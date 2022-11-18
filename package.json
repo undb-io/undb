@@ -11,16 +11,16 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "up": "pnpm up -r --workspace"
   },
   "devDependencies": {
-    "@egodb/eslint-config": "workspace:*",
+    "@egodb/eslint-config": "workspace:0.0.0",
     "prettier": "latest",
     "turbo": "latest"
   },
   "engines": {
     "node": ">=18.0.0"
   },
-  "dependencies": {},
   "packageManager": "pnpm@7.14.2"
 }

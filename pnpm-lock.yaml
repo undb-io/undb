@@ -4,7 +4,7 @@ importers:
 
   .:
     specifiers:
-      '@egodb/eslint-config': workspace:*
+      '@egodb/eslint-config': workspace:0.0.0
       prettier: latest
       turbo: latest
     devDependencies:
@@ -14,29 +14,29 @@ importers:
 
   apps/backend:
     specifiers:
-      '@egodb/eslint-config': workspace:*
-      '@nestjs/cli': ^8.0.0
-      '@nestjs/common': ^8.0.0
-      '@nestjs/core': ^8.0.0
-      '@nestjs/platform-express': ^8.0.0
-      '@nestjs/schematics': ^8.0.0
-      '@nestjs/testing': ^8.0.0
-      '@types/express': ^4.17.13
+      '@egodb/eslint-config': workspace:0.0.0
+      '@nestjs/cli': ^8.2.8
+      '@nestjs/common': ^8.4.7
+      '@nestjs/core': ^8.4.7
+      '@nestjs/platform-express': ^8.4.7
+      '@nestjs/schematics': ^8.0.11
+      '@nestjs/testing': ^8.4.7
+      '@types/express': ^4.17.14
       '@types/jest': ^26.0.24
-      '@types/node': ^16.0.0
-      '@types/supertest': ^2.0.11
+      '@types/node': ^16.18.3
+      '@types/supertest': ^2.0.12
       eslint: 7.32.0
       jest: 27.0.6
       reflect-metadata: ^0.1.13
       rimraf: ^3.0.2
-      rxjs: ^7.2.0
-      supertest: ^6.1.3
-      ts-jest: ^27.0.3
-      ts-loader: ^9.2.3
-      ts-node: ^10.0.0
-      tsconfig: workspace:*
-      tsconfig-paths: ^3.10.1
-      typescript: ^4.3.5
+      rxjs: ^7.5.7
+      supertest: ^6.3.1
+      ts-jest: ^27.1.5
+      ts-loader: ^9.4.1
+      ts-node: ^10.9.1
+      tsconfig: workspace:0.0.0
+      tsconfig-paths: ^3.14.1
+      typescript: ^4.9.3
     dependencies:
       '@nestjs/common': 8.4.7_yzt46al3aifnexifjjdb4dxxja
       '@nestjs/core': 8.4.7_rvglusfgyoseqzubhh6546rvkq
@@ -65,18 +65,18 @@ importers:
 
   apps/docs:
     specifiers:
-      '@babel/core': ^7.0.0
-      '@egodb/eslint-config': workspace:*
-      '@egodb/ui': workspace:*
-      '@types/node': ^17.0.12
-      '@types/react': ^18.0.22
-      '@types/react-dom': ^18.0.7
+      '@babel/core': ^7.20.2
+      '@egodb/eslint-config': workspace:0.0.0
+      '@egodb/ui': workspace:0.0.0
+      '@types/node': ^17.0.45
+      '@types/react': ^18.0.25
+      '@types/react-dom': ^18.0.9
       eslint: 7.32.0
       next: 13.0.0
       react: 18.2.0
       react-dom: 18.2.0
-      tsconfig: workspace:*
-      typescript: ^4.5.3
+      tsconfig: workspace:0.0.0
+      typescript: ^4.9.3
     dependencies:
       '@egodb/ui': link:../../packages/ui
       next: 13.0.0_mqvh5p7ejg4taogoj6tpk3gd5a
@@ -94,18 +94,18 @@ importers:
 
   apps/web:
     specifiers:
-      '@babel/core': ^7.0.0
-      '@egodb/eslint-config': workspace:*
-      '@egodb/ui': workspace:*
-      '@types/node': ^17.0.12
-      '@types/react': ^18.0.22
-      '@types/react-dom': ^18.0.7
+      '@babel/core': ^7.20.2
+      '@egodb/eslint-config': workspace:0.0.0
+      '@egodb/ui': workspace:0.0.0
+      '@types/node': ^17.0.45
+      '@types/react': ^18.0.25
+      '@types/react-dom': ^18.0.9
       eslint: 7.32.0
       next: 13.0.0
       react: 18.2.0
       react-dom: 18.2.0
-      tsconfig: workspace:*
-      typescript: ^4.5.3
+      tsconfig: workspace:0.0.0
+      typescript: ^4.9.3
     dependencies:
       '@egodb/ui': link:../../packages/ui
       next: 13.0.0_mqvh5p7ejg4taogoj6tpk3gd5a
@@ -123,12 +123,12 @@ importers:
 
   packages/eslint-config:
     specifiers:
-      eslint: ^7.23.0
+      eslint: ^7.32.0
       eslint-config-next: 13.0.0
-      eslint-config-prettier: ^8.3.0
+      eslint-config-prettier: ^8.5.0
       eslint-config-turbo: latest
       eslint-plugin-react: 7.31.8
-      typescript: ^4.7.4
+      typescript: ^4.9.3
     dependencies:
       eslint: 7.32.0
       eslint-config-next: 13.0.0_77fvizpdb3y4icyeo2mf4eo7em
@@ -143,16 +143,16 @@ importers:
 
   packages/ui:
     specifiers:
-      '@egodb/eslint-config': workspace:*
+      '@egodb/eslint-config': workspace:0.0.0
       '@emotion/react': ^11.10.5
       '@mantine/core': ^5.8.0
       '@mantine/hooks': ^5.8.0
-      '@types/react': ^18.0.17
-      '@types/react-dom': ^18.0.6
+      '@types/react': ^18.0.25
+      '@types/react-dom': ^18.0.9
       eslint: ^7.32.0
       react: ^18.2.0
-      tsconfig: workspace:*
-      typescript: ^4.5.2
+      tsconfig: workspace:0.0.0
+      typescript: ^4.9.3
     dependencies:
       '@emotion/react': 11.10.5_fan5qbzahqtxlm5dzefqlqx5ia
       '@mantine/core': 5.8.0_ftqexesuhun2iuyxu7g3gltmym
@@ -802,7 +802,7 @@ packages:
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
       '@jest/types': 27.5.1
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       chalk: 4.1.2
       jest-message-util: 27.5.1
       jest-util: 27.5.1
@@ -823,7 +823,7 @@ packages:
       '@jest/test-result': 27.5.1
       '@jest/transform': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.8.1
@@ -860,7 +860,7 @@ packages:
     dependencies:
       '@jest/fake-timers': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       jest-mock: 27.5.1
     dev: true
 
@@ -870,7 +870,7 @@ packages:
     dependencies:
       '@jest/types': 27.5.1
       '@sinonjs/fake-timers': 8.1.0
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       jest-message-util: 27.5.1
       jest-mock: 27.5.1
       jest-util: 27.5.1
@@ -899,7 +899,7 @@ packages:
       '@jest/test-result': 27.5.1
       '@jest/transform': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       chalk: 4.1.2
       collect-v8-coverage: 1.0.1
       exit: 0.1.2
@@ -983,7 +983,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       '@types/yargs': 15.0.14
       chalk: 4.1.2
     dev: true
@@ -994,7 +994,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       '@types/yargs': 16.0.4
       chalk: 4.1.2
     dev: true
@@ -1598,13 +1598,13 @@ packages:
     resolution: {integrity: sha512-ALYone6pm6QmwZoAgeyNksccT9Q4AWZQ6PvfwR37GT6r6FWUPguq6sUmNGSMV2Wr761oQoBxwGGa6DR5o1DC9g==}
     dependencies:
       '@types/connect': 3.4.35
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
     dev: true
 
   /@types/connect/3.4.35:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
     dev: true
 
   /@types/cookiejar/2.1.2:
@@ -1632,7 +1632,7 @@ packages:
   /@types/express-serve-static-core/4.17.31:
     resolution: {integrity: sha512-DxMhY+NAsTwMMFHBTtJFNp5qiHKJ7TeqOo23zVEM9alT1Ml27Q3xcTH0xwxn7Q0BbMcVEJOs/7aQtUWupUQN3Q==}
     dependencies:
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.4
     dev: true
@@ -1649,7 +1649,7 @@ packages:
   /@types/graceful-fs/4.1.5:
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
     dependencies:
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
     dev: true
 
   /@types/istanbul-lib-coverage/2.0.4:
@@ -1732,7 +1732,7 @@ packages:
     resolution: {integrity: sha512-z5xyF6uh8CbjAu9760KDKsH2FcDxZ2tFCsA4HIMWE6IkiYMXfVoa+4f9KX+FN0ZLsaMw1WNG2ETLA6N+/YA+cg==}
     dependencies:
       '@types/mime': 3.0.1
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
     dev: true
 
   /@types/stack-utils/2.0.1:
@@ -1740,11 +1740,11 @@ packages:
     dev: true
 
   /@types/superagent/4.1.15:
-    resolution: {integrity: sha512-iiXaOL2wSbnSY4qg0mFPWJHL9iwyEsoNYwaHF2w58/fsVAQJlj+KUfFAFZu+nzbz+b7dUprJEAc+O9vhHHhQTA==}
+    resolution: {integrity: sha512-iiXaOL2wSbnSY4qg0mFPWJHL9iwyEsoNYwaHF2w58/fsVAQJlj+KUfFAFZu+nzbz+b7dUprJEAc+O9vhHHhQTA==, tarball: '@types/superagent/-/superagent-4.1.14.tgz'}
     deprecated: '[WARNING] Use 4.1.14 instead of 4.1.15, reason: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/58445'
     dependencies:
       '@types/cookiejar': 2.1.2
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
     dev: true
 
   /@types/supertest/2.0.12:
@@ -2014,7 +2014,7 @@ packages:
       ajv:
         optional: true
     dependencies:
-      ajv: 8.11.2
+      ajv: 8.9.0
     dev: true
 
   /ajv-keywords/3.5.2_ajv@6.12.6:
@@ -4040,7 +4040,7 @@ packages:
       '@jest/environment': 27.5.1
       '@jest/test-result': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       chalk: 4.1.2
       co: 4.6.0
       dedent: 0.7.0
@@ -4176,7 +4176,7 @@ packages:
       '@jest/environment': 27.5.1
       '@jest/fake-timers': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       jest-mock: 27.5.1
       jest-util: 27.5.1
       jsdom: 16.7.0
@@ -4194,7 +4194,7 @@ packages:
       '@jest/environment': 27.5.1
       '@jest/fake-timers': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       jest-mock: 27.5.1
       jest-util: 27.5.1
     dev: true
@@ -4215,7 +4215,7 @@ packages:
     dependencies:
       '@jest/types': 27.5.1
       '@types/graceful-fs': 4.1.5
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       anymatch: 3.1.2
       fb-watchman: 2.0.2
       graceful-fs: 4.2.10
@@ -4237,7 +4237,7 @@ packages:
       '@jest/source-map': 27.5.1
       '@jest/test-result': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       chalk: 4.1.2
       co: 4.6.0
       expect: 27.5.1
@@ -4292,7 +4292,7 @@ packages:
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
       '@jest/types': 27.5.1
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
     dev: true
 
   /jest-pnp-resolver/1.2.3_jest-resolve@27.5.1:
@@ -4348,7 +4348,7 @@ packages:
       '@jest/test-result': 27.5.1
       '@jest/transform': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       chalk: 4.1.2
       emittery: 0.8.1
       graceful-fs: 4.2.10
@@ -4405,7 +4405,7 @@ packages:
     resolution: {integrity: sha512-jZCyo6iIxO1aqUxpuBlwTDMkzOAJS4a3eYz3YzgxxVQFwLeSA7Jfq5cbqCY+JLvTDrWirgusI/0KwxKMgrdf7w==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       graceful-fs: 4.2.10
     dev: true
 
@@ -4444,7 +4444,7 @@ packages:
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
       '@jest/types': 27.5.1
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       chalk: 4.1.2
       ci-info: 3.6.1
       graceful-fs: 4.2.10
@@ -4469,7 +4469,7 @@ packages:
     dependencies:
       '@jest/test-result': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       jest-util: 27.5.1
@@ -4480,7 +4480,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 17.0.45
+      '@types/node': 16.18.3
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
@@ -5626,6 +5626,11 @@ packages:
     engines: {node: '>= 8'}
     dev: true
 
+  /source-map/0.7.4:
+    resolution: {integrity: sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==}
+    engines: {node: '>= 8'}
+    dev: true
+
   /sourcemap-codec/1.4.8:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
     dev: true
@@ -6287,7 +6292,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.4
       convert-source-map: 1.9.0
-      source-map: 0.7.3
+      source-map: 0.7.4
     dev: true
 
   /vary/1.1.2:
