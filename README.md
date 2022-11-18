@@ -6,3 +6,8 @@
 $ pnpm install
 $ pnpm run dev
 ```
+
+## TODO
+
+- [ ] commitizen
+- [ ] husky
