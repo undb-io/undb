@@ -1,4 +1,4 @@
-import { Button } from "ui";
+import { Button } from '@egodb/ui'
 
 export default function Docs() {
   return (
@@ -6,5 +6,5 @@ export default function Docs() {
       <h1>Docs</h1>
       <Button />
     </div>
-  );
+  )
 }

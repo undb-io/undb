@@ -4,69 +4,69 @@ importers:
 
   .:
     specifiers:
-      eslint-config-custom: workspace:*
+      '@egodb/eslint-config': workspace:*
       prettier: latest
       turbo: latest
     devDependencies:
-      eslint-config-custom: link:packages/eslint-config-custom
+      '@egodb/eslint-config': link:packages/eslint-config-custom
       prettier: 2.7.1
       turbo: 1.6.3
 
   apps/docs:
     specifiers:
       '@babel/core': ^7.0.0
+      '@egodb/eslint-config': workspace:*
+      '@egodb/ui': workspace:*
       '@types/node': ^17.0.12
       '@types/react': ^18.0.22
       '@types/react-dom': ^18.0.7
       eslint: 7.32.0
-      eslint-config-custom: workspace:*
       next: 13.0.0
       react: 18.2.0
       react-dom: 18.2.0
       tsconfig: workspace:*
       typescript: ^4.5.3
-      ui: workspace:*
     dependencies:
+      '@egodb/ui': link:../../packages/ui
       next: 13.0.0_mqvh5p7ejg4taogoj6tpk3gd5a
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      ui: link:../../packages/ui
     devDependencies:
       '@babel/core': 7.20.2
+      '@egodb/eslint-config': link:../../packages/eslint-config-custom
       '@types/node': 17.0.45
       '@types/react': 18.0.25
       '@types/react-dom': 18.0.9
       eslint: 7.32.0
-      eslint-config-custom: link:../../packages/eslint-config-custom
       tsconfig: link:../../packages/tsconfig
       typescript: 4.9.3
 
   apps/web:
     specifiers:
       '@babel/core': ^7.0.0
+      '@egodb/eslint-config': workspace:*
+      '@egodb/ui': workspace:*
       '@types/node': ^17.0.12
       '@types/react': ^18.0.22
       '@types/react-dom': ^18.0.7
       eslint: 7.32.0
-      eslint-config-custom: workspace:*
       next: 13.0.0
       react: 18.2.0
       react-dom: 18.2.0
       tsconfig: workspace:*
       typescript: ^4.5.3
-      ui: workspace:*
     dependencies:
+      '@egodb/ui': link:../../packages/ui
       next: 13.0.0_mqvh5p7ejg4taogoj6tpk3gd5a
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      ui: link:../../packages/ui
     devDependencies:
       '@babel/core': 7.20.2
+      '@egodb/eslint-config': link:../../packages/eslint-config-custom
       '@types/node': 17.0.45
       '@types/react': 18.0.25
       '@types/react-dom': 18.0.9
       eslint: 7.32.0
-      eslint-config-custom: link:../../packages/eslint-config-custom
       tsconfig: link:../../packages/tsconfig
       typescript: 4.9.3
 
@@ -92,18 +92,18 @@ importers:
 
   packages/ui:
     specifiers:
+      '@egodb/eslint-config': workspace:*
       '@types/react': ^18.0.17
       '@types/react-dom': ^18.0.6
       eslint: ^7.32.0
-      eslint-config-custom: workspace:*
       react: ^18.2.0
       tsconfig: workspace:*
       typescript: ^4.5.2
     devDependencies:
+      '@egodb/eslint-config': link:../eslint-config-custom
       '@types/react': 18.0.25
       '@types/react-dom': 18.0.9
       eslint: 7.32.0
-      eslint-config-custom: link:../eslint-config-custom
       react: 18.2.0
       tsconfig: link:../tsconfig
       typescript: 4.9.3
