@@ -12,7 +12,7 @@
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "up": "pnpm up -r --workspace"
+    "up": "pnpm up -r --workspace -i"
   },
   "devDependencies": {
     "@egodb/eslint-config": "workspace:0.0.0",
