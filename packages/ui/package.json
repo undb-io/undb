@@ -8,12 +8,17 @@
     "lint": "eslint *.ts*"
   },
   "devDependencies": {
+    "@egodb/eslint-config": "workspace:*",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "eslint": "^7.32.0",
-    "@egodb/eslint-config": "workspace:*",
     "react": "^18.2.0",
     "tsconfig": "workspace:*",
     "typescript": "^4.5.2"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@mantine/core": "^5.8.0",
+    "@mantine/hooks": "^5.8.0"
   }
 }
