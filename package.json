@@ -13,14 +13,14 @@
     "lint": "turbo run lint",
     "test": "echo \"not implemented\" && exit 0",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "up": "pnpm up -r --workspace -i",
+    "up": "pnpm up -r --workspace",
     "prepare": "husky install"
   },
   "devDependencies": {
     "@egodb/eslint-config": "workspace:0.0.0",
+    "husky": "^8.0.2",
     "prettier": "latest",
-    "turbo": "latest",
-    "husky": "^8.0.0"
+    "turbo": "latest"
   },
   "engines": {
     "node": ">=18.0.0"
