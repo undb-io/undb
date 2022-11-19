@@ -13,11 +13,16 @@
     "lint": "turbo run lint",
     "test": "echo \"not implemented\" && exit 0",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "commit": "cz",
     "up": "pnpm up -r --workspace",
     "prepare": "husky install"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.2.0",
+    "@commitlint/config-conventional": "^17.2.0",
     "@egodb/eslint-config": "workspace:0.0.0",
+    "commitizen": "^4.2.5",
+    "cz-conventional-changelog": "^3.3.0",
     "husky": "^8.0.2",
     "prettier": "latest",
     "turbo": "latest"

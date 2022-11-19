@@ -9,7 +9,7 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "start": "nest start",
-    "dev": "nest start --watch --preserveWatchOutput",
+    "dev": "nest build --webpack --webpackPath webpack-hmr.config.js --watch",
     "start:debug": "nest start --debug --watch --preserveWatchOutput",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -38,13 +38,16 @@
     "@types/supertest": "^2.0.12",
     "eslint": "7.32.0",
     "jest": "27.0.6",
+    "run-script-webpack-plugin": "^0.1.1",
     "supertest": "^6.3.1",
     "ts-jest": "^27.1.5",
     "ts-loader": "^9.4.1",
     "ts-node": "^10.9.1",
     "tsconfig": "workspace:0.0.0",
     "tsconfig-paths": "^3.14.1",
-    "typescript": "^4.9.3"
+    "typescript": "^4.9.3",
+    "webpack": "^5.75.0",
+    "webpack-node-externals": "^3.0.0"
   },
   "jest": {
     "moduleFileExtensions": [

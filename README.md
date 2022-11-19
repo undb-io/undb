@@ -7,6 +7,12 @@ $ pnpm install
 $ pnpm run dev
 ```
 
+## Commit
+
+```bash
+$ pnpm run commit
+```
+
 ## TODO
 
 - [ ] commitizen

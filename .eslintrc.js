@@ -4,7 +4,7 @@ module.exports = {
   extends: ["@egodb/eslint-config"],
   settings: {
     next: {
-      rootDir: ["apps/*/"],
+      rootDir: ["apps/web/"],
     },
   },
 };
