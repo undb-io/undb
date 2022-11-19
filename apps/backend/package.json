@@ -1,24 +1,8 @@
 {
   "name": "@egodb/backend",
-  "version": "0.0.1",
   "description": "",
+  "version": "0.0.1",
   "author": "",
-  "private": true,
-  "license": "UNLICENSED",
-  "scripts": {
-    "prebuild": "rimraf dist",
-    "build": "nest build",
-    "start": "nest start",
-    "dev": "nest build --webpack --webpackPath webpack-hmr.config.js --watch",
-    "start:debug": "nest start --debug --watch --preserveWatchOutput",
-    "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
-  },
   "dependencies": {
     "@nestjs/common": "^8.4.7",
     "@nestjs/core": "^8.4.7",
@@ -28,7 +12,7 @@
     "rxjs": "^7.5.7"
   },
   "devDependencies": {
-    "@egodb/eslint-config": "0.0.0",
+    "@egodb/eslint-config": "^0.0.0",
     "@nestjs/cli": "^8.2.8",
     "@nestjs/schematics": "^8.0.11",
     "@nestjs/testing": "^8.4.7",
@@ -37,13 +21,13 @@
     "@types/node": "^17.0.45",
     "@types/supertest": "^2.0.12",
     "eslint": "^7.32.0",
-    "jest": "27.0.6",
+    "jest": "^27.0.6",
     "run-script-webpack-plugin": "^0.1.1",
     "supertest": "^6.3.1",
     "ts-jest": "^27.1.5",
     "ts-loader": "^9.4.1",
     "ts-node": "^10.9.1",
-    "tsconfig": "0.0.0",
+    "tsconfig": "^0.0.0",
     "tsconfig-paths": "^3.14.1",
     "typescript": "^4.9.3",
     "webpack": "^5.75.0",
@@ -65,5 +49,21 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "build": "nest build",
+    "dev": "nest build --webpack --webpackPath webpack-hmr.config.js --watch",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "prebuild": "rimraf dist",
+    "start": "nest start",
+    "start:debug": "nest start --debug --watch --preserveWatchOutput",
+    "start:prod": "node dist/main",
+    "test": "jest",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:watch": "jest --watch"
   }
 }

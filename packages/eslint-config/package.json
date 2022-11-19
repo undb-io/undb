@@ -1,18 +1,18 @@
 {
   "name": "@egodb/eslint-config",
   "version": "0.0.0",
-  "main": "index.js",
-  "license": "MIT",
   "dependencies": {
     "eslint": "^7.32.0",
     "eslint-config-next": "^13.0.4",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-turbo": "latest",
-    "eslint-plugin-react": "7.31.8"
+    "eslint-plugin-react": "^7.31.8"
   },
   "devDependencies": {
     "typescript": "^4.9.3"
   },
+  "license": "MIT",
+  "main": "index.js",
   "publishConfig": {
     "access": "public"
   }
