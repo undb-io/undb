@@ -1,28 +1,10 @@
 {
   "name": "egodb",
   "version": "0.0.0",
-  "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "scripts": {
-    "preinstall": "npx only-allow pnpm",
-    "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint",
-    "test": "echo \"not implemented\" && exit 0",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "commit": "cz",
-    "up": "pnpm up -r --workspace",
-    "syncpack:fix": "syncpack fix-mismatches",
-    "syncpack:check": "syncpack list-mismatches",
-    "prepare": "husky install"
-  },
   "devDependencies": {
     "@commitlint/cli": "^17.2.0",
     "@commitlint/config-conventional": "^17.2.0",
-    "@egodb/eslint-config": "0.0.0",
+    "@egodb/eslint-config": "^0.0.0",
     "commitizen": "^4.2.5",
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^8.0.2",
@@ -33,5 +15,23 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "packageManager": "pnpm@7.14.2"
+  "packageManager": "pnpm@7.14.2",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "commit": "cz",
+    "dev": "turbo run dev --parallel",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "turbo run lint",
+    "preinstall": "npx only-allow pnpm",
+    "prepare": "husky install",
+    "syncpack:check": "syncpack list-mismatches",
+    "syncpack:fix": "syncpack fix-mismatches",
+    "test": "echo \"not implemented\" && exit 0",
+    "up": "pnpm up -r --workspace"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
 }
