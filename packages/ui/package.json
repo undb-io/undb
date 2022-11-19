@@ -17,8 +17,10 @@
     "typescript": "^4.9.3"
   },
   "dependencies": {
+    "@babel/core": "^7.20.2",
     "@emotion/react": "^11.10.5",
     "@mantine/core": "^5.8.0",
-    "@mantine/hooks": "^5.8.0"
+    "@mantine/hooks": "^5.8.0",
+    "react-dom": "18.2.0"
   }
 }
