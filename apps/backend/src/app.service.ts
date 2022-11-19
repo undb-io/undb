@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common'
+import { ClsService } from 'nestjs-cls'
 
 @Injectable()
 export class AppService {
+  constructor(private readonly clsService: ClsService) {}
   getHello(): string {
-    return 'Hello World!';
+    return this.clsService.get('ip')
   }
 }

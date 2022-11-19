@@ -39,6 +39,7 @@ importers:
       '@types/supertest': ^2.0.12
       eslint: ^7.32.0
       jest: ^27.0.6
+      nestjs-cls: ^3.0.4
       reflect-metadata: ^0.1.13
       rimraf: ^3.0.2
       run-script-webpack-plugin: ^0.1.1
@@ -56,6 +57,7 @@ importers:
       '@nestjs/common': 8.4.7_yzt46al3aifnexifjjdb4dxxja
       '@nestjs/core': 8.4.7_rvglusfgyoseqzubhh6546rvkq
       '@nestjs/platform-express': 8.4.7_7tsmhnugyerf5okgqzer2mfqme
+      nestjs-cls: 3.0.4_7tsmhnugyerf5okgqzer2mfqme
       reflect-metadata: 0.1.13
       rimraf: 3.0.2
       rxjs: 7.5.7
@@ -5679,6 +5681,17 @@ packages:
   /neo-async/2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
+
+  /nestjs-cls/3.0.4_7tsmhnugyerf5okgqzer2mfqme:
+    resolution: {integrity: sha512-NRJIcrRYQKsKOdO7U3VYxajE+oKZhECFXyUhb07X8DDzc0O1NWtVOUl0r7dysXiYPqMUGi8CeFl7fMD48zyLIA==}
+    engines: {node: '>=12.17.0'}
+    peerDependencies:
+      '@nestjs/common': '> 7.0.0 < 10'
+      '@nestjs/core': '> 7.0.0 < 10'
+    dependencies:
+      '@nestjs/common': 8.4.7_yzt46al3aifnexifjjdb4dxxja
+      '@nestjs/core': 8.4.7_rvglusfgyoseqzubhh6546rvkq
+    dev: false
 
   /next/13.0.4_mqvh5p7ejg4taogoj6tpk3gd5a:
     resolution: {integrity: sha512-4P0MvbjPCI1E/UPL1GrTXtYlgFnbBbY3JQ+AMY8jYE2SwyvCWctEJySoRjveznAHjrl6TIjuAJeB8u1c2StYUQ==}
