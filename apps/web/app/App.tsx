@@ -1,6 +1,8 @@
+'use client'
+
 import { AppShell, Button, EgoUIProvider, Header, Navbar } from '@egodb/ui'
 
-export default function Web() {
+export default function App() {
   return (
     <EgoUIProvider withGlobalStyles withNormalizeCSS>
       <AppShell
@@ -17,9 +19,6 @@ export default function Web() {
             {/* Header content */}
           </Header>
         }
-        styles={(theme) => ({
-          main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
-        })}
       >
         <Button>hello EGO</Button>
       </AppShell>

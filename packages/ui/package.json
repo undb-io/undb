@@ -19,8 +19,10 @@
   "dependencies": {
     "@babel/core": "^7.20.2",
     "@emotion/react": "^11.10.5",
+    "@emotion/server": "^11.10.0",
     "@mantine/core": "^5.8.0",
     "@mantine/hooks": "^5.8.0",
+    "@mantine/next": "^5.8.0",
     "react-dom": "18.2.0"
   }
 }
