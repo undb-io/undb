@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "mikestead.dotenv",
+    "dbaeumer.vscode-eslint",
+    "usernamehw.errorlens",
+    "eamodio.gitlens",
+    "ms-vsliveshare.vsliveshare",
+    "jacano.vscode-pnpm",
+    "esbenp.prettier-vscode"
+  ]
+}
