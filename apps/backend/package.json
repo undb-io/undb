@@ -14,7 +14,7 @@
     "rxjs": "^7.5.7"
   },
   "devDependencies": {
-    "@egodb/eslint-config": "0.0.0",
+    "@egodb/eslint-config": "^0.0.0",
     "@nestjs/cli": "^9.1.5",
     "@nestjs/schematics": "^9.0.3",
     "@nestjs/testing": "^9.2.0",
@@ -29,7 +29,7 @@
     "ts-jest": "^29.0.3",
     "ts-loader": "^9.4.1",
     "ts-node": "^10.9.1",
-    "tsconfig": "0.0.0",
+    "tsconfig": "^0.0.0",
     "tsconfig-paths": "^4.1.0",
     "typescript": "^4.9.3",
     "webpack": "^5.75.0",

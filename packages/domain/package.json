@@ -1,12 +1,7 @@
 {
   "name": "@egodb/domain",
-  "version": "0.0.0",
   "description": "",
-  "main": "index.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
+  "version": "0.0.0",
   "author": "",
   "dependencies": {
     "fast-deep-equal": "^3.1.3",
@@ -14,6 +9,11 @@
     "oxide.ts": "^1.1.0"
   },
   "devDependencies": {
-    "tsconfig": "0.0.0"
+    "tsconfig": "^0.0.0"
+  },
+  "keywords": [],
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
