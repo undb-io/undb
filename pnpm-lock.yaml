@@ -26,7 +26,7 @@ importers:
 
   apps/backend:
     specifiers:
-      '@egodb/core': workspace:^0.0.0
+      '@egodb/core': ^0.0.0
       '@egodb/domain': ^0.0.0
       '@egodb/eslint-config': ^0.0.0
       '@nestjs/cli': ^9.1.5
@@ -116,7 +116,7 @@ importers:
 
   packages/core:
     specifiers:
-      '@egodb/domain': workspace:^0.0.0
+      '@egodb/domain': ^0.0.0
       rimraf: ^3.0.2
       tsconfig: ^0.0.0
       typescript: ^4.9.3

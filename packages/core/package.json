@@ -3,6 +3,9 @@
   "description": "",
   "version": "0.0.0",
   "author": "",
+  "dependencies": {
+    "@egodb/domain": "^0.0.0"
+  },
   "devDependencies": {
     "rimraf": "^3.0.2",
     "tsconfig": "^0.0.0",
@@ -19,8 +22,5 @@
     "prebuild": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "types": "./dist/index.d",
-  "dependencies": {
-    "@egodb/domain": "workspace:^0.0.0"
-  }
+  "types": "./dist/index.d"
 }
