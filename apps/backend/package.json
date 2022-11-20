@@ -9,6 +9,7 @@
     "@nestjs/core": "^9.2.0",
     "@nestjs/cqrs": "^9.0.1",
     "@nestjs/platform-express": "^9.2.0",
+    "@nestjs/terminus": "^9.1.3",
     "nestjs-cls": "^3.0.4",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
