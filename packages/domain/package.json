@@ -14,6 +14,6 @@
     "oxide.ts": "^1.1.0"
   },
   "devDependencies": {
-    "tsconfig": "^0.0.0"
+    "tsconfig": "0.0.0"
   }
 }
