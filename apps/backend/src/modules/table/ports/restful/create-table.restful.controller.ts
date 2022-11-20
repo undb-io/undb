@@ -1,5 +1,5 @@
 import { CreateTableCommand } from '@egodb/core'
-import { Body, Controller, Get, Post } from '@nestjs/common'
+import { Body, Controller, Post } from '@nestjs/common'
 import { CommandBus } from '@nestjs/cqrs'
 import { routesV1 } from '../../../../configs/app.routes'
 import { CreateTableRequestDTO } from './create-table.request.dto'
@@ -11,12 +11,6 @@ export class CreateTableRestfulController {
   @Post(routesV1.table.create)
   async create(@Body() props: CreateTableRequestDTO) {
     const cmd = new CreateTableCommand({ name: props.name })
-    await this.commandBus.execute(cmd)
-  }
-
-  @Get(routesV1.table.root)
-  async get() {
-    const cmd = new CreateTableCommand({ name: 'test' })
     await this.commandBus.execute(cmd)
   }
 }
