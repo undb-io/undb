@@ -1,5 +1,10 @@
 import { Command, CommandProps } from '@egodb/domain'
-export class CreateTableCommand extends Command {
+
+export interface ICreateTableCommand {
+  readonly name: string
+}
+
+export class CreateTableCommand extends Command implements ICreateTableCommand {
   readonly name: string
 
   constructor(props: CommandProps<CreateTableCommand>) {

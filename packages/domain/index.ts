@@ -1,4 +1,5 @@
 export * from './command'
+export * from './command-handler'
 export * from './date.vo'
 export * from './id.vo'
 export * from './interfaces'

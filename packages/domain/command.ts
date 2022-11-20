@@ -19,7 +19,7 @@ export class Command {
   public readonly causationId?: string
 
   constructor(props: CommandProps<unknown>) {
-    this.correlationId = props.correlationId || v4()
-    this.id = props.id || v4()
+    this.correlationId = props.correlationId ?? v4()
+    this.id = props.id ?? v4()
   }
 }

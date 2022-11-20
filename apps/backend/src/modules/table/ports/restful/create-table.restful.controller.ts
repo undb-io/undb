@@ -1,11 +1,11 @@
+import { CreateTableCommand } from '@egodb/core'
 import { Body, Controller, Get, Post } from '@nestjs/common'
 import { CommandBus } from '@nestjs/cqrs'
-import { routesV1 } from 'src/configs/app.routes'
-import { CreateTableCommand } from '../commands/create-table.command'
+import { routesV1 } from '../../../../configs/app.routes'
 import { CreateTableRequestDTO } from './create-table.request.dto'
 
 @Controller(routesV1.version)
-export class CreateTableHttpController {
+export class CreateTableRestfulController {
   constructor(private readonly commandBus: CommandBus) {}
 
   @Post(routesV1.table.create)

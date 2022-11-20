@@ -1,0 +1,26 @@
+{
+  "name": "@egodb/core",
+  "description": "",
+  "version": "0.0.0",
+  "author": "",
+  "dependencies": {
+    "@egodb/domain": "^0.0.0"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "tsconfig": "^0.0.0",
+    "typescript": "^4.9.3"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [],
+  "main": "./dist/index",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prebuild": "rimraf dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "types": "./dist/index.d"
+}

@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
+import { dbAdapters } from './adapters'
 import { commandHandlers } from './commands'
-import { httpControllers } from './ports'
+import { restfulControllers } from './ports/restful'
 
 @Module({
   imports: [CqrsModule],
-  controllers: [...httpControllers],
-  providers: [...commandHandlers],
+  controllers: [...restfulControllers],
+  providers: [...commandHandlers, ...dbAdapters],
 })
 export class TableModule {}
