@@ -1,4 +1,4 @@
-import { CreateTableCommand, CreateTableCommandHandler as DomainHandler, ITableRepository } from '@egodb/core'
+import { CreateTableCommand, CreateTableCommandHandler as DomainHandler, type ITableRepository } from '@egodb/core'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { InjectTableReposiory } from '../adapters'
 
