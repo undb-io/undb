@@ -3,6 +3,7 @@
   "include": ["**/*.ts"],
   "exclude": ["node_modules"],
   "compilerOptions": {
+    "module": "CommonJS",
     "outDir": "./dist",
     "baseUrl": "./"
   }
