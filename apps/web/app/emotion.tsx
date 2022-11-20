@@ -3,12 +3,9 @@
 import { CacheProvider, EgoUIProvider, useEmotionCache } from '@egodb/ui'
 import { useServerInsertedHTML } from 'next/navigation'
 
-export default function RootStyleRegistry({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootStyleRegistry({ children }: { children: React.ReactNode }) {
   const cache = useEmotionCache()
+
   cache.compat = true
 
   useServerInsertedHTML(() => (
