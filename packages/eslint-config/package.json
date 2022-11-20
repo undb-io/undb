@@ -2,11 +2,11 @@
   "name": "@egodb/eslint-config",
   "version": "0.0.0",
   "dependencies": {
-    "eslint": "^7.32.0",
+    "eslint": "^8.28.0",
     "eslint-config-next": "^13.0.4",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-config-turbo": "latest",
-    "eslint-plugin-react": "^7.31.8"
+    "eslint-config-turbo": "^0.0.4",
+    "eslint-plugin-react": "^7.31.11"
   },
   "devDependencies": {
     "typescript": "^4.9.3"

@@ -8,9 +8,9 @@
     "commitizen": "^4.2.5",
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^8.0.2",
-    "prettier": "latest",
+    "prettier": "^2.7.1",
     "syncpack": "^8.3.9",
-    "turbo": "latest"
+    "turbo": "^1.6.3"
   },
   "engines": {
     "node": ">=18.0.0"
