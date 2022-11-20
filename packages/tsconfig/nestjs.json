@@ -2,14 +2,14 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "./base.json",
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "preserveWatchOutput": true,
-    "target": "es2017",
+    "target": "ES2017",
     "sourceMap": true,
     "incremental": true
   }

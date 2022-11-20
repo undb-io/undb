@@ -1,5 +1,11 @@
 {
   "extends": "tsconfig/lib.json",
   "include": ["."],
-  "exclude": ["dist", "build", "node_modules"]
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES6",
+    "outDir": "./dist",
+    "baseUrl": "."
+  }
 }

@@ -1,1 +1,5 @@
+export * from './command'
+export * from './date.vo'
+export * from './id.vo'
 export * from './interfaces'
+export * from './value-object'

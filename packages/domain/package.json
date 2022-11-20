@@ -6,14 +6,25 @@
   "dependencies": {
     "fast-deep-equal": "^3.1.3",
     "nanoid": "^4.0.0",
-    "oxide.ts": "^1.1.0"
+    "oxide.ts": "^1.1.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "tsconfig": "^0.0.0"
+    "@types/uuid": "^8.3.4",
+    "rimraf": "^3.0.2",
+    "tsconfig": "^0.0.0",
+    "typescript": "^4.9.3"
   },
   "keywords": [],
-  "main": "index.ts",
+  "main": "./dist/index",
+  "types": "./dist/index.d",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "dev": "tsc --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { ClsModule } from 'nestjs-cls'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { modules } from './modules'
 
 @Module({
   imports: [
@@ -9,6 +10,7 @@ import { AppService } from './app.service'
       global: true,
       middleware: { mount: true },
     }),
+    ...modules,
   ],
   controllers: [AppController],
   providers: [AppService],
