@@ -1,7 +1,18 @@
 {
   "name": "@egodb/trpc",
-  "version": "0.0.0",
   "description": "",
+  "version": "0.0.0",
+  "dependencies": {
+    "@egodb/core": "^0.0.0",
+    "@trpc/server": "^10.0.0-rc.8",
+    "zod": "^3.19.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.14",
+    "tsconfig": "^0.0.0",
+    "tsup": "^6.5.0",
+    "typescript": "^4.9.3"
+  },
   "files": [
     "dist"
   ],
@@ -13,16 +24,5 @@
     "prebuild": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "types": "./dist/index.d",
-  "dependencies": {
-    "@egodb/core": "workspace:^0.0.0",
-    "@trpc/server": "10.0.0-rc.8",
-    "zod": "^3.19.1"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.14",
-    "tsconfig": "workspace:^0.0.0",
-    "tsup": "^6.5.0",
-    "typescript": "^4.9.3"
-  }
+  "types": "./dist/index.d"
 }
