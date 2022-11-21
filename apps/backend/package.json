@@ -6,6 +6,7 @@
   "dependencies": {
     "@egodb/core": "^0.0.0",
     "@egodb/domain": "^0.0.0",
+    "@egodb/trpc": "^0.0.0",
     "@nestjs/common": "^9.2.0",
     "@nestjs/core": "^9.2.0",
     "@nestjs/cqrs": "^9.0.1",
@@ -59,7 +60,7 @@
   "private": true,
   "scripts": {
     "build": "nest build",
-    "dev": "nest build --webpack --webpackPath webpack-hmr.config.js --watch",
+    "dev": "nest start --watch --preserveWatchOutput",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "prebuild": "rimraf dist",
     "start": "nest start",

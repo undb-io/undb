@@ -29,6 +29,7 @@ importers:
       '@egodb/core': ^0.0.0
       '@egodb/domain': ^0.0.0
       '@egodb/eslint-config': ^0.0.0
+      '@egodb/trpc': ^0.0.0
       '@nestjs/cli': ^9.1.5
       '@nestjs/common': ^9.2.0
       '@nestjs/core': ^9.2.0
@@ -60,6 +61,7 @@ importers:
     dependencies:
       '@egodb/core': link:../../packages/core
       '@egodb/domain': link:../../packages/domain
+      '@egodb/trpc': link:../../packages/trpc
       '@nestjs/common': 9.2.0_yzt46al3aifnexifjjdb4dxxja
       '@nestjs/core': 9.2.0_jfowmhmgk7kwjudosrpv7e7liy
       '@nestjs/cqrs': 9.0.1_fptmb26m37y4cwlu6vktl6lm6y
@@ -173,6 +175,25 @@ importers:
       eslint-config-turbo: 0.0.4_eslint@8.28.0
       eslint-plugin-react: 7.31.11_eslint@8.28.0
     devDependencies:
+      typescript: 4.9.3
+
+  packages/trpc:
+    specifiers:
+      '@egodb/core': ^0.0.0
+      '@trpc/server': ^10.0.0-rc.8
+      '@types/express': ^4.17.14
+      tsconfig: ^0.0.0
+      tsup: ^6.5.0
+      typescript: ^4.9.3
+      zod: ^3.19.1
+    dependencies:
+      '@egodb/core': link:../core
+      '@trpc/server': 10.0.0-rc.8
+      zod: 3.19.1
+    devDependencies:
+      '@types/express': 4.17.14
+      tsconfig: link:../tsconfig
+      tsup: 6.5.0_typescript@4.9.3
       typescript: 4.9.3
 
   packages/tsconfig:
@@ -1908,6 +1929,10 @@ packages:
     resolution: {integrity: sha512-rEUrBSGIoSFuYxwBYtlUFMlE2CwGhmW+w9355/5oduSw8e5h2+Tj4UrAGNNgP9915++wj5vkQo0UuOBqOAq4nw==}
     dependencies:
       tslib: 2.4.1
+    dev: false
+
+  /@trpc/server/10.0.0-rc.8:
+    resolution: {integrity: sha512-+NsQqaJGHTiiBcOesH1bIictnnSO+SXaCOy5pM/324QBnJRt9VOO8oYDLcHSwAbJpAbOA+vl6YHs8OoykW6D2g==}
     dev: false
 
   /@tsconfig/node10/1.0.9:
@@ -7864,3 +7889,7 @@ packages:
   /yocto-queue/0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+
+  /zod/3.19.1:
+    resolution: {integrity: sha512-LYjZsEDhCdYET9ikFu6dVPGp2YH9DegXjdJToSzD9rO6fy4qiRYFoyEYwps88OseJlPyl2NOe2iJuhEhL7IpEA==}
+    dev: false
