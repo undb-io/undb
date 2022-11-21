@@ -16,9 +16,6 @@
     "tsup": "^6.5.0",
     "typescript": "^4.9.3"
   },
-  "files": [
-    "dist"
-  ],
   "keywords": [],
   "main": "./dist/index",
   "scripts": {
