@@ -13,7 +13,6 @@ $ pnpm run dev
 $ pnpm run commit
 ```
 
-## TODO
+## Api Document
 
-- [ ] commitizen
-- [ ] husky
+打开 `http://localhost:4000/api-docs` 查看 swagger 文档
