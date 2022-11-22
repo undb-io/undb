@@ -1,7 +1,7 @@
 import { inferAsyncReturnType } from '@trpc/server'
 import * as trpcExpress from '@trpc/server/adapters/express'
 import { type Handler } from 'express'
-import { AppRouter } from './router'
+import { AppRouter } from './router/router'
 
 const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) => ({}) // no context
 type Context = inferAsyncReturnType<typeof createContext>
