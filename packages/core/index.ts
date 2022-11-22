@@ -1,4 +1,5 @@
 export * from './commands'
+export * from './queries'
 export * from './repository'
 export * from './table'
 export * from './table.command-bus'

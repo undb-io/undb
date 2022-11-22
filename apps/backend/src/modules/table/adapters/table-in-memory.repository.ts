@@ -1,4 +1,4 @@
-import { ITableRepository, Table } from '@egodb/core'
+import { type ITableRepository, type Table } from '@egodb/core'
 import { Injectable } from '@nestjs/common'
 
 @Injectable()
