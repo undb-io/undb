@@ -1,6 +1,6 @@
-import { router } from './trpc'
+import { router } from '../trpc'
 
-import { ITableCommandBus } from '@egodb/core/dist'
+import { ITableCommandBus } from '@egodb/core'
 import { createTableRouter } from './table'
 
 export const createRouter = (commandBus: ITableCommandBus) => {
