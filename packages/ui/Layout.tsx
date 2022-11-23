@@ -1,1 +1,1 @@
-export { Center, Group } from '@mantine/core'
+export { Center, Group, Flex, Box } from '@mantine/core'

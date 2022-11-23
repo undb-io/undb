@@ -12,9 +12,12 @@ import {
   useToggle,
   useForm,
   TextInput,
+  zodResolver,
   Group,
+  Divider,
 } from '@egodb/ui'
-import { type ICreateTableInput } from '@egodb/core'
+import { createTableCommandInput, type ICreateTableInput } from '@egodb/core'
+import { trpc } from '../trpc'
 
 export default function App() {
   const [opened, toggle] = useToggle()
@@ -23,6 +26,12 @@ export default function App() {
     initialValues: {
       name: '',
     },
+    validate: zodResolver(createTableCommandInput),
+  })
+
+  const createTable = trpc.table.create.useMutation()
+  const onSubmit = form.onSubmit((values) => {
+    createTable.mutate(values)
   })
 
   return (
@@ -33,7 +42,13 @@ export default function App() {
           <Navbar width={{ base: 250 }} p="xl">
             <Navbar.Section grow>
               <Center>
-                <Button fullWidth leftIcon={<IconPlus size={14} />} variant="outline" onClick={() => toggle(true)}>
+                <Button
+                  color="dark"
+                  fullWidth
+                  leftIcon={<IconPlus size={14} />}
+                  variant="outline"
+                  onClick={() => toggle(true)}
+                >
                   New table
                 </Button>
               </Center>
@@ -46,7 +61,7 @@ export default function App() {
           </Header>
         }
       >
-        <Button>hello EGO</Button>
+        {null}
       </AppShell>
       <Drawer
         opened={opened}
@@ -59,11 +74,15 @@ export default function App() {
         overlayOpacity={0.55}
         overlayBlur={3}
       >
-        <form onSubmit={form.onSubmit((values) => alert(values))}>
-          <TextInput label="Name" {...form.getInputProps('email')} />
-          <Group mt="md">
-            <Button disabled={!form.isValid()} type="submit" fullWidth>
-              Submit
+        <form onSubmit={onSubmit}>
+          <TextInput error={form.errors['name']} label="Name" {...form.getInputProps('name')} />
+          <Divider my="lg" />
+          <Group position="right">
+            <Button color="dark" variant="subtle" onClick={() => toggle(false)}>
+              Cancel
+            </Button>
+            <Button loading={createTable.isLoading} miw={200} color="dark" disabled={!form.isValid()} type="submit">
+              Create
             </Button>
           </Group>
         </form>

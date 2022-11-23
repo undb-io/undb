@@ -6,6 +6,7 @@ export * from './Layout'
 export * from './Drawer'
 export * from './Button'
 export * from './AppShell'
+export * from './Divider'
 export * from './Provider'
 export * from './Inputs'
 
