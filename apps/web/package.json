@@ -2,6 +2,7 @@
   "name": "@egodb/web",
   "version": "0.0.0",
   "dependencies": {
+    "@egodb/core": "workspace:^0.0.0",
     "@egodb/ui": "^0.0.0",
     "next": "^13.0.4",
     "react": "^18.2.0",

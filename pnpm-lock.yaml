@@ -96,6 +96,7 @@ importers:
   apps/web:
     specifiers:
       '@babel/core': ^7.20.2
+      '@egodb/core': workspace:^0.0.0
       '@egodb/eslint-config': ^0.0.0
       '@egodb/ui': ^0.0.0
       '@types/node': ^18.11.9
@@ -108,6 +109,7 @@ importers:
       tsconfig: ^0.0.0
       typescript: ^4.9.3
     dependencies:
+      '@egodb/core': link:../../packages/core
       '@egodb/ui': link:../../packages/ui
       next: 13.0.4_mqvh5p7ejg4taogoj6tpk3gd5a
       react: 18.2.0
@@ -216,8 +218,10 @@ importers:
       '@emotion/react': ^11.10.5
       '@emotion/server': ^11.10.0
       '@mantine/core': ^5.8.2
+      '@mantine/form': ^5.8.2
       '@mantine/hooks': ^5.8.2
       '@mantine/next': ^5.8.2
+      '@tabler/icons': ^1.112.0
       '@types/react': ^18.0.25
       '@types/react-dom': ^18.0.9
       eslint: ^8.28.0
@@ -230,8 +234,10 @@ importers:
       '@emotion/react': 11.10.5_cuziicjcvwawlf5iuhzacuhqcy
       '@emotion/server': 11.10.0
       '@mantine/core': 5.8.2_wk4snxdwgug6rsjcbzlyeojvsa
+      '@mantine/form': 5.8.2_react@18.2.0
       '@mantine/hooks': 5.8.2_react@18.2.0
       '@mantine/next': 5.8.2_vavbdtuajfyku5chqvt5ands7q
+      '@tabler/icons': 1.112.0_biqbaboplfbrettd7655fr4n2y
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
       '@egodb/eslint-config': link:../eslint-config
@@ -1347,6 +1353,16 @@ packages:
       - '@types/react'
     dev: false
 
+  /@mantine/form/5.8.2_react@18.2.0:
+    resolution: {integrity: sha512-FWh30GN9g0FRhX3a4fzeSvW6CRcyQpMvECIoYbwBqDkSeFMIH2RDK7pQNz4FWOwF3zIw4q6wxTUBOUjEQrIzKw==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      fast-deep-equal: 3.1.3
+      klona: 2.0.5
+      react: 18.2.0
+    dev: false
+
   /@mantine/hooks/5.8.2_react@18.2.0:
     resolution: {integrity: sha512-j/jdEqp0NgJzel6hdVfU4U3YGFOrCo5UKHBzvRKxpF8+PSY2i2nRY8XqkR0qp5yGjhgwl9uiZRbUTK9a1MxNwg==}
     peerDependencies:
@@ -1939,6 +1955,21 @@ packages:
     resolution: {integrity: sha512-rEUrBSGIoSFuYxwBYtlUFMlE2CwGhmW+w9355/5oduSw8e5h2+Tj4UrAGNNgP9915++wj5vkQo0UuOBqOAq4nw==}
     dependencies:
       tslib: 2.4.1
+    dev: false
+
+  /@tabler/icons/1.112.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-M1FmEXqeOUG1iZOLue1aLKEl+E3HHU1JaXb/LmZuOjOWuhHHpfQnSv+mgSmupehophq5piwSPhqnytt1Uh6oLw==}
+    peerDependencies:
+      react: ^16.x || 17.x || 18.x
+      react-dom: ^16.x || 17.x || 18.x
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@trpc/server/10.0.0-rc.8:
@@ -5590,6 +5621,11 @@ packages:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
     dev: true
+
+  /klona/2.0.5:
+    resolution: {integrity: sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==}
+    engines: {node: '>= 8'}
+    dev: false
 
   /language-subtag-registry/0.3.22:
     resolution: {integrity: sha512-tN0MCzyWnoz/4nHS6uxdlFWoUZT7ABptwKPQ52Ea7URk6vll88bWBVhodtnlfEuCcKWNGoc+uGbw1cwa9IKh/w==}
