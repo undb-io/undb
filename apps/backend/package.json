@@ -4,10 +4,10 @@
   "version": "0.0.1",
   "author": "",
   "dependencies": {
-    "@egodb/core": "workspace:^0.0.0",
-    "@egodb/domain": "workspace:^0.0.0",
-    "@egodb/in-memory-repository": "workspace:^0.0.0",
-    "@egodb/trpc": "workspace:^0.0.0",
+    "@egodb/core": "^0.0.0",
+    "@egodb/domain": "^0.0.0",
+    "@egodb/in-memory-repository": "^0.0.0",
+    "@egodb/trpc": "^0.0.0",
     "@nestjs/common": "^9.2.0",
     "@nestjs/core": "^9.2.0",
     "@nestjs/cqrs": "^9.0.1",
@@ -19,7 +19,7 @@
     "rxjs": "^7.5.7"
   },
   "devDependencies": {
-    "@egodb/eslint-config": "workspace:^0.0.0",
+    "@egodb/eslint-config": "^0.0.0",
     "@nestjs/cli": "^9.1.5",
     "@nestjs/schematics": "^9.0.3",
     "@nestjs/testing": "^9.2.0",
@@ -34,7 +34,7 @@
     "ts-jest": "^29.0.3",
     "ts-loader": "^9.4.1",
     "ts-node": "^10.9.1",
-    "tsconfig": "workspace:^0.0.0",
+    "tsconfig": "^0.0.0",
     "tsconfig-paths": "^4.1.0",
     "typescript": "^4.9.3",
     "webpack": "^5.75.0",
