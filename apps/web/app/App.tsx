@@ -17,6 +17,8 @@ import {
   Divider,
   Alert,
   IconAlertCircle,
+  openConfirmModal,
+  Text,
 } from '@egodb/ui'
 import { createTableCommandInput, type ICreateTableInput } from '@egodb/core'
 import { trpc } from '../trpc'
@@ -38,6 +40,26 @@ export default function App() {
   const onSubmit = form.onSubmit((values) => {
     createTable.mutate(values)
   })
+
+  const closeModal = () => {
+    form.reset()
+    createTable.reset()
+    toggle(false)
+  }
+
+  const openModal = () =>
+    openConfirmModal({
+      target: 'body',
+      title: 'Please confirm your action',
+      children: <Text size="sm">You have unsaved changes. Do you really want to close the panel?</Text>,
+      labels: { confirm: 'Confirm', cancel: 'Cancel' },
+      confirmProps: { color: 'red' },
+      onConfirm: closeModal,
+      overlayColor: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2],
+      overlayOpacity: 0.55,
+      overlayBlur: 3,
+      centered: true,
+    })
 
   return (
     <>
@@ -71,9 +93,11 @@ export default function App() {
       <Drawer
         opened={opened}
         onClose={() => {
-          form.reset()
-          createTable.reset()
-          toggle(false)
+          if (form.isDirty()) {
+            openModal()
+          } else {
+            closeModal()
+          }
         }}
         title="New Table"
         padding="xl"
