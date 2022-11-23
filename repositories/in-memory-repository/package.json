@@ -15,11 +15,11 @@
   "main": "./dist/index",
   "scripts": {
     "build": "tsc",
+    "coverage": "vitest run --coverage",
     "dev": "tsup --watch --onSuccess \"tsc --emitDeclarationOnly --declaration\"",
     "prebuild": "rimraf dist",
     "test": "vitest run",
-    "test:watch": "vitest",
-    "coverage": "vitest run --coverage"
+    "test:watch": "vitest"
   },
   "types": "./dist/index.d"
 }

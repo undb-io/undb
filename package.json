@@ -15,6 +15,9 @@
   "engines": {
     "node": ">=18.0.0"
   },
+  "lint-staged": {
+    "*.{ts,tsx,md}": "prettier --write"
+  },
   "packageManager": "pnpm@7.14.2",
   "private": true,
   "scripts": {
@@ -35,8 +38,5 @@
     "apps/*",
     "packages/*",
     "repositories/*"
-  ],
-  "lint-staged": {
-    "*.{ts,tsx,md}": "prettier --write"
-  }
+  ]
 }
