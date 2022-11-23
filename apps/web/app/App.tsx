@@ -29,6 +29,7 @@ export default function App() {
       name: '',
     },
     validate: zodResolver(createTableCommandInput),
+    validateInputOnBlur: ['name'],
   })
 
   const createTable = trpc.table.create.useMutation({
