@@ -6,11 +6,11 @@ importers:
     specifiers:
       '@commitlint/cli': ^17.3.0
       '@commitlint/config-conventional': ^17.3.0
-      '@egodb/eslint-config': ^0.0.0
+      '@egodb/eslint-config': workspace:^0.0.0
       commitizen: ^4.2.5
       cz-conventional-changelog: ^3.3.0
       husky: ^8.0.2
-      prettier: ^2.7.1
+      prettier: ^2.8.0
       syncpack: ^8.3.9
       turbo: ^1.6.3
     devDependencies:
@@ -26,11 +26,11 @@ importers:
 
   apps/backend:
     specifiers:
-      '@egodb/core': ^0.0.0
-      '@egodb/domain': ^0.0.0
-      '@egodb/eslint-config': ^0.0.0
-      '@egodb/in-memory-repository': ^0.0.0
-      '@egodb/trpc': ^0.0.0
+      '@egodb/core': workspace:^0.0.0
+      '@egodb/domain': workspace:^0.0.0
+      '@egodb/eslint-config': workspace:^0.0.0
+      '@egodb/in-memory-repository': workspace:^0.0.0
+      '@egodb/trpc': workspace:^0.0.0
       '@nestjs/cli': ^9.1.5
       '@nestjs/common': ^9.2.0
       '@nestjs/core': ^9.2.0
@@ -54,7 +54,7 @@ importers:
       ts-jest: ^29.0.3
       ts-loader: ^9.4.1
       ts-node: ^10.9.1
-      tsconfig: ^0.0.0
+      tsconfig: workspace:^0.0.0
       tsconfig-paths: ^4.1.0
       typescript: ^4.9.3
       webpack: ^5.75.0
@@ -98,10 +98,10 @@ importers:
   apps/web:
     specifiers:
       '@babel/core': ^7.20.2
-      '@egodb/core': ^0.0.0
-      '@egodb/eslint-config': ^0.0.0
-      '@egodb/trpc': ^0.0.0
-      '@egodb/ui': ^0.0.0
+      '@egodb/core': workspace:^0.0.0
+      '@egodb/eslint-config': workspace:^0.0.0
+      '@egodb/trpc': workspace:^0.0.0
+      '@egodb/ui': workspace:^0.0.0
       '@tanstack/react-query': ^4.16.1
       '@trpc/client': ^10.1.0
       '@trpc/next': ^10.1.0
@@ -114,7 +114,7 @@ importers:
       next: ^13.0.4
       react: ^18.2.0
       react-dom: ^18.2.0
-      tsconfig: ^0.0.0
+      tsconfig: workspace:^0.0.0
       typescript: ^4.9.3
     dependencies:
       '@egodb/core': link:../../packages/core
@@ -140,9 +140,9 @@ importers:
 
   packages/core:
     specifiers:
-      '@egodb/domain': ^0.0.0
+      '@egodb/domain': workspace:^0.0.0
       rimraf: ^3.0.2
-      tsconfig: ^0.0.0
+      tsconfig: workspace:^0.0.0
       tsup: ^6.5.0
       typescript: ^4.9.3
       vitest: ^0.25.3
@@ -164,7 +164,7 @@ importers:
       nanoid: ^4.0.0
       oxide.ts: ^1.1.0
       rimraf: ^3.0.2
-      tsconfig: ^0.0.0
+      tsconfig: workspace:^0.0.0
       tsup: ^6.5.0
       typescript: ^4.9.3
       uuid: ^9.0.0
@@ -201,14 +201,14 @@ importers:
 
   packages/trpc:
     specifiers:
-      '@egodb/core': ^0.0.0
+      '@egodb/core': workspace:^0.0.0
       '@trpc/server': ^10.1.0
       '@types/express': ^4.17.14
       '@types/swagger-ui-express': ^4.1.3
       openapi-types: ^12.0.2
       swagger-ui-express: ^4.6.0
       trpc-openapi: ^1.0.0-alpha.4
-      tsconfig: ^0.0.0
+      tsconfig: workspace:^0.0.0
       tsup: ^6.5.0
       typescript: ^4.9.3
       vitest: ^0.25.3
@@ -234,31 +234,33 @@ importers:
   packages/ui:
     specifiers:
       '@babel/core': ^7.20.2
-      '@egodb/eslint-config': ^0.0.0
+      '@egodb/eslint-config': workspace:^0.0.0
       '@emotion/react': ^11.10.5
       '@emotion/server': ^11.10.0
-      '@mantine/core': ^5.8.2
-      '@mantine/form': ^5.8.2
-      '@mantine/hooks': ^5.8.2
-      '@mantine/next': ^5.8.2
-      '@mantine/notifications': ^5.8.2
+      '@mantine/core': ^5.8.3
+      '@mantine/form': ^5.8.3
+      '@mantine/hooks': ^5.8.3
+      '@mantine/modals': ^5.8.3
+      '@mantine/next': ^5.8.3
+      '@mantine/notifications': ^5.8.3
       '@tabler/icons': ^1.112.0
       '@types/react': ^18.0.25
       '@types/react-dom': ^18.0.9
       eslint: ^8.28.0
       react: ^18.2.0
       react-dom: ^18.2.0
-      tsconfig: ^0.0.0
+      tsconfig: workspace:^0.0.0
       typescript: ^4.9.3
     dependencies:
       '@babel/core': 7.20.2
       '@emotion/react': 11.10.5_cuziicjcvwawlf5iuhzacuhqcy
       '@emotion/server': 11.10.0
-      '@mantine/core': 5.8.2_wk4snxdwgug6rsjcbzlyeojvsa
-      '@mantine/form': 5.8.2_react@18.2.0
-      '@mantine/hooks': 5.8.2_react@18.2.0
-      '@mantine/next': 5.8.2_vavbdtuajfyku5chqvt5ands7q
-      '@mantine/notifications': 5.8.2_mg4am4smyspjkl6dnttcswxx6a
+      '@mantine/core': 5.8.3_2vc2xgx7q2ij62urx5h5ijvzqm
+      '@mantine/form': 5.8.3_react@18.2.0
+      '@mantine/hooks': 5.8.3_react@18.2.0
+      '@mantine/modals': 5.8.3_gtqqcbkbecpo5mfxa3iuc57uvi
+      '@mantine/next': 5.8.3_vavbdtuajfyku5chqvt5ands7q
+      '@mantine/notifications': 5.8.3_gtqqcbkbecpo5mfxa3iuc57uvi
       '@tabler/icons': 1.112.0_biqbaboplfbrettd7655fr4n2y
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
@@ -272,9 +274,9 @@ importers:
 
   repositories/in-memory-repository:
     specifiers:
-      '@egodb/core': ^0.0.0
+      '@egodb/core': workspace:^0.0.0
       rimraf: ^3.0.2
-      tsconfig: ^0.0.0
+      tsconfig: workspace:^0.0.0
       tsup: ^6.5.0
       typescript: ^4.9.3
       vitest: ^0.25.3
@@ -1377,17 +1379,17 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
-  /@mantine/core/5.8.2_wk4snxdwgug6rsjcbzlyeojvsa:
-    resolution: {integrity: sha512-F+m+FUN8vn/LRiD/Z0v8eC0lodZEsta+f4hJ7JjchX+6+ehi1GnbPgRkH37HOoGzrqe4DC16mqmF2JTVkgRINw==}
+  /@mantine/core/5.8.3_2vc2xgx7q2ij62urx5h5ijvzqm:
+    resolution: {integrity: sha512-KiGrBtKhqVfOM82SWvob7635EWGLdXq1q/62YS+x1pgbrOJSk22EU9HgAuL5cJqbZ5Dwggb2irlAhsZNiBx9oQ==}
     peerDependencies:
-      '@mantine/hooks': 5.8.2
+      '@mantine/hooks': 5.8.3
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
       '@floating-ui/react-dom-interactions': 0.10.3_2zx2umvpluuhvlq44va5bta2da
-      '@mantine/hooks': 5.8.2_react@18.2.0
-      '@mantine/styles': 5.8.2_sogmqz4enknxtkxk3k5s6bqwnq
-      '@mantine/utils': 5.8.2_react@18.2.0
+      '@mantine/hooks': 5.8.3_react@18.2.0
+      '@mantine/styles': 5.8.3_sogmqz4enknxtkxk3k5s6bqwnq
+      '@mantine/utils': 5.8.3_react@18.2.0
       '@radix-ui/react-scroll-area': 1.0.0_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -1397,8 +1399,8 @@ packages:
       - '@types/react'
     dev: false
 
-  /@mantine/form/5.8.2_react@18.2.0:
-    resolution: {integrity: sha512-FWh30GN9g0FRhX3a4fzeSvW6CRcyQpMvECIoYbwBqDkSeFMIH2RDK7pQNz4FWOwF3zIw4q6wxTUBOUjEQrIzKw==}
+  /@mantine/form/5.8.3_react@18.2.0:
+    resolution: {integrity: sha512-+9+IyPWX5SSx0EVfqXHmNsh1A8Hm5K+KT3o6FsBg1HwPdqIXRCKEzdftwEEmp4Z4J6VK+8XlHcuNrjWKl12YnA==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
@@ -1407,23 +1409,38 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@mantine/hooks/5.8.2_react@18.2.0:
-    resolution: {integrity: sha512-j/jdEqp0NgJzel6hdVfU4U3YGFOrCo5UKHBzvRKxpF8+PSY2i2nRY8XqkR0qp5yGjhgwl9uiZRbUTK9a1MxNwg==}
+  /@mantine/hooks/5.8.3_react@18.2.0:
+    resolution: {integrity: sha512-tXUm164GRGRMTtc+oXzJq8Pg4DW9EuURHcM+yV5Hw3kWNIGQzW/9E8ghjjyV2rS9DIdxB678rXAdeL6t2TVrPA==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
       react: 18.2.0
     dev: false
 
-  /@mantine/next/5.8.2_vavbdtuajfyku5chqvt5ands7q:
-    resolution: {integrity: sha512-VDOWlJZPBz7WVMYkD6DEmgmzpFZhQBQ7/u4jv5HBoc2ibBw8QerLcQi33qmmsDLyuiHkKYEFBdyso8p7mAKSdQ==}
+  /@mantine/modals/5.8.3_gtqqcbkbecpo5mfxa3iuc57uvi:
+    resolution: {integrity: sha512-oJNtGwvzgYJqO/+lEG69nNmeUYgHjX44Y8QGYmJkn74W0Jw+xt0c9Pc8/To4nKWKm7/PNlE13LmbQ9OdqZkQFA==}
+    peerDependencies:
+      '@mantine/core': 5.8.3
+      '@mantine/hooks': 5.8.3
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@mantine/core': 5.8.3_2vc2xgx7q2ij62urx5h5ijvzqm
+      '@mantine/hooks': 5.8.3_react@18.2.0
+      '@mantine/utils': 5.8.3_react@18.2.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@mantine/next/5.8.3_vavbdtuajfyku5chqvt5ands7q:
+    resolution: {integrity: sha512-WSDezkEYF+Rb+6lcavWoia03YwNhz7c0BuW0vswc1XGoHvDATuzD2QUjdOqlJOCu+1q9X7SoEtrNLpDtD7iMiw==}
     peerDependencies:
       next: '*'
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@mantine/ssr': 5.8.2_vavbdtuajfyku5chqvt5ands7q
-      '@mantine/styles': 5.8.2_sogmqz4enknxtkxk3k5s6bqwnq
+      '@mantine/ssr': 5.8.3_vavbdtuajfyku5chqvt5ands7q
+      '@mantine/styles': 5.8.3_sogmqz4enknxtkxk3k5s6bqwnq
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     transitivePeerDependencies:
@@ -1431,24 +1448,24 @@ packages:
       - '@emotion/server'
     dev: false
 
-  /@mantine/notifications/5.8.2_mg4am4smyspjkl6dnttcswxx6a:
-    resolution: {integrity: sha512-Z9cMHcCgblkV4ytLAQ8O8RvsGiLf39pTnOlSHLb97SfpT5Uz5zwCltWT3ApTSbikUen0GOSWwXFrmVAmOwwKng==}
+  /@mantine/notifications/5.8.3_gtqqcbkbecpo5mfxa3iuc57uvi:
+    resolution: {integrity: sha512-uaz6b9XntD/EaWpSReyJ0eFDdELRJ7BFIvTAi3np61qsWthNPVqn7SHhsIr6Q9RzypMI+b09Vpi6RHdySVCtQA==}
     peerDependencies:
-      '@mantine/core': 5.8.2
-      '@mantine/hooks': 5.8.2
+      '@mantine/core': 5.8.3
+      '@mantine/hooks': 5.8.3
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@mantine/core': 5.8.2_wk4snxdwgug6rsjcbzlyeojvsa
-      '@mantine/hooks': 5.8.2_react@18.2.0
-      '@mantine/utils': 5.8.2_react@18.2.0
+      '@mantine/core': 5.8.3_2vc2xgx7q2ij62urx5h5ijvzqm
+      '@mantine/hooks': 5.8.3_react@18.2.0
+      '@mantine/utils': 5.8.3_react@18.2.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-transition-group: 4.4.2_biqbaboplfbrettd7655fr4n2y
     dev: false
 
-  /@mantine/ssr/5.8.2_vavbdtuajfyku5chqvt5ands7q:
-    resolution: {integrity: sha512-D1QDIL0fGUTa2lvga4mr3P2sA8viJX22YxI9sUc97of4NOaXYvM4iWOip0TBXL9ijlZ1+R0wZaGMypj0xNJPXQ==}
+  /@mantine/ssr/5.8.3_vavbdtuajfyku5chqvt5ands7q:
+    resolution: {integrity: sha512-9rpi4mywegQRWxlFCxxmZNduLqjX6vK9KHtwCRKWL/gI8E24tXB9P/89FbBo3FqCFdosrPSirCtLBbygFo/ZBg==}
     peerDependencies:
       '@emotion/react': '>=11.9.0'
       '@emotion/server': '>=11.4.0'
@@ -1457,14 +1474,14 @@ packages:
     dependencies:
       '@emotion/react': 11.10.5_cuziicjcvwawlf5iuhzacuhqcy
       '@emotion/server': 11.10.0
-      '@mantine/styles': 5.8.2_sogmqz4enknxtkxk3k5s6bqwnq
+      '@mantine/styles': 5.8.3_sogmqz4enknxtkxk3k5s6bqwnq
       html-react-parser: 1.4.12_react@18.2.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@mantine/styles/5.8.2_sogmqz4enknxtkxk3k5s6bqwnq:
-    resolution: {integrity: sha512-mXuQFPS/pSP1zKypnUXWUQ35SWhF+rJhI/7YxdIvJgkzVy9i6DoQAd895bETMrejokGxxguvZHPsGGJGqsLM3A==}
+  /@mantine/styles/5.8.3_sogmqz4enknxtkxk3k5s6bqwnq:
+    resolution: {integrity: sha512-dwE3sg4UUgzpKxKE1+deYM5GkHxeIWcFu+G81MUYd+DGPv50gXrHmibs03t5a2FydwUPui8IyJya4tIMOD87QQ==}
     peerDependencies:
       '@emotion/react': '>=11.9.0'
       react: '>=16.8.0'
@@ -1477,8 +1494,8 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@mantine/utils/5.8.2_react@18.2.0:
-    resolution: {integrity: sha512-ZTxZeTyRO2l9dQ7pYsaV3AC7Cjz1HAPi1Ukd9GtiVYq74UuA3iBMLbPV4obxcHAqgUqgIHAP2ulCKHN3DPhaDQ==}
+  /@mantine/utils/5.8.3_react@18.2.0:
+    resolution: {integrity: sha512-MprJbMh/z3TbC8yPF2PQftitRwl58w7hvhp7O9fT+9jrvJHKM8V7r15iHMwBw2jgX6zmlksstO7QfhENc0vMHQ==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
@@ -1776,6 +1793,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
     requiresBuild: true
     dev: false
     optional: true
@@ -1785,6 +1803,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
     requiresBuild: true
     dev: false
     optional: true
@@ -1794,6 +1813,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
     requiresBuild: true
     dev: false
     optional: true
@@ -1803,6 +1823,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
     requiresBuild: true
     dev: false
     optional: true
@@ -2309,7 +2330,7 @@ packages:
     dev: true
 
   /@types/superagent/4.1.15:
-    resolution: {integrity: sha512-mu/N4uvfDN2zVQQ5AYJI/g4qxn2bHB6521t1UuH09ShNWjebTqN0ZFuYK9uYjcgmI0dTQEs+Owi1EO6U0OkOZQ==}
+    resolution: {integrity: sha512-iiXaOL2wSbnSY4qg0mFPWJHL9iwyEsoNYwaHF2w58/fsVAQJlj+KUfFAFZu+nzbz+b7dUprJEAc+O9vhHHhQTA==, tarball: '@types/superagent/-/superagent-4.1.14.tgz'}
     deprecated: '[WARNING] Use 4.1.14 instead of 4.1.15, reason: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/58445'
     dependencies:
       '@types/cookiejar': 2.1.2
