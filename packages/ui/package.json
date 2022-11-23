@@ -6,8 +6,10 @@
     "@emotion/react": "^11.10.5",
     "@emotion/server": "^11.10.0",
     "@mantine/core": "^5.8.2",
+    "@mantine/form": "^5.8.2",
     "@mantine/hooks": "^5.8.2",
     "@mantine/next": "^5.8.2",
+    "@tabler/icons": "^1.112.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {

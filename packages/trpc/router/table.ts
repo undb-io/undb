@@ -1,7 +1,7 @@
 import {
   CreateTableCommand,
+  createTableCommandInput,
   createTableCommandOutput,
-  createTableCommandSchema,
   getTableQueryOutput,
   getTableQuerySchema,
   ITableCommandBus,
@@ -19,7 +19,7 @@ export const createTableRouter = (commandBus: ITableCommandBus) =>
       }),
     create: publicProcedure
       .meta({ openapi: { method: 'POST', path: '/table.create' } })
-      .input(createTableCommandSchema)
+      .input(createTableCommandInput)
       .output(createTableCommandOutput)
       .mutation(({ input }) => {
         const cmd = new CreateTableCommand({ name: input.name })

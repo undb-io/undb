@@ -2,8 +2,8 @@
   "name": "egodb",
   "version": "0.0.0",
   "devDependencies": {
-    "@commitlint/cli": "^17.2.0",
-    "@commitlint/config-conventional": "^17.2.0",
+    "@commitlint/cli": "^17.3.0",
+    "@commitlint/config-conventional": "^17.3.0",
     "@egodb/eslint-config": "^0.0.0",
     "commitizen": "^4.2.5",
     "cz-conventional-changelog": "^3.3.0",

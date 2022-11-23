@@ -1,6 +1,6 @@
 import * as z from 'zod'
+import { createTableCommandInput } from './create-table.command.input'
 import { createTableCommandOutput } from './create-table.command.output'
-import { createTableCommandSchema } from './create-table.command.schema'
 
-export type ICreateTableCommand = z.infer<typeof createTableCommandSchema>
+export type ICreateTableInput = z.infer<typeof createTableCommandInput>
 export type ICreateTableOutput = z.infer<typeof createTableCommandOutput>
