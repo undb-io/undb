@@ -24,7 +24,7 @@
   "keywords": [],
   "main": "./dist/index",
   "scripts": {
-    "build": "tsc",
+    "build": "tsup",
     "coverage": "vitest run --coverage",
     "dev": "tsup --watch --onSuccess \"tsc --emitDeclarationOnly --declaration\"",
     "prebuild": "rimraf dist",

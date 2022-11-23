@@ -1,6 +1,6 @@
 import { ITableRepository, Table } from '@egodb/core'
 import { Low, Memory } from 'lowdb'
-import { TableInMemory } from './table'
+import { TableInMemory } from './table.js'
 
 type Data = {
   tables: TableInMemory[]

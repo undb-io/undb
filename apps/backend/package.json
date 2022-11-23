@@ -59,7 +59,7 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "build": "nest build",
+    "build": "nest build --webpack --webpackPath webpack-hmr.config.js",
     "dev": "nest build --webpack --webpackPath webpack-hmr.config.js --watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "prebuild": "rimraf dist",
