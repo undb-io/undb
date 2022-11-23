@@ -29,7 +29,7 @@ importers:
       '@egodb/core': ^0.0.0
       '@egodb/domain': ^0.0.0
       '@egodb/eslint-config': ^0.0.0
-      '@egodb/in-memory-repository': workspace:^0.0.0
+      '@egodb/in-memory-repository': ^0.0.0
       '@egodb/trpc': ^0.0.0
       '@nestjs/cli': ^9.1.5
       '@nestjs/common': ^9.2.0
@@ -266,9 +266,9 @@ importers:
 
   repositories/in-memory-repository:
     specifiers:
-      '@egodb/core': workspace:^0.0.0
+      '@egodb/core': ^0.0.0
       rimraf: ^3.0.2
-      tsconfig: workspace:^0.0.0
+      tsconfig: ^0.0.0
       tsup: ^6.5.0
       typescript: ^4.9.3
     dependencies:

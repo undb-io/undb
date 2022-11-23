@@ -1,7 +1,16 @@
 {
   "name": "@egodb/in-memory-repository",
-  "version": "0.0.0",
   "description": "",
+  "version": "0.0.0",
+  "dependencies": {
+    "@egodb/core": "^0.0.0"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "tsconfig": "^0.0.0",
+    "tsup": "^6.5.0",
+    "typescript": "^4.9.3"
+  },
   "main": "./dist/index",
   "scripts": {
     "build": "tsc",
@@ -9,14 +18,5 @@
     "prebuild": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "types": "./dist/index.d",
-  "devDependencies": {
-    "rimraf": "^3.0.2",
-    "tsconfig": "workspace:^0.0.0",
-    "tsup": "^6.5.0",
-    "typescript": "^4.9.3"
-  },
-  "dependencies": {
-    "@egodb/core": "workspace:^0.0.0"
-  }
+  "types": "./dist/index.d"
 }
