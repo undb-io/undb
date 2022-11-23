@@ -11,7 +11,8 @@
     "rimraf": "^3.0.2",
     "tsconfig": "^0.0.0",
     "tsup": "^6.5.0",
-    "typescript": "^4.9.3"
+    "typescript": "^4.9.3",
+    "vitest": "^0.25.3"
   },
   "files": [
     "dist"
@@ -20,9 +21,11 @@
   "main": "./dist/index",
   "scripts": {
     "build": "tsc",
+    "coverage": "vitest run --coverage",
     "dev": "tsup --watch --onSuccess \"tsc --emitDeclarationOnly --declaration\"",
     "prebuild": "rimraf dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "types": "./dist/index.d"
 }
