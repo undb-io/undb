@@ -20,7 +20,7 @@ importers:
       commitizen: 4.2.5
       cz-conventional-changelog: 3.3.0
       husky: 8.0.2
-      prettier: 2.7.1
+      prettier: 2.8.0
       syncpack: 8.3.9
       turbo: 1.6.3
 
@@ -98,7 +98,13 @@ importers:
       '@babel/core': ^7.20.2
       '@egodb/core': ^0.0.0
       '@egodb/eslint-config': ^0.0.0
+      '@egodb/trpc': ^0.0.0
       '@egodb/ui': ^0.0.0
+      '@tanstack/react-query': ^4.16.1
+      '@trpc/client': ^10.1.0
+      '@trpc/next': ^10.1.0
+      '@trpc/react-query': ^10.1.0
+      '@trpc/server': ^10.1.0
       '@types/node': ^18.11.9
       '@types/react': ^18.0.25
       '@types/react-dom': ^18.0.9
@@ -110,7 +116,13 @@ importers:
       typescript: ^4.9.3
     dependencies:
       '@egodb/core': link:../../packages/core
+      '@egodb/trpc': link:../../packages/trpc
       '@egodb/ui': link:../../packages/ui
+      '@tanstack/react-query': 4.16.1_biqbaboplfbrettd7655fr4n2y
+      '@trpc/client': 10.1.0_@trpc+server@10.1.0
+      '@trpc/next': 10.1.0_7n7i73g2poaa6aq6zuvf6lnqpa
+      '@trpc/react-query': 10.1.0_6w4fappfojusde7o3jmgvyxwlu
+      '@trpc/server': 10.1.0
       next: 13.0.4_mqvh5p7ejg4taogoj6tpk3gd5a
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -1721,7 +1733,6 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
     requiresBuild: true
     dev: false
     optional: true
@@ -1731,7 +1742,6 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
     requiresBuild: true
     dev: false
     optional: true
@@ -1741,7 +1751,6 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
     requiresBuild: true
     dev: false
     optional: true
@@ -1751,7 +1760,6 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
     requiresBuild: true
     dev: false
     optional: true
@@ -1977,6 +1985,73 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
+  /@tanstack/query-core/4.15.1:
+    resolution: {integrity: sha512-+UfqJsNbPIVo0a9ANW0ZxtjiMfGLaaoIaL9vZeVycvmBuWywJGtSi7fgPVMCPdZQFOzMsaXaOsDtSKQD5xLRVQ==}
+    dev: false
+
+  /@tanstack/react-query/4.16.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-PDE9u49wSDykPazlCoLFevUpceLjQ0Mm8i6038HgtTEKb/aoVnUZdlUP7C392ds3Cd75+EGlHU7qpEX06R7d9Q==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@tanstack/query-core': 4.15.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
+    dev: false
+
+  /@trpc/client/10.1.0_@trpc+server@10.1.0:
+    resolution: {integrity: sha512-E7L9l2OTa5lIdM0NYvQLJf/GLapskfiVLv0Jv7t6GVxEOFd+O4THWsWQgJVUUAz9iq805iMNkY3uqSvf4GJaWg==}
+    peerDependencies:
+      '@trpc/server': 10.1.0
+    dependencies:
+      '@trpc/server': 10.1.0
+    dev: false
+
+  /@trpc/next/10.1.0_7n7i73g2poaa6aq6zuvf6lnqpa:
+    resolution: {integrity: sha512-bJ3zMbrSO+udhMi/8KZ1JY5VpXsucTOat08LdU5MPXzMFEQ+d0QehoM4PoZirO39batZfM0rmbCJ8w6P5hLCow==}
+    peerDependencies:
+      '@tanstack/react-query': ^4.3.8
+      '@trpc/client': 10.1.0
+      '@trpc/react-query': ^10.0.0-proxy-beta.21
+      '@trpc/server': 10.1.0
+      next: '*'
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@tanstack/react-query': 4.16.1_biqbaboplfbrettd7655fr4n2y
+      '@trpc/client': 10.1.0_@trpc+server@10.1.0
+      '@trpc/react-query': 10.1.0_6w4fappfojusde7o3jmgvyxwlu
+      '@trpc/server': 10.1.0
+      next: 13.0.4_mqvh5p7ejg4taogoj6tpk3gd5a
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      react-ssr-prepass: 1.5.0_react@18.2.0
+    dev: false
+
+  /@trpc/react-query/10.1.0_6w4fappfojusde7o3jmgvyxwlu:
+    resolution: {integrity: sha512-Xjx3m73CDuBNrpAOF6scUQedYyp4LIxthwmdjw8Y+iR193XNwFTH+C8TZn5qOLVw9u/FM5YchAJjPPgUJyXBBQ==}
+    peerDependencies:
+      '@tanstack/react-query': ^4.3.8
+      '@trpc/client': 10.1.0
+      '@trpc/server': 10.1.0
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@tanstack/react-query': 4.16.1_biqbaboplfbrettd7655fr4n2y
+      '@trpc/client': 10.1.0_@trpc+server@10.1.0
+      '@trpc/server': 10.1.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
   /@trpc/server/10.1.0:
     resolution: {integrity: sha512-UiRZPApLruhi1UKukTNsB9igFBEhEA0aMxy86Xp1OvbzuY00yoFcvDUYsBdBjp9mzIHR3yNjqrlfS/RNpPhZEw==}
     dev: false
@@ -2181,7 +2256,7 @@ packages:
     dev: true
 
   /@types/superagent/4.1.15:
-    resolution: {integrity: sha512-iiXaOL2wSbnSY4qg0mFPWJHL9iwyEsoNYwaHF2w58/fsVAQJlj+KUfFAFZu+nzbz+b7dUprJEAc+O9vhHHhQTA==}
+    resolution: {integrity: sha512-mu/N4uvfDN2zVQQ5AYJI/g4qxn2bHB6521t1UuH09ShNWjebTqN0ZFuYK9uYjcgmI0dTQEs+Owi1EO6U0OkOZQ==}
     deprecated: '[WARNING] Use 4.1.14 instead of 4.1.15, reason: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/58445'
     dependencies:
       '@types/cookiejar': 2.1.2
@@ -6391,8 +6466,8 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  /prettier/2.7.1:
-    resolution: {integrity: sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==}
+  /prettier/2.8.0:
+    resolution: {integrity: sha512-9Lmg8hTFZKG0Asr/kW9Bp8tJjRVluO8EJQVfY2T7FMw9T5jy4I/Uvx0Rca/XWf50QQ1/SS48+6IJWnrb+2yemA==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
@@ -6506,6 +6581,14 @@ packages:
 
   /react-property/2.0.0:
     resolution: {integrity: sha512-kzmNjIgU32mO4mmH5+iUyrqlpFQhF8K2k7eZ4fdLSOPFrD1XgEuSBv9LDEgxRXTMBqMd8ppT0x6TIzqE5pdGdw==}
+    dev: false
+
+  /react-ssr-prepass/1.5.0_react@18.2.0:
+    resolution: {integrity: sha512-yFNHrlVEReVYKsLI5lF05tZoHveA5pGzjFbFJY/3pOqqjGOmMmqx83N4hIjN2n6E1AOa+eQEUxs3CgRnPmT0RQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-textarea-autosize/8.3.4_fan5qbzahqtxlm5dzefqlqx5ia:
