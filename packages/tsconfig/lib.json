@@ -4,6 +4,7 @@
   "extends": "./base.json",
   "compilerOptions": {
     "module": "CommonJS",
+    "types": ["vitest/globals"],
     "target": "es6"
   }
 }

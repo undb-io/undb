@@ -15,7 +15,8 @@
     "openapi-types": "^12.0.2",
     "tsconfig": "^0.0.0",
     "tsup": "^6.5.0",
-    "typescript": "^4.9.3"
+    "typescript": "^4.9.3",
+    "vitest": "^0.25.3"
   },
   "files": [
     "dist"
@@ -26,7 +27,9 @@
     "build": "tsc",
     "dev": "tsup --watch --onSuccess \"tsc --emitDeclarationOnly --declaration\"",
     "prebuild": "rimraf dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "types": "./dist/index.d"
 }
