@@ -15,6 +15,8 @@ import {
   zodResolver,
   Group,
   Divider,
+  Alert,
+  IconAlertCircle,
 } from '@egodb/ui'
 import { createTableCommandInput, type ICreateTableInput } from '@egodb/core'
 import { trpc } from '../trpc'
@@ -29,7 +31,9 @@ export default function App() {
     validate: zodResolver(createTableCommandInput),
   })
 
-  const createTable = trpc.table.create.useMutation()
+  const createTable = trpc.table.create.useMutation({
+    onSuccess: () => toggle(false),
+  })
   const onSubmit = form.onSubmit((values) => {
     createTable.mutate(values)
   })
@@ -65,11 +69,15 @@ export default function App() {
       </AppShell>
       <Drawer
         opened={opened}
-        onClose={() => toggle(false)}
+        onClose={() => {
+          form.reset()
+          createTable.reset()
+          toggle(false)
+        }}
         title="New Table"
         padding="xl"
         position="right"
-        size="xl"
+        size={700}
         overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
         overlayOpacity={0.55}
         overlayBlur={3}
@@ -85,6 +93,11 @@ export default function App() {
               Create
             </Button>
           </Group>
+          {createTable.isError && (
+            <Alert icon={<IconAlertCircle size={16} />} title="Oops! Create Table Error!" mt="lg" color="red">
+              {createTable.error.message}
+            </Alert>
+          )}
         </form>
       </Drawer>
     </>

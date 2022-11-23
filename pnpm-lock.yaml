@@ -29,6 +29,7 @@ importers:
       '@egodb/core': ^0.0.0
       '@egodb/domain': ^0.0.0
       '@egodb/eslint-config': ^0.0.0
+      '@egodb/in-memory-repository': workspace:^0.0.0
       '@egodb/trpc': ^0.0.0
       '@nestjs/cli': ^9.1.5
       '@nestjs/common': ^9.2.0
@@ -61,6 +62,7 @@ importers:
     dependencies:
       '@egodb/core': link:../../packages/core
       '@egodb/domain': link:../../packages/domain
+      '@egodb/in-memory-repository': link:../../repositories/in-memory-repository
       '@egodb/trpc': link:../../packages/trpc
       '@nestjs/common': 9.2.0_yzt46al3aifnexifjjdb4dxxja
       '@nestjs/core': 9.2.0_jfowmhmgk7kwjudosrpv7e7liy
@@ -233,6 +235,7 @@ importers:
       '@mantine/form': ^5.8.2
       '@mantine/hooks': ^5.8.2
       '@mantine/next': ^5.8.2
+      '@mantine/notifications': ^5.8.2
       '@tabler/icons': ^1.112.0
       '@types/react': ^18.0.25
       '@types/react-dom': ^18.0.9
@@ -249,6 +252,7 @@ importers:
       '@mantine/form': 5.8.2_react@18.2.0
       '@mantine/hooks': 5.8.2_react@18.2.0
       '@mantine/next': 5.8.2_vavbdtuajfyku5chqvt5ands7q
+      '@mantine/notifications': 5.8.2_mg4am4smyspjkl6dnttcswxx6a
       '@tabler/icons': 1.112.0_biqbaboplfbrettd7655fr4n2y
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
@@ -258,6 +262,21 @@ importers:
       eslint: 8.28.0
       react: 18.2.0
       tsconfig: link:../tsconfig
+      typescript: 4.9.3
+
+  repositories/in-memory-repository:
+    specifiers:
+      '@egodb/core': workspace:^0.0.0
+      rimraf: ^3.0.2
+      tsconfig: workspace:^0.0.0
+      tsup: ^6.5.0
+      typescript: ^4.9.3
+    dependencies:
+      '@egodb/core': link:../../packages/core
+    devDependencies:
+      rimraf: 3.0.2
+      tsconfig: link:../../packages/tsconfig
+      tsup: 6.5.0_typescript@4.9.3
       typescript: 4.9.3
 
 packages:
@@ -1402,6 +1421,22 @@ packages:
     transitivePeerDependencies:
       - '@emotion/react'
       - '@emotion/server'
+    dev: false
+
+  /@mantine/notifications/5.8.2_mg4am4smyspjkl6dnttcswxx6a:
+    resolution: {integrity: sha512-Z9cMHcCgblkV4ytLAQ8O8RvsGiLf39pTnOlSHLb97SfpT5Uz5zwCltWT3ApTSbikUen0GOSWwXFrmVAmOwwKng==}
+    peerDependencies:
+      '@mantine/core': 5.8.2
+      '@mantine/hooks': 5.8.2
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@mantine/core': 5.8.2_wk4snxdwgug6rsjcbzlyeojvsa
+      '@mantine/hooks': 5.8.2_react@18.2.0
+      '@mantine/utils': 5.8.2_react@18.2.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      react-transition-group: 4.4.2_biqbaboplfbrettd7655fr4n2y
     dev: false
 
   /@mantine/ssr/5.8.2_vavbdtuajfyku5chqvt5ands7q:
@@ -3500,6 +3535,13 @@ packages:
     engines: {node: '>=6.0.0'}
     dependencies:
       esutils: 2.0.3
+
+  /dom-helpers/5.2.1:
+    resolution: {integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==}
+    dependencies:
+      '@babel/runtime': 7.20.1
+      csstype: 3.1.1
+    dev: false
 
   /dom-serializer/1.4.1:
     resolution: {integrity: sha512-VHwB3KfrcOOkelEG2ZOfxqLZdfkil8PtJi4P8N2MMXucZq2yLp75ClViUlOVwyoHEDjYU433Aq+5zWP61+RGag==}
@@ -6603,6 +6645,20 @@ packages:
       use-latest: 1.2.1_fan5qbzahqtxlm5dzefqlqx5ia
     transitivePeerDependencies:
       - '@types/react'
+    dev: false
+
+  /react-transition-group/4.4.2_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg==}
+    peerDependencies:
+      react: '>=16.6.0'
+      react-dom: '>=16.6.0'
+    dependencies:
+      '@babel/runtime': 7.20.1
+      dom-helpers: 5.2.1
+      loose-envify: 1.4.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react/18.2.0:
