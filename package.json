@@ -34,5 +34,8 @@
     "apps/*",
     "packages/*",
     "repositories/*"
-  ]
+  ],
+  "lint-staged": {
+    "*.{ts,tsx,md}": "prettier --write"
+  }
 }
