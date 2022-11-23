@@ -1,1 +1,1 @@
-export * from './table-in-memory-repository'
+export * from './table-in-memory-repository.js'

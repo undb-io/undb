@@ -3,8 +3,10 @@
   "description": "",
   "version": "0.0.0",
   "dependencies": {
-    "@egodb/core": "^0.0.0"
+    "@egodb/core": "^0.0.0",
+    "lowdb": "^5.0.5"
   },
+  "type": "module",
   "devDependencies": {
     "rimraf": "^3.0.2",
     "tsconfig": "^0.0.0",
@@ -12,7 +14,7 @@
     "typescript": "^4.9.3",
     "vitest": "^0.25.3"
   },
-  "main": "./dist/index",
+  "exports": "./dist/index.js",
   "scripts": {
     "build": "tsc",
     "coverage": "vitest run --coverage",

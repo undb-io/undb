@@ -44,6 +44,7 @@ importers:
       '@types/node': ^18.11.9
       '@types/supertest': ^2.0.12
       eslint: ^8.28.0
+      esm: ^3.2.25
       jest: ^29.3.1
       nestjs-cls: ^3.0.4
       reflect-metadata: ^0.1.13
@@ -83,6 +84,7 @@ importers:
       '@types/node': 18.11.9
       '@types/supertest': 2.0.12
       eslint: 8.28.0
+      esm: 3.2.25
       jest: 29.3.1_odkjkoia5xunhxkdrka32ib6vi
       run-script-webpack-plugin: 0.1.1
       supertest: 6.3.1
@@ -275,6 +277,7 @@ importers:
   repositories/in-memory-repository:
     specifiers:
       '@egodb/core': ^0.0.0
+      lowdb: ^5.0.5
       rimraf: ^3.0.2
       tsconfig: ^0.0.0
       tsup: ^6.5.0
@@ -282,6 +285,7 @@ importers:
       vitest: ^0.25.3
     dependencies:
       '@egodb/core': link:../../packages/core
+      lowdb: 5.0.5
     devDependencies:
       rimraf: 3.0.2
       tsconfig: link:../../packages/tsconfig
@@ -2330,7 +2334,7 @@ packages:
     dev: true
 
   /@types/superagent/4.1.15:
-    resolution: {integrity: sha512-iiXaOL2wSbnSY4qg0mFPWJHL9iwyEsoNYwaHF2w58/fsVAQJlj+KUfFAFZu+nzbz+b7dUprJEAc+O9vhHHhQTA==}
+    resolution: {integrity: sha512-iiXaOL2wSbnSY4qg0mFPWJHL9iwyEsoNYwaHF2w58/fsVAQJlj+KUfFAFZu+nzbz+b7dUprJEAc+O9vhHHhQTA==, tarball: '@types/superagent/-/superagent-4.1.15.tgz'}
     deprecated: '[WARNING] Use 4.1.14 instead of 4.1.15, reason: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/58445'
     dependencies:
       '@types/cookiejar': 2.1.2
@@ -4253,6 +4257,11 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
+  /esm/3.2.25:
+    resolution: {integrity: sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==}
+    engines: {node: '>=6'}
+    dev: true
+
   /espree/9.4.1:
     resolution: {integrity: sha512-XwctdmTO6SIvCzd9810yyNzIrOrqNYV9Koizx4C/mRhf9uq0o4yHoCEU/670pOxOL/MSraektvSAji79kX90Vg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -5962,6 +5971,13 @@ packages:
       get-func-name: 2.0.0
     dev: true
 
+  /lowdb/5.0.5:
+    resolution: {integrity: sha512-7EWKmIMhNKA8TXFhL8t0p6N2LC53l3ZqsWQGSksGhhjrcms9rbKlyrAh2PzSGK5v0KPJ2W5VItBnC3NDRzOnzQ==}
+    engines: {node: '>=14.16'}
+    dependencies:
+      steno: 3.0.0
+    dev: false
+
   /lru-cache/6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
@@ -7209,6 +7225,11 @@ packages:
   /statuses/2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
     engines: {node: '>= 0.8'}
+
+  /steno/3.0.0:
+    resolution: {integrity: sha512-uZtn7Ht9yXLiYgOsmo8btj4+f7VxyYheMt8g6F1ANjyqByQXEE2Gygjgenp3otHH1TlHsS4JAaRGv5wJ1wvMNw==}
+    engines: {node: '>=14.16'}
+    dev: false
 
   /streamsearch/1.1.0:
     resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}

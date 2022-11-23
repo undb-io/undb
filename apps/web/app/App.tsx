@@ -35,26 +35,29 @@ export default function App() {
   })
 
   const createTable = trpc.table.create.useMutation({
-    onSuccess: () => toggle(false),
+    onSuccess: () => {
+      form.reset()
+      toggle(false)
+    },
   })
   const onSubmit = form.onSubmit((values) => {
     createTable.mutate(values)
   })
 
-  const closeModal = () => {
+  const cancel = () => {
     form.reset()
     createTable.reset()
     toggle(false)
   }
 
-  const openModal = () =>
+  const confirm = () =>
     openConfirmModal({
       target: 'body',
       title: 'Please confirm your action',
       children: <Text size="sm">You have unsaved changes. Do you really want to close the panel?</Text>,
       labels: { confirm: 'Confirm', cancel: 'Cancel' },
       confirmProps: { color: 'red' },
-      onConfirm: closeModal,
+      onConfirm: cancel,
       overlayColor: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2],
       overlayOpacity: 0.55,
       overlayBlur: 3,
@@ -94,9 +97,9 @@ export default function App() {
         opened={opened}
         onClose={() => {
           if (form.isDirty()) {
-            openModal()
+            confirm()
           } else {
-            closeModal()
+            cancel()
           }
         }}
         title="New Table"
@@ -108,7 +111,7 @@ export default function App() {
         overlayBlur={3}
       >
         <form onSubmit={onSubmit}>
-          <TextInput error={form.errors['name']} label="Name" {...form.getInputProps('name')} />
+          <TextInput error={form.errors['name']} label="Name" {...form.getInputProps('name')} required={true} />
           <Divider my="lg" />
           <Group position="right">
             <Button color="dark" variant="subtle" onClick={() => toggle(false)}>
