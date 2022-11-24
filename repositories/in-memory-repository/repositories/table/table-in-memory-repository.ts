@@ -1,7 +1,9 @@
 import { ITableRepository, Table } from '@egodb/core'
 import { ITableSpec } from '@egodb/core/dist/specifications/interface.js'
 import { Low, Memory } from 'lowdb'
-import { Option } from 'oxide.ts'
+import { None, Option, Some } from 'oxide.ts'
+import { TableInMemoryMapper } from './table-in-memory.mapper.js'
+import { TableInMemoryQueryVisitor } from './table-in-memory.query-visitor.js'
 import { TableInMemory } from './table.js'
 
 type Data = {
@@ -16,16 +18,34 @@ export class TableInMemoryRepository implements ITableRepository {
     }
   }
 
-  findOneById(id: string): Promise<Option<Table>> {
-    throw new Error('Method not implemented.')
+  async findOneById(id: string): Promise<Option<Table>> {
+    const t = this.db.data!.tables.find((t) => t.id === id)
+    if (!t) return None
+
+    const table = TableInMemoryMapper.toDomain(t).unwrap()
+    return Some(table)
   }
 
-  findOne(spec: ITableSpec): Promise<Option<Table>> {
-    throw new Error('Method not implemented.')
+  async findOne(spec: ITableSpec): Promise<Option<Table>> {
+    const visitor = new TableInMemoryQueryVisitor()
+    spec.accept(visitor)
+
+    const predicate = visitor.mustGetPredicate().unwrap()
+
+    const t = this.db.data!.tables.find(predicate)
+    return t ? Some(TableInMemoryMapper.toDomain(t).unwrap()) : None
   }
 
-  find(spec: ITableSpec): Promise<Table[]> {
-    throw new Error('Method not implemented.')
+  async find(spec: ITableSpec): Promise<Table[]> {
+    const visitor = new TableInMemoryQueryVisitor()
+    spec.accept(visitor)
+
+    const predicate = visitor.mustGetPredicate().unwrap()
+
+    return this.db
+      .data!.tables.filter(predicate)
+      .map(TableInMemoryMapper.toDomain)
+      .map((t) => t.unwrap())
   }
 
   async insert(table: Table): Promise<void> {

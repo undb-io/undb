@@ -9,7 +9,7 @@ export class Table {
     this.name = name
   }
 
-  static create(name: TableName): Table {
-    return new Table(name)
+  static create(name: string): Table {
+    return new Table(new TableName(name))
   }
 }
