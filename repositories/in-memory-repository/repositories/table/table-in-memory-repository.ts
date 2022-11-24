@@ -1,10 +1,9 @@
-import { ITableRepository, Table } from '@egodb/core'
-import { ITableSpec } from '@egodb/core/dist/specifications/interface.js'
+import type { ITableRepository, ITableSpec, Table } from '@egodb/core'
 import { Low, Memory } from 'lowdb'
 import { None, Option, Some } from 'oxide.ts'
 import { TableInMemoryMapper } from './table-in-memory.mapper.js'
 import { TableInMemoryQueryVisitor } from './table-in-memory.query-visitor.js'
-import { TableInMemory } from './table.js'
+import type { TableInMemory } from './table.js'
 
 type Data = {
   tables: TableInMemory[]

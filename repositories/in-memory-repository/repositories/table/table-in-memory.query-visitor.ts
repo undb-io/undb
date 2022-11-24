@@ -1,7 +1,6 @@
-import { ITableSpecVisitor } from '@egodb/core/dist/specifications/interface'
-import { WithName } from '@egodb/core/dist/specifications/table-name.specification'
+import type { ITableSpecVisitor, WithName } from '@egodb/core'
 import { Err, Ok, Result } from 'oxide.ts'
-import { TableInMemory } from './table'
+import type { TableInMemory } from './table'
 
 type TableInMemoryPredicate = (value: TableInMemory, index: number, obj: TableInMemory[]) => unknown
 
