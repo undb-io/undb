@@ -1,5 +1,6 @@
 import * as z from 'zod'
+import { tableNameSchema } from '../../value-objects/table-name.vo'
 
 export const createTableCommandInput = z.object({
-  name: z.string().min(2).max(20),
+  name: tableNameSchema,
 })
