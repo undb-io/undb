@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "dependencies": {
     "@egodb/core": "workspace:^0.0.0",
-    "lowdb": "^5.0.5"
+    "lowdb": "^5.0.5",
+    "oxide.ts": "^1.1.0"
   },
   "devDependencies": {
     "rimraf": "^3.0.2",

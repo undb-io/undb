@@ -143,6 +143,7 @@ importers:
   packages/core:
     specifiers:
       '@egodb/domain': workspace:^0.0.0
+      oxide.ts: ^1.1.0
       rimraf: ^3.0.2
       tsconfig: workspace:^0.0.0
       tsup: ^6.5.0
@@ -151,6 +152,7 @@ importers:
       zod: ^3.19.1
     dependencies:
       '@egodb/domain': link:../domain
+      oxide.ts: 1.1.0
       zod: 3.19.1
     devDependencies:
       rimraf: 3.0.2
@@ -278,6 +280,7 @@ importers:
     specifiers:
       '@egodb/core': workspace:^0.0.0
       lowdb: ^5.0.5
+      oxide.ts: ^1.1.0
       rimraf: ^3.0.2
       tsconfig: workspace:^0.0.0
       tsup: ^6.5.0
@@ -286,6 +289,7 @@ importers:
     dependencies:
       '@egodb/core': link:../../packages/core
       lowdb: 5.0.5
+      oxide.ts: 1.1.0
     devDependencies:
       rimraf: 3.0.2
       tsconfig: link:../../packages/tsconfig

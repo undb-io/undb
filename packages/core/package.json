@@ -5,6 +5,7 @@
   "author": "",
   "dependencies": {
     "@egodb/domain": "workspace:^0.0.0",
+    "oxide.ts": "^1.1.0",
     "zod": "^3.19.1"
   },
   "devDependencies": {

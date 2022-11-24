@@ -18,6 +18,9 @@
     "vitest": "^0.25.3"
   },
   "keywords": [],
+  "files": [
+    "./dist"
+  ],
   "main": "./dist/index",
   "scripts": {
     "build": "tsup",
