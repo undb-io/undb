@@ -2,9 +2,9 @@
   "name": "@egodb/web",
   "version": "0.0.0",
   "dependencies": {
-    "@egodb/core": "workspace:^0.0.0",
-    "@egodb/trpc": "workspace:^0.0.0",
-    "@egodb/ui": "workspace:^0.0.0",
+    "@egodb/core": "^0.0.0",
+    "@egodb/trpc": "^0.0.0",
+    "@egodb/ui": "^0.0.0",
     "@tanstack/react-query": "^4.16.1",
     "@trpc/client": "^10.1.0",
     "@trpc/next": "^10.1.0",
@@ -16,12 +16,12 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
-    "@egodb/eslint-config": "workspace:^0.0.0",
+    "@egodb/eslint-config": "^0.0.0",
     "@types/node": "^18.11.9",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
     "eslint": "^8.28.0",
-    "tsconfig": "workspace:^0.0.0",
+    "tsconfig": "^0.0.0",
     "typescript": "^4.9.3"
   },
   "private": true,

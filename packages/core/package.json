@@ -4,13 +4,13 @@
   "version": "0.0.0",
   "author": "",
   "dependencies": {
-    "@egodb/domain": "workspace:^0.0.0",
+    "@egodb/domain": "^0.0.0",
     "oxide.ts": "^1.1.0",
     "zod": "^3.19.1"
   },
   "devDependencies": {
     "rimraf": "^3.0.2",
-    "tsconfig": "workspace:^0.0.0",
+    "tsconfig": "^0.0.0",
     "tsup": "^6.5.0",
     "typescript": "^4.9.3",
     "vitest": "^0.25.3"
