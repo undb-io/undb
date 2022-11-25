@@ -283,7 +283,7 @@ importers:
   repositories/in-memory-repository:
     specifiers:
       '@egodb/core': ^0.0.0
-      '@egodb/domain': workspace:^0.0.0
+      '@egodb/domain': ^0.0.0
       lowdb: ^5.0.5
       oxide.ts: ^1.1.0
       rimraf: ^3.0.2
