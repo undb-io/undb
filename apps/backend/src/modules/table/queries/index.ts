@@ -1,3 +1,4 @@
-import { GetTableQueryHandelr } from './get-table.query.handler'
+import { NestGetTableQueryHandelr } from './get-table.query.handler'
+import { NestGetTablesQueryHandelr } from './get-tables.query.handler'
 
-export const queryHandlers = [GetTableQueryHandelr]
+export const queryHandlers = [NestGetTableQueryHandelr, NestGetTablesQueryHandelr]

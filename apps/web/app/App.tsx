@@ -19,6 +19,8 @@ import {
   IconAlertCircle,
   openConfirmModal,
   Text,
+  Box,
+  NavLink,
 } from '@egodb/ui'
 import { createTableCommandInput, type ICreateTableInput } from '@egodb/core'
 import { trpc } from '../trpc'
@@ -38,8 +40,11 @@ export default function App() {
     onSuccess: () => {
       form.reset()
       toggle(false)
+      getTables.refetch()
     },
   })
+  const getTables = trpc.table.list.useQuery({})
+
   const onSubmit = form.onSubmit((values) => {
     createTable.mutate(values)
   })
@@ -71,7 +76,12 @@ export default function App() {
         navbar={
           <Navbar width={{ base: 250 }} p="xl">
             <Navbar.Section grow>
-              <Center>
+              <Box>
+                {getTables.data?.map((table) => (
+                  <NavLink key={table.id} label={table.name} />
+                ))}
+              </Box>
+              <Center mt="md">
                 <Button
                   color="dark"
                   fullWidth

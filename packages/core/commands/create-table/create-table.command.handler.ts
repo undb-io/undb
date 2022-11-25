@@ -1,8 +1,8 @@
 import { type ICommandHandler } from '@egodb/domain'
-import { ITableRepository } from '../../repository'
+import type { ITableRepository } from '../../repository'
 import { Table } from '../../table'
-import { CreateTableCommand } from './create-table.command'
-import { ICreateTableOutput } from './create-table.command.interface'
+import type { CreateTableCommand } from './create-table.command'
+import type { ICreateTableOutput } from './create-table.command.interface'
 
 type ICreateTableCommandHandler = ICommandHandler<CreateTableCommand, ICreateTableOutput>
 

@@ -1,11 +1,12 @@
+import { TableId } from './value-objects'
 import { TableName } from './value-objects/table-name.vo'
 
 export class Table {
-  readonly id!: string
-  public name!: TableName
+  public id: TableId
+  public name: TableName
 
   private constructor(name: TableName) {
-    this.id = 'hello'
+    this.id = new TableId('hello')
     this.name = name
   }
 
