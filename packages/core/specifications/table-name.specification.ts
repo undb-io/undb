@@ -1,10 +1,13 @@
+import { CompositeSpecification } from '@egodb/domain'
 import { Ok, type Result } from 'oxide.ts'
 import { type Table } from '../table'
-import { TableName } from '../value-objects/table-name.vo'
-import type { ITableSpec, ITableSpecVisitor } from './interface'
+import { TableName } from '../value-objects'
+import type { ITableSpecVisitor } from './interface'
 
-export class WithName implements ITableSpec {
-  constructor(public readonly name: TableName) {}
+export class WithName extends CompositeSpecification {
+  constructor(public readonly name: TableName) {
+    super()
+  }
 
   isSatisfiedBy(t: Table): boolean {
     return this.name.equals(t.name)
