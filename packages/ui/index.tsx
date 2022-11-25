@@ -12,6 +12,7 @@ export * from './Divider'
 export * from './Provider'
 export * from './Inputs'
 export * from './Typography'
+export * from './Feedback'
 
 export * from './hooks'
 export * from './theme'

@@ -1,5 +1,6 @@
 import { swaggerServe } from '@egodb/trpc'
-import { Logger, MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common'
+import type { MiddlewareConsumer, NestModule } from '@nestjs/common'
+import { Logger, Module, RequestMethod } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
 import { providers } from './providers'
 import { TrpcOpenApiMiddleware } from './trpc-open-api.middleware'
