@@ -12,6 +12,7 @@
     "noEmit": true,
     "incremental": true,
     "esModuleInterop": true,
+    "noUnusedLocals": false,
     "module": "esnext",
     "resolveJsonModule": true,
     "isolatedModules": true,

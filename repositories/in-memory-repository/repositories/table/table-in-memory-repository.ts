@@ -18,7 +18,7 @@ export class TableInMemoryRepository implements ITableRepository {
   }
 
   async findOneById(id: string): Promise<Option<Table>> {
-    const t = this.db.data!.tables.find((t) => t.id === id)
+    const t = this.db.data?.tables.find((t) => t.id === id)
     if (!t) return None
 
     const table = TableInMemoryMapper.toDomain(t).unwrap()
@@ -31,7 +31,7 @@ export class TableInMemoryRepository implements ITableRepository {
 
     const predicate = visitor.mustGetPredicate().unwrap()
 
-    const t = this.db.data!.tables.find(predicate)
+    const t = this.db.data?.tables.find(predicate)
     return t ? Some(TableInMemoryMapper.toDomain(t).unwrap()) : None
   }
 
@@ -41,6 +41,7 @@ export class TableInMemoryRepository implements ITableRepository {
 
     const predicate = visitor.mustGetPredicate().unwrap()
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.db
       .data!.tables.filter(predicate)
       .map(TableInMemoryMapper.toDomain)
@@ -48,6 +49,6 @@ export class TableInMemoryRepository implements ITableRepository {
   }
 
   async insert(table: Table): Promise<void> {
-    this.db.data!.tables.push({ id: table.id, name: table.name.value })
+    this.db.data?.tables.push({ id: table.id, name: table.name.value })
   }
 }
