@@ -1,5 +1,5 @@
-import { Option } from 'oxide.ts'
-import { ITableSpec } from './specifications/interface'
+import type { Option } from 'oxide.ts'
+import type { ITableSpec } from './specifications/interface'
 import { type Table } from './table'
 
 export interface ITableRepository {
