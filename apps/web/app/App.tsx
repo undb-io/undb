@@ -21,6 +21,7 @@ import {
   Text,
   Box,
   NavLink,
+  Skeleton,
 } from '@egodb/ui'
 import { createTableCommandInput, type ICreateTableInput } from '@egodb/core'
 import { trpc } from '../trpc'
@@ -38,8 +39,7 @@ export default function App() {
 
   const createTable = trpc.table.create.useMutation({
     onSuccess: () => {
-      form.reset()
-      toggle(false)
+      reset()
       getTables.refetch()
     },
   })
@@ -49,10 +49,12 @@ export default function App() {
     createTable.mutate(values)
   })
 
-  const cancel = () => {
-    form.reset()
-    createTable.reset()
+  const reset = () => {
     toggle(false)
+    createTable.reset()
+    form.reset()
+    form.resetDirty()
+    form.resetTouched()
   }
 
   const confirm = () =>
@@ -62,7 +64,7 @@ export default function App() {
       children: <Text size="sm">You have unsaved changes. Do you really want to close the panel?</Text>,
       labels: { confirm: 'Confirm', cancel: 'Cancel' },
       confirmProps: { color: 'red' },
-      onConfirm: cancel,
+      onConfirm: reset,
       overlayColor: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2],
       overlayOpacity: 0.55,
       overlayBlur: 3,
@@ -77,6 +79,13 @@ export default function App() {
           <Navbar width={{ base: 250 }} p="xl">
             <Navbar.Section grow>
               <Box>
+                {getTables.isLoading && (
+                  <>
+                    <Skeleton visible={getTables.isLoading} height={30} />
+                    <Skeleton visible={getTables.isLoading} mt={6} height={30} />
+                    <Skeleton visible={getTables.isLoading} mt={6} height={30} />
+                  </>
+                )}
                 {getTables.data?.map((table) => (
                   <NavLink key={table.id} label={table.name} />
                 ))}
@@ -109,7 +118,7 @@ export default function App() {
           if (form.isDirty()) {
             confirm()
           } else {
-            cancel()
+            reset()
           }
         }}
         title="New Table"

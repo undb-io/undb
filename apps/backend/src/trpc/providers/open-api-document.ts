@@ -1,5 +1,7 @@
-import { AppRouter, createOpenApiDocument } from '@egodb/trpc'
-import { Inject, Provider } from '@nestjs/common'
+import type { AppRouter } from '@egodb/trpc'
+import { createOpenApiDocument } from '@egodb/trpc'
+import type { Provider } from '@nestjs/common'
+import { Inject } from '@nestjs/common'
 import { AppRouterSymbol } from './app-router'
 
 const OpenApiDocument = Symbol('OPEN_API_DOCUMENT')
