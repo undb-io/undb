@@ -1,18 +1,15 @@
-import {
-  GetTableQuery,
-  GetTableQueryHandler as DomainHandler,
-  IGetTableOutput,
-  type ITableRepository,
-} from '@egodb/core'
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs'
-import { InjectTableReposiory } from '../adapters'
+import type { IGetTableOutput, ITableQueryModel } from '@egodb/core'
+import { GetTableQuery, GetTableQueryHandler as DomainHandler } from '@egodb/core'
+import type { IQueryHandler } from '@nestjs/cqrs'
+import { QueryHandler } from '@nestjs/cqrs'
+import { InjectTableQueryModel } from '../adapters'
 
 @QueryHandler(GetTableQuery)
-export class GetTableQueryHandelr extends DomainHandler implements IQueryHandler<GetTableQuery, IGetTableOutput> {
+export class NestGetTableQueryHandelr extends DomainHandler implements IQueryHandler<GetTableQuery, IGetTableOutput> {
   constructor(
-    @InjectTableReposiory()
-    protected readonly repo: ITableRepository,
+    @InjectTableQueryModel()
+    protected readonly rm: ITableQueryModel,
   ) {
-    super(repo)
+    super(rm)
   }
 }

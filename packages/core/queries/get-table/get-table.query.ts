@@ -1,4 +1,4 @@
-import { IGetTableQuery } from './get-table.query.interface'
+import type { IGetTableQuery } from './get-table.query.interface'
 
 export class GetTableQuery implements IGetTableQuery {
   public readonly id: string

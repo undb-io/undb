@@ -1,6 +1,6 @@
-import { Table } from '@egodb/core/dist'
+import { Table } from '@egodb/core'
 import { Result } from 'oxide.ts'
-import { TableInMemory } from './table'
+import type { TableInMemory } from './table'
 
 export class TableInMemoryMapper {
   static toDomain(t: TableInMemory): Result<Table, Error> {

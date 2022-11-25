@@ -1,21 +1,34 @@
+import type { ITableCommandBus, ITableQueryBus } from '@egodb/core'
 import {
   CreateTableCommand,
   createTableCommandInput,
   createTableCommandOutput,
+  GetTableQuery,
   getTableQueryOutput,
   getTableQuerySchema,
-  ITableCommandBus,
+  GetTablesQuery,
+  getTablesQueryOutput,
+  getTablesQuerySchema,
 } from '@egodb/core'
 import { publicProcedure, router } from '../trpc'
 
-export const createTableRouter = (commandBus: ITableCommandBus) =>
+export const createTableRouter = (commandBus: ITableCommandBus, queryBus: ITableQueryBus) =>
   router({
     get: publicProcedure
       .meta({ openapi: { method: 'GET', path: '/table.get' } })
       .input(getTableQuerySchema)
       .output(getTableQueryOutput)
       .query(({ input }) => {
-        return { id: input.id }
+        const query = new GetTableQuery({ id: input.id })
+        return queryBus.execute(query)
+      }),
+    list: publicProcedure
+      .meta({ openapi: { method: 'GET', path: '/table.list' } })
+      .input(getTablesQuerySchema)
+      .output(getTablesQueryOutput)
+      .query(() => {
+        const query = new GetTablesQuery()
+        return queryBus.execute(query)
       }),
     create: publicProcedure
       .meta({ openapi: { method: 'POST', path: '/table.create' } })
