@@ -15,10 +15,10 @@
     "typescript": "^4.9.3",
     "vitest": "^0.25.3"
   },
-  "keywords": [],
   "files": [
     "./dist"
   ],
+  "keywords": [],
   "main": "./dist/index",
   "scripts": {
     "build": "tsup",

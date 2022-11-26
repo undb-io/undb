@@ -20,8 +20,8 @@
   "files": [
     "./dist"
   ],
-  "main": "./dist/index",
   "keywords": [],
+  "main": "./dist/index",
   "scripts": {
     "build": "tsup",
     "coverage": "vitest run --coverage",
