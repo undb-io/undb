@@ -35,7 +35,7 @@ export const createTableRouter = (commandBus: ITableCommandBus, queryBus: ITable
       .input(createTableCommandInput)
       .output(createTableCommandOutput)
       .mutation(({ input }) => {
-        const cmd = new CreateTableCommand({ name: input.name })
+        const cmd = new CreateTableCommand({ name: input.name, schema: input.schema })
         return commandBus.execute(cmd)
       }),
   })

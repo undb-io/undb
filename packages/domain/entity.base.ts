@@ -15,7 +15,7 @@ export interface CreateEntityProps<TI extends ID, T> {
 
 export abstract class Entity<TI extends ID, EntityProps> {
   constructor({ id, createdAt, updatedAt, props }: CreateEntityProps<TI, EntityProps>) {
-    this.setId(id)
+    this._id = id
     const now = new Date()
     this._createdAt = createdAt || now
     this._updatedAt = updatedAt || now
@@ -24,7 +24,7 @@ export abstract class Entity<TI extends ID, EntityProps> {
 
   protected readonly props: EntityProps
 
-  protected abstract _id: TI
+  protected readonly _id: TI
 
   private readonly _createdAt: Date
 
@@ -32,10 +32,6 @@ export abstract class Entity<TI extends ID, EntityProps> {
 
   get id(): TI {
     return this._id
-  }
-
-  private setId(id: TI): void {
-    this._id = id
   }
 
   get createdAt(): Date {
