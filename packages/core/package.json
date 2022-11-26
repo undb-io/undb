@@ -16,7 +16,7 @@
     "vitest": "^0.25.3"
   },
   "files": [
-    "dist"
+    "./dist"
   ],
   "keywords": [],
   "main": "./dist/index",

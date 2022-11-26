@@ -6,7 +6,7 @@ export class Table {
   public name: TableName
 
   private constructor(name: TableName) {
-    this.id = new TableId('hello')
+    this.id = new TableId()
     this.name = name
   }
 
