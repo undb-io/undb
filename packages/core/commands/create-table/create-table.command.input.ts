@@ -1,6 +1,7 @@
 import * as z from 'zod'
-import { tableNameSchema } from '../../value-objects/table-name.vo'
+import { createTableSchemaSchema, tableNameSchema } from '../../value-objects'
 
 export const createTableCommandInput = z.object({
   name: tableNameSchema,
+  schema: createTableSchemaSchema,
 })
