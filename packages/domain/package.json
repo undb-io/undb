@@ -3,6 +3,7 @@
   "description": "",
   "version": "0.0.0",
   "author": "",
+  "type": "module",
   "dependencies": {
     "fast-deep-equal": "^3.1.3",
     "nanoid": "^4.0.0",
@@ -17,11 +18,8 @@
     "typescript": "^4.9.3",
     "vitest": "^0.25.3"
   },
-  "files": [
-    "./dist"
-  ],
   "keywords": [],
-  "main": "./dist/index",
+  "exports": "./dist/index.js",
   "scripts": {
     "build": "tsup",
     "coverage": "vitest run --coverage",

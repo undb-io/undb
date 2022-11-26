@@ -1,3 +1,4 @@
+export * from './column'
 export * from './commands'
 export * from './queries'
 export * from './query-model'
