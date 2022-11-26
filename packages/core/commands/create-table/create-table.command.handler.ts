@@ -10,7 +10,7 @@ export class CreateTableCommandHandler implements ICreateTableCommandHandler {
   constructor(protected readonly repo: ITableRepository) {}
 
   async execute(command: CreateTableCommand): Promise<ICreateTableOutput> {
-    const table = Table.create(command.name)
+    const table = Table.create(command)
     await this.repo.insert(table)
   }
 }

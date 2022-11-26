@@ -1,12 +1,12 @@
 import * as z from 'zod'
-import { baseColumnSchema, Column } from './column.base'
+import { BaseColumn, baseColumnSchema, createBaseColumnsSchema } from './column.base'
 
 const textTypeSchema = z.literal('text')
 
 export const textColumnSchema = baseColumnSchema
 
-export const createTextColumnSchema = baseColumnSchema.merge(z.object({ type: textTypeSchema }))
+export const createTextColumnSchema = createBaseColumnsSchema.merge(z.object({ type: textTypeSchema }))
 
 export type ICreateTextColumn = z.infer<typeof createTextColumnSchema>
 
-export class TextColumn extends Column {}
+export class TextColumn extends BaseColumn {}

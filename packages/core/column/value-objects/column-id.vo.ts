@@ -1,4 +1,7 @@
 import { NanoID } from '@egodb/domain'
+import * as z from 'zod'
+
+export const columnIdSchema = z.string()
 
 export class ColumnId extends NanoID {
   private static COLUMN_ID_PREFIX = 'col'
