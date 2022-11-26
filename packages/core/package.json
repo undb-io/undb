@@ -3,7 +3,6 @@
   "description": "",
   "version": "0.0.0",
   "author": "",
-  "type": "module",
   "dependencies": {
     "@egodb/domain": "^0.0.0",
     "oxide.ts": "^1.1.0",
@@ -17,7 +16,10 @@
     "vitest": "^0.25.3"
   },
   "keywords": [],
-  "main": "./dist/index.js",
+  "files": [
+    "./dist"
+  ],
+  "main": "./dist/index",
   "scripts": {
     "build": "tsup",
     "coverage": "vitest run --coverage",
