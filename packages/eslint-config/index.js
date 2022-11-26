@@ -1,4 +1,9 @@
 module.exports = {
+  "env": {
+    "browser": true,
+    "amd": true,
+    "node": true,
+  },
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', "prettier"],
   ignorePatterns: ['node_modules', 'dist'],
   parser: '@typescript-eslint/parser',
