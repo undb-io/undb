@@ -6,6 +6,7 @@
     "eamodio.gitlens",
     "ms-vsliveshare.vsliveshare",
     "jacano.vscode-pnpm",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "rangav.vscode-thunder-client"
   ]
 }

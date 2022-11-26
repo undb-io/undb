@@ -1,0 +1,61 @@
+[
+  {
+    "_id": "f6845b9d-b375-49cd-a345-75685dd213e8",
+    "colId": "9225d89a-6cb3-4439-9561-8c5f179684f0",
+    "containerId": "",
+    "name": "{{EGODB_API_TRPC_URL}}/table.create",
+    "url": "{{EGODB_API_TRPC_URL}}/table.create",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2022-11-26T02:38:20.473Z",
+    "modified": "2022-11-26T02:38:20.473Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"name\": \"hello\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "c4ce3362-1cf3-4d88-96c0-09a202d75ccb",
+    "colId": "9225d89a-6cb3-4439-9561-8c5f179684f0",
+    "containerId": "",
+    "name": "{{EGODB_API_TRPC_URL}}/table.get",
+    "url": "{{EGODB_API_TRPC_URL}}/table.get?input={\"id\": \"hello\"}",
+    "method": "GET",
+    "sortNum": 20000,
+    "created": "2022-11-26T02:38:37.721Z",
+    "modified": "2022-11-26T02:39:10.289Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "input",
+        "value": "{\"id\": \"hello\"}",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "bc422a39-e725-47d4-bb45-68d8fec4f751",
+    "colId": "9225d89a-6cb3-4439-9561-8c5f179684f0",
+    "containerId": "",
+    "name": "{{EGODB_API_TRPC_URL}}/table.list",
+    "url": "{{EGODB_API_TRPC_URL}}/table.list?input={\"id\": \"hello\"}",
+    "method": "GET",
+    "sortNum": 30000,
+    "created": "2022-11-26T02:39:15.045Z",
+    "modified": "2022-11-26T02:39:25.576Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "input",
+        "value": "{\"id\": \"hello\"}",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  }
+]
