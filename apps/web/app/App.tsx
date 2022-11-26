@@ -32,6 +32,7 @@ export default function App() {
   const form = useForm<ICreateTableInput>({
     initialValues: {
       name: '',
+      schema: [],
     },
     validate: zodResolver(createTableCommandInput),
     validateInputOnBlur: ['name'],
