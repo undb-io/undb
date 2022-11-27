@@ -38,7 +38,6 @@ export class TableInMemoryRepository implements ITableRepository {
   }
 
   async insert(table: Table): Promise<void> {
-    console.log(table)
-    db.data?.tables.push({ id: table.id.value, name: table.name.value, columns: table.schema.columns })
+    db.data?.tables.push(TableInMemoryMapper.toInMemory(table))
   }
 }

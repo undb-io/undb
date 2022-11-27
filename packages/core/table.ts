@@ -1,5 +1,4 @@
 import type { ICreateTableInput } from './commands'
-import type { ICreateTableSchemaSchema } from './value-objects'
 import { TableId, TableSchema } from './value-objects'
 import { TableName } from './value-objects/table-name.vo'
 
@@ -8,17 +7,21 @@ export class Table {
   public name: TableName
   public schema: TableSchema
 
-  constructor(name: TableName, schema: TableSchema) {
-    this.id = new TableId()
+  constructor(id = TableId.create(), name: TableName, schema: TableSchema) {
+    this.id = id
     this.name = name
     this.schema = schema
   }
 
   static create(input: ICreateTableInput): Table {
-    return new Table(new TableName(input.name), Table.createSchema(input.schema))
+    return new Table(TableId.fromOrCreate(input.id), TableName.create(input.name), TableSchema.create(input.schema))
   }
 
-  static createSchema(inputs: ICreateTableSchemaSchema): TableSchema {
-    return TableSchema.create(inputs)
+  static unsafeCreate(input: ICreateTableInput): Table {
+    return new Table(
+      TableId.fromOrCreate(input.id),
+      TableName.unsafeCreate(input.name),
+      TableSchema.unsafeCreate(input.schema),
+    )
   }
 }

@@ -1,4 +1,5 @@
 import equal from 'fast-deep-equal'
+import { convertPropsToObject } from './utils'
 export type Primitives = string | number | boolean
 export interface DomainPrimitive<T extends Primitives | Date> {
   value: T
@@ -14,5 +15,25 @@ export abstract class ValueObject<T = any> {
       return false
     }
     return equal(this, vo)
+  }
+
+  static isValueObject(obj: unknown): obj is ValueObject<unknown> {
+    return obj instanceof ValueObject
+  }
+
+  public unpack(): T {
+    if (this.isDomainPrimitive(this.props)) {
+      return this.props.value
+    }
+
+    const propsCopy = convertPropsToObject(this.props)
+
+    return Object.freeze(propsCopy)
+  }
+  private isDomainPrimitive(obj: unknown): obj is DomainPrimitive<T & (Primitives | Date)> {
+    if (Object.prototype.hasOwnProperty.call(obj, 'value')) {
+      return true
+    }
+    return false
   }
 }

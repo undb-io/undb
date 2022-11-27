@@ -16,5 +16,6 @@
     "skipLibCheck": true,
     "strict": true
   },
+  "include": ["./packages/eslint-config/index.js"],
   "exclude": ["node_modules"]
 }

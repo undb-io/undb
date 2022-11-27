@@ -1,8 +1,10 @@
 type NumberColumnInMemory = {
+  type: 'text'
   name: string
 }
 
 type TextColumnInMemory = {
+  type: 'number'
   name: string
 }
 

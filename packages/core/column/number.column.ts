@@ -1,12 +1,33 @@
 import * as z from 'zod'
-import { BaseColumn, baseColumnSchema, createBaseColumnsSchema } from './column.base'
+import { BaseColumn, baseColumnQuerySchema, createBaseColumnsSchema } from './column.base'
+import type { INumberColumn } from './column.type'
+import { ColumnName, ColumnValueConstraints } from './value-objects'
 
-const numberTypeSchema = z.literal('number')
-
-export const numberColumnSchema = baseColumnSchema
+export const numberTypeSchema = z.literal('number')
+export type NumberType = z.infer<typeof numberTypeSchema>
 
 export const createNumberColumnSchema = createBaseColumnsSchema.merge(z.object({ type: numberTypeSchema }))
 
-export type ICreateNumberColumn = z.infer<typeof createNumberColumnSchema>
+export type ICreateNumberColumnInput = z.infer<typeof createNumberColumnSchema>
 
-export class NumberColumn extends BaseColumn {}
+export const numberColumnQuerySchema = baseColumnQuerySchema.merge(z.object({ type: numberTypeSchema }))
+
+export class NumberColumn extends BaseColumn<INumberColumn> {
+  get type(): NumberType {
+    return 'number'
+  }
+
+  static create(input: ICreateNumberColumnInput): NumberColumn {
+    return new NumberColumn({
+      name: ColumnName.create(input.name),
+      valueConstrains: ColumnValueConstraints.create({ required: input.required }),
+    })
+  }
+
+  static unsafeCreate(input: ICreateNumberColumnInput): NumberColumn {
+    return new NumberColumn({
+      name: ColumnName.unsafaCreate(input.name),
+      valueConstrains: ColumnValueConstraints.unsafeCreate({ required: input.required }),
+    })
+  }
+}
