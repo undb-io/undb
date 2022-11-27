@@ -1,6 +1,8 @@
-import { Alert, Button, Divider, Group, IconAlertCircle, TextInput } from '@egodb/ui'
+import { Alert, Button, Divider, Group, IconAlertCircle, Space, TextInput } from '@egodb/ui'
 import { trpc } from '../../trpc'
+import { CreateTableAddColumnButton } from './create-table-add-column-button'
 import { useCreateTableFormContext } from './create-table-form-context'
+import { CreateTableFormSchema } from './create-table-form-schema'
 
 interface IProps {
   onCancel: () => void
@@ -32,7 +34,17 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel: onClose }) => {
   return (
     <form onSubmit={onSubmit}>
       <TextInput error={form.errors['name']} label="Name" {...form.getInputProps('name')} required={true} />
+
+      <Space h="md" />
+
+      <CreateTableFormSchema />
+
+      <Space h="md" />
+
+      <CreateTableAddColumnButton />
+
       <Divider my="lg" />
+
       <Group position="right">
         <Button color="dark" variant="subtle" onClick={() => onClose()}>
           Cancel
@@ -41,6 +53,7 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel: onClose }) => {
           Create
         </Button>
       </Group>
+
       {createTable.isError && (
         <Alert icon={<IconAlertCircle size={16} />} title="Oops! Create Table Error!" mt="lg" color="red">
           {createTable.error.message}
