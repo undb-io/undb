@@ -24,4 +24,4 @@ export class WithName extends CompositeSpecification {
   }
 }
 
-export const withNameS = (name: string) => new WithName(new TableName(name))
+export const withNameS = (name: string) => new WithName(TableName.create(name))

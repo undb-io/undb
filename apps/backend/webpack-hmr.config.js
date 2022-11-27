@@ -11,6 +11,9 @@ module.exports = function (options, webpack) {
         allowlist: [
           'webpack/hot/poll?100',
           '@egodb/in-memory-repository',
+          '@egodb/core',
+          '@egodb/domain',
+          '@egodb/trpc',
         ],
       }),
     ],

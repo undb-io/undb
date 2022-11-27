@@ -1,7 +1,7 @@
 import { ColumnName } from './column-name.vo'
 
 it('should create new column name value object', () => {
-  const columnName = new ColumnName('hello')
+  const columnName = ColumnName.create('hello')
   expect(columnName).toMatchInlineSnapshot(`
     ColumnName {
       "props": {
@@ -9,10 +9,11 @@ it('should create new column name value object', () => {
       },
     }
   `)
+  expect(columnName.value).toBe('hello')
 })
 
 it('should throw error if input is invlaue', () => {
-  expect(() => new ColumnName('')).toThrowErrorMatchingInlineSnapshot(`
+  expect(() => ColumnName.create('')).toThrowErrorMatchingInlineSnapshot(`
     "[
       {
         \\"code\\": \\"too_small\\",
@@ -27,7 +28,7 @@ it('should throw error if input is invlaue', () => {
 })
 
 it('should throw error if input is too long', () => {
-  expect(() => new ColumnName('thisisaverylongnameexceed20?')).toThrowErrorMatchingInlineSnapshot(`
+  expect(() => ColumnName.create('thisisaverylongnameexceed20?')).toThrowErrorMatchingInlineSnapshot(`
     "[
       {
         \\"code\\": \\"too_big\\",

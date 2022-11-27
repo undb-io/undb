@@ -4,6 +4,14 @@
     "colName": "egodb",
     "created": "2022-11-26T02:38:20.471Z",
     "sortNum": 10000,
-    "folders": []
+    "folders": [
+      {
+        "_id": "69b6aadd-5d30-481f-832b-d6fc5067434a",
+        "name": "create-and-list",
+        "containerId": "",
+        "created": "2022-11-27T05:43:28.313Z",
+        "sortNum": 10000
+      }
+    ]
   }
 ]

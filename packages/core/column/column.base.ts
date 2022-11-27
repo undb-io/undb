@@ -1,26 +1,27 @@
-import { Entity } from '@egodb/domain'
+import { ValueObject } from '@egodb/domain'
 import * as z from 'zod'
-import { columnIdSchema, columnNameSchema, valueConstraintsSchema } from './value-objects'
-import { ColumnId } from './value-objects/column-id.vo'
+import type { IColumnType } from './column.schema'
+import type { IBaseColumn } from './column.type'
+import type { ColumnName } from './value-objects'
+import { columnNameSchema, valueConstraintsSchema } from './value-objects'
 
-export const baseColumnSchema = z
+export const createBaseColumnsSchema = z
   .object({
     name: columnNameSchema,
   })
   .merge(valueConstraintsSchema)
 
-export type BaseColumnProps = z.infer<typeof baseColumnSchema>
+export type IBaseCreateColumnsSchema = z.infer<typeof createBaseColumnsSchema>
 
-export const createBaseColumnsSchema = baseColumnSchema.merge(z.object({ id: columnIdSchema.optional() }))
+export const baseColumnQuerySchema = z.object({ name: columnNameSchema }).merge(valueConstraintsSchema)
 
-export type BaseCreateColumnsSchema = z.infer<typeof createBaseColumnsSchema>
-
-export abstract class BaseColumn<CP extends BaseColumnProps = BaseColumnProps> extends Entity<ColumnId, CP> {
-  constructor(props: CP, id = new ColumnId()) {
-    super({ id, props })
+export abstract class BaseColumn<C extends IBaseColumn> extends ValueObject<C> {
+  abstract type: IColumnType
+  public get name(): ColumnName {
+    return this.props.name
   }
 
-  public get name(): string {
-    return this.props.name
+  public get required(): boolean {
+    return this.props.valueConstrains.required
   }
 }

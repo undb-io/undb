@@ -1,7 +1,7 @@
-import { ValueConstraints } from './constraints.vo'
+import { ColumnValueConstraints } from './column-value-constraints.vo'
 
 it('should create new constraints object with default required field false', () => {
-  const constraint = new ValueConstraints({})
+  const constraint = ColumnValueConstraints.create({})
 
   expect(constraint).toHaveProperty('required', false)
 })

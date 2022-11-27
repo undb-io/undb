@@ -13,7 +13,7 @@ export interface CreateEntityProps<TI extends ID, T> {
   updatedAt?: Date
 }
 
-export abstract class Entity<TI extends ID, EntityProps> {
+export abstract class Entity<TI extends ID, EntityProps = any> {
   constructor({ id, createdAt, updatedAt, props }: CreateEntityProps<TI, EntityProps>) {
     this._id = id
     const now = new Date()

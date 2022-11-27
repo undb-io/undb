@@ -9,6 +9,6 @@ export class GetTableQueryHandler implements IQueryHandler<GetTableQuery, IGetTa
   async execute(query: GetTableQuery): Promise<IGetTableOutput> {
     const table = (await this.rm.findOneById(query.id)).unwrap()
 
-    return { id: table.id, name: table.name }
+    return { id: table.id, name: table.name, columns: table.columns }
   }
 }

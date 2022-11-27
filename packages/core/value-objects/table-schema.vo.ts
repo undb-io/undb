@@ -6,15 +6,20 @@ import { ColumnFactory } from '../column/column.factory'
 
 export const createTableSchemaSchema = z.array(createColumnSchema)
 
-export type ICreateTableSchemaSchema = z.infer<typeof createTableSchemaSchema>
+export type ICreateTableSchemaInput = z.infer<typeof createTableSchemaSchema>
 
 export class TableSchema extends ValueObject<Column[]> {
   constructor(props: Column[]) {
     super(props)
   }
 
-  static create(inputs: ICreateTableSchemaSchema): TableSchema {
+  static create(inputs: ICreateTableSchemaInput): TableSchema {
     const columns = inputs.map(ColumnFactory.create)
+    return new TableSchema(columns)
+  }
+
+  static unsafeCreate(inputs: ICreateTableSchemaInput): TableSchema {
+    const columns = inputs.map(ColumnFactory.unsafeCreate)
     return new TableSchema(columns)
   }
 

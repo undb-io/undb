@@ -7,7 +7,19 @@ export class TableId extends NanoID {
   private static TABLE_ID_PREFIX = 'tbl'
   private static TABLE_ID_SIZE = 8
 
-  constructor() {
-    super(TableId.TABLE_ID_PREFIX, TableId.TABLE_ID_SIZE)
+  static create(): TableId {
+    const id = NanoID.createId(TableId.TABLE_ID_PREFIX, TableId.TABLE_ID_SIZE)
+    return new TableId(id)
+  }
+
+  static from(id: string): TableId {
+    return new TableId(id)
+  }
+
+  static fromOrCreate(id?: string): TableId {
+    if (!id) {
+      return TableId.create()
+    }
+    return new TableId(id)
   }
 }
