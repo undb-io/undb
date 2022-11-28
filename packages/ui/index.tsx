@@ -2,6 +2,7 @@ export * from './next'
 export * from './emotion'
 
 export * from './Alert'
+export * from './Accordion'
 export * from './Icon'
 export * from './Layout'
 export * from './Drawer'
