@@ -1,5 +1,5 @@
 import { initTRPC } from '@trpc/server'
-import { OpenApiMeta } from 'trpc-openapi'
+import type { OpenApiMeta } from 'trpc-openapi'
 
 const t = initTRPC.meta<OpenApiMeta>().create()
 
