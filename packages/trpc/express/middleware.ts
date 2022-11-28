@@ -1,11 +1,11 @@
-import { OpenAPIV3 } from 'openapi-types'
+import type { OpenAPIV3 } from 'openapi-types'
 
 import * as trpcExpress from '@trpc/server/adapters/express'
 import swaggerUi from 'swagger-ui-express'
 
 import { type Handler, type RequestHandler } from 'express'
 import { createOpenApiExpressMiddleware, generateOpenApiDocument } from 'trpc-openapi'
-import { AppRouter } from '../router/router'
+import type { AppRouter } from '../router/router'
 
 const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) => ({}) // no context
 

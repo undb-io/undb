@@ -5,6 +5,7 @@ import { CqrsModule } from '@nestjs/cqrs'
 import { providers } from './providers'
 import { TrpcOpenApiMiddleware } from './trpc-open-api.middleware'
 import { TrpcSwaggerUISetupMiddleware } from './trpc-swagger-ui-setup.middleware'
+import { TRPC_API_DOCS_ENDPOINT, TRPC_ENDPOINT, TRPC_OPEN_API_ENDPOINT } from './trpc.constants'
 import { TrpcMiddleware } from './trpc.middleware'
 
 @Module({
@@ -12,27 +13,23 @@ import { TrpcMiddleware } from './trpc.middleware'
   providers,
 })
 export class TrpcModule implements NestModule {
-  static TRPC_ENDPOINT = '/api/trpc'
-  static TRPC_OPEN_API_ENDPOINT = '/api'
-  static TRPC_API_DOCS_ENDPOINT = '/api-docs'
-
   static logger = new Logger(TrpcModule.name)
 
   configure(consumer: MiddlewareConsumer) {
     {
-      consumer.apply(TrpcMiddleware).forRoutes(TrpcModule.TRPC_ENDPOINT)
-      TrpcModule.logger.debug('Mounting Trpc middleware to ' + TrpcModule.TRPC_ENDPOINT)
+      consumer.apply(TrpcMiddleware).forRoutes(TRPC_ENDPOINT)
+      TrpcModule.logger.log('Mounting Trpc middleware to ' + TRPC_ENDPOINT)
     }
     {
-      consumer.apply(TrpcOpenApiMiddleware).forRoutes(TrpcModule.TRPC_OPEN_API_ENDPOINT)
-      TrpcModule.logger.debug('Mounting TrpcOpenApi middleware to ' + TrpcModule.TRPC_OPEN_API_ENDPOINT)
+      consumer.apply(TrpcOpenApiMiddleware).forRoutes(TRPC_OPEN_API_ENDPOINT)
+      TrpcModule.logger.log('Mounting TrpcOpenApi middleware to ' + TRPC_OPEN_API_ENDPOINT)
     }
     {
-      consumer.apply(...swaggerServe).forRoutes(TrpcModule.TRPC_API_DOCS_ENDPOINT)
+      consumer.apply(...swaggerServe).forRoutes(TRPC_API_DOCS_ENDPOINT)
       consumer
         .apply(TrpcSwaggerUISetupMiddleware)
-        .forRoutes({ path: TrpcModule.TRPC_API_DOCS_ENDPOINT, method: RequestMethod.GET })
-      TrpcModule.logger.debug('Mounting TrpcSwaggerUI middleware to ' + TrpcModule.TRPC_API_DOCS_ENDPOINT)
+        .forRoutes({ path: TRPC_API_DOCS_ENDPOINT, method: RequestMethod.GET })
+      TrpcModule.logger.log('Mounting TrpcSwaggerUI middleware to ' + TRPC_API_DOCS_ENDPOINT)
     }
   }
 }
