@@ -1,1 +1,1 @@
-export { TextInput } from '@mantine/core'
+export { TextInput, Select } from '@mantine/core'

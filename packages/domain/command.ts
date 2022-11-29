@@ -7,7 +7,7 @@ export class Command {
    * Command id, in case if we want to save it
    * for auditing purposes and create a correlation/causation chain
    */
-  public readonly id: string
+  public readonly commandId: string
 
   /** ID for correlation purposes (for commands that
    *  arrive from other microservices,logs correlation, etc). */
@@ -20,6 +20,6 @@ export class Command {
 
   constructor(props: CommandProps<unknown>) {
     this.correlationId = props.correlationId ?? v4()
-    this.id = props.id ?? v4()
+    this.commandId = props.commandId ?? v4()
   }
 }

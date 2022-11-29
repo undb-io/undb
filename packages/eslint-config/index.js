@@ -11,5 +11,6 @@ module.exports = {
   rules: {
     "react/jsx-key": "off",
     "@typescript-eslint/consistent-type-imports": "warn",
+    "@typescript-eslint/prefer-optional-chain": "warn",
   },
 };
