@@ -1,14 +1,15 @@
 import { Alert, Button, Divider, Group, IconAlertCircle, Space, TextInput } from '@egodb/ui'
 import { trpc } from '../../trpc'
-import { CreateTableAddColumnButton } from './create-table-add-column-button'
+import { CreateTableAddColumnButton } from './create-table-add-field-button'
 import { useCreateTableFormContext } from './create-table-form-context'
 import { CreateTableFormSchema } from './create-table-form-schema'
 
 interface IProps {
   onCancel: () => void
+  onSuccess?: () => void
 }
 
-export const CreateTableForm: React.FC<IProps> = ({ onCancel: onClose }) => {
+export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
   const form = useCreateTableFormContext()
   const utils = trpc.useContext()
 
@@ -16,6 +17,7 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel: onClose }) => {
     onSuccess: () => {
       reset()
       utils.table.list.refetch()
+      onSuccess?.()
     },
   })
 
@@ -24,7 +26,7 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel: onClose }) => {
   })
 
   const reset = () => {
-    onClose()
+    onCancel()
     createTable.reset()
     form.reset()
     form.resetDirty()
@@ -46,7 +48,7 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel: onClose }) => {
       <Divider my="lg" />
 
       <Group position="right">
-        <Button color="dark" variant="subtle" onClick={() => onClose()}>
+        <Button color="dark" variant="subtle" onClick={() => onCancel()}>
           Cancel
         </Button>
         <Button loading={createTable.isLoading} miw={200} color="dark" disabled={!form.isValid()} type="submit">
