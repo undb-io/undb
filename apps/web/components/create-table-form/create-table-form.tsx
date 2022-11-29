@@ -1,4 +1,4 @@
-import { Alert, Button, Divider, Group, IconAlertCircle, Space, TextInput } from '@egodb/ui'
+import { Alert, Button, Divider, Group, IconAlertCircle, Text, Space, TextInput } from '@egodb/ui'
 import { trpc } from '../../trpc'
 import { CreateTableAddColumnButton } from './create-table-add-field-button'
 import { useCreateTableFormContext } from './create-table-form-context'
@@ -35,7 +35,16 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
 
   return (
     <form onSubmit={onSubmit}>
-      <TextInput error={form.errors['name']} label="Name" {...form.getInputProps('name')} required={true} />
+      <TextInput
+        error={form.errors['name']}
+        label={
+          <Text size={14} fw={700} tt="uppercase" display="inline-block">
+            name
+          </Text>
+        }
+        {...form.getInputProps('name')}
+        required={true}
+      />
 
       <Space h="md" />
 
