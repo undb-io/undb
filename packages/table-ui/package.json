@@ -1,0 +1,22 @@
+{
+  "name": "@egodb/table-ui",
+  "version": "0.0.0",
+  "main": "./index.tsx",
+  "scripts": {
+    "lint": "eslint *.ts*"
+  },
+  "types": "./index.tsx",
+  "dependencies": {
+    "@egodb/ui": "workspace:^0.0.0",
+    "@tanstack/react-table": "^8.7.0"
+  },
+  "devDependencies": {
+    "@egodb/eslint-config": "^0.0.0",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.9",
+    "eslint": "^8.28.0",
+    "react": "^18.2.0",
+    "tsconfig": "^0.0.0",
+    "typescript": "^4.9.3"
+  }
+}

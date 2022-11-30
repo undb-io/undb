@@ -112,6 +112,7 @@ importers:
       '@dnd-kit/utilities': ^3.2.0
       '@egodb/core': ^0.0.0
       '@egodb/eslint-config': ^0.0.0
+      '@egodb/table-ui': workspace:^0.0.0
       '@egodb/trpc': ^0.0.0
       '@egodb/ui': ^0.0.0
       '@tanstack/react-query': ^4.16.1
@@ -136,6 +137,7 @@ importers:
       '@dnd-kit/sortable': 7.0.1_vvd3dzag27tc7rclyb2whqqnpe
       '@dnd-kit/utilities': 3.2.0_react@18.2.0
       '@egodb/core': link:../../packages/core
+      '@egodb/table-ui': link:../../packages/table-ui
       '@egodb/trpc': link:../../packages/trpc
       '@egodb/ui': link:../../packages/ui
       '@tanstack/react-query': 4.16.1_biqbaboplfbrettd7655fr4n2y
@@ -223,6 +225,29 @@ importers:
     devDependencies:
       '@typescript-eslint/eslint-plugin': 5.44.0_fnsv2sbzcckq65bwfk7a5xwslu
       '@typescript-eslint/parser': 5.44.0_hsf322ms6xhhd4b5ne6lb74y4a
+      typescript: 4.9.3
+
+  packages/table-ui:
+    specifiers:
+      '@egodb/eslint-config': ^0.0.0
+      '@egodb/ui': workspace:^0.0.0
+      '@tanstack/react-table': ^8.7.0
+      '@types/react': ^18.0.25
+      '@types/react-dom': ^18.0.9
+      eslint: ^8.28.0
+      react: ^18.2.0
+      tsconfig: ^0.0.0
+      typescript: ^4.9.3
+    dependencies:
+      '@egodb/ui': link:../ui
+      '@tanstack/react-table': 8.7.0_react@18.2.0
+    devDependencies:
+      '@egodb/eslint-config': link:../eslint-config
+      '@types/react': 18.0.25
+      '@types/react-dom': 18.0.9
+      eslint: 8.28.0
+      react: 18.2.0
+      tsconfig: link:../tsconfig
       typescript: 4.9.3
 
   packages/trpc:
@@ -2178,6 +2203,22 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       use-sync-external-store: 1.2.0_react@18.2.0
+    dev: false
+
+  /@tanstack/react-table/8.7.0_react@18.2.0:
+    resolution: {integrity: sha512-VJ+9rsymDLaSU35rWOfX0bwNXnpW1i+T14wi+sHx8lxwAsfg6IY1Yw7FPfGADvUFP5eQn2t4nlohAJd+IoEj/Q==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      '@tanstack/table-core': 8.7.0
+      react: 18.2.0
+    dev: false
+
+  /@tanstack/table-core/8.7.0:
+    resolution: {integrity: sha512-DRiRbOAmDHapzUBd4/C4Yy+FTug4fdGp5sdZWWfCq4wxRoaXQraQgbzmK23a3QcbwLFtLeNezPkZrqbJWuX+VA==}
+    engines: {node: '>=12'}
     dev: false
 
   /@trpc/client/10.1.0_@trpc+server@10.1.0:
