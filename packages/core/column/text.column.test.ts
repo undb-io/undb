@@ -4,10 +4,12 @@ it('should create new text column', () => {
   const column = TextColumn.create({
     name: 'hello',
     type: 'text',
+    id: 'abc',
   })
 
   expect(column.unpack()).toMatchInlineSnapshot(`
     {
+      "id": "abc",
       "name": "hello",
       "valueConstrains": {
         "required": undefined,
@@ -23,6 +25,7 @@ it('should throw error if name is invalid', () => {
     TextColumn.create({
       name: 'h',
       type: 'text',
+      id: 'abc',
     })
 
   expect(createColumn).toThrowErrorMatchingInlineSnapshot(`

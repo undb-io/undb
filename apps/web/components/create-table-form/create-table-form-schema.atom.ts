@@ -1,3 +1,3 @@
-import { atom } from 'jotai'
+import { atomWithReset } from 'jotai/utils'
 
-export const fieldValueAtom = atom<string | null>(null)
+export const activeFieldAtom = atomWithReset<string | null>(null)

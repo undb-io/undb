@@ -8,6 +8,7 @@ it('should create text column', () => {
   const column = ColumnFactory.create({
     type: 'text',
     name: 'hello',
+    id: 'abc',
   })
 
   expectTypeOf(column).toEqualTypeOf<Column>()
@@ -21,6 +22,7 @@ it('should create number column', () => {
   const column = ColumnFactory.create({
     type: 'number',
     name: 'hello',
+    id: 'abc',
   })
 
   expectTypeOf(column).toEqualTypeOf<Column>()
