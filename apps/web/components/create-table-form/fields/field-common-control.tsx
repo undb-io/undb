@@ -1,7 +1,7 @@
 import { ActionIcon, Text, Button, Group, IconDots, Menu } from '@egodb/ui'
-import { useAtom } from 'jotai'
+import { useResetAtom } from 'jotai/utils'
 import { useCreateTableFormContext } from '../create-table-form-context'
-import { fieldValueAtom } from '../create-table-form-schema.atom'
+import { activeFieldAtom } from '../create-table-form-schema.atom'
 
 interface IProps {
   index: number
@@ -10,7 +10,7 @@ interface IProps {
 export const FieldCommonControl: React.FC<IProps> = ({ index }) => {
   const form = useCreateTableFormContext()
 
-  const [, setOpened] = useAtom(fieldValueAtom)
+  const resetActiveField = useResetAtom(activeFieldAtom)
   return (
     <Group position="right">
       <Menu>
@@ -26,7 +26,7 @@ export const FieldCommonControl: React.FC<IProps> = ({ index }) => {
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
-      <Button size="xs" variant="outline" color="dark" onClick={() => setOpened(null)}>
+      <Button size="xs" variant="outline" color="dark" onClick={resetActiveField}>
         Done
       </Button>
     </Group>

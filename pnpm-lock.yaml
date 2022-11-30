@@ -114,7 +114,6 @@ importers:
       '@egodb/eslint-config': ^0.0.0
       '@egodb/trpc': ^0.0.0
       '@egodb/ui': ^0.0.0
-      '@formkit/auto-animate': 1.0.0-beta.5
       '@tanstack/react-query': ^4.16.1
       '@tanstack/react-query-devtools': ^4.18.0
       '@trpc/client': ^10.1.0
@@ -139,7 +138,6 @@ importers:
       '@egodb/core': link:../../packages/core
       '@egodb/trpc': link:../../packages/trpc
       '@egodb/ui': link:../../packages/ui
-      '@formkit/auto-animate': 1.0.0-beta.5
       '@tanstack/react-query': 4.16.1_biqbaboplfbrettd7655fr4n2y
       '@tanstack/react-query-devtools': 4.18.0_makdk7ivkz7rbnnozofqroz2qy
       '@trpc/client': 10.1.0_@trpc+server@10.1.0
@@ -1174,10 +1172,6 @@ packages:
       '@floating-ui/dom': 1.0.6
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-    dev: false
-
-  /@formkit/auto-animate/1.0.0-beta.5:
-    resolution: {integrity: sha512-WoSwyhAZPOe6RB/IgicOtCHtrWwEpfKIZ/H/nxpKfnZL9CB6hhhBGU5bCdMRw7YpAUF2CDlQa+WWh+gCqz5lDg==}
     dev: false
 
   /@humanwhocodes/config-array/0.11.7:
