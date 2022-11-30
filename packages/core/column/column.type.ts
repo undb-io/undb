@@ -1,6 +1,7 @@
-import type { ColumnName, ColumnValueConstraints } from './value-objects'
+import type { ColumnId, ColumnName, ColumnValueConstraints } from './value-objects'
 
 export interface IBaseColumn {
+  id: ColumnId
   name: ColumnName
   valueConstrains: ColumnValueConstraints
 }

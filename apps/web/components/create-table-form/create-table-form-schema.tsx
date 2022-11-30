@@ -1,6 +1,5 @@
-import { useRef, useEffect, useState } from 'react'
-import { Accordion, Box, usePrevious } from '@egodb/ui'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { useEffect, useState } from 'react'
+import { Accordion, usePrevious } from '@egodb/ui'
 import { FieldAccordionItem } from './fields/field-accordion-item'
 import { useCreateTableFormContext } from './create-table-form-context'
 import { useAtom } from 'jotai'

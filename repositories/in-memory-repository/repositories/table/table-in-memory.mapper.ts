@@ -18,6 +18,7 @@ export class TableInMemoryMapper {
       id: t.id.value,
       name: t.name.value,
       columns: t.schema.columns.map((c) => ({
+        id: c.id.value,
         name: c.name.value,
         type: c.type,
         required: c.required,

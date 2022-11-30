@@ -14,4 +14,8 @@ export class ColumnId extends NanoID {
     const id = NanoID.createId(ColumnId.COLUMN_ID_PREFIX, this.COLUMN_ID_SIZE)
     return new this(columnIdSchema.parse(id))
   }
+
+  static from(id: string): ColumnId {
+    return new this(id)
+  }
 }

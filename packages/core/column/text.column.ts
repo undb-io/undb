@@ -1,7 +1,7 @@
 import * as z from 'zod'
 import { BaseColumn, baseColumnQuerySchema, createBaseColumnsSchema } from './column.base'
 import type { ITextColumn } from './column.type'
-import { ColumnName, ColumnValueConstraints } from './value-objects'
+import { ColumnId, ColumnName, ColumnValueConstraints } from './value-objects'
 
 export const textTypeSchema = z.literal('text')
 export type TextColumnType = z.infer<typeof textTypeSchema>
@@ -23,6 +23,7 @@ export class TextColumn extends BaseColumn<ITextColumn> {
 
   static create(input: ICreateTextColumnInput): TextColumn {
     return new TextColumn({
+      id: ColumnId.from(input.id),
       name: ColumnName.create(input.name),
       valueConstrains: ColumnValueConstraints.create({ required: input.required }),
     })
@@ -30,6 +31,7 @@ export class TextColumn extends BaseColumn<ITextColumn> {
 
   static unsafeCreate(input: ICreateTextColumnInput): TextColumn {
     return new TextColumn({
+      id: ColumnId.from(input.id),
       name: ColumnName.unsafaCreate(input.name),
       valueConstrains: ColumnValueConstraints.unsafeCreate({ required: input.required }),
     })
