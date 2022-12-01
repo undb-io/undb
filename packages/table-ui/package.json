@@ -7,8 +7,8 @@
   },
   "types": "./index.tsx",
   "dependencies": {
-    "@egodb/ui": "workspace:^0.0.0",
-    "@egodb/core": "workspace:^0.0.0",
+    "@egodb/ui": "^0.0.0",
+    "@egodb/core": "^0.0.0",
     "@tanstack/react-table": "^8.7.0"
   },
   "devDependencies": {
