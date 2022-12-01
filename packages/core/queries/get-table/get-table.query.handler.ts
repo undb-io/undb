@@ -7,8 +7,8 @@ export class GetTableQueryHandler implements IQueryHandler<GetTableQuery, IGetTa
   constructor(protected readonly rm: ITableQueryModel) {}
 
   async execute(query: GetTableQuery): Promise<IGetTableOutput> {
-    const table = (await this.rm.findOneById(query.id)).unwrap()
+    const table = (await this.rm.findOneById(query.id)).into(undefined)
 
-    return { id: table.id, name: table.name, columns: table.columns }
+    return table && { id: table.id, name: table.name, columns: table.columns }
   }
 }

@@ -229,6 +229,7 @@ importers:
 
   packages/table-ui:
     specifiers:
+      '@egodb/core': workspace:^0.0.0
       '@egodb/eslint-config': ^0.0.0
       '@egodb/ui': workspace:^0.0.0
       '@tanstack/react-table': ^8.7.0
@@ -239,6 +240,7 @@ importers:
       tsconfig: ^0.0.0
       typescript: ^4.9.3
     dependencies:
+      '@egodb/core': link:../core
       '@egodb/ui': link:../ui
       '@tanstack/react-table': 8.7.0_react@18.2.0
     devDependencies:

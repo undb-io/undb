@@ -1,4 +1,4 @@
-import { Navbar, Box, Skeleton, NavLink, Center, Button, IconPlus } from '@egodb/ui'
+import { Navbar, Box, Skeleton, NavLink, Center, Button, IconPlus, ScrollArea } from '@egodb/ui'
 import { useAtom } from 'jotai'
 import { trpc } from '../../trpc'
 import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.atom'
@@ -8,8 +8,8 @@ export const TableNavList: React.FC = () => {
   const getTables = trpc.table.list.useQuery({})
 
   return (
-    <Navbar width={{ base: 250 }} p="xl">
-      <Navbar.Section grow>
+    <Navbar w={300} p="xl">
+      <Navbar.Section grow component={ScrollArea}>
         <Box>
           {getTables.isLoading && (
             <>

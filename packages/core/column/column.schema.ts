@@ -7,6 +7,7 @@ export const createColumnSchema = z.discriminatedUnion('type', [createTextColumn
 export type ICreateColumnSchema = z.infer<typeof createColumnSchema>
 
 export const queryColumnSchema = z.discriminatedUnion('type', [textColumnQuerySchema, numberColumnQuerySchema])
+export type IQueryColumnSchema = z.infer<typeof queryColumnSchema>
 export const queryColumnsSchema = z.array(queryColumnSchema)
 export type IQueryColumnsSchema = z.infer<typeof queryColumnsSchema>
 

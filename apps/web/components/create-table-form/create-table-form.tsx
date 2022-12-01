@@ -1,4 +1,5 @@
 import { Alert, Button, Divider, Group, IconAlertCircle, Text, Space, TextInput } from '@egodb/ui'
+import { useRouter } from 'next/navigation'
 import { trpc } from '../../trpc'
 import { CreateTableAddColumnButton } from './create-table-add-field-button'
 import { useCreateTableFormContext } from './create-table-form-context'
@@ -12,11 +13,13 @@ interface IProps {
 export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
   const form = useCreateTableFormContext()
   const utils = trpc.useContext()
+  const router = useRouter()
 
   const createTable = trpc.table.create.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
       reset()
       utils.table.list.refetch()
+      router.push(`table/${data.id}`)
       onSuccess?.()
     },
   })

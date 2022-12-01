@@ -12,5 +12,7 @@ export class CreateTableCommandHandler implements ICreateTableCommandHandler {
   async execute(command: CreateTableCommand): Promise<ICreateTableOutput> {
     const table = Table.create(command)
     await this.repo.insert(table)
+
+    return { id: table.id.value }
   }
 }
