@@ -1,3 +1,4 @@
+import type { QueryTable } from '@egodb/core'
 import { Table } from '@egodb/core'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
@@ -11,6 +12,18 @@ export class TableInMemoryMapper {
       schema: t.columns,
     })
     return Ok(table)
+  }
+
+  static toQueryModel(t: Table): QueryTable {
+    return {
+      id: t.id.value,
+      name: t.name.value,
+      columns: t.schema.columns.map((c) => ({
+        id: c.id.value,
+        name: c.name.value,
+        type: c.type,
+      })),
+    }
   }
 
   static toInMemory(t: Table): TableInMemory {

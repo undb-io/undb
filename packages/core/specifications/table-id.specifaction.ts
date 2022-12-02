@@ -2,7 +2,7 @@ import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { Table } from '../table'
-import type { TableId } from '../value-objects'
+import { TableId } from '../value-objects'
 import type { ITableSpecVisitor } from './interface'
 
 export class WithTableId extends CompositeSpecification {
@@ -24,3 +24,5 @@ export class WithTableId extends CompositeSpecification {
     return Ok(undefined)
   }
 }
+
+export const WithTableIdS = (id: string) => new WithTableId(TableId.from(id))
