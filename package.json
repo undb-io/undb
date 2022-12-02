@@ -9,7 +9,8 @@
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^8.0.2",
     "prettier": "^2.8.0",
-    "syncpack": "^8.3.9",
+    "syncpack": "^8.4.11",
+    "taze": "^0.8.4",
     "turbo": "^1.6.3"
   },
   "engines": {
@@ -32,7 +33,7 @@
     "syncpack:fix": "syncpack fix-mismatches",
     "test": "FORCE_COLOR=1 turbo run test",
     "test:watch": "FORCE_COLOR=1 turbo run test:watch",
-    "up": "pnpm up -r --workspace"
+    "up": "taze -r -w -i"
   },
   "workspaces": [
     "apps/*",
