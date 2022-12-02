@@ -1,7 +1,8 @@
 'use client'
-import { Aside, Box } from '@egodb/ui'
+import { AppShell } from '@egodb/ui'
 import { CreateTableFormDrawer } from '../components/create-table-form'
 import { TableNavList } from '../components/tables-list-nav/table-list-nav'
+import { AtomsDevtools } from './atom-devtool'
 import RootStyleRegistry from './emotion'
 import Trpc from './trpc'
 
@@ -10,15 +11,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="zh-CH">
       <head />
       <body>
-        <RootStyleRegistry>
-          <Trpc>
-            <Box display="flex">
-              <TableNavList />
-              <Aside>{children}</Aside>
-            </Box>
-            <CreateTableFormDrawer />
-          </Trpc>
-        </RootStyleRegistry>
+        <AtomsDevtools>
+          <RootStyleRegistry>
+            <Trpc>
+              <AppShell padding="md" navbar={<TableNavList />}>
+                {children}
+                <CreateTableFormDrawer />
+              </AppShell>
+            </Trpc>
+          </RootStyleRegistry>
+        </AtomsDevtools>
       </body>
     </html>
   )

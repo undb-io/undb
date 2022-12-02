@@ -1,5 +1,6 @@
 import { Navbar, Box, Skeleton, NavLink, Center, Button, IconPlus, ScrollArea } from '@egodb/ui'
 import { useAtom } from 'jotai'
+import Link from 'next/link'
 import { trpc } from '../../trpc'
 import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.atom'
 
@@ -8,7 +9,7 @@ export const TableNavList: React.FC = () => {
   const getTables = trpc.table.list.useQuery({})
 
   return (
-    <Navbar w={300} p="xl">
+    <Navbar width={{ base: 300 }} p="sm">
       <Navbar.Section grow component={ScrollArea}>
         <Box>
           {getTables.isLoading && (
@@ -19,7 +20,9 @@ export const TableNavList: React.FC = () => {
             </>
           )}
           {getTables.data?.map((table) => (
-            <NavLink key={table.id} label={table.name} />
+            <Link href={`/table/${table.id}`}>
+              <NavLink key={table.id} label={table.name} />
+            </Link>
           ))}
         </Box>
         <Center mt="md">
