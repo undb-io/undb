@@ -43,6 +43,7 @@ export const CreateTableFormDrawer: React.FC = () => {
   return (
     <CreateTableFormProvider form={form}>
       <Drawer
+        target="body"
         opened={opened}
         onClose={() => {
           if (form.isDirty()) {

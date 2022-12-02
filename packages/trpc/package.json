@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "dependencies": {
     "@egodb/core": "^0.0.0",
-    "@trpc/server": "^10.1.0",
+    "@trpc/server": "^10.4.2",
     "swagger-ui-express": "^4.6.0",
-    "trpc-openapi": "^1.0.0-alpha.4",
+    "trpc-openapi": "^1.0.0",
     "zod": "^3.19.1"
   },
   "devDependencies": {
