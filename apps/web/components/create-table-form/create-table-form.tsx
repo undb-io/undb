@@ -1,7 +1,7 @@
 import { Alert, Button, Divider, Group, IconAlertCircle, Text, Space, TextInput } from '@egodb/ui'
 import { useRouter } from 'next/navigation'
 import { trpc } from '../../trpc'
-import { CreateTableAddColumnButton } from './create-table-add-field-button'
+import { CreateTableAddFieldButton } from './create-table-add-field-button'
 import { useCreateTableFormContext } from './create-table-form-context'
 import { CreateTableFormSchema } from './create-table-form-schema'
 
@@ -55,7 +55,7 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
 
       <Space h="md" />
 
-      <CreateTableAddColumnButton />
+      <CreateTableAddFieldButton />
 
       <Divider my="lg" />
 

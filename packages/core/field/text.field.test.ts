@@ -1,13 +1,13 @@
-import { TextColumn } from './text.column'
+import { TextField } from './text.field'
 
-it('should create new text column', () => {
-  const column = TextColumn.create({
+it('should create new text field', () => {
+  const field = TextField.create({
     name: 'hello',
     type: 'text',
     id: 'abc',
   })
 
-  expect(column.unpack()).toMatchInlineSnapshot(`
+  expect(field.unpack()).toMatchInlineSnapshot(`
     {
       "id": "abc",
       "name": "hello",
@@ -17,18 +17,18 @@ it('should create new text column', () => {
     }
   `)
 
-  expect(column.type).toBe('text')
+  expect(field.type).toBe('text')
 })
 
 it('should throw error if name is invalid', () => {
-  const createColumn = () =>
-    TextColumn.create({
+  const createField = () =>
+    TextField.create({
       name: 'h',
       type: 'text',
       id: 'abc',
     })
 
-  expect(createColumn).toThrowErrorMatchingInlineSnapshot(`
+  expect(createField).toThrowErrorMatchingInlineSnapshot(`
     "[
       {
         \\"code\\": \\"too_small\\",

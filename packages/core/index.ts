@@ -1,5 +1,5 @@
-export * from './column'
 export * from './commands'
+export * from './field'
 export * from './queries'
 export * from './query-model'
 export * from './query-table.schema'

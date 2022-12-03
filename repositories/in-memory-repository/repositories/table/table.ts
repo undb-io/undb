@@ -1,19 +1,19 @@
-type NumberColumnInMemory = {
+type NumberFieldInMemory = {
   id: string
   type: 'text'
   name: string
 }
 
-type TextColumnInMemory = {
+type TextFieldInMemory = {
   id: string
   type: 'number'
   name: string
 }
 
-type ColumnInMemory = TextColumnInMemory | NumberColumnInMemory
+type FieldInMemory = TextFieldInMemory | NumberFieldInMemory
 
 export type TableInMemory = {
   id: string
   name: string
-  columns: ColumnInMemory[]
+  schema: FieldInMemory[]
 }

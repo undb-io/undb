@@ -1,8 +1,8 @@
 import { Button, IconPlus } from '@egodb/ui'
-import { ColumnId } from '@egodb/core'
+import { FieldId } from '@egodb/core'
 import { useCreateTableFormContext } from './create-table-form-context'
 
-export const CreateTableAddColumnButton: React.FC = () => {
+export const CreateTableAddFieldButton: React.FC = () => {
   const form = useCreateTableFormContext()
   const len = form.values.schema.length
   const hasSchema = len > 0
@@ -10,7 +10,7 @@ export const CreateTableAddColumnButton: React.FC = () => {
   return (
     <Button
       onClick={() => {
-        const id = ColumnId.create().value
+        const id = FieldId.create().value
         form.insertListItem('schema', { id, type: 'text', name: '' })
       }}
       fullWidth
@@ -18,7 +18,7 @@ export const CreateTableAddColumnButton: React.FC = () => {
       variant={hasSchema ? 'white' : 'light'}
       leftIcon={<IconPlus />}
     >
-      Add New Column
+      Add New Field
     </Button>
   )
 }

@@ -7,16 +7,16 @@ export const valueConstraintsSchema = z.object({
 
 export type IValueConstraint = z.infer<typeof valueConstraintsSchema>
 
-export class ColumnValueConstraints extends ValueObject<IValueConstraint> {
+export class FieldValueConstraints extends ValueObject<IValueConstraint> {
   private constructor(props: IValueConstraint) {
     super(props)
   }
 
-  static create(value: IValueConstraint): ColumnValueConstraints {
+  static create(value: IValueConstraint): FieldValueConstraints {
     return new this(valueConstraintsSchema.parse(value))
   }
 
-  static unsafeCreate(value: IValueConstraint): ColumnValueConstraints {
+  static unsafeCreate(value: IValueConstraint): FieldValueConstraints {
     return new this(value)
   }
 

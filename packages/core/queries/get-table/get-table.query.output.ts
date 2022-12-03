@@ -1,10 +1,10 @@
 import * as z from 'zod'
-import { queryColumnsSchema } from '../../column'
+import { querySchemaSchema } from '../../field'
 
 export const getTableQueryOutput = z
   .object({
     id: z.string(),
     name: z.string(),
-    columns: queryColumnsSchema,
+    schema: querySchemaSchema,
   })
   .optional()

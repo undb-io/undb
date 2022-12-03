@@ -1,19 +1,19 @@
-import type { IGetTableOutput } from '@egodb/core'
+import type { NonNullableGetTableOutput } from '@egodb/core'
 import { Table, Text, UnstyledButton } from '@egodb/ui'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 
 interface IProps {
-  table: NonNullable<IGetTableOutput>
+  table: NonNullableGetTableOutput
 }
 
 export const EGOTable: React.FC<IProps> = ({ table }) => {
   // TODO: helper types should infered by type
-  const columnHelper = createColumnHelper<Record<string, string | number>>()
-  const columns = table.columns.map((c) => columnHelper.accessor(c.name, { id: c.id }))
+  const fieldHelper = createColumnHelper<Record<string, string | number>>()
+  const fields = table.schema.map((c) => fieldHelper.accessor(c.name, { id: c.id }))
 
   const rt = useReactTable({
     data: [],
-    columns,
+    columns: fields,
     getCoreRowModel: getCoreRowModel(),
   })
 
@@ -46,7 +46,7 @@ export const EGOTable: React.FC<IProps> = ({ table }) => {
           {rt.getRowModel().rows.map((row) => (
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                <td key={cell.id}>{flexRender(cell.field.fieldDef.cell, cell.getContext())}</td>
               ))}
             </tr>
           ))}
@@ -56,7 +56,7 @@ export const EGOTable: React.FC<IProps> = ({ table }) => {
             <tr key={footerGroup.id}>
               {footerGroup.headers.map((header) => (
                 <th key={header.id}>
-                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.footer, header.getContext())}
+                  {header.isPlaceholder ? null : flexRender(header.field.fieldDef.footer, header.getContext())}
                 </th>
               ))}
             </tr>
