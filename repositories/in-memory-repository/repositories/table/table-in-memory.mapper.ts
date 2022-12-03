@@ -9,7 +9,7 @@ export class TableInMemoryMapper {
     const table = Table.unsafeCreate({
       id: t.id,
       name: t.name,
-      schema: t.columns,
+      schema: t.schema,
     })
     return Ok(table)
   }
@@ -18,7 +18,7 @@ export class TableInMemoryMapper {
     return {
       id: t.id.value,
       name: t.name.value,
-      columns: t.schema.columns.map((c) => ({
+      schema: t.schema.fields.map((c) => ({
         id: c.id.value,
         name: c.name.value,
         type: c.type,
@@ -30,7 +30,7 @@ export class TableInMemoryMapper {
     return {
       id: t.id.value,
       name: t.name.value,
-      columns: t.schema.columns.map((c) => ({
+      schema: t.schema.fields.map((c) => ({
         id: c.id.value,
         name: c.name.value,
         type: c.type,

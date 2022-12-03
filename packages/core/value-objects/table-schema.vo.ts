@@ -1,31 +1,34 @@
 import { ValueObject } from '@egodb/domain'
 import * as z from 'zod'
-import type { Column } from '../column'
-import { createColumnSchema } from '../column'
-import { ColumnFactory } from '../column/column.factory'
+import type { Field } from '../field'
+import { createFieldSchema } from '../field'
+import { FieldFactory } from '../field/field.factory'
 
 export const createTableSchemaSchema = z
-  .array(createColumnSchema)
+  .array(createFieldSchema)
   .min(1, { message: 'create table required at least one schema field' })
 
 export type ICreateTableSchemaInput = z.infer<typeof createTableSchemaSchema>
 
-export class TableSchema extends ValueObject<Column[]> {
-  constructor(props: Column[]) {
+/**
+ * Table Schema is a collection of fields
+ */
+export class TableSchema extends ValueObject<Field[]> {
+  constructor(props: Field[]) {
     super(props)
   }
 
   static create(inputs: ICreateTableSchemaInput): TableSchema {
-    const columns = inputs.map(ColumnFactory.create)
-    return new TableSchema(columns)
+    const fields = inputs.map(FieldFactory.create)
+    return new TableSchema(fields)
   }
 
   static unsafeCreate(inputs: ICreateTableSchemaInput): TableSchema {
-    const columns = inputs.map(ColumnFactory.unsafeCreate)
-    return new TableSchema(columns)
+    const fields = inputs.map(FieldFactory.unsafeCreate)
+    return new TableSchema(fields)
   }
 
-  public get columns(): Column[] {
+  public get fields(): Field[] {
     return this.props
   }
 }

@@ -1,19 +1,19 @@
-import { ColumnName } from './column-name.vo'
+import { FieldName } from './field-name.vo'
 
-it('should create new column name value object', () => {
-  const columnName = ColumnName.create('hello')
-  expect(columnName).toMatchInlineSnapshot(`
-    ColumnName {
+it('should create new field name value object', () => {
+  const fieldName = FieldName.create('hello')
+  expect(fieldName).toMatchInlineSnapshot(`
+    FieldName {
       "props": {
         "value": "hello",
       },
     }
   `)
-  expect(columnName.value).toBe('hello')
+  expect(fieldName.value).toBe('hello')
 })
 
 it('should throw error if input is invlaue', () => {
-  expect(() => ColumnName.create('')).toThrowErrorMatchingInlineSnapshot(`
+  expect(() => FieldName.create('')).toThrowErrorMatchingInlineSnapshot(`
     "[
       {
         \\"code\\": \\"too_small\\",
@@ -28,7 +28,7 @@ it('should throw error if input is invlaue', () => {
 })
 
 it('should throw error if input is too long', () => {
-  expect(() => ColumnName.create('thisisaverylongnameexceed20?')).toThrowErrorMatchingInlineSnapshot(`
+  expect(() => FieldName.create('thisisaverylongnameexceed20?')).toThrowErrorMatchingInlineSnapshot(`
     "[
       {
         \\"code\\": \\"too_big\\",

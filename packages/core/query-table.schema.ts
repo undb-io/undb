@@ -1,7 +1,7 @@
-import type { IQueryColumnsSchema } from './column'
+import type { IQuerySchemaSchema } from './field'
 
 export interface QueryTable {
   id: string
   name: string
-  columns: IQueryColumnsSchema
+  schema: IQuerySchemaSchema
 }
