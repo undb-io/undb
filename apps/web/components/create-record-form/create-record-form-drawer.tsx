@@ -27,7 +27,7 @@ export const CreateRecordFormDrawer: React.FC<IProps> = ({ table }) => {
   const form = useCreateRecord({
     initialValues: {
       tableId: table.id,
-      value: {},
+      value: [],
     },
     validate: zodResolver(createRecordCommandInput),
   })

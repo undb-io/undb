@@ -1,4 +1,4 @@
-import { entries, filter, map, pipe, toArray } from '@fxts/core'
+import { filter, map, pipe, toArray } from '@fxts/core'
 import type { ICreateRecordInput, ICreateTableInput } from './commands'
 import type { ICreateFieldsSchema_internal, ICreateFieldValueSchema_internal } from './field'
 import { createFieldValueSchema_internal } from './field'
@@ -32,8 +32,7 @@ export class Table {
   public createRecord(input: ICreateRecordInput): Record {
     const inputs: ICreateFieldsSchema_internal = pipe(
       input.value,
-      entries,
-      map(([name, value]) =>
+      map(({ name, value }) =>
         this.schema
           .getField(name)
           .map((field) => ({ type: field.type, field, value } as ICreateFieldValueSchema_internal)),
