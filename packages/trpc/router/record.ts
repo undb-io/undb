@@ -1,4 +1,11 @@
-import { CreateRecordCommand, createRecordCommandInput, createRecordCommandOutput } from '@egodb/core'
+import {
+  CreateRecordCommand,
+  createRecordCommandInput,
+  createRecordCommandOutput,
+  GetRecordsQuery,
+  getRecordsQueryInput,
+  getRecordsQueryOutput,
+} from '@egodb/core'
 import type { ICommandBus, IQueryBus } from '@egodb/domain'
 import type { publicProcedure } from '../trpc'
 import { router } from '../trpc'
@@ -16,5 +23,13 @@ export const createRecordRouter =
         .mutation(({ input }) => {
           const cmd = new CreateRecordCommand(input)
           return commandBus.execute(cmd)
+        }),
+      list: procedure
+        .meta({ openapi: { method: 'GET', path: '/record.list', tags } })
+        .input(getRecordsQueryInput)
+        .output(getRecordsQueryOutput)
+        .query(({ input }) => {
+          const query = new GetRecordsQuery()
+          return queryBus.execute(query)
         }),
     })

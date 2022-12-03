@@ -1,5 +1,4 @@
 export * from './query-model'
-export * from './query-record.schema'
 export * from './record'
 export * from './record.type'
 export * from './repository'
