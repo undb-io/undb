@@ -1,17 +1,18 @@
 'use client'
 
-import type { IGetTableOutput } from '@egodb/core'
+import type { NonNullableGetTableOutput } from '@egodb/core'
 import { EGOTable } from '@egodb/table-ui'
-import { Box, Title } from '@egodb/ui'
+import { Box } from '@egodb/ui'
+import { TableHaeder } from '../../../components/table/table-title'
 
 interface IProps {
-  table: NonNullable<IGetTableOutput>
+  table: NonNullableGetTableOutput
 }
 
 export default function Table({ table }: IProps) {
   return (
     <Box>
-      <Title>{table.name}</Title>
+      <TableHaeder table={table} />
       <EGOTable table={table} />
     </Box>
   )
