@@ -1,10 +1,11 @@
 import { middleware, publicProcedure, router } from '../trpc'
 
-import type { ITableCommandBus, ITableQueryBus } from '@egodb/core'
+import type { ICommandBus, IQueryBus } from '@egodb/domain/dist'
 import type { ILogger } from '../type'
+import { createRecordRouter } from './record'
 import { createTableRouter } from './table'
 
-export const createRouter = (commandBus: ITableCommandBus, queryBus: ITableQueryBus, logger: ILogger) => {
+export const createRouter = (commandBus: ICommandBus, queryBus: IQueryBus, logger: ILogger) => {
   const procedure = publicProcedure.use(
     middleware(async ({ path, type, next }) => {
       const start = Date.now()
@@ -18,6 +19,7 @@ export const createRouter = (commandBus: ITableCommandBus, queryBus: ITableQuery
   )
   const appRouter = router({
     table: createTableRouter(procedure)(commandBus, queryBus),
+    record: createRecordRouter(procedure)(commandBus, queryBus),
   })
   return appRouter
 }

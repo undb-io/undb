@@ -4,7 +4,7 @@ import type { Provider } from '@nestjs/common'
 import { Inject } from '@nestjs/common'
 import { AppRouterSymbol } from './app-router'
 
-const OpenApiDocument = Symbol('OPEN_API_DOCUMENT')
+export const OpenApiDocument = Symbol('OPEN_API_DOCUMENT')
 
 export const InjectOpenApiDocument = () => Inject(OpenApiDocument)
 

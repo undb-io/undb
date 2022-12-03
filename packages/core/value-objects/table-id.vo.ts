@@ -20,6 +20,6 @@ export class TableId extends NanoID {
     if (!id) {
       return TableId.create()
     }
-    return new TableId(id)
+    return TableId.from(id)
   }
 }

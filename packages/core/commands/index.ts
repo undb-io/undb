@@ -1,2 +1,2 @@
-export * from './create-table';
-
+export * from './create-record'
+export * from './create-table'

@@ -1,23 +1,14 @@
-import { createTableCommandInput } from '@egodb/core'
+import { createRecordCommandInput } from '@egodb/core'
 import { Drawer, useEgoUITheme, zodResolver } from '@egodb/ui'
 import { useAtom } from 'jotai'
 import { useConfirmModal } from '../../hooks'
-import { CreateTableForm } from './create-table-form'
-import { CreateTableFormProvider, useCreateTable } from './create-table-form-context'
-import { createTableFormDrawerOpened } from './drawer-opened.atom'
+import { CreateRecordForm } from './create-record-form'
+import { CreateRecordFormProvider, useCreateRecord } from './create-record-form-context'
+import { createRecordFormDrawerOpened } from './drawer-opened.atom'
 
-export const CreateTableFormDrawer: React.FC = () => {
-  const [opened, setOpened] = useAtom(createTableFormDrawerOpened)
+export const CreateRecordFormDrawer: React.FC = () => {
+  const [opened, setOpened] = useAtom(createRecordFormDrawerOpened)
   const theme = useEgoUITheme()
-
-  const form = useCreateTable({
-    initialValues: {
-      name: '',
-      schema: [],
-    },
-    validate: zodResolver(createTableCommandInput),
-    validateInputOnBlur: ['name'],
-  })
 
   const reset = () => {
     setOpened(false)
@@ -28,8 +19,13 @@ export const CreateTableFormDrawer: React.FC = () => {
   }
   const confirm = useConfirmModal({ onConfirm: reset })
 
+  const form = useCreateRecord({
+    initialValues: {},
+    validate: zodResolver(createRecordCommandInput),
+  })
+
   return (
-    <CreateTableFormProvider form={form}>
+    <CreateRecordFormProvider form={form}>
       <Drawer
         target="body"
         opened={opened}
@@ -40,7 +36,7 @@ export const CreateTableFormDrawer: React.FC = () => {
             reset()
           }
         }}
-        title="New Table"
+        title="New Record"
         padding="xl"
         position="right"
         size={700}
@@ -48,8 +44,8 @@ export const CreateTableFormDrawer: React.FC = () => {
         overlayOpacity={0.55}
         overlayBlur={3}
       >
-        <CreateTableForm onCancel={() => setOpened(false)} />
+        <CreateRecordForm onCancel={() => setOpened(false)} />
       </Drawer>
-    </CreateTableFormProvider>
+    </CreateRecordFormProvider>
   )
 }

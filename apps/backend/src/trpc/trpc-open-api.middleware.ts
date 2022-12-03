@@ -1,4 +1,4 @@
-import { AppRouter, createOpenApiMiddlware } from '@egodb/trpc'
+import { AppRouter, createOpenApiMiddlware } from '@egodb/trpc/dist'
 import type { NestMiddleware } from '@nestjs/common'
 import { Injectable } from '@nestjs/common'
 import type { NextFunction, Request, Response } from 'express'
