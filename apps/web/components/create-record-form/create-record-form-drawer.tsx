@@ -1,3 +1,4 @@
+import type { NonNullableGetTableOutput } from '@egodb/core'
 import { createRecordCommandInput } from '@egodb/core'
 import { Drawer, useEgoUITheme, zodResolver } from '@egodb/ui'
 import { useAtom } from 'jotai'
@@ -6,7 +7,11 @@ import { CreateRecordForm } from './create-record-form'
 import { CreateRecordFormProvider, useCreateRecord } from './create-record-form-context'
 import { createRecordFormDrawerOpened } from './drawer-opened.atom'
 
-export const CreateRecordFormDrawer: React.FC = () => {
+interface IProps {
+  table: NonNullableGetTableOutput
+}
+
+export const CreateRecordFormDrawer: React.FC<IProps> = ({ table }) => {
   const [opened, setOpened] = useAtom(createRecordFormDrawerOpened)
   const theme = useEgoUITheme()
 
@@ -20,7 +25,10 @@ export const CreateRecordFormDrawer: React.FC = () => {
   const confirm = useConfirmModal({ onConfirm: reset })
 
   const form = useCreateRecord({
-    initialValues: {},
+    initialValues: {
+      tableId: table.id,
+      value: {},
+    },
     validate: zodResolver(createRecordCommandInput),
   })
 

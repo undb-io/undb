@@ -41,7 +41,7 @@ export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
       </Group>
 
       {createRecord.isError && (
-        <Alert icon={<IconAlertCircle size={16} />} title="Oops! Create Record Error!" mt="lg">
+        <Alert color="red" icon={<IconAlertCircle size={16} />} title="Oops! Create Record Error!" mt="lg">
           {createRecord.error.message}
         </Alert>
       )}

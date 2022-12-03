@@ -63,6 +63,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
             label={<FieldInputLabel>name</FieldInputLabel>}
             variant="filled"
             required={true}
+            autoFocus
           />
         </Group>
         <Space h="lg" />

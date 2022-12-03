@@ -20,8 +20,8 @@ export const TableNavList: React.FC = () => {
             </>
           )}
           {getTables.data?.map((table) => (
-            <Link href={`/table/${table.id}`}>
-              <NavLink key={table.id} label={table.name} />
+            <Link key={table.id} href={`/table/${table.id}`}>
+              <NavLink label={table.name} />
             </Link>
           ))}
         </Box>

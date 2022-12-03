@@ -14,6 +14,7 @@ importers:
       syncpack: ^8.4.11
       taze: ^0.8.4
       turbo: ^1.6.3
+      typescript: ^4.9.3
     devDependencies:
       '@commitlint/cli': 17.3.0
       '@commitlint/config-conventional': 17.3.0
@@ -25,6 +26,7 @@ importers:
       syncpack: 8.4.11
       taze: 0.8.4
       turbo: 1.6.3
+      typescript: 4.9.3
 
   apps/backend:
     specifiers:
@@ -165,6 +167,7 @@ importers:
   packages/core:
     specifiers:
       '@egodb/domain': ^0.0.0
+      '@fxts/core': ^0.11.0
       oxide.ts: ^1.1.0
       rimraf: ^3.0.2
       tsconfig: ^0.0.0
@@ -174,6 +177,7 @@ importers:
       zod: ^3.19.1
     dependencies:
       '@egodb/domain': link:../domain
+      '@fxts/core': 0.11.0
       oxide.ts: 1.1.0
       zod: 3.19.1
     devDependencies:
@@ -1220,6 +1224,12 @@ packages:
       '@floating-ui/dom': 1.0.6
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@fxts/core/0.11.0:
+    resolution: {integrity: sha512-IT0NoKHG6RvKGej0oaJaKHVvSVjKJ1OO781+20/PJ9bfew6sYS820qrl2AQc93kFIxfffZUulAsWxdFBKd50WQ==}
+    dependencies:
+      tslib: 2.4.1
     dev: false
 
   /@gar/promisify/1.1.3:

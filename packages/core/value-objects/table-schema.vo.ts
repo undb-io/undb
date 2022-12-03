@@ -1,4 +1,5 @@
 import { ValueObject } from '@egodb/domain'
+import { Option } from 'oxide.ts'
 import * as z from 'zod'
 import type { Field } from '../field'
 import { createFieldSchema } from '../field'
@@ -30,5 +31,9 @@ export class TableSchema extends ValueObject<Field[]> {
 
   public get fields(): Field[] {
     return this.props
+  }
+
+  public getField(name: string): Option<Field> {
+    return Option(this.fields.find((f) => f.name.value === name))
   }
 }

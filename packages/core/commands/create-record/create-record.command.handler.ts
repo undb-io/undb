@@ -1,15 +1,18 @@
 import type { ICommandHandler } from '@egodb/domain/dist'
-import { Record } from '../../record'
 import type { IRecordRepository } from '../../record/repository'
+import type { ITableRepository } from '../../repository'
 import type { ICreateTableOutput } from '../create-table'
 import type { CreateRecordCommand } from './create-record.comand'
 
 export class CreateRecordCommandHandler implements ICommandHandler<CreateRecordCommand, ICreateTableOutput> {
-  constructor(protected readonly repo: IRecordRepository) {}
+  constructor(protected readonly tableRepo: ITableRepository, protected readonly recordRepo: IRecordRepository) {}
   async execute(command: CreateRecordCommand): Promise<ICreateTableOutput> {
-    const record = Record.create(command)
+    const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
 
-    await this.repo.insert(record)
+    const record = table.createRecord(command)
+    await this.recordRepo.insert(record)
+
+    console.log(record)
 
     return { id: record.id.value }
   }

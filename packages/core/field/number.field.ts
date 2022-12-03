@@ -1,19 +1,8 @@
-import * as z from 'zod'
-import { BaseField, baseFieldQuerySchema, createBaseFieldsSchema } from './field.base'
+import { BaseField } from './field.base'
 import type { INumberField } from './field.type'
+import { NumberFieldValue } from './number-field-value'
+import type { ICreateNumberFieldInput, ICreateNumberFieldValue, NumberType } from './number-field.type'
 import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
-
-export const numberTypeSchema = z.literal('number')
-export type NumberType = z.infer<typeof numberTypeSchema>
-
-export const createNumberFieldSchema = createBaseFieldsSchema.merge(z.object({ type: numberTypeSchema }))
-
-export type ICreateNumberFieldInput = z.infer<typeof createNumberFieldSchema>
-
-export const numberFieldQuerySchema = baseFieldQuerySchema.merge(z.object({ type: numberTypeSchema }))
-
-export const numberFieldValue = z.number()
-export type NumberFieldValue = z.infer<typeof numberFieldValue>
 
 export class NumberField extends BaseField<INumberField> {
   get type(): NumberType {
@@ -34,5 +23,9 @@ export class NumberField extends BaseField<INumberField> {
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
     })
+  }
+
+  createValue(value: ICreateNumberFieldValue): NumberFieldValue {
+    return new NumberFieldValue(value)
   }
 }

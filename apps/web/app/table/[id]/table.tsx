@@ -15,7 +15,7 @@ export default function Table({ table }: IProps) {
     <Box>
       <TableHaeder table={table} />
       <EGOTable table={table} />
-      <CreateRecordFormDrawer />
+      <CreateRecordFormDrawer table={table} />
     </Box>
   )
 }
