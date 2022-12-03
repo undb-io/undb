@@ -1,5 +1,6 @@
 'use client'
 
+import { Table as CoreTable } from '@egodb/core'
 import { Alert, Container, IconAlertCircle } from '@egodb/ui'
 import { trpc } from '../../../trpc'
 import Table from './table'
@@ -25,5 +26,6 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     return 'none'
   }
 
-  return <Table table={getTable.data} />
+  const table = CoreTable.fromQuery(getTable.data)
+  return <Table table={table} />
 }

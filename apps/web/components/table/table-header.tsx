@@ -1,10 +1,10 @@
-import type { NonNullableGetTableOutput } from '@egodb/core'
+import type { Table } from '@egodb/core'
 import { Button, Group, Text, IconPlus, Title } from '@egodb/ui'
 import { useAtom } from 'jotai'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
 
 interface IProps {
-  table: NonNullableGetTableOutput
+  table: Table
 }
 
 export const TableHaeder: React.FC<IProps> = ({ table }) => {
@@ -16,7 +16,7 @@ export const TableHaeder: React.FC<IProps> = ({ table }) => {
           Tables
         </Text>
         <Text color="gray.4">/</Text>
-        <Title order={3}>{table.name}</Title>
+        <Title order={3}>{table.name.value}</Title>
       </Group>
       <Button leftIcon={<IconPlus size={14} />} onClick={() => setOpened(true)}>
         Add New Record

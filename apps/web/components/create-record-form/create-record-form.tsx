@@ -1,13 +1,16 @@
-import { Alert, Button, Group, IconAlertCircle } from '@egodb/ui'
+import type { Table } from '@egodb/core'
+import { Alert, Button, Group, IconAlertCircle, TextInput } from '@egodb/ui'
 import { trpc } from '../../trpc'
+import { FieldInputLabel } from '../fields/field-input-label'
 import { useCreateRecordFormContext } from './create-record-form-context'
 
 interface IProps {
+  table: Table
   onCancel: () => void
   onSuccess?: () => void
 }
 
-export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
+export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess }) => {
   const form = useCreateRecordFormContext()
 
   const createRecord = trpc.record.create.useMutation({
@@ -39,6 +42,15 @@ export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
           Create
         </Button>
       </Group>
+
+      {table.schema.fields.map((field, index) => {
+        return (
+          <TextInput
+            {...form.getInputProps(`value.${index}.value`)}
+            label={<FieldInputLabel>{field.name.value}</FieldInputLabel>}
+          />
+        )
+      })}
 
       {createRecord.isError && (
         <Alert color="red" icon={<IconAlertCircle size={16} />} title="Oops! Create Record Error!" mt="lg">

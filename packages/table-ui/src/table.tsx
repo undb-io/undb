@@ -1,15 +1,15 @@
-import type { NonNullableGetTableOutput } from '@egodb/core'
+import type { Table as CoreTable } from '@egodb/core'
 import { Table, Text, UnstyledButton } from '@egodb/ui'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 
 interface IProps {
-  table: NonNullableGetTableOutput
+  table: CoreTable
 }
 
 export const EGOTable: React.FC<IProps> = ({ table }) => {
   // TODO: helper types should infered by type
   const fieldHelper = createColumnHelper<Record<string, string | number>>()
-  const fields = table.schema.map((c) => fieldHelper.accessor(c.name, { id: c.id }))
+  const fields = table.schema.fields.map((c) => fieldHelper.accessor(c.name.value, { id: c.id.value }))
 
   const rt = useReactTable({
     data: [],

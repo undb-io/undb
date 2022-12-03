@@ -2,6 +2,7 @@ import { filter, map, pipe, toArray } from '@fxts/core'
 import type { ICreateRecordInput, ICreateTableInput } from './commands'
 import type { ICreateFieldsSchema_internal, ICreateFieldValueSchema_internal } from './field'
 import { createFieldValueSchema_internal } from './field'
+import type { QueryTable } from './query-table.schema'
 import { Record } from './record'
 import { TableId, TableSchema } from './value-objects'
 import { TableName } from './value-objects/table-name.vo'
@@ -27,6 +28,14 @@ export class Table {
       TableName.unsafeCreate(input.name),
       TableSchema.unsafeCreate(input.schema),
     )
+  }
+
+  static fromQuery(q: QueryTable): Table {
+    return this.unsafeCreate({
+      id: q.id,
+      name: q.name,
+      schema: q.schema,
+    })
   }
 
   public createRecord(input: ICreateRecordInput): Record {

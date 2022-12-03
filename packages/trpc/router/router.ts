@@ -7,13 +7,13 @@ import { createTableRouter } from './table'
 
 export const createRouter = (commandBus: ICommandBus, queryBus: IQueryBus, logger: ILogger) => {
   const procedure = publicProcedure.use(
-    middleware(async ({ path, type, next }) => {
+    middleware(async ({ path, type, next, rawInput }) => {
       const start = Date.now()
       const result = await next()
       const durationMs = Date.now() - start
       result.ok
-        ? logger.log('OK request', { path, type, durationMs })
-        : logger.error('Non-OK request', { path, type, durationMs })
+        ? logger.log('OK request', { path, type, durationMs, rawInput })
+        : logger.error('Non-OK request', { path, type, durationMs, rawInput })
       return result
     }),
   )
