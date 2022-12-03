@@ -3,7 +3,7 @@
 import type { NonNullableGetTableOutput } from '@egodb/core'
 import { EGOTable } from '@egodb/table-ui'
 import { Box } from '@egodb/ui'
-import { TableHaeder } from '../../../components/table/table-title'
+import { TableHaeder } from '../../../components/table/table-header'
 
 interface IProps {
   table: NonNullableGetTableOutput

@@ -60,16 +60,16 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
       <Divider my="lg" />
 
       <Group position="right">
-        <Button color="dark" variant="subtle" onClick={() => onCancel()}>
+        <Button variant="subtle" onClick={() => onCancel()}>
           Cancel
         </Button>
-        <Button loading={createTable.isLoading} miw={200} color="dark" disabled={!form.isValid()} type="submit">
+        <Button loading={createTable.isLoading} miw={200} disabled={!form.isValid()} type="submit">
           Create
         </Button>
       </Group>
 
       {createTable.isError && (
-        <Alert icon={<IconAlertCircle size={16} />} title="Oops! Create Table Error!" mt="lg" color="red">
+        <Alert icon={<IconAlertCircle size={16} />} title="Oops! Create Table Error!" mt="lg">
           {createTable.error.message}
         </Alert>
       )}

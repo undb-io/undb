@@ -26,13 +26,7 @@ export const TableNavList: React.FC = () => {
           ))}
         </Box>
         <Center mt="md">
-          <Button
-            color="dark"
-            fullWidth
-            leftIcon={<IconPlus size={14} />}
-            variant="outline"
-            onClick={() => setOpened(true)}
-          >
+          <Button fullWidth leftIcon={<IconPlus size={14} />} variant="outline" onClick={() => setOpened(true)}>
             New table
           </Button>
         </Center>

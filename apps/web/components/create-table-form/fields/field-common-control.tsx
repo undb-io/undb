@@ -15,7 +15,7 @@ export const FieldCommonControl: React.FC<IProps> = ({ index }) => {
     <Group position="right">
       <Menu>
         <Menu.Target>
-          <ActionIcon variant="subtle" color="dark">
+          <ActionIcon variant="subtle">
             <IconDots size={14} />
           </ActionIcon>
         </Menu.Target>
@@ -26,7 +26,7 @@ export const FieldCommonControl: React.FC<IProps> = ({ index }) => {
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
-      <Button size="xs" variant="outline" color="dark" onClick={resetActiveField}>
+      <Button size="xs" variant="outline" onClick={resetActiveField}>
         Done
       </Button>
     </Group>

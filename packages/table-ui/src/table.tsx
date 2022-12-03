@@ -19,14 +19,21 @@ export const EGOTable: React.FC<IProps> = ({ table }) => {
 
   return (
     <div className="p-2">
-      <Table striped highlightOnHover>
+      <Table striped highlightOnHover sx={{ 'thead tr th': { padding: 0 } }}>
         <thead>
           {rt.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th key={header.id}>
-                  <UnstyledButton h={50} w="100%" p="sm">
-                    <Text fz="lg" fw={500}>
+                  <UnstyledButton
+                    w="100%"
+                    h={45}
+                    px="lg"
+                    sx={(theme) => ({
+                      ':hover': { backgroundColor: theme.colors.gray[2] },
+                    })}
+                  >
+                    <Text fz="sm" color="gray.7" fw={500}>
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </Text>
                   </UnstyledButton>
