@@ -1,4 +1,4 @@
-import type { QueryRecords, Table as CoreTable } from '@egodb/core'
+import type { IFieldValue, QueryRecords, Table as CoreTable } from '@egodb/core'
 import { Table, Text, UnstyledButton } from '@egodb/ui'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 
@@ -9,12 +9,16 @@ interface IProps {
 
 export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   // TODO: helper types should infered by type
-  const fieldHelper = createColumnHelper<Record<string, string | number>>()
-  const fields = table.schema.fields.map((c) => fieldHelper.accessor(c.name.value, { id: c.id.value }))
+  const fieldHelper = createColumnHelper<Record<string, IFieldValue>>()
+  const columns = table.schema.fields.map((c) =>
+    fieldHelper.accessor(c.name.value, {
+      id: c.name.value,
+    }),
+  )
 
   const rt = useReactTable({
     data: records.map((r) => r.values),
-    columns: fields,
+    columns,
     getCoreRowModel: getCoreRowModel(),
   })
 
