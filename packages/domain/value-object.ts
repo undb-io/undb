@@ -1,6 +1,6 @@
 import equal from 'fast-deep-equal'
 import { convertPropsToObject } from './utils'
-export type Primitives = string | number | boolean
+export type Primitives = string | number | boolean | null
 export interface DomainPrimitive<T extends Primitives | Date> {
   value: T
 }

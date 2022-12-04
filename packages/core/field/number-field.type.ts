@@ -12,7 +12,7 @@ export type ICreateNumberFieldInput = z.infer<typeof createNumberFieldSchema>
 
 export const numberFieldQuerySchema = baseFieldQuerySchema.merge(numberTypeObjectSchema)
 
-export const numberFieldValue = z.number()
+export const numberFieldValue = z.number().or(z.null())
 export type INumberFieldValue = z.infer<typeof numberFieldValue>
 
 export const createNumberFieldValue = numberFieldValue

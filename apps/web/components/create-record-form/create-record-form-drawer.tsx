@@ -29,7 +29,7 @@ export const CreateRecordFormDrawer: React.FC<IProps> = ({ table }) => {
       tableId: table.id.value,
       value: table.schema.fields.map((field) => ({
         name: field.name.value,
-        value: undefined as any,
+        value: null,
       })),
     },
     validate: zodResolver(createRecordCommandInput),
