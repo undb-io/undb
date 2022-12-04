@@ -24,8 +24,8 @@ export abstract class CompositeSpecification<T = any, V = any> implements ISpeci
   }
 }
 
-class And<T> extends CompositeSpecification<T> {
-  constructor(private readonly left: ISpecification<T>, private readonly right: ISpecification<T>) {
+class And<T, V> extends CompositeSpecification<T, V> {
+  constructor(private readonly left: ISpecification<T, V>, private readonly right: ISpecification<T, V>) {
     super()
   }
 
@@ -34,15 +34,16 @@ class And<T> extends CompositeSpecification<T> {
   }
 
   mutate(t: T): Result<T, string> {
-    throw new Error('Method not implemented.')
+    return this.left.mutate(t).and(this.right.mutate(t))
   }
-  accept(v: any): Result<void, string> {
-    throw new Error('Method not implemented.')
+
+  accept(v: V): Result<void, string> {
+    return this.left.accept(v).and(this.right.accept(v))
   }
 }
 
-class Or<T> extends CompositeSpecification<T> {
-  constructor(private readonly left: ISpecification<T>, private readonly right: ISpecification<T>) {
+class Or<T, V> extends CompositeSpecification<T, V> {
+  constructor(private readonly left: ISpecification<T, V>, private readonly right: ISpecification<T, V>) {
     super()
   }
 
@@ -51,10 +52,11 @@ class Or<T> extends CompositeSpecification<T> {
   }
 
   mutate(t: T): Result<T, string> {
-    throw new Error('Method not implemented.')
+    return this.left.mutate(t).orElse(() => this.right.mutate(t))
   }
-  accept(v: any): Result<void, string> {
-    throw new Error('Method not implemented.')
+
+  accept(v: V): Result<void, string> {
+    return this.left.accept(v).or(this.right.accept(v))
   }
 }
 
@@ -70,6 +72,7 @@ class Not<T> extends CompositeSpecification<T> {
   mutate(t: T): Result<T, string> {
     throw new Error('Method not implemented.')
   }
+
   accept(v: any): Result<void, string> {
     throw new Error('Method not implemented.')
   }
