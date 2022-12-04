@@ -1,5 +1,8 @@
 import { NanoID } from '@egodb/domain'
+import type { Result } from 'oxide.ts'
+import { Err, Ok } from 'oxide.ts'
 import * as z from 'zod'
+import { InvalidTableIdError } from '../table.errors'
 
 export const tableIdSchema = z.string().min(1)
 
@@ -12,14 +15,17 @@ export class TableId extends NanoID {
     return new TableId(id)
   }
 
-  static from(id: string): TableId {
-    return new TableId(id)
+  static from(id: string): Result<TableId, InvalidTableIdError> {
+    if (!id) {
+      return Err(new InvalidTableIdError())
+    }
+    return Ok(new TableId(id))
   }
 
   static fromOrCreate(id?: string): TableId {
     if (!id) {
       return TableId.create()
     }
-    return new TableId(id)
+    return TableId.from(id).unwrap()
   }
 }

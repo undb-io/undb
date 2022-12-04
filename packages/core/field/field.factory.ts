@@ -1,5 +1,4 @@
-import type { ICreateFieldSchema } from './field.schema'
-import type { Field } from './field.type'
+import type { Field, ICreateFieldSchema } from './field.type'
 import { NumberField } from './number.field'
 import { TextField } from './text.field'
 

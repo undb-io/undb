@@ -1,7 +1,7 @@
 import type { ITableRepository, ITableSpec, Table } from '@egodb/core'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
-import { db } from './db.js'
+import { db } from '../db.js'
 import { TableInMemoryMapper } from './table-in-memory.mapper.js'
 import { TableInMemoryQueryVisitor } from './table-in-memory.query-visitor.js'
 

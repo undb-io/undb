@@ -49,7 +49,7 @@ export const CreateTableFormSchema: React.FC = () => {
       }}
     >
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
-        <Accordion value={activeField} onChange={setActiveField} transitionDuration={duration}>
+        <Accordion value={activeField} variant="contained" onChange={setActiveField} transitionDuration={duration}>
           {form.values.schema.map((field, index) => (
             <FieldAccordionItem key={field.id} index={index} id={field.id} />
           ))}

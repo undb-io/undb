@@ -1,4 +1,4 @@
-import type { Result } from 'oxide.ts/dist'
+import type { Result } from 'oxide.ts'
 import { CompositeSpecification } from './specification'
 
 describe('and', () => {

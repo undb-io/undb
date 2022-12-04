@@ -1,7 +1,7 @@
 'use client'
 import { AppShell } from '@egodb/ui'
 import { CreateTableFormDrawer } from '../components/create-table-form'
-import { TableNavList } from '../components/tables-list-nav/table-list-nav'
+import { TableNavList } from '../components/tables-nav-list/table-nav-list'
 import { AtomsDevtools } from './atom-devtool'
 import RootStyleRegistry from './emotion'
 import Trpc from './trpc'

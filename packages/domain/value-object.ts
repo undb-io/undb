@@ -1,6 +1,6 @@
 import equal from 'fast-deep-equal'
 import { convertPropsToObject } from './utils'
-export type Primitives = string | number | boolean
+export type Primitives = string | number | boolean | null
 export interface DomainPrimitive<T extends Primitives | Date> {
   value: T
 }
@@ -30,6 +30,7 @@ export abstract class ValueObject<T = any> {
 
     return Object.freeze(propsCopy)
   }
+
   private isDomainPrimitive(obj: unknown): obj is DomainPrimitive<T & (Primitives | Date)> {
     if (Object.prototype.hasOwnProperty.call(obj, 'value')) {
       return true

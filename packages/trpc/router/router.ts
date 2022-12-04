@@ -1,23 +1,33 @@
 import { middleware, publicProcedure, router } from '../trpc'
 
-import type { ITableCommandBus, ITableQueryBus } from '@egodb/core'
+import type { ICommandBus, IQueryBus } from '@egodb/domain/dist'
 import type { ILogger } from '../type'
+import { createRecordRouter } from './record'
 import { createTableRouter } from './table'
 
-export const createRouter = (commandBus: ITableCommandBus, queryBus: ITableQueryBus, logger: ILogger) => {
+export const createRouter = (commandBus: ICommandBus, queryBus: IQueryBus, logger: ILogger) => {
   const procedure = publicProcedure.use(
-    middleware(async ({ path, type, next }) => {
+    middleware(async ({ path, type, next, rawInput }) => {
       const start = Date.now()
       const result = await next()
       const durationMs = Date.now() - start
       result.ok
-        ? logger.log('OK request', { path, type, durationMs })
-        : logger.error('Non-OK request', { path, type, durationMs })
+        ? logger.log('OK request', { path, type, durationMs, rawInput })
+        : logger.error('Non-OK request', {
+            path,
+            type,
+            durationMs,
+            rawInput,
+            error: result.error,
+            msg: result.error.message,
+            stack: result.error.stack,
+          })
       return result
     }),
   )
   const appRouter = router({
     table: createTableRouter(procedure)(commandBus, queryBus),
+    record: createRecordRouter(procedure)(commandBus, queryBus),
   })
   return appRouter
 }

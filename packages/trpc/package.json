@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "dependencies": {
     "@egodb/core": "^0.0.0",
+    "@egodb/domain": "^0.0.0",
     "@trpc/server": "^10.4.2",
     "swagger-ui-express": "^4.6.0",
     "trpc-openapi": "^1.0.0",
@@ -18,9 +19,6 @@
     "typescript": "^4.9.3",
     "vitest": "^0.25.3"
   },
-  "files": [
-    "./dist"
-  ],
   "keywords": [],
   "main": "./dist/index",
   "scripts": {
