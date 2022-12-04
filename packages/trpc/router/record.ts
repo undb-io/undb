@@ -29,7 +29,7 @@ export const createRecordRouter =
         .input(getRecordsQueryInput)
         .output(getRecordsQueryOutput)
         .query(({ input }) => {
-          const query = new GetRecordsQuery()
+          const query = new GetRecordsQuery(input)
           return queryBus.execute(query)
         }),
     })

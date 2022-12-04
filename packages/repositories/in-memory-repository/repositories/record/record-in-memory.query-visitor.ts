@@ -1,4 +1,4 @@
-import type { IRecordSpec, IRecordSpecVisitor, WithRecordId } from '@egodb/core'
+import type { IRecordSpec, IRecordSpecVisitor, WithRecordId, WithRecordTableId } from '@egodb/core'
 import type { Result } from 'oxide.ts'
 import { Err, Ok } from 'oxide.ts'
 import type { RecordInMemory } from './record.type'
@@ -10,7 +10,7 @@ export class RecordInMemoryQueryVisitor implements IRecordSpecVisitor {
 
   getPredicate(): Result<RecordInMemoryPredicate, Error> {
     if (!this.predicate) {
-      return Err(new Error('missing predicate'))
+      return Err(new Error('record in memory visitor missing predicate'))
     }
 
     return Ok(this.predicate)
@@ -27,6 +27,10 @@ export class RecordInMemoryQueryVisitor implements IRecordSpecVisitor {
   }
 
   idEqual(s: WithRecordId): void {
-    this.predicate = (t) => t.id === s.id.value
+    this.predicate = (r) => r.id === s.id.value
+  }
+
+  tableIdEqual(s: WithRecordTableId): void {
+    this.predicate = (r) => r.tableId === s.id.value
   }
 }

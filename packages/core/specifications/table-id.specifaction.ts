@@ -25,4 +25,4 @@ export class WithTableId extends CompositeSpecification {
   }
 }
 
-export const WithTableIdS = (id: string) => new WithTableId(TableId.from(id))
+export const WithTableIdS = (id: string) => TableId.from(id).map((tableId) => new WithTableId(tableId))

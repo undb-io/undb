@@ -7,10 +7,11 @@ export class RecordInMemoryMapper {
     throw new Error('unimplemented')
   }
 
-  static toInMemory(t: Record): RecordInMemory {
+  static toInMemory(r: Record): RecordInMemory {
     return {
-      id: t.id.value,
-      values: t.value.toObject(),
+      id: r.id.value,
+      tableId: r.tableId.value,
+      values: r.value.toObject(),
     }
   }
 }

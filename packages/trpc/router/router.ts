@@ -13,7 +13,15 @@ export const createRouter = (commandBus: ICommandBus, queryBus: IQueryBus, logge
       const durationMs = Date.now() - start
       result.ok
         ? logger.log('OK request', { path, type, durationMs, rawInput })
-        : logger.error('Non-OK request', { path, type, durationMs, rawInput })
+        : logger.error('Non-OK request', {
+            path,
+            type,
+            durationMs,
+            rawInput,
+            error: result.error,
+            msg: result.error.message,
+            stack: result.error.stack,
+          })
       return result
     }),
   )

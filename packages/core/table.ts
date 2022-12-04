@@ -52,6 +52,6 @@ export class Table {
       toArray,
     )
 
-    return Record.create({ value: inputs })
+    return Record.create({ tableId: this.id, value: inputs })
   }
 }
