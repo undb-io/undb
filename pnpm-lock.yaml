@@ -70,7 +70,7 @@ importers:
     dependencies:
       '@egodb/core': link:../../packages/core
       '@egodb/domain': link:../../packages/domain
-      '@egodb/in-memory-repository': link:../../repositories/in-memory-repository
+      '@egodb/in-memory-repository': link:../../packages/repositories/in-memory-repository
       '@egodb/trpc': link:../../packages/trpc
       '@nestjs/common': 9.2.1_yzt46al3aifnexifjjdb4dxxja
       '@nestjs/core': 9.2.1_tuv4y6h3m23xb7odf2gtnrhr3e
@@ -233,6 +233,29 @@ importers:
       '@typescript-eslint/parser': 5.45.0_hsf322ms6xhhd4b5ne6lb74y4a
       typescript: 4.9.3
 
+  packages/repositories/in-memory-repository:
+    specifiers:
+      '@egodb/core': ^0.0.0
+      '@egodb/domain': ^0.0.0
+      lowdb: ^5.0.5
+      oxide.ts: ^1.1.0
+      rimraf: ^3.0.2
+      tsconfig: ^0.0.0
+      tsup: ^6.5.0
+      typescript: ^4.9.3
+      vitest: ^0.25.3
+    dependencies:
+      '@egodb/core': link:../../core
+      '@egodb/domain': link:../../domain
+      lowdb: 5.0.5
+      oxide.ts: 1.1.0
+    devDependencies:
+      rimraf: 3.0.2
+      tsconfig: link:../../tsconfig
+      tsup: 6.5.0_typescript@4.9.3
+      typescript: 4.9.3
+      vitest: 0.25.3
+
   packages/table-ui:
     specifiers:
       '@egodb/core': ^0.0.0
@@ -332,29 +355,6 @@ importers:
       react: 18.2.0
       tsconfig: link:../tsconfig
       typescript: 4.9.3
-
-  repositories/in-memory-repository:
-    specifiers:
-      '@egodb/core': ^0.0.0
-      '@egodb/domain': ^0.0.0
-      lowdb: ^5.0.5
-      oxide.ts: ^1.1.0
-      rimraf: ^3.0.2
-      tsconfig: ^0.0.0
-      tsup: ^6.5.0
-      typescript: ^4.9.3
-      vitest: ^0.25.3
-    dependencies:
-      '@egodb/core': link:../../packages/core
-      '@egodb/domain': link:../../packages/domain
-      lowdb: 5.0.5
-      oxide.ts: 1.1.0
-    devDependencies:
-      rimraf: 3.0.2
-      tsconfig: link:../../packages/tsconfig
-      tsup: 6.5.0_typescript@4.9.3
-      typescript: 4.9.3
-      vitest: 0.25.3
 
 packages:
 

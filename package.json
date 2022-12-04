@@ -39,6 +39,6 @@
   "workspaces": [
     "apps/*",
     "packages/*",
-    "repositories/*"
+    "packages/repositories/*"
   ]
 }
