@@ -1,5 +1,5 @@
 import type { Table } from '@egodb/core'
-import { Alert, Button, Group, IconAlertCircle, NumberInput, TextInput } from '@egodb/ui'
+import { Alert, Text, Button, Divider, Group, HoverCard, IconAlertCircle, NumberInput, TextInput } from '@egodb/ui'
 import { trpc } from '../../trpc'
 import { FieldInputLabel } from '../fields/field-input-label'
 import { useCreateRecordFormContext } from './create-record-form-context'
@@ -36,15 +36,6 @@ export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess 
 
   return (
     <form onSubmit={onSubmit}>
-      <Group position="right">
-        <Button variant="subtle" onClick={() => onCancel()}>
-          Cancel
-        </Button>
-        <Button loading={createRecord.isLoading} miw={200} disabled={!form.isValid()} type="submit">
-          Create
-        </Button>
-      </Group>
-
       {table.schema.fields.map((field, index) => {
         const props = form.getInputProps(`value.${index}.value`)
         const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
@@ -53,6 +44,18 @@ export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess 
         }
         return <TextInput {...props} label={label} />
       })}
+
+      <Divider my="lg" />
+
+      <Group position="right">
+        <Button variant="subtle" onClick={() => onCancel()}>
+          Cancel
+        </Button>
+
+        <Button loading={createRecord.isLoading} miw={200} disabled={!form.isValid()} type="submit">
+          Create
+        </Button>
+      </Group>
 
       {createRecord.isError && (
         <Alert color="red" icon={<IconAlertCircle size={16} />} title="Oops! Create Record Error!" mt="lg">
