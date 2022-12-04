@@ -1,24 +1,24 @@
 import type { TableId } from '../value-objects'
 import type { ICreateRecordInput_internal } from './record.type'
 import { RecordId } from './value-objects'
-import { RecordValue } from './value-objects/record-value.vo'
+import { RecordValues } from './value-objects/record-values.vo'
 
 export class Record {
   public id: RecordId
   public tableId: TableId
-  public value: RecordValue
+  public values: RecordValues
 
-  constructor(id = RecordId.create(), tableId: TableId, value: RecordValue) {
+  constructor(id = RecordId.create(), tableId: TableId, value: RecordValues) {
     this.id = id
     this.tableId = tableId
-    this.value = value
+    this.values = value
   }
 
   static create(input: ICreateRecordInput_internal): Record {
-    return new Record(RecordId.fromOrCreate(input.id), input.tableId, RecordValue.fromArray(input.value))
+    return new Record(RecordId.fromOrCreate(input.id), input.tableId, RecordValues.fromArray(input.value))
   }
 
   static unsafeCreate(input: ICreateRecordInput_internal): Record {
-    return new Record(RecordId.fromOrCreate(input.id), input.tableId, RecordValue.fromArray(input.value))
+    return new Record(RecordId.fromOrCreate(input.id), input.tableId, RecordValues.fromArray(input.value))
   }
 }
