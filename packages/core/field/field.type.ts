@@ -1,4 +1,5 @@
 import * as z from 'zod'
+import type { INumberFieldValue } from './number-field.type'
 import {
   createNumberFieldSchema,
   createNumberFieldValue,
@@ -7,6 +8,7 @@ import {
   numberFieldValue,
   numberTypeSchema,
 } from './number-field.type'
+import type { ITextFieldValue } from './text-field.type'
 import {
   createTextFieldSchema,
   createTextFieldValue,
@@ -62,3 +64,5 @@ export type Field = TextField | NumberField
 
 export type FieldValue = TextFieldValue | NumberFieldValue
 export type FieldValues = FieldValue[]
+
+export type UnpackedFieldValue = ITextFieldValue | INumberFieldValue

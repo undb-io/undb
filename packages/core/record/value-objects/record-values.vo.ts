@@ -1,9 +1,7 @@
 import { ValueObject } from '@egodb/domain/dist'
-import { Option } from 'oxide.ts'
-import type { FieldValue, ICreateFieldsSchema_internal, IFieldValue } from '../../field'
-import type { TextFieldValue } from '../../field/text-field-value'
-import type { ITextFieldValue } from '../../field/text-field.type'
-import type { TextField } from '../../field/text.field'
+import { isString } from '@fxts/core'
+import { None, Option, Some } from 'oxide.ts'
+import type { FieldValue, ICreateFieldsSchema_internal, IFieldValue, UnpackedFieldValue } from '../../field'
 
 export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   static fromArray(inputs: ICreateFieldsSchema_internal): RecordValues {
@@ -23,7 +21,27 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
     return obj
   }
 
-  getTextValue(field: TextField): Option<ITextFieldValue> {
-    return Option.nonNull(this.value.get(field.name.value)).map((v) => (v as TextFieldValue).unpack())
+  /**
+   * get unpacked field value
+   *
+   * @param name - field name
+   * @returns unpacked field value
+   */
+  private getUnpackedValue(name: string): Option<UnpackedFieldValue> {
+    return Option.nonNull(this.value.get(name)).map((v) => v.unpack())
+  }
+
+  /**
+   * get field string value by field name
+   * - if field not exists returns option none
+   * - if value is not stirng returns option none
+   *
+   * @param name - field name
+   * @returns unpacked string value
+   */
+  getStringValue(name: string): Option<string> {
+    return this.getUnpackedValue(name)
+      .map((v) => (isString(v) ? Some(v) : None))
+      .flatten()
   }
 }

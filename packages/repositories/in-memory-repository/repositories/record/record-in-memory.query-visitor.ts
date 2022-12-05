@@ -1,4 +1,4 @@
-import type { IRecordSpec, IRecordSpecVisitor, WithRecordId, WithRecordTableId } from '@egodb/core'
+import type { IRecordSpec, IRecordSpecVisitor, StringEqual, WithRecordId, WithRecordTableId } from '@egodb/core'
 import type { Result } from 'oxide.ts'
 import { Err, Ok } from 'oxide.ts'
 import type { RecordInMemory } from './record.type'
@@ -32,5 +32,9 @@ export class RecordInMemoryQueryVisitor implements IRecordSpecVisitor {
 
   tableIdEqual(s: WithRecordTableId): void {
     this.predicate = (r) => r.tableId === s.id.value
+  }
+
+  valueStringEqual(s: StringEqual): void {
+    this.predicate = (r) => r.values[s.name] === s.value
   }
 }
