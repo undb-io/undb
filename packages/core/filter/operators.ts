@@ -4,7 +4,7 @@ import { numberFieldValue } from '../field/number-field.type'
 import type { ITextFieldValue } from '../field/text-field.type'
 import { textFieldValue } from '../field/text-field.type'
 
-type Filter<TSchema extends Record<string, ComparableFieldValue> = Record<string, ComparableFieldValue>> =
+export type Filter<TSchema extends Record<string, ComparableFieldValue> = Record<string, ComparableFieldValue>> =
   | RootOperator
   | TSchema
   | Record<string, Operator>
@@ -16,29 +16,23 @@ export interface RootOperator {
 
 type ComparableFieldValue = ITextFieldValue | INumberFieldValue
 
-type FieldOperator = {
-  $eq?: ComparableFieldValue
-  $neq?: ComparableFieldValue
-}
+type FilterOperator = { $eq?: ComparableFieldValue } | { $neq?: ComparableFieldValue }
 
-export type Operator = ComparableFieldValue | FieldOperator
+export type Operator = ComparableFieldValue | FilterOperator
 
-const $comparableFieldValue: z.ZodOptional<z.ZodType<ComparableFieldValue>> = z
-  .union([textFieldValue, numberFieldValue])
-  .optional()
+const $comparableFieldValue = z.union([textFieldValue, numberFieldValue])
 
-export const $fieldOperator: z.ZodType<FieldOperator> = z.object({
-  $eq: $comparableFieldValue,
-  $neq: $comparableFieldValue,
-})
+const $eq = z.object({ $eq: $comparableFieldValue })
+const $neq = z.object({ $neq: $comparableFieldValue })
+
+export const $filterOperator = z.union([$eq, $neq])
 
 export const $filter: z.ZodType<Filter> = z.lazy(() =>
-  z.union([$rootOperator, z.record(z.union([$comparableFieldValue, $fieldOperator]))]),
+  z.union([z.record($comparableFieldValue.or($filterOperator)), $rootOperator]),
 )
-export type IFilter = z.infer<typeof $filter>
 
 const $filters = z.array($filter).optional()
-const $rootOperator: z.ZodType<RootOperator> = z.object({
+const $rootOperator = z.object({
   $and: $filters,
   $or: $filters,
 })
