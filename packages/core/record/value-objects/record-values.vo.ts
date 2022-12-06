@@ -1,5 +1,5 @@
 import { ValueObject } from '@egodb/domain/dist'
-import { isString } from '@fxts/core'
+import { isNumber, isString } from '@fxts/core'
 import { None, Option, Some } from 'oxide.ts'
 import type { FieldValue, ICreateFieldsSchema_internal, IFieldValue, UnpackedFieldValue } from '../../field'
 
@@ -42,6 +42,20 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   getStringValue(name: string): Option<string> {
     return this.getUnpackedValue(name)
       .map((v) => (isString(v) ? Some(v) : None))
+      .flatten()
+  }
+
+  /**
+   * get field number value by field name
+   * - if field not exists returns option none
+   * - if value is not number returns option none
+   *
+   * @param name - field name
+   * @returns unpacked number value
+   */
+  getNumberValue(name: string): Option<number> {
+    return this.getUnpackedValue(name)
+      .map((v) => (isNumber(v) ? Some(v) : None))
       .flatten()
   }
 }

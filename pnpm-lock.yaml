@@ -239,6 +239,7 @@ importers:
     specifiers:
       '@egodb/core': ^0.0.0
       '@egodb/domain': ^0.0.0
+      '@fxts/core': ^0.11.0
       lowdb: ^5.0.5
       oxide.ts: ^1.1.0
       rimraf: ^3.0.2
@@ -249,6 +250,7 @@ importers:
     dependencies:
       '@egodb/core': link:../../core
       '@egodb/domain': link:../../domain
+      '@fxts/core': 0.11.0
       lowdb: 5.0.5
       oxide.ts: 1.1.0
     devDependencies:
