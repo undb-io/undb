@@ -16,9 +16,9 @@ export interface RootOperator {
 
 type ComparableFieldValue = ITextFieldValue | INumberFieldValue
 
-type FilterOperator = { $eq?: ComparableFieldValue } | { $neq?: ComparableFieldValue }
+type FilterOperator = { $eq: ComparableFieldValue } | { $neq: ComparableFieldValue }
 
-export type Operator = ComparableFieldValue | FilterOperator | { $not?: FilterOperator }
+export type Operator = ComparableFieldValue | FilterOperator | { $not: FilterOperator | ComparableFieldValue }
 
 const $comparableFieldValue = z.union([textFieldValue, numberFieldValue])
 
@@ -27,7 +27,7 @@ const $neq = z.object({ $neq: $comparableFieldValue })
 
 export const $filterOperator = z.union([$eq, $neq])
 
-const $not = z.lazy(() => z.object({ $not: $filterOperator }))
+const $not = z.lazy(() => z.object({ $not: $filterOperator.or($comparableFieldValue) }))
 
 export const $filter: z.ZodType<Filter> = z.lazy(() =>
   z.union([z.record($comparableFieldValue.or($filterOperator).or($not)), $rootOperator]),

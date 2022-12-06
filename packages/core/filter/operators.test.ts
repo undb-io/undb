@@ -4,6 +4,7 @@ test.each<Filter>([
   { hello: 'world' },
   { hello: { $eq: 'world' } },
   { hello: { $not: { $eq: 'world' } } },
+  { hello: { $not: 'world' } },
   {
     $and: [
       { $or: [{ hello: { $eq: 'world' } }, { hello: { $eq: 'this' } }] },
