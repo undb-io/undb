@@ -1,3 +1,5 @@
-export type { IRecordSpec, IRecordSpecVisitor } from './interface'
+export type { IRecordSpec, IRecordSpecVisitor, IRecordVisitor } from './interface'
+export * from './number.specification'
 export * from './record-id.specifaction'
 export * from './record-table-id.specification'
+export * from './string.specification'

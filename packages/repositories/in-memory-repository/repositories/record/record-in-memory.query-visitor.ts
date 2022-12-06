@@ -1,11 +1,20 @@
-import type { IRecordSpec, IRecordSpecVisitor, WithRecordId, WithRecordTableId } from '@egodb/core'
+import type {
+  IRecordSpec,
+  IRecordVisitor,
+  NumberEqual,
+  StringContain,
+  StringEqual,
+  WithRecordId,
+  WithRecordTableId,
+} from '@egodb/core'
+import { contains, isNumber, isString } from '@fxts/core'
 import type { Result } from 'oxide.ts'
 import { Err, Ok } from 'oxide.ts'
 import type { RecordInMemory } from './record.type'
 
 type RecordInMemoryPredicate = (value: RecordInMemory, index: number, obj: RecordInMemory[]) => unknown
 
-export class RecordInMemoryQueryVisitor implements IRecordSpecVisitor {
+export class RecordInMemoryQueryVisitor implements IRecordVisitor {
   private predicate?: RecordInMemoryPredicate
 
   getPredicate(): Result<RecordInMemoryPredicate, Error> {
@@ -32,5 +41,26 @@ export class RecordInMemoryQueryVisitor implements IRecordSpecVisitor {
 
   tableIdEqual(s: WithRecordTableId): void {
     this.predicate = (r) => r.tableId === s.id.value
+  }
+
+  stringEqual(s: StringEqual): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isString(value) && s.value === value
+    }
+  }
+
+  numberEqual(s: NumberEqual): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isNumber(value) && value === s.value
+    }
+  }
+
+  stringContain(s: StringContain): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isString(value) && contains(s.value, value)
+    }
   }
 }
