@@ -18,7 +18,7 @@ type ComparableFieldValue = ITextFieldValue | INumberFieldValue
 
 type FilterOperator = { $eq?: ComparableFieldValue } | { $neq?: ComparableFieldValue }
 
-export type Operator = ComparableFieldValue | FilterOperator
+export type Operator = ComparableFieldValue | FilterOperator | { $not?: FilterOperator }
 
 const $comparableFieldValue = z.union([textFieldValue, numberFieldValue])
 
@@ -27,8 +27,10 @@ const $neq = z.object({ $neq: $comparableFieldValue })
 
 export const $filterOperator = z.union([$eq, $neq])
 
+const $not = z.lazy(() => z.object({ $not: $filterOperator }))
+
 export const $filter: z.ZodType<Filter> = z.lazy(() =>
-  z.union([z.record($comparableFieldValue.or($filterOperator)), $rootOperator]),
+  z.union([z.record($comparableFieldValue.or($filterOperator).or($not)), $rootOperator]),
 )
 
 const $filters = z.array($filter).optional()

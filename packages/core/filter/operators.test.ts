@@ -3,6 +3,7 @@ import { $filter, Filter } from './operators'
 test.each<Filter>([
   { hello: 'world' },
   { hello: { $eq: 'world' } },
+  { hello: { $not: { $eq: 'world' } } },
   {
     $and: [
       { $or: [{ hello: { $eq: 'world' } }, { hello: { $eq: 'this' } }] },
