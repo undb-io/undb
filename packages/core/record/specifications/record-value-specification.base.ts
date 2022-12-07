@@ -1,4 +1,4 @@
-import { CompositeSpecification } from '@egodb/domain/dist'
+import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import type { Record } from '../record'
 import type { IRecordValueVisitor } from './interface'

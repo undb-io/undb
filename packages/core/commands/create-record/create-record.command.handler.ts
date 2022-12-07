@@ -1,4 +1,4 @@
-import type { ICommandHandler } from '@egodb/domain/dist'
+import type { ICommandHandler } from '@egodb/domain'
 import type { IRecordRepository } from '../../record/repository'
 import type { ITableRepository } from '../../repository'
 import type { ICreateTableOutput } from '../create-table'

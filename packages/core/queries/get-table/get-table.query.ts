@@ -1,4 +1,4 @@
-import { Query } from '@egodb/domain/dist'
+import { Query } from '@egodb/domain'
 import type { IGetTableQuery } from './get-table.query.interface'
 
 export class GetTableQuery extends Query {

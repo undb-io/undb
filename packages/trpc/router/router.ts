@@ -1,6 +1,6 @@
 import { middleware, publicProcedure, router } from '../trpc'
 
-import type { ICommandBus, IQueryBus } from '@egodb/domain/dist'
+import type { ICommandBus, IQueryBus } from '@egodb/domain'
 import type { ILogger } from '../type'
 import { createRecordRouter } from './record'
 import { createTableRouter } from './table'
