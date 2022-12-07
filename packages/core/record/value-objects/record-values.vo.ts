@@ -1,4 +1,4 @@
-import { ValueObject } from '@egodb/domain/dist'
+import { ValueObject } from '@egodb/domain'
 import { isNumber, isString } from '@fxts/core'
 import { None, Option, Some } from 'oxide.ts'
 import type { FieldValue, ICreateFieldsSchema_internal, IFieldValue, UnpackedFieldValue } from '../../field'
