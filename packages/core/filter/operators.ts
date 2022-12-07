@@ -4,10 +4,7 @@ import { numberFieldValue } from '../field/number-field.type'
 import type { ITextFieldValue } from '../field/text-field.type'
 import { textFieldValue } from '../field/text-field.type'
 
-export type Filter<TSchema extends Record<string, ComparableFieldValue> = Record<string, ComparableFieldValue>> =
-  | RootOperator
-  | TSchema
-  | Record<string, Operator>
+export type Filter = RootOperator | Record<string, Operator>
 
 export interface RootOperator {
   $and?: Filter[]
@@ -15,10 +12,11 @@ export interface RootOperator {
 }
 
 type ComparableFieldValue = ITextFieldValue | INumberFieldValue
+type LeafOperator = { $eq: ComparableFieldValue } | { $neq: ComparableFieldValue }
+type NotOperator = { $not: ValueOperator }
 
-type FilterOperator = { $eq: ComparableFieldValue } | { $neq: ComparableFieldValue }
-
-export type Operator = ComparableFieldValue | FilterOperator | { $not: FilterOperator | ComparableFieldValue }
+type ValueOperator = ComparableFieldValue | LeafOperator
+export type Operator = ValueOperator | NotOperator
 
 const $comparableFieldValue = z.union([textFieldValue, numberFieldValue])
 
