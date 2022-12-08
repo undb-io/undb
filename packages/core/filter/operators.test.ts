@@ -1,6 +1,6 @@
-import { $filter, Filter } from './operators'
+import { $filter, IFilter } from './operators'
 
-test.each<Filter>([
+test.each<IFilter>([
   { hello: 'world' },
   { hello: { $eq: 'world' } },
   { hello: { $not: { $eq: 'world' } } },

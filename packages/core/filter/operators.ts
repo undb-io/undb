@@ -4,11 +4,11 @@ import { numberFieldValue } from '../field/number-field.type'
 import type { ITextFieldValue } from '../field/text-field.type'
 import { textFieldValue } from '../field/text-field.type'
 
-export type Filter = RootOperator | Record<string, Operator>
+export type IFilter = RootOperator | Record<string, Operator>
 
 export interface RootOperator {
-  $and?: Filter[]
-  $or?: Filter[]
+  $and?: IFilter[]
+  $or?: IFilter[]
 }
 
 type ComparableFieldValue = ITextFieldValue | INumberFieldValue
@@ -27,7 +27,7 @@ export const $filterOperator = z.union([$eq, $neq])
 
 const $not = z.lazy(() => z.object({ $not: $filterOperator.or($comparableFieldValue) }))
 
-export const $filter: z.ZodType<Filter> = z.lazy(() =>
+export const $filter: z.ZodType<IFilter> = z.lazy(() =>
   z.union([z.record($comparableFieldValue.or($filterOperator).or($not)), $rootOperator]),
 )
 
@@ -36,3 +36,10 @@ const $rootOperator = z.object({
   $and: $filters,
   $or: $filters,
 })
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace IOperator {
+  export type Eq = z.infer<typeof $eq>
+  export type Neq = z.infer<typeof $neq>
+  export type Not = z.infer<typeof $not>
+}
