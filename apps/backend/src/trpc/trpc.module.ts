@@ -1,4 +1,4 @@
-import { swaggerServe } from '@egodb/trpc/dist'
+import { swaggerServe } from '@egodb/trpc'
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common'
 import { Logger, Module, RequestMethod } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'

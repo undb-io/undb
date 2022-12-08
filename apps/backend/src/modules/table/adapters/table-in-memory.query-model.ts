@@ -1,4 +1,4 @@
-import type { ITableQueryModel } from '@egodb/core/dist'
+import type { ITableQueryModel } from '@egodb/core'
 import { TableInMemoryQueryModel } from '@egodb/in-memory-repository'
 import { Injectable } from '@nestjs/common'
 

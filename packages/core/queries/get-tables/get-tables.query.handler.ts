@@ -1,5 +1,5 @@
 import type { IQueryHandler } from '@egodb/domain'
-import type { ITableQueryModel } from '../../query-model'
+import type { ITableQueryModel } from '../../table.query-model'
 import type { GetTablesQuery } from './get-tables.query'
 import type { IGetTablesOutput } from './get-tables.query.interface'
 

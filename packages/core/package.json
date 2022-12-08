@@ -21,7 +21,7 @@
   "scripts": {
     "build": "tsup",
     "coverage": "vitest run --coverage",
-    "dev": "tsup --watch --onSuccess \"tsc --emitDeclarationOnly --declaration\"",
+    "dev": "tsup --watch",
     "prebuild": "rimraf dist",
     "test": "vitest run",
     "test:watch": "vitest"
