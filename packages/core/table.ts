@@ -1,25 +1,36 @@
 import { filter, map, pipe, toArray } from '@fxts/core'
 import type { ICreateRecordInput } from './commands'
-import type { ICreateFieldsSchema_internal, ICreateFieldValueSchema_internal } from './field'
+import type { ICreateFieldsSchema_internal, ICreateFieldValueSchema_internal, IQuerySchemaSchema } from './field'
 import { createFieldValueSchema_internal } from './field'
 import { Record } from './record'
 import type { ICreateTableInput_internal } from './table.schema'
-import type { IQueryTable } from './table.type'
 import { TableId, TableSchema } from './value-objects'
 import { TableName } from './value-objects/table-name.vo'
+import type { IQueryView } from './view'
 import { defaultViewDiaplyType, View } from './view'
+import { Views } from './view/views'
+
+/**
+ * QueryTable
+ */
+export interface IQueryTable {
+  id: string
+  name: string
+  schema: IQuerySchemaSchema
+  views?: IQueryView[]
+}
 
 export class Table {
   public id: TableId
   public name: TableName
   public schema: TableSchema
-  public defaultView: View
+  public views: Views
 
-  constructor(id = TableId.create(), name: TableName, schema: TableSchema, defaultView?: View) {
+  constructor(id = TableId.create(), name: TableName, schema: TableSchema, views?: Views) {
     this.id = id
     this.name = name
     this.schema = schema
-    this.defaultView = defaultView ?? this.createDefaultView()
+    this.views = views?.views.length ? views : this.createDefaultViews()
   }
 
   static create(input: ICreateTableInput_internal): Table {
@@ -27,7 +38,7 @@ export class Table {
       TableId.fromOrCreate(input.id),
       TableName.create(input.name),
       TableSchema.create(input.schema),
-      input.defaultView ? View.create(input.defaultView) : undefined,
+      Views.create(input.views),
     )
   }
 
@@ -36,7 +47,7 @@ export class Table {
       TableId.fromOrCreate(input.id),
       TableName.unsafeCreate(input.name),
       TableSchema.unsafeCreate(input.schema),
-      input.defaultView ? View.create(input.defaultView) : undefined,
+      Views.create(input.views),
     )
   }
 
@@ -45,7 +56,7 @@ export class Table {
       id: q.id,
       name: q.name,
       schema: q.schema,
-      defaultView: q.defaultView,
+      views: q.views,
     })
   }
 
@@ -58,14 +69,23 @@ export class Table {
         name: c.name.value,
         type: c.type,
       })),
-      defaultView: {
-        name: this.defaultView.name.unpack(),
-        displayType: this.defaultView.displayType,
-      },
+      views: this.views.views.map((v) => ({
+        name: v.name.unpack(),
+        displayType: v.displayType,
+      })),
     }
   }
-  public createDefaultView(): View {
+
+  public get defaultView(): View {
+    return this.views.defaultView.unwrapOrElse(() => this.createDefaultView())
+  }
+
+  private createDefaultView(): View {
     return View.create({ name: this.name.value, displayType: defaultViewDiaplyType })
+  }
+
+  public createDefaultViews(): Views {
+    return new Views([this.createDefaultView()])
   }
 
   public createRecord(input: ICreateRecordInput): Record {

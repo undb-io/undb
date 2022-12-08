@@ -1,4 +1,3 @@
-import type { ITableCommandBus, ITableQueryBus } from '@egodb/core'
 import {
   CreateTableCommand,
   createTableCommandInput,
@@ -10,6 +9,7 @@ import {
   getTablesQueryOutput,
   getTablesQuerySchema,
 } from '@egodb/core'
+import type { ICommandBus, IQueryBus } from '@egodb/domain'
 import type { publicProcedure } from '../trpc'
 import { router } from '../trpc'
 
@@ -17,7 +17,7 @@ const TAG_TABLE = 'table'
 const tags = [TAG_TABLE]
 
 export const createTableRouter =
-  (procedure: typeof publicProcedure) => (commandBus: ITableCommandBus, queryBus: ITableQueryBus) =>
+  (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
     router({
       get: procedure
         .meta({ openapi: { method: 'GET', path: '/table.get', tags } })
