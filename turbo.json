@@ -8,6 +8,9 @@
     "lint": {
       "outputs": []
     },
+    "clean": {
+      "outputs": []
+    },
     "test": {
       "outputs": []
     },

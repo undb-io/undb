@@ -26,6 +26,7 @@
     "build": "turbo run build",
     "commit": "cz",
     "dev": "FORCE_COLOR=1 turbo run dev --parallel",
+    "clean": "turbo run clean --parallel",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "preinstall": "npx only-allow pnpm",
