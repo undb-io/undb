@@ -20,22 +20,24 @@ export type Operator = ValueOperator | NotOperator
 
 const $comparableFieldValue = z.union([textFieldValue, numberFieldValue])
 
-const $eq = z.object({ $eq: $comparableFieldValue })
-const $neq = z.object({ $neq: $comparableFieldValue })
+const $eq = z.object({ $eq: $comparableFieldValue }).strict()
+const $neq = z.object({ $neq: $comparableFieldValue }).strict()
 
 export const $filterOperator = z.union([$eq, $neq])
 
-const $not = z.lazy(() => z.object({ $not: $filterOperator.or($comparableFieldValue) }))
+const $not = z.lazy(() => z.object({ $not: $filterOperator.or($comparableFieldValue) }).strict())
 
 export const $filter: z.ZodType<IFilter> = z.lazy(() =>
   z.union([z.record($comparableFieldValue.or($filterOperator).or($not)), $rootOperator]),
 )
 
 const $filters = z.array($filter).optional()
-const $rootOperator = z.object({
-  $and: $filters,
-  $or: $filters,
-})
+const $rootOperator = z
+  .object({
+    $and: $filters,
+    $or: $filters,
+  })
+  .strict()
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace IOperator {

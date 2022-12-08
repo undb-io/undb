@@ -6,13 +6,16 @@ import type { ICreateViewInput_internal, IView, IViewDisplayType } from './view.
 export const defaultViewDiaplyType: IViewDisplayType = 'grid'
 
 export class View extends ValueObject<IView> {
-  public name: ViewName
-  public displayType: IViewDisplayType
+  public get name() {
+    return this.props.name
+  }
 
-  constructor(view: IView) {
-    super(view)
-    this.name = view.name
-    this.displayType = view.displayType
+  public get displayType() {
+    return this.props.displayType
+  }
+
+  public get filters() {
+    return this.props.filters
   }
 
   static create(input: ICreateViewInput_internal): View {
