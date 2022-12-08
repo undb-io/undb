@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { createTableCommandInput } from './commands'
 import { querySchemaSchema } from './field'
-import type { IQueryTable } from './table.type'
+import type { IQueryTable } from './table'
 import { createViewInput_internal, queryViews } from './view'
 
 export const createTableInput_internal = createTableCommandInput.merge(

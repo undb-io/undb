@@ -1,14 +1,24 @@
 import { filter, map, pipe, toArray } from '@fxts/core'
 import type { ICreateRecordInput } from './commands'
-import type { ICreateFieldsSchema_internal, ICreateFieldValueSchema_internal } from './field'
+import type { ICreateFieldsSchema_internal, ICreateFieldValueSchema_internal, IQuerySchemaSchema } from './field'
 import { createFieldValueSchema_internal } from './field'
 import { Record } from './record'
 import type { ICreateTableInput_internal } from './table.schema'
-import type { IQueryTable } from './table.type'
 import { TableId, TableSchema } from './value-objects'
 import { TableName } from './value-objects/table-name.vo'
+import type { IQueryView } from './view'
 import { defaultViewDiaplyType, View } from './view'
 import { Views } from './view/views'
+
+/**
+ * QueryTable
+ */
+export interface IQueryTable {
+  id: string
+  name: string
+  schema: IQuerySchemaSchema
+  views?: IQueryView[]
+}
 
 export class Table {
   public id: TableId

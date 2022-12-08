@@ -21,5 +21,5 @@ export type TableInMemory = {
   id: string
   name: string
   schema: FieldInMemory[]
-  defaultView: ViewInMemory
+  views: ViewInMemory[]
 }

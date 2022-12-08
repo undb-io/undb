@@ -9,7 +9,7 @@ export class TableInMemoryMapper {
       id: t.id,
       name: t.name,
       schema: t.schema,
-      defaultView: t.defaultView,
+      views: t.views,
     })
     return Ok(table)
   }
@@ -24,10 +24,10 @@ export class TableInMemoryMapper {
         type: c.type,
         required: c.required,
       })),
-      defaultView: {
-        name: t.defaultView.name.unpack(),
-        displayType: t.defaultView.displayType,
-      },
+      views: t.views.views.map((v) => ({
+        name: v.name.unpack(),
+        displayType: v.displayType,
+      })),
     }
   }
 }
