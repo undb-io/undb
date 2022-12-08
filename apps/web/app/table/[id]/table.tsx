@@ -38,7 +38,6 @@ export default function Table({ table, records }: IProps) {
 
   return (
     <Box>
-      <TableHaeder table={table} />
       <Box px="md">
         <TableHaeder table={table} />
         <TableToolbar table={table} />
