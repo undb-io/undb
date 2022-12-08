@@ -15,3 +15,5 @@ export const queryView = z.object({
   displayType: viewDisplayType,
   filters: $filter.optional(),
 })
+
+export const queryViews = z.array(queryView).optional()

@@ -5,5 +5,5 @@ export interface IQueryTable {
   id: string
   name: string
   schema: IQuerySchemaSchema
-  defaultView: IQueryView
+  views?: IQueryView[]
 }
