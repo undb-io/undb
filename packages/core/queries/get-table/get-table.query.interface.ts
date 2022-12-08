@@ -4,4 +4,3 @@ import type { getTableQuerySchema } from './get-table.query.schema'
 
 export type IGetTableQuery = z.infer<typeof getTableQuerySchema>
 export type IGetTableOutput = z.infer<typeof getTableQueryOutput>
-export type NonNullableGetTableOutput = NonNullable<IGetTableOutput>

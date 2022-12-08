@@ -1,6 +1,6 @@
 import type { ICommandHandler } from '@egodb/domain'
 import type { IRecordRepository } from '../../record/repository'
-import type { ITableRepository } from '../../repository'
+import type { ITableRepository } from '../../table.repository'
 import type { ICreateTableOutput } from '../create-table'
 import type { CreateRecordCommand } from './create-record.comand'
 

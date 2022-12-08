@@ -12,8 +12,14 @@ type TextFieldInMemory = {
 
 type FieldInMemory = TextFieldInMemory | NumberFieldInMemory
 
+type ViewInMemory = {
+  name: string
+  displayType: 'grid' | 'kanban'
+}
+
 export type TableInMemory = {
   id: string
   name: string
   schema: FieldInMemory[]
+  defaultView: ViewInMemory
 }
