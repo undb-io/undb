@@ -4,14 +4,16 @@ import { FieldInputLabel } from '../fields/field-input-label'
 
 interface IProps {
   schema: Table['schema']
+  value: Field | null
   onChange: (field: Field | null) => void
 }
-export const FieldSelector: React.FC<IProps> = ({ schema, onChange }) => {
+export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => {
   return (
     <Select
       label={<FieldInputLabel>Field</FieldInputLabel>}
       searchable
       clearable
+      value={value?.name.value}
       onChange={(value) => {
         onChange(value ? schema.getField(value).into(null) : null)
       }}

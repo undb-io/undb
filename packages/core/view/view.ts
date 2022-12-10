@@ -29,6 +29,7 @@ export class View extends ValueObject<IView> {
     return new View({
       name: ViewName.create(parsed.name),
       displayType: parsed.displayType || defaultViewDiaplyType,
+      filters: parsed.filters ? new Filters(parsed.filters) : undefined,
     })
   }
 }

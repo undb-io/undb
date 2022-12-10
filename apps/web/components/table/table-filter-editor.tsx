@@ -11,6 +11,8 @@ export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
   const setFilters = trpc.table.setFilters.useMutation({
     onSuccess: () => {
       handler.close()
+
+      utils.table.get.refetch({ id: table.id.value })
       utils.record.list.refetch({ tableId: table.id.value })
     },
   })
@@ -18,14 +20,14 @@ export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
   return (
     <Popover position="bottom-start" opened={opened} onChange={handler.toggle} closeOnClickOutside>
       <Popover.Target>
-        <Button variant="white" leftIcon={<IconFilter size={18} />} onClick={handler.open}>
+        <Button variant="white" leftIcon={<IconFilter size={18} />} onClick={handler.toggle}>
           Filter
         </Button>
       </Popover.Target>
 
       <Popover.Dropdown>
         <FiltersEditor
-          schema={table.schema}
+          table={table}
           onApply={(filters) => {
             setFilters.mutate({ tableId: table.id.value, filters })
           }}

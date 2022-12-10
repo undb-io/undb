@@ -6,10 +6,11 @@ import { FieldInputLabel } from '../fields/field-input-label'
 
 interface IProps {
   field: Field | null
+  value: IFieldValue
   onChange: (v: IFieldValue) => void
 }
 
-export const FilterValueInput: React.FC<IProps> = ({ field, onChange }) => {
+export const FilterValueInput: React.FC<IProps> = ({ field, value, onChange }) => {
   if (!field) {
     return null
   }
@@ -17,11 +18,11 @@ export const FilterValueInput: React.FC<IProps> = ({ field, onChange }) => {
   const label = <FieldInputLabel>value</FieldInputLabel>
 
   if (field instanceof TextField) {
-    return <TextInput label={label} onChange={(event) => onChange(event.target.value)} />
+    return <TextInput label={label} value={value as string} onChange={(event) => onChange(event.target.value)} />
   }
 
   if (field instanceof NumberField) {
-    return <NumberInput label={label} onChange={(number) => onChange(number || null)} />
+    return <NumberInput label={label} value={value as number} onChange={(number) => onChange(number || null)} />
   }
 
   return null

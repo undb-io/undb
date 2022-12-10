@@ -1,17 +1,19 @@
-import type { IRecordOperator, TableSchema } from '@egodb/core'
+import type { IFilter, IRecordOperator, Table } from '@egodb/core'
 import { Box, Button, Divider, Group, IconPlus, Stack, useListState } from '@egodb/ui'
 import { FieldFilter } from './field-filter'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 
 interface IProps {
-  schema: TableSchema
+  table: Table
   onChange?: (filters: IRecordOperator[]) => void
   onApply?: (filters: IRecordOperator[]) => void
   onCancel?: () => void
 }
 
-export const FiltersEditor: React.FC<IProps> = ({ schema, onChange, onApply, onCancel }) => {
-  const [filters, handlers] = useListState<IRecordOperator | null>([null])
+export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCancel }) => {
+  const initialFilters = table.getOrCreateDefaultView().filters?.value
+  const recordFilters = initialFilters ? Object.values(initialFilters) : undefined
+  const [filters, handlers] = useListState<IFilter | null>(recordFilters ?? [null])
   const validFilters = filters.filter((f) => f !== null) as IRecordOperator[]
 
   useDeepCompareEffect(() => {
@@ -21,11 +23,12 @@ export const FiltersEditor: React.FC<IProps> = ({ schema, onChange, onApply, onC
   return (
     <Box miw={640}>
       <Stack>
-        {filters.map((_, index) => (
+        {filters.map((filter, index) => (
           <FieldFilter
             key={index}
-            schema={schema}
+            schema={table.schema}
             index={index}
+            value={filter}
             onChange={(operator, index) => handlers.setItem(index, operator)}
           />
         ))}

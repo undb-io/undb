@@ -76,6 +76,7 @@ export class Table {
       views: this.views.views.map((v) => ({
         name: v.name.unpack(),
         displayType: v.displayType,
+        filters: v.filters?.value,
       })),
     }
   }
