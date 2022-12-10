@@ -119,7 +119,6 @@ importers:
       '@egodb/table-ui': ^0.0.0
       '@egodb/trpc': ^0.0.0
       '@egodb/ui': ^0.0.0
-      '@formkit/auto-animate': 1.0.0-beta.5
       '@tanstack/react-query': ^4.19.0
       '@tanstack/react-query-devtools': ^4.19.0
       '@trpc/client': ^10.4.2
@@ -146,7 +145,6 @@ importers:
       '@egodb/table-ui': link:../../packages/table-ui
       '@egodb/trpc': link:../../packages/trpc
       '@egodb/ui': link:../../packages/ui
-      '@formkit/auto-animate': 1.0.0-beta.5
       '@tanstack/react-query': 4.19.0_biqbaboplfbrettd7655fr4n2y
       '@tanstack/react-query-devtools': 4.19.0_budcsmmktl2xfbndofa5sinodm
       '@trpc/client': 10.4.2_@trpc+server@10.4.2
@@ -1234,10 +1232,6 @@ packages:
       '@floating-ui/dom': 1.0.6
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-    dev: false
-
-  /@formkit/auto-animate/1.0.0-beta.5:
-    resolution: {integrity: sha512-WoSwyhAZPOe6RB/IgicOtCHtrWwEpfKIZ/H/nxpKfnZL9CB6hhhBGU5bCdMRw7YpAUF2CDlQa+WWh+gCqz5lDg==}
     dev: false
 
   /@fxts/core/0.11.0:
