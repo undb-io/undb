@@ -1,3 +1,4 @@
+import type { IQueryTable } from '@egodb/core'
 import {
   CreateTableCommand,
   createTableCommandInput,
@@ -8,8 +9,11 @@ import {
   GetTablesQuery,
   getTablesQueryOutput,
   getTablesQuerySchema,
+  setFiltersCommandInput,
+  SetFitlersCommand,
 } from '@egodb/core'
 import type { ICommandBus, IQueryBus } from '@egodb/domain'
+import * as z from 'zod'
 import type { publicProcedure } from '../trpc'
 import { router } from '../trpc'
 
@@ -25,7 +29,7 @@ export const createTableRouter =
         .output(getTableQueryOutput)
         .query(({ input }) => {
           const query = new GetTableQuery({ id: input.id })
-          return queryBus.execute(query)
+          return queryBus.execute<IQueryTable>(query)
         }),
       list: procedure
         .meta({ openapi: { method: 'GET', path: '/table.list', tags } })
@@ -33,7 +37,7 @@ export const createTableRouter =
         .output(getTablesQueryOutput)
         .query(() => {
           const query = new GetTablesQuery()
-          return queryBus.execute(query)
+          return queryBus.execute<IQueryTable[]>(query)
         }),
       create: procedure
         .meta({ openapi: { method: 'POST', path: '/table.create', tags } })
@@ -42,5 +46,13 @@ export const createTableRouter =
         .mutation(({ input }) => {
           const cmd = new CreateTableCommand({ name: input.name, schema: input.schema })
           return commandBus.execute(cmd)
+        }),
+      setFilters: procedure
+        .meta({ openapi: { method: 'POST', path: '/table.setFitlers', tags } })
+        .input(setFiltersCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new SetFitlersCommand(input)
+          return commandBus.execute<void>(cmd)
         }),
     })

@@ -1,5 +1,6 @@
 export * from './commands'
 export * from './field'
+export * from './filter'
 export * from './queries'
 export * from './record'
 export * from './specifications'
