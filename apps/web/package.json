@@ -10,6 +10,7 @@
     "@egodb/table-ui": "^0.0.0",
     "@egodb/trpc": "^0.0.0",
     "@egodb/ui": "^0.0.0",
+    "@formkit/auto-animate": "1.0.0-beta.5",
     "@tanstack/react-query": "^4.19.0",
     "@tanstack/react-query-devtools": "^4.19.0",
     "@trpc/client": "^10.4.2",
@@ -19,7 +20,8 @@
     "jotai": "^1.11.0",
     "next": "^13.0.5",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "use-deep-compare-effect": "^1.8.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",

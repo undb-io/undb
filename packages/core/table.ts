@@ -1,9 +1,8 @@
 import { filter, map, pipe, toArray } from '@fxts/core'
-import type { Result } from 'oxide.ts'
 import type { ICreateRecordInput } from './commands'
 import type { ICreateFieldsSchema_internal, ICreateFieldValueSchema_internal, IQuerySchemaSchema } from './field'
 import { createFieldValueSchema_internal } from './field'
-import type { IFilter } from './filter'
+import type { IFilters } from './filter'
 import { Record } from './record'
 import type { ICreateTableInput_internal } from './table.schema'
 import { TableId, TableSchema } from './value-objects'
@@ -90,8 +89,13 @@ export class Table {
     return new Views([this.createDefaultView()])
   }
 
-  public setFilters(filters: IFilter, viewName?: string): Result<void, Error> {
-    throw new Error('unimplemented')
+  public getOrCreateDefaultView(viewName?: string): View {
+    return this.views.getByName(viewName).unwrapOrElse(() => this.defaultView)
+  }
+
+  public setFilters(filters?: IFilters, viewName?: string): void {
+    const view = this.getOrCreateDefaultView(viewName)
+    view.setFilters(filters)
   }
 
   public createRecord(input: ICreateRecordInput): Record {

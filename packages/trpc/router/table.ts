@@ -13,7 +13,7 @@ import {
   SetFitlersCommand,
 } from '@egodb/core'
 import type { ICommandBus, IQueryBus } from '@egodb/domain'
-import * as z from 'zod'
+import { z } from 'zod'
 import type { publicProcedure } from '../trpc'
 import { router } from '../trpc'
 

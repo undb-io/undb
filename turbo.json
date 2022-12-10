@@ -9,6 +9,7 @@
       "outputs": []
     },
     "clean": {
+      "cache": false,
       "outputs": []
     },
     "test": {

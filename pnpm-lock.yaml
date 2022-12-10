@@ -119,6 +119,7 @@ importers:
       '@egodb/table-ui': ^0.0.0
       '@egodb/trpc': ^0.0.0
       '@egodb/ui': ^0.0.0
+      '@formkit/auto-animate': 1.0.0-beta.5
       '@tanstack/react-query': ^4.19.0
       '@tanstack/react-query-devtools': ^4.19.0
       '@trpc/client': ^10.4.2
@@ -135,6 +136,7 @@ importers:
       react-dom: ^18.2.0
       tsconfig: ^0.0.0
       typescript: ^4.9.3
+      use-deep-compare-effect: ^1.8.1
     dependencies:
       '@dnd-kit/core': 6.0.5_biqbaboplfbrettd7655fr4n2y
       '@dnd-kit/modifiers': 6.0.0_vvd3dzag27tc7rclyb2whqqnpe
@@ -144,6 +146,7 @@ importers:
       '@egodb/table-ui': link:../../packages/table-ui
       '@egodb/trpc': link:../../packages/trpc
       '@egodb/ui': link:../../packages/ui
+      '@formkit/auto-animate': 1.0.0-beta.5
       '@tanstack/react-query': 4.19.0_biqbaboplfbrettd7655fr4n2y
       '@tanstack/react-query-devtools': 4.19.0_budcsmmktl2xfbndofa5sinodm
       '@trpc/client': 10.4.2_@trpc+server@10.4.2
@@ -154,6 +157,7 @@ importers:
       next: 13.0.5_672uxklweod7ene3nqtsh262ca
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+      use-deep-compare-effect: 1.8.1_react@18.2.0
     devDependencies:
       '@babel/core': 7.20.5
       '@egodb/eslint-config': link:../../packages/eslint-config
@@ -1230,6 +1234,10 @@ packages:
       '@floating-ui/dom': 1.0.6
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@formkit/auto-animate/1.0.0-beta.5:
+    resolution: {integrity: sha512-WoSwyhAZPOe6RB/IgicOtCHtrWwEpfKIZ/H/nxpKfnZL9CB6hhhBGU5bCdMRw7YpAUF2CDlQa+WWh+gCqz5lDg==}
     dev: false
 
   /@fxts/core/0.11.0:
@@ -4059,6 +4067,11 @@ packages:
   /depd/2.0.0:
     resolution: {integrity: sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==}
     engines: {node: '>= 0.8'}
+
+  /dequal/2.0.3:
+    resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
+    engines: {node: '>=6'}
+    dev: false
 
   /destroy/1.2.0:
     resolution: {integrity: sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==}
@@ -9290,6 +9303,17 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
+      react: 18.2.0
+    dev: false
+
+  /use-deep-compare-effect/1.8.1_react@18.2.0:
+    resolution: {integrity: sha512-kbeNVZ9Zkc0RFGpfMN3MNfaKNvcLNyxOAAd9O4CBZ+kCBXXscn9s/4I+8ytUER4RDpEYs5+O6Rs4PqiZ+rHr5Q==}
+    engines: {node: '>=10', npm: '>=6'}
+    peerDependencies:
+      react: '>=16.13'
+    dependencies:
+      '@babel/runtime': 7.20.1
+      dequal: 2.0.3
       react: 18.2.0
     dev: false
 

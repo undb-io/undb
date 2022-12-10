@@ -5,6 +5,6 @@
   "compilerOptions": {
     "module": "CommonJS",
     "types": ["vitest/globals"],
-    "target": "es6"
+    "target": "es2020"
   }
 }
