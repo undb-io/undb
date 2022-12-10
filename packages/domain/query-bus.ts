@@ -1,5 +1,5 @@
 import type { Query } from './query'
 
-export interface IQueryBus<TQuery extends Query = Query, TResult = any> {
-  execute(command: TQuery): Promise<TResult>
+export interface IQueryBus<TQuery extends Query = Query> {
+  execute<TResult>(command: TQuery): Promise<TResult>
 }

@@ -1,3 +1,5 @@
+import type { IFilters } from '@egodb/core'
+
 type NumberFieldInMemory = {
   id: string
   type: 'text'
@@ -15,6 +17,7 @@ type FieldInMemory = TextFieldInMemory | NumberFieldInMemory
 type ViewInMemory = {
   name: string
   displayType: 'grid' | 'kanban'
+  filters?: IFilters
 }
 
 export type TableInMemory = {

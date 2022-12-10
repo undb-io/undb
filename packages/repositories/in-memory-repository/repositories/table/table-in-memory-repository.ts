@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { ITableRepository, ITableSpec, Table } from '@egodb/core'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { db } from '../db.js'
 import { TableInMemoryMapper } from './table-in-memory.mapper.js'
+import { TableInMemoryMutationVisitor } from './table-in-memory.mutation-visitor.js'
 import { TableInMemoryQueryVisitor } from './table-in-memory.query-visitor.js'
 
 export class TableInMemoryRepository implements ITableRepository {
@@ -30,7 +32,6 @@ export class TableInMemoryRepository implements ITableRepository {
 
     const predicate = visitor.getPredicate().unwrap()
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return db
       .data!.tables.filter(predicate)
       .map(TableInMemoryMapper.toDomain)
@@ -38,6 +39,15 @@ export class TableInMemoryRepository implements ITableRepository {
   }
 
   async insert(table: Table): Promise<void> {
-    db.data?.tables.push(TableInMemoryMapper.toInMemory(table))
+    const t = TableInMemoryMapper.toInMemory(table)
+    db.data?.tables.push(t)
+  }
+
+  async updateOneById(id: string, spec: ITableSpec): Promise<void> {
+    const table = db.data!.tables.find((t) => t.id === id)
+    if (!table) return
+
+    const visitor = new TableInMemoryMutationVisitor(table)
+    spec.accept(visitor)
   }
 }

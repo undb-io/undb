@@ -15,6 +15,7 @@ export * from './AppShell'
 export * from './Divider'
 export * from './Provider'
 export * from './Inputs'
+export * from './Popover'
 export * from './Typography'
 export * from './Feedback'
 

@@ -1,3 +1,4 @@
+import type { CompositeSpecification } from '@egodb/domain'
 import { type ISpecification } from '@egodb/domain'
 import { type Record } from '../record'
 import type { NumberEqual } from './number.specification'
@@ -20,3 +21,5 @@ export interface IRecordValueVisitor {
 export type IRecordSpec = ISpecification<Record, IRecordVisitor>
 
 export type IRecordVisitor = IRecordSpecVisitor & IRecordValueVisitor
+
+export type IRecordSpecificaiton = CompositeSpecification<Record, IRecordValueVisitor>

@@ -15,4 +15,8 @@ export class Views extends ValueObject<View[]> {
   static create(views: ICreateViewInput_internal[] = []): Views {
     return new this(views.map((v) => View.create(v)))
   }
+
+  getByName(viewName: string): Option<View> {
+    return Option(this.views.find((v) => v.name.unpack() === viewName))
+  }
 }

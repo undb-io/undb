@@ -33,4 +33,8 @@ export class TableInMemoryQueryVisitor implements ITableSpecVisitor {
   nameEqual(s: WithName): void {
     this.predicate = (t) => t.name === s.name.value
   }
+
+  filtersEqual(): void {
+    throw new Error('cannot query by filters')
+  }
 }

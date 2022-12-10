@@ -1,5 +1,7 @@
 import { ValueObject } from '@egodb/domain'
+import { isEmpty } from '@fxts/core'
 import * as z from 'zod'
+import type { ComparableFieldValue, IOperator, IRecordOperator, LeafOperator } from '../filter'
 import type { IBaseField, IFieldType } from './field.type'
 import type { FieldName } from './value-objects'
 import { fieldNameSchema, valueConstraintsSchema } from './value-objects'
@@ -28,5 +30,13 @@ export abstract class BaseField<C extends IBaseField> extends ValueObject<C> {
 
   public get required(): boolean {
     return this.props.valueConstrains.required
+  }
+
+  createFilter(operator: IOperator.LeafOperator, value: ComparableFieldValue | null): IRecordOperator {
+    return {
+      [this.name.value]: {
+        [operator]: isEmpty(value) ? null : value,
+      } as LeafOperator,
+    }
   }
 }
