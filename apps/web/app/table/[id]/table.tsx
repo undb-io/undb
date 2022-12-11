@@ -2,8 +2,8 @@
 
 import type { Table as CoreTable, QueryRecords } from '@egodb/core'
 import { EGOTable } from '@egodb/table-ui'
-import { Box, NumberInput, openConfirmModal, TextInput, Space } from '@egodb/ui'
-import { useAtom } from 'jotai'
+import { Box, Space } from '@egodb/ui'
+import { useUpdateAtom } from 'jotai/utils'
 import { CreateRecordFormDrawer } from '../../../components/create-record-form/create-record-form-drawer'
 import { editRecordFormDrawerOpened } from '../../../components/edit-record-form/drawer-opened.atom'
 import { EditRecordFormDrawer } from '../../../components/edit-record-form/edit-record-form-drawer'
@@ -16,7 +16,7 @@ interface IProps {
 }
 
 export default function Table({ table, records }: IProps) {
-  const [, setOpened] = useAtom(editRecordFormDrawerOpened)
+  const setOpened = useUpdateAtom(editRecordFormDrawerOpened)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const rowClick = (row: any) => {
