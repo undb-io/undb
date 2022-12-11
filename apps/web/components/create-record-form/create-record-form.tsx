@@ -1,5 +1,5 @@
 import type { Table } from '@egodb/core'
-import { Alert, Text, Button, Divider, Group, HoverCard, IconAlertCircle, NumberInput, TextInput } from '@egodb/ui'
+import { Alert, Button, Divider, Group, IconAlertCircle, NumberInput, TextInput } from '@egodb/ui'
 import { trpc } from '../../trpc'
 import { FieldInputLabel } from '../fields/field-input-label'
 import { useCreateRecordFormContext } from './create-record-form-context'
