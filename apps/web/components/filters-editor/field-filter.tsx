@@ -1,4 +1,4 @@
-import type { Field, IFieldValue, IFilter, IOperator, IRecordOperator, Table } from '@egodb/core'
+import type { Field, IFieldValue, IFilter, IOperator, IRecordOperator, TableSchema } from '@egodb/core'
 import { Group } from '@egodb/ui'
 import { useEffect, useState } from 'react'
 import { FieldSelector } from './field-selector'
@@ -6,7 +6,7 @@ import { FilterValueInput } from './filter-value-input'
 import { OperatorSelector } from './operator-selector'
 
 interface IProps {
-  schema: Table['schema']
+  schema: TableSchema
   index: number
   value: IFilter | null
   onChange: (field: IRecordOperator | null, index: number) => void
