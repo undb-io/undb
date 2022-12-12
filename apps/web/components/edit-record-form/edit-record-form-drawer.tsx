@@ -3,15 +3,16 @@ import { createRecordCommandInput } from '@egodb/core'
 import { Drawer, useEgoUITheme, zodResolver } from '@egodb/ui'
 import { useAtom } from 'jotai'
 import { useConfirmModal } from '../../hooks'
-import { CreateRecordForm } from '../create-record-form/create-record-form'
 import { CreateRecordFormProvider, useCreateRecord } from '../create-record-form/create-record-form-context'
 import { editRecordFormDrawerOpened } from './drawer-opened.atom'
+import { EditRecordForm } from './edit-record-form'
 
 interface IProps {
   table: CoreTable
+  rowId?: string
 }
 
-export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
+export const EditRecordFormDrawer: React.FC<IProps> = ({ table, rowId }) => {
   const [opened, setOpened] = useAtom(editRecordFormDrawerOpened)
   const theme = useEgoUITheme()
 
@@ -55,7 +56,7 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
         overlayOpacity={0.55}
         overlayBlur={3}
       >
-        <CreateRecordForm table={table} onCancel={reset} />
+        <EditRecordForm table={table} onCancel={reset} rowId={rowId} />
       </Drawer>
     </CreateRecordFormProvider>
   )
