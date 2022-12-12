@@ -1,4 +1,4 @@
-import type { IFilters } from '@egodb/core'
+import type { IRootFilter } from '@egodb/core'
 
 type NumberFieldInMemory = {
   id: string
@@ -17,7 +17,7 @@ type FieldInMemory = TextFieldInMemory | NumberFieldInMemory
 type ViewInMemory = {
   name: string
   displayType: 'grid' | 'kanban'
-  filters?: IFilters
+  filters?: IRootFilter
 }
 
 export type TableInMemory = {

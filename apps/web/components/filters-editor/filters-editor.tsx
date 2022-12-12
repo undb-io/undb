@@ -1,20 +1,19 @@
-import type { IFilter, IRecordOperator, Table } from '@egodb/core'
+import type { IFilterOrGroup, IRootFilterList, Table } from '@egodb/core'
 import { Box, Button, Divider, Group, IconPlus, Stack, useListState } from '@egodb/ui'
 import { FieldFilter } from './field-filter'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 
 interface IProps {
   table: Table
-  onChange?: (filters: IRecordOperator[]) => void
-  onApply?: (filters: IRecordOperator[]) => void
+  onChange?: (filters: IRootFilterList) => void
+  onApply?: (filters: IRootFilterList) => void
   onCancel?: () => void
 }
 
 export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCancel }) => {
-  const initialFilters = table.getOrCreateDefaultView().filters?.value
-  const recordFilters = initialFilters ? Object.values(initialFilters) : undefined
-  const [filters, handlers] = useListState<IFilter | null>(recordFilters ?? [null])
-  const validFilters = filters.filter((f) => f !== null) as IRecordOperator[]
+  const initialFilters = table.getOrCreateDefaultView().filterList
+  const [filters, handlers] = useListState<IFilterOrGroup | null>(initialFilters.length ? initialFilters : [null])
+  const validFilters = filters.filter((f) => f !== null) as IRootFilterList
 
   useDeepCompareEffect(() => {
     onChange?.(validFilters)

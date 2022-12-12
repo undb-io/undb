@@ -1,5 +1,17 @@
-import type { Field, IFieldValue, IFilter, IOperator, IRecordOperator, TableSchema } from '@egodb/core'
-import { Group } from '@egodb/ui'
+import type {
+  TableSchema,
+  Field,
+  IFieldValue,
+  IOperator,
+  IFilter,
+  IBaseField,
+  TextField,
+  IStringFilter,
+} from '@egodb/core'
+import type { BaseField } from '@egodb/core/field/field.base'
+import { Group, Select } from '@egodb/ui'
+import { atom } from 'jotai'
+import { useUpdateAtom } from 'jotai/utils'
 import { useEffect, useState } from 'react'
 import { FieldSelector } from './field-selector'
 import { FilterValueInput } from './filter-value-input'
@@ -9,25 +21,61 @@ interface IProps {
   schema: TableSchema
   index: number
   value: IFilter | null
-  onChange: (field: IRecordOperator | null, index: number) => void
+  onChange: (filter: IFilter | null, index: number) => void
+}
+
+const selectedFieldAtom = atom<Field | null>(null)
+const operatorAtom = atom<IOperator | null>(null)
+const setOperatorAtom = atom(null, (_, set, value: IOperator | null) => set(operatorAtom, value))
+const fieldValueAtom = atom<IFieldValue | null>(null)
+const setFieldValueAtom = atom(null, (_, set, value: IFieldValue | null) => set(fieldValueAtom, value))
+
+type FieldProps<F extends BaseField<IBaseField>, FF extends IFilter> = {
+  field: F
+  value: FF
+  onChange: (filter: IFilter | null) => void
+}
+
+const TextSelector: React.FC<FieldProps<TextField, IStringFilter>> = ({ field, value }) => {
+  const setOperator = useUpdateAtom(setOperatorAtom)
+  return (
+    <>
+      <Select
+        disabled={!field}
+        value={value.operator}
+        onChange={setOperator}
+        data={[
+          { value: '$eq', label: 'equal' },
+          { value: '$neq', label: 'equal' },
+        ]}
+      />
+      <Select
+        disabled={!field}
+        value={value.operator}
+        onChange={setOperator}
+        data={[
+          { value: '$eq', label: 'equal' },
+          { value: '$neq', label: 'equal' },
+        ]}
+      />
+    </>
+  )
 }
 
 export const FieldFilter: React.FC<IProps> = ({ schema, value, onChange, index }) => {
   // TODO: better encapsulation of fields
-  const v = value ? Object.values(value)[0] : null
-  const fieldName = value ? Object.keys(value)[0] : null
+
+  const fieldName = value?.path as string
   const field = fieldName ? schema.getField(fieldName).into(null) : null
-
   const [selectedField, setField] = useState<Field | null>(field)
-  const initialOperaotr = v ? (Object.keys(v)[0] as IOperator.LeafOperator) : null
-  const [operator, setOperator] = useState<IOperator.LeafOperator | null>(initialOperaotr)
 
-  const initialFieldValue = v ? Object.values(v)[0] : null
-  const [fieldValue, setValue] = useState<IFieldValue | null>(initialFieldValue as IFieldValue)
+  const [operator, setOperator] = useState<IOperator | null>(value?.operator ?? null)
+
+  const [fieldValue, setValue] = useState<IFieldValue | null>(value?.value ?? null)
 
   useEffect(() => {
     if (selectedField && operator) {
-      onChange(selectedField.createFilter(operator, fieldValue), index)
+      onChange(selectedField.createFilter(operator, fieldValue as any), index)
     } else {
       onChange(null, index)
     }

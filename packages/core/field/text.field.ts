@@ -1,3 +1,4 @@
+import type { IStringFilter, IStringFilterOperator } from '../filter'
 import { BaseField } from './field.base'
 import type { ITextField } from './field.type'
 import { TextFieldValue } from './text-field-value'
@@ -31,5 +32,9 @@ export class TextField extends BaseField<ITextField> {
 
   validateNewValue(value: string): boolean {
     return value.length > 0
+  }
+
+  createFilter(operator: IStringFilterOperator, value: string | null): IStringFilter {
+    return { operator, value, path: this.name.value, type: 'string' }
   }
 }

@@ -1,4 +1,5 @@
 import * as z from 'zod'
+import { FIELD_TYPE_KEY } from './field.constant'
 import type { INumberFieldValue } from './number-field.type'
 import {
   createNumberFieldSchema,
@@ -54,7 +55,6 @@ export interface IBaseField {
 export type ITextField = IBaseField
 export type INumberField = IBaseField
 
-import { FIELD_TYPE_KEY } from './field.constant'
 import type { NumberFieldValue } from './number-field-value'
 import type { NumberField } from './number.field'
 import type { TextFieldValue } from './text-field-value'

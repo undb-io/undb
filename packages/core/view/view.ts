@@ -1,6 +1,6 @@
 import { ValueObject } from '@egodb/domain'
-import type { IFilters } from '../filter'
-import { Filters } from '../filter'
+import type { IRootFilter, IRootFilterList } from '../filter'
+import { RootFilter } from '../filter'
 import { ViewName } from './view-name.vo'
 import { createViewInput_internal } from './view.schema'
 import type { ICreateViewInput_internal, IView, IViewDisplayType } from './view.type'
@@ -16,12 +16,19 @@ export class View extends ValueObject<IView> {
     return this.props.displayType
   }
 
-  public get filters() {
+  public get filters(): RootFilter | undefined {
     return this.props.filters
   }
 
-  setFilters(filters?: IFilters) {
-    this.props.filters = filters ? new Filters(filters) : undefined
+  public get filterList(): IRootFilterList {
+    const filters = this.filters?.value
+    if (Array.isArray(filters)) return filters
+    if (filters) return [filters]
+    return []
+  }
+
+  setFilters(filters: IRootFilter | null) {
+    this.props.filters = filters ? new RootFilter(filters) : undefined
   }
 
   static create(input: ICreateViewInput_internal): View {
@@ -29,7 +36,7 @@ export class View extends ValueObject<IView> {
     return new View({
       name: ViewName.create(parsed.name),
       displayType: parsed.displayType || defaultViewDiaplyType,
-      filters: parsed.filters ? new Filters(parsed.filters) : undefined,
+      filters: parsed.filters ? new RootFilter(parsed.filters) : undefined,
     })
   }
 }

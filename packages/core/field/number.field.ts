@@ -1,3 +1,4 @@
+import type { INumberFilter, INumberFilterOperator } from '../filter'
 import { BaseField } from './field.base'
 import type { INumberField } from './field.type'
 import { NumberFieldValue } from './number-field-value'
@@ -27,5 +28,9 @@ export class NumberField extends BaseField<INumberField> {
 
   createValue(value: ICreateNumberFieldValue): NumberFieldValue {
     return new NumberFieldValue(value)
+  }
+
+  createFilter(operator: INumberFilterOperator, value: number | null): INumberFilter {
+    return { operator, value, path: this.name.value, type: 'number' }
   }
 }

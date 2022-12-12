@@ -1,13 +1,13 @@
 import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { IFilters } from '../filter'
-import { Filters } from '../filter'
+import type { IRootFilter } from '../filter'
+import { RootFilter } from '../filter'
 import type { Table } from '../table'
 import type { ITableSpecVisitor } from './interface'
 
 export class WithFilters extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly filters: IFilters | undefined, public readonly viewName: string) {
+  constructor(public readonly filters: IRootFilter | null, public readonly viewName: string) {
     super()
   }
 
@@ -15,7 +15,7 @@ export class WithFilters extends CompositeSpecification<Table, ITableSpecVisitor
     if (!this.filters) {
       return !t.getOrCreateDefaultView(this.viewName).filters
     }
-    return t.getOrCreateDefaultView(this.viewName).filters?.equals(new Filters(this.filters)) ?? false
+    return t.getOrCreateDefaultView(this.viewName).filters?.equals(new RootFilter(this.filters)) ?? false
   }
 
   mutate(t: Table): Result<Table, string> {
