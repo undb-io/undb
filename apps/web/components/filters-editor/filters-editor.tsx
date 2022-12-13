@@ -1,7 +1,8 @@
 import type { IFilter, IRootFilterList, Table } from '@egodb/core'
-import { Box, Button, Divider, Group, IconPlus, Stack, useListState } from '@egodb/ui'
+import { ActionIcon, Box, Button, Divider, Group, IconPlus, IconTrash, Stack, useListState } from '@egodb/ui'
 import { FieldFilter } from './field-filter'
 import useDeepCompareEffect from 'use-deep-compare-effect'
+import { useEffect } from 'react'
 
 interface IProps {
   table: Table
@@ -20,17 +21,27 @@ export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCa
     onChange?.(validFilters)
   }, [validFilters])
 
+  useEffect(() => {
+    if (filters.length === 0) {
+      handlers.append(null)
+    }
+  }, [filters.length])
+
   return (
     <Box miw={640}>
       <Stack>
         {filters.map((filter, index) => (
-          <FieldFilter
-            key={index}
-            schema={table.schema}
-            index={index}
-            value={filter}
-            onChange={(operator, index) => handlers.setItem(index, operator)}
-          />
+          <Group key={index} align="center">
+            <FieldFilter
+              schema={table.schema}
+              index={index}
+              value={filter}
+              onChange={(operator, index) => handlers.setItem(index, operator)}
+            />
+            <ActionIcon size="lg" color="gray.5" variant="outline" onClick={() => handlers.remove(index)}>
+              <IconTrash size={14} />
+            </ActionIcon>
+          </Group>
         ))}
         <Divider h="md" />
         <Group position="apart">

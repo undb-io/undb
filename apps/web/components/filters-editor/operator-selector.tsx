@@ -2,7 +2,6 @@ import type { Field, IOperator } from '@egodb/core'
 import { NumberField, TextField } from '@egodb/core'
 import type { SelectItem } from '@egodb/ui'
 import { Select } from '@egodb/ui'
-import { FieldInputLabel } from '../fields/field-input-label'
 
 interface IProps {
   field: Field | null
@@ -11,7 +10,6 @@ interface IProps {
 }
 
 export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) => {
-  const label = <FieldInputLabel>Operator</FieldInputLabel>
   let data: SelectItem[] = []
 
   // TODO: optimize if else
@@ -28,12 +26,6 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
   }
 
   return (
-    <Select
-      value={value}
-      disabled={!field}
-      label={label}
-      data={data}
-      onChange={(value) => onChange(value as IOperator | null)}
-    />
+    <Select value={value} disabled={!field} data={data} onChange={(value) => onChange(value as IOperator | null)} />
   )
 }

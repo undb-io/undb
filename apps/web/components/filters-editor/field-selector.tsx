@@ -10,7 +10,6 @@ interface IProps {
 export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => {
   return (
     <Select
-      label={<FieldInputLabel>Field</FieldInputLabel>}
       searchable
       clearable
       value={value?.name.value}
