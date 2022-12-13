@@ -1,0 +1,71 @@
+// Vitest Snapshot v1
+
+exports[`should convert root filter to record specification 1`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): StringEqual {
+    "name": "name",
+    "value": "value",
+  },
+}
+`;
+
+exports[`should convert root filter to record specification 2`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): And {
+    "left": StringEqual {
+      "name": "field1",
+      "value": "1",
+    },
+    "right": Not {
+      "spec": StringEqual {
+        "name": "field2",
+        "value": "2",
+      },
+    },
+  },
+}
+`;
+
+exports[`should convert root filter to record specification 3`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): Not {
+    "spec": StringEqual {
+      "name": "field2",
+      "value": "2",
+    },
+  },
+}
+`;
+
+exports[`should convert root filter to record specification 4`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): Or {
+    "left": StringEqual {
+      "name": "field1",
+      "value": "1",
+    },
+    "right": Not {
+      "spec": StringEqual {
+        "name": "field2",
+        "value": "2",
+      },
+    },
+  },
+}
+`;
+
+exports[`should convert root filter to record specification 5`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): Not {
+    "spec": StringEqual {
+      "name": "field1",
+      "value": "1",
+    },
+  },
+}
+`;
