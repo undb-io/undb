@@ -35,6 +35,7 @@ it('should throw error if name is invalid', () => {
         \\"minimum\\": 2,
         \\"type\\": \\"string\\",
         \\"inclusive\\": true,
+        \\"exact\\": false,
         \\"message\\": \\"String must contain at least 2 character(s)\\",
         \\"path\\": []
       }

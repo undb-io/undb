@@ -5,23 +5,23 @@
     "@babel/core": "^7.20.5",
     "@emotion/react": "^11.10.5",
     "@emotion/server": "^11.10.0",
-    "@mantine/core": "^5.9.0",
-    "@mantine/form": "^5.9.0",
-    "@mantine/hooks": "^5.9.0",
-    "@mantine/modals": "^5.9.0",
-    "@mantine/next": "^5.9.0",
-    "@mantine/notifications": "^5.9.0",
-    "@tabler/icons": "^1.114.0",
+    "@mantine/core": "^5.9.4",
+    "@mantine/form": "^5.9.4",
+    "@mantine/hooks": "^5.9.4",
+    "@mantine/modals": "^5.9.4",
+    "@mantine/next": "^5.9.4",
+    "@mantine/notifications": "^5.9.4",
+    "@tabler/icons": "^1.116.1",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@egodb/eslint-config": "^0.0.0",
-    "@types/react": "^18.0.25",
+    "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
-    "eslint": "^8.28.0",
+    "eslint": "^8.29.0",
     "react": "^18.2.0",
     "tsconfig": "^0.0.0",
-    "typescript": "^4.9.3"
+    "typescript": "^4.9.4"
   },
   "main": "./index.tsx",
   "scripts": {
