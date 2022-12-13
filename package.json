@@ -24,9 +24,9 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "clean": "turbo run clean --parallel",
     "commit": "cz",
     "dev": "FORCE_COLOR=1 turbo run dev --parallel",
-    "clean": "turbo run clean --parallel",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "preinstall": "npx only-allow pnpm",
