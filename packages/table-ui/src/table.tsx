@@ -6,10 +6,10 @@ interface IProps {
   table: CoreTable
   records: QueryRecords
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onRowClick: (row: any) => void
+  onRecordClick: (row: any) => void
 }
 
-export const EGOTable: React.FC<IProps> = ({ table, records, onRowClick }) => {
+export const EGOTable: React.FC<IProps> = ({ table, records, onRecordClick }) => {
   // TODO: helper types should infered by type
   const fieldHelper = createColumnHelper<Record<string, IFieldValue>>()
   const columns = table.schema.fields.map((c) =>
@@ -54,7 +54,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records, onRowClick }) => {
             <tr
               key={row.id}
               onClick={() => {
-                onRowClick(row.id)
+                onRecordClick(row.id)
               }}
             >
               {row.getVisibleCells().map((cell) => (

@@ -4,7 +4,7 @@ import type { Table as CoreTable, QueryRecords } from '@egodb/core'
 import { EGOTable } from '@egodb/table-ui'
 import { Box, Space } from '@egodb/ui'
 import { useUpdateAtom } from 'jotai/utils'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { CreateRecordFormDrawer } from '../../../components/create-record-form/create-record-form-drawer'
 import { editRecordFormDrawerOpened } from '../../../components/edit-record-form/drawer-opened.atom'
 import { EditRecordFormDrawer } from '../../../components/edit-record-form/edit-record-form-drawer'
@@ -19,9 +19,9 @@ interface IProps {
 export default function Table({ table, records }: IProps) {
   const setOpened = useUpdateAtom(editRecordFormDrawerOpened)
 
-  const onRowClick = useCallback(
+  const onRecordClick = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     (id: string) => {
-      console.log(id)
       setOpened(true)
     },
     [setOpened],
@@ -34,7 +34,7 @@ export default function Table({ table, records }: IProps) {
         <TableToolbar table={table} />
       </Box>
       <Space h="md" />
-      <EGOTable onRowClick={onRowClick} records={records} table={table} />
+      <EGOTable onRecordClick={onRecordClick} records={records} table={table} />
       <CreateRecordFormDrawer table={table} />
       <EditRecordFormDrawer table={table} />
     </Box>
