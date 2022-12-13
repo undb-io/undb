@@ -5,9 +5,11 @@ import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '
 interface IProps {
   table: CoreTable
   records: QueryRecords
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onRecordClick: (row: any) => void
 }
 
-export const EGOTable: React.FC<IProps> = ({ table, records }) => {
+export const EGOTable: React.FC<IProps> = ({ table, records, onRecordClick }) => {
   // TODO: helper types should infered by type
   const fieldHelper = createColumnHelper<Record<string, IFieldValue>>()
   const columns = table.schema.fields.map((c) =>
@@ -49,7 +51,12 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
         </thead>
         <tbody>
           {rt.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
+            <tr
+              key={row.id}
+              onClick={() => {
+                onRecordClick(row.id)
+              }}
+            >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
               ))}
