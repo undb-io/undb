@@ -1,4 +1,4 @@
-import type { ITableSpecVisitor, WithFilters, WithName } from '@egodb/core'
+import type { ITableSpecVisitor, WithFilter, WithName } from '@egodb/core'
 import type { TableInMemory } from './table'
 
 export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
@@ -12,10 +12,10 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
     this.table.name = s.name.value
   }
 
-  filtersEqual(s: WithFilters): void {
+  filterEqual(s: WithFilter): void {
     const view = this.table.views.find((v) => v.name === s.viewName)
     if (view) {
-      view.filters = s.filters
+      view.filter = s.filter ?? undefined
     }
   }
 }

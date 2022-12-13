@@ -1,4 +1,4 @@
-import type { Field, IFieldValue, IFilter, IOperator, IRecordOperator, TableSchema } from '@egodb/core'
+import type { TableSchema, Field, IFieldValue, IOperator, IFilter } from '@egodb/core'
 import { Group } from '@egodb/ui'
 import { useEffect, useState } from 'react'
 import { FieldSelector } from './field-selector'
@@ -9,25 +9,21 @@ interface IProps {
   schema: TableSchema
   index: number
   value: IFilter | null
-  onChange: (field: IRecordOperator | null, index: number) => void
+  onChange: (filter: IFilter | null, index: number) => void
 }
 
 export const FieldFilter: React.FC<IProps> = ({ schema, value, onChange, index }) => {
-  // TODO: better encapsulation of fields
-  const v = value ? Object.values(value)[0] : null
-  const fieldName = value ? Object.keys(value)[0] : null
+  // TODO: path maybe string list
+  const fieldName = value?.path as string
   const field = fieldName ? schema.getField(fieldName).into(null) : null
 
   const [selectedField, setField] = useState<Field | null>(field)
-  const initialOperaotr = v ? (Object.keys(v)[0] as IOperator.LeafOperator) : null
-  const [operator, setOperator] = useState<IOperator.LeafOperator | null>(initialOperaotr)
-
-  const initialFieldValue = v ? Object.values(v)[0] : null
-  const [fieldValue, setValue] = useState<IFieldValue | null>(initialFieldValue as IFieldValue)
+  const [operator, setOperator] = useState<IOperator | null>(value?.operator ?? null)
+  const [fieldValue, setValue] = useState<IFieldValue | null>(value?.value ?? null)
 
   useEffect(() => {
     if (selectedField && operator) {
-      onChange(selectedField.createFilter(operator, fieldValue), index)
+      onChange(selectedField.createFilter(operator, fieldValue as any), index)
     } else {
       onChange(null, index)
     }

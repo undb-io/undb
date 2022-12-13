@@ -24,10 +24,10 @@
   "main": "./dist/index",
   "scripts": {
     "build": "tsup",
+    "clean": "rimraf dist",
     "coverage": "vitest run --coverage",
     "dev": "tsup --watch ",
     "prebuild": "pnpm run clean",
-    "clean": "rimraf dist",
     "test": "vitest run",
     "test:watch": "vitest"
   },

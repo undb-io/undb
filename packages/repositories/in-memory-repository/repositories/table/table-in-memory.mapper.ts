@@ -27,7 +27,7 @@ export class TableInMemoryMapper {
       views: t.views.views.map((v) => ({
         name: v.name.unpack(),
         displayType: v.displayType,
-        filters: v.filters?.value,
+        filters: v.filter?.value,
       })),
     }
   }

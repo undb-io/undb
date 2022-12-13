@@ -1,7 +1,7 @@
 import { ValueObject } from '@egodb/domain'
-import type { IFilters } from './operators'
+import type { IRootFilter } from './filter'
 
-export class Filters extends ValueObject<IFilters> {
+export class RootFilter extends ValueObject<IRootFilter> {
   get value() {
     return this.props
   }

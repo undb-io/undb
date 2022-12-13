@@ -7,7 +7,7 @@ import { RecordValueSpecifcationBase } from './record-value-specification.base'
 
 export class StringEqual extends RecordValueSpecifcationBase<string> {
   /**
-   * check given string is equal to record value
+   * check given string is equal to record value by field name
    * @param r - record
    * @returns bool
    */
@@ -22,6 +22,11 @@ export class StringEqual extends RecordValueSpecifcationBase<string> {
 }
 
 export class StringContain extends RecordValueSpecifcationBase<string> {
+  /**
+   * check whether record value by field name contains given string
+   * @param r - record
+   * @returns
+   */
   isSatisfiedBy(r: Record): boolean {
     return r.values.getStringValue(this.name).mapOr(false, contains(this.value))
   }
