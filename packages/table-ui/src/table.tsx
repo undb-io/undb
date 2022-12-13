@@ -54,7 +54,6 @@ export const EGOTable: React.FC<IProps> = ({ table, records, onRowClick }) => {
             <tr
               key={row.id}
               onClick={() => {
-                console.log('rowClick')
                 onRowClick(row.id)
               }}
             >

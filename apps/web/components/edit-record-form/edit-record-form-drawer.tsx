@@ -9,10 +9,9 @@ import { EditRecordForm } from './edit-record-form'
 
 interface IProps {
   table: CoreTable
-  rowId?: string
 }
 
-export const EditRecordFormDrawer: React.FC<IProps> = ({ table, rowId }) => {
+export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
   const [opened, setOpened] = useAtom(editRecordFormDrawerOpened)
   const theme = useEgoUITheme()
 
@@ -56,7 +55,7 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table, rowId }) => {
         overlayOpacity={0.55}
         overlayBlur={3}
       >
-        <EditRecordForm table={table} onCancel={reset} rowId={rowId} />
+        <EditRecordForm table={table} onCancel={reset} />
       </Drawer>
     </CreateRecordFormProvider>
   )
