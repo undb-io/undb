@@ -1,6 +1,6 @@
 import type { z } from 'zod'
 import type { IRootFilter } from '../filter'
-import type { RootFilter } from '../filter/filters'
+import type { RootFilter } from '../filter/root-filter'
 import type { ViewName } from './view-name.vo'
 import type { createViewInput_internal, viewDisplayType } from './view.schema'
 

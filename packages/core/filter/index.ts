@@ -1,2 +1,2 @@
 export * from './filter'
-export * from './filters'
+export * from './root-filter'

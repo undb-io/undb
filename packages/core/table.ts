@@ -93,6 +93,10 @@ export class Table {
     return new Views([this.createDefaultView()])
   }
 
+  public getSpec(viewName?: string) {
+    return this.getOrCreateDefaultView(viewName).spec
+  }
+
   public getOrCreateDefaultView(viewName?: string): View {
     if (!viewName) {
       return this.defaultView

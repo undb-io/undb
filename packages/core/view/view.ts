@@ -1,5 +1,8 @@
+import type { CompositeSpecification } from '@egodb/domain'
 import { ValueObject } from '@egodb/domain'
-import type { IRootFilter, IRootFilterList } from '../filter'
+import type { Option } from 'oxide.ts'
+import { None } from 'oxide.ts'
+import type { IFilterOrGroupList, IRootFilter } from '../filter'
 import { RootFilter } from '../filter'
 import { ViewName } from './view-name.vo'
 import { createViewInput_internal } from './view.schema'
@@ -20,7 +23,12 @@ export class View extends ValueObject<IView> {
     return this.props.filter
   }
 
-  public get filterList(): IRootFilterList {
+  public get spec(): Option<CompositeSpecification> {
+    if (!this.filter) return None
+    return this.filter.spec
+  }
+
+  public get filterList(): IFilterOrGroupList {
     const filters = this.filter?.value
     if (Array.isArray(filters)) return filters
     if (filters) return [filters]

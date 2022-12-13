@@ -10,6 +10,7 @@
     "inlineSources": false,
     "isolatedModules": false,
     "moduleResolution": "node",
+    "lib": ["ES2022"],
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "preserveWatchOutput": true,

@@ -3,7 +3,7 @@ import type { Result } from 'oxide.ts'
 import type { Record } from '../record'
 import type { IRecordValueVisitor } from './interface'
 
-export abstract class RecordValueSpecifcationBase<T> extends CompositeSpecification<Record, IRecordValueVisitor> {
+export abstract class RecordValueSpecifcationBase<T = any> extends CompositeSpecification<Record, IRecordValueVisitor> {
   constructor(readonly name: string, readonly value: T) {
     super()
   }
