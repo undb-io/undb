@@ -25,7 +25,6 @@ export const FieldFilter: React.FC<IProps> = ({ schema, value, onChange, onRemov
   const [operator, setOperator] = useState<IOperator | null>(value?.operator ?? null)
   const [fieldValue, setValue] = useState<IFieldValue | null>(value?.value ?? '')
 
-  console.log(fieldValue)
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: getFilterId(value) })
   const style = {
     transform: CSS.Transform.toString(transform),
