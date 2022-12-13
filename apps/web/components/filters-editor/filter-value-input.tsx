@@ -15,11 +15,11 @@ export const FilterValueInput: React.FC<IProps> = ({ field, value, onChange }) =
   }
 
   if (field instanceof TextField) {
-    return <TextInput value={value as string} onChange={(event) => onChange(event.target.value)} />
+    return <TextInput value={(value ?? '') as string} onChange={(event) => onChange(event.target.value)} />
   }
 
   if (field instanceof NumberField) {
-    return <NumberInput value={value as number} onChange={(number) => onChange(number || null)} />
+    return <NumberInput onChange={(number) => onChange(number || null)} />
   }
 
   return null

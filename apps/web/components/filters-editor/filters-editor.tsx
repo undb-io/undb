@@ -3,7 +3,10 @@ import { ActionIcon, Box, Button, Divider, Group, IconPlus, IconTrash, Stack, us
 import { FieldFilter } from './field-filter'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useEffect } from 'react'
-
+import { closestCenter, DndContext } from '@dnd-kit/core'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
+import { getFilterId } from './get-filter.id'
 interface IProps {
   table: Table
   onChange?: (filters: IRootFilterList) => void
@@ -17,6 +20,8 @@ export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCa
   const [filters, handlers] = useListState<IFilter | null>(initialFilters.length ? initialFilters : [null])
   const validFilters = filters.filter((f) => f !== null) as IRootFilterList
 
+  const hasNull = filters.some((f) => f === null)
+
   useDeepCompareEffect(() => {
     onChange?.(validFilters)
   }, [validFilters])
@@ -26,26 +31,46 @@ export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCa
       handlers.append(null)
     }
   }, [filters.length])
+  const items = filters.map(getFilterId)
 
   return (
     <Box miw={640}>
       <Stack>
-        {filters.map((filter, index) => (
-          <Group key={index} align="center">
-            <FieldFilter
-              schema={table.schema}
-              index={index}
-              value={filter}
-              onChange={(operator, index) => handlers.setItem(index, operator)}
-            />
-            <ActionIcon size="lg" color="gray.5" variant="outline" onClick={() => handlers.remove(index)}>
-              <IconTrash size={14} />
-            </ActionIcon>
-          </Group>
-        ))}
+        <DndContext
+          collisionDetection={closestCenter}
+          modifiers={[restrictToVerticalAxis]}
+          onDragEnd={(e) => {
+            const { over, active } = e
+            if (over) {
+              handlers.reorder({
+                from: active.data.current?.sortable?.index,
+                to: over?.data.current?.sortable?.index,
+              })
+            }
+          }}
+        >
+          <SortableContext items={items} strategy={verticalListSortingStrategy}>
+            {filters.map((filter, index) => (
+              <FieldFilter
+                schema={table.schema}
+                index={index}
+                value={filter}
+                key={getFilterId(filter)}
+                onChange={(operator, index) => handlers.setItem(index, operator)}
+                onRemove={handlers.remove}
+              />
+            ))}
+          </SortableContext>
+        </DndContext>
         <Divider h="md" />
         <Group position="apart">
-          <Button variant="outline" size="xs" leftIcon={<IconPlus size={14} />} onClick={() => handlers.append(null)}>
+          <Button
+            disabled={hasNull}
+            variant="outline"
+            size="xs"
+            leftIcon={<IconPlus size={14} />}
+            onClick={() => handlers.append(null)}
+          >
             Add new filter
           </Button>
           <Group>
