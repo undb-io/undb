@@ -7,13 +7,13 @@ import type { createViewInput_internal, viewDisplayType } from './view.schema'
 export interface IView {
   name: ViewName
   displayType: IViewDisplayType
-  filters?: RootFilter
+  filter?: RootFilter
 }
 
 export interface IQueryView {
   name: string
   displayType: IViewDisplayType
-  filters?: IRootFilter
+  filter?: IRootFilter
 }
 export type IViewDisplayType = z.infer<typeof viewDisplayType>
 export type ICreateViewInput_internal = z.infer<typeof createViewInput_internal>

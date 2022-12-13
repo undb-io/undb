@@ -10,7 +10,7 @@ export class SetFiltersCommandHandler implements ISetFilterCommandHandler {
   async execute(command: SetFitlersCommand): Promise<void> {
     const table = (await this.repo.findOneById(command.tableId)).unwrap()
 
-    const spec = table.setFilters(command.filter, command.viewName).unwrap()
+    const spec = table.setFilter(command.filter, command.viewName).unwrap()
     await this.repo.updateOneById(command.tableId, spec)
   }
 }

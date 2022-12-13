@@ -101,7 +101,7 @@ export class Table {
     return this.views.getByName(viewName).unwrapOrElse(() => this.defaultView)
   }
 
-  public setFilters(filters: IRootFilter | null, viewName?: string): Result<TableSpecificaiton, string> {
+  public setFilter(filters: IRootFilter | null, viewName?: string): Result<TableSpecificaiton, string> {
     const vn = this.getOrCreateDefaultView(viewName).name.unpack()
     const spec = new WithFilters(filters, vn)
     return spec.mutate(this).map(() => spec)

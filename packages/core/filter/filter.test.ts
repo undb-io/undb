@@ -21,7 +21,7 @@ test.each<IRootFilter>([
   },
   [
     {
-      conjection: '$and',
+      conjunction: '$and',
       children: [
         {
           type: 'string',
@@ -34,7 +34,7 @@ test.each<IRootFilter>([
   ],
   [
     {
-      conjection: '$or',
+      conjunction: '$or',
       children: [
         {
           type: 'string',

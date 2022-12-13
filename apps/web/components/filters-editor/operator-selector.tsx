@@ -6,8 +6,8 @@ import { FieldInputLabel } from '../fields/field-input-label'
 
 interface IProps {
   field: Field | null
-  value: IOperator.LeafOperator | null
-  onChange: (operator: IOperator.LeafOperator | null) => void
+  value: IOperator | null
+  onChange: (operator: IOperator | null) => void
 }
 
 export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) => {
@@ -33,7 +33,7 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
       disabled={!field}
       label={label}
       data={data}
-      onChange={(value) => onChange(value as IOperator.LeafOperator | null)}
+      onChange={(value) => onChange(value as IOperator | null)}
     />
   )
 }

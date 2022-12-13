@@ -47,7 +47,7 @@ export const createTableRouter =
           const cmd = new CreateTableCommand({ name: input.name, schema: input.schema })
           return commandBus.execute(cmd)
         }),
-      setFilters: procedure
+      setFilter: procedure
         .meta({ openapi: { method: 'POST', path: '/table.setFitlers', tags } })
         .input(setFiltersCommandInput)
         .output(z.void())

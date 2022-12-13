@@ -1,4 +1,4 @@
-import type { IFilterOrGroup, IRootFilterList, Table } from '@egodb/core'
+import type { IFilter, IRootFilterList, Table } from '@egodb/core'
 import { Box, Button, Divider, Group, IconPlus, Stack, useListState } from '@egodb/ui'
 import { FieldFilter } from './field-filter'
 import useDeepCompareEffect from 'use-deep-compare-effect'
@@ -11,8 +11,9 @@ interface IProps {
 }
 
 export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCancel }) => {
-  const initialFilters = table.getOrCreateDefaultView().filterList
-  const [filters, handlers] = useListState<IFilterOrGroup | null>(initialFilters.length ? initialFilters : [null])
+  // TODO: ignore group for now
+  const initialFilters = table.getOrCreateDefaultView().filterList as IFilter[]
+  const [filters, handlers] = useListState<IFilter | null>(initialFilters.length ? initialFilters : [null])
   const validFilters = filters.filter((f) => f !== null) as IRootFilterList
 
   useDeepCompareEffect(() => {

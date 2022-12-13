@@ -17,7 +17,7 @@ export class View extends ValueObject<IView> {
   }
 
   public get filters(): RootFilter | undefined {
-    return this.props.filters
+    return this.props.filter
   }
 
   public get filterList(): IRootFilterList {
@@ -27,8 +27,8 @@ export class View extends ValueObject<IView> {
     return []
   }
 
-  setFilters(filters: IRootFilter | null) {
-    this.props.filters = filters ? new RootFilter(filters) : undefined
+  setFilter(filter: IRootFilter | null) {
+    this.props.filter = filter ? new RootFilter(filter) : undefined
   }
 
   static create(input: ICreateViewInput_internal): View {
@@ -36,7 +36,7 @@ export class View extends ValueObject<IView> {
     return new View({
       name: ViewName.create(parsed.name),
       displayType: parsed.displayType || defaultViewDiaplyType,
-      filters: parsed.filters ? new RootFilter(parsed.filters) : undefined,
+      filter: parsed.filter ? new RootFilter(parsed.filter) : undefined,
     })
   }
 }

@@ -20,7 +20,7 @@ export class WithFilters extends CompositeSpecification<Table, ITableSpecVisitor
 
   mutate(t: Table): Result<Table, string> {
     const view = t.getOrCreateDefaultView(this.viewName)
-    view.setFilters(this.filters)
+    view.setFilter(this.filters)
     return Ok(t)
   }
 

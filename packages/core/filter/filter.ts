@@ -40,19 +40,19 @@ const $or = z.literal('$or')
 const $not = z.literal('$not')
 
 const conjunctions = z.union([$and, $or, $not])
-type IConjunction = z.infer<typeof conjunctions>
+export type IConjunction = z.infer<typeof conjunctions>
 
 export type IFilter = z.infer<typeof filter>
 export type IFilters = IFilter[]
 
 export interface IGroup {
-  conjection: IConjunction
+  conjunction: IConjunction
   children: Array<IFilter | IGroup>
 }
 
 const group: z.ZodType<IGroup> = z.lazy(() =>
   z.object({
-    conjection: conjunctions,
+    conjunction: conjunctions,
     children: z.union([group, filter]).array().nonempty(),
   }),
 )

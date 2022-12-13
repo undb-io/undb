@@ -8,7 +8,7 @@ export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
 
   const utils = trpc.useContext()
 
-  const setFilters = trpc.table.setFilters.useMutation({
+  const setFilter = trpc.table.setFilter.useMutation({
     onSuccess: () => {
       handler.close()
 
@@ -22,7 +22,7 @@ export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
       <Popover.Target>
         <Button
           variant="white"
-          loading={setFilters.isLoading}
+          loading={setFilter.isLoading}
           leftIcon={<IconFilter size={18} />}
           onClick={handler.toggle}
         >
@@ -33,8 +33,8 @@ export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
       <Popover.Dropdown>
         <FiltersEditor
           table={table}
-          onApply={(filters) => {
-            setFilters.mutate({ tableId: table.id.value, filters })
+          onApply={(filter) => {
+            setFilter.mutate({ tableId: table.id.value, filter })
           }}
           onCancel={handler.close}
         />
