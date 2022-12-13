@@ -1,5 +1,5 @@
-import type { IFilter, IRootFilterList, Table } from '@egodb/core'
-import { ActionIcon, Box, Button, Divider, Group, IconPlus, IconTrash, Stack, useListState } from '@egodb/ui'
+import type { IFilter, IFilterOrGroupList, Table } from '@egodb/core'
+import { Box, Button, Divider, Group, IconPlus, Stack, useListState } from '@egodb/ui'
 import { FieldFilter } from './field-filter'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useEffect } from 'react'
@@ -9,8 +9,8 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { getFilterId } from './get-filter.id'
 interface IProps {
   table: Table
-  onChange?: (filters: IRootFilterList) => void
-  onApply?: (filters: IRootFilterList) => void
+  onChange?: (filters: IFilterOrGroupList) => void
+  onApply?: (filters: IFilterOrGroupList) => void
   onCancel?: () => void
 }
 
@@ -18,7 +18,7 @@ export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCa
   // TODO: ignore group for now
   const initialFilters = table.getOrCreateDefaultView().filterList as IFilter[]
   const [filters, handlers] = useListState<IFilter | null>(initialFilters.length ? initialFilters : [null])
-  const validFilters = filters.filter((f) => f !== null) as IRootFilterList
+  const validFilters = filters.filter((f) => f !== null) as IFilterOrGroupList
 
   const hasNull = filters.some((f) => f === null)
 
