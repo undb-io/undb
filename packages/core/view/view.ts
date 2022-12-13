@@ -16,12 +16,12 @@ export class View extends ValueObject<IView> {
     return this.props.displayType
   }
 
-  public get filters(): RootFilter | undefined {
+  public get filter(): RootFilter | undefined {
     return this.props.filter
   }
 
   public get filterList(): IRootFilterList {
-    const filters = this.filters?.value
+    const filters = this.filter?.value
     if (Array.isArray(filters)) return filters
     if (filters) return [filters]
     return []

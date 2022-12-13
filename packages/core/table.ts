@@ -6,7 +6,7 @@ import { createFieldValueSchema_internal } from './field'
 import type { IRootFilter } from './filter'
 import { Record } from './record'
 import type { TableSpecificaiton } from './specifications'
-import { WithFilters } from './specifications/filters.specificaiton'
+import { WithFilter } from './specifications/filters.specificaiton'
 import type { ICreateTableInput_internal } from './table.schema'
 import { TableId, TableSchema } from './value-objects'
 import { TableName } from './value-objects/table-name.vo'
@@ -76,7 +76,7 @@ export class Table {
       views: this.views.views.map((v) => ({
         name: v.name.unpack(),
         displayType: v.displayType,
-        filters: v.filters?.value ?? undefined,
+        filter: v.filter?.value ?? undefined,
       })),
     }
   }
@@ -103,7 +103,7 @@ export class Table {
 
   public setFilter(filters: IRootFilter | null, viewName?: string): Result<TableSpecificaiton, string> {
     const vn = this.getOrCreateDefaultView(viewName).name.unpack()
-    const spec = new WithFilters(filters, vn)
+    const spec = new WithFilter(filters, vn)
     return spec.mutate(this).map(() => spec)
   }
 
