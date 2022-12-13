@@ -4,16 +4,16 @@
   "dependencies": {
     "@egodb/core": "^0.0.0",
     "@egodb/ui": "^0.0.0",
-    "@tanstack/react-table": "^8.7.0"
+    "@tanstack/react-table": "^8.7.2"
   },
   "devDependencies": {
     "@egodb/eslint-config": "^0.0.0",
-    "@types/react": "^18.0.25",
+    "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
-    "eslint": "^8.28.0",
+    "eslint": "^8.29.0",
     "react": "^18.2.0",
     "tsconfig": "^0.0.0",
-    "typescript": "^4.9.3"
+    "typescript": "^4.9.4"
   },
   "main": "./index.tsx",
   "scripts": {
