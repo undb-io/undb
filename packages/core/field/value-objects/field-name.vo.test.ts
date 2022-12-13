@@ -20,6 +20,7 @@ it('should throw error if input is invlaue', () => {
         \\"minimum\\": 2,
         \\"type\\": \\"string\\",
         \\"inclusive\\": true,
+        \\"exact\\": false,
         \\"message\\": \\"String must contain at least 2 character(s)\\",
         \\"path\\": []
       }
@@ -35,6 +36,7 @@ it('should throw error if input is too long', () => {
         \\"maximum\\": 20,
         \\"type\\": \\"string\\",
         \\"inclusive\\": true,
+        \\"exact\\": false,
         \\"message\\": \\"String must contain at most 20 character(s)\\",
         \\"path\\": []
       }
