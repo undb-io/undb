@@ -1,3 +1,4 @@
+export * from './fixtures'
 export * from './query-model'
 export * from './record'
 export * from './record.type'
