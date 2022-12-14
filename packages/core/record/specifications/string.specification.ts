@@ -2,7 +2,7 @@ import { contains } from '@fxts/core'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { Record } from '../record'
-import type { IRecordValueVisitor } from './interface'
+import type { IRecordVisitor } from './interface'
 import { RecordValueSpecifcationBase } from './record-value-specification.base'
 
 export class StringEqual extends RecordValueSpecifcationBase<string> {
@@ -15,7 +15,7 @@ export class StringEqual extends RecordValueSpecifcationBase<string> {
     return r.values.getStringValue(this.name).mapOr(false, (value) => value === this.value)
   }
 
-  accept(v: IRecordValueVisitor): Result<void, string> {
+  accept(v: IRecordVisitor): Result<void, string> {
     v.stringEqual(this)
     return Ok(undefined)
   }
@@ -31,7 +31,7 @@ export class StringContain extends RecordValueSpecifcationBase<string> {
     return r.values.getStringValue(this.name).mapOr(false, contains(this.value))
   }
 
-  accept(v: IRecordValueVisitor): Result<void, string> {
+  accept(v: IRecordVisitor): Result<void, string> {
     v.stringContain(this)
     return Ok(undefined)
   }

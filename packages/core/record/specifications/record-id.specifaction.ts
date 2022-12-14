@@ -3,7 +3,7 @@ import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { Record } from '../record'
 import { RecordId } from '../value-objects'
-import type { IRecordSpecVisitor } from './interface'
+import type { IRecordVisitor } from './interface'
 
 export class WithRecordId extends CompositeSpecification {
   constructor(public readonly id: RecordId) {
@@ -19,7 +19,7 @@ export class WithRecordId extends CompositeSpecification {
     return Ok(t)
   }
 
-  accept(v: IRecordSpecVisitor): Result<void, string> {
+  accept(v: IRecordVisitor): Result<void, string> {
     v.idEqual(this)
     return Ok(undefined)
   }

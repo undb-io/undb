@@ -4,16 +4,30 @@ import { Err, Ok } from 'oxide.ts'
 import type { TableInMemory } from './table'
 
 type TableInMemoryPredicate = (value: TableInMemory, index: number, obj: TableInMemory[]) => unknown
+const opposite =
+  (fn: TableInMemoryPredicate) =>
+  (...args: Parameters<TableInMemoryPredicate>): boolean =>
+    !fn(...args)
 
 export class TableInMemoryQueryVisitor implements ITableSpecVisitor {
   private predicate?: TableInMemoryPredicate
+  private isOpposite = false
 
   getPredicate(): Result<TableInMemoryPredicate, Error> {
     if (!this.predicate) {
       return Err(new Error('missing predicate'))
     }
 
+    if (this.isOpposite) {
+      return Ok(opposite(this.predicate))
+    }
+
     return Ok(this.predicate)
+  }
+
+  not(): this {
+    this.isOpposite = !this.isOpposite
+    return this
   }
 
   and(ss: ITableSpec[]): void {

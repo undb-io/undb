@@ -13,16 +13,30 @@ import { Err, Ok } from 'oxide.ts'
 import type { RecordInMemory } from './record.type'
 
 type RecordInMemoryPredicate = (value: RecordInMemory, index: number, obj: RecordInMemory[]) => unknown
+const opposite =
+  (fn: RecordInMemoryPredicate) =>
+  (...args: Parameters<RecordInMemoryPredicate>): boolean =>
+    !fn(...args)
 
 export class RecordInMemoryQueryVisitor implements IRecordVisitor {
   private predicate?: RecordInMemoryPredicate
+  private isOpposite = false
 
   getPredicate(): Result<RecordInMemoryPredicate, Error> {
     if (!this.predicate) {
       return Err(new Error('record in memory visitor missing predicate'))
     }
 
+    if (this.isOpposite) {
+      return Ok(opposite(this.predicate))
+    }
+
     return Ok(this.predicate)
+  }
+
+  not(): this {
+    this.isOpposite = !this.isOpposite
+    return this
   }
 
   and(ss: IRecordSpec[]): void {
