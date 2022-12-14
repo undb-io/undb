@@ -1,5 +1,5 @@
 import type { IQueryTable, ITableQueryModel, ITableSpec } from '@egodb/core'
-import { WithTableIdS } from '@egodb/core'
+import { WithTableId } from '@egodb/core'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { db } from '../db'
@@ -24,6 +24,6 @@ export class TableInMemoryQueryModel implements ITableQueryModel {
   }
 
   findOneById(id: string): Promise<Option<IQueryTable>> {
-    return this.findOne(WithTableIdS(id).unwrap())
+    return this.findOne(WithTableId.fromString(id).unwrap())
   }
 }

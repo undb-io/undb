@@ -2,12 +2,16 @@ import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { Table } from '../table'
-import type { TableId } from '../value-objects'
+import { TableId } from '../value-objects'
 import type { ITableSpecVisitor } from './interface'
 
 export class WithTableId extends CompositeSpecification {
   constructor(public readonly id: TableId) {
     super()
+  }
+
+  static fromString(id: string): Result<WithTableId, Error> {
+    return TableId.from(id).map((tableId) => new WithTableId(tableId))
   }
 
   isSatisfiedBy(t: Table): boolean {
