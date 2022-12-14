@@ -1,6 +1,6 @@
 import type { IQueryHandler } from '@egodb/domain'
 import type { IRecordQueryModel } from '../../record'
-import { WithRecordTableIdS } from '../../record'
+import { WithRecordTableId } from '../../record'
 import type { ITableRepository } from '../../table.repository'
 import type { GetRecordsQuery } from './get-records.query'
 import type { IGetRecordsOutput } from './get-records.query.interface'
@@ -12,7 +12,7 @@ export class GetRecordsQueryHandler implements IQueryHandler<GetRecordsQuery, IG
     const table = (await this.tableRepo.findOneById(query.tableId)).unwrap()
     const filter = table.getSpec(query.viewName)
 
-    const spec = WithRecordTableIdS(query.tableId)
+    const spec = WithRecordTableId.fromString(query.tableId)
       .map((s) => (filter.isNone() ? s : s.and(filter.unwrap())))
       .unwrap()
 

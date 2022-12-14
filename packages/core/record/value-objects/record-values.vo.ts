@@ -10,6 +10,10 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
     return new RecordValues(values)
   }
 
+  static empty(): RecordValues {
+    return new RecordValues(new Map())
+  }
+
   public get value() {
     return this.props
   }

@@ -10,6 +10,10 @@ export class WithRecordTableId extends CompositeSpecification {
     super()
   }
 
+  static fromString(id: string): Result<WithRecordTableId, Error> {
+    return tableId.from(id).map((tableId) => new WithRecordTableId(tableId))
+  }
+
   isSatisfiedBy(t: Record): boolean {
     return this.id.equals(t.tableId)
   }
@@ -24,5 +28,3 @@ export class WithRecordTableId extends CompositeSpecification {
     return Ok(undefined)
   }
 }
-
-export const WithRecordTableIdS = (id: string) => tableId.from(id).map((tableId) => new WithRecordTableId(tableId))

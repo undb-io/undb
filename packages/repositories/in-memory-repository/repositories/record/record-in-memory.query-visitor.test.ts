@@ -1,8 +1,8 @@
-import { WithRecordIdS } from '@egodb/core'
+import { WithRecordId } from '@egodb/core'
 import { CompositeSpecification } from '@egodb/domain'
 import { RecordInMemoryQueryVisitor } from './record-in-memory.query-visitor'
 
-test.each<CompositeSpecification>([WithRecordIdS('test').not()])('test visitor not', (spec) => {
+test.each<CompositeSpecification>([WithRecordId.fromString('test').not()])('test visitor not', (spec) => {
   const visitor = new RecordInMemoryQueryVisitor()
 
   spec.accept(visitor)

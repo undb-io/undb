@@ -132,4 +132,8 @@ export class RecordInMemoryQueryVisitor implements IRecordVisitor {
       return isNumber(value) && value <= s.value
     }
   }
+
+  values(): void {
+    throw new Error('[RecordInMemoryQueryVisitor.values] Method not implemented.')
+  }
 }

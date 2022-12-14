@@ -1,4 +1,4 @@
-import type { ISpecVisitor } from '@egodb/domain'
+import type { CompositeSpecification, ISpecVisitor } from '@egodb/domain'
 import { type ISpecification } from '@egodb/domain'
 import { type Record } from '../record'
 import type {
@@ -10,11 +10,14 @@ import type {
 } from './number.specification'
 import type { WithRecordId } from './record-id.specifaction'
 import type { WithRecordTableId } from './record-table-id.specification'
+import type { WithRecordValues } from './record-values.specification'
 import type { StringContain, StringEndsWith, StringEqual, StringRegex, StringStartsWith } from './string.specification'
 
 interface IRecordSpecVisitor {
   idEqual(s: WithRecordId): void
   tableIdEqual(s: WithRecordTableId): void
+
+  values(s: WithRecordValues): void
 }
 
 interface IRecordValueVisitor {
@@ -30,6 +33,8 @@ interface IRecordValueVisitor {
   numberGreaterThanOrEqual(s: NumberGreaterThanOrEqual): void
   numberLessThanOrEqual(s: NumberLessThanOrEqual): void
 }
+
+export type RecordCompositeSpecification = CompositeSpecification<Record, IRecordVisitor>
 
 export type IRecordSpec = ISpecification<Record, IRecordVisitor>
 
