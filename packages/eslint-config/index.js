@@ -9,6 +9,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'eslint-plugin-tsdoc'],
   rules: {
+    "no-console": "warn",
     "react/jsx-key": "off",
     "tsdoc/syntax": "warn",
     "@typescript-eslint/consistent-type-imports": "warn",
