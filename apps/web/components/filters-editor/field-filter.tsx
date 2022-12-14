@@ -33,7 +33,7 @@ export const FieldFilter: React.FC<IProps> = ({ schema, value, onChange, onRemov
 
   useEffect(() => {
     if (selectedField && operator) {
-      onChange(selectedField.createFilter(operator, fieldValue as any), index)
+      onChange(selectedField.createFilter(operator as any, fieldValue as any), index)
     } else {
       onChange(null, index)
     }
