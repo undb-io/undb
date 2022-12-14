@@ -4,6 +4,10 @@ import type { TableInMemory } from './table'
 export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
   constructor(private table: TableInMemory) {}
 
+  not(): this {
+    return this
+  }
+
   idEqual(): void {
     throw new Error('[TableInMemoryMutationVisitor.idEqual] Method not implemented.')
   }
