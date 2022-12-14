@@ -17,6 +17,10 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
     data = [
       { value: '$eq', label: 'equal' },
       { value: '$neq', label: 'not equal' },
+      { value: '$contains', label: 'contains' },
+      { value: '$starts_with', label: 'startsWith' },
+      { value: '$ends_with', label: 'endsWith' },
+      { value: '$regex', label: 'regex' },
     ]
   } else if (field instanceof NumberField) {
     data = [

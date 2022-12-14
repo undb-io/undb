@@ -36,3 +36,51 @@ export class StringContain extends RecordValueSpecifcationBase<string> {
     return Ok(undefined)
   }
 }
+
+export class StringStartsWith extends RecordValueSpecifcationBase<string> {
+  /**
+   * check whether string starts with given value
+   * @param r - record
+   * @returns boolean
+   */
+  isSatisfiedBy(r: Record): boolean {
+    return r.values.getStringValue(this.name).mapOr(false, (value) => value.startsWith(this.value))
+  }
+
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.stringStartsWith(this)
+    return Ok(undefined)
+  }
+}
+
+export class StringEndsWith extends RecordValueSpecifcationBase<string> {
+  /**
+   * check whether string ends with given value
+   * @param r - record
+   * @returns boolean
+   */
+  isSatisfiedBy(r: Record): boolean {
+    return r.values.getStringValue(this.name).mapOr(false, (value) => value.endsWith(this.value))
+  }
+
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.stringEndsWith(this)
+    return Ok(undefined)
+  }
+}
+
+export class StringRegex extends RecordValueSpecifcationBase<string> {
+  /**
+   * check whether string match given regex
+   * @param r - record
+   * @returns boolean
+   */
+  isSatisfiedBy(r: Record): boolean {
+    return r.values.getStringValue(this.name).mapOr(false, (value) => new RegExp(this.value).test(value))
+  }
+
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.stringRegex(this)
+    return Ok(undefined)
+  }
+}

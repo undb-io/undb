@@ -2,16 +2,20 @@ import type { CompositeSpecification } from '@egodb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
-import { NumberEqual, StringEqual } from '../record'
+import { NumberEqual, StringContain, StringEndsWith, StringEqual, StringStartsWith } from '../record'
 
 const $eq = z.literal('$eq')
 const $neq = z.literal('$neq')
+const $contains = z.literal('$contains')
+const $starts_with = z.literal('$starts_with')
+const $ends_with = z.literal('$ends_with')
+const $regex = z.literal('$regex')
 
 const baseFilter = z.object({
   path: z.string().min(1),
 })
 
-const stringFilterOperators = z.union([$eq, $neq])
+const stringFilterOperators = z.union([$eq, $neq, $contains, $starts_with, $ends_with, $regex])
 const stringFilter = z
   .object({
     type: z.literal('string'),
@@ -19,6 +23,7 @@ const stringFilter = z
     value: z.string().nullable(),
   })
   .merge(baseFilter)
+
 export type IStringFilter = z.infer<typeof stringFilter>
 export type IStringFilterOperator = z.infer<typeof stringFilterOperators>
 
@@ -86,8 +91,18 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
         case '$eq': {
           return Some(new StringEqual(filter.path, filter.value))
         }
-        case '$neq':
+        case '$neq': {
           return Some(new StringEqual(filter.path, filter.value).not())
+        }
+        case '$contains': {
+          return Some(new StringContain(filter.path, filter.value))
+        }
+        case '$starts_with': {
+          return Some(new StringStartsWith(filter.path, filter.value))
+        }
+        case '$ends_with': {
+          return Some(new StringEndsWith(filter.path, filter.value))
+        }
 
         default:
           return None
