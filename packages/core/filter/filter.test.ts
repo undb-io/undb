@@ -8,6 +8,24 @@ test.each<IRootFilter>([
     value: 'hello',
   },
   {
+    type: 'string',
+    operator: '$contains',
+    path: 'name',
+    value: 'hello',
+  },
+  {
+    type: 'string',
+    operator: '$starts_with',
+    path: 'name',
+    value: 'starts with',
+  },
+  {
+    type: 'string',
+    operator: '$ends_with',
+    path: 'name',
+    value: 'ends with',
+  },
+  {
     type: 'number',
     operator: '$neq',
     path: 'name',
@@ -48,75 +66,7 @@ test.each<IRootFilter>([
 ])('should create root filter', (filter) => {
   const parsed = rootFilter.parse(filter)
   expect(parsed).toEqual(filter)
-})
 
-test.each<IRootFilter>([
-  {
-    type: 'string',
-    value: 'value',
-    operator: '$eq',
-    path: 'name',
-  },
-  [
-    {
-      type: 'string',
-      value: '1',
-      operator: '$eq',
-      path: 'field1',
-    },
-    {
-      type: 'string',
-      value: '2',
-      operator: '$neq',
-      path: 'field2',
-    },
-  ],
-  [
-    {
-      conjunction: '$or',
-      children: [
-        {
-          type: 'string',
-          value: '2',
-          operator: '$neq',
-          path: 'field2',
-        },
-      ],
-    },
-  ],
-  [
-    {
-      conjunction: '$or',
-      children: [
-        {
-          type: 'string',
-          value: '1',
-          operator: '$eq',
-          path: 'field1',
-        },
-        {
-          type: 'string',
-          value: '2',
-          operator: '$neq',
-          path: 'field2',
-        },
-      ],
-    },
-  ],
-  [
-    {
-      conjunction: '$not',
-      children: [
-        {
-          type: 'string',
-          value: '1',
-          operator: '$eq',
-          path: 'field1',
-        },
-      ],
-    },
-  ],
-])('should convert root filter to record specification', (filter) => {
   const spec = convertFilterSpec(filter)
   expect(spec).toMatchSnapshot()
 })

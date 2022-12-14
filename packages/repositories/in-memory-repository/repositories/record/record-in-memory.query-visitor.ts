@@ -3,11 +3,14 @@ import type {
   IRecordVisitor,
   NumberEqual,
   StringContain,
+  StringEndsWith,
   StringEqual,
+  StringRegex,
+  StringStartsWith,
   WithRecordId,
   WithRecordTableId,
 } from '@egodb/core'
-import { contains, isNumber, isString } from '@fxts/core'
+import { isNumber, isString } from '@fxts/core'
 import type { Result } from 'oxide.ts'
 import { Err, Ok } from 'oxide.ts'
 import type { RecordInMemory } from './record.type'
@@ -74,7 +77,28 @@ export class RecordInMemoryQueryVisitor implements IRecordVisitor {
   stringContain(s: StringContain): void {
     this.predicate = (r) => {
       const value = r.values[s.name]
-      return isString(value) && contains(s.value, value)
+      return isString(value) && value.includes(s.value)
+    }
+  }
+
+  stringStartsWith(s: StringStartsWith): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isString(value) && value.startsWith(s.value)
+    }
+  }
+
+  stringEndsWith(s: StringEndsWith): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isString(value) && value.endsWith(s.value)
+    }
+  }
+
+  stringRegex(s: StringRegex): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isString(value) && new RegExp(s.value).test(value)
     }
   }
 }

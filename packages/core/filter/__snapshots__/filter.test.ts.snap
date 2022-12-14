@@ -1,71 +1,85 @@
 // Vitest Snapshot v1
 
-exports[`should convert root filter to record specification 1`] = `
+exports[`should create root filter 1`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): StringEqual {
     "name": "name",
-    "value": "value",
+    "value": "hello",
   },
 }
 `;
 
-exports[`should convert root filter to record specification 2`] = `
+exports[`should create root filter 2`] = `
 OptionType {
   Symbol(T): true,
-  Symbol(Val): And {
-    "left": StringEqual {
-      "name": "field1",
-      "value": "1",
-    },
-    "right": Not {
-      "spec": StringEqual {
-        "name": "field2",
-        "value": "2",
-      },
-    },
+  Symbol(Val): StringContain {
+    "name": "name",
+    "value": "hello",
   },
 }
 `;
 
-exports[`should convert root filter to record specification 3`] = `
+exports[`should create root filter 3`] = `
 OptionType {
   Symbol(T): true,
-  Symbol(Val): Not {
-    "spec": StringEqual {
-      "name": "field2",
-      "value": "2",
-    },
+  Symbol(Val): StringStartsWith {
+    "name": "name",
+    "value": "starts with",
   },
 }
 `;
 
-exports[`should convert root filter to record specification 4`] = `
+exports[`should create root filter 4`] = `
 OptionType {
   Symbol(T): true,
-  Symbol(Val): Or {
-    "left": StringEqual {
-      "name": "field1",
-      "value": "1",
-    },
-    "right": Not {
-      "spec": StringEqual {
-        "name": "field2",
-        "value": "2",
-      },
-    },
+  Symbol(Val): StringEndsWith {
+    "name": "name",
+    "value": "ends with",
   },
 }
 `;
 
-exports[`should convert root filter to record specification 5`] = `
+exports[`should create root filter 5`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): Not {
-    "spec": StringEqual {
-      "name": "field1",
-      "value": "1",
+    "spec": NumberEqual {
+      "name": "name",
+      "value": 1,
     },
+  },
+}
+`;
+
+exports[`should create root filter 6`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): Not {
+    "spec": NumberEqual {
+      "name": "name.nested",
+      "value": 1,
+    },
+  },
+}
+`;
+
+exports[`should create root filter 7`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): StringEqual {
+    "name": "name",
+    "value": "hello",
+  },
+}
+`;
+
+exports[`should create root filter 8`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): StringEqual {
+    "name": "name",
+    "value": "hello",
   },
 }
 `;
