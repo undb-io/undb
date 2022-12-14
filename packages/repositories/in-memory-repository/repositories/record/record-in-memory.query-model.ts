@@ -1,6 +1,6 @@
 import type { IQueryRecordSchema, IRecordQueryModel, IRecordSpec, QueryRecords } from '@egodb/core'
 import { WithRecordIdS } from '@egodb/core'
-import type { Option } from 'oxide.ts'
+import { Option } from 'oxide.ts'
 import { db } from '../db'
 import { RecordInMemoryQueryVisitor } from './record-in-memory.query-visitor'
 
@@ -13,7 +13,11 @@ export class RecordInMemoryQueryModel implements IRecordQueryModel {
   }
 
   async findOne(spec: IRecordSpec): Promise<Option<IQueryRecordSchema>> {
-    throw new Error('unimplemented')
+    const visitor = new RecordInMemoryQueryVisitor()
+    spec.accept(visitor).unwrap()
+
+    const found = db.data?.records.find(visitor.getPredicate().unwrap())
+    return Option(found)
   }
 
   findOneById(id: string): Promise<Option<IQueryRecordSchema>> {
