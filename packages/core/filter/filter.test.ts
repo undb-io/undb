@@ -63,6 +63,30 @@ test.each<IRootFilter>([
       ],
     },
   ],
+  {
+    type: 'number',
+    operator: '$gt',
+    path: 'gt',
+    value: 1,
+  },
+  {
+    type: 'number',
+    operator: '$gte',
+    path: 'gte',
+    value: 1,
+  },
+  {
+    type: 'number',
+    operator: '$lt',
+    path: 'lt',
+    value: 1,
+  },
+  {
+    type: 'number',
+    operator: '$lte',
+    path: 'lte',
+    value: 1,
+  },
 ])('should create root filter', (filter) => {
   const parsed = rootFilter.parse(filter)
   expect(parsed).toEqual(filter)

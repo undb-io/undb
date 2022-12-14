@@ -26,6 +26,10 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
     data = [
       { value: '$eq', label: 'equal' },
       { value: '$neq', label: 'not equal' },
+      { value: '$gt', label: 'greater than' },
+      { value: '$gte', label: 'greater than or equal' },
+      { value: '$lt', label: 'less than' },
+      { value: '$lte', label: 'less than or equal' },
     ]
   }
 
