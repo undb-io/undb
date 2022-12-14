@@ -23,7 +23,6 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
     form.resetDirty()
   }
   const confirm = useConfirmModal({ onConfirm: reset })
-  console.log('Field:', table.schema.fields)
   const form = useCreateRecord({
     initialValues: {
       tableId: table.id.value,
