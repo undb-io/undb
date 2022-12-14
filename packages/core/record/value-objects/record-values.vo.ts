@@ -2,6 +2,7 @@ import { ValueObject } from '@egodb/domain'
 import { isNumber, isString } from '@fxts/core'
 import { None, Option, Some } from 'oxide.ts'
 import type { FieldValue, ICreateFieldsSchema_internal, IFieldValue, UnpackedFieldValue } from '../../field'
+import { FieldValueFactory } from '../../field/field-value.factory'
 
 export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   static fromArray(inputs: ICreateFieldsSchema_internal): RecordValues {
@@ -11,6 +12,15 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
 
   public get value() {
     return this.props
+  }
+
+  set(fieldName: string, value: IFieldValue) {
+    const fieldValue = FieldValueFactory.from(value)
+
+    // TODO: handler is none value
+    if (fieldValue.isSome()) {
+      this.props.set(fieldName, fieldValue.unwrap())
+    }
   }
 
   toObject() {
