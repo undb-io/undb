@@ -2,6 +2,10 @@ import type {
   IRecordSpec,
   IRecordVisitor,
   NumberEqual,
+  NumberGreaterThan,
+  NumberGreaterThanOrEqual,
+  NumberLessThan,
+  NumberLessThanOrEqual,
   StringContain,
   StringEndsWith,
   StringEqual,
@@ -99,6 +103,33 @@ export class RecordInMemoryQueryVisitor implements IRecordVisitor {
     this.predicate = (r) => {
       const value = r.values[s.name]
       return isString(value) && new RegExp(s.value).test(value)
+    }
+  }
+
+  numberGreaterThan(s: NumberGreaterThan): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isNumber(value) && value > s.value
+    }
+  }
+  numberLessThan(s: NumberLessThan): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isNumber(value) && value < s.value
+    }
+  }
+
+  numberGreaterThanOrEqual(s: NumberGreaterThanOrEqual): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isNumber(value) && value >= s.value
+    }
+  }
+
+  numberLessThanOrEqual(s: NumberLessThanOrEqual): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isNumber(value) && value <= s.value
     }
   }
 }

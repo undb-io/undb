@@ -2,7 +2,17 @@ import type { CompositeSpecification } from '@egodb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
-import { NumberEqual, StringContain, StringEndsWith, StringEqual, StringStartsWith } from '../record'
+import {
+  NumberEqual,
+  NumberGreaterThan,
+  NumberGreaterThanOrEqual,
+  NumberLessThan,
+  NumberLessThanOrEqual,
+  StringContain,
+  StringEndsWith,
+  StringEqual,
+  StringStartsWith,
+} from '../record'
 
 const $eq = z.literal('$eq')
 const $neq = z.literal('$neq')
@@ -10,6 +20,11 @@ const $contains = z.literal('$contains')
 const $starts_with = z.literal('$starts_with')
 const $ends_with = z.literal('$ends_with')
 const $regex = z.literal('$regex')
+
+const $gt = z.literal('$gt')
+const $lt = z.literal('$lt')
+const $gte = z.literal('$gte')
+const $lte = z.literal('$lte')
 
 const baseFilter = z.object({
   path: z.string().min(1),
@@ -27,7 +42,7 @@ const stringFilter = z
 export type IStringFilter = z.infer<typeof stringFilter>
 export type IStringFilterOperator = z.infer<typeof stringFilterOperators>
 
-const numberFilterOperators = z.union([$eq, $neq])
+const numberFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
 const numberFilter = z
   .object({
     type: z.literal('number'),
@@ -81,48 +96,68 @@ const isFilter = (filterOrGroup: IFilterOrGroup): filterOrGroup is IFilter => {
   return Object.hasOwn(filterOrGroup, 'type') && Object.hasOwn(filterOrGroup, 'value')
 }
 
+const convertStringFilter = (filter: IStringFilter): Option<CompositeSpecification> => {
+  if (!filter.value) {
+    return None
+  }
+
+  switch (filter.operator) {
+    case '$eq': {
+      return Some(new StringEqual(filter.path, filter.value))
+    }
+    case '$neq': {
+      return Some(new StringEqual(filter.path, filter.value).not())
+    }
+    case '$contains': {
+      return Some(new StringContain(filter.path, filter.value))
+    }
+    case '$starts_with': {
+      return Some(new StringStartsWith(filter.path, filter.value))
+    }
+    case '$ends_with': {
+      return Some(new StringEndsWith(filter.path, filter.value))
+    }
+
+    default:
+      return None
+  }
+}
+
+const convertNumberFilter = (filter: INumberFilter): Option<CompositeSpecification> => {
+  if (!filter.value) {
+    return None
+  }
+
+  switch (filter.operator) {
+    case '$eq': {
+      return Some(new NumberEqual(filter.path, filter.value))
+    }
+    case '$neq': {
+      return Some(new NumberEqual(filter.path, filter.value).not())
+    }
+    case '$gt': {
+      return Some(new NumberGreaterThan(filter.path, filter.value))
+    }
+    case '$gte': {
+      return Some(new NumberGreaterThanOrEqual(filter.path, filter.value))
+    }
+    case '$lt': {
+      return Some(new NumberLessThan(filter.path, filter.value))
+    }
+    case '$lte': {
+      return Some(new NumberLessThanOrEqual(filter.path, filter.value))
+    }
+    default:
+      return None
+  }
+}
+
 const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
   switch (filter.type) {
     case 'string':
-      if (!filter.value) {
-        return None
-      }
-      switch (filter.operator) {
-        case '$eq': {
-          return Some(new StringEqual(filter.path, filter.value))
-        }
-        case '$neq': {
-          return Some(new StringEqual(filter.path, filter.value).not())
-        }
-        case '$contains': {
-          return Some(new StringContain(filter.path, filter.value))
-        }
-        case '$starts_with': {
-          return Some(new StringStartsWith(filter.path, filter.value))
-        }
-        case '$ends_with': {
-          return Some(new StringEndsWith(filter.path, filter.value))
-        }
-
-        default:
-          return None
-      }
+      return convertStringFilter(filter)
     case 'number':
-      if (!filter.value) {
-        return None
-      }
-
-      switch (filter.operator) {
-        case '$eq': {
-          return Some(new NumberEqual(filter.path, filter.value))
-        }
-        case '$neq': {
-          return Some(new NumberEqual(filter.path, filter.value).not())
-        }
-        default:
-          return None
-      }
-
+      return convertNumberFilter(filter)
     default:
       return None
   }

@@ -83,3 +83,43 @@ OptionType {
   },
 }
 `;
+
+exports[`should create root filter 9`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): NumberGreaterThan {
+    "name": "gt",
+    "value": 1,
+  },
+}
+`;
+
+exports[`should create root filter 10`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): NumberGreaterThanOrEqual {
+    "name": "gte",
+    "value": 1,
+  },
+}
+`;
+
+exports[`should create root filter 11`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): NumberLessThan {
+    "name": "lt",
+    "value": 1,
+  },
+}
+`;
+
+exports[`should create root filter 12`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): NumberLessThanOrEqual {
+    "name": "lte",
+    "value": 1,
+  },
+}
+`;
