@@ -1,5 +1,5 @@
 import type { IQueryRecordSchema, IRecordQueryModel, IRecordSpec, QueryRecords } from '@egodb/core'
-import { WithRecordIdS } from '@egodb/core'
+import { WithRecordId } from '@egodb/core'
 import { Option } from 'oxide.ts'
 import { db } from '../db'
 import { RecordInMemoryQueryVisitor } from './record-in-memory.query-visitor'
@@ -21,6 +21,6 @@ export class RecordInMemoryQueryModel implements IRecordQueryModel {
   }
 
   findOneById(id: string): Promise<Option<IQueryRecordSchema>> {
-    return this.findOne(WithRecordIdS(id))
+    return this.findOne(WithRecordId.fromString(id))
   }
 }

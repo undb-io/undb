@@ -1,0 +1,43 @@
+// Vitest Snapshot v1
+
+exports[`should create record 1`] = `
+ResultType {
+  Symbol(Val): Record {
+    "id": RecordId {
+      "props": {
+        "value": "record",
+      },
+    },
+    "tableId": TableId {
+      "props": {
+        "value": "table",
+      },
+    },
+    "values": RecordValues {
+      "props": Map {},
+    },
+  },
+  Symbol(T): true,
+}
+`;
+
+exports[`should create record 2`] = `
+ResultType {
+  Symbol(Val): Record {
+    "id": RecordId {
+      "props": {
+        "value": "record",
+      },
+    },
+    "tableId": TableId {
+      "props": {
+        "value": "table",
+      },
+    },
+    "values": RecordValues {
+      "props": Map {},
+    },
+  },
+  Symbol(T): true,
+}
+`;

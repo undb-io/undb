@@ -4,7 +4,10 @@ import type { ICreateRecordInput } from './commands'
 import type { ICreateFieldsSchema_internal, ICreateFieldValueSchema_internal, IQuerySchemaSchema } from './field'
 import { createFieldValueSchema_internal } from './field'
 import type { IRootFilter } from './filter'
-import { Record } from './record'
+import type { Record } from './record'
+import { WithRecordTableId } from './record'
+import { RecordFactory } from './record/record.factory'
+import { WithRecordValues } from './record/specifications/record-values.specification'
 import type { TableSpecificaiton } from './specifications'
 import { WithFilter } from './specifications/filters.specificaiton'
 import type { ICreateTableInput_internal } from './table.schema'
@@ -125,6 +128,7 @@ export class Table {
       toArray,
     )
 
-    return Record.create({ tableId: this.id, value: inputs })
+    const spec = new WithRecordTableId(this.id).and(WithRecordValues.fromArray(inputs))
+    return RecordFactory.create(spec).unwrap()
   }
 }

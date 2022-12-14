@@ -10,6 +10,10 @@ export class WithRecordId extends CompositeSpecification {
     super()
   }
 
+  static fromString(id: string): WithRecordId {
+    return new WithRecordId(RecordId.from(id))
+  }
+
   isSatisfiedBy(t: Record): boolean {
     return this.id.equals(t.id)
   }
@@ -24,5 +28,3 @@ export class WithRecordId extends CompositeSpecification {
     return Ok(undefined)
   }
 }
-
-export const WithRecordIdS = (id: string) => new WithRecordId(RecordId.from(id))
