@@ -1,12 +1,12 @@
+import type { DateVO } from '@egodb/domain'
 import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { DateFieldValue } from '../../field/date-field-value'
 import type { Record } from '../record'
 import type { IRecordVisitor } from './interface'
 
 export class WithRecordCreatedAt extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(public readonly date: DateFieldValue) {
+  constructor(public readonly date: DateVO) {
     super()
   }
 

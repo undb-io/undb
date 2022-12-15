@@ -11,7 +11,7 @@ export class RecordInMemoryMapper {
     return {
       id: r.id.value,
       tableId: r.tableId.value,
-      createdAt: r.createdAt.value,
+      createdAt: r.createdAt.unpack(),
       values: r.values.toObject(),
     }
   }

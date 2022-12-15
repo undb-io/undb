@@ -143,7 +143,9 @@ export class RecordInMemoryQueryVisitor implements IRecordVisitor {
   createdAt(s: WithRecordCreatedAt): void {
     this.predicate = (r) => {
       const value = r.createdAt
-      return isDate(value) && isEqual(value, s.date.unpack())
+      const createdAt = s.date.unpack()
+
+      return isDate(value) && isDate(createdAt) && isEqual(value, createdAt as Date)
     }
   }
 
