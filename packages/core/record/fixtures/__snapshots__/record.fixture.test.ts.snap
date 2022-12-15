@@ -4,7 +4,7 @@ exports[`createTestRecord 1`] = `
 Record {
   "createdAt": DateVO {
     "props": {
-      "value": 2022-01-31T16:00:00.000Z,
+      "value": 2022-02-01T00:00:00.000Z,
     },
   },
   "id": RecordId {
@@ -33,7 +33,7 @@ exports[`createTestRecord 2`] = `
 Record {
   "createdAt": DateVO {
     "props": {
-      "value": 2022-01-31T16:00:00.000Z,
+      "value": 2022-02-01T00:00:00.000Z,
     },
   },
   "id": RecordId {
@@ -62,7 +62,7 @@ exports[`createTestRecord 3`] = `
 Record {
   "createdAt": DateVO {
     "props": {
-      "value": 2022-01-31T16:00:00.000Z,
+      "value": 2022-02-01T00:00:00.000Z,
     },
   },
   "id": RecordId {
