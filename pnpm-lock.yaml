@@ -176,6 +176,7 @@ importers:
       tsup: ^6.5.0
       typescript: ^4.9.4
       vitest: ^0.25.7
+      vitest-mock-extended: ^1.0.7
       zod: ^3.20.2
     dependencies:
       '@egodb/domain': link:../domain
@@ -188,6 +189,7 @@ importers:
       tsup: 6.5.0_typescript@4.9.4
       typescript: 4.9.4
       vitest: 0.25.7
+      vitest-mock-extended: 1.0.7_53rdty6htfhgadzztb2suiyzhy
 
   packages/domain:
     specifiers:
@@ -8910,6 +8912,14 @@ packages:
       zod-to-json-schema: 3.19.1_zod@3.20.2
     dev: false
 
+  /ts-essentials/9.3.0_typescript@4.9.4:
+    resolution: {integrity: sha512-XeiCboEyBG8UqXZtXl59bWEi4ZgOqRsogFDI6WDGIF1LmzbYiAkIwjkXN6zZWWl4re/lsOqMlYfe8KA0XiiEPw==}
+    peerDependencies:
+      typescript: '>=4.1.0'
+    dependencies:
+      typescript: 4.9.4
+    dev: true
+
   /ts-interface-checker/0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
     dev: true
@@ -9416,6 +9426,17 @@ packages:
       rollup: 2.79.1
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
+
+  /vitest-mock-extended/1.0.7_53rdty6htfhgadzztb2suiyzhy:
+    resolution: {integrity: sha512-AgNlZ3yxbrQNDaBuZgkSUASeTmIcACLWTmoBujjL4rGXiiGLhjlQ12ItIZCvSjkdQ9hl+6KSdjztmLxPSIuvGA==}
+    peerDependencies:
+      typescript: 3.x || 4.x
+      vitest: '>=0.24.3'
+    dependencies:
+      ts-essentials: 9.3.0_typescript@4.9.4
+      typescript: 4.9.4
+      vitest: 0.25.7
     dev: true
 
   /vitest/0.25.7:
