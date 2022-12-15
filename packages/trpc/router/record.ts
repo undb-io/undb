@@ -2,6 +2,9 @@ import {
   CreateRecordCommand,
   createRecordCommandInput,
   createRecordCommandOutput,
+  GetRecordQuery,
+  getRecordQueryInput,
+  getRecordQueryOutput,
   GetRecordsQuery,
   getRecordsQueryInput,
   getRecordsQueryOutput,
@@ -23,6 +26,14 @@ export const createRecordRouter =
         .mutation(({ input }) => {
           const cmd = new CreateRecordCommand(input)
           return commandBus.execute(cmd)
+        }),
+      get: procedure
+        .meta({ openapi: { method: 'GET', path: '/record.get', tags } })
+        .input(getRecordQueryInput)
+        .output(getRecordQueryOutput)
+        .query(({ input }) => {
+          const query = new GetRecordQuery(input)
+          return queryBus.execute(query)
         }),
       list: procedure
         .meta({ openapi: { method: 'GET', path: '/record.list', tags } })
