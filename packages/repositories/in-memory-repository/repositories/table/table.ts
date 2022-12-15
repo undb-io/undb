@@ -1,4 +1,5 @@
 import type { IRootFilter } from '@egodb/core'
+import type { ICurrencySymbol } from '@egodb/core/field/currency'
 
 type NumberFieldInMemory = {
   id: string
@@ -6,10 +7,15 @@ type NumberFieldInMemory = {
   name: string
 }
 
+interface ICurrency {
+  symbol: ICurrencySymbol
+}
+
 type TextFieldInMemory = {
   id: string
   type: 'number'
   name: string
+  currency?: ICurrency
 }
 
 type DateFieldInMemory = {

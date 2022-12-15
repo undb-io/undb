@@ -1,4 +1,5 @@
 import type { INumberFilter, INumberFilterOperator } from '../filter'
+import { Currency } from './currency'
 import { BaseField } from './field.base'
 import type { INumberField } from './field.type'
 import { NumberFieldValue } from './number-field-value'
@@ -15,6 +16,7 @@ export class NumberField extends BaseField<INumberField> {
       id: FieldId.from(input.id),
       name: FieldName.create(input.name),
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
+      currency: Currency.fromNullable(input.currency),
     })
   }
 
@@ -23,6 +25,7 @@ export class NumberField extends BaseField<INumberField> {
       id: FieldId.from(input.id),
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
+      currency: Currency.fromNullable(input.currency),
     })
   }
 
