@@ -8,6 +8,7 @@ import type {
   NumberLessThan,
   NumberLessThanOrEqual,
 } from './number.specification'
+import type { WithRecordCreatedAt } from './record-created-at.specification'
 import type { WithRecordId } from './record-id.specifaction'
 import type { WithRecordTableId } from './record-table-id.specification'
 import type { WithRecordValues } from './record-values.specification'
@@ -16,6 +17,8 @@ import type { StringContain, StringEndsWith, StringEqual, StringRegex, StringSta
 interface IRecordSpecVisitor {
   idEqual(s: WithRecordId): void
   tableIdEqual(s: WithRecordTableId): void
+
+  createdAt(s: WithRecordCreatedAt): void
 
   values(s: WithRecordValues): void
 }

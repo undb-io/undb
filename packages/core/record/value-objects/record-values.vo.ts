@@ -23,7 +23,7 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
 
     // TODO: handler is none value
     if (fieldValue.isSome()) {
-      this.props.set(fieldName, fieldValue.unwrap())
+      this.value.set(fieldName, fieldValue.unwrap())
     }
   }
 

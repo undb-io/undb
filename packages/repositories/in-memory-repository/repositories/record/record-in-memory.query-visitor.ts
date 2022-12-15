@@ -11,10 +11,12 @@ import type {
   StringEqual,
   StringRegex,
   StringStartsWith,
+  WithRecordCreatedAt,
   WithRecordId,
   WithRecordTableId,
 } from '@egodb/core'
 import { isNumber, isString } from '@fxts/core'
+import { isDate, isEqual } from 'date-fns'
 import type { Result } from 'oxide.ts'
 import { Err, Ok } from 'oxide.ts'
 import type { RecordInMemory } from './record.type'
@@ -130,6 +132,13 @@ export class RecordInMemoryQueryVisitor implements IRecordVisitor {
     this.predicate = (r) => {
       const value = r.values[s.name]
       return isNumber(value) && value <= s.value
+    }
+  }
+
+  createdAt(s: WithRecordCreatedAt): void {
+    this.predicate = (r) => {
+      const value = r.createdAt
+      return isDate(value) && isEqual(value, s.date.value)
     }
   }
 
