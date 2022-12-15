@@ -1,5 +1,17 @@
 import * as z from 'zod'
+import type { DateFieldValue } from './date-field-value'
+import type { IDateFieldValue } from './date-field.type'
+import {
+  createDateFieldSchema,
+  createDateFieldValue,
+  createDateFieldValue_internal,
+  dateFieldQuerySchema,
+  dateFieldValue,
+  dateTypeSchema,
+} from './date-field.type'
+import type { DateField } from './date.field'
 import { FIELD_TYPE_KEY } from './field.constant'
+import type { NumberFieldValue } from './number-field-value'
 import type { INumberFieldValue } from './number-field.type'
 import {
   createNumberFieldSchema,
@@ -9,6 +21,8 @@ import {
   numberFieldValue,
   numberTypeSchema,
 } from './number-field.type'
+import type { NumberField } from './number.field'
+import type { TextFieldValue } from './text-field-value'
 import type { ITextFieldValue } from './text-field.type'
 import {
   createTextFieldSchema,
@@ -18,6 +32,7 @@ import {
   textFieldValue,
   textTypeSchema,
 } from './text-field.type'
+import type { TextField } from './text.field'
 import type { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
 export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
@@ -64,22 +79,6 @@ export interface IBaseField {
 export type ITextField = IBaseField
 export type INumberField = IBaseField
 export type IDateField = IBaseField
-
-import type { DateFieldValue } from './date-field-value'
-import type { IDateFieldValue } from './date-field.type'
-import {
-  createDateFieldSchema,
-  createDateFieldValue,
-  createDateFieldValue_internal,
-  dateFieldQuerySchema,
-  dateFieldValue,
-  dateTypeSchema,
-} from './date-field.type'
-import type { DateField } from './date.field'
-import type { NumberFieldValue } from './number-field-value'
-import type { NumberField } from './number.field'
-import type { TextFieldValue } from './text-field-value'
-import type { TextField } from './text.field'
 
 export type Field = TextField | NumberField | DateField
 

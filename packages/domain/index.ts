@@ -1,7 +1,6 @@
 export * from './command'
 export * from './command-bus'
 export * from './command-handler'
-export * from './date.vo'
 export * from './entity.base'
 export * from './exception.base'
 export * from './id.vo'
