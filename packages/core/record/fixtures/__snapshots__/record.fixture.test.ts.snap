@@ -1,0 +1,78 @@
+// Vitest Snapshot v1
+
+exports[`createTestRecord 1`] = `
+Record {
+  "id": RecordId {
+    "props": {
+      "value": "record",
+    },
+  },
+  "tableId": TableId {
+    "props": {
+      "value": "tableId",
+    },
+  },
+  "values": RecordValues {
+    "props": Map {
+      "hello" => TextFieldValue {
+        "props": {
+          "value": "world",
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`createTestRecord 2`] = `
+Record {
+  "id": RecordId {
+    "props": {
+      "value": "record",
+    },
+  },
+  "tableId": TableId {
+    "props": {
+      "value": "tableId",
+    },
+  },
+  "values": RecordValues {
+    "props": Map {
+      "hello" => NumberFieldValue {
+        "props": {
+          "value": 1,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`createTestRecord 3`] = `
+Record {
+  "id": RecordId {
+    "props": {
+      "value": "record",
+    },
+  },
+  "tableId": TableId {
+    "props": {
+      "value": "tableId",
+    },
+  },
+  "values": RecordValues {
+    "props": Map {
+      "hello" => TextFieldValue {
+        "props": {
+          "value": "world",
+        },
+      },
+      "number" => NumberFieldValue {
+        "props": {
+          "value": 1,
+        },
+      },
+    },
+  },
+}
+`;
