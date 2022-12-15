@@ -1,5 +1,6 @@
 import { ValueObject } from '@egodb/domain'
 import { isNumber, isString } from '@fxts/core'
+import { isDate } from 'date-fns'
 import { None, Option, Some } from 'oxide.ts'
 import type { FieldValue, ICreateFieldsSchema_internal, IFieldValue, UnpackedFieldValue } from '../../field'
 import { FieldValueFactory } from '../../field/field-value.factory'
@@ -70,6 +71,12 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   getNumberValue(name: string): Option<number> {
     return this.getUnpackedValue(name)
       .map((v) => (isNumber(v) ? Some(v) : None))
+      .flatten()
+  }
+
+  getDateValue(name: string): Option<Date> {
+    return this.getUnpackedValue(name)
+      .map((v) => (isDate(v) ? Some(v as Date) : None))
       .flatten()
   }
 }

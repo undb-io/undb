@@ -12,7 +12,13 @@ type TextFieldInMemory = {
   name: string
 }
 
-type FieldInMemory = TextFieldInMemory | NumberFieldInMemory
+type DateFieldInMemory = {
+  id: string
+  type: 'date'
+  name: string
+}
+
+type FieldInMemory = TextFieldInMemory | NumberFieldInMemory | DateFieldInMemory
 
 type ViewInMemory = {
   name: string

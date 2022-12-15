@@ -1,7 +1,8 @@
 import type { Field, IFieldValue } from '@egodb/core'
+import { DateField } from '@egodb/core'
 import { NumberField } from '@egodb/core'
 import { TextField } from '@egodb/core'
-import { NumberInput, TextInput } from '@egodb/ui'
+import { DatePicker, NumberInput, TextInput } from '@egodb/ui'
 
 interface IProps {
   field: Field | null
@@ -20,6 +21,10 @@ export const FilterValueInput: React.FC<IProps> = ({ field, value, onChange }) =
 
   if (field instanceof NumberField) {
     return <NumberInput onChange={(number) => onChange(number || null)} />
+  }
+
+  if (field instanceof DateField) {
+    return <DatePicker onChange={(date) => onChange(date || null)} />
   }
 
   return null

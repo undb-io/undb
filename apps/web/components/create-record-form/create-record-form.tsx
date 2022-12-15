@@ -1,5 +1,5 @@
 import type { Table } from '@egodb/core'
-import { Alert, Button, Divider, Group, IconAlertCircle, NumberInput, TextInput } from '@egodb/ui'
+import { Alert, Button, DatePicker, Divider, Group, IconAlertCircle, NumberInput, TextInput } from '@egodb/ui'
 import { trpc } from '../../trpc'
 import { FieldInputLabel } from '../fields/field-input-label'
 import { useCreateRecordFormContext } from './create-record-form-context'
@@ -41,6 +41,9 @@ export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess 
         const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
         if (field.type === 'number') {
           return <NumberInput {...props} label={label} />
+        }
+        if (field.type === 'date') {
+          return <DatePicker {...props} label={label} />
         }
         return <TextInput {...props} label={label} />
       })}

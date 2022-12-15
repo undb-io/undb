@@ -22,10 +22,6 @@ export type ICreateTableSchemaInput = z.infer<typeof createTableSchemaSchema>
  * Table Schema is a collection of fields
  */
 export class TableSchema extends ValueObject<Field[]> {
-  constructor(props: Field[]) {
-    super(props)
-  }
-
   static create(inputs: ICreateTableSchemaInput): TableSchema {
     const fields = createTableSchemaSchema.parse(inputs).map(FieldFactory.create)
     return new TableSchema(fields)

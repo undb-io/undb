@@ -1,4 +1,9 @@
 import type {
+  DateEqual,
+  DateGreaterThan,
+  DateGreaterThanOrEqual,
+  DateLessThan,
+  DateLessThanOrEqual,
   IRecordSpec,
   IRecordVisitor,
   NumberEqual,
@@ -16,7 +21,7 @@ import type {
   WithRecordTableId,
 } from '@egodb/core'
 import { isNumber, isString } from '@fxts/core'
-import { isDate, isEqual } from 'date-fns'
+import { isAfter, isBefore, isDate, isEqual } from 'date-fns'
 import type { Result } from 'oxide.ts'
 import { Err, Ok } from 'oxide.ts'
 import type { RecordInMemory } from './record.type'
@@ -139,6 +144,41 @@ export class RecordInMemoryQueryVisitor implements IRecordVisitor {
     this.predicate = (r) => {
       const value = r.createdAt
       return isDate(value) && isEqual(value, s.date.value)
+    }
+  }
+
+  dateEqual(s: DateEqual): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isDate(value) && isEqual(value as Date, s.value)
+    }
+  }
+
+  dateGreaterThan(s: DateGreaterThan): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isDate(value) && isAfter(value as Date, s.value)
+    }
+  }
+
+  dateLessThan(s: DateLessThan): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isDate(value) && isBefore(value as Date, s.value)
+    }
+  }
+
+  dateGreaterThanOrEqual(s: DateGreaterThanOrEqual): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isDate(value) && (isAfter(value as Date, s.value) || isEqual(value as Date, s.value))
+    }
+  }
+
+  dateLessThanOrEqual(s: DateLessThanOrEqual): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isDate(value) && (isBefore(value as Date, s.value) || isEqual(value as Date, s.value))
     }
   }
 

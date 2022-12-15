@@ -20,26 +20,35 @@ import {
 } from './text-field.type'
 import type { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
-export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [createTextFieldSchema, createNumberFieldSchema])
+export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
+  createTextFieldSchema,
+  createNumberFieldSchema,
+  createDateFieldSchema,
+])
 export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
 
-export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [textFieldQuerySchema, numberFieldQuerySchema])
+export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
+  textFieldQuerySchema,
+  numberFieldQuerySchema,
+  dateFieldQuerySchema,
+])
 export type IQueryFieldSchema = z.infer<typeof queryFieldSchema>
 export const querySchemaSchema = z.array(queryFieldSchema)
 export type IQuerySchemaSchema = z.infer<typeof querySchemaSchema>
 
-export const fieldTypes = z.union([textTypeSchema, numberTypeSchema])
+export const fieldTypes = z.union([textTypeSchema, numberTypeSchema, dateTypeSchema])
 export type IFieldType = z.infer<typeof fieldTypes>
 
-export const fieldValue = z.union([textFieldValue, numberFieldValue])
+export const fieldValue = z.union([textFieldValue, numberFieldValue, dateFieldValue])
 export type IFieldValue = z.infer<typeof fieldValue>
 
-export const createFieldValueSchema = z.union([createTextFieldValue, createNumberFieldValue])
+export const createFieldValueSchema = z.union([createTextFieldValue, createNumberFieldValue, createDateFieldValue])
 export type ICreateFieldValue = z.infer<typeof createFieldValueSchema>
 
 export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createTextFieldValue_internal,
   createNumberFieldValue_internal,
+  createDateFieldValue_internal,
 ])
 export type ICreateFieldValueSchema_internal = z.infer<typeof createFieldValueSchema_internal>
 
@@ -54,15 +63,27 @@ export interface IBaseField {
 
 export type ITextField = IBaseField
 export type INumberField = IBaseField
+export type IDateField = IBaseField
 
+import type { DateFieldValue } from './date-field-value'
+import type { IDateFieldValue } from './date-field.type'
+import {
+  createDateFieldSchema,
+  createDateFieldValue,
+  createDateFieldValue_internal,
+  dateFieldQuerySchema,
+  dateFieldValue,
+  dateTypeSchema,
+} from './date-field.type'
+import type { DateField } from './date.field'
 import type { NumberFieldValue } from './number-field-value'
 import type { NumberField } from './number.field'
 import type { TextFieldValue } from './text-field-value'
 import type { TextField } from './text.field'
 
-export type Field = TextField | NumberField
+export type Field = TextField | NumberField | DateField
 
-export type FieldValue = TextFieldValue | NumberFieldValue
+export type FieldValue = TextFieldValue | NumberFieldValue | DateFieldValue
 export type FieldValues = FieldValue[]
 
-export type UnpackedFieldValue = ITextFieldValue | INumberFieldValue
+export type UnpackedFieldValue = ITextFieldValue | INumberFieldValue | IDateFieldValue

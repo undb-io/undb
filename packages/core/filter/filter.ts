@@ -3,6 +3,11 @@ import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
 import {
+  DateEqual,
+  DateGreaterThan,
+  DateGreaterThanOrEqual,
+  DateLessThan,
+  DateLessThanOrEqual,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -53,10 +58,21 @@ const numberFilter = z
 export type INumberFilter = z.infer<typeof numberFilter>
 export type INumberFilterOperator = z.infer<typeof numberFilterOperators>
 
-export const operaotrs = z.union([stringFilterOperators, numberFilterOperators])
+const dateFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
+const dateFilter = z
+  .object({
+    type: z.literal('date'),
+    operator: dateFilterOperators,
+    value: z.date().nullable(),
+  })
+  .merge(baseFilter)
+export type IDateFilter = z.infer<typeof dateFilter>
+export type IDateFilterOperator = z.infer<typeof dateFilterOperators>
+
+export const operaotrs = z.union([stringFilterOperators, numberFilterOperators, dateFilterOperators])
 export type IOperator = z.infer<typeof operaotrs>
 
-const filter = z.discriminatedUnion('type', [stringFilter, numberFilter])
+const filter = z.discriminatedUnion('type', [stringFilter, numberFilter, dateFilter])
 
 const $and = z.literal('$and')
 const $or = z.literal('$or')
@@ -152,12 +168,43 @@ const convertNumberFilter = (filter: INumberFilter): Option<CompositeSpecificati
   }
 }
 
+const convertDateFilter = (filter: IDateFilter): Option<CompositeSpecification> => {
+  if (!filter.value) {
+    return None
+  }
+
+  switch (filter.operator) {
+    case '$eq': {
+      return Some(new DateEqual(filter.path, filter.value))
+    }
+    case '$neq': {
+      return Some(new DateEqual(filter.path, filter.value).not())
+    }
+    case '$gt': {
+      return Some(new DateGreaterThan(filter.path, filter.value))
+    }
+    case '$gte': {
+      return Some(new DateGreaterThanOrEqual(filter.path, filter.value))
+    }
+    case '$lt': {
+      return Some(new DateLessThan(filter.path, filter.value))
+    }
+    case '$lte': {
+      return Some(new DateLessThanOrEqual(filter.path, filter.value))
+    }
+    default:
+      return None
+  }
+}
+
 const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
   switch (filter.type) {
     case 'string':
       return convertStringFilter(filter)
     case 'number':
       return convertNumberFilter(filter)
+    case 'date':
+      return convertDateFilter(filter)
     default:
       return None
   }

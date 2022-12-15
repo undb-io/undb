@@ -1,3 +1,4 @@
+export * from './date.specification'
 export type { IRecordSpec, IRecordVisitor } from './interface'
 export * from './number.specification'
 export * from './record-created-at.specification'

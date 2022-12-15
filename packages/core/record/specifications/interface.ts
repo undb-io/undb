@@ -2,6 +2,13 @@ import type { CompositeSpecification, ISpecVisitor } from '@egodb/domain'
 import { type ISpecification } from '@egodb/domain'
 import { type Record } from '../record'
 import type {
+  DateEqual,
+  DateGreaterThan,
+  DateGreaterThanOrEqual,
+  DateLessThan,
+  DateLessThanOrEqual,
+} from './date.specification'
+import type {
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -35,6 +42,12 @@ interface IRecordValueVisitor {
   numberLessThan(s: NumberLessThan): void
   numberGreaterThanOrEqual(s: NumberGreaterThanOrEqual): void
   numberLessThanOrEqual(s: NumberLessThanOrEqual): void
+
+  dateEqual(s: DateEqual): void
+  dateGreaterThan(s: DateGreaterThan): void
+  dateLessThan(s: DateLessThan): void
+  dateGreaterThanOrEqual(s: DateGreaterThanOrEqual): void
+  dateLessThanOrEqual(s: DateLessThanOrEqual): void
 }
 
 export type RecordCompositeSpecification = CompositeSpecification<Record, IRecordVisitor>
