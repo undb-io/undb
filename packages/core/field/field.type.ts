@@ -1,4 +1,6 @@
+import type { Option } from 'oxide.ts'
 import * as z from 'zod'
+import type { Currency } from './currency'
 import type { DateFieldValue } from './date-field-value'
 import type { IDateFieldValue } from './date-field.type'
 import {
@@ -77,7 +79,10 @@ export interface IBaseField {
 }
 
 export type ITextField = IBaseField
-export type INumberField = IBaseField
+export interface INumberField extends IBaseField {
+  currency: Option<Currency>
+}
+
 export type IDateField = IBaseField
 
 export type Field = TextField | NumberField | DateField
