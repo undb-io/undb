@@ -4,6 +4,6 @@ import type { IRecordVisitor } from './specifications'
 
 export class RecordFactory {
   static create(spec: CompositeSpecification<Record, IRecordVisitor>) {
-    return spec.mutate(new Record())
+    return spec.mutate(Record.create())
   }
 }
