@@ -1,4 +1,5 @@
 import type { Field, IOperator } from '@egodb/core'
+import { DateField } from '@egodb/core'
 import { NumberField, TextField } from '@egodb/core'
 import type { SelectItem } from '@egodb/ui'
 import { Select } from '@egodb/ui'
@@ -23,6 +24,15 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
       { value: '$regex', label: 'regex' },
     ]
   } else if (field instanceof NumberField) {
+    data = [
+      { value: '$eq', label: 'equal' },
+      { value: '$neq', label: 'not equal' },
+      { value: '$gt', label: 'greater than' },
+      { value: '$gte', label: 'greater than or equal' },
+      { value: '$lt', label: 'less than' },
+      { value: '$lte', label: 'less than or equal' },
+    ]
+  } else if (field instanceof DateField) {
     data = [
       { value: '$eq', label: 'equal' },
       { value: '$neq', label: 'not equal' },

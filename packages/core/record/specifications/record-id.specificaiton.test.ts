@@ -12,7 +12,7 @@ describe('WithRecordId', () => {
   test('#mutate', () => {
     const id = 'testint'
     const spec = WithRecordId.fromString(id)
-    const record = new Record()
+    const record = Record.create()
     spec.mutate(record)
 
     expect(record.id.value).toBe(id)

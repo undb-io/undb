@@ -6,12 +6,14 @@
     "@emotion/react": "^11.10.5",
     "@emotion/server": "^11.10.0",
     "@mantine/core": "^5.9.4",
+    "@mantine/dates": "^5.9.4",
     "@mantine/form": "^5.9.4",
     "@mantine/hooks": "^5.9.4",
     "@mantine/modals": "^5.9.4",
     "@mantine/next": "^5.9.4",
     "@mantine/notifications": "^5.9.4",
     "@tabler/icons": "^1.116.1",
+    "dayjs": "^1.11.7",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {

@@ -33,8 +33,8 @@
     "prepare": "husky install",
     "syncpack:check": "syncpack list-mismatches",
     "syncpack:fix": "syncpack fix-mismatches",
-    "test": "FORCE_COLOR=1 turbo run test",
-    "test:watch": "FORCE_COLOR=1 turbo run test:watch",
+    "test": "FORCE_COLOR=1 TZ=UTC turbo run test",
+    "test:watch": "FORCE_COLOR=1 TZ=UTC turbo run test:watch",
     "up": "taze -r -w -i"
   },
   "workspaces": [

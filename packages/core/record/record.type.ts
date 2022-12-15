@@ -13,6 +13,7 @@ export type ICreateRecordInput_internal = z.infer<typeof createRecordInput_inter
 export const queryRecordSchema = z.object({
   id: recordIdSchema,
   tableId: tableIdSchema,
+  createdAt: z.date(),
   values: z.record(fieldIdSchema, fieldValue),
 })
 export type IQueryRecordSchema = z.infer<typeof queryRecordSchema>
