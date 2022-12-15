@@ -1,7 +1,7 @@
 import { Group, Skeleton } from '@egodb/ui'
 import React from 'react'
 
-export const Loading: React.FC = () => {
+export const TableLoading: React.FC = () => {
   return (
     <Group fz="md" p="md">
       <Skeleton h="30px" />

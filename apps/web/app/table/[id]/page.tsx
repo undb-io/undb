@@ -1,8 +1,8 @@
 'use client'
 
 import { Table as CoreTable } from '@egodb/core'
-import { Alert, Container, IconAlertCircle, Skeleton } from '@egodb/ui'
-import { Loading } from '../../../components/loading'
+import { Alert, Container, IconAlertCircle } from '@egodb/ui'
+import { TableLoading } from '../../../components/loading'
 import { trpc } from '../../../trpc'
 import Table from './table'
 
@@ -11,7 +11,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   const records = trpc.record.list.useQuery({ tableId: id })
 
   if (getTable.isLoading) {
-    return <Loading />
+    return <TableLoading />
   }
 
   if (getTable.isError) {
