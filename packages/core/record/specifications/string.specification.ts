@@ -1,4 +1,3 @@
-import { contains } from '@fxts/core'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { Record } from '../record'
@@ -28,7 +27,7 @@ export class StringContain extends RecordValueSpecifcationBase<string> {
    * @returns
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getStringValue(this.name).mapOr(false, contains(this.value))
+    return r.values.getStringValue(this.name).mapOr(false, (value) => value.includes(this.value))
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
