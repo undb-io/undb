@@ -1,5 +1,5 @@
 import { createTestRecord } from '../fixtures'
-import { StringContain, StringEndsWith, StringEqual, StringStartsWith } from './string.specification'
+import { StringContain, StringEndsWith, StringEqual, StringRegex, StringStartsWith } from './string.specification'
 
 test.each<[StringContain, StringEqual, boolean]>([
   [new StringContain('hello', 'world'), new StringEqual('hello', 'world111'), true],
@@ -31,6 +31,14 @@ test.each<[StringEndsWith, StringEqual, boolean]>([
   [new StringEndsWith('hello', 'world'), new StringEqual('hello', 'world111'), false],
   [new StringEndsWith('hello', 'world'), new StringEqual('hello', '111world'), true],
 ])('should match StringEndsWith', (spec, value, result) => {
+  const record = createTestRecord(value)
+  expect(spec.isSatisfiedBy(record)).toBe(result)
+})
+
+test.each<[StringRegex, StringEqual, boolean]>([
+  [new StringRegex('hello', '^wor'), new StringEqual('hello', 'world111'), true],
+  [new StringRegex('hello', '11$'), new StringEqual('hello', 'world111'), true],
+])('should match StringRegex', (spec, value, result) => {
   const record = createTestRecord(value)
   expect(spec.isSatisfiedBy(record)).toBe(result)
 })
