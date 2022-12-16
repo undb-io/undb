@@ -3,6 +3,8 @@ import {
   CreateTableCommand,
   createTableCommandInput,
   createTableCommandOutput,
+  EditTableCommand,
+  editTableCommandInput,
   GetTableQuery,
   getTableQueryOutput,
   getTableQuerySchema,
@@ -45,6 +47,14 @@ export const createTableRouter =
         .output(createTableCommandOutput)
         .mutation(({ input }) => {
           const cmd = new CreateTableCommand({ name: input.name, schema: input.schema })
+          return commandBus.execute(cmd)
+        }),
+      edit: procedure
+        .meta({ openapi: { method: 'POST', path: '/table.edit', tags } })
+        .input(editTableCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new EditTableCommand(input)
           return commandBus.execute(cmd)
         }),
       setFilter: procedure
