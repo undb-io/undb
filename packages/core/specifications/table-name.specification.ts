@@ -4,9 +4,13 @@ import { type Table } from '../table'
 import { TableName } from '../value-objects'
 import type { ITableSpecVisitor } from './interface'
 
-export class WithName extends CompositeSpecification {
+export class WithTableName extends CompositeSpecification {
   constructor(public readonly name: TableName) {
     super()
+  }
+
+  static fromString(name: string): WithTableName {
+    return new WithTableName(TableName.create(name))
   }
 
   isSatisfiedBy(t: Table): boolean {
@@ -23,5 +27,3 @@ export class WithName extends CompositeSpecification {
     return Ok(undefined)
   }
 }
-
-export const withNameS = (name: string) => new WithName(TableName.create(name))

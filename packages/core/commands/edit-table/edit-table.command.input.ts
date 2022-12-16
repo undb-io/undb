@@ -1,14 +1,9 @@
 import { z } from 'zod'
-import { tableIdSchema, tableNameSchema } from '../../value-objects'
+import { editTableSchema } from '../../table.schema'
+import { tableIdSchema } from '../../value-objects'
 
 export const editTableCommandInput = z
   .object({
     id: tableIdSchema,
   })
-  .merge(
-    z
-      .object({
-        name: tableNameSchema,
-      })
-      .partial(),
-  )
+  .merge(editTableSchema)
