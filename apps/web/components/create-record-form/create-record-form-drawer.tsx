@@ -1,7 +1,8 @@
-import type { Table as CoreTable } from '@egodb/core'
+import type { ICreateRecordInput, Table as CoreTable } from '@egodb/core'
 import { createRecordCommandInput } from '@egodb/core'
 import { Drawer, useEgoUITheme, zodResolver } from '@egodb/ui'
 import { useAtom } from 'jotai'
+import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useConfirmModal } from '../../hooks'
 import { CreateRecordForm } from './create-record-form'
 import { CreateRecordFormProvider, useCreateRecord } from './create-record-form-context'
@@ -15,25 +16,29 @@ export const CreateRecordFormDrawer: React.FC<IProps> = ({ table }) => {
   const [opened, setOpened] = useAtom(createRecordFormDrawerOpened)
   const theme = useEgoUITheme()
 
+  const initialValues: ICreateRecordInput = {
+    tableId: table.id.value,
+    value: table.schema.fields.map((field) => ({
+      name: field.name.value,
+      value: null,
+    })),
+  }
+
+  const form = useCreateRecord({
+    initialValues,
+    validate: zodResolver(createRecordCommandInput),
+  })
+
+  useDeepCompareEffect(() => {
+    form.setValues(initialValues)
+  }, [initialValues])
+
   const reset = () => {
     setOpened(false)
     form.clearErrors()
     form.reset()
-    form.resetTouched()
-    form.resetDirty()
   }
   const confirm = useConfirmModal({ onConfirm: reset })
-
-  const form = useCreateRecord({
-    initialValues: {
-      tableId: table.id.value,
-      value: table.schema.fields.map((field) => ({
-        name: field.name.value,
-        value: null,
-      })),
-    },
-    validate: zodResolver(createRecordCommandInput),
-  })
 
   return (
     <CreateRecordFormProvider form={form}>
