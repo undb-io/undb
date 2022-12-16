@@ -1,5 +1,6 @@
+import { and } from '@egodb/domain'
 import { filter, map, pipe, toArray } from '@fxts/core'
-import type { Result } from 'oxide.ts'
+import type { Option, Result } from 'oxide.ts'
 import type { ICreateRecordInput } from './commands'
 import type { ICreateFieldsSchema_internal, ICreateFieldValueSchema_internal, IQuerySchemaSchema } from './field'
 import { createFieldValueSchema_internal } from './field'
@@ -9,8 +10,9 @@ import { WithRecordTableId } from './record'
 import { RecordFactory } from './record/record.factory'
 import { WithRecordValues } from './record/specifications/record-values.specification'
 import type { TableSpecificaiton } from './specifications'
+import { WithTableName } from './specifications'
 import { WithFilter } from './specifications/filters.specificaiton'
-import type { ICreateTableInput_internal } from './table.schema'
+import type { ICreateTableInput_internal, IEditTableSchema } from './table.schema'
 import { TableId, TableSchema } from './value-objects'
 import { TableName } from './value-objects/table-name.vo'
 import type { IQueryView } from './view'
@@ -112,6 +114,23 @@ export class Table {
     const vn = this.getOrCreateDefaultView(viewName).name.unpack()
     const spec = new WithFilter(filters, vn)
     return spec.mutate(this).map(() => spec)
+  }
+
+  public updateName(name: string): TableSpecificaiton {
+    const spec = WithTableName.fromString(name)
+    spec.mutate(this).unwrap()
+    return spec
+  }
+
+  public edit(input: IEditTableSchema): Option<TableSpecificaiton> {
+    const specs: TableSpecificaiton[] = []
+
+    if (input.name) {
+      const spec = this.updateName(input.name)
+      specs.push(spec)
+    }
+
+    return and(...specs)
   }
 
   public createRecord(input: ICreateRecordInput): Record {

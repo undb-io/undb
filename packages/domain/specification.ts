@@ -1,4 +1,5 @@
-import type { Result } from 'oxide.ts'
+import type { Option, Result } from 'oxide.ts'
+import { None, Some } from 'oxide.ts'
 
 export interface ISpecVisitor {
   not(): this
@@ -82,4 +83,17 @@ class Not<T, V extends ISpecVisitor> extends CompositeSpecification<T, V> {
   accept(v: V): Result<void, string> {
     return this.spec.accept(v.not())
   }
+}
+
+export const and = <T, V extends ISpecVisitor>(
+  ...specs: CompositeSpecification<T, V>[]
+): Option<CompositeSpecification<T, V>> => {
+  if (!specs.length) return None
+
+  let s = specs[0]
+  for (const spec of specs.slice(1)) {
+    s = s.and(spec)
+  }
+
+  return Some(s)
 }

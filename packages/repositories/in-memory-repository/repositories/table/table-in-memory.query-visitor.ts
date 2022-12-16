@@ -1,4 +1,4 @@
-import type { ITableSpec, ITableSpecVisitor, WithName, WithTableId } from '@egodb/core'
+import type { ITableSpec, ITableSpecVisitor, WithTableId, WithTableName } from '@egodb/core'
 import type { Result } from 'oxide.ts'
 import { Err, Ok } from 'oxide.ts'
 import type { TableInMemory } from './table'
@@ -44,7 +44,7 @@ export class TableInMemoryQueryVisitor implements ITableSpecVisitor {
     this.predicate = (t) => t.id === s.id.value
   }
 
-  nameEqual(s: WithName): void {
+  nameEqual(s: WithTableName): void {
     this.predicate = (t) => t.name === s.name.value
   }
 
