@@ -23,7 +23,7 @@ export const FieldFilter: React.FC<IProps> = ({ schema, value, onChange, onRemov
 
   const [selectedField, setField] = useState<Field | null>(field)
   const [operator, setOperator] = useState<IOperator | null>(value?.operator ?? null)
-  const [fieldValue, setValue] = useState<IFieldValue | null>(value?.value ?? '')
+  const [fieldValue, setValue] = useState<IFieldValue | null>(value?.value ?? null)
 
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: getFilterId(value) })
   const style = {
@@ -52,7 +52,7 @@ export const FieldFilter: React.FC<IProps> = ({ schema, value, onChange, onRemov
       </ActionIcon>
       <FieldSelector schema={schema} value={selectedField} onChange={setField} />
       <OperatorSelector field={selectedField} value={operator} onChange={setOperator} />
-      <FilterValueInput field={selectedField} value={fieldValue} onChange={setValue} />
+      <FilterValueInput field={selectedField} value={fieldValue} onChange={setValue} operator={operator} />
       <ActionIcon color="gray.5" variant="outline" onClick={() => onRemove(index)}>
         <IconTrash size={12} />
       </ActionIcon>

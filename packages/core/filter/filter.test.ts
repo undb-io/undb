@@ -87,6 +87,11 @@ test.each<IRootFilter>([
     path: 'lte',
     value: 1,
   },
+  {
+    type: 'date',
+    operator: '$is_today',
+    path: 'is_today',
+  },
 ])('should create root filter', (filter) => {
   const parsed = rootFilter.parse(filter)
   expect(parsed).toEqual(filter)

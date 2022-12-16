@@ -6,6 +6,7 @@ import {
   DateEqual,
   DateGreaterThan,
   DateGreaterThanOrEqual,
+  DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
   NumberEqual,
@@ -30,6 +31,8 @@ const $gt = z.literal('$gt')
 const $lt = z.literal('$lt')
 const $gte = z.literal('$gte')
 const $lte = z.literal('$lte')
+
+const $is_today = z.literal('$is_today')
 
 const baseFilter = z.object({
   path: z.string().min(1),
@@ -58,12 +61,16 @@ const numberFilter = z
 export type INumberFilter = z.infer<typeof numberFilter>
 export type INumberFilterOperator = z.infer<typeof numberFilterOperators>
 
-const dateFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
+const dateFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte, $is_today])
+/**
+ * built in date operators
+ */
+export const dateBuiltInOperators = new Set<IDateFilterOperator>([$is_today.value])
 const dateFilter = z
   .object({
     type: z.literal('date'),
     operator: dateFilterOperators,
-    value: z.date().nullable(),
+    value: z.date().nullable().optional(),
   })
   .merge(baseFilter)
 export type IDateFilter = z.infer<typeof dateFilter>
@@ -109,7 +116,7 @@ const isGroup = (filterOrGroup: IFilterOrGroup): filterOrGroup is IGroup => {
 }
 
 const isFilter = (filterOrGroup: IFilterOrGroup): filterOrGroup is IFilter => {
-  return Object.hasOwn(filterOrGroup, 'type') && Object.hasOwn(filterOrGroup, 'value')
+  return Object.hasOwn(filterOrGroup, 'type') && Object.hasOwn(filterOrGroup, 'operator')
 }
 
 const convertStringFilter = (filter: IStringFilter): Option<CompositeSpecification> => {
@@ -169,6 +176,10 @@ const convertNumberFilter = (filter: INumberFilter): Option<CompositeSpecificati
 }
 
 const convertDateFilter = (filter: IDateFilter): Option<CompositeSpecification> => {
+  if (filter.operator === $is_today.value) {
+    return Some(new DateIsToday(filter.path))
+  }
+
   if (!filter.value) {
     return None
   }
