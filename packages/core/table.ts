@@ -2,7 +2,12 @@ import { and } from '@egodb/domain'
 import { filter, map, pipe, toArray } from '@fxts/core'
 import type { Option, Result } from 'oxide.ts'
 import type { ICreateRecordInput } from './commands'
-import type { ICreateFieldsSchema_internal, ICreateFieldValueSchema_internal, IQuerySchemaSchema } from './field'
+import type {
+  ICreateFieldSchema,
+  ICreateFieldsSchema_internal,
+  ICreateFieldValueSchema_internal,
+  IQuerySchemaSchema,
+} from './field'
 import { createFieldValueSchema_internal } from './field'
 import type { IRootFilter } from './filter'
 import type { Record } from './record'
@@ -149,5 +154,12 @@ export class Table {
 
     const spec = new WithRecordTableId(this.id).and(WithRecordValues.fromArray(inputs))
     return RecordFactory.create(spec).unwrap()
+  }
+
+  public createField(input: ICreateFieldSchema): TableSpecificaiton {
+    const spec = this.schema.createField(input)
+    spec.mutate(this).unwrap()
+
+    return spec
   }
 }

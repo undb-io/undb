@@ -51,4 +51,8 @@ export class TableInMemoryQueryVisitor implements ITableSpecVisitor {
   filterEqual(): void {
     throw new Error('cannot query by filters')
   }
+
+  newField(): void {
+    throw new Error('Method not implemented.')
+  }
 }

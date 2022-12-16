@@ -5,6 +5,7 @@ type NumberFieldInMemory = {
   id: string
   type: 'text'
   name: string
+  required?: boolean
 }
 
 interface ICurrency {
@@ -15,6 +16,7 @@ type TextFieldInMemory = {
   id: string
   type: 'number'
   name: string
+  required?: boolean
   currency?: ICurrency
 }
 
@@ -22,9 +24,10 @@ type DateFieldInMemory = {
   id: string
   type: 'date'
   name: string
+  required?: boolean
 }
 
-type FieldInMemory = TextFieldInMemory | NumberFieldInMemory | DateFieldInMemory
+export type FieldInMemory = TextFieldInMemory | NumberFieldInMemory | DateFieldInMemory
 
 type ViewInMemory = {
   name: string
