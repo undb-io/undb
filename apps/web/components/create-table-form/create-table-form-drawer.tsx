@@ -1,6 +1,8 @@
+import type { ICreateTableInput } from '@egodb/core'
 import { createTableCommandInput } from '@egodb/core'
 import { Drawer, useEgoUITheme, zodResolver } from '@egodb/ui'
 import { useAtom } from 'jotai'
+import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useConfirmModal } from '../../hooks'
 import { CreateTableForm } from './create-table-form'
 import { CreateTableFormProvider, useCreateTable } from './create-table-form-context'
@@ -10,21 +12,25 @@ export const CreateTableFormDrawer: React.FC = () => {
   const [opened, setOpened] = useAtom(createTableFormDrawerOpened)
   const theme = useEgoUITheme()
 
+  const initialValues: ICreateTableInput = {
+    name: '',
+    schema: [],
+  }
+
   const form = useCreateTable({
-    initialValues: {
-      name: '',
-      schema: [],
-    },
+    initialValues,
     validate: zodResolver(createTableCommandInput),
     validateInputOnBlur: ['name'],
   })
+
+  useDeepCompareEffect(() => {
+    form.setValues(initialValues)
+  }, [initialValues])
 
   const reset = () => {
     setOpened(false)
     form.clearErrors()
     form.reset()
-    form.resetTouched()
-    form.resetDirty()
   }
   const confirm = useConfirmModal({ onConfirm: reset })
 
