@@ -1,4 +1,4 @@
-import type { ITableSpecVisitor, WithFilter, WithName } from '@egodb/core'
+import type { ITableSpecVisitor, WithFilter, WithTableName } from '@egodb/core'
 import type { TableInMemory } from './table'
 
 export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
@@ -12,7 +12,7 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
     throw new Error('[TableInMemoryMutationVisitor.idEqual] Method not implemented.')
   }
 
-  nameEqual(s: WithName): void {
+  nameEqual(s: WithTableName): void {
     this.table.name = s.name.value
   }
 
