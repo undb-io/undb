@@ -123,3 +123,13 @@ OptionType {
   },
 }
 `;
+
+exports[`should create root filter 13`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): DateIsToday {
+    "name": "is_today",
+    "value": null,
+  },
+}
+`;

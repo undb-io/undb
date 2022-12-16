@@ -1,4 +1,4 @@
-import { isAfter, isBefore, isEqual } from 'date-fns'
+import { isAfter, isBefore, isEqual, isToday } from 'date-fns'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { Record } from '../record'
@@ -60,6 +60,20 @@ export class DateLessThanOrEqual extends RecordValueSpecifcationBase<Date> {
 
   accept(v: IRecordVisitor): Result<void, string> {
     v.dateLessThanOrEqual(this)
+    return Ok(undefined)
+  }
+}
+
+export class DateIsToday extends RecordValueSpecifcationBase<null> {
+  constructor(fieldName: string) {
+    super(fieldName, null)
+  }
+  isSatisfiedBy(r: Record): boolean {
+    return r.values.getDateValue(this.name).mapOr(false, (value) => isToday(value))
+  }
+
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.dateIsToday(this)
     return Ok(undefined)
   }
 }

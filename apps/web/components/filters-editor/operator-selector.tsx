@@ -40,6 +40,7 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
       { value: '$gte', label: 'greater than or equal' },
       { value: '$lt', label: 'less than' },
       { value: '$lte', label: 'less than or equal' },
+      { value: '$is_today', label: 'is today' },
     ]
   }
 

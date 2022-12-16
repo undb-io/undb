@@ -1,14 +1,15 @@
-import { addDays } from 'date-fns'
+import { addDays, addHours, endOfDay, startOfDay } from 'date-fns'
 import { createTestRecord } from '../fixtures'
 import {
   DateEqual,
   DateGreaterThan,
   DateGreaterThanOrEqual,
+  DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
 } from './date.specification'
 
-const date = new Date(2022, 1, 1)
+const date = new Date(2022, 1, 1, 10)
 
 test.each<[DateEqual, DateEqual, boolean]>([
   [new DateEqual('name', date), new DateEqual('name', date), true],
@@ -51,4 +52,17 @@ test.each<[DateLessThanOrEqual, DateEqual, boolean]>([
 ])('DateLessThanOrEqual.isSatisfiedBy', (spec, value, result) => {
   const record = createTestRecord(value)
   expect(spec.isSatisfiedBy(record)).toBe(result)
+})
+
+test.each<[DateIsToday, DateEqual, boolean]>([
+  [new DateIsToday('name'), new DateEqual('name', date), true],
+  [new DateIsToday('name'), new DateEqual('name', addDays(date, 1)), false],
+  [new DateIsToday('name'), new DateEqual('name', addHours(date, 1)), true],
+  [new DateIsToday('name'), new DateEqual('name', startOfDay(date)), true],
+  [new DateIsToday('name'), new DateEqual('name', endOfDay(date)), true],
+])('DateLessThanOrEqual.isSatisfiedBy', (spec, value, result) => {
+  vi.setSystemTime(date)
+  const record = createTestRecord(value)
+  expect(spec.isSatisfiedBy(record)).toBe(result)
+  vi.useRealTimers()
 })

@@ -5,6 +5,7 @@ import type {
   DateEqual,
   DateGreaterThan,
   DateGreaterThanOrEqual,
+  DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
 } from './date.specification'
@@ -48,6 +49,8 @@ interface IRecordValueVisitor {
   dateLessThan(s: DateLessThan): void
   dateGreaterThanOrEqual(s: DateGreaterThanOrEqual): void
   dateLessThanOrEqual(s: DateLessThanOrEqual): void
+
+  dateIsToday(s: DateIsToday): void
 }
 
 export type RecordCompositeSpecification = CompositeSpecification<Record, IRecordVisitor>
