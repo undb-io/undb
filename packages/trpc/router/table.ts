@@ -1,8 +1,10 @@
 import type { IQueryTable } from '@egodb/core'
 import {
+  CreateFieldCommand,
   CreateTableCommand,
   createTableCommandInput,
   createTableCommandOutput,
+  creawteFieldCommandInput,
   EditTableCommand,
   editTableCommandInput,
   GetTableQuery,
@@ -55,6 +57,14 @@ export const createTableRouter =
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new EditTableCommand(input)
+          return commandBus.execute(cmd)
+        }),
+      createField: procedure
+        .meta({ openapi: { method: 'POST', path: '/table.createField', tags } })
+        .input(creawteFieldCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new CreateFieldCommand(input)
           return commandBus.execute(cmd)
         }),
       setFilter: procedure

@@ -37,7 +37,7 @@ export default function Table({ table, records }: IProps) {
       <EGOTable onRecordClick={onRecordClick} records={records} table={table} />
       <CreateRecordFormDrawer table={table} />
       <EditRecordFormDrawer table={table} />
-      <CreateFieldModal />
+      <CreateFieldModal table={table} />
     </Stack>
   )
 }

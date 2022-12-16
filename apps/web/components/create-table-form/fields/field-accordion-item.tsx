@@ -5,6 +5,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { useCreateTableFormContext } from '../create-table-form-context'
 import { FieldCommonControl } from './field-common-control'
 import { FieldInputLabel } from '../../fields/field-input-label'
+import { FIELD_SELECT_ITEMS } from '../../../constants/field.constants'
 
 interface IProps {
   id: string
@@ -46,11 +47,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
             defaultValue="text"
             variant="filled"
             required={true}
-            data={[
-              { value: 'text', label: 'Text' },
-              { value: 'number', label: 'Number' },
-              { value: 'date', label: 'Date' },
-            ]}
+            data={FIELD_SELECT_ITEMS}
           />
           <TextInput
             {...form.getInputProps(`schema.${index}.name`)}
