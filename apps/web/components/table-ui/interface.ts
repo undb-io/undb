@@ -10,6 +10,6 @@ export type THeader = Header<TData, unknown>
 export type TRow = Row<TData>
 
 export interface IProps {
-  table: Table | null
+  table: Table
   records: QueryRecords
 }
