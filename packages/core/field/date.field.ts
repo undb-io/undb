@@ -1,4 +1,5 @@
 import type { IDateFilter, IDateFilterOperator } from '../filter'
+import { dateBuiltInOperators } from '../filter/operators'
 import { DateFieldValue } from './date-field-value'
 import type { DateType, ICreateDateFieldSchema, ICreateDateFieldValue } from './date-field.type'
 import { BaseField } from './field.base'
@@ -31,6 +32,11 @@ export class DateField extends BaseField<IDateField> {
   }
 
   createFilter(operator: IDateFilterOperator, value: Date | null): IDateFilter {
-    return { operator, value, path: this.name.value, type: 'date' }
+    // built in operators ignore value
+    let v = value
+    if (dateBuiltInOperators.has(operator)) {
+      v = null
+    }
+    return { operator, value: v, path: this.name.value, type: 'date' }
   }
 }
