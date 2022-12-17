@@ -116,11 +116,11 @@ importers:
       '@dnd-kit/utilities': ^3.2.1
       '@egodb/core': ^0.0.0
       '@egodb/eslint-config': ^0.0.0
-      '@egodb/table-ui': ^0.0.0
       '@egodb/trpc': ^0.0.0
       '@egodb/ui': ^0.0.0
       '@tanstack/react-query': ^4.19.1
       '@tanstack/react-query-devtools': ^4.19.1
+      '@tanstack/react-table': ^8.7.2
       '@trpc/client': ^10.5.0
       '@trpc/next': ^10.5.0
       '@trpc/react-query': ^10.5.0
@@ -143,11 +143,11 @@ importers:
       '@dnd-kit/sortable': 7.0.1_ighjjj6vulsdnb2lagbd2egmxy
       '@dnd-kit/utilities': 3.2.1_react@18.2.0
       '@egodb/core': link:../../packages/core
-      '@egodb/table-ui': link:../../packages/table-ui
       '@egodb/trpc': link:../../packages/trpc
       '@egodb/ui': link:../../packages/ui
       '@tanstack/react-query': 4.19.1_biqbaboplfbrettd7655fr4n2y
       '@tanstack/react-query-devtools': 4.19.1_xnkyuugmv5unvdsxvtkktqsuae
+      '@tanstack/react-table': 8.7.2_biqbaboplfbrettd7655fr4n2y
       '@trpc/client': 10.5.0_@trpc+server@10.5.0
       '@trpc/next': 10.5.0_ulqxwhd3n5wjj3kblp2lhgkbwa
       '@trpc/react-query': 10.5.0_i3ykvnz4igoclzsim3lzrnoi4y
@@ -271,31 +271,6 @@ importers:
       tsup: 6.5.0_typescript@4.9.4
       typescript: 4.9.4
       vitest: 0.25.7
-
-  packages/table-ui:
-    specifiers:
-      '@egodb/core': ^0.0.0
-      '@egodb/eslint-config': ^0.0.0
-      '@egodb/ui': ^0.0.0
-      '@tanstack/react-table': ^8.7.2
-      '@types/react': ^18.0.26
-      '@types/react-dom': ^18.0.9
-      eslint: ^8.29.0
-      react: ^18.2.0
-      tsconfig: ^0.0.0
-      typescript: ^4.9.4
-    dependencies:
-      '@egodb/core': link:../core
-      '@egodb/ui': link:../ui
-      '@tanstack/react-table': 8.7.2_react@18.2.0
-    devDependencies:
-      '@egodb/eslint-config': link:../eslint-config
-      '@types/react': 18.0.26
-      '@types/react-dom': 18.0.9
-      eslint: 8.29.0
-      react: 18.2.0
-      tsconfig: link:../tsconfig
-      typescript: 4.9.4
 
   packages/trpc:
     specifiers:
@@ -2386,7 +2361,7 @@ packages:
       use-sync-external-store: 1.2.0_react@18.2.0
     dev: false
 
-  /@tanstack/react-table/8.7.2_react@18.2.0:
+  /@tanstack/react-table/8.7.2_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-8SpMU/o5owFlVTiIZ9h6WzMF4o8eVEJqez+cXyCu27xo9/pETZLseLnyNlBDakA4z6evlDQGU91c5FdOoDgs1g==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -2395,6 +2370,7 @@ packages:
     dependencies:
       '@tanstack/table-core': 8.7.2
       react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@tanstack/table-core/8.7.2:
