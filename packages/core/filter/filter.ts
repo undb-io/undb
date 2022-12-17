@@ -19,26 +19,12 @@ import {
   StringEqual,
   StringStartsWith,
 } from '../record'
-
-const $eq = z.literal('$eq')
-const $neq = z.literal('$neq')
-const $contains = z.literal('$contains')
-const $starts_with = z.literal('$starts_with')
-const $ends_with = z.literal('$ends_with')
-const $regex = z.literal('$regex')
-
-const $gt = z.literal('$gt')
-const $lt = z.literal('$lt')
-const $gte = z.literal('$gte')
-const $lte = z.literal('$lte')
-
-const $is_today = z.literal('$is_today')
+import { $is_today, dateFilterOperators, numberFilterOperators, stringFilterOperators } from './operators'
 
 const baseFilter = z.object({
   path: z.string().min(1),
 })
 
-const stringFilterOperators = z.union([$eq, $neq, $contains, $starts_with, $ends_with, $regex])
 const stringFilter = z
   .object({
     type: z.literal('string'),
@@ -50,7 +36,6 @@ const stringFilter = z
 export type IStringFilter = z.infer<typeof stringFilter>
 export type IStringFilterOperator = z.infer<typeof stringFilterOperators>
 
-const numberFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
 const numberFilter = z
   .object({
     type: z.literal('number'),
@@ -61,11 +46,6 @@ const numberFilter = z
 export type INumberFilter = z.infer<typeof numberFilter>
 export type INumberFilterOperator = z.infer<typeof numberFilterOperators>
 
-const dateFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte, $is_today])
-/**
- * built in date operators
- */
-export const dateBuiltInOperators = new Set<IDateFilterOperator>([$is_today.value])
 const dateFilter = z
   .object({
     type: z.literal('date'),
@@ -74,7 +54,6 @@ const dateFilter = z
   })
   .merge(baseFilter)
 export type IDateFilter = z.infer<typeof dateFilter>
-export type IDateFilterOperator = z.infer<typeof dateFilterOperators>
 
 export const operaotrs = z.union([stringFilterOperators, numberFilterOperators, dateFilterOperators])
 export type IOperator = z.infer<typeof operaotrs>
