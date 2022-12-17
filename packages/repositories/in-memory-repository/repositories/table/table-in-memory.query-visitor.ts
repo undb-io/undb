@@ -55,4 +55,11 @@ export class TableInMemoryQueryVisitor implements ITableSpecVisitor {
   newField(): void {
     throw new Error('Method not implemented.')
   }
+
+  schemaEqual(): void {
+    throw new Error('Method not implemented.')
+  }
+  viewsEqual(): void {
+    throw new Error('Method not implemented.')
+  }
 }

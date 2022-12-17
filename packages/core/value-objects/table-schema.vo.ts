@@ -4,7 +4,7 @@ import * as z from 'zod'
 import type { Field, ICreateFieldSchema } from '../field'
 import { createFieldSchema } from '../field'
 import { FieldFactory } from '../field/field.factory'
-import type { TableSpecificaiton } from '../specifications'
+import type { TableCompositeSpecificaiton } from '../specifications/interface'
 import { WithNewField } from '../specifications/table-field.specification'
 
 function hasDuplicates(elements: ICreateFieldSchema[]): boolean {
@@ -46,7 +46,7 @@ export class TableSchema extends ValueObject<Field[]> {
     this.props.push(field)
   }
 
-  public createField(input: ICreateFieldSchema): TableSpecificaiton {
+  public createField(input: ICreateFieldSchema): TableCompositeSpecificaiton {
     // TODO: check name
     const field = FieldFactory.create(input)
     const spec = new WithNewField(field)

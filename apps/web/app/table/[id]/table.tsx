@@ -2,7 +2,7 @@
 
 import type { Table as CoreTable, QueryRecords } from '@egodb/core'
 import { EGOTable } from '@egodb/table-ui'
-import { Box, Space, Stack } from '@egodb/ui'
+import { Stack } from '@egodb/ui'
 import { useUpdateAtom } from 'jotai/utils'
 import { useCallback } from 'react'
 import { CreateFieldModal } from '../../../components/create-field-form/create-field-modal'
