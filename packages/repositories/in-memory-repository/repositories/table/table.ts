@@ -27,6 +27,8 @@ type DateFieldInMemory = {
   required?: boolean
 }
 
+export type SchemaInMemory = FieldInMemory[]
+
 export type FieldInMemory = TextFieldInMemory | NumberFieldInMemory | DateFieldInMemory
 
 type ViewInMemory = {
@@ -34,6 +36,8 @@ type ViewInMemory = {
   displayType: 'grid' | 'kanban'
   filter?: IRootFilter
 }
+
+export type ViewsInMemory = ViewInMemory[]
 
 export type TableInMemory = {
   id: string

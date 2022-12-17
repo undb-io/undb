@@ -24,6 +24,6 @@ export class TableInMemoryQueryModel implements ITableQueryModel {
   }
 
   findOneById(id: string): Promise<Option<IQueryTable>> {
-    return this.findOne(WithTableId.fromString(id).unwrap())
+    return this.findOne(WithTableId.fromExistingString(id).unwrap())
   }
 }

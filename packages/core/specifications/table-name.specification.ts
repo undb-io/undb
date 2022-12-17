@@ -13,6 +13,10 @@ export class WithTableName extends CompositeSpecification {
     return new WithTableName(TableName.create(name))
   }
 
+  static unsafe(name: string): WithTableName {
+    return new WithTableName(TableName.unsafeCreate(name))
+  }
+
   isSatisfiedBy(t: Table): boolean {
     return this.name.equals(t.name)
   }

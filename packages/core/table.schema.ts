@@ -4,9 +4,10 @@ import { querySchemaSchema } from './field'
 import { tableNameSchema } from './value-objects'
 import { createViewInput_internal, queryViews } from './view'
 
-export const createTableInput_internal = createTableCommandInput.merge(
-  z.object({ views: z.array(createViewInput_internal).optional() }),
-)
+const createViewsSchema = z.array(createViewInput_internal).optional()
+export type ICreateViewsSchema = z.infer<typeof createViewsSchema>
+
+export const createTableInput_internal = createTableCommandInput.merge(z.object({ views: createViewsSchema }))
 
 export type ICreateTableInput_internal = z.infer<typeof createTableInput_internal>
 

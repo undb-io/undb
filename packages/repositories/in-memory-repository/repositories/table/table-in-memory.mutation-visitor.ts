@@ -1,4 +1,11 @@
-import type { ITableSpecVisitor, WithFilter, WithNewField, WithTableName } from '@egodb/core'
+import type {
+  ITableSpecVisitor,
+  WithFilter,
+  WithNewField,
+  WithTableName,
+  WithTableSchema,
+  WithTableViews,
+} from '@egodb/core'
 import type { TableInMemory } from './table'
 import { TableInMemoryMapper } from './table-in-memory.mapper'
 
@@ -21,6 +28,14 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
     if (view) {
       view.filter = s.filter ?? undefined
     }
+  }
+
+  schemaEqual(s: WithTableSchema): void {
+    this.table.schema = TableInMemoryMapper.schemaToInMemory(s.schema)
+  }
+
+  viewsEqual(s: WithTableViews): void {
+    this.table.views = TableInMemoryMapper.viewsToInMemory(s.views)
   }
 
   newField(s: WithNewField): void {

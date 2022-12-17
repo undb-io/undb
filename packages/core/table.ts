@@ -1,6 +1,7 @@
 import { and } from '@egodb/domain'
 import { filter, map, pipe, toArray } from '@fxts/core'
 import type { Option, Result } from 'oxide.ts'
+import { Ok } from 'oxide.ts'
 import type { ICreateRecordInput } from './commands'
 import type {
   ICreateFieldSchema,
@@ -14,12 +15,13 @@ import type { Record } from './record'
 import { WithRecordTableId } from './record'
 import { RecordFactory } from './record/record.factory'
 import { WithRecordValues } from './record/specifications/record-values.specification'
-import type { TableSpecificaiton } from './specifications'
 import { WithTableName } from './specifications'
 import { WithFilter } from './specifications/filters.specificaiton'
-import type { ICreateTableInput_internal, IEditTableSchema } from './table.schema'
-import { TableId, TableSchema } from './value-objects'
-import { TableName } from './value-objects/table-name.vo'
+import type { TableCompositeSpecificaiton } from './specifications/interface'
+import type { IEditTableSchema } from './table.schema'
+import type { TableId } from './value-objects'
+import { TableSchema } from './value-objects'
+import type { TableName } from './value-objects/table-name.vo'
 import type { IQueryView } from './view'
 import { defaultViewDiaplyType, View } from './view'
 import { Views } from './view/views'
@@ -35,43 +37,16 @@ export interface IQueryTable {
 }
 
 export class Table {
-  public id: TableId
-  public name: TableName
-  public schema: TableSchema
-  public views: Views
+  public id!: TableId
+  public name!: TableName
+  public schema: TableSchema = new TableSchema([])
+  public views: Views = new Views([])
 
-  constructor(id = TableId.create(), name: TableName, schema: TableSchema, views?: Views) {
-    this.id = id
-    this.name = name
-    this.schema = schema
-    this.views = views?.views.length ? views : this.createDefaultViews()
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private constructor() {}
 
-  static create(input: ICreateTableInput_internal): Table {
-    return new Table(
-      TableId.fromOrCreate(input.id),
-      TableName.create(input.name),
-      TableSchema.create(input.schema),
-      Views.create(input.views),
-    )
-  }
-
-  static unsafeCreate(input: ICreateTableInput_internal): Table {
-    return new Table(
-      TableId.fromOrCreate(input.id),
-      TableName.unsafeCreate(input.name),
-      TableSchema.unsafeCreate(input.schema),
-      Views.create(input.views),
-    )
-  }
-
-  static fromQuery(q: IQueryTable): Table {
-    return this.unsafeCreate({
-      id: q.id,
-      name: q.name,
-      schema: q.schema,
-      views: q.views,
-    })
+  static empty() {
+    return new Table()
   }
 
   toQueryModel(): IQueryTable {
@@ -115,20 +90,21 @@ export class Table {
     return this.views.getByName(viewName).unwrapOrElse(() => this.defaultView)
   }
 
-  public setFilter(filters: IRootFilter | null, viewName?: string): Result<TableSpecificaiton, string> {
+  public setFilter(filters: IRootFilter | null, viewName?: string): Result<TableCompositeSpecificaiton, string> {
     const vn = this.getOrCreateDefaultView(viewName).name.unpack()
     const spec = new WithFilter(filters, vn)
-    return spec.mutate(this).map(() => spec)
+    spec.mutate(this).unwrap()
+    return Ok(spec)
   }
 
-  public updateName(name: string): TableSpecificaiton {
+  public updateName(name: string): TableCompositeSpecificaiton {
     const spec = WithTableName.fromString(name)
     spec.mutate(this).unwrap()
     return spec
   }
 
-  public edit(input: IEditTableSchema): Option<TableSpecificaiton> {
-    const specs: TableSpecificaiton[] = []
+  public edit(input: IEditTableSchema): Option<TableCompositeSpecificaiton> {
+    const specs: TableCompositeSpecificaiton[] = []
 
     if (input.name) {
       const spec = this.updateName(input.name)
@@ -156,7 +132,7 @@ export class Table {
     return RecordFactory.create(spec).unwrap()
   }
 
-  public createField(input: ICreateFieldSchema): TableSpecificaiton {
+  public createField(input: ICreateFieldSchema): TableCompositeSpecificaiton {
     const spec = this.schema.createField(input)
     spec.mutate(this).unwrap()
 

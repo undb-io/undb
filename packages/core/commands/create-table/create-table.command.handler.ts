@@ -1,5 +1,5 @@
 import { type ICommandHandler } from '@egodb/domain'
-import { Table } from '../../table'
+import { TableFactory } from '../../table.factory'
 import type { ITableRepository } from '../../table.repository'
 import type { CreateTableCommand } from './create-table.command'
 import type { ICreateTableOutput } from './create-table.command.interface'
@@ -10,7 +10,8 @@ export class CreateTableCommandHandler implements ICreateTableCommandHandler {
   constructor(protected readonly repo: ITableRepository) {}
 
   async execute(command: CreateTableCommand): Promise<ICreateTableOutput> {
-    const table = Table.create(command)
+    const table = TableFactory.from(command).unwrap()
+
     await this.repo.insert(table)
 
     return { id: table.id.value }
