@@ -1,7 +1,7 @@
 'use client'
 
 import type { Table as CoreTable, QueryRecords } from '@egodb/core'
-import { EGOTable } from '@egodb/table-ui'
+import { EGOTable } from '../../../components/table-ui/table'
 import { Stack } from '@egodb/ui'
 import { useUpdateAtom } from 'jotai/utils'
 import { useCallback } from 'react'

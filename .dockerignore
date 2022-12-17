@@ -9,7 +9,6 @@ packages/core/node_modules
 packages/domain/node_modules
 packages/eslint-config/node_modules
 packages/repositories/in-memory-repository/node_modules
-packages/table-ui/node_modules
 packages/trpc/node_modules
 packages/tsconfig/node_modules
 packages/ui/node_modules

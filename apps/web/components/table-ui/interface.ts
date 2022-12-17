@@ -12,6 +12,4 @@ export type TRow = Row<TData>
 export interface IProps {
   table: Table | null
   records: QueryRecords
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onRecordClick?: (row: any) => void
 }

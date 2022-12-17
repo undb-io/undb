@@ -1,19 +1,15 @@
-import type { QueryRecords, Table as CoreTable } from '@egodb/core'
 import { Table } from '@egodb/ui'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { EgoTableContext } from './context'
-import type { TData } from './interface'
-import { Th } from './th'
+import type { IProps, TData } from './interface'
+import { Thead } from './thead'
 import { Tr } from './tr'
 
-interface IProps {
-  table: CoreTable
-  records: QueryRecords
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onRecordClick: (row: any) => void
-}
+export const EGOTable: React.FC<IProps> = ({ table, records }) => {
+  if (!table) {
+    return null
+  }
 
-export const EGOTable: React.FC<IProps> = ({ table, records, onRecordClick }) => {
   const fieldHelper = createColumnHelper<TData>()
   const columns = table.schema.fields.map((c) =>
     fieldHelper.accessor(c.name.value, {
@@ -28,16 +24,32 @@ export const EGOTable: React.FC<IProps> = ({ table, records, onRecordClick }) =>
   })
 
   return (
-    <EgoTableContext.Provider value={{ table, records, onRecordClick }}>
+    <EgoTableContext.Provider value={{ table, records }}>
       <div className="p-2">
-        <Table striped highlightOnHover sx={{ 'thead tr th': { padding: 0 } }}>
+        <Table
+          withBorder
+          withColumnBorders
+          highlightOnHover
+          sx={{
+            backgroundColor: 'white',
+            'thead tr th': {
+              padding: 0,
+              ':last-child': {
+                paddingLeft: '10px',
+                border: 0,
+              },
+            },
+            'tbody tr td': {
+              ':last-child': {
+                paddingLeft: '10px',
+                border: 0,
+              },
+            },
+          }}
+        >
           <thead>
             {rt.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <Th header={header} key={header.id} />
-                ))}
-              </tr>
+              <Thead headerGroup={headerGroup} key={headerGroup.id} />
             ))}
           </thead>
           <tbody>

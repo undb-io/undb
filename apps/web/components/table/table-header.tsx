@@ -1,6 +1,5 @@
 import { Group, Text, Title } from '@egodb/ui'
 import { EditTableFormDrawer } from '../edit-table-form/edit-table-form-drawer'
-import { AddFieldButton } from './add-field.button'
 import { EditTableButton } from './edit-table-button'
 import type { ITableBaseProps } from './table-base-props'
 
@@ -15,8 +14,6 @@ export const TableHaeder: React.FC<ITableBaseProps> = ({ table }) => {
 
       <EditTableButton />
       <EditTableFormDrawer table={table} />
-
-      <AddFieldButton />
     </Group>
   )
 }
