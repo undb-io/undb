@@ -17,7 +17,8 @@ export class TableFactory {
         .mutate(Table.empty())
     }
 
-    return spec.mutate(Table.empty())
+    const table = Table.empty()
+    return spec.mutate(table).map(() => table)
   }
 
   static from(input: ICreateTableInput_internal) {

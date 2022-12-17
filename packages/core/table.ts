@@ -19,7 +19,8 @@ import { WithTableName } from './specifications'
 import { WithFilter } from './specifications/filters.specificaiton'
 import type { TableCompositeSpecificaiton } from './specifications/interface'
 import type { IEditTableSchema } from './table.schema'
-import type { TableId, TableSchema } from './value-objects'
+import type { TableId } from './value-objects'
+import { TableSchema } from './value-objects'
 import type { TableName } from './value-objects/table-name.vo'
 import type { IQueryView } from './view'
 import { defaultViewDiaplyType, View } from './view'
@@ -38,8 +39,8 @@ export interface IQueryTable {
 export class Table {
   public id!: TableId
   public name!: TableName
-  public schema!: TableSchema
-  public views!: Views
+  public schema: TableSchema = new TableSchema([])
+  public views: Views = new Views([])
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
