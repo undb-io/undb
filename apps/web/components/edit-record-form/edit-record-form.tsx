@@ -7,7 +7,7 @@ interface IProps {
   onSuccess?: () => void
 }
 
-export const EditRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess }) => {
+export const EditRecordForm: React.FC<IProps> = ({ onCancel }) => {
   return (
     <form>
       <Divider my="lg" />

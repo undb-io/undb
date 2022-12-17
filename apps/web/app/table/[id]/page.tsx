@@ -1,6 +1,6 @@
 'use client'
 
-import { Table as CoreTable, TableFactory } from '@egodb/core'
+import { TableFactory } from '@egodb/core'
 import { Alert, Container, IconAlertCircle } from '@egodb/ui'
 import { TableLoading } from '../../../components/loading'
 import { trpc } from '../../../trpc'
