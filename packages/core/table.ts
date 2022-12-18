@@ -22,7 +22,7 @@ import type { IEditTableSchema } from './table.schema'
 import type { TableId } from './value-objects'
 import { TableSchema } from './value-objects'
 import type { TableName } from './value-objects/table-name.vo'
-import type { IQueryView, ISetFieldWidthSchema } from './view'
+import type { IQueryView, ISetFieldVisibilitySchema, ISetFieldWidthSchema } from './view'
 import { defaultViewDiaplyType, View } from './view'
 import { Views } from './view/views'
 
@@ -125,6 +125,13 @@ export class Table {
   public setFieldWidth(input: ISetFieldWidthSchema): TableCompositeSpecificaiton {
     const view = this.getOrCreateDefaultView(input.viewName)
     const spec = view.setFieldWidth(input.fieldName, input.width)
+    spec.mutate(this)
+    return spec
+  }
+
+  public setFieldVisibility(input: ISetFieldVisibilitySchema): TableCompositeSpecificaiton {
+    const view = this.getOrCreateDefaultView(input.viewName)
+    const spec = view.setFieldVisibility(input.fieldName, input.hidden)
     spec.mutate(this)
     return spec
   }

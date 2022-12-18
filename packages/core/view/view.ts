@@ -4,7 +4,7 @@ import type { Option } from 'oxide.ts'
 import { None } from 'oxide.ts'
 import type { IFilterOrGroupList, IRootFilter } from '../filter'
 import { RootFilter } from '../filter'
-import { WithFieldWidth } from '../specifications'
+import { WithFieldVisibility, WithFieldWidth } from '../specifications'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
 import type { IViewFieldOption } from './view-field-options'
 import { ViewFieldOptions } from './view-field-options'
@@ -44,12 +44,20 @@ export class View extends ValueObject<IView> {
     return this.fieldOptions.getOrCreateOption(fieldName)
   }
 
+  public getFieldHidden(fieldName: string): boolean {
+    return this.fieldOptions.getHidden(fieldName)
+  }
+
   public getFieldWidth(fieldName: string): number {
     return this.fieldOptions.getWidth(fieldName)
   }
 
   public setFieldWidth(fieldName: string, width: number): TableCompositeSpecificaiton {
     return new WithFieldWidth(fieldName, this.name.unpack(), width)
+  }
+
+  public setFieldVisibility(fieldName: string, hidden: boolean): TableCompositeSpecificaiton {
+    return new WithFieldVisibility(fieldName, this.name.unpack(), hidden)
   }
 
   public get filterList(): IFilterOrGroupList {

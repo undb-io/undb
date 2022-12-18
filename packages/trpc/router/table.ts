@@ -13,6 +13,8 @@ import {
   GetTablesQuery,
   getTablesQueryOutput,
   getTablesQuerySchema,
+  SetFieldVisibilityCommand,
+  setFieldVisibilityCommandInput,
   SetFieldWidthCommand,
   setFieldWidthCommandInput,
   setFiltersCommandInput,
@@ -83,6 +85,14 @@ export const createTableRouter =
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new SetFieldWidthCommand(input)
+          return commandBus.execute<void>(cmd)
+        }),
+      setFieldVisibility: procedure
+        .meta({ openapi: { method: 'POST', path: '/table.setFieldVisibility', tags } })
+        .input(setFieldVisibilityCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new SetFieldVisibilityCommand(input)
           return commandBus.execute<void>(cmd)
         }),
     })

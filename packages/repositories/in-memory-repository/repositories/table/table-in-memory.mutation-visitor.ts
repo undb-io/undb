@@ -1,5 +1,6 @@
 import type {
   ITableSpecVisitor,
+  WithFieldVisibility,
   WithFieldWidth,
   WithFilter,
   WithNewField,
@@ -52,6 +53,17 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
         option.width = s.width
       } else {
         view.fieldOptions[s.fieldName] = { width: s.width }
+      }
+    }
+  }
+  fieldVisibility(s: WithFieldVisibility): void {
+    const view = this.table.views.find((v) => v.name === s.viewName)
+    if (view) {
+      const option = view.fieldOptions?.[s.fieldName]
+      if (option) {
+        option.hidden = s.hidden
+      } else {
+        view.fieldOptions[s.fieldName] = { hidden: s.hidden }
       }
     }
   }

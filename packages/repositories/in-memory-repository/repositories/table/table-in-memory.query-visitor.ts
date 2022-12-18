@@ -1,4 +1,11 @@
-import type { ITableSpec, ITableSpecVisitor, WithFieldWidth, WithTableId, WithTableName } from '@egodb/core'
+import type {
+  ITableSpec,
+  ITableSpecVisitor,
+  WithFieldVisibility,
+  WithFieldWidth,
+  WithTableId,
+  WithTableName,
+} from '@egodb/core'
 import type { Result } from 'oxide.ts'
 import { Err, Ok } from 'oxide.ts'
 import type { TableInMemory } from './table'
@@ -66,6 +73,14 @@ export class TableInMemoryQueryVisitor implements ITableSpecVisitor {
     this.predicate = (t) => {
       const view = t.views.find((v) => v.name === s.viewName)
       if (!view) return false
+      return view.fieldOptions?.[s.fieldName]?.width === s.width
+    }
+  }
+  fieldVisibility(s: WithFieldVisibility): void {
+    this.predicate = (t) => {
+      const view = t.views.find((v) => v.name === s.viewName)
+      if (!view) return false
+      return !!view.fieldOptions?.[s.fieldName]?.hidden === s.hidden
     }
   }
 }

@@ -1,3 +1,4 @@
+import { SetFieldVisibilityCommandHandler } from '@egodb/core'
 import { CreateFieldCommandHandler } from './create-field.command.handler'
 import { CreateRecordCommandHandler } from './create-record.command.handler'
 import { CreateTableCommandHandler } from './create-table.command.handler'
@@ -11,5 +12,6 @@ export const commandHandlers = [
   CreateFieldCommandHandler,
   SetFiltersCommandHandler,
   SetFieldWidthCommandHandler,
+  SetFieldVisibilityCommandHandler,
   EditTableCommandHandler,
 ]

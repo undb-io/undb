@@ -3,12 +3,12 @@ import { z } from 'zod'
 
 export const DEFAULT_WIDTH = 200
 
-const hidden = z.boolean().optional()
+export const fieldHiddenSchema = z.boolean().optional()
 export const fieldWidthSchema = z.number().positive()
 
 export const viewFieldOption = z.object({
-  hidden,
-  width: fieldWidthSchema,
+  hidden: fieldHiddenSchema,
+  width: fieldWidthSchema.optional(),
 })
 
 export type IViewFieldOption = z.infer<typeof viewFieldOption>
@@ -48,6 +48,6 @@ export class ViewFieldOptions extends ValueObject<Map<string, IViewFieldOption>>
   }
 
   public getWidth(fieldName: string): number {
-    return this.getOption(fieldName).width
+    return this.getOption(fieldName).width ?? DEFAULT_WIDTH
   }
 }
