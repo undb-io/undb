@@ -4,6 +4,10 @@ import type { Option } from 'oxide.ts'
 import { None } from 'oxide.ts'
 import type { IFilterOrGroupList, IRootFilter } from '../filter'
 import { RootFilter } from '../filter'
+import { WithFieldWidth } from '../specifications'
+import type { TableCompositeSpecificaiton } from '../specifications/interface'
+import type { IViewFieldOption } from './view-field-options'
+import { ViewFieldOptions } from './view-field-options'
 import { ViewName } from './view-name.vo'
 import { createViewInput_internal } from './view.schema'
 import type { ICreateViewInput_internal, IView, IViewDisplayType } from './view.type'
@@ -28,6 +32,26 @@ export class View extends ValueObject<IView> {
     return this.filter.spec
   }
 
+  public get fieldOptions() {
+    return this.props.fieldOptions
+  }
+
+  public getFieldOption(fieldName: string): IViewFieldOption {
+    return this.fieldOptions.getOption(fieldName)
+  }
+
+  public getOrCreateFieldOption(fieldName: string): IViewFieldOption {
+    return this.fieldOptions.getOrCreateOption(fieldName)
+  }
+
+  public getFieldWidth(fieldName: string): number {
+    return this.fieldOptions.getWidth(fieldName)
+  }
+
+  public setFieldWidth(fieldName: string, width: number): TableCompositeSpecificaiton {
+    return new WithFieldWidth(fieldName, this.name.unpack(), width)
+  }
+
   public get filterList(): IFilterOrGroupList {
     const filters = this.filter?.value
     if (Array.isArray(filters)) return filters
@@ -45,6 +69,7 @@ export class View extends ValueObject<IView> {
       name: ViewName.create(parsed.name),
       displayType: parsed.displayType || defaultViewDiaplyType,
       filter: parsed.filter ? new RootFilter(parsed.filter) : undefined,
+      fieldOptions: ViewFieldOptions.from(input.fieldOptions),
     })
   }
 }

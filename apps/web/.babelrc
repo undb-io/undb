@@ -1,4 +1,4 @@
 {
   "presets": ["next/babel"],
-  "plugins": ["jotai/babel/plugin-debug-label"]
+  "plugins": ["jotai/babel/plugin-debug-label", "@emotion"]
 }

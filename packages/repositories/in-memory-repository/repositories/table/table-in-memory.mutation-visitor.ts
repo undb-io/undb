@@ -1,5 +1,6 @@
 import type {
   ITableSpecVisitor,
+  WithFieldWidth,
   WithFilter,
   WithNewField,
   WithTableName,
@@ -41,5 +42,17 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
   newField(s: WithNewField): void {
     const field = TableInMemoryMapper.fieldToInMemopy(s.field)
     this.table.schema.push(field)
+  }
+
+  fieldWidthEqual(s: WithFieldWidth): void {
+    const view = this.table.views.find((v) => v.name === s.viewName)
+    if (view) {
+      const option = view.fieldOptions?.[s.fieldName]
+      if (option) {
+        option.width = s.width
+      } else {
+        view.fieldOptions[s.fieldName] = { width: s.width }
+      }
+    }
   }
 }

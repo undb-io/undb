@@ -1,4 +1,4 @@
-import type { IRootFilter } from '@egodb/core'
+import type { IRootFilter, IViewFieldOption } from '@egodb/core'
 import type { ICurrencySymbol } from '@egodb/core/field/currency'
 
 type NumberFieldInMemory = {
@@ -35,6 +35,7 @@ type ViewInMemory = {
   name: string
   displayType: 'grid' | 'kanban'
   filter?: IRootFilter
+  fieldOptions: Record<string, IViewFieldOption>
 }
 
 export type ViewsInMemory = ViewInMemory[]

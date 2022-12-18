@@ -28,6 +28,5 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     return 'none'
   }
 
-  const table = TableFactory.fromQuery(getTable.data)
-  return <Table table={table} records={records.data?.records ?? []} />
+  return <Table table={TableFactory.fromQuery(getTable.data)} records={records.data?.records ?? []} />
 }

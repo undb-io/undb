@@ -3,7 +3,6 @@ import { WithTableId } from '@egodb/core'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { db } from '../db'
-import { TableInMemoryMapper } from './table-in-memory.mapper'
 import { TableInMemoryQueryVisitor } from './table-in-memory.query-visitor'
 
 export class TableInMemoryQueryModel implements ITableQueryModel {
@@ -17,10 +16,7 @@ export class TableInMemoryQueryModel implements ITableQueryModel {
     const table = db.data?.tables.find(visitor.getPredicate().unwrap())
     if (!table) return None
 
-    return TableInMemoryMapper.toDomain(table)
-      .map((t) => t.toQueryModel())
-      .map((t) => Some(t))
-      .unwrap()
+    return Some(table)
   }
 
   findOneById(id: string): Promise<Option<IQueryTable>> {
