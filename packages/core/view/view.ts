@@ -60,6 +60,14 @@ export class View extends ValueObject<IView> {
     return new WithFieldVisibility(fieldName, this.name.unpack(), hidden)
   }
 
+  public getVisibility(): Record<string, boolean> {
+    const visibility: Record<string, boolean> = {}
+    for (const [key, value] of this.fieldOptions.value) {
+      visibility[key] = value.hidden ?? false
+    }
+    return visibility
+  }
+
   public get filterList(): IFilterOrGroupList {
     const filters = this.filter?.value
     if (Array.isArray(filters)) return filters
