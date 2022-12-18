@@ -1,6 +1,7 @@
 import { Table } from '@egodb/ui'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { useMemo } from 'react'
+import { ACTIONS_FIELD } from '../../constants/field.constants'
 import { RecordActions } from './actions'
 import type { IProps, TData } from './interface'
 import { Thead } from './thead'
@@ -21,7 +22,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
     )
     .concat(
       fieldHelper.display({
-        id: 'actions',
+        id: ACTIONS_FIELD,
         cell: (props) => <RecordActions row={props.row} />,
       }),
     )

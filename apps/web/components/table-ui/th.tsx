@@ -1,10 +1,10 @@
-import { usePrevious } from '@egodb/ui'
-import { Text, UnstyledButton } from '@egodb/ui'
+import { Box, Text, UnstyledButton } from '@egodb/ui'
 import { flexRender } from '@tanstack/react-table'
 import styled from '@emotion/styled'
 import type { THeader } from './interface'
 import { trpc } from '../../trpc'
-import { useMemo } from 'react'
+import { ACTIONS_FIELD } from '../../constants/field.constants'
+import { AddFieldButton } from '../table/add-field.button'
 
 const ResizerLine = styled.div`
   display: block;
@@ -33,7 +33,7 @@ const Resizer = styled.div`
   }
 `
 
-export const Th: React.FC<{ header: THeader; tableId: string }> = ({ header, tableId }) => {
+const Content: React.FC<{ header: THeader; tableId: string }> = ({ header, tableId }) => {
   const setFieldWidth = trpc.table.setFieldWidth.useMutation()
 
   const onSetFieldWidth = (fieldName: string, width: number) => {
@@ -44,8 +44,16 @@ export const Th: React.FC<{ header: THeader; tableId: string }> = ({ header, tab
     })
   }
 
+  if (header.id === ACTIONS_FIELD) {
+    return (
+      <Box px="xs">
+        <AddFieldButton />
+      </Box>
+    )
+  }
+
   return (
-    <th key={header.id} style={{ position: 'relative', width: header.getSize() }} colSpan={header.colSpan}>
+    <>
       <UnstyledButton
         w="100%"
         h={45}
@@ -54,6 +62,7 @@ export const Th: React.FC<{ header: THeader; tableId: string }> = ({ header, tab
           ':hover': { backgroundColor: theme.colors.gray[2] },
         })}
       >
+        {header.id === ACTIONS_FIELD && <AddFieldButton />}
         <Text fz="sm" color="gray.7" fw={500}>
           {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
         </Text>
@@ -65,6 +74,14 @@ export const Th: React.FC<{ header: THeader; tableId: string }> = ({ header, tab
       >
         <ResizerLine />
       </Resizer>
+    </>
+  )
+}
+
+export const Th: React.FC<{ header: THeader; tableId: string }> = ({ header, tableId }) => {
+  return (
+    <th key={header.id} style={{ position: 'relative', width: header.getSize() }} colSpan={header.colSpan}>
+      <Content tableId={tableId} header={header} />
     </th>
   )
 }
