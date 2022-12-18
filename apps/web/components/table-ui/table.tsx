@@ -2,6 +2,7 @@ import { Table } from '@egodb/ui'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { useMemo } from 'react'
 import { ACTIONS_FIELD } from '../../constants/field.constants'
+import { AddFieldButton } from '../table/add-field.button'
 import { RecordActions } from './actions'
 import type { IProps, TData } from './interface'
 import { Thead } from './thead'
@@ -23,6 +24,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
     .concat(
       fieldHelper.display({
         id: ACTIONS_FIELD,
+        header: () => <AddFieldButton />,
         cell: (props) => <RecordActions row={props.row} />,
       }),
     )
@@ -38,15 +40,11 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   return (
     <div className="p-2">
       <Table
+        highlightOnHover
         withBorder
         withColumnBorders
-        highlightOnHover
         sx={{
-          backgroundColor: 'white',
           width: rt.getCenterTotalSize(),
-          'thead tr th': {
-            padding: 0,
-          },
         }}
       >
         <thead>
