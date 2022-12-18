@@ -6,6 +6,7 @@ import type { WithNewField } from './table-field.specification'
 import type { WithTableId } from './table-id.specifaction'
 import type { WithTableName } from './table-name.specification'
 import type { WithTableSchema } from './table-schema.specification'
+import type { WithFieldWidth } from './table-view-field-option.specification'
 import type { WithTableViews } from './table-views.specification'
 
 export interface ITableSpecVisitor extends ISpecVisitor {
@@ -16,6 +17,8 @@ export interface ITableSpecVisitor extends ISpecVisitor {
 
   filterEqual(s: WithFilter): void
   newField(s: WithNewField): void
+
+  fieldWidthEqual(s: WithFieldWidth): void
 }
 
 export type ITableSpec = ISpecification<Table, ITableSpecVisitor>

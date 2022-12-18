@@ -21,7 +21,7 @@ export default function Table({ table, records }: IProps) {
         <TableHaeder table={table} />
         <TableToolbar table={table} />
       </Stack>
-      <EGOTable records={records} table={table} />
+      <EGOTable table={table} records={records} />
       <CreateRecordFormDrawer table={table} />
       <EditRecordFormDrawer table={table} />
       <CreateFieldModal table={table} />

@@ -47,9 +47,8 @@ export class TableSchema extends ValueObject<Field[]> {
   }
 
   public createField(input: ICreateFieldSchema): TableCompositeSpecificaiton {
-    // TODO: check name
+    // FIXME: check name
     const field = FieldFactory.create(input)
-    const spec = new WithNewField(field)
-    return spec
+    return new WithNewField(field)
   }
 }

@@ -13,6 +13,8 @@ import {
   GetTablesQuery,
   getTablesQueryOutput,
   getTablesQuerySchema,
+  SetFieldWidthCommand,
+  setFieldWidthCommandInput,
   setFiltersCommandInput,
   SetFitlersCommand,
 } from '@egodb/core'
@@ -73,6 +75,14 @@ export const createTableRouter =
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new SetFitlersCommand(input)
+          return commandBus.execute<void>(cmd)
+        }),
+      setFieldWidth: procedure
+        .meta({ openapi: { method: 'POST', path: '/table.setFieldWidth', tags } })
+        .input(setFieldWidthCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new SetFieldWidthCommand(input)
           return commandBus.execute<void>(cmd)
         }),
     })

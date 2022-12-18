@@ -43,6 +43,9 @@ test('createTestTable', () => {
           View {
             "props": {
               "displayType": "grid",
+              "fieldOptions": ViewFieldOptions {
+                "props": Map {},
+              },
               "filter": undefined,
               "name": ViewName {
                 "props": {

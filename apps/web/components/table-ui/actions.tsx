@@ -1,6 +1,7 @@
 import { ActionIcon, Group, IconCopy, IconDots, Menu, useClipboard } from '@egodb/ui'
+import type { TRow } from './interface'
 
-export const RecordActions: React.FC<{ id: string }> = ({ id }) => {
+export const RecordActions: React.FC<{ row: TRow }> = ({ row }) => {
   const { copy } = useClipboard({ timeout: 500 })
   return (
     <Group>
@@ -15,7 +16,7 @@ export const RecordActions: React.FC<{ id: string }> = ({ id }) => {
           <Menu.Item
             onClick={(e) => {
               e.stopPropagation()
-              copy(id)
+              copy(row.id)
             }}
             icon={<IconCopy size={14} />}
           >

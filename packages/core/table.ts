@@ -22,7 +22,7 @@ import type { IEditTableSchema } from './table.schema'
 import type { TableId } from './value-objects'
 import { TableSchema } from './value-objects'
 import type { TableName } from './value-objects/table-name.vo'
-import type { IQueryView } from './view'
+import type { IQueryView, ISetFieldWidthSchema } from './view'
 import { defaultViewDiaplyType, View } from './view'
 import { Views } from './view/views'
 
@@ -47,23 +47,6 @@ export class Table {
 
   static empty() {
     return new Table()
-  }
-
-  toQueryModel(): IQueryTable {
-    return {
-      id: this.id.value,
-      name: this.name.value,
-      schema: this.schema.fields.map((c) => ({
-        id: c.id.value,
-        name: c.name.value,
-        type: c.type,
-      })),
-      views: this.views.views.map((v) => ({
-        name: v.name.unpack(),
-        displayType: v.displayType,
-        filter: v.filter?.value ?? undefined,
-      })),
-    }
   }
 
   public get defaultView(): View {
@@ -136,6 +119,13 @@ export class Table {
     const spec = this.schema.createField(input)
     spec.mutate(this).unwrap()
 
+    return spec
+  }
+
+  public setFieldWidth(input: ISetFieldWidthSchema): TableCompositeSpecificaiton {
+    const view = this.getOrCreateDefaultView(input.viewName)
+    const spec = view.setFieldWidth(input.fieldName, input.width)
+    spec.mutate(this)
     return spec
   }
 }
