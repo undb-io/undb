@@ -21,7 +21,8 @@ export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
     <Popover position="bottom-start" opened={opened} onChange={handler.toggle} closeOnClickOutside>
       <Popover.Target>
         <Button
-          variant="white"
+          size="xs"
+          variant="outline"
           loading={setFilter.isLoading}
           leftIcon={<IconFilter size={18} />}
           onClick={handler.toggle}
