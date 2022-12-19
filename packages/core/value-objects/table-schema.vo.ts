@@ -6,6 +6,7 @@ import { createFieldSchema } from '../field'
 import { FieldFactory } from '../field/field.factory'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
 import { WithNewField } from '../specifications/table-field.specification'
+import { ViewFieldsOrder } from '../view/view-fields-order.vo'
 
 function hasDuplicates(elements: ICreateFieldSchema[]): boolean {
   const names = elements.map((e) => e.name)
@@ -44,6 +45,11 @@ export class TableSchema extends ValueObject<Field[]> {
 
   public addField(field: Field) {
     this.props.push(field)
+  }
+
+  public get defaultFieldsOrder(): ViewFieldsOrder {
+    const order = this.props.map((v) => v.name.value)
+    return ViewFieldsOrder.fromArray(order)
   }
 
   public createField(input: ICreateFieldSchema): TableCompositeSpecificaiton {

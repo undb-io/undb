@@ -31,11 +31,12 @@ export type SchemaInMemory = FieldInMemory[]
 
 export type FieldInMemory = TextFieldInMemory | NumberFieldInMemory | DateFieldInMemory
 
-type ViewInMemory = {
+export type ViewInMemory = {
   name: string
   displayType: 'grid' | 'kanban'
   filter?: IRootFilter
   fieldOptions: Record<string, IViewFieldOption>
+  fieldsOrder?: string[]
 }
 
 export type ViewsInMemory = ViewInMemory[]

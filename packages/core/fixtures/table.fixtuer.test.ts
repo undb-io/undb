@@ -46,6 +46,7 @@ test('createTestTable', () => {
               "fieldOptions": ViewFieldOptions {
                 "props": Map {},
               },
+              "fieldsOrder": undefined,
               "filter": undefined,
               "name": ViewName {
                 "props": {

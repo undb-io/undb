@@ -16,7 +16,7 @@ interface IProps {
 
 export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCancel }) => {
   // TODO: ignore group for now
-  const initialFilters = table.getOrCreateDefaultView().filterList as IFilter[]
+  const initialFilters = table.mustGetView().filterList as IFilter[]
   const [filters, handlers] = useListState<IFilter | null>(initialFilters.length ? initialFilters : [null])
   const validFilters = filters.filter((f) => f !== null) as IFilterOrGroupList
 

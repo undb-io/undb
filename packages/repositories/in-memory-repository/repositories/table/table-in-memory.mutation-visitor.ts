@@ -6,7 +6,9 @@ import type {
   WithNewField,
   WithTableName,
   WithTableSchema,
+  WithTableView,
   WithTableViews,
+  WithViewFieldsOrder,
 } from '@egodb/core'
 import type { TableInMemory } from './table'
 import { TableInMemoryMapper } from './table-in-memory.mapper'
@@ -45,8 +47,11 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
     this.table.schema.push(field)
   }
 
+  private getView(viewName?: string) {
+    return this.table.views.find((v) => v.name === viewName)
+  }
   fieldWidthEqual(s: WithFieldWidth): void {
-    const view = this.table.views.find((v) => v.name === s.viewName)
+    const view = this.getView(s.viewName)
     if (view) {
       const option = view.fieldOptions?.[s.fieldName]
       if (option) {
@@ -56,8 +61,12 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
       }
     }
   }
+  viewEqual(s: WithTableView): void {
+    const index = this.table.views.findIndex((v) => v.name === s.view.name.unpack())
+    this.table.views[index] = TableInMemoryMapper.viewToInMemory(s.view)
+  }
   fieldVisibility(s: WithFieldVisibility): void {
-    const view = this.table.views.find((v) => v.name === s.viewName)
+    const view = this.getView(s.viewName)
     if (view) {
       const option = view.fieldOptions?.[s.fieldName]
       if (option) {
@@ -65,6 +74,12 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
       } else {
         view.fieldOptions[s.fieldName] = { hidden: s.hidden }
       }
+    }
+  }
+  fieldsOrder(s: WithViewFieldsOrder): void {
+    const view = this.table.views.find((v) => v.name === s.view.name.unpack())
+    if (view) {
+      view.fieldsOrder = s.viewFieldsOrder.order
     }
   }
 }

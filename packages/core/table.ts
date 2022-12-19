@@ -1,7 +1,7 @@
-import { and } from '@egodb/domain'
+import { and, andOptions } from '@egodb/domain'
 import { filter, map, pipe, toArray } from '@fxts/core'
 import type { Option, Result } from 'oxide.ts'
-import { Ok } from 'oxide.ts'
+import { None, Ok, Some } from 'oxide.ts'
 import type { ICreateRecordInput } from './commands'
 import type {
   ICreateFieldSchema,
@@ -15,14 +15,20 @@ import type { Record } from './record'
 import { WithRecordTableId } from './record'
 import { RecordFactory } from './record/record.factory'
 import { WithRecordValues } from './record/specifications/record-values.specification'
-import { WithTableName } from './specifications'
+import { WithTableName, WithTableView, WithViewFieldsOrder } from './specifications'
 import { WithFilter } from './specifications/filters.specificaiton'
 import type { TableCompositeSpecificaiton } from './specifications/interface'
 import type { IEditTableSchema } from './table.schema'
 import type { TableId } from './value-objects'
 import { TableSchema } from './value-objects'
 import type { TableName } from './value-objects/table-name.vo'
-import type { IQueryView, ISetFieldVisibilitySchema, ISetFieldWidthSchema } from './view'
+import type {
+  IMoveFieldSchema,
+  IQueryView,
+  ISetFieldVisibilitySchema,
+  ISetFieldWidthSchema,
+  ViewFieldsOrder,
+} from './view'
 import { defaultViewDiaplyType, View } from './view'
 import { Views } from './view/views'
 
@@ -49,12 +55,22 @@ export class Table {
     return new Table()
   }
 
+  public getOrCreateDefaultView(viewName?: string): [View, Option<TableCompositeSpecificaiton>] {
+    const defaultView = this.defaultView
+    if (defaultView) return [defaultView, None]
+
+    const spec = new WithTableView(this.createDefaultView(viewName))
+    spec.mutate(this)
+
+    return [spec.view, Some(spec)]
+  }
+
   public get defaultView(): View {
     return this.views.defaultView.unwrapOrElse(() => this.createDefaultView())
   }
 
-  private createDefaultView(): View {
-    return View.create({ name: this.name.value, displayType: defaultViewDiaplyType })
+  private createDefaultView(viewName?: string): View {
+    return View.create({ name: viewName ?? this.name.value, displayType: defaultViewDiaplyType })
   }
 
   public createDefaultViews(): Views {
@@ -62,10 +78,24 @@ export class Table {
   }
 
   public getSpec(viewName?: string) {
-    return this.getOrCreateDefaultView(viewName).spec
+    return this.mustGetView(viewName).spec
   }
 
-  public getOrCreateDefaultView(viewName?: string): View {
+  public getView(viewName?: string): Option<View> {
+    if (!viewName) {
+      return Some(this.defaultView)
+    }
+
+    return this.views.getByName(viewName)
+  }
+
+  public getOrCreateView(viewName?: string): [View, Option<TableCompositeSpecificaiton>] {
+    const view = this.views.getByName(viewName)
+    if (view.isSome()) return [view.unwrap(), None]
+    return this.getOrCreateDefaultView(viewName)
+  }
+
+  public mustGetView(viewName?: string): View {
     if (!viewName) {
       return this.defaultView
     }
@@ -74,7 +104,7 @@ export class Table {
   }
 
   public setFilter(filters: IRootFilter | null, viewName?: string): Result<TableCompositeSpecificaiton, string> {
-    const vn = this.getOrCreateDefaultView(viewName).name.unpack()
+    const vn = this.mustGetView(viewName).name.unpack()
     const spec = new WithFilter(filters, vn)
     spec.mutate(this).unwrap()
     return Ok(spec)
@@ -95,6 +125,10 @@ export class Table {
     }
 
     return and(...specs)
+  }
+
+  public getFieldsOrder(view: View): ViewFieldsOrder {
+    return view.fieldsOrder ?? this.schema.defaultFieldsOrder
   }
 
   public createRecord(input: ICreateRecordInput): Record {
@@ -123,16 +157,26 @@ export class Table {
   }
 
   public setFieldWidth(input: ISetFieldWidthSchema): TableCompositeSpecificaiton {
-    const view = this.getOrCreateDefaultView(input.viewName)
+    const view = this.mustGetView(input.viewName)
     const spec = view.setFieldWidth(input.fieldName, input.width)
     spec.mutate(this)
     return spec
   }
 
   public setFieldVisibility(input: ISetFieldVisibilitySchema): TableCompositeSpecificaiton {
-    const view = this.getOrCreateDefaultView(input.viewName)
+    const view = this.mustGetView(input.viewName)
     const spec = view.setFieldVisibility(input.fieldName, input.hidden)
     spec.mutate(this)
     return spec
+  }
+
+  public moveField(input: IMoveFieldSchema): TableCompositeSpecificaiton {
+    const [view, viewSpec] = this.getOrCreateDefaultView(input.viewName)
+    const viewFieldsOrder = this.getFieldsOrder(view).move(input.from, input.to)
+
+    const spec = new WithViewFieldsOrder(viewFieldsOrder, view)
+    spec.mutate(this)
+
+    return andOptions(viewSpec, Some(spec)).unwrap()
   }
 }

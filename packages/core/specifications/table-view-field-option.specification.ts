@@ -13,7 +13,7 @@ abstract class BaseViewFieldOptionSpec extends CompositeSpecification<Table, ITa
   }
 
   protected getView(t: Table): View {
-    return t.getOrCreateDefaultView(this.viewName)
+    return t.mustGetView(this.viewName)
   }
 
   protected getFieldOption(t: Table): IViewFieldOption {

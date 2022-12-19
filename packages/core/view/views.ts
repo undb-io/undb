@@ -12,11 +12,15 @@ export class Views extends ValueObject<View[]> {
     return Option(this.views.at(0))
   }
 
+  addView(view: View) {
+    this.views.push(view)
+  }
+
   static create(views: ICreateViewInput_internal[] = []): Views {
     return new this(views.map((v) => View.create(v)))
   }
 
-  getByName(viewName: string): Option<View> {
+  getByName(viewName?: string): Option<View> {
     return Option(this.views.find((v) => v.name.unpack() === viewName))
   }
 }

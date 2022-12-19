@@ -10,7 +10,7 @@ export const TableFieldVisibilityEditor: React.FC<ITableBaseProps> = ({ table })
       utils.table.get.refetch()
     },
   })
-  const visibility = table.getOrCreateDefaultView().getVisibility()
+  const visibility = table.mustGetView().getVisibility()
 
   const onChange = (fieldName: string, visible: boolean) => {
     setFieldVisibility.mutate({ tableId: table.id.value, fieldName, hidden: !visible })

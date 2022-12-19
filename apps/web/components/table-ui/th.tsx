@@ -1,11 +1,13 @@
-import { Text } from '@egodb/ui'
+import { Group, Text } from '@egodb/ui'
 import { flexRender } from '@tanstack/react-table'
 import styled from '@emotion/styled'
 import type { THeader } from './interface'
 import { trpc } from '../../trpc'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
-const ResizerLine = styled.div`
-  display: block;
+const ResizerLine = styled.div<{ hidden: boolean }>`
+  display: ${(props) => (props.hidden ? 'none' : 'block')};
   position: absolute;
   height: 100%;
   width: 100%;
@@ -42,17 +44,39 @@ export const Th: React.FC<{ header: THeader; tableId: string }> = ({ header, tab
     })
   }
 
+  const { attributes, isDragging, listeners, setNodeRef, transform, transition } = useSortable({
+    id: header.id,
+  })
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+  }
+
   return (
-    <th key={header.id} style={{ position: 'relative', width: header.getSize() }} colSpan={header.colSpan}>
-      <Text fz="sm" color="gray.7" fw={500}>
-        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-      </Text>
+    <th
+      ref={setNodeRef}
+      key={header.id}
+      style={{
+        position: 'relative',
+        width: header.getSize(),
+        zIndex: isDragging ? 100 : undefined,
+        cursor: isDragging ? 'grabbing' : undefined,
+        ...style,
+      }}
+      colSpan={header.colSpan}
+      {...attributes}
+    >
+      <Group {...listeners}>
+        <Text fz="sm" fw={500}>
+          {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+        </Text>
+      </Group>
       <Resizer
         onMouseDown={header.getResizeHandler()}
         onTouchStart={header.getResizeHandler()}
         onMouseUp={() => onSetFieldWidth(header.id, header.getSize())}
       >
-        <ResizerLine />
+        <ResizerLine hidden={isDragging} />
       </Resizer>
     </th>
   )

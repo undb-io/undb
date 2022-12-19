@@ -14,13 +14,13 @@ export class WithFilter extends CompositeSpecification<Table, ITableSpecVisitor>
 
   isSatisfiedBy(t: Table): boolean {
     if (!this.filter) {
-      return isEmpty(t.getOrCreateDefaultView(this.viewName).filter)
+      return isEmpty(t.mustGetView(this.viewName).filter)
     }
-    return t.getOrCreateDefaultView(this.viewName).filter?.equals(new RootFilter(this.filter)) ?? false
+    return t.mustGetView(this.viewName).filter?.equals(new RootFilter(this.filter)) ?? false
   }
 
   mutate(t: Table): Result<Table, string> {
-    const view = t.getOrCreateDefaultView(this.viewName)
+    const view = t.mustGetView(this.viewName)
     view.setFilter(this.filter)
     return Ok(t)
   }
