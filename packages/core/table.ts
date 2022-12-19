@@ -150,10 +150,13 @@ export class Table {
   }
 
   public createField(input: ICreateFieldSchema): TableCompositeSpecificaiton {
-    const spec = this.schema.createField(input)
+    const [field, spec] = this.schema.createField(input)
     spec.mutate(this).unwrap()
 
-    return spec
+    // add field to view order
+    const viewsSpec = this.views.addField(field)
+
+    return andOptions(Some(spec), viewsSpec).unwrap()
   }
 
   public setFieldWidth(input: ISetFieldWidthSchema): TableCompositeSpecificaiton {

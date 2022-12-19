@@ -17,4 +17,8 @@ export class ViewFieldsOrder extends ValueObject<string[]> {
     const moved = arrayMove(this.order, fromIndex, toIndex)
     return ViewFieldsOrder.fromArray(moved)
   }
+
+  public add(name: string): ViewFieldsOrder {
+    return ViewFieldsOrder.fromArray([...this.props, name])
+  }
 }

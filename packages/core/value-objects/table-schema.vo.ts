@@ -52,9 +52,10 @@ export class TableSchema extends ValueObject<Field[]> {
     return ViewFieldsOrder.fromArray(order)
   }
 
-  public createField(input: ICreateFieldSchema): TableCompositeSpecificaiton {
+  public createField(input: ICreateFieldSchema): [Field, TableCompositeSpecificaiton] {
     // FIXME: check name
     const field = FieldFactory.create(input)
-    return new WithNewField(field)
+    const spec = new WithNewField(field)
+    return [field, spec]
   }
 }
