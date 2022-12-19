@@ -42,26 +42,25 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   })
 
   return (
-    <div className="p-2">
-      <Table
-        highlightOnHover
-        withBorder
-        withColumnBorders
-        sx={{
-          width: rt.getCenterTotalSize(),
-        }}
-      >
-        <thead>
-          {rt.getHeaderGroups().map((headerGroup) => (
-            <Thead headerGroup={headerGroup} key={headerGroup.id} tableId={table.id.value} />
-          ))}
-        </thead>
-        <tbody>
-          {rt.getRowModel().rows.map((row) => (
-            <Tr key={row.id} row={row} />
-          ))}
-        </tbody>
-      </Table>
-    </div>
+    <Table
+      highlightOnHover
+      withBorder
+      withColumnBorders
+      sx={{
+        backgroundColor: 'white',
+        width: rt.getCenterTotalSize(),
+      }}
+    >
+      <thead>
+        {rt.getHeaderGroups().map((headerGroup) => (
+          <Thead headerGroup={headerGroup} key={headerGroup.id} tableId={table.id.value} />
+        ))}
+      </thead>
+      <tbody>
+        {rt.getRowModel().rows.map((row) => (
+          <Tr key={row.id} row={row} />
+        ))}
+      </tbody>
+    </Table>
   )
 }
