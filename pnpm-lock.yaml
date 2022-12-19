@@ -176,7 +176,7 @@ importers:
     specifiers:
       '@egodb/domain': ^0.0.0
       '@fxts/core': ^0.11.0
-      array-move: 3.0.1
+      array-move: ^3.0.1
       date-fns: ^2.29.3
       oxide.ts: ^1.1.0
       rimraf: ^3.0.2
