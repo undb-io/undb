@@ -63,7 +63,7 @@ export class View extends ValueObject<IView> {
   public getVisibility(): Record<string, boolean> {
     const visibility: Record<string, boolean> = {}
     for (const [key, value] of this.fieldOptions.value) {
-      visibility[key] = value.hidden ?? false
+      visibility[key] = !value.hidden
     }
     return visibility
   }

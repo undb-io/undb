@@ -40,12 +40,12 @@ export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess 
         const props = form.getInputProps(`value.${index}.value`)
         const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
         if (field.type === 'number') {
-          return <NumberInput {...props} label={label} />
+          return <NumberInput key={field.id.value} {...props} label={label} />
         }
         if (field.type === 'date') {
-          return <DatePicker {...props} label={label} />
+          return <DatePicker key={field.id.value} {...props} label={label} />
         }
-        return <TextInput {...props} label={label} />
+        return <TextInput key={field.id.value} {...props} label={label} />
       })}
 
       <Divider my="lg" />

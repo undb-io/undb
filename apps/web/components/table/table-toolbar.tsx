@@ -9,7 +9,7 @@ export const TableToolbar: React.FC<ITableBaseProps> = ({ table }) => {
     <Group>
       <TableCreateNewRecordButton />
       <TableFilterEditor table={table} />
-      <TableFieldVisibilityEditor />
+      <TableFieldVisibilityEditor table={table} />
     </Group>
   )
 }

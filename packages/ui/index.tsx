@@ -20,6 +20,7 @@ export * from './Provider'
 export * from './Inputs'
 export * from './Popover'
 export * from './Typography'
+export * from './List'
 export * from './Feedback'
 
 export * from './hooks'
