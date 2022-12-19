@@ -48,3 +48,20 @@ export class WithFieldWidth extends BaseViewFieldOptionSpec {
     return Ok(undefined)
   }
 }
+
+export class WithFieldVisibility extends BaseViewFieldOptionSpec {
+  constructor(fieldName: string, viewName: string, public readonly hidden: boolean) {
+    super(fieldName, viewName)
+  }
+  isSatisfiedBy(t: Table): boolean {
+    return this.getView(t).getFieldHidden(this.fieldName) === this.hidden
+  }
+  mutate(t: Table): Result<Table, string> {
+    this.getOrCreateFieldOption(t).hidden = this.hidden
+    return Ok(t)
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.fieldVisibility(this)
+    return Ok(undefined)
+  }
+}

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { fieldNameSchema } from '../field'
 import { rootFilter } from '../filter'
-import { fieldWidthSchema, viewFieldOption } from './view-field-options'
+import { fieldHiddenSchema, fieldWidthSchema, viewFieldOption } from './view-field-options'
 import { viewNameSchema } from './view-name.vo'
 
 export const viewDisplayType = z.enum(['grid', 'kanban'])
@@ -22,10 +22,22 @@ export const queryView = z.object({
 
 export const queryViews = z.array(queryView).optional()
 
-export const setFieldWidthSchema = z.object({
+const viewFieldOptionBaseSchema = z.object({
   viewName: viewNameSchema.optional(),
   fieldName: fieldNameSchema,
-  width: fieldWidthSchema,
 })
 
+export const setFieldWidthSchema = z
+  .object({
+    width: fieldWidthSchema,
+  })
+  .merge(viewFieldOptionBaseSchema)
 export type ISetFieldWidthSchema = z.infer<typeof setFieldWidthSchema>
+
+export const setFieldVisibilitySchema = z
+  .object({
+    hidden: fieldHiddenSchema.unwrap(),
+  })
+  .merge(viewFieldOptionBaseSchema)
+
+export type ISetFieldVisibilitySchema = z.infer<typeof setFieldVisibilitySchema>

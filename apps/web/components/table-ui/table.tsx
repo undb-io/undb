@@ -12,6 +12,7 @@ const fieldHelper = createColumnHelper<TData>()
 
 export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const view = table.getOrCreateDefaultView()
+  const columnVisibility = view.getVisibility()
 
   const columns = table.schema.fields
     .map((c) =>
@@ -33,6 +34,9 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const rt = useReactTable({
     data,
     columns,
+    state: {
+      columnVisibility,
+    },
     columnResizeMode: 'onChange',
     getCoreRowModel: getCoreRowModel(),
   })
