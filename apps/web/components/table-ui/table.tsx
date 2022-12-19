@@ -1,3 +1,4 @@
+import { DndContext } from '@dnd-kit/core'
 import { Table } from '@egodb/ui'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { useMemo } from 'react'
@@ -13,6 +14,7 @@ const fieldHelper = createColumnHelper<TData>()
 export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const view = table.getOrCreateDefaultView()
   const columnVisibility = view.getVisibility()
+  const columnOrder = table.getFieldsOrder().order
 
   const columns = table.schema.fields
     .map((c) =>
@@ -36,31 +38,34 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
     columns,
     state: {
       columnVisibility,
+      columnOrder,
     },
     columnResizeMode: 'onChange',
     getCoreRowModel: getCoreRowModel(),
   })
 
   return (
-    <Table
-      highlightOnHover
-      withBorder
-      withColumnBorders
-      sx={{
-        backgroundColor: 'white',
-        width: rt.getCenterTotalSize(),
-      }}
-    >
-      <thead>
-        {rt.getHeaderGroups().map((headerGroup) => (
-          <Thead headerGroup={headerGroup} key={headerGroup.id} tableId={table.id.value} />
-        ))}
-      </thead>
-      <tbody>
-        {rt.getRowModel().rows.map((row) => (
-          <Tr key={row.id} row={row} />
-        ))}
-      </tbody>
-    </Table>
+    <DndContext>
+      <Table
+        highlightOnHover
+        withBorder
+        withColumnBorders
+        sx={{
+          backgroundColor: 'white',
+          width: rt.getCenterTotalSize(),
+        }}
+      >
+        <thead>
+          {rt.getHeaderGroups().map((headerGroup) => (
+            <Thead headerGroup={headerGroup} key={headerGroup.id} tableId={table.id.value} />
+          ))}
+        </thead>
+        <tbody>
+          {rt.getRowModel().rows.map((row) => (
+            <Tr key={row.id} row={row} />
+          ))}
+        </tbody>
+      </Table>
+    </DndContext>
   )
 }

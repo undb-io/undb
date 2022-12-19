@@ -7,6 +7,7 @@ import type {
   WithTableName,
   WithTableSchema,
   WithTableViews,
+  WithViewFieldsOrder,
 } from '@egodb/core'
 import type { TableInMemory } from './table'
 import { TableInMemoryMapper } from './table-in-memory.mapper'
@@ -66,5 +67,8 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
         view.fieldOptions[s.fieldName] = { hidden: s.hidden }
       }
     }
+  }
+  fieldsOrder(s: WithViewFieldsOrder): void {
+    throw new Error('Method not implemented.')
   }
 }

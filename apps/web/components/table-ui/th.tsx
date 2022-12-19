@@ -1,8 +1,9 @@
-import { Text } from '@egodb/ui'
+import { Group, Text, useEgoUITheme } from '@egodb/ui'
 import { flexRender } from '@tanstack/react-table'
 import styled from '@emotion/styled'
 import type { THeader } from './interface'
 import { trpc } from '../../trpc'
+import { useDraggable, useDroppable } from '@dnd-kit/core'
 
 const ResizerLine = styled.div`
   display: block;
@@ -33,6 +34,7 @@ const Resizer = styled.div`
 
 export const Th: React.FC<{ header: THeader; tableId: string }> = ({ header, tableId }) => {
   const setFieldWidth = trpc.table.setFieldWidth.useMutation()
+  const theme = useEgoUITheme()
 
   const onSetFieldWidth = (fieldName: string, width: number) => {
     setFieldWidth.mutate({
@@ -42,11 +44,36 @@ export const Th: React.FC<{ header: THeader; tableId: string }> = ({ header, tab
     })
   }
 
+  const { isOver, setNodeRef: setDroppableRef } = useDroppable({ id: header.id })
+  const {
+    attributes,
+    listeners,
+    setNodeRef: setDraggableRef,
+    transform,
+  } = useDraggable({
+    id: header.id,
+  })
+  const style = transform
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+      }
+    : undefined
   return (
-    <th key={header.id} style={{ position: 'relative', width: header.getSize() }} colSpan={header.colSpan}>
-      <Text fz="sm" color="gray.7" fw={500}>
-        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-      </Text>
+    <th
+      ref={setDroppableRef}
+      key={header.id}
+      style={{
+        position: 'relative',
+        width: header.getSize(),
+        color: isOver ? theme.colors.gray[2] : theme.colors.gray[7],
+      }}
+      colSpan={header.colSpan}
+    >
+      <Group position="apart" ref={setDraggableRef} style={style} {...listeners} {...attributes}>
+        <Text fz="sm" fw={500}>
+          {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+        </Text>
+      </Group>
       <Resizer
         onMouseDown={header.getResizeHandler()}
         onTouchStart={header.getResizeHandler()}

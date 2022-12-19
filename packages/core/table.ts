@@ -22,7 +22,7 @@ import type { IEditTableSchema } from './table.schema'
 import type { TableId } from './value-objects'
 import { TableSchema } from './value-objects'
 import type { TableName } from './value-objects/table-name.vo'
-import type { IQueryView, ISetFieldVisibilitySchema, ISetFieldWidthSchema } from './view'
+import type { IQueryView, ISetFieldVisibilitySchema, ISetFieldWidthSchema, ViewFieldsOrder } from './view'
 import { defaultViewDiaplyType, View } from './view'
 import { Views } from './view/views'
 
@@ -95,6 +95,10 @@ export class Table {
     }
 
     return and(...specs)
+  }
+
+  public getFieldsOrder(viewName?: string): ViewFieldsOrder {
+    return this.getOrCreateDefaultView(viewName).fieldsOrder ?? this.schema.defaultFieldsOrder
   }
 
   public createRecord(input: ICreateRecordInput): Record {

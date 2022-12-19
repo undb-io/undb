@@ -1,4 +1,3 @@
-import React from 'react'
 import type { THeaderGroup } from './interface'
 import { Th } from './th'
 

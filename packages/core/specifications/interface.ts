@@ -7,6 +7,7 @@ import type { WithTableId } from './table-id.specifaction'
 import type { WithTableName } from './table-name.specification'
 import type { WithTableSchema } from './table-schema.specification'
 import type { WithFieldVisibility, WithFieldWidth } from './table-view-field-option.specification'
+import type { WithViewFieldsOrder } from './table-view-fields-order.specification'
 import type { WithTableViews } from './table-views.specification'
 
 export interface ITableSpecVisitor extends ISpecVisitor {
@@ -18,6 +19,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   filterEqual(s: WithFilter): void
   newField(s: WithNewField): void
 
+  fieldsOrder(s: WithViewFieldsOrder): void
   fieldWidthEqual(s: WithFieldWidth): void
   fieldVisibility(s: WithFieldVisibility): void
 }

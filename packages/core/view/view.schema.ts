@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { fieldNameSchema } from '../field'
-import { rootFilter } from '../filter'
+import { rootFilter } from '../filter/filter'
 import { fieldHiddenSchema, fieldWidthSchema, viewFieldOption } from './view-field-options'
 import { viewNameSchema } from './view-name.vo'
 

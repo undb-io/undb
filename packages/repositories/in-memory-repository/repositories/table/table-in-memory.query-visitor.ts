@@ -5,6 +5,7 @@ import type {
   WithFieldWidth,
   WithTableId,
   WithTableName,
+  WithViewFieldsOrder,
 } from '@egodb/core'
 import type { Result } from 'oxide.ts'
 import { Err, Ok } from 'oxide.ts'
@@ -82,5 +83,8 @@ export class TableInMemoryQueryVisitor implements ITableSpecVisitor {
       if (!view) return false
       return !!view.fieldOptions?.[s.fieldName]?.hidden === s.hidden
     }
+  }
+  fieldsOrder(s: WithViewFieldsOrder): void {
+    throw new Error('Method not implemented.')
   }
 }

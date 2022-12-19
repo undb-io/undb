@@ -4,10 +4,11 @@ import type { Option } from 'oxide.ts'
 import { None } from 'oxide.ts'
 import type { IFilterOrGroupList, IRootFilter } from '../filter'
 import { RootFilter } from '../filter'
-import { WithFieldVisibility, WithFieldWidth } from '../specifications'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
+import { WithFieldVisibility, WithFieldWidth } from '../specifications/table-view-field-option.specification'
 import type { IViewFieldOption } from './view-field-options'
 import { ViewFieldOptions } from './view-field-options'
+import type { ViewFieldsOrder } from './view-fields-order.vo'
 import { ViewName } from './view-name.vo'
 import { createViewInput_internal } from './view.schema'
 import type { ICreateViewInput_internal, IView, IViewDisplayType } from './view.type'
@@ -34,6 +35,14 @@ export class View extends ValueObject<IView> {
 
   public get fieldOptions() {
     return this.props.fieldOptions
+  }
+
+  public get fieldsOrder() {
+    return this.props.fieldsOrder
+  }
+
+  public set fieldsOrder(v: ViewFieldsOrder | undefined) {
+    this.props.fieldsOrder = v
   }
 
   public getFieldOption(fieldName: string): IViewFieldOption {
