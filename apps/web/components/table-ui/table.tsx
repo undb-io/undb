@@ -11,9 +11,9 @@ import { Tr } from './tr'
 const fieldHelper = createColumnHelper<TData>()
 
 export const EGOTable: React.FC<IProps> = ({ table, records }) => {
-  const view = table.getOrCreateDefaultView()
+  const view = table.mustGetView()
   const columnVisibility = view.getVisibility()
-  const columnOrder = table.getFieldsOrder().order
+  const columnOrder = table.getFieldsOrder(view).order
 
   const columns = table.schema.fields
     .map((c) =>

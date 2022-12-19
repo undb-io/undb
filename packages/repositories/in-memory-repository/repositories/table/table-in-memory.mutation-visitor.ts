@@ -6,6 +6,7 @@ import type {
   WithNewField,
   WithTableName,
   WithTableSchema,
+  WithTableView,
   WithTableViews,
   WithViewFieldsOrder,
 } from '@egodb/core'
@@ -60,6 +61,10 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
       }
     }
   }
+  viewEqual(s: WithTableView): void {
+    const index = this.table.views.findIndex((v) => v.name === s.view.name.unpack())
+    this.table.views[index] = TableInMemoryMapper.viewToInMemory(s.view)
+  }
   fieldVisibility(s: WithFieldVisibility): void {
     const view = this.getView(s.viewName)
     if (view) {
@@ -72,7 +77,7 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
     }
   }
   fieldsOrder(s: WithViewFieldsOrder): void {
-    const view = this.table.views.find((v) => v.name === s.viewName)
+    const view = this.table.views.find((v) => v.name === s.view.name.unpack())
     if (view) {
       view.fieldsOrder = s.viewFieldsOrder.order
     }

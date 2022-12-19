@@ -97,3 +97,9 @@ export const and = <T, V extends ISpecVisitor>(
 
   return Some(s)
 }
+
+export const andOptions = <T, V extends ISpecVisitor>(
+  ...specs: Option<CompositeSpecification<T, V>>[]
+): Option<CompositeSpecification<T, V>> => {
+  return and(...specs.filter((spec) => spec.isSome()).map((spec) => spec.unwrap()))
+}

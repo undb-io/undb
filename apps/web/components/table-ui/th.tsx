@@ -1,9 +1,10 @@
-import { Group, Text, useEgoUITheme } from '@egodb/ui'
+import { Group, Text } from '@egodb/ui'
 import { flexRender } from '@tanstack/react-table'
 import styled from '@emotion/styled'
 import type { THeader } from './interface'
 import { trpc } from '../../trpc'
-import { useDraggable, useDroppable } from '@dnd-kit/core'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 const ResizerLine = styled.div<{ hidden: boolean }>`
   display: ${(props) => (props.hidden ? 'none' : 'block')};
@@ -34,7 +35,6 @@ const Resizer = styled.div`
 
 export const Th: React.FC<{ header: THeader; tableId: string }> = ({ header, tableId }) => {
   const setFieldWidth = trpc.table.setFieldWidth.useMutation()
-  const theme = useEgoUITheme()
 
   const onSetFieldWidth = (fieldName: string, width: number) => {
     setFieldWidth.mutate({
@@ -44,33 +44,23 @@ export const Th: React.FC<{ header: THeader; tableId: string }> = ({ header, tab
     })
   }
 
-  const { isOver, setNodeRef: setDroppableRef, over, active } = useDroppable({ id: header.id })
-  const {
-    attributes,
-    listeners,
-    setNodeRef: setDraggableRef,
-    transform,
-    isDragging,
-  } = useDraggable({
+  const { attributes, isDragging, listeners, setNodeRef, transform, transition } = useSortable({
     id: header.id,
   })
-  const style = transform
-    ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-      }
-    : undefined
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+  }
+
   return (
     <th
-      ref={(ref) => {
-        setDraggableRef(ref)
-        setDroppableRef(ref)
-      }}
+      ref={setNodeRef}
       key={header.id}
       style={{
         position: 'relative',
         width: header.getSize(),
-        color: isOver && over?.id !== active?.id ? theme.colors.gray[2] : theme.colors.gray[7],
         zIndex: isDragging ? 100 : undefined,
+        cursor: isDragging ? 'grabbing' : undefined,
         ...style,
       }}
       colSpan={header.colSpan}

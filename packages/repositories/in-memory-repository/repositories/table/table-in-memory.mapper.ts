@@ -1,7 +1,7 @@
-import type { Field, Table, TableSchema, Views } from '@egodb/core'
+import type { Field, Table, TableSchema, View, Views } from '@egodb/core'
 import { TableFactory } from '@egodb/core'
 import type { Result } from 'oxide.ts'
-import type { FieldInMemory, SchemaInMemory, TableInMemory, ViewsInMemory } from './table'
+import type { FieldInMemory, SchemaInMemory, TableInMemory, ViewInMemory, ViewsInMemory } from './table'
 
 export class TableInMemoryMapper {
   static toDomain(t: TableInMemory): Result<Table, string> {
@@ -26,14 +26,18 @@ export class TableInMemoryMapper {
     return schema.fields.map((f) => this.fieldToInMemopy(f))
   }
 
-  static viewsToInMemory(views: Views): ViewsInMemory {
-    return views.views.map((v) => ({
+  static viewToInMemory(v: View): ViewInMemory {
+    return {
       name: v.name.unpack(),
       displayType: v.displayType,
-      filters: v.filter?.value,
+      filter: v.filter?.value,
       fieldOptions: Object.fromEntries(v.fieldOptions.value),
       fieldsOrder: v.fieldsOrder?.order,
-    }))
+    }
+  }
+
+  static viewsToInMemory(views: Views): ViewsInMemory {
+    return views.views.map((v) => this.viewToInMemory(v))
   }
 
   static toInMemory(t: Table): TableInMemory {

@@ -4,6 +4,7 @@ import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '.'
 import type { Table } from '../table'
 import type { ICreateViewsSchema } from '../table.schema'
+import type { View } from '../view'
 import { Views } from '../view/views'
 
 export class WithTableViews extends CompositeSpecification<Table, ITableSpecVisitor> {
@@ -27,6 +28,26 @@ export class WithTableViews extends CompositeSpecification<Table, ITableSpecVisi
 
   accept(v: ITableSpecVisitor): Result<void, string> {
     v.viewsEqual(this)
+    return Ok(undefined)
+  }
+}
+
+export class WithTableView extends CompositeSpecification<Table, ITableSpecVisitor> {
+  constructor(public readonly view: View) {
+    super()
+  }
+
+  isSatisfiedBy(t: Table): boolean {
+    return t.getView(this.view.name.unpack()).mapOr(false, (v) => v.equals(this.view))
+  }
+
+  mutate(t: Table): Result<Table, string> {
+    t.views.addView(this.view)
+    return Ok(t)
+  }
+
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.viewEqual(this)
     return Ok(undefined)
   }
 }
