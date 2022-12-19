@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { fieldNameSchema } from '../field'
+import { fieldIdSchema, fieldNameSchema } from '../field'
 import { rootFilter } from '../filter/filter'
 import { fieldHiddenSchema, fieldWidthSchema, viewFieldOption } from './view-field-options'
 import { viewNameSchema } from './view-name.vo'
@@ -11,6 +11,7 @@ export const createViewInput_internal = z.object({
   displayType: viewDisplayType.optional(),
   filter: rootFilter.optional(),
   fieldOptions: z.record(viewFieldOption).optional(),
+  fieldsOrder: z.string().array().optional(),
 })
 
 export const queryView = z.object({
@@ -18,6 +19,7 @@ export const queryView = z.object({
   displayType: viewDisplayType,
   filter: rootFilter.optional(),
   fieldOptions: z.record(viewFieldOption).optional(),
+  fieldsOrder: z.string().array().optional(),
 })
 
 export const queryViews = z.array(queryView).optional()
@@ -41,3 +43,11 @@ export const setFieldVisibilitySchema = z
   .merge(viewFieldOptionBaseSchema)
 
 export type ISetFieldVisibilitySchema = z.infer<typeof setFieldVisibilitySchema>
+
+export const moveFieldSchema = z.object({
+  viewName: viewNameSchema.optional(),
+  from: fieldIdSchema,
+  to: fieldIdSchema,
+})
+
+export type IMoveFieldSchema = z.infer<typeof moveFieldSchema>

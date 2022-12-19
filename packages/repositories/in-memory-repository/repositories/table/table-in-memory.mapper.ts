@@ -32,6 +32,7 @@ export class TableInMemoryMapper {
       displayType: v.displayType,
       filters: v.filter?.value,
       fieldOptions: Object.fromEntries(v.fieldOptions.value),
+      fieldsOrder: v.fieldsOrder?.order,
     }))
   }
 

@@ -19,6 +19,7 @@ export interface IQueryView {
   displayType: IViewDisplayType
   filter?: IRootFilter
   fieldOptions?: Record<string, IViewFieldOption>
+  fieldsOrder?: string[]
 }
 export type IViewDisplayType = z.infer<typeof viewDisplayType>
 export type ICreateViewInput_internal = z.infer<typeof createViewInput_internal>

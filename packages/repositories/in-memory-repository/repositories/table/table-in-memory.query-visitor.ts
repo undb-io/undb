@@ -70,16 +70,20 @@ export class TableInMemoryQueryVisitor implements ITableSpecVisitor {
   viewsEqual(): void {
     throw new Error('Method not implemented.')
   }
+
+  private getView(t: TableInMemory, viewName?: string) {
+    return t.views.find((v) => v.name === viewName)
+  }
   fieldWidthEqual(s: WithFieldWidth): void {
     this.predicate = (t) => {
-      const view = t.views.find((v) => v.name === s.viewName)
+      const view = this.getView(t, s.viewName)
       if (!view) return false
       return view.fieldOptions?.[s.fieldName]?.width === s.width
     }
   }
   fieldVisibility(s: WithFieldVisibility): void {
     this.predicate = (t) => {
-      const view = t.views.find((v) => v.name === s.viewName)
+      const view = this.getView(t, s.viewName)
       if (!view) return false
       return !!view.fieldOptions?.[s.fieldName]?.hidden === s.hidden
     }

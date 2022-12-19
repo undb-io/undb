@@ -13,6 +13,8 @@ import {
   GetTablesQuery,
   getTablesQueryOutput,
   getTablesQuerySchema,
+  MoveFieldCommand,
+  moveFieldCommandInput,
   SetFieldVisibilityCommand,
   setFieldVisibilityCommandInput,
   SetFieldWidthCommand,
@@ -93,6 +95,14 @@ export const createTableRouter =
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new SetFieldVisibilityCommand(input)
+          return commandBus.execute<void>(cmd)
+        }),
+      moveField: procedure
+        .meta({ openapi: { method: 'POST', path: '/table.moveField', tags } })
+        .input(moveFieldCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new MoveFieldCommand(input)
           return commandBus.execute<void>(cmd)
         }),
     })

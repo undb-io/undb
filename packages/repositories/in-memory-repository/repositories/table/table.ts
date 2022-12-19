@@ -36,6 +36,7 @@ type ViewInMemory = {
   displayType: 'grid' | 'kanban'
   filter?: IRootFilter
   fieldOptions: Record<string, IViewFieldOption>
+  fieldsOrder?: string[]
 }
 
 export type ViewsInMemory = ViewInMemory[]

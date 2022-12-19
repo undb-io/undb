@@ -1,4 +1,5 @@
 import { ValueObject } from '@egodb/domain'
+import arrayMove from 'array-move'
 
 export class ViewFieldsOrder extends ValueObject<string[]> {
   public get order() {
@@ -9,12 +10,11 @@ export class ViewFieldsOrder extends ValueObject<string[]> {
     return new this(ids)
   }
 
-  public swap(from: string, to: string): ViewFieldsOrder {
-    const copied = [...this.order]
-    const fromIndex = copied.findIndex((v) => v === from)
-    const toIndex = copied.findIndex((v) => v === to)
+  public move(fromId: string, toId: string): ViewFieldsOrder {
+    const fromIndex = this.order.findIndex((id) => id === fromId)
+    const toIndex = this.order.findIndex((id) => id === toId)
 
-    ;[copied[toIndex], copied[fromIndex]] = [copied[fromIndex], copied[toIndex]]
-    return ViewFieldsOrder.fromArray(copied)
+    const moved = arrayMove(this.order, fromIndex, toIndex)
+    return ViewFieldsOrder.fromArray(moved)
   }
 }

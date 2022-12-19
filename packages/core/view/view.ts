@@ -8,7 +8,7 @@ import type { TableCompositeSpecificaiton } from '../specifications/interface'
 import { WithFieldVisibility, WithFieldWidth } from '../specifications/table-view-field-option.specification'
 import type { IViewFieldOption } from './view-field-options'
 import { ViewFieldOptions } from './view-field-options'
-import type { ViewFieldsOrder } from './view-fields-order.vo'
+import { ViewFieldsOrder } from './view-fields-order.vo'
 import { ViewName } from './view-name.vo'
 import { createViewInput_internal } from './view.schema'
 import type { ICreateViewInput_internal, IView, IViewDisplayType } from './view.type'
@@ -95,6 +95,7 @@ export class View extends ValueObject<IView> {
       displayType: parsed.displayType || defaultViewDiaplyType,
       filter: parsed.filter ? new RootFilter(parsed.filter) : undefined,
       fieldOptions: ViewFieldOptions.from(input.fieldOptions),
+      fieldsOrder: input.fieldsOrder?.length ? ViewFieldsOrder.fromArray(input.fieldsOrder) : undefined,
     })
   }
 }

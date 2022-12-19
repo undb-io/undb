@@ -6,7 +6,7 @@ import type { Table } from '../table'
 import type { ViewFieldsOrder } from '../view'
 
 export class WithViewFieldsOrder extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly viewName: string, public readonly viewFieldsOrder: ViewFieldsOrder) {
+  constructor(public readonly viewFieldsOrder: ViewFieldsOrder, public readonly viewName?: string) {
     super()
   }
 

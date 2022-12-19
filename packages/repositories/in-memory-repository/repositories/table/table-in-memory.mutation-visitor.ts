@@ -46,8 +46,11 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
     this.table.schema.push(field)
   }
 
+  private getView(viewName?: string) {
+    return this.table.views.find((v) => v.name === viewName)
+  }
   fieldWidthEqual(s: WithFieldWidth): void {
-    const view = this.table.views.find((v) => v.name === s.viewName)
+    const view = this.getView(s.viewName)
     if (view) {
       const option = view.fieldOptions?.[s.fieldName]
       if (option) {
@@ -58,7 +61,7 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
     }
   }
   fieldVisibility(s: WithFieldVisibility): void {
-    const view = this.table.views.find((v) => v.name === s.viewName)
+    const view = this.getView(s.viewName)
     if (view) {
       const option = view.fieldOptions?.[s.fieldName]
       if (option) {
@@ -69,6 +72,9 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
     }
   }
   fieldsOrder(s: WithViewFieldsOrder): void {
-    throw new Error('Method not implemented.')
+    const view = this.table.views.find((v) => v.name === s.viewName)
+    if (view) {
+      view.fieldsOrder = s.viewFieldsOrder.order
+    }
   }
 }

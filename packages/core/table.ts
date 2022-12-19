@@ -15,14 +15,20 @@ import type { Record } from './record'
 import { WithRecordTableId } from './record'
 import { RecordFactory } from './record/record.factory'
 import { WithRecordValues } from './record/specifications/record-values.specification'
-import { WithTableName } from './specifications'
+import { WithTableName, WithViewFieldsOrder } from './specifications'
 import { WithFilter } from './specifications/filters.specificaiton'
 import type { TableCompositeSpecificaiton } from './specifications/interface'
 import type { IEditTableSchema } from './table.schema'
 import type { TableId } from './value-objects'
 import { TableSchema } from './value-objects'
 import type { TableName } from './value-objects/table-name.vo'
-import type { IQueryView, ISetFieldVisibilitySchema, ISetFieldWidthSchema, ViewFieldsOrder } from './view'
+import type {
+  IMoveFieldSchema,
+  IQueryView,
+  ISetFieldVisibilitySchema,
+  ISetFieldWidthSchema,
+  ViewFieldsOrder,
+} from './view'
 import { defaultViewDiaplyType, View } from './view'
 import { Views } from './view/views'
 
@@ -137,6 +143,14 @@ export class Table {
     const view = this.getOrCreateDefaultView(input.viewName)
     const spec = view.setFieldVisibility(input.fieldName, input.hidden)
     spec.mutate(this)
+    return spec
+  }
+
+  public moveField(input: IMoveFieldSchema): TableCompositeSpecificaiton {
+    const viewFieldsOrder = this.getFieldsOrder(input.viewName).move(input.from, input.to)
+    const spec = new WithViewFieldsOrder(viewFieldsOrder, input.viewName)
+    spec.mutate(this)
+
     return spec
   }
 }
