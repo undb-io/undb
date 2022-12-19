@@ -1,4 +1,3 @@
-import { DndContext } from '@dnd-kit/core'
 import { Table } from '@egodb/ui'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { useMemo } from 'react'
@@ -45,27 +44,27 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   })
 
   return (
-    <DndContext>
-      <Table
-        highlightOnHover
-        withBorder
-        withColumnBorders
-        sx={{
+    <Table
+      highlightOnHover
+      withBorder
+      withColumnBorders
+      sx={{
+        width: rt.getCenterTotalSize(),
+        'thead th': {
           backgroundColor: 'white',
-          width: rt.getCenterTotalSize(),
-        }}
-      >
-        <thead>
-          {rt.getHeaderGroups().map((headerGroup) => (
-            <Thead headerGroup={headerGroup} key={headerGroup.id} tableId={table.id.value} />
-          ))}
-        </thead>
-        <tbody>
-          {rt.getRowModel().rows.map((row) => (
-            <Tr key={row.id} row={row} />
-          ))}
-        </tbody>
-      </Table>
-    </DndContext>
+        },
+      }}
+    >
+      <thead>
+        {rt.getHeaderGroups().map((headerGroup) => (
+          <Thead headerGroup={headerGroup} key={headerGroup.id} tableId={table.id.value} />
+        ))}
+      </thead>
+      <tbody>
+        {rt.getRowModel().rows.map((row) => (
+          <Tr key={row.id} row={row} />
+        ))}
+      </tbody>
+    </Table>
   )
 }

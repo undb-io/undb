@@ -5,8 +5,8 @@ import type { THeader } from './interface'
 import { trpc } from '../../trpc'
 import { useDraggable, useDroppable } from '@dnd-kit/core'
 
-const ResizerLine = styled.div`
-  display: block;
+const ResizerLine = styled.div<{ hidden: boolean }>`
+  display: ${(props) => (props.hidden ? 'none' : 'block')};
   position: absolute;
   height: 100%;
   width: 100%;
@@ -44,12 +44,13 @@ export const Th: React.FC<{ header: THeader; tableId: string }> = ({ header, tab
     })
   }
 
-  const { isOver, setNodeRef: setDroppableRef } = useDroppable({ id: header.id })
+  const { isOver, setNodeRef: setDroppableRef, over, active } = useDroppable({ id: header.id })
   const {
     attributes,
     listeners,
     setNodeRef: setDraggableRef,
     transform,
+    isDragging,
   } = useDraggable({
     id: header.id,
   })
@@ -60,16 +61,22 @@ export const Th: React.FC<{ header: THeader; tableId: string }> = ({ header, tab
     : undefined
   return (
     <th
-      ref={setDroppableRef}
+      ref={(ref) => {
+        setDraggableRef(ref)
+        setDroppableRef(ref)
+      }}
       key={header.id}
       style={{
         position: 'relative',
         width: header.getSize(),
-        color: isOver ? theme.colors.gray[2] : theme.colors.gray[7],
+        color: isOver && over?.id !== active?.id ? theme.colors.gray[2] : theme.colors.gray[7],
+        zIndex: isDragging ? 100 : undefined,
+        ...style,
       }}
       colSpan={header.colSpan}
+      {...attributes}
     >
-      <Group position="apart" ref={setDraggableRef} style={style} {...listeners} {...attributes}>
+      <Group {...listeners}>
         <Text fz="sm" fw={500}>
           {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
         </Text>
@@ -79,7 +86,7 @@ export const Th: React.FC<{ header: THeader; tableId: string }> = ({ header, tab
         onTouchStart={header.getResizeHandler()}
         onMouseUp={() => onSetFieldWidth(header.id, header.getSize())}
       >
-        <ResizerLine />
+        <ResizerLine hidden={isDragging} />
       </Resizer>
     </th>
   )
