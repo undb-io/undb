@@ -1,4 +1,4 @@
-import type { ISelectFilter, ISelectFilterOperator } from '../filter'
+import type { ISelectFilter, ISelectFilterOperator, ISelectFilterValue } from '../filter'
 import { Options } from '../option/options'
 import { BaseField } from './field.base'
 import type { ISelectField } from './field.type'
@@ -33,7 +33,7 @@ export class SelectField extends BaseField<ISelectField> {
     })
   }
 
-  createFilter(operator: ISelectFilterOperator, value: string | null): ISelectFilter {
+  createFilter(operator: ISelectFilterOperator, value: ISelectFilterValue): ISelectFilter {
     return { operator, value, path: this.name.value, type: 'select' }
   }
 

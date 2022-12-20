@@ -2,6 +2,8 @@ import type { CompositeSpecification } from '@egodb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
+import type { ISelectFieldValue } from '../field/select-field.type'
+import { selectFieldValue } from '../field/select-field.type'
 import {
   DateEqual,
   DateGreaterThan,
@@ -66,7 +68,8 @@ const dateFilter = z
   .merge(baseFilter)
 export type IDateFilter = z.infer<typeof dateFilter>
 
-export const selectFilterValue = z.string().or(z.string().array()).nullable()
+export const selectFilterValue = selectFieldValue.or(selectFieldValue.array()).nullable()
+export type ISelectFilterValue = z.infer<typeof selectFieldValue>
 const selectFilter = z
   .object({
     type: z.literal('select'),
@@ -191,16 +194,16 @@ const convertSelectFilter = (filter: ISelectFilter): Option<CompositeSpecificati
 
   switch (filter.operator) {
     case '$eq': {
-      return Some(new SelectEqual(filter.path, filter.value as string))
+      return Some(new SelectEqual(filter.path, filter.value as ISelectFieldValue))
     }
     case '$neq': {
-      return Some(new SelectEqual(filter.path, filter.value as string).not())
+      return Some(new SelectEqual(filter.path, filter.value as ISelectFieldValue).not())
     }
     case '$in': {
-      return Some(new SelectIn(filter.path, filter.value as string[]))
+      return Some(new SelectIn(filter.path, filter.value as ISelectFieldValue[]))
     }
     case '$nin': {
-      return Some(new SelectIn(filter.path, filter.value as string[]).not())
+      return Some(new SelectIn(filter.path, filter.value as ISelectFieldValue[]).not())
     }
 
     default: {

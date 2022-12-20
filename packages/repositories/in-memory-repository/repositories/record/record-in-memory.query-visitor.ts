@@ -91,28 +91,28 @@ export class RecordInMemoryQueryVisitor implements IRecordVisitor {
   stringContain(s: StringContain): void {
     this.predicate = (r) => {
       const value = r.values[s.name]
-      return isString(value) && value.includes(s.value)
+      return isString(value) && isString(s.value) && value.includes(s.value)
     }
   }
 
   stringStartsWith(s: StringStartsWith): void {
     this.predicate = (r) => {
       const value = r.values[s.name]
-      return isString(value) && value.startsWith(s.value)
+      return isString(value) && isString(s.value) && value.startsWith(s.value)
     }
   }
 
   stringEndsWith(s: StringEndsWith): void {
     this.predicate = (r) => {
       const value = r.values[s.name]
-      return isString(value) && value.endsWith(s.value)
+      return isString(value) && isString(s.value) && value.endsWith(s.value)
     }
   }
 
   stringRegex(s: StringRegex): void {
     this.predicate = (r) => {
       const value = r.values[s.name]
-      return isString(value) && new RegExp(s.value).test(value)
+      return isString(value) && isString(s.value) && new RegExp(s.value).test(value)
     }
   }
 

@@ -35,7 +35,7 @@ export class SelectEqual extends BaseSelectSpecification {
   }
 }
 
-export class SelectIn extends RecordValueQuerySpecification<string[]> {
+export class SelectIn extends RecordValueQuerySpecification<ISelectFieldValue[]> {
   /**
    * check given select is equal to record value by field name
    * @param r - record
@@ -44,7 +44,7 @@ export class SelectIn extends RecordValueQuerySpecification<string[]> {
   isSatisfiedBy(r: Record): boolean {
     return r.values
       .getSelectValue(this.name)
-      .mapOr(false, (value) => !!value.option && this.value.includes(value.option))
+      .mapOr(false, (value) => !!value.option && this.value.map((v) => v.name).includes(value.option))
   }
 
   accept(v: IRecordVisitor): Result<void, string> {

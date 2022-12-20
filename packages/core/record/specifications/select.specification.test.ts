@@ -25,8 +25,8 @@ test.each<[SelectEqual, SelectEqual, boolean]>([
 })
 
 test.each<[SelectIn, SelectEqual, boolean]>([
-  [new SelectIn('hello', ['world']), new SelectEqual('hello', { name: 'world' }), true],
-  [new SelectIn('hello', ['']), new SelectEqual('hello', { name: 'world' }), false],
+  [new SelectIn('hello', [{ name: 'world' }]), new SelectEqual('hello', { name: 'world' }), true],
+  [new SelectIn('hello', [{ name: 'w' }]), new SelectEqual('hello', { name: 'world' }), false],
 ])('should match SelectEqual', (spec, value, result) => {
   const record = createTestRecord(value)
   expect(spec.isSatisfiedBy(record)).toBe(result)

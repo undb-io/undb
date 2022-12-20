@@ -6,6 +6,7 @@ import { newTableSpec } from './specifications/specifications'
 import type { IQueryTable } from './table'
 import { Table } from './table'
 import type { ICreateTableInput_internal } from './table.schema'
+import type { ICreateTableSchemaInput } from './value-objects'
 
 export class TableFactory {
   static create(...specs: TableCompositeSpecificaiton[]): Result<Table, string>
@@ -38,7 +39,7 @@ export class TableFactory {
   static fromQuery(q: IQueryTable): Table {
     const spec = WithTableName.fromString(q.name)
       .and(WithTableId.fromExistingString(q.id).unwrap())
-      .and(WithTableSchema.from(q.schema))
+      .and(WithTableSchema.from(q.schema as ICreateTableSchemaInput))
       .and(WithTableViews.from(q.views))
 
     return this.create(spec).unwrap()
