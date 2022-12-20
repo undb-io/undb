@@ -24,6 +24,17 @@ import {
   numberTypeSchema,
 } from './number-field.type'
 import type { NumberField } from './number.field'
+import type { SelectFieldValue } from './select-field-value'
+import type { ISelectFieldValue } from './select-field.type'
+import {
+  createSelectFieldSchema,
+  createSelectFieldValue,
+  createSelectFieldValue_internal,
+  selectFieldQuerySchema,
+  selectFieldValue,
+  selectTypeSchema,
+} from './select-field.type'
+import type { SelectField } from './select.field'
 import type { TextFieldValue } from './text-field-value'
 import type { ITextFieldValue } from './text-field.type'
 import {
@@ -41,6 +52,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createTextFieldSchema,
   createNumberFieldSchema,
   createDateFieldSchema,
+  createSelectFieldSchema,
 ])
 export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
 
@@ -48,24 +60,31 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   textFieldQuerySchema,
   numberFieldQuerySchema,
   dateFieldQuerySchema,
+  selectFieldQuerySchema,
 ])
 export type IQueryFieldSchema = z.infer<typeof queryFieldSchema>
 export const querySchemaSchema = z.array(queryFieldSchema)
 export type IQuerySchemaSchema = z.infer<typeof querySchemaSchema>
 
-export const fieldTypes = z.union([textTypeSchema, numberTypeSchema, dateTypeSchema])
+export const fieldTypes = z.union([textTypeSchema, numberTypeSchema, dateTypeSchema, selectTypeSchema])
 export type IFieldType = z.infer<typeof fieldTypes>
 
-export const fieldValue = z.union([textFieldValue, numberFieldValue, dateFieldValue])
+export const fieldValue = z.union([textFieldValue, numberFieldValue, dateFieldValue, selectFieldValue])
 export type IFieldValue = z.infer<typeof fieldValue>
 
-export const createFieldValueSchema = z.union([createTextFieldValue, createNumberFieldValue, createDateFieldValue])
+export const createFieldValueSchema = z.union([
+  createTextFieldValue,
+  createNumberFieldValue,
+  createDateFieldValue,
+  createSelectFieldValue,
+])
 export type ICreateFieldValue = z.infer<typeof createFieldValueSchema>
 
 export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createTextFieldValue_internal,
   createNumberFieldValue_internal,
   createDateFieldValue_internal,
+  createSelectFieldValue_internal,
 ])
 export type ICreateFieldValueSchema_internal = z.infer<typeof createFieldValueSchema_internal>
 
@@ -84,10 +103,11 @@ export interface INumberField extends IBaseField {
 }
 
 export type IDateField = IBaseField
+export type ISelectField = IBaseField
 
-export type Field = TextField | NumberField | DateField
+export type Field = TextField | NumberField | DateField | SelectField
 
-export type FieldValue = TextFieldValue | NumberFieldValue | DateFieldValue
+export type FieldValue = TextFieldValue | NumberFieldValue | DateFieldValue | SelectFieldValue
 export type FieldValues = FieldValue[]
 
-export type UnpackedFieldValue = ITextFieldValue | INumberFieldValue | IDateFieldValue
+export type UnpackedFieldValue = ITextFieldValue | INumberFieldValue | IDateFieldValue | ISelectFieldValue

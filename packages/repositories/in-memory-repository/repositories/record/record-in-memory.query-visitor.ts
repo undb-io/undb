@@ -12,6 +12,8 @@ import type {
   NumberGreaterThanOrEqual,
   NumberLessThan,
   NumberLessThanOrEqual,
+  SelectEqual,
+  SelectIn,
   StringContain,
   StringEndsWith,
   StringEqual,
@@ -190,6 +192,14 @@ export class RecordInMemoryQueryVisitor implements IRecordVisitor {
       const value = r.values[s.name]
       return isDate(value) && isToday(value as Date)
     }
+  }
+
+  selectEqual(s: SelectEqual): void {
+    throw new Error('Method not implemented.')
+  }
+
+  selectIn(s: SelectIn): void {
+    throw new Error('Method not implemented.')
   }
 
   values(): void {

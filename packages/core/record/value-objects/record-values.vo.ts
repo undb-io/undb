@@ -4,6 +4,8 @@ import { isDate } from 'date-fns'
 import { None, Option, Some } from 'oxide.ts'
 import type { FieldValue, ICreateFieldsSchema_internal, IFieldValue, UnpackedFieldValue } from '../../field'
 import { FieldValueFactory } from '../../field/field-value.factory'
+import type { SelectFieldValue } from '../../field/select-field-value'
+import { isSelectFieldValue } from '../../field/select-field-value'
 
 export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   static fromArray(inputs: ICreateFieldsSchema_internal): RecordValues {
@@ -78,5 +80,13 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
     return this.getUnpackedValue(name)
       .map((v) => (isDate(v) ? Some(v as Date) : None))
       .flatten()
+  }
+
+  getSelectValue(name: string): Option<SelectFieldValue> {
+    const value = this.value.get(name)
+    if (isSelectFieldValue(value)) {
+      return Some(value)
+    }
+    return None
   }
 }

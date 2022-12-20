@@ -14,51 +14,81 @@ import {
   NumberGreaterThanOrEqual,
   NumberLessThan,
   NumberLessThanOrEqual,
+  SelectEqual,
+  SelectIn,
   StringContain,
   StringEndsWith,
   StringEqual,
   StringStartsWith,
 } from '../record'
-import { $is_today, dateFilterOperators, numberFilterOperators, stringFilterOperators } from './operators'
+import {
+  $is_today,
+  dateFilterOperators,
+  numberFilterOperators,
+  selectFilterOperators,
+  stringFilterOperators,
+} from './operators'
 
 const baseFilter = z.object({
   path: z.string().min(1),
 })
 
+export const stringFilterValue = z.string().nullable()
 const stringFilter = z
   .object({
     type: z.literal('string'),
     operator: stringFilterOperators,
-    value: z.string().nullable(),
+    value: stringFilterValue,
   })
   .merge(baseFilter)
 
 export type IStringFilter = z.infer<typeof stringFilter>
 export type IStringFilterOperator = z.infer<typeof stringFilterOperators>
 
+export const numberFilterValue = z.number().nullable()
 const numberFilter = z
   .object({
     type: z.literal('number'),
     operator: numberFilterOperators,
-    value: z.number().nullable(),
+    value: numberFilterValue,
   })
   .merge(baseFilter)
 export type INumberFilter = z.infer<typeof numberFilter>
 export type INumberFilterOperator = z.infer<typeof numberFilterOperators>
 
+export const dateFilterValue = z.date().nullable().optional()
 const dateFilter = z
   .object({
     type: z.literal('date'),
     operator: dateFilterOperators,
-    value: z.date().nullable().optional(),
+    value: dateFilterValue,
   })
   .merge(baseFilter)
 export type IDateFilter = z.infer<typeof dateFilter>
 
-export const operaotrs = z.union([stringFilterOperators, numberFilterOperators, dateFilterOperators])
+export const selectFilterValue = z.string().or(z.string().array()).nullable()
+const selectFilter = z
+  .object({
+    type: z.literal('select'),
+    operator: selectFilterOperators,
+    value: selectFilterValue,
+  })
+  .merge(baseFilter)
+
+export type ISelectFilter = z.infer<typeof selectFilter>
+
+export const filterValue = z.union([stringFilterValue, numberFilterValue, dateFilterValue, selectFilterValue])
+export type IFilterValue = z.infer<typeof filterValue>
+
+export const operaotrs = z.union([
+  stringFilterOperators,
+  numberFilterOperators,
+  dateFilterOperators,
+  selectFilterOperators,
+])
 export type IOperator = z.infer<typeof operaotrs>
 
-const filter = z.discriminatedUnion('type', [stringFilter, numberFilter, dateFilter])
+const filter = z.discriminatedUnion('type', [stringFilter, numberFilter, dateFilter, selectFilter])
 
 const $and = z.literal('$and')
 const $or = z.literal('$or')
@@ -154,6 +184,31 @@ const convertNumberFilter = (filter: INumberFilter): Option<CompositeSpecificati
   }
 }
 
+const convertSelectFilter = (filter: ISelectFilter): Option<CompositeSpecification> => {
+  if (!filter.value) {
+    return None
+  }
+
+  switch (filter.operator) {
+    case '$eq': {
+      return Some(new SelectEqual(filter.path, filter.value as string))
+    }
+    case '$neq': {
+      return Some(new SelectEqual(filter.path, filter.value as string).not())
+    }
+    case '$in': {
+      return Some(new SelectIn(filter.path, filter.value as string[]))
+    }
+    case '$nin': {
+      return Some(new SelectIn(filter.path, filter.value as string[]).not())
+    }
+
+    default: {
+      return None
+    }
+  }
+}
+
 const convertDateFilter = (filter: IDateFilter): Option<CompositeSpecification> => {
   if (filter.operator === $is_today.value) {
     return Some(new DateIsToday(filter.path))
@@ -195,6 +250,8 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
       return convertNumberFilter(filter)
     case 'date':
       return convertDateFilter(filter)
+    case 'select':
+      return convertSelectFilter(filter)
     default:
       return None
   }
