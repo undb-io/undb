@@ -1,0 +1,77 @@
+// Vitest Snapshot v1
+
+exports[`Table > createField > should add new field 1`] = `
+Table {
+  "id": TableId {
+    "props": {
+      "value": "tableId",
+    },
+  },
+  "name": TableName {
+    "props": {
+      "value": "name",
+    },
+  },
+  "schema": TableSchema {
+    "props": [
+      TextField {
+        "props": {
+          "id": FieldId {
+            "props": {
+              "value": "field1",
+            },
+          },
+          "name": FieldName {
+            "props": {
+              "value": "field1",
+            },
+          },
+          "valueConstrains": FieldValueConstraints {
+            "props": {
+              "required": undefined,
+            },
+          },
+        },
+      },
+      TextField {
+        "props": {
+          "id": FieldId {
+            "props": {
+              "value": "text",
+            },
+          },
+          "name": FieldName {
+            "props": {
+              "value": "text",
+            },
+          },
+          "valueConstrains": FieldValueConstraints {
+            "props": {
+              "required": undefined,
+            },
+          },
+        },
+      },
+    ],
+  },
+  "views": Views {
+    "props": [
+      View {
+        "props": {
+          "displayType": "grid",
+          "fieldOptions": ViewFieldOptions {
+            "props": Map {},
+          },
+          "fieldsOrder": undefined,
+          "filter": undefined,
+          "name": ViewName {
+            "props": {
+              "value": "name",
+            },
+          },
+        },
+      },
+    ],
+  },
+}
+`;
