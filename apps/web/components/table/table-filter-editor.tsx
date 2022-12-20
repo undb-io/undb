@@ -1,12 +1,14 @@
-import { Button, IconFilter, Popover, Space, useDisclosure } from '@egodb/ui'
+import { IFilter } from '@egodb/core'
+import { Button, IconFilter, Popover, Space, useDisclosure, useEgoUITheme } from '@egodb/ui'
 import { useState } from 'react'
 import { trpc } from '../../trpc'
 import { FiltersEditor } from '../filters-editor/filters-editor'
 import type { ITableBaseProps } from './table-base-props'
 
 export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
+  const filters = table.mustGetView().filterList as IFilter[]
   const [opened, handler] = useDisclosure(false)
-  const [filterTotal, setFilterTotal] = useState<number>()
+  const [filterTotal, setFilterTotal] = useState<number>(filters.length)
 
   const utils = trpc.useContext()
 
@@ -24,14 +26,14 @@ export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
       <Popover.Target>
         <Button
           size="xs"
-          variant="outline"
+          variant={filterTotal ? 'light' : 'outline'}
           loading={setFilter.isLoading}
           leftIcon={<IconFilter size={18} />}
           onClick={handler.toggle}
         >
           Filter
           <Space w="xs" />
-          {filterTotal}
+          {filterTotal ? filterTotal : null}
         </Button>
       </Popover.Target>
 
