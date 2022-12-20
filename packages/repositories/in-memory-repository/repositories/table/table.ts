@@ -27,11 +27,17 @@ type DateFieldInMemory = {
   required?: boolean
 }
 
+type OptionInMemory = {
+  name: string
+}
+
 type SelectFieldInMemory = {
   id: string
   type: 'select'
   name: string
   required?: boolean
+  // FIXME: options should not be optional
+  options?: OptionInMemory[]
 }
 
 export type SchemaInMemory = FieldInMemory[]

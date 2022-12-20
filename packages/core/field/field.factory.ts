@@ -1,6 +1,7 @@
 import { DateField } from './date.field'
 import type { Field, ICreateFieldSchema } from './field.type'
 import { NumberField } from './number.field'
+import { SelectField } from './select.field'
 import { TextField } from './text.field'
 
 export class FieldFactory {
@@ -14,6 +15,9 @@ export class FieldFactory {
       }
       case 'date': {
         return DateField.create(input)
+      }
+      case 'select': {
+        return SelectField.create(input)
       }
 
       default:
@@ -31,6 +35,9 @@ export class FieldFactory {
       }
       case 'date': {
         return DateField.unsafeCreate(input)
+      }
+      case 'select': {
+        return SelectField.unsafeCreate(input)
       }
 
       default:

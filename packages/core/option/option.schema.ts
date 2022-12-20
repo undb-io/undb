@@ -7,3 +7,13 @@ export const optionSchema = z.object({
 })
 
 export type IOptionSchema = z.infer<typeof optionSchema>
+
+export const createOptionSchema = z.object({
+  name: optionNameSchema,
+})
+
+export type ICreateOptionSchema = z.infer<typeof createOptionSchema>
+
+export const createOptionsSchema = createOptionSchema.array()
+
+export type ICreateOptionsSchema = z.infer<typeof createOptionsSchema>

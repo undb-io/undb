@@ -6,6 +6,6 @@ export const isSelectFieldValue = (value?: FieldValue): value is SelectFieldValu
 
 export class SelectFieldValue extends ValueObject<ISelectFieldValue> {
   get option(): string | null {
-    return this.props.option
+    return this.props.name
   }
 }
