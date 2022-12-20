@@ -1,5 +1,5 @@
 import { createTestRecord } from '../fixtures'
-import { SelectEqual } from './select.specification'
+import { SelectEqual, SelectIn } from './select.specification'
 
 test('should create with select value', () => {
   const spec = new SelectEqual('hello', { name: 'world' })
@@ -19,6 +19,14 @@ test('should create with select value', () => {
 test.each<[SelectEqual, SelectEqual, boolean]>([
   [new SelectEqual('hello', { name: 'world' }), new SelectEqual('hello', { name: 'world' }), true],
   [new SelectEqual('hello', { name: 'world' }), new SelectEqual('hello', { name: 'worl' }), false],
+])('should match SelectEqual', (spec, value, result) => {
+  const record = createTestRecord(value)
+  expect(spec.isSatisfiedBy(record)).toBe(result)
+})
+
+test.each<[SelectIn, SelectEqual, boolean]>([
+  [new SelectIn('hello', ['world']), new SelectEqual('hello', { name: 'world' }), true],
+  [new SelectIn('hello', ['']), new SelectEqual('hello', { name: 'world' }), false],
 ])('should match SelectEqual', (spec, value, result) => {
   const record = createTestRecord(value)
   expect(spec.isSatisfiedBy(record)).toBe(result)
