@@ -22,6 +22,7 @@ export * from './Popover'
 export * from './Typography'
 export * from './List'
 export * from './Feedback'
+export * from './Badge'
 
 export * from './hooks'
 export * from './theme'

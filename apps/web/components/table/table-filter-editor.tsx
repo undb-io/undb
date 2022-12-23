@@ -1,9 +1,11 @@
-import { Button, IconFilter, Popover, useDisclosure } from '@egodb/ui'
+import { IFilter } from '@egodb/core'
+import { Button, IconFilter, Popover, useDisclosure, Badge } from '@egodb/ui'
 import { trpc } from '../../trpc'
 import { FiltersEditor } from '../filters-editor/filters-editor'
 import type { ITableBaseProps } from './table-base-props'
 
 export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
+  const filters = table.mustGetView().filterList as IFilter[]
   const [opened, handler] = useDisclosure(false)
 
   const utils = trpc.useContext()
@@ -22,10 +24,11 @@ export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
       <Popover.Target>
         <Button
           size="xs"
-          variant="outline"
+          variant={filters.length ? 'light' : 'outline'}
           loading={setFilter.isLoading}
           leftIcon={<IconFilter size={18} />}
           onClick={handler.toggle}
+          rightIcon={filters.length ? <Badge>{filters.length}</Badge> : null}
         >
           Filter
         </Button>
