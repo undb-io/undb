@@ -3,7 +3,7 @@ import { isNumber, isString } from '@fxts/core'
 import { isDate } from 'date-fns'
 import { None, Option, Some } from 'oxide.ts'
 import type { FieldValue, ICreateFieldsSchema_internal, IFieldValue, UnpackedFieldValue } from '../../field'
-import { FieldValueFactory } from '../../field/field-value.factory'
+import { SelectFieldValue } from '../../field/select-field-value'
 
 export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   static fromArray(inputs: ICreateFieldsSchema_internal): RecordValues {
@@ -19,13 +19,8 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
     return this.props
   }
 
-  set(fieldName: string, value: IFieldValue) {
-    const fieldValue = FieldValueFactory.from(value)
-
-    // TODO: handler is none value
-    if (fieldValue.isSome()) {
-      this.value.set(fieldName, fieldValue.unwrap())
-    }
+  setValue(fieldName: string, value: FieldValue) {
+    this.value.set(fieldName, value)
   }
 
   toObject() {
@@ -78,5 +73,13 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
     return this.getUnpackedValue(name)
       .map((v) => (isDate(v) ? Some(v as Date) : None))
       .flatten()
+  }
+
+  getSelectValue(name: string): Option<SelectFieldValue> {
+    const value = this.value.get(name)
+    if (SelectFieldValue.isSelectFieldValue(value)) {
+      return Some(value)
+    }
+    return None
   }
 }

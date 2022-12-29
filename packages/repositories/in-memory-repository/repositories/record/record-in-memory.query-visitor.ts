@@ -12,6 +12,8 @@ import type {
   NumberGreaterThanOrEqual,
   NumberLessThan,
   NumberLessThanOrEqual,
+  SelectEqual,
+  SelectIn,
   StringContain,
   StringEndsWith,
   StringEqual,
@@ -89,28 +91,28 @@ export class RecordInMemoryQueryVisitor implements IRecordVisitor {
   stringContain(s: StringContain): void {
     this.predicate = (r) => {
       const value = r.values[s.name]
-      return isString(value) && value.includes(s.value)
+      return isString(value) && isString(s.value) && value.includes(s.value)
     }
   }
 
   stringStartsWith(s: StringStartsWith): void {
     this.predicate = (r) => {
       const value = r.values[s.name]
-      return isString(value) && value.startsWith(s.value)
+      return isString(value) && isString(s.value) && value.startsWith(s.value)
     }
   }
 
   stringEndsWith(s: StringEndsWith): void {
     this.predicate = (r) => {
       const value = r.values[s.name]
-      return isString(value) && value.endsWith(s.value)
+      return isString(value) && isString(s.value) && value.endsWith(s.value)
     }
   }
 
   stringRegex(s: StringRegex): void {
     this.predicate = (r) => {
       const value = r.values[s.name]
-      return isString(value) && new RegExp(s.value).test(value)
+      return isString(value) && isString(s.value) && new RegExp(s.value).test(value)
     }
   }
 
@@ -153,35 +155,43 @@ export class RecordInMemoryQueryVisitor implements IRecordVisitor {
   dateEqual(s: DateEqual): void {
     this.predicate = (r) => {
       const value = r.values[s.name]
-      return isDate(value) && isEqual(value as Date, s.value)
+      return isDate(value) && isDate(s.value) && isEqual(value as Date, s.value as Date)
     }
   }
 
   dateGreaterThan(s: DateGreaterThan): void {
     this.predicate = (r) => {
       const value = r.values[s.name]
-      return isDate(value) && isAfter(value as Date, s.value)
+      return isDate(value) && isDate(s.value) && isAfter(value as Date, s.value as Date)
     }
   }
 
   dateLessThan(s: DateLessThan): void {
     this.predicate = (r) => {
       const value = r.values[s.name]
-      return isDate(value) && isBefore(value as Date, s.value)
+      return isDate(value) && isDate(s.value) && isBefore(value as Date, s.value as Date)
     }
   }
 
   dateGreaterThanOrEqual(s: DateGreaterThanOrEqual): void {
     this.predicate = (r) => {
       const value = r.values[s.name]
-      return isDate(value) && (isAfter(value as Date, s.value) || isEqual(value as Date, s.value))
+      return (
+        isDate(value) &&
+        isDate(s.value) &&
+        (isAfter(value as Date, s.value as Date) || isEqual(value as Date, s.value as Date))
+      )
     }
   }
 
   dateLessThanOrEqual(s: DateLessThanOrEqual): void {
     this.predicate = (r) => {
       const value = r.values[s.name]
-      return isDate(value) && (isBefore(value as Date, s.value) || isEqual(value as Date, s.value))
+      return (
+        isDate(value) &&
+        isDate(s.value) &&
+        (isBefore(value as Date, s.value as Date) || isEqual(value as Date, s.value as Date))
+      )
     }
   }
 
@@ -190,6 +200,14 @@ export class RecordInMemoryQueryVisitor implements IRecordVisitor {
       const value = r.values[s.name]
       return isDate(value) && isToday(value as Date)
     }
+  }
+
+  selectEqual(s: SelectEqual): void {
+    throw new Error('Method not implemented.')
+  }
+
+  selectIn(s: SelectIn): void {
+    throw new Error('Method not implemented.')
   }
 
   values(): void {

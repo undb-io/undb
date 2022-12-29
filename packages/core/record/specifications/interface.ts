@@ -20,6 +20,7 @@ import type { WithRecordCreatedAt } from './record-created-at.specification'
 import type { WithRecordId } from './record-id.specifaction'
 import type { WithRecordTableId } from './record-table-id.specification'
 import type { WithRecordValues } from './record-values.specification'
+import type { SelectEqual, SelectIn } from './select.specification'
 import type { StringContain, StringEndsWith, StringEqual, StringRegex, StringStartsWith } from './string.specification'
 
 interface IRecordSpecVisitor {
@@ -49,6 +50,9 @@ interface IRecordValueVisitor {
   dateLessThan(s: DateLessThan): void
   dateGreaterThanOrEqual(s: DateGreaterThanOrEqual): void
   dateLessThanOrEqual(s: DateLessThanOrEqual): void
+
+  selectEqual(s: SelectEqual): void
+  selectIn(s: SelectIn): void
 
   dateIsToday(s: DateIsToday): void
 }

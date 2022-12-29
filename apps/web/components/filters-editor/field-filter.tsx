@@ -23,7 +23,7 @@ export const FieldFilter: React.FC<IProps> = ({ schema, value, onChange, onRemov
 
   const [selectedField, setField] = useState<Field | null>(field)
   const [operator, setOperator] = useState<IOperator | null>(value?.operator ?? null)
-  const [fieldValue, setValue] = useState<IFieldValue | null>(value?.value ?? null)
+  const [fieldValue, setValue] = useState<IFieldValue | null>((value?.value as never) ?? null)
 
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: getFilterId(value) })
   const style = {
@@ -33,7 +33,7 @@ export const FieldFilter: React.FC<IProps> = ({ schema, value, onChange, onRemov
 
   useEffect(() => {
     if (selectedField && operator) {
-      onChange(selectedField.createFilter(operator as any, fieldValue as any), index)
+      onChange(selectedField.createFilter(operator as never, fieldValue as never), index)
     } else {
       onChange(null, index)
     }

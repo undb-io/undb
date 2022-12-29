@@ -30,10 +30,6 @@ export class TextField extends BaseField<ITextField> {
     return new TextFieldValue(value)
   }
 
-  validateNewValue(value: string): boolean {
-    return value.length > 0
-  }
-
   createFilter(operator: IStringFilterOperator, value: string | null): IStringFilter {
     return { operator, value, path: this.name.value, type: 'string' }
   }

@@ -15,6 +15,10 @@ export class WithTableSchema extends CompositeSpecification<Table, ITableSpecVis
     return new this(TableSchema.create(input))
   }
 
+  static unsafeFrom(input: ICreateTableSchemaInput): WithTableSchema {
+    return new this(TableSchema.unsafeCreate(input))
+  }
+
   isSatisfiedBy(t: Table): boolean {
     return t.schema.equals(this.schema)
   }

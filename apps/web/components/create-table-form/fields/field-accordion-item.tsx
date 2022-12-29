@@ -1,11 +1,12 @@
 import { useSortable } from '@dnd-kit/sortable'
-import { Accordion, Group, Text, Select, TextInput, Space, ActionIcon, IconGripVertical } from '@egodb/ui'
+import { Accordion, Group, Text, Select, TextInput, Space, ActionIcon, IconGripVertical, Stack } from '@egodb/ui'
 import React from 'react'
 import { CSS } from '@dnd-kit/utilities'
 import { useCreateTableFormContext } from '../create-table-form-context'
 import { FieldCommonControl } from './field-common-control'
 import { FieldInputLabel } from '../../fields/field-input-label'
 import { FIELD_SELECT_ITEMS } from '../../../constants/field.constants'
+import { FieldVariantControl } from './field-variant-control'
 
 interface IProps {
   id: string
@@ -40,23 +41,26 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
         </Group>
       </Accordion.Control>
       <Accordion.Panel>
-        <Group grow={true}>
-          <Select
-            {...form.getInputProps(`schema.${index}.type`)}
-            label={<FieldInputLabel>type</FieldInputLabel>}
-            defaultValue="text"
-            variant="filled"
-            required={true}
-            data={FIELD_SELECT_ITEMS}
-          />
-          <TextInput
-            {...form.getInputProps(`schema.${index}.name`)}
-            label={<FieldInputLabel>name</FieldInputLabel>}
-            variant="filled"
-            required={true}
-            autoFocus
-          />
-        </Group>
+        <Stack>
+          <Group grow={true}>
+            <Select
+              {...form.getInputProps(`schema.${index}.type`)}
+              label={<FieldInputLabel>type</FieldInputLabel>}
+              defaultValue="text"
+              variant="filled"
+              required={true}
+              data={FIELD_SELECT_ITEMS}
+            />
+            <TextInput
+              {...form.getInputProps(`schema.${index}.name`)}
+              label={<FieldInputLabel>name</FieldInputLabel>}
+              variant="filled"
+              required={true}
+              autoFocus
+            />
+          </Group>
+          <FieldVariantControl index={index} />
+        </Stack>
         <Space h="lg" />
         <FieldCommonControl index={index} />
       </Accordion.Panel>

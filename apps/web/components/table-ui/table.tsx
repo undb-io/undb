@@ -16,11 +16,17 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const columnOrder = table.getFieldsOrder(view).order
 
   const columns = table.schema.fields
-    .map((c) =>
-      fieldHelper.accessor(c.name.value, {
-        id: c.name.value,
+    .map((f) =>
+      fieldHelper.accessor(f.name.value, {
+        id: f.name.value,
         enableResizing: true,
-        size: view.getFieldWidth(c.name.value),
+        size: view.getFieldWidth(f.name.value),
+        cell: (props) => {
+          if (f.type === 'select' && typeof props.getValue() === 'string') {
+            return f.options.getById(props.getValue() as string).mapOr('', (o) => o.name.value)
+          }
+          return props.getValue()
+        },
       }),
     )
     .concat(

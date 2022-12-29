@@ -14,6 +14,15 @@ export class TableInMemoryMapper {
   }
 
   static fieldToInMemopy(f: Field): FieldInMemory {
+    if (f.type === 'select') {
+      return {
+        id: f.id.value,
+        name: f.name.value,
+        type: f.type,
+        required: f.required,
+        options: f.options.options.map((o) => ({ id: o.id.value, name: o.name.value })),
+      }
+    }
     return {
       id: f.id.value,
       name: f.name.value,

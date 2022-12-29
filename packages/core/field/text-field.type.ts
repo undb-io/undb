@@ -12,7 +12,7 @@ export type ICreateTextFieldInput = z.infer<typeof createTextFieldSchema>
 
 export const textFieldQuerySchema = baseFieldQuerySchema.merge(textTypeObjectSchema)
 
-export const textFieldValue = z.string().or(z.null())
+export const textFieldValue = z.string().nullable()
 export type ITextFieldValue = z.infer<typeof textFieldValue>
 
 export const createTextFieldValue = textFieldValue

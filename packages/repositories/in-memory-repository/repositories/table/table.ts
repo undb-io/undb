@@ -27,9 +27,22 @@ type DateFieldInMemory = {
   required?: boolean
 }
 
+type OptionInMemory = {
+  id: string
+  name: string
+}
+
+type SelectFieldInMemory = {
+  id: string
+  type: 'select'
+  name: string
+  required?: boolean
+  options: OptionInMemory[]
+}
+
 export type SchemaInMemory = FieldInMemory[]
 
-export type FieldInMemory = TextFieldInMemory | NumberFieldInMemory | DateFieldInMemory
+export type FieldInMemory = TextFieldInMemory | NumberFieldInMemory | DateFieldInMemory | SelectFieldInMemory
 
 export type ViewInMemory = {
   name: string
