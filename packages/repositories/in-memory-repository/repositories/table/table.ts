@@ -36,8 +36,7 @@ type SelectFieldInMemory = {
   type: 'select'
   name: string
   required?: boolean
-  // FIXME: options should not be optional
-  options?: OptionInMemory[]
+  options: OptionInMemory[]
 }
 
 export type SchemaInMemory = FieldInMemory[]

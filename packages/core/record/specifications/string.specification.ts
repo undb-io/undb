@@ -1,10 +1,23 @@
+import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
+import { TextFieldValue } from '../../field/text-field-value'
 import type { Record } from '../record'
 import type { IRecordVisitor } from './interface'
-import { RecordValueSpecifcationBase } from './record-value-specification.base'
 
-export class StringEqual extends RecordValueSpecifcationBase<string | null> {
+abstract class BaseStringSpecification extends CompositeSpecification<Record, IRecordVisitor> {
+  constructor(readonly name: string, readonly value: string | null) {
+    super()
+  }
+
+  mutate(r: Record): Result<Record, string> {
+    const stringValue = new TextFieldValue(this.value)
+    r.values.setValue(this.name, stringValue)
+    return Ok(r)
+  }
+}
+
+export class StringEqual extends BaseStringSpecification {
   /**
    * check given string is equal to record value by field name
    * @param r - record
@@ -20,7 +33,7 @@ export class StringEqual extends RecordValueSpecifcationBase<string | null> {
   }
 }
 
-export class StringContain extends RecordValueSpecifcationBase<string | null> {
+export class StringContain extends BaseStringSpecification {
   /**
    * check whether record value by field name contains given string
    * @param r - record
@@ -36,7 +49,7 @@ export class StringContain extends RecordValueSpecifcationBase<string | null> {
   }
 }
 
-export class StringStartsWith extends RecordValueSpecifcationBase<string | null> {
+export class StringStartsWith extends BaseStringSpecification {
   /**
    * check whether string starts with given value
    * @param r - record
@@ -54,7 +67,7 @@ export class StringStartsWith extends RecordValueSpecifcationBase<string | null>
   }
 }
 
-export class StringEndsWith extends RecordValueSpecifcationBase<string | null> {
+export class StringEndsWith extends BaseStringSpecification {
   /**
    * check whether string ends with given value
    * @param r - record
@@ -70,7 +83,7 @@ export class StringEndsWith extends RecordValueSpecifcationBase<string | null> {
   }
 }
 
-export class StringRegex extends RecordValueSpecifcationBase<string | null> {
+export class StringRegex extends BaseStringSpecification {
   /**
    * check whether string match given regex
    * @param r - record

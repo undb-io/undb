@@ -1,8 +1,8 @@
 import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
+import { SelectFieldValue } from '../../field/select-field-value'
 import type { ISelectFieldValue } from '../../field/select-field.type'
-import { Option } from '../../option/option'
 import type { Record } from '../record'
 import type { IRecordVisitor } from './interface'
 import { RecordValueQuerySpecification } from './record-value-specification.base'
@@ -13,8 +13,8 @@ abstract class BaseSelectSpecification extends CompositeSpecification<Record, IR
   }
 
   mutate(r: Record): Result<Record, string> {
-    const option = Option.create(this.value)
-    r.values.set(this.name, option)
+    const selectFieldValue = new SelectFieldValue(this.value)
+    r.values.setValue(this.name, selectFieldValue)
     return Ok(r)
   }
 }
@@ -26,7 +26,7 @@ export class SelectEqual extends BaseSelectSpecification {
    * @returns bool
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getSelectValue(this.name).mapOr(false, (value) => value.option === this.value.name)
+    return r.values.getSelectValue(this.name).mapOr(false, (value) => value.id === this.value.id)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -44,7 +44,7 @@ export class SelectIn extends RecordValueQuerySpecification<ISelectFieldValue[]>
   isSatisfiedBy(r: Record): boolean {
     return r.values
       .getSelectValue(this.name)
-      .mapOr(false, (value) => !!value.option && this.value.map((v) => v.name).includes(value.option))
+      .mapOr(false, (value) => !!value.id && this.value.map((v) => v.id).includes(value.id))
   }
 
   accept(v: IRecordVisitor): Result<void, string> {

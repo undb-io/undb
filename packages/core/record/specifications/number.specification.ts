@@ -1,10 +1,23 @@
+import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
+import { NumberFieldValue } from '../../field/number-field-value'
 import type { Record } from '../record'
 import type { IRecordVisitor } from './interface'
-import { RecordValueSpecifcationBase } from './record-value-specification.base'
 
-export class NumberEqual extends RecordValueSpecifcationBase<number> {
+abstract class BaseNumberSpecification extends CompositeSpecification<Record, IRecordVisitor> {
+  constructor(readonly name: string, readonly value: number) {
+    super()
+  }
+
+  mutate(r: Record): Result<Record, string> {
+    const numberValue = new NumberFieldValue(this.value)
+    r.values.setValue(this.name, numberValue)
+    return Ok(r)
+  }
+}
+
+export class NumberEqual extends BaseNumberSpecification {
   isSatisfiedBy(r: Record): boolean {
     return r.values.getNumberValue(this.name).mapOr(false, (value) => value === this.value)
   }
@@ -15,7 +28,7 @@ export class NumberEqual extends RecordValueSpecifcationBase<number> {
   }
 }
 
-export class NumberGreaterThan extends RecordValueSpecifcationBase<number> {
+export class NumberGreaterThan extends BaseNumberSpecification {
   isSatisfiedBy(r: Record): boolean {
     return r.values.getNumberValue(this.name).mapOr(false, (value) => value > this.value)
   }
@@ -26,7 +39,7 @@ export class NumberGreaterThan extends RecordValueSpecifcationBase<number> {
   }
 }
 
-export class NumberLessThan extends RecordValueSpecifcationBase<number> {
+export class NumberLessThan extends BaseNumberSpecification {
   isSatisfiedBy(r: Record): boolean {
     return r.values.getNumberValue(this.name).mapOr(false, (value) => value < this.value)
   }
@@ -37,7 +50,7 @@ export class NumberLessThan extends RecordValueSpecifcationBase<number> {
   }
 }
 
-export class NumberGreaterThanOrEqual extends RecordValueSpecifcationBase<number> {
+export class NumberGreaterThanOrEqual extends BaseNumberSpecification {
   isSatisfiedBy(r: Record): boolean {
     return r.values.getNumberValue(this.name).mapOr(false, (value) => value >= this.value)
   }
@@ -48,7 +61,7 @@ export class NumberGreaterThanOrEqual extends RecordValueSpecifcationBase<number
   }
 }
 
-export class NumberLessThanOrEqual extends RecordValueSpecifcationBase<number> {
+export class NumberLessThanOrEqual extends BaseNumberSpecification {
   isSatisfiedBy(r: Record): boolean {
     return r.values.getNumberValue(this.name).mapOr(false, (value) => value <= this.value)
   }

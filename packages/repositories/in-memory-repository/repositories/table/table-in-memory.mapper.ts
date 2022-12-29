@@ -19,7 +19,7 @@ export class TableInMemoryMapper {
       name: f.name.value,
       type: f.type,
       required: f.required,
-    }
+    } as FieldInMemory
   }
 
   static schemaToInMemory(schema: TableSchema): SchemaInMemory {

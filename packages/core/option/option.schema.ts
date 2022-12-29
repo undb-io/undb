@@ -2,13 +2,17 @@ import { z } from 'zod'
 
 export const optionNameSchema = z.string().min(1)
 
+export const optionIdSchema = z.string().min(1)
+
 export const optionSchema = z.object({
+  id: optionIdSchema,
   name: optionNameSchema,
 })
 
 export type IOptionSchema = z.infer<typeof optionSchema>
 
 export const createOptionSchema = z.object({
+  id: optionIdSchema.optional(),
   name: optionNameSchema,
 })
 
