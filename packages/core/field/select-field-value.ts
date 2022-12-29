@@ -1,17 +1,22 @@
 import { ValueObject } from '@egodb/domain'
+import type { Option } from '../option'
 import type { FieldValue } from './field.type'
 import type { ISelectFieldValue } from './select-field.type'
 
 export class SelectFieldValue extends ValueObject<ISelectFieldValue> {
+  constructor(value: string) {
+    super({ value })
+  }
+
   static isSelectFieldValue(value?: FieldValue): value is SelectFieldValue {
     return value instanceof SelectFieldValue
   }
 
-  get id(): string {
-    return this.props.id
+  static fromOption(o: Option): SelectFieldValue {
+    return new this(o.id.value)
   }
 
-  get name(): string | null {
-    return this.props.name
+  get id(): string {
+    return this.props.value
   }
 }

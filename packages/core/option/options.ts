@@ -1,4 +1,5 @@
 import { ValueObject } from '@egodb/domain'
+import { Option as O } from 'oxide.ts'
 import { Option } from './option'
 import type { ICreateOptionsSchema } from './option.schema'
 import { createOptionsSchema } from './option.schema'
@@ -6,6 +7,10 @@ import { createOptionsSchema } from './option.schema'
 export class Options extends ValueObject<Option[]> {
   public get options(): Option[] {
     return this.props
+  }
+
+  public getById(id: string): O<Option> {
+    return O(this.options.find((o) => o.id.value === id))
   }
 
   static create(inputs: ICreateOptionsSchema) {

@@ -26,7 +26,7 @@ export class SelectEqual extends BaseSelectSpecification {
    * @returns bool
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getSelectValue(this.name).mapOr(false, (value) => value.id === this.value.id)
+    return r.values.getSelectValue(this.name).mapOr(false, (value) => value.id === this.value)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -42,9 +42,7 @@ export class SelectIn extends RecordValueQuerySpecification<ISelectFieldValue[]>
    * @returns bool
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values
-      .getSelectValue(this.name)
-      .mapOr(false, (value) => !!value.id && this.value.map((v) => v.id).includes(value.id))
+    return r.values.getSelectValue(this.name).mapOr(false, (value) => !!value.id && this.value.includes(value.id))
   }
 
   accept(v: IRecordVisitor): Result<void, string> {

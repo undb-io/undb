@@ -38,6 +38,8 @@ export class SelectField extends BaseField<ISelectField> {
   }
 
   createValue(value: ICreateSelectFieldValue): SelectFieldValue {
-    return new SelectFieldValue(value)
+    const option = this.options.getById(value).unwrap()
+
+    return SelectFieldValue.fromOption(option)
   }
 }

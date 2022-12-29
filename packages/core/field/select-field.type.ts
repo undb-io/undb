@@ -1,5 +1,5 @@
 import * as z from 'zod'
-import { createOptionsSchema, optionIdSchema, optionNameSchema, optionsSchema } from '../option/option.schema'
+import { createOptionsSchema, optionIdSchema, optionsSchema } from '../option/option.schema'
 import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base'
 import { FIELD_TYPE_KEY } from './field.constant'
 import { SelectField } from './select.field'
@@ -21,13 +21,10 @@ export const selectFieldQuerySchema = baseFieldQuerySchema.merge(selectTypeObjec
   }),
 )
 
-export const selectFieldValue = z.object({
-  id: optionIdSchema,
-  name: optionNameSchema,
-})
+export const selectFieldValue = optionIdSchema
 export type ISelectFieldValue = z.infer<typeof selectFieldValue>
 
-export const createSelectFieldValue = selectFieldValue
+export const createSelectFieldValue = optionIdSchema
 export type ICreateSelectFieldValue = z.infer<typeof createSelectFieldValue>
 
 export const createSelectFieldValue_internal = z
