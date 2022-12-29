@@ -1,5 +1,5 @@
 import type { Field, Table, TableSchema, View, Views } from '@egodb/core'
-import { TableFactory } from '@egodb/core'
+import { SelectField, TableFactory } from '@egodb/core'
 import type { Result } from 'oxide.ts'
 import type { FieldInMemory, SchemaInMemory, TableInMemory, ViewInMemory, ViewsInMemory } from './table'
 
@@ -14,12 +14,21 @@ export class TableInMemoryMapper {
   }
 
   static fieldToInMemopy(f: Field): FieldInMemory {
+    if (f instanceof SelectField) {
+      return {
+        id: f.id.value,
+        name: f.name.value,
+        type: f.type,
+        required: f.required,
+        options: f.options.options.map((o) => ({ id: o.id.value, name: o.name.value })),
+      }
+    }
     return {
       id: f.id.value,
       name: f.name.value,
       type: f.type,
       required: f.required,
-    } as FieldInMemory
+    }
   }
 
   static schemaToInMemory(schema: TableSchema): SchemaInMemory {
