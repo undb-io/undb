@@ -50,6 +50,7 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
   private getView(viewName?: string) {
     return this.table.views.find((v) => v.name === viewName)
   }
+
   fieldWidthEqual(s: WithFieldWidth): void {
     const view = this.getView(s.viewName)
     if (view) {
@@ -61,10 +62,12 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
       }
     }
   }
+
   viewEqual(s: WithTableView): void {
     const index = this.table.views.findIndex((v) => v.name === s.view.name.unpack())
     this.table.views[index] = TableInMemoryMapper.viewToInMemory(s.view)
   }
+
   fieldVisibility(s: WithFieldVisibility): void {
     const view = this.getView(s.viewName)
     if (view) {
@@ -76,6 +79,7 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
       }
     }
   }
+
   fieldsOrder(s: WithViewFieldsOrder): void {
     const view = this.table.views.find((v) => v.name === s.view.name.unpack())
     if (view) {

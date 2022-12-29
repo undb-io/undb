@@ -13,11 +13,6 @@ export class GetTableQueryHandler implements IQueryHandler<GetTableQuery, IGetTa
       return undefined
     }
 
-    return {
-      id: table.id,
-      name: table.name,
-      schema: table.schema,
-      views: table.views,
-    }
+    return table
   }
 }

@@ -9,6 +9,8 @@ export const optionSchema = z.object({
   name: optionNameSchema,
 })
 
+export const optionsSchema = optionSchema.array()
+
 export type IOptionSchema = z.infer<typeof optionSchema>
 
 export const createOptionSchema = z.object({

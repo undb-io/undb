@@ -3,7 +3,7 @@ import { Options } from '../option/options'
 import { BaseField } from './field.base'
 import type { ISelectField } from './field.type'
 import { SelectFieldValue } from './select-field-value'
-import type { ICreateSelectFieldInput, ICreateSelectFieldValue, SelectFieldType } from './select-field.type'
+import type { ICreateSelectFieldSchema, ICreateSelectFieldValue, SelectFieldType } from './select-field.type'
 import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
 export class SelectField extends BaseField<ISelectField> {
@@ -15,7 +15,7 @@ export class SelectField extends BaseField<ISelectField> {
     return this.props.options
   }
 
-  static create(input: ICreateSelectFieldInput): SelectField {
+  static create(input: ICreateSelectFieldSchema): SelectField {
     return new SelectField({
       id: FieldId.from(input.id),
       name: FieldName.create(input.name),
@@ -24,7 +24,7 @@ export class SelectField extends BaseField<ISelectField> {
     })
   }
 
-  static unsafeCreate(input: ICreateSelectFieldInput): SelectField {
+  static unsafeCreate(input: ICreateSelectFieldSchema): SelectField {
     return new SelectField({
       id: FieldId.from(input.id),
       name: FieldName.unsafaCreate(input.name),

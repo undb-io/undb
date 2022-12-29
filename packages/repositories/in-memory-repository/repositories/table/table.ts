@@ -28,6 +28,7 @@ type DateFieldInMemory = {
 }
 
 type OptionInMemory = {
+  id: string
   name: string
 }
 
