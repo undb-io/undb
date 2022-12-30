@@ -1,4 +1,5 @@
 import type { Field, IOperator } from '@egodb/core'
+import { SelectField } from '@egodb/core'
 import { StringField } from '@egodb/core'
 import { BoolField } from '@egodb/core'
 import { DateField } from '@egodb/core'
@@ -48,6 +49,13 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
     data = [
       { value: '$is_true', label: 'is true' },
       { value: '$is_false', label: 'is false' },
+    ]
+  } else if (field instanceof SelectField) {
+    data = [
+      { value: '$eq', label: 'equal' },
+      { value: '$neq', label: 'not equal' },
+      { value: '$in', label: 'in' },
+      { value: '$nin', label: 'not in' },
     ]
   }
 

@@ -1,10 +1,11 @@
 import type { Field, IDateFilterOperator, IFieldValue, IOperator } from '@egodb/core'
+import { SelectField } from '@egodb/core'
 import { StringField } from '@egodb/core'
 import { dateBuiltInOperators } from '@egodb/core'
 import { DateField } from '@egodb/core'
 import { NumberField } from '@egodb/core'
-import { BoolField } from '@egodb/core'
 import { DatePicker, NumberInput, TextInput } from '@egodb/ui'
+import { OptionPicker } from '../option/option-picker'
 
 interface IProps {
   field: Field | null
@@ -31,6 +32,10 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
       return null
     }
     return <DatePicker onChange={(date) => onChange(date || null)} />
+  }
+
+  if (field instanceof SelectField) {
+    return <OptionPicker field={field} onChange={(option) => onChange(option || null)} />
   }
 
   return null
