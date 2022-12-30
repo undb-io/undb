@@ -27,6 +27,7 @@ import type {
   IQueryView,
   ISetFieldVisibilitySchema,
   ISetFieldWidthSchema,
+  ISwitchDisplayTypeSchema,
   ViewFieldsOrder,
 } from './view'
 import { defaultViewDiaplyType, View } from './view'
@@ -162,6 +163,13 @@ export class Table {
   public setFieldWidth(input: ISetFieldWidthSchema): TableCompositeSpecificaiton {
     const view = this.mustGetView(input.viewName)
     const spec = view.setFieldWidth(input.fieldName, input.width)
+    spec.mutate(this)
+    return spec
+  }
+
+  public switchDisplayType(input: ISwitchDisplayTypeSchema): TableCompositeSpecificaiton {
+    const view = this.mustGetView(input.viewName)
+    const spec = view.switchDisplayType(view.name.unpack(), input.displayType)
     spec.mutate(this)
     return spec
   }

@@ -51,3 +51,10 @@ export const moveFieldSchema = z.object({
 })
 
 export type IMoveFieldSchema = z.infer<typeof moveFieldSchema>
+
+export const switchDisplayTypeSchema = z.object({
+  viewName: viewNameSchema.optional(),
+  displayType: viewDisplayType,
+})
+
+export type ISwitchDisplayTypeSchema = z.infer<typeof switchDisplayTypeSchema>

@@ -1,6 +1,7 @@
 import type {
   ITableSpec,
   ITableSpecVisitor,
+  WithDisplayType,
   WithFieldVisibility,
   WithFieldWidth,
   WithTableId,
@@ -94,5 +95,12 @@ export class TableInMemoryQueryVisitor implements ITableSpecVisitor {
   }
   viewEqual(s: WithTableView): void {
     throw new Error('Method not implemented.')
+  }
+  displayTypeEqual(s: WithDisplayType): void {
+    this.predicate = (t) => {
+      const view = this.getView(t, s.viewName)
+      if (!view) return false
+      return view.displayType === s.displayType
+    }
   }
 }

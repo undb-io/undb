@@ -1,5 +1,6 @@
 import type {
   ITableSpecVisitor,
+  WithDisplayType,
   WithFieldVisibility,
   WithFieldWidth,
   WithFilter,
@@ -84,6 +85,13 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
     const view = this.table.views.find((v) => v.name === s.view.name.unpack())
     if (view) {
       view.fieldsOrder = s.viewFieldsOrder.order
+    }
+  }
+
+  displayTypeEqual(s: WithDisplayType): void {
+    const view = this.table.views.find((v) => v.name === s.viewName)
+    if (view) {
+      view.displayType = s.displayType
     }
   }
 }

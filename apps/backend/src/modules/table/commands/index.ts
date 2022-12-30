@@ -7,6 +7,7 @@ import { SetFieldVisibilityCommandHandler } from './set-field-visibility.command
 import { SetFieldWidthCommandHandler } from './set-field-width.command.handler'
 import { SetFiltersCommandHandler } from './set-filters.command.handler'
 import { SetKanbanFieldCommandHandler } from './set-kanban-field.command.handler'
+import { SwitchDisplayTypeCommandHandler } from './switch-display-type.command.handler'
 
 export const commandHandlers = [
   CreateTableCommandHandler,
@@ -18,4 +19,5 @@ export const commandHandlers = [
   SetFieldVisibilityCommandHandler,
   MoveFieldCommandHandler,
   EditTableCommandHandler,
+  SwitchDisplayTypeCommandHandler,
 ]

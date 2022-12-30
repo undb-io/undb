@@ -1,3 +1,4 @@
+export * from './specifications'
 export * from './view'
 export * from './view-field-options'
 export * from './view-fields-order.vo'

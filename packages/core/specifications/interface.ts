@@ -1,6 +1,7 @@
 import type { CompositeSpecification, ISpecVisitor } from '@egodb/domain'
 import { type ISpecification } from '@egodb/domain'
 import { type Table } from '../table'
+import type { WithDisplayType } from '../view/specifications/display-type.specification'
 import type { WithFilter } from './filters.specificaiton'
 import type { WithNewField } from './table-field.specification'
 import type { WithTableId } from './table-id.specifaction'
@@ -23,6 +24,8 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   fieldsOrder(s: WithViewFieldsOrder): void
   fieldWidthEqual(s: WithFieldWidth): void
   fieldVisibility(s: WithFieldVisibility): void
+
+  displayTypeEqual(s: WithDisplayType): void
 }
 
 export type ITableSpec = ISpecification<Table, ITableSpecVisitor>

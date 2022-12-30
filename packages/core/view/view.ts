@@ -6,6 +6,7 @@ import type { IFilterOrGroupList, IRootFilter } from '../filter'
 import { RootFilter } from '../filter'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
 import { WithFieldVisibility, WithFieldWidth } from '../specifications/table-view-field-option.specification'
+import { WithDisplayType } from './specifications/display-type.specification'
 import type { IViewFieldOption } from './view-field-options'
 import { ViewFieldOptions } from './view-field-options'
 import { ViewFieldsOrder } from './view-fields-order.vo'
@@ -22,6 +23,10 @@ export class View extends ValueObject<IView> {
 
   public get displayType() {
     return this.props.displayType
+  }
+
+  public set displayType(type: IViewDisplayType) {
+    this.props.displayType = type
   }
 
   public get filter(): RootFilter | undefined {
@@ -63,6 +68,10 @@ export class View extends ValueObject<IView> {
 
   public setFieldWidth(fieldName: string, width: number): TableCompositeSpecificaiton {
     return new WithFieldWidth(fieldName, this.name.unpack(), width)
+  }
+
+  public switchDisplayType(viewName: string, type: IViewDisplayType): TableCompositeSpecificaiton {
+    return new WithDisplayType(viewName, type)
   }
 
   public setFieldVisibility(fieldName: string, hidden: boolean): TableCompositeSpecificaiton {
