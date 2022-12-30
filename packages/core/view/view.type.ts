@@ -1,6 +1,7 @@
 import type { z } from 'zod'
 import type { IRootFilter } from '../filter'
 import type { RootFilter } from '../filter/root-filter'
+import type { Kanban } from './kanban'
 import type { IViewFieldOption, ViewFieldOptions } from './view-field-options'
 import type { ViewFieldsOrder } from './view-fields-order.vo'
 import type { ViewName } from './view-name.vo'
@@ -12,6 +13,7 @@ export interface IView {
   filter?: RootFilter
   fieldOptions: ViewFieldOptions
   fieldsOrder?: ViewFieldsOrder
+  kanban?: Kanban
 }
 
 export interface IQueryView {

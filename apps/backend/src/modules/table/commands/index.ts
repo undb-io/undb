@@ -6,12 +6,14 @@ import { MoveFieldCommandHandler } from './move-field.command.handler'
 import { SetFieldVisibilityCommandHandler } from './set-field-visibility.command.handler'
 import { SetFieldWidthCommandHandler } from './set-field-width.command.handler'
 import { SetFiltersCommandHandler } from './set-filters.command.handler'
+import { SetKanbanFieldCommandHandler } from './set-kanban-field.command.handler'
 
 export const commandHandlers = [
   CreateTableCommandHandler,
   CreateRecordCommandHandler,
   CreateFieldCommandHandler,
   SetFiltersCommandHandler,
+  SetKanbanFieldCommandHandler,
   SetFieldWidthCommandHandler,
   SetFieldVisibilityCommandHandler,
   MoveFieldCommandHandler,
