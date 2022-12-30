@@ -14,7 +14,7 @@ describe('Table', () => {
   describe('createField', () => {
     test('should add new field', () => {
       const table = createTestTable()
-      table.createField({ id: 'text', type: 'text', name: 'text' })
+      table.createField({ id: 'string', type: 'string', name: 'string' })
 
       expect(table).toMatchSnapshot()
     })

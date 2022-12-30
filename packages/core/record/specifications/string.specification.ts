@@ -1,7 +1,7 @@
 import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import { TextFieldValue } from '../../field/text-field-value'
+import { StringFieldValue } from '../../field/string-field-value'
 import type { Record } from '../record'
 import type { IRecordVisitor } from './interface'
 
@@ -11,7 +11,7 @@ abstract class BaseStringSpecification extends CompositeSpecification<Record, IR
   }
 
   mutate(r: Record): Result<Record, string> {
-    const stringValue = new TextFieldValue(this.value)
+    const stringValue = new StringFieldValue(this.value)
     r.values.setValue(this.name, stringValue)
     return Ok(r)
   }

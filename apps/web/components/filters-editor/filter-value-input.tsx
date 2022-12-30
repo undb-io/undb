@@ -1,8 +1,8 @@
 import type { Field, IDateFilterOperator, IFieldValue, IOperator } from '@egodb/core'
+import { StringField } from '@egodb/core'
 import { dateBuiltInOperators } from '@egodb/core'
 import { DateField } from '@egodb/core'
 import { NumberField } from '@egodb/core'
-import { TextField } from '@egodb/core'
 import { DatePicker, NumberInput, TextInput } from '@egodb/ui'
 
 interface IProps {
@@ -17,7 +17,7 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
     return null
   }
 
-  if (field instanceof TextField) {
+  if (field instanceof StringField) {
     return <TextInput value={(value ?? '') as string} onChange={(event) => onChange(event.target.value)} />
   }
 

@@ -46,7 +46,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
             <Select
               {...form.getInputProps(`schema.${index}.type`)}
               label={<FieldInputLabel>type</FieldInputLabel>}
-              defaultValue="text"
+              defaultValue="string"
               variant="filled"
               required={true}
               data={FIELD_SELECT_ITEMS}

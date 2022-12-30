@@ -14,7 +14,7 @@ Table {
   },
   "schema": TableSchema {
     "props": [
-      TextField {
+      StringField {
         "props": {
           "id": FieldId {
             "props": {
@@ -33,16 +33,16 @@ Table {
           },
         },
       },
-      TextField {
+      StringField {
         "props": {
           "id": FieldId {
             "props": {
-              "value": "text",
+              "value": "string",
             },
           },
           "name": FieldName {
             "props": {
-              "value": "text",
+              "value": "string",
             },
           },
           "valueConstrains": FieldValueConstraints {

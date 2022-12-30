@@ -1,9 +1,9 @@
-import { TextField } from './text.field'
+import { StringField } from './string.field'
 
 it('should create new text field', () => {
-  const field = TextField.create({
+  const field = StringField.create({
     name: 'hello',
-    type: 'text',
+    type: 'string',
     id: 'abc',
   })
 
@@ -17,14 +17,14 @@ it('should create new text field', () => {
     }
   `)
 
-  expect(field.type).toBe('text')
+  expect(field.type).toBe('string')
 })
 
 it('should throw error if name is invalid', () => {
   const createField = () =>
-    TextField.create({
+    StringField.create({
       name: 'h',
-      type: 'text',
+      type: 'string',
       id: 'abc',
     })
 

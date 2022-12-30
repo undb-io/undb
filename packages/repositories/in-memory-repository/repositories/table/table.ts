@@ -3,21 +3,21 @@ import type { ICurrencySymbol } from '@egodb/core/field/currency'
 
 type NumberFieldInMemory = {
   id: string
-  type: 'text'
+  type: 'number'
   name: string
   required?: boolean
+  currency?: ICurrency
 }
 
 interface ICurrency {
   symbol: ICurrencySymbol
 }
 
-type TextFieldInMemory = {
+type StringFieldInMemory = {
   id: string
-  type: 'number'
+  type: 'string'
   name: string
   required?: boolean
-  currency?: ICurrency
 }
 
 type DateFieldInMemory = {
@@ -42,7 +42,7 @@ type SelectFieldInMemory = {
 
 export type SchemaInMemory = FieldInMemory[]
 
-export type FieldInMemory = TextFieldInMemory | NumberFieldInMemory | DateFieldInMemory | SelectFieldInMemory
+export type FieldInMemory = StringFieldInMemory | NumberFieldInMemory | DateFieldInMemory | SelectFieldInMemory
 
 export type ViewInMemory = {
   name: string

@@ -19,7 +19,7 @@ Record {
   },
   "values": RecordValues {
     "props": Map {
-      "hello" => TextFieldValue {
+      "hello" => StringFieldValue {
         "props": {
           "value": "world",
         },
@@ -77,7 +77,7 @@ Record {
   },
   "values": RecordValues {
     "props": Map {
-      "hello" => TextFieldValue {
+      "hello" => StringFieldValue {
         "props": {
           "value": "world",
         },
