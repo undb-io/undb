@@ -1,4 +1,6 @@
 import type {
+  BoolIsFalse,
+  BoolIsTrue,
   DateEqual,
   DateGreaterThan,
   DateGreaterThanOrEqual,
@@ -23,7 +25,7 @@ import type {
   WithRecordId,
   WithRecordTableId,
 } from '@egodb/core'
-import { isNumber, isString } from '@fxts/core'
+import { isBoolean, isNumber, isString } from '@fxts/core'
 import { isAfter, isBefore, isDate, isEqual, isToday } from 'date-fns'
 import type { Result } from 'oxide.ts'
 import { Err, Ok } from 'oxide.ts'
@@ -212,5 +214,19 @@ export class RecordInMemoryQueryVisitor implements IRecordVisitor {
 
   values(): void {
     throw new Error('[RecordInMemoryQueryVisitor.values] Method not implemented.')
+  }
+
+  boolIsTrue(s: BoolIsTrue): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isBoolean(value) && value === true
+    }
+  }
+
+  boolIsFalse(s: BoolIsFalse): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return isBoolean(value) && value === false
+    }
   }
 }

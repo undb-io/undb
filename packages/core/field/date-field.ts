@@ -1,4 +1,5 @@
-import type { IDateFilter, IDateFilterOperator } from '../filter'
+import type { IDateFilterOperator } from '../filter'
+import type { IDateFilter } from '../filter/date.filter'
 import { dateBuiltInOperators } from '../filter/operators'
 import { DateFieldValue } from './date-field-value'
 import type { DateType, ICreateDateFieldSchema, ICreateDateFieldValue } from './date-field.type'

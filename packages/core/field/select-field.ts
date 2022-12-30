@@ -1,4 +1,5 @@
-import type { ISelectFilter, ISelectFilterOperator, ISelectFilterValue } from '../filter'
+import type { ISelectFilterOperator } from '../filter/operators'
+import type { ISelectFilter, ISelectFilterValue } from '../filter/select.filter'
 import { Options } from '../option/options'
 import { BaseField } from './field.base'
 import type { ISelectField } from './field.type'

@@ -1,4 +1,4 @@
-import { SelectField } from './select.field'
+import { SelectField } from './select-field'
 
 describe('SelectField', () => {
   describe('#create()', () => {

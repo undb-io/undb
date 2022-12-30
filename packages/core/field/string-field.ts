@@ -1,4 +1,4 @@
-import type { IStringFilter, IStringFilterOperator } from '../filter'
+import type { IStringFilter, IStringFilterOperator } from '../filter/string.filter'
 import { BaseField } from './field.base'
 import type { IStringField } from './field.type'
 import { StringFieldValue } from './string-field-value'

@@ -3,6 +3,7 @@ import { StringField } from '@egodb/core'
 import { dateBuiltInOperators } from '@egodb/core'
 import { DateField } from '@egodb/core'
 import { NumberField } from '@egodb/core'
+import { BoolField } from '@egodb/core'
 import { DatePicker, NumberInput, TextInput } from '@egodb/ui'
 
 interface IProps {

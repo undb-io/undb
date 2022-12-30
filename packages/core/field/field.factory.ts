@@ -1,8 +1,9 @@
-import { DateField } from './date.field'
+import { BoolField } from './bool-field'
+import { DateField } from './date-field'
 import type { Field, ICreateFieldSchema } from './field.type'
-import { NumberField } from './number.field'
-import { SelectField } from './select.field'
-import { StringField } from './string.field'
+import { NumberField } from './number-field'
+import { SelectField } from './select-field'
+import { StringField } from './string-field'
 
 export class FieldFactory {
   static create(input: ICreateFieldSchema): Field {
@@ -18,6 +19,9 @@ export class FieldFactory {
       }
       case 'select': {
         return SelectField.create(input)
+      }
+      case 'bool': {
+        return BoolField.create(input)
       }
 
       default:
@@ -38,6 +42,9 @@ export class FieldFactory {
       }
       case 'select': {
         return SelectField.unsafeCreate(input)
+      }
+      case 'bool': {
+        return BoolField.unsafeCreate(input)
       }
 
       default:
