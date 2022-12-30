@@ -1,4 +1,4 @@
-import { Table } from '@egodb/ui'
+import { Checkbox, Table } from '@egodb/ui'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { useMemo } from 'react'
 import { ACTIONS_FIELD } from '../../constants/field.constants'
@@ -24,6 +24,9 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
         cell: (props) => {
           if (f.type === 'select' && typeof props.getValue() === 'string') {
             return f.options.getById(props.getValue() as string).mapOr('', (o) => o.name.value)
+          }
+          if (f.type === 'bool') {
+            return <Checkbox checked={props.getValue() as boolean} />
           }
           return props.getValue()
         },

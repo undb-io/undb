@@ -187,10 +187,10 @@ const convertBoolFilter = (filter: IBoolFilter): Option<CompositeSpecification> 
 
   switch (filter.operator) {
     case $is_true.value: {
-      return Some(new BoolIsTrue(filter.path, filter.value))
+      return Some(new BoolIsTrue(filter.path))
     }
     case $is_false.value: {
-      return Some(new BoolIsFalse(filter.path, filter.value))
+      return Some(new BoolIsFalse(filter.path))
     }
 
     default: {

@@ -1,3 +1,4 @@
+import { BoolField } from './bool-field'
 import { FieldFactory } from './field.factory'
 import { Field } from './field.type'
 import { NumberField } from './number-field'
@@ -46,4 +47,16 @@ it('should create select field', () => {
   expect(field.type).toBe('select')
   expect(field.name).toBeInstanceOf(FieldName)
   expect(field.name.value).toBe('hello')
+})
+
+it('should create bool field', () => {
+  const field = FieldFactory.create({
+    type: 'bool',
+    name: 'hello',
+    id: 'abc',
+  })
+
+  expectTypeOf(field).toEqualTypeOf<Field>()
+  expect(field).toBeInstanceOf(BoolField)
+  expect(field.type).toBe('bool')
 })

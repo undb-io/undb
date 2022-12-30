@@ -61,7 +61,7 @@ export const EditTableForm: React.FC<IProps> = ({ table, onCancel, onSuccess }) 
         </Group>
 
         {editTable.isError && (
-          <Alert icon={<IconAlertCircle size={16} />} title="Oops! Create Table Error!" mt="lg">
+          <Alert color="red" icon={<IconAlertCircle size={16} />} title="Oops! Create Table Error!" mt="lg">
             {editTable.error.message}
           </Alert>
         )}

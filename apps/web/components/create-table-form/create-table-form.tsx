@@ -69,7 +69,7 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
       </Group>
 
       {createTable.isError && (
-        <Alert icon={<IconAlertCircle size={16} />} title="Oops! Create Table Error!" mt="lg">
+        <Alert color="red" icon={<IconAlertCircle size={16} />} title="Oops! Create Table Error!" mt="lg">
           {createTable.error.message}
         </Alert>
       )}

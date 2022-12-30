@@ -1,3 +1,4 @@
+import { BoolField } from './bool-field'
 import { DateField } from './date-field'
 import type { Field, ICreateFieldSchema } from './field.type'
 import { NumberField } from './number-field'
@@ -19,6 +20,9 @@ export class FieldFactory {
       case 'select': {
         return SelectField.create(input)
       }
+      case 'bool': {
+        return BoolField.create(input)
+      }
 
       default:
         throw new Error('invalid field type')
@@ -38,6 +42,9 @@ export class FieldFactory {
       }
       case 'select': {
         return SelectField.unsafeCreate(input)
+      }
+      case 'bool': {
+        return BoolField.unsafeCreate(input)
       }
 
       default:
