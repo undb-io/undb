@@ -8,6 +8,8 @@ import Table from './table'
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const getTable = trpc.table.get.useQuery({ id })
+  // FIXME: 不应该在 page 获取 records
+  // TODO: 根据不同试图，在 kanban 根据 select id 获取
   const records = trpc.record.list.useQuery({ tableId: id })
 
   if (getTable.isLoading) {
