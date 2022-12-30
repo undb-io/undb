@@ -27,6 +27,7 @@ import type {
   IQueryView,
   ISetFieldVisibilitySchema,
   ISetFieldWidthSchema,
+  ISetKanbanFieldSchema,
   ISwitchDisplayTypeSchema,
   ViewFieldsOrder,
 } from './view'
@@ -177,6 +178,14 @@ export class Table {
   public setFieldVisibility(input: ISetFieldVisibilitySchema): TableCompositeSpecificaiton {
     const view = this.mustGetView(input.viewName)
     const spec = view.setFieldVisibility(input.fieldName, input.hidden)
+    spec.mutate(this)
+    return spec
+  }
+
+  public setKanbanField(input: ISetKanbanFieldSchema): TableCompositeSpecificaiton {
+    const view = this.mustGetView(input.viewName)
+    const field = this.schema.getField(input.field).unwrap()
+    const spec = view.setKanbanField(field.id)
     spec.mutate(this)
     return spec
   }

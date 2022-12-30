@@ -1,11 +1,13 @@
 import type { CompositeSpecification } from '@egodb/domain'
 import { ValueObject } from '@egodb/domain'
-import type { Option } from 'oxide.ts'
-import { None } from 'oxide.ts'
+import { None, Option } from 'oxide.ts'
+import { FieldId } from '../field'
 import type { IFilterOrGroupList, IRootFilter } from '../filter'
 import { RootFilter } from '../filter'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
 import { WithFieldVisibility, WithFieldWidth } from '../specifications/table-view-field-option.specification'
+import { Kanban } from './kanban'
+import { WithKanbanField } from './specifications'
 import { WithDisplayType } from './specifications/display-type.specification'
 import type { IViewFieldOption } from './view-field-options'
 import { ViewFieldOptions } from './view-field-options'
@@ -31,6 +33,14 @@ export class View extends ValueObject<IView> {
 
   public get filter(): RootFilter | undefined {
     return this.props.filter
+  }
+
+  public get kanban(): Option<Kanban> {
+    return Option(this.props.kanban)
+  }
+
+  public get kanbanSelectFieldId(): Option<FieldId> {
+    return this.kanban.mapOr(None, (kanban) => Option(kanban.selectField))
   }
 
   public get spec(): Option<CompositeSpecification> {
@@ -76,6 +86,10 @@ export class View extends ValueObject<IView> {
 
   public setFieldVisibility(fieldName: string, hidden: boolean): TableCompositeSpecificaiton {
     return new WithFieldVisibility(fieldName, this.name.unpack(), hidden)
+  }
+
+  public setKanbanField(fieldId: FieldId): TableCompositeSpecificaiton {
+    return new WithKanbanField(this, fieldId)
   }
 
   public getVisibility(): Record<string, boolean> {

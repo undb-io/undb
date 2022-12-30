@@ -16,7 +16,7 @@ interface IProps {
 
 export default function Table({ table, records }: IProps) {
   return (
-    <Stack>
+    <Stack h="100%">
       <Stack px="md" pt="sm">
         <TableHaeder table={table} />
         <TableToolbar table={table} />

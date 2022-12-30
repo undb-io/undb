@@ -1,8 +1,7 @@
 import { ValueObject } from '@egodb/domain'
 import { Option } from 'oxide.ts'
 import * as z from 'zod'
-import type { Field, ICreateFieldSchema } from '../field'
-import { createFieldSchema, fieldNameSchema } from '../field'
+import { createFieldSchema, Field, fieldNameSchema, ICreateFieldSchema, SelectField } from '../field'
 import { FieldFactory } from '../field/field.factory'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
 import { WithNewField } from '../specifications/table-field.specification'
@@ -37,6 +36,10 @@ export class TableSchema extends ValueObject<Field[]> {
 
   public get fields(): Field[] {
     return this.props
+  }
+
+  public get selectFields(): SelectField[] {
+    return this.fields.filter((f) => f instanceof SelectField) as SelectField[]
   }
 
   get fieldsNames(): string[] {

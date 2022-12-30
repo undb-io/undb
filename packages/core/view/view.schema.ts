@@ -58,3 +58,9 @@ export const switchDisplayTypeSchema = z.object({
 })
 
 export type ISwitchDisplayTypeSchema = z.infer<typeof switchDisplayTypeSchema>
+
+export const setKanbanFieldSchema = z.object({
+  viewName: viewNameSchema.optional(),
+  field: fieldIdSchema,
+})
+export type ISetKanbanFieldSchema = z.infer<typeof setKanbanFieldSchema>

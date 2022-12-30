@@ -9,5 +9,9 @@ export class SetKanbanFieldCommandHandler implements ISetKanbanFieldCommandHandl
 
   async execute(command: SetKanbanFieldCommand): Promise<void> {
     const table = (await this.repo.findOneById(command.tableId)).unwrap()
+
+    const spec = table.setKanbanField(command)
+
+    await this.repo.updateOneById(table.id.value, spec)
   }
 }

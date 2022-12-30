@@ -19,7 +19,7 @@ export default function RootStyleRegistry({ children }: { children: React.ReactN
 
   return (
     <CacheProvider value={cache}>
-      <EgoUIProvider theme={{ primaryColor: 'grape' }} withGlobalStyles withNormalizeCSS>
+      <EgoUIProvider theme={{ primaryColor: 'indigo' }} withGlobalStyles withNormalizeCSS>
         <ModalsProvider>{children}</ModalsProvider>
       </EgoUIProvider>
     </CacheProvider>

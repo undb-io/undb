@@ -21,6 +21,8 @@ import {
   setFieldWidthCommandInput,
   setFiltersCommandInput,
   SetFitlersCommand,
+  SetKanbanFieldCommand,
+  setKanbanFieldCommandInput,
   SwitchDisplayTypeCommand,
   switchDisplayTypeCommandInput,
 } from '@egodb/core'
@@ -105,6 +107,14 @@ export const createTableRouter =
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new MoveFieldCommand(input)
+          return commandBus.execute<void>(cmd)
+        }),
+      setKanbanField: procedure
+        .meta({ openapi: { method: 'POST', path: '/table.setKanbanField', tags } })
+        .input(setKanbanFieldCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new SetKanbanFieldCommand(input)
           return commandBus.execute<void>(cmd)
         }),
       switchDisplayType: procedure
