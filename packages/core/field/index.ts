@@ -1,6 +1,7 @@
 import { createNumberFieldSchema } from './number-field.type'
 import { createStringFieldSchema } from './string-field.type'
 
+export * from './bool-field'
 export * from './date-field'
 export * from './field.constant'
 export * from './field.factory'

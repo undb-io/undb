@@ -136,14 +136,20 @@ OptionType {
 
 exports[`should create root filter 14`] = `
 OptionType {
-  Symbol(T): false,
-  Symbol(Val): undefined,
+  Symbol(T): true,
+  Symbol(Val): BoolIsTrue {
+    "name": "field",
+    "value": true,
+  },
 }
 `;
 
 exports[`should create root filter 15`] = `
 OptionType {
-  Symbol(T): false,
-  Symbol(Val): undefined,
+  Symbol(T): true,
+  Symbol(Val): BoolIsFalse {
+    "name": "field",
+    "value": false,
+  },
 }
 `;

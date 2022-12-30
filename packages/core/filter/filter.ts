@@ -1,5 +1,4 @@
 import type { CompositeSpecification } from '@egodb/domain'
-import { isNil } from '@fxts/core'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
@@ -181,10 +180,6 @@ const convertSelectFilter = (filter: ISelectFilter): Option<CompositeSpecificati
 }
 
 const convertBoolFilter = (filter: IBoolFilter): Option<CompositeSpecification> => {
-  if (isNil(filter.value)) {
-    return None
-  }
-
   switch (filter.operator) {
     case $is_true.value: {
       return Some(new BoolIsTrue(filter.path))

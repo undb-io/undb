@@ -1,5 +1,6 @@
 import type { Field, IOperator } from '@egodb/core'
 import { StringField } from '@egodb/core'
+import { BoolField } from '@egodb/core'
 import { DateField } from '@egodb/core'
 import { NumberField } from '@egodb/core'
 import type { SelectItem } from '@egodb/ui'
@@ -42,6 +43,11 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
       { value: '$lt', label: 'less than' },
       { value: '$lte', label: 'less than or equal' },
       { value: '$is_today', label: 'is today' },
+    ]
+  } else if (field instanceof BoolField) {
+    data = [
+      { value: '$is_true', label: 'is true' },
+      { value: '$is_false', label: 'is false' },
     ]
   }
 
