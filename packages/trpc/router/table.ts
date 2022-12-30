@@ -1,4 +1,3 @@
-import type { IQueryTable } from '@egodb/core'
 import {
   CreateFieldCommand,
   CreateTableCommand,
@@ -13,6 +12,7 @@ import {
   GetTablesQuery,
   getTablesQueryOutput,
   getTablesQuerySchema,
+  IQueryTable,
   MoveFieldCommand,
   moveFieldCommandInput,
   SetFieldVisibilityCommand,
@@ -21,6 +21,8 @@ import {
   setFieldWidthCommandInput,
   setFiltersCommandInput,
   SetFitlersCommand,
+  SwitchDisplayTypeCommand,
+  switchDisplayTypeCommandInput,
 } from '@egodb/core'
 import type { ICommandBus, IQueryBus } from '@egodb/domain'
 import { z } from 'zod'
@@ -103,6 +105,14 @@ export const createTableRouter =
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new MoveFieldCommand(input)
+          return commandBus.execute<void>(cmd)
+        }),
+      switchDisplayType: procedure
+        .meta({ openapi: { method: 'POST', path: '/table.switchDisplayType', tags } })
+        .input(switchDisplayTypeCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new SwitchDisplayTypeCommand(input)
           return commandBus.execute<void>(cmd)
         }),
     })

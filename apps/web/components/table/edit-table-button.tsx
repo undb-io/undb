@@ -1,9 +1,9 @@
 import { ActionIcon, IconSettings } from '@egodb/ui'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { editTableFormDrawerOpened } from '../edit-table-form/drawer-opened.atom'
 
 export const EditTableButton: React.FC = () => {
-  const setOpened = useUpdateAtom(editTableFormDrawerOpened)
+  const setOpened = useSetAtom(editTableFormDrawerOpened)
 
   return (
     <ActionIcon radius="xl" variant="subtle" size="lg" onClick={() => setOpened(true)}>

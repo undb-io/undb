@@ -21,7 +21,7 @@ export const TableFieldVisibilityEditor: React.FC<ITableBaseProps> = ({ table })
       <Popover.Target>
         <Button
           variant="outline"
-          size="xs"
+          compact
           loading={setFieldVisibility.isLoading}
           leftIcon={<IconEye size={18} />}
           onClick={handler.toggle}
