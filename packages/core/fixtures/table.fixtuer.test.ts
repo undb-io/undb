@@ -17,7 +17,7 @@ test('createTestTable', () => {
       },
       "schema": TableSchema {
         "props": [
-          TextField {
+          StringField {
             "props": {
               "id": FieldId {
                 "props": {

@@ -2,13 +2,13 @@ import { DateField } from './date.field'
 import type { Field, ICreateFieldSchema } from './field.type'
 import { NumberField } from './number.field'
 import { SelectField } from './select.field'
-import { TextField } from './text.field'
+import { StringField } from './string.field'
 
 export class FieldFactory {
   static create(input: ICreateFieldSchema): Field {
     switch (input.type) {
-      case 'text': {
-        return TextField.create(input)
+      case 'string': {
+        return StringField.create(input)
       }
       case 'number': {
         return NumberField.create(input)
@@ -21,14 +21,14 @@ export class FieldFactory {
       }
 
       default:
-        throw new Error('invalid text field type')
+        throw new Error('invalid field type')
     }
   }
 
   static unsafeCreate(input: ICreateFieldSchema): Field {
     switch (input.type) {
-      case 'text': {
-        return TextField.unsafeCreate(input)
+      case 'string': {
+        return StringField.unsafeCreate(input)
       }
       case 'number': {
         return NumberField.unsafeCreate(input)
@@ -41,7 +41,7 @@ export class FieldFactory {
       }
 
       default:
-        throw new Error('invalid text field type')
+        throw new Error('invalid field type')
     }
   }
 }

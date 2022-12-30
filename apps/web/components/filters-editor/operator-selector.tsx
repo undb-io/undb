@@ -1,6 +1,7 @@
 import type { Field, IOperator } from '@egodb/core'
+import { StringField } from '@egodb/core'
 import { DateField } from '@egodb/core'
-import { NumberField, TextField } from '@egodb/core'
+import { NumberField } from '@egodb/core'
 import type { SelectItem } from '@egodb/ui'
 import { Select } from '@egodb/ui'
 
@@ -14,7 +15,7 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
   let data: SelectItem[] = []
 
   // TODO: optimize if else
-  if (field instanceof TextField) {
+  if (field instanceof StringField) {
     data = [
       { value: '$eq', label: 'equal' },
       { value: '$neq', label: 'not equal' },

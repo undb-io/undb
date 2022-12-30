@@ -11,7 +11,7 @@ export const CreateTableAddFieldButton: React.FC = () => {
     <Button
       onClick={() => {
         const id = FieldId.create().value
-        form.insertListItem('schema', { id, type: 'text', name: '' })
+        form.insertListItem('schema', { id, type: 'string', name: '' })
       }}
       fullWidth
       color={hasSchema ? 'gray' : 'orange'}

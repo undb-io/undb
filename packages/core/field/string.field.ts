@@ -1,33 +1,33 @@
 import type { IStringFilter, IStringFilterOperator } from '../filter'
 import { BaseField } from './field.base'
-import type { ITextField } from './field.type'
-import { TextFieldValue } from './text-field-value'
-import type { ICreateTextFieldInput, ICreateTextFieldValue, TextFieldType } from './text-field.type'
+import type { IStringField } from './field.type'
+import { StringFieldValue } from './string-field-value'
+import type { ICreateStringFieldInput, ICreateStringFieldValue, StringFieldType } from './string-field.type'
 import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
-export class TextField extends BaseField<ITextField> {
-  get type(): TextFieldType {
-    return 'text'
+export class StringField extends BaseField<IStringField> {
+  get type(): StringFieldType {
+    return 'string'
   }
 
-  static create(input: ICreateTextFieldInput): TextField {
-    return new TextField({
+  static create(input: ICreateStringFieldInput): StringField {
+    return new StringField({
       id: FieldId.from(input.id),
       name: FieldName.create(input.name),
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
     })
   }
 
-  static unsafeCreate(input: ICreateTextFieldInput): TextField {
-    return new TextField({
+  static unsafeCreate(input: ICreateStringFieldInput): StringField {
+    return new StringField({
       id: FieldId.from(input.id),
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
     })
   }
 
-  createValue(value: ICreateTextFieldValue): TextFieldValue {
-    return new TextFieldValue(value)
+  createValue(value: ICreateStringFieldValue): StringFieldValue {
+    return new StringFieldValue(value)
   }
 
   createFilter(operator: IStringFilterOperator, value: string | null): IStringFilter {
