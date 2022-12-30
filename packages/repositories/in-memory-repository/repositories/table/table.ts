@@ -40,9 +40,21 @@ type SelectFieldInMemory = {
   options: OptionInMemory[]
 }
 
+type BoolFieldInMemory = {
+  id: string
+  type: 'bool'
+  name: string
+  required?: boolean
+}
+
 export type SchemaInMemory = FieldInMemory[]
 
-export type FieldInMemory = StringFieldInMemory | NumberFieldInMemory | DateFieldInMemory | SelectFieldInMemory
+export type FieldInMemory =
+  | StringFieldInMemory
+  | NumberFieldInMemory
+  | DateFieldInMemory
+  | SelectFieldInMemory
+  | BoolFieldInMemory
 
 export type ViewInMemory = {
   name: string

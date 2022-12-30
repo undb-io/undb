@@ -2,7 +2,7 @@ import * as z from 'zod'
 import { createCurrencySchema } from './currency'
 import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base'
 import { FIELD_TYPE_KEY } from './field.constant'
-import { NumberField } from './number.field'
+import { NumberField } from './number-field'
 
 export const numberTypeSchema = z.literal('number')
 export type NumberType = z.infer<typeof numberTypeSchema>

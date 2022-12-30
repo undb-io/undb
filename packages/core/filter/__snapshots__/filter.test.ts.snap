@@ -133,3 +133,17 @@ OptionType {
   },
 }
 `;
+
+exports[`should create root filter 14`] = `
+OptionType {
+  Symbol(T): false,
+  Symbol(Val): undefined,
+}
+`;
+
+exports[`should create root filter 15`] = `
+OptionType {
+  Symbol(T): false,
+  Symbol(Val): undefined,
+}
+`;

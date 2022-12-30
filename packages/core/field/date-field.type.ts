@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { DateField } from './date.field'
+import { DateField } from './date-field'
 import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base'
 import { FIELD_TYPE_KEY } from './field.constant'
 

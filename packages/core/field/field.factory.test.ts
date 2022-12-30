@@ -1,8 +1,8 @@
 import { FieldFactory } from './field.factory'
 import { Field } from './field.type'
-import { NumberField } from './number.field'
-import { SelectField } from './select.field'
-import { StringField } from './string.field'
+import { NumberField } from './number-field'
+import { SelectField } from './select-field'
+import { StringField } from './string-field'
 import { FieldName } from './value-objects'
 
 it('should create string field', () => {

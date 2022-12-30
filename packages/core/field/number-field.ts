@@ -1,4 +1,4 @@
-import type { INumberFilter, INumberFilterOperator } from '../filter'
+import type { INumberFilter, INumberFilterOperator } from '../filter/number.filter'
 import { Currency } from './currency'
 import { BaseField } from './field.base'
 import type { INumberField } from './field.type'

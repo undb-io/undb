@@ -1,6 +1,7 @@
 import type { CompositeSpecification, ISpecVisitor } from '@egodb/domain'
 import { type ISpecification } from '@egodb/domain'
 import { type Record } from '../record'
+import type { BoolIsFalse, BoolIsTrue } from './bool.specification'
 import type {
   DateEqual,
   DateGreaterThan,
@@ -50,11 +51,13 @@ interface IRecordValueVisitor {
   dateLessThan(s: DateLessThan): void
   dateGreaterThanOrEqual(s: DateGreaterThanOrEqual): void
   dateLessThanOrEqual(s: DateLessThanOrEqual): void
+  dateIsToday(s: DateIsToday): void
 
   selectEqual(s: SelectEqual): void
   selectIn(s: SelectIn): void
 
-  dateIsToday(s: DateIsToday): void
+  boolIsTrue(s: BoolIsTrue): void
+  boolIsFalse(s: BoolIsFalse): void
 }
 
 export type RecordCompositeSpecification = CompositeSpecification<Record, IRecordVisitor>

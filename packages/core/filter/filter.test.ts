@@ -92,6 +92,18 @@ test.each<IRootFilter>([
     operator: '$is_today',
     path: 'is_today',
   },
+  {
+    type: 'bool',
+    operator: '$is_true',
+    path: 'field',
+    value: null,
+  },
+  {
+    type: 'bool',
+    operator: '$is_false',
+    path: 'field',
+    value: null,
+  },
 ])('should create root filter', (filter) => {
   const parsed = rootFilter.parse(filter)
   expect(parsed).toEqual(filter)

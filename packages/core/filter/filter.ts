@@ -1,10 +1,12 @@
 import type { CompositeSpecification } from '@egodb/domain'
+import { isNil } from '@fxts/core'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
 import type { ISelectFieldValue } from '../field/select-field.type'
-import { selectFieldValue } from '../field/select-field.type'
 import {
+  BoolIsFalse,
+  BoolIsTrue,
   DateEqual,
   DateGreaterThan,
   DateGreaterThanOrEqual,
@@ -23,64 +25,36 @@ import {
   StringEqual,
   StringStartsWith,
 } from '../record'
+import type { IBoolFilter } from './bool.filter'
+import { boolFilter, boolFilterValue } from './bool.filter'
+import type { IConjunction } from './conjunction'
+import { conjunctions } from './conjunction'
+import type { IDateFilter } from './date.filter'
+import { dateFilter, dateFilterValue } from './date.filter'
+import type { INumberFilter } from './number.filter'
+import { numberFilter, numberFilterValue } from './number.filter'
 import {
+  $is_false,
   $is_today,
+  $is_true,
+  boolFilterOperators,
   dateFilterOperators,
   numberFilterOperators,
   selectFilterOperators,
   stringFilterOperators,
 } from './operators'
+import type { ISelectFilter } from './select.filter'
+import { selectFilter, selectFilterValue } from './select.filter'
+import type { IStringFilter } from './string.filter'
+import { stringFilter, stringFilterValue } from './string.filter'
 
-const baseFilter = z.object({
-  path: z.string().min(1),
-})
-
-export const stringFilterValue = z.string().nullable()
-const stringFilter = z
-  .object({
-    type: z.literal('string'),
-    operator: stringFilterOperators,
-    value: stringFilterValue,
-  })
-  .merge(baseFilter)
-
-export type IStringFilter = z.infer<typeof stringFilter>
-export type IStringFilterOperator = z.infer<typeof stringFilterOperators>
-
-export const numberFilterValue = z.number().nullable()
-const numberFilter = z
-  .object({
-    type: z.literal('number'),
-    operator: numberFilterOperators,
-    value: numberFilterValue,
-  })
-  .merge(baseFilter)
-export type INumberFilter = z.infer<typeof numberFilter>
-export type INumberFilterOperator = z.infer<typeof numberFilterOperators>
-
-export const dateFilterValue = z.date().nullable().optional()
-const dateFilter = z
-  .object({
-    type: z.literal('date'),
-    operator: dateFilterOperators,
-    value: dateFilterValue,
-  })
-  .merge(baseFilter)
-export type IDateFilter = z.infer<typeof dateFilter>
-
-export const selectFilterValue = selectFieldValue.or(selectFieldValue.array()).nullable()
-export type ISelectFilterValue = z.infer<typeof selectFieldValue>
-const selectFilter = z
-  .object({
-    type: z.literal('select'),
-    operator: selectFilterOperators,
-    value: selectFilterValue,
-  })
-  .merge(baseFilter)
-
-export type ISelectFilter = z.infer<typeof selectFilter>
-
-export const filterValue = z.union([stringFilterValue, numberFilterValue, dateFilterValue, selectFilterValue])
+export const filterValue = z.union([
+  stringFilterValue,
+  numberFilterValue,
+  dateFilterValue,
+  selectFilterValue,
+  boolFilterValue,
+])
 export type IFilterValue = z.infer<typeof filterValue>
 
 export const operaotrs = z.union([
@@ -88,17 +62,11 @@ export const operaotrs = z.union([
   numberFilterOperators,
   dateFilterOperators,
   selectFilterOperators,
+  boolFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
-const filter = z.discriminatedUnion('type', [stringFilter, numberFilter, dateFilter, selectFilter])
-
-const $and = z.literal('$and')
-const $or = z.literal('$or')
-const $not = z.literal('$not')
-
-const conjunctions = z.union([$and, $or, $not])
-export type IConjunction = z.infer<typeof conjunctions>
+const filter = z.discriminatedUnion('type', [stringFilter, numberFilter, dateFilter, selectFilter, boolFilter])
 
 export type IFilter = z.infer<typeof filter>
 export type IFilters = IFilter[]
@@ -212,6 +180,25 @@ const convertSelectFilter = (filter: ISelectFilter): Option<CompositeSpecificati
   }
 }
 
+const convertBoolFilter = (filter: IBoolFilter): Option<CompositeSpecification> => {
+  if (isNil(filter.value)) {
+    return None
+  }
+
+  switch (filter.operator) {
+    case $is_true.value: {
+      return Some(new BoolIsTrue(filter.path, filter.value))
+    }
+    case $is_false.value: {
+      return Some(new BoolIsFalse(filter.path, filter.value))
+    }
+
+    default: {
+      return None
+    }
+  }
+}
+
 const convertDateFilter = (filter: IDateFilter): Option<CompositeSpecification> => {
   if (filter.operator === $is_today.value) {
     return Some(new DateIsToday(filter.path))
@@ -255,6 +242,8 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
       return convertDateFilter(filter)
     case 'select':
       return convertSelectFilter(filter)
+    case 'bool':
+      return convertBoolFilter(filter)
     default:
       return None
   }
