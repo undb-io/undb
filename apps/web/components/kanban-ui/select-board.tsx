@@ -15,7 +15,7 @@ import { Container, Group, useListState } from '@egodb/ui'
 import { useState } from 'react'
 import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
-import { KanbanLane, KanbanLaneDnd } from './kanban-lane'
+import { KanbanLane, SortableKanbanLane } from './kanban-lane'
 
 interface IProps extends ITableBaseProps {
   field: SelectField
@@ -64,7 +64,7 @@ export const SelectBoard: React.FC<IProps> = ({ table, field }) => {
         >
           <SortableContext items={items} strategy={horizontalListSortingStrategy}>
             {options.map((option) => (
-              <KanbanLaneDnd key={option.id.value} id={option.id.value} title={option.name.value} />
+              <SortableKanbanLane key={option.id.value} id={option.id.value} title={option.name.value} />
             ))}
           </SortableContext>
           <DragOverlay>

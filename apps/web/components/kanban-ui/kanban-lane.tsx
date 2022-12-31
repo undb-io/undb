@@ -42,7 +42,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   )
 }
 
-export const KanbanLaneDnd: React.FC<IProps> = ({ title, id }) => {
+export const SortableKanbanLane: React.FC<IProps> = ({ title, id }) => {
   const { attributes, listeners, isDragging, setNodeRef, transform, transition } = useSortable({
     id,
     animateLayoutChanges: defaultAnimateLayoutChanges,
