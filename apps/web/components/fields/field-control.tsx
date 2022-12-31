@@ -1,6 +1,16 @@
 import type { ICreateOptionSchema } from '@egodb/core'
 import { OptionId } from '@egodb/core'
-import { useListState, Stack, Group, ActionIcon, IconGripVertical, TextInput, Button } from '@egodb/ui'
+import {
+  useListState,
+  Stack,
+  Group,
+  ActionIcon,
+  IconGripVertical,
+  TextInput,
+  Button,
+  IconSelect,
+  FocusTrap,
+} from '@egodb/ui'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 
 interface ISelectFieldControlProps {
@@ -21,17 +31,24 @@ export const SelectFieldControl: React.FC<ISelectFieldControlProps> = ({ onChang
             <ActionIcon>
               <IconGripVertical size={14} color="gray" />
             </ActionIcon>
-            <TextInput
-              variant="unstyled"
-              value={o.name}
-              onChange={(e) => handlers.setItemProp(index, 'name', e.target.value)}
-            />
+            <FocusTrap>
+              <TextInput
+                variant="unstyled"
+                value={o.name}
+                onChange={(e) => handlers.setItemProp(index, 'name', e.target.value)}
+              />
+            </FocusTrap>
           </Group>
         ))}
+        <Button
+          leftIcon={<IconSelect size={14} />}
+          size="xs"
+          variant="subtle"
+          onClick={() => handlers.append({ id: OptionId.create().value, name: '' })}
+        >
+          Add new option
+        </Button>
       </Stack>
-      <Button compact variant="outline" onClick={() => handlers.append({ id: OptionId.create().value, name: '' })}>
-        Add new option
-      </Button>
     </>
   )
 }
