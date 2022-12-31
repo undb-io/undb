@@ -1,6 +1,6 @@
 import type { IQueryRecordSchema } from '@egodb/core'
 import { SelectField } from '@egodb/core'
-import { Card } from '@egodb/ui'
+import { Card, Group } from '@egodb/ui'
 import type { ITableBaseProps } from '../table/table-base-props'
 
 interface IProps extends ITableBaseProps {
@@ -15,9 +15,9 @@ export const KanbanCard: React.FC<IProps> = ({ table, record }) => {
         if (field.isNone()) return null
         const f = field.unwrap()
         if (f instanceof SelectField) {
-          return f.options.getById(value as string).mapOr('', (o) => o.name.value)
+          return <Group key={key}>{f.options.getById(value as string).mapOr('', (o) => o.name.value)}</Group>
         }
-        return <>{value}</>
+        return <Group key={key}>{value?.toString()}</Group>
       })}
     </Card>
   )
