@@ -11,6 +11,7 @@ import {
 import { restrictToHorizontalAxis } from '@dnd-kit/modifiers'
 import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import type { SelectField } from '@egodb/core'
+import type { QueryRecords } from '@egodb/core'
 import { Container, Group, useListState } from '@egodb/ui'
 import { useState } from 'react'
 import { trpc } from '../../trpc'
@@ -19,9 +20,10 @@ import { KanbanLane, SortableKanbanLane } from './kanban-lane'
 
 interface IProps extends ITableBaseProps {
   field: SelectField
+  records: QueryRecords
 }
 
-export const SelectBoard: React.FC<IProps> = ({ table, field }) => {
+export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
   const [options, handlers] = useListState(field.options.options)
   const items = options.map((o) => o.id.value)
   const sensors = useSensors(
@@ -64,11 +66,24 @@ export const SelectBoard: React.FC<IProps> = ({ table, field }) => {
         >
           <SortableContext items={items} strategy={horizontalListSortingStrategy}>
             {options.map((option) => (
-              <SortableKanbanLane key={option.id.value} id={option.id.value} title={option.name.value} />
+              <SortableKanbanLane
+                field={field}
+                table={table}
+                records={records}
+                key={option.id.value}
+                id={option.id.value}
+                title={option.name.value}
+              />
             ))}
           </SortableContext>
           <DragOverlay>
-            <KanbanLane title={active ? active.name.value : ''} id={active ? active.id.value : ''} />
+            <KanbanLane
+              table={table}
+              field={field}
+              records={records}
+              title={active ? active.name.value : ''}
+              id={active ? active.id.value : ''}
+            />
           </DragOverlay>
         </DndContext>
       </Group>

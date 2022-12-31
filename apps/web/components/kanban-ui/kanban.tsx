@@ -8,7 +8,7 @@ interface IProps extends ITableBaseProps {
   records: QueryRecords
 }
 
-export const Kanban: React.FC<IProps> = ({ table }) => {
+export const Kanban: React.FC<IProps> = ({ table, records }) => {
   const view = table.mustGetView()
   const fieldId = view.kanbanSelectFieldId
   if (fieldId.isNone()) {
@@ -16,5 +16,5 @@ export const Kanban: React.FC<IProps> = ({ table }) => {
   }
 
   const field = table.schema.getFieldById(fieldId.unwrap().value).unwrap()
-  return <KanbanBoard table={table} field={field as IKanbanField} />
+  return <KanbanBoard table={table} field={field as IKanbanField} records={records} />
 }
