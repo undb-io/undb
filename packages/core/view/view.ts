@@ -1,7 +1,7 @@
 import type { CompositeSpecification } from '@egodb/domain'
 import { ValueObject } from '@egodb/domain'
 import { None, Option } from 'oxide.ts'
-import { FieldId } from '../field'
+import type { FieldId } from '../field'
 import type { IFilterOrGroupList, IRootFilter } from '../filter'
 import { RootFilter } from '../filter'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
@@ -40,7 +40,7 @@ export class View extends ValueObject<IView> {
   }
 
   public get kanbanSelectFieldId(): Option<FieldId> {
-    return this.kanban.mapOr(None, (kanban) => Option(kanban.selectField))
+    return this.kanban.mapOr(None, (kanban) => Option(kanban.fieldId))
   }
 
   public get spec(): Option<CompositeSpecification> {
@@ -68,6 +68,14 @@ export class View extends ValueObject<IView> {
     return this.fieldOptions.getOrCreateOption(fieldName)
   }
 
+  public getOrCreateKanban(): Kanban {
+    const kanban = this.kanban
+    if (kanban.isSome()) return kanban.unwrap()
+
+    this.props.kanban = new Kanban({})
+    return this.props.kanban
+  }
+
   public getFieldHidden(fieldName: string): boolean {
     return this.fieldOptions.getHidden(fieldName)
   }
@@ -80,15 +88,15 @@ export class View extends ValueObject<IView> {
     return new WithFieldWidth(fieldName, this.name.unpack(), width)
   }
 
-  public switchDisplayType(viewName: string, type: IViewDisplayType): TableCompositeSpecificaiton {
-    return new WithDisplayType(viewName, type)
+  public switchDisplayType(type: IViewDisplayType): TableCompositeSpecificaiton {
+    return new WithDisplayType(this, type)
   }
 
   public setFieldVisibility(fieldName: string, hidden: boolean): TableCompositeSpecificaiton {
     return new WithFieldVisibility(fieldName, this.name.unpack(), hidden)
   }
 
-  public setKanbanField(fieldId: FieldId): TableCompositeSpecificaiton {
+  public setKanbanFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
     return new WithKanbanField(this, fieldId)
   }
 
@@ -115,6 +123,7 @@ export class View extends ValueObject<IView> {
     const parsed = createViewInput_internal.parse(input)
     return new View({
       name: ViewName.create(parsed.name),
+      kanban: input.kanban ? Kanban.from(input.kanban) : undefined,
       displayType: parsed.displayType || defaultViewDiaplyType,
       filter: parsed.filter ? new RootFilter(parsed.filter) : undefined,
       fieldOptions: ViewFieldOptions.from(input.fieldOptions),

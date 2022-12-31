@@ -4,6 +4,7 @@ import type {
   WithDisplayType,
   WithFieldVisibility,
   WithFieldWidth,
+  WithKanbanField,
   WithTableId,
   WithTableName,
   WithTableView,
@@ -98,9 +99,16 @@ export class TableInMemoryQueryVisitor implements ITableSpecVisitor {
   }
   displayTypeEqual(s: WithDisplayType): void {
     this.predicate = (t) => {
-      const view = this.getView(t, s.viewName)
+      const view = this.getView(t, s.view.name.value)
       if (!view) return false
       return view.displayType === s.displayType
+    }
+  }
+  kanbanFieldEqual(s: WithKanbanField): void {
+    this.predicate = (t) => {
+      const view = this.getView(t, s.view.name.unpack())
+      if (!view) return false
+      return view.kanban?.fieldId === s.fieldId.value
     }
   }
 }

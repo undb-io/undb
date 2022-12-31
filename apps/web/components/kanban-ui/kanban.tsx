@@ -1,5 +1,5 @@
-import { QueryRecords } from '@egodb/core'
-import { ITableBaseProps } from '../table/table-base-props'
+import type { QueryRecords } from '@egodb/core'
+import type { ITableBaseProps } from '../table/table-base-props'
 import { SelectKanbanField } from './select-kanban-field'
 
 interface IProps extends ITableBaseProps {

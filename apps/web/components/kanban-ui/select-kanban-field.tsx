@@ -1,11 +1,17 @@
 import { setKanbanFieldSchema } from '@egodb/core'
 import { Button, Card, Center, Container, Group, Radio, Text, useForm, zodResolver } from '@egodb/ui'
 import { trpc } from '../../trpc'
-import { ITableBaseProps } from '../table/table-base-props'
+import type { ITableBaseProps } from '../table/table-base-props'
 
 export const SelectKanbanField: React.FC<ITableBaseProps> = ({ table }) => {
   const selectFields = table.schema.selectFields
-  const setKanbanField = trpc.table.setKanbanField.useMutation()
+  const utils = trpc.useContext()
+  const setKanbanField = trpc.table.setKanbanField.useMutation({
+    onSuccess() {
+      utils.table.get.refetch()
+    },
+  })
+
   const form = useForm({
     initialValues: {
       field: '',

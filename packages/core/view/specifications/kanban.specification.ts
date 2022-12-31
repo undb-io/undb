@@ -1,22 +1,27 @@
 import { CompositeSpecification } from '@egodb/domain'
-import { Result } from 'oxide.ts/dist'
-import { FieldId } from '../../field'
-import { ITableSpecVisitor } from '../../specifications'
-import { Table } from '../../table'
-import { View } from '../view'
+import type { Result } from 'oxide.ts'
+import { Ok } from 'oxide.ts'
+import type { FieldId } from '../../field'
+import type { ITableSpecVisitor } from '../../specifications'
+import type { Table } from '../../table'
+import type { View } from '../view'
 
 export class WithKanbanField extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(public readonly view: View, public readonly fieldId: FieldId) {
     super()
   }
 
-  isSatisfiedBy(t: Table): boolean {
-    throw new Error('Method not implemented.')
+  isSatisfiedBy(): boolean {
+    return this.view.kanbanSelectFieldId.mapOr(false, (fieldId) => fieldId.equals(this.fieldId))
   }
+
   mutate(t: Table): Result<Table, string> {
-    throw new Error('Method not implemented.')
+    this.view.getOrCreateKanban().fieldId = this.fieldId
+    return Ok(t)
   }
+
   accept(v: ITableSpecVisitor): Result<void, string> {
-    throw new Error('Method not implemented.')
+    v.kanbanFieldEqual(this)
+    return Ok(undefined)
   }
 }

@@ -4,6 +4,7 @@ import type {
   WithFieldVisibility,
   WithFieldWidth,
   WithFilter,
+  WithKanbanField,
   WithNewField,
   WithTableName,
   WithTableSchema,
@@ -89,9 +90,20 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
   }
 
   displayTypeEqual(s: WithDisplayType): void {
-    const view = this.table.views.find((v) => v.name === s.viewName)
+    const view = this.table.views.find((v) => v.name === s.view.name.value)
     if (view) {
       view.displayType = s.displayType
+    }
+  }
+
+  kanbanFieldEqual(s: WithKanbanField): void {
+    const view = this.table.views.find((v) => v.name === s.view.name.value)
+    if (view) {
+      if (view.kanban) {
+        view.kanban.fieldId = s.fieldId.value
+      } else {
+        view.kanban = { fieldId: s.fieldId.value }
+      }
     }
   }
 }

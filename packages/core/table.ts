@@ -170,7 +170,7 @@ export class Table {
 
   public switchDisplayType(input: ISwitchDisplayTypeSchema): TableCompositeSpecificaiton {
     const view = this.mustGetView(input.viewName)
-    const spec = view.switchDisplayType(view.name.unpack(), input.displayType)
+    const spec = view.switchDisplayType(input.displayType)
     spec.mutate(this)
     return spec
   }
@@ -184,8 +184,8 @@ export class Table {
 
   public setKanbanField(input: ISetKanbanFieldSchema): TableCompositeSpecificaiton {
     const view = this.mustGetView(input.viewName)
-    const field = this.schema.getField(input.field).unwrap()
-    const spec = view.setKanbanField(field.id)
+    const field = this.schema.getFieldById(input.field).unwrap()
+    const spec = view.setKanbanFieldSpec(field.id)
     spec.mutate(this)
     return spec
   }
