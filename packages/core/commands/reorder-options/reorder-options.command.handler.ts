@@ -7,5 +7,9 @@ export class ReorderOptionsCommandHandler implements ICommandHandler<ReorderOpti
 
   async execute(command: ReorderOptionsCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
+
+    const spec = table.reorderOption(command)
+
+    await this.tableRepo.updateOneById(table.id.value, spec)
   }
 }

@@ -1,7 +1,15 @@
-import type { Field, Table, TableSchema, View, Views } from '@egodb/core'
+import type { Field, Option, Table, TableSchema, View, Views } from '@egodb/core'
 import { TableFactory } from '@egodb/core'
 import type { Result } from 'oxide.ts'
-import type { FieldInMemory, KanbanInMemory, SchemaInMemory, TableInMemory, ViewInMemory, ViewsInMemory } from './table'
+import type {
+  FieldInMemory,
+  KanbanInMemory,
+  OptionInMemory,
+  SchemaInMemory,
+  TableInMemory,
+  ViewInMemory,
+  ViewsInMemory,
+} from './table'
 
 export class TableInMemoryMapper {
   static toDomain(t: TableInMemory): Result<Table, string> {
@@ -13,6 +21,10 @@ export class TableInMemoryMapper {
     })
   }
 
+  static optionToInMemory(o: Option): OptionInMemory {
+    return { id: o.id.value, name: o.name.value }
+  }
+
   static fieldToInMemopy(f: Field): FieldInMemory {
     if (f.type === 'select') {
       return {
@@ -20,7 +32,7 @@ export class TableInMemoryMapper {
         name: f.name.value,
         type: f.type,
         required: f.required,
-        options: f.options.options.map((o) => ({ id: o.id.value, name: o.name.value })),
+        options: f.options.options.map(this.optionToInMemory),
       }
     }
     return {

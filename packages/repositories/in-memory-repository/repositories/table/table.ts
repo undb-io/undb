@@ -27,12 +27,12 @@ type DateFieldInMemory = {
   required?: boolean
 }
 
-type OptionInMemory = {
+export type OptionInMemory = {
   id: string
   name: string
 }
 
-type SelectFieldInMemory = {
+export type SelectFieldInMemory = {
   id: string
   type: 'select'
   name: string

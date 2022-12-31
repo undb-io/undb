@@ -5,6 +5,7 @@ import type {
   WithFieldVisibility,
   WithFieldWidth,
   WithKanbanField,
+  WithOptions,
   WithTableId,
   WithTableName,
   WithTableView,
@@ -110,5 +111,8 @@ export class TableInMemoryQueryVisitor implements ITableSpecVisitor {
       if (!view) return false
       return view.kanban?.fieldId === s.fieldId.value
     }
+  }
+  optionsEqual(s: WithOptions): void {
+    throw new Error('Method not implemented.')
   }
 }

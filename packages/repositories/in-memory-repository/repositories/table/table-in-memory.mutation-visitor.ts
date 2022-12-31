@@ -6,13 +6,14 @@ import type {
   WithFilter,
   WithKanbanField,
   WithNewField,
+  WithOptions,
   WithTableName,
   WithTableSchema,
   WithTableView,
   WithTableViews,
   WithViewFieldsOrder,
 } from '@egodb/core'
-import type { TableInMemory } from './table'
+import type { SelectFieldInMemory, TableInMemory } from './table'
 import { TableInMemoryMapper } from './table-in-memory.mapper'
 
 export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
@@ -104,6 +105,13 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
       } else {
         view.kanban = { fieldId: s.fieldId.value }
       }
+    }
+  }
+
+  optionsEqual(s: WithOptions): void {
+    const field = this.table.schema.find((f) => f.id === s.field.id.value)
+    if (field) {
+      ;(field as SelectFieldInMemory).options = s.options.options.map(TableInMemoryMapper.optionToInMemory)
     }
   }
 }

@@ -1,5 +1,6 @@
 import type { CompositeSpecification, ISpecVisitor } from '@egodb/domain'
 import { type ISpecification } from '@egodb/domain'
+import type { WithOptions } from '../field/specifications/select-field.specification'
 import { type Table } from '../table'
 import type { WithKanbanField } from '../view'
 import type { WithDisplayType } from '../view/specifications/display-type.specification'
@@ -28,6 +29,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
 
   displayTypeEqual(s: WithDisplayType): void
   kanbanFieldEqual(s: WithKanbanField): void
+  optionsEqual(s: WithOptions): void
 }
 
 export type ITableSpec = ISpecification<Table, ITableSpecVisitor>

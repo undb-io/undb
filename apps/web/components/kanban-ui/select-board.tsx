@@ -55,6 +55,7 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
 
               reorderOptions.mutate({
                 tableId: table.id.value,
+                fieldId: field.id.value,
                 from: active.id as string,
                 to: over.id as string,
               })
