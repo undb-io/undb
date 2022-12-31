@@ -1,16 +1,19 @@
 import type {
   ITableSpecVisitor,
+  WithDisplayType,
   WithFieldVisibility,
   WithFieldWidth,
   WithFilter,
+  WithKanbanField,
   WithNewField,
+  WithOptions,
   WithTableName,
   WithTableSchema,
   WithTableView,
   WithTableViews,
   WithViewFieldsOrder,
 } from '@egodb/core'
-import type { TableInMemory } from './table'
+import type { SelectFieldInMemory, TableInMemory } from './table'
 import { TableInMemoryMapper } from './table-in-memory.mapper'
 
 export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
@@ -84,6 +87,31 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
     const view = this.table.views.find((v) => v.name === s.view.name.unpack())
     if (view) {
       view.fieldsOrder = s.viewFieldsOrder.order
+    }
+  }
+
+  displayTypeEqual(s: WithDisplayType): void {
+    const view = this.table.views.find((v) => v.name === s.view.name.value)
+    if (view) {
+      view.displayType = s.displayType
+    }
+  }
+
+  kanbanFieldEqual(s: WithKanbanField): void {
+    const view = this.table.views.find((v) => v.name === s.view.name.value)
+    if (view) {
+      if (view.kanban) {
+        view.kanban.fieldId = s.fieldId.value
+      } else {
+        view.kanban = { fieldId: s.fieldId.value }
+      }
+    }
+  }
+
+  optionsEqual(s: WithOptions): void {
+    const field = this.table.schema.find((f) => f.id === s.field.id.value)
+    if (field) {
+      ;(field as SelectFieldInMemory).options = s.options.options.map(TableInMemoryMapper.optionToInMemory)
     }
   }
 }

@@ -46,6 +46,7 @@ ResultType {
             },
             "fieldsOrder": undefined,
             "filter": undefined,
+            "kanban": undefined,
             "name": ViewName {
               "props": {
                 "value": "table",

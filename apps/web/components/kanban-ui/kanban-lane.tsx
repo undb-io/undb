@@ -1,0 +1,87 @@
+import { defaultAnimateLayoutChanges, useSortable } from '@dnd-kit/sortable'
+import { ActionIcon, Card, Group, IconGripVertical, Stack, Text } from '@egodb/ui'
+import { CSS } from '@dnd-kit/utilities'
+import type { CSSProperties } from 'react'
+import { useMemo } from 'react'
+import type { DraggableAttributes, DraggableSyntheticListeners } from '@dnd-kit/core'
+import type { QueryRecords, SelectField } from '@egodb/core'
+import { KanbanCard } from './card'
+import type { Table } from '@egodb/core'
+
+interface IProps {
+  id: string
+  title: string
+  table: Table
+  field: SelectField
+  records: QueryRecords
+}
+
+interface IKanbanLaneProps extends IProps {
+  setNodeRef?: (node: HTMLElement | null) => void
+  style?: CSSProperties
+  attributes?: DraggableAttributes
+  listeners?: DraggableSyntheticListeners
+}
+
+export const KanbanLane: React.FC<IKanbanLaneProps> = ({
+  id,
+  field,
+  table,
+  setNodeRef,
+  style,
+  title,
+  attributes = {},
+  listeners = {},
+  records,
+}) => {
+  const filteredRecords = useMemo(() => records.filter((r) => r.values[field.name.value] === id), [records])
+  return (
+    <Card ref={setNodeRef} style={style} withBorder shadow="xs" radius="sm" w={350}>
+      <Card.Section withBorder inheritPadding py="sm">
+        <Group position="apart">
+          <Text weight={500}>{title}</Text>
+
+          <ActionIcon {...listeners} {...attributes}>
+            <IconGripVertical size={14} cursor="grab" />
+          </ActionIcon>
+        </Group>
+      </Card.Section>
+
+      <Card.Section withBorder inheritPadding p="sm" bg="gray.1" mih={400}>
+        <Stack>
+          {filteredRecords.map((r) => (
+            <KanbanCard table={table} record={r} key={r.id} />
+          ))}
+        </Stack>
+      </Card.Section>
+    </Card>
+  )
+}
+
+export const SortableKanbanLane: React.FC<IProps> = ({ table, title, field, id, records }) => {
+  const { attributes, listeners, isDragging, setNodeRef, transform, transition } = useSortable({
+    id,
+    animateLayoutChanges: defaultAnimateLayoutChanges,
+  })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 100 : undefined,
+    opacity: isDragging ? 0.5 : undefined,
+  }
+
+  return (
+    <KanbanLane
+      table={table}
+      records={records}
+      title={title}
+      id={id}
+      field={field}
+      attributes={attributes}
+      listeners={listeners}
+      setNodeRef={setNodeRef}
+      style={style}
+    />
+  )
+}

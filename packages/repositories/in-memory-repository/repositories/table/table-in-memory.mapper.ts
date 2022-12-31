@@ -1,7 +1,15 @@
-import type { Field, Table, TableSchema, View, Views } from '@egodb/core'
+import type { Field, Option, Table, TableSchema, View, Views } from '@egodb/core'
 import { TableFactory } from '@egodb/core'
 import type { Result } from 'oxide.ts'
-import type { FieldInMemory, SchemaInMemory, TableInMemory, ViewInMemory, ViewsInMemory } from './table'
+import type {
+  FieldInMemory,
+  KanbanInMemory,
+  OptionInMemory,
+  SchemaInMemory,
+  TableInMemory,
+  ViewInMemory,
+  ViewsInMemory,
+} from './table'
 
 export class TableInMemoryMapper {
   static toDomain(t: TableInMemory): Result<Table, string> {
@@ -13,6 +21,10 @@ export class TableInMemoryMapper {
     })
   }
 
+  static optionToInMemory(o: Option): OptionInMemory {
+    return { id: o.id.value, name: o.name.value }
+  }
+
   static fieldToInMemopy(f: Field): FieldInMemory {
     if (f.type === 'select') {
       return {
@@ -20,7 +32,7 @@ export class TableInMemoryMapper {
         name: f.name.value,
         type: f.type,
         required: f.required,
-        options: f.options.options.map((o) => ({ id: o.id.value, name: o.name.value })),
+        options: f.options.options.map(this.optionToInMemory),
       }
     }
     return {
@@ -35,9 +47,18 @@ export class TableInMemoryMapper {
     return schema.fields.map((f) => this.fieldToInMemopy(f))
   }
 
+  static kanbanToInMemory(v: View): KanbanInMemory | undefined {
+    if (v.kanban.isSome()) {
+      return { fieldId: v.kanban.unwrap().fieldId?.value }
+    }
+
+    return undefined
+  }
+
   static viewToInMemory(v: View): ViewInMemory {
     return {
       name: v.name.unpack(),
+      kanban: this.kanbanToInMemory(v),
       displayType: v.displayType,
       filter: v.filter?.value,
       fieldOptions: Object.fromEntries(v.fieldOptions.value),

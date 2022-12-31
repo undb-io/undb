@@ -48,6 +48,7 @@ test('createTestTable', () => {
               },
               "fieldsOrder": undefined,
               "filter": undefined,
+              "kanban": undefined,
               "name": ViewName {
                 "props": {
                   "value": "name",

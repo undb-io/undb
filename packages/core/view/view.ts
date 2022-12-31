@@ -1,11 +1,14 @@
 import type { CompositeSpecification } from '@egodb/domain'
 import { ValueObject } from '@egodb/domain'
-import type { Option } from 'oxide.ts'
-import { None } from 'oxide.ts'
+import { None, Option } from 'oxide.ts'
+import type { FieldId } from '../field'
 import type { IFilterOrGroupList, IRootFilter } from '../filter'
 import { RootFilter } from '../filter'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
 import { WithFieldVisibility, WithFieldWidth } from '../specifications/table-view-field-option.specification'
+import { Kanban } from './kanban'
+import { WithKanbanField } from './specifications'
+import { WithDisplayType } from './specifications/display-type.specification'
 import type { IViewFieldOption } from './view-field-options'
 import { ViewFieldOptions } from './view-field-options'
 import { ViewFieldsOrder } from './view-fields-order.vo'
@@ -24,8 +27,20 @@ export class View extends ValueObject<IView> {
     return this.props.displayType
   }
 
+  public set displayType(type: IViewDisplayType) {
+    this.props.displayType = type
+  }
+
   public get filter(): RootFilter | undefined {
     return this.props.filter
+  }
+
+  public get kanban(): Option<Kanban> {
+    return Option(this.props.kanban)
+  }
+
+  public get kanbanSelectFieldId(): Option<FieldId> {
+    return this.kanban.mapOr(None, (kanban) => Option(kanban.fieldId))
   }
 
   public get spec(): Option<CompositeSpecification> {
@@ -53,6 +68,14 @@ export class View extends ValueObject<IView> {
     return this.fieldOptions.getOrCreateOption(fieldName)
   }
 
+  public getOrCreateKanban(): Kanban {
+    const kanban = this.kanban
+    if (kanban.isSome()) return kanban.unwrap()
+
+    this.props.kanban = new Kanban({})
+    return this.props.kanban
+  }
+
   public getFieldHidden(fieldName: string): boolean {
     return this.fieldOptions.getHidden(fieldName)
   }
@@ -65,8 +88,16 @@ export class View extends ValueObject<IView> {
     return new WithFieldWidth(fieldName, this.name.unpack(), width)
   }
 
+  public switchDisplayType(type: IViewDisplayType): TableCompositeSpecificaiton {
+    return new WithDisplayType(this, type)
+  }
+
   public setFieldVisibility(fieldName: string, hidden: boolean): TableCompositeSpecificaiton {
     return new WithFieldVisibility(fieldName, this.name.unpack(), hidden)
+  }
+
+  public setKanbanFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
+    return new WithKanbanField(this, fieldId)
   }
 
   public getVisibility(): Record<string, boolean> {
@@ -92,6 +123,7 @@ export class View extends ValueObject<IView> {
     const parsed = createViewInput_internal.parse(input)
     return new View({
       name: ViewName.create(parsed.name),
+      kanban: input.kanban ? Kanban.from(input.kanban) : undefined,
       displayType: parsed.displayType || defaultViewDiaplyType,
       filter: parsed.filter ? new RootFilter(parsed.filter) : undefined,
       fieldOptions: ViewFieldOptions.from(input.fieldOptions),

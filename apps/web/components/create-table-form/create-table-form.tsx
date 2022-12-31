@@ -19,7 +19,7 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
     onSuccess: (data) => {
       reset()
       utils.table.list.refetch()
-      router.push(`table/${data.id}`)
+      router.push(`t/${data.id}`)
       onSuccess?.()
     },
   })

@@ -15,12 +15,18 @@ import {
   getTablesQuerySchema,
   MoveFieldCommand,
   moveFieldCommandInput,
+  ReorderOptionsCommand,
+  reorderOptionsCommandInput,
   SetFieldVisibilityCommand,
   setFieldVisibilityCommandInput,
   SetFieldWidthCommand,
   setFieldWidthCommandInput,
   setFiltersCommandInput,
   SetFitlersCommand,
+  SetKanbanFieldCommand,
+  setKanbanFieldCommandInput,
+  SwitchDisplayTypeCommand,
+  switchDisplayTypeCommandInput,
 } from '@egodb/core'
 import type { ICommandBus, IQueryBus } from '@egodb/domain'
 import { z } from 'zod'
@@ -103,6 +109,30 @@ export const createTableRouter =
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new MoveFieldCommand(input)
+          return commandBus.execute<void>(cmd)
+        }),
+      setKanbanField: procedure
+        .meta({ openapi: { method: 'POST', path: '/table.setKanbanField', tags } })
+        .input(setKanbanFieldCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new SetKanbanFieldCommand(input)
+          return commandBus.execute<void>(cmd)
+        }),
+      switchDisplayType: procedure
+        .meta({ openapi: { method: 'POST', path: '/table.switchDisplayType', tags } })
+        .input(switchDisplayTypeCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new SwitchDisplayTypeCommand(input)
+          return commandBus.execute<void>(cmd)
+        }),
+      reorderOptions: procedure
+        .meta({ openapi: { method: 'POST', path: '/table.reorderOptions', tags } })
+        .input(reorderOptionsCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new ReorderOptionsCommand(input)
           return commandBus.execute<void>(cmd)
         }),
     })

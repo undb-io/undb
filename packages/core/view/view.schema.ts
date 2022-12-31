@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { fieldIdSchema, fieldNameSchema } from '../field'
 import { rootFilter } from '../filter/filter'
+import { kanbanSchema } from './kanban.schema'
 import { fieldHiddenSchema, fieldWidthSchema, viewFieldOption } from './view-field-options'
 import { viewNameSchema } from './view-name.vo'
 
@@ -8,6 +9,7 @@ export const viewDisplayType = z.enum(['grid', 'kanban'])
 
 export const createViewInput_internal = z.object({
   name: viewNameSchema,
+  kanban: kanbanSchema.optional(),
   displayType: viewDisplayType.optional(),
   filter: rootFilter.optional(),
   fieldOptions: z.record(viewFieldOption).optional(),
@@ -16,6 +18,7 @@ export const createViewInput_internal = z.object({
 
 export const queryView = z.object({
   name: z.string(),
+  kanban: kanbanSchema.optional(),
   displayType: viewDisplayType,
   filter: rootFilter.optional(),
   fieldOptions: z.record(viewFieldOption).optional(),
@@ -51,3 +54,16 @@ export const moveFieldSchema = z.object({
 })
 
 export type IMoveFieldSchema = z.infer<typeof moveFieldSchema>
+
+export const switchDisplayTypeSchema = z.object({
+  viewName: viewNameSchema.optional(),
+  displayType: viewDisplayType,
+})
+
+export type ISwitchDisplayTypeSchema = z.infer<typeof switchDisplayTypeSchema>
+
+export const setKanbanFieldSchema = z.object({
+  viewName: viewNameSchema.optional(),
+  field: fieldIdSchema,
+})
+export type ISetKanbanFieldSchema = z.infer<typeof setKanbanFieldSchema>

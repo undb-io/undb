@@ -9,6 +9,7 @@ export * from './field.type'
 export * from './number-field'
 export * from './select-field'
 export * from './select-field.type'
+export * from './specifications'
 export * from './string-field'
 export * from './value-objects'
 export { createNumberFieldSchema, createStringFieldSchema }

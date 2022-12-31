@@ -1,5 +1,4 @@
-import type { DateVO } from '@egodb/domain'
-import { CompositeSpecification } from '@egodb/domain'
+import { CompositeSpecification, DateVO } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { Record } from '../record'
@@ -10,16 +9,16 @@ export class WithRecordCreatedAt extends CompositeSpecification<Record, IRecordV
     super()
   }
 
+  static fromDate(date: Date): WithRecordCreatedAt {
+    return new this(new DateVO(date))
+  }
+
   isSatisfiedBy(t: Record): boolean {
     return this.date.equals(t.createdAt)
   }
 
-  /**
-   * created at should not mutate exisiting record
-   * @param r - record
-   * @returns
-   */
   mutate(r: Record): Result<Record, string> {
+    r.createdAt = this.date
     return Ok(r)
   }
 

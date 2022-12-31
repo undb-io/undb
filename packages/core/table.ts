@@ -8,8 +8,9 @@ import type {
   ICreateFieldsSchema_internal,
   ICreateFieldValueSchema_internal,
   IQuerySchemaSchema,
+  IReorderOptionsSchema,
 } from './field'
-import { createFieldValueSchema_internal } from './field'
+import { createFieldValueSchema_internal, isSelectField } from './field'
 import type { IRootFilter } from './filter'
 import type { Record } from './record'
 import { WithRecordTableId } from './record'
@@ -27,6 +28,8 @@ import type {
   IQueryView,
   ISetFieldVisibilitySchema,
   ISetFieldWidthSchema,
+  ISetKanbanFieldSchema,
+  ISwitchDisplayTypeSchema,
   ViewFieldsOrder,
 } from './view'
 import { defaultViewDiaplyType, View } from './view'
@@ -166,9 +169,24 @@ export class Table {
     return spec
   }
 
+  public switchDisplayType(input: ISwitchDisplayTypeSchema): TableCompositeSpecificaiton {
+    const view = this.mustGetView(input.viewName)
+    const spec = view.switchDisplayType(input.displayType)
+    spec.mutate(this)
+    return spec
+  }
+
   public setFieldVisibility(input: ISetFieldVisibilitySchema): TableCompositeSpecificaiton {
     const view = this.mustGetView(input.viewName)
     const spec = view.setFieldVisibility(input.fieldName, input.hidden)
+    spec.mutate(this)
+    return spec
+  }
+
+  public setKanbanField(input: ISetKanbanFieldSchema): TableCompositeSpecificaiton {
+    const view = this.mustGetView(input.viewName)
+    const field = this.schema.getFieldById(input.field).unwrap()
+    const spec = view.setKanbanFieldSpec(field.id)
     spec.mutate(this)
     return spec
   }
@@ -181,5 +199,15 @@ export class Table {
     spec.mutate(this)
 
     return andOptions(viewSpec, Some(spec)).unwrap()
+  }
+
+  public reorderOption(input: IReorderOptionsSchema): TableCompositeSpecificaiton {
+    let field = this.schema.getFieldById(input.fieldId).unwrap()
+    field = isSelectField.parse(field)
+
+    const spec = field.reorder(input.from, input.to)
+    spec.mutate(this)
+
+    return spec
   }
 }

@@ -27,12 +27,12 @@ type DateFieldInMemory = {
   required?: boolean
 }
 
-type OptionInMemory = {
+export type OptionInMemory = {
   id: string
   name: string
 }
 
-type SelectFieldInMemory = {
+export type SelectFieldInMemory = {
   id: string
   type: 'select'
   name: string
@@ -56,9 +56,14 @@ export type FieldInMemory =
   | SelectFieldInMemory
   | BoolFieldInMemory
 
+export type KanbanInMemory = {
+  fieldId?: string
+}
+
 export type ViewInMemory = {
   name: string
   displayType: 'grid' | 'kanban'
+  kanban?: KanbanInMemory
   filter?: IRootFilter
   fieldOptions: Record<string, IViewFieldOption>
   fieldsOrder?: string[]
