@@ -1,5 +1,7 @@
 import type { QueryRecords } from '@egodb/core'
+import type { IKanbanField } from '@egodb/core/view/kanban.schema'
 import type { ITableBaseProps } from '../table/table-base-props'
+import { KanbanBoard } from './board'
 import { SelectKanbanField } from './select-kanban-field'
 
 interface IProps extends ITableBaseProps {
@@ -12,5 +14,7 @@ export const Kanban: React.FC<IProps> = ({ table }) => {
   if (fieldId.isNone()) {
     return <SelectKanbanField table={table} />
   }
-  return <>kanban</>
+
+  const field = table.schema.getFieldById(fieldId.unwrap().value).unwrap()
+  return <KanbanBoard table={table} field={field as IKanbanField} />
 }
