@@ -7,9 +7,9 @@ interface IProps extends ITableBaseProps {
   field: IKanbanField
 }
 
-export const KanbanBoard: React.FC<IProps> = ({ field }) => {
+export const KanbanBoard: React.FC<IProps> = ({ field, table }) => {
   if (field instanceof SelectField) {
-    return <SelectBoard field={field} />
+    return <SelectBoard field={field} table={table} />
   }
 
   return <>board</>

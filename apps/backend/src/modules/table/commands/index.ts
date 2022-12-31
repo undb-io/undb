@@ -3,6 +3,7 @@ import { CreateRecordCommandHandler } from './create-record.command.handler'
 import { CreateTableCommandHandler } from './create-table.command.handler'
 import { EditTableCommandHandler } from './edit-table.command.handler'
 import { MoveFieldCommandHandler } from './move-field.command.handler'
+import { ReorderOptionsCommandHandler } from './reorder-options.command.handler'
 import { SetFieldVisibilityCommandHandler } from './set-field-visibility.command.handler'
 import { SetFieldWidthCommandHandler } from './set-field-width.command.handler'
 import { SetFiltersCommandHandler } from './set-filters.command.handler'
@@ -19,5 +20,6 @@ export const commandHandlers = [
   SetFieldVisibilityCommandHandler,
   MoveFieldCommandHandler,
   EditTableCommandHandler,
+  ReorderOptionsCommandHandler,
   SwitchDisplayTypeCommandHandler,
 ]

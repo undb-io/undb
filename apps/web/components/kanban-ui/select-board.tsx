@@ -13,12 +13,15 @@ import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordin
 import type { SelectField } from '@egodb/core'
 import { Container, Group, useListState } from '@egodb/ui'
 import { useState } from 'react'
+import { trpc } from '../../trpc'
+import type { ITableBaseProps } from '../table/table-base-props'
 import { KanbanLane, KanbanLaneDnd } from './kanban-lane'
 
-interface IProps {
+interface IProps extends ITableBaseProps {
   field: SelectField
 }
-export const SelectBoard: React.FC<IProps> = ({ field }) => {
+
+export const SelectBoard: React.FC<IProps> = ({ table, field }) => {
   const [options, handlers] = useListState(field.options.options)
   const items = options.map((o) => o.id.value)
   const sensors = useSensors(
@@ -32,6 +35,8 @@ export const SelectBoard: React.FC<IProps> = ({ field }) => {
   const [activeId, setActiveId] = useState<string | null>(null)
   const active = options.find((o) => o.id.value === activeId)
 
+  const reorderOptions = trpc.table.reorderOptions.useMutation()
+
   return (
     <Container fluid ml={0}>
       <Group>
@@ -43,7 +48,13 @@ export const SelectBoard: React.FC<IProps> = ({ field }) => {
             if (over) {
               handlers.reorder({
                 from: active.data.current?.sortable?.index,
-                to: over?.data.current?.sortable?.index,
+                to: over.data.current?.sortable?.index,
+              })
+
+              reorderOptions.mutate({
+                tableId: table.id.value,
+                from: active.id as string,
+                to: over.id as string,
               })
             }
             setActiveId(null)

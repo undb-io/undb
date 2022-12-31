@@ -32,3 +32,10 @@ export const createSelectFieldValue_internal = z
   .merge(selectTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(SelectField) }))
 export type ICreateSelectFieldValue_internal = z.infer<typeof createSelectFieldValue_internal>
+
+export const reorderOptionsSchema = z.object({
+  from: optionIdSchema,
+  to: optionIdSchema,
+})
+
+export type IReorderOptionsSchema = z.infer<typeof reorderOptionsSchema>

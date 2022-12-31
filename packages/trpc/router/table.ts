@@ -1,3 +1,4 @@
+import type { IQueryTable } from '@egodb/core'
 import {
   CreateFieldCommand,
   CreateTableCommand,
@@ -12,9 +13,10 @@ import {
   GetTablesQuery,
   getTablesQueryOutput,
   getTablesQuerySchema,
-  IQueryTable,
   MoveFieldCommand,
   moveFieldCommandInput,
+  ReorderOptionsCommand,
+  reorderOptionsCommandInput,
   SetFieldVisibilityCommand,
   setFieldVisibilityCommandInput,
   SetFieldWidthCommand,
@@ -123,6 +125,14 @@ export const createTableRouter =
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new SwitchDisplayTypeCommand(input)
+          return commandBus.execute<void>(cmd)
+        }),
+      reorderOptions: procedure
+        .meta({ openapi: { method: 'POST', path: '/table.reorderOptions', tags } })
+        .input(reorderOptionsCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new ReorderOptionsCommand(input)
           return commandBus.execute<void>(cmd)
         }),
     })
