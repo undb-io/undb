@@ -1,7 +1,7 @@
-import { IViewDisplayType } from '@egodb/core'
+import type { IViewDisplayType } from '@egodb/core'
 import { Button, Menu, SegmentedControl, useDisclosure } from '@egodb/ui'
 import { trpc } from '../../trpc'
-import { ITableBaseProps } from './table-base-props'
+import type { ITableBaseProps } from './table-base-props'
 
 export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
   const [opened, toggle] = useDisclosure(false)
@@ -15,9 +15,9 @@ export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
   })
 
   return (
-    <Menu opened={opened} closeOnClickOutside>
+    <Menu opened={opened} closeOnItemClick closeOnClickOutside onClose={toggle.close}>
       <Menu.Target>
-        <Button compact variant="subtle" onClick={toggle.open}>
+        <Button compact variant="subtle" onClick={toggle.toggle}>
           {view.name.unpack()}
         </Button>
       </Menu.Target>
