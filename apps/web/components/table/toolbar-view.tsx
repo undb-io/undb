@@ -1,6 +1,7 @@
 import type { IViewDisplayType } from '@egodb/core'
-import { Button, Menu, SegmentedControl, useDisclosure } from '@egodb/ui'
+import { Button, Menu, SegmentedControl, Tooltip, useDisclosure } from '@egodb/ui'
 import { trpc } from '../../trpc'
+import { DisplayTypeIcon } from '../view/display-type-icon'
 import type { ITableBaseProps } from './table-base-props'
 
 export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
@@ -17,9 +18,16 @@ export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
   return (
     <Menu opened={opened} closeOnItemClick closeOnClickOutside onClose={toggle.close}>
       <Menu.Target>
-        <Button compact variant="subtle" onClick={toggle.toggle}>
-          {view.name.unpack()}
-        </Button>
+        <Tooltip label={view.displayType}>
+          <Button
+            compact
+            variant="subtle"
+            onClick={toggle.toggle}
+            leftIcon={<DisplayTypeIcon displayType={view.displayType} />}
+          >
+            {view.name.unpack()}
+          </Button>
+        </Tooltip>
       </Menu.Target>
 
       <Menu.Dropdown>
