@@ -62,7 +62,7 @@ export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCa
             ))}
           </SortableContext>
         </DndContext>
-        <Divider h="md" />
+        <Divider />
         <Group position="apart">
           <Button
             disabled={hasNull}
