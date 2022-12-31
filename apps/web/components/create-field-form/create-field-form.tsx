@@ -7,6 +7,7 @@ import { FieldInputLabel } from '../fields/field-input-label'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { useCreateFieldFormContext } from './create-field-form-context'
 import { createFielModelOpened } from './create-field-modal-opened.atom'
+import { CreateFieldVariantControl } from './create-field-variant-control'
 
 interface IProps extends ITableBaseProps {
   onCancel?: () => void
@@ -42,7 +43,10 @@ export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
           data={FIELD_SELECT_ITEMS}
         />
         <TextInput {...form.getInputProps('name')} label={<FieldInputLabel>name</FieldInputLabel>} required />
+        <CreateFieldVariantControl />
+
         <Divider />
+
         <Group position="right">
           <Button
             variant="subtle"
@@ -53,6 +57,7 @@ export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
           >
             Cancel
           </Button>
+
           <Button loading={createField.isLoading} miw={200} disabled={!form.isValid()} type="submit">
             Create
           </Button>
