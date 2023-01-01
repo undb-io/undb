@@ -42,14 +42,15 @@ export const SelectExistingField: React.FC<ITableBaseProps> = ({ table }) => {
         <Card.Section withBorder inheritPadding py="sm">
           <Stack spacing="xs">
             {hasSelectFields ? (
-              <Radio.Group {...form.getInputProps('field')}>
-                {selectFields.map((f) => (
-                  <Radio key={f.id.value} value={f.id.value} label={f.name.value} />
-                ))}
-              </Radio.Group>
+              <>
+                <Radio.Group {...form.getInputProps('field')}>
+                  {selectFields.map((f) => (
+                    <Radio key={f.id.value} value={f.id.value} label={f.name.value} />
+                  ))}
+                </Radio.Group>
+                <Divider label="or" labelPosition="center" />
+              </>
             ) : null}
-
-            <Divider label="or" labelPosition="center" />
 
             <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setStepOne}>
               add new select field
