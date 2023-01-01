@@ -1,4 +1,4 @@
-import { SelectFieldControl } from '../../fields/field-control'
+import { SelectFieldControl } from '../../fields/select-field-control'
 import { useCreateTableFormContext } from '../create-table-form-context'
 
 interface IProps {

@@ -1,4 +1,4 @@
-import { SelectFieldControl } from '../fields/field-control'
+import { SelectFieldControl } from '../fields/select-field-control'
 import { useCreateFieldFormContext } from './create-field-form-context'
 
 export const CreateFieldVariantControl: React.FC = () => {
