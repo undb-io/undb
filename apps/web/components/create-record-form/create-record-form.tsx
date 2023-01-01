@@ -1,5 +1,16 @@
 import type { Table } from '@egodb/core'
-import { Alert, Button, Checkbox, DatePicker, Divider, Group, IconAlertCircle, NumberInput, TextInput } from '@egodb/ui'
+import {
+  Alert,
+  Button,
+  Checkbox,
+  DatePicker,
+  Divider,
+  Group,
+  IconAlertCircle,
+  NumberInput,
+  Stack,
+  TextInput,
+} from '@egodb/ui'
 import { trpc } from '../../trpc'
 import { FieldInputLabel } from '../fields/field-input-label'
 import { OptionPicker } from '../option/option-picker'
@@ -37,23 +48,25 @@ export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess 
 
   return (
     <form onSubmit={onSubmit}>
-      {table.schema.fields.map((field, index) => {
-        const props = form.getInputProps(`value.${index}.value`)
-        const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
-        if (field.type === 'number') {
-          return <NumberInput key={field.id.value} {...props} label={label} />
-        }
-        if (field.type === 'date') {
-          return <DatePicker key={field.id.value} {...props} label={label} />
-        }
-        if (field.type === 'bool') {
-          return <Checkbox key={field.id.value} {...props} label={label} />
-        }
-        if (field.type === 'select') {
-          return <OptionPicker field={field} key={field.id.value} {...props} label={label} />
-        }
-        return <TextInput key={field.id.value} {...props} label={label} />
-      })}
+      <Stack>
+        {table.schema.fields.map((field, index) => {
+          const props = form.getInputProps(`value.${index}.value`)
+          const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
+          if (field.type === 'number') {
+            return <NumberInput key={field.id.value} {...props} label={label} />
+          }
+          if (field.type === 'date') {
+            return <DatePicker key={field.id.value} {...props} label={label} />
+          }
+          if (field.type === 'bool') {
+            return <Checkbox key={field.id.value} {...props} label={label} />
+          }
+          if (field.type === 'select') {
+            return <OptionPicker field={field} key={field.id.value} {...props} label={label} />
+          }
+          return <TextInput key={field.id.value} {...props} label={label} />
+        })}
+      </Stack>
 
       <Divider my="lg" />
 

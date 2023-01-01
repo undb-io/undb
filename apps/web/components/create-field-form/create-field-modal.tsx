@@ -1,5 +1,6 @@
 import type { ICreateFieldSchema } from '@egodb/core'
-import { Modal, useEgoUITheme } from '@egodb/ui'
+import { createFieldSchema } from '@egodb/core'
+import { Modal, useEgoUITheme, zodResolver } from '@egodb/ui'
 import { useAtom } from 'jotai'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import type { ITableBaseProps } from '../table/table-base-props'
@@ -11,12 +12,13 @@ export const CreateFieldModal: React.FC<ITableBaseProps> = ({ table }) => {
   const [opened, setOpened] = useAtom(createFielModelOpened)
   const initialValues: ICreateFieldSchema = {
     type: 'string',
-    id: '',
+    id: 'id',
     name: '',
   }
 
   const form = useCreateField({
     initialValues,
+    validate: zodResolver(createFieldSchema),
   })
 
   useDeepCompareEffect(() => {
