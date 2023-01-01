@@ -3,7 +3,7 @@ import { useForm, zodResolver, Card, Radio, Group, Button, Text, IconPlus, Stack
 import { useSetAtom } from 'jotai'
 import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
-import { stepOne } from './kanban-step.atom'
+import { stepOneAtom } from './kanban-step.atom'
 
 export const SelectExistingField: React.FC<ITableBaseProps> = ({ table }) => {
   const selectFields = table.schema.selectFields
@@ -30,7 +30,7 @@ export const SelectExistingField: React.FC<ITableBaseProps> = ({ table }) => {
     })
   })
 
-  const setStepOne = useSetAtom(stepOne)
+  const setStepOne = useSetAtom(stepOneAtom)
 
   return (
     <form onSubmit={onSubmit}>
