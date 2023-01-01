@@ -14,7 +14,7 @@ export const SelectKanbanField: React.FC<IProps> = ({ table, onSuccess }) => {
   return (
     <>
       {step === 0 ? <SelectExistingField onSuccess={onSuccess} table={table} /> : null}
-      {step === 1 ? <CreateSelectField table={table} /> : null}
+      {step === 1 ? <CreateSelectField onSuccess={onSuccess} table={table} /> : null}
     </>
   )
 }

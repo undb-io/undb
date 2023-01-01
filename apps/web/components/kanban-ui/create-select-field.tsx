@@ -1,14 +1,29 @@
 import type { ICreateSelectFieldSchema } from '@egodb/core'
 import { createSelectFieldSchema } from '@egodb/core'
 import { FieldId } from '@egodb/core'
-import { Button, Card, Group, IconChevronLeft, Stack, Text, TextInput, useForm, zodResolver } from '@egodb/ui'
+import {
+  Button,
+  Card,
+  FocusTrap,
+  Group,
+  IconChevronLeft,
+  Stack,
+  Text,
+  TextInput,
+  useForm,
+  zodResolver,
+} from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { trpc } from '../../trpc'
 import { SelectFieldControl } from '../fields/select-field-control'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { stepZeroAtom } from './kanban-step.atom'
 
-export const CreateSelectField: React.FC<ITableBaseProps> = ({ table }) => {
+interface IProps extends ITableBaseProps {
+  onSuccess?: () => void
+}
+
+export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
   const form = useForm<ICreateSelectFieldSchema>({
     initialValues: {
       type: 'select',
@@ -25,6 +40,7 @@ export const CreateSelectField: React.FC<ITableBaseProps> = ({ table }) => {
     onSuccess() {
       utils.table.get.refetch()
       setStepZero()
+      onSuccess?.()
     },
   })
 
@@ -50,14 +66,16 @@ export const CreateSelectField: React.FC<ITableBaseProps> = ({ table }) => {
 
   return (
     <form onSubmit={onSubmit}>
-      <Card shadow="sm" w={450}>
+      <Card shadow="sm">
         <Card.Section withBorder inheritPadding py="sm">
           <Text>create new select field</Text>
         </Card.Section>
 
         <Card.Section withBorder inheritPadding py="sm">
           <Stack spacing="xs">
-            <TextInput {...form.getInputProps('name')} />
+            <FocusTrap>
+              <TextInput {...form.getInputProps('name')} placeholder="new select field name" />
+            </FocusTrap>
             <SelectFieldControl onChange={(options) => form.setFieldValue('options', options)} />
           </Stack>
         </Card.Section>

@@ -61,6 +61,12 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
           overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
           overlayOpacity={0.55}
           overlayBlur={3}
+          styles={{
+            modal: {
+              // TODO: better override
+              padding: '0 !important',
+            },
+          }}
         >
           <SelectKanbanField table={table} onSuccess={() => setOpened(false)} />
         </Modal>
