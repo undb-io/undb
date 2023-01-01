@@ -34,10 +34,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   listeners,
   records,
 }) => {
-  const filteredRecords = useMemo(
-    () => records.filter((r) => (id ? r.values[field.name.value] === id : !r.values[field.name.value])),
-    [records],
-  )
+  const filteredRecords = useMemo(() => records.filter((r) => r.values[field.name.value] === id), [records])
   return (
     <Card ref={setNodeRef} style={style} withBorder shadow="xs" radius="sm" w={350}>
       <Card.Section withBorder inheritPadding py="sm">
@@ -52,7 +49,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
         </Group>
       </Card.Section>
 
-      <Card.Section withBorder inheritPadding p="sm" bg="gray.1" mih={400}>
+      <Card.Section withBorder inheritPadding p="sm" bg="gray.0" mih={400}>
         <Stack>
           {filteredRecords.map((r) => (
             <KanbanCard table={table} record={r} key={r.id} />
