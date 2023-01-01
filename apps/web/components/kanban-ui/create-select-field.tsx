@@ -4,7 +4,7 @@ import { FieldId } from '@egodb/core'
 import { Button, Card, Group, IconChevronLeft, Stack, Text, TextInput, useForm, zodResolver } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { trpc } from '../../trpc'
-import { SelectFieldControl } from '../fields/field-control'
+import { SelectFieldControl } from '../fields/select-field-control'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { stepZero } from './kanban-step.atom'
 
