@@ -10,13 +10,15 @@ import {
 } from '@dnd-kit/core'
 import { restrictToHorizontalAxis } from '@dnd-kit/modifiers'
 import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-import type { SelectField } from '@egodb/core'
-import type { QueryRecords } from '@egodb/core'
-import { Container, Group, useListState } from '@egodb/ui'
-import { useState } from 'react'
+import type { QueryRecords, SelectField } from '@egodb/core'
+import { Container, Group, Modal, useEgoUITheme, useListState } from '@egodb/ui'
+import { useAtom } from 'jotai'
+import { useEffect, useState } from 'react'
 import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
+import { openKanbanEditFieldAtom } from './kanban-edit-field.atom'
 import { KanbanLane, SortableKanbanLane } from './kanban-lane'
+import { SelectKanbanField } from './select-kanban-field'
 
 interface IProps extends ITableBaseProps {
   field: SelectField
@@ -25,6 +27,11 @@ interface IProps extends ITableBaseProps {
 
 export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
   const [options, handlers] = useListState(field.options.options)
+
+  useEffect(() => {
+    handlers.setState(field.options.options)
+  }, [field])
+
   const items = options.map((o) => o.id.value)
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -39,8 +46,26 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
 
   const reorderOptions = trpc.table.reorderOptions.useMutation()
 
+  const [opened, setOpened] = useAtom(openKanbanEditFieldAtom)
+
+  const theme = useEgoUITheme()
+
   return (
     <Container fluid ml={0}>
+      {opened && (
+        <Modal
+          target="body"
+          withCloseButton={false}
+          opened={opened}
+          onClose={() => setOpened(false)}
+          overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
+          overlayOpacity={0.55}
+          overlayBlur={3}
+        >
+          <SelectKanbanField table={table} onSuccess={() => setOpened(false)} />
+        </Modal>
+      )}
+
       <Group>
         <KanbanLane table={table} field={field} records={records} title="uncategorized" id={null} />
 

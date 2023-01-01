@@ -1,3 +1,4 @@
+export * from './kanban'
 export * from './specifications'
 export * from './view'
 export * from './view-field-options'
