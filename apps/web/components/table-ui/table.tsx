@@ -26,7 +26,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
             return f.options.getById(props.getValue() as string).mapOr('', (o) => o.name.value)
           }
           if (f.type === 'bool') {
-            return <Checkbox checked={props.getValue() as boolean} />
+            return <Checkbox defaultChecked={props.getValue() as boolean} />
           }
           return props.getValue()?.toString()
         },
