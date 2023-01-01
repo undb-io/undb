@@ -50,6 +50,10 @@ export class SelectField extends BaseField<ISelectField> {
   }
 
   createValue(value: ICreateSelectFieldValue): SelectFieldValue {
+    if (value === null) {
+      return new SelectFieldValue(null)
+    }
+
     const option = this.options.getById(value).unwrap()
 
     return SelectFieldValue.fromOption(option)
