@@ -1,5 +1,5 @@
 import { setKanbanFieldSchema } from '@egodb/core'
-import { useForm, zodResolver, Card, Radio, Group, Button, Text, IconPlus, Stack } from '@egodb/ui'
+import { useForm, zodResolver, Card, Radio, Group, Button, Text, IconPlus, Stack, Divider } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
@@ -40,7 +40,7 @@ export const SelectExistingField: React.FC<ITableBaseProps> = ({ table }) => {
         </Card.Section>
 
         <Card.Section withBorder inheritPadding py="sm">
-          <Stack>
+          <Stack spacing="xs">
             {hasSelectFields ? (
               <Radio.Group {...form.getInputProps('field')}>
                 {selectFields.map((f) => (
@@ -48,6 +48,8 @@ export const SelectExistingField: React.FC<ITableBaseProps> = ({ table }) => {
                 ))}
               </Radio.Group>
             ) : null}
+
+            <Divider label="or" labelPosition="center" />
 
             <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setStepOne}>
               add new select field

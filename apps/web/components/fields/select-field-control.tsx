@@ -1,6 +1,6 @@
 import { closestCenter, DndContext } from '@dnd-kit/core'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
-import { horizontalListSortingStrategy, SortableContext, useSortable } from '@dnd-kit/sortable'
+import { SortableContext, useSortable } from '@dnd-kit/sortable'
 import type { ICreateOptionSchema } from '@egodb/core'
 import { OptionId } from '@egodb/core'
 import {
