@@ -1,6 +1,6 @@
 import type { ICreateRecordInput, Table as CoreTable } from '@egodb/core'
 import { createRecordCommandInput } from '@egodb/core'
-import { Drawer, useEgoUITheme, zodResolver } from '@egodb/ui'
+import { Drawer, zodResolver } from '@egodb/ui'
 import { useAtom } from 'jotai'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useConfirmModal } from '../../hooks'
@@ -14,7 +14,6 @@ interface IProps {
 
 export const CreateRecordFormDrawer: React.FC<IProps> = ({ table }) => {
   const [opened, setOpened] = useAtom(createRecordFormDrawerOpened)
-  const theme = useEgoUITheme()
 
   const initialValues: ICreateRecordInput = {
     tableId: table.id.value,
@@ -57,9 +56,6 @@ export const CreateRecordFormDrawer: React.FC<IProps> = ({ table }) => {
         padding="xl"
         position="right"
         size={700}
-        overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
-        overlayOpacity={0.55}
-        overlayBlur={3}
       >
         <CreateRecordForm table={table} onCancel={reset} />
       </Drawer>
