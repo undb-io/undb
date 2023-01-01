@@ -48,4 +48,42 @@ describe('SelectField', () => {
       `)
     })
   })
+
+  describe('createSelectValue', () => {
+    test('should create null value', () => {
+      const selectField = SelectField.create({
+        type: 'select',
+        name: 'select',
+        id: 'select',
+        options: [{ name: '1' }],
+      })
+
+      const value = selectField.createValue(null)
+      expect(value).toMatchInlineSnapshot(`
+        SelectFieldValue {
+          "props": {
+            "value": null,
+          },
+        }
+      `)
+    })
+
+    test('should create option value', () => {
+      const selectField = SelectField.create({
+        type: 'select',
+        name: 'select',
+        id: 'select',
+        options: [{ id: 'fld1', name: '1' }],
+      })
+
+      const value = selectField.createValue('fld1')
+      expect(value).toMatchInlineSnapshot(`
+        SelectFieldValue {
+          "props": {
+            "value": "fld1",
+          },
+        }
+      `)
+    })
+  })
 })
