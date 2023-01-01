@@ -1,6 +1,6 @@
 import type { ICreateFieldSchema } from '@egodb/core'
 import { createFieldSchema } from '@egodb/core'
-import { Modal, useEgoUITheme, zodResolver } from '@egodb/ui'
+import { Modal, zodResolver } from '@egodb/ui'
 import { useAtom } from 'jotai'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import type { ITableBaseProps } from '../table/table-base-props'
@@ -25,19 +25,9 @@ export const CreateFieldModal: React.FC<ITableBaseProps> = ({ table }) => {
     form.setValues(initialValues)
   }, [initialValues])
 
-  const theme = useEgoUITheme()
-
   return (
     <CreateFieldFormProvider form={form}>
-      <Modal
-        exitTransitionDuration={100}
-        opened={opened}
-        onClose={() => setOpened(false)}
-        title="Add Field"
-        overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
-        overlayOpacity={0.55}
-        overlayBlur={3}
-      >
+      <Modal exitTransitionDuration={100} opened={opened} onClose={() => setOpened(false)} title="Add Field">
         <CreateFieldForm table={table} />
       </Modal>
     </CreateFieldFormProvider>

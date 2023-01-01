@@ -1,6 +1,6 @@
 'use client'
 
-import { CacheProvider, EgoUIProvider, ModalsProvider, useEmotionCache } from '@egodb/ui'
+import { CacheProvider, EgoUIProvider, ModalsProvider, modalStyles, useEmotionCache } from '@egodb/ui'
 import { useServerInsertedHTML } from 'next/navigation'
 
 export default function RootStyleRegistry({ children }: { children: React.ReactNode }) {
@@ -19,7 +19,21 @@ export default function RootStyleRegistry({ children }: { children: React.ReactN
 
   return (
     <CacheProvider value={cache}>
-      <EgoUIProvider theme={{ primaryColor: 'indigo' }} withGlobalStyles withNormalizeCSS>
+      <EgoUIProvider
+        theme={{
+          primaryColor: 'indigo',
+          components: {
+            Modal: {
+              styles: modalStyles,
+            },
+            Drawer: {
+              styles: modalStyles,
+            },
+          },
+        }}
+        withGlobalStyles
+        withNormalizeCSS
+      >
         <ModalsProvider>{children}</ModalsProvider>
       </EgoUIProvider>
     </CacheProvider>

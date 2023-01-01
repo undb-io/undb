@@ -11,7 +11,7 @@ import {
 import { restrictToHorizontalAxis } from '@dnd-kit/modifiers'
 import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import type { QueryRecords, SelectField } from '@egodb/core'
-import { Container, Group, Modal, useEgoUITheme, useListState } from '@egodb/ui'
+import { Container, Group, Modal, useListState } from '@egodb/ui'
 import { useAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import { trpc } from '../../trpc'
@@ -48,8 +48,6 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
 
   const [opened, setOpened] = useAtom(openKanbanEditFieldAtom)
 
-  const theme = useEgoUITheme()
-
   return (
     <Container fluid ml={0}>
       {opened && (
@@ -58,9 +56,6 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
           withCloseButton={false}
           opened={opened}
           onClose={() => setOpened(false)}
-          overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
-          overlayOpacity={0.55}
-          overlayBlur={3}
           styles={{
             modal: {
               // TODO: better override

@@ -1,6 +1,6 @@
 import type { IEditTableSchema } from '@egodb/core'
 import { editTableSchema } from '@egodb/core'
-import { Drawer, useEgoUITheme, zodResolver } from '@egodb/ui'
+import { Drawer, zodResolver } from '@egodb/ui'
 import { useAtom } from 'jotai'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useConfirmModal } from '../../hooks'
@@ -11,7 +11,6 @@ import { EditTableFormProvider, useEditTable } from './edit-table-form-context'
 
 export const EditTableFormDrawer: React.FC<ITableBaseProps> = ({ table }) => {
   const [opened, setOpened] = useAtom(editTableFormDrawerOpened)
-  const theme = useEgoUITheme()
 
   const initialValues: IEditTableSchema = {
     name: table.name.value,
@@ -51,9 +50,6 @@ export const EditTableFormDrawer: React.FC<ITableBaseProps> = ({ table }) => {
         padding="xl"
         position="right"
         size={700}
-        overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
-        overlayOpacity={0.55}
-        overlayBlur={3}
       >
         <EditTableForm table={table} onCancel={() => setOpened(false)} />
       </Drawer>
