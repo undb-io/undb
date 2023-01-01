@@ -5,20 +5,27 @@ import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { stepOneAtom } from './kanban-step.atom'
 
-export const SelectExistingField: React.FC<ITableBaseProps> = ({ table }) => {
+interface IProps extends ITableBaseProps {
+  onSuccess?: () => void
+}
+
+export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
   const selectFields = table.schema.selectFields
+  const view = table.mustGetView()
+  const initialSelectFieldId = view.kanban.into()?.fieldId?.value
   const hasSelectFields = selectFields.length > 0
 
   const utils = trpc.useContext()
   const setKanbanField = trpc.table.setKanbanField.useMutation({
     onSuccess() {
       utils.table.get.refetch()
+      onSuccess?.()
     },
   })
 
   const form = useForm({
     initialValues: {
-      field: '',
+      field: initialSelectFieldId ?? '',
     },
     validate: zodResolver(setKanbanFieldSchema),
   })
@@ -34,7 +41,7 @@ export const SelectExistingField: React.FC<ITableBaseProps> = ({ table }) => {
 
   return (
     <form onSubmit={onSubmit}>
-      <Card shadow={'sm'} w={450}>
+      <Card shadow={'sm'}>
         <Card.Section withBorder inheritPadding py="sm">
           <Text>select one field</Text>
         </Card.Section>
@@ -43,7 +50,11 @@ export const SelectExistingField: React.FC<ITableBaseProps> = ({ table }) => {
           <Stack spacing="xs">
             {hasSelectFields ? (
               <>
-                <Radio.Group {...form.getInputProps('field')}>
+                <Radio.Group
+                  orientation="vertical"
+                  defaultValue={initialSelectFieldId}
+                  {...form.getInputProps('field')}
+                >
                   {selectFields.map((f) => (
                     <Radio key={f.id.value} value={f.id.value} label={f.name.value} />
                   ))}
@@ -60,7 +71,7 @@ export const SelectExistingField: React.FC<ITableBaseProps> = ({ table }) => {
 
         <Card.Section withBorder inheritPadding py="sm">
           <Group position="right">
-            <Button size="xs" type="submit" disabled={!form.isValid()}>
+            <Button size="xs" type="submit" disabled={!form.isValid() || !form.isDirty()}>
               Done
             </Button>
           </Group>
