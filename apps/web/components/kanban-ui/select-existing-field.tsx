@@ -40,7 +40,7 @@ export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
   const setStepOne = useSetAtom(stepOneAtom)
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} style={{ width: '100%' }}>
       <Card shadow={'sm'}>
         <Card.Section withBorder inheritPadding py="sm">
           <Text>select one field</Text>

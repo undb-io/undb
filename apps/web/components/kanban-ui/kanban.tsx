@@ -14,8 +14,8 @@ export const Kanban: React.FC<IProps> = ({ table, records }) => {
   const fieldId = view.kanbanSelectFieldId
   if (fieldId.isNone()) {
     return (
-      <Container h="100%">
-        <Center h="100%">
+      <Container h="100%" w={450}>
+        <Center h="100%" w="100%">
           <SelectKanbanField table={table} />
         </Center>
       </Container>
