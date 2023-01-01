@@ -22,10 +22,10 @@ export const selectFieldQuerySchema = baseFieldQuerySchema.merge(selectTypeObjec
   }),
 )
 
-export const selectFieldValue = optionIdSchema
+export const selectFieldValue = optionIdSchema.nullable()
 export type ISelectFieldValue = z.infer<typeof selectFieldValue>
 
-export const createSelectFieldValue = optionIdSchema
+export const createSelectFieldValue = optionIdSchema.nullable()
 export type ICreateSelectFieldValue = z.infer<typeof createSelectFieldValue>
 
 export const createSelectFieldValue_internal = z

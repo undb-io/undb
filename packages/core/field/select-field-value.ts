@@ -4,7 +4,7 @@ import type { FieldValue } from './field.type'
 import type { ISelectFieldValue } from './select-field.type'
 
 export class SelectFieldValue extends ValueObject<ISelectFieldValue> {
-  constructor(value: string) {
+  constructor(value: ISelectFieldValue) {
     super({ value })
   }
 
@@ -16,7 +16,7 @@ export class SelectFieldValue extends ValueObject<ISelectFieldValue> {
     return new this(o.id.value)
   }
 
-  get id(): string {
+  get id(): ISelectFieldValue {
     return this.props.value
   }
 }
