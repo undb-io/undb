@@ -9,7 +9,7 @@ import { KanbanCard } from './card'
 import type { Table } from '@egodb/core'
 
 interface IProps {
-  id: string
+  id: string | null
   title: string
   table: Table
   field: SelectField
@@ -31,19 +31,24 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   style,
   title,
   attributes = {},
-  listeners = {},
+  listeners,
   records,
 }) => {
-  const filteredRecords = useMemo(() => records.filter((r) => r.values[field.name.value] === id), [records])
+  const filteredRecords = useMemo(
+    () => records.filter((r) => (id ? r.values[field.name.value] === id : !r.values[field.name.value])),
+    [records],
+  )
   return (
     <Card ref={setNodeRef} style={style} withBorder shadow="xs" radius="sm" w={350}>
       <Card.Section withBorder inheritPadding py="sm">
         <Group position="apart">
           <Text weight={500}>{title}</Text>
 
-          <ActionIcon {...listeners} {...attributes}>
-            <IconGripVertical size={14} cursor="grab" />
-          </ActionIcon>
+          {listeners ? (
+            <ActionIcon {...listeners} {...attributes}>
+              <IconGripVertical size={14} cursor="grab" />
+            </ActionIcon>
+          ) : null}
         </Group>
       </Card.Section>
 
@@ -60,7 +65,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
 
 export const SortableKanbanLane: React.FC<IProps> = ({ table, title, field, id, records }) => {
   const { attributes, listeners, isDragging, setNodeRef, transform, transition } = useSortable({
-    id,
+    id: id as string,
     animateLayoutChanges: defaultAnimateLayoutChanges,
   })
 

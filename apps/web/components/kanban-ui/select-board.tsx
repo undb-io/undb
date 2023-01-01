@@ -42,6 +42,8 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
   return (
     <Container fluid ml={0}>
       <Group>
+        <KanbanLane table={table} field={field} records={records} title="uncategorized" id="uncategorized" />
+
         <DndContext
           sensors={sensors}
           onDragStart={({ active }) => setActiveId(active.id as string)}
