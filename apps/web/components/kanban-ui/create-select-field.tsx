@@ -6,7 +6,7 @@ import { useSetAtom } from 'jotai'
 import { trpc } from '../../trpc'
 import { SelectFieldControl } from '../fields/select-field-control'
 import type { ITableBaseProps } from '../table/table-base-props'
-import { stepZero } from './kanban-step.atom'
+import { stepZeroAtom } from './kanban-step.atom'
 
 export const CreateSelectField: React.FC<ITableBaseProps> = ({ table }) => {
   const form = useForm<ICreateSelectFieldSchema>({
@@ -46,7 +46,7 @@ export const CreateSelectField: React.FC<ITableBaseProps> = ({ table }) => {
     })
   })
 
-  const setStepZero = useSetAtom(stepZero)
+  const setStepZero = useSetAtom(stepZeroAtom)
 
   return (
     <form onSubmit={onSubmit}>
