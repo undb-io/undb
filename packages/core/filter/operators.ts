@@ -39,3 +39,6 @@ export type IDateFilterOperator = z.infer<typeof dateFilterOperators>
  * built in date operators
  */
 export const dateBuiltInOperators = new Set<IDateFilterOperator>([$is_today.value])
+
+export const dateRangeFilterOperators = z.union([$eq, $neq])
+export type IDateRangeFilterOperator = z.infer<typeof dateRangeFilterOperators>

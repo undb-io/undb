@@ -28,6 +28,7 @@ import type { IBoolFilter } from './bool.filter'
 import { boolFilter, boolFilterValue } from './bool.filter'
 import type { IConjunction } from './conjunction'
 import { conjunctions } from './conjunction'
+import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter'
 import type { IDateFilter } from './date.filter'
 import { dateFilter, dateFilterValue } from './date.filter'
 import type { INumberFilter } from './number.filter'
@@ -38,6 +39,7 @@ import {
   $is_true,
   boolFilterOperators,
   dateFilterOperators,
+  dateRangeFilterOperators,
   numberFilterOperators,
   selectFilterOperators,
   stringFilterOperators,
@@ -51,6 +53,7 @@ export const filterValue = z.union([
   stringFilterValue,
   numberFilterValue,
   dateFilterValue,
+  dateRangeFilterValue,
   selectFilterValue,
   boolFilterValue,
 ])
@@ -60,12 +63,20 @@ export const operaotrs = z.union([
   stringFilterOperators,
   numberFilterOperators,
   dateFilterOperators,
+  dateRangeFilterOperators,
   selectFilterOperators,
   boolFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
-const filter = z.discriminatedUnion('type', [stringFilter, numberFilter, dateFilter, selectFilter, boolFilter])
+const filter = z.discriminatedUnion('type', [
+  stringFilter,
+  numberFilter,
+  dateFilter,
+  dateRangeFilter,
+  selectFilter,
+  boolFilter,
+])
 
 export type IFilter = z.infer<typeof filter>
 export type IFilters = IFilter[]
