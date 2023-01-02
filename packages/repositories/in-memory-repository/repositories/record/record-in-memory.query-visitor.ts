@@ -7,6 +7,7 @@ import type {
   DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
+  DateRangeEqual,
   IRecordSpec,
   IRecordVisitor,
   NumberEqual,
@@ -25,6 +26,7 @@ import type {
   WithRecordId,
   WithRecordTableId,
 } from '@egodb/core'
+import { DateRangeFieldValue } from '@egodb/core'
 import { isBoolean, isNumber, isString } from '@fxts/core'
 import { isAfter, isBefore, isDate, isEqual, isToday } from 'date-fns'
 import type { Result } from 'oxide.ts'
@@ -227,6 +229,19 @@ export class RecordInMemoryQueryVisitor implements IRecordVisitor {
     this.predicate = (r) => {
       const value = r.values[s.name]
       return isBoolean(value) && value === false
+    }
+  }
+
+  dateRangeEqual(s: DateRangeEqual): void {
+    this.predicate = (r) => {
+      const value = r.values[s.name]
+      return (
+        DateRangeFieldValue.isDateRange(value) &&
+        !!value &&
+        !!s.value &&
+        isEqual(value[0], s.value[0]) &&
+        isEqual(value[1], s.value[1])
+      )
     }
   }
 }

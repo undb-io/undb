@@ -1,7 +1,12 @@
 import type { IDateRangeFilterOperator } from '../filter'
 import type { IDateRangeFilter } from '../filter/date-range.filter'
 import { DateRangeFieldValue } from './date-range-field-value'
-import type { DateRangeType, ICreateDateRangeFieldSchema, ICreateDateRangeFieldValue } from './date-range-field.type'
+import type {
+  DateRangeType,
+  ICreateDateRangeFieldSchema,
+  ICreateDateRangeFieldValue,
+  IDateRangeFieldValue,
+} from './date-range-field.type'
 import { BaseField } from './field.base'
 import type { IDateRangeField } from './field.type'
 import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
@@ -31,7 +36,7 @@ export class DateRangeField extends BaseField<IDateRangeField> {
     return new DateRangeFieldValue(value)
   }
 
-  createFilter(operator: IDateRangeFilterOperator, value: Date | null): IDateRangeFilter {
-    return { operator, field: null, value: value, path: this.name.value, type: 'date-range' }
+  createFilter(operator: IDateRangeFilterOperator, value: IDateRangeFieldValue | null): IDateRangeFilter {
+    return { operator, value: value, path: this.name.value, type: 'date-range' }
   }
 }

@@ -3,6 +3,8 @@ import { isBoolean, isNumber, isString } from '@fxts/core'
 import { isDate } from 'date-fns'
 import { None, Option, Some } from 'oxide.ts'
 import type { FieldValue, ICreateFieldsSchema_internal, IFieldValue, UnpackedFieldValue } from '../../field'
+import { DateRangeFieldValue } from '../../field/date-range-field-value'
+import type { IDateRangeFieldValue } from '../../field/date-range-field.type'
 import { SelectFieldValue } from '../../field/select-field-value'
 
 export class RecordValues extends ValueObject<Map<string, FieldValue>> {
@@ -78,6 +80,12 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   getDateValue(name: string): Option<Date> {
     return this.getUnpackedValue(name)
       .map((v) => (isDate(v) ? Some(v as Date) : None))
+      .flatten()
+  }
+
+  getDateRangeValue(name: string): Option<IDateRangeFieldValue> {
+    return this.getUnpackedValue(name)
+      .map((v) => (DateRangeFieldValue.isDateRange(v) ? Some(v) : None))
       .flatten()
   }
 

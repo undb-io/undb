@@ -2,6 +2,7 @@ import type { CompositeSpecification, ISpecVisitor } from '@egodb/domain'
 import { type ISpecification } from '@egodb/domain'
 import { type Record } from '../record'
 import type { BoolIsFalse, BoolIsTrue } from './bool.specification'
+import type { DateRangeEqual } from './date-range.specification'
 import type {
   DateEqual,
   DateGreaterThan,
@@ -52,6 +53,8 @@ interface IRecordValueVisitor {
   dateGreaterThanOrEqual(s: DateGreaterThanOrEqual): void
   dateLessThanOrEqual(s: DateLessThanOrEqual): void
   dateIsToday(s: DateIsToday): void
+
+  dateRangeEqual(s: DateRangeEqual): void
 
   selectEqual(s: SelectEqual): void
   selectIn(s: SelectIn): void
