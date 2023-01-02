@@ -18,8 +18,9 @@ import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { openKanbanEditFieldAtom } from './kanban-edit-field.atom'
 import { KanbanLane, SortableKanbanLane } from './kanban-lane'
-import { NewStackLane } from './new-stack-lane'
+import { CreateNewOptionButton } from './create-new-option-button'
 import { SelectKanbanField } from './select-kanban-field'
+import { CreateNewOptionModal } from './create-new-option-modal'
 
 interface IProps extends ITableBaseProps {
   field: SelectField
@@ -117,7 +118,8 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
           </DragOverlay>
         </DndContext>
 
-        <NewStackLane />
+        <CreateNewOptionModal table={table} />
+        <CreateNewOptionButton />
       </Group>
     </Container>
   )

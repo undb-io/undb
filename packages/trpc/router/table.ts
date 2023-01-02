@@ -1,6 +1,8 @@
 import type { IQueryTable } from '@egodb/core'
 import {
   CreateFieldCommand,
+  CreateOptionCommand,
+  createOptionCommandInput,
   CreateTableCommand,
   createTableCommandInput,
   createTableCommandOutput,
@@ -133,6 +135,14 @@ export const createTableRouter =
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new ReorderOptionsCommand(input)
+          return commandBus.execute<void>(cmd)
+        }),
+      createOption: procedure
+        .meta({ openapi: { method: 'POST', path: '/table.createOption', tags } })
+        .input(createOptionCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new CreateOptionCommand(input)
           return commandBus.execute<void>(cmd)
         }),
     })
