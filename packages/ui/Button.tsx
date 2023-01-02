@@ -1,1 +1,1 @@
-export { Button, UnstyledButton, ActionIcon } from '@mantine/core'
+export { Button, UnstyledButton, ActionIcon, ActionIconProps } from '@mantine/core'
