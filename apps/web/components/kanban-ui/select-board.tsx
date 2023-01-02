@@ -46,7 +46,7 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
   const [activeId, setActiveId] = useState<string | null>(null)
   const active = options.find((o) => o.id.value === activeId)
 
-  const reorderOptions = trpc.table.reorderOptions.useMutation()
+  const reorderOptions = trpc.table.field.select.reorderOptions.useMutation()
 
   const [opened, setOpened] = useAtom(openKanbanEditFieldAtom)
 

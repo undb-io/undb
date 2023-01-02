@@ -9,7 +9,7 @@ import { Th } from './th'
 
 export const Thead: React.FC<{ headerGroup: THeaderGroup; tableId: string }> = ({ headerGroup, tableId }) => {
   const utils = trpc.useContext()
-  const moveField = trpc.table.moveField.useMutation({
+  const moveField = trpc.table.view.field.move.useMutation({
     onSuccess() {
       utils.table.get.refetch()
     },

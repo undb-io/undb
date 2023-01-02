@@ -42,7 +42,7 @@ export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
   const displayType = view.displayType
 
   const utils = trpc.useContext()
-  const switchDisplayType = trpc.table.switchDisplayType.useMutation({
+  const switchDisplayType = trpc.table.view.switchDisplayType.useMutation({
     onSuccess() {
       utils.table.get.refetch()
       toggle.close()

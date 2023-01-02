@@ -20,7 +20,7 @@ export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
 
   const utils = trpc.useContext()
 
-  const createField = trpc.table.createField.useMutation({
+  const createField = trpc.table.field.create.useMutation({
     onSuccess: () => {
       form.reset()
       setOpened(false)

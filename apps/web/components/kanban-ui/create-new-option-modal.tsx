@@ -18,7 +18,7 @@ export const CreateNewOptionModal: React.FC<ITableBaseProps> = ({ table }) => {
 
   const utils = trpc.useContext()
 
-  const createOption = trpc.table.createOption.useMutation({
+  const createOption = trpc.table.field.select.createOption.useMutation({
     onSuccess() {
       setOpened(false)
       form.reset()

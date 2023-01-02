@@ -34,7 +34,7 @@ const Resizer = styled.div`
 `
 
 export const Th: React.FC<{ header: THeader; tableId: string }> = ({ header, tableId }) => {
-  const setFieldWidth = trpc.table.setFieldWidth.useMutation()
+  const setFieldWidth = trpc.table.view.field.setWidth.useMutation()
 
   const onSetFieldWidth = (fieldName: string, width: number) => {
     setFieldWidth.mutate({
