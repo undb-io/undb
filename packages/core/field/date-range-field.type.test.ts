@@ -5,9 +5,9 @@ import { dateRangeFieldValue, IDateRangeFieldValue } from './date-range-field.ty
 const now = new Date()
 
 test.each<[IDateRangeFieldValue, boolean]>([
-  [{ from: now, to: addMilliseconds(now, 1) }, false],
-  [{ from: now, to: addMilliseconds(now, -1) }, true],
-  [{ from: now, to: now }, true],
+  [[now, addMilliseconds(now, 1)], false],
+  [[now, addMilliseconds(now, -1)], true],
+  [[now, now], true],
   [null, false],
 ])('dateRangeFieldValue', (data, expectError) => {
   const result = dateRangeFieldValue.safeParse(data)
@@ -15,6 +15,6 @@ test.each<[IDateRangeFieldValue, boolean]>([
   if (!expectError) {
     expect(result.success).toBe(true)
   } else {
-    expect((result as SafeParseError<boolean>).error).toMatchSnapshot()
+    expect((result as SafeParseError<IDateRangeFieldValue>).error).toMatchSnapshot()
   }
 })

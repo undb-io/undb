@@ -1,4 +1,6 @@
 import { BoolField } from './bool-field'
+import { DateField } from './date-field'
+import { DateRangeField } from './date-range-field'
 import { FieldFactory } from './field.factory'
 import { Field } from './field.type'
 import { NumberField } from './number-field'
@@ -30,6 +32,34 @@ it('should create number field', () => {
   expectTypeOf(field).toEqualTypeOf<Field>()
   expect(field).toBeInstanceOf(NumberField)
   expect(field.type).toBe('number')
+  expect(field.name).toBeInstanceOf(FieldName)
+  expect(field.name.value).toBe('hello')
+})
+
+it('should create date field', () => {
+  const field = FieldFactory.create({
+    type: 'date',
+    name: 'hello',
+    id: 'date',
+  })
+
+  expectTypeOf(field).toEqualTypeOf<Field>()
+  expect(field).toBeInstanceOf(DateField)
+  expect(field.type).toBe('date')
+  expect(field.name).toBeInstanceOf(FieldName)
+  expect(field.name.value).toBe('hello')
+})
+
+it('should create date range field', () => {
+  const field = FieldFactory.create({
+    type: 'date-range',
+    name: 'hello',
+    id: 'date-range',
+  })
+
+  expectTypeOf(field).toEqualTypeOf<Field>()
+  expect(field).toBeInstanceOf(DateRangeField)
+  expect(field.type).toBe('date-range')
   expect(field.name).toBeInstanceOf(FieldName)
   expect(field.name.value).toBe('hello')
 })

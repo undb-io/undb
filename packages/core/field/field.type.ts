@@ -107,9 +107,9 @@ export const fieldValue = z.union([
   stringFieldValue,
   numberFieldValue,
   dateFieldValue,
+  dateRangeFieldValue,
   selectFieldValue,
   boolFieldValue,
-  dateRangeFieldValue,
 ])
 export type IFieldValue = z.infer<typeof fieldValue>
 
@@ -117,9 +117,9 @@ export const createFieldValueSchema = z.union([
   createStringFieldValue,
   createNumberFieldValue,
   createDateFieldValue,
+  createDateRangeFieldValue,
   createSelectFieldValue,
   createBoolFieldValue,
-  createDateRangeFieldValue,
 ])
 export type ICreateFieldValue = z.infer<typeof createFieldValueSchema>
 
