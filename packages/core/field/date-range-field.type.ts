@@ -19,11 +19,15 @@ export const dateRangeFieldValue = z
     to: z.date(),
   })
   .nullable()
-  .refine((checker) => {
-    if (checker) {
-      return isAfter(checker.to, checker.from)
-    }
-  })
+  .refine(
+    (checker) => {
+      if (checker) {
+        return isAfter(checker.to, checker.from)
+      }
+      return true
+    },
+    { message: 'date range value from should before value to' },
+  )
 
 export type IDateRangeFieldValue = z.infer<typeof dateRangeFieldValue>
 
