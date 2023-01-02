@@ -5,7 +5,7 @@ import type { ITableBaseProps } from './table-base-props'
 export const TableFieldVisibilityEditor: React.FC<ITableBaseProps> = ({ table }) => {
   const [opened, handler] = useDisclosure(false)
   const utils = trpc.useContext()
-  const setFieldVisibility = trpc.table.setFieldVisibility.useMutation({
+  const setFieldVisibility = trpc.table.view.field.setVisibility.useMutation({
     onSuccess() {
       utils.table.get.refetch()
     },

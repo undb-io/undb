@@ -6,6 +6,7 @@ import type {
   WithFilter,
   WithKanbanField,
   WithNewField,
+  WithNewOption,
   WithOptions,
   WithTableName,
   WithTableSchema,
@@ -112,6 +113,13 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
     const field = this.table.schema.find((f) => f.id === s.field.id.value)
     if (field) {
       ;(field as SelectFieldInMemory).options = s.options.options.map(TableInMemoryMapper.optionToInMemory)
+    }
+  }
+
+  newOption(s: WithNewOption): void {
+    const field = this.table.schema.find((f) => f.id === s.field.id.value)
+    if (field) {
+      ;(field as SelectFieldInMemory).options.push(TableInMemoryMapper.optionToInMemory(s.option))
     }
   }
 }

@@ -36,7 +36,7 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
 
   const utils = trpc.useContext()
 
-  const setKanbanField = trpc.table.setKanbanField.useMutation({
+  const setKanbanField = trpc.table.view.kanban.setField.useMutation({
     onSuccess() {
       utils.table.get.refetch()
       setStepZero()
@@ -44,7 +44,7 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
     },
   })
 
-  const createSelectField = trpc.table.createField.useMutation({
+  const createSelectField = trpc.table.field.create.useMutation({
     onSuccess(_, variables) {
       const id = variables.field.id
 

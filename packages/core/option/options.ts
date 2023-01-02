@@ -2,7 +2,7 @@ import { ValueObject } from '@egodb/domain'
 import arrayMove from 'array-move'
 import { Option as O } from 'oxide.ts'
 import { Option } from './option'
-import type { ICreateOptionsSchema } from './option.schema'
+import type { ICreateOptionSchema, ICreateOptionsSchema } from './option.schema'
 import { createOptionsSchema } from './option.schema'
 
 export class Options extends ValueObject<Option[]> {
@@ -15,6 +15,10 @@ export class Options extends ValueObject<Option[]> {
     const toIndex = this.options.findIndex((o) => o.id.value === to)
     const moved = arrayMove(this.options, formIndex, toIndex)
     return new Options(moved)
+  }
+
+  public createOption(input: ICreateOptionSchema): Option {
+    return Option.create(input)
   }
 
   public getById(id: string): O<Option> {

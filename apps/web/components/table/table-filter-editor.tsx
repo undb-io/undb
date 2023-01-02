@@ -1,4 +1,4 @@
-import { IFilter } from '@egodb/core'
+import type { IFilter } from '@egodb/core'
 import { Button, IconFilter, Popover, useDisclosure, Badge } from '@egodb/ui'
 import { trpc } from '../../trpc'
 import { FiltersEditor } from '../filters-editor/filters-editor'
@@ -10,7 +10,7 @@ export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
 
   const utils = trpc.useContext()
 
-  const setFilter = trpc.table.setFilter.useMutation({
+  const setFilter = trpc.table.view.filter.set.useMutation({
     onSuccess: () => {
       handler.close()
 
