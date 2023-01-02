@@ -1,4 +1,4 @@
-import type { ICreateOptionSchema } from '@egodb/core'
+import type { ICreateOptionSchema, SelectField } from '@egodb/core'
 import { OptionId } from '@egodb/core'
 import { createOptionSchema } from '@egodb/core'
 import { Button, Divider, Group, Modal, Stack, TextInput, useForm, zodResolver } from '@egodb/ui'
@@ -7,7 +7,11 @@ import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { createNewOptionOpened } from './create-new-option.atom'
 
-export const CreateNewOptionModal: React.FC<ITableBaseProps> = ({ table }) => {
+interface IProps extends ITableBaseProps {
+  field: SelectField
+}
+
+export const CreateNewOptionModal: React.FC<IProps> = ({ table, field }) => {
   const [opened, setOpened] = useAtom(createNewOptionOpened)
   const form = useForm<ICreateOptionSchema>({
     initialValues: {
@@ -30,6 +34,7 @@ export const CreateNewOptionModal: React.FC<ITableBaseProps> = ({ table }) => {
     values.id = OptionId.create().value
     createOption.mutate({
       tableId: table.id.value,
+      fieldId: field.id.value,
       option: values,
     })
   })

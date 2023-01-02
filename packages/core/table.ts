@@ -12,6 +12,7 @@ import type {
 } from './field'
 import { createFieldValueSchema_internal, isSelectField } from './field'
 import type { IRootFilter } from './filter'
+import type { ICreateOptionSchema } from './option'
 import type { Record } from './record'
 import { WithRecordTableId } from './record'
 import { RecordFactory } from './record/record.factory'
@@ -206,6 +207,16 @@ export class Table {
     field = isSelectField.parse(field)
 
     const spec = field.reorder(input.from, input.to)
+    spec.mutate(this)
+
+    return spec
+  }
+
+  public createOption(fieldId: string, input: ICreateOptionSchema): TableCompositeSpecificaiton {
+    let field = this.schema.getFieldById(fieldId).unwrap()
+    field = isSelectField.parse(field)
+
+    const spec = field.createOption(input)
     spec.mutate(this)
 
     return spec

@@ -16,7 +16,7 @@ export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
   const hasSelectFields = selectFields.length > 0
 
   const utils = trpc.useContext()
-  const setKanbanField = trpc.table.setKanbanField.useMutation({
+  const setKanbanField = trpc.table.view.kanban.setField.useMutation({
     onSuccess() {
       utils.table.get.refetch()
       onSuccess?.()

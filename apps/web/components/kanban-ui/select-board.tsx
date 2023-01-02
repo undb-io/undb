@@ -118,7 +118,7 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
           </DragOverlay>
         </DndContext>
 
-        <CreateNewOptionModal table={table} />
+        <CreateNewOptionModal table={table} field={field} />
         <CreateNewOptionButton />
       </Group>
     </Container>
