@@ -1,4 +1,5 @@
 export * from './bool.specification'
+export * from './date-range.specification'
 export * from './date.specification'
 export type { IRecordSpec, IRecordVisitor } from './interface'
 export * from './number.specification'

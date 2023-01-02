@@ -12,6 +12,7 @@ import {
   DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
+  DateRangeEqual,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -28,16 +29,21 @@ import type { IBoolFilter } from './bool.filter'
 import { boolFilter, boolFilterValue } from './bool.filter'
 import type { IConjunction } from './conjunction'
 import { conjunctions } from './conjunction'
+import type { IDateRangeFilter } from './date-range.filter'
+import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter'
 import type { IDateFilter } from './date.filter'
 import { dateFilter, dateFilterValue } from './date.filter'
 import type { INumberFilter } from './number.filter'
 import { numberFilter, numberFilterValue } from './number.filter'
 import {
+  $eq,
   $is_false,
   $is_today,
   $is_true,
+  $neq,
   boolFilterOperators,
   dateFilterOperators,
+  dateRangeFilterOperators,
   numberFilterOperators,
   selectFilterOperators,
   stringFilterOperators,
@@ -51,6 +57,7 @@ export const filterValue = z.union([
   stringFilterValue,
   numberFilterValue,
   dateFilterValue,
+  dateRangeFilterValue,
   selectFilterValue,
   boolFilterValue,
 ])
@@ -60,12 +67,20 @@ export const operaotrs = z.union([
   stringFilterOperators,
   numberFilterOperators,
   dateFilterOperators,
+  dateRangeFilterOperators,
   selectFilterOperators,
   boolFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
-const filter = z.discriminatedUnion('type', [stringFilter, numberFilter, dateFilter, selectFilter, boolFilter])
+const filter = z.discriminatedUnion('type', [
+  stringFilter,
+  numberFilter,
+  dateFilter,
+  dateRangeFilter,
+  selectFilter,
+  boolFilter,
+])
 
 export type IFilter = z.infer<typeof filter>
 export type IFilters = IFilter[]
@@ -194,6 +209,18 @@ const convertBoolFilter = (filter: IBoolFilter): Option<CompositeSpecification> 
   }
 }
 
+const convertDateRangeFilter = (filter: IDateRangeFilter): Option<CompositeSpecification> => {
+  switch (filter.operator) {
+    case $eq.value:
+      return Some(new DateRangeEqual(filter.path, filter.value))
+    case $neq.value:
+      return Some(new DateRangeEqual(filter.path, filter.value).not())
+
+    default:
+      return None
+  }
+}
+
 const convertDateFilter = (filter: IDateFilter): Option<CompositeSpecification> => {
   if (filter.operator === $is_today.value) {
     return Some(new DateIsToday(filter.path))
@@ -235,6 +262,8 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
       return convertNumberFilter(filter)
     case 'date':
       return convertDateFilter(filter)
+    case 'date-range':
+      return convertDateRangeFilter(filter)
     case 'select':
       return convertSelectFilter(filter)
     case 'bool':

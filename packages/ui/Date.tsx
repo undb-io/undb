@@ -1,1 +1,1 @@
-export { DatePicker } from '@mantine/dates'
+export { DatePicker, DateRangePicker } from '@mantine/dates'

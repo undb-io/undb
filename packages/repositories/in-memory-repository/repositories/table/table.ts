@@ -27,6 +27,13 @@ type DateFieldInMemory = {
   required?: boolean
 }
 
+type DateRangeFieldInMemory = {
+  id: string
+  type: 'date-range'
+  name: string
+  required?: boolean
+}
+
 export type OptionInMemory = {
   id: string
   name: string
@@ -53,6 +60,7 @@ export type FieldInMemory =
   | StringFieldInMemory
   | NumberFieldInMemory
   | DateFieldInMemory
+  | DateRangeFieldInMemory
   | SelectFieldInMemory
   | BoolFieldInMemory
 

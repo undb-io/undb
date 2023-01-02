@@ -4,6 +4,7 @@ import {
   Button,
   Checkbox,
   DatePicker,
+  DateRangePicker,
   Divider,
   Group,
   IconAlertCircle,
@@ -57,6 +58,9 @@ export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess 
           }
           if (field.type === 'date') {
             return <DatePicker key={field.id.value} {...props} label={label} />
+          }
+          if (field.type === 'date-range') {
+            return <DateRangePicker key={field.id.value} {...props} value={props.value || [null, null]} label={label} />
           }
           if (field.type === 'bool') {
             return <Checkbox key={field.id.value} {...props} label={label} />

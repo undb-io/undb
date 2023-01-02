@@ -1,0 +1,14 @@
+import { z } from 'zod'
+import { dateRangeFieldValue } from '../field/date-range-field.type'
+import { baseFilter } from './filter.base'
+import { dateRangeFilterOperators } from './operators'
+
+export const dateRangeFilterValue = dateRangeFieldValue
+export const dateRangeFilter = z
+  .object({
+    type: z.literal('date-range'),
+    operator: dateRangeFilterOperators,
+    value: dateRangeFilterValue,
+  })
+  .merge(baseFilter)
+export type IDateRangeFilter = z.infer<typeof dateRangeFilter>

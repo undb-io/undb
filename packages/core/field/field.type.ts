@@ -24,6 +24,17 @@ import {
   dateFieldValue,
   dateTypeSchema,
 } from './date-field.type'
+import type { DateRangeField } from './date-range-field'
+import type { DateRangeFieldValue } from './date-range-field-value'
+import type { IDateRangeFieldValue } from './date-range-field.type'
+import {
+  createDateRangeFieldSchema,
+  createDateRangeFieldValue,
+  createDateRangeFieldValue_internal,
+  dateRangeFieldQuerySchema,
+  dateRangeFieldValue,
+  dateRangeTypeSchema,
+} from './date-range-field.type'
 import { FIELD_TYPE_KEY } from './field.constant'
 import type { NumberField } from './number-field'
 import type { NumberFieldValue } from './number-field-value'
@@ -66,6 +77,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createDateFieldSchema,
   createSelectFieldSchema,
   createBoolFieldSchema,
+  createDateRangeFieldSchema,
 ])
 export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
 
@@ -75,6 +87,7 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   dateFieldQuerySchema,
   selectFieldQuerySchema,
   boolFieldQuerySchema,
+  dateRangeFieldQuerySchema,
 ])
 export type IQueryFieldSchema = z.infer<typeof queryFieldSchema>
 export const querySchemaSchema = z.array(queryFieldSchema)
@@ -86,6 +99,7 @@ export const fieldTypes = z.union([
   dateTypeSchema,
   selectTypeSchema,
   boolTypeSchema,
+  dateRangeTypeSchema,
 ])
 export type IFieldType = z.infer<typeof fieldTypes>
 
@@ -93,6 +107,7 @@ export const fieldValue = z.union([
   stringFieldValue,
   numberFieldValue,
   dateFieldValue,
+  dateRangeFieldValue,
   selectFieldValue,
   boolFieldValue,
 ])
@@ -102,6 +117,7 @@ export const createFieldValueSchema = z.union([
   createStringFieldValue,
   createNumberFieldValue,
   createDateFieldValue,
+  createDateRangeFieldValue,
   createSelectFieldValue,
   createBoolFieldValue,
 ])
@@ -113,6 +129,7 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createDateFieldValue_internal,
   createSelectFieldValue_internal,
   createBoolFieldValue_internal,
+  createDateRangeFieldValue_internal,
 ])
 export type ICreateFieldValueSchema_internal = z.infer<typeof createFieldValueSchema_internal>
 
@@ -131,15 +148,22 @@ export interface INumberField extends IBaseField {
 }
 
 export type IDateField = IBaseField
+export type IDateRangeField = IBaseField
 export type ISelectField = IBaseField & {
   options: Options
 }
 
 export type IBoolField = IBaseField
 
-export type Field = StringField | NumberField | DateField | SelectField | BoolField
+export type Field = StringField | NumberField | DateField | SelectField | BoolField | DateRangeField
 
-export type FieldValue = StringFieldValue | NumberFieldValue | DateFieldValue | SelectFieldValue | BoolFieldValue
+export type FieldValue =
+  | StringFieldValue
+  | NumberFieldValue
+  | DateFieldValue
+  | SelectFieldValue
+  | BoolFieldValue
+  | DateRangeFieldValue
 export type FieldValues = FieldValue[]
 
 export type UnpackedFieldValue =
@@ -148,3 +172,4 @@ export type UnpackedFieldValue =
   | IDateFieldValue
   | ISelectFieldValue
   | IBoolFieldValue
+  | IDateRangeFieldValue

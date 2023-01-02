@@ -3,6 +3,8 @@ import { createStringFieldSchema } from './string-field.type'
 
 export * from './bool-field'
 export * from './date-field'
+export * from './date-range-field'
+export * from './date-range-field-value'
 export * from './field.constant'
 export * from './field.factory'
 export * from './field.type'
