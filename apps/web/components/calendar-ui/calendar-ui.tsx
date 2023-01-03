@@ -1,60 +1,27 @@
 import type { QueryRecords } from '@egodb/core'
-import { Calendar, Container } from '@egodb/ui'
-import { useState } from 'react'
+import type { ICalendarField } from '@egodb/core/view/calendar'
+import { Center, Container } from '@egodb/ui'
 import type { ITableBaseProps } from '../table/table-base-props'
-import { Day } from './day'
+import { CalendarBoard } from './calendar-board'
+import { SelectCalendarField } from './select-calendar-field'
 
 interface IProps extends ITableBaseProps {
   records: QueryRecords
 }
 
-export const CalendarUI: React.FC<IProps> = () => {
-  const [date, setDate] = useState<Date | null>(null)
+export const CalendarUI: React.FC<IProps> = ({ table, records }) => {
+  const view = table.mustGetView()
+  const calendarFieldId = view.calendarFieldId.into()
+  if (calendarFieldId) {
+    const field = table.schema.getFieldById(calendarFieldId.value).into() as ICalendarField
+    return <CalendarBoard table={table} records={records} field={field} />
+  }
+
   return (
-    <Container w="100%" h="100%" maw="100%" p={0}>
-      <Calendar
-        value={date}
-        onChange={setDate}
-        h="100%"
-        bg="white"
-        fullWidth
-        size="xl"
-        allowLevelChange={false}
-        renderDay={(date) => <Day date={date} />}
-        styles={(theme) => ({
-          calendarHeader: {
-            height: 30,
-            marginBottom: 0,
-            paddingBottom: 10,
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[0],
-          },
-          calendarHeaderControl: {
-            height: '100%',
-          },
-          calendarHeaderLevel: {
-            height: '100%',
-            fontSize: theme.fontSizes.md,
-          },
-          month: { height: 'calc(100% - 40px)' },
-          cell: {
-            border: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1]}`,
-          },
-          day: {
-            padding: theme.spacing.xs,
-            borderRadius: 0,
-            height: '100%',
-            display: 'inline-flex',
-            flexDirection: 'column',
-            fontSize: theme.fontSizes.sm,
-          },
-          weekday: { fontSize: theme.fontSizes.lg },
-          weekdayCell: {
-            fontSize: theme.fontSizes.xs,
-            border: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1]}`,
-            height: 20,
-          },
-        })}
-      />
+    <Container h="100%" w={450}>
+      <Center h="100%" w="100%">
+        <SelectCalendarField table={table} />
+      </Center>
     </Container>
   )
 }

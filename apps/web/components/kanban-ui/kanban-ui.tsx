@@ -9,7 +9,7 @@ interface IProps extends ITableBaseProps {
   records: QueryRecords
 }
 
-export const Kanban: React.FC<IProps> = ({ table, records }) => {
+export const KanbanUI: React.FC<IProps> = ({ table, records }) => {
   const view = table.mustGetView()
   const fieldId = view.kanbanFieldId
   if (fieldId.isNone()) {
