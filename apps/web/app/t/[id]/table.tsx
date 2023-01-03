@@ -7,7 +7,7 @@ import { CreateRecordFormDrawer } from '../../../components/create-record-form/c
 import { EditRecordFormDrawer } from '../../../components/edit-record-form/edit-record-form-drawer'
 import { TableHaeder } from '../../../components/table/table-header'
 import { TableToolbar } from '../../../components/table/table-toolbar'
-import { TableDisplay } from '../../../components/table/table-display'
+import { ViewDisplay } from '../../../components/table/view-display'
 
 interface IProps {
   table: CoreTable
@@ -21,7 +21,7 @@ export default function Table({ table, records }: IProps) {
         <TableHaeder table={table} />
         <TableToolbar table={table} />
       </Stack>
-      <TableDisplay table={table} records={records} />
+      <ViewDisplay table={table} records={records} />
       <CreateRecordFormDrawer table={table} />
       <EditRecordFormDrawer table={table} />
       <CreateFieldModal table={table} />

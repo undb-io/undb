@@ -70,6 +70,7 @@ export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
             data={[
               { label: 'Grid', value: 'grid' },
               { label: 'Kanban', value: 'kanban' },
+              { label: 'Calendar', value: 'calendar' },
             ]}
             onChange={(type) => {
               switchDisplayType.mutate({
