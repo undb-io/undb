@@ -4,6 +4,7 @@ import { useSetAtom } from 'jotai'
 import { FIELD_SELECT_ITEMS } from '../../constants/field.constants'
 import { trpc } from '../../trpc'
 import { FieldInputLabel } from '../fields/field-input-label'
+import { getSchemasIcon, SelectItem } from '../fields/schemas-select-icon'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { useCreateFieldFormContext } from './create-field-form-context'
 import { createFielModelOpened } from './create-field-modal-opened.atom'
@@ -41,6 +42,8 @@ export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
           required
           label={<FieldInputLabel>type</FieldInputLabel>}
           data={FIELD_SELECT_ITEMS}
+          itemComponent={SelectItem}
+          icon={getSchemasIcon(form.values.type)}
         />
         <TextInput {...form.getInputProps('name')} label={<FieldInputLabel>name</FieldInputLabel>} required />
         <CreateFieldVariantControl />
