@@ -2,6 +2,7 @@ import type { Field, Option, Table, TableSchema, View, Views } from '@egodb/core
 import { TableFactory } from '@egodb/core'
 import type { Result } from 'oxide.ts'
 import type {
+  CalendarInMemory,
   FieldInMemory,
   KanbanInMemory,
   OptionInMemory,
@@ -50,6 +51,14 @@ export class TableInMemoryMapper {
   static kanbanToInMemory(v: View): KanbanInMemory | undefined {
     if (v.kanban.isSome()) {
       return { fieldId: v.kanban.unwrap().fieldId?.value }
+    }
+
+    return undefined
+  }
+
+  static calendarToInMemory(v: View): CalendarInMemory | undefined {
+    if (v.calendar.isSome()) {
+      return { fieldId: v.calendar.unwrap().fieldId?.value }
     }
 
     return undefined

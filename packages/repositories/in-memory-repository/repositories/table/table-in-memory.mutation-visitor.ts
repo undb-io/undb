@@ -1,5 +1,6 @@
 import type {
   ITableSpecVisitor,
+  WithCalendarField,
   WithDisplayType,
   WithFieldVisibility,
   WithFieldWidth,
@@ -105,6 +106,17 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
         view.kanban.fieldId = s.fieldId.value
       } else {
         view.kanban = { fieldId: s.fieldId.value }
+      }
+    }
+  }
+
+  calendarFieldEqual(s: WithCalendarField): void {
+    const view = this.table.views.find((v) => v.name === s.view.name.value)
+    if (view) {
+      if (view.calendar) {
+        view.calendar.fieldId = s.fieldId.value
+      } else {
+        view.calendar = { fieldId: s.fieldId.value }
       }
     }
   }

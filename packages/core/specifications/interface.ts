@@ -3,6 +3,7 @@ import { type ISpecification } from '@egodb/domain'
 import type { WithNewOption, WithOptions } from '../field/specifications/select-field.specification'
 import { type Table } from '../table'
 import type { WithKanbanField } from '../view'
+import type { WithCalendarField } from '../view/specifications/calendar.specification'
 import type { WithDisplayType } from '../view/specifications/display-type.specification'
 import type { WithFilter } from './filters.specificaiton'
 import type { WithNewField } from './table-field.specification'
@@ -29,6 +30,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
 
   displayTypeEqual(s: WithDisplayType): void
   kanbanFieldEqual(s: WithKanbanField): void
+  calendarFieldEqual(s: WithCalendarField): void
   optionsEqual(s: WithOptions): void
   newOption(s: WithNewOption): void
 }

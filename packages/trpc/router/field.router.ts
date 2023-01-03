@@ -3,7 +3,7 @@ import type { ICommandBus } from '@egodb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc'
 import { router } from '../trpc'
-import { createSelectFieldRouter } from './select-field'
+import { createSelectFieldRouter } from './select-field.router'
 
 const TAG_TABLE = 'table'
 const tags = [TAG_TABLE]

@@ -6,8 +6,9 @@ import type { IFilterOrGroupList, IRootFilter } from '../filter'
 import { RootFilter } from '../filter'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
 import { WithFieldVisibility, WithFieldWidth } from '../specifications/table-view-field-option.specification'
+import { Calendar } from './calendar'
 import { Kanban } from './kanban'
-import { WithKanbanField } from './specifications'
+import { WithCalendarField, WithKanbanField } from './specifications'
 import { WithDisplayType } from './specifications/display-type.specification'
 import type { IViewFieldOption } from './view-field-options'
 import { ViewFieldOptions } from './view-field-options'
@@ -39,8 +40,16 @@ export class View extends ValueObject<IView> {
     return Option(this.props.kanban)
   }
 
-  public get kanbanSelectFieldId(): Option<FieldId> {
+  public get kanbanFieldId(): Option<FieldId> {
     return this.kanban.mapOr(None, (kanban) => Option(kanban.fieldId))
+  }
+
+  public get calendar(): Option<Kanban> {
+    return Option(this.props.calendar)
+  }
+
+  public get calendarFieldId(): Option<FieldId> {
+    return this.calendar.mapOr(None, (calendar) => Option(calendar.fieldId))
   }
 
   public get spec(): Option<CompositeSpecification> {
@@ -76,6 +85,14 @@ export class View extends ValueObject<IView> {
     return this.props.kanban
   }
 
+  public getOrCreateCalendar(): Kanban {
+    const calendar = this.calendar
+    if (calendar.isSome()) return calendar.unwrap()
+
+    this.props.calendar = new Calendar({})
+    return this.props.calendar
+  }
+
   public getFieldHidden(fieldName: string): boolean {
     return this.fieldOptions.getHidden(fieldName)
   }
@@ -98,6 +115,10 @@ export class View extends ValueObject<IView> {
 
   public setKanbanFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
     return new WithKanbanField(this, fieldId)
+  }
+
+  public setCalendarFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
+    return new WithCalendarField(this, fieldId)
   }
 
   public getVisibility(): Record<string, boolean> {
@@ -124,6 +145,7 @@ export class View extends ValueObject<IView> {
     return new View({
       name: ViewName.create(parsed.name),
       kanban: input.kanban ? Kanban.from(input.kanban) : undefined,
+      calendar: input.calendar ? Kanban.from(input.calendar) : undefined,
       displayType: parsed.displayType || defaultViewDiaplyType,
       filter: parsed.filter ? new RootFilter(parsed.filter) : undefined,
       fieldOptions: ViewFieldOptions.from(input.fieldOptions),

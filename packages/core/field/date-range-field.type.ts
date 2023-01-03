@@ -38,3 +38,5 @@ export const createDateRangeFieldValue_internal = z
   .merge(z.object({ field: z.instanceof(DateRangeField) }))
 
 export type ICreateDateRangeFieldValue_internal = z.infer<typeof createDateRangeFieldValue_internal>
+
+export const isDateRangeField = z.instanceof(DateRangeField)

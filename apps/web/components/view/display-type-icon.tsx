@@ -1,5 +1,5 @@
 import type { IViewDisplayType } from '@egodb/core'
-import { IconLayoutKanban, IconTable } from '@egodb/ui'
+import { IconCalendar, IconLayoutKanban, IconTable } from '@egodb/ui'
 
 export const DisplayTypeIcon: React.FC<{ displayType: IViewDisplayType }> = ({ displayType }) => {
   switch (displayType) {
@@ -7,6 +7,8 @@ export const DisplayTypeIcon: React.FC<{ displayType: IViewDisplayType }> = ({ d
       return <IconTable />
     case 'kanban':
       return <IconLayoutKanban />
+    case 'calendar':
+      return <IconCalendar />
 
     default:
       return null
