@@ -1,11 +1,16 @@
 import type { IRecordRepository, IRecordSpec, Record } from '@egodb/core'
 import type { Option } from 'oxide.ts'
+import { None, Some } from 'oxide.ts'
 import { db } from '../db.js'
 import { RecordInMemoryMapper } from './record-in-memory.mapper.js'
 
 export class RecordInMemoryRepository implements IRecordRepository {
   async findOneById(id: string): Promise<Option<Record>> {
-    throw new Error('unimplemented')
+    const r = db.data?.records.find((t) => t.id === id)
+    if (!r) return None
+
+    const record = RecordInMemoryMapper.toDomain(r).unwrap()
+    return Some(record)
   }
 
   async findOne(spec: IRecordSpec): Promise<Option<Record>> {

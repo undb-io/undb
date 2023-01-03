@@ -29,8 +29,6 @@ export const EditTableForm: React.FC<IProps> = ({ table, onCancel, onSuccess }) 
     onCancel()
     editTable.reset()
     form.reset()
-    form.resetDirty()
-    form.resetTouched()
   }
 
   const disabled = !form.isValid || !form.isDirty()

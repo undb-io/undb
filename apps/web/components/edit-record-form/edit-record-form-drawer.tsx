@@ -1,7 +1,6 @@
 import type { Table as CoreTable } from '@egodb/core'
 import { updateRecordSchema } from '@egodb/core'
 import type { IUpdateRecordValueSchema } from '@egodb/core'
-import { mutateRecordValueSchema } from '@egodb/core'
 import { Drawer, zodResolver } from '@egodb/ui'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
@@ -29,6 +28,7 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
 
   useEffect(() => {
     form.setValues(initialValues)
+    form.resetDirty()
   }, [record])
 
   const reset = () => {
