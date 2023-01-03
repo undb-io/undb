@@ -1,8 +1,7 @@
-import type { IFieldValue, QueryRecords, Table } from '@egodb/core'
+import type { IQueryRecordSchema, QueryRecords, Table } from '@egodb/core'
 import type { Header, HeaderGroup, Row } from '@tanstack/react-table'
 
-// TODO: helper types should infered by type
-export type TData = Record<string, IFieldValue>
+export type TData = IQueryRecordSchema['values']
 
 export type THeaderGroup = HeaderGroup<TData>
 export type THeader = Header<TData, unknown>

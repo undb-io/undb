@@ -1,5 +1,9 @@
 import { DateVO } from '@egodb/domain'
-import type { TableId } from '../value-objects'
+import type { TableId, TableSchema } from '../value-objects'
+import type { IMutateRecordValueSchema } from './record.schema'
+import { createRecordInputs } from './record.utils'
+import { WithRecordValues } from './specifications'
+import type { RecordCompositeSpecification } from './specifications/interface'
 import { RecordId, RecordValues } from './value-objects'
 
 export class Record {
@@ -15,5 +19,14 @@ export class Record {
     const record = new Record()
 
     return record
+  }
+
+  updateRecord(schema: TableSchema, value: IMutateRecordValueSchema): RecordCompositeSpecification {
+    const inputs = createRecordInputs(schema, value)
+    const spec = WithRecordValues.fromArray(inputs)
+
+    spec.mutate(this)
+
+    return spec
   }
 }

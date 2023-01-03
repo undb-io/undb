@@ -1,20 +1,7 @@
 import type { Table } from '@egodb/core'
-import {
-  Alert,
-  Button,
-  Checkbox,
-  DatePicker,
-  DateRangePicker,
-  Divider,
-  Group,
-  IconAlertCircle,
-  NumberInput,
-  Stack,
-  TextInput,
-} from '@egodb/ui'
+import { Alert, Button, Divider, Group, IconAlertCircle, Stack } from '@egodb/ui'
 import { trpc } from '../../trpc'
-import { FieldInputLabel } from '../fields/field-input-label'
-import { OptionPicker } from '../option/option-picker'
+import { RecordInputFactory } from '../record/record-input.factory'
 import { useCreateRecordFormContext } from './create-record-form-context'
 
 interface IProps {
@@ -52,23 +39,7 @@ export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess 
       <Stack>
         {table.schema.fields.map((field, index) => {
           const props = form.getInputProps(`value.${index}.value`)
-          const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
-          if (field.type === 'number') {
-            return <NumberInput key={field.id.value} {...props} label={label} />
-          }
-          if (field.type === 'date') {
-            return <DatePicker key={field.id.value} {...props} label={label} />
-          }
-          if (field.type === 'date-range') {
-            return <DateRangePicker key={field.id.value} {...props} value={props.value || [null, null]} label={label} />
-          }
-          if (field.type === 'bool') {
-            return <Checkbox key={field.id.value} {...props} label={label} />
-          }
-          if (field.type === 'select') {
-            return <OptionPicker field={field} key={field.id.value} {...props} label={label} />
-          }
-          return <TextInput key={field.id.value} {...props} label={label} />
+          return <RecordInputFactory key={field.id.value} props={props} field={field} />
         })}
       </Stack>
 

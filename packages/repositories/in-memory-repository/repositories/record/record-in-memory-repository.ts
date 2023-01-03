@@ -19,4 +19,8 @@ export class RecordInMemoryRepository implements IRecordRepository {
   async insert(record: Record): Promise<void> {
     db.data?.records.push(RecordInMemoryMapper.toInMemory(record))
   }
+
+  async updateOneById(id: string, spec: IRecordSpec): Promise<void> {
+    throw new Error('Method not implemented.')
+  }
 }

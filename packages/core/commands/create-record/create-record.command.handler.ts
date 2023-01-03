@@ -10,7 +10,7 @@ export class CreateRecordCommandHandler implements ICommandHandler<CreateRecordC
   async execute(command: CreateRecordCommand): Promise<ICreateTableOutput> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
 
-    const record = table.createRecord(command)
+    const record = table.createRecord(command.value)
     await this.recordRepo.insert(record)
 
     return { id: record.id.value }

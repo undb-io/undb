@@ -8,8 +8,11 @@ import {
   GetRecordsQuery,
   getRecordsQueryInput,
   getRecordsQueryOutput,
+  UpdateRecordCommand,
+  updateRecordCommandInput,
 } from '@egodb/core'
 import type { ICommandBus, IQueryBus } from '@egodb/domain'
+import { z } from 'zod'
 import type { publicProcedure } from '../trpc'
 import { router } from '../trpc'
 
@@ -25,6 +28,14 @@ export const createRecordRouter =
         .output(createRecordCommandOutput)
         .mutation(({ input }) => {
           const cmd = new CreateRecordCommand(input)
+          return commandBus.execute(cmd)
+        }),
+      update: procedure
+        .meta({ openapi: { method: 'POST', path: '/record.update', tags } })
+        .input(updateRecordCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new UpdateRecordCommand(input)
           return commandBus.execute(cmd)
         }),
       get: procedure
