@@ -1,6 +1,6 @@
 import type { QueryRecords } from '@egodb/core'
 import { SelectField } from '@egodb/core'
-import type { IKanbanField } from '@egodb/core/view/kanban.schema'
+import type { IKanbanField } from '@egodb/core'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { SelectBoard } from './select-board'
 

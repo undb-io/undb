@@ -1,5 +1,5 @@
 import { ValueObject } from '@egodb/domain'
-import { FieldId } from '../field'
+import { FieldId } from '../../field'
 import type { IKanbanSchema } from './kanban.schema'
 import type { IKanban } from './kanban.type'
 

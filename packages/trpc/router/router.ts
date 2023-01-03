@@ -2,8 +2,8 @@ import { middleware, publicProcedure, router } from '../trpc'
 
 import type { ICommandBus, IQueryBus } from '@egodb/domain'
 import type { ILogger } from '../type'
-import { createRecordRouter } from './record'
-import { createTableRouter } from './table'
+import { createRecordRouter } from './record.router'
+import { createTableRouter } from './table.router'
 
 export const createRouter = (commandBus: ICommandBus, queryBus: IQueryBus, logger: ILogger) => {
   const procedure = publicProcedure.use(

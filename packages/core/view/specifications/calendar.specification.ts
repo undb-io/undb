@@ -6,22 +6,22 @@ import type { ITableSpecVisitor } from '../../specifications'
 import type { Table } from '../../table'
 import type { View } from '../view'
 
-export class WithKanbanField extends CompositeSpecification<Table, ITableSpecVisitor> {
+export class WithCalendarField extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(public readonly view: View, public readonly fieldId: FieldId) {
     super()
   }
 
   isSatisfiedBy(): boolean {
-    return this.view.kanbanFieldId.mapOr(false, (fieldId) => fieldId.equals(this.fieldId))
+    return this.view.calendarFieldId.mapOr(false, (fieldId) => fieldId.equals(this.fieldId))
   }
 
   mutate(t: Table): Result<Table, string> {
-    this.view.getOrCreateKanban().fieldId = this.fieldId
+    this.view.getOrCreateCalendar().fieldId = this.fieldId
     return Ok(t)
   }
 
   accept(v: ITableSpecVisitor): Result<void, string> {
-    v.kanbanFieldEqual(this)
+    v.calendarFieldEqual(this)
     return Ok(undefined)
   }
 }

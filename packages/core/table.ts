@@ -27,6 +27,7 @@ import type { TableName } from './value-objects/table-name.vo'
 import type {
   IMoveFieldSchema,
   IQueryView,
+  ISetCalendarFieldSchema,
   ISetFieldVisibilitySchema,
   ISetFieldWidthSchema,
   ISetKanbanFieldSchema,
@@ -188,6 +189,14 @@ export class Table {
     const view = this.mustGetView(input.viewName)
     const field = this.schema.getFieldById(input.field).unwrap()
     const spec = view.setKanbanFieldSpec(field.id)
+    spec.mutate(this)
+    return spec
+  }
+
+  public setCalendarField(input: ISetCalendarFieldSchema): TableCompositeSpecificaiton {
+    const view = this.mustGetView(input.viewName)
+    const field = this.schema.getFieldById(input.field).unwrap()
+    const spec = view.setCalendarFieldSpec(field.id)
     spec.mutate(this)
     return spec
   }

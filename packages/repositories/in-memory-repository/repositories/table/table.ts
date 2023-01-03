@@ -68,10 +68,15 @@ export type KanbanInMemory = {
   fieldId?: string
 }
 
+export type CalendarInMemory = {
+  fieldId?: string
+}
+
 export type ViewInMemory = {
   name: string
-  displayType: 'grid' | 'kanban'
+  displayType: 'grid' | 'kanban' | 'calendar'
   kanban?: KanbanInMemory
+  calendar?: CalendarInMemory
   filter?: IRootFilter
   fieldOptions: Record<string, IViewFieldOption>
   fieldsOrder?: string[]

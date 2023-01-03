@@ -1,6 +1,7 @@
 import type {
   ITableSpec,
   ITableSpecVisitor,
+  WithCalendarField,
   WithDisplayType,
   WithFieldVisibility,
   WithFieldWidth,
@@ -111,6 +112,13 @@ export class TableInMemoryQueryVisitor implements ITableSpecVisitor {
       const view = this.getView(t, s.view.name.unpack())
       if (!view) return false
       return view.kanban?.fieldId === s.fieldId.value
+    }
+  }
+  calendarFieldEqual(s: WithCalendarField): void {
+    this.predicate = (t) => {
+      const view = this.getView(t, s.view.name.unpack())
+      if (!view) return false
+      return view.calendar?.fieldId === s.fieldId.value
     }
   }
   optionsEqual(s: WithOptions): void {

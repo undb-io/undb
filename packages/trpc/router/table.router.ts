@@ -16,8 +16,8 @@ import type { ICommandBus, IQueryBus } from '@egodb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc'
 import { router } from '../trpc'
-import { createFieldRouter } from './field'
-import { createViewRouter } from './view'
+import { createFieldRouter } from './field.router'
+import { createViewRouter } from './view.router'
 
 const TAG_TABLE = 'table'
 const tags = [TAG_TABLE]
