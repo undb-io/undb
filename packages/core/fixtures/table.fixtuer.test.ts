@@ -42,6 +42,7 @@ test('createTestTable', () => {
         "props": [
           View {
             "props": {
+              "calendar": undefined,
               "displayType": "grid",
               "fieldOptions": ViewFieldOptions {
                 "props": Map {},
