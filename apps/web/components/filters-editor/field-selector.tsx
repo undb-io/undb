@@ -1,12 +1,29 @@
 import type { Field, Table } from '@egodb/core'
-import { Select } from '@egodb/ui'
-import { useState } from 'react'
-import { getSchemasIcon, SelectItem } from '../fields/schemas-select-icon'
+import { Group, Select, Text } from '@egodb/ui'
+import { forwardRef, useState } from 'react'
+import { getSchemasIcon } from '../fields/field-Icon'
 interface IProps {
   schema: Table['schema']
   value: Field | null
   onChange: (field: Field | null) => void
 }
+
+interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
+  field: Field
+  label: string
+}
+
+export const SelectItem = forwardRef<HTMLDivElement, ItemProps>(({ field, label, ...others }: ItemProps, ref) => {
+  return (
+    <div ref={ref} {...others}>
+      <Group noWrap>
+        {getSchemasIcon({ type: field?.type })}
+        <Text size="sm">{label}</Text>
+      </Group>
+    </div>
+  )
+})
+
 export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => {
   const [selectedColumnType, setSelectedColumnType] = useState<string>()
   return (
@@ -25,9 +42,9 @@ export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => 
       data={schema.fields.map((f) => ({
         value: f.name.value,
         label: f.name.value,
-        type: f.type,
+        field: f,
       }))}
-      icon={!value ? null : selectedColumnType ? getSchemasIcon(selectedColumnType) : null}
+      icon={!value ? null : selectedColumnType ? getSchemasIcon({ type: selectedColumnType, size: 16 }) : null}
     />
   )
 }
