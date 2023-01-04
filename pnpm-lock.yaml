@@ -120,6 +120,7 @@ importers:
       '@egodb/ui': ^0.0.0
       '@emotion/babel-plugin': ^11.10.5
       '@emotion/styled': ^11.10.5
+      '@fxts/core': ^0.11.0
       '@tanstack/react-query': ^4.20.4
       '@tanstack/react-query-devtools': ^4.20.4
       '@tanstack/react-table': ^8.7.4
@@ -148,6 +149,7 @@ importers:
       '@egodb/trpc': link:../../packages/trpc
       '@egodb/ui': link:../../packages/ui
       '@emotion/styled': 11.10.5_3grbeiqrb6djg67fiejiqngkdi
+      '@fxts/core': 0.11.0
       '@tanstack/react-query': 4.20.4_biqbaboplfbrettd7655fr4n2y
       '@tanstack/react-query-devtools': 4.20.4_fu3ixcwltlssi3ozitelgaebme
       '@tanstack/react-table': 8.7.4_biqbaboplfbrettd7655fr4n2y

@@ -10,6 +10,7 @@
     "@egodb/trpc": "^0.0.0",
     "@egodb/ui": "^0.0.0",
     "@emotion/styled": "^11.10.5",
+    "@fxts/core": "^0.11.0",
     "@tanstack/react-query": "^4.20.4",
     "@tanstack/react-query-devtools": "^4.20.4",
     "@tanstack/react-table": "^8.7.4",
