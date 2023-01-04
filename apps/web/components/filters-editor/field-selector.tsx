@@ -1,7 +1,7 @@
 import type { Field, Table } from '@egodb/core'
 import { Group, Select, Text } from '@egodb/ui'
 import { forwardRef, useState } from 'react'
-import { getSchemasIcon } from '../fields/field-Icon'
+import { FieldIcon } from '../fields/field-Icon'
 interface IProps {
   schema: Table['schema']
   value: Field | null
@@ -17,7 +17,7 @@ export const SelectItem = forwardRef<HTMLDivElement, ItemProps>(({ field, label,
   return (
     <div ref={ref} {...others}>
       <Group noWrap>
-        {getSchemasIcon({ type: field?.type })}
+        {FieldIcon({ type: field?.type })}
         <Text size="sm">{label}</Text>
       </Group>
     </div>
@@ -34,8 +34,9 @@ export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => 
       onChange={(value) => {
         onChange(value ? schema.getField(value).into(null) : null)
         const selectedColumn = value ? schema.getField(value).into(null) : null
-
-        selectedColumn && setSelectedColumnType(selectedColumn.type)
+        if (selectedColumn) {
+          setSelectedColumnType(selectedColumn.type)
+        }
       }}
       placeholder="search field"
       itemComponent={SelectItem}
@@ -44,7 +45,7 @@ export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => 
         label: f.name.value,
         field: f,
       }))}
-      icon={!value ? null : selectedColumnType ? getSchemasIcon({ type: selectedColumnType, size: 16 }) : null}
+      icon={!value ? null : selectedColumnType ? FieldIcon({ type: selectedColumnType, size: 16 }) : null}
     />
   )
 }

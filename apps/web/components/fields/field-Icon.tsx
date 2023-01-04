@@ -15,7 +15,7 @@ interface FieldProps {
   size?: number
 }
 
-export const getSchemasIcon: React.FC<FieldProps> = ({ type, size = 16 }) => {
+export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16 }) => {
   switch (type) {
     case 'string':
       return <IconLetterT size={size} />
