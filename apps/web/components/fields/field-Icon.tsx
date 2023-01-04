@@ -6,6 +6,7 @@ import {
   IconListCheck,
   IconQuestionMark,
   IconSquareCheck,
+  useEgoUITheme,
 } from '@egodb/ui'
 import React from 'react'
 interface FieldProps {
@@ -14,7 +15,9 @@ interface FieldProps {
   color?: string
 }
 
-export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16, color = '#adb5bd' }) => {
+export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16, color }) => {
+  const theme = useEgoUITheme()
+  color = color ? color : theme.colors.gray[2]
   switch (type) {
     case 'string':
       return <IconLetterT size={size} color={color} />
