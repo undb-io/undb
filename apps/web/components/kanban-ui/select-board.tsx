@@ -30,6 +30,7 @@ import { SelectKanbanField } from './select-kanban-field'
 import { CreateNewOptionModal } from './create-new-option-modal'
 import { groupBy } from '@fxts/core'
 import { KanbanCard } from './kanban-card'
+import { UNCATEGORIZED_OPTION_ID } from './kanban.constants'
 
 interface IProps extends ITableBaseProps {
   field: SelectField
@@ -50,7 +51,8 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
   const [options, handlers] = useListState(field.options.options)
   const [opened, setOpened] = useAtom(openKanbanEditFieldAtom)
 
-  const groupOptionRecords = () => groupBy((record) => (record.values[field.name.value] as string) || '', records)
+  const groupOptionRecords = () =>
+    groupBy((record) => (record.values[field.name.value] as string) || UNCATEGORIZED_OPTION_ID, records)
   const [optionRecords, setOptionRecords] = useState(groupOptionRecords())
 
   useEffect(() => {
@@ -103,7 +105,7 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
 
       if (overId != null) {
         if (overId in containers) {
-          const containerItems = optionRecords[overId].map((r) => r.id)
+          const containerItems = optionRecords[overId]?.map((r) => r.id) ?? []
 
           if (containerItems.length > 0) {
             overId = closestCenter({
@@ -171,7 +173,7 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
 
             setOptionRecords((prev) => {
               const activeItems = prev[activeContainer].map((r) => r.id)
-              const overItems = prev[overContainer].map((r) => r.id)
+              const overItems = prev[overContainer]?.map((r) => r.id) ?? []
 
               // Find the indexes for the items
               const activeIndex = activeItems.indexOf(active.id as string)
@@ -196,9 +198,9 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
                 ...prev,
                 [activeContainer]: [...prev[activeContainer].filter((item) => item.id !== active.id)],
                 [overContainer]: [
-                  ...prev[overContainer].slice(0, newIndex),
+                  ...(prev[overContainer]?.slice(0, newIndex) ?? []),
                   optionRecords[activeContainer][activeIndex],
-                  ...prev[overContainer].slice(newIndex, prev[overContainer].length),
+                  ...(prev[overContainer]?.slice(newIndex, prev[overContainer].length) ?? []),
                 ],
               }
             })
@@ -250,8 +252,13 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
           }}
           collisionDetection={collisionDetectionStrategy}
         >
-          <KanbanLane table={table} field={field} records={optionRecords[''] ?? []} title="uncategorized" id={null} />
-
+          <KanbanLane
+            table={table}
+            field={field}
+            records={optionRecords[UNCATEGORIZED_OPTION_ID] ?? []}
+            title="uncategorized"
+            id={UNCATEGORIZED_OPTION_ID}
+          />
           <SortableContext items={containers} strategy={horizontalListSortingStrategy}>
             {options.map((option) => (
               <SortableKanbanLane

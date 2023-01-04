@@ -8,6 +8,7 @@ import { useSetAtom } from 'jotai'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
 import type { SortableProps } from '../sortable.interface'
+import { UNCATEGORIZED_OPTION_ID } from './kanban.constants'
 
 interface IProps {
   id: string | null
@@ -24,6 +25,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   field,
   table,
   setNodeRef,
+  setActivatorNodeRef,
   style,
   title,
   attributes = {},
@@ -36,7 +38,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   const onCreateRecord = () => {
     setOpened(true)
     if (id) {
-      setCreateRecordInitialValue({ [field.name.value]: id })
+      setCreateRecordInitialValue({ [field.name.value]: id === UNCATEGORIZED_OPTION_ID ? null : id })
     }
   }
 
@@ -49,7 +51,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
           <Text weight={500}>{title}</Text>
 
           {listeners ? (
-            <ActionIcon {...listeners} {...attributes}>
+            <ActionIcon ref={setActivatorNodeRef} {...listeners} {...attributes}>
               <IconGripVertical size={14} cursor="grab" />
             </ActionIcon>
           ) : null}
@@ -74,8 +76,9 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
 }
 
 export const SortableKanbanLane: React.FC<IProps> = ({ table, title, field, id, records }) => {
-  const { attributes, listeners, isDragging, setNodeRef, transform, transition } = useSortable({
+  const { attributes, listeners, isDragging, setNodeRef, setActivatorNodeRef, transform, transition } = useSortable({
     id: id as string,
+    disabled: id === UNCATEGORIZED_OPTION_ID,
     data: {
       type: 'container',
     },
@@ -98,6 +101,7 @@ export const SortableKanbanLane: React.FC<IProps> = ({ table, title, field, id, 
       attributes={attributes}
       listeners={listeners}
       setNodeRef={setNodeRef}
+      setActivatorNodeRef={setActivatorNodeRef}
       style={style}
     />
   )
