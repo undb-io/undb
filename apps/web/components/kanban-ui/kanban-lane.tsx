@@ -1,15 +1,13 @@
-import { defaultAnimateLayoutChanges, useSortable } from '@dnd-kit/sortable'
+import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { ActionIcon, Card, Group, IconGripVertical, IconRowInsertTop, Stack, Text } from '@egodb/ui'
 import { CSS } from '@dnd-kit/utilities'
-import type { CSSProperties } from 'react'
-import { useMemo } from 'react'
-import type { DraggableAttributes, DraggableSyntheticListeners } from '@dnd-kit/core'
 import type { QueryRecords, SelectField } from '@egodb/core'
-import { KanbanCard } from './card'
+import { SortableKanbanCard } from './kanban-card'
 import type { Table } from '@egodb/core'
 import { useSetAtom } from 'jotai'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
+import type { SortableProps } from '../sortable.interface'
 
 interface IProps {
   id: string | null
@@ -19,12 +17,7 @@ interface IProps {
   records: QueryRecords
 }
 
-interface IKanbanLaneProps extends IProps {
-  setNodeRef?: (node: HTMLElement | null) => void
-  style?: CSSProperties
-  attributes?: DraggableAttributes
-  listeners?: DraggableSyntheticListeners
-}
+type IKanbanLaneProps = IProps & SortableProps
 
 export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   id,
@@ -37,8 +30,6 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   listeners,
   records,
 }) => {
-  const filteredRecords = useMemo(() => records.filter((r) => r.values[field.name.value] === id), [records])
-
   const setOpened = useSetAtom(createRecordFormDrawerOpened)
   const setCreateRecordInitialValue = useSetAtom(createRecordInitialValueAtom)
 
@@ -49,8 +40,10 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
     }
   }
 
+  const items = records.map((r) => r.id)
+
   return (
-    <Card ref={setNodeRef} style={style} withBorder shadow="xs" radius="sm" w={350}>
+    <Card ref={setNodeRef} withBorder shadow="xs" radius="sm" w={350} style={style}>
       <Card.Section withBorder inheritPadding py="sm">
         <Group position="apart">
           <Text weight={500}>{title}</Text>
@@ -69,9 +62,11 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
             <IconRowInsertTop />
           </ActionIcon>
 
-          {filteredRecords.map((r) => (
-            <KanbanCard table={table} record={r} key={r.id} />
-          ))}
+          <SortableContext items={items} strategy={verticalListSortingStrategy}>
+            {records.map((r) => (
+              <SortableKanbanCard table={table} record={r} key={r.id} />
+            ))}
+          </SortableContext>
         </Stack>
       </Card.Section>
     </Card>
@@ -81,11 +76,13 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
 export const SortableKanbanLane: React.FC<IProps> = ({ table, title, field, id, records }) => {
   const { attributes, listeners, isDragging, setNodeRef, transform, transition } = useSortable({
     id: id as string,
-    animateLayoutChanges: defaultAnimateLayoutChanges,
+    data: {
+      type: 'container',
+    },
   })
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
     transition,
     zIndex: isDragging ? 100 : undefined,
     opacity: isDragging ? 0.5 : undefined,

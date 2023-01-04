@@ -2,7 +2,7 @@ import { NanoID } from '@egodb/domain'
 import { optionIdSchema } from './option.schema'
 
 export class OptionId extends NanoID {
-  private static OPTION_ID_PREFIX = ''
+  private static OPTION_ID_PREFIX = 'opt'
   private static OPTION_ID_SIZE = 5
   public get value(): string {
     return this.props.value
