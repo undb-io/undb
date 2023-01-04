@@ -1,35 +1,20 @@
 import type { Field, Table } from '@egodb/core'
-import { Group, Select, Text } from '@egodb/ui'
-import { forwardRef, useState } from 'react'
+import { Select } from '@egodb/ui'
+import { useState } from 'react'
 import { FieldIcon } from '../fields/field-Icon'
+import { FileItem } from '../fields/field-item'
 interface IProps {
   schema: Table['schema']
   value: Field | null
   onChange: (field: Field | null) => void
 }
 
-interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
-  field: Field
-  label: string
-}
-
-export const SelectItem = forwardRef<HTMLDivElement, ItemProps>(({ field, label, ...others }: ItemProps, ref) => {
-  return (
-    <div ref={ref} {...others}>
-      <Group noWrap>
-        {FieldIcon({ type: field?.type })}
-        <Text size="sm">{label}</Text>
-      </Group>
-    </div>
-  )
-})
-
 export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => {
   const [selectedColumnType, setSelectedColumnType] = useState<string>()
 
   const getFieldIcon = () => {
     if (value && selectedColumnType) {
-      return FieldIcon({ type: selectedColumnType, size: 16 })
+      return <FieldIcon type={selectedColumnType} />
     }
     return null
   }
@@ -47,11 +32,11 @@ export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => 
         }
       }}
       placeholder="search field"
-      itemComponent={SelectItem}
+      itemComponent={FileItem}
       data={schema.fields.map((f) => ({
         value: f.name.value,
         label: f.name.value,
-        field: f,
+        type: f.type,
       }))}
       icon={getFieldIcon()}
     />

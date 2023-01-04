@@ -2,6 +2,7 @@ import { setCalendarFieldSchema } from '@egodb/core'
 import { useForm, zodResolver, Card, Radio, Group, Button, Text, IconPlus, Stack, Divider } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { trpc } from '../../trpc'
+import { FieldIcon } from '../fields/field-Icon'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { calendarStepOne, calendarStepTwo } from './calendar-step.atom'
 
@@ -57,7 +58,16 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ table, onSuccess
                   {...form.getInputProps('field')}
                 >
                   {calendarFields.map((f) => (
-                    <Radio key={f.id.value} value={f.id.value} label={f.name.value} />
+                    <Radio
+                      key={f.id.value}
+                      value={f.id.value}
+                      label={
+                        <Group spacing="xs">
+                          <FieldIcon type={f.type} />
+                          {f.name.value}
+                        </Group>
+                      }
+                    />
                   ))}
                 </Radio.Group>
                 <Divider label="or" labelPosition="center" />

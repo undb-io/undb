@@ -9,28 +9,12 @@ import type { ITableBaseProps } from '../table/table-base-props'
 import { useCreateFieldFormContext } from './create-field-form-context'
 import { createFielModelOpened } from './create-field-modal-opened.atom'
 import { CreateFieldVariantControl } from './create-field-variant-control'
-import { forwardRef } from 'react'
+import { FileItem } from '../fields/field-item'
 
 interface IProps extends ITableBaseProps {
   onCancel?: () => void
   onSuccess?: () => void
 }
-
-interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
-  value: string
-  label: string
-}
-
-export const SelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, label, ...others }: ItemProps, ref) => {
-  return (
-    <div ref={ref} {...others}>
-      <Group noWrap>
-        {FieldIcon({ type: value })}
-        <Text size="sm">{label}</Text>
-      </Group>
-    </div>
-  )
-})
 
 export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
   const form = useCreateFieldFormContext()
@@ -59,8 +43,8 @@ export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
           required
           label={<FieldInputLabel>type</FieldInputLabel>}
           data={FIELD_SELECT_ITEMS}
-          itemComponent={SelectItem}
-          icon={FieldIcon({ type: form.values.type })}
+          itemComponent={FileItem}
+          icon={<FieldIcon type={form.values.type} />}
         />
         <TextInput {...form.getInputProps('name')} label={<FieldInputLabel>name</FieldInputLabel>} required />
         <CreateFieldVariantControl />

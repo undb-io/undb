@@ -1,5 +1,6 @@
-import { Button, Checkbox, IconEye, Popover, Stack, useDisclosure } from '@egodb/ui'
+import { Button, Checkbox, Group, IconEye, Popover, Stack, useDisclosure } from '@egodb/ui'
 import { trpc } from '../../trpc'
+import { FieldIcon } from '../fields/field-Icon'
 import type { ITableBaseProps } from './table-base-props'
 
 export const TableFieldVisibilityEditor: React.FC<ITableBaseProps> = ({ table }) => {
@@ -38,7 +39,12 @@ export const TableFieldVisibilityEditor: React.FC<ITableBaseProps> = ({ table })
               defaultChecked={visibility[f.name.value] === undefined || !!visibility[f.name.value]}
               key={f.id.value}
               value={f.name.value}
-              label={f.name.value}
+              label={
+                <Group spacing="xs">
+                  <FieldIcon type={f.type} />
+                  {f.name.value}
+                </Group>
+              }
             />
           ))}
         </Stack>

@@ -7,6 +7,8 @@ import { FieldCommonControl } from './field-common-control'
 import { FieldInputLabel } from '../../fields/field-input-label'
 import { FIELD_SELECT_ITEMS } from '../../../constants/field.constants'
 import { FieldVariantControl } from './field-variant-control'
+import { FieldIcon } from '../../fields/field-Icon'
+import { FileItem } from '../../fields/field-item'
 
 interface IProps {
   id: string
@@ -50,6 +52,8 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
               variant="filled"
               required={true}
               data={FIELD_SELECT_ITEMS}
+              itemComponent={FileItem}
+              icon={<FieldIcon type={form.values.schema[index].type} />}
             />
             <TextInput
               {...form.getInputProps(`schema.${index}.name`)}
