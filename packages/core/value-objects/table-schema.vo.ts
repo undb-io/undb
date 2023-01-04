@@ -22,6 +22,8 @@ export const createTableSchemaSchema = z
 
 export type ICreateTableSchemaInput = z.infer<typeof createTableSchemaSchema>
 
+export type TableSchemaMap = Map<string, Field>
+
 /**
  * Table Schema is a collection of fields
  */
@@ -34,6 +36,10 @@ export class TableSchema extends ValueObject<Field[]> {
   static unsafeCreate(inputs: ICreateTableSchemaInput): TableSchema {
     const fields = inputs.map(FieldFactory.unsafeCreate)
     return new TableSchema(fields)
+  }
+
+  public toMap(): TableSchemaMap {
+    return new Map(this.fields.map((f) => [f.name.value, f]))
   }
 
   public get fields(): Field[] {
