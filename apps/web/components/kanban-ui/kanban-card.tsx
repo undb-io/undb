@@ -18,7 +18,7 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
   style,
 }) => {
   return (
-    <Card py="xs" shadow="xs" radius="sm" {...attributes} {...listeners} ref={setNodeRef} style={style}>
+    <Card py="sm" shadow="xs" radius="sm" {...attributes} {...listeners} ref={setNodeRef} style={style}>
       {Object.entries(record.values).map(([key, value]) => {
         const field = table.schema.getField(key)
         if (field.isNone()) return null
