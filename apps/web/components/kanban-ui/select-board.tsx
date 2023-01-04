@@ -11,7 +11,12 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
-import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
+import {
+  arrayMove,
+  horizontalListSortingStrategy,
+  SortableContext,
+  sortableKeyboardCoordinates,
+} from '@dnd-kit/sortable'
 import type { QueryRecords, SelectField } from '@egodb/core'
 import { Container, Group, Modal, useListState } from '@egodb/ui'
 import { useAtom } from 'jotai'
@@ -19,7 +24,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { openKanbanEditFieldAtom } from './kanban-edit-field.atom'
-import { KanbanLane } from './kanban-lane'
+import { KanbanLane, SortableKanbanLane } from './kanban-lane'
 import { CreateNewOptionButton } from './create-new-option-button'
 import { SelectKanbanField } from './select-kanban-field'
 import { CreateNewOptionModal } from './create-new-option-modal'
@@ -247,30 +252,32 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
         >
           <KanbanLane table={table} field={field} records={optionRecords[''] ?? []} title="uncategorized" id={null} />
 
-          {options.map((option) => (
-            <KanbanLane
-              field={field}
-              table={table}
-              records={optionRecords[option.id.value] ?? []}
-              key={option.id.value}
-              id={option.id.value}
-              title={option.name.value}
-            />
-          ))}
-
-          <DragOverlay adjustScale dropAnimation={dropAnimation}>
-            {containers.includes(activeId as string) ? (
-              <KanbanLane
-                table={table}
+          <SortableContext items={containers} strategy={horizontalListSortingStrategy}>
+            {options.map((option) => (
+              <SortableKanbanLane
                 field={field}
-                records={records}
-                title={activeContainer?.name.value ?? ''}
-                id={activeContainer?.id.value ?? ''}
+                table={table}
+                records={optionRecords[option.id.value] ?? []}
+                key={option.id.value}
+                id={option.id.value}
+                title={option.name.value}
               />
-            ) : (
-              <KanbanCard record={activeRecord!} table={table} />
-            )}
-          </DragOverlay>
+            ))}
+
+            <DragOverlay dropAnimation={dropAnimation}>
+              {containers.includes(activeId as string) ? (
+                <KanbanLane
+                  table={table}
+                  field={field}
+                  records={optionRecords[(activeId as string) || ''] ?? []}
+                  title={activeContainer?.name.value ?? ''}
+                  id={activeContainer?.id.value ?? ''}
+                />
+              ) : (
+                <KanbanCard record={activeRecord!} table={table} />
+              )}
+            </DragOverlay>
+          </SortableContext>
         </DndContext>
 
         <CreateNewOptionModal table={table} field={field} />
