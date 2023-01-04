@@ -26,6 +26,14 @@ export const SelectItem = forwardRef<HTMLDivElement, ItemProps>(({ field, label,
 
 export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => {
   const [selectedColumnType, setSelectedColumnType] = useState<string>()
+
+  const getFieldIcon = () => {
+    if (value && selectedColumnType) {
+      return FieldIcon({ type: selectedColumnType, size: 16 })
+    }
+    return null
+  }
+
   return (
     <Select
       searchable
@@ -45,7 +53,7 @@ export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => 
         label: f.name.value,
         field: f,
       }))}
-      icon={!value ? null : selectedColumnType ? FieldIcon({ type: selectedColumnType, size: 16 }) : null}
+      icon={getFieldIcon()}
     />
   )
 }
