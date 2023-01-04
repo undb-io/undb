@@ -1,14 +1,21 @@
 import { flexRender } from '@tanstack/react-table'
 import { useSetAtom } from 'jotai'
 import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
+import { editRecordValuesAtom } from '../edit-record-form/edit-record-values.atom'
 import type { TRow } from './interface'
 
-export const Tr: React.FC<{ row: TRow }> = ({ row }) => {
+interface IProps {
+  row: TRow
+  id: string
+}
+export const Tr: React.FC<IProps> = ({ row, id }) => {
   const setOpened = useSetAtom(editRecordFormDrawerOpened)
+  const setEditRecordValues = useSetAtom(editRecordValuesAtom)
   return (
     <tr
       key={row.id}
       onClick={() => {
+        setEditRecordValues({ id, values: row.original })
         setOpened(true)
       }}
     >

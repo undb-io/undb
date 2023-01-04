@@ -70,8 +70,8 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
         ))}
       </thead>
       <tbody>
-        {rt.getRowModel().rows.map((row) => (
-          <Tr key={row.id} row={row} />
+        {rt.getRowModel().rows.map((row, index) => (
+          <Tr key={row.id} id={records[index].id} row={row} />
         ))}
       </tbody>
     </Table>

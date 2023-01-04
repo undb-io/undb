@@ -1,5 +1,5 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { IRecordRepository } from '../../record/repository'
+import type { IRecordRepository } from '../../record/record.repository'
 import type { ITableRepository } from '../../table.repository'
 import type { ICreateTableOutput } from '../create-table'
 import type { CreateRecordCommand } from './create-record.comand'
@@ -10,7 +10,7 @@ export class CreateRecordCommandHandler implements ICommandHandler<CreateRecordC
   async execute(command: CreateRecordCommand): Promise<ICreateTableOutput> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
 
-    const record = table.createRecord(command)
+    const record = table.createRecord(command.value)
     await this.recordRepo.insert(record)
 
     return { id: record.id.value }

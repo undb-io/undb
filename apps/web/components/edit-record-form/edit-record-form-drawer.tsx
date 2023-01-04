@@ -1,11 +1,14 @@
 import type { Table as CoreTable } from '@egodb/core'
-import { createRecordCommandInput } from '@egodb/core'
+import { updateRecordSchema } from '@egodb/core'
+import type { IUpdateRecordValueSchema } from '@egodb/core'
 import { Drawer, zodResolver } from '@egodb/ui'
 import { useAtom } from 'jotai'
+import { useEffect } from 'react'
 import { useConfirmModal } from '../../hooks'
-import { CreateRecordFormProvider, useCreateRecord } from '../create-record-form/create-record-form-context'
 import { editRecordFormDrawerOpened } from './drawer-opened.atom'
 import { EditRecordForm } from './edit-record-form'
+import { UpdateRecordFormProvider, useUpdateRecord } from './edit-record-form-context'
+import { editRecordValuesAtom } from './edit-record-values.atom'
 
 interface IProps {
   table: CoreTable
@@ -13,28 +16,35 @@ interface IProps {
 
 export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
   const [opened, setOpened] = useAtom(editRecordFormDrawerOpened)
+  const [record, setRecord] = useAtom(editRecordValuesAtom)
+
+  const initialValues: IUpdateRecordValueSchema = {
+    id: record?.id ?? '',
+    value: table.schema.fields.map((field) => ({
+      name: field.name.value,
+      value: record?.values[field.name.value] ?? null,
+    })),
+  }
+
+  useEffect(() => {
+    form.setValues(initialValues)
+    form.resetDirty()
+  }, [record])
 
   const reset = () => {
     setOpened(false)
+    setRecord(null)
     form.clearErrors()
     form.reset()
-    form.resetTouched()
-    form.resetDirty()
   }
   const confirm = useConfirmModal({ onConfirm: reset })
-  const form = useCreateRecord({
-    initialValues: {
-      tableId: table.id.value,
-      value: table.schema.fields.map((field) => ({
-        name: field.name.value,
-        value: null,
-      })),
-    },
-    validate: zodResolver(createRecordCommandInput),
+  const form = useUpdateRecord({
+    initialValues,
+    validate: zodResolver(updateRecordSchema),
   })
 
   return (
-    <CreateRecordFormProvider form={form}>
+    <UpdateRecordFormProvider form={form}>
       <Drawer
         target="body"
         opened={opened}
@@ -45,13 +55,13 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
             reset()
           }
         }}
-        title="New Record"
+        title="Edit Record"
         padding="xl"
         position="right"
         size={700}
       >
         <EditRecordForm table={table} onCancel={reset} />
       </Drawer>
-    </CreateRecordFormProvider>
+    </UpdateRecordFormProvider>
   )
 }

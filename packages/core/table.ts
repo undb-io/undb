@@ -1,21 +1,15 @@
 import { and, andOptions } from '@egodb/domain'
-import { filter, map, pipe, toArray } from '@fxts/core'
 import type { Option, Result } from 'oxide.ts'
 import { None, Ok, Some } from 'oxide.ts'
-import type { ICreateRecordInput } from './commands'
-import type {
-  ICreateFieldSchema,
-  ICreateFieldsSchema_internal,
-  ICreateFieldValueSchema_internal,
-  IQuerySchemaSchema,
-  IReorderOptionsSchema,
-} from './field'
-import { createFieldValueSchema_internal, isSelectField } from './field'
+import type { ICreateFieldSchema, IQuerySchemaSchema, IReorderOptionsSchema } from './field'
+import { isSelectField } from './field'
 import type { IRootFilter } from './filter'
 import type { ICreateOptionSchema } from './option'
 import type { Record } from './record'
 import { WithRecordTableId } from './record'
 import { RecordFactory } from './record/record.factory'
+import type { IMutateRecordValueSchema } from './record/record.schema'
+import { createRecordInputs } from './record/record.utils'
 import { WithRecordValues } from './record/specifications/record-values.specification'
 import { WithTableName, WithTableView, WithViewFieldsOrder } from './specifications'
 import { WithFilter } from './specifications/filters.specificaiton'
@@ -136,20 +130,8 @@ export class Table {
     return view.fieldsOrder ?? this.schema.defaultFieldsOrder
   }
 
-  public createRecord(input: ICreateRecordInput): Record {
-    const inputs: ICreateFieldsSchema_internal = pipe(
-      input.value,
-      map(({ name, value }) =>
-        this.schema
-          .getField(name)
-          .map((field) => ({ type: field.type, field, value } as ICreateFieldValueSchema_internal)),
-      ),
-      filter((f) => f.isSome),
-      map((f) => f.unwrap()),
-      map((f) => createFieldValueSchema_internal.parse(f)),
-      toArray,
-    )
-
+  public createRecord(value: IMutateRecordValueSchema): Record {
+    const inputs = createRecordInputs(this.schema, value)
     const spec = new WithRecordTableId(this.id).and(WithRecordValues.fromArray(inputs))
     return RecordFactory.create(spec).unwrap()
   }
