@@ -137,6 +137,13 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
     })
   }, [containers])
 
+  const utils = trpc.useContext()
+  const updateRecord = trpc.record.update.useMutation({
+    onSuccess() {
+      utils.record.list.refetch()
+    },
+  })
+
   return (
     <Container fluid ml={0}>
       {opened && (
@@ -239,14 +246,21 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
 
             if (overContainer) {
               const activeIndex = optionRecords[activeContainer].map((r) => r.id).indexOf(active.id as string)
-              const overIndex = optionRecords[overContainer].map((r) => r.id).indexOf(overId as string)
+              const overIndex = optionRecords[overContainer]?.map((r) => r.id).indexOf(overId as string) ?? -1
 
               if (activeIndex !== overIndex) {
                 setOptionRecords((items) => ({
                   ...items,
-                  [overContainer]: arrayMove(items[overContainer], activeIndex, overIndex),
+                  [overContainer]: arrayMove(items[overContainer] ?? [], activeIndex, overIndex),
                 }))
               }
+              updateRecord.mutate({
+                tableId: table.id.value,
+                id: active.id as string,
+                value: [
+                  { name: field.name.value, value: overContainer === UNCATEGORIZED_OPTION_ID ? null : overContainer },
+                ],
+              })
             }
             setActiveId(null)
           }}
