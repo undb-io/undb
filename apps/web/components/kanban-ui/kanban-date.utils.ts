@@ -1,0 +1,12 @@
+import { NODATE_STACK_ID } from './kanban.constants'
+
+export const KANBAN_DATE_STACKS = [
+  NODATE_STACK_ID,
+  'BEFORE_YESTERDAY',
+  'YESTERDAY',
+  'TODAY',
+  'TOMORROW',
+  'AFTER_TOMORROW',
+]
+
+export const RElAVANT_DATES = ['BEFORE_YESTERDAY', 'AFTER_TOMORROW']

@@ -1,8 +1,31 @@
-import type { CollisionDetection, DragEndEvent, DragOverEvent, DragStartEvent, UniqueIdentifier } from '@dnd-kit/core'
-import { closestCenter, getFirstCollision, pointerWithin, rectIntersection } from '@dnd-kit/core'
+import type {
+  CollisionDetection,
+  DragEndEvent,
+  DragOverEvent,
+  DragStartEvent,
+  DropAnimation,
+  UniqueIdentifier,
+} from '@dnd-kit/core'
+import {
+  closestCenter,
+  defaultDropAnimationSideEffects,
+  getFirstCollision,
+  pointerWithin,
+  rectIntersection,
+} from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import type { Dispatch, SetStateAction } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+
+const dropAnimation: DropAnimation = {
+  sideEffects: defaultDropAnimationSideEffects({
+    styles: {
+      active: {
+        opacity: '0.5',
+      },
+    },
+  }),
+}
 
 export interface IUseKanbanProps<TContainer, TItem> {
   containers: UniqueIdentifier[]
@@ -11,8 +34,10 @@ export interface IUseKanbanProps<TContainer, TItem> {
   setItems: Dispatch<SetStateAction<Record<string, TItem[]>>>
   getItemId: (item: TItem) => UniqueIdentifier
 
-  onDragContainerEnd: (e: DragEndEvent) => void
-  onDragItemEnd: (e: DragEndEvent, overContainer: UniqueIdentifier) => void
+  getContainer: (id: UniqueIdentifier) => TContainer | undefined
+
+  onDragContainerEnd?: (e: DragEndEvent) => void
+  onDragItemEnd?: (e: DragEndEvent, overContainer: UniqueIdentifier) => void
 }
 
 export const useKanban = <TContainer, TItem>({
@@ -21,6 +46,7 @@ export const useKanban = <TContainer, TItem>({
   setItems,
   getItemId,
   getActiveItem,
+  getContainer,
   onDragContainerEnd,
   onDragItemEnd,
 }: IUseKanbanProps<TContainer, TItem>) => {
@@ -139,7 +165,7 @@ export const useKanban = <TContainer, TItem>({
   const onDragEnd: (event: DragEndEvent) => void = (e) => {
     const { over, active } = e
     if (containers.includes(active.id as string) && over?.id) {
-      onDragContainerEnd(e)
+      onDragContainerEnd?.(e)
       return
     }
     const activeContainer = findContainer(active.id)
@@ -168,21 +194,24 @@ export const useKanban = <TContainer, TItem>({
           [overContainer]: arrayMove(items[overContainer] ?? [], activeIndex, overIndex),
         }))
       }
-      onDragItemEnd(e, overContainer)
+      onDragItemEnd?.(e, overContainer)
     }
     setActiveId(null)
   }
 
   const isActiveContainer = containers.includes(activeId as string)
   const activeItem = getActiveItem(activeId as string)
+  const activeContainer = getContainer(activeId as string)
 
   return {
     collisionDetectionStrategy,
+    dropAnimation,
     onDragStart,
     onDragOver,
     onDragEnd,
     isActiveContainer,
     activeId,
     activeItem,
+    activeContainer,
   }
 }

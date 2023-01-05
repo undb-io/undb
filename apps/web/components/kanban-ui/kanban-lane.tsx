@@ -1,7 +1,7 @@
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { ActionIcon, Card, Group, IconGripVertical, IconRowInsertTop, Stack, Text } from '@egodb/ui'
 import { CSS } from '@dnd-kit/utilities'
-import type { QueryRecords, Records, SelectField } from '@egodb/core'
+import type { ICreateFieldValue, IKanbanField, Records } from '@egodb/core'
 import { SortableKanbanCard } from './kanban-card'
 import type { Table } from '@egodb/core'
 import { useSetAtom } from 'jotai'
@@ -14,8 +14,10 @@ interface IProps {
   id: string | null
   title: string
   table: Table
-  field: SelectField
+  field: IKanbanField
   records: Records
+  disableAddRecord?: boolean
+  getRecordValue?: (id: string | null) => ICreateFieldValue
 }
 
 type IKanbanLaneProps = IProps & SortableProps
@@ -31,14 +33,16 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   attributes = {},
   listeners,
   records,
+  disableAddRecord,
+  getRecordValue,
 }) => {
   const setOpened = useSetAtom(createRecordFormDrawerOpened)
   const setCreateRecordInitialValue = useSetAtom(createRecordInitialValueAtom)
 
   const onCreateRecord = () => {
     setOpened(true)
-    if (id) {
-      setCreateRecordInitialValue({ [field.name.value]: id === UNCATEGORIZED_OPTION_ID ? null : id })
+    if (id && getRecordValue) {
+      setCreateRecordInitialValue({ [field.name.value]: getRecordValue(id) })
     }
   }
 
@@ -60,9 +64,11 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
 
       <Card.Section withBorder inheritPadding p="sm" bg="gray.0" mih={400}>
         <Stack>
-          <ActionIcon w="100%" color="blue" variant="outline" onClick={onCreateRecord}>
-            <IconRowInsertTop />
-          </ActionIcon>
+          {!disableAddRecord ? (
+            <ActionIcon w="100%" color="blue" variant="outline" onClick={onCreateRecord}>
+              <IconRowInsertTop />
+            </ActionIcon>
+          ) : null}
 
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
             {records.map((r) => (
@@ -75,10 +81,10 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   )
 }
 
-export const SortableKanbanLane: React.FC<IProps> = ({ table, title, field, id, records }) => {
+export const SortableKanbanLane: React.FC<IProps> = (props) => {
   const { attributes, listeners, isDragging, setNodeRef, setActivatorNodeRef, transform, transition } = useSortable({
-    id: id as string,
-    disabled: id === UNCATEGORIZED_OPTION_ID,
+    id: props.id as string,
+    disabled: props.id === UNCATEGORIZED_OPTION_ID,
     data: {
       type: 'container',
     },
@@ -93,11 +99,7 @@ export const SortableKanbanLane: React.FC<IProps> = ({ table, title, field, id, 
 
   return (
     <KanbanLane
-      table={table}
-      records={records}
-      title={title}
-      id={id}
-      field={field}
+      {...props}
       attributes={attributes}
       listeners={listeners}
       setNodeRef={setNodeRef}

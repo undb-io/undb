@@ -1,5 +1,5 @@
-import type { ICreateSelectFieldSchema } from '@egodb/core'
-import { createSelectFieldSchema } from '@egodb/core'
+import type { ICreateDateFieldSchema } from '@egodb/core'
+import { createDateFieldSchema } from '@egodb/core'
 import { FieldId } from '@egodb/core'
 import {
   Button,
@@ -15,7 +15,6 @@ import {
 } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { trpc } from '../../trpc'
-import { SelectFieldControl } from '../fields/select-field-control'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { kanbanStepZeroAtom } from './kanban-step.atom'
 
@@ -23,15 +22,14 @@ interface IProps extends ITableBaseProps {
   onSuccess?: () => void
 }
 
-export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
-  const form = useForm<ICreateSelectFieldSchema>({
+export const CreateDateField: React.FC<IProps> = ({ table, onSuccess }) => {
+  const form = useForm<ICreateDateFieldSchema>({
     initialValues: {
-      type: 'select',
+      type: 'date',
       id: 'id',
       name: '',
-      options: [],
     },
-    validate: zodResolver(createSelectFieldSchema),
+    validate: zodResolver(createDateFieldSchema),
   })
 
   const utils = trpc.useContext()
@@ -44,7 +42,7 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
     },
   })
 
-  const createSelectField = trpc.table.field.create.useMutation({
+  const createDateField = trpc.table.field.create.useMutation({
     onSuccess(_, variables) {
       const id = variables.field.id
 
@@ -56,7 +54,7 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
   })
 
   const onSubmit = form.onSubmit((values) => {
-    createSelectField.mutate({
+    createDateField.mutate({
       id: table.id.value,
       field: { ...values, id: FieldId.create().value },
     })
@@ -68,15 +66,14 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
     <form onSubmit={onSubmit}>
       <Card shadow="sm">
         <Card.Section withBorder inheritPadding py="sm">
-          <Text>create new select field</Text>
+          <Text>create new date field</Text>
         </Card.Section>
 
         <Card.Section withBorder inheritPadding py="sm">
           <Stack spacing="xs">
             <FocusTrap>
-              <TextInput {...form.getInputProps('name')} placeholder="new select field name" />
+              <TextInput {...form.getInputProps('name')} placeholder="new date field name" />
             </FocusTrap>
-            <SelectFieldControl onChange={(options) => form.setFieldValue('options', options)} />
           </Stack>
         </Card.Section>
 
