@@ -33,6 +33,7 @@ ResultType {
               },
             },
           },
+          "type": "string",
         },
       ],
     },

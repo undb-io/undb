@@ -6,9 +6,7 @@ import type { ICreateStringFieldInput, ICreateStringFieldValue, StringFieldType 
 import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
 export class StringField extends BaseField<IStringField> {
-  get type(): StringFieldType {
-    return 'string'
-  }
+  type: StringFieldType = 'string'
 
   static create(input: ICreateStringFieldInput): StringField {
     return new StringField({

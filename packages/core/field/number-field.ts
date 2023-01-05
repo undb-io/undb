@@ -7,9 +7,7 @@ import type { ICreateNumberFieldInput, ICreateNumberFieldValue, NumberType } fro
 import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
 export class NumberField extends BaseField<INumberField> {
-  get type(): NumberType {
-    return 'number'
-  }
+  type: NumberType = 'number'
 
   static create(input: ICreateNumberFieldInput): NumberField {
     return new NumberField({

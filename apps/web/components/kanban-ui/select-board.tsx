@@ -1,26 +1,12 @@
-import type { CollisionDetection, DropAnimation, UniqueIdentifier } from '@dnd-kit/core'
+import type { DropAnimation } from '@dnd-kit/core'
 import { defaultDropAnimationSideEffects } from '@dnd-kit/core'
 import { DragOverlay } from '@dnd-kit/core'
-import { getFirstCollision, pointerWithin, rectIntersection } from '@dnd-kit/core'
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  MouseSensor,
-  TouchSensor,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core'
-import {
-  arrayMove,
-  horizontalListSortingStrategy,
-  SortableContext,
-  sortableKeyboardCoordinates,
-} from '@dnd-kit/sortable'
+import { DndContext, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import type { Records, SelectField } from '@egodb/core'
 import { Container, Group, Modal, useListState } from '@egodb/ui'
 import { useAtom } from 'jotai'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { openKanbanEditFieldAtom } from './kanban-edit-field.atom'
@@ -31,6 +17,9 @@ import { CreateNewOptionModal } from './create-new-option-modal'
 import { groupBy } from '@fxts/core'
 import { KanbanCard } from './kanban-card'
 import { UNCATEGORIZED_OPTION_ID } from './kanban.constants'
+import { useKanban } from './use-kanban'
+import type { Record } from '@egodb/core'
+import type { Option } from '@egodb/core'
 
 interface IProps extends ITableBaseProps {
   field: SelectField
@@ -49,6 +38,8 @@ const dropAnimation: DropAnimation = {
 
 export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
   const [options, handlers] = useListState(field.options.options)
+  const containers = options.map((o) => o.id.value)
+
   const [opened, setOpened] = useAtom(openKanbanEditFieldAtom)
 
   const groupOptionRecords = () =>
@@ -60,6 +51,8 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
     )
   const [optionRecords, setOptionRecords] = useState(groupOptionRecords())
 
+  const reorderOptions = trpc.table.field.select.reorderOptions.useMutation()
+
   useEffect(() => {
     handlers.setState(field.options.options)
   }, [field])
@@ -68,7 +61,6 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
     setOptionRecords(groupOptionRecords())
   }, [records])
 
-  const containers = options.map((o) => o.id.value)
   const sensors = useSensors(
     useSensor(MouseSensor),
     useSensor(TouchSensor),
@@ -77,77 +69,45 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
     }),
   )
 
-  const reorderOptions = trpc.table.field.select.reorderOptions.useMutation()
-  const findContainer = (id: UniqueIdentifier) => {
-    if (containers.includes(id as string)) {
-      return id
-    }
-
-    return Object.keys(optionRecords).find((optionId) =>
-      optionRecords[optionId].map((r) => r.id.value).includes(id as string),
-    )
-  }
-
-  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
-  const lastOverId = useRef<UniqueIdentifier | null>(null)
-  const recentlyMovedToNewContainer = useRef(false)
-
-  const activeContainer = options.find((o) => o.id.value === activeId)
-  const activeRecord = records.find((r) => r.id.value === activeId)
-
-  const collisionDetectionStrategy: CollisionDetection = useCallback(
-    (args) => {
-      if (activeId && activeId in containers) {
-        return closestCenter({
-          ...args,
-          droppableContainers: args.droppableContainers.filter((container) => container.id in containers),
-        })
-      }
-
-      const pointerIntersections = pointerWithin(args)
-      const intersections = pointerIntersections.length > 0 ? pointerIntersections : rectIntersection(args)
-      let overId = getFirstCollision(intersections, 'id')
-
-      if (overId != null) {
-        if (overId in containers) {
-          const containerItems = optionRecords[overId]?.map((r) => r.id.value) ?? []
-
-          if (containerItems.length > 0) {
-            overId = closestCenter({
-              ...args,
-              droppableContainers: args.droppableContainers.filter(
-                (container) => container.id !== overId && containerItems.includes(container.id as string),
-              ),
-            })[0]?.id
-          }
-        }
-
-        lastOverId.current = overId
-
-        return [{ id: overId }]
-      }
-
-      if (recentlyMovedToNewContainer.current) {
-        lastOverId.current = activeId
-      }
-
-      return lastOverId.current ? [{ id: lastOverId.current }] : []
-    },
-    [activeId, containers],
-  )
-
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      recentlyMovedToNewContainer.current = false
-    })
-  }, [containers])
-
   const utils = trpc.useContext()
   const updateRecord = trpc.record.update.useMutation({
     onSuccess() {
       utils.record.list.refetch()
     },
   })
+
+  const { collisionDetectionStrategy, onDragStart, onDragOver, onDragEnd, isActiveContainer, activeId, activeItem } =
+    useKanban<Option, Record>({
+      containers,
+      items: optionRecords,
+      setItems: setOptionRecords,
+      getItemId: (item) => item.id.value,
+      getActiveItem: (activeId) => records.find((r) => r.id.value === activeId),
+
+      onDragContainerEnd: ({ active, over }) => {
+        if (over) {
+          handlers.reorder({
+            from: active.data.current?.sortable?.index,
+            to: over.data.current?.sortable?.index,
+          })
+
+          reorderOptions.mutate({
+            tableId: table.id.value,
+            fieldId: field.id.value,
+            from: active.id as string,
+            to: over.id as string,
+          })
+        }
+      },
+      onDragItemEnd: (e, overContainer) => {
+        updateRecord.mutate({
+          tableId: table.id.value,
+          id: e.active.id as string,
+          value: [{ name: field.name.value, value: overContainer === UNCATEGORIZED_OPTION_ID ? null : overContainer }],
+        })
+      },
+    })
+  const activeContainer = options.find((o) => o.id.value === activeId)
 
   return (
     <Container fluid ml={0}>
@@ -166,109 +126,9 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
       <Group align="start" noWrap>
         <DndContext
           sensors={sensors}
-          onDragStart={(e) => {
-            setActiveId(e.active.id)
-          }}
-          onDragOver={(e) => {
-            const { over, active } = e
-            const overId = over?.id
-
-            if (overId == null || containers.includes(active.id as string)) {
-              return
-            }
-
-            const overContainer = findContainer(overId as string)
-            const activeContainer = findContainer(active.id as string)
-            if (!activeContainer || !overContainer || activeContainer === overContainer) {
-              return
-            }
-
-            setOptionRecords((prev) => {
-              const activeItems = prev[activeContainer].map((r) => r.id.value)
-              const overItems = prev[overContainer]?.map((r) => r.id.value) ?? []
-
-              // Find the indexes for the items
-              const activeIndex = activeItems.indexOf(active.id as string)
-              const overIndex = overItems.indexOf(overId as string)
-
-              let newIndex: number
-
-              if (overId in containers) {
-                newIndex = overItems.length + 1
-              } else {
-                const isBelowOverItem =
-                  over &&
-                  active.rect.current.translated &&
-                  active.rect.current.translated.top > over.rect.top + over.rect.height
-
-                const modifier = isBelowOverItem ? 1 : 0
-
-                newIndex = overIndex >= 0 ? overIndex + modifier : overItems.length + 1
-              }
-
-              return {
-                ...prev,
-                [activeContainer]: [...prev[activeContainer].filter((item) => item.id.value !== active.id)],
-                [overContainer]: [
-                  ...(prev[overContainer]?.slice(0, newIndex) ?? []),
-                  optionRecords[activeContainer][activeIndex],
-                  ...(prev[overContainer]?.slice(newIndex, prev[overContainer].length) ?? []),
-                ],
-              }
-            })
-          }}
-          onDragEnd={(e) => {
-            const { over, active } = e
-            if (containers.includes(active.id as string) && over?.id) {
-              handlers.reorder({
-                from: active.data.current?.sortable?.index,
-                to: over.data.current?.sortable?.index,
-              })
-
-              reorderOptions.mutate({
-                tableId: table.id.value,
-                fieldId: field.id.value,
-                from: active.id as string,
-                to: over.id as string,
-              })
-              return
-            }
-            const activeContainer = findContainer(active.id)
-
-            if (!activeContainer) {
-              setActiveId(null)
-              return
-            }
-
-            const overId = over?.id
-
-            if (overId == null) {
-              setActiveId(null)
-              return
-            }
-
-            const overContainer = findContainer(overId)
-
-            if (overContainer) {
-              const activeIndex = optionRecords[activeContainer].map((r) => r.id.value).indexOf(active.id as string)
-              const overIndex = optionRecords[overContainer]?.map((r) => r.id.value).indexOf(overId as string) ?? -1
-
-              if (activeIndex !== overIndex) {
-                setOptionRecords((items) => ({
-                  ...items,
-                  [overContainer]: arrayMove(items[overContainer] ?? [], activeIndex, overIndex),
-                }))
-              }
-              updateRecord.mutate({
-                tableId: table.id.value,
-                id: active.id as string,
-                value: [
-                  { name: field.name.value, value: overContainer === UNCATEGORIZED_OPTION_ID ? null : overContainer },
-                ],
-              })
-            }
-            setActiveId(null)
-          }}
+          onDragStart={onDragStart}
+          onDragOver={onDragOver}
+          onDragEnd={onDragEnd}
           collisionDetection={collisionDetectionStrategy}
         >
           <KanbanLane
@@ -291,7 +151,7 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
             ))}
 
             <DragOverlay dropAnimation={dropAnimation}>
-              {containers.includes(activeId as string) ? (
+              {isActiveContainer ? (
                 <KanbanLane
                   table={table}
                   field={field}
@@ -300,7 +160,7 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
                   id={activeContainer?.id.value ?? ''}
                 />
               ) : (
-                <KanbanCard record={activeRecord!} table={table} />
+                <KanbanCard record={activeItem!} table={table} />
               )}
             </DragOverlay>
           </SortableContext>

@@ -7,9 +7,7 @@ import type { IBoolField } from './field.type'
 import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
 export class BoolField extends BaseField<IBoolField> {
-  get type(): BoolFieldType {
-    return 'bool'
-  }
+  type: BoolFieldType = 'bool'
 
   static create(input: ICreateBoolFieldInput): BoolField {
     return new BoolField({
