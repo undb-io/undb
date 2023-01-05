@@ -1,4 +1,5 @@
 import { ValueObject } from '@egodb/domain'
+import { OptionColor } from './option-color'
 import { OptionId } from './option-id.vo'
 import { OptionName } from './option-name.vo'
 import type { IOption } from './option.interface'
@@ -15,10 +16,15 @@ export class Option extends ValueObject<IOption> {
     return this.props.name
   }
 
+  public get color() {
+    return this.props.color
+  }
+
   static create(input: ICreateOptionSchema): Option {
     return new this({
       id: OptionId.fromNullableString(input.id),
       name: OptionName.create(input.name),
+      color: OptionColor.create(input.optionColor),
     })
   }
 
@@ -26,6 +32,7 @@ export class Option extends ValueObject<IOption> {
     return new this({
       id: OptionId.fromNullableString(input.id),
       name: OptionName.unsafeCreate(input.name),
+      color: OptionColor.create(input.optionColor),
     })
   }
 }

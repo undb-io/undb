@@ -23,7 +23,7 @@ export class TableInMemoryMapper {
   }
 
   static optionToInMemory(o: Option): OptionInMemory {
-    return { id: o.id.value, name: o.name.value }
+    return { id: o.id.value, name: o.name.value, color: { name: o.color.name, shade: o.color.shade } }
   }
 
   static fieldToInMemopy(f: Field): FieldInMemory {
