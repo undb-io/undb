@@ -7,5 +7,7 @@ interface IProps extends Omit<SelectProps, 'data'> {
 }
 
 export const OptionPicker: React.FC<IProps> = ({ field, ...rest }) => {
-  return <Select data={field.options.options.map((o) => ({ value: o.id.value, label: o.name.value }))} {...rest} />
+  return (
+    <Select clearable data={field.options.options.map((o) => ({ value: o.id.value, label: o.name.value }))} {...rest} />
+  )
 }
