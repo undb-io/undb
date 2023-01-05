@@ -13,5 +13,5 @@ export const KanbanBoard: React.FC<IProps> = ({ field, table, records }) => {
     return <SelectBoard field={field} table={table} records={records} />
   }
 
-  return <>board</>
+  return null
 }
