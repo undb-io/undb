@@ -337,6 +337,7 @@ importers:
       '@mantine/modals': ^5.9.6
       '@mantine/next': ^5.9.6
       '@mantine/notifications': ^5.9.6
+      '@mantine/utils': ^5.10.0
       '@tabler/icons': ^1.119.0
       '@types/react': ^18.0.26
       '@types/react-dom': ^18.0.10
@@ -357,6 +358,7 @@ importers:
       '@mantine/modals': 5.9.6_lxwcaovbkfhdao2g6lpw6macu4
       '@mantine/next': 5.9.6_vavbdtuajfyku5chqvt5ands7q
       '@mantine/notifications': 5.9.6_lxwcaovbkfhdao2g6lpw6macu4
+      '@mantine/utils': 5.10.0_react@18.2.0
       '@tabler/icons': 1.119.0_biqbaboplfbrettd7655fr4n2y
       dayjs: 1.11.7
       react-dom: 18.2.0_react@18.2.0
@@ -1664,6 +1666,14 @@ packages:
       csstype: 3.0.9
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@mantine/utils/5.10.0_react@18.2.0:
+    resolution: {integrity: sha512-mHnNm0ajIa8qLAIEwv82N6+7YKecynOA3I8vzgBHXS2x4HwGsHITFYGmMh2LNpx5dRL034tObfEFYZXqncyEDw==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /@mantine/utils/5.9.6_react@18.2.0:
