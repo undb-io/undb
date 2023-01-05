@@ -1,3 +1,4 @@
+import type { SelectFieldValue, BoolFieldValue } from '@egodb/core'
 import { Checkbox, Table } from '@egodb/ui'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { useMemo } from 'react'
@@ -22,11 +23,11 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
         enableResizing: true,
         size: view.getFieldWidth(f.name.value),
         cell: (props) => {
-          if (f.type === 'select' && typeof props.getValue() === 'string') {
-            return f.options.getById(props.getValue() as string).mapOr('', (o) => o.name.value)
+          if (f.type === 'select') {
+            return (props.getValue() as SelectFieldValue).getOptionName(f)
           }
           if (f.type === 'bool') {
-            return <Checkbox defaultChecked={props.getValue() as boolean} />
+            return <Checkbox defaultChecked={(props.getValue() as BoolFieldValue).unpack()} />
           }
           return props.getValue()?.toString()
         },
@@ -40,7 +41,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
       }),
     )
 
-  const data = useMemo(() => records.map((r) => r.values), [records])
+  const data = useMemo(() => records.map((r) => r.values.valueJSON), [records])
   const rt = useReactTable({
     data,
     columns,
@@ -71,7 +72,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
       </thead>
       <tbody>
         {rt.getRowModel().rows.map((row, index) => (
-          <Tr key={row.id} id={records[index].id} row={row} />
+          <Tr key={row.id} id={records[index].id.value} row={row} />
         ))}
       </tbody>
     </Table>

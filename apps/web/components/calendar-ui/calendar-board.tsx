@@ -1,4 +1,4 @@
-import type { QueryRecords } from '@egodb/core'
+import type { Records } from '@egodb/core'
 import type { ICalendarField } from '@egodb/core/view/calendar'
 import { Calendar, Container } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
@@ -10,7 +10,7 @@ import { Day } from './day'
 
 interface IProps extends ITableBaseProps {
   field: ICalendarField
-  records: QueryRecords
+  records: Records
 }
 
 export const CalendarBoard: React.FC<IProps> = ({ field }) => {

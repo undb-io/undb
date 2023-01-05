@@ -1,6 +1,7 @@
 import { ValueObject } from '@egodb/domain'
 import type { Option } from '../option'
 import type { FieldValue } from './field.type'
+import type { SelectField } from './select-field'
 import type { ISelectFieldValue } from './select-field.type'
 
 export class SelectFieldValue extends ValueObject<ISelectFieldValue> {
@@ -18,5 +19,10 @@ export class SelectFieldValue extends ValueObject<ISelectFieldValue> {
 
   get id(): ISelectFieldValue {
     return this.props.value
+  }
+
+  getOptionName(field: SelectField): string {
+    if (!this.id) return ''
+    return field.options.getById(this.id).mapOr('', (o) => o.name.value)
   }
 }

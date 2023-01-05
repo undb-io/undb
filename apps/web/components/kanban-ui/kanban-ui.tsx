@@ -1,4 +1,4 @@
-import type { QueryRecords } from '@egodb/core'
+import type { Records } from '@egodb/core'
 import type { IKanbanField } from '@egodb/core'
 import { Container, Center } from '@egodb/ui'
 import type { ITableBaseProps } from '../table/table-base-props'
@@ -6,7 +6,7 @@ import { KanbanBoard } from './board'
 import { SelectKanbanField } from './select-kanban-field'
 
 interface IProps extends ITableBaseProps {
-  records: QueryRecords
+  records: Records
 }
 
 export const KanbanUI: React.FC<IProps> = ({ table, records }) => {

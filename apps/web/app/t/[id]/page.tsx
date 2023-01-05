@@ -1,5 +1,6 @@
 'use client'
 
+import { RecordFactory } from '@egodb/core'
 import { TableFactory } from '@egodb/core'
 import { Alert, Container, IconAlertCircle } from '@egodb/ui'
 import { TableLoading } from '../../../components/loading'
@@ -10,7 +11,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   const getTable = trpc.table.get.useQuery({ id })
   // FIXME: 不应该在 page 获取 records
   // TODO: 根据不同试图，在 kanban 根据 select id 获取
-  const records = trpc.record.list.useQuery({ tableId: id })
+  const listRecords = trpc.record.list.useQuery({ tableId: id })
 
   if (getTable.isLoading) {
     return <TableLoading />
@@ -29,6 +30,8 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   if (!getTable.data) {
     return 'none'
   }
-
-  return <Table table={TableFactory.fromQuery(getTable.data)} records={records.data?.records ?? []} />
+  const table = TableFactory.fromQuery(getTable.data)
+  const records = RecordFactory.fromQueryRecords(listRecords.data?.records ?? [], table.schema.toMap())
+  console.log(listRecords.data?.records)
+  return <Table table={table} records={records} />
 }

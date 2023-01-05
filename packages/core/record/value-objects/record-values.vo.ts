@@ -9,6 +9,8 @@ import { SelectFieldValue } from '../../field/select-field-value'
 import type { TableSchemaMap } from '../../value-objects'
 import type { IQueryRecordValues } from '../record.type'
 
+export type RecordValueJSON = Record<string, FieldValue>
+
 export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   static fromArray(inputs: ICreateFieldsSchema_internal): RecordValues {
     const values = new Map(inputs.map((v) => [v.field.name.value, v.field.createValue(v.value as never)]))
@@ -33,6 +35,10 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
 
   public get value() {
     return this.props
+  }
+
+  public get valueJSON(): RecordValueJSON {
+    return Object.fromEntries(this.value)
   }
 
   setValue(fieldName: string, value: FieldValue) {

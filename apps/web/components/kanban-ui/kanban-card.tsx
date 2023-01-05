@@ -1,12 +1,12 @@
 import { useSortable } from '@dnd-kit/sortable'
-import type { IQueryRecordSchema } from '@egodb/core'
 import { CSS } from '@dnd-kit/utilities'
 import { Card, Group } from '@egodb/ui'
 import type { SortableProps } from '../sortable.interface'
 import type { ITableBaseProps } from '../table/table-base-props'
+import type { Record } from '@egodb/core'
 
 interface IProps extends ITableBaseProps {
-  record: IQueryRecordSchema
+  record: Record
 }
 
 export const KanbanCard: React.FC<IProps & SortableProps> = ({
@@ -34,7 +34,7 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
 
 export const SortableKanbanCard: React.FC<IProps> = ({ table, record }) => {
   const { attributes, listeners, setNodeRef, isDragging, transform, transition } = useSortable({
-    id: record.id,
+    id: record.id.value,
     data: {
       type: 'card',
     },

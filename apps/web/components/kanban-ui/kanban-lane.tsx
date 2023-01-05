@@ -1,7 +1,7 @@
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { ActionIcon, Card, Group, IconGripVertical, IconRowInsertTop, Stack, Text } from '@egodb/ui'
 import { CSS } from '@dnd-kit/utilities'
-import type { QueryRecords, SelectField } from '@egodb/core'
+import type { QueryRecords, Records, SelectField } from '@egodb/core'
 import { SortableKanbanCard } from './kanban-card'
 import type { Table } from '@egodb/core'
 import { useSetAtom } from 'jotai'
@@ -15,7 +15,7 @@ interface IProps {
   title: string
   table: Table
   field: SelectField
-  records: QueryRecords
+  records: Records
 }
 
 type IKanbanLaneProps = IProps & SortableProps
@@ -42,7 +42,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
     }
   }
 
-  const items = records.map((r) => r.id)
+  const items = records.map((r) => r.id.value)
 
   return (
     <Card ref={setNodeRef} withBorder shadow="xs" radius="sm" w={350} style={style}>
@@ -66,7 +66,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
 
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
             {records.map((r) => (
-              <SortableKanbanCard table={table} record={r} key={r.id} />
+              <SortableKanbanCard table={table} record={r} key={r.id.value} />
             ))}
           </SortableContext>
         </Stack>
