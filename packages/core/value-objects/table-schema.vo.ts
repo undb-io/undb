@@ -6,6 +6,7 @@ import { createFieldSchema, DateField, DateRangeField, fieldNameSchema, SelectFi
 import { FieldFactory } from '../field/field.factory'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
 import { WithNewField } from '../specifications/table-field.specification'
+import type { IKanbanField } from '../view'
 import type { ICalendarField } from '../view/calendar'
 import { ViewFieldsOrder } from '../view/view-fields-order.vo'
 
@@ -46,8 +47,8 @@ export class TableSchema extends ValueObject<Field[]> {
     return this.props
   }
 
-  public get selectFields(): SelectField[] {
-    return this.fields.filter((f) => f instanceof SelectField) as SelectField[]
+  public get kanbanFields(): IKanbanField[] {
+    return this.fields.filter((f) => f instanceof SelectField || f instanceof DateField) as IKanbanField[]
   }
 
   public get calendarFields(): ICalendarField[] {

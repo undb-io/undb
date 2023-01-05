@@ -133,6 +133,7 @@ importers:
       '@types/node': ^18.11.18
       '@types/react': ^18.0.26
       '@types/react-dom': ^18.0.10
+      date-fns: ^2.29.3
       eslint: ^8.31.0
       jotai: ^1.12.1
       next: ^13.1.1
@@ -159,6 +160,7 @@ importers:
       '@trpc/next': 10.7.0_gmaturtqmtlrknaw65ek5pmv2i
       '@trpc/react-query': 10.7.0_x4ie6nhblo2vtx2aafrgzlfqy4
       '@trpc/server': 10.7.0
+      date-fns: 2.29.3
       jotai: 1.12.1_dojr2aquw55jwdpbannhlirjf4
       next: 13.1.1_7xlrwlvvs7cv2obrs6a5y6oxxq
       react: 18.2.0

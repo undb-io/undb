@@ -25,7 +25,7 @@ const StackedBy: React.FC<{ fieldId?: FieldId; table: Table }> = ({ table, field
         compact
         variant="subtle"
         leftIcon={<IconSelect size={18} />}
-      >{`stacked by ${field.name.value}`}</Button>
+      >{`stacked by "${field.name.value}"`}</Button>
     </Tooltip>
   )
 }
