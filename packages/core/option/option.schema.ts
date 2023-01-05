@@ -4,7 +4,7 @@ export const optionNameSchema = z.string().min(1)
 
 export const optionIdSchema = z.string().min(1)
 
-export const optionColorName = z.enum([
+export const optionColorOrder = [
   'dark',
   'gray',
   'red',
@@ -19,7 +19,9 @@ export const optionColorName = z.enum([
   'lime',
   'yellow',
   'orange',
-])
+] as const
+
+export const optionColorName = z.enum(optionColorOrder)
 
 export type IOptionColorName = z.infer<typeof optionColorName>
 
@@ -54,10 +56,13 @@ export const optionsSchema = optionSchema.array()
 export type IOptionSchema = z.infer<typeof optionSchema>
 export type IOptionColor = z.infer<typeof optionColor>
 
+export const createOptionColorSchema = optionColor.partial()
+export type ICreateOptionColorSchema = z.infer<typeof createOptionColorSchema>
+
 export const createOptionSchema = z.object({
   id: optionIdSchema.optional(),
   name: optionNameSchema,
-  optionColor: optionColor.optional(),
+  optionColor: createOptionColorSchema.optional(),
 })
 
 export type ICreateOptionSchema = z.infer<typeof createOptionSchema>

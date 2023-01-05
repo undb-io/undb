@@ -1,5 +1,6 @@
 import { ValueObject } from '@egodb/domain'
-import type { IOptionColor, IOptionColorName, IOptionColorShade } from './option.schema'
+import type { ICreateOptionColorSchema, IOptionColor, IOptionColorName, IOptionColorShade } from './option.schema'
+import { optionColorOrder } from './option.schema'
 
 export class OptionColor extends ValueObject<IOptionColor> {
   get name() {
@@ -18,14 +19,31 @@ export class OptionColor extends ValueObject<IOptionColor> {
     return 'indigo'
   }
 
-  static create(input?: IOptionColor): OptionColor {
-    return input ? new this(input) : this.defaultColor
+  static create(input?: ICreateOptionColorSchema): OptionColor {
+    return input
+      ? new this({
+          name: input.name ?? this.defaultColorName,
+          shade: input.shade ?? this.defaultShade,
+        })
+      : this.defaultColor
   }
 
   static get defaultColor(): OptionColor {
     return new this({
       name: this.defaultColorName,
       shade: this.defaultShade,
+    })
+  }
+
+  next(): OptionColor {
+    const index = optionColorOrder.indexOf(this.name)
+    const nextColorIndex = index === optionColorOrder.length - 1 ? 0 : index + 1
+    const nextColorName = optionColorOrder[nextColorIndex]
+    const shade = this.shade
+
+    return new OptionColor({
+      name: nextColorName,
+      shade,
     })
   }
 }
