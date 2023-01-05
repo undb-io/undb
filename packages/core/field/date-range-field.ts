@@ -12,9 +12,7 @@ import type { IDateRangeField } from './field.type'
 import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
 export class DateRangeField extends BaseField<IDateRangeField> {
-  get type(): DateRangeType {
-    return 'date-range'
-  }
+  type: DateRangeType = 'date-range'
 
   static create(input: ICreateDateRangeFieldSchema): DateRangeField {
     return new DateRangeField({

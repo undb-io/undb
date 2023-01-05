@@ -11,9 +11,7 @@ import { WithNewOption, WithOptions } from './specifications/select-field.specif
 import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
 export class SelectField extends BaseField<ISelectField> {
-  get type(): SelectFieldType {
-    return 'select'
-  }
+  type: SelectFieldType = 'select'
 
   get options() {
     return this.props.options

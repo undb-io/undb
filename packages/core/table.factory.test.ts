@@ -17,5 +17,9 @@ describe('TableFactory', () => {
   ])('should create table', (input) => {
     const table = TableFactory.from(input)
     expect(table).toMatchSnapshot()
+    expect(table.isOk()).to.be.true
+    expect(table.unwrap().schema.fields).to.have.length(1)
+    expect(table.unwrap().schema.fields.at(0)!.type).not.to.be.undefined
+    expect(table.unwrap().schema.fields.at(0)!.type).to.be.eq('string')
   })
 })

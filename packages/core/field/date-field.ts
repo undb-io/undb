@@ -8,9 +8,7 @@ import type { IDateField } from './field.type'
 import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
 export class DateField extends BaseField<IDateField> {
-  get type(): DateType {
-    return 'date'
-  }
+  type: DateType = 'date'
 
   static create(input: ICreateDateFieldSchema): DateField {
     return new DateField({

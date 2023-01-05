@@ -35,6 +35,7 @@ test('createTestTable', () => {
                 },
               },
             },
+            "type": "string",
           },
         ],
       },

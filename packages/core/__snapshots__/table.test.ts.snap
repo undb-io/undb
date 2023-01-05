@@ -32,6 +32,7 @@ Table {
             },
           },
         },
+        "type": "string",
       },
       StringField {
         "props": {
@@ -51,6 +52,7 @@ Table {
             },
           },
         },
+        "type": "string",
       },
     ],
   },
