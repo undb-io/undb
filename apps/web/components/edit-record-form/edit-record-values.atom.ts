@@ -1,4 +1,4 @@
-import type { IQueryRecordSchema } from '@egodb/core'
+import type { RecordValueJSON } from '@egodb/core'
 import { atom } from 'jotai'
 
-export const editRecordValuesAtom = atom<Pick<IQueryRecordSchema, 'id' | 'values'> | null>(null)
+export const editRecordValuesAtom = atom<{ id: string; values: RecordValueJSON } | null>(null)

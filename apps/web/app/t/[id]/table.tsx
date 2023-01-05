@@ -1,6 +1,7 @@
 'use client'
 
-import type { Table as CoreTable, QueryRecords } from '@egodb/core'
+import type { Table as CoreTable } from '@egodb/core'
+import type { Records } from '@egodb/core'
 import { Stack } from '@egodb/ui'
 import { CreateFieldModal } from '../../../components/create-field-form/create-field-modal'
 import { CreateRecordFormDrawer } from '../../../components/create-record-form/create-record-form-drawer'
@@ -11,7 +12,7 @@ import { ViewDisplay } from '../../../components/table/view-display'
 
 interface IProps {
   table: CoreTable
-  records: QueryRecords
+  records: Records
 }
 
 export default function Table({ table, records }: IProps) {

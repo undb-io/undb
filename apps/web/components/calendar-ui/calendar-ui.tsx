@@ -1,4 +1,4 @@
-import type { QueryRecords } from '@egodb/core'
+import type { Records } from '@egodb/core'
 import type { ICalendarField } from '@egodb/core/view/calendar'
 import { Center, Container } from '@egodb/ui'
 import type { ITableBaseProps } from '../table/table-base-props'
@@ -6,7 +6,7 @@ import { CalendarBoard } from './calendar-board'
 import { SelectCalendarField } from './select-calendar-field'
 
 interface IProps extends ITableBaseProps {
-  records: QueryRecords
+  records: Records
 }
 
 export const CalendarUI: React.FC<IProps> = ({ table, records }) => {

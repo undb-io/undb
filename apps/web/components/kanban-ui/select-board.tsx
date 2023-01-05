@@ -17,7 +17,7 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable'
-import type { QueryRecords, SelectField } from '@egodb/core'
+import type { Records, SelectField } from '@egodb/core'
 import { Container, Group, Modal, useListState } from '@egodb/ui'
 import { useAtom } from 'jotai'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -34,7 +34,7 @@ import { UNCATEGORIZED_OPTION_ID } from './kanban.constants'
 
 interface IProps extends ITableBaseProps {
   field: SelectField
-  records: QueryRecords
+  records: Records
 }
 
 const dropAnimation: DropAnimation = {
@@ -52,7 +52,12 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
   const [opened, setOpened] = useAtom(openKanbanEditFieldAtom)
 
   const groupOptionRecords = () =>
-    groupBy((record) => (record.values[field.name.value] as string) || UNCATEGORIZED_OPTION_ID, records)
+    groupBy(
+      (record) =>
+        record.values.getSelectValue(field.name.value).mapOr(UNCATEGORIZED_OPTION_ID, (v) => v.id) ??
+        UNCATEGORIZED_OPTION_ID,
+      records,
+    )
   const [optionRecords, setOptionRecords] = useState(groupOptionRecords())
 
   useEffect(() => {
@@ -79,7 +84,7 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
     }
 
     return Object.keys(optionRecords).find((optionId) =>
-      optionRecords[optionId].map((r) => r.id).includes(id as string),
+      optionRecords[optionId].map((r) => r.id.value).includes(id as string),
     )
   }
 
@@ -88,7 +93,7 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
   const recentlyMovedToNewContainer = useRef(false)
 
   const activeContainer = options.find((o) => o.id.value === activeId)
-  const activeRecord = records.find((r) => r.id === activeId)
+  const activeRecord = records.find((r) => r.id.value === activeId)
 
   const collisionDetectionStrategy: CollisionDetection = useCallback(
     (args) => {
@@ -105,7 +110,7 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
 
       if (overId != null) {
         if (overId in containers) {
-          const containerItems = optionRecords[overId]?.map((r) => r.id) ?? []
+          const containerItems = optionRecords[overId]?.map((r) => r.id.value) ?? []
 
           if (containerItems.length > 0) {
             overId = closestCenter({
@@ -179,8 +184,8 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
             }
 
             setOptionRecords((prev) => {
-              const activeItems = prev[activeContainer].map((r) => r.id)
-              const overItems = prev[overContainer]?.map((r) => r.id) ?? []
+              const activeItems = prev[activeContainer].map((r) => r.id.value)
+              const overItems = prev[overContainer]?.map((r) => r.id.value) ?? []
 
               // Find the indexes for the items
               const activeIndex = activeItems.indexOf(active.id as string)
@@ -203,7 +208,7 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
 
               return {
                 ...prev,
-                [activeContainer]: [...prev[activeContainer].filter((item) => item.id !== active.id)],
+                [activeContainer]: [...prev[activeContainer].filter((item) => item.id.value !== active.id)],
                 [overContainer]: [
                   ...(prev[overContainer]?.slice(0, newIndex) ?? []),
                   optionRecords[activeContainer][activeIndex],
@@ -245,8 +250,8 @@ export const SelectBoard: React.FC<IProps> = ({ table, field, records }) => {
             const overContainer = findContainer(overId)
 
             if (overContainer) {
-              const activeIndex = optionRecords[activeContainer].map((r) => r.id).indexOf(active.id as string)
-              const overIndex = optionRecords[overContainer]?.map((r) => r.id).indexOf(overId as string) ?? -1
+              const activeIndex = optionRecords[activeContainer].map((r) => r.id.value).indexOf(active.id as string)
+              const overIndex = optionRecords[overContainer]?.map((r) => r.id.value).indexOf(overId as string) ?? -1
 
               if (activeIndex !== overIndex) {
                 setOptionRecords((items) => ({

@@ -1,7 +1,10 @@
 import { z } from 'zod'
 import { createFieldsSchema_internal, fieldIdSchema, fieldValue } from '../field'
 import { TableId, tableIdSchema } from '../value-objects'
+import type { Record } from './record'
 import { recordIdSchema } from './value-objects'
+
+export type Records = Record[]
 
 export const createRecordInput_internal = z.object({
   id: recordIdSchema.optional(),

@@ -1,11 +1,11 @@
-import type { QueryRecords } from '@egodb/core'
+import type { Records } from '@egodb/core'
 import { CalendarUI } from '../calendar-ui/calendar-ui'
 import { KanbanUI } from '../kanban-ui/kanban-ui'
 import { EGOTable } from '../table-ui/table'
 import type { ITableBaseProps } from './table-base-props'
 
 interface IProps extends ITableBaseProps {
-  records: QueryRecords
+  records: Records
 }
 
 export const ViewDisplay: React.FC<IProps> = ({ table, records }) => {
