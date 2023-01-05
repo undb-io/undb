@@ -32,6 +32,5 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   }
   const table = TableFactory.fromQuery(getTable.data)
   const records = RecordFactory.fromQueryRecords(listRecords.data?.records ?? [], table.schema.toMap())
-  console.log(listRecords.data?.records)
   return <Table table={table} records={records} />
 }
