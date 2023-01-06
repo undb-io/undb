@@ -4,11 +4,11 @@ import { IconCalendar, IconLayoutKanban, IconTable } from '@egodb/ui'
 export const DisplayTypeIcon: React.FC<{ displayType: IViewDisplayType }> = ({ displayType }) => {
   switch (displayType) {
     case 'grid':
-      return <IconTable />
+      return <IconTable size={18} />
     case 'kanban':
-      return <IconLayoutKanban />
+      return <IconLayoutKanban size={18} />
     case 'calendar':
-      return <IconCalendar />
+      return <IconCalendar size={18} />
 
     default:
       return null
