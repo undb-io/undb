@@ -6,7 +6,7 @@ import { recordIdSchema } from './value-objects'
 export const mutateRecordValueSchema = z
   .array(
     z.object({
-      name: fieldNameSchema,
+      id: fieldNameSchema,
       value: createFieldValueSchema,
     }),
   )

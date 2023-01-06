@@ -10,9 +10,11 @@ export class NumberField extends BaseField<INumberField> {
   type: NumberType = 'number'
 
   static create(input: ICreateNumberFieldInput): NumberField {
+    const fieldName = FieldName.create(input.name)
+
     return new NumberField({
-      id: FieldId.from(input.id),
-      name: FieldName.create(input.name),
+      id: input.id ? FieldId.from(input.id) : FieldId.fromName(fieldName),
+      name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
       currency: Currency.fromNullable(input.currency),
     })
@@ -32,6 +34,6 @@ export class NumberField extends BaseField<INumberField> {
   }
 
   createFilter(operator: INumberFilterOperator, value: number | null): INumberFilter {
-    return { operator, value, path: this.name.value, type: 'number' }
+    return { operator, value, path: this.id.value, type: 'number' }
   }
 }

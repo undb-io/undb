@@ -56,12 +56,12 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ table, onSucces
   const onSubmit = form.onSubmit((values) => {
     createDateRangeField.mutate({
       id: table.id.value,
-      field: { ...values, id: FieldId.create().value },
+      field: values,
     })
   })
 
   const setStepZero = useSetAtom(calendarStepZero)
-
+  const props = form.getInputProps('name')
   return (
     <form onSubmit={onSubmit}>
       <Card shadow="sm">
@@ -72,7 +72,14 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ table, onSucces
         <Card.Section withBorder inheritPadding py="sm">
           <Stack spacing="xs">
             <FocusTrap>
-              <TextInput {...form.getInputProps('name')} placeholder="new date range field name" />
+              <TextInput
+                {...props}
+                onChange={(e) => {
+                  props.onChange(e)
+                  form.setFieldValue('id', e.target.value)
+                }}
+                placeholder="new date range field name"
+              />
             </FocusTrap>
           </Stack>
         </Card.Section>

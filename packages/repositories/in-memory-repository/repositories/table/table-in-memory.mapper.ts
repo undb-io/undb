@@ -30,7 +30,7 @@ export class TableInMemoryMapper {
     if (f.type === 'select') {
       return {
         id: f.id.value,
-        name: f.name.value,
+        name: f.id.value,
         type: f.type,
         required: f.required,
         options: f.options.options.map(this.optionToInMemory),
@@ -38,7 +38,7 @@ export class TableInMemoryMapper {
     }
     return {
       id: f.id.value,
-      name: f.name.value,
+      name: f.id.value,
       type: f.type,
       required: f.required,
     }

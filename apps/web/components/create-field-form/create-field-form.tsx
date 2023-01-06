@@ -1,5 +1,5 @@
 import { FieldId } from '@egodb/core'
-import { Button, Divider, Group, Select, Stack, TextInput, Text } from '@egodb/ui'
+import { Button, Divider, Group, Select, Stack, TextInput } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { FIELD_SELECT_ITEMS } from '../../constants/field.constants'
 import { trpc } from '../../trpc'
@@ -31,7 +31,6 @@ export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
   })
 
   const onSubmit = form.onSubmit((values) => {
-    values.id = FieldId.create().value
     createField.mutate({ id: table.id.value, field: values })
   })
 

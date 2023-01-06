@@ -27,7 +27,7 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
   const form = useForm<ICreateSelectFieldSchema>({
     initialValues: {
       type: 'select',
-      id: 'id',
+      id: '',
       name: '',
       options: [],
     },
@@ -58,12 +58,12 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
   const onSubmit = form.onSubmit((values) => {
     createSelectField.mutate({
       id: table.id.value,
-      field: { ...values, id: FieldId.create().value },
+      field: values,
     })
   })
 
   const setStepZero = useSetAtom(kanbanStepZeroAtom)
-
+  const props = form.getInputProps('name')
   return (
     <form onSubmit={onSubmit}>
       <Card shadow="sm">
@@ -74,7 +74,14 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
         <Card.Section withBorder inheritPadding py="sm">
           <Stack spacing="xs">
             <FocusTrap>
-              <TextInput {...form.getInputProps('name')} placeholder="new select field name" />
+              <TextInput
+                {...props}
+                onChange={(e) => {
+                  props.onChange(e)
+                  form.setFieldValue('id', e.target.value)
+                }}
+                placeholder="new select field name"
+              />
             </FocusTrap>
             <SelectFieldControl onChange={(options) => form.setFieldValue('options', options)} />
           </Stack>

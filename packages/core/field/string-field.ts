@@ -9,9 +9,11 @@ export class StringField extends BaseField<IStringField> {
   type: StringFieldType = 'string'
 
   static create(input: ICreateStringFieldInput): StringField {
+    const fieldName = FieldName.create(input.name)
+
     return new StringField({
-      id: FieldId.from(input.id),
-      name: FieldName.create(input.name),
+      id: input.id ? FieldId.from(input.id) : FieldId.fromName(fieldName),
+      name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
     })
   }
@@ -29,6 +31,6 @@ export class StringField extends BaseField<IStringField> {
   }
 
   createFilter(operator: IStringFilterOperator, value: string | null): IStringFilter {
-    return { operator, value, path: this.name.value, type: 'string' }
+    return { operator, value, path: this.id.value, type: 'string' }
   }
 }

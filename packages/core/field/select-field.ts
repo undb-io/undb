@@ -32,9 +32,11 @@ export class SelectField extends BaseField<ISelectField> {
   }
 
   static create(input: ICreateSelectFieldSchema): SelectField {
+    const fieldName = FieldName.create(input.name)
+
     return new SelectField({
-      id: FieldId.from(input.id),
-      name: FieldName.create(input.name),
+      id: input.id ? FieldId.from(input.id) : FieldId.fromName(fieldName),
+      name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
       options: Options.create(input.options),
     })
@@ -50,7 +52,7 @@ export class SelectField extends BaseField<ISelectField> {
   }
 
   createFilter(operator: ISelectFilterOperator, value: ISelectFilterValue): ISelectFilter {
-    return { operator, value, path: this.name.value, type: 'select' }
+    return { operator, value, path: this.id.value, type: 'select' }
   }
 
   createValue(value: ICreateSelectFieldValue): SelectFieldValue {

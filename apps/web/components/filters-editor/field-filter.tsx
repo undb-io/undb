@@ -20,8 +20,8 @@ interface IProps {
 
 export const FieldFilter: React.FC<IProps> = ({ table, schema, value, onChange, onRemove, index }) => {
   // TODO: path maybe string list
-  const fieldName = value?.path as string
-  const field = fieldName ? schema.getField(fieldName).into(null) : null
+  const fieldId = value?.path as string
+  const field = fieldId ? schema.getFieldById(fieldId).into(null) : null
 
   const [selectedField, setField] = useState<Field | null>(field)
   const [operator, setOperator] = useState<IOperator | null>(value?.operator ?? null)

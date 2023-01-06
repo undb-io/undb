@@ -23,10 +23,10 @@ export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => 
     <Select
       searchable
       clearable
-      value={value?.name.value}
+      value={value?.id.value}
       onChange={(value) => {
-        onChange(value ? schema.getField(value).into(null) : null)
-        const selectedColumn = value ? schema.getField(value).into(null) : null
+        onChange(value ? schema.getFieldById(value).into(null) : null)
+        const selectedColumn = value ? schema.getFieldById(value).into(null) : null
         if (selectedColumn) {
           setSelectedColumnType(selectedColumn.type)
         }
@@ -34,8 +34,8 @@ export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => 
       placeholder="search field"
       itemComponent={FileItem}
       data={schema.fields.map((f) => ({
-        value: f.name.value,
-        label: f.name.value,
+        value: f.id.value,
+        label: f.id.value,
         type: f.type,
       }))}
       icon={getFieldIcon()}

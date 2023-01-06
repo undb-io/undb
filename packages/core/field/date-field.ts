@@ -11,9 +11,10 @@ export class DateField extends BaseField<IDateField> {
   type: DateType = 'date'
 
   static create(input: ICreateDateFieldSchema): DateField {
+    const fieldName = FieldName.create(input.name)
     return new DateField({
-      id: FieldId.from(input.id),
-      name: FieldName.create(input.name),
+      id: input.id ? FieldId.from(input.id) : FieldId.fromName(fieldName),
+      name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
     })
   }
@@ -36,6 +37,6 @@ export class DateField extends BaseField<IDateField> {
     if (dateBuiltInOperators.has(operator)) {
       v = null
     }
-    return { operator, value: v, path: this.name.value, type: 'date' }
+    return { operator, value: v, path: this.id.value, type: 'date' }
   }
 }

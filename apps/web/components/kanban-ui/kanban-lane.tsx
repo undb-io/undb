@@ -45,7 +45,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   const onCreateRecord = () => {
     setOpened(true)
     if (id && getRecordValue) {
-      setCreateRecordInitialValue({ [field.name.value]: getRecordValue(id) })
+      setCreateRecordInitialValue({ [field.id.value]: getRecordValue(id) })
     }
   }
 

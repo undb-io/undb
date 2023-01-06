@@ -36,7 +36,7 @@ export const queryViews = z.array(queryView).optional()
 
 const viewFieldOptionBaseSchema = z.object({
   viewId: viewNameSchema.optional(),
-  fieldName: fieldNameSchema,
+  fieldId: fieldNameSchema,
 })
 
 export const setFieldWidthSchema = z

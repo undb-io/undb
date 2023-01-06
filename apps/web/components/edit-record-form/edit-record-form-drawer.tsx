@@ -21,8 +21,8 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
   const initialValues: IUpdateRecordValueSchema = {
     id: record?.id ?? '',
     value: table.schema.fields.map((field) => ({
-      name: field.name.value,
-      value: record?.values[field.name.value]?.unpack() ?? null,
+      id: field.id.value,
+      value: record?.values[field.id.value]?.unpack() ?? null,
     })),
   }
 

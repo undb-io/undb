@@ -19,13 +19,13 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
 
   const columns = table.schema.fields
     .map((f) =>
-      fieldHelper.accessor(f.name.value, {
-        id: f.name.value,
+      fieldHelper.accessor(f.id.value, {
+        id: f.id.value,
         enableResizing: true,
-        size: view.getFieldWidth(f.name.value),
+        size: view.getFieldWidth(f.id.value),
         cell: (props) => {
           if (f.type === 'select') {
-            const option = (props.getValue() as SelectFieldValue).getOption(f).into()
+            const option = (props.getValue() as SelectFieldValue)?.getOption(f).into()
             if (!option) return null
             return (
               <Option

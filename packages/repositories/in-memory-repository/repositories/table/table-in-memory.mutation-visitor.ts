@@ -59,11 +59,11 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
   fieldWidthEqual(s: WithFieldWidth): void {
     const view = this.getView(s.viewId)
     if (view) {
-      const option = view.fieldOptions?.[s.fieldName]
+      const option = view.fieldOptions?.[s.fieldId]
       if (option) {
         option.width = s.width
       } else {
-        view.fieldOptions[s.fieldName] = { width: s.width }
+        view.fieldOptions[s.fieldId] = { width: s.width }
       }
     }
   }
@@ -76,11 +76,11 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
   fieldVisibility(s: WithFieldVisibility): void {
     const view = this.getView(s.viewId)
     if (view) {
-      const option = view.fieldOptions?.[s.fieldName]
+      const option = view.fieldOptions?.[s.fieldId]
       if (option) {
         option.hidden = s.hidden
       } else {
-        view.fieldOptions[s.fieldName] = { hidden: s.hidden }
+        view.fieldOptions[s.fieldId] = { hidden: s.hidden }
       }
     }
   }

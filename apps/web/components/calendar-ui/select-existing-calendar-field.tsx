@@ -64,7 +64,7 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ table, onSuccess
                       label={
                         <Group spacing="xs">
                           <FieldIcon type={f.type} />
-                          {f.name.value}
+                          {f.id.value}
                         </Group>
                       }
                     />

@@ -2,9 +2,8 @@ import { ValueObject } from '@egodb/domain'
 import { Option } from 'oxide.ts'
 import * as z from 'zod'
 import type { Field, ICreateFieldSchema } from '../field'
-import { createFieldSchema, DateField, DateRangeField, fieldNameSchema, SelectField } from '../field'
+import { createFieldSchema, DateField, DateRangeField, fieldIdSchema, fieldNameSchema, SelectField } from '../field'
 import { FieldFactory } from '../field/field.factory'
-import type { TableCompositeSpecificaiton } from '../specifications/interface'
 import { WithNewField } from '../specifications/table-field.specification'
 import type { IKanbanField } from '../view'
 import type { ICalendarField } from '../view/calendar'
@@ -15,6 +14,7 @@ function hasDuplicates(names: string[]): boolean {
 }
 
 const namesSchema = fieldNameSchema.array().refine(hasDuplicates)
+const idsSchema = fieldIdSchema.array().refine(hasDuplicates)
 
 export const createTableSchemaSchema = z
   .array(createFieldSchema)
@@ -40,7 +40,7 @@ export class TableSchema extends ValueObject<Field[]> {
   }
 
   public toMap(): TableSchemaMap {
-    return new Map(this.fields.map((f) => [f.name.value, f]))
+    return new Map(this.fields.map((f) => [f.id.value, f]))
   }
 
   public get fields(): Field[] {
@@ -59,13 +59,18 @@ export class TableSchema extends ValueObject<Field[]> {
     return this.props.map((f) => f.name.value)
   }
 
+  get fieldsIds(): string[] {
+    return this.props.map((f) => f.id.value)
+  }
+
   private validateNames(...newNames: string[]) {
     const names = [...this.fieldsNames, ...newNames]
     namesSchema.parse(names)
   }
 
-  public getField(name: string): Option<Field> {
-    return Option(this.fields.find((f) => f.name.value === name))
+  private validateIds(...newIds: string[]) {
+    const ids = [...this.fieldsNames, ...newIds]
+    idsSchema.parse(ids)
   }
 
   public getFieldById(id: string): Option<Field> {
@@ -77,17 +82,16 @@ export class TableSchema extends ValueObject<Field[]> {
   }
 
   public get defaultFieldsOrder(): ViewFieldsOrder {
-    const order = this.props.map((v) => v.name.value)
+    const order = this.props.map((v) => v.id.value)
     return ViewFieldsOrder.fromArray(order)
   }
 
-  public createField(input: ICreateFieldSchema): [Field, TableCompositeSpecificaiton] {
-    // FIXME: check name
+  public createField(input: ICreateFieldSchema): WithNewField {
     const field = FieldFactory.create(input)
 
     this.validateNames(field.name.value)
+    this.validateIds(field.id.value)
 
-    const spec = new WithNewField(field)
-    return [field, spec]
+    return new WithNewField(field)
   }
 }

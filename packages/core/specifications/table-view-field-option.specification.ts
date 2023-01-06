@@ -8,7 +8,7 @@ import type { IViewFieldOption } from '../view/view-field-options'
 import { DEFAULT_WIDTH } from '../view/view-field-options'
 
 abstract class BaseViewFieldOptionSpec extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly fieldName: string, public readonly viewId: string) {
+  constructor(public readonly fieldId: string, public readonly viewId: string) {
     super()
   }
 
@@ -17,21 +17,21 @@ abstract class BaseViewFieldOptionSpec extends CompositeSpecification<Table, ITa
   }
 
   protected getFieldOption(t: Table): IViewFieldOption {
-    return this.getView(t).getFieldOption(this.fieldName)
+    return this.getView(t).getFieldOption(this.fieldId)
   }
 
   protected getOrCreateFieldOption(t: Table): IViewFieldOption {
-    return this.getView(t).getOrCreateFieldOption(this.fieldName)
+    return this.getView(t).getOrCreateFieldOption(this.fieldId)
   }
 }
 
 export class WithFieldWidth extends BaseViewFieldOptionSpec {
-  constructor(fieldName: string, viewId: string, public readonly width: number) {
-    super(fieldName, viewId)
+  constructor(fieldId: string, viewId: string, public readonly width: number) {
+    super(fieldId, viewId)
   }
 
-  static default(fieldName: string, viewId: string) {
-    return new this(fieldName, viewId, DEFAULT_WIDTH)
+  static default(fieldId: string, viewId: string) {
+    return new this(fieldId, viewId, DEFAULT_WIDTH)
   }
 
   isSatisfiedBy(t: Table): boolean {
@@ -50,11 +50,11 @@ export class WithFieldWidth extends BaseViewFieldOptionSpec {
 }
 
 export class WithFieldVisibility extends BaseViewFieldOptionSpec {
-  constructor(fieldName: string, viewId: string, public readonly hidden: boolean) {
-    super(fieldName, viewId)
+  constructor(fieldId: string, viewId: string, public readonly hidden: boolean) {
+    super(fieldId, viewId)
   }
   isSatisfiedBy(t: Table): boolean {
-    return this.getView(t).getFieldHidden(this.fieldName) === this.hidden
+    return this.getView(t).getFieldHidden(this.fieldId) === this.hidden
   }
   mutate(t: Table): Result<Table, string> {
     this.getOrCreateFieldOption(t).hidden = this.hidden

@@ -28,7 +28,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
   const groupOptionRecords = () =>
     groupBy(
       (record) =>
-        record.values.getSelectValue(field.name.value).mapOr(UNCATEGORIZED_OPTION_ID, (v) => v.id) ??
+        record.values.getSelectValue(field.id.value).mapOr(UNCATEGORIZED_OPTION_ID, (v) => v.id) ??
         UNCATEGORIZED_OPTION_ID,
       records,
     )
@@ -95,7 +95,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
       updateRecord.mutate({
         tableId: table.id.value,
         id: e.active.id as string,
-        value: [{ name: field.name.value, value: overContainer === UNCATEGORIZED_OPTION_ID ? null : overContainer }],
+        value: [{ id: field.id.value, value: overContainer === UNCATEGORIZED_OPTION_ID ? null : overContainer }],
       })
     },
 

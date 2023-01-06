@@ -5,14 +5,14 @@ import type { ISetFieldWidthCommandInput } from './set-field-width.command.inter
 export class SetFieldWidthCommand extends Command implements ISetFieldWidthCommandInput {
   public readonly tableId: string
   public readonly viewId?: string
-  public readonly fieldName: string
+  public readonly fieldId: string
   public readonly width: number
 
   constructor(props: CommandProps<ISetFieldWidthCommandInput>) {
     super(props)
     this.tableId = props.tableId
     this.viewId = props.viewId
-    this.fieldName = props.fieldName
+    this.fieldId = props.fieldId
     this.width = props.width
   }
 }
