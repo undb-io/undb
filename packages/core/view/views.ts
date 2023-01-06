@@ -35,7 +35,7 @@ export class Views extends ValueObject<View[]> {
     return new this(views.map((v) => View.create(v)))
   }
 
-  getByName(viewName?: string): Option<View> {
-    return Option(this.views.find((v) => v.name.unpack() === viewName))
+  getById(viewId?: string): Option<View> {
+    return Option(this.views.find((v) => v.id.value === viewId))
   }
 }

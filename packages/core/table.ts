@@ -69,41 +69,40 @@ export class Table {
   }
 
   private createDefaultView(viewName?: string): View {
-    return View.create({ name: viewName ?? this.name.value, displayType: defaultViewDiaplyType })
+    // TODO: move to views value object
+    return View.create({
+      id: viewName ?? this.name.value,
+      name: viewName ?? this.name.value,
+      displayType: defaultViewDiaplyType,
+    })
   }
 
   public createDefaultViews(): Views {
     return new Views([this.createDefaultView()])
   }
 
-  public getSpec(viewName?: string) {
-    return this.mustGetView(viewName).spec
+  public getSpec(viewId?: string) {
+    return this.mustGetView(viewId).spec
   }
 
-  public getView(viewName?: string): Option<View> {
-    if (!viewName) {
+  public getView(viewId?: string): Option<View> {
+    if (!viewId) {
       return Some(this.defaultView)
     }
 
-    return this.views.getByName(viewName)
+    return this.views.getById(viewId)
   }
 
-  public getOrCreateView(viewName?: string): [View, Option<TableCompositeSpecificaiton>] {
-    const view = this.views.getByName(viewName)
-    if (view.isSome()) return [view.unwrap(), None]
-    return this.getOrCreateDefaultView(viewName)
-  }
-
-  public mustGetView(viewName?: string): View {
-    if (!viewName) {
+  public mustGetView(viewId?: string): View {
+    if (!viewId) {
       return this.defaultView
     }
 
-    return this.views.getByName(viewName).unwrapOrElse(() => this.defaultView)
+    return this.views.getById(viewId).unwrapOrElse(() => this.defaultView)
   }
 
-  public setFilter(filters: IRootFilter | null, viewName?: string): Result<TableCompositeSpecificaiton, string> {
-    const vn = this.mustGetView(viewName).name.unpack()
+  public setFilter(filters: IRootFilter | null, viewId?: string): Result<TableCompositeSpecificaiton, string> {
+    const vn = this.mustGetView(viewId).name.unpack()
     const spec = new WithFilter(filters, vn)
     spec.mutate(this).unwrap()
     return Ok(spec)
@@ -147,28 +146,28 @@ export class Table {
   }
 
   public setFieldWidth(input: ISetFieldWidthSchema): TableCompositeSpecificaiton {
-    const view = this.mustGetView(input.viewName)
+    const view = this.mustGetView(input.viewId)
     const spec = view.setFieldWidth(input.fieldName, input.width)
     spec.mutate(this)
     return spec
   }
 
   public switchDisplayType(input: ISwitchDisplayTypeSchema): TableCompositeSpecificaiton {
-    const view = this.mustGetView(input.viewName)
+    const view = this.mustGetView(input.viewId)
     const spec = view.switchDisplayType(input.displayType)
     spec.mutate(this)
     return spec
   }
 
   public setFieldVisibility(input: ISetFieldVisibilitySchema): TableCompositeSpecificaiton {
-    const view = this.mustGetView(input.viewName)
+    const view = this.mustGetView(input.viewId)
     const spec = view.setFieldVisibility(input.fieldName, input.hidden)
     spec.mutate(this)
     return spec
   }
 
   public setKanbanField(input: ISetKanbanFieldSchema): TableCompositeSpecificaiton {
-    const view = this.mustGetView(input.viewName)
+    const view = this.mustGetView(input.viewId)
     const field = this.schema.getFieldById(input.field).unwrap()
     const spec = view.setKanbanFieldSpec(field.id)
     spec.mutate(this)
@@ -176,7 +175,7 @@ export class Table {
   }
 
   public setCalendarField(input: ISetCalendarFieldSchema): TableCompositeSpecificaiton {
-    const view = this.mustGetView(input.viewName)
+    const view = this.mustGetView(input.viewId)
     const field = this.schema.getFieldById(input.field).unwrap()
     const spec = view.setCalendarFieldSpec(field.id)
     spec.mutate(this)
@@ -184,7 +183,7 @@ export class Table {
   }
 
   public moveField(input: IMoveFieldSchema): TableCompositeSpecificaiton {
-    const [view, viewSpec] = this.getOrCreateDefaultView(input.viewName)
+    const [view, viewSpec] = this.getOrCreateDefaultView(input.viewId)
     const viewFieldsOrder = this.getFieldsOrder(view).move(input.from, input.to)
 
     const spec = new WithViewFieldsOrder(viewFieldsOrder, view)

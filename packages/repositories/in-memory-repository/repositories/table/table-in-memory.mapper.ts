@@ -66,6 +66,7 @@ export class TableInMemoryMapper {
 
   static viewToInMemory(v: View): ViewInMemory {
     return {
+      id: v.name.value,
       name: v.name.unpack(),
       kanban: this.kanbanToInMemory(v),
       displayType: v.displayType,

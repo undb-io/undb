@@ -8,19 +8,19 @@ import type { Table } from '../table'
 import type { ITableSpecVisitor } from './interface'
 
 export class WithFilter extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly filter: IRootFilter | null, public readonly viewName: string) {
+  constructor(public readonly filter: IRootFilter | null, public readonly viewId: string) {
     super()
   }
 
   isSatisfiedBy(t: Table): boolean {
     if (!this.filter) {
-      return isEmpty(t.mustGetView(this.viewName).filter)
+      return isEmpty(t.mustGetView(this.viewId).filter)
     }
-    return t.mustGetView(this.viewName).filter?.equals(new RootFilter(this.filter)) ?? false
+    return t.mustGetView(this.viewId).filter?.equals(new RootFilter(this.filter)) ?? false
   }
 
   mutate(t: Table): Result<Table, string> {
-    const view = t.mustGetView(this.viewName)
+    const view = t.mustGetView(this.viewId)
     view.setFilter(this.filter)
     return Ok(t)
   }

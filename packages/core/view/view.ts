@@ -13,6 +13,7 @@ import { WithDisplayType } from './specifications/display-type.specification'
 import type { IViewFieldOption } from './view-field-options'
 import { ViewFieldOptions } from './view-field-options'
 import { ViewFieldsOrder } from './view-fields-order.vo'
+import { ViewId } from './view-id.vo'
 import { ViewName } from './view-name.vo'
 import { createViewInput_internal } from './view.schema'
 import type { ICreateViewInput_internal, IView, IViewDisplayType } from './view.type'
@@ -20,6 +21,10 @@ import type { ICreateViewInput_internal, IView, IViewDisplayType } from './view.
 export const defaultViewDiaplyType: IViewDisplayType = 'grid'
 
 export class View extends ValueObject<IView> {
+  public get id() {
+    return this.props.id
+  }
+
   public get name() {
     return this.props.name
   }
@@ -142,8 +147,10 @@ export class View extends ValueObject<IView> {
 
   static create(input: ICreateViewInput_internal): View {
     const parsed = createViewInput_internal.parse(input)
+    const viewName = ViewName.create(parsed.name)
     return new View({
-      name: ViewName.create(parsed.name),
+      id: input.id ? ViewId.create(input.id) : ViewId.fromName(viewName),
+      name: viewName,
       kanban: input.kanban ? Kanban.from(input.kanban) : undefined,
       calendar: input.calendar ? Kanban.from(input.calendar) : undefined,
       displayType: parsed.displayType || defaultViewDiaplyType,

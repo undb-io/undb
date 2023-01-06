@@ -33,7 +33,7 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
   }
 
   filterEqual(s: WithFilter): void {
-    const view = this.table.views.find((v) => v.name === s.viewName)
+    const view = this.table.views.find((v) => v.name === s.viewId)
     if (view) {
       view.filter = s.filter ?? undefined
     }
@@ -52,12 +52,12 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
     this.table.schema.push(field)
   }
 
-  private getView(viewName?: string) {
-    return this.table.views.find((v) => v.name === viewName)
+  private getView(viewId?: string) {
+    return this.table.views.find((v) => v.id === viewId)
   }
 
   fieldWidthEqual(s: WithFieldWidth): void {
-    const view = this.getView(s.viewName)
+    const view = this.getView(s.viewId)
     if (view) {
       const option = view.fieldOptions?.[s.fieldName]
       if (option) {
@@ -74,7 +74,7 @@ export class TableInMemoryMutationVisitor implements ITableSpecVisitor {
   }
 
   fieldVisibility(s: WithFieldVisibility): void {
-    const view = this.getView(s.viewName)
+    const view = this.getView(s.viewId)
     if (view) {
       const option = view.fieldOptions?.[s.fieldName]
       if (option) {

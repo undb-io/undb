@@ -48,6 +48,11 @@ ResultType {
             },
             "fieldsOrder": undefined,
             "filter": undefined,
+            "id": ViewId {
+              "props": {
+                "value": "table",
+              },
+            },
             "kanban": undefined,
             "name": ViewName {
               "props": {

@@ -50,6 +50,11 @@ test('createTestTable', () => {
               },
               "fieldsOrder": undefined,
               "filter": undefined,
+              "id": ViewId {
+                "props": {
+                  "value": "name",
+                },
+              },
               "kanban": undefined,
               "name": ViewName {
                 "props": {
