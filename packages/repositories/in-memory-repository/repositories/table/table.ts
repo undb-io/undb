@@ -1,4 +1,4 @@
-import type { IOptionColorName, IRootFilter, IViewFieldOption } from '@egodb/core'
+import type { IOptionColorName, IOptionColorShade, IRootFilter, IViewFieldOption } from '@egodb/core'
 import type { ICurrencySymbol } from '@egodb/core/field/currency'
 
 type NumberFieldInMemory = {
@@ -39,7 +39,7 @@ export type OptionInMemory = {
   name: string
   color: {
     name: IOptionColorName
-    shade: number
+    shade: IOptionColorShade
   }
 }
 
