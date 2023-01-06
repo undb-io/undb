@@ -25,7 +25,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
         size: view.getFieldWidth(f.id.value),
         cell: (props) => {
           if (f.type === 'select') {
-            const option = (props.getValue() as SelectFieldValue).getOption(f).into()
+            const option = (props.getValue() as SelectFieldValue)?.getOption(f).into()
             if (!option) return null
             return (
               <Option
