@@ -1,8 +1,8 @@
 import type { IOptionColorName, IOptionColorShade } from '@egodb/core'
-import type { PolymorphicComponentProps, BadgeProps } from '@egodb/ui'
+import type { BadgeVariant } from '@egodb/ui'
 import { Badge } from '@egodb/ui'
 
-interface IProps extends PolymorphicComponentProps<'span', BadgeProps> {
+interface IProps {
   id: string
   colorName: IOptionColorName
   shade: IOptionColorShade
@@ -10,8 +10,10 @@ interface IProps extends PolymorphicComponentProps<'span', BadgeProps> {
 }
 
 export const Option: React.FC<IProps> = ({ colorName, name, shade, id, ...rest }) => {
+  const color = `${colorName}.${shade}`
+  const variant: BadgeVariant = shade < 5 ? 'light' : 'filled'
   return (
-    <Badge<'span'> {...rest} radius="xs" color={`${colorName}.${shade}`} data-option-id={id}>
+    <Badge<'span'> {...rest} radius="xs" bg={color} variant={variant} data-option-id={id}>
       {name}
     </Badge>
   )

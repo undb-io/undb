@@ -24,7 +24,7 @@ export class Option extends ValueObject<IOption> {
     return new this({
       id: OptionId.fromNullableString(input.id),
       name: OptionName.create(input.name),
-      color: OptionColor.create(input.optionColor),
+      color: OptionColor.create(input.color),
     })
   }
 
@@ -32,7 +32,7 @@ export class Option extends ValueObject<IOption> {
     return new this({
       id: OptionId.fromNullableString(input.id),
       name: OptionName.unsafeCreate(input.name),
-      color: OptionColor.create(input.optionColor),
+      color: OptionColor.create(input.color),
     })
   }
 }

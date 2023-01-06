@@ -1,6 +1,5 @@
 import type { IOptionColorName, IOptionColorShade, SelectField } from '@egodb/core'
 import type { SelectProps } from '@egodb/ui'
-import { Box } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { Select } from '@egodb/ui'
 import { forwardRef } from 'react'
@@ -36,7 +35,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
   ({ value, label, colorName, shade, ...others }: ItemProps, ref) => (
     <Group ref={ref} p="xs" {...others}>
-      <Option w={100} id={value} name={label} colorName={colorName} shade={shade} />
+      <Option id={value} name={label} colorName={colorName} shade={shade} />
     </Group>
   ),
 )

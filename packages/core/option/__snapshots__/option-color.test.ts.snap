@@ -1,0 +1,35 @@
+// Vitest Snapshot v1
+
+exports[`createColors > should create colors if has input 1`] = `
+[
+  OptionColor {
+    "props": {
+      "name": "blue",
+      "shade": 5,
+    },
+  },
+  OptionColor {
+    "props": {
+      "name": "red",
+      "shade": 5,
+    },
+  },
+]
+`;
+
+exports[`createColors > should create colors if no input 1`] = `
+[
+  OptionColor {
+    "props": {
+      "name": "indigo",
+      "shade": 5,
+    },
+  },
+  OptionColor {
+    "props": {
+      "name": "blue",
+      "shade": 5,
+    },
+  },
+]
+`;

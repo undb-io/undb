@@ -48,3 +48,15 @@ describe('next', () => {
     expect(color.next().name).to.be.eq('dark')
   })
 })
+
+describe('createColors', () => {
+  test('should create colors if no input', () => {
+    const colors = OptionColor.createColors([undefined, undefined])
+    expect(colors).to.toMatchSnapshot()
+  })
+
+  test('should create colors if has input', () => {
+    const colors = OptionColor.createColors([{ name: 'blue' }, { name: 'red' }])
+    expect(colors).to.toMatchSnapshot()
+  })
+})

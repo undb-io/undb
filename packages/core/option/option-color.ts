@@ -35,6 +35,20 @@ export class OptionColor extends ValueObject<IOptionColor> {
     })
   }
 
+  static createColors(inputs: (ICreateOptionColorSchema | undefined)[]): OptionColor[] {
+    const colors: OptionColor[] = []
+
+    for (const [index, input] of inputs.entries()) {
+      if (!input && colors[index - 1]) {
+        colors.push(colors[index - 1].next())
+      } else {
+        colors.push(OptionColor.create(input))
+      }
+    }
+
+    return colors
+  }
+
   next(): OptionColor {
     const index = optionColorOrder.indexOf(this.name)
     const nextColorIndex = index === optionColorOrder.length - 1 ? 0 : index + 1
