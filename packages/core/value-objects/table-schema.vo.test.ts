@@ -4,8 +4,8 @@ describe('TableSchema', () => {
   describe('createField', () => {
     test('should not has duplicated names', () => {
       const schema = new TableSchema([])
-      const [field] = schema.createField({ type: 'string', name: 'string', id: 'string' })
-      schema.addField(field)
+      const spec = schema.createField({ type: 'string', name: 'string', id: 'string' })
+      schema.addField(spec.field)
       expect(() => {
         schema.createField({ type: 'string', name: 'string', id: 'string' })
       }).toThrowErrorMatchingInlineSnapshot(`

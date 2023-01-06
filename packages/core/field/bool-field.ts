@@ -10,9 +10,10 @@ export class BoolField extends BaseField<IBoolField> {
   type: BoolFieldType = 'bool'
 
   static create(input: ICreateBoolFieldInput): BoolField {
+    const fieldName = FieldName.create(input.name)
     return new BoolField({
-      id: FieldId.from(input.id),
-      name: FieldName.create(input.name),
+      id: input.id ? FieldId.from(input.id) : FieldId.fromName(fieldName),
+      name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
     })
   }
@@ -30,6 +31,6 @@ export class BoolField extends BaseField<IBoolField> {
   }
 
   createFilter(operator: IBoolFilterOperator, value: boolean | null): IBoolFilter {
-    return { operator, value, path: this.name.value, type: 'bool' }
+    return { operator, value, path: this.id.value, type: 'bool' }
   }
 }

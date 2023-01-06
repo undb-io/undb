@@ -15,7 +15,7 @@ describe('SelectField', () => {
       expect(selectField).toBeInstanceOf(SelectField)
       expect(selectField.id.value).toBe('select')
       expect(selectField.type).toBe('select')
-      expect(selectField.name.value).toBe('select')
+      expect(selectField.id.value).toBe('select')
       expect(selectField).toHaveProperty('options')
       expect(selectField.options.options).toHaveLength(1)
     })

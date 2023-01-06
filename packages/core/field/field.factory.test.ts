@@ -18,8 +18,8 @@ it('should create string field', () => {
   expectTypeOf(field).toEqualTypeOf<Field>()
   expect(field).toBeInstanceOf(StringField)
   expect(field.type).toBe('string')
-  expect(field.name).toBeInstanceOf(FieldName)
-  expect(field.name.value).toBe('hello')
+  expect(field.id).toBeInstanceOf(FieldName)
+  expect(field.id.value).toBe('hello')
 })
 
 it('should create number field', () => {
@@ -32,8 +32,8 @@ it('should create number field', () => {
   expectTypeOf(field).toEqualTypeOf<Field>()
   expect(field).toBeInstanceOf(NumberField)
   expect(field.type).toBe('number')
-  expect(field.name).toBeInstanceOf(FieldName)
-  expect(field.name.value).toBe('hello')
+  expect(field.id).toBeInstanceOf(FieldName)
+  expect(field.id.value).toBe('hello')
 })
 
 it('should create date field', () => {
@@ -46,8 +46,8 @@ it('should create date field', () => {
   expectTypeOf(field).toEqualTypeOf<Field>()
   expect(field).toBeInstanceOf(DateField)
   expect(field.type).toBe('date')
-  expect(field.name).toBeInstanceOf(FieldName)
-  expect(field.name.value).toBe('hello')
+  expect(field.id).toBeInstanceOf(FieldName)
+  expect(field.id.value).toBe('hello')
 })
 
 it('should create date range field', () => {
@@ -60,8 +60,8 @@ it('should create date range field', () => {
   expectTypeOf(field).toEqualTypeOf<Field>()
   expect(field).toBeInstanceOf(DateRangeField)
   expect(field.type).toBe('date-range')
-  expect(field.name).toBeInstanceOf(FieldName)
-  expect(field.name.value).toBe('hello')
+  expect(field.id).toBeInstanceOf(FieldName)
+  expect(field.id.value).toBe('hello')
 })
 
 it('should create select field', () => {
@@ -75,8 +75,8 @@ it('should create select field', () => {
   expectTypeOf(field).toEqualTypeOf<Field>()
   expect(field).toBeInstanceOf(SelectField)
   expect(field.type).toBe('select')
-  expect(field.name).toBeInstanceOf(FieldName)
-  expect(field.name.value).toBe('hello')
+  expect(field.id).toBeInstanceOf(FieldName)
+  expect(field.id.value).toBe('hello')
 })
 
 it('should create bool field', () => {

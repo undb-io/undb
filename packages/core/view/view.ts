@@ -74,12 +74,12 @@ export class View extends ValueObject<IView> {
     this.props.fieldsOrder = v
   }
 
-  public getFieldOption(fieldName: string): IViewFieldOption {
-    return this.fieldOptions.getOption(fieldName)
+  public getFieldOption(fieldId: string): IViewFieldOption {
+    return this.fieldOptions.getOption(fieldId)
   }
 
-  public getOrCreateFieldOption(fieldName: string): IViewFieldOption {
-    return this.fieldOptions.getOrCreateOption(fieldName)
+  public getOrCreateFieldOption(fieldId: string): IViewFieldOption {
+    return this.fieldOptions.getOrCreateOption(fieldId)
   }
 
   public getOrCreateKanban(): Kanban {
@@ -98,24 +98,24 @@ export class View extends ValueObject<IView> {
     return this.props.calendar
   }
 
-  public getFieldHidden(fieldName: string): boolean {
-    return this.fieldOptions.getHidden(fieldName)
+  public getFieldHidden(fieldId: string): boolean {
+    return this.fieldOptions.getHidden(fieldId)
   }
 
-  public getFieldWidth(fieldName: string): number {
-    return this.fieldOptions.getWidth(fieldName)
+  public getFieldWidth(fieldId: string): number {
+    return this.fieldOptions.getWidth(fieldId)
   }
 
-  public setFieldWidth(fieldName: string, width: number): TableCompositeSpecificaiton {
-    return new WithFieldWidth(fieldName, this.name.unpack(), width)
+  public setFieldWidth(fieldId: string, width: number): TableCompositeSpecificaiton {
+    return new WithFieldWidth(fieldId, this.name.unpack(), width)
   }
 
   public switchDisplayType(type: IViewDisplayType): TableCompositeSpecificaiton {
     return new WithDisplayType(this, type)
   }
 
-  public setFieldVisibility(fieldName: string, hidden: boolean): TableCompositeSpecificaiton {
-    return new WithFieldVisibility(fieldName, this.name.unpack(), hidden)
+  public setFieldVisibility(fieldId: string, hidden: boolean): TableCompositeSpecificaiton {
+    return new WithFieldVisibility(fieldId, this.name.unpack(), hidden)
   }
 
   public setKanbanFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {

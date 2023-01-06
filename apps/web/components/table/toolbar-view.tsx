@@ -25,7 +25,7 @@ const StackedBy: React.FC<{ fieldId?: FieldId; table: Table }> = ({ table, field
         compact
         variant="subtle"
         leftIcon={<IconSelect size={18} />}
-      >{`stacked by "${field.name.value}"`}</Button>
+      >{`stacked by "${field.id.value}"`}</Button>
     </Tooltip>
   )
 }
@@ -52,7 +52,7 @@ const UsingCalendarField: React.FC<{ fieldId?: FieldId; table: Table }> = ({ tab
         compact
         variant="subtle"
         leftIcon={<IconCalendarPlus size={18} />}
-      >{`using "${field.name.value}" field`}</Button>
+      >{`using "${field.id.value}" field`}</Button>
     </Tooltip>
   )
 }

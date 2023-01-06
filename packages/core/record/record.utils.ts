@@ -10,8 +10,8 @@ export const createRecordInputs = (
 ): ICreateFieldsSchema_internal => {
   return pipe(
     value,
-    map(({ name, value }) =>
-      schema.getField(name).map((field) => ({ type: field.type, field, value } as ICreateFieldValueSchema_internal)),
+    map(({ id, value }) =>
+      schema.getFieldById(id).map((field) => ({ type: field.type, field, value } as ICreateFieldValueSchema_internal)),
     ),
     filter((f) => f.isSome),
     map((f) => f.unwrap()),

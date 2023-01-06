@@ -57,7 +57,7 @@ export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
                   {...form.getInputProps('field')}
                 >
                   {kanbanFields.map((f) => (
-                    <Radio key={f.id.value} value={f.id.value} label={f.name.value} />
+                    <Radio key={f.id.value} value={f.id.value} label={f.id.value} />
                   ))}
                 </Radio.Group>
                 <Divider label="or" labelPosition="center" />

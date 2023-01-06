@@ -136,18 +136,18 @@ export class Table {
   }
 
   public createField(input: ICreateFieldSchema): TableCompositeSpecificaiton {
-    const [field, spec] = this.schema.createField(input)
+    const spec = this.schema.createField(input)
     spec.mutate(this).unwrap()
 
     // add field to view order
-    const viewsSpec = this.views.addField(field)
+    const viewsSpec = this.views.addField(spec.field)
 
     return andOptions(Some(spec), viewsSpec).unwrap()
   }
 
   public setFieldWidth(input: ISetFieldWidthSchema): TableCompositeSpecificaiton {
     const view = this.mustGetView(input.viewId)
-    const spec = view.setFieldWidth(input.fieldName, input.width)
+    const spec = view.setFieldWidth(input.fieldId, input.width)
     spec.mutate(this)
     return spec
   }
@@ -161,7 +161,7 @@ export class Table {
 
   public setFieldVisibility(input: ISetFieldVisibilitySchema): TableCompositeSpecificaiton {
     const view = this.mustGetView(input.viewId)
-    const spec = view.setFieldVisibility(input.fieldName, input.hidden)
+    const spec = view.setFieldVisibility(input.fieldId, input.hidden)
     spec.mutate(this)
     return spec
   }

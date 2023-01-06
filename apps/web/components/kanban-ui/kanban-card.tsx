@@ -23,7 +23,7 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
     <Card py="sm" shadow="xs" radius="sm" {...attributes} {...listeners} ref={setNodeRef} style={style}>
       <Stack spacing="xs">
         {Object.entries(record.values.valueJSON).map(([key, value]) => {
-          const field = table.schema.getField(key)
+          const field = table.schema.getFieldById(key)
           if (field.isNone()) return null
           const f = field.unwrap()
           if (f.type === 'select') {

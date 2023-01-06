@@ -12,7 +12,7 @@ interface IProps {
 }
 
 export const RecordInputFactory: React.FC<IProps> = ({ props, table, field }) => {
-  const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
+  const label = <FieldInputLabel>{field.id.value}</FieldInputLabel>
   if (field.type === 'number') {
     return <NumberInput {...props} label={label} />
   }

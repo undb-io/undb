@@ -84,14 +84,14 @@ export class TableInMemoryQueryVisitor implements ITableSpecVisitor {
     this.predicate = (t) => {
       const view = this.getView(t, s.viewId)
       if (!view) return false
-      return view.fieldOptions?.[s.fieldName]?.width === s.width
+      return view.fieldOptions?.[s.fieldId]?.width === s.width
     }
   }
   fieldVisibility(s: WithFieldVisibility): void {
     this.predicate = (t) => {
       const view = this.getView(t, s.viewId)
       if (!view) return false
-      return !!view.fieldOptions?.[s.fieldName]?.hidden === s.hidden
+      return !!view.fieldOptions?.[s.fieldId]?.hidden === s.hidden
     }
   }
   fieldsOrder(s: WithViewFieldsOrder): void {

@@ -11,7 +11,7 @@ import { FieldIcon } from '../../fields/field-Icon'
 import { FileItem } from '../../fields/field-item'
 
 interface IProps {
-  id: string
+  id: number
   index: number
   isNew?: boolean
 }
@@ -30,8 +30,10 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
     transition,
   }
 
+  const nameProps = form.getInputProps(`schema.${index}.name`)
+
   return (
-    <Accordion.Item id={id} opacity={isDragging ? 0.5 : 1} value={id}>
+    <Accordion.Item id={String(id)} opacity={isDragging ? 0.5 : 1} value={String(id)}>
       <Accordion.Control ref={setNodeRef} style={style}>
         <Group>
           <ActionIcon {...attributes} {...listeners} component="a">
@@ -56,7 +58,11 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
               icon={<FieldIcon type={form.values.schema[index].type} />}
             />
             <TextInput
-              {...form.getInputProps(`schema.${index}.name`)}
+              {...nameProps}
+              onChange={(e) => {
+                nameProps.onChange(e)
+                form.setFieldValue(`schema.${index}.id`, e.target.value)
+              }}
               label={<FieldInputLabel>name</FieldInputLabel>}
               variant="filled"
               required={true}

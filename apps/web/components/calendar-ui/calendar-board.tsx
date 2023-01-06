@@ -21,7 +21,7 @@ export const CalendarBoard: React.FC<IProps> = ({ field }) => {
   const onChange = (date: Date) => {
     setDate(date)
     setOpened(true)
-    setInitialValue({ [field.name.value]: date })
+    setInitialValue({ [field.id.value]: date })
   }
 
   return (

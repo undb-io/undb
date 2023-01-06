@@ -31,23 +31,23 @@ export class ViewFieldOptions extends ValueObject<Map<string, IViewFieldOption>>
     return this.props
   }
 
-  public getOption(fieldName: string): IViewFieldOption {
-    return this.props.get(fieldName) ?? ViewFieldOptions.DEFAULT_OPTION
+  public getOption(fieldId: string): IViewFieldOption {
+    return this.props.get(fieldId) ?? ViewFieldOptions.DEFAULT_OPTION
   }
 
-  public getOrCreateOption(fieldName: string): IViewFieldOption {
-    const option = this.props.get(fieldName)
+  public getOrCreateOption(fieldId: string): IViewFieldOption {
+    const option = this.props.get(fieldId)
     if (option) return option
 
-    this.props.set(fieldName, ViewFieldOptions.DEFAULT_OPTION)
-    return this.getOption(fieldName)
+    this.props.set(fieldId, ViewFieldOptions.DEFAULT_OPTION)
+    return this.getOption(fieldId)
   }
 
-  public getHidden(fieldName: string): boolean {
-    return this.getOption(fieldName).hidden ?? false
+  public getHidden(fieldId: string): boolean {
+    return this.getOption(fieldId).hidden ?? false
   }
 
-  public getWidth(fieldName: string): number {
-    return this.getOption(fieldName).width ?? DEFAULT_WIDTH
+  public getWidth(fieldId: string): number {
+    return this.getOption(fieldId).width ?? DEFAULT_WIDTH
   }
 }

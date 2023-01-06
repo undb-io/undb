@@ -13,16 +13,16 @@ export type RecordValueJSON = Record<string, FieldValue>
 
 export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   static fromArray(inputs: ICreateFieldsSchema_internal): RecordValues {
-    const values = new Map(inputs.map((v) => [v.field.name.value, v.field.createValue(v.value as never)]))
+    const values = new Map(inputs.map((v) => [v.field.id.value, v.field.createValue(v.value as never)]))
     return new RecordValues(values)
   }
 
   static fromObject(schema: TableSchemaMap, inputs: IQueryRecordValues): RecordValues {
     const values = new Map(
-      Object.entries(inputs).map(([fieldName, fieldValue]) => [
-        fieldName,
+      Object.entries(inputs).map(([fieldId, fieldValue]) => [
+        fieldId,
         // TODO: handler missing field
-        schema.get(fieldName)!.createValue(fieldValue as never),
+        schema.get(fieldId)!.createValue(fieldValue as never),
       ]),
     )
 
@@ -41,8 +41,8 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
     return Object.fromEntries(this.value)
   }
 
-  setValue(fieldName: string, value: FieldValue) {
-    this.value.set(fieldName, value)
+  setValue(fieldId: string, value: FieldValue) {
+    this.value.set(fieldId, value)
   }
 
   toObject() {
@@ -56,11 +56,11 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   /**
    * get unpacked field value
    *
-   * @param name - field name
+   * @param id - field id
    * @returns unpacked field value
    */
-  private getUnpackedValue(name: string): Option<UnpackedFieldValue> {
-    return Option.nonNull(this.value.get(name)).map((v) => v.unpack())
+  private getUnpackedValue(id: string): Option<UnpackedFieldValue> {
+    return Option.nonNull(this.value.get(id)).map((v) => v.unpack())
   }
 
   /**
@@ -68,17 +68,17 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
    * - if field not exists returns option none
    * - if value is not stirng returns option none
    *
-   * @param name - field name
+   * @param id - field id
    * @returns unpacked string value
    */
-  getStringValue(name: string): Option<string> {
-    return this.getUnpackedValue(name)
+  getStringValue(id: string): Option<string> {
+    return this.getUnpackedValue(id)
       .map((v) => (isString(v) ? Some(v) : None))
       .flatten()
   }
 
-  getBoolValue(name: string): Option<boolean> {
-    return this.getUnpackedValue(name)
+  getBoolValue(id: string): Option<boolean> {
+    return this.getUnpackedValue(id)
       .map((v) => (isBoolean(v) ? Some(v) : None))
       .flatten()
   }
@@ -88,29 +88,29 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
    * - if field not exists returns option none
    * - if value is not number returns option none
    *
-   * @param name - field name
+   * @param id - field id
    * @returns unpacked number value
    */
-  getNumberValue(name: string): Option<number> {
-    return this.getUnpackedValue(name)
+  getNumberValue(id: string): Option<number> {
+    return this.getUnpackedValue(id)
       .map((v) => (isNumber(v) ? Some(v) : None))
       .flatten()
   }
 
-  getDateValue(name: string): Option<Date> {
-    return this.getUnpackedValue(name)
+  getDateValue(id: string): Option<Date> {
+    return this.getUnpackedValue(id)
       .map((v) => (isDate(v) ? Some(v as Date) : None))
       .flatten()
   }
 
-  getDateRangeValue(name: string): Option<IDateRangeFieldValue> {
-    return this.getUnpackedValue(name)
+  getDateRangeValue(id: string): Option<IDateRangeFieldValue> {
+    return this.getUnpackedValue(id)
       .map((v) => (DateRangeFieldValue.isDateRange(v) ? Some(v) : None))
       .flatten()
   }
 
-  getSelectValue(name: string): Option<SelectFieldValue> {
-    const value = this.value.get(name)
+  getSelectValue(id: string): Option<SelectFieldValue> {
+    const value = this.value.get(id)
     if (SelectFieldValue.isSelectFieldValue(value)) {
       return Some(value)
     }

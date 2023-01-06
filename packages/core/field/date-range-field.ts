@@ -15,9 +15,11 @@ export class DateRangeField extends BaseField<IDateRangeField> {
   type: DateRangeType = 'date-range'
 
   static create(input: ICreateDateRangeFieldSchema): DateRangeField {
+    const fieldName = FieldName.create(input.name)
+
     return new DateRangeField({
-      id: FieldId.from(input.id),
-      name: FieldName.create(input.name),
+      id: input.id ? FieldId.from(input.id) : FieldId.fromName(fieldName),
+      name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
     })
   }
@@ -35,6 +37,6 @@ export class DateRangeField extends BaseField<IDateRangeField> {
   }
 
   createFilter(operator: IDateRangeFilterOperator, value: IDateRangeFieldValue | null): IDateRangeFilter {
-    return { operator, value, path: this.name.value, type: 'date-range' }
+    return { operator, value, path: this.id.value, type: 'date-range' }
   }
 }

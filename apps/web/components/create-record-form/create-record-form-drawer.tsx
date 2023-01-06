@@ -20,9 +20,9 @@ export const CreateRecordFormDrawer: React.FC<IProps> = ({ table }) => {
   const initialValues: ICreateRecordInput = {
     tableId: table.id.value,
     value: table.schema.fields.map((field) => ({
-      name: field.name.value,
+      id: field.id.value,
       // TODO: get field default value
-      value: initialCreateRecordValue[field.name.value] ?? (field.type === 'bool' ? false : null),
+      value: initialCreateRecordValue[field.id.value] ?? (field.type === 'bool' ? false : null),
     })),
   }
 

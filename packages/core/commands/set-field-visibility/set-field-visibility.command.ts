@@ -5,14 +5,14 @@ import type { ISetFieldVisibilityCommandInput } from './set-field-visibility.com
 export class SetFieldVisibilityCommand extends Command implements ISetFieldVisibilityCommandInput {
   public readonly tableId: string
   public readonly viewId?: string
-  public readonly fieldName: string
+  public readonly fieldId: string
   public readonly hidden: boolean
 
   constructor(props: CommandProps<ISetFieldVisibilityCommandInput>) {
     super(props)
     this.tableId = props.tableId
     this.viewId = props.viewId
-    this.fieldName = props.fieldName
+    this.fieldId = props.fieldId
     this.hidden = props.hidden
   }
 }
