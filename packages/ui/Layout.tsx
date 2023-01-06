@@ -1,1 +1,1 @@
-export { Center, Group, Flex, Box, Space, Container, Stack } from '@mantine/core'
+export { Center, Group, Flex, Box, Space, Container, Stack, Grid, SimpleGrid } from '@mantine/core'

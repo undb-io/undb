@@ -2,6 +2,7 @@ import { ValueObject } from '@egodb/domain'
 import arrayMove from 'array-move'
 import { Option as O } from 'oxide.ts'
 import { Option } from './option'
+import { OptionColor } from './option-color'
 import type { ICreateOptionSchema, ICreateOptionsSchema } from './option.schema'
 import { createOptionsSchema } from './option.schema'
 
@@ -27,11 +28,15 @@ export class Options extends ValueObject<Option[]> {
 
   static create(inputs: ICreateOptionsSchema) {
     inputs = createOptionsSchema.parse(inputs)
-    const options = inputs.map((i) => Option.create(i))
+
+    const colors = OptionColor.createColors(inputs.map((i) => i.color))
+    const options = inputs.map((input, index) => Option.create({ ...input, color: colors[index] }))
+
     return new this(options)
   }
 
   static unsafeCreate(inputs: ICreateOptionsSchema) {
+    console.log(JSON.stringify(inputs, null, 2))
     const options = inputs.map((i) => Option.unsafeCrete(i))
     return new this(options)
   }

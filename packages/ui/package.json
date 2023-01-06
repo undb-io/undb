@@ -12,6 +12,7 @@
     "@mantine/modals": "^5.9.6",
     "@mantine/next": "^5.9.6",
     "@mantine/notifications": "^5.9.6",
+    "@mantine/utils": "^5.10.0",
     "@tabler/icons": "^1.119.0",
     "dayjs": "^1.11.7",
     "react-dom": "^18.2.0"

@@ -3,6 +3,7 @@ import { Checkbox, Table } from '@egodb/ui'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { useMemo } from 'react'
 import { ACTIONS_FIELD } from '../../constants/field.constants'
+import { Option } from '../option/option'
 import { AddFieldButton } from '../table/add-field.button'
 import { RecordActions } from './actions'
 import type { IProps, TData } from './interface'
@@ -24,7 +25,16 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
         size: view.getFieldWidth(f.name.value),
         cell: (props) => {
           if (f.type === 'select') {
-            return (props.getValue() as SelectFieldValue).getOptionName(f)
+            const option = (props.getValue() as SelectFieldValue).getOption(f).into()
+            if (!option) return null
+            return (
+              <Option
+                id={option.id.value}
+                name={option.name.value}
+                colorName={option.color.name}
+                shade={option.color.shade}
+              />
+            )
           }
           if (f.type === 'bool') {
             return <Checkbox defaultChecked={(props.getValue() as BoolFieldValue).unpack()} />

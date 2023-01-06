@@ -1,4 +1,6 @@
 import { ValueObject } from '@egodb/domain'
+import type { Option as O } from 'oxide.ts'
+import { None } from 'oxide.ts'
 import type { Option } from '../option'
 import type { FieldValue } from './field.type'
 import type { SelectField } from './select-field'
@@ -21,8 +23,8 @@ export class SelectFieldValue extends ValueObject<ISelectFieldValue> {
     return this.props.value
   }
 
-  getOptionName(field: SelectField): string {
-    if (!this.id) return ''
-    return field.options.getById(this.id).mapOr('', (o) => o.name.value)
+  getOption(field: SelectField): O<Option> {
+    if (!this.id) return None
+    return field.options.getById(this.id)
   }
 }

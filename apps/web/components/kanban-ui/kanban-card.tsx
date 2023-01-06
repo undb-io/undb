@@ -5,6 +5,7 @@ import type { SortableProps } from '../sortable.interface'
 import type { ITableBaseProps } from '../table/table-base-props'
 import type { Record } from '@egodb/core'
 import type { SelectFieldValue } from '@egodb/core'
+import { Option } from '../option/option'
 
 interface IProps extends ITableBaseProps {
   record: Record
@@ -25,7 +26,19 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
         if (field.isNone()) return null
         const f = field.unwrap()
         if (f.type === 'select') {
-          return <Group key={key}>{(value as SelectFieldValue).getOptionName(f)}</Group>
+          const option = (value as SelectFieldValue).getOption(f).into()
+          if (!option) return null
+
+          return (
+            <Group key={key}>
+              <Option
+                id={option.id.value}
+                name={option.name.value}
+                colorName={option.color.name}
+                shade={option.color.shade}
+              />
+            </Group>
+          )
         }
         return <Group key={key}>{value.unpack()?.toString()}</Group>
       })}
