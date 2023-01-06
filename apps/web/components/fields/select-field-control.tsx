@@ -153,7 +153,10 @@ export const SelectFieldControl: React.FC<ISelectFieldControlProps> = ({ onChang
           handlers.append({
             id: OptionId.create().value,
             name: '',
-            color,
+            color: {
+              name: color.name,
+              shade: color.shade,
+            },
           })
         }}
       >

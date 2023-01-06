@@ -52,6 +52,7 @@ export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCa
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
             {filters.map((filter, index) => (
               <FieldFilter
+                table={table}
                 schema={table.schema}
                 index={index}
                 value={filter}

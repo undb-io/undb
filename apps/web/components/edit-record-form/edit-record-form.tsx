@@ -46,7 +46,7 @@ export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel })
       <Stack>
         {table.schema.fields.map((field, index) => {
           const props = form.getInputProps(`value.${index}.value`)
-          return <RecordInputFactory key={field.id.value} props={props} field={field} />
+          return <RecordInputFactory table={table} key={field.id.value} props={props} field={field} />
         })}
       </Stack>
       <Divider my="lg" />

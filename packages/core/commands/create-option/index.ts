@@ -1,4 +1,4 @@
 export * from './create-option.command'
-export * from './create-table.command.handler'
-export * from './create-table.command.input'
-export * from './create-table.command.interface'
+export * from './create-option.command.handler'
+export * from './create-option.command.input'
+export * from './create-option.command.interface'

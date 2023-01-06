@@ -56,14 +56,16 @@ export const optionsSchema = optionSchema.array()
 export type IOptionSchema = z.infer<typeof optionSchema>
 export type IOptionColor = z.infer<typeof optionColor>
 
-export const createOptionColorSchema = optionColor.partial()
+export const createOptionColorSchema = optionColor.partial().strict()
 export type ICreateOptionColorSchema = z.infer<typeof createOptionColorSchema>
 
-export const createOptionSchema = z.object({
-  id: optionIdSchema.optional(),
-  name: optionNameSchema,
-  color: createOptionColorSchema.optional(),
-})
+export const createOptionSchema = z
+  .object({
+    id: optionIdSchema.optional(),
+    name: optionNameSchema,
+    color: createOptionColorSchema.optional(),
+  })
+  .strict()
 
 export type ICreateOptionSchema = z.infer<typeof createOptionSchema>
 
