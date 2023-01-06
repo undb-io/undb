@@ -11,11 +11,11 @@ export class OptionColor extends ValueObject<IOptionColor> {
     return this.props.shade
   }
 
-  private static get defaultShade(): IOptionColorShade {
+  static get defaultShade(): IOptionColorShade {
     return 5
   }
 
-  private static get defaultColorName(): IOptionColorName {
+  static get defaultColorName(): IOptionColorName {
     return 'indigo'
   }
 
@@ -49,10 +49,18 @@ export class OptionColor extends ValueObject<IOptionColor> {
     return colors
   }
 
-  next(): OptionColor {
-    const index = optionColorOrder.indexOf(this.name)
+  static nextColorName(colorName?: IOptionColorName): IOptionColorName {
+    if (!colorName) return optionColorOrder[0]
+
+    const index = optionColorOrder.indexOf(colorName)
     const nextColorIndex = index === optionColorOrder.length - 1 ? 0 : index + 1
     const nextColorName = optionColorOrder[nextColorIndex]
+
+    return nextColorName
+  }
+
+  next(): OptionColor {
+    const nextColorName = OptionColor.nextColorName(this.name)
     const shade = this.shade
 
     return new OptionColor({

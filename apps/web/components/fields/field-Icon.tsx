@@ -6,7 +6,6 @@ import {
   IconListCheck,
   IconQuestionMark,
   IconSquareCheck,
-  useEgoUITheme,
 } from '@egodb/ui'
 import React from 'react'
 interface FieldProps {
@@ -15,23 +14,21 @@ interface FieldProps {
   color?: string
 }
 
-export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16, color }) => {
-  const theme = useEgoUITheme()
-  color = color ? color : theme.colors.gray[2]
+export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16 }) => {
   switch (type) {
     case 'string':
-      return <IconLetterT size={size} color={color} />
+      return <IconLetterT size={size} />
     case 'number':
-      return <Icon123 size={size} color={color} />
+      return <Icon123 size={size} />
     case 'date':
-      return <IconCalendar size={size} color={color} />
+      return <IconCalendar size={size} />
     case 'date-range':
-      return <IconCalendarTime size={size} color={color} />
+      return <IconCalendarTime size={size} />
     case 'bool':
-      return <IconSquareCheck size={size} color={color} />
+      return <IconSquareCheck size={size} />
     case 'select':
-      return <IconListCheck size={size} color={color} />
+      return <IconListCheck size={size} />
     default:
-      return <IconQuestionMark size={size} color={color} />
+      return <IconQuestionMark size={size} />
   }
 }

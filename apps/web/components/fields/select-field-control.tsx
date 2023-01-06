@@ -1,7 +1,7 @@
 import { closestCenter, DndContext } from '@dnd-kit/core'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { SortableContext, useSortable } from '@dnd-kit/sortable'
-import type { ICreateOptionSchema } from '@egodb/core'
+import { optionColorOrder } from '@egodb/core'
 import { OptionId } from '@egodb/core'
 import {
   useListState,
@@ -13,18 +13,66 @@ import {
   Button,
   IconSelect,
   FocusTrap,
+  IconCircleChevronDown,
+  Popover,
+  SimpleGrid,
+  UnstyledButton,
 } from '@egodb/ui'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { CSS } from '@dnd-kit/utilities'
+import type { IOptionColor, ICreateOptionSchema } from '@egodb/core'
+import { OptionColor } from '@egodb/core'
+import { Option } from '../option/option'
+import { useState } from 'react'
 
-interface ISelectFieldControlProps {
-  onChange: (options: ICreateOptionSchema[]) => void
+type OnColorChange = (color: IOptionColor) => void
+
+interface IOptionColorPickerProps {
+  option: ICreateOptionSchema
+  onChange: OnColorChange
 }
 
-const OptionControl: React.FC<{ option: ICreateOptionSchema; onChange: (name: string) => void }> = ({
-  option,
-  onChange,
-}) => {
+const OptionColorPicker: React.FC<IOptionColorPickerProps> = ({ option, onChange }) => {
+  const [opened, setOpened] = useState(false)
+
+  return (
+    <Popover width={150} position="bottom-start" opened={opened} onChange={setOpened}>
+      <Popover.Target>
+        <ActionIcon onClick={() => setOpened(true)} color={`${option.color?.name}.${option.color?.shade}`}>
+          <IconCircleChevronDown size={14} />
+        </ActionIcon>
+      </Popover.Target>
+
+      <Popover.Dropdown>
+        <SimpleGrid cols={2}>
+          {optionColorOrder.map((color) => (
+            <UnstyledButton
+              onClick={() => {
+                onChange({ name: color, shade: option.color?.shade ?? OptionColor.defaultShade })
+                setOpened(false)
+              }}
+            >
+              <Option
+                id={option.id ?? ''}
+                name={option.name || 'a'}
+                colorName={color}
+                shade={option.color?.shade ?? OptionColor.defaultShade}
+              />
+            </UnstyledButton>
+          ))}
+        </SimpleGrid>
+      </Popover.Dropdown>
+    </Popover>
+  )
+}
+
+interface IOptionControlProps {
+  option: ICreateOptionSchema
+  onNameChange: (name: string) => void
+  onColorChange: OnColorChange
+}
+
+const OptionControl: React.FC<IOptionControlProps> = ({ option, onNameChange, onColorChange }) => {
   const { listeners, attributes, setNodeRef, transform, transition } = useSortable({ id: option.id as string })
 
   const style = {
@@ -37,11 +85,18 @@ const OptionControl: React.FC<{ option: ICreateOptionSchema; onChange: (name: st
       <ActionIcon {...listeners} {...attributes}>
         <IconGripVertical size={14} color="gray" />
       </ActionIcon>
-      <FocusTrap>
-        <TextInput variant="unstyled" value={option.name} onChange={(e) => onChange(e.target.value)} />
-      </FocusTrap>
+      <Group>
+        <OptionColorPicker onChange={onColorChange} option={option} />
+        <FocusTrap>
+          <TextInput variant="unstyled" value={option.name} onChange={(e) => onNameChange(e.target.value)} />
+        </FocusTrap>
+      </Group>
     </Group>
   )
+}
+
+interface ISelectFieldControlProps {
+  onChange: (options: ICreateOptionSchema[]) => void
 }
 
 export const SelectFieldControl: React.FC<ISelectFieldControlProps> = ({ onChange }) => {
@@ -69,7 +124,12 @@ export const SelectFieldControl: React.FC<ISelectFieldControlProps> = ({ onChang
       >
         <SortableContext items={items}>
           {options.map((o, index) => (
-            <OptionControl key={o.id} option={o} onChange={(name) => handlers.setItemProp(index, 'name', name)} />
+            <OptionControl
+              key={o.id}
+              option={o}
+              onNameChange={(name) => handlers.setItemProp(index, 'name', name)}
+              onColorChange={(color) => handlers.setItemProp(index, 'color', color)}
+            />
           ))}
         </SortableContext>
       </DndContext>
@@ -77,7 +137,20 @@ export const SelectFieldControl: React.FC<ISelectFieldControlProps> = ({ onChang
         leftIcon={<IconSelect size={14} />}
         size="xs"
         variant="subtle"
-        onClick={() => handlers.append({ id: OptionId.create().value, name: '' })}
+        onClick={() => {
+          const length = options.length
+          const color =
+            length === 0
+              ? OptionColor.defaultColor
+              : OptionColor.create(options[length - 1]?.color)
+                  .next()
+                  .unpack()
+          handlers.append({
+            id: OptionId.create().value,
+            name: '',
+            color,
+          })
+        }}
       >
         Add new option
       </Button>
