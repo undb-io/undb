@@ -36,9 +36,14 @@ const OptionColorPicker: React.FC<IOptionColorPickerProps> = ({ option, onChange
   const [opened, setOpened] = useState(false)
 
   return (
-    <Popover width={150} position="bottom-start" opened={opened} onChange={setOpened}>
+    <Popover position="bottom-start" opened={opened} onChange={setOpened}>
       <Popover.Target>
-        <ActionIcon onClick={() => setOpened(true)} color={`${option.color?.name}.${option.color?.shade}`}>
+        <ActionIcon
+          size="sm"
+          variant="filled"
+          onClick={() => setOpened(true)}
+          color={`${option.color?.name}.${option.color?.shade}`}
+        >
           <IconCircleChevronDown size={14} />
         </ActionIcon>
       </Popover.Target>
