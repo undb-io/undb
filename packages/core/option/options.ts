@@ -11,6 +11,10 @@ export class Options extends ValueObject<Option[]> {
     return this.props
   }
 
+  public get lastOption(): O<Option> {
+    return O(this.options[this.options.length - 1])
+  }
+
   public reorder(from: string, to: string): Options {
     const formIndex = this.options.findIndex((o) => o.id.value === from)
     const toIndex = this.options.findIndex((o) => o.id.value === to)
@@ -36,7 +40,6 @@ export class Options extends ValueObject<Option[]> {
   }
 
   static unsafeCreate(inputs: ICreateOptionsSchema) {
-    console.log(JSON.stringify(inputs, null, 2))
     const options = inputs.map((i) => Option.unsafeCrete(i))
     return new this(options)
   }

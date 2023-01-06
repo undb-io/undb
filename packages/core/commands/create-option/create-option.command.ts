@@ -1,7 +1,7 @@
 import type { CommandProps } from '@egodb/domain'
 import { Command } from '@egodb/domain'
 import type { ICreateOptionSchema } from '../../option'
-import type { ICreateOptionCommandInput } from './create-table.command.interface'
+import type { ICreateOptionCommandInput } from './create-option.command.interface'
 
 export class CreateOptionCommand extends Command implements ICreateOptionCommandInput {
   readonly tableId: string
