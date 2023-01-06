@@ -5,6 +5,6 @@ import { viewNameSchema } from '../../view'
 
 export const setFiltersCommandInput = z.object({
   tableId: tableIdSchema,
-  viewName: viewNameSchema.optional(),
+  viewId: viewNameSchema.optional(),
   filter: rootFilter.nullable(),
 })

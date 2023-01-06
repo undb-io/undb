@@ -122,7 +122,7 @@ export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
             onChange={(type) => {
               switchDisplayType.mutate({
                 tableId: table.id.value,
-                viewName: view.name.unpack(),
+                viewId: view.name.unpack(),
                 displayType: type as IViewDisplayType,
               })
             }}

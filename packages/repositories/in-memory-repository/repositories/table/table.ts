@@ -77,6 +77,7 @@ export type CalendarInMemory = {
 }
 
 export type ViewInMemory = {
+  id: string
   name: string
   displayType: 'grid' | 'kanban' | 'calendar'
   kanban?: KanbanInMemory

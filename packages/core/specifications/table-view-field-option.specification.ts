@@ -8,12 +8,12 @@ import type { IViewFieldOption } from '../view/view-field-options'
 import { DEFAULT_WIDTH } from '../view/view-field-options'
 
 abstract class BaseViewFieldOptionSpec extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly fieldName: string, public readonly viewName: string) {
+  constructor(public readonly fieldName: string, public readonly viewId: string) {
     super()
   }
 
   protected getView(t: Table): View {
-    return t.mustGetView(this.viewName)
+    return t.mustGetView(this.viewId)
   }
 
   protected getFieldOption(t: Table): IViewFieldOption {
@@ -26,12 +26,12 @@ abstract class BaseViewFieldOptionSpec extends CompositeSpecification<Table, ITa
 }
 
 export class WithFieldWidth extends BaseViewFieldOptionSpec {
-  constructor(fieldName: string, viewName: string, public readonly width: number) {
-    super(fieldName, viewName)
+  constructor(fieldName: string, viewId: string, public readonly width: number) {
+    super(fieldName, viewId)
   }
 
-  static default(fieldName: string, viewName: string) {
-    return new this(fieldName, viewName, DEFAULT_WIDTH)
+  static default(fieldName: string, viewId: string) {
+    return new this(fieldName, viewId, DEFAULT_WIDTH)
   }
 
   isSatisfiedBy(t: Table): boolean {
@@ -50,8 +50,8 @@ export class WithFieldWidth extends BaseViewFieldOptionSpec {
 }
 
 export class WithFieldVisibility extends BaseViewFieldOptionSpec {
-  constructor(fieldName: string, viewName: string, public readonly hidden: boolean) {
-    super(fieldName, viewName)
+  constructor(fieldName: string, viewId: string, public readonly hidden: boolean) {
+    super(fieldName, viewId)
   }
   isSatisfiedBy(t: Table): boolean {
     return this.getView(t).getFieldHidden(this.fieldName) === this.hidden
