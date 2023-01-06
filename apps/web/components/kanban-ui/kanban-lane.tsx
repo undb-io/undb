@@ -9,8 +9,10 @@ import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opene
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
 import type { SortableProps } from '../sortable.interface'
 import { UNCATEGORIZED_OPTION_ID } from './kanban.constants'
+import type { ReactNode } from 'react'
 
 interface IProps {
+  renderTitle?: () => ReactNode
   id: string | null
   title: string
   table: Table
@@ -34,6 +36,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   listeners,
   records,
   disableAddRecord,
+  renderTitle,
   getRecordValue,
 }) => {
   const setOpened = useSetAtom(createRecordFormDrawerOpened)
@@ -52,7 +55,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
     <Card ref={setNodeRef} withBorder shadow="xs" radius="sm" w={350} style={style}>
       <Card.Section withBorder inheritPadding py="sm">
         <Group position="apart">
-          <Text weight={500}>{title}</Text>
+          {renderTitle ? renderTitle() : <Text weight={500}>{title}</Text>}
 
           {listeners ? (
             <ActionIcon ref={setActivatorNodeRef} {...listeners} {...attributes}>

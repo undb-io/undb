@@ -13,8 +13,8 @@ import { groupBy } from '@fxts/core'
 import { KanbanCard } from './kanban-card'
 import { UNCATEGORIZED_OPTION_ID } from './kanban.constants'
 import { useKanban } from './use-kanban'
-import type { Record } from '@egodb/core'
-import type { Option } from '@egodb/core'
+import type { Record, Option as CoreOption } from '@egodb/core'
+import { Option } from '../option/option'
 
 interface IProps extends ITableBaseProps {
   field: SelectField
@@ -69,7 +69,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
     activeItem,
     dropAnimation,
     activeContainer,
-  } = useKanban<Option, Record>({
+  } = useKanban<CoreOption, Record>({
     containers,
     items: optionRecords,
     setItems: setOptionRecords,
@@ -129,6 +129,14 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
                 key={option.id.value}
                 id={option.id.value}
                 title={option.name.value}
+                renderTitle={() => (
+                  <Option
+                    id={option.id.value}
+                    name={option.name.value}
+                    colorName={option.color.name}
+                    shade={option.color.shade}
+                  />
+                )}
                 getRecordValue={(id) => (id === UNCATEGORIZED_OPTION_ID ? null : id)}
               />
             ))}
@@ -141,6 +149,14 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
                   records={optionRecords[(activeId as string) || ''] ?? []}
                   title={activeContainer?.name.value ?? ''}
                   id={activeContainer?.id.value ?? ''}
+                  renderTitle={() => (
+                    <Option
+                      id={activeContainer!.id.value}
+                      name={activeContainer!.name.value}
+                      colorName={activeContainer!.color.name}
+                      shade={activeContainer!.color.shade}
+                    />
+                  )}
                 />
               ) : (
                 <KanbanCard record={activeItem!} table={table} />
