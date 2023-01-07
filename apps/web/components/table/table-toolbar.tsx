@@ -1,4 +1,4 @@
-import { Button, Group } from '@egodb/ui'
+import { Group } from '@egodb/ui'
 import type { ITableBaseProps } from './table-base-props'
 import { TableCreateNewRecordButton } from './table-create-new-record-button'
 import { TableFieldVisibilityEditor } from './table-field-visibility-editor'
