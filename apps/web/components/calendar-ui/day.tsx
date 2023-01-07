@@ -3,9 +3,12 @@ import { CSS } from '@dnd-kit/utilities'
 import type { ICalendarField, Records } from '@egodb/core'
 import type { Record } from '@egodb/core'
 import { DateEqual } from '@egodb/core'
-import { Box, Indicator, Stack, Text } from '@egodb/ui'
-import { isToday } from 'date-fns'
+import { ActionIcon, Box, Group, IconPlus, Indicator, Stack, Text, useHover } from '@egodb/ui'
+import { isEqual, isToday } from 'date-fns'
+import { useAtom } from 'jotai'
 import { useMemo } from 'react'
+import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
+import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
 
 interface IProps {
   records: Records
@@ -17,6 +20,7 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
   const { setNodeRef, attributes, listeners, transform, isDragging } = useDraggable({
     id: record.id.value,
   })
+
   return (
     <Box
       ref={setNodeRef}
@@ -52,41 +56,67 @@ export const Day: React.FC<IProps> = ({ date, field, records }) => {
     return records.filter((r) => spec.isSatisfiedBy(r))
   }, [records])
 
+  const { hovered, ref } = useHover()
+
+  const [opened, setCreateRecordOpened] = useAtom(createRecordFormDrawerOpened)
+  const [initialValue, setRecordInitialValue] = useAtom(createRecordInitialValueAtom)
+
   return (
-    <Stack
-      ref={setNodeRef}
-      spacing="xs"
-      px="sm"
-      py="xs"
-      w="100%"
-      h="100%"
-      sx={(theme) => ({
-        lineHeight: theme.fontSizes.md + 'px',
-      })}
-    >
-      <Box maw={10} sx={{ textAlign: 'start' }}>
-        <Indicator position="top-end" offset={-2} size={6} color="red" disabled={!isToday(date)}>
-          <span>{date.getDate()}</span>
-        </Indicator>
-      </Box>
-      <Stack spacing={5}>
-        {isOver ? (
-          <Box
-            bg="white"
-            px="xs"
-            w="100%"
-            h={20}
-            sx={(theme) => ({
-              textAlign: 'start',
-              borderRadius: theme.radius.xs,
-              border: `1px ${theme.colors.gray[5]} dashed`,
-            })}
-          />
-        ) : null}
-        {filteredRecords.map((record) => (
-          <DraggableRecord record={record} key={record.id.value} />
-        ))}
+    <Box w="100%" h="100%" ref={ref}>
+      <Stack
+        ref={setNodeRef}
+        spacing="xs"
+        px="sm"
+        py="xs"
+        w="100%"
+        h="100%"
+        sx={(theme) => ({
+          lineHeight: theme.fontSizes.md + 'px',
+        })}
+      >
+        <Group position="apart" ref={ref}>
+          <Box maw={10} sx={{ textAlign: 'start' }}>
+            <Indicator position="top-end" offset={-2} size={6} color="red" disabled={!isToday(date)}>
+              <span>{date.getDate()}</span>
+            </Indicator>
+          </Box>
+
+          <ActionIcon
+            onClick={() => {
+              setCreateRecordOpened(true)
+              setRecordInitialValue({ [field.id.value]: date })
+            }}
+            size={16}
+            sx={{
+              visibility:
+                hovered ||
+                (opened && initialValue[field.id.value] && isEqual(initialValue[field.id.value] as Date, date))
+                  ? 'visible'
+                  : 'hidden',
+            }}
+          >
+            <IconPlus />
+          </ActionIcon>
+        </Group>
+        <Stack spacing={5}>
+          {isOver ? (
+            <Box
+              bg="white"
+              px="xs"
+              w="100%"
+              h={20}
+              sx={(theme) => ({
+                textAlign: 'start',
+                borderRadius: theme.radius.xs,
+                border: `1px ${theme.colors.gray[5]} dashed`,
+              })}
+            />
+          ) : null}
+          {filteredRecords.map((record) => (
+            <DraggableRecord record={record} key={record.id.value} />
+          ))}
+        </Stack>
       </Stack>
-    </Stack>
+    </Box>
   )
 }

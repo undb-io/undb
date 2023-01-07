@@ -1,1 +1,1 @@
-export { useMantineTheme as useEgoUITheme, type MantineTheme } from '@mantine/core'
+export { createStyles, useMantineTheme as useEgoUITheme, type MantineTheme } from '@mantine/core'

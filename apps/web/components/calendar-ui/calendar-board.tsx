@@ -1,11 +1,7 @@
 import { DndContext, rectIntersection } from '@dnd-kit/core'
 import type { ICalendarField, Records, Table } from '@egodb/core'
 import { Calendar, Grid } from '@egodb/ui'
-import { useSetAtom } from 'jotai'
-import { useState } from 'react'
 import { trpc } from '../../trpc'
-import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
-import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { CalendarRecords } from './calendar-records'
 import { Day } from './day'
@@ -17,15 +13,8 @@ interface IProps extends ITableBaseProps {
 }
 
 export const CalendarBoard: React.FC<IProps> = ({ table, field, records }) => {
-  const [date, setDate] = useState<Date | null>(null)
-  const setOpened = useSetAtom(createRecordFormDrawerOpened)
-  const setInitialValue = useSetAtom(createRecordInitialValueAtom)
-
-  const onChange = (date: Date) => {
-    setDate(date)
-    setOpened(true)
-    setInitialValue({ [field.id.value]: date })
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const onChange = () => {}
 
   const utils = trpc.useContext()
   const updateRecord = trpc.record.update.useMutation({
@@ -55,7 +44,6 @@ export const CalendarBoard: React.FC<IProps> = ({ table, field, records }) => {
         </Grid.Col>
         <Grid.Col span={10}>
           <Calendar
-            value={date}
             onChange={onChange}
             h="100%"
             fullWidth
