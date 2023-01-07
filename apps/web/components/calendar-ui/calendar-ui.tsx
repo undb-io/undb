@@ -19,7 +19,7 @@ export const CalendarUI: React.FC<IProps> = ({ table, records }) => {
 
   return (
     <Container h="100%" w={450}>
-      <Center h="100%" w="100%">
+      <Center pb={200} h="100%" w="100%">
         <SelectCalendarField table={table} />
       </Center>
     </Container>
