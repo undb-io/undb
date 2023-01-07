@@ -81,69 +81,69 @@ export class RecordInMemoryQueryVisitor implements IRecordVisitor {
 
   stringEqual(s: StringEqual): void {
     this.predicate = (r) => {
-      const value = r.values[s.name]
+      const value = r.values[s.fieldId]
       return isString(value) && s.value === value
     }
   }
 
   numberEqual(s: NumberEqual): void {
     this.predicate = (r) => {
-      const value = r.values[s.name]
+      const value = r.values[s.fieldId]
       return isNumber(value) && value === s.value
     }
   }
 
   stringContain(s: StringContain): void {
     this.predicate = (r) => {
-      const value = r.values[s.name]
+      const value = r.values[s.fieldId]
       return isString(value) && isString(s.value) && value.includes(s.value)
     }
   }
 
   stringStartsWith(s: StringStartsWith): void {
     this.predicate = (r) => {
-      const value = r.values[s.name]
+      const value = r.values[s.fieldId]
       return isString(value) && isString(s.value) && value.startsWith(s.value)
     }
   }
 
   stringEndsWith(s: StringEndsWith): void {
     this.predicate = (r) => {
-      const value = r.values[s.name]
+      const value = r.values[s.fieldId]
       return isString(value) && isString(s.value) && value.endsWith(s.value)
     }
   }
 
   stringRegex(s: StringRegex): void {
     this.predicate = (r) => {
-      const value = r.values[s.name]
+      const value = r.values[s.fieldId]
       return isString(value) && isString(s.value) && new RegExp(s.value).test(value)
     }
   }
 
   numberGreaterThan(s: NumberGreaterThan): void {
     this.predicate = (r) => {
-      const value = r.values[s.name]
+      const value = r.values[s.fieldId]
       return isNumber(value) && value > s.value
     }
   }
   numberLessThan(s: NumberLessThan): void {
     this.predicate = (r) => {
-      const value = r.values[s.name]
+      const value = r.values[s.fieldId]
       return isNumber(value) && value < s.value
     }
   }
 
   numberGreaterThanOrEqual(s: NumberGreaterThanOrEqual): void {
     this.predicate = (r) => {
-      const value = r.values[s.name]
+      const value = r.values[s.fieldId]
       return isNumber(value) && value >= s.value
     }
   }
 
   numberLessThanOrEqual(s: NumberLessThanOrEqual): void {
     this.predicate = (r) => {
-      const value = r.values[s.name]
+      const value = r.values[s.fieldId]
       return isNumber(value) && value <= s.value
     }
   }
@@ -221,21 +221,21 @@ export class RecordInMemoryQueryVisitor implements IRecordVisitor {
 
   boolIsTrue(s: BoolIsTrue): void {
     this.predicate = (r) => {
-      const value = r.values[s.name]
+      const value = r.values[s.fieldId]
       return isBoolean(value) && value === true
     }
   }
 
   boolIsFalse(s: BoolIsFalse): void {
     this.predicate = (r) => {
-      const value = r.values[s.name]
+      const value = r.values[s.fieldId]
       return isBoolean(value) && value === false
     }
   }
 
   dateRangeEqual(s: DateRangeEqual): void {
     this.predicate = (r) => {
-      const value = r.values[s.name]
+      const value = r.values[s.fieldId]
       return (
         DateRangeFieldValue.isDateRange(value) &&
         !!value &&
