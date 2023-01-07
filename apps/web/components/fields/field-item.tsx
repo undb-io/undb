@@ -8,7 +8,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
   type?: string
 }
 
-export const FileItem = forwardRef<HTMLDivElement, ItemProps>(({ value, label, type, ...others }: ItemProps, ref) => {
+export const FieldItem = forwardRef<HTMLDivElement, ItemProps>(({ value, label, type, ...others }: ItemProps, ref) => {
   return (
     <div ref={ref} {...others}>
       <Group noWrap>

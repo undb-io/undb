@@ -42,7 +42,7 @@ export class SelectIn extends RecordValueQuerySpecification<ISelectFieldValue[]>
    * @returns bool
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getSelectValue(this.name).mapOr(false, (value) => !!value.id && this.value.includes(value.id))
+    return r.values.getSelectValue(this.fielId).mapOr(false, (value) => !!value.id && this.value.includes(value.id))
   }
 
   accept(v: IRecordVisitor): Result<void, string> {

@@ -4,7 +4,7 @@ exports[`should create root filter 1`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): StringEqual {
-    "name": "name",
+    "fieldId": "name",
     "value": "hello",
   },
 }
@@ -14,7 +14,7 @@ exports[`should create root filter 2`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): StringContain {
-    "name": "name",
+    "fieldId": "name",
     "value": "hello",
   },
 }
@@ -24,7 +24,7 @@ exports[`should create root filter 3`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): StringStartsWith {
-    "name": "name",
+    "fieldId": "name",
     "value": "starts with",
   },
 }
@@ -34,7 +34,7 @@ exports[`should create root filter 4`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): StringEndsWith {
-    "name": "name",
+    "fieldId": "name",
     "value": "ends with",
   },
 }
@@ -45,7 +45,7 @@ OptionType {
   Symbol(T): true,
   Symbol(Val): Not {
     "spec": NumberEqual {
-      "name": "name",
+      "fieldId": "name",
       "value": 1,
     },
   },
@@ -57,7 +57,7 @@ OptionType {
   Symbol(T): true,
   Symbol(Val): Not {
     "spec": NumberEqual {
-      "name": "name.nested",
+      "fieldId": "name.nested",
       "value": 1,
     },
   },
@@ -68,7 +68,7 @@ exports[`should create root filter 7`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): StringEqual {
-    "name": "name",
+    "fieldId": "name",
     "value": "hello",
   },
 }
@@ -78,7 +78,7 @@ exports[`should create root filter 8`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): StringEqual {
-    "name": "name",
+    "fieldId": "name",
     "value": "hello",
   },
 }
@@ -88,7 +88,7 @@ exports[`should create root filter 9`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): NumberGreaterThan {
-    "name": "gt",
+    "fieldId": "gt",
     "value": 1,
   },
 }
@@ -98,7 +98,7 @@ exports[`should create root filter 10`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): NumberGreaterThanOrEqual {
-    "name": "gte",
+    "fieldId": "gte",
     "value": 1,
   },
 }
@@ -108,7 +108,7 @@ exports[`should create root filter 11`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): NumberLessThan {
-    "name": "lt",
+    "fieldId": "lt",
     "value": 1,
   },
 }
@@ -118,7 +118,7 @@ exports[`should create root filter 12`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): NumberLessThanOrEqual {
-    "name": "lte",
+    "fieldId": "lte",
     "value": 1,
   },
 }
@@ -138,7 +138,7 @@ exports[`should create root filter 14`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): BoolIsTrue {
-    "name": "field",
+    "fieldId": "field",
     "value": true,
   },
 }
@@ -148,7 +148,7 @@ exports[`should create root filter 15`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): BoolIsFalse {
-    "name": "field",
+    "fieldId": "field",
     "value": false,
   },
 }

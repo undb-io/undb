@@ -28,7 +28,13 @@ export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
           loading={setFilter.isLoading}
           leftIcon={<IconFilter size={18} />}
           onClick={handler.toggle}
-          rightIcon={filters.length ? <Badge>{filters.length}</Badge> : null}
+          rightIcon={
+            filters.length ? (
+              <Badge variant="filled" size="xs">
+                {filters.length}
+              </Badge>
+            ) : null
+          }
         >
           Filter
         </Button>

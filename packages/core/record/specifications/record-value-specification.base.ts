@@ -10,7 +10,7 @@ import type { IRecordVisitor } from './interface'
 export abstract class RecordValueQuerySpecification<
   T extends IFilterValue = IFilterValue,
 > extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(readonly name: string, readonly value: T) {
+  constructor(readonly fielId: string, readonly value: T) {
     super()
   }
 

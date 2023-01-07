@@ -12,7 +12,7 @@ export const CreateFieldModal: React.FC<ITableBaseProps> = ({ table }) => {
   const [opened, setOpened] = useAtom(createFielModelOpened)
   const initialValues: ICreateFieldSchema = {
     type: 'string',
-    id: 'id',
+    id: '',
     name: '',
   }
 

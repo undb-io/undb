@@ -9,7 +9,7 @@ import {
 } from '@egodb/ui'
 import React from 'react'
 interface FieldProps {
-  type: string
+  type?: string
   size?: number
   color?: string
 }

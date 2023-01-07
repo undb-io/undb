@@ -28,14 +28,14 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, table, val
   }
 
   if (field instanceof NumberField) {
-    return <NumberInput onChange={(number) => onChange(number || null)} />
+    return <NumberInput value={value as number} onChange={(number) => onChange(number || null)} />
   }
 
   if (field instanceof DateField) {
     if (dateBuiltInOperators.has(operator as IDateFilterOperator)) {
       return null
     }
-    return <DatePicker onChange={(date) => onChange(date || null)} />
+    return <DatePicker value={value as Date} onChange={(date) => onChange(date || null)} />
   }
 
   if (field instanceof DateRangeField) {
@@ -52,7 +52,14 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, table, val
   }
 
   if (field instanceof SelectField) {
-    return <OptionPicker table={table} field={field} onChange={(option) => onChange(option || null)} />
+    return (
+      <OptionPicker
+        value={value as string}
+        table={table}
+        field={field}
+        onChange={(option) => onChange(option || null)}
+      />
+    )
   }
 
   return null
