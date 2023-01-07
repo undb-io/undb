@@ -6,13 +6,13 @@ import type { Record } from '../record'
 import type { IRecordVisitor } from './interface'
 
 abstract class BaseStringSpecification extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(readonly name: string, readonly value: string | null) {
+  constructor(readonly field: string, readonly value: string | null) {
     super()
   }
 
   mutate(r: Record): Result<Record, string> {
     const stringValue = new StringFieldValue(this.value)
-    r.values.setValue(this.name, stringValue)
+    r.values.setValue(this.field, stringValue)
     return Ok(r)
   }
 }
@@ -24,7 +24,7 @@ export class StringEqual extends BaseStringSpecification {
    * @returns bool
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getStringValue(this.name).mapOr(false, (value) => value === this.value)
+    return r.values.getStringValue(this.field).mapOr(false, (value) => value === this.value)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -40,7 +40,9 @@ export class StringContain extends BaseStringSpecification {
    * @returns
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getStringValue(this.name).mapOr(false, (value) => this.value !== null && value.includes(this.value))
+    return r.values
+      .getStringValue(this.field)
+      .mapOr(false, (value) => this.value !== null && value.includes(this.value))
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -57,7 +59,7 @@ export class StringStartsWith extends BaseStringSpecification {
    */
   isSatisfiedBy(r: Record): boolean {
     return r.values
-      .getStringValue(this.name)
+      .getStringValue(this.field)
       .mapOr(false, (value) => this.value !== null && value.startsWith(this.value))
   }
 
@@ -74,7 +76,9 @@ export class StringEndsWith extends BaseStringSpecification {
    * @returns boolean
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getStringValue(this.name).mapOr(false, (value) => this.value !== null && value.endsWith(this.value))
+    return r.values
+      .getStringValue(this.field)
+      .mapOr(false, (value) => this.value !== null && value.endsWith(this.value))
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -91,7 +95,7 @@ export class StringRegex extends BaseStringSpecification {
    */
   isSatisfiedBy(r: Record): boolean {
     return r.values
-      .getStringValue(this.name)
+      .getStringValue(this.field)
       .mapOr(false, (value) => this.value !== null && new RegExp(this.value).test(value))
   }
 

@@ -1,4 +1,3 @@
-import { FieldId } from '@egodb/core'
 import { Button, Divider, Group, Select, Stack, TextInput } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { FIELD_SELECT_ITEMS } from '../../constants/field.constants'
@@ -9,7 +8,7 @@ import type { ITableBaseProps } from '../table/table-base-props'
 import { useCreateFieldFormContext } from './create-field-form-context'
 import { createFielModelOpened } from './create-field-modal-opened.atom'
 import { CreateFieldVariantControl } from './create-field-variant-control'
-import { FileItem } from '../fields/field-item'
+import { FieldItem } from '../fields/field-item'
 
 interface IProps extends ITableBaseProps {
   onCancel?: () => void
@@ -34,6 +33,8 @@ export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
     createField.mutate({ id: table.id.value, field: values })
   })
 
+  const props = form.getInputProps('name')
+
   return (
     <form onSubmit={onSubmit}>
       <Stack>
@@ -42,10 +43,18 @@ export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
           required
           label={<FieldInputLabel>type</FieldInputLabel>}
           data={FIELD_SELECT_ITEMS}
-          itemComponent={FileItem}
+          itemComponent={FieldItem}
           icon={<FieldIcon type={form.values.type} />}
         />
-        <TextInput {...form.getInputProps('name')} label={<FieldInputLabel>name</FieldInputLabel>} required />
+        <TextInput
+          {...props}
+          onChange={(e) => {
+            props.onChange(e)
+            form.setFieldValue('id', e.target.value)
+          }}
+          label={<FieldInputLabel>name</FieldInputLabel>}
+          required
+        />
         <CreateFieldVariantControl />
 
         <Divider />
