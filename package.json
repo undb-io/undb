@@ -9,6 +9,7 @@
     "commitizen": "^4.2.6",
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^8.0.3",
+    "lint-staged": "^13.1.0",
     "prettier": "^2.8.1",
     "syncpack": "^8.4.11",
     "taze": "^0.8.5",
