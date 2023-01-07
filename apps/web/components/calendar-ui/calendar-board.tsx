@@ -1,4 +1,4 @@
-import { closestCenter, DndContext, rectIntersection } from '@dnd-kit/core'
+import { closestCenter, DndContext } from '@dnd-kit/core'
 import type { ICalendarField, Records, Table } from '@egodb/core'
 import { Calendar, Grid } from '@egodb/ui'
 import { trpc } from '../../trpc'

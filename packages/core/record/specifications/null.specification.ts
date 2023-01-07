@@ -10,7 +10,7 @@ export class NullSpecification extends CompositeSpecification<Record, IRecordVis
   }
 
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getUnpackedValue(this.fieldId).mapOr(false, (value) => value === null)
+    return r.values.getUnpackedValue(this.fieldId).mapOr(true, (value) => value === null)
   }
 
   mutate(t: Record): Result<Record, string> {
