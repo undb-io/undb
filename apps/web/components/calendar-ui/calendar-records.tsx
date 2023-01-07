@@ -16,19 +16,15 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
     id: record.id.value,
   })
 
-  const style = {
-    transform: CSS.Translate.toString(transform),
-    zIndex: isDragging ? 1000 : undefined,
-    opacity: isDragging ? 0.7 : undefined,
-  }
-
   return (
     <Box
       ref={setNodeRef}
       w="100%"
       p="sm"
-      style={style}
       sx={(theme) => ({
+        transform: CSS.Translate.toString(transform),
+        zIndex: isDragging ? 1000 : undefined,
+        opacity: isDragging ? 0.7 : undefined,
         backgroundColor: theme.colors[theme.primaryColor][theme.fn.primaryShade()],
         borderRadius: theme.radius.sm,
         boxShadow: theme.shadows.lg,

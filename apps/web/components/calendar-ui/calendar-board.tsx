@@ -1,8 +1,9 @@
 import { DndContext, rectIntersection } from '@dnd-kit/core'
-import type { ICalendarField, Records } from '@egodb/core'
+import type { ICalendarField, Records, Table } from '@egodb/core'
 import { Calendar, Grid } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { useState } from 'react'
+import { trpc } from '../../trpc'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
 import type { ITableBaseProps } from '../table/table-base-props'
@@ -10,11 +11,12 @@ import { CalendarRecords } from './calendar-records'
 import { Day } from './day'
 
 interface IProps extends ITableBaseProps {
+  table: Table
   field: ICalendarField
   records: Records
 }
 
-export const CalendarBoard: React.FC<IProps> = ({ field, records }) => {
+export const CalendarBoard: React.FC<IProps> = ({ table, field, records }) => {
   const [date, setDate] = useState<Date | null>(null)
   const setOpened = useSetAtom(createRecordFormDrawerOpened)
   const setInitialValue = useSetAtom(createRecordInitialValueAtom)
@@ -25,8 +27,28 @@ export const CalendarBoard: React.FC<IProps> = ({ field, records }) => {
     setInitialValue({ [field.id.value]: date })
   }
 
+  const utils = trpc.useContext()
+  const updateRecord = trpc.record.update.useMutation({
+    onSuccess() {
+      utils.record.list.refetch()
+    },
+  })
+
   return (
-    <DndContext collisionDetection={rectIntersection} onDragEnd={console.log}>
+    <DndContext
+      collisionDetection={rectIntersection}
+      onDragEnd={(e) => {
+        const recordId = e.active.id
+        const date = e.over?.id
+        if (date) {
+          updateRecord.mutate({
+            tableId: table.id.value,
+            id: recordId as string,
+            value: [{ id: field.id.value, value: new Date(date) }],
+          })
+        }
+      }}
+    >
       <Grid h="100%" gutter={0}>
         <Grid.Col span={2}>
           <CalendarRecords field={field} records={records} />
