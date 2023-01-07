@@ -1,3 +1,4 @@
+export * from './calendar'
 export * from './kanban'
 export * from './specifications'
 export * from './view'

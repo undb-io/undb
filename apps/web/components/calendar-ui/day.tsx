@@ -1,11 +1,26 @@
-import { Box, Indicator, Stack } from '@egodb/ui'
+import type { ICalendarField, Records } from '@egodb/core'
+import { DateEqual } from '@egodb/core'
+import { Box, Indicator, Space, Stack, Text } from '@egodb/ui'
+import { useMemo } from 'react'
 
 const today = new Date()
 
-export const Day: React.FC<{ date: Date }> = ({ date }) => {
+interface IProps {
+  records: Records
+  field: ICalendarField
+  date: Date
+}
+
+export const Day: React.FC<IProps> = ({ date, field, records }) => {
+  const filteredRecords = useMemo(() => {
+    const spec = new DateEqual(field.id.value, date)
+    return records.filter((r) => spec.isSatisfiedBy(r))
+  }, [records])
+
   return (
     <Stack
       spacing="xs"
+      w="100%"
       sx={(theme) => ({
         lineHeight: theme.fontSizes.md + 'px',
       })}
@@ -19,7 +34,26 @@ export const Day: React.FC<{ date: Date }> = ({ date }) => {
         offset={-2}
         disabled={date.getDate() !== today.getDate()}
       >
-        <Box>{date.getDate()}</Box>
+        <Box sx={{ textAlign: 'start' }}>{date.getDate()}</Box>
+        <Space h={3} />
+        <Stack>
+          {filteredRecords.map((r) => (
+            <Box
+              key={r.id.value}
+              bg="white"
+              px="xs"
+              w="100%"
+              sx={(theme) => ({
+                textAlign: 'start',
+                borderRadius: theme.radius.xs,
+                border: `1px ${theme.colors.gray[2]} solid`,
+                lineHeight: theme.fontSizes.sm + 'px',
+              })}
+            >
+              <Text color="dark">{r.id.value}</Text>
+            </Box>
+          ))}
+        </Stack>
       </Indicator>
     </Stack>
   )

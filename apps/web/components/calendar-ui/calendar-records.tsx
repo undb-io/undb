@@ -1,6 +1,5 @@
-import type { Records } from '@egodb/core'
+import type { ICalendarField, Records } from '@egodb/core'
 import { NullSpecification } from '@egodb/core'
-import type { ICalendarField } from '@egodb/core/view/calendar'
 import { ActionIcon, Box, Group, IconGripVertical, Space, Stack, Text, Title } from '@egodb/ui'
 import { useMemo } from 'react'
 
@@ -19,6 +18,7 @@ export const CalendarRecords: React.FC<IProps> = ({ field, records }) => {
       <Stack>
         {nullRecords.map((r) => (
           <Box
+            key={r.id.value}
             w="100%"
             p="sm"
             sx={(theme) => ({

@@ -1,5 +1,4 @@
-import type { Records } from '@egodb/core'
-import type { ICalendarField } from '@egodb/core/view/calendar'
+import type { ICalendarField, Records } from '@egodb/core'
 import { Center, Container } from '@egodb/ui'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { CalendarBoard } from './calendar-board'

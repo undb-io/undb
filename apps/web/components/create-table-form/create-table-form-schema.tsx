@@ -23,7 +23,7 @@ export const CreateTableFormSchema: React.FC = () => {
     if (len && len >= (prevLen || 0)) {
       const id = form.values.schema[len - 1]?.id
       if (id) {
-        setActiveField(id)
+        setActiveField(String(len - 1))
       }
     }
   }, [len])

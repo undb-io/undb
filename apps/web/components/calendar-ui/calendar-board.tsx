@@ -1,5 +1,4 @@
-import type { Records } from '@egodb/core'
-import type { ICalendarField } from '@egodb/core/view/calendar'
+import type { ICalendarField, Records } from '@egodb/core'
 import { Calendar, Grid } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { useState } from 'react'
@@ -39,7 +38,7 @@ export const CalendarBoard: React.FC<IProps> = ({ field, records }) => {
           bg="white"
           size="xl"
           allowLevelChange={false}
-          renderDay={(date) => <Day date={date} />}
+          renderDay={(date) => <Day field={field} records={records} date={date} />}
           styles={(theme) => ({
             calendarHeader: {
               height: 30,
@@ -56,6 +55,7 @@ export const CalendarBoard: React.FC<IProps> = ({ field, records }) => {
             },
             month: { height: 'calc(100% - 40px)' },
             cell: {
+              height: 'calc(100% / 6)',
               border: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1]}`,
             },
             day: {
