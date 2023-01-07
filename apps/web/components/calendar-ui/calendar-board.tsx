@@ -1,4 +1,4 @@
-import { closestCenter, DndContext } from '@dnd-kit/core'
+import { DndContext, rectIntersection } from '@dnd-kit/core'
 import type { ICalendarField, Records, Table } from '@egodb/core'
 import { Calendar, Grid } from '@egodb/ui'
 import { trpc } from '../../trpc'
@@ -25,7 +25,7 @@ export const CalendarBoard: React.FC<IProps> = ({ table, field, records }) => {
 
   return (
     <DndContext
-      collisionDetection={closestCenter}
+      collisionDetection={rectIntersection}
       onDragEnd={(e) => {
         const recordId = e.active.id
         const date = e.over?.id
