@@ -3,12 +3,14 @@ import { CSS } from '@dnd-kit/utilities'
 import type { ICalendarField, Records } from '@egodb/core'
 import type { Record } from '@egodb/core'
 import { DateEqual } from '@egodb/core'
-import { ActionIcon, Box, Group, IconPlus, Indicator, Stack, Text, useHover } from '@egodb/ui'
+import { ActionIcon, Box, Group, IconGripVertical, IconPlus, Stack, Text, useHover } from '@egodb/ui'
 import { isEqual, isToday } from 'date-fns'
-import { useAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
+import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
+import { editRecordValuesAtom } from '../edit-record-form/edit-record-values.atom'
 
 interface IProps {
   records: Records
@@ -17,38 +19,53 @@ interface IProps {
 }
 
 const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
+  const setOpened = useSetAtom(editRecordFormDrawerOpened)
+  const setRecordValues = useSetAtom(editRecordValuesAtom)
   const { setNodeRef, attributes, listeners, transform, isDragging } = useDraggable({
     id: record.id.value,
   })
 
   return (
-    <Box
+    <Group
       ref={setNodeRef}
       bg="white"
       px="xs"
       w="100%"
-      onClick={(e) => e.stopPropagation()}
+      spacing="xs"
+      role="button"
       sx={(theme) => ({
         textAlign: 'start',
         borderRadius: theme.radius.xs,
         border: `1px ${theme.colors.gray[2]} solid`,
         boxShadow: theme.shadows.xs,
         lineHeight: theme.fontSizes.sm + 'px',
-        cursor: isDragging ? 'grabbing' : 'grab',
+        cursor: 'pointer',
         transform: CSS.Translate.toString(transform),
         zIndex: isDragging ? 1000 : undefined,
       })}
-      {...attributes}
-      {...listeners}
+      onClick={(e) => {
+        e.stopPropagation()
+        setRecordValues({ id: record.id.value, values: record.values.valueJSON })
+        setOpened(true)
+      }}
     >
+      <IconGripVertical
+        {...attributes}
+        {...listeners}
+        style={{
+          cursor: isDragging ? 'grabbing' : 'grab',
+        }}
+        size={12}
+      />
       <Text color="dark">{record.id.value}</Text>
-    </Box>
+    </Group>
   )
 }
 
 export const Day: React.FC<IProps> = ({ date, field, records }) => {
+  const id = date.toISOString()
   const { setNodeRef, isOver } = useDroppable({
-    id: date.toISOString(),
+    id,
   })
 
   const filteredRecords = useMemo(() => {
@@ -72,6 +89,7 @@ export const Day: React.FC<IProps> = ({ date, field, records }) => {
         h="100%"
         sx={(theme) => ({
           lineHeight: theme.fontSizes.md + 'px',
+          backgroundColor: isOver ? theme.colors.gray[0] : 'inherit',
         })}
       >
         <Group position="apart" ref={ref}>
