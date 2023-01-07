@@ -36,7 +36,7 @@ export const Day: React.FC<IProps> = ({ date, field, records }) => {
       >
         <Box sx={{ textAlign: 'start' }}>{date.getDate()}</Box>
         <Space h={3} />
-        <Stack>
+        <Stack spacing={5}>
           {filteredRecords.map((r) => (
             <Box
               key={r.id.value}
@@ -47,6 +47,7 @@ export const Day: React.FC<IProps> = ({ date, field, records }) => {
                 textAlign: 'start',
                 borderRadius: theme.radius.xs,
                 border: `1px ${theme.colors.gray[2]} solid`,
+                boxShadow: theme.shadows.xs,
                 lineHeight: theme.fontSizes.sm + 'px',
               })}
             >
