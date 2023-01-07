@@ -66,7 +66,7 @@ export const Day: React.FC<IProps> = ({ date, field, records }) => {
       <Stack
         ref={setNodeRef}
         spacing="xs"
-        px="sm"
+        px={5}
         py="xs"
         w="100%"
         h="100%"
@@ -75,10 +75,16 @@ export const Day: React.FC<IProps> = ({ date, field, records }) => {
         })}
       >
         <Group position="apart" ref={ref}>
-          <Box maw={10} sx={{ textAlign: 'start' }}>
-            <Indicator position="top-end" offset={-2} size={6} color="red" disabled={!isToday(date)}>
-              <span>{date.getDate()}</span>
-            </Indicator>
+          <Box
+            px={2}
+            py={1}
+            sx={(theme) => ({
+              borderRadius: theme.radius.xs,
+              backgroundColor: isToday(date) ? theme.colors[theme.primaryColor][theme.fn.primaryShade()] : 'inherit',
+              color: isToday(date) ? theme.white : 'inherit',
+            })}
+          >
+            {date.getDate()}
           </Box>
 
           <ActionIcon

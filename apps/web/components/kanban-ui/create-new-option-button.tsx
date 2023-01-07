@@ -6,7 +6,7 @@ export const CreateNewOptionButton: React.FC = () => {
   const setOpened = useSetAtom(createNewOptionOpened)
 
   return (
-    <Button onClick={() => setOpened(true)} w={300} variant="white" leftIcon={<IconPlus />}>
+    <Button onClick={() => setOpened(true)} w={300} variant="outline" leftIcon={<IconPlus />}>
       New Stack
     </Button>
   )

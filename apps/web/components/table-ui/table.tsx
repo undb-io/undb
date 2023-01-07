@@ -68,12 +68,15 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
       highlightOnHover
       withBorder
       withColumnBorders
-      sx={{
+      sx={(theme) => ({
+        backgroundColor: theme.white,
+        borderTop: '0',
+        borderLeft: '0',
         width: rt.getCenterTotalSize(),
         'thead th': {
           backgroundColor: 'white',
         },
-      }}
+      })}
     >
       <thead>
         {rt.getHeaderGroups().map((headerGroup) => (
