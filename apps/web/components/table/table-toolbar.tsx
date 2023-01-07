@@ -8,7 +8,9 @@ import { ToolbarView } from './toolbar-view'
 export const TableToolbar: React.FC<ITableBaseProps> = ({ table }) => {
   return (
     <Group
-      p="md"
+      px="md"
+      py="xs"
+      spacing="xs"
       sx={(theme) => {
         const border = '1px solid ' + theme.colors.gray[3]
         return {
@@ -20,10 +22,8 @@ export const TableToolbar: React.FC<ITableBaseProps> = ({ table }) => {
     >
       <TableCreateNewRecordButton />
       <ToolbarView table={table} />
-      <Button.Group>
-        <TableFilterEditor table={table} />
-        <TableFieldVisibilityEditor table={table} />
-      </Button.Group>
+      <TableFilterEditor table={table} />
+      <TableFieldVisibilityEditor table={table} />
     </Group>
   )
 }
