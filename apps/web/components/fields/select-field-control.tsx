@@ -93,7 +93,12 @@ const OptionControl: React.FC<IOptionControlProps> = ({ option, onNameChange, on
       <Group>
         <OptionColorPicker onChange={onColorChange} option={option} />
         <FocusTrap>
-          <TextInput variant="unstyled" value={option.name} onChange={(e) => onNameChange(e.target.value)} />
+          <TextInput
+            variant="unstyled"
+            value={option.name}
+            onChange={(e) => onNameChange(e.target.value)}
+            placeholder="option name..."
+          />
         </FocusTrap>
       </Group>
     </Group>
