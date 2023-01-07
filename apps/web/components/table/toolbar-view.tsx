@@ -2,7 +2,16 @@ import type { IViewDisplayType, Kanban } from '@egodb/core'
 import type { FieldId } from '@egodb/core'
 import type { Table } from '@egodb/core'
 import type { ICalendar } from '@egodb/core/view/calendar'
-import { Button, IconCalendarPlus, IconSelect, Menu, Modal, SegmentedControl, Tooltip, useDisclosure } from '@egodb/ui'
+import {
+  Button,
+  IconCalendarPlus,
+  IconSelect,
+  Popover,
+  Modal,
+  SegmentedControl,
+  Tooltip,
+  useDisclosure,
+} from '@egodb/ui'
 import { useAtom, useSetAtom } from 'jotai'
 import { trpc } from '../../trpc'
 import { openCalendarEditField, openCalendarEditFieldAtom } from '../calendar-ui/calendar-edit-field.atom'
@@ -98,8 +107,8 @@ export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
 
   return (
     <Button.Group>
-      <Menu opened={opened} closeOnItemClick closeOnClickOutside onClose={toggle.close}>
-        <Menu.Target>
+      <Popover opened={opened} closeOnClickOutside onClose={toggle.close} shadow="md">
+        <Popover.Target>
           <Tooltip label={view.displayType}>
             <Button
               compact
@@ -110,9 +119,9 @@ export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
               {view.name.unpack()}
             </Button>
           </Tooltip>
-        </Menu.Target>
+        </Popover.Target>
 
-        <Menu.Dropdown>
+        <Popover.Dropdown p="xs">
           <SegmentedControl
             data={[
               { label: 'Grid', value: 'grid' },
@@ -129,8 +138,8 @@ export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
             value={view.displayType}
             defaultValue={view.displayType}
           />
-        </Menu.Dropdown>
-      </Menu>
+        </Popover.Dropdown>
+      </Popover>
 
       {displayType === 'kanban' ? <KanbanControl table={table} kanban={view.kanban.into()} /> : null}
       {displayType === 'calendar' ? <CalendarControl table={table} calendar={view.calendar.into()} /> : null}

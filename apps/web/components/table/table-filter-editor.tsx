@@ -20,7 +20,7 @@ export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
   })
 
   return (
-    <Popover position="bottom-start" opened={opened} onChange={handler.toggle} closeOnClickOutside>
+    <Popover position="bottom-start" opened={opened} onChange={handler.toggle} closeOnClickOutside shadow="md">
       <Popover.Target>
         <Button
           compact

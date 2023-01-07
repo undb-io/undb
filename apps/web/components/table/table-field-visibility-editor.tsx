@@ -18,7 +18,14 @@ export const TableFieldVisibilityEditor: React.FC<ITableBaseProps> = ({ table })
   }
 
   return (
-    <Popover width={250} position="bottom-start" opened={opened} onChange={handler.toggle} closeOnClickOutside>
+    <Popover
+      width={250}
+      position="bottom-start"
+      opened={opened}
+      onChange={handler.toggle}
+      closeOnClickOutside
+      shadow="md"
+    >
       <Popover.Target>
         <Button
           variant="subtle"

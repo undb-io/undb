@@ -43,7 +43,7 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ table, onSuccess
 
   return (
     <form onSubmit={onSubmit} style={{ width: '100%' }}>
-      <Card shadow={'sm'}>
+      <Card shadow="md">
         <Card.Section withBorder inheritPadding py="sm">
           <Text>select one field</Text>
         </Card.Section>
