@@ -41,6 +41,7 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
         lineHeight: theme.fontSizes.sm + 'px',
         cursor: 'pointer',
         transform: CSS.Translate.toString(transform),
+        opacity: isDragging ? 0.5 : undefined,
         zIndex: isDragging ? 1000 : undefined,
       })}
       onClick={(e) => {
