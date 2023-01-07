@@ -72,6 +72,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
         backgroundColor: theme.white,
         borderTop: '0',
         borderLeft: '0',
+        borderBottom: data.length ? '1px solid ' + theme.colors.gray[2] : '0',
         width: rt.getCenterTotalSize(),
         'thead th': {
           backgroundColor: 'white',
