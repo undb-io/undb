@@ -5,10 +5,10 @@
   "dependencies": {
     "@egodb/core": "^0.0.0",
     "@egodb/domain": "^0.0.0",
-    "@trpc/server": "^10.7.0",
+    "@trpc/server": "^10.8.1",
     "superjson": "^1.12.1",
     "swagger-ui-express": "^4.6.0",
-    "trpc-openapi": "^1.0.0",
+    "trpc-openapi": "^1.1.1",
     "zod": "^3.20.2"
   },
   "devDependencies": {
@@ -19,7 +19,7 @@
     "tsconfig": "^0.0.0",
     "tsup": "^6.5.0",
     "typescript": "^4.9.4",
-    "vitest": "^0.26.2"
+    "vitest": "^0.26.3"
   },
   "keywords": [],
   "main": "./dist/index",
