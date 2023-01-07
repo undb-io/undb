@@ -21,8 +21,8 @@ export const CreateTableFormSchema: React.FC = () => {
 
   useEffect(() => {
     if (len && len >= (prevLen || 0)) {
-      const id = form.values.schema[len - 1]?.id
-      if (id) {
+      const field = form.values.schema[len - 1]
+      if (field) {
         setActiveField(String(len - 1))
       }
     }
