@@ -25,7 +25,7 @@ export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => 
         label: f.id.value,
         type: f.type,
       }))}
-      icon={<FieldIcon type={value?.type} />}
+      icon={value?.type ? <FieldIcon type={value.type} /> : null}
     />
   )
 }

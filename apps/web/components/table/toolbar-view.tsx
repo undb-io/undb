@@ -32,6 +32,7 @@ const StackedBy: React.FC<{ fieldId?: FieldId; table: Table }> = ({ table, field
       <Button
         onClick={setOpened}
         compact
+        size="xs"
         variant="subtle"
         leftIcon={<IconSelect size={18} />}
       >{`stacked by "${field.id.value}"`}</Button>
@@ -60,6 +61,7 @@ const UsingCalendarField: React.FC<{ fieldId?: FieldId; table: Table }> = ({ tab
         onClick={setOpened}
         compact
         variant="subtle"
+        size="xs"
         leftIcon={<IconCalendarPlus size={18} />}
       >{`using "${field.id.value}" field`}</Button>
     </Tooltip>
@@ -111,6 +113,7 @@ export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
         <Popover.Target>
           <Tooltip label={view.displayType}>
             <Button
+              size="xs"
               compact
               variant="subtle"
               onClick={toggle.toggle}

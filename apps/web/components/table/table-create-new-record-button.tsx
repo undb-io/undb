@@ -5,7 +5,7 @@ import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opene
 export const TableCreateNewRecordButton: React.FC = () => {
   const setOpened = useSetAtom(createRecordFormDrawerOpened)
   return (
-    <Button compact leftIcon={<IconRowInsertBottom size={14} />} onClick={() => setOpened(true)}>
+    <Button compact size="xs" leftIcon={<IconRowInsertBottom size={14} />} onClick={() => setOpened(true)}>
       Add New Record
     </Button>
   )

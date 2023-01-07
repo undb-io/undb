@@ -30,6 +30,7 @@ export const TableFieldVisibilityEditor: React.FC<ITableBaseProps> = ({ table })
         <Button
           variant="subtle"
           compact
+          size="xs"
           loading={setFieldVisibility.isLoading}
           leftIcon={<IconEye size={18} />}
           onClick={handler.toggle}
