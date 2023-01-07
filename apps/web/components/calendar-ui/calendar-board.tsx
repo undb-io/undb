@@ -55,6 +55,8 @@ export const CalendarBoard: React.FC<IProps> = ({ field }) => {
           },
           day: {
             padding: theme.spacing.xs,
+            paddingTop: theme.spacing.sm,
+            paddingBottom: theme.spacing.sm,
             borderRadius: 0,
             height: '100%',
             display: 'inline-flex',
