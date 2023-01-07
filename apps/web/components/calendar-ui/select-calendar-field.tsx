@@ -1,3 +1,4 @@
+import { Box } from '@egodb/ui'
 import { useAtomValue } from 'jotai'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { calendarStep } from './calendar-step.atom'
@@ -13,10 +14,10 @@ export const SelectCalendarField: React.FC<IProps> = ({ table, onSuccess }) => {
   const step = useAtomValue(calendarStep)
 
   return (
-    <>
+    <Box w={500}>
       {step === 0 ? <SelectExistingCalendarField onSuccess={onSuccess} table={table} /> : null}
       {step === 1 ? <CreateCalendarDateField onSuccess={onSuccess} table={table} /> : null}
       {step === 2 ? <CreateCalendarDateRangeField onSuccess={onSuccess} table={table} /> : null}
-    </>
+    </Box>
   )
 }
