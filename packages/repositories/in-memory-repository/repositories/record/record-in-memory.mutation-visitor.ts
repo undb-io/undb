@@ -9,6 +9,7 @@ import type {
   DateLessThanOrEqual,
   DateRangeEqual,
   IRecordVisitor,
+  NullSpecification,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -30,6 +31,9 @@ import type { RecordInMemory } from './record.type'
 
 export class RecordInMemoryMutationVisitor implements IRecordVisitor {
   constructor(private record: RecordInMemory) {}
+  null(s: NullSpecification): void {
+    throw new Error('Method not implemented.')
+  }
   idEqual(s: WithRecordId): void {
     throw new Error('Method not implemented.')
   }
