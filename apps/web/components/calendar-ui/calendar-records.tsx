@@ -1,4 +1,7 @@
+import { useDraggable } from '@dnd-kit/core'
+import { CSS } from '@dnd-kit/utilities'
 import type { ICalendarField, Records } from '@egodb/core'
+import type { Record } from '@egodb/core'
 import { NullSpecification } from '@egodb/core'
 import { ActionIcon, Box, Group, IconGripVertical, Space, Stack, Text, Title } from '@egodb/ui'
 import { useMemo } from 'react'
@@ -6,6 +9,39 @@ import { useMemo } from 'react'
 interface IProps {
   field: ICalendarField
   records: Records
+}
+
+const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
+  const { setNodeRef, attributes, listeners, setActivatorNodeRef, transform, isDragging } = useDraggable({
+    id: record.id.value,
+  })
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    zIndex: isDragging ? 1000 : undefined,
+    opacity: isDragging ? 0.7 : undefined,
+  }
+
+  return (
+    <Box
+      ref={setNodeRef}
+      w="100%"
+      p="sm"
+      style={style}
+      sx={(theme) => ({
+        backgroundColor: theme.colors[theme.primaryColor][theme.fn.primaryShade()],
+        borderRadius: theme.radius.sm,
+        boxShadow: theme.shadows.lg,
+      })}
+    >
+      <Group>
+        <ActionIcon size={18} variant="transparent" ref={setActivatorNodeRef} {...attributes} {...listeners}>
+          <IconGripVertical color="white" />
+        </ActionIcon>
+        <Text color="white">{record.id.value}</Text>
+      </Group>
+    </Box>
+  )
 }
 
 export const CalendarRecords: React.FC<IProps> = ({ field, records }) => {
@@ -16,24 +52,8 @@ export const CalendarRecords: React.FC<IProps> = ({ field, records }) => {
       <Title size={20}>Records</Title>
       <Space h="md" />
       <Stack>
-        {nullRecords.map((r) => (
-          <Box
-            key={r.id.value}
-            w="100%"
-            p="sm"
-            sx={(theme) => ({
-              backgroundColor: theme.colors[theme.primaryColor][theme.fn.primaryShade()],
-              borderRadius: theme.radius.sm,
-              boxShadow: theme.shadows.lg,
-            })}
-          >
-            <Group>
-              <ActionIcon size={18} variant="transparent">
-                <IconGripVertical color="white" />
-              </ActionIcon>
-              <Text color="white">{r.id.value}</Text>
-            </Group>
-          </Box>
+        {nullRecords.map((record) => (
+          <DraggableRecord key={record.id.value} record={record} />
         ))}
       </Stack>
     </Box>

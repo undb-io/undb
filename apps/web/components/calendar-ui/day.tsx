@@ -1,3 +1,4 @@
+import { useDroppable } from '@dnd-kit/core'
 import type { ICalendarField, Records } from '@egodb/core'
 import { DateEqual } from '@egodb/core'
 import { Box, Indicator, Stack, Text } from '@egodb/ui'
@@ -11,6 +12,10 @@ interface IProps {
 }
 
 export const Day: React.FC<IProps> = ({ date, field, records }) => {
+  const { setNodeRef, isOver } = useDroppable({
+    id: date.toISOString(),
+  })
+
   const filteredRecords = useMemo(() => {
     const spec = new DateEqual(field.id.value, date)
     return records.filter((r) => spec.isSatisfiedBy(r))
@@ -18,8 +23,12 @@ export const Day: React.FC<IProps> = ({ date, field, records }) => {
 
   return (
     <Stack
+      ref={setNodeRef}
       spacing="xs"
+      px="sm"
+      py="xs"
       w="100%"
+      h="100%"
       sx={(theme) => ({
         lineHeight: theme.fontSizes.md + 'px',
       })}
@@ -30,6 +39,19 @@ export const Day: React.FC<IProps> = ({ date, field, records }) => {
         </Indicator>
       </Box>
       <Stack spacing={5}>
+        {isOver ? (
+          <Box
+            bg="white"
+            px="xs"
+            w="100%"
+            h={20}
+            sx={(theme) => ({
+              textAlign: 'start',
+              borderRadius: theme.radius.xs,
+              border: `1px ${theme.colors.gray[5]} dashed`,
+            })}
+          />
+        ) : null}
         {filteredRecords.map((r) => (
           <Box
             key={r.id.value}
