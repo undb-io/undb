@@ -17,6 +17,7 @@ export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess 
   const createRecord = trpc.record.create.useMutation({
     onSuccess: () => {
       reset()
+      form.reset()
       utils.record.list.refetch()
       onSuccess?.()
     },
