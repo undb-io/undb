@@ -2,10 +2,7 @@ import { defineConfig } from 'taze'
 
 export default defineConfig({
   // ignore packages from bumping
-  exclude: [
-    '/@egodb/',
-		"nanoid",
-  ],
+  exclude: ['/@egodb/', 'nanoid', 'array-move'],
   recursive: true,
   // fetch latest package info from registry without cache
   force: true,
@@ -15,6 +12,6 @@ export default defineConfig({
   install: true,
   // override with different bumping mode for each package
   packageMode: {
-    'typescript': 'major',
-  }
+    typescript: 'major',
+  },
 })
