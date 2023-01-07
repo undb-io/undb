@@ -63,39 +63,43 @@ export const CalendarBoard: React.FC<IProps> = ({ table, field, records }) => {
             size="xl"
             allowLevelChange={false}
             renderDay={(date) => <Day field={field} records={records} date={date} />}
-            styles={(theme) => ({
-              calendarHeader: {
-                height: 30,
-                marginBottom: 0,
-                paddingBottom: 10,
-                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[0],
-              },
-              calendarHeaderControl: {
-                height: '100%',
-              },
-              calendarHeaderLevel: {
-                height: '100%',
-                fontSize: theme.fontSizes.md,
-              },
-              month: { height: 'calc(100% - 40px)' },
-              cell: {
-                height: 'calc(100% / 6)',
-                border: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1]}`,
-              },
-              day: {
-                borderRadius: 0,
-                height: '100%',
-                display: 'inline-flex',
-                flexDirection: 'column',
-                fontSize: theme.fontSizes.sm,
-              },
-              weekday: { fontSize: theme.fontSizes.lg },
-              weekdayCell: {
-                fontSize: theme.fontSizes.xs,
-                border: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1]}`,
-                height: 20,
-              },
-            })}
+            styles={(theme) => {
+              const border = `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1]}`
+              return {
+                calendarHeader: {
+                  backgroundColor: theme.white,
+                  marginBottom: 0,
+                  padding: 10,
+                  borderLeft: border,
+                },
+                calendarHeaderControl: {
+                  height: theme.spacing.xs + 'px',
+                },
+                calendarHeaderLevel: {
+                  height: '100%',
+                  fontSize: theme.fontSizes.lg,
+                },
+                month: { height: 'calc(100% - 40px)' },
+                cell: {
+                  height: 'calc(100% / 6)',
+                  border: border,
+                },
+                day: {
+                  cursor: 'unset',
+                  borderRadius: 0,
+                  height: '100%',
+                  display: 'inline-flex',
+                  flexDirection: 'column',
+                  fontSize: theme.fontSizes.sm,
+                },
+                weekday: { fontSize: theme.fontSizes.lg },
+                weekdayCell: {
+                  fontSize: theme.fontSizes.xs,
+                  border: border,
+                  height: 20,
+                },
+              }
+            }}
           />
         </Grid.Col>
       </Grid>

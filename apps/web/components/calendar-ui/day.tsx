@@ -1,5 +1,7 @@
-import { useDroppable } from '@dnd-kit/core'
+import { useDraggable, useDroppable } from '@dnd-kit/core'
+import { CSS } from '@dnd-kit/utilities'
 import type { ICalendarField, Records } from '@egodb/core'
+import type { Record } from '@egodb/core'
 import { DateEqual } from '@egodb/core'
 import { Box, Indicator, Stack, Text } from '@egodb/ui'
 import { isToday } from 'date-fns'
@@ -9,6 +11,35 @@ interface IProps {
   records: Records
   field: ICalendarField
   date: Date
+}
+
+const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
+  const { setNodeRef, attributes, listeners, transform, isDragging } = useDraggable({
+    id: record.id.value,
+  })
+  return (
+    <Box
+      ref={setNodeRef}
+      bg="white"
+      px="xs"
+      w="100%"
+      onClick={(e) => e.stopPropagation()}
+      sx={(theme) => ({
+        textAlign: 'start',
+        borderRadius: theme.radius.xs,
+        border: `1px ${theme.colors.gray[2]} solid`,
+        boxShadow: theme.shadows.xs,
+        lineHeight: theme.fontSizes.sm + 'px',
+        cursor: isDragging ? 'grabbing' : 'grab',
+        transform: CSS.Translate.toString(transform),
+        zIndex: isDragging ? 1000 : undefined,
+      })}
+      {...attributes}
+      {...listeners}
+    >
+      <Text color="dark">{record.id.value}</Text>
+    </Box>
+  )
 }
 
 export const Day: React.FC<IProps> = ({ date, field, records }) => {
@@ -52,22 +83,8 @@ export const Day: React.FC<IProps> = ({ date, field, records }) => {
             })}
           />
         ) : null}
-        {filteredRecords.map((r) => (
-          <Box
-            key={r.id.value}
-            bg="white"
-            px="xs"
-            w="100%"
-            sx={(theme) => ({
-              textAlign: 'start',
-              borderRadius: theme.radius.xs,
-              border: `1px ${theme.colors.gray[2]} solid`,
-              boxShadow: theme.shadows.xs,
-              lineHeight: theme.fontSizes.sm + 'px',
-            })}
-          >
-            <Text color="dark">{r.id.value}</Text>
-          </Box>
+        {filteredRecords.map((record) => (
+          <DraggableRecord record={record} key={record.id.value} />
         ))}
       </Stack>
     </Stack>

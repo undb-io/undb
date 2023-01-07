@@ -5,7 +5,7 @@ import type { ITableBaseProps } from './table-base-props'
 
 export const TableHaeder: React.FC<ITableBaseProps> = ({ table }) => {
   return (
-    <Group fz="md">
+    <Group fz="md" p="md">
       <Text fw={500} color="gray.5">
         Tables
       </Text>

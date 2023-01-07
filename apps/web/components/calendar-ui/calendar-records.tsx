@@ -31,7 +31,14 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
       })}
     >
       <Group>
-        <ActionIcon size={18} variant="transparent" ref={setActivatorNodeRef} {...attributes} {...listeners}>
+        <ActionIcon
+          size={18}
+          variant="transparent"
+          ref={setActivatorNodeRef}
+          {...attributes}
+          {...listeners}
+          sx={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+        >
           <IconGripVertical color="white" />
         </ActionIcon>
         <Text color="white">{record.id.value}</Text>
@@ -44,14 +51,28 @@ export const CalendarRecords: React.FC<IProps> = ({ field, records }) => {
   const spec = new NullSpecification(field.id.value)
   const nullRecords = useMemo(() => records.filter((r) => spec.isSatisfiedBy(r)), [records])
   return (
-    <Box p="md">
+    <Box p="md" bg="white" h="100%">
       <Title size={20}>Records</Title>
       <Space h="md" />
-      <Stack>
-        {nullRecords.map((record) => (
-          <DraggableRecord key={record.id.value} record={record} />
-        ))}
-      </Stack>
+      {nullRecords.length ? (
+        <Stack>
+          {nullRecords.map((record) => (
+            <DraggableRecord key={record.id.value} record={record} />
+          ))}
+        </Stack>
+      ) : (
+        <Box
+          p="md"
+          sx={(theme) => ({
+            fontSize: theme.fontSizes.sm,
+            borderRadius: theme.radius.sm,
+            backgroundColor: theme.colors.gray[0],
+          })}
+          color="gray"
+        >
+          There are no more unscheduled records.
+        </Box>
+      )}
     </Box>
   )
 }
