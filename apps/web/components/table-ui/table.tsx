@@ -37,7 +37,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
             )
           }
           if (f.type === 'bool') {
-            return <Checkbox defaultChecked={(props.getValue() as BoolFieldValue).unpack()} />
+            return <Checkbox h="100%" lh={1} defaultChecked={(props.getValue() as BoolFieldValue)?.unpack() ?? false} />
           }
           return props.getValue()?.unpack()?.toString()
         },
@@ -68,6 +68,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
       highlightOnHover
       withBorder
       withColumnBorders
+      verticalSpacing={5}
       sx={(theme) => ({
         backgroundColor: theme.white,
         borderTop: '0',
@@ -76,10 +77,6 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
         width: rt.getCenterTotalSize(),
         'thead th': {
           backgroundColor: theme.white,
-        },
-        'tbody tr td': {
-          paddingTop: '4px',
-          paddingBottom: '4px',
         },
       })}
     >
