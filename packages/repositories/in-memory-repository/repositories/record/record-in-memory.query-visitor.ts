@@ -10,6 +10,7 @@ import type {
   DateRangeEqual,
   IRecordSpec,
   IRecordVisitor,
+  NullSpecification,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -242,6 +243,12 @@ export class RecordInMemoryQueryVisitor implements IRecordVisitor {
         isEqual(value[0], s.value[0]) &&
         isEqual(value[1], s.value[1])
       )
+    }
+  }
+  null(s: NullSpecification): void {
+    this.predicate = (r) => {
+      const value = r.values[s.fieldId]
+      return value === null
     }
   }
 }

@@ -59,7 +59,7 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
    * @param id - field id
    * @returns unpacked field value
    */
-  private getUnpackedValue(id: string): Option<UnpackedFieldValue> {
+  getUnpackedValue(id: string): Option<UnpackedFieldValue> {
     return Option.nonNull(this.value.get(id)).map((v) => v.unpack())
   }
 

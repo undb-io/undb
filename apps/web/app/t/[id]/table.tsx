@@ -17,11 +17,9 @@ interface IProps {
 
 export default function Table({ table, records }: IProps) {
   return (
-    <Stack h="100%">
-      <Stack px="md" pt="sm">
-        <TableHaeder table={table} />
-        <TableToolbar table={table} />
-      </Stack>
+    <Stack h="100%" spacing={0}>
+      <TableHaeder table={table} />
+      <TableToolbar table={table} />
       <ViewDisplay table={table} records={records} />
       <CreateRecordFormDrawer table={table} />
       <EditRecordFormDrawer table={table} />
