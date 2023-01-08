@@ -1,15 +1,18 @@
 import type { ITableRepository, ITableSpec, Table } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { Option } from 'oxide.ts'
+import { None, Some } from 'oxide.ts'
 import { Field as FieldEntity, fieldTypeMap, Table as TableEntity } from '../../entity'
+import { TableSqliteMapper } from './table-sqlite.mapper'
 
 export class TableSqliteRepository implements ITableRepository {
   constructor(protected readonly em: EntityManager) {}
 
   async findOneById(id: string): Promise<Option<Table>> {
     const table = await this.em.findOne(TableEntity, id)
+    if (!table) return None
 
-    throw new Error('Method not implemented.')
+    return Some(TableSqliteMapper.entityToDomain(table).unwrap())
   }
 
   findOne(spec: ITableSpec): Promise<Option<Table>> {

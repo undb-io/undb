@@ -1,8 +1,10 @@
 import type { IQueryTable } from '@egodb/core'
+import { ITableSpec } from '@egodb/core'
 import { TableSqliteQueryModel } from '@egodb/sqlite'
 import { EntityManager } from '@mikro-orm/better-sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
+import type { Option } from 'oxide.ts'
 
 @Injectable()
 export class NestTableSqliteQueryModel extends TableSqliteQueryModel {
@@ -13,5 +15,10 @@ export class NestTableSqliteQueryModel extends TableSqliteQueryModel {
   @UseRequestContext()
   async find(): Promise<IQueryTable[]> {
     return super.find()
+  }
+
+  @UseRequestContext()
+  async findOne(spec: ITableSpec): Promise<Option<IQueryTable>> {
+    return super.findOne(spec)
   }
 }
