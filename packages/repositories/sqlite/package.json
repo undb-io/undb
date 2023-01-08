@@ -3,7 +3,7 @@
   "description": "",
   "version": "0.0.0",
   "dependencies": {
-    "@egodb/core": "workspace:^0.0.0",
+    "@egodb/core": "^0.0.0",
     "@egodb/domain": "^0.0.0",
     "@mikro-orm/better-sqlite": "^5.6.4",
     "@mikro-orm/core": "^5.6.4",
@@ -19,6 +19,7 @@
     "typescript": "^4.9.4",
     "vitest": "^0.26.3"
   },
+  "main": "./dist/index",
   "scripts": {
     "build": "tsup",
     "clean": "rimraf dist",
@@ -26,6 +27,5 @@
     "dev": "tsup --watch ",
     "prebuild": "pnpm run clean"
   },
-  "main": "./dist/index",
   "types": "./dist/index"
 }

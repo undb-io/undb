@@ -5,7 +5,7 @@
     "@egodb/core": "^0.0.0",
     "@egodb/domain": "^0.0.0",
     "@egodb/in-memory-repository": "^0.0.0",
-    "@egodb/sqlite": "workspace:^0.0.0",
+    "@egodb/sqlite": "^0.0.0",
     "@egodb/trpc": "^0.0.0",
     "@mikro-orm/better-sqlite": "^5.6.4",
     "@mikro-orm/core": "^5.6.4",
