@@ -1,5 +1,4 @@
 import type { IQueryTable, ITableQueryModel, ITableSpec } from '@egodb/core'
-import { WithTableId } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
@@ -30,7 +29,12 @@ export class TableSqliteQueryModel implements ITableQueryModel {
     return Some(TableSqliteMapper.entityToQuery(table))
   }
 
-  findOneById(id: string): Promise<Option<IQueryTable>> {
-    return this.findOne(WithTableId.fromExistingString(id).unwrap())
+  async findOneById(id: string): Promise<Option<IQueryTable>> {
+    const table = await this.em.findOne(Table, id)
+    if (!table) return None
+
+    await this.em.populate(table, ['fields'])
+
+    return Some(TableSqliteMapper.entityToQuery(table))
   }
 }
