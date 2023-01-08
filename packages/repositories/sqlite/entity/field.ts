@@ -20,6 +20,15 @@ export const fieldTypeMap: Record<IFieldType, FieldType> = {
   'date-range': FieldType.DATE_RANGE,
 }
 
+export const fieldEnumMap: Record<FieldType, IFieldType> = {
+  [FieldType.STRING]: 'string',
+  [FieldType.NUMBER]: 'number',
+  [FieldType.DATE]: 'date',
+  [FieldType.SELECT]: 'select',
+  [FieldType.BOOL]: 'bool',
+  [FieldType.DATE_RANGE]: 'date-range',
+}
+
 @Entity({ tableName: 'fields' })
 export class Field {
   @PrimaryKey()
