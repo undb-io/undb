@@ -1,7 +1,7 @@
 import { CreateOptionCommand, CreateOptionCommandHandler as DomainHandler, type ITableRepository } from '@egodb/core'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
-import { InjectTableReposiory } from '../adapters'
+import { InjectTableReposiory } from '../adapters/in-memory'
 
 @CommandHandler(CreateOptionCommand)
 export class CreateOptionCommandHandler extends DomainHandler implements ICommandHandler<CreateOptionCommand> {

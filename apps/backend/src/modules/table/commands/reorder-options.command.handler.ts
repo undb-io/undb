@@ -1,7 +1,7 @@
 import { ITableRepository, ReorderOptionsCommand, ReorderOptionsCommandHandler as DomainHandler } from '@egodb/core'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
-import { InjectTableReposiory } from '../adapters'
+import { InjectTableReposiory } from '../adapters/in-memory'
 
 @CommandHandler(ReorderOptionsCommand)
 export class ReorderOptionsCommandHandler extends DomainHandler implements ICommandHandler<ReorderOptionsCommand> {

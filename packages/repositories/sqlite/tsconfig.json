@@ -1,0 +1,12 @@
+{
+  "extends": "tsconfig/lib.json",
+  "include": ["."],
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "target": "ESNEXT",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "outDir": "./dist"
+  }
+}

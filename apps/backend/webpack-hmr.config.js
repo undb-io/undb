@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const nodeExternals = require('webpack-node-externals');
-const { RunScriptWebpackPlugin } = require('run-script-webpack-plugin');
+const nodeExternals = require('webpack-node-externals')
+const { RunScriptWebpackPlugin } = require('run-script-webpack-plugin')
 
 module.exports = function (options, webpack) {
   return {
@@ -11,6 +11,7 @@ module.exports = function (options, webpack) {
         allowlist: [
           'webpack/hot/poll?100',
           '@egodb/in-memory-repository',
+          '@egodb/sqlite',
           '@egodb/core',
           '@egodb/domain',
           '@egodb/trpc',
@@ -25,5 +26,5 @@ module.exports = function (options, webpack) {
       }),
       new RunScriptWebpackPlugin({ name: options.output.filename, autoRestart: true }),
     ],
-  };
-};
+  }
+}

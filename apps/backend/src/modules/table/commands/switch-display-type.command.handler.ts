@@ -5,7 +5,7 @@ import {
 } from '@egodb/core'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
-import { InjectTableReposiory } from '../adapters'
+import { InjectTableReposiory } from '../adapters/in-memory'
 
 @CommandHandler(SwitchDisplayTypeCommand)
 export class SwitchDisplayTypeCommandHandler

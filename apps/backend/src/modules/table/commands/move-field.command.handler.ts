@@ -1,7 +1,7 @@
 import { MoveFieldCommand, MoveFieldCommandHandler as DomainHandler, type ITableRepository } from '@egodb/core'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
-import { InjectTableReposiory } from '../adapters'
+import { InjectTableReposiory } from '../adapters/in-memory'
 
 @CommandHandler(MoveFieldCommand)
 export class MoveFieldCommandHandler extends DomainHandler implements ICommandHandler<MoveFieldCommand> {
