@@ -23,7 +23,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ props, table, field }) =>
     return <DateRangePicker key={field.id.value} {...props} value={props.value || [null, null]} label={label} />
   }
   if (field.type === 'bool') {
-    return <Checkbox key={field.id.value} {...props} label={label} />
+    return <Checkbox lh={1} key={field.id.value} {...props} label={label} />
   }
   if (field.type === 'select') {
     return <OptionPicker field={field} table={table} key={field.id.value} {...props} label={label} />
