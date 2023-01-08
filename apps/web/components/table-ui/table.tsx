@@ -37,7 +37,9 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
             )
           }
           if (f.type === 'bool') {
-            return <Checkbox h="100%" lh={1} defaultChecked={(props.getValue() as BoolFieldValue)?.unpack() ?? false} />
+            return (
+              <Checkbox h="100%" lh={1} readOnly checked={(props.getValue() as BoolFieldValue)?.unpack() ?? false} />
+            )
           }
           return props.getValue()?.unpack()?.toString()
         },
