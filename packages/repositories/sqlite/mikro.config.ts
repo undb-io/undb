@@ -1,23 +1,17 @@
 import { BetterSqliteDriver } from '@mikro-orm/better-sqlite'
 import { defineConfig, ReflectMetadataProvider } from '@mikro-orm/core'
 import path from 'path'
-import { Table } from './entity'
-import { Init } from './migrations/init'
+import { Field, Table } from './entity'
 
 export const config = defineConfig({
-  entities: [Table],
+  entities: [Table, Field],
   metadataProvider: ReflectMetadataProvider,
   driver: BetterSqliteDriver,
   baseDir: process.cwd(),
   dbName: path.resolve(process.cwd(), '../../.ego/data/ego.sqlite'),
   debug: true,
-  migrations: {
-    tableName: 'migrations',
-    migrationsList: [
-      {
-        name: 'init',
-        class: Init,
-      },
-    ],
+  schemaGenerator: {
+    disableForeignKeys: true,
+    createForeignKeyConstraints: true,
   },
 })

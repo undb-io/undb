@@ -56,6 +56,7 @@ importers:
       jest: ^29.3.1
       nestjs-cls: ^3.0.5
       nestjs-pino: ^3.1.2
+      oxide.ts: ^1.1.0
       pino-http: ^8.3.1
       pino-pretty: ^9.1.1
       reflect-metadata: ^0.1.13
@@ -87,6 +88,7 @@ importers:
       '@nestjs/terminus': 9.1.4_fbxeqpgzjbs2ydhivg36d5dmua
       nestjs-cls: 3.0.5_hjcqpoaebdr7gdo5hgc22hthbe
       nestjs-pino: 3.1.2_sfapocvosrcjidgmqxjuhlo64q
+      oxide.ts: 1.1.0
       pino-http: 8.3.1
       pino-pretty: 9.1.1
       reflect-metadata: 0.1.13

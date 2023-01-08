@@ -17,6 +17,7 @@
     "@nestjs/terminus": "^9.1.4",
     "nestjs-cls": "^3.0.5",
     "nestjs-pino": "^3.1.2",
+    "oxide.ts": "^1.1.0",
     "pino-http": "^8.3.1",
     "pino-pretty": "^9.1.1",
     "reflect-metadata": "^0.1.13",
