@@ -2,7 +2,7 @@ import type { IGetRecordsOutput } from '@egodb/core'
 import { GetRecordsQuery, GetRecordsQueryHandler, IRecordQueryModel, ITableRepository } from '@egodb/core'
 import type { IQueryHandler } from '@nestjs/cqrs'
 import { QueryHandler } from '@nestjs/cqrs'
-import { InjectRecordQueryModel, InjectTableReposiory } from '../adapters/in-memory'
+import { InjectRecordQueryModel, InjectTableReposiory } from '../adapters'
 
 @QueryHandler(GetRecordsQuery)
 export class NestGetRecordsQueryHandelr

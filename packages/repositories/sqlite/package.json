@@ -3,10 +3,12 @@
   "description": "",
   "version": "0.0.0",
   "dependencies": {
-    "@egodb/core": "^0.0.0",
+    "@egodb/core": "workspace:^0.0.0",
     "@egodb/domain": "^0.0.0",
     "@mikro-orm/better-sqlite": "^5.6.4",
     "@mikro-orm/core": "^5.6.4",
+    "@mikro-orm/migrations": "^5.6.4",
+    "oxide.ts": "^1.1.0",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {

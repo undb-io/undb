@@ -36,3 +36,5 @@ yarn-error.log*
 .env
 
 .pnpm-store/
+
+.ego/

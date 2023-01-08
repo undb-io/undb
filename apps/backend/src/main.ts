@@ -16,6 +16,8 @@ async function bootstrap() {
     module.hot.dispose(() => app.close())
   }
 
+  app.enableShutdownHooks()
+
   await app.listen(4000)
 }
 bootstrap()

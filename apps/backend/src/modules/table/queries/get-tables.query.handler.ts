@@ -2,7 +2,7 @@ import type { IGetTablesOutput } from '@egodb/core'
 import { GetTablesQuery, GetTablesQueryHandler, ITableQueryModel } from '@egodb/core'
 import type { IQueryHandler } from '@nestjs/cqrs'
 import { QueryHandler } from '@nestjs/cqrs'
-import { InjectTableQueryModel } from '../adapters/in-memory'
+import { InjectTableQueryModel } from '../adapters'
 
 @QueryHandler(GetTablesQuery)
 export class NestGetTablesQueryHandelr

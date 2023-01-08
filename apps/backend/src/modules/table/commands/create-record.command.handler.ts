@@ -6,7 +6,7 @@ import {
 } from '@egodb/core'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
-import { InjectRecordReposiory, InjectTableReposiory } from '../adapters/in-memory'
+import { InjectRecordReposiory, InjectTableReposiory } from '../adapters'
 
 @CommandHandler(CreateRecordCommand)
 export class CreateRecordCommandHandler extends DomainHandler implements ICommandHandler<CreateRecordCommand> {
