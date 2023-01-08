@@ -6,5 +6,6 @@ export const config = defineConfig({
   entities: [Table],
   metadataProvider: ReflectMetadataProvider,
   driver: BetterSqliteDriver,
-  dbName: 'ego.db',
+  baseDir: process.cwd(),
+  dbName: '.ego/data/ego.sqlite',
 })
