@@ -1,4 +1,5 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core'
+import { Collection, Entity, OneToMany, PrimaryKey, Property } from '@mikro-orm/core'
+import { Field } from './field'
 
 @Entity({ tableName: 'tables' })
 export class Table {
@@ -7,4 +8,7 @@ export class Table {
 
   @Property()
   name!: string
+
+  @OneToMany(() => Field, (field) => field.table)
+  fields = new Collection<Field>(this)
 }

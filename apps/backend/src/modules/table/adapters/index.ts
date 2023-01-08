@@ -2,7 +2,7 @@ import type { Provider } from '@nestjs/common'
 import { Inject } from '@nestjs/common'
 import { NestRecordInMemoryQueryModel } from './in-memory/record-in-memory.query-model'
 import { NestRecordInMemoryRepository } from './in-memory/record-in-memory.repository'
-import { NestTableInMemoryQueryModel } from './in-memory/table-in-memory.query-model'
+import { NestTableSqliteQueryModel } from './sqlite/table-sqlite.query-model'
 import { NestTableSqliteRepository } from './sqlite/table-sqlite.repository'
 
 const TABLE_REPOSITORY = Symbol('TABLE_REPOSITORY')
@@ -24,7 +24,7 @@ export const dbAdapters: Provider[] = [
   },
   {
     provide: TABLE_QUERY_MODEL,
-    useClass: NestTableInMemoryQueryModel,
+    useClass: NestTableSqliteQueryModel,
   },
   {
     provide: RECORD_REPOSITORY,
