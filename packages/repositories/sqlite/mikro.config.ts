@@ -1,10 +1,12 @@
 import { BetterSqliteDriver } from '@mikro-orm/better-sqlite'
 import { defineConfig, ReflectMetadataProvider } from '@mikro-orm/core'
+import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import path from 'path'
-import { Field, Option, Table } from './entity'
+import { entities } from './entity'
 
 export const config = defineConfig({
-  entities: [Table, Field, Option],
+  entities,
+  highlighter: new SqlHighlighter(),
   metadataProvider: ReflectMetadataProvider,
   driver: BetterSqliteDriver,
   baseDir: process.cwd(),

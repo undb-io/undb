@@ -31,6 +31,6 @@ export class AppModule implements OnModuleInit {
 
   async onModuleInit(): Promise<void> {
     const generator = this.orm.getSchemaGenerator()
-    await generator.updateSchema()
+    // await generator.updateSchema({ dropTables: true })
   }
 }

@@ -2,14 +2,13 @@ import type { ICreateTableSchemaInput, IQueryFieldSchema, IQueryTable } from '@e
 import { TableFactory } from '@egodb/core'
 import type { EntityDTO } from '@mikro-orm/core'
 import type { Field as FieldEntity, Table as TableEntity } from '../../entity'
-import { fieldEnumMap } from '../../entity'
 
 export class TableSqliteMapper {
   static fieldToQuery(entity: EntityDTO<FieldEntity>): IQueryFieldSchema {
     return {
       id: entity.id,
       name: entity.name,
-      type: fieldEnumMap[entity.type],
+      type: entity.type,
     } as IQueryFieldSchema
   }
 
@@ -28,7 +27,7 @@ export class TableSqliteMapper {
       schema: entity.fields.toJSON().map((f) => ({
         id: f.id,
         name: f.name,
-        type: fieldEnumMap[f.type],
+        type: f.type,
       })) as ICreateTableSchemaInput,
     })
   }

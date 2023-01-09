@@ -2,13 +2,9 @@ import type { ITableRepository, ITableSpec, Table } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
-import {
-  Field as FieldEntity,
-  fieldTypeMap,
-  Option as OptionEntity,
-  OptionColor,
-  Table as TableEntity,
-} from '../../entity'
+import type { SelectField } from '../../entity'
+import { Option as OptionEntity, OptionColor, Table as TableEntity } from '../../entity'
+import { FieldFactory } from '../../entity/field.factory'
 import { TableSqliteMapper } from './table-sqlite.mapper'
 
 export class TableSqliteRepository implements ITableRepository {
@@ -35,19 +31,19 @@ export class TableSqliteRepository implements ITableRepository {
     tableEntity.name = table.name.value
 
     for (const field of table.schema.fields) {
-      const fieldEntiy = new FieldEntity()
-      fieldEntiy.id = field.id.value
-      fieldEntiy.type = fieldTypeMap[field.type]
-      fieldEntiy.name = field.name.value
-      fieldEntiy.table = tableEntity
-      this.em.persist(fieldEntiy)
+      const fieldEntity = FieldFactory.create(field)
+
+      fieldEntity.id = field.id.value
+      fieldEntity.type = field.type
+      fieldEntity.name = field.name.value
+      fieldEntity.table = tableEntity
 
       if (field.type === 'select') {
         for (const option of field.options.options) {
           const optionEntity = new OptionEntity()
           optionEntity.id = option.id.value
           optionEntity.name = option.name.value
-          optionEntity.field = fieldEntiy
+          optionEntity.field = fieldEntity as SelectField
 
           const optionColor = new OptionColor()
           optionColor.name = option.color.name
@@ -57,6 +53,8 @@ export class TableSqliteRepository implements ITableRepository {
           this.em.persist(optionEntity)
         }
       }
+
+      this.em.persist(fieldEntity)
     }
 
     this.em.persist(tableEntity)

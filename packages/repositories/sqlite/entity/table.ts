@@ -2,7 +2,7 @@ import { Collection, Entity, OneToMany, PrimaryKey, Property } from '@mikro-orm/
 import { BaseEntity } from './base'
 import { Field } from './field'
 
-@Entity({ tableName: 'tables' })
+@Entity()
 export class Table extends BaseEntity {
   @PrimaryKey()
   id!: string

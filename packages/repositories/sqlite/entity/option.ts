@@ -1,23 +1,24 @@
-import { Embeddable, Embedded, Entity, ManyToOne, PrimaryKey, PrimaryKeyType, Property } from '@mikro-orm/core'
+import type { IOptionColorName, IOptionColorShade } from '@egodb/core'
+import { Embeddable, Embedded, Entity, Enum, ManyToOne, PrimaryKey, PrimaryKeyType, Property } from '@mikro-orm/core'
 import { BaseEntity } from './base'
-import { Field } from './field'
+import { SelectField } from './field'
 
 @Embeddable()
 export class OptionColor {
-  @Property()
-  name!: string
+  @Enum({ type: 'string' })
+  name!: IOptionColorName
 
-  @Property()
-  shade!: number
+  @Enum()
+  shade!: IOptionColorShade
 }
 
-@Entity({ tableName: 'options' })
+@Entity()
 export class Option extends BaseEntity {
   @PrimaryKey()
   id!: string
 
-  @ManyToOne(() => Field, { primary: true })
-  field!: Field;
+  @ManyToOne(() => SelectField, { primary: true })
+  field!: SelectField;
 
   [PrimaryKeyType]?: [string, string, string]
 

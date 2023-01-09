@@ -4,35 +4,8 @@ import { BaseEntity } from './base'
 import { Option } from './option'
 import { Table } from './table'
 
-export enum FieldType {
-  STRING,
-  NUMBER,
-  DATE,
-  DATE_RANGE,
-  SELECT,
-  BOOL,
-}
-
-export const fieldTypeMap: Record<IFieldType, FieldType> = {
-  string: FieldType.STRING,
-  number: FieldType.NUMBER,
-  date: FieldType.DATE,
-  select: FieldType.SELECT,
-  bool: FieldType.BOOL,
-  'date-range': FieldType.DATE_RANGE,
-}
-
-export const fieldEnumMap: Record<FieldType, IFieldType> = {
-  [FieldType.STRING]: 'string',
-  [FieldType.NUMBER]: 'number',
-  [FieldType.DATE]: 'date',
-  [FieldType.SELECT]: 'select',
-  [FieldType.BOOL]: 'bool',
-  [FieldType.DATE_RANGE]: 'date-range',
-}
-
-@Entity({ tableName: 'fields' })
-export class Field extends BaseEntity {
+@Entity({ abstract: true, discriminatorColumn: 'type' })
+export abstract class Field extends BaseEntity {
   @PrimaryKey()
   id!: string
 
@@ -44,9 +17,27 @@ export class Field extends BaseEntity {
   @Property()
   name!: string
 
-  @Enum(() => FieldType)
-  type!: FieldType
+  @Enum({ type: 'string' })
+  type!: IFieldType
+}
 
+@Entity({ discriminatorValue: 'string' })
+export class StringField extends Field {}
+
+@Entity({ discriminatorValue: 'number' })
+export class NumberField extends Field {}
+
+@Entity({ discriminatorValue: 'bool' })
+export class BoolField extends Field {}
+
+@Entity({ discriminatorValue: 'date' })
+export class DateField extends Field {}
+
+@Entity({ discriminatorValue: 'date-range' })
+export class DateRangeField extends Field {}
+
+@Entity({ discriminatorValue: 'select' })
+export class SelectField extends Field {
   @OneToMany(() => Option, (option) => option.field)
   options = new Collection<Option>(this)
 }
