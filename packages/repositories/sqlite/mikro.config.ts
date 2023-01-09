@@ -1,10 +1,10 @@
 import { BetterSqliteDriver } from '@mikro-orm/better-sqlite'
 import { defineConfig, ReflectMetadataProvider } from '@mikro-orm/core'
 import path from 'path'
-import { Field, Table } from './entity'
+import { Field, Option, Table } from './entity'
 
 export const config = defineConfig({
-  entities: [Table, Field],
+  entities: [Table, Field, Option],
   metadataProvider: ReflectMetadataProvider,
   driver: BetterSqliteDriver,
   baseDir: process.cwd(),

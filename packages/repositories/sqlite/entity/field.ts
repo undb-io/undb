@@ -1,5 +1,7 @@
 import type { IFieldType } from '@egodb/core'
-import { Entity, Enum, ManyToOne, PrimaryKey, PrimaryKeyType, Property } from '@mikro-orm/core'
+import { Collection, Entity, Enum, ManyToOne, OneToMany, PrimaryKey, PrimaryKeyType, Property } from '@mikro-orm/core'
+import { BaseEntity } from './base'
+import { Option } from './option'
 import { Table } from './table'
 
 export enum FieldType {
@@ -30,7 +32,7 @@ export const fieldEnumMap: Record<FieldType, IFieldType> = {
 }
 
 @Entity({ tableName: 'fields' })
-export class Field {
+export class Field extends BaseEntity {
   @PrimaryKey()
   id!: string
 
@@ -44,4 +46,7 @@ export class Field {
 
   @Enum(() => FieldType)
   type!: FieldType
+
+  @OneToMany(() => Option, (option) => option.field)
+  options = new Collection<Option>(this)
 }

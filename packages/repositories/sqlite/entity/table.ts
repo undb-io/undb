@@ -1,8 +1,9 @@
 import { Collection, Entity, OneToMany, PrimaryKey, Property } from '@mikro-orm/core'
+import { BaseEntity } from './base'
 import { Field } from './field'
 
 @Entity({ tableName: 'tables' })
-export class Table {
+export class Table extends BaseEntity {
   @PrimaryKey()
   id!: string
 
