@@ -1,4 +1,4 @@
-import { config } from '@egodb/sqlite'
+import { createConfig } from '@egodb/sqlite'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { Module } from '@nestjs/common'
 import { ClsModule } from 'nestjs-cls'
@@ -20,7 +20,7 @@ import { TrpcModule } from './trpc/trpc.module'
         transport: process.env.NODE_ENV !== 'production' ? { target: 'pino-pretty' } : undefined,
       },
     }),
-    MikroOrmModule.forRoot(config),
+    MikroOrmModule.forRoot(createConfig('../../.ego/data')),
     ...modules,
   ],
 })

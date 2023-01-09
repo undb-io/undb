@@ -21,6 +21,12 @@
     "dev": {
       "dependsOn": ["^dev"],
       "cache": false
+    },
+    "db:schema:fresh": {
+      "cache": false
+    },
+    "db:migration:up": {
+      "cache": false
     }
   }
 }

@@ -34,7 +34,9 @@
     "clean": "rimraf dist",
     "coverage": "vitest run --coverage",
     "dev": "tsup --watch ",
-    "prebuild": "pnpm run clean"
+    "prebuild": "pnpm run clean",
+    "db:schema:fresh": "mikro-orm schema:fresh -r",
+    "db:migration:up": "mikro-orm migration:up"
   },
   "types": "./dist/index"
 }
