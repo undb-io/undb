@@ -8,12 +8,15 @@ declare const module: any
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true })
   app.useLogger(app.get(Logger))
+
   app.enableCors()
 
   if (module.hot) {
     module.hot.accept()
     module.hot.dispose(() => app.close())
   }
+
+  app.enableShutdownHooks()
 
   await app.listen(4000)
 }

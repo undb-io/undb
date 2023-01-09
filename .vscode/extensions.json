@@ -8,6 +8,7 @@
     "jacano.vscode-pnpm",
     "esbenp.prettier-vscode",
     "rangav.vscode-thunder-client",
-    "ms-azuretools.vscode-docker"
+    "ms-azuretools.vscode-docker",
+    "alexcvzz.vscode-sqlite"
   ]
 }
