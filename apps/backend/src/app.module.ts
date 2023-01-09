@@ -1,7 +1,5 @@
 import { config } from '@egodb/sqlite'
-import { MikroORM } from '@mikro-orm/core'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
-import type { OnModuleInit } from '@nestjs/common'
 import { Module } from '@nestjs/common'
 import { ClsModule } from 'nestjs-cls'
 import { LoggerModule } from 'nestjs-pino'
@@ -26,11 +24,4 @@ import { TrpcModule } from './trpc/trpc.module'
     ...modules,
   ],
 })
-export class AppModule implements OnModuleInit {
-  constructor(private readonly orm: MikroORM) {}
-
-  async onModuleInit(): Promise<void> {
-    const generator = this.orm.getSchemaGenerator()
-    // await generator.updateSchema({ dropTables: true })
-  }
-}
+export class AppModule {}

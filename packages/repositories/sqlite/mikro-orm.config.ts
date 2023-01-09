@@ -17,3 +17,5 @@ export const config = defineConfig({
     createForeignKeyConstraints: true,
   },
 })
+
+export default config
