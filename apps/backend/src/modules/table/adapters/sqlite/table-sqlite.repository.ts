@@ -24,4 +24,9 @@ export class NestTableSqliteRepository extends TableSqliteRepository {
   async insert(table: Table): Promise<void> {
     return super.insert(table)
   }
+
+  @UseRequestContext()
+  async updateOneById(id: string, spec: ITableSpec): Promise<void> {
+    return super.updateOneById(id, spec)
+  }
 }

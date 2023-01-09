@@ -7,6 +7,7 @@ import { Option as OptionEntity, OptionColor, Table as TableEntity } from '../..
 import { FieldFactory } from '../../entity/field.factory'
 import { Calendar, Kanban, View as ViewEntity } from '../../entity/view'
 import { TableSqliteMapper } from './table-sqlite.mapper'
+import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor'
 
 export class TableSqliteRepository implements ITableRepository {
   constructor(protected readonly em: EntityManager) {}
@@ -85,7 +86,11 @@ export class TableSqliteRepository implements ITableRepository {
     await this.em.flush()
   }
 
-  updateOneById(id: string, spec: ITableSpec): Promise<void> {
-    throw new Error('Method not implemented.')
+  async updateOneById(id: string, spec: ITableSpec): Promise<void> {
+    const visitor = new TableSqliteMutationVisitor(id, this.em)
+
+    spec.accept(visitor)
+
+    await Promise.all(visitor.qbs.map((qb) => qb.execute()))
   }
 }

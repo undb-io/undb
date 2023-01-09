@@ -38,6 +38,16 @@ export class TableSqliteMapper {
       id: entity.id,
       name: entity.name,
       schema: entity.fields.getItems().map((table) => this.fieldToQuery(table)),
+      views: entity.views.getItems().map((view) => ({
+        id: view.id,
+        name: view.name,
+        displayType: view.displayType,
+        filter: view.filter,
+        fieldOptions: view.fieldOptions,
+        fieldsOrder: view.fieldsOrder,
+        kanban: view.kanban,
+        calendar: view.calendar,
+      })),
     }
   }
 
