@@ -23,6 +23,12 @@
     "vitest": "^0.26.3"
   },
   "main": "./dist/index",
+  "mikro-orm": {
+    "useTsNode": true,
+    "configPaths": [
+      "./mikro-orm.config.ts"
+    ]
+  },
   "scripts": {
     "build": "tsup",
     "clean": "rimraf dist",
@@ -30,11 +36,5 @@
     "dev": "tsup --watch ",
     "prebuild": "pnpm run clean"
   },
-  "types": "./dist/index",
-  "mikro-orm": {
-    "useTsNode": true,
-    "configPaths": [
-      "./mikro-orm.config.ts"
-    ]
-  }
+  "types": "./dist/index"
 }
