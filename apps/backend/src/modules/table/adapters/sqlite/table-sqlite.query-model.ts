@@ -21,4 +21,9 @@ export class NestTableSqliteQueryModel extends TableSqliteQueryModel {
   async findOne(spec: ITableSpec): Promise<Option<IQueryTable>> {
     return super.findOne(spec)
   }
+
+  @UseRequestContext()
+  async findOneById(id: string): Promise<Option<IQueryTable>> {
+    return super.findOneById(id)
+  }
 }

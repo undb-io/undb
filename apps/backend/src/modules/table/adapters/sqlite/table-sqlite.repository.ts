@@ -1,4 +1,4 @@
-import { Table } from '@egodb/core'
+import { ITableSpec, Table } from '@egodb/core'
 import { TableSqliteRepository } from '@egodb/sqlite'
 import { EntityManager } from '@mikro-orm/better-sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
@@ -14,6 +14,11 @@ export class NestTableSqliteRepository extends TableSqliteRepository {
   @UseRequestContext()
   async findOneById(id: string): Promise<Option<Table>> {
     return super.findOneById(id)
+  }
+
+  @UseRequestContext()
+  async findOne(spec: ITableSpec): Promise<Option<Table>> {
+    return super.findOne(spec)
   }
 
   @UseRequestContext()
