@@ -15,14 +15,14 @@ import { Table } from './table'
 
 @Embeddable()
 export class Kanban {
-  @Property()
-  fieldId!: string
+  @Property({ nullable: true })
+  fieldId?: string
 }
 
 @Embeddable()
 export class Calendar {
-  @Property()
-  fieldId!: string
+  @Property({ nullable: true })
+  fieldId?: string
 }
 
 @Entity()

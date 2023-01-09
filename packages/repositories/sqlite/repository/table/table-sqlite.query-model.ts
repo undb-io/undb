@@ -10,7 +10,7 @@ export class TableSqliteQueryModel implements ITableQueryModel {
   constructor(protected readonly em: EntityManager) {}
 
   async find(): Promise<IQueryTable[]> {
-    const tables = await this.em.find(Table, {}, { populate: ['fields.options'] })
+    const tables = await this.em.find(Table, {}, { populate: ['fields.options', 'views'] })
     return tables.map((table) => TableSqliteMapper.entityToQuery(table))
   }
 
@@ -24,7 +24,7 @@ export class TableSqliteQueryModel implements ITableQueryModel {
     const table = await visitor.qb.getSingleResult()
     if (!table) return None
 
-    await this.em.populate(table, ['fields.options'])
+    await this.em.populate(table, ['fields.options', 'views'])
 
     return Some(TableSqliteMapper.entityToQuery(table))
   }
@@ -33,7 +33,7 @@ export class TableSqliteQueryModel implements ITableQueryModel {
     const table = await this.em.findOne(Table, id)
     if (!table) return None
 
-    await this.em.populate(table, ['fields.options'])
+    await this.em.populate(table, ['fields.options', 'views'])
     return Some(TableSqliteMapper.entityToQuery(table))
   }
 }

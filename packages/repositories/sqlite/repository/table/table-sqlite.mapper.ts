@@ -67,6 +67,16 @@ export class TableSqliteMapper {
           type: f.type,
         }
       }) as ICreateTableSchemaInput,
+      views: entity.views.getItems().map((view) => ({
+        id: view.id,
+        name: view.name,
+        displayType: view.displayType,
+        filter: view.filter,
+        fieldOptions: view.fieldOptions,
+        fieldsOrder: view.fieldsOrder,
+        kanban: view.kanban,
+        calendar: view.calendar,
+      })),
     })
   }
 }

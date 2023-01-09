@@ -5,13 +5,14 @@ import { None, Some } from 'oxide.ts'
 import type { SelectField } from '../../entity'
 import { Option as OptionEntity, OptionColor, Table as TableEntity } from '../../entity'
 import { FieldFactory } from '../../entity/field.factory'
+import { Calendar, Kanban, View as ViewEntity } from '../../entity/view'
 import { TableSqliteMapper } from './table-sqlite.mapper'
 
 export class TableSqliteRepository implements ITableRepository {
   constructor(protected readonly em: EntityManager) {}
 
   async findOneById(id: string): Promise<Option<Table>> {
-    const table = await this.em.findOne(TableEntity, id, { populate: ['fields.options'] })
+    const table = await this.em.findOne(TableEntity, id, { populate: ['fields.options', 'views'] })
     if (!table) return None
 
     return Some(TableSqliteMapper.entityToDomain(table).unwrap())
@@ -55,6 +56,28 @@ export class TableSqliteRepository implements ITableRepository {
       }
 
       this.em.persist(fieldEntity)
+    }
+
+    for (const view of table.views.views ?? []) {
+      const viewEntity = new ViewEntity()
+      viewEntity.id = view.id.value
+      viewEntity.name = view.name.value
+      viewEntity.table = tableEntity
+      viewEntity.displayType = view.displayType
+      viewEntity.filter = view.filter?.value
+
+      const kanban = new Kanban()
+      kanban.fieldId = view.kanban.into()?.unpack().fieldId?.value
+      viewEntity.kanban = kanban
+
+      const calendar = new Calendar()
+      calendar.fieldId = view.calendar.into()?.unpack().fieldId?.value
+      viewEntity.calendar = calendar
+
+      viewEntity.fieldsOrder = view.fieldsOrder?.unpack()
+      viewEntity.fieldOptions = view.fieldOptions?.value ? Object.fromEntries(view.fieldOptions.value) : undefined
+
+      this.em.persist(viewEntity)
     }
 
     this.em.persist(tableEntity)

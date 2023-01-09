@@ -12,6 +12,7 @@ export const createConfig = (relativaPath: string) =>
     driver: BetterSqliteDriver,
     dbName: path.resolve(process.cwd(), relativaPath, 'ego.sqlite'),
     debug: true,
+    forceUndefined: true,
     schemaGenerator: {
       disableForeignKeys: true,
       createForeignKeyConstraints: true,
