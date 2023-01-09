@@ -34,7 +34,6 @@ export class TableSqliteQueryModel implements ITableQueryModel {
     if (!table) return None
 
     await this.em.populate(table, ['fields.options'])
-
     return Some(TableSqliteMapper.entityToQuery(table))
   }
 }

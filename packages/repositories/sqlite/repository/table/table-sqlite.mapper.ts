@@ -1,10 +1,31 @@
-import type { ICreateTableSchemaInput, IQueryFieldSchema, IQueryTable } from '@egodb/core'
+import type {
+  ICreateSelectFieldSchema,
+  ICreateTableSchemaInput,
+  IQueryFieldSchema,
+  IQueryTable,
+  ISelectFieldQuerySchema,
+} from '@egodb/core'
 import { TableFactory } from '@egodb/core'
-import type { EntityDTO } from '@mikro-orm/core'
 import type { Field as FieldEntity, Table as TableEntity } from '../../entity'
+import { SelectField } from '../../entity'
 
 export class TableSqliteMapper {
-  static fieldToQuery(entity: EntityDTO<FieldEntity>): IQueryFieldSchema {
+  static fieldToQuery(entity: FieldEntity): IQueryFieldSchema {
+    if (entity instanceof SelectField) {
+      return {
+        id: entity.id,
+        name: entity.name,
+        type: 'select',
+        options: entity.options.toArray().map((o) => ({
+          id: o.id,
+          name: o.name,
+          color: {
+            name: o.color.name,
+            shade: o.color.shade,
+          },
+        })),
+      } satisfies ISelectFieldQuerySchema
+    }
     return {
       id: entity.id,
       name: entity.name,
@@ -16,7 +37,7 @@ export class TableSqliteMapper {
     return {
       id: entity.id,
       name: entity.name,
-      schema: entity.fields.toArray().map((table) => this.fieldToQuery(table)),
+      schema: entity.fields.getItems().map((table) => this.fieldToQuery(table)),
     }
   }
 
@@ -24,11 +45,28 @@ export class TableSqliteMapper {
     return TableFactory.unsafeCreate({
       id: entity.id,
       name: entity.name,
-      schema: entity.fields.toJSON().map((f) => ({
-        id: f.id,
-        name: f.name,
-        type: f.type,
-      })) as ICreateTableSchemaInput,
+      schema: entity.fields.getItems().map((f) => {
+        if (f instanceof SelectField) {
+          return {
+            id: f.id,
+            name: f.name,
+            type: 'select',
+            options: f.options.getItems().map((o) => ({
+              id: o.id,
+              name: o.name,
+              color: {
+                name: o.color.name,
+                shade: o.color.shade,
+              },
+            })),
+          } satisfies ICreateSelectFieldSchema
+        }
+        return {
+          id: f.id,
+          name: f.name,
+          type: f.type,
+        }
+      }) as ICreateTableSchemaInput,
     })
   }
 }
