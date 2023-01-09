@@ -41,3 +41,5 @@ export class SelectField extends Field {
   @OneToMany(() => Option, (option) => option.field)
   options = new Collection<Option>(this)
 }
+
+export type IField = StringField | NumberField | BoolField | DateField | DateRangeField | SelectField

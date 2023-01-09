@@ -1,5 +1,6 @@
 import { Collection, Entity, OneToMany, PrimaryKey, Property } from '@mikro-orm/core'
 import { BaseEntity } from './base'
+import type { IField } from './field'
 import { Field } from './field'
 
 @Entity()
@@ -11,5 +12,5 @@ export class Table extends BaseEntity {
   name!: string
 
   @OneToMany(() => Field, (field) => field.table)
-  fields = new Collection<Field>(this)
+  fields = new Collection<IField>(this)
 }
