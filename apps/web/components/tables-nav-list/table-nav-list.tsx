@@ -1,12 +1,17 @@
 import { Navbar, Box, Skeleton, NavLink, Center, Button, IconPlus, ScrollArea } from '@egodb/ui'
-import { useAtom } from 'jotai'
+import { useSetAtom } from 'jotai'
 import Link from 'next/link'
 import { trpc } from '../../trpc'
 import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.atom'
+import { tableListNumber } from './table-list.atom'
 
 export const TableNavList: React.FC = () => {
-  const [, setOpened] = useAtom(createTableFormDrawerOpened)
+  const setOpened = useSetAtom(createTableFormDrawerOpened)
+  const setTableListNumber = useSetAtom(tableListNumber)
   const getTables = trpc.table.list.useQuery({})
+  if (getTables.data) {
+    setTableListNumber(getTables.data.length)
+  }
 
   return (
     <Navbar width={{ base: 300 }} p="sm">
