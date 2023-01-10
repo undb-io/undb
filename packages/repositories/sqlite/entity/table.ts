@@ -1,3 +1,4 @@
+import type { Table as CoreTable } from '@egodb/core'
 import { Collection, Entity, OneToMany, PrimaryKey, Property } from '@mikro-orm/core'
 import { BaseEntity } from './base'
 import type { IField } from './field'
@@ -6,6 +7,12 @@ import { View } from './view'
 
 @Entity()
 export class Table extends BaseEntity {
+  constructor(table: CoreTable) {
+    super()
+    this.id = table.id.value
+    this.name = table.name.value
+  }
+
   @PrimaryKey()
   id!: string
 
