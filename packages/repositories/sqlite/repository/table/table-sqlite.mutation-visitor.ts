@@ -17,11 +17,13 @@ import type {
 } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import { Field, Option, SelectField, Table } from '../../entity'
+import type { SelectField } from '../../entity'
+import { Field, Option, Table } from '../../entity'
 import { FieldFactory } from '../../entity/field.factory'
 import { View } from '../../entity/view'
 
 export class TableSqliteMutationVisitor implements ITableSpecVisitor {
+  public jobs: (() => Promise<void>)[] = []
   constructor(private readonly tableId: string, public em: EntityManager) {}
 
   private get table(): Table {
@@ -101,18 +103,17 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
     this.em.persist(view)
   }
   optionsEqual(s: WithOptions): void {
-    const field = this.getField(s.field.id.value)
-    if (field instanceof SelectField) {
+    this.jobs.push(async () => {
+      const field = this.getField(s.field.id.value) as SelectField
+      await field.options.init()
       wrap(field).assign({ options: s.options.options.map((option) => new Option(field, option)) })
       this.em.persist(field)
-    }
+    })
   }
   newOption(s: WithNewOption): void {
-    const field = this.getField(s.field.id.value)
-    if (field instanceof SelectField) {
-      wrap(field).assign({ options: new Option(field, s.option) })
-      this.em.persist(field)
-    }
+    const field = this.getField(s.field.id.value) as SelectField
+    const option = new Option(field, s.option)
+    this.em.persist(option)
   }
   not(): this {
     return this
