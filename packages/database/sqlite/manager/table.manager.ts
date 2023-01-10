@@ -7,8 +7,9 @@ export class TableSqliteManager implements ITableManager {
   async create(table: Table): Promise<void> {
     const knex = this.em.getKnex()
 
-    await knex.schema.createTable(table.name.value, (t) => {
+    await knex.schema.createTable(table.id.value, (t) => {
       t.string('id').primary()
+
       for (const field of table.schema.fields) {
         switch (field.type) {
           case 'string':
@@ -28,7 +29,7 @@ export class TableSqliteManager implements ITableManager {
             t.datetime(field.name.value + '_to')
             break
           case 'select':
-            t.enum(field.name.value, [field.options.ids])
+            t.string(field.name.value)
             break
 
           default:
