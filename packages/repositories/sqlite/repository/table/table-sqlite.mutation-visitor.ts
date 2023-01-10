@@ -87,14 +87,20 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
     this.em.persist(view)
   }
   fieldWidthEqual(s: WithFieldWidth): void {
-    const view = this.getView(s.viewId)
-    wrap(view).assign({ fieldOptions: { [s.fieldId]: { width: s.width } } }, { mergeObjects: true })
-    this.em.persist(view)
+    this.jobs.push(async () => {
+      const view = this.getView(s.viewId)
+      await wrap(view).init()
+      wrap(view).assign({ fieldOptions: { [s.fieldId]: { width: s.width } } }, { mergeObjects: true })
+      this.em.persist(view)
+    })
   }
   fieldVisibility(s: WithFieldVisibility): void {
-    const view = this.getView(s.viewId)
-    wrap(view).assign({ fieldOptions: { [s.fieldId]: { hidden: s.hidden } } }, { mergeObjects: true })
-    this.em.persist(view)
+    this.jobs.push(async () => {
+      const view = this.getView(s.viewId)
+      await wrap(view).init()
+      wrap(view).assign({ fieldOptions: { [s.fieldId]: { hidden: s.hidden } } }, { mergeObjects: true })
+      this.em.persist(view)
+    })
   }
   displayTypeEqual(s: WithDisplayType): void {
     const view = this.getView(s.view.id.value)
