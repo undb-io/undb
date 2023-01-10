@@ -17,8 +17,7 @@ import type {
 } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import type { SelectField } from '../../entity'
-import { Field, Option, Table } from '../../entity'
+import { Field, Option, SelectField, Table } from '../../entity'
 import { FieldFactory } from '../../entity/field.factory'
 import { View } from '../../entity/view'
 
@@ -69,8 +68,13 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   }
   newField(s: WithNewField): void {
     const table = this.table
-    const field = FieldFactory.create(table, s.field)
+    const f = s.field
+    const field = FieldFactory.create(table, f)
     this.em.persist(field)
+    if (field instanceof SelectField && f.type === 'select') {
+      wrap(field).assign({ options: f.options.options.map((option) => new Option(field, option)) })
+      this.em.persist(field)
+    }
   }
   fieldsOrder(s: WithViewFieldsOrder): void {
     const view = this.getView(s.view.id.value)
