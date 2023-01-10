@@ -1,4 +1,4 @@
-import type { IFieldType } from '@egodb/core'
+import type { Field as CoreField, IFieldType } from '@egodb/core'
 import { Collection, Entity, Enum, ManyToOne, OneToMany, PrimaryKey, PrimaryKeyType, Property } from '@mikro-orm/core'
 import { BaseEntity } from './base'
 import { Option } from './option'
@@ -6,6 +6,14 @@ import { Table } from './table'
 
 @Entity({ abstract: true, discriminatorColumn: 'type' })
 export abstract class Field extends BaseEntity {
+  constructor(table: Table, field: CoreField) {
+    super()
+    this.id = field.id.value
+    this.table = table
+    this.name = field.name.value
+    this.type = field.type
+  }
+
   @PrimaryKey()
   id!: string
 
