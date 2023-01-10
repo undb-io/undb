@@ -56,7 +56,6 @@ export class TableSqliteRepository implements ITableRepository {
 
     spec.accept(visitor)
 
-    await Promise.all(visitor.jobs.map((job) => job()))
-    await visitor.em.flush()
+    await visitor.commit()
   }
 }

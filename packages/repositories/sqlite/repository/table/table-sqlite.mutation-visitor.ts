@@ -22,8 +22,13 @@ import { FieldFactory } from '../../entity/field.factory'
 import { View } from '../../entity/view'
 
 export class TableSqliteMutationVisitor implements ITableSpecVisitor {
-  public jobs: (() => Promise<void>)[] = []
-  constructor(private readonly tableId: string, public em: EntityManager) {}
+  private jobs: (() => Promise<void>)[] = []
+  constructor(private readonly tableId: string, private readonly em: EntityManager) {}
+
+  public async commit() {
+    await Promise.all(this.jobs.map((job) => job()))
+    await this.em.flush()
+  }
 
   private get table(): Table {
     return this.em.getReference(Table, this.tableId)
