@@ -33,6 +33,10 @@ export class ViewFieldOptions extends ValueObject<Map<string, IViewFieldOption>>
     return this.props
   }
 
+  public get hiddenCount(): number {
+    return [...this.value.values()].filter((v) => v.hidden).length
+  }
+
   public getOption(fieldId: string): IViewFieldOption {
     return this.props.get(fieldId) ?? ViewFieldOptions.DEFAULT_OPTION
   }
