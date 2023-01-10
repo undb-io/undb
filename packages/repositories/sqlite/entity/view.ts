@@ -82,9 +82,7 @@ export class View extends BaseEntity {
       this.calendar = new Calendar(view.calendar.unwrap())
     }
     this.filter = view.filter?.value
-    if (view.fieldOptions.value.size) {
-      this.fieldOptions = Object.fromEntries(view.fieldOptions.value)
-    }
+    this.fieldOptions = view.fieldOptions.toObject().into()
     if (view.fieldsOrder) {
       this.fieldsOrder = view.fieldsOrder.order
     }

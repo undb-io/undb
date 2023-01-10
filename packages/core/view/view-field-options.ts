@@ -1,4 +1,6 @@
 import { ValueObject } from '@egodb/domain'
+import type { Option } from 'oxide.ts'
+import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
 
 export const DEFAULT_WIDTH = 200
@@ -49,5 +51,11 @@ export class ViewFieldOptions extends ValueObject<Map<string, IViewFieldOption>>
 
   public getWidth(fieldId: string): number {
     return this.getOption(fieldId).width ?? DEFAULT_WIDTH
+  }
+
+  public toObject(): Option<Record<string, IViewFieldOption>> {
+    if (!this.value.size) return None
+    const obj = Object.fromEntries(this.value)
+    return Some(obj)
   }
 }

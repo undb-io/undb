@@ -3,20 +3,21 @@ import type {
   ICreateTableSchemaInput,
   IQueryFieldSchema,
   IQueryTable,
+  IQueryView,
   ISelectFieldQuerySchema,
 } from '@egodb/core'
 import { TableFactory } from '@egodb/core'
-import type { Field as FieldEntity, Table as TableEntity } from '../../entity'
-import { SelectField } from '../../entity'
+import type { EntityDTO } from '@mikro-orm/core'
+import type { Field as FieldEntity, SelectField, Table as TableEntity } from '../../entity'
 
 export class TableSqliteMapper {
-  static fieldToQuery(entity: FieldEntity): IQueryFieldSchema {
-    if (entity instanceof SelectField) {
+  static fieldToQuery(entity: EntityDTO<FieldEntity>): IQueryFieldSchema {
+    if (entity.type === 'select') {
       return {
         id: entity.id,
         name: entity.name,
         type: 'select',
-        options: entity.options.toArray().map((o) => ({
+        options: (entity as EntityDTO<SelectField>).options.map((o) => ({
           id: o.id,
           name: o.name,
           color: {
@@ -37,17 +38,20 @@ export class TableSqliteMapper {
     return {
       id: entity.id,
       name: entity.name,
-      schema: entity.fields.getItems().map((table) => this.fieldToQuery(table)),
-      views: entity.views.getItems().map((view) => ({
-        id: view.id,
-        name: view.name,
-        displayType: view.displayType,
-        filter: view.filter,
-        fieldOptions: view.fieldOptions,
-        fieldsOrder: view.fieldsOrder,
-        kanban: view.kanban,
-        calendar: view.calendar,
-      })),
+      schema: entity.fields.toArray().map((table) => this.fieldToQuery(table)),
+      views: entity.views.toArray().map(
+        (view) =>
+          ({
+            id: view.id,
+            name: view.name,
+            displayType: view.displayType,
+            filter: view.filter,
+            fieldOptions: view.fieldOptions,
+            fieldsOrder: view.fieldsOrder,
+            kanban: view.kanban,
+            calendar: view.calendar,
+          } as IQueryView),
+      ),
     }
   }
 
@@ -55,13 +59,13 @@ export class TableSqliteMapper {
     return TableFactory.unsafeCreate({
       id: entity.id,
       name: entity.name,
-      schema: entity.fields.getItems().map((f) => {
-        if (f instanceof SelectField) {
+      schema: entity.fields.toArray().map((f) => {
+        if (f.type === 'select') {
           return {
             id: f.id,
             name: f.name,
             type: 'select',
-            options: f.options.getItems().map((o) => ({
+            options: (f as EntityDTO<SelectField>).options.map((o) => ({
               id: o.id,
               name: o.name,
               color: {
@@ -77,16 +81,19 @@ export class TableSqliteMapper {
           type: f.type,
         }
       }) as ICreateTableSchemaInput,
-      views: entity.views.getItems().map((view) => ({
-        id: view.id,
-        name: view.name,
-        displayType: view.displayType,
-        filter: view.filter,
-        fieldOptions: view.fieldOptions,
-        fieldsOrder: view.fieldsOrder,
-        kanban: view.kanban,
-        calendar: view.calendar,
-      })),
+      views: entity.views.toArray().map(
+        (view) =>
+          ({
+            id: view.id,
+            name: view.name,
+            displayType: view.displayType,
+            filter: view.filter,
+            fieldOptions: view.fieldOptions,
+            fieldsOrder: view.fieldsOrder,
+            kanban: view.kanban,
+            calendar: view.calendar,
+          } as IQueryView),
+      ),
     })
   }
 }
