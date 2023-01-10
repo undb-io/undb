@@ -1,6 +1,6 @@
 'use client'
 import { AppShell, Button, IconPlus, Center } from '@egodb/ui'
-import { useAtom, useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import React from 'react'
 import { CreateTableFormDrawer } from '../components/create-table-form'
 import { createTableFormDrawerOpened } from '../components/create-table-form/drawer-opened.atom'
@@ -12,7 +12,7 @@ import Trpc from './trpc'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const setOpened = useSetAtom(createTableFormDrawerOpened)
-  const [tableTotal] = useAtom(tableListNumber)
+  const tableTotal = useAtomValue(tableListNumber)
 
   return (
     <html lang="zh-CH">
