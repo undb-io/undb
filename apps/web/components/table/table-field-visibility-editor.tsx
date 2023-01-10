@@ -1,4 +1,4 @@
-import { Button, Checkbox, Group, IconEye, Popover, Stack, useDisclosure } from '@egodb/ui'
+import { Badge, Button, Checkbox, Group, IconEye, Popover, Stack, useDisclosure } from '@egodb/ui'
 import { trpc } from '../../trpc'
 import { FieldIcon } from '../fields/field-Icon'
 import type { ITableBaseProps } from './table-base-props'
@@ -11,7 +11,9 @@ export const TableFieldVisibilityEditor: React.FC<ITableBaseProps> = ({ table })
       utils.table.get.refetch()
     },
   })
-  const visibility = table.mustGetView().getVisibility()
+  const view = table.mustGetView()
+  const visibility = view.getVisibility()
+  const hiddenCount = view.fieldOptions?.hiddenCount ?? 0
 
   const onChange = (fieldId: string, visible: boolean) => {
     setFieldVisibility.mutate({ tableId: table.id.value, fieldId, hidden: !visible })
@@ -28,12 +30,19 @@ export const TableFieldVisibilityEditor: React.FC<ITableBaseProps> = ({ table })
     >
       <Popover.Target>
         <Button
-          variant="subtle"
+          variant={hiddenCount ? 'light' : 'subtle'}
           compact
           size="xs"
           loading={setFieldVisibility.isLoading}
           leftIcon={<IconEye size={18} />}
           onClick={handler.toggle}
+          rightIcon={
+            hiddenCount ? (
+              <Badge variant="filled" size="xs">
+                {hiddenCount}
+              </Badge>
+            ) : null
+          }
         >
           Hide Fields
         </Button>
