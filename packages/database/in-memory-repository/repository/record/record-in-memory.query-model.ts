@@ -1,18 +1,18 @@
-import type { IQueryRecordSchema, IRecordQueryModel, IRecordSpec, QueryRecords } from '@egodb/core'
+import type { IQueryRecordSchema, IRecordQueryModel, IRecordSpec, QueryRecords, TableSchemaMap } from '@egodb/core'
 import { WithRecordId } from '@egodb/core'
 import { Option } from 'oxide.ts'
 import { db } from '../db'
 import { RecordInMemoryQueryVisitor } from './record-in-memory.query-visitor'
 
 export class RecordInMemoryQueryModel implements IRecordQueryModel {
-  async find(spec: IRecordSpec): Promise<QueryRecords> {
+  async find(spec: IRecordSpec, schema: TableSchemaMap): Promise<QueryRecords> {
     const visitor = new RecordInMemoryQueryVisitor()
     spec.accept(visitor).unwrap()
 
     return db.data?.records.filter(visitor.getPredicate().unwrap()) ?? []
   }
 
-  async findOne(spec: IRecordSpec): Promise<Option<IQueryRecordSchema>> {
+  async findOne(spec: IRecordSpec, schema: TableSchemaMap): Promise<Option<IQueryRecordSchema>> {
     const visitor = new RecordInMemoryQueryVisitor()
     spec.accept(visitor).unwrap()
 
@@ -20,7 +20,7 @@ export class RecordInMemoryQueryModel implements IRecordQueryModel {
     return Option(found)
   }
 
-  findOneById(id: string): Promise<Option<IQueryRecordSchema>> {
-    return this.findOne(WithRecordId.fromString(id))
+  findOneById(id: string, schema: TableSchemaMap): Promise<Option<IQueryRecordSchema>> {
+    return this.findOne(WithRecordId.fromString(id), schema)
   }
 }
