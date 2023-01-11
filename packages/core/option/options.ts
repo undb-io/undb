@@ -15,6 +15,10 @@ export class Options extends ValueObject<Option[]> {
     return O(this.options[this.options.length - 1])
   }
 
+  public get ids() {
+    return this.options.map((o) => o.id.value)
+  }
+
   public reorder(from: string, to: string): Options {
     const formIndex = this.options.findIndex((o) => o.id.value === from)
     const toIndex = this.options.findIndex((o) => o.id.value === to)

@@ -27,24 +27,24 @@ import type {
   WithRecordTableId,
   WithRecordValues,
 } from '@egodb/core'
-import type { RecordInMemory } from './record.type'
+import type { Knex } from '@mikro-orm/better-sqlite'
 
-export class RecordInMemoryMutationVisitor implements IRecordVisitor {
-  constructor(private record: RecordInMemory) {}
-  null(s: NullSpecification): void {
-    throw new Error('Method not implemented.')
-  }
+export class RecordSqliteQueryVisitor implements IRecordVisitor {
+  public tableId!: string
+  constructor(private readonly qb: Knex.QueryBuilder) {}
+
   idEqual(s: WithRecordId): void {
-    throw new Error('Method not implemented.')
+    this.qb.where({ id: s.id.value })
   }
   tableIdEqual(s: WithRecordTableId): void {
-    throw new Error('Method not implemented.')
+    this.tableId = s.id.value
+    this.qb.from(s.id.value)
   }
   createdAt(s: WithRecordCreatedAt): void {
-    throw new Error('Method not implemented.')
+    this.qb.where({ created_at: s.date.value })
   }
   values(s: WithRecordValues): void {
-    this.record.values = { ...this.record.values, ...s.values.toObject() }
+    throw new Error('Method not implemented.')
   }
   stringEqual(s: StringEqual): void {
     throw new Error('Method not implemented.')
@@ -92,6 +92,9 @@ export class RecordInMemoryMutationVisitor implements IRecordVisitor {
     throw new Error('Method not implemented.')
   }
   dateIsToday(s: DateIsToday): void {
+    throw new Error('Method not implemented.')
+  }
+  null(s: NullSpecification): void {
     throw new Error('Method not implemented.')
   }
   dateRangeEqual(s: DateRangeEqual): void {

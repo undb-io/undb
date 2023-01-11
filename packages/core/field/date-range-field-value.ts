@@ -1,5 +1,6 @@
 import { ValueObject } from '@egodb/domain'
 import { isDate } from 'date-fns'
+import { Option } from 'oxide.ts'
 import type { IDateRangeFieldValue } from './date-range-field.type'
 
 export class DateRangeFieldValue extends ValueObject<IDateRangeFieldValue> {
@@ -13,5 +14,13 @@ export class DateRangeFieldValue extends ValueObject<IDateRangeFieldValue> {
 
   unpack() {
     return Array.isArray(this.props) ? this.props : null
+  }
+
+  get from(): Option<Date> {
+    return Option(this.unpack()?.[0])
+  }
+
+  get to(): Option<Date> {
+    return Option(this.unpack()?.[1])
   }
 }

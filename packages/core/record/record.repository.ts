@@ -5,7 +5,7 @@ import type { IRecordSpec } from './specifications/interface'
 
 export interface IRecordRepository {
   insert(record: Record): Promise<void>
-  findOneById(id: string, schema: TableSchemaMap): Promise<Option<Record>>
+  findOneById(tableId: string, id: string, schema: TableSchemaMap): Promise<Option<Record>>
 
-  updateOneById(id: string, spec: IRecordSpec): Promise<void>
+  updateOneById(tableId: string, id: string, spec: IRecordSpec): Promise<void>
 }

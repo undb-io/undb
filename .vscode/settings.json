@@ -1,3 +1,12 @@
 {
-  "thunder-client.saveToWorkspace": true
+  "thunder-client.saveToWorkspace": true,
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "ego",
+      "database": "${workspaceFolder:egodb}/.ego/data/ego.sqlite"
+    }
+  ],
+  "sqltools.useNodeRuntime": true
 }
