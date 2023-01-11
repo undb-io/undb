@@ -37,7 +37,7 @@ export interface IUseKanbanProps<TContainer, TItem> {
   getContainer: (id: UniqueIdentifier) => TContainer | undefined
 
   onDragContainerEnd?: (e: DragEndEvent) => void
-  onDragItemEnd?: (e: DragEndEvent, overContainer: UniqueIdentifier) => void
+  onDragItemEnd?: (e: DragEndEvent, activeContainer: UniqueIdentifier, overContainer: UniqueIdentifier) => void
 }
 
 export const useKanban = <TContainer, TItem>({
@@ -194,7 +194,7 @@ export const useKanban = <TContainer, TItem>({
           [overContainer]: arrayMove(items[overContainer] ?? [], activeIndex, overIndex),
         }))
       }
-      onDragItemEnd?.(e, overContainer)
+      onDragItemEnd?.(e, activeContainer, overContainer)
     }
     setActiveId(null)
   }

@@ -91,7 +91,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
         })
       }
     },
-    onDragItemEnd: (e, overContainer) => {
+    onDragItemEnd: (e, activeContainer, overContainer) => {
       updateRecord.mutate({
         tableId: table.id.value,
         id: e.active.id as string,

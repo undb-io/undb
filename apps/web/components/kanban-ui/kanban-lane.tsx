@@ -1,5 +1,5 @@
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { ActionIcon, Card, Group, IconGripVertical, IconRowInsertTop, Stack, Text } from '@egodb/ui'
+import { ActionIcon, Group, IconGripVertical, IconRowInsertTop, Stack, Text } from '@egodb/ui'
 import { CSS } from '@dnd-kit/utilities'
 import type { ICreateFieldValue, IKanbanField, Records } from '@egodb/core'
 import { SortableKanbanCard } from './kanban-card'
@@ -52,35 +52,31 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   const items = records.map((r) => r.id.value)
 
   return (
-    <Card ref={setNodeRef} withBorder shadow="xs" radius="sm" w={350} style={style}>
-      <Card.Section withBorder inheritPadding py="sm">
-        <Group position="apart">
-          {renderTitle ? renderTitle() : <Text weight={500}>{title}</Text>}
+    <Stack w={350} ref={setNodeRef} style={style}>
+      <Group position="apart" h={40}>
+        {renderTitle ? renderTitle() : <Text weight={500}>{title}</Text>}
 
-          {listeners ? (
-            <ActionIcon ref={setActivatorNodeRef} {...listeners} {...attributes}>
-              <IconGripVertical size={14} cursor="grab" />
-            </ActionIcon>
-          ) : null}
-        </Group>
-      </Card.Section>
+        {listeners ? (
+          <ActionIcon ref={setActivatorNodeRef} {...listeners} {...attributes}>
+            <IconGripVertical size={14} cursor="grab" />
+          </ActionIcon>
+        ) : null}
+      </Group>
 
-      <Card.Section withBorder inheritPadding p="sm" bg="gray.0" mih={400}>
-        <Stack>
-          {!disableAddRecord ? (
-            <ActionIcon w="100%" color="blue" variant="outline" onClick={onCreateRecord}>
-              <IconRowInsertTop />
-            </ActionIcon>
-          ) : null}
+      <Stack>
+        {!disableAddRecord ? (
+          <ActionIcon w="100%" color="gray" variant="light" onClick={onCreateRecord}>
+            <IconRowInsertTop />
+          </ActionIcon>
+        ) : null}
 
-          <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            {records.map((r) => (
-              <SortableKanbanCard table={table} record={r} key={r.id.value} />
-            ))}
-          </SortableContext>
-        </Stack>
-      </Card.Section>
-    </Card>
+        <SortableContext items={items} strategy={verticalListSortingStrategy}>
+          {records.map((r) => (
+            <SortableKanbanCard table={table} record={r} key={r.id.value} />
+          ))}
+        </SortableContext>
+      </Stack>
+    </Stack>
   )
 }
 

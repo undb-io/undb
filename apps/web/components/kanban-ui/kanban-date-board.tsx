@@ -76,7 +76,7 @@ export const KanbanDateBoard: React.FC<IProps> = ({ table, field, records }) => 
     getItemId: (item) => item.id.value,
     getActiveItem: (activeId) => records.find((r) => r.id.value === activeId),
 
-    onDragItemEnd: (e, overContainer) => {
+    onDragItemEnd: (e, activeContainer, overContainer) => {
       updateRecord.mutate({
         tableId: table.id.value,
         id: e.active.id as string,
