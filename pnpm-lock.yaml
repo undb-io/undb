@@ -142,6 +142,7 @@ importers:
       date-fns: ^2.29.3
       eslint: ^8.31.0
       jotai: ^1.13.0
+      jotai-devtools: ^0.1.0
       next: ^13.1.1
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -167,7 +168,8 @@ importers:
       '@trpc/react-query': 10.8.2_jk7y2roqpjmck5g55a4fdace5i
       '@trpc/server': 10.8.2
       date-fns: 2.29.3
-      jotai: 1.13.0_2exiyaescjxorpwwmy4ejghgte
+      jotai: 1.13.0_6qnycuwrw3rxxh3wipbmljxq6i
+      jotai-devtools: 0.1.0_jotai@1.13.0+react@18.2.0
       next: 13.1.1_pjwopsidmaokadturxaafygjp4
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -766,6 +768,13 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.13.11
+
+  /@babel/runtime/7.20.7:
+    resolution: {integrity: sha512-UF0tvkUtxwAgZ5W/KrkHf0Rn0fdnLDU9ScxBrEVNUprE/MzirjK4MJUX1/BVDv00Sv8cljtukVK1aky++X1SjQ==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.11
+    dev: false
 
   /@babel/template/7.20.7:
     resolution: {integrity: sha512-8SegXApWe6VoNw0r9JHpSteLKTpTiLZ4rMlGIm9JQ18KiCtyQiAMEazujAHrUS5flrcqYZa75ukev3P6QmUwUw==}
@@ -2596,6 +2605,15 @@ packages:
     dependencies:
       '@babel/runtime': 7.20.1
       react: 18.2.0
+    dev: false
+
+  /@redux-devtools/extension/3.2.4:
+    resolution: {integrity: sha512-fKh6zQiwbn8cd/rXmG1WQmm0YwIJifkBQ5oI0SeavldvT/wVD9OTPdBSW2NSYFjVvqCg/OiTzjrdfzxbE6neLQ==}
+    peerDependencies:
+      redux: ^3.1.0 || ^4.0.0
+    dependencies:
+      '@babel/runtime': 7.20.7
+      immutable: 4.2.2
     dev: false
 
   /@rushstack/eslint-patch/1.2.0:
@@ -6234,6 +6252,10 @@ packages:
     resolution: {integrity: sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==}
     engines: {node: '>= 4'}
 
+  /immutable/4.2.2:
+    resolution: {integrity: sha512-fTMKDwtbvO5tldky9QZ2fMX7slR0mYpY5nbnFWYp0fOzDhHqhgIw9KoYgxLWsoNTS9ZHGauHj18DTyEw6BK3Og==}
+    dev: false
+
   /import-fresh/3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -7075,7 +7097,21 @@ packages:
     resolution: {integrity: sha512-8wb9Yw966OSxApiCt0K3yNJL8pnNeIv+OEq2YMidz4FKP6nonSRoOXc80iXY4JaN2FC11B9qsNmDsm+ZOfMROA==}
     dev: true
 
-  /jotai/1.13.0_2exiyaescjxorpwwmy4ejghgte:
+  /jotai-devtools/0.1.0_jotai@1.13.0+react@18.2.0:
+    resolution: {integrity: sha512-tHo22cXxl1mljcOJ2k17tOj25/0myvMdVAtAM6jiw3MsD5e9YoHAGNVFbTO3LrZhviDH4rcR/NknsNAI2XH28A==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      jotai: '>=1.8.6 <2.x'
+      react: '>=16.8'
+    dependencies:
+      '@redux-devtools/extension': 3.2.4
+      jotai: 1.13.0_6qnycuwrw3rxxh3wipbmljxq6i
+      react: 18.2.0
+    transitivePeerDependencies:
+      - redux
+    dev: false
+
+  /jotai/1.13.0_6qnycuwrw3rxxh3wipbmljxq6i:
     resolution: {integrity: sha512-SPTO46Jw1aJTp2i18tiKgk++nKNKJTMNw4qYFy9QRTydceWvD2Eys+YgB7cb1S6pzbM9i0Ik/y7Yl7IH8k9Lig==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
@@ -7116,6 +7152,7 @@ packages:
         optional: true
     dependencies:
       '@babel/core': 7.20.12
+      jotai-devtools: 0.1.0_jotai@1.13.0+react@18.2.0
       react: 18.2.0
     dev: false
 
