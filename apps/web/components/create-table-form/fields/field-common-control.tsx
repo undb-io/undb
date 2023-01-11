@@ -1,6 +1,7 @@
+import type { ICreateTableInput } from '@egodb/core'
 import { ActionIcon, Text, Button, Group, IconDots, Menu } from '@egodb/ui'
 import { useResetAtom } from 'jotai/utils'
-import { useCreateTableFormContext } from '../create-table-form-context'
+import { useFieldArray } from 'react-hook-form'
 import { activeFieldAtom } from '../create-table-form-schema.atom'
 
 interface IProps {
@@ -8,7 +9,9 @@ interface IProps {
 }
 
 export const FieldCommonControl: React.FC<IProps> = ({ index }) => {
-  const form = useCreateTableFormContext()
+  const { remove } = useFieldArray<ICreateTableInput>({
+    name: 'schema',
+  })
 
   const resetActiveField = useResetAtom(activeFieldAtom)
   return (
@@ -21,7 +24,7 @@ export const FieldCommonControl: React.FC<IProps> = ({ index }) => {
         </Menu.Target>
 
         <Menu.Dropdown>
-          <Menu.Item h={30} color="red" onClick={() => form.removeListItem('schema', index)}>
+          <Menu.Item h={30} color="red" onClick={() => remove(index)}>
             <Text size={14}>remove</Text>
           </Menu.Item>
         </Menu.Dropdown>

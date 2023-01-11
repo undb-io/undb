@@ -1,19 +1,9 @@
 import type { ICreateDateRangeFieldSchema } from '@egodb/core'
 import { createDateRangeFieldSchema } from '@egodb/core'
-import { FieldId } from '@egodb/core'
-import {
-  Button,
-  Card,
-  FocusTrap,
-  Group,
-  IconChevronLeft,
-  Stack,
-  Text,
-  TextInput,
-  useForm,
-  zodResolver,
-} from '@egodb/ui'
+import { Button, Card, FocusTrap, Group, IconChevronLeft, Stack, Text, TextInput } from '@egodb/ui'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
+import { useForm } from 'react-hook-form'
 import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { calendarStepZero } from './calendar-step.atom'
@@ -24,12 +14,12 @@ interface IProps extends ITableBaseProps {
 
 export const CreateCalendarDateRangeField: React.FC<IProps> = ({ table, onSuccess }) => {
   const form = useForm<ICreateDateRangeFieldSchema>({
-    initialValues: {
+    defaultValues: {
       type: 'date-range',
       id: 'id',
       name: '',
     },
-    validate: zodResolver(createDateRangeFieldSchema),
+    resolver: zodResolver(createDateRangeFieldSchema),
   })
 
   const utils = trpc.useContext()
@@ -53,7 +43,7 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ table, onSucces
     },
   })
 
-  const onSubmit = form.onSubmit((values) => {
+  const onSubmit = form.handleSubmit((values) => {
     createDateRangeField.mutate({
       id: table.id.value,
       field: values,
@@ -61,7 +51,7 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ table, onSucces
   })
 
   const setStepZero = useSetAtom(calendarStepZero)
-  const props = form.getInputProps('name')
+  const props = form.register('name')
   return (
     <form onSubmit={onSubmit}>
       <Card shadow="sm">
@@ -76,7 +66,7 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ table, onSucces
                 {...props}
                 onChange={(e) => {
                   props.onChange(e)
-                  form.setFieldValue('id', e.target.value)
+                  form.setValue('id', e.target.value)
                 }}
                 placeholder="new date range field name"
               />
@@ -89,7 +79,7 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ table, onSucces
             <Button leftIcon={<IconChevronLeft size={14} />} size="xs" variant="white" onClick={setStepZero}>
               Select Existing Field
             </Button>
-            <Button size="xs" type="submit" disabled={!form.isValid()}>
+            <Button size="xs" type="submit" disabled={!form.formState.isValid}>
               Done
             </Button>
           </Group>

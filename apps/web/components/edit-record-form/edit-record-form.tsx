@@ -1,9 +1,9 @@
-import type { Table } from '@egodb/core'
+import type { IUpdateRecordValueSchema, Table } from '@egodb/core'
 import { Alert, Button, Divider, Group, IconAlertCircle, Stack } from '@egodb/ui'
 import { useAtomValue } from 'jotai'
+import { useFormContext } from 'react-hook-form'
 import { trpc } from '../../trpc'
 import { RecordInputFactory } from '../record/record-input.factory'
-import { useUpdateRecordFormContext } from './edit-record-form-context'
 import { editRecordValuesAtom } from './edit-record-values.atom'
 
 interface IProps {
@@ -13,7 +13,7 @@ interface IProps {
 }
 
 export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel }) => {
-  const form = useUpdateRecordFormContext()
+  const form = useFormContext<IUpdateRecordValueSchema>()
   const utils = trpc.useContext()
 
   const record = useAtomValue(editRecordValuesAtom)
@@ -26,7 +26,7 @@ export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel })
     },
   })
 
-  const onSubmit = form.onSubmit((values) => {
+  const onSubmit = form.handleSubmit((values) => {
     if (record) {
       updateRecord.mutate({
         tableId: table.id.value,
@@ -45,8 +45,9 @@ export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel })
     <form onSubmit={onSubmit}>
       <Stack>
         {table.schema.fields.map((field, index) => {
-          const props = form.getInputProps(`value.${index}.value`)
-          return <RecordInputFactory table={table} key={field.id.value} props={props} field={field} />
+          const props = form.register(`value.${index}.value`)
+          const value = form.getValues(`value.${index}.value`)
+          return <RecordInputFactory table={table} key={field.id.value} value={value} props={props} field={field} />
         })}
       </Stack>
       <Divider my="lg" />
@@ -56,7 +57,7 @@ export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel })
           Cancel
         </Button>
 
-        <Button miw={200} type="submit" disabled={!form.isValid() || !form.isDirty()}>
+        <Button miw={200} type="submit" disabled={!form.formState.isValid || !form.formState.isDirty}>
           Confirm
         </Button>
       </Group>

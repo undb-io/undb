@@ -1,8 +1,10 @@
 import type { ICreateOptionSchema, SelectField } from '@egodb/core'
 import { OptionId } from '@egodb/core'
 import { createOptionSchema } from '@egodb/core'
-import { Button, Divider, Group, Modal, Stack, TextInput, useForm, zodResolver } from '@egodb/ui'
+import { Button, Divider, Group, Modal, Stack, TextInput } from '@egodb/ui'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom } from 'jotai'
+import { useForm } from 'react-hook-form'
 import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { createNewOptionOpened } from './create-new-option.atom'
@@ -14,10 +16,10 @@ interface IProps extends ITableBaseProps {
 export const CreateNewOptionModal: React.FC<IProps> = ({ table, field }) => {
   const [opened, setOpened] = useAtom(createNewOptionOpened)
   const form = useForm<ICreateOptionSchema>({
-    initialValues: {
+    defaultValues: {
       name: '',
     },
-    validate: zodResolver(createOptionSchema),
+    resolver: zodResolver(createOptionSchema),
   })
 
   const utils = trpc.useContext()
@@ -30,7 +32,7 @@ export const CreateNewOptionModal: React.FC<IProps> = ({ table, field }) => {
     },
   })
 
-  const onSubmit = form.onSubmit((values) => {
+  const onSubmit = form.handleSubmit((values) => {
     values.id = OptionId.create().value
     createOption.mutate({
       tableId: table.id.value,
@@ -43,13 +45,13 @@ export const CreateNewOptionModal: React.FC<IProps> = ({ table, field }) => {
     <Modal title="Create New Option" opened={opened} onClose={() => setOpened(false)}>
       <form onSubmit={onSubmit}>
         <Stack>
-          <TextInput placeholder="option name" {...form.getInputProps('name')} />
+          <TextInput placeholder="option name" {...form.register('name')} />
           <Divider />
           <Group position="right">
             <Button variant="white" onClick={() => setOpened(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={!form.isValid()}>
+            <Button type="submit" disabled={!form.formState.isValid}>
               Done
             </Button>
           </Group>

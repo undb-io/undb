@@ -1,16 +1,17 @@
+import type { ICreateTableInput } from '@egodb/core'
+import { useFormContext } from 'react-hook-form'
 import { SelectFieldControl } from '../../fields/select-field-control'
-import { useCreateTableFormContext } from '../create-table-form-context'
 
 interface IProps {
   index: number
 }
 
 export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
-  const form = useCreateTableFormContext()
-  const field = form.values.schema[index]
+  const form = useFormContext<ICreateTableInput>()
+  const field = form.getValues(`schema.${index}`)
 
   if (field.type === 'select') {
-    return <SelectFieldControl onChange={(options) => form.setFieldValue(`schema.${index}.options`, options)} />
+    return <SelectFieldControl onChange={(options) => form.setValue(`schema.${index}.options`, options)} />
   }
 
   return null

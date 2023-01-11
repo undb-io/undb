@@ -1,4 +1,4 @@
-import type { Field } from '@egodb/core'
+import type { Field, IFieldValue } from '@egodb/core'
 import type { Table } from '@egodb/core'
 import { NumberInput, DatePicker, DateRangePicker, Checkbox, TextInput } from '@egodb/ui'
 import React from 'react'
@@ -8,25 +8,26 @@ import { OptionPicker } from '../option/option-picker'
 interface IProps {
   table: Table
   field: Field
+  value: IFieldValue
   props: any
 }
 
-export const RecordInputFactory: React.FC<IProps> = ({ props, table, field }) => {
+export const RecordInputFactory: React.FC<IProps> = ({ props, table, value, field }) => {
   const label = <FieldInputLabel>{field.id.value}</FieldInputLabel>
   if (field.type === 'number') {
-    return <NumberInput {...props} label={label} />
+    return <NumberInput {...props} value={value} label={label} />
   }
   if (field.type === 'date') {
-    return <DatePicker key={field.id.value} {...props} label={label} />
+    return <DatePicker key={field.id.value} {...props} value={value} label={label} />
   }
   if (field.type === 'date-range') {
-    return <DateRangePicker key={field.id.value} {...props} value={props.value || [null, null]} label={label} />
+    return <DateRangePicker key={field.id.value} {...props} value={value} label={label} />
   }
   if (field.type === 'bool') {
-    return <Checkbox lh={1} key={field.id.value} {...props} label={label} />
+    return <Checkbox lh={1} key={field.id.value} {...props} value={value} label={label} />
   }
   if (field.type === 'select') {
-    return <OptionPicker field={field} table={table} key={field.id.value} {...props} label={label} />
+    return <OptionPicker field={field} table={table} key={field.id.value} {...props} value={value} label={label} />
   }
-  return <TextInput key={field.id.value} {...props} label={label} />
+  return <TextInput key={field.id.value} {...props} value={value} label={label} />
 }

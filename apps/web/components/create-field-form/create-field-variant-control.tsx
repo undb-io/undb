@@ -1,12 +1,13 @@
+import type { ICreateFieldSchema } from '@egodb/core'
+import { useFormContext } from 'react-hook-form'
 import { SelectFieldControl } from '../fields/select-field-control'
-import { useCreateFieldFormContext } from './create-field-form-context'
 
 export const CreateFieldVariantControl: React.FC = () => {
-  const form = useCreateFieldFormContext()
-  const type = form.values.type
+  const form = useFormContext<ICreateFieldSchema>()
+  const type = form.getValues('type')
 
   if (type === 'select') {
-    return <SelectFieldControl onChange={(options) => form.setFieldValue('options', options)} />
+    return <SelectFieldControl onChange={(options) => form.setValue('options', options)} />
   }
 
   return null

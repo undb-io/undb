@@ -1,8 +1,9 @@
 import type { Table } from '@egodb/core'
+import type { ICreateRecordInput } from '@egodb/core'
 import { Alert, Button, Divider, Group, IconAlertCircle, Stack } from '@egodb/ui'
+import { useFormContext } from 'react-hook-form'
 import { trpc } from '../../trpc'
 import { RecordInputFactory } from '../record/record-input.factory'
-import { useCreateRecordFormContext } from './create-record-form-context'
 
 interface IProps {
   table: Table
@@ -11,7 +12,7 @@ interface IProps {
 }
 
 export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess }) => {
-  const form = useCreateRecordFormContext()
+  const form = useFormContext<ICreateRecordInput>()
   const utils = trpc.useContext()
 
   const createRecord = trpc.record.create.useMutation({
@@ -23,7 +24,7 @@ export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess 
     },
   })
 
-  const onSubmit = form.onSubmit((values) => {
+  const onSubmit = form.handleSubmit((values) => {
     createRecord.mutate(values)
   })
 
@@ -31,16 +32,15 @@ export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess 
     onCancel()
     createRecord.reset()
     form.reset()
-    form.resetDirty()
-    form.resetTouched()
   }
 
   return (
     <form onSubmit={onSubmit}>
       <Stack>
         {table.schema.fields.map((field, index) => {
-          const props = form.getInputProps(`value.${index}.value`)
-          return <RecordInputFactory table={table} key={field.id.value} props={props} field={field} />
+          const props = form.register(`value.${index}.value`)
+          const value = form.getValues(`value.${index}.value`)
+          return <RecordInputFactory value={value} table={table} key={field.id.value} props={props} field={field} />
         })}
       </Stack>
 
@@ -51,7 +51,7 @@ export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess 
           Cancel
         </Button>
 
-        <Button loading={createRecord.isLoading} miw={200} disabled={!form.isValid()} type="submit">
+        <Button loading={createRecord.isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
           Create
         </Button>
       </Group>

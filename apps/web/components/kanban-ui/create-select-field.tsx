@@ -1,19 +1,9 @@
 import type { ICreateSelectFieldSchema } from '@egodb/core'
 import { createSelectFieldSchema } from '@egodb/core'
-import { FieldId } from '@egodb/core'
-import {
-  Button,
-  Card,
-  FocusTrap,
-  Group,
-  IconChevronLeft,
-  Stack,
-  Text,
-  TextInput,
-  useForm,
-  zodResolver,
-} from '@egodb/ui'
+import { Button, Card, FocusTrap, Group, IconChevronLeft, Stack, Text, TextInput } from '@egodb/ui'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
+import { useForm } from 'react-hook-form'
 import { trpc } from '../../trpc'
 import { SelectFieldControl } from '../fields/select-field-control'
 import type { ITableBaseProps } from '../table/table-base-props'
@@ -25,13 +15,13 @@ interface IProps extends ITableBaseProps {
 
 export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
   const form = useForm<ICreateSelectFieldSchema>({
-    initialValues: {
+    defaultValues: {
       type: 'select',
       id: '',
       name: '',
       options: [],
     },
-    validate: zodResolver(createSelectFieldSchema),
+    resolver: zodResolver(createSelectFieldSchema),
   })
 
   const utils = trpc.useContext()
@@ -55,7 +45,7 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
     },
   })
 
-  const onSubmit = form.onSubmit((values) => {
+  const onSubmit = form.handleSubmit((values) => {
     createSelectField.mutate({
       id: table.id.value,
       field: values,
@@ -63,7 +53,7 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
   })
 
   const setStepZero = useSetAtom(kanbanStepZeroAtom)
-  const props = form.getInputProps('name')
+  const props = form.register('name')
   return (
     <form onSubmit={onSubmit}>
       <Card shadow="sm">
@@ -78,12 +68,12 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
                 {...props}
                 onChange={(e) => {
                   props.onChange(e)
-                  form.setFieldValue('id', e.target.value)
+                  form.setValue('id', e.target.value)
                 }}
                 placeholder="new select field name"
               />
             </FocusTrap>
-            <SelectFieldControl onChange={(options) => form.setFieldValue('options', options)} />
+            <SelectFieldControl onChange={(options) => form.setValue('options', options)} />
           </Stack>
         </Card.Section>
 
@@ -92,7 +82,7 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
             <Button leftIcon={<IconChevronLeft size={14} />} size="xs" variant="white" onClick={setStepZero}>
               Select Existing Field
             </Button>
-            <Button size="xs" type="submit" disabled={!form.isValid()}>
+            <Button size="xs" type="submit" disabled={!form.formState.isValid}>
               Done
             </Button>
           </Group>

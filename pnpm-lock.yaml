@@ -129,6 +129,7 @@ importers:
       '@emotion/babel-plugin': ^11.10.5
       '@emotion/styled': ^11.10.5
       '@fxts/core': ^0.11.0
+      '@hookform/resolvers': ^2.9.10
       '@tanstack/react-query': ^4.22.0
       '@tanstack/react-query-devtools': ^4.22.0
       '@tanstack/react-table': ^8.7.6
@@ -146,6 +147,7 @@ importers:
       next: ^13.1.1
       react: ^18.2.0
       react-dom: ^18.2.0
+      react-hook-form: ^7.41.5
       superjson: ^1.12.1
       tsconfig: ^0.0.0
       typescript: ^4.9.4
@@ -160,6 +162,7 @@ importers:
       '@egodb/ui': link:../../packages/ui
       '@emotion/styled': 11.10.5_jp5qgyg6plq757v5hojp7ls2oe
       '@fxts/core': 0.11.0
+      '@hookform/resolvers': 2.9.10_react-hook-form@7.41.5
       '@tanstack/react-query': 4.22.0_biqbaboplfbrettd7655fr4n2y
       '@tanstack/react-query-devtools': 4.22.0_gp275tdwez2a4eujt75dnnp754
       '@tanstack/react-table': 8.7.6_biqbaboplfbrettd7655fr4n2y
@@ -173,6 +176,7 @@ importers:
       next: 13.1.1_pjwopsidmaokadturxaafygjp4
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+      react-hook-form: 7.41.5_react@18.2.0
       superjson: 1.12.1
       use-deep-compare-effect: 1.8.1_react@18.2.0
     devDependencies:
@@ -1183,6 +1187,14 @@ packages:
   /@gar/promisify/1.1.3:
     resolution: {integrity: sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==}
     dev: true
+
+  /@hookform/resolvers/2.9.10_react-hook-form@7.41.5:
+    resolution: {integrity: sha512-JIL1DgJIlH9yuxcNGtyhsWX/PgNltz+5Gr6+8SX9fhXc/hPbEIk6wPI82nhgvp3uUb6ZfAM5mqg/x7KR7NAb+A==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.41.5_react@18.2.0
+    dev: false
 
   /@humanwhocodes/config-array/0.11.8:
     resolution: {integrity: sha512-UybHIJzJnR5Qc/MsD9Kr+RpO2h+/P1GhOwdiLPXK5TWk5sgTdu88bTD9UP+CKbPPh5Rni1u0GjAdYQLemG8g+g==}
@@ -8756,6 +8768,15 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-hook-form/7.41.5_react@18.2.0:
+    resolution: {integrity: sha512-DAKjSJ7X9f16oQrP3TW2/eD9N6HOgrmIahP4LOdFphEWVfGZ2LulFd6f6AQ/YS/0cx/5oc4j8a1PXxuaurWp/Q==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-is/16.13.1:

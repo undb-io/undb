@@ -1,8 +1,9 @@
+import type { ICreateTableInput } from '@egodb/core'
 import { Alert, Button, Divider, Group, IconAlertCircle, Text, Space, TextInput } from '@egodb/ui'
 import { useRouter } from 'next/navigation'
+import { useFormContext } from 'react-hook-form'
 import { trpc } from '../../trpc'
 import { CreateTableAddFieldButton } from './create-table-add-field-button'
-import { useCreateTableFormContext } from './create-table-form-context'
 import { CreateTableFormSchema } from './create-table-form-schema'
 
 interface IProps {
@@ -11,7 +12,7 @@ interface IProps {
 }
 
 export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
-  const form = useCreateTableFormContext()
+  const form = useFormContext<ICreateTableInput>()
   const utils = trpc.useContext()
   const router = useRouter()
 
@@ -24,7 +25,7 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
     },
   })
 
-  const onSubmit = form.onSubmit((values) => {
+  const onSubmit = form.handleSubmit((values) => {
     createTable.mutate(values)
   })
 
@@ -32,20 +33,18 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
     onCancel()
     createTable.reset()
     form.reset()
-    form.resetDirty()
-    form.resetTouched()
   }
 
   return (
     <form onSubmit={onSubmit}>
       <TextInput
-        error={form.errors['name']}
+        error={form.formState.errors['name']?.message}
         label={
           <Text size={14} fw={700} tt="uppercase" display="inline-block">
             name
           </Text>
         }
-        {...form.getInputProps('name')}
+        {...form.register('name')}
         required={true}
       />
 
@@ -63,7 +62,7 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
         <Button variant="subtle" onClick={() => onCancel()}>
           Cancel
         </Button>
-        <Button loading={createTable.isLoading} miw={200} disabled={!form.isValid()} type="submit">
+        <Button loading={createTable.isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
           Create
         </Button>
       </Group>
