@@ -1,30 +1,30 @@
 import type { ICreateTableInput } from '@egodb/core'
 import { createTableCommandInput } from '@egodb/core'
-import { Drawer, zodResolver } from '@egodb/ui'
+import { Drawer } from '@egodb/ui'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom } from 'jotai'
+import { FormProvider, useForm } from 'react-hook-form'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useConfirmModal } from '../../hooks'
 import { CreateTableForm } from './create-table-form'
-import { CreateTableFormProvider, useCreateTable } from './create-table-form-context'
 import { createTableFormDrawerOpened } from './drawer-opened.atom'
 
 export const CreateTableFormDrawer: React.FC = () => {
   const [opened, setOpened] = useAtom(createTableFormDrawerOpened)
 
-  const initialValues: ICreateTableInput = {
+  const defaultValues: ICreateTableInput = {
     name: '',
     schema: [],
   }
 
-  const form = useCreateTable({
-    initialValues,
-    validate: zodResolver(createTableCommandInput),
-    validateInputOnBlur: ['name'],
+  const form = useForm<ICreateTableInput>({
+    defaultValues,
+    resolver: zodResolver(createTableCommandInput),
   })
 
   useDeepCompareEffect(() => {
-    form.setValues(initialValues)
-  }, [initialValues])
+    form.reset(defaultValues)
+  }, [defaultValues])
 
   const reset = () => {
     setOpened(false)
@@ -34,12 +34,12 @@ export const CreateTableFormDrawer: React.FC = () => {
   const confirm = useConfirmModal({ onConfirm: reset })
 
   return (
-    <CreateTableFormProvider form={form}>
+    <FormProvider {...form}>
       <Drawer
         target="body"
         opened={opened}
         onClose={() => {
-          if (form.isDirty()) {
+          if (form.formState.isDirty) {
             confirm()
           } else {
             reset()
@@ -52,6 +52,6 @@ export const CreateTableFormDrawer: React.FC = () => {
       >
         <CreateTableForm onCancel={() => setOpened(false)} />
       </Drawer>
-    </CreateTableFormProvider>
+    </FormProvider>
   )
 }

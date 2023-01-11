@@ -5,10 +5,11 @@ import { trpc } from '../../trpc'
 import { FieldInputLabel } from '../fields/field-input-label'
 import { FieldIcon } from '../fields/field-Icon'
 import type { ITableBaseProps } from '../table/table-base-props'
-import { useCreateFieldFormContext } from './create-field-form-context'
 import { createFielModelOpened } from './create-field-modal-opened.atom'
 import { CreateFieldVariantControl } from './create-field-variant-control'
 import { FieldItem } from '../fields/field-item'
+import { useFormContext } from 'react-hook-form'
+import type { ICreateFieldSchema, IFieldType } from '@egodb/core'
 
 interface IProps extends ITableBaseProps {
   onCancel?: () => void
@@ -16,7 +17,7 @@ interface IProps extends ITableBaseProps {
 }
 
 export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
-  const form = useCreateFieldFormContext()
+  const form = useFormContext<ICreateFieldSchema>()
   const setOpened = useSetAtom(createFielModelOpened)
 
   const utils = trpc.useContext()
@@ -29,28 +30,29 @@ export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
     },
   })
 
-  const onSubmit = form.onSubmit((values) => {
+  const onSubmit = form.handleSubmit((values) => {
     createField.mutate({ id: table.id.value, field: values })
   })
 
-  const props = form.getInputProps('name')
+  const props = form.register('name')
 
   return (
     <form onSubmit={onSubmit}>
       <Stack>
         <Select
-          {...form.getInputProps('type')}
+          {...form.register('type')}
+          onChange={(type) => type && form.setValue('type', type as IFieldType)}
           required
           label={<FieldInputLabel>type</FieldInputLabel>}
           data={FIELD_SELECT_ITEMS}
           itemComponent={FieldItem}
-          icon={<FieldIcon type={form.values.type} />}
+          icon={<FieldIcon type={form.getValues('type')} />}
         />
         <TextInput
           {...props}
           onChange={(e) => {
             props.onChange(e)
-            form.setFieldValue('id', e.target.value)
+            form.setValue('id', e.target.value)
           }}
           label={<FieldInputLabel>name</FieldInputLabel>}
           required
@@ -70,7 +72,7 @@ export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
             Cancel
           </Button>
 
-          <Button loading={createField.isLoading} miw={200} disabled={!form.isValid()} type="submit">
+          <Button loading={createField.isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
             Create
           </Button>
         </Group>

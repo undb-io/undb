@@ -31,6 +31,5 @@ export * from './Badge'
 
 export * from './hooks'
 export * from './theme'
-export * from './Form'
 export * from './notification'
 export * from './modal'

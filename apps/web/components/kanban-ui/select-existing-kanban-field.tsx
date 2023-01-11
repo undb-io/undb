@@ -1,6 +1,8 @@
 import { setKanbanFieldSchema } from '@egodb/core'
-import { useForm, zodResolver, Card, Radio, Group, Button, Text, IconPlus, Stack, Divider } from '@egodb/ui'
+import { Card, Radio, Group, Button, Text, IconPlus, Stack, Divider } from '@egodb/ui'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
+import { useForm } from 'react-hook-form'
 import { trpc } from '../../trpc'
 import { FieldIcon } from '../fields/field-Icon'
 import type { ITableBaseProps } from '../table/table-base-props'
@@ -25,13 +27,13 @@ export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
   })
 
   const form = useForm({
-    initialValues: {
+    defaultValues: {
       field: initialKanbanFieldId ?? '',
     },
-    validate: zodResolver(setKanbanFieldSchema),
+    resolver: zodResolver(setKanbanFieldSchema),
   })
 
-  const onSubmit = form.onSubmit((values) => {
+  const onSubmit = form.handleSubmit((values) => {
     setKanbanField.mutate({
       tableId: table.id.value,
       field: values.field,
@@ -42,25 +44,22 @@ export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
   const setKanbanStepTwo = useSetAtom(kanbanStepTwoAtom)
 
   return (
-    <form onSubmit={onSubmit} style={{ width: '100%' }}>
-      <Card shadow="md">
-        <Card.Section withBorder inheritPadding py="sm">
-          <Text>select one field</Text>
-        </Card.Section>
+    <>
+      <form onSubmit={onSubmit} style={{ width: '100%' }}>
+        <Card shadow="md">
+          <Card.Section withBorder inheritPadding py="sm">
+            <Text>select one field</Text>
+          </Card.Section>
 
-        <Card.Section withBorder inheritPadding py="sm">
-          <Stack spacing="xs">
-            {hasKanbanFields ? (
-              <>
-                <Radio.Group
-                  orientation="vertical"
-                  defaultValue={initialKanbanFieldId}
-                  {...form.getInputProps('field')}
-                >
+          <Card.Section withBorder inheritPadding py="sm">
+            <Stack spacing="xs">
+              {hasKanbanFields ? (
+                <>
                   {kanbanFields.map((f) => (
                     <Radio
                       key={f.id.value}
                       value={f.id.value}
+                      {...form.register('field')}
                       label={
                         <Group spacing="xs">
                           <FieldIcon type={f.type} />
@@ -69,28 +68,28 @@ export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
                       }
                     />
                   ))}
-                </Radio.Group>
-                <Divider label="or" labelPosition="center" />
-              </>
-            ) : null}
+                  <Divider label="or" labelPosition="center" />
+                </>
+              ) : null}
 
-            <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setKanbanStepOne}>
-              add new select field
-            </Button>
-            <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setKanbanStepTwo}>
-              add new date field
-            </Button>
-          </Stack>
-        </Card.Section>
+              <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setKanbanStepOne}>
+                add new select field
+              </Button>
+              <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setKanbanStepTwo}>
+                add new date field
+              </Button>
+            </Stack>
+          </Card.Section>
 
-        <Card.Section withBorder inheritPadding py="sm">
-          <Group position="right">
-            <Button size="xs" type="submit" disabled={!form.isValid() || !form.isDirty()}>
-              Done
-            </Button>
-          </Group>
-        </Card.Section>
-      </Card>
-    </form>
+          <Card.Section withBorder inheritPadding py="sm">
+            <Group position="right">
+              <Button size="xs" type="submit" disabled={!form.formState.isValid || !form.formState.isDirty}>
+                Done
+              </Button>
+            </Group>
+          </Card.Section>
+        </Card>
+      </form>
+    </>
   )
 }

@@ -1,12 +1,13 @@
 import type { ICreateRecordInput, Table as CoreTable } from '@egodb/core'
 import { createRecordCommandInput } from '@egodb/core'
-import { Drawer, zodResolver } from '@egodb/ui'
+import { Drawer } from '@egodb/ui'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useConfirmModal } from '../../hooks'
 import { CreateRecordForm } from './create-record-form'
-import { CreateRecordFormProvider, useCreateRecord } from './create-record-form-context'
 import { createRecordInitialValueAtom } from './create-record-initial-value.atom'
 import { createRecordFormDrawerOpened } from './drawer-opened.atom'
 
@@ -18,7 +19,7 @@ export const CreateRecordFormDrawer: React.FC<IProps> = ({ table }) => {
   const [opened, setOpened] = useAtom(createRecordFormDrawerOpened)
   const initialCreateRecordValue = useAtomValue(createRecordInitialValueAtom)
 
-  const initialValues = useMemo(
+  const defaultValues = useMemo(
     () => ({
       tableId: table.id.value,
       value: table.schema.fields.map((field) => ({
@@ -30,14 +31,14 @@ export const CreateRecordFormDrawer: React.FC<IProps> = ({ table }) => {
     [initialCreateRecordValue],
   )
 
-  const form = useCreateRecord({
-    initialValues,
-    validate: zodResolver(createRecordCommandInput),
+  const form = useForm<ICreateRecordInput>({
+    defaultValues,
+    resolver: zodResolver(createRecordCommandInput),
   })
 
   useDeepCompareEffect(() => {
-    form.setValues(initialValues)
-  }, [initialValues])
+    form.reset(defaultValues)
+  }, [defaultValues])
 
   const reset = () => {
     setOpened(false)
@@ -46,12 +47,12 @@ export const CreateRecordFormDrawer: React.FC<IProps> = ({ table }) => {
   const confirm = useConfirmModal({ onConfirm: reset })
 
   return (
-    <CreateRecordFormProvider form={form}>
+    <FormProvider {...form}>
       <Drawer
         target="body"
         opened={opened}
         onClose={() => {
-          if (form.isDirty()) {
+          if (form.formState.isDirty) {
             confirm()
           } else {
             reset()
@@ -64,6 +65,6 @@ export const CreateRecordFormDrawer: React.FC<IProps> = ({ table }) => {
       >
         <CreateRecordForm table={table} onCancel={reset} />
       </Drawer>
-    </CreateRecordFormProvider>
+    </FormProvider>
   )
 }

@@ -1,7 +1,8 @@
+import type { IEditTableSchema } from '@egodb/core'
 import { Alert, Button, Divider, Group, IconAlertCircle, Stack, Text, TextInput } from '@egodb/ui'
+import { useFormContext } from 'react-hook-form'
 import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
-import { useEditTableFormContext } from './edit-table-form-context'
 
 interface IProps extends ITableBaseProps {
   onCancel: () => void
@@ -9,7 +10,7 @@ interface IProps extends ITableBaseProps {
 }
 
 export const EditTableForm: React.FC<IProps> = ({ table, onCancel, onSuccess }) => {
-  const form = useEditTableFormContext()
+  const form = useFormContext<IEditTableSchema>()
   const utils = trpc.useContext()
 
   const editTable = trpc.table.edit.useMutation({
@@ -21,7 +22,7 @@ export const EditTableForm: React.FC<IProps> = ({ table, onCancel, onSuccess }) 
     },
   })
 
-  const onSubmit = form.onSubmit((values) => {
+  const onSubmit = form.handleSubmit((values) => {
     editTable.mutate({ id: table.id.value, ...values })
   })
 
@@ -31,19 +32,19 @@ export const EditTableForm: React.FC<IProps> = ({ table, onCancel, onSuccess }) 
     form.reset()
   }
 
-  const disabled = !form.isValid || !form.isDirty()
+  const disabled = !form.formState.isValid || !form.formState.isDirty
 
   return (
     <form onSubmit={onSubmit}>
       <Stack>
         <TextInput
-          error={form.errors['name']}
+          error={form.formState.errors['name']?.message}
           label={
             <Text size={14} fw={700} tt="uppercase" display="inline-block">
               name
             </Text>
           }
-          {...form.getInputProps('name')}
+          {...form.register('name')}
           required={true}
         />
 

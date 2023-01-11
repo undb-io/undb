@@ -1,14 +1,15 @@
 import type { Table as CoreTable } from '@egodb/core'
 import { updateRecordSchema } from '@egodb/core'
 import type { IUpdateRecordValueSchema } from '@egodb/core'
-import { Drawer, zodResolver } from '@egodb/ui'
+import { Drawer } from '@egodb/ui'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useConfirmModal } from '../../hooks'
 import { editRecordFormDrawerOpened } from './drawer-opened.atom'
 import { EditRecordForm } from './edit-record-form'
-import { UpdateRecordFormProvider, useUpdateRecord } from './edit-record-form-context'
 import { editRecordValuesAtom } from './edit-record-values.atom'
+import { FormProvider, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 interface IProps {
   table: CoreTable
@@ -18,7 +19,7 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
   const [opened, setOpened] = useAtom(editRecordFormDrawerOpened)
   const [record, setRecord] = useAtom(editRecordValuesAtom)
 
-  const initialValues: IUpdateRecordValueSchema = {
+  const defaultValues: IUpdateRecordValueSchema = {
     id: record?.id ?? '',
     value: table.schema.fields.map((field) => ({
       id: field.id.value,
@@ -26,30 +27,29 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
     })),
   }
 
+  const form = useForm<IUpdateRecordValueSchema>({
+    defaultValues,
+    resolver: zodResolver(updateRecordSchema),
+  })
+
   useEffect(() => {
-    form.setValues(initialValues)
-    form.resetDirty()
+    form.reset(defaultValues)
   }, [record])
 
   const reset = () => {
     setOpened(false)
     setRecord(null)
-    form.clearErrors()
     form.reset()
   }
   const confirm = useConfirmModal({ onConfirm: reset })
-  const form = useUpdateRecord({
-    initialValues,
-    validate: zodResolver(updateRecordSchema),
-  })
 
   return (
-    <UpdateRecordFormProvider form={form}>
+    <FormProvider {...form}>
       <Drawer
         target="body"
         opened={opened}
         onClose={() => {
-          if (form.isDirty()) {
+          if (form.formState.isDirty) {
             confirm()
           } else {
             reset()
@@ -62,6 +62,6 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
       >
         <EditRecordForm table={table} onCancel={reset} />
       </Drawer>
-    </UpdateRecordFormProvider>
+    </FormProvider>
   )
 }
