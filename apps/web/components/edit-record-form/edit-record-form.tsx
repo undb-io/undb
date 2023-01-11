@@ -7,6 +7,7 @@ import { DevTool } from '@hookform/devtools'
 import { trpc } from '../../trpc'
 import { RecordInputFactory } from '../record/record-input.factory'
 import { editRecordValuesAtom } from './edit-record-values.atom'
+import type { IMutateRecordValueSchema } from '@egodb/core'
 
 interface IProps {
   table: Table
@@ -28,11 +29,21 @@ export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel })
     },
   })
 
-  const onSubmit = form.handleSubmit((values) => {
-    if (record) {
+  const onSubmit = form.handleSubmit((data) => {
+    const values: IMutateRecordValueSchema = []
+
+    for (const [index, field] of data.value.entries()) {
+      const isDirty = form.getFieldState(`value.${index}.value`).isDirty
+      if (isDirty) {
+        values.push(field)
+      }
+    }
+
+    if (record && values.length) {
       updateRecord.mutate({
         tableId: table.id.value,
-        ...values,
+        id: data.id,
+        value: values,
       })
     }
   })
