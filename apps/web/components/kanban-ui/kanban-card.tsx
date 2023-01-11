@@ -1,11 +1,12 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Card, Group, Stack } from '@egodb/ui'
+import { Card, Group, Stack, useEgoUITheme } from '@egodb/ui'
 import type { SortableProps } from '../sortable.interface'
 import type { ITableBaseProps } from '../table/table-base-props'
 import type { Record } from '@egodb/core'
 import type { SelectFieldValue } from '@egodb/core'
 import { Option } from '../option/option'
+import type { CSSProperties } from 'react'
 
 interface IProps extends ITableBaseProps {
   record: Record
@@ -20,7 +21,7 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
   style,
 }) => {
   return (
-    <Card py="sm" shadow="xs" radius="sm" {...attributes} {...listeners} ref={setNodeRef} style={style}>
+    <Card py="sm" withBorder shadow="md" radius="xs" {...attributes} {...listeners} ref={setNodeRef} style={style}>
       <Stack spacing="xs">
         {Object.entries(record.values.valueJSON).map(([key, value]) => {
           const field = table.schema.getFieldById(key)
@@ -56,11 +57,14 @@ export const SortableKanbanCard: React.FC<IProps> = ({ table, record }) => {
     },
   })
 
-  const style = {
+  const theme = useEgoUITheme()
+
+  const style: CSSProperties = {
     transform: CSS.Translate.toString(transform),
     transition,
     cursor: isDragging ? 'grabbing' : 'grab',
     opacity: isDragging ? 0.5 : undefined,
+    boxShadow: isDragging ? theme.shadows.xl : theme.shadows.sm,
   }
 
   return (
