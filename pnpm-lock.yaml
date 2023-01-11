@@ -33,7 +33,6 @@ importers:
       '@egodb/core': ^0.0.0
       '@egodb/domain': ^0.0.0
       '@egodb/eslint-config': ^0.0.0
-      '@egodb/in-memory-repository': ^0.0.0
       '@egodb/sqlite': ^0.0.0
       '@egodb/trpc': ^0.0.0
       '@mikro-orm/better-sqlite': ^5.6.4
@@ -75,7 +74,6 @@ importers:
     dependencies:
       '@egodb/core': link:../../packages/core
       '@egodb/domain': link:../../packages/domain
-      '@egodb/in-memory-repository': link:../../packages/database/in-memory-repository
       '@egodb/sqlite': link:../../packages/database/sqlite
       '@egodb/trpc': link:../../packages/trpc
       '@mikro-orm/better-sqlite': 5.6.4_@mikro-orm+core@5.6.4
@@ -214,33 +212,6 @@ importers:
       typescript: 4.9.4
       vitest: 0.26.3
       vitest-mock-extended: 1.0.8_xclmfinyfk6aufj4k2cxreubxi
-
-  packages/database/in-memory-repository:
-    specifiers:
-      '@egodb/core': ^0.0.0
-      '@egodb/domain': ^0.0.0
-      '@fxts/core': ^0.11.0
-      date-fns: ^2.29.3
-      lowdb: ^5.0.5
-      oxide.ts: ^1.1.0
-      rimraf: ^3.0.2
-      tsconfig: ^0.0.0
-      tsup: ^6.5.0
-      typescript: ^4.9.4
-      vitest: ^0.26.3
-    dependencies:
-      '@egodb/core': link:../../core
-      '@egodb/domain': link:../../domain
-      '@fxts/core': 0.11.0
-      date-fns: 2.29.3
-      lowdb: 5.0.5
-      oxide.ts: 1.1.0
-    devDependencies:
-      rimraf: 3.0.2
-      tsconfig: link:../../tsconfig
-      tsup: 6.5.0_typescript@4.9.4
-      typescript: 4.9.4
-      vitest: 0.26.3
 
   packages/database/sqlite:
     specifiers:
@@ -7519,13 +7490,6 @@ packages:
       get-func-name: 2.0.0
     dev: true
 
-  /lowdb/5.0.5:
-    resolution: {integrity: sha512-7EWKmIMhNKA8TXFhL8t0p6N2LC53l3ZqsWQGSksGhhjrcms9rbKlyrAh2PzSGK5v0KPJ2W5VItBnC3NDRzOnzQ==}
-    engines: {node: '>=14.16'}
-    dependencies:
-      steno: 3.0.0
-    dev: false
-
   /lru-cache/5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
     dependencies:
@@ -9438,11 +9402,6 @@ packages:
   /statuses/2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
     engines: {node: '>= 0.8'}
-
-  /steno/3.0.0:
-    resolution: {integrity: sha512-uZtn7Ht9yXLiYgOsmo8btj4+f7VxyYheMt8g6F1ANjyqByQXEE2Gygjgenp3otHH1TlHsS4JAaRGv5wJ1wvMNw==}
-    engines: {node: '>=14.16'}
-    dev: false
 
   /streamsearch/1.1.0:
     resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
