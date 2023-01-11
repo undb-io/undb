@@ -2,7 +2,7 @@ import { setCalendarFieldSchema } from '@egodb/core'
 import { Card, Radio, Group, Button, Text, IconPlus, Stack, Divider } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { trpc } from '../../trpc'
 import { FieldIcon } from '../fields/field-Icon'
 import type { ITableBaseProps } from '../table/table-base-props'
@@ -53,23 +53,34 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ table, onSuccess
         <Card.Section withBorder inheritPadding py="sm">
           <Stack spacing="xs">
             {hasCalendarFields ? (
-              <>
-                {calendarFields.map((f) => (
-                  <Radio
-                    key={f.id.value}
-                    value={f.id.value}
-                    {...form.register('field')}
-                    label={
-                      <Group spacing="xs">
-                        <FieldIcon type={f.type} />
-                        {f.id.value}
-                      </Group>
-                    }
-                  />
-                ))}
-                <Divider label="or" labelPosition="center" />
-              </>
+              <Controller
+                name="field"
+                control={form.control}
+                render={(f) => (
+                  <Radio.Group
+                    {...f.field}
+                    orientation="vertical"
+                    onChange={(value) => f.field.onChange(value)}
+                    withAsterisk
+                  >
+                    {calendarFields.map((f) => (
+                      <Radio
+                        key={f.id.value}
+                        value={f.id.value}
+                        label={
+                          <Group spacing="xs">
+                            <FieldIcon type={f.type} />
+                            {f.id.value}
+                          </Group>
+                        }
+                      />
+                    ))}
+                  </Radio.Group>
+                )}
+              />
             ) : null}
+
+            <Divider label="or" labelPosition="center" />
 
             <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setStepOne}>
               add new date field
@@ -82,7 +93,7 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ table, onSuccess
 
         <Card.Section withBorder inheritPadding py="sm">
           <Group position="right">
-            <Button size="xs" type="submit" disabled={!form.formState.isValid || !form.formState.isDirty}>
+            <Button size="xs" type="submit" disabled={!form.formState.isValid}>
               Done
             </Button>
           </Group>
