@@ -1,5 +1,5 @@
 import type { Table } from '@egodb/core'
-import { Button, Divider, Group, Stack } from '@egodb/ui'
+import { Alert, Button, Divider, Group, IconAlertCircle, Stack } from '@egodb/ui'
 import { useAtomValue } from 'jotai'
 import { trpc } from '../../trpc'
 import { RecordInputFactory } from '../record/record-input.factory'
@@ -60,6 +60,12 @@ export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel })
           Confirm
         </Button>
       </Group>
+
+      {updateRecord.isError && (
+        <Alert color="red" icon={<IconAlertCircle size={16} />} title="Oops! Create Table Error!" mt="lg">
+          {updateRecord.error.message}
+        </Alert>
+      )}
     </form>
   )
 }

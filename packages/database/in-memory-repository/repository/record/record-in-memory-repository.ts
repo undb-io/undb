@@ -6,7 +6,7 @@ import { RecordInMemoryMapper } from './record-in-memory.mapper.js'
 import { RecordInMemoryMutationVisitor } from './record-in-memory.mutation-visitor.js'
 
 export class RecordInMemoryRepository implements IRecordRepository {
-  async findOneById(id: string, schema: TableSchemaMap): Promise<Option<Record>> {
+  async findOneById(tableId: string, id: string, schema: TableSchemaMap): Promise<Option<Record>> {
     const r = db.data?.records.find((t) => t.id === id)
     if (!r) return None
 
@@ -18,7 +18,7 @@ export class RecordInMemoryRepository implements IRecordRepository {
     db.data?.records.push(RecordInMemoryMapper.toInMemory(record))
   }
 
-  async updateOneById(id: string, spec: IRecordSpec): Promise<void> {
+  async updateOneById(tableId: string, id: string, spec: IRecordSpec): Promise<void> {
     const record = db.data?.records.find((r) => r.id === id)
     if (!record) return
 
