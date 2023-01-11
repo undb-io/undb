@@ -20,6 +20,7 @@ export const queryRecordSchema = z.object({
   id: recordIdSchema,
   tableId: tableIdSchema,
   createdAt: z.date(),
+  updatedAt: z.date(),
   values: queryRecordValues,
 })
 export type IQueryRecordSchema = z.infer<typeof queryRecordSchema>

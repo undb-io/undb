@@ -25,6 +25,7 @@ import type {
   WithRecordCreatedAt,
   WithRecordId,
   WithRecordTableId,
+  WithRecordUpdatedAt,
   WithRecordValues,
 } from '@egodb/core'
 import { DateRangeFieldValue } from '@egodb/core'
@@ -43,6 +44,9 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
     throw new Error('Method not implemented.')
   }
   createdAt(s: WithRecordCreatedAt): void {
+    throw new Error('Method not implemented.')
+  }
+  updatedAt(s: WithRecordUpdatedAt): void {
     throw new Error('Method not implemented.')
   }
   values(s: WithRecordValues): void {

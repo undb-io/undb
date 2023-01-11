@@ -5,7 +5,7 @@ import type { Result } from 'oxide.ts'
 export class RecordSqliteMapper {
   // TODO: record type
   static toQuery(tableId: string, schema: TableSchemaMap, data: globalThis.Record<string, any>): IQueryRecordSchema {
-    const { id, created_at, ...rest } = data
+    const { id, created_at, updated_at, ...rest } = data
     const values: globalThis.Record<string, IFieldValue> = {}
 
     for (const [columnName, value] of Object.entries(rest)) {
@@ -28,6 +28,7 @@ export class RecordSqliteMapper {
     return {
       id,
       createdAt: new Date(created_at),
+      updatedAt: new Date(updated_at),
       tableId,
       values,
     }
