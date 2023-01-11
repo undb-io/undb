@@ -37,9 +37,13 @@ export class TableSqliteManager implements ITableManager {
         }
       }
 
-      t.timestamp('created_at').defaultTo(knex.fn.now())
-      // TODO: updated_at column
-      // t.timestamp('updated_at').defaultTo(knex.fn.now())
-    })
+      t.timestamp('created_at').notNullable().defaultTo(knex.fn.now())
+      t.dateTime('updated_at').notNullable().defaultTo(knex.fn.now())
+    }).raw(`
+    CREATE TRIGGER update_at_update AFTER UPDATE ON ${table.id.value}
+    BEGIN
+      update ${table.id.value} SET updated_at = datetime('now') WHERE id = NEW.id;
+    END;
+    `)
   }
 }

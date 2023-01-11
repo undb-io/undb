@@ -25,6 +25,7 @@ import type {
   WithRecordCreatedAt,
   WithRecordId,
   WithRecordTableId,
+  WithRecordUpdatedAt,
   WithRecordValues,
 } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
@@ -42,6 +43,9 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   }
   createdAt(s: WithRecordCreatedAt): void {
     this.qb.where({ created_at: s.date.value })
+  }
+  updatedAt(s: WithRecordUpdatedAt): void {
+    this.qb.where({ updated_at: s.date.value })
   }
   values(s: WithRecordValues): void {
     throw new Error('Method not implemented.')

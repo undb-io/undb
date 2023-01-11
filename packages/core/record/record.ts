@@ -11,6 +11,7 @@ export class Record {
   public tableId!: TableId
   public values: RecordValues = RecordValues.empty()
   public createdAt: DateVO = DateVO.now()
+  public updatedAt: DateVO = DateVO.now()
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}

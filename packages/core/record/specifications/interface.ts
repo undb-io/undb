@@ -22,6 +22,7 @@ import type {
 import type { WithRecordCreatedAt } from './record-created-at.specification'
 import type { WithRecordId } from './record-id.specifaction'
 import type { WithRecordTableId } from './record-table-id.specification'
+import type { WithRecordUpdatedAt } from './record-updated-at.specification'
 import type { WithRecordValues } from './record-values.specification'
 import type { SelectEqual, SelectIn } from './select.specification'
 import type { StringContain, StringEndsWith, StringEqual, StringRegex, StringStartsWith } from './string.specification'
@@ -31,6 +32,7 @@ interface IRecordSpecVisitor {
   tableIdEqual(s: WithRecordTableId): void
 
   createdAt(s: WithRecordCreatedAt): void
+  updatedAt(s: WithRecordUpdatedAt): void
 
   values(s: WithRecordValues): void
 }
