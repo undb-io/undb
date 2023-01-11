@@ -44,17 +44,17 @@ export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
   const setKanbanStepTwo = useSetAtom(kanbanStepTwoAtom)
 
   return (
-    <form onSubmit={onSubmit} style={{ width: '100%' }}>
-      <Card shadow="md">
-        <Card.Section withBorder inheritPadding py="sm">
-          <Text>select one field</Text>
-        </Card.Section>
+    <>
+      <form onSubmit={onSubmit} style={{ width: '100%' }}>
+        <Card shadow="md">
+          <Card.Section withBorder inheritPadding py="sm">
+            <Text>select one field</Text>
+          </Card.Section>
 
-        <Card.Section withBorder inheritPadding py="sm">
-          <Stack spacing="xs">
-            {hasKanbanFields ? (
-              <>
-                <Radio.Group orientation="vertical" defaultValue={initialKanbanFieldId}>
+          <Card.Section withBorder inheritPadding py="sm">
+            <Stack spacing="xs">
+              {hasKanbanFields ? (
+                <>
                   {kanbanFields.map((f) => (
                     <Radio
                       key={f.id.value}
@@ -68,28 +68,28 @@ export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
                       }
                     />
                   ))}
-                </Radio.Group>
-                <Divider label="or" labelPosition="center" />
-              </>
-            ) : null}
+                  <Divider label="or" labelPosition="center" />
+                </>
+              ) : null}
 
-            <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setKanbanStepOne}>
-              add new select field
-            </Button>
-            <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setKanbanStepTwo}>
-              add new date field
-            </Button>
-          </Stack>
-        </Card.Section>
+              <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setKanbanStepOne}>
+                add new select field
+              </Button>
+              <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setKanbanStepTwo}>
+                add new date field
+              </Button>
+            </Stack>
+          </Card.Section>
 
-        <Card.Section withBorder inheritPadding py="sm">
-          <Group position="right">
-            <Button size="xs" type="submit" disabled={!form.formState.isValid || !form.formState.isDirty}>
-              Done
-            </Button>
-          </Group>
-        </Card.Section>
-      </Card>
-    </form>
+          <Card.Section withBorder inheritPadding py="sm">
+            <Group position="right">
+              <Button size="xs" type="submit" disabled={!form.formState.isValid || !form.formState.isDirty}>
+                Done
+              </Button>
+            </Group>
+          </Card.Section>
+        </Card>
+      </form>
+    </>
   )
 }

@@ -54,21 +54,19 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ table, onSuccess
           <Stack spacing="xs">
             {hasCalendarFields ? (
               <>
-                <Radio.Group orientation="vertical" defaultValue={initialCalendarFieldId}>
-                  {calendarFields.map((f) => (
-                    <Radio
-                      key={f.id.value}
-                      value={f.id.value}
-                      {...form.register('field')}
-                      label={
-                        <Group spacing="xs">
-                          <FieldIcon type={f.type} />
-                          {f.id.value}
-                        </Group>
-                      }
-                    />
-                  ))}
-                </Radio.Group>
+                {calendarFields.map((f) => (
+                  <Radio
+                    key={f.id.value}
+                    value={f.id.value}
+                    {...form.register('field')}
+                    label={
+                      <Group spacing="xs">
+                        <FieldIcon type={f.type} />
+                        {f.id.value}
+                      </Group>
+                    }
+                  />
+                ))}
                 <Divider label="or" labelPosition="center" />
               </>
             ) : null}
