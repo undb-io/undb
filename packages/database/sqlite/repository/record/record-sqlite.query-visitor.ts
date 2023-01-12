@@ -30,23 +30,32 @@ import type {
 } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import { endOfDay, startOfDay } from 'date-fns'
+import {
+  UNDERLYING_COLUMN_CREATED_AT_NAME,
+  UNDERLYING_COLUMN_ID_NAME,
+  UNDERLYING_COLUMN_UPDATED_AT_NAME,
+} from '../../constants'
 
 export class RecordSqliteQueryVisitor implements IRecordVisitor {
   public tableId!: string
   constructor(private qb: Knex.QueryBuilder) {}
 
+  get query() {
+    return this.qb.toQuery()
+  }
+
   idEqual(s: WithRecordId): void {
-    this.qb.where({ id: s.id.value })
+    this.qb.where({ [UNDERLYING_COLUMN_ID_NAME]: s.id.value })
   }
   tableIdEqual(s: WithRecordTableId): void {
     this.tableId = s.id.value
     this.qb.from(s.id.value)
   }
   createdAt(s: WithRecordCreatedAt): void {
-    this.qb.where({ created_at: s.date.value })
+    this.qb.where({ [UNDERLYING_COLUMN_CREATED_AT_NAME]: s.date.value })
   }
   updatedAt(s: WithRecordUpdatedAt): void {
-    this.qb.where({ updated_at: s.date.value })
+    this.qb.where({ [UNDERLYING_COLUMN_UPDATED_AT_NAME]: s.date.value })
   }
   values(s: WithRecordValues): void {
     throw new Error('Method not implemented.')
@@ -55,13 +64,25 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     this.qb.where({ [s.fieldId]: s.value })
   }
   stringContain(s: StringContain): void {
-    this.qb.whereRaw(`${s.fieldId} like '%??%'`, [s.value])
+    if (s.value === null) {
+      this.qb.whereNull(s.fieldId)
+    } else {
+      this.qb.whereRaw(`${s.fieldId} like '%??%'`, [s.value])
+    }
   }
   stringStartsWith(s: StringStartsWith): void {
-    this.qb.whereRaw(`${s.fieldId} like '??%'`, [s.value])
+    if (s.value === null) {
+      this.qb.whereNull(s.fieldId)
+    } else {
+      this.qb.whereRaw(`${s.fieldId} like '??%'`, [s.value])
+    }
   }
   stringEndsWith(s: StringEndsWith): void {
-    this.qb.whereRaw(`${s.fieldId} like '%??'`, [s.value])
+    if (s.value === null) {
+      this.qb.whereNull(s.fieldId)
+    } else {
+      this.qb.whereRaw(`${s.fieldId} like '%??'`, [s.value])
+    }
   }
   stringRegex(s: StringRegex): void {
     throw new Error('Method not implemented.')
@@ -85,16 +106,32 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     this.qb.where({ [s.fieldId]: s.value })
   }
   dateGreaterThan(s: DateGreaterThan): void {
-    this.qb.where(s.fieldId, '>', s.value)
+    if (s.value === null) {
+      this.qb.whereNull(s.fieldId)
+    } else {
+      this.qb.where(s.fieldId, '>', s.value)
+    }
   }
   dateLessThan(s: DateLessThan): void {
-    this.qb.where(s.fieldId, '<', s.value)
+    if (s.value === null) {
+      this.qb.whereNull(s.fieldId)
+    } else {
+      this.qb.where(s.fieldId, '<', s.value)
+    }
   }
   dateGreaterThanOrEqual(s: DateGreaterThanOrEqual): void {
-    this.qb.where(s.fieldId, '>=', s.value)
+    if (s.value === null) {
+      this.qb.whereNull(s.fieldId)
+    } else {
+      this.qb.where(s.fieldId, '>=', s.value)
+    }
   }
   dateLessThanOrEqual(s: DateLessThanOrEqual): void {
-    this.qb.where(s.fieldId, '<=', s.value)
+    if (s.value === null) {
+      this.qb.whereNull(s.fieldId)
+    } else {
+      this.qb.where(s.fieldId, '<=', s.value)
+    }
   }
   dateIsToday(s: DateIsToday): void {
     this.qb.whereBetween(s.fieldId, [startOfDay(new Date()), endOfDay(new Date())])
@@ -105,8 +142,9 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   dateRangeEqual(s: DateRangeEqual): void {
     if (s.value) {
       this.qb.whereBetween(s.fieldId, s.value)
+    } else {
+      this.qb.whereNull(s.fieldId)
     }
-    this.qb.whereNull(s.fieldId)
   }
   selectEqual(s: SelectEqual): void {
     this.qb.where(s.fieldId, s.value)
