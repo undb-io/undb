@@ -37,7 +37,12 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field }) => 
       <Controller
         name={name}
         render={(form) => (
-          <DateRangePicker label={label} {...form.field} onChange={(value) => form.field.onChange(value)} />
+          <DateRangePicker
+            label={label}
+            {...form.field}
+            value={form.field.value ?? [null, null]}
+            onChange={(value) => form.field.onChange(value)}
+          />
         )}
       />
     )
