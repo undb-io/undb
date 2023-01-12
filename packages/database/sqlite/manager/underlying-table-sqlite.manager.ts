@@ -16,7 +16,7 @@ export class UnderlyingTableSqliteManager implements IUnderlyingTableManager {
   }
 
   async update(table: Table, spec: ITableSpec): Promise<void> {
-    const visitor = new UnderlyingTableSqliteManagerVisitor(table, this.em.getKnex().schema)
+    const visitor = new UnderlyingTableSqliteManagerVisitor(table, this.em.getKnex())
     spec.accept(visitor)
 
     await visitor.commit()

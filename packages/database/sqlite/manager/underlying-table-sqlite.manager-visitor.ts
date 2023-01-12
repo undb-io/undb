@@ -18,9 +18,16 @@ import type {
   WithViewFieldsOrder,
 } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
+import { UnderlyingColumnFactory } from '../entity/underlying-table/underlying-column.factory'
 
 export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
-  constructor(private readonly table: Table, private readonly sb: Knex.SchemaBuilder) {}
+  private sb: Knex.SchemaBuilder
+  private readonly tableName: string
+  constructor(private readonly table: Table, private readonly knex: Knex) {
+    this.sb = knex.schema
+    this.tableName = table.id.value
+  }
+
   async commit() {
     await this.sb
   }
@@ -44,7 +51,16 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   newField(s: WithNewField): void {
-    throw new Error('Method not implemented.')
+    const underlyingColumn = UnderlyingColumnFactory.create(s.field)
+    this.sb = this.sb.alterTable(this.tableName, (tb) => {
+      if (Array.isArray(underlyingColumn)) {
+        for (const c of underlyingColumn) {
+          c.build(tb, this.knex, this.tableName)
+        }
+      } else {
+        underlyingColumn.build(tb, this.knex, this.tableName)
+      }
+    })
   }
   fieldsOrder(s: WithViewFieldsOrder): void {
     throw new Error('Method not implemented.')

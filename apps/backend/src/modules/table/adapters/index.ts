@@ -18,6 +18,9 @@ export const InjectRecordReposiory = () => Inject(RECORD_REPOSITORY)
 const RECORD_QUERY_MODEL = Symbol('RECORD_QUERY_MODEL')
 export const InjectRecordQueryModel = () => Inject(RECORD_QUERY_MODEL)
 
+const UNDELYING_TABLE_MANAGER = Symbol('UNDELYING_TABLE_MANAGER')
+export const InjectUndelyingTableManager = () => Inject(UNDELYING_TABLE_MANAGER)
+
 export const dbAdapters: Provider[] = [
   {
     provide: TABLE_REPOSITORY,
@@ -35,5 +38,8 @@ export const dbAdapters: Provider[] = [
     provide: RECORD_QUERY_MODEL,
     useClass: NestRecordSqliteQueryModel,
   },
-  NestTableSqliteManager,
+  {
+    provide: UNDELYING_TABLE_MANAGER,
+    useClass: NestTableSqliteManager,
+  },
 ]
