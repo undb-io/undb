@@ -6,7 +6,6 @@ import { UnderlyingTableSqliteManagerVisitor } from './underlying-table-sqlite.m
 
 export class UnderlyingTableSqliteManager implements IUnderlyingTableManager {
   constructor(protected readonly em: EntityManager) {}
-
   async create(table: Table): Promise<void> {
     const knex = this.em.getKnex()
     const sb = knex.schema
@@ -28,5 +27,12 @@ export class UnderlyingTableSqliteManager implements IUnderlyingTableManager {
     spec.accept(visitor)
 
     await visitor.commit()
+  }
+
+  async delete(table: Table): Promise<void> {
+    const knex = this.em.getKnex()
+
+    const sb = knex.schema.dropTable(table.id.value)
+    await sb
   }
 }

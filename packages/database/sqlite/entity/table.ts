@@ -1,5 +1,5 @@
 import type { Table as CoreTable } from '@egodb/core'
-import { Collection, Entity, OneToMany, PrimaryKey, Property } from '@mikro-orm/core'
+import { Cascade, Collection, Entity, OneToMany, PrimaryKey, Property } from '@mikro-orm/core'
 import { BaseEntity } from './base'
 import type { IField } from './field'
 import { Field } from './field'
@@ -19,9 +19,9 @@ export class Table extends BaseEntity {
   @Property()
   name!: string
 
-  @OneToMany(() => Field, (field) => field.table)
+  @OneToMany(() => Field, (field) => field.table, { orphanRemoval: true, cascade: [Cascade.ALL] })
   fields = new Collection<IField>(this)
 
-  @OneToMany(() => View, (view) => view.table)
+  @OneToMany(() => View, (view) => view.table, { orphanRemoval: true, cascade: [Cascade.ALL] })
   views = new Collection<View>(this)
 }

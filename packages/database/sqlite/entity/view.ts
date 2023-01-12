@@ -8,6 +8,7 @@ import type {
 } from '@egodb/core'
 import {
   ArrayType,
+  Cascade,
   Embeddable,
   Embedded,
   Entity,
@@ -45,7 +46,7 @@ export class View extends BaseEntity {
   @PrimaryKey()
   id: string
 
-  @ManyToOne(() => Table, { primary: true })
+  @ManyToOne(() => Table, { primary: true, cascade: [Cascade.ALL] })
   table: Table
 
   @Property()

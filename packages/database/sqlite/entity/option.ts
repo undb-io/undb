@@ -4,7 +4,17 @@ import type {
   Option as CoreOption,
   OptionColor as CoreOptionColor,
 } from '@egodb/core'
-import { Embeddable, Embedded, Entity, Enum, ManyToOne, PrimaryKey, PrimaryKeyType, Property } from '@mikro-orm/core'
+import {
+  Cascade,
+  Embeddable,
+  Embedded,
+  Entity,
+  Enum,
+  ManyToOne,
+  PrimaryKey,
+  PrimaryKeyType,
+  Property,
+} from '@mikro-orm/core'
 import { BaseEntity } from './base'
 import { SelectField } from './field'
 
@@ -35,7 +45,7 @@ export class Option extends BaseEntity {
   @PrimaryKey()
   id: string
 
-  @ManyToOne(() => SelectField, { primary: true })
+  @ManyToOne(() => SelectField, { primary: true, cascade: [Cascade.ALL] })
   field: SelectField;
 
   [PrimaryKeyType]?: [string, string, string]

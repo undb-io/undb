@@ -9,6 +9,7 @@ import { useConfirmModal } from '../../hooks'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { editTableFormDrawerOpened } from './drawer-opened.atom'
 import { EditTableForm } from './edit-table-form'
+import { EditTableMenu } from './edit-table-menu'
 
 export const EditTableFormDrawer: React.FC<ITableBaseProps> = ({ table }) => {
   const [opened, setOpened] = useAtom(editTableFormDrawerOpened)
@@ -38,6 +39,7 @@ export const EditTableFormDrawer: React.FC<ITableBaseProps> = ({ table }) => {
       <Drawer
         target="body"
         opened={opened}
+        withCloseButton={false}
         onClose={() => {
           if (form.formState.isDirty) {
             confirm()
@@ -45,9 +47,14 @@ export const EditTableFormDrawer: React.FC<ITableBaseProps> = ({ table }) => {
             reset()
           }
         }}
-        title="Edit Table"
+        title={<EditTableMenu table={table} />}
         padding="xl"
         position="right"
+        styles={{
+          title: {
+            width: '100%',
+          },
+        }}
         size={700}
       >
         <EditTableForm table={table} onCancel={() => setOpened(false)} />
