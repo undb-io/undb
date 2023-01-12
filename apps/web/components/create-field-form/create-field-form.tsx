@@ -46,7 +46,7 @@ export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
           label={<FieldInputLabel>type</FieldInputLabel>}
           data={FIELD_SELECT_ITEMS}
           itemComponent={FieldItem}
-          icon={<FieldIcon type={form.getValues('type')} />}
+          icon={<FieldIcon type={form.watch('type')} />}
         />
         <TextInput
           {...props}

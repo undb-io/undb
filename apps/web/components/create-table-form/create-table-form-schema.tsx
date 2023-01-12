@@ -18,21 +18,21 @@ export const CreateTableFormSchema: React.FC = () => {
   const [activeField, setActiveField] = useAtom(activeFieldAtom)
   const resetActiveField = useResetAtom(activeFieldAtom)
 
-  const len = form.getValues(`schema`).length
+  const len = form.watch(`schema`).length
   const prevLen = usePrevious(len)
 
   const [duration, setDuration] = useState(100)
 
   useEffect(() => {
     if (len && len >= (prevLen || 0)) {
-      const field = form.getValues(`schema`)[len - 1]
+      const field = form.watch(`schema`)[len - 1]
       if (field) {
         setActiveField(String(len - 1))
       }
     }
   }, [len])
 
-  const items = form.getValues(`schema`).map((field) => field.id)
+  const items = form.watch(`schema`).map((field) => field.id)
   return (
     <DndContext
       onDragStart={() => {
@@ -51,7 +51,7 @@ export const CreateTableFormSchema: React.FC = () => {
     >
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
         <Accordion value={activeField} variant="contained" onChange={setActiveField} transitionDuration={duration}>
-          {form.getValues('schema').map((field, index) => (
+          {form.watch('schema').map((field, index) => (
             <FieldAccordionItem key={index} index={index} id={index} />
           ))}
         </Accordion>

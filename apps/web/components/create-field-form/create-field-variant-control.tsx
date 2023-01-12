@@ -4,7 +4,7 @@ import { SelectFieldControl } from '../fields/select-field-control'
 
 export const CreateFieldVariantControl: React.FC = () => {
   const form = useFormContext<ICreateFieldSchema>()
-  const type = form.getValues('type')
+  const type = form.watch('type')
 
   if (type === 'select') {
     return <SelectFieldControl onChange={(options) => form.setValue('options', options)} />

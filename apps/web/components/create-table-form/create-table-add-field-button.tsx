@@ -7,7 +7,7 @@ export const CreateTableAddFieldButton: React.FC = () => {
   const { append } = useFieldArray<ICreateTableInput>({
     name: 'schema',
   })
-  const len = form.getValues('schema').length
+  const len = form.watch('schema').length
   const hasSchema = len > 0
 
   return (

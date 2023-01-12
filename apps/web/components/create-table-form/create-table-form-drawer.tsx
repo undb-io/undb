@@ -1,10 +1,10 @@
 import type { ICreateTableInput } from '@egodb/core'
 import { createTableCommandInput } from '@egodb/core'
 import { Drawer } from '@egodb/ui'
+import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom } from 'jotai'
 import { FormProvider, useForm } from 'react-hook-form'
-import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useConfirmModal } from '../../hooks'
 import { CreateTableForm } from './create-table-form'
 import { createTableFormDrawerOpened } from './drawer-opened.atom'
@@ -21,10 +21,6 @@ export const CreateTableFormDrawer: React.FC = () => {
     defaultValues,
     resolver: zodResolver(createTableCommandInput),
   })
-
-  useDeepCompareEffect(() => {
-    form.reset(defaultValues)
-  }, [defaultValues])
 
   const reset = () => {
     setOpened(false)
@@ -51,6 +47,7 @@ export const CreateTableFormDrawer: React.FC = () => {
         size={700}
       >
         <CreateTableForm onCancel={() => setOpened(false)} />
+        <DevTool control={form.control} />
       </Drawer>
     </FormProvider>
   )
