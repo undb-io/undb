@@ -3,14 +3,19 @@ import { CSS } from '@dnd-kit/utilities'
 import { Card, Group, Stack, useEgoUITheme } from '@egodb/ui'
 import type { SortableProps } from '../sortable.interface'
 import type { ITableBaseProps } from '../table/table-base-props'
-import type { Record } from '@egodb/core'
+import type { DateRangeFieldValue, Record } from '@egodb/core'
 import type { SelectFieldValue } from '@egodb/core'
 import { Option } from '../option/option'
 import type { CSSProperties } from 'react'
+import type { DateFieldValue } from '@egodb/core'
+import { format } from 'date-fns/fp'
+import { FieldIcon } from '../fields/field-Icon'
 
 interface IProps extends ITableBaseProps {
   record: Record
 }
+
+const dateFormat = format('yyyy-MM-dd')
 
 export const KanbanCard: React.FC<IProps & SortableProps> = ({
   table,
@@ -22,17 +27,19 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
 }) => {
   return (
     <Card py="sm" withBorder shadow="md" radius="xs" {...attributes} {...listeners} ref={setNodeRef} style={style}>
-      <Stack spacing="xs">
+      <Stack spacing={5} sx={(theme) => ({ fontSize: theme.fontSizes.sm })}>
         {Object.entries(record.values.valueJSON).map(([key, value]) => {
           const field = table.schema.getFieldById(key)
           if (field.isNone()) return null
           const f = field.unwrap()
+          const icon = <FieldIcon type={f.type} color="gray" />
           if (f.type === 'select') {
             const option = (value as SelectFieldValue).getOption(f).into()
             if (!option) return null
 
             return (
-              <Group key={key}>
+              <Group spacing="xs" key={key}>
+                {icon}
                 <Option
                   id={option.id.value}
                   name={option.name.value}
@@ -42,7 +49,32 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
               </Group>
             )
           }
-          return <Group key={key}>{value.unpack()?.toString()}</Group>
+          if (f.type === 'date') {
+            const date = (value as DateFieldValue).unpack()
+
+            return (
+              <Group spacing="xs" key={key}>
+                {icon}
+                {date && dateFormat(date)}
+              </Group>
+            )
+          }
+          if (f.type === 'date-range') {
+            const date = (value as DateRangeFieldValue).unpack()
+            return (
+              <Group spacing="xs" key={key}>
+                {icon}
+                {date && `${dateFormat(date[0])} - ${dateFormat(date[1])}`}
+              </Group>
+            )
+          }
+
+          return (
+            <Group spacing="xs" key={key}>
+              {icon}
+              {value.unpack()?.toString()}
+            </Group>
+          )
         })}
       </Stack>
     </Card>
