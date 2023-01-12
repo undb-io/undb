@@ -6,12 +6,12 @@ import { openConfirmModal } from '@egodb/ui'
 export const useConfirmModal = (props: OpenConfirmModal) => {
   const open = () =>
     openConfirmModal({
-      ...props,
-      target: 'body',
       title: 'Please confirm your action',
       children: <Text size="sm">You have unsaved changes. Do you really want to close the panel?</Text>,
+      ...props,
+      target: 'body',
       labels: { confirm: 'Confirm', cancel: 'Cancel' },
-      confirmProps: { color: 'red' },
+      confirmProps: Object.assign({ color: 'red' }, props.confirmProps),
       centered: true,
       styles: modalStyles,
     })

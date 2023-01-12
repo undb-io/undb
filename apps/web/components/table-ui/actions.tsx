@@ -1,4 +1,5 @@
-import { ActionIcon, Group, IconCopy, IconDots, IconTrash, Menu, useClipboard } from '@egodb/ui'
+import { ActionIcon, Alert, Group, IconCopy, IconDots, IconTrash, Menu, useClipboard } from '@egodb/ui'
+import { useConfirmModal } from '../../hooks'
 import { trpc } from '../../trpc'
 import type { TRow } from './interface'
 
@@ -8,6 +9,17 @@ export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableI
   const deleteRecord = trpc.record.delete.useMutation({
     onSuccess() {
       utils.record.list.refetch()
+    },
+  })
+
+  const confirm = useConfirmModal({
+    children: <Alert color="red">Confirm to Delete Record {row.id} ?</Alert>,
+    confirmProps: { loading: deleteRecord.isLoading },
+    onConfirm: () => {
+      deleteRecord.mutate({
+        tableId,
+        id: row.id,
+      })
     },
   })
 
@@ -34,10 +46,7 @@ export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableI
             color="red"
             onClick={(e) => {
               e.stopPropagation()
-              deleteRecord.mutate({
-                tableId,
-                id: row.id,
-              })
+              confirm()
             }}
             icon={<IconTrash size={14} />}
           >
