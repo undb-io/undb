@@ -1,14 +1,17 @@
-import type { ITableManager, Table } from '@egodb/core'
+import type { ITableSpec, IUnderlyingTableManager, Table } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
+import { UnderlyingTableBuilder } from '../entity/underlying-table/underlying-table.builder'
+import { UnderlyingTableSqliteManagerVisitor } from './underlying-table-sqlite.manager-visitor'
 
-export class TableSqliteManager implements ITableManager {
+export class UnderlyingTableSqliteManager implements IUnderlyingTableManager {
   constructor(protected readonly em: EntityManager) {}
 
   async create(table: Table): Promise<void> {
     const knex = this.em.getKnex()
 
     await knex.schema.createTable(table.id.value, (t) => {
-      t.string('id').primary()
+      const builder = new UnderlyingTableBuilder(knex, t, table.id.value)
+      builder.createId().createCreatedAt().createUpdatedAt()
 
       for (const field of table.schema.fields) {
         switch (field.type) {
@@ -36,14 +39,13 @@ export class TableSqliteManager implements ITableManager {
             break
         }
       }
+    })
+  }
 
-      t.timestamp('created_at').notNullable().defaultTo(knex.fn.now())
-      t.dateTime('updated_at').notNullable().defaultTo(knex.fn.now())
-    }).raw(`
-    CREATE TRIGGER update_at_update AFTER UPDATE ON ${table.id.value}
-    BEGIN
-      update ${table.id.value} SET updated_at = datetime('now') WHERE id = NEW.id;
-    END;
-    `)
+  async update(table: Table, spec: ITableSpec): Promise<void> {
+    const visitor = new UnderlyingTableSqliteManagerVisitor(table, this.em.getKnex().schema)
+    spec.accept(visitor)
+
+    await visitor.commit()
   }
 }
