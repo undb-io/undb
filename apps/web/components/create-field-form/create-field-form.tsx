@@ -8,8 +8,8 @@ import type { ITableBaseProps } from '../table/table-base-props'
 import { createFielModelOpened } from './create-field-modal-opened.atom'
 import { CreateFieldVariantControl } from './create-field-variant-control'
 import { FieldItem } from '../fields/field-item'
-import { useFormContext } from 'react-hook-form'
-import type { ICreateFieldSchema, IFieldType } from '@egodb/core'
+import { Controller, useFormContext } from 'react-hook-form'
+import type { ICreateFieldSchema } from '@egodb/core'
 
 interface IProps extends ITableBaseProps {
   onCancel?: () => void
@@ -39,14 +39,19 @@ export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
   return (
     <form onSubmit={onSubmit}>
       <Stack>
-        <Select
-          {...form.register('type')}
-          onChange={(type) => type && form.setValue('type', type as IFieldType)}
-          required
-          label={<FieldInputLabel>type</FieldInputLabel>}
-          data={FIELD_SELECT_ITEMS}
-          itemComponent={FieldItem}
-          icon={<FieldIcon type={form.watch('type')} />}
+        <Controller
+          name="type"
+          render={(props) => (
+            <Select
+              {...props.field}
+              onChange={(type) => type && props.field.onChange(type)}
+              required
+              label={<FieldInputLabel>type</FieldInputLabel>}
+              data={FIELD_SELECT_ITEMS}
+              itemComponent={FieldItem}
+              icon={<FieldIcon type={form.watch('type')} />}
+            />
+          )}
         />
         <TextInput
           {...props}

@@ -1,5 +1,5 @@
 import type { ICreateTableInput } from '@egodb/core'
-import { useFormContext } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import { SelectFieldControl } from '../../fields/select-field-control'
 
 interface IProps {
@@ -11,7 +11,12 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
   const type = form.watch(`schema.${index}.type`)
 
   if (type === 'select') {
-    return <SelectFieldControl onChange={(options) => form.setValue(`schema.${index}.options`, options)} />
+    return (
+      <Controller
+        name={`schema.${index}.options`}
+        render={(props) => <SelectFieldControl onChange={(options) => props.field.onChange(options)} />}
+      />
+    )
   }
 
   return null
