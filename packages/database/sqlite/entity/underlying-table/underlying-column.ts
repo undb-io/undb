@@ -1,3 +1,4 @@
+import type { BoolField, DateField, DateRangeField, Field, NumberField, SelectField, StringField } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import {
   UNDERLYING_COLUMN_CREATED_AT_NAME,
@@ -47,5 +48,63 @@ export class UnderlyingUpdatedAtColumn extends UnderlyingColumn {
     `)
 
     return cb
+  }
+}
+
+abstract class UnderlyingFieldColumn<F extends Field> implements IUnderlyingColumn {
+  constructor(protected readonly field: F) {}
+  get name(): string {
+    return this.field.id.value
+  }
+  abstract build(tb: Knex.TableBuilder, knex: Knex, tableName: string): Knex.ColumnBuilder
+}
+
+export class UnderlyingStringColumn extends UnderlyingFieldColumn<StringField> {
+  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
+    return tb.string(this.name)
+  }
+}
+
+export class UnderlyingNumberColumn extends UnderlyingFieldColumn<NumberField> {
+  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
+    return tb.float(this.name)
+  }
+}
+
+export class UnderlyingBoolColumn extends UnderlyingFieldColumn<BoolField> {
+  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
+    return tb.boolean(this.name)
+  }
+}
+
+export class UnderlyingDateColumn extends UnderlyingFieldColumn<DateField> {
+  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
+    return tb.dateTime(this.name)
+  }
+}
+
+export class UnderlyingDateRangeFromColumn extends UnderlyingFieldColumn<DateRangeField> {
+  get name(): string {
+    return super.name + '_from'
+  }
+
+  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
+    return tb.dateTime(this.name)
+  }
+}
+
+export class UnderlyingDateRangeToFromColumn extends UnderlyingFieldColumn<DateRangeField> {
+  get name(): string {
+    return super.name + '_to'
+  }
+
+  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
+    return tb.dateTime(this.name)
+  }
+}
+
+export class UnderlyingSelectFromColumn extends UnderlyingFieldColumn<SelectField> {
+  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
+    return tb.string(this.name)
   }
 }
