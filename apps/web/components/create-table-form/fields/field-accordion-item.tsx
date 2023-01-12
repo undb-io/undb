@@ -8,8 +8,8 @@ import { FIELD_SELECT_ITEMS } from '../../../constants/field.constants'
 import { FieldVariantControl } from './field-variant-control'
 import { FieldIcon } from '../../fields/field-Icon'
 import { FieldItem } from '../../fields/field-item'
-import { useFormContext } from 'react-hook-form'
-import type { ICreateTableInput, IFieldType } from '@egodb/core'
+import { Controller, useFormContext } from 'react-hook-form'
+import type { ICreateTableInput } from '@egodb/core'
 
 interface IProps {
   id: number
@@ -23,7 +23,7 @@ export type Props = {
 
 export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
   const form = useFormContext<ICreateTableInput>()
-  const name = form.getValues(`schema.${index}`).name
+  const name = form.watch(`schema.${index}.name`)
 
   const { attributes, listeners, isDragging, setNodeRef, transform, transition } = useSortable({ id })
   const style = {
@@ -32,7 +32,6 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
   }
 
   const nameProps = form.register(`schema.${index}.name`)
-  const props = form.register(`schema.${index}.type`)
   return (
     <Accordion.Item id={String(id)} opacity={isDragging ? 0.5 : 1} value={String(id)}>
       <Accordion.Control ref={setNodeRef} style={style}>
@@ -48,17 +47,23 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
       <Accordion.Panel>
         <Stack>
           <Group grow={true}>
-            <Select
-              {...props}
-              onChange={(value) => value && form.setValue(`schema.${index}.type`, value as IFieldType)}
-              label={<FieldInputLabel>type</FieldInputLabel>}
-              defaultValue="string"
-              variant="filled"
-              required={true}
-              data={FIELD_SELECT_ITEMS}
-              itemComponent={FieldItem}
-              icon={<FieldIcon type={form.getValues(`schema.${index}`).type} />}
+            <Controller
+              name={`schema.${index}.type`}
+              render={(f) => (
+                <Select
+                  {...f.field}
+                  onChange={(value) => f.field.onChange(value)}
+                  label={<FieldInputLabel>type</FieldInputLabel>}
+                  defaultValue="string"
+                  variant="filled"
+                  required={true}
+                  data={FIELD_SELECT_ITEMS}
+                  itemComponent={FieldItem}
+                  icon={<FieldIcon type={form.watch(`schema.${index}.type`)} />}
+                />
+              )}
             />
+
             <TextInput
               {...nameProps}
               onChange={(e) => {

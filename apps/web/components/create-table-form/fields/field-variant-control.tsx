@@ -8,9 +8,9 @@ interface IProps {
 
 export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
   const form = useFormContext<ICreateTableInput>()
-  const field = form.getValues(`schema.${index}`)
+  const type = form.watch(`schema.${index}.type`)
 
-  if (field.type === 'select') {
+  if (type === 'select') {
     return <SelectFieldControl onChange={(options) => form.setValue(`schema.${index}.options`, options)} />
   }
 
