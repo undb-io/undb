@@ -13,6 +13,9 @@ export const createConfig = (relativaPath: string) =>
     dbName: path.resolve(process.cwd(), relativaPath, 'ego.sqlite'),
     debug: true,
     forceUndefined: true,
+    migrations: {
+      disableForeignKeys: true,
+    },
     schemaGenerator: {
       disableForeignKeys: true,
       createForeignKeyConstraints: true,

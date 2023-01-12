@@ -9,4 +9,5 @@ export interface ITableRepository {
 
   insert(table: Table): Promise<void>
   updateOneById(id: string, spec: ITableSpec): Promise<void>
+  deleteOneById(id: string): Promise<void>
 }

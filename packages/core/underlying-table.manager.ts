@@ -4,4 +4,5 @@ import type { Table } from './table'
 export interface IUnderlyingTableManager {
   create(table: Table): Promise<void>
   update(table: Table, spec: ITableSpec): Promise<void>
+  delete(table: Table): Promise<void>
 }

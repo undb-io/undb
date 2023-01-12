@@ -1,5 +1,15 @@
 import type { Field as CoreField, IFieldType } from '@egodb/core'
-import { Collection, Entity, Enum, ManyToOne, OneToMany, PrimaryKey, PrimaryKeyType, Property } from '@mikro-orm/core'
+import {
+  Cascade,
+  Collection,
+  Entity,
+  Enum,
+  ManyToOne,
+  OneToMany,
+  PrimaryKey,
+  PrimaryKeyType,
+  Property,
+} from '@mikro-orm/core'
 import { BaseEntity } from './base'
 import { Option } from './option'
 import { Table } from './table'
@@ -17,7 +27,7 @@ export abstract class Field extends BaseEntity {
   @PrimaryKey()
   id!: string
 
-  @ManyToOne(() => Table, { primary: true })
+  @ManyToOne(() => Table, { primary: true, cascade: [Cascade.ALL] })
   table!: Table;
 
   [PrimaryKeyType]?: [string, string]
@@ -46,7 +56,7 @@ export class DateRangeField extends Field {}
 
 @Entity({ discriminatorValue: 'select' })
 export class SelectField extends Field {
-  @OneToMany(() => Option, (option) => option.field)
+  @OneToMany(() => Option, (option) => option.field, { orphanRemoval: true, cascade: [Cascade.ALL] })
   options = new Collection<Option>(this)
 }
 

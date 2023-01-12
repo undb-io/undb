@@ -3,6 +3,8 @@ import {
   CreateTableCommand,
   createTableCommandInput,
   createTableCommandOutput,
+  DeleteTableCommand,
+  deleteTableCommandInput,
   EditTableCommand,
   editTableCommandInput,
   GetTableQuery,
@@ -55,6 +57,14 @@ export const createTableRouter =
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new EditTableCommand(input)
+          return commandBus.execute(cmd)
+        }),
+      delete: procedure
+        .meta({ openapi: { method: 'POST', path: '/table.delete', tags } })
+        .input(deleteTableCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new DeleteTableCommand(input)
           return commandBus.execute(cmd)
         }),
       field: createFieldRouter(procedure)(commandBus),

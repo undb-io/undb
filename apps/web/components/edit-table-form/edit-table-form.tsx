@@ -9,17 +9,18 @@ interface IProps extends ITableBaseProps {
   onSuccess?: () => void
 }
 
-export const EditTableForm: React.FC<IProps> = ({ table, onCancel, onSuccess }) => {
+export const EditTableForm: React.FC<IProps> = ({ table, onCancel, onSuccess: success }) => {
   const form = useFormContext<IEditTableSchema>()
   const utils = trpc.useContext()
 
+  const onSuccess = () => {
+    reset()
+    utils.table.list.refetch()
+    utils.table.get.refetch()
+    success?.()
+  }
   const editTable = trpc.table.edit.useMutation({
-    onSuccess: () => {
-      reset()
-      utils.table.list.refetch()
-      utils.table.get.refetch()
-      onSuccess?.()
-    },
+    onSuccess,
   })
 
   const onSubmit = form.handleSubmit((values) => {
