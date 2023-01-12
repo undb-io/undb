@@ -15,7 +15,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const visitor = new RecordSqliteQueryVisitor(qb)
     spec.accept(visitor).unwrap()
 
-    const data = await qb
+    const data = await this.em.execute(qb)
 
     const records = data.map((d) => RecordSqliteMapper.toQuery(visitor.tableId, schema, d))
     return records
@@ -28,7 +28,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const visitor = new RecordSqliteQueryVisitor(qb)
     spec.accept(visitor).unwrap()
 
-    const data = await qb.first()
+    const data = await this.em.execute(qb.first())
 
     const record = RecordSqliteMapper.toQuery(visitor.tableId, schema, data)
     return Option(record)

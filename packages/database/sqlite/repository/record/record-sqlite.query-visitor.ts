@@ -29,10 +29,11 @@ import type {
   WithRecordValues,
 } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
+import { endOfDay, startOfDay } from 'date-fns'
 
 export class RecordSqliteQueryVisitor implements IRecordVisitor {
   public tableId!: string
-  constructor(private readonly qb: Knex.QueryBuilder) {}
+  constructor(private qb: Knex.QueryBuilder) {}
 
   idEqual(s: WithRecordId): void {
     this.qb.where({ id: s.id.value })
@@ -51,72 +52,76 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     throw new Error('Method not implemented.')
   }
   stringEqual(s: StringEqual): void {
-    throw new Error('Method not implemented.')
+    this.qb.where({ [s.fieldId]: s.value })
   }
   stringContain(s: StringContain): void {
-    throw new Error('Method not implemented.')
+    this.qb.whereRaw(`${s.fieldId} like '%??%'`, [s.value])
   }
   stringStartsWith(s: StringStartsWith): void {
-    throw new Error('Method not implemented.')
+    this.qb.whereRaw(`${s.fieldId} like '??%'`, [s.value])
   }
   stringEndsWith(s: StringEndsWith): void {
-    throw new Error('Method not implemented.')
+    this.qb.whereRaw(`${s.fieldId} like '%??'`, [s.value])
   }
   stringRegex(s: StringRegex): void {
     throw new Error('Method not implemented.')
   }
   numberEqual(s: NumberEqual): void {
-    throw new Error('Method not implemented.')
+    this.qb.where({ [s.fieldId]: s.value })
   }
   numberGreaterThan(s: NumberGreaterThan): void {
-    throw new Error('Method not implemented.')
+    this.qb.where(s.fieldId, '>', s.value)
   }
   numberLessThan(s: NumberLessThan): void {
-    throw new Error('Method not implemented.')
+    this.qb.where(s.fieldId, '<', s.value)
   }
   numberGreaterThanOrEqual(s: NumberGreaterThanOrEqual): void {
-    throw new Error('Method not implemented.')
+    this.qb.where(s.fieldId, '>=', s.value)
   }
   numberLessThanOrEqual(s: NumberLessThanOrEqual): void {
-    throw new Error('Method not implemented.')
+    this.qb.where(s.fieldId, '<=', s.value)
   }
   dateEqual(s: DateEqual): void {
-    throw new Error('Method not implemented.')
+    this.qb.where({ [s.fieldId]: s.value })
   }
   dateGreaterThan(s: DateGreaterThan): void {
-    throw new Error('Method not implemented.')
+    this.qb.where(s.fieldId, '>', s.value)
   }
   dateLessThan(s: DateLessThan): void {
-    throw new Error('Method not implemented.')
+    this.qb.where(s.fieldId, '<', s.value)
   }
   dateGreaterThanOrEqual(s: DateGreaterThanOrEqual): void {
-    throw new Error('Method not implemented.')
+    this.qb.where(s.fieldId, '>=', s.value)
   }
   dateLessThanOrEqual(s: DateLessThanOrEqual): void {
-    throw new Error('Method not implemented.')
+    this.qb.where(s.fieldId, '<=', s.value)
   }
   dateIsToday(s: DateIsToday): void {
-    throw new Error('Method not implemented.')
+    this.qb.whereBetween(s.fieldId, [startOfDay(new Date()), endOfDay(new Date())])
   }
   null(s: NullSpecification): void {
-    throw new Error('Method not implemented.')
+    this.qb.whereNull(s.fieldId)
   }
   dateRangeEqual(s: DateRangeEqual): void {
-    throw new Error('Method not implemented.')
+    if (s.value) {
+      this.qb.whereBetween(s.fieldId, s.value)
+    }
+    this.qb.whereNull(s.fieldId)
   }
   selectEqual(s: SelectEqual): void {
-    throw new Error('Method not implemented.')
+    this.qb.where(s.fieldId, s.value)
   }
   selectIn(s: SelectIn): void {
-    throw new Error('Method not implemented.')
+    this.qb.whereIn(s.fielId, s.value)
   }
   boolIsTrue(s: BoolIsTrue): void {
-    throw new Error('Method not implemented.')
+    this.qb.where(s.fieldId, true)
   }
   boolIsFalse(s: BoolIsFalse): void {
-    throw new Error('Method not implemented.')
+    this.qb.where(s.fieldId, false)
   }
   not(): this {
-    throw new Error('Method not implemented.')
+    this.qb = this.qb.not
+    return this
   }
 }

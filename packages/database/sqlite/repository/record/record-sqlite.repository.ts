@@ -27,7 +27,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       {} as Record<string, Primitive | Date>,
     )
     data['id'] = record.id.value
-    await knex.insert(data).into(record.tableId.value)
+    await this.em.execute(knex.insert(data).into(record.tableId.value))
   }
 
   async findOneById(tableId: string, id: string, schema: TableSchemaMap): Promise<Option<CoreRecord>> {
@@ -37,7 +37,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     const qv = new RecordSqliteQueryVisitor(qb)
     spec.accept(qv)
 
-    const data = await qb.first()
+    const data = await this.em.execute(qb.first())
 
     const record = RecordSqliteMapper.toDomain(tableId, schema, data).unwrap()
     return Some(record)
@@ -52,6 +52,6 @@ export class RecordSqliteRepository implements IRecordRepository {
     const mv = new RecordSqliteMutationVisitor(qb)
     spec.accept(mv)
 
-    await qb
+    await this.em.execute(qb)
   }
 }
