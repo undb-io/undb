@@ -46,7 +46,9 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field }) => 
     return (
       <Controller
         name={name}
-        render={(form) => <Checkbox lh={1} key={field.id.value} {...form.field} label={label} />}
+        render={(form) => (
+          <Checkbox lh={1} key={field.id.value} {...form.field} checked={form.field.value} label={label} />
+        )}
       />
     )
   }
