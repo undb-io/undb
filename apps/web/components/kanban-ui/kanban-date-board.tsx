@@ -1,4 +1,4 @@
-import { DragOverlay } from '@dnd-kit/core'
+import { DragOverlay, PointerSensor } from '@dnd-kit/core'
 import { DndContext, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import type { DateField, Records } from '@egodb/core'
@@ -45,7 +45,16 @@ export const KanbanDateBoard: React.FC<IProps> = ({ table, field, records }) => 
   }, [records])
 
   const sensors = useSensors(
-    useSensor(MouseSensor),
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
     useSensor(TouchSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,

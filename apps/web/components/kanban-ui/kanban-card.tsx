@@ -10,6 +10,9 @@ import type { CSSProperties } from 'react'
 import type { DateFieldValue } from '@egodb/core'
 import { format } from 'date-fns/fp'
 import { FieldIcon } from '../fields/field-Icon'
+import { useSetAtom } from 'jotai'
+import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
+import { editRecordValuesAtom } from '../edit-record-form/edit-record-values.atom'
 
 interface IProps extends ITableBaseProps {
   record: Record
@@ -25,8 +28,25 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
   setNodeRef,
   style,
 }) => {
+  const setOpened = useSetAtom(editRecordFormDrawerOpened)
+  const setValues = useSetAtom(editRecordValuesAtom)
+
   return (
-    <Card py="sm" withBorder shadow="md" radius="xs" {...attributes} {...listeners} ref={setNodeRef} style={style}>
+    <Card
+      py="sm"
+      withBorder
+      shadow="md"
+      radius="xs"
+      {...attributes}
+      {...listeners}
+      ref={setNodeRef}
+      style={style}
+      onClick={(e) => {
+        e.stopPropagation()
+        setOpened(true)
+        setValues({ id: record.id.value, values: record.values.valueJSON })
+      }}
+    >
       <Stack spacing={5} sx={(theme) => ({ fontSize: theme.fontSizes.sm })}>
         {Object.entries(record.values.valueJSON).map(([key, value]) => {
           const field = table.schema.getFieldById(key)
