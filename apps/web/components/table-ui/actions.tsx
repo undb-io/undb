@@ -1,8 +1,16 @@
-import { ActionIcon, Group, IconCopy, IconDots, Menu, useClipboard } from '@egodb/ui'
+import { ActionIcon, Group, IconCopy, IconDots, IconTrash, Menu, useClipboard } from '@egodb/ui'
+import { trpc } from '../../trpc'
 import type { TRow } from './interface'
 
-export const RecordActions: React.FC<{ row: TRow }> = ({ row }) => {
+export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableId, row }) => {
   const { copy } = useClipboard({ timeout: 500 })
+  const utils = trpc.useContext()
+  const deleteRecord = trpc.record.delete.useMutation({
+    onSuccess() {
+      utils.record.list.refetch()
+    },
+  })
+
   return (
     <Group>
       <Menu>
@@ -21,6 +29,19 @@ export const RecordActions: React.FC<{ row: TRow }> = ({ row }) => {
             icon={<IconCopy size={14} />}
           >
             Copy Record Id
+          </Menu.Item>
+          <Menu.Item
+            color="red"
+            onClick={(e) => {
+              e.stopPropagation()
+              deleteRecord.mutate({
+                tableId,
+                id: row.id,
+              })
+            }}
+            icon={<IconTrash size={14} />}
+          >
+            Delete Record
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

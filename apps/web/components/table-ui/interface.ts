@@ -1,7 +1,7 @@
-import type { Records, RecordValueJSON, Table } from '@egodb/core'
+import type { RecordAllValues, Records, Table } from '@egodb/core'
 import type { Header, HeaderGroup, Row } from '@tanstack/react-table'
 
-export type TData = RecordValueJSON
+export type TData = RecordAllValues
 
 export type THeaderGroup = HeaderGroup<TData>
 export type THeader = Header<TData, unknown>

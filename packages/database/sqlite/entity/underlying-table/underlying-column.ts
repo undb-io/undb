@@ -1,10 +1,6 @@
 import type { BoolField, DateField, DateRangeField, Field, NumberField, SelectField, StringField } from '@egodb/core'
+import { INTERNAL_FIELD_CREATED_AT_NAME, INTERNAL_FIELD_ID_NAME, INTERNAL_FIELD_UPDATED_AT_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
-import {
-  UNDERLYING_COLUMN_CREATED_AT_NAME,
-  UNDERLYING_COLUMN_ID_NAME,
-  UNDERLYING_COLUMN_UPDATED_AT_NAME,
-} from '../../constants'
 import type { IUnderlyingColumn } from '../../types/underlying-column'
 
 export abstract class UnderlyingColumn implements IUnderlyingColumn {
@@ -14,7 +10,7 @@ export abstract class UnderlyingColumn implements IUnderlyingColumn {
 
 export class UnderlyingIdColumn extends UnderlyingColumn {
   get name(): string {
-    return UNDERLYING_COLUMN_ID_NAME
+    return INTERNAL_FIELD_ID_NAME
   }
 
   build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
@@ -24,7 +20,7 @@ export class UnderlyingIdColumn extends UnderlyingColumn {
 
 export class UnderlyingCreatedAtColumn extends UnderlyingColumn {
   get name(): string {
-    return UNDERLYING_COLUMN_CREATED_AT_NAME
+    return INTERNAL_FIELD_CREATED_AT_NAME
   }
 
   build(tb: Knex.TableBuilder, knex: Knex): Knex.ColumnBuilder {
@@ -34,7 +30,7 @@ export class UnderlyingCreatedAtColumn extends UnderlyingColumn {
 
 export class UnderlyingUpdatedAtColumn extends UnderlyingColumn {
   get name(): string {
-    return UNDERLYING_COLUMN_UPDATED_AT_NAME
+    return INTERNAL_FIELD_UPDATED_AT_NAME
   }
 
   build(tb: Knex.TableBuilder, knex: Knex): Knex.ColumnBuilder {

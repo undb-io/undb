@@ -1,5 +1,12 @@
+import type { Merge } from 'type-fest'
 import { z } from 'zod'
-import { createFieldValueSchema } from '../field'
+import type { FieldValue } from '../field'
+import {
+  createFieldValueSchema,
+  INTERNAL_FIELD_CREATED_AT_NAME,
+  INTERNAL_FIELD_ID_NAME,
+  INTERNAL_FIELD_UPDATED_AT_NAME,
+} from '../field'
 import { fieldNameSchema } from '../field/value-objects/field-name.vo'
 import { recordIdSchema } from './value-objects'
 
@@ -18,3 +25,15 @@ export const updateRecordSchema = z.object({
   value: mutateRecordValueSchema,
 })
 export type IUpdateRecordValueSchema = z.infer<typeof updateRecordSchema>
+
+export const internalRecordValues = z.object({
+  [INTERNAL_FIELD_ID_NAME]: recordIdSchema,
+  [INTERNAL_FIELD_CREATED_AT_NAME]: z.date(),
+  [INTERNAL_FIELD_UPDATED_AT_NAME]: z.date(),
+})
+
+export type IInternalRecordValues = z.infer<typeof internalRecordValues>
+
+export type RecordValueJSON = Record<string, FieldValue>
+
+export type RecordAllValues = Merge<RecordValueJSON, IInternalRecordValues>

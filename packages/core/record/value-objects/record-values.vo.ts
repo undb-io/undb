@@ -7,9 +7,8 @@ import { DateRangeFieldValue } from '../../field/date-range-field-value'
 import type { IDateRangeFieldValue } from '../../field/date-range-field.type'
 import { SelectFieldValue } from '../../field/select-field-value'
 import type { TableSchemaMap } from '../../value-objects'
+import type { RecordValueJSON } from '../record.schema'
 import type { IQueryRecordValues } from '../record.type'
-
-export type RecordValueJSON = Record<string, FieldValue>
 
 export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   static fromArray(inputs: ICreateFieldsSchema_internal): RecordValues {

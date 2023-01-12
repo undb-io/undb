@@ -54,4 +54,12 @@ export class RecordSqliteRepository implements IRecordRepository {
 
     await this.em.execute(qb)
   }
+
+  async deleteOneById(tableId: string, id: string): Promise<void> {
+    const qb = this.em.getKnex().queryBuilder()
+
+    qb.from(tableId).where({ id }).del()
+
+    await this.em.execute(qb)
+  }
 }

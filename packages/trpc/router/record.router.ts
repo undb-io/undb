@@ -2,6 +2,8 @@ import {
   CreateRecordCommand,
   createRecordCommandInput,
   createRecordCommandOutput,
+  DeleteRecordCommand,
+  deleteRecordCommandInput,
   GetRecordQuery,
   getRecordQueryInput,
   getRecordQueryOutput,
@@ -36,6 +38,14 @@ export const createRecordRouter =
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new UpdateRecordCommand(input)
+          return commandBus.execute(cmd)
+        }),
+      delete: procedure
+        .meta({ openapi: { method: 'POST', path: '/record.get', tags } })
+        .input(deleteRecordCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new DeleteRecordCommand(input)
           return commandBus.execute(cmd)
         }),
       get: procedure
