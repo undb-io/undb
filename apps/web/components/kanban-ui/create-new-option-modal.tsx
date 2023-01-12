@@ -51,7 +51,7 @@ export const CreateNewOptionModal: React.FC<IProps> = ({ table, field }) => {
             <Button variant="white" onClick={() => setOpened(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={!form.formState.isValid}>
+            <Button type="submit" disabled={!form.formState.isValid} loading={createOption.isLoading}>
               Done
             </Button>
           </Group>

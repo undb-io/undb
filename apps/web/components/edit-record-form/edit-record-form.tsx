@@ -70,7 +70,12 @@ export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel })
             Cancel
           </Button>
 
-          <Button miw={200} type="submit" disabled={!form.formState.isValid || !form.formState.isDirty}>
+          <Button
+            miw={200}
+            type="submit"
+            disabled={!form.formState.isValid || !form.formState.isDirty}
+            loading={updateRecord.isLoading}
+          >
             Confirm
           </Button>
         </Group>

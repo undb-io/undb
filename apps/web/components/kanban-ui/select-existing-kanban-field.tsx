@@ -94,7 +94,7 @@ export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
 
           <Card.Section withBorder inheritPadding py="sm">
             <Group position="right">
-              <Button size="xs" type="submit" disabled={!form.formState.isValid}>
+              <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={setKanbanField.isLoading}>
                 Done
               </Button>
             </Group>

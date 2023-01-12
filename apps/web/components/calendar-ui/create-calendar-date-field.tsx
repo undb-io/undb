@@ -79,7 +79,7 @@ export const CreateCalendarDateField: React.FC<IProps> = ({ table, onSuccess }) 
             <Button leftIcon={<IconChevronLeft size={14} />} size="xs" variant="white" onClick={setStepZero}>
               Select Existing Field
             </Button>
-            <Button size="xs" type="submit" disabled={!form.formState.isValid}>
+            <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={createDateField.isLoading}>
               Done
             </Button>
           </Group>

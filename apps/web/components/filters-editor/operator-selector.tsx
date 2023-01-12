@@ -5,7 +5,6 @@ import { StringField } from '@egodb/core'
 import { BoolField } from '@egodb/core'
 import { DateField } from '@egodb/core'
 import { NumberField } from '@egodb/core'
-import { DateFieldValue } from '@egodb/core/field/date-field-value'
 import type { SelectItem } from '@egodb/ui'
 import { Select } from '@egodb/ui'
 

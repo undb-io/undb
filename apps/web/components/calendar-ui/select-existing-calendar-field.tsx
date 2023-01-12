@@ -93,7 +93,7 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ table, onSuccess
 
         <Card.Section withBorder inheritPadding py="sm">
           <Group position="right">
-            <Button size="xs" type="submit" disabled={!form.formState.isValid}>
+            <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={setCalendarField.isLoading}>
               Done
             </Button>
           </Group>
