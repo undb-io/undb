@@ -62,11 +62,11 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
       fieldHelper.display({
         id: ACTIONS_FIELD,
         header: () => <AddFieldButton />,
-        cell: (props) => <RecordActions row={props.row} />,
+        cell: (props) => <RecordActions tableId={table.id.value} row={props.row} />,
       }),
     )
 
-  const data = useMemo(() => records.map((r) => r.values.valueJSON), [records])
+  const data = useMemo(() => records.map((r) => r.valuesJSON), [records])
   const rt = useReactTable({
     data,
     columns,
@@ -74,6 +74,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
       columnVisibility,
       columnOrder,
     },
+    getRowId: (r) => r.id,
     columnResizeMode: 'onChange',
     getCoreRowModel: getCoreRowModel(),
   })

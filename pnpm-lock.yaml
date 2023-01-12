@@ -202,6 +202,7 @@ importers:
       rimraf: ^3.0.2
       tsconfig: ^0.0.0
       tsup: ^6.5.0
+      type-fest: ^3.5.1
       typescript: ^4.9.4
       vitest: ^0.26.3
       vitest-mock-extended: ^1.0.8
@@ -217,6 +218,7 @@ importers:
       rimraf: 3.0.2
       tsconfig: link:../tsconfig
       tsup: 6.5.0_typescript@4.9.4
+      type-fest: 3.5.1
       typescript: 4.9.4
       vitest: 0.26.3
       vitest-mock-extended: 1.0.8_xclmfinyfk6aufj4k2cxreubxi

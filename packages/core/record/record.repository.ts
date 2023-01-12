@@ -8,4 +8,5 @@ export interface IRecordRepository {
   findOneById(tableId: string, id: string, schema: TableSchemaMap): Promise<Option<Record>>
 
   updateOneById(tableId: string, id: string, spec: IRecordSpec): Promise<void>
+  deleteOneById(tableId: string, id: string): Promise<void>
 }

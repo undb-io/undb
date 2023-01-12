@@ -1,6 +1,6 @@
 import { DateVO } from '@egodb/domain'
 import type { TableId, TableSchema } from '../value-objects'
-import type { IMutateRecordValueSchema } from './record.schema'
+import type { IInternalRecordValues, IMutateRecordValueSchema, RecordAllValues } from './record.schema'
 import { createRecordInputs } from './record.utils'
 import { WithRecordValues } from './specifications'
 import type { RecordCompositeSpecification } from './specifications/interface'
@@ -20,6 +20,18 @@ export class Record {
     const record = new Record()
 
     return record
+  }
+
+  get internalValuesJSON(): IInternalRecordValues {
+    return {
+      id: this.id.value,
+      created_at: this.createdAt.value,
+      updated_at: this.updatedAt.value,
+    }
+  }
+
+  get valuesJSON(): RecordAllValues {
+    return Object.assign({}, this.internalValuesJSON, this.values.valueJSON)
   }
 
   updateRecord(schema: TableSchema, value: IMutateRecordValueSchema): RecordCompositeSpecification {

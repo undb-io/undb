@@ -2,6 +2,7 @@ import { CreateFieldCommandHandler } from './create-field.command.handler'
 import { CreateOptionCommandHandler } from './create-option.command.handler'
 import { CreateRecordCommandHandler } from './create-record.command.handler'
 import { CreateTableCommandHandler } from './create-table.command.handler'
+import { DeleteRecordCommandHandler } from './delete-record.command.handler'
 import { EditTableCommandHandler } from './edit-table.command.handler'
 import { MoveFieldCommandHandler } from './move-field.command.handler'
 import { ReorderOptionsCommandHandler } from './reorder-options.command.handler'
@@ -28,4 +29,5 @@ export const commandHandlers = [
   ReorderOptionsCommandHandler,
   SwitchDisplayTypeCommandHandler,
   UpdateRecordCommandHandler,
+  DeleteRecordCommandHandler,
 ]

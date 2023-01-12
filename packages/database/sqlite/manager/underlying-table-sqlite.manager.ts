@@ -1,6 +1,6 @@
 import type { ITableSpec, IUnderlyingTableManager, Table } from '@egodb/core'
+import { INTERNAL_FIELD_ID_NAME, INTERNAL_FIELD_UPDATED_AT_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
-import { UNDERLYING_COLUMN_ID_NAME, UNDERLYING_COLUMN_UPDATED_AT_NAME } from '../constants'
 import { UnderlyingTableBuilder } from '../entity/underlying-table/underlying-table.builder'
 import { UnderlyingTableSqliteManagerVisitor } from './underlying-table-sqlite.manager-visitor'
 
@@ -18,7 +18,7 @@ export class UnderlyingTableSqliteManager implements IUnderlyingTableManager {
     }).raw(`
       CREATE TRIGGER update_at_update_${tableName} AFTER UPDATE ON ${tableName}
       BEGIN
-        update ${tableName} SET ${UNDERLYING_COLUMN_UPDATED_AT_NAME} = datetime('now') WHERE ${UNDERLYING_COLUMN_ID_NAME} = NEW.${UNDERLYING_COLUMN_ID_NAME};
+        update ${tableName} SET ${INTERNAL_FIELD_UPDATED_AT_NAME} = datetime('now') WHERE ${INTERNAL_FIELD_ID_NAME} = NEW.${INTERNAL_FIELD_ID_NAME};
       END;
     `)
   }
