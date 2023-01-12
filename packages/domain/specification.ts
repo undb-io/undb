@@ -26,7 +26,7 @@ export abstract class CompositeSpecification<T = any, V extends ISpecVisitor = I
     return new Or(this, s)
   }
 
-  public not(): CompositeSpecification<T, V> {
+  public not(): Not<T, V> {
     return new Not(this)
   }
 }
@@ -68,7 +68,7 @@ class Or<T, V extends ISpecVisitor> extends CompositeSpecification<T, V> {
 }
 
 class Not<T, V extends ISpecVisitor> extends CompositeSpecification<T, V> {
-  constructor(private readonly spec: ISpecification<T, V>) {
+  constructor(public readonly spec: ISpecification<T, V>) {
     super()
   }
 
