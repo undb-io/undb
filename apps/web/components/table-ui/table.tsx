@@ -1,6 +1,9 @@
 import type { SelectFieldValue, BoolFieldValue } from '@egodb/core'
+import type { DateFieldValue } from '@egodb/core'
+import type { DateRangeFieldValue } from '@egodb/core'
 import { Checkbox, Table } from '@egodb/ui'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import { format } from 'date-fns/fp'
 import { useMemo } from 'react'
 import { ACTIONS_FIELD } from '../../constants/field.constants'
 import { Option } from '../option/option'
@@ -11,6 +14,8 @@ import { Thead } from './thead'
 import { Tr } from './tr'
 
 const fieldHelper = createColumnHelper<TData>()
+
+const dateFormat = format('yyyy-MM-dd')
 
 export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const view = table.mustGetView()
@@ -40,6 +45,14 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
             return (
               <Checkbox h="100%" lh={1} readOnly checked={(props.getValue() as BoolFieldValue)?.unpack() ?? false} />
             )
+          }
+          if (f.type === 'date') {
+            const date = (props.getValue() as DateFieldValue).unpack()
+            return date && dateFormat(date)
+          }
+          if (f.type === 'date-range') {
+            const date = (props.getValue() as DateRangeFieldValue).unpack()
+            return date && `${dateFormat(date[0])} - ${dateFormat(date[1])}`
           }
           return props.getValue()?.unpack()?.toString()
         },
