@@ -1,24 +1,6 @@
-import type {
-  ITableSpecVisitor,
-  Table,
-  WithCalendarField,
-  WithDisplayType,
-  WithFieldVisibility,
-  WithFieldWidth,
-  WithFilter,
-  WithKanbanField,
-  WithNewField,
-  WithNewOption,
-  WithOptions,
-  WithTableId,
-  WithTableName,
-  WithTableSchema,
-  WithTableView,
-  WithTableViews,
-  WithViewFieldsOrder,
-} from '@egodb/core'
+import type { ITableSpecVisitor, Table, WithNewField, WithTableSchema } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
-import { UnderlyingColumnFactory } from '../entity/underlying-table/underlying-column.factory'
+import { UnderlyingTableBuilder } from '../entity/underlying-table/underlying-table.builder'
 
 export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   private sb: Knex.SchemaBuilder
@@ -32,58 +14,55 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     await this.sb
   }
 
-  idEqual(s: WithTableId): void {
+  idEqual(): void {
     throw new Error('Method not implemented.')
   }
-  nameEqual(s: WithTableName): void {
+  nameEqual(): void {
     throw new Error('Method not implemented.')
   }
   schemaEqual(s: WithTableSchema): void {
+    this.sb = this.sb.alterTable(this.tableName, (tb) => {
+      const builder = new UnderlyingTableBuilder(this.knex, tb, this.tableName)
+      builder.createUnderlying(s.schema.fields)
+    })
+  }
+  viewsEqual(): void {
     throw new Error('Method not implemented.')
   }
-  viewsEqual(s: WithTableViews): void {
+  viewEqual(): void {
     throw new Error('Method not implemented.')
   }
-  viewEqual(s: WithTableView): void {
-    throw new Error('Method not implemented.')
-  }
-  filterEqual(s: WithFilter): void {
+  filterEqual(): void {
     throw new Error('Method not implemented.')
   }
   newField(s: WithNewField): void {
-    const underlyingColumn = UnderlyingColumnFactory.create(s.field)
     this.sb = this.sb.alterTable(this.tableName, (tb) => {
-      if (Array.isArray(underlyingColumn)) {
-        for (const c of underlyingColumn) {
-          c.build(tb, this.knex, this.tableName)
-        }
-      } else {
-        underlyingColumn.build(tb, this.knex, this.tableName)
-      }
+      const builder = new UnderlyingTableBuilder(this.knex, tb, this.tableName)
+      builder.createUnderlying([s.field])
     })
   }
-  fieldsOrder(s: WithViewFieldsOrder): void {
+  fieldsOrder(): void {
     throw new Error('Method not implemented.')
   }
-  fieldWidthEqual(s: WithFieldWidth): void {
+  fieldWidthEqual(): void {
     throw new Error('Method not implemented.')
   }
-  fieldVisibility(s: WithFieldVisibility): void {
+  fieldVisibility(): void {
     throw new Error('Method not implemented.')
   }
-  displayTypeEqual(s: WithDisplayType): void {
+  displayTypeEqual(): void {
     throw new Error('Method not implemented.')
   }
-  kanbanFieldEqual(s: WithKanbanField): void {
+  kanbanFieldEqual(): void {
     throw new Error('Method not implemented.')
   }
-  calendarFieldEqual(s: WithCalendarField): void {
+  calendarFieldEqual(): void {
     throw new Error('Method not implemented.')
   }
-  optionsEqual(s: WithOptions): void {
+  optionsEqual(): void {
     throw new Error('Method not implemented.')
   }
-  newOption(s: WithNewOption): void {
+  newOption(): void {
     throw new Error('Method not implemented.')
   }
   not(): this {
