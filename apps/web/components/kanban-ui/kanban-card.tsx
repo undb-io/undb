@@ -70,7 +70,7 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
             )
           }
           if (f.type === 'date') {
-            const date = (value as DateFieldValue).unpack()
+            const date = (value as DateFieldValue)?.unpack()
 
             return (
               <Group spacing="xs" key={key}>
@@ -80,7 +80,7 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
             )
           }
           if (f.type === 'date-range') {
-            const date = (value as DateRangeFieldValue).unpack()
+            const date = (value as DateRangeFieldValue)?.unpack()
             return (
               <Group spacing="xs" key={key}>
                 {icon}

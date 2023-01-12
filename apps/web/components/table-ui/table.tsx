@@ -47,11 +47,11 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
             )
           }
           if (f.type === 'date') {
-            const date = (props.getValue() as DateFieldValue).unpack()
+            const date = (props.getValue() as DateFieldValue)?.unpack()
             return date && dateFormat(date)
           }
           if (f.type === 'date-range') {
-            const date = (props.getValue() as DateRangeFieldValue).unpack()
+            const date = (props.getValue() as DateRangeFieldValue)?.unpack()
             return date && `${dateFormat(date[0])} - ${dateFormat(date[1])}`
           }
           return props.getValue()?.unpack()?.toString()
