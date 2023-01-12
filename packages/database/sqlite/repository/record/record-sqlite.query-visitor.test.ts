@@ -24,9 +24,8 @@ import {
   WithRecordId,
   WithRecordUpdatedAt,
 } from '@egodb/core'
-import { BetterSqliteDriver, Knex, MikroORM } from '@mikro-orm/better-sqlite'
-import { defineConfig, Entity, PrimaryKey } from '@mikro-orm/core'
-import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
+import { Knex } from '@mikro-orm/better-sqlite'
+import { Entity, PrimaryKey } from '@mikro-orm/core'
 import { addDays, subDays } from 'date-fns'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
 
@@ -42,16 +41,8 @@ describe('RecordSqliteQueryVisitor', () => {
   let visitor: RecordSqliteQueryVisitor
 
   beforeAll(async () => {
-    const orm = await MikroORM.init(
-      defineConfig({
-        entities: [MockEntity],
-        metadataProvider: TsMorphMetadataProvider,
-        dbName: ':memory:',
-        driver: BetterSqliteDriver,
-      }),
-    )
-
-    knex = orm.em.getKnex()
+    // @ts-expect-error type
+    knex = global.knex
     vi.setSystemTime(date)
   })
 
