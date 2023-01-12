@@ -2,7 +2,7 @@ import { customAlphabet } from 'nanoid'
 import { ID } from './id.vo'
 
 export abstract class NanoID extends ID {
-  private static ALPHABETS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  private static ALPHABETS = '0123456789abcdefghijklmnopqrstuvwxyz'
 
   static createId(prefix = '', size = 5) {
     const id = customAlphabet(NanoID.ALPHABETS, size)()

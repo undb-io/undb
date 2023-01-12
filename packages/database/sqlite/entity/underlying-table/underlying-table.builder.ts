@@ -21,7 +21,7 @@ export class UnderlyingTableBuilder implements IUnderlyingTableBuilder {
   }
 
   createUpdatedAt(): this {
-    new UnderlyingUpdatedAtColumn().build(this.tb, this.knex, this.tableName)
+    new UnderlyingUpdatedAtColumn().build(this.tb, this.knex)
     return this
   }
 
