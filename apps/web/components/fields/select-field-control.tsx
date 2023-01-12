@@ -1,4 +1,4 @@
-import { closestCenter, DndContext } from '@dnd-kit/core'
+import { DndContext, rectIntersection } from '@dnd-kit/core'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { SortableContext, useSortable } from '@dnd-kit/sortable'
 import { optionColorOrder } from '@egodb/core'
@@ -17,6 +17,8 @@ import {
   Popover,
   SimpleGrid,
   UnstyledButton,
+  IconTrash,
+  Grid,
 } from '@egodb/ui'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { CSS } from '@dnd-kit/utilities'
@@ -24,6 +26,7 @@ import type { IOptionColor, ICreateOptionSchema } from '@egodb/core'
 import { OptionColor } from '@egodb/core'
 import { Option } from '../option/option'
 import { useState } from 'react'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 type OnColorChange = (color: IOptionColor) => void
 
@@ -75,9 +78,10 @@ interface IOptionControlProps {
   option: ICreateOptionSchema
   onNameChange: (name: string) => void
   onColorChange: OnColorChange
+  onRemove: () => void
 }
 
-const OptionControl: React.FC<IOptionControlProps> = ({ option, onNameChange, onColorChange }) => {
+const OptionControl: React.FC<IOptionControlProps> = ({ option, onNameChange, onColorChange, onRemove }) => {
   const { listeners, attributes, setNodeRef, transform, transition } = useSortable({ id: option.id as string })
 
   const style = {
@@ -86,22 +90,33 @@ const OptionControl: React.FC<IOptionControlProps> = ({ option, onNameChange, on
   }
 
   return (
-    <Group spacing="xs" ref={setNodeRef} style={style}>
-      <ActionIcon {...listeners} {...attributes}>
-        <IconGripVertical size={14} color="gray" />
-      </ActionIcon>
-      <Group>
-        <OptionColorPicker onChange={onColorChange} option={option} />
-        <FocusTrap>
-          <TextInput
-            variant="unstyled"
-            value={option.name}
-            onChange={(e) => onNameChange(e.target.value)}
-            placeholder="option name..."
-          />
-        </FocusTrap>
-      </Group>
-    </Group>
+    <Grid align="center" w="100%" ref={setNodeRef} style={style}>
+      <Grid.Col span="auto">
+        <ActionIcon {...listeners} {...attributes}>
+          <IconGripVertical size={14} color="gray" />
+        </ActionIcon>
+      </Grid.Col>
+
+      <Grid.Col span={10}>
+        <Group>
+          <OptionColorPicker onChange={onColorChange} option={option} />
+          <FocusTrap>
+            <TextInput
+              variant="unstyled"
+              value={option.name}
+              onChange={(e) => onNameChange(e.target.value)}
+              placeholder="option name..."
+            />
+          </FocusTrap>
+        </Group>
+      </Grid.Col>
+
+      <Grid.Col span="auto">
+        <ActionIcon onClick={() => onRemove()}>
+          <IconTrash size={14} color="gray" />
+        </ActionIcon>
+      </Grid.Col>
+    </Grid>
   )
 }
 
@@ -116,33 +131,41 @@ export const SelectFieldControl: React.FC<ISelectFieldControlProps> = ({ onChang
   }, [options])
 
   const items = options.map((o) => o.id as string)
+  const [parent, enableAnimations] = useAutoAnimate({ duration: 200 })
 
   return (
     <Stack spacing={0}>
-      <DndContext
-        collisionDetection={closestCenter}
-        modifiers={[restrictToVerticalAxis]}
-        onDragEnd={(e) => {
-          const { over, active } = e
-          if (over) {
-            handlers.reorder({
-              from: active.data.current?.sortable?.index,
-              to: over?.data.current?.sortable?.index,
-            })
-          }
-        }}
-      >
-        <SortableContext items={items}>
-          {options.map((o, index) => (
-            <OptionControl
-              key={o.id}
-              option={o}
-              onNameChange={(name) => handlers.setItemProp(index, 'name', name)}
-              onColorChange={(color) => handlers.setItemProp(index, 'color', color)}
-            />
-          ))}
-        </SortableContext>
-      </DndContext>
+      <div ref={parent as any}>
+        <DndContext
+          collisionDetection={rectIntersection}
+          modifiers={[restrictToVerticalAxis]}
+          onDragStart={() => enableAnimations(false)}
+          onDragEnd={(e) => {
+            const { over, active } = e
+            setTimeout(() => {
+              enableAnimations(true)
+            }, 0)
+            if (over) {
+              handlers.reorder({
+                from: active.data.current?.sortable?.index,
+                to: over?.data.current?.sortable?.index,
+              })
+            }
+          }}
+        >
+          <SortableContext items={items}>
+            {options.map((o, index) => (
+              <OptionControl
+                key={o.id}
+                option={o}
+                onNameChange={(name) => handlers.setItemProp(index, 'name', name)}
+                onColorChange={(color) => handlers.setItemProp(index, 'color', color)}
+                onRemove={() => handlers.remove(index)}
+              />
+            ))}
+          </SortableContext>
+        </DndContext>
+      </div>
       <Button
         leftIcon={<IconSelect size={14} />}
         size="xs"

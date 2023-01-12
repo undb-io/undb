@@ -128,6 +128,7 @@ importers:
       '@egodb/ui': ^0.0.0
       '@emotion/babel-plugin': ^11.10.5
       '@emotion/styled': ^11.10.5
+      '@formkit/auto-animate': 1.0.0-beta.5
       '@fxts/core': ^0.11.0
       '@hookform/devtools': ^4.3.0
       '@hookform/resolvers': ^2.9.10
@@ -162,6 +163,7 @@ importers:
       '@egodb/trpc': link:../../packages/trpc
       '@egodb/ui': link:../../packages/ui
       '@emotion/styled': 11.10.5_jp5qgyg6plq757v5hojp7ls2oe
+      '@formkit/auto-animate': 1.0.0-beta.5
       '@fxts/core': 0.11.0
       '@hookform/resolvers': 2.9.10_react-hook-form@7.41.5
       '@tanstack/react-query': 4.22.0_biqbaboplfbrettd7655fr4n2y
@@ -1200,6 +1202,10 @@ packages:
       '@floating-ui/dom': 1.0.6
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@formkit/auto-animate/1.0.0-beta.5:
+    resolution: {integrity: sha512-WoSwyhAZPOe6RB/IgicOtCHtrWwEpfKIZ/H/nxpKfnZL9CB6hhhBGU5bCdMRw7YpAUF2CDlQa+WWh+gCqz5lDg==}
     dev: false
 
   /@fxts/core/0.11.0:
