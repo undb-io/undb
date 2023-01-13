@@ -107,7 +107,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
       fieldHelper.display({
         id: ACTIONS_FIELD,
         header: () => (
-          <th>
+          <th style={{ borderBottom: '0' }}>
             <AddFieldButton />
           </th>
         ),
@@ -139,24 +139,35 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
         borderTop: '0',
         borderLeft: '0',
         borderRight: '0',
-        borderBottom: data.length ? '1px solid ' + theme.colors.gray[2] : '0',
+        borderBottom: '0',
         width: rt.getCenterTotalSize(),
-        'thead th': {
+        table: {
+          border: '0',
+        },
+        'thead tr': {
+          border: '0',
+        },
+        'thead tr th': {
           position: 'relative',
           userSelect: 'none',
           backgroundColor: theme.white,
 
           ':last-child': {
-            border: '0',
+            border: '1px red solid',
           },
         },
         'tbody tr': {
           cursor: 'pointer',
         },
         'tbody tr td': {
+          borderRight: '1px solid ' + theme.colors.gray[2],
+          borderBottom: '1px solid ' + theme.colors.gray[2],
           ':last-child': {
-            border: '1px white solid',
+            border: '0',
           },
+        },
+        'tbody tr:hover td:last-child': {
+          backgroundColor: theme.white,
         },
       })}
     >
