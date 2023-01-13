@@ -3,6 +3,7 @@ import arrayMove from 'array-move'
 import { Option as O } from 'oxide.ts'
 import { Option } from './option'
 import { OptionColor } from './option-color'
+import type { OptionId } from './option-id.vo'
 import type { ICreateOptionSchema, ICreateOptionsSchema } from './option.schema'
 import { createOptionsSchema } from './option.schema'
 
@@ -13,6 +14,10 @@ export class Options extends ValueObject<Option[]> {
 
   public get lastOption(): O<Option> {
     return O(this.options[this.options.length - 1])
+  }
+
+  public remove(id: OptionId): Options {
+    return new Options(this.options.filter((option) => !option.id.equals(id)))
   }
 
   public get ids() {

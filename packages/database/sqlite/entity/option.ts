@@ -48,7 +48,7 @@ export class Option extends BaseEntity {
   @ManyToOne(() => SelectField, { primary: true, cascade: [Cascade.ALL] })
   field: SelectField;
 
-  [PrimaryKeyType]?: [string, string, string]
+  [PrimaryKeyType]?: [string, string]
 
   @Property()
   name: string

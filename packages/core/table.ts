@@ -2,7 +2,7 @@ import { and, andOptions } from '@egodb/domain'
 import type { Option, Result } from 'oxide.ts'
 import { None, Ok, Some } from 'oxide.ts'
 import type { ICreateFieldSchema, IQuerySchemaSchema, IReorderOptionsSchema } from './field'
-import { isSelectField } from './field'
+import { SelectField } from './field'
 import type { IRootFilter } from './filter'
 import type { ICreateOptionSchema } from './option'
 import type { Record } from './record'
@@ -193,8 +193,7 @@ export class Table {
   }
 
   public reorderOption(input: IReorderOptionsSchema): TableCompositeSpecificaiton {
-    let field = this.schema.getFieldById(input.fieldId).unwrap()
-    field = isSelectField.parse(field)
+    const field = this.schema.getFieldByIdOfType(input.fieldId, SelectField).unwrap()
 
     const spec = field.reorder(input.from, input.to)
     spec.mutate(this)
@@ -203,10 +202,18 @@ export class Table {
   }
 
   public createOption(fieldId: string, input: ICreateOptionSchema): TableCompositeSpecificaiton {
-    let field = this.schema.getFieldById(fieldId).unwrap()
-    field = isSelectField.parse(field)
+    const field = this.schema.getFieldByIdOfType(fieldId, SelectField).unwrap()
 
     const spec = field.createOption(input)
+    spec.mutate(this)
+
+    return spec
+  }
+
+  public removeOption(fieldId: string, id: string): TableCompositeSpecificaiton {
+    const field = this.schema.getFieldByIdOfType(fieldId, SelectField).unwrap()
+
+    const spec = field.removeOption(id)
     spec.mutate(this)
 
     return spec

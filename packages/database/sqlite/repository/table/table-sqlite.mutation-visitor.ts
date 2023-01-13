@@ -9,6 +9,7 @@ import type {
   WithNewField,
   WithNewOption,
   WithOptions,
+  WithoutOption,
   WithTableName,
   WithTableSchema,
   WithTableView,
@@ -24,7 +25,6 @@ import { View } from '../../entity/view'
 export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   private jobs: (() => Promise<void>)[] = []
   constructor(private readonly tableId: string, private readonly em: EntityManager) {}
-
   public async commit() {
     await Promise.all(this.jobs.map((job) => job()))
     await this.em.flush()
@@ -129,6 +129,14 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
     const field = this.getField(s.field.id.value) as SelectField
     const option = new Option(field, s.option)
     this.em.persist(option)
+  }
+  witoutOption(s: WithoutOption): void {
+    this.jobs.push(async () => {
+      await this.em
+        .qb(Option)
+        .delete()
+        .where({ id: s.optionId.value, field: [s.field.id.value, this.tableId] })
+    })
   }
   not(): this {
     return this

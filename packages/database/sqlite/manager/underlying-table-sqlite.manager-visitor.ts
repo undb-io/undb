@@ -1,17 +1,22 @@
-import type { ITableSpecVisitor, Table, WithNewField, WithTableSchema } from '@egodb/core'
-import type { Knex } from '@mikro-orm/better-sqlite'
+import type { ITableSpecVisitor, Table, WithNewField, WithoutOption, WithTableSchema } from '@egodb/core'
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { UnderlyingTableBuilder } from '../entity/underlying-table/underlying-table.builder'
 
 export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
+  private readonly knex: Knex
   private sb: Knex.SchemaBuilder
+  private qb: Knex.QueryBuilder
   private readonly tableName: string
-  constructor(private readonly table: Table, private readonly knex: Knex) {
+  constructor(private readonly table: Table, private readonly em: EntityManager) {
+    const knex = em.getKnex()
+    this.knex = knex
     this.sb = knex.schema
+    this.qb = knex.queryBuilder()
     this.tableName = table.id.value
   }
-
   async commit() {
     await this.sb
+    await this.em.execute(this.qb)
   }
 
   idEqual(): void {
@@ -64,6 +69,9 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   }
   newOption(): void {
     throw new Error('Method not implemented.')
+  }
+  witoutOption(s: WithoutOption): void {
+    this.qb = this.qb.from(this.tableName).where(s.field.id.value, s.optionId.value).update(s.field.id.value, null)
   }
   not(): this {
     throw new Error('Method not implemented.')

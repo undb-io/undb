@@ -1,19 +1,13 @@
-import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { Option } from '../../option'
+import type { Option, OptionId } from '../../option'
 import { Options } from '../../option'
 import type { ITableSpecVisitor } from '../../specifications'
 import type { Table } from '../../table'
 import type { SelectField } from '../select-field'
+import { BaseFieldSpecification } from './base-field.specification'
 
-abstract class BaseSelectFieldSpecification extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly field: SelectField) {
-    super()
-  }
-}
-
-export class WithOptions extends BaseSelectFieldSpecification {
+export class WithOptions extends BaseFieldSpecification<SelectField> {
   constructor(field: SelectField, public readonly options: Options) {
     super(field)
   }
@@ -33,7 +27,7 @@ export class WithOptions extends BaseSelectFieldSpecification {
   }
 }
 
-export class WithNewOption extends BaseSelectFieldSpecification {
+export class WithNewOption extends BaseFieldSpecification<SelectField> {
   constructor(field: SelectField, public readonly option: Option) {
     super(field)
   }
@@ -49,6 +43,26 @@ export class WithNewOption extends BaseSelectFieldSpecification {
 
   accept(v: ITableSpecVisitor): Result<void, string> {
     v.newOption(this)
+    return Ok(undefined)
+  }
+}
+
+export class WithoutOption extends BaseFieldSpecification<SelectField> {
+  constructor(field: SelectField, public readonly optionId: OptionId) {
+    super(field)
+  }
+
+  isSatisfiedBy(): boolean {
+    return true
+  }
+
+  mutate(t: Table): Result<Table, string> {
+    this.field.options = this.field.options.remove(this.optionId)
+    return Ok(t)
+  }
+
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.witoutOption(this)
     return Ok(undefined)
   }
 }

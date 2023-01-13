@@ -1,6 +1,6 @@
 import type { CompositeSpecification, ISpecVisitor } from '@egodb/domain'
 import { type ISpecification } from '@egodb/domain'
-import type { WithNewOption, WithOptions } from '../field/specifications/select-field.specification'
+import type { WithNewOption, WithOptions, WithoutOption } from '../field/specifications/select-field.specification'
 import { type Table } from '../table'
 import type { WithKanbanField } from '../view'
 import type { WithCalendarField } from '../view/specifications/calendar.specification'
@@ -33,6 +33,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   calendarFieldEqual(s: WithCalendarField): void
   optionsEqual(s: WithOptions): void
   newOption(s: WithNewOption): void
+  witoutOption(s: WithoutOption): void
 }
 
 export type ITableSpec = ISpecification<Table, ITableSpecVisitor>

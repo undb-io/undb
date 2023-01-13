@@ -9,6 +9,7 @@ import type {
   WithNewField,
   WithNewOption,
   WithOptions,
+  WithoutOption,
   WithTableId,
   WithTableName,
   WithTableSchema,
@@ -21,7 +22,6 @@ import type { Table } from '../../entity'
 
 export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   constructor(public qb: QueryBuilder<Table>) {}
-
   idEqual(s: WithTableId): void {
     this.qb.where({ id: s.id.value })
   }
@@ -67,6 +67,10 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   newOption(s: WithNewOption): void {
     throw new Error('Method not implemented.')
   }
+  witoutOption(s: WithoutOption): void {
+    throw new Error('Method not implemented.')
+  }
+
   not(): this {
     throw new Error('Method not implemented.')
   }

@@ -1,5 +1,6 @@
 import { ValueObject } from '@egodb/domain'
 import { Option } from 'oxide.ts'
+import type { Class } from 'type-fest'
 import * as z from 'zod'
 import type { Field, ICreateFieldSchema } from '../field'
 import { createFieldSchema, DateField, DateRangeField, fieldIdSchema, fieldNameSchema, SelectField } from '../field'
@@ -75,6 +76,10 @@ export class TableSchema extends ValueObject<Field[]> {
 
   public getFieldById(id: string): Option<Field> {
     return Option(this.fields.find((f) => f.id.value === id))
+  }
+
+  public getFieldByIdOfType<F extends Field>(id: string, type: Class<F>): Option<F> {
+    return Option(this.fields.find((f) => f.id.value === id && f instanceof type) as F)
   }
 
   public addField(field: Field) {
