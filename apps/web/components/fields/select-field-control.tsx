@@ -90,14 +90,14 @@ const OptionControl: React.FC<IOptionControlProps> = ({ option, onNameChange, on
   }
 
   return (
-    <Grid align="center" w="100%" ref={setNodeRef} style={style}>
-      <Grid.Col span="auto">
+    <Grid align="center" grow ref={setNodeRef} style={style}>
+      <Grid.Col span={1}>
         <ActionIcon {...listeners} {...attributes}>
           <IconGripVertical size={14} color="gray" />
         </ActionIcon>
       </Grid.Col>
 
-      <Grid.Col span={10}>
+      <Grid.Col span={9}>
         <Group>
           <OptionColorPicker onChange={onColorChange} option={option} />
           <FocusTrap>
@@ -111,7 +111,7 @@ const OptionControl: React.FC<IOptionControlProps> = ({ option, onNameChange, on
         </Group>
       </Grid.Col>
 
-      <Grid.Col span="auto">
+      <Grid.Col span={1}>
         <ActionIcon onClick={() => onRemove()}>
           <IconTrash size={14} color="gray" />
         </ActionIcon>
