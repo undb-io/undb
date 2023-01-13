@@ -2,6 +2,7 @@ import type {
   ITableSpecVisitor,
   WithCalendarField,
   WithDisplayType,
+  WithFieldOption,
   WithFieldVisibility,
   WithFieldWidth,
   WithFilter,
@@ -9,6 +10,7 @@ import type {
   WithNewField,
   WithNewOption,
   WithOptions,
+  WithoutField,
   WithoutOption,
   WithTableName,
   WithTableSchema,
@@ -107,12 +109,12 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   }
   kanbanFieldEqual(s: WithKanbanField): void {
     const view = this.getView(s.view.id.value)
-    wrap(view).assign({ kanban: { fieldId: s.fieldId.value } })
+    wrap(view).assign({ kanban: { fieldId: s.fieldId?.value ?? '' } })
     this.em.persist(view)
   }
   calendarFieldEqual(s: WithCalendarField): void {
     const view = this.getView(s.view.id.value)
-    wrap(view).assign({ calendar: { fieldId: s.fieldId.value } })
+    wrap(view).assign({ calendar: { fieldId: s.fieldId?.value ?? '' } })
     this.em.persist(view)
   }
   optionsEqual(s: WithOptions): void {
@@ -135,6 +137,15 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
         .delete()
         .where({ id: s.optionId.value, field: [s.field.id.value, this.tableId] })
     })
+  }
+  withoutField(s: WithoutField): void {
+    const field = this.getField(s.field.id.value)
+    this.em.remove(field)
+  }
+  fieldOptionsEqual(s: WithFieldOption): void {
+    const view = this.getView(s.viewId)
+    wrap(view).assign(s.options.toObject().unwrapOr({}), { mergeObjects: true })
+    this.em.persist(view)
   }
   not(): this {
     return this

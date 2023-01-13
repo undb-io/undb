@@ -3,8 +3,10 @@ import { Option } from 'oxide.ts'
 import type { Class } from 'type-fest'
 import * as z from 'zod'
 import type { Field, ICreateFieldSchema } from '../field'
-import { createFieldSchema, DateField, DateRangeField, fieldIdSchema, fieldNameSchema, SelectField } from '../field'
+import { createFieldSchema, DateField, DateRangeField, SelectField, WithoutField } from '../field'
 import { FieldFactory } from '../field/field.factory'
+import { fieldIdSchema } from '../field/value-objects/field-id.schema'
+import { fieldNameSchema } from '../field/value-objects/field-name.schema'
 import { WithNewField } from '../specifications/table-field.specification'
 import type { IKanbanField } from '../view'
 import type { ICalendarField } from '../view/calendar'
@@ -98,5 +100,11 @@ export class TableSchema extends ValueObject<Field[]> {
     this.validateIds(field.id.value)
 
     return new WithNewField(field)
+  }
+
+  public removeField(id: string): WithoutField {
+    const field = this.getFieldById(id).unwrap()
+
+    return new WithoutField(field)
   }
 }

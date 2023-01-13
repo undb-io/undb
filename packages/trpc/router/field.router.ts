@@ -1,4 +1,4 @@
-import { CreateFieldCommand, createFieldCommandInput } from '@egodb/core'
+import { CreateFieldCommand, createFieldCommandInput, DeleteFieldCommand, deleteFieldCommandInput } from '@egodb/core'
 import type { ICommandBus } from '@egodb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc'
@@ -16,6 +16,14 @@ export const createFieldRouter = (procedure: typeof publicProcedure) => (command
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new CreateFieldCommand(input)
+        return commandBus.execute(cmd)
+      }),
+    delete: procedure
+      .meta({ openapi: { method: 'POST', path: '/table.field.delete', tags } })
+      .input(deleteFieldCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new DeleteFieldCommand(input)
         return commandBus.execute(cmd)
       }),
     select: createSelectFieldRouter(procedure)(commandBus),

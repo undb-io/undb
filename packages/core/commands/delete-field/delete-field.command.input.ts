@@ -1,10 +1,9 @@
 import * as z from 'zod'
 import { fieldIdSchema } from '../../field/value-objects/field-id.schema'
-import { createOptionSchema } from '../../option'
 import { tableIdSchema } from '../../value-objects'
 
-export const createOptionCommandInput = z.object({
+export const deleteFieldCommandInput = z.object({
   tableId: tableIdSchema,
-  fieldId: fieldIdSchema,
-  option: createOptionSchema,
+  id: fieldIdSchema,
 })
+export type IDeleteFieldInput = z.infer<typeof deleteFieldCommandInput>

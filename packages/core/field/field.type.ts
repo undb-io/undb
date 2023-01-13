@@ -70,7 +70,7 @@ import {
   stringTypeSchema,
 } from './string-field.type'
 import type { FieldId, FieldName, FieldValueConstraints } from './value-objects'
-import { fieldNameSchema } from './value-objects'
+import { fieldNameSchema } from './value-objects/field-name.schema'
 
 export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createStringFieldSchema,

@@ -1,4 +1,4 @@
-import { and, ValueObject } from '@egodb/domain'
+import { and, andOptions, ValueObject } from '@egodb/domain'
 import { Option } from 'oxide.ts'
 import type { Field } from '../field'
 import { WithViewFieldsOrder } from '../specifications'
@@ -29,6 +29,11 @@ export class Views extends ValueObject<View[]> {
       })
 
     return and(...specs)
+  }
+
+  removeField(field: Field): Option<TableCompositeSpecificaiton> {
+    const specs = this.views.map((view) => view.removeField(field))
+    return andOptions(...specs)
   }
 
   static create(views: ICreateViewInput_internal[] = []): Views {

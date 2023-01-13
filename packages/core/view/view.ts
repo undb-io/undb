@@ -1,11 +1,16 @@
 import type { CompositeSpecification } from '@egodb/domain'
-import { ValueObject } from '@egodb/domain'
+import { and, ValueObject } from '@egodb/domain'
 import { None, Option } from 'oxide.ts'
-import type { FieldId } from '../field'
+import type { Field, FieldId } from '../field'
 import type { IFilterOrGroupList, IRootFilter } from '../filter'
 import { RootFilter } from '../filter'
+import { WithFilter, WithViewFieldsOrder } from '../specifications'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
-import { WithFieldVisibility, WithFieldWidth } from '../specifications/table-view-field-option.specification'
+import {
+  WithFieldOption,
+  WithFieldVisibility,
+  WithFieldWidth,
+} from '../specifications/table-view-field-option.specification'
 import { Calendar } from './calendar'
 import { Kanban } from './kanban'
 import { WithCalendarField, WithKanbanField } from './specifications'
@@ -41,16 +46,28 @@ export class View extends ValueObject<IView> {
     return this.props.filter
   }
 
+  public set filter(filter: RootFilter | undefined) {
+    this.props.filter = filter
+  }
+
   public get kanban(): Option<Kanban> {
     return Option(this.props.kanban)
+  }
+
+  public set kanban(kanban: Option<Kanban>) {
+    this.props.kanban = kanban.into()
   }
 
   public get kanbanFieldId(): Option<FieldId> {
     return this.kanban.mapOr(None, (kanban) => Option(kanban.fieldId))
   }
 
-  public get calendar(): Option<Kanban> {
+  public get calendar(): Option<Calendar> {
     return Option(this.props.calendar)
+  }
+
+  public set calendar(calendar: Option<Calendar>) {
+    this.props.calendar = calendar.into()
   }
 
   public get calendarFieldId(): Option<FieldId> {
@@ -64,6 +81,10 @@ export class View extends ValueObject<IView> {
 
   public get fieldOptions() {
     return this.props.fieldOptions
+  }
+
+  public set fieldOptions(options: ViewFieldOptions) {
+    this.props.fieldOptions = options
   }
 
   public get fieldsOrder() {
@@ -90,7 +111,7 @@ export class View extends ValueObject<IView> {
     return this.props.kanban
   }
 
-  public getOrCreateCalendar(): Kanban {
+  public getOrCreateCalendar(): Calendar {
     const calendar = this.calendar
     if (calendar.isSome()) return calendar.unwrap()
 
@@ -143,6 +164,40 @@ export class View extends ValueObject<IView> {
 
   setFilter(filter: IRootFilter | null) {
     this.props.filter = filter ? new RootFilter(filter) : undefined
+  }
+
+  public removeField(field: Field): Option<TableCompositeSpecificaiton> {
+    const specs: TableCompositeSpecificaiton[] = []
+    const kanban = this.kanban.map((kanban) => kanban.removeField(field)).flatten()
+    if (kanban.isSome()) {
+      this.kanban = kanban
+      specs.push(new WithKanbanField(this, null))
+    }
+    const calendar = this.calendar.map((calendar) => calendar.removeField(field)).flatten()
+    if (calendar.isSome()) {
+      this.calendar = calendar
+      specs.push(new WithKanbanField(this, null))
+    }
+
+    const order = this.fieldsOrder?.removeField(field)
+    if (order?.isSome()) {
+      this.fieldsOrder = order.unwrap()
+      specs.push(new WithViewFieldsOrder(order.unwrap(), this))
+    }
+
+    const filter = this.filter?.removeField(field)
+    if (filter?.isSome()) {
+      this.filter = filter.unwrap()
+      specs.push(new WithFilter(filter.into()?.value ?? null, this.id.value))
+    }
+
+    const options = this.fieldOptions.removeField(field)
+    if (options.isSome()) {
+      this.fieldOptions = options.unwrap()
+      specs.push(new WithFieldOption(this.id.value, options.unwrap()))
+    }
+
+    return and(...specs)
   }
 
   static create(input: ICreateViewInput_internal): View {

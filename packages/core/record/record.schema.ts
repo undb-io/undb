@@ -7,7 +7,7 @@ import {
   INTERNAL_FIELD_ID_NAME,
   INTERNAL_FIELD_UPDATED_AT_NAME,
 } from '../field'
-import { fieldNameSchema } from '../field/value-objects/field-name.vo'
+import { fieldNameSchema } from '../field/value-objects/field-name.schema'
 import { recordIdSchema } from './value-objects'
 
 export const mutateRecordValueSchema = z

@@ -4,7 +4,7 @@ import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '.'
 import type { Table } from '../table'
 import type { View } from '../view'
-import type { IViewFieldOption } from '../view/view-field-options'
+import type { IViewFieldOption, ViewFieldOptions } from '../view/view-field-options'
 import { DEFAULT_WIDTH } from '../view/view-field-options'
 
 abstract class BaseViewFieldOptionSpec extends CompositeSpecification<Table, ITableSpecVisitor> {
@@ -22,6 +22,26 @@ abstract class BaseViewFieldOptionSpec extends CompositeSpecification<Table, ITa
 
   protected getOrCreateFieldOption(t: Table): IViewFieldOption {
     return this.getView(t).getOrCreateFieldOption(this.fieldId)
+  }
+}
+
+export class WithFieldOption extends CompositeSpecification<Table, ITableSpecVisitor> {
+  constructor(public readonly viewId: string, public readonly options: ViewFieldOptions) {
+    super()
+  }
+
+  isSatisfiedBy(): boolean {
+    return true
+  }
+
+  mutate(t: Table): Result<Table, string> {
+    t.mustGetView(this.viewId).fieldOptions = this.options
+    return Ok(t)
+  }
+
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.fieldOptionsEqual(this)
+    return Ok(undefined)
   }
 }
 

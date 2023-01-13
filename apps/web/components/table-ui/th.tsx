@@ -1,19 +1,22 @@
 import { Group, Text } from '@egodb/ui'
-import { flexRender } from '@tanstack/react-table'
 import styled from '@emotion/styled'
-import type { THeader } from './interface'
+import type { TColumn, THeader } from './interface'
 import { trpc } from '../../trpc'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import type { Field } from '@egodb/core'
+import { memo } from 'react'
+import { FieldIcon } from '../fields/field-Icon'
+import { HeaderMenu } from './header-menu'
 
-const ResizerLine = styled.div<{ hidden: boolean }>`
+const ResizerLine = styled.div<{ hidden: boolean; isResizing: boolean }>`
   display: ${(props) => (props.hidden ? 'none' : 'block')};
   position: absolute;
   height: 100%;
   width: 100%;
   border-radius: 2px;
   background-color: #2d7ff9;
-  opacity: 0;
+  opacity: ${(props) => (props.isResizing ? 1 : 0)};
 `
 
 const Resizer = styled.div`
@@ -33,7 +36,14 @@ const Resizer = styled.div`
   }
 `
 
-export const Th: React.FC<{ header: THeader; tableId: string }> = ({ header, tableId }) => {
+interface IProps {
+  header: THeader
+  column: TColumn
+  tableId: string
+  field: Field
+}
+
+export const Th: React.FC<IProps> = memo(({ header, tableId, field, column }) => {
   const setFieldWidth = trpc.table.view.field.setWidth.useMutation()
 
   const onSetFieldWidth = (fieldId: string, width: number) => {
@@ -47,37 +57,36 @@ export const Th: React.FC<{ header: THeader; tableId: string }> = ({ header, tab
   const { attributes, isDragging, listeners, setNodeRef, transform, transition } = useSortable({
     id: header.id,
   })
-  const style = {
-    transform: CSS.Translate.toString(transform),
-    transition,
-  }
-
   return (
     <th
-      ref={setNodeRef}
       key={header.id}
       style={{
         position: 'relative',
         width: header.getSize(),
-        zIndex: isDragging ? 100 : undefined,
+        transform: CSS.Translate.toString(transform),
+        transition,
+        zIndex: 100,
         cursor: isDragging ? 'grabbing' : undefined,
-        ...style,
       }}
-      colSpan={header.colSpan}
-      {...attributes}
     >
-      <Group {...listeners}>
-        <Text fz="sm" fw={500}>
-          {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-        </Text>
+      <Group position="apart" ref={setNodeRef} {...attributes} {...listeners}>
+        <Group>
+          <FieldIcon type={field.type} />
+          <Text fz="sm" fw={500}>
+            {field.name.value}
+          </Text>
+        </Group>
+
+        <HeaderMenu tableId={tableId} field={field} />
       </Group>
+
       <Resizer
         onMouseDown={header.getResizeHandler()}
         onTouchStart={header.getResizeHandler()}
         onMouseUp={() => onSetFieldWidth(header.id, header.getSize())}
       >
-        <ResizerLine hidden={isDragging} />
+        <ResizerLine hidden={isDragging} isResizing={column.getIsResizing()} />
       </Resizer>
     </th>
   )
-}
+})

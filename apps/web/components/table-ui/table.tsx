@@ -1,16 +1,29 @@
+import {
+  DndContext,
+  KeyboardSensor,
+  MouseSensor,
+  PointerSensor,
+  rectIntersection,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core'
+import { restrictToHorizontalAxis } from '@dnd-kit/modifiers'
+import { SortableContext, horizontalListSortingStrategy, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import type { SelectFieldValue, BoolFieldValue } from '@egodb/core'
 import type { DateFieldValue } from '@egodb/core'
 import type { DateRangeFieldValue } from '@egodb/core'
-import { Checkbox, Table } from '@egodb/ui'
-import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import { Checkbox, Table, useListState } from '@egodb/ui'
+import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { format } from 'date-fns/fp'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { ACTIONS_FIELD } from '../../constants/field.constants'
+import { trpc } from '../../trpc'
 import { Option } from '../option/option'
 import { AddFieldButton } from '../table/add-field.button'
 import { RecordActions } from './actions'
 import type { IProps, TData } from './interface'
-import { Thead } from './thead'
+import { Th } from './th'
 import { Tr } from './tr'
 
 const fieldHelper = createColumnHelper<TData>()
@@ -21,12 +34,44 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const view = table.mustGetView()
   const columnVisibility = view.getVisibility()
   const columnOrder = table.getFieldsOrder(view).order
+  const [fields, handlers] = useListState(table.schema.fields)
 
-  const columns = table.schema.fields
+  useEffect(() => {
+    handlers.setState(table.schema.fields)
+  }, [table])
+
+  const utils = trpc.useContext()
+  const moveField = trpc.table.view.field.move.useMutation({
+    onSuccess() {
+      utils.table.get.refetch()
+    },
+  })
+  const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  )
+
+  const items = fields.map((f) => f.id.value)
+  const columns = fields
     .map((f) =>
       fieldHelper.accessor(f.id.value, {
         id: f.id.value,
         enableResizing: true,
+        header: (props) => (
+          <Th key={f.id.value} column={props.column} field={f} header={props.header} tableId={table.id.value} />
+        ),
         size: view.getFieldWidth(f.id.value),
         cell: (props) => {
           if (f.type === 'select') {
@@ -61,7 +106,11 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
     .concat(
       fieldHelper.display({
         id: ACTIONS_FIELD,
-        header: () => <AddFieldButton />,
+        header: () => (
+          <th>
+            <AddFieldButton />
+          </th>
+        ),
         cell: (props) => <RecordActions tableId={table.id.value} row={props.row} />,
       }),
     )
@@ -81,24 +130,58 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
 
   return (
     <Table
-      highlightOnHover
       withBorder
+      highlightOnHover
       withColumnBorders
       verticalSpacing={5}
       sx={(theme) => ({
         backgroundColor: theme.white,
         borderTop: '0',
         borderLeft: '0',
+        borderRight: '0',
         borderBottom: data.length ? '1px solid ' + theme.colors.gray[2] : '0',
         width: rt.getCenterTotalSize(),
         'thead th': {
+          position: 'relative',
+          userSelect: 'none',
           backgroundColor: theme.white,
+
+          ':last-child': {
+            border: '0',
+          },
+        },
+        'tbody tr': {
+          cursor: 'pointer',
+        },
+        'tbody tr td': {
+          ':last-child': {
+            border: '1px white solid',
+          },
         },
       })}
     >
       <thead>
         {rt.getHeaderGroups().map((headerGroup) => (
-          <Thead headerGroup={headerGroup} key={headerGroup.id} tableId={table.id.value} />
+          <tr key={headerGroup.id}>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={rectIntersection}
+              modifiers={[restrictToHorizontalAxis]}
+              onDragEnd={({ over, active }) => {
+                if (over) {
+                  handlers.reorder({
+                    from: active.data.current?.sortable?.index,
+                    to: over?.data.current?.sortable?.index,
+                  })
+                  moveField.mutate({ tableId: table.id.value, from: active.id as string, to: over.id as string })
+                }
+              }}
+            >
+              <SortableContext items={items} strategy={horizontalListSortingStrategy}>
+                {headerGroup.headers.map((header) => flexRender(header.column.columnDef.header, header.getContext()))}
+              </SortableContext>
+            </DndContext>
+          </tr>
         ))}
       </thead>
       <tbody>

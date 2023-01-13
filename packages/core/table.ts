@@ -145,6 +145,16 @@ export class Table {
     return andOptions(Some(spec), viewsSpec).unwrap()
   }
 
+  public removeField(id: string): TableCompositeSpecificaiton {
+    const spec = this.schema.removeField(id)
+    spec.mutate(this).unwrap()
+
+    // remove field from view order
+    const viewsSpec = this.views.removeField(spec.field)
+
+    return andOptions(Some(spec), viewsSpec).unwrap()
+  }
+
   public setFieldWidth(input: ISetFieldWidthSchema): TableCompositeSpecificaiton {
     const view = this.mustGetView(input.viewId)
     const spec = view.setFieldWidth(input.fieldId, input.width)

@@ -1,12 +1,21 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import type { ITableSpecVisitor, WithNewField, WithoutOption, WithTableSchema } from '@egodb/core'
+import type {
+  ITableSpecVisitor,
+  WithFieldOption,
+  WithNewField,
+  WithoutField,
+  WithoutOption,
+  WithTableSchema,
+} from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import { UnderlyingColumnFactory } from '../entity/underlying-table/underlying-column.factory'
 import { UnderlyingTableBuilder } from '../entity/underlying-table/underlying-table.builder'
 
 export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   private readonly knex: Knex
   private sb?: Knex.SchemaBuilder
   private qb?: Knex.QueryBuilder
+  private sqls: string[] = []
   constructor(private readonly tableName: string, private readonly em: EntityManager) {
     const knex = em.getKnex()
     this.knex = knex
@@ -22,11 +31,14 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
 
   async commit() {
     if (this.sb) {
-      const query = this.#sb.toQuery()
+      const query = this.sb.toQuery()
       await this.em.execute(query)
     }
     if (this.qb) {
       await this.em.execute(this.qb)
+    }
+    for (const sql of this.sqls) {
+      await this.em.execute(sql)
     }
   }
 
@@ -59,6 +71,19 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   newOption(): void {}
   witoutOption(s: WithoutOption): void {
     this.qb = this.#qb.from(this.tableName).where(s.field.id.value, s.optionId.value).update(s.field.id.value, null)
+  }
+  withoutField(s: WithoutField): void {
+    const fields = UnderlyingColumnFactory.createMany([s.field])
+    const sqls = fields.map(
+      (f) =>
+        `
+    alter table \`${this.tableName}\` drop column \`${f.name}\`;
+    `,
+    )
+    this.sqls.push(...sqls)
+  }
+  fieldOptionsEqual(s: WithFieldOption): void {
+    throw new Error('Method not implemented.')
   }
   not(): this {
     return this

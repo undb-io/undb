@@ -167,8 +167,7 @@
             "id"
           ],
           "referencedTableName": "table",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
+          "deleteRule": "cascade"
         }
       }
     },
