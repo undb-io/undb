@@ -2,6 +2,7 @@ import type {
   ITableSpecVisitor,
   WithCalendarField,
   WithDisplayType,
+  WithFieldOption,
   WithFieldVisibility,
   WithFieldWidth,
   WithFilter,
@@ -140,6 +141,11 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   withoutField(s: WithoutField): void {
     const field = this.getField(s.field.id.value)
     this.em.remove(field)
+  }
+  fieldOptionsEqual(s: WithFieldOption): void {
+    const view = this.getView(s.viewId)
+    wrap(view).assign(s.options.toObject().unwrapOr({}), { mergeObjects: true })
+    this.em.persist(view)
   }
   not(): this {
     return this

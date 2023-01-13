@@ -2,6 +2,7 @@ import type {
   ITableSpecVisitor,
   WithCalendarField,
   WithDisplayType,
+  WithFieldOption,
   WithFieldVisibility,
   WithFieldWidth,
   WithFilter,
@@ -72,6 +73,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   withoutField(s: WithoutField): void {
+    throw new Error('Method not implemented.')
+  }
+  fieldOptionsEqual(s: WithFieldOption): void {
     throw new Error('Method not implemented.')
   }
 
