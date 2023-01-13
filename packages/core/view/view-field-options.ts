@@ -2,6 +2,7 @@ import { ValueObject } from '@egodb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
+import type { Field } from '../field'
 
 export const DEFAULT_WIDTH = 200
 
@@ -61,5 +62,14 @@ export class ViewFieldOptions extends ValueObject<Map<string, IViewFieldOption>>
     if (!this.value.size) return None
     const obj = Object.fromEntries(this.value)
     return Some(obj)
+  }
+
+  public removeField(field: Field): Option<ViewFieldOptions> {
+    if (this.value.has(field.id.value)) {
+      const options = new ViewFieldOptions(new Map([...this.value.entries()].filter(([k]) => k !== field.id.value)))
+
+      return Some(options)
+    }
+    return None
   }
 }

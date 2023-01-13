@@ -1,5 +1,8 @@
 import { ValueObject } from '@egodb/domain'
 import arrayMove from 'array-move'
+import type { Option } from 'oxide.ts'
+import { None, Some } from 'oxide.ts'
+import type { Field } from '../field'
 
 export class ViewFieldsOrder extends ValueObject<string[]> {
   public get order() {
@@ -20,5 +23,13 @@ export class ViewFieldsOrder extends ValueObject<string[]> {
 
   public add(name: string): ViewFieldsOrder {
     return ViewFieldsOrder.fromArray([...this.props, name])
+  }
+
+  public removeField(field: Field): Option<ViewFieldsOrder> {
+    if (this.order.includes(field.id.value)) {
+      return Some(new ViewFieldsOrder(this.order.filter((id) => id !== field.id.value)))
+    }
+
+    return None
   }
 }

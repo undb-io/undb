@@ -4,8 +4,13 @@ import { None, Option } from 'oxide.ts'
 import type { Field, FieldId } from '../field'
 import type { IFilterOrGroupList, IRootFilter } from '../filter'
 import { RootFilter } from '../filter'
+import { WithFilter, WithViewFieldsOrder } from '../specifications'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
-import { WithFieldVisibility, WithFieldWidth } from '../specifications/table-view-field-option.specification'
+import {
+  WithFieldOption,
+  WithFieldVisibility,
+  WithFieldWidth,
+} from '../specifications/table-view-field-option.specification'
 import { Calendar } from './calendar'
 import { Kanban } from './kanban'
 import { WithCalendarField, WithKanbanField } from './specifications'
@@ -41,6 +46,10 @@ export class View extends ValueObject<IView> {
     return this.props.filter
   }
 
+  public set filter(filter: RootFilter | undefined) {
+    this.props.filter = filter
+  }
+
   public get kanban(): Option<Kanban> {
     return Option(this.props.kanban)
   }
@@ -72,6 +81,10 @@ export class View extends ValueObject<IView> {
 
   public get fieldOptions() {
     return this.props.fieldOptions
+  }
+
+  public set fieldOptions(options: ViewFieldOptions) {
+    this.props.fieldOptions = options
   }
 
   public get fieldsOrder() {
@@ -164,6 +177,24 @@ export class View extends ValueObject<IView> {
     if (calendar.isSome()) {
       this.calendar = calendar
       specs.push(new WithKanbanField(this, null))
+    }
+
+    const order = this.fieldsOrder?.removeField(field)
+    if (order?.isSome()) {
+      this.fieldsOrder = order.unwrap()
+      specs.push(new WithViewFieldsOrder(order.unwrap(), this))
+    }
+
+    const filter = this.filter?.removeField(field)
+    if (filter?.isSome()) {
+      this.filter = filter.unwrap()
+      specs.push(new WithFilter(filter.into()?.value ?? null, this.id.value))
+    }
+
+    const options = this.fieldOptions.removeField(field)
+    if (options.isSome()) {
+      this.fieldOptions = options.unwrap()
+      specs.push(new WithFieldOption(this.id.value, options.unwrap()))
     }
 
     return and(...specs)
