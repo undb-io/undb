@@ -1,8 +1,5 @@
 import { ValueObject } from '@egodb/domain'
-import * as z from 'zod'
 import type { FieldName } from './field-name.vo'
-
-export const fieldIdSchema = z.string().min(1)
 
 export class FieldId extends ValueObject<string> {
   public get value(): string {

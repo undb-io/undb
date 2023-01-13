@@ -3,9 +3,10 @@ import * as z from 'zod'
 import type { IFilter, IOperator } from '../filter'
 import type { IBaseField, IFieldType } from './field.type'
 import type { FieldName } from './value-objects'
-import { fieldNameSchema, valueConstraintsSchema } from './value-objects'
+import { valueConstraintsSchema } from './value-objects'
+import { fieldIdSchema } from './value-objects/field-id.schema'
 import type { FieldId } from './value-objects/field-id.vo'
-import { fieldIdSchema } from './value-objects/field-id.vo'
+import { fieldNameSchema } from './value-objects/field-name.schema'
 
 export const createBaseFieldsSchema = z
   .object({

@@ -1,7 +1,5 @@
 import { ValueObject } from '@egodb/domain'
-import * as z from 'zod'
-
-export const fieldNameSchema = z.string().trim().min(2).max(20)
+import { fieldNameSchema } from './field-name.schema'
 
 export class FieldName extends ValueObject<string> {
   private constructor(value: string) {

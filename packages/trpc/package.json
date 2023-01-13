@@ -5,7 +5,7 @@
   "dependencies": {
     "@egodb/core": "^0.0.0",
     "@egodb/domain": "^0.0.0",
-    "@trpc/server": "^10.8.2",
+    "@trpc/server": "^10.9.0",
     "superjson": "^1.12.1",
     "swagger-ui-express": "^4.6.0",
     "trpc-openapi": "^1.1.1",

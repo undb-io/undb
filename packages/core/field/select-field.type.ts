@@ -3,7 +3,7 @@ import { createOptionsSchema, optionIdSchema, optionsSchema } from '../option/op
 import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base'
 import { FIELD_TYPE_KEY } from './field.constant'
 import { SelectField } from './select-field'
-import { fieldIdSchema } from './value-objects'
+import { fieldIdSchema } from './value-objects/field-id.schema'
 
 export const selectTypeSchema = z.literal('select')
 export type SelectFieldType = z.infer<typeof selectTypeSchema>

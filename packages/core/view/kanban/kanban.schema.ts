@@ -1,5 +1,6 @@
 import { z } from 'zod'
-import { DateField, fieldIdSchema, SelectField } from '../../field'
+import { DateField, SelectField } from '../../field'
+import { fieldIdSchema } from '../../field/value-objects/field-id.schema'
 
 export const kanbanSchema = z.object({
   fieldId: fieldIdSchema.optional(),

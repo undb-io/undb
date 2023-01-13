@@ -1,7 +1,7 @@
 import type { CompositeSpecification } from '@egodb/domain'
-import { ValueObject } from '@egodb/domain'
+import { and, ValueObject } from '@egodb/domain'
 import { None, Option } from 'oxide.ts'
-import type { FieldId } from '../field'
+import type { Field, FieldId } from '../field'
 import type { IFilterOrGroupList, IRootFilter } from '../filter'
 import { RootFilter } from '../filter'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
@@ -45,12 +45,20 @@ export class View extends ValueObject<IView> {
     return Option(this.props.kanban)
   }
 
+  public set kanban(kanban: Option<Kanban>) {
+    this.props.kanban = kanban.into()
+  }
+
   public get kanbanFieldId(): Option<FieldId> {
     return this.kanban.mapOr(None, (kanban) => Option(kanban.fieldId))
   }
 
-  public get calendar(): Option<Kanban> {
+  public get calendar(): Option<Calendar> {
     return Option(this.props.calendar)
+  }
+
+  public set calendar(calendar: Option<Calendar>) {
+    this.props.calendar = calendar.into()
   }
 
   public get calendarFieldId(): Option<FieldId> {
@@ -90,7 +98,7 @@ export class View extends ValueObject<IView> {
     return this.props.kanban
   }
 
-  public getOrCreateCalendar(): Kanban {
+  public getOrCreateCalendar(): Calendar {
     const calendar = this.calendar
     if (calendar.isSome()) return calendar.unwrap()
 
@@ -143,6 +151,22 @@ export class View extends ValueObject<IView> {
 
   setFilter(filter: IRootFilter | null) {
     this.props.filter = filter ? new RootFilter(filter) : undefined
+  }
+
+  public removeField(field: Field): Option<TableCompositeSpecificaiton> {
+    const specs: TableCompositeSpecificaiton[] = []
+    const kanban = this.kanban.map((kanban) => kanban.removeField(field)).flatten()
+    if (kanban.isSome()) {
+      this.kanban = kanban
+      specs.push(new WithKanbanField(this, null))
+    }
+    const calendar = this.calendar.map((calendar) => calendar.removeField(field)).flatten()
+    if (calendar.isSome()) {
+      this.calendar = calendar
+      specs.push(new WithKanbanField(this, null))
+    }
+
+    return and(...specs)
   }
 
   static create(input: ICreateViewInput_internal): View {

@@ -7,16 +7,16 @@ import type { Table } from '../../table'
 import type { View } from '../view'
 
 export class WithCalendarField extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly view: View, public readonly fieldId: FieldId) {
+  constructor(public readonly view: View, public readonly fieldId: FieldId | null) {
     super()
   }
 
   isSatisfiedBy(): boolean {
-    return this.view.calendarFieldId.mapOr(false, (fieldId) => fieldId.equals(this.fieldId))
+    return this.view.calendarFieldId.mapOr(false, (fieldId) => !!this.fieldId && fieldId.equals(this.fieldId))
   }
 
   mutate(t: Table): Result<Table, string> {
-    this.view.getOrCreateCalendar().fieldId = this.fieldId
+    this.view.getOrCreateCalendar().fieldId = this.fieldId ?? undefined
     return Ok(t)
   }
 

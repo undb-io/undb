@@ -1,5 +1,5 @@
 import * as z from 'zod'
-import { fieldIdSchema } from '../../field'
+import { fieldIdSchema } from '../../field/value-objects/field-id.schema'
 import { optionIdSchema } from '../../option'
 import { tableIdSchema } from '../../value-objects'
 

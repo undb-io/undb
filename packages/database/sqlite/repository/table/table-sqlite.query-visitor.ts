@@ -9,6 +9,7 @@ import type {
   WithNewField,
   WithNewOption,
   WithOptions,
+  WithoutField,
   WithoutOption,
   WithTableId,
   WithTableName,
@@ -68,6 +69,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   witoutOption(s: WithoutOption): void {
+    throw new Error('Method not implemented.')
+  }
+  withoutField(s: WithoutField): void {
     throw new Error('Method not implemented.')
   }
 
