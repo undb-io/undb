@@ -33,17 +33,17 @@ export class UnderlyingTableSqliteManager implements IUnderlyingTableManager {
     await this.em.execute(raw)
   }
 
-  async update(table: Table, spec: ITableSpec): Promise<void> {
-    const visitor = new UnderlyingTableSqliteManagerVisitor(table, this.em)
+  async update(tableId: string, spec: ITableSpec): Promise<void> {
+    const visitor = new UnderlyingTableSqliteManagerVisitor(tableId, this.em)
     spec.accept(visitor)
 
     await visitor.commit()
   }
 
-  async delete(table: Table): Promise<void> {
+  async delete(tableId: string): Promise<void> {
     const knex = this.em.getKnex()
 
-    const sb = knex.schema.dropTable(table.id.value)
+    const sb = knex.schema.dropTable(tableId)
     await this.em.execute(sb.toQuery())
   }
 }

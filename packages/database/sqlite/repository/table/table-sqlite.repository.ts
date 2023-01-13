@@ -1,4 +1,4 @@
-import type { ITableRepository, ITableSpec, Table as CoreTable } from '@egodb/core'
+import type { ITableRepository, ITableSpec, IUnderlyingTableManager, Table as CoreTable } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
@@ -9,7 +9,7 @@ import { TableSqliteMapper } from './table-sqlite.mapper'
 import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor'
 
 export class TableSqliteRepository implements ITableRepository {
-  constructor(protected readonly em: EntityManager) {}
+  constructor(protected readonly em: EntityManager, protected readonly tm: IUnderlyingTableManager) {}
 
   async findOneById(id: string): Promise<Option<CoreTable>> {
     const table = await this.em.findOne(TableEntity, id, { populate: ['fields.options', 'views'] })
@@ -27,39 +27,47 @@ export class TableSqliteRepository implements ITableRepository {
   }
 
   async insert(table: CoreTable): Promise<void> {
-    const tableEntity = new TableEntity(table)
+    await this.em.transactional(async (em) => {
+      const tableEntity = new TableEntity(table)
 
-    for (const field of table.schema.fields) {
-      const fieldEntity = FieldFactory.create(tableEntity, field)
-      if (fieldEntity instanceof SelectField && field.type === 'select') {
-        for (const option of field.options.options) {
-          const optionEntity = new OptionEntity(fieldEntity, option)
-          this.em.persist(optionEntity)
+      for (const field of table.schema.fields) {
+        const fieldEntity = FieldFactory.create(tableEntity, field)
+        if (fieldEntity instanceof SelectField && field.type === 'select') {
+          for (const option of field.options.options) {
+            const optionEntity = new OptionEntity(fieldEntity, option)
+            em.persist(optionEntity)
+          }
         }
+
+        em.persist(fieldEntity)
       }
 
-      this.em.persist(fieldEntity)
-    }
+      for (const view of table.views.views ?? []) {
+        const viewEntity = new ViewEntity(tableEntity, view)
+        em.persist(viewEntity)
+      }
 
-    for (const view of table.views.views ?? []) {
-      const viewEntity = new ViewEntity(tableEntity, view)
-      this.em.persist(viewEntity)
-    }
+      em.persist(tableEntity)
 
-    this.em.persist(tableEntity)
-
-    await this.em.flush()
+      await this.tm.create(table)
+    })
   }
 
   async updateOneById(id: string, spec: ITableSpec): Promise<void> {
-    const visitor = new TableSqliteMutationVisitor(id, this.em)
+    await this.em.transactional(async (em) => {
+      const visitor = new TableSqliteMutationVisitor(id, em)
 
-    spec.accept(visitor)
+      spec.accept(visitor)
 
-    await visitor.commit()
+      await visitor.commit()
+      await this.tm.update(id, spec)
+    })
   }
 
   async deleteOneById(id: string): Promise<void> {
-    await this.em.nativeDelete(Table, { id })
+    await this.em.transactional(async (em) => {
+      await em.nativeDelete(Table, { id })
+      await this.tm.delete(id)
+    })
   }
 }

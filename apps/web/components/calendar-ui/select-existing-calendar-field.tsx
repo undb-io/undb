@@ -80,7 +80,7 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ table, onSuccess
               />
             ) : null}
 
-            <Divider label="or" labelPosition="center" />
+            {hasCalendarFields && <Divider label="or" labelPosition="center" />}
 
             <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setStepOne}>
               add new date field
