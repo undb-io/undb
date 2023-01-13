@@ -1,6 +1,8 @@
 import {
   CreateOptionCommand,
   createOptionCommandInput,
+  DeleteOptionCommand,
+  deleteOptionCommandInput,
   ReorderOptionsCommand,
   reorderOptionsCommandInput,
 } from '@egodb/core'
@@ -28,6 +30,14 @@ export const createSelectFieldRouter = (procedure: typeof publicProcedure) => (c
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new CreateOptionCommand(input)
+        return commandBus.execute<void>(cmd)
+      }),
+    deleteOption: procedure
+      .meta({ openapi: { method: 'POST', path: '/table.field.select.deleteOption', tags } })
+      .input(deleteOptionCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new DeleteOptionCommand(input)
         return commandBus.execute<void>(cmd)
       }),
   })

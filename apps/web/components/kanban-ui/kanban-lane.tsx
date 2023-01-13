@@ -10,6 +10,7 @@ import { createRecordInitialValueAtom } from '../create-record-form/create-recor
 import type { SortableProps } from '../sortable.interface'
 import { UNCATEGORIZED_OPTION_ID } from './kanban.constants'
 import type { ReactNode } from 'react'
+import { KanbanLaneMenu } from './kanban-lane-menu'
 
 interface IProps {
   renderTitle?: () => ReactNode
@@ -54,13 +55,17 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   return (
     <Stack w={350} ref={setNodeRef} style={style}>
       <Group position="apart" h={40}>
-        {renderTitle ? renderTitle() : <Text weight={500}>{title}</Text>}
+        <Group spacing="xs">
+          {listeners ? (
+            <ActionIcon ref={setActivatorNodeRef} {...listeners} {...attributes}>
+              <IconGripVertical size={14} cursor="grab" />
+            </ActionIcon>
+          ) : null}
 
-        {listeners ? (
-          <ActionIcon ref={setActivatorNodeRef} {...listeners} {...attributes}>
-            <IconGripVertical size={14} cursor="grab" />
-          </ActionIcon>
-        ) : null}
+          {renderTitle ? renderTitle() : <Text weight={500}>{title}</Text>}
+        </Group>
+
+        {id && <KanbanLaneMenu table={table} field={field} optionId={id} />}
       </Group>
 
       <Stack>

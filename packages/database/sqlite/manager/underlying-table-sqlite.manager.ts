@@ -23,7 +23,7 @@ export class UnderlyingTableSqliteManager implements IUnderlyingTableManager {
   }
 
   async update(table: Table, spec: ITableSpec): Promise<void> {
-    const visitor = new UnderlyingTableSqliteManagerVisitor(table, this.em.getKnex())
+    const visitor = new UnderlyingTableSqliteManagerVisitor(table, this.em)
     spec.accept(visitor)
 
     await visitor.commit()

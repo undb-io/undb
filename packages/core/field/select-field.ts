@@ -1,13 +1,14 @@
 import type { ISelectFilterOperator } from '../filter/operators'
 import type { ISelectFilter, ISelectFilterValue } from '../filter/select.filter'
 import type { ICreateOptionSchema } from '../option'
+import { OptionId } from '../option'
 import { Options } from '../option/options'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
 import { BaseField } from './field.base'
 import type { ISelectField } from './field.type'
 import { SelectFieldValue } from './select-field-value'
 import type { ICreateSelectFieldSchema, ICreateSelectFieldValue, SelectFieldType } from './select-field.type'
-import { WithNewOption, WithOptions } from './specifications/select-field.specification'
+import { WithNewOption, WithOptions, WithoutOption } from './specifications/select-field.specification'
 import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
 export class SelectField extends BaseField<ISelectField> {
@@ -29,6 +30,11 @@ export class SelectField extends BaseField<ISelectField> {
   createOption(input: ICreateOptionSchema): TableCompositeSpecificaiton {
     const option = this.options.createOption(input)
     return new WithNewOption(this, option)
+  }
+
+  removeOption(id: string): TableCompositeSpecificaiton {
+    const optionId = OptionId.fromString(id)
+    return new WithoutOption(this, optionId)
   }
 
   static create(input: ICreateSelectFieldSchema): SelectField {
