@@ -2,7 +2,7 @@ import type { Provider } from '@nestjs/common'
 import { Inject } from '@nestjs/common'
 import { NestRecordSqliteQueryModel } from './sqlite/record-sqlite.query-model'
 import { NestRecordSqliteRepository } from './sqlite/record-sqlite.repository'
-import { NestTableSqliteManager } from './sqlite/table-sqlite.manager'
+import { NestTableSqliteManager, UNDELYING_TABLE_MANAGER } from './sqlite/table-sqlite.manager'
 import { NestTableSqliteQueryModel } from './sqlite/table-sqlite.query-model'
 import { NestTableSqliteRepository } from './sqlite/table-sqlite.repository'
 
@@ -17,9 +17,6 @@ export const InjectRecordReposiory = () => Inject(RECORD_REPOSITORY)
 
 const RECORD_QUERY_MODEL = Symbol('RECORD_QUERY_MODEL')
 export const InjectRecordQueryModel = () => Inject(RECORD_QUERY_MODEL)
-
-const UNDELYING_TABLE_MANAGER = Symbol('UNDELYING_TABLE_MANAGER')
-export const InjectUndelyingTableManager = () => Inject(UNDELYING_TABLE_MANAGER)
 
 export const dbAdapters: Provider[] = [
   {

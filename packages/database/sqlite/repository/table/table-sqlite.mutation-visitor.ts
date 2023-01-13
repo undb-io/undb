@@ -27,7 +27,6 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   constructor(private readonly tableId: string, private readonly em: EntityManager) {}
   public async commit() {
     await Promise.all(this.jobs.map((job) => job()))
-    await this.em.flush()
   }
 
   private get table(): Table {
@@ -75,11 +74,10 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
     const table = this.table
     const f = s.field
     const field = FieldFactory.create(table, f)
-    this.em.persist(field)
     if (field instanceof SelectField && f.type === 'select') {
       wrap(field).assign({ options: f.options.options.map((option) => new Option(field, option)) })
-      this.em.persist(field)
     }
+    this.em.persist(field)
   }
   fieldsOrder(s: WithViewFieldsOrder): void {
     const view = this.getView(s.view.id.value)

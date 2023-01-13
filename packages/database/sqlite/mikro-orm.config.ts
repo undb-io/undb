@@ -1,5 +1,5 @@
 import { BetterSqliteDriver } from '@mikro-orm/better-sqlite'
-import { defineConfig, ReflectMetadataProvider } from '@mikro-orm/core'
+import { defineConfig, FlushMode, ReflectMetadataProvider } from '@mikro-orm/core'
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import path from 'path'
 import { entities } from './entity'
@@ -13,6 +13,7 @@ export const createConfig = (relativaPath: string) =>
     dbName: path.resolve(process.cwd(), relativaPath, 'ego.sqlite'),
     debug: true,
     forceUndefined: true,
+    flushMode: FlushMode.COMMIT,
     migrations: {
       disableForeignKeys: true,
     },
