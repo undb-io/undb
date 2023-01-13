@@ -15,7 +15,8 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     this.tableName = table.id.value
   }
   async commit() {
-    await this.sb
+    const query = this.sb.toQuery()
+    await this.em.execute(query)
     await this.em.execute(this.qb)
   }
 
