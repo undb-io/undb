@@ -125,6 +125,17 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
       this.em.persist(field)
     })
   }
+  optionEqual(s: WithNewOption): void {
+    this.jobs.push(async () => {
+      await this.em
+        .qb(Option)
+        .update({
+          name: s.option.name.value,
+          color: { name: s.option.color.name, shade: s.option.color.shade },
+        })
+        .where({ id: s.option.id.value, field: [s.field.id.value, this.tableId] })
+    })
+  }
   newOption(s: WithNewOption): void {
     const field = this.getField(s.field.id.value) as SelectField
     const option = new Option(field, s.option)

@@ -1,7 +1,6 @@
 import { DndContext, rectIntersection } from '@dnd-kit/core'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { SortableContext, useSortable } from '@dnd-kit/sortable'
-import { optionColorOrder } from '@egodb/core'
 import { OptionId } from '@egodb/core'
 import {
   useListState,
@@ -13,66 +12,16 @@ import {
   Button,
   IconSelect,
   FocusTrap,
-  IconCircleChevronDown,
-  Popover,
-  SimpleGrid,
-  UnstyledButton,
   IconTrash,
   Grid,
 } from '@egodb/ui'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { CSS } from '@dnd-kit/utilities'
-import type { IOptionColor, ICreateOptionSchema } from '@egodb/core'
+import type { ICreateOptionSchema } from '@egodb/core'
 import { OptionColor } from '@egodb/core'
-import { Option } from '../option/option'
-import { useState } from 'react'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-
-type OnColorChange = (color: IOptionColor) => void
-
-interface IOptionColorPickerProps {
-  option: ICreateOptionSchema
-  onChange: OnColorChange
-}
-
-const OptionColorPicker: React.FC<IOptionColorPickerProps> = ({ option, onChange }) => {
-  const [opened, setOpened] = useState(false)
-
-  return (
-    <Popover position="bottom-start" opened={opened} onChange={setOpened}>
-      <Popover.Target>
-        <ActionIcon
-          size="sm"
-          variant="filled"
-          onClick={() => setOpened(true)}
-          color={`${option.color?.name}.${option.color?.shade}`}
-        >
-          <IconCircleChevronDown size={14} />
-        </ActionIcon>
-      </Popover.Target>
-
-      <Popover.Dropdown>
-        <SimpleGrid cols={2}>
-          {optionColorOrder.map((color) => (
-            <UnstyledButton
-              onClick={() => {
-                onChange({ name: color, shade: option.color?.shade ?? OptionColor.defaultShade })
-                setOpened(false)
-              }}
-            >
-              <Option
-                id={option.id ?? ''}
-                name={option.name || 'a'}
-                colorName={color}
-                shade={option.color?.shade ?? OptionColor.defaultShade}
-              />
-            </UnstyledButton>
-          ))}
-        </SimpleGrid>
-      </Popover.Dropdown>
-    </Popover>
-  )
-}
+import { OptionColorPicker } from './option-color-picker'
+import type { OnColorChange } from './type'
 
 interface IOptionControlProps {
   option: ICreateOptionSchema
@@ -90,14 +39,14 @@ const OptionControl: React.FC<IOptionControlProps> = ({ option, onNameChange, on
   }
 
   return (
-    <Grid align="center" w="100%" ref={setNodeRef} style={style}>
-      <Grid.Col span="auto">
+    <Grid align="center" grow ref={setNodeRef} style={style}>
+      <Grid.Col span={1}>
         <ActionIcon {...listeners} {...attributes}>
           <IconGripVertical size={14} color="gray" />
         </ActionIcon>
       </Grid.Col>
 
-      <Grid.Col span={10}>
+      <Grid.Col span={9}>
         <Group>
           <OptionColorPicker onChange={onColorChange} option={option} />
           <FocusTrap>
@@ -111,7 +60,7 @@ const OptionControl: React.FC<IOptionControlProps> = ({ option, onNameChange, on
         </Group>
       </Grid.Col>
 
-      <Grid.Col span="auto">
+      <Grid.Col span={1}>
         <ActionIcon onClick={() => onRemove()}>
           <IconTrash size={14} color="gray" />
         </ActionIcon>
@@ -133,6 +82,12 @@ export const SelectFieldControl: React.FC<ISelectFieldControlProps> = ({ onChang
   const items = options.map((o) => o.id as string)
   const [parent, enableAnimations] = useAutoAnimate({ duration: 200 })
 
+  useDeepCompareEffect(() => {
+    requestAnimationFrame(() => {
+      enableAnimations(true)
+    })
+  }, [items])
+
   return (
     <Stack spacing={0}>
       <div ref={parent as any}>
@@ -142,9 +97,6 @@ export const SelectFieldControl: React.FC<ISelectFieldControlProps> = ({ onChang
           onDragStart={() => enableAnimations(false)}
           onDragEnd={(e) => {
             const { over, active } = e
-            setTimeout(() => {
-              enableAnimations(true)
-            }, 0)
             if (over) {
               handlers.reorder({
                 from: active.data.current?.sortable?.index,

@@ -78,6 +78,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   fieldOptionsEqual(s: WithFieldOption): void {
     throw new Error('Method not implemented.')
   }
+  optionEqual(s: WithNewOption): void {
+    throw new Error('Method not implemented.')
+  }
 
   not(): this {
     throw new Error('Method not implemented.')

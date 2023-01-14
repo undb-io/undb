@@ -14,6 +14,7 @@ import { KanbanLaneMenu } from './kanban-lane-menu'
 
 interface IProps {
   renderTitle?: () => ReactNode
+  renderMenu?: () => ReactNode
   id: string | null
   title: string
   table: Table
@@ -38,6 +39,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   records,
   disableAddRecord,
   renderTitle,
+  renderMenu,
   getRecordValue,
 }) => {
   const setOpened = useSetAtom(createRecordFormDrawerOpened)
@@ -65,7 +67,11 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
           {renderTitle ? renderTitle() : <Text weight={500}>{title}</Text>}
         </Group>
 
-        {id && <KanbanLaneMenu table={table} field={field} optionId={id} />}
+        {id && (
+          <KanbanLaneMenu table={table} field={field} optionId={id}>
+            {renderMenu?.()}
+          </KanbanLaneMenu>
+        )}
       </Group>
 
       <Stack>

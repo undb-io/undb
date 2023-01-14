@@ -53,7 +53,7 @@ export const OptionPicker: React.FC<IProps> = ({ field, table, ...rest }) => {
       getCreateLabel={(query) => (
         <Group>
           {`+ Create `}
-          <Option name={query} id={''} colorName={nextColor.name} shade={nextColor.shade} />
+          <Option name={query} colorName={nextColor.name} shade={nextColor.shade} />
         </Group>
       )}
       {...rest}
@@ -71,7 +71,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
   ({ value, label, colorName, shade, ...others }: ItemProps, ref) => (
     <Group ref={ref} p="xs" {...others}>
-      <Option id={value} name={label} colorName={colorName} shade={shade} />
+      <Option name={label} colorName={colorName} shade={shade} />
     </Group>
   ),
 )

@@ -36,6 +36,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withoutField(s: WithoutField): void
 
   optionsEqual(s: WithOptions): void
+  optionEqual(s: WithNewOption): void
   newOption(s: WithNewOption): void
   witoutOption(s: WithoutOption): void
 }

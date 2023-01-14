@@ -2,7 +2,7 @@ import type { IFilter, IFilterOrGroupList, Table } from '@egodb/core'
 import { Box, Button, Divider, Group, IconPlus, Stack, useListState } from '@egodb/ui'
 import { FieldFilter } from './field-filter'
 import useDeepCompareEffect from 'use-deep-compare-effect'
-import { useEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import { closestCenter, DndContext } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
@@ -26,7 +26,7 @@ export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCa
     onChange?.(validFilters)
   }, [validFilters])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (filters.length === 0) {
       handlers.append(null)
     }

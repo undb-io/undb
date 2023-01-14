@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { Accordion, usePrevious } from '@egodb/ui'
 import { FieldAccordionItem } from './fields/field-accordion-item'
 import { useAtom } from 'jotai'
@@ -18,21 +18,23 @@ export const CreateTableFormSchema: React.FC = () => {
   const [activeField, setActiveField] = useAtom(activeFieldAtom)
   const resetActiveField = useResetAtom(activeFieldAtom)
 
-  const len = form.watch(`schema`).length
+  const schema = form.watch('schema')
+
+  const len = schema.length
   const prevLen = usePrevious(len)
 
   const [duration, setDuration] = useState(100)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (len && len >= (prevLen || 0)) {
-      const field = form.watch(`schema`)[len - 1]
+      const field = schema[len - 1]
       if (field) {
         setActiveField(String(len - 1))
       }
     }
-  }, [len])
+  }, [len, schema])
 
-  const items = form.watch(`schema`).map((field) => field.id)
+  const items = schema.map((field) => field.id)
   return (
     <DndContext
       onDragStart={() => {
@@ -45,13 +47,13 @@ export const CreateTableFormSchema: React.FC = () => {
         setDuration(100)
         const { over, active } = e
         if (over) {
-          move(active.data.current?.sortable.index, over?.data.current?.sortable.index)
+          move(active.data.current?.sortable?.index, over?.data.current?.sortable?.index)
         }
       }}
     >
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
         <Accordion value={activeField} variant="contained" onChange={setActiveField} transitionDuration={duration}>
-          {form.watch('schema').map((field, index) => (
+          {schema.map((field, index) => (
             <FieldAccordionItem key={index} index={index} id={index} />
           ))}
         </Accordion>

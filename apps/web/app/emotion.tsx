@@ -2,6 +2,7 @@
 
 import { CacheProvider, EgoUIProvider, ModalsProvider, modalStyles, useEmotionCache } from '@egodb/ui'
 import { useServerInsertedHTML } from 'next/navigation'
+import { UDPATE_OPTION_MODAL_ID, UpdateOptionModal } from '../components/update-option-form/update-option-modal'
 
 export default function RootStyleRegistry({ children }: { children: React.ReactNode }) {
   const cache = useEmotionCache()
@@ -34,7 +35,7 @@ export default function RootStyleRegistry({ children }: { children: React.ReactN
         withGlobalStyles
         withNormalizeCSS
       >
-        <ModalsProvider>{children}</ModalsProvider>
+        <ModalsProvider modals={{ [UDPATE_OPTION_MODAL_ID]: UpdateOptionModal }}>{children}</ModalsProvider>
       </EgoUIProvider>
     </CacheProvider>
   )

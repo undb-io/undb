@@ -16,7 +16,7 @@ import type { DateRangeFieldValue } from '@egodb/core'
 import { Checkbox, Table, useListState } from '@egodb/ui'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { format } from 'date-fns/fp'
-import { useEffect, useMemo } from 'react'
+import { useLayoutEffect, useMemo } from 'react'
 import { ACTIONS_FIELD } from '../../constants/field.constants'
 import { trpc } from '../../trpc'
 import { Option } from '../option/option'
@@ -36,7 +36,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const columnOrder = table.getFieldsOrder(view).order
   const [fields, handlers] = useListState(table.schema.fields)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     handlers.setState(table.schema.fields)
   }, [table])
 
@@ -77,14 +77,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
           if (f.type === 'select') {
             const option = (props.getValue() as SelectFieldValue)?.getOption(f).into()
             if (!option) return null
-            return (
-              <Option
-                id={option.id.value}
-                name={option.name.value}
-                colorName={option.color.name}
-                shade={option.color.shade}
-              />
-            )
+            return <Option name={option.name.value} colorName={option.color.name} shade={option.color.shade} />
           }
           if (f.type === 'bool') {
             return (
@@ -157,6 +150,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
           },
         },
         'tbody tr': {
+          transition: '0.22s',
           cursor: 'pointer',
         },
         'tbody tr td': {
@@ -167,7 +161,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
           },
         },
         'tbody tr:hover td:last-child': {
-          backgroundColor: theme.white,
+          // backgroundColor: theme.white,
         },
       })}
     >
