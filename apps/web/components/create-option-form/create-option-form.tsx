@@ -8,7 +8,7 @@ import { trpc } from '../../trpc'
 import { OptionColorPicker } from '../fields/option-color-picker'
 import type { ICreateOptionFormProps } from './create-option-form.props'
 
-export const CreateOptionForm: React.FC<ICreateOptionFormProps> = ({ table, field, color }) => {
+export const CreateOptionForm: React.FC<ICreateOptionFormProps> = ({ table, field, color, onSuccess }) => {
   const form = useForm<ICreateOptionSchema>({
     defaultValues: {
       name: '',
@@ -23,6 +23,7 @@ export const CreateOptionForm: React.FC<ICreateOptionFormProps> = ({ table, fiel
     onSuccess() {
       form.reset()
       utils.table.get.refetch()
+      onSuccess?.()
     },
   })
 
@@ -49,10 +50,15 @@ export const CreateOptionForm: React.FC<ICreateOptionFormProps> = ({ table, fiel
           <TextInput data-autofocus variant="unstyled" placeholder="option name" {...form.register('name')} />
         </Group>
         <Group position="right">
-          <Button variant="white" onClick={() => closeModal(CREATE_OPTION_MODAL_ID)}>
+          <Button size="xs" variant="white" onClick={() => closeModal(CREATE_OPTION_MODAL_ID)}>
             Cancel
           </Button>
-          <Button type="submit" disabled={!form.formState.isValid} loading={createOption.isLoading}>
+          <Button
+            size="xs"
+            type="submit"
+            disabled={!form.formState.isValid || !form.formState.isDirty}
+            loading={createOption.isLoading}
+          >
             Done
           </Button>
         </Group>
