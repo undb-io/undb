@@ -50,51 +50,57 @@ describe('UnderlyingTableBuilder', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
       const builder = new UnderlyingTableBuilder(knex, tb, 'tableName')
-      builder.createUnderlying([StringField.create({ name: 'name', key: 'undelying table', type: 'string' })])
+      builder.createUnderlying([
+        StringField.create({ id: 'fldid', name: 'name', key: 'undelying table', type: 'string' }),
+      ])
     })
 
-    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`undelying table` varchar(255))"')
+    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`fldid` varchar(255))"')
   })
 
   test('should create number column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
       const builder = new UnderlyingTableBuilder(knex, tb, 'tableName')
-      builder.createUnderlying([NumberField.create({ name: 'name', key: 'undelying table', type: 'number' })])
+      builder.createUnderlying([
+        NumberField.create({ id: 'fldid', name: 'name', key: 'undelying table', type: 'number' }),
+      ])
     })
 
-    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`undelying table` float)"')
+    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`fldid` float)"')
   })
 
   test('should create bool column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
       const builder = new UnderlyingTableBuilder(knex, tb, 'tableName')
-      builder.createUnderlying([BoolField.create({ name: 'name', key: 'undelying table', type: 'bool' })])
+      builder.createUnderlying([BoolField.create({ id: 'fldid', name: 'name', key: 'undelying table', type: 'bool' })])
     })
 
-    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`undelying table` boolean)"')
+    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`fldid` boolean)"')
   })
 
   test('should create date column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
       const builder = new UnderlyingTableBuilder(knex, tb, 'tableName')
-      builder.createUnderlying([DateField.create({ name: 'name', key: 'undelying table', type: 'date' })])
+      builder.createUnderlying([DateField.create({ id: 'fldid', name: 'name', key: 'undelying table', type: 'date' })])
     })
 
-    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`undelying table` datetime)"')
+    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`fldid` datetime)"')
   })
 
   test('should create date range column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
       const builder = new UnderlyingTableBuilder(knex, tb, 'tableName')
-      builder.createUnderlying([DateRangeField.create({ name: 'name', key: 'undelying table', type: 'date-range' })])
+      builder.createUnderlying([
+        DateRangeField.create({ id: 'fldid', name: 'name', key: 'undelying table', type: 'date-range' }),
+      ])
     })
 
     expect(sb.toQuery()).toMatchInlineSnapshot(
-      '"create table `tableName` (`undelying table_from` datetime, `undelying table_to` datetime)"',
+      '"create table `tableName` (`fldid_from` datetime, `fldid_to` datetime)"',
     )
   })
 
@@ -103,10 +109,10 @@ describe('UnderlyingTableBuilder', () => {
     sb.createTable(tableName, (tb) => {
       const builder = new UnderlyingTableBuilder(knex, tb, 'tableName')
       builder.createUnderlying([
-        SelectField.create({ name: 'name', key: 'undelying table', type: 'select', options: [] }),
+        SelectField.create({ id: 'fldid', name: 'name', key: 'undelying table', type: 'select', options: [] }),
       ])
     })
 
-    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`undelying table` varchar(255))"')
+    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`fldid` varchar(255))"')
   })
 })

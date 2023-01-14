@@ -8,7 +8,7 @@ describe('TableFactory', () => {
       name: 'table',
       schema: [
         {
-          id: 'id',
+          id: 'fldid',
           key: 'field1',
           type: 'string',
           name: 'field1',
