@@ -23,7 +23,6 @@ interface IProps extends ITableBaseProps {
 
 export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) => {
   const [options, handlers] = useListState(field.options.options)
-  console.log(options)
   const containers = [UNCATEGORIZED_OPTION_ID, ...options.map((o) => o.key.value)]
   const lastOption = options[options.length - 1]
 
