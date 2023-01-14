@@ -39,6 +39,6 @@ export class DateRangeField extends BaseField<IDateRangeField> {
   }
 
   createFilter(operator: IDateRangeFilterOperator, value: IDateRangeFieldValue | null): IDateRangeFilter {
-    return { operator, value, path: this.key.value, type: 'date-range' }
+    return { operator, value, path: this.id.value, type: 'date-range' }
   }
 }

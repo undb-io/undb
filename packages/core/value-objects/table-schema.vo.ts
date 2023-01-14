@@ -30,7 +30,7 @@ export const createTableSchemaSchema = z
 
 export type ICreateTableSchemaInput = z.infer<typeof createTableSchemaSchema>
 
-export type TableSchemaMap = Map<string, Field>
+export type TableSchemaIdMap = Map<string, Field>
 
 /**
  * Table Schema is a collection of fields
@@ -46,8 +46,8 @@ export class TableSchema extends ValueObject<Field[]> {
     return new TableSchema(fields)
   }
 
-  public toMap(): TableSchemaMap {
-    return new Map(this.fields.map((f) => [f.key.value, f]))
+  public toIdMap(): TableSchemaIdMap {
+    return new Map(this.fields.map((f) => [f.id.value, f]))
   }
 
   public get fields(): Field[] {
@@ -66,8 +66,12 @@ export class TableSchema extends ValueObject<Field[]> {
     return this.props.map((f) => f.name.value)
   }
 
+  get fieldsKeys(): string[] {
+    return this.props.map((f) => f.id.value)
+  }
+
   get fieldsIds(): string[] {
-    return this.props.map((f) => f.key.value)
+    return this.props.map((f) => f.id.value)
   }
 
   private validateNames(...newNames: string[]) {
@@ -75,17 +79,17 @@ export class TableSchema extends ValueObject<Field[]> {
     namesSchema.parse(names)
   }
 
-  private validateIds(...newIds: string[]) {
-    const ids = [...this.fieldsNames, ...newIds]
+  private validateKeys(...newKeys: string[]) {
+    const ids = [...this.fieldsKeys, ...newKeys]
     idsSchema.parse(ids)
   }
 
   public getFieldById(id: string): Option<Field> {
-    return Option(this.fields.find((f) => f.key.value === id))
+    return Option(this.fields.find((f) => f.id.value === id))
   }
 
   public getFieldByIdOfType<F extends Field>(id: string, type: Class<F>): Option<F> {
-    return Option(this.fields.find((f) => f.key.value === id && f instanceof type) as F)
+    return Option(this.fields.find((f) => f.id.value === id && f instanceof type) as F)
   }
 
   public addField(field: Field) {
@@ -93,7 +97,7 @@ export class TableSchema extends ValueObject<Field[]> {
   }
 
   public get defaultFieldsOrder(): ViewFieldsOrder {
-    const order = this.props.map((v) => v.key.value)
+    const order = this.props.map((v) => v.id.value)
     return ViewFieldsOrder.fromArray(order)
   }
 
@@ -101,7 +105,7 @@ export class TableSchema extends ValueObject<Field[]> {
     const field = FieldFactory.create(input)
 
     this.validateNames(field.name.value)
-    this.validateIds(field.key.value)
+    this.validateKeys(field.key.value)
 
     return new WithNewField(field)
   }

@@ -33,6 +33,6 @@ export class StringField extends BaseField<IStringField> {
   }
 
   createFilter(operator: IStringFilterOperator, value: string | null): IStringFilter {
-    return { operator, value, path: this.key.value, type: 'string' }
+    return { operator, value, path: this.id.value, type: 'string' }
   }
 }

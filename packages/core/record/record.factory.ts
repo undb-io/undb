@@ -1,6 +1,6 @@
 import { and } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
-import type { TableSchemaMap } from '../value-objects'
+import type { TableSchemaIdMap } from '../value-objects'
 import { Record } from './record'
 import type { IQueryRecordSchema, Records } from './record.type'
 import { WithRecordCreatedAt, WithRecordId, WithRecordTableId, WithRecordValues } from './specifications'
@@ -19,11 +19,11 @@ export class RecordFactory {
     return spec.mutate(Record.create())
   }
 
-  static fromQueryRecords(rs: IQueryRecordSchema[], schema: TableSchemaMap): Records {
+  static fromQueryRecords(rs: IQueryRecordSchema[], schema: TableSchemaIdMap): Records {
     return rs.map((r) => this.fromQuery(r, schema).unwrap())
   }
 
-  static fromQuery(r: IQueryRecordSchema, schema: TableSchemaMap): Result<Record, string> {
+  static fromQuery(r: IQueryRecordSchema, schema: TableSchemaIdMap): Result<Record, string> {
     return this.create(
       WithRecordId.fromString(r.id)
         .and(WithRecordTableId.fromString(r.tableId).unwrap())

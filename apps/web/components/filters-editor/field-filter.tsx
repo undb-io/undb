@@ -2,7 +2,7 @@ import type { TableSchema, Field, IFieldValue, IOperator, IFilter } from '@egodb
 import { Group, ActionIcon, IconGripVertical, IconTrash } from '@egodb/ui'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { FieldSelector } from './field-selector'
 import { FilterValueInput } from './filter-value-input'
 import { OperatorSelector } from './operator-selector'
@@ -27,7 +27,7 @@ export const FieldFilter: React.FC<IProps> = ({ table, schema, value, onChange, 
   const [operator, setOperator] = useState<IOperator | null>(value?.operator ?? null)
   const [fieldValue, setValue] = useState<IFieldValue | null>((value?.value as never) ?? null)
 
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: getFilterId(value) })
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: getFilterId(value, index) })
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -41,7 +41,7 @@ export const FieldFilter: React.FC<IProps> = ({ table, schema, value, onChange, 
     }
   }, [selectedField, operator, fieldValue])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!selectedField) {
       setOperator(null)
     }

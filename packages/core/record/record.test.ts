@@ -18,7 +18,7 @@ describe('Record', () => {
         {
           type: 'string',
           value: 'string',
-          field: StringField.create({ key: 'stringField', name: 'name', type: 'string' }),
+          field: StringField.create({ id: 'fldid', key: 'stringField', name: 'name', type: 'string' }),
         },
       ]),
     )
@@ -28,6 +28,6 @@ describe('Record', () => {
     expect(valuesJson).to.have.property(INTERNAL_COLUMN_ID_NAME)
     expect(valuesJson).to.have.property(INTERNAL_COLUMN_CREATED_AT_NAME)
     expect(valuesJson).to.have.property(INTERNAL_COLUMN_UPDATED_AT_NAME)
-    expect(valuesJson).to.have.property('stringField')
+    expect(valuesJson).to.have.property('fldid')
   })
 })

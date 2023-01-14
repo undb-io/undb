@@ -65,12 +65,12 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ table, onSuccess
                   >
                     {calendarFields.map((f) => (
                       <Radio
-                        key={f.key.value}
-                        value={f.key.value}
+                        key={f.id.value}
+                        value={f.id.value}
                         label={
                           <Group spacing="xs">
                             <FieldIcon type={f.type} />
-                            {f.key.value}
+                            {f.id.value}
                           </Group>
                         }
                       />

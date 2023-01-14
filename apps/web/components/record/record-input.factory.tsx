@@ -13,7 +13,7 @@ interface IProps {
 }
 
 export const RecordInputFactory: React.FC<IProps> = ({ table, name, field }) => {
-  const label = <FieldInputLabel>{field.key.value}</FieldInputLabel>
+  const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
   if (field.type === 'number') {
     return (
       <Controller
@@ -52,7 +52,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field }) => 
       <Controller
         name={name}
         render={(form) => (
-          <Checkbox lh={1} key={field.key.value} {...form.field} checked={form.field.value} label={label} />
+          <Checkbox lh={1} key={field.id.value} {...form.field} checked={form.field.value} label={label} />
         )}
       />
     )

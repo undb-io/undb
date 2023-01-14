@@ -36,6 +36,6 @@ export class NumberField extends BaseField<INumberField> {
   }
 
   createFilter(operator: INumberFilterOperator, value: number | null): INumberFilter {
-    return { operator, value, path: this.key.value, type: 'number' }
+    return { operator, value, path: this.id.value, type: 'number' }
   }
 }

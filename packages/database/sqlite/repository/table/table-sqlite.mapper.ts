@@ -15,6 +15,7 @@ export class TableSqliteMapper {
   static fieldToQuery(entity: EntityDTO<FieldEntity>): IQueryFieldSchema {
     if (entity.type === 'select') {
       return {
+        id: entity.id,
         key: entity.key,
         name: entity.name,
         type: 'select',
@@ -29,6 +30,7 @@ export class TableSqliteMapper {
       } satisfies ISelectFieldQuerySchema
     }
     return {
+      id: entity.id,
       key: entity.key,
       name: entity.name,
       type: entity.type,

@@ -16,7 +16,7 @@ export class GetRecordsQueryHandler implements IQueryHandler<GetRecordsQuery, IG
       .map((s) => (filter.isNone() ? s : s.and(filter.unwrap())))
       .unwrap()
 
-    const records = await this.rm.find(spec, table.schema.toMap())
+    const records = await this.rm.find(spec, table.schema.toIdMap())
 
     return { records }
   }

@@ -21,8 +21,8 @@ export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => 
       placeholder="search field"
       itemComponent={FieldItem}
       data={schema.fields.map((f) => ({
-        value: f.key.value,
-        label: f.key.value,
+        value: f.id.value,
+        label: f.name.value,
         type: f.type,
       }))}
       icon={value?.type ? <FieldIcon type={value.type} /> : null}

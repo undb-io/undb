@@ -1,7 +1,7 @@
 import { NanoID } from '@egodb/domain'
 
 export class FieldId extends NanoID {
-  private static FIELD_ID_PREFIX = 'fld'
+  public static readonly FIELD_ID_PREFIX = 'fld'
   private static FIELD_ID_SIZE = 8
 
   public get value(): string {

@@ -7,13 +7,13 @@ import {
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
 } from '../field'
-import { fieldNameSchema } from '../field/value-objects/field-name.schema'
+import { fieldIdSchema } from '../field/value-objects/field-id.schema'
 import { recordIdSchema } from './value-objects'
 
 export const mutateRecordValueSchema = z
   .array(
     z.object({
-      id: fieldNameSchema,
+      id: fieldIdSchema,
       value: createFieldValueSchema,
     }),
   )

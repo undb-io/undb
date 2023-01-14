@@ -2,7 +2,7 @@ import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { ICreateFieldsSchema_internal } from '../../field'
-import type { TableSchemaMap } from '../../value-objects'
+import type { TableSchemaIdMap } from '../../value-objects'
 import type { Record } from '../record'
 import type { IQueryRecordValues } from '../record.type'
 import { RecordValues } from '../value-objects'
@@ -17,7 +17,7 @@ export class WithRecordValues extends CompositeSpecification<Record, IRecordVisi
     return new this(RecordValues.fromArray(values))
   }
 
-  static fromObject(schema: TableSchemaMap, values: IQueryRecordValues): WithRecordValues {
+  static fromObject(schema: TableSchemaIdMap, values: IQueryRecordValues): WithRecordValues {
     return new this(RecordValues.fromObject(schema, values))
   }
 

@@ -71,7 +71,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   newOption(): void {}
   optionEqual(): void {}
   witoutOption(s: WithoutOption): void {
-    this.qb = this.#qb.from(this.tableName).where(s.field.key.value, s.optionKey.value).update(s.field.key.value, null)
+    this.qb = this.#qb.from(this.tableName).where(s.field.id.value, s.optionKey.value).update(s.field.id.value, null)
   }
   withoutField(s: WithoutField): void {
     const fields = UnderlyingColumnFactory.createMany([s.field])

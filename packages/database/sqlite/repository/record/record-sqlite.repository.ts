@@ -1,4 +1,4 @@
-import type { IRecordRepository, IRecordSpec, Record as CoreRecord, TableSchemaMap } from '@egodb/core'
+import type { IRecordRepository, IRecordSpec, Record as CoreRecord, TableSchemaIdMap } from '@egodb/core'
 import { DateRangeFieldValue, WithRecordId, WithRecordTableId } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { Option } from 'oxide.ts'
@@ -16,12 +16,12 @@ export class RecordSqliteRepository implements IRecordRepository {
     const knex = this.em.getKnex()
     // TODO
     const data = [...record.values.value.entries()].reduce<Record<string, Primitive | Date>>(
-      (prev, [fieldKey, value]) => {
+      (prev, [fieldId, value]) => {
         if (value instanceof DateRangeFieldValue) {
-          prev[fieldKey + '_from'] = value.from.into()
-          prev[fieldKey + '_to'] = value.to.into()
+          prev[fieldId + '_from'] = value.from.into()
+          prev[fieldId + '_to'] = value.to.into()
         } else {
-          prev[fieldKey] = value.unpack()
+          prev[fieldId] = value.unpack()
         }
         return prev
       },
@@ -31,7 +31,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     await this.em.execute(knex.insert(data).into(record.tableId.value))
   }
 
-  async findOneById(tableId: string, id: string, schema: TableSchemaMap): Promise<Option<CoreRecord>> {
+  async findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<CoreRecord>> {
     const qb = this.em.getKnex().queryBuilder()
     const spec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
 

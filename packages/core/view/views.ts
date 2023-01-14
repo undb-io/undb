@@ -24,7 +24,7 @@ export class Views extends ValueObject<View[]> {
       .filter((view) => !!view.fieldsOrder)
       .map((v) => {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const viewFieldsOrder = v.fieldsOrder!.add(field.key.value)
+        const viewFieldsOrder = v.fieldsOrder!.add(field.id.value)
         return new WithViewFieldsOrder(viewFieldsOrder, v)
       })
 

@@ -10,6 +10,7 @@ import { FieldKey } from './value-objects'
 
 it('should create string field', () => {
   const field = FieldFactory.create({
+    id: 'fldid',
     type: 'string',
     name: 'hello',
     key: 'abc',
@@ -19,11 +20,12 @@ it('should create string field', () => {
   expect(field).toBeInstanceOf(StringField)
   expect(field.type).toBe('string')
   expect(field.key).toBeInstanceOf(FieldKey)
-  expect(field.key.value).toBe('abc')
+  expect(field.id.value).toBe('fldid')
 })
 
 it('should create number field', () => {
   const field = FieldFactory.create({
+    id: 'fldid',
     type: 'number',
     name: 'hello',
     key: 'abc',
@@ -33,11 +35,12 @@ it('should create number field', () => {
   expect(field).toBeInstanceOf(NumberField)
   expect(field.type).toBe('number')
   expect(field.key).toBeInstanceOf(FieldKey)
-  expect(field.key.value).toBe('abc')
+  expect(field.id.value).toBe('fldid')
 })
 
 it('should create date field', () => {
   const field = FieldFactory.create({
+    id: 'fldid',
     type: 'date',
     name: 'hello',
     key: 'date',
@@ -47,11 +50,12 @@ it('should create date field', () => {
   expect(field).toBeInstanceOf(DateField)
   expect(field.type).toBe('date')
   expect(field.key).toBeInstanceOf(FieldKey)
-  expect(field.key.value).toBe('date')
+  expect(field.id.value).toBe('fldid')
 })
 
 it('should create date range field', () => {
   const field = FieldFactory.create({
+    id: 'fldid',
     type: 'date-range',
     name: 'hello',
     key: 'date-range',
@@ -61,11 +65,12 @@ it('should create date range field', () => {
   expect(field).toBeInstanceOf(DateRangeField)
   expect(field.type).toBe('date-range')
   expect(field.key).toBeInstanceOf(FieldKey)
-  expect(field.key.value).toBe('date-range')
+  expect(field.id.value).toBe('fldid')
 })
 
 it('should create select field', () => {
   const field = FieldFactory.create({
+    id: 'fldid',
     type: 'select',
     name: 'hello',
     key: 'abc',
@@ -76,11 +81,12 @@ it('should create select field', () => {
   expect(field).toBeInstanceOf(SelectField)
   expect(field.type).toBe('select')
   expect(field.key).toBeInstanceOf(FieldKey)
-  expect(field.key.value).toBe('abc')
+  expect(field.id.value).toBe('fldid')
 })
 
 it('should create bool field', () => {
   const field = FieldFactory.create({
+    id: 'fldid',
     type: 'bool',
     name: 'hello',
     key: 'abc',
@@ -89,4 +95,5 @@ it('should create bool field', () => {
   expectTypeOf(field).toEqualTypeOf<Field>()
   expect(field).toBeInstanceOf(BoolField)
   expect(field.type).toBe('bool')
+  expect(field.id.value).toBe('fldid')
 })

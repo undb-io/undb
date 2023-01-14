@@ -65,7 +65,7 @@ export class SelectField extends BaseField<ISelectField> {
   }
 
   createFilter(operator: ISelectFilterOperator, value: ISelectFilterValue): ISelectFilter {
-    return { operator, value, path: this.key.value, type: 'select' }
+    return { operator, value, path: this.id.value, type: 'select' }
   }
 
   createValue(value: ICreateSelectFieldValue): SelectFieldValue {
