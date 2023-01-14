@@ -1,16 +1,12 @@
 import { Box } from '@egodb/ui'
 import { useAtomValue } from 'jotai'
-import type { ITableBaseProps } from '../table/table-base-props'
 import { CreateDateField } from './create-date-field'
 import { CreateSelectField } from './create-select-field'
 import { kanbanStepAtom } from './kanban-step.atom'
 import { SelectExistingField } from './select-existing-kanban-field'
+import type { ISelectKanbanFieldProps } from './select-kanban-field.props'
 
-interface IProps extends ITableBaseProps {
-  onSuccess?: () => void
-}
-
-export const SelectKanbanField: React.FC<IProps> = ({ table, onSuccess }) => {
+export const SelectKanbanField: React.FC<ISelectKanbanFieldProps> = ({ table, onSuccess }) => {
   const step = useAtomValue(kanbanStepAtom)
 
   return (
