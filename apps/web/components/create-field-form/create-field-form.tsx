@@ -1,24 +1,18 @@
-import { Button, Divider, Group, Select, Stack, TextInput } from '@egodb/ui'
-import { useSetAtom } from 'jotai'
+import { Button, closeModal, Divider, Group, Select, Stack, TextInput } from '@egodb/ui'
 import { FIELD_SELECT_ITEMS } from '../../constants/field.constants'
 import { trpc } from '../../trpc'
 import { FieldInputLabel } from '../fields/field-input-label'
 import { FieldIcon } from '../fields/field-Icon'
-import type { ITableBaseProps } from '../table/table-base-props'
-import { createFielModelOpened } from './create-field-modal-opened.atom'
 import { CreateFieldVariantControl } from './create-field-variant-control'
 import { FieldItem } from '../fields/field-item'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import type { ICreateFieldSchema } from '@egodb/core'
 import { createFieldSchema } from '@egodb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
+import type { ICreateFieldProps } from './create-field.props'
+import { CREATE_FIELD_MODAL_ID } from '../../modals'
 
-interface IProps extends ITableBaseProps {
-  onCancel?: () => void
-  onSuccess?: () => void
-}
-
-export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
+export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ table, onCancel }) => {
   const defaultValues: ICreateFieldSchema = {
     type: 'string',
     id: '',
@@ -30,14 +24,12 @@ export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
     resolver: zodResolver(createFieldSchema),
   })
 
-  const setOpened = useSetAtom(createFielModelOpened)
-
   const utils = trpc.useContext()
 
   const createField = trpc.table.field.create.useMutation({
     onSuccess: () => {
       form.reset()
-      setOpened(false)
+      closeModal(CREATE_FIELD_MODAL_ID)
       utils.table.get.refetch()
     },
   })
@@ -84,8 +76,8 @@ export const CreateFieldForm: React.FC<IProps> = ({ table, onCancel }) => {
             <Button
               variant="subtle"
               onClick={() => {
-                setOpened(false)
                 onCancel?.()
+                closeModal(CREATE_FIELD_MODAL_ID)
               }}
             >
               Cancel

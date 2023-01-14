@@ -13,14 +13,14 @@ import { SortableContext, horizontalListSortingStrategy, sortableKeyboardCoordin
 import type { SelectFieldValue, BoolFieldValue } from '@egodb/core'
 import type { DateFieldValue } from '@egodb/core'
 import type { DateRangeFieldValue } from '@egodb/core'
-import { Checkbox, Table, useListState } from '@egodb/ui'
+import { ActionIcon, Checkbox, IconColumnInsertRight, openContextModal, Table, Tooltip, useListState } from '@egodb/ui'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { format } from 'date-fns/fp'
 import { useLayoutEffect, useMemo } from 'react'
 import { ACTIONS_FIELD } from '../../constants/field.constants'
+import { CREATE_FIELD_MODAL_ID } from '../../modals'
 import { trpc } from '../../trpc'
 import { Option } from '../option/option'
-import { AddFieldButton } from '../table/add-field.button'
 import { RecordActions } from './actions'
 import type { IProps, TData } from './interface'
 import { Th } from './th'
@@ -101,7 +101,19 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
         id: ACTIONS_FIELD,
         header: () => (
           <th style={{ borderBottom: '0' }}>
-            <AddFieldButton />
+            <Tooltip label="Add New Field">
+              <ActionIcon
+                onClick={() =>
+                  openContextModal({
+                    title: 'Create New Field',
+                    modal: CREATE_FIELD_MODAL_ID,
+                    innerProps: { table },
+                  })
+                }
+              >
+                <IconColumnInsertRight />
+              </ActionIcon>
+            </Tooltip>
           </th>
         ),
         cell: (props) => <RecordActions tableId={table.id.value} row={props.row} />,
