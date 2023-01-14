@@ -60,12 +60,7 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
             return (
               <Group spacing="xs" key={key}>
                 {icon}
-                <Option
-                  id={option.id.value}
-                  name={option.name.value}
-                  colorName={option.color.name}
-                  shade={option.color.shade}
-                />
+                <Option name={option.name.value} colorName={option.color.name} shade={option.color.shade} />
               </Group>
             )
           }

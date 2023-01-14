@@ -15,7 +15,6 @@ import { UNCATEGORIZED_OPTION_ID } from './kanban.constants'
 import { useKanban } from './use-kanban'
 import type { Record, Option as CoreOption } from '@egodb/core'
 import { Option } from '../option/option'
-import { UpdateOptionForm } from '../update-option-form/update-option-form'
 import type { IUpdateOptionModalProps } from '../update-option-form/update-option-modal'
 import { UDPATE_OPTION_MODAL_ID } from '../update-option-form/update-option-modal'
 

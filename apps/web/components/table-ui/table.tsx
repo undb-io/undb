@@ -77,14 +77,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
           if (f.type === 'select') {
             const option = (props.getValue() as SelectFieldValue)?.getOption(f).into()
             if (!option) return null
-            return (
-              <Option
-                id={option.id.value}
-                name={option.name.value}
-                colorName={option.color.name}
-                shade={option.color.shade}
-              />
-            )
+            return <Option name={option.name.value} colorName={option.color.name} shade={option.color.shade} />
           }
           if (f.type === 'bool') {
             return (
