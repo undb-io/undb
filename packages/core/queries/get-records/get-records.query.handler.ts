@@ -10,7 +10,7 @@ export class GetRecordsQueryHandler implements IQueryHandler<GetRecordsQuery, IG
 
   async execute(query: GetRecordsQuery): Promise<IGetRecordsOutput> {
     const table = (await this.tableRepo.findOneById(query.tableId)).unwrap()
-    const filter = table.getSpec(query.viewId)
+    const filter = table.getSpec(query.viewKey)
 
     const spec = WithRecordTableId.fromString(query.tableId)
       .map((s) => (filter.isNone() ? s : s.and(filter.unwrap())))

@@ -3,10 +3,10 @@ import type { IGetRecordsQuery } from './get-records.query.interface'
 
 export class GetRecordsQuery extends Query implements IGetRecordsQuery {
   readonly tableId: string
-  readonly viewId?: string
+  readonly viewKey?: string
   constructor(query: IGetRecordsQuery) {
     super()
     this.tableId = query.tableId
-    this.viewId = query.viewId
+    this.viewKey = query.viewKey
   }
 }

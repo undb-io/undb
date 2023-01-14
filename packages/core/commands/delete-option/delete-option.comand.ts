@@ -4,13 +4,13 @@ import type { IDeleteOptionInput } from './delete-option.command.input'
 
 export class DeleteOptionCommand extends Command implements IDeleteOptionInput {
   readonly id: string
-  readonly fieldId: string
+  readonly fieldKey: string
   readonly tableId: string
 
   constructor(props: CommandProps<IDeleteOptionInput>) {
     super(props)
     this.tableId = props.tableId
-    this.fieldId = props.fieldId
+    this.fieldKey = props.fieldKey
     this.id = props.id
   }
 }

@@ -5,7 +5,7 @@ import { UpdateOptionForm } from './update-option-form'
 export type IUpdateOptionModalProps = {
   tableId: string
   field: SelectField
-  optionId: string
+  optionKey: string
   option: IMutateOptionSchema
 }
 

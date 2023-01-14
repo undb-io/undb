@@ -1,3 +1,7 @@
 export * from './calendar.specification'
 export * from './display-type.specification'
+export * from './filters.specificaiton'
 export * from './kanban.specification'
+export * from './view-field-option.specification'
+export * from './view-fields-order.specification'
+export * from './views.specification'

@@ -16,7 +16,7 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ table, onSucces
   const form = useForm<ICreateDateRangeFieldSchema>({
     defaultValues: {
       type: 'date-range',
-      id: 'id',
+      key: 'key',
       name: '',
     },
     resolver: zodResolver(createDateRangeFieldSchema),
@@ -34,7 +34,7 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ table, onSucces
 
   const createDateRangeField = trpc.table.field.create.useMutation({
     onSuccess(_, variables) {
-      const id = variables.field.id
+      const id = variables.field.key
 
       setCalendarField.mutate({
         tableId: table.id.value,
@@ -66,7 +66,7 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ table, onSucces
                 {...props}
                 onChange={(e) => {
                   props.onChange(e)
-                  form.setValue('id', e.target.value)
+                  form.setValue('key', e.target.value)
                 }}
                 placeholder="new date range field name"
               />

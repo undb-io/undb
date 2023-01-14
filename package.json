@@ -29,6 +29,7 @@
     "db:migration:up": "FORCE_COLOR=1 turbo run db:migration:up",
     "db:schema:fresh": "FORCE_COLOR=1 turbo run db:schema:fresh",
     "dev": "FORCE_COLOR=1 turbo run dev --parallel",
+    "dev:packages": "FORCE_COLOR=1 turbo run dev --parallel --filter=./packages/*",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "preinstall": "npx only-allow pnpm",

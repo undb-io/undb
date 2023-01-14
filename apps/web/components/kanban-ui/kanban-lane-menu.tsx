@@ -6,11 +6,11 @@ import type { ITableBaseProps } from '../table/table-base-props'
 
 interface IProps extends ITableBaseProps {
   field: Field
-  optionId: string
+  optionKey: string
   children?: React.ReactNode
 }
 
-export const KanbanLaneMenu: React.FC<IProps> = ({ table, field, optionId, children }) => {
+export const KanbanLaneMenu: React.FC<IProps> = ({ table, field, optionKey, children }) => {
   const utils = trpc.useContext()
   const deleteOption = trpc.table.field.select.deleteOption.useMutation({
     onSuccess() {
@@ -23,8 +23,8 @@ export const KanbanLaneMenu: React.FC<IProps> = ({ table, field, optionId, child
     onConfirm() {
       deleteOption.mutate({
         tableId: table.id.value,
-        fieldId: field.id.value,
-        id: optionId,
+        fieldKey: field.key.value,
+        id: optionKey,
       })
     },
   })

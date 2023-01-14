@@ -1,16 +1,26 @@
-import { ValueObject } from '@egodb/domain'
-import type { FieldName } from './field-name.vo'
+import { NanoID } from '@egodb/domain'
 
-export class FieldId extends ValueObject<string> {
+export class FieldId extends NanoID {
+  private static FIELD_ID_PREFIX = 'fld'
+  private static FIELD_ID_SIZE = 8
+
   public get value(): string {
     return this.props.value
   }
 
-  static fromName(fieldName: FieldName): FieldId {
-    return new this({ value: fieldName.value })
+  static create(): FieldId {
+    const id = NanoID.createId(FieldId.FIELD_ID_PREFIX, this.FIELD_ID_SIZE)
+    return new this(id)
   }
 
-  static from(id: string): FieldId {
-    return new this({ value: id })
+  static fromString(id: string): FieldId {
+    return new this(id)
+  }
+
+  static fromNullableString(id?: string): FieldId {
+    if (!id) {
+      return this.create()
+    }
+    return new this(id)
   }
 }

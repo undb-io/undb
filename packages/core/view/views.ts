@@ -1,8 +1,8 @@
 import { and, andOptions, ValueObject } from '@egodb/domain'
 import { Option } from 'oxide.ts'
 import type { Field } from '../field'
-import { WithViewFieldsOrder } from '../specifications'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
+import { WithViewFieldsOrder } from './specifications/view-fields-order.specification'
 import { View } from './view'
 import type { ICreateViewInput_internal } from './view.type'
 
@@ -24,7 +24,7 @@ export class Views extends ValueObject<View[]> {
       .filter((view) => !!view.fieldsOrder)
       .map((v) => {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const viewFieldsOrder = v.fieldsOrder!.add(field.id.value)
+        const viewFieldsOrder = v.fieldsOrder!.add(field.key.value)
         return new WithViewFieldsOrder(viewFieldsOrder, v)
       })
 
@@ -40,7 +40,7 @@ export class Views extends ValueObject<View[]> {
     return new this(views.map((v) => View.create(v)))
   }
 
-  getById(viewId?: string): Option<View> {
-    return Option(this.views.find((v) => v.id.value === viewId))
+  getById(viewKey?: string): Option<View> {
+    return Option(this.views.find((v) => v.key.value === viewKey))
   }
 }

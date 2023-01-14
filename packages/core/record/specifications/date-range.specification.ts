@@ -8,13 +8,13 @@ import type { Record } from '../record'
 import type { IRecordVisitor } from './interface'
 
 abstract class BaseDateRangeSpecification extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(readonly fieldId: string, readonly value: IDateRangeFieldValue | null) {
+  constructor(readonly fieldKey: string, readonly value: IDateRangeFieldValue | null) {
     super()
   }
 
   mutate(r: Record): Result<Record, string> {
     const dateRangeValue = new DateRangeFieldValue(this.value)
-    r.values.setValue(this.fieldId, dateRangeValue)
+    r.values.setValue(this.fieldKey, dateRangeValue)
     return Ok(r)
   }
 }
@@ -22,7 +22,7 @@ abstract class BaseDateRangeSpecification extends CompositeSpecification<Record,
 export class DateRangeEqual extends BaseDateRangeSpecification {
   isSatisfiedBy(r: Record): boolean {
     return r.values
-      .getDateRangeValue(this.fieldId)
+      .getDateRangeValue(this.fieldKey)
       .mapOr(
         false,
         (value) => !!value && !!this.value && isEqual(value[0], this.value[0]) && isEqual(value[1], this.value[1]),

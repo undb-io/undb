@@ -46,7 +46,7 @@ export const optionColor = z.object({
 })
 
 export const optionSchema = z.object({
-  id: optionIdSchema,
+  key: optionIdSchema,
   name: optionNameSchema,
   color: optionColor,
 })
@@ -71,7 +71,7 @@ export type IMutateOptionSchema = z.infer<typeof mutateOptionSchema>
 export const createOptionSchema = mutateOptionSchema
   .merge(
     z.object({
-      id: optionIdSchema.optional(),
+      key: optionIdSchema.optional(),
       name: optionNameSchema,
     }),
   )

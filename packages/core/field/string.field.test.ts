@@ -4,18 +4,16 @@ it('should create new text field', () => {
   const field = StringField.create({
     name: 'hello',
     type: 'string',
-    id: 'abc',
+    key: 'abc',
   })
 
-  expect(field.unpack()).toMatchInlineSnapshot(`
-    {
-      "id": "abc",
-      "name": "hello",
-      "valueConstrains": {
-        "required": undefined,
-      },
-    }
-  `)
+  expect(field.unpack()).toMatchObject({
+    key: 'abc',
+    name: 'hello',
+    valueConstrains: {
+      required: undefined,
+    },
+  })
 
   expect(field.type).toBe('string')
 })
@@ -25,7 +23,7 @@ it('should throw error if name is invalid', () => {
     StringField.create({
       name: 'h',
       type: 'string',
-      id: 'abc',
+      key: 'abc',
     })
 
   expect(createField).toThrowErrorMatchingInlineSnapshot(`

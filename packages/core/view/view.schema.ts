@@ -1,18 +1,20 @@
 import { z } from 'zod'
-import { fieldIdSchema } from '../field/value-objects/field-id.schema'
+import { fieldKeySchema } from '../field/value-objects/field-key.schema'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema'
 import { rootFilter } from '../filter/filter'
 import { calendarSchema } from './calendar'
 import { kanbanSchema } from './kanban'
 import { fieldHiddenSchema, fieldWidthSchema, viewFieldOption } from './view-field-options'
 import { viewIdSchema } from './view-id.vo'
+import { viewKeySchema } from './view-key.vo'
 import { viewNameSchema } from './view-name.vo'
 
 export const viewDisplayType = z.enum(['grid', 'kanban', 'calendar'])
 
 export const createViewInput_internal = z.object({
+  id: viewIdSchema.optional(),
   // TODO: set to optional
-  id: viewIdSchema,
+  key: viewKeySchema,
   name: viewNameSchema,
   kanban: kanbanSchema.optional(),
   calendar: calendarSchema.optional(),
@@ -23,7 +25,7 @@ export const createViewInput_internal = z.object({
 })
 
 export const queryView = z.object({
-  id: z.string(),
+  key: z.string(),
   name: z.string(),
   kanban: kanbanSchema.optional(),
   calendar: calendarSchema.optional(),
@@ -36,8 +38,8 @@ export const queryView = z.object({
 export const queryViews = z.array(queryView).optional()
 
 const viewFieldOptionBaseSchema = z.object({
-  viewId: viewNameSchema.optional(),
-  fieldId: fieldNameSchema,
+  viewKey: viewNameSchema.optional(),
+  fieldKey: fieldNameSchema,
 })
 
 export const setFieldWidthSchema = z
@@ -56,28 +58,28 @@ export const setFieldVisibilitySchema = z
 export type ISetFieldVisibilitySchema = z.infer<typeof setFieldVisibilitySchema>
 
 export const moveFieldSchema = z.object({
-  viewId: viewNameSchema.optional(),
-  from: fieldIdSchema,
-  to: fieldIdSchema,
+  viewKey: viewNameSchema.optional(),
+  from: fieldKeySchema,
+  to: fieldKeySchema,
 })
 
 export type IMoveFieldSchema = z.infer<typeof moveFieldSchema>
 
 export const switchDisplayTypeSchema = z.object({
-  viewId: viewNameSchema.optional(),
+  viewKey: viewNameSchema.optional(),
   displayType: viewDisplayType,
 })
 
 export type ISwitchDisplayTypeSchema = z.infer<typeof switchDisplayTypeSchema>
 
 export const setKanbanFieldSchema = z.object({
-  viewId: viewNameSchema.optional(),
-  field: fieldIdSchema,
+  viewKey: viewNameSchema.optional(),
+  field: fieldKeySchema,
 })
 export type ISetKanbanFieldSchema = z.infer<typeof setKanbanFieldSchema>
 
 export const setCalendarFieldSchema = z.object({
-  viewId: viewNameSchema.optional(),
-  field: fieldIdSchema,
+  viewKey: viewNameSchema.optional(),
+  field: fieldKeySchema,
 })
 export type ISetCalendarFieldSchema = z.infer<typeof setCalendarFieldSchema>

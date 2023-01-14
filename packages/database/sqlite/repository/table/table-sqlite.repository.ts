@@ -66,7 +66,7 @@ export class TableSqliteRepository implements ITableRepository {
 
   async deleteOneById(id: string): Promise<void> {
     await this.em.transactional(async (em) => {
-      await em.nativeDelete(Table, { id })
+      await em.qb(Table).update({ deletedAt: new Date() }).where(id)
       await this.tm.delete(id)
     })
   }

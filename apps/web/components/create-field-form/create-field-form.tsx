@@ -15,7 +15,7 @@ import { CREATE_FIELD_MODAL_ID } from '../../modals'
 export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ table, onCancel }) => {
   const defaultValues: ICreateFieldSchema = {
     type: 'string',
-    id: '',
+    key: '',
     name: '',
   }
 
@@ -63,7 +63,7 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ table, onCancel }
             {...props}
             onChange={(e) => {
               props.onChange(e)
-              form.setValue('id', e.target.value)
+              form.setValue('key', e.target.value)
             }}
             label={<FieldInputLabel>name</FieldInputLabel>}
             required

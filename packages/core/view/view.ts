@@ -1,24 +1,21 @@
 import type { CompositeSpecification } from '@egodb/domain'
 import { and, ValueObject } from '@egodb/domain'
 import { None, Option } from 'oxide.ts'
-import type { Field, FieldId } from '../field'
+import type { Field, FieldKey } from '../field'
 import type { IFilterOrGroupList, IRootFilter } from '../filter'
 import { RootFilter } from '../filter'
-import { WithFilter, WithViewFieldsOrder } from '../specifications'
+import { WithFilter } from '../specifications'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
-import {
-  WithFieldOption,
-  WithFieldVisibility,
-  WithFieldWidth,
-} from '../specifications/table-view-field-option.specification'
 import { Calendar } from './calendar'
 import { Kanban } from './kanban'
-import { WithCalendarField, WithKanbanField } from './specifications'
+import { WithCalendarField, WithKanbanField, WithViewFieldsOrder } from './specifications'
 import { WithDisplayType } from './specifications/display-type.specification'
+import { WithFieldOption, WithFieldVisibility, WithFieldWidth } from './specifications/view-field-option.specification'
 import type { IViewFieldOption } from './view-field-options'
 import { ViewFieldOptions } from './view-field-options'
 import { ViewFieldsOrder } from './view-fields-order.vo'
 import { ViewId } from './view-id.vo'
+import { ViewKey } from './view-key.vo'
 import { ViewName } from './view-name.vo'
 import { createViewInput_internal } from './view.schema'
 import type { ICreateViewInput_internal, IView, IViewDisplayType } from './view.type'
@@ -28,6 +25,10 @@ export const defaultViewDiaplyType: IViewDisplayType = 'grid'
 export class View extends ValueObject<IView> {
   public get id() {
     return this.props.id
+  }
+
+  public get key() {
+    return this.props.key
   }
 
   public get name() {
@@ -58,8 +59,8 @@ export class View extends ValueObject<IView> {
     this.props.kanban = kanban.into()
   }
 
-  public get kanbanFieldId(): Option<FieldId> {
-    return this.kanban.mapOr(None, (kanban) => Option(kanban.fieldId))
+  public get kanbanFieldId(): Option<FieldKey> {
+    return this.kanban.mapOr(None, (kanban) => Option(kanban.fieldKey))
   }
 
   public get calendar(): Option<Calendar> {
@@ -70,8 +71,8 @@ export class View extends ValueObject<IView> {
     this.props.calendar = calendar.into()
   }
 
-  public get calendarFieldId(): Option<FieldId> {
-    return this.calendar.mapOr(None, (calendar) => Option(calendar.fieldId))
+  public get calendarFieldId(): Option<FieldKey> {
+    return this.calendar.mapOr(None, (calendar) => Option(calendar.fieldKey))
   }
 
   public get spec(): Option<CompositeSpecification> {
@@ -95,12 +96,12 @@ export class View extends ValueObject<IView> {
     this.props.fieldsOrder = v
   }
 
-  public getFieldOption(fieldId: string): IViewFieldOption {
-    return this.fieldOptions.getOption(fieldId)
+  public getFieldOption(fieldKey: string): IViewFieldOption {
+    return this.fieldOptions.getOption(fieldKey)
   }
 
-  public getOrCreateFieldOption(fieldId: string): IViewFieldOption {
-    return this.fieldOptions.getOrCreateOption(fieldId)
+  public getOrCreateFieldOption(fieldKey: string): IViewFieldOption {
+    return this.fieldOptions.getOrCreateOption(fieldKey)
   }
 
   public getOrCreateKanban(): Kanban {
@@ -119,32 +120,32 @@ export class View extends ValueObject<IView> {
     return this.props.calendar
   }
 
-  public getFieldHidden(fieldId: string): boolean {
-    return this.fieldOptions.getHidden(fieldId)
+  public getFieldHidden(fieldKey: string): boolean {
+    return this.fieldOptions.getHidden(fieldKey)
   }
 
-  public getFieldWidth(fieldId: string): number {
-    return this.fieldOptions.getWidth(fieldId)
+  public getFieldWidth(fieldKey: string): number {
+    return this.fieldOptions.getWidth(fieldKey)
   }
 
-  public setFieldWidth(fieldId: string, width: number): TableCompositeSpecificaiton {
-    return new WithFieldWidth(fieldId, this.name.unpack(), width)
+  public setFieldWidth(fieldKey: string, width: number): TableCompositeSpecificaiton {
+    return new WithFieldWidth(fieldKey, this, width)
   }
 
   public switchDisplayType(type: IViewDisplayType): TableCompositeSpecificaiton {
     return new WithDisplayType(this, type)
   }
 
-  public setFieldVisibility(fieldId: string, hidden: boolean): TableCompositeSpecificaiton {
-    return new WithFieldVisibility(fieldId, this.name.unpack(), hidden)
+  public setFieldVisibility(fieldKey: string, hidden: boolean): TableCompositeSpecificaiton {
+    return new WithFieldVisibility(fieldKey, this, hidden)
   }
 
-  public setKanbanFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
-    return new WithKanbanField(this, fieldId)
+  public setKanbanFieldSpec(fieldKey: FieldKey): TableCompositeSpecificaiton {
+    return new WithKanbanField(this, fieldKey)
   }
 
-  public setCalendarFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
-    return new WithCalendarField(this, fieldId)
+  public setCalendarFieldSpec(fieldKey: FieldKey): TableCompositeSpecificaiton {
+    return new WithCalendarField(this, fieldKey)
   }
 
   public getVisibility(): Record<string, boolean> {
@@ -188,13 +189,13 @@ export class View extends ValueObject<IView> {
     const filter = this.filter?.removeField(field)
     if (filter?.isSome()) {
       this.filter = filter.unwrap()
-      specs.push(new WithFilter(filter.into()?.value ?? null, this.id.value))
+      specs.push(new WithFilter(filter.into()?.value ?? null, this))
     }
 
     const options = this.fieldOptions.removeField(field)
     if (options.isSome()) {
       this.fieldOptions = options.unwrap()
-      specs.push(new WithFieldOption(this.id.value, options.unwrap()))
+      specs.push(new WithFieldOption(this, options.unwrap()))
     }
 
     return and(...specs)
@@ -204,7 +205,8 @@ export class View extends ValueObject<IView> {
     const parsed = createViewInput_internal.parse(input)
     const viewName = ViewName.create(parsed.name)
     return new View({
-      id: input.id ? ViewId.create(input.id) : ViewId.fromName(viewName),
+      id: input.id ? ViewId.fromString(input.id) : ViewId.create(),
+      key: input.key ? ViewKey.create(input.key) : ViewKey.fromName(viewName),
       name: viewName,
       kanban: input.kanban ? Kanban.from(input.kanban) : undefined,
       calendar: input.calendar ? Kanban.from(input.calendar) : undefined,

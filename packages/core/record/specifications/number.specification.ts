@@ -6,20 +6,20 @@ import type { Record } from '../record'
 import type { IRecordVisitor } from './interface'
 
 abstract class BaseNumberSpecification extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(readonly fieldId: string, readonly value: number) {
+  constructor(readonly fieldKey: string, readonly value: number) {
     super()
   }
 
   mutate(r: Record): Result<Record, string> {
     const numberValue = new NumberFieldValue(this.value)
-    r.values.setValue(this.fieldId, numberValue)
+    r.values.setValue(this.fieldKey, numberValue)
     return Ok(r)
   }
 }
 
 export class NumberEqual extends BaseNumberSpecification {
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getNumberValue(this.fieldId).mapOr(false, (value) => value === this.value)
+    return r.values.getNumberValue(this.fieldKey).mapOr(false, (value) => value === this.value)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -30,7 +30,7 @@ export class NumberEqual extends BaseNumberSpecification {
 
 export class NumberGreaterThan extends BaseNumberSpecification {
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getNumberValue(this.fieldId).mapOr(false, (value) => value > this.value)
+    return r.values.getNumberValue(this.fieldKey).mapOr(false, (value) => value > this.value)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -41,7 +41,7 @@ export class NumberGreaterThan extends BaseNumberSpecification {
 
 export class NumberLessThan extends BaseNumberSpecification {
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getNumberValue(this.fieldId).mapOr(false, (value) => value < this.value)
+    return r.values.getNumberValue(this.fieldKey).mapOr(false, (value) => value < this.value)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -52,7 +52,7 @@ export class NumberLessThan extends BaseNumberSpecification {
 
 export class NumberGreaterThanOrEqual extends BaseNumberSpecification {
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getNumberValue(this.fieldId).mapOr(false, (value) => value >= this.value)
+    return r.values.getNumberValue(this.fieldKey).mapOr(false, (value) => value >= this.value)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -63,7 +63,7 @@ export class NumberGreaterThanOrEqual extends BaseNumberSpecification {
 
 export class NumberLessThanOrEqual extends BaseNumberSpecification {
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getNumberValue(this.fieldId).mapOr(false, (value) => value <= this.value)
+    return r.values.getNumberValue(this.fieldKey).mapOr(false, (value) => value <= this.value)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {

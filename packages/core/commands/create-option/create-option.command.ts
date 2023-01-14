@@ -5,13 +5,13 @@ import type { ICreateOptionCommandInput } from './create-option.command.interfac
 
 export class CreateOptionCommand extends Command implements ICreateOptionCommandInput {
   readonly tableId: string
-  readonly fieldId: string
+  readonly fieldKey: string
   readonly option: ICreateOptionSchema
 
   constructor(props: CommandProps<ICreateOptionCommandInput>) {
     super(props)
     this.tableId = props.tableId
-    this.fieldId = props.fieldId
+    this.fieldKey = props.fieldKey
     this.option = props.option
   }
 }

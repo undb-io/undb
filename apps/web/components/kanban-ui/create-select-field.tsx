@@ -17,7 +17,7 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
   const form = useForm<ICreateSelectFieldSchema>({
     defaultValues: {
       type: 'select',
-      id: '',
+      key: '',
       name: '',
       options: [],
     },
@@ -36,7 +36,7 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
 
   const createSelectField = trpc.table.field.create.useMutation({
     onSuccess(_, variables) {
-      const id = variables.field.id
+      const id = variables.field.key
 
       setKanbanField.mutate({
         tableId: table.id.value,
@@ -68,7 +68,7 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
                 {...props}
                 onChange={(e) => {
                   props.onChange(e)
-                  form.setValue('id', e.target.value)
+                  form.setValue('key', e.target.value)
                 }}
                 placeholder="new select field name"
               />

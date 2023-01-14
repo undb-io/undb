@@ -1,11 +1,12 @@
 import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { ITableSpecVisitor } from '.'
-import type { Table } from '../table'
-import type { ICreateViewsSchema } from '../table.schema'
-import type { View } from '../view'
-import { Views } from '../view/views'
+import type { View } from '..'
+import type { ITableSpecVisitor } from '../../specifications'
+import type { Table } from '../../table'
+import type { ICreateViewsSchema } from '../../table.schema'
+import { Views } from '../views'
+import { BaseViewSpecification } from './base-view-specification'
 
 export class WithTableViews extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(public readonly views: Views) {
@@ -32,13 +33,13 @@ export class WithTableViews extends CompositeSpecification<Table, ITableSpecVisi
   }
 }
 
-export class WithTableView extends CompositeSpecification<Table, ITableSpecVisitor> {
+export class WithTableView extends BaseViewSpecification {
   constructor(public readonly view: View) {
-    super()
+    super(view)
   }
 
   isSatisfiedBy(t: Table): boolean {
-    return t.getView(this.view.name.unpack()).mapOr(false, (v) => v.equals(this.view))
+    return t.getView(this.view.key.unpack()).mapOr(false, (v) => v.equals(this.view))
   }
 
   mutate(t: Table): Result<Table, string> {

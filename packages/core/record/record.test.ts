@@ -18,7 +18,7 @@ describe('Record', () => {
         {
           type: 'string',
           value: 'string',
-          field: StringField.create({ id: 'stringField', name: 'name', type: 'string' }),
+          field: StringField.create({ key: 'stringField', name: 'name', type: 'string' }),
         },
       ]),
     )

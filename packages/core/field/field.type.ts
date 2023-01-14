@@ -69,7 +69,7 @@ import {
   stringFieldValue,
   stringTypeSchema,
 } from './string-field.type'
-import type { FieldId, FieldName, FieldValueConstraints } from './value-objects'
+import type { FieldId, FieldKey, FieldName, FieldValueConstraints } from './value-objects'
 import { fieldNameSchema } from './value-objects/field-name.schema'
 
 export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
@@ -142,6 +142,7 @@ export type ICreateFieldsSchema_internal = z.infer<typeof createFieldsSchema_int
 
 export interface IBaseField {
   id: FieldId
+  key: FieldKey
   name: FieldName
   valueConstrains: FieldValueConstraints
 }

@@ -15,12 +15,12 @@ export class RecordSqliteRepository implements IRecordRepository {
     const knex = this.em.getKnex()
     // TODO
     const data = [...record.values.value.entries()].reduce<Record<string, Primitive | Date>>(
-      (prev, [fieldId, value]) => {
+      (prev, [fieldKey, value]) => {
         if (value instanceof DateRangeFieldValue) {
-          prev[fieldId + '_from'] = value.from.into()
-          prev[fieldId + '_to'] = value.to.into()
+          prev[fieldKey + '_from'] = value.from.into()
+          prev[fieldKey + '_to'] = value.to.into()
         } else {
-          prev[fieldId] = value.unpack()
+          prev[fieldKey] = value.unpack()
         }
         return prev
       },

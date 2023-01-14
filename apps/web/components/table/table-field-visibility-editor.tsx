@@ -15,8 +15,8 @@ export const TableFieldVisibilityEditor: React.FC<ITableBaseProps> = ({ table })
   const visibility = view.getVisibility()
   const hiddenCount = view.fieldOptions?.hiddenCount ?? 0
 
-  const onChange = (fieldId: string, visible: boolean) => {
-    setFieldVisibility.mutate({ tableId: table.id.value, fieldId, hidden: !visible })
+  const onChange = (fieldKey: string, visible: boolean) => {
+    setFieldVisibility.mutate({ tableId: table.id.value, fieldKey, hidden: !visible })
   }
 
   return (
@@ -53,14 +53,14 @@ export const TableFieldVisibilityEditor: React.FC<ITableBaseProps> = ({ table })
           {table.schema.fields.map((f) => (
             <Checkbox
               lh={1}
-              onChange={(e) => onChange(f.id.value, e.target.checked)}
-              defaultChecked={visibility[f.id.value] === undefined || !!visibility[f.id.value]}
-              key={f.id.value}
-              value={f.id.value}
+              onChange={(e) => onChange(f.key.value, e.target.checked)}
+              defaultChecked={visibility[f.key.value] === undefined || !!visibility[f.key.value]}
+              key={f.key.value}
+              value={f.key.value}
               label={
                 <Group spacing="xs">
                   <FieldIcon type={f.type} />
-                  {f.id.value}
+                  {f.key.value}
                 </Group>
               }
             />

@@ -3,7 +3,7 @@ import arrayMove from 'array-move'
 import { Option as O } from 'oxide.ts'
 import { Option } from './option'
 import { OptionColor } from './option-color'
-import type { OptionId } from './option-id.vo'
+import type { OptionKey } from './option-key.vo'
 import type { ICreateOptionSchema, ICreateOptionsSchema } from './option.schema'
 import { createOptionsSchema } from './option.schema'
 
@@ -16,17 +16,17 @@ export class Options extends ValueObject<Option[]> {
     return O(this.options[this.options.length - 1])
   }
 
-  public remove(id: OptionId): Options {
-    return new Options(this.options.filter((option) => !option.id.equals(id)))
+  public remove(key: OptionKey): Options {
+    return new Options(this.options.filter((option) => !option.key.equals(key)))
   }
 
   public get ids() {
-    return this.options.map((o) => o.id.value)
+    return this.options.map((o) => o.key.value)
   }
 
   public reorder(from: string, to: string): Options {
-    const formIndex = this.options.findIndex((o) => o.id.value === from)
-    const toIndex = this.options.findIndex((o) => o.id.value === to)
+    const formIndex = this.options.findIndex((o) => o.key.value === from)
+    const toIndex = this.options.findIndex((o) => o.key.value === to)
     const moved = arrayMove(this.options, formIndex, toIndex)
     return new Options(moved)
   }
@@ -35,8 +35,8 @@ export class Options extends ValueObject<Option[]> {
     return Option.create(input)
   }
 
-  public getById(id: string): O<Option> {
-    return O(this.options.find((o) => o.id.value === id))
+  public getById(key: string): O<Option> {
+    return O(this.options.find((o) => o.key.value === key))
   }
 
   static create(inputs: ICreateOptionsSchema) {

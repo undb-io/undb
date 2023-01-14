@@ -26,8 +26,8 @@ export class ViewFieldsOrder extends ValueObject<string[]> {
   }
 
   public removeField(field: Field): Option<ViewFieldsOrder> {
-    if (this.order.includes(field.id.value)) {
-      return Some(new ViewFieldsOrder(this.order.filter((id) => id !== field.id.value)))
+    if (this.order.includes(field.key.value)) {
+      return Some(new ViewFieldsOrder(this.order.filter((id) => id !== field.key.value)))
     }
 
     return None

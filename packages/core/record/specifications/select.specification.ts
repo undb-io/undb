@@ -8,13 +8,13 @@ import type { IRecordVisitor } from './interface'
 import { RecordValueQuerySpecification } from './record-value-specification.base'
 
 abstract class BaseSelectSpecification extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(readonly fieldId: string, readonly value: ISelectFieldValue) {
+  constructor(readonly fieldKey: string, readonly value: ISelectFieldValue) {
     super()
   }
 
   mutate(r: Record): Result<Record, string> {
     const selectFieldValue = new SelectFieldValue(this.value)
-    r.values.setValue(this.fieldId, selectFieldValue)
+    r.values.setValue(this.fieldKey, selectFieldValue)
     return Ok(r)
   }
 }
@@ -26,7 +26,7 @@ export class SelectEqual extends BaseSelectSpecification {
    * @returns bool
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getSelectValue(this.fieldId).mapOr(false, (value) => value.id === this.value)
+    return r.values.getSelectValue(this.fieldKey).mapOr(false, (value) => value.id === this.value)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {

@@ -6,14 +6,18 @@ import { type Table } from '../table'
 import type { WithKanbanField } from '../view'
 import type { WithCalendarField } from '../view/specifications/calendar.specification'
 import type { WithDisplayType } from '../view/specifications/display-type.specification'
-import type { WithFilter } from './filters.specificaiton'
+import type { WithFilter } from '../view/specifications/filters.specificaiton'
+import type {
+  WithFieldOption,
+  WithFieldVisibility,
+  WithFieldWidth,
+} from '../view/specifications/view-field-option.specification'
+import type { WithViewFieldsOrder } from '../view/specifications/view-fields-order.specification'
+import type { WithTableView, WithTableViews } from '../view/specifications/views.specification'
 import type { WithNewField } from './table-field.specification'
 import type { WithTableId } from './table-id.specifaction'
 import type { WithTableName } from './table-name.specification'
 import type { WithTableSchema } from './table-schema.specification'
-import type { WithFieldOption, WithFieldVisibility, WithFieldWidth } from './table-view-field-option.specification'
-import type { WithViewFieldsOrder } from './table-view-fields-order.specification'
-import type { WithTableView, WithTableViews } from './table-views.specification'
 
 export interface ITableSpecVisitor extends ISpecVisitor {
   idEqual(s: WithTableId): void

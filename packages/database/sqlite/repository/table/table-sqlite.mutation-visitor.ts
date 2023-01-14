@@ -36,11 +36,11 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   }
 
   private getView(id: string): View {
-    return this.em.getReference(View, [id, this.tableId])
+    return this.em.getReference(View, id)
   }
 
   private getField(id: string): Field {
-    return this.em.getReference(Field, [id, this.tableId])
+    return this.em.getReference(Field, id)
   }
 
   idEqual(): void {
@@ -68,7 +68,7 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
     this.em.persist(view)
   }
   filterEqual(s: WithFilter): void {
-    const view = this.getView(s.viewId)
+    const view = this.getView(s.view.id.value)
     wrap(view).assign({ filter: s.filter })
     this.em.persist(view)
   }
@@ -88,17 +88,17 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   }
   fieldWidthEqual(s: WithFieldWidth): void {
     this.jobs.push(async () => {
-      const view = this.getView(s.viewId)
+      const view = this.getView(s.view.id.value)
       await wrap(view).init()
-      wrap(view).assign({ fieldOptions: { [s.fieldId]: { width: s.width } } }, { mergeObjects: true })
+      wrap(view).assign({ fieldOptions: { [s.fieldKey]: { width: s.width } } }, { mergeObjects: true })
       this.em.persist(view)
     })
   }
   fieldVisibility(s: WithFieldVisibility): void {
     this.jobs.push(async () => {
-      const view = this.getView(s.viewId)
+      const view = this.getView(s.view.id.value)
       await wrap(view).init()
-      wrap(view).assign({ fieldOptions: { [s.fieldId]: { hidden: s.hidden } } }, { mergeObjects: true })
+      wrap(view).assign({ fieldOptions: { [s.fieldKey]: { hidden: s.hidden } } }, { mergeObjects: true })
       this.em.persist(view)
     })
   }
@@ -109,12 +109,12 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   }
   kanbanFieldEqual(s: WithKanbanField): void {
     const view = this.getView(s.view.id.value)
-    wrap(view).assign({ kanban: { fieldId: s.fieldId?.value ?? '' } })
+    wrap(view).assign({ kanban: { fieldKey: s.fieldKey?.value ?? '' } })
     this.em.persist(view)
   }
   calendarFieldEqual(s: WithCalendarField): void {
     const view = this.getView(s.view.id.value)
-    wrap(view).assign({ calendar: { fieldId: s.fieldId?.value ?? '' } })
+    wrap(view).assign({ calendar: { fieldKey: s.fieldKey?.value ?? '' } })
     this.em.persist(view)
   }
   optionsEqual(s: WithOptions): void {
@@ -126,15 +126,12 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
     })
   }
   optionEqual(s: WithNewOption): void {
-    this.jobs.push(async () => {
-      await this.em
-        .qb(Option)
-        .update({
-          name: s.option.name.value,
-          color: { name: s.option.color.name, shade: s.option.color.shade },
-        })
-        .where({ id: s.option.id.value, field: [s.field.id.value, this.tableId] })
+    const option = this.em.getReference(Option, s.option.key.value as never)
+    wrap(option).assign({
+      name: s.option.name.value,
+      color: { name: s.option.color.name, shade: s.option.color.shade },
     })
+    this.em.persist(option)
   }
   newOption(s: WithNewOption): void {
     const field = this.getField(s.field.id.value) as SelectField
@@ -142,19 +139,16 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
     this.em.persist(option)
   }
   witoutOption(s: WithoutOption): void {
-    this.jobs.push(async () => {
-      await this.em
-        .qb(Option)
-        .delete()
-        .where({ id: s.optionId.value, field: [s.field.id.value, this.tableId] })
-    })
+    const option = this.em.getReference(Option, s.optionKey.value as never)
+    this.em.remove(option)
   }
   withoutField(s: WithoutField): void {
     const field = this.getField(s.field.id.value)
-    this.em.remove(field)
+    wrap(field).assign({ deletedAt: new Date() })
+    this.em.persist(field)
   }
   fieldOptionsEqual(s: WithFieldOption): void {
-    const view = this.getView(s.viewId)
+    const view = this.getView(s.view.id.value)
     wrap(view).assign(s.options.toObject().unwrapOr({}), { mergeObjects: true })
     this.em.persist(view)
   }

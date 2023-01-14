@@ -13,11 +13,11 @@ import { OptionColorPicker } from '../fields/option-color-picker'
 interface IProps {
   tableId: string
   field: SelectField
-  optionId: string
+  optionKey: string
   option: IMutateOptionSchema
 }
 
-export const UpdateOptionForm: React.FC<IProps> = ({ tableId, field, optionId, option }) => {
+export const UpdateOptionForm: React.FC<IProps> = ({ tableId, field, optionKey, option }) => {
   const form = useForm<IUpdateOptionSchema>({
     defaultValues: {
       name: option.name,
@@ -39,8 +39,8 @@ export const UpdateOptionForm: React.FC<IProps> = ({ tableId, field, optionId, o
   const onSubmit = form.handleSubmit((values) => {
     updateOption.mutate({
       tableId,
-      fieldId: field.id.value,
-      id: optionId,
+      fieldKey: field.key.value,
+      id: optionKey,
       option: values,
     })
   })

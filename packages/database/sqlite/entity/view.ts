@@ -24,20 +24,20 @@ import { Table } from './table'
 @Embeddable()
 export class Kanban {
   @Property({ nullable: true })
-  fieldId?: string
+  fieldKey?: string
 
   constructor(kanban: CoreKanban) {
-    this.fieldId = kanban.fieldId?.value
+    this.fieldKey = kanban.fieldKey?.value
   }
 }
 
 @Embeddable()
 export class Calendar {
   @Property({ nullable: true })
-  fieldId?: string
+  fieldKey?: string
 
   constructor(calendar: CoreCalendar) {
-    this.fieldId = calendar.fieldId?.value
+    this.fieldKey = calendar.fieldKey?.value
   }
 }
 
@@ -46,7 +46,10 @@ export class View extends BaseEntity {
   @PrimaryKey()
   id: string
 
-  @ManyToOne(() => Table, { primary: true, cascade: [Cascade.ALL] })
+  @Property()
+  key: string
+
+  @ManyToOne(() => Table, { cascade: [Cascade.ALL] })
   table: Table
 
   @Property()
@@ -73,6 +76,7 @@ export class View extends BaseEntity {
   constructor(table: Table, view: CoreView) {
     super()
     this.id = view.id.value
+    this.key = view.key.value
     this.name = view.name.value
     this.table = table
     this.displayType = view.displayType

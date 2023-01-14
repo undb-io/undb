@@ -1,6 +1,6 @@
 import type { IOptionColorName, IOptionColorShade, SelectField } from '@egodb/core'
 import type { Table } from '@egodb/core'
-import { OptionId } from '@egodb/core'
+import { OptionKey } from '@egodb/core'
 import type { SelectProps } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { Select } from '@egodb/ui'
@@ -25,7 +25,7 @@ export const OptionPicker: React.FC<IProps> = ({ field, table, ...rest }) => {
   return (
     <Select
       data={field.options.options.map((o) => ({
-        value: o.id.value,
+        value: o.key.value,
         label: o.name.value,
         colorName: o.color.name,
         shade: o.color.shade,
@@ -35,12 +35,12 @@ export const OptionPicker: React.FC<IProps> = ({ field, table, ...rest }) => {
       searchable
       creatable
       onCreate={(query) => {
-        const id = OptionId.create().value
+        const key = OptionKey.create().value
         createOption.mutate({
-          fieldId: field.id.value,
+          fieldKey: field.key.value,
           tableId: table.id.value,
           option: {
-            id,
+            key,
             name: query,
             color: {
               name: nextColor.name,
@@ -48,7 +48,7 @@ export const OptionPicker: React.FC<IProps> = ({ field, table, ...rest }) => {
             },
           },
         })
-        return id
+        return key
       }}
       getCreateLabel={(query) => (
         <Group>

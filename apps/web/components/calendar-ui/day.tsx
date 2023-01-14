@@ -70,7 +70,7 @@ export const Day: React.FC<IProps> = ({ date, field, records }) => {
   })
 
   const filteredRecords = useMemo(() => {
-    const spec = new DateEqual(field.id.value, date)
+    const spec = new DateEqual(field.key.value, date)
     return records.filter((r) => spec.isSatisfiedBy(r))
   }, [records])
 
@@ -109,13 +109,13 @@ export const Day: React.FC<IProps> = ({ date, field, records }) => {
           <ActionIcon
             onClick={() => {
               setCreateRecordOpened(true)
-              setRecordInitialValue({ [field.id.value]: date })
+              setRecordInitialValue({ [field.key.value]: date })
             }}
             size={16}
             sx={{
               visibility:
                 hovered ||
-                (opened && initialValue[field.id.value] && isEqual(initialValue[field.id.value] as Date, date))
+                (opened && initialValue[field.key.value] && isEqual(initialValue[field.key.value] as Date, date))
                   ? 'visible'
                   : 'hidden',
             }}

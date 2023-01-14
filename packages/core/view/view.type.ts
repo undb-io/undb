@@ -6,11 +6,13 @@ import type { IKanbanSchema, Kanban } from './kanban'
 import type { IViewFieldOption, ViewFieldOptions } from './view-field-options'
 import type { ViewFieldsOrder } from './view-fields-order.vo'
 import type { ViewId } from './view-id.vo'
+import type { ViewKey } from './view-key.vo'
 import type { ViewName } from './view-name.vo'
 import type { createViewInput_internal, viewDisplayType } from './view.schema'
 
 export interface IView {
   id: ViewId
+  key: ViewKey
   name: ViewName
   kanban?: Kanban
   calendar?: Calendar
@@ -21,7 +23,7 @@ export interface IView {
 }
 
 export interface IQueryView {
-  id: string
+  key: string
   name: string
   kanban?: IKanbanSchema
   calendar?: ICalendarSchema

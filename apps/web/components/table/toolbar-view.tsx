@@ -1,5 +1,5 @@
 import type { IViewDisplayType, Kanban } from '@egodb/core'
-import type { FieldId } from '@egodb/core'
+import type { FieldKey } from '@egodb/core'
 import type { Table } from '@egodb/core'
 import type { ICalendar } from '@egodb/core/view/calendar'
 import {
@@ -18,10 +18,10 @@ import { trpc } from '../../trpc'
 import { DisplayTypeIcon } from '../view/display-type-icon'
 import type { ITableBaseProps } from './table-base-props'
 
-const StackedBy: React.FC<{ fieldId?: FieldId; table: Table }> = ({ table, fieldId }) => {
-  if (!fieldId) return null
+const StackedBy: React.FC<{ fieldKey?: FieldKey; table: Table }> = ({ table, fieldKey }) => {
+  if (!fieldKey) return null
 
-  const field = table.schema.getFieldById(fieldId.value).into()
+  const field = table.schema.getFieldById(fieldKey.value).into()
   if (!field) return null
 
   return (
@@ -41,7 +41,7 @@ const StackedBy: React.FC<{ fieldId?: FieldId; table: Table }> = ({ table, field
         size="xs"
         variant="subtle"
         leftIcon={<IconSelect size={18} />}
-      >{`stacked by "${field.id.value}"`}</Button>
+      >{`stacked by "${field.key.value}"`}</Button>
     </Tooltip>
   )
 }
@@ -49,15 +49,15 @@ const StackedBy: React.FC<{ fieldId?: FieldId; table: Table }> = ({ table, field
 const KanbanControl: React.FC<{ table: Table; kanban?: Kanban }> = ({ table, kanban }) => {
   return (
     <>
-      <StackedBy fieldId={kanban?.fieldId} table={table} />
+      <StackedBy fieldKey={kanban?.fieldKey} table={table} />
     </>
   )
 }
 
-const UsingCalendarField: React.FC<{ fieldId?: FieldId; table: Table }> = ({ table, fieldId }) => {
-  if (!fieldId) return null
+const UsingCalendarField: React.FC<{ fieldKey?: FieldKey; table: Table }> = ({ table, fieldKey }) => {
+  if (!fieldKey) return null
 
-  const field = table.schema.getFieldById(fieldId.value).into()
+  const field = table.schema.getFieldById(fieldKey.value).into()
   if (!field) return null
 
   return (
@@ -77,13 +77,13 @@ const UsingCalendarField: React.FC<{ fieldId?: FieldId; table: Table }> = ({ tab
         variant="subtle"
         size="xs"
         leftIcon={<IconCalendarPlus size={18} />}
-      >{`using "${field.id.value}" field`}</Button>
+      >{`using "${field.key.value}" field`}</Button>
     </Tooltip>
   )
 }
 
 const CalendarControl: React.FC<{ table: Table; calendar?: ICalendar }> = ({ table, calendar }) => {
-  return <UsingCalendarField fieldId={calendar?.fieldId} table={table} />
+  return <UsingCalendarField fieldKey={calendar?.fieldKey} table={table} />
 }
 
 export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
@@ -127,7 +127,7 @@ export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
             onChange={(type) => {
               switchDisplayType.mutate({
                 tableId: table.id.value,
-                viewId: view.name.unpack(),
+                viewKey: view.name.unpack(),
                 displayType: type as IViewDisplayType,
               })
             }}

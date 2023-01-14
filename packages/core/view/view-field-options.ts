@@ -38,24 +38,24 @@ export class ViewFieldOptions extends ValueObject<Map<string, IViewFieldOption>>
     return [...this.value.values()].filter((v) => v.hidden).length
   }
 
-  public getOption(fieldId: string): IViewFieldOption {
-    return this.props.get(fieldId) ?? ViewFieldOptions.DEFAULT_OPTION
+  public getOption(fieldKey: string): IViewFieldOption {
+    return this.props.get(fieldKey) ?? ViewFieldOptions.DEFAULT_OPTION
   }
 
-  public getOrCreateOption(fieldId: string): IViewFieldOption {
-    const option = this.props.get(fieldId)
+  public getOrCreateOption(fieldKey: string): IViewFieldOption {
+    const option = this.props.get(fieldKey)
     if (option) return option
 
-    this.props.set(fieldId, ViewFieldOptions.DEFAULT_OPTION)
-    return this.getOption(fieldId)
+    this.props.set(fieldKey, ViewFieldOptions.DEFAULT_OPTION)
+    return this.getOption(fieldKey)
   }
 
-  public getHidden(fieldId: string): boolean {
-    return this.getOption(fieldId).hidden ?? false
+  public getHidden(fieldKey: string): boolean {
+    return this.getOption(fieldKey).hidden ?? false
   }
 
-  public getWidth(fieldId: string): number {
-    return this.getOption(fieldId).width ?? DEFAULT_WIDTH
+  public getWidth(fieldKey: string): number {
+    return this.getOption(fieldKey).width ?? DEFAULT_WIDTH
   }
 
   public toObject(): Option<Record<string, IViewFieldOption>> {
@@ -65,8 +65,8 @@ export class ViewFieldOptions extends ValueObject<Map<string, IViewFieldOption>>
   }
 
   public removeField(field: Field): Option<ViewFieldOptions> {
-    if (this.value.has(field.id.value)) {
-      const options = new ViewFieldOptions(new Map([...this.value.entries()].filter(([k]) => k !== field.id.value)))
+    if (this.value.has(field.key.value)) {
+      const options = new ViewFieldOptions(new Map([...this.value.entries()].filter(([k]) => k !== field.key.value)))
 
       return Some(options)
     }

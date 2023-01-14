@@ -1,5 +1,5 @@
-import type { FieldId } from '../../field'
+import type { FieldKey } from '../../field'
 
 export interface ICalendar {
-  fieldId?: FieldId
+  fieldKey?: FieldKey
 }

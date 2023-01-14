@@ -12,16 +12,16 @@ import type { IQueryRecordValues } from '../record.type'
 
 export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   static fromArray(inputs: ICreateFieldsSchema_internal): RecordValues {
-    const values = new Map(inputs.map((v) => [v.field.id.value, v.field.createValue(v.value as never)]))
+    const values = new Map(inputs.map((v) => [v.field.key.value, v.field.createValue(v.value as never)]))
     return new RecordValues(values)
   }
 
   static fromObject(schema: TableSchemaMap, inputs: IQueryRecordValues): RecordValues {
     const values = new Map(
-      Object.entries(inputs).map(([fieldId, fieldValue]) => [
-        fieldId,
+      Object.entries(inputs).map(([fieldKey, fieldValue]) => [
+        fieldKey,
         // TODO: handler missing field
-        schema.get(fieldId)!.createValue(fieldValue as never),
+        schema.get(fieldKey)!.createValue(fieldValue as never),
       ]),
     )
 
@@ -40,8 +40,8 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
     return Object.fromEntries(this.value)
   }
 
-  setValue(fieldId: string, value: FieldValue) {
-    this.value.set(fieldId, value)
+  setValue(fieldKey: string, value: FieldValue) {
+    this.value.set(fieldKey, value)
   }
 
   toObject() {

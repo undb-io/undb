@@ -16,7 +16,7 @@ export class SelectFieldValue extends ValueObject<ISelectFieldValue> {
   }
 
   static fromOption(o: Option): SelectFieldValue {
-    return new this(o.id.value)
+    return new this(o.key.value)
   }
 
   get id(): ISelectFieldValue {

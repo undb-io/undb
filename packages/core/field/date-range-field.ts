@@ -9,7 +9,7 @@ import type {
 } from './date-range-field.type'
 import { BaseField } from './field.base'
 import type { IDateRangeField } from './field.type'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
+import { FieldId, FieldKey, FieldName, FieldValueConstraints } from './value-objects'
 
 export class DateRangeField extends BaseField<IDateRangeField> {
   type: DateRangeType = 'date-range'
@@ -18,7 +18,8 @@ export class DateRangeField extends BaseField<IDateRangeField> {
     const fieldName = FieldName.create(input.name)
 
     return new DateRangeField({
-      id: input.id ? FieldId.from(input.id) : FieldId.fromName(fieldName),
+      id: FieldId.fromNullableString(input.id),
+      key: input.key ? FieldKey.from(input.key) : FieldKey.fromName(fieldName),
       name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
     })
@@ -26,7 +27,8 @@ export class DateRangeField extends BaseField<IDateRangeField> {
 
   static unsafeCreate(input: ICreateDateRangeFieldSchema): DateRangeField {
     return new DateRangeField({
-      id: FieldId.from(input.id),
+      id: FieldId.fromNullableString(input.id),
+      key: FieldKey.from(input.key),
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
     })
@@ -37,6 +39,6 @@ export class DateRangeField extends BaseField<IDateRangeField> {
   }
 
   createFilter(operator: IDateRangeFilterOperator, value: IDateRangeFieldValue | null): IDateRangeFilter {
-    return { operator, value, path: this.id.value, type: 'date-range' }
+    return { operator, value, path: this.key.value, type: 'date-range' }
   }
 }

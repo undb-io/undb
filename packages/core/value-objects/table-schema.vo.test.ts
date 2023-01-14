@@ -4,16 +4,19 @@ describe('TableSchema', () => {
   describe('createField', () => {
     test('should not has duplicated names', () => {
       const schema = new TableSchema([])
-      const spec = schema.createField({ type: 'string', name: 'string', id: 'string' })
+      const spec = schema.createField({ type: 'string', name: 'string', key: 'string' })
       schema.addField(spec.field)
       expect(() => {
-        schema.createField({ type: 'string', name: 'string', id: 'string' })
+        schema.createField({ type: 'string', name: 'string', key: 'string' })
       }).toThrowErrorMatchingInlineSnapshot(`
         "[
           {
             \\"code\\": \\"custom\\",
-            \\"message\\": \\"Invalid input\\",
-            \\"path\\": []
+            \\"message\\": \\"field name should not be duplicated\\",
+            \\"path\\": [
+              \\"field\\",
+              \\"name\\"
+            ]
           }
         ]"
       `)

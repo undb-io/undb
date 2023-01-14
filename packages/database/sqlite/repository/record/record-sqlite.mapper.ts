@@ -15,11 +15,11 @@ export class RecordSqliteMapper {
         const field = schema.get(columnName)
         if (field) {
           if (field.type === 'date') {
-            values[field.id.value] = value ? new Date(value) : null
+            values[field.key.value] = value ? new Date(value) : null
           } else if (field.type === 'bool') {
-            values[field.id.value] = !!value
+            values[field.key.value] = !!value
           } else {
-            values[field.id.value] = value
+            values[field.key.value] = value
           }
         }
       }
