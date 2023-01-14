@@ -3,9 +3,9 @@ import { z } from 'zod'
 import type { FieldValue } from '../field'
 import {
   createFieldValueSchema,
-  INTERNAL_FIELD_CREATED_AT_NAME,
-  INTERNAL_FIELD_ID_NAME,
-  INTERNAL_FIELD_UPDATED_AT_NAME,
+  INTERNAL_COLUMN_CREATED_AT_NAME,
+  INTERNAL_COLUMN_ID_NAME,
+  INTERNAL_COLUMN_UPDATED_AT_NAME,
 } from '../field'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema'
 import { recordIdSchema } from './value-objects'
@@ -27,9 +27,9 @@ export const updateRecordSchema = z.object({
 export type IUpdateRecordValueSchema = z.infer<typeof updateRecordSchema>
 
 export const internalRecordValues = z.object({
-  [INTERNAL_FIELD_ID_NAME]: recordIdSchema,
-  [INTERNAL_FIELD_CREATED_AT_NAME]: z.date(),
-  [INTERNAL_FIELD_UPDATED_AT_NAME]: z.date(),
+  [INTERNAL_COLUMN_ID_NAME]: recordIdSchema,
+  [INTERNAL_COLUMN_CREATED_AT_NAME]: z.date(),
+  [INTERNAL_COLUMN_UPDATED_AT_NAME]: z.date(),
 })
 
 export type IInternalRecordValues = z.infer<typeof internalRecordValues>

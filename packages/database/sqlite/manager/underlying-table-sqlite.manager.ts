@@ -1,5 +1,5 @@
 import type { ITableSpec, IUnderlyingTableManager, Table } from '@egodb/core'
-import { INTERNAL_FIELD_ID_NAME, INTERNAL_FIELD_UPDATED_AT_NAME } from '@egodb/core'
+import { INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { UnderlyingTableBuilder } from '../entity/underlying-table/underlying-table.builder'
 import { UnderlyingTableSqliteManagerVisitor } from './underlying-table-sqlite.manager-visitor'
@@ -13,7 +13,7 @@ export class UnderlyingTableSqliteManager implements IUnderlyingTableManager {
     const query = knex.schema
       .createTable(table.id.value, (t) => {
         const builder = new UnderlyingTableBuilder(knex, t, table.id.value)
-        builder.createId().createCreatedAt().createUpdatedAt().createUnderlying(table.schema.fields)
+        builder.createId().createCreatedAt().createUpdatedAt().createUnderlying(table.schema.fields).createDeletedAt()
       })
       .toQuery()
 
@@ -24,7 +24,7 @@ export class UnderlyingTableSqliteManager implements IUnderlyingTableManager {
         `
       CREATE TRIGGER update_at_update_${tableName} AFTER UPDATE ON ${tableName}
       BEGIN
-        update ${tableName} SET ${INTERNAL_FIELD_UPDATED_AT_NAME} = datetime('now') WHERE ${INTERNAL_FIELD_ID_NAME} = NEW.${INTERNAL_FIELD_ID_NAME};
+        update ${tableName} SET ${INTERNAL_COLUMN_UPDATED_AT_NAME} = datetime('now') WHERE ${INTERNAL_COLUMN_ID_NAME} = NEW.${INTERNAL_COLUMN_ID_NAME};
       END;
     `,
       )

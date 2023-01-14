@@ -4,6 +4,7 @@ import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { Option } from 'oxide.ts'
 import { Some } from 'oxide.ts'
 import type { Primitive } from 'type-fest'
+import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../entity/underlying-table/constants'
 import { RecordSqliteMapper } from './record-sqlite.mapper'
 import { RecordSqliteMutationVisitor } from './record-sqlite.mutation-visitor'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
@@ -58,7 +59,9 @@ export class RecordSqliteRepository implements IRecordRepository {
   async deleteOneById(tableId: string, id: string): Promise<void> {
     const qb = this.em.getKnex().queryBuilder()
 
-    qb.from(tableId).where({ id }).del()
+    qb.from(tableId)
+      .update({ [INTERNAL_COLUMN_DELETED_AT_NAME]: new Date() })
+      .where({ id })
 
     await this.em.execute(qb)
   }
