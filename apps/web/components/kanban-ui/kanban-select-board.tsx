@@ -23,6 +23,7 @@ interface IProps extends ITableBaseProps {
 
 export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) => {
   const [options, handlers] = useListState(field.options.options)
+  console.log(options)
   const containers = [UNCATEGORIZED_OPTION_ID, ...options.map((o) => o.key.value)]
   const lastOption = options[options.length - 1]
 
@@ -89,8 +90,8 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
     onDragContainerEnd: ({ active, over }) => {
       if (over) {
         handlers.reorder({
-          from: active.data.current?.sortable?.index,
-          to: over.data.current?.sortable?.index,
+          from: active.data.current?.sortable?.index - 1,
+          to: over.data.current?.sortable?.index - 1,
         })
 
         reorderOptions.mutate({
