@@ -23,13 +23,13 @@ interface IProps extends ITableBaseProps {
 
 export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) => {
   const [options, handlers] = useListState(field.options.options)
-  const containers = options.map((o) => o.id.value)
+  const containers = options.map((o) => o.key.value)
   const lastOption = options[options.length - 1]
 
   const groupOptionRecords = () =>
     groupBy(
       (record) =>
-        record.values.getSelectValue(field.id.value).mapOr(UNCATEGORIZED_OPTION_ID, (v) => v.id) ??
+        record.values.getSelectValue(field.key.value).mapOr(UNCATEGORIZED_OPTION_ID, (v) => v.id) ??
         UNCATEGORIZED_OPTION_ID,
       records,
     )
@@ -95,7 +95,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
 
         reorderOptions.mutate({
           tableId: table.id.value,
-          fieldId: field.id.value,
+          fieldKey: field.key.value,
           from: active.id as string,
           to: over.id as string,
         })
@@ -105,11 +105,11 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
       updateRecord.mutate({
         tableId: table.id.value,
         id: e.active.id as string,
-        value: [{ id: field.id.value, value: overContainer === UNCATEGORIZED_OPTION_ID ? null : overContainer }],
+        value: [{ id: field.key.value, value: overContainer === UNCATEGORIZED_OPTION_ID ? null : overContainer }],
       })
     },
 
-    getContainer: (activeId) => options.find((o) => o.id.value === activeId),
+    getContainer: (activeId) => options.find((o) => o.key.value === activeId),
   })
 
   return (
@@ -135,9 +135,9 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
               <SortableKanbanLane
                 field={field}
                 table={table}
-                records={optionRecords[option.id.value] ?? []}
-                key={option.id.value}
-                id={option.id.value}
+                records={optionRecords[option.key.value] ?? []}
+                key={option.key.value}
+                id={option.key.value}
                 title={option.name.value}
                 renderTitle={() => (
                   <Option name={option.name.value} colorName={option.color.name} shade={option.color.shade} />
@@ -151,7 +151,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
                         innerProps: {
                           tableId: table.id.value,
                           field,
-                          optionId: option.id.value,
+                          optionKey: option.key.value,
                           option: { name: option.name.value, color: option.color.unpack() },
                         } as IUpdateOptionModalProps,
                       })
@@ -171,7 +171,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
                   field={field}
                   records={optionRecords[(activeId as string) || ''] ?? []}
                   title={activeContainer?.name.value ?? ''}
-                  id={activeContainer?.id.value ?? ''}
+                  id={activeContainer?.key.value ?? ''}
                   renderTitle={() => (
                     <Option
                       name={activeContainer!.name.value}

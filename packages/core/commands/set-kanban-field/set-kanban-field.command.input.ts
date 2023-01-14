@@ -5,6 +5,6 @@ import { setKanbanFieldSchema, viewNameSchema } from '../../view'
 export const setKanbanFieldCommandInput = z
   .object({
     tableId: tableIdSchema,
-    viewId: viewNameSchema.optional(),
+    viewKey: viewNameSchema.optional(),
   })
   .merge(setKanbanFieldSchema)

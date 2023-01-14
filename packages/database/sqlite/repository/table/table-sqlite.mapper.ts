@@ -1,6 +1,7 @@
 import type {
   ICreateSelectFieldSchema,
   ICreateTableSchemaInput,
+  ICreateViewsSchema,
   IQueryFieldSchema,
   IQueryTable,
   IQueryView,
@@ -14,11 +15,11 @@ export class TableSqliteMapper {
   static fieldToQuery(entity: EntityDTO<FieldEntity>): IQueryFieldSchema {
     if (entity.type === 'select') {
       return {
-        id: entity.id,
+        key: entity.key,
         name: entity.name,
         type: 'select',
         options: (entity as EntityDTO<SelectField>).options.map((o) => ({
-          id: o.id,
+          key: o.key,
           name: o.name,
           color: {
             name: o.color.name,
@@ -28,7 +29,7 @@ export class TableSqliteMapper {
       } satisfies ISelectFieldQuerySchema
     }
     return {
-      id: entity.id,
+      key: entity.key,
       name: entity.name,
       type: entity.type,
     } as IQueryFieldSchema
@@ -42,7 +43,7 @@ export class TableSqliteMapper {
       views: entity.views.toArray().map(
         (view) =>
           ({
-            id: view.id,
+            key: view.key,
             name: view.name,
             displayType: view.displayType,
             filter: view.filter,
@@ -63,10 +64,11 @@ export class TableSqliteMapper {
         if (f.type === 'select') {
           return {
             id: f.id,
+            key: f.key,
             name: f.name,
             type: 'select',
             options: (f as EntityDTO<SelectField>).options.map((o) => ({
-              id: o.id,
+              key: o.key,
               name: o.name,
               color: {
                 name: o.color.name,
@@ -77,23 +79,22 @@ export class TableSqliteMapper {
         }
         return {
           id: f.id,
+          key: f.key,
           name: f.name,
           type: f.type,
         }
       }) as ICreateTableSchemaInput,
-      views: entity.views.toArray().map(
-        (view) =>
-          ({
-            id: view.id,
-            name: view.name,
-            displayType: view.displayType,
-            filter: view.filter,
-            fieldOptions: view.fieldOptions,
-            fieldsOrder: view.fieldsOrder,
-            kanban: view.kanban,
-            calendar: view.calendar,
-          } as IQueryView),
-      ),
+      views: entity.views.toArray().map((view) => ({
+        id: view.id,
+        key: view.key,
+        name: view.name,
+        displayType: view.displayType,
+        filter: view.filter,
+        fieldOptions: view.fieldOptions,
+        fieldsOrder: view.fieldsOrder,
+        kanban: view.kanban,
+        calendar: view.calendar,
+      })) as ICreateViewsSchema,
     })
   }
 }

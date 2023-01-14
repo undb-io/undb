@@ -1,5 +1,5 @@
 import type { ICreateOptionSchema } from '@egodb/core'
-import { createOptionSchema, OptionId } from '@egodb/core'
+import { createOptionSchema, OptionKey } from '@egodb/core'
 import { Stack, TextInput, Group, Button, closeModal } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
@@ -27,10 +27,10 @@ export const CreateOptionForm: React.FC<ICreateOptionFormProps> = ({ table, fiel
   })
 
   const onSubmit = form.handleSubmit((values) => {
-    values.id = OptionId.create().value
+    values.key = OptionKey.create().value
     createOption.mutate({
       tableId: table.id.value,
-      fieldId: field.id.value,
+      fieldKey: field.key.value,
       option: values,
     })
   })

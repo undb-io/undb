@@ -48,7 +48,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   const onCreateRecord = () => {
     setOpened(true)
     if (id && getRecordValue) {
-      setCreateRecordInitialValue({ [field.id.value]: getRecordValue(id) })
+      setCreateRecordInitialValue({ [field.key.value]: getRecordValue(id) })
     }
   }
 
@@ -68,7 +68,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
         </Group>
 
         {id && (
-          <KanbanLaneMenu table={table} field={field} optionId={id}>
+          <KanbanLaneMenu table={table} field={field} optionKey={id}>
             {renderMenu?.()}
           </KanbanLaneMenu>
         )}

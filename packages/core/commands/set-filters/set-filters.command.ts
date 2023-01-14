@@ -5,13 +5,13 @@ import type { ISetFilterCommandInput } from './set-filters.command.interface'
 
 export class SetFitlersCommand extends Command implements ISetFilterCommandInput {
   readonly tableId: string
-  readonly viewId?: string
+  readonly viewKey?: string
   readonly filter: IRootFilter | null
 
   constructor(props: CommandProps<ISetFilterCommandInput>) {
     super(props)
     this.tableId = props.tableId
-    this.viewId = props.viewId
+    this.viewKey = props.viewKey
     this.filter = props.filter
   }
 }

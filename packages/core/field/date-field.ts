@@ -5,7 +5,7 @@ import { DateFieldValue } from './date-field-value'
 import type { DateType, ICreateDateFieldSchema, ICreateDateFieldValue } from './date-field.type'
 import { BaseField } from './field.base'
 import type { IDateField } from './field.type'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
+import { FieldId, FieldKey, FieldName, FieldValueConstraints } from './value-objects'
 
 export class DateField extends BaseField<IDateField> {
   type: DateType = 'date'
@@ -13,7 +13,8 @@ export class DateField extends BaseField<IDateField> {
   static create(input: ICreateDateFieldSchema): DateField {
     const fieldName = FieldName.create(input.name)
     return new DateField({
-      id: input.id ? FieldId.from(input.id) : FieldId.fromName(fieldName),
+      id: FieldId.fromNullableString(input.id),
+      key: input.key ? FieldKey.from(input.key) : FieldKey.fromName(fieldName),
       name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
     })
@@ -21,7 +22,8 @@ export class DateField extends BaseField<IDateField> {
 
   static unsafeCreate(input: ICreateDateFieldSchema): DateField {
     return new DateField({
-      id: FieldId.from(input.id),
+      id: FieldId.fromNullableString(input.id),
+      key: FieldKey.from(input.key),
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
     })
@@ -37,6 +39,6 @@ export class DateField extends BaseField<IDateField> {
     if (dateBuiltInOperators.has(operator)) {
       v = null
     }
-    return { operator, value: v, path: this.id.value, type: 'date' }
+    return { operator, value: v, path: this.key.value, type: 'date' }
   }
 }

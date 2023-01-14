@@ -1,8 +1,8 @@
 import type { ICreateTableInput_internal } from '../table.schema'
+import { WithTableViews } from '../view/specifications/views.specification'
 import { WithTableId } from './table-id.specifaction'
 import { WithTableName } from './table-name.specification'
 import { WithTableSchema } from './table-schema.specification'
-import { WithTableViews } from './table-views.specification'
 
 export const newTableSpec = (input: ICreateTableInput_internal) => {
   return WithTableName.fromString(input.name)

@@ -15,7 +15,7 @@ interface IProps extends ITableBaseProps {
 export const SelectExistingCalendarField: React.FC<IProps> = ({ table, onSuccess }) => {
   const calendarFields = table.schema.calendarFields
   const view = table.mustGetView()
-  const initialCalendarFieldId = view.calendar.into()?.fieldId?.value
+  const initialCalendarFieldId = view.calendar.into()?.fieldKey?.value
   const hasCalendarFields = calendarFields.length > 0
 
   const utils = trpc.useContext()
@@ -65,12 +65,12 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ table, onSuccess
                   >
                     {calendarFields.map((f) => (
                       <Radio
-                        key={f.id.value}
-                        value={f.id.value}
+                        key={f.key.value}
+                        value={f.key.value}
                         label={
                           <Group spacing="xs">
                             <FieldIcon type={f.type} />
-                            {f.id.value}
+                            {f.key.value}
                           </Group>
                         }
                       />

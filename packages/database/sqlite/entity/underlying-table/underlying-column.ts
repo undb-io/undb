@@ -41,7 +41,7 @@ export class UnderlyingUpdatedAtColumn extends UnderlyingColumn {
 abstract class UnderlyingFieldColumn<F extends Field> implements IUnderlyingColumn {
   constructor(protected readonly field: F) {}
   get name(): string {
-    return this.field.id.value
+    return this.field.key.value
   }
   abstract build(tb: Knex.TableBuilder, knex: Knex, tableName: string): Knex.ColumnBuilder
 }

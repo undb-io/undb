@@ -1,14 +1,14 @@
 import type { ISelectFilterOperator } from '../filter/operators'
 import type { ISelectFilter, ISelectFilterValue } from '../filter/select.filter'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from '../option'
-import { OptionId } from '../option'
+import { OptionKey } from '../option'
 import { Options } from '../option/options'
 import { BaseField } from './field.base'
 import type { ISelectField } from './field.type'
 import { SelectFieldValue } from './select-field-value'
 import type { ICreateSelectFieldSchema, ICreateSelectFieldValue, SelectFieldType } from './select-field.type'
 import { WithNewOption, WithOption, WithOptions, WithoutOption } from './specifications/select-field.specification'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
+import { FieldId, FieldKey, FieldName, FieldValueConstraints } from './value-objects'
 
 export class SelectField extends BaseField<ISelectField> {
   type: SelectFieldType = 'select'
@@ -38,15 +38,16 @@ export class SelectField extends BaseField<ISelectField> {
   }
 
   removeOption(id: string): WithoutOption {
-    const optionId = OptionId.fromString(id)
-    return new WithoutOption(this, optionId)
+    const optionKey = OptionKey.fromString(id)
+    return new WithoutOption(this, optionKey)
   }
 
   static create(input: ICreateSelectFieldSchema): SelectField {
     const fieldName = FieldName.create(input.name)
 
     return new SelectField({
-      id: input.id ? FieldId.from(input.id) : FieldId.fromName(fieldName),
+      id: FieldId.fromNullableString(input.id),
+      key: input.key ? FieldKey.from(input.key) : FieldKey.fromName(fieldName),
       name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
       options: Options.create(input.options),
@@ -55,7 +56,8 @@ export class SelectField extends BaseField<ISelectField> {
 
   static unsafeCreate(input: ICreateSelectFieldSchema): SelectField {
     return new SelectField({
-      id: FieldId.from(input.id),
+      id: FieldId.fromNullableString(input.id),
+      key: FieldKey.from(input.key),
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
       options: Options.unsafeCreate(input.options),
@@ -63,7 +65,7 @@ export class SelectField extends BaseField<ISelectField> {
   }
 
   createFilter(operator: ISelectFilterOperator, value: ISelectFilterValue): ISelectFilter {
-    return { operator, value, path: this.id.value, type: 'select' }
+    return { operator, value, path: this.key.value, type: 'select' }
   }
 
   createValue(value: ICreateSelectFieldValue): SelectFieldValue {

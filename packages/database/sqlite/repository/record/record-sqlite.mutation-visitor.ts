@@ -51,12 +51,12 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
   }
   values(s: WithRecordValues): void {
     // TODO
-    const data = [...s.values.value.entries()].reduce<Record<string, Primitive | Date>>((prev, [fieldId, value]) => {
+    const data = [...s.values.value.entries()].reduce<Record<string, Primitive | Date>>((prev, [fieldKey, value]) => {
       if (value instanceof DateRangeFieldValue) {
-        prev[fieldId + '_from'] = value.from.into()
-        prev[fieldId + '_to'] = value.to.into()
+        prev[fieldKey + '_from'] = value.from.into()
+        prev[fieldKey + '_to'] = value.to.into()
       } else {
-        prev[fieldId] = value.unpack()
+        prev[fieldKey] = value.unpack()
       }
       return prev
     }, {} as Record<string, Primitive | Date>)

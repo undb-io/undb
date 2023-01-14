@@ -4,5 +4,5 @@ import { viewNameSchema } from '../../view'
 
 export const getRecordsQueryInput = z.object({
   tableId: tableIdSchema,
-  viewId: viewNameSchema.optional(),
+  viewKey: viewNameSchema.optional(),
 })

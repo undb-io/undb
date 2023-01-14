@@ -1,26 +1,26 @@
 import { NanoID } from '@egodb/domain'
 import { optionIdSchema } from './option.schema'
 
-export class OptionId extends NanoID {
+export class OptionKey extends NanoID {
   private static OPTION_ID_PREFIX = 'opt'
   private static OPTION_ID_SIZE = 5
   public get value(): string {
     return this.props.value
   }
 
-  static create(): OptionId {
-    const id = NanoID.createId(OptionId.OPTION_ID_PREFIX, this.OPTION_ID_SIZE)
+  static create(): OptionKey {
+    const id = NanoID.createId(OptionKey.OPTION_ID_PREFIX, this.OPTION_ID_SIZE)
     return new this(optionIdSchema.parse(id))
   }
 
-  static fromString(id: string): OptionId {
-    return new this(id)
+  static fromString(key: string): OptionKey {
+    return new this(key)
   }
 
-  static fromNullableString(id?: string): OptionId {
-    if (!id) {
+  static fromNullableString(key?: string): OptionKey {
+    if (!key) {
       return this.create()
     }
-    return new this(id)
+    return new this(key)
   }
 }

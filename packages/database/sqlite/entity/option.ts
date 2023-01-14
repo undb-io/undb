@@ -4,17 +4,7 @@ import type {
   Option as CoreOption,
   OptionColor as CoreOptionColor,
 } from '@egodb/core'
-import {
-  Cascade,
-  Embeddable,
-  Embedded,
-  Entity,
-  Enum,
-  ManyToOne,
-  PrimaryKey,
-  PrimaryKeyType,
-  Property,
-} from '@mikro-orm/core'
+import { Cascade, Embeddable, Embedded, Entity, Enum, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
 import { BaseEntity } from './base'
 import { SelectField } from './field'
 
@@ -36,19 +26,17 @@ export class OptionColor {
 export class Option extends BaseEntity {
   constructor(field: SelectField, option: CoreOption) {
     super()
-    this.id = option.id.value
+    this.key = option.key.value
     this.field = field
     this.name = option.name.value
     this.color = new OptionColor(option.color)
   }
 
   @PrimaryKey()
-  id: string
+  key: string
 
-  @ManyToOne(() => SelectField, { primary: true, cascade: [Cascade.ALL] })
-  field: SelectField;
-
-  [PrimaryKeyType]?: [string, string, string]
+  @ManyToOne(() => SelectField, { cascade: [Cascade.ALL] })
+  field: SelectField
 
   @Property()
   name: string

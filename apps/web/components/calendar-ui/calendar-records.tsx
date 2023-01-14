@@ -48,7 +48,7 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
 }
 
 export const CalendarRecords: React.FC<IProps> = ({ field, records }) => {
-  const spec = new NullSpecification(field.id.value)
+  const spec = new NullSpecification(field.key.value)
   const nullRecords = useMemo(() => records.filter((r) => spec.isSatisfiedBy(r)), [records])
   return (
     <Box p="md" bg="white" h="100%">

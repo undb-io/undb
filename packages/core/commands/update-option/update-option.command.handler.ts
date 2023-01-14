@@ -10,7 +10,7 @@ export class UpdateOptionCommandHandler implements IUpdateOptionCommandHandler {
   async execute(command: UpdateOptionCommand): Promise<void> {
     const table = (await this.repo.findOneById(command.tableId)).unwrap()
 
-    const spec = table.updateOption(command.fieldId, command.id, command.option)
+    const spec = table.updateOption(command.fieldKey, command.id, command.option)
 
     await this.repo.updateOneById(table.id.value, spec)
   }

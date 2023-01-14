@@ -5,12 +5,12 @@ import type { Record } from '../record'
 import type { IRecordVisitor } from './interface'
 
 export class NullSpecification extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(public readonly fieldId: string) {
+  constructor(public readonly fieldKey: string) {
     super()
   }
 
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getUnpackedValue(this.fieldId).mapOr(true, (value) => value === null)
+    return r.values.getUnpackedValue(this.fieldKey).mapOr(true, (value) => value === null)
   }
 
   mutate(t: Record): Result<Record, string> {

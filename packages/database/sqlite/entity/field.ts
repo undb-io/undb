@@ -1,15 +1,5 @@
 import type { Field as CoreField, IFieldType } from '@egodb/core'
-import {
-  Cascade,
-  Collection,
-  Entity,
-  Enum,
-  ManyToOne,
-  OneToMany,
-  PrimaryKey,
-  PrimaryKeyType,
-  Property,
-} from '@mikro-orm/core'
+import { Cascade, Collection, Entity, Enum, ManyToOne, OneToMany, PrimaryKey, Property } from '@mikro-orm/core'
 import { BaseEntity } from './base'
 import { Option } from './option'
 import { Table } from './table'
@@ -19,24 +9,26 @@ export abstract class Field extends BaseEntity {
   constructor(table: Table, field: CoreField) {
     super()
     this.id = field.id.value
+    this.key = field.key.value
     this.table = table
     this.name = field.name.value
     this.type = field.type
   }
 
   @PrimaryKey()
-  id!: string
-
-  @ManyToOne(() => Table, { primary: true, cascade: [Cascade.ALL] })
-  table!: Table;
-
-  [PrimaryKeyType]?: [string, string]
+  id: string
 
   @Property()
-  name!: string
+  key: string
+
+  @ManyToOne(() => Table, { cascade: [Cascade.ALL] })
+  table: Table
+
+  @Property()
+  name: string
 
   @Enum({ type: 'string' })
-  type!: IFieldType
+  type: IFieldType
 }
 
 @Entity({ discriminatorValue: 'string' })

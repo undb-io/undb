@@ -10,7 +10,7 @@ export class CreateOptionCommandHandler implements ICreateOptionCommandHandler {
   async execute(command: CreateOptionCommand): Promise<void> {
     const table = (await this.repo.findOneById(command.tableId)).unwrap()
 
-    const spec = table.createOption(command.fieldId, command.option)
+    const spec = table.createOption(command.fieldKey, command.option)
 
     await this.repo.updateOneById(table.id.value, spec)
   }

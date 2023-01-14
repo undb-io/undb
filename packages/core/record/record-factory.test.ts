@@ -1,5 +1,5 @@
-import { Field, FieldId, FieldName, FieldValueConstraints, SelectField, StringField } from '../field'
-import { Option, OptionId, OptionName, Options } from '../option'
+import { Field, FieldId, FieldKey, FieldName, FieldValueConstraints, SelectField, StringField } from '../field'
+import { Option, OptionColor, OptionKey, OptionName, Options } from '../option'
 import { TableSchemaMap } from '../value-objects'
 import { RecordFactory } from './record.factory'
 import { IQueryRecordSchema } from './record.type'
@@ -28,12 +28,14 @@ describe('fromQuery', () => {
           field1: 'hello',
         },
         createdAt: new Date(),
+        updatedAt: new Date(),
       },
       new Map([
         [
           'field1',
           new StringField({
-            id: FieldId.from('field1'),
+            id: FieldId.fromString('id'),
+            key: FieldKey.from('field1'),
             name: FieldName.create('field1'),
             valueConstrains: FieldValueConstraints.create({}),
           }),
@@ -48,15 +50,23 @@ describe('fromQuery', () => {
           field1: 'opt1',
         },
         createdAt: new Date(),
+        updatedAt: new Date(),
       },
       new Map([
         [
           'field1',
           new SelectField({
-            id: FieldId.from('field1'),
+            id: FieldId.fromString('id'),
+            key: FieldKey.from('field1'),
             name: FieldName.create('field1'),
             valueConstrains: FieldValueConstraints.create({}),
-            options: new Options([new Option({ id: OptionId.fromString('opt1'), name: OptionName.create('opt1') })]),
+            options: new Options([
+              new Option({
+                key: OptionKey.fromString('opt1'),
+                name: OptionName.create('opt1'),
+                color: OptionColor.defaultColor,
+              }),
+            ]),
           }),
         ],
       ]),
@@ -75,7 +85,7 @@ describe('fromQuery', () => {
         [
           'field1',
           new StringField({
-            id: FieldId.from('field1'),
+            key: FieldKey.from('field1'),
             name: FieldName.create('field1'),
             valueConstrains: FieldValueConstraints.create({}),
           }),
@@ -83,10 +93,10 @@ describe('fromQuery', () => {
         [
           'field2',
           new SelectField({
-            id: FieldId.from('field2'),
+            key: FieldKey.from('field2'),
             name: FieldName.create('field2'),
             valueConstrains: FieldValueConstraints.create({}),
-            options: new Options([new Option({ id: OptionId.fromString('opt1'), name: OptionName.create('opt1') })]),
+            options: new Options([new Option({ key: OptionKey.fromString('opt1'), name: OptionName.create('opt1') })]),
           }),
         ],
       ]),

@@ -41,9 +41,9 @@ export class UnderlyingTableSqliteManager implements IUnderlyingTableManager {
   }
 
   async delete(tableId: string): Promise<void> {
-    const knex = this.em.getKnex()
-
-    const sb = knex.schema.dropTable(tableId)
-    await this.em.execute(sb.toQuery())
+    // TODO: drop table later
+    // const knex = this.em.getKnex()
+    // const sb = knex.schema.dropTable(tableId)
+    // await this.em.execute(sb.toQuery())
   }
 }

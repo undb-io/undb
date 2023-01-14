@@ -1,19 +1,29 @@
-import { ValueObject } from '@egodb/domain'
+import { NanoID } from '@egodb/domain'
 import { z } from 'zod'
-import type { ViewName } from './view-name.vo'
 
 export const viewIdSchema = z.string().min(1)
 
-export class ViewId extends ValueObject<string> {
-  public get value() {
+export class ViewId extends NanoID {
+  private static VIEW_ID_PREFIX = 'viw'
+  private static VIEW_ID_SIZE = 8
+
+  public get value(): string {
     return this.props.value
   }
 
-  static fromName(viewName: ViewName) {
-    return new this({ value: viewName.value })
+  static create(): ViewId {
+    const id = NanoID.createId(ViewId.VIEW_ID_PREFIX, this.VIEW_ID_SIZE)
+    return new this(id)
   }
 
-  static create(id: string) {
-    return new this({ value: id })
+  static fromString(id: string): ViewId {
+    return new this(id)
+  }
+
+  static fromNullableString(id?: string): ViewId {
+    if (!id) {
+      return this.create()
+    }
+    return new this(id)
   }
 }

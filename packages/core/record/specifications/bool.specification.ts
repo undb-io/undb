@@ -6,13 +6,13 @@ import type { Record } from '../record'
 import type { IRecordVisitor } from './interface'
 
 abstract class BaseBoolSpecification extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(readonly fieldId: string, readonly value: boolean) {
+  constructor(readonly fieldKey: string, readonly value: boolean) {
     super()
   }
 
   mutate(r: Record): Result<Record, string> {
     const boolValue = new BoolFieldValue(this.value)
-    r.values.setValue(this.fieldId, boolValue)
+    r.values.setValue(this.fieldKey, boolValue)
     return Ok(r)
   }
 }
@@ -28,7 +28,7 @@ export class BoolIsTrue extends BaseBoolSpecification {
    * @returns bool
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getBoolValue(this.fieldId).mapOr(false, (value) => value === true)
+    return r.values.getBoolValue(this.fieldKey).mapOr(false, (value) => value === true)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -48,7 +48,7 @@ export class BoolIsFalse extends BaseBoolSpecification {
    * @returns bool
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getBoolValue(this.fieldId).mapOr(false, (value) => value === false)
+    return r.values.getBoolValue(this.fieldKey).mapOr(false, (value) => value === false)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {

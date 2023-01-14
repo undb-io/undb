@@ -57,102 +57,102 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     throw new Error('Method not implemented.')
   }
   stringEqual(s: StringEqual): void {
-    this.qb.where({ [s.fieldId]: s.value })
+    this.qb.where({ [s.fieldKey]: s.value })
   }
   stringContain(s: StringContain): void {
     if (s.value === null) {
-      this.qb.whereNull(s.fieldId)
+      this.qb.whereNull(s.fieldKey)
     } else {
-      this.qb.whereRaw(`${s.fieldId} like '%??%'`, [s.value])
+      this.qb.whereRaw(`${s.fieldKey} like '%??%'`, [s.value])
     }
   }
   stringStartsWith(s: StringStartsWith): void {
     if (s.value === null) {
-      this.qb.whereNull(s.fieldId)
+      this.qb.whereNull(s.fieldKey)
     } else {
-      this.qb.whereRaw(`${s.fieldId} like '??%'`, [s.value])
+      this.qb.whereRaw(`${s.fieldKey} like '??%'`, [s.value])
     }
   }
   stringEndsWith(s: StringEndsWith): void {
     if (s.value === null) {
-      this.qb.whereNull(s.fieldId)
+      this.qb.whereNull(s.fieldKey)
     } else {
-      this.qb.whereRaw(`${s.fieldId} like '%??'`, [s.value])
+      this.qb.whereRaw(`${s.fieldKey} like '%??'`, [s.value])
     }
   }
   stringRegex(s: StringRegex): void {
     throw new Error('Method not implemented.')
   }
   numberEqual(s: NumberEqual): void {
-    this.qb.where({ [s.fieldId]: s.value })
+    this.qb.where({ [s.fieldKey]: s.value })
   }
   numberGreaterThan(s: NumberGreaterThan): void {
-    this.qb.where(s.fieldId, '>', s.value)
+    this.qb.where(s.fieldKey, '>', s.value)
   }
   numberLessThan(s: NumberLessThan): void {
-    this.qb.where(s.fieldId, '<', s.value)
+    this.qb.where(s.fieldKey, '<', s.value)
   }
   numberGreaterThanOrEqual(s: NumberGreaterThanOrEqual): void {
-    this.qb.where(s.fieldId, '>=', s.value)
+    this.qb.where(s.fieldKey, '>=', s.value)
   }
   numberLessThanOrEqual(s: NumberLessThanOrEqual): void {
-    this.qb.where(s.fieldId, '<=', s.value)
+    this.qb.where(s.fieldKey, '<=', s.value)
   }
   dateEqual(s: DateEqual): void {
-    this.qb.where({ [s.fieldId]: s.value })
+    this.qb.where({ [s.fieldKey]: s.value })
   }
   dateGreaterThan(s: DateGreaterThan): void {
     if (s.value === null) {
-      this.qb.whereNull(s.fieldId)
+      this.qb.whereNull(s.fieldKey)
     } else {
-      this.qb.where(s.fieldId, '>', s.value)
+      this.qb.where(s.fieldKey, '>', s.value)
     }
   }
   dateLessThan(s: DateLessThan): void {
     if (s.value === null) {
-      this.qb.whereNull(s.fieldId)
+      this.qb.whereNull(s.fieldKey)
     } else {
-      this.qb.where(s.fieldId, '<', s.value)
+      this.qb.where(s.fieldKey, '<', s.value)
     }
   }
   dateGreaterThanOrEqual(s: DateGreaterThanOrEqual): void {
     if (s.value === null) {
-      this.qb.whereNull(s.fieldId)
+      this.qb.whereNull(s.fieldKey)
     } else {
-      this.qb.where(s.fieldId, '>=', s.value)
+      this.qb.where(s.fieldKey, '>=', s.value)
     }
   }
   dateLessThanOrEqual(s: DateLessThanOrEqual): void {
     if (s.value === null) {
-      this.qb.whereNull(s.fieldId)
+      this.qb.whereNull(s.fieldKey)
     } else {
-      this.qb.where(s.fieldId, '<=', s.value)
+      this.qb.where(s.fieldKey, '<=', s.value)
     }
   }
   dateIsToday(s: DateIsToday): void {
-    this.qb.whereBetween(s.fieldId, [startOfDay(new Date()), endOfDay(new Date())])
+    this.qb.whereBetween(s.fieldKey, [startOfDay(new Date()), endOfDay(new Date())])
   }
   null(s: NullSpecification): void {
-    this.qb.whereNull(s.fieldId)
+    this.qb.whereNull(s.fieldKey)
   }
   dateRangeEqual(s: DateRangeEqual): void {
     if (s.value) {
-      this.qb.whereBetween(s.fieldId, s.value)
+      this.qb.whereBetween(s.fieldKey, s.value)
     } else {
-      this.qb.whereNull(s.fieldId)
+      this.qb.whereNull(s.fieldKey)
     }
   }
   selectEqual(s: SelectEqual): void {
-    this.qb.where(s.fieldId, s.value)
+    this.qb.where(s.fieldKey, s.value)
   }
   selectIn(s: SelectIn): void {
     this.qb.whereIn(s.fielId, s.value)
   }
   boolIsTrue(s: BoolIsTrue): void {
-    this.qb.where(s.fieldId, true)
+    this.qb.where(s.fieldKey, true)
   }
   boolIsFalse(s: BoolIsFalse): void {
-    this.qb.where(s.fieldId, false)
+    this.qb.where(s.fieldKey, false)
   }
   not(): this {
     this.qb = this.qb.not

@@ -1,6 +1,6 @@
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { Option, OptionId } from '../../option'
+import type { Option, OptionKey } from '../../option'
 import { Options } from '../../option'
 import type { ITableSpecVisitor } from '../../specifications'
 import type { Table } from '../../table'
@@ -38,7 +38,7 @@ export class WithOption extends BaseFieldSpecification<SelectField> {
 
   mutate(t: Table): Result<Table, string> {
     this.field.options = new Options(
-      this.field.options.options.map((o) => (o.id.equals(this.option.id) ? this.option : o)),
+      this.field.options.options.map((o) => (o.key.equals(this.option.key) ? this.option : o)),
     )
     return Ok(t)
   }
@@ -69,7 +69,7 @@ export class WithNewOption extends BaseFieldSpecification<SelectField> {
 }
 
 export class WithoutOption extends BaseFieldSpecification<SelectField> {
-  constructor(field: SelectField, public readonly optionId: OptionId) {
+  constructor(field: SelectField, public readonly optionKey: OptionKey) {
     super(field)
   }
 
@@ -78,7 +78,7 @@ export class WithoutOption extends BaseFieldSpecification<SelectField> {
   }
 
   mutate(t: Table): Result<Table, string> {
-    this.field.options = this.field.options.remove(this.optionId)
+    this.field.options = this.field.options.remove(this.optionKey)
     return Ok(t)
   }
 

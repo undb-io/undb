@@ -5,6 +5,6 @@ import { setCalendarFieldSchema, viewNameSchema } from '../../view'
 export const setCalendarFieldCommandInput = z
   .object({
     tableId: tableIdSchema,
-    viewId: viewNameSchema.optional(),
+    viewKey: viewNameSchema.optional(),
   })
   .merge(setCalendarFieldSchema)

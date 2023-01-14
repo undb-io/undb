@@ -68,7 +68,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
               {...nameProps}
               onChange={(e) => {
                 nameProps.onChange(e)
-                form.setValue(`schema.${index}.id`, e.target.value)
+                form.setValue(`schema.${index}.key`, e.target.value)
               }}
               label={<FieldInputLabel>name</FieldInputLabel>}
               variant="filled"

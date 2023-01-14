@@ -2,28 +2,28 @@ import { ValueObject } from '@egodb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import type { Field } from '../../field'
-import { FieldId } from '../../field'
+import { FieldKey } from '../../field'
 import type { ICalendarSchema } from './calendar.schema'
 import type { ICalendar } from './calendar.type'
 
 export class Calendar extends ValueObject<ICalendar> {
   static from(input: ICalendarSchema) {
     return new this({
-      fieldId: input.fieldId ? FieldId.from(input.fieldId) : undefined,
+      fieldKey: input.fieldKey ? FieldKey.from(input.fieldKey) : undefined,
     })
   }
 
-  public get fieldId() {
-    return this.props.fieldId
+  public get fieldKey() {
+    return this.props.fieldKey
   }
 
-  public set fieldId(fieldId: FieldId | undefined) {
-    this.props.fieldId = fieldId
+  public set fieldKey(fieldKey: FieldKey | undefined) {
+    this.props.fieldKey = fieldKey
   }
 
   public removeField(field: Field): Option<Calendar> {
-    if (this.fieldId?.equals(field.id)) {
-      const kanban = new Calendar({ ...this, fieldId: undefined })
+    if (this.fieldKey?.equals(field.key)) {
+      const kanban = new Calendar({ ...this, fieldKey: undefined })
       return Some(kanban)
     }
 

@@ -1,7 +1,7 @@
 import { DndContext, rectIntersection } from '@dnd-kit/core'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { SortableContext, useSortable } from '@dnd-kit/sortable'
-import { OptionId } from '@egodb/core'
+import { OptionKey } from '@egodb/core'
 import {
   useListState,
   Stack,
@@ -31,7 +31,7 @@ interface IOptionControlProps {
 }
 
 const OptionControl: React.FC<IOptionControlProps> = ({ option, onNameChange, onColorChange, onRemove }) => {
-  const { listeners, attributes, setNodeRef, transform, transition } = useSortable({ id: option.id as string })
+  const { listeners, attributes, setNodeRef, transform, transition } = useSortable({ id: option.key as string })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -79,7 +79,7 @@ export const SelectFieldControl: React.FC<ISelectFieldControlProps> = ({ onChang
     onChange(options)
   }, [options])
 
-  const items = options.map((o) => o.id as string)
+  const items = options.map((o) => o.key as string)
   const [parent, enableAnimations] = useAutoAnimate({ duration: 200 })
 
   useDeepCompareEffect(() => {
@@ -108,7 +108,7 @@ export const SelectFieldControl: React.FC<ISelectFieldControlProps> = ({ onChang
           <SortableContext items={items}>
             {options.map((o, index) => (
               <OptionControl
-                key={o.id}
+                key={o.key}
                 option={o}
                 onNameChange={(name) => handlers.setItemProp(index, 'name', name)}
                 onColorChange={(color) => handlers.setItemProp(index, 'color', color)}
@@ -131,7 +131,7 @@ export const SelectFieldControl: React.FC<ISelectFieldControlProps> = ({ onChang
                   .next()
                   .unpack()
           handlers.append({
-            id: OptionId.create().value,
+            key: OptionKey.create().value,
             name: '',
             color: {
               name: color.name,

@@ -5,7 +5,7 @@ import * as z from 'zod'
 import type { Field, ICreateFieldSchema } from '../field'
 import { createFieldSchema, DateField, DateRangeField, SelectField, WithoutField } from '../field'
 import { FieldFactory } from '../field/field.factory'
-import { fieldIdSchema } from '../field/value-objects/field-id.schema'
+import { fieldKeySchema } from '../field/value-objects/field-key.schema'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema'
 import { WithNewField } from '../specifications/table-field.specification'
 import type { IKanbanField } from '../view'
@@ -16,8 +16,12 @@ function hasDuplicates(names: string[]): boolean {
   return names.length === new Set(names).size
 }
 
-const namesSchema = fieldNameSchema.array().refine(hasDuplicates)
-const idsSchema = fieldIdSchema.array().refine(hasDuplicates)
+const namesSchema = fieldNameSchema
+  .array()
+  .refine(hasDuplicates, { message: 'field name should not be duplicated', path: ['field', 'name'] })
+const idsSchema = fieldKeySchema
+  .array()
+  .refine(hasDuplicates, { message: 'field id should not be duplicated', path: ['field', 'id'] })
 
 export const createTableSchemaSchema = z
   .array(createFieldSchema)
@@ -43,7 +47,7 @@ export class TableSchema extends ValueObject<Field[]> {
   }
 
   public toMap(): TableSchemaMap {
-    return new Map(this.fields.map((f) => [f.id.value, f]))
+    return new Map(this.fields.map((f) => [f.key.value, f]))
   }
 
   public get fields(): Field[] {
@@ -63,7 +67,7 @@ export class TableSchema extends ValueObject<Field[]> {
   }
 
   get fieldsIds(): string[] {
-    return this.props.map((f) => f.id.value)
+    return this.props.map((f) => f.key.value)
   }
 
   private validateNames(...newNames: string[]) {
@@ -77,11 +81,11 @@ export class TableSchema extends ValueObject<Field[]> {
   }
 
   public getFieldById(id: string): Option<Field> {
-    return Option(this.fields.find((f) => f.id.value === id))
+    return Option(this.fields.find((f) => f.key.value === id))
   }
 
   public getFieldByIdOfType<F extends Field>(id: string, type: Class<F>): Option<F> {
-    return Option(this.fields.find((f) => f.id.value === id && f instanceof type) as F)
+    return Option(this.fields.find((f) => f.key.value === id && f instanceof type) as F)
   }
 
   public addField(field: Field) {
@@ -89,7 +93,7 @@ export class TableSchema extends ValueObject<Field[]> {
   }
 
   public get defaultFieldsOrder(): ViewFieldsOrder {
-    const order = this.props.map((v) => v.id.value)
+    const order = this.props.map((v) => v.key.value)
     return ViewFieldsOrder.fromArray(order)
   }
 
@@ -97,7 +101,7 @@ export class TableSchema extends ValueObject<Field[]> {
     const field = FieldFactory.create(input)
 
     this.validateNames(field.name.value)
-    this.validateIds(field.id.value)
+    this.validateIds(field.key.value)
 
     return new WithNewField(field)
   }

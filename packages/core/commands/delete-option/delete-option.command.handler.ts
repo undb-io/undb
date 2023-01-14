@@ -8,7 +8,7 @@ export class DeleteOptionCommandHandler implements ICommandHandler<DeleteOptionC
   async execute(command: DeleteOptionCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
 
-    const spec = table.removeOption(command.fieldId, command.id)
+    const spec = table.removeOption(command.fieldKey, command.id)
 
     await this.tableRepo.updateOneById(table.id.value, spec)
   }
