@@ -2,7 +2,7 @@ import { DragOverlay, PointerSensor } from '@dnd-kit/core'
 import { DndContext, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import type { Records, SelectField } from '@egodb/core'
-import { Button, Container, Group, IconPlus, Menu, openContextModal, useListState } from '@egodb/ui'
+import { Button, closeModal, Container, Group, IconPlus, Menu, openContextModal, useListState } from '@egodb/ui'
 import { useEffect, useState } from 'react'
 import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
@@ -193,7 +193,12 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
               title: 'Create New Option',
               modal: CREATE_OPTION_MODAL_ID,
               trapFocus: true,
-              innerProps: { table, field, color: lastOption?.color.next() },
+              innerProps: {
+                table,
+                field,
+                color: lastOption?.color.next().unpack(),
+                onSuccess: () => closeModal(CREATE_OPTION_MODAL_ID),
+              },
             })
           }
           w={300}

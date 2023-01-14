@@ -4,4 +4,5 @@ export type ICreateOptionFormProps = {
   table: Table
   field: SelectField
   color: IOptionColor
+  onSuccess?: () => void
 }
