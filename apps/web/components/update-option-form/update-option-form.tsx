@@ -3,12 +3,12 @@ import type { IMutateOptionSchema } from '@egodb/core'
 import type { SelectField } from '@egodb/core'
 import { updateOptionSchema } from '@egodb/core'
 import { OptionColor } from '@egodb/core'
-import { Group, Button, closeModal, TextInput, FocusTrap } from '@egodb/ui'
+import { Group, Button, closeModal, TextInput, FocusTrap, Divider, Stack } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
+import { UDPATE_OPTION_MODAL_ID } from '../../modals'
 import { trpc } from '../../trpc'
 import { OptionColorPicker } from '../fields/option-color-picker'
-import { UDPATE_OPTION_MODAL_ID } from './update-option-modal'
 
 interface IProps {
   tableId: string
@@ -47,7 +47,7 @@ export const UpdateOptionForm: React.FC<IProps> = ({ tableId, field, optionId, o
 
   return (
     <form onSubmit={onSubmit}>
-      <>
+      <Stack>
         <Group>
           <Controller
             name="color"
@@ -56,10 +56,9 @@ export const UpdateOptionForm: React.FC<IProps> = ({ tableId, field, optionId, o
               <OptionColorPicker {...props.field} option={{ name: form.watch('name'), color: props.field.value }} />
             )}
           />
-          <FocusTrap>
-            <TextInput placeholder="option name..." variant="unstyled" {...form.register('name')} />
-          </FocusTrap>
+          <TextInput data-autofocus placeholder="option name..." variant="unstyled" {...form.register('name')} />
         </Group>
+
         <Group position="right">
           <Button size="xs" variant="white" onClick={() => closeModal(UDPATE_OPTION_MODAL_ID)}>
             Cancel
@@ -73,7 +72,7 @@ export const UpdateOptionForm: React.FC<IProps> = ({ tableId, field, optionId, o
             Done
           </Button>
         </Group>
-      </>
+      </Stack>
     </form>
   )
 }
