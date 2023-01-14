@@ -3,7 +3,7 @@ import { OptionColor } from './option-color'
 import { OptionId } from './option-id.vo'
 import { OptionName } from './option-name.vo'
 import type { IOption } from './option.interface'
-import type { ICreateOptionSchema } from './option.schema'
+import type { ICreateOptionSchema, IMutateOptionSchema } from './option.schema'
 
 export const isOption = (o?: unknown): o is Option => o instanceof Option
 
@@ -18,6 +18,14 @@ export class Option extends ValueObject<IOption> {
 
   public get color() {
     return this.props.color
+  }
+
+  public updateOption(input: IMutateOptionSchema): Option {
+    return new Option({
+      id: this.id,
+      name: input.name ? OptionName.create(input.name) : this.name,
+      color: input.color ? OptionColor.create(input.color) : this.color,
+    })
   }
 
   static create(input: ICreateOptionSchema): Option {

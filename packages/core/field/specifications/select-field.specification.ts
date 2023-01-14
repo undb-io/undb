@@ -27,6 +27,27 @@ export class WithOptions extends BaseFieldSpecification<SelectField> {
   }
 }
 
+export class WithOption extends BaseFieldSpecification<SelectField> {
+  constructor(field: SelectField, public readonly option: Option) {
+    super(field)
+  }
+
+  isSatisfiedBy(): boolean {
+    return true
+  }
+
+  mutate(t: Table): Result<Table, string> {
+    this.field.options = new Options(
+      this.field.options.options.map((o) => (o.id.equals(this.option.id) ? this.option : o)),
+    )
+    return Ok(t)
+  }
+
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.optionEqual(this)
+    return Ok(undefined)
+  }
+}
 export class WithNewOption extends BaseFieldSpecification<SelectField> {
   constructor(field: SelectField, public readonly option: Option) {
     super(field)

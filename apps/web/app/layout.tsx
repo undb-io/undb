@@ -19,8 +19,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head />
       <body>
         <AtomsDevtools>
-          <RootStyleRegistry>
-            <Trpc>
+          <Trpc>
+            <RootStyleRegistry>
               <AppShell
                 padding={0}
                 navbar={<TableNavList />}
@@ -36,8 +36,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 )}
                 <CreateTableFormDrawer />
               </AppShell>
-            </Trpc>
-          </RootStyleRegistry>
+            </RootStyleRegistry>
+          </Trpc>
         </AtomsDevtools>
       </body>
     </html>

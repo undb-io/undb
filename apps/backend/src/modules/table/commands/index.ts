@@ -15,6 +15,7 @@ import { SetFieldWidthCommandHandler } from './set-field-width.command.handler'
 import { SetFiltersCommandHandler } from './set-filters.command.handler'
 import { SetKanbanFieldCommandHandler } from './set-kanban-field.command.handler'
 import { SwitchDisplayTypeCommandHandler } from './switch-display-type.command.handler'
+import { UpdateOptionCommandHandler } from './update-option.command.handler'
 import { UpdateRecordCommandHandler } from './update-record.command.handler'
 
 export const commandHandlers = [
@@ -32,6 +33,7 @@ export const commandHandlers = [
   ReorderOptionsCommandHandler,
   SwitchDisplayTypeCommandHandler,
   UpdateRecordCommandHandler,
+  UpdateOptionCommandHandler,
   DeleteRecordCommandHandler,
   DeleteTableCommandHandler,
   DeleteOptionCommandHandler,

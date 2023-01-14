@@ -4,9 +4,11 @@ import { Drawer } from '@egodb/ui'
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom } from 'jotai'
+import { useResetAtom } from 'jotai/utils'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useConfirmModal } from '../../hooks'
 import { CreateTableForm } from './create-table-form'
+import { activeFieldAtom } from './create-table-form-schema.atom'
 import { createTableFormDrawerOpened } from './drawer-opened.atom'
 
 export const CreateTableFormDrawer: React.FC = () => {
@@ -21,8 +23,10 @@ export const CreateTableFormDrawer: React.FC = () => {
     defaultValues,
     resolver: zodResolver(createTableCommandInput),
   })
+  const resetActiveField = useResetAtom(activeFieldAtom)
 
   const reset = () => {
+    resetActiveField()
     setOpened(false)
     form.clearErrors()
     form.reset()
@@ -46,7 +50,7 @@ export const CreateTableFormDrawer: React.FC = () => {
         position="right"
         size={700}
       >
-        <CreateTableForm onCancel={() => setOpened(false)} />
+        <CreateTableForm onCancel={reset} />
         <DevTool control={form.control} />
       </Drawer>
     </FormProvider>

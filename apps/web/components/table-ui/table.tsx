@@ -16,7 +16,7 @@ import type { DateRangeFieldValue } from '@egodb/core'
 import { Checkbox, Table, useListState } from '@egodb/ui'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { format } from 'date-fns/fp'
-import { useEffect, useMemo } from 'react'
+import { useLayoutEffect, useMemo } from 'react'
 import { ACTIONS_FIELD } from '../../constants/field.constants'
 import { trpc } from '../../trpc'
 import { Option } from '../option/option'
@@ -36,7 +36,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const columnOrder = table.getFieldsOrder(view).order
   const [fields, handlers] = useListState(table.schema.fields)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     handlers.setState(table.schema.fields)
   }, [table])
 

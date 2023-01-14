@@ -69,6 +69,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   calendarFieldEqual(): void {}
   optionsEqual(): void {}
   newOption(): void {}
+  optionEqual(): void {}
   witoutOption(s: WithoutOption): void {
     this.qb = this.#qb.from(this.tableName).where(s.field.id.value, s.optionId.value).update(s.field.id.value, null)
   }

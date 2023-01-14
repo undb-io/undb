@@ -59,12 +59,22 @@ export type IOptionColor = z.infer<typeof optionColor>
 export const createOptionColorSchema = optionColor.partial().strict()
 export type ICreateOptionColorSchema = z.infer<typeof createOptionColorSchema>
 
-export const createOptionSchema = z
+export const mutateOptionSchema = z
   .object({
-    id: optionIdSchema.optional(),
-    name: optionNameSchema,
+    name: optionNameSchema.optional(),
     color: createOptionColorSchema.optional(),
   })
+  .strict()
+
+export type IMutateOptionSchema = z.infer<typeof mutateOptionSchema>
+
+export const createOptionSchema = mutateOptionSchema
+  .merge(
+    z.object({
+      id: optionIdSchema.optional(),
+      name: optionNameSchema,
+    }),
+  )
   .strict()
 
 export type ICreateOptionSchema = z.infer<typeof createOptionSchema>
@@ -72,3 +82,7 @@ export type ICreateOptionSchema = z.infer<typeof createOptionSchema>
 export const createOptionsSchema = createOptionSchema.array()
 
 export type ICreateOptionsSchema = z.infer<typeof createOptionsSchema>
+
+export const updateOptionSchema = mutateOptionSchema
+
+export type IUpdateOptionSchema = z.infer<typeof updateOptionSchema>

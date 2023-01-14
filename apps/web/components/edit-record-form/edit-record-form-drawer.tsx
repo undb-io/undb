@@ -3,7 +3,7 @@ import { updateRecordSchema } from '@egodb/core'
 import type { IUpdateRecordValueSchema } from '@egodb/core'
 import { Drawer } from '@egodb/ui'
 import { useAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import { useConfirmModal } from '../../hooks'
 import { editRecordFormDrawerOpened } from './drawer-opened.atom'
 import { EditRecordForm } from './edit-record-form'
@@ -32,7 +32,7 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
     resolver: zodResolver(updateRecordSchema),
   })
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     form.reset(defaultValues)
   }, [record])
 

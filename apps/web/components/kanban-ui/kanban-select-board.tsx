@@ -2,7 +2,7 @@ import { DragOverlay, PointerSensor } from '@dnd-kit/core'
 import { DndContext, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import type { Records, SelectField } from '@egodb/core'
-import { Container, Group, useListState } from '@egodb/ui'
+import { Container, Group, Menu, openContextModal, openModal, useListState } from '@egodb/ui'
 import { useEffect, useState } from 'react'
 import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
@@ -15,6 +15,9 @@ import { UNCATEGORIZED_OPTION_ID } from './kanban.constants'
 import { useKanban } from './use-kanban'
 import type { Record, Option as CoreOption } from '@egodb/core'
 import { Option } from '../option/option'
+import { UpdateOptionForm } from '../update-option-form/update-option-form'
+import type { IUpdateOptionModalProps } from '../update-option-form/update-option-modal'
+import { UDPATE_OPTION_MODAL_ID } from '../update-option-form/update-option-modal'
 
 interface IProps extends ITableBaseProps {
   field: SelectField
@@ -139,12 +142,25 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
                 id={option.id.value}
                 title={option.name.value}
                 renderTitle={() => (
-                  <Option
-                    id={option.id.value}
-                    name={option.name.value}
-                    colorName={option.color.name}
-                    shade={option.color.shade}
-                  />
+                  <Option name={option.name.value} colorName={option.color.name} shade={option.color.shade} />
+                )}
+                renderMenu={() => (
+                  <Menu.Item
+                    onClick={() =>
+                      openContextModal({
+                        title: 'Update Option',
+                        modal: UDPATE_OPTION_MODAL_ID,
+                        innerProps: {
+                          tableId: table.id.value,
+                          field,
+                          optionId: option.id.value,
+                          option: { name: option.name.value, color: option.color.unpack() },
+                        } as IUpdateOptionModalProps,
+                      })
+                    }
+                  >
+                    Update Option
+                  </Menu.Item>
                 )}
                 getRecordValue={(id) => (id === UNCATEGORIZED_OPTION_ID ? null : id)}
               />
@@ -160,7 +176,6 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
                   id={activeContainer?.id.value ?? ''}
                   renderTitle={() => (
                     <Option
-                      id={activeContainer!.id.value}
                       name={activeContainer!.name.value}
                       colorName={activeContainer!.color.name}
                       shade={activeContainer!.color.shade}

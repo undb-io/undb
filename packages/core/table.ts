@@ -4,7 +4,7 @@ import { None, Ok, Some } from 'oxide.ts'
 import type { ICreateFieldSchema, IQuerySchemaSchema, IReorderOptionsSchema } from './field'
 import { SelectField } from './field'
 import type { IRootFilter } from './filter'
-import type { ICreateOptionSchema } from './option'
+import type { ICreateOptionSchema, IUpdateOptionSchema } from './option'
 import type { Record } from './record'
 import { WithRecordTableId } from './record'
 import { RecordFactory } from './record/record.factory'
@@ -215,6 +215,15 @@ export class Table {
     const field = this.schema.getFieldByIdOfType(fieldId, SelectField).unwrap()
 
     const spec = field.createOption(input)
+    spec.mutate(this)
+
+    return spec
+  }
+
+  public updateOption(fieldId: string, optionId: string, input: IUpdateOptionSchema): TableCompositeSpecificaiton {
+    const field = this.schema.getFieldByIdOfType(fieldId, SelectField).unwrap()
+
+    const spec = field.updateOption(optionId, input)
     spec.mutate(this)
 
     return spec
