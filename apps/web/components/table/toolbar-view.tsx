@@ -7,15 +7,15 @@ import {
   IconCalendarPlus,
   IconSelect,
   Popover,
-  Modal,
   SegmentedControl,
   Tooltip,
   useDisclosure,
+  openContextModal,
+  closeModal,
 } from '@egodb/ui'
-import { useAtom, useSetAtom } from 'jotai'
+import { useSetAtom } from 'jotai'
+import { SELECT_CALENDAR_FIELD_MODAL_ID } from '../../modals'
 import { trpc } from '../../trpc'
-import { openCalendarEditField, openCalendarEditFieldAtom } from '../calendar-ui/calendar-edit-field.atom'
-import { SelectCalendarField } from '../calendar-ui/select-calendar-field'
 import { openKanbanEditField } from '../kanban-ui/kanban-edit-field.atom'
 import { DisplayTypeIcon } from '../view/display-type-icon'
 import type { ITableBaseProps } from './table-base-props'
@@ -49,7 +49,6 @@ const KanbanControl: React.FC<{ table: Table; kanban?: Kanban }> = ({ table, kan
 }
 
 const UsingCalendarField: React.FC<{ fieldId?: FieldId; table: Table }> = ({ table, fieldId }) => {
-  const setOpened = useSetAtom(openCalendarEditField)
   if (!fieldId) return null
 
   const field = table.schema.getFieldById(fieldId.value).into()
@@ -58,7 +57,13 @@ const UsingCalendarField: React.FC<{ fieldId?: FieldId; table: Table }> = ({ tab
   return (
     <Tooltip label="stacked by">
       <Button
-        onClick={setOpened}
+        onClick={() =>
+          openContextModal({
+            title: 'Select Calendar Field',
+            modal: SELECT_CALENDAR_FIELD_MODAL_ID,
+            innerProps: { table, onSucess: () => closeModal(SELECT_CALENDAR_FIELD_MODAL_ID) },
+          })
+        }
         compact
         variant="subtle"
         size="xs"
@@ -69,28 +74,7 @@ const UsingCalendarField: React.FC<{ fieldId?: FieldId; table: Table }> = ({ tab
 }
 
 const CalendarControl: React.FC<{ table: Table; calendar?: ICalendar }> = ({ table, calendar }) => {
-  const [opened, setOpened] = useAtom(openCalendarEditFieldAtom)
-  return (
-    <>
-      {opened && (
-        <Modal
-          target="body"
-          withCloseButton={false}
-          opened={opened}
-          onClose={() => setOpened(false)}
-          styles={{
-            modal: {
-              padding: '0 !important',
-            },
-          }}
-        >
-          <SelectCalendarField table={table} onSuccess={() => setOpened(false)} />
-        </Modal>
-      )}
-
-      <UsingCalendarField fieldId={calendar?.fieldId} table={table} />
-    </>
-  )
+  return <UsingCalendarField fieldId={calendar?.fieldId} table={table} />
 }
 
 export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {

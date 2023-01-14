@@ -1,15 +1,11 @@
-import { Modal } from '@egodb/ui'
-import { useAtom } from 'jotai'
-import type { ITableBaseProps } from '../table/table-base-props'
+import type { ContextModalProps } from '@egodb/ui'
 import { CreateFieldForm } from './create-field-form'
-import { createFielModelOpened } from './create-field-modal-opened.atom'
+import type { ICreateFieldProps } from './create-field.props'
 
-export const CreateFieldModal: React.FC<ITableBaseProps> = ({ table }) => {
-  const [opened, setOpened] = useAtom(createFielModelOpened)
-
+export const CreateFieldModal = ({ innerProps }: ContextModalProps<ICreateFieldProps>) => {
   return (
-    <Modal exitTransitionDuration={100} opened={opened} onClose={() => setOpened(false)} title="Add Field">
-      <CreateFieldForm table={table} />
-    </Modal>
+    <>
+      <CreateFieldForm {...innerProps} />
+    </>
   )
 }
