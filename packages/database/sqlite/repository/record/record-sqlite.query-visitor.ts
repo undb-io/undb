@@ -28,30 +28,33 @@ import type {
   WithRecordUpdatedAt,
   WithRecordValues,
 } from '@egodb/core'
-import { INTERNAL_FIELD_CREATED_AT_NAME, INTERNAL_FIELD_ID_NAME, INTERNAL_FIELD_UPDATED_AT_NAME } from '@egodb/core'
+import { INTERNAL_COLUMN_CREATED_AT_NAME, INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import { endOfDay, startOfDay } from 'date-fns'
+import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../entity/underlying-table/constants'
 
 export class RecordSqliteQueryVisitor implements IRecordVisitor {
   public tableId!: string
-  constructor(private qb: Knex.QueryBuilder) {}
+  constructor(private qb: Knex.QueryBuilder) {
+    this.qb = this.qb.where({ [INTERNAL_COLUMN_DELETED_AT_NAME]: null })
+  }
 
   get query() {
     return this.qb.toQuery()
   }
 
   idEqual(s: WithRecordId): void {
-    this.qb.where({ [INTERNAL_FIELD_ID_NAME]: s.id.value })
+    this.qb.where({ [INTERNAL_COLUMN_ID_NAME]: s.id.value })
   }
   tableIdEqual(s: WithRecordTableId): void {
     this.tableId = s.id.value
     this.qb.from(s.id.value)
   }
   createdAt(s: WithRecordCreatedAt): void {
-    this.qb.where({ [INTERNAL_FIELD_CREATED_AT_NAME]: s.date.value })
+    this.qb.where({ [INTERNAL_COLUMN_CREATED_AT_NAME]: s.date.value })
   }
   updatedAt(s: WithRecordUpdatedAt): void {
-    this.qb.where({ [INTERNAL_FIELD_UPDATED_AT_NAME]: s.date.value })
+    this.qb.where({ [INTERNAL_COLUMN_UPDATED_AT_NAME]: s.date.value })
   }
   values(s: WithRecordValues): void {
     throw new Error('Method not implemented.')

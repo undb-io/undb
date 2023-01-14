@@ -1,7 +1,7 @@
 import {
-  INTERNAL_FIELD_CREATED_AT_NAME,
-  INTERNAL_FIELD_ID_NAME,
-  INTERNAL_FIELD_UPDATED_AT_NAME,
+  INTERNAL_COLUMN_CREATED_AT_NAME,
+  INTERNAL_COLUMN_ID_NAME,
+  INTERNAL_COLUMN_UPDATED_AT_NAME,
   StringField,
 } from '../field'
 import { createTestRecord } from './fixtures'
@@ -25,9 +25,9 @@ describe('Record', () => {
 
     const valuesJson = record.valuesJSON
 
-    expect(valuesJson).to.have.property(INTERNAL_FIELD_ID_NAME)
-    expect(valuesJson).to.have.property(INTERNAL_FIELD_CREATED_AT_NAME)
-    expect(valuesJson).to.have.property(INTERNAL_FIELD_UPDATED_AT_NAME)
+    expect(valuesJson).to.have.property(INTERNAL_COLUMN_ID_NAME)
+    expect(valuesJson).to.have.property(INTERNAL_COLUMN_CREATED_AT_NAME)
+    expect(valuesJson).to.have.property(INTERNAL_COLUMN_UPDATED_AT_NAME)
     expect(valuesJson).to.have.property('stringField')
   })
 })
