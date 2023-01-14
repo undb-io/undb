@@ -23,7 +23,7 @@ export const KanbanLaneMenu: React.FC<IProps> = ({ table, field, optionKey, chil
     onConfirm() {
       deleteOption.mutate({
         tableId: table.id.value,
-        fieldKey: field.key.value,
+        fieldKey: field.id.value,
         id: optionKey,
       })
     },

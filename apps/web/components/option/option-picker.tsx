@@ -37,7 +37,7 @@ export const OptionPicker: React.FC<IProps> = ({ field, table, ...rest }) => {
       onCreate={(query) => {
         const key = OptionKey.create().value
         createOption.mutate({
-          fieldKey: field.key.value,
+          fieldKey: field.id.value,
           tableId: table.id.value,
           option: {
             key,

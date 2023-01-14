@@ -19,7 +19,7 @@ it('should create string field', () => {
   expect(field).toBeInstanceOf(StringField)
   expect(field.type).toBe('string')
   expect(field.key).toBeInstanceOf(FieldKey)
-  expect(field.key.value).toBe('abc')
+  expect(field.id.value).toBe('abc')
 })
 
 it('should create number field', () => {
@@ -33,7 +33,7 @@ it('should create number field', () => {
   expect(field).toBeInstanceOf(NumberField)
   expect(field.type).toBe('number')
   expect(field.key).toBeInstanceOf(FieldKey)
-  expect(field.key.value).toBe('abc')
+  expect(field.id.value).toBe('abc')
 })
 
 it('should create date field', () => {
@@ -47,7 +47,7 @@ it('should create date field', () => {
   expect(field).toBeInstanceOf(DateField)
   expect(field.type).toBe('date')
   expect(field.key).toBeInstanceOf(FieldKey)
-  expect(field.key.value).toBe('date')
+  expect(field.id.value).toBe('date')
 })
 
 it('should create date range field', () => {
@@ -61,7 +61,7 @@ it('should create date range field', () => {
   expect(field).toBeInstanceOf(DateRangeField)
   expect(field.type).toBe('date-range')
   expect(field.key).toBeInstanceOf(FieldKey)
-  expect(field.key.value).toBe('date-range')
+  expect(field.id.value).toBe('date-range')
 })
 
 it('should create select field', () => {
@@ -76,7 +76,7 @@ it('should create select field', () => {
   expect(field).toBeInstanceOf(SelectField)
   expect(field.type).toBe('select')
   expect(field.key).toBeInstanceOf(FieldKey)
-  expect(field.key.value).toBe('abc')
+  expect(field.id.value).toBe('abc')
 })
 
 it('should create bool field', () => {

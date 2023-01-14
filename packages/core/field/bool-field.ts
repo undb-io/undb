@@ -33,6 +33,6 @@ export class BoolField extends BaseField<IBoolField> {
   }
 
   createFilter(operator: IBoolFilterOperator, value: boolean | null): IBoolFilter {
-    return { operator, value, path: this.key.value, type: 'bool' }
+    return { operator, value, path: this.id.value, type: 'bool' }
   }
 }

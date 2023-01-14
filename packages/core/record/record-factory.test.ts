@@ -1,6 +1,6 @@
 import { Field, FieldId, FieldKey, FieldName, FieldValueConstraints, SelectField, StringField } from '../field'
 import { Option, OptionColor, OptionKey, OptionName, Options } from '../option'
-import { TableSchemaMap } from '../value-objects'
+import { TableSchemaIdMap } from '../value-objects'
 import { RecordFactory } from './record.factory'
 import { IQueryRecordSchema } from './record.type'
 import { WithRecordId, WithRecordTableId } from './specifications'
@@ -19,7 +19,7 @@ test.each<RecordCompositeSpecification>([
 })
 
 describe('fromQuery', () => {
-  test.each<[IQueryRecordSchema, TableSchemaMap]>([
+  test.each<[IQueryRecordSchema, TableSchemaIdMap]>([
     [
       {
         id: 'rec1',

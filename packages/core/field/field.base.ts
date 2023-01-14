@@ -20,7 +20,7 @@ export const createBaseFieldsSchema = z
 export type IBaseCreateFieldsSchema = z.infer<typeof createBaseFieldsSchema>
 
 export const baseFieldQuerySchema = z
-  .object({ key: fieldKeySchema, name: fieldNameSchema })
+  .object({ id: fieldIdSchema, key: fieldKeySchema, name: fieldNameSchema })
   .merge(valueConstraintsSchema)
 
 export abstract class BaseField<C extends IBaseField> extends ValueObject<C> {

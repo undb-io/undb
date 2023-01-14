@@ -39,6 +39,6 @@ export class DateField extends BaseField<IDateField> {
     if (dateBuiltInOperators.has(operator)) {
       v = null
     }
-    return { operator, value: v, path: this.key.value, type: 'date' }
+    return { operator, value: v, path: this.id.value, type: 'date' }
   }
 }

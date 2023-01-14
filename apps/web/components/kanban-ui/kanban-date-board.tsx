@@ -27,7 +27,7 @@ export const KanbanDateBoard: React.FC<IProps> = ({ table, field, records }) => 
   const groupDateRecords = (): Record<string, CoreRecord[]> =>
     groupBy(
       (record) =>
-        record.values.getDateValue(field.key.value).mapOr<string>(NODATE_STACK_ID, (v) => {
+        record.values.getDateValue(field.id.value).mapOr<string>(NODATE_STACK_ID, (v) => {
           if (!v) return 'NO_DATE'
           if (isToday(v)) return 'TODAY'
           if (isTomorrow(v)) return 'TOMORROW'
@@ -89,7 +89,7 @@ export const KanbanDateBoard: React.FC<IProps> = ({ table, field, records }) => 
       updateRecord.mutate({
         tableId: table.id.value,
         id: e.active.id as string,
-        value: [{ id: field.key.value, value: overContainer === NODATE_STACK_ID ? null : overContainer }],
+        value: [{ id: field.id.value, value: overContainer === NODATE_STACK_ID ? null : overContainer }],
       })
     },
 

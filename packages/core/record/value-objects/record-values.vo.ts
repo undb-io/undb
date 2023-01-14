@@ -6,22 +6,22 @@ import type { FieldValue, ICreateFieldsSchema_internal, IFieldValue, UnpackedFie
 import { DateRangeFieldValue } from '../../field/date-range-field-value'
 import type { IDateRangeFieldValue } from '../../field/date-range-field.type'
 import { SelectFieldValue } from '../../field/select-field-value'
-import type { TableSchemaMap } from '../../value-objects'
+import type { TableSchemaIdMap } from '../../value-objects'
 import type { RecordValueJSON } from '../record.schema'
 import type { IQueryRecordValues } from '../record.type'
 
 export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   static fromArray(inputs: ICreateFieldsSchema_internal): RecordValues {
-    const values = new Map(inputs.map((v) => [v.field.key.value, v.field.createValue(v.value as never)]))
+    const values = new Map(inputs.map((v) => [v.field.id.value, v.field.createValue(v.value as never)]))
     return new RecordValues(values)
   }
 
-  static fromObject(schema: TableSchemaMap, inputs: IQueryRecordValues): RecordValues {
+  static fromObject(schema: TableSchemaIdMap, inputs: IQueryRecordValues): RecordValues {
     const values = new Map(
-      Object.entries(inputs).map(([fieldKey, fieldValue]) => [
-        fieldKey,
+      Object.entries(inputs).map(([fieldId, fieldValue]) => [
+        fieldId,
         // TODO: handler missing field
-        schema.get(fieldKey)!.createValue(fieldValue as never),
+        schema.get(fieldId)!.createValue(fieldValue as never),
       ]),
     )
 

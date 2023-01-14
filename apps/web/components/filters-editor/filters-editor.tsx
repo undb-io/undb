@@ -56,7 +56,7 @@ export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCa
                 schema={table.schema}
                 index={index}
                 value={filter}
-                key={getFilterId(filter)}
+                key={getFilterId(filter, index)}
                 onChange={(operator, index) => handlers.setItem(index, operator)}
                 onRemove={handlers.remove}
               />

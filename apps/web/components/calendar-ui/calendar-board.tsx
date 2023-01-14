@@ -33,7 +33,7 @@ export const CalendarBoard: React.FC<IProps> = ({ table, field, records }) => {
           updateRecord.mutate({
             tableId: table.id.value,
             id: recordId as string,
-            value: [{ id: field.key.value, value: new Date(date) }],
+            value: [{ id: field.id.value, value: new Date(date) }],
           })
         }
       }}

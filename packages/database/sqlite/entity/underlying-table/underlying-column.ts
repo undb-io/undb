@@ -52,7 +52,7 @@ export class UnderlyingDeletedAtColumn extends UnderlyingColumn {
 abstract class UnderlyingFieldColumn<F extends Field> implements IUnderlyingColumn {
   constructor(protected readonly field: F) {}
   get name(): string {
-    return this.field.key.value
+    return this.field.id.value
   }
   abstract build(tb: Knex.TableBuilder, knex: Knex, tableName: string): Knex.ColumnBuilder
 }

@@ -15,7 +15,7 @@ export const HeaderMenu: React.FC<{ tableId: string; field: Field }> = ({ tableI
     onConfirm() {
       deleteField.mutate({
         tableId,
-        id: field.key.value,
+        id: field.id.value,
       })
     },
   })

@@ -65,8 +65,8 @@ export class ViewFieldOptions extends ValueObject<Map<string, IViewFieldOption>>
   }
 
   public removeField(field: Field): Option<ViewFieldOptions> {
-    if (this.value.has(field.key.value)) {
-      const options = new ViewFieldOptions(new Map([...this.value.entries()].filter(([k]) => k !== field.key.value)))
+    if (this.value.has(field.id.value)) {
+      const options = new ViewFieldOptions(new Map([...this.value.entries()].filter(([k]) => k !== field.id.value)))
 
       return Some(options)
     }

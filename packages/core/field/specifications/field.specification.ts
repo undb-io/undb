@@ -8,7 +8,7 @@ import { BaseFieldSpecification } from './base-field.specification'
 
 export class WithoutField extends BaseFieldSpecification<Field> {
   isSatisfiedBy(t: Table): boolean {
-    return t.schema.getFieldById(this.field.key.value).mapOr(false, (f) => f.key.equals(this.field.key))
+    return t.schema.getFieldById(this.field.id.value).mapOr(false, (f) => f.key.equals(this.field.key))
   }
 
   mutate(t: Table): Result<Table, string> {
