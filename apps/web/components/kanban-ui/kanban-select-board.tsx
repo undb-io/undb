@@ -2,13 +2,11 @@ import { DragOverlay, PointerSensor } from '@dnd-kit/core'
 import { DndContext, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import type { Records, SelectField } from '@egodb/core'
-import { Container, Group, Menu, openContextModal, openModal, useListState } from '@egodb/ui'
+import { Button, Container, Group, IconPlus, Menu, openContextModal, useListState } from '@egodb/ui'
 import { useEffect, useState } from 'react'
 import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { KanbanLane, SortableKanbanLane } from './kanban-lane'
-import { CreateNewOptionButton } from './create-new-option-button'
-import { CreateNewOptionModal } from './create-new-option-modal'
 import { groupBy } from '@fxts/core'
 import { KanbanCard } from './kanban-card'
 import { UNCATEGORIZED_OPTION_ID } from './kanban.constants'
@@ -16,7 +14,7 @@ import { useKanban } from './use-kanban'
 import type { Record, Option as CoreOption } from '@egodb/core'
 import { Option } from '../option/option'
 import type { IUpdateOptionModalProps } from '../update-option-form/update-option-modal'
-import { UDPATE_OPTION_MODAL_ID } from '../update-option-form/update-option-modal'
+import { CREATE_OPTION_MODAL_ID, UDPATE_OPTION_MODAL_ID } from '../../modals'
 
 interface IProps extends ITableBaseProps {
   field: SelectField
@@ -26,6 +24,7 @@ interface IProps extends ITableBaseProps {
 export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) => {
   const [options, handlers] = useListState(field.options.options)
   const containers = options.map((o) => o.id.value)
+  const lastOption = options[options.length - 1]
 
   const groupOptionRecords = () =>
     groupBy(
@@ -188,8 +187,21 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
           </SortableContext>
         </DndContext>
 
-        <CreateNewOptionModal table={table} field={field} />
-        <CreateNewOptionButton />
+        <Button
+          onClick={() =>
+            openContextModal({
+              title: 'Create New Option',
+              modal: CREATE_OPTION_MODAL_ID,
+              trapFocus: true,
+              innerProps: { table, field, color: lastOption?.color.next() },
+            })
+          }
+          w={300}
+          variant="outline"
+          leftIcon={<IconPlus />}
+        >
+          New Stack
+        </Button>
       </Group>
     </Container>
   )
