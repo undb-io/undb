@@ -119,10 +119,11 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   }
   optionsEqual(s: WithOptions): void {
     this.jobs.push(async () => {
-      const field = this.getField(s.field.id.value) as SelectField
-      await field.options.init()
-      wrap(field).assign({ options: s.options.options.map((option) => new Option(field, option)) })
-      this.em.persist(field)
+      const field = await this.em.findOne(SelectField, s.field.id.value, { populate: ['options'] })
+      if (field) {
+        wrap(field).assign({ options: s.options.options.map((option) => new Option(field, option)) })
+        this.em.persist(field)
+      }
     })
   }
   optionEqual(s: WithNewOption): void {
