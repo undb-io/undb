@@ -23,7 +23,7 @@ interface IProps extends ITableBaseProps {
 
 export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) => {
   const [options, handlers] = useListState(field.options.options)
-  const containers = options.map((o) => o.key.value)
+  const containers = [UNCATEGORIZED_OPTION_ID, ...options.map((o) => o.key.value)]
   const lastOption = options[options.length - 1]
 
   const groupOptionRecords = () =>
@@ -113,8 +113,8 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
   })
 
   return (
-    <Container fluid ml={0}>
-      <Group align="start" noWrap>
+    <Container fluid ml={0} h="100%">
+      <Group align="start" noWrap h="100%">
         <DndContext
           sensors={sensors}
           onDragStart={onDragStart}
@@ -122,15 +122,15 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
           onDragEnd={onDragEnd}
           collisionDetection={collisionDetectionStrategy}
         >
-          <KanbanLane
-            table={table}
-            field={field}
-            records={optionRecords[UNCATEGORIZED_OPTION_ID] ?? []}
-            title="uncategorized"
-            id={UNCATEGORIZED_OPTION_ID}
-            getRecordValue={(id) => (id === UNCATEGORIZED_OPTION_ID ? null : id)}
-          />
           <SortableContext items={containers} strategy={horizontalListSortingStrategy}>
+            <SortableKanbanLane
+              table={table}
+              field={field}
+              records={optionRecords[UNCATEGORIZED_OPTION_ID] ?? []}
+              title="uncategorized"
+              id={UNCATEGORIZED_OPTION_ID}
+              getRecordValue={(id) => (id === UNCATEGORIZED_OPTION_ID ? null : id)}
+            />
             {options.map((option) => (
               <SortableKanbanLane
                 field={field}

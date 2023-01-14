@@ -13,6 +13,7 @@ interface IProps extends ITableBaseProps {
 
 const Wrapper = styled.div`
   padding-top: ${({ theme }) => (theme as MantineTheme).spacing.md + 'px'};
+  height: 100%;
 `
 
 export const KanbanBoard: React.FC<IProps> = ({ field, table, records }) => {
