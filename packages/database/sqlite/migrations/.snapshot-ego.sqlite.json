@@ -32,6 +32,16 @@
           "length": 0,
           "mappedType": "datetime"
         },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
         "name": {
           "name": "name",
           "type": "text",
@@ -44,6 +54,15 @@
       },
       "name": "table",
       "indexes": [
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "table_deleted_at_index",
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "primary",
           "columnNames": [
@@ -97,6 +116,16 @@
           "length": 0,
           "mappedType": "datetime"
         },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
         "name": {
           "name": "name",
           "type": "text",
@@ -137,6 +166,15 @@
         },
         {
           "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "field_deleted_at_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
             "type"
           ],
           "composite": false,
@@ -167,7 +205,8 @@
             "id"
           ],
           "referencedTableName": "table",
-          "deleteRule": "cascade"
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
         }
       }
     },
@@ -220,6 +259,16 @@
           "length": 0,
           "mappedType": "datetime"
         },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
         "name": {
           "name": "name",
           "type": "text",
@@ -250,6 +299,15 @@
       },
       "name": "option",
       "indexes": [
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "option_deleted_at_index",
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "option_field_id_field_table_id_index",
           "columnNames": [
@@ -331,6 +389,16 @@
           "length": 0,
           "mappedType": "datetime"
         },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
         "name": {
           "name": "name",
           "type": "text",
@@ -403,6 +471,15 @@
           ],
           "composite": false,
           "keyName": "view_table_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "view_deleted_at_index",
           "primary": false,
           "unique": false
         },
