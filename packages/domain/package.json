@@ -29,5 +29,5 @@
     "test": "vitest run",
     "test:watch": "vitest"
   },
-  "types": "./dist/index"
+  "types": "./dist/index.d.ts"
 }

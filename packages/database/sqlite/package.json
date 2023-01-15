@@ -5,23 +5,23 @@
   "dependencies": {
     "@egodb/core": "^0.0.0",
     "@egodb/domain": "^0.0.0",
-    "@mikro-orm/better-sqlite": "^5.6.6",
-    "@mikro-orm/core": "^5.6.6",
-    "@mikro-orm/migrations": "^5.6.6",
+    "@mikro-orm/better-sqlite": "^5.6.7",
+    "@mikro-orm/core": "^5.6.7",
+    "@mikro-orm/migrations": "^5.6.7",
     "@mikro-orm/sql-highlighter": "^1.0.1",
     "date-fns": "^2.29.3",
     "oxide.ts": "^1.1.0",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "@mikro-orm/cli": "^5.6.6",
-    "@mikro-orm/reflection": "^5.6.6",
+    "@mikro-orm/cli": "^5.6.7",
+    "@mikro-orm/reflection": "^5.6.7",
     "@swc/core": "^1.3.26",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1",
     "tsconfig": "^0.0.0",
     "tsup": "^6.5.0",
-    "type-fest": "^3.5.1",
+    "type-fest": "^3.5.2",
     "typescript": "^4.9.4",
     "vitest": "^0.26.3"
   },
@@ -43,5 +43,5 @@
     "test": "vitest run",
     "test:watch": "vitest"
   },
-  "types": "./dist/index"
+  "types": "./dist/index.d.ts"
 }

@@ -5,6 +5,9 @@ export default defineConfig({
   outDir: 'dist',
   splitting: true,
   sourcemap: true,
-  clean: true,
-  dts: true,
+  clean: false,
+  dts: {
+    entry: 'index.ts',
+    resolve: true,
+  },
 })

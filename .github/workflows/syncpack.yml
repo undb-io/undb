@@ -19,7 +19,7 @@ jobs:
         name: Install pnpm
         id: pnpm-install
         with:
-          version: 7.21.0
+          version: 7.25.0
           run_install: true
 
       - name: Build
