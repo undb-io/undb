@@ -48,7 +48,7 @@ export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
       <form onSubmit={onSubmit} style={{ width: '100%' }}>
         <Card shadow="md">
           <Card.Section withBorder inheritPadding py="sm">
-            <Text>select one field</Text>
+            <Text>select kanban field</Text>
           </Card.Section>
 
           <Card.Section withBorder inheritPadding py="sm">
