@@ -1,4 +1,5 @@
 import type { ICreateDateRangeFieldSchema } from '@egodb/core'
+import { FieldId } from '@egodb/core'
 import { createDateRangeFieldSchema } from '@egodb/core'
 import { Button, Card, FocusTrap, Group, IconChevronLeft, Stack, Text, TextInput } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -34,16 +35,19 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ table, onSucces
 
   const createDateRangeField = trpc.table.field.create.useMutation({
     onSuccess(_, variables) {
-      const id = variables.field.key
+      const id = variables.field.id
 
-      setCalendarField.mutate({
-        tableId: table.id.value,
-        field: id,
-      })
+      if (id) {
+        setCalendarField.mutate({
+          tableId: table.id.value,
+          field: id,
+        })
+      }
     },
   })
 
   const onSubmit = form.handleSubmit((values) => {
+    values.id = FieldId.createId()
     createDateRangeField.mutate({
       id: table.id.value,
       field: values,

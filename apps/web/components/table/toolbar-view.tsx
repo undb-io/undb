@@ -15,6 +15,7 @@ import {
 } from '@egodb/ui'
 import { SELECT_CALENDAR_FIELD_MODAL_ID, SELECT_KANBAN_FIELD_MODAL_ID } from '../../modals'
 import { trpc } from '../../trpc'
+import type { ISelectKanbanFieldProps } from '../kanban-ui/select-kanban-field.props'
 import { DisplayTypeIcon } from '../view/display-type-icon'
 import type { ITableBaseProps } from './table-base-props'
 
@@ -30,7 +31,7 @@ const StackedBy: React.FC<{ fieldKey?: FieldKey; table: Table }> = ({ table, fie
         onClick={() =>
           openContextModal({
             modal: SELECT_KANBAN_FIELD_MODAL_ID,
-            innerProps: { table },
+            innerProps: { table, onSuccess: () => closeModal(SELECT_KANBAN_FIELD_MODAL_ID) } as ISelectKanbanFieldProps,
             withCloseButton: false,
             styles: {
               modal: { padding: '0 !important' },
@@ -77,7 +78,7 @@ const UsingCalendarField: React.FC<{ fieldKey?: FieldKey; table: Table }> = ({ t
         variant="subtle"
         size="xs"
         leftIcon={<IconCalendarPlus size={18} />}
-      >{`using "${field.id.value}" field`}</Button>
+      >{`using "${field.name.value}" field`}</Button>
     </Tooltip>
   )
 }

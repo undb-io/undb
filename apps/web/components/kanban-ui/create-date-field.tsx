@@ -1,4 +1,5 @@
 import type { ICreateDateFieldSchema } from '@egodb/core'
+import { FieldId } from '@egodb/core'
 import { createDateFieldSchema } from '@egodb/core'
 import { Button, Card, FocusTrap, Group, IconChevronLeft, Stack, Text, TextInput } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -34,16 +35,19 @@ export const CreateDateField: React.FC<IProps> = ({ table, onSuccess }) => {
 
   const createDateField = trpc.table.field.create.useMutation({
     onSuccess(_, variables) {
-      const id = variables.field.key
+      const id = variables.field.id
 
-      setKanbanField.mutate({
-        tableId: table.id.value,
-        field: id,
-      })
+      if (id) {
+        setKanbanField.mutate({
+          tableId: table.id.value,
+          field: id,
+        })
+      }
     },
   })
 
   const onSubmit = form.handleSubmit((values) => {
+    values.id = FieldId.createId()
     createDateField.mutate({
       id: table.id.value,
       field: values,

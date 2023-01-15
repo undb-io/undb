@@ -8,6 +8,10 @@ export class FieldId extends NanoID {
     return this.props.value
   }
 
+  static createId(): string {
+    return super.createId(this.FIELD_ID_PREFIX, this.FIELD_ID_SIZE)
+  }
+
   static create(): FieldId {
     const id = NanoID.createId(FieldId.FIELD_ID_PREFIX, this.FIELD_ID_SIZE)
     return new this(id)

@@ -1,4 +1,5 @@
 import type { ICreateSelectFieldSchema } from '@egodb/core'
+import { FieldId } from '@egodb/core'
 import { createSelectFieldSchema } from '@egodb/core'
 import { Button, Card, FocusTrap, Group, IconChevronLeft, Stack, Text, TextInput } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -36,16 +37,19 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
 
   const createSelectField = trpc.table.field.create.useMutation({
     onSuccess(_, variables) {
-      const id = variables.field.key
+      const id = variables.field.id
 
-      setKanbanField.mutate({
-        tableId: table.id.value,
-        field: id,
-      })
+      if (id) {
+        setKanbanField.mutate({
+          tableId: table.id.value,
+          field: id,
+        })
+      }
     },
   })
 
   const onSubmit = form.handleSubmit((values) => {
+    values.id = FieldId.createId()
     createSelectField.mutate({
       id: table.id.value,
       field: values,
