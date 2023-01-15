@@ -1,15 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import type {
-  ITableSpecVisitor,
-  WithFieldOption,
-  WithNewField,
-  WithoutField,
-  WithoutOption,
-  WithTableSchema,
-} from '@egodb/core'
+import type { ITableSpecVisitor, WithNewField, WithoutField, WithoutOption, WithTableSchema } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { UnderlyingColumnFactory } from '../entity/underlying-table/underlying-column.factory'
-import { UnderlyingTableBuilder } from '../entity/underlying-table/underlying-table.builder'
+import { UnderlyingColumnBuilder } from '../entity/underlying-table/underlying-table.builder'
 
 export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   private readonly knex: Knex
@@ -29,16 +22,13 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     return this.qb ?? this.knex.queryBuilder()
   }
 
+  public get queries(): string[] {
+    return [this.sb?.toQuery() ?? '', this.qb?.toQuery() ?? '', ...this.sqls].filter(Boolean)
+  }
+
   async commit() {
-    if (this.sb) {
-      const query = this.sb.toQuery()
+    for (const query of this.queries) {
       await this.em.execute(query)
-    }
-    if (this.qb) {
-      await this.em.execute(this.qb)
-    }
-    for (const sql of this.sqls) {
-      await this.em.execute(sql)
     }
   }
 
@@ -48,7 +38,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   nameEqual(): void {}
   schemaEqual(s: WithTableSchema): void {
     this.sb = this.#sb.alterTable(this.tableName, (tb) => {
-      const builder = new UnderlyingTableBuilder(this.knex, tb, this.tableName)
+      const builder = new UnderlyingColumnBuilder(this.knex, tb)
       builder.createUnderlying(s.schema.fields)
     })
   }
@@ -57,7 +47,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   filterEqual(): void {}
   newField(s: WithNewField): void {
     this.sb = this.#sb.alterTable(this.tableName, (tb) => {
-      const builder = new UnderlyingTableBuilder(this.knex, tb, this.tableName)
+      const builder = new UnderlyingColumnBuilder(this.knex, tb)
       builder.createUnderlying([s.field])
     })
   }
@@ -83,9 +73,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     )
     this.sqls.push(...sqls)
   }
-  fieldOptionsEqual(s: WithFieldOption): void {
-    throw new Error('Method not implemented.')
-  }
+  fieldOptionsEqual(): void {}
   not(): this {
     return this
   }
