@@ -6,7 +6,7 @@ import { INTERNAL_COLUMN_DELETED_AT_NAME } from './constants'
 
 export abstract class UnderlyingColumn implements IUnderlyingColumn {
   abstract get name(): string
-  abstract build(tb: Knex.TableBuilder, knex: Knex, tableName: string): Knex.ColumnBuilder
+  abstract build(tb: Knex.TableBuilder, knex: Knex): Knex.ColumnBuilder
 }
 
 export class UnderlyingIdColumn extends UnderlyingColumn {
@@ -54,7 +54,7 @@ abstract class UnderlyingFieldColumn<F extends Field> implements IUnderlyingColu
   get name(): string {
     return this.field.id.value
   }
-  abstract build(tb: Knex.TableBuilder, knex: Knex, tableName: string): Knex.ColumnBuilder
+  abstract build(tb: Knex.TableBuilder, knex: Knex): Knex.ColumnBuilder
 }
 
 export class UnderlyingStringColumn extends UnderlyingFieldColumn<StringField> {

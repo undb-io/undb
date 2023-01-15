@@ -1,6 +1,7 @@
-import type { Field } from '@egodb/core'
+import type { Field, Table } from '@egodb/core'
+import { INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
-import type { IUnderlyingTableBuilder } from '../../types/underlying-table.builder'
+import type { IUnderlyingColumnBuilder } from '../../types/underlying-table.builder'
 import {
   UnderlyingCreatedAtColumn,
   UnderlyingDeletedAtColumn,
@@ -9,12 +10,55 @@ import {
 } from './underlying-column'
 import { UnderlyingColumnFactory } from './underlying-column.factory'
 
-export class UnderlyingTableBuilder implements IUnderlyingTableBuilder {
-  constructor(
-    private readonly knex: Knex,
-    private readonly tb: Knex.TableBuilder,
-    private readonly tableName: string,
-  ) {}
+export class UnderlyingTableBuilder {
+  constructor(private readonly knex: Knex) {}
+
+  private queries: string[] = []
+
+  private addQueries(...queries: string[]) {
+    for (const query of queries) {
+      this.queries.unshift(query)
+    }
+  }
+
+  public build() {
+    return this.queries
+  }
+
+  public createTable(table: Table) {
+    const query = this.knex.schema
+      .createTable(table.id.value, (tb) => {
+        const queries = new UnderlyingColumnBuilder(this.knex, tb)
+          .createId()
+          .createCreatedAt()
+          .createUpdatedAt(table.id.value)
+          .createDeletedAt()
+          .createUnderlying(table.schema.fields)
+          .build()
+        this.addQueries(...queries)
+      })
+      .toQuery()
+
+    this.addQueries(query)
+
+    return this
+  }
+}
+
+export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
+  constructor(private readonly knex: Knex, private readonly tb: Knex.TableBuilder) {}
+  private queries: string[] = []
+
+  private addQueries(...queries: string[]) {
+    for (const query of queries) {
+      this.queries.push(query)
+    }
+  }
+
+  public build() {
+    return this.queries
+  }
+
   createId(): this {
     new UnderlyingIdColumn().build(this.tb)
     return this
@@ -25,8 +69,22 @@ export class UnderlyingTableBuilder implements IUnderlyingTableBuilder {
     return this
   }
 
-  createUpdatedAt(): this {
+  createUpdatedAt(tableName: string): this {
     new UnderlyingUpdatedAtColumn().build(this.tb, this.knex)
+
+    const query = this.knex
+      .raw(
+        `
+		CREATE TRIGGER update_at_update_${tableName} AFTER UPDATE ON \`${tableName}\`
+		BEGIN
+			update \`${tableName}\` SET ${INTERNAL_COLUMN_UPDATED_AT_NAME} = datetime('now') WHERE ${INTERNAL_COLUMN_ID_NAME} = NEW.${INTERNAL_COLUMN_ID_NAME};
+		END;
+	 `,
+      )
+      .toQuery()
+
+    this.addQueries(query)
+
     return this
   }
 
@@ -39,7 +97,7 @@ export class UnderlyingTableBuilder implements IUnderlyingTableBuilder {
     const underlyingColumns = UnderlyingColumnFactory.createMany(fields)
 
     for (const column of underlyingColumns) {
-      column.build(this.tb, this.knex, this.tableName)
+      column.build(this.tb, this.knex)
     }
 
     return this
