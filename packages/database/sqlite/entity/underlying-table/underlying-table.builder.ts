@@ -1,46 +1,37 @@
-import type { Field } from '@egodb/core'
+import type { Table } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
-import type { IUnderlyingTableBuilder } from '../../types/underlying-table.builder'
-import {
-  UnderlyingCreatedAtColumn,
-  UnderlyingDeletedAtColumn,
-  UnderlyingIdColumn,
-  UnderlyingUpdatedAtColumn,
-} from './underlying-column'
-import { UnderlyingColumnFactory } from './underlying-column.factory'
+import { UnderlyingColumnBuilder } from './underlying-column.builder'
 
-export class UnderlyingTableBuilder implements IUnderlyingTableBuilder {
-  constructor(
-    private readonly knex: Knex,
-    private readonly tb: Knex.TableBuilder,
-    private readonly tableName: string,
-  ) {}
-  createId(): this {
-    new UnderlyingIdColumn().build(this.tb)
-    return this
-  }
+export class UnderlyingTableBuilder {
+  constructor(private readonly knex: Knex) {}
 
-  createCreatedAt(): this {
-    new UnderlyingCreatedAtColumn().build(this.tb, this.knex)
-    return this
-  }
+  private queries: string[] = []
 
-  createUpdatedAt(): this {
-    new UnderlyingUpdatedAtColumn().build(this.tb, this.knex)
-    return this
-  }
-
-  createDeletedAt(): this {
-    new UnderlyingDeletedAtColumn().build(this.tb)
-    return this
-  }
-
-  createUnderlying(fields: Field[]): this {
-    const underlyingColumns = UnderlyingColumnFactory.createMany(fields)
-
-    for (const column of underlyingColumns) {
-      column.build(this.tb, this.knex, this.tableName)
+  private addQueries(...queries: string[]) {
+    for (const query of queries) {
+      this.queries.unshift(query)
     }
+  }
+
+  public build() {
+    return this.queries
+  }
+
+  public createTable(table: Table) {
+    const query = this.knex.schema
+      .createTable(table.id.value, (tb) => {
+        const queries = new UnderlyingColumnBuilder(this.knex, tb)
+          .createId()
+          .createCreatedAt()
+          .createUpdatedAt(table.id.value)
+          .createDeletedAt()
+          .createUnderlying(table.schema.fields)
+          .build()
+        this.addQueries(...queries)
+      })
+      .toQuery()
+
+    this.addQueries(query)
 
     return this
   }

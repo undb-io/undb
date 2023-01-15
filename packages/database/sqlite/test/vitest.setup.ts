@@ -24,4 +24,6 @@ beforeAll(async () => {
   global.knex = knex
   // @ts-expect-error type
   global.orm = orm
+  // @ts-expect-error type
+  global.em = orm.em
 })
