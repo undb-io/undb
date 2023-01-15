@@ -5,6 +5,7 @@ import type { Option } from 'oxide.ts'
 import { Some } from 'oxide.ts'
 import type { Primitive } from 'type-fest'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../entity/underlying-table/constants'
+import { getColumnNames } from '../../entity/underlying-table/underlying-table.utils'
 import { RecordSqliteMapper } from './record-sqlite.mapper'
 import { RecordSqliteMutationVisitor } from './record-sqlite.mutation-visitor'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
@@ -34,6 +35,8 @@ export class RecordSqliteRepository implements IRecordRepository {
   async findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<CoreRecord>> {
     const qb = this.em.getKnex().queryBuilder()
     const spec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
+
+    qb.select(getColumnNames([...schema.values()]))
 
     const qv = new RecordSqliteQueryVisitor(qb)
     spec.accept(qv)
