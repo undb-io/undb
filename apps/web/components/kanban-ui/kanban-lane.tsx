@@ -11,12 +11,12 @@ import type { SortableProps } from '../sortable.interface'
 import { UNCATEGORIZED_OPTION_ID } from './kanban.constants'
 import type { ReactNode } from 'react'
 import { KanbanLaneMenu } from './kanban-lane-menu'
+import React from 'react'
 
 interface IProps {
-  renderTitle?: () => ReactNode
   renderMenu?: () => ReactNode
   id: string | null
-  title: string
+  title: ReactNode
   table: Table
   field: IKanbanField
   records: Records
@@ -38,7 +38,6 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   listeners,
   records,
   disableAddRecord,
-  renderTitle,
   renderMenu,
   getRecordValue,
 }) => {
@@ -63,8 +62,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
               <IconGripVertical size={14} cursor="grab" />
             </ActionIcon>
           ) : null}
-
-          {renderTitle ? renderTitle() : <Text weight={500}>{title}</Text>}
+          {React.isValidElement(title) ? title : <Text weight={500}>{title}</Text>}
         </Group>
 
         {id && (
