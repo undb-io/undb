@@ -246,6 +246,7 @@ importers:
       type-fest: ^3.5.1
       typescript: ^4.9.4
       vitest: ^0.26.3
+      vitest-mock-extended: ^1.0.8
     dependencies:
       '@egodb/core': link:../../core
       '@egodb/domain': link:../../domain
@@ -267,6 +268,7 @@ importers:
       type-fest: 3.5.1
       typescript: 4.9.4
       vitest: 0.26.3
+      vitest-mock-extended: 1.0.8_xclmfinyfk6aufj4k2cxreubxi
 
   packages/domain:
     specifiers:

@@ -27,7 +27,7 @@ export abstract class Field extends BaseEntity {
   @Property()
   name: string
 
-  @Enum({ type: 'string' })
+  @Enum({ items: ['string', 'number', 'date', 'select', 'bool', 'date-range'] })
   type: IFieldType
 }
 
