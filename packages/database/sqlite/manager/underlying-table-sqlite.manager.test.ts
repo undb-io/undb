@@ -1,5 +1,11 @@
-import { createTestTable } from '@egodb/core'
+import {
+  createTestTable,
+  INTERNAL_COLUMN_CREATED_AT_NAME,
+  INTERNAL_COLUMN_ID_NAME,
+  INTERNAL_COLUMN_UPDATED_AT_NAME,
+} from '@egodb/core'
 import { EntityManager } from '@mikro-orm/better-sqlite'
+import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../entity/underlying-table/constants'
 import { UnderlyingTableSqliteManager } from './underlying-table-sqlite.manager'
 
 describe('UnderlyingTableSqliteManager', () => {
@@ -12,9 +18,28 @@ describe('UnderlyingTableSqliteManager', () => {
 
   test('should create table', async () => {
     const manager = new UnderlyingTableSqliteManager(em)
-
-    const data = await manager.create(createTestTable())
+    const table = createTestTable()
+    const data = await manager.create(table)
 
     expect(data).to.be.undefined
+
+    const knex = em.getKnex()
+
+    const hasTbale = await knex.schema.hasTable(table.id.value)
+    expect(hasTbale).to.be.true
+
+    const hasId = await knex.schema.hasColumn(table.id.value, INTERNAL_COLUMN_ID_NAME)
+    expect(hasId).to.be.true
+
+    const hasCreatedAt = await knex.schema.hasColumn(table.id.value, INTERNAL_COLUMN_CREATED_AT_NAME)
+    expect(hasCreatedAt).to.be.true
+
+    const hasUpdatedAt = await knex.schema.hasColumn(table.id.value, INTERNAL_COLUMN_UPDATED_AT_NAME)
+    expect(hasUpdatedAt).to.be.true
+
+    const hasDeletedAt = await knex.schema.hasColumn(table.id.value, INTERNAL_COLUMN_DELETED_AT_NAME)
+    expect(hasDeletedAt).to.be.true
+
+    await knex.schema.dropTable(table.id.value)
   })
 })
