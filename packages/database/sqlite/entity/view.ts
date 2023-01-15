@@ -55,7 +55,7 @@ export class View extends BaseEntity {
   @Property()
   name: string
 
-  @Enum({ type: 'string' })
+  @Enum({ items: ['kanban', 'calendar', 'grid'] })
   displayType: IViewDisplayType
 
   @Embedded({ nullable: true })

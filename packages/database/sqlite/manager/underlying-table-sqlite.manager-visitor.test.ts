@@ -13,7 +13,7 @@ import { UnderlyingTableSqliteManagerVisitor } from './underlying-table-sqlite.m
 
 describe('UnderlyingTableSqliteManagerVisitor', () => {
   let em: EntityManager
-  const tableName = 'table'
+  const tableName = 'tbltest'
 
   beforeAll(() => {
     // @ts-expect-error
@@ -50,7 +50,7 @@ describe('UnderlyingTableSqliteManagerVisitor', () => {
 
     expect(visitor.queries).toMatchInlineSnapshot(`
       [
-        "alter table \`table\` add column \`fldid\` varchar(255)",
+        "alter table \`tbltest\` add column \`fldid\` varchar(255)",
       ]
     `)
 
@@ -73,7 +73,7 @@ describe('UnderlyingTableSqliteManagerVisitor', () => {
 
     expect(visitor.queries).toMatchInlineSnapshot(`
       [
-        "alter table \`table\` add column \`fldid\` varchar(255)",
+        "alter table \`tbltest\` add column \`fldid\` varchar(255)",
       ]
     `)
 

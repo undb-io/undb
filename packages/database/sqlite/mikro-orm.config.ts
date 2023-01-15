@@ -7,6 +7,7 @@ import { entities } from './entity'
 export const createConfig = (relativaPath: string) =>
   defineConfig({
     entities,
+    entitiesTs: entities,
     highlighter: new SqlHighlighter(),
     metadataProvider: ReflectMetadataProvider,
     driver: BetterSqliteDriver,
