@@ -15,8 +15,8 @@ export const KanbanUI: React.FC<IProps> = ({ table, records }) => {
 
   if (fieldKey.isNone()) {
     return (
-      <Container h="100%" w={450}>
-        <Center pb={200} h="100%" w="100%">
+      <Container h="100%" w={450} sx={{ overflow: 'scroll' }}>
+        <Center pb={200} h="100%" w="100%" sx={{ overflow: 'scroll' }}>
           <SelectKanbanField table={table} />
         </Center>
       </Container>

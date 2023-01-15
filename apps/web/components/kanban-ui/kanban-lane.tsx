@@ -54,7 +54,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   const items = records.map((r) => r.id.value)
 
   return (
-    <Stack w={350} ref={setNodeRef} style={style} h="100%">
+    <Stack w={350} ref={setNodeRef} style={style} h="100%" sx={{ flexShrink: 0 }}>
       <Group position="apart" h={40}>
         <Group spacing="xs">
           {listeners ? (
