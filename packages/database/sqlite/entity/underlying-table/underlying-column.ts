@@ -1,4 +1,13 @@
-import type { BoolField, DateField, DateRangeField, Field, NumberField, SelectField, StringField } from '@egodb/core'
+import type {
+  BoolField,
+  DateField,
+  DateRangeField,
+  Field,
+  NumberField,
+  ReferenceField,
+  SelectField,
+  StringField,
+} from '@egodb/core'
 import { INTERNAL_COLUMN_CREATED_AT_NAME, INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import type { IUnderlyingColumn } from '../../types/underlying-column'
@@ -104,5 +113,12 @@ export class UnderlyingDateRangeToFromColumn extends UnderlyingFieldColumn<DateR
 export class UnderlyingSelectFromColumn extends UnderlyingFieldColumn<SelectField> {
   build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
     return tb.string(this.name)
+  }
+}
+
+export class UnderlyingReferenceFromColumn extends UnderlyingFieldColumn<ReferenceField> {
+  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
+    // return tb.string(this.name)
+    throw new Error('UnderlyingReferenceFromColumn.build not implemented')
   }
 }

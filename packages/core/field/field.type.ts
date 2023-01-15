@@ -47,6 +47,15 @@ import {
   numberFieldValue,
   numberTypeSchema,
 } from './number-field.type'
+import type { ReferenceField } from './reference-field'
+import {
+  createReferenceFieldSchema,
+  createReferenceFieldValue,
+  createReferenceFieldValue_internal,
+  referenceFieldQuerySchema,
+  referenceFieldValue,
+  referenceTypeSchema,
+} from './reference-field.type'
 import type { SelectField } from './select-field'
 import type { SelectFieldValue } from './select-field-value'
 import type { ISelectFieldValue } from './select-field.type'
@@ -79,6 +88,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createSelectFieldSchema,
   createBoolFieldSchema,
   createDateRangeFieldSchema,
+  createReferenceFieldSchema,
 ])
 export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
 
@@ -89,6 +99,7 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   selectFieldQuerySchema,
   boolFieldQuerySchema,
   dateRangeFieldQuerySchema,
+  referenceFieldQuerySchema,
 ])
 export type IQueryFieldSchema = z.infer<typeof queryFieldSchema>
 export const querySchemaSchema = z.array(queryFieldSchema)
@@ -101,6 +112,7 @@ export const fieldTypes = z.union([
   selectTypeSchema,
   boolTypeSchema,
   dateRangeTypeSchema,
+  referenceTypeSchema,
 ])
 export type IFieldType = z.infer<typeof fieldTypes>
 
@@ -111,6 +123,7 @@ export const fieldValue = z.union([
   dateRangeFieldValue,
   selectFieldValue,
   boolFieldValue,
+  referenceFieldValue,
 ])
 export type IFieldValue = z.infer<typeof fieldValue>
 
@@ -121,6 +134,7 @@ export const createFieldValueSchema = z.union([
   createDateRangeFieldValue,
   createSelectFieldValue,
   createBoolFieldValue,
+  createReferenceFieldValue,
 ])
 export type ICreateFieldValue = z.infer<typeof createFieldValueSchema>
 
@@ -134,6 +148,7 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createSelectFieldValue_internal,
   createBoolFieldValue_internal,
   createDateRangeFieldValue_internal,
+  createReferenceFieldValue_internal,
 ])
 export type ICreateFieldValueSchema_internal = z.infer<typeof createFieldValueSchema_internal>
 
@@ -159,8 +174,9 @@ export type ISelectField = IBaseField & {
 }
 
 export type IBoolField = IBaseField
+export type IReferenceField = IBaseField
 
-export type Field = StringField | NumberField | DateField | SelectField | BoolField | DateRangeField
+export type Field = StringField | NumberField | DateField | SelectField | BoolField | DateRangeField | ReferenceField
 
 export type FieldValue =
   | StringFieldValue
