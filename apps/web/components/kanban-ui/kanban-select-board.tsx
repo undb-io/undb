@@ -2,7 +2,18 @@ import { DragOverlay, PointerSensor } from '@dnd-kit/core'
 import { DndContext, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import type { Records, SelectField } from '@egodb/core'
-import { Badge, Button, closeModal, Container, Group, IconPlus, Menu, openContextModal, useListState } from '@egodb/ui'
+import {
+  Badge,
+  Box,
+  Button,
+  closeModal,
+  Container,
+  Group,
+  IconPlus,
+  Menu,
+  openContextModal,
+  useListState,
+} from '@egodb/ui'
 import { useEffect, useState } from 'react'
 import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
@@ -113,7 +124,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
   })
 
   return (
-    <Container fluid ml={0} h="100%">
+    <Container fluid ml={0} h="100%" sx={{ overflow: 'scroll' }}>
       <Group align="start" noWrap h="100%">
         <DndContext
           sensors={sensors}
@@ -187,26 +198,28 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
           </SortableContext>
         </DndContext>
 
-        <Button
-          onClick={() =>
-            openContextModal({
-              title: 'Create New Option',
-              modal: CREATE_OPTION_MODAL_ID,
-              trapFocus: true,
-              innerProps: {
-                table,
-                field,
-                color: lastOption?.color.next().unpack(),
-                onSuccess: () => closeModal(CREATE_OPTION_MODAL_ID),
-              },
-            })
-          }
-          w={300}
-          variant="outline"
-          leftIcon={<IconPlus />}
-        >
-          New Stack
-        </Button>
+        <Box pr="md">
+          <Button
+            onClick={() =>
+              openContextModal({
+                title: 'Create New Option',
+                modal: CREATE_OPTION_MODAL_ID,
+                trapFocus: true,
+                innerProps: {
+                  table,
+                  field,
+                  color: lastOption?.color.next().unpack(),
+                  onSuccess: () => closeModal(CREATE_OPTION_MODAL_ID),
+                },
+              })
+            }
+            w={300}
+            variant="outline"
+            leftIcon={<IconPlus />}
+          >
+            New Stack
+          </Button>
+        </Box>
       </Group>
     </Container>
   )
