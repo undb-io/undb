@@ -2,7 +2,7 @@ import { DragOverlay, PointerSensor } from '@dnd-kit/core'
 import { DndContext, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import type { Records, SelectField } from '@egodb/core'
-import { Button, closeModal, Container, Group, IconPlus, Menu, openContextModal, useListState } from '@egodb/ui'
+import { Badge, Button, closeModal, Container, Group, IconPlus, Menu, openContextModal, useListState } from '@egodb/ui'
 import { useEffect, useState } from 'react'
 import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
@@ -127,7 +127,11 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
               table={table}
               field={field}
               records={optionRecords[UNCATEGORIZED_OPTION_ID] ?? []}
-              title="uncategorized"
+              title={
+                <Badge radius="xs" color="gray">
+                  uncategorized
+                </Badge>
+              }
               id={UNCATEGORIZED_OPTION_ID}
               getRecordValue={(id) => (id === UNCATEGORIZED_OPTION_ID ? null : id)}
             />
@@ -138,10 +142,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
                 records={optionRecords[option.key.value] ?? []}
                 key={option.key.value}
                 id={option.key.value}
-                title={option.name.value}
-                renderTitle={() => (
-                  <Option name={option.name.value} colorName={option.color.name} shade={option.color.shade} />
-                )}
+                title={<Option name={option.name.value} colorName={option.color.name} shade={option.color.shade} />}
                 renderMenu={() => (
                   <Menu.Item
                     onClick={() =>
@@ -170,15 +171,14 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
                   table={table}
                   field={field}
                   records={optionRecords[(activeId as string) || ''] ?? []}
-                  title={activeContainer?.name.value ?? ''}
                   id={activeContainer?.key.value ?? ''}
-                  renderTitle={() => (
+                  title={
                     <Option
                       name={activeContainer!.name.value}
                       colorName={activeContainer!.color.name}
                       shade={activeContainer!.color.shade}
                     />
-                  )}
+                  }
                 />
               ) : (
                 <KanbanCard record={activeItem!} table={table} />
