@@ -71,7 +71,7 @@ export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
                           label={
                             <Group spacing="xs">
                               <FieldIcon type={f.type} />
-                              {f.id.value}
+                              {f.name.value}
                             </Group>
                           }
                         />
