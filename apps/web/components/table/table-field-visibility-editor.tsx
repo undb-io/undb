@@ -60,7 +60,7 @@ export const TableFieldVisibilityEditor: React.FC<ITableBaseProps> = ({ table })
               label={
                 <Group spacing="xs">
                   <FieldIcon type={f.type} />
-                  {f.id.value}
+                  {f.name.value}
                 </Group>
               }
             />
