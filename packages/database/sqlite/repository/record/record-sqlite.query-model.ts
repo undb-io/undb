@@ -2,6 +2,7 @@ import type { IQueryRecordSchema, IRecordQueryModel, IRecordSpec, QueryRecords, 
 import { WithRecordId } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { Option } from 'oxide.ts'
+import { getColumnNames } from '../../entity/underlying-table/underlying-table.utils'
 import { RecordSqliteMapper } from './record-sqlite.mapper'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
 
@@ -15,6 +16,8 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const visitor = new RecordSqliteQueryVisitor(qb)
     spec.accept(visitor).unwrap()
 
+    qb.select(getColumnNames([...schema.values()]))
+
     const data = await this.em.execute(qb)
 
     const records = data.map((d) => RecordSqliteMapper.toQuery(visitor.tableId, schema, d))
@@ -27,6 +30,8 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
 
     const visitor = new RecordSqliteQueryVisitor(qb)
     spec.accept(visitor).unwrap()
+
+    qb.select(getColumnNames([...schema.values()]))
 
     const data = await this.em.execute(qb.first())
 
