@@ -28,7 +28,16 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field }) => 
     return (
       <Controller
         name={name}
-        render={(form) => <DatePicker label={label} {...form.field} onChange={(date) => form.field.onChange(date)} />}
+        render={(form) => (
+          <DatePicker
+            allowFreeInput
+            inputFormat="YYYY-MM-DD"
+            labelFormat="YYYY-MM-DD"
+            label={label}
+            {...form.field}
+            onChange={(date) => form.field.onChange(date)}
+          />
+        )}
       />
     )
   }
