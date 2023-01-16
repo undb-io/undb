@@ -1,6 +1,7 @@
 import { createTestTable, IUnderlyingTableManager, Table as CoreTable } from '@egodb/core'
 import { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { mock, MockProxy } from 'vitest-mock-extended'
+import { Table } from '../../entity'
 import { TableSqliteRepository } from './table-sqlite.repository'
 
 describe('TableSqliteRepository', () => {
@@ -28,6 +29,9 @@ describe('TableSqliteRepository', () => {
 
   test('deleteOneById', async () => {
     await repo.deleteOneById(table.id.value)
+
+    const found = await em.fork().findOne(Table, { id: table.id.value })
+    expect(found).to.be.null
 
     expect(tm.delete).toHaveBeenCalledWith(table.id.value)
   })
