@@ -1,7 +1,8 @@
 export default function Head() {
   return (
     <>
-      <title>Egodb</title>
+      <title>egodb</title>
+      <link rel="shortcut icon" href="/favicon.ico" />
     </>
   )
 }
