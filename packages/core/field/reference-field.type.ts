@@ -1,4 +1,5 @@
 import * as z from 'zod'
+import { recordIdSchema } from '../record/value-objects/record-id.schema'
 import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base'
 import { FIELD_TYPE_KEY } from './field.constant'
 import { ReferenceField } from './reference-field'
@@ -12,7 +13,7 @@ export type ICreateReferenceFieldInput = z.infer<typeof createReferenceFieldSche
 
 export const referenceFieldQuerySchema = baseFieldQuerySchema.merge(referenceTypeObjectSchema)
 
-export const referenceFieldValue = z.null()
+export const referenceFieldValue = recordIdSchema.array()
 export type IReferenceFieldValue = z.infer<typeof referenceFieldValue>
 
 export const createReferenceFieldValue = referenceFieldValue

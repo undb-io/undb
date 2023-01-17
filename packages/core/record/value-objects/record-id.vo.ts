@@ -1,10 +1,7 @@
 import { NanoID } from '@egodb/domain'
-import * as z from 'zod'
-
-export const recordIdSchema = z.string().min(1)
 
 export class RecordId extends NanoID {
-  private static RECORD_ID_PREFIX = 'rec'
+  public static RECORD_ID_PREFIX = 'rec'
   private static RECORD_ID_SIZE = 8
 
   static create(): RecordId {

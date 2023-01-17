@@ -3,7 +3,7 @@ import { createFieldsSchema_internal, fieldValue } from '../field'
 import { fieldIdSchema } from '../field/value-objects/field-id.schema'
 import { TableId, tableIdSchema } from '../value-objects'
 import type { Record } from './record'
-import { recordIdSchema } from './value-objects'
+import { recordIdSchema } from './value-objects/record-id.schema'
 
 export type Records = Record[]
 
