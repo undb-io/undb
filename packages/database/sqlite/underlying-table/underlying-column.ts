@@ -117,7 +117,7 @@ export class UnderlyingSelectFromColumn extends UnderlyingFieldColumn<SelectFiel
 }
 
 export class UnderlyingReferenceColumn extends UnderlyingFieldColumn<ReferenceField> {
-  build(): void {
-    // DO NOTHING
+  build(tb: Knex.TableBuilder): void {
+    tb.json(this.name)
   }
 }
