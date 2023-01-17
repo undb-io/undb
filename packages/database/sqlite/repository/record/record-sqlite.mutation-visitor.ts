@@ -162,12 +162,24 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
     if (field && s.value) {
       const underlyingTable = new UnderlyingM2MTable(this.tableId, field)
 
+      const query = this.em
+        .getKnex()
+        .queryBuilder()
+        .table(underlyingTable.name)
+        .delete()
+        .where(M2M_REF_ID_FIELD, this.recordId)
+        .toQuery()
+
+      this.addQueries(query)
+
       for (const recordId of s.value) {
         const query = this.em
           .getKnex()
           .queryBuilder()
           .table(underlyingTable.name)
           .insert({ [M2M_ID_FIELD]: recordId, [M2M_REF_ID_FIELD]: this.recordId })
+          .onConflict()
+          .ignore()
           .toQuery()
 
         this.addQueries(query)
