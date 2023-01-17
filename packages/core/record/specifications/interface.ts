@@ -24,6 +24,7 @@ import type { WithRecordId } from './record-id.specifaction'
 import type { WithRecordTableId } from './record-table-id.specification'
 import type { WithRecordUpdatedAt } from './record-updated-at.specification'
 import type { WithRecordValues } from './record-values.specification'
+import type { ReferenceEqual } from './reference.specification'
 import type { SelectEqual, SelectIn } from './select.specification'
 import type { StringContain, StringEndsWith, StringEqual, StringRegex, StringStartsWith } from './string.specification'
 
@@ -65,6 +66,8 @@ interface IRecordValueVisitor {
 
   boolIsTrue(s: BoolIsTrue): void
   boolIsFalse(s: BoolIsFalse): void
+
+  referenceEqual(s: ReferenceEqual): void
 }
 
 export type RecordCompositeSpecification = CompositeSpecification<Record, IRecordVisitor>

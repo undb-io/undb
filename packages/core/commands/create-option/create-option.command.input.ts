@@ -5,6 +5,6 @@ import { tableIdSchema } from '../../value-objects'
 
 export const createOptionCommandInput = z.object({
   tableId: tableIdSchema,
-  fieldKey: fieldKeySchema,
+  fieldId: fieldKeySchema,
   option: createOptionSchema,
 })

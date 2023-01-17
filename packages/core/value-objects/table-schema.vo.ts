@@ -3,7 +3,7 @@ import { Option } from 'oxide.ts'
 import type { Class } from 'type-fest'
 import * as z from 'zod'
 import type { Field, ICreateFieldSchema } from '../field'
-import { createFieldSchema, DateField, DateRangeField, SelectField, WithoutField } from '../field'
+import { createFieldSchema, DateField, DateRangeField, ReferenceField, SelectField, WithoutField } from '../field'
 import { FieldFactory } from '../field/field.factory'
 import { fieldKeySchema } from '../field/value-objects/field-key.schema'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema'
@@ -52,6 +52,10 @@ export class TableSchema extends ValueObject<Field[]> {
 
   public get fields(): Field[] {
     return this.props
+  }
+
+  public get referenceFields(): ReferenceField[] {
+    return this.fields.filter((f) => f instanceof ReferenceField) as ReferenceField[]
   }
 
   public get kanbanFields(): IKanbanField[] {

@@ -60,7 +60,7 @@ export class View extends ValueObject<IView> {
   }
 
   public get kanbanFieldId(): Option<FieldKey> {
-    return this.kanban.mapOr(None, (kanban) => Option(kanban.fieldKey))
+    return this.kanban.mapOr(None, (kanban) => Option(kanban.fieldId))
   }
 
   public get calendar(): Option<Calendar> {
@@ -72,7 +72,7 @@ export class View extends ValueObject<IView> {
   }
 
   public get calendarFieldId(): Option<FieldKey> {
-    return this.calendar.mapOr(None, (calendar) => Option(calendar.fieldKey))
+    return this.calendar.mapOr(None, (calendar) => Option(calendar.fieldId))
   }
 
   public get spec(): Option<CompositeSpecification> {
@@ -96,12 +96,12 @@ export class View extends ValueObject<IView> {
     this.props.fieldsOrder = v
   }
 
-  public getFieldOption(fieldKey: string): IViewFieldOption {
-    return this.fieldOptions.getOption(fieldKey)
+  public getFieldOption(fieldId: string): IViewFieldOption {
+    return this.fieldOptions.getOption(fieldId)
   }
 
-  public getOrCreateFieldOption(fieldKey: string): IViewFieldOption {
-    return this.fieldOptions.getOrCreateOption(fieldKey)
+  public getOrCreateFieldOption(fieldId: string): IViewFieldOption {
+    return this.fieldOptions.getOrCreateOption(fieldId)
   }
 
   public getOrCreateKanban(): Kanban {
@@ -120,32 +120,32 @@ export class View extends ValueObject<IView> {
     return this.props.calendar
   }
 
-  public getFieldHidden(fieldKey: string): boolean {
-    return this.fieldOptions.getHidden(fieldKey)
+  public getFieldHidden(fieldId: string): boolean {
+    return this.fieldOptions.getHidden(fieldId)
   }
 
-  public getFieldWidth(fieldKey: string): number {
-    return this.fieldOptions.getWidth(fieldKey)
+  public getFieldWidth(fieldId: string): number {
+    return this.fieldOptions.getWidth(fieldId)
   }
 
-  public setFieldWidth(fieldKey: string, width: number): TableCompositeSpecificaiton {
-    return new WithFieldWidth(fieldKey, this, width)
+  public setFieldWidth(fieldId: string, width: number): TableCompositeSpecificaiton {
+    return new WithFieldWidth(fieldId, this, width)
   }
 
   public switchDisplayType(type: IViewDisplayType): TableCompositeSpecificaiton {
     return new WithDisplayType(this, type)
   }
 
-  public setFieldVisibility(fieldKey: string, hidden: boolean): TableCompositeSpecificaiton {
-    return new WithFieldVisibility(fieldKey, this, hidden)
+  public setFieldVisibility(fieldId: string, hidden: boolean): TableCompositeSpecificaiton {
+    return new WithFieldVisibility(fieldId, this, hidden)
   }
 
-  public setKanbanFieldSpec(fieldKey: FieldKey): TableCompositeSpecificaiton {
-    return new WithKanbanField(this, fieldKey)
+  public setKanbanFieldSpec(fieldId: FieldKey): TableCompositeSpecificaiton {
+    return new WithKanbanField(this, fieldId)
   }
 
-  public setCalendarFieldSpec(fieldKey: FieldKey): TableCompositeSpecificaiton {
-    return new WithCalendarField(this, fieldKey)
+  public setCalendarFieldSpec(fieldId: FieldKey): TableCompositeSpecificaiton {
+    return new WithCalendarField(this, fieldId)
   }
 
   public getVisibility(): Record<string, boolean> {

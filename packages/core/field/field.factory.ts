@@ -3,6 +3,7 @@ import { DateField } from './date-field'
 import { DateRangeField } from './date-range-field'
 import type { Field, ICreateFieldSchema } from './field.type'
 import { NumberField } from './number-field'
+import { ReferenceField } from './reference-field'
 import { SelectField } from './select-field'
 import { StringField } from './string-field'
 
@@ -27,9 +28,9 @@ export class FieldFactory {
       case 'bool': {
         return BoolField.create(input)
       }
-
-      default:
-        throw new Error('invalid field type')
+      case 'reference': {
+        return ReferenceField.create(input)
+      }
     }
   }
 
@@ -53,9 +54,9 @@ export class FieldFactory {
       case 'bool': {
         return BoolField.unsafeCreate(input)
       }
-
-      default:
-        throw new Error('invalid field type')
+      case 'reference': {
+        return ReferenceField.unsafeCreate(input)
+      }
     }
   }
 }

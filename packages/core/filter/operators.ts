@@ -35,6 +35,9 @@ export type ISelectFilterOperator = z.infer<typeof selectFilterOperators>
 export const dateFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte, $is_today])
 export type IDateFilterOperator = z.infer<typeof dateFilterOperators>
 
+export const referenceFilterOperators = z.union([$eq, $neq])
+export type IReferenceFilterOperator = z.infer<typeof referenceFilterOperators>
+
 /**
  * built in date operators
  */

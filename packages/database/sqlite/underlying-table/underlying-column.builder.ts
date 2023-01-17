@@ -1,7 +1,7 @@
 import type { Field } from '@egodb/core'
 import { INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
-import type { IUnderlyingColumnBuilder } from '../../types/underlying-table.builder'
+import type { IUnderlyingColumnBuilder } from '../interfaces/underlying-table.builder'
 import {
   UnderlyingCreatedAtColumn,
   UnderlyingDeletedAtColumn,

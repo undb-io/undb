@@ -9,21 +9,21 @@ import type { IKanban } from './kanban.type'
 export class Kanban extends ValueObject<IKanban> {
   static from(input: IKanbanSchema) {
     return new this({
-      fieldKey: input.fieldKey ? FieldKey.from(input.fieldKey) : undefined,
+      fieldId: input.fieldId ? FieldKey.from(input.fieldId) : undefined,
     })
   }
 
-  public get fieldKey() {
-    return this.props.fieldKey
+  public get fieldId() {
+    return this.props.fieldId
   }
 
-  public set fieldKey(fieldKey: FieldKey | undefined) {
-    this.props.fieldKey = fieldKey
+  public set fieldId(fieldId: FieldKey | undefined) {
+    this.props.fieldId = fieldId
   }
 
   public removeField(field: Field): Option<Kanban> {
-    if (this.fieldKey?.equals(field.key)) {
-      const kanban = new Kanban({ ...this, fieldKey: undefined })
+    if (this.fieldId?.equals(field.key)) {
+      const kanban = new Kanban({ ...this, fieldId: undefined })
       return Some(kanban)
     }
 

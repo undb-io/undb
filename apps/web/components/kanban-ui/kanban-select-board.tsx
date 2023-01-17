@@ -106,7 +106,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
 
         reorderOptions.mutate({
           tableId: table.id.value,
-          fieldKey: field.id.value,
+          fieldId: field.id.value,
           from: active.id as string,
           to: over.id as string,
         })

@@ -154,10 +154,11 @@
           "enumItems": [
             "string",
             "number",
-            "bool",
             "date",
+            "select",
+            "bool",
             "date-range",
-            "select"
+            "reference"
           ],
           "mappedType": "enum"
         }
@@ -279,11 +280,27 @@
         },
         "color_name": {
           "name": "color_name",
-          "type": "integer",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "enumItems": [
+            "dark",
+            "gray",
+            "red",
+            "pink",
+            "grape",
+            "violet",
+            "indigo",
+            "blue",
+            "cyan",
+            "teal",
+            "green",
+            "lime",
+            "yellow",
+            "orange"
+          ],
           "mappedType": "enum"
         },
         "color_shade": {
@@ -413,11 +430,16 @@
         },
         "display_type": {
           "name": "display_type",
-          "type": "integer",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "enumItems": [
+            "kanban",
+            "calendar",
+            "grid"
+          ],
           "mappedType": "enum"
         },
         "kanban_field_key": {

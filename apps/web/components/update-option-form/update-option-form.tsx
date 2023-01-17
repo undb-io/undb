@@ -39,7 +39,7 @@ export const UpdateOptionForm: React.FC<IProps> = ({ tableId, field, optionKey, 
   const onSubmit = form.handleSubmit((values) => {
     updateOption.mutate({
       tableId,
-      fieldKey: field.id.value,
+      fieldId: field.id.value,
       id: optionKey,
       option: values,
     })

@@ -45,9 +45,11 @@ import {
   dateFilterOperators,
   dateRangeFilterOperators,
   numberFilterOperators,
+  referenceFilterOperators,
   selectFilterOperators,
   stringFilterOperators,
 } from './operators'
+import { referenceFilter, referenceFilterValue } from './reference.filter'
 import type { ISelectFilter } from './select.filter'
 import { selectFilter, selectFilterValue } from './select.filter'
 import type { IStringFilter } from './string.filter'
@@ -60,6 +62,7 @@ export const filterValue = z.union([
   dateRangeFilterValue,
   selectFilterValue,
   boolFilterValue,
+  referenceFilterValue,
 ])
 export type IFilterValue = z.infer<typeof filterValue>
 
@@ -70,6 +73,7 @@ export const operaotrs = z.union([
   dateRangeFilterOperators,
   selectFilterOperators,
   boolFilterOperators,
+  referenceFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
@@ -80,6 +84,7 @@ const filter = z.discriminatedUnion('type', [
   dateRangeFilter,
   selectFilter,
   boolFilter,
+  referenceFilter,
 ])
 
 export type IFilter = z.infer<typeof filter>
@@ -268,6 +273,8 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
       return convertSelectFilter(filter)
     case 'bool':
       return convertBoolFilter(filter)
+    case 'reference':
+      throw new Error('convertFilter.reference not implemented')
     default:
       return None
   }

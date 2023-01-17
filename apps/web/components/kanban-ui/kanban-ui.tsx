@@ -11,9 +11,9 @@ interface IProps extends ITableBaseProps {
 
 export const KanbanUI: React.FC<IProps> = ({ table, records }) => {
   const view = table.mustGetView()
-  const fieldKey = view.kanbanFieldId
+  const fieldId = view.kanbanFieldId
 
-  if (fieldKey.isNone()) {
+  if (fieldId.isNone()) {
     return (
       <Container h="100%" w={450} sx={{ overflow: 'scroll' }}>
         <Center pb={200} h="100%" w="100%" sx={{ overflow: 'scroll' }}>
@@ -23,6 +23,6 @@ export const KanbanUI: React.FC<IProps> = ({ table, records }) => {
     )
   }
 
-  const field = table.schema.getFieldById(fieldKey.unwrap().value).unwrap()
+  const field = table.schema.getFieldById(fieldId.unwrap().value).unwrap()
   return <KanbanBoard table={table} field={field as IKanbanField} records={records} />
 }

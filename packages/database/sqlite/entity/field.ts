@@ -27,7 +27,7 @@ export abstract class Field extends BaseEntity {
   @Property()
   name: string
 
-  @Enum({ items: ['string', 'number', 'date', 'select', 'bool', 'date-range'] })
+  @Enum({ items: ['string', 'number', 'date', 'select', 'bool', 'date-range', 'reference'] })
   type: IFieldType
 }
 
@@ -52,4 +52,17 @@ export class SelectField extends Field {
   options = new Collection<Option>(this)
 }
 
-export type IField = StringField | NumberField | BoolField | DateField | DateRangeField | SelectField
+@Entity({ discriminatorValue: 'reference' })
+export class ReferenceField extends Field {}
+
+export type IField = StringField | NumberField | BoolField | DateField | DateRangeField | SelectField | ReferenceField
+
+export const fieldEntities = [
+  StringField,
+  NumberField,
+  BoolField,
+  DateField,
+  DateRangeField,
+  SelectField,
+  ReferenceField,
+]

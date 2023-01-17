@@ -5,6 +5,7 @@ import React from 'react'
 import { Controller } from 'react-hook-form'
 import { FieldInputLabel } from '../fields/field-input-label'
 import { OptionPicker } from '../option/option-picker'
+import { RecordPicker } from './record-picker'
 
 interface IProps {
   table: Table
@@ -70,17 +71,32 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field }) => 
     return (
       <Controller
         name={name}
-        render={(form) => {
-          return (
-            <OptionPicker
-              field={field}
-              table={table}
-              label={label}
-              {...form.field}
-              onChange={(value) => form.field.onChange(value)}
-            />
-          )
-        }}
+        render={(form) => (
+          <OptionPicker
+            field={field}
+            table={table}
+            label={label}
+            {...form.field}
+            onChange={(value) => form.field.onChange(value)}
+          />
+        )}
+      />
+    )
+  }
+
+  if (field.type === 'reference') {
+    return (
+      <Controller
+        name={name}
+        render={(form) => (
+          <RecordPicker
+            field={field}
+            table={table}
+            label={label}
+            {...form.field}
+            onChange={(value) => form.field.onChange(value)}
+          />
+        )}
       />
     )
   }

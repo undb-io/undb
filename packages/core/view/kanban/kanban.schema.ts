@@ -3,7 +3,7 @@ import { DateField, SelectField } from '../../field'
 import { fieldKeySchema } from '../../field/value-objects/field-key.schema'
 
 export const kanbanSchema = z.object({
-  fieldKey: fieldKeySchema.optional(),
+  fieldId: fieldKeySchema.optional(),
 })
 
 export const kanbanField = z.union([z.instanceof(SelectField), z.instanceof(DateField)])

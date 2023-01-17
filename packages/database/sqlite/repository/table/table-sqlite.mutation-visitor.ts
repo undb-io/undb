@@ -1,5 +1,6 @@
 import type {
   ITableSpecVisitor,
+  ReferenceField,
   WithCalendarField,
   WithDisplayType,
   WithFieldOption,
@@ -23,6 +24,7 @@ import { wrap } from '@mikro-orm/core'
 import { Field, Option, SelectField, Table } from '../../entity'
 import { FieldFactory } from '../../entity/field.factory'
 import { View } from '../../entity/view'
+import { UnderlyingM2MTable } from '../../underlying-table/underlying-table'
 
 export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   private jobs: (() => Promise<void>)[] = []
@@ -43,6 +45,26 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
     return this.em.getReference(Field, id)
   }
 
+  private handlerNewReferenceField(field: ReferenceField) {
+    const id = 'id'
+    const refId = 'ref_id'
+    const underlyingTable = new UnderlyingM2MTable(this.tableId, field)
+    const refenrenceTableName = underlyingTable.name
+
+    this.jobs.push(async () => {
+      const query = this.em
+        .getKnex()
+        .schema.createTable(refenrenceTableName, (tb) => {
+          tb.string(id).notNullable().references('id').inTable(this.tableId)
+          tb.string(refId).notNullable().references('id').inTable(this.tableId)
+          tb.primary([id, refId])
+        })
+        .toQuery()
+
+      await this.em.execute(query)
+    })
+  }
+
   idEqual(): void {
     throw new Error('[TableSqliteMutationVisitor.idEqual] Method not implemented.')
   }
@@ -53,8 +75,12 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   }
   schemaEqual(s: WithTableSchema): void {
     const table = this.table
-    wrap(table).assign({ fields: s.schema.fields.map((field) => FieldFactory.create(table, field)) })
+    wrap(table).assign({ fields: FieldFactory.createMany(table, s.schema.fields) })
     this.em.persist(table)
+
+    for (const referenceField of s.schema.referenceFields) {
+      this.handlerNewReferenceField(referenceField)
+    }
   }
   viewsEqual(s: WithTableViews): void {
     const table = this.table
@@ -75,11 +101,18 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   newField(s: WithNewField): void {
     const table = this.table
     const f = s.field
-    const field = FieldFactory.create(table, f)
-    if (field instanceof SelectField && f.type === 'select') {
-      wrap(field).assign({ options: f.options.options.map((option) => new Option(field, option)) })
+
+    if (f.type === 'reference') {
+      this.handlerNewReferenceField(f)
     }
-    this.em.persist(field)
+
+    const field = FieldFactory.create(table, f)
+    if (field) {
+      if (field instanceof SelectField && f.type === 'select') {
+        wrap(field).assign({ options: f.options.options.map((option) => new Option(field, option)) })
+      }
+      this.em.persist(field)
+    }
   }
   fieldsOrder(s: WithViewFieldsOrder): void {
     const view = this.getView(s.view.id.value)
@@ -90,7 +123,7 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
     this.jobs.push(async () => {
       const view = this.getView(s.view.id.value)
       await wrap(view).init()
-      wrap(view).assign({ fieldOptions: { [s.fieldKey]: { width: s.width } } }, { mergeObjects: true })
+      wrap(view).assign({ fieldOptions: { [s.fieldId]: { width: s.width } } }, { mergeObjects: true })
       this.em.persist(view)
     })
   }
@@ -98,7 +131,7 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
     this.jobs.push(async () => {
       const view = this.getView(s.view.id.value)
       await wrap(view).init()
-      wrap(view).assign({ fieldOptions: { [s.fieldKey]: { hidden: s.hidden } } }, { mergeObjects: true })
+      wrap(view).assign({ fieldOptions: { [s.fieldId]: { hidden: s.hidden } } }, { mergeObjects: true })
       this.em.persist(view)
     })
   }
@@ -109,12 +142,12 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   }
   kanbanFieldEqual(s: WithKanbanField): void {
     const view = this.getView(s.view.id.value)
-    wrap(view).assign({ kanban: { fieldKey: s.fieldKey?.value ?? '' } })
+    wrap(view).assign({ kanban: { fieldId: s.fieldId?.value ?? '' } })
     this.em.persist(view)
   }
   calendarFieldEqual(s: WithCalendarField): void {
     const view = this.getView(s.view.id.value)
-    wrap(view).assign({ calendar: { fieldKey: s.fieldKey?.value ?? '' } })
+    wrap(view).assign({ calendar: { fieldId: s.fieldId?.value ?? '' } })
     this.em.persist(view)
   }
   optionsEqual(s: WithOptions): void {

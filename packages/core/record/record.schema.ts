@@ -8,7 +8,7 @@ import {
   INTERNAL_COLUMN_UPDATED_AT_NAME,
 } from '../field'
 import { fieldIdSchema } from '../field/value-objects/field-id.schema'
-import { recordIdSchema } from './value-objects'
+import { recordIdSchema } from './value-objects/record-id.schema'
 
 export const mutateRecordValueSchema = z
   .array(

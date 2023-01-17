@@ -46,10 +46,10 @@ interface IProps {
 export const Th: React.FC<IProps> = memo(({ header, tableId, field, column }) => {
   const setFieldWidth = trpc.table.view.field.setWidth.useMutation()
 
-  const onSetFieldWidth = (fieldKey: string, width: number) => {
+  const onSetFieldWidth = (fieldId: string, width: number) => {
     setFieldWidth.mutate({
       tableId,
-      fieldKey,
+      fieldId,
       width,
     })
   }
@@ -59,6 +59,7 @@ export const Th: React.FC<IProps> = memo(({ header, tableId, field, column }) =>
   })
   return (
     <th
+      data-field-id={field.id.value}
       key={header.id}
       style={{
         position: 'relative',

@@ -1,11 +1,12 @@
 import type { Field } from '@egodb/core'
-import type { IUnderlyingColumn } from '../../types/underlying-column'
+import type { IUnderlyingColumn } from '../interfaces/underlying-column'
 import {
   UnderlyingBoolColumn,
   UnderlyingDateColumn,
   UnderlyingDateRangeFromColumn,
   UnderlyingDateRangeToFromColumn,
   UnderlyingNumberColumn,
+  UnderlyingReferenceColumn,
   UnderlyingSelectFromColumn,
   UnderlyingStringColumn,
 } from './underlying-column'
@@ -25,6 +26,8 @@ export class UnderlyingColumnFactory {
         return [new UnderlyingDateRangeFromColumn(field), new UnderlyingDateRangeToFromColumn(field)]
       case 'select':
         return new UnderlyingSelectFromColumn(field)
+      case 'reference':
+        return new UnderlyingReferenceColumn(field)
     }
   }
 

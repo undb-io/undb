@@ -39,7 +39,9 @@ export class TableSqliteRepository implements ITableRepository {
           }
         }
 
-        em.persist(fieldEntity)
+        if (fieldEntity) {
+          em.persist(fieldEntity)
+        }
       }
 
       for (const view of table.views.views ?? []) {

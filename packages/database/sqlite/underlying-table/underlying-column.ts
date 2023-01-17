@@ -1,12 +1,21 @@
-import type { BoolField, DateField, DateRangeField, Field, NumberField, SelectField, StringField } from '@egodb/core'
+import type {
+  BoolField,
+  DateField,
+  DateRangeField,
+  Field,
+  NumberField,
+  ReferenceField,
+  SelectField,
+  StringField,
+} from '@egodb/core'
 import { INTERNAL_COLUMN_CREATED_AT_NAME, INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
-import type { IUnderlyingColumn } from '../../types/underlying-column'
+import type { IUnderlyingColumn } from '../interfaces/underlying-column'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from './constants'
 
 export abstract class UnderlyingColumn implements IUnderlyingColumn {
   abstract get name(): string
-  abstract build(tb: Knex.TableBuilder, knex: Knex): Knex.ColumnBuilder
+  abstract build(tb: Knex.TableBuilder, knex: Knex): void
 }
 
 export class UnderlyingIdColumn extends UnderlyingColumn {
@@ -14,8 +23,8 @@ export class UnderlyingIdColumn extends UnderlyingColumn {
     return INTERNAL_COLUMN_ID_NAME
   }
 
-  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
-    return tb.string(this.name).notNullable().primary()
+  build(tb: Knex.TableBuilder): void {
+    tb.string(this.name).notNullable().primary()
   }
 }
 
@@ -24,8 +33,8 @@ export class UnderlyingCreatedAtColumn extends UnderlyingColumn {
     return INTERNAL_COLUMN_CREATED_AT_NAME
   }
 
-  build(tb: Knex.TableBuilder, knex: Knex): Knex.ColumnBuilder {
-    return tb.datetime(this.name).notNullable().defaultTo(knex.fn.now())
+  build(tb: Knex.TableBuilder, knex: Knex): void {
+    tb.datetime(this.name).notNullable().defaultTo(knex.fn.now())
   }
 }
 
@@ -34,8 +43,8 @@ export class UnderlyingUpdatedAtColumn extends UnderlyingColumn {
     return INTERNAL_COLUMN_UPDATED_AT_NAME
   }
 
-  build(tb: Knex.TableBuilder, knex: Knex): Knex.ColumnBuilder {
-    return tb.datetime(this.name).notNullable().defaultTo(knex.fn.now())
+  build(tb: Knex.TableBuilder, knex: Knex): void {
+    tb.datetime(this.name).notNullable().defaultTo(knex.fn.now())
   }
 }
 
@@ -44,8 +53,8 @@ export class UnderlyingDeletedAtColumn extends UnderlyingColumn {
     return INTERNAL_COLUMN_DELETED_AT_NAME
   }
 
-  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
-    return tb.datetime(this.name).nullable()
+  build(tb: Knex.TableBuilder): void {
+    tb.datetime(this.name).nullable()
   }
 }
 
@@ -54,30 +63,30 @@ abstract class UnderlyingFieldColumn<F extends Field> implements IUnderlyingColu
   get name(): string {
     return this.field.id.value
   }
-  abstract build(tb: Knex.TableBuilder, knex: Knex): Knex.ColumnBuilder
+  abstract build(tb: Knex.TableBuilder, knex: Knex): void
 }
 
 export class UnderlyingStringColumn extends UnderlyingFieldColumn<StringField> {
-  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
-    return tb.string(this.name)
+  build(tb: Knex.TableBuilder): void {
+    tb.string(this.name)
   }
 }
 
 export class UnderlyingNumberColumn extends UnderlyingFieldColumn<NumberField> {
-  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
-    return tb.float(this.name)
+  build(tb: Knex.TableBuilder): void {
+    tb.float(this.name)
   }
 }
 
 export class UnderlyingBoolColumn extends UnderlyingFieldColumn<BoolField> {
-  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
-    return tb.boolean(this.name)
+  build(tb: Knex.TableBuilder): void {
+    tb.boolean(this.name)
   }
 }
 
 export class UnderlyingDateColumn extends UnderlyingFieldColumn<DateField> {
-  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
-    return tb.dateTime(this.name)
+  build(tb: Knex.TableBuilder): void {
+    tb.dateTime(this.name)
   }
 }
 
@@ -86,8 +95,8 @@ export class UnderlyingDateRangeFromColumn extends UnderlyingFieldColumn<DateRan
     return super.name + '_from'
   }
 
-  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
-    return tb.dateTime(this.name)
+  build(tb: Knex.TableBuilder): void {
+    tb.dateTime(this.name)
   }
 }
 
@@ -96,13 +105,19 @@ export class UnderlyingDateRangeToFromColumn extends UnderlyingFieldColumn<DateR
     return super.name + '_to'
   }
 
-  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
-    return tb.dateTime(this.name)
+  build(tb: Knex.TableBuilder): void {
+    tb.dateTime(this.name)
   }
 }
 
 export class UnderlyingSelectFromColumn extends UnderlyingFieldColumn<SelectField> {
-  build(tb: Knex.TableBuilder): Knex.ColumnBuilder {
-    return tb.string(this.name)
+  build(tb: Knex.TableBuilder): void {
+    tb.string(this.name)
+  }
+}
+
+export class UnderlyingReferenceColumn extends UnderlyingFieldColumn<ReferenceField> {
+  build(tb: Knex.TableBuilder): void {
+    tb.json(this.name)
   }
 }
