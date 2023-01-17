@@ -6,7 +6,7 @@ import {
   UnderlyingDateRangeFromColumn,
   UnderlyingDateRangeToFromColumn,
   UnderlyingNumberColumn,
-  UnderlyingReferenceFromColumn,
+  UnderlyingReferenceColumn,
   UnderlyingSelectFromColumn,
   UnderlyingStringColumn,
 } from './underlying-column'
@@ -27,7 +27,7 @@ export class UnderlyingColumnFactory {
       case 'select':
         return new UnderlyingSelectFromColumn(field)
       case 'reference':
-        return new UnderlyingReferenceFromColumn(field)
+        return new UnderlyingReferenceColumn(field)
     }
   }
 

@@ -116,7 +116,7 @@ export class UnderlyingSelectFromColumn extends UnderlyingFieldColumn<SelectFiel
   }
 }
 
-export class UnderlyingReferenceFromColumn extends UnderlyingFieldColumn<ReferenceField> {
+export class UnderlyingReferenceColumn extends UnderlyingFieldColumn<ReferenceField> {
   build(): void {
     // DO NOTHING
   }
