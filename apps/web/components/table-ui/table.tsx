@@ -10,10 +10,20 @@ import {
 } from '@dnd-kit/core'
 import { restrictToHorizontalAxis } from '@dnd-kit/modifiers'
 import { SortableContext, horizontalListSortingStrategy, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-import type { SelectFieldValue, BoolFieldValue } from '@egodb/core'
+import type { SelectFieldValue, BoolFieldValue, ReferenceFieldValue } from '@egodb/core'
 import type { DateFieldValue } from '@egodb/core'
 import type { DateRangeFieldValue } from '@egodb/core'
-import { ActionIcon, Checkbox, IconColumnInsertRight, openContextModal, Table, Tooltip, useListState } from '@egodb/ui'
+import {
+  ActionIcon,
+  Badge,
+  Checkbox,
+  Group,
+  IconColumnInsertRight,
+  openContextModal,
+  Table,
+  Tooltip,
+  useListState,
+} from '@egodb/ui'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { format } from 'date-fns/fp'
 import { useLayoutEffect, useMemo } from 'react'
@@ -91,6 +101,20 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
           if (f.type === 'date-range') {
             const date = (props.getValue() as DateRangeFieldValue)?.unpack()
             return date && `${dateFormat(date[0])} - ${dateFormat(date[1])}`
+          }
+          if (f.type === 'reference') {
+            const values = (props.getValue() as ReferenceFieldValue)?.unpack()
+            return (
+              values && (
+                <Group>
+                  {values.map((value) => (
+                    <Badge color="gray" size="xs" sx={{ textTransform: 'unset' }}>
+                      {value}
+                    </Badge>
+                  ))}
+                </Group>
+              )
+            )
           }
           return props.getValue()?.unpack()?.toString()
         },
