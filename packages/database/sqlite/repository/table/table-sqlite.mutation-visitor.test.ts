@@ -1,9 +1,11 @@
 import {
   createTestTable,
   IUnderlyingTableManager,
+  ReferenceField,
   Table as CoreTable,
   View as CoreView,
   Views,
+  WithNewField,
   WithTableName,
   WithTableSchema,
   WithTableViews,
@@ -12,6 +14,7 @@ import { EntityManager } from '@mikro-orm/better-sqlite'
 import { mock } from 'vitest-mock-extended'
 import { Field, Table } from '../../entity'
 import { View } from '../../entity/view'
+import { UnderlyingM2MTable } from '../../underlying-table/underlying-table'
 import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor'
 import { TableSqliteRepository } from './table-sqlite.repository'
 
@@ -86,5 +89,38 @@ describe('TableSqliteMutationVisitor', () => {
     expect(view!.createdAt).to.be.instanceOf(Date)
     expect(view!.updatedAt).to.be.instanceOf(Date)
     expect(view!.deletedAt).to.be.undefined
+  })
+
+  describe('newField', () => {
+    test('new reference feild', async () => {
+      const field = ReferenceField.create({ id: 'fldid', type: 'reference', name: 'reference', key: 'reference' })
+      mv.newField(new WithNewField(field))
+
+      await mv.commit()
+      await em.flush()
+
+      const m2m = new UnderlyingM2MTable(table.id.value, field)
+
+      const hasTable = await em.getKnex().schema.hasTable(m2m.name)
+      expect(hasTable).to.be.true
+
+      const columnInfo = await em.getKnex().table(m2m.name).columnInfo()
+      expect(columnInfo).toMatchInlineSnapshot(`
+        {
+          "id": {
+            "defaultValue": null,
+            "maxLength": "255",
+            "nullable": false,
+            "type": "varchar",
+          },
+          "ref_id": {
+            "defaultValue": null,
+            "maxLength": "255",
+            "nullable": false,
+            "type": "varchar",
+          },
+        }
+      `)
+    })
   })
 })
