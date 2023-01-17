@@ -28,7 +28,7 @@ import type {
   WithRecordUpdatedAt,
   WithRecordValues,
 } from '@egodb/core'
-import { DateRangeFieldValue } from '@egodb/core'
+import { DateRangeFieldValue, ReferenceFieldValue } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import type { Primitive } from 'type-fest'
 
@@ -51,15 +51,20 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
   }
   values(s: WithRecordValues): void {
     // TODO
-    const data = [...s.values.value.entries()].reduce<Record<string, Primitive | Date>>((prev, [fieldId, value]) => {
-      if (value instanceof DateRangeFieldValue) {
-        prev[fieldId + '_from'] = value.from.into()
-        prev[fieldId + '_to'] = value.to.into()
-      } else {
-        prev[fieldId] = value.unpack()
-      }
-      return prev
-    }, {} as Record<string, Primitive | Date>)
+    const data = [...s.values.value.entries()].reduce<Record<string, Primitive | Date | string[]>>(
+      (prev, [fieldId, value]) => {
+        if (value instanceof DateRangeFieldValue) {
+          prev[fieldId + '_from'] = value.from.into()
+          prev[fieldId + '_to'] = value.to.into()
+        } else if (value instanceof ReferenceFieldValue) {
+          prev[fieldId] = value.unpack() === null ? value.unpack() : JSON.stringify(value.unpack())
+        } else {
+          prev[fieldId] = value.unpack()
+        }
+        return prev
+      },
+      {} as Record<string, Primitive | Date | string>,
+    )
     this.qb.update(data)
   }
   stringEqual(s: StringEqual): void {

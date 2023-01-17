@@ -1,5 +1,5 @@
 import type { IRecordRepository, IRecordSpec, Record as CoreRecord, TableSchemaIdMap } from '@egodb/core'
-import { DateRangeFieldValue, WithRecordId, WithRecordTableId } from '@egodb/core'
+import { DateRangeFieldValue, ReferenceFieldValue, WithRecordId, WithRecordTableId } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { Option } from 'oxide.ts'
 import { Some } from 'oxide.ts'
@@ -16,17 +16,19 @@ export class RecordSqliteRepository implements IRecordRepository {
   async insert(record: CoreRecord): Promise<void> {
     const knex = this.em.getKnex()
     // TODO
-    const data = [...record.values.value.entries()].reduce<Record<string, Primitive | Date>>(
+    const data = [...record.values.value.entries()].reduce<Record<string, Primitive | Date | string[]>>(
       (prev, [fieldId, value]) => {
         if (value instanceof DateRangeFieldValue) {
           prev[fieldId + '_from'] = value.from.into()
           prev[fieldId + '_to'] = value.to.into()
+        } else if (value instanceof ReferenceFieldValue) {
+          prev[fieldId] = value.unpack() === null ? value.unpack() : JSON.stringify(value.unpack())
         } else {
           prev[fieldId] = value.unpack()
         }
         return prev
       },
-      {} as Record<string, Primitive | Date>,
+      {} as Record<string, Primitive | Date | string[]>,
     )
     data['id'] = record.id.value
     await this.em.execute(knex.insert(data).into(record.tableId.value))

@@ -13,7 +13,7 @@ export type ICreateReferenceFieldInput = z.infer<typeof createReferenceFieldSche
 
 export const referenceFieldQuerySchema = baseFieldQuerySchema.merge(referenceTypeObjectSchema)
 
-export const referenceFieldValue = recordIdSchema.array()
+export const referenceFieldValue = recordIdSchema.array().nullable()
 export type IReferenceFieldValue = z.infer<typeof referenceFieldValue>
 
 export const createReferenceFieldValue = referenceFieldValue

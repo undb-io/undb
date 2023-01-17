@@ -59,6 +59,7 @@ export const Th: React.FC<IProps> = memo(({ header, tableId, field, column }) =>
   })
   return (
     <th
+      data-field-id={field.id.value}
       key={header.id}
       style={{
         position: 'relative',
