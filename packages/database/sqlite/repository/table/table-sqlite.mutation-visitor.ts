@@ -1,5 +1,6 @@
 import type {
   ITableSpecVisitor,
+  ReferenceField,
   WithCalendarField,
   WithDisplayType,
   WithFieldOption,
@@ -43,6 +44,17 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
     return this.em.getReference(Field, id)
   }
 
+  private handlerNewReferenceField(field: ReferenceField) {
+    this.jobs.push(async () => {
+      const refenrenceTableName = `${field.id.value}_${this.tableId}`
+      this.em.getKnex().schema.createTable(refenrenceTableName, (tb) => {
+        tb.string('id').notNullable()
+        tb.string('ref_id').notNullable()
+        tb.primary(['id', 'ref_id'], { constraintName: `pk_${refenrenceTableName}` })
+      })
+    })
+  }
+
   idEqual(): void {
     throw new Error('[TableSqliteMutationVisitor.idEqual] Method not implemented.')
   }
@@ -53,8 +65,12 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   }
   schemaEqual(s: WithTableSchema): void {
     const table = this.table
-    wrap(table).assign({ fields: s.schema.fields.map((field) => FieldFactory.create(table, field)) })
+    wrap(table).assign({ fields: FieldFactory.createMany(table, s.schema.fields) })
     this.em.persist(table)
+
+    for (const referenceField of s.schema.referenceFields) {
+      this.handlerNewReferenceField(referenceField)
+    }
   }
   viewsEqual(s: WithTableViews): void {
     const table = this.table
@@ -75,11 +91,18 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   newField(s: WithNewField): void {
     const table = this.table
     const f = s.field
-    const field = FieldFactory.create(table, f)
-    if (field instanceof SelectField && f.type === 'select') {
-      wrap(field).assign({ options: f.options.options.map((option) => new Option(field, option)) })
+
+    if (f.type === 'reference') {
+      this.handlerNewReferenceField(f)
     }
-    this.em.persist(field)
+
+    const field = FieldFactory.create(table, f)
+    if (field) {
+      if (field instanceof SelectField && f.type === 'select') {
+        wrap(field).assign({ options: f.options.options.map((option) => new Option(field, option)) })
+      }
+      this.em.persist(field)
+    }
   }
   fieldsOrder(s: WithViewFieldsOrder): void {
     const view = this.getView(s.view.id.value)

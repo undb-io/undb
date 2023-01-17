@@ -31,7 +31,7 @@ import type {
 import { INTERNAL_COLUMN_CREATED_AT_NAME, INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import { endOfDay, startOfDay } from 'date-fns'
-import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../entity/underlying-table/constants'
+import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants'
 
 export class RecordSqliteQueryVisitor implements IRecordVisitor {
   public tableId!: string

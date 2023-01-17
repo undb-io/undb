@@ -1,9 +1,14 @@
-import type { Field } from '@egodb/core'
+import type { Field as CoreField } from '@egodb/core'
+import type { Field } from './field'
 import { BoolField, DateField, DateRangeField, NumberField, SelectField, StringField } from './field'
 import type { Table } from './table'
 
 export class FieldFactory {
-  static create(table: Table, field: Field) {
+  static createMany(table: Table, fields: CoreField[]): Field[] {
+    return fields.map((field) => this.create(table, field)).filter(Boolean) as Field[]
+  }
+
+  static create(table: Table, field: CoreField) {
     switch (field.type) {
       case 'string':
         return new StringField(table, field)

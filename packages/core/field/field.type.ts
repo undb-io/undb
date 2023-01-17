@@ -1,5 +1,6 @@
 import type { Option } from 'oxide.ts'
 import * as z from 'zod'
+import type { IReferenceFilterValue } from '../filter/reference.filter'
 import type { Options } from '../option/options'
 import type { BoolField } from './bool-field'
 import type { BoolFieldValue } from './bool-field-value'
@@ -48,6 +49,7 @@ import {
   numberTypeSchema,
 } from './number-field.type'
 import type { ReferenceField } from './reference-field'
+import type { ReferenceFieldValue } from './reference-field-value'
 import {
   createReferenceFieldSchema,
   createReferenceFieldValue,
@@ -185,6 +187,7 @@ export type FieldValue =
   | SelectFieldValue
   | BoolFieldValue
   | DateRangeFieldValue
+  | ReferenceFieldValue
 export type FieldValues = FieldValue[]
 
 export type UnpackedFieldValue =
@@ -194,6 +197,7 @@ export type UnpackedFieldValue =
   | ISelectFieldValue
   | IBoolFieldValue
   | IDateRangeFieldValue
+  | IReferenceFilterValue
 
 export const INTERNAL_COLUMN_ID_NAME = 'id'
 export const INTERNAL_COLUMN_CREATED_AT_NAME = 'created_at'

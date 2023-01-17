@@ -2,6 +2,7 @@ import type { IReferenceFilterOperator } from '../filter/operators'
 import type { IReferenceFilter } from '../filter/reference.filter'
 import { BaseField } from './field.base'
 import type { IReferenceField } from './field.type'
+import { ReferenceFieldValue } from './reference-field-value'
 import type { ICreateReferenceFieldInput, ICreateReferenceFieldValue, ReferenceFieldType } from './reference-field.type'
 import { FieldId, FieldKey, FieldName, FieldValueConstraints } from './value-objects'
 
@@ -28,8 +29,8 @@ export class ReferenceField extends BaseField<IReferenceField> {
     })
   }
 
-  createValue(value: ICreateReferenceFieldValue): null {
-    return null
+  createValue(value: ICreateReferenceFieldValue): ReferenceFieldValue {
+    return new ReferenceFieldValue(value)
   }
 
   createFilter(operator: IReferenceFilterOperator, value: null): IReferenceFilter {

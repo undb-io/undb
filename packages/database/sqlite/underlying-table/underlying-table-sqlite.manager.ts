@@ -1,7 +1,7 @@
 import type { ITableSpec, IUnderlyingTableManager, Table } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
-import { UnderlyingTableBuilder } from '../entity/underlying-table/underlying-table.builder'
 import { UnderlyingTableSqliteManagerVisitor } from './underlying-table-sqlite.manager-visitor'
+import { UnderlyingTableBuilder } from './underlying-table.builder'
 
 export class UnderlyingTableSqliteManager implements IUnderlyingTableManager {
   constructor(protected readonly em: EntityManager) {}
