@@ -159,7 +159,7 @@ export class Table {
 
   public setFieldWidth(input: ISetFieldWidthSchema): TableCompositeSpecificaiton {
     const view = this.mustGetView(input.viewKey)
-    const spec = view.setFieldWidth(input.fieldKey, input.width)
+    const spec = view.setFieldWidth(input.fieldId, input.width)
     spec.mutate(this)
     return spec
   }
@@ -173,7 +173,7 @@ export class Table {
 
   public setFieldVisibility(input: ISetFieldVisibilitySchema): TableCompositeSpecificaiton {
     const view = this.mustGetView(input.viewKey)
-    const spec = view.setFieldVisibility(input.fieldKey, input.hidden)
+    const spec = view.setFieldVisibility(input.fieldId, input.hidden)
     spec.mutate(this)
     return spec
   }
@@ -205,7 +205,7 @@ export class Table {
   }
 
   public reorderOption(input: IReorderOptionsSchema): TableCompositeSpecificaiton {
-    const field = this.schema.getFieldByIdOfType(input.fieldKey, SelectField).unwrap()
+    const field = this.schema.getFieldByIdOfType(input.fieldId, SelectField).unwrap()
 
     const spec = field.reorder(input.from, input.to)
     spec.mutate(this)
@@ -213,8 +213,8 @@ export class Table {
     return spec
   }
 
-  public createOption(fieldKey: string, input: ICreateOptionSchema): TableCompositeSpecificaiton {
-    const field = this.schema.getFieldByIdOfType(fieldKey, SelectField).unwrap()
+  public createOption(fieldId: string, input: ICreateOptionSchema): TableCompositeSpecificaiton {
+    const field = this.schema.getFieldByIdOfType(fieldId, SelectField).unwrap()
 
     const spec = field.createOption(input)
     spec.mutate(this)
@@ -222,8 +222,8 @@ export class Table {
     return spec
   }
 
-  public updateOption(fieldKey: string, optionKey: string, input: IUpdateOptionSchema): TableCompositeSpecificaiton {
-    const field = this.schema.getFieldByIdOfType(fieldKey, SelectField).unwrap()
+  public updateOption(fieldId: string, optionKey: string, input: IUpdateOptionSchema): TableCompositeSpecificaiton {
+    const field = this.schema.getFieldByIdOfType(fieldId, SelectField).unwrap()
 
     const spec = field.updateOption(optionKey, input)
     spec.mutate(this)
@@ -231,8 +231,8 @@ export class Table {
     return spec
   }
 
-  public removeOption(fieldKey: string, id: string): TableCompositeSpecificaiton {
-    const field = this.schema.getFieldByIdOfType(fieldKey, SelectField).unwrap()
+  public removeOption(fieldId: string, id: string): TableCompositeSpecificaiton {
+    const field = this.schema.getFieldByIdOfType(fieldId, SelectField).unwrap()
 
     const spec = field.removeOption(id)
     spec.mutate(this)

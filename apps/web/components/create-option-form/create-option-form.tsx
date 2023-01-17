@@ -31,7 +31,7 @@ export const CreateOptionForm: React.FC<ICreateOptionFormProps> = ({ table, fiel
     values.key = OptionKey.create().value
     createOption.mutate({
       tableId: table.id.value,
-      fieldKey: field.id.value,
+      fieldId: field.id.value,
       option: values,
     })
   })

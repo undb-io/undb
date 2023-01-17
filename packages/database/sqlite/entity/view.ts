@@ -24,20 +24,20 @@ import { Table } from './table'
 @Embeddable()
 export class Kanban {
   @Property({ nullable: true })
-  fieldKey?: string
+  fieldId?: string
 
   constructor(kanban: CoreKanban) {
-    this.fieldKey = kanban.fieldKey?.value
+    this.fieldId = kanban.fieldId?.value
   }
 }
 
 @Embeddable()
 export class Calendar {
   @Property({ nullable: true })
-  fieldKey?: string
+  fieldId?: string
 
   constructor(calendar: CoreCalendar) {
-    this.fieldKey = calendar.fieldKey?.value
+    this.fieldId = calendar.fieldId?.value
   }
 }
 

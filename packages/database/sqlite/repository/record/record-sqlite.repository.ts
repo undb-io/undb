@@ -49,16 +49,18 @@ export class RecordSqliteRepository implements IRecordRepository {
     return Some(record)
   }
 
-  async updateOneById(tableId: string, id: string, spec: IRecordSpec): Promise<void> {
-    const qb = this.em.getKnex().queryBuilder()
+  async updateOneById(tableId: string, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void> {
+    await this.em.transactional(async (em) => {
+      const qb = em.getKnex().queryBuilder()
 
-    const qv = new RecordSqliteQueryVisitor(qb)
-    WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id)).accept(qv)
+      const qv = new RecordSqliteQueryVisitor(qb)
+      WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id)).accept(qv)
 
-    const mv = new RecordSqliteMutationVisitor(qb)
-    spec.accept(mv)
+      const mv = new RecordSqliteMutationVisitor(tableId, id, schema, em, qb)
+      spec.accept(mv)
 
-    await this.em.execute(qb)
+      await mv.commit()
+    })
   }
 
   async deleteOneById(tableId: string, id: string): Promise<void> {

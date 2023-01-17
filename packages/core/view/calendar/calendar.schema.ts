@@ -4,7 +4,7 @@ import { isDateRangeField } from '../../field/date-range-field.type'
 import { fieldKeySchema } from '../../field/value-objects/field-key.schema'
 
 export const calendarSchema = z.object({
-  fieldKey: fieldKeySchema.optional(),
+  fieldId: fieldKeySchema.optional(),
 })
 
 export const calendarField = z.union([isDateField, isDateRangeField])

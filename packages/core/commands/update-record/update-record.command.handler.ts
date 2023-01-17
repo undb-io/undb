@@ -11,6 +11,6 @@ export class UpdateRecordCommandHandler implements ICommandHandler<UpdateRecordC
     const record = (await this.recordRepo.findOneById(table.id.value, command.id, table.schema.toIdMap())).unwrap()
 
     const spec = record.updateRecord(table.schema, command.value)
-    await this.recordRepo.updateOneById(table.id.value, command.id, spec)
+    await this.recordRepo.updateOneById(table.id.value, command.id, table.schema.toIdMap(), spec)
   }
 }

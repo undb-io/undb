@@ -15,7 +15,7 @@ interface IProps extends ITableBaseProps {
 export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
   const kanbanFields = table.schema.kanbanFields
   const view = table.mustGetView()
-  const initialKanbanFieldId = view.kanban.into()?.fieldKey?.value
+  const initialKanbanFieldId = view.kanban.into()?.fieldId?.value
   const hasKanbanFields = kanbanFields.length > 0
 
   const utils = trpc.useContext()

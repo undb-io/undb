@@ -43,7 +43,7 @@ export const createSelectFieldValue_internal = z
 export type ICreateSelectFieldValue_internal = z.infer<typeof createSelectFieldValue_internal>
 
 export const reorderOptionsSchema = z.object({
-  fieldKey: fieldKeySchema,
+  fieldId: fieldKeySchema,
   from: optionIdSchema,
   to: optionIdSchema,
 })

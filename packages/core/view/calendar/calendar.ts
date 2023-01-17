@@ -9,21 +9,21 @@ import type { ICalendar } from './calendar.type'
 export class Calendar extends ValueObject<ICalendar> {
   static from(input: ICalendarSchema) {
     return new this({
-      fieldKey: input.fieldKey ? FieldKey.from(input.fieldKey) : undefined,
+      fieldId: input.fieldId ? FieldKey.from(input.fieldId) : undefined,
     })
   }
 
-  public get fieldKey() {
-    return this.props.fieldKey
+  public get fieldId() {
+    return this.props.fieldId
   }
 
-  public set fieldKey(fieldKey: FieldKey | undefined) {
-    this.props.fieldKey = fieldKey
+  public set fieldId(fieldId: FieldKey | undefined) {
+    this.props.fieldId = fieldId
   }
 
   public removeField(field: Field): Option<Calendar> {
-    if (this.fieldKey?.equals(field.key)) {
-      const kanban = new Calendar({ ...this, fieldKey: undefined })
+    if (this.fieldId?.equals(field.key)) {
+      const kanban = new Calendar({ ...this, fieldId: undefined })
       return Some(kanban)
     }
 

@@ -15,6 +15,7 @@ import type {
   NumberGreaterThanOrEqual,
   NumberLessThan,
   NumberLessThanOrEqual,
+  ReferenceEqual,
   SelectEqual,
   SelectIn,
   StringContain,
@@ -36,9 +37,8 @@ import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constant
 export class RecordSqliteQueryVisitor implements IRecordVisitor {
   public tableId!: string
   constructor(private qb: Knex.QueryBuilder) {
-    this.qb = this.qb.where({ [INTERNAL_COLUMN_DELETED_AT_NAME]: null })
+    this.qb = this.qb.whereNull(INTERNAL_COLUMN_DELETED_AT_NAME)
   }
-
   get query() {
     return this.qb.toQuery()
   }
@@ -60,103 +60,107 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     throw new Error('Method not implemented.')
   }
   stringEqual(s: StringEqual): void {
-    this.qb.where({ [s.fieldKey]: s.value })
+    this.qb.where({ [s.fieldId]: s.value })
   }
   stringContain(s: StringContain): void {
     if (s.value === null) {
-      this.qb.whereNull(s.fieldKey)
+      this.qb.whereNull(s.fieldId)
     } else {
-      this.qb.whereRaw(`${s.fieldKey} like '%??%'`, [s.value])
+      this.qb.whereRaw(`${s.fieldId} like '%??%'`, [s.value])
     }
   }
   stringStartsWith(s: StringStartsWith): void {
     if (s.value === null) {
-      this.qb.whereNull(s.fieldKey)
+      this.qb.whereNull(s.fieldId)
     } else {
-      this.qb.whereRaw(`${s.fieldKey} like '??%'`, [s.value])
+      this.qb.whereRaw(`${s.fieldId} like '??%'`, [s.value])
     }
   }
   stringEndsWith(s: StringEndsWith): void {
     if (s.value === null) {
-      this.qb.whereNull(s.fieldKey)
+      this.qb.whereNull(s.fieldId)
     } else {
-      this.qb.whereRaw(`${s.fieldKey} like '%??'`, [s.value])
+      this.qb.whereRaw(`${s.fieldId} like '%??'`, [s.value])
     }
   }
   stringRegex(s: StringRegex): void {
     throw new Error('Method not implemented.')
   }
   numberEqual(s: NumberEqual): void {
-    this.qb.where({ [s.fieldKey]: s.value })
+    this.qb.where({ [s.fieldId]: s.value })
   }
   numberGreaterThan(s: NumberGreaterThan): void {
-    this.qb.where(s.fieldKey, '>', s.value)
+    this.qb.where(s.fieldId, '>', s.value)
   }
   numberLessThan(s: NumberLessThan): void {
-    this.qb.where(s.fieldKey, '<', s.value)
+    this.qb.where(s.fieldId, '<', s.value)
   }
   numberGreaterThanOrEqual(s: NumberGreaterThanOrEqual): void {
-    this.qb.where(s.fieldKey, '>=', s.value)
+    this.qb.where(s.fieldId, '>=', s.value)
   }
   numberLessThanOrEqual(s: NumberLessThanOrEqual): void {
-    this.qb.where(s.fieldKey, '<=', s.value)
+    this.qb.where(s.fieldId, '<=', s.value)
   }
   dateEqual(s: DateEqual): void {
-    this.qb.where({ [s.fieldKey]: s.value })
+    this.qb.where({ [s.fieldId]: s.value })
   }
   dateGreaterThan(s: DateGreaterThan): void {
     if (s.value === null) {
-      this.qb.whereNull(s.fieldKey)
+      this.qb.whereNull(s.fieldId)
     } else {
-      this.qb.where(s.fieldKey, '>', s.value)
+      this.qb.where(s.fieldId, '>', s.value)
     }
   }
   dateLessThan(s: DateLessThan): void {
     if (s.value === null) {
-      this.qb.whereNull(s.fieldKey)
+      this.qb.whereNull(s.fieldId)
     } else {
-      this.qb.where(s.fieldKey, '<', s.value)
+      this.qb.where(s.fieldId, '<', s.value)
     }
   }
   dateGreaterThanOrEqual(s: DateGreaterThanOrEqual): void {
     if (s.value === null) {
-      this.qb.whereNull(s.fieldKey)
+      this.qb.whereNull(s.fieldId)
     } else {
-      this.qb.where(s.fieldKey, '>=', s.value)
+      this.qb.where(s.fieldId, '>=', s.value)
     }
   }
   dateLessThanOrEqual(s: DateLessThanOrEqual): void {
     if (s.value === null) {
-      this.qb.whereNull(s.fieldKey)
+      this.qb.whereNull(s.fieldId)
     } else {
-      this.qb.where(s.fieldKey, '<=', s.value)
+      this.qb.where(s.fieldId, '<=', s.value)
     }
   }
   dateIsToday(s: DateIsToday): void {
-    this.qb.whereBetween(s.fieldKey, [startOfDay(new Date()), endOfDay(new Date())])
+    this.qb.whereBetween(s.fieldId, [startOfDay(new Date()), endOfDay(new Date())])
   }
   null(s: NullSpecification): void {
-    this.qb.whereNull(s.fieldKey)
+    this.qb.whereNull(s.fieldId)
   }
   dateRangeEqual(s: DateRangeEqual): void {
     if (s.value) {
-      this.qb.whereBetween(s.fieldKey, s.value)
+      this.qb.whereBetween(s.fieldId, s.value)
     } else {
-      this.qb.whereNull(s.fieldKey)
+      this.qb.whereNull(s.fieldId)
     }
   }
   selectEqual(s: SelectEqual): void {
-    this.qb.where(s.fieldKey, s.value)
+    this.qb.where(s.fieldId, s.value)
   }
   selectIn(s: SelectIn): void {
     this.qb.whereIn(s.fielId, s.value)
   }
   boolIsTrue(s: BoolIsTrue): void {
-    this.qb.where(s.fieldKey, true)
+    this.qb.where(s.fieldId, true)
   }
   boolIsFalse(s: BoolIsFalse): void {
-    this.qb.where(s.fieldKey, false)
+    this.qb.where(s.fieldId, false)
   }
+  referenceEqual(s: ReferenceEqual): void {
+    this.qb.where(s.fieldId, s.value ? s.value : JSON.stringify(s.value))
+  }
+
   not(): this {
     this.qb = this.qb.not
     return this

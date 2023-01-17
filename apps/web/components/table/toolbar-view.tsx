@@ -19,10 +19,10 @@ import type { ISelectKanbanFieldProps } from '../kanban-ui/select-kanban-field.p
 import { DisplayTypeIcon } from '../view/display-type-icon'
 import type { ITableBaseProps } from './table-base-props'
 
-const StackedBy: React.FC<{ fieldKey?: FieldKey; table: Table }> = ({ table, fieldKey }) => {
-  if (!fieldKey) return null
+const StackedBy: React.FC<{ fieldId?: FieldKey; table: Table }> = ({ table, fieldId }) => {
+  if (!fieldId) return null
 
-  const field = table.schema.getFieldById(fieldKey.value).into()
+  const field = table.schema.getFieldById(fieldId.value).into()
   if (!field) return null
 
   return (
@@ -50,15 +50,15 @@ const StackedBy: React.FC<{ fieldKey?: FieldKey; table: Table }> = ({ table, fie
 const KanbanControl: React.FC<{ table: Table; kanban?: Kanban }> = ({ table, kanban }) => {
   return (
     <>
-      <StackedBy fieldKey={kanban?.fieldKey} table={table} />
+      <StackedBy fieldId={kanban?.fieldId} table={table} />
     </>
   )
 }
 
-const UsingCalendarField: React.FC<{ fieldKey?: FieldKey; table: Table }> = ({ table, fieldKey }) => {
-  if (!fieldKey) return null
+const UsingCalendarField: React.FC<{ fieldId?: FieldKey; table: Table }> = ({ table, fieldId }) => {
+  if (!fieldId) return null
 
-  const field = table.schema.getFieldById(fieldKey.value).into()
+  const field = table.schema.getFieldById(fieldId.value).into()
   if (!field) return null
 
   return (
@@ -84,7 +84,7 @@ const UsingCalendarField: React.FC<{ fieldKey?: FieldKey; table: Table }> = ({ t
 }
 
 const CalendarControl: React.FC<{ table: Table; calendar?: ICalendar }> = ({ table, calendar }) => {
-  return <UsingCalendarField fieldKey={calendar?.fieldKey} table={table} />
+  return <UsingCalendarField fieldId={calendar?.fieldId} table={table} />
 }
 
 export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {

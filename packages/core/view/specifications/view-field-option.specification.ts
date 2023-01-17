@@ -7,7 +7,7 @@ import type { IViewFieldOption, ViewFieldOptions } from '../view-field-options'
 import { BaseViewSpecification } from './base-view-specification'
 
 abstract class BaseViewFieldOptionSpec extends BaseViewSpecification {
-  constructor(public readonly fieldKey: string, public readonly view: View) {
+  constructor(public readonly fieldId: string, public readonly view: View) {
     super(view)
   }
 
@@ -16,11 +16,11 @@ abstract class BaseViewFieldOptionSpec extends BaseViewSpecification {
   }
 
   protected getFieldOption(t: Table): IViewFieldOption {
-    return this.getView(t).getFieldOption(this.fieldKey)
+    return this.getView(t).getFieldOption(this.fieldId)
   }
 
   protected getOrCreateFieldOption(t: Table): IViewFieldOption {
-    return this.getView(t).getOrCreateFieldOption(this.fieldKey)
+    return this.getView(t).getOrCreateFieldOption(this.fieldId)
   }
 }
 
@@ -45,8 +45,8 @@ export class WithFieldOption extends BaseViewSpecification {
 }
 
 export class WithFieldWidth extends BaseViewFieldOptionSpec {
-  constructor(fieldKey: string, view: View, public readonly width: number) {
-    super(fieldKey, view)
+  constructor(fieldId: string, view: View, public readonly width: number) {
+    super(fieldId, view)
   }
 
   isSatisfiedBy(t: Table): boolean {
@@ -65,11 +65,11 @@ export class WithFieldWidth extends BaseViewFieldOptionSpec {
 }
 
 export class WithFieldVisibility extends BaseViewFieldOptionSpec {
-  constructor(fieldKey: string, view: View, public readonly hidden: boolean) {
-    super(fieldKey, view)
+  constructor(fieldId: string, view: View, public readonly hidden: boolean) {
+    super(fieldId, view)
   }
   isSatisfiedBy(t: Table): boolean {
-    return this.getView(t).getFieldHidden(this.fieldKey) === this.hidden
+    return this.getView(t).getFieldHidden(this.fieldId) === this.hidden
   }
   mutate(t: Table): Result<Table, string> {
     this.getOrCreateFieldOption(t).hidden = this.hidden

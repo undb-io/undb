@@ -5,7 +5,7 @@ import { tableIdSchema } from '../../value-objects'
 
 export const deleteOptionCommandInput = z.object({
   tableId: tableIdSchema,
-  fieldKey: fieldKeySchema,
+  fieldId: fieldKeySchema,
   id: optionIdSchema,
 })
 export type IDeleteOptionInput = z.infer<typeof deleteOptionCommandInput>

@@ -38,24 +38,24 @@ export class ViewFieldOptions extends ValueObject<Map<string, IViewFieldOption>>
     return [...this.value.values()].filter((v) => v.hidden).length
   }
 
-  public getOption(fieldKey: string): IViewFieldOption {
-    return this.props.get(fieldKey) ?? ViewFieldOptions.DEFAULT_OPTION
+  public getOption(fieldId: string): IViewFieldOption {
+    return this.props.get(fieldId) ?? ViewFieldOptions.DEFAULT_OPTION
   }
 
-  public getOrCreateOption(fieldKey: string): IViewFieldOption {
-    const option = this.props.get(fieldKey)
+  public getOrCreateOption(fieldId: string): IViewFieldOption {
+    const option = this.props.get(fieldId)
     if (option) return option
 
-    this.props.set(fieldKey, ViewFieldOptions.DEFAULT_OPTION)
-    return this.getOption(fieldKey)
+    this.props.set(fieldId, ViewFieldOptions.DEFAULT_OPTION)
+    return this.getOption(fieldId)
   }
 
-  public getHidden(fieldKey: string): boolean {
-    return this.getOption(fieldKey).hidden ?? false
+  public getHidden(fieldId: string): boolean {
+    return this.getOption(fieldId).hidden ?? false
   }
 
-  public getWidth(fieldKey: string): number {
-    return this.getOption(fieldKey).width ?? DEFAULT_WIDTH
+  public getWidth(fieldId: string): number {
+    return this.getOption(fieldId).width ?? DEFAULT_WIDTH
   }
 
   public toObject(): Option<Record<string, IViewFieldOption>> {

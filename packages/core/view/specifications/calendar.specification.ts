@@ -7,16 +7,16 @@ import type { View } from '../view'
 import { BaseViewSpecification } from './base-view-specification'
 
 export class WithCalendarField extends BaseViewSpecification {
-  constructor(public readonly view: View, public readonly fieldKey: FieldKey | null) {
+  constructor(public readonly view: View, public readonly fieldId: FieldKey | null) {
     super(view)
   }
 
   isSatisfiedBy(): boolean {
-    return this.view.calendarFieldId.mapOr(false, (fieldKey) => !!this.fieldKey && fieldKey.equals(this.fieldKey))
+    return this.view.calendarFieldId.mapOr(false, (fieldId) => !!this.fieldId && fieldId.equals(this.fieldId))
   }
 
   mutate(t: Table): Result<Table, string> {
-    this.view.getOrCreateCalendar().fieldKey = this.fieldKey ?? undefined
+    this.view.getOrCreateCalendar().fieldId = this.fieldId ?? undefined
     return Ok(t)
   }
 

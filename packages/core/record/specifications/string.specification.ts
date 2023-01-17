@@ -6,13 +6,13 @@ import type { Record } from '../record'
 import type { IRecordVisitor } from './interface'
 
 abstract class BaseStringSpecification extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(readonly fieldKey: string, readonly value: string | null) {
+  constructor(readonly fieldId: string, readonly value: string | null) {
     super()
   }
 
   mutate(r: Record): Result<Record, string> {
     const stringValue = new StringFieldValue(this.value)
-    r.values.setValue(this.fieldKey, stringValue)
+    r.values.setValue(this.fieldId, stringValue)
     return Ok(r)
   }
 }
@@ -24,7 +24,7 @@ export class StringEqual extends BaseStringSpecification {
    * @returns bool
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getStringValue(this.fieldKey).mapOr(false, (value) => value === this.value)
+    return r.values.getStringValue(this.fieldId).mapOr(false, (value) => value === this.value)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -41,7 +41,7 @@ export class StringContain extends BaseStringSpecification {
    */
   isSatisfiedBy(r: Record): boolean {
     return r.values
-      .getStringValue(this.fieldKey)
+      .getStringValue(this.fieldId)
       .mapOr(false, (value) => this.value !== null && value.includes(this.value))
   }
 
@@ -59,7 +59,7 @@ export class StringStartsWith extends BaseStringSpecification {
    */
   isSatisfiedBy(r: Record): boolean {
     return r.values
-      .getStringValue(this.fieldKey)
+      .getStringValue(this.fieldId)
       .mapOr(false, (value) => this.value !== null && value.startsWith(this.value))
   }
 
@@ -77,7 +77,7 @@ export class StringEndsWith extends BaseStringSpecification {
    */
   isSatisfiedBy(r: Record): boolean {
     return r.values
-      .getStringValue(this.fieldKey)
+      .getStringValue(this.fieldId)
       .mapOr(false, (value) => this.value !== null && value.endsWith(this.value))
   }
 
@@ -95,7 +95,7 @@ export class StringRegex extends BaseStringSpecification {
    */
   isSatisfiedBy(r: Record): boolean {
     return r.values
-      .getStringValue(this.fieldKey)
+      .getStringValue(this.fieldId)
       .mapOr(false, (value) => this.value !== null && new RegExp(this.value).test(value))
   }
 

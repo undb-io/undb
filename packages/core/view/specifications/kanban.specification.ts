@@ -7,16 +7,16 @@ import type { View } from '../view'
 import { BaseViewSpecification } from './base-view-specification'
 
 export class WithKanbanField extends BaseViewSpecification {
-  constructor(public readonly view: View, public readonly fieldKey: FieldKey | null) {
+  constructor(public readonly view: View, public readonly fieldId: FieldKey | null) {
     super(view)
   }
 
   isSatisfiedBy(): boolean {
-    return this.view.kanbanFieldId.mapOr(false, (fieldKey) => !!this.fieldKey && fieldKey.equals(this.fieldKey))
+    return this.view.kanbanFieldId.mapOr(false, (fieldId) => !!this.fieldId && fieldId.equals(this.fieldId))
   }
 
   mutate(t: Table): Result<Table, string> {
-    this.view.getOrCreateKanban().fieldKey = this.fieldKey ?? undefined
+    this.view.getOrCreateKanban().fieldId = this.fieldId ?? undefined
     return Ok(t)
   }
 
