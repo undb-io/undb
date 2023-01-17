@@ -5,6 +5,7 @@ import {
   IconLetterT,
   IconListCheck,
   IconQuestionMark,
+  IconRelationManyToMany,
   IconSquareCheck,
 } from '@egodb/ui'
 import React from 'react'
@@ -28,6 +29,8 @@ export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16, color }) => {
       return <IconSquareCheck size={size} color={color} />
     case 'select':
       return <IconListCheck size={size} color={color} />
+    case 'reference':
+      return <IconRelationManyToMany size={size} color={color} />
     default:
       return <IconQuestionMark size={size} color={color} />
   }

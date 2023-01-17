@@ -7,6 +7,7 @@ export const FIELD_SELECT_ITEMS: SelectItem[] = [
   { value: 'date-range', label: 'DateRange' },
   { value: 'bool', label: 'Bool' },
   { value: 'select', label: 'Select' },
+  { value: 'reference', label: 'Reference' },
 ]
 
 export const ACTIONS_FIELD = 'actions'

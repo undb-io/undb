@@ -45,13 +45,21 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   }
 
   private handlerNewReferenceField(field: ReferenceField) {
+    const id = 'id'
+    const refId = 'ref_id'
+
     this.jobs.push(async () => {
       const refenrenceTableName = `${field.id.value}_${this.tableId}`
-      this.em.getKnex().schema.createTable(refenrenceTableName, (tb) => {
-        tb.string('id').notNullable()
-        tb.string('ref_id').notNullable()
-        tb.primary(['id', 'ref_id'], { constraintName: `pk_${refenrenceTableName}` })
-      })
+      const query = this.em
+        .getKnex()
+        .schema.createTable(refenrenceTableName, (tb) => {
+          tb.string(id).notNullable().references('id').inTable(this.tableId)
+          tb.string(refId).notNullable().references('id').inTable(this.tableId)
+          tb.primary([id, refId])
+        })
+        .toQuery()
+
+      await this.em.execute(query)
     })
   }
 

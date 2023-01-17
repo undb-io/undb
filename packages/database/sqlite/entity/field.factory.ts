@@ -1,6 +1,6 @@
 import type { Field as CoreField } from '@egodb/core'
 import type { Field } from './field'
-import { BoolField, DateField, DateRangeField, NumberField, SelectField, StringField } from './field'
+import { BoolField, DateField, DateRangeField, NumberField, ReferenceField, SelectField, StringField } from './field'
 import type { Table } from './table'
 
 export class FieldFactory {
@@ -8,7 +8,7 @@ export class FieldFactory {
     return fields.map((field) => this.create(table, field)).filter(Boolean) as Field[]
   }
 
-  static create(table: Table, field: CoreField) {
+  static create(table: Table, field: CoreField): Field {
     switch (field.type) {
       case 'string':
         return new StringField(table, field)
@@ -22,6 +22,8 @@ export class FieldFactory {
         return new BoolField(table, field)
       case 'select':
         return new SelectField(table, field)
+      case 'reference':
+        return new ReferenceField(table, field)
     }
   }
 }
