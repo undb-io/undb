@@ -1,5 +1,5 @@
 import type { ReferenceField } from '@egodb/core'
-import type { IUnderlyingTable } from '../types/underlying-table'
+import type { IUnderlyingTable } from '../interfaces/underlying-table'
 
 export class UnderlyingM2MTable implements IUnderlyingTable {
   constructor(private readonly tableName: string, private readonly field: ReferenceField) {}

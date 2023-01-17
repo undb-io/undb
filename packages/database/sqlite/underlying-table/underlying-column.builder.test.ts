@@ -1,4 +1,12 @@
-import { BoolField, DateField, DateRangeField, NumberField, SelectField, StringField } from '@egodb/core'
+import {
+  BoolField,
+  DateField,
+  DateRangeField,
+  NumberField,
+  ReferenceField,
+  SelectField,
+  StringField,
+} from '@egodb/core'
 import { Knex } from '@mikro-orm/better-sqlite'
 import { UnderlyingColumnBuilder } from './underlying-column.builder'
 
@@ -114,5 +122,17 @@ describe('UnderlyingColumnBuilder', () => {
     })
 
     expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`fldid` varchar(255))"')
+  })
+
+  test('should create reference column', () => {
+    const sb = knex.schema
+    sb.createTable(tableName, (tb) => {
+      const builder = new UnderlyingColumnBuilder(knex, tb)
+      builder.createUnderlying([
+        ReferenceField.create({ id: 'fldid', name: 'name', key: 'undelying table', type: 'reference' }),
+      ])
+    })
+
+    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`fldid` json)"')
   })
 })

@@ -1,5 +1,5 @@
 import type { Field } from '@egodb/core'
-import type { IUnderlyingColumn } from '../types/underlying-column'
+import type { IUnderlyingColumn } from '../interfaces/underlying-column'
 import {
   UnderlyingBoolColumn,
   UnderlyingDateColumn,

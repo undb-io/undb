@@ -10,7 +10,7 @@ import type {
 } from '@egodb/core'
 import { INTERNAL_COLUMN_CREATED_AT_NAME, INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
-import type { IUnderlyingColumn } from '../types/underlying-column'
+import type { IUnderlyingColumn } from '../interfaces/underlying-column'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from './constants'
 
 export abstract class UnderlyingColumn implements IUnderlyingColumn {
