@@ -28,6 +28,7 @@ export class UnderlyingTableBuilder {
           .createDeletedAt()
           .createUnderlying(table.schema.fields)
           .build()
+
         this.addQueries(...queries)
       })
       .toQuery()
