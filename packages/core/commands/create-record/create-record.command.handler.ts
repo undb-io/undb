@@ -11,7 +11,7 @@ export class CreateRecordCommandHandler implements ICommandHandler<CreateRecordC
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
 
     const record = table.createRecord(command.value)
-    await this.recordRepo.insert(record)
+    await this.recordRepo.insert(record, table.schema.toIdMap())
 
     return { id: record.id.value }
   }

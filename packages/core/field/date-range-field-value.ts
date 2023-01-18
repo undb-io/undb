@@ -1,9 +1,10 @@
-import { ValueObject } from '@egodb/domain'
 import { isDate } from 'date-fns'
 import { Option } from 'oxide.ts'
 import type { IDateRangeFieldValue } from './date-range-field.type'
+import { FieldValueBase } from './field-value.base'
+import type { IFieldValueVisitor } from './field-value.visitor'
 
-export class DateRangeFieldValue extends ValueObject<IDateRangeFieldValue> {
+export class DateRangeFieldValue extends FieldValueBase<IDateRangeFieldValue> {
   constructor(value: IDateRangeFieldValue) {
     super(value ? value : { value })
   }
@@ -22,5 +23,9 @@ export class DateRangeFieldValue extends ValueObject<IDateRangeFieldValue> {
 
   get to(): Option<Date> {
     return Option(this.unpack()?.[1])
+  }
+
+  accept(visitor: IFieldValueVisitor): void {
+    visitor.dateRange(this)
   }
 }

@@ -1,12 +1,13 @@
-import { ValueObject } from '@egodb/domain'
 import type { Option as O } from 'oxide.ts'
 import { None } from 'oxide.ts'
 import type { Option } from '../option'
+import { FieldValueBase } from './field-value.base'
+import type { IFieldValueVisitor } from './field-value.visitor'
 import type { FieldValue } from './field.type'
 import type { SelectField } from './select-field'
 import type { ISelectFieldValue } from './select-field.type'
 
-export class SelectFieldValue extends ValueObject<ISelectFieldValue> {
+export class SelectFieldValue extends FieldValueBase<ISelectFieldValue> {
   constructor(value: ISelectFieldValue) {
     super({ value })
   }
@@ -26,5 +27,9 @@ export class SelectFieldValue extends ValueObject<ISelectFieldValue> {
   getOption(field: SelectField): O<Option> {
     if (!this.id) return None
     return field.options.getById(this.id)
+  }
+
+  accept(visitor: IFieldValueVisitor): void {
+    visitor.select(this)
   }
 }

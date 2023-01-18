@@ -7,6 +7,7 @@ import type {
   DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
+  DateRangeEqual,
   IRecordVisitor,
   NullSpecification,
   NumberEqual,
@@ -14,7 +15,7 @@ import type {
   NumberGreaterThanOrEqual,
   NumberLessThan,
   NumberLessThanOrEqual,
-  ReferenceField,
+  ReferenceEqual,
   SelectEqual,
   SelectIn,
   StringContain,
@@ -29,10 +30,8 @@ import type {
   WithRecordUpdatedAt,
   WithRecordValues,
 } from '@egodb/core'
-import { DateRangeEqual, DateRangeFieldValue, ReferenceEqual, ReferenceFieldValue } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import { M2M_ID_FIELD, M2M_REF_ID_FIELD } from '../../underlying-table/constants'
-import { UnderlyingM2MTable } from '../../underlying-table/underlying-table'
+import { RecordValueSqliteVisitor } from '../values/record-value-sqlite.visitor'
 
 export class RecordSqliteMutationVisitor implements IRecordVisitor {
   constructor(
@@ -49,15 +48,15 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
     this.queries.push(...queries)
   }
 
+  private createRecordValueVisitor(fieldId: string) {
+    return new RecordValueSqliteVisitor(this.tableId, fieldId, this.recordId, this.schema, this.em)
+  }
+
   public async commit(): Promise<void> {
     await this.em.execute(this.qb)
     for (const query of this.queries) {
       await this.em.execute(query)
     }
-  }
-
-  private get knex() {
-    return this.em.getKnex()
   }
 
   null(s: NullSpecification): void {
@@ -76,16 +75,13 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
     throw new Error('Method not implemented.')
   }
   values(s: WithRecordValues): void {
-    const values = [...s.values.value.entries()]
-    // TODO
-    for (const [fieldId, value] of values) {
-      if (value instanceof DateRangeFieldValue) {
-        this.dateRangeEqual(new DateRangeEqual(fieldId, value.unpack()))
-      } else if (value instanceof ReferenceFieldValue) {
-        this.referenceEqual(new ReferenceEqual(fieldId, value.unpack()))
-      } else {
-        this.qb.update(fieldId, value.unpack())
-      }
+    for (const [fieldId, value] of s.values) {
+      const valueVisitor = this.createRecordValueVisitor(fieldId)
+
+      value.accept(valueVisitor)
+
+      this.qb.update(valueVisitor.data)
+      this.addQueries(...valueVisitor.queries)
     }
   }
   stringEqual(s: StringEqual): void {
@@ -137,10 +133,7 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
     throw new Error('Method not implemented.')
   }
   dateRangeEqual(s: DateRangeEqual): void {
-    this.qb.update({
-      [s.fieldId + '_from']: s.value?.[0],
-      [s.fieldId + '_to']: s.value?.[1],
-    })
+    throw new Error('Method not implemented.')
   }
   selectEqual(s: SelectEqual): void {
     throw new Error('Method not implemented.')
@@ -155,38 +148,7 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
     throw new Error('Method not implemented.')
   }
   referenceEqual(s: ReferenceEqual): void {
-    const value = s.value
-    this.qb.update(s.fieldId, value == null ? value : JSON.stringify(value))
-
-    const field = this.schema.get(s.fieldId) as ReferenceField | undefined
-    if (field) {
-      const underlyingTable = new UnderlyingM2MTable(this.tableId, field)
-
-      const query = this.em
-        .getKnex()
-        .queryBuilder()
-        .table(underlyingTable.name)
-        .delete()
-        .where(M2M_REF_ID_FIELD, this.recordId)
-        .toQuery()
-
-      this.addQueries(query)
-
-      if (s.value?.length) {
-        for (const recordId of s.value) {
-          const query = this.em
-            .getKnex()
-            .queryBuilder()
-            .table(underlyingTable.name)
-            .insert({ [M2M_ID_FIELD]: recordId, [M2M_REF_ID_FIELD]: this.recordId })
-            .onConflict()
-            .ignore()
-            .toQuery()
-
-          this.addQueries(query)
-        }
-      }
-    }
+    throw new Error('Method not implemented')
   }
   not(): this {
     throw new Error('Method not implemented.')
