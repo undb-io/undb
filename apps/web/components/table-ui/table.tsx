@@ -31,6 +31,7 @@ import { ACTIONS_FIELD } from '../../constants/field.constants'
 import { CREATE_FIELD_MODAL_ID } from '../../modals'
 import { trpc } from '../../trpc'
 import { Option } from '../option/option'
+import { ReferenceItem } from '../reference/reference-item'
 import { RecordActions } from './actions'
 import type { IProps, TData } from './interface'
 import { Th } from './th'
@@ -108,9 +109,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
               values && (
                 <Group>
                   {values.map((value) => (
-                    <Badge color="gray" size="xs" sx={{ textTransform: 'unset' }}>
-                      {value}
-                    </Badge>
+                    <ReferenceItem key={value} value={value} />
                   ))}
                 </Group>
               )
