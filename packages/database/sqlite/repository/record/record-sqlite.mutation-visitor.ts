@@ -159,7 +159,7 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
     this.qb.update(s.fieldId, value == null ? value : JSON.stringify(value))
 
     const field = this.schema.get(s.fieldId) as ReferenceField | undefined
-    if (field && s.value) {
+    if (field) {
       const underlyingTable = new UnderlyingM2MTable(this.tableId, field)
 
       const query = this.em
@@ -172,17 +172,19 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
 
       this.addQueries(query)
 
-      for (const recordId of s.value) {
-        const query = this.em
-          .getKnex()
-          .queryBuilder()
-          .table(underlyingTable.name)
-          .insert({ [M2M_ID_FIELD]: recordId, [M2M_REF_ID_FIELD]: this.recordId })
-          .onConflict()
-          .ignore()
-          .toQuery()
+      if (s.value?.length) {
+        for (const recordId of s.value) {
+          const query = this.em
+            .getKnex()
+            .queryBuilder()
+            .table(underlyingTable.name)
+            .insert({ [M2M_ID_FIELD]: recordId, [M2M_REF_ID_FIELD]: this.recordId })
+            .onConflict()
+            .ignore()
+            .toQuery()
 
-        this.addQueries(query)
+          this.addQueries(query)
+        }
       }
     }
   }
