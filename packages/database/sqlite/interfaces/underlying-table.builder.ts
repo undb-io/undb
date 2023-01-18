@@ -1,7 +1,8 @@
 import type { Field } from '@egodb/core'
 
 export interface IUnderlyingColumnBuilder {
-  createId(): this
+  createAutoIncrement(): this
+  createId(tableName: string): this
   createCreatedAt(): this
   createUpdatedAt(tableName: string): this
   createDeletedAt(): this

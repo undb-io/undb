@@ -3,6 +3,7 @@ import { INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb
 import type { Knex } from '@mikro-orm/better-sqlite'
 import type { IUnderlyingColumnBuilder } from '../interfaces/underlying-table.builder'
 import {
+  UnderlyingAutoIncreamentColumn,
   UnderlyingCreatedAtColumn,
   UnderlyingDeletedAtColumn,
   UnderlyingIdColumn,
@@ -24,8 +25,26 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
     return this.queries
   }
 
-  createId(): this {
-    new UnderlyingIdColumn().build(this.tb)
+  createAutoIncrement(): this {
+    new UnderlyingAutoIncreamentColumn().build(this.tb)
+
+    return this
+  }
+
+  createId(tableName: string): this {
+    const column = new UnderlyingIdColumn()
+    column.build(this.tb)
+
+    const query = this.knex
+      .raw(
+        `
+      create index \`${tableName}_id_index\` on \`${tableName}\` (\`${column.name}\`)
+    `,
+      )
+      .toQuery()
+
+    this.addQueries(query)
+
     return this
   }
 
