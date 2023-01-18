@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230117070854 extends Migration {
+export class Migration20230118010942 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, primary key (`id`));',
@@ -21,7 +21,7 @@ export class Migration20230117070854 extends Migration {
     this.addSql('create index `option_field_id_index` on `option` (`field_id`);')
 
     this.addSql(
-      "create table `view` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `key` text not null, `table_id` text null, `name` text not null, `display_type` text check (`display_type` in ('kanban', 'calendar', 'grid')) not null, `kanban_field_key` text null, `calendar_field_key` text null, `filter` json null, `field_options` json null, `fields_order` text null, constraint `view_table_id_foreign` foreign key(`table_id`) references `table`(`id`) on delete cascade on update cascade, primary key (`id`));",
+      "create table `view` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `key` text not null, `table_id` text null, `name` text not null, `display_type` text check (`display_type` in ('kanban', 'calendar', 'grid')) not null, `kanban_field_id` text null, `calendar_field_id` text null, `filter` json null, `field_options` json null, `fields_order` text null, constraint `view_table_id_foreign` foreign key(`table_id`) references `table`(`id`) on delete cascade on update cascade, primary key (`id`));",
     )
     this.addSql('create index `view_deleted_at_index` on `view` (`deleted_at`);')
     this.addSql('create index `view_table_id_index` on `view` (`table_id`);')

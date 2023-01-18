@@ -442,8 +442,8 @@
           ],
           "mappedType": "enum"
         },
-        "kanban_field_key": {
-          "name": "kanban_field_key",
+        "kanban_field_id": {
+          "name": "kanban_field_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -451,8 +451,8 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "calendar_field_key": {
-          "name": "calendar_field_key",
+        "calendar_field_id": {
+          "name": "calendar_field_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,

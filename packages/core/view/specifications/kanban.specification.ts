@@ -1,13 +1,13 @@
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { FieldKey } from '../../field'
+import type { FieldId } from '../../field'
 import type { ITableSpecVisitor } from '../../specifications'
 import type { Table } from '../../table'
 import type { View } from '../view'
 import { BaseViewSpecification } from './base-view-specification'
 
 export class WithKanbanField extends BaseViewSpecification {
-  constructor(public readonly view: View, public readonly fieldId: FieldKey | null) {
+  constructor(public readonly view: View, public readonly fieldId: FieldId | null) {
     super(view)
   }
 

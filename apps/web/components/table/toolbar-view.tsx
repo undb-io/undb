@@ -1,5 +1,4 @@
-import type { IViewDisplayType, Kanban } from '@egodb/core'
-import type { FieldKey } from '@egodb/core'
+import type { FieldId, IViewDisplayType, Kanban } from '@egodb/core'
 import type { Table } from '@egodb/core'
 import type { ICalendar } from '@egodb/core/view/calendar'
 import {
@@ -19,7 +18,7 @@ import type { ISelectKanbanFieldProps } from '../kanban-ui/select-kanban-field.p
 import { DisplayTypeIcon } from '../view/display-type-icon'
 import type { ITableBaseProps } from './table-base-props'
 
-const StackedBy: React.FC<{ fieldId?: FieldKey; table: Table }> = ({ table, fieldId }) => {
+const StackedBy: React.FC<{ fieldId?: FieldId; table: Table }> = ({ table, fieldId }) => {
   if (!fieldId) return null
 
   const field = table.schema.getFieldById(fieldId.value).into()
@@ -55,7 +54,7 @@ const KanbanControl: React.FC<{ table: Table; kanban?: Kanban }> = ({ table, kan
   )
 }
 
-const UsingCalendarField: React.FC<{ fieldId?: FieldKey; table: Table }> = ({ table, fieldId }) => {
+const UsingCalendarField: React.FC<{ fieldId?: FieldId; table: Table }> = ({ table, fieldId }) => {
   if (!fieldId) return null
 
   const field = table.schema.getFieldById(fieldId.value).into()

@@ -1,7 +1,7 @@
 import type { CompositeSpecification } from '@egodb/domain'
 import { and, ValueObject } from '@egodb/domain'
 import { None, Option } from 'oxide.ts'
-import type { Field, FieldKey } from '../field'
+import type { Field, FieldId } from '../field'
 import type { IFilterOrGroupList, IRootFilter } from '../filter'
 import { RootFilter } from '../filter'
 import { WithFilter } from '../specifications'
@@ -59,7 +59,7 @@ export class View extends ValueObject<IView> {
     this.props.kanban = kanban.into()
   }
 
-  public get kanbanFieldId(): Option<FieldKey> {
+  public get kanbanFieldId(): Option<FieldId> {
     return this.kanban.mapOr(None, (kanban) => Option(kanban.fieldId))
   }
 
@@ -71,7 +71,7 @@ export class View extends ValueObject<IView> {
     this.props.calendar = calendar.into()
   }
 
-  public get calendarFieldId(): Option<FieldKey> {
+  public get calendarFieldId(): Option<FieldId> {
     return this.calendar.mapOr(None, (calendar) => Option(calendar.fieldId))
   }
 
@@ -140,11 +140,11 @@ export class View extends ValueObject<IView> {
     return new WithFieldVisibility(fieldId, this, hidden)
   }
 
-  public setKanbanFieldSpec(fieldId: FieldKey): TableCompositeSpecificaiton {
+  public setKanbanFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
     return new WithKanbanField(this, fieldId)
   }
 
-  public setCalendarFieldSpec(fieldId: FieldKey): TableCompositeSpecificaiton {
+  public setCalendarFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
     return new WithCalendarField(this, fieldId)
   }
 
