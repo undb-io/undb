@@ -1,7 +1,8 @@
-import { ValueObject } from '@egodb/domain'
 import type { IBoolFieldValue } from './bool-field.type'
+import { FieldValueBase } from './field-value.base'
+import type { IFieldValueVisitor } from './field-value.visitor'
 
-export class BoolFieldValue extends ValueObject<IBoolFieldValue> {
+export class BoolFieldValue extends FieldValueBase<IBoolFieldValue> {
   constructor(value: IBoolFieldValue) {
     super({ value })
   }
@@ -12,5 +13,9 @@ export class BoolFieldValue extends ValueObject<IBoolFieldValue> {
 
   static F(): BoolFieldValue {
     return new this(false)
+  }
+
+  accept(visitor: IFieldValueVisitor): void {
+    visitor.bool(this)
   }
 }
