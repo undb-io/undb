@@ -12,7 +12,7 @@ import type {
 } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { RecordValueData, RecordValueSqlitePrimitives } from '../../types/record-value-sqlite.type'
-import { M2M_ID_FIELD, M2M_REF_ID_FIELD } from '../../underlying-table/constants'
+import { M2M_CHILD_ID_FIELD, M2M_PARENG_ID_FIELD } from '../../underlying-table/constants'
 import { UnderlyingM2MTable } from '../../underlying-table/underlying-table'
 
 export class RecordValueSqliteVisitor implements IFieldValueVisitor {
@@ -72,7 +72,7 @@ export class RecordValueSqliteVisitor implements IFieldValueVisitor {
         .queryBuilder()
         .table(underlyingTable.name)
         .delete()
-        .where(M2M_REF_ID_FIELD, this.recordId)
+        .where(M2M_PARENG_ID_FIELD, this.recordId)
         .toQuery()
 
       this.addQueries(query)
@@ -84,7 +84,7 @@ export class RecordValueSqliteVisitor implements IFieldValueVisitor {
             .getKnex()
             .queryBuilder()
             .table(underlyingTable.name)
-            .insert({ [M2M_ID_FIELD]: recordId, [M2M_REF_ID_FIELD]: this.recordId })
+            .insert({ [M2M_CHILD_ID_FIELD]: recordId, [M2M_PARENG_ID_FIELD]: this.recordId })
             .onConflict()
             .ignore()
             .toQuery()

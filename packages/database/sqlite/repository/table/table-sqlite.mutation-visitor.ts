@@ -19,12 +19,13 @@ import type {
   WithTableViews,
   WithViewFieldsOrder,
 } from '@egodb/core'
+import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
 import { Field, Option, SelectField, Table } from '../../entity'
 import { FieldFactory } from '../../entity/field.factory'
 import { View } from '../../entity/view'
-import { M2M_ID_FIELD, M2M_REF_ID_FIELD } from '../../underlying-table/constants'
+import { M2M_CHILD_ID_FIELD, M2M_PARENG_ID_FIELD } from '../../underlying-table/constants'
 import { UnderlyingM2MTable } from '../../underlying-table/underlying-table'
 
 export class TableSqliteMutationVisitor implements ITableSpecVisitor {
@@ -54,9 +55,9 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
       const query = this.em
         .getKnex()
         .schema.createTable(refenrenceTableName, (tb) => {
-          tb.string(M2M_ID_FIELD).notNullable().references('id').inTable(this.tableId)
-          tb.string(M2M_REF_ID_FIELD).notNullable().references('id').inTable(this.tableId)
-          tb.primary([M2M_ID_FIELD, M2M_REF_ID_FIELD])
+          tb.string(M2M_CHILD_ID_FIELD).notNullable().references(INTERNAL_COLUMN_ID_NAME).inTable(this.tableId)
+          tb.string(M2M_PARENG_ID_FIELD).notNullable().references(INTERNAL_COLUMN_ID_NAME).inTable(this.tableId)
+          tb.primary([M2M_CHILD_ID_FIELD, M2M_PARENG_ID_FIELD])
         })
         .toQuery()
 

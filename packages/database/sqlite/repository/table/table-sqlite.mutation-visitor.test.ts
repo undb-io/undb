@@ -107,13 +107,13 @@ describe('TableSqliteMutationVisitor', () => {
       const columnInfo = await em.getKnex().table(m2m.name).columnInfo()
       expect(columnInfo).toMatchInlineSnapshot(`
         {
-          "id": {
+          "child_id": {
             "defaultValue": null,
             "maxLength": "255",
             "nullable": false,
             "type": "varchar",
           },
-          "ref_id": {
+          "parent_id": {
             "defaultValue": null,
             "maxLength": "255",
             "nullable": false,
