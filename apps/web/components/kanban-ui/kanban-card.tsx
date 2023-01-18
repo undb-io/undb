@@ -3,7 +3,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { Card, Group, Stack, useEgoUITheme } from '@egodb/ui'
 import type { SortableProps } from '../sortable.interface'
 import type { ITableBaseProps } from '../table/table-base-props'
-import type { DateRangeFieldValue, Record } from '@egodb/core'
+import type { DateRangeFieldValue, Record, ReferenceFieldValue } from '@egodb/core'
 import type { SelectFieldValue } from '@egodb/core'
 import { Option } from '../option/option'
 import type { CSSProperties } from 'react'
@@ -13,6 +13,7 @@ import { FieldIcon } from '../fields/field-Icon'
 import { useSetAtom } from 'jotai'
 import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
 import { editRecordValuesAtom } from '../edit-record-form/edit-record-values.atom'
+import { ReferenceItem } from '../reference/reference-item'
 
 interface IProps extends ITableBaseProps {
   record: Record
@@ -47,7 +48,7 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
         setValues({ id: record.id.value, values: record.values.valueJSON })
       }}
     >
-      <Stack spacing={5} sx={(theme) => ({ fontSize: theme.fontSizes.sm })}>
+      <Stack spacing={8} sx={(theme) => ({ fontSize: theme.fontSizes.sm })}>
         {Object.entries(record.values.valueJSON).map(([key, value]) => {
           const field = table.schema.getFieldById(key)
           if (field.isNone()) return null
@@ -82,6 +83,29 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
                 {date && `${dateFormat(date[0])} - ${dateFormat(date[1])}`}
               </Group>
             )
+          }
+
+          if (f.type === 'reference') {
+            const records = (value as ReferenceFieldValue)?.unpack()
+
+            if (records) {
+              return (
+                <Group spacing="xs" key={key}>
+                  {icon}
+                  <Group>
+                    {records.map((value) => (
+                      <ReferenceItem key={value} value={value} />
+                    ))}
+                  </Group>
+                </Group>
+              )
+            } else {
+              return (
+                <Group spacing="xs" key={key}>
+                  {icon}
+                </Group>
+              )
+            }
           }
 
           return (
