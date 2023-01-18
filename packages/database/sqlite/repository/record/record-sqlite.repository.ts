@@ -1,11 +1,12 @@
 import type { IRecordRepository, IRecordSpec, Record as CoreRecord, TableSchemaIdMap } from '@egodb/core'
-import { DateRangeFieldValue, ReferenceFieldValue, WithRecordId, WithRecordTableId } from '@egodb/core'
+import { WithRecordId, WithRecordTableId } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { Option } from 'oxide.ts'
 import { Some } from 'oxide.ts'
-import type { Primitive } from 'type-fest'
+import type { RecordValueData } from '../../types/record-value-sqlite.type'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants'
 import { getColumnNames } from '../../underlying-table/underlying-table.utils'
+import { RecordValueSqliteVisitor } from '../values/record-value-sqlite.visitor'
 import { RecordSqliteMapper } from './record-sqlite.mapper'
 import { RecordSqliteMutationVisitor } from './record-sqlite.mutation-visitor'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
@@ -13,25 +14,26 @@ import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
 export class RecordSqliteRepository implements IRecordRepository {
   constructor(protected readonly em: EntityManager) {}
 
-  async insert(record: CoreRecord): Promise<void> {
-    const knex = this.em.getKnex()
-    // TODO
-    const data = [...record.values.value.entries()].reduce<Record<string, Primitive | Date | string[]>>(
-      (prev, [fieldId, value]) => {
-        if (value instanceof DateRangeFieldValue) {
-          prev[fieldId + '_from'] = value.from.into()
-          prev[fieldId + '_to'] = value.to.into()
-        } else if (value instanceof ReferenceFieldValue) {
-          prev[fieldId] = value.unpack() === null ? value.unpack() : JSON.stringify(value.unpack())
-        } else {
-          prev[fieldId] = value.unpack()
-        }
-        return prev
-      },
-      {} as Record<string, Primitive | Date | string[]>,
-    )
-    data['id'] = record.id.value
-    await this.em.execute(knex.insert(data).into(record.tableId.value))
+  async insert(record: CoreRecord, schema: TableSchemaIdMap): Promise<void> {
+    const data: RecordValueData = {
+      id: record.id.value,
+    }
+    const queries: string[] = []
+
+    for (const [fieldId, value] of record.values) {
+      const visitor = new RecordValueSqliteVisitor(record.tableId.value, fieldId, record.id.value, schema, this.em)
+
+      value.accept(visitor)
+
+      Object.assign(data, visitor.data)
+      queries.push(...visitor.queries)
+    }
+
+    const qb = this.em.getKnex().insert(data).into(record.tableId.value)
+    await this.em.execute(qb)
+    for (const query of queries) {
+      this.em.execute(query)
+    }
   }
 
   async findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<CoreRecord>> {

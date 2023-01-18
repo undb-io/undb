@@ -41,6 +41,10 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
     return Object.fromEntries(this.value)
   }
 
+  *[Symbol.iterator]() {
+    yield* this.value.entries()
+  }
+
   setValue(fieldId: string, value: FieldValue) {
     this.value.set(fieldId, value)
   }

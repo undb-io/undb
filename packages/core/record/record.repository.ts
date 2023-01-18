@@ -4,7 +4,7 @@ import type { Record } from './record'
 import type { IRecordSpec } from './specifications/interface'
 
 export interface IRecordRepository {
-  insert(record: Record): Promise<void>
+  insert(record: Record, schema: TableSchemaIdMap): Promise<void>
   findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<Record>>
 
   updateOneById(tableId: string, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void>
