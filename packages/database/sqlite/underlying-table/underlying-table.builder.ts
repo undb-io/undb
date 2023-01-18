@@ -21,7 +21,8 @@ export class UnderlyingTableBuilder {
     const query = this.knex.schema
       .createTable(table.id.value, (tb) => {
         const queries = new UnderlyingColumnBuilder(this.knex, tb)
-          .createId()
+          .createAutoIncrement()
+          .createId(table.id.value)
           .createCreatedAt()
           .createUpdatedAt(table.id.value)
           .createDeletedAt()

@@ -200,13 +200,6 @@ export type UnpackedFieldValue =
   | IReferenceFilterValue
 
 export const INTERNAL_COLUMN_ID_NAME = 'id'
+export const INTERNAL_INCREAMENT_ID_NAME = 'auto_increment'
 export const INTERNAL_COLUMN_CREATED_AT_NAME = 'created_at'
 export const INTERNAL_COLUMN_UPDATED_AT_NAME = 'updated_at'
-
-export const internalFieldNames = z.enum([
-  INTERNAL_COLUMN_ID_NAME,
-  INTERNAL_COLUMN_CREATED_AT_NAME,
-  INTERNAL_COLUMN_UPDATED_AT_NAME,
-])
-
-export type IInternalFields = z.infer<typeof internalFieldNames>

@@ -8,7 +8,12 @@ import type {
   SelectField,
   StringField,
 } from '@egodb/core'
-import { INTERNAL_COLUMN_CREATED_AT_NAME, INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
+import {
+  INTERNAL_COLUMN_CREATED_AT_NAME,
+  INTERNAL_COLUMN_ID_NAME,
+  INTERNAL_COLUMN_UPDATED_AT_NAME,
+  INTERNAL_INCREAMENT_ID_NAME as INTERNAL_AUTO_INCREAMENT_ID_NAME,
+} from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import type { IUnderlyingColumn } from '../interfaces/underlying-column'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from './constants'
@@ -24,7 +29,17 @@ export class UnderlyingIdColumn extends UnderlyingColumn {
   }
 
   build(tb: Knex.TableBuilder): void {
-    tb.string(this.name).notNullable().primary()
+    tb.string(this.name).notNullable()
+  }
+}
+
+export class UnderlyingAutoIncreamentColumn extends UnderlyingColumn {
+  get name(): string {
+    return INTERNAL_AUTO_INCREAMENT_ID_NAME
+  }
+
+  build(tb: Knex.TableBuilder): void {
+    tb.increments(this.name).notNullable()
   }
 }
 

@@ -2,12 +2,15 @@
 
 exports[`UnderlyingTableBuilder > should build table 1`] = `
 [
-  "create table \`tableId\` (\`id\` varchar(255) not null, \`created_at\` datetime not null default CURRENT_TIMESTAMP, \`updated_at\` datetime not null default CURRENT_TIMESTAMP, \`deleted_at\` datetime null, \`fldid\` varchar(255), primary key (\`id\`))",
+  "create table \`tableId\` (\`auto_increment\` integer not null primary key autoincrement, \`id\` varchar(255) not null, \`created_at\` datetime not null default CURRENT_TIMESTAMP, \`updated_at\` datetime not null default CURRENT_TIMESTAMP, \`deleted_at\` datetime null, \`fldid\` varchar(255))",
   "
 		CREATE TRIGGER update_at_update_tableId AFTER UPDATE ON \`tableId\`
 		BEGIN
 			update \`tableId\` SET updated_at = datetime('now') WHERE id = NEW.id;
 		END;
 	 ",
+  "
+      create index \`tableId_id_index\` on \`tableId\` (\`id\`)
+    ",
 ]
 `;

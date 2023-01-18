@@ -18,16 +18,26 @@ describe('UnderlyingColumnBuilder', () => {
     knex = global.knex
   })
 
+  test('should create auto increment column', () => {
+    const sb = knex.schema
+    sb.createTable(tableName, (tb) => {
+      const builder = new UnderlyingColumnBuilder(knex, tb)
+      builder.createAutoIncrement()
+    })
+
+    expect(sb.toQuery()).toMatchInlineSnapshot(
+      '"create table `tableName` (`auto_increment` integer not null primary key autoincrement)"',
+    )
+  })
+
   test('should create id column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
       const builder = new UnderlyingColumnBuilder(knex, tb)
-      builder.createId()
+      builder.createId(tableName)
     })
 
-    expect(sb.toQuery()).toMatchInlineSnapshot(
-      '"create table `tableName` (`id` varchar(255) not null, primary key (`id`))"',
-    )
+    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`id` varchar(255) not null)"')
   })
 
   test('should create created_at column', () => {
