@@ -25,5 +25,7 @@ export * from './select-field.type'
 export * from './specifications'
 export * from './string-field'
 export * from './string-field-value'
+export * from './tree-field'
+export * from './tree-field-value'
 export * from './value-objects'
 export { createNumberFieldSchema, createStringFieldSchema }

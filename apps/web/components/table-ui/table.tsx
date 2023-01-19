@@ -15,7 +15,6 @@ import type { DateFieldValue } from '@egodb/core'
 import type { DateRangeFieldValue } from '@egodb/core'
 import {
   ActionIcon,
-  Badge,
   Checkbox,
   Group,
   IconColumnInsertRight,
@@ -103,7 +102,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
             const date = (props.getValue() as DateRangeFieldValue)?.unpack()
             return date && `${dateFormat(date[0])} - ${dateFormat(date[1])}`
           }
-          if (f.type === 'reference') {
+          if (f.type === 'reference' || f.type === 'tree') {
             const values = (props.getValue() as ReferenceFieldValue)?.unpack()
             return (
               values && (

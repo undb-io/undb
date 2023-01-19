@@ -3,7 +3,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { Card, Group, Stack, useEgoUITheme } from '@egodb/ui'
 import type { SortableProps } from '../sortable.interface'
 import type { ITableBaseProps } from '../table/table-base-props'
-import type { DateRangeFieldValue, Record, ReferenceFieldValue } from '@egodb/core'
+import type { DateRangeFieldValue, Record, ReferenceFieldValue, TreeFieldValue } from '@egodb/core'
 import type { SelectFieldValue } from '@egodb/core'
 import { Option } from '../option/option'
 import type { CSSProperties } from 'react'
@@ -85,8 +85,8 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
             )
           }
 
-          if (f.type === 'reference') {
-            const records = (value as ReferenceFieldValue)?.unpack()
+          if (f.type === 'reference' || f.type === 'tree') {
+            const records = (value as ReferenceFieldValue | TreeFieldValue)?.unpack()
 
             if (records) {
               return (

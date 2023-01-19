@@ -8,6 +8,7 @@ export const FIELD_SELECT_ITEMS: SelectItem[] = [
   { value: 'bool', label: 'Bool' },
   { value: 'select', label: 'Select' },
   { value: 'reference', label: 'Reference' },
+  { value: 'tree', label: 'Tree' },
 ]
 
 export const ACTIONS_FIELD = 'actions'

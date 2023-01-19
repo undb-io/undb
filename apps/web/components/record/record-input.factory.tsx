@@ -101,5 +101,23 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field }) => 
     )
   }
 
+  // TODO: 限制选择的范围
+  if (field.type === 'tree') {
+    return (
+      <Controller
+        name={name}
+        render={(form) => (
+          <RecordPicker
+            field={field}
+            table={table}
+            label={label}
+            {...form.field}
+            onChange={(value) => form.field.onChange(value)}
+          />
+        )}
+      />
+    )
+  }
+
   return <Controller name={name} render={(form) => <TextInput label={label} {...form.field} />} />
 }

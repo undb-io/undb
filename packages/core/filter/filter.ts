@@ -48,12 +48,14 @@ import {
   referenceFilterOperators,
   selectFilterOperators,
   stringFilterOperators,
+  treeFilterOperators,
 } from './operators'
 import { referenceFilter, referenceFilterValue } from './reference.filter'
 import type { ISelectFilter } from './select.filter'
 import { selectFilter, selectFilterValue } from './select.filter'
 import type { IStringFilter } from './string.filter'
 import { stringFilter, stringFilterValue } from './string.filter'
+import { treeFilter, treeFilterValue } from './tree.filter'
 
 export const filterValue = z.union([
   stringFilterValue,
@@ -63,6 +65,7 @@ export const filterValue = z.union([
   selectFilterValue,
   boolFilterValue,
   referenceFilterValue,
+  treeFilterValue,
 ])
 export type IFilterValue = z.infer<typeof filterValue>
 
@@ -74,6 +77,7 @@ export const operaotrs = z.union([
   selectFilterOperators,
   boolFilterOperators,
   referenceFilterOperators,
+  treeFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
@@ -85,6 +89,7 @@ const filter = z.discriminatedUnion('type', [
   selectFilter,
   boolFilter,
   referenceFilter,
+  treeFilter,
 ])
 
 export type IFilter = z.infer<typeof filter>

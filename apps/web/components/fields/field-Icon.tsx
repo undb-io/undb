@@ -2,6 +2,7 @@ import {
   Icon123,
   IconCalendar,
   IconCalendarTime,
+  IconHierarchy,
   IconLetterT,
   IconListCheck,
   IconQuestionMark,
@@ -31,6 +32,8 @@ export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16, color }) => {
       return <IconListCheck size={size} color={color} />
     case 'reference':
       return <IconRelationManyToMany size={size} color={color} />
+    case 'tree':
+      return <IconHierarchy size={size} color={color} />
     default:
       return <IconQuestionMark size={size} color={color} />
   }

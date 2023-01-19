@@ -7,6 +7,7 @@ import type {
   ReferenceField,
   SelectField,
   StringField,
+  TreeField,
 } from '@egodb/core'
 import {
   INTERNAL_COLUMN_CREATED_AT_NAME,
@@ -132,6 +133,12 @@ export class UnderlyingSelectFromColumn extends UnderlyingFieldColumn<SelectFiel
 }
 
 export class UnderlyingReferenceColumn extends UnderlyingFieldColumn<ReferenceField> {
+  build(tb: Knex.TableBuilder): void {
+    tb.json(this.name)
+  }
+}
+
+export class UnderlyingTreeColumn extends UnderlyingFieldColumn<TreeField> {
   build(tb: Knex.TableBuilder): void {
     tb.json(this.name)
   }

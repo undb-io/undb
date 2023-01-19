@@ -9,6 +9,7 @@ import {
   UnderlyingReferenceColumn,
   UnderlyingSelectFromColumn,
   UnderlyingStringColumn,
+  UnderlyingTreeColumn,
 } from './underlying-column'
 
 export class UnderlyingColumnFactory {
@@ -28,6 +29,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingSelectFromColumn(field)
       case 'reference':
         return new UnderlyingReferenceColumn(field)
+      case 'tree':
+        return new UnderlyingTreeColumn(field)
     }
   }
 

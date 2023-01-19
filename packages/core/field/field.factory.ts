@@ -6,6 +6,7 @@ import { NumberField } from './number-field'
 import { ReferenceField } from './reference-field'
 import { SelectField } from './select-field'
 import { StringField } from './string-field'
+import { TreeField } from './tree-field'
 
 export class FieldFactory {
   static create(input: ICreateFieldSchema): Field {
@@ -30,6 +31,9 @@ export class FieldFactory {
       }
       case 'reference': {
         return ReferenceField.create(input)
+      }
+      case 'tree': {
+        return TreeField.create(input)
       }
     }
   }
@@ -56,6 +60,9 @@ export class FieldFactory {
       }
       case 'reference': {
         return ReferenceField.unsafeCreate(input)
+      }
+      case 'tree': {
+        return TreeField.unsafeCreate(input)
       }
     }
   }

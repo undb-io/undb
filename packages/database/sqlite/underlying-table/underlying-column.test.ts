@@ -1,4 +1,4 @@
-import { ReferenceField, StringField } from '@egodb/core'
+import { ReferenceField, StringField, TreeField } from '@egodb/core'
 import { Knex } from '@mikro-orm/better-sqlite'
 import {
   UnderlyingCreatedAtColumn,
@@ -6,6 +6,7 @@ import {
   UnderlyingIdColumn,
   UnderlyingReferenceColumn,
   UnderlyingStringColumn,
+  UnderlyingTreeColumn,
   UnderlyingUpdatedAtColumn,
 } from './underlying-column'
 
@@ -134,6 +135,26 @@ describe('UnderlyingColumn', () => {
       const field = new UnderlyingReferenceColumn(
         ReferenceField.create({ id: 'fld1', name: 'name', key: 'key', type: 'reference' }),
       )
+
+      await knex.schema.createTable(tableName, (tb) => {
+        field.build(tb)
+      })
+
+      const info = await knex(tableName).columnInfo()
+      expect(info).toMatchInlineSnapshot(`
+        {
+          "fld1": {
+            "defaultValue": null,
+            "maxLength": null,
+            "nullable": true,
+            "type": "json",
+          },
+        }
+      `)
+    })
+
+    test('UnderlyingTreeColumn', async () => {
+      const field = new UnderlyingTreeColumn(TreeField.create({ id: 'fld1', name: 'name', key: 'key', type: 'tree' }))
 
       await knex.schema.createTable(tableName, (tb) => {
         field.build(tb)
