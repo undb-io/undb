@@ -49,7 +49,7 @@ export class RecordSqliteRepository implements IRecordRepository {
 
     const data = await this.em.execute(qb.first())
 
-    const record = RecordSqliteMapper.toDomain(tableId, schema, data).unwrap()
+    const record = RecordSqliteMapper.toDomain(tableId, schema, data[0]).unwrap()
     return Some(record)
   }
 

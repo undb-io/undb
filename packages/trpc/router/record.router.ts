@@ -4,6 +4,8 @@ import {
   createRecordCommandOutput,
   DeleteRecordCommand,
   deleteRecordCommandInput,
+  DuplicateRecordCommand,
+  duplicateRecordCommandInput,
   GetRecordQuery,
   getRecordQueryInput,
   getRecordQueryOutput,
@@ -32,6 +34,14 @@ export const createRecordRouter =
           const cmd = new CreateRecordCommand(input)
           return commandBus.execute(cmd)
         }),
+      duplicate: procedure
+        .meta({ openapi: { method: 'POST', path: '/record.duplicate', tags } })
+        .input(duplicateRecordCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new DuplicateRecordCommand(input)
+          return commandBus.execute(cmd)
+        }),
       update: procedure
         .meta({ openapi: { method: 'POST', path: '/record.update', tags } })
         .input(updateRecordCommandInput)
@@ -41,7 +51,7 @@ export const createRecordRouter =
           return commandBus.execute(cmd)
         }),
       delete: procedure
-        .meta({ openapi: { method: 'POST', path: '/record.get', tags } })
+        .meta({ openapi: { method: 'POST', path: '/record.delete', tags } })
         .input(deleteRecordCommandInput)
         .output(z.void())
         .mutation(({ input }) => {

@@ -10,7 +10,8 @@
     "allowSyntheticDefaultImports": true,
     "preserveWatchOutput": true,
     "target": "ES2017",
-    "sourceMap": true,
+    "declarationMap": true,
+    "inlineSourceMap": true,
     "incremental": true
   }
 }

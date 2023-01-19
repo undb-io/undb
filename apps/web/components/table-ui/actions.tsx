@@ -1,4 +1,14 @@
-import { ActionIcon, Alert, Group, IconCopy, IconDots, IconTrash, Menu, useClipboard } from '@egodb/ui'
+import {
+  ActionIcon,
+  Alert,
+  Group,
+  IconCopy,
+  IconDots,
+  IconRowInsertBottom,
+  IconTrash,
+  Menu,
+  useClipboard,
+} from '@egodb/ui'
 import { useConfirmModal } from '../../hooks'
 import { trpc } from '../../trpc'
 import type { TRow } from './interface'
@@ -23,6 +33,12 @@ export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableI
     },
   })
 
+  const duplicateRecord = trpc.record.duplicate.useMutation({
+    onSuccess() {
+      utils.record.list.refetch()
+    },
+  })
+
   return (
     <Group>
       <Menu>
@@ -33,6 +49,18 @@ export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableI
         </Menu.Target>
 
         <Menu.Dropdown>
+          <Menu.Item
+            onClick={(e) => {
+              e.stopPropagation()
+              duplicateRecord.mutate({
+                tableId,
+                id: row.id,
+              })
+            }}
+            icon={<IconRowInsertBottom size={14} />}
+          >
+            Duplciate Record
+          </Menu.Item>
           <Menu.Item
             onClick={(e) => {
               e.stopPropagation()

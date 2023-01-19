@@ -36,6 +36,7 @@
     "esm": "^3.2.25",
     "jest": "^29.3.1",
     "run-script-webpack-plugin": "^0.1.1",
+    "source-map-support": "^0.5.21",
     "supertest": "^6.3.3",
     "ts-jest": "^29.0.4",
     "ts-loader": "^9.4.2",

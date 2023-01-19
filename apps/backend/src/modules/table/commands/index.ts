@@ -6,6 +6,7 @@ import { DeleteFieldCommandHandler } from './delete-field.command.handler'
 import { DeleteOptionCommandHandler } from './delete-option.command.handler'
 import { DeleteRecordCommandHandler } from './delete-record.command.handler'
 import { DeleteTableCommandHandler } from './delete-table.command.handler'
+import { DuplicateRecordCommandHandler } from './duplicate-record.command.handler'
 import { EditTableCommandHandler } from './edit-table.command.handler'
 import { MoveFieldCommandHandler } from './move-field.command.handler'
 import { ReorderOptionsCommandHandler } from './reorder-options.command.handler'
@@ -21,6 +22,7 @@ import { UpdateRecordCommandHandler } from './update-record.command.handler'
 export const commandHandlers = [
   CreateTableCommandHandler,
   CreateRecordCommandHandler,
+  DuplicateRecordCommandHandler,
   CreateFieldCommandHandler,
   CreateOptionCommandHandler,
   SetFiltersCommandHandler,
