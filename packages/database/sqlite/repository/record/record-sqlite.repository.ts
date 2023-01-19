@@ -15,25 +15,27 @@ export class RecordSqliteRepository implements IRecordRepository {
   constructor(protected readonly em: EntityManager) {}
 
   async insert(record: CoreRecord, schema: TableSchemaIdMap): Promise<void> {
-    const data: RecordValueData = {
-      id: record.id.value,
-    }
-    const queries: string[] = []
+    await this.em.transactional(async (em) => {
+      const data: RecordValueData = {
+        id: record.id.value,
+      }
+      const queries: string[] = []
 
-    for (const [fieldId, value] of record.values) {
-      const visitor = new RecordValueSqliteVisitor(record.tableId.value, fieldId, record.id.value, schema, this.em)
+      for (const [fieldId, value] of record.values) {
+        const visitor = new RecordValueSqliteVisitor(record.tableId.value, fieldId, record.id.value, schema, em)
 
-      value.accept(visitor)
+        value.accept(visitor)
 
-      Object.assign(data, visitor.data)
-      queries.push(...visitor.queries)
-    }
+        Object.assign(data, visitor.data)
+        queries.push(...visitor.queries)
+      }
 
-    const qb = this.em.getKnex().insert(data).into(record.tableId.value)
-    await this.em.execute(qb)
-    for (const query of queries) {
-      this.em.execute(query)
-    }
+      const qb = em.getKnex().insert(data).into(record.tableId.value)
+      await em.execute(qb)
+      for (const query of queries) {
+        await em.execute(query)
+      }
+    })
   }
 
   async findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<CoreRecord>> {

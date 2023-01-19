@@ -35,15 +35,23 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
     const column = new UnderlyingIdColumn()
     column.build(this.tb)
 
-    const query = this.knex
+    const index = this.knex
       .raw(
         `
-      create index \`${tableName}_id_index\` on \`${tableName}\` (\`${column.name}\`)
+      create index \`${tableName}_${column.name}_index\` on \`${tableName}\` (\`${column.name}\`)
     `,
       )
       .toQuery()
 
-    this.addQueries(query)
+    const unique = this.knex
+      .raw(
+        `
+      create unique index \`${tableName}_${column.name}_unique\` on \`${tableName}\` (\`${column.name}\`)
+      `,
+      )
+      .toQuery()
+
+    this.addQueries(index, unique)
 
     return this
   }
