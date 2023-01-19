@@ -161,7 +161,16 @@ describe('UnderlyingColumn', () => {
       })
 
       const info = await knex(tableName).columnInfo()
-      expect(info).toMatchInlineSnapshot()
+      expect(info).toMatchInlineSnapshot(`
+        {
+          "fld1": {
+            "defaultValue": null,
+            "maxLength": null,
+            "nullable": true,
+            "type": "json",
+          },
+        }
+      `)
     })
   })
 })

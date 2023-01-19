@@ -154,6 +154,6 @@ describe('UnderlyingColumnBuilder', () => {
       builder.createUnderlying([TreeField.create({ id: 'fldid', name: 'name', key: 'undelying table', type: 'tree' })])
     })
 
-    expect(sb.toQuery()).toMatchInlineSnapshot()
+    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`fldid` json)"')
   })
 })
