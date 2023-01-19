@@ -4,6 +4,7 @@ import { BoolFieldValue } from './bool-field-value'
 import type { BoolFieldType, ICreateBoolFieldInput, ICreateBoolFieldValue } from './bool-field.type'
 import { BaseField } from './field.base'
 import type { IBoolField } from './field.type'
+import type { IFieldVisitor } from './field.visitor'
 import { FieldId, FieldKey, FieldName, FieldValueConstraints } from './value-objects'
 
 export class BoolField extends BaseField<IBoolField> {
@@ -34,5 +35,9 @@ export class BoolField extends BaseField<IBoolField> {
 
   createFilter(operator: IBoolFilterOperator, value: boolean | null): IBoolFilter {
     return { operator, value, path: this.id.value, type: 'bool' }
+  }
+
+  accept(visitor: IFieldVisitor): void {
+    visitor.bool(this)
   }
 }

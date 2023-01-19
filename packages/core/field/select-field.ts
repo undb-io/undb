@@ -5,6 +5,7 @@ import { OptionKey } from '../option'
 import { Options } from '../option/options'
 import { BaseField } from './field.base'
 import type { ISelectField } from './field.type'
+import type { IFieldVisitor } from './field.visitor'
 import { SelectFieldValue } from './select-field-value'
 import type { ICreateSelectFieldSchema, ICreateSelectFieldValue, SelectFieldType } from './select-field.type'
 import { WithNewOption, WithOption, WithOptions, WithoutOption } from './specifications/select-field.specification'
@@ -76,5 +77,9 @@ export class SelectField extends BaseField<ISelectField> {
     const option = this.options.getById(value).unwrap()
 
     return SelectFieldValue.fromOption(option)
+  }
+
+  accept(visitor: IFieldVisitor): void {
+    visitor.select(this)
   }
 }

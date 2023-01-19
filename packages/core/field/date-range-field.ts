@@ -9,6 +9,7 @@ import type {
 } from './date-range-field.type'
 import { BaseField } from './field.base'
 import type { IDateRangeField } from './field.type'
+import type { IFieldVisitor } from './field.visitor'
 import { FieldId, FieldKey, FieldName, FieldValueConstraints } from './value-objects'
 
 export class DateRangeField extends BaseField<IDateRangeField> {
@@ -40,5 +41,9 @@ export class DateRangeField extends BaseField<IDateRangeField> {
 
   createFilter(operator: IDateRangeFilterOperator, value: IDateRangeFieldValue | null): IDateRangeFilter {
     return { operator, value, path: this.id.value, type: 'date-range' }
+  }
+
+  accept(visitor: IFieldVisitor): void {
+    visitor.dateRange(this)
   }
 }

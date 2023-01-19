@@ -2,6 +2,7 @@ import type { INumberFilter, INumberFilterOperator } from '../filter/number.filt
 import { Currency } from './currency'
 import { BaseField } from './field.base'
 import type { INumberField } from './field.type'
+import type { IFieldVisitor } from './field.visitor'
 import { NumberFieldValue } from './number-field-value'
 import type { ICreateNumberFieldInput, ICreateNumberFieldValue, NumberType } from './number-field.type'
 import { FieldId, FieldKey, FieldName, FieldValueConstraints } from './value-objects'
@@ -37,5 +38,9 @@ export class NumberField extends BaseField<INumberField> {
 
   createFilter(operator: INumberFilterOperator, value: number | null): INumberFilter {
     return { operator, value, path: this.id.value, type: 'number' }
+  }
+
+  accept(visitor: IFieldVisitor): void {
+    visitor.number(this)
   }
 }
