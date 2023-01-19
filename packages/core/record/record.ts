@@ -1,8 +1,9 @@
 import { DateVO } from '@egodb/domain'
 import type { TableId, TableSchema } from '../value-objects'
+import { RecordFactory } from './record.factory'
 import type { IInternalRecordValues, IMutateRecordValueSchema, RecordAllValues } from './record.schema'
 import { createRecordInputs } from './record.utils'
-import { WithRecordValues } from './specifications'
+import { WithRecordId, WithRecordTableId, WithRecordValues } from './specifications'
 import type { RecordCompositeSpecification } from './specifications/interface'
 import { RecordId, RecordValues } from './value-objects'
 
@@ -41,5 +42,13 @@ export class Record {
     spec.mutate(this)
 
     return spec
+  }
+
+  duplicate(): Record {
+    return RecordFactory.create(
+      new WithRecordId(RecordId.create())
+        .and(new WithRecordTableId(this.tableId))
+        .and(new WithRecordValues(this.values)),
+    ).unwrap()
   }
 }
