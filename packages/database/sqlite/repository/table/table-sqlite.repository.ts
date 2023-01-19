@@ -2,9 +2,9 @@ import type { ITableRepository, ITableSpec, IUnderlyingTableManager, Table as Co
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
-import { Option as OptionEntity, SelectField, Table, Table as TableEntity } from '../../entity'
-import { FieldFactory } from '../../entity/field.factory'
+import { Table, Table as TableEntity } from '../../entity'
 import { View as ViewEntity } from '../../entity/view'
+import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor'
 import { TableSqliteMapper } from './table-sqlite.mapper'
 import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor'
 
@@ -31,17 +31,9 @@ export class TableSqliteRepository implements ITableRepository {
       const tableEntity = new TableEntity(table)
 
       for (const field of table.schema.fields) {
-        const fieldEntity = FieldFactory.create(tableEntity, field)
-        if (fieldEntity instanceof SelectField && field.type === 'select') {
-          for (const option of field.options.options) {
-            const optionEntity = new OptionEntity(fieldEntity, option)
-            em.persist(optionEntity)
-          }
-        }
-
-        if (fieldEntity) {
-          em.persist(fieldEntity)
-        }
+        const visitor = new TableSqliteFieldVisitor(tableEntity, em)
+        field.accept(visitor)
+        await visitor.commit()
       }
 
       for (const view of table.views.views ?? []) {

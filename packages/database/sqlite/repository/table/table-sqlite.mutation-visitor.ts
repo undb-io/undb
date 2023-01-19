@@ -1,6 +1,5 @@
 import type {
   ITableSpecVisitor,
-  ReferenceField,
   WithCalendarField,
   WithDisplayType,
   WithFieldOption,
@@ -19,14 +18,11 @@ import type {
   WithTableViews,
   WithViewFieldsOrder,
 } from '@egodb/core'
-import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
 import { Field, Option, SelectField, Table } from '../../entity'
-import { FieldFactory } from '../../entity/field.factory'
 import { View } from '../../entity/view'
-import { M2M_CHILD_ID_FIELD, M2M_PARENG_ID_FIELD } from '../../underlying-table/constants'
-import { UnderlyingM2MTable } from '../../underlying-table/underlying-table'
+import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor'
 
 export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   private jobs: (() => Promise<void>)[] = []
@@ -47,24 +43,6 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
     return this.em.getReference(Field, id)
   }
 
-  private handlerNewReferenceField(field: ReferenceField) {
-    const underlyingTable = new UnderlyingM2MTable(this.tableId, field)
-    const refenrenceTableName = underlyingTable.name
-
-    this.jobs.push(async () => {
-      const query = this.em
-        .getKnex()
-        .schema.createTable(refenrenceTableName, (tb) => {
-          tb.string(M2M_CHILD_ID_FIELD).notNullable().references(INTERNAL_COLUMN_ID_NAME).inTable(this.tableId)
-          tb.string(M2M_PARENG_ID_FIELD).notNullable().references(INTERNAL_COLUMN_ID_NAME).inTable(this.tableId)
-          tb.primary([M2M_CHILD_ID_FIELD, M2M_PARENG_ID_FIELD])
-        })
-        .toQuery()
-
-      await this.em.execute(query)
-    })
-  }
-
   idEqual(): void {
     throw new Error('[TableSqliteMutationVisitor.idEqual] Method not implemented.')
   }
@@ -75,11 +53,11 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   }
   schemaEqual(s: WithTableSchema): void {
     const table = this.table
-    wrap(table).assign({ fields: FieldFactory.createMany(table, s.schema.fields) })
-    this.em.persist(table)
+    for (const field of s.schema.fields) {
+      const visitor = new TableSqliteFieldVisitor(table, this.em)
+      field.accept(visitor)
 
-    for (const referenceField of s.schema.referenceFields) {
-      this.handlerNewReferenceField(referenceField)
+      this.jobs.push(async () => visitor.commit())
     }
   }
   viewsEqual(s: WithTableViews): void {
@@ -102,17 +80,13 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
     const table = this.table
     const f = s.field
 
-    if (f.type === 'reference') {
-      this.handlerNewReferenceField(f)
-    }
+    const visitor = new TableSqliteFieldVisitor(table, this.em)
 
-    const field = FieldFactory.create(table, f)
-    if (field) {
-      if (field instanceof SelectField && f.type === 'select') {
-        wrap(field).assign({ options: f.options.options.map((option) => new Option(field, option)) })
-      }
-      this.em.persist(field)
-    }
+    f.accept(visitor)
+
+    this.jobs.push(async () => {
+      await visitor.commit()
+    })
   }
   fieldsOrder(s: WithViewFieldsOrder): void {
     const view = this.getView(s.view.id.value)

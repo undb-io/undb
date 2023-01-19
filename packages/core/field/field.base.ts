@@ -2,6 +2,7 @@ import { ValueObject } from '@egodb/domain'
 import * as z from 'zod'
 import type { IFilter, IOperator } from '../filter'
 import type { IBaseField, IFieldType } from './field.type'
+import type { IFieldVisitor } from './field.visitor'
 import type { FieldId, FieldName } from './value-objects'
 import { valueConstraintsSchema } from './value-objects'
 import { fieldIdSchema } from './value-objects/field-id.schema'
@@ -42,4 +43,6 @@ export abstract class BaseField<C extends IBaseField> extends ValueObject<C> {
   }
 
   abstract createFilter(operator: IOperator, value: unknown): IFilter
+
+  abstract accept(visitor: IFieldVisitor): void
 }

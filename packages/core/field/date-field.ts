@@ -5,6 +5,7 @@ import { DateFieldValue } from './date-field-value'
 import type { DateType, ICreateDateFieldSchema, ICreateDateFieldValue } from './date-field.type'
 import { BaseField } from './field.base'
 import type { IDateField } from './field.type'
+import type { IFieldVisitor } from './field.visitor'
 import { FieldId, FieldKey, FieldName, FieldValueConstraints } from './value-objects'
 
 export class DateField extends BaseField<IDateField> {
@@ -40,5 +41,9 @@ export class DateField extends BaseField<IDateField> {
       v = null
     }
     return { operator, value: v, path: this.id.value, type: 'date' }
+  }
+
+  accept(visitor: IFieldVisitor): void {
+    visitor.date(this)
   }
 }
