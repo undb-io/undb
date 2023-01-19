@@ -10,6 +10,9 @@ exports[`UnderlyingTableBuilder > should build table 1`] = `
 		END;
 	 ",
   "
+      create unique index \`tableId_id_unique\` on \`tableId\` (\`id\`)
+      ",
+  "
       create index \`tableId_id_index\` on \`tableId\` (\`id\`)
     ",
 ]
