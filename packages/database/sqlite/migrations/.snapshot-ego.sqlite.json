@@ -158,7 +158,8 @@
             "select",
             "bool",
             "date-range",
-            "reference"
+            "reference",
+            "tree"
           ],
           "mappedType": "enum"
         }

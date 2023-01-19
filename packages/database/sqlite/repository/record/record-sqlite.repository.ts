@@ -6,7 +6,7 @@ import { Some } from 'oxide.ts'
 import type { RecordValueData } from '../../types/record-value-sqlite.type'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants'
 import { getColumnNames } from '../../underlying-table/underlying-table.utils'
-import { RecordValueSqliteVisitor } from '../values/record-value-sqlite.visitor'
+import { RecordValueSqliteMutationVisitor } from '../values/record-value-sqlite.mutation-visitor'
 import { RecordSqliteMapper } from './record-sqlite.mapper'
 import { RecordSqliteMutationVisitor } from './record-sqlite.mutation-visitor'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
@@ -22,7 +22,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       const queries: string[] = []
 
       for (const [fieldId, value] of record.values) {
-        const visitor = new RecordValueSqliteVisitor(record.tableId.value, fieldId, record.id.value, schema, em)
+        const visitor = new RecordValueSqliteMutationVisitor(record.tableId.value, fieldId, record.id.value, schema, em)
 
         value.accept(visitor)
 

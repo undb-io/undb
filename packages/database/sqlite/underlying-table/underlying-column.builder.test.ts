@@ -6,6 +6,7 @@ import {
   ReferenceField,
   SelectField,
   StringField,
+  TreeField,
 } from '@egodb/core'
 import { Knex } from '@mikro-orm/better-sqlite'
 import { UnderlyingColumnBuilder } from './underlying-column.builder'
@@ -144,5 +145,15 @@ describe('UnderlyingColumnBuilder', () => {
     })
 
     expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`fldid` json)"')
+  })
+
+  test('should create tree column', () => {
+    const sb = knex.schema
+    sb.createTable(tableName, (tb) => {
+      const builder = new UnderlyingColumnBuilder(knex, tb)
+      builder.createUnderlying([TreeField.create({ id: 'fldid', name: 'name', key: 'undelying table', type: 'tree' })])
+    })
+
+    expect(sb.toQuery()).toMatchInlineSnapshot()
   })
 })

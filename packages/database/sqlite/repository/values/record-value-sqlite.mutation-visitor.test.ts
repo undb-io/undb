@@ -1,10 +1,10 @@
 import { createTestTable, DateRangeFieldValue, ReferenceFieldValue, Table, WithTableSchema } from '@egodb/core'
 import { EntityManager } from '@mikro-orm/better-sqlite'
 import { addDays } from 'date-fns'
-import { RecordValueSqliteVisitor } from './record-value-sqlite.visitor'
+import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation-visitor'
 
 describe('RecordValueSqliteVisitor', () => {
-  let visitor: RecordValueSqliteVisitor
+  let visitor: RecordValueSqliteMutationVisitor
   let em: EntityManager
   let table: Table
 
@@ -18,7 +18,7 @@ describe('RecordValueSqliteVisitor', () => {
     beforeAll(() => {
       table = createTestTable(WithTableSchema.from([{ id: 'fld1', name: 'range', key: 'range', type: 'date-range' }]))
 
-      visitor = new RecordValueSqliteVisitor(
+      visitor = new RecordValueSqliteMutationVisitor(
         table.id.value,
         table.schema.fieldsIds[0],
         'recordtest',
@@ -47,7 +47,7 @@ describe('RecordValueSqliteVisitor', () => {
         WithTableSchema.from([{ id: 'fld1', name: 'reference', key: 'reference', type: 'reference' }]),
       )
 
-      visitor = new RecordValueSqliteVisitor(
+      visitor = new RecordValueSqliteMutationVisitor(
         table.id.value,
         table.schema.fieldsIds[0],
         'recordtest',

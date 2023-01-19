@@ -7,8 +7,8 @@ import type {
   ReferenceField as CoreReferenceField,
   SelectField as CoreSelectField,
   StringField as CoreStringField,
+  TreeField as CoreTreeField,
 } from '@egodb/core'
-import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
 import type { Table } from '../../entity'
@@ -21,13 +21,12 @@ import {
   ReferenceField,
   SelectField,
   StringField,
+  TreeField,
 } from '../../entity'
-import { M2M_CHILD_ID_FIELD, M2M_PARENG_ID_FIELD } from '../../underlying-table/constants'
-import { UnderlyingM2MTable } from '../../underlying-table/underlying-table'
+import { UnderlyingAdjacencyListTable, UnderlyingClosureTable } from '../../underlying-table/underlying-foreign-table'
 
 export class TableSqliteFieldVisitor implements IFieldVisitor {
   constructor(private readonly table: Table, private readonly em: EntityManager) {}
-
   private queries: string[] = []
 
   public async commit(): Promise<void> {
@@ -76,17 +75,20 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
     const field = new ReferenceField(this.table, value)
     this.em.persist(field)
 
-    const underlyingTable = new UnderlyingM2MTable(this.table.id, value)
-    const refenrenceTableName = underlyingTable.name
+    const adjacencyListTable = new UnderlyingAdjacencyListTable(this.table.id, value)
 
-    const query = this.em
-      .getKnex()
-      .schema.createTable(refenrenceTableName, (tb) => {
-        tb.string(M2M_CHILD_ID_FIELD).notNullable().references(INTERNAL_COLUMN_ID_NAME).inTable(this.table.id)
-        tb.string(M2M_PARENG_ID_FIELD).notNullable().references(INTERNAL_COLUMN_ID_NAME).inTable(this.table.id)
-        tb.primary([M2M_CHILD_ID_FIELD, M2M_PARENG_ID_FIELD])
-      })
-      .toQuery()
+    const query = adjacencyListTable.getCreateTableQuery(this.em.getKnex())
+
+    this.queries.push(query)
+  }
+
+  tree(value: CoreTreeField): void {
+    const field = new TreeField(this.table, value)
+    this.em.persist(field)
+
+    const closureTable = new UnderlyingClosureTable(this.table.id, value)
+
+    const query = closureTable.getCreateTableQuery(this.em.getKnex())
 
     this.queries.push(query)
   }

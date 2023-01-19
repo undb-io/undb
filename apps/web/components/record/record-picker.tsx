@@ -1,11 +1,11 @@
-import type { ReferenceField, Table } from '@egodb/core'
+import type { ReferenceField, Table, TreeField } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
 import type { MultiSelectProps } from '@egodb/ui'
 import { MultiSelect } from '@egodb/ui'
 import { trpc } from '../../trpc'
 
 interface IProps extends Omit<MultiSelectProps, 'data'> {
-  field: ReferenceField
+  field: ReferenceField | TreeField
   table: Table
 }
 export const RecordPicker: React.FC<IProps> = ({ table, field, ...rest }) => {

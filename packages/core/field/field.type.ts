@@ -80,6 +80,17 @@ import {
   stringFieldValue,
   stringTypeSchema,
 } from './string-field.type'
+import type { TreeField } from './tree-field'
+import type { TreeFieldValue } from './tree-field-value'
+import type { ITreeFieldValue } from './tree-field.type'
+import {
+  createTreeFieldSchema,
+  createTreeFieldValue,
+  createTreeFieldValue_internal,
+  treeFieldQuerySchema,
+  treeFieldValue,
+  treeTypeSchema,
+} from './tree-field.type'
 import type { FieldId, FieldKey, FieldName, FieldValueConstraints } from './value-objects'
 import { fieldNameSchema } from './value-objects/field-name.schema'
 
@@ -91,6 +102,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createBoolFieldSchema,
   createDateRangeFieldSchema,
   createReferenceFieldSchema,
+  createTreeFieldSchema,
 ])
 export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
 
@@ -102,6 +114,7 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   boolFieldQuerySchema,
   dateRangeFieldQuerySchema,
   referenceFieldQuerySchema,
+  treeFieldQuerySchema,
 ])
 export type IQueryFieldSchema = z.infer<typeof queryFieldSchema>
 export const querySchemaSchema = z.array(queryFieldSchema)
@@ -115,6 +128,7 @@ export const fieldTypes = z.union([
   boolTypeSchema,
   dateRangeTypeSchema,
   referenceTypeSchema,
+  treeTypeSchema,
 ])
 export type IFieldType = z.infer<typeof fieldTypes>
 
@@ -126,6 +140,7 @@ export const fieldValue = z.union([
   selectFieldValue,
   boolFieldValue,
   referenceFieldValue,
+  treeFieldValue,
 ])
 export type IFieldValue = z.infer<typeof fieldValue>
 
@@ -137,6 +152,7 @@ export const createFieldValueSchema = z.union([
   createSelectFieldValue,
   createBoolFieldValue,
   createReferenceFieldValue,
+  createTreeFieldValue,
 ])
 export type ICreateFieldValue = z.infer<typeof createFieldValueSchema>
 
@@ -151,6 +167,7 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createBoolFieldValue_internal,
   createDateRangeFieldValue_internal,
   createReferenceFieldValue_internal,
+  createTreeFieldValue_internal,
 ])
 export type ICreateFieldValueSchema_internal = z.infer<typeof createFieldValueSchema_internal>
 
@@ -177,8 +194,17 @@ export type ISelectField = IBaseField & {
 
 export type IBoolField = IBaseField
 export type IReferenceField = IBaseField
+export type ITreeField = IBaseField
 
-export type Field = StringField | NumberField | DateField | SelectField | BoolField | DateRangeField | ReferenceField
+export type Field =
+  | StringField
+  | NumberField
+  | DateField
+  | SelectField
+  | BoolField
+  | DateRangeField
+  | ReferenceField
+  | TreeField
 
 export type FieldValue =
   | StringFieldValue
@@ -188,6 +214,8 @@ export type FieldValue =
   | BoolFieldValue
   | DateRangeFieldValue
   | ReferenceFieldValue
+  | TreeFieldValue
+
 export type FieldValues = FieldValue[]
 
 export type UnpackedFieldValue =
@@ -198,8 +226,10 @@ export type UnpackedFieldValue =
   | IBoolFieldValue
   | IDateRangeFieldValue
   | IReferenceFilterValue
+  | ITreeFieldValue
 
 export const INTERNAL_COLUMN_ID_NAME = 'id'
 export const INTERNAL_INCREAMENT_ID_NAME = 'auto_increment'
 export const INTERNAL_COLUMN_CREATED_AT_NAME = 'created_at'
 export const INTERNAL_COLUMN_UPDATED_AT_NAME = 'updated_at'
+export const INTERNAL_COLUMN_PARENT_ID_NAME = 'parent_id'

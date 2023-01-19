@@ -5,6 +5,7 @@ import type { NumberField } from './number-field'
 import type { ReferenceField } from './reference-field'
 import type { SelectField } from './select-field'
 import type { StringField } from './string-field'
+import type { TreeField } from './tree-field'
 
 export interface IFieldVisitor {
   string(value: StringField): void
@@ -14,4 +15,5 @@ export interface IFieldVisitor {
   dateRange(value: DateRangeField): void
   select(value: SelectField): void
   reference(value: ReferenceField): void
+  tree(value: TreeField): void
 }
