@@ -178,13 +178,8 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
           position: 'relative',
           userSelect: 'none',
           backgroundColor: theme.white,
-
-          ':last-child': {
-            border: '1px red solid',
-          },
         },
         'tbody tr': {
-          transition: '0.22s',
           cursor: 'pointer',
         },
         'tbody tr td': {
@@ -195,7 +190,8 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
           },
         },
         'tbody tr:hover td:last-child': {
-          // backgroundColor: theme.white,
+          cursor: 'unset',
+          backgroundColor: theme.white,
         },
       })}
     >
