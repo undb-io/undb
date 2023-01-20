@@ -3,6 +3,7 @@ export * from './emotion'
 
 export * from './Alert'
 export * from './Accordion'
+export * from './Autocomplete'
 export * from './Icon'
 export * from './Overlay'
 export * from './Table'

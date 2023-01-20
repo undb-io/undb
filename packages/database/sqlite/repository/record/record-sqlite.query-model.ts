@@ -1,4 +1,4 @@
-import type { IQueryRecordSchema, IRecordQueryModel, IRecordSpec, QueryRecords, TableSchemaIdMap } from '@egodb/core'
+import type { IQueryRecords, IQueryRecordSchema, IRecordQueryModel, IRecordSpec, TableSchemaIdMap } from '@egodb/core'
 import { WithRecordId } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { Option } from 'oxide.ts'
@@ -9,7 +9,7 @@ import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
 export class RecordSqliteQueryModel implements IRecordQueryModel {
   constructor(protected readonly em: EntityManager) {}
 
-  async find(spec: IRecordSpec, schema: TableSchemaIdMap): Promise<QueryRecords> {
+  async find(spec: IRecordSpec, schema: TableSchemaIdMap): Promise<IQueryRecords> {
     const knex = this.em.getKnex()
     const qb = knex.queryBuilder()
 
@@ -41,5 +41,9 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
 
   findOneById(id: string, schema: TableSchemaIdMap): Promise<Option<IQueryRecordSchema>> {
     return this.findOne(WithRecordId.fromString(id), schema)
+  }
+
+  findTreeAvailable(spec: IRecordSpec, schema: TableSchemaIdMap): Promise<IQueryRecords> {
+    throw new Error('Method not implemented.')
   }
 }

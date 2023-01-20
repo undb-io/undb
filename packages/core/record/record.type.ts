@@ -25,3 +25,6 @@ export const queryRecordSchema = z.object({
   values: queryRecordValues,
 })
 export type IQueryRecordSchema = z.infer<typeof queryRecordSchema>
+
+export const queryRecords = z.array(queryRecordSchema)
+export type IQueryRecords = z.infer<typeof queryRecords>

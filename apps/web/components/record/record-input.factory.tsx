@@ -3,7 +3,8 @@ import type { Table } from '@egodb/core'
 import { NumberInput, DatePicker, DateRangePicker, Checkbox, TextInput } from '@egodb/ui'
 import React from 'react'
 import { Controller } from 'react-hook-form'
-import { FieldInputLabel } from '../fields/field-input-label'
+import { FieldInputLabel } from '../field-inputs/field-input-label'
+import { TreeRecordsPicker } from '../field-inputs/tree-records-picker'
 import { OptionPicker } from '../option/option-picker'
 import { RecordPicker } from './record-picker'
 
@@ -101,13 +102,12 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field }) => 
     )
   }
 
-  // TODO: 限制选择的范围
   if (field.type === 'tree') {
     return (
       <Controller
         name={name}
         render={(form) => (
-          <RecordPicker
+          <TreeRecordsPicker
             field={field}
             table={table}
             label={label}

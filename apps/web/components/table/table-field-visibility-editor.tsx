@@ -1,6 +1,6 @@
 import { Badge, Button, Checkbox, Group, IconEye, Popover, Stack, useDisclosure } from '@egodb/ui'
 import { trpc } from '../../trpc'
-import { FieldIcon } from '../fields/field-Icon'
+import { FieldIcon } from '../field-inputs/field-Icon'
 import type { ITableBaseProps } from './table-base-props'
 
 export const TableFieldVisibilityEditor: React.FC<ITableBaseProps> = ({ table }) => {

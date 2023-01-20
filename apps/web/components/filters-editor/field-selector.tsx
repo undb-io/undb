@@ -1,7 +1,7 @@
 import type { Field, Table } from '@egodb/core'
 import { Select } from '@egodb/ui'
-import { FieldIcon } from '../fields/field-Icon'
-import { FieldItem } from '../fields/field-item'
+import { FieldIcon } from '../field-inputs/field-Icon'
+import { FieldItem } from '../field-inputs/field-item'
 interface IProps {
   schema: Table['schema']
   value: Field | null

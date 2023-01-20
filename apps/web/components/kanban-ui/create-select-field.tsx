@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { useForm } from 'react-hook-form'
 import { trpc } from '../../trpc'
-import { SelectFieldControl } from '../fields/select-field-control'
+import { SelectFieldControl } from '../field-inputs/select-field-control'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { kanbanStepZeroAtom } from './kanban-step.atom'
 
