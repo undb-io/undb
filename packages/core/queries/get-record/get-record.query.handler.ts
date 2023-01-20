@@ -10,7 +10,7 @@ export class GetRecordQueryHandler implements IQueryHandler<GetRecordQuery, IGet
   async execute(query: GetRecordQuery): Promise<IGetRecordOutput> {
     const table = (await this.tableRepo.findOneById(query.tableId)).unwrap()
 
-    const record = (await this.rm.findOneById(query.id, table.schema.toIdMap())).into()
+    const record = (await this.rm.findOneById(table.id.value, query.id, table.schema.toIdMap())).into()
 
     return record
   }

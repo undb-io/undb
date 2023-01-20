@@ -4,5 +4,5 @@ export type IUderlyingForeignTableName = `${string}_adjacency_list` | `${string}
 
 export interface IUnderlyingForeignTable {
   get name(): IUderlyingForeignTableName
-  getCreateTableQuery(knex: Knex): string
+  getSqls(knex: Knex): string[]
 }

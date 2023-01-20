@@ -136,7 +136,7 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
             insert into ${closure.name}(${parentId}, ${childId}, ${depth})
 select p.${parentId}, c.${childId}, p.${depth}+c.${depth}+1
   from ${closure.name} as p, ${closure.name} as c
- where p.${childId}='${this.recordId}' and c.${parentId}='${recordId} on conflict replace'
+ where p.${childId}='${this.recordId}' and c.${parentId}='${recordId}'
  `,
             )
             .toQuery()

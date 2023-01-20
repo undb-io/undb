@@ -4,7 +4,7 @@ import type { IQueryRecords, IQueryRecordSchema } from './record.type'
 import type { IRecordSpec } from './specifications'
 
 export interface IRecordQueryModel {
-  findOne(spec: IRecordSpec, schema: TableSchemaIdMap): Promise<Option<IQueryRecordSchema>>
-  findOneById(id: string, schema: TableSchemaIdMap): Promise<Option<IQueryRecordSchema>>
-  find(spec: IRecordSpec, schema: TableSchemaIdMap): Promise<IQueryRecords>
+  findOne(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap): Promise<Option<IQueryRecordSchema>>
+  findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<IQueryRecordSchema>>
+  find(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap): Promise<IQueryRecords>
 }

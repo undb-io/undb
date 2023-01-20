@@ -39,12 +39,13 @@ export class RecordSqliteRepository implements IRecordRepository {
   }
 
   async findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<CoreRecord>> {
-    const qb = this.em.getKnex().queryBuilder()
+    const knex = this.em.getKnex()
+    const qb = knex.queryBuilder()
     const spec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
 
     qb.select(getColumnNames([...schema.values()]))
 
-    const qv = new RecordSqliteQueryVisitor(qb)
+    const qv = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
     spec.accept(qv)
 
     const data = await this.em.execute(qb.first())
@@ -55,9 +56,10 @@ export class RecordSqliteRepository implements IRecordRepository {
 
   async updateOneById(tableId: string, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void> {
     await this.em.transactional(async (em) => {
-      const qb = em.getKnex().queryBuilder()
+      const knex = em.getKnex()
+      const qb = knex.queryBuilder()
 
-      const qv = new RecordSqliteQueryVisitor(qb)
+      const qv = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
       WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id)).accept(qv)
 
       const mv = new RecordSqliteMutationVisitor(tableId, id, schema, em, qb)

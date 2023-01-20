@@ -6,7 +6,7 @@ import { Controller } from 'react-hook-form'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { TreeRecordsPicker } from '../field-inputs/tree-records-picker'
 import { OptionPicker } from '../option/option-picker'
-import { RecordPicker } from './record-picker'
+import { ReferenceRecordPicker } from '../field-inputs/reference-record-picker'
 
 interface IProps {
   table: Table
@@ -90,7 +90,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field }) => 
       <Controller
         name={name}
         render={(form) => (
-          <RecordPicker
+          <ReferenceRecordPicker
             field={field}
             table={table}
             label={label}

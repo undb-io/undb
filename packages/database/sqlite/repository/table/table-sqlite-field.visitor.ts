@@ -77,9 +77,9 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
 
     const adjacencyListTable = new UnderlyingAdjacencyListTable(this.table.id, value)
 
-    const query = adjacencyListTable.getCreateTableQuery(this.em.getKnex())
+    const queries = adjacencyListTable.getSqls(this.em.getKnex())
 
-    this.queries.push(query)
+    this.queries.push(...queries)
   }
 
   tree(value: CoreTreeField): void {
@@ -88,8 +88,7 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
 
     const closureTable = new UnderlyingClosureTable(this.table.id, value)
 
-    const query = closureTable.getCreateTableQuery(this.em.getKnex())
-
-    this.queries.push(query)
+    const queries = closureTable.getSqls(this.em.getKnex())
+    this.queries.push(...queries)
   }
 }

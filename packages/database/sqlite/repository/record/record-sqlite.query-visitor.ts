@@ -22,21 +22,33 @@ import type {
   StringEqual,
   StringRegex,
   StringStartsWith,
+  TableSchemaIdMap,
+  TreeAvailableSpec,
   WithRecordCreatedAt,
   WithRecordId,
   WithRecordTableId,
   WithRecordUpdatedAt,
   WithRecordValues,
 } from '@egodb/core'
-import { INTERNAL_COLUMN_CREATED_AT_NAME, INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
+import {
+  INTERNAL_COLUMN_CREATED_AT_NAME,
+  INTERNAL_COLUMN_ID_NAME,
+  INTERNAL_COLUMN_UPDATED_AT_NAME,
+  TreeField,
+} from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import { endOfDay, startOfDay } from 'date-fns'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants'
+import { UnderlyingClosureTable } from '../../underlying-table/underlying-foreign-table'
 
 export class RecordSqliteQueryVisitor implements IRecordVisitor {
-  public tableId!: string
-  constructor(private qb: Knex.QueryBuilder) {
-    this.qb = this.qb.whereNull(INTERNAL_COLUMN_DELETED_AT_NAME)
+  constructor(
+    private readonly tableId: string,
+    private readonly schema: TableSchemaIdMap,
+    private qb: Knex.QueryBuilder,
+    private knex: Knex,
+  ) {
+    this.qb = qb.from(tableId).whereNull(INTERNAL_COLUMN_DELETED_AT_NAME)
   }
   get query() {
     return this.qb.toQuery()
@@ -46,7 +58,6 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     this.qb.where({ [INTERNAL_COLUMN_ID_NAME]: s.id.value })
   }
   tableIdEqual(s: WithRecordTableId): void {
-    this.tableId = s.id.value
     this.qb.from(s.id.value)
   }
   createdAt(s: WithRecordCreatedAt): void {
@@ -159,6 +170,22 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   }
   referenceEqual(s: ReferenceEqual): void {
     this.qb.where(s.fieldId, s.value.unpack() ? s.value.unpack() : JSON.stringify(s.value.unpack()))
+  }
+
+  treeAvailable(s: TreeAvailableSpec): void {
+    const field = this.schema.get(s.fielId)
+    if (!(field instanceof TreeField)) return
+
+    const closureTable = new UnderlyingClosureTable(this.tableId, field)
+    this.qb.whereNotIn(
+      INTERNAL_COLUMN_ID_NAME,
+      this.knex
+        .queryBuilder()
+        .from(closureTable.name)
+        .select(UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD)
+        .where(UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD, '>', 0)
+        .distinct(),
+    )
   }
 
   not(): this {
