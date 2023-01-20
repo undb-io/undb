@@ -42,8 +42,4 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
   findOneById(id: string, schema: TableSchemaIdMap): Promise<Option<IQueryRecordSchema>> {
     return this.findOne(WithRecordId.fromString(id), schema)
   }
-
-  findTreeAvailable(spec: IRecordSpec, schema: TableSchemaIdMap): Promise<IQueryRecords> {
-    throw new Error('Method not implemented.')
-  }
 }
