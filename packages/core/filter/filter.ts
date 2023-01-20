@@ -2,6 +2,7 @@ import type { CompositeSpecification } from '@egodb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
+import { DateFieldValue, NumberFieldValue, SelectFieldValue, StringFieldValue } from '../field'
 import type { ISelectFieldValue } from '../field/select-field.type'
 import {
   BoolIsFalse,
@@ -130,19 +131,19 @@ const convertStringFilter = (filter: IStringFilter): Option<CompositeSpecificati
 
   switch (filter.operator) {
     case '$eq': {
-      return Some(new StringEqual(filter.path, filter.value))
+      return Some(new StringEqual(filter.path, new StringFieldValue(filter.value)))
     }
     case '$neq': {
-      return Some(new StringEqual(filter.path, filter.value).not())
+      return Some(new StringEqual(filter.path, new StringFieldValue(filter.value)).not())
     }
     case '$contains': {
-      return Some(new StringContain(filter.path, filter.value))
+      return Some(new StringContain(filter.path, new StringFieldValue(filter.value)))
     }
     case '$starts_with': {
-      return Some(new StringStartsWith(filter.path, filter.value))
+      return Some(new StringStartsWith(filter.path, new StringFieldValue(filter.value)))
     }
     case '$ends_with': {
-      return Some(new StringEndsWith(filter.path, filter.value))
+      return Some(new StringEndsWith(filter.path, new StringFieldValue(filter.value)))
     }
 
     default:
@@ -157,22 +158,22 @@ const convertNumberFilter = (filter: INumberFilter): Option<CompositeSpecificati
 
   switch (filter.operator) {
     case '$eq': {
-      return Some(new NumberEqual(filter.path, filter.value))
+      return Some(new NumberEqual(filter.path, new NumberFieldValue(filter.value)))
     }
     case '$neq': {
-      return Some(new NumberEqual(filter.path, filter.value).not())
+      return Some(new NumberEqual(filter.path, new NumberFieldValue(filter.value)).not())
     }
     case '$gt': {
-      return Some(new NumberGreaterThan(filter.path, filter.value))
+      return Some(new NumberGreaterThan(filter.path, new NumberFieldValue(filter.value)))
     }
     case '$gte': {
-      return Some(new NumberGreaterThanOrEqual(filter.path, filter.value))
+      return Some(new NumberGreaterThanOrEqual(filter.path, new NumberFieldValue(filter.value)))
     }
     case '$lt': {
-      return Some(new NumberLessThan(filter.path, filter.value))
+      return Some(new NumberLessThan(filter.path, new NumberFieldValue(filter.value)))
     }
     case '$lte': {
-      return Some(new NumberLessThanOrEqual(filter.path, filter.value))
+      return Some(new NumberLessThanOrEqual(filter.path, new NumberFieldValue(filter.value)))
     }
     default:
       return None
@@ -186,16 +187,26 @@ const convertSelectFilter = (filter: ISelectFilter): Option<CompositeSpecificati
 
   switch (filter.operator) {
     case '$eq': {
-      return Some(new SelectEqual(filter.path, filter.value as ISelectFieldValue))
+      return Some(new SelectEqual(filter.path, new SelectFieldValue(filter.value as ISelectFieldValue)))
     }
     case '$neq': {
-      return Some(new SelectEqual(filter.path, filter.value as ISelectFieldValue).not())
+      return Some(new SelectEqual(filter.path, new SelectFieldValue(filter.value as ISelectFieldValue)).not())
     }
     case '$in': {
-      return Some(new SelectIn(filter.path, filter.value as ISelectFieldValue[]))
+      return Some(
+        new SelectIn(
+          filter.path,
+          (filter.value as ISelectFieldValue[]).map((v) => new SelectFieldValue(v)),
+        ),
+      )
     }
     case '$nin': {
-      return Some(new SelectIn(filter.path, filter.value as ISelectFieldValue[]).not())
+      return Some(
+        new SelectIn(
+          filter.path,
+          (filter.value as ISelectFieldValue[]).map((v) => new SelectFieldValue(v)),
+        ).not(),
+      )
     }
 
     default: {
@@ -222,9 +233,9 @@ const convertBoolFilter = (filter: IBoolFilter): Option<CompositeSpecification> 
 const convertDateRangeFilter = (filter: IDateRangeFilter): Option<CompositeSpecification> => {
   switch (filter.operator) {
     case $eq.value:
-      return Some(new DateRangeEqual(filter.path, filter.value))
+      return Some(DateRangeEqual.from(filter.path, filter.value))
     case $neq.value:
-      return Some(new DateRangeEqual(filter.path, filter.value).not())
+      return Some(DateRangeEqual.from(filter.path, filter.value).not())
 
     default:
       return None
@@ -242,22 +253,22 @@ const convertDateFilter = (filter: IDateFilter): Option<CompositeSpecification> 
 
   switch (filter.operator) {
     case '$eq': {
-      return Some(new DateEqual(filter.path, filter.value))
+      return Some(new DateEqual(filter.path, new DateFieldValue(filter.value)))
     }
     case '$neq': {
-      return Some(new DateEqual(filter.path, filter.value).not())
+      return Some(new DateEqual(filter.path, new DateFieldValue(filter.value)).not())
     }
     case '$gt': {
-      return Some(new DateGreaterThan(filter.path, filter.value))
+      return Some(new DateGreaterThan(filter.path, new DateFieldValue(filter.value)))
     }
     case '$gte': {
-      return Some(new DateGreaterThanOrEqual(filter.path, filter.value))
+      return Some(new DateGreaterThanOrEqual(filter.path, new DateFieldValue(filter.value)))
     }
     case '$lt': {
-      return Some(new DateLessThan(filter.path, filter.value))
+      return Some(new DateLessThan(filter.path, new DateFieldValue(filter.value)))
     }
     case '$lte': {
-      return Some(new DateLessThanOrEqual(filter.path, filter.value))
+      return Some(new DateLessThanOrEqual(filter.path, new DateFieldValue(filter.value)))
     }
     default:
       return None

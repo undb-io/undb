@@ -23,7 +23,7 @@ test('should create bool field value with false', () => {
 })
 
 test('T', () => {
-  const value = BoolFieldValue.T()
+  const value = BoolFieldValue.T
   expect(value).toMatchInlineSnapshot(`
     BoolFieldValue {
       "props": {
@@ -34,7 +34,7 @@ test('T', () => {
 })
 
 test('F', () => {
-  const value = BoolFieldValue.F()
+  const value = BoolFieldValue.F
   expect(value).toMatchInlineSnapshot(`
     BoolFieldValue {
       "props": {

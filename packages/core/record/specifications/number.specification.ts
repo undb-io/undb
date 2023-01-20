@@ -1,25 +1,14 @@
-import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import { NumberFieldValue } from '../../field/number-field-value'
 import type { Record } from '../record'
 import type { IRecordVisitor } from './interface'
+import { BaseRecordSpecification } from './record-specification.base'
 
-abstract class BaseNumberSpecification extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(readonly fieldId: string, readonly value: number) {
-    super()
-  }
-
-  mutate(r: Record): Result<Record, string> {
-    const numberValue = new NumberFieldValue(this.value)
-    r.values.setValue(this.fieldId, numberValue)
-    return Ok(r)
-  }
-}
-
-export class NumberEqual extends BaseNumberSpecification {
+export class NumberEqual extends BaseRecordSpecification<NumberFieldValue> {
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getNumberValue(this.fieldId).mapOr(false, (value) => value === this.value)
+    const value = r.values.value.get(this.fieldId)
+    return value instanceof NumberFieldValue && value.equals(this.value)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -28,9 +17,13 @@ export class NumberEqual extends BaseNumberSpecification {
   }
 }
 
-export class NumberGreaterThan extends BaseNumberSpecification {
+export class NumberGreaterThan extends BaseRecordSpecification<NumberFieldValue> {
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getNumberValue(this.fieldId).mapOr(false, (value) => value > this.value)
+    const value = r.values.value.get(this.fieldId)
+    if (!(value instanceof NumberFieldValue)) return false
+    const n1 = value.unpack()
+    const n2 = this.value.unpack()
+    return n1 !== null && n2 !== null && n1 > n2
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -39,9 +32,13 @@ export class NumberGreaterThan extends BaseNumberSpecification {
   }
 }
 
-export class NumberLessThan extends BaseNumberSpecification {
+export class NumberLessThan extends BaseRecordSpecification<NumberFieldValue> {
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getNumberValue(this.fieldId).mapOr(false, (value) => value < this.value)
+    const value = r.values.value.get(this.fieldId)
+    if (!(value instanceof NumberFieldValue)) return false
+    const n1 = value.unpack()
+    const n2 = this.value.unpack()
+    return n1 !== null && n2 !== null && n1 < n2
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -50,9 +47,13 @@ export class NumberLessThan extends BaseNumberSpecification {
   }
 }
 
-export class NumberGreaterThanOrEqual extends BaseNumberSpecification {
+export class NumberGreaterThanOrEqual extends BaseRecordSpecification<NumberFieldValue> {
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getNumberValue(this.fieldId).mapOr(false, (value) => value >= this.value)
+    const value = r.values.value.get(this.fieldId)
+    if (!(value instanceof NumberFieldValue)) return false
+    const n1 = value.unpack()
+    const n2 = this.value.unpack()
+    return n1 !== null && n2 !== null && n1 >= n2
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -61,9 +62,13 @@ export class NumberGreaterThanOrEqual extends BaseNumberSpecification {
   }
 }
 
-export class NumberLessThanOrEqual extends BaseNumberSpecification {
+export class NumberLessThanOrEqual extends BaseRecordSpecification<NumberFieldValue> {
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getNumberValue(this.fieldId).mapOr(false, (value) => value <= this.value)
+    const value = r.values.value.get(this.fieldId)
+    if (!(value instanceof NumberFieldValue)) return false
+    const n1 = value.unpack()
+    const n2 = this.value.unpack()
+    return n1 !== null && n2 !== null && n1 <= n2
   }
 
   accept(v: IRecordVisitor): Result<void, string> {

@@ -2,23 +2,27 @@ import {
   BoolIsFalse,
   BoolIsTrue,
   DateEqual,
+  DateFieldValue,
   DateGreaterThan,
   DateGreaterThanOrEqual,
   DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
   DateRangeEqual,
-  NullSpecification,
+  DateRangeFieldValue,
   NumberEqual,
+  NumberFieldValue,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
   NumberLessThan,
   NumberLessThanOrEqual,
   SelectEqual,
+  SelectFieldValue,
   SelectIn,
   StringContain,
   StringEndsWith,
   StringEqual,
+  StringFieldValue,
   StringStartsWith,
   WithRecordCreatedAt,
   WithRecordId,
@@ -76,123 +80,123 @@ describe('RecordSqliteQueryVisitor', () => {
   })
 
   test('stringEqual', () => {
-    visitor.stringEqual(new StringEqual('fieldId', 'value'))
+    visitor.stringEqual(new StringEqual('fieldId', new StringFieldValue('value')))
     expect(visitor.query).toMatchInlineSnapshot('"select * where `deleted_at` is null and `fieldId` = \'value\'"')
-    visitor.stringEqual(new StringEqual('fieldId', null))
+    visitor.stringEqual(new StringEqual('fieldId', new StringFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and `fieldId` = \'value\' and `fieldId` is null"',
     )
   })
 
   test('stringContain', () => {
-    visitor.stringContain(new StringContain('fieldId', 'value'))
+    visitor.stringContain(new StringContain('fieldId', new StringFieldValue('value')))
     expect(visitor.query).toMatchInlineSnapshot('"select * where `deleted_at` is null and fieldId like \'%`value`%\'"')
-    visitor.stringContain(new StringContain('fieldId', null))
+    visitor.stringContain(new StringContain('fieldId', new StringFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and fieldId like \'%`value`%\' and `fieldId` is null"',
     )
   })
 
   test('stringStartsWith', () => {
-    visitor.stringStartsWith(new StringStartsWith('fieldId', 'value'))
+    visitor.stringStartsWith(new StringStartsWith('fieldId', new StringFieldValue('value')))
     expect(visitor.query).toMatchInlineSnapshot('"select * where `deleted_at` is null and fieldId like \'`value`%\'"')
 
-    visitor.stringStartsWith(new StringStartsWith('fieldId', null))
+    visitor.stringStartsWith(new StringStartsWith('fieldId', new StringFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and fieldId like \'`value`%\' and `fieldId` is null"',
     )
   })
 
   test('stringEndsWith', () => {
-    visitor.stringEndsWith(new StringEndsWith('fieldId', 'value'))
+    visitor.stringEndsWith(new StringEndsWith('fieldId', new StringFieldValue('value')))
     expect(visitor.query).toMatchInlineSnapshot('"select * where `deleted_at` is null and fieldId like \'%`value`\'"')
 
-    visitor.stringEndsWith(new StringEndsWith('fieldId', null))
+    visitor.stringEndsWith(new StringEndsWith('fieldId', new StringFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and fieldId like \'%`value`\' and `fieldId` is null"',
     )
   })
 
   test('numberEqual', () => {
-    visitor.numberEqual(new NumberEqual('fieldId', 1000))
+    visitor.numberEqual(new NumberEqual('fieldId', new NumberFieldValue(1000)))
     expect(visitor.query).toMatchInlineSnapshot('"select * where `deleted_at` is null and `fieldId` = 1000"')
   })
 
   test('numberGreaterThan', () => {
-    visitor.numberGreaterThan(new NumberGreaterThan('fieldId', 1000))
+    visitor.numberGreaterThan(new NumberGreaterThan('fieldId', new NumberFieldValue(1000)))
     expect(visitor.query).toMatchInlineSnapshot('"select * where `deleted_at` is null and `fieldId` > 1000"')
   })
 
   test('numberLessThan', () => {
-    visitor.numberLessThan(new NumberLessThan('fieldId', 1000))
+    visitor.numberLessThan(new NumberLessThan('fieldId', new NumberFieldValue(1000)))
     expect(visitor.query).toMatchInlineSnapshot('"select * where `deleted_at` is null and `fieldId` < 1000"')
   })
 
   test('numberGreaterThanOrEqual', () => {
-    visitor.numberGreaterThanOrEqual(new NumberGreaterThanOrEqual('fieldId', 1000))
+    visitor.numberGreaterThanOrEqual(new NumberGreaterThanOrEqual('fieldId', new NumberFieldValue(1000)))
     expect(visitor.query).toMatchInlineSnapshot('"select * where `deleted_at` is null and `fieldId` >= 1000"')
   })
 
   test('numberLessThanOrEqual', () => {
-    visitor.numberLessThanOrEqual(new NumberLessThanOrEqual('fieldId', 1000))
+    visitor.numberLessThanOrEqual(new NumberLessThanOrEqual('fieldId', new NumberFieldValue(1000)))
     expect(visitor.query).toMatchInlineSnapshot('"select * where `deleted_at` is null and `fieldId` <= 1000"')
   })
 
   test('dateEqual', () => {
-    visitor.dateEqual(new DateEqual('fieldId', date))
+    visitor.dateEqual(new DateEqual('fieldId', new DateFieldValue(date)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and `fieldId` = \\"2022-03-02T00:00:00.000Z\\""',
     )
 
-    visitor.dateEqual(new DateEqual('fieldId', null))
+    visitor.dateEqual(new DateEqual('fieldId', new DateFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and `fieldId` = \\"2022-03-02T00:00:00.000Z\\" and `fieldId` is null"',
     )
   })
 
   test('dateGreaterThan', () => {
-    visitor.dateGreaterThan(new DateGreaterThan('fieldId', date))
+    visitor.dateGreaterThan(new DateGreaterThan('fieldId', new DateFieldValue(date)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and `fieldId` > \\"2022-03-02T00:00:00.000Z\\""',
     )
 
-    visitor.dateGreaterThan(new DateGreaterThan('fieldId', null))
+    visitor.dateGreaterThan(new DateGreaterThan('fieldId', new DateFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and `fieldId` > \\"2022-03-02T00:00:00.000Z\\" and `fieldId` is null"',
     )
   })
 
   test('dateGreaterThanOrEqual', () => {
-    visitor.dateGreaterThanOrEqual(new DateGreaterThanOrEqual('fieldId', date))
+    visitor.dateGreaterThanOrEqual(new DateGreaterThanOrEqual('fieldId', new DateFieldValue(date)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and `fieldId` >= \\"2022-03-02T00:00:00.000Z\\""',
     )
 
-    visitor.dateGreaterThanOrEqual(new DateGreaterThanOrEqual('fieldId', null))
+    visitor.dateGreaterThanOrEqual(new DateGreaterThanOrEqual('fieldId', new DateFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and `fieldId` >= \\"2022-03-02T00:00:00.000Z\\" and `fieldId` is null"',
     )
   })
 
   test('dateLessThan', () => {
-    visitor.dateLessThan(new DateLessThan('fieldId', date))
+    visitor.dateLessThan(new DateLessThan('fieldId', new DateFieldValue(date)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and `fieldId` < \\"2022-03-02T00:00:00.000Z\\""',
     )
 
-    visitor.dateLessThan(new DateLessThan('fieldId', null))
+    visitor.dateLessThan(new DateLessThan('fieldId', new DateFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and `fieldId` < \\"2022-03-02T00:00:00.000Z\\" and `fieldId` is null"',
     )
   })
 
   test('dateLessThanOrEqual', () => {
-    visitor.dateLessThanOrEqual(new DateLessThanOrEqual('fieldId', date))
+    visitor.dateLessThanOrEqual(new DateLessThanOrEqual('fieldId', new DateFieldValue(date)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and `fieldId` <= \\"2022-03-02T00:00:00.000Z\\""',
     )
 
-    visitor.dateLessThanOrEqual(new DateLessThanOrEqual('fieldId', null))
+    visitor.dateLessThanOrEqual(new DateLessThanOrEqual('fieldId', new DateFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and `fieldId` <= \\"2022-03-02T00:00:00.000Z\\" and `fieldId` is null"',
     )
@@ -205,35 +209,37 @@ describe('RecordSqliteQueryVisitor', () => {
     )
   })
 
-  test('null', () => {
-    visitor.null(new NullSpecification('fieldId'))
-    expect(visitor.query).toMatchInlineSnapshot('"select * where `deleted_at` is null and `fieldId` is null"')
-  })
-
   test('dateRangeEqual', () => {
-    visitor.dateRangeEqual(new DateRangeEqual('field', [subDays(new Date(), 1), addDays(new Date(), 1)]))
+    visitor.dateRangeEqual(
+      new DateRangeEqual('field', new DateRangeFieldValue([subDays(new Date(), 1), addDays(new Date(), 1)])),
+    )
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and `field` between \\"2022-03-01T00:00:00.000Z\\" and \\"2022-03-03T00:00:00.000Z\\""',
     )
 
-    visitor.dateRangeEqual(new DateRangeEqual('field', null))
+    visitor.dateRangeEqual(new DateRangeEqual('field', new DateRangeFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and `field` between \\"2022-03-01T00:00:00.000Z\\" and \\"2022-03-03T00:00:00.000Z\\" and `field` is null"',
     )
   })
 
   test('selectEqual', () => {
-    visitor.selectEqual(new SelectEqual('fieldId', 'opt1'))
+    visitor.selectEqual(new SelectEqual('fieldId', new SelectFieldValue('opt1')))
     expect(visitor.query).toMatchInlineSnapshot('"select * where `deleted_at` is null and `fieldId` = \'opt1\'"')
 
-    visitor.selectEqual(new SelectEqual('fieldId', null))
+    visitor.selectEqual(new SelectEqual('fieldId', new SelectFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and `fieldId` = \'opt1\' and `fieldId` is null"',
     )
   })
 
   test('selectIn', () => {
-    visitor.selectIn(new SelectIn('fieldId', ['opt1, opt2']))
+    visitor.selectIn(
+      new SelectIn(
+        'fieldId',
+        ['opt1, opt2'].map((o) => new SelectFieldValue(o)),
+      ),
+    )
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * where `deleted_at` is null and `fieldId` in (\'opt1, opt2\')"',
     )
@@ -255,7 +261,7 @@ describe('RecordSqliteQueryVisitor', () => {
   })
 
   test('string not equal', () => {
-    const spec = new StringEqual('fieldId', 'value').not()
+    const spec = new StringEqual('fieldId', new StringFieldValue('value')).not()
     spec.accept(visitor)
     expect(visitor.query).toMatchInlineSnapshot('"select * where `deleted_at` is null and not `fieldId` = \'value\'"')
   })

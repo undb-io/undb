@@ -9,7 +9,6 @@ import type {
   DateLessThanOrEqual,
   DateRangeEqual,
   IRecordVisitor,
-  NullSpecification,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -59,9 +58,6 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
     }
   }
 
-  null(s: NullSpecification): void {
-    throw new Error('Method not implemented.')
-  }
   idEqual(s: WithRecordId): void {
     throw new Error('Method not implemented.')
   }

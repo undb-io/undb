@@ -1,8 +1,7 @@
 import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
-import type { ICalendarField, Records } from '@egodb/core'
-import type { Record } from '@egodb/core'
-import { NullSpecification } from '@egodb/core'
+import { DateEqual, DateFieldValue, DateRangeEqual, DateRangeFieldValue } from '@egodb/core'
+import type { Record, ICalendarField, Records } from '@egodb/core'
 import { ActionIcon, Box, Group, IconGripVertical, Space, Stack, Text, Title } from '@egodb/ui'
 import { useMemo } from 'react'
 
@@ -48,7 +47,11 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
 }
 
 export const CalendarRecords: React.FC<IProps> = ({ field, records }) => {
-  const spec = new NullSpecification(field.id.value)
+  const spec =
+    field.type === 'date'
+      ? new DateEqual(field.id.value, new DateFieldValue(null))
+      : new DateRangeEqual(field.id.value, new DateRangeFieldValue(null))
+
   const nullRecords = useMemo(() => records.filter((r) => spec.isSatisfiedBy(r)), [records])
   return (
     <Box p="md" bg="white" h="100%">

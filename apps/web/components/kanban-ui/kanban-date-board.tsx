@@ -15,6 +15,7 @@ import type { Record as CoreRecord } from '@egodb/core'
 import { KANBAN_DATE_STACKS, RElAVANT_DATES } from './kanban-date.utils'
 import { addDays, isAfter, isBefore, isToday, isTomorrow, isYesterday, startOfDay } from 'date-fns'
 import { endOfDay } from 'date-fns/esm'
+import type { DateFieldValue } from '@egodb/core'
 
 interface IProps extends ITableBaseProps {
   field: DateField
@@ -25,19 +26,16 @@ export const KanbanDateBoard: React.FC<IProps> = ({ table, field, records }) => 
   const containers = KANBAN_DATE_STACKS
 
   const groupDateRecords = (): Record<string, CoreRecord[]> =>
-    groupBy(
-      (record) =>
-        record.values.getDateValue(field.id.value).mapOr<string>(NODATE_STACK_ID, (v) => {
-          if (!v) return 'NO_DATE'
-          if (isToday(v)) return 'TODAY'
-          if (isTomorrow(v)) return 'TOMORROW'
-          if (isYesterday(v)) return 'YESTERDAY'
-          if (isAfter(v, endOfDay(addDays(v, 1)))) return 'AFTER_TOMORROW'
-          if (isBefore(v, startOfDay(addDays(v, -1)))) return 'AFTER_TOMORROW'
-          return 'NO_DATE'
-        }) ?? NODATE_STACK_ID,
-      records,
-    )
+    groupBy((record) => {
+      const value = (record.values.value.get(field.id.value) as DateFieldValue | undefined)?.unpack()
+      if (!value) return 'NO_DATE'
+      if (isToday(value)) return 'TODAY'
+      if (isTomorrow(value)) return 'TOMORROW'
+      if (isYesterday(value)) return 'YESTERDAY'
+      if (isAfter(value, endOfDay(addDays(value, 1)))) return 'AFTER_TOMORROW'
+      if (isBefore(value, startOfDay(addDays(value, -1)))) return 'AFTER_TOMORROW'
+      return 'NO_DATE'
+    }, records)
   const [dateRecords, setDateRecords] = useState(groupDateRecords())
 
   useEffect(() => {

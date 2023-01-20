@@ -1,25 +1,13 @@
-import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import { BoolFieldValue } from '../../field/bool-field-value'
 import type { Record } from '../record'
 import type { IRecordVisitor } from './interface'
+import { BaseRecordSpecification } from './record-specification.base'
 
-abstract class BaseBoolSpecification extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(readonly fieldId: string, readonly value: boolean) {
-    super()
-  }
-
-  mutate(r: Record): Result<Record, string> {
-    const boolValue = new BoolFieldValue(this.value)
-    r.values.setValue(this.fieldId, boolValue)
-    return Ok(r)
-  }
-}
-
-export class BoolIsTrue extends BaseBoolSpecification {
+export class BoolIsTrue extends BaseRecordSpecification<BoolFieldValue> {
   constructor(name: string) {
-    super(name, true)
+    super(name, BoolFieldValue.T)
   }
 
   /**
@@ -28,7 +16,8 @@ export class BoolIsTrue extends BaseBoolSpecification {
    * @returns bool
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getBoolValue(this.fieldId).mapOr(false, (value) => value === true)
+    const value = r.values.value.get(this.fieldId)
+    return value instanceof BoolFieldValue && value.equals(BoolFieldValue.T)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -37,9 +26,9 @@ export class BoolIsTrue extends BaseBoolSpecification {
   }
 }
 
-export class BoolIsFalse extends BaseBoolSpecification {
+export class BoolIsFalse extends BaseRecordSpecification<BoolFieldValue> {
   constructor(name: string) {
-    super(name, false)
+    super(name, BoolFieldValue.F)
   }
 
   /**
@@ -48,7 +37,8 @@ export class BoolIsFalse extends BaseBoolSpecification {
    * @returns bool
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getBoolValue(this.fieldId).mapOr(false, (value) => value === false)
+    const value = r.values.value.get(this.fieldId)
+    return value instanceof BoolFieldValue && value.equals(BoolFieldValue.F)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {

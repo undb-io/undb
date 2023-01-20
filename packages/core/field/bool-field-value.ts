@@ -7,11 +7,11 @@ export class BoolFieldValue extends FieldValueBase<IBoolFieldValue> {
     super({ value })
   }
 
-  static T(): BoolFieldValue {
+  static get T(): BoolFieldValue {
     return new this(true)
   }
 
-  static F(): BoolFieldValue {
+  static get F(): BoolFieldValue {
     return new this(false)
   }
 
