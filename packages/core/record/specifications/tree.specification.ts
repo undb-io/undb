@@ -4,7 +4,7 @@ import type { Record } from '../record'
 import type { IRecordVisitor } from './interface'
 import { BaseRecordQuerySpecification } from './record-specification.base'
 
-export class TreeAvailableSpec extends BaseRecordQuerySpecification<void> {
+export class TreeAvailableSpec extends BaseRecordQuerySpecification<string | undefined> {
   isSatisfiedBy(t: Record): boolean {
     throw new Error('Method not implemented.')
   }

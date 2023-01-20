@@ -9,6 +9,7 @@ import { ReferenceItem } from '../reference/reference-item'
 interface IProps extends Omit<MultiSelectProps, 'data'> {
   table: Table
   field: TreeField
+  recordId?: string
 }
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -22,10 +23,10 @@ const TreeSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, ...others
   </Group>
 ))
 
-export const TreeRecordsPicker: React.FC<IProps> = ({ table, field, ...rest }) => {
+export const TreeRecordsPicker: React.FC<IProps> = ({ table, field, recordId, ...rest }) => {
   const [focused, setFocused] = useState(false)
   const getRecords = trpc.record.tree.available.useQuery(
-    { tableId: table.id.value, treeFieldId: field.id.value },
+    { tableId: table.id.value, treeFieldId: field.id.value, recordId },
     { enabled: focused },
   )
 

@@ -177,15 +177,29 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     if (!(field instanceof TreeField)) return
 
     const closureTable = new UnderlyingClosureTable(this.tableId, field)
-    this.qb.whereNotIn(
-      INTERNAL_COLUMN_ID_NAME,
-      this.knex
-        .queryBuilder()
-        .from(closureTable.name)
-        .select(UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD)
-        .where(UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD, '>', 0)
-        .distinct(),
-    )
+    // 去掉已经有父级的 recordId
+    const subQuery = this.knex
+      .queryBuilder()
+      .from(closureTable.name)
+      .select(UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD)
+      .where(UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD, '>', 0)
+      .distinct()
+
+    const recordId = s.value
+    // 去掉自己父级或祖先的 recordId
+    if (recordId) {
+      subQuery.union(
+        this.knex
+          .queryBuilder()
+          .from(closureTable.name)
+          .select(UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD)
+          .where(UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD, recordId)
+          .andWhereNot(UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD, recordId)
+          .distinct(),
+      )
+    }
+
+    this.qb.whereNotIn(INTERNAL_COLUMN_ID_NAME, subQuery)
   }
 
   not(): this {

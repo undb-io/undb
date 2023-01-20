@@ -24,6 +24,8 @@ import {
   StringEqual,
   StringFieldValue,
   StringStartsWith,
+  TreeAvailableSpec,
+  TreeField,
   WithRecordCreatedAt,
   WithRecordId,
   WithRecordUpdatedAt,
@@ -285,5 +287,30 @@ describe('RecordSqliteQueryVisitor', () => {
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * from `tabletest` where `deleted_at` is null and not `fieldId` = \'value\'"',
     )
+  })
+
+  describe('treeAvailable', () => {
+    beforeEach(() => {
+      visitor = new RecordSqliteQueryVisitor(
+        'tabletest',
+        new Map([['fieldId', TreeField.create({ id: 'fieldId', name: 'tree', type: 'tree', key: 'tree' })]]),
+        knex.queryBuilder(),
+        knex,
+      )
+    })
+
+    test('with record id', () => {
+      visitor.treeAvailable(new TreeAvailableSpec('fieldId', 'recordId'))
+      expect(visitor.query).toMatchInlineSnapshot(
+        "\"select * from `tabletest` where `deleted_at` is null and `id` not in (select distinct `child_id` from `fieldId_tabletest_closure_table` where `depth` > 0 union select distinct `parent_id` from `fieldId_tabletest_closure_table` where `child_id` = 'recordId' and not `parent_id` = 'recordId')\"",
+      )
+    })
+
+    test('without record id', () => {
+      visitor.treeAvailable(new TreeAvailableSpec('fieldId', undefined))
+      expect(visitor.query).toMatchInlineSnapshot(
+        '"select * from `tabletest` where `deleted_at` is null and `id` not in (select distinct `child_id` from `fieldId_tabletest_closure_table` where `depth` > 0)"',
+      )
+    })
   })
 })

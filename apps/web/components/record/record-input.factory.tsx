@@ -12,9 +12,10 @@ interface IProps {
   table: Table
   field: Field
   name: string
+  recordId?: string
 }
 
-export const RecordInputFactory: React.FC<IProps> = ({ table, name, field }) => {
+export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recordId }) => {
   const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
   if (field.type === 'number') {
     return (
@@ -111,6 +112,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field }) => 
             field={field}
             table={table}
             label={label}
+            recordId={recordId}
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
           />

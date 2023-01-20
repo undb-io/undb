@@ -17,7 +17,7 @@ export class GetTreeAvailableRecordsQueryHandler
     const spec = andOptions(
       table.getSpec(query.viewId),
       Option(WithRecordTableId.fromString(query.tableId).unwrap()),
-      Option(new TreeAvailableSpec(query.treeFieldId, undefined)),
+      Option(new TreeAvailableSpec(query.treeFieldId, query.recordId)),
     ).unwrap()
 
     const records = await this.rm.find(query.tableId, spec, table.schema.toIdMap())
