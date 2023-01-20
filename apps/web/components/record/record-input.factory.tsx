@@ -3,17 +3,19 @@ import type { Table } from '@egodb/core'
 import { NumberInput, DatePicker, DateRangePicker, Checkbox, TextInput } from '@egodb/ui'
 import React from 'react'
 import { Controller } from 'react-hook-form'
-import { FieldInputLabel } from '../fields/field-input-label'
+import { FieldInputLabel } from '../field-inputs/field-input-label'
+import { TreeRecordsPicker } from '../field-inputs/tree-records-picker'
 import { OptionPicker } from '../option/option-picker'
-import { RecordPicker } from './record-picker'
+import { ReferenceRecordPicker } from '../field-inputs/reference-record-picker'
 
 interface IProps {
   table: Table
   field: Field
   name: string
+  recordId?: string
 }
 
-export const RecordInputFactory: React.FC<IProps> = ({ table, name, field }) => {
+export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recordId }) => {
   const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
   if (field.type === 'number') {
     return (
@@ -89,7 +91,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field }) => 
       <Controller
         name={name}
         render={(form) => (
-          <RecordPicker
+          <ReferenceRecordPicker
             field={field}
             table={table}
             label={label}
@@ -101,16 +103,16 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field }) => 
     )
   }
 
-  // TODO: 限制选择的范围
   if (field.type === 'tree') {
     return (
       <Controller
         name={name}
         render={(form) => (
-          <RecordPicker
+          <TreeRecordsPicker
             field={field}
             table={table}
             label={label}
+            recordId={recordId}
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
           />

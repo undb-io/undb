@@ -6,7 +6,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import type { Field } from '@egodb/core'
 import { memo } from 'react'
-import { FieldIcon } from '../fields/field-Icon'
+import { FieldIcon } from '../field-inputs/field-Icon'
 import { HeaderMenu } from './header-menu'
 
 const ResizerLine = styled.div<{ hidden: boolean; isResizing: boolean }>`

@@ -7,7 +7,7 @@ abstract class BaseUnderlyingForeignTable<F extends Field> implements IUnderlyin
   constructor(protected readonly foreignTableName: string, protected readonly field: F) {}
 
   abstract get name(): IUderlyingForeignTableName
-  abstract getCreateTableQuery(knex: Knex): string
+  abstract getSqls(knex: Knex): string[]
 }
 
 export class UnderlyingAdjacencyListTable extends BaseUnderlyingForeignTable<ReferenceField> {
@@ -18,25 +18,27 @@ export class UnderlyingAdjacencyListTable extends BaseUnderlyingForeignTable<Ref
     return `${this.field.id.value}_${this.foreignTableName}_adjacency_list`
   }
 
-  getCreateTableQuery(knex: Knex): string {
-    return knex.schema
-      .createTable(this.name, (tb) => {
-        tb.string(UnderlyingAdjacencyListTable.ADJACENCY_LIST_CHILD_ID_FIELD)
-          .notNullable()
-          .references(INTERNAL_COLUMN_ID_NAME)
-          .inTable(this.foreignTableName)
+  getSqls(knex: Knex): string[] {
+    return [
+      knex.schema
+        .createTable(this.name, (tb) => {
+          tb.string(UnderlyingAdjacencyListTable.ADJACENCY_LIST_CHILD_ID_FIELD)
+            .notNullable()
+            .references(INTERNAL_COLUMN_ID_NAME)
+            .inTable(this.foreignTableName)
 
-        tb.string(UnderlyingAdjacencyListTable.ADJACENCY_LIST_PARENT_ID_FIELD)
-          .notNullable()
-          .references(INTERNAL_COLUMN_ID_NAME)
-          .inTable(this.foreignTableName)
+          tb.string(UnderlyingAdjacencyListTable.ADJACENCY_LIST_PARENT_ID_FIELD)
+            .notNullable()
+            .references(INTERNAL_COLUMN_ID_NAME)
+            .inTable(this.foreignTableName)
 
-        tb.primary([
-          UnderlyingAdjacencyListTable.ADJACENCY_LIST_CHILD_ID_FIELD,
-          UnderlyingAdjacencyListTable.ADJACENCY_LIST_PARENT_ID_FIELD,
-        ])
-      })
-      .toQuery()
+          tb.primary([
+            UnderlyingAdjacencyListTable.ADJACENCY_LIST_CHILD_ID_FIELD,
+            UnderlyingAdjacencyListTable.ADJACENCY_LIST_PARENT_ID_FIELD,
+          ])
+        })
+        .toQuery(),
+    ]
   }
 }
 
@@ -49,26 +51,35 @@ export class UnderlyingClosureTable extends BaseUnderlyingForeignTable<TreeField
     return `${this.field.id.value}_${this.foreignTableName}_closure_table`
   }
 
-  getCreateTableQuery(knex: Knex): string {
-    return knex.schema
-      .createTable(this.name, (tb) => {
-        tb.string(UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD)
-          .notNullable()
-          .references(INTERNAL_COLUMN_ID_NAME)
-          .inTable(this.foreignTableName)
+  getSqls(knex: Knex): string[] {
+    return [
+      knex.schema
+        .createTable(this.name, (tb) => {
+          tb.string(UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD)
+            .notNullable()
+            .references(INTERNAL_COLUMN_ID_NAME)
+            .inTable(this.foreignTableName)
 
-        tb.string(UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD)
-          .notNullable()
-          .references(INTERNAL_COLUMN_ID_NAME)
-          .inTable(this.foreignTableName)
+          tb.string(UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD)
+            .notNullable()
+            .references(INTERNAL_COLUMN_ID_NAME)
+            .inTable(this.foreignTableName)
 
-        tb.integer(UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD).notNullable().defaultTo(0)
+          tb.integer(UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD).notNullable().defaultTo(0)
 
-        tb.primary([
-          UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD,
-          UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD,
-        ])
-      })
-      .toQuery()
+          tb.primary([
+            UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD,
+            UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD,
+          ])
+        })
+        .toQuery(),
+      knex
+        .raw(
+          `
+       create index \`${this.name}_${UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD}_index\` on \`${this.name}\` (\`${UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD}\`)
+       `,
+        )
+        .toQuery(),
+    ]
   }
 }

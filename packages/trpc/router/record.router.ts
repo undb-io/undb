@@ -19,6 +19,7 @@ import type { ICommandBus, IQueryBus } from '@egodb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc'
 import { router } from '../trpc'
+import { createTreeQueryRouter } from './tree-query.router'
 
 const RECORD_TAG = 'record'
 const tags = [RECORD_TAG]
@@ -74,4 +75,5 @@ export const createRecordRouter =
           const query = new GetRecordsQuery(input)
           return queryBus.execute(query)
         }),
+      tree: createTreeQueryRouter(procedure)(queryBus),
     })

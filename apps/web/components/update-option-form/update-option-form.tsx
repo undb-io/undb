@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 import { UDPATE_OPTION_MODAL_ID } from '../../modals'
 import { trpc } from '../../trpc'
-import { OptionColorPicker } from '../fields/option-color-picker'
+import { OptionColorPicker } from '../field-inputs/option-color-picker'
 
 interface IProps {
   tableId: string

@@ -22,10 +22,7 @@ export abstract class BaseRecordSpecification<V extends FieldValue> extends Comp
 /**
  * Used only for query
  */
-export abstract class BaseRecordQuerySpecification<T extends FieldValue | FieldValue[]> extends CompositeSpecification<
-  Record,
-  IRecordVisitor
-> {
+export abstract class BaseRecordQuerySpecification<T = unknown> extends CompositeSpecification<Record, IRecordVisitor> {
   constructor(readonly fielId: string, readonly value: T) {
     super()
   }

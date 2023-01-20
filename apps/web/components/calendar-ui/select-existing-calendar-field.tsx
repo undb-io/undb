@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { Controller, useForm } from 'react-hook-form'
 import { trpc } from '../../trpc'
-import { FieldIcon } from '../fields/field-Icon'
+import { FieldIcon } from '../field-inputs/field-Icon'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { calendarStepOne, calendarStepTwo } from './calendar-step.atom'
 

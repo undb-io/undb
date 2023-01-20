@@ -23,6 +23,7 @@ import type {
   StringRegex,
   StringStartsWith,
   TableSchemaIdMap,
+  TreeAvailableSpec,
   WithRecordCreatedAt,
   WithRecordId,
   WithRecordTableId,
@@ -40,7 +41,6 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
     private readonly em: EntityManager,
     private readonly qb: Knex.QueryBuilder,
   ) {}
-
   private queries: string[] = []
 
   private addQueries(...queries: string[]) {
@@ -146,6 +146,10 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
   referenceEqual(s: ReferenceEqual): void {
     throw new Error('Method not implemented')
   }
+  treeAvailable(s: TreeAvailableSpec): void {
+    throw new Error('Method not implemented.')
+  }
+
   not(): this {
     throw new Error('Method not implemented.')
   }
