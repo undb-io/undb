@@ -1,30 +1,20 @@
-import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import { StringFieldValue } from '../../field/string-field-value'
 import type { Record } from '../record'
 import type { IRecordVisitor } from './interface'
+import { BaseRecordSpecification } from './record-specification.base'
 
-abstract class BaseStringSpecification extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(readonly fieldId: string, readonly value: string | null) {
-    super()
-  }
-
-  mutate(r: Record): Result<Record, string> {
-    const stringValue = new StringFieldValue(this.value)
-    r.values.setValue(this.fieldId, stringValue)
-    return Ok(r)
-  }
-}
-
-export class StringEqual extends BaseStringSpecification {
+export class StringEqual extends BaseRecordSpecification<StringFieldValue> {
   /**
    * check given string is equal to record value by field name
    * @param r - record
    * @returns bool
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getStringValue(this.fieldId).mapOr(false, (value) => value === this.value)
+    const value = r.values.value.get(this.fieldId)
+
+    return value instanceof StringFieldValue && this.value.equals(value)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -33,16 +23,19 @@ export class StringEqual extends BaseStringSpecification {
   }
 }
 
-export class StringContain extends BaseStringSpecification {
+export class StringContain extends BaseRecordSpecification<StringFieldValue> {
   /**
    * check whether record value by field name contains given string
    * @param r - record
    * @returns
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values
-      .getStringValue(this.fieldId)
-      .mapOr(false, (value) => this.value !== null && value.includes(this.value))
+    const value = r.values.value.get(this.fieldId)
+    if (!(value instanceof StringFieldValue)) return false
+
+    const s1 = value.unpack()
+    const s2 = this.value.unpack()
+    return !!s1 && !!s2 && s1.includes(s2)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -51,16 +44,19 @@ export class StringContain extends BaseStringSpecification {
   }
 }
 
-export class StringStartsWith extends BaseStringSpecification {
+export class StringStartsWith extends BaseRecordSpecification<StringFieldValue> {
   /**
    * check whether string starts with given value
    * @param r - record
    * @returns boolean
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values
-      .getStringValue(this.fieldId)
-      .mapOr(false, (value) => this.value !== null && value.startsWith(this.value))
+    const value = r.values.value.get(this.fieldId)
+    if (!(value instanceof StringFieldValue)) return false
+
+    const s1 = value.unpack()
+    const s2 = this.value.unpack()
+    return !!s1 && !!s2 && s1.startsWith(s2)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -69,16 +65,19 @@ export class StringStartsWith extends BaseStringSpecification {
   }
 }
 
-export class StringEndsWith extends BaseStringSpecification {
+export class StringEndsWith extends BaseRecordSpecification<StringFieldValue> {
   /**
    * check whether string ends with given value
    * @param r - record
    * @returns boolean
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values
-      .getStringValue(this.fieldId)
-      .mapOr(false, (value) => this.value !== null && value.endsWith(this.value))
+    const value = r.values.value.get(this.fieldId)
+    if (!(value instanceof StringFieldValue)) return false
+
+    const s1 = value.unpack()
+    const s2 = this.value.unpack()
+    return !!s1 && !!s2 && s1.endsWith(s2)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -87,16 +86,19 @@ export class StringEndsWith extends BaseStringSpecification {
   }
 }
 
-export class StringRegex extends BaseStringSpecification {
+export class StringRegex extends BaseRecordSpecification<StringFieldValue> {
   /**
    * check whether string match given regex
    * @param r - record
    * @returns boolean
    */
   isSatisfiedBy(r: Record): boolean {
-    return r.values
-      .getStringValue(this.fieldId)
-      .mapOr(false, (value) => this.value !== null && new RegExp(this.value).test(value))
+    const value = r.values.value.get(this.fieldId)
+    if (!(value instanceof StringFieldValue)) return false
+
+    const s1 = value.unpack()
+    const s2 = this.value.unpack()
+    return !!s1 && !!s2 && new RegExp(s2).test(s1)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {

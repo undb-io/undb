@@ -26,6 +26,7 @@ import type { Record, Option as CoreOption } from '@egodb/core'
 import { Option } from '../option/option'
 import type { IUpdateOptionModalProps } from '../update-option-form/update-option-modal'
 import { CREATE_OPTION_MODAL_ID, UDPATE_OPTION_MODAL_ID } from '../../modals'
+import type { SelectFieldValue } from '@egodb/core'
 
 interface IProps extends ITableBaseProps {
   field: SelectField
@@ -38,12 +39,12 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
   const lastOption = options[options.length - 1]
 
   const groupOptionRecords = () =>
-    groupBy(
-      (record) =>
-        record.values.getSelectValue(field.id.value).mapOr(UNCATEGORIZED_OPTION_ID, (v) => v.id) ??
-        UNCATEGORIZED_OPTION_ID,
-      records,
-    )
+    groupBy((record) => {
+      const value = record.values.value.get(field.id.value) as SelectFieldValue | undefined
+
+      if (!value?.id) return UNCATEGORIZED_OPTION_ID
+      return value.id
+    }, records)
   const [optionRecords, setOptionRecords] = useState(groupOptionRecords())
 
   const reorderOptions = trpc.table.field.select.reorderOptions.useMutation()

@@ -5,7 +5,11 @@ OptionType {
   Symbol(T): true,
   Symbol(Val): StringEqual {
     "fieldId": "name",
-    "value": "hello",
+    "value": StringFieldValue {
+      "props": {
+        "value": "hello",
+      },
+    },
   },
 }
 `;
@@ -15,7 +19,11 @@ OptionType {
   Symbol(T): true,
   Symbol(Val): StringContain {
     "fieldId": "name",
-    "value": "hello",
+    "value": StringFieldValue {
+      "props": {
+        "value": "hello",
+      },
+    },
   },
 }
 `;
@@ -25,7 +33,11 @@ OptionType {
   Symbol(T): true,
   Symbol(Val): StringStartsWith {
     "fieldId": "name",
-    "value": "starts with",
+    "value": StringFieldValue {
+      "props": {
+        "value": "starts with",
+      },
+    },
   },
 }
 `;
@@ -35,7 +47,11 @@ OptionType {
   Symbol(T): true,
   Symbol(Val): StringEndsWith {
     "fieldId": "name",
-    "value": "ends with",
+    "value": StringFieldValue {
+      "props": {
+        "value": "ends with",
+      },
+    },
   },
 }
 `;
@@ -46,7 +62,11 @@ OptionType {
   Symbol(Val): Not {
     "spec": NumberEqual {
       "fieldId": "name",
-      "value": 1,
+      "value": NumberFieldValue {
+        "props": {
+          "value": 1,
+        },
+      },
     },
   },
 }
@@ -58,7 +78,11 @@ OptionType {
   Symbol(Val): Not {
     "spec": NumberEqual {
       "fieldId": "name.nested",
-      "value": 1,
+      "value": NumberFieldValue {
+        "props": {
+          "value": 1,
+        },
+      },
     },
   },
 }
@@ -69,7 +93,11 @@ OptionType {
   Symbol(T): true,
   Symbol(Val): StringEqual {
     "fieldId": "name",
-    "value": "hello",
+    "value": StringFieldValue {
+      "props": {
+        "value": "hello",
+      },
+    },
   },
 }
 `;
@@ -79,7 +107,11 @@ OptionType {
   Symbol(T): true,
   Symbol(Val): StringEqual {
     "fieldId": "name",
-    "value": "hello",
+    "value": StringFieldValue {
+      "props": {
+        "value": "hello",
+      },
+    },
   },
 }
 `;
@@ -89,7 +121,11 @@ OptionType {
   Symbol(T): true,
   Symbol(Val): NumberGreaterThan {
     "fieldId": "gt",
-    "value": 1,
+    "value": NumberFieldValue {
+      "props": {
+        "value": 1,
+      },
+    },
   },
 }
 `;
@@ -99,7 +135,11 @@ OptionType {
   Symbol(T): true,
   Symbol(Val): NumberGreaterThanOrEqual {
     "fieldId": "gte",
-    "value": 1,
+    "value": NumberFieldValue {
+      "props": {
+        "value": 1,
+      },
+    },
   },
 }
 `;
@@ -109,7 +149,11 @@ OptionType {
   Symbol(T): true,
   Symbol(Val): NumberLessThan {
     "fieldId": "lt",
-    "value": 1,
+    "value": NumberFieldValue {
+      "props": {
+        "value": 1,
+      },
+    },
   },
 }
 `;
@@ -119,7 +163,11 @@ OptionType {
   Symbol(T): true,
   Symbol(Val): NumberLessThanOrEqual {
     "fieldId": "lte",
-    "value": 1,
+    "value": NumberFieldValue {
+      "props": {
+        "value": 1,
+      },
+    },
   },
 }
 `;
@@ -129,7 +177,11 @@ OptionType {
   Symbol(T): true,
   Symbol(Val): DateIsToday {
     "fieldId": "is_today",
-    "value": null,
+    "value": DateFieldValue {
+      "props": {
+        "value": null,
+      },
+    },
   },
 }
 `;
@@ -139,7 +191,11 @@ OptionType {
   Symbol(T): true,
   Symbol(Val): BoolIsTrue {
     "fieldId": "field",
-    "value": true,
+    "value": BoolFieldValue {
+      "props": {
+        "value": true,
+      },
+    },
   },
 }
 `;
@@ -149,7 +205,11 @@ OptionType {
   Symbol(T): true,
   Symbol(Val): BoolIsFalse {
     "fieldId": "field",
-    "value": false,
+    "value": BoolFieldValue {
+      "props": {
+        "value": false,
+      },
+    },
   },
 }
 `;

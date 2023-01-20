@@ -2,6 +2,7 @@ import { useDraggable, useDroppable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import type { ICalendarField, Records } from '@egodb/core'
 import type { Record } from '@egodb/core'
+import { DateFieldValue } from '@egodb/core'
 import { DateEqual } from '@egodb/core'
 import { ActionIcon, Box, Group, IconGripVertical, IconPlus, Stack, Text, useHover } from '@egodb/ui'
 import { isEqual, isToday } from 'date-fns'
@@ -70,7 +71,7 @@ export const Day: React.FC<IProps> = ({ date, field, records }) => {
   })
 
   const filteredRecords = useMemo(() => {
-    const spec = new DateEqual(field.id.value, date)
+    const spec = new DateEqual(field.id.value, new DateFieldValue(date))
     return records.filter((r) => spec.isSatisfiedBy(r))
   }, [records])
 

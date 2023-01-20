@@ -11,7 +11,6 @@ import type {
   DateLessThan,
   DateLessThanOrEqual,
 } from './date.specification'
-import type { NullSpecification } from './null.specification'
 import type {
   NumberEqual,
   NumberGreaterThan,
@@ -58,7 +57,6 @@ interface IRecordValueVisitor {
   dateLessThanOrEqual(s: DateLessThanOrEqual): void
   dateIsToday(s: DateIsToday): void
 
-  null(s: NullSpecification): void
   dateRangeEqual(s: DateRangeEqual): void
 
   selectEqual(s: SelectEqual): void

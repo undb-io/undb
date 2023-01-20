@@ -1,26 +1,15 @@
-import { CompositeSpecification } from '@egodb/domain'
 import { isAfter, isBefore, isEqual, isToday } from 'date-fns'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import { DateFieldValue } from '../../field/date-field-value'
+import { DateFieldValue } from '../../field'
 import type { Record } from '../record'
 import type { IRecordVisitor } from './interface'
+import { BaseRecordSpecification } from './record-specification.base'
 
-abstract class BaseDateSpecification extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(readonly fieldId: string, readonly value: Date | null) {
-    super()
-  }
-
-  mutate(r: Record): Result<Record, string> {
-    const dateValue = new DateFieldValue(this.value)
-    r.values.setValue(this.fieldId, dateValue)
-    return Ok(r)
-  }
-}
-
-export class DateEqual extends BaseDateSpecification {
+export class DateEqual extends BaseRecordSpecification<DateFieldValue> {
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getDateValue(this.fieldId).mapOr(false, (value) => !!this.value && isEqual(value, this.value))
+    const value = r.values.value.get(this.fieldId)
+    return value instanceof DateFieldValue && this.value.equals(value)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -29,9 +18,14 @@ export class DateEqual extends BaseDateSpecification {
   }
 }
 
-export class DateGreaterThan extends BaseDateSpecification {
+export class DateGreaterThan extends BaseRecordSpecification<DateFieldValue> {
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getDateValue(this.fieldId).mapOr(false, (value) => !!this.value && isAfter(value, this.value))
+    const value = r.values.value.get(this.fieldId)
+    if (!(value instanceof DateFieldValue)) return false
+
+    const d1 = value.unpack()
+    const d2 = this.value.unpack()
+    return !!d1 && !!d2 && isAfter(d1, d2)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -40,9 +34,14 @@ export class DateGreaterThan extends BaseDateSpecification {
   }
 }
 
-export class DateLessThan extends BaseDateSpecification {
+export class DateLessThan extends BaseRecordSpecification<DateFieldValue> {
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getDateValue(this.fieldId).mapOr(false, (value) => !!this.value && isBefore(value, this.value))
+    const value = r.values.value.get(this.fieldId)
+    if (!(value instanceof DateFieldValue)) return false
+
+    const d1 = value.unpack()
+    const d2 = this.value.unpack()
+    return !!d1 && !!d2 && isBefore(d1, d2)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -51,11 +50,14 @@ export class DateLessThan extends BaseDateSpecification {
   }
 }
 
-export class DateGreaterThanOrEqual extends BaseDateSpecification {
+export class DateGreaterThanOrEqual extends BaseRecordSpecification<DateFieldValue> {
   isSatisfiedBy(r: Record): boolean {
-    return r.values
-      .getDateValue(this.fieldId)
-      .mapOr(false, (value) => !!this.value && (isAfter(value, this.value) || isEqual(value, this.value)))
+    const value = r.values.value.get(this.fieldId)
+    if (!(value instanceof DateFieldValue)) return false
+
+    const d1 = value.unpack()
+    const d2 = this.value.unpack()
+    return !!d1 && !!d2 && (isEqual(d1, d2) || isAfter(d1, d2))
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -64,11 +66,14 @@ export class DateGreaterThanOrEqual extends BaseDateSpecification {
   }
 }
 
-export class DateLessThanOrEqual extends BaseDateSpecification {
+export class DateLessThanOrEqual extends BaseRecordSpecification<DateFieldValue> {
   isSatisfiedBy(r: Record): boolean {
-    return r.values
-      .getDateValue(this.fieldId)
-      .mapOr(false, (value) => !!this.value && (isBefore(value, this.value) || isEqual(value, this.value)))
+    const value = r.values.value.get(this.fieldId)
+    if (!(value instanceof DateFieldValue)) return false
+
+    const d1 = value.unpack()
+    const d2 = this.value.unpack()
+    return !!d1 && !!d2 && (isEqual(d1, d2) || isBefore(d1, d2))
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
@@ -77,12 +82,18 @@ export class DateLessThanOrEqual extends BaseDateSpecification {
   }
 }
 
-export class DateIsToday extends BaseDateSpecification {
+export class DateIsToday extends BaseRecordSpecification<DateFieldValue> {
   constructor(fieldId: string) {
-    super(fieldId, null)
+    super(fieldId, new DateFieldValue(null))
   }
+
   isSatisfiedBy(r: Record): boolean {
-    return r.values.getDateValue(this.fieldId).mapOr(false, (value) => isToday(value))
+    const value = r.values.value.get(this.fieldId)
+    if (!(value instanceof DateFieldValue)) return false
+
+    const date = value.unpack()
+
+    return !!date && isToday(date)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
