@@ -110,13 +110,13 @@ describe('RecordValueSqliteVisitor', () => {
                     insert into fld1_tableId_closure_table(parent_id, child_id, depth)
         select p.parent_id, c.child_id, p.depth+c.depth+1
           from fld1_tableId_closure_table as p, fld1_tableId_closure_table as c
-         where p.child_id='recordtest' and c.parent_id='foreign_record1'
+         where p.child_id='recordtest' and c.parent_id='foreign_record1 on conflict replace'
          ",
           "
                     insert into fld1_tableId_closure_table(parent_id, child_id, depth)
         select p.parent_id, c.child_id, p.depth+c.depth+1
           from fld1_tableId_closure_table as p, fld1_tableId_closure_table as c
-         where p.child_id='recordtest' and c.parent_id='foreign_record_2'
+         where p.child_id='recordtest' and c.parent_id='foreign_record_2 on conflict replace'
          ",
         ]
       `)
