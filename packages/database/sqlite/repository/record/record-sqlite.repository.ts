@@ -6,10 +6,10 @@ import { Some } from 'oxide.ts'
 import type { RecordValueData } from '../../types/record-value-sqlite.type'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants'
 import { getColumnNames } from '../../underlying-table/underlying-table.utils'
-import { RecordValueSqliteMutationVisitor } from '../values/record-value-sqlite.mutation-visitor'
 import { RecordSqliteMapper } from './record-sqlite.mapper'
 import { RecordSqliteMutationVisitor } from './record-sqlite.mutation-visitor'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
+import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation-visitor'
 
 export class RecordSqliteRepository implements IRecordRepository {
   constructor(protected readonly em: EntityManager) {}
