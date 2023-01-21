@@ -10,7 +10,7 @@ import {
   Tooltip,
   useDisclosure,
   openContextModal,
-  closeModal,
+  closeAllModals,
 } from '@egodb/ui'
 import { SELECT_CALENDAR_FIELD_MODAL_ID, SELECT_KANBAN_FIELD_MODAL_ID } from '../../modals'
 import { trpc } from '../../trpc'
@@ -30,7 +30,7 @@ const StackedBy: React.FC<{ fieldId?: FieldId; table: Table }> = ({ table, field
         onClick={() =>
           openContextModal({
             modal: SELECT_KANBAN_FIELD_MODAL_ID,
-            innerProps: { table, onSuccess: () => closeModal(SELECT_KANBAN_FIELD_MODAL_ID) } as ISelectKanbanFieldProps,
+            innerProps: { table, onSuccess: () => closeAllModals() } as ISelectKanbanFieldProps,
             withCloseButton: false,
             styles: {
               modal: { padding: '0 !important' },
@@ -66,7 +66,7 @@ const UsingCalendarField: React.FC<{ fieldId?: FieldId; table: Table }> = ({ tab
         onClick={() =>
           openContextModal({
             modal: SELECT_CALENDAR_FIELD_MODAL_ID,
-            innerProps: { table, onSucess: () => closeModal(SELECT_CALENDAR_FIELD_MODAL_ID) },
+            innerProps: { table, onSucess: () => closeAllModals() },
             withCloseButton: false,
             styles: {
               modal: { padding: '0 !important' },

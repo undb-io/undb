@@ -1,9 +1,8 @@
 import type { ICreateOptionSchema } from '@egodb/core'
 import { createOptionSchema, OptionKey } from '@egodb/core'
-import { Stack, TextInput, Group, Button, closeModal } from '@egodb/ui'
+import { Stack, TextInput, Group, Button, closeAllModals } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
-import { CREATE_OPTION_MODAL_ID } from '../../modals'
 import { trpc } from '../../trpc'
 import { OptionColorPicker } from '../field-inputs/option-color-picker'
 import type { ICreateOptionFormProps } from './create-option-form.props'
@@ -50,7 +49,7 @@ export const CreateOptionForm: React.FC<ICreateOptionFormProps> = ({ table, fiel
           <TextInput data-autofocus variant="unstyled" placeholder="option name" {...form.register('name')} />
         </Group>
         <Group position="right">
-          <Button size="xs" variant="white" onClick={() => closeModal(CREATE_OPTION_MODAL_ID)}>
+          <Button size="xs" variant="white" onClick={() => closeAllModals()}>
             Cancel
           </Button>
           <Button

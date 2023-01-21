@@ -6,7 +6,7 @@ import {
   Badge,
   Box,
   Button,
-  closeModal,
+  closeAllModals,
   Container,
   Group,
   IconPlus,
@@ -210,7 +210,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
                   table,
                   field,
                   color: lastOption?.color.next().unpack(),
-                  onSuccess: () => closeModal(CREATE_OPTION_MODAL_ID),
+                  onSuccess: () => closeAllModals(),
                 },
               })
             }
