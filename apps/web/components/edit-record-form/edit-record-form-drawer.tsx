@@ -1,7 +1,7 @@
 import type { Table as CoreTable } from '@egodb/core'
 import { updateRecordSchema } from '@egodb/core'
 import type { IUpdateRecordValueSchema } from '@egodb/core'
-import { ActionIcon, Drawer, Icon123, IconChevronLeft, IconChevronRight } from '@egodb/ui'
+import { ActionIcon, Drawer, IconChevronLeft, IconChevronRight } from '@egodb/ui'
 import { useAtom } from 'jotai'
 import { useLayoutEffect } from 'react'
 import { useConfirmModal } from '../../hooks'
