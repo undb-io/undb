@@ -3,6 +3,8 @@ import type { IRootFilter } from '../filter'
 import type { RootFilter } from '../filter/root-filter'
 import type { Calendar, ICalendarSchema } from './calendar'
 import type { IKanbanSchema, Kanban } from './kanban'
+import type { ISorts } from './sort/sort.schema'
+import type { Sorts } from './sort/sorts'
 import type { IViewFieldOption, ViewFieldOptions } from './view-field-options'
 import type { ViewFieldsOrder } from './view-fields-order.vo'
 import type { ViewId } from './view-id.vo'
@@ -14,6 +16,7 @@ export interface IView {
   id: ViewId
   key: ViewKey
   name: ViewName
+  sorts?: Sorts
   kanban?: Kanban
   calendar?: Calendar
   displayType: IViewDisplayType
@@ -25,6 +28,7 @@ export interface IView {
 export interface IQueryView {
   key: string
   name: string
+  sorts?: ISorts
   kanban?: IKanbanSchema
   calendar?: ICalendarSchema
   displayType: IViewDisplayType

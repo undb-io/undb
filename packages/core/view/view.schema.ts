@@ -4,6 +4,7 @@ import { fieldNameSchema } from '../field/value-objects/field-name.schema'
 import { rootFilter } from '../filter/filter'
 import { calendarSchema } from './calendar'
 import { kanbanSchema } from './kanban'
+import { sortsSchema } from './sort/sort.schema'
 import { fieldHiddenSchema, fieldWidthSchema, viewFieldOption } from './view-field-options'
 import { viewIdSchema } from './view-id.vo'
 import { viewKeySchema } from './view-key.vo'
@@ -16,6 +17,7 @@ export const createViewInput_internal = z.object({
   // TODO: set to optional
   key: viewKeySchema,
   name: viewNameSchema,
+  sorts: sortsSchema.optional(),
   kanban: kanbanSchema.optional(),
   calendar: calendarSchema.optional(),
   displayType: viewDisplayType.optional(),
@@ -27,6 +29,7 @@ export const createViewInput_internal = z.object({
 export const queryView = z.object({
   key: z.string(),
   name: z.string(),
+  sorts: sortsSchema.optional(),
   kanban: kanbanSchema.optional(),
   calendar: calendarSchema.optional(),
   displayType: viewDisplayType,

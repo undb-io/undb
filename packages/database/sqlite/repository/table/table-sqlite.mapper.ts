@@ -6,9 +6,11 @@ import type {
   IQueryTable,
   IQueryView,
   ISelectFieldQuerySchema,
+  Table,
 } from '@egodb/core'
 import { TableFactory } from '@egodb/core'
 import type { EntityDTO } from '@mikro-orm/core'
+import type { Result } from 'oxide.ts'
 import type { Field as FieldEntity, SelectField, Table as TableEntity } from '../../entity'
 
 export class TableSqliteMapper {
@@ -53,12 +55,13 @@ export class TableSqliteMapper {
             fieldsOrder: view.fieldsOrder,
             kanban: view.kanban,
             calendar: view.calendar,
+            sorts: view.sorts,
           } as IQueryView),
       ),
     }
   }
 
-  static entityToDomain(entity: TableEntity) {
+  static entityToDomain(entity: TableEntity): Result<Table, string> {
     return TableFactory.unsafeCreate({
       id: entity.id,
       name: entity.name,
@@ -96,6 +99,7 @@ export class TableSqliteMapper {
         fieldsOrder: view.fieldsOrder,
         kanban: view.kanban,
         calendar: view.calendar,
+        sorts: view.sorts,
       })) as ICreateViewsSchema,
     })
   }
