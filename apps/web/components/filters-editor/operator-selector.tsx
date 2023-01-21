@@ -69,6 +69,13 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
   }
 
   return (
-    <Select value={value} disabled={!field} data={data} onChange={(value) => onChange(value as IOperator | null)} />
+    <Select
+      size="xs"
+      variant="filled"
+      value={value}
+      disabled={!field}
+      data={data}
+      onChange={(value) => onChange(value as IOperator | null)}
+    />
   )
 }

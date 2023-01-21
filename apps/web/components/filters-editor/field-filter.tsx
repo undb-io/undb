@@ -48,7 +48,7 @@ export const FieldFilter: React.FC<IProps> = ({ table, schema, value, onChange, 
   }, [selectedField])
 
   return (
-    <Group ref={setNodeRef} style={style}>
+    <Group ref={setNodeRef} style={style} spacing="xs">
       <ActionIcon {...attributes} {...listeners} component="a">
         <IconGripVertical size={12} />
       </ActionIcon>
