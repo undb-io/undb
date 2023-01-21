@@ -1,7 +1,7 @@
 import type { Table as CoreTable } from '@egodb/core'
 import { updateRecordSchema } from '@egodb/core'
 import type { IUpdateRecordValueSchema } from '@egodb/core'
-import { Drawer } from '@egodb/ui'
+import { ActionIcon, Drawer, Icon123, IconChevronLeft, IconChevronRight } from '@egodb/ui'
 import { useAtom } from 'jotai'
 import { useLayoutEffect } from 'react'
 import { useConfirmModal } from '../../hooks'
@@ -48,6 +48,9 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
       <Drawer
         target="body"
         opened={opened}
+        withOverlay={false}
+        withinPortal
+        trapFocus
         onClose={() => {
           if (form.formState.isDirty) {
             confirm()
@@ -58,9 +61,28 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
         title="Edit Record"
         padding="xl"
         position="right"
-        size={700}
+        size="xl"
       >
         <EditRecordForm table={table} onCancel={reset} />
+        <ActionIcon
+          onClick={() => setOpened(false)}
+          variant="default"
+          radius="xl"
+          size="xl"
+          sx={(theme) => ({
+            position: 'fixed',
+            top: 'calc(50% - 40px)',
+            left: '-22px',
+            backgroundColor: theme.white,
+            boxShadow: theme.shadows.lg,
+            transition: '0.22s',
+            ':hover': {
+              boxShadow: theme.shadows.xl,
+            },
+          })}
+        >
+          {opened ? <IconChevronRight /> : <IconChevronLeft />}
+        </ActionIcon>
       </Drawer>
     </FormProvider>
   )

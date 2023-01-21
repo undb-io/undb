@@ -51,6 +51,7 @@ export const CreateRecordFormDrawer: React.FC<IProps> = ({ table }) => {
       <Drawer
         target="body"
         opened={opened}
+        withinPortal
         onClose={() => {
           if (form.formState.isDirty) {
             confirm()
