@@ -7,6 +7,7 @@ import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { TreeRecordsPicker } from '../field-inputs/tree-records-picker'
 import { OptionPicker } from '../option/option-picker'
 import { ReferenceRecordPicker } from '../field-inputs/reference-record-picker'
+import { FieldIcon } from '../field-inputs/field-Icon'
 
 interface IProps {
   table: Table
@@ -22,7 +23,12 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
       <Controller
         name={name}
         render={(form) => (
-          <NumberInput {...form.field} label={label} onChange={(number) => form.field.onChange(number)} />
+          <NumberInput
+            {...form.field}
+            icon={<FieldIcon type={field.type} />}
+            label={label}
+            onChange={(number) => form.field.onChange(number)}
+          />
         )}
       />
     )
@@ -36,7 +42,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
             allowFreeInput
             inputFormat="YYYY-MM-DD"
             labelFormat="YYYY-MM-DD"
-            label={label}
+            icon={<FieldIcon type={field.type} />}
             {...form.field}
             onChange={(date) => form.field.onChange(date)}
           />
@@ -52,6 +58,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
           <DateRangePicker
             label={label}
             {...form.field}
+            icon={<FieldIcon type={field.type} />}
             value={form.field.value ?? [null, null]}
             onChange={(value) => form.field.onChange(value)}
           />
@@ -76,6 +83,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
         render={(form) => (
           <OptionPicker
             field={field}
+            icon={<FieldIcon type={field.type} />}
             table={table}
             label={label}
             {...form.field}
@@ -121,5 +129,10 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
     )
   }
 
-  return <Controller name={name} render={(form) => <TextInput label={label} {...form.field} />} />
+  return (
+    <Controller
+      name={name}
+      render={(form) => <TextInput icon={<FieldIcon type={field.type} />} label={label} {...form.field} />}
+    />
+  )
 }
