@@ -24,23 +24,34 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, table, val
   }
 
   if (field instanceof StringField) {
-    return <TextInput value={(value ?? '') as string} onChange={(event) => onChange(event.target.value)} />
+    return (
+      <TextInput
+        size="xs"
+        variant="filled"
+        value={(value ?? '') as string}
+        onChange={(event) => onChange(event.target.value)}
+      />
+    )
   }
 
   if (field instanceof NumberField) {
-    return <NumberInput value={value as number} onChange={(number) => onChange(number || null)} />
+    return (
+      <NumberInput size="xs" variant="filled" value={value as number} onChange={(number) => onChange(number || null)} />
+    )
   }
 
   if (field instanceof DateField) {
     if (dateBuiltInOperators.has(operator as IDateFilterOperator)) {
       return null
     }
-    return <DatePicker value={value as Date} onChange={(date) => onChange(date || null)} />
+    return <DatePicker size="xs" variant="filled" value={value as Date} onChange={(date) => onChange(date || null)} />
   }
 
   if (field instanceof DateRangeField) {
     return (
       <DateRangePicker
+        size="xs"
+        variant="filled"
         value={(value as IDateRangeFieldValue) ?? undefined}
         onChange={(range) => {
           if (range.at(0) !== null && range.at !== null) {
@@ -54,6 +65,8 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, table, val
   if (field instanceof SelectField) {
     return (
       <OptionPicker
+        size="xs"
+        variant="filled"
         value={value as string}
         table={table}
         field={field}

@@ -14,6 +14,8 @@ export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => 
       searchable
       clearable
       value={value?.id.value}
+      size="xs"
+      variant="filled"
       onChange={(value) => {
         const selectedColumn = value ? schema.getFieldById(value).into(null) : null
         onChange(selectedColumn)

@@ -35,7 +35,7 @@ export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCa
 
   return (
     <Box miw={640}>
-      <Stack>
+      <Stack spacing="xs">
         <DndContext
           collisionDetection={closestCenter}
           modifiers={[restrictToVerticalAxis]}
