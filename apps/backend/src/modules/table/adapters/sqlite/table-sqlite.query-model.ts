@@ -1,14 +1,15 @@
 import type { IQueryTable } from '@egodb/core'
 import { ITableSpec } from '@egodb/core'
-import { EntityManager, TableSqliteQueryModel } from '@egodb/sqlite'
+import type { EntityManager } from '@egodb/sqlite'
+import { TableSqliteQueryModel } from '@egodb/sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import type { Option } from 'oxide.ts'
 
 @Injectable()
 export class NestTableSqliteQueryModel extends TableSqliteQueryModel {
-  constructor(public readonly orm: MikroORM, protected readonly em: EntityManager) {
-    super(em)
+  constructor(public readonly orm: MikroORM) {
+    super(orm.em as EntityManager)
   }
 
   @UseRequestContext()

@@ -2,15 +2,15 @@
   "name": "@egodb/eslint-config",
   "version": "0.0.0",
   "dependencies": {
-    "eslint": "^8.31.0",
-    "eslint-config-next": "^13.1.2",
+    "eslint": "^8.32.0",
+    "eslint-config-next": "^13.1.4",
     "eslint-config-prettier": "^8.6.0",
     "eslint-config-turbo": "^0.0.7",
-    "eslint-plugin-react": "^7.32.0"
+    "eslint-plugin-react": "^7.32.1"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.48.1",
-    "@typescript-eslint/parser": "^5.48.1",
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/parser": "^5.48.2",
     "eslint-import-resolver-typescript": "^3.5.3",
     "eslint-plugin-tsdoc": "^0.2.17",
     "typescript": "^4.9.4"

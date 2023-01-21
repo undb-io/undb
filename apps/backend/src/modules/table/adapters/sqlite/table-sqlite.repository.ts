@@ -1,5 +1,6 @@
 import { ITableSpec, IUnderlyingTableManager, Table } from '@egodb/core'
-import { EntityManager, TableSqliteRepository } from '@egodb/sqlite'
+import type { EntityManager } from '@egodb/sqlite'
+import { TableSqliteRepository } from '@egodb/sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import type { Option } from 'oxide.ts'
@@ -9,11 +10,10 @@ InjectUndelyingTableManager
 export class NestTableSqliteRepository extends TableSqliteRepository {
   constructor(
     public readonly orm: MikroORM,
-    protected readonly em: EntityManager,
     @InjectUndelyingTableManager()
     protected readonly tm: IUnderlyingTableManager,
   ) {
-    super(em, tm)
+    super(orm.em as EntityManager, tm)
   }
 
   @UseRequestContext()
