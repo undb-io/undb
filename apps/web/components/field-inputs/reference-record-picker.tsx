@@ -6,6 +6,7 @@ import { MultiSelect } from '@egodb/ui'
 import { forwardRef, useState } from 'react'
 import { trpc } from '../../trpc'
 import { ReferenceItem } from '../reference/reference-item'
+import { FieldIcon } from './field-Icon'
 
 interface IProps extends Omit<MultiSelectProps, 'data'> {
   field: ReferenceField
@@ -41,7 +42,7 @@ export const ReferenceRecordPicker: React.FC<IProps> = ({ table, field, ...rest 
       onFocus={() => setFocused(true)}
       placeholder={focused && listRecords.isLoading ? 'loading records...' : undefined}
       disabled={focused && listRecords.isLoading}
-      icon={focused && listRecords.isLoading ? <Loader color="gray" size={14} /> : null}
+      icon={focused && listRecords.isLoading ? <Loader color="gray" size={14} /> : <FieldIcon type={field.type} />}
     />
   )
 }
