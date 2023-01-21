@@ -30,15 +30,20 @@ export const TreeRecordsPicker: React.FC<IProps> = ({ table, field, recordId, ..
     { enabled: focused },
   )
 
-  const data = getRecords.data?.records.map((record) => ({ value: record.id, label: record.id })) ?? []
+  const data = [
+    ...(getRecords.data?.records.map((record) => ({ value: record.id, label: record.id })) ?? []),
+    ...(rest.value?.map((id) => ({ value: id, label: id })) ?? []),
+  ]
 
   return (
     <MultiSelect
       {...rest}
-      data={data}
+      multiple
       searchable
       clearable
+      description={focused && !getRecords.data?.records.length ? 'no more available record to select' : undefined}
       itemComponent={TreeSelectItem}
+      data={data}
       onFocus={() => setFocused(true)}
       placeholder={focused && getRecords.isLoading ? 'loading records...' : undefined}
       disabled={focused && getRecords.isLoading}
