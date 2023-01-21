@@ -36,6 +36,7 @@ export const ReferenceRecordPicker: React.FC<IProps> = ({ table, field, ...rest 
       clearable
       searchable
       itemComponent={ReferenceSelectItem}
+      description={focused && !listRecords.data?.records.length ? 'no more available record to select' : undefined}
       data={data}
       onFocus={() => setFocused(true)}
       placeholder={focused && listRecords.isLoading ? 'loading records...' : undefined}
