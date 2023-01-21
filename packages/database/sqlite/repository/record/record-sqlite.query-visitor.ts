@@ -9,6 +9,7 @@ import type {
   DateLessThanOrEqual,
   DateRangeEqual,
   IRecordVisitor,
+  IsRoot,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -203,6 +204,22 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     if (recordId) {
       this.qb.andWhereNot(INTERNAL_COLUMN_ID_NAME, recordId)
     }
+  }
+
+  isRoot(s: IsRoot): void {
+    const field = this.schema.get(s.fielId)
+    if (!(field instanceof TreeField)) return
+
+    const closure = new UnderlyingClosureTable(this.tableId, field)
+
+    this.qb.whereNotIn(
+      INTERNAL_COLUMN_ID_NAME,
+      this.knex
+        .queryBuilder()
+        .select(UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD)
+        .from(closure.name)
+        .where(UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD, '>', '0'),
+    )
   }
 
   not(): this {

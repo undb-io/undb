@@ -26,7 +26,7 @@ import type { WithRecordValues } from './record-values.specification'
 import type { ReferenceEqual } from './reference.specification'
 import type { SelectEqual, SelectIn } from './select.specification'
 import type { StringContain, StringEndsWith, StringEqual, StringRegex, StringStartsWith } from './string.specification'
-import type { TreeAvailableSpec } from './tree.specification'
+import type { IsRoot, TreeAvailableSpec } from './tree.specification'
 
 interface IRecordSpecVisitor {
   idEqual(s: WithRecordId): void
@@ -69,6 +69,7 @@ interface IRecordValueVisitor {
   referenceEqual(s: ReferenceEqual): void
 
   treeAvailable(s: TreeAvailableSpec): void
+  isRoot(s: IsRoot): void
 }
 
 export type RecordCompositeSpecification = CompositeSpecification<Record, IRecordVisitor>

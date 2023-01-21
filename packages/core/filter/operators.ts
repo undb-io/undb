@@ -38,8 +38,11 @@ export type IDateFilterOperator = z.infer<typeof dateFilterOperators>
 export const referenceFilterOperators = z.union([$eq, $neq])
 export type IReferenceFilterOperator = z.infer<typeof referenceFilterOperators>
 
-export const treeFilterOperators = z.union([$eq, $neq])
+export const $is_root = z.literal('$is_root')
+
+export const treeFilterOperators = z.union([$eq, $neq, $is_root])
 export type ITreeFilterOperator = z.infer<typeof treeFilterOperators>
+export const treeBuiltInOperators = new Set<ITreeFilterOperator>([$is_root.value])
 
 /**
  * built in date operators

@@ -1,4 +1,5 @@
 import type { Field, IOperator } from '@egodb/core'
+import { TreeField } from '@egodb/core'
 import { DateRangeField } from '@egodb/core'
 import { SelectField } from '@egodb/core'
 import { StringField } from '@egodb/core'
@@ -63,6 +64,8 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
       { value: '$in', label: 'in' },
       { value: '$nin', label: 'not in' },
     ]
+  } else if (field instanceof TreeField) {
+    data = [{ value: '$is_root', label: 'is root' }]
   }
 
   return (
