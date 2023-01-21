@@ -74,14 +74,15 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
             top: 'calc(50% - 40px)',
             left: '-22px',
             backgroundColor: theme.white,
-            boxShadow: theme.shadows.lg,
-            transition: '0.22s',
+            boxShadow: theme.shadows.xl,
+            transition: '0.4s',
+            border: '1px solid ' + theme.colors.gray[1],
             ':hover': {
-              boxShadow: theme.shadows.xl,
+              boxShadow: theme.shadows.md,
             },
           })}
         >
-          {opened ? <IconChevronRight /> : <IconChevronLeft />}
+          {opened ? <IconChevronRight size={16} /> : <IconChevronLeft size={16} />}
         </ActionIcon>
       </Drawer>
     </FormProvider>
