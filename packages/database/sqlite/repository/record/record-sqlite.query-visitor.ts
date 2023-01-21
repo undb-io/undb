@@ -200,6 +200,9 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     }
 
     this.qb.whereNotIn(INTERNAL_COLUMN_ID_NAME, subQuery)
+    if (recordId) {
+      this.qb.andWhereNot(INTERNAL_COLUMN_ID_NAME, recordId)
+    }
   }
 
   not(): this {

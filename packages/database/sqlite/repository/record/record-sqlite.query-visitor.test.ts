@@ -302,7 +302,7 @@ describe('RecordSqliteQueryVisitor', () => {
     test('with record id', () => {
       visitor.treeAvailable(new TreeAvailableSpec('fieldId', 'recordId'))
       expect(visitor.query).toMatchInlineSnapshot(
-        "\"select * from `tabletest` where `deleted_at` is null and `id` not in (select distinct `child_id` from `fieldId_tabletest_closure_table` where `depth` > 0 union select distinct `parent_id` from `fieldId_tabletest_closure_table` where `child_id` = 'recordId' and not `parent_id` = 'recordId')\"",
+        "\"select * from `tabletest` where `deleted_at` is null and `id` not in (select distinct `child_id` from `fieldId_tabletest_closure_table` where `depth` > 0 union select distinct `parent_id` from `fieldId_tabletest_closure_table` where `child_id` = 'recordId' and not `parent_id` = 'recordId') and not `id` = 'recordId'\"",
       )
     })
 
