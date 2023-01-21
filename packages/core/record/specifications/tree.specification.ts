@@ -14,3 +14,13 @@ export class TreeAvailableSpec extends BaseRecordQuerySpecification<string | und
     return Ok(undefined)
   }
 }
+
+export class IsRoot extends BaseRecordQuerySpecification<void> {
+  isSatisfiedBy(t: Record): boolean {
+    throw new Error('Method not implemented.')
+  }
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.isRoot(this)
+    return Ok(undefined)
+  }
+}

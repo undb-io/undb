@@ -59,11 +59,13 @@ export class UnderlyingClosureTable extends BaseUnderlyingForeignTable<TreeField
             .notNullable()
             .references(INTERNAL_COLUMN_ID_NAME)
             .inTable(this.foreignTableName)
+            .onDelete('CASCADE')
 
           tb.string(UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD)
             .notNullable()
             .references(INTERNAL_COLUMN_ID_NAME)
             .inTable(this.foreignTableName)
+            .onDelete('CASCADE')
 
           tb.integer(UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD).notNullable().defaultTo(0)
 

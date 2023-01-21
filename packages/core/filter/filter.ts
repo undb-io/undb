@@ -14,6 +14,7 @@ import {
   DateLessThan,
   DateLessThanOrEqual,
   DateRangeEqual,
+  IsRoot,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -39,6 +40,7 @@ import { numberFilter, numberFilterValue } from './number.filter'
 import {
   $eq,
   $is_false,
+  $is_root,
   $is_today,
   $is_true,
   $neq,
@@ -56,6 +58,7 @@ import type { ISelectFilter } from './select.filter'
 import { selectFilter, selectFilterValue } from './select.filter'
 import type { IStringFilter } from './string.filter'
 import { stringFilter, stringFilterValue } from './string.filter'
+import type { ITreeFilter } from './tree.filter'
 import { treeFilter, treeFilterValue } from './tree.filter'
 
 export const filterValue = z.union([
@@ -275,6 +278,18 @@ const convertDateFilter = (filter: IDateFilter): Option<CompositeSpecification> 
   }
 }
 
+const convertTreeFilter = (filter: ITreeFilter): Option<CompositeSpecification> => {
+  switch (filter.operator) {
+    case $is_root.value: {
+      return Some(new IsRoot(filter.path))
+    }
+
+    default: {
+      return None
+    }
+  }
+}
+
 const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
   switch (filter.type) {
     case 'string':
@@ -291,6 +306,8 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
       return convertBoolFilter(filter)
     case 'reference':
       throw new Error('convertFilter.reference not implemented')
+    case 'tree':
+      return convertTreeFilter(filter)
     default:
       return None
   }
