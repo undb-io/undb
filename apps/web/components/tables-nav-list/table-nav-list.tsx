@@ -1,12 +1,15 @@
 import { Navbar, Box, Skeleton, NavLink, Center, Button, IconPlus, ScrollArea } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import Link from 'next/link'
+import { unstable_batchedUpdates } from 'react-dom'
 import { trpc } from '../../trpc'
 import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.atom'
+import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
 import { tableListNumber } from './table-list.atom'
 
 export const TableNavList: React.FC = () => {
   const setOpened = useSetAtom(createTableFormDrawerOpened)
+  const setEditRecordOpened = useSetAtom(editRecordFormDrawerOpened)
   const setTableListNumber = useSetAtom(tableListNumber)
   const getTables = trpc.table.list.useQuery({})
   if (getTables.data) {
@@ -31,7 +34,17 @@ export const TableNavList: React.FC = () => {
           ))}
         </Box>
         <Center mt="md">
-          <Button fullWidth leftIcon={<IconPlus size={14} />} variant="outline" onClick={() => setOpened(true)}>
+          <Button
+            fullWidth
+            leftIcon={<IconPlus size={14} />}
+            variant="outline"
+            onClick={() => {
+              unstable_batchedUpdates(() => {
+                setEditRecordOpened(false)
+                setOpened(true)
+              })
+            }}
+          >
             New table
           </Button>
         </Center>

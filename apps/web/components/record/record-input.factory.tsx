@@ -132,7 +132,9 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
   return (
     <Controller
       name={name}
-      render={(form) => <TextInput icon={<FieldIcon type={field.type} />} label={label} {...form.field} />}
+      render={(form) => (
+        <TextInput data-auto-focus icon={<FieldIcon type={field.type} />} label={label} {...form.field} />
+      )}
     />
   )
 }
