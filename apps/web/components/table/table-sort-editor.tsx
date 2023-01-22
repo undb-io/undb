@@ -44,10 +44,10 @@ export const TableSortEditor: React.FC<IProps> = ({ table }) => {
       <Popover.Dropdown miw={300}>
         <SortsEditor
           table={table}
-          onApply={() => {
+          onApply={(values) => {
             setSortsReq.mutate({
               tableId: table.id.value,
-              sorts,
+              sorts: values,
             })
           }}
         />
