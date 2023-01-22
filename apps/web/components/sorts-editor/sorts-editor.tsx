@@ -1,37 +1,37 @@
-import type { IFilter, IFilterOrGroupList, Table } from '@egodb/core'
+import type { ISorts, ISortSchema, Table } from '@egodb/core'
 import { Box, Button, Divider, Group, IconPlus, Stack, useListState } from '@egodb/ui'
-import { FieldFilter } from './field-filter'
+import { FieldSort } from './field-sort'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useLayoutEffect } from 'react'
 import { closestCenter, DndContext } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
-import { getFilterId } from './get-filter-id'
+import { getSortId } from './get-sort-id'
 interface IProps {
   table: Table
-  onChange?: (filters: IFilterOrGroupList) => void
-  onApply?: (filters: IFilterOrGroupList) => void
+  onChange?: (filters: ISorts) => void
+  onApply?: (filters: ISorts) => void
   onCancel?: () => void
 }
 
-export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCancel }) => {
-  // TODO: ignore group for now
-  const initialFilters = table.mustGetView().filterList as IFilter[]
-  const [filters, handlers] = useListState<IFilter | null>(initialFilters.length ? initialFilters : [null])
-  const validFilters = filters.filter((f) => f !== null) as IFilterOrGroupList
+export const SortsEditor: React.FC<IProps> = ({ table, onChange, onApply, onCancel }) => {
+  const initialSorts = table.mustGetView().sorts?.sorts ?? []
+  const [sorts, handlers] = useListState<ISortSchema | null>(initialSorts.length ? initialSorts : [null])
+  const validSorts = sorts.filter((f) => f !== null) as ISorts
 
-  const hasNull = filters.some((f) => f === null)
+  const hasNull = sorts.some((f) => f === null)
 
   useDeepCompareEffect(() => {
-    onChange?.(validFilters)
-  }, [validFilters])
+    onChange?.(validSorts)
+  }, [validSorts])
 
   useLayoutEffect(() => {
-    if (filters.length === 0) {
+    if (sorts.length === 0) {
       handlers.append(null)
     }
-  }, [filters.length])
-  const items = filters.map(getFilterId)
+  }, [sorts.length])
+
+  const items = sorts.map(getSortId)
 
   return (
     <Box miw={640}>
@@ -50,13 +50,13 @@ export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCa
           }}
         >
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            {filters.map((filter, index) => (
-              <FieldFilter
+            {sorts.map((filter, index) => (
+              <FieldSort
                 table={table}
-                schema={table.schema}
+                fields={table.schema.fields}
                 index={index}
                 value={filter}
-                key={getFilterId(filter, index)}
+                key={getSortId(filter, index)}
                 onChange={(operator, index) => handlers.setItem(index, operator)}
                 onRemove={handlers.remove}
               />
@@ -78,7 +78,7 @@ export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCa
             <Button onClick={onCancel} variant="subtle" size="xs">
               Cancel
             </Button>
-            <Button size="xs" onClick={() => onApply?.(validFilters)}>
+            <Button size="xs" onClick={() => onApply?.(validSorts)}>
               Apply
             </Button>
           </Group>

@@ -1,28 +1,45 @@
 import type { Table } from '@egodb/core'
-import { Button, Divider, Group, IconArrowsSort, Popover, Stack, Text } from '@egodb/ui'
+import type { ISorts } from '@egodb/core'
+import { Button, IconArrowsSort, Popover, useDisclosure } from '@egodb/ui'
+import { useState } from 'react'
+import { trpc } from '../../trpc'
+import { SortsEditor } from '../sorts-editor/sorts-editor'
 
 interface IProps {
   table: Table
 }
 
 export const TableSortEditor: React.FC<IProps> = ({ table }) => {
-  const sorts = table.mustGetView().sorts?.unpack() ?? []
-  const fields = table.schema.fields
+  const utils = trpc.useContext()
+
+  const [opened, toggle] = useDisclosure(false)
+  const setSortsReq = trpc.table.view.sort.set.useMutation({
+    onSuccess() {
+      toggle.close()
+      utils.table.get.refetch()
+    },
+  })
+  const [sorts, setSorts] = useState<ISorts>([])
 
   return (
-    <Popover position="bottom-start" closeOnClickOutside shadow="md">
+    <Popover opened={opened} onClose={toggle.close} position="bottom-start" closeOnClickOutside shadow="md">
       <Popover.Target>
-        <Button compact size="xs" variant="subtle" leftIcon={<IconArrowsSort size={16} />}>
+        <Button compact size="xs" variant="subtle" leftIcon={<IconArrowsSort size={16} onClick={toggle.toggle} />}>
           Sort
         </Button>
       </Popover.Target>
 
       <Popover.Dropdown miw={300}>
-        <Text size="xs">Sort by</Text>
-        <Divider my="xs" />
-        {sorts.map((sort) => {
-          return <Group key={sort.fieldId}></Group>
-        })}
+        <SortsEditor
+          table={table}
+          onChange={setSorts}
+          onApply={() => {
+            setSortsReq.mutate({
+              tableId: table.id.value,
+              sorts,
+            })
+          }}
+        />
       </Popover.Dropdown>
     </Popover>
   )

@@ -3,10 +3,10 @@ import { Group, ActionIcon, IconGripVertical, IconTrash } from '@egodb/ui'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useEffect, useLayoutEffect, useState } from 'react'
-import { FieldSelector } from './field-selector'
+import { FieldSelector } from '../field-inputs/field-selector'
 import { FilterValueInput } from './filter-value-input'
 import { OperatorSelector } from './operator-selector'
-import { getFilterId } from './get-filter.id'
+import { getFilterId } from './get-filter-id'
 import type { Table } from '@egodb/core'
 
 interface IProps {
@@ -52,7 +52,7 @@ export const FieldFilter: React.FC<IProps> = ({ table, schema, value, onChange, 
       <ActionIcon {...attributes} {...listeners} component="a">
         <IconGripVertical size={12} />
       </ActionIcon>
-      <FieldSelector schema={schema} value={selectedField} onChange={setField} />
+      <FieldSelector fields={schema.fields} value={selectedField} onChange={setField} />
       <OperatorSelector field={selectedField} value={operator} onChange={setOperator} />
       <FilterValueInput
         table={table}

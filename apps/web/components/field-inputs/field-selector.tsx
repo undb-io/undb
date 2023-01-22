@@ -1,14 +1,14 @@
-import type { Field, Table } from '@egodb/core'
+import type { Field } from '@egodb/core'
 import { Select } from '@egodb/ui'
-import { FieldIcon } from '../field-inputs/field-Icon'
-import { FieldItem } from '../field-inputs/field-item'
+import { FieldIcon } from './field-Icon'
+import { FieldItem } from './field-item'
 interface IProps {
-  schema: Table['schema']
+  fields: Field[]
   value: Field | null
   onChange: (field: Field | null) => void
 }
 
-export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => {
+export const FieldSelector: React.FC<IProps> = ({ fields, value, onChange }) => {
   return (
     <Select
       searchable
@@ -17,12 +17,12 @@ export const FieldSelector: React.FC<IProps> = ({ schema, value, onChange }) => 
       size="xs"
       variant="filled"
       onChange={(value) => {
-        const selectedColumn = value ? schema.getFieldById(value).into(null) : null
+        const selectedColumn = value ? fields.find((f) => f.id.value === value) ?? null : null
         onChange(selectedColumn)
       }}
       placeholder="search field"
       itemComponent={FieldItem}
-      data={schema.fields.map((f) => ({
+      data={fields.map((f) => ({
         value: f.id.value,
         label: f.name.value,
         type: f.type,
