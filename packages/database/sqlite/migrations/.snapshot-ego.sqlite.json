@@ -443,6 +443,15 @@
           ],
           "mappedType": "enum"
         },
+        "sorts": {
+          "name": "sorts",
+          "type": "json",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
         "kanban_field_id": {
           "name": "kanban_field_id",
           "type": "text",

@@ -1,6 +1,6 @@
 import type { Table } from '@egodb/core'
 import type { ISorts } from '@egodb/core'
-import { Button, IconArrowsSort, Popover, useDisclosure } from '@egodb/ui'
+import { Badge, Button, IconArrowsSort, Popover, useDisclosure } from '@egodb/ui'
 import { useState } from 'react'
 import { trpc } from '../../trpc'
 import { SortsEditor } from '../sorts-editor/sorts-editor'
@@ -22,9 +22,22 @@ export const TableSortEditor: React.FC<IProps> = ({ table }) => {
   const [sorts, setSorts] = useState<ISorts>([])
 
   return (
-    <Popover opened={opened} onClose={toggle.close} position="bottom-start" closeOnClickOutside shadow="md">
+    <Popover opened={opened} onChange={toggle.toggle} position="bottom-start" closeOnClickOutside shadow="md">
       <Popover.Target>
-        <Button compact size="xs" variant="subtle" leftIcon={<IconArrowsSort size={16} onClick={toggle.toggle} />}>
+        <Button
+          compact
+          size="xs"
+          variant={sorts.length ? 'light' : 'subtle'}
+          leftIcon={<IconArrowsSort size={16} />}
+          onClick={toggle.toggle}
+          rightIcon={
+            sorts.length ? (
+              <Badge variant="filled" size="xs">
+                {sorts.length}
+              </Badge>
+            ) : null
+          }
+        >
           Sort
         </Button>
       </Popover.Target>

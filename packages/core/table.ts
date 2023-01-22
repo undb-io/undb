@@ -24,11 +24,13 @@ import type {
   ISetFieldVisibilitySchema,
   ISetFieldWidthSchema,
   ISetKanbanFieldSchema,
+  ISorts,
   ISwitchDisplayTypeSchema,
   ViewFieldsOrder,
 } from './view'
-import { defaultViewDiaplyType, View, WithTableView, WithViewFieldsOrder } from './view'
+import { defaultViewDiaplyType, Sorts, View, WithTableView, WithViewFieldsOrder } from './view'
 import { WithFilter } from './view/specifications/filters.specificaiton'
+import { WithSorts } from './view/specifications/sorts.specification'
 import { ViewId } from './view/view-id.vo'
 import { Views } from './view/views'
 
@@ -106,6 +108,13 @@ export class Table {
   public setFilter(filters: IRootFilter | null, viewKey?: string): Result<TableCompositeSpecificaiton, string> {
     const view = this.mustGetView(viewKey)
     const spec = new WithFilter(filters, view)
+    spec.mutate(this).unwrap()
+    return Ok(spec)
+  }
+
+  public setSorts(sorts: ISorts | null, viewKey?: string): Result<TableCompositeSpecificaiton, string> {
+    const view = this.mustGetView(viewKey)
+    const spec = new WithSorts(new Sorts(sorts ?? []), view)
     spec.mutate(this).unwrap()
     return Ok(spec)
   }

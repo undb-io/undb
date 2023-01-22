@@ -12,6 +12,7 @@ import type {
   WithOptions,
   WithoutField,
   WithoutOption,
+  WithSorts,
   WithTableId,
   WithTableName,
   WithTableSchema,
@@ -79,6 +80,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   optionEqual(s: WithNewOption): void {
+    throw new Error('Method not implemented.')
+  }
+  sortsEqual(s: WithSorts): void {
     throw new Error('Method not implemented.')
   }
 

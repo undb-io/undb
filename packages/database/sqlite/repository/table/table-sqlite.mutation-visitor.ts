@@ -12,6 +12,7 @@ import type {
   WithOptions,
   WithoutField,
   WithoutOption,
+  WithSorts,
   WithTableName,
   WithTableSchema,
   WithTableView,
@@ -74,6 +75,11 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
   filterEqual(s: WithFilter): void {
     const view = this.getView(s.view.id.value)
     wrap(view).assign({ filter: s.filter })
+    this.em.persist(view)
+  }
+  sortsEqual(s: WithSorts): void {
+    const view = this.getView(s.view.id.value)
+    wrap(view).assign({ sorts: s.sorts?.sorts ?? [] })
     this.em.persist(view)
   }
   newField(s: WithNewField): void {

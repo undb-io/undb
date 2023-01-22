@@ -50,13 +50,13 @@ export const SortsEditor: React.FC<IProps> = ({ table, onChange, onApply, onCanc
           }}
         >
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            {sorts.map((filter, index) => (
+            {sorts.map((sort, index) => (
               <FieldSort
                 table={table}
                 fields={table.schema.fields}
                 index={index}
-                value={filter}
-                key={getSortId(filter, index)}
+                value={sort}
+                key={getSortId(sort, index)}
                 onChange={(operator, index) => handlers.setItem(index, operator)}
                 onRemove={handlers.remove}
               />
@@ -72,7 +72,7 @@ export const SortsEditor: React.FC<IProps> = ({ table, onChange, onApply, onCanc
             leftIcon={<IconPlus size={14} />}
             onClick={() => handlers.append(null)}
           >
-            Add new filter
+            Add new Sort
           </Button>
           <Group>
             <Button onClick={onCancel} variant="subtle" size="xs">

@@ -7,6 +7,7 @@ import type { WithKanbanField } from '../view'
 import type { WithCalendarField } from '../view/specifications/calendar.specification'
 import type { WithDisplayType } from '../view/specifications/display-type.specification'
 import type { WithFilter } from '../view/specifications/filters.specificaiton'
+import type { WithSorts } from '../view/specifications/sorts.specification'
 import type {
   WithFieldOption,
   WithFieldVisibility,
@@ -25,6 +26,8 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   schemaEqual(s: WithTableSchema): void
   viewsEqual(s: WithTableViews): void
   viewEqual(s: WithTableView): void
+
+  sortsEqual(s: WithSorts): void
 
   filterEqual(s: WithFilter): void
   fieldsOrder(s: WithViewFieldsOrder): void

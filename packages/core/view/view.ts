@@ -1,5 +1,6 @@
 import type { CompositeSpecification } from '@egodb/domain'
 import { and, ValueObject } from '@egodb/domain'
+import { isEmpty } from '@fxts/core'
 import { None, Option } from 'oxide.ts'
 import type { Field, FieldId } from '../field'
 import type { IFilterOrGroupList, IRootFilter } from '../filter'
@@ -54,6 +55,14 @@ export class View extends ValueObject<IView> {
 
   public get sorts(): Sorts | undefined {
     return this.props.sorts
+  }
+
+  public set sorts(sorts: Sorts | undefined) {
+    if (isEmpty(sorts)) {
+      this.props.sorts = undefined
+    } else {
+      this.props.sorts = sorts
+    }
   }
 
   public get kanban(): Option<Kanban> {

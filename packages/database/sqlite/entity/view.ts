@@ -1,7 +1,7 @@
 import type {
   Calendar as CoreCalendar,
   IRootFilter,
-  ISortDirection,
+  ISorts,
   IViewDisplayType,
   IViewFieldOption,
   Kanban as CoreKanban,
@@ -60,7 +60,7 @@ export class View extends BaseEntity {
   displayType: IViewDisplayType
 
   @Property({ type: JsonType, nullable: true })
-  sorts?: Record<string, ISortDirection>
+  sorts?: ISorts
 
   @Embedded({ nullable: true })
   kanban?: Kanban
