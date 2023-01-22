@@ -34,7 +34,7 @@ export const SortsEditor: React.FC<IProps> = ({ table, onChange, onApply, onCanc
   const items = sorts.map(getSortId)
 
   return (
-    <Box miw={640}>
+    <Box>
       <Stack spacing="xs">
         <DndContext
           collisionDetection={closestCenter}
