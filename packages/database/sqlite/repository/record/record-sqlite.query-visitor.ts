@@ -77,21 +77,21 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     if (s.value.unpack() === null) {
       this.qb.whereNull(s.fieldId)
     } else {
-      this.qb.whereRaw(`${s.fieldId} like '%??%'`, [s.value.unpack()])
+      this.qb.whereLike(s.fieldId, `%${s.value.unpack()}%`)
     }
   }
   stringStartsWith(s: StringStartsWith): void {
     if (s.value.unpack() === null) {
       this.qb.whereNull(s.fieldId)
     } else {
-      this.qb.whereRaw(`${s.fieldId} like '??%'`, [s.value.unpack()])
+      this.qb.whereLike(s.fieldId, `${s.value.unpack()}%`)
     }
   }
   stringEndsWith(s: StringEndsWith): void {
     if (s.value.unpack() === null) {
       this.qb.whereNull(s.fieldId)
     } else {
-      this.qb.whereRaw(`${s.fieldId} like '%??'`, [s.value.unpack()])
+      this.qb.whereLike(s.fieldId, `%${s.value.unpack()}`)
     }
   }
   stringRegex(s: StringRegex): void {

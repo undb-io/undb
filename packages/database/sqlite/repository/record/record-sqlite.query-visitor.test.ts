@@ -91,35 +91,35 @@ describe('RecordSqliteQueryVisitor', () => {
   test('stringContain', () => {
     visitor.stringContain(new StringContain('fieldId', new StringFieldValue('value')))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` where `deleted_at` is null and fieldId like \'%`value`%\'"',
+      '"select * from `tabletest` where `deleted_at` is null and `fieldId` like \'%value%\'"',
     )
     visitor.stringContain(new StringContain('fieldId', new StringFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` where `deleted_at` is null and fieldId like \'%`value`%\' and `fieldId` is null"',
+      '"select * from `tabletest` where `deleted_at` is null and `fieldId` like \'%value%\' and `fieldId` is null"',
     )
   })
 
   test('stringStartsWith', () => {
     visitor.stringStartsWith(new StringStartsWith('fieldId', new StringFieldValue('value')))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` where `deleted_at` is null and fieldId like \'`value`%\'"',
+      '"select * from `tabletest` where `deleted_at` is null and `fieldId` like \'value%\'"',
     )
 
     visitor.stringStartsWith(new StringStartsWith('fieldId', new StringFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` where `deleted_at` is null and fieldId like \'`value`%\' and `fieldId` is null"',
+      '"select * from `tabletest` where `deleted_at` is null and `fieldId` like \'value%\' and `fieldId` is null"',
     )
   })
 
   test('stringEndsWith', () => {
     visitor.stringEndsWith(new StringEndsWith('fieldId', new StringFieldValue('value')))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` where `deleted_at` is null and fieldId like \'%`value`\'"',
+      '"select * from `tabletest` where `deleted_at` is null and `fieldId` like \'%value\'"',
     )
 
     visitor.stringEndsWith(new StringEndsWith('fieldId', new StringFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` where `deleted_at` is null and fieldId like \'%`value`\' and `fieldId` is null"',
+      '"select * from `tabletest` where `deleted_at` is null and `fieldId` like \'%value\' and `fieldId` is null"',
     )
   })
 
