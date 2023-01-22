@@ -1,4 +1,11 @@
-import type { IQueryRecords, IQueryRecordSchema, IRecordQueryModel, IRecordSpec, TableSchemaIdMap } from '@egodb/core'
+import type {
+  IQueryRecords,
+  IQueryRecordSchema,
+  IRecordQueryModel,
+  IRecordSpec,
+  ISorts,
+  TableSchemaIdMap,
+} from '@egodb/core'
 import { WithRecordId } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { Option } from 'oxide.ts'
@@ -9,7 +16,7 @@ import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
 export class RecordSqliteQueryModel implements IRecordQueryModel {
   constructor(protected readonly em: EntityManager) {}
 
-  async find(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap): Promise<IQueryRecords> {
+  async find(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap, sorts: ISorts): Promise<IQueryRecords> {
     const knex = this.em.getKnex()
     const qb = knex.queryBuilder()
 
@@ -17,6 +24,11 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     spec.accept(visitor).unwrap()
 
     qb.select(getColumnNames([...schema.values()]))
+    if (sorts.length) {
+      for (const sort of sorts) {
+        qb.orderBy(sort.fieldId, sort.direction)
+      }
+    }
 
     const data = await this.em.execute(qb)
 

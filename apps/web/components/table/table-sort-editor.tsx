@@ -17,6 +17,7 @@ export const TableSortEditor: React.FC<IProps> = ({ table }) => {
     onSuccess() {
       toggle.close()
       utils.table.get.refetch()
+      utils.record.list.refetch()
     },
   })
   const [sorts, setSorts] = useState<ISorts>([])

@@ -57,7 +57,7 @@ export const SortsEditor: React.FC<IProps> = ({ table, onChange, onApply, onCanc
                 index={index}
                 value={sort}
                 key={getSortId(sort, index)}
-                onChange={(operator, index) => handlers.setItem(index, operator)}
+                onChange={(sort, index) => handlers.setItem(index, sort)}
                 onRemove={handlers.remove}
               />
             ))}

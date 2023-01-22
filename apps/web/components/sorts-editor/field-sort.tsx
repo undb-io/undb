@@ -29,13 +29,13 @@ export const FieldSort: React.FC<IProps> = ({ table, fields, value, onChange, on
     transition,
   }
 
-  const [direction, setDirection] = useState<ISortDirection>('asc')
+  const [direction, setDirection] = useState<ISortDirection>(value?.direction ?? 'asc')
 
   useEffect(() => {
     if (selectedField) {
       onChange({ fieldId: selectedField.id.value, direction }, index)
     }
-  }, [selectedField])
+  }, [selectedField, direction])
 
   return (
     <Group ref={setNodeRef} style={style} spacing="xs">
