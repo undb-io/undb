@@ -53,6 +53,7 @@ export const TableFieldVisibilityEditor: React.FC<ITableBaseProps> = ({ table })
           {table.schema.fields.map((f) => (
             <Checkbox
               lh={1}
+              size="xs"
               onChange={(e) => onChange(f.id.value, e.target.checked)}
               defaultChecked={visibility[f.id.value] === undefined || !!visibility[f.id.value]}
               key={f.id.value}
