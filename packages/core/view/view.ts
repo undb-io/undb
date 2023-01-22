@@ -1,5 +1,6 @@
 import type { CompositeSpecification } from '@egodb/domain'
 import { and, ValueObject } from '@egodb/domain'
+import { isEmpty } from '@fxts/core'
 import { None, Option } from 'oxide.ts'
 import type { Field, FieldId } from '../field'
 import type { IFilterOrGroupList, IRootFilter } from '../filter'
@@ -8,6 +9,7 @@ import { WithFilter } from '../specifications'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
 import { Calendar } from './calendar'
 import { Kanban } from './kanban'
+import { Sorts } from './sort/sorts'
 import { WithCalendarField, WithKanbanField, WithViewFieldsOrder } from './specifications'
 import { WithDisplayType } from './specifications/display-type.specification'
 import { WithFieldOption, WithFieldVisibility, WithFieldWidth } from './specifications/view-field-option.specification'
@@ -49,6 +51,18 @@ export class View extends ValueObject<IView> {
 
   public set filter(filter: RootFilter | undefined) {
     this.props.filter = filter
+  }
+
+  public get sorts(): Sorts | undefined {
+    return this.props.sorts
+  }
+
+  public set sorts(sorts: Sorts | undefined) {
+    if (isEmpty(sorts)) {
+      this.props.sorts = undefined
+    } else {
+      this.props.sorts = sorts
+    }
   }
 
   public get kanban(): Option<Kanban> {
@@ -208,6 +222,7 @@ export class View extends ValueObject<IView> {
       id: input.id ? ViewId.fromString(input.id) : ViewId.create(),
       key: input.key ? ViewKey.create(input.key) : ViewKey.fromName(viewName),
       name: viewName,
+      sorts: input.sorts ? new Sorts(input.sorts) : undefined,
       kanban: input.kanban ? Kanban.from(input.kanban) : undefined,
       calendar: input.calendar ? Kanban.from(input.calendar) : undefined,
       displayType: parsed.displayType || defaultViewDiaplyType,

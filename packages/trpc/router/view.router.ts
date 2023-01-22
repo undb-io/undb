@@ -6,6 +6,7 @@ import { router } from '../trpc'
 import { createCalendarRouter } from './calendar.router'
 import { createFilterRouter } from './filter.router'
 import { createKanbanRouter } from './kanban.router'
+import { createSortRouter } from './sort.router'
 import { createViewFieldRouter } from './view-field.router'
 
 const tags = ['view']
@@ -22,6 +23,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
       }),
     field: createViewFieldRouter(procedure)(commandBus),
     filter: createFilterRouter(procedure)(commandBus),
+    sort: createSortRouter(procedure)(commandBus),
     kanban: createKanbanRouter(procedure)(commandBus),
     calendar: createCalendarRouter(procedure)(commandBus),
   })

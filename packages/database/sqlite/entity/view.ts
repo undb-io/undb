@@ -1,6 +1,7 @@
 import type {
   Calendar as CoreCalendar,
   IRootFilter,
+  ISorts,
   IViewDisplayType,
   IViewFieldOption,
   Kanban as CoreKanban,
@@ -58,6 +59,9 @@ export class View extends BaseEntity {
   @Enum({ items: ['kanban', 'calendar', 'grid'] })
   displayType: IViewDisplayType
 
+  @Property({ type: JsonType, nullable: true })
+  sorts?: ISorts
+
   @Embedded({ nullable: true })
   kanban?: Kanban
 
@@ -90,6 +94,9 @@ export class View extends BaseEntity {
     this.fieldOptions = view.fieldOptions.toObject().into()
     if (view.fieldsOrder) {
       this.fieldsOrder = view.fieldsOrder.order
+    }
+    if (view.sorts) {
+      this.sorts = view.sorts.unpack()
     }
   }
 }

@@ -16,7 +16,12 @@ export class GetRecordsQueryHandler implements IQueryHandler<GetRecordsQuery, IG
       .map((s) => (filter.isNone() ? s : s.and(filter.unwrap())))
       .unwrap()
 
-    const records = await this.rm.find(table.id.value, spec, table.schema.toIdMap())
+    const records = await this.rm.find(
+      table.id.value,
+      spec,
+      table.schema.toIdMap(),
+      table.mustGetView().sorts?.sorts ?? [],
+    )
 
     return { records }
   }

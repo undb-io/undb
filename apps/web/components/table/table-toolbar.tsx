@@ -3,6 +3,7 @@ import type { ITableBaseProps } from './table-base-props'
 import { TableCreateNewRecordButton } from './table-create-new-record-button'
 import { TableFieldVisibilityEditor } from './table-field-visibility-editor'
 import { TableFilterEditor } from './table-filter-editor'
+import { TableSortEditor } from './table-sort-editor'
 import { ToolbarView } from './toolbar-view'
 
 export const TableToolbar: React.FC<ITableBaseProps> = ({ table }) => {
@@ -23,6 +24,7 @@ export const TableToolbar: React.FC<ITableBaseProps> = ({ table }) => {
       <TableCreateNewRecordButton />
       <ToolbarView table={table} />
       <TableFilterEditor table={table} />
+      <TableSortEditor table={table} />
       <TableFieldVisibilityEditor table={table} />
     </Group>
   )

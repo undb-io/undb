@@ -13,7 +13,6 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     const knex = em.getKnex()
     this.knex = knex
   }
-
   get #sb() {
     return this.sb ?? this.knex.schema
   }
@@ -60,6 +59,8 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   optionsEqual(): void {}
   newOption(): void {}
   optionEqual(): void {}
+  sortsEqual(): void {}
+
   witoutOption(s: WithoutOption): void {
     this.qb = this.#qb.from(this.tableName).where(s.field.id.value, s.optionKey.value).update(s.field.id.value, null)
   }

@@ -1,5 +1,6 @@
 export * from './calendar'
 export * from './kanban'
+export * from './sort'
 export * from './specifications'
 export * from './view'
 export * from './view-field-options'
