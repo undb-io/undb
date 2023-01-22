@@ -10,6 +10,8 @@ export const sortSchema = z.object({
   direction: sortDirection,
 })
 
+export type ISortSchema = z.infer<typeof sortSchema>
+
 export const sortsSchema = z.array(sortSchema)
 
 export type ISorts = z.infer<typeof sortsSchema>
