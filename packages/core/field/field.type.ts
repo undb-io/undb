@@ -37,6 +37,17 @@ import {
   dateRangeTypeSchema,
 } from './date-range-field.type'
 import { FIELD_TYPE_KEY } from './field.constant'
+import type { IdField } from './id-field'
+import type { IdFieldValue } from './id-field-value'
+import type { IIdFieldValue } from './id-field.type'
+import {
+  createIdFieldSchema,
+  createIdFieldValue,
+  createIdFieldValue_internal,
+  idFieldQuerySchema,
+  idFieldValue,
+  idTypeSchema,
+} from './id-field.type'
 import type { NumberField } from './number-field'
 import type { NumberFieldValue } from './number-field-value'
 import type { INumberFieldValue } from './number-field.type'
@@ -95,6 +106,7 @@ import type { FieldId, FieldKey, FieldName, FieldValueConstraints } from './valu
 import { fieldNameSchema } from './value-objects/field-name.schema'
 
 export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
+  createIdFieldSchema,
   createStringFieldSchema,
   createNumberFieldSchema,
   createDateFieldSchema,
@@ -107,6 +119,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
 export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
 
 export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
+  idFieldQuerySchema,
   stringFieldQuerySchema,
   numberFieldQuerySchema,
   dateFieldQuerySchema,
@@ -121,6 +134,7 @@ export const querySchemaSchema = z.array(queryFieldSchema)
 export type IQuerySchemaSchema = z.infer<typeof querySchemaSchema>
 
 export const fieldTypes = z.union([
+  idTypeSchema,
   stringTypeSchema,
   numberTypeSchema,
   dateTypeSchema,
@@ -133,6 +147,7 @@ export const fieldTypes = z.union([
 export type IFieldType = z.infer<typeof fieldTypes>
 
 export const fieldValue = z.union([
+  idFieldValue,
   stringFieldValue,
   numberFieldValue,
   dateFieldValue,
@@ -145,6 +160,7 @@ export const fieldValue = z.union([
 export type IFieldValue = z.infer<typeof fieldValue>
 
 export const createFieldValueSchema = z.union([
+  createIdFieldValue,
   createStringFieldValue,
   createNumberFieldValue,
   createDateFieldValue,
@@ -160,6 +176,7 @@ export const createFieldValueObject = z.record(fieldNameSchema, createFieldValue
 export type ICreateFieldValueObject = z.infer<typeof createFieldValueObject>
 
 export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_KEY, [
+  createIdFieldValue_internal,
   createStringFieldValue_internal,
   createNumberFieldValue_internal,
   createDateFieldValue_internal,
@@ -176,11 +193,13 @@ export type ICreateFieldsSchema_internal = z.infer<typeof createFieldsSchema_int
 
 export interface IBaseField {
   id: FieldId
+  system?: boolean
   key: FieldKey
   name: FieldName
   valueConstrains: FieldValueConstraints
 }
 
+export type IIdField = IBaseField
 export type IStringField = IBaseField
 export interface INumberField extends IBaseField {
   currency: Option<Currency>
@@ -196,7 +215,9 @@ export type IBoolField = IBaseField
 export type IReferenceField = IBaseField
 export type ITreeField = IBaseField
 
-export type Field =
+export type SystemField = IdField
+
+export type NoneSystemField =
   | StringField
   | NumberField
   | DateField
@@ -206,7 +227,10 @@ export type Field =
   | ReferenceField
   | TreeField
 
+export type Field = SystemField | NoneSystemField
+
 export type FieldValue =
+  | IdFieldValue
   | StringFieldValue
   | NumberFieldValue
   | DateFieldValue
@@ -219,6 +243,7 @@ export type FieldValue =
 export type FieldValues = FieldValue[]
 
 export type UnpackedFieldValue =
+  | IIdFieldValue
   | IStringFieldValue
   | INumberFieldValue
   | IDateFieldValue

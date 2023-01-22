@@ -3,6 +3,7 @@ import {
   IconCalendar,
   IconCalendarTime,
   IconHierarchy,
+  IconKey,
   IconLetterT,
   IconListCheck,
   IconQuestionMark,
@@ -18,6 +19,8 @@ interface FieldProps {
 
 export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16, color }) => {
   switch (type) {
+    case 'id':
+      return <IconKey size={size} color={color} />
     case 'string':
       return <IconLetterT size={size} color={color} />
     case 'number':

@@ -78,7 +78,7 @@ export const Th: React.FC<IProps> = memo(({ header, tableId, field, column }) =>
           </Text>
         </Group>
 
-        <HeaderMenu tableId={tableId} field={field} />
+        {!field.system && <HeaderMenu tableId={tableId} field={field} />}
       </Group>
 
       <Resizer

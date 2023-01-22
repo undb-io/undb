@@ -58,7 +58,7 @@ export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel })
     <>
       <form onSubmit={onSubmit}>
         <Stack>
-          {table.schema.fields.map((field, index) => {
+          {table.schema.nonSystemFields.map((field, index) => {
             const name: FieldPath<IUpdateRecordValueSchema> = `value.${index}.value`
             return (
               <RecordInputFactory name={name} table={table} key={field.id.value} field={field} recordId={record?.id} />

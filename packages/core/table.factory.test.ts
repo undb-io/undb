@@ -18,8 +18,10 @@ describe('TableFactory', () => {
   ])('should create table', (input) => {
     const table = TableFactory.from(input)
     expect(table.isOk()).to.be.true
-    expect(table.unwrap().schema.fields).to.have.length(1)
+    expect(table.unwrap().schema.fields).to.have.length(2)
     expect(table.unwrap().schema.fields.at(0)!.type).not.to.be.undefined
-    expect(table.unwrap().schema.fields.at(0)!.type).to.be.eq('string')
+    expect(table.unwrap().schema.fields.at(0)!.type).to.be.eq('id')
+    expect(table.unwrap().schema.fields.at(1)!.type).not.to.be.undefined
+    expect(table.unwrap().schema.fields.at(1)!.type).to.be.eq('string')
   })
 })

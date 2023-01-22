@@ -27,9 +27,15 @@ export abstract class Field extends BaseEntity {
   @Property()
   name: string
 
-  @Enum({ items: ['string', 'number', 'date', 'select', 'bool', 'date-range', 'reference', 'tree'] })
+  @Property({ type: 'bool', default: false })
+  system = false
+
+  @Enum({ items: ['id', 'string', 'number', 'date', 'select', 'bool', 'date-range', 'reference', 'tree'] })
   type: IFieldType
 }
+
+@Entity({ discriminatorValue: 'id' })
+export class IdField extends Field {}
 
 @Entity({ discriminatorValue: 'string' })
 export class StringField extends Field {}
@@ -59,6 +65,7 @@ export class ReferenceField extends Field {}
 export class TreeField extends Field {}
 
 export type IField =
+  | IdField
   | StringField
   | NumberField
   | BoolField
@@ -69,6 +76,7 @@ export type IField =
   | TreeField
 
 export const fieldEntities = [
+  IdField,
   StringField,
   NumberField,
   BoolField,

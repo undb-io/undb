@@ -1,7 +1,7 @@
 import { ValueObject } from '@egodb/domain'
 import * as z from 'zod'
 import type { IFilter, IOperator } from '../filter'
-import type { IBaseField, IFieldType } from './field.type'
+import type { IBaseField, IFieldType, SystemField } from './field.type'
 import type { IFieldVisitor } from './field.visitor'
 import type { FieldId, FieldName } from './value-objects'
 import { valueConstraintsSchema } from './value-objects'
@@ -26,6 +26,12 @@ export const baseFieldQuerySchema = z
 
 export abstract class BaseField<C extends IBaseField> extends ValueObject<C> {
   abstract type: IFieldType
+  system = false
+
+  isSystem(): this is SystemField {
+    return this.system
+  }
+
   public get id(): FieldId {
     return this.props.id
   }

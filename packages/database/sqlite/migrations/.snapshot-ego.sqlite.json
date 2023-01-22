@@ -144,6 +144,16 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "system": {
+          "name": "system",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "text"
+        },
         "type": {
           "name": "type",
           "type": "text",
@@ -152,6 +162,7 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
+            "id",
             "string",
             "number",
             "date",

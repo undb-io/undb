@@ -35,6 +35,7 @@ import type { IDateRangeFilter } from './date-range.filter'
 import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter'
 import type { IDateFilter } from './date.filter'
 import { dateFilter, dateFilterValue } from './date.filter'
+import { idFilter, idFilterValue } from './id.filter'
 import type { INumberFilter } from './number.filter'
 import { numberFilter, numberFilterValue } from './number.filter'
 import {
@@ -47,6 +48,7 @@ import {
   boolFilterOperators,
   dateFilterOperators,
   dateRangeFilterOperators,
+  idFilterOperators,
   numberFilterOperators,
   referenceFilterOperators,
   selectFilterOperators,
@@ -62,6 +64,7 @@ import type { ITreeFilter } from './tree.filter'
 import { treeFilter, treeFilterValue } from './tree.filter'
 
 export const filterValue = z.union([
+  idFilterValue,
   stringFilterValue,
   numberFilterValue,
   dateFilterValue,
@@ -74,6 +77,7 @@ export const filterValue = z.union([
 export type IFilterValue = z.infer<typeof filterValue>
 
 export const operaotrs = z.union([
+  idFilterOperators,
   stringFilterOperators,
   numberFilterOperators,
   dateFilterOperators,
@@ -86,6 +90,7 @@ export const operaotrs = z.union([
 export type IOperator = z.infer<typeof operaotrs>
 
 const filter = z.discriminatedUnion('type', [
+  idFilter,
   stringFilter,
   numberFilter,
   dateFilter,

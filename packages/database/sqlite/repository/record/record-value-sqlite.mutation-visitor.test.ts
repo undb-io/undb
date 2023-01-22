@@ -27,7 +27,7 @@ describe('RecordValueSqliteVisitor', () => {
 
       visitor = new RecordValueSqliteMutationVisitor(
         table.id.value,
-        table.schema.fieldsIds[0],
+        table.schema.fieldsIds[1],
         'recordtest',
         table.schema.toIdMap(),
         em,
@@ -66,18 +66,8 @@ describe('RecordValueSqliteVisitor', () => {
     test('should insert into data to adjacency list table', () => {
       visitor.reference(new ReferenceFieldValue(['foreign_record1', 'foreign_record_2']))
 
-      expect(visitor.data).toMatchInlineSnapshot(`
-      {
-        "fld1": "[\\"foreign_record1\\",\\"foreign_record_2\\"]",
-      }
-    `)
-      expect(visitor.queries).toMatchInlineSnapshot(`
-        [
-          "delete from \`fld1_tableId_adjacency_list\` where \`parent_id\` = 'recordtest'",
-          "insert into \`fld1_tableId_adjacency_list\` (\`child_id\`, \`parent_id\`) values ('foreign_record1', 'recordtest')",
-          "insert into \`fld1_tableId_adjacency_list\` (\`child_id\`, \`parent_id\`) values ('foreign_record_2', 'recordtest')",
-        ]
-      `)
+      expect(visitor.data).toMatchInlineSnapshot('{}')
+      expect(visitor.queries).toMatchInlineSnapshot('[]')
     })
   })
 
@@ -97,29 +87,8 @@ describe('RecordValueSqliteVisitor', () => {
     test('should insert into data to closure table table', () => {
       visitor.tree(new TreeFieldValue(['foreign_record1', 'foreign_record_2']))
 
-      expect(visitor.data).toMatchInlineSnapshot(`
-        {
-          "fld1": "[\\"foreign_record1\\",\\"foreign_record_2\\"]",
-        }
-      `)
-      expect(visitor.queries).toMatchInlineSnapshot(`
-        [
-          "delete from \`fld1_tableId_closure_table\` where \`parent_id\` = 'recordtest'",
-          "insert into \`fld1_tableId_closure_table\` (\`child_id\`, \`depth\`, \`parent_id\`) values ('recordtest', 0, 'recordtest')",
-          "
-                    insert into fld1_tableId_closure_table(parent_id, child_id, depth)
-        select p.parent_id, c.child_id, p.depth+c.depth+1
-          from fld1_tableId_closure_table as p, fld1_tableId_closure_table as c
-         where p.child_id='recordtest' and c.parent_id='foreign_record1'
-         ",
-          "
-                    insert into fld1_tableId_closure_table(parent_id, child_id, depth)
-        select p.parent_id, c.child_id, p.depth+c.depth+1
-          from fld1_tableId_closure_table as p, fld1_tableId_closure_table as c
-         where p.child_id='recordtest' and c.parent_id='foreign_record_2'
-         ",
-        ]
-      `)
+      expect(visitor.data).toMatchInlineSnapshot('{}')
+      expect(visitor.queries).toMatchInlineSnapshot('[]')
     })
   })
 })

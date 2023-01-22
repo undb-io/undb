@@ -22,7 +22,7 @@ export const CreateRecordFormDrawer: React.FC<IProps> = ({ table }) => {
   const defaultValues = useMemo(
     () => ({
       tableId: table.id.value,
-      value: table.schema.fields.map((field) => ({
+      value: table.schema.nonSystemFields.map((field) => ({
         id: field.id.value,
         // TODO: get field default value
         value: initialCreateRecordValue[field.id.value] ?? (field.type === 'bool' ? false : null),

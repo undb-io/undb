@@ -2,9 +2,10 @@ import { ValueObject } from '@egodb/domain'
 import { Option } from 'oxide.ts'
 import type { Class } from 'type-fest'
 import * as z from 'zod'
-import type { Field, ICreateFieldSchema } from '../field'
+import type { Field, ICreateFieldSchema, NoneSystemField } from '../field'
 import { createFieldSchema, DateField, DateRangeField, ReferenceField, SelectField, WithoutField } from '../field'
 import { FieldFactory } from '../field/field.factory'
+import { IdField } from '../field/id-field'
 import { fieldKeySchema } from '../field/value-objects/field-key.schema'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema'
 import { WithNewField } from '../specifications/table-field.specification'
@@ -38,7 +39,7 @@ export type TableSchemaIdMap = Map<string, Field>
 export class TableSchema extends ValueObject<Field[]> {
   static create(inputs: ICreateTableSchemaInput): TableSchema {
     const fields = createTableSchemaSchema.parse(inputs).map(FieldFactory.create)
-    return new TableSchema(fields)
+    return new TableSchema([IdField.create({ name: 'id', type: 'id', key: 'id' }), ...fields])
   }
 
   static unsafeCreate(inputs: ICreateTableSchemaInput): TableSchema {
@@ -52,6 +53,10 @@ export class TableSchema extends ValueObject<Field[]> {
 
   public get fields(): Field[] {
     return this.props
+  }
+
+  public get nonSystemFields(): NoneSystemField[] {
+    return this.fields.filter((f) => !f.isSystem()) as NoneSystemField[]
   }
 
   public get referenceFields(): ReferenceField[] {
@@ -116,6 +121,10 @@ export class TableSchema extends ValueObject<Field[]> {
 
   public removeField(id: string): WithoutField {
     const field = this.getFieldById(id).unwrap()
+
+    if (field.isSystem()) {
+      throw new Error('not allowed to delete system field')
+    }
 
     return new WithoutField(field)
   }

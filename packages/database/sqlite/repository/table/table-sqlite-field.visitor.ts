@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-empty-function */
 import type {
   BoolField as CoreBoolField,
   DateField as CoreDateField,
   DateRangeField as CoreDateRangeField,
+  IdField as CoreIdField,
   IFieldVisitor,
   NumberField as CoreNumberField,
   ReferenceField as CoreReferenceField,
@@ -17,6 +20,7 @@ import {
   BoolField,
   DateField,
   DateRangeField,
+  IdField,
   NumberField,
   Option,
   ReferenceField,
@@ -38,6 +42,12 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
     for (const query of this.#queries) {
       await this.em.execute(query)
     }
+  }
+
+  id(value: CoreIdField): void {
+    const field = new IdField(this.table, value)
+
+    this.em.persist(field)
   }
 
   string(value: CoreStringField): void {

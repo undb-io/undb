@@ -31,6 +31,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingReferenceColumn(field)
       case 'tree':
         return new UnderlyingTreeColumn(field)
+      case 'id':
+        return []
     }
   }
 

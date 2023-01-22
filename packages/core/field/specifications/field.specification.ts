@@ -3,10 +3,10 @@ import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications'
 import type { Table } from '../../table'
 import { TableSchema } from '../../value-objects'
-import type { Field } from '../field.type'
+import type { NoneSystemField } from '../field.type'
 import { BaseFieldSpecification } from './base-field.specification'
 
-export class WithoutField extends BaseFieldSpecification<Field> {
+export class WithoutField extends BaseFieldSpecification<NoneSystemField> {
   isSatisfiedBy(t: Table): boolean {
     return t.schema.getFieldById(this.field.id.value).mapOr(false, (f) => f.key.equals(this.field.key))
   }
