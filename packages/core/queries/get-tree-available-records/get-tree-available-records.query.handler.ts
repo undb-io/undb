@@ -20,7 +20,12 @@ export class GetTreeAvailableRecordsQueryHandler
       Option(new TreeAvailableSpec(query.treeFieldId, query.recordId)),
     ).unwrap()
 
-    const records = await this.rm.find(query.tableId, spec, table.schema.toIdMap())
+    const records = await this.rm.find(
+      query.tableId,
+      spec,
+      table.schema.toIdMap(),
+      table.mustGetView().sorts?.sorts ?? [],
+    )
 
     return { records }
   }
