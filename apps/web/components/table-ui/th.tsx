@@ -71,8 +71,8 @@ export const Th: React.FC<IProps> = memo(({ header, tableId, field, column }) =>
       }}
     >
       <Group position="apart" ref={setNodeRef} {...attributes} {...listeners}>
-        <Group>
-          <FieldIcon type={field.type} />
+        <Group spacing="xs">
+          <FieldIcon type={field.type} size={14} />
           <Text fz="sm" fw={500}>
             {field.name.value}
           </Text>
