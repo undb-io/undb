@@ -2,6 +2,7 @@ import { BoolField } from './bool-field'
 import { DateField } from './date-field'
 import { DateRangeField } from './date-range-field'
 import type { Field, ICreateFieldSchema } from './field.type'
+import { IdField } from './id-field'
 import { NumberField } from './number-field'
 import { ReferenceField } from './reference-field'
 import { SelectField } from './select-field'
@@ -11,6 +12,9 @@ import { TreeField } from './tree-field'
 export class FieldFactory {
   static create(input: ICreateFieldSchema): Field {
     switch (input.type) {
+      case 'id': {
+        return IdField.create(input)
+      }
       case 'string': {
         return StringField.create(input)
       }
@@ -40,6 +44,9 @@ export class FieldFactory {
 
   static unsafeCreate(input: ICreateFieldSchema): Field {
     switch (input.type) {
+      case 'id': {
+        return IdField.unsafeCreate(input)
+      }
       case 'string': {
         return StringField.unsafeCreate(input)
       }

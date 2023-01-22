@@ -40,7 +40,7 @@ export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess 
     <>
       <form onSubmit={onSubmit}>
         <Stack>
-          {table.schema.fields.map((field, index) => {
+          {table.schema.nonSystemFields.map((field, index) => {
             const name: FieldPath<ICreateRecordInput> = `value.${index}.value`
             return <RecordInputFactory name={name} table={table} key={field.id.value} field={field} />
           })}

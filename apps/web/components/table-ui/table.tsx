@@ -15,6 +15,7 @@ import type { DateFieldValue } from '@egodb/core'
 import type { DateRangeFieldValue } from '@egodb/core'
 import {
   ActionIcon,
+  Badge,
   Checkbox,
   Group,
   IconColumnInsertRight,
@@ -84,6 +85,13 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
         ),
         size: view.getFieldWidth(f.id.value),
         cell: (props) => {
+          if (f.type === 'id') {
+            return (
+              <Badge color="gray.6" radius="xl" sx={{ textTransform: 'unset' }}>
+                {props.row.original.id}
+              </Badge>
+            )
+          }
           if (f.type === 'select') {
             const option = (props.getValue() as SelectFieldValue)?.getOption(f).into()
             if (!option) return null

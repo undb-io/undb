@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type {
   BoolFieldValue,
   DateFieldValue,
   DateRangeFieldValue,
+  IdFieldValue,
   IFieldValueVisitor,
   NumberFieldValue,
   ReferenceFieldValue,
@@ -39,6 +42,8 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
   private addQueries(...queries: string[]) {
     this.queries.push(...queries)
   }
+
+  id(value: IdFieldValue): void {}
 
   string(value: StringFieldValue): void {
     this.setData(this.fieldId, value.unpack())
