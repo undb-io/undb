@@ -1,5 +1,5 @@
 import type { Field, ISortDirection, ISortSchema } from '@egodb/core'
-import { Group, ActionIcon, IconGripVertical, IconTrash, Select } from '@egodb/ui'
+import { Group, ActionIcon, IconGripVertical, IconTrash, SegmentedControl } from '@egodb/ui'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useEffect, useState } from 'react'
@@ -16,8 +16,7 @@ interface IProps {
   onRemove: (index: number) => void
 }
 
-export const FieldSort: React.FC<IProps> = ({ table, fields, value, onChange, onRemove, index }) => {
-  // TODO: path maybe string list
+export const FieldSort: React.FC<IProps> = ({ fields, value, onChange, onRemove, index }) => {
   const fieldId = value?.fieldId
   const field = fieldId ? fields.find((f) => f.id.value === fieldId) ?? null : null
 
@@ -43,11 +42,8 @@ export const FieldSort: React.FC<IProps> = ({ table, fields, value, onChange, on
         <IconGripVertical size={12} />
       </ActionIcon>
       <FieldSelector fields={fields} value={selectedField} onChange={setField} />
-      <Select
+      <SegmentedControl
         size="xs"
-        clearable={false}
-        searchable={false}
-        variant="filled"
         value={direction}
         onChange={(value) => {
           if (value) {
