@@ -57,6 +57,7 @@ import {
   selectFilterOperators,
   stringFilterOperators,
   treeFilterOperators,
+  updatedAtFilterOperators,
 } from './operators'
 import { referenceFilter, referenceFilterValue } from './reference.filter'
 import type { ISelectFilter } from './select.filter'
@@ -65,10 +66,13 @@ import type { IStringFilter } from './string.filter'
 import { stringFilter, stringFilterValue } from './string.filter'
 import type { ITreeFilter } from './tree.filter'
 import { treeFilter, treeFilterValue } from './tree.filter'
+import type { IUpdatedAtFilter } from './updated-at.filter'
+import { updatedAtFilter, updatedAtFilterValue } from './updated-at.filter'
 
 export const filterValue = z.union([
   idFilterValue,
   createdAtFilterValue,
+  updatedAtFilterValue,
   stringFilterValue,
   numberFilterValue,
   dateFilterValue,
@@ -83,6 +87,7 @@ export type IFilterValue = z.infer<typeof filterValue>
 export const operaotrs = z.union([
   idFilterOperators,
   createdAtFilterOperators,
+  updatedAtFilterOperators,
   stringFilterOperators,
   numberFilterOperators,
   dateFilterOperators,
@@ -97,6 +102,7 @@ export type IOperator = z.infer<typeof operaotrs>
 const filter = z.discriminatedUnion('type', [
   idFilter,
   createdAtFilter,
+  updatedAtFilter,
   stringFilter,
   numberFilter,
   dateFilter,
@@ -256,7 +262,9 @@ const convertDateRangeFilter = (filter: IDateRangeFilter): Option<CompositeSpeci
   }
 }
 
-const convertDateFilter = (filter: IDateFilter | ICreatedAtFilter): Option<CompositeSpecification> => {
+const convertDateFilter = (
+  filter: IDateFilter | ICreatedAtFilter | IUpdatedAtFilter,
+): Option<CompositeSpecification> => {
   if (filter.operator === $is_today.value) {
     return Some(new DateIsToday(filter.path))
   }
@@ -309,6 +317,7 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
       return convertNumberFilter(filter)
     case 'date':
     case 'created-at':
+    case 'updated-at':
       return convertDateFilter(filter)
     case 'date-range':
       return convertDateRangeFilter(filter)

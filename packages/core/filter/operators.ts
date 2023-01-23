@@ -57,8 +57,8 @@ export type IDateRangeFilterOperator = z.infer<typeof dateRangeFilterOperators>
 
 export const createdAtFilterOperators = dateFilterOperators
 export type ICreatedAtFilterOperator = z.infer<typeof dateFilterOperators>
-
-/**
- * built in date operators
- */
 export const createdAtBuiltInOperators = dateBuiltInOperators
+
+export const updatedAtFilterOperators = dateFilterOperators
+export type IUpdatedAtFilterOperator = z.infer<typeof dateFilterOperators>
+export const updatedAtBuiltInOperators = dateBuiltInOperators

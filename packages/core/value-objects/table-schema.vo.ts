@@ -7,6 +7,7 @@ import { createFieldSchema, DateField, DateRangeField, ReferenceField, SelectFie
 import { CreatedAtField } from '../field/created-at-field'
 import { FieldFactory } from '../field/field.factory'
 import { IdField } from '../field/id-field'
+import { UpdatedAtField } from '../field/updated-at-field'
 import { fieldKeySchema } from '../field/value-objects/field-key.schema'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema'
 import { WithNewField } from '../specifications/table-field.specification'
@@ -44,6 +45,7 @@ export class TableSchema extends ValueObject<Field[]> {
       IdField.create({ name: 'id', type: 'id', key: 'id' }),
       ...fields,
       CreatedAtField.create({ name: 'createdAt', type: 'created-at', key: 'createdAt' }),
+      UpdatedAtField.create({ name: 'updatedAt', type: 'updated-at', key: 'updatedAt' }),
     ])
   }
 

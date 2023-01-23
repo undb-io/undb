@@ -97,6 +97,10 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
             const date = props.row.original.created_at
             return date && dateTimeFormat(date)
           }
+          if (f.type === 'updated-at') {
+            const date = props.row.original.updated_at
+            return date && dateTimeFormat(date)
+          }
           if (f.type === 'select') {
             const option = (props.getValue() as SelectFieldValue)?.getOption(f).into()
             if (!option) return null

@@ -13,6 +13,7 @@ import type {
   StringFieldValue,
   TableSchemaIdMap,
   TreeFieldValue,
+  UpdatedAtFieldValue,
 } from '@egodb/core'
 import { ReferenceField, TreeField } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
@@ -46,6 +47,7 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
 
   id(value: IdFieldValue): void {}
   createdAt(value: CreatedAtFieldValue): void {}
+  updatedAt(value: UpdatedAtFieldValue): void {}
 
   string(value: StringFieldValue): void {
     this.setData(this.fieldId, value.unpack())

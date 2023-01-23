@@ -8,10 +8,12 @@ import type { ReferenceFieldValue } from './reference-field-value'
 import type { SelectFieldValue } from './select-field-value'
 import type { StringFieldValue } from './string-field-value'
 import type { TreeFieldValue } from './tree-field-value'
+import type { UpdatedAtFieldValue } from './updated-at-field-value'
 
 export interface IFieldValueVisitor {
   id(value: IdFieldValue): void
   createdAt(value: CreatedAtFieldValue): void
+  updatedAt(value: UpdatedAtFieldValue): void
   string(value: StringFieldValue): void
   number(value: NumberFieldValue): void
   bool(value: BoolFieldValue): void

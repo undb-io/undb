@@ -2,6 +2,7 @@ import {
   Icon123,
   IconCalendar,
   IconCalendarPlus,
+  IconCalendarStats,
   IconCalendarTime,
   IconHierarchy,
   IconKey,
@@ -30,6 +31,8 @@ export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16, color }) => {
       return <IconCalendar size={size} color={color} />
     case 'created-at':
       return <IconCalendarPlus size={size} color={color} />
+    case 'updated-at':
+      return <IconCalendarStats size={size} color={color} />
     case 'date-range':
       return <IconCalendarTime size={size} color={color} />
     case 'bool':
