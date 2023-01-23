@@ -3,7 +3,13 @@ import type { Result } from 'oxide.ts'
 import type { TableSchemaIdMap } from '../value-objects'
 import { Record } from './record'
 import type { IQueryRecordSchema, Records } from './record.type'
-import { WithRecordCreatedAt, WithRecordId, WithRecordTableId, WithRecordValues } from './specifications'
+import {
+  WithRecordCreatedAt,
+  WithRecordId,
+  WithRecordTableId,
+  WithRecordUpdatedAt,
+  WithRecordValues,
+} from './specifications'
 import type { RecordCompositeSpecification } from './specifications/interface'
 
 export class RecordFactory {
@@ -28,6 +34,7 @@ export class RecordFactory {
       WithRecordId.fromString(r.id)
         .and(WithRecordTableId.fromString(r.tableId).unwrap())
         .and(WithRecordCreatedAt.fromDate(r.createdAt))
+        .and(WithRecordUpdatedAt.fromDate(r.updatedAt))
         .and(WithRecordValues.fromObject(schema, r.values)),
     )
   }
