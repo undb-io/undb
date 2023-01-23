@@ -9,7 +9,7 @@ import type {
 import { WithRecordId } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { Option } from 'oxide.ts'
-import { getColumnNames } from '../../underlying-table/underlying-table.utils'
+import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory'
 import { RecordSqliteMapper } from './record-sqlite.mapper'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
 
@@ -23,10 +23,18 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const visitor = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
     spec.accept(visitor).unwrap()
 
-    qb.select(getColumnNames([...schema.values()]))
+    const columns = UnderlyingColumnFactory.createMany([...schema.values()])
+
+    qb.select(columns.map((c) => c.name))
     if (sorts.length) {
       for (const sort of sorts) {
-        qb.orderBy(sort.fieldId, sort.direction)
+        const field = schema.get(sort.fieldId)
+        if (!field) continue
+
+        const column = UnderlyingColumnFactory.create(field)
+        if (Array.isArray(column)) continue
+
+        qb.orderBy(column.name, sort.direction)
       }
     }
 
@@ -42,8 +50,9 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
 
     const visitor = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
     spec.accept(visitor).unwrap()
+    const columns = UnderlyingColumnFactory.createMany([...schema.values()])
 
-    qb.select(getColumnNames([...schema.values()]))
+    qb.select(columns.map((c) => c.name))
 
     const data = await this.em.execute(qb.first())
 

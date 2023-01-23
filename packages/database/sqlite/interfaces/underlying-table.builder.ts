@@ -1,4 +1,4 @@
-import type { Field } from '@egodb/core'
+import type { NoneSystemField } from '@egodb/core'
 
 export interface IUnderlyingColumnBuilder {
   createAutoIncrement(): this
@@ -6,5 +6,5 @@ export interface IUnderlyingColumnBuilder {
   createCreatedAt(): this
   createUpdatedAt(tableName: string): this
   createDeletedAt(): this
-  createUnderlying(fields: Field[]): this
+  createUnderlying(fields: NoneSystemField[]): this
 }

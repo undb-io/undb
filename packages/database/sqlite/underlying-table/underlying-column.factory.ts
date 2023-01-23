@@ -2,23 +2,28 @@ import type { Field } from '@egodb/core'
 import type { IUnderlyingColumn } from '../interfaces/underlying-column'
 import {
   UnderlyingBoolColumn,
+  UnderlyingCreatedAtColumn,
   UnderlyingDateColumn,
   UnderlyingDateRangeFromColumn,
   UnderlyingDateRangeToFromColumn,
+  UnderlyingIdColumn,
   UnderlyingNumberColumn,
   UnderlyingReferenceColumn,
   UnderlyingSelectFromColumn,
   UnderlyingStringColumn,
   UnderlyingTreeColumn,
+  UnderlyingUpdatedAtColumn,
 } from './underlying-column'
 
 export class UnderlyingColumnFactory {
   static create(field: Field): IUnderlyingColumn | IUnderlyingColumn[] {
-    if (field.isSystem()) {
-      return []
-    }
-
     switch (field.type) {
+      case 'id':
+        return new UnderlyingIdColumn()
+      case 'created-at':
+        return new UnderlyingCreatedAtColumn()
+      case 'updated-at':
+        return new UnderlyingUpdatedAtColumn()
       case 'string':
         return new UnderlyingStringColumn(field)
       case 'number':

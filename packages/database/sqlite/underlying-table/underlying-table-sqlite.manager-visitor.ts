@@ -38,16 +38,21 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   schemaEqual(s: WithTableSchema): void {
     this.sb = this.#sb.alterTable(this.tableName, (tb) => {
       const builder = new UnderlyingColumnBuilder(this.knex, tb)
-      builder.createUnderlying(s.schema.fields)
+      builder.createUnderlying(s.schema.nonSystemFields)
     })
   }
   viewsEqual(): void {}
   viewEqual(): void {}
   filterEqual(): void {}
   newField(s: WithNewField): void {
+    const field = s.field
+    if (field.isSystem()) {
+      return
+    }
+
     this.sb = this.#sb.alterTable(this.tableName, (tb) => {
       const builder = new UnderlyingColumnBuilder(this.knex, tb)
-      builder.createUnderlying([s.field])
+      builder.createUnderlying([field])
     })
   }
   fieldsOrder(): void {}
