@@ -9,6 +9,7 @@ import { ReferenceField } from './reference-field'
 import { SelectField } from './select-field'
 import { StringField } from './string-field'
 import { TreeField } from './tree-field'
+import { UpdatedAtField } from './updated-at-field'
 
 export class FieldFactory {
   static create(input: ICreateFieldSchema): Field {
@@ -18,6 +19,9 @@ export class FieldFactory {
       }
       case 'created-at': {
         return CreatedAtField.create(input)
+      }
+      case 'updated-at': {
+        return UpdatedAtField.create(input)
       }
       case 'string': {
         return StringField.create(input)
@@ -53,6 +57,9 @@ export class FieldFactory {
       }
       case 'created-at': {
         return CreatedAtField.unsafeCreate(input)
+      }
+      case 'updated-at': {
+        return UpdatedAtField.unsafeCreate(input)
       }
       case 'string': {
         return StringField.unsafeCreate(input)

@@ -31,5 +31,7 @@ export * from './string-field'
 export * from './string-field-value'
 export * from './tree-field'
 export * from './tree-field-value'
+export * from './updated-at-field'
+export * from './updated-at-field-value'
 export * from './value-objects'
 export { createNumberFieldSchema, createStringFieldSchema }

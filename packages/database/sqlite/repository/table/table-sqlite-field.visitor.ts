@@ -12,6 +12,7 @@ import type {
   SelectField as CoreSelectField,
   StringField as CoreStringField,
   TreeField as CoreTreeField,
+  UpdatedAtField as CoereUpdatedAtField,
 } from '@egodb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
@@ -29,6 +30,7 @@ import {
   SelectField,
   StringField,
   TreeField,
+  UpdatedAtField,
 } from '../../entity'
 import { UnderlyingAdjacencyListTable, UnderlyingClosureTable } from '../../underlying-table/underlying-foreign-table'
 
@@ -54,6 +56,12 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
 
   createdAt(value: CoreCreatedAtField): void {
     const field = new CreatedAtField(this.table, value)
+
+    this.em.persist(field)
+  }
+
+  updatedAt(value: CoereUpdatedAtField): void {
+    const field = new UpdatedAtField(this.table, value)
 
     this.em.persist(field)
   }
