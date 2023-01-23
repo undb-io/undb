@@ -2,6 +2,7 @@
 
 exports[`createTestRecord 1`] = `
 Record {
+  "autoIncrement": undefined,
   "createdAt": DateVO {
     "props": {
       "value": 2022-02-01T00:00:00.000Z,
@@ -36,6 +37,7 @@ Record {
 
 exports[`createTestRecord 2`] = `
 Record {
+  "autoIncrement": undefined,
   "createdAt": DateVO {
     "props": {
       "value": 2022-02-01T00:00:00.000Z,
@@ -70,6 +72,7 @@ Record {
 
 exports[`createTestRecord 3`] = `
 Record {
+  "autoIncrement": undefined,
   "createdAt": DateVO {
     "props": {
       "value": 2022-02-01T00:00:00.000Z,

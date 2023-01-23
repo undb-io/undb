@@ -1,3 +1,4 @@
+import type { AutoIncrementField } from './auto-increment-field'
 import type { BoolField } from './bool-field'
 import type { CreatedAtField } from './created-at-field'
 import type { DateField } from './date-field'
@@ -14,6 +15,7 @@ export interface IFieldVisitor {
   id(value: IdField): void
   createdAt(value: CreatedAtField): void
   updatedAt(value: UpdatedAtField): void
+  autoIncrement(value: AutoIncrementField): void
   string(value: StringField): void
   number(value: NumberField): void
   bool(value: BoolField): void

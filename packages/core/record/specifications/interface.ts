@@ -18,6 +18,7 @@ import type {
   NumberLessThan,
   NumberLessThanOrEqual,
 } from './number.specification'
+import type { WithRecordAutoIncrement } from './record-auto-increment.specification'
 import type { WithRecordCreatedAt } from './record-created-at.specification'
 import type { WithRecordId } from './record-id.specifaction'
 import type { WithRecordTableId } from './record-table-id.specification'
@@ -34,6 +35,8 @@ interface IRecordSpecVisitor {
 
   createdAt(s: WithRecordCreatedAt): void
   updatedAt(s: WithRecordUpdatedAt): void
+
+  autoIncrement(s: WithRecordAutoIncrement): void
 
   values(s: WithRecordValues): void
 }

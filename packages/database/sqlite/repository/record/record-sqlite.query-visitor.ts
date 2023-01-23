@@ -25,6 +25,7 @@ import type {
   StringStartsWith,
   TableSchemaIdMap,
   TreeAvailableSpec,
+  WithRecordAutoIncrement,
   WithRecordCreatedAt,
   WithRecordId,
   WithRecordTableId,
@@ -35,6 +36,7 @@ import {
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
+  INTERNAL_INCREAMENT_ID_NAME,
   TreeField,
 } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
@@ -66,6 +68,9 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   }
   updatedAt(s: WithRecordUpdatedAt): void {
     this.qb.where({ [INTERNAL_COLUMN_UPDATED_AT_NAME]: s.date.value })
+  }
+  autoIncrement(s: WithRecordAutoIncrement): void {
+    this.qb.where(INTERNAL_INCREAMENT_ID_NAME, s.n)
   }
   values(s: WithRecordValues): void {
     throw new Error('Method not implemented.')

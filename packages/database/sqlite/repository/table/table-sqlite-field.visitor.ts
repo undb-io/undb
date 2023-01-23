@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import type {
+  AutoIncrementField as CoreAutoIncrementField,
   BoolField as CoreBoolField,
   CreatedAtField as CoreCreatedAtField,
   DateField as CoreDateField,
@@ -19,6 +20,7 @@ import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
 import type { Table } from '../../entity'
 import {
+  AutoIncrementField,
   BoolField,
   CreatedAtField,
   DateField,
@@ -62,6 +64,12 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
 
   updatedAt(value: CoereUpdatedAtField): void {
     const field = new UpdatedAtField(this.table, value)
+
+    this.em.persist(field)
+  }
+
+  autoIncrement(value: CoreAutoIncrementField): void {
+    const field = new AutoIncrementField(this.table, value)
 
     this.em.persist(field)
   }

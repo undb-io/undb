@@ -10,6 +10,7 @@ import {
   IconListCheck,
   IconQuestionMark,
   IconRelationManyToMany,
+  IconSortAscendingNumbers,
   IconSquareCheck,
 } from '@egodb/ui'
 import React from 'react'
@@ -33,6 +34,8 @@ export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16, color }) => {
       return <IconCalendarPlus size={size} color={color} />
     case 'updated-at':
       return <IconCalendarStats size={size} color={color} />
+    case 'auto-increment':
+      return <IconSortAscendingNumbers size={size} color={color} />
     case 'date-range':
       return <IconCalendarTime size={size} color={color} />
     case 'bool':

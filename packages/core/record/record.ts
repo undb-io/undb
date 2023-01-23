@@ -13,6 +13,7 @@ export class Record {
   public values: RecordValues = RecordValues.empty()
   public createdAt: DateVO = DateVO.now()
   public updatedAt: DateVO = DateVO.now()
+  public autoIncrement?: number
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
@@ -28,6 +29,7 @@ export class Record {
       id: this.id.value,
       created_at: this.createdAt.value,
       updated_at: this.updatedAt.value,
+      auto_increment: this.autoIncrement,
     }
   }
 

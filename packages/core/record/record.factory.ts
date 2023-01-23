@@ -11,6 +11,7 @@ import {
   WithRecordValues,
 } from './specifications'
 import type { RecordCompositeSpecification } from './specifications/interface'
+import { WithRecordAutoIncrement } from './specifications/record-auto-increment.specification'
 
 export class RecordFactory {
   static create(...specs: RecordCompositeSpecification[]): Result<Record, string>
@@ -35,6 +36,7 @@ export class RecordFactory {
         .and(WithRecordTableId.fromString(r.tableId).unwrap())
         .and(WithRecordCreatedAt.fromDate(r.createdAt))
         .and(WithRecordUpdatedAt.fromDate(r.updatedAt))
+        .and(new WithRecordAutoIncrement(r.autoIncrement))
         .and(WithRecordValues.fromObject(schema, r.values)),
     )
   }

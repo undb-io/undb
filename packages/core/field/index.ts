@@ -1,6 +1,8 @@
 import { createNumberFieldSchema } from './number-field.type'
 import { createStringFieldSchema } from './string-field.type'
 
+export * from './auto-increment-field'
+export * from './auto-increment-field-value'
 export * from './bool-field'
 export * from './bool-field-value'
 export * from './created-at-field'

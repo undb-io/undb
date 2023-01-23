@@ -1,6 +1,7 @@
 import type { Field } from '@egodb/core'
 import type { IUnderlyingColumn } from '../interfaces/underlying-column'
 import {
+  UnderlyingAutoIncreamentColumn,
   UnderlyingBoolColumn,
   UnderlyingCreatedAtColumn,
   UnderlyingDateColumn,
@@ -24,6 +25,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingCreatedAtColumn()
       case 'updated-at':
         return new UnderlyingUpdatedAtColumn()
+      case 'auto-increment':
+        return new UnderlyingAutoIncreamentColumn()
       case 'string':
         return new UnderlyingStringColumn(field)
       case 'number':

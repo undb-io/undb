@@ -1,3 +1,4 @@
+import { AutoIncrementField } from './auto-increment-field'
 import { BoolField } from './bool-field'
 import { CreatedAtField } from './created-at-field'
 import { DateField } from './date-field'
@@ -22,6 +23,9 @@ export class FieldFactory {
       }
       case 'updated-at': {
         return UpdatedAtField.create(input)
+      }
+      case 'auto-increment': {
+        return AutoIncrementField.create(input)
       }
       case 'string': {
         return StringField.create(input)
@@ -60,6 +64,9 @@ export class FieldFactory {
       }
       case 'updated-at': {
         return UpdatedAtField.unsafeCreate(input)
+      }
+      case 'auto-increment': {
+        return AutoIncrementField.unsafeCreate(input)
       }
       case 'string': {
         return StringField.unsafeCreate(input)

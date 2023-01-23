@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type {
+  AutoIncrementFieldValue,
   BoolFieldValue,
   CreatedAtFieldValue,
   DateFieldValue,
@@ -38,7 +39,6 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
     private readonly schema: TableSchemaIdMap,
     private readonly em: EntityManager,
   ) {}
-
   public readonly queries: string[] = []
 
   private addQueries(...queries: string[]) {
@@ -48,6 +48,7 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
   id(value: IdFieldValue): void {}
   createdAt(value: CreatedAtFieldValue): void {}
   updatedAt(value: UpdatedAtFieldValue): void {}
+  autoIncrement(value: AutoIncrementFieldValue): void {}
 
   string(value: StringFieldValue): void {
     this.setData(this.fieldId, value.unpack())

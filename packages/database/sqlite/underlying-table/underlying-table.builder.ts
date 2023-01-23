@@ -26,7 +26,7 @@ export class UnderlyingTableBuilder {
           .createCreatedAt()
           .createUpdatedAt(table.id.value)
           .createDeletedAt()
-          .createUnderlying(table.schema.fields)
+          .createUnderlying(table.schema.nonSystemFields)
           .build()
 
         this.addQueries(...queries)

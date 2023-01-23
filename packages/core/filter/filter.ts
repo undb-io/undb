@@ -27,6 +27,8 @@ import {
   StringEqual,
   StringStartsWith,
 } from '../record'
+import type { IAutoIncrementFilter } from './auto-increment.filter'
+import { autoIncrementFilter, autoIncrementFilterValue } from './auto-increment.filter'
 import type { IBoolFilter } from './bool.filter'
 import { boolFilter, boolFilterValue } from './bool.filter'
 import type { IConjunction } from './conjunction'
@@ -47,6 +49,7 @@ import {
   $is_today,
   $is_true,
   $neq,
+  autoIncrementFilterOperators,
   boolFilterOperators,
   createdAtFilterOperators,
   dateFilterOperators,
@@ -73,6 +76,7 @@ export const filterValue = z.union([
   idFilterValue,
   createdAtFilterValue,
   updatedAtFilterValue,
+  autoIncrementFilterValue,
   stringFilterValue,
   numberFilterValue,
   dateFilterValue,
@@ -88,6 +92,7 @@ export const operaotrs = z.union([
   idFilterOperators,
   createdAtFilterOperators,
   updatedAtFilterOperators,
+  autoIncrementFilterOperators,
   stringFilterOperators,
   numberFilterOperators,
   dateFilterOperators,
@@ -103,6 +108,7 @@ const filter = z.discriminatedUnion('type', [
   idFilter,
   createdAtFilter,
   updatedAtFilter,
+  autoIncrementFilter,
   stringFilter,
   numberFilter,
   dateFilter,
@@ -171,7 +177,7 @@ const convertStringFilter = (filter: IStringFilter): Option<CompositeSpecificati
   }
 }
 
-const convertNumberFilter = (filter: INumberFilter): Option<CompositeSpecification> => {
+const convertNumberFilter = (filter: INumberFilter | IAutoIncrementFilter): Option<CompositeSpecification> => {
   if (!filter.value) {
     return None
   }
@@ -314,6 +320,7 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
     case 'string':
       return convertStringFilter(filter)
     case 'number':
+    case 'auto-increment':
       return convertNumberFilter(filter)
     case 'date':
     case 'created-at':
