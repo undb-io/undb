@@ -1,5 +1,5 @@
 import type { ICreateTableInput } from '@egodb/core'
-import { Alert, Button, Divider, Group, IconAlertCircle, Text, Space, TextInput } from '@egodb/ui'
+import { Alert, Button, Divider, Group, IconAlertCircle, Text, Space, TextInput, Code } from '@egodb/ui'
 import { useRouter } from 'next/navigation'
 import { useFormContext } from 'react-hook-form'
 import { trpc } from '../../trpc'
@@ -48,7 +48,13 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
         required={true}
       />
 
-      <Space h="md" />
+      <Space h="xs" />
+
+      <Text size="xs" color="gray">
+        System fields: <Code fw={600}>id</Code> , <Code fw={600}>createdAt</Code> , <Code fw={600}>updatedAt</Code> .
+      </Text>
+
+      <Space h="xs" />
 
       <CreateTableFormSchema />
 
