@@ -44,6 +44,7 @@ export const TableSortEditor: React.FC<IProps> = ({ table }) => {
       <Popover.Dropdown miw={300}>
         <SortsEditor
           table={table}
+          onCancel={toggle.close}
           onApply={(values) => {
             setSortsReq.mutate({
               tableId: table.id.value,
