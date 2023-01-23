@@ -62,3 +62,6 @@ export const createdAtBuiltInOperators = dateBuiltInOperators
 export const updatedAtFilterOperators = dateFilterOperators
 export type IUpdatedAtFilterOperator = z.infer<typeof dateFilterOperators>
 export const updatedAtBuiltInOperators = dateBuiltInOperators
+
+export const autoIncrementFilterOperators = numberFilterOperators
+export type IAutoIncrementFilterOperator = z.infer<typeof autoIncrementFilterOperators>

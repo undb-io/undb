@@ -2,6 +2,17 @@ import type { Option } from 'oxide.ts'
 import * as z from 'zod'
 import type { IReferenceFilterValue } from '../filter/reference.filter'
 import type { Options } from '../option/options'
+import type { AutoIncrementField } from './auto-increment-field'
+import type { AutoIncrementFieldValue } from './auto-increment-field-value'
+import type { IAutoIncrementFieldValue } from './auto-increment-field.type'
+import {
+  autoIncrementFieldQuerySchema,
+  autoIncrementFieldValue,
+  autoIncrementTypeSchema,
+  createAutoIncrementFieldSchema,
+  createAutoIncrementFieldValue,
+  createAutoIncrementFieldValue_internal,
+} from './auto-increment-field.type'
 import type { BoolField } from './bool-field'
 import type { BoolFieldValue } from './bool-field-value'
 import type { IBoolFieldValue } from './bool-field.type'
@@ -131,6 +142,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createIdFieldSchema,
   createCreatedAtFieldSchema,
   createUpdatedAtFieldSchema,
+  createAutoIncrementFieldSchema,
   createStringFieldSchema,
   createNumberFieldSchema,
   createDateFieldSchema,
@@ -146,6 +158,7 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   idFieldQuerySchema,
   createdAtFieldQuerySchema,
   updatedAtFieldQuerySchema,
+  autoIncrementFieldQuerySchema,
   stringFieldQuerySchema,
   numberFieldQuerySchema,
   dateFieldQuerySchema,
@@ -163,6 +176,7 @@ export const fieldTypes = z.union([
   idTypeSchema,
   createdAtTypeSchema,
   updatedAtTypeSchema,
+  autoIncrementTypeSchema,
   stringTypeSchema,
   numberTypeSchema,
   dateTypeSchema,
@@ -178,6 +192,7 @@ export const fieldValue = z.union([
   idFieldValue,
   createdAtFieldValue,
   updatedAtFieldValue,
+  autoIncrementFieldValue,
   stringFieldValue,
   numberFieldValue,
   dateFieldValue,
@@ -193,6 +208,7 @@ export const createFieldValueSchema = z.union([
   createIdFieldValue,
   createCreatedAtFieldValue,
   createUpdatedAtFieldValue,
+  createAutoIncrementFieldValue,
   createStringFieldValue,
   createNumberFieldValue,
   createDateFieldValue,
@@ -211,6 +227,7 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createIdFieldValue_internal,
   createCreatedAtFieldValue_internal,
   createUpdatedAtFieldValue_internal,
+  createAutoIncrementFieldValue_internal,
   createStringFieldValue_internal,
   createNumberFieldValue_internal,
   createDateFieldValue_internal,
@@ -236,6 +253,7 @@ export interface IBaseField {
 export type IIdField = IBaseField
 export type ICreatedAtField = IBaseField
 export type IUpdatedAtField = IBaseField
+export type IAutoIncrementField = IBaseField
 export type IStringField = IBaseField
 export interface INumberField extends IBaseField {
   currency: Option<Currency>
@@ -251,7 +269,7 @@ export type IBoolField = IBaseField
 export type IReferenceField = IBaseField
 export type ITreeField = IBaseField
 
-export type SystemField = IdField | CreatedAtField | UpdatedAtField
+export type SystemField = IdField | CreatedAtField | UpdatedAtField | AutoIncrementField
 
 export type NoneSystemField =
   | StringField
@@ -269,6 +287,7 @@ export type FieldValue =
   | IdFieldValue
   | CreatedAtFieldValue
   | UpdatedAtFieldValue
+  | AutoIncrementFieldValue
   | StringFieldValue
   | NumberFieldValue
   | DateFieldValue
@@ -284,6 +303,7 @@ export type UnpackedFieldValue =
   | IIdFieldValue
   | ICreatedAtFieldValue
   | IUpdatedAtFieldValue
+  | IAutoIncrementFieldValue
   | IStringFieldValue
   | INumberFieldValue
   | IDateFieldValue

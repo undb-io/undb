@@ -101,6 +101,10 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
             const date = props.row.original.updated_at
             return date && dateTimeFormat(date)
           }
+          if (f.type === 'auto-increment') {
+            const autoIncrement = props.row.original.auto_increment
+            return autoIncrement
+          }
           if (f.type === 'select') {
             const option = (props.getValue() as SelectFieldValue)?.getOption(f).into()
             if (!option) return null

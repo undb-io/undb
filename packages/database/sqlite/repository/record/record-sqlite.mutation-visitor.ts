@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type {
   BoolIsFalse,
   BoolIsTrue,
@@ -25,6 +26,7 @@ import type {
   StringStartsWith,
   TableSchemaIdMap,
   TreeAvailableSpec,
+  WithRecordAutoIncrement,
   WithRecordCreatedAt,
   WithRecordId,
   WithRecordTableId,
@@ -63,6 +65,9 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
     throw new Error('Method not implemented.')
   }
   tableIdEqual(s: WithRecordTableId): void {
+    throw new Error('Method not implemented.')
+  }
+  autoIncrement(s: WithRecordAutoIncrement): void {
     throw new Error('Method not implemented.')
   }
   createdAt(s: WithRecordCreatedAt): void {

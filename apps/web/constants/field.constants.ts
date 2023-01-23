@@ -5,6 +5,7 @@ export const FIELD_SELECT_ITEMS: SelectItem[] = [
   { value: 'number', label: 'Number' },
   { value: 'date', label: 'Date' },
   { value: 'date-range', label: 'DateRange' },
+  { value: 'auto-increment', label: 'AutoIncrement' },
   { value: 'bool', label: 'Bool' },
   { value: 'select', label: 'Select' },
   { value: 'reference', label: 'Reference' },

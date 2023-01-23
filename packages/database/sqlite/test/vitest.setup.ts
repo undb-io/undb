@@ -1,7 +1,7 @@
 import { BetterSqliteDriver, MikroORM } from '@mikro-orm/better-sqlite'
 import { defineConfig } from '@mikro-orm/core'
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
-import { Migration20230123024851 } from '../migrations/Migration20230123024851'
+import { Migration20230123085333 } from '../migrations/Migration20230123085333'
 
 beforeAll(async () => {
   const { entities } = await import('../entity')
@@ -14,8 +14,8 @@ beforeAll(async () => {
       migrations: {
         migrationsList: [
           {
-            name: 'Migration20230123024851',
-            class: Migration20230123024851,
+            name: 'Migration20230123085333',
+            class: Migration20230123085333,
           },
         ],
       },

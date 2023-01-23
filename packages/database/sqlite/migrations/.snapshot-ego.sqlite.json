@@ -165,6 +165,7 @@
             "id",
             "created-at",
             "updated-at",
+            "auto-increment",
             "string",
             "number",
             "date",
