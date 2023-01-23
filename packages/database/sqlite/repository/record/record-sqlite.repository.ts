@@ -5,7 +5,7 @@ import type { Option } from 'oxide.ts'
 import { Some } from 'oxide.ts'
 import type { RecordValueData } from '../../types/record-value-sqlite.type'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants'
-import { getColumnNames } from '../../underlying-table/underlying-table.utils'
+import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory'
 import { RecordSqliteMapper } from './record-sqlite.mapper'
 import { RecordSqliteMutationVisitor } from './record-sqlite.mutation-visitor'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
@@ -43,7 +43,8 @@ export class RecordSqliteRepository implements IRecordRepository {
     const qb = knex.queryBuilder()
     const spec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
 
-    qb.select(getColumnNames([...schema.values()]))
+    const columns = UnderlyingColumnFactory.createMany([...schema.values()])
+    qb.select(columns.map((c) => c.name))
 
     const qv = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
     spec.accept(qv)

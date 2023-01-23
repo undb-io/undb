@@ -1,4 +1,4 @@
-import type { Field } from '@egodb/core'
+import type { NoneSystemField } from '@egodb/core'
 import { INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import type { IUnderlyingColumnBuilder } from '../interfaces/underlying-table.builder'
@@ -77,7 +77,7 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
     return this
   }
 
-  createUnderlying(fields: Field[]): this {
+  createUnderlying(fields: NoneSystemField[]): this {
     const underlyingColumns = UnderlyingColumnFactory.createMany(fields)
 
     for (const column of underlyingColumns) {
