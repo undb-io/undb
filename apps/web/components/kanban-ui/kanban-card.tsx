@@ -65,7 +65,7 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
               </Group>
             )
           }
-          if (f.type === 'date') {
+          if (f.type === 'date' || f.type === 'created-at') {
             const date = (value as DateFieldValue)?.unpack()
 
             return (

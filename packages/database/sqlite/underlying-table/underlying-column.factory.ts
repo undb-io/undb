@@ -14,6 +14,10 @@ import {
 
 export class UnderlyingColumnFactory {
   static create(field: Field): IUnderlyingColumn | IUnderlyingColumn[] {
+    if (field.isSystem()) {
+      return []
+    }
+
     switch (field.type) {
       case 'string':
         return new UnderlyingStringColumn(field)
@@ -31,8 +35,6 @@ export class UnderlyingColumnFactory {
         return new UnderlyingReferenceColumn(field)
       case 'tree':
         return new UnderlyingTreeColumn(field)
-      case 'id':
-        return []
     }
   }
 

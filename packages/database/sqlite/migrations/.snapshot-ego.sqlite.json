@@ -163,6 +163,8 @@
           "nullable": false,
           "enumItems": [
             "id",
+            "created-at",
+            "updated-at",
             "string",
             "number",
             "date",

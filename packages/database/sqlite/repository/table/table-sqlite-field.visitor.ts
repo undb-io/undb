@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import type {
   BoolField as CoreBoolField,
+  CreatedAtField as CoreCreatedAtField,
   DateField as CoreDateField,
   DateRangeField as CoreDateRangeField,
   IdField as CoreIdField,
@@ -18,6 +19,7 @@ import { wrap } from '@mikro-orm/core'
 import type { Table } from '../../entity'
 import {
   BoolField,
+  CreatedAtField,
   DateField,
   DateRangeField,
   IdField,
@@ -46,6 +48,12 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
 
   id(value: CoreIdField): void {
     const field = new IdField(this.table, value)
+
+    this.em.persist(field)
+  }
+
+  createdAt(value: CoreCreatedAtField): void {
+    const field = new CreatedAtField(this.table, value)
 
     this.em.persist(field)
   }

@@ -1,4 +1,5 @@
 import { BoolField } from './bool-field'
+import { CreatedAtField } from './created-at-field'
 import { DateField } from './date-field'
 import { DateRangeField } from './date-range-field'
 import type { Field, ICreateFieldSchema } from './field.type'
@@ -14,6 +15,9 @@ export class FieldFactory {
     switch (input.type) {
       case 'id': {
         return IdField.create(input)
+      }
+      case 'created-at': {
+        return CreatedAtField.create(input)
       }
       case 'string': {
         return StringField.create(input)
@@ -46,6 +50,9 @@ export class FieldFactory {
     switch (input.type) {
       case 'id': {
         return IdField.unsafeCreate(input)
+      }
+      case 'created-at': {
+        return CreatedAtField.unsafeCreate(input)
       }
       case 'string': {
         return StringField.unsafeCreate(input)

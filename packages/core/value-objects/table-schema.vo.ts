@@ -4,6 +4,7 @@ import type { Class } from 'type-fest'
 import * as z from 'zod'
 import type { Field, ICreateFieldSchema, NoneSystemField } from '../field'
 import { createFieldSchema, DateField, DateRangeField, ReferenceField, SelectField, WithoutField } from '../field'
+import { CreatedAtField } from '../field/created-at-field'
 import { FieldFactory } from '../field/field.factory'
 import { IdField } from '../field/id-field'
 import { fieldKeySchema } from '../field/value-objects/field-key.schema'
@@ -39,7 +40,11 @@ export type TableSchemaIdMap = Map<string, Field>
 export class TableSchema extends ValueObject<Field[]> {
   static create(inputs: ICreateTableSchemaInput): TableSchema {
     const fields = createTableSchemaSchema.parse(inputs).map(FieldFactory.create)
-    return new TableSchema([IdField.create({ name: 'id', type: 'id', key: 'id' }), ...fields])
+    return new TableSchema([
+      IdField.create({ name: 'id', type: 'id', key: 'id' }),
+      ...fields,
+      CreatedAtField.create({ name: 'createdAt', type: 'created-at', key: 'createdAt' }),
+    ])
   }
 
   static unsafeCreate(inputs: ICreateTableSchemaInput): TableSchema {
