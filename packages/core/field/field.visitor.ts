@@ -1,4 +1,5 @@
 import type { BoolField } from './bool-field'
+import type { CreatedAtField } from './created-at-field'
 import type { DateField } from './date-field'
 import type { DateRangeField } from './date-range-field'
 import type { IdField } from './id-field'
@@ -10,6 +11,7 @@ import type { TreeField } from './tree-field'
 
 export interface IFieldVisitor {
   id(value: IdField): void
+  createdAt(value: CreatedAtField): void
   string(value: StringField): void
   number(value: NumberField): void
   bool(value: BoolField): void

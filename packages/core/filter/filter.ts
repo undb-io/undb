@@ -31,6 +31,8 @@ import type { IBoolFilter } from './bool.filter'
 import { boolFilter, boolFilterValue } from './bool.filter'
 import type { IConjunction } from './conjunction'
 import { conjunctions } from './conjunction'
+import type { ICreatedAtFilter } from './created-at.filter'
+import { createdAtFilter, createdAtFilterValue } from './created-at.filter'
 import type { IDateRangeFilter } from './date-range.filter'
 import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter'
 import type { IDateFilter } from './date.filter'
@@ -46,6 +48,7 @@ import {
   $is_true,
   $neq,
   boolFilterOperators,
+  createdAtFilterOperators,
   dateFilterOperators,
   dateRangeFilterOperators,
   idFilterOperators,
@@ -65,6 +68,7 @@ import { treeFilter, treeFilterValue } from './tree.filter'
 
 export const filterValue = z.union([
   idFilterValue,
+  createdAtFilterValue,
   stringFilterValue,
   numberFilterValue,
   dateFilterValue,
@@ -78,6 +82,7 @@ export type IFilterValue = z.infer<typeof filterValue>
 
 export const operaotrs = z.union([
   idFilterOperators,
+  createdAtFilterOperators,
   stringFilterOperators,
   numberFilterOperators,
   dateFilterOperators,
@@ -91,6 +96,7 @@ export type IOperator = z.infer<typeof operaotrs>
 
 const filter = z.discriminatedUnion('type', [
   idFilter,
+  createdAtFilter,
   stringFilter,
   numberFilter,
   dateFilter,
@@ -250,7 +256,7 @@ const convertDateRangeFilter = (filter: IDateRangeFilter): Option<CompositeSpeci
   }
 }
 
-const convertDateFilter = (filter: IDateFilter): Option<CompositeSpecification> => {
+const convertDateFilter = (filter: IDateFilter | ICreatedAtFilter): Option<CompositeSpecification> => {
   if (filter.operator === $is_today.value) {
     return Some(new DateIsToday(filter.path))
   }
@@ -302,6 +308,7 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
     case 'number':
       return convertNumberFilter(filter)
     case 'date':
+    case 'created-at':
       return convertDateFilter(filter)
     case 'date-range':
       return convertDateRangeFilter(filter)

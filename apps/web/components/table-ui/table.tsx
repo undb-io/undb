@@ -40,6 +40,7 @@ import { Tr } from './tr'
 const fieldHelper = createColumnHelper<TData>()
 
 const dateFormat = format('yyyy-MM-dd')
+const dateTimeFormat = format('yyyy-MM-dd hh:mm:ss')
 
 export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const view = table.mustGetView()
@@ -91,6 +92,10 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
                 {props.row.original.id}
               </Badge>
             )
+          }
+          if (f.type === 'created-at') {
+            const date = props.row.original.created_at
+            return date && dateTimeFormat(date)
           }
           if (f.type === 'select') {
             const option = (props.getValue() as SelectFieldValue)?.getOption(f).into()

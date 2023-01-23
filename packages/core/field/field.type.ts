@@ -13,6 +13,17 @@ import {
   createBoolFieldValue,
   createBoolFieldValue_internal,
 } from './bool-field.type'
+import type { CreatedAtField } from './created-at-field'
+import type { CreatedAtFieldValue } from './created-at-field-value'
+import type { ICreatedAtFieldValue } from './created-at-field.type'
+import {
+  createCreatedAtFieldSchema,
+  createCreatedAtFieldValue,
+  createCreatedAtFieldValue_internal,
+  createdAtFieldQuerySchema,
+  createdAtFieldValue,
+  createdAtTypeSchema,
+} from './created-at-field.type'
 import type { Currency } from './currency'
 import type { DateField } from './date-field'
 import type { DateFieldValue } from './date-field-value'
@@ -107,6 +118,7 @@ import { fieldNameSchema } from './value-objects/field-name.schema'
 
 export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createIdFieldSchema,
+  createCreatedAtFieldSchema,
   createStringFieldSchema,
   createNumberFieldSchema,
   createDateFieldSchema,
@@ -120,6 +132,7 @@ export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
 
 export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   idFieldQuerySchema,
+  createdAtFieldQuerySchema,
   stringFieldQuerySchema,
   numberFieldQuerySchema,
   dateFieldQuerySchema,
@@ -135,6 +148,7 @@ export type IQuerySchemaSchema = z.infer<typeof querySchemaSchema>
 
 export const fieldTypes = z.union([
   idTypeSchema,
+  createdAtTypeSchema,
   stringTypeSchema,
   numberTypeSchema,
   dateTypeSchema,
@@ -148,6 +162,7 @@ export type IFieldType = z.infer<typeof fieldTypes>
 
 export const fieldValue = z.union([
   idFieldValue,
+  createdAtFieldValue,
   stringFieldValue,
   numberFieldValue,
   dateFieldValue,
@@ -161,6 +176,7 @@ export type IFieldValue = z.infer<typeof fieldValue>
 
 export const createFieldValueSchema = z.union([
   createIdFieldValue,
+  createCreatedAtFieldValue,
   createStringFieldValue,
   createNumberFieldValue,
   createDateFieldValue,
@@ -177,6 +193,7 @@ export type ICreateFieldValueObject = z.infer<typeof createFieldValueObject>
 
 export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createIdFieldValue_internal,
+  createCreatedAtFieldValue_internal,
   createStringFieldValue_internal,
   createNumberFieldValue_internal,
   createDateFieldValue_internal,
@@ -200,6 +217,7 @@ export interface IBaseField {
 }
 
 export type IIdField = IBaseField
+export type ICreatedAtField = IBaseField
 export type IStringField = IBaseField
 export interface INumberField extends IBaseField {
   currency: Option<Currency>
@@ -215,7 +233,7 @@ export type IBoolField = IBaseField
 export type IReferenceField = IBaseField
 export type ITreeField = IBaseField
 
-export type SystemField = IdField
+export type SystemField = IdField | CreatedAtField
 
 export type NoneSystemField =
   | StringField
@@ -231,6 +249,7 @@ export type Field = SystemField | NoneSystemField
 
 export type FieldValue =
   | IdFieldValue
+  | CreatedAtFieldValue
   | StringFieldValue
   | NumberFieldValue
   | DateFieldValue
@@ -244,6 +263,7 @@ export type FieldValues = FieldValue[]
 
 export type UnpackedFieldValue =
   | IIdFieldValue
+  | ICreatedAtFieldValue
   | IStringFieldValue
   | INumberFieldValue
   | IDateFieldValue
@@ -257,4 +277,3 @@ export const INTERNAL_COLUMN_ID_NAME = 'id'
 export const INTERNAL_INCREAMENT_ID_NAME = 'auto_increment'
 export const INTERNAL_COLUMN_CREATED_AT_NAME = 'created_at'
 export const INTERNAL_COLUMN_UPDATED_AT_NAME = 'updated_at'
-export const INTERNAL_COLUMN_PARENT_ID_NAME = 'parent_id'

@@ -38,6 +38,11 @@ export type ISelectFilterOperator = z.infer<typeof selectFilterOperators>
 export const dateFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte, $is_today])
 export type IDateFilterOperator = z.infer<typeof dateFilterOperators>
 
+/**
+ * built in date operators
+ */
+export const dateBuiltInOperators = new Set<IDateFilterOperator>([$is_today.value])
+
 export const referenceFilterOperators = z.union([$eq, $neq])
 export type IReferenceFilterOperator = z.infer<typeof referenceFilterOperators>
 
@@ -47,10 +52,13 @@ export const treeFilterOperators = z.union([$eq, $neq, $is_root])
 export type ITreeFilterOperator = z.infer<typeof treeFilterOperators>
 export const treeBuiltInOperators = new Set<ITreeFilterOperator>([$is_root.value])
 
+export const dateRangeFilterOperators = z.union([$eq, $neq])
+export type IDateRangeFilterOperator = z.infer<typeof dateRangeFilterOperators>
+
+export const createdAtFilterOperators = dateFilterOperators
+export type ICreatedAtFilterOperator = z.infer<typeof dateFilterOperators>
+
 /**
  * built in date operators
  */
-export const dateBuiltInOperators = new Set<IDateFilterOperator>([$is_today.value])
-
-export const dateRangeFilterOperators = z.union([$eq, $neq])
-export type IDateRangeFilterOperator = z.infer<typeof dateRangeFilterOperators>
+export const createdAtBuiltInOperators = dateBuiltInOperators

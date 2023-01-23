@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type {
   BoolFieldValue,
+  CreatedAtFieldValue,
   DateFieldValue,
   DateRangeFieldValue,
   IdFieldValue,
@@ -44,6 +45,7 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
   }
 
   id(value: IdFieldValue): void {}
+  createdAt(value: CreatedAtFieldValue): void {}
 
   string(value: StringFieldValue): void {
     this.setData(this.fieldId, value.unpack())
