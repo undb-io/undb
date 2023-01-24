@@ -30,6 +30,7 @@
     "db:schema:fresh": "FORCE_COLOR=1 turbo run db:schema:fresh",
     "dev": "FORCE_COLOR=1 turbo run dev --parallel",
     "dev:packages": "FORCE_COLOR=1 turbo run dev --parallel --filter=./packages/*",
+    "dev:www": "turbo run dev --filter www",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "preinstall": "npx only-allow pnpm",
