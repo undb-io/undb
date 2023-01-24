@@ -19,7 +19,6 @@ describe('TableSqliteFieldVisitor', () => {
       id: 'fieldid',
       name: 'tree',
       type: 'tree',
-      key: 'key',
     })
 
     visitor.tree(treeField)

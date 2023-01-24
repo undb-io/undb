@@ -9,7 +9,7 @@ import type {
 import { BaseField } from './field.base'
 import type { IAutoIncrementField } from './field.type'
 import type { IFieldVisitor } from './field.visitor'
-import { FieldId, FieldKey, FieldName, FieldValueConstraints } from './value-objects'
+import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
 export class AutoIncrementField extends BaseField<IAutoIncrementField> {
   type: AutoIncrementFieldType = 'auto-increment'
@@ -19,7 +19,6 @@ export class AutoIncrementField extends BaseField<IAutoIncrementField> {
     const fieldName = FieldName.create(input.name)
     return new AutoIncrementField({
       id: FieldId.fromNullableString(input.id),
-      key: input.key ? FieldKey.from(input.key) : FieldKey.fromName(fieldName),
       name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
     })
@@ -28,7 +27,6 @@ export class AutoIncrementField extends BaseField<IAutoIncrementField> {
   static unsafeCreate(input: ICreateAutoIncrementFieldInput): AutoIncrementField {
     return new AutoIncrementField({
       id: FieldId.fromNullableString(input.id),
-      key: FieldKey.from(input.key),
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
     })

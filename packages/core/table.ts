@@ -190,7 +190,7 @@ export class Table {
   public setKanbanField(input: ISetKanbanFieldSchema): TableCompositeSpecificaiton {
     const view = this.mustGetView(input.viewKey)
     const field = this.schema.getFieldById(input.field).unwrap()
-    const spec = view.setKanbanFieldSpec(field.key)
+    const spec = view.setKanbanFieldSpec(field.id)
     spec.mutate(this)
     return spec
   }
@@ -198,7 +198,7 @@ export class Table {
   public setCalendarField(input: ISetCalendarFieldSchema): TableCompositeSpecificaiton {
     const view = this.mustGetView(input.viewKey)
     const field = this.schema.getFieldById(input.field).unwrap()
-    const spec = view.setCalendarFieldSpec(field.key)
+    const spec = view.setCalendarFieldSpec(field.id)
     spec.mutate(this)
     return spec
   }

@@ -10,7 +10,7 @@ export const createTestTable = (...specs: TableCompositeSpecificaiton[]) => {
     .unwrap()
     .and(WithTableName.fromString('name'))
     .and(new WithTableViews(new Views([])))
-    .and(new WithNewField(FieldFactory.create({ type: 'string', key: 'field1', name: 'field1' })))
+    .and(new WithNewField(FieldFactory.create({ type: 'string', name: 'field1' })))
 
   for (const s of specs) {
     spec = spec.and(s)

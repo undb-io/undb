@@ -110,9 +110,7 @@ describe('UnderlyingColumn', () => {
 
   describe('UnderlyingFieldColumn', () => {
     test('UnderlyingStringColumn', async () => {
-      const field = new UnderlyingStringColumn(
-        StringField.create({ id: 'fld1', name: 'name', key: 'key', type: 'string' }),
-      )
+      const field = new UnderlyingStringColumn(StringField.create({ id: 'fld1', name: 'name', type: 'string' }))
 
       await knex.schema.createTable(tableName, (tb) => {
         field.build(tb)
@@ -133,7 +131,7 @@ describe('UnderlyingColumn', () => {
 
     test('UnderlyingReferenceColumn', async () => {
       const field = new UnderlyingReferenceColumn(
-        ReferenceField.create({ id: 'fld1', name: 'name', key: 'key', type: 'reference' }),
+        ReferenceField.create({ id: 'fld1', name: 'name', type: 'reference' }),
       )
 
       await knex.schema.createTable(tableName, (tb) => {
@@ -154,7 +152,7 @@ describe('UnderlyingColumn', () => {
     })
 
     test('UnderlyingTreeColumn', async () => {
-      const field = new UnderlyingTreeColumn(TreeField.create({ id: 'fld1', name: 'name', key: 'key', type: 'tree' }))
+      const field = new UnderlyingTreeColumn(TreeField.create({ id: 'fld1', name: 'name', type: 'tree' }))
 
       await knex.schema.createTable(tableName, (tb) => {
         field.build(tb)

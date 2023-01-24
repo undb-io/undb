@@ -34,7 +34,7 @@ export const CreateTableFormSchema: React.FC = () => {
     }
   }, [len, schema])
 
-  const items = schema.map((field) => field.key)
+  const items = schema.map((field) => field.id!)
   return (
     <DndContext
       onDragStart={() => {

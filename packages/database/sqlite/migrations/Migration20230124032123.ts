@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230123085333 extends Migration {
+export class Migration20230124032123 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, primary key (`id`));',
@@ -8,7 +8,7 @@ export class Migration20230123085333 extends Migration {
     this.addSql('create index `table_deleted_at_index` on `table` (`deleted_at`);')
 
     this.addSql(
-      "create table `field` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `key` text not null, `table_id` text null, `name` text not null, `system` text not null default false, `type` text check (`type` in ('id', 'created-at', 'updated-at', 'auto-increment', 'string', 'number', 'date', 'select', 'bool', 'date-range', 'reference', 'tree')) not null, constraint `field_table_id_foreign` foreign key(`table_id`) references `table`(`id`) on delete cascade on update cascade, primary key (`id`));",
+      "create table `field` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `name` text not null, `system` text not null default false, `type` text check (`type` in ('id', 'created-at', 'updated-at', 'auto-increment', 'string', 'number', 'date', 'select', 'bool', 'date-range', 'reference', 'tree')) not null, constraint `field_table_id_foreign` foreign key(`table_id`) references `table`(`id`) on delete cascade on update cascade, primary key (`id`));",
     )
     this.addSql('create index `field_deleted_at_index` on `field` (`deleted_at`);')
     this.addSql('create index `field_table_id_index` on `field` (`table_id`);')

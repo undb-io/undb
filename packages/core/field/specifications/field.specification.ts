@@ -8,11 +8,11 @@ import { BaseFieldSpecification } from './base-field.specification'
 
 export class WithoutField extends BaseFieldSpecification<NoneSystemField> {
   isSatisfiedBy(t: Table): boolean {
-    return t.schema.getFieldById(this.field.id.value).mapOr(false, (f) => f.key.equals(this.field.key))
+    return t.schema.getFieldById(this.field.id.value).mapOr(false, (f) => f.id.equals(this.field.id))
   }
 
   mutate(t: Table): Result<Table, string> {
-    t.schema = new TableSchema(t.schema.fields.filter((f) => !f.key.equals(this.field.key)))
+    t.schema = new TableSchema(t.schema.fields.filter((f) => !f.id.equals(this.field.id)))
     return Ok(t)
   }
 

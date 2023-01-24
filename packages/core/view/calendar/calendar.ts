@@ -22,7 +22,7 @@ export class Calendar extends ValueObject<ICalendar> {
   }
 
   public removeField(field: Field): Option<Calendar> {
-    if (this.fieldId?.equals(field.key)) {
+    if (this.fieldId?.equals(field.id)) {
       const kanban = new Calendar({ ...this, fieldId: undefined })
       return Some(kanban)
     }

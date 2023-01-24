@@ -8,7 +8,6 @@ import { CreatedAtField } from '../field/created-at-field'
 import { FieldFactory } from '../field/field.factory'
 import { IdField } from '../field/id-field'
 import { UpdatedAtField } from '../field/updated-at-field'
-import { fieldKeySchema } from '../field/value-objects/field-key.schema'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema'
 import { WithNewField } from '../specifications/table-field.specification'
 import type { IKanbanField } from '../view'
@@ -22,9 +21,6 @@ function hasDuplicates(names: string[]): boolean {
 const namesSchema = fieldNameSchema
   .array()
   .refine(hasDuplicates, { message: 'field name should not be duplicated', path: ['field', 'name'] })
-const idsSchema = fieldKeySchema
-  .array()
-  .refine(hasDuplicates, { message: 'field id should not be duplicated', path: ['field', 'id'] })
 
 export const createTableSchemaSchema = z
   .array(createFieldSchema)
@@ -41,12 +37,7 @@ export type TableSchemaIdMap = Map<string, Field>
 export class TableSchema extends ValueObject<Field[]> {
   static create(inputs: ICreateTableSchemaInput): TableSchema {
     const fields = createTableSchemaSchema.parse(inputs).map(FieldFactory.create)
-    return new TableSchema([
-      IdField.create({ name: 'id', type: 'id', key: 'id' }),
-      ...fields,
-      CreatedAtField.create({ name: 'createdAt', type: 'created-at', key: 'createdAt' }),
-      UpdatedAtField.create({ name: 'updatedAt', type: 'updated-at', key: 'updatedAt' }),
-    ])
+    return new TableSchema([IdField.default(), ...fields, CreatedAtField.default(), UpdatedAtField.default()])
   }
 
   static unsafeCreate(inputs: ICreateTableSchemaInput): TableSchema {
@@ -82,10 +73,6 @@ export class TableSchema extends ValueObject<Field[]> {
     return this.props.map((f) => f.name.value)
   }
 
-  get fieldsKeys(): string[] {
-    return this.props.map((f) => f.id.value)
-  }
-
   get fieldsIds(): string[] {
     return this.props.map((f) => f.id.value)
   }
@@ -93,11 +80,6 @@ export class TableSchema extends ValueObject<Field[]> {
   private validateNames(...newNames: string[]) {
     const names = [...this.fieldsNames, ...newNames]
     namesSchema.parse(names)
-  }
-
-  private validateKeys(...newKeys: string[]) {
-    const ids = [...this.fieldsKeys, ...newKeys]
-    idsSchema.parse(ids)
   }
 
   public getFieldById(id: string): Option<Field> {
@@ -121,7 +103,6 @@ export class TableSchema extends ValueObject<Field[]> {
     const field = FieldFactory.create(input)
 
     this.validateNames(field.name.value)
-    this.validateKeys(field.key.value)
 
     return new WithNewField(field)
   }

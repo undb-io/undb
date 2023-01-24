@@ -1,6 +1,5 @@
 import {
   FieldId,
-  FieldKey,
   FieldName,
   FieldValueConstraints,
   StringField,
@@ -40,7 +39,6 @@ describe('UnderlyingTableSqliteManagerVisitor', () => {
         new TableSchema([
           new StringField({
             id: FieldId.fromString('fldid'),
-            key: FieldKey.from('field1'),
             name: FieldName.create('field1'),
             valueConstrains: FieldValueConstraints.create({}),
           }),
@@ -64,7 +62,6 @@ describe('UnderlyingTableSqliteManagerVisitor', () => {
       new WithNewField(
         new StringField({
           id: FieldId.fromString('fldid'),
-          key: FieldKey.from('field1'),
           name: FieldName.create('field1'),
           valueConstrains: FieldValueConstraints.create({}),
         }),

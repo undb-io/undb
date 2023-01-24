@@ -4,11 +4,9 @@ it('should create new text field', () => {
   const field = StringField.create({
     name: 'hello',
     type: 'string',
-    key: 'abc',
   })
 
   expect(field.unpack()).toMatchObject({
-    key: 'abc',
     name: 'hello',
     valueConstrains: {
       required: undefined,
@@ -23,7 +21,6 @@ it('should throw error if name is invalid', () => {
     StringField.create({
       name: 'h',
       type: 'string',
-      key: 'abc',
     })
 
   expect(createField).toThrowErrorMatchingInlineSnapshot(`

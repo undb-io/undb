@@ -1,4 +1,4 @@
-import { Field, FieldId, FieldKey, FieldName, FieldValueConstraints, SelectField, StringField } from '../field'
+import { Field, FieldId, FieldName, FieldValueConstraints, SelectField, StringField } from '../field'
 import { Option, OptionColor, OptionKey, OptionName, Options } from '../option'
 import { TableSchemaIdMap } from '../value-objects'
 import { RecordFactory } from './record.factory'
@@ -29,13 +29,13 @@ describe('fromQuery', () => {
         },
         createdAt: new Date(),
         updatedAt: new Date(),
+        autoIncrement: 1,
       },
       new Map([
         [
           'field1',
           new StringField({
             id: FieldId.fromString('id'),
-            key: FieldKey.from('field1'),
             name: FieldName.create('field1'),
             valueConstrains: FieldValueConstraints.create({}),
           }),
@@ -51,13 +51,13 @@ describe('fromQuery', () => {
         },
         createdAt: new Date(),
         updatedAt: new Date(),
+        autoIncrement: 1,
       },
       new Map([
         [
           'field1',
           new SelectField({
             id: FieldId.fromString('id'),
-            key: FieldKey.from('field1'),
             name: FieldName.create('field1'),
             valueConstrains: FieldValueConstraints.create({}),
             options: new Options([
@@ -80,12 +80,14 @@ describe('fromQuery', () => {
           field2: 'opt1',
         },
         createdAt: new Date(),
+        updatedAt: new Date(),
+        autoIncrement: 1,
       },
       new Map<string, Field>([
         [
           'field1',
           new StringField({
-            key: FieldKey.from('field1'),
+            id: FieldId.fromNullableString('field1'),
             name: FieldName.create('field1'),
             valueConstrains: FieldValueConstraints.create({}),
           }),
@@ -93,10 +95,16 @@ describe('fromQuery', () => {
         [
           'field2',
           new SelectField({
-            key: FieldKey.from('field2'),
+            id: FieldId.fromNullableString('field1'),
             name: FieldName.create('field2'),
             valueConstrains: FieldValueConstraints.create({}),
-            options: new Options([new Option({ key: OptionKey.fromString('opt1'), name: OptionName.create('opt1') })]),
+            options: new Options([
+              new Option({
+                key: OptionKey.fromString('opt1'),
+                name: OptionName.create('name'),
+                color: OptionColor.defaultColor,
+              }),
+            ]),
           }),
         ],
       ]),

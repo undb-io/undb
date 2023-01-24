@@ -17,7 +17,6 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ table, onSucces
   const form = useForm<ICreateDateRangeFieldSchema>({
     defaultValues: {
       type: 'date-range',
-      key: 'key',
       name: '',
     },
     resolver: zodResolver(createDateRangeFieldSchema),
@@ -66,14 +65,7 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ table, onSucces
         <Card.Section withBorder inheritPadding py="sm">
           <Stack spacing="xs">
             <FocusTrap>
-              <TextInput
-                {...props}
-                onChange={(e) => {
-                  props.onChange(e)
-                  form.setValue('key', e.target.value)
-                }}
-                placeholder="new date range field name"
-              />
+              <TextInput {...form.register('name')} placeholder="new date range field name" />
             </FocusTrap>
           </Stack>
         </Card.Section>

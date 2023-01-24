@@ -9,7 +9,7 @@ import type { IFieldVisitor } from './field.visitor'
 import { SelectFieldValue } from './select-field-value'
 import type { ICreateSelectFieldSchema, ICreateSelectFieldValue, SelectFieldType } from './select-field.type'
 import { WithNewOption, WithOption, WithOptions, WithoutOption } from './specifications/select-field.specification'
-import { FieldId, FieldKey, FieldName, FieldValueConstraints } from './value-objects'
+import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
 export class SelectField extends BaseField<ISelectField> {
   type: SelectFieldType = 'select'
@@ -48,7 +48,6 @@ export class SelectField extends BaseField<ISelectField> {
 
     return new SelectField({
       id: FieldId.fromNullableString(input.id),
-      key: input.key ? FieldKey.from(input.key) : FieldKey.fromName(fieldName),
       name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
       options: Options.create(input.options),
@@ -58,7 +57,6 @@ export class SelectField extends BaseField<ISelectField> {
   static unsafeCreate(input: ICreateSelectFieldSchema): SelectField {
     return new SelectField({
       id: FieldId.fromNullableString(input.id),
-      key: FieldKey.from(input.key),
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
       options: Options.unsafeCreate(input.options),

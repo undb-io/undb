@@ -9,7 +9,6 @@ export abstract class Field extends BaseEntity {
   constructor(table: Table, field: CoreField) {
     super()
     this.id = field.id.value
-    this.key = field.id.value
     this.table = table
     this.name = field.name.value
     this.type = field.type
@@ -17,9 +16,6 @@ export abstract class Field extends BaseEntity {
 
   @PrimaryKey()
   id: string
-
-  @Property()
-  key: string
 
   @ManyToOne(() => Table, { cascade: [Cascade.ALL] })
   table: Table

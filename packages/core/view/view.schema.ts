@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { fieldKeySchema } from '../field/value-objects/field-key.schema'
+import { fieldIdSchema } from '../field/value-objects/field-id.schema'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema'
 import { rootFilter } from '../filter/filter'
 import { calendarSchema } from './calendar'
@@ -62,8 +62,8 @@ export type ISetFieldVisibilitySchema = z.infer<typeof setFieldVisibilitySchema>
 
 export const moveFieldSchema = z.object({
   viewKey: viewNameSchema.optional(),
-  from: fieldKeySchema,
-  to: fieldKeySchema,
+  from: fieldIdSchema,
+  to: fieldIdSchema,
 })
 
 export type IMoveFieldSchema = z.infer<typeof moveFieldSchema>
@@ -77,12 +77,12 @@ export type ISwitchDisplayTypeSchema = z.infer<typeof switchDisplayTypeSchema>
 
 export const setKanbanFieldSchema = z.object({
   viewKey: viewNameSchema.optional(),
-  field: fieldKeySchema,
+  field: fieldIdSchema,
 })
 export type ISetKanbanFieldSchema = z.infer<typeof setKanbanFieldSchema>
 
 export const setCalendarFieldSchema = z.object({
   viewKey: viewNameSchema.optional(),
-  field: fieldKeySchema,
+  field: fieldIdSchema,
 })
 export type ISetCalendarFieldSchema = z.infer<typeof setCalendarFieldSchema>

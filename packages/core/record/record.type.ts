@@ -22,7 +22,7 @@ export const queryRecordSchema = z.object({
   tableId: tableIdSchema,
   createdAt: z.date(),
   updatedAt: z.date(),
-  autoIncrement: z.number(),
+  autoIncrement: z.number().int().positive().optional(),
   values: queryRecordValues,
 })
 export type IQueryRecordSchema = z.infer<typeof queryRecordSchema>
