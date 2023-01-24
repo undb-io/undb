@@ -200,9 +200,9 @@ importers:
     specifiers:
       '@astrojs/react': ^1.2.2
       '@astrojs/tailwind': ^2.1.3
-      '@egodb/ui': workspace:^0.0.0
-      '@types/react': ^18.0.21
-      '@types/react-dom': ^18.0.6
+      '@egodb/ui': ^0.0.0
+      '@types/react': ^18.0.27
+      '@types/react-dom': ^18.0.10
       astro: ^1.9.0
       react: ^18.2.0
       react-dom: ^18.2.0
