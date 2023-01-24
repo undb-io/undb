@@ -31,6 +31,7 @@
     "dev": "FORCE_COLOR=1 turbo run dev --parallel",
     "dev:packages": "FORCE_COLOR=1 turbo run dev --parallel --filter=./packages/*",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "dev:www":"turbo run dev --filter www",
     "lint": "turbo run lint",
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
