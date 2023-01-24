@@ -1,6 +1,7 @@
 import { ValueObject } from '@egodb/domain'
 import { Option } from 'oxide.ts'
 import type { FieldValue, ICreateFieldsSchema_internal, IFieldValue, UnpackedFieldValue } from '../../field'
+import { TreeField } from '../../field'
 import type { TableSchemaIdMap } from '../../value-objects'
 import type { RecordValueJSON } from '../record.schema'
 import type { IQueryRecordValues } from '../record.type'
@@ -59,5 +60,24 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
    */
   getUnpackedValue(id: string): Option<UnpackedFieldValue> {
     return Option.nonNull(this.value.get(id)).map((v) => v.unpack())
+  }
+
+  /**
+   * duplicate record values
+   *
+   * - remove tree value
+   *
+   * @param schema - table schema
+   */
+  dulicate(schema: TableSchemaIdMap): RecordValues {
+    const props = new Map(this.props)
+
+    for (const [fieldId, field] of schema) {
+      if (field instanceof TreeField) {
+        props.delete(fieldId)
+      }
+    }
+
+    return new RecordValues(props)
   }
 }
