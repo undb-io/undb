@@ -1,5 +1,5 @@
 import { DateVO } from '@egodb/domain'
-import type { TableId, TableSchema } from '../value-objects'
+import type { TableId, TableSchema, TableSchemaIdMap } from '../value-objects'
 import { RecordFactory } from './record.factory'
 import type { IInternalRecordValues, IMutateRecordValueSchema, RecordAllValues } from './record.schema'
 import { createRecordInputs } from './record.utils'
@@ -46,11 +46,11 @@ export class Record {
     return spec
   }
 
-  duplicate(): Record {
+  duplicate(schema: TableSchemaIdMap): Record {
     return RecordFactory.create(
       new WithRecordId(RecordId.create())
         .and(new WithRecordTableId(this.tableId))
-        .and(new WithRecordValues(this.values)),
+        .and(new WithRecordValues(this.values.dulicate(schema))),
     ).unwrap()
   }
 }
