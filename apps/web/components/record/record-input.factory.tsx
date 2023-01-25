@@ -42,6 +42,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
             allowFreeInput
             inputFormat="YYYY-MM-DD"
             labelFormat="YYYY-MM-DD"
+            label={label}
             icon={<FieldIcon type={field.type} />}
             {...form.field}
             onChange={(date) => form.field.onChange(date)}
