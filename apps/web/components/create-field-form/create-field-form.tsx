@@ -29,6 +29,7 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ table, onCancel }
       form.reset()
       closeAllModals()
       utils.table.get.refetch()
+      utils.record.list.refetch()
     },
   })
 
