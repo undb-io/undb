@@ -1,5 +1,48 @@
 ---
 import Layout from '../layouts/Layout.astro'
+import gitHubIcon from '../../public/images/github.svg'
+import egoWhiteIcon from '../../public/icon_png_white/ego_icon_white.svg'
+import mySqlImg from '../../public/images/mysql.jpg'
+import msSqlImg from '../../public/images/mssql.jpg'
+import PostgreSqlImg from '../public/images/Postgresql.png'
+import sqliteImg from '../public/images/sqlite.svg'
+import mariaImg from '../public/images/maria.jpg'
+import auroraImg from '../public/images/aurora.png'
+import oracleImg from '../public/images/oracle.png'
+import bigqueryImg from '../public/images/bigquery.png'
+import snowflakeImg from '../public/images/snowflake.png'
+
+const imgList = [
+  mySqlImg,
+  msSqlImg,
+  PostgreSqlImg,
+  sqliteImg,
+  mariaImg,
+  auroraImg,
+  oracleImg,
+  snowflakeImg,
+  bigqueryImg,
+]
 ---
 
-<Layout title="Welcome to Ego." />
+<Layout title="Welcome to Ego.">
+  <div class="mt-[80px] leading-9 text-center md:text-center flex flex-col items-center">
+    <span class="font-black text-8xl leading-relaxed">Open Source, Privacy First</span>
+    <span class="font-black text-8xl text-[#05449d] leading-relaxed">Airtable Alternative</span>
+    <span class="leading-relaxed text-1xl font-extralight mt-5 mb-8 text-[#888888]"
+      >EgoDB is an open source #NoCode platform that turns any database into a smart spreadsheet.</span
+    >
+    <div class="flex flex-row gap-[30px]">
+      <button class="font-bold bg-[#0a6bde] rounded-lg py-[9px] px-[20px] text-slate-100 w-[180px] flex items-center">
+        <img src={gitHubIcon} alt="" />&nbsp Check GitHub</button
+      >
+      <button class="font-bold bg-[#000000] rounded-lg py-[9px] px-[20px] text-slate-100 w-[180px] flex items-center">
+        <img class="w-[25px]" src={egoWhiteIcon} alt="" />Self Host EGO</button
+      >
+    </div>
+    <span class="leading-relaxed text-1xl font-extralight mt-5 mb-8 text-[#888888]">Supported Databases</span>
+    <div class="flex justify-center pt-[10px]">
+      {imgList.map((img, index) => <img class="h-[40px] px-[20px]" src={img} alt="" key={index} />)}
+    </div>
+  </div>
+</Layout>

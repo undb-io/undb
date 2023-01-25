@@ -3,19 +3,22 @@ export interface Props {}
 const {} = Astro.props
 ---
 
-<div class="container flex justify-between h-72 mx-auto items-center gap-20 border-solid border-b-2 border-gray-200">
-  <div class="flex h-full gap-1 items-center">
-    <img class="h-2/3" alt="ego.io" src="/apple-touch-icon.png" />
-    <span class="font-mono text-2xl font-extrabold">ego</span>
+<>
+  <div class="flex justify-between h-72 items-center gap-20">
+    <a class="flex h-full gap-1 items-center" href="/">
+      <img class="h-2/3" alt="ego.io" src="/apple-touch-icon.png" />
+      <span class="font-mono text-2xl font-extrabold">ego</span>
+    </a>
+    <div class="flex items-center h-full gap-12 font-bold">
+      <a class="text-1xl" href="/showCase">Show case</a>
+      <a class="text-1xl" href="/docs">Docs</a>
+      <a class="text-1xl" href="/community">Community</a>
+      <a class="text-1xl" href="/pricing">Pricing</a>
+    </div>
+    <div class="flex h-full items-center gap-[1.6rem]">
+      <button class="rounded-lg border-2 border-[#0a6bde]/50 py-[7px] px-[20px] font-bold">Sign in</button>
+      <button class="font-bold bg-[#0a6bde] rounded-lg py-[9px] px-[20px] text-slate-100">Get start</button>
+    </div>
   </div>
-  <div class="flex items-center h-full gap-12 font-bold">
-    <a class="text-1xl" href="/showCase">Show case</a>
-    <a class="text-1xl" href="/docs">Docs</a>
-    <a class="text-1xl" href="/community">Community</a>
-    <a class="text-1xl" href="/pricing">Pricing</a>
-  </div>
-  <div class="flex h-full items-center gap-[1.6rem]">
-    <button class="rounded-lg border-2 border-[#8CAEFF]/50 py-[7px] px-[20px] font-bold">Sign in</button>
-    <button class="font-bold bg-[#8CAEFF] rounded-lg py-[9px] px-[20px] text-slate-100">Get start</button>
-  </div>
-</div>
+  <div class="absolute h-px left-0 bg-slate-100 w-screen"></div>
+</>
