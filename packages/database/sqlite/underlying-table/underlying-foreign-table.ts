@@ -54,7 +54,7 @@ export class UnderlyingClosureTable extends BaseUnderlyingForeignTable<TreeField
   getSqls(knex: Knex): string[] {
     return [
       knex.schema
-        .createTable(this.name, (tb) => {
+        .createTableIfNotExists(this.name, (tb) => {
           tb.string(UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD)
             .notNullable()
             .references(INTERNAL_COLUMN_ID_NAME)
@@ -78,7 +78,7 @@ export class UnderlyingClosureTable extends BaseUnderlyingForeignTable<TreeField
       knex
         .raw(
           `
-       create index \`${this.name}_${UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD}_index\` on \`${this.name}\` (\`${UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD}\`)
+       create index if not exists \`${this.name}_${UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD}_index\` on \`${this.name}\` (\`${UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD}\`)
        `,
         )
         .toQuery(),
