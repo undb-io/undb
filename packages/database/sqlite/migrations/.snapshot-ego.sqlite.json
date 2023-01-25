@@ -164,9 +164,28 @@
             "bool",
             "date-range",
             "reference",
-            "tree"
+            "tree",
+            "parent"
           ],
           "mappedType": "enum"
+        },
+        "parent_field_id": {
+          "name": "parent_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "tree_field_id": {
+          "name": "tree_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         }
       },
       "name": "field",

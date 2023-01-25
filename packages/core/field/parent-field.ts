@@ -10,8 +10,8 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 export class ParentField extends BaseField<IParentField> {
   type: ParentFieldType = 'parent'
 
-  set treeFieldId(fieldId: FieldId | undefined) {
-    this.props.treeFieldId = fieldId
+  get treeFieldId() {
+    return this.props.treeFieldId
   }
 
   static create(input: ICreateParentFieldInput): ParentField {
@@ -20,6 +20,7 @@ export class ParentField extends BaseField<IParentField> {
     return new ParentField({
       id: FieldId.fromNullableString(input.id),
       name: fieldName,
+      treeFieldId: FieldId.fromString(input.treeFieldId),
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
     })
   }
@@ -28,6 +29,7 @@ export class ParentField extends BaseField<IParentField> {
     return new ParentField({
       id: FieldId.fromNullableString(input.id),
       name: FieldName.unsafaCreate(input.name),
+      treeFieldId: FieldId.fromString(input.treeFieldId),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
     })
   }

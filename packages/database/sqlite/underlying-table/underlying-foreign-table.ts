@@ -1,5 +1,5 @@
-import type { Field, ParentField, ReferenceField, TreeField } from '@egodb/core'
-import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
+import type { Field, ParentField, ReferenceField } from '@egodb/core'
+import { INTERNAL_COLUMN_ID_NAME, TreeField } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import type { IUderlyingForeignTableName, IUnderlyingForeignTable } from '../interfaces/underlying-foreign-table'
 
@@ -48,7 +48,8 @@ export class UnderlyingClosureTable extends BaseUnderlyingForeignTable<TreeField
   static CLOSURE_TABLE_DEPTH_FIELD = 'depth'
 
   get name(): IUderlyingForeignTableName {
-    return `${this.field.id.value}_${this.foreignTableName}_closure_table`
+    const fieldId = this.field instanceof TreeField ? this.field.id.value : this.field.treeFieldId!.value
+    return `${fieldId}_${this.foreignTableName}_closure_table`
   }
 
   getCreateTableSqls(knex: Knex): string[] {

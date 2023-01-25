@@ -17,7 +17,7 @@ import type {
   TreeFieldValue,
   UpdatedAtFieldValue,
 } from '@egodb/core'
-import { ParentField, ReferenceField, TreeField } from '@egodb/core'
+import { INTERNAL_COLUMN_ID_NAME, ParentField, ReferenceField, TreeField } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { RecordValueData, RecordValueSqlitePrimitives } from '../../types/record-value-sqlite.type'
 import { UnderlyingAdjacencyListTable, UnderlyingClosureTable } from '../../underlying-table/underlying-foreign-table'
@@ -113,21 +113,45 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
     const field = this.schema.get(this.fieldId)
     if (!(field instanceof TreeField)) return
 
-    const recordIds = value.unpack()
-    this.setData(this.fieldId, recordIds == null ? recordIds : JSON.stringify(recordIds))
+    const children = value.unpack()
+    this.setData(this.fieldId, children == null ? children : JSON.stringify(children))
+
+    const knex = this.em.getKnex()
+    const closure = new UnderlyingClosureTable(this.tableId, field)
 
     const parentFieldId = field.parentFieldId?.value
     if (parentFieldId) {
       const parentField = this.schema.get(parentFieldId)
       if (parentField instanceof ParentField) {
-        this.setData(parentFieldId, this.recordId)
+        const clear = knex
+          .queryBuilder()
+          .table(this.tableId)
+          .update(parentFieldId, null)
+          .whereIn(
+            INTERNAL_COLUMN_ID_NAME,
+            knex
+              .select(UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD)
+              .from(closure.name)
+              .where(UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD, this.recordId)
+              .andWhere(UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD, '>', 0),
+          )
+          .toQuery()
+
+        this.addQueries(clear)
+
+        if (children?.length) {
+          const updateChildren = knex
+            .queryBuilder()
+            .table(this.tableId)
+            .update(parentFieldId, this.recordId)
+            .whereIn(INTERNAL_COLUMN_ID_NAME, children)
+            .toQuery()
+          this.addQueries(updateChildren)
+        }
       }
     }
 
-    const knex = this.em.getKnex()
-    const closure = new UnderlyingClosureTable(this.tableId, field)
-
-    this.addQueries(...closure.connect(knex, this.recordId, recordIds ?? []))
+    this.addQueries(...closure.connect(knex, this.recordId, children ?? []))
   }
 
   parent(value: ParentFieldValue): void {

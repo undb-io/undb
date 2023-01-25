@@ -152,6 +152,7 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
 
   tree(value: CoreTreeField): void {
     const field = new TreeField(this.table, value)
+    field.parentFieldId = value.parentFieldId!.value
     this.em.persist(field)
 
     this.initClosureTable(value)
@@ -159,6 +160,7 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
 
   parent(value: CoreParentField): void {
     const field = new ParentField(this.table, value)
+    field.treeFieldId = value.treeFieldId.value
     this.em.persist(field)
 
     this.initClosureTable(value)

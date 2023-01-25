@@ -4,6 +4,7 @@ import type {
   DateRangeField,
   Field,
   NumberField,
+  ParentField,
   ReferenceField,
   SelectField,
   StringField,
@@ -141,5 +142,11 @@ export class UnderlyingReferenceColumn extends UnderlyingFieldColumn<ReferenceFi
 export class UnderlyingTreeColumn extends UnderlyingFieldColumn<TreeField> {
   build(tb: Knex.TableBuilder): void {
     tb.json(this.name)
+  }
+}
+
+export class UnderlyingParentColumn extends UnderlyingFieldColumn<ParentField> {
+  build(tb: Knex.TableBuilder): void {
+    tb.string(this.name).nullable()
   }
 }

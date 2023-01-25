@@ -7,7 +7,6 @@ import {
   createFieldSchema,
   DateField,
   DateRangeField,
-  ParentField,
   ReferenceField,
   SelectField,
   TreeField,
@@ -45,7 +44,11 @@ export type TableSchemaIdMap = Map<string, Field>
  */
 export class TableSchema extends ValueObject<Field[]> {
   static create(inputs: ICreateTableSchemaInput): TableSchema {
-    const fields = createTableSchemaSchema.parse(inputs).map(FieldFactory.create)
+    const fields = createTableSchemaSchema
+      .parse(inputs)
+      .map(FieldFactory.create)
+      .flatMap((f) => (f instanceof TreeField ? ([f, f.createParentField()] as [Field, Field]) : f))
+
     return new TableSchema([IdField.default(), ...fields, CreatedAtField.default(), UpdatedAtField.default()])
   }
 
@@ -100,16 +103,11 @@ export class TableSchema extends ValueObject<Field[]> {
   }
 
   public addField(field: Field) {
-    this.props.push(field)
+    this.fields.push(field)
 
-    // TODO: 封装
-    if (field instanceof ParentField) {
-      // TODO: 这里的关系也许可以从传入参数获取，要看是不是需要让用户指定关系，以及是不是支持多个 tree 类型列
-      const treeField = this.fields.find((f) => f instanceof TreeField) as TreeField | undefined
-      if (treeField) treeField.parentFieldId = field.id
-    } else if (field instanceof TreeField) {
-      const parentField = this.fields.find((f) => f instanceof ParentField) as ParentField | undefined
-      if (parentField) parentField.treeFieldId = field.id
+    if (field instanceof TreeField) {
+      const parentField = field.createParentField()
+      this.fields.push(parentField)
     }
   }
 

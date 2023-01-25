@@ -284,7 +284,7 @@ export type ISelectField = IBaseField & {
 export type IBoolField = IBaseField
 export type IReferenceField = IBaseField
 export type ITreeField = IBaseField & { parentFieldId?: FieldId }
-export type IParentField = IBaseField & { treeFieldId?: FieldId }
+export type IParentField = IBaseField & { treeFieldId: FieldId }
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField | AutoIncrementField
 

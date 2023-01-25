@@ -83,10 +83,16 @@ export class SelectField extends Field {
 export class ReferenceField extends Field {}
 
 @Entity({ discriminatorValue: 'tree' })
-export class TreeField extends Field {}
+export class TreeField extends Field {
+  @Property()
+  parentFieldId!: string
+}
 
 @Entity({ discriminatorValue: 'parent' })
-export class ParentField extends Field {}
+export class ParentField extends Field {
+  @Property()
+  treeFieldId!: string
+}
 
 export type IField =
   | IdField

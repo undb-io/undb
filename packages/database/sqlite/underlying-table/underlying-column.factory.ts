@@ -9,6 +9,7 @@ import {
   UnderlyingDateRangeToFromColumn,
   UnderlyingIdColumn,
   UnderlyingNumberColumn,
+  UnderlyingParentColumn,
   UnderlyingReferenceColumn,
   UnderlyingSelectFromColumn,
   UnderlyingStringColumn,
@@ -43,6 +44,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingReferenceColumn(field)
       case 'tree':
         return new UnderlyingTreeColumn(field)
+      case 'parent':
+        return new UnderlyingParentColumn(field)
     }
   }
 
