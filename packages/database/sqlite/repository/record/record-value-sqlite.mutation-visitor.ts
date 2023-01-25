@@ -133,7 +133,7 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
               .select(UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD)
               .from(closure.name)
               .where(UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD, this.recordId)
-              .andWhere(UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD, '>', 0),
+              .andWhere(UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD, '=', 1),
           )
           .toQuery()
 
