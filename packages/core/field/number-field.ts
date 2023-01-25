@@ -5,7 +5,7 @@ import type { INumberField } from './field.type'
 import type { IFieldVisitor } from './field.visitor'
 import { NumberFieldValue } from './number-field-value'
 import type { ICreateNumberFieldInput, ICreateNumberFieldValue, NumberType } from './number-field.type'
-import { FieldId, FieldKey, FieldName, FieldValueConstraints } from './value-objects'
+import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
 export class NumberField extends BaseField<INumberField> {
   type: NumberType = 'number'
@@ -15,7 +15,6 @@ export class NumberField extends BaseField<INumberField> {
 
     return new NumberField({
       id: FieldId.fromNullableString(input.id),
-      key: input.key ? FieldKey.from(input.key) : FieldKey.fromName(fieldName),
       name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
       currency: Currency.fromNullable(input.currency),
@@ -25,7 +24,6 @@ export class NumberField extends BaseField<INumberField> {
   static unsafeCreate(input: ICreateNumberFieldInput): NumberField {
     return new NumberField({
       id: FieldId.fromNullableString(input.id),
-      key: FieldKey.from(input.key),
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
       currency: Currency.fromNullable(input.currency),

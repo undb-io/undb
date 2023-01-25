@@ -17,7 +17,6 @@ export const CreateDateField: React.FC<IProps> = ({ table, onSuccess }) => {
   const form = useForm<ICreateDateFieldSchema>({
     defaultValues: {
       type: 'date',
-      key: '',
       name: '',
     },
     resolver: zodResolver(createDateFieldSchema),
@@ -55,7 +54,6 @@ export const CreateDateField: React.FC<IProps> = ({ table, onSuccess }) => {
   })
 
   const setStepZero = useSetAtom(kanbanStepZeroAtom)
-  const props = form.register('name')
   return (
     <form onSubmit={onSubmit}>
       <Card shadow="sm">
@@ -66,14 +64,7 @@ export const CreateDateField: React.FC<IProps> = ({ table, onSuccess }) => {
         <Card.Section withBorder inheritPadding py="sm">
           <Stack spacing="xs">
             <FocusTrap>
-              <TextInput
-                {...props}
-                onChange={(e) => {
-                  props.onChange(e)
-                  form.setValue('key', e.target.value)
-                }}
-                placeholder="new date field name"
-              />
+              <TextInput {...form.register('name')} placeholder="new date field name" />
             </FocusTrap>
           </Stack>
         </Card.Section>

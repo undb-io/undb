@@ -31,7 +31,6 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
     transition,
   }
 
-  const nameProps = form.register(`schema.${index}.name`)
   return (
     <Accordion.Item id={String(id)} opacity={isDragging ? 0.5 : 1} value={String(id)}>
       <Accordion.Control ref={setNodeRef} style={style}>
@@ -65,11 +64,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
             />
 
             <TextInput
-              {...nameProps}
-              onChange={(e) => {
-                nameProps.onChange(e)
-                form.setValue(`schema.${index}.key`, e.target.value)
-              }}
+              {...form.register(`schema.${index}.name`)}
               label={<FieldInputLabel>name</FieldInputLabel>}
               variant="filled"
               required={true}

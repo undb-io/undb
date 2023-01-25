@@ -31,13 +31,16 @@ export class RecordFactory {
   }
 
   static fromQuery(r: IQueryRecordSchema, schema: TableSchemaIdMap): Result<Record, string> {
-    return this.create(
-      WithRecordId.fromString(r.id)
-        .and(WithRecordTableId.fromString(r.tableId).unwrap())
-        .and(WithRecordCreatedAt.fromDate(r.createdAt))
-        .and(WithRecordUpdatedAt.fromDate(r.updatedAt))
-        .and(new WithRecordAutoIncrement(r.autoIncrement))
-        .and(WithRecordValues.fromObject(schema, r.values)),
-    )
+    let spec = WithRecordId.fromString(r.id)
+      .and(WithRecordTableId.fromString(r.tableId).unwrap())
+      .and(WithRecordCreatedAt.fromDate(r.createdAt))
+      .and(WithRecordUpdatedAt.fromDate(r.updatedAt))
+      .and(WithRecordValues.fromObject(schema, r.values))
+
+    if (typeof r.autoIncrement === 'number') {
+      spec = spec.and(new WithRecordAutoIncrement(r.autoIncrement))
+    }
+
+    return this.create(spec)
   }
 }

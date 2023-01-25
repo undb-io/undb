@@ -18,7 +18,6 @@ export class TableSqliteMapper {
     if (entity.type === 'select') {
       return {
         id: entity.id,
-        key: entity.key,
         name: entity.name,
         type: 'select',
         options: (entity as EntityDTO<SelectField>).options.map((o) => ({
@@ -33,7 +32,6 @@ export class TableSqliteMapper {
     }
     return {
       id: entity.id,
-      key: entity.key,
       name: entity.name,
       type: entity.type,
     } as IQueryFieldSchema
@@ -69,7 +67,6 @@ export class TableSqliteMapper {
         if (f.type === 'select') {
           return {
             id: f.id,
-            key: f.key,
             name: f.name,
             type: 'select',
             options: (f as EntityDTO<SelectField>).options.map((o) => ({
@@ -84,7 +81,6 @@ export class TableSqliteMapper {
         }
         return {
           id: f.id,
-          key: f.key,
           name: f.name,
           type: f.type,
         }

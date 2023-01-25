@@ -23,7 +23,7 @@ describe('RecordValueSqliteVisitor', () => {
 
   describe('dateRange', () => {
     beforeAll(() => {
-      table = createTestTable(WithTableSchema.from([{ id: 'fld1', name: 'range', key: 'range', type: 'date-range' }]))
+      table = createTestTable(WithTableSchema.from([{ id: 'fld1', name: 'range', type: 'date-range' }]))
 
       visitor = new RecordValueSqliteMutationVisitor(
         table.id.value,
@@ -50,9 +50,7 @@ describe('RecordValueSqliteVisitor', () => {
 
   describe('refenrence', () => {
     beforeAll(() => {
-      table = createTestTable(
-        WithTableSchema.from([{ id: 'fld1', name: 'reference', key: 'reference', type: 'reference' }]),
-      )
+      table = createTestTable(WithTableSchema.from([{ id: 'fld1', name: 'reference', type: 'reference' }]))
 
       visitor = new RecordValueSqliteMutationVisitor(
         table.id.value,
@@ -73,7 +71,7 @@ describe('RecordValueSqliteVisitor', () => {
 
   describe('', () => {
     beforeAll(() => {
-      table = createTestTable(WithTableSchema.from([{ id: 'fld1', name: 'tree', key: 'tree', type: 'tree' }]))
+      table = createTestTable(WithTableSchema.from([{ id: 'fld1', name: 'tree', type: 'tree' }]))
 
       visitor = new RecordValueSqliteMutationVisitor(
         table.id.value,

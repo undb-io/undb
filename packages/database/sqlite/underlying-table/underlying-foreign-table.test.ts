@@ -13,7 +13,7 @@ describe('UnderlyingAdjacencyListTable', () => {
   test('should create UnderlyingAdjacencyListTable', () => {
     const table = new UnderlyingAdjacencyListTable(
       'tablename',
-      ReferenceField.create({ id: 'fldid', name: 'reference', type: 'reference', key: 'reference' }),
+      ReferenceField.create({ id: 'fldid', name: 'reference', type: 'reference' }),
     )
 
     expect(table.name).toMatchInlineSnapshot('"fldid_tablename_adjacency_list"')
@@ -28,10 +28,7 @@ describe('UnderlyingAdjacencyListTable', () => {
   })
 
   test('should create UnderlyingAdjacencyListTable', () => {
-    const table = new UnderlyingClosureTable(
-      'tablename',
-      TreeField.create({ id: 'fldid', name: 'tree', type: 'tree', key: 'tree' }),
-    )
+    const table = new UnderlyingClosureTable('tablename', TreeField.create({ id: 'fldid', name: 'tree', type: 'tree' }))
 
     expect(table.name).toMatchInlineSnapshot('"fldid_tablename_closure_table"')
     const query = table.getSqls(knex)

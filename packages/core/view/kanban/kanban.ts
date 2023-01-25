@@ -22,7 +22,7 @@ export class Kanban extends ValueObject<IKanban> {
   }
 
   public removeField(field: Field): Option<Kanban> {
-    if (this.fieldId?.equals(field.key)) {
+    if (this.fieldId?.equals(field.id)) {
       const kanban = new Kanban({ ...this, fieldId: undefined })
       return Some(kanban)
     }

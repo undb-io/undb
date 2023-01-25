@@ -3,7 +3,7 @@ import { createOptionsSchema, optionIdSchema, optionsSchema } from '../option/op
 import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base'
 import { FIELD_TYPE_KEY } from './field.constant'
 import { SelectField } from './select-field'
-import { fieldKeySchema } from './value-objects/field-key.schema'
+import { fieldIdSchema } from './value-objects/field-id.schema'
 
 export const selectTypeSchema = z.literal('select')
 export type SelectFieldType = z.infer<typeof selectTypeSchema>
@@ -43,7 +43,7 @@ export const createSelectFieldValue_internal = z
 export type ICreateSelectFieldValue_internal = z.infer<typeof createSelectFieldValue_internal>
 
 export const reorderOptionsSchema = z.object({
-  fieldId: fieldKeySchema,
+  fieldId: fieldIdSchema,
   from: optionIdSchema,
   to: optionIdSchema,
 })

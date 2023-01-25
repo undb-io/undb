@@ -1,9 +1,9 @@
 import { z } from 'zod'
 import { DateField, SelectField } from '../../field'
-import { fieldKeySchema } from '../../field/value-objects/field-key.schema'
+import { fieldIdSchema } from '../../field/value-objects/field-id.schema'
 
 export const kanbanSchema = z.object({
-  fieldId: fieldKeySchema.optional(),
+  fieldId: fieldIdSchema.optional(),
 })
 
 export const kanbanField = z.union([z.instanceof(SelectField), z.instanceof(DateField)])

@@ -14,7 +14,6 @@ import type { ICreateFieldProps } from './create-field.props'
 export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ table, onCancel }) => {
   const defaultValues: ICreateFieldSchema = {
     type: 'string',
-    key: '',
     name: '',
   }
 
@@ -37,8 +36,6 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ table, onCancel }
     createField.mutate({ id: table.id.value, field: values })
   })
 
-  const props = form.register('name')
-
   return (
     <FormProvider {...form}>
       <form onSubmit={onSubmit}>
@@ -58,15 +55,7 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ table, onCancel }
               />
             )}
           />
-          <TextInput
-            {...props}
-            onChange={(e) => {
-              props.onChange(e)
-              form.setValue('key', e.target.value)
-            }}
-            label={<FieldInputLabel>name</FieldInputLabel>}
-            required
-          />
+          <TextInput {...form.register('name')} label={<FieldInputLabel>name</FieldInputLabel>} required />
           <CreateFieldVariantControl />
 
           <Divider />

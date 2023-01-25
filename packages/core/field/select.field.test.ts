@@ -8,14 +8,11 @@ describe('SelectField', () => {
       const selectField = SelectField.create({
         type: 'select',
         name: 'select',
-        key: 'select',
         options: [{ name: 'option1' }],
       })
 
       expect(selectField).toBeInstanceOf(SelectField)
-      expect(selectField.key.value).toBe('select')
       expect(selectField.type).toBe('select')
-      expect(selectField.key.value).toBe('select')
       expect(selectField).toHaveProperty('options')
       expect(selectField.options.options).toHaveLength(1)
     })
@@ -24,7 +21,6 @@ describe('SelectField', () => {
   describe('createSelectFieldSchema', () => {
     test('should return false if no options', () => {
       const { success, error } = createSelectFieldSchema.safeParse({
-        key: '1',
         name: 'name',
         type: 'select',
         options: [],
@@ -54,7 +50,6 @@ describe('SelectField', () => {
       const selectField = SelectField.create({
         type: 'select',
         name: 'select',
-        key: 'select',
         options: [{ name: '1' }],
       })
 
@@ -72,7 +67,6 @@ describe('SelectField', () => {
       const selectField = SelectField.create({
         type: 'select',
         name: 'select',
-        key: 'select',
         options: [{ key: 'fld1', name: '1' }],
       })
 

@@ -1,7 +1,6 @@
 import {
   createTestTable,
   FieldId,
-  FieldKey,
   FieldName,
   FieldValueConstraints,
   StringField,
@@ -28,7 +27,6 @@ describe('UnderlyingTableBuilder', () => {
               new StringField({
                 id: FieldId.fromString('fldid'),
                 name: FieldName.create('name'),
-                key: FieldKey.from('key'),
                 valueConstrains: FieldValueConstraints.create({}),
               }),
             ]),

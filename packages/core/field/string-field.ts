@@ -4,7 +4,7 @@ import type { IStringField } from './field.type'
 import type { IFieldVisitor } from './field.visitor'
 import { StringFieldValue } from './string-field-value'
 import type { ICreateStringFieldInput, ICreateStringFieldValue, StringFieldType } from './string-field.type'
-import { FieldId, FieldKey, FieldName, FieldValueConstraints } from './value-objects'
+import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
 export class StringField extends BaseField<IStringField> {
   type: StringFieldType = 'string'
@@ -14,7 +14,6 @@ export class StringField extends BaseField<IStringField> {
 
     return new StringField({
       id: FieldId.fromNullableString(input.id),
-      key: input.key ? FieldKey.from(input.key) : FieldKey.fromName(fieldName),
       name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
     })
@@ -23,7 +22,6 @@ export class StringField extends BaseField<IStringField> {
   static unsafeCreate(input: ICreateStringFieldInput): StringField {
     return new StringField({
       id: FieldId.fromNullableString(input.id),
-      key: FieldKey.from(input.key),
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
     })

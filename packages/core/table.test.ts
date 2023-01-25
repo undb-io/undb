@@ -14,7 +14,7 @@ describe('Table', () => {
   describe('createField', () => {
     test('should add new field', () => {
       const table = createTestTable()
-      table.createField({ key: 'string', type: 'string', name: 'string' })
+      table.createField({ type: 'string', name: 'string' })
     })
   })
 })

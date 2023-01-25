@@ -6,23 +6,18 @@ import type { IFieldVisitor } from './field.visitor'
 import type { FieldId, FieldName } from './value-objects'
 import { valueConstraintsSchema } from './value-objects'
 import { fieldIdSchema } from './value-objects/field-id.schema'
-import { fieldKeySchema } from './value-objects/field-key.schema'
-import type { FieldKey } from './value-objects/field-key.vo'
 import { fieldNameSchema } from './value-objects/field-name.schema'
 
 export const createBaseFieldsSchema = z
   .object({
     id: fieldIdSchema.optional(),
-    key: fieldKeySchema,
     name: fieldNameSchema,
   })
   .merge(valueConstraintsSchema)
 
 export type IBaseCreateFieldsSchema = z.infer<typeof createBaseFieldsSchema>
 
-export const baseFieldQuerySchema = z
-  .object({ id: fieldIdSchema, key: fieldKeySchema, name: fieldNameSchema })
-  .merge(valueConstraintsSchema)
+export const baseFieldQuerySchema = z.object({ id: fieldIdSchema, name: fieldNameSchema }).merge(valueConstraintsSchema)
 
 export abstract class BaseField<C extends IBaseField> extends ValueObject<C> {
   abstract type: IFieldType
@@ -34,10 +29,6 @@ export abstract class BaseField<C extends IBaseField> extends ValueObject<C> {
 
   public get id(): FieldId {
     return this.props.id
-  }
-
-  public get key(): FieldKey {
-    return this.props.key
   }
 
   public get name(): FieldName {

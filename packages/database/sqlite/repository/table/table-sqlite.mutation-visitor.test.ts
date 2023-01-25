@@ -55,7 +55,7 @@ describe('TableSqliteMutationVisitor', () => {
   })
 
   test('schemaEqual', async () => {
-    mv.schemaEqual(WithTableSchema.from([{ id: 'fld1', name: 'field1', key: 'field1', type: 'string' }]))
+    mv.schemaEqual(WithTableSchema.from([{ id: 'fld1', name: 'field1', type: 'string' }]))
 
     await em.flush()
 
@@ -93,7 +93,7 @@ describe('TableSqliteMutationVisitor', () => {
 
   describe('newField', () => {
     test('new reference feild', async () => {
-      const field = ReferenceField.create({ id: 'fldid', type: 'reference', name: 'reference', key: 'reference' })
+      const field = ReferenceField.create({ id: 'fldid', type: 'reference', name: 'reference' })
       mv.newField(new WithNewField(field))
 
       await mv.commit()

@@ -13,7 +13,7 @@ export const CreateTableAddFieldButton: React.FC = () => {
   return (
     <Button
       onClick={() => {
-        append({ key: '', type: 'string', name: '' })
+        append({ type: 'string', name: '' })
       }}
       fullWidth
       color={hasSchema ? 'gray' : 'orange'}
