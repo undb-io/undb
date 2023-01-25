@@ -28,6 +28,8 @@ export class TableSqliteRepository implements ITableRepository {
 
   async insert(table: CoreTable): Promise<void> {
     await this.em.transactional(async (em) => {
+      await this.tm.create(table)
+
       const tableEntity = new TableEntity(table)
 
       for (const field of table.schema.fields) {
@@ -42,8 +44,6 @@ export class TableSqliteRepository implements ITableRepository {
       }
 
       em.persist(tableEntity)
-
-      await this.tm.create(table)
     })
   }
 
