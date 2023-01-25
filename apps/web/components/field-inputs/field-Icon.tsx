@@ -1,5 +1,6 @@
 import {
   Icon123,
+  IconBinaryTree,
   IconCalendar,
   IconCalendarPlus,
   IconCalendarStats,
@@ -46,6 +47,8 @@ export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16, color }) => {
       return <IconRelationManyToMany size={size} color={color} />
     case 'tree':
       return <IconHierarchy size={size} color={color} />
+    case 'parent':
+      return <IconBinaryTree size={size} color={color} />
     default:
       return <IconQuestionMark size={size} color={color} />
   }
