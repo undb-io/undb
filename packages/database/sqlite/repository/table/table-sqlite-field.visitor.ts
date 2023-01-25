@@ -9,6 +9,7 @@ import type {
   IdField as CoreIdField,
   IFieldVisitor,
   NumberField as CoreNumberField,
+  ParentField as CoreParentField,
   ReferenceField as CoreReferenceField,
   SelectField as CoreSelectField,
   StringField as CoreStringField,
@@ -28,6 +29,7 @@ import {
   IdField,
   NumberField,
   Option,
+  ParentField,
   ReferenceField,
   SelectField,
   StringField,
@@ -116,21 +118,19 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
 
     const adjacencyListTable = new UnderlyingAdjacencyListTable(this.table.id, value)
 
-    const queries = adjacencyListTable.getSqls(this.em.getKnex())
+    const queries = adjacencyListTable.getCreateTableSqls(this.em.getKnex())
 
     this.#queries.push(...queries)
   }
 
-  tree(value: CoreTreeField): void {
-    const field = new TreeField(this.table, value)
-    this.em.persist(field)
-
+  private initClosureTable(value: CoreTreeField | CoreParentField) {
     const tableId = this.table.id
+
     const closureTable = new UnderlyingClosureTable(tableId, value)
 
     const knex = this.em.getKnex()
 
-    const queries = closureTable.getSqls(knex)
+    const queries = closureTable.getCreateTableSqls(knex)
     this.#queries.push(...queries)
 
     const insert = knex
@@ -144,7 +144,23 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
           .from(tableId),
       )
       .into(closureTable.name)
+      .onConflict()
+      .merge()
       .toQuery()
     this.#queries.push(insert)
+  }
+
+  tree(value: CoreTreeField): void {
+    const field = new TreeField(this.table, value)
+    this.em.persist(field)
+
+    this.initClosureTable(value)
+  }
+
+  parent(value: CoreParentField): void {
+    const field = new ParentField(this.table, value)
+    this.em.persist(field)
+
+    this.initClosureTable(value)
   }
 }

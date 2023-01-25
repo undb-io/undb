@@ -3,7 +3,16 @@ import { Option } from 'oxide.ts'
 import type { Class } from 'type-fest'
 import * as z from 'zod'
 import type { Field, ICreateFieldSchema, NoneSystemField } from '../field'
-import { createFieldSchema, DateField, DateRangeField, ReferenceField, SelectField, WithoutField } from '../field'
+import {
+  createFieldSchema,
+  DateField,
+  DateRangeField,
+  ParentField,
+  ReferenceField,
+  SelectField,
+  TreeField,
+  WithoutField,
+} from '../field'
 import { CreatedAtField } from '../field/created-at-field'
 import { FieldFactory } from '../field/field.factory'
 import { IdField } from '../field/id-field'
@@ -92,6 +101,16 @@ export class TableSchema extends ValueObject<Field[]> {
 
   public addField(field: Field) {
     this.props.push(field)
+
+    // TODO: 封装
+    if (field instanceof ParentField) {
+      // TODO: 这里的关系也许可以从传入参数获取，要看是不是需要让用户指定关系，以及是不是支持多个 tree 类型列
+      const treeField = this.fields.find((f) => f instanceof TreeField) as TreeField | undefined
+      if (treeField) treeField.parentFieldId = field.id
+    } else if (field instanceof TreeField) {
+      const parentField = this.fields.find((f) => f instanceof ParentField) as ParentField | undefined
+      if (parentField) parentField.treeFieldId = field.id
+    }
   }
 
   public get defaultFieldsOrder(): ViewFieldsOrder {

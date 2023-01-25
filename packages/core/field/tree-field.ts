@@ -10,6 +10,10 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 export class TreeField extends BaseField<ITreeField> {
   type: TreeFieldType = 'tree'
 
+  set parentFieldId(fieldId: FieldId | undefined) {
+    this.props.parentFieldId = fieldId
+  }
+
   static create(input: ICreateTreeFieldInput): TreeField {
     const fieldName = FieldName.create(input.name)
 

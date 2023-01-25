@@ -52,6 +52,9 @@ export const treeFilterOperators = z.union([$eq, $neq, $is_root])
 export type ITreeFilterOperator = z.infer<typeof treeFilterOperators>
 export const treeBuiltInOperators = new Set<ITreeFilterOperator>([$is_root.value])
 
+export const parentFilterOperators = z.union([$eq, $neq])
+export type IParentFilterOperator = z.infer<typeof parentFilterOperators>
+
 export const dateRangeFilterOperators = z.union([$eq, $neq])
 export type IDateRangeFilterOperator = z.infer<typeof dateRangeFilterOperators>
 

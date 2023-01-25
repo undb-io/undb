@@ -69,7 +69,7 @@ describe('RecordValueSqliteVisitor', () => {
     })
   })
 
-  describe('', () => {
+  describe('tree', () => {
     beforeAll(() => {
       table = createTestTable(WithTableSchema.from([{ id: 'fld1', name: 'tree', type: 'tree' }]))
 

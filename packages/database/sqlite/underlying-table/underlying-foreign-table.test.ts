@@ -17,7 +17,7 @@ describe('UnderlyingAdjacencyListTable', () => {
     )
 
     expect(table.name).toMatchInlineSnapshot('"fldid_tablename_adjacency_list"')
-    const query = table.getSqls(knex)
+    const query = table.getCreateTableSqls(knex)
     expect(query).toMatchInlineSnapshot(
       `
       [
@@ -31,7 +31,7 @@ describe('UnderlyingAdjacencyListTable', () => {
     const table = new UnderlyingClosureTable('tablename', TreeField.create({ id: 'fldid', name: 'tree', type: 'tree' }))
 
     expect(table.name).toMatchInlineSnapshot('"fldid_tablename_closure_table"')
-    const query = table.getSqls(knex)
+    const query = table.getCreateTableSqls(knex)
     expect(query).toMatchInlineSnapshot(
       `
       [

@@ -9,6 +9,7 @@ import type {
   IdFieldValue,
   IFieldValueVisitor,
   NumberFieldValue,
+  ParentFieldValue,
   ReferenceFieldValue,
   SelectFieldValue,
   StringFieldValue,
@@ -16,7 +17,7 @@ import type {
   TreeFieldValue,
   UpdatedAtFieldValue,
 } from '@egodb/core'
-import { ReferenceField, TreeField } from '@egodb/core'
+import { ParentField, ReferenceField, TreeField } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { RecordValueData, RecordValueSqlitePrimitives } from '../../types/record-value-sqlite.type'
 import { UnderlyingAdjacencyListTable, UnderlyingClosureTable } from '../../underlying-table/underlying-foreign-table'
@@ -110,54 +111,33 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
 
   tree(value: TreeFieldValue): void {
     const field = this.schema.get(this.fieldId)
-    if (!(field instanceof TreeField)) {
-      return
+    if (!(field instanceof TreeField)) return
+
+    const recordIds = value.unpack()
+    this.setData(this.fieldId, recordIds == null ? recordIds : JSON.stringify(recordIds))
+
+    const parentFieldId = field.parentFieldId?.value
+    if (parentFieldId) {
+      const parentField = this.schema.get(parentFieldId)
+      if (parentField instanceof ParentField) {
+        this.setData(parentFieldId, this.recordId)
+      }
     }
-    const unpacked = value.unpack()
-    this.setData(this.fieldId, unpacked == null ? unpacked : JSON.stringify(unpacked))
 
     const knex = this.em.getKnex()
     const closure = new UnderlyingClosureTable(this.tableId, field)
-    const childId = UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD,
-      parentId = UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD,
-      depth = UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD
 
-    const query = knex
-      .queryBuilder()
-      .table(closure.name)
-      .delete()
-      .where(UnderlyingAdjacencyListTable.ADJACENCY_LIST_PARENT_ID_FIELD, this.recordId)
-      .toQuery()
+    this.addQueries(...closure.connect(knex, this.recordId, recordIds ?? []))
+  }
 
-    this.addQueries(query)
+  parent(value: ParentFieldValue): void {
+    const field = this.schema.get(this.fieldId)
+    if (!(field instanceof ParentField)) return
 
-    const unpackedValue = value.unpack()
+    const parentId = value.unpack()
+    this.setData(this.fieldId, parentId)
 
-    const rootInsert = knex(closure.name)
-      .insert({
-        [childId]: this.recordId,
-        [depth]: 0,
-        [parentId]: this.recordId,
-      })
-      .toQuery()
-
-    this.addQueries(rootInsert)
-
-    if (unpackedValue?.length) {
-      for (const recordId of unpackedValue) {
-        const query = knex
-          .raw(
-            `
-            insert into ${closure.name}(${parentId}, ${childId}, ${depth})
-select p.${parentId}, c.${childId}, p.${depth}+c.${depth}+1
-  from ${closure.name} as p, ${closure.name} as c
- where p.${childId}='${this.recordId}' and c.${parentId}='${recordId}'
- `,
-          )
-          .toQuery()
-
-        this.addQueries(query)
-      }
-    }
+    const knex = this.em.getKnex()
+    const closure = new UnderlyingClosureTable(this.tableId, field)
   }
 }
