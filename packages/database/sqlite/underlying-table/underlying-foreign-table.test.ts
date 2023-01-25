@@ -35,9 +35,9 @@ describe('UnderlyingAdjacencyListTable', () => {
     expect(query).toMatchInlineSnapshot(
       `
       [
-        "create table \`fldid_tablename_closure_table\` (\`child_id\` varchar(255) not null, \`parent_id\` varchar(255) not null, \`depth\` integer not null default '0', foreign key(\`child_id\`) references \`tablename\`(\`id\`) on delete CASCADE, foreign key(\`parent_id\`) references \`tablename\`(\`id\`) on delete CASCADE, primary key (\`child_id\`, \`parent_id\`))",
+        "create table if not exists \`fldid_tablename_closure_table\` (\`child_id\` varchar(255) not null, \`parent_id\` varchar(255) not null, \`depth\` integer not null default '0', foreign key(\`child_id\`) references \`tablename\`(\`id\`) on delete CASCADE, foreign key(\`parent_id\`) references \`tablename\`(\`id\`) on delete CASCADE, primary key (\`child_id\`, \`parent_id\`))",
         "
-             create index \`fldid_tablename_closure_table_depth_index\` on \`fldid_tablename_closure_table\` (\`depth\`)
+             create index if not exists \`fldid_tablename_closure_table_depth_index\` on \`fldid_tablename_closure_table\` (\`depth\`)
              ",
       ]
     `,
