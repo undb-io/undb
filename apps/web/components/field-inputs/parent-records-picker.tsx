@@ -27,8 +27,8 @@ const ParentSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, ...othe
 
 export const ParentRecordPicker: React.FC<IProps> = ({ table, field, recordId, ...rest }) => {
   const [focused, setFocused] = useState(false)
-  const getRecords = trpc.record.tree.available.useQuery(
-    { tableId: table.id.value, treeFieldId: field.id.value, recordId },
+  const getRecords = trpc.record.parent.available.useQuery(
+    { tableId: table.id.value, parentFieldId: field.id.value, recordId },
     { enabled: focused },
   )
 

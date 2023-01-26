@@ -14,7 +14,7 @@ import {
   DateLessThan,
   DateLessThanOrEqual,
   DateRangeEqual,
-  IsRoot,
+  IsTreeRoot,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -311,7 +311,7 @@ const convertDateFilter = (
 const convertTreeFilter = (filter: ITreeFilter): Option<CompositeSpecification> => {
   switch (filter.operator) {
     case $is_root.value: {
-      return Some(new IsRoot(filter.path))
+      return Some(new IsTreeRoot(filter.path))
     }
 
     default: {

@@ -10,7 +10,7 @@ import type {
   DateLessThanOrEqual,
   DateRangeEqual,
   IRecordVisitor,
-  IsRoot,
+  IsTreeRoot,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -155,7 +155,10 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
   treeAvailable(s: TreeAvailableSpec): void {
     throw new Error('Method not implemented.')
   }
-  isRoot(s: IsRoot): void {
+  isTreeRoot(s: IsTreeRoot): void {
+    throw new Error('Method not implemented.')
+  }
+  parentAvailable(s: TreeAvailableSpec): void {
     throw new Error('Method not implemented.')
   }
 

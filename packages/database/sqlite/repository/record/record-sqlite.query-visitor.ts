@@ -9,7 +9,7 @@ import type {
   DateLessThanOrEqual,
   DateRangeEqual,
   IRecordVisitor,
-  IsRoot,
+  IsTreeRoot,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -211,7 +211,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     }
   }
 
-  isRoot(s: IsRoot): void {
+  isTreeRoot(s: IsTreeRoot): void {
     const field = this.schema.get(s.fielId)
     if (!(field instanceof TreeField)) return
 
@@ -225,6 +225,10 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
         .from(closure.name)
         .where(UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD, '>', '0'),
     )
+  }
+
+  parentAvailable(s: TreeAvailableSpec): void {
+    throw new Error('Method not implemented.')
   }
 
   not(): this {
