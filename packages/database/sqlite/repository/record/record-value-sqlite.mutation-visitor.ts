@@ -19,13 +19,13 @@ import type {
 } from '@egodb/core'
 import { INTERNAL_COLUMN_ID_NAME, ParentField, ReferenceField, TreeField } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
-import type { RecordValueData, RecordValueSqlitePrimitives } from '../../types/record-value-sqlite.type'
+import type { RecordValueData } from '../../types/record-value-sqlite.type'
 import { UnderlyingAdjacencyListTable, UnderlyingClosureTable } from '../../underlying-table/underlying-foreign-table'
 
 export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
   #data: RecordValueData = {}
 
-  private setData(fieldId: string, value: RecordValueSqlitePrimitives): void {
+  private setData(fieldId: string, value: any): void {
     this.#data[fieldId] = value
   }
 
@@ -76,13 +76,14 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
       return
     }
 
-    const unpacked = value.unpack()
-    this.setData(this.fieldId, unpacked == null ? unpacked : JSON.stringify(unpacked))
+    const knex = this.em.getKnex()
+
+    const references = value.unpack()
+    this.setData(this.fieldId, references?.length ? knex.raw('json_array(?)', [references]) : null)
 
     const underlyingTable = new UnderlyingAdjacencyListTable(this.tableId, field)
 
-    const query = this.em
-      .getKnex()
+    const query = knex
       .queryBuilder()
       .table(underlyingTable.name)
       .delete()
@@ -94,8 +95,7 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
     const unpackedValue = value.unpack()
     if (unpackedValue?.length) {
       for (const recordId of unpackedValue) {
-        const query = this.em
-          .getKnex()
+        const query = knex
           .queryBuilder()
           .table(underlyingTable.name)
           .insert({
@@ -113,11 +113,11 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
     const field = this.schema.get(this.fieldId)
     if (!(field instanceof TreeField)) return
 
-    const children = value.unpack()
-    this.setData(this.fieldId, children == null ? children : JSON.stringify(children))
-
     const knex = this.em.getKnex()
     const closure = new UnderlyingClosureTable(this.tableId, field)
+
+    const children = value.unpack()
+    this.setData(this.fieldId, children?.length ? knex.raw('json_array(?)', [children]) : null)
 
     const parentFieldId = field.parentFieldId?.value
     if (parentFieldId) {
