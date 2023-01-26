@@ -209,6 +209,6 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
       this.addQueries(query)
     }
 
-    this.addQueries(...closure.moveParent(knex))
+    this.addQueries(...closure.moveParent(knex, this.recordId, parentId))
   }
 }

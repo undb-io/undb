@@ -133,7 +133,39 @@ export class ClosureTable extends BaseUnderlyingForeignTable<TreeField | ParentF
     return queries
   }
 
-  moveParent(knex: Knex): string[] {
-    throw new Error('moveParent not implemented')
+  moveParent(knex: Knex, recordId: string, parentId: string | null): string[] {
+    const queries: string[] = []
+
+    queries.push(
+      knex
+        .queryBuilder()
+        .delete()
+        .from(this.name)
+        .whereIn(
+          ClosureTable.CHILD_ID,
+          knex.queryBuilder().select(ClosureTable.CHILD_ID).from(this.name).where(ClosureTable.PARENT_ID, recordId),
+        )
+        .whereNotIn(
+          ClosureTable.PARENT_ID,
+          knex.queryBuilder().select(ClosureTable.CHILD_ID).from(this.name).where(ClosureTable.PARENT_ID, recordId),
+        )
+        .toQuery(),
+    )
+
+    if (parentId) {
+      queries.push(
+        `
+        INSERT INTO ${this.name} (${ClosureTable.PARENT_ID}, ${ClosureTable.CHILD_ID}, ${ClosureTable.DEPTH})
+
+        SELECT supertree.${ClosureTable.PARENT_ID}, subtree.${ClosureTable.CHILD_ID},
+        supertree.${ClosureTable.DEPTH}+subtree.${ClosureTable.DEPTH}+1
+        FROM ${this.name} AS supertree JOIN ${this.name} AS subtree
+        WHERE subtree.${ClosureTable.PARENT_ID} = '${recordId}'
+        AND supertree.${ClosureTable.CHILD_ID} = '${parentId}';
+        `,
+      )
+    }
+
+    return queries
   }
 }
