@@ -147,13 +147,18 @@ export class Table {
   }
 
   public createField(input: ICreateFieldSchema): TableCompositeSpecificaiton {
-    const spec = this.schema.createField(input)
-    spec.mutate(this).unwrap()
+    const specs: Option<TableCompositeSpecificaiton>[] = []
+    const newFieldSpecs = this.schema.createField(input)
+    for (const spec of newFieldSpecs) {
+      spec.mutate(this).unwrap()
 
-    // add field to view order
-    const viewsSpec = this.views.addField(spec.field)
+      // add field to view order
+      const viewsSpec = this.views.addField(spec.field)
 
-    return andOptions(Some(spec), viewsSpec).unwrap()
+      specs.push(Some(spec), viewsSpec)
+    }
+
+    return andOptions(...specs).unwrap()
   }
 
   public removeField(id: string): TableCompositeSpecificaiton {

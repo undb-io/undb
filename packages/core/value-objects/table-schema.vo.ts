@@ -104,11 +104,6 @@ export class TableSchema extends ValueObject<Field[]> {
 
   public addField(field: Field) {
     this.fields.push(field)
-
-    if (field instanceof TreeField) {
-      const parentField = field.createParentField()
-      this.fields.push(parentField)
-    }
   }
 
   public get defaultFieldsOrder(): ViewFieldsOrder {
@@ -116,12 +111,16 @@ export class TableSchema extends ValueObject<Field[]> {
     return ViewFieldsOrder.fromArray(order)
   }
 
-  public createField(input: ICreateFieldSchema): WithNewField {
+  public createField(input: ICreateFieldSchema): WithNewField[] {
     const field = FieldFactory.create(input)
+    const specs = [new WithNewField(field)]
+    if (field.type === 'tree') {
+      specs.push(new WithNewField(field.createParentField()))
+    }
 
-    this.validateNames(field.name.value)
+    this.validateNames(...specs.map((spec) => spec.field.name.value))
 
-    return new WithNewField(field)
+    return specs
   }
 
   public removeField(id: string): WithoutField {

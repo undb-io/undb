@@ -16,13 +16,15 @@ export class TreeField extends BaseField<ITreeField> {
   }
 
   createParentField(): ParentField {
-    const parentId = ParentField.create({
+    const parentField = ParentField.create({
       type: 'parent',
       name: this.name.value + '_parent',
       treeFieldId: this.id.value,
     })
-    this.props.parentFieldId = parentId.id
-    return parentId
+
+    this.props.parentFieldId = parentField.id
+
+    return parentField
   }
 
   static create(input: ICreateTreeFieldInput): TreeField {
