@@ -14,7 +14,7 @@ import { EntityManager } from '@mikro-orm/better-sqlite'
 import { mock } from 'vitest-mock-extended'
 import { Field, Table } from '../../entity'
 import { View } from '../../entity/view'
-import { UnderlyingAdjacencyListTable } from '../../underlying-table/underlying-foreign-table'
+import { AdjacencyListTable } from '../../underlying-table/underlying-foreign-table'
 import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor'
 import { TableSqliteRepository } from './table-sqlite.repository'
 
@@ -99,7 +99,7 @@ describe('TableSqliteMutationVisitor', () => {
       await mv.commit()
       await em.flush()
 
-      const m2m = new UnderlyingAdjacencyListTable(table.id.value, field)
+      const m2m = new AdjacencyListTable(table.id.value, field)
 
       const hasTable = await em.getKnex().schema.hasTable(m2m.name)
       expect(hasTable).to.be.true

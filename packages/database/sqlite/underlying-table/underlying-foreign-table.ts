@@ -10,9 +10,9 @@ abstract class BaseUnderlyingForeignTable<F extends Field> implements IUnderlyin
   abstract getCreateTableSqls(knex: Knex): string[]
 }
 
-export class UnderlyingAdjacencyListTable extends BaseUnderlyingForeignTable<ReferenceField> {
-  static ADJACENCY_LIST_CHILD_ID_FIELD = 'child_id'
-  static ADJACENCY_LIST_PARENT_ID_FIELD = 'parent_id'
+export class AdjacencyListTable extends BaseUnderlyingForeignTable<ReferenceField> {
+  static CHILD_ID = 'child_id'
+  static PARENT_ID = 'parent_id'
 
   get name(): IUderlyingForeignTableName {
     return `${this.field.id.value}_${this.foreignTableName}_adjacency_list`
@@ -22,33 +22,30 @@ export class UnderlyingAdjacencyListTable extends BaseUnderlyingForeignTable<Ref
     return [
       knex.schema
         .createTable(this.name, (tb) => {
-          tb.string(UnderlyingAdjacencyListTable.ADJACENCY_LIST_CHILD_ID_FIELD)
+          tb.string(AdjacencyListTable.CHILD_ID)
             .notNullable()
             .references(INTERNAL_COLUMN_ID_NAME)
             .inTable(this.foreignTableName)
 
-          tb.string(UnderlyingAdjacencyListTable.ADJACENCY_LIST_PARENT_ID_FIELD)
+          tb.string(AdjacencyListTable.PARENT_ID)
             .notNullable()
             .references(INTERNAL_COLUMN_ID_NAME)
             .inTable(this.foreignTableName)
 
-          tb.primary([
-            UnderlyingAdjacencyListTable.ADJACENCY_LIST_CHILD_ID_FIELD,
-            UnderlyingAdjacencyListTable.ADJACENCY_LIST_PARENT_ID_FIELD,
-          ])
+          tb.primary([AdjacencyListTable.CHILD_ID, AdjacencyListTable.PARENT_ID])
         })
         .toQuery(),
     ]
   }
 }
 
-export class UnderlyingClosureTable extends BaseUnderlyingForeignTable<TreeField | ParentField> {
-  static CLOSURE_TABLE_CHILD_ID_FIELD = 'child_id'
-  static CLOSURE_TABLE_PARENT_ID_FIELD = 'parent_id'
-  static CLOSURE_TABLE_DEPTH_FIELD = 'depth'
+export class ClosureTable extends BaseUnderlyingForeignTable<TreeField | ParentField> {
+  static CHILD_ID = 'child_id'
+  static PARENT_ID = 'parent_id'
+  static DEPTH = 'depth'
 
   get name(): IUderlyingForeignTableName {
-    const fieldId = this.field instanceof TreeField ? this.field.id.value : this.field.treeFieldId!.value
+    const fieldId = this.field instanceof TreeField ? this.field.id.value : this.field.treeFieldId.value
     return `${fieldId}_${this.foreignTableName}_closure_table`
   }
 
@@ -56,30 +53,27 @@ export class UnderlyingClosureTable extends BaseUnderlyingForeignTable<TreeField
     return [
       knex.schema
         .createTableIfNotExists(this.name, (tb) => {
-          tb.string(UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD)
+          tb.string(ClosureTable.CHILD_ID)
             .notNullable()
             .references(INTERNAL_COLUMN_ID_NAME)
             .inTable(this.foreignTableName)
             .onDelete('CASCADE')
 
-          tb.string(UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD)
+          tb.string(ClosureTable.PARENT_ID)
             .notNullable()
             .references(INTERNAL_COLUMN_ID_NAME)
             .inTable(this.foreignTableName)
             .onDelete('CASCADE')
 
-          tb.integer(UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD).notNullable().defaultTo(0)
+          tb.integer(ClosureTable.DEPTH).notNullable().defaultTo(0)
 
-          tb.primary([
-            UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD,
-            UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD,
-          ])
+          tb.primary([ClosureTable.CHILD_ID, ClosureTable.PARENT_ID])
         })
         .toQuery(),
       knex
         .raw(
           `
-       create index if not exists \`${this.name}_${UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD}_index\` on \`${this.name}\` (\`${UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD}\`)
+       create index if not exists \`${this.name}_${ClosureTable.DEPTH}_index\` on \`${this.name}\` (\`${ClosureTable.DEPTH}\`)
        `,
         )
         .toQuery(),
@@ -93,16 +87,16 @@ export class UnderlyingClosureTable extends BaseUnderlyingForeignTable<TreeField
       .queryBuilder()
       .table(this.name)
       .delete()
-      .where(UnderlyingAdjacencyListTable.ADJACENCY_LIST_PARENT_ID_FIELD, parentRecordId)
+      .where(AdjacencyListTable.PARENT_ID, parentRecordId)
       .toQuery()
 
     queries.push(query)
 
     const rootInsert = knex(this.name)
       .insert({
-        [UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD]: parentRecordId,
-        [UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD]: 0,
-        [UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD]: parentRecordId,
+        [ClosureTable.CHILD_ID]: parentRecordId,
+        [ClosureTable.DEPTH]: 0,
+        [ClosureTable.PARENT_ID]: parentRecordId,
       })
       .toQuery()
 
@@ -115,19 +109,19 @@ export class UnderlyingClosureTable extends BaseUnderlyingForeignTable<TreeField
             `
             insert into
              ${this.name}
-              (${UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD},
-                ${UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD},
-                ${UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD})
+              (${ClosureTable.PARENT_ID},
+                ${ClosureTable.CHILD_ID},
+                ${ClosureTable.DEPTH})
 
             select
-              p.${UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD},
-              c.${UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD},
-              p.${UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD}+c.${UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD}+1
+              p.${ClosureTable.PARENT_ID},
+              c.${ClosureTable.CHILD_ID},
+              p.${ClosureTable.DEPTH}+c.${ClosureTable.DEPTH}+1
             from ${this.name} as p, ${this.name} as c
             where
-            p.${UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD}='${parentRecordId}'
+            p.${ClosureTable.CHILD_ID}='${parentRecordId}'
             and
-            c.${UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD}='${recordId}'
+            c.${ClosureTable.PARENT_ID}='${recordId}'
  `,
           )
           .toQuery()
@@ -137,5 +131,9 @@ export class UnderlyingClosureTable extends BaseUnderlyingForeignTable<TreeField
     }
 
     return queries
+  }
+
+  moveParent(knex: Knex): string[] {
+    throw new Error('moveParent not implemented')
   }
 }

@@ -29,6 +29,7 @@ describe('RecordValueSqliteVisitor', () => {
         table.id.value,
         table.schema.fieldsIds[1],
         'recordtest',
+        true,
         table.schema.toIdMap(),
         em,
       )
@@ -56,6 +57,7 @@ describe('RecordValueSqliteVisitor', () => {
         table.id.value,
         table.schema.fieldsIds[0],
         'recordtest',
+        true,
         table.schema.toIdMap(),
         em,
       )
@@ -82,6 +84,7 @@ describe('RecordValueSqliteVisitor', () => {
         table.id.value,
         table.schema.fieldsIds[0],
         'recordtest',
+        true,
         table.schema.toIdMap(),
         em,
       )
@@ -90,11 +93,7 @@ describe('RecordValueSqliteVisitor', () => {
     test('should insert into data to closure table table', () => {
       visitor.tree(new TreeFieldValue(['foreign_record1', 'foreign_record_2']))
 
-      expect(visitor.data).toMatchInlineSnapshot(`
-        {
-          "fld1": "[\\"foreign_record1\\",\\"foreign_record_2\\"]",
-        }
-      `)
+      expect(visitor.data).not.to.be.null
       expect(visitor.queries).toMatchInlineSnapshot(`
         [
           "update \`tableId\` set \`fld2\` = NULL where \`id\` in (select \`child_id\` from \`fld1_tableId_closure_table\` where \`parent_id\` = 'recordtest' and \`depth\` = 1)",

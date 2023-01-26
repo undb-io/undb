@@ -52,7 +52,7 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
   }
 
   private createRecordValueVisitor(fieldId: string) {
-    return new RecordValueSqliteMutationVisitor(this.tableId, fieldId, this.recordId, this.schema, this.em)
+    return new RecordValueSqliteMutationVisitor(this.tableId, fieldId, this.recordId, false, this.schema, this.em)
   }
 
   public async commit(): Promise<void> {

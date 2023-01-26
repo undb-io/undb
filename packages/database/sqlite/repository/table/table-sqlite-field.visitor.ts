@@ -36,7 +36,7 @@ import {
   TreeField,
   UpdatedAtField,
 } from '../../entity'
-import { UnderlyingAdjacencyListTable, UnderlyingClosureTable } from '../../underlying-table/underlying-foreign-table'
+import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table'
 
 export class TableSqliteFieldVisitor implements IFieldVisitor {
   constructor(private readonly table: Table, private readonly em: EntityManager) {}
@@ -116,7 +116,7 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
     const field = new ReferenceField(this.table, value)
     this.em.persist(field)
 
-    const adjacencyListTable = new UnderlyingAdjacencyListTable(this.table.id, value)
+    const adjacencyListTable = new AdjacencyListTable(this.table.id, value)
 
     const queries = adjacencyListTable.getCreateTableSqls(this.em.getKnex())
 
@@ -126,7 +126,7 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
   private initClosureTable(value: CoreTreeField | CoreParentField) {
     const tableId = this.table.id
 
-    const closureTable = new UnderlyingClosureTable(tableId, value)
+    const closureTable = new ClosureTable(tableId, value)
 
     const knex = this.em.getKnex()
 
@@ -137,9 +137,9 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
       .insert(
         knex
           .select([
-            `${INTERNAL_COLUMN_ID_NAME} as ${UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD}`,
-            `${INTERNAL_COLUMN_ID_NAME} as ${UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD}`,
-            knex.raw('? as ??', [0, UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD]),
+            `${INTERNAL_COLUMN_ID_NAME} as ${ClosureTable.CHILD_ID}`,
+            `${INTERNAL_COLUMN_ID_NAME} as ${ClosureTable.PARENT_ID}`,
+            knex.raw('? as ??', [0, ClosureTable.DEPTH]),
           ])
           .from(tableId),
       )

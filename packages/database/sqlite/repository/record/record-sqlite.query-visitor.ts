@@ -43,7 +43,7 @@ import {
 import type { Knex } from '@mikro-orm/better-sqlite'
 import { endOfDay, startOfDay } from 'date-fns'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants'
-import { UnderlyingClosureTable } from '../../underlying-table/underlying-foreign-table'
+import { ClosureTable } from '../../underlying-table/underlying-foreign-table'
 
 export class RecordSqliteQueryVisitor implements IRecordVisitor {
   constructor(
@@ -183,13 +183,13 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     const field = this.schema.get(s.fielId)
     if (!(field instanceof TreeField)) return
 
-    const closureTable = new UnderlyingClosureTable(this.tableId, field)
+    const closureTable = new ClosureTable(this.tableId, field)
     // 去掉已经有父级的 recordId
     const subQuery = this.knex
       .queryBuilder()
       .from(closureTable.name)
-      .select(UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD)
-      .where(UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD, '>', 0)
+      .select(ClosureTable.CHILD_ID)
+      .where(ClosureTable.DEPTH, '>', 0)
       .distinct()
 
     const recordId = s.value
@@ -199,9 +199,9 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
         this.knex
           .queryBuilder()
           .from(closureTable.name)
-          .select(UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD)
-          .where(UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD, recordId)
-          .andWhereNot(UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD, recordId)
+          .select(ClosureTable.PARENT_ID)
+          .where(ClosureTable.CHILD_ID, recordId)
+          .andWhereNot(ClosureTable.PARENT_ID, recordId)
           .distinct(),
       )
     }
@@ -216,15 +216,11 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     const field = this.schema.get(s.fielId)
     if (!(field instanceof TreeField)) return
 
-    const closure = new UnderlyingClosureTable(this.tableId, field)
+    const closure = new ClosureTable(this.tableId, field)
 
     this.qb.whereNotIn(
       INTERNAL_COLUMN_ID_NAME,
-      this.knex
-        .queryBuilder()
-        .select(UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD)
-        .from(closure.name)
-        .where(UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD, '>', '0'),
+      this.knex.queryBuilder().select(ClosureTable.CHILD_ID).from(closure.name).where(ClosureTable.DEPTH, '>', '0'),
     )
   }
 

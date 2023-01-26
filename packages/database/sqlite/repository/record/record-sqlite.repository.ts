@@ -22,7 +22,14 @@ export class RecordSqliteRepository implements IRecordRepository {
       const queries: string[] = []
 
       for (const [fieldId, value] of record.values) {
-        const visitor = new RecordValueSqliteMutationVisitor(record.tableId.value, fieldId, record.id.value, schema, em)
+        const visitor = new RecordValueSqliteMutationVisitor(
+          record.tableId.value,
+          fieldId,
+          record.id.value,
+          true,
+          schema,
+          em,
+        )
 
         value.accept(visitor)
 
