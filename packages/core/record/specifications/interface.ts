@@ -18,6 +18,7 @@ import type {
   NumberLessThan,
   NumberLessThanOrEqual,
 } from './number.specification'
+import type { ParentAvailableSpec } from './parent.specification'
 import type { WithRecordAutoIncrement } from './record-auto-increment.specification'
 import type { WithRecordCreatedAt } from './record-created-at.specification'
 import type { WithRecordId } from './record-id.specifaction'
@@ -74,7 +75,7 @@ interface IRecordValueVisitor {
   treeAvailable(s: TreeAvailableSpec): void
   isTreeRoot(s: IsTreeRoot): void
 
-  parentAvailable(s: TreeAvailableSpec): void
+  parentAvailable(s: ParentAvailableSpec): void
 }
 
 export type RecordCompositeSpecification = CompositeSpecification<Record, IRecordVisitor>

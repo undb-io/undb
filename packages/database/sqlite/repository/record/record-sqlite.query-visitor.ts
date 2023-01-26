@@ -15,6 +15,7 @@ import type {
   NumberGreaterThanOrEqual,
   NumberLessThan,
   NumberLessThanOrEqual,
+  ParentAvailableSpec,
   ReferenceEqual,
   SelectEqual,
   SelectIn,
@@ -227,8 +228,14 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     )
   }
 
-  parentAvailable(s: TreeAvailableSpec): void {
-    throw new Error('Method not implemented.')
+  parentAvailable(s: ParentAvailableSpec): void {
+    const field = this.schema.get(s.fielId)
+    if (!(field instanceof TreeField)) return
+
+    const recordId = s.value
+    if (recordId) {
+      this.qb.whereNot(INTERNAL_COLUMN_ID_NAME, recordId)
+    }
   }
 
   not(): this {

@@ -34,7 +34,7 @@ export const ParentRecordPicker: React.FC<IProps> = ({ table, field, recordId, .
 
   const data = [...(getRecords.data?.records.map((record) => ({ value: record.id, label: record.id })) ?? [])]
 
-  if (rest.value) {
+  if (rest.value && !data.find((d) => d.value === rest.value)) {
     data.push({ value: rest.value, label: rest.value })
   }
 

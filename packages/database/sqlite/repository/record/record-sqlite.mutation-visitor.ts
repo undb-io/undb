@@ -16,6 +16,7 @@ import type {
   NumberGreaterThanOrEqual,
   NumberLessThan,
   NumberLessThanOrEqual,
+  ParentAvailableSpec,
   ReferenceEqual,
   SelectEqual,
   SelectIn,
@@ -158,7 +159,7 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
   isTreeRoot(s: IsTreeRoot): void {
     throw new Error('Method not implemented.')
   }
-  parentAvailable(s: TreeAvailableSpec): void {
+  parentAvailable(s: ParentAvailableSpec): void {
     throw new Error('Method not implemented.')
   }
 
