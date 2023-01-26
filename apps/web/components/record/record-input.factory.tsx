@@ -8,6 +8,7 @@ import { TreeRecordsPicker } from '../field-inputs/tree-records-picker'
 import { OptionPicker } from '../option/option-picker'
 import { ReferenceRecordPicker } from '../field-inputs/reference-record-picker'
 import { FieldIcon } from '../field-inputs/field-Icon'
+import { ParentRecordPicker } from '../field-inputs/parent-records-picker'
 
 interface IProps {
   table: Table
@@ -118,6 +119,24 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
         name={name}
         render={(form) => (
           <TreeRecordsPicker
+            field={field}
+            table={table}
+            label={label}
+            recordId={recordId}
+            {...form.field}
+            onChange={(value) => form.field.onChange(value)}
+          />
+        )}
+      />
+    )
+  }
+
+  if (field.type === 'parent') {
+    return (
+      <Controller
+        name={name}
+        render={(form) => (
+          <ParentRecordPicker
             field={field}
             table={table}
             label={label}
