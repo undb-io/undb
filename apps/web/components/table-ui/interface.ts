@@ -1,4 +1,4 @@
-import type { RecordAllValues, Records, Table } from '@egodb/core'
+import type { RecordAllValues, Table } from '@egodb/core'
 import type { Column, Header, HeaderGroup, Row } from '@tanstack/react-table'
 
 export type TData = RecordAllValues
@@ -11,5 +11,4 @@ export type TRow = Row<TData>
 
 export interface IProps {
   table: Table
-  records: Records
 }
