@@ -10,7 +10,7 @@ import type {
 } from '@egodb/core'
 import { TableFactory } from '@egodb/core'
 import type { ICreateParentFieldInput } from '@egodb/core/field/parent-field.type'
-import type { ICreateTreeFieldInput } from '@egodb/core/field/tree-field.type'
+import type { ICreateTreeFieldSchema } from '@egodb/core/field/tree-field.type'
 import type { EntityDTO } from '@mikro-orm/core'
 import type { Result } from 'oxide.ts'
 import type { Field as FieldEntity, ParentField, SelectField, Table as TableEntity, TreeField } from '../../entity'
@@ -54,6 +54,7 @@ export class TableSqliteMapper {
             fieldOptions: view.fieldOptions,
             fieldsOrder: view.fieldsOrder,
             kanban: view.kanban,
+            tree: view.tree,
             calendar: view.calendar,
             sorts: view.sorts,
           } as IQueryView),
@@ -72,7 +73,7 @@ export class TableSqliteMapper {
             name: f.name,
             type: 'tree',
             parentFieldId: (f as EntityDTO<TreeField>).parentFieldId,
-          } satisfies ICreateTreeFieldInput
+          } satisfies ICreateTreeFieldSchema
         }
         if (f.type === 'parent') {
           return {
@@ -112,6 +113,7 @@ export class TableSqliteMapper {
         fieldOptions: view.fieldOptions,
         fieldsOrder: view.fieldsOrder,
         kanban: view.kanban,
+        tree: view.tree,
         calendar: view.calendar,
         sorts: view.sorts,
       })) as ICreateViewsSchema,

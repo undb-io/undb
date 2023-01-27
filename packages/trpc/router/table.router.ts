@@ -1,4 +1,3 @@
-import type { IQueryTable } from '@egodb/core'
 import {
   CreateTableCommand,
   createTableCommandInput,
@@ -33,7 +32,7 @@ export const createTableRouter =
         .output(getTableQueryOutput)
         .query(({ input }) => {
           const query = new GetTableQuery({ id: input.id })
-          return queryBus.execute<IQueryTable>(query)
+          return queryBus.execute(query)
         }),
       list: procedure
         .meta({ openapi: { method: 'GET', path: '/table.list', tags } })
@@ -41,7 +40,7 @@ export const createTableRouter =
         .output(getTablesQueryOutput)
         .query(() => {
           const query = new GetTablesQuery()
-          return queryBus.execute<IQueryTable[]>(query)
+          return queryBus.execute(query)
         }),
       create: procedure
         .meta({ openapi: { method: 'POST', path: '/table.create', tags } })

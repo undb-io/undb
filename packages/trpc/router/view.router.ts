@@ -7,6 +7,7 @@ import { createCalendarRouter } from './calendar.router'
 import { createFilterRouter } from './filter.router'
 import { createKanbanRouter } from './kanban.router'
 import { createSortRouter } from './sort.router'
+import { createTreeViewRouter } from './tree-view.router'
 import { createViewFieldRouter } from './view-field.router'
 
 const tags = ['view']
@@ -26,4 +27,5 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
     sort: createSortRouter(procedure)(commandBus),
     kanban: createKanbanRouter(procedure)(commandBus),
     calendar: createCalendarRouter(procedure)(commandBus),
+    tree: createTreeViewRouter(procedure)(commandBus),
   })

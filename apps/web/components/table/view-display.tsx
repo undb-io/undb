@@ -28,6 +28,10 @@ export const ViewDisplay: React.FC<ITableBaseProps> = ({ table }) => {
     )
   }
 
+  if (displayType === 'tree') {
+    return <>hello</>
+  }
+
   return (
     <Wrapper>
       <EGOTable table={table} />

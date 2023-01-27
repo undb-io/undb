@@ -463,7 +463,8 @@
           "enumItems": [
             "kanban",
             "calendar",
-            "grid"
+            "grid",
+            "tree"
           ],
           "mappedType": "enum"
         },
@@ -487,6 +488,15 @@
         },
         "calendar_field_id": {
           "name": "calendar_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "tree_field_id": {
+          "name": "tree_field_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,

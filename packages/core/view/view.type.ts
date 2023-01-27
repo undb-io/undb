@@ -5,6 +5,7 @@ import type { Calendar, ICalendarSchema } from './calendar'
 import type { IKanbanSchema, Kanban } from './kanban'
 import type { ISorts } from './sort/sort.schema'
 import type { Sorts } from './sort/sorts'
+import type { ITreeViewSchema, TreeView } from './tree-view'
 import type { IViewFieldOption, ViewFieldOptions } from './view-field-options'
 import type { ViewFieldsOrder } from './view-fields-order.vo'
 import type { ViewId } from './view-id.vo'
@@ -19,6 +20,7 @@ export interface IView {
   sorts?: Sorts
   kanban?: Kanban
   calendar?: Calendar
+  tree?: TreeView
   displayType: IViewDisplayType
   filter?: RootFilter
   fieldOptions: ViewFieldOptions
@@ -30,6 +32,7 @@ export interface IQueryView {
   name: string
   sorts?: ISorts
   kanban?: IKanbanSchema
+  tree?: ITreeViewSchema
   calendar?: ICalendarSchema
   displayType: IViewDisplayType
   filter?: IRootFilter

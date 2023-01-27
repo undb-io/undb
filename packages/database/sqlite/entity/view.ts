@@ -5,6 +5,7 @@ import type {
   IViewDisplayType,
   IViewFieldOption,
   Kanban as CoreKanban,
+  TreeView as CoreTreeView,
   View as CoreView,
 } from '@egodb/core'
 import {
@@ -42,6 +43,16 @@ export class Calendar {
   }
 }
 
+@Embeddable()
+export class Tree {
+  @Property({ nullable: true })
+  fieldId?: string
+
+  constructor(tree: CoreTreeView) {
+    this.fieldId = tree.fieldId?.value
+  }
+}
+
 @Entity()
 export class View extends BaseEntity {
   @PrimaryKey()
@@ -56,7 +67,7 @@ export class View extends BaseEntity {
   @Property()
   name: string
 
-  @Enum({ items: ['kanban', 'calendar', 'grid'] })
+  @Enum({ items: ['kanban', 'calendar', 'grid', 'tree'] })
   displayType: IViewDisplayType
 
   @Property({ type: JsonType, nullable: true })
@@ -67,6 +78,9 @@ export class View extends BaseEntity {
 
   @Embedded({ nullable: true })
   calendar?: Calendar
+
+  @Embedded({ nullable: true })
+  tree?: Tree
 
   @Property({ type: JsonType, nullable: true })
   filter?: IRootFilter
@@ -87,6 +101,9 @@ export class View extends BaseEntity {
     if (view.kanban.isSome()) {
       this.kanban = new Kanban(view.kanban.unwrap())
     }
+    if (view.treeView.isSome()) {
+      this.tree = new Kanban(view.treeView.unwrap())
+    }
     if (view.calendar.isSome()) {
       this.calendar = new Calendar(view.calendar.unwrap())
     }
@@ -100,3 +117,5 @@ export class View extends BaseEntity {
     }
   }
 }
+
+export const viewEntities = [View, Kanban, Calendar, Tree]

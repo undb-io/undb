@@ -5,12 +5,13 @@ import { rootFilter } from '../filter/filter'
 import { calendarSchema } from './calendar'
 import { kanbanSchema } from './kanban'
 import { sortsSchema } from './sort/sort.schema'
+import { treeViewSchema } from './tree-view'
 import { fieldHiddenSchema, fieldWidthSchema, viewFieldOption } from './view-field-options'
 import { viewIdSchema } from './view-id.vo'
 import { viewKeySchema } from './view-key.vo'
 import { viewNameSchema } from './view-name.vo'
 
-export const viewDisplayType = z.enum(['grid', 'kanban', 'calendar'])
+export const viewDisplayType = z.enum(['grid', 'kanban', 'calendar', 'tree'])
 
 export const createViewInput_internal = z.object({
   id: viewIdSchema.optional(),
@@ -20,6 +21,7 @@ export const createViewInput_internal = z.object({
   sorts: sortsSchema.optional(),
   kanban: kanbanSchema.optional(),
   calendar: calendarSchema.optional(),
+  tree: treeViewSchema.optional(),
   displayType: viewDisplayType.optional(),
   filter: rootFilter.optional(),
   fieldOptions: z.record(viewFieldOption).optional(),
@@ -32,6 +34,7 @@ export const queryView = z.object({
   sorts: sortsSchema.optional(),
   kanban: kanbanSchema.optional(),
   calendar: calendarSchema.optional(),
+  tree: treeViewSchema.optional(),
   displayType: viewDisplayType,
   filter: rootFilter.optional(),
   fieldOptions: z.record(viewFieldOption).optional(),
@@ -86,3 +89,9 @@ export const setCalendarFieldSchema = z.object({
   field: fieldIdSchema,
 })
 export type ISetCalendarFieldSchema = z.infer<typeof setCalendarFieldSchema>
+
+export const setTreeViewFieldSchema = z.object({
+  viewKey: viewNameSchema.optional(),
+  field: fieldIdSchema,
+})
+export type ISetTreeViewFieldSchema = z.infer<typeof setTreeViewFieldSchema>
