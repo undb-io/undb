@@ -35,33 +35,22 @@ import type {
   WithRecordValues,
 } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import { BaseEntityManager } from '../base-entity-manager'
 import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation-visitor'
 
-export class RecordSqliteMutationVisitor implements IRecordVisitor {
+export class RecordSqliteMutationVisitor extends BaseEntityManager implements IRecordVisitor {
   constructor(
     private readonly tableId: string,
     private readonly recordId: string,
     private readonly schema: TableSchemaIdMap,
-    private readonly em: EntityManager,
+    em: EntityManager,
     private readonly qb: Knex.QueryBuilder,
-  ) {}
-  private queries: string[] = []
-  #jobs: Array<() => Promise<void>> = []
-
-  private addQueries(...queries: string[]) {
-    this.queries.push(...queries)
+  ) {
+    super(em)
   }
 
   private createRecordValueVisitor(fieldId: string) {
     return new RecordValueSqliteMutationVisitor(this.tableId, fieldId, this.recordId, false, this.schema, this.em)
-  }
-
-  public async commit(): Promise<void> {
-    await Promise.all(this.#jobs.map((job) => job()))
-    await this.em.execute(this.qb)
-    for (const query of this.queries) {
-      await this.em.execute(query)
-    }
   }
 
   idEqual(s: WithRecordId): void {
@@ -85,8 +74,9 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
 
       value.accept(valueVisitor)
 
-      this.#jobs.push(...valueVisitor.jobs)
-      this.qb.update(valueVisitor.data)
+      this.addJobs(...valueVisitor.jobs)
+      const update = this.qb.update(valueVisitor.data).toQuery()
+      this.addQueries(update)
       this.addQueries(...valueVisitor.queries)
     }
   }

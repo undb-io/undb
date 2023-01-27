@@ -1,26 +1,17 @@
 import type { Table } from '@egodb/core'
-import type { Knex } from '@mikro-orm/better-sqlite'
+import { BaseEntityManager } from '../repository/base-entity-manager'
 import { UnderlyingColumnBuilder } from './underlying-column.builder'
 
-export class UnderlyingTableBuilder {
-  constructor(private readonly knex: Knex) {}
-
-  private queries: string[] = []
-
-  private addQueries(...queries: string[]) {
-    for (const query of queries) {
-      this.queries.unshift(query)
-    }
-  }
-
+export class UnderlyingTableBuilder extends BaseEntityManager {
   public build() {
     return this.queries
   }
 
   public createTable(table: Table) {
-    const query = this.knex.schema
+    const knex = this.em.getKnex()
+    const query = knex.schema
       .createTable(table.id.value, (tb) => {
-        const queries = new UnderlyingColumnBuilder(this.knex, tb)
+        const queries = new UnderlyingColumnBuilder(knex, tb)
           .createAutoIncrement()
           .createId(table.id.value)
           .createCreatedAt()
@@ -29,11 +20,11 @@ export class UnderlyingTableBuilder {
           .createUnderlying(table.schema.nonSystemFields)
           .build()
 
-        this.addQueries(...queries)
+        this.unshiftQueries(...queries)
       })
       .toQuery()
 
-    this.addQueries(query)
+    this.unshiftQueries(query)
 
     return this
   }

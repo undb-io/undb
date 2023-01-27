@@ -37,19 +37,11 @@ import {
   UpdatedAtField,
 } from '../../entity'
 import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table'
+import { BaseEntityManager } from '../base-entity-manager'
 
-export class TableSqliteFieldVisitor implements IFieldVisitor {
-  constructor(private readonly table: Table, private readonly em: EntityManager) {}
-  #queries: string[] = []
-
-  public get queries() {
-    return this.#queries
-  }
-
-  public async commit(): Promise<void> {
-    for (const query of this.#queries) {
-      await this.em.execute(query)
-    }
+export class TableSqliteFieldVisitor extends BaseEntityManager implements IFieldVisitor {
+  constructor(private readonly table: Table, em: EntityManager) {
+    super(em)
   }
 
   id(value: CoreIdField): void {
@@ -120,7 +112,7 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
 
     const queries = adjacencyListTable.getCreateTableSqls(this.em.getKnex())
 
-    this.#queries.push(...queries)
+    this.addQueries(...queries)
   }
 
   private initClosureTable(value: CoreTreeField | CoreParentField) {
@@ -131,7 +123,7 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
     const knex = this.em.getKnex()
 
     const queries = closureTable.getCreateTableSqls(knex)
-    this.#queries.push(...queries)
+    this.addQueries(...queries)
 
     const insert = knex
       .insert(
@@ -147,7 +139,7 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
       .onConflict()
       .merge()
       .toQuery()
-    this.#queries.push(insert)
+    this.addQueries(insert)
   }
 
   tree(value: CoreTreeField): void {

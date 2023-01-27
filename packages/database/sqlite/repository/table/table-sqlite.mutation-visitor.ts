@@ -23,13 +23,12 @@ import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
 import { Field, Option, SelectField, Table } from '../../entity'
 import { View } from '../../entity/view'
+import { BaseEntityManager } from '../base-entity-manager'
 import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor'
 
-export class TableSqliteMutationVisitor implements ITableSpecVisitor {
-  private jobs: (() => Promise<void>)[] = []
-  constructor(private readonly tableId: string, private readonly em: EntityManager) {}
-  public async commit() {
-    await Promise.all(this.jobs.map((job) => job()))
+export class TableSqliteMutationVisitor extends BaseEntityManager implements ITableSpecVisitor {
+  constructor(private readonly tableId: string, em: EntityManager) {
+    super(em)
   }
 
   private get table(): Table {
@@ -58,7 +57,7 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
       const visitor = new TableSqliteFieldVisitor(table, this.em)
       field.accept(visitor)
 
-      this.jobs.push(async () => visitor.commit())
+      this.addJobs(async () => visitor.commit())
     }
   }
   viewsEqual(s: WithTableViews): void {
@@ -90,7 +89,7 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
 
     f.accept(visitor)
 
-    this.jobs.push(async () => {
+    this.addJobs(async () => {
       await visitor.commit()
     })
   }
@@ -100,7 +99,7 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
     this.em.persist(view)
   }
   fieldWidthEqual(s: WithFieldWidth): void {
-    this.jobs.push(async () => {
+    this.addJobs(async () => {
       const view = this.getView(s.view.id.value)
       await wrap(view).init()
       wrap(view).assign({ fieldOptions: { [s.fieldId]: { width: s.width } } }, { mergeObjects: true })
@@ -108,7 +107,7 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
     })
   }
   fieldVisibility(s: WithFieldVisibility): void {
-    this.jobs.push(async () => {
+    this.addJobs(async () => {
       const view = this.getView(s.view.id.value)
       await wrap(view).init()
       wrap(view).assign({ fieldOptions: { [s.fieldId]: { hidden: s.hidden } } }, { mergeObjects: true })
@@ -131,7 +130,7 @@ export class TableSqliteMutationVisitor implements ITableSpecVisitor {
     this.em.persist(view)
   }
   optionsEqual(s: WithOptions): void {
-    this.jobs.push(async () => {
+    this.addJobs(async () => {
       const field = await this.em.findOne(SelectField, s.field.id.value, { populate: ['options'] })
       if (field) {
         wrap(field).assign({ options: s.options.options.map((option) => new Option(field, option)) })

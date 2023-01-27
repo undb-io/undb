@@ -7,19 +7,19 @@ import {
   TableSchema,
   WithTableSchema,
 } from '@egodb/core'
-import { Knex } from '@mikro-orm/better-sqlite'
+import { EntityManager } from '@mikro-orm/better-sqlite'
 import { UnderlyingTableBuilder } from './underlying-table.builder'
 
 describe('UnderlyingTableBuilder', () => {
-  let knex: Knex
+  let em: EntityManager
 
   beforeAll(() => {
     // @ts-expect-error
-    knex = global.knex
+    em = global.em
   })
 
   test('should build table', () => {
-    const queries = new UnderlyingTableBuilder(knex)
+    const queries = new UnderlyingTableBuilder(em)
       .createTable(
         createTestTable(
           new WithTableSchema(

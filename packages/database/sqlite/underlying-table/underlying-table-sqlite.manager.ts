@@ -1,18 +1,15 @@
 import type { ITableSpec, IUnderlyingTableManager, Table } from '@egodb/core'
-import type { EntityManager } from '@mikro-orm/better-sqlite'
+import { BaseEntityManager } from '../repository/base-entity-manager'
 import { UnderlyingTableSqliteManagerVisitor } from './underlying-table-sqlite.manager-visitor'
 import { UnderlyingTableBuilder } from './underlying-table.builder'
 
-export class UnderlyingTableSqliteManager implements IUnderlyingTableManager {
-  constructor(protected readonly em: EntityManager) {}
+export class UnderlyingTableSqliteManager extends BaseEntityManager implements IUnderlyingTableManager {
   async create(table: Table): Promise<void> {
-    const knex = this.em.getKnex()
+    const queries = new UnderlyingTableBuilder(this.em).createTable(table).build()
 
-    const queries = new UnderlyingTableBuilder(knex).createTable(table).build()
+    this.addQueries(...queries)
 
-    for (const query of queries) {
-      await this.em.execute(query)
-    }
+    await this.commit()
   }
 
   async update(tableId: string, spec: ITableSpec): Promise<void> {
