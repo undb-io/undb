@@ -29,3 +29,7 @@ export type IQueryRecordSchema = z.infer<typeof queryRecordSchema>
 
 export const queryRecords = z.array(queryRecordSchema)
 export type IQueryRecords = z.infer<typeof queryRecords>
+
+export const queryRecordSchemaWithChildren = queryRecordSchema.merge(z.object({ children: queryRecordSchema.array() }))
+export const queryTreeRecords = z.array(queryRecordSchemaWithChildren)
+export type IQueryTreeRecords = z.infer<typeof queryTreeRecords>
