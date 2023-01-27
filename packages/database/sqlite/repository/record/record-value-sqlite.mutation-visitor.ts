@@ -20,10 +20,10 @@ import type {
 import { INTERNAL_COLUMN_ID_NAME, ParentField, ReferenceField, TreeField } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table'
+import { BaseEntityManager } from '../base-entity-manager'
 
-export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
+export class RecordValueSqliteMutationVisitor extends BaseEntityManager implements IFieldValueVisitor {
   #data: Record<string, Knex.Value> = {}
-  #jobs: Array<() => Promise<void>> = []
 
   private setData(fieldId: string, value: Knex.Value): void {
     this.#data[fieldId] = value
@@ -33,22 +33,15 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
     return this.#data
   }
 
-  public get jobs() {
-    return this.#jobs
-  }
-
   constructor(
     private readonly tableId: string,
     private readonly fieldId: string,
     private readonly recordId: string,
     private readonly isNew: boolean,
     private readonly schema: TableSchemaIdMap,
-    private readonly em: EntityManager,
-  ) {}
-  public readonly queries: string[] = []
-
-  private addQueries(...queries: string[]) {
-    this.queries.push(...queries)
+    em: EntityManager,
+  ) {
+    super(em)
   }
 
   id(value: IdFieldValue): void {}
@@ -172,7 +165,7 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
     const treeFieldId = field.treeFieldId.value
     const treeField = this.schema.get(treeFieldId)
 
-    this.#jobs.push(async () => {
+    this.addJobs(async () => {
       const getChildrenQuery = (parent: Knex.Value) =>
         knex
           .queryBuilder()
