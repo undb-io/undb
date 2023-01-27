@@ -198,7 +198,7 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
 
         const nestQuery = getChildrenQuery(parentQuery).clone().andWhereNot(ClosureTable.CHILD_ID, this.recordId)
 
-        const children = (await this.em.execute(getChildrenQuery(nestQuery).toQuery())).map((data) => data.child_id)
+        const children = (await this.em.execute(nestQuery.toQuery())).map((data) => data.child_id)
 
         const query = knex
           .queryBuilder()
