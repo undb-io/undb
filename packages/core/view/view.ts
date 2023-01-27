@@ -10,7 +10,7 @@ import type { TableCompositeSpecificaiton } from '../specifications/interface'
 import { Calendar } from './calendar'
 import { Kanban } from './kanban'
 import { Sorts } from './sort/sorts'
-import { WithCalendarField, WithKanbanField, WithViewFieldsOrder } from './specifications'
+import { WithCalendarField, WithKanbanField, WithTreeViewField, WithViewFieldsOrder } from './specifications'
 import { WithDisplayType } from './specifications/display-type.specification'
 import { WithFieldOption, WithFieldVisibility, WithFieldWidth } from './specifications/view-field-option.specification'
 import { TreeView } from './tree-view'
@@ -183,6 +183,10 @@ export class View extends ValueObject<IView> {
     return new WithCalendarField(this, fieldId)
   }
 
+  public setTreeViewFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
+    return new WithTreeViewField(this, fieldId)
+  }
+
   public getVisibility(): Record<string, boolean> {
     const visibility: Record<string, boolean> = {}
     for (const [key, value] of this.fieldOptions.value) {
@@ -245,7 +249,8 @@ export class View extends ValueObject<IView> {
       name: viewName,
       sorts: input.sorts ? new Sorts(input.sorts) : undefined,
       kanban: input.kanban ? Kanban.from(input.kanban) : undefined,
-      calendar: input.calendar ? Kanban.from(input.calendar) : undefined,
+      calendar: input.calendar ? Calendar.from(input.calendar) : undefined,
+      tree: input.tree ? TreeView.from(input.tree) : undefined,
       displayType: parsed.displayType || defaultViewDiaplyType,
       filter: parsed.filter ? new RootFilter(parsed.filter) : undefined,
       fieldOptions: ViewFieldOptions.from(input.fieldOptions),

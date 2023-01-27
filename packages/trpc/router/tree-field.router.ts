@@ -1,4 +1,7 @@
 import {
+  GetRecordsTreeQuery,
+  getRecordsTreeQueryInput,
+  getRecordsTreeQueryOutput,
   GetTreeAvailableRecordsQuery,
   getTreeAvailableRecordsQueryInput,
   getTreeAvailableRecordsQueryOutput,
@@ -9,6 +12,13 @@ import { router } from '../trpc'
 
 export const createTreeFieldRouter = (procedure: typeof publicProcedure) => (queryBus: IQueryBus) =>
   router({
+    list: procedure
+      .input(getRecordsTreeQueryInput)
+      .output(getRecordsTreeQueryOutput)
+      .query(({ input }) => {
+        const query = new GetRecordsTreeQuery(input)
+        return queryBus.execute(query)
+      }),
     available: procedure
       .input(getTreeAvailableRecordsQueryInput)
       .output(getTreeAvailableRecordsQueryOutput)

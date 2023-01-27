@@ -24,6 +24,7 @@ import type {
   ISetFieldVisibilitySchema,
   ISetFieldWidthSchema,
   ISetKanbanFieldSchema,
+  ISetTreeViewFieldSchema,
   ISorts,
   ISwitchDisplayTypeSchema,
   ViewFieldsOrder,
@@ -204,6 +205,14 @@ export class Table {
     const view = this.mustGetView(input.viewKey)
     const field = this.schema.getFieldById(input.field).unwrap()
     const spec = view.setCalendarFieldSpec(field.id)
+    spec.mutate(this)
+    return spec
+  }
+
+  public setTreeViewField(input: ISetTreeViewFieldSchema): TableCompositeSpecificaiton {
+    const view = this.mustGetView(input.viewKey)
+    const field = this.schema.getFieldById(input.field).unwrap()
+    const spec = view.setTreeViewFieldSpec(field.id)
     spec.mutate(this)
     return spec
   }

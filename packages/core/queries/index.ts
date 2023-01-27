@@ -1,6 +1,7 @@
 export * from './get-parent-available-records'
 export * from './get-record'
 export * from './get-records'
+export * from './get-records-tree'
 export * from './get-table'
 export * from './get-tables'
 export * from './get-tree-available-records'
