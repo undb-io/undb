@@ -38,6 +38,7 @@ import {
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
   INTERNAL_INCREAMENT_ID_NAME,
+  ParentField,
   TreeField,
 } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
@@ -226,7 +227,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
 
   parentAvailable(s: ParentAvailableSpec): void {
     const field = this.schema.get(s.fielId)
-    if (!(field instanceof TreeField)) return
+    if (!(field instanceof ParentField)) return
 
     const recordId = s.value
     if (recordId) {
