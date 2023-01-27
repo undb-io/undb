@@ -1,7 +1,6 @@
 import {
   createTestTable,
   DateRangeFieldValue,
-  ParentFieldValue,
   ReferenceFieldValue,
   Table,
   TreeFieldValue,
@@ -135,56 +134,6 @@ describe('RecordValueSqliteVisitor', () => {
                     and
                     c.parent_id='foreign_record_2'
          ",
-        ]
-      `)
-    })
-  })
-
-  describe('parent', () => {
-    beforeAll(() => {
-      table = createTestTable(
-        WithTableSchema.unsafeFrom([
-          { id: 'fld1', name: 'tree', type: 'tree', parentFieldId: 'fld2' },
-          { id: 'fld2', name: 'parent', type: 'parent', treeFieldId: 'fld1' },
-        ]),
-      )
-
-      visitor = new RecordValueSqliteMutationVisitor(
-        table.id.value,
-        'fld2',
-        'recordtest',
-        false,
-        table.schema.toIdMap(),
-        em,
-      )
-    })
-
-    test('should update table & underlying table', () => {
-      visitor.parent(new ParentFieldValue('rec3'))
-
-      expect(visitor.queries).not.to.be.empty
-      expect(visitor.queries).toMatchInlineSnapshot(`
-        [
-          "update \`tableId\` set \`fld1\` = 
-                  CASE
-                    WHEN (select \`child_id\` from \`fld1_tableId_closure_table\` where \`depth\` = 1 and \`parent_id\` = (select \`parent_id\` from \`fld1_tableId_closure_table\` where \`child_id\` = 'recordtest' and \`depth\` = 1) and not \`child_id\` = 'recordtest') IS NULL THEN null
-                                   ELSE json_array((select \`child_id\` from \`fld1_tableId_closure_table\` where \`depth\` = 1 and \`parent_id\` = (select \`parent_id\` from \`fld1_tableId_closure_table\` where \`child_id\` = 'recordtest' and \`depth\` = 1) and not \`child_id\` = 'recordtest'))
-                    END where \`id\` = (select \`parent_id\` from \`fld1_tableId_closure_table\` where \`child_id\` = 'recordtest' and \`depth\` = 1)",
-          "delete from \`fld1_tableId_closure_table\` where \`child_id\` in (select \`child_id\` from \`fld1_tableId_closure_table\` where \`parent_id\` = 'recordtest') and \`parent_id\` not in (select \`child_id\` from \`fld1_tableId_closure_table\` where \`parent_id\` = 'recordtest')",
-          "
-                INSERT INTO fld1_tableId_closure_table (parent_id, child_id, depth)
-
-                SELECT supertree.parent_id, subtree.child_id,
-                supertree.depth+subtree.depth+1
-                FROM fld1_tableId_closure_table AS supertree JOIN fld1_tableId_closure_table AS subtree
-                WHERE subtree.parent_id = 'recordtest'
-                AND supertree.child_id = 'rec3';
-                ",
-          "update \`tableId\` set \`fld1\` = 
-                  CASE
-                    WHEN (select \`child_id\` from \`fld1_tableId_closure_table\` where \`depth\` = 1 and \`parent_id\` = 'rec3') IS NULL THEN null
-                                   ELSE json_array((select \`child_id\` from \`fld1_tableId_closure_table\` where \`depth\` = 1 and \`parent_id\` = 'rec3'))
-                    END where \`id\` = 'rec3'",
         ]
       `)
     })

@@ -172,57 +172,64 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
     const treeFieldId = field.treeFieldId.value
     const treeField = this.schema.get(treeFieldId)
 
-    const getChildrenQuery = (parent: Knex.Value) =>
-      knex
-        .queryBuilder()
-        .select(ClosureTable.CHILD_ID)
-        .from(closure.name)
-        .where(ClosureTable.DEPTH, 1)
-        .andWhere(ClosureTable.PARENT_ID, parent)
+    this.#jobs.push(async () => {
+      const getChildrenQuery = (parent: Knex.Value) =>
+        knex
+          .queryBuilder()
+          .select(ClosureTable.CHILD_ID)
+          .from(closure.name)
+          .forUpdate()
+          .where(ClosureTable.DEPTH, 1)
+          .andWhere(ClosureTable.PARENT_ID, parent)
 
-    const getUpdateJsonArrayQuery = (query: Knex.Value) =>
-      knex.raw(
-        `
-          CASE
-            WHEN ? IS NULL THEN null
-                           ELSE json_array(?)
-            END`,
-        [query, query],
-      )
+      const getUpdateJsonArrayQuery = (query: Knex.Value) => {
+        if (query === null) return null
+        return knex.raw('json_array(?)', [query])
+      }
 
-    if (treeField instanceof TreeField && !this.isNew) {
-      const parentQuery = knex
-        .queryBuilder()
-        .select(ClosureTable.PARENT_ID)
-        .from(closure.name)
-        .where(ClosureTable.CHILD_ID, this.recordId)
-        .andWhere(ClosureTable.DEPTH, 1)
+      // 1. update origin parent table tree field to remove `this.record` from children value
+      if (treeField instanceof TreeField && !this.isNew) {
+        const parentQuery = knex
+          .queryBuilder()
+          .select(ClosureTable.PARENT_ID)
+          .from(closure.name)
+          .where(ClosureTable.CHILD_ID, this.recordId)
+          .andWhere(ClosureTable.DEPTH, 1)
 
-      const nestQuery = getChildrenQuery(parentQuery).clone().andWhereNot(ClosureTable.CHILD_ID, this.recordId)
+        const nestQuery = getChildrenQuery(parentQuery).clone().andWhereNot(ClosureTable.CHILD_ID, this.recordId)
 
-      const query = knex
-        .queryBuilder()
-        .table(this.tableId)
-        .update(treeFieldId, getUpdateJsonArrayQuery(nestQuery))
-        .where(INTERNAL_COLUMN_ID_NAME, parentQuery)
-        .toQuery()
+        const children = (await this.em.execute(getChildrenQuery(nestQuery).toQuery())).map((data) => data.child_id)
 
-      this.addQueries(query)
-    }
+        const query = knex
+          .queryBuilder()
+          .table(this.tableId)
+          .update(treeFieldId, getUpdateJsonArrayQuery(children?.length ? children : null))
+          .where(INTERNAL_COLUMN_ID_NAME, parentQuery)
+          .toQuery()
 
-    this.addQueries(...closure.moveParent(knex, this.recordId, parentId))
+        await this.em.execute(query)
+      }
 
-    if (treeField instanceof TreeField && !this.isNew && parentId) {
-      const childrenQuery = getChildrenQuery(parentId)
+      // 2. update underlying closure table to move parent
+      const moveParentQueries = closure.moveParent(knex, this.recordId, parentId)
+      for (const query of moveParentQueries) {
+        await this.em.execute(query)
+      }
 
-      const update = knex
-        .queryBuilder()
-        .table(this.tableId)
-        .update(treeFieldId, getUpdateJsonArrayQuery(childrenQuery))
-        .where(INTERNAL_COLUMN_ID_NAME, parentId)
-        .toQuery()
+      // 3. update new parent children to add `this.recordId` as new child
+      if (treeField instanceof TreeField && !this.isNew && parentId) {
+        const childrenQuery = getChildrenQuery(parentId)
+        const children: string[] = (await this.em.execute(childrenQuery)).map((data) => data.child_id)
 
-      this.addQueries(update)
-    }
+        const update = knex
+          .queryBuilder()
+          .table(this.tableId)
+          .update(treeFieldId, getUpdateJsonArrayQuery(children.length ? children : null))
+          .where(INTERNAL_COLUMN_ID_NAME, parentId)
+          .toQuery()
+
+        await this.em.execute(update)
+      }
+    })
   }
 }

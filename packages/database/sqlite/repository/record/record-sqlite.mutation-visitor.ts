@@ -46,6 +46,7 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
     private readonly qb: Knex.QueryBuilder,
   ) {}
   private queries: string[] = []
+  #jobs: Array<() => Promise<void>> = []
 
   private addQueries(...queries: string[]) {
     this.queries.push(...queries)
@@ -56,6 +57,7 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
   }
 
   public async commit(): Promise<void> {
+    await Promise.all(this.#jobs.map((job) => job()))
     await this.em.execute(this.qb)
     for (const query of this.queries) {
       await this.em.execute(query)
@@ -83,6 +85,7 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
 
       value.accept(valueVisitor)
 
+      this.#jobs.push(...valueVisitor.jobs)
       this.qb.update(valueVisitor.data)
       this.addQueries(...valueVisitor.queries)
     }
