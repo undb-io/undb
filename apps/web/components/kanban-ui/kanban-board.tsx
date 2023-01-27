@@ -1,4 +1,3 @@
-import type { Records } from '@egodb/core'
 import type { IKanbanField } from '@egodb/core'
 import type { MantineTheme } from '@egodb/ui'
 import styled from '@emotion/styled'

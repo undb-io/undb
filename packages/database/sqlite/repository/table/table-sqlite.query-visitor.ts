@@ -18,6 +18,7 @@ import type {
   WithTableSchema,
   WithTableView,
   WithTableViews,
+  WithTreeViewField,
   WithViewFieldsOrder,
 } from '@egodb/core'
 import type { QueryBuilder } from '@mikro-orm/better-sqlite'
@@ -59,6 +60,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   kanbanFieldEqual(s: WithKanbanField): void {
+    throw new Error('Method not implemented.')
+  }
+  treeViewFieldEqual(s: WithTreeViewField): void {
     throw new Error('Method not implemented.')
   }
   calendarFieldEqual(s: WithCalendarField): void {

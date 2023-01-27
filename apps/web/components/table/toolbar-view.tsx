@@ -123,6 +123,7 @@ export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
               { label: 'Grid', value: 'grid' },
               { label: 'Kanban', value: 'kanban' },
               { label: 'Calendar', value: 'calendar' },
+              { label: 'Tree', value: 'tree' },
             ]}
             onChange={(type) => {
               switchDisplayType.mutate({

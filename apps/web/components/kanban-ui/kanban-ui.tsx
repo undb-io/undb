@@ -1,4 +1,3 @@
-import type { Records } from '@egodb/core'
 import type { IKanbanField } from '@egodb/core'
 import { Container, Center } from '@egodb/ui'
 import type { ITableBaseProps } from '../table/table-base-props'

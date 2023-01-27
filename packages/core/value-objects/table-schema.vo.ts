@@ -18,7 +18,7 @@ import { IdField } from '../field/id-field'
 import { UpdatedAtField } from '../field/updated-at-field'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema'
 import { WithNewField } from '../specifications/table-field.specification'
-import type { IKanbanField } from '../view'
+import type { IKanbanField, ITreeViewField } from '../view'
 import type { ICalendarField } from '../view/calendar'
 import { ViewFieldsOrder } from '../view/view-fields-order.vo'
 
@@ -79,6 +79,10 @@ export class TableSchema extends ValueObject<Field[]> {
 
   public get calendarFields(): ICalendarField[] {
     return this.fields.filter((f) => f instanceof DateField || f instanceof DateRangeField) as ICalendarField[]
+  }
+
+  public get treeFields(): ITreeViewField[] {
+    return this.fields.filter((f) => f instanceof TreeField) as ITreeViewField[]
   }
 
   get fieldsNames(): string[] {

@@ -64,6 +64,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   fieldVisibility(): void {}
   displayTypeEqual(): void {}
   kanbanFieldEqual(): void {}
+  treeViewFieldEqual(): void {}
   calendarFieldEqual(): void {}
   optionsEqual(): void {}
   newOption(): void {}

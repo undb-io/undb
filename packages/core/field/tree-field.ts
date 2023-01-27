@@ -5,7 +5,7 @@ import type { ITreeField } from './field.type'
 import type { IFieldVisitor } from './field.visitor'
 import { ParentField } from './parent-field'
 import { TreeFieldValue } from './tree-field-value'
-import type { ICreateTreeFieldInput, ICreateTreeFieldValue, TreeFieldType } from './tree-field.type'
+import type { ICreateTreeFieldSchema, ICreateTreeFieldValue, TreeFieldType } from './tree-field.type'
 import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
 export class TreeField extends BaseField<ITreeField> {
@@ -27,7 +27,7 @@ export class TreeField extends BaseField<ITreeField> {
     return parentField
   }
 
-  static create(input: ICreateTreeFieldInput): TreeField {
+  static create(input: ICreateTreeFieldSchema): TreeField {
     const fieldName = FieldName.create(input.name)
 
     return new TreeField({
@@ -38,7 +38,7 @@ export class TreeField extends BaseField<ITreeField> {
     })
   }
 
-  static unsafeCreate(input: ICreateTreeFieldInput): TreeField {
+  static unsafeCreate(input: ICreateTreeFieldSchema): TreeField {
     return new TreeField({
       id: FieldId.fromNullableString(input.id),
       name: FieldName.unsafaCreate(input.name),

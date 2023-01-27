@@ -13,6 +13,7 @@ import { Sorts } from './sort/sorts'
 import { WithCalendarField, WithKanbanField, WithViewFieldsOrder } from './specifications'
 import { WithDisplayType } from './specifications/display-type.specification'
 import { WithFieldOption, WithFieldVisibility, WithFieldWidth } from './specifications/view-field-option.specification'
+import { TreeView } from './tree-view'
 import type { IViewFieldOption } from './view-field-options'
 import { ViewFieldOptions } from './view-field-options'
 import { ViewFieldsOrder } from './view-fields-order.vo'
@@ -89,6 +90,18 @@ export class View extends ValueObject<IView> {
     return this.calendar.mapOr(None, (calendar) => Option(calendar.fieldId))
   }
 
+  public get treeView(): Option<TreeView> {
+    return Option(this.props.tree)
+  }
+
+  public set treeView(treeView: Option<TreeView>) {
+    this.props.tree = treeView.into()
+  }
+
+  public get treeViewFieldId(): Option<FieldId> {
+    return this.treeView.mapOr(None, (treeView) => Option(treeView.fieldId))
+  }
+
   public get spec(): Option<CompositeSpecification> {
     if (!this.filter) return None
     return this.filter.spec
@@ -132,6 +145,14 @@ export class View extends ValueObject<IView> {
 
     this.props.calendar = new Calendar({})
     return this.props.calendar
+  }
+
+  public getOrCreateTreeView(): Kanban {
+    const treeView = this.treeView
+    if (treeView.isSome()) return treeView.unwrap()
+
+    this.props.tree = new TreeView({})
+    return this.props.tree
   }
 
   public getFieldHidden(fieldId: string): boolean {

@@ -17,6 +17,7 @@ import type {
   WithTableSchema,
   WithTableView,
   WithTableViews,
+  WithTreeViewField,
   WithViewFieldsOrder,
 } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
@@ -122,6 +123,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   kanbanFieldEqual(s: WithKanbanField): void {
     const view = this.getView(s.view.id.value)
     wrap(view).assign({ kanban: { fieldId: s.fieldId?.value ?? '' } })
+    this.em.persist(view)
+  }
+  treeViewFieldEqual(s: WithTreeViewField): void {
+    const view = this.getView(s.view.id.value)
+    wrap(view).assign({ tree: { fieldId: s.fieldId?.value ?? '' } })
     this.em.persist(view)
   }
   calendarFieldEqual(s: WithCalendarField): void {
