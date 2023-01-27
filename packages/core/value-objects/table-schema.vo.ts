@@ -3,7 +3,15 @@ import { Option } from 'oxide.ts'
 import type { Class } from 'type-fest'
 import * as z from 'zod'
 import type { Field, ICreateFieldSchema, NoneSystemField } from '../field'
-import { createFieldSchema, DateField, DateRangeField, ReferenceField, SelectField, WithoutField } from '../field'
+import {
+  createFieldSchema,
+  DateField,
+  DateRangeField,
+  ReferenceField,
+  SelectField,
+  TreeField,
+  WithoutField,
+} from '../field'
 import { CreatedAtField } from '../field/created-at-field'
 import { FieldFactory } from '../field/field.factory'
 import { IdField } from '../field/id-field'
@@ -36,7 +44,11 @@ export type TableSchemaIdMap = Map<string, Field>
  */
 export class TableSchema extends ValueObject<Field[]> {
   static create(inputs: ICreateTableSchemaInput): TableSchema {
-    const fields = createTableSchemaSchema.parse(inputs).map(FieldFactory.create)
+    const fields = createTableSchemaSchema
+      .parse(inputs)
+      .map(FieldFactory.create)
+      .flatMap((f) => (f instanceof TreeField ? ([f, f.createParentField()] as [Field, Field]) : f))
+
     return new TableSchema([IdField.default(), ...fields, CreatedAtField.default(), UpdatedAtField.default()])
   }
 
@@ -91,7 +103,7 @@ export class TableSchema extends ValueObject<Field[]> {
   }
 
   public addField(field: Field) {
-    this.props.push(field)
+    this.fields.push(field)
   }
 
   public get defaultFieldsOrder(): ViewFieldsOrder {
@@ -99,12 +111,16 @@ export class TableSchema extends ValueObject<Field[]> {
     return ViewFieldsOrder.fromArray(order)
   }
 
-  public createField(input: ICreateFieldSchema): WithNewField {
+  public createField(input: ICreateFieldSchema): WithNewField[] {
     const field = FieldFactory.create(input)
+    const specs = [new WithNewField(field)]
+    if (field.type === 'tree') {
+      specs.push(new WithNewField(field.createParentField()))
+    }
 
-    this.validateNames(field.name.value)
+    this.validateNames(...specs.map((spec) => spec.field.name.value))
 
-    return new WithNewField(field)
+    return specs
   }
 
   public removeField(id: string): WithoutField {

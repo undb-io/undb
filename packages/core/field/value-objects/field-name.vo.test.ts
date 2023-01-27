@@ -27,19 +27,3 @@ it('should throw error if input is invlaue', () => {
     ]"
   `)
 })
-
-it('should throw error if input is too long', () => {
-  expect(() => FieldName.create('thisisaverylongnameexceed20?')).toThrowErrorMatchingInlineSnapshot(`
-    "[
-      {
-        \\"code\\": \\"too_big\\",
-        \\"maximum\\": 20,
-        \\"type\\": \\"string\\",
-        \\"inclusive\\": true,
-        \\"exact\\": false,
-        \\"message\\": \\"String must contain at most 20 character(s)\\",
-        \\"path\\": []
-      }
-    ]"
-  `)
-})

@@ -14,7 +14,7 @@ import {
   DateLessThan,
   DateLessThanOrEqual,
   DateRangeEqual,
-  IsRoot,
+  IsTreeRoot,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -56,12 +56,14 @@ import {
   dateRangeFilterOperators,
   idFilterOperators,
   numberFilterOperators,
+  parentFilterOperators,
   referenceFilterOperators,
   selectFilterOperators,
   stringFilterOperators,
   treeFilterOperators,
   updatedAtFilterOperators,
 } from './operators'
+import { parentFilter, parentFilterValue } from './parent.filter'
 import { referenceFilter, referenceFilterValue } from './reference.filter'
 import type { ISelectFilter } from './select.filter'
 import { selectFilter, selectFilterValue } from './select.filter'
@@ -85,6 +87,7 @@ export const filterValue = z.union([
   boolFilterValue,
   referenceFilterValue,
   treeFilterValue,
+  parentFilterValue,
 ])
 export type IFilterValue = z.infer<typeof filterValue>
 
@@ -101,6 +104,7 @@ export const operaotrs = z.union([
   boolFilterOperators,
   referenceFilterOperators,
   treeFilterOperators,
+  parentFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
@@ -117,6 +121,7 @@ const filter = z.discriminatedUnion('type', [
   boolFilter,
   referenceFilter,
   treeFilter,
+  parentFilter,
 ])
 
 export type IFilter = z.infer<typeof filter>
@@ -306,7 +311,7 @@ const convertDateFilter = (
 const convertTreeFilter = (filter: ITreeFilter): Option<CompositeSpecification> => {
   switch (filter.operator) {
     case $is_root.value: {
-      return Some(new IsRoot(filter.path))
+      return Some(new IsTreeRoot(filter.path))
     }
 
     default: {

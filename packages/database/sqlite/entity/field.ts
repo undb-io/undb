@@ -40,6 +40,7 @@ export abstract class Field extends BaseEntity {
       'date-range',
       'reference',
       'tree',
+      'parent',
     ],
   })
   type: IFieldType
@@ -82,7 +83,16 @@ export class SelectField extends Field {
 export class ReferenceField extends Field {}
 
 @Entity({ discriminatorValue: 'tree' })
-export class TreeField extends Field {}
+export class TreeField extends Field {
+  @Property()
+  parentFieldId!: string
+}
+
+@Entity({ discriminatorValue: 'parent' })
+export class ParentField extends Field {
+  @Property()
+  treeFieldId!: string
+}
 
 export type IField =
   | IdField
@@ -97,6 +107,7 @@ export type IField =
   | SelectField
   | ReferenceField
   | TreeField
+  | ParentField
 
 export const fieldEntities = [
   IdField,
@@ -111,4 +122,5 @@ export const fieldEntities = [
   SelectField,
   ReferenceField,
   TreeField,
+  ParentField,
 ]

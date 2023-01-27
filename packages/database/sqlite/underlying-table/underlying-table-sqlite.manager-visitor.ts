@@ -8,7 +8,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   private readonly knex: Knex
   private sb?: Knex.SchemaBuilder
   private qb?: Knex.QueryBuilder
-  private sqls: string[] = []
+  #queries: string[] = []
   constructor(private readonly tableName: string, private readonly em: EntityManager) {
     const knex = em.getKnex()
     this.knex = knex
@@ -22,7 +22,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   }
 
   public get queries(): string[] {
-    return [this.sb?.toQuery() ?? '', this.qb?.toQuery() ?? '', ...this.sqls].filter(Boolean)
+    return [this.sb?.toQuery() ?? '', this.qb?.toQuery() ?? '', ...this.#queries].filter(Boolean)
   }
 
   async commit() {
@@ -50,10 +50,14 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
       return
     }
 
-    this.sb = this.#sb.alterTable(this.tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(this.knex, tb)
-      builder.createUnderlying([field])
-    })
+    const query = this.#sb
+      .alterTable(this.tableName, (tb) => {
+        const builder = new UnderlyingColumnBuilder(this.knex, tb)
+        builder.createUnderlying([field])
+      })
+      .toQuery()
+
+    this.#queries.push(query)
   }
   fieldsOrder(): void {}
   fieldWidthEqual(): void {}
@@ -77,7 +81,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     alter table \`${this.tableName}\` drop column \`${f.name}\`;
     `,
     )
-    this.sqls.push(...sqls)
+    this.#queries.push(...sqls)
   }
   fieldOptionsEqual(): void {}
   not(): this {

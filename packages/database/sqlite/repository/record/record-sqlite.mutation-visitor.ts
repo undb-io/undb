@@ -10,12 +10,13 @@ import type {
   DateLessThanOrEqual,
   DateRangeEqual,
   IRecordVisitor,
-  IsRoot,
+  IsTreeRoot,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
   NumberLessThan,
   NumberLessThanOrEqual,
+  ParentAvailableSpec,
   ReferenceEqual,
   SelectEqual,
   SelectIn,
@@ -45,16 +46,18 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
     private readonly qb: Knex.QueryBuilder,
   ) {}
   private queries: string[] = []
+  #jobs: Array<() => Promise<void>> = []
 
   private addQueries(...queries: string[]) {
     this.queries.push(...queries)
   }
 
   private createRecordValueVisitor(fieldId: string) {
-    return new RecordValueSqliteMutationVisitor(this.tableId, fieldId, this.recordId, this.schema, this.em)
+    return new RecordValueSqliteMutationVisitor(this.tableId, fieldId, this.recordId, false, this.schema, this.em)
   }
 
   public async commit(): Promise<void> {
+    await Promise.all(this.#jobs.map((job) => job()))
     await this.em.execute(this.qb)
     for (const query of this.queries) {
       await this.em.execute(query)
@@ -82,6 +85,7 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
 
       value.accept(valueVisitor)
 
+      this.#jobs.push(...valueVisitor.jobs)
       this.qb.update(valueVisitor.data)
       this.addQueries(...valueVisitor.queries)
     }
@@ -155,7 +159,10 @@ export class RecordSqliteMutationVisitor implements IRecordVisitor {
   treeAvailable(s: TreeAvailableSpec): void {
     throw new Error('Method not implemented.')
   }
-  isRoot(s: IsRoot): void {
+  isTreeRoot(s: IsTreeRoot): void {
+    throw new Error('Method not implemented.')
+  }
+  parentAvailable(s: ParentAvailableSpec): void {
     throw new Error('Method not implemented.')
   }
 

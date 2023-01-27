@@ -10,7 +10,13 @@ import {
 } from '@dnd-kit/core'
 import { restrictToHorizontalAxis } from '@dnd-kit/modifiers'
 import { SortableContext, horizontalListSortingStrategy, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-import type { SelectFieldValue, BoolFieldValue, ReferenceFieldValue } from '@egodb/core'
+import type {
+  SelectFieldValue,
+  BoolFieldValue,
+  ReferenceFieldValue,
+  TreeFieldValue,
+  ParentFieldValue,
+} from '@egodb/core'
 import type { DateFieldValue } from '@egodb/core'
 import type { DateRangeFieldValue } from '@egodb/core'
 import {
@@ -123,8 +129,12 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
             const date = (props.getValue() as DateRangeFieldValue)?.unpack()
             return date && `${dateFormat(date[0])} - ${dateFormat(date[1])}`
           }
+          if (f.type === 'parent') {
+            const value = (props.getValue() as ParentFieldValue)?.unpack()
+            return value && <ReferenceItem value={value} />
+          }
           if (f.type === 'reference' || f.type === 'tree') {
-            const values = (props.getValue() as ReferenceFieldValue)?.unpack()
+            const values = (props.getValue() as ReferenceFieldValue | TreeFieldValue)?.unpack()
             return (
               values && (
                 <Group>

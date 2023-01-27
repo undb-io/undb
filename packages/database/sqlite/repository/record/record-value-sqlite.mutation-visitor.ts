@@ -9,6 +9,7 @@ import type {
   IdFieldValue,
   IFieldValueVisitor,
   NumberFieldValue,
+  ParentFieldValue,
   ReferenceFieldValue,
   SelectFieldValue,
   StringFieldValue,
@@ -16,15 +17,15 @@ import type {
   TreeFieldValue,
   UpdatedAtFieldValue,
 } from '@egodb/core'
-import { ReferenceField, TreeField } from '@egodb/core'
-import type { EntityManager } from '@mikro-orm/better-sqlite'
-import type { RecordValueData, RecordValueSqlitePrimitives } from '../../types/record-value-sqlite.type'
-import { UnderlyingAdjacencyListTable, UnderlyingClosureTable } from '../../underlying-table/underlying-foreign-table'
+import { INTERNAL_COLUMN_ID_NAME, ParentField, ReferenceField, TreeField } from '@egodb/core'
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table'
 
 export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
-  #data: RecordValueData = {}
+  #data: Record<string, Knex.Value> = {}
+  #jobs: Array<() => Promise<void>> = []
 
-  private setData(fieldId: string, value: RecordValueSqlitePrimitives): void {
+  private setData(fieldId: string, value: Knex.Value): void {
     this.#data[fieldId] = value
   }
 
@@ -32,10 +33,15 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
     return this.#data
   }
 
+  public get jobs() {
+    return this.#jobs
+  }
+
   constructor(
     private readonly tableId: string,
     private readonly fieldId: string,
     private readonly recordId: string,
+    private readonly isNew: boolean,
     private readonly schema: TableSchemaIdMap,
     private readonly em: EntityManager,
   ) {}
@@ -63,8 +69,8 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
     this.setData(this.fieldId, value.unpack())
   }
   dateRange(value: DateRangeFieldValue): void {
-    this.setData(this.fieldId + '_from', value.from.into())
-    this.setData(this.fieldId + '_to', value.to.into())
+    this.setData(this.fieldId + '_from', value.from.into(null))
+    this.setData(this.fieldId + '_to', value.to.into(null))
   }
   select(value: SelectFieldValue): void {
     this.setData(this.fieldId, value.unpack())
@@ -75,17 +81,18 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
       return
     }
 
-    const unpacked = value.unpack()
-    this.setData(this.fieldId, unpacked == null ? unpacked : JSON.stringify(unpacked))
+    const knex = this.em.getKnex()
 
-    const underlyingTable = new UnderlyingAdjacencyListTable(this.tableId, field)
+    const references = value.unpack()
+    this.setData(this.fieldId, references?.length ? knex.raw('json_array(?)', [references]) : null)
 
-    const query = this.em
-      .getKnex()
+    const underlyingTable = new AdjacencyListTable(this.tableId, field)
+
+    const query = knex
       .queryBuilder()
       .table(underlyingTable.name)
       .delete()
-      .where(UnderlyingAdjacencyListTable.ADJACENCY_LIST_PARENT_ID_FIELD, this.recordId)
+      .where(AdjacencyListTable.PARENT_ID, this.recordId)
       .toQuery()
 
     this.addQueries(query)
@@ -93,13 +100,12 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
     const unpackedValue = value.unpack()
     if (unpackedValue?.length) {
       for (const recordId of unpackedValue) {
-        const query = this.em
-          .getKnex()
+        const query = knex
           .queryBuilder()
           .table(underlyingTable.name)
           .insert({
-            [UnderlyingAdjacencyListTable.ADJACENCY_LIST_CHILD_ID_FIELD]: recordId,
-            [UnderlyingAdjacencyListTable.ADJACENCY_LIST_PARENT_ID_FIELD]: this.recordId,
+            [AdjacencyListTable.CHILD_ID]: recordId,
+            [AdjacencyListTable.PARENT_ID]: this.recordId,
           })
           .toQuery()
 
@@ -110,54 +116,120 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
 
   tree(value: TreeFieldValue): void {
     const field = this.schema.get(this.fieldId)
-    if (!(field instanceof TreeField)) {
-      return
-    }
-    const unpacked = value.unpack()
-    this.setData(this.fieldId, unpacked == null ? unpacked : JSON.stringify(unpacked))
+    if (!(field instanceof TreeField)) return
 
     const knex = this.em.getKnex()
-    const closure = new UnderlyingClosureTable(this.tableId, field)
-    const childId = UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD,
-      parentId = UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD,
-      depth = UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD
+    const closure = new ClosureTable(this.tableId, field)
 
-    const query = knex
-      .queryBuilder()
-      .table(closure.name)
-      .delete()
-      .where(UnderlyingAdjacencyListTable.ADJACENCY_LIST_PARENT_ID_FIELD, this.recordId)
-      .toQuery()
+    const children = value.unpack()
+    this.setData(this.fieldId, children?.length ? knex.raw('json_array(?)', [children]) : null)
 
-    this.addQueries(query)
-
-    const unpackedValue = value.unpack()
-
-    const rootInsert = knex(closure.name)
-      .insert({
-        [childId]: this.recordId,
-        [depth]: 0,
-        [parentId]: this.recordId,
-      })
-      .toQuery()
-
-    this.addQueries(rootInsert)
-
-    if (unpackedValue?.length) {
-      for (const recordId of unpackedValue) {
-        const query = knex
-          .raw(
-            `
-            insert into ${closure.name}(${parentId}, ${childId}, ${depth})
-select p.${parentId}, c.${childId}, p.${depth}+c.${depth}+1
-  from ${closure.name} as p, ${closure.name} as c
- where p.${childId}='${this.recordId}' and c.${parentId}='${recordId}'
- `,
+    const parentFieldId = field.parentFieldId?.value
+    if (parentFieldId) {
+      const parentField = this.schema.get(parentFieldId)
+      if (parentField instanceof ParentField) {
+        const clear = knex
+          .queryBuilder()
+          .table(this.tableId)
+          .update(parentFieldId, null)
+          .whereIn(
+            INTERNAL_COLUMN_ID_NAME,
+            knex
+              .select(ClosureTable.CHILD_ID)
+              .from(closure.name)
+              .where(ClosureTable.PARENT_ID, this.recordId)
+              .andWhere(ClosureTable.DEPTH, '=', 1),
           )
           .toQuery()
 
-        this.addQueries(query)
+        this.addQueries(clear)
+
+        if (children?.length) {
+          const updateChildren = knex
+            .queryBuilder()
+            .table(this.tableId)
+            .update(parentFieldId, this.recordId)
+            .whereIn(INTERNAL_COLUMN_ID_NAME, children)
+            .toQuery()
+          this.addQueries(updateChildren)
+        }
       }
     }
+
+    this.addQueries(...closure.connect(knex, this.recordId, children ?? []))
+  }
+
+  parent(value: ParentFieldValue): void {
+    const field = this.schema.get(this.fieldId)
+    if (!(field instanceof ParentField)) return
+
+    const parentId = value.unpack()
+    this.setData(this.fieldId, parentId)
+
+    const knex = this.em.getKnex()
+    const closure = new ClosureTable(this.tableId, field)
+
+    const treeFieldId = field.treeFieldId.value
+    const treeField = this.schema.get(treeFieldId)
+
+    this.#jobs.push(async () => {
+      const getChildrenQuery = (parent: Knex.Value) =>
+        knex
+          .queryBuilder()
+          .select(ClosureTable.CHILD_ID)
+          .from(closure.name)
+          .forUpdate()
+          .where(ClosureTable.DEPTH, 1)
+          .andWhere(ClosureTable.PARENT_ID, parent)
+
+      const getUpdateJsonArrayQuery = (query: Knex.Value) => {
+        if (query === null) return null
+        return knex.raw('json_array(?)', [query])
+      }
+
+      // 1. update origin parent table tree field to remove `this.record` from children value
+      if (treeField instanceof TreeField && !this.isNew) {
+        const parentQuery = knex
+          .queryBuilder()
+          .select(ClosureTable.PARENT_ID)
+          .from(closure.name)
+          .where(ClosureTable.CHILD_ID, this.recordId)
+          .andWhere(ClosureTable.DEPTH, 1)
+
+        const nestQuery = getChildrenQuery(parentQuery).clone().andWhereNot(ClosureTable.CHILD_ID, this.recordId)
+
+        const children = (await this.em.execute(nestQuery.toQuery())).map((data) => data.child_id)
+
+        const query = knex
+          .queryBuilder()
+          .table(this.tableId)
+          .update(treeFieldId, getUpdateJsonArrayQuery(children?.length ? children : null))
+          .where(INTERNAL_COLUMN_ID_NAME, parentQuery)
+          .toQuery()
+
+        await this.em.execute(query)
+      }
+
+      // 2. update underlying closure table to move parent
+      const moveParentQueries = closure.moveParent(knex, this.recordId, parentId)
+      for (const query of moveParentQueries) {
+        await this.em.execute(query)
+      }
+
+      // 3. update new parent children to add `this.recordId` as new child
+      if (treeField instanceof TreeField && !this.isNew && parentId) {
+        const childrenQuery = getChildrenQuery(parentId)
+        const children: string[] = (await this.em.execute(childrenQuery)).map((data) => data.child_id)
+
+        const update = knex
+          .queryBuilder()
+          .table(this.tableId)
+          .update(treeFieldId, getUpdateJsonArrayQuery(children.length ? children : null))
+          .where(INTERNAL_COLUMN_ID_NAME, parentId)
+          .toQuery()
+
+        await this.em.execute(update)
+      }
+    })
   }
 }

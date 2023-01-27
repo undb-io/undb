@@ -14,9 +14,9 @@ export class WithNewField extends CompositeSpecification<Table, ITableSpecVisito
     return false
   }
 
-  mutate(t: Table): Result<any, string> {
+  mutate(t: Table): Result<Table, string> {
     t.schema.addField(this.field)
-    return Ok(undefined)
+    return Ok(t)
   }
 
   accept(v: ITableSpecVisitor): Result<void, string> {

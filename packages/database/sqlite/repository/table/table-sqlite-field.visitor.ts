@@ -9,6 +9,7 @@ import type {
   IdField as CoreIdField,
   IFieldVisitor,
   NumberField as CoreNumberField,
+  ParentField as CoreParentField,
   ReferenceField as CoreReferenceField,
   SelectField as CoreSelectField,
   StringField as CoreStringField,
@@ -28,13 +29,14 @@ import {
   IdField,
   NumberField,
   Option,
+  ParentField,
   ReferenceField,
   SelectField,
   StringField,
   TreeField,
   UpdatedAtField,
 } from '../../entity'
-import { UnderlyingAdjacencyListTable, UnderlyingClosureTable } from '../../underlying-table/underlying-foreign-table'
+import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table'
 
 export class TableSqliteFieldVisitor implements IFieldVisitor {
   constructor(private readonly table: Table, private readonly em: EntityManager) {}
@@ -114,37 +116,53 @@ export class TableSqliteFieldVisitor implements IFieldVisitor {
     const field = new ReferenceField(this.table, value)
     this.em.persist(field)
 
-    const adjacencyListTable = new UnderlyingAdjacencyListTable(this.table.id, value)
+    const adjacencyListTable = new AdjacencyListTable(this.table.id, value)
 
-    const queries = adjacencyListTable.getSqls(this.em.getKnex())
+    const queries = adjacencyListTable.getCreateTableSqls(this.em.getKnex())
 
     this.#queries.push(...queries)
   }
 
-  tree(value: CoreTreeField): void {
-    const field = new TreeField(this.table, value)
-    this.em.persist(field)
-
+  private initClosureTable(value: CoreTreeField | CoreParentField) {
     const tableId = this.table.id
-    const closureTable = new UnderlyingClosureTable(tableId, value)
+
+    const closureTable = new ClosureTable(tableId, value)
 
     const knex = this.em.getKnex()
 
-    const queries = closureTable.getSqls(knex)
+    const queries = closureTable.getCreateTableSqls(knex)
     this.#queries.push(...queries)
 
     const insert = knex
       .insert(
         knex
           .select([
-            `${INTERNAL_COLUMN_ID_NAME} as ${UnderlyingClosureTable.CLOSURE_TABLE_CHILD_ID_FIELD}`,
-            `${INTERNAL_COLUMN_ID_NAME} as ${UnderlyingClosureTable.CLOSURE_TABLE_PARENT_ID_FIELD}`,
-            knex.raw('? as ??', [0, UnderlyingClosureTable.CLOSURE_TABLE_DEPTH_FIELD]),
+            `${INTERNAL_COLUMN_ID_NAME} as ${ClosureTable.CHILD_ID}`,
+            `${INTERNAL_COLUMN_ID_NAME} as ${ClosureTable.PARENT_ID}`,
+            knex.raw('? as ??', [0, ClosureTable.DEPTH]),
           ])
           .from(tableId),
       )
       .into(closureTable.name)
+      .onConflict()
+      .merge()
       .toQuery()
     this.#queries.push(insert)
+  }
+
+  tree(value: CoreTreeField): void {
+    const field = new TreeField(this.table, value)
+    field.parentFieldId = value.parentFieldId!.value
+    this.em.persist(field)
+
+    this.initClosureTable(value)
+  }
+
+  parent(value: CoreParentField): void {
+    const field = new ParentField(this.table, value)
+    field.treeFieldId = value.treeFieldId.value
+    this.em.persist(field)
+
+    this.initClosureTable(value)
   }
 }

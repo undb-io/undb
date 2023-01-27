@@ -1,9 +1,8 @@
 import type { IRecordRepository, IRecordSpec, Record as CoreRecord, TableSchemaIdMap } from '@egodb/core'
 import { WithRecordId, WithRecordTableId } from '@egodb/core'
-import type { EntityManager } from '@mikro-orm/better-sqlite'
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type { Option } from 'oxide.ts'
 import { Some } from 'oxide.ts'
-import type { RecordValueData } from '../../types/record-value-sqlite.type'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory'
 import { RecordSqliteMapper } from './record-sqlite.mapper'
@@ -16,13 +15,20 @@ export class RecordSqliteRepository implements IRecordRepository {
 
   async insert(record: CoreRecord, schema: TableSchemaIdMap): Promise<void> {
     await this.em.transactional(async (em) => {
-      const data: RecordValueData = {
+      const data: Record<string, Knex.Value> = {
         id: record.id.value,
       }
       const queries: string[] = []
 
       for (const [fieldId, value] of record.values) {
-        const visitor = new RecordValueSqliteMutationVisitor(record.tableId.value, fieldId, record.id.value, schema, em)
+        const visitor = new RecordValueSqliteMutationVisitor(
+          record.tableId.value,
+          fieldId,
+          record.id.value,
+          true,
+          schema,
+          em,
+        )
 
         value.accept(visitor)
 

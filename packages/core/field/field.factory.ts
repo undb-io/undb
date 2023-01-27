@@ -6,6 +6,7 @@ import { DateRangeField } from './date-range-field'
 import type { Field, ICreateFieldSchema } from './field.type'
 import { IdField } from './id-field'
 import { NumberField } from './number-field'
+import { ParentField } from './parent-field'
 import { ReferenceField } from './reference-field'
 import { SelectField } from './select-field'
 import { StringField } from './string-field'
@@ -51,6 +52,9 @@ export class FieldFactory {
       case 'tree': {
         return TreeField.create(input)
       }
+      case 'parent': {
+        return ParentField.create(input)
+      }
     }
   }
 
@@ -91,6 +95,9 @@ export class FieldFactory {
       }
       case 'tree': {
         return TreeField.unsafeCreate(input)
+      }
+      case 'parent': {
+        return ParentField.unsafeCreate(input)
       }
     }
   }

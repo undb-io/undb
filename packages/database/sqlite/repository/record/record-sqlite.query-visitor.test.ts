@@ -10,7 +10,7 @@ import {
   DateLessThanOrEqual,
   DateRangeEqual,
   DateRangeFieldValue,
-  IsRoot,
+  IsTreeRoot,
   NumberEqual,
   NumberFieldValue,
   NumberGreaterThan,
@@ -317,8 +317,8 @@ describe('RecordSqliteQueryVisitor', () => {
       })
     })
 
-    test('isRoot', () => {
-      visitor.isRoot(new IsRoot(treeFieldId, undefined))
+    test('isTreeRoot', () => {
+      visitor.isTreeRoot(new IsTreeRoot(treeFieldId, undefined))
 
       expect(visitor.query).toMatchInlineSnapshot(
         '"select * from `tabletest` where `deleted_at` is null and `id` not in (select `child_id` from `treefieldid_tabletest_closure_table` where `depth` > \'0\')"',
