@@ -18,15 +18,14 @@ import type {
   UpdatedAtFieldValue,
 } from '@egodb/core'
 import { INTERNAL_COLUMN_ID_NAME, ParentField, ReferenceField, TreeField } from '@egodb/core'
-import type { EntityManager } from '@mikro-orm/better-sqlite'
-import type { RecordValueData } from '../../types/record-value-sqlite.type'
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table'
 
 export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
-  #data: RecordValueData = {}
+  #data: Record<string, Knex.Value> = {}
   #jobs: Array<() => Promise<void>> = []
 
-  private setData(fieldId: string, value: any): void {
+  private setData(fieldId: string, value: Knex.Value): void {
     this.#data[fieldId] = value
   }
 
@@ -70,8 +69,8 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
     this.setData(this.fieldId, value.unpack())
   }
   dateRange(value: DateRangeFieldValue): void {
-    this.setData(this.fieldId + '_from', value.from.into())
-    this.setData(this.fieldId + '_to', value.to.into())
+    this.setData(this.fieldId + '_from', value.from.into(null))
+    this.setData(this.fieldId + '_to', value.to.into(null))
   }
   select(value: SelectFieldValue): void {
     this.setData(this.fieldId, value.unpack())
@@ -173,6 +172,24 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
     const treeFieldId = field.treeFieldId.value
     const treeField = this.schema.get(treeFieldId)
 
+    const getChildrenQuery = (parent: Knex.Value) =>
+      knex
+        .queryBuilder()
+        .select(ClosureTable.CHILD_ID)
+        .from(closure.name)
+        .where(ClosureTable.DEPTH, 1)
+        .andWhere(ClosureTable.PARENT_ID, parent)
+
+    const getUpdateJsonArrayQuery = (query: Knex.Value) =>
+      knex.raw(
+        `
+          CASE
+            WHEN ? IS NULL THEN null
+                           ELSE json_array(?)
+            END`,
+        [query, query],
+      )
+
     if (treeField instanceof TreeField && !this.isNew) {
       const parentQuery = knex
         .queryBuilder()
@@ -181,28 +198,12 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
         .where(ClosureTable.CHILD_ID, this.recordId)
         .andWhere(ClosureTable.DEPTH, 1)
 
-      const nestQuery = knex
-        .queryBuilder()
-        .select(ClosureTable.CHILD_ID)
-        .from(closure.name)
-        .where(ClosureTable.PARENT_ID, parentQuery)
-        .andWhere(ClosureTable.DEPTH, 1)
-        .andWhereNot(ClosureTable.CHILD_ID, this.recordId)
+      const nestQuery = getChildrenQuery(parentQuery).clone().andWhereNot(ClosureTable.CHILD_ID, this.recordId)
 
       const query = knex
         .queryBuilder()
         .table(this.tableId)
-        .update(
-          treeFieldId,
-          knex.raw(
-            `
-          CASE
-            WHEN ? IS NULL THEN null
-                           ELSE json_array(?)
-            END`,
-            [nestQuery, nestQuery],
-          ),
-        )
+        .update(treeFieldId, getUpdateJsonArrayQuery(nestQuery))
         .where(INTERNAL_COLUMN_ID_NAME, parentQuery)
         .toQuery()
 
@@ -210,5 +211,18 @@ export class RecordValueSqliteMutationVisitor implements IFieldValueVisitor {
     }
 
     this.addQueries(...closure.moveParent(knex, this.recordId, parentId))
+
+    if (treeField instanceof TreeField && !this.isNew && parentId) {
+      const childrenQuery = getChildrenQuery(parentId)
+
+      const update = knex
+        .queryBuilder()
+        .table(this.tableId)
+        .update(treeFieldId, getUpdateJsonArrayQuery(childrenQuery))
+        .where(INTERNAL_COLUMN_ID_NAME, parentId)
+        .toQuery()
+
+      this.addQueries(update)
+    }
   }
 }
