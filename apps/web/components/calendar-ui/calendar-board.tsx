@@ -1,5 +1,6 @@
 import { DndContext, rectIntersection } from '@dnd-kit/core'
-import type { ICalendarField, Records, Table } from '@egodb/core'
+import type { ICalendarField, Table } from '@egodb/core'
+import { RecordFactory } from '@egodb/core'
 import { Calendar, Grid } from '@egodb/ui'
 import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
@@ -9,12 +10,17 @@ import { Day } from './day'
 interface IProps extends ITableBaseProps {
   table: Table
   field: ICalendarField
-  records: Records
 }
 
-export const CalendarBoard: React.FC<IProps> = ({ table, field, records }) => {
+export const CalendarBoard: React.FC<IProps> = ({ table, field }) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   const onChange = () => {}
+
+  const listRecords = trpc.record.list.useQuery({
+    tableId: table.id.value,
+  })
+
+  const records = RecordFactory.fromQueryRecords(listRecords.data?.records ?? [], table.schema.toIdMap())
 
   const utils = trpc.useContext()
   const updateRecord = trpc.record.update.useMutation({

@@ -1,7 +1,7 @@
 import { DragOverlay, PointerSensor } from '@dnd-kit/core'
 import { DndContext, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-import type { DateField, Records } from '@egodb/core'
+import { RecordFactory } from '@egodb/core'
 import { Container, Group } from '@egodb/ui'
 import { useEffect, useState } from 'react'
 import { trpc } from '../../trpc'
@@ -11,7 +11,7 @@ import { groupBy } from '@fxts/core'
 import { KanbanCard } from './kanban-card'
 import { NODATE_STACK_ID } from './kanban.constants'
 import { useKanban } from './use-kanban'
-import type { Record as CoreRecord } from '@egodb/core'
+import type { Record as CoreRecord, DateField } from '@egodb/core'
 import { KANBAN_DATE_STACKS, RElAVANT_DATES } from './kanban-date.utils'
 import { addDays, isAfter, isBefore, isToday, isTomorrow, isYesterday, startOfDay } from 'date-fns'
 import { endOfDay } from 'date-fns/esm'
@@ -19,11 +19,16 @@ import type { DateFieldValue } from '@egodb/core'
 
 interface IProps extends ITableBaseProps {
   field: DateField
-  records: Records
 }
 
-export const KanbanDateBoard: React.FC<IProps> = ({ table, field, records }) => {
+export const KanbanDateBoard: React.FC<IProps> = ({ table, field }) => {
   const containers = KANBAN_DATE_STACKS
+
+  const listRecords = trpc.record.list.useQuery({
+    tableId: table.id.value,
+  })
+
+  const records = RecordFactory.fromQueryRecords(listRecords.data?.records ?? [], table.schema.toIdMap())
 
   const groupDateRecords = (): Record<string, CoreRecord[]> =>
     groupBy((record) => {

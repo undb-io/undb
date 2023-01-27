@@ -5,11 +5,7 @@ import type { ITableBaseProps } from '../table/table-base-props'
 import { KanbanBoard } from './kanban-board'
 import { SelectKanbanField } from './select-kanban-field'
 
-interface IProps extends ITableBaseProps {
-  records: Records
-}
-
-export const KanbanUI: React.FC<IProps> = ({ table, records }) => {
+export const KanbanUI: React.FC<ITableBaseProps> = ({ table }) => {
   const view = table.mustGetView()
   const fieldId = view.kanbanFieldId
 
@@ -24,5 +20,6 @@ export const KanbanUI: React.FC<IProps> = ({ table, records }) => {
   }
 
   const field = table.schema.getFieldById(fieldId.unwrap().value).unwrap()
-  return <KanbanBoard table={table} field={field as IKanbanField} records={records} />
+
+  return <KanbanBoard table={table} field={field as IKanbanField} />
 }

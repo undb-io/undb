@@ -8,7 +8,6 @@ import { KanbanSelectBoard } from './kanban-select-board'
 
 interface IProps extends ITableBaseProps {
   field: IKanbanField
-  records: Records
 }
 
 const Wrapper = styled.div`
@@ -16,11 +15,11 @@ const Wrapper = styled.div`
   height: 100%;
 `
 
-export const KanbanBoard: React.FC<IProps> = ({ field, table, records }) => {
+export const KanbanBoard: React.FC<IProps> = ({ field, table }) => {
   if (field.type === 'select') {
     return (
       <Wrapper>
-        <KanbanSelectBoard field={field} table={table} records={records} />
+        <KanbanSelectBoard field={field} table={table} />
       </Wrapper>
     )
   }
@@ -28,7 +27,7 @@ export const KanbanBoard: React.FC<IProps> = ({ field, table, records }) => {
   if (field.type === 'date') {
     return (
       <Wrapper>
-        <KanbanDateBoard field={field} table={table} records={records} />
+        <KanbanDateBoard field={field} table={table} />
       </Wrapper>
     )
   }
