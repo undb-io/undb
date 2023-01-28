@@ -12,6 +12,7 @@ import { Option } from 'oxide.ts'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory'
 import { RecordSqliteMapper } from './record-sqlite.mapper'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
+import type { RecordSqlite } from './record.type'
 
 export class RecordSqliteQueryModel implements IRecordQueryModel {
   constructor(protected readonly em: EntityManager) {}
@@ -38,7 +39,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
       }
     }
 
-    const data = await this.em.execute(qb)
+    const data = await this.em.execute<RecordSqlite[]>(qb)
 
     const records = data.map((d) => RecordSqliteMapper.toQuery(tableId, schema, d))
     return records
@@ -54,7 +55,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
 
     qb.select(columns.map((c) => c.name))
 
-    const data = await this.em.execute(qb.first())
+    const data = await this.em.execute<RecordSqlite>(qb.first())
 
     const record = RecordSqliteMapper.toQuery(tableId, schema, data)
     return Option(record)

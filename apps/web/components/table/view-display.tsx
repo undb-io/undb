@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import { CalendarUI } from '../calendar-ui/calendar-ui'
 import { KanbanUI } from '../kanban-ui/kanban-ui'
 import { EGOTable } from '../table-ui/table'
+import { TreeViewUI } from '../tree-view-ui/tree-view-ui'
 import type { ITableBaseProps } from './table-base-props'
 
 const Wrapper = styled.div`
@@ -29,7 +30,11 @@ export const ViewDisplay: React.FC<ITableBaseProps> = ({ table }) => {
   }
 
   if (displayType === 'tree') {
-    return <>hello</>
+    return (
+      <Wrapper>
+        <TreeViewUI table={table} />
+      </Wrapper>
+    )
   }
 
   return (

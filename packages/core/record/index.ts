@@ -1,5 +1,6 @@
 export * from './fixtures'
 export * from './record'
+export * from './record-tree-query-model'
 export * from './record.factory'
 export * from './record.query-model'
 export * from './record.repository'

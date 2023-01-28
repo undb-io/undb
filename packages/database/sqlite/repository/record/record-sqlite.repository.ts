@@ -9,6 +9,7 @@ import { RecordSqliteMapper } from './record-sqlite.mapper'
 import { RecordSqliteMutationVisitor } from './record-sqlite.mutation-visitor'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
 import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation-visitor'
+import type { RecordSqlite } from './record.type'
 
 export class RecordSqliteRepository implements IRecordRepository {
   constructor(protected readonly em: EntityManager) {}
@@ -55,7 +56,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     const qv = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
     spec.accept(qv)
 
-    const data = await this.em.execute(qb.first())
+    const data = await this.em.execute<RecordSqlite[]>(qb.first())
 
     const record = RecordSqliteMapper.toDomain(tableId, schema, data[0]).unwrap()
     return Some(record)

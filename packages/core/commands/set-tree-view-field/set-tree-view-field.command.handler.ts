@@ -10,8 +10,8 @@ export class SetTreeViewFieldCommandHandler implements ISetTreeViewFieldCommandH
   async execute(command: SetTreeViewFieldCommand): Promise<void> {
     const table = (await this.repo.findOneById(command.tableId)).unwrap()
 
-    // const spec = table.setTreeViewField(command)
+    const spec = table.setTreeViewField(command)
 
-    // await this.repo.updateOneById(table.id.value, spec)
+    await this.repo.updateOneById(table.id.value, spec)
   }
 }
