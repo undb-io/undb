@@ -1,10 +1,11 @@
 import type { IFieldValue, IQueryRecordSchema, Record, TableSchemaIdMap } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
 import type { Result } from 'oxide.ts'
+import type { RecordSqlite } from './record.type'
 
 export class RecordSqliteMapper {
   // TODO: record type
-  static toQuery(tableId: string, schema: TableSchemaIdMap, data: globalThis.Record<string, any>): IQueryRecordSchema {
+  static toQuery(tableId: string, schema: TableSchemaIdMap, data: RecordSqlite): IQueryRecordSchema {
     const { id, created_at, updated_at, auto_increment, ...rest } = data
     const values: globalThis.Record<string, IFieldValue> = {}
 
@@ -37,11 +38,7 @@ export class RecordSqliteMapper {
     }
   }
 
-  static toDomain(
-    tableId: string,
-    schema: TableSchemaIdMap,
-    data: globalThis.Record<string, any>,
-  ): Result<Record, string> {
+  static toDomain(tableId: string, schema: TableSchemaIdMap, data: RecordSqlite): Result<Record, string> {
     const qr = this.toQuery(tableId, schema, data)
     return RecordFactory.fromQuery(qr, schema)
   }
