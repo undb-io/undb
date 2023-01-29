@@ -21,7 +21,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const knex = this.em.getKnex()
     const qb = knex.queryBuilder()
 
-    const visitor = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
+    const visitor = new RecordSqliteQueryVisitor(tableId, '', schema, qb, knex)
     spec.accept(visitor).unwrap()
 
     const columns = UnderlyingColumnFactory.createMany([...schema.values()])
@@ -49,7 +49,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const knex = this.em.getKnex()
     const qb = knex.queryBuilder()
 
-    const visitor = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
+    const visitor = new RecordSqliteQueryVisitor(tableId, '', schema, qb, knex)
     spec.accept(visitor).unwrap()
     const columns = UnderlyingColumnFactory.createMany([...schema.values()])
 

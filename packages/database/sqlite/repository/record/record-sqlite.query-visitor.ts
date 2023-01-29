@@ -49,11 +49,16 @@ import { ClosureTable } from '../../underlying-table/underlying-foreign-table'
 export class RecordSqliteQueryVisitor implements IRecordVisitor {
   constructor(
     private readonly tableId: string,
+    private readonly alias: string = '',
     private readonly schema: TableSchemaIdMap,
     private qb: Knex.QueryBuilder,
     private knex: Knex,
   ) {
-    this.qb = qb.from(tableId).whereNull(INTERNAL_COLUMN_DELETED_AT_NAME)
+    if (alias) {
+      this.qb = qb.from(`${tableId} as ${alias}`).whereNull(`${alias}.${INTERNAL_COLUMN_DELETED_AT_NAME}`)
+    } else {
+      this.qb = qb.from(tableId).whereNull(INTERNAL_COLUMN_DELETED_AT_NAME)
+    }
   }
   get query() {
     return this.qb.toQuery()
@@ -63,7 +68,11 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     this.qb.where({ [INTERNAL_COLUMN_ID_NAME]: s.id.value })
   }
   tableIdEqual(s: WithRecordTableId): void {
-    this.qb.from(s.id.value)
+    if (this.alias) {
+      this.qb.from(`${s.id.value} as ${this.alias}`)
+    } else {
+      this.qb.from(s.id.value)
+    }
   }
   createdAt(s: WithRecordCreatedAt): void {
     this.qb.where({ [INTERNAL_COLUMN_CREATED_AT_NAME]: s.date.value })

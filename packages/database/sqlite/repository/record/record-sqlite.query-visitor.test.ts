@@ -47,7 +47,7 @@ describe('RecordSqliteQueryVisitor', () => {
   })
 
   beforeEach(() => {
-    visitor = new RecordSqliteQueryVisitor('tabletest', new Map(), knex.queryBuilder(), knex)
+    visitor = new RecordSqliteQueryVisitor('tabletest', '', new Map(), knex.queryBuilder(), knex)
     expect(visitor).not.to.be.undefined
     expect(visitor).to.be.instanceof(RecordSqliteQueryVisitor)
   })
@@ -295,6 +295,7 @@ describe('RecordSqliteQueryVisitor', () => {
     beforeEach(() => {
       visitor = new RecordSqliteQueryVisitor(
         'tabletest',
+        '',
         new Map([[treeFieldId, TreeField.create({ id: treeFieldId, name: 'tree', type: 'tree' })]]),
         knex.queryBuilder(),
         knex,
