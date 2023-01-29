@@ -216,9 +216,10 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       )
     }
 
-    this.qb.whereNotIn(INTERNAL_COLUMN_ID_NAME, subQuery)
+    const id = this.alias ? `${this.alias}.${INTERNAL_COLUMN_ID_NAME}` : INTERNAL_COLUMN_ID_NAME
+    this.qb.whereNotIn(id, subQuery)
     if (recordId) {
-      this.qb.andWhereNot(INTERNAL_COLUMN_ID_NAME, recordId)
+      this.qb.andWhereNot(id, recordId)
     }
   }
 
@@ -228,8 +229,9 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
 
     const closure = new ClosureTable(this.tableId, field)
 
+    const id = this.alias ? `${this.alias}.${INTERNAL_COLUMN_ID_NAME}` : INTERNAL_COLUMN_ID_NAME
     this.qb.whereNotIn(
-      INTERNAL_COLUMN_ID_NAME,
+      id,
       this.knex.queryBuilder().select(ClosureTable.CHILD_ID).from(closure.name).where(ClosureTable.DEPTH, '>', '0'),
     )
   }
@@ -240,7 +242,8 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
 
     const recordId = s.value
     if (recordId) {
-      this.qb.whereNot(INTERNAL_COLUMN_ID_NAME, recordId)
+      const id = this.alias ? `${this.alias}.${INTERNAL_COLUMN_ID_NAME}` : INTERNAL_COLUMN_ID_NAME
+      this.qb.whereNot(id, recordId)
     }
   }
 
