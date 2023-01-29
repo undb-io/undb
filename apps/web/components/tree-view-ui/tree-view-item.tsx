@@ -1,5 +1,5 @@
 import type { UniqueIdentifier } from '@dnd-kit/core'
-import type { Table } from '@egodb/core'
+import type { Table, TreeField } from '@egodb/core'
 import {
   ActionIcon,
   Badge,
@@ -7,17 +7,23 @@ import {
   Group,
   IconChevronDown,
   IconGripVertical,
+  IconPlus,
   IconTrashX,
   Text,
   useEgoUITheme,
 } from '@egodb/ui'
+import { useSetAtom } from 'jotai'
 import type { HTMLAttributes } from 'react'
 import React, { forwardRef } from 'react'
+import { unstable_batchedUpdates } from 'react-dom'
 import { useConfirmModal } from '../../hooks'
 import { trpc } from '../../trpc'
+import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
+import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
 
 export interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
   id: UniqueIdentifier
+  field: TreeField
   table: Table
   childCount?: number
   clone?: boolean
@@ -39,6 +45,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     {
       id,
       table,
+      field,
       childCount,
       clone,
       depth,
@@ -60,6 +67,9 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     const theme = useEgoUITheme()
 
     const utils = trpc.useContext()
+
+    const setOpened = useSetAtom(createRecordFormDrawerOpened)
+    const setCreateRecordInitialValue = useSetAtom(createRecordInitialValueAtom)
 
     const deleteRecord = trpc.record.delete.useMutation({
       onSuccess() {
@@ -123,19 +133,34 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
             <Text color="gray.7">{value}</Text>
             {clone && childCount && childCount > 1 ? <Badge radius="xl">{childCount}</Badge> : null}
           </Group>
-          {!clone && onRemove && (
+          <Group>
             <ActionIcon
-              onClick={confirm}
-              color="gray.3"
-              sx={(theme) => ({
-                ':hover': {
-                  color: theme.colors.red[4],
-                },
-              })}
+              onClick={() => {
+                unstable_batchedUpdates(() => {
+                  if (field.parentFieldId) {
+                    setCreateRecordInitialValue({ [field.parentFieldId.value]: id })
+                  }
+                  setOpened(true)
+                })
+              }}
+              color="gray.5"
             >
-              <IconTrashX size={14} />
+              <IconPlus size={14} />
             </ActionIcon>
-          )}
+            {!clone && onRemove && (
+              <ActionIcon
+                onClick={confirm}
+                color="gray.3"
+                sx={(theme) => ({
+                  ':hover': {
+                    color: theme.colors.red[4],
+                  },
+                })}
+              >
+                <IconTrashX size={14} />
+              </ActionIcon>
+            )}
+          </Group>
         </Group>
       </Box>
     )
