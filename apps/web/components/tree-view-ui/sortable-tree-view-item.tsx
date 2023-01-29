@@ -1,15 +1,10 @@
 import type { CSSProperties } from 'react'
 import React from 'react'
-import type { UniqueIdentifier } from '@dnd-kit/core'
 import type { AnimateLayoutChanges } from '@dnd-kit/sortable'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import type { Props as TreeItemProps } from './tree-view-item'
+import type { Props } from './tree-view-item'
 import { TreeItem } from './tree-view-item'
-
-interface Props extends TreeItemProps {
-  id: UniqueIdentifier
-}
 
 const animateLayoutChanges: AnimateLayoutChanges = ({ isSorting, wasDragging }) =>
   isSorting || wasDragging ? false : true
@@ -45,6 +40,7 @@ export function SortableTreeItem({ id, depth, ...props }: Props) {
         ...attributes,
         ...listeners,
       }}
+      id={id}
       {...props}
     />
   )

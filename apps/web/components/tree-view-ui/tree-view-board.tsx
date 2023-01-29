@@ -6,8 +6,6 @@ interface IProps {
   table: Table
   field: ITreeViewField
   indentationWidth?: number
-  indicator?: boolean
-  removable?: boolean
 }
 
 export const TreeViewBoard: React.FC<IProps> = ({ table, field, ...rest }) => {

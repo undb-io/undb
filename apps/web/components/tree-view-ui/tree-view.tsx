@@ -48,7 +48,6 @@ interface IProps {
   field: TreeField
   records: IQueryTreeRecords
   indentationWidth?: number
-  removable?: boolean
 }
 
 const measuring = {
@@ -87,7 +86,7 @@ const adjustTranslate: Modifier = ({ transform }) => {
   }
 }
 
-export const TreeView: React.FC<IProps> = ({ table, field, removable = false, indentationWidth = 50, records }) => {
+export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50, records }) => {
   const updateRecord = trpc.record.update.useMutation({})
 
   const [items, setItems] = useState<SortableRecordItems>(() => {
@@ -181,6 +180,7 @@ export const TreeView: React.FC<IProps> = ({ table, field, removable = false, in
       <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
         {flattenedItems.map(({ id, children, collapsed, depth }) => (
           <SortableTreeItem
+            table={table}
             key={id}
             id={id}
             value={id as string}
@@ -188,13 +188,14 @@ export const TreeView: React.FC<IProps> = ({ table, field, removable = false, in
             indentationWidth={indentationWidth}
             collapsed={Boolean(collapsed && children.length)}
             onCollapse={children.length ? () => handleCollapse(id) : undefined}
-            onRemove={removable ? () => handleRemove(id) : undefined}
+            onRemove={() => handleRemove(id)}
           />
         ))}
         {createPortal(
           <DragOverlay dropAnimation={dropAnimationConfig} modifiers={[adjustTranslate]}>
             {activeId && activeItem ? (
               <SortableTreeItem
+                table={table}
                 id={activeId}
                 depth={activeItem.depth}
                 clone

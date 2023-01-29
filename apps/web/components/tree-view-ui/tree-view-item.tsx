@@ -1,8 +1,24 @@
-import { ActionIcon, Badge, Box, Group, IconChevronDown, IconGripVertical, Text, useEgoUITheme } from '@egodb/ui'
+import type { UniqueIdentifier } from '@dnd-kit/core'
+import type { Table } from '@egodb/core'
+import {
+  ActionIcon,
+  Badge,
+  Box,
+  Group,
+  IconChevronDown,
+  IconGripVertical,
+  IconTrashX,
+  Text,
+  useEgoUITheme,
+} from '@egodb/ui'
 import type { HTMLAttributes } from 'react'
 import React, { forwardRef } from 'react'
+import { useConfirmModal } from '../../hooks'
+import { trpc } from '../../trpc'
 
 export interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
+  id: UniqueIdentifier
+  table: Table
   childCount?: number
   clone?: boolean
   collapsed?: boolean
@@ -21,6 +37,8 @@ export interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
 export const TreeItem = forwardRef<HTMLDivElement, Props>(
   (
     {
+      id,
+      table,
       childCount,
       clone,
       depth,
@@ -40,6 +58,22 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     ref,
   ) => {
     const theme = useEgoUITheme()
+
+    const utils = trpc.useContext()
+
+    const deleteRecord = trpc.record.delete.useMutation({
+      onSuccess() {
+        utils.record.tree.list.refetch()
+      },
+    })
+    const confirm = useConfirmModal({
+      onConfirm() {
+        deleteRecord.mutate({
+          tableId: table.id.value,
+          id: id as string,
+        })
+      },
+    })
 
     return (
       <Box
@@ -65,28 +99,43 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           sx={(theme) => ({
             border: '1px solid ' + theme.colors.gray[3],
           })}
+          position="apart"
         >
-          <Group spacing="xs">
-            <ActionIcon {...handleProps}>
-              <IconGripVertical size={16} />
-            </ActionIcon>
-            {onCollapse && (
-              <ActionIcon
-                sx={{
-                  svg: {
-                    transition: 'transform 250ms ease',
-                    transform: collapsed ? 'rotate(-90deg)' : 'unset',
-                  },
-                }}
-                onClick={onCollapse}
-              >
-                <IconChevronDown size="14" />
+          <Group>
+            <Group spacing="xs">
+              <ActionIcon {...handleProps}>
+                <IconGripVertical size={16} />
               </ActionIcon>
-            )}
+              {onCollapse && (
+                <ActionIcon
+                  sx={{
+                    svg: {
+                      transition: 'transform 250ms ease',
+                      transform: collapsed ? 'rotate(-90deg)' : 'unset',
+                    },
+                  }}
+                  onClick={onCollapse}
+                >
+                  <IconChevronDown size="14" />
+                </ActionIcon>
+              )}
+            </Group>
+            <Text color="gray.7">{value}</Text>
+            {clone && childCount && childCount > 1 ? <Badge radius="xl">{childCount}</Badge> : null}
           </Group>
-          <Text color="gray.7">{value}</Text>
-          {/* {!clone && onRemove && <Remove onClick={onRemove} />} */}
-          {clone && childCount && childCount > 1 ? <Badge radius="xl">{childCount}</Badge> : null}
+          {!clone && onRemove && (
+            <ActionIcon
+              onClick={confirm}
+              color="gray.3"
+              sx={(theme) => ({
+                ':hover': {
+                  color: theme.colors.red[4],
+                },
+              })}
+            >
+              <IconTrashX size={14} />
+            </ActionIcon>
+          )}
         </Group>
       </Box>
     )
