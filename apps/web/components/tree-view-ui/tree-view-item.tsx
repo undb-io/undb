@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Group, IconChevronDown, IconGripVertical, Text, useEgoUITheme } from '@egodb/ui'
+import { ActionIcon, Badge, Box, Group, IconChevronDown, IconGripVertical, Text, useEgoUITheme } from '@egodb/ui'
 import type { HTMLAttributes } from 'react'
 import React, { forwardRef } from 'react'
 
@@ -86,7 +86,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           </Group>
           <Text color="gray.7">{value}</Text>
           {/* {!clone && onRemove && <Remove onClick={onRemove} />} */}
-          {/* {clone && childCount && childCount > 1 ? <span className={styles.Count}>{childCount}</span> : null} */}
+          {clone && childCount && childCount > 1 ? <Badge radius="xl">{childCount}</Badge> : null}
         </Group>
       </Box>
     )
