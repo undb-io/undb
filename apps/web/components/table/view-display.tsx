@@ -2,7 +2,7 @@ import type { MantineTheme } from '@egodb/ui'
 import styled from '@emotion/styled'
 import { CalendarUI } from '../calendar-ui/calendar-ui'
 import { KanbanUI } from '../kanban-ui/kanban-ui'
-import { EGOTable } from '../table-ui/table'
+import { TableUI } from '../table-ui/table-ui'
 import { TreeViewUI } from '../tree-view-ui/tree-view-ui'
 import type { ITableBaseProps } from './table-base-props'
 
@@ -39,7 +39,7 @@ export const ViewDisplay: React.FC<ITableBaseProps> = ({ table }) => {
 
   return (
     <Wrapper>
-      <EGOTable table={table} />
+      <TableUI table={table} />
     </Wrapper>
   )
 }
