@@ -154,7 +154,5 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
     const field = new ParentField(this.table, value)
     field.treeFieldId = value.treeFieldId.value
     this.em.persist(field)
-
-    this.initClosureTable(value)
   }
 }
