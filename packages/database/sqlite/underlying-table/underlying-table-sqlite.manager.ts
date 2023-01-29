@@ -7,9 +7,9 @@ export class UnderlyingTableSqliteManager extends BaseEntityManager implements I
   async create(table: Table): Promise<void> {
     const queries = new UnderlyingTableBuilder(this.em).createTable(table).build()
 
-    this.addQueries(...queries)
-
-    await this.commit()
+    for (const query of queries) {
+      await this.em.execute(query)
+    }
   }
 
   async update(tableId: string, spec: ITableSpec): Promise<void> {
