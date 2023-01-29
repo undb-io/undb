@@ -21,9 +21,10 @@ import {
 } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import type { IQueryTreeRecord, IQueryTreeRecords } from '@egodb/core'
+import type { IQueryTreeRecord, IQueryTreeRecords, Table, TreeField } from '@egodb/core'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { trpc } from '../../trpc'
 import { sortableTreeKeyboardCoordinates } from './keyboard-coordinates'
 import { SortableTreeItem } from './sortable-tree-view-item'
 import type {
@@ -43,6 +44,8 @@ import {
 } from './tree-view-ui.util'
 
 interface IProps {
+  table: Table
+  field: TreeField
   records: IQueryTreeRecords
   indentationWidth?: number
   removable?: boolean
@@ -84,7 +87,9 @@ const adjustTranslate: Modifier = ({ transform }) => {
   }
 }
 
-export const TreeView: React.FC<IProps> = ({ removable = false, indentationWidth = 50, records }) => {
+export const TreeView: React.FC<IProps> = ({ table, field, removable = false, indentationWidth = 50, records }) => {
+  const updateRecord = trpc.record.update.useMutation({})
+
   const [items, setItems] = useState<SortableRecordItems>(() => {
     const mapper = (record: IQueryTreeRecord): SortableRecordItem => ({
       id: record.id,
@@ -245,6 +250,14 @@ export const TreeView: React.FC<IProps> = ({ removable = false, indentationWidth
       const newItems = buildTree(sortedItems)
 
       setItems(newItems)
+
+      if (field.parentFieldId) {
+        updateRecord.mutate({
+          tableId: table.id.value,
+          id: activeId as string,
+          value: [{ id: field.parentFieldId.value, value: parentId }],
+        })
+      }
     }
   }
 

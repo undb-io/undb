@@ -21,5 +21,5 @@ export const TreeViewBoard: React.FC<IProps> = ({ table, field, ...rest }) => {
     return null
   }
 
-  return <TreeView records={listRecords.data?.records ?? []} {...rest} />
+  return <TreeView table={table} field={field} records={listRecords.data?.records ?? []} {...rest} />
 }
