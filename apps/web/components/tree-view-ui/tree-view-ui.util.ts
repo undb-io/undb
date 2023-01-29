@@ -147,7 +147,9 @@ export function setProperty<T extends keyof SortableRecordItem>(
   property: T,
   setter: (value: SortableRecordItem[T]) => SortableRecordItem[T],
 ) {
-  for (const item of items) {
+  const cloned = JSON.parse(JSON.stringify(items))
+
+  for (const item of cloned) {
     if (item.id === id) {
       item[property] = setter(item[property])
       continue
@@ -158,7 +160,7 @@ export function setProperty<T extends keyof SortableRecordItem>(
     }
   }
 
-  return [...items]
+  return cloned
 }
 
 function countChildren(items: SortableRecordItem[], count = 0): number {

@@ -10,10 +10,9 @@ const horizontal: string[] = [KeyboardCode.Left, KeyboardCode.Right]
 
 export const sortableTreeKeyboardCoordinates: (
   context: SensorContext,
-  indicator: boolean,
   indentationWidth: number,
 ) => KeyboardCoordinateGetter =
-  (context, indicator, indentationWidth) =>
+  (context, indentationWidth) =>
   (event, { currentCoordinates, context: { active, over, collisionRect, droppableRects, droppableContainers } }) => {
     if (directions.includes(event.code)) {
       if (!active || !collisionRect) {
@@ -112,7 +111,7 @@ export const sortableTreeKeyboardCoordinates: (
             )
             const isBelow = newIndex > activeIndex
             const modifier = isBelow ? 1 : -1
-            const offset = indicator ? (collisionRect.height - activeRect.height) / 2 : 0
+            const offset = (collisionRect.height - activeRect.height) / 2
 
             const newCoordinates = {
               x: newRect.left + depth * indentationWidth,

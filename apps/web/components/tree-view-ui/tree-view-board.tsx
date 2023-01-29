@@ -5,7 +5,6 @@ import { TreeView } from './tree-view'
 interface IProps {
   table: Table
   field: ITreeViewField
-  collapsible?: boolean
   indentationWidth?: number
   indicator?: boolean
   removable?: boolean

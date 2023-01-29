@@ -8,6 +8,7 @@ import type {
   Modifier,
   UniqueIdentifier,
 } from '@dnd-kit/core'
+import { MouseSensor } from '@dnd-kit/core'
 import { defaultDropAnimation, MeasuringStrategy } from '@dnd-kit/core'
 import {
   closestCenter,
@@ -20,12 +21,17 @@ import {
 } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import type { IQueryTreeRecords } from '@egodb/core'
+import type { IQueryTreeRecord, IQueryTreeRecords } from '@egodb/core'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { sortableTreeKeyboardCoordinates } from './keyboard-coordinates'
 import { SortableTreeItem } from './sortable-tree-view-item'
-import type { FlattenedSortableRecord, SensorContext, SortableRecordItems } from './tree-view-ui.types'
+import type {
+  FlattenedSortableRecord,
+  SensorContext,
+  SortableRecordItem,
+  SortableRecordItems,
+} from './tree-view-ui.types'
 import {
   flattenTree,
   removeChildrenOf,
@@ -38,9 +44,7 @@ import {
 
 interface IProps {
   records: IQueryTreeRecords
-  collapsible?: boolean
   indentationWidth?: number
-  indicator?: boolean
   removable?: boolean
 }
 
@@ -80,14 +84,15 @@ const adjustTranslate: Modifier = ({ transform }) => {
   }
 }
 
-export const TreeView: React.FC<IProps> = ({
-  removable = false,
-  collapsible = false,
-  indicator = false,
-  indentationWidth = 50,
-  records: initialRecords,
-}) => {
-  const [records, setRecords] = useState<SortableRecordItems>(() => initialRecords)
+export const TreeView: React.FC<IProps> = ({ removable = false, indentationWidth = 50, records }) => {
+  const [items, setItems] = useState<SortableRecordItems>(() => {
+    const mapper = (record: IQueryTreeRecord): SortableRecordItem => ({
+      id: record.id,
+      children: record.children.map(mapper),
+    })
+
+    return records.map(mapper)
+  })
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [overId, setOverId] = useState<UniqueIdentifier | null>(null)
   const [offsetLeft, setOffsetLeft] = useState(0)
@@ -97,23 +102,32 @@ export const TreeView: React.FC<IProps> = ({
   } | null>(null)
 
   const flattenedItems = useMemo(() => {
-    const flattenedTree = flattenTree(records)
+    const flattenedTree = flattenTree(items)
     const collapsedItems = flattenedTree.reduce<string[]>(
       (acc, { children, collapsed, id }) => (collapsed && children.length ? ([...acc, id] as string[]) : acc),
       [],
     )
 
     return removeChildrenOf(flattenedTree, activeId ? [activeId, ...collapsedItems] : collapsedItems)
-  }, [activeId, records])
+  }, [activeId, items])
   const projected =
     activeId && overId ? getProjection(flattenedItems, activeId, overId, offsetLeft, indentationWidth) : null
   const sensorContext: SensorContext = useRef({
     items: flattenedItems,
     offset: offsetLeft,
   })
-  const [coordinateGetter] = useState(() => sortableTreeKeyboardCoordinates(sensorContext, indicator, indentationWidth))
+  const [coordinateGetter] = useState(() => sortableTreeKeyboardCoordinates(sensorContext, indentationWidth))
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter,
     }),
@@ -167,20 +181,19 @@ export const TreeView: React.FC<IProps> = ({
             value={id as string}
             depth={id === activeId && projected ? projected.depth : depth}
             indentationWidth={indentationWidth}
-            indicator={indicator}
             collapsed={Boolean(collapsed && children.length)}
-            onCollapse={collapsible && children.length ? () => handleCollapse(id) : undefined}
+            onCollapse={children.length ? () => handleCollapse(id) : undefined}
             onRemove={removable ? () => handleRemove(id) : undefined}
           />
         ))}
         {createPortal(
-          <DragOverlay dropAnimation={dropAnimationConfig} modifiers={indicator ? [adjustTranslate] : undefined}>
+          <DragOverlay dropAnimation={dropAnimationConfig} modifiers={[adjustTranslate]}>
             {activeId && activeItem ? (
               <SortableTreeItem
                 id={activeId}
                 depth={activeItem.depth}
                 clone
-                childCount={getChildCount(records, activeId) + 1}
+                childCount={getChildCount(items, activeId) + 1}
                 value={activeId.toString()}
                 indentationWidth={indentationWidth}
               />
@@ -221,7 +234,7 @@ export const TreeView: React.FC<IProps> = ({
 
     if (projected && over) {
       const { depth, parentId } = projected
-      const clonedItems: FlattenedSortableRecord[] = JSON.parse(JSON.stringify(flattenTree(records)))
+      const clonedItems: FlattenedSortableRecord[] = JSON.parse(JSON.stringify(flattenTree(items)))
       const overIndex = clonedItems.findIndex(({ id }) => id === over.id)
       const activeIndex = clonedItems.findIndex(({ id }) => id === active.id)
       const activeTreeItem = clonedItems[activeIndex]
@@ -231,7 +244,7 @@ export const TreeView: React.FC<IProps> = ({
       const sortedItems = arrayMove(clonedItems, activeIndex, overIndex)
       const newItems = buildTree(sortedItems)
 
-      setRecords(newItems)
+      setItems(newItems)
     }
   }
 
@@ -249,15 +262,11 @@ export const TreeView: React.FC<IProps> = ({
   }
 
   function handleRemove(id: UniqueIdentifier) {
-    setRecords((items) => removeItem(items, id))
+    setItems((items) => removeItem(items, id))
   }
 
   function handleCollapse(id: UniqueIdentifier) {
-    setRecords((items) =>
-      setProperty(items, id, 'collapsed', (value) => {
-        return !value
-      }),
-    )
+    setItems((items) => setProperty(items, id, 'collapsed', (value) => !value))
   }
 
   function getMovementAnnouncement(eventName: string, activeId: UniqueIdentifier, overId?: UniqueIdentifier) {
@@ -273,7 +282,7 @@ export const TreeView: React.FC<IProps> = ({
         }
       }
 
-      const clonedItems: FlattenedSortableRecord[] = JSON.parse(JSON.stringify(flattenTree(records)))
+      const clonedItems: FlattenedSortableRecord[] = JSON.parse(JSON.stringify(flattenTree(items)))
       const overIndex = clonedItems.findIndex(({ id }) => id === overId)
       const activeIndex = clonedItems.findIndex(({ id }) => id === activeId)
       const sortedItems = arrayMove(clonedItems, activeIndex, overIndex)
