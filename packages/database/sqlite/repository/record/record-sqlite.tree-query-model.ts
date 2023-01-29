@@ -1,6 +1,7 @@
 import type { IQueryTreeRecords, IRecordSpec, IRecordTreeQueryModel, TableSchemaIdMap, TreeField } from '@egodb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
+import { DELETED_AT_COLUMN_NAME } from '../../decorators/soft-delete.decorator'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory'
 import { ClosureTable } from '../../underlying-table/underlying-foreign-table'
 import { RecordSqliteMapper } from './record-sqlite.mapper'
@@ -24,16 +25,18 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
 
     const qb = knex
       .queryBuilder()
-      .from(tableId)
-      .leftOuterJoin(closureTable.name, function () {
+      .from(`${tableId} as t`)
+      .leftOuterJoin(`${closureTable.name} as c`, function () {
         this
           //
-          .on(`${tableId}.${INTERNAL_COLUMN_ID_NAME}`, '=', `${closureTable.name}.${ClosureTable.CHILD_ID}`)
-          .andOn(`${closureTable.name}.${ClosureTable.DEPTH}`, '=', knex.raw('?', [1]))
+          .on(`t.${INTERNAL_COLUMN_ID_NAME}`, '=', `c.${ClosureTable.CHILD_ID}`)
+          .andOn(`c.${ClosureTable.DEPTH}`, '=', knex.raw('?', [1]))
       })
-      .select([...columns.map((c) => c.name), `${closureTable.name}.${ClosureTable.PARENT_ID}`])
+      .leftOuterJoin(`${tableId} as t2`, `t2.${INTERNAL_COLUMN_ID_NAME}`, `c.${ClosureTable.PARENT_ID}`)
+      .whereNull(`t2.${DELETED_AT_COLUMN_NAME}`)
+      .select([...columns.map((c) => `t.${c.name}`), `c.${ClosureTable.PARENT_ID}`])
 
-    const visitor = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
+    const visitor = new RecordSqliteQueryVisitor(tableId, 't', schema, qb, knex)
     spec.accept(visitor).unwrap()
     const data = await this.em.execute<RecordSqliteWithParent[]>(qb)
     const records = data.map((r) => {
