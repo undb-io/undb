@@ -210,7 +210,7 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
       }
 
       // 3. update new parent children to add `this.recordId` as new child
-      if (treeField instanceof TreeField && !this.isNew && parentId) {
+      if (treeField instanceof TreeField && parentId) {
         const childrenQuery = getChildrenQuery(parentId)
         const children: string[] = (await this.em.execute(childrenQuery)).map((data) => data.child_id)
 

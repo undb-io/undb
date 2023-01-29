@@ -1,6 +1,6 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 
-type Job = () => Promise<void>
+export type Job = () => Promise<void>
 
 export abstract class BaseEntityManager {
   constructor(protected readonly em: EntityManager) {}
