@@ -22,6 +22,7 @@ export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess 
       reset()
       form.reset()
       utils.record.list.refetch()
+      utils.record.tree.list.refetch()
       onSuccess?.()
     },
   })

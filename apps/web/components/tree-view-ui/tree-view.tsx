@@ -85,18 +85,22 @@ const adjustTranslate: Modifier = ({ transform }) => {
     y: transform.y - 25,
   }
 }
+const mapper = (record: IQueryTreeRecord): SortableRecordItem => ({
+  id: record.id,
+  children: record.children.map(mapper),
+})
 
 export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50, records }) => {
   const updateRecord = trpc.record.update.useMutation({})
 
   const [items, setItems] = useState<SortableRecordItems>(() => {
-    const mapper = (record: IQueryTreeRecord): SortableRecordItem => ({
-      id: record.id,
-      children: record.children.map(mapper),
-    })
-
     return records.map(mapper)
   })
+
+  useEffect(() => {
+    setItems(records.map(mapper))
+  }, [records])
+
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [overId, setOverId] = useState<UniqueIdentifier | null>(null)
   const [offsetLeft, setOffsetLeft] = useState(0)
@@ -181,6 +185,7 @@ export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50
         {flattenedItems.map(({ id, children, collapsed, depth }) => (
           <SortableTreeItem
             table={table}
+            field={field}
             key={id}
             id={id}
             value={id as string}
@@ -196,6 +201,7 @@ export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50
             {activeId && activeItem ? (
               <SortableTreeItem
                 table={table}
+                field={field}
                 id={activeId}
                 depth={activeItem.depth}
                 clone
