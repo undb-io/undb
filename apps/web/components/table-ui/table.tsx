@@ -10,7 +10,6 @@ import {
 } from '@dnd-kit/core'
 import { restrictToHorizontalAxis } from '@dnd-kit/modifiers'
 import { SortableContext, horizontalListSortingStrategy, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-import { RecordFactory } from '@egodb/core'
 import type {
   DateFieldValue,
   SelectFieldValue,
@@ -49,17 +48,11 @@ const fieldHelper = createColumnHelper<TData>()
 const dateFormat = format('yyyy-MM-dd')
 const dateTimeFormat = format('yyyy-MM-dd hh:mm:ss')
 
-export const EGOTable: React.FC<IProps> = ({ table }) => {
+export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const view = table.mustGetView()
   const columnVisibility = view.getVisibility()
   const columnOrder = table.getFieldsOrder(view).order
   const [fields, handlers] = useListState(table.schema.fields)
-
-  const listRecords = trpc.record.list.useQuery({
-    tableId: table.id.value,
-  })
-
-  const records = RecordFactory.fromQueryRecords(listRecords.data?.records ?? [], table.schema.toIdMap())
 
   useLayoutEffect(() => {
     handlers.setState(table.schema.fields)
