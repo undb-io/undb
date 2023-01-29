@@ -14,8 +14,9 @@ export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
     onSuccess: () => {
       handler.close()
 
-      utils.table.get.refetch({ id: table.id.value })
-      utils.record.list.refetch({ tableId: table.id.value })
+      utils.table.get.refetch()
+      utils.record.list.refetch()
+      utils.record.tree.list.refetch()
     },
   })
 
