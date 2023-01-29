@@ -5,6 +5,7 @@ import type { Option } from 'oxide.ts'
 import { Some } from 'oxide.ts'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory'
+import type { Job } from '../base-entity-manager'
 import { RecordSqliteMapper } from './record-sqlite.mapper'
 import { RecordSqliteMutationVisitor } from './record-sqlite.mutation-visitor'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
@@ -20,6 +21,7 @@ export class RecordSqliteRepository implements IRecordRepository {
         id: record.id.value,
       }
       const queries: string[] = []
+      const jobs: Job[] = []
 
       for (const [fieldId, value] of record.values) {
         const visitor = new RecordValueSqliteMutationVisitor(
@@ -35,6 +37,7 @@ export class RecordSqliteRepository implements IRecordRepository {
 
         Object.assign(data, visitor.data)
         queries.push(...visitor.queries)
+        jobs.push(...visitor.jobs)
       }
 
       const qb = em.getKnex().insert(data).into(record.tableId.value)
@@ -42,6 +45,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       for (const query of queries) {
         await em.execute(query)
       }
+      await Promise.all(jobs.map((job) => job()))
     })
   }
 
