@@ -1,4 +1,4 @@
-import { Box } from '@egodb/ui'
+import { ActionIcon, Box, Flex, IconGripVertical } from '@egodb/ui'
 import type { HTMLAttributes } from 'react'
 import React, { forwardRef } from 'react'
 
@@ -42,9 +42,20 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     ref,
   ) => {
     return (
-      <Box ref={wrapperRef} pl={indentationWidth * depth} {...props}>
-        <div ref={ref} style={style}>
-          <div {...handleProps} />
+      <Box ref={wrapperRef} mb={-1} {...props} pl={indentationWidth * depth}>
+        <Flex
+          ref={ref}
+          style={style}
+          align="center"
+          py="xs"
+          px="md"
+          sx={(theme) => ({
+            border: '1px solid ' + theme.colors.gray[5],
+          })}
+        >
+          <ActionIcon {...handleProps}>
+            <IconGripVertical size={16} />
+          </ActionIcon>
           {/* {onCollapse && (
             <Action onClick={onCollapse} className={classNames(styles.Collapse, collapsed && styles.collapsed)}>
               {collapseIcon}
@@ -53,7 +64,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           <span>{value}</span>
           {/* {!clone && onRemove && <Remove onClick={onRemove} />} */}
           {/* {clone && childCount && childCount > 1 ? <span className={styles.Count}>{childCount}</span> : null} */}
-        </div>
+        </Flex>
       </Box>
     )
   },
