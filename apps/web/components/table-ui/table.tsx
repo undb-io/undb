@@ -10,43 +10,20 @@ import {
 } from '@dnd-kit/core'
 import { restrictToHorizontalAxis } from '@dnd-kit/modifiers'
 import { SortableContext, horizontalListSortingStrategy, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-import type {
-  DateFieldValue,
-  SelectFieldValue,
-  BoolFieldValue,
-  ReferenceFieldValue,
-  TreeFieldValue,
-  ParentFieldValue,
-} from '@egodb/core'
-import type { DateRangeFieldValue } from '@egodb/core'
-import {
-  ActionIcon,
-  Badge,
-  Checkbox,
-  Group,
-  IconColumnInsertRight,
-  openContextModal,
-  Table,
-  Tooltip,
-  useListState,
-} from '@egodb/ui'
+import { ActionIcon, IconColumnInsertRight, openContextModal, Table, Tooltip, useListState } from '@egodb/ui'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { format } from 'date-fns/fp'
 import { useLayoutEffect, useMemo } from 'react'
 import { ACTIONS_FIELD } from '../../constants/field.constants'
 import { CREATE_FIELD_MODAL_ID } from '../../modals'
 import { trpc } from '../../trpc'
-import { Option } from '../option/option'
-import { ReferenceItem } from '../reference/reference-item'
 import { RecordActions } from './actions'
 import type { IProps, TData } from './interface'
 import { Th } from './th'
 import { Tr } from './tr'
+import type { RecordAllValueType } from '@egodb/core'
+import { FieldValueFactory } from '../field-value/field-value.factory'
 
 const fieldHelper = createColumnHelper<TData>()
-
-const dateFormat = format('yyyy-MM-dd')
-const dateTimeFormat = format('yyyy-MM-dd hh:mm:ss')
 
 export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const view = table.mustGetView()
@@ -92,60 +69,21 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
         ),
         size: view.getFieldWidth(f.id.value),
         cell: (props) => {
+          let value: RecordAllValueType = undefined
+
           if (f.type === 'id') {
-            return (
-              <Badge color="gray.6" radius="xl" sx={{ textTransform: 'unset' }}>
-                {props.row.original.id}
-              </Badge>
-            )
+            value = props.row.original.id
+          } else if (f.type === 'created-at') {
+            value = props.row.original.created_at
+          } else if (f.type === 'updated-at') {
+            value = props.row.original.updated_at
+          } else if (f.type === 'auto-increment') {
+            value = props.row.original.auto_increment
+          } else {
+            value = props.getValue()
           }
-          if (f.type === 'created-at') {
-            const date = props.row.original.created_at
-            return date && dateTimeFormat(date)
-          }
-          if (f.type === 'updated-at') {
-            const date = props.row.original.updated_at
-            return date && dateTimeFormat(date)
-          }
-          if (f.type === 'auto-increment') {
-            const autoIncrement = props.row.original.auto_increment
-            return autoIncrement
-          }
-          if (f.type === 'select') {
-            const option = (props.getValue() as SelectFieldValue)?.getOption(f).into()
-            if (!option) return null
-            return <Option name={option.name.value} colorName={option.color.name} shade={option.color.shade} />
-          }
-          if (f.type === 'bool') {
-            return (
-              <Checkbox h="100%" lh={1} readOnly checked={(props.getValue() as BoolFieldValue)?.unpack() ?? false} />
-            )
-          }
-          if (f.type === 'date') {
-            const date = (props.getValue() as DateFieldValue)?.unpack()
-            return date && dateFormat(date)
-          }
-          if (f.type === 'date-range') {
-            const date = (props.getValue() as DateRangeFieldValue)?.unpack()
-            return date && `${dateFormat(date[0])} - ${dateFormat(date[1])}`
-          }
-          if (f.type === 'parent') {
-            const value = (props.getValue() as ParentFieldValue)?.unpack()
-            return value && <ReferenceItem value={value} />
-          }
-          if (f.type === 'reference' || f.type === 'tree') {
-            const values = (props.getValue() as ReferenceFieldValue | TreeFieldValue)?.unpack()
-            return (
-              values && (
-                <Group>
-                  {values.map((value) => (
-                    <ReferenceItem key={value} value={value} />
-                  ))}
-                </Group>
-              )
-            )
-          }
-          return props.getValue()?.unpack()?.toString()
+
+          return <FieldValueFactory field={f} value={value} />
         },
       }),
     )

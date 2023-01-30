@@ -1,4 +1,4 @@
-import type { Merge } from 'type-fest'
+import type { Merge, ValueOf } from 'type-fest'
 import { z } from 'zod'
 import type { FieldValue } from '../field'
 import {
@@ -39,3 +39,5 @@ export type IInternalRecordValues = z.infer<typeof internalRecordValues>
 export type RecordValueJSON = Record<string, FieldValue>
 
 export type RecordAllValues = Merge<RecordValueJSON, IInternalRecordValues>
+
+export type RecordAllValueType = ValueOf<RecordAllValues> | ValueOf<IInternalRecordValues>

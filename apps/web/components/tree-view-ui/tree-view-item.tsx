@@ -1,5 +1,5 @@
 import type { UniqueIdentifier } from '@dnd-kit/core'
-import type { Table, TreeField } from '@egodb/core'
+import type { RecordAllValues, Table, TreeField } from '@egodb/core'
 import {
   ActionIcon,
   Badge,
@@ -10,6 +10,7 @@ import {
   IconPlus,
   IconTrashX,
   Text,
+  Tooltip,
   useEgoUITheme,
 } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
@@ -20,9 +21,13 @@ import { useConfirmModal } from '../../hooks'
 import { trpc } from '../../trpc'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
+import { FieldIcon } from '../field-inputs/field-Icon'
+import { FieldValueFactory } from '../field-value/field-value.factory'
+import { RecordId } from '../field-value/record-id'
 
 export interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
   id: UniqueIdentifier
+  values: RecordAllValues
   field: TreeField
   table: Table
   childCount?: number
@@ -44,6 +49,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
   (
     {
       id,
+      values,
       table,
       field,
       childCount,
@@ -64,6 +70,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     },
     ref,
   ) => {
+    const schema = table.schema.toIdMap()
     const theme = useEgoUITheme()
 
     const utils = trpc.useContext()
@@ -130,7 +137,28 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
                 </ActionIcon>
               )}
             </Group>
-            <Text color="gray.7">{value}</Text>
+            <Group>
+              <RecordId id={id as string} />
+              {Object.entries(values).map(([fieldId, value]) => {
+                const field = schema.get(fieldId)
+                if (!field) return null
+
+                return (
+                  <Tooltip
+                    label={
+                      <Group spacing="xs">
+                        <FieldIcon type={field.type} />
+                        <Text>{field.name.value}</Text>
+                      </Group>
+                    }
+                  >
+                    <Group>
+                      <FieldValueFactory field={field} value={value} />
+                    </Group>
+                  </Tooltip>
+                )
+              })}
+            </Group>
             {clone && childCount && childCount > 1 ? <Badge radius="xl">{childCount}</Badge> : null}
           </Group>
           <Group>

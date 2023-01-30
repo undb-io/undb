@@ -5,7 +5,7 @@ import { Group } from '@egodb/ui'
 import { Loader } from '@egodb/ui'
 import { forwardRef, useState } from 'react'
 import { trpc } from '../../trpc'
-import { ReferenceItem } from '../reference/reference-item'
+import { ReferenceValue } from '../field-value/reference-value'
 import { FieldIcon } from './field-Icon'
 
 interface IProps extends Omit<SelectProps, 'data'> {
@@ -21,7 +21,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
 
 const ParentSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, ...others }: ItemProps, ref) => (
   <Group ref={ref} p="xs" {...others}>
-    <ReferenceItem value={value} />
+    <ReferenceValue value={value} />
   </Group>
 ))
 

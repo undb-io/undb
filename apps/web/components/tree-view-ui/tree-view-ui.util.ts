@@ -1,5 +1,6 @@
 import type { UniqueIdentifier } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
+import type { RecordAllValues } from '@egodb/core'
 import type { FlattenedSortableRecord, SortableRecordItem, SortableRecordItems } from './tree-view-ui.types'
 
 function flatten(
@@ -10,6 +11,24 @@ function flatten(
   return records.reduce<FlattenedSortableRecord[]>((acc, item, index) => {
     return [...acc, { ...item, parentId, depth, index }, ...flatten(item.children, item.id, depth + 1)]
   }, [])
+}
+
+export function cloneItem(item: SortableRecordItem): SortableRecordItem {
+  return {
+    id: item.id,
+    values: { ...item.values },
+    children: item.children.map(cloneItem),
+    collapsed: item.collapsed,
+  }
+}
+
+export function cloneFlattened(item: FlattenedSortableRecord): FlattenedSortableRecord {
+  return {
+    ...cloneItem(item),
+    depth: item.depth,
+    parentId: item.parentId,
+    index: item.index,
+  }
 }
 
 export function flattenTree(items: SortableRecordItems): FlattenedSortableRecord[] {
@@ -125,7 +144,7 @@ export function findItem(items: SortableRecordItem[], itemId: UniqueIdentifier) 
 }
 
 export function buildTree(flattenedItems: FlattenedSortableRecord[]): SortableRecordItems {
-  const root: SortableRecordItem = { id: 'root', children: [] }
+  const root: SortableRecordItem = { id: 'root', values: {} as RecordAllValues, children: [] }
   const nodes: Record<string, SortableRecordItem> = { [root.id]: root }
   const items = flattenedItems.map((item) => ({ ...item, children: [] }))
 
@@ -134,7 +153,7 @@ export function buildTree(flattenedItems: FlattenedSortableRecord[]): SortableRe
     const parentId = item.parentId ?? root.id
     const parent = nodes[parentId] ?? findItem(items, parentId)
 
-    nodes[id] = { id, children }
+    nodes[id] = { id, values: {} as RecordAllValues, children }
     parent.children.push(item)
   }
 
@@ -147,7 +166,7 @@ export function setProperty<T extends keyof SortableRecordItem>(
   property: T,
   setter: (value: SortableRecordItem[T]) => SortableRecordItem[T],
 ) {
-  const cloned = JSON.parse(JSON.stringify(items))
+  const cloned = items.map(cloneItem)
 
   for (const item of cloned) {
     if (item.id === id) {
