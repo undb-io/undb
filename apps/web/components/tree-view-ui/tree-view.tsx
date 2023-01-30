@@ -197,7 +197,6 @@ export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50
             values={values}
             key={id}
             id={id}
-            value={id as string}
             depth={id === activeId && projected ? projected.depth : depth}
             indentationWidth={indentationWidth}
             collapsed={Boolean(collapsed && children.length)}
@@ -216,7 +215,6 @@ export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50
                 depth={activeItem.depth}
                 clone
                 childCount={getChildCount(items, activeId) + 1}
-                value={activeId.toString()}
                 indentationWidth={indentationWidth}
               />
             ) : null}
@@ -325,7 +323,7 @@ export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50
 
       if (!previousItem) {
         const nextItem = sortedItems[overIndex + 1]
-        announcement = `${activeId} was ${movedVerb} before ${nextItem.id}.`
+        announcement = `${activeId} was ${movedVerb} before ${nextItem?.id}.`
       } else {
         if (projected.depth > previousItem.depth) {
           announcement = `${activeId} was ${nestedVerb} under ${previousItem.id}.`
