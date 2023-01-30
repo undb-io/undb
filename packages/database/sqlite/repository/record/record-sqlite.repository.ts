@@ -1,5 +1,6 @@
 import type { IRecordRepository, IRecordSpec, Record as CoreRecord, TableSchemaIdMap } from '@egodb/core'
-import { WithRecordId, WithRecordTableId } from '@egodb/core'
+import { ParentField, TreeField, WithRecordId, WithRecordTableId, WithRecordValues } from '@egodb/core'
+import { and } from '@egodb/domain'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type { Option } from 'oxide.ts'
 import { Some } from 'oxide.ts'
@@ -81,13 +82,31 @@ export class RecordSqliteRepository implements IRecordRepository {
     })
   }
 
-  async deleteOneById(tableId: string, id: string): Promise<void> {
-    const qb = this.em.getKnex().queryBuilder()
+  async deleteOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<void> {
+    await this.em.transactional(async (em) => {
+      const knex = em.getKnex()
+      const qb = knex.queryBuilder()
 
-    qb.from(tableId)
-      .update({ [INTERNAL_COLUMN_DELETED_AT_NAME]: new Date() })
-      .where({ id })
+      qb.from(tableId)
+        .update({ [INTERNAL_COLUMN_DELETED_AT_NAME]: new Date() })
+        .where({ id })
 
-    await this.em.execute(qb)
+      const mv = new RecordSqliteMutationVisitor(tableId, id, schema, em, qb)
+      const specs: WithRecordValues[] = []
+
+      for (const [fieldId, field] of schema.entries()) {
+        if (field instanceof TreeField || field instanceof ParentField) {
+          const spec = WithRecordValues.fromObject(schema, { [fieldId]: null })
+          specs.push(spec)
+        }
+      }
+
+      const spec = and(...specs).into()
+
+      spec?.accept(mv)
+
+      await em.execute(qb)
+      await mv.commit()
+    })
   }
 }
