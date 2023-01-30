@@ -1,4 +1,4 @@
 import type { RecordValueJSON } from '@egodb/core'
-import { atom } from 'jotai'
+import { atomWithReset } from 'jotai/utils'
 
-export const editRecordValuesAtom = atom<{ id: string; values: RecordValueJSON } | null>(null)
+export const editRecordValuesAtom = atomWithReset<{ id: string; values: RecordValueJSON } | null>(null)

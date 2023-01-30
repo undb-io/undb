@@ -20,6 +20,7 @@ import { unstable_batchedUpdates } from 'react-dom'
 import { useConfirmModal } from '../../hooks'
 import { trpc } from '../../trpc'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
+import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
 import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
 import { editRecordValuesAtom } from '../edit-record-form/edit-record-values.atom'
 import { FieldIcon } from '../field-inputs/field-Icon'
@@ -77,6 +78,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
 
     const utils = trpc.useContext()
 
+    const setCreateOpened = useSetAtom(createRecordFormDrawerOpened)
     const setCreateRecordInitialValue = useSetAtom(createRecordInitialValueAtom)
 
     const deleteRecord = trpc.record.delete.useMutation({
@@ -139,7 +141,10 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
                       transform: collapsed ? 'rotate(-90deg)' : 'unset',
                     },
                   }}
-                  onClick={onCollapse}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onCollapse()
+                  }}
                 >
                   <IconChevronDown size="14" />
                 </ActionIcon>
@@ -171,12 +176,13 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           </Group>
           <Group>
             <ActionIcon
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation()
                 unstable_batchedUpdates(() => {
                   if (field.parentFieldId) {
                     setCreateRecordInitialValue({ [field.parentFieldId.value]: id })
                   }
-                  setOpened(true)
+                  setCreateOpened(true)
                 })
               }}
               color="gray.5"
@@ -185,7 +191,10 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
             </ActionIcon>
             {!clone && onRemove && (
               <ActionIcon
-                onClick={confirm}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  confirm()
+                }}
                 color="gray.3"
                 sx={(theme) => ({
                   ':hover': {
