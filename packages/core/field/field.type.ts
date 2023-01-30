@@ -1,4 +1,3 @@
-import type { Option } from 'oxide.ts'
 import * as z from 'zod'
 import type { IReferenceFilterValue } from '../filter/reference.filter'
 import type { Options } from '../option/options'
@@ -35,7 +34,6 @@ import {
   createdAtFieldValue,
   createdAtTypeSchema,
 } from './created-at-field.type'
-import type { Currency } from './currency'
 import type { DateField } from './date-field'
 import type { DateFieldValue } from './date-field-value'
 import type { IDateFieldValue } from './date-field.type'
@@ -271,9 +269,7 @@ export type ICreatedAtField = IBaseField
 export type IUpdatedAtField = IBaseField
 export type IAutoIncrementField = IBaseField
 export type IStringField = IBaseField
-export interface INumberField extends IBaseField {
-  currency: Option<Currency>
-}
+export type INumberField = IBaseField
 
 export type IDateField = IBaseField
 export type IDateRangeField = IBaseField
