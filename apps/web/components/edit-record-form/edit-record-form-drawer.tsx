@@ -3,7 +3,7 @@ import { updateRecordSchema } from '@egodb/core'
 import type { IUpdateRecordValueSchema } from '@egodb/core'
 import { ActionIcon, Drawer, IconChevronLeft, IconChevronRight } from '@egodb/ui'
 import { useAtom } from 'jotai'
-import { useLayoutEffect } from 'react'
+import { useLayoutEffect, useMemo } from 'react'
 import { useConfirmModal } from '../../hooks'
 import { editRecordFormDrawerOpened } from './drawer-opened.atom'
 import { EditRecordForm } from './edit-record-form'
@@ -19,13 +19,16 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
   const [opened, setOpened] = useAtom(editRecordFormDrawerOpened)
   const [record, setRecord] = useAtom(editRecordValuesAtom)
 
-  const defaultValues: IUpdateRecordValueSchema = {
-    id: record?.id ?? '',
-    value: table.schema.nonSystemFields.map((field) => ({
-      id: field.id.value,
-      value: record?.values[field.id.value]?.unpack() ?? null,
-    })),
-  }
+  const defaultValues: IUpdateRecordValueSchema = useMemo(
+    () => ({
+      id: record?.id ?? '',
+      value: table.schema.nonSystemFields.map((field) => ({
+        id: field.id.value,
+        value: record?.values[field.id.value]?.unpack() ?? null,
+      })),
+    }),
+    [record],
+  )
 
   const form = useForm<IUpdateRecordValueSchema>({
     defaultValues,

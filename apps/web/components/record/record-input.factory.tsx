@@ -90,6 +90,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
             label={label}
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
+            value={form.field.value ?? ''}
           />
         )}
       />
@@ -107,6 +108,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
             label={label}
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
+            value={form.field.value ?? []}
           />
         )}
       />
@@ -125,6 +127,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
             recordId={recordId}
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
+            value={form.field.value ?? []}
           />
         )}
       />
@@ -143,6 +146,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
             recordId={recordId}
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
+            value={form.field.value ?? ''}
           />
         )}
       />
@@ -152,9 +156,17 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
   return (
     <Controller
       name={name}
-      render={(form) => (
-        <TextInput data-auto-focus icon={<FieldIcon type={field.type} />} label={label} {...form.field} />
-      )}
+      render={(form) => {
+        return (
+          <TextInput
+            data-auto-focus
+            icon={<FieldIcon type={field.type} />}
+            label={label}
+            {...form.field}
+            value={form.field.value ?? ''}
+          />
+        )
+      }}
     />
   )
 }

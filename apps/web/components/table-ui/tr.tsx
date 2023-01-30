@@ -1,5 +1,6 @@
 import { flexRender } from '@tanstack/react-table'
 import { useSetAtom } from 'jotai'
+import { unstable_batchedUpdates } from 'react-dom'
 import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
 import { editRecordValuesAtom } from '../edit-record-form/edit-record-values.atom'
 import type { TRow } from './interface'
@@ -15,8 +16,10 @@ export const Tr: React.FC<IProps> = ({ row, id }) => {
     <tr
       key={row.id}
       onClick={() => {
-        setEditRecordValues({ id, values: row.original })
-        setOpened(true)
+        unstable_batchedUpdates(() => {
+          setEditRecordValues({ id, values: row.original })
+          setOpened(true)
+        })
       }}
     >
       {row.getVisibleCells().map((cell) => (
