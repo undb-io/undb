@@ -1,7 +1,6 @@
 import { DragOverlay, PointerSensor } from '@dnd-kit/core'
 import { DndContext, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-import { RecordFactory, Records } from '@egodb/core'
 import {
   Badge,
   Box,
@@ -27,21 +26,17 @@ import { Option } from '../option/option'
 import type { IUpdateOptionModalProps } from '../update-option-form/update-option-modal'
 import { CREATE_OPTION_MODAL_ID, UDPATE_OPTION_MODAL_ID } from '../../modals'
 import type { SelectFieldValue } from '@egodb/core'
+import type { Records } from '@egodb/core'
 
 interface IProps extends ITableBaseProps {
   field: SelectField
+  records: Records
 }
 
-export const KanbanSelectBoard: React.FC<IProps> = ({ table, field }) => {
+export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) => {
   const [options, handlers] = useListState(field.options.options)
   const containers = [UNCATEGORIZED_OPTION_ID, ...options.map((o) => o.key.value)]
   const lastOption = options[options.length - 1]
-
-  const listRecords = trpc.record.list.useQuery({
-    tableId: table.id.value,
-  })
-
-  const records = RecordFactory.fromQueryRecords(listRecords.data?.records ?? [], table.schema.toIdMap())
 
   const groupOptionRecords = () =>
     groupBy((record) => {
