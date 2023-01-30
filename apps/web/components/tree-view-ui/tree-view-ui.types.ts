@@ -1,4 +1,5 @@
 import type { UniqueIdentifier } from '@dnd-kit/core'
+import type { RecordAllValues } from '@egodb/core'
 import type { MutableRefObject } from 'react'
 
 export type SensorContext = MutableRefObject<{
@@ -6,13 +7,12 @@ export type SensorContext = MutableRefObject<{
   offset: number
 }>
 
-interface TreeItem {
+export type SortableRecordItem = {
   id: UniqueIdentifier
-  children: TreeItem[]
+  children: SortableRecordItem[]
+  values: RecordAllValues
   collapsed?: boolean
 }
-
-export type SortableRecordItem = { id: UniqueIdentifier; children: TreeItem[]; collapsed?: boolean }
 export type SortableRecordItems = SortableRecordItem[]
 
 export interface FlattenedSortableRecord extends SortableRecordItem {

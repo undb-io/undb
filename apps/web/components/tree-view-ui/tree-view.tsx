@@ -22,6 +22,8 @@ import {
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import type { IQueryTreeRecord, IQueryTreeRecords, Table, TreeField } from '@egodb/core'
+import type { TableSchemaIdMap } from '@egodb/core'
+import { RecordFactory } from '@egodb/core'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { trpc } from '../../trpc'
@@ -85,20 +87,25 @@ const adjustTranslate: Modifier = ({ transform }) => {
     y: transform.y - 25,
   }
 }
-const mapper = (record: IQueryTreeRecord): SortableRecordItem => ({
-  id: record.id,
-  children: record.children.map(mapper),
-})
+const mapper = (schema: TableSchemaIdMap, record: IQueryTreeRecord): SortableRecordItem => {
+  const r = RecordFactory.fromQuery(record, schema).unwrap()
+  return {
+    id: r.id.value,
+    values: r.valuesJSON,
+    children: record.children.map((r) => mapper(schema, r)),
+  }
+}
 
 export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50, records }) => {
   const updateRecord = trpc.record.update.useMutation({})
+  const schema = table.schema.toIdMap()
 
   const [items, setItems] = useState<SortableRecordItems>(() => {
-    return records.map(mapper)
+    return records.map((r) => mapper(schema, r))
   })
 
   useEffect(() => {
-    setItems(records.map(mapper))
+    setItems(records.map((r) => mapper(schema, r)))
   }, [records])
 
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
@@ -182,10 +189,11 @@ export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50
       onDragCancel={handleDragCancel}
     >
       <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
-        {flattenedItems.map(({ id, children, collapsed, depth }) => (
+        {flattenedItems.map(({ id, children, values, collapsed, depth }) => (
           <SortableTreeItem
             table={table}
             field={field}
+            values={values}
             key={id}
             id={id}
             value={id as string}
@@ -203,6 +211,7 @@ export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50
                 table={table}
                 field={field}
                 id={activeId}
+                values={activeItem.values}
                 depth={activeItem.depth}
                 clone
                 childCount={getChildCount(items, activeId) + 1}
