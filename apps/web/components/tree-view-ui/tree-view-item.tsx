@@ -20,7 +20,8 @@ import { unstable_batchedUpdates } from 'react-dom'
 import { useConfirmModal } from '../../hooks'
 import { trpc } from '../../trpc'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
-import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
+import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
+import { editRecordValuesAtom } from '../edit-record-form/edit-record-values.atom'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldValueFactory } from '../field-value/field-value.factory'
 import { RecordId } from '../field-value/record-id'
@@ -39,7 +40,6 @@ export interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
   ghost?: boolean
   handleProps?: any
   indentationWidth: number
-  value: string
   onCollapse?(): void
   onRemove?(): void
   wrapperRef?(node: HTMLDivElement): void
@@ -64,7 +64,6 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       onCollapse,
       onRemove,
       style,
-      value,
       wrapperRef,
       ...props
     },
@@ -73,9 +72,11 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     const schema = table.schema.toIdMap()
     const theme = useEgoUITheme()
 
+    const setOpened = useSetAtom(editRecordFormDrawerOpened)
+    const setEditRecordValues = useSetAtom(editRecordValuesAtom)
+
     const utils = trpc.useContext()
 
-    const setOpened = useSetAtom(createRecordFormDrawerOpened)
     const setCreateRecordInitialValue = useSetAtom(createRecordInitialValueAtom)
 
     const deleteRecord = trpc.record.delete.useMutation({
@@ -99,7 +100,14 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         ml={-1}
         {...props}
         pl={indentationWidth * depth}
+        onClick={() => {
+          unstable_batchedUpdates(() => {
+            setEditRecordValues({ id: id as string, values })
+            setOpened(true)
+          })
+        }}
         sx={{
+          cursor: 'pointer',
           ':first-child': {
             marginTop: '-1px',
           },
@@ -120,7 +128,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         >
           <Group>
             <Group spacing="xs">
-              <ActionIcon {...handleProps}>
+              <ActionIcon {...handleProps} sx={{ cursor: 'grab' }}>
                 <IconGripVertical size={16} />
               </ActionIcon>
               {onCollapse && (
