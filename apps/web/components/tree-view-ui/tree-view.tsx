@@ -43,6 +43,7 @@ import {
   setProperty,
   getChildCount,
   buildTree,
+  cloneFlattened,
 } from './tree-view-ui.util'
 
 interface IProps {
@@ -255,7 +256,7 @@ export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50
 
     if (projected && over) {
       const { depth, parentId } = projected
-      const clonedItems: FlattenedSortableRecord[] = JSON.parse(JSON.stringify(flattenTree(items)))
+      const clonedItems: FlattenedSortableRecord[] = flattenTree(items).map(cloneFlattened)
       const overIndex = clonedItems.findIndex(({ id }) => id === over.id)
       const activeIndex = clonedItems.findIndex(({ id }) => id === active.id)
       const activeTreeItem = clonedItems[activeIndex]
@@ -311,7 +312,7 @@ export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50
         }
       }
 
-      const clonedItems: FlattenedSortableRecord[] = JSON.parse(JSON.stringify(flattenTree(items)))
+      const clonedItems: FlattenedSortableRecord[] = flattenTree(items).map(cloneFlattened)
       const overIndex = clonedItems.findIndex(({ id }) => id === overId)
       const activeIndex = clonedItems.findIndex(({ id }) => id === activeId)
       const sortedItems = arrayMove(clonedItems, activeIndex, overIndex)
