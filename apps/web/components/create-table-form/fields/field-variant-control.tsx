@@ -23,7 +23,8 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
         render={(props) => <SelectFieldControl onChange={(options) => props.field.onChange(options)} />}
       />
     )
-  } else if (type === 'tree') {
+  }
+  if (type === 'tree') {
     return (
       <Controller
         name={`schema.${index}.displayFieldIds`}

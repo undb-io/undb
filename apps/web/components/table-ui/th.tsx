@@ -66,7 +66,6 @@ export const Th: React.FC<IProps> = memo(({ header, tableId, field, column }) =>
         width: header.getSize(),
         transform: CSS.Translate.toString(transform),
         transition,
-        zIndex: 100,
         cursor: isDragging ? 'grabbing' : undefined,
       }}
     >

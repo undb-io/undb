@@ -9,6 +9,7 @@ import type { ITableBaseProps } from './table-base-props'
 const Wrapper = styled.div`
   background-color: ${({ theme }) => (theme as MantineTheme).white};
   height: 100%;
+  overflow-y: scroll;
 `
 
 export const ViewDisplay: React.FC<ITableBaseProps> = ({ table }) => {
