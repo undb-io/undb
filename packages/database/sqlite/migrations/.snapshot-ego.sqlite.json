@@ -159,6 +159,7 @@
             "auto-increment",
             "string",
             "email",
+            "color",
             "number",
             "date",
             "select",

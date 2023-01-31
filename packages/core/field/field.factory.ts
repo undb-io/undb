@@ -1,5 +1,6 @@
 import { AutoIncrementField } from './auto-increment-field'
 import { BoolField } from './bool-field'
+import { ColorField } from './color-field'
 import { CreatedAtField } from './created-at-field'
 import { DateField } from './date-field'
 import { DateRangeField } from './date-range-field'
@@ -34,6 +35,9 @@ export class FieldFactory {
       }
       case 'email': {
         return EmailField.create(input)
+      }
+      case 'color': {
+        return ColorField.create(input)
       }
       case 'number': {
         return NumberField.create(input)
@@ -81,6 +85,9 @@ export class FieldFactory {
       }
       case 'email': {
         return EmailField.unsafeCreate(input)
+      }
+      case 'color': {
+        return ColorField.unsafeCreate(input)
       }
       case 'number': {
         return NumberField.unsafeCreate(input)

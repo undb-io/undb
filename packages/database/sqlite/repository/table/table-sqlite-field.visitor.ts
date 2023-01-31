@@ -3,6 +3,7 @@
 import type {
   AutoIncrementField as CoreAutoIncrementField,
   BoolField as CoreBoolField,
+  ColorField as CoreColorField,
   CreatedAtField as CoreCreatedAtField,
   DateField as CoreDateField,
   DateRangeField as CoreDateRangeField,
@@ -24,6 +25,7 @@ import type { Table } from '../../entity'
 import {
   AutoIncrementField,
   BoolField,
+  ColorField,
   CreatedAtField,
   DateField,
   DateRangeField,
@@ -77,6 +79,12 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   email(value: CoreEmailField): void {
     const field = new EmailField(this.table, value)
+
+    this.em.persist(field)
+  }
+
+  color(value: CoreColorField): void {
+    const field = new ColorField(this.table, value)
 
     this.em.persist(field)
   }

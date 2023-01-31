@@ -1,5 +1,6 @@
 import type {
   BoolField,
+  ColorField,
   DateField,
   DateRangeField,
   EmailField,
@@ -93,6 +94,12 @@ export class UnderlyingStringColumn extends UnderlyingFieldColumn<StringField> {
 export class UnderlyingEmailColumn extends UnderlyingFieldColumn<EmailField> {
   build(tb: Knex.TableBuilder): void {
     tb.string(this.name)
+  }
+}
+
+export class UnderlyingColorColumn extends UnderlyingFieldColumn<ColorField> {
+  build(tb: Knex.TableBuilder): void {
+    tb.string(this.name, 10)
   }
 }
 

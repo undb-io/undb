@@ -3,6 +3,7 @@ import type { IUnderlyingColumn } from '../interfaces/underlying-column'
 import {
   UnderlyingAutoIncreamentColumn,
   UnderlyingBoolColumn,
+  UnderlyingColorColumn,
   UnderlyingCreatedAtColumn,
   UnderlyingDateColumn,
   UnderlyingDateRangeFromColumn,
@@ -33,6 +34,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingStringColumn(field)
       case 'email':
         return new UnderlyingEmailColumn(field)
+      case 'color':
+        return new UnderlyingColorColumn(field)
       case 'number':
         return new UnderlyingNumberColumn(field)
       case 'bool':
