@@ -4,7 +4,17 @@ import type {
   ParentField as CoreParentField,
   TreeField as CoreTreeField,
 } from '@egodb/core'
-import { Cascade, Collection, Entity, Enum, ManyToOne, OneToMany, PrimaryKey, Property } from '@mikro-orm/core'
+import {
+  ArrayType,
+  Cascade,
+  Collection,
+  Entity,
+  Enum,
+  ManyToOne,
+  OneToMany,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/core'
 import { BaseEntity } from './base'
 import { Option } from './option'
 import { Table } from './table'
@@ -100,10 +110,14 @@ export class TreeField extends Field {
   constructor(table: Table, field: CoreTreeField) {
     super(table, field)
     this.parentFieldId = field.parentFieldId!.value
+    this.displayFieldIds = field.displayFieldIds?.map((f) => f.value)
   }
 
   @Property()
-  parentFieldId!: string
+  parentFieldId: string
+
+  @Property({ type: ArrayType, nullable: true })
+  displayFieldIds?: string[]
 }
 
 @Entity({ discriminatorValue: 'parent' })

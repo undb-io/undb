@@ -39,7 +39,7 @@ export class TreeField extends BaseField<ITreeField> {
       name: fieldName,
       parentFieldId: FieldId.fromNullableString(input.parentFieldId),
       displayFields: input.displayFieldIds
-        ? new DisplayFields(input.displayFieldIds.map(FieldId.fromString))
+        ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
         : undefined,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
     })
@@ -51,7 +51,7 @@ export class TreeField extends BaseField<ITreeField> {
       name: FieldName.unsafaCreate(input.name),
       parentFieldId: FieldId.fromNullableString(input.parentFieldId),
       displayFields: input.displayFieldIds
-        ? new DisplayFields(input.displayFieldIds.map(FieldId.fromString))
+        ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
         : undefined,
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
     })

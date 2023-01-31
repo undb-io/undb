@@ -33,11 +33,13 @@ export class TableSqliteMapper {
       } satisfies ISelectFieldQuerySchema
     }
     if (entity.type === 'tree') {
+      const field = entity as EntityDTO<TreeField>
       return {
         id: entity.id,
         name: entity.name,
         type: 'tree',
-        parentFieldId: (entity as EntityDTO<TreeField>).parentFieldId,
+        parentFieldId: field.parentFieldId,
+        displayFieldId: field.displayFieldIds,
       } satisfies ITreeFieldQuerySchema
     }
     if (entity.type === 'parent') {

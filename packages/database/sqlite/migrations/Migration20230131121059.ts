@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230131053847 extends Migration {
+export class Migration20230131121059 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, primary key (`id`));',
@@ -8,7 +8,7 @@ export class Migration20230131053847 extends Migration {
     this.addSql('create index `table_deleted_at_index` on `table` (`deleted_at`);')
 
     this.addSql(
-      "create table `field` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `name` text not null, `system` text not null default false, `type` text check (`type` in ('id', 'created-at', 'updated-at', 'auto-increment', 'string', 'email', 'color', 'number', 'date', 'select', 'bool', 'date-range', 'reference', 'tree', 'parent')) not null, `parent_field_id` text null, `tree_field_id` text null, constraint `field_table_id_foreign` foreign key(`table_id`) references `table`(`id`) on delete cascade on update cascade, primary key (`id`));",
+      "create table `field` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `name` text not null, `system` text not null default false, `type` text check (`type` in ('id', 'created-at', 'updated-at', 'auto-increment', 'string', 'email', 'color', 'number', 'date', 'select', 'bool', 'date-range', 'reference', 'tree', 'parent')) not null, `parent_field_id` text null, `display_field_ids` text null, `tree_field_id` text null, constraint `field_table_id_foreign` foreign key(`table_id`) references `table`(`id`) on delete cascade on update cascade, primary key (`id`));",
     )
     this.addSql('create index `field_deleted_at_index` on `field` (`deleted_at`);')
     this.addSql('create index `field_table_id_index` on `field` (`table_id`);')
