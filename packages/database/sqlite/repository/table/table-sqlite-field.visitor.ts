@@ -6,6 +6,7 @@ import type {
   CreatedAtField as CoreCreatedAtField,
   DateField as CoreDateField,
   DateRangeField as CoreDateRangeField,
+  EmailField as CoreEmailField,
   IdField as CoreIdField,
   IFieldVisitor,
   NumberField as CoreNumberField,
@@ -26,6 +27,7 @@ import {
   CreatedAtField,
   DateField,
   DateRangeField,
+  EmailField,
   IdField,
   NumberField,
   Option,
@@ -43,7 +45,6 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
   constructor(private readonly table: Table, em: EntityManager) {
     super(em)
   }
-
   id(value: CoreIdField): void {
     const field = new IdField(this.table, value)
 
@@ -70,6 +71,12 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   string(value: CoreStringField): void {
     const field = new StringField(this.table, value)
+
+    this.em.persist(field)
+  }
+
+  email(value: CoreEmailField): void {
+    const field = new EmailField(this.table, value)
 
     this.em.persist(field)
   }

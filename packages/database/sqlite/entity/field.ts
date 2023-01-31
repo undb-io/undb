@@ -33,6 +33,7 @@ export abstract class Field extends BaseEntity {
       'updated-at',
       'auto-increment',
       'string',
+      'email',
       'number',
       'date',
       'select',
@@ -60,6 +61,9 @@ export class AutoIncrementField extends Field {}
 
 @Entity({ discriminatorValue: 'string' })
 export class StringField extends Field {}
+
+@Entity({ discriminatorValue: 'email' })
+export class EmailField extends Field {}
 
 @Entity({ discriminatorValue: 'number' })
 export class NumberField extends Field {}
@@ -100,6 +104,7 @@ export type IField =
   | UpdatedAtField
   | AutoIncrementField
   | StringField
+  | EmailField
   | NumberField
   | BoolField
   | DateField
@@ -115,6 +120,7 @@ export const fieldEntities = [
   UpdatedAtField,
   AutoIncrementField,
   StringField,
+  EmailField,
   NumberField,
   BoolField,
   DateField,

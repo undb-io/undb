@@ -3,6 +3,7 @@ import type { BoolFieldValue } from './bool-field-value'
 import type { CreatedAtFieldValue } from './created-at-field-value'
 import type { DateFieldValue } from './date-field-value'
 import type { DateRangeFieldValue } from './date-range-field-value'
+import type { EmailFieldValue } from './email-field-value'
 import type { IdFieldValue } from './id-field-value'
 import type { NumberFieldValue } from './number-field-value'
 import type { ParentFieldValue } from './parent-field-value'
@@ -18,6 +19,7 @@ export interface IFieldValueVisitor {
   updatedAt(value: UpdatedAtFieldValue): void
   autoIncrement(value: AutoIncrementFieldValue): void
   string(value: StringFieldValue): void
+  email(value: EmailFieldValue): void
   number(value: NumberFieldValue): void
   bool(value: BoolFieldValue): void
   date(value: DateFieldValue): void

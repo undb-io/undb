@@ -9,6 +9,7 @@ import {
   IconKey,
   IconLetterT,
   IconListCheck,
+  IconMail,
   IconQuestionMark,
   IconRelationManyToMany,
   IconSortAscendingNumbers,
@@ -27,6 +28,8 @@ export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16, color }) => {
       return <IconKey size={size} color={color} />
     case 'string':
       return <IconLetterT size={size} color={color} />
+    case 'email':
+      return <IconMail size={size} color={color} />
     case 'number':
       return <Icon123 size={size} color={color} />
     case 'date':

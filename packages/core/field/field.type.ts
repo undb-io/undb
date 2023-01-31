@@ -56,6 +56,17 @@ import {
   dateRangeFieldValue,
   dateRangeTypeSchema,
 } from './date-range-field.type'
+import type { EmailField } from './email-field'
+import type { EmailFieldValue } from './email-field-value'
+import type { IEmailFieldValue } from './email-field.type'
+import {
+  createEmailFieldSchema,
+  createEmailFieldValue,
+  createEmailFieldValue_internal,
+  emailFieldQuerySchema,
+  emailFieldValue,
+  emailTypeSchema,
+} from './email-field.type'
 import { FIELD_TYPE_KEY } from './field.constant'
 import type { IdField } from './id-field'
 import type { IdFieldValue } from './id-field-value'
@@ -153,6 +164,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createUpdatedAtFieldSchema,
   createAutoIncrementFieldSchema,
   createStringFieldSchema,
+  createEmailFieldSchema,
   createNumberFieldSchema,
   createDateFieldSchema,
   createSelectFieldSchema,
@@ -170,6 +182,7 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   updatedAtFieldQuerySchema,
   autoIncrementFieldQuerySchema,
   stringFieldQuerySchema,
+  emailFieldQuerySchema,
   numberFieldQuerySchema,
   dateFieldQuerySchema,
   selectFieldQuerySchema,
@@ -189,6 +202,7 @@ export const fieldTypes = z.union([
   updatedAtTypeSchema,
   autoIncrementTypeSchema,
   stringTypeSchema,
+  emailTypeSchema,
   numberTypeSchema,
   dateTypeSchema,
   selectTypeSchema,
@@ -206,6 +220,7 @@ export const fieldValue = z.union([
   updatedAtFieldValue,
   autoIncrementFieldValue,
   stringFieldValue,
+  emailFieldValue,
   numberFieldValue,
   dateFieldValue,
   dateRangeFieldValue,
@@ -223,6 +238,7 @@ export const createFieldValueSchema = z.union([
   createUpdatedAtFieldValue,
   createAutoIncrementFieldValue,
   createStringFieldValue,
+  createEmailFieldValue,
   createNumberFieldValue,
   createDateFieldValue,
   createDateRangeFieldValue,
@@ -243,6 +259,7 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createUpdatedAtFieldValue_internal,
   createAutoIncrementFieldValue_internal,
   createStringFieldValue_internal,
+  createEmailFieldValue_internal,
   createNumberFieldValue_internal,
   createDateFieldValue_internal,
   createSelectFieldValue_internal,
@@ -269,6 +286,7 @@ export type ICreatedAtField = IBaseField
 export type IUpdatedAtField = IBaseField
 export type IAutoIncrementField = IBaseField
 export type IStringField = IBaseField
+export type IEmailField = IBaseField
 export type INumberField = IBaseField
 
 export type IDateField = IBaseField
@@ -287,6 +305,7 @@ export type SystemField = IdField | CreatedAtField | UpdatedAtField | AutoIncrem
 export type NoneSystemField =
   | StringField
   | NumberField
+  | EmailField
   | DateField
   | SelectField
   | BoolField
@@ -303,6 +322,7 @@ export type FieldValue =
   | UpdatedAtFieldValue
   | AutoIncrementFieldValue
   | StringFieldValue
+  | EmailFieldValue
   | NumberFieldValue
   | DateFieldValue
   | SelectFieldValue
@@ -320,6 +340,7 @@ export type UnpackedFieldValue =
   | IUpdatedAtFieldValue
   | IAutoIncrementFieldValue
   | IStringFieldValue
+  | IEmailFieldValue
   | INumberFieldValue
   | IDateFieldValue
   | ISelectFieldValue

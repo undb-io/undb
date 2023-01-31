@@ -6,6 +6,7 @@ import type {
   CreatedAtFieldValue,
   DateFieldValue,
   DateRangeFieldValue,
+  EmailFieldValue,
   IdFieldValue,
   IFieldValueVisitor,
   NumberFieldValue,
@@ -50,6 +51,9 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
   autoIncrement(value: AutoIncrementFieldValue): void {}
 
   string(value: StringFieldValue): void {
+    this.setData(this.fieldId, value.unpack())
+  }
+  email(value: EmailFieldValue): void {
     this.setData(this.fieldId, value.unpack())
   }
   number(value: NumberFieldValue): void {
