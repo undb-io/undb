@@ -25,6 +25,7 @@ export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel })
     onSuccess() {
       reset()
       utils.record.list.refetch()
+      utils.record.tree.list.refetch()
       onSuccess?.()
     },
   })
