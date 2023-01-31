@@ -3,6 +3,7 @@ import { BoolField } from './bool-field'
 import { CreatedAtField } from './created-at-field'
 import { DateField } from './date-field'
 import { DateRangeField } from './date-range-field'
+import { EmailField } from './email-field'
 import type { Field, ICreateFieldSchema } from './field.type'
 import { IdField } from './id-field'
 import { NumberField } from './number-field'
@@ -30,6 +31,9 @@ export class FieldFactory {
       }
       case 'string': {
         return StringField.create(input)
+      }
+      case 'email': {
+        return EmailField.create(input)
       }
       case 'number': {
         return NumberField.create(input)
@@ -74,6 +78,9 @@ export class FieldFactory {
       }
       case 'string': {
         return StringField.unsafeCreate(input)
+      }
+      case 'email': {
+        return EmailField.unsafeCreate(input)
       }
       case 'number': {
         return NumberField.unsafeCreate(input)

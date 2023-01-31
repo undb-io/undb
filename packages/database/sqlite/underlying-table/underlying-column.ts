@@ -2,6 +2,7 @@ import type {
   BoolField,
   DateField,
   DateRangeField,
+  EmailField,
   Field,
   NumberField,
   ParentField,
@@ -84,6 +85,12 @@ abstract class UnderlyingFieldColumn<F extends Field> implements IUnderlyingColu
 }
 
 export class UnderlyingStringColumn extends UnderlyingFieldColumn<StringField> {
+  build(tb: Knex.TableBuilder): void {
+    tb.string(this.name)
+  }
+}
+
+export class UnderlyingEmailColumn extends UnderlyingFieldColumn<EmailField> {
   build(tb: Knex.TableBuilder): void {
     tb.string(this.name)
   }

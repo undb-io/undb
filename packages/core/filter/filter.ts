@@ -39,6 +39,7 @@ import type { IDateRangeFilter } from './date-range.filter'
 import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter'
 import type { IDateFilter } from './date.filter'
 import { dateFilter, dateFilterValue } from './date.filter'
+import { emailFilter, emailFilterValue } from './email.filter'
 import { idFilter, idFilterValue } from './id.filter'
 import type { INumberFilter } from './number.filter'
 import { numberFilter, numberFilterValue } from './number.filter'
@@ -54,6 +55,7 @@ import {
   createdAtFilterOperators,
   dateFilterOperators,
   dateRangeFilterOperators,
+  emailFilterOperators,
   idFilterOperators,
   numberFilterOperators,
   parentFilterOperators,
@@ -80,6 +82,7 @@ export const filterValue = z.union([
   updatedAtFilterValue,
   autoIncrementFilterValue,
   stringFilterValue,
+  emailFilterValue,
   numberFilterValue,
   dateFilterValue,
   dateRangeFilterValue,
@@ -97,6 +100,7 @@ export const operaotrs = z.union([
   updatedAtFilterOperators,
   autoIncrementFilterOperators,
   stringFilterOperators,
+  emailFilterOperators,
   numberFilterOperators,
   dateFilterOperators,
   dateRangeFilterOperators,
@@ -114,6 +118,7 @@ const filter = z.discriminatedUnion('type', [
   updatedAtFilter,
   autoIncrementFilter,
   stringFilter,
+  emailFilter,
   numberFilter,
   dateFilter,
   dateRangeFilter,

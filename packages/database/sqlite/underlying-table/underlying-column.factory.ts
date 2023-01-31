@@ -7,6 +7,7 @@ import {
   UnderlyingDateColumn,
   UnderlyingDateRangeFromColumn,
   UnderlyingDateRangeToFromColumn,
+  UnderlyingEmailColumn,
   UnderlyingIdColumn,
   UnderlyingNumberColumn,
   UnderlyingParentColumn,
@@ -30,6 +31,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingAutoIncreamentColumn()
       case 'string':
         return new UnderlyingStringColumn(field)
+      case 'email':
+        return new UnderlyingEmailColumn(field)
       case 'number':
         return new UnderlyingNumberColumn(field)
       case 'bool':

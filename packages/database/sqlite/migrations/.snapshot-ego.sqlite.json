@@ -158,6 +158,7 @@
             "updated-at",
             "auto-increment",
             "string",
+            "email",
             "number",
             "date",
             "select",
