@@ -6,13 +6,17 @@ import type { IFieldVisitor } from './field.visitor'
 import { ParentField } from './parent-field'
 import { TreeFieldValue } from './tree-field-value'
 import type { ICreateTreeFieldSchema, ICreateTreeFieldValue, TreeFieldType } from './tree-field.type'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
+import { DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
 export class TreeField extends BaseField<ITreeField> {
   type: TreeFieldType = 'tree'
 
   get parentFieldId() {
     return this.props.parentFieldId
+  }
+
+  get displayFieldIds() {
+    return this.props.displayFields?.ids
   }
 
   createParentField(): ParentField {
@@ -34,6 +38,9 @@ export class TreeField extends BaseField<ITreeField> {
       id: FieldId.fromNullableString(input.id),
       name: fieldName,
       parentFieldId: FieldId.fromNullableString(input.parentFieldId),
+      displayFields: input.displayFieldIds
+        ? new DisplayFields(input.displayFieldIds.map(FieldId.fromString))
+        : undefined,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
     })
   }
@@ -43,6 +50,9 @@ export class TreeField extends BaseField<ITreeField> {
       id: FieldId.fromNullableString(input.id),
       name: FieldName.unsafaCreate(input.name),
       parentFieldId: FieldId.fromNullableString(input.parentFieldId),
+      displayFields: input.displayFieldIds
+        ? new DisplayFields(input.displayFieldIds.map(FieldId.fromString))
+        : undefined,
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
     })
   }

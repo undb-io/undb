@@ -166,7 +166,7 @@ import {
   updatedAtFieldValue,
   updatedAtTypeSchema,
 } from './updated-at-field.type'
-import type { FieldId, FieldName, FieldValueConstraints } from './value-objects'
+import type { DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects'
 import { fieldNameSchema } from './value-objects/field-name.schema'
 
 export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
@@ -315,7 +315,7 @@ export type ISelectField = IBaseField & {
 
 export type IBoolField = IBaseField
 export type IReferenceField = IBaseField
-export type ITreeField = IBaseField & { parentFieldId?: FieldId }
+export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?: DisplayFields }
 export type IParentField = IBaseField & { treeFieldId: FieldId }
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField | AutoIncrementField
