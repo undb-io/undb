@@ -41,7 +41,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
         render={(form) => (
           <ColorInput
             {...form.field}
-            icon={<FieldIcon type={field.type} color={form.field.value} />}
+            icon={<FieldIcon type={field.type} color={form.field.value ?? 'gray'} />}
             label={label}
             onChange={(color) => form.field.onChange(color)}
             value={form.field.value ?? ''}
