@@ -1,5 +1,6 @@
 import type {
   BoolFieldValue,
+  ColorFieldValue,
   DateFieldValue,
   DateRangeFieldValue,
   Field,
@@ -19,6 +20,7 @@ import { RecordId } from './record-id'
 import { Group, Text } from '@egodb/ui'
 import type { FieldValue } from '@egodb/core'
 import { Option } from '../option/option'
+import { ColorValue } from './color-value'
 
 export const FieldValueFactory: React.FC<{
   field: Field
@@ -53,6 +55,11 @@ export const FieldValueFactory: React.FC<{
     case 'bool': {
       const b = (value as BoolFieldValue | undefined)?.unpack() ?? false
       return <BoolValue value={b} />
+    }
+    case 'color': {
+      const color = (value as ColorFieldValue | undefined)?.unpack() || undefined
+      if (!color) return null
+      return <ColorValue value={color} />
     }
     case 'parent': {
       const reference = (value as ParentFieldValue | undefined)?.unpack() || undefined

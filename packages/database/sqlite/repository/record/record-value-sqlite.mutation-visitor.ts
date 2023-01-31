@@ -3,6 +3,7 @@
 import type {
   AutoIncrementFieldValue,
   BoolFieldValue,
+  ColorFieldValue,
   CreatedAtFieldValue,
   DateFieldValue,
   DateRangeFieldValue,
@@ -54,6 +55,9 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
     this.setData(this.fieldId, value.unpack())
   }
   email(value: EmailFieldValue): void {
+    this.setData(this.fieldId, value.unpack())
+  }
+  color(value: ColorFieldValue): void {
     this.setData(this.fieldId, value.unpack())
   }
   number(value: NumberFieldValue): void {

@@ -34,6 +34,7 @@ export abstract class Field extends BaseEntity {
       'auto-increment',
       'string',
       'email',
+      'color',
       'number',
       'date',
       'select',
@@ -64,6 +65,9 @@ export class StringField extends Field {}
 
 @Entity({ discriminatorValue: 'email' })
 export class EmailField extends Field {}
+
+@Entity({ discriminatorValue: 'color' })
+export class ColorField extends Field {}
 
 @Entity({ discriminatorValue: 'number' })
 export class NumberField extends Field {}
@@ -105,6 +109,7 @@ export type IField =
   | AutoIncrementField
   | StringField
   | EmailField
+  | ColorField
   | NumberField
   | BoolField
   | DateField
@@ -121,6 +126,7 @@ export const fieldEntities = [
   AutoIncrementField,
   StringField,
   EmailField,
+  ColorField,
   NumberField,
   BoolField,
   DateField,

@@ -1,5 +1,6 @@
 import type { AutoIncrementField } from './auto-increment-field'
 import type { BoolField } from './bool-field'
+import type { ColorField } from './color-field'
 import type { CreatedAtField } from './created-at-field'
 import type { DateField } from './date-field'
 import type { DateRangeField } from './date-range-field'
@@ -20,6 +21,7 @@ export interface IFieldVisitor {
   autoIncrement(value: AutoIncrementField): void
   string(value: StringField): void
   email(value: EmailField): void
+  color(value: ColorField): void
   number(value: NumberField): void
   bool(value: BoolField): void
   date(value: DateField): void

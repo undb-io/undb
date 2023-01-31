@@ -3,6 +3,7 @@ import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
 import { DateFieldValue, NumberFieldValue, SelectFieldValue, StringFieldValue } from '../field'
+import { colorFieldValue } from '../field/color-field.type'
 import type { ISelectFieldValue } from '../field/select-field.type'
 import {
   BoolIsFalse,
@@ -31,6 +32,7 @@ import type { IAutoIncrementFilter } from './auto-increment.filter'
 import { autoIncrementFilter, autoIncrementFilterValue } from './auto-increment.filter'
 import type { IBoolFilter } from './bool.filter'
 import { boolFilter, boolFilterValue } from './bool.filter'
+import { colorFilter } from './color.filter'
 import type { IConjunction } from './conjunction'
 import { conjunctions } from './conjunction'
 import type { ICreatedAtFilter } from './created-at.filter'
@@ -52,6 +54,7 @@ import {
   $neq,
   autoIncrementFilterOperators,
   boolFilterOperators,
+  colorFilterOperators,
   createdAtFilterOperators,
   dateFilterOperators,
   dateRangeFilterOperators,
@@ -83,6 +86,7 @@ export const filterValue = z.union([
   autoIncrementFilterValue,
   stringFilterValue,
   emailFilterValue,
+  colorFieldValue,
   numberFilterValue,
   dateFilterValue,
   dateRangeFilterValue,
@@ -101,6 +105,7 @@ export const operaotrs = z.union([
   autoIncrementFilterOperators,
   stringFilterOperators,
   emailFilterOperators,
+  colorFilterOperators,
   numberFilterOperators,
   dateFilterOperators,
   dateRangeFilterOperators,
@@ -119,6 +124,7 @@ const filter = z.discriminatedUnion('type', [
   autoIncrementFilter,
   stringFilter,
   emailFilter,
+  colorFilter,
   numberFilter,
   dateFilter,
   dateRangeFilter,
