@@ -1,4 +1,9 @@
-import type { Field as CoreField, IFieldType } from '@egodb/core'
+import type {
+  Field as CoreField,
+  IFieldType,
+  ParentField as CoreParentField,
+  TreeField as CoreTreeField,
+} from '@egodb/core'
 import { Cascade, Collection, Entity, Enum, ManyToOne, OneToMany, PrimaryKey, Property } from '@mikro-orm/core'
 import { BaseEntity } from './base'
 import { Option } from './option'
@@ -92,12 +97,22 @@ export class ReferenceField extends Field {}
 
 @Entity({ discriminatorValue: 'tree' })
 export class TreeField extends Field {
+  constructor(table: Table, field: CoreTreeField) {
+    super(table, field)
+    this.parentFieldId = field.parentFieldId!.value
+  }
+
   @Property()
   parentFieldId!: string
 }
 
 @Entity({ discriminatorValue: 'parent' })
 export class ParentField extends Field {
+  constructor(table: Table, field: CoreParentField) {
+    super(table, field)
+    this.treeFieldId = field.treeFieldId.value
+  }
+
   @Property()
   treeFieldId!: string
 }
