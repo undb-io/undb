@@ -3,7 +3,7 @@ import type { IReferenceFilterValue } from '../filter/reference.filter'
 import type { Options } from '../option/options'
 import type { AutoIncrementField } from './auto-increment-field'
 import type { AutoIncrementFieldValue } from './auto-increment-field-value'
-import type { IAutoIncrementFieldValue } from './auto-increment-field.type'
+import type { IAutoIncrementFieldValue, IAutoIncrementQueryValue } from './auto-increment-field.type'
 import {
   autoIncrementFieldQuerySchema,
   autoIncrementFieldValue,
@@ -14,7 +14,7 @@ import {
 } from './auto-increment-field.type'
 import type { BoolField } from './bool-field'
 import type { BoolFieldValue } from './bool-field-value'
-import type { IBoolFieldValue } from './bool-field.type'
+import type { IBoolFieldQueryValue, IBoolFieldValue } from './bool-field.type'
 import {
   boolFieldQuerySchema,
   boolFieldValue,
@@ -25,7 +25,7 @@ import {
 } from './bool-field.type'
 import type { ColorField } from './color-field'
 import type { ColorFieldValue } from './color-field-value'
-import type { IColorFieldValue } from './color-field.type'
+import type { IColorFieldQueryValue, IColorFieldValue } from './color-field.type'
 import {
   colorFieldQuerySchema,
   colorFieldValue,
@@ -36,7 +36,7 @@ import {
 } from './color-field.type'
 import type { CreatedAtField } from './created-at-field'
 import type { CreatedAtFieldValue } from './created-at-field-value'
-import type { ICreatedAtFieldValue } from './created-at-field.type'
+import type { ICreatedAtFieldQueryValue, ICreatedAtFieldValue } from './created-at-field.type'
 import {
   createCreatedAtFieldSchema,
   createCreatedAtFieldValue,
@@ -47,7 +47,7 @@ import {
 } from './created-at-field.type'
 import type { DateField } from './date-field'
 import type { DateFieldValue } from './date-field-value'
-import type { IDateFieldValue } from './date-field.type'
+import type { IDateFieldQueryValue, IDateFieldValue } from './date-field.type'
 import {
   createDateFieldSchema,
   createDateFieldValue,
@@ -58,7 +58,7 @@ import {
 } from './date-field.type'
 import type { DateRangeField } from './date-range-field'
 import type { DateRangeFieldValue } from './date-range-field-value'
-import type { IDateRangeFieldValue } from './date-range-field.type'
+import type { IDateRangeFieldQueryValue, IDateRangeFieldValue } from './date-range-field.type'
 import {
   createDateRangeFieldSchema,
   createDateRangeFieldValue,
@@ -69,7 +69,7 @@ import {
 } from './date-range-field.type'
 import type { EmailField } from './email-field'
 import type { EmailFieldValue } from './email-field-value'
-import type { IEmailFieldValue } from './email-field.type'
+import type { IEmailFieldQueryValue, IEmailFieldValue } from './email-field.type'
 import {
   createEmailFieldSchema,
   createEmailFieldValue,
@@ -81,7 +81,7 @@ import {
 import { FIELD_TYPE_KEY } from './field.constant'
 import type { IdField } from './id-field'
 import type { IdFieldValue } from './id-field-value'
-import type { IIdFieldValue } from './id-field.type'
+import type { IIdFieldQueryValue, IIdFieldValue } from './id-field.type'
 import {
   createIdFieldSchema,
   createIdFieldValue,
@@ -92,7 +92,7 @@ import {
 } from './id-field.type'
 import type { NumberField } from './number-field'
 import type { NumberFieldValue } from './number-field-value'
-import type { INumberFieldValue } from './number-field.type'
+import type { INumberFieldQueryValue, INumberFieldValue } from './number-field.type'
 import {
   createNumberFieldSchema,
   createNumberFieldValue,
@@ -103,7 +103,7 @@ import {
 } from './number-field.type'
 import type { ParentField } from './parent-field'
 import type { ParentFieldValue } from './parent-field-value'
-import type { IParentFieldValue } from './parent-field.type'
+import type { IParentFieldQueryValue, IParentFieldValue } from './parent-field.type'
 import {
   createParentFieldSchema,
   createParentFieldValue,
@@ -114,6 +114,7 @@ import {
 } from './parent-field.type'
 import type { ReferenceField } from './reference-field'
 import type { ReferenceFieldValue } from './reference-field-value'
+import type { IReferenceFieldQueryValue } from './reference-field.type'
 import {
   createReferenceFieldSchema,
   createReferenceFieldValue,
@@ -124,7 +125,7 @@ import {
 } from './reference-field.type'
 import type { SelectField } from './select-field'
 import type { SelectFieldValue } from './select-field-value'
-import type { ISelectFieldValue } from './select-field.type'
+import type { ISelectFieldQueryValue, ISelectFieldValue } from './select-field.type'
 import {
   createSelectFieldSchema,
   createSelectFieldValue,
@@ -135,7 +136,7 @@ import {
 } from './select-field.type'
 import type { StringField } from './string-field'
 import type { StringFieldValue } from './string-field-value'
-import type { IStringFieldValue } from './string-field.type'
+import type { IStringFieldQueryValue, IStringFieldValue } from './string-field.type'
 import {
   createStringFieldSchema,
   createStringFieldValue,
@@ -146,7 +147,7 @@ import {
 } from './string-field.type'
 import type { TreeField } from './tree-field'
 import type { TreeFieldValue } from './tree-field-value'
-import type { ITreeFieldValue } from './tree-field.type'
+import type { ITreeFieldQueryValue, ITreeFieldValue } from './tree-field.type'
 import {
   createTreeFieldSchema,
   createTreeFieldValue,
@@ -157,7 +158,7 @@ import {
 } from './tree-field.type'
 import type { UpdatedAtField } from './updated-at-field'
 import type { UpdatedAtFieldValue } from './updated-at-field-value'
-import type { IUpdatedAtFieldValue } from './updated-at-field.type'
+import type { IUpdatedAtFieldQueryValue, IUpdatedAtFieldValue } from './updated-at-field.type'
 import {
   createUpdatedAtFieldSchema,
   createUpdatedAtFieldValue,
@@ -370,6 +371,23 @@ export type UnpackedFieldValue =
   | IReferenceFilterValue
   | ITreeFieldValue
   | IParentFieldValue
+
+export type IFieldQueryValue =
+  | ITreeFieldQueryValue
+  | IAutoIncrementQueryValue
+  | IBoolFieldQueryValue
+  | IColorFieldQueryValue
+  | ICreatedAtFieldQueryValue
+  | IDateFieldQueryValue
+  | IDateRangeFieldQueryValue
+  | IEmailFieldQueryValue
+  | IIdFieldQueryValue
+  | INumberFieldQueryValue
+  | IParentFieldQueryValue
+  | IReferenceFieldQueryValue
+  | ISelectFieldQueryValue
+  | IStringFieldQueryValue
+  | IUpdatedAtFieldQueryValue
 
 export const INTERNAL_COLUMN_ID_NAME = 'id'
 export const INTERNAL_INCREAMENT_ID_NAME = 'auto_increment'

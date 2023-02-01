@@ -32,6 +32,9 @@ export type IDateRangeFieldValue = z.infer<typeof dateRangeFieldValue>
 export const createDateRangeFieldValue = dateRangeFieldValue
 export type ICreateDateRangeFieldValue = z.infer<typeof createDateRangeFieldValue>
 
+export const dateRangeFieldQueryValue = dateRangeFieldValue
+export type IDateRangeFieldQueryValue = z.infer<typeof dateRangeFieldQueryValue>
+
 export const createDateRangeFieldValue_internal = z
   .object({ value: createDateRangeFieldValue })
   .merge(dateRangeTypeObjectSchema)

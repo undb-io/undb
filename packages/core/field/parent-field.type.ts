@@ -25,6 +25,9 @@ export type IParentFieldValue = z.infer<typeof parentFieldValue>
 export const createParentFieldValue = parentFieldValue
 export type ICreateParentFieldValue = z.infer<typeof createParentFieldValue>
 
+export const parentFieldQueryValue = parentFieldValue
+export type IParentFieldQueryValue = z.infer<typeof parentFieldQueryValue>
+
 export const createParentFieldValue_internal = z
   .object({ value: createParentFieldValue })
   .merge(parentTypeObjectSchema)

@@ -20,6 +20,9 @@ export type INumberFieldValue = z.infer<typeof numberFieldValue>
 export const createNumberFieldValue = numberFieldValue
 export type ICreateNumberFieldValue = z.infer<typeof createNumberFieldValue>
 
+export const numberFieldQueryValue = numberFieldValue
+export type INumberFieldQueryValue = z.infer<typeof numberFieldQueryValue>
+
 export const createNumberFieldValue_internal = z
   .object({ value: createNumberFieldValue })
   .merge(numberTypeObjectSchema)

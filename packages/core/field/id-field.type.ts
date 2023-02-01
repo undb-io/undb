@@ -19,6 +19,9 @@ export type IIdFieldValue = z.infer<typeof idFieldValue>
 export const createIdFieldValue = idFieldValue
 export type ICreateIdFieldValue = z.infer<typeof createIdFieldValue>
 
+export const idFieldQueryValue = idFieldValue
+export type IIdFieldQueryValue = z.infer<typeof idFieldQueryValue>
+
 export const createIdFieldValue_internal = z
   .object({ value: createIdFieldValue })
   .merge(idTypeObjectSchema)

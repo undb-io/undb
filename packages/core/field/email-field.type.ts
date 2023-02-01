@@ -18,6 +18,9 @@ export type IEmailFieldValue = z.infer<typeof emailFieldValue>
 export const createEmailFieldValue = emailFieldValue
 export type ICreateEmailFieldValue = z.infer<typeof createEmailFieldValue>
 
+export const emailFieldQueryValue = emailFieldValue
+export type IEmailFieldQueryValue = z.infer<typeof emailFieldQueryValue>
+
 export const createEmailFieldValue_internal = z
   .object({ value: createEmailFieldValue })
   .merge(emailTypeObjectSchema)
