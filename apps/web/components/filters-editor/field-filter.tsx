@@ -1,4 +1,4 @@
-import type { TableSchema, Field, IFieldValue, IOperator, IFilter } from '@egodb/core'
+import type { TableSchema, Field, IOperator, IFilter } from '@egodb/core'
 import { Group, ActionIcon, IconGripVertical, IconTrash } from '@egodb/ui'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
@@ -8,6 +8,7 @@ import { FilterValueInput } from './filter-value-input'
 import { OperatorSelector } from './operator-selector'
 import { getFilterId } from './get-filter-id'
 import type { Table } from '@egodb/core'
+import type { IFieldQueryValue } from '@egodb/core'
 
 interface IProps {
   table: Table
@@ -25,7 +26,7 @@ export const FieldFilter: React.FC<IProps> = ({ table, schema, value, onChange, 
 
   const [selectedField, setField] = useState<Field | null>(field)
   const [operator, setOperator] = useState<IOperator | null>(value?.operator ?? null)
-  const [fieldValue, setValue] = useState<IFieldValue | null>((value?.value as never) ?? null)
+  const [fieldValue, setValue] = useState<IFieldQueryValue | null>((value?.value as never) ?? null)
 
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: getFilterId(value, index) })
   const style = {

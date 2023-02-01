@@ -1,6 +1,6 @@
 import { ValueObject } from '@egodb/domain'
 import { Option } from 'oxide.ts'
-import type { FieldValue, ICreateFieldsSchema_internal, IFieldValue, UnpackedFieldValue } from '../../field'
+import type { FieldValue, ICreateFieldsSchema_internal, IFieldQueryValue, UnpackedFieldValue } from '../../field'
 import { TreeField } from '../../field'
 import type { TableSchemaIdMap } from '../../value-objects'
 import type { RecordValueJSON } from '../record.schema'
@@ -45,7 +45,7 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   }
 
   toObject() {
-    const obj: Record<string, IFieldValue> = {}
+    const obj: Record<string, IFieldQueryValue> = {}
     for (const [key, value] of this.value) {
       obj[key] = value.unpack()
     }

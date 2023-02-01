@@ -3,10 +3,9 @@ import type { IReferenceFilterValue } from '../filter/reference.filter'
 import type { Options } from '../option/options'
 import type { AutoIncrementField } from './auto-increment-field'
 import type { AutoIncrementFieldValue } from './auto-increment-field-value'
-import type { IAutoIncrementFieldValue, IAutoIncrementQueryValue } from './auto-increment-field.type'
+import type { IAutoIncrementFieldValue } from './auto-increment-field.type'
 import {
   autoIncrementFieldQuerySchema,
-  autoIncrementFieldValue,
   autoIncrementQueryValue,
   autoIncrementTypeSchema,
   createAutoIncrementFieldSchema,
@@ -15,11 +14,10 @@ import {
 } from './auto-increment-field.type'
 import type { BoolField } from './bool-field'
 import type { BoolFieldValue } from './bool-field-value'
-import type { IBoolFieldQueryValue, IBoolFieldValue } from './bool-field.type'
+import type { IBoolFieldValue } from './bool-field.type'
 import {
   boolFieldQuerySchema,
   boolFieldQueryValue,
-  boolFieldValue,
   boolTypeSchema,
   createBoolFieldSchema,
   createBoolFieldValue,
@@ -27,11 +25,10 @@ import {
 } from './bool-field.type'
 import type { ColorField } from './color-field'
 import type { ColorFieldValue } from './color-field-value'
-import type { IColorFieldQueryValue, IColorFieldValue } from './color-field.type'
+import type { IColorFieldValue } from './color-field.type'
 import {
   colorFieldQuerySchema,
   colorFieldQueryValue,
-  colorFieldValue,
   colorTypeSchema,
   createColorFieldSchema,
   createColorFieldValue,
@@ -39,147 +36,134 @@ import {
 } from './color-field.type'
 import type { CreatedAtField } from './created-at-field'
 import type { CreatedAtFieldValue } from './created-at-field-value'
-import type { ICreatedAtFieldQueryValue, ICreatedAtFieldValue } from './created-at-field.type'
+import type { ICreatedAtFieldValue } from './created-at-field.type'
 import {
   createCreatedAtFieldSchema,
   createCreatedAtFieldValue,
   createCreatedAtFieldValue_internal,
   createdAtFieldQuerySchema,
   createdAtFieldQueryValue,
-  createdAtFieldValue,
   createdAtTypeSchema,
 } from './created-at-field.type'
 import type { DateField } from './date-field'
 import type { DateFieldValue } from './date-field-value'
-import type { IDateFieldQueryValue, IDateFieldValue } from './date-field.type'
+import type { IDateFieldValue } from './date-field.type'
 import {
   createDateFieldSchema,
   createDateFieldValue,
   createDateFieldValue_internal,
   dateFieldQuerySchema,
   dateFieldQueryValue,
-  dateFieldValue,
   dateTypeSchema,
 } from './date-field.type'
 import type { DateRangeField } from './date-range-field'
 import type { DateRangeFieldValue } from './date-range-field-value'
-import type { IDateRangeFieldQueryValue, IDateRangeFieldValue } from './date-range-field.type'
+import type { IDateRangeFieldValue } from './date-range-field.type'
 import {
   createDateRangeFieldSchema,
   createDateRangeFieldValue,
   createDateRangeFieldValue_internal,
   dateRangeFieldQuerySchema,
   dateRangeFieldQueryValue,
-  dateRangeFieldValue,
   dateRangeTypeSchema,
 } from './date-range-field.type'
 import type { EmailField } from './email-field'
 import type { EmailFieldValue } from './email-field-value'
-import type { IEmailFieldQueryValue, IEmailFieldValue } from './email-field.type'
+import type { IEmailFieldValue } from './email-field.type'
 import {
   createEmailFieldSchema,
   createEmailFieldValue,
   createEmailFieldValue_internal,
   emailFieldQuerySchema,
   emailFieldQueryValue,
-  emailFieldValue,
   emailTypeSchema,
 } from './email-field.type'
 import { FIELD_TYPE_KEY } from './field.constant'
 import type { IdField } from './id-field'
 import type { IdFieldValue } from './id-field-value'
-import type { IIdFieldQueryValue, IIdFieldValue } from './id-field.type'
+import type { IIdFieldValue } from './id-field.type'
 import {
   createIdFieldSchema,
   createIdFieldValue,
   createIdFieldValue_internal,
   idFieldQuerySchema,
   idFieldQueryValue,
-  idFieldValue,
   idTypeSchema,
 } from './id-field.type'
 import type { NumberField } from './number-field'
 import type { NumberFieldValue } from './number-field-value'
-import type { INumberFieldQueryValue, INumberFieldValue } from './number-field.type'
+import type { INumberFieldValue } from './number-field.type'
 import {
   createNumberFieldSchema,
   createNumberFieldValue,
   createNumberFieldValue_internal,
   numberFieldQuerySchema,
   numberFieldQueryValue,
-  numberFieldValue,
   numberTypeSchema,
 } from './number-field.type'
 import type { ParentField } from './parent-field'
 import type { ParentFieldValue } from './parent-field-value'
-import type { IParentFieldQueryValue, IParentFieldValue } from './parent-field.type'
+import type { IParentFieldValue } from './parent-field.type'
 import {
   createParentFieldSchema,
   createParentFieldValue,
   createParentFieldValue_internal,
   parentFieldQuerySchema,
   parentFieldQueryValue,
-  parentFieldValue,
   parentTypeSchema,
 } from './parent-field.type'
 import type { ReferenceField } from './reference-field'
 import type { ReferenceFieldValue } from './reference-field-value'
-import type { IReferenceFieldQueryValue } from './reference-field.type'
 import {
   createReferenceFieldSchema,
   createReferenceFieldValue,
   createReferenceFieldValue_internal,
   referenceFieldQuerySchema,
   referenceFieldQueryValue,
-  referenceFieldValue,
   referenceTypeSchema,
 } from './reference-field.type'
 import type { SelectField } from './select-field'
 import type { SelectFieldValue } from './select-field-value'
-import type { ISelectFieldQueryValue, ISelectFieldValue } from './select-field.type'
+import type { ISelectFieldValue } from './select-field.type'
 import {
   createSelectFieldSchema,
   createSelectFieldValue,
   createSelectFieldValue_internal,
   selectFieldQuerySchema,
   selectFieldQueryValue,
-  selectFieldValue,
   selectTypeSchema,
 } from './select-field.type'
 import type { StringField } from './string-field'
 import type { StringFieldValue } from './string-field-value'
-import type { IStringFieldQueryValue, IStringFieldValue } from './string-field.type'
+import type { IStringFieldValue } from './string-field.type'
 import {
   createStringFieldSchema,
   createStringFieldValue,
   createStringFieldValue_internal,
   stringFieldQuerySchema,
   stringFieldQueryValue,
-  stringFieldValue,
   stringTypeSchema,
 } from './string-field.type'
 import type { TreeField } from './tree-field'
 import type { TreeFieldValue } from './tree-field-value'
-import type { ITreeFieldQueryValue, ITreeFieldValue } from './tree-field.type'
+import type { ITreeFieldValue } from './tree-field.type'
 import {
   createTreeFieldSchema,
   createTreeFieldValue,
   createTreeFieldValue_internal,
   treeFieldQuerySchema,
   treeFieldQueryValue,
-  treeFieldValue,
   treeTypeSchema,
 } from './tree-field.type'
 import type { UpdatedAtField } from './updated-at-field'
 import type { UpdatedAtFieldValue } from './updated-at-field-value'
-import type { IUpdatedAtFieldQueryValue, IUpdatedAtFieldValue } from './updated-at-field.type'
+import type { IUpdatedAtFieldValue } from './updated-at-field.type'
 import {
   createUpdatedAtFieldSchema,
   createUpdatedAtFieldValue,
   createUpdatedAtFieldValue_internal,
   updatedAtFieldQuerySchema,
   updatedAtFieldQueryValue,
-  updatedAtFieldValue,
   updatedAtTypeSchema,
 } from './updated-at-field.type'
 import type { DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects'
@@ -243,25 +227,6 @@ export const fieldTypes = z.union([
   parentTypeSchema,
 ])
 export type IFieldType = z.infer<typeof fieldTypes>
-
-export const fieldValue = z.union([
-  idFieldValue,
-  createdAtFieldValue,
-  updatedAtFieldValue,
-  autoIncrementFieldValue,
-  stringFieldValue,
-  emailFieldValue,
-  colorFieldValue,
-  numberFieldValue,
-  dateFieldValue,
-  dateRangeFieldValue,
-  selectFieldValue,
-  boolFieldValue,
-  referenceFieldValue,
-  treeFieldValue,
-  parentFieldValue,
-])
-export type IFieldValue = z.infer<typeof fieldValue>
 
 export const createFieldValueSchema = z.union([
   createIdFieldValue,
@@ -405,22 +370,7 @@ export const fieldQueryValue = z.union([
   updatedAtFieldQueryValue,
 ])
 
-export type IFieldQueryValue =
-  | ITreeFieldQueryValue
-  | IAutoIncrementQueryValue
-  | IBoolFieldQueryValue
-  | IColorFieldQueryValue
-  | ICreatedAtFieldQueryValue
-  | IDateFieldQueryValue
-  | IDateRangeFieldQueryValue
-  | IEmailFieldQueryValue
-  | IIdFieldQueryValue
-  | INumberFieldQueryValue
-  | IParentFieldQueryValue
-  | IReferenceFieldQueryValue
-  | ISelectFieldQueryValue
-  | IStringFieldQueryValue
-  | IUpdatedAtFieldQueryValue
+export type IFieldQueryValue = z.infer<typeof fieldQueryValue>
 
 export const INTERNAL_COLUMN_ID_NAME = 'id'
 export const INTERNAL_INCREAMENT_ID_NAME = 'auto_increment'
