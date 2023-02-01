@@ -7,6 +7,7 @@ import type { IAutoIncrementFieldValue, IAutoIncrementQueryValue } from './auto-
 import {
   autoIncrementFieldQuerySchema,
   autoIncrementFieldValue,
+  autoIncrementQueryValue,
   autoIncrementTypeSchema,
   createAutoIncrementFieldSchema,
   createAutoIncrementFieldValue,
@@ -17,6 +18,7 @@ import type { BoolFieldValue } from './bool-field-value'
 import type { IBoolFieldQueryValue, IBoolFieldValue } from './bool-field.type'
 import {
   boolFieldQuerySchema,
+  boolFieldQueryValue,
   boolFieldValue,
   boolTypeSchema,
   createBoolFieldSchema,
@@ -28,6 +30,7 @@ import type { ColorFieldValue } from './color-field-value'
 import type { IColorFieldQueryValue, IColorFieldValue } from './color-field.type'
 import {
   colorFieldQuerySchema,
+  colorFieldQueryValue,
   colorFieldValue,
   colorTypeSchema,
   createColorFieldSchema,
@@ -42,6 +45,7 @@ import {
   createCreatedAtFieldValue,
   createCreatedAtFieldValue_internal,
   createdAtFieldQuerySchema,
+  createdAtFieldQueryValue,
   createdAtFieldValue,
   createdAtTypeSchema,
 } from './created-at-field.type'
@@ -53,6 +57,7 @@ import {
   createDateFieldValue,
   createDateFieldValue_internal,
   dateFieldQuerySchema,
+  dateFieldQueryValue,
   dateFieldValue,
   dateTypeSchema,
 } from './date-field.type'
@@ -64,6 +69,7 @@ import {
   createDateRangeFieldValue,
   createDateRangeFieldValue_internal,
   dateRangeFieldQuerySchema,
+  dateRangeFieldQueryValue,
   dateRangeFieldValue,
   dateRangeTypeSchema,
 } from './date-range-field.type'
@@ -75,6 +81,7 @@ import {
   createEmailFieldValue,
   createEmailFieldValue_internal,
   emailFieldQuerySchema,
+  emailFieldQueryValue,
   emailFieldValue,
   emailTypeSchema,
 } from './email-field.type'
@@ -87,6 +94,7 @@ import {
   createIdFieldValue,
   createIdFieldValue_internal,
   idFieldQuerySchema,
+  idFieldQueryValue,
   idFieldValue,
   idTypeSchema,
 } from './id-field.type'
@@ -98,6 +106,7 @@ import {
   createNumberFieldValue,
   createNumberFieldValue_internal,
   numberFieldQuerySchema,
+  numberFieldQueryValue,
   numberFieldValue,
   numberTypeSchema,
 } from './number-field.type'
@@ -109,6 +118,7 @@ import {
   createParentFieldValue,
   createParentFieldValue_internal,
   parentFieldQuerySchema,
+  parentFieldQueryValue,
   parentFieldValue,
   parentTypeSchema,
 } from './parent-field.type'
@@ -120,6 +130,7 @@ import {
   createReferenceFieldValue,
   createReferenceFieldValue_internal,
   referenceFieldQuerySchema,
+  referenceFieldQueryValue,
   referenceFieldValue,
   referenceTypeSchema,
 } from './reference-field.type'
@@ -131,6 +142,7 @@ import {
   createSelectFieldValue,
   createSelectFieldValue_internal,
   selectFieldQuerySchema,
+  selectFieldQueryValue,
   selectFieldValue,
   selectTypeSchema,
 } from './select-field.type'
@@ -142,6 +154,7 @@ import {
   createStringFieldValue,
   createStringFieldValue_internal,
   stringFieldQuerySchema,
+  stringFieldQueryValue,
   stringFieldValue,
   stringTypeSchema,
 } from './string-field.type'
@@ -153,6 +166,7 @@ import {
   createTreeFieldValue,
   createTreeFieldValue_internal,
   treeFieldQuerySchema,
+  treeFieldQueryValue,
   treeFieldValue,
   treeTypeSchema,
 } from './tree-field.type'
@@ -164,6 +178,7 @@ import {
   createUpdatedAtFieldValue,
   createUpdatedAtFieldValue_internal,
   updatedAtFieldQuerySchema,
+  updatedAtFieldQueryValue,
   updatedAtFieldValue,
   updatedAtTypeSchema,
 } from './updated-at-field.type'
@@ -371,6 +386,24 @@ export type UnpackedFieldValue =
   | IReferenceFilterValue
   | ITreeFieldValue
   | IParentFieldValue
+
+export const fieldQueryValue = z.union([
+  treeFieldQueryValue,
+  autoIncrementQueryValue,
+  boolFieldQueryValue,
+  colorFieldQueryValue,
+  createdAtFieldQueryValue,
+  dateFieldQueryValue,
+  dateRangeFieldQueryValue,
+  emailFieldQueryValue,
+  idFieldQueryValue,
+  numberFieldQueryValue,
+  parentFieldQueryValue,
+  referenceFieldQueryValue,
+  selectFieldQueryValue,
+  stringFieldQueryValue,
+  updatedAtFieldQueryValue,
+])
 
 export type IFieldQueryValue =
   | ITreeFieldQueryValue
