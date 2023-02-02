@@ -49,16 +49,12 @@ import { ClosureTable } from '../../underlying-table/underlying-foreign-table'
 export class RecordSqliteQueryVisitor implements IRecordVisitor {
   constructor(
     private readonly tableId: string,
-    private readonly alias: string = '',
+    private readonly alias: string = 't',
     private readonly schema: TableSchemaIdMap,
     private qb: Knex.QueryBuilder,
     private knex: Knex,
   ) {
-    if (alias) {
-      this.qb = qb.from(`${tableId} as ${alias}`).whereNull(`${alias}.${INTERNAL_COLUMN_DELETED_AT_NAME}`)
-    } else {
-      this.qb = qb.from(tableId).whereNull(INTERNAL_COLUMN_DELETED_AT_NAME)
-    }
+    this.qb = qb.from(tableId).whereNull(`${alias}.${INTERNAL_COLUMN_DELETED_AT_NAME}`)
   }
   get query() {
     return this.qb.toQuery()
@@ -216,7 +212,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       )
     }
 
-    const id = this.alias ? `${this.alias}.${INTERNAL_COLUMN_ID_NAME}` : INTERNAL_COLUMN_ID_NAME
+    const id = `${this.alias}.${INTERNAL_COLUMN_ID_NAME}`
     this.qb.whereNotIn(id, subQuery)
     if (recordId) {
       this.qb.andWhereNot(id, recordId)
@@ -229,7 +225,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
 
     const closure = new ClosureTable(this.tableId, field)
 
-    const id = this.alias ? `${this.alias}.${INTERNAL_COLUMN_ID_NAME}` : INTERNAL_COLUMN_ID_NAME
+    const id = `${this.alias}.${INTERNAL_COLUMN_ID_NAME}`
     this.qb.whereNotIn(
       id,
       this.knex.queryBuilder().select(ClosureTable.CHILD_ID).from(closure.name).where(ClosureTable.DEPTH, '>', '0'),
@@ -242,7 +238,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
 
     const recordId = s.value
     if (recordId) {
-      const id = this.alias ? `${this.alias}.${INTERNAL_COLUMN_ID_NAME}` : INTERNAL_COLUMN_ID_NAME
+      const id = `${this.alias}.${INTERNAL_COLUMN_ID_NAME}`
       this.qb.whereNot(id, recordId)
     }
   }

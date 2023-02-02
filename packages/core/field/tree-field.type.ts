@@ -20,7 +20,7 @@ export type ICreateTreeFieldSchema = z.infer<typeof createTreeFieldSchema>
 export const treeFieldQuerySchema = baseFieldQuerySchema.merge(treeTypeObjectSchema).merge(
   z.object({
     parentFieldId: fieldIdSchema,
-    displayFieldId: fieldIdSchema.array().optional(),
+    displayFieldIds: fieldIdSchema.array().optional(),
   }),
 )
 export type ITreeFieldQuerySchema = z.infer<typeof treeFieldQuerySchema>

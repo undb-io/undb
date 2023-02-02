@@ -125,10 +125,14 @@ export class ParentField extends Field {
   constructor(table: Table, field: CoreParentField) {
     super(table, field)
     this.treeFieldId = field.treeFieldId.value
+    this.displayFieldIds = field.displayFieldIds?.map((f) => f.value)
   }
 
   @Property()
   treeFieldId!: string
+
+  @Property({ type: ArrayType, nullable: true })
+  displayFieldIds?: string[]
 }
 
 export type IField =

@@ -58,7 +58,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     const columns = UnderlyingColumnFactory.createMany([...schema.values()])
     qb.select(columns.map((c) => c.name))
 
-    const qv = new RecordSqliteQueryVisitor(tableId, '', schema, qb, knex)
+    const qv = new RecordSqliteQueryVisitor(tableId, 't', schema, qb, knex)
     spec.accept(qv)
 
     const data = await this.em.execute<RecordSqlite[]>(qb.first())
@@ -72,7 +72,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       const knex = em.getKnex()
       const qb = knex.queryBuilder()
 
-      const qv = new RecordSqliteQueryVisitor(tableId, '', schema, qb, knex)
+      const qv = new RecordSqliteQueryVisitor(tableId, 't', schema, qb, knex)
       WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id)).accept(qv)
 
       const mv = new RecordSqliteMutationVisitor(tableId, id, schema, em, qb)

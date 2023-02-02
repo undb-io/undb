@@ -9,9 +9,12 @@ export const parentTypeSchema = z.literal('parent')
 export type ParentFieldType = z.infer<typeof parentTypeSchema>
 const parentTypeObjectSchema = z.object({ [FIELD_TYPE_KEY]: parentTypeSchema })
 
-export const createParentFieldSchema = createBaseFieldsSchema
-  .merge(parentTypeObjectSchema)
-  .merge(z.object({ treeFieldId: fieldIdSchema }))
+export const createParentFieldSchema = createBaseFieldsSchema.merge(parentTypeObjectSchema).merge(
+  z.object({
+    treeFieldId: fieldIdSchema,
+    displayFieldIds: fieldIdSchema.array().optional(),
+  }),
+)
 export type ICreateParentFieldInput = z.infer<typeof createParentFieldSchema>
 
 export const parentFieldQuerySchema = baseFieldQuerySchema

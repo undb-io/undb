@@ -17,6 +17,12 @@ export type ICreateRecordInput_internal = z.infer<typeof createRecordInput_inter
 const queryRecordValues = z.record(fieldIdSchema, fieldQueryValue)
 export type IQueryRecordValues = z.infer<typeof queryRecordValues>
 
+export const recordDisplayValues = z.record(
+  fieldIdSchema,
+  z.record(fieldIdSchema, z.array(z.string().nullable()).nullable()),
+)
+export type IRecordDisplayValues = z.infer<typeof recordDisplayValues>
+
 export const queryRecordSchema = z.object({
   id: recordIdSchema,
   tableId: tableIdSchema,
@@ -24,6 +30,7 @@ export const queryRecordSchema = z.object({
   updatedAt: z.date(),
   autoIncrement: z.number().int().positive().optional(),
   values: queryRecordValues,
+  displayValues: recordDisplayValues,
 })
 export type IQueryRecordSchema = z.infer<typeof queryRecordSchema>
 
@@ -35,6 +42,3 @@ export type IQueryTreeRecords = Array<IQueryTreeRecord>
 export const queryTreeRecords: z.ZodType<IQueryTreeRecords> = z.lazy(() =>
   queryRecordSchema.merge(z.object({ children: queryTreeRecords })).array(),
 )
-
-export const recordDisplayValues = z.record(fieldIdSchema, z.string().nullable())
-export type IRecordDisplayValues = z.infer<typeof recordDisplayValues>
