@@ -35,3 +35,6 @@ export type IQueryTreeRecords = Array<IQueryTreeRecord>
 export const queryTreeRecords: z.ZodType<IQueryTreeRecords> = z.lazy(() =>
   queryRecordSchema.merge(z.object({ children: queryTreeRecords })).array(),
 )
+
+export const recordDisplayValues = z.record(fieldIdSchema, z.string().nullable())
+export type IRecordDisplayValues = z.infer<typeof recordDisplayValues>
