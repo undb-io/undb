@@ -1,10 +1,4 @@
-import type {
-  IFieldQueryValue,
-  IQueryRecordSchema,
-  ISelectFieldQueryValue,
-  Record,
-  TableSchemaIdMap,
-} from '@egodb/core'
+import type { IFieldQueryValue, IQueryRecordSchema, Record, TableSchemaIdMap } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
 import type { Result } from 'oxide.ts'
 import type { RecordSqlite } from './record.type'
@@ -25,13 +19,6 @@ export class RecordSqliteMapper {
         const fieldId = field.id.value
         if (field.type === 'date') {
           values[fieldId] = value ? new Date(value) : null
-        } else if (field.type === 'select') {
-          const optionId = value as string
-          const option = field.options.getById(optionId).into()
-          if (!option) continue
-
-          const qv: ISelectFieldQueryValue = { id: optionId, name: option.name.value }
-          values[fieldId] = qv
         } else if (field.type === 'reference' || field.type === 'tree') {
           values[fieldId] = typeof value === 'string' ? JSON.parse(value) : value
         } else if (field.type === 'bool') {

@@ -28,7 +28,7 @@ export type ITreeFieldQuerySchema = z.infer<typeof treeFieldQuerySchema>
 export const treeFieldValue = recordIdSchema.array().nullable()
 export type ITreeFieldValue = z.infer<typeof treeFieldValue>
 
-export const treeFieldQueryValue = z.object({ id: recordIdSchema, displayValue: z.string() }).array()
+export const treeFieldQueryValue = treeFieldValue
 export type ITreeFieldQueryValue = z.infer<typeof treeFieldQueryValue>
 
 export const createTreeFieldValue = treeFieldValue
