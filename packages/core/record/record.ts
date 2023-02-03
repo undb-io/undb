@@ -32,6 +32,7 @@ export class Record {
       created_at: this.createdAt.value,
       updated_at: this.updatedAt.value,
       auto_increment: this.autoIncrement,
+      display_values: this.displayValues?.values,
     }
   }
 

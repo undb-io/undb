@@ -180,8 +180,8 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "display_field_ids": {
-          "name": "display_field_ids",
+        "tree_field_id": {
+          "name": "tree_field_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -189,8 +189,8 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "tree_field_id": {
-          "name": "tree_field_id",
+        "display_field_ids": {
+          "name": "display_field_ids",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,

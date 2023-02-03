@@ -4,6 +4,7 @@ import type { TableSchemaIdMap } from '../value-objects'
 import { Record } from './record'
 import type { IQueryRecordSchema, Records } from './record.type'
 import {
+  WithDisplayValues,
   WithRecordCreatedAt,
   WithRecordId,
   WithRecordTableId,
@@ -36,6 +37,7 @@ export class RecordFactory {
       .and(WithRecordCreatedAt.fromDate(r.createdAt))
       .and(WithRecordUpdatedAt.fromDate(r.updatedAt))
       .and(WithRecordValues.fromObject(schema, r.values))
+      .and(WithDisplayValues.from(r.displayValues))
 
     if (typeof r.autoIncrement === 'number') {
       spec = spec.and(new WithRecordAutoIncrement(r.autoIncrement))

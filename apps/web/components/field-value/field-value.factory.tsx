@@ -4,7 +4,6 @@ import type {
   DateFieldValue,
   DateRangeFieldValue,
   Field,
-  ParentFieldValue,
   RecordAllValueType,
   ReferenceFieldValue,
   SelectFieldValue,
@@ -21,11 +20,13 @@ import { Group, Text } from '@egodb/ui'
 import type { FieldValue } from '@egodb/core'
 import { Option } from '../option/option'
 import { ColorValue } from './color-value'
+import type { IRecordDisplayValues } from '@egodb/core'
 
 export const FieldValueFactory: React.FC<{
   field: Field
   value: RecordAllValueType
-}> = ({ field, value }) => {
+  displayValues?: IRecordDisplayValues
+}> = ({ field, value, displayValues }) => {
   switch (field.type) {
     case 'id': {
       return <RecordId id={value as string} />
@@ -62,17 +63,21 @@ export const FieldValueFactory: React.FC<{
       return <ColorValue value={color} />
     }
     case 'parent': {
-      const reference = (value as ParentFieldValue | undefined)?.unpack() || undefined
-      return <ReferenceValue value={reference} />
+      const values = field.displayFieldIds.map(
+        (displayFieldId) => displayValues?.[field.id.value]?.[displayFieldId.value] ?? undefined,
+      )[0]
+      return <ReferenceValue values={values} />
     }
     case 'reference':
     case 'tree': {
-      const references = (value as ReferenceFieldValue | TreeFieldValue | undefined)?.unpack()
-      if (!references) return null
+      const values = field.displayFieldIds.map(
+        (displayFieldId) => displayValues?.[field.id.value]?.[displayFieldId.value] ?? undefined,
+      )
+
       return (
         <Group>
-          {references.map((reference) => (
-            <ReferenceValue key={reference} value={reference} />
+          {values.map((value, index) => (
+            <ReferenceValue key={index} values={value} />
           ))}
         </Group>
       )
