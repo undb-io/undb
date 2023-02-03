@@ -361,6 +361,7 @@ importers:
       '@egodb/trpc': workspace:^0.0.0
       '@reduxjs/toolkit': ^1.9.2
       '@trpc/client': ^10.9.0
+      '@trpc/server': ^10.9.0
       '@types/redux-logger': ^3.0.9
       eslint: ^8.32.0
       react: ^18.2.0
@@ -374,13 +375,14 @@ importers:
       '@egodb/core': link:../core
       '@egodb/trpc': link:../trpc
       '@reduxjs/toolkit': 1.9.2_react@18.2.0
-      '@trpc/client': 10.9.0
+      '@trpc/client': 10.9.0_@trpc+server@10.9.0
       redux: 4.2.1
       redux-logger: 3.0.6
       redux-saga: 1.2.2
       superjson: 1.12.2
     devDependencies:
       '@egodb/eslint-config': link:../eslint-config
+      '@trpc/server': 10.9.0
       '@types/redux-logger': 3.0.9
       eslint: 8.32.0
       react: 18.2.0
@@ -3237,12 +3239,6 @@ packages:
     engines: {node: '>= 10'}
     dev: true
 
-  /@trpc/client/10.9.0:
-    resolution: {integrity: sha512-id6318qpgqllNOuBp7nuciXFPXCe+zae5d4r1hze6Eyp5fFFNO58TqA+4Q44KIcHgpfWyW2egs6iPeql3PrdKA==}
-    peerDependencies:
-      '@trpc/server': 10.9.0
-    dev: false
-
   /@trpc/client/10.9.0_@trpc+server@10.9.0:
     resolution: {integrity: sha512-id6318qpgqllNOuBp7nuciXFPXCe+zae5d4r1hze6Eyp5fFFNO58TqA+4Q44KIcHgpfWyW2egs6iPeql3PrdKA==}
     peerDependencies:
@@ -3290,7 +3286,6 @@ packages:
 
   /@trpc/server/10.9.0:
     resolution: {integrity: sha512-5psyZgbvy29pJND32hwkWTMbv6s86IbsPOeDopsgNF0VegZT6Dsijmb7Ub/TDhuJVQVq5u4u5briMXi3SxmBkw==}
-    dev: false
 
   /@ts-morph/common/0.18.1:
     resolution: {integrity: sha512-RVE+zSRICWRsfrkAw5qCAK+4ZH9kwEFv5h0+/YeHTLieWP7F4wWq4JsKFuNWG+fYh/KF+8rAtgdj5zb2mm+DVA==}

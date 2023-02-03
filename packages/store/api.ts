@@ -2,7 +2,7 @@ import type { AppRouter } from '@egodb/trpc'
 import { createTRPCProxyClient, httpBatchLink } from '@trpc/client'
 import superjson from 'superjson'
 
-export const api = createTRPCProxyClient<AppRouter>({
+export const api: ReturnType<typeof createTRPCProxyClient<AppRouter>> = createTRPCProxyClient<AppRouter>({
   transformer: superjson,
   links: [
     httpBatchLink({
@@ -10,5 +10,3 @@ export const api = createTRPCProxyClient<AppRouter>({
     }),
   ],
 })
-
-export type Api = typeof api

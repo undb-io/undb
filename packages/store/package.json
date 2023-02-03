@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@egodb/eslint-config": "^0.0.0",
+    "@trpc/server": "^10.9.0",
     "@types/redux-logger": "^3.0.9",
     "eslint": "^8.32.0",
     "react": "^18.2.0",
