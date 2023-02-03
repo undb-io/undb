@@ -18,6 +18,9 @@ export type IColorFieldValue = z.infer<typeof colorFieldValue>
 export const createColorFieldValue = colorFieldValue
 export type ICreateColorFieldValue = z.infer<typeof createColorFieldValue>
 
+export const colorFieldQueryValue = colorFieldValue
+export type IColorFieldQueryValue = z.infer<typeof colorFieldQueryValue>
+
 export const createColorFieldValue_internal = z
   .object({ value: createColorFieldValue })
   .merge(colorTypeObjectSchema)

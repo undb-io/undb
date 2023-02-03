@@ -18,6 +18,9 @@ export type IBoolFieldValue = z.infer<typeof boolFieldValue>
 export const createBoolFieldValue = boolFieldValue
 export type ICreateBoolFieldValue = z.infer<typeof createBoolFieldValue>
 
+export const boolFieldQueryValue = boolFieldValue
+export type IBoolFieldQueryValue = z.infer<typeof boolFieldQueryValue>
+
 export const createBoolFieldValue_internal = z
   .object({ value: createBoolFieldValue })
   .merge(boolTypeObjectSchema)

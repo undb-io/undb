@@ -1,4 +1,4 @@
-import type { Field, IDateFilterOperator, IFieldValue, IOperator } from '@egodb/core'
+import type { Field, IDateFilterOperator, IFieldQueryValue, IOperator } from '@egodb/core'
 import { DateRangeField } from '@egodb/core'
 import { SelectField } from '@egodb/core'
 import { StringField } from '@egodb/core'
@@ -14,8 +14,8 @@ interface IProps {
   table: Table
   field: Field | null
   operator: IOperator | null
-  value: IFieldValue
-  onChange: (v: IFieldValue) => void
+  value: IFieldQueryValue
+  onChange: (v: IFieldQueryValue) => void
 }
 
 export const FilterValueInput: React.FC<IProps> = ({ operator, field, table, value, onChange }) => {

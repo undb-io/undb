@@ -1,13 +1,13 @@
 import type { IParentFilterOperator } from '../filter/operators'
 import type { IParentFilter } from '../filter/parent.filter'
-import { BaseField } from './field.base'
+import { BaseReferenceField } from './field.base'
 import type { IParentField } from './field.type'
 import type { IFieldVisitor } from './field.visitor'
 import { ParentFieldValue } from './parent-field-value'
 import type { ICreateParentFieldInput, ICreateParentFieldValue, ParentFieldType } from './parent-field.type'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
+import { DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
-export class ParentField extends BaseField<IParentField> {
+export class ParentField extends BaseReferenceField<IParentField> {
   type: ParentFieldType = 'parent'
 
   get treeFieldId() {
@@ -22,6 +22,9 @@ export class ParentField extends BaseField<IParentField> {
       name: fieldName,
       treeFieldId: FieldId.fromString(input.treeFieldId),
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
+      displayFields: input.displayFieldIds
+        ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
+        : undefined,
     })
   }
 
@@ -31,6 +34,9 @@ export class ParentField extends BaseField<IParentField> {
       name: FieldName.unsafaCreate(input.name),
       treeFieldId: FieldId.fromString(input.treeFieldId),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
+      displayFields: input.displayFieldIds
+        ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
+        : undefined,
     })
   }
 

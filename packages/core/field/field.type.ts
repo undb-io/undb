@@ -1,12 +1,14 @@
+import type { Option } from 'oxide.ts'
 import * as z from 'zod'
 import type { IReferenceFilterValue } from '../filter/reference.filter'
 import type { Options } from '../option/options'
+import type { IRecordDisplayValues } from '../record'
 import type { AutoIncrementField } from './auto-increment-field'
 import type { AutoIncrementFieldValue } from './auto-increment-field-value'
 import type { IAutoIncrementFieldValue } from './auto-increment-field.type'
 import {
   autoIncrementFieldQuerySchema,
-  autoIncrementFieldValue,
+  autoIncrementQueryValue,
   autoIncrementTypeSchema,
   createAutoIncrementFieldSchema,
   createAutoIncrementFieldValue,
@@ -17,7 +19,7 @@ import type { BoolFieldValue } from './bool-field-value'
 import type { IBoolFieldValue } from './bool-field.type'
 import {
   boolFieldQuerySchema,
-  boolFieldValue,
+  boolFieldQueryValue,
   boolTypeSchema,
   createBoolFieldSchema,
   createBoolFieldValue,
@@ -28,7 +30,7 @@ import type { ColorFieldValue } from './color-field-value'
 import type { IColorFieldValue } from './color-field.type'
 import {
   colorFieldQuerySchema,
-  colorFieldValue,
+  colorFieldQueryValue,
   colorTypeSchema,
   createColorFieldSchema,
   createColorFieldValue,
@@ -42,7 +44,7 @@ import {
   createCreatedAtFieldValue,
   createCreatedAtFieldValue_internal,
   createdAtFieldQuerySchema,
-  createdAtFieldValue,
+  createdAtFieldQueryValue,
   createdAtTypeSchema,
 } from './created-at-field.type'
 import type { DateField } from './date-field'
@@ -53,7 +55,7 @@ import {
   createDateFieldValue,
   createDateFieldValue_internal,
   dateFieldQuerySchema,
-  dateFieldValue,
+  dateFieldQueryValue,
   dateTypeSchema,
 } from './date-field.type'
 import type { DateRangeField } from './date-range-field'
@@ -64,7 +66,7 @@ import {
   createDateRangeFieldValue,
   createDateRangeFieldValue_internal,
   dateRangeFieldQuerySchema,
-  dateRangeFieldValue,
+  dateRangeFieldQueryValue,
   dateRangeTypeSchema,
 } from './date-range-field.type'
 import type { EmailField } from './email-field'
@@ -75,7 +77,7 @@ import {
   createEmailFieldValue,
   createEmailFieldValue_internal,
   emailFieldQuerySchema,
-  emailFieldValue,
+  emailFieldQueryValue,
   emailTypeSchema,
 } from './email-field.type'
 import { FIELD_TYPE_KEY } from './field.constant'
@@ -87,7 +89,7 @@ import {
   createIdFieldValue,
   createIdFieldValue_internal,
   idFieldQuerySchema,
-  idFieldValue,
+  idFieldQueryValue,
   idTypeSchema,
 } from './id-field.type'
 import type { NumberField } from './number-field'
@@ -98,7 +100,7 @@ import {
   createNumberFieldValue,
   createNumberFieldValue_internal,
   numberFieldQuerySchema,
-  numberFieldValue,
+  numberFieldQueryValue,
   numberTypeSchema,
 } from './number-field.type'
 import type { ParentField } from './parent-field'
@@ -109,7 +111,7 @@ import {
   createParentFieldValue,
   createParentFieldValue_internal,
   parentFieldQuerySchema,
-  parentFieldValue,
+  parentFieldQueryValue,
   parentTypeSchema,
 } from './parent-field.type'
 import type { ReferenceField } from './reference-field'
@@ -119,7 +121,7 @@ import {
   createReferenceFieldValue,
   createReferenceFieldValue_internal,
   referenceFieldQuerySchema,
-  referenceFieldValue,
+  referenceFieldQueryValue,
   referenceTypeSchema,
 } from './reference-field.type'
 import type { SelectField } from './select-field'
@@ -130,7 +132,7 @@ import {
   createSelectFieldValue,
   createSelectFieldValue_internal,
   selectFieldQuerySchema,
-  selectFieldValue,
+  selectFieldQueryValue,
   selectTypeSchema,
 } from './select-field.type'
 import type { StringField } from './string-field'
@@ -141,7 +143,7 @@ import {
   createStringFieldValue,
   createStringFieldValue_internal,
   stringFieldQuerySchema,
-  stringFieldValue,
+  stringFieldQueryValue,
   stringTypeSchema,
 } from './string-field.type'
 import type { TreeField } from './tree-field'
@@ -152,7 +154,7 @@ import {
   createTreeFieldValue,
   createTreeFieldValue_internal,
   treeFieldQuerySchema,
-  treeFieldValue,
+  treeFieldQueryValue,
   treeTypeSchema,
 } from './tree-field.type'
 import type { UpdatedAtField } from './updated-at-field'
@@ -163,10 +165,10 @@ import {
   createUpdatedAtFieldValue,
   createUpdatedAtFieldValue_internal,
   updatedAtFieldQuerySchema,
-  updatedAtFieldValue,
+  updatedAtFieldQueryValue,
   updatedAtTypeSchema,
 } from './updated-at-field.type'
-import type { FieldId, FieldName, FieldValueConstraints } from './value-objects'
+import type { DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects'
 import { fieldNameSchema } from './value-objects/field-name.schema'
 
 export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
@@ -227,25 +229,6 @@ export const fieldTypes = z.union([
   parentTypeSchema,
 ])
 export type IFieldType = z.infer<typeof fieldTypes>
-
-export const fieldValue = z.union([
-  idFieldValue,
-  createdAtFieldValue,
-  updatedAtFieldValue,
-  autoIncrementFieldValue,
-  stringFieldValue,
-  emailFieldValue,
-  colorFieldValue,
-  numberFieldValue,
-  dateFieldValue,
-  dateRangeFieldValue,
-  selectFieldValue,
-  boolFieldValue,
-  referenceFieldValue,
-  treeFieldValue,
-  parentFieldValue,
-])
-export type IFieldValue = z.infer<typeof fieldValue>
 
 export const createFieldValueSchema = z.union([
   createIdFieldValue,
@@ -314,9 +297,9 @@ export type ISelectField = IBaseField & {
 }
 
 export type IBoolField = IBaseField
-export type IReferenceField = IBaseField
-export type ITreeField = IBaseField & { parentFieldId?: FieldId }
-export type IParentField = IBaseField & { treeFieldId: FieldId }
+export type IReferenceField = IBaseField & { displayFields?: DisplayFields }
+export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?: DisplayFields }
+export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: DisplayFields }
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField | AutoIncrementField
 
@@ -371,7 +354,34 @@ export type UnpackedFieldValue =
   | ITreeFieldValue
   | IParentFieldValue
 
+export const fieldQueryValue = z.union([
+  treeFieldQueryValue,
+  autoIncrementQueryValue,
+  boolFieldQueryValue,
+  colorFieldQueryValue,
+  createdAtFieldQueryValue,
+  dateFieldQueryValue,
+  dateRangeFieldQueryValue,
+  emailFieldQueryValue,
+  idFieldQueryValue,
+  numberFieldQueryValue,
+  parentFieldQueryValue,
+  referenceFieldQueryValue,
+  selectFieldQueryValue,
+  stringFieldQueryValue,
+  updatedAtFieldQueryValue,
+])
+
+export type IFieldQueryValue = z.infer<typeof fieldQueryValue>
+
 export const INTERNAL_COLUMN_ID_NAME = 'id'
 export const INTERNAL_INCREAMENT_ID_NAME = 'auto_increment'
 export const INTERNAL_COLUMN_CREATED_AT_NAME = 'created_at'
 export const INTERNAL_COLUMN_UPDATED_AT_NAME = 'updated_at'
+export const INTERNAL_DISPLAY_VALUES_NAME = 'display_values'
+
+export interface IReference {
+  get foreignTableId(): Option<string>
+  get displayFieldIds(): FieldId[]
+  getDisplayValues(values: IRecordDisplayValues): ((string | null)[] | undefined)[]
+}

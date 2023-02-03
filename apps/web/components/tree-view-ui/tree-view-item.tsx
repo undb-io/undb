@@ -166,7 +166,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
                     }
                   >
                     <Group>
-                      <FieldValueFactory field={field} value={value} />
+                      <FieldValueFactory field={field} value={value} displayValues={values.display_values} />
                     </Group>
                   </Tooltip>
                 )

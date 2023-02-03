@@ -19,6 +19,9 @@ export type IReferenceFieldValue = z.infer<typeof referenceFieldValue>
 export const createReferenceFieldValue = referenceFieldValue
 export type ICreateReferenceFieldValue = z.infer<typeof createReferenceFieldValue>
 
+export const referenceFieldQueryValue = referenceFieldValue
+export type IReferenceFieldQueryValue = z.infer<typeof referenceFieldQueryValue>
+
 export const createReferenceFieldValue_internal = z
   .object({ value: createReferenceFieldValue })
   .merge(referenceTypeObjectSchema)

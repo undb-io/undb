@@ -1,29 +1,39 @@
-import type { IFieldValue, IQueryRecordSchema, Record, TableSchemaIdMap } from '@egodb/core'
+import type { IFieldQueryValue, IQueryRecordSchema, IRecordDisplayValues, Record, TableSchemaIdMap } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
+import { castArray, mapValues } from 'lodash'
 import type { Result } from 'oxide.ts'
 import type { RecordSqlite } from './record.type'
+import { isExpandColumnName } from './record.type'
 
 export class RecordSqliteMapper {
-  // TODO: record type
+  // TODO: refactor if else logic
   static toQuery(tableId: string, schema: TableSchemaIdMap, data: RecordSqlite): IQueryRecordSchema {
     const { id, created_at, updated_at, auto_increment, ...rest } = data
-    const values: globalThis.Record<string, IFieldValue> = {}
+
+    const values: globalThis.Record<string, IFieldQueryValue> = {}
+    const displayValues: IRecordDisplayValues = {}
 
     for (const [columnName, value] of Object.entries(rest)) {
-      if (columnName.endsWith('_from') || columnName.endsWith('_to')) {
+      if (isExpandColumnName(columnName)) {
+        Object.assign(
+          displayValues,
+          mapValues(JSON.parse(value), (expanded) => mapValues(expanded, castArray)),
+        )
+      } else if (columnName.endsWith('_from') || columnName.endsWith('_to')) {
         continue
       } else {
         const field = schema.get(columnName)
-        if (field) {
-          if (field.type === 'date') {
-            values[field.id.value] = value ? new Date(value) : null
-          } else if (field.type === 'reference' || field.type === 'tree') {
-            values[field.id.value] = typeof value === 'string' ? JSON.parse(value) : value
-          } else if (field.type === 'bool') {
-            values[field.id.value] = !!value
-          } else {
-            values[field.id.value] = value
-          }
+        if (!field) continue
+
+        const fieldId = field.id.value
+        if (field.type === 'date') {
+          values[fieldId] = value ? new Date(value) : null
+        } else if (field.type === 'reference' || field.type === 'tree') {
+          values[fieldId] = typeof value === 'string' ? JSON.parse(value) : value
+        } else if (field.type === 'bool') {
+          values[fieldId] = !!value
+        } else {
+          values[fieldId] = value
         }
       }
     }
@@ -35,6 +45,7 @@ export class RecordSqliteMapper {
       autoIncrement: auto_increment,
       tableId,
       values,
+      displayValues,
     }
   }
 

@@ -1,7 +1,7 @@
 import { ValueObject } from '@egodb/domain'
 import type { IFieldValueVisitor } from './field-value.visitor'
-import type { IFieldValue } from './field.type'
+import type { IFieldQueryValue } from './field.type'
 
-export abstract class FieldValueBase<V extends IFieldValue> extends ValueObject<V> {
+export abstract class FieldValueBase<V extends IFieldQueryValue> extends ValueObject<V> {
   abstract accept(visitor: IFieldValueVisitor): void
 }

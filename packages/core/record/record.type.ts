@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { createFieldsSchema_internal, fieldValue } from '../field'
+import { createFieldsSchema_internal, fieldQueryValue } from '../field'
 import { fieldIdSchema } from '../field/value-objects/field-id.schema'
 import { TableId, tableIdSchema } from '../value-objects'
 import type { Record } from './record'
@@ -14,8 +14,14 @@ export const createRecordInput_internal = z.object({
 })
 export type ICreateRecordInput_internal = z.infer<typeof createRecordInput_internal>
 
-const queryRecordValues = z.record(fieldIdSchema, fieldValue)
+const queryRecordValues = z.record(fieldIdSchema, fieldQueryValue)
 export type IQueryRecordValues = z.infer<typeof queryRecordValues>
+
+export const recordDisplayValues = z.record(
+  fieldIdSchema,
+  z.record(fieldIdSchema, z.array(z.string().nullable()).nullable()),
+)
+export type IRecordDisplayValues = z.infer<typeof recordDisplayValues>
 
 export const queryRecordSchema = z.object({
   id: recordIdSchema,
@@ -24,6 +30,7 @@ export const queryRecordSchema = z.object({
   updatedAt: z.date(),
   autoIncrement: z.number().int().positive().optional(),
   values: queryRecordValues,
+  displayValues: recordDisplayValues,
 })
 export type IQueryRecordSchema = z.infer<typeof queryRecordSchema>
 

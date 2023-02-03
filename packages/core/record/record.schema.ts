@@ -6,9 +6,11 @@ import {
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
+  INTERNAL_DISPLAY_VALUES_NAME,
   INTERNAL_INCREAMENT_ID_NAME,
 } from '../field'
 import { fieldIdSchema } from '../field/value-objects/field-id.schema'
+import { recordDisplayValues } from './record.type'
 import { recordIdSchema } from './value-objects/record-id.schema'
 
 export const mutateRecordValueSchema = z
@@ -32,6 +34,7 @@ export const internalRecordValues = z.object({
   [INTERNAL_COLUMN_CREATED_AT_NAME]: z.date(),
   [INTERNAL_COLUMN_UPDATED_AT_NAME]: z.date(),
   [INTERNAL_INCREAMENT_ID_NAME]: z.number().optional(),
+  [INTERNAL_DISPLAY_VALUES_NAME]: recordDisplayValues.optional(),
 })
 
 export type IInternalRecordValues = z.infer<typeof internalRecordValues>

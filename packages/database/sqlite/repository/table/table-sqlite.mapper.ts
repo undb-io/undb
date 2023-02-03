@@ -33,19 +33,23 @@ export class TableSqliteMapper {
       } satisfies ISelectFieldQuerySchema
     }
     if (entity.type === 'tree') {
+      const field = entity as EntityDTO<TreeField>
       return {
         id: entity.id,
         name: entity.name,
         type: 'tree',
-        parentFieldId: (entity as EntityDTO<TreeField>).parentFieldId,
+        parentFieldId: field.parentFieldId,
+        displayFieldIds: field.displayFieldIds,
       } satisfies ITreeFieldQuerySchema
     }
     if (entity.type === 'parent') {
+      const field = entity as EntityDTO<ParentField>
       return {
         id: entity.id,
         name: entity.name,
         type: 'parent',
-        treeFieldId: (entity as EntityDTO<ParentField>).treeFieldId,
+        treeFieldId: field.treeFieldId,
+        displayFieldIds: field.displayFieldIds,
       } satisfies IParentFieldQuerySchema
     }
     return {
@@ -84,19 +88,23 @@ export class TableSqliteMapper {
       name: entity.name,
       schema: entity.fields.toArray().map((f) => {
         if (f.type === 'tree') {
+          const field = f as EntityDTO<TreeField>
           return {
             id: f.id,
             name: f.name,
             type: 'tree',
-            parentFieldId: (f as EntityDTO<TreeField>).parentFieldId,
+            parentFieldId: field.parentFieldId,
+            displayFieldIds: field.displayFieldIds,
           } satisfies ICreateTreeFieldSchema
         }
         if (f.type === 'parent') {
+          const field = f as EntityDTO<ParentField>
           return {
             id: f.id,
             name: f.name,
             type: 'parent',
-            treeFieldId: (f as EntityDTO<ParentField>).treeFieldId,
+            treeFieldId: field.treeFieldId,
+            displayFieldIds: field.displayFieldIds,
           } satisfies ICreateParentFieldInput
         }
         if (f.type === 'select') {

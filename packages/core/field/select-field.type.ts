@@ -33,8 +33,11 @@ export type ISelectFieldQuerySchema = z.infer<typeof selectFieldQuerySchema>
 export const selectFieldValue = optionIdSchema.nullable()
 export type ISelectFieldValue = z.infer<typeof selectFieldValue>
 
-export const createSelectFieldValue = optionIdSchema.nullable()
+export const createSelectFieldValue = selectFieldValue
 export type ICreateSelectFieldValue = z.infer<typeof createSelectFieldValue>
+
+export const selectFieldQueryValue = selectFieldValue
+export type ISelectFieldQueryValue = z.infer<typeof selectFieldQueryValue>
 
 export const createSelectFieldValue_internal = z
   .object({ value: createSelectFieldValue })

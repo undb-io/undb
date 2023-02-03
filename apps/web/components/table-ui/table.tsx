@@ -83,7 +83,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
             value = props.getValue()
           }
 
-          return <FieldValueFactory field={f} value={value} />
+          return <FieldValueFactory field={f} value={value} displayValues={props.row.original.display_values} />
         },
       }),
     )

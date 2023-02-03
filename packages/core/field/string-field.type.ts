@@ -18,6 +18,9 @@ export type IStringFieldValue = z.infer<typeof stringFieldValue>
 export const createStringFieldValue = stringFieldValue
 export type ICreateStringFieldValue = z.infer<typeof createStringFieldValue>
 
+export const stringFieldQueryValue = stringFieldValue
+export type IStringFieldQueryValue = z.infer<typeof stringFieldQueryValue>
+
 export const createStringFieldValue_internal = z
   .object({ value: createStringFieldValue })
   .merge(stringTypeObjectSchema)

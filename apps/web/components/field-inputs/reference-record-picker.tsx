@@ -5,7 +5,7 @@ import { Group } from '@egodb/ui'
 import { MultiSelect } from '@egodb/ui'
 import { forwardRef, useState } from 'react'
 import { trpc } from '../../trpc'
-import { ReferenceValue } from '../field-value/reference-value'
+import { RecordId } from '../field-value/record-id'
 import { FieldIcon } from './field-Icon'
 
 interface IProps extends Omit<MultiSelectProps, 'data'> {
@@ -20,7 +20,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
 
 const ReferenceSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, ...others }: ItemProps, ref) => (
   <Group ref={ref} p="xs" {...others}>
-    <ReferenceValue value={value} />
+    <RecordId id={value} />
   </Group>
 ))
 

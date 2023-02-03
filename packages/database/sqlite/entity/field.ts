@@ -2,9 +2,20 @@ import type {
   Field as CoreField,
   IFieldType,
   ParentField as CoreParentField,
+  ReferenceField as CoreReferenceField,
   TreeField as CoreTreeField,
 } from '@egodb/core'
-import { Cascade, Collection, Entity, Enum, ManyToOne, OneToMany, PrimaryKey, Property } from '@mikro-orm/core'
+import {
+  ArrayType,
+  Cascade,
+  Collection,
+  Entity,
+  Enum,
+  ManyToOne,
+  OneToMany,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/core'
 import { BaseEntity } from './base'
 import { Option } from './option'
 import { Table } from './table'
@@ -93,17 +104,29 @@ export class SelectField extends Field {
 }
 
 @Entity({ discriminatorValue: 'reference' })
-export class ReferenceField extends Field {}
+export class ReferenceField extends Field {
+  constructor(table: Table, field: CoreReferenceField) {
+    super(table, field)
+    this.displayFieldIds = field.displayFieldIds?.map((f) => f.value)
+  }
+
+  @Property({ type: ArrayType, nullable: true })
+  displayFieldIds?: string[]
+}
 
 @Entity({ discriminatorValue: 'tree' })
 export class TreeField extends Field {
   constructor(table: Table, field: CoreTreeField) {
     super(table, field)
     this.parentFieldId = field.parentFieldId!.value
+    this.displayFieldIds = field.displayFieldIds?.map((f) => f.value)
   }
 
   @Property()
-  parentFieldId!: string
+  parentFieldId: string
+
+  @Property({ type: ArrayType, nullable: true })
+  displayFieldIds?: string[]
 }
 
 @Entity({ discriminatorValue: 'parent' })
@@ -111,10 +134,14 @@ export class ParentField extends Field {
   constructor(table: Table, field: CoreParentField) {
     super(table, field)
     this.treeFieldId = field.treeFieldId.value
+    this.displayFieldIds = field.displayFieldIds?.map((f) => f.value)
   }
 
   @Property()
   treeFieldId!: string
+
+  @Property({ type: ArrayType, nullable: true })
+  displayFieldIds?: string[]
 }
 
 export type IField =

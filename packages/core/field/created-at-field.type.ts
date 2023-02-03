@@ -18,6 +18,9 @@ export type ICreatedAtFieldValue = z.infer<typeof createdAtFieldValue>
 export const createCreatedAtFieldValue = createdAtFieldValue
 export type ICreateCreatedAtFieldValue = z.infer<typeof createCreatedAtFieldValue>
 
+export const createdAtFieldQueryValue = createdAtFieldValue
+export type ICreatedAtFieldQueryValue = z.infer<typeof createdAtFieldQueryValue>
+
 export const createCreatedAtFieldValue_internal = z
   .object({ value: createCreatedAtFieldValue })
   .merge(createdAtTypeObjectSchema)

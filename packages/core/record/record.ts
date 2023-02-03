@@ -6,11 +6,13 @@ import { createRecordInputs } from './record.utils'
 import { WithRecordId, WithRecordTableId, WithRecordValues } from './specifications'
 import type { RecordCompositeSpecification } from './specifications/interface'
 import { RecordId, RecordValues } from './value-objects'
+import { RecordDisplayValues } from './value-objects/record-display-values.vo'
 
 export class Record {
   public id: RecordId = RecordId.create()
   public tableId!: TableId
   public values: RecordValues = RecordValues.empty()
+  public displayValues?: RecordDisplayValues = RecordDisplayValues.empty()
   public createdAt: DateVO = DateVO.now()
   public updatedAt: DateVO = DateVO.now()
   public autoIncrement?: number
@@ -30,6 +32,7 @@ export class Record {
       created_at: this.createdAt.value,
       updated_at: this.updatedAt.value,
       auto_increment: this.autoIncrement,
+      display_values: this.displayValues?.values,
     }
   }
 

@@ -1,14 +1,14 @@
 import type { ITreeFilterOperator } from '../filter/operators'
 import type { ITreeFilter } from '../filter/tree.filter'
-import { BaseField } from './field.base'
+import { BaseReferenceField } from './field.base'
 import type { ITreeField } from './field.type'
 import type { IFieldVisitor } from './field.visitor'
 import { ParentField } from './parent-field'
 import { TreeFieldValue } from './tree-field-value'
 import type { ICreateTreeFieldSchema, ICreateTreeFieldValue, TreeFieldType } from './tree-field.type'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
+import { DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
-export class TreeField extends BaseField<ITreeField> {
+export class TreeField extends BaseReferenceField<ITreeField> {
   type: TreeFieldType = 'tree'
 
   get parentFieldId() {
@@ -20,6 +20,7 @@ export class TreeField extends BaseField<ITreeField> {
       type: 'parent',
       name: this.name.value + '_parent',
       treeFieldId: this.id.value,
+      displayFieldIds: this.displayFieldIds.map((f) => f.value),
     })
 
     this.props.parentFieldId = parentField.id
@@ -34,6 +35,9 @@ export class TreeField extends BaseField<ITreeField> {
       id: FieldId.fromNullableString(input.id),
       name: fieldName,
       parentFieldId: FieldId.fromNullableString(input.parentFieldId),
+      displayFields: input.displayFieldIds
+        ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
+        : undefined,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
     })
   }
@@ -43,6 +47,9 @@ export class TreeField extends BaseField<ITreeField> {
       id: FieldId.fromNullableString(input.id),
       name: FieldName.unsafaCreate(input.name),
       parentFieldId: FieldId.fromNullableString(input.parentFieldId),
+      displayFields: input.displayFieldIds
+        ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
+        : undefined,
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
     })
   }

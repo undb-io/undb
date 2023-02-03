@@ -18,6 +18,9 @@ export type IAutoIncrementFieldValue = z.infer<typeof autoIncrementFieldValue>
 export const createAutoIncrementFieldValue = autoIncrementFieldValue
 export type ICreateAutoIncrementFieldValue = z.infer<typeof createAutoIncrementFieldValue>
 
+export const autoIncrementQueryValue = autoIncrementFieldValue
+export type IAutoIncrementQueryValue = z.infer<typeof autoIncrementQueryValue>
+
 export const createAutoIncrementFieldValue_internal = z
   .object({ value: createAutoIncrementFieldValue })
   .merge(autoIncrementTypeObjectSchema)

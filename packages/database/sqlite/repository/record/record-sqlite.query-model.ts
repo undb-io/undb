@@ -6,12 +6,13 @@ import type {
   ISorts,
   TableSchemaIdMap,
 } from '@egodb/core'
-import { WithRecordId } from '@egodb/core'
+import { getReferenceFields, WithRecordId } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { Option } from 'oxide.ts'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory'
 import { RecordSqliteMapper } from './record-sqlite.mapper'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
+import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor'
 import type { RecordSqlite } from './record.type'
 
 export class RecordSqliteQueryModel implements IRecordQueryModel {
@@ -21,21 +22,33 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const knex = this.em.getKnex()
     const qb = knex.queryBuilder()
 
-    const visitor = new RecordSqliteQueryVisitor(tableId, '', schema, qb, knex)
+    const alias = 't'
+
+    const visitor = new RecordSqliteQueryVisitor(tableId, alias, schema, qb, knex)
     spec.accept(visitor).unwrap()
+
+    const referenceFields = getReferenceFields([...schema.values()])
+    for (const [index, referenceField] of referenceFields.entries()) {
+      const visitor = new RecordSqliteReferenceQueryVisitor(tableId, alias, index, qb, knex)
+      referenceField.accept(visitor)
+    }
 
     const columns = UnderlyingColumnFactory.createMany([...schema.values()])
 
-    qb.select(columns.map((c) => c.name))
+    qb.select(columns.map((c) => `${alias}.${c.name}`))
     if (sorts.length) {
       for (const sort of sorts) {
         const field = schema.get(sort.fieldId)
         if (!field) continue
 
         const column = UnderlyingColumnFactory.create(field)
-        if (Array.isArray(column)) continue
-
-        qb.orderBy(column.name, sort.direction)
+        if (Array.isArray(column)) {
+          for (const c of column) {
+            qb.orderBy(c.name, sort.direction)
+          }
+        } else {
+          qb.orderBy(column.name, sort.direction)
+        }
       }
     }
 
@@ -49,7 +62,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const knex = this.em.getKnex()
     const qb = knex.queryBuilder()
 
-    const visitor = new RecordSqliteQueryVisitor(tableId, '', schema, qb, knex)
+    const visitor = new RecordSqliteQueryVisitor(tableId, 't', schema, qb, knex)
     spec.accept(visitor).unwrap()
     const columns = UnderlyingColumnFactory.createMany([...schema.values()])
 

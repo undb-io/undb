@@ -1,10 +1,18 @@
 import type { ICreateFieldSchema } from '@egodb/core'
 import { Controller, useFormContext } from 'react-hook-form'
+import type { FieldBase } from '../field-inputs/field-picker.type'
+import { FieldsPicker } from '../field-inputs/fields-picker'
 import { SelectFieldControl } from '../field-inputs/select-field-control'
+import type { ITableBaseProps } from '../table/table-base-props'
 
-export const CreateFieldVariantControl: React.FC = () => {
+export const CreateFieldVariantControl: React.FC<ITableBaseProps> = ({ table }) => {
   const form = useFormContext<ICreateFieldSchema>()
   const type = form.watch('type')
+  const fields: FieldBase[] = table.schema.nonSystemFields.map((f) => ({
+    id: f.id.value,
+    name: f.name.value,
+    type: f.type,
+  }))
 
   if (type === 'select') {
     return (
@@ -15,5 +23,15 @@ export const CreateFieldVariantControl: React.FC = () => {
     )
   }
 
+  if (type === 'tree') {
+    return (
+      <Controller
+        name={'displayFieldIds'}
+        render={(props) => (
+          <FieldsPicker fields={fields} {...props.field} onChange={(ids) => props.field.onChange(ids)} />
+        )}
+      />
+    )
+  }
   return null
 }

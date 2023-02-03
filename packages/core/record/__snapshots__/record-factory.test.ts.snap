@@ -44,6 +44,9 @@ ResultType {
         "value": 2022-02-01T00:00:00.000Z,
       },
     },
+    "displayValues": RecordDisplayValues {
+      "props": {},
+    },
     "id": RecordId {
       "props": {
         "value": "record",

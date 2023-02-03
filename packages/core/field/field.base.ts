@@ -1,7 +1,18 @@
 import { ValueObject } from '@egodb/domain'
+import type { Option } from 'oxide.ts'
+import { None } from 'oxide.ts'
 import * as z from 'zod'
 import type { IFilter, IOperator } from '../filter'
-import type { IBaseField, IFieldType, SystemField } from './field.type'
+import type { IRecordDisplayValues } from '../record'
+import type {
+  IBaseField,
+  IFieldType,
+  IParentField,
+  IReference,
+  IReferenceField,
+  ITreeField,
+  SystemField,
+} from './field.type'
 import type { IFieldVisitor } from './field.visitor'
 import type { FieldId, FieldName } from './value-objects'
 import { valueConstraintsSchema } from './value-objects'
@@ -42,4 +53,21 @@ export abstract class BaseField<C extends IBaseField> extends ValueObject<C> {
   abstract createFilter(operator: IOperator, value: unknown): IFilter
 
   abstract accept(visitor: IFieldVisitor): void
+}
+
+export abstract class BaseReferenceField<F extends ITreeField | IParentField | IReferenceField>
+  extends BaseField<F>
+  implements IReference
+{
+  get foreignTableId(): Option<string> {
+    return None
+  }
+
+  get displayFieldIds(): FieldId[] {
+    return this.props.displayFields?.ids ?? []
+  }
+
+  getDisplayValues(values?: IRecordDisplayValues): ((string | null)[] | undefined)[] {
+    return this.displayFieldIds.map((displayFieldId) => values?.[this.id.value]?.[displayFieldId.value] ?? undefined)
+  }
 }
