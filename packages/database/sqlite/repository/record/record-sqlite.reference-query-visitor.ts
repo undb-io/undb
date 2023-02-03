@@ -19,9 +19,10 @@ import type {
   TreeField,
   UpdatedAtField,
 } from '@egodb/core'
-import { INTERNAL_COLUMN_EXPAND_NAME, INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
+import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import { ClosureTable } from '../../underlying-table/underlying-foreign-table'
+import { getExpandColumnName } from './record.type'
 
 export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
   constructor(
@@ -102,9 +103,41 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
       knex.raw(
         `json_object('${field.id.value}',json_object(${jsonObjectEntries
           .map((k) => k.join(','))
-          .join(',')})) as ${INTERNAL_COLUMN_EXPAND_NAME}`,
+          .join(',')})) as ${getExpandColumnName(field.id.value)}`,
       ),
     )
   }
-  parent(value: ParentField): void {}
+  parent(field: ParentField): void {
+    const foreignTableId = this.getForeignTableId(field)
+    const closure = new ClosureTable(foreignTableId, field)
+    const { alias, knex, index } = this
+
+    const rt = `rt${index}`
+    const ft = `ft${index}`
+
+    this.qb
+      .leftJoin(`${closure.name} as ${rt}`, function () {
+        this.on(`${alias}.${INTERNAL_COLUMN_ID_NAME}`, `${rt}.${ClosureTable.CHILD_ID}`).andOn(
+          `${rt}.${ClosureTable.DEPTH}`,
+          knex.raw('?', [1]),
+        )
+      })
+      .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
+      .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${rt}.${ClosureTable.PARENT_ID}`)
+
+    const jsonObjectEntries: [string, string][] = field.displayFieldIds.map((fieldId) => [
+      `'${fieldId.value}'`,
+      `${ft}.${fieldId.value}`,
+    ])
+
+    if (jsonObjectEntries.length) {
+      this.qb.select(
+        knex.raw(
+          `json_object('${field.id.value}',json_object(${jsonObjectEntries
+            .map((k) => k.join(','))
+            .join(',')})) as ${getExpandColumnName(field.id.value)}`,
+        ),
+      )
+    }
+  }
 }
