@@ -358,7 +358,7 @@ importers:
     specifiers:
       '@egodb/core': ^0.0.0
       '@egodb/eslint-config': ^0.0.0
-      '@egodb/trpc': workspace:^0.0.0
+      '@egodb/trpc': ^0.0.0
       '@reduxjs/toolkit': ^1.9.2
       '@trpc/client': ^10.9.0
       '@trpc/server': ^10.9.0
