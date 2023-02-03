@@ -126,7 +126,7 @@ importers:
       '@dnd-kit/utilities': ^3.2.1
       '@egodb/core': ^0.0.0
       '@egodb/eslint-config': ^0.0.0
-      '@egodb/store': workspace:^0.0.0
+      '@egodb/store': ^0.0.0
       '@egodb/trpc': ^0.0.0
       '@egodb/ui': ^0.0.0
       '@emotion/babel-plugin': ^11.10.5
@@ -356,7 +356,7 @@ importers:
 
   packages/store:
     specifiers:
-      '@egodb/core': workspace:^0.0.0
+      '@egodb/core': ^0.0.0
       '@egodb/eslint-config': ^0.0.0
       '@reduxjs/toolkit': ^1.9.2
       '@types/redux-logger': ^3.0.9
