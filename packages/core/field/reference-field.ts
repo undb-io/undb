@@ -1,15 +1,13 @@
-import type { Option } from 'oxide.ts'
-import { None } from 'oxide.ts'
 import type { IReferenceFilterOperator } from '../filter/operators'
 import type { IReferenceFilter } from '../filter/reference.filter'
-import { BaseField } from './field.base'
-import type { IReference, IReferenceField } from './field.type'
+import { BaseReferenceField } from './field.base'
+import type { IReferenceField } from './field.type'
 import type { IFieldVisitor } from './field.visitor'
 import { ReferenceFieldValue } from './reference-field-value'
 import type { ICreateReferenceFieldInput, ICreateReferenceFieldValue, ReferenceFieldType } from './reference-field.type'
 import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
-export class ReferenceField extends BaseField<IReferenceField> implements IReference {
+export class ReferenceField extends BaseReferenceField<IReferenceField> {
   type: ReferenceFieldType = 'reference'
 
   static create(input: ICreateReferenceFieldInput): ReferenceField {
@@ -28,15 +26,6 @@ export class ReferenceField extends BaseField<IReferenceField> implements IRefer
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
     })
-  }
-
-  get foreignTableId(): Option<string> {
-    return None
-  }
-
-  get displayFieldIds(): FieldId[] {
-    // TODO: defiend display field
-    return []
   }
 
   createValue(value: ICreateReferenceFieldValue): ReferenceFieldValue {

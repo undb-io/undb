@@ -2,6 +2,7 @@ import type { Option } from 'oxide.ts'
 import * as z from 'zod'
 import type { IReferenceFilterValue } from '../filter/reference.filter'
 import type { Options } from '../option/options'
+import type { IRecordDisplayValues } from '../record'
 import type { AutoIncrementField } from './auto-increment-field'
 import type { AutoIncrementFieldValue } from './auto-increment-field-value'
 import type { IAutoIncrementFieldValue } from './auto-increment-field.type'
@@ -296,7 +297,7 @@ export type ISelectField = IBaseField & {
 }
 
 export type IBoolField = IBaseField
-export type IReferenceField = IBaseField
+export type IReferenceField = IBaseField & { displayFields?: DisplayFields }
 export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?: DisplayFields }
 export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: DisplayFields }
 
@@ -382,4 +383,5 @@ export const INTERNAL_DISPLAY_VALUES_NAME = 'display_values'
 export interface IReference {
   get foreignTableId(): Option<string>
   get displayFieldIds(): FieldId[]
+  getDisplayValues(values: IRecordDisplayValues): ((string | null)[] | undefined)[]
 }

@@ -5,9 +5,7 @@ import type {
   DateRangeFieldValue,
   Field,
   RecordAllValueType,
-  ReferenceFieldValue,
   SelectFieldValue,
-  TreeFieldValue,
 } from '@egodb/core'
 import { isNumber } from '@fxts/core'
 import React from 'react'
@@ -63,16 +61,12 @@ export const FieldValueFactory: React.FC<{
       return <ColorValue value={color} />
     }
     case 'parent': {
-      const values = field.displayFieldIds.map(
-        (displayFieldId) => displayValues?.[field.id.value]?.[displayFieldId.value] ?? undefined,
-      )[0]
+      const values = field.getDisplayValues(displayValues)[0]
       return <ReferenceValue values={values} />
     }
     case 'reference':
     case 'tree': {
-      const values = field.displayFieldIds.map(
-        (displayFieldId) => displayValues?.[field.id.value]?.[displayFieldId.value] ?? undefined,
-      )
+      const values = field.getDisplayValues(displayValues)
 
       return (
         <Group>

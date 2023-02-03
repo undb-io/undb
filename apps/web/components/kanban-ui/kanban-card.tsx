@@ -50,7 +50,7 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
           return (
             <Group spacing="xs" key={key}>
               <FieldIcon type={f.type} color="gray" />
-              <FieldValueFactory field={f} value={value} />
+              <FieldValueFactory field={f} value={value} displayValues={record.displayValues?.values} />
             </Group>
           )
         })}

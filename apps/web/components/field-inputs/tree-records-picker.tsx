@@ -4,7 +4,7 @@ import { Group } from '@egodb/ui'
 import { Loader, MultiSelect } from '@egodb/ui'
 import { forwardRef, useState } from 'react'
 import { trpc } from '../../trpc'
-import { ReferenceValue } from '../field-value/reference-value'
+import { RecordId } from '../field-value/record-id'
 import { FieldIcon } from './field-Icon'
 
 interface IProps extends Omit<MultiSelectProps, 'data'> {
@@ -20,7 +20,8 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
 
 const TreeSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, ...others }: ItemProps, ref) => (
   <Group ref={ref} p="xs" {...others}>
-    <ReferenceValue value={value} />
+    <RecordId id={value} />
+    {/* TODO: display values */}
   </Group>
 ))
 
@@ -32,8 +33,12 @@ export const TreeRecordsPicker: React.FC<IProps> = ({ table, field, recordId, ..
   )
 
   const data = [
-    ...(getRecords.data?.records.map((record) => ({ value: record.id, label: record.id })) ?? []),
-    ...(rest.value?.map((id) => ({ value: id, label: id })) ?? []),
+    ...(getRecords.data?.records.map((record) => ({
+      value: record.id,
+      values: field.getDisplayValues(record.displayValues),
+      label: record.id,
+    })) ?? []),
+    ...(rest.value?.map((id) => ({ value: id, values: [], label: id })) ?? []),
   ]
 
   return (

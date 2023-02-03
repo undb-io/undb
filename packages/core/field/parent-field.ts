@@ -1,27 +1,17 @@
-import type { Option } from 'oxide.ts'
-import { None } from 'oxide.ts'
 import type { IParentFilterOperator } from '../filter/operators'
 import type { IParentFilter } from '../filter/parent.filter'
-import { BaseField } from './field.base'
-import type { IParentField, IReference } from './field.type'
+import { BaseReferenceField } from './field.base'
+import type { IParentField } from './field.type'
 import type { IFieldVisitor } from './field.visitor'
 import { ParentFieldValue } from './parent-field-value'
 import type { ICreateParentFieldInput, ICreateParentFieldValue, ParentFieldType } from './parent-field.type'
 import { DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects'
 
-export class ParentField extends BaseField<IParentField> implements IReference {
+export class ParentField extends BaseReferenceField<IParentField> {
   type: ParentFieldType = 'parent'
 
   get treeFieldId() {
     return this.props.treeFieldId
-  }
-
-  get foreignTableId(): Option<string> {
-    return None
-  }
-
-  get displayFieldIds(): FieldId[] {
-    return this.props.displayFields?.ids ?? []
   }
 
   static create(input: ICreateParentFieldInput): ParentField {

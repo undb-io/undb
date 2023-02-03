@@ -2,6 +2,7 @@ import type {
   Field as CoreField,
   IFieldType,
   ParentField as CoreParentField,
+  ReferenceField as CoreReferenceField,
   TreeField as CoreTreeField,
 } from '@egodb/core'
 import {
@@ -103,7 +104,15 @@ export class SelectField extends Field {
 }
 
 @Entity({ discriminatorValue: 'reference' })
-export class ReferenceField extends Field {}
+export class ReferenceField extends Field {
+  constructor(table: Table, field: CoreReferenceField) {
+    super(table, field)
+    this.displayFieldIds = field.displayFieldIds?.map((f) => f.value)
+  }
+
+  @Property({ type: ArrayType, nullable: true })
+  displayFieldIds?: string[]
+}
 
 @Entity({ discriminatorValue: 'tree' })
 export class TreeField extends Field {
