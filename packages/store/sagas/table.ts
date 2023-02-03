@@ -1,10 +1,15 @@
-/* eslint-disable no-constant-condition */
-
-import { all, fork, put, takeEvery } from 'redux-saga/effects'
+import type { IGetTablesOutput } from '@egodb/core'
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects'
 import * as actions from '../actions'
+import type { IClient } from '../store/context'
+import { getClient } from '../store/context'
 
 export function* getTables() {
-  yield put(actions.receiveTables({ tables: [] }))
+  const client: IClient = yield getClient()
+
+  const tables: IGetTablesOutput = yield call(client.getTableList, {})
+
+  yield put(actions.receiveTables({ tables }))
 }
 
 export function* watchGetProducts() {
