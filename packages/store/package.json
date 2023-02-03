@@ -1,0 +1,24 @@
+{
+  "name": "@egodb/store",
+  "version": "0.0.0",
+  "dependencies": {
+    "@egodb/core": "^0.0.0",
+    "@reduxjs/toolkit": "^1.9.2",
+    "redux": "^4.2.1",
+    "redux-logger": "^3.0.6",
+    "redux-saga": "^1.2.2"
+  },
+  "devDependencies": {
+    "@egodb/eslint-config": "^0.0.0",
+    "@types/redux-logger": "^3.0.9",
+    "eslint": "^8.32.0",
+    "react": "^18.2.0",
+    "tsconfig": "^0.0.0",
+    "typescript": "^4.9.4"
+  },
+  "main": "./index.ts",
+  "scripts": {
+    "lint": "eslint *.ts*"
+  },
+  "types": "./index.ts"
+}

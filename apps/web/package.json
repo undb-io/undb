@@ -7,6 +7,7 @@
     "@dnd-kit/sortable": "^7.0.2",
     "@dnd-kit/utilities": "^3.2.1",
     "@egodb/core": "^0.0.0",
+    "@egodb/store": "^0.0.0",
     "@egodb/trpc": "^0.0.0",
     "@egodb/ui": "^0.0.0",
     "@emotion/styled": "^11.10.5",
@@ -27,6 +28,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.42.1",
+    "react-redux": "^8.0.5",
     "superjson": "^1.12.2",
     "use-deep-compare-effect": "^1.8.1"
   },
