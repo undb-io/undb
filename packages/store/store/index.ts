@@ -4,9 +4,11 @@ import createSagaMiddleware from 'redux-saga'
 
 import { rootReducer } from '../reducers'
 import rootSaga from '../sagas/table'
+import type { SagaContext } from './context'
+import { context } from './context'
 
 export const createStore = () => {
-  const sagaMiddleware = createSagaMiddleware()
+  const sagaMiddleware = createSagaMiddleware<SagaContext>({ context })
 
   const store = configureStore({
     reducer: rootReducer,

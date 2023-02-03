@@ -3,10 +3,13 @@
   "version": "0.0.0",
   "dependencies": {
     "@egodb/core": "^0.0.0",
+    "@egodb/trpc": "workspace:^0.0.0",
     "@reduxjs/toolkit": "^1.9.2",
+    "@trpc/client": "^10.9.0",
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
-    "redux-saga": "^1.2.2"
+    "redux-saga": "^1.2.2",
+    "superjson": "^1.12.2"
   },
   "devDependencies": {
     "@egodb/eslint-config": "^0.0.0",
