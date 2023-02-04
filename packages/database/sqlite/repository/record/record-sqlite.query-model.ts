@@ -44,10 +44,10 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
         const column = UnderlyingColumnFactory.create(field)
         if (Array.isArray(column)) {
           for (const c of column) {
-            qb.orderBy(c.name, sort.direction)
+            qb.orderBy(`${alias}.${c.name}`, sort.direction)
           }
         } else {
-          qb.orderBy(column.name, sort.direction)
+          qb.orderBy(`${alias}.${column.name}`, sort.direction)
         }
       }
     }
