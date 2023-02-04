@@ -226,8 +226,10 @@ importers:
     specifiers:
       '@egodb/domain': ^0.0.0
       '@fxts/core': ^0.11.0
+      '@types/lodash': ^4.14.191
       array-move: ^3.0.1
       date-fns: ^2.29.3
+      lodash: ^4.17.21
       oxide.ts: ^1.1.0
       rimraf: ^3.0.2
       tsconfig: ^0.0.0
@@ -242,9 +244,11 @@ importers:
       '@fxts/core': 0.11.0
       array-move: 3.0.1
       date-fns: 2.29.3
+      lodash: 4.17.21
       oxide.ts: 1.1.0
       zod: 3.20.2
     devDependencies:
+      '@types/lodash': 4.14.191
       rimraf: 3.0.2
       tsconfig: link:../tsconfig
       tsup: 6.5.0_typescript@4.9.4

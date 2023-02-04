@@ -6,11 +6,9 @@ export const ReferenceValue: React.FC<{ values?: (string | undefined | null)[] }
 
   return (
     <Group spacing="xs">
-      {visibleValues.map((value) => (
-        <Badge key={value} color="gray" size="xs" sx={{ textTransform: 'unset' }}>
-          {value}
-        </Badge>
-      ))}
+      <Badge color="gray" size="xs" sx={{ textTransform: 'unset' }}>
+        {visibleValues.join(', ')}
+      </Badge>
     </Group>
   )
 }

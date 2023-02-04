@@ -1,4 +1,6 @@
 import { ValueObject } from '@egodb/domain'
+import { map, pipe, toArray } from '@fxts/core'
+import { unzip } from 'lodash/fp'
 import type { Option } from 'oxide.ts'
 import { None } from 'oxide.ts'
 import * as z from 'zod'
@@ -67,7 +69,12 @@ export abstract class BaseReferenceField<F extends ITreeField | IParentField | I
     return this.props.displayFields?.ids ?? []
   }
 
-  getDisplayValues(values?: IRecordDisplayValues): ((string | null)[] | undefined)[] {
-    return this.displayFieldIds.map((displayFieldId) => values?.[this.id.value]?.[displayFieldId.value] ?? undefined)
+  getDisplayValues(values?: IRecordDisplayValues): (string | null)[][] {
+    return pipe(
+      this.displayFieldIds,
+      map((displayFieldId) => values?.[this.id.value]?.[displayFieldId.value] ?? []),
+      toArray,
+      unzip,
+    )
   }
 }
