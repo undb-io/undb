@@ -1,12 +1,8 @@
-import type { IGetTablesQuery } from '@egodb/core'
 import { getContext } from 'redux-saga/effects'
 import { api } from '../api'
+import { TableApi } from '../services/table'
 
-const client = {
-  async getTableList(params: IGetTablesQuery) {
-    return api.table.list.query(params)
-  },
-}
+const client = new TableApi(api)
 
 export type IClient = typeof client
 

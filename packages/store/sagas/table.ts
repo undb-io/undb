@@ -7,7 +7,7 @@ import { getClient } from '../store/context'
 export function* getTables() {
   const client: IClient = yield getClient()
 
-  const tables: IGetTablesOutput = yield call(client.getTableList, {})
+  const tables: IGetTablesOutput = yield call(client.getTables, {})
 
   yield put(actions.receiveTables({ tables }))
 }
