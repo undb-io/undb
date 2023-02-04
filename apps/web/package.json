@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
+    "@babel/plugin-proposal-decorators": "^7.20.13",
     "@egodb/eslint-config": "^0.0.0",
     "@emotion/babel-plugin": "^11.10.5",
     "@hookform/devtools": "^4.3.0",
