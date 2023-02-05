@@ -14,7 +14,7 @@ const { title } = Astro.props as Props
     <meta charset="UTF-8" />
     <title>{title}</title>
   </head>
-  <body class="container mx-auto">
+  <body style="margin:0;padding:0" class="flex flex-col">
     <Navbar />
     <slot />
   </body>
