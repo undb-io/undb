@@ -1,4 +1,4 @@
-import type { ReferenceField, Table } from '@egodb/core'
+import type { IQueryRecords, ReferenceField, Table } from '@egodb/core'
 import { useLazyGetRecordsQuery } from '@egodb/store'
 import type { MultiSelectProps } from '@egodb/ui'
 import { Loader } from '@egodb/ui'
@@ -26,13 +26,18 @@ const ReferenceSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, ...o
 
 export const ReferenceRecordPicker: React.FC<IProps> = ({ table, field, ...rest }) => {
   const [focused, setFocused] = useState(false)
-  const [listRecords, { data: listRecordsData, isLoading }] = useLazyGetRecordsQuery()
+  const [listRecords, { rawRecords, isLoading }] = useLazyGetRecordsQuery({
+    selectFromResult: (result) => ({
+      ...result,
+      rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+    }),
+  })
 
   useEffect(() => {
     listRecords({ tableId: table.id.value })
   }, [focused])
 
-  const data = listRecordsData?.records.map((r) => ({ value: r.id, label: r.id })) ?? []
+  const data = rawRecords.map((r) => ({ value: r.id, label: r.id })) ?? []
 
   return (
     <MultiSelect
@@ -41,7 +46,7 @@ export const ReferenceRecordPicker: React.FC<IProps> = ({ table, field, ...rest 
       clearable
       searchable
       itemComponent={ReferenceSelectItem}
-      description={focused && !listRecordsData?.records.length ? 'no more available record to select' : undefined}
+      description={focused && !rawRecords.length ? 'no more available record to select' : undefined}
       data={data}
       onFocus={() => setFocused(true)}
       placeholder={focused && isLoading ? 'loading records...' : undefined}
