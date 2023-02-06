@@ -54,6 +54,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const data = await this.em.execute<RecordSqlite[]>(qb)
 
     const records = data.map((d) => RecordSqliteMapper.toQuery(tableId, schema, d))
+    console.log(data)
     return records
   }
 
