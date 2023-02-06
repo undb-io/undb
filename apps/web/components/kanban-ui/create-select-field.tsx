@@ -50,7 +50,7 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
   const onSubmit = form.handleSubmit((values) => {
     values.id = FieldId.createId()
     createSelectField.mutate({
-      id: table.id.value,
+      tableId: table.id.value,
       field: values,
     })
   })
