@@ -23,36 +23,36 @@ export const { useSetFilterMutation, useSetSortMutation, useSwitchDisplayTypeMut
 
 const calendarApi = viewApi.injectEndpoints({
   endpoints: (builder) => ({
-    setField: builder.mutation({
+    setCalendarField: builder.mutation({
       query: trpc.table.view.calendar.setField.mutate,
       invalidatesTags: ['Table'],
     }),
   }),
 })
 
-export const { useSetFieldMutation: useSetCalendarFieldMutation } = calendarApi
+export const { useSetCalendarFieldMutation } = calendarApi
 
 const kanbanApi = viewApi.injectEndpoints({
   endpoints: (builder) => ({
-    setField: builder.mutation({
+    setKanbanField: builder.mutation({
       query: trpc.table.view.kanban.setField.mutate,
       invalidatesTags: ['Table'],
     }),
   }),
 })
 
-export const { useSetFieldMutation: useSetKanbanFieldMutation } = kanbanApi
+export const { useSetKanbanFieldMutation } = kanbanApi
 
 const treeViewApi = viewApi.injectEndpoints({
   endpoints: (builder) => ({
-    setField: builder.mutation({
+    setTreeField: builder.mutation({
       query: trpc.table.view.tree.setField.mutate,
       invalidatesTags: ['Table'],
     }),
   }),
 })
 
-export const { useSetFieldMutation: useSetTreeFieldMutation } = treeViewApi
+export const { useSetTreeFieldMutation } = treeViewApi
 
 const viewFieldApi = viewApi.injectEndpoints({
   endpoints: (builder) => ({

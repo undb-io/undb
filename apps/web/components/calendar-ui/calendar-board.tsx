@@ -1,5 +1,5 @@
 import { DndContext, rectIntersection } from '@dnd-kit/core'
-import type { ICalendarField, Table } from '@egodb/core'
+import type { ICalendarField, IQueryRecords, Table } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
 import { useGetRecordsQuery, useUpdateRecordMutation } from '@egodb/store'
 import { Calendar, Grid } from '@egodb/ui'
@@ -16,11 +16,19 @@ export const CalendarBoard: React.FC<IProps> = ({ table, field }) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   const onChange = () => {}
 
-  const listRecords = useGetRecordsQuery({
-    tableId: table.id.value,
-  })
+  const listRecords = useGetRecordsQuery(
+    {
+      tableId: table.id.value,
+    },
+    {
+      selectFromResult: (result) => ({
+        ...result,
+        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+      }),
+    },
+  )
 
-  const records = RecordFactory.fromQueryRecords(listRecords.data?.records ?? [], table.schema.toIdMap())
+  const records = RecordFactory.fromQueryRecords(listRecords.rawRecords, table.schema.toIdMap())
 
   const [updateRecord] = useUpdateRecordMutation()
 

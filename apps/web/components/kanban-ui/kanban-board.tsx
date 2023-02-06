@@ -1,4 +1,4 @@
-import type { IKanbanField } from '@egodb/core'
+import type { IKanbanField, IQueryRecords } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
 import { useGetRecordsQuery } from '@egodb/store'
 import type { MantineTheme } from '@egodb/ui'
@@ -17,11 +17,19 @@ const Wrapper = styled.div`
 `
 
 export const KanbanBoard: React.FC<IProps> = ({ field, table }) => {
-  const listRecords = useGetRecordsQuery({
-    tableId: table.id.value,
-  })
+  const listRecords = useGetRecordsQuery(
+    {
+      tableId: table.id.value,
+    },
+    {
+      selectFromResult: (result) => ({
+        ...result,
+        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+      }),
+    },
+  )
 
-  const records = RecordFactory.fromQueryRecords(listRecords.data?.records ?? [], table.schema.toIdMap())
+  const records = RecordFactory.fromQueryRecords(listRecords.rawRecords, table.schema.toIdMap())
 
   if (field.type === 'select') {
     return (

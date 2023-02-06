@@ -10,7 +10,7 @@ import { groupBy } from '@fxts/core'
 import { KanbanCard } from './kanban-card'
 import { NODATE_STACK_ID } from './kanban.constants'
 import { useKanban } from './use-kanban'
-import type { Record as CoreRecord, DateField } from '@egodb/core'
+import type { Record as CoreRecord, DateField, IQueryRecords } from '@egodb/core'
 import { KANBAN_DATE_STACKS, RElAVANT_DATES } from './kanban-date.utils'
 import { addDays, isAfter, isBefore, isToday, isTomorrow, isYesterday, startOfDay } from 'date-fns'
 import { endOfDay } from 'date-fns/esm'
@@ -24,11 +24,19 @@ interface IProps extends ITableBaseProps {
 export const KanbanDateBoard: React.FC<IProps> = ({ table, field }) => {
   const containers = KANBAN_DATE_STACKS
 
-  const listRecords = useGetRecordsQuery({
-    tableId: table.id.value,
-  })
+  const listRecords = useGetRecordsQuery(
+    {
+      tableId: table.id.value,
+    },
+    {
+      selectFromResult: (result) => ({
+        ...result,
+        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+      }),
+    },
+  )
 
-  const records = RecordFactory.fromQueryRecords(listRecords.data?.records ?? [], table.schema.toIdMap())
+  const records = RecordFactory.fromQueryRecords(listRecords.rawRecords, table.schema.toIdMap())
 
   const groupDateRecords = (): Record<string, CoreRecord[]> =>
     groupBy((record) => {
