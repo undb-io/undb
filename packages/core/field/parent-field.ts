@@ -14,7 +14,7 @@ export class ParentField extends BaseReferenceField<IParentField> {
     return this.props.treeFieldId
   }
 
-  static create(input: ICreateParentFieldInput): ParentField {
+  static create(input: Omit<ICreateParentFieldInput, 'type'>): ParentField {
     const fieldName = FieldName.create(input.name)
 
     return new ParentField({

@@ -43,7 +43,7 @@ export class SelectField extends BaseField<ISelectField> {
     return new WithoutOption(this, optionKey)
   }
 
-  static create(input: ICreateSelectFieldSchema): SelectField {
+  static create(input: Omit<ICreateSelectFieldSchema, 'type'>): SelectField {
     const fieldName = FieldName.create(input.name)
 
     return new SelectField({

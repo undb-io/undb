@@ -6,7 +6,6 @@ describe('SelectField', () => {
   describe('#create()', () => {
     test('should create new select field', () => {
       const selectField = SelectField.create({
-        type: 'select',
         name: 'select',
         options: [{ name: 'option1' }],
       })
@@ -48,7 +47,6 @@ describe('SelectField', () => {
   describe('createSelectValue', () => {
     test('should create null value', () => {
       const selectField = SelectField.create({
-        type: 'select',
         name: 'select',
         options: [{ name: '1' }],
       })
@@ -65,7 +63,6 @@ describe('SelectField', () => {
 
     test('should create option value', () => {
       const selectField = SelectField.create({
-        type: 'select',
         name: 'select',
         options: [{ key: 'fld1', name: '1' }],
       })

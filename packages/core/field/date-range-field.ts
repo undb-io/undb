@@ -15,7 +15,7 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 export class DateRangeField extends BaseField<IDateRangeField> {
   type: DateRangeType = 'date-range'
 
-  static create(input: ICreateDateRangeFieldSchema): DateRangeField {
+  static create(input: Omit<ICreateDateRangeFieldSchema, 'type'>): DateRangeField {
     const fieldName = FieldName.create(input.name)
 
     return new DateRangeField({

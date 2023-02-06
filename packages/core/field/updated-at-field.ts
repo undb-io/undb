@@ -18,11 +18,10 @@ export class UpdatedAtField extends BaseField<IUpdatedAtField> {
   static default(): UpdatedAtField {
     return this.create({
       name: 'updatedAt',
-      type: 'updated-at',
     })
   }
 
-  static create(input: ICreateUpdatedAtFieldInput): UpdatedAtField {
+  static create(input: Omit<ICreateUpdatedAtFieldInput, 'type'>): UpdatedAtField {
     const fieldName = FieldName.create(input.name)
     return new UpdatedAtField({
       id: FieldId.fromNullableString(input.id),

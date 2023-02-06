@@ -9,7 +9,7 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 export class NumberField extends BaseField<INumberField> {
   type: NumberType = 'number'
 
-  static create(input: ICreateNumberFieldInput): NumberField {
+  static create(input: Omit<ICreateNumberFieldInput, 'type'>): NumberField {
     const fieldName = FieldName.create(input.name)
 
     return new NumberField({

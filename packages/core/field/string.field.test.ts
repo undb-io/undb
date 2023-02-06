@@ -3,7 +3,6 @@ import { StringField } from './string-field'
 it('should create new text field', () => {
   const field = StringField.create({
     name: 'hello',
-    type: 'string',
   })
 
   expect(field.unpack()).toMatchObject({
@@ -20,7 +19,6 @@ it('should throw error if name is invalid', () => {
   const createField = () =>
     StringField.create({
       name: 'h',
-      type: 'string',
     })
 
   expect(createField).toThrowErrorMatchingInlineSnapshot(`

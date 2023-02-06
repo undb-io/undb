@@ -9,7 +9,7 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 export class StringField extends BaseField<IStringField> {
   type: StringFieldType = 'string'
 
-  static create(input: ICreateStringFieldInput): StringField {
+  static create(input: Omit<ICreateStringFieldInput, 'type'>): StringField {
     const fieldName = FieldName.create(input.name)
 
     return new StringField({
