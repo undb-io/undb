@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Card, Group, Stack, useEgoUITheme } from '@egodb/ui'
+import { Box, Card, Flex, Group, Stack, useEgoUITheme } from '@egodb/ui'
 import type { SortableProps } from '../sortable.interface'
 import type { ITableBaseProps } from '../table/table-base-props'
 import type { Record } from '@egodb/core'
@@ -48,8 +48,10 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
           if (field.isNone()) return null
           const f = field.unwrap()
           return (
-            <Group spacing="xs" key={key}>
-              <FieldIcon type={f.type} color="gray" />
+            <Group spacing="xs" key={key} noWrap mih={20} align="center">
+              <Flex>
+                <FieldIcon type={f.type} color="gray" />
+              </Flex>
               <FieldValueFactory field={f} value={value} displayValues={record.displayValues?.values} />
             </Group>
           )
