@@ -1,15 +1,15 @@
-import type { Table as CoreTable } from '@egodb/core'
+import { RecordFactory } from '@egodb/core'
 import { updateRecordSchema } from '@egodb/core'
-import type { IUpdateRecordValueSchema } from '@egodb/core'
+import type { IUpdateRecordValueSchema, Table as CoreTable } from '@egodb/core'
 import { ActionIcon, Drawer, IconChevronLeft, IconChevronRight } from '@egodb/ui'
 import { useAtom } from 'jotai'
 import { useLayoutEffect, useMemo } from 'react'
-import { useConfirmModal } from '../../hooks'
+import { useAppDispatch, useAppSelector, useConfirmModal } from '../../hooks'
 import { editRecordFormDrawerOpened } from './drawer-opened.atom'
 import { EditRecordForm } from './edit-record-form'
-import { editRecordValuesAtom } from './edit-record-values.atom'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { getSelectedRecordId, resetSelectedRecordId, useGetRecordQuery } from '@egodb/store'
 
 interface IProps {
   table: CoreTable
@@ -17,17 +17,29 @@ interface IProps {
 
 export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
   const [opened, setOpened] = useAtom(editRecordFormDrawerOpened)
-  const [record, setRecord] = useAtom(editRecordValuesAtom)
+  const dispatch = useAppDispatch()
+
+  const selectedRecordId = useAppSelector(getSelectedRecordId)
+  const { selectedRecord } = useGetRecordQuery(
+    { id: selectedRecordId, tableId: table.id.value },
+    {
+      skip: !selectedRecordId,
+      selectFromResult: (result) => ({
+        ...result,
+        selectedRecord: result.data ? RecordFactory.fromQuery(result.data, table.schema.toIdMap()).unwrap() : undefined,
+      }),
+    },
+  )
 
   const defaultValues: IUpdateRecordValueSchema = useMemo(
     () => ({
-      id: record?.id ?? '',
+      id: selectedRecord?.id.value ?? '',
       value: table.schema.nonSystemFields.map((field) => ({
         id: field.id.value,
-        value: record?.values[field.id.value]?.unpack() ?? null,
+        value: selectedRecord?.valuesJSON?.[field.id.value]?.unpack() ?? null,
       })),
     }),
-    [record],
+    [selectedRecord],
   )
 
   const form = useForm<IUpdateRecordValueSchema>({
@@ -37,11 +49,11 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
 
   useLayoutEffect(() => {
     form.reset(defaultValues)
-  }, [record])
+  }, [selectedRecordId])
 
   const reset = () => {
     setOpened(false)
-    setRecord(null)
+    dispatch(resetSelectedRecordId())
     form.reset()
   }
   const confirm = useConfirmModal({ onConfirm: reset })

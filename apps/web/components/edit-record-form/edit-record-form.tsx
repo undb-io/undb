@@ -1,13 +1,12 @@
 import type { IUpdateRecordValueSchema, Table } from '@egodb/core'
 import { Alert, Button, Divider, Group, IconAlertCircle, Stack } from '@egodb/ui'
-import { useAtomValue } from 'jotai'
 import type { FieldPath } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 import { DevTool } from '@hookform/devtools'
 import { RecordInputFactory } from '../record/record-input.factory'
-import { editRecordValuesAtom } from './edit-record-values.atom'
 import type { IMutateRecordValueSchema } from '@egodb/core'
-import { useUpdateRecordMutation } from '@egodb/store'
+import { getSelectedRecordId, useUpdateRecordMutation } from '@egodb/store'
+import { useAppSelector } from '../../hooks'
 
 interface IProps {
   table: Table
@@ -18,7 +17,7 @@ interface IProps {
 export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel }) => {
   const form = useFormContext<IUpdateRecordValueSchema>()
 
-  const record = useAtomValue(editRecordValuesAtom)
+  const selectedRecordId = useAppSelector(getSelectedRecordId)
 
   const [updateRecord, { isLoading, isError, error, reset: resetUpdateRecord }] = useUpdateRecordMutation()
 
@@ -32,7 +31,7 @@ export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel })
       }
     }
 
-    if (record && values.length) {
+    if (selectedRecordId && values.length) {
       await updateRecord({
         tableId: table.id.value,
         id: data.id,
@@ -56,7 +55,13 @@ export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel })
           {table.schema.nonSystemFields.map((field, index) => {
             const name: FieldPath<IUpdateRecordValueSchema> = `value.${index}.value`
             return (
-              <RecordInputFactory name={name} table={table} key={field.id.value} field={field} recordId={record?.id} />
+              <RecordInputFactory
+                name={name}
+                table={table}
+                key={field.id.value}
+                field={field}
+                recordId={selectedRecordId}
+              />
             )
           })}
         </Stack>

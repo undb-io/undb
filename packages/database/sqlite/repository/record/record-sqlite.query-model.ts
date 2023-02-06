@@ -20,9 +20,8 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
 
   async find(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap, sorts: ISorts): Promise<IQueryRecords> {
     const knex = this.em.getKnex()
-    const qb = knex.queryBuilder()
-
     const alias = 't'
+    const qb = knex.queryBuilder()
 
     const visitor = new RecordSqliteQueryVisitor(tableId, alias, schema, qb, knex)
     spec.accept(visitor).unwrap()
@@ -60,17 +59,25 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
 
   async findOne(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap): Promise<Option<IQueryRecordSchema>> {
     const knex = this.em.getKnex()
+    const alias = 't'
     const qb = knex.queryBuilder()
 
-    const visitor = new RecordSqliteQueryVisitor(tableId, 't', schema, qb, knex)
+    const visitor = new RecordSqliteQueryVisitor(tableId, alias, schema, qb, knex)
     spec.accept(visitor).unwrap()
+
+    const referenceFields = getReferenceFields([...schema.values()])
+    for (const [index, referenceField] of referenceFields.entries()) {
+      const visitor = new RecordSqliteReferenceQueryVisitor(tableId, alias, index, qb, knex)
+      referenceField.accept(visitor)
+    }
+
     const columns = UnderlyingColumnFactory.createMany([...schema.values()])
 
-    qb.select(columns.map((c) => c.name))
+    qb.select(columns.map((c) => `${alias}.${c.name}`))
 
-    const data = await this.em.execute<RecordSqlite>(qb.first())
+    const data = await this.em.execute<RecordSqlite[]>(qb.first())
 
-    const record = RecordSqliteMapper.toQuery(tableId, schema, data)
+    const record = RecordSqliteMapper.toQuery(tableId, schema, data[0])
     return Option(record)
   }
 

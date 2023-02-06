@@ -4,14 +4,15 @@ import type { ICalendarField, Records } from '@egodb/core'
 import type { Record } from '@egodb/core'
 import { DateFieldValue } from '@egodb/core'
 import { DateEqual } from '@egodb/core'
+import { setSelectedRecordId } from '@egodb/store'
 import { ActionIcon, Box, Group, IconGripVertical, IconPlus, Stack, Text, useHover } from '@egodb/ui'
 import { isEqual, isToday } from 'date-fns'
 import { useAtom, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
+import { useAppDispatch } from '../../hooks'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
 import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
-import { editRecordValuesAtom } from '../edit-record-form/edit-record-values.atom'
 
 interface IProps {
   records: Records
@@ -21,10 +22,11 @@ interface IProps {
 
 const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
   const setOpened = useSetAtom(editRecordFormDrawerOpened)
-  const setRecordValues = useSetAtom(editRecordValuesAtom)
   const { setNodeRef, attributes, listeners, transform, isDragging } = useDraggable({
     id: record.id.value,
   })
+
+  const dispatch = useAppDispatch()
 
   return (
     <Group
@@ -47,7 +49,7 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
       })}
       onClick={(e) => {
         e.stopPropagation()
-        setRecordValues({ id: record.id.value, values: record.values.valueJSON })
+        dispatch(setSelectedRecordId(record.id.value))
         setOpened(true)
       }}
     >

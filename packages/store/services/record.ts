@@ -1,6 +1,8 @@
 import type {
   IFieldQueryValue,
   IGetParentAvailableRecordQuery,
+  IGetRecordOutput,
+  IGetRecordQuery,
   IGetRecordsOutput,
   IGetRecordsQuery,
   IGetRecordsTreeQuery,
@@ -20,7 +22,7 @@ type QueryRecordsEntity = EntityState<IQueryRecordSchema>
 
 const providesTags = (result: QueryRecordsEntity | undefined) => [
   'Record' as const,
-  ...(result?.ids.map((id) => ({ type: 'Record' as const, id })) ?? []),
+  ...(result?.ids?.map((id) => ({ type: 'Record' as const, id })) ?? []),
 ]
 const transformResponse = (result: IGetRecordsOutput) => recordAdapter.setAll(initialState, result.records)
 
@@ -30,6 +32,10 @@ const recordApi = api.injectEndpoints({
       query: trpc.record.list.query,
       providesTags,
       transformResponse,
+    }),
+    getRecord: builder.query<IGetRecordOutput, IGetRecordQuery>({
+      query: trpc.record.get.query,
+      providesTags: (_, __, { id }) => [{ type: 'Record', id }],
     }),
     listTree: builder.query<QueryRecordsEntity, IGetRecordsTreeQuery>({
       query: trpc.record.tree.list.query,
@@ -93,6 +99,7 @@ const recordApi = api.injectEndpoints({
 
 export const {
   useGetRecordsQuery,
+  useGetRecordQuery,
   useLazyGetRecordsQuery,
   useListTreeQuery,
   useParentAvailableQuery,

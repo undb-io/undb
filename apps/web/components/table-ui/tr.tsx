@@ -1,8 +1,9 @@
+import { setSelectedRecordId } from '@egodb/store'
 import { flexRender } from '@tanstack/react-table'
 import { useSetAtom } from 'jotai'
 import { unstable_batchedUpdates } from 'react-dom'
+import { useAppDispatch } from '../../hooks'
 import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
-import { editRecordValuesAtom } from '../edit-record-form/edit-record-values.atom'
 import type { TRow } from './interface'
 
 interface IProps {
@@ -11,14 +12,16 @@ interface IProps {
 }
 export const Tr: React.FC<IProps> = ({ row, id }) => {
   const setOpened = useSetAtom(editRecordFormDrawerOpened)
-  const setEditRecordValues = useSetAtom(editRecordValuesAtom)
+
+  const dispatch = useAppDispatch()
+
   return (
     <tr
       key={row.id}
       onClick={() => {
         unstable_batchedUpdates(() => {
-          setEditRecordValues({ id, values: row.original })
           setOpened(true)
+          dispatch(setSelectedRecordId(id))
         })
       }}
     >

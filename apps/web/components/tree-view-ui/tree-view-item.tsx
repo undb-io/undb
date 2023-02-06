@@ -1,6 +1,6 @@
 import type { UniqueIdentifier } from '@dnd-kit/core'
 import type { RecordAllValues, Table, TreeField } from '@egodb/core'
-import { useDeleteRecordMutation } from '@egodb/store'
+import { setSelectedRecordId, useDeleteRecordMutation } from '@egodb/store'
 import {
   ActionIcon,
   Badge,
@@ -18,11 +18,10 @@ import { useSetAtom } from 'jotai'
 import type { HTMLAttributes } from 'react'
 import React, { forwardRef } from 'react'
 import { unstable_batchedUpdates } from 'react-dom'
-import { useConfirmModal } from '../../hooks'
+import { useAppDispatch, useConfirmModal } from '../../hooks'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
 import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
-import { editRecordValuesAtom } from '../edit-record-form/edit-record-values.atom'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldValueFactory } from '../field-value/field-value.factory'
 import { RecordId } from '../field-value/record-id'
@@ -74,7 +73,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     const theme = useEgoUITheme()
 
     const setOpened = useSetAtom(editRecordFormDrawerOpened)
-    const setEditRecordValues = useSetAtom(editRecordValuesAtom)
+    const dispatch = useAppDispatch()
 
     const setCreateOpened = useSetAtom(createRecordFormDrawerOpened)
     const setCreateRecordInitialValue = useSetAtom(createRecordInitialValueAtom)
@@ -98,7 +97,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         pl={indentationWidth * depth}
         onClick={() => {
           unstable_batchedUpdates(() => {
-            setEditRecordValues({ id: id as string, values })
+            dispatch(setSelectedRecordId(id as string))
             setOpened(true)
           })
         }}

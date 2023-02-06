@@ -358,9 +358,11 @@ importers:
       '@trpc/server': ^10.9.0
       '@types/redux-logger': ^3.0.9
       eslint: ^8.32.0
+      immer: ^9.0.19
       react: ^18.2.0
       redux: ^4.2.1
       redux-logger: ^3.0.6
+      reselect: ^4.1.7
       superjson: ^1.12.2
       tsconfig: ^0.0.0
       typescript: ^4.9.4
@@ -377,7 +379,9 @@ importers:
       '@trpc/server': 10.9.0
       '@types/redux-logger': 3.0.9
       eslint: 8.32.0
+      immer: 9.0.19
       react: 18.2.0
+      reselect: 4.1.7
       tsconfig: link:../tsconfig
       typescript: 4.9.4
 
@@ -7339,7 +7343,6 @@ packages:
 
   /immer/9.0.19:
     resolution: {integrity: sha512-eY+Y0qcsB4TZKwgQzLaE/lqYMlKhv5J9dyd2RhhtGhNo2njPXDqU9XPfcNfa3MIDsdtZt5KlkIsirlo4dHsWdQ==}
-    dev: false
 
   /immutable/4.2.2:
     resolution: {integrity: sha512-fTMKDwtbvO5tldky9QZ2fMX7slR0mYpY5nbnFWYp0fOzDhHqhgIw9KoYgxLWsoNTS9ZHGauHj18DTyEw6BK3Og==}
@@ -10941,7 +10944,6 @@ packages:
 
   /reselect/4.1.7:
     resolution: {integrity: sha512-Zu1xbUt3/OPwsXL46hvOOoQrap2azE7ZQbokq61BQfiXvhewsKDwhMeZjTX9sX0nvw1t/U5Audyn1I9P/m9z0A==}
-    dev: false
 
   /resolve-cwd/3.0.0:
     resolution: {integrity: sha512-OrZaX2Mb+rJCpH/6CpSqt9xFVpN++x01XnN2ie9g6P5/3xelLAkXWVADpdz1IHD/KFfEXyE6V0U01OQ3UO2rEg==}
