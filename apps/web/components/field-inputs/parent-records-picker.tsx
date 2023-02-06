@@ -1,12 +1,11 @@
-import type { ParentField, Table } from '@egodb/core'
+import type { IQueryRecords, ParentField, Table } from '@egodb/core'
+import { useLazyParentAvailableQuery } from '@egodb/store'
 import type { SelectProps } from '@egodb/ui'
 import { Select } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { Loader } from '@egodb/ui'
-import { forwardRef, useState } from 'react'
-import { trpc } from '../../trpc'
+import { forwardRef, useEffect, useState } from 'react'
 import { RecordId } from '../field-value/record-id'
-import { ReferenceValue } from '../field-value/reference-value'
 import { FieldIcon } from './field-Icon'
 
 interface IProps extends Omit<SelectProps, 'data'> {
@@ -31,13 +30,19 @@ const ParentSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, values,
 
 export const ParentRecordPicker: React.FC<IProps> = ({ table, field, recordId, ...rest }) => {
   const [focused, setFocused] = useState(false)
-  const getRecords = trpc.record.parent.available.useQuery(
-    { tableId: table.id.value, parentFieldId: field.id.value, recordId },
-    { enabled: focused },
-  )
+  const [getRecords, { rawRecords, isLoading }] = useLazyParentAvailableQuery({
+    selectFromResult: (result) => ({
+      ...result,
+      rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+    }),
+  })
+
+  useEffect(() => {
+    getRecords({ tableId: table.id.value, parentFieldId: field.id.value, recordId })
+  }, [focused])
 
   const data = [
-    ...(getRecords.data?.records.map((record) => ({
+    ...(rawRecords?.map((record) => ({
       value: record.id,
       values: field.getDisplayValues(record.displayValues),
       label: record.id,
@@ -54,13 +59,13 @@ export const ParentRecordPicker: React.FC<IProps> = ({ table, field, recordId, .
       multiple
       searchable
       clearable
-      description={focused && !getRecords.data?.records.length ? 'no more available record to select' : undefined}
+      description={focused && !rawRecords.length ? 'no more available record to select' : undefined}
       itemComponent={ParentSelectItem}
       data={data}
       onFocus={() => setFocused(true)}
-      placeholder={focused && getRecords.isLoading ? 'loading records...' : undefined}
-      disabled={focused && getRecords.isLoading}
-      icon={focused && getRecords.isLoading ? <Loader color="gray" size={14} /> : <FieldIcon type={field.type} />}
+      placeholder={focused && isLoading ? 'loading records...' : undefined}
+      disabled={focused && isLoading}
+      icon={focused && isLoading ? <Loader color="gray" size={14} /> : <FieldIcon type={field.type} />}
     />
   )
 }

@@ -6,10 +6,8 @@
     "@egodb/trpc": "^0.0.0",
     "@reduxjs/toolkit": "^1.9.2",
     "@trpc/client": "^10.9.0",
-    "autobind-decorator": "^2.4.0",
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
-    "redux-saga": "^1.2.2",
     "superjson": "^1.12.2"
   },
   "devDependencies": {
@@ -17,7 +15,9 @@
     "@trpc/server": "^10.9.0",
     "@types/redux-logger": "^3.0.9",
     "eslint": "^8.32.0",
+    "immer": "^9.0.19",
     "react": "^18.2.0",
+    "reselect": "^4.1.7",
     "tsconfig": "^0.0.0",
     "typescript": "^4.9.4"
   },

@@ -1,6 +1,7 @@
 import type { FieldId, IViewDisplayType, Kanban } from '@egodb/core'
 import type { Table } from '@egodb/core'
 import type { ICalendar } from '@egodb/core/view/calendar'
+import { useSwitchDisplayTypeMutation } from '@egodb/store'
 import {
   Button,
   IconCalendarPlus,
@@ -13,7 +14,6 @@ import {
   closeAllModals,
 } from '@egodb/ui'
 import { SELECT_CALENDAR_FIELD_MODAL_ID, SELECT_KANBAN_FIELD_MODAL_ID } from '../../modals'
-import { trpc } from '../../trpc'
 import type { ISelectKanbanFieldProps } from '../kanban-ui/select-kanban-field.props'
 import { DisplayTypeIcon } from '../view/display-type-icon'
 import type { ITableBaseProps } from './table-base-props'
@@ -92,13 +92,7 @@ export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
 
   const displayType = view.displayType
 
-  const utils = trpc.useContext()
-  const switchDisplayType = trpc.table.view.switchDisplayType.useMutation({
-    onSuccess() {
-      utils.table.get.refetch()
-      toggle.close()
-    },
-  })
+  const [switchDisplayType] = useSwitchDisplayTypeMutation()
 
   return (
     <Button.Group>
@@ -126,10 +120,12 @@ export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
               { label: 'Tree', value: 'tree' },
             ]}
             onChange={(type) => {
-              switchDisplayType.mutate({
+              switchDisplayType({
                 tableId: table.id.value,
                 viewKey: view.name.unpack(),
                 displayType: type as IViewDisplayType,
+              }).then(() => {
+                toggle.close()
               })
             }}
             value={view.displayType}

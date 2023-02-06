@@ -1,9 +1,9 @@
 import type { ICreateOptionSchema } from '@egodb/core'
 import { createOptionSchema, OptionKey } from '@egodb/core'
+import { useCreateOptionMutation } from '@egodb/store'
 import { Stack, TextInput, Group, Button, closeAllModals } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
-import { trpc } from '../../trpc'
 import { OptionColorPicker } from '../field-inputs/option-color-picker'
 import type { ICreateOptionFormProps } from './create-option-form.props'
 
@@ -16,23 +16,18 @@ export const CreateOptionForm: React.FC<ICreateOptionFormProps> = ({ table, fiel
     resolver: zodResolver(createOptionSchema),
   })
 
-  const utils = trpc.useContext()
+  const [createOption, { isLoading }] = useCreateOptionMutation()
 
-  const createOption = trpc.table.field.select.createOption.useMutation({
-    onSuccess() {
-      form.reset()
-      utils.table.get.refetch()
-      onSuccess?.()
-    },
-  })
-
-  const onSubmit = form.handleSubmit((values) => {
+  const onSubmit = form.handleSubmit(async (values) => {
     values.key = OptionKey.create().value
-    createOption.mutate({
+    await createOption({
       tableId: table.id.value,
       fieldId: field.id.value,
       option: values,
     })
+
+    form.reset()
+    onSuccess?.()
   })
 
   return (
@@ -56,7 +51,7 @@ export const CreateOptionForm: React.FC<ICreateOptionFormProps> = ({ table, fiel
             size="xs"
             type="submit"
             disabled={!form.formState.isValid || !form.formState.isDirty}
-            loading={createOption.isLoading}
+            loading={isLoading}
           >
             Done
           </Button>

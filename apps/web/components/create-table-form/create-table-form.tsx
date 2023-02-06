@@ -1,8 +1,8 @@
 import type { ICreateTableInput } from '@egodb/core'
+import { useCreateTableMutation } from '@egodb/store'
 import { Alert, Button, Divider, Group, IconAlertCircle, Text, Space, TextInput, Code } from '@egodb/ui'
 import { useRouter } from 'next/navigation'
 import { useFormContext } from 'react-hook-form'
-import { trpc } from '../../trpc'
 import { CreateTableAddFieldButton } from './create-table-add-field-button'
 import { CreateTableFormSchema } from './create-table-form-schema'
 
@@ -13,25 +13,22 @@ interface IProps {
 
 export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
   const form = useFormContext<ICreateTableInput>()
-  const utils = trpc.useContext()
   const router = useRouter()
 
-  const createTable = trpc.table.create.useMutation({
-    onSuccess: (data) => {
-      reset()
-      utils.table.list.refetch()
-      router.push(`t/${data.id}`)
-      onSuccess?.()
-    },
-  })
+  const [createTable, { isLoading, isError, error, reset: resetCreateTable }] = useCreateTableMutation()
 
-  const onSubmit = form.handleSubmit((values) => {
-    createTable.mutate(values)
+  const onSubmit = form.handleSubmit(async (values) => {
+    const data = await createTable(values)
+    if ('data' in data) {
+      reset()
+      router.push(`t/${data.data.id}`)
+      onSuccess?.()
+    }
   })
 
   const reset = () => {
     onCancel()
-    createTable.reset()
+    resetCreateTable()
     form.reset()
   }
 
@@ -68,14 +65,14 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
         <Button variant="subtle" onClick={() => onCancel()}>
           Cancel
         </Button>
-        <Button loading={createTable.isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
+        <Button loading={isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
           Create
         </Button>
       </Group>
 
-      {createTable.isError && (
+      {isError && (
         <Alert color="red" icon={<IconAlertCircle size={16} />} title="Oops! Create Table Error!" mt="lg">
-          {createTable.error.message}
+          {(error as any).message}
         </Alert>
       )}
     </form>

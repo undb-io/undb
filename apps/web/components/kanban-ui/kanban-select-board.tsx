@@ -14,7 +14,6 @@ import {
   useListState,
 } from '@egodb/ui'
 import { useEffect, useState } from 'react'
-import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { KanbanLane, SortableKanbanLane } from './kanban-lane'
 import { groupBy } from '@fxts/core'
@@ -27,6 +26,7 @@ import type { IUpdateOptionModalProps } from '../update-option-form/update-optio
 import { CREATE_OPTION_MODAL_ID, UDPATE_OPTION_MODAL_ID } from '../../modals'
 import type { SelectFieldValue } from '@egodb/core'
 import type { Records } from '@egodb/core'
+import { useReorderOptionsMutation, useUpdateRecordMutation } from '@egodb/store'
 
 interface IProps extends ITableBaseProps {
   field: SelectField
@@ -47,7 +47,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
     }, records)
   const [optionRecords, setOptionRecords] = useState(groupOptionRecords())
 
-  const reorderOptions = trpc.table.field.select.reorderOptions.useMutation()
+  const [reorderOptions] = useReorderOptionsMutation()
 
   useEffect(() => {
     handlers.setState(field.options.options)
@@ -74,12 +74,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
     }),
   )
 
-  const utils = trpc.useContext()
-  const updateRecord = trpc.record.update.useMutation({
-    onSuccess() {
-      utils.record.list.refetch()
-    },
-  })
+  const [updateRecord] = useUpdateRecordMutation()
 
   const {
     collisionDetectionStrategy,
@@ -105,7 +100,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
           to: over.data.current?.sortable?.index - 1,
         })
 
-        reorderOptions.mutate({
+        reorderOptions({
           tableId: table.id.value,
           fieldId: field.id.value,
           from: active.id as string,
@@ -114,7 +109,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
       }
     },
     onDragItemEnd: (e, activeContainer, overContainer) => {
-      updateRecord.mutate({
+      updateRecord({
         tableId: table.id.value,
         id: e.active.id as string,
         value: [{ id: field.id.value, value: overContainer === UNCATEGORIZED_OPTION_ID ? null : overContainer }],

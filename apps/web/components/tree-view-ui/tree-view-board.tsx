@@ -1,5 +1,5 @@
 import type { ITreeViewField, Table } from '@egodb/core'
-import { trpc } from '../../trpc'
+import { useListTreeQuery } from '@egodb/store'
 import { TreeView } from './tree-view'
 
 interface IProps {
@@ -9,7 +9,7 @@ interface IProps {
 }
 
 export const TreeViewBoard: React.FC<IProps> = ({ table, field, ...rest }) => {
-  const listRecords = trpc.record.tree.list.useQuery({
+  const listRecords = useListTreeQuery({
     tableId: table.id.value,
     fieldId: field.id.value,
   })

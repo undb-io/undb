@@ -1,17 +1,44 @@
-import type { IGetTablesOutput, IGetTablesQuery } from '@egodb/core'
-import type { AppRouter } from '@egodb/trpc'
-import type { createTRPCProxyClient } from '@trpc/client'
-import { boundClass } from 'autobind-decorator'
+import type {
+  ICreateTableInput,
+  ICreateTableOutput,
+  IGetTableOutput,
+  IGetTableQuery,
+  IGetTablesOutput,
+  IGetTablesQuery,
+} from '@egodb/core'
+import { trpc } from '../trpc'
+import { api } from './api'
 
-export interface ITableService {
-  getTables(params: IGetTablesQuery): Promise<IGetTablesOutput>
-}
+const tableApi = api.injectEndpoints({
+  endpoints: (builder) => ({
+    getTables: builder.query<IGetTablesOutput, IGetTablesQuery>({
+      query: trpc.table.list.query,
+      providesTags: ['Table'],
+    }),
+    getTable: builder.query<IGetTableOutput, IGetTableQuery>({
+      query: trpc.table.get.query,
+      providesTags: (_, __, args) => [{ type: 'Table', id: args.id }],
+    }),
+    createTable: builder.mutation<ICreateTableOutput, ICreateTableInput>({
+      query: trpc.table.create.mutate,
+      invalidatesTags: ['Table'],
+    }),
+    editTable: builder.mutation({
+      query: trpc.table.edit.mutate,
+      invalidatesTags: ['Table'],
+    }),
+    deleteTable: builder.mutation({
+      query: trpc.table.delete.mutate,
+      invalidatesTags: ['Table'],
+    }),
+  }),
+  overrideExisting: false,
+})
 
-@boundClass
-export class TableApi implements ITableService {
-  constructor(private readonly trpc: ReturnType<typeof createTRPCProxyClient<AppRouter>>) {}
-
-  getTables(params: IGetTablesQuery): Promise<IGetTablesOutput> {
-    return this.trpc.table.list.query(params)
-  }
-}
+export const {
+  useGetTablesQuery,
+  useGetTableQuery,
+  useCreateTableMutation,
+  useEditTableMutation,
+  useDeleteTableMutation,
+} = tableApi

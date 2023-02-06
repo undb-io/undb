@@ -1,10 +1,10 @@
-import type { ReferenceField, Table } from '@egodb/core'
+import type { IQueryRecords, ReferenceField, Table } from '@egodb/core'
+import { useLazyGetRecordsQuery } from '@egodb/store'
 import type { MultiSelectProps } from '@egodb/ui'
 import { Loader } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { MultiSelect } from '@egodb/ui'
-import { forwardRef, useState } from 'react'
-import { trpc } from '../../trpc'
+import { forwardRef, useEffect, useState } from 'react'
 import { RecordId } from '../field-value/record-id'
 import { FieldIcon } from './field-Icon'
 
@@ -26,9 +26,18 @@ const ReferenceSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, ...o
 
 export const ReferenceRecordPicker: React.FC<IProps> = ({ table, field, ...rest }) => {
   const [focused, setFocused] = useState(false)
-  const listRecords = trpc.record.list.useQuery({ tableId: table.id.value }, { enabled: focused })
+  const [listRecords, { rawRecords, isLoading }] = useLazyGetRecordsQuery({
+    selectFromResult: (result) => ({
+      ...result,
+      rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+    }),
+  })
 
-  const data = listRecords.data?.records.map((r) => ({ value: r.id, label: r.id })) ?? []
+  useEffect(() => {
+    listRecords({ tableId: table.id.value })
+  }, [focused])
+
+  const data = rawRecords.map((r) => ({ value: r.id, label: r.id })) ?? []
 
   return (
     <MultiSelect
@@ -37,12 +46,12 @@ export const ReferenceRecordPicker: React.FC<IProps> = ({ table, field, ...rest 
       clearable
       searchable
       itemComponent={ReferenceSelectItem}
-      description={focused && !listRecords.data?.records.length ? 'no more available record to select' : undefined}
+      description={focused && !rawRecords.length ? 'no more available record to select' : undefined}
       data={data}
       onFocus={() => setFocused(true)}
-      placeholder={focused && listRecords.isLoading ? 'loading records...' : undefined}
-      disabled={focused && listRecords.isLoading}
-      icon={focused && listRecords.isLoading ? <Loader color="gray" size={14} /> : <FieldIcon type={field.type} />}
+      placeholder={focused && isLoading ? 'loading records...' : undefined}
+      disabled={focused && isLoading}
+      icon={focused && isLoading ? <Loader color="gray" size={14} /> : <FieldIcon type={field.type} />}
     />
   )
 }

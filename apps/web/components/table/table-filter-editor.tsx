@@ -1,6 +1,6 @@
 import type { IFilter } from '@egodb/core'
+import { useSetFilterMutation } from '@egodb/store'
 import { Button, IconFilter, Popover, useDisclosure, Badge } from '@egodb/ui'
-import { trpc } from '../../trpc'
 import { FiltersEditor } from '../filters-editor/filters-editor'
 import type { ITableBaseProps } from './table-base-props'
 
@@ -8,17 +8,7 @@ export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
   const filters = table.mustGetView().filterList as IFilter[]
   const [opened, handler] = useDisclosure(false)
 
-  const utils = trpc.useContext()
-
-  const setFilter = trpc.table.view.filter.set.useMutation({
-    onSuccess: () => {
-      handler.close()
-
-      utils.table.get.refetch()
-      utils.record.list.refetch()
-      utils.record.tree.list.refetch()
-    },
-  })
+  const [setFilter, { isLoading }] = useSetFilterMutation()
 
   return (
     <Popover position="bottom-start" opened={opened} onChange={handler.toggle} closeOnClickOutside shadow="md">
@@ -27,7 +17,7 @@ export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
           compact
           size="xs"
           variant={filters.length ? 'light' : 'subtle'}
-          loading={setFilter.isLoading}
+          loading={isLoading}
           leftIcon={<IconFilter size={18} />}
           onClick={handler.toggle}
           rightIcon={
@@ -46,7 +36,7 @@ export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
         <FiltersEditor
           table={table}
           onApply={(filter) => {
-            setFilter.mutate({ tableId: table.id.value, filter })
+            setFilter({ tableId: table.id.value, filter }).then(() => handler.close())
           }}
           onCancel={handler.close}
         />

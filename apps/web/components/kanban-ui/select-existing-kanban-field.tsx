@@ -1,9 +1,9 @@
 import { setKanbanFieldSchema } from '@egodb/core'
+import { useSetKanbanFieldMutation } from '@egodb/store'
 import { Card, Radio, Group, Button, Text, IconPlus, Stack, Divider } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { Controller, useForm } from 'react-hook-form'
-import { trpc } from '../../trpc'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { kanbanStepOneAtom, kanbanStepTwoAtom } from './kanban-step.atom'
@@ -18,13 +18,7 @@ export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
   const initialKanbanFieldId = view.kanban.into()?.fieldId?.value
   const hasKanbanFields = kanbanFields.length > 0
 
-  const utils = trpc.useContext()
-  const setKanbanField = trpc.table.view.kanban.setField.useMutation({
-    onSuccess() {
-      utils.table.get.refetch()
-      onSuccess?.()
-    },
-  })
+  const [setKanbanField, { isLoading }] = useSetKanbanFieldMutation()
 
   const form = useForm({
     defaultValues: {
@@ -33,11 +27,12 @@ export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
     resolver: zodResolver(setKanbanFieldSchema),
   })
 
-  const onSubmit = form.handleSubmit((values) => {
-    setKanbanField.mutate({
+  const onSubmit = form.handleSubmit(async (values) => {
+    await setKanbanField({
       tableId: table.id.value,
       field: values.field,
     })
+    onSuccess?.()
   })
 
   const setKanbanStepOne = useSetAtom(kanbanStepOneAtom)
@@ -94,7 +89,7 @@ export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
 
           <Card.Section withBorder inheritPadding py="sm">
             <Group position="right">
-              <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={setKanbanField.isLoading}>
+              <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={isLoading}>
                 Done
               </Button>
             </Group>

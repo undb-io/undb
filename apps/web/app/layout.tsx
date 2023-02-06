@@ -10,7 +10,6 @@ import { tableListNumber } from '../components/tables-nav-list/table-list.atom'
 import { TableNavList } from '../components/tables-nav-list/table-nav-list'
 import { AtomsDevtools } from './atom-devtool'
 import RootStyleRegistry from './emotion'
-import Trpc from './trpc'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const setOpened = useSetAtom(createTableFormDrawerOpened)
@@ -24,25 +23,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Provider store={store}>
           <AtomsDevtools>
-            <Trpc>
-              <RootStyleRegistry>
-                <AppShell
-                  padding={0}
-                  navbar={<TableNavList />}
-                  sx={(theme) => ({ backgroundColor: theme.colors.gray[0] })}
-                >
-                  {children}
-                  {!tableTotal && (
-                    <Center style={{ height: '100%' }}>
-                      <Button leftIcon={<IconPlus size={14} />} variant="outline" onClick={() => setOpened(true)}>
-                        New table
-                      </Button>
-                    </Center>
-                  )}
-                  <CreateTableFormDrawer />
-                </AppShell>
-              </RootStyleRegistry>
-            </Trpc>
+            <RootStyleRegistry>
+              <AppShell
+                padding={0}
+                navbar={<TableNavList />}
+                sx={(theme) => ({ backgroundColor: theme.colors.gray[0] })}
+              >
+                {children}
+                {!tableTotal && (
+                  <Center style={{ height: '100%' }}>
+                    <Button leftIcon={<IconPlus size={14} />} variant="outline" onClick={() => setOpened(true)}>
+                      New table
+                    </Button>
+                  </Center>
+                )}
+                <CreateTableFormDrawer />
+              </AppShell>
+            </RootStyleRegistry>
           </AtomsDevtools>
         </Provider>
       </body>

@@ -1,9 +1,9 @@
-import type { Table, TreeField } from '@egodb/core'
+import type { IQueryRecords, Table, TreeField } from '@egodb/core'
+import { useLazyTreeAvailableQuery } from '@egodb/store'
 import type { MultiSelectProps } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { Loader, MultiSelect } from '@egodb/ui'
-import { forwardRef, useState } from 'react'
-import { trpc } from '../../trpc'
+import { forwardRef, useEffect, useState } from 'react'
 import { RecordId } from '../field-value/record-id'
 import { FieldIcon } from './field-Icon'
 
@@ -27,13 +27,19 @@ const TreeSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, ...others
 
 export const TreeRecordsPicker: React.FC<IProps> = ({ table, field, recordId, ...rest }) => {
   const [focused, setFocused] = useState(false)
-  const getRecords = trpc.record.tree.available.useQuery(
-    { tableId: table.id.value, treeFieldId: field.id.value, recordId },
-    { enabled: focused },
-  )
+  const [getRecords, { rawRecords, isLoading }] = useLazyTreeAvailableQuery({
+    selectFromResult: (result) => ({
+      ...result,
+      rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+    }),
+  })
+
+  useEffect(() => {
+    getRecords({ tableId: table.id.value, treeFieldId: field.id.value, recordId })
+  }, [focused])
 
   const data = [
-    ...(getRecords.data?.records.map((record) => ({
+    ...(rawRecords?.map((record) => ({
       value: record.id,
       values: field.getDisplayValues(record.displayValues),
       label: record.id,
@@ -47,13 +53,13 @@ export const TreeRecordsPicker: React.FC<IProps> = ({ table, field, recordId, ..
       multiple
       searchable
       clearable
-      description={focused && !getRecords.data?.records.length ? 'no more available record to select' : undefined}
+      description={focused && !rawRecords.length ? 'no more available record to select' : undefined}
       itemComponent={TreeSelectItem}
       data={data}
       onFocus={() => setFocused(true)}
-      placeholder={focused && getRecords.isLoading ? 'loading records...' : undefined}
-      disabled={focused && getRecords.isLoading}
-      icon={focused && getRecords.isLoading ? <Loader color="gray" size={14} /> : <FieldIcon type={field.type} />}
+      placeholder={focused && isLoading ? 'loading records...' : undefined}
+      disabled={focused && isLoading}
+      icon={focused && isLoading ? <Loader color="gray" size={14} /> : <FieldIcon type={field.type} />}
     />
   )
 }

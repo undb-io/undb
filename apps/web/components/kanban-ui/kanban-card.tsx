@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Box, Card, Flex, Group, Stack, useEgoUITheme } from '@egodb/ui'
+import { Card, Flex, Group, Stack, useEgoUITheme } from '@egodb/ui'
 import type { SortableProps } from '../sortable.interface'
 import type { ITableBaseProps } from '../table/table-base-props'
 import type { Record } from '@egodb/core'
@@ -8,8 +8,9 @@ import type { CSSProperties } from 'react'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { useSetAtom } from 'jotai'
 import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
-import { editRecordValuesAtom } from '../edit-record-form/edit-record-values.atom'
 import { FieldValueFactory } from '../field-value/field-value.factory'
+import { setSelectedRecordId } from '@egodb/store'
+import { useAppDispatch } from '../../hooks'
 
 interface IProps extends ITableBaseProps {
   record: Record
@@ -24,7 +25,7 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
   style,
 }) => {
   const setOpened = useSetAtom(editRecordFormDrawerOpened)
-  const setValues = useSetAtom(editRecordValuesAtom)
+  const dispatch = useAppDispatch()
 
   return (
     <Card
@@ -39,7 +40,7 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
       onClick={(e) => {
         e.stopPropagation()
         setOpened(true)
-        setValues({ id: record.id.value, values: record.values.valueJSON })
+        dispatch(setSelectedRecordId(record.id.value))
       }}
     >
       <Stack spacing={8} sx={(theme) => ({ fontSize: theme.fontSizes.sm })}>

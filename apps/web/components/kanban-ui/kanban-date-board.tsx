@@ -4,18 +4,18 @@ import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { RecordFactory } from '@egodb/core'
 import { Container, Group } from '@egodb/ui'
 import { useEffect, useState } from 'react'
-import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { KanbanLane } from './kanban-lane'
 import { groupBy } from '@fxts/core'
 import { KanbanCard } from './kanban-card'
 import { NODATE_STACK_ID } from './kanban.constants'
 import { useKanban } from './use-kanban'
-import type { Record as CoreRecord, DateField } from '@egodb/core'
+import type { Record as CoreRecord, DateField, IQueryRecords } from '@egodb/core'
 import { KANBAN_DATE_STACKS, RElAVANT_DATES } from './kanban-date.utils'
 import { addDays, isAfter, isBefore, isToday, isTomorrow, isYesterday, startOfDay } from 'date-fns'
 import { endOfDay } from 'date-fns/esm'
 import type { DateFieldValue } from '@egodb/core'
+import { useGetRecordsQuery, useUpdateRecordMutation } from '@egodb/store'
 
 interface IProps extends ITableBaseProps {
   field: DateField
@@ -24,11 +24,19 @@ interface IProps extends ITableBaseProps {
 export const KanbanDateBoard: React.FC<IProps> = ({ table, field }) => {
   const containers = KANBAN_DATE_STACKS
 
-  const listRecords = trpc.record.list.useQuery({
-    tableId: table.id.value,
-  })
+  const listRecords = useGetRecordsQuery(
+    {
+      tableId: table.id.value,
+    },
+    {
+      selectFromResult: (result) => ({
+        ...result,
+        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+      }),
+    },
+  )
 
-  const records = RecordFactory.fromQueryRecords(listRecords.data?.records ?? [], table.schema.toIdMap())
+  const records = RecordFactory.fromQueryRecords(listRecords.rawRecords, table.schema.toIdMap())
 
   const groupDateRecords = (): Record<string, CoreRecord[]> =>
     groupBy((record) => {
@@ -64,12 +72,7 @@ export const KanbanDateBoard: React.FC<IProps> = ({ table, field }) => {
     }),
   )
 
-  const utils = trpc.useContext()
-  const updateRecord = trpc.record.update.useMutation({
-    onSuccess() {
-      utils.record.list.refetch()
-    },
-  })
+  const [updateRecord] = useUpdateRecordMutation()
 
   const {
     collisionDetectionStrategy,
@@ -89,7 +92,7 @@ export const KanbanDateBoard: React.FC<IProps> = ({ table, field }) => {
     getActiveItem: (activeId) => records.find((r) => r.id.value === activeId),
 
     onDragItemEnd: (e, activeContainer, overContainer) => {
-      updateRecord.mutate({
+      updateRecord({
         tableId: table.id.value,
         id: e.active.id as string,
         value: [{ id: field.id.value, value: overContainer === NODATE_STACK_ID ? null : overContainer }],

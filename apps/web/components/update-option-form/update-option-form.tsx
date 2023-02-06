@@ -3,10 +3,10 @@ import type { IMutateOptionSchema } from '@egodb/core'
 import type { SelectField } from '@egodb/core'
 import { updateOptionSchema } from '@egodb/core'
 import { OptionColor } from '@egodb/core'
+import { useUpdateOptionMutation } from '@egodb/store'
 import { Group, Button, TextInput, Stack, closeAllModals } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
-import { trpc } from '../../trpc'
 import { OptionColorPicker } from '../field-inputs/option-color-picker'
 
 interface IProps {
@@ -25,23 +25,17 @@ export const UpdateOptionForm: React.FC<IProps> = ({ tableId, field, optionKey, 
     resolver: zodResolver(updateOptionSchema),
   })
 
-  const utils = trpc.useContext()
+  const [updateOption, { isLoading }] = useUpdateOptionMutation()
 
-  const updateOption = trpc.table.field.select.updateOption.useMutation({
-    onSuccess() {
-      utils.table.get.refetch()
-      form.reset()
-      closeAllModals()
-    },
-  })
-
-  const onSubmit = form.handleSubmit((values) => {
-    updateOption.mutate({
+  const onSubmit = form.handleSubmit(async (values) => {
+    await updateOption({
       tableId,
       fieldId: field.id.value,
       id: optionKey,
       option: values,
     })
+    form.reset()
+    closeAllModals()
   })
 
   return (
@@ -66,7 +60,7 @@ export const UpdateOptionForm: React.FC<IProps> = ({ tableId, field, optionKey, 
             size="xs"
             type="submit"
             disabled={!form.formState.isValid || !form.formState.isDirty}
-            loading={updateOption.isLoading}
+            loading={isLoading}
           >
             Done
           </Button>

@@ -54,14 +54,18 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     private qb: Knex.QueryBuilder,
     private knex: Knex,
   ) {
-    this.qb = qb.from(tableId).whereNull(`${alias}.${INTERNAL_COLUMN_DELETED_AT_NAME}`)
+    this.qb = qb.from(tableId + ' as ' + alias).whereNull(`${alias}.${INTERNAL_COLUMN_DELETED_AT_NAME}`)
   }
   get query() {
     return this.qb.toQuery()
   }
 
+  getFieldId(fieldId: string) {
+    return this.alias + '.' + fieldId
+  }
+
   idEqual(s: WithRecordId): void {
-    this.qb.where({ [INTERNAL_COLUMN_ID_NAME]: s.id.value })
+    this.qb.where({ [this.getFieldId(INTERNAL_COLUMN_ID_NAME)]: s.id.value })
   }
   tableIdEqual(s: WithRecordTableId): void {
     if (this.alias) {
@@ -71,103 +75,103 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     }
   }
   createdAt(s: WithRecordCreatedAt): void {
-    this.qb.where({ [INTERNAL_COLUMN_CREATED_AT_NAME]: s.date.value })
+    this.qb.where({ [this.getFieldId(INTERNAL_COLUMN_CREATED_AT_NAME)]: s.date.value })
   }
   updatedAt(s: WithRecordUpdatedAt): void {
-    this.qb.where({ [INTERNAL_COLUMN_UPDATED_AT_NAME]: s.date.value })
+    this.qb.where({ [this.getFieldId(INTERNAL_COLUMN_UPDATED_AT_NAME)]: s.date.value })
   }
   autoIncrement(s: WithRecordAutoIncrement): void {
-    this.qb.where(INTERNAL_INCREAMENT_ID_NAME, s.n)
+    this.qb.where(this.getFieldId(INTERNAL_INCREAMENT_ID_NAME), s.n)
   }
   values(s: WithRecordValues): void {
     throw new Error('Method not implemented.')
   }
   stringEqual(s: StringEqual): void {
-    this.qb.where({ [s.fieldId]: s.value.unpack() })
+    this.qb.where({ [this.getFieldId(s.fieldId)]: s.value.unpack() })
   }
   stringContain(s: StringContain): void {
     if (s.value.unpack() === null) {
-      this.qb.whereNull(s.fieldId)
+      this.qb.whereNull(this.getFieldId(s.fieldId))
     } else {
-      this.qb.whereLike(s.fieldId, `%${s.value.unpack()}%`)
+      this.qb.whereLike(this.getFieldId(s.fieldId), `%${s.value.unpack()}%`)
     }
   }
   stringStartsWith(s: StringStartsWith): void {
     if (s.value.unpack() === null) {
-      this.qb.whereNull(s.fieldId)
+      this.qb.whereNull(this.getFieldId(s.fieldId))
     } else {
-      this.qb.whereLike(s.fieldId, `${s.value.unpack()}%`)
+      this.qb.whereLike(this.getFieldId(s.fieldId), `${s.value.unpack()}%`)
     }
   }
   stringEndsWith(s: StringEndsWith): void {
     if (s.value.unpack() === null) {
-      this.qb.whereNull(s.fieldId)
+      this.qb.whereNull(this.getFieldId(s.fieldId))
     } else {
-      this.qb.whereLike(s.fieldId, `%${s.value.unpack()}`)
+      this.qb.whereLike(this.getFieldId(s.fieldId), `%${s.value.unpack()}`)
     }
   }
   stringRegex(s: StringRegex): void {
     throw new Error('Method not implemented.')
   }
   numberEqual(s: NumberEqual): void {
-    this.qb.where({ [s.fieldId]: s.value.unpack() })
+    this.qb.where({ [this.getFieldId(s.fieldId)]: s.value.unpack() })
   }
   numberGreaterThan(s: NumberGreaterThan): void {
-    this.qb.where(s.fieldId, '>', s.value.unpack())
+    this.qb.where(this.getFieldId(s.fieldId), '>', s.value.unpack())
   }
   numberLessThan(s: NumberLessThan): void {
-    this.qb.where(s.fieldId, '<', s.value.unpack())
+    this.qb.where(this.getFieldId(s.fieldId), '<', s.value.unpack())
   }
   numberGreaterThanOrEqual(s: NumberGreaterThanOrEqual): void {
-    this.qb.where(s.fieldId, '>=', s.value.unpack())
+    this.qb.where(this.getFieldId(s.fieldId), '>=', s.value.unpack())
   }
   numberLessThanOrEqual(s: NumberLessThanOrEqual): void {
-    this.qb.where(s.fieldId, '<=', s.value.unpack())
+    this.qb.where(this.getFieldId(s.fieldId), '<=', s.value.unpack())
   }
   dateEqual(s: DateEqual): void {
-    this.qb.where({ [s.fieldId]: s.value.unpack() })
+    this.qb.where({ [this.getFieldId(s.fieldId)]: s.value.unpack() })
   }
   dateGreaterThan(s: DateGreaterThan): void {
     if (s.value.unpack() === null) {
-      this.qb.whereNull(s.fieldId)
+      this.qb.whereNull(this.getFieldId(s.fieldId))
     } else {
-      this.qb.where(s.fieldId, '>', s.value.unpack())
+      this.qb.where(this.getFieldId(s.fieldId), '>', s.value.unpack())
     }
   }
   dateLessThan(s: DateLessThan): void {
     if (s.value.unpack() === null) {
-      this.qb.whereNull(s.fieldId)
+      this.qb.whereNull(this.getFieldId(s.fieldId))
     } else {
-      this.qb.where(s.fieldId, '<', s.value.unpack())
+      this.qb.where(this.getFieldId(s.fieldId), '<', s.value.unpack())
     }
   }
   dateGreaterThanOrEqual(s: DateGreaterThanOrEqual): void {
     if (s.value.unpack() === null) {
-      this.qb.whereNull(s.fieldId)
+      this.qb.whereNull(this.getFieldId(s.fieldId))
     } else {
-      this.qb.where(s.fieldId, '>=', s.value.unpack())
+      this.qb.where(this.getFieldId(s.fieldId), '>=', s.value.unpack())
     }
   }
   dateLessThanOrEqual(s: DateLessThanOrEqual): void {
     if (s.value.unpack() === null) {
-      this.qb.whereNull(s.fieldId)
+      this.qb.whereNull(this.getFieldId(s.fieldId))
     } else {
-      this.qb.where(s.fieldId, '<=', s.value.unpack())
+      this.qb.where(this.getFieldId(s.fieldId), '<=', s.value.unpack())
     }
   }
   dateIsToday(s: DateIsToday): void {
-    this.qb.whereBetween(s.fieldId, [startOfDay(new Date()), endOfDay(new Date())])
+    this.qb.whereBetween(this.getFieldId(s.fieldId), [startOfDay(new Date()), endOfDay(new Date())])
   }
   dateRangeEqual(s: DateRangeEqual): void {
     const range = s.value.unpack()
     if (range) {
-      this.qb.whereBetween(s.fieldId, range)
+      this.qb.whereBetween(this.getFieldId(s.fieldId), range)
     } else {
-      this.qb.whereNull(s.fieldId)
+      this.qb.whereNull(this.getFieldId(s.fieldId))
     }
   }
   selectEqual(s: SelectEqual): void {
-    this.qb.where(s.fieldId, s.value.unpack())
+    this.qb.where(this.getFieldId(s.fieldId), s.value.unpack())
   }
   selectIn(s: SelectIn): void {
     this.qb.whereIn(
@@ -176,13 +180,13 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     )
   }
   boolIsTrue(s: BoolIsTrue): void {
-    this.qb.where(s.fieldId, true)
+    this.qb.where(this.getFieldId(s.fieldId), true)
   }
   boolIsFalse(s: BoolIsFalse): void {
-    this.qb.where(s.fieldId, false)
+    this.qb.where(this.getFieldId(s.fieldId), false)
   }
   referenceEqual(s: ReferenceEqual): void {
-    this.qb.where(s.fieldId, s.value.unpack() ? s.value.unpack() : JSON.stringify(s.value.unpack()))
+    this.qb.where(this.getFieldId(s.fieldId), s.value.unpack() ? s.value.unpack() : JSON.stringify(s.value.unpack()))
   }
 
   treeAvailable(s: TreeAvailableSpec): void {
