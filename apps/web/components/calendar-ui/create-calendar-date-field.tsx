@@ -48,7 +48,7 @@ export const CreateCalendarDateField: React.FC<IProps> = ({ table, onSuccess }) 
   const onSubmit = form.handleSubmit((values) => {
     values.id = FieldId.createId()
     createDateField.mutate({
-      id: table.id.value,
+      tableId: table.id.value,
       field: values,
     })
   })

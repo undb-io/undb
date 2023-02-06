@@ -48,7 +48,7 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ table, onSucces
   const onSubmit = form.handleSubmit((values) => {
     values.id = FieldId.createId()
     createDateRangeField.mutate({
-      id: table.id.value,
+      tableId: table.id.value,
       field: values,
     })
   })

@@ -48,7 +48,7 @@ export const CreateTreeField: React.FC<IProps> = ({ table, onSuccess }) => {
   const onSubmit = form.handleSubmit((values) => {
     values.id = FieldId.createId()
     createTreeField.mutate({
-      id: table.id.value,
+      tableId: table.id.value,
       field: values,
     })
   })

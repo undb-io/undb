@@ -8,7 +8,7 @@ export class CreateFieldCommandHandler implements ICreateFieldCommandHandler {
   constructor(protected readonly tableRepo: ITableRepository) {}
 
   async execute(command: CreateFieldCommand): Promise<void> {
-    const table = (await this.tableRepo.findOneById(command.id)).unwrap()
+    const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
 
     const spec = table.createField(command.field)
 

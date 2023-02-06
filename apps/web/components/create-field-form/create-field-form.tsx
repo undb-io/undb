@@ -34,7 +34,7 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ table, onCancel }
   })
 
   const onSubmit = form.handleSubmit((values) => {
-    createField.mutate({ id: table.id.value, field: values })
+    createField.mutate({ tableId: table.id.value, field: values })
   })
 
   return (

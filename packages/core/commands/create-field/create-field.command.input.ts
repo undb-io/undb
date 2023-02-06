@@ -3,6 +3,6 @@ import { createFieldSchema } from '../../field'
 import { tableIdSchema } from '../../value-objects'
 
 export const createFieldCommandInput = z.object({
-  id: tableIdSchema,
+  tableId: tableIdSchema,
   field: createFieldSchema,
 })
