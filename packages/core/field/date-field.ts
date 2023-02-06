@@ -11,7 +11,7 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 export class DateField extends BaseField<IDateField> {
   type: DateType = 'date'
 
-  static create(input: ICreateDateFieldSchema): DateField {
+  static create(input: Omit<ICreateDateFieldSchema, 'type'>): DateField {
     const fieldName = FieldName.create(input.name)
     return new DateField({
       id: FieldId.fromNullableString(input.id),

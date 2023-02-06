@@ -15,7 +15,7 @@ export class AutoIncrementField extends BaseField<IAutoIncrementField> {
   type: AutoIncrementFieldType = 'auto-increment'
   system = true
 
-  static create(input: ICreateAutoIncrementFieldInput): AutoIncrementField {
+  static create(input: Omit<ICreateAutoIncrementFieldInput, 'type'>): AutoIncrementField {
     const fieldName = FieldName.create(input.name)
     return new AutoIncrementField({
       id: FieldId.fromNullableString(input.id),

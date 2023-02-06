@@ -12,13 +12,10 @@ export class IdField extends BaseField<IIdField> {
   system = true
 
   static default(): IdField {
-    return this.create({
-      type: 'id',
-      name: 'id',
-    })
+    return this.create({ name: 'id' })
   }
 
-  static create(input: ICreateIdFieldInput): IdField {
+  static create(input: Omit<ICreateIdFieldInput, 'type'>): IdField {
     const fieldName = FieldName.create(input.name)
     return new IdField({
       id: FieldId.fromNullableString(input.id),

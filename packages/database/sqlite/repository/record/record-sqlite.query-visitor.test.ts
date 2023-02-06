@@ -296,7 +296,7 @@ describe('RecordSqliteQueryVisitor', () => {
       visitor = new RecordSqliteQueryVisitor(
         'tabletest',
         '',
-        new Map([[treeFieldId, TreeField.create({ id: treeFieldId, name: 'tree', type: 'tree' })]]),
+        new Map([[treeFieldId, TreeField.create({ id: treeFieldId, name: 'tree' })]]),
         knex.queryBuilder(),
         knex,
       )

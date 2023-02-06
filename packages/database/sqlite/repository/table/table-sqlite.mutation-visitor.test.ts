@@ -93,7 +93,7 @@ describe('TableSqliteMutationVisitor', () => {
 
   describe('newField', () => {
     test('new reference feild', async () => {
-      const field = ReferenceField.create({ id: 'fldid', type: 'reference', name: 'reference' })
+      const field = ReferenceField.create({ id: 'fldid', name: 'reference' })
       mv.newField(new WithNewField(field))
 
       await mv.commit()

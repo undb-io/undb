@@ -4,7 +4,6 @@ import { TreeField } from './tree-field'
 describe('TreeField', () => {
   test('createParentField', () => {
     const treeFeild = TreeField.create({
-      type: 'tree',
       id: 'tree',
       name: 'tree',
     })

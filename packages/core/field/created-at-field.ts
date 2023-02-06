@@ -16,10 +16,10 @@ export class CreatedAtField extends BaseField<ICreatedAtField> {
   system = true
 
   static default(): CreatedAtField {
-    return this.create({ name: 'createdAt', type: 'created-at' })
+    return this.create({ name: 'createdAt' })
   }
 
-  static create(input: ICreateCreatedAtFieldInput): CreatedAtField {
+  static create(input: Omit<ICreateCreatedAtFieldInput, 'type'>): CreatedAtField {
     const fieldName = FieldName.create(input.name)
     return new CreatedAtField({
       id: FieldId.fromNullableString(input.id),

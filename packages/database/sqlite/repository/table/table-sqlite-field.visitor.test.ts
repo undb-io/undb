@@ -18,7 +18,6 @@ describe('TableSqliteFieldVisitor', () => {
     const treeField = TreeField.create({
       id: 'fieldid',
       name: 'tree',
-      type: 'tree',
     })
 
     visitor.tree(treeField)

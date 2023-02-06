@@ -10,7 +10,7 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 export class ReferenceField extends BaseReferenceField<IReferenceField> {
   type: ReferenceFieldType = 'reference'
 
-  static create(input: ICreateReferenceFieldInput): ReferenceField {
+  static create(input: Omit<ICreateReferenceFieldInput, 'type'>): ReferenceField {
     const fieldName = FieldName.create(input.name)
 
     return new ReferenceField({
