@@ -54,7 +54,7 @@ const recordApi = api.injectEndpoints({
     }),
     createRecord: builder.mutation({
       query: trpc.record.create.mutate,
-      invalidatesTags: ['Record'],
+      invalidatesTags: ['Record', 'TreeRecord'],
     }),
     updateRecord: builder.mutation<void, IUpdateRecordCommandInput>({
       query: trpc.record.update.mutate,
