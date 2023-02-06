@@ -5,12 +5,15 @@ const viewApi = api.injectEndpoints({
   endpoints: (builder) => ({
     setFilter: builder.mutation({
       query: trpc.table.view.filter.set.mutate,
+      invalidatesTags: ['Table'],
     }),
     setSort: builder.mutation({
       query: trpc.table.view.sort.set.mutate,
+      invalidatesTags: ['Table'],
     }),
     switchDisplayType: builder.mutation({
       query: trpc.table.view.switchDisplayType.mutate,
+      invalidatesTags: ['Table'],
     }),
   }),
   overrideExisting: false,
@@ -22,6 +25,7 @@ const calendarApi = viewApi.injectEndpoints({
   endpoints: (builder) => ({
     setField: builder.mutation({
       query: trpc.table.view.calendar.setField.mutate,
+      invalidatesTags: ['Table'],
     }),
   }),
 })
@@ -32,6 +36,7 @@ const kanbanApi = viewApi.injectEndpoints({
   endpoints: (builder) => ({
     setField: builder.mutation({
       query: trpc.table.view.kanban.setField.mutate,
+      invalidatesTags: ['Table'],
     }),
   }),
 })
@@ -42,6 +47,7 @@ const treeViewApi = viewApi.injectEndpoints({
   endpoints: (builder) => ({
     setField: builder.mutation({
       query: trpc.table.view.tree.setField.mutate,
+      invalidatesTags: ['Table'],
     }),
   }),
 })
@@ -52,12 +58,15 @@ const viewFieldApi = viewApi.injectEndpoints({
   endpoints: (builder) => ({
     setVisibility: builder.mutation({
       query: trpc.table.view.field.setVisibility.mutate,
+      invalidatesTags: ['Table'],
     }),
     moveField: builder.mutation({
       query: trpc.table.view.field.move.mutate,
+      invalidatesTags: ['Table'],
     }),
     setFieldWidth: builder.mutation({
       query: trpc.table.view.field.setWidth.mutate,
+      invalidatesTags: ['Table'],
     }),
   }),
 })
