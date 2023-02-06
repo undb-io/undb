@@ -6,5 +6,5 @@ export const api = createApi({
   baseQuery: (trpcResult: Promise<unknown>) =>
     trpcResult.then((data) => ({ data })).catch((error: TRPCError) => ({ error })),
   endpoints: () => ({}),
-  tagTypes: ['Table', 'Record'],
+  tagTypes: ['Table', 'Record', 'TreeRecord'],
 })

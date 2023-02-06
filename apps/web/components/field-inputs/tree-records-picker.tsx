@@ -1,4 +1,4 @@
-import type { Table, TreeField } from '@egodb/core'
+import type { IQueryRecords, Table, TreeField } from '@egodb/core'
 import { useLazyTreeAvailableQuery } from '@egodb/store'
 import type { MultiSelectProps } from '@egodb/ui'
 import { Group } from '@egodb/ui'
@@ -27,14 +27,19 @@ const TreeSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, ...others
 
 export const TreeRecordsPicker: React.FC<IProps> = ({ table, field, recordId, ...rest }) => {
   const [focused, setFocused] = useState(false)
-  const [getRecords, { data: getRecordsData, isLoading }] = useLazyTreeAvailableQuery()
+  const [getRecords, { rawRecords, isLoading }] = useLazyTreeAvailableQuery({
+    selectFromResult: (result) => ({
+      ...result,
+      rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+    }),
+  })
 
   useEffect(() => {
     getRecords({ tableId: table.id.value, treeFieldId: field.id.value, recordId })
   }, [focused])
 
   const data = [
-    ...(getRecordsData?.records.map((record) => ({
+    ...(rawRecords?.map((record) => ({
       value: record.id,
       values: field.getDisplayValues(record.displayValues),
       label: record.id,
@@ -48,7 +53,7 @@ export const TreeRecordsPicker: React.FC<IProps> = ({ table, field, recordId, ..
       multiple
       searchable
       clearable
-      description={focused && !getRecordsData?.records.length ? 'no more available record to select' : undefined}
+      description={focused && !rawRecords.length ? 'no more available record to select' : undefined}
       itemComponent={TreeSelectItem}
       data={data}
       onFocus={() => setFocused(true)}

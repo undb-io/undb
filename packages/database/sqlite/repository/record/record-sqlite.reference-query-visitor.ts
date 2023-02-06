@@ -95,7 +95,7 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
       .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${rt}.${ClosureTable.CHILD_ID}`)
 
     const jsonObjectEntries: [string, string][] = field.displayFieldIds.map((fieldId) => [
-      `'${fieldId.value}'`,
+      `'${alias}.${fieldId.value}'`,
       `json_group_array(${ft}.${fieldId.value})`,
     ])
 
@@ -126,7 +126,7 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
       .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${rt}.${ClosureTable.PARENT_ID}`)
 
     const jsonObjectEntries: [string, string][] = field.displayFieldIds.map((fieldId) => [
-      `'${fieldId.value}'`,
+      `'${alias}.${fieldId.value}'`,
       `${ft}.${fieldId.value}`,
     ])
 

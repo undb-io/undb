@@ -65,7 +65,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   }
 
   idEqual(s: WithRecordId): void {
-    this.qb.where({ [INTERNAL_COLUMN_ID_NAME]: s.id.value })
+    this.qb.where({ [this.getFieldId(INTERNAL_COLUMN_ID_NAME)]: s.id.value })
   }
   tableIdEqual(s: WithRecordTableId): void {
     if (this.alias) {

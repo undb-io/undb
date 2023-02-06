@@ -3,7 +3,7 @@ import { updateRecordSchema } from '@egodb/core'
 import type { IUpdateRecordValueSchema, Table as CoreTable } from '@egodb/core'
 import { ActionIcon, Drawer, IconChevronLeft, IconChevronRight } from '@egodb/ui'
 import { useAtom } from 'jotai'
-import { useLayoutEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector, useConfirmModal } from '../../hooks'
 import { editRecordFormDrawerOpened } from './drawer-opened.atom'
 import { EditRecordForm } from './edit-record-form'
@@ -20,7 +20,7 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
   const dispatch = useAppDispatch()
 
   const selectedRecordId = useAppSelector(getSelectedRecordId)
-  const { selectedRecord } = useGetRecordQuery(
+  const { selectedRecord, data } = useGetRecordQuery(
     { id: selectedRecordId, tableId: table.id.value },
     {
       skip: !selectedRecordId,
@@ -31,25 +31,28 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
     },
   )
 
-  const defaultValues: IUpdateRecordValueSchema = useMemo(
-    () => ({
-      id: selectedRecord?.id.value ?? '',
-      value: table.schema.nonSystemFields.map((field) => ({
-        id: field.id.value,
-        value: selectedRecord?.valuesJSON?.[field.id.value]?.unpack() ?? null,
-      })),
-    }),
-    [selectedRecord],
-  )
+  const defaultValues = {
+    id: selectedRecord?.id.value ?? '',
+    value: table.schema.nonSystemFields.map((field) => ({
+      id: field.id.value,
+      value: selectedRecord?.valuesJSON?.[field.id.value]?.unpack() ?? null,
+    })),
+  }
 
   const form = useForm<IUpdateRecordValueSchema>({
     defaultValues,
     resolver: zodResolver(updateRecordSchema),
   })
 
-  useLayoutEffect(() => {
-    form.reset(defaultValues)
-  }, [selectedRecordId])
+  useEffect(() => {
+    form.reset({
+      id: selectedRecord?.id.value ?? '',
+      value: table.schema.nonSystemFields.map((field) => ({
+        id: field.id.value,
+        value: selectedRecord?.valuesJSON?.[field.id.value]?.unpack() ?? null,
+      })),
+    })
+  }, [data])
 
   const reset = () => {
     setOpened(false)

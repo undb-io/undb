@@ -5,6 +5,7 @@ import type {
   IGetRecordQuery,
   IGetRecordsOutput,
   IGetRecordsQuery,
+  IGetRecordsTreeOutput,
   IGetRecordsTreeQuery,
   IGetTreeAvailableRecordsQuery,
   IQueryRecordSchema,
@@ -37,10 +38,9 @@ const recordApi = api.injectEndpoints({
       query: trpc.record.get.query,
       providesTags: (_, __, { id }) => [{ type: 'Record', id }],
     }),
-    listTree: builder.query<QueryRecordsEntity, IGetRecordsTreeQuery>({
+    listTree: builder.query<IGetRecordsTreeOutput, IGetRecordsTreeQuery>({
       query: trpc.record.tree.list.query,
-      providesTags,
-      transformResponse,
+      providesTags: ['TreeRecord'],
     }),
     treeAvailable: builder.query<QueryRecordsEntity, IGetTreeAvailableRecordsQuery>({
       query: trpc.record.tree.available.query,
