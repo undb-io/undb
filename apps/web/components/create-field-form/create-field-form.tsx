@@ -1,6 +1,5 @@
 import { Button, closeAllModals, Divider, Group, Select, Stack, TextInput } from '@egodb/ui'
 import { FIELD_SELECT_ITEMS } from '../../constants/field.constants'
-import { trpc } from '../../trpc'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { CreateFieldVariantControl } from './create-field-variant-control'
@@ -10,6 +9,7 @@ import type { ICreateFieldSchema } from '@egodb/core'
 import { createFieldSchema } from '@egodb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { ICreateFieldProps } from './create-field.props'
+import { useCreateFieldMutation } from '@egodb/store'
 
 export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ table, onCancel }) => {
   const defaultValues: ICreateFieldSchema = {
@@ -22,19 +22,12 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ table, onCancel }
     resolver: zodResolver(createFieldSchema),
   })
 
-  const utils = trpc.useContext()
+  const [createField, { isLoading }] = useCreateFieldMutation()
 
-  const createField = trpc.table.field.create.useMutation({
-    onSuccess: () => {
-      form.reset()
-      closeAllModals()
-      utils.table.get.refetch()
-      utils.record.list.refetch()
-    },
-  })
-
-  const onSubmit = form.handleSubmit((values) => {
-    createField.mutate({ tableId: table.id.value, field: values })
+  const onSubmit = form.handleSubmit(async (values) => {
+    await createField({ tableId: table.id.value, field: values })
+    form.reset()
+    closeAllModals()
   })
 
   return (
@@ -72,7 +65,7 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ table, onCancel }
               Cancel
             </Button>
 
-            <Button loading={createField.isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
+            <Button loading={isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
               Create
             </Button>
           </Group>

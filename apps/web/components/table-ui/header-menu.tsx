@@ -1,19 +1,14 @@
 import type { Field } from '@egodb/core'
+import { useDeleteFieldMutation } from '@egodb/store'
 import { ActionIcon, IconDots, Menu } from '@egodb/ui'
 import { useConfirmModal } from '../../hooks'
-import { trpc } from '../../trpc'
 
 export const HeaderMenu: React.FC<{ tableId: string; field: Field }> = ({ tableId, field }) => {
-  const utils = trpc.useContext()
-  const deleteField = trpc.table.field.delete.useMutation({
-    onSuccess() {
-      utils.table.get.refetch()
-    },
-  })
+  const [deleteField] = useDeleteFieldMutation()
 
   const confirm = useConfirmModal({
     onConfirm() {
-      deleteField.mutate({
+      deleteField({
         tableId,
         id: field.id.value,
       })

@@ -1,13 +1,13 @@
 import { Group, Text } from '@egodb/ui'
 import styled from '@emotion/styled'
 import type { TColumn, THeader } from './interface'
-import { trpc } from '../../trpc'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import type { Field } from '@egodb/core'
 import { memo } from 'react'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { HeaderMenu } from './header-menu'
+import { useSetFieldWidthMutation } from '@egodb/store'
 
 const ResizerLine = styled.div<{ hidden: boolean; isResizing: boolean }>`
   display: ${(props) => (props.hidden ? 'none' : 'block')};
@@ -44,10 +44,10 @@ interface IProps {
 }
 
 export const Th: React.FC<IProps> = memo(({ header, tableId, field, column }) => {
-  const setFieldWidth = trpc.table.view.field.setWidth.useMutation()
+  const [setFieldWidth] = useSetFieldWidthMutation()
 
   const onSetFieldWidth = (fieldId: string, width: number) => {
-    setFieldWidth.mutate({
+    setFieldWidth({
       tableId,
       fieldId,
       width,

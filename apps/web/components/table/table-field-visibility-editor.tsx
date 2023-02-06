@@ -1,22 +1,18 @@
+import { useSetVisibilityMutation } from '@egodb/store'
 import { Badge, Button, Checkbox, Group, IconEye, Popover, Stack, useDisclosure } from '@egodb/ui'
-import { trpc } from '../../trpc'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import type { ITableBaseProps } from './table-base-props'
 
 export const TableFieldVisibilityEditor: React.FC<ITableBaseProps> = ({ table }) => {
   const [opened, handler] = useDisclosure(false)
-  const utils = trpc.useContext()
-  const setFieldVisibility = trpc.table.view.field.setVisibility.useMutation({
-    onSuccess() {
-      utils.table.get.refetch()
-    },
-  })
+  const [setFieldVisibility, { isLoading }] = useSetVisibilityMutation()
+
   const view = table.mustGetView()
   const visibility = view.getVisibility()
   const hiddenCount = view.fieldOptions?.hiddenCount ?? 0
 
   const onChange = (fieldId: string, visible: boolean) => {
-    setFieldVisibility.mutate({ tableId: table.id.value, fieldId, hidden: !visible })
+    setFieldVisibility({ tableId: table.id.value, fieldId, hidden: !visible })
   }
 
   return (
@@ -33,7 +29,7 @@ export const TableFieldVisibilityEditor: React.FC<ITableBaseProps> = ({ table })
           variant={hiddenCount ? 'light' : 'subtle'}
           compact
           size="xs"
-          loading={setFieldVisibility.isLoading}
+          loading={isLoading}
           leftIcon={<IconEye size={18} />}
           onClick={handler.toggle}
           rightIcon={

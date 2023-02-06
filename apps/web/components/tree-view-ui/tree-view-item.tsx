@@ -1,5 +1,6 @@
 import type { UniqueIdentifier } from '@dnd-kit/core'
 import type { RecordAllValues, Table, TreeField } from '@egodb/core'
+import { useDeleteRecordMutation } from '@egodb/store'
 import {
   ActionIcon,
   Badge,
@@ -18,7 +19,6 @@ import type { HTMLAttributes } from 'react'
 import React, { forwardRef } from 'react'
 import { unstable_batchedUpdates } from 'react-dom'
 import { useConfirmModal } from '../../hooks'
-import { trpc } from '../../trpc'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
 import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
@@ -76,19 +76,13 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     const setOpened = useSetAtom(editRecordFormDrawerOpened)
     const setEditRecordValues = useSetAtom(editRecordValuesAtom)
 
-    const utils = trpc.useContext()
-
     const setCreateOpened = useSetAtom(createRecordFormDrawerOpened)
     const setCreateRecordInitialValue = useSetAtom(createRecordInitialValueAtom)
 
-    const deleteRecord = trpc.record.delete.useMutation({
-      onSuccess() {
-        utils.record.tree.list.refetch()
-      },
-    })
+    const [deleteRecord] = useDeleteRecordMutation()
     const confirm = useConfirmModal({
       onConfirm() {
-        deleteRecord.mutate({
+        deleteRecord({
           tableId: table.id.value,
           id: id as string,
         })

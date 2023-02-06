@@ -1,11 +1,11 @@
 import type { IOptionColorName, IOptionColorShade, SelectField } from '@egodb/core'
 import type { Table } from '@egodb/core'
 import { OptionKey } from '@egodb/core'
+import { useCreateOptionMutation } from '@egodb/store'
 import type { SelectProps } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { Select } from '@egodb/ui'
 import { forwardRef } from 'react'
-import { trpc } from '../../trpc'
 import { Option } from './option'
 
 interface IProps extends Omit<SelectProps, 'data'> {
@@ -15,12 +15,7 @@ interface IProps extends Omit<SelectProps, 'data'> {
 
 export const OptionPicker: React.FC<IProps> = ({ field, table, ...rest }) => {
   const nextColor = field.options.lastOption.map((o) => o.color.next()).unwrap()
-  const utils = trpc.useContext()
-  const createOption = trpc.table.field.select.createOption.useMutation({
-    onSuccess() {
-      utils.table.get.refetch()
-    },
-  })
+  const [createOption] = useCreateOptionMutation()
 
   return (
     <Select
@@ -36,7 +31,7 @@ export const OptionPicker: React.FC<IProps> = ({ field, table, ...rest }) => {
       creatable
       onCreate={(query) => {
         const key = OptionKey.create().value
-        createOption.mutate({
+        createOption({
           fieldId: field.id.value,
           tableId: table.id.value,
           option: {

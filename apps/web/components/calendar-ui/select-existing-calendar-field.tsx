@@ -1,9 +1,9 @@
 import { setCalendarFieldSchema } from '@egodb/core'
+import { useSetCalendarFieldMutation } from '@egodb/store'
 import { Card, Radio, Group, Button, Text, IconPlus, Stack, Divider } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { Controller, useForm } from 'react-hook-form'
-import { trpc } from '../../trpc'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { calendarStepOne, calendarStepTwo } from './calendar-step.atom'
@@ -18,13 +18,7 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ table, onSuccess
   const initialCalendarFieldId = view.calendar.into()?.fieldId?.value
   const hasCalendarFields = calendarFields.length > 0
 
-  const utils = trpc.useContext()
-  const setCalendarField = trpc.table.view.calendar.setField.useMutation({
-    onSuccess() {
-      utils.table.get.refetch()
-      onSuccess?.()
-    },
-  })
+  const [setCalendarField, { isLoading }] = useSetCalendarFieldMutation()
 
   const form = useForm({
     defaultValues: {
@@ -33,11 +27,13 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ table, onSuccess
     resolver: zodResolver(setCalendarFieldSchema),
   })
 
-  const onSubmit = form.handleSubmit((values) => {
-    setCalendarField.mutate({
+  const onSubmit = form.handleSubmit(async (values) => {
+    await setCalendarField({
       tableId: table.id.value,
       field: values.field,
     })
+
+    onSuccess?.()
   })
 
   const setStepOne = useSetAtom(calendarStepOne)
@@ -93,7 +89,7 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ table, onSuccess
 
         <Card.Section withBorder inheritPadding py="sm">
           <Group position="right">
-            <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={setCalendarField.isLoading}>
+            <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={isLoading}>
               Done
             </Button>
           </Group>

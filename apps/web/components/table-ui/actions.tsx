@@ -1,3 +1,4 @@
+import { useDeleteRecordMutation, useDulicateRecordMutation } from '@egodb/store'
 import {
   ActionIcon,
   Alert,
@@ -10,34 +11,24 @@ import {
   useClipboard,
 } from '@egodb/ui'
 import { useConfirmModal } from '../../hooks'
-import { trpc } from '../../trpc'
 import type { TRow } from './interface'
 
 export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableId, row }) => {
   const { copy } = useClipboard({ timeout: 500 })
-  const utils = trpc.useContext()
-  const deleteRecord = trpc.record.delete.useMutation({
-    onSuccess() {
-      utils.record.list.refetch()
-    },
-  })
+  const [deleteRecord, { isLoading }] = useDeleteRecordMutation()
 
   const confirm = useConfirmModal({
     children: <Alert color="red">Confirm to Delete Record {row.id} ?</Alert>,
-    confirmProps: { loading: deleteRecord.isLoading },
+    confirmProps: { loading: isLoading },
     onConfirm: () => {
-      deleteRecord.mutate({
+      deleteRecord({
         tableId,
         id: row.id,
       })
     },
   })
 
-  const duplicateRecord = trpc.record.duplicate.useMutation({
-    onSuccess() {
-      utils.record.list.refetch()
-    },
-  })
+  const [duplicateRecord] = useDulicateRecordMutation()
 
   return (
     <Group>
@@ -52,7 +43,7 @@ export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableI
           <Menu.Item
             onClick={(e) => {
               e.stopPropagation()
-              duplicateRecord.mutate({
+              duplicateRecord({
                 tableId,
                 id: row.id,
               })

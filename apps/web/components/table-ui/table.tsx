@@ -15,13 +15,13 @@ import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '
 import { useLayoutEffect, useMemo } from 'react'
 import { ACTIONS_FIELD } from '../../constants/field.constants'
 import { CREATE_FIELD_MODAL_ID } from '../../modals'
-import { trpc } from '../../trpc'
 import { RecordActions } from './actions'
 import type { IProps, TData } from './interface'
 import { Th } from './th'
 import { Tr } from './tr'
 import type { RecordAllValueType } from '@egodb/core'
 import { FieldValueFactory } from '../field-value/field-value.factory'
+import { useMoveFieldMutation } from '@egodb/store'
 
 const fieldHelper = createColumnHelper<TData>()
 
@@ -35,12 +35,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
     handlers.setState(table.schema.fields)
   }, [table])
 
-  const utils = trpc.useContext()
-  const moveField = trpc.table.view.field.move.useMutation({
-    onSuccess() {
-      utils.table.get.refetch()
-    },
-  })
+  const [moveField] = useMoveFieldMutation()
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: {
@@ -177,7 +172,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
                     from: active.data.current?.sortable?.index,
                     to: over?.data.current?.sortable?.index,
                   })
-                  moveField.mutate({ tableId: table.id.value, from: active.id as string, to: over.id as string })
+                  moveField({ tableId: table.id.value, from: active.id as string, to: over.id as string })
                 }
               }}
             >

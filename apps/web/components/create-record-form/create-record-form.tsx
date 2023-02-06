@@ -1,10 +1,10 @@
 import type { Table } from '@egodb/core'
 import type { ICreateRecordInput } from '@egodb/core'
+import { useCreateRecordMutation } from '@egodb/store'
 import { Alert, Button, Divider, Group, IconAlertCircle, Stack } from '@egodb/ui'
 import { DevTool } from '@hookform/devtools'
 import type { FieldPath } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
-import { trpc } from '../../trpc'
 import { RecordInputFactory } from '../record/record-input.factory'
 
 interface IProps {
@@ -15,25 +15,19 @@ interface IProps {
 
 export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess }) => {
   const form = useFormContext<ICreateRecordInput>()
-  const utils = trpc.useContext()
 
-  const createRecord = trpc.record.create.useMutation({
-    onSuccess: () => {
-      reset()
-      form.reset()
-      utils.record.list.refetch()
-      utils.record.tree.list.refetch()
-      onSuccess?.()
-    },
-  })
+  const [createRecord, { isLoading, isError, error, reset: resetCreateRecord }] = useCreateRecordMutation()
 
-  const onSubmit = form.handleSubmit((values) => {
-    createRecord.mutate(values)
+  const onSubmit = form.handleSubmit(async (values) => {
+    await createRecord(values)
+    reset()
+    form.reset()
+    onSuccess?.()
   })
 
   const reset = () => {
     onCancel()
-    createRecord.reset()
+    resetCreateRecord()
     form.reset()
   }
 
@@ -54,14 +48,14 @@ export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess 
             Cancel
           </Button>
 
-          <Button loading={createRecord.isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
+          <Button loading={isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
             Create
           </Button>
         </Group>
 
-        {createRecord.isError && (
+        {isError && (
           <Alert color="red" icon={<IconAlertCircle size={16} />} title="Oops! Create Record Error!" mt="lg">
-            {createRecord.error.message}
+            {(error as any).message}
           </Alert>
         )}
       </form>

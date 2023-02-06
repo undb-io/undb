@@ -136,13 +136,7 @@ importers:
       '@fxts/core': ^0.11.0
       '@hookform/devtools': ^4.3.0
       '@hookform/resolvers': ^2.9.10
-      '@tanstack/react-query': ^4.22.0
-      '@tanstack/react-query-devtools': ^4.22.0
       '@tanstack/react-table': ^8.7.6
-      '@trpc/client': ^10.9.0
-      '@trpc/next': ^10.9.0
-      '@trpc/react-query': ^10.9.0
-      '@trpc/server': ^10.9.0
       '@types/node': ^18.11.18
       '@types/react': ^18.0.27
       '@types/react-dom': ^18.0.10
@@ -172,13 +166,7 @@ importers:
       '@formkit/auto-animate': 1.0.0-beta.5
       '@fxts/core': 0.11.0
       '@hookform/resolvers': 2.9.10_react-hook-form@7.42.1
-      '@tanstack/react-query': 4.22.0_biqbaboplfbrettd7655fr4n2y
-      '@tanstack/react-query-devtools': 4.22.0_gp275tdwez2a4eujt75dnnp754
       '@tanstack/react-table': 8.7.6_biqbaboplfbrettd7655fr4n2y
-      '@trpc/client': 10.9.0_@trpc+server@10.9.0
-      '@trpc/next': 10.9.0_362trfxe2o6f4q7yoc7vapoz64
-      '@trpc/react-query': 10.9.0_qw4miir7nnxijwjta54q3esyeq
-      '@trpc/server': 10.9.0
       date-fns: 2.29.3
       jotai: 1.13.1_6qnycuwrw3rxxh3wipbmljxq6i
       jotai-devtools: 0.1.0_jotai@1.13.1+react@18.2.0
@@ -369,12 +357,10 @@ importers:
       '@trpc/client': ^10.9.0
       '@trpc/server': ^10.9.0
       '@types/redux-logger': ^3.0.9
-      autobind-decorator: ^2.4.0
       eslint: ^8.32.0
       react: ^18.2.0
       redux: ^4.2.1
       redux-logger: ^3.0.6
-      redux-saga: ^1.2.2
       superjson: ^1.12.2
       tsconfig: ^0.0.0
       typescript: ^4.9.4
@@ -383,10 +369,8 @@ importers:
       '@egodb/trpc': link:../trpc
       '@reduxjs/toolkit': 1.9.2_react@18.2.0
       '@trpc/client': 10.9.0_@trpc+server@10.9.0
-      autobind-decorator: 2.4.0
       redux: 4.2.1
       redux-logger: 3.0.6
-      redux-saga: 1.2.2
       superjson: 1.12.2
     devDependencies:
       '@egodb/eslint-config': link:../eslint-config
@@ -3048,44 +3032,6 @@ packages:
       immutable: 4.2.2
     dev: false
 
-  /@redux-saga/core/1.2.2:
-    resolution: {integrity: sha512-0qr5oleOAmI5WoZLRA6FEa30M4qKZcvx+ZQOQw+RqFeH8t20bvhE329XSPsNfTVP8C6qyDsXOSjuoV+g3+8zkg==}
-    dependencies:
-      '@babel/runtime': 7.20.7
-      '@redux-saga/deferred': 1.2.1
-      '@redux-saga/delay-p': 1.2.1
-      '@redux-saga/is': 1.1.3
-      '@redux-saga/symbols': 1.1.3
-      '@redux-saga/types': 1.2.1
-      redux: 4.2.1
-      typescript-tuple: 2.2.1
-    dev: false
-
-  /@redux-saga/deferred/1.2.1:
-    resolution: {integrity: sha512-cmin3IuuzMdfQjA0lG4B+jX+9HdTgHZZ+6u3jRAOwGUxy77GSlTi4Qp2d6PM1PUoTmQUR5aijlA39scWWPF31g==}
-    dev: false
-
-  /@redux-saga/delay-p/1.2.1:
-    resolution: {integrity: sha512-MdiDxZdvb1m+Y0s4/hgdcAXntpUytr9g0hpcOO1XFVyyzkrDu3SKPgBFOtHn7lhu7n24ZKIAT1qtKyQjHqRd+w==}
-    dependencies:
-      '@redux-saga/symbols': 1.1.3
-    dev: false
-
-  /@redux-saga/is/1.1.3:
-    resolution: {integrity: sha512-naXrkETG1jLRfVfhOx/ZdLj0EyAzHYbgJWkXbB3qFliPcHKiWbv/ULQryOAEKyjrhiclmr6AMdgsXFyx7/yE6Q==}
-    dependencies:
-      '@redux-saga/symbols': 1.1.3
-      '@redux-saga/types': 1.2.1
-    dev: false
-
-  /@redux-saga/symbols/1.1.3:
-    resolution: {integrity: sha512-hCx6ZvU4QAEUojETnX8EVg4ubNLBFl1Lps4j2tX7o45x/2qg37m3c6v+kSp8xjDJY+2tJw4QB3j8o8dsl1FDXg==}
-    dev: false
-
-  /@redux-saga/types/1.2.1:
-    resolution: {integrity: sha512-1dgmkh+3so0+LlBWRhGA33ua4MYr7tUOj+a9Si28vUi0IUFNbff1T3sgpeDJI/LaC75bBYnQ0A3wXjn0OrRNBA==}
-    dev: false
-
   /@reduxjs/toolkit/1.9.2_react@18.2.0:
     resolution: {integrity: sha512-5ZAZ7hwAKWSii5T6NTPmgIBUqyVdlDs+6JjThz6J6dmHLDm6zCzv2OjHIFAi3Vvs1qjmXU0bm6eBojukYXjVMQ==}
     peerDependencies:
@@ -3260,50 +3206,6 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@tanstack/match-sorter-utils/8.7.0:
-    resolution: {integrity: sha512-OgfIPMHTfuw9JGcXCCoEHWFP/eSP2eyhCYwkrFnWBM3NbUPAgOlFP11DbM7cozDRVB0XbPr1tD4pLAtWKlVUVg==}
-    engines: {node: '>=12'}
-    dependencies:
-      remove-accents: 0.4.2
-    dev: false
-
-  /@tanstack/query-core/4.22.0:
-    resolution: {integrity: sha512-OeLyBKBQoT265f5G9biReijeP8mBxNFwY7ZUu1dKL+YzqpG5q5z7J/N1eT8aWyKuhyDTiUHuKm5l+oIVzbtrjw==}
-    dev: false
-
-  /@tanstack/react-query-devtools/4.22.0_gp275tdwez2a4eujt75dnnp754:
-    resolution: {integrity: sha512-YeYFBnfqvb+ZlA0IiJqiHNNSzepNhI1p2o9i8NlhQli9+Zrn230M47OBaBUs8qr3DD1dC2zGB1Dis50Ktz8gAA==}
-    peerDependencies:
-      '@tanstack/react-query': 4.22.0
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      '@tanstack/match-sorter-utils': 8.7.0
-      '@tanstack/react-query': 4.22.0_biqbaboplfbrettd7655fr4n2y
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-      superjson: 1.12.2
-      use-sync-external-store: 1.2.0_react@18.2.0
-    dev: false
-
-  /@tanstack/react-query/4.22.0_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-P9o+HjG42uB/xHR6dMsJaPhtZydSe4v0xdG5G/cEj1oHZAXelMlm67/rYJNQGKgBamKElKogj+HYGF+NY2yHYg==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-      react-native: '*'
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
-    dependencies:
-      '@tanstack/query-core': 4.22.0
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-      use-sync-external-store: 1.2.0_react@18.2.0
-    dev: false
-
   /@tanstack/react-table/8.7.6_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-/QijmMFeP7wDLBnr0MQ/5MlbXePbIL/1nOtkxBC9zvmBu4gDKJEDBqipUyM7Wc/iBpSd0IFyqBlvZvTPD9FYDA==}
     engines: {node: '>=12'}
@@ -3332,43 +3234,6 @@ packages:
       '@trpc/server': 10.9.0
     dependencies:
       '@trpc/server': 10.9.0
-    dev: false
-
-  /@trpc/next/10.9.0_362trfxe2o6f4q7yoc7vapoz64:
-    resolution: {integrity: sha512-h/W8VHMki/fw7vHNMs1Ku7bLqccjpiKCE1wkqbvHfBOO1ARDmarRbuK6dLqJilip/f7jkFXcrxwB+eNgK4+6Wg==}
-    peerDependencies:
-      '@tanstack/react-query': ^4.3.8
-      '@trpc/client': 10.9.0
-      '@trpc/react-query': ^10.8.0
-      '@trpc/server': 10.9.0
-      next: '*'
-      react: '>=16.8.0'
-      react-dom: '>=16.8.0'
-    dependencies:
-      '@tanstack/react-query': 4.22.0_biqbaboplfbrettd7655fr4n2y
-      '@trpc/client': 10.9.0_@trpc+server@10.9.0
-      '@trpc/react-query': 10.9.0_qw4miir7nnxijwjta54q3esyeq
-      '@trpc/server': 10.9.0
-      next: 13.1.4_pjwopsidmaokadturxaafygjp4
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-      react-ssr-prepass: 1.5.0_react@18.2.0
-    dev: false
-
-  /@trpc/react-query/10.9.0_qw4miir7nnxijwjta54q3esyeq:
-    resolution: {integrity: sha512-I7xtdFj/AETwc9HfY2bGxKINij39r26LvfIiTBfz2pBj1ELrcgucWmPeI2eS6pon/uI1E9Nqa6fQCg/zkg764Q==}
-    peerDependencies:
-      '@tanstack/react-query': ^4.3.8
-      '@trpc/client': 10.9.0
-      '@trpc/server': 10.9.0
-      react: '>=16.8.0'
-      react-dom: '>=16.8.0'
-    dependencies:
-      '@tanstack/react-query': 4.22.0_biqbaboplfbrettd7655fr4n2y
-      '@trpc/client': 10.9.0_@trpc+server@10.9.0
-      '@trpc/server': 10.9.0
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@trpc/server/10.9.0:
@@ -4404,11 +4269,6 @@ packages:
   /atomic-sleep/1.0.0:
     resolution: {integrity: sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==}
     engines: {node: '>=8.0.0'}
-    dev: false
-
-  /autobind-decorator/2.4.0:
-    resolution: {integrity: sha512-OGYhWUO72V6DafbF8PM8rm3EPbfuyMZcJhtm5/n26IDwO18pohE4eNazLoCGhPiXOCD0gEGmrbU3849QvM8bbw==}
-    engines: {node: '>=8.10', npm: '>=6.4.1'}
     dev: false
 
   /autoprefixer/10.4.13_postcss@8.4.19:
@@ -10789,14 +10649,6 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: true
 
-  /react-ssr-prepass/1.5.0_react@18.2.0:
-    resolution: {integrity: sha512-yFNHrlVEReVYKsLI5lF05tZoHveA5pGzjFbFJY/3pOqqjGOmMmqx83N4hIjN2n6E1AOa+eQEUxs3CgRnPmT0RQ==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      react: 18.2.0
-    dev: false
-
   /react-textarea-autosize/8.3.4_3stiutgnnbnfnf3uowm5cip22i:
     resolution: {integrity: sha512-CdtmP8Dc19xL8/R6sWvtknD/eCXkQr30dtvC4VmGInhRsfF8X/ihXCq6+9l9qbxmKRiq407/7z5fxE7cVWQNgQ==}
     engines: {node: '>=10'}
@@ -10968,12 +10820,6 @@ packages:
       deep-diff: 0.3.8
     dev: false
 
-  /redux-saga/1.2.2:
-    resolution: {integrity: sha512-6xAHWgOqRP75MFuLq88waKK9/+6dCdMQjii2TohDMARVHeQ6HZrZoJ9HZ3dLqMWCZ9kj4iuS6CDsujgnovn11A==}
-    dependencies:
-      '@redux-saga/core': 1.2.2
-    dev: false
-
   /redux-thunk/2.4.2_redux@4.2.1:
     resolution: {integrity: sha512-+P3TjtnP0k/FEjcBL5FZpoovtvrTNT/UXd4/sluaSyrURlSlhLSzEdfsTBW7WsKB6yPvgd7q/iZPICFjW4o57Q==}
     peerDependencies:
@@ -11077,10 +10923,6 @@ packages:
       retext: 8.1.0
       retext-smartypants: 5.2.0
       unist-util-visit: 4.1.1
-    dev: false
-
-  /remove-accents/0.4.2:
-    resolution: {integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==}
     dev: false
 
   /require-directory/2.1.1:
@@ -12642,22 +12484,6 @@ packages:
 
   /typedarray/0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
-
-  /typescript-compare/0.0.2:
-    resolution: {integrity: sha512-8ja4j7pMHkfLJQO2/8tut7ub+J3Lw2S3061eJLFQcvs3tsmJKp8KG5NtpLn7KcY2w08edF74BSVN7qJS0U6oHA==}
-    dependencies:
-      typescript-logic: 0.0.0
-    dev: false
-
-  /typescript-logic/0.0.0:
-    resolution: {integrity: sha512-zXFars5LUkI3zP492ls0VskH3TtdeHCqu0i7/duGt60i5IGPIpAHE/DWo5FqJ6EjQ15YKXrt+AETjv60Dat34Q==}
-    dev: false
-
-  /typescript-tuple/2.2.1:
-    resolution: {integrity: sha512-Zcr0lbt8z5ZdEzERHAMAniTiIKerFCMgd7yjq1fPnDJ43et/k9twIFQMUYff9k5oXcsQ0WpvFcgzK2ZKASoW6Q==}
-    dependencies:
-      typescript-compare: 0.0.2
-    dev: false
 
   /typescript/4.9.4:
     resolution: {integrity: sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==}

@@ -1,7 +1,7 @@
 import type { IEditTableSchema } from '@egodb/core'
+import { useEditTableMutation } from '@egodb/store'
 import { Alert, Button, Divider, Group, IconAlertCircle, Stack, Text, TextInput } from '@egodb/ui'
 import { useFormContext } from 'react-hook-form'
-import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
 
 interface IProps extends ITableBaseProps {
@@ -11,25 +11,18 @@ interface IProps extends ITableBaseProps {
 
 export const EditTableForm: React.FC<IProps> = ({ table, onCancel, onSuccess: success }) => {
   const form = useFormContext<IEditTableSchema>()
-  const utils = trpc.useContext()
 
-  const onSuccess = () => {
+  const [editTable, { reset: resetEditTable, isLoading, isError, error }] = useEditTableMutation()
+
+  const onSubmit = form.handleSubmit(async (values) => {
+    await editTable({ id: table.id.value, ...values })
     reset()
-    utils.table.list.refetch()
-    utils.table.get.refetch()
     success?.()
-  }
-  const editTable = trpc.table.edit.useMutation({
-    onSuccess,
-  })
-
-  const onSubmit = form.handleSubmit((values) => {
-    editTable.mutate({ id: table.id.value, ...values })
   })
 
   const reset = () => {
     onCancel()
-    editTable.reset()
+    resetEditTable()
     form.reset()
   }
 
@@ -55,14 +48,14 @@ export const EditTableForm: React.FC<IProps> = ({ table, onCancel, onSuccess: su
           <Button variant="subtle" onClick={() => onCancel()}>
             Cancel
           </Button>
-          <Button loading={editTable.isLoading} miw={200} disabled={disabled} type="submit">
+          <Button loading={isLoading} miw={200} disabled={disabled} type="submit">
             Update
           </Button>
         </Group>
 
-        {editTable.isError && (
+        {isError && (
           <Alert color="red" icon={<IconAlertCircle size={16} />} title="Oops! Create Table Error!" mt="lg">
-            {editTable.error.message}
+            {(error as any).message}
           </Alert>
         )}
       </Stack>

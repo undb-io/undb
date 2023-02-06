@@ -1,8 +1,8 @@
 import { DndContext, rectIntersection } from '@dnd-kit/core'
 import type { ICalendarField, Table } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
+import { useGetRecordsQuery, useUpdateRecordMutation } from '@egodb/store'
 import { Calendar, Grid } from '@egodb/ui'
-import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { CalendarRecords } from './calendar-records'
 import { Day } from './day'
@@ -16,18 +16,13 @@ export const CalendarBoard: React.FC<IProps> = ({ table, field }) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   const onChange = () => {}
 
-  const listRecords = trpc.record.list.useQuery({
+  const listRecords = useGetRecordsQuery({
     tableId: table.id.value,
   })
 
   const records = RecordFactory.fromQueryRecords(listRecords.data?.records ?? [], table.schema.toIdMap())
 
-  const utils = trpc.useContext()
-  const updateRecord = trpc.record.update.useMutation({
-    onSuccess() {
-      utils.record.list.refetch()
-    },
-  })
+  const [updateRecord] = useUpdateRecordMutation()
 
   return (
     <DndContext
@@ -36,7 +31,7 @@ export const CalendarBoard: React.FC<IProps> = ({ table, field }) => {
         const recordId = e.active.id
         const date = e.over?.id
         if (date) {
-          updateRecord.mutate({
+          updateRecord({
             tableId: table.id.value,
             id: recordId as string,
             value: [{ id: field.id.value, value: new Date(date) }],

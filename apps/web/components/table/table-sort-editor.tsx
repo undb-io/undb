@@ -1,6 +1,6 @@
 import type { Table } from '@egodb/core'
+import { useSetSortMutation } from '@egodb/store'
 import { Badge, Button, IconArrowsSort, Popover, useDisclosure } from '@egodb/ui'
-import { trpc } from '../../trpc'
 import { SortsEditor } from '../sorts-editor/sorts-editor'
 
 interface IProps {
@@ -8,16 +8,8 @@ interface IProps {
 }
 
 export const TableSortEditor: React.FC<IProps> = ({ table }) => {
-  const utils = trpc.useContext()
-
   const [opened, toggle] = useDisclosure(false)
-  const setSortsReq = trpc.table.view.sort.set.useMutation({
-    onSuccess() {
-      toggle.close()
-      utils.table.get.refetch()
-      utils.record.list.refetch()
-    },
-  })
+  const [setSortsReq] = useSetSortMutation()
   const sorts = table.mustGetView().sorts?.sorts ?? []
 
   return (
@@ -46,10 +38,10 @@ export const TableSortEditor: React.FC<IProps> = ({ table }) => {
           table={table}
           onCancel={toggle.close}
           onApply={(values) => {
-            setSortsReq.mutate({
+            setSortsReq({
               tableId: table.id.value,
               sorts: values,
-            })
+            }).then(() => toggle.close())
           }}
         />
       </Popover.Dropdown>

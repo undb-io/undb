@@ -1,8 +1,8 @@
 import type { IKanbanField } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
+import { useGetRecordsQuery } from '@egodb/store'
 import type { MantineTheme } from '@egodb/ui'
 import styled from '@emotion/styled'
-import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { KanbanDateBoard } from './kanban-date-board'
 import { KanbanSelectBoard } from './kanban-select-board'
@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 `
 
 export const KanbanBoard: React.FC<IProps> = ({ field, table }) => {
-  const listRecords = trpc.record.list.useQuery({
+  const listRecords = useGetRecordsQuery({
     tableId: table.id.value,
   })
 

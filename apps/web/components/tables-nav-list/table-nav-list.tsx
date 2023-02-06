@@ -1,8 +1,8 @@
+import { useGetTablesQuery } from '@egodb/store'
 import { Navbar, Box, Skeleton, NavLink, Center, Button, IconPlus, ScrollArea } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import Link from 'next/link'
 import { unstable_batchedUpdates } from 'react-dom'
-import { trpc } from '../../trpc'
 import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.atom'
 import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
 import { tableListNumber } from './table-list.atom'
@@ -11,23 +11,23 @@ export const TableNavList: React.FC = () => {
   const setOpened = useSetAtom(createTableFormDrawerOpened)
   const setEditRecordOpened = useSetAtom(editRecordFormDrawerOpened)
   const setTableListNumber = useSetAtom(tableListNumber)
-  const getTables = trpc.table.list.useQuery({})
-  if (getTables.data) {
-    setTableListNumber(getTables.data.length)
+  const { data, isLoading } = useGetTablesQuery({})
+  if (data) {
+    setTableListNumber(data.length)
   }
 
   return (
     <Navbar width={{ base: 300 }} p="sm">
       <Navbar.Section grow component={ScrollArea}>
         <Box>
-          {getTables.isLoading && (
+          {isLoading && (
             <>
-              <Skeleton visible={getTables.isLoading} height={30} />
-              <Skeleton visible={getTables.isLoading} mt={6} height={30} />
-              <Skeleton visible={getTables.isLoading} mt={6} height={30} />
+              <Skeleton visible={isLoading} height={30} />
+              <Skeleton visible={isLoading} mt={6} height={30} />
+              <Skeleton visible={isLoading} mt={6} height={30} />
             </>
           )}
-          {getTables.data?.map((table) => (
+          {data?.map((table) => (
             <Link key={table.id} href={`/t/${table.id}`}>
               <NavLink label={table.name} />
             </Link>

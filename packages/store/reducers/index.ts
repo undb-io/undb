@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit'
-import { tableReducer } from './table'
+import { api } from '../services'
 
 export const rootReducer = combineReducers({
-  tables: tableReducer,
+  [api.reducerPath]: api.reducer,
 })
 
 export type RootState = ReturnType<typeof rootReducer>

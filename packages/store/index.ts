@@ -1,2 +1,2 @@
-export * from './actions'
+export * from './services'
 export { createStore } from './store'

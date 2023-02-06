@@ -1,39 +1,31 @@
 'use client'
 
 import { TableFactory } from '@egodb/core'
-import { getTables } from '@egodb/store'
+import { useGetTableQuery } from '@egodb/store'
+import type { TRPCError } from '@egodb/trpc'
 import { Alert, Container, IconAlertCircle } from '@egodb/ui'
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
 import { TableLoading } from '../../../components/loading'
-import { trpc } from '../../../trpc'
 import Table from './table'
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(getTables())
-  }, [dispatch])
-
-  const getTable = trpc.table.get.useQuery({ id })
-  if (getTable.isLoading) {
+  const { data, isLoading, isError, error } = useGetTableQuery({ id })
+  if (isLoading) {
     return <TableLoading />
   }
 
-  if (getTable.isError) {
+  if (isError) {
     return (
       <Container>
         <Alert icon={<IconAlertCircle size={16} />} title="Oops! Get Table Error!" mt="lg" color="red">
-          {getTable.error.message}
+          {(error as TRPCError).message}
         </Alert>
       </Container>
     )
   }
 
-  if (!getTable.data) {
+  if (!data) {
     return 'none'
   }
-  const table = TableFactory.fromQuery(getTable.data)
+  const table = TableFactory.fromQuery(data)
   return <Table table={table} />
 }

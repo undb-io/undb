@@ -4,10 +4,10 @@ import { useAtomValue } from 'jotai'
 import type { FieldPath } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 import { DevTool } from '@hookform/devtools'
-import { trpc } from '../../trpc'
 import { RecordInputFactory } from '../record/record-input.factory'
 import { editRecordValuesAtom } from './edit-record-values.atom'
 import type { IMutateRecordValueSchema } from '@egodb/core'
+import { useUpdateRecordMutation } from '@egodb/store'
 
 interface IProps {
   table: Table
@@ -17,20 +17,12 @@ interface IProps {
 
 export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel }) => {
   const form = useFormContext<IUpdateRecordValueSchema>()
-  const utils = trpc.useContext()
 
   const record = useAtomValue(editRecordValuesAtom)
 
-  const updateRecord = trpc.record.update.useMutation({
-    onSuccess() {
-      reset()
-      utils.record.list.refetch()
-      utils.record.tree.list.refetch()
-      onSuccess?.()
-    },
-  })
+  const [updateRecord, { isLoading, isError, error, reset: resetUpdateRecord }] = useUpdateRecordMutation()
 
-  const onSubmit = form.handleSubmit((data) => {
+  const onSubmit = form.handleSubmit(async (data) => {
     const values: IMutateRecordValueSchema = []
 
     for (const [index, field] of data.value.entries()) {
@@ -41,17 +33,19 @@ export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel })
     }
 
     if (record && values.length) {
-      updateRecord.mutate({
+      await updateRecord({
         tableId: table.id.value,
         id: data.id,
         value: values,
       })
+      reset()
+      onSuccess?.()
     }
   })
 
   const reset = () => {
     onCancel()
-    updateRecord.reset()
+    resetUpdateRecord()
     form.reset()
   }
 
@@ -77,15 +71,15 @@ export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel })
             miw={200}
             type="submit"
             disabled={!form.formState.isValid || !form.formState.isDirty}
-            loading={updateRecord.isLoading}
+            loading={isLoading}
           >
             Confirm
           </Button>
         </Group>
 
-        {updateRecord.isError && (
+        {isError && (
           <Alert color="red" icon={<IconAlertCircle size={16} />} title="Oops! Create Table Error!" mt="lg">
-            {updateRecord.error.message}
+            {(error as any).message}
           </Alert>
         )}
       </form>

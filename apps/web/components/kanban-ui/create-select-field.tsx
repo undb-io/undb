@@ -1,11 +1,11 @@
 import type { ICreateSelectFieldSchema } from '@egodb/core'
 import { FieldId } from '@egodb/core'
 import { createSelectFieldSchema } from '@egodb/core'
+import { useCreateFieldMutation, useSetKanbanFieldMutation } from '@egodb/store'
 import { Button, Card, FocusTrap, Group, IconChevronLeft, Stack, Text, TextInput } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { useForm } from 'react-hook-form'
-import { trpc } from '../../trpc'
 import { SelectFieldControl } from '../field-inputs/select-field-control'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { kanbanStepZeroAtom } from './kanban-step.atom'
@@ -24,35 +24,23 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
     resolver: zodResolver(createSelectFieldSchema),
   })
 
-  const utils = trpc.useContext()
+  const [createSelectField, { isLoading }] = useCreateFieldMutation()
+  const [setKanbanField] = useSetKanbanFieldMutation()
 
-  const setKanbanField = trpc.table.view.kanban.setField.useMutation({
-    onSuccess() {
-      utils.table.get.refetch()
-      setStepZero()
-      onSuccess?.()
-    },
-  })
-
-  const createSelectField = trpc.table.field.create.useMutation({
-    onSuccess(_, variables) {
-      const id = variables.field.id
-
-      if (id) {
-        setKanbanField.mutate({
-          tableId: table.id.value,
-          field: id,
-        })
-      }
-    },
-  })
-
-  const onSubmit = form.handleSubmit((values) => {
+  const onSubmit = form.handleSubmit(async (values) => {
     values.id = FieldId.createId()
-    createSelectField.mutate({
+    await createSelectField({
       tableId: table.id.value,
       field: values,
     })
+
+    await setKanbanField({
+      tableId: table.id.value,
+      field: values.id,
+    })
+
+    setStepZero()
+    onSuccess?.()
   })
 
   const setStepZero = useSetAtom(kanbanStepZeroAtom)
@@ -77,7 +65,7 @@ export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
             <Button leftIcon={<IconChevronLeft size={14} />} size="xs" variant="white" onClick={setStepZero}>
               Select Existing Field
             </Button>
-            <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={createSelectField.isLoading}>
+            <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={isLoading}>
               Done
             </Button>
           </Group>

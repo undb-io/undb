@@ -1,30 +1,24 @@
+import { useDeleteTableMutation } from '@egodb/store'
 import { Group, ActionIcon, IconDots, Text, Menu } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
 import { useConfirmModal } from '../../hooks'
-import { trpc } from '../../trpc'
 import type { ITableBaseProps } from '../table/table-base-props'
 import { editTableFormDrawerOpened } from './drawer-opened.atom'
 
 export const EditTableMenu: React.FC<ITableBaseProps> = ({ table }) => {
   const setOpened = useSetAtom(editTableFormDrawerOpened)
-  const utils = trpc.useContext()
   const router = useRouter()
 
-  const onSuccess = async () => {
-    await utils.table.list.refetch()
-    setOpened(false)
-    router.replace('/')
-  }
-  const deleteTable = trpc.table.delete.useMutation({
-    onSuccess,
-  })
+  const [deleteTable] = useDeleteTableMutation()
 
   const confirm = useConfirmModal({
-    onConfirm() {
-      deleteTable.mutate({
+    async onConfirm() {
+      await deleteTable({
         id: table.id.value,
       })
+      setOpened(false)
+      router.replace('/')
     },
   })
 

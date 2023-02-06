@@ -24,9 +24,9 @@ import { CSS } from '@dnd-kit/utilities'
 import type { IQueryTreeRecord, IQueryTreeRecords, Table, TreeField } from '@egodb/core'
 import type { TableSchemaIdMap } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
+import { useUpdateRecordMutation } from '@egodb/store'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { trpc } from '../../trpc'
 import { sortableTreeKeyboardCoordinates } from './keyboard-coordinates'
 import { SortableTreeItem } from './sortable-tree-view-item'
 import type {
@@ -98,7 +98,7 @@ const mapper = (schema: TableSchemaIdMap, record: IQueryTreeRecord): SortableRec
 }
 
 export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50, records }) => {
-  const updateRecord = trpc.record.update.useMutation({})
+  const [updateRecord] = useUpdateRecordMutation()
   const schema = table.schema.toIdMap()
 
   const [items, setItems] = useState<SortableRecordItems>(() => {
@@ -267,7 +267,7 @@ export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50
       setItems(newItems)
 
       if (field.parentFieldId) {
-        updateRecord.mutate({
+        updateRecord({
           tableId: table.id.value,
           id: activeId as string,
           value: [{ id: field.parentFieldId.value, value: parentId }],
