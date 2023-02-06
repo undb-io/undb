@@ -13,7 +13,7 @@ export const createRecordInputs = (
     map(({ id, value }) =>
       schema.getFieldById(id).map((field) => ({ type: field.type, field, value } as ICreateFieldValueSchema_internal)),
     ),
-    filter((f) => f.isSome),
+    filter((f) => f.isSome()),
     map((f) => f.unwrap()),
     map((f) => createFieldValueSchema_internal.parse(f)),
     toArray,
