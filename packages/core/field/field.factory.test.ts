@@ -4,15 +4,17 @@ import { DateRangeField } from './date-range-field'
 import { FieldFactory } from './field.factory'
 import { Field } from './field.type'
 import { NumberField } from './number-field'
+import { ParentField } from './parent-field'
 import { SelectField } from './select-field'
 import { StringField } from './string-field'
+import { TreeField } from './tree-field'
 
 it('should create string field', () => {
   const field = FieldFactory.create({
     id: 'fldid',
     type: 'string',
     name: 'hello',
-  })
+  }) as Field
 
   expectTypeOf(field).toEqualTypeOf<Field>()
   expect(field).toBeInstanceOf(StringField)
@@ -25,7 +27,7 @@ it('should create number field', () => {
     id: 'fldid',
     type: 'number',
     name: 'hello',
-  })
+  }) as Field
 
   expectTypeOf(field).toEqualTypeOf<Field>()
   expect(field).toBeInstanceOf(NumberField)
@@ -38,7 +40,7 @@ it('should create date field', () => {
     id: 'fldid',
     type: 'date',
     name: 'hello',
-  })
+  }) as Field
 
   expectTypeOf(field).toEqualTypeOf<Field>()
   expect(field).toBeInstanceOf(DateField)
@@ -51,7 +53,7 @@ it('should create date range field', () => {
     id: 'fldid',
     type: 'date-range',
     name: 'hello',
-  })
+  }) as Field
 
   expectTypeOf(field).toEqualTypeOf<Field>()
   expect(field).toBeInstanceOf(DateRangeField)
@@ -65,7 +67,7 @@ it('should create select field', () => {
     type: 'select',
     name: 'hello',
     options: [],
-  })
+  }) as Field
 
   expectTypeOf(field).toEqualTypeOf<Field>()
   expect(field).toBeInstanceOf(SelectField)
@@ -78,10 +80,19 @@ it('should create bool field', () => {
     id: 'fldid',
     type: 'bool',
     name: 'hello',
-  })
+  }) as Field
 
   expectTypeOf(field).toEqualTypeOf<Field>()
   expect(field).toBeInstanceOf(BoolField)
   expect(field.type).toBe('bool')
   expect(field.id.value).toBe('fldid')
+})
+
+it('should create tree field & parent field', () => {
+  const fields = FieldFactory.create({ id: 'fieldid', type: 'tree', name: 'tree' }) as Field[]
+
+  expect(Array.isArray(fields)).to.be.true
+  expect(fields).to.have.lengthOf(2)
+  expect(fields[0]).to.be.instanceof(TreeField)
+  expect(fields[1]).to.be.instanceof(ParentField)
 })

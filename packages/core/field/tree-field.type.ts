@@ -4,6 +4,7 @@ import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base'
 import { FIELD_TYPE_KEY } from './field.constant'
 import { TreeField } from './tree-field'
 import { fieldIdSchema } from './value-objects/field-id.schema'
+import { fieldNameSchema } from './value-objects/field-name.schema'
 
 export const treeTypeSchema = z.literal('tree')
 export type TreeFieldType = z.infer<typeof treeTypeSchema>
@@ -12,6 +13,7 @@ const treeTypeObjectSchema = z.object({ [FIELD_TYPE_KEY]: treeTypeSchema })
 export const createTreeFieldSchema = createBaseFieldsSchema.merge(treeTypeObjectSchema).merge(
   z.object({
     parentFieldId: fieldIdSchema.optional(),
+    parentFieldName: fieldNameSchema.optional(),
     displayFieldIds: fieldIdSchema.array().optional(),
   }),
 )
