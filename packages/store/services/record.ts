@@ -27,7 +27,7 @@ const providesTags = (result: QueryRecordsEntity | undefined) => [
 ]
 const transformResponse = (result: IGetRecordsOutput) => recordAdapter.setAll(initialState, result.records)
 
-const recordApi = api.injectEndpoints({
+export const recordApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getRecords: builder.query<QueryRecordsEntity, IGetRecordsQuery>({
       query: trpc.record.list.query,

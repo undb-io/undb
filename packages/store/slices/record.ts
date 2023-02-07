@@ -1,9 +1,10 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSelector, createSlice } from '@reduxjs/toolkit'
 import 'immer'
-import { filter, keys, pipe, prop, some, T } from 'lodash/fp'
+import { filter, keys, omit, pipe, prop, some, T } from 'lodash/fp'
 import 'reselect'
 import type { RootState } from '../reducers'
+import { recordApi } from '../services'
 
 export interface RecordState {
   selectedRecordId: string
@@ -31,6 +32,19 @@ export const recordSlice = createSlice({
     resetSelectedRecordIds: (state) => {
       state.selectedRecordIds = initialState.selectedRecordIds
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(recordApi.endpoints.deleteRecord.matchFulfilled, (state, action) => {
+        const id = action.meta.arg.originalArgs.id
+        if (state.selectedRecordId === id) {
+          state.selectedRecordId = initialState.selectedRecordId
+        }
+      })
+      .addMatcher(recordApi.endpoints.bulkdDeleteRecords.matchFulfilled, (state, action) => {
+        const ids = action.meta.arg.originalArgs.ids
+        state.selectedRecordIds = omit(ids, state.selectedRecordIds)
+      })
   },
 })
 
