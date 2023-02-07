@@ -6,13 +6,11 @@ import Link from 'next/link'
 import { unstable_batchedUpdates } from 'react-dom'
 import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.atom'
 import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
-import { tableListNumber } from './table-list.atom'
 
 export const TableNavList: React.FC = () => {
   const setOpened = useSetAtom(createTableFormDrawerOpened)
   const setEditRecordOpened = useSetAtom(editRecordFormDrawerOpened)
-  const setTableListNumber = useSetAtom(tableListNumber)
-  const { data, isLoading, tablesList } = useGetTablesQuery(
+  const { isLoading, tablesList } = useGetTablesQuery(
     {},
     {
       selectFromResult: (result) => ({
@@ -21,9 +19,6 @@ export const TableNavList: React.FC = () => {
       }),
     },
   )
-  if (data) {
-    setTableListNumber(tablesList.length)
-  }
 
   return (
     <Navbar width={{ base: 300 }} p="sm">
