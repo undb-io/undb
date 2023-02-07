@@ -16,7 +16,7 @@ import { TreeField } from './tree-field'
 import { UpdatedAtField } from './updated-at-field'
 
 export class FieldFactory {
-  static create(input: ICreateFieldSchema): Field {
+  static create(input: ICreateFieldSchema): Field | Field[] {
     switch (input.type) {
       case 'id': {
         return IdField.create(input)
@@ -58,7 +58,8 @@ export class FieldFactory {
         return ReferenceField.create(input)
       }
       case 'tree': {
-        return TreeField.create(input)
+        const treeField = TreeField.create(input)
+        return [treeField, treeField.createParentField(input.parentFieldName)]
       }
       case 'parent': {
         return ParentField.create(input)

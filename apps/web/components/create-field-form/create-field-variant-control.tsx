@@ -1,5 +1,7 @@
 import type { ICreateFieldSchema } from '@egodb/core'
+import { TextInput } from '@egodb/ui'
 import { Controller, useFormContext } from 'react-hook-form'
+import { FieldInputLabel } from '../field-inputs/field-input-label'
 import type { FieldBase } from '../field-inputs/field-picker.type'
 import { FieldsPicker } from '../field-inputs/fields-picker'
 import { SelectFieldControl } from '../field-inputs/select-field-control'
@@ -25,12 +27,29 @@ export const CreateFieldVariantControl: React.FC<ITableBaseProps> = ({ table }) 
 
   if (type === 'tree') {
     return (
-      <Controller
-        name={'displayFieldIds'}
-        render={(props) => (
-          <FieldsPicker fields={fields} {...props.field} onChange={(ids) => props.field.onChange(ids)} />
-        )}
-      />
+      <>
+        <Controller
+          name="parentFieldName"
+          render={(props) => (
+            <TextInput
+              label={<FieldInputLabel>parent field name</FieldInputLabel>}
+              {...props.field}
+              value={props.field.value ?? ''}
+            />
+          )}
+        />
+        <Controller
+          name={'displayFieldIds'}
+          render={(props) => (
+            <FieldsPicker
+              fields={fields}
+              {...props.field}
+              onChange={(ids) => props.field.onChange(ids)}
+              variant="default"
+            />
+          )}
+        />
+      </>
     )
   }
   return null

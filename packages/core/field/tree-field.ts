@@ -15,9 +15,9 @@ export class TreeField extends BaseReferenceField<ITreeField> {
     return this.props.parentFieldId
   }
 
-  createParentField(): ParentField {
+  createParentField(name: string = this.name.value + ' Parent'): ParentField {
     const parentField = ParentField.create({
-      name: this.name.value + '_parent',
+      name,
       treeFieldId: this.id.value,
       displayFieldIds: this.displayFieldIds.map((f) => f.value),
     })

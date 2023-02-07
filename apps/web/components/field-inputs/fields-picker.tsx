@@ -12,10 +12,10 @@ export const FieldsPicker: React.FC<IProps> = ({ fields, ...rest }) => {
 
   return (
     <MultiSelect
-      {...rest}
       placeholder="select display fields"
-      label={<FieldInputLabel>Display Fields</FieldInputLabel>}
       variant="filled"
+      label={<FieldInputLabel>Display Fields</FieldInputLabel>}
+      {...rest}
       data={data}
     />
   )

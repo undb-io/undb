@@ -1,3 +1,4 @@
+import type { StringField } from '../field'
 import { FieldFactory } from '../field'
 import { WithNewField, WithTableId, WithTableName } from '../specifications'
 import type { TableCompositeSpecificaiton } from '../specifications/interface'
@@ -10,7 +11,7 @@ export const createTestTable = (...specs: TableCompositeSpecificaiton[]) => {
     .unwrap()
     .and(WithTableName.fromString('name'))
     .and(new WithTableViews(new Views([])))
-    .and(new WithNewField(FieldFactory.create({ type: 'string', name: 'field1' })))
+    .and(new WithNewField(FieldFactory.create({ type: 'string', name: 'field1' }) as StringField))
 
   for (const s of specs) {
     spec = spec.and(s)

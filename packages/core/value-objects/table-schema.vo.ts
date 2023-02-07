@@ -1,4 +1,5 @@
 import { ValueObject } from '@egodb/domain'
+import { castArray } from 'lodash'
 import { Option } from 'oxide.ts'
 import type { Class } from 'type-fest'
 import * as z from 'zod'
@@ -44,10 +45,7 @@ export type TableSchemaIdMap = Map<string, Field>
  */
 export class TableSchema extends ValueObject<Field[]> {
   static create(inputs: ICreateTableSchemaInput): TableSchema {
-    const fields = createTableSchemaSchema
-      .parse(inputs)
-      .map(FieldFactory.create)
-      .flatMap((f) => (f instanceof TreeField ? ([f, f.createParentField()] as [Field, Field]) : f))
+    const fields = createTableSchemaSchema.parse(inputs).flatMap(FieldFactory.create)
 
     return new TableSchema([IdField.default(), ...fields, CreatedAtField.default(), UpdatedAtField.default()])
   }
@@ -116,11 +114,8 @@ export class TableSchema extends ValueObject<Field[]> {
   }
 
   public createField(input: ICreateFieldSchema): WithNewField[] {
-    const field = FieldFactory.create(input)
-    const specs = [new WithNewField(field)]
-    if (field.type === 'tree') {
-      specs.push(new WithNewField(field.createParentField()))
-    }
+    const fields = FieldFactory.create(input)
+    const specs = castArray(fields).map((field) => new WithNewField(field))
 
     this.validateNames(...specs.map((spec) => spec.field.name.value))
 
