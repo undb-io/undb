@@ -15,3 +15,4 @@ export const FIELD_SELECT_ITEMS: SelectItem[] = [
 ]
 
 export const ACTIONS_FIELD = 'actions'
+export const SELECTION_ID = 'selection'
