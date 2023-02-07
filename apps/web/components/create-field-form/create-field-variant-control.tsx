@@ -28,7 +28,12 @@ export const CreateFieldVariantControl: React.FC<ITableBaseProps> = ({ table }) 
       <Controller
         name={'displayFieldIds'}
         render={(props) => (
-          <FieldsPicker fields={fields} {...props.field} onChange={(ids) => props.field.onChange(ids)} />
+          <FieldsPicker
+            fields={fields}
+            {...props.field}
+            onChange={(ids) => props.field.onChange(ids)}
+            variant="default"
+          />
         )}
       />
     )
