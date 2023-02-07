@@ -1,3 +1,4 @@
+export * from './bulk-delete-record'
 export * from './create-field'
 export * from './create-option'
 export * from './create-record'

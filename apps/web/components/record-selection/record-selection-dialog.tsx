@@ -1,11 +1,30 @@
-import { getHasSelectedRecordIds, getSelectedRecordIdsCount, resetSelectedRecordIds } from '@egodb/store'
+import {
+  getHasSelectedRecordIds,
+  getSelectedRecordIdList,
+  getSelectedRecordIdsCount,
+  resetSelectedRecordIds,
+  useBulkdDeleteRecordsMutation,
+} from '@egodb/store'
 import { Dialog, Group, Button, Text } from '@egodb/ui'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useAppDispatch, useAppSelector, useConfirmModal } from '../../hooks'
+import type { ITableBaseProps } from '../table/table-base-props'
 
-export const RecordSelectionDialog = () => {
+export const RecordSelectionDialog: React.FC<ITableBaseProps> = ({ table }) => {
+  const ids = useAppSelector(getSelectedRecordIdList)
   const hasSelectedRecords = useAppSelector(getHasSelectedRecordIds)
   const count = useAppSelector(getSelectedRecordIdsCount)
   const dispatch = useAppDispatch()
+
+  const [bulkDeleteRecords] = useBulkdDeleteRecordsMutation()
+
+  const confirm = useConfirmModal({
+    async onConfirm() {
+      await bulkDeleteRecords({
+        tableId: table.id.value,
+        ids: ids as [string, ...string[]],
+      })
+    },
+  })
 
   return (
     <Dialog
@@ -29,7 +48,7 @@ export const RecordSelectionDialog = () => {
             Reset
           </Button>
         </Group>
-        <Button compact size="xs" color="red" variant="subtle" onClick={() => dispatch(resetSelectedRecordIds())}>
+        <Button compact size="xs" color="red" variant="subtle" onClick={confirm}>
           Delete Selected
         </Button>
       </Group>

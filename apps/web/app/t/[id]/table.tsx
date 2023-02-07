@@ -22,7 +22,7 @@ export default function Table({ table }: IProps) {
       <CreateRecordFormDrawer table={table} />
       <EditRecordFormDrawer table={table} />
 
-      <RecordSelectionDialog />
+      <RecordSelectionDialog table={table} />
     </Stack>
   )
 }

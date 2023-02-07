@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSelector, createSlice } from '@reduxjs/toolkit'
 import 'immer'
-import { filter, some } from 'lodash'
+import { filter, keys, pipe, prop, some, T } from 'lodash/fp'
 import 'reselect'
 import type { RootState } from '../reducers'
 
@@ -43,11 +43,8 @@ export const getSelectedRecordId = (state: RootState) => state.record.selectedRe
 
 export const getSelectedRecordIds = (state: RootState) => state.record.selectedRecordIds
 
-export const getSelectedRecordIdsCount = createSelector(
-  getSelectedRecordIds,
-  (ids) => filter(ids, (selected) => selected === true).length,
-)
+export const getSelectedRecordIdList = createSelector(getSelectedRecordIds, keys)
 
-export const getHasSelectedRecordIds = createSelector(getSelectedRecordIds, (ids) =>
-  some(ids, (selected) => selected === true),
-)
+export const getSelectedRecordIdsCount = createSelector(getSelectedRecordIds, pipe(filter(T), prop('length')))
+
+export const getHasSelectedRecordIds = createSelector(getSelectedRecordIds, some(T))
