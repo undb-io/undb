@@ -5,15 +5,29 @@ import type {
   IGetTableQuery,
   IGetTablesOutput,
   IGetTablesQuery,
+  IQueryTable,
 } from '@egodb/core'
+import type { EntityState } from '@reduxjs/toolkit'
+import { createEntityAdapter } from '@reduxjs/toolkit'
 import { trpc } from '../trpc'
 import { api } from './api'
 
-const tableApi = api.injectEndpoints({
+const tableAdapter = createEntityAdapter<IQueryTable>()
+const initialState = tableAdapter.getInitialState()
+
+type QueryTableEntityState = EntityState<IQueryTable>
+
+const providesTags = (result: QueryTableEntityState | undefined) => [
+  'Table' as const,
+  ...(result?.ids?.map((id) => ({ type: 'Table' as const, id })) ?? []),
+]
+
+export const tableApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getTables: builder.query<IGetTablesOutput, IGetTablesQuery>({
+    getTables: builder.query<QueryTableEntityState, IGetTablesQuery>({
       query: trpc.table.list.query,
-      providesTags: ['Table'],
+      providesTags,
+      transformResponse: (result: IGetTablesOutput) => tableAdapter.setAll(initialState, result),
     }),
     getTable: builder.query<IGetTableOutput, IGetTableQuery>({
       query: trpc.table.get.query,
@@ -32,7 +46,7 @@ const tableApi = api.injectEndpoints({
       invalidatesTags: ['Table'],
     }),
   }),
-  overrideExisting: false,
+  overrideExisting: true,
 })
 
 export const {
