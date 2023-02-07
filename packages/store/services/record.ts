@@ -27,7 +27,7 @@ const providesTags = (result: QueryRecordsEntity | undefined) => [
 ]
 const transformResponse = (result: IGetRecordsOutput) => recordAdapter.setAll(initialState, result.records)
 
-const recordApi = api.injectEndpoints({
+export const recordApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getRecords: builder.query<QueryRecordsEntity, IGetRecordsQuery>({
       query: trpc.record.list.query,
@@ -94,6 +94,19 @@ const recordApi = api.injectEndpoints({
         queryFulfilled.catch(patchResult.undo)
       },
     }),
+    bulkdDeleteRecords: builder.mutation({
+      query: trpc.record.bulkDelete.mutate,
+      onQueryStarted({ ids, tableId }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          recordApi.util.updateQueryData('getRecords', { tableId }, (draft) => {
+            for (const id of ids) {
+              delete draft.entities[id]
+            }
+          }),
+        )
+        queryFulfilled.catch(patchResult.undo)
+      },
+    }),
   }),
 })
 
@@ -110,4 +123,5 @@ export const {
   useUpdateRecordMutation,
   useDulicateRecordMutation,
   useDeleteRecordMutation,
+  useBulkdDeleteRecordsMutation,
 } = recordApi

@@ -1,5 +1,12 @@
 import type { IRecordRepository, IRecordSpec, Record as CoreRecord, TableSchemaIdMap } from '@egodb/core'
-import { ParentField, TreeField, WithRecordId, WithRecordTableId, WithRecordValues } from '@egodb/core'
+import {
+  INTERNAL_COLUMN_ID_NAME,
+  ParentField,
+  TreeField,
+  WithRecordId,
+  WithRecordTableId,
+  WithRecordValues,
+} from '@egodb/core'
 import { and } from '@egodb/domain'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type { Option } from 'oxide.ts'
@@ -15,7 +22,6 @@ import type { RecordSqlite } from './record.type'
 
 export class RecordSqliteRepository implements IRecordRepository {
   constructor(protected readonly em: EntityManager) {}
-
   async insert(record: CoreRecord, schema: TableSchemaIdMap): Promise<void> {
     await this.em.transactional(async (em) => {
       const data: Record<string, Knex.Value> = {
@@ -107,6 +113,36 @@ export class RecordSqliteRepository implements IRecordRepository {
 
       await em.execute(qb)
       await mv.commit()
+    })
+  }
+
+  async deleteManyByIds(tableId: string, ids: string[], schema: TableSchemaIdMap): Promise<void> {
+    await this.em.transactional(async (em) => {
+      const knex = em.getKnex()
+      const qb = knex
+        .queryBuilder()
+        .from(tableId)
+        .update(INTERNAL_COLUMN_DELETED_AT_NAME, new Date())
+        .whereIn(INTERNAL_COLUMN_ID_NAME, ids)
+
+      for (const id of ids) {
+        const mv = new RecordSqliteMutationVisitor(tableId, id, schema, em, qb)
+        const specs: WithRecordValues[] = []
+
+        for (const [fieldId, field] of schema.entries()) {
+          if (field instanceof TreeField || field instanceof ParentField) {
+            const spec = WithRecordValues.fromObject(schema, { [fieldId]: null })
+            specs.push(spec)
+          }
+        }
+
+        const spec = and(...specs).into()
+
+        spec?.accept(mv)
+        await mv.commit()
+      }
+
+      await em.execute(qb)
     })
   }
 }

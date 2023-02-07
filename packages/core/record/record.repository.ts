@@ -9,4 +9,5 @@ export interface IRecordRepository {
 
   updateOneById(tableId: string, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void>
   deleteOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<void>
+  deleteManyByIds(tableId: string, ids: string[], schema: TableSchemaIdMap): Promise<void>
 }

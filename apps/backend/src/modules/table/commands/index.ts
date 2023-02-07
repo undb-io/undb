@@ -1,3 +1,4 @@
+import { BulkDeleteRecordCommandHandler } from './bulk-delete-record.command.handler'
 import { CreateFieldCommandHandler } from './create-field.command.handler'
 import { CreateOptionCommandHandler } from './create-option.command.handler'
 import { CreateRecordCommandHandler } from './create-record.command.handler'
@@ -41,6 +42,7 @@ export const commandHandlers = [
   UpdateRecordCommandHandler,
   UpdateOptionCommandHandler,
   DeleteRecordCommandHandler,
+  BulkDeleteRecordCommandHandler,
   DeleteTableCommandHandler,
   DeleteOptionCommandHandler,
   DeleteFieldCommandHandler,
