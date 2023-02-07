@@ -22,7 +22,7 @@ import {
 } from '@egodb/ui'
 import type { ColumnDef } from '@tanstack/react-table'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { useLayoutEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { ACTIONS_FIELD, SELECTION_ID } from '../../constants/field.constants'
 import { CREATE_FIELD_MODAL_ID } from '../../modals'
 import { RecordActions } from './actions'
@@ -31,7 +31,8 @@ import { Th } from './th'
 import { Tr } from './tr'
 import type { RecordAllValueType } from '@egodb/core'
 import { FieldValueFactory } from '../field-value/field-value.factory'
-import { useMoveFieldMutation } from '@egodb/store'
+import { setSelectedRecordIds, useMoveFieldMutation } from '@egodb/store'
+import { useAppDispatch } from '../../hooks'
 
 const columnHelper = createColumnHelper<TData>()
 
@@ -40,7 +41,12 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const columnVisibility = view.getVisibility()
   const columnOrder = table.getFieldsOrder(view).order
   const [fields, handlers] = useListState(table.schema.fields)
+
+  const dispatch = useAppDispatch()
   const [rowSelection, setRowSelection] = useState({})
+  useEffect(() => {
+    dispatch(setSelectedRecordIds(rowSelection))
+  }, [rowSelection])
 
   useLayoutEffect(() => {
     handlers.setState(table.schema.fields)
@@ -70,7 +76,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
     enableResizing: false,
     id: SELECTION_ID,
     header: () => (
-      <th style={{ width: '10px' }}>
+      <th key={SELECTION_ID} style={{ width: '10px' }}>
         <Checkbox
           size="xs"
           checked={rt.getIsAllRowsSelected()}
