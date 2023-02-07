@@ -1,3 +1,4 @@
+import type { IQueryTable } from '@egodb/core'
 import { useGetTablesQuery } from '@egodb/store'
 import { Navbar, Box, Skeleton, NavLink, Center, Button, IconPlus, ScrollArea } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
@@ -11,9 +12,17 @@ export const TableNavList: React.FC = () => {
   const setOpened = useSetAtom(createTableFormDrawerOpened)
   const setEditRecordOpened = useSetAtom(editRecordFormDrawerOpened)
   const setTableListNumber = useSetAtom(tableListNumber)
-  const { data, isLoading } = useGetTablesQuery({})
+  const { data, isLoading, tablesList } = useGetTablesQuery(
+    {},
+    {
+      selectFromResult: (result) => ({
+        ...result,
+        tablesList: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryTable[],
+      }),
+    },
+  )
   if (data) {
-    setTableListNumber(data.length)
+    setTableListNumber(tablesList.length)
   }
 
   return (
@@ -27,7 +36,7 @@ export const TableNavList: React.FC = () => {
               <Skeleton visible={isLoading} mt={6} height={30} />
             </>
           )}
-          {data?.map((table) => (
+          {tablesList?.map((table) => (
             <Link key={table.id} href={`/t/${table.id}`}>
               <NavLink label={table.name} />
             </Link>
