@@ -31,7 +31,7 @@ import { Th } from './th'
 import { Tr } from './tr'
 import type { RecordAllValueType } from '@egodb/core'
 import { FieldValueFactory } from '../field-value/field-value.factory'
-import { getSelectedRecordIds, setSelectedRecordIds, useMoveFieldMutation } from '@egodb/store'
+import { getTableSelectedRecordIds, setTableSelectedRecordIds, useMoveFieldMutation } from '@egodb/store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 
 const columnHelper = createColumnHelper<TData>()
@@ -43,11 +43,11 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const [fields, handlers] = useListState(table.schema.fields)
 
   const dispatch = useAppDispatch()
-  const selectedRecordIds = useAppSelector(getSelectedRecordIds)
+  const selectedRecordIds = useAppSelector((state) => getTableSelectedRecordIds(state, table.id.value))
   const [rowSelection, setRowSelection] = useState(selectedRecordIds)
 
   useEffect(() => {
-    dispatch(setSelectedRecordIds(rowSelection))
+    dispatch(setTableSelectedRecordIds({ tableId: table.id.value, ids: rowSelection }))
   }, [rowSelection])
 
   useEffect(() => {

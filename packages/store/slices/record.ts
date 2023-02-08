@@ -8,7 +8,7 @@ import { recordApi } from '../services'
 
 export interface RecordState {
   selectedRecordId: string
-  selectedRecordIds: Record<string, boolean>
+  selectedRecordIds: Record<string, Record<string, boolean>>
 }
 
 const initialState: RecordState = {
@@ -26,8 +26,11 @@ export const recordSlice = createSlice({
     resetSelectedRecordId: (state) => {
       state.selectedRecordId = initialState.selectedRecordId
     },
-    setSelectedRecordIds: (state, action: PayloadAction<Record<string, boolean>>) => {
-      state.selectedRecordIds = action.payload
+    setTableSelectedRecordIds: (state, action: PayloadAction<{ tableId: string; ids: Record<string, boolean> }>) => {
+      state.selectedRecordIds[action.payload.tableId] = action.payload.ids
+    },
+    resetTableSelectedRecordIds: (state, action: PayloadAction<string>) => {
+      delete state.selectedRecordIds[action.payload]
     },
     resetSelectedRecordIds: (state) => {
       state.selectedRecordIds = initialState.selectedRecordIds
@@ -42,16 +45,16 @@ export const recordSlice = createSlice({
         }
       })
       .addMatcher(recordApi.endpoints.BulkDeleteRecords.matchFulfilled, (state, action) => {
-        const ids = action.meta.arg.originalArgs.ids
-        state.selectedRecordIds = omit(ids, state.selectedRecordIds)
+        const { ids, tableId } = action.meta.arg.originalArgs
+        state.selectedRecordIds = omit(ids, state.selectedRecordIds[tableId])
       })
-      .addMatcher(recordApi.endpoints.bulkDuplicateRecord.matchFulfilled, (state) => {
-        state.selectedRecordIds = initialState.selectedRecordIds
+      .addMatcher(recordApi.endpoints.bulkDuplicateRecord.matchFulfilled, (state, action) => {
+        delete state.selectedRecordIds[action.meta.arg.originalArgs.tableId]
       })
   },
 })
 
-export const { setSelectedRecordId, resetSelectedRecordId, setSelectedRecordIds, resetSelectedRecordIds } =
+export const { setSelectedRecordId, resetSelectedRecordId, setTableSelectedRecordIds, resetSelectedRecordIds } =
   recordSlice.actions
 
 export const recordReducer = recordSlice.reducer
@@ -60,8 +63,13 @@ export const getSelectedRecordId = (state: RootState) => state.record.selectedRe
 
 export const getSelectedRecordIds = (state: RootState) => state.record.selectedRecordIds
 
-export const getSelectedRecordIdList = createSelector(getSelectedRecordIds, keys)
+export const getTableSelectedRecordIds = createSelector(
+  [getSelectedRecordIds, (_: RootState, tableId: string) => tableId],
+  (ids, tableId) => ids[tableId] ?? {},
+)
 
-export const getSelectedRecordIdsCount = createSelector(getSelectedRecordIds, pipe(filter(T), prop('length')))
+export const getTableSelectedRecordIdList = createSelector(getTableSelectedRecordIds, keys)
 
-export const getHasSelectedRecordIds = createSelector(getSelectedRecordIds, some(T))
+export const getTableSelectedRecordIdsCount = createSelector(getTableSelectedRecordIds, pipe(filter(T), prop('length')))
+
+export const getTableHasSelectedRecordIds = createSelector(getTableSelectedRecordIds, some(T))

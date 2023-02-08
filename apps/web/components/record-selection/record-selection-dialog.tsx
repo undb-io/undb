@@ -1,7 +1,7 @@
 import {
-  getHasSelectedRecordIds,
-  getSelectedRecordIdList,
-  getSelectedRecordIdsCount,
+  getTableHasSelectedRecordIds,
+  getTableSelectedRecordIdList,
+  getTableSelectedRecordIdsCount,
   resetSelectedRecordIds,
   useBulkDeleteRecordsMutation,
   useBulkDuplicateRecordMutation,
@@ -11,11 +11,10 @@ import { useAppDispatch, useAppSelector, useConfirmModal } from '../../hooks'
 import type { ITableBaseProps } from '../table/table-base-props'
 
 export const RecordSelectionDialog: React.FC<ITableBaseProps> = ({ table }) => {
-  const ids = useAppSelector(getSelectedRecordIdList)
-  const hasSelectedRecords = useAppSelector(getHasSelectedRecordIds)
-  const count = useAppSelector(getSelectedRecordIdsCount)
+  const ids = useAppSelector((state) => getTableSelectedRecordIdList(state, table.id.value))
+  const hasSelectedRecords = useAppSelector((state) => getTableHasSelectedRecordIds(state, table.id.value))
+  const count = useAppSelector((state) => getTableSelectedRecordIdsCount(state, table.id.value))
   const previousCount = usePrevious(count)
-
   const dispatch = useAppDispatch()
 
   const [bulkDeleteRecords] = useBulkDeleteRecordsMutation()
