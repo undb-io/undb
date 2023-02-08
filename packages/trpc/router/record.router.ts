@@ -1,6 +1,6 @@
 import {
-  BulkDeleteRecordCommand,
-  bulkDeleteRecordCommandInput,
+  BulkDeleteRecordsCommand,
+  bulkDeleteRecordsCommandInput,
   CreateRecordCommand,
   createRecordCommandInput,
   createRecordCommandOutput,
@@ -64,10 +64,10 @@ export const createRecordRouter =
         }),
       bulkDelete: procedure
         .meta({ openapi: { method: 'POST', path: '/record.bulkDelete', tags } })
-        .input(bulkDeleteRecordCommandInput)
+        .input(bulkDeleteRecordsCommandInput)
         .output(z.void())
         .mutation(({ input }) => {
-          const cmd = new BulkDeleteRecordCommand(input)
+          const cmd = new BulkDeleteRecordsCommand(input)
           return commandBus.execute(cmd)
         }),
       get: procedure
