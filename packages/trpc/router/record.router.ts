@@ -1,6 +1,8 @@
 import {
   BulkDeleteRecordsCommand,
   bulkDeleteRecordsCommandInput,
+  BulkDuplicateRecordsCommand,
+  bulkDuplicateRecordsCommandInput,
   CreateRecordCommand,
   createRecordCommandInput,
   createRecordCommandOutput,
@@ -44,6 +46,14 @@ export const createRecordRouter =
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new DuplicateRecordCommand(input)
+          return commandBus.execute(cmd)
+        }),
+      bulkDuplicate: procedure
+        .meta({ openapi: { method: 'POST', path: '/record.bulkDuplicate', tags } })
+        .input(bulkDuplicateRecordsCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new BulkDuplicateRecordsCommand(input)
           return commandBus.execute(cmd)
         }),
       update: procedure
