@@ -1,6 +1,8 @@
 'use client'
 
 import type { Table as CoreTable } from '@egodb/core'
+import { Box } from '@egodb/ui'
+import { useEgoUITheme } from '@egodb/ui'
 import { Stack } from '@egodb/ui'
 import { CreateRecordFormDrawer } from '../../../components/create-record-form/create-record-form-drawer'
 import { EditRecordFormDrawer } from '../../../components/edit-record-form/edit-record-form-drawer'
@@ -14,11 +16,16 @@ interface IProps {
 }
 
 export default function Table({ table }: IProps) {
+  const theme = useEgoUITheme()
+
   return (
-    <Stack h="100%" spacing={0}>
+    <Stack h="100vh" spacing={0}>
       <TableHaeder table={table} />
       <TableToolbar table={table} />
-      <ViewDisplay table={table} />
+      <Box w="100%" h="100%" bg={theme.white} sx={{ overflow: 'scroll', flex: '1 1 auto' }}>
+        <ViewDisplay table={table} />
+      </Box>
+
       <CreateRecordFormDrawer table={table} />
       <EditRecordFormDrawer table={table} />
 
