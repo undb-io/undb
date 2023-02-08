@@ -21,7 +21,7 @@ import type {
 import type { ParentAvailableSpec } from './parent.specification'
 import type { WithRecordAutoIncrement } from './record-auto-increment.specification'
 import type { WithRecordCreatedAt } from './record-created-at.specification'
-import type { WithRecordId } from './record-id.specifaction'
+import type { WithRecordId, WithRecordIds } from './record-id.specifaction'
 import type { WithRecordTableId } from './record-table-id.specification'
 import type { WithRecordUpdatedAt } from './record-updated-at.specification'
 import type { WithRecordValues } from './record-values.specification'
@@ -32,6 +32,7 @@ import type { IsTreeRoot, TreeAvailableSpec } from './tree.specification'
 
 interface IRecordSpecVisitor {
   idEqual(s: WithRecordId): void
+  idsIn(s: WithRecordIds): void
   tableIdEqual(s: WithRecordTableId): void
 
   createdAt(s: WithRecordCreatedAt): void

@@ -29,6 +29,7 @@ import type {
   WithRecordAutoIncrement,
   WithRecordCreatedAt,
   WithRecordId,
+  WithRecordIds,
   WithRecordTableId,
   WithRecordUpdatedAt,
   WithRecordValues,
@@ -66,6 +67,9 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
 
   idEqual(s: WithRecordId): void {
     this.qb.where({ [this.getFieldId(INTERNAL_COLUMN_ID_NAME)]: s.id.value })
+  }
+  idsIn(s: WithRecordIds): void {
+    this.qb.whereIn(this.getFieldId(INTERNAL_COLUMN_ID_NAME), s.idsStringList)
   }
   tableIdEqual(s: WithRecordTableId): void {
     if (this.alias) {
