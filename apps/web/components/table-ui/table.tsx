@@ -81,6 +81,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const selection: ColumnDef<TData> = {
     enableResizing: false,
     id: SELECTION_ID,
+    size: 10,
     header: () => (
       <th key={SELECTION_ID} style={{ width: '10px' }}>
         <Checkbox
@@ -133,6 +134,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
 
   const action = columnHelper.display({
     id: ACTIONS_FIELD,
+    size: 10,
     header: () => (
       <th style={{ width: '10px', borderBottom: '0' }}>
         <Tooltip label="Add New Field">
@@ -182,6 +184,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
         borderLeft: '0',
         borderRight: '0',
         borderBottom: '0',
+        height: '100%',
         width: rt.getCenterTotalSize(),
         table: {
           border: '0',
