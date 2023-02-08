@@ -53,7 +53,7 @@ export class Record {
     return RecordFactory.create(
       new WithRecordId(RecordId.create())
         .and(new WithRecordTableId(this.tableId))
-        .and(new WithRecordValues(this.values.dulicate(schema))),
+        .and(new WithRecordValues(this.values.duplicate(schema))),
     ).unwrap()
   }
 }

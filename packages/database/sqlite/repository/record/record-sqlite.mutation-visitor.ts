@@ -30,6 +30,7 @@ import type {
   WithRecordAutoIncrement,
   WithRecordCreatedAt,
   WithRecordId,
+  WithRecordIds,
   WithRecordTableId,
   WithRecordUpdatedAt,
   WithRecordValues,
@@ -48,7 +49,6 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
   ) {
     super(em)
   }
-
   private createRecordValueVisitor(fieldId: string) {
     return new RecordValueSqliteMutationVisitor(this.tableId, fieldId, this.recordId, false, this.schema, this.em)
   }
@@ -56,6 +56,10 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
   idEqual(s: WithRecordId): void {
     throw new Error('Method not implemented.')
   }
+  idsIn(s: WithRecordIds): void {
+    throw new Error('Method not implemented.')
+  }
+
   tableIdEqual(s: WithRecordTableId): void {
     throw new Error('Method not implemented.')
   }

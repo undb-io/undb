@@ -79,8 +79,12 @@ export const recordApi = api.injectEndpoints({
         queryFulfilled.catch(patchResult.undo)
       },
     }),
-    dulicateRecord: builder.mutation({
+    duplicateRecord: builder.mutation({
       query: trpc.record.duplicate.mutate,
+      invalidatesTags: ['Record'],
+    }),
+    bulkDuplicateRecord: builder.mutation({
+      query: trpc.record.bulkDuplicate.mutate,
       invalidatesTags: ['Record'],
     }),
     deleteRecord: builder.mutation({
@@ -94,7 +98,7 @@ export const recordApi = api.injectEndpoints({
         queryFulfilled.catch(patchResult.undo)
       },
     }),
-    bulkdDeleteRecords: builder.mutation({
+    BulkDeleteRecords: builder.mutation({
       query: trpc.record.bulkDelete.mutate,
       onQueryStarted({ ids, tableId }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
@@ -121,7 +125,8 @@ export const {
   useLazyTreeAvailableQuery,
   useCreateRecordMutation,
   useUpdateRecordMutation,
-  useDulicateRecordMutation,
+  useDuplicateRecordMutation,
+  useBulkDuplicateRecordMutation,
   useDeleteRecordMutation,
-  useBulkdDeleteRecordsMutation,
+  useBulkDeleteRecordsMutation,
 } = recordApi

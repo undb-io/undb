@@ -69,7 +69,7 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
    *
    * @param schema - table schema
    */
-  dulicate(schema: TableSchemaIdMap): RecordValues {
+  duplicate(schema: TableSchemaIdMap): RecordValues {
     const props = new Map(this.props)
 
     for (const [fieldId, field] of schema) {

@@ -41,9 +41,12 @@ export const recordSlice = createSlice({
           state.selectedRecordId = initialState.selectedRecordId
         }
       })
-      .addMatcher(recordApi.endpoints.bulkdDeleteRecords.matchFulfilled, (state, action) => {
+      .addMatcher(recordApi.endpoints.BulkDeleteRecords.matchFulfilled, (state, action) => {
         const ids = action.meta.arg.originalArgs.ids
         state.selectedRecordIds = omit(ids, state.selectedRecordIds)
+      })
+      .addMatcher(recordApi.endpoints.bulkDuplicateRecord.matchFulfilled, (state) => {
+        state.selectedRecordIds = initialState.selectedRecordIds
       })
   },
 })

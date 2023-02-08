@@ -1,4 +1,4 @@
-import { useDeleteRecordMutation, useDulicateRecordMutation } from '@egodb/store'
+import { useDeleteRecordMutation, useDuplicateRecordMutation } from '@egodb/store'
 import {
   ActionIcon,
   Alert,
@@ -28,7 +28,7 @@ export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableI
     },
   })
 
-  const [duplicateRecord] = useDulicateRecordMutation()
+  const [duplicateRecord] = useDuplicateRecordMutation()
 
   return (
     <Group>

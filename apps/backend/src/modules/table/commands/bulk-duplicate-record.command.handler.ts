@@ -1,6 +1,6 @@
 import {
-  BulkDeleteRecordsCommand,
-  BulkDeleteRecordsCommandHandler as DomainHandler,
+  BulkDuplicateRecordsCommand,
+  BulkDuplicateRecordsCommandHandler as DomainHandler,
   IRecordRepository,
   ITableRepository,
 } from '@egodb/core'
@@ -8,10 +8,10 @@ import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
 import { InjectRecordReposiory, InjectTableReposiory } from '../adapters'
 
-@CommandHandler(BulkDeleteRecordsCommand)
-export class BulkDeleteRecordsCommandHandler
+@CommandHandler(BulkDuplicateRecordsCommand)
+export class BulkDuplicateRecordsCommandHandler
   extends DomainHandler
-  implements ICommandHandler<BulkDeleteRecordsCommand>
+  implements ICommandHandler<BulkDuplicateRecordsCommand>
 {
   constructor(
     @InjectTableReposiory()

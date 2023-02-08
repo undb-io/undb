@@ -22,37 +22,46 @@ import type { RecordSqlite } from './record.type'
 
 export class RecordSqliteRepository implements IRecordRepository {
   constructor(protected readonly em: EntityManager) {}
+
+  private async _insert(em: EntityManager, record: CoreRecord, schema: TableSchemaIdMap) {
+    const data: globalThis.Record<string, Knex.Value> = {
+      id: record.id.value,
+    }
+    const queries: string[] = []
+    const jobs: Job[] = []
+
+    for (const [fieldId, value] of record.values) {
+      const visitor = new RecordValueSqliteMutationVisitor(
+        record.tableId.value,
+        fieldId,
+        record.id.value,
+        true,
+        schema,
+        em,
+      )
+
+      value.accept(visitor)
+
+      Object.assign(data, visitor.data)
+      queries.push(...visitor.queries)
+      jobs.push(...visitor.jobs)
+    }
+
+    const qb = em.getKnex().insert(data).into(record.tableId.value)
+    await em.execute(qb)
+    for (const query of queries) {
+      await em.execute(query)
+    }
+    await Promise.all(jobs.map((job) => job()))
+  }
+
   async insert(record: CoreRecord, schema: TableSchemaIdMap): Promise<void> {
+    await this.em.transactional((em) => this._insert(em, record, schema))
+  }
+
+  async insertMany(records: CoreRecord[], schema: TableSchemaIdMap): Promise<void> {
     await this.em.transactional(async (em) => {
-      const data: Record<string, Knex.Value> = {
-        id: record.id.value,
-      }
-      const queries: string[] = []
-      const jobs: Job[] = []
-
-      for (const [fieldId, value] of record.values) {
-        const visitor = new RecordValueSqliteMutationVisitor(
-          record.tableId.value,
-          fieldId,
-          record.id.value,
-          true,
-          schema,
-          em,
-        )
-
-        value.accept(visitor)
-
-        Object.assign(data, visitor.data)
-        queries.push(...visitor.queries)
-        jobs.push(...visitor.jobs)
-      }
-
-      const qb = em.getKnex().insert(data).into(record.tableId.value)
-      await em.execute(qb)
-      for (const query of queries) {
-        await em.execute(query)
-      }
-      await Promise.all(jobs.map((job) => job()))
+      await Promise.all(records.map((record) => this._insert(em, record, schema)))
     })
   }
 
@@ -71,6 +80,22 @@ export class RecordSqliteRepository implements IRecordRepository {
 
     const record = RecordSqliteMapper.toDomain(tableId, schema, data[0]).unwrap()
     return Some(record)
+  }
+
+  async find(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap): Promise<CoreRecord[]> {
+    const knex = this.em.getKnex()
+    const qb = knex.queryBuilder().from(tableId)
+
+    const columns = UnderlyingColumnFactory.createMany([...schema.values()])
+    qb.select(columns.map((c) => c.name))
+
+    const qv = new RecordSqliteQueryVisitor(tableId, 't', schema, qb, knex)
+    spec.accept(qv)
+
+    const data = await this.em.execute<RecordSqlite[]>(qb)
+
+    const record = data.map((r) => RecordSqliteMapper.toDomain(tableId, schema, r).unwrap())
+    return record
   }
 
   async updateOneById(tableId: string, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void> {

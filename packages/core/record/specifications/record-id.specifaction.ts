@@ -28,3 +28,29 @@ export class WithRecordId extends CompositeSpecification {
     return Ok(undefined)
   }
 }
+
+export class WithRecordIds extends CompositeSpecification<Record, IRecordVisitor> {
+  constructor(public readonly ids: ReadonlyArray<RecordId>) {
+    super()
+  }
+
+  public get idsStringList(): string[] {
+    return this.ids.map((id) => id.value)
+  }
+
+  static fromIds(ids: string[]): WithRecordIds {
+    return new WithRecordIds(ids.map(RecordId.from))
+  }
+
+  isSatisfiedBy(t: Record): boolean {
+    return this.ids.includes(t.id)
+  }
+
+  mutate(t: Record): Result<Record, string> {
+    throw new Error('Method not implemented.')
+  }
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.idsIn(this)
+    return Ok(undefined)
+  }
+}
