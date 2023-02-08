@@ -134,7 +134,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const action = columnHelper.display({
     id: ACTIONS_FIELD,
     header: () => (
-      <th style={{ borderBottom: '0' }}>
+      <th style={{ width: '10px', borderBottom: '0' }}>
         <Tooltip label="Add New Field">
           <ActionIcon
             onClick={() =>
