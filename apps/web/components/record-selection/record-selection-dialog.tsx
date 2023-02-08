@@ -32,6 +32,8 @@ export const RecordSelectionDialog: React.FC<ITableBaseProps> = ({ table }) => {
   return (
     <Dialog
       position={{ left: '50%', bottom: 50 }}
+      w={500}
+      shadow="lg"
       sx={{ transform: 'translate(-50%, 0) !important' }}
       opened={hasSelectedRecords}
       onClose={() => dispatch(resetSelectedRecordIds())}

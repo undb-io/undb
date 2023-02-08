@@ -22,7 +22,7 @@ import {
 } from '@egodb/ui'
 import type { ColumnDef } from '@tanstack/react-table'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ACTIONS_FIELD, SELECTION_ID } from '../../constants/field.constants'
 import { CREATE_FIELD_MODAL_ID } from '../../modals'
 import { RecordActions } from './actions'
@@ -33,6 +33,7 @@ import type { RecordAllValueType } from '@egodb/core'
 import { FieldValueFactory } from '../field-value/field-value.factory'
 import { getTableSelectedRecordIds, setTableSelectedRecordIds, useMoveFieldMutation } from '@egodb/store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useVirtualizer } from '@tanstack/react-virtual'
 
 const columnHelper = createColumnHelper<TData>()
 
@@ -81,9 +82,9 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const selection: ColumnDef<TData> = {
     enableResizing: false,
     id: SELECTION_ID,
-    size: 10,
+    size: 40,
     header: () => (
-      <th key={SELECTION_ID} style={{ width: '10px' }}>
+      <th key={SELECTION_ID} style={{ width: '40px' }}>
         <Checkbox
           size="xs"
           checked={rt.getIsAllRowsSelected()}
@@ -134,9 +135,9 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
 
   const action = columnHelper.display({
     id: ACTIONS_FIELD,
-    size: 10,
+    size: 40,
     header: () => (
-      <th style={{ width: '10px', borderBottom: '0' }}>
+      <th style={{ width: '40px', borderBottom: '0' }}>
         <Tooltip label="Add New Field">
           <ActionIcon
             onClick={() =>
@@ -171,77 +172,118 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
     columnResizeMode: 'onChange',
     getCoreRowModel: getCoreRowModel(),
   })
+  const { rows } = rt.getRowModel()
+
+  const tableContainerRef = useRef<HTMLDivElement>(null)
+  const rowVirtualizer = useVirtualizer({
+    count: data.length,
+    getScrollElement: () => tableContainerRef.current,
+    estimateSize: () => 32,
+    overscan: 5,
+  })
+
+  const paddingTop = rowVirtualizer.getVirtualItems().length > 0 ? rowVirtualizer.getVirtualItems()?.[0]?.start || 0 : 0
+  const paddingBottom =
+    rowVirtualizer.getVirtualItems().length > 0
+      ? rowVirtualizer.getTotalSize() -
+        (rowVirtualizer.getVirtualItems()?.[rowVirtualizer.getVirtualItems().length - 1]?.end || 0)
+      : 0
 
   return (
-    <Table
-      withBorder
-      highlightOnHover
-      withColumnBorders
-      verticalSpacing={5}
-      sx={(theme) => ({
-        backgroundColor: theme.white,
-        borderTop: '0',
-        borderLeft: '0',
-        borderRight: '0',
-        borderBottom: '0',
-        height: '100%',
-        width: rt.getCenterTotalSize(),
-        table: {
-          border: '0',
-        },
-        'thead tr': {
-          border: '0',
-        },
-        'thead tr th': {
-          position: 'relative',
-          userSelect: 'none',
+    <div ref={tableContainerRef} style={{ height: '100%', overflow: 'auto' }}>
+      <Table
+        withBorder
+        highlightOnHover
+        withColumnBorders
+        verticalSpacing={5}
+        sx={(theme) => ({
+          borderCollapse: 'collapse',
+          borderSpacing: 0,
+          tableLayout: 'fixed',
           backgroundColor: theme.white,
-        },
-        'tbody tr': {
-          cursor: 'pointer',
-        },
-        'tbody tr td': {
-          borderRight: '1px solid ' + theme.colors.gray[2],
-          borderBottom: '1px solid ' + theme.colors.gray[2],
-          ':last-child': {
+          borderTop: '0',
+          borderLeft: '0',
+          borderRight: '0',
+          borderBottom: '0',
+          height: '100%',
+          width: rt.getCenterTotalSize(),
+          table: {
             border: '0',
           },
-        },
-        'tbody tr:hover td:last-child': {
-          cursor: 'unset',
-          backgroundColor: theme.white,
-        },
-      })}
-    >
-      <thead>
-        {rt.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
-            <DndContext
-              sensors={sensors}
-              collisionDetection={rectIntersection}
-              modifiers={[restrictToHorizontalAxis]}
-              onDragEnd={({ over, active }) => {
-                if (over) {
-                  handlers.reorder({
-                    from: active.data.current?.sortable?.index,
-                    to: over?.data.current?.sortable?.index,
-                  })
-                  moveField({ tableId: table.id.value, from: active.id as string, to: over.id as string })
-                }
-              }}
-            >
-              <SortableContext items={items} strategy={horizontalListSortingStrategy}>
-                {headerGroup.headers.map((header) => flexRender(header.column.columnDef.header, header.getContext()))}
-              </SortableContext>
-            </DndContext>
-          </tr>
-        ))}
-      </thead>
-      <tbody>
-        {rt.getRowModel().rows.map((row, index) => (
-          <Tr key={row.id} id={records[index].id.value} row={row} />
-        ))}
-      </tbody>
-    </Table>
+          thead: {
+            margin: 0,
+            position: 'sticky',
+            top: 0,
+            border: 0,
+            zIndex: 100,
+            backgroundColor: theme.white,
+          },
+          'thead tr': {
+            border: '0',
+            outline: '1px solid ' + theme.colors.gray[2],
+          },
+          'thead tr th': {
+            position: 'relative',
+            userSelect: 'none',
+            backgroundColor: theme.white,
+          },
+          'tbody tr': {
+            cursor: 'pointer',
+          },
+          'tbody tr td': {
+            borderRight: '1px solid ' + theme.colors.gray[2],
+            borderBottom: '1px solid ' + theme.colors.gray[2],
+            ':last-child': {
+              border: '0',
+            },
+          },
+          'tbody tr:hover td:last-child': {
+            cursor: 'unset',
+            backgroundColor: theme.white,
+          },
+        })}
+      >
+        <thead>
+          {rt.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              <DndContext
+                sensors={sensors}
+                collisionDetection={rectIntersection}
+                modifiers={[restrictToHorizontalAxis]}
+                onDragEnd={({ over, active }) => {
+                  if (over) {
+                    handlers.reorder({
+                      from: active.data.current?.sortable?.index,
+                      to: over?.data.current?.sortable?.index,
+                    })
+                    moveField({ tableId: table.id.value, from: active.id as string, to: over.id as string })
+                  }
+                }}
+              >
+                <SortableContext items={items} strategy={horizontalListSortingStrategy}>
+                  {headerGroup.headers.map((header) => flexRender(header.column.columnDef.header, header.getContext()))}
+                </SortableContext>
+              </DndContext>
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {paddingTop > 0 && (
+            <tr>
+              <td style={{ height: `${paddingTop}px` }} />
+            </tr>
+          )}
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+            const row = rows[virtualRow.index]
+            return <Tr key={row.id} id={row.id} row={row} />
+          })}
+          {paddingBottom > 0 && (
+            <tr>
+              <td style={{ height: `${paddingBottom}px` }} />
+            </tr>
+          )}
+        </tbody>
+      </Table>
+    </div>
   )
 }
