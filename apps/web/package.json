@@ -15,6 +15,7 @@
     "@fxts/core": "^0.11.0",
     "@hookform/resolvers": "^2.9.10",
     "@tanstack/react-table": "^8.7.9",
+    "@tanstack/react-virtual": "3.0.0-beta.45",
     "date-fns": "^2.29.3",
     "jotai": "^1.13.1",
     "jotai-devtools": "^0.1.0",
