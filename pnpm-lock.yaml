@@ -136,7 +136,7 @@ importers:
       '@hookform/devtools': ^4.3.0
       '@hookform/resolvers': ^2.9.10
       '@tanstack/react-table': ^8.7.9
-      '@tanstack/react-virtual': 3.0.0-beta.45
+      '@tanstack/react-virtual': ^3.0.0-beta.45
       '@types/node': ^18.11.19
       '@types/react': ^18.0.27
       '@types/react-dom': ^18.0.10
