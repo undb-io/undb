@@ -98,7 +98,7 @@ export const recordApi = api.injectEndpoints({
         queryFulfilled.catch(patchResult.undo)
       },
     }),
-    bulkdDeleteRecords: builder.mutation({
+    BulkDeleteRecords: builder.mutation({
       query: trpc.record.bulkDelete.mutate,
       onQueryStarted({ ids, tableId }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
@@ -128,5 +128,5 @@ export const {
   useDuplicateRecordMutation,
   useBulkDuplicateRecordMutation,
   useDeleteRecordMutation,
-  useBulkdDeleteRecordsMutation,
+  useBulkDeleteRecordsMutation,
 } = recordApi
