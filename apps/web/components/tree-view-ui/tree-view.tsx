@@ -25,6 +25,8 @@ import type { IQueryTreeRecord, IQueryTreeRecords, Table, TreeField } from '@ego
 import type { TableSchemaIdMap } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
 import { useUpdateRecordMutation } from '@egodb/store'
+import { Box } from '@egodb/ui'
+import { useVirtualizer } from '@tanstack/react-virtual'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { sortableTreeKeyboardCoordinates } from './keyboard-coordinates'
@@ -101,9 +103,7 @@ export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50
   const [updateRecord] = useUpdateRecordMutation()
   const schema = table.schema.toIdMap()
 
-  const [items, setItems] = useState<SortableRecordItems>(() => {
-    return records.map((r) => mapper(schema, r))
-  })
+  const [items, setItems] = useState<SortableRecordItems>(() => records.map((r) => mapper(schema, r)))
 
   useEffect(() => {
     setItems(records.map((r) => mapper(schema, r)))
@@ -177,52 +177,82 @@ export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50
     },
   }
 
+  const tableContainerRef = useRef<HTMLDivElement>(null)
+  const rowVirtualizer = useVirtualizer({
+    count: flattenedItems.length,
+    getScrollElement: () => tableContainerRef.current,
+    estimateSize: () => 50,
+    overscan: 100,
+  })
+  const paddingTop = rowVirtualizer.getVirtualItems().length > 0 ? rowVirtualizer.getVirtualItems()?.[0]?.start || 0 : 0
+  const paddingBottom =
+    rowVirtualizer.getVirtualItems().length > 0
+      ? rowVirtualizer.getTotalSize() -
+        (rowVirtualizer.getVirtualItems()?.[rowVirtualizer.getVirtualItems().length - 1]?.end || 0)
+      : 0
+
   return (
-    <DndContext
-      accessibility={{ announcements }}
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      measuring={measuring}
-      onDragStart={handleDragStart}
-      onDragMove={handleDragMove}
-      onDragOver={handleDragOver}
-      onDragEnd={handleDragEnd}
-      onDragCancel={handleDragCancel}
-    >
-      <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
-        {flattenedItems.map(({ id, children, values, collapsed, depth }) => (
-          <SortableTreeItem
-            table={table}
-            field={field}
-            values={values}
-            key={id}
-            id={id}
-            depth={id === activeId && projected ? projected.depth : depth}
-            indentationWidth={indentationWidth}
-            collapsed={Boolean(collapsed && children.length)}
-            onCollapse={children.length ? () => handleCollapse(id) : undefined}
-            onRemove={() => handleRemove(id)}
-          />
-        ))}
-        {createPortal(
-          <DragOverlay dropAnimation={dropAnimationConfig} modifiers={[adjustTranslate]}>
-            {activeId && activeItem ? (
+    <Box ref={tableContainerRef} sx={{ height: '100%', overflow: 'auto' }}>
+      <DndContext
+        accessibility={{ announcements }}
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        measuring={measuring}
+        onDragStart={handleDragStart}
+        onDragMove={handleDragMove}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+        onDragCancel={handleDragCancel}
+      >
+        <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
+          {paddingTop > 0 && (
+            <tr>
+              <td style={{ height: `${paddingTop}px` }} />
+            </tr>
+          )}
+
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+            const { id, children, values, collapsed, depth } = flattenedItems[virtualRow.index]
+            return (
               <SortableTreeItem
                 table={table}
                 field={field}
-                id={activeId}
-                values={activeItem.values}
-                depth={activeItem.depth}
-                clone
-                childCount={getChildCount(items, activeId) + 1}
+                values={values}
+                key={id}
+                id={id}
+                depth={id === activeId && projected ? projected.depth : depth}
                 indentationWidth={indentationWidth}
+                collapsed={Boolean(collapsed && children.length)}
+                onCollapse={children.length ? () => handleCollapse(id) : undefined}
+                onRemove={() => handleRemove(id)}
               />
-            ) : null}
-          </DragOverlay>,
-          document.body,
-        )}
-      </SortableContext>
-    </DndContext>
+            )
+          })}
+          {createPortal(
+            <DragOverlay dropAnimation={dropAnimationConfig} modifiers={[adjustTranslate]}>
+              {activeId && activeItem ? (
+                <SortableTreeItem
+                  table={table}
+                  field={field}
+                  id={activeId}
+                  values={activeItem.values}
+                  depth={activeItem.depth}
+                  clone
+                  childCount={getChildCount(items, activeId) + 1}
+                  indentationWidth={indentationWidth}
+                />
+              ) : null}
+            </DragOverlay>,
+            document.body,
+          )}
+          {paddingBottom > 0 && (
+            <tr>
+              <td style={{ height: `${paddingBottom}px` }} />
+            </tr>
+          )}
+        </SortableContext>
+      </DndContext>
+    </Box>
   )
 
   function handleDragStart({ active: { id: activeId } }: DragStartEvent) {
