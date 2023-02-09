@@ -47,11 +47,11 @@ export const CalendarBoard: React.FC<IProps> = ({ table, field }) => {
         }
       }}
     >
-      <Grid h="100%" gutter={0}>
-        <Grid.Col span={2}>
+      <Grid h="100%" gutter={0} sx={{ overflow: 'hidden' }}>
+        <Grid.Col h="100%" span={2} pb={50}>
           <CalendarRecords field={field} records={records} />
         </Grid.Col>
-        <Grid.Col span={10}>
+        <Grid.Col h="100%" span={10}>
           <Calendar
             onChange={onChange}
             h="100%"
