@@ -178,7 +178,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   const rowVirtualizer = useVirtualizer({
     count: data.length,
     getScrollElement: () => tableContainerRef.current,
-    estimateSize: () => 32,
+    estimateSize: () => 35,
     overscan: 5,
   })
 
@@ -205,7 +205,6 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
           borderLeft: '0',
           borderRight: '0',
           borderBottom: '0',
-          height: '100%',
           width: rt.getCenterTotalSize(),
           table: {
             border: '0',
@@ -229,6 +228,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
           },
           'tbody tr': {
             cursor: 'pointer',
+            height: 35,
           },
           'tbody tr td': {
             borderRight: '1px solid ' + theme.colors.gray[2],
