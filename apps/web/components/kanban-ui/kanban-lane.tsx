@@ -1,5 +1,5 @@
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { ActionIcon, Group, IconGripVertical, IconRowInsertTop, Stack, Text } from '@egodb/ui'
+import { ActionIcon, Group, IconGripVertical, IconRowInsertTop, ScrollArea, Stack, Text } from '@egodb/ui'
 import { CSS } from '@dnd-kit/utilities'
 import type { ICreateFieldValue, IKanbanField, Records } from '@egodb/core'
 import { SortableKanbanCard } from './kanban-card'
@@ -55,7 +55,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
 
   return (
     <Stack w={350} ref={setNodeRef} style={style} h="100%" sx={{ flexShrink: 0 }}>
-      <Group position="apart" h={40}>
+      <Group position="apart" mih={40}>
         <Group spacing="xs">
           {listeners ? (
             <ActionIcon ref={setActivatorNodeRef} {...listeners} {...attributes}>
@@ -71,20 +71,21 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
           </KanbanLaneMenu>
         )}
       </Group>
+      {!disableAddRecord ? (
+        <ActionIcon w="100%" color="gray" variant="light" onClick={onCreateRecord}>
+          <IconRowInsertTop />
+        </ActionIcon>
+      ) : null}
 
-      <Stack>
-        {!disableAddRecord ? (
-          <ActionIcon w="100%" color="gray" variant="light" onClick={onCreateRecord}>
-            <IconRowInsertTop />
-          </ActionIcon>
-        ) : null}
-
-        <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          {records.map((r) => (
-            <SortableKanbanCard table={table} record={r} key={r.id.value} />
-          ))}
-        </SortableContext>
-      </Stack>
+      <ScrollArea mb={20} offsetScrollbars>
+        <Stack>
+          <SortableContext items={items} strategy={verticalListSortingStrategy}>
+            {records.map((r) => (
+              <SortableKanbanCard table={table} record={r} key={r.id.value} />
+            ))}
+          </SortableContext>
+        </Stack>
+      </ScrollArea>
     </Stack>
   )
 }
