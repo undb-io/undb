@@ -3,7 +3,8 @@ import { CSS } from '@dnd-kit/utilities'
 import { DateEqual, DateFieldValue, DateRangeEqual, DateRangeFieldValue } from '@egodb/core'
 import type { Record, ICalendarField, Records } from '@egodb/core'
 import { ActionIcon, Box, Group, IconGripVertical, Space, Stack, Text, Title } from '@egodb/ui'
-import { useMemo } from 'react'
+import { useMemo, useRef } from 'react'
+import { useVirtualizer } from '@tanstack/react-virtual'
 
 interface IProps {
   field: ICalendarField
@@ -53,15 +54,43 @@ export const CalendarRecords: React.FC<IProps> = ({ field, records }) => {
       : new DateRangeEqual(field.id.value, new DateRangeFieldValue(null))
 
   const nullRecords = useMemo(() => records.filter((r) => spec.isSatisfiedBy(r)), [records])
+
+  const tableContainerRef = useRef<HTMLDivElement>(null)
+  const rowVirtualizer = useVirtualizer({
+    count: nullRecords.length,
+    getScrollElement: () => tableContainerRef.current,
+    estimateSize: () => 50,
+    overscan: 5,
+  })
+  const paddingTop = rowVirtualizer.getVirtualItems().length > 0 ? rowVirtualizer.getVirtualItems()?.[0]?.start || 0 : 0
+  const paddingBottom =
+    rowVirtualizer.getVirtualItems().length > 0
+      ? rowVirtualizer.getTotalSize() -
+        (rowVirtualizer.getVirtualItems()?.[rowVirtualizer.getVirtualItems().length - 1]?.end || 0)
+      : 0
+
   return (
     <Box p="md" bg="white" h="100%">
       <Title size={20}>Records</Title>
       <Space h="md" />
       {nullRecords.length ? (
-        <Stack>
-          {nullRecords.map((record) => (
-            <DraggableRecord key={record.id.value} record={record} />
-          ))}
+        <Stack ref={tableContainerRef} h="100%" sx={{ overflow: 'auto' }}>
+          {paddingTop > 0 && (
+            <tr>
+              <td style={{ height: `${paddingTop}px` }} />
+            </tr>
+          )}
+
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+            const record = nullRecords[virtualRow.index]
+            return <DraggableRecord key={record.id.value} record={record} />
+          })}
+
+          {paddingBottom > 0 && (
+            <tr>
+              <td style={{ height: `${paddingBottom}px` }} />
+            </tr>
+          )}
         </Stack>
       ) : (
         <Box
