@@ -14,6 +14,7 @@
     "@nestjs/cqrs": "^9.0.1",
     "@nestjs/platform-express": "^9.3.5",
     "@nestjs/terminus": "^9.2.0",
+    "express": "^4.18.2",
     "nestjs-cls": "^3.0.5",
     "nestjs-pino": "^3.1.2",
     "oxide.ts": "^1.1.0",
