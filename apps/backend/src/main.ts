@@ -2,6 +2,7 @@
 require('source-map-support').install()
 
 import { NestFactory } from '@nestjs/core'
+import { json, urlencoded } from 'express'
 import { Logger } from 'nestjs-pino'
 import { AppModule } from './app.module'
 
@@ -13,6 +14,8 @@ async function bootstrap() {
   app.useLogger(app.get(Logger))
 
   app.enableCors()
+  app.use(json({ limit: '50mb' }))
+  app.use(urlencoded({ extended: true, limit: '50mb' }))
 
   if (module.hot) {
     module.hot.accept()
