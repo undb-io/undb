@@ -23,6 +23,7 @@ export function SortableTreeItem({ id, depth, ...props }: Props) {
     id,
     animateLayoutChanges,
   })
+
   const style: CSSProperties = {
     transform: CSS.Translate.toString(transform),
     transition,
@@ -32,7 +33,6 @@ export function SortableTreeItem({ id, depth, ...props }: Props) {
     <TreeItem
       ref={setDraggableNodeRef}
       wrapperRef={setDroppableNodeRef}
-      style={style}
       depth={depth}
       ghost={isDragging}
       disableInteraction={isSorting}
@@ -42,6 +42,7 @@ export function SortableTreeItem({ id, depth, ...props }: Props) {
       }}
       id={id}
       {...props}
+      style={{ ...style, ...props.style }}
     />
   )
 }
