@@ -10,16 +10,7 @@ import {
 } from '@dnd-kit/core'
 import { restrictToHorizontalAxis } from '@dnd-kit/modifiers'
 import { SortableContext, horizontalListSortingStrategy, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-import {
-  ActionIcon,
-  Box,
-  Checkbox,
-  IconColumnInsertRight,
-  openContextModal,
-  Table,
-  Tooltip,
-  useListState,
-} from '@egodb/ui'
+import { ActionIcon, Checkbox, IconColumnInsertRight, openContextModal, Table, Tooltip, useListState } from '@egodb/ui'
 import type { ColumnDef } from '@tanstack/react-table'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
@@ -34,6 +25,7 @@ import { FieldValueFactory } from '../field-value/field-value.factory'
 import { getTableSelectedRecordIds, setTableSelectedRecordIds, useMoveFieldMutation } from '@egodb/store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useVirtualizer } from '@tanstack/react-virtual'
+import { RecordSelection } from './selection'
 
 const columnHelper = createColumnHelper<TData>()
 
@@ -93,16 +85,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
         />
       </th>
     ),
-    cell: ({ row }) => (
-      <Box onClick={(e) => e.stopPropagation()}>
-        <Checkbox
-          size="xs"
-          checked={row.getIsSelected()}
-          onChange={row.getToggleSelectedHandler()}
-          disabled={!row.getCanSelect()}
-        />
-      </Box>
-    ),
+    cell: ({ row }) => <RecordSelection row={row} />,
   }
 
   const accesssors = fields.map((f) =>
