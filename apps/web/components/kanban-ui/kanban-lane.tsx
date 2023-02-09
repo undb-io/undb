@@ -1,5 +1,5 @@
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { ActionIcon, Group, IconGripVertical, IconRowInsertTop, ScrollArea, Stack, Text } from '@egodb/ui'
+import { ActionIcon, Box, Group, IconGripVertical, IconRowInsertTop, ScrollArea, Stack, Text } from '@egodb/ui'
 import { CSS } from '@dnd-kit/utilities'
 import type { ICreateFieldValue, IKanbanField, Records } from '@egodb/core'
 import { SortableKanbanCard } from './kanban-card'
@@ -10,8 +10,10 @@ import { createRecordInitialValueAtom } from '../create-record-form/create-recor
 import type { SortableProps } from '../sortable.interface'
 import { UNCATEGORIZED_OPTION_ID } from './kanban.constants'
 import type { ReactNode } from 'react'
+import { useMemo, useRef } from 'react'
 import { KanbanLaneMenu } from './kanban-lane-menu'
 import React from 'react'
+import { useVirtualizer } from '@tanstack/react-virtual'
 
 interface IProps {
   renderMenu?: () => ReactNode
@@ -51,7 +53,22 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
     }
   }
 
-  const items = records.map((r) => r.id.value)
+  const items = useMemo(() => records.map((r) => r.id.value), [records])
+  const len = table.schema.fields.length
+
+  const tableContainerRef = useRef<HTMLDivElement>(null)
+  const rowVirtualizer = useVirtualizer({
+    count: items.length,
+    getScrollElement: () => tableContainerRef.current,
+    estimateSize: () => len * 20 + (len - 1) * 8 + 24,
+    overscan: 100,
+  })
+  const paddingTop = rowVirtualizer.getVirtualItems().length > 0 ? rowVirtualizer.getVirtualItems()?.[0]?.start || 0 : 0
+  const paddingBottom =
+    rowVirtualizer.getVirtualItems().length > 0
+      ? rowVirtualizer.getTotalSize() -
+        (rowVirtualizer.getVirtualItems()?.[rowVirtualizer.getVirtualItems().length - 1]?.end || 0)
+      : 0
 
   return (
     <Stack w={350} ref={setNodeRef} style={style} h="100%" sx={{ flexShrink: 0 }}>
@@ -77,15 +94,26 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
         </ActionIcon>
       ) : null}
 
-      <ScrollArea mb={20} offsetScrollbars>
+      <Box mb={20} ref={tableContainerRef} h="100%" sx={{ overflow: 'auto' }}>
         <Stack>
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            {records.map((r) => (
-              <SortableKanbanCard table={table} record={r} key={r.id.value} />
-            ))}
+            {paddingTop > 0 && (
+              <tr>
+                <td style={{ height: `${paddingTop}px` }} />
+              </tr>
+            )}
+            {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+              const r = records[virtualRow.index]
+              return <SortableKanbanCard table={table} record={r} key={r.id.value} />
+            })}
+            {paddingBottom > 0 && (
+              <tr>
+                <td style={{ height: `${paddingBottom}px` }} />
+              </tr>
+            )}
           </SortableContext>
         </Stack>
-      </ScrollArea>
+      </Box>
     </Stack>
   )
 }
