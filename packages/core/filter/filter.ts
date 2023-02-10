@@ -167,7 +167,7 @@ const isFilter = (filterOrGroup: IFilterOrGroup): filterOrGroup is IFilter => {
 }
 
 const convertStringFilter = (filter: IStringFilter): Option<CompositeSpecification> => {
-  if (!filter.value) {
+  if (filter.value === undefined) {
     return None
   }
 
@@ -194,7 +194,7 @@ const convertStringFilter = (filter: IStringFilter): Option<CompositeSpecificati
 }
 
 const convertNumberFilter = (filter: INumberFilter | IAutoIncrementFilter): Option<CompositeSpecification> => {
-  if (!filter.value) {
+  if (filter.value === undefined) {
     return None
   }
 
@@ -223,7 +223,7 @@ const convertNumberFilter = (filter: INumberFilter | IAutoIncrementFilter): Opti
 }
 
 const convertSelectFilter = (filter: ISelectFilter): Option<CompositeSpecification> => {
-  if (!filter.value) {
+  if (filter.value === undefined) {
     return None
   }
 
@@ -291,7 +291,7 @@ const convertDateFilter = (
     return Some(new DateIsToday(filter.path))
   }
 
-  if (!filter.value) {
+  if (filter.value === undefined) {
     return None
   }
 
