@@ -18,7 +18,8 @@ export class GetRecordsQueryHandler implements IQueryHandler<GetRecordsQuery, IG
       .unwrap()
 
     if (query.filter) {
-      spec = spec.and(convertFilterSpec(query.filter).unwrap())
+      const querySpec = convertFilterSpec(query.filter)
+      spec = spec.and(querySpec.unwrap())
     }
 
     const records = await this.rm.find(

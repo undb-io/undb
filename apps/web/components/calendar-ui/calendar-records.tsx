@@ -1,14 +1,15 @@
 import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
-import { DateEqual, DateFieldValue, DateRangeEqual, DateRangeFieldValue } from '@egodb/core'
-import type { Record, ICalendarField, Records } from '@egodb/core'
-import { ActionIcon, Box, Group, IconGripVertical, Space, Stack, Text, Title } from '@egodb/ui'
+import { RecordFactory } from '@egodb/core'
+import type { Record, ICalendarField, IQueryRecords, Table } from '@egodb/core'
+import { ActionIcon, Box, Group, IconGripVertical, Skeleton, Space, Stack, Text, Title } from '@egodb/ui'
 import { useMemo, useRef } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
+import { useGetRecordsQuery } from '@egodb/store'
 
 interface IProps {
+  table: Table
   field: ICalendarField
-  records: Records
 }
 
 const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
@@ -47,17 +48,25 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
   )
 }
 
-export const CalendarRecords: React.FC<IProps> = ({ field, records }) => {
-  const spec =
-    field.type === 'date'
-      ? new DateEqual(field.id.value, new DateFieldValue(null))
-      : new DateRangeEqual(field.id.value, new DateRangeFieldValue(null))
+export const CalendarRecords: React.FC<IProps> = ({ table, field }) => {
+  const { rawRecords, isLoading } = useGetRecordsQuery(
+    {
+      tableId: table.id.value,
+      filter: [{ path: field.id.value, type: 'date', value: null, operator: '$eq' }],
+    },
+    {
+      selectFromResult: (result) => ({
+        ...result,
+        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+      }),
+    },
+  )
 
-  const nullRecords = useMemo(() => records.filter((r) => spec.isSatisfiedBy(r)), [records])
+  const records = useMemo(() => RecordFactory.fromQueryRecords(rawRecords, table.schema.toIdMap()), [rawRecords])
 
   const tableContainerRef = useRef<HTMLDivElement>(null)
   const rowVirtualizer = useVirtualizer({
-    count: nullRecords.length,
+    count: records.length,
     getScrollElement: () => tableContainerRef.current,
     estimateSize: () => 50,
     overscan: 5,
@@ -69,12 +78,33 @@ export const CalendarRecords: React.FC<IProps> = ({ field, records }) => {
         (rowVirtualizer.getVirtualItems()?.[rowVirtualizer.getVirtualItems().length - 1]?.end || 0)
       : 0
 
+  if (isLoading) {
+    return (
+      <Box p="md">
+        <Title size={20}>Records</Title>
+        <Space h="md" />
+        <Stack>
+          <Skeleton h={50} />
+          <Skeleton h={50} />
+          <Skeleton h={50} />
+          <Skeleton h={50} />
+          <Skeleton h={50} />
+          <Skeleton h={50} />
+          <Skeleton h={50} />
+          <Skeleton h={50} />
+          <Skeleton h={50} />
+          <Skeleton h={50} />
+        </Stack>
+      </Box>
+    )
+  }
+
   return (
     <Box p="md" bg="white" h="100%">
       <Title size={20}>Records</Title>
       <Space h="md" />
-      {nullRecords.length ? (
-        <Stack ref={tableContainerRef} h="100%" sx={{ overflow: 'auto' }}>
+      {records.length ? (
+        <Stack ref={tableContainerRef} h="100%" sx={{ overflow: 'auto', overflowX: 'hidden' }}>
           {paddingTop > 0 && (
             <tr>
               <td style={{ height: `${paddingTop}px` }} />
@@ -82,7 +112,7 @@ export const CalendarRecords: React.FC<IProps> = ({ field, records }) => {
           )}
 
           {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-            const record = nullRecords[virtualRow.index]
+            const record = records[virtualRow.index]
             return <DraggableRecord key={record.id.value} record={record} />
           })}
 
