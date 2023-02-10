@@ -83,7 +83,7 @@ export const Day: React.FC<IProps> = ({ date, field, records }) => {
   const [initialValue, setRecordInitialValue] = useAtom(createRecordInitialValueAtom)
 
   return (
-    <Box w="100%" h="100%" ref={ref}>
+    <Box w="100%" h={0} ref={ref}>
       <Stack
         ref={setNodeRef}
         spacing="xs"

@@ -76,9 +76,12 @@ export const CalendarBoard: React.FC<IProps> = ({ table, field }) => {
                   height: '100%',
                   fontSize: theme.fontSizes.lg,
                 },
-                month: { height: 'calc(100% - 40px)' },
+                month: {
+                  height: 'calc(100% - 40px)',
+                },
                 cell: {
                   height: 'calc(100% / 6)',
+                  overflow: 'scroll',
                   border: border,
                 },
                 day: {
