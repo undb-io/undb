@@ -26,14 +26,10 @@ import { router } from '../trpc'
 import { createParentFieldRouter } from './parent-field.router'
 import { createTreeFieldRouter } from './tree-field.router'
 
-const RECORD_TAG = 'record'
-const tags = [RECORD_TAG]
-
 export const createRecordRouter =
   (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
     router({
       create: procedure
-        .meta({ openapi: { method: 'POST', path: '/record.create', tags } })
         .input(createRecordCommandInput)
         .output(createRecordCommandOutput)
         .mutation(({ input }) => {
@@ -41,7 +37,6 @@ export const createRecordRouter =
           return commandBus.execute(cmd)
         }),
       duplicate: procedure
-        .meta({ openapi: { method: 'POST', path: '/record.duplicate', tags } })
         .input(duplicateRecordCommandInput)
         .output(z.void())
         .mutation(({ input }) => {
@@ -49,7 +44,6 @@ export const createRecordRouter =
           return commandBus.execute(cmd)
         }),
       bulkDuplicate: procedure
-        .meta({ openapi: { method: 'POST', path: '/record.bulkDuplicate', tags } })
         .input(bulkDuplicateRecordsCommandInput)
         .output(z.void())
         .mutation(({ input }) => {
@@ -57,7 +51,6 @@ export const createRecordRouter =
           return commandBus.execute(cmd)
         }),
       update: procedure
-        .meta({ openapi: { method: 'POST', path: '/record.update', tags } })
         .input(updateRecordCommandInput)
         .output(z.void())
         .mutation(({ input }) => {
@@ -65,7 +58,6 @@ export const createRecordRouter =
           return commandBus.execute(cmd)
         }),
       delete: procedure
-        .meta({ openapi: { method: 'POST', path: '/record.delete', tags } })
         .input(deleteRecordCommandInput)
         .output(z.void())
         .mutation(({ input }) => {
@@ -73,7 +65,6 @@ export const createRecordRouter =
           return commandBus.execute(cmd)
         }),
       bulkDelete: procedure
-        .meta({ openapi: { method: 'POST', path: '/record.bulkDelete', tags } })
         .input(bulkDeleteRecordsCommandInput)
         .output(z.void())
         .mutation(({ input }) => {
@@ -81,7 +72,6 @@ export const createRecordRouter =
           return commandBus.execute(cmd)
         }),
       get: procedure
-        .meta({ openapi: { method: 'GET', path: '/record.get', tags } })
         .input(getRecordQueryInput)
         .output(getRecordQueryOutput)
         .query(({ input }) => {
@@ -89,7 +79,6 @@ export const createRecordRouter =
           return queryBus.execute(query)
         }),
       list: procedure
-        .meta({ openapi: { method: 'GET', path: '/record.list', tags } })
         .input(getRecordsQueryInput)
         .output(getRecordsQueryOutput)
         .query(({ input }) => {

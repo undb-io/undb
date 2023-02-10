@@ -1,4 +1,5 @@
 import type { IQueryHandler } from '@egodb/domain'
+import { convertFilterSpec } from '../../filter'
 import type { IRecordQueryModel } from '../../record'
 import { WithRecordTableId } from '../../record'
 import type { ITableRepository } from '../../table.repository'
@@ -12,9 +13,13 @@ export class GetRecordsQueryHandler implements IQueryHandler<GetRecordsQuery, IG
     const table = (await this.tableRepo.findOneById(query.tableId)).unwrap()
     const filter = table.getSpec(query.viewKey)
 
-    const spec = WithRecordTableId.fromString(query.tableId)
+    let spec = WithRecordTableId.fromString(query.tableId)
       .map((s) => (filter.isNone() ? s : s.and(filter.unwrap())))
       .unwrap()
+
+    if (query.filter) {
+      spec = spec.and(convertFilterSpec(query.filter).unwrap())
+    }
 
     const records = await this.rm.find(
       table.id.value,

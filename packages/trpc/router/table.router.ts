@@ -20,14 +20,10 @@ import { router } from '../trpc'
 import { createFieldRouter } from './field.router'
 import { createViewRouter } from './view.router'
 
-const TAG_TABLE = 'table'
-const tags = [TAG_TABLE]
-
 export const createTableRouter =
   (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
     router({
       get: procedure
-        .meta({ openapi: { method: 'GET', path: '/table.get', tags } })
         .input(getTableQuerySchema)
         .output(getTableQueryOutput)
         .query(({ input }) => {
@@ -35,7 +31,6 @@ export const createTableRouter =
           return queryBus.execute(query)
         }),
       list: procedure
-        .meta({ openapi: { method: 'GET', path: '/table.list', tags } })
         .input(getTablesQuerySchema)
         .output(getTablesQueryOutput)
         .query(() => {
@@ -43,7 +38,6 @@ export const createTableRouter =
           return queryBus.execute(query)
         }),
       create: procedure
-        .meta({ openapi: { method: 'POST', path: '/table.create', tags } })
         .input(createTableCommandInput)
         .output(createTableCommandOutput)
         .mutation(({ input }) => {
@@ -51,7 +45,6 @@ export const createTableRouter =
           return commandBus.execute(cmd)
         }),
       edit: procedure
-        .meta({ openapi: { method: 'POST', path: '/table.edit', tags } })
         .input(editTableCommandInput)
         .output(z.void())
         .mutation(({ input }) => {
@@ -59,7 +52,6 @@ export const createTableRouter =
           return commandBus.execute(cmd)
         }),
       delete: procedure
-        .meta({ openapi: { method: 'POST', path: '/table.delete', tags } })
         .input(deleteTableCommandInput)
         .output(z.void())
         .mutation(({ input }) => {

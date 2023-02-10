@@ -5,13 +5,9 @@ import type { publicProcedure } from '../trpc'
 import { router } from '../trpc'
 import { createSelectFieldRouter } from './select-field.router'
 
-const TAG_TABLE = 'table'
-const tags = [TAG_TABLE]
-
 export const createFieldRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus) =>
   router({
     create: procedure
-      .meta({ openapi: { method: 'POST', path: '/table.field.create', tags } })
       .input(createFieldCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -19,7 +15,6 @@ export const createFieldRouter = (procedure: typeof publicProcedure) => (command
         return commandBus.execute(cmd)
       }),
     delete: procedure
-      .meta({ openapi: { method: 'POST', path: '/table.field.delete', tags } })
       .input(deleteFieldCommandInput)
       .output(z.void())
       .mutation(({ input }) => {

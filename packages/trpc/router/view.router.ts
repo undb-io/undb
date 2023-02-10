@@ -10,12 +10,9 @@ import { createSortRouter } from './sort.router'
 import { createTreeViewRouter } from './tree-view.router'
 import { createViewFieldRouter } from './view-field.router'
 
-const tags = ['view']
-
 export const createViewRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus) =>
   router({
     switchDisplayType: procedure
-      .meta({ openapi: { method: 'POST', path: '/table.view.switchDisplayType', tags } })
       .input(switchDisplayTypeCommandInput)
       .output(z.void())
       .mutation(({ input }) => {

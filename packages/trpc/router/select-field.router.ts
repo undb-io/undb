@@ -13,13 +13,9 @@ import { z } from 'zod'
 import type { publicProcedure } from '../trpc'
 import { router } from '../trpc'
 
-const TAG_TABLE = 'option'
-const tags = [TAG_TABLE]
-
 export const createSelectFieldRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus) =>
   router({
     reorderOptions: procedure
-      .meta({ openapi: { method: 'POST', path: '/table.field.select.reorderOptions', tags } })
       .input(reorderOptionsCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -27,7 +23,6 @@ export const createSelectFieldRouter = (procedure: typeof publicProcedure) => (c
         return commandBus.execute<void>(cmd)
       }),
     createOption: procedure
-      .meta({ openapi: { method: 'POST', path: '/table.field.select.createOption', tags } })
       .input(createOptionCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -35,7 +30,6 @@ export const createSelectFieldRouter = (procedure: typeof publicProcedure) => (c
         return commandBus.execute<void>(cmd)
       }),
     updateOption: procedure
-      .meta({ openapi: { method: 'POST', path: '/table.field.select.updateOption', tags } })
       .input(updateOptionCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -43,7 +37,6 @@ export const createSelectFieldRouter = (procedure: typeof publicProcedure) => (c
         return commandBus.execute<void>(cmd)
       }),
     deleteOption: procedure
-      .meta({ openapi: { method: 'POST', path: '/table.field.select.deleteOption', tags } })
       .input(deleteOptionCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
