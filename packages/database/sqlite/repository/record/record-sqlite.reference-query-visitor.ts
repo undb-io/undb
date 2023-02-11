@@ -13,6 +13,7 @@ import type {
   IReference,
   NumberField,
   ParentField,
+  RatingField,
   ReferenceField,
   SelectField,
   StringField,
@@ -32,7 +33,6 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
     private readonly qb: Knex.QueryBuilder,
     private readonly knex: Knex,
   ) {}
-
   private getForeignTableId(field: IReference): string {
     return field.foreignTableId.unwrapOr(this.tableId)
   }
@@ -47,6 +47,9 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
     throw new Error('Method not implemented.')
   }
   autoIncrement(value: AutoIncrementField): void {
+    throw new Error('Method not implemented.')
+  }
+  rating(field: RatingField): void {
     throw new Error('Method not implemented.')
   }
   string(value: StringField): void {

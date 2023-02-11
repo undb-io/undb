@@ -8,6 +8,7 @@ import type { EmailField } from './email-field'
 import type { IdField } from './id-field'
 import type { NumberField } from './number-field'
 import type { ParentField } from './parent-field'
+import type { RatingField } from './rating-field'
 import type { ReferenceField } from './reference-field'
 import type { SelectField } from './select-field'
 import type { StringField } from './string-field'
@@ -30,4 +31,5 @@ export interface IFieldVisitor {
   reference(field: ReferenceField): void
   tree(field: TreeField): void
   parent(field: ParentField): void
+  rating(field: RatingField): void
 }

@@ -62,6 +62,7 @@ import {
   idFilterOperators,
   numberFilterOperators,
   parentFilterOperators,
+  ratingFilterOperators,
   referenceFilterOperators,
   selectFilterOperators,
   stringFilterOperators,
@@ -69,6 +70,8 @@ import {
   updatedAtFilterOperators,
 } from './operators'
 import { parentFilter, parentFilterValue } from './parent.filter'
+import type { IRatingFilter } from './rating.filter'
+import { ratingFilter, ratingFilterValue } from './rating.filter'
 import { referenceFilter, referenceFilterValue } from './reference.filter'
 import type { ISelectFilter } from './select.filter'
 import { selectFilter, selectFilterValue } from './select.filter'
@@ -95,6 +98,7 @@ export const filterValue = z.union([
   referenceFilterValue,
   treeFilterValue,
   parentFilterValue,
+  ratingFilterValue,
 ])
 export type IFilterValue = z.infer<typeof filterValue>
 
@@ -114,6 +118,7 @@ export const operaotrs = z.union([
   referenceFilterOperators,
   treeFilterOperators,
   parentFilterOperators,
+  ratingFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
@@ -133,6 +138,7 @@ const filter = z.discriminatedUnion('type', [
   referenceFilter,
   treeFilter,
   parentFilter,
+  ratingFilter,
 ])
 
 export type IFilter = z.infer<typeof filter>
@@ -193,7 +199,9 @@ const convertStringFilter = (filter: IStringFilter): Option<CompositeSpecificati
   }
 }
 
-const convertNumberFilter = (filter: INumberFilter | IAutoIncrementFilter): Option<CompositeSpecification> => {
+const convertNumberFilter = (
+  filter: INumberFilter | IAutoIncrementFilter | IRatingFilter,
+): Option<CompositeSpecification> => {
   if (filter.value === undefined) {
     return None
   }
@@ -336,6 +344,7 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
     case 'string':
       return convertStringFilter(filter)
     case 'number':
+    case 'rating':
     case 'auto-increment':
       return convertNumberFilter(filter)
     case 'date':

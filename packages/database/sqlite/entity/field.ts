@@ -59,6 +59,7 @@ export abstract class Field extends BaseEntity {
       'reference',
       'tree',
       'parent',
+      'rating',
     ],
   })
   type: IFieldType
@@ -87,6 +88,9 @@ export class ColorField extends Field {}
 
 @Entity({ discriminatorValue: 'number' })
 export class NumberField extends Field {}
+
+@Entity({ discriminatorValue: 'rating' })
+export class RatingField extends Field {}
 
 @Entity({ discriminatorValue: 'bool' })
 export class BoolField extends Field {}
@@ -160,6 +164,7 @@ export type IField =
   | ReferenceField
   | TreeField
   | ParentField
+  | RatingField
 
 export const fieldEntities = [
   IdField,
@@ -177,4 +182,5 @@ export const fieldEntities = [
   ReferenceField,
   TreeField,
   ParentField,
+  RatingField,
 ]

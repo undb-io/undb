@@ -12,6 +12,7 @@ import type {
   IFieldValueVisitor,
   NumberFieldValue,
   ParentFieldValue,
+  RatingFieldValue,
   ReferenceFieldValue,
   SelectFieldValue,
   StringFieldValue,
@@ -45,7 +46,6 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
   ) {
     super(em)
   }
-
   id(value: IdFieldValue): void {}
   createdAt(value: CreatedAtFieldValue): void {}
   updatedAt(value: UpdatedAtFieldValue): void {}
@@ -61,6 +61,9 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
     this.setData(this.fieldId, value.unpack())
   }
   number(value: NumberFieldValue): void {
+    this.setData(this.fieldId, value.unpack())
+  }
+  rating(value: RatingFieldValue): void {
     this.setData(this.fieldId, value.unpack())
   }
   bool(value: BoolFieldValue): void {
