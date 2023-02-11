@@ -2,6 +2,7 @@ import type {
   Field as CoreField,
   IFieldType,
   ParentField as CoreParentField,
+  RatingField as CoreRatingField,
   ReferenceField as CoreReferenceField,
   TreeField as CoreTreeField,
 } from '@egodb/core'
@@ -15,6 +16,7 @@ import {
   OneToMany,
   PrimaryKey,
   Property,
+  SmallIntType,
 } from '@mikro-orm/core'
 import { BaseEntity } from './base'
 import { Option } from './option'
@@ -90,7 +92,15 @@ export class ColorField extends Field {}
 export class NumberField extends Field {}
 
 @Entity({ discriminatorValue: 'rating' })
-export class RatingField extends Field {}
+export class RatingField extends Field {
+  constructor(table: Table, field: CoreRatingField) {
+    super(table, field)
+    this.max = field.max
+  }
+
+  @Property({ type: SmallIntType })
+  max: number
+}
 
 @Entity({ discriminatorValue: 'bool' })
 export class BoolField extends Field {}

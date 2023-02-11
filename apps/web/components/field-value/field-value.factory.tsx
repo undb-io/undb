@@ -54,7 +54,7 @@ export const FieldValueFactory: React.FC<{
     }
     case 'rating': {
       const n = (value as RatingFieldValue | undefined)?.unpack() ?? undefined
-      return isNumber(n) ? <Rating value={n} readOnly /> : null
+      return isNumber(n) ? <Rating value={n} count={field.max} readOnly size="xs" /> : null
     }
     case 'bool': {
       const b = (value as BoolFieldValue | undefined)?.unpack() ?? false

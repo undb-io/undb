@@ -198,6 +198,15 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "max": {
+          "name": "max",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
         }
       },
       "name": "field",

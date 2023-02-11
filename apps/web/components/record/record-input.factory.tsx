@@ -41,7 +41,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
         render={(form) => (
           <>
             <FieldInputLabel>{field.name.value}</FieldInputLabel>
-            <Rating {...form.field} onChange={(number) => form.field.onChange(number)} />
+            <Rating {...form.field} count={field.max} onChange={(number) => form.field.onChange(number)} />
           </>
         )}
       />

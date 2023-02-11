@@ -9,6 +9,10 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
 export class RatingField extends BaseField<IRatingField> {
   type: RatingFieldType = 'rating'
 
+  public get max(): number {
+    return this.props.max ?? 5
+  }
+
   static create(input: Omit<ICreateRatingFieldInput, 'type'>): RatingField {
     const fieldName = FieldName.create(input.name)
 
@@ -16,6 +20,7 @@ export class RatingField extends BaseField<IRatingField> {
       id: FieldId.fromNullableString(input.id),
       name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
+      max: input.max,
     })
   }
 
@@ -24,6 +29,7 @@ export class RatingField extends BaseField<IRatingField> {
       id: FieldId.fromNullableString(input.id),
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
+      max: input.max,
     })
   }
 

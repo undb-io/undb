@@ -305,7 +305,7 @@ export type IStringField = IBaseField
 export type IEmailField = IBaseField
 export type IColorField = IBaseField
 export type INumberField = IBaseField
-export type IRatingField = IBaseField
+export type IRatingField = IBaseField & { max?: number }
 
 export type IDateField = IBaseField
 export type IDateRangeField = IBaseField
