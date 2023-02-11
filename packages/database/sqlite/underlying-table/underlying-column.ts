@@ -7,6 +7,7 @@ import type {
   Field,
   NumberField,
   ParentField,
+  RatingField,
   ReferenceField,
   SelectField,
   StringField,
@@ -104,6 +105,12 @@ export class UnderlyingColorColumn extends UnderlyingFieldColumn<ColorField> {
 }
 
 export class UnderlyingNumberColumn extends UnderlyingFieldColumn<NumberField> {
+  build(tb: Knex.TableBuilder): void {
+    tb.float(this.name)
+  }
+}
+
+export class UnderlyingRatingColumn extends UnderlyingFieldColumn<RatingField> {
   build(tb: Knex.TableBuilder): void {
     tb.float(this.name)
   }

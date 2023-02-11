@@ -15,6 +15,7 @@ import {
   IconRelationManyToMany,
   IconSortAscendingNumbers,
   IconSquareCheck,
+  IconStars,
 } from '@egodb/ui'
 import React from 'react'
 interface FieldProps {
@@ -35,6 +36,8 @@ export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16, color }) => {
       return <IconPalette size={size} color={color} />
     case 'number':
       return <Icon123 size={size} color={color} />
+    case 'rating':
+      return <IconStars size={size} color={color} />
     case 'date':
       return <IconCalendar size={size} color={color} />
     case 'created-at':

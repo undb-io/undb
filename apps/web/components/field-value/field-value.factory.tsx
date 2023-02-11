@@ -4,6 +4,7 @@ import type {
   DateFieldValue,
   DateRangeFieldValue,
   Field,
+  RatingFieldValue,
   RecordAllValueType,
   SelectFieldValue,
 } from '@egodb/core'
@@ -14,7 +15,7 @@ import { BoolValue } from './bool-value'
 import { DateRangeValue } from './date-range-value'
 import { DateValue } from './date-value'
 import { RecordId } from './record-id'
-import { Group, Text } from '@egodb/ui'
+import { Group, Rating, Text } from '@egodb/ui'
 import type { FieldValue } from '@egodb/core'
 import { Option } from '../option/option'
 import { ColorValue } from './color-value'
@@ -50,6 +51,10 @@ export const FieldValueFactory: React.FC<{
     case 'auto-increment': {
       const n = value as number | undefined
       return isNumber(n) ? <>{n}</> : null
+    }
+    case 'rating': {
+      const n = (value as RatingFieldValue | undefined)?.unpack() ?? undefined
+      return isNumber(n) ? <Rating value={n} readOnly /> : null
     }
     case 'bool': {
       const b = (value as BoolFieldValue | undefined)?.unpack() ?? false

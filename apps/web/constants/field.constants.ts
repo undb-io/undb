@@ -5,6 +5,7 @@ export const FIELD_SELECT_ITEMS: SelectItem[] = [
   { value: 'email', label: 'Email' },
   { value: 'color', label: 'Color' },
   { value: 'number', label: 'Number' },
+  { value: 'rating', label: 'Rating' },
   { value: 'date', label: 'Date' },
   { value: 'date-range', label: 'DateRange' },
   { value: 'auto-increment', label: 'AutoIncrement' },

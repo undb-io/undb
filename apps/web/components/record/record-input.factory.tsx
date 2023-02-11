@@ -1,6 +1,6 @@
 import type { Field } from '@egodb/core'
 import type { Table } from '@egodb/core'
-import { NumberInput, DatePicker, DateRangePicker, Checkbox, TextInput, ColorInput } from '@egodb/ui'
+import { NumberInput, DatePicker, DateRangePicker, Checkbox, TextInput, ColorInput, Rating } from '@egodb/ui'
 import React from 'react'
 import { Controller } from 'react-hook-form'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
@@ -30,6 +30,19 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
             label={label}
             onChange={(number) => form.field.onChange(number)}
           />
+        )}
+      />
+    )
+  }
+  if (field.type === 'rating') {
+    return (
+      <Controller
+        name={name}
+        render={(form) => (
+          <>
+            <FieldInputLabel>{field.name.value}</FieldInputLabel>
+            <Rating {...form.field} onChange={(number) => form.field.onChange(number)} />
+          </>
         )}
       />
     )

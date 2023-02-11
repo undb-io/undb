@@ -12,6 +12,7 @@ import {
   UnderlyingIdColumn,
   UnderlyingNumberColumn,
   UnderlyingParentColumn,
+  UnderlyingRatingColumn,
   UnderlyingReferenceColumn,
   UnderlyingSelectFromColumn,
   UnderlyingStringColumn,
@@ -34,6 +35,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingStringColumn(field)
       case 'email':
         return new UnderlyingEmailColumn(field)
+      case 'rating':
+        return new UnderlyingRatingColumn(field)
       case 'color':
         return new UnderlyingColorColumn(field)
       case 'number':
