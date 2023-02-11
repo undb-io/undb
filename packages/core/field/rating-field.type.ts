@@ -12,7 +12,7 @@ export type ICreateRatingFieldInput = z.infer<typeof createRatingFieldSchema>
 
 export const ratingFieldQuerySchema = baseFieldQuerySchema.merge(ratingTypeObjectSchema)
 
-export const ratingFieldValue = z.number().nonnegative().int().nullable()
+export const ratingFieldValue = z.number().nonnegative().nullable()
 export type IRatingFieldValue = z.infer<typeof ratingFieldValue>
 
 export const createRatingFieldValue = ratingFieldValue

@@ -167,7 +167,8 @@
             "date-range",
             "reference",
             "tree",
-            "parent"
+            "parent",
+            "rating"
           ],
           "mappedType": "enum"
         },
