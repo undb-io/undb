@@ -9,6 +9,7 @@ import type { Field, ICreateFieldSchema } from './field.type'
 import { IdField } from './id-field'
 import { NumberField } from './number-field'
 import { ParentField } from './parent-field'
+import { RatingField } from './rating-field'
 import { ReferenceField } from './reference-field'
 import { SelectField } from './select-field'
 import { StringField } from './string-field'
@@ -41,6 +42,9 @@ export class FieldFactory {
       }
       case 'number': {
         return NumberField.create(input)
+      }
+      case 'rating': {
+        return RatingField.create(input)
       }
       case 'date': {
         return DateField.create(input)
@@ -92,6 +96,9 @@ export class FieldFactory {
       }
       case 'number': {
         return NumberField.unsafeCreate(input)
+      }
+      case 'rating': {
+        return RatingField.unsafeCreate(input)
       }
       case 'date': {
         return DateField.unsafeCreate(input)

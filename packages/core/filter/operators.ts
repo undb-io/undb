@@ -35,6 +35,9 @@ export type IColorFilterOperator = z.infer<typeof colorFilterOperators>
 export const numberFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
 export type INumberFilterOperator = z.infer<typeof numberFilterOperators>
 
+export const ratingFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
+export type IRatingFilterOperator = z.infer<typeof ratingFilterOperators>
+
 export const boolFilterOperators = z.union([$is_true, $is_false])
 export type IBoolFilterOperator = z.infer<typeof boolFilterOperators>
 

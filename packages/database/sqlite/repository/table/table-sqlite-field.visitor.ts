@@ -12,6 +12,7 @@ import type {
   IFieldVisitor,
   NumberField as CoreNumberField,
   ParentField as CoreParentField,
+  RatingField as CoreRatingField,
   ReferenceField as CoreReferenceField,
   SelectField as CoreSelectField,
   StringField as CoreStringField,
@@ -34,6 +35,7 @@ import {
   NumberField,
   Option,
   ParentField,
+  RatingField,
   ReferenceField,
   SelectField,
   StringField,
@@ -91,6 +93,12 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   number(value: CoreNumberField): void {
     const field = new NumberField(this.table, value)
+
+    this.em.persist(field)
+  }
+
+  rating(value: CoreRatingField): void {
+    const field = new RatingField(this.table, value)
 
     this.em.persist(field)
   }

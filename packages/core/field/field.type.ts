@@ -114,6 +114,17 @@ import {
   parentFieldQueryValue,
   parentTypeSchema,
 } from './parent-field.type'
+import type { RatingField } from './rating-field'
+import type { RatingFieldValue } from './rating-field-value'
+import type { IRatingFieldValue } from './rating-field.type'
+import {
+  createRatingFieldSchema,
+  createRatingFieldValue,
+  createRatingFieldValue_internal,
+  ratingFieldQuerySchema,
+  ratingFieldQueryValue,
+  ratingTypeSchema,
+} from './rating-field.type'
 import type { ReferenceField } from './reference-field'
 import type { ReferenceFieldValue } from './reference-field-value'
 import {
@@ -187,6 +198,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createReferenceFieldSchema,
   createTreeFieldSchema,
   createParentFieldSchema,
+  createRatingFieldSchema,
 ])
 export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
 
@@ -206,6 +218,7 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   referenceFieldQuerySchema,
   treeFieldQuerySchema,
   parentFieldQuerySchema,
+  ratingFieldQuerySchema,
 ])
 export type IQueryFieldSchema = z.infer<typeof queryFieldSchema>
 export const querySchemaSchema = z.array(queryFieldSchema)
@@ -227,6 +240,7 @@ export const fieldTypes = z.union([
   referenceTypeSchema,
   treeTypeSchema,
   parentTypeSchema,
+  ratingTypeSchema,
 ])
 export type IFieldType = z.infer<typeof fieldTypes>
 
@@ -246,6 +260,7 @@ export const createFieldValueSchema = z.union([
   createReferenceFieldValue,
   createTreeFieldValue,
   createParentFieldValue,
+  createRatingFieldValue,
 ])
 export type ICreateFieldValue = z.infer<typeof createFieldValueSchema>
 
@@ -268,6 +283,7 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createReferenceFieldValue_internal,
   createTreeFieldValue_internal,
   createParentFieldValue_internal,
+  createRatingFieldValue_internal,
 ])
 export type ICreateFieldValueSchema_internal = z.infer<typeof createFieldValueSchema_internal>
 
@@ -289,6 +305,7 @@ export type IStringField = IBaseField
 export type IEmailField = IBaseField
 export type IColorField = IBaseField
 export type INumberField = IBaseField
+export type IRatingField = IBaseField & { max?: number }
 
 export type IDateField = IBaseField
 export type IDateRangeField = IBaseField
@@ -315,6 +332,7 @@ export type NoneSystemField =
   | ReferenceField
   | TreeField
   | ParentField
+  | RatingField
 
 export type Field = SystemField | NoneSystemField
 
@@ -334,6 +352,7 @@ export type FieldValue =
   | ReferenceFieldValue
   | TreeFieldValue
   | ParentFieldValue
+  | RatingFieldValue
 
 export type FieldValues = FieldValue[]
 
@@ -353,6 +372,7 @@ export type UnpackedFieldValue =
   | IReferenceFilterValue
   | ITreeFieldValue
   | IParentFieldValue
+  | IRatingFieldValue
 
 export const fieldQueryValue = z.union([
   treeFieldQueryValue,
@@ -370,6 +390,7 @@ export const fieldQueryValue = z.union([
   selectFieldQueryValue,
   stringFieldQueryValue,
   updatedAtFieldQueryValue,
+  ratingFieldQueryValue,
 ])
 
 export type IFieldQueryValue = z.infer<typeof fieldQueryValue>

@@ -1,10 +1,12 @@
 import type {
+  ICreateRatingFieldInput,
   ICreateSelectFieldSchema,
   ICreateTableSchemaInput,
   ICreateViewsSchema,
   IQueryFieldSchema,
   IQueryTable,
   IQueryView,
+  IRatingFieldQuerySchema,
   ISelectFieldQuerySchema,
   Table,
 } from '@egodb/core'
@@ -13,7 +15,14 @@ import type { ICreateParentFieldInput, IParentFieldQuerySchema } from '@egodb/co
 import type { ICreateTreeFieldSchema, ITreeFieldQuerySchema } from '@egodb/core/field/tree-field.type'
 import type { EntityDTO } from '@mikro-orm/core'
 import type { Result } from 'oxide.ts'
-import type { Field as FieldEntity, ParentField, SelectField, Table as TableEntity, TreeField } from '../../entity'
+import type {
+  Field as FieldEntity,
+  ParentField,
+  RatingField,
+  SelectField,
+  Table as TableEntity,
+  TreeField,
+} from '../../entity'
 
 export class TableSqliteMapper {
   static fieldToQuery(entity: EntityDTO<FieldEntity>): IQueryFieldSchema {
@@ -51,6 +60,15 @@ export class TableSqliteMapper {
         treeFieldId: field.treeFieldId,
         displayFieldIds: field.displayFieldIds,
       } satisfies IParentFieldQuerySchema
+    }
+    if (entity.type === 'rating') {
+      const field = entity as EntityDTO<RatingField>
+      return {
+        id: entity.id,
+        name: entity.name,
+        type: 'rating',
+        max: field.max,
+      } satisfies IRatingFieldQuerySchema
     }
     return {
       id: entity.id,
@@ -106,6 +124,15 @@ export class TableSqliteMapper {
             treeFieldId: field.treeFieldId,
             displayFieldIds: field.displayFieldIds,
           } satisfies ICreateParentFieldInput
+        }
+        if (f.type === 'rating') {
+          const field = f as EntityDTO<RatingField>
+          return {
+            id: f.id,
+            name: f.name,
+            type: 'rating',
+            max: field.max,
+          } satisfies ICreateRatingFieldInput
         }
         if (f.type === 'select') {
           return {

@@ -1,5 +1,6 @@
 import type { ICreateTableInput } from '@egodb/core'
-import { TextInput } from '@egodb/ui'
+import { RATING_MAX, RATING_MAX_DEFAULT } from '@egodb/core'
+import { NumberInput, TextInput } from '@egodb/ui'
 import { Controller, useFormContext } from 'react-hook-form'
 import { FieldInputLabel } from '../../field-inputs/field-input-label'
 import type { FieldBase } from '../../field-inputs/field-picker.type'
@@ -16,8 +17,24 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
   const id = form.watch(`schema.${index}.id`)
   const fields = form.watch('schema')
 
-  const treeFields = fields.filter((f) => f.id !== id)
+  if (type === 'rating') {
+    return (
+      <Controller
+        name={`schema.${index}.max`}
+        render={(props) => (
+          <NumberInput
+            {...props.field}
+            variant="filled"
+            defaultValue={RATING_MAX_DEFAULT}
+            max={RATING_MAX}
+            onChange={(number) => props.field.onChange(number)}
+          />
+        )}
+      />
+    )
+  }
 
+  const treeFields = fields.filter((f) => f.id !== id)
   if (type === 'select') {
     return (
       <Controller
