@@ -57,7 +57,9 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
       })
       .toQuery()
 
-    this.#queries.push(query)
+    const queries = query.split(';\n')
+
+    this.#queries.push(...queries)
   }
   fieldsOrder(): void {}
   fieldWidthEqual(): void {}

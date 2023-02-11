@@ -2,6 +2,12 @@ import type { IFieldQueryValue, IQueryRecordSchema, IRecordDisplayValues, Record
 import { RecordFactory } from '@egodb/core'
 import { castArray, mapValues } from 'lodash'
 import type { Result } from 'oxide.ts'
+import {
+  getFieldIdFromDateRangeFromColumnName,
+  getFieldIdFromDateRangeToColumnName,
+  isUnlderlyingDateTangeFromColumn,
+  isUnlderlyingDateTangeToColumn,
+} from '../../underlying-table/underlying-column'
 import type { RecordSqlite } from './record.type'
 import { isExpandColumnName } from './record.type'
 
@@ -19,8 +25,14 @@ export class RecordSqliteMapper {
           displayValues,
           mapValues(JSON.parse(value), (expanded) => mapValues(expanded, castArray)),
         )
-      } else if (columnName.endsWith('_from') || columnName.endsWith('_to')) {
-        continue
+      } else if (isUnlderlyingDateTangeFromColumn(columnName)) {
+        const fieldId = getFieldIdFromDateRangeFromColumnName(columnName)
+        values[fieldId] ??= []
+        ;(values[fieldId] as Array<Date | null>)[0] = value ? new Date(value) : null
+      } else if (isUnlderlyingDateTangeToColumn(columnName)) {
+        const fieldId = getFieldIdFromDateRangeToColumnName(columnName)
+        values[fieldId] ??= []
+        ;(values[fieldId] as Array<Date | null>)[1] = value ? new Date(value) : null
       } else {
         const field = schema.get(columnName)
         if (!field) continue

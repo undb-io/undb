@@ -128,9 +128,19 @@ export class UnderlyingDateColumn extends UnderlyingFieldColumn<DateField> {
   }
 }
 
+const UNDERLYING_DATE_RANGE_FROM = '_from'
+
+export type UnderlyingDateRangeFromColumnName = `${string}${typeof UNDERLYING_DATE_RANGE_FROM}`
+
+export const isUnlderlyingDateTangeFromColumn = (str: string): str is UnderlyingDateRangeFromColumnName =>
+  str.endsWith(UNDERLYING_DATE_RANGE_FROM)
+
+export const getFieldIdFromDateRangeFromColumnName = (name: UnderlyingDateRangeFromColumnName): string =>
+  name.replace(UNDERLYING_DATE_RANGE_FROM, '')
+
 export class UnderlyingDateRangeFromColumn extends UnderlyingFieldColumn<DateRangeField> {
-  get name(): string {
-    return super.name + '_from'
+  get name(): UnderlyingDateRangeFromColumnName {
+    return `${super.name}${UNDERLYING_DATE_RANGE_FROM}`
   }
 
   build(tb: Knex.TableBuilder): void {
@@ -138,9 +148,19 @@ export class UnderlyingDateRangeFromColumn extends UnderlyingFieldColumn<DateRan
   }
 }
 
+const UNDERLYING_DATE_RANGE_TO = '_to'
+
+export type UnderlyingDateRangeToColumnName = `${string}${typeof UNDERLYING_DATE_RANGE_TO}`
+
+export const isUnlderlyingDateTangeToColumn = (str: string): str is UnderlyingDateRangeToColumnName =>
+  str.endsWith(UNDERLYING_DATE_RANGE_TO)
+
+export const getFieldIdFromDateRangeToColumnName = (name: UnderlyingDateRangeToColumnName): string =>
+  name.replace(UNDERLYING_DATE_RANGE_TO, '')
+
 export class UnderlyingDateRangeToFromColumn extends UnderlyingFieldColumn<DateRangeField> {
-  get name(): string {
-    return super.name + '_to'
+  get name(): UnderlyingDateRangeToColumnName {
+    return `${super.name}${UNDERLYING_DATE_RANGE_TO}`
   }
 
   build(tb: Knex.TableBuilder): void {
