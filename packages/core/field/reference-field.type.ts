@@ -1,8 +1,8 @@
 import * as z from 'zod'
-import { recordIdSchema } from '../record/value-objects/record-id.schema'
-import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base'
-import { FIELD_TYPE_KEY } from './field.constant'
-import { ReferenceField } from './reference-field'
+import { recordIdSchema } from '../record/value-objects/record-id.schema.js'
+import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base.js'
+import { FIELD_TYPE_KEY } from './field.constant.js'
+import { ReferenceField } from './reference-field.js'
 
 export const referenceTypeSchema = z.literal('reference')
 export type ReferenceFieldType = z.infer<typeof referenceTypeSchema>

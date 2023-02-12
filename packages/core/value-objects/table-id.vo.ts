@@ -2,7 +2,7 @@ import { NanoID } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Err, Ok } from 'oxide.ts'
 import * as z from 'zod'
-import { InvalidTableIdError } from '../table.errors'
+import { InvalidTableIdError } from '../table.errors.js'
 
 export const tableIdSchema = z.string().min(1)
 

@@ -1,10 +1,10 @@
-import type { IRatingFilter, IRatingFilterOperator } from '../filter/rating.filter'
-import { BaseField } from './field.base'
-import type { IRatingField } from './field.type'
-import type { IFieldVisitor } from './field.visitor'
-import { RatingFieldValue } from './rating-field-value'
-import type { ICreateRatingFieldInput, ICreateRatingFieldValue, RatingFieldType } from './rating-field.type'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
+import type { IRatingFilter, IRatingFilterOperator } from '../filter/rating.filter.js'
+import { BaseField } from './field.base.js'
+import type { IRatingField } from './field.type.js'
+import type { IFieldVisitor } from './field.visitor.js'
+import { RatingFieldValue } from './rating-field-value.js'
+import type { ICreateRatingFieldInput, ICreateRatingFieldValue, RatingFieldType } from './rating-field.type.js'
+import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export class RatingField extends BaseField<IRatingField> {
   type: RatingFieldType = 'rating'

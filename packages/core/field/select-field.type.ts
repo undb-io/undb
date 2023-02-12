@@ -1,9 +1,9 @@
 import * as z from 'zod'
-import { createOptionsSchema, optionIdSchema, optionsSchema } from '../option/option.schema'
-import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base'
-import { FIELD_TYPE_KEY } from './field.constant'
-import { SelectField } from './select-field'
-import { fieldIdSchema } from './value-objects/field-id.schema'
+import { createOptionsSchema, optionIdSchema, optionsSchema } from '../option/option.schema.js'
+import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base.js'
+import { FIELD_TYPE_KEY } from './field.constant.js'
+import { SelectField } from './select-field.js'
+import { fieldIdSchema } from './value-objects/field-id.schema.js'
 
 export const selectTypeSchema = z.literal('select')
 export type SelectFieldType = z.infer<typeof selectTypeSchema>

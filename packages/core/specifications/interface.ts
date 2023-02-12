@@ -1,25 +1,25 @@
 import type { CompositeSpecification, ISpecVisitor } from '@egodb/domain'
 import { type ISpecification } from '@egodb/domain'
-import type { WithoutField } from '../field/specifications/field.specification'
-import type { WithNewOption, WithOptions, WithoutOption } from '../field/specifications/select-field.specification'
-import { type Table } from '../table'
-import type { WithKanbanField } from '../view'
-import type { WithCalendarField } from '../view/specifications/calendar.specification'
-import type { WithDisplayType } from '../view/specifications/display-type.specification'
-import type { WithFilter } from '../view/specifications/filters.specificaiton'
-import type { WithSorts } from '../view/specifications/sorts.specification'
-import type { WithTreeViewField } from '../view/specifications/tree-view.specification'
+import type { WithoutField } from '../field/specifications/field.specification.js'
+import type { WithNewOption, WithOptions, WithoutOption } from '../field/specifications/select-field.specification.js'
+import { type Table } from '../table.js'
+import type { WithKanbanField } from '../view/index.js'
+import type { WithCalendarField } from '../view/specifications/calendar.specification.js'
+import type { WithDisplayType } from '../view/specifications/display-type.specification.js'
+import type { WithFilter } from '../view/specifications/filters.specificaiton.js'
+import type { WithSorts } from '../view/specifications/sorts.specification.js'
+import type { WithTreeViewField } from '../view/specifications/tree-view.specification.js'
 import type {
   WithFieldOption,
   WithFieldVisibility,
   WithFieldWidth,
-} from '../view/specifications/view-field-option.specification'
-import type { WithViewFieldsOrder } from '../view/specifications/view-fields-order.specification'
-import type { WithTableView, WithTableViews } from '../view/specifications/views.specification'
-import type { WithNewField } from './table-field.specification'
-import type { WithTableId } from './table-id.specifaction'
-import type { WithTableName } from './table-name.specification'
-import type { WithTableSchema } from './table-schema.specification'
+} from '../view/specifications/view-field-option.specification.js'
+import type { WithViewFieldsOrder } from '../view/specifications/view-fields-order.specification.js'
+import type { WithTableView, WithTableViews } from '../view/specifications/views.specification.js'
+import type { WithNewField } from './table-field.specification.js'
+import type { WithTableId } from './table-id.specification'
+import type { WithTableName } from './table-name.specification.js'
+import type { WithTableSchema } from './table-schema.specification.js'
 
 export interface ITableSpecVisitor extends ISpecVisitor {
   idEqual(s: WithTableId): void

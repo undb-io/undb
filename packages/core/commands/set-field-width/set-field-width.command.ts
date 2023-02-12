@@ -1,6 +1,6 @@
 import type { CommandProps } from '@egodb/domain'
 import { Command } from '@egodb/domain'
-import type { ISetFieldWidthCommandInput } from './set-field-width.command.interface'
+import type { ISetFieldWidthCommandInput } from './set-field-width.command.interface.js'
 
 export class SetFieldWidthCommand extends Command implements ISetFieldWidthCommandInput {
   public readonly tableId: string

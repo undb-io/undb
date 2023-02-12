@@ -2,9 +2,9 @@ import type { CompositeSpecification } from '@egodb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
-import { DateFieldValue, NumberFieldValue, SelectFieldValue, StringFieldValue } from '../field'
-import { colorFieldValue } from '../field/color-field.type'
-import type { ISelectFieldValue } from '../field/select-field.type'
+import { colorFieldValue } from '../field/color-field.type.js'
+import { DateFieldValue, NumberFieldValue, SelectFieldValue, StringFieldValue } from '../field/index.js'
+import type { ISelectFieldValue } from '../field/select-field.type.js'
 import {
   BoolIsFalse,
   BoolIsTrue,
@@ -27,24 +27,24 @@ import {
   StringEndsWith,
   StringEqual,
   StringStartsWith,
-} from '../record'
-import type { IAutoIncrementFilter } from './auto-increment.filter'
-import { autoIncrementFilter, autoIncrementFilterValue } from './auto-increment.filter'
-import type { IBoolFilter } from './bool.filter'
-import { boolFilter, boolFilterValue } from './bool.filter'
-import { colorFilter } from './color.filter'
+} from '../record/index.js'
+import type { IAutoIncrementFilter } from './auto-increment.filter.js'
+import { autoIncrementFilter, autoIncrementFilterValue } from './auto-increment.filter.js'
+import type { IBoolFilter } from './bool.filter.js'
+import { boolFilter, boolFilterValue } from './bool.filter.js'
+import { colorFilter } from './color.filter.js'
 import type { IConjunction } from './conjunction'
 import { conjunctions } from './conjunction'
-import type { ICreatedAtFilter } from './created-at.filter'
-import { createdAtFilter, createdAtFilterValue } from './created-at.filter'
-import type { IDateRangeFilter } from './date-range.filter'
-import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter'
-import type { IDateFilter } from './date.filter'
-import { dateFilter, dateFilterValue } from './date.filter'
-import { emailFilter, emailFilterValue } from './email.filter'
-import { idFilter, idFilterValue } from './id.filter'
-import type { INumberFilter } from './number.filter'
-import { numberFilter, numberFilterValue } from './number.filter'
+import type { ICreatedAtFilter } from './created-at.filter.js'
+import { createdAtFilter, createdAtFilterValue } from './created-at.filter.js'
+import type { IDateRangeFilter } from './date-range.filter.js'
+import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter.js'
+import type { IDateFilter } from './date.filter.js'
+import { dateFilter, dateFilterValue } from './date.filter.js'
+import { emailFilter, emailFilterValue } from './email.filter.js'
+import { idFilter, idFilterValue } from './id.filter.js'
+import type { INumberFilter } from './number.filter.js'
+import { numberFilter, numberFilterValue } from './number.filter.js'
 import {
   $eq,
   $is_false,
@@ -68,19 +68,19 @@ import {
   stringFilterOperators,
   treeFilterOperators,
   updatedAtFilterOperators,
-} from './operators'
-import { parentFilter, parentFilterValue } from './parent.filter'
-import type { IRatingFilter } from './rating.filter'
-import { ratingFilter, ratingFilterValue } from './rating.filter'
-import { referenceFilter, referenceFilterValue } from './reference.filter'
-import type { ISelectFilter } from './select.filter'
-import { selectFilter, selectFilterValue } from './select.filter'
-import type { IStringFilter } from './string.filter'
-import { stringFilter, stringFilterValue } from './string.filter'
-import type { ITreeFilter } from './tree.filter'
-import { treeFilter, treeFilterValue } from './tree.filter'
-import type { IUpdatedAtFilter } from './updated-at.filter'
-import { updatedAtFilter, updatedAtFilterValue } from './updated-at.filter'
+} from './operators.js'
+import { parentFilter, parentFilterValue } from './parent.filter.js'
+import type { IRatingFilter } from './rating.filter.js'
+import { ratingFilter, ratingFilterValue } from './rating.filter.js'
+import { referenceFilter, referenceFilterValue } from './reference.filter.js'
+import type { ISelectFilter } from './select.filter.js'
+import { selectFilter, selectFilterValue } from './select.filter.js'
+import type { IStringFilter } from './string.filter.js'
+import { stringFilter, stringFilterValue } from './string.filter.js'
+import type { ITreeFilter } from './tree.filter.js'
+import { treeFilter, treeFilterValue } from './tree.filter.js'
+import type { IUpdatedAtFilter } from './updated-at.filter.js'
+import { updatedAtFilter, updatedAtFilterValue } from './updated-at.filter.js'
 
 export const filterValue = z.union([
   idFilterValue,

@@ -1,4 +1,4 @@
-import type { FieldId } from '../../field'
+import type { FieldId } from '../../field/index.js'
 
 export interface IKanban {
   fieldId?: FieldId

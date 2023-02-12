@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { colorFieldValue } from '../field/color-field.type'
-import { baseFilter } from './filter.base'
-import { colorFilterOperators } from './operators'
+import { colorFieldValue } from '../field/color-field.type.js'
+import { baseFilter } from './filter.base.js'
+import { colorFilterOperators } from './operators.js'
 
 export const colorFilterValue = colorFieldValue
 export const colorFilter = z

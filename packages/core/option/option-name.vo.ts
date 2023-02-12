@@ -1,5 +1,5 @@
 import { ValueObject } from '@egodb/domain'
-import { optionNameSchema } from './option.schema'
+import { optionNameSchema } from './option.schema.js'
 
 export class OptionName extends ValueObject<string> {
   private constructor(value: string) {

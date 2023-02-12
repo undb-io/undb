@@ -1,3 +1,3 @@
-export * from './bulk-delete-records.comand'
-export * from './bulk-delete-records.command.handler'
-export * from './bulk-delete-records.command.input'
+export * from './bulk-delete-records.comand.js'
+export * from './bulk-delete-records.command.handler.js'
+export * from './bulk-delete-records.command.input.js'

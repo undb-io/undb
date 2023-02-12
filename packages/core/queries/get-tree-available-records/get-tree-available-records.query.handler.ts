@@ -1,11 +1,11 @@
 import type { IQueryHandler } from '@egodb/domain'
 import { andOptions } from '@egodb/domain'
 import { Option } from 'oxide.ts'
-import type { IRecordQueryModel } from '../../record'
-import { TreeAvailableSpec, WithRecordTableId } from '../../record'
-import type { ITableRepository } from '../../table.repository'
-import type { GetTreeAvailableRecordsQuery } from './get-tree-available-records.query'
-import type { IGetTreeAvailableRecordsOutput } from './get-tree-available-records.query.interface'
+import type { IRecordQueryModel } from '../../record/index.js'
+import { TreeAvailableSpec, WithRecordTableId } from '../../record/index.js'
+import type { ITableRepository } from '../../table.repository.js'
+import type { IGetTreeAvailableRecordsOutput } from './get-tree-available-records.query.interface.js'
+import type { GetTreeAvailableRecordsQuery } from './get-tree-available-records.query.js'
 
 export class GetTreeAvailableRecordsQueryHandler
   implements IQueryHandler<GetTreeAvailableRecordsQuery, IGetTreeAvailableRecordsOutput>

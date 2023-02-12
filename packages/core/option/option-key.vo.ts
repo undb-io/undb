@@ -1,5 +1,5 @@
 import { NanoID } from '@egodb/domain'
-import { optionIdSchema } from './option.schema'
+import { optionIdSchema } from './option.schema.js'
 
 export class OptionKey extends NanoID {
   private static OPTION_ID_PREFIX = 'opt'

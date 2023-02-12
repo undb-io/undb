@@ -1,9 +1,9 @@
 import { z } from 'zod'
-import { createFieldsSchema_internal, fieldQueryValue } from '../field'
-import { fieldIdSchema } from '../field/value-objects/field-id.schema'
-import { TableId, tableIdSchema } from '../value-objects'
-import type { Record } from './record'
-import { recordIdSchema } from './value-objects/record-id.schema'
+import { createFieldsSchema_internal, fieldQueryValue } from '../field/index.js'
+import { fieldIdSchema } from '../field/value-objects/field-id.schema.js'
+import { TableId, tableIdSchema } from '../value-objects/index.js'
+import type { Record } from './record.js'
+import { recordIdSchema } from './value-objects/record-id.schema.js'
 
 export type Records = Record[]
 

@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { referenceFieldValue } from '../field/reference-field.type'
-import { baseFilter } from './filter.base'
-import { referenceFilterOperators } from './operators'
+import { referenceFieldValue } from '../field/reference-field.type.js'
+import { baseFilter } from './filter.base.js'
+import { referenceFilterOperators } from './operators.js'
 
 export const referenceFilterValue = referenceFieldValue.or(referenceFieldValue.array()).nullable()
 export type IReferenceFilterValue = z.infer<typeof referenceFieldValue>

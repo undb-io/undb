@@ -1,6 +1,6 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { ITableRepository } from '../../table.repository'
-import type { SetFieldWidthCommand } from './set-field-width.command'
+import type { ITableRepository } from '../../table.repository.js'
+import type { SetFieldWidthCommand } from './set-field-width.command.js'
 
 export class SetFieldWidthCommandHandler implements ICommandHandler<SetFieldWidthCommand, void> {
   constructor(protected readonly tableRepo: ITableRepository) {}

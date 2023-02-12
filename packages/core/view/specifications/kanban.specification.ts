@@ -1,10 +1,10 @@
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { FieldId } from '../../field'
-import type { ITableSpecVisitor } from '../../specifications'
-import type { Table } from '../../table'
-import type { View } from '../view'
-import { BaseViewSpecification } from './base-view-specification'
+import type { FieldId } from '../../field/index.js'
+import type { ITableSpecVisitor } from '../../specifications/index.js'
+import type { Table } from '../../table.js'
+import type { View } from '../view.js'
+import { BaseViewSpecification } from './base-view-specification.js'
 
 export class WithKanbanField extends BaseViewSpecification {
   constructor(public readonly view: View, public readonly fieldId: FieldId | null) {

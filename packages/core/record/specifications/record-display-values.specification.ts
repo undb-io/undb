@@ -2,10 +2,10 @@
 import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { Record } from '../record'
-import type { IRecordDisplayValues } from '../record.type'
-import { RecordDisplayValues } from '../value-objects/record-display-values.vo'
-import type { IRecordVisitor } from './interface'
+import type { Record } from '../record.js'
+import type { IRecordDisplayValues } from '../record.type.js'
+import { RecordDisplayValues } from '../value-objects/record-display-values.vo.js'
+import type { IRecordVisitor } from './interface.js'
 
 export class WithDisplayValues extends CompositeSpecification<Record, IRecordVisitor> {
   constructor(public readonly values: RecordDisplayValues) {

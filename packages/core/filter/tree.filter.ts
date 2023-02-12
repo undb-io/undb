@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { treeFieldValue } from '../field/tree-field.type'
-import { baseFilter } from './filter.base'
-import { treeFilterOperators } from './operators'
+import { treeFieldValue } from '../field/tree-field.type.js'
+import { baseFilter } from './filter.base.js'
+import { treeFilterOperators } from './operators.js'
 
 export const treeFilterValue = treeFieldValue.or(treeFieldValue.array()).nullable()
 export type ITreeFilterValue = z.infer<typeof treeFieldValue>

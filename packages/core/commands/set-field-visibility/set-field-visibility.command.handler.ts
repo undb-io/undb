@@ -1,6 +1,6 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { ITableRepository } from '../../table.repository'
-import type { SetFieldVisibilityCommand } from './set-field-visibility.command'
+import type { ITableRepository } from '../../table.repository.js'
+import type { SetFieldVisibilityCommand } from './set-field-visibility.command.js'
 
 export class SetFieldVisibilityCommandHandler implements ICommandHandler<SetFieldVisibilityCommand, void> {
   constructor(protected readonly tableRepo: ITableRepository) {}

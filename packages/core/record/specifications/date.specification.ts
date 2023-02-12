@@ -1,10 +1,10 @@
 import { isAfter, isBefore, isEqual, isToday } from 'date-fns'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import { DateFieldValue } from '../../field'
-import type { Record } from '../record'
-import type { IRecordVisitor } from './interface'
-import { BaseRecordSpecification } from './record-specification.base'
+import { DateFieldValue } from '../../field/index.js'
+import type { Record } from '../record.js'
+import type { IRecordVisitor } from './interface.js'
+import { BaseRecordSpecification } from './record-specification.base.js'
 
 export class DateEqual extends BaseRecordSpecification<DateFieldValue> {
   isSatisfiedBy(r: Record): boolean {

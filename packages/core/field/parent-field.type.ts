@@ -1,9 +1,9 @@
 import * as z from 'zod'
-import { recordIdSchema } from '../record/value-objects/record-id.schema'
-import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base'
-import { FIELD_TYPE_KEY } from './field.constant'
-import { ParentField } from './parent-field'
-import { fieldIdSchema } from './value-objects/field-id.schema'
+import { recordIdSchema } from '../record/value-objects/record-id.schema.js'
+import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base.js'
+import { FIELD_TYPE_KEY } from './field.constant.js'
+import { ParentField } from './parent-field.js'
+import { fieldIdSchema } from './value-objects/field-id.schema.js'
 
 export const parentTypeSchema = z.literal('parent')
 export type ParentFieldType = z.infer<typeof parentTypeSchema>

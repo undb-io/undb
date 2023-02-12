@@ -1,6 +1,6 @@
 import type { CommandProps } from '@egodb/domain'
 import { Command } from '@egodb/domain'
-import type { ISetKanbanFieldCommandInput } from './set-kanban-field.command.interface'
+import type { ISetKanbanFieldCommandInput } from './set-kanban-field.command.interface.js'
 
 export class SetKanbanFieldCommand extends Command implements ISetKanbanFieldCommandInput {
   readonly tableId: string

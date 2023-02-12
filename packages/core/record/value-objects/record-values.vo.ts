@@ -1,10 +1,15 @@
 import { ValueObject } from '@egodb/domain'
 import { Option } from 'oxide.ts'
-import type { FieldValue, ICreateFieldsSchema_internal, IFieldQueryValue, UnpackedFieldValue } from '../../field'
-import { TreeField } from '../../field'
-import type { TableSchemaIdMap } from '../../value-objects'
-import type { RecordValueJSON } from '../record.schema'
-import type { IQueryRecordValues } from '../record.type'
+import type {
+  FieldValue,
+  ICreateFieldsSchema_internal,
+  IFieldQueryValue,
+  UnpackedFieldValue,
+} from '../../field/index.js'
+import { TreeField } from '../../field/index.js'
+import type { TableSchemaIdMap } from '../../value-objects/index.js'
+import type { RecordValueJSON } from '../record.schema.js'
+import type { IQueryRecordValues } from '../record.type.js'
 
 export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   static fromArray(inputs: ICreateFieldsSchema_internal): RecordValues {

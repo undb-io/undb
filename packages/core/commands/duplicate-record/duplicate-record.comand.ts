@@ -1,6 +1,6 @@
 import type { CommandProps } from '@egodb/domain'
 import { Command } from '@egodb/domain'
-import type { IDuplicateRecordInput } from './duplicate-record.command.input'
+import type { IDuplicateRecordInput } from './duplicate-record.command.input.js'
 
 export class DuplicateRecordCommand extends Command {
   readonly id: string

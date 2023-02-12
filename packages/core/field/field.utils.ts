@@ -1,6 +1,6 @@
-import type { Field, IFieldType } from './field.type'
-import type { ParentField } from './parent-field'
-import type { TreeField } from './tree-field'
+import type { Field, IFieldType } from './field.type.js'
+import type { ParentField } from './parent-field.js'
+import type { TreeField } from './tree-field.js'
 
 const referenceFieldTypes: IFieldType[] = ['tree', 'parent']
 

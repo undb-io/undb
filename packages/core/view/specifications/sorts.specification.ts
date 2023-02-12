@@ -1,11 +1,11 @@
 import { isEmpty } from '@fxts/core'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { ITableSpecVisitor } from '../../specifications/interface'
-import type { Table } from '../../table'
-import type { Sorts } from '../sort'
-import type { View } from '../view'
-import { BaseViewSpecification } from './base-view-specification'
+import type { ITableSpecVisitor } from '../../specifications/interface.js'
+import type { Table } from '../../table.js'
+import type { Sorts } from '../sort/index.js'
+import type { View } from '../view.js'
+import { BaseViewSpecification } from './base-view-specification.js'
 
 export class WithSorts extends BaseViewSpecification {
   constructor(public readonly sorts: Sorts | null, public readonly view: View) {

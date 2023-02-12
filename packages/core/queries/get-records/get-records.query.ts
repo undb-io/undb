@@ -1,6 +1,6 @@
 import { Query } from '@egodb/domain'
-import type { IRootFilter } from '../../filter'
-import type { IGetRecordsQuery } from './get-records.query.interface'
+import type { IRootFilter } from '../../filter/index.js'
+import type { IGetRecordsQuery } from './get-records.query.interface.js'
 
 export class GetRecordsQuery extends Query implements IGetRecordsQuery {
   readonly tableId: string

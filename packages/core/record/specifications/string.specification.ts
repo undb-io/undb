@@ -1,9 +1,9 @@
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import { StringFieldValue } from '../../field/string-field-value'
-import type { Record } from '../record'
-import type { IRecordVisitor } from './interface'
-import { BaseRecordSpecification } from './record-specification.base'
+import { StringFieldValue } from '../../field/string-field-value.js'
+import type { Record } from '../record.js'
+import type { IRecordVisitor } from './interface.js'
+import { BaseRecordSpecification } from './record-specification.base.js'
 
 export class StringEqual extends BaseRecordSpecification<StringFieldValue> {
   /**

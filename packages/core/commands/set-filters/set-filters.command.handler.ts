@@ -1,6 +1,6 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { ITableRepository } from '../../table.repository'
-import type { SetFitlersCommand } from './set-filters.command'
+import type { ITableRepository } from '../../table.repository.js'
+import type { SetFitlersCommand } from './set-filters.command.js'
 
 type ISetFilterCommandHandler = ICommandHandler<SetFitlersCommand, void>
 

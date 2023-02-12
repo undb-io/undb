@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { baseFilter } from './filter.base'
-import { autoIncrementFilterOperators } from './operators'
+import { baseFilter } from './filter.base.js'
+import { autoIncrementFilterOperators } from './operators.js'
 
 export const autoIncrementFilterValue = z.number().nullable()
 export const autoIncrementFilter = z

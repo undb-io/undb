@@ -1,8 +1,8 @@
 import { and } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
-import type { TableSchemaIdMap } from '../value-objects'
-import { Record } from './record'
-import type { IQueryRecordSchema, Records } from './record.type'
+import type { TableSchemaIdMap } from '../value-objects/index.js'
+import { Record } from './record.js'
+import type { IQueryRecordSchema, Records } from './record.type.js'
 import {
   WithDisplayValues,
   WithRecordCreatedAt,
@@ -10,9 +10,9 @@ import {
   WithRecordTableId,
   WithRecordUpdatedAt,
   WithRecordValues,
-} from './specifications'
-import type { RecordCompositeSpecification } from './specifications/interface'
-import { WithRecordAutoIncrement } from './specifications/record-auto-increment.specification'
+} from './specifications/index.js'
+import type { RecordCompositeSpecification } from './specifications/interface.js'
+import { WithRecordAutoIncrement } from './specifications/record-auto-increment.specification.js'
 
 export class RecordFactory {
   static create(...specs: RecordCompositeSpecification[]): Result<Record, string>

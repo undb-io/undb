@@ -1,6 +1,6 @@
 import type { CommandProps } from '@egodb/domain'
 import { Command } from '@egodb/domain'
-import type { ISetFieldVisibilityCommandInput } from './set-field-visibility.command.interface'
+import type { ISetFieldVisibilityCommandInput } from './set-field-visibility.command.interface.js'
 
 export class SetFieldVisibilityCommand extends Command implements ISetFieldVisibilityCommandInput {
   public readonly tableId: string

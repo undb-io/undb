@@ -1,6 +1,6 @@
-import { FieldValueBase } from './field-value.base'
-import type { IFieldValueVisitor } from './field-value.visitor'
-import type { IStringFieldValue } from './string-field.type'
+import { FieldValueBase } from './field-value.base.js'
+import type { IFieldValueVisitor } from './field-value.visitor.js'
+import type { IStringFieldValue } from './string-field.type.js'
 
 export class StringFieldValue extends FieldValueBase<IStringFieldValue> {
   constructor(value: IStringFieldValue) {

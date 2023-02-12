@@ -1,10 +1,10 @@
 import type { IQueryHandler } from '@egodb/domain'
-import { convertFilterSpec } from '../../filter'
-import type { IRecordQueryModel } from '../../record'
-import { WithRecordTableId } from '../../record'
-import type { ITableRepository } from '../../table.repository'
-import type { GetRecordsQuery } from './get-records.query'
-import type { IGetRecordsOutput } from './get-records.query.interface'
+import { convertFilterSpec } from '../../filter/index.js'
+import type { IRecordQueryModel } from '../../record/index.js'
+import { WithRecordTableId } from '../../record/index.js'
+import type { ITableRepository } from '../../table.repository.js'
+import type { IGetRecordsOutput } from './get-records.query.interface.js'
+import type { GetRecordsQuery } from './get-records.query.js'
 
 export class GetRecordsQueryHandler implements IQueryHandler<GetRecordsQuery, IGetRecordsOutput> {
   constructor(protected readonly tableRepo: ITableRepository, protected readonly rm: IRecordQueryModel) {}

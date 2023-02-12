@@ -1,12 +1,12 @@
 import { isEmpty } from '@fxts/core'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { IRootFilter } from '../../filter'
-import { RootFilter } from '../../filter'
-import type { ITableSpecVisitor } from '../../specifications/interface'
-import type { Table } from '../../table'
-import type { View } from '../view'
-import { BaseViewSpecification } from './base-view-specification'
+import type { IRootFilter } from '../../filter/index.js'
+import { RootFilter } from '../../filter/index.js'
+import type { ITableSpecVisitor } from '../../specifications/interface.js'
+import type { Table } from '../../table.js'
+import type { View } from '../view.js'
+import { BaseViewSpecification } from './base-view-specification.js'
 
 export class WithFilter extends BaseViewSpecification {
   constructor(public readonly filter: IRootFilter | null, public readonly view: View) {

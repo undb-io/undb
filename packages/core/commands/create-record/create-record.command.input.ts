@@ -1,7 +1,7 @@
 import * as z from 'zod'
-import { mutateRecordValueSchema } from '../../record/record.schema'
-import { recordIdSchema } from '../../record/value-objects/record-id.schema'
-import { tableIdSchema } from '../../value-objects'
+import { mutateRecordValueSchema } from '../../record/record.schema.js'
+import { recordIdSchema } from '../../record/value-objects/record-id.schema.js'
+import { tableIdSchema } from '../../value-objects/index.js'
 
 export const createRecordCommandInput = z.object({
   tableId: tableIdSchema,

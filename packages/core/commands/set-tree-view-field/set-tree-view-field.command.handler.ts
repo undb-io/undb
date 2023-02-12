@@ -1,6 +1,6 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { ITableRepository } from '../../table.repository'
-import type { SetTreeViewFieldCommand } from './set-tree-view-field.command'
+import type { ITableRepository } from '../../table.repository.js'
+import type { SetTreeViewFieldCommand } from './set-tree-view-field.command.js'
 
 type ISetTreeViewFieldCommandHandler = ICommandHandler<SetTreeViewFieldCommand, void>
 

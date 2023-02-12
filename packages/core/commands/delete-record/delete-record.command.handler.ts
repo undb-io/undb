@@ -1,7 +1,7 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { IRecordRepository } from '../../record/record.repository'
-import type { ITableRepository } from '../../table.repository'
-import type { DeleteRecordCommand } from './delete-record.comand'
+import type { IRecordRepository } from '../../record/record.repository.js'
+import type { ITableRepository } from '../../table.repository.js'
+import type { DeleteRecordCommand } from './delete-record.comand.js'
 
 export class DeleteRecordCommandHandler implements ICommandHandler<DeleteRecordCommand, void> {
   constructor(protected readonly tableRepo: ITableRepository, protected readonly recordRepo: IRecordRepository) {}

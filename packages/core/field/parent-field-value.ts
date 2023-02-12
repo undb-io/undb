@@ -1,6 +1,6 @@
-import { FieldValueBase } from './field-value.base'
-import type { IFieldValueVisitor } from './field-value.visitor'
-import type { IParentFieldValue } from './parent-field.type'
+import { FieldValueBase } from './field-value.base.js'
+import type { IFieldValueVisitor } from './field-value.visitor.js'
+import type { IParentFieldValue } from './parent-field.type.js'
 
 export class ParentFieldValue extends FieldValueBase<IParentFieldValue> {
   constructor(value: IParentFieldValue) {

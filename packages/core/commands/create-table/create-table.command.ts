@@ -1,7 +1,7 @@
 import type { CommandProps } from '@egodb/domain'
 import { Command } from '@egodb/domain'
-import type { ICreateTableSchemaInput } from '../../value-objects'
-import type { ICreateTableInput } from './create-table.command.interface'
+import type { ICreateTableSchemaInput } from '../../value-objects/index.js'
+import type { ICreateTableInput } from './create-table.command.interface.js'
 
 export class CreateTableCommand extends Command implements ICreateTableInput {
   readonly name: string

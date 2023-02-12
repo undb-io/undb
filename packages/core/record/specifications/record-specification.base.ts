@@ -1,9 +1,9 @@
 import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { FieldValue } from '../../field'
-import type { Record } from '../record'
-import type { IRecordVisitor } from './interface'
+import type { FieldValue } from '../../field/index.js'
+import type { Record } from '../record.js'
+import type { IRecordVisitor } from './interface.js'
 
 export abstract class BaseRecordSpecification<V extends FieldValue> extends CompositeSpecification<
   Record,
@@ -28,6 +28,6 @@ export abstract class BaseRecordQuerySpecification<T = unknown> extends Composit
   }
 
   mutate(): Result<Record, string> {
-    throw new Error('record value specification used only for query')
+    throw new Error('record value specification used only for query.js')
   }
 }

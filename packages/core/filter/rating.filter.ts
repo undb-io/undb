@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { ratingFieldValue } from '../field/rating-field.type'
-import { baseFilter } from './filter.base'
-import { ratingFilterOperators } from './operators'
+import { ratingFieldValue } from '../field/rating-field.type.js'
+import { baseFilter } from './filter.base.js'
+import { ratingFilterOperators } from './operators.js'
 
 export const ratingFilterValue = ratingFieldValue
 export const ratingFilter = z

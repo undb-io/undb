@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { baseFilter } from './filter.base'
-import { dateFilterOperators } from './operators'
+import { baseFilter } from './filter.base.js'
+import { dateFilterOperators } from './operators.js'
 
 export const dateFilterValue = z.date().nullable().optional()
 export const dateFilter = z

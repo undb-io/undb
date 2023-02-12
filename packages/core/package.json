@@ -8,12 +8,12 @@
     "@fxts/core": "^0.11.0",
     "array-move": "^3.0.1",
     "date-fns": "^2.29.3",
-    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
     "oxide.ts": "^1.1.0",
     "zod": "^3.20.3"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.191",
+    "@types/lodash-es": "^4.17.6",
     "rimraf": "^3.0.2",
     "tsconfig": "^0.0.0",
     "tsup": "^6.6.0",
@@ -22,8 +22,11 @@
     "vitest": "^0.26.3",
     "vitest-mock-extended": "^1.0.9"
   },
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/index.js"
+  },
   "keywords": [],
-  "main": "./dist/index",
   "scripts": {
     "build": "tsup",
     "clean": "rimraf dist",
@@ -33,5 +36,6 @@
     "test": "vitest run",
     "test:watch": "vitest"
   },
+  "type": "module",
   "types": "./dist/index"
 }

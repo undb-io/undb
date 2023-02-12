@@ -1,11 +1,11 @@
 import { ValueObject } from '@egodb/domain'
 import { map, pipe, toArray } from '@fxts/core'
-import { unzip } from 'lodash/fp'
+import { unzip } from 'lodash-es'
 import type { Option } from 'oxide.ts'
 import { None } from 'oxide.ts'
 import * as z from 'zod'
-import type { IFilter, IOperator } from '../filter'
-import type { IRecordDisplayValues } from '../record'
+import type { IFilter, IOperator } from '../filter/index.js'
+import type { IRecordDisplayValues } from '../record/index.js'
 import type {
   IBaseField,
   IFieldType,
@@ -14,12 +14,12 @@ import type {
   IReferenceField,
   ITreeField,
   SystemField,
-} from './field.type'
-import type { IFieldVisitor } from './field.visitor'
-import type { FieldId, FieldName } from './value-objects'
-import { valueConstraintsSchema } from './value-objects'
-import { fieldIdSchema } from './value-objects/field-id.schema'
-import { fieldNameSchema } from './value-objects/field-name.schema'
+} from './field.type.js'
+import type { IFieldVisitor } from './field.visitor.js'
+import { fieldIdSchema } from './value-objects/field-id.schema.js'
+import { fieldNameSchema } from './value-objects/field-name.schema.js'
+import type { FieldId, FieldName } from './value-objects/index.js'
+import { valueConstraintsSchema } from './value-objects/index.js'
 
 export const createBaseFieldsSchema = z
   .object({

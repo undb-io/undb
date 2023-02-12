@@ -1,12 +1,12 @@
 import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { View } from '..'
-import type { ITableSpecVisitor } from '../../specifications'
-import type { Table } from '../../table'
-import type { ICreateViewsSchema } from '../../table.schema'
-import { Views } from '../views'
-import { BaseViewSpecification } from './base-view-specification'
+import type { ITableSpecVisitor } from '../../specifications/index.js'
+import type { Table } from '../../table.js'
+import type { ICreateViewsSchema } from '../../table.schema.js'
+import type { View } from '../view.js'
+import { Views } from '../views.js'
+import { BaseViewSpecification } from './base-view-specification.js'
 
 export class WithTableViews extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(public readonly views: Views) {

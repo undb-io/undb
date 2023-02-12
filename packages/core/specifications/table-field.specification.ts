@@ -1,9 +1,9 @@
 import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { ITableSpecVisitor } from '.'
-import type { Field } from '../field'
-import type { Table } from '../table'
+import type { Field } from '../field/index.js'
+import type { Table } from '../table.js'
+import type { ITableSpecVisitor } from './interface.js'
 
 export class WithNewField extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(public readonly field: Field) {

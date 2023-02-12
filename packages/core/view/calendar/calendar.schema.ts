@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { isDateField } from '../../field/date-field.type'
-import { isDateRangeField } from '../../field/date-range-field.type'
-import { fieldIdSchema } from '../../field/value-objects/field-id.schema'
+import { isDateField } from '../../field/date-field.type.js'
+import { isDateRangeField } from '../../field/date-range-field.type.js'
+import { fieldIdSchema } from '../../field/value-objects/field-id.schema.js'
 
 export const calendarSchema = z.object({
   fieldId: fieldIdSchema.optional(),

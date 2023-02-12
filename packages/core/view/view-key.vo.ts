@@ -1,6 +1,6 @@
 import { ValueObject } from '@egodb/domain'
 import { z } from 'zod'
-import type { ViewName } from './view-name.vo'
+import type { ViewName } from './view-name.vo.js'
 
 export const viewKeySchema = z.string().min(1)
 

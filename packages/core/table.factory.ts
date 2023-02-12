@@ -1,13 +1,13 @@
 import { and } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
-import { WithTableId, WithTableName, WithTableSchema } from './specifications'
-import type { TableCompositeSpecificaiton } from './specifications/interface'
-import { newTableSpec } from './specifications/specifications'
-import type { IQueryTable } from './table'
-import { Table } from './table'
-import type { ICreateTableInput_internal } from './table.schema'
-import type { ICreateTableSchemaInput } from './value-objects'
-import { WithTableViews } from './view'
+import { WithTableId, WithTableName, WithTableSchema } from './specifications/index.js'
+import type { TableCompositeSpecificaiton } from './specifications/interface.js'
+import { newTableSpec } from './specifications/specifications.js'
+import type { IQueryTable } from './table.js'
+import { Table } from './table.js'
+import type { ICreateTableInput_internal } from './table.schema.js'
+import type { ICreateTableSchemaInput } from './value-objects/index.js'
+import { WithTableViews } from './view/index.js'
 
 export class TableFactory {
   static create(...specs: TableCompositeSpecificaiton[]): Result<Table, string>

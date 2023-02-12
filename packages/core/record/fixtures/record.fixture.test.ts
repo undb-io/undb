@@ -1,7 +1,7 @@
-import { NumberFieldValue, StringFieldValue } from '../../field'
-import { NumberEqual, StringEqual } from '../specifications'
-import { RecordCompositeSpecification } from '../specifications/interface'
-import { createTestRecord } from './record.fixture'
+import { NumberFieldValue, StringFieldValue } from '../../field/index.js'
+import { NumberEqual, StringEqual } from '../specifications/index.js'
+import { RecordCompositeSpecification } from '../specifications/interface.js'
+import { createTestRecord } from './record.fixture.js'
 
 beforeAll(() => {
   vi.setSystemTime(new Date(2022, 1, 1))

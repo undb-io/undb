@@ -1,13 +1,13 @@
-import { BoolField } from './bool-field'
-import { DateField } from './date-field'
-import { DateRangeField } from './date-range-field'
+import { BoolField } from './bool-field.js'
+import { DateField } from './date-field.js'
+import { DateRangeField } from './date-range-field.js'
 import { FieldFactory } from './field.factory'
-import { Field } from './field.type'
-import { NumberField } from './number-field'
-import { ParentField } from './parent-field'
-import { SelectField } from './select-field'
-import { StringField } from './string-field'
-import { TreeField } from './tree-field'
+import { Field } from './field.type.js'
+import { NumberField } from './number-field.js'
+import { ParentField } from './parent-field.js'
+import { SelectField } from './select-field.js'
+import { StringField } from './string-field.js'
+import { TreeField } from './tree-field.js'
 
 it('should create string field', () => {
   const field = FieldFactory.create({

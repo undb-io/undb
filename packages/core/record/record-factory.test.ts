@@ -1,10 +1,10 @@
-import { Field, FieldId, FieldName, FieldValueConstraints, SelectField, StringField } from '../field'
-import { Option, OptionColor, OptionKey, OptionName, Options } from '../option'
-import { TableSchemaIdMap } from '../value-objects'
-import { RecordFactory } from './record.factory'
-import { IQueryRecordSchema } from './record.type'
-import { WithRecordId, WithRecordTableId } from './specifications'
-import { RecordCompositeSpecification } from './specifications/interface'
+import { Field, FieldId, FieldName, FieldValueConstraints, SelectField, StringField } from '../field/index.js'
+import { Option, OptionColor, OptionKey, OptionName, Options } from '../option/index.js'
+import { TableSchemaIdMap } from '../value-objects/index.js'
+import { RecordFactory } from './record.factory.js'
+import { IQueryRecordSchema } from './record.type.js'
+import { WithRecordId, WithRecordTableId } from './specifications/index.js'
+import { RecordCompositeSpecification } from './specifications/interface.js'
 
 beforeAll(() => {
   vi.setSystemTime(new Date(2022, 1, 1))
@@ -109,7 +109,7 @@ describe('fromQuery', () => {
         ],
       ]),
     ],
-  ])('should create record from query', (r, field) => {
+  ])('should create record from query.js', (r, field) => {
     const record = RecordFactory.fromQuery(r, field)
 
     expect(record.isOk()).toBeTruthy()

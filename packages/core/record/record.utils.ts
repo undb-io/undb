@@ -1,8 +1,8 @@
 import { filter, map, pipe, toArray } from '@fxts/core'
-import type { ICreateFieldsSchema_internal, ICreateFieldValueSchema_internal } from '../field'
-import { createFieldValueSchema_internal } from '../field'
-import type { TableSchema } from '../value-objects'
-import type { IMutateRecordValueSchema } from './record.schema'
+import type { ICreateFieldsSchema_internal, ICreateFieldValueSchema_internal } from '../field/index.js'
+import { createFieldValueSchema_internal } from '../field/index.js'
+import type { TableSchema } from '../value-objects/index.js'
+import type { IMutateRecordValueSchema } from './record.schema.js'
 
 export const createRecordInputs = (
   schema: TableSchema,

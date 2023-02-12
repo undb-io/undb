@@ -1,7 +1,7 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { IRecordRepository } from '../../record/record.repository'
-import type { ITableRepository } from '../../table.repository'
-import type { BulkDeleteRecordsCommand } from './bulk-delete-records.comand'
+import type { IRecordRepository } from '../../record/record.repository.js'
+import type { ITableRepository } from '../../table.repository.js'
+import type { BulkDeleteRecordsCommand } from './bulk-delete-records.comand.js'
 
 export class BulkDeleteRecordsCommandHandler implements ICommandHandler<BulkDeleteRecordsCommand, void> {
   constructor(protected readonly tableRepo: ITableRepository, protected readonly recordRepo: IRecordRepository) {}

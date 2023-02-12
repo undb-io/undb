@@ -1,5 +1,5 @@
 import { createTestTable } from './fixtures/table.fixture'
-import { WithTableName } from './specifications'
+import { WithTableName } from './specifications/index.js'
 
 describe('Table', () => {
   describe('updateName', () => {

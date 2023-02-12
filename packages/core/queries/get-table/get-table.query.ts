@@ -1,5 +1,5 @@
 import { Query } from '@egodb/domain'
-import type { IGetTableQuery } from './get-table.query.interface'
+import type { IGetTableQuery } from './get-table.query.interface.js'
 
 export class GetTableQuery extends Query {
   public readonly id: string

@@ -1,6 +1,6 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { ITableRepository } from '../../table.repository'
-import type { SwitchDisplayTypeCommand } from './switch-display-type.command'
+import type { ITableRepository } from '../../table.repository.js'
+import type { SwitchDisplayTypeCommand } from './switch-display-type.command.js'
 
 export class SwitchDisplayTypeCommandHandler implements ICommandHandler<SwitchDisplayTypeCommand, void> {
   constructor(protected readonly tableRepo: ITableRepository) {}

@@ -1,6 +1,6 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { ITableRepository } from '../../table.repository'
-import type { SetCalendarFieldCommand } from './set-calendar-field.command'
+import type { ITableRepository } from '../../table.repository.js'
+import type { SetCalendarFieldCommand } from './set-calendar-field.command.js'
 
 type ISetCalendarFieldCommandHandler = ICommandHandler<SetCalendarFieldCommand, void>
 

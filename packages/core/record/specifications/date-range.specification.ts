@@ -1,10 +1,10 @@
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { IDateRangeFieldValue } from '../../field'
-import { DateRangeFieldValue } from '../../field/date-range-field-value'
-import type { Record } from '../record'
-import type { IRecordVisitor } from './interface'
-import { BaseRecordSpecification } from './record-specification.base'
+import { DateRangeFieldValue } from '../../field/date-range-field-value.js'
+import type { IDateRangeFieldValue } from '../../field/index.js'
+import type { Record } from '../record.js'
+import type { IRecordVisitor } from './interface.js'
+import { BaseRecordSpecification } from './record-specification.base.js'
 
 export class DateRangeEqual extends BaseRecordSpecification<DateRangeFieldValue> {
   static from(fieldId: string, value: IDateRangeFieldValue): DateRangeEqual {

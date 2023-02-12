@@ -1,3 +1,3 @@
-export * from './duplicate-record.comand'
-export * from './duplicate-record.command.handler'
-export * from './duplicate-record.command.input'
+export * from './duplicate-record.comand.js'
+export * from './duplicate-record.command.handler.js'
+export * from './duplicate-record.command.input.js'

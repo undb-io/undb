@@ -1,7 +1,7 @@
 import type { CommandProps } from '@egodb/domain'
 import { Command } from '@egodb/domain'
-import type { IViewDisplayType } from '../../view'
-import type { ISwitchDisplayTypeCommandInput } from './switch-display-type.command.interface'
+import type { IViewDisplayType } from '../../view/index.js'
+import type { ISwitchDisplayTypeCommandInput } from './switch-display-type.command.interface.js'
 
 export class SwitchDisplayTypeCommand extends Command implements ISwitchDisplayTypeCommandInput {
   public readonly tableId: string

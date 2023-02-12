@@ -1,6 +1,6 @@
 import { SafeParseError } from 'zod'
-import { SelectField } from './select-field'
-import { createSelectFieldSchema, ICreateSelectFieldSchema } from './select-field.type'
+import { SelectField } from './select-field.js'
+import { createSelectFieldSchema, ICreateSelectFieldSchema } from './select-field.type.js'
 
 describe('SelectField', () => {
   describe('#create()', () => {

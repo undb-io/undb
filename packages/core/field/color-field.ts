@@ -1,10 +1,10 @@
-import type { IColorFilter, IColorFilterOperator } from '../filter/color.filter'
-import { ColorFieldValue } from './color-field-value'
-import type { ColorFieldType, ICreateColorFieldInput, ICreateColorFieldValue } from './color-field.type'
-import { BaseField } from './field.base'
-import type { IColorField } from './field.type'
-import type { IFieldVisitor } from './field.visitor'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
+import type { IColorFilter, IColorFilterOperator } from '../filter/color.filter.js'
+import { ColorFieldValue } from './color-field-value.js'
+import type { ColorFieldType, ICreateColorFieldInput, ICreateColorFieldValue } from './color-field.type.js'
+import { BaseField } from './field.base.js'
+import type { IColorField } from './field.type.js'
+import type { IFieldVisitor } from './field.visitor.js'
+import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export class ColorField extends BaseField<IColorField> {
   type: ColorFieldType = 'color'

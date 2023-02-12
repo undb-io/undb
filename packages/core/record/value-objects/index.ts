@@ -1,2 +1,2 @@
-export * from './record-id.vo'
-export * from './record-values.vo'
+export * from './record-id.vo.js'
+export * from './record-values.vo.js'

@@ -1,6 +1,6 @@
 import type { IFieldQueryValue, IQueryRecordSchema, IRecordDisplayValues, Record, TableSchemaIdMap } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
-import { castArray, mapValues } from 'lodash'
+import { castArray, mapValues } from 'lodash-es'
 import type { Result } from 'oxide.ts'
 import {
   getFieldIdFromDateRangeFromColumnName,

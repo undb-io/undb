@@ -1,6 +1,6 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { ITableRepository } from '../../table.repository'
-import type { SetSortsCommand } from './set-sorts.command'
+import type { ITableRepository } from '../../table.repository.js'
+import type { SetSortsCommand } from './set-sorts.command.js'
 
 type ISetSortsCommandHandler = ICommandHandler<SetSortsCommand, void>
 

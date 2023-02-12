@@ -1,15 +1,15 @@
-import type { IUpdatedAtFilterOperator } from '../filter/operators'
-import type { IUpdatedAtFilter } from '../filter/updated-at.filter'
-import { BaseField } from './field.base'
-import type { IUpdatedAtField } from './field.type'
-import type { IFieldVisitor } from './field.visitor'
-import { UpdatedAtFieldValue } from './updated-at-field-value'
+import type { IUpdatedAtFilterOperator } from '../filter/operators.js'
+import type { IUpdatedAtFilter } from '../filter/updated-at.filter.js'
+import { BaseField } from './field.base.js'
+import type { IUpdatedAtField } from './field.type.js'
+import type { IFieldVisitor } from './field.visitor.js'
+import { UpdatedAtFieldValue } from './updated-at-field-value.js'
 import type {
   ICreateUpdatedAtFieldInput,
   ICreateUpdatedAtFieldValue,
   UpdatedAtFieldType,
-} from './updated-at-field.type'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
+} from './updated-at-field.type.js'
+import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export class UpdatedAtField extends BaseField<IUpdatedAtField> {
   type: UpdatedAtFieldType = 'updated-at'

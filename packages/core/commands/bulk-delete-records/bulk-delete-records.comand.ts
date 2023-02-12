@@ -1,6 +1,6 @@
 import type { CommandProps } from '@egodb/domain'
 import { Command } from '@egodb/domain'
-import type { IBulkDeleteRecordsInput } from './bulk-delete-records.command.input'
+import type { IBulkDeleteRecordsInput } from './bulk-delete-records.command.input.js'
 
 export class BulkDeleteRecordsCommand extends Command {
   readonly ids: string[]

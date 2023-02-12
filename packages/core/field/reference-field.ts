@@ -1,11 +1,15 @@
-import type { IReferenceFilterOperator } from '../filter/operators'
-import type { IReferenceFilter } from '../filter/reference.filter'
-import { BaseReferenceField } from './field.base'
-import type { IReferenceField } from './field.type'
-import type { IFieldVisitor } from './field.visitor'
-import { ReferenceFieldValue } from './reference-field-value'
-import type { ICreateReferenceFieldInput, ICreateReferenceFieldValue, ReferenceFieldType } from './reference-field.type'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
+import type { IReferenceFilterOperator } from '../filter/operators.js'
+import type { IReferenceFilter } from '../filter/reference.filter.js'
+import { BaseReferenceField } from './field.base.js'
+import type { IReferenceField } from './field.type.js'
+import type { IFieldVisitor } from './field.visitor.js'
+import { ReferenceFieldValue } from './reference-field-value.js'
+import type {
+  ICreateReferenceFieldInput,
+  ICreateReferenceFieldValue,
+  ReferenceFieldType,
+} from './reference-field.type.js'
+import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export class ReferenceField extends BaseReferenceField<IReferenceField> {
   type: ReferenceFieldType = 'reference'
