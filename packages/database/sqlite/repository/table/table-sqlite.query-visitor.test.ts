@@ -1,7 +1,7 @@
 import { WithTableId, WithTableName } from '@egodb/core'
 import { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
-import { Table } from '../../entity'
-import { TableSqliteQueryVisitor } from './table-sqlite.query-visitor'
+import { Table } from '../../entity/index.js'
+import { TableSqliteQueryVisitor } from './table-sqlite.query-visitor.js'
 
 describe('TableSqliteQueryVisitor', () => {
   let em: EntityManager

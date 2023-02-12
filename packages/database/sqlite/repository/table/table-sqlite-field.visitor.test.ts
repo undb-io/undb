@@ -1,7 +1,7 @@
 import { createTestTable, TreeField } from '@egodb/core'
 import { EntityManager } from '@mikro-orm/better-sqlite'
-import { Table } from '../../entity'
-import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor'
+import { Table } from '../../entity/index.js'
+import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
 
 describe('TableSqliteFieldVisitor', () => {
   let em: EntityManager

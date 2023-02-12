@@ -18,9 +18,9 @@ import {
   Property,
   SmallIntType,
 } from '@mikro-orm/core'
-import { BaseEntity } from './base'
-import { Option } from './option'
-import { Table } from './table'
+import { BaseEntity } from './base.js'
+import { Option } from './option.js'
+import { Table } from './table.js'
 
 @Entity({ abstract: true, discriminatorColumn: 'type' })
 export abstract class Field extends BaseEntity {

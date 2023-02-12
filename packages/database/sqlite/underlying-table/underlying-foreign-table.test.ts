@@ -1,6 +1,6 @@
 import { ReferenceField, TreeField } from '@egodb/core'
 import { Knex } from '@mikro-orm/better-sqlite'
-import { AdjacencyListTable, ClosureTable } from './underlying-foreign-table'
+import { AdjacencyListTable, ClosureTable } from './underlying-foreign-table.js'
 
 describe('UnderlyingAdjacencyListTable', () => {
   let knex: Knex

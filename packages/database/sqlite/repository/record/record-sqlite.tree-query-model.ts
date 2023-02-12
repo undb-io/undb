@@ -1,14 +1,14 @@
 import type { IQueryTreeRecords, IRecordSpec, IRecordTreeQueryModel, TableSchemaIdMap, TreeField } from '@egodb/core'
 import { getReferenceFields, INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
-import { DELETED_AT_COLUMN_NAME } from '../../decorators/soft-delete.decorator'
-import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory'
-import { ClosureTable } from '../../underlying-table/underlying-foreign-table'
-import { RecordSqliteMapper } from './record-sqlite.mapper'
-import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
-import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor'
-import type { RecordSqliteWithParent } from './record.type'
-import { createRecordTree } from './record.util'
+import { DELETED_AT_COLUMN_NAME } from '../../decorators/soft-delete.decorator.js'
+import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
+import { ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
+import { RecordSqliteMapper } from './record-sqlite.mapper.js'
+import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
+import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
+import type { RecordSqliteWithParent } from './record.type.js'
+import { createRecordTree } from './record.util.js'
 
 export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
   constructor(private readonly em: EntityManager) {}

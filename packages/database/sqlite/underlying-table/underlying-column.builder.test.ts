@@ -9,7 +9,7 @@ import {
   TreeField,
 } from '@egodb/core'
 import { Knex } from '@mikro-orm/better-sqlite'
-import { UnderlyingColumnBuilder } from './underlying-column.builder'
+import { UnderlyingColumnBuilder } from './underlying-column.builder.js'
 
 describe('UnderlyingColumnBuilder', () => {
   const tableName = 'tableName'

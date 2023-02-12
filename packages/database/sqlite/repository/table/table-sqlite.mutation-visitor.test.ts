@@ -12,11 +12,11 @@ import {
 } from '@egodb/core'
 import { EntityManager } from '@mikro-orm/better-sqlite'
 import { mock } from 'vitest-mock-extended'
-import { Field, Table } from '../../entity'
-import { View } from '../../entity/view'
-import { AdjacencyListTable } from '../../underlying-table/underlying-foreign-table'
-import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor'
-import { TableSqliteRepository } from './table-sqlite.repository'
+import { Field, Table } from '../../entity/index.js'
+import { View } from '../../entity/view.js'
+import { AdjacencyListTable } from '../../underlying-table/underlying-foreign-table.js'
+import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor.js'
+import { TableSqliteRepository } from './table-sqlite.repository.js'
 
 describe('TableSqliteMutationVisitor', () => {
   let table: CoreTable

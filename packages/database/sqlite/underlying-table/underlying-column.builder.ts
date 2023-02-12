@@ -1,15 +1,15 @@
 import type { NoneSystemField } from '@egodb/core'
 import { INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
-import type { IUnderlyingColumnBuilder } from '../interfaces/underlying-table.builder'
+import type { IUnderlyingColumnBuilder } from '../interfaces/underlying-table.builder.js'
+import { UnderlyingColumnFactory } from './underlying-column.factory.js'
 import {
   UnderlyingAutoIncreamentColumn,
   UnderlyingCreatedAtColumn,
   UnderlyingDeletedAtColumn,
   UnderlyingIdColumn,
   UnderlyingUpdatedAtColumn,
-} from './underlying-column'
-import { UnderlyingColumnFactory } from './underlying-column.factory'
+} from './underlying-column.js'
 
 export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
   constructor(private readonly knex: Knex, private readonly tb: Knex.TableBuilder) {}

@@ -4,7 +4,7 @@ import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
 import { Migration20230211054300 } from '../migrations/Migration20230211054300'
 
 beforeAll(async () => {
-  const { entities } = await import('../entity')
+  const { entities } = await import('../entity/index.js')
   const orm = await MikroORM.init(
     defineConfig({
       entities,

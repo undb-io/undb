@@ -5,8 +5,8 @@ import {
   INTERNAL_COLUMN_UPDATED_AT_NAME,
 } from '@egodb/core'
 import { EntityManager } from '@mikro-orm/better-sqlite'
-import { INTERNAL_COLUMN_DELETED_AT_NAME } from './constants'
-import { UnderlyingTableSqliteManager } from './underlying-table-sqlite.manager'
+import { INTERNAL_COLUMN_DELETED_AT_NAME } from './constants.js'
+import { UnderlyingTableSqliteManager } from './underlying-table-sqlite.manager.js'
 
 describe('UnderlyingTableSqliteManager', () => {
   let em: EntityManager

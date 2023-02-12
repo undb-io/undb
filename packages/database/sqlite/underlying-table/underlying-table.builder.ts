@@ -1,6 +1,6 @@
 import type { Table } from '@egodb/core'
-import { BaseEntityManager } from '../repository/base-entity-manager'
-import { UnderlyingColumnBuilder } from './underlying-column.builder'
+import { BaseEntityManager } from '../repository/base-entity-manager.js'
+import { UnderlyingColumnBuilder } from './underlying-column.builder.js'
 
 export class UnderlyingTableBuilder extends BaseEntityManager {
   public build() {

@@ -22,7 +22,7 @@ import type {
 import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import type { Table } from '../../entity'
+import type { Table } from '../../entity/index.js'
 import {
   AutoIncrementField,
   BoolField,
@@ -41,9 +41,9 @@ import {
   StringField,
   TreeField,
   UpdatedAtField,
-} from '../../entity'
-import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table'
-import { BaseEntityManager } from '../base-entity-manager'
+} from '../../entity/index.js'
+import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
+import { BaseEntityManager } from '../base-entity-manager.js'
 
 export class TableSqliteFieldVisitor extends BaseEntityManager implements IFieldVisitor {
   constructor(private readonly table: Table, em: EntityManager) {

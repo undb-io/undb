@@ -2,11 +2,11 @@ import type { ITableRepository, ITableSpec, IUnderlyingTableManager, Table as Co
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
-import { Table, Table as TableEntity } from '../../entity'
-import { View as ViewEntity } from '../../entity/view'
-import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor'
-import { TableSqliteMapper } from './table-sqlite.mapper'
-import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor'
+import { Table, Table as TableEntity } from '../../entity/index.js'
+import { View as ViewEntity } from '../../entity/view.js'
+import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
+import { TableSqliteMapper } from './table-sqlite.mapper.js'
+import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor.js'
 
 export class TableSqliteRepository implements ITableRepository {
   constructor(protected readonly em: EntityManager, protected readonly tm: IUnderlyingTableManager) {}

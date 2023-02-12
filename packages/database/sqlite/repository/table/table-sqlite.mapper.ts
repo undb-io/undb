@@ -1,18 +1,20 @@
 import type {
+  ICreateParentFieldInput,
   ICreateRatingFieldInput,
   ICreateSelectFieldSchema,
   ICreateTableSchemaInput,
+  ICreateTreeFieldSchema,
   ICreateViewsSchema,
+  IParentFieldQuerySchema,
   IQueryFieldSchema,
   IQueryTable,
   IQueryView,
   IRatingFieldQuerySchema,
   ISelectFieldQuerySchema,
+  ITreeFieldQuerySchema,
   Table,
 } from '@egodb/core'
 import { TableFactory } from '@egodb/core'
-import type { ICreateParentFieldInput, IParentFieldQuerySchema } from '@egodb/core/field/parent-field.type'
-import type { ICreateTreeFieldSchema, ITreeFieldQuerySchema } from '@egodb/core/field/tree-field.type'
 import type { EntityDTO } from '@mikro-orm/core'
 import type { Result } from 'oxide.ts'
 import type {
@@ -22,7 +24,7 @@ import type {
   SelectField,
   Table as TableEntity,
   TreeField,
-} from '../../entity'
+} from '../../entity/index.js'
 
 export class TableSqliteMapper {
   static fieldToQuery(entity: EntityDTO<FieldEntity>): IQueryFieldSchema {

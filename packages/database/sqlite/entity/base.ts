@@ -1,5 +1,5 @@
 import { Index, Property } from '@mikro-orm/core'
-import { SoftDelete } from '../decorators/soft-delete.decorator'
+import { SoftDelete } from '../decorators/soft-delete.decorator.js'
 
 @SoftDelete()
 export abstract class BaseEntity {

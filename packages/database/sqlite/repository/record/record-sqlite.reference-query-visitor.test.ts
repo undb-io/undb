@@ -1,6 +1,6 @@
 import { ParentField, TreeField } from '@egodb/core'
 import { Knex } from '@mikro-orm/better-sqlite'
-import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor'
+import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
 
 describe('RecordSqliteReferenceQueryVisitor', () => {
   let visitor: RecordSqliteReferenceQueryVisitor

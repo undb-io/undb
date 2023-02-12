@@ -8,6 +8,7 @@ import type {
   TreeView as CoreTreeView,
   View as CoreView,
 } from '@egodb/core'
+import type { Rel } from '@mikro-orm/core'
 import {
   ArrayType,
   Cascade,
@@ -20,8 +21,8 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core'
-import { BaseEntity } from './base'
-import { Table } from './table'
+import { BaseEntity } from './base.js'
+import { Table } from './table.js'
 
 @Embeddable()
 export class Kanban {
@@ -62,7 +63,7 @@ export class View extends BaseEntity {
   key: string
 
   @ManyToOne(() => Table, { cascade: [Cascade.ALL] })
-  table: Table
+  table: Rel<Table>
 
   @Property()
   name: string
@@ -91,7 +92,7 @@ export class View extends BaseEntity {
   @Property({ type: ArrayType, nullable: true })
   fieldsOrder?: string[]
 
-  constructor(table: Table, view: CoreView) {
+  constructor(table: Rel<Table>, view: CoreView) {
     super()
     this.id = view.id.value
     this.key = view.key.value

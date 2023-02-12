@@ -33,7 +33,7 @@ import {
 } from '@egodb/core'
 import { Knex } from '@mikro-orm/better-sqlite'
 import { addDays, subDays } from 'date-fns'
-import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
+import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
 
 const date = new Date(2022, 2, 2)
 describe('RecordSqliteQueryVisitor', () => {

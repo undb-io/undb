@@ -20,8 +20,8 @@ import {
   INTERNAL_INCREAMENT_ID_NAME as INTERNAL_AUTO_INCREAMENT_ID_NAME,
 } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
-import type { IUnderlyingColumn } from '../interfaces/underlying-column'
-import { INTERNAL_COLUMN_DELETED_AT_NAME } from './constants'
+import type { IUnderlyingColumn } from '../interfaces/underlying-column.js'
+import { INTERNAL_COLUMN_DELETED_AT_NAME } from './constants.js'
 
 export abstract class UnderlyingColumn implements IUnderlyingColumn {
   abstract get name(): string

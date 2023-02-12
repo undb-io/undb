@@ -2,9 +2,9 @@ import type { IQueryTable, ITableQueryModel, ITableSpec } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
-import { Table } from '../../entity'
-import { TableSqliteMapper } from './table-sqlite.mapper'
-import { TableSqliteQueryVisitor } from './table-sqlite.query-visitor'
+import { Table } from '../../entity/index.js'
+import { TableSqliteMapper } from './table-sqlite.mapper.js'
+import { TableSqliteQueryVisitor } from './table-sqlite.query-visitor.js'
 
 export class TableSqliteQueryModel implements ITableQueryModel {
   constructor(protected readonly em: EntityManager) {}

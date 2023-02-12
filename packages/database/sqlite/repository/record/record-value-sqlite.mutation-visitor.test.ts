@@ -8,7 +8,7 @@ import {
 } from '@egodb/core'
 import { EntityManager } from '@mikro-orm/better-sqlite'
 import { addDays } from 'date-fns'
-import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation-visitor'
+import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation-visitor.js'
 
 describe('RecordValueSqliteVisitor', () => {
   let visitor: RecordValueSqliteMutationVisitor
