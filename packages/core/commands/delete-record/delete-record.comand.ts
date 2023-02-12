@@ -1,6 +1,6 @@
 import type { CommandProps } from '@egodb/domain'
 import { Command } from '@egodb/domain'
-import type { IDeleteRecordInput } from './delete-record.command.input'
+import type { IDeleteRecordInput } from './delete-record.command.input.js'
 
 export class DeleteRecordCommand extends Command {
   readonly id: string

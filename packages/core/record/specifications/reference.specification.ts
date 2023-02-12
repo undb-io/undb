@@ -1,9 +1,9 @@
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import { ReferenceFieldValue } from '../../field'
-import type { Record } from '../record'
-import type { IRecordVisitor } from './interface'
-import { BaseRecordSpecification } from './record-specification.base'
+import { ReferenceFieldValue } from '../../field/index.js'
+import type { Record } from '../record.js'
+import type { IRecordVisitor } from './interface.js'
+import { BaseRecordSpecification } from './record-specification.base.js'
 
 export class ReferenceEqual extends BaseRecordSpecification<ReferenceFieldValue> {
   isSatisfiedBy(r: Record): boolean {

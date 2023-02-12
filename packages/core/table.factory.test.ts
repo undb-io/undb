@@ -1,5 +1,5 @@
-import { TableFactory } from './table.factory'
-import { ICreateTableInput_internal } from './table.schema'
+import { TableFactory } from './table.factory.js'
+import { ICreateTableInput_internal } from './table.schema.js'
 
 describe('TableFactory', () => {
   test.each<ICreateTableInput_internal>([

@@ -1,5 +1,5 @@
-import { ParentField } from './parent-field'
-import { TreeField } from './tree-field'
+import { ParentField } from './parent-field.js'
+import { TreeField } from './tree-field.js'
 
 describe('TreeField', () => {
   test('createParentField', () => {

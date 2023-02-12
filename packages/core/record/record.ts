@@ -1,12 +1,12 @@
 import { DateVO } from '@egodb/domain'
-import type { TableId, TableSchema, TableSchemaIdMap } from '../value-objects'
-import { RecordFactory } from './record.factory'
-import type { IInternalRecordValues, IMutateRecordValueSchema, RecordAllValues } from './record.schema'
+import type { TableId, TableSchema, TableSchemaIdMap } from '../value-objects/index.js'
+import { RecordFactory } from './record.factory.js'
+import type { IInternalRecordValues, IMutateRecordValueSchema, RecordAllValues } from './record.schema.js'
 import { createRecordInputs } from './record.utils'
-import { WithRecordId, WithRecordTableId, WithRecordValues } from './specifications'
-import type { RecordCompositeSpecification } from './specifications/interface'
-import { RecordId, RecordValues } from './value-objects'
-import { RecordDisplayValues } from './value-objects/record-display-values.vo'
+import { WithRecordId, WithRecordTableId, WithRecordValues } from './specifications/index.js'
+import type { RecordCompositeSpecification } from './specifications/interface.js'
+import { RecordId, RecordValues } from './value-objects/index.js'
+import { RecordDisplayValues } from './value-objects/record-display-values.vo.js'
 
 export class Record {
   public id: RecordId = RecordId.create()

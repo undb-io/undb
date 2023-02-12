@@ -1,9 +1,9 @@
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import { SelectFieldValue } from '../../field/select-field-value'
-import type { Record } from '../record'
-import type { IRecordVisitor } from './interface'
-import { BaseRecordQuerySpecification, BaseRecordSpecification } from './record-specification.base'
+import { SelectFieldValue } from '../../field/select-field-value.js'
+import type { Record } from '../record.js'
+import type { IRecordVisitor } from './interface.js'
+import { BaseRecordQuerySpecification, BaseRecordSpecification } from './record-specification.base.js'
 
 export class SelectEqual extends BaseRecordSpecification<SelectFieldValue> {
   /**

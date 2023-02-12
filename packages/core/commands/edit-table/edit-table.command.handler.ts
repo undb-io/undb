@@ -1,6 +1,6 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { ITableRepository } from '../../table.repository'
-import type { EditTableCommand } from './edit-table.command'
+import type { ITableRepository } from '../../table.repository.js'
+import type { EditTableCommand } from './edit-table.command.js'
 
 type IEditTableCommandHandler = ICommandHandler<EditTableCommand, void>
 

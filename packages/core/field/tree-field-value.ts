@@ -1,6 +1,6 @@
-import { FieldValueBase } from './field-value.base'
-import type { IFieldValueVisitor } from './field-value.visitor'
-import type { ITreeFieldValue } from './tree-field.type'
+import { FieldValueBase } from './field-value.base.js'
+import type { IFieldValueVisitor } from './field-value.visitor.js'
+import type { ITreeFieldValue } from './tree-field.type.js'
 
 export class TreeFieldValue extends FieldValueBase<ITreeFieldValue> {
   constructor(value: ITreeFieldValue) {

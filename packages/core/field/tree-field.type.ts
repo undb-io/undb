@@ -1,10 +1,10 @@
 import * as z from 'zod'
-import { recordIdSchema } from '../record/value-objects/record-id.schema'
-import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base'
-import { FIELD_TYPE_KEY } from './field.constant'
-import { TreeField } from './tree-field'
-import { fieldIdSchema } from './value-objects/field-id.schema'
-import { fieldNameSchema } from './value-objects/field-name.schema'
+import { recordIdSchema } from '../record/value-objects/record-id.schema.js'
+import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base.js'
+import { FIELD_TYPE_KEY } from './field.constant.js'
+import { TreeField } from './tree-field.js'
+import { fieldIdSchema } from './value-objects/field-id.schema.js'
+import { fieldNameSchema } from './value-objects/field-name.schema.js'
 
 export const treeTypeSchema = z.literal('tree')
 export type TreeFieldType = z.infer<typeof treeTypeSchema>

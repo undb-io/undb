@@ -1,10 +1,10 @@
-import type { INumberFilter, INumberFilterOperator } from '../filter/number.filter'
-import { BaseField } from './field.base'
-import type { INumberField } from './field.type'
-import type { IFieldVisitor } from './field.visitor'
-import { NumberFieldValue } from './number-field-value'
-import type { ICreateNumberFieldInput, ICreateNumberFieldValue, NumberType } from './number-field.type'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
+import type { INumberFilter, INumberFilterOperator } from '../filter/number.filter.js'
+import { BaseField } from './field.base.js'
+import type { INumberField } from './field.type.js'
+import type { IFieldVisitor } from './field.visitor.js'
+import { NumberFieldValue } from './number-field-value.js'
+import type { ICreateNumberFieldInput, ICreateNumberFieldValue, NumberType } from './number-field.type.js'
+import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export class NumberField extends BaseField<INumberField> {
   type: NumberType = 'number'

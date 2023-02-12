@@ -1,6 +1,6 @@
 import type { CommandProps } from '@egodb/domain'
 import { Command } from '@egodb/domain'
-import type { IReorderOptionsCommandInput } from './reorder-options.command.interface'
+import type { IReorderOptionsCommandInput } from './reorder-options.command.interface.js'
 
 export class ReorderOptionsCommand extends Command implements IReorderOptionsCommandInput {
   public readonly tableId: string

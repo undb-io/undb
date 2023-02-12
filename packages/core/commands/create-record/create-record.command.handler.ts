@@ -1,8 +1,8 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { IRecordRepository } from '../../record/record.repository'
-import type { ITableRepository } from '../../table.repository'
-import type { ICreateTableOutput } from '../create-table'
-import type { CreateRecordCommand } from './create-record.comand'
+import type { IRecordRepository } from '../../record/record.repository.js'
+import type { ITableRepository } from '../../table.repository.js'
+import type { ICreateTableOutput } from '../create-table/index.js'
+import type { CreateRecordCommand } from './create-record.comand.js'
 
 export class CreateRecordCommandHandler implements ICommandHandler<CreateRecordCommand, ICreateTableOutput> {
   constructor(protected readonly tableRepo: ITableRepository, protected readonly recordRepo: IRecordRepository) {}

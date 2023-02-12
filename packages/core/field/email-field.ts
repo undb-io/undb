@@ -1,10 +1,10 @@
-import type { IEmailFilter, IEmailFilterOperator } from '../filter/email.filter'
-import { EmailFieldValue } from './email-field-value'
-import type { EmailFieldType, ICreateEmailFieldInput, ICreateEmailFieldValue } from './email-field.type'
-import { BaseField } from './field.base'
-import type { IEmailField } from './field.type'
-import type { IFieldVisitor } from './field.visitor'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects'
+import type { IEmailFilter, IEmailFilterOperator } from '../filter/email.filter.js'
+import { EmailFieldValue } from './email-field-value.js'
+import type { EmailFieldType, ICreateEmailFieldInput, ICreateEmailFieldValue } from './email-field.type.js'
+import { BaseField } from './field.base.js'
+import type { IEmailField } from './field.type.js'
+import type { IFieldVisitor } from './field.visitor.js'
+import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export class EmailField extends BaseField<IEmailField> {
   type: EmailFieldType = 'email'

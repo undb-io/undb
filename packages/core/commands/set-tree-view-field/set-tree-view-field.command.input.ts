@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { tableIdSchema } from '../../value-objects'
-import { setTreeViewFieldSchema, viewNameSchema } from '../../view'
+import { tableIdSchema } from '../../value-objects/index.js'
+import { setTreeViewFieldSchema, viewNameSchema } from '../../view/index.js'
 
 export const setTreeViewFieldCommandInput = z
   .object({

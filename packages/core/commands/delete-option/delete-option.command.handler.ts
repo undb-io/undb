@@ -1,6 +1,6 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { ITableRepository } from '../../table.repository'
-import type { DeleteOptionCommand } from './delete-option.comand'
+import type { ITableRepository } from '../../table.repository.js'
+import type { DeleteOptionCommand } from './delete-option.comand.js'
 
 export class DeleteOptionCommandHandler implements ICommandHandler<DeleteOptionCommand, void> {
   constructor(protected readonly tableRepo: ITableRepository) {}

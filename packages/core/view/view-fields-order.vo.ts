@@ -2,7 +2,7 @@ import { ValueObject } from '@egodb/domain'
 import arrayMove from 'array-move'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
-import type { Field } from '../field'
+import type { Field } from '../field/index.js'
 
 export class ViewFieldsOrder extends ValueObject<string[]> {
   public get order() {

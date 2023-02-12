@@ -2,7 +2,7 @@ import { ValueObject } from '@egodb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
-import type { Field } from '../field'
+import type { Field } from '../field/index.js'
 
 export const DEFAULT_WIDTH = 200
 

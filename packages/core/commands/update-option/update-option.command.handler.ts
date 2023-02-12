@@ -1,6 +1,6 @@
 import { type ICommandHandler } from '@egodb/domain'
-import type { ITableRepository } from '../../table.repository'
-import type { UpdateOptionCommand } from './update-option.command'
+import type { ITableRepository } from '../../table.repository.js'
+import type { UpdateOptionCommand } from './update-option.command.js'
 
 type IUpdateOptionCommandHandler = ICommandHandler<UpdateOptionCommand, void>
 

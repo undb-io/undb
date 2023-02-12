@@ -1,8 +1,8 @@
 import type { ValueObject } from '@egodb/domain'
 import { isEqual } from 'date-fns'
-import type { IDateFieldValue } from './date-field.type'
-import { FieldValueBase } from './field-value.base'
-import type { IFieldValueVisitor } from './field-value.visitor'
+import type { IDateFieldValue } from './date-field.type.js'
+import { FieldValueBase } from './field-value.base.js'
+import type { IFieldValueVisitor } from './field-value.visitor.js'
 
 export class DateFieldValue extends FieldValueBase<IDateFieldValue> {
   constructor(value: IDateFieldValue) {

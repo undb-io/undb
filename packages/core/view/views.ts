@@ -1,10 +1,10 @@
 import { and, andOptions, ValueObject } from '@egodb/domain'
 import { Option } from 'oxide.ts'
-import type { Field } from '../field'
-import type { TableCompositeSpecificaiton } from '../specifications/interface'
-import { WithViewFieldsOrder } from './specifications/view-fields-order.specification'
-import { View } from './view'
-import type { ICreateViewInput_internal } from './view.type'
+import type { Field } from '../field/index.js'
+import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import { WithViewFieldsOrder } from './specifications/view-fields-order.specification.js'
+import { View } from './view.js'
+import type { ICreateViewInput_internal } from './view.type.js'
 
 export class Views extends ValueObject<View[]> {
   get views() {

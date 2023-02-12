@@ -3,7 +3,6 @@ import { castArray } from 'lodash'
 import { Option } from 'oxide.ts'
 import type { Class } from 'type-fest'
 import * as z from 'zod'
-import type { Field, ICreateFieldSchema, NoneSystemField } from '../field'
 import {
   createFieldSchema,
   DateField,
@@ -13,15 +12,16 @@ import {
   TreeField,
   WithoutField,
 } from '../field'
-import { CreatedAtField } from '../field/created-at-field'
-import { FieldFactory } from '../field/field.factory'
-import { IdField } from '../field/id-field'
-import { UpdatedAtField } from '../field/updated-at-field'
-import { fieldNameSchema } from '../field/value-objects/field-name.schema'
-import { WithNewField } from '../specifications/table-field.specification'
-import type { IKanbanField, ITreeViewField } from '../view'
-import type { ICalendarField } from '../view/calendar'
-import { ViewFieldsOrder } from '../view/view-fields-order.vo'
+import { CreatedAtField } from '../field/created-at-field.js'
+import { FieldFactory } from '../field/field.factory.js'
+import { IdField } from '../field/id-field.js'
+import type { Field, ICreateFieldSchema, NoneSystemField } from '../field/index.js'
+import { UpdatedAtField } from '../field/updated-at-field.js'
+import { fieldNameSchema } from '../field/value-objects/field-name.schema.js'
+import { WithNewField } from '../specifications/table-field.specification.js'
+import type { ICalendarField } from '../view/calendar/index.js'
+import type { IKanbanField, ITreeViewField } from '../view/index.js'
+import { ViewFieldsOrder } from '../view/view-fields-order.vo.js'
 
 function hasDuplicates(names: string[]): boolean {
   return names.length === new Set(names).size

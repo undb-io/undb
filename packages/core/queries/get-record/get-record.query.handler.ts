@@ -1,8 +1,8 @@
 import type { IQueryHandler } from '@egodb/domain'
-import type { IRecordQueryModel } from '../../record'
-import type { ITableRepository } from '../../table.repository'
-import type { GetRecordQuery } from './get-record.query'
-import type { IGetRecordOutput } from './get-record.query.interface'
+import type { IRecordQueryModel } from '../../record/index.js'
+import type { ITableRepository } from '../../table.repository.js'
+import type { IGetRecordOutput } from './get-record.query.interface.js'
+import type { GetRecordQuery } from './get-record.query.js'
 
 export class GetRecordQueryHandler implements IQueryHandler<GetRecordQuery, IGetRecordOutput> {
   constructor(protected readonly tableRepo: ITableRepository, protected readonly rm: IRecordQueryModel) {}

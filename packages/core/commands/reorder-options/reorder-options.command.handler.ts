@@ -1,6 +1,6 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { ITableRepository } from '../../table.repository'
-import type { ReorderOptionsCommand } from './reorder-options.command'
+import type { ITableRepository } from '../../table.repository.js'
+import type { ReorderOptionsCommand } from './reorder-options.command.js'
 
 export class ReorderOptionsCommandHandler implements ICommandHandler<ReorderOptionsCommand, void> {
   constructor(protected readonly tableRepo: ITableRepository) {}

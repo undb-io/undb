@@ -1,6 +1,6 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { ITableRepository } from '../../table.repository'
-import type { CreateFieldCommand } from './create-field.command'
+import type { ITableRepository } from '../../table.repository.js'
+import type { CreateFieldCommand } from './create-field.command.js'
 
 type ICreateFieldCommandHandler = ICommandHandler<CreateFieldCommand, void>
 

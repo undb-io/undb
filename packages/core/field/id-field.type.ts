@@ -1,8 +1,8 @@
 import * as z from 'zod'
-import { recordIdSchema } from '../record/value-objects/record-id.schema'
-import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base'
-import { FIELD_TYPE_KEY } from './field.constant'
-import { IdField } from './id-field'
+import { recordIdSchema } from '../record/value-objects/record-id.schema.js'
+import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base.js'
+import { FIELD_TYPE_KEY } from './field.constant.js'
+import { IdField } from './id-field.js'
 
 export const idTypeSchema = z.literal('id')
 export type IdFieldType = z.infer<typeof idTypeSchema>

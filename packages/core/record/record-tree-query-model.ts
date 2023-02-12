@@ -1,7 +1,7 @@
-import type { TreeField } from '../field'
-import type { TableSchemaIdMap } from '../value-objects'
-import type { IQueryTreeRecords } from './record.type'
-import type { IRecordSpec } from './specifications'
+import type { TreeField } from '../field/index.js'
+import type { TableSchemaIdMap } from '../value-objects/index.js'
+import type { IQueryTreeRecords } from './record.type.js'
+import type { IRecordSpec } from './specifications/index.js'
 
 export interface IRecordTreeQueryModel {
   /**

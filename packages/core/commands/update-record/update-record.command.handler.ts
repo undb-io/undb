@@ -1,7 +1,7 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { IRecordRepository } from '../../record/record.repository'
-import type { ITableRepository } from '../../table.repository'
-import type { UpdateRecordCommand } from './update-record.command'
+import type { IRecordRepository } from '../../record/record.repository.js'
+import type { ITableRepository } from '../../table.repository.js'
+import type { UpdateRecordCommand } from './update-record.command.js'
 
 export class UpdateRecordCommandHandler implements ICommandHandler<UpdateRecordCommand, void> {
   constructor(protected readonly tableRepo: ITableRepository, protected readonly recordRepo: IRecordRepository) {}

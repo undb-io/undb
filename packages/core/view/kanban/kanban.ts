@@ -1,10 +1,10 @@
 import { ValueObject } from '@egodb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
-import type { Field } from '../../field'
-import { FieldId } from '../../field'
-import type { IKanbanSchema } from './kanban.schema'
-import type { IKanban } from './kanban.type'
+import type { Field } from '../../field/index.js'
+import { FieldId } from '../../field/index.js'
+import type { IKanbanSchema } from './kanban.schema.js'
+import type { IKanban } from './kanban.type.js'
 
 export class Kanban extends ValueObject<IKanban> {
   static from(input: IKanbanSchema) {

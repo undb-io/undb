@@ -1,7 +1,7 @@
 import type { CommandProps } from '@egodb/domain'
 import { Command } from '@egodb/domain'
-import type { ISorts } from '../../view'
-import type { ISetSortsCommandInput } from './set-sorts.command.interface'
+import type { ISorts } from '../../view/index.js'
+import type { ISetSortsCommandInput } from './set-sorts.command.interface.js'
 
 export class SetSortsCommand extends Command implements ISetSortsCommandInput {
   readonly tableId: string

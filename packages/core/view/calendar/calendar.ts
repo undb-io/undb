@@ -1,10 +1,10 @@
 import { ValueObject } from '@egodb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
-import type { Field } from '../../field'
-import { FieldId } from '../../field'
-import type { ICalendarSchema } from './calendar.schema'
-import type { ICalendar } from './calendar.type'
+import type { Field } from '../../field/index.js'
+import { FieldId } from '../../field/index.js'
+import type { ICalendarSchema } from './calendar.schema.js'
+import type { ICalendar } from './calendar.type.js'
 
 export class Calendar extends ValueObject<ICalendar> {
   static from(input: ICalendarSchema) {

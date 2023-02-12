@@ -1,3 +1,3 @@
-export * from './delete-field.comand'
-export * from './delete-field.command.handler'
-export * from './delete-field.command.input'
+export * from './delete-field.comand.js'
+export * from './delete-field.command.handler.js'
+export * from './delete-field.command.input.js'

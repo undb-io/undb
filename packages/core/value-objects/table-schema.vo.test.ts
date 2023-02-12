@@ -1,4 +1,4 @@
-import { TableSchema } from './table-schema.vo'
+import { TableSchema } from './table-schema.vo.js'
 
 describe('TableSchema', () => {
   describe('createField', () => {

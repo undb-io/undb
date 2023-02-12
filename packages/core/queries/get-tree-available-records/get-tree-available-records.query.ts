@@ -1,5 +1,5 @@
 import { Query } from '@egodb/domain'
-import type { IGetTreeAvailableRecordsQuery } from './get-tree-available-records.query.interface'
+import type { IGetTreeAvailableRecordsQuery } from './get-tree-available-records.query.interface.js'
 
 export class GetTreeAvailableRecordsQuery extends Query implements IGetTreeAvailableRecordsQuery {
   readonly tableId: string

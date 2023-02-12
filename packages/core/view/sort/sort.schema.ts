@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { fieldIdSchema } from '../../field/value-objects/field-id.schema'
+import { fieldIdSchema } from '../../field/value-objects/field-id.schema.js'
 
 export const sortDirection = z.enum(['asc', 'desc'])
 

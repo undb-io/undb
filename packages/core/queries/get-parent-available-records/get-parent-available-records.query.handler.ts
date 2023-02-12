@@ -1,11 +1,11 @@
 import type { IQueryHandler } from '@egodb/domain'
 import { andOptions } from '@egodb/domain'
 import { Option } from 'oxide.ts'
-import type { IRecordQueryModel } from '../../record'
-import { ParentAvailableSpec, WithRecordTableId } from '../../record'
-import type { ITableRepository } from '../../table.repository'
-import type { GetParentAvailableRecordsQuery } from './get-parent-available-records.query'
-import type { IGetParentAvailableRecordsOutput } from './get-parent-available-records.query.interface'
+import type { IRecordQueryModel } from '../../record/index.js'
+import { ParentAvailableSpec, WithRecordTableId } from '../../record/index.js'
+import type { ITableRepository } from '../../table.repository.js'
+import type { IGetParentAvailableRecordsOutput } from './get-parent-available-records.query.interface.js'
+import type { GetParentAvailableRecordsQuery } from './get-parent-available-records.query.js'
 
 export class GetParentAvailableRecordsQueryHandler
   implements IQueryHandler<GetParentAvailableRecordsQuery, IGetParentAvailableRecordsOutput>

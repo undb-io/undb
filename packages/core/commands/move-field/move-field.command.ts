@@ -1,6 +1,6 @@
 import type { CommandProps } from '@egodb/domain'
 import { Command } from '@egodb/domain'
-import type { IMoveFieldCommandInput } from './move-field.command.interface'
+import type { IMoveFieldCommandInput } from './move-field.command.interface.js'
 
 export class MoveFieldCommand extends Command implements IMoveFieldCommandInput {
   readonly tableId: string

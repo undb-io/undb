@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { baseFilter } from './filter.base'
-import { numberFilterOperators } from './operators'
+import { baseFilter } from './filter.base.js'
+import { numberFilterOperators } from './operators.js'
 
 export const numberFilterValue = z.number().nullable()
 export const numberFilter = z

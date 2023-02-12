@@ -1,3 +1,3 @@
-export * from './delete-table.comand'
-export * from './delete-table.command.handler'
-export * from './delete-table.command.input'
+export * from './delete-table.comand.js'
+export * from './delete-table.command.handler.js'
+export * from './delete-table.command.input.js'

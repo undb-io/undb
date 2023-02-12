@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { baseFilter } from './filter.base'
-import { stringFilterOperators } from './operators'
+import { baseFilter } from './filter.base.js'
+import { stringFilterOperators } from './operators.js'
 
 export const stringFilterValue = z.string().nullable()
 export const stringFilter = z

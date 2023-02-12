@@ -1,5 +1,5 @@
 import * as z from 'zod'
-import { tableIdSchema } from '../../value-objects'
+import { tableIdSchema } from '../../value-objects/index.js'
 
 export const deleteTableCommandInput = z.object({
   id: tableIdSchema,

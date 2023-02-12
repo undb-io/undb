@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { baseFilter } from './filter.base'
-import { boolFilterOperators } from './operators'
+import { baseFilter } from './filter.base.js'
+import { boolFilterOperators } from './operators.js'
 
 export const boolFilterValue = z.boolean().nullable()
 export const boolFilter = z

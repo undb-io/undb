@@ -1,3 +1,3 @@
-export * from './filter'
-export * from './operators'
-export * from './root-filter'
+export * from './filter.js'
+export * from './operators.js'
+export * from './root-filter.js'

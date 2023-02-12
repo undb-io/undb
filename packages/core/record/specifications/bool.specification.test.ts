@@ -1,5 +1,5 @@
-import { createTestRecord } from '../fixtures'
-import { BoolIsFalse, BoolIsTrue } from './bool.specification'
+import { createTestRecord } from '../fixtures/index.js'
+import { BoolIsFalse, BoolIsTrue } from './bool.specification.js'
 
 test.each<[BoolIsTrue, BoolIsTrue | BoolIsFalse, boolean]>([
   [new BoolIsTrue('name'), new BoolIsTrue('name'), true],

@@ -1,8 +1,8 @@
 import type { ICommandHandler } from '@egodb/domain'
-import { WithRecordIds } from '../../record'
-import type { IRecordRepository } from '../../record/record.repository'
-import type { ITableRepository } from '../../table.repository'
-import type { BulkDuplicateRecordsCommand } from './bulk-duplicate-records.comand'
+import { WithRecordIds } from '../../record/index.js'
+import type { IRecordRepository } from '../../record/record.repository.js'
+import type { ITableRepository } from '../../table.repository.js'
+import type { BulkDuplicateRecordsCommand } from './bulk-duplicate-records.comand.js'
 
 export class BulkDuplicateRecordsCommandHandler implements ICommandHandler<BulkDuplicateRecordsCommand, void> {
   constructor(protected readonly tableRepo: ITableRepository, protected readonly recordRepo: IRecordRepository) {}

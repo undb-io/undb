@@ -1,5 +1,5 @@
 import { Query } from '@egodb/domain'
-import type { IGetParentAvailableRecordQuery } from './get-parent-available-records.query.interface'
+import type { IGetParentAvailableRecordQuery } from './get-parent-available-records.query.interface.js'
 
 export class GetParentAvailableRecordsQuery extends Query implements IGetParentAvailableRecordQuery {
   readonly tableId: string

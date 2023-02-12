@@ -1,4 +1,4 @@
-import { ViewFieldsOrder } from '.'
+import { ViewFieldsOrder } from './view-fields-order.vo'
 
 describe('ViewFieldsOrder', () => {
   test('#move()', () => {

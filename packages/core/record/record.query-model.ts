@@ -1,8 +1,8 @@
 import type { Option } from 'oxide.ts'
-import type { TableSchemaIdMap } from '../value-objects'
-import type { ISorts } from '../view'
-import type { IQueryRecords, IQueryRecordSchema } from './record.type'
-import type { IRecordSpec } from './specifications'
+import type { TableSchemaIdMap } from '../value-objects/index.js'
+import type { ISorts } from '../view/index.js'
+import type { IQueryRecords, IQueryRecordSchema } from './record.type.js'
+import type { IRecordSpec } from './specifications/index.js'
 
 export interface IRecordQueryModel {
   findOne(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap): Promise<Option<IQueryRecordSchema>>

@@ -1,5 +1,5 @@
 import { ValueObject } from '@egodb/domain'
-import { fieldNameSchema } from './field-name.schema'
+import { fieldNameSchema } from './field-name.schema.js'
 
 export class FieldName extends ValueObject<string> {
   private constructor(value: string) {

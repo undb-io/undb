@@ -1,6 +1,6 @@
 import { type ICommandHandler } from '@egodb/domain'
-import type { ITableRepository } from '../../table.repository'
-import type { CreateOptionCommand } from './create-option.command'
+import type { ITableRepository } from '../../table.repository.js'
+import type { CreateOptionCommand } from './create-option.command.js'
 
 type ICreateOptionCommandHandler = ICommandHandler<CreateOptionCommand, void>
 

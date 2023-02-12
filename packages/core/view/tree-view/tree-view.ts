@@ -1,10 +1,10 @@
 import { ValueObject } from '@egodb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
-import type { Field } from '../../field'
-import { FieldId } from '../../field'
-import type { ITreeViewSchema } from './tree-view.schema'
-import type { ITreeView } from './tree-view.type'
+import type { Field } from '../../field/index.js'
+import { FieldId } from '../../field/index.js'
+import type { ITreeViewSchema } from './tree-view.schema.js'
+import type { ITreeView } from './tree-view.type.js'
 
 export class TreeView extends ValueObject<ITreeView> {
   static from(input: ITreeViewSchema) {

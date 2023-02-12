@@ -1,3 +1,3 @@
-export * from './delete-record.comand'
-export * from './delete-record.command.handler'
-export * from './delete-record.command.input'
+export * from './delete-record.comand.js'
+export * from './delete-record.command.handler.js'
+export * from './delete-record.command.input.js'

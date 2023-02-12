@@ -1,8 +1,8 @@
 import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { Record } from '../record'
-import type { IRecordVisitor } from './interface'
+import type { Record } from '../record.js'
+import type { IRecordVisitor } from './interface.js'
 
 export class WithRecordAutoIncrement extends CompositeSpecification<Record, IRecordVisitor> {
   constructor(public readonly n: number) {

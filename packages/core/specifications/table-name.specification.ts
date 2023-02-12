@@ -1,8 +1,8 @@
 import { CompositeSpecification } from '@egodb/domain'
 import { Ok, type Result } from 'oxide.ts'
-import { type Table } from '../table'
-import { TableName } from '../value-objects'
-import type { ITableSpecVisitor } from './interface'
+import { type Table } from '../table.js'
+import { TableName } from '../value-objects/index.js'
+import type { ITableSpecVisitor } from './interface.js'
 
 export class WithTableName extends CompositeSpecification {
   constructor(public readonly name: TableName) {

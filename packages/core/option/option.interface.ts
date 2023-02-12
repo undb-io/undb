@@ -1,6 +1,6 @@
-import type { OptionColor } from './option-color'
-import type { OptionKey } from './option-key.vo'
-import type { OptionName } from './option-name.vo'
+import type { OptionColor } from './option-color.js'
+import type { OptionKey } from './option-key.vo.js'
+import type { OptionName } from './option-name.vo.js'
 
 export interface IOption {
   key: OptionKey

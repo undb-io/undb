@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import { createTableCommandInput } from './commands'
-import { querySchemaSchema } from './field'
-import { tableNameSchema } from './value-objects'
-import { createViewInput_internal, queryViews } from './view'
+import { createTableCommandInput } from './commands/index.js'
+import { querySchemaSchema } from './field/index.js'
+import { tableNameSchema } from './value-objects/index.js'
+import { createViewInput_internal, queryViews } from './view/index.js'
 
 const createViewsSchema = z.array(createViewInput_internal).optional()
 export type ICreateViewsSchema = z.infer<typeof createViewsSchema>

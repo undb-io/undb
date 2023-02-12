@@ -1,3 +1,3 @@
-export * from './table-id.vo'
-export * from './table-name.vo'
-export * from './table-schema.vo'
+export * from './table-id.vo.js'
+export * from './table-name.vo.js'
+export * from './table-schema.vo.js'

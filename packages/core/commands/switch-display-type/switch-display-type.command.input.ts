@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { tableIdSchema } from '../../value-objects'
-import { switchDisplayTypeSchema } from '../../view'
+import { tableIdSchema } from '../../value-objects/index.js'
+import { switchDisplayTypeSchema } from '../../view/index.js'
 
 export const switchDisplayTypeCommandInput = z
   .object({

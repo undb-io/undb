@@ -1,12 +1,12 @@
 import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { ICreateFieldsSchema_internal } from '../../field'
-import type { TableSchemaIdMap } from '../../value-objects'
-import type { Record } from '../record'
-import type { IQueryRecordValues } from '../record.type'
-import { RecordValues } from '../value-objects'
-import type { IRecordVisitor } from './interface'
+import type { ICreateFieldsSchema_internal } from '../../field/index.js'
+import type { TableSchemaIdMap } from '../../value-objects/index.js'
+import type { Record } from '../record.js'
+import type { IQueryRecordValues } from '../record.type.js'
+import { RecordValues } from '../value-objects/index.js'
+import type { IRecordVisitor } from './interface.js'
 
 export class WithRecordValues extends CompositeSpecification<Record, IRecordVisitor> {
   constructor(public readonly values: RecordValues) {

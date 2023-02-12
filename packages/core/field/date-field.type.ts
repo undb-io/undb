@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { DateField } from './date-field'
-import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base'
-import { FIELD_TYPE_KEY } from './field.constant'
+import { DateField } from './date-field.js'
+import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base.js'
+import { FIELD_TYPE_KEY } from './field.constant.js'
 
 export const dateTypeSchema = z.literal('date')
 export type DateType = z.infer<typeof dateTypeSchema>

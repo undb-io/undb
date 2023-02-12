@@ -1,10 +1,10 @@
-import type { StringField } from '../field'
-import { FieldFactory } from '../field'
-import { WithNewField, WithTableId, WithTableName } from '../specifications'
-import type { TableCompositeSpecificaiton } from '../specifications/interface'
-import { TableFactory } from '../table.factory'
-import { Views } from '../view'
-import { WithTableViews } from '../view/specifications/views.specification'
+import type { StringField } from '../field/index.js'
+import { FieldFactory } from '../field/index.js'
+import { WithNewField, WithTableId, WithTableName } from '../specifications/index.js'
+import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import { TableFactory } from '../table.factory.js'
+import { Views } from '../view/index.js'
+import { WithTableViews } from '../view/specifications/views.specification.js'
 
 export const createTestTable = (...specs: TableCompositeSpecificaiton[]) => {
   let spec: TableCompositeSpecificaiton = WithTableId.fromExistingString('tableId')

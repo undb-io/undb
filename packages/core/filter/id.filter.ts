@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { recordIdSchema } from '../record/value-objects/record-id.schema'
-import { baseFilter } from './filter.base'
-import { idFilterOperators } from './operators'
+import { recordIdSchema } from '../record/value-objects/record-id.schema.js'
+import { baseFilter } from './filter.base.js'
+import { idFilterOperators } from './operators.js'
 
 export const idFilterValue = recordIdSchema
 export const idFilter = z

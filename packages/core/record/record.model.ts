@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import { fieldQueryValue } from '../field'
-import { autoIncrementQueryValue } from '../field/auto-increment-field.type'
-import { fieldIdSchema } from '../field/value-objects/field-id.schema'
-import { recordIdSchema } from './value-objects/record-id.schema'
+import { autoIncrementQueryValue } from '../field/auto-increment-field.type.js'
+import { fieldQueryValue } from '../field/index.js'
+import { fieldIdSchema } from '../field/value-objects/field-id.schema.js'
+import { recordIdSchema } from './value-objects/record-id.schema.js'
 
 export const recordModel = z.object({
   id: recordIdSchema,

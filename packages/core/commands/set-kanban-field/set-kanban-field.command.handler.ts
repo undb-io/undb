@@ -1,6 +1,6 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { ITableRepository } from '../../table.repository'
-import type { SetKanbanFieldCommand } from './set-kanban-field.command'
+import type { ITableRepository } from '../../table.repository.js'
+import type { SetKanbanFieldCommand } from './set-kanban-field.command.js'
 
 type ISetKanbanFieldCommandHandler = ICommandHandler<SetKanbanFieldCommand, void>
 

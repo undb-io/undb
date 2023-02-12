@@ -1,9 +1,9 @@
 import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import { TableId as tableId } from '../../value-objects'
-import type { Record } from '../record'
-import type { IRecordVisitor } from './interface'
+import { TableId as tableId } from '../../value-objects/index.js'
+import type { Record } from '../record.js'
+import type { IRecordVisitor } from './interface.js'
 
 export class WithRecordTableId extends CompositeSpecification {
   constructor(public readonly id: tableId) {

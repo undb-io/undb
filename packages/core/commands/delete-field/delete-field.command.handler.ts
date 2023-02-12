@@ -1,6 +1,6 @@
 import type { ICommandHandler } from '@egodb/domain'
-import type { ITableRepository } from '../../table.repository'
-import type { DeleteFieldCommand } from './delete-field.comand'
+import type { ITableRepository } from '../../table.repository.js'
+import type { DeleteFieldCommand } from './delete-field.comand.js'
 
 export class DeleteFieldCommandHandler implements ICommandHandler<DeleteFieldCommand, void> {
   constructor(protected readonly tableRepo: ITableRepository) {}

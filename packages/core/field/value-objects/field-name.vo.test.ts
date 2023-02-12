@@ -1,4 +1,4 @@
-import { FieldName } from './field-name.vo'
+import { FieldName } from './field-name.vo.js'
 
 it('should create new field name value object', () => {
   const fieldName = FieldName.create('hello')

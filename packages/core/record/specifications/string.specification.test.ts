@@ -1,6 +1,6 @@
-import { StringFieldValue } from '../../field'
-import { createTestRecord } from '../fixtures'
-import { StringContain, StringEndsWith, StringEqual, StringRegex, StringStartsWith } from './string.specification'
+import { StringFieldValue } from '../../field/index.js'
+import { createTestRecord } from '../fixtures/index.js'
+import { StringContain, StringEndsWith, StringEqual, StringRegex, StringStartsWith } from './string.specification.js'
 
 test.each<[StringContain, StringEqual, boolean]>([
   [

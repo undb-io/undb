@@ -1,4 +1,4 @@
-import { convertFilterSpec, IRootFilter, rootFilter } from './filter'
+import { convertFilterSpec, IRootFilter, rootFilter } from './filter.js'
 
 test.each<IRootFilter>([
   {

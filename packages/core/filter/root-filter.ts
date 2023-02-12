@@ -3,8 +3,8 @@ import { ValueObject } from '@egodb/domain'
 import type { Option } from 'oxide.ts'
 import { None } from 'oxide.ts'
 import type { Field } from '../field'
-import type { IRootFilter } from './filter'
-import { convertFilterSpec } from './filter'
+import type { IRootFilter } from './filter.js'
+import { convertFilterSpec } from './filter.js'
 
 export class RootFilter extends ValueObject<IRootFilter> {
   get value() {

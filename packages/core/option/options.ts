@@ -1,11 +1,11 @@
 import { ValueObject } from '@egodb/domain'
 import arrayMove from 'array-move'
 import { Option as O } from 'oxide.ts'
-import { Option } from './option'
-import { OptionColor } from './option-color'
-import type { OptionKey } from './option-key.vo'
-import type { ICreateOptionSchema, ICreateOptionsSchema } from './option.schema'
-import { createOptionsSchema } from './option.schema'
+import { OptionColor } from './option-color.js'
+import type { OptionKey } from './option-key.vo.js'
+import { Option } from './option.js'
+import type { ICreateOptionSchema, ICreateOptionsSchema } from './option.schema.js'
+import { createOptionsSchema } from './option.schema.js'
 
 export class Options extends ValueObject<Option[]> {
   public get options(): Option[] {

@@ -1,6 +1,6 @@
 import type { CommandProps } from '@egodb/domain'
 import { Command } from '@egodb/domain'
-import type { IDeleteTableInput } from './delete-table.command.input'
+import type { IDeleteTableInput } from './delete-table.command.input.js'
 
 export class DeleteTableCommand extends Command {
   readonly id: string

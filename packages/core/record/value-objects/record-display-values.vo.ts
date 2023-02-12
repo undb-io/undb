@@ -1,5 +1,5 @@
 import { ValueObject } from '@egodb/domain'
-import type { IRecordDisplayValues } from '../record.type'
+import type { IRecordDisplayValues } from '../record.type.js'
 
 export class RecordDisplayValues extends ValueObject<IRecordDisplayValues> {
   public get values() {

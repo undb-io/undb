@@ -1,10 +1,10 @@
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { View } from '..'
-import type { ITableSpecVisitor } from '../../specifications'
-import type { Table } from '../../table'
-import type { IViewFieldOption, ViewFieldOptions } from '../view-field-options'
-import { BaseViewSpecification } from './base-view-specification'
+import type { ITableSpecVisitor } from '../../specifications/index.js'
+import type { Table } from '../../table.js'
+import type { IViewFieldOption, ViewFieldOptions } from '../view-field-options.js'
+import type { View } from '../view.js'
+import { BaseViewSpecification } from './base-view-specification.js'
 
 abstract class BaseViewFieldOptionSpec extends BaseViewSpecification {
   constructor(public readonly fieldId: string, public readonly view: View) {

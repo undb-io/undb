@@ -1,5 +1,5 @@
-import type { ITableSpec } from './specifications'
-import type { Table } from './table'
+import type { ITableSpec } from './specifications/index.js'
+import type { Table } from './table.js'
 
 export interface IUnderlyingTableManager {
   create(table: Table): Promise<void>

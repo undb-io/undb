@@ -1,6 +1,6 @@
 import { ValueObject } from '@egodb/domain'
-import type { ICreateOptionColorSchema, IOptionColor, IOptionColorName, IOptionColorShade } from './option.schema'
-import { optionColorOrder } from './option.schema'
+import type { ICreateOptionColorSchema, IOptionColor, IOptionColorName, IOptionColorShade } from './option.schema.js'
+import { optionColorOrder } from './option.schema.js'
 
 export class OptionColor extends ValueObject<IOptionColor> {
   get name() {

@@ -1,10 +1,10 @@
 import { CompositeSpecification } from '@egodb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { ITableSpecVisitor } from '.'
-import type { Table } from '../table'
-import type { ICreateTableSchemaInput } from '../value-objects'
-import { TableSchema } from '../value-objects'
+import type { Table } from '../table.js'
+import type { ICreateTableSchemaInput } from '../value-objects/index.js'
+import { TableSchema } from '../value-objects/index.js'
+import type { ITableSpecVisitor } from './interface.js'
 
 export class WithTableSchema extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(public readonly schema: TableSchema) {

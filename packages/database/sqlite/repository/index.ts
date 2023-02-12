@@ -1,2 +1,2 @@
-export * from './record'
-export * from './table'
+export * from './record/index.js'
+export * from './table/index.js'

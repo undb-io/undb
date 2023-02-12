@@ -1,7 +1,7 @@
 import * as z from 'zod'
-import { BoolField } from './bool-field'
-import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base'
-import { FIELD_TYPE_KEY } from './field.constant'
+import { BoolField } from './bool-field.js'
+import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base.js'
+import { FIELD_TYPE_KEY } from './field.constant.js'
 
 export const boolTypeSchema = z.literal('bool')
 export type BoolFieldType = z.infer<typeof boolTypeSchema>

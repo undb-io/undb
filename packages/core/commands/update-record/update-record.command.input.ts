@@ -1,6 +1,6 @@
 import * as z from 'zod'
-import { updateRecordSchema } from '../../record/record.schema'
-import { tableIdSchema } from '../../value-objects'
+import { updateRecordSchema } from '../../record/record.schema.js'
+import { tableIdSchema } from '../../value-objects/index.js'
 
 export const updateRecordCommandInput = z
   .object({

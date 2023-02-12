@@ -1,6 +1,6 @@
 import type { Merge, ValueOf } from 'type-fest'
 import { z } from 'zod'
-import type { FieldValue } from '../field'
+import type { FieldValue } from '../field/index.js'
 import {
   createFieldValueSchema,
   INTERNAL_COLUMN_CREATED_AT_NAME,
@@ -8,10 +8,10 @@ import {
   INTERNAL_COLUMN_UPDATED_AT_NAME,
   INTERNAL_DISPLAY_VALUES_NAME,
   INTERNAL_INCREAMENT_ID_NAME,
-} from '../field'
-import { fieldIdSchema } from '../field/value-objects/field-id.schema'
-import { recordDisplayValues } from './record.type'
-import { recordIdSchema } from './value-objects/record-id.schema'
+} from '../field/index.js'
+import { fieldIdSchema } from '../field/value-objects/field-id.schema.js'
+import { recordDisplayValues } from './record.type.js'
+import { recordIdSchema } from './value-objects/record-id.schema.js'
 
 export const mutateRecordValueSchema = z
   .array(

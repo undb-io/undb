@@ -1,7 +1,7 @@
 import type { CommandProps } from '@egodb/domain'
 import { Command } from '@egodb/domain'
-import type { IUpdateOptionSchema } from '../../option'
-import type { IUpdateOptionCommandInput } from './update-option.command.interface'
+import type { IUpdateOptionSchema } from '../../option/index.js'
+import type { IUpdateOptionCommandInput } from './update-option.command.interface.js'
 
 export class UpdateOptionCommand extends Command implements IUpdateOptionCommandInput {
   readonly tableId: string

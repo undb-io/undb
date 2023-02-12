@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { selectFieldValue } from '../field/select-field.type'
-import { baseFilter } from './filter.base'
-import { selectFilterOperators } from './operators'
+import { selectFieldValue } from '../field/select-field.type.js'
+import { baseFilter } from './filter.base.js'
+import { selectFilterOperators } from './operators.js'
 
 export const selectFilterValue = selectFieldValue.or(selectFieldValue.array()).nullable()
 export type ISelectFilterValue = z.infer<typeof selectFieldValue>

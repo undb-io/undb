@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { TreeField } from '../../field'
-import { fieldIdSchema } from '../../field/value-objects/field-id.schema'
+import { TreeField } from '../../field/index.js'
+import { fieldIdSchema } from '../../field/value-objects/field-id.schema.js'
 
 export const treeViewSchema = z.object({
   fieldId: fieldIdSchema.optional(),
