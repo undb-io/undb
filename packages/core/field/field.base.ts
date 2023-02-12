@@ -1,6 +1,6 @@
 import { ValueObject } from '@egodb/domain'
 import { map, pipe, toArray } from '@fxts/core'
-import { unzip } from 'lodash'
+import { unzip } from 'lodash-es'
 import type { Option } from 'oxide.ts'
 import { None } from 'oxide.ts'
 import * as z from 'zod'

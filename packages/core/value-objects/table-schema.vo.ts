@@ -1,5 +1,5 @@
 import { ValueObject } from '@egodb/domain'
-import { castArray } from 'lodash'
+import { castArray } from 'lodash-es'
 import { Option } from 'oxide.ts'
 import type { Class } from 'type-fest'
 import * as z from 'zod'
