@@ -1,8 +1,8 @@
 import { SetKanbanFieldCommand, setKanbanFieldCommandInput } from '@egodb/core'
 import type { ICommandBus } from '@egodb/domain'
 import { z } from 'zod'
-import type { publicProcedure } from '../trpc'
-import { router } from '../trpc'
+import type { publicProcedure } from '../trpc.js'
+import { router } from '../trpc.js'
 
 export const createKanbanRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus) =>
   router({
