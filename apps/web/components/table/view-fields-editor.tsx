@@ -1,11 +1,15 @@
 import { closestCenter, DndContext } from '@dnd-kit/core'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import type { Field } from '@egodb/core'
 import { useSetVisibilityMutation } from '@egodb/store'
 import type { CheckboxProps } from '@egodb/ui'
+import { useListState } from '@egodb/ui'
+import { ActionIcon, IconGripVertical } from '@egodb/ui'
 import { Tooltip } from '@egodb/ui'
 import { Badge, Button, Checkbox, Group, IconEye, Popover, Stack, useDisclosure } from '@egodb/ui'
+import { useEffect } from 'react'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import type { ITableBaseProps } from './table-base-props'
 
@@ -17,8 +21,17 @@ interface IFieldItemProps extends CheckboxProps {
 }
 
 const FieldItem: React.FC<IFieldItemProps> = ({ field: f, onVisibleChange, ...rest }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: f.id.value })
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  }
+
   return (
-    <Group>
+    <Group spacing="xs" ref={setNodeRef} style={style}>
+      <ActionIcon size="xs" {...attributes} {...listeners}>
+        <IconGripVertical size={14} />
+      </ActionIcon>
       <Checkbox
         lh={1}
         size="xs"
@@ -45,7 +58,11 @@ export const ViewFieldsEditor: React.FC<ITableBaseProps> = ({ table }) => {
   const visibility = view.getVisibility()
   const hiddenCount = view.fieldOptions?.hiddenCount ?? 0
 
-  const order = table.getFieldsOrder(view).order
+  const [order, handlers] = useListState(table.getFieldsOrder(view).order)
+
+  useEffect(() => {
+    handlers.setState(table.getFieldsOrder(view).order)
+  }, [table])
 
   const onChange: OnVisibleChange = (fieldId: string, visible: boolean) => {
     setFieldVisibility({ tableId: table.id.value, fieldId, hidden: !visible })
@@ -84,7 +101,19 @@ export const ViewFieldsEditor: React.FC<ITableBaseProps> = ({ table }) => {
 
       <Popover.Dropdown>
         <Stack>
-          <DndContext collisionDetection={closestCenter} modifiers={[restrictToVerticalAxis]} onDragEnd={console.log}>
+          <DndContext
+            collisionDetection={closestCenter}
+            modifiers={[restrictToVerticalAxis]}
+            onDragEnd={(e) => {
+              const { over, active } = e
+              if (over) {
+                handlers.reorder({
+                  from: active.data.current?.sortable?.index,
+                  to: over?.data.current?.sortable?.index,
+                })
+              }
+            }}
+          >
             <SortableContext items={order} strategy={verticalListSortingStrategy}>
               {table.schema.fields.map((field) => (
                 <FieldItem
