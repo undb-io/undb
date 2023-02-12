@@ -2,11 +2,6 @@
   "name": "@egodb/sqlite",
   "description": "",
   "version": "0.0.0",
-  "type": "module",
-  "exports": {
-    "import": "./dist/index.js",
-    "require": "./dist/index.js"
-  },
   "dependencies": {
     "@egodb/core": "^0.0.0",
     "@egodb/domain": "^0.0.0",
@@ -34,6 +29,10 @@
     "vitest": "^0.26.3",
     "vitest-mock-extended": "^1.0.9"
   },
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/index.js"
+  },
   "main": "./dist/index",
   "mikro-orm": {
     "useTsNode": true,
@@ -52,5 +51,6 @@
     "test": "TZ=UTC vitest run",
     "test:watch": "TZ=UTC vitest"
   },
+  "type": "module",
   "types": "./dist/index"
 }
