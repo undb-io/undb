@@ -56,6 +56,7 @@ export const ViewFieldsEditor: React.FC<ITableBaseProps> = ({ table }) => {
 
   const view = table.mustGetView()
   const visibility = view.getVisibility()
+  const schema = table.schema.toIdMap()
   const hiddenCount = view.fieldOptions?.hiddenCount ?? 0
 
   const [order, handlers] = useListState(table.getFieldsOrder(view).order)
@@ -115,14 +116,18 @@ export const ViewFieldsEditor: React.FC<ITableBaseProps> = ({ table }) => {
             }}
           >
             <SortableContext items={order} strategy={verticalListSortingStrategy}>
-              {table.schema.fields.map((field) => (
-                <FieldItem
-                  key={field.id.value}
-                  field={field}
-                  onVisibleChange={onChange}
-                  defaultChecked={visibility[field.id.value] === undefined || !!visibility[field.id.value]}
-                />
-              ))}
+              {order.map((fieldId) => {
+                const field = schema.get(fieldId)
+                if (!field) return null
+                return (
+                  <FieldItem
+                    key={field.id.value}
+                    field={field}
+                    onVisibleChange={onChange}
+                    defaultChecked={visibility[field.id.value] === undefined || !!visibility[field.id.value]}
+                  />
+                )
+              })}
             </SortableContext>
           </DndContext>
         </Stack>
