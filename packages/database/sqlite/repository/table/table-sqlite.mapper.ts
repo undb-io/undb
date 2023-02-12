@@ -1,7 +1,9 @@
 import type {
+  ICreateParentFieldInput,
   ICreateRatingFieldInput,
   ICreateSelectFieldSchema,
   ICreateTableSchemaInput,
+  ICreateTreeFieldSchema,
   ICreateViewsSchema,
   IParentFieldQuerySchema,
   IQueryFieldSchema,
