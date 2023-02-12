@@ -11,6 +11,10 @@ import auroraImg from '../public/images/aurora.png'
 import oracleImg from '../public/images/oracle.png'
 import bigqueryImg from '../public/images/bigquery.png'
 import snowflakeImg from '../public/images/snowflake.png'
+import gitHub from './public/images/brand-github.svg'
+import linkedin from './public/images/brand-linkedin.svg'
+import twitter from './public/images/brand-twitter.svg'
+import youTuBe from './public/images/brand-youtube.svg'
 
 const imgList = [
   mySqlImg,
@@ -23,10 +27,12 @@ const imgList = [
   snowflakeImg,
   bigqueryImg,
 ]
+
+const iconList = [twitter, linkedin, gitHub, youTuBe]
 ---
 
-<Layout title="Welcome to Ego.">
-  <div class="mt-[152px] leading-9 text-center md:text-center flex flex-col items-center">
+<Layout title="Welcome to Ego." bgColor="#ffffff">
+  <div class="h-full mt-[152px] leading-9 text-center md:text-center flex flex-col items-center">
     <span class="font-black text-8xl leading-relaxed">Open Source, Privacy First</span>
     <span class="font-black text-8xl text-[#05449d] leading-relaxed">Airtable Alternative</span>
     <span class="leading-relaxed text-1xl font-extralight mt-5 mb-8 text-[#888888]"
@@ -43,6 +49,189 @@ const imgList = [
     <span class="leading-relaxed text-1xl font-extralight mt-5 mb-8 text-[#888888]">Supported Databases</span>
     <div class="flex justify-center pt-[10px]">
       {imgList.map((img, index) => <img class="h-[40px] px-[20px]" src={img} alt="" />)}
+    </div>
+
+    <div class="mt-[300px] text-4xl font-mono">Do what you want to do</div>
+    <div class="w-full h-full mx-2 flex flex-col gap-[200px] mt-[40px] bg-gradient-to-b from-white to-sky-100">
+      <div class="item-1 mx-[100px] flex items-center">
+        <div class="w-[60%] mr-[40px]">
+          <img class="rounded-lg" src={'./public/images/image_1.jpg'} alt="" />
+        </div>
+        <span class="w-[40%] text-left text-zinc-500">
+          <p class="text-[30px] mb-[20px] text-zinc-600">无代码平台的发展</p>
+
+          你的项目、想法、工作流程管理是否都还不清晰呢？那你尝试过使用一个工具让它们的流程和概述更加清晰明确呢？如果你想要尝试使用工具帮助你整理这些，那我们推荐EGODB来帮助你实现这些。
+          <br />
+          <button
+            class="mt-[20px] rounded-lg font-bold bg-gradient-to-r from-cyan-500 to-blue-500 px-[12px] py-[4px] text-slate-100 flex gap-[4px] items-center"
+          >
+            free start
+            <img class="w-[16px] h-[16px]" src="./public/images/button-icons/chevron-right.svg" alt="" />
+          </button>
+        </span>
+      </div>
+      <div class="item-2 mx-[100px] flex items-center">
+        <span class="w-[40%] text-left text-zinc-500">
+          <p class="text-[30px] mb-[20px] text-zinc-600">无代码平台的发展</p>
+
+          你的项目、想法、工作流程管理是否都还不清晰呢？那你尝试过使用一个工具让它们的流程和概述更加清晰明确呢？如果你想要尝试使用工具帮助你整理这些，那我们推荐EGODB来帮助你实现这些。
+          <br />
+          <button
+            class="mt-[20px] rounded-lg font-bold bg-gradient-to-r from-cyan-500 to-blue-500 px-[12px] py-[4px] text-slate-100 flex gap-[4px] items-center"
+          >
+            free start
+            <img class="w-[16px] h-[16px]" src="./public/images/button-icons/chevron-right.svg" alt="" />
+          </button>
+        </span>
+        <div class="w-[60%] ml-[40px]">
+          <img class="rounded-lg" src={'./public/images/image_1.jpg'} alt="" />
+        </div>
+      </div>
+      <div class="item-3 mx-[100px] flex items-center mb-[100px]">
+        <div class="w-[60%] mr-[40px]">
+          <img class="rounded-lg" src={'./public/images/image_1.jpg'} alt="" />
+        </div>
+        <span class="w-[40%] text-left text-zinc-500">
+          <p class="text-[30px] mb-[20px] text-zinc-600">无代码平台的发展</p>
+
+          你的项目、想法、工作流程管理是否都还不清晰呢？那你尝试过使用一个工具让它们的流程和概述更加清晰明确呢？如果你想要尝试使用工具帮助你整理这些，那我们推荐EGODB来帮助你实现这些。
+          <br />
+          <button
+            class="mt-[20px] rounded-lg font-bold bg-gradient-to-r from-cyan-500 to-blue-500 px-[12px] py-[4px] text-slate-100 flex gap-[4px] items-center"
+          >
+            free start
+            <img class="w-[16px] h-[16px]" src="./public/images/button-icons/chevron-right.svg" alt="" />
+          </button>
+        </span>
+      </div>
+    </div>
+    <div class="flex flex-row gap-[30px] mt-[300px] mx-[100px] mb-[200px]">
+      <div class="item-1 flex-1 rounded-md flex flex-col items-start">
+        <img class="rounded-md mb-[24px]" src="./public/images/image-2.jpg" alt="" />
+        <p class="mb-[16px] text-[20px] font-[600]">Ego DB Free</p>
+        <span class="h-[48px] mb-[24px] text-start text-[16px] font-[300] leading-[1.5] text-[#191919]"
+          >For people and companies that want to try out Baserow.</span
+        >
+        <button class="flex items-center gap-[8px] text-[16px] font-[400] leading-[1.5]">
+          Learn more
+          <img class="w-[18px] h-[18px]" src="./public/images/button-icons/chevron-right.svg" alt="" />
+        </button>
+      </div>
+      <div class="item-2 flex-1 rounded-md flex flex-col items-start">
+        <img class="rounded-md mb-[24px]" src="./public/images/image-2.jpg" alt="" />
+        <p class="mb-[16px] text-[20px] font-[600]">Ego DB Pro</p>
+        <span class="h-[48px] mb-[24px] text-start text-[16px] font-[300] leading-[1.5] text-[#191919]"
+          >Use Ego DB in the cloud for easy report sharing and collaboration.</span
+        >
+        <button class="flex items-center gap-[8px] text-[16px] font-[400] leading-[1.5]">
+          Learn more
+          <img class="w-[18px] h-[18px]" src="./public/images/button-icons/chevron-right.svg" alt="" />
+        </button>
+      </div>
+      <div class="item-1 flex-1 rounded-md flex flex-col items-start">
+        <img class="rounded-md mb-[24px]" src="./public/images/image-2.jpg" alt="" />
+        <p class="mb-[16px] text-[20px] font-[600]">Ego DB Premium</p>
+        <span class="h-[48px] mb-[24px] text-start text-[16px] font-[300] leading-[1.5] text-[#191919]"
+          >Add enterprise BI for advanced analytics and scale when you need it.</span
+        >
+        <button class="flex items-center gap-[8px] text-[16px] font-[400] leading-[1.5]">
+          Learn more
+          <img class="w-[18px] h-[18px]" src="./public/images/button-icons/chevron-right.svg" alt="" />
+        </button>
+      </div>
+    </div>
+    <div class="connect-learn-more-list w-[100vw] flex flex-col py-[80px] px-[80px] gap-[40px]">
+      <!-- Connect and learn more -->
+      <div class="title text-start text-[36px] font-[600] leading-[48px]">Connect and learn more</div>
+      <div class="flex flex-row gap-[30px]">
+        <div
+          class="flex-1 flex flex-col shadow-xl justify-start items-start py-[24px] pl-[12px] pr-[24px] rounded-md hover:top-[-2px]"
+        >
+          <p class="text-[16px] font-[600] h-[33px] leading-[24px] mb-[9px]">Documentation</p>
+          <span class="text-start text-[16px] font-[300] leading-[24px] h-[96px]">
+            Find guides and information on how to make the most of Ego DB.</span
+          >
+          <button class="flex items-center gap-[8px] text-[16px] font-[600] leading-[24px]">
+            Explore topics
+            <img class="w-[18px] h-[18px]" src="./public/images/button-icons/chevron-right.svg" alt="" />
+          </button>
+        </div>
+        <div
+          class="flex-1 flex flex-col shadow-xl justify-start items-start py-[24px] pl-[12px] pr-[24px] rounded-md hover:top-[-2px]"
+        >
+          <p class="text-[16px] font-[600] h-[33px] leading-[24px] mb-[9px]">Guided learning</p>
+          <span class="text-start text-[16px] font-[300] leading-[24px] h-[96px]">
+            Take guided courses on how to accomplish common tasks within Ego DB.</span
+          >
+          <button class="flex items-center gap-[8px] text-[16px] font-[600] leading-[24px]">
+            Explore topics
+            <img class="w-[18px] h-[18px]" src="./public/images/button-icons/chevron-right.svg" alt="" />
+          </button>
+        </div>
+        <div
+          class="flex-1 flex flex-col shadow-xl justify-start items-start py-[24px] pl-[12px] pr-[24px] rounded-md hover:top-[-2px]"
+        >
+          <p class="text-[16px] font-[600] h-[33px] leading-[24px] mb-[9px]">Online workshops</p>
+          <span class="text-start text-[16px] font-[300] leading-[24px] h-[96px]">
+            Learn how to use—and make the most of—Ego DB through free virtual training.</span
+          >
+          <button class="flex items-center gap-[8px] text-[16px] font-[600] leading-[24px]">
+            Explore topics
+            <img class="w-[18px] h-[18px]" src="./public/images/button-icons/chevron-right.svg" alt="" />
+          </button>
+        </div>
+        <div
+          class="flex-1 flex flex-col shadow-xl justify-start items-start py-[24px] pl-[12px] pr-[24px] rounded-md hover:top-[-2px]"
+        >
+          <p class="text-[16px] font-[600] h-[33px] leading-[24px] mb-[9px]">Community</p>
+          <span class="text-start text-[16px] font-[300] leading-[24px] h-[96px]">
+            Connect, learn, and discuss with Ego DB experts and peers.</span
+          >
+          <button class="flex items-center gap-[8px] text-[16px] font-[600] leading-[24px]">
+            Explore topics
+            <img class="w-[18px] h-[18px]" src="./public/images/button-icons/chevron-right.svg" alt="" />
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="start-button w-screen bg-[#f5f5f5] flex flex-col items-center py-[44px]">
+      <p class="text-[2.25rem] leading-[48px] font-[400] mt-[8px]">Distributed teams choose ego.io</p>
+      <button
+        class="rounded-[40px] get-started py-[10px] px-[25px] bg-[#0a6bde] flex items-center text-white gap-[8px] font-[300] text-[1rem] mt-[32px]"
+      >
+        Get Started
+        <img class="h-[18px] w-[18px]" src="./public/images/button-icons/arrow-right.svg" alt="" />
+      </button>
+      <span class="mt-[8px] text-[0.8125rem] font-[300] text-sky-800">Free forever. No credit card.</span>
+    </div>
+    <div
+      class="footer-content-container w-screen flex px-[80px] justify-start items-start gap-[80px] my-[40px] font-[300] text-[14px]"
+    >
+      <div class="flex justify-start items-center gap-[4px]">
+        <img class="h-[32px]" src="/apple-touch-icon.png" alt="" />
+        <span class="font-[700] text-[16px]">ego.db</span>
+      </div>
+      <div class="flex flex-col gap-[16px] justify-start items-start">
+        <button class="hover:text-sky-500 cursor-pointer">Pricing</button>
+        <button class="hover:text-sky-500 cursor-pointer">About us</button>
+      </div>
+      <div class="flex flex-col gap-[16px] justify-start items-start">
+        <button class="hover:text-sky-500 cursor-pointer">Support</button>
+        <button class="hover:text-sky-500 cursor-pointer">Customer stories</button>
+      </div>
+      <div class="flex flex-col gap-[16px] justify-start items-start">
+        <button class="hover:text-sky-500 cursor-pointer">Contact sales</button>
+        <button class="hover:text-sky-500 cursor-pointer">Enterpries</button>
+      </div>
+      <div class="flex flex-col gap-[16px] justify-start items-start">
+        <button class="hover:text-sky-500 cursor-pointer">Integrations</button>
+        <button class="hover:text-sky-500 cursor-pointer">Templates</button>
+      </div>
+    </div>
+    <div class="divide w-screen mx-[80px] border-b"></div>
+    <div class="flex gap-[20px] m-[80px]">
+      <p>Follow EgoDB On</p>
+      {iconList.map((item) => <img src={item} alt={`ego.${item}`} />)}
     </div>
   </div>
 </Layout>

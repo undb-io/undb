@@ -3,9 +3,10 @@ import Navbar from '../components/Navbar.astro'
 
 export interface Props {
   title: string
+  bgColor: string
 }
 
-const { title } = Astro.props as Props
+const { title, bgColor } = Astro.props as Props
 ---
 
 <!DOCTYPE html>
@@ -15,7 +16,7 @@ const { title } = Astro.props as Props
     <title>{title}</title>
   </head>
   <body style="margin:0;padding:0" class="flex flex-col">
-    <Navbar />
+    <Navbar color={bgColor} />
     <slot />
   </body>
 </html>
