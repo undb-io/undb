@@ -2,11 +2,6 @@
   "name": "@egodb/trpc",
   "description": "",
   "version": "0.0.0",
-  "type": "module",
-  "exports": {
-    "import": "./dist/index.js",
-    "require": "./dist/index.js"
-  },
   "dependencies": {
     "@egodb/core": "^0.0.0",
     "@egodb/domain": "^0.0.0",
@@ -24,6 +19,10 @@
     "typescript": "^4.9.5",
     "vitest": "^0.26.3"
   },
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/index.js"
+  },
   "keywords": [],
   "scripts": {
     "build": "tsup",
@@ -34,5 +33,6 @@
     "test": "vitest run",
     "test:watch": "vitest"
   },
+  "type": "module",
   "types": "./dist/index.d.ts"
 }
