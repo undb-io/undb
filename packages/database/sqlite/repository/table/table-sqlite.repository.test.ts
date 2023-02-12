@@ -1,9 +1,9 @@
 import { createTestTable, IUnderlyingTableManager, Table as CoreTable, WithTableName } from '@egodb/core'
 import { EntityManager } from '@mikro-orm/better-sqlite'
 import { mock, MockProxy } from 'vitest-mock-extended'
-import { FILTER_SOFT_DELETE } from '../../decorators/soft-delete.decorator'
-import { Table } from '../../entity'
-import { TableSqliteRepository } from './table-sqlite.repository'
+import { FILTER_SOFT_DELETE } from '../../decorators/soft-delete.decorator.js'
+import { Table } from '../../entity/index.js'
+import { TableSqliteRepository } from './table-sqlite.repository.js'
 
 describe('TableSqliteRepository', () => {
   let em: EntityManager

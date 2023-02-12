@@ -1,9 +1,9 @@
 import type { Table as CoreTable } from '@egodb/core'
 import { Cascade, Collection, Entity, OneToMany, PrimaryKey, Property } from '@mikro-orm/core'
-import { BaseEntity } from './base'
-import type { IField } from './field'
-import { Field } from './field'
-import { View } from './view'
+import { BaseEntity } from './base.js'
+import type { IField } from './field.js'
+import { Field } from './field.js'
+import { View } from './view.js'
 
 @Entity()
 export class Table extends BaseEntity {

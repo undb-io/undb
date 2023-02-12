@@ -22,8 +22,8 @@ import type {
 } from '@egodb/core'
 import { INTERNAL_COLUMN_ID_NAME, ParentField, ReferenceField, TreeField } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table'
-import { BaseEntityManager } from '../base-entity-manager'
+import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
+import { BaseEntityManager } from '../base-entity-manager.js'
 
 export class RecordValueSqliteMutationVisitor extends BaseEntityManager implements IFieldValueVisitor {
   #data: Record<string, Knex.Value> = {}

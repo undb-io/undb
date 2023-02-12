@@ -3,10 +3,14 @@
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
-    "target": "ESNEXT",
+    "target": "ESNext",
+    "module": "ESNext",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
+    "noEmitHelpers": true,
+    "importHelpers": true,
+    "removeComments": true,
     "declaration": true,
     "outDir": "./dist"
   }

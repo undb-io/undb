@@ -2,7 +2,7 @@ import { BetterSqliteDriver } from '@mikro-orm/better-sqlite'
 import { defineConfig, FlushMode, ReflectMetadataProvider } from '@mikro-orm/core'
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import path from 'path'
-import { entities } from './entity'
+import { entities } from './entity/index.js'
 
 export const createConfig = (relativaPath: string) =>
   defineConfig({

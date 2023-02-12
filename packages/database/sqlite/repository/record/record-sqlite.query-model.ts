@@ -9,11 +9,11 @@ import type {
 import { getReferenceFields, WithRecordId } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { Option } from 'oxide.ts'
-import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory'
-import { RecordSqliteMapper } from './record-sqlite.mapper'
-import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
-import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor'
-import type { RecordSqlite } from './record.type'
+import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
+import { RecordSqliteMapper } from './record-sqlite.mapper.js'
+import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
+import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
+import type { RecordSqlite } from './record.type.js'
 
 export class RecordSqliteQueryModel implements IRecordQueryModel {
   constructor(protected readonly em: EntityManager) {}

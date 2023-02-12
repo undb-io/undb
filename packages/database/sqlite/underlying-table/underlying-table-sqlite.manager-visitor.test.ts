@@ -8,7 +8,7 @@ import {
   WithTableSchema,
 } from '@egodb/core'
 import { EntityManager } from '@mikro-orm/better-sqlite'
-import { UnderlyingTableSqliteManagerVisitor } from './underlying-table-sqlite.manager-visitor'
+import { UnderlyingTableSqliteManagerVisitor } from './underlying-table-sqlite.manager-visitor.js'
 
 describe('UnderlyingTableSqliteManagerVisitor', () => {
   let em: EntityManager

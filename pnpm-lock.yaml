@@ -268,6 +268,7 @@ importers:
       rimraf: ^3.0.2
       ts-node: ^10.9.1
       tsconfig: ^0.0.0
+      tslib: ^2.5.0
       tsup: ^6.6.0
       type-fest: ^3.5.6
       typescript: ^4.9.5
@@ -292,6 +293,7 @@ importers:
       rimraf: 3.0.2
       ts-node: 10.9.1_wnsgli6f57yglk4g6j26vltcfa
       tsconfig: link:../../tsconfig
+      tslib: 2.5.0
       tsup: 6.6.0_arb6tv3bymv5hkfd2xmjxdai7u
       type-fest: 3.5.6
       typescript: 4.9.5
@@ -11569,7 +11571,7 @@ packages:
   /rxjs/7.8.0:
     resolution: {integrity: sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg==}
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.5.0
 
   /s.color/0.0.15:
     resolution: {integrity: sha512-AUNrbEUHeKY8XsYr/DYpl+qk5+aM+DChopnWOPEzn8YKzOhv4l2zH6LzZms3tOZP3wwdOyc0RmTciyi46HLIuA==}
@@ -12667,6 +12669,7 @@ packages:
 
   /tslib/2.4.1:
     resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
+    dev: false
 
   /tslib/2.5.0:
     resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}

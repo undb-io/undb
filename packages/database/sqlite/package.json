@@ -2,6 +2,11 @@
   "name": "@egodb/sqlite",
   "description": "",
   "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/index.js"
+  },
   "dependencies": {
     "@egodb/core": "^0.0.0",
     "@egodb/domain": "^0.0.0",
@@ -22,6 +27,7 @@
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1",
     "tsconfig": "^0.0.0",
+    "tslib": "^2.5.0",
     "tsup": "^6.6.0",
     "type-fest": "^3.5.6",
     "typescript": "^4.9.5",
@@ -39,8 +45,8 @@
     "build": "tsup",
     "clean": "rimraf dist",
     "coverage": "vitest run --coverage",
-    "db:migration:up": "mikro-orm migration:up",
-    "db:schema:fresh": "mikro-orm schema:fresh -r",
+    "db:migration:up": "NODE_OPTIONS=\"--loader ts-node/esm\" mikro-orm migration:up",
+    "db:schema:fresh": "NODE_OPTIONS=\"--loader ts-node/esm\" mikro-orm schema:fresh -r",
     "dev": "tsup --watch ",
     "prebuild": "pnpm run clean",
     "test": "vitest run",

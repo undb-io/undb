@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import type { ITableSpecVisitor, WithNewField, WithoutField, WithoutOption, WithTableSchema } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import { UnderlyingColumnBuilder } from './underlying-column.builder'
-import { UnderlyingColumnFactory } from './underlying-column.factory'
+import { UnderlyingColumnBuilder } from './underlying-column.builder.js'
+import { UnderlyingColumnFactory } from './underlying-column.factory.js'
 
 export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   private readonly knex: Knex

@@ -1,5 +1,5 @@
 import type { IQueryTreeRecords } from '@egodb/core'
-import type { RecordSqliteWithParent } from './record.type'
+import type { RecordSqliteWithParent } from './record.type.js'
 
 export const createRecordTree = <T extends RecordSqliteWithParent>(dataset: T[]): IQueryTreeRecords => {
   const hashTable = Object.create(null)

@@ -22,7 +22,7 @@ import type {
   WithViewFieldsOrder,
 } from '@egodb/core'
 import type { QueryBuilder } from '@mikro-orm/better-sqlite'
-import type { Table } from '../../entity'
+import type { Table } from '../../entity/index.js'
 
 export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   constructor(public qb: QueryBuilder<Table>) {}

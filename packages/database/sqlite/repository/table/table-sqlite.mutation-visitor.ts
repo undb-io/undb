@@ -22,10 +22,10 @@ import type {
 } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import { Field, Option, SelectField, Table } from '../../entity'
-import { View } from '../../entity/view'
-import { BaseEntityManager } from '../base-entity-manager'
-import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor'
+import { Field, Option, SelectField, Table } from '../../entity/index.js'
+import { View } from '../../entity/view.js'
+import { BaseEntityManager } from '../base-entity-manager.js'
+import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
 
 export class TableSqliteMutationVisitor extends BaseEntityManager implements ITableSpecVisitor {
   constructor(private readonly tableId: string, em: EntityManager) {

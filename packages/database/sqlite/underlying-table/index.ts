@@ -1,1 +1,1 @@
-export * from './underlying-table-sqlite.manager'
+export * from './underlying-table-sqlite.manager.js'

@@ -44,8 +44,8 @@ import {
 } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import { endOfDay, startOfDay } from 'date-fns'
-import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants'
-import { ClosureTable } from '../../underlying-table/underlying-foreign-table'
+import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants.js'
+import { ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
 
 export class RecordSqliteQueryVisitor implements IRecordVisitor {
   constructor(

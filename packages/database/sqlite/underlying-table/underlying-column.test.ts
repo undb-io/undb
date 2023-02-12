@@ -8,7 +8,7 @@ import {
   UnderlyingStringColumn,
   UnderlyingTreeColumn,
   UnderlyingUpdatedAtColumn,
-} from './underlying-column'
+} from './underlying-column.js'
 
 describe('UnderlyingColumn', () => {
   let knex: Knex

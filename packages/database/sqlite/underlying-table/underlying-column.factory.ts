@@ -1,5 +1,5 @@
 import type { Field } from '@egodb/core'
-import type { IUnderlyingColumn } from '../interfaces/underlying-column'
+import type { IUnderlyingColumn } from '../interfaces/underlying-column.js'
 import {
   UnderlyingAutoIncreamentColumn,
   UnderlyingBoolColumn,
@@ -18,7 +18,7 @@ import {
   UnderlyingStringColumn,
   UnderlyingTreeColumn,
   UnderlyingUpdatedAtColumn,
-} from './underlying-column'
+} from './underlying-column.js'
 
 export class UnderlyingColumnFactory {
   static create(field: Field): IUnderlyingColumn | IUnderlyingColumn[] {

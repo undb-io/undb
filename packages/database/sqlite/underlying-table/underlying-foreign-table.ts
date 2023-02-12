@@ -1,7 +1,7 @@
 import type { Field, ParentField, ReferenceField } from '@egodb/core'
 import { INTERNAL_COLUMN_ID_NAME, TreeField } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
-import type { IUderlyingForeignTableName, IUnderlyingForeignTable } from '../interfaces/underlying-foreign-table'
+import type { IUderlyingForeignTableName, IUnderlyingForeignTable } from '../interfaces/underlying-foreign-table.js'
 
 abstract class BaseUnderlyingForeignTable<F extends Field> implements IUnderlyingForeignTable {
   constructor(protected readonly foreignTableName: string, protected readonly field: F) {}

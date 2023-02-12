@@ -36,8 +36,8 @@ import type {
   WithRecordValues,
 } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import { BaseEntityManager } from '../base-entity-manager'
-import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation-visitor'
+import { BaseEntityManager } from '../base-entity-manager.js'
+import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation-visitor.js'
 
 export class RecordSqliteMutationVisitor extends BaseEntityManager implements IRecordVisitor {
   constructor(

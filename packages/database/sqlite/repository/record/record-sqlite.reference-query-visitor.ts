@@ -22,8 +22,8 @@ import type {
 } from '@egodb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
-import { ClosureTable } from '../../underlying-table/underlying-foreign-table'
-import { getExpandColumnName } from './record.type'
+import { ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
+import { getExpandColumnName } from './record.type.js'
 
 export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
   constructor(
