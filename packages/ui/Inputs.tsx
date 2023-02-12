@@ -9,4 +9,4 @@ export {
   MultiSelect,
   ColorInput,
 } from '@mantine/core'
-export type { SelectProps, SelectItem, MultiSelectProps } from '@mantine/core'
+export type { SelectProps, SelectItem, MultiSelectProps, CheckboxProps } from '@mantine/core'
