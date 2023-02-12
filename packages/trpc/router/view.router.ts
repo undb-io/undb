@@ -1,14 +1,14 @@
 import { SwitchDisplayTypeCommand, switchDisplayTypeCommandInput } from '@egodb/core'
 import type { ICommandBus } from '@egodb/domain'
 import { z } from 'zod'
-import type { publicProcedure } from '../trpc'
-import { router } from '../trpc'
-import { createCalendarRouter } from './calendar.router'
-import { createFilterRouter } from './filter.router'
-import { createKanbanRouter } from './kanban.router'
-import { createSortRouter } from './sort.router'
-import { createTreeViewRouter } from './tree-view.router'
-import { createViewFieldRouter } from './view-field.router'
+import type { publicProcedure } from '../trpc.js'
+import { router } from '../trpc.js'
+import { createCalendarRouter } from './calendar.router.js'
+import { createFilterRouter } from './filter.router.js'
+import { createKanbanRouter } from './kanban.router.js'
+import { createSortRouter } from './sort.router.js'
+import { createTreeViewRouter } from './tree-view.router.js'
+import { createViewFieldRouter } from './view-field.router.js'
 
 export const createViewRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus) =>
   router({

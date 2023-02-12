@@ -1,8 +1,8 @@
 import { setFiltersCommandInput, SetFitlersCommand } from '@egodb/core'
 import type { ICommandBus } from '@egodb/domain'
 import { z } from 'zod'
-import type { publicProcedure } from '../trpc'
-import { router } from '../trpc'
+import type { publicProcedure } from '../trpc.js'
+import { router } from '../trpc.js'
 
 export const createFilterRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus) =>
   router({

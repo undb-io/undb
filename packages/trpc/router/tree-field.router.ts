@@ -7,8 +7,8 @@ import {
   getTreeAvailableRecordsQueryOutput,
 } from '@egodb/core'
 import type { IQueryBus } from '@egodb/domain'
-import type { publicProcedure } from '../trpc'
-import { router } from '../trpc'
+import type { publicProcedure } from '../trpc.js'
+import { router } from '../trpc.js'
 
 export const createTreeFieldRouter = (procedure: typeof publicProcedure) => (queryBus: IQueryBus) =>
   router({

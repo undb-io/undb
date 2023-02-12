@@ -15,10 +15,10 @@ import {
 } from '@egodb/core'
 import type { ICommandBus, IQueryBus } from '@egodb/domain'
 import { z } from 'zod'
-import type { publicProcedure } from '../trpc'
-import { router } from '../trpc'
-import { createFieldRouter } from './field.router'
-import { createViewRouter } from './view.router'
+import type { publicProcedure } from '../trpc.js'
+import { router } from '../trpc.js'
+import { createFieldRouter } from './field.router.js'
+import { createViewRouter } from './view.router.js'
 
 export const createTableRouter =
   (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>

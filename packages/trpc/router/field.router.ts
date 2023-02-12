@@ -1,9 +1,9 @@
 import { CreateFieldCommand, createFieldCommandInput, DeleteFieldCommand, deleteFieldCommandInput } from '@egodb/core'
 import type { ICommandBus } from '@egodb/domain'
 import { z } from 'zod'
-import type { publicProcedure } from '../trpc'
-import { router } from '../trpc'
-import { createSelectFieldRouter } from './select-field.router'
+import type { publicProcedure } from '../trpc.js'
+import { router } from '../trpc.js'
+import { createSelectFieldRouter } from './select-field.router.js'
 
 export const createFieldRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus) =>
   router({

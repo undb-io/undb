@@ -21,10 +21,10 @@ import {
 } from '@egodb/core'
 import type { ICommandBus, IQueryBus } from '@egodb/domain'
 import { z } from 'zod'
-import type { publicProcedure } from '../trpc'
-import { router } from '../trpc'
-import { createParentFieldRouter } from './parent-field.router'
-import { createTreeFieldRouter } from './tree-field.router'
+import type { publicProcedure } from '../trpc.js'
+import { router } from '../trpc.js'
+import { createParentFieldRouter } from './parent-field.router.js'
+import { createTreeFieldRouter } from './tree-field.router.js'
 
 export const createRecordRouter =
   (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
