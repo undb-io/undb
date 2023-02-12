@@ -3,11 +3,6 @@
   "description": "",
   "version": "0.0.0",
   "author": "",
-  "type": "module",
-  "exports": {
-    "import": "./dist/index.js",
-    "require": "./dist/index.js"
-  },
   "dependencies": {
     "@egodb/domain": "^0.0.0",
     "@fxts/core": "^0.11.0",
@@ -27,6 +22,10 @@
     "vitest": "^0.26.3",
     "vitest-mock-extended": "^1.0.9"
   },
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/index.js"
+  },
   "keywords": [],
   "scripts": {
     "build": "tsup",
@@ -37,5 +36,6 @@
     "test": "vitest run",
     "test:watch": "vitest"
   },
+  "type": "module",
   "types": "./dist/index"
 }
