@@ -3,7 +3,7 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import type { Field } from '@egodb/core'
-import { useSetVisibilityMutation } from '@egodb/store'
+import { useMoveFieldMutation, useSetVisibilityMutation } from '@egodb/store'
 import type { CheckboxProps } from '@egodb/ui'
 import { useListState } from '@egodb/ui'
 import { ActionIcon, IconGripVertical } from '@egodb/ui'
@@ -69,6 +69,8 @@ export const ViewFieldsEditor: React.FC<ITableBaseProps> = ({ table }) => {
     setFieldVisibility({ tableId: table.id.value, fieldId, hidden: !visible })
   }
 
+  const [moveField] = useMoveFieldMutation()
+
   return (
     <Popover
       width={250}
@@ -112,6 +114,8 @@ export const ViewFieldsEditor: React.FC<ITableBaseProps> = ({ table }) => {
                   from: active.data.current?.sortable?.index,
                   to: over?.data.current?.sortable?.index,
                 })
+
+                moveField({ tableId: table.id.value, from: active.id as string, to: over.id as string })
               }
             }}
           >
