@@ -1,15 +1,3 @@
-import {
-  DndContext,
-  KeyboardSensor,
-  MouseSensor,
-  PointerSensor,
-  rectIntersection,
-  TouchSensor,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core'
-import { restrictToHorizontalAxis } from '@dnd-kit/modifiers'
-import { SortableContext, horizontalListSortingStrategy, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { ActionIcon, Checkbox, IconColumnInsertRight, openContextModal, Table, Tooltip, useListState } from '@egodb/ui'
 import type { ColumnDef } from '@tanstack/react-table'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
@@ -22,7 +10,7 @@ import { Th } from './th'
 import { Tr } from './tr'
 import type { RecordAllValueType } from '@egodb/core'
 import { FieldValueFactory } from '../field-value/field-value.factory'
-import { getTableSelectedRecordIds, setTableSelectedRecordIds, useMoveFieldMutation } from '@egodb/store'
+import { getTableSelectedRecordIds, setTableSelectedRecordIds } from '@egodb/store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { RecordSelection } from './selection'
@@ -50,26 +38,6 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
   useLayoutEffect(() => {
     handlers.setState(table.schema.fields)
   }, [table])
-
-  const [moveField] = useMoveFieldMutation()
-  const sensors = useSensors(
-    useSensor(MouseSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    }),
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    }),
-    useSensor(TouchSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-  )
-
-  const items = fields.map((f) => f.id.value)
 
   const selection: ColumnDef<TData> = {
     enableResizing: false,
@@ -229,24 +197,7 @@ export const EGOTable: React.FC<IProps> = ({ table, records }) => {
         <thead>
           {rt.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              <DndContext
-                sensors={sensors}
-                collisionDetection={rectIntersection}
-                modifiers={[restrictToHorizontalAxis]}
-                onDragEnd={({ over, active }) => {
-                  if (over) {
-                    handlers.reorder({
-                      from: active.data.current?.sortable?.index,
-                      to: over?.data.current?.sortable?.index,
-                    })
-                    moveField({ tableId: table.id.value, from: active.id as string, to: over.id as string })
-                  }
-                }}
-              >
-                <SortableContext items={items} strategy={horizontalListSortingStrategy}>
-                  {headerGroup.headers.map((header) => flexRender(header.column.columnDef.header, header.getContext()))}
-                </SortableContext>
-              </DndContext>
+              {headerGroup.headers.map((header) => flexRender(header.column.columnDef.header, header.getContext()))}
             </tr>
           ))}
         </thead>
