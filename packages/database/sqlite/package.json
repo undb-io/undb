@@ -49,8 +49,8 @@
     "db:schema:fresh": "NODE_OPTIONS=\"--loader ts-node/esm\" mikro-orm schema:fresh -r",
     "dev": "tsup --watch ",
     "prebuild": "pnpm run clean",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "TZ=UTC vitest run",
+    "test:watch": "TZ=UTC vitest"
   },
   "types": "./dist/index"
 }
