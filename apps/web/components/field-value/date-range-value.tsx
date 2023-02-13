@@ -6,5 +6,17 @@ const dateFormat = format('yyyy-MM-dd')
 export const DateRangeValue: React.FC<{ value: IDateRangeFieldValue | undefined }> = ({ value }) => {
   if (!value) return null
 
-  return <>{`${dateFormat(value[0])} - ${dateFormat(value[1])}`}</>
+  const [from, to] = value
+  if (from && to) {
+    return <>{`${dateFormat(from)} - ${dateFormat(to)}`}</>
+  }
+
+  if (from) {
+    return <>{dateFormat(from)}</>
+  }
+
+  if (to) {
+    return <>{dateFormat(to)}</>
+  }
+  return null
 }
