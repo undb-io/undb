@@ -14,13 +14,16 @@ export type ICreateDateRangeFieldSchema = z.infer<typeof createDateRangeFieldSch
 export const dateRangeFieldQuerySchema = baseFieldQuerySchema.merge(dateRangeTypeObjectSchema)
 
 export const dateRangeFieldValue = z
-  .tuple([z.date(), z.date()])
+  .tuple([z.date().nullable(), z.date().nullable()])
   .nullable()
   .refine(
     (checker) => {
       if (checker) {
         const [from, to] = checker
-        return isAfter(to, from)
+        if (from && to) {
+          return isAfter(to, from)
+        }
+        return true
       }
       return true
     },
