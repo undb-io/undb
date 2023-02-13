@@ -1,9 +1,5 @@
-import {
-  CreateRecordCommand,
-  CreateRecordCommandHandler as DomainHandler,
-  IRecordRepository,
-  ITableRepository,
-} from '@egodb/core'
+import { IRecordRepository, ITableRepository } from '@egodb/core'
+import { CreateRecordCommand, CreateRecordCommandHandler as DomainHandler } from '@egodb/cqrs'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
 import { InjectRecordReposiory, InjectTableReposiory } from '../adapters'

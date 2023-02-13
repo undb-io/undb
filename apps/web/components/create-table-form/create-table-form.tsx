@@ -1,4 +1,4 @@
-import type { ICreateTableInput } from '@egodb/core'
+import type { ICreateTableInput } from '@egodb/cqrs'
 import { useCreateTableMutation } from '@egodb/store'
 import { Alert, Button, Divider, Group, IconAlertCircle, Text, Space, TextInput, Code } from '@egodb/ui'
 import { useRouter } from 'next/navigation'

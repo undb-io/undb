@@ -1,8 +1,5 @@
-import {
-  ITableRepository,
-  SetFieldVisibilityCommand,
-  SetFieldVisibilityCommandHandler as DomainHandelr,
-} from '@egodb/core'
+import { ITableRepository } from '@egodb/core'
+import { SetFieldVisibilityCommand, SetFieldVisibilityCommandHandler as DomainHandelr } from '@egodb/cqrs'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
 import { InjectTableReposiory } from '../adapters'

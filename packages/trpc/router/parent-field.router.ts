@@ -2,7 +2,7 @@ import {
   GetParentAvailableRecordsQuery,
   getParentAvailableRecordsQueryInput,
   getParentAvailableRecordsQueryOutput,
-} from '@egodb/core'
+} from '@egodb/cqrs'
 import type { IQueryBus } from '@egodb/domain'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'

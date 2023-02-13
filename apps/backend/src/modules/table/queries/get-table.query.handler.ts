@@ -1,5 +1,6 @@
-import type { IGetTableOutput } from '@egodb/core'
-import { GetTableQuery, GetTableQueryHandler as DomainHandler, ITableQueryModel } from '@egodb/core'
+import { ITableQueryModel } from '@egodb/core'
+import type { IGetTableOutput } from '@egodb/cqrs'
+import { GetTableQuery, GetTableQueryHandler as DomainHandler } from '@egodb/cqrs'
 import type { IQueryHandler } from '@nestjs/cqrs'
 import { QueryHandler } from '@nestjs/cqrs'
 import { InjectTableQueryModel } from '../adapters'

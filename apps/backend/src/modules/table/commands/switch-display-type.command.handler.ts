@@ -1,8 +1,5 @@
-import {
-  ITableRepository,
-  SwitchDisplayTypeCommand,
-  SwitchDisplayTypeCommandHandler as DomainHandelr,
-} from '@egodb/core'
+import { ITableRepository } from '@egodb/core'
+import { SwitchDisplayTypeCommand, SwitchDisplayTypeCommandHandler as DomainHandelr } from '@egodb/cqrs'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
 import { InjectTableReposiory } from '../adapters'

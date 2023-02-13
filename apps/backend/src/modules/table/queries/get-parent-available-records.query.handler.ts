@@ -1,10 +1,6 @@
-import type { IGetParentAvailableRecordsOutput } from '@egodb/core'
-import {
-  GetParentAvailableRecordsQuery,
-  GetParentAvailableRecordsQueryHandler,
-  IRecordQueryModel,
-  ITableRepository,
-} from '@egodb/core'
+import { IRecordQueryModel, ITableRepository } from '@egodb/core'
+import type { IGetParentAvailableRecordsOutput } from '@egodb/cqrs'
+import { GetParentAvailableRecordsQuery, GetParentAvailableRecordsQueryHandler } from '@egodb/cqrs'
 import type { IQueryHandler } from '@nestjs/cqrs'
 import { QueryHandler } from '@nestjs/cqrs'
 import { InjectRecordQueryModel, InjectTableReposiory } from '../adapters'

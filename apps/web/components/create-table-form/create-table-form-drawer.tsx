@@ -1,5 +1,5 @@
-import type { ICreateTableInput } from '@egodb/core'
-import { createTableCommandInput } from '@egodb/core'
+import type { ICreateTableInput } from '@egodb/cqrs'
+import { createTableCommandInput } from '@egodb/cqrs'
 import { Drawer } from '@egodb/ui'
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'

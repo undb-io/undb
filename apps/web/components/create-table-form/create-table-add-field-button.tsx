@@ -1,4 +1,4 @@
-import type { ICreateTableInput } from '@egodb/core'
+import type { ICreateTableInput } from '@egodb/cqrs'
 import { FieldId } from '@egodb/core'
 import { Button, IconPlus } from '@egodb/ui'
 import { useFieldArray, useFormContext } from 'react-hook-form'

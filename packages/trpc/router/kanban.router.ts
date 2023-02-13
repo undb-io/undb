@@ -1,4 +1,4 @@
-import { SetKanbanFieldCommand, setKanbanFieldCommandInput } from '@egodb/core'
+import { SetKanbanFieldCommand, setKanbanFieldCommandInput } from '@egodb/cqrs'
 import type { ICommandBus } from '@egodb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'

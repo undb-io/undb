@@ -1,4 +1,4 @@
-import type { ICreateTableInput } from '@egodb/core'
+import type { ICreateTableInput } from '@egodb/cqrs'
 import { RATING_MAX, RATING_MAX_DEFAULT } from '@egodb/core'
 import { NumberInput, TextInput } from '@egodb/ui'
 import { Controller, useFormContext } from 'react-hook-form'

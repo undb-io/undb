@@ -1,4 +1,5 @@
-import { SetSortsCommand, SetSortsCommandHandler as DomainHandler, type ITableRepository } from '@egodb/core'
+import { ITableRepository } from '@egodb/core'
+import { SetSortsCommand, SetSortsCommandHandler as DomainHandler } from '@egodb/cqrs'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
 import { InjectTableReposiory } from '../adapters'

@@ -1,6 +1,6 @@
-import { ITableSpec, IUnderlyingTableManager, Table } from '@egodb/core'
+import { ITableSpec, Table } from '@egodb/core'
 import type { EntityManager } from '@egodb/sqlite'
-import { TableSqliteRepository } from '@egodb/sqlite'
+import { IUnderlyingTableManager, TableSqliteRepository } from '@egodb/sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import type { Option } from 'oxide.ts'

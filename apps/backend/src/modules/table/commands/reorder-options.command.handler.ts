@@ -1,4 +1,5 @@
-import { ITableRepository, ReorderOptionsCommand, ReorderOptionsCommandHandler as DomainHandler } from '@egodb/core'
+import { ITableRepository } from '@egodb/core'
+import { ReorderOptionsCommand, ReorderOptionsCommandHandler as DomainHandler } from '@egodb/cqrs'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
 import { InjectTableReposiory } from '../adapters'

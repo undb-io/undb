@@ -12,7 +12,7 @@ import {
   GetTablesQuery,
   getTablesQueryOutput,
   getTablesQuerySchema,
-} from '@egodb/core'
+} from '@egodb/cqrs'
 import type { ICommandBus, IQueryBus } from '@egodb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'

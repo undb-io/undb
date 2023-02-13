@@ -1,7 +1,13 @@
-import type { ITableSpec, IUnderlyingTableManager, Table } from '@egodb/core'
+import type { ITableSpec, Table } from '@egodb/core'
 import { BaseEntityManager } from '../repository/base-entity-manager.js'
 import { UnderlyingTableSqliteManagerVisitor } from './underlying-table-sqlite.manager-visitor.js'
 import { UnderlyingTableBuilder } from './underlying-table.builder.js'
+
+export interface IUnderlyingTableManager {
+  create(table: Table): Promise<void>
+  update(tableId: string, spec: ITableSpec): Promise<void>
+  delete(tableId: string): Promise<void>
+}
 
 export class UnderlyingTableSqliteManager extends BaseEntityManager implements IUnderlyingTableManager {
   async create(table: Table): Promise<void> {

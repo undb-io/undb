@@ -1,5 +1,6 @@
-import type { ICreateRecordInput, Table as CoreTable } from '@egodb/core'
-import { createRecordCommandInput } from '@egodb/core'
+import type { Table as CoreTable } from '@egodb/core'
+import type { ICreateRecordInput } from '@egodb/cqrs'
+import { createRecordCommandInput } from '@egodb/cqrs'
 import { Drawer } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom, useAtomValue } from 'jotai'

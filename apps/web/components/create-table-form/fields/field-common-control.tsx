@@ -1,4 +1,4 @@
-import type { ICreateTableInput } from '@egodb/core'
+import type { ICreateTableInput } from '@egodb/cqrs'
 import { ActionIcon, Text, Button, Group, IconDots, Menu } from '@egodb/ui'
 import { useResetAtom } from 'jotai/utils'
 import { useFieldArray } from 'react-hook-form'
