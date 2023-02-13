@@ -21,7 +21,6 @@ import { unstable_batchedUpdates } from 'react-dom'
 import { useAppDispatch, useConfirmModal } from '../../hooks'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
-import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldValueFactory } from '../field-value/field-value.factory'
 import { RecordId } from '../field-value/record-id'
@@ -72,7 +71,6 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     const schema = table.schema.toIdMap()
     const theme = useEgoUITheme()
 
-    const setOpened = useSetAtom(editRecordFormDrawerOpened)
     const dispatch = useAppDispatch()
 
     const setCreateOpened = useSetAtom(createRecordFormDrawerOpened)
@@ -96,10 +94,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         {...props}
         pl={indentationWidth * depth}
         onClick={() => {
-          unstable_batchedUpdates(() => {
-            dispatch(setSelectedRecordId(id as string))
-            setOpened(true)
-          })
+          dispatch(setSelectedRecordId(id as string))
         }}
         sx={{
           cursor: 'pointer',

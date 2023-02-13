@@ -7,12 +7,11 @@ import { DateEqual } from '@egodb/core'
 import { setSelectedRecordId } from '@egodb/store'
 import { ActionIcon, Box, Group, IconGripVertical, IconPlus, Stack, Text, useHover } from '@egodb/ui'
 import { isEqual, isToday } from 'date-fns'
-import { useAtom, useSetAtom } from 'jotai'
+import { useAtom } from 'jotai'
 import { useMemo } from 'react'
 import { useAppDispatch } from '../../hooks'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
-import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
 
 interface IProps {
   records: Records
@@ -21,7 +20,6 @@ interface IProps {
 }
 
 const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
-  const setOpened = useSetAtom(editRecordFormDrawerOpened)
   const { setNodeRef, attributes, listeners, transform, isDragging } = useDraggable({
     id: record.id.value,
   })
@@ -50,7 +48,6 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
       onClick={(e) => {
         e.stopPropagation()
         dispatch(setSelectedRecordId(record.id.value))
-        setOpened(true)
       }}
     >
       <IconGripVertical
