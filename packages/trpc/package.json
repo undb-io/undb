@@ -5,19 +5,19 @@
   "dependencies": {
     "@egodb/core": "^0.0.0",
     "@egodb/domain": "^0.0.0",
-    "@trpc/server": "^10.10.0",
+    "@trpc/server": "^10.11.0",
     "superjson": "^1.12.2",
     "swagger-ui-express": "^4.6.0",
-    "zod": "^3.20.3"
+    "zod": "^3.20.6"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
     "@types/swagger-ui-express": "^4.1.3",
-    "rimraf": "^3.0.2",
+    "rimraf": "^4.1.2",
     "tsconfig": "^0.0.0",
-    "tsup": "^6.6.0",
+    "tsup": "^6.6.2",
     "typescript": "^4.9.5",
-    "vitest": "^0.26.3"
+    "vitest": "^0.28.4"
   },
   "exports": {
     "import": "./dist/index.js",

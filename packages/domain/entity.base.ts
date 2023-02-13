@@ -1,4 +1,4 @@
-import type { ID } from './id.vo'
+import type { ID } from './id.vo.js'
 
 export interface BaseEntityProps<TI extends ID> {
   id: TI

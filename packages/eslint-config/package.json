@@ -2,7 +2,7 @@
   "name": "@egodb/eslint-config",
   "version": "0.0.0",
   "dependencies": {
-    "eslint": "^8.33.0",
+    "eslint": "^8.34.0",
     "eslint-config-next": "^13.1.6",
     "eslint-config-prettier": "^8.6.0",
     "eslint-config-turbo": "^0.0.7",
