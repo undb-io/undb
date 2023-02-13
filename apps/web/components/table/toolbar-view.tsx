@@ -122,7 +122,7 @@ export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
             onChange={(type) => {
               switchDisplayType({
                 tableId: table.id.value,
-                viewKey: view.name.unpack(),
+                viewId: view.name.unpack(),
                 displayType: type as IViewDisplayType,
               }).then(() => {
                 toggle.close()

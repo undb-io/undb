@@ -4,14 +4,14 @@ import type { IMoveFieldCommandInput } from './move-field.command.interface.js'
 
 export class MoveFieldCommand extends Command implements IMoveFieldCommandInput {
   readonly tableId: string
-  readonly viewKey?: string
+  readonly viewId?: string
   readonly from: string
   readonly to: string
 
   constructor(props: CommandProps<IMoveFieldCommandInput>) {
     super(props)
     this.tableId = props.tableId
-    this.viewKey = props.viewKey
+    this.viewId = props.viewId
     this.from = props.from
     this.to = props.to
   }

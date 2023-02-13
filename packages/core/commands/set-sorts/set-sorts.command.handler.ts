@@ -10,7 +10,7 @@ export class SetSortsCommandHandler implements ISetSortsCommandHandler {
   async execute(command: SetSortsCommand): Promise<void> {
     const table = (await this.repo.findOneById(command.tableId)).unwrap()
 
-    const spec = table.setSorts(command.sorts, command.viewKey).unwrap()
+    const spec = table.setSorts(command.sorts, command.viewId).unwrap()
 
     await this.repo.updateOneById(command.tableId, spec)
   }

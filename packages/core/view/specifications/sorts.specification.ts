@@ -14,14 +14,14 @@ export class WithSorts extends BaseViewSpecification {
 
   isSatisfiedBy(t: Table): boolean {
     if (!this.sorts) {
-      return isEmpty(t.mustGetView(this.view.key.value).filter)
+      return isEmpty(t.mustGetView(this.view.id.value).filter)
     }
 
-    return t.mustGetView(this.view.key.value).sorts?.equals(this.sorts) ?? false
+    return t.mustGetView(this.view.id.value).sorts?.equals(this.sorts) ?? false
   }
 
   mutate(t: Table): Result<Table, string> {
-    const view = t.mustGetView(this.view.key.value)
+    const view = t.mustGetView(this.view.id.value)
     view.sorts = this.sorts ?? undefined
     return Ok(t)
   }

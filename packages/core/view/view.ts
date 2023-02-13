@@ -22,7 +22,6 @@ import type { IViewFieldOption } from './view-field-options'
 import { ViewFieldOptions } from './view-field-options'
 import { ViewFieldsOrder } from './view-fields-order.vo'
 import { ViewId } from './view-id.vo'
-import { ViewKey } from './view-key.vo'
 import { ViewName } from './view-name.vo'
 import { createViewInput_internal } from './view.schema.js'
 import type { ICreateViewInput_internal, IView, IViewDisplayType } from './view.type.js'
@@ -32,10 +31,6 @@ export const defaultViewDiaplyType: IViewDisplayType = 'grid'
 export class View extends ValueObject<IView> {
   public get id() {
     return this.props.id
-  }
-
-  public get key() {
-    return this.props.key
   }
 
   public get name() {
@@ -249,7 +244,6 @@ export class View extends ValueObject<IView> {
     const viewName = ViewName.create(parsed.name)
     return new View({
       id: input.id ? ViewId.fromString(input.id) : ViewId.create(),
-      key: input.key ? ViewKey.create(input.key) : ViewKey.fromName(viewName),
       name: viewName,
       sorts: input.sorts ? new Sorts(input.sorts) : undefined,
       kanban: input.kanban ? Kanban.from(input.kanban) : undefined,

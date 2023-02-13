@@ -67,11 +67,7 @@ describe('TableSqliteMutationVisitor', () => {
   })
 
   test('viewsEqual', async () => {
-    mv.viewsEqual(
-      new WithTableViews(
-        new Views([CoreView.create({ id: 'viw1', name: 'view1', key: 'view1', displayType: 'grid' })]),
-      ),
-    )
+    mv.viewsEqual(new WithTableViews(new Views([CoreView.create({ id: 'viw1', name: 'view1', displayType: 'grid' })])))
 
     await em.flush()
 
@@ -79,7 +75,6 @@ describe('TableSqliteMutationVisitor', () => {
     expect(view).not.to.be.null
     expect(view!.id).to.be.eq('viw1')
     expect(view!.name).to.be.eq('view1')
-    expect(view!.key).to.be.eq('view1')
     expect(view!.displayType).to.be.eq('grid')
     expect(view!.kanban).to.be.undefined
     expect(view!.calendar).to.be.undefined

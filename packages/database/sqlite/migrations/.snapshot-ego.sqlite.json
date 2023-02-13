@@ -447,15 +447,6 @@
           "length": 0,
           "mappedType": "datetime"
         },
-        "key": {
-          "name": "key",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
         "table_id": {
           "name": "table_id",
           "type": "text",

@@ -5,13 +5,13 @@ import type { ISwitchDisplayTypeCommandInput } from './switch-display-type.comma
 
 export class SwitchDisplayTypeCommand extends Command implements ISwitchDisplayTypeCommandInput {
   public readonly tableId: string
-  public readonly viewKey?: string
+  public readonly viewId?: string
   public readonly displayType: IViewDisplayType
 
   constructor(props: CommandProps<ISwitchDisplayTypeCommandInput>) {
     super(props)
     this.tableId = props.tableId
-    this.viewKey = props.viewKey
+    this.viewId = props.viewId
     this.displayType = props.displayType
   }
 }

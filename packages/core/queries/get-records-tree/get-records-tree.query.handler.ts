@@ -12,7 +12,7 @@ export class GetRecordsTreeQueryHandler implements IQueryHandler<GetRecordsTreeQ
   async execute(query: GetRecordsTreeQuery): Promise<IGetRecordsTreeOutput> {
     const table = (await this.tableRepo.findOneById(query.tableId)).unwrap()
     const field = table.schema.getFieldByIdOfType(query.fieldId, TreeField).unwrap()
-    const filter = table.getSpec(query.viewKey)
+    const filter = table.getSpec(query.viewId)
 
     const spec = WithRecordTableId.fromString(query.tableId)
       .map((s) => (filter.isNone() ? s : s.and(filter.unwrap())))
