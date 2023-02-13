@@ -4,7 +4,7 @@ export default defineConfig({
   entry: ['index.ts'],
   outDir: 'dist',
   splitting: true,
-  sourcemap: true,
+  sourcemap: 'inline',
   dts: true,
   format: 'esm',
 })

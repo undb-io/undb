@@ -26,6 +26,5 @@
   "main": "./index.ts",
   "scripts": {
     "lint": "eslint *.ts*"
-  },
-  "types": "./index.ts"
+  }
 }

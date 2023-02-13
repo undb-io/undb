@@ -46,11 +46,10 @@
     "coverage": "vitest run --coverage",
     "db:migration:up": "NODE_OPTIONS=\"--loader ts-node/esm\" mikro-orm migration:up",
     "db:schema:fresh": "NODE_OPTIONS=\"--loader ts-node/esm\" mikro-orm schema:fresh -r",
-    "dev": "tsup --watch ",
+    "dev": "tsup --watch --onSuccess=\"tsc --emitDeclarationOnly --declaration\" ",
     "prebuild": "pnpm run clean",
     "test": "TZ=UTC vitest run",
     "test:watch": "TZ=UTC vitest"
   },
-  "type": "module",
-  "types": "./dist/index"
+  "type": "module"
 }
