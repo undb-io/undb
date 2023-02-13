@@ -1,15 +1,15 @@
 import type { IQueryTable } from '@egodb/core'
-import { useGetTablesQuery } from '@egodb/store'
+import { resetSelectedRecordId, useGetTablesQuery } from '@egodb/store'
 import { Navbar, Box, Skeleton, NavLink, Center, Button, IconPlus, ScrollArea } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import Link from 'next/link'
 import { unstable_batchedUpdates } from 'react-dom'
+import { useAppDispatch } from '../../hooks'
 import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.atom'
-import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
 
 export const TableNavList: React.FC = () => {
+  const dispatch = useAppDispatch()
   const setOpened = useSetAtom(createTableFormDrawerOpened)
-  const setEditRecordOpened = useSetAtom(editRecordFormDrawerOpened)
   const { isLoading, tablesList } = useGetTablesQuery(
     {},
     {
@@ -44,7 +44,7 @@ export const TableNavList: React.FC = () => {
             variant="outline"
             onClick={() => {
               unstable_batchedUpdates(() => {
-                setEditRecordOpened(false)
+                dispatch(resetSelectedRecordId())
                 setOpened(true)
               })
             }}

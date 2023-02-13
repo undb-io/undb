@@ -6,8 +6,6 @@ import type { ITableBaseProps } from '../table/table-base-props'
 import type { Record } from '@egodb/core'
 import type { CSSProperties } from 'react'
 import { FieldIcon } from '../field-inputs/field-Icon'
-import { useSetAtom } from 'jotai'
-import { editRecordFormDrawerOpened } from '../edit-record-form/drawer-opened.atom'
 import { FieldValueFactory } from '../field-value/field-value.factory'
 import { setSelectedRecordId } from '@egodb/store'
 import { useAppDispatch } from '../../hooks'
@@ -24,7 +22,6 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
   setNodeRef,
   style,
 }) => {
-  const setOpened = useSetAtom(editRecordFormDrawerOpened)
   const dispatch = useAppDispatch()
 
   return (
@@ -39,7 +36,6 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
       style={style}
       onClick={(e) => {
         e.stopPropagation()
-        setOpened(true)
         dispatch(setSelectedRecordId(record.id.value))
       }}
     >

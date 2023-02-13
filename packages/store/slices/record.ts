@@ -61,6 +61,8 @@ export const recordReducer = recordSlice.reducer
 
 export const getSelectedRecordId = (state: RootState) => state.record.selectedRecordId
 
+export const getHasSelectedRecordId = createSelector(getSelectedRecordId, Boolean)
+
 export const getSelectedRecordIds = (state: RootState) => state.record.selectedRecordIds
 
 export const getTableSelectedRecordIds = createSelector(
