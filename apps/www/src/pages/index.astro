@@ -29,10 +29,46 @@ const imgList = [
 ]
 
 const iconList = [twitter, linkedin, gitHub, youTuBe]
+
+let selectedStartWay: string
 ---
 
 <Layout title="Welcome to Ego." bgColor="#ffffff">
-  <div class="h-full mt-[152px] leading-9 text-center md:text-center flex flex-col items-center">
+  <div class="h-full mt-[152px] leading-9 text-center md:text-center flex flex-col items-start mx-[80px]">
+    <h1 class="open-source font-black text-8xl text-start leading-[1.5]">
+      Open Source
+      <br />
+      <span
+        class="text-center text-9xl text-[#05449d] border-sky-500 border-2 px-[20px] mt-[20px] bg-sky-100 rounded-xl"
+      >
+        Ego DB
+      </span>
+      <span class="ml-[40px]">Platform</span>
+    </h1>
+    <div class="fast-installation flex gap-[20px] my-[40px]">
+      <div class="flex-1 hint my-[24px] text-gray-600 text-[20px] text-start font-[200]">
+        Privacy first and airtable alternative
+        <br />
+        Create your own online database without technical experience. Our user friendly no-code tool gives you the powers
+        of a developer without leaving your browser.
+      </div>
+      <div class="code-container flex-1 w-full bg-[#131522] rounded-xl p-[20px] text-start">
+        <div class="title-wrapper flex justify-between">
+          <span class="text-[2.5rem] text-white font-bold"> Quick Start</span>
+          <div class="tab-btn h-[38px] bg-[#505263] rounded-2xl py-[4px] px-[8px] flex gap-[4px]">
+            {
+              ['PIP', 'BREW', 'GIT', 'DOCKER'].map((item) => (
+                <a class="rounded-2xl hover:bg-[#323443] p-[4px] text-center leading-[25px] cursor-pointer active:bg-sky-600 text-white text-[14px]">
+                  {item}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+        <code> </code>
+      </div>
+    </div>
+
     <span class="font-black text-8xl leading-relaxed">Open Source, Privacy First</span>
     <span class="font-black text-8xl text-[#05449d] leading-relaxed">Airtable Alternative</span>
     <span class="leading-relaxed text-1xl font-extralight mt-5 mb-8 text-[#888888]"
