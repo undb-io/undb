@@ -39,7 +39,7 @@ export class WithTableView extends BaseViewSpecification {
   }
 
   isSatisfiedBy(t: Table): boolean {
-    return t.getView(this.view.key.unpack()).mapOr(false, (v) => v.equals(this.view))
+    return t.getView(this.view.id.unpack()).mapOr(false, (v) => v.equals(this.view))
   }
 
   mutate(t: Table): Result<Table, string> {

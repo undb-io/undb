@@ -4,13 +4,13 @@ import type { ISetCalendarFieldCommandInput } from './set-calendar-field.command
 
 export class SetCalendarFieldCommand extends Command implements ISetCalendarFieldCommandInput {
   readonly tableId: string
-  readonly viewKey?: string
+  readonly viewId?: string
   readonly field: string
 
   constructor(props: CommandProps<ISetCalendarFieldCommandInput>) {
     super(props)
     this.tableId = props.tableId
-    this.viewKey = props.viewKey
+    this.viewId = props.viewId
     this.field = props.field
   }
 }

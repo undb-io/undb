@@ -9,13 +9,11 @@ import type { ITreeViewSchema, TreeView } from './tree-view/index.js'
 import type { IViewFieldOption, ViewFieldOptions } from './view-field-options.js'
 import type { ViewFieldsOrder } from './view-fields-order.vo.js'
 import type { ViewId } from './view-id.vo.js'
-import type { ViewKey } from './view-key.vo.js'
 import type { ViewName } from './view-name.vo.js'
 import type { createViewInput_internal, viewDisplayType } from './view.schema.js'
 
 export interface IView {
   id: ViewId
-  key: ViewKey
   name: ViewName
   sorts?: Sorts
   kanban?: Kanban
@@ -28,7 +26,7 @@ export interface IView {
 }
 
 export interface IQueryView {
-  key: string
+  id: string
   name: string
   sorts?: ISorts
   kanban?: IKanbanSchema

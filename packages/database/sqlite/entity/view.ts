@@ -59,9 +59,6 @@ export class View extends BaseEntity {
   @PrimaryKey()
   id: string
 
-  @Property()
-  key: string
-
   @ManyToOne(() => Table, { cascade: [Cascade.ALL] })
   table: Rel<Table>
 
@@ -95,7 +92,6 @@ export class View extends BaseEntity {
   constructor(table: Rel<Table>, view: CoreView) {
     super()
     this.id = view.id.value
-    this.key = view.key.value
     this.name = view.name.value
     this.table = table
     this.displayType = view.displayType

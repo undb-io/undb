@@ -40,7 +40,7 @@ export class Views extends ValueObject<View[]> {
     return new this(views.map((v) => View.create(v)))
   }
 
-  getById(viewKey?: string): Option<View> {
-    return Option(this.views.find((v) => v.key.value === viewKey))
+  getById(viewId?: string): Option<View> {
+    return Option(this.views.find((v) => v.id.value === viewId))
   }
 }

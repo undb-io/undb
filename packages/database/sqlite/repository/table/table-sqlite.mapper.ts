@@ -87,7 +87,7 @@ export class TableSqliteMapper {
       views: entity.views.toArray().map(
         (view) =>
           ({
-            key: view.key,
+            id: view.id,
             name: view.name,
             displayType: view.displayType,
             filter: view.filter,
@@ -159,7 +159,6 @@ export class TableSqliteMapper {
       }) as ICreateTableSchemaInput,
       views: entity.views.toArray().map((view) => ({
         id: view.id,
-        key: view.key,
         name: view.name,
         displayType: view.displayType,
         filter: view.filter,
