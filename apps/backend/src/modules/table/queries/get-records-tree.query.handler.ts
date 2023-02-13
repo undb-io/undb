@@ -1,5 +1,6 @@
-import type { IGetRecordsTreeOutput } from '@egodb/core'
-import { GetRecordsTreeQuery, GetRecordsTreeQueryHandler, IRecordTreeQueryModel, ITableRepository } from '@egodb/core'
+import { IRecordTreeQueryModel, ITableRepository } from '@egodb/core'
+import type { IGetRecordsTreeOutput } from '@egodb/cqrs'
+import { GetRecordsTreeQuery, GetRecordsTreeQueryHandler } from '@egodb/cqrs'
 import type { IQueryHandler } from '@nestjs/cqrs'
 import { QueryHandler } from '@nestjs/cqrs'
 import { InjectTableReposiory } from '../adapters'

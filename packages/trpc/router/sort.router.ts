@@ -1,4 +1,4 @@
-import { SetSortsCommand, setSortsCommandInput } from '@egodb/core'
+import { SetSortsCommand, setSortsCommandInput } from '@egodb/cqrs'
 import type { ICommandBus } from '@egodb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'

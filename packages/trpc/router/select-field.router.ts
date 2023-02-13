@@ -7,7 +7,7 @@ import {
   reorderOptionsCommandInput,
   UpdateOptionCommand,
   updateOptionCommandInput,
-} from '@egodb/core'
+} from '@egodb/cqrs'
 import type { ICommandBus } from '@egodb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'

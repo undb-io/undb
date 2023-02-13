@@ -1,3 +1,4 @@
+import '@egodb/core'
 import {
   BulkDeleteRecordsCommand,
   bulkDeleteRecordsCommandInput,
@@ -18,11 +19,10 @@ import {
   getRecordsQueryOutput,
   UpdateRecordCommand,
   updateRecordCommandInput,
-} from '@egodb/core'
-import type { ICommandBus, IQueryBus } from '@egodb/domain'
+} from '@egodb/cqrs'
+import { ICommandBus, IQueryBus } from '@egodb/domain'
 import { z } from 'zod'
-import type { publicProcedure } from '../trpc.js'
-import { router } from '../trpc.js'
+import { publicProcedure, router } from '../trpc.js'
 import { createParentFieldRouter } from './parent-field.router.js'
 import { createTreeFieldRouter } from './tree-field.router.js'
 

@@ -1,5 +1,5 @@
 import type { Table } from '@egodb/core'
-import type { ICreateRecordInput } from '@egodb/core'
+import type { ICreateRecordInput } from '@egodb/cqrs'
 import { useCreateRecordMutation } from '@egodb/store'
 import { Alert, Button, Divider, Group, IconAlertCircle, Stack } from '@egodb/ui'
 import { DevTool } from '@hookform/devtools'

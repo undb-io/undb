@@ -1,0 +1,35 @@
+{
+  "name": "@egodb/cqrs",
+  "description": "",
+  "version": "0.0.0",
+  "author": "",
+  "dependencies": {
+    "@egodb/core": "^0.0.0",
+    "@egodb/domain": "^0.0.0",
+    "oxide.ts": "^1.1.0",
+    "zod": "^3.20.6"
+  },
+  "devDependencies": {
+    "rimraf": "^4.1.2",
+    "tsconfig": "^0.0.0",
+    "tsup": "^6.6.2",
+    "typescript": "^4.9.5",
+    "vitest": "^0.28.4"
+  },
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/index.js"
+  },
+  "keywords": [],
+  "main": "./dist/index",
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf dist",
+    "coverage": "vitest run --coverage",
+    "dev": "tsup --watch --onSuccess=\"tsc --emitDeclarationOnly --declaration\" ",
+    "prebuild": "pnpm run clean",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "type": "module"
+}

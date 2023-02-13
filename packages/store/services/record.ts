@@ -1,5 +1,5 @@
+import type { IFieldQueryValue, IQueryRecordSchema } from '@egodb/core'
 import type {
-  IFieldQueryValue,
   IGetParentAvailableRecordQuery,
   IGetRecordOutput,
   IGetRecordQuery,
@@ -8,9 +8,8 @@ import type {
   IGetRecordsTreeOutput,
   IGetRecordsTreeQuery,
   IGetTreeAvailableRecordsQuery,
-  IQueryRecordSchema,
   IUpdateRecordCommandInput,
-} from '@egodb/core'
+} from '@egodb/cqrs'
 import type { EntityState } from '@reduxjs/toolkit'
 import { createEntityAdapter } from '@reduxjs/toolkit'
 import { trpc } from '../trpc'

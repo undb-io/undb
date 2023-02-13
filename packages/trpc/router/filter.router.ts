@@ -1,4 +1,4 @@
-import { setFiltersCommandInput, SetFitlersCommand } from '@egodb/core'
+import { setFiltersCommandInput, SetFitlersCommand } from '@egodb/cqrs'
 import type { ICommandBus } from '@egodb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'

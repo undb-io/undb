@@ -1,4 +1,5 @@
-import { DeleteOptionCommand, DeleteOptionCommandHandler as DomainHandler, ITableRepository } from '@egodb/core'
+import { ITableRepository } from '@egodb/core'
+import { DeleteOptionCommand, DeleteOptionCommandHandler as DomainHandler } from '@egodb/cqrs'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
 import { InjectTableReposiory } from '../adapters'

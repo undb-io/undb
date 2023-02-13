@@ -8,7 +8,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { useResetAtom } from 'jotai/utils'
 import { useFieldArray, useFormContext } from 'react-hook-form'
-import type { ICreateTableInput } from '@egodb/core'
+import type { ICreateTableInput } from '@egodb/cqrs'
 
 export const CreateTableFormSchema: React.FC = () => {
   const form = useFormContext<ICreateTableInput>()

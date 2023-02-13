@@ -1,9 +1,5 @@
-import {
-  BulkDuplicateRecordsCommand,
-  BulkDuplicateRecordsCommandHandler as DomainHandler,
-  IRecordRepository,
-  ITableRepository,
-} from '@egodb/core'
+import { IRecordRepository, ITableRepository } from '@egodb/core'
+import { BulkDuplicateRecordsCommand, BulkDuplicateRecordsCommandHandler as DomainHandler } from '@egodb/cqrs'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
 import { InjectRecordReposiory, InjectTableReposiory } from '../adapters'

@@ -1,4 +1,4 @@
-import { SwitchDisplayTypeCommand, switchDisplayTypeCommandInput } from '@egodb/core'
+import { SwitchDisplayTypeCommand, switchDisplayTypeCommandInput } from '@egodb/cqrs'
 import type { ICommandBus } from '@egodb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'

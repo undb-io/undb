@@ -9,7 +9,7 @@ import { FieldVariantControl } from './field-variant-control'
 import { FieldIcon } from '../../field-inputs/field-Icon'
 import { FieldItem } from '../../field-inputs/field-item'
 import { Controller, useFormContext } from 'react-hook-form'
-import type { ICreateTableInput } from '@egodb/core'
+import type { ICreateTableInput } from '@egodb/cqrs'
 
 interface IProps {
   id: number
