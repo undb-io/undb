@@ -3,6 +3,12 @@
   "description": "",
   "version": "0.0.0",
   "author": "",
+  "dependencies": {
+    "@egodb/core": "^0.0.0",
+    "@egodb/domain": "^0.0.0",
+    "oxide.ts": "^1.1.0",
+    "zod": "^3.20.6"
+  },
   "devDependencies": {
     "rimraf": "^4.1.2",
     "tsconfig": "^0.0.0",
@@ -25,11 +31,5 @@
     "test": "vitest run",
     "test:watch": "vitest"
   },
-  "type": "module",
-  "dependencies": {
-    "@egodb/core": "workspace:^0.0.0",
-    "@egodb/domain": "workspace:^0.0.0",
-    "oxide.ts": "^1.1.0",
-    "zod": "^3.20.6"
-  }
+  "type": "module"
 }

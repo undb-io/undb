@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "dependencies": {
     "@egodb/core": "^0.0.0",
-    "@egodb/cqrs": "workspace:^0.0.0",
+    "@egodb/cqrs": "^0.0.0",
     "@egodb/trpc": "^0.0.0",
     "@reduxjs/toolkit": "^1.9.2",
     "@trpc/client": "^10.11.0",
