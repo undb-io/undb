@@ -1,5 +1,5 @@
 import { ValueObject } from '@egodb/domain'
-import arrayMove from 'array-move'
+import { arrayMoveImmutable } from 'array-move'
 import { Option as O } from 'oxide.ts'
 import { OptionColor } from './option-color.js'
 import type { OptionKey } from './option-key.vo.js'
@@ -27,7 +27,7 @@ export class Options extends ValueObject<Option[]> {
   public reorder(from: string, to: string): Options {
     const formIndex = this.options.findIndex((o) => o.key.value === from)
     const toIndex = this.options.findIndex((o) => o.key.value === to)
-    const moved = arrayMove(this.options, formIndex, toIndex)
+    const moved = arrayMoveImmutable(this.options, formIndex, toIndex)
     return new Options(moved)
   }
 

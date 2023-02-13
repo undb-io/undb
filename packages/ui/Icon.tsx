@@ -1,1 +1,1 @@
-export * from '@tabler/icons'
+export * from '@tabler/icons-react'
