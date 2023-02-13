@@ -16,7 +16,8 @@ import { createEntityAdapter } from '@reduxjs/toolkit'
 import { trpc } from '../trpc'
 import { api } from './api'
 
-const recordAdapter = createEntityAdapter<IQueryRecordSchema>()
+const recordAdapter: ReturnType<typeof createEntityAdapter<IQueryRecordSchema>> =
+  createEntityAdapter<IQueryRecordSchema>()
 const initialState = recordAdapter.getInitialState()
 
 type QueryRecordsEntity = EntityState<IQueryRecordSchema>

@@ -30,6 +30,7 @@ describe('fromQuery', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         autoIncrement: 1,
+        displayValues: {},
       },
       new Map([
         [
@@ -52,6 +53,7 @@ describe('fromQuery', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         autoIncrement: 1,
+        displayValues: {},
       },
       new Map([
         [
@@ -82,6 +84,7 @@ describe('fromQuery', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         autoIncrement: 1,
+        displayValues: {},
       },
       new Map<string, Field>([
         [
