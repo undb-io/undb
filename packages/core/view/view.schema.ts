@@ -12,6 +12,14 @@ import { viewNameSchema } from './view-name.vo.js'
 
 export const viewDisplayType = z.enum(['grid', 'kanban', 'calendar', 'tree'])
 
+export const createViewSchema = z.object({
+  id: viewIdSchema.optional(),
+  name: viewNameSchema,
+  displayType: viewDisplayType.optional(),
+})
+
+export type ICreateViewSchema = z.infer<typeof createViewSchema>
+
 export const createViewInput_internal = z.object({
   id: viewIdSchema.optional(),
   name: viewNameSchema,

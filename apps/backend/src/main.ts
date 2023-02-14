@@ -16,13 +16,12 @@ async function bootstrap() {
   app.enableCors()
   app.use(json({ limit: '50mb' }))
   app.use(urlencoded({ extended: true, limit: '50mb' }))
+  app.enableShutdownHooks()
 
   if (module.hot) {
     module.hot.accept()
     module.hot.dispose(() => app.close())
   }
-
-  app.enableShutdownHooks()
 
   await app.listen(4000)
 }

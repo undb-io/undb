@@ -1,6 +1,5 @@
 import {
   createTestTable,
-  IUnderlyingTableManager,
   ReferenceField,
   Table as CoreTable,
   View as CoreView,
@@ -15,6 +14,7 @@ import { mock } from 'vitest-mock-extended'
 import { Field, Table } from '../../entity/index.js'
 import { View } from '../../entity/view.js'
 import { AdjacencyListTable } from '../../underlying-table/underlying-foreign-table.js'
+import { IUnderlyingTableManager } from '../../underlying-table/underlying-table-sqlite.manager.js'
 import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor.js'
 import { TableSqliteRepository } from './table-sqlite.repository.js'
 
