@@ -18,6 +18,7 @@ import type { TableId } from './value-objects/index.js'
 import { TableSchema } from './value-objects/index.js'
 import type { TableName } from './value-objects/table-name.vo'
 import type {
+  ICreateViewSchema,
   IMoveFieldSchema,
   IQueryView,
   ISetCalendarFieldSchema,
@@ -169,6 +170,13 @@ export class Table {
     const viewsSpec = this.views.removeField(spec.field)
 
     return andOptions(Some(spec), viewsSpec).unwrap()
+  }
+
+  public createView(input: ICreateViewSchema): TableCompositeSpecificaiton {
+    const spec = this.views.createView(input)
+    spec.mutate(this).unwrap()
+
+    return spec
   }
 
   public setFieldWidth(input: ISetFieldWidthSchema): TableCompositeSpecificaiton {
