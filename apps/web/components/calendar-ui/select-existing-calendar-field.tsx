@@ -4,15 +4,16 @@ import { Card, Radio, Group, Button, Text, IconPlus, Stack, Divider } from '@ego
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { Controller, useForm } from 'react-hook-form'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { FieldIcon } from '../field-inputs/field-Icon'
-import type { ITableBaseProps } from '../table/table-base-props'
 import { calendarStepOne, calendarStepTwo } from './calendar-step.atom'
 
-interface IProps extends ITableBaseProps {
+interface IProps {
   onSuccess?: () => void
 }
 
-export const SelectExistingCalendarField: React.FC<IProps> = ({ table, onSuccess }) => {
+export const SelectExistingCalendarField: React.FC<IProps> = ({ onSuccess }) => {
+  const table = useCurrentTable()
   const calendarFields = table.schema.calendarFields
   const view = table.mustGetView()
   const initialCalendarFieldId = view.calendar.into()?.fieldId?.value

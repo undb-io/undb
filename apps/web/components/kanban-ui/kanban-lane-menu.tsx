@@ -2,15 +2,16 @@ import type { Field } from '@egodb/core'
 import { useDeleteOptionMutation } from '@egodb/store'
 import { ActionIcon, IconDots, Menu } from '@egodb/ui'
 import { useConfirmModal } from '../../hooks'
-import type { ITableBaseProps } from '../table/table-base-props'
+import { useCurrentTable } from '../../hooks/use-current-table'
 
-interface IProps extends ITableBaseProps {
+interface IProps {
   field: Field
   optionKey: string
   children?: React.ReactNode
 }
 
-export const KanbanLaneMenu: React.FC<IProps> = ({ table, field, optionKey, children }) => {
+export const KanbanLaneMenu: React.FC<IProps> = ({ field, optionKey, children }) => {
+  const table = useCurrentTable()
   const [deleteOption] = useDeleteOptionMutation()
 
   const confirm = useConfirmModal({

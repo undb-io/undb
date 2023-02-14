@@ -1,4 +1,4 @@
-import type { IUpdateRecordValueSchema, Table } from '@egodb/core'
+import type { IUpdateRecordValueSchema } from '@egodb/core'
 import { Alert, Button, Divider, Group, IconAlertCircle, Stack } from '@egodb/ui'
 import type { FieldPath } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
@@ -7,15 +7,16 @@ import { RecordInputFactory } from '../record/record-input.factory'
 import type { IMutateRecordValueSchema } from '@egodb/core'
 import { getSelectedRecordId, useUpdateRecordMutation } from '@egodb/store'
 import { useAppSelector } from '../../hooks'
+import { useCurrentTable } from '../../hooks/use-current-table'
 
 interface IProps {
-  table: Table
   onCancel: () => void
   onSuccess?: () => void
 }
 
-export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel }) => {
+export const EditRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
   const form = useFormContext<IUpdateRecordValueSchema>()
+  const table = useCurrentTable()
 
   const selectedRecordId = useAppSelector(getSelectedRecordId)
 
@@ -54,15 +55,7 @@ export const EditRecordForm: React.FC<IProps> = ({ table, onSuccess, onCancel })
         <Stack>
           {table.schema.nonSystemFields.map((field, index) => {
             const name: FieldPath<IUpdateRecordValueSchema> = `value.${index}.value`
-            return (
-              <RecordInputFactory
-                name={name}
-                table={table}
-                key={field.id.value}
-                field={field}
-                recordId={selectedRecordId}
-              />
-            )
+            return <RecordInputFactory name={name} key={field.id.value} field={field} recordId={selectedRecordId} />
           })}
         </Stack>
         <Divider my="lg" />

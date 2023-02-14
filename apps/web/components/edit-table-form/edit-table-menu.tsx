@@ -3,10 +3,12 @@ import { Group, ActionIcon, IconDots, Text, Menu } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
 import { useConfirmModal } from '../../hooks'
-import type { ITableBaseProps } from '../table/table-base-props'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { editTableFormDrawerOpened } from './drawer-opened.atom'
 
-export const EditTableMenu: React.FC<ITableBaseProps> = ({ table }) => {
+export const EditTableMenu: React.FC = () => {
+  const table = useCurrentTable()
+
   const setOpened = useSetAtom(editTableFormDrawerOpened)
   const router = useRouter()
 

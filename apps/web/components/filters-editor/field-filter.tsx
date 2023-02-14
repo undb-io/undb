@@ -7,11 +7,9 @@ import { FieldSelector } from '../field-inputs/field-selector'
 import { FilterValueInput } from './filter-value-input'
 import { OperatorSelector } from './operator-selector'
 import { getFilterId } from './get-filter-id'
-import type { Table } from '@egodb/core'
 import type { IFieldQueryValue } from '@egodb/core'
 
 interface IProps {
-  table: Table
   schema: TableSchema
   index: number
   value: IFilter | null
@@ -19,7 +17,7 @@ interface IProps {
   onRemove: (index: number) => void
 }
 
-export const FieldFilter: React.FC<IProps> = ({ table, schema, value, onChange, onRemove, index }) => {
+export const FieldFilter: React.FC<IProps> = ({ schema, value, onChange, onRemove, index }) => {
   // TODO: path maybe string list
   const fieldId = value?.path as string
   const field = fieldId ? schema.getFieldById(fieldId).into(null) : null
@@ -55,13 +53,7 @@ export const FieldFilter: React.FC<IProps> = ({ table, schema, value, onChange, 
       </ActionIcon>
       <FieldSelector fields={schema.fields} value={selectedField} onChange={setField} />
       <OperatorSelector field={selectedField} value={operator} onChange={setOperator} />
-      <FilterValueInput
-        table={table}
-        field={selectedField}
-        value={fieldValue}
-        onChange={setValue}
-        operator={operator}
-      />
+      <FilterValueInput field={selectedField} value={fieldValue} onChange={setValue} operator={operator} />
       <ActionIcon color="gray.5" variant="outline" onClick={() => onRemove(index)}>
         <IconTrash size={12} />
       </ActionIcon>

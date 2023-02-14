@@ -1,21 +1,22 @@
 import type { IOptionColorName, IOptionColorShade, SelectField } from '@egodb/core'
-import type { Table } from '@egodb/core'
 import { OptionKey } from '@egodb/core'
 import { useCreateOptionMutation } from '@egodb/store'
 import type { SelectProps } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { Select } from '@egodb/ui'
 import { forwardRef } from 'react'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { Option } from './option'
 
 interface IProps extends Omit<SelectProps, 'data'> {
   field: SelectField
-  table: Table
 }
 
-export const OptionPicker: React.FC<IProps> = ({ field, table, ...rest }) => {
+export const OptionPicker: React.FC<IProps> = ({ field, ...rest }) => {
   const nextColor = field.options.lastOption.map((o) => o.color.next()).unwrap()
   const [createOption] = useCreateOptionMutation()
+
+  const table = useCurrentTable()
 
   return (
     <Select

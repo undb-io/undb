@@ -1,16 +1,16 @@
-import type { IQueryRecords, ReferenceField, Table } from '@egodb/core'
+import type { IQueryRecords, ReferenceField } from '@egodb/core'
 import { useLazyGetRecordsQuery } from '@egodb/store'
 import type { MultiSelectProps } from '@egodb/ui'
 import { Loader } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { MultiSelect } from '@egodb/ui'
 import { forwardRef, useEffect, useState } from 'react'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { RecordId } from '../field-value/record-id'
 import { FieldIcon } from './field-Icon'
 
 interface IProps extends Omit<MultiSelectProps, 'data'> {
   field: ReferenceField
-  table: Table
 }
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -24,7 +24,7 @@ const ReferenceSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, ...o
   </Group>
 ))
 
-export const ReferenceRecordPicker: React.FC<IProps> = ({ table, field, ...rest }) => {
+export const ReferenceRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
   const [focused, setFocused] = useState(false)
   const [listRecords, { rawRecords, isLoading }] = useLazyGetRecordsQuery({
     selectFromResult: (result) => ({
@@ -32,6 +32,8 @@ export const ReferenceRecordPicker: React.FC<IProps> = ({ table, field, ...rest 
       rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
     }),
   })
+
+  const table = useCurrentTable()
 
   useEffect(() => {
     listRecords({ tableId: table.id.value })

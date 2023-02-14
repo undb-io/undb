@@ -1,21 +1,22 @@
 import type { ICalendarField } from '@egodb/core'
 import { Center, Container } from '@egodb/ui'
-import type { ITableBaseProps } from '../table/table-base-props'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { CalendarBoard } from './calendar-board'
 import { SelectCalendarField } from './select-calendar-field'
 
-export const CalendarUI: React.FC<ITableBaseProps> = ({ table }) => {
+export const CalendarUI: React.FC = () => {
+  const table = useCurrentTable()
   const view = table.mustGetView()
   const calendarFieldId = view.calendarFieldId.into()
   if (calendarFieldId) {
     const field = table.schema.getFieldById(calendarFieldId.value).into() as ICalendarField
-    return <CalendarBoard table={table} field={field} />
+    return <CalendarBoard field={field} />
   }
 
   return (
     <Container h="100%" w={450}>
       <Center pb={200} h="100%" w="100%">
-        <SelectCalendarField table={table} />
+        <SelectCalendarField />
       </Center>
     </Container>
   )

@@ -1,10 +1,11 @@
 import type { IQueryRecords } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
 import { useGetRecordsQuery } from '@egodb/store'
-import type { ITableBaseProps } from '../table/table-base-props'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { EGOTable } from './table'
 
-export const TableUI: React.FC<ITableBaseProps> = ({ table }) => {
+export const TableUI: React.FC = () => {
+  const table = useCurrentTable()
   const { rawRecords } = useGetRecordsQuery(
     { tableId: table.id.value },
     {
@@ -18,5 +19,5 @@ export const TableUI: React.FC<ITableBaseProps> = ({ table }) => {
 
   const records = RecordFactory.fromQueryRecords(rawRecords, table.schema.toIdMap())
 
-  return <EGOTable table={table} records={records} />
+  return <EGOTable records={records} />
 }

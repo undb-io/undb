@@ -2,14 +2,15 @@ import type { IEditTableSchema } from '@egodb/core'
 import { useEditTableMutation } from '@egodb/store'
 import { Alert, Button, Divider, Group, IconAlertCircle, Stack, Text, TextInput } from '@egodb/ui'
 import { useFormContext } from 'react-hook-form'
-import type { ITableBaseProps } from '../table/table-base-props'
+import { useCurrentTable } from '../../hooks/use-current-table'
 
-interface IProps extends ITableBaseProps {
+interface IProps {
   onCancel: () => void
   onSuccess?: () => void
 }
 
-export const EditTableForm: React.FC<IProps> = ({ table, onCancel, onSuccess: success }) => {
+export const EditTableForm: React.FC<IProps> = ({ onCancel, onSuccess: success }) => {
+  const table = useCurrentTable()
   const form = useFormContext<IEditTableSchema>()
 
   const [editTable, { reset: resetEditTable, isLoading, isError, error }] = useEditTableMutation()

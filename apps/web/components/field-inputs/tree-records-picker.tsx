@@ -1,14 +1,14 @@
-import type { IQueryRecords, Table, TreeField } from '@egodb/core'
+import type { IQueryRecords, TreeField } from '@egodb/core'
 import { useLazyTreeAvailableQuery } from '@egodb/store'
 import type { MultiSelectProps } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { Loader, MultiSelect } from '@egodb/ui'
 import { forwardRef, useEffect, useState } from 'react'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { RecordId } from '../field-value/record-id'
 import { FieldIcon } from './field-Icon'
 
 interface IProps extends Omit<MultiSelectProps, 'data'> {
-  table: Table
   field: TreeField
   recordId?: string
 }
@@ -25,7 +25,7 @@ const TreeSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, ...others
   </Group>
 ))
 
-export const TreeRecordsPicker: React.FC<IProps> = ({ table, field, recordId, ...rest }) => {
+export const TreeRecordsPicker: React.FC<IProps> = ({ field, recordId, ...rest }) => {
   const [focused, setFocused] = useState(false)
   const [getRecords, { rawRecords, isLoading }] = useLazyTreeAvailableQuery({
     selectFromResult: (result) => ({
@@ -33,6 +33,8 @@ export const TreeRecordsPicker: React.FC<IProps> = ({ table, field, recordId, ..
       rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
     }),
   })
+
+  const table = useCurrentTable()
 
   useEffect(() => {
     getRecords({ tableId: table.id.value, treeFieldId: field.id.value, recordId })

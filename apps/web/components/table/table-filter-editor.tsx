@@ -1,10 +1,11 @@
 import type { IFilter } from '@egodb/core'
 import { useSetFilterMutation } from '@egodb/store'
 import { Button, IconFilter, Popover, useDisclosure, Badge } from '@egodb/ui'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { FiltersEditor } from '../filters-editor/filters-editor'
-import type { ITableBaseProps } from './table-base-props'
 
-export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
+export const TableFilterEditor: React.FC = () => {
+  const table = useCurrentTable()
   const filters = table.mustGetView().filterList as IFilter[]
   const [opened, handler] = useDisclosure(false)
 
@@ -34,7 +35,6 @@ export const TableFilterEditor: React.FC<ITableBaseProps> = ({ table }) => {
 
       <Popover.Dropdown>
         <FiltersEditor
-          table={table}
           onApply={(filter) => {
             setFilter({ tableId: table.id.value, filter }).then(() => handler.close())
           }}

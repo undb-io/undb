@@ -1,4 +1,3 @@
-import type { Table as CoreTable } from '@egodb/core'
 import type { ICreateRecordInput } from '@egodb/cqrs'
 import { createRecordCommandInput } from '@egodb/cqrs'
 import { Drawer } from '@egodb/ui'
@@ -8,15 +7,13 @@ import { useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useConfirmModal } from '../../hooks'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { CreateRecordForm } from './create-record-form'
 import { createRecordInitialValueAtom } from './create-record-initial-value.atom'
 import { createRecordFormDrawerOpened } from './drawer-opened.atom'
 
-interface IProps {
-  table: CoreTable
-}
-
-export const CreateRecordFormDrawer: React.FC<IProps> = ({ table }) => {
+export const CreateRecordFormDrawer: React.FC = () => {
+  const table = useCurrentTable()
   const [opened, setOpened] = useAtom(createRecordFormDrawerOpened)
   const initialCreateRecordValue = useAtomValue(createRecordInitialValueAtom)
 
@@ -65,7 +62,7 @@ export const CreateRecordFormDrawer: React.FC<IProps> = ({ table }) => {
         position="right"
         size={700}
       >
-        <CreateRecordForm table={table} onCancel={reset} />
+        <CreateRecordForm onCancel={reset} />
       </Drawer>
     </FormProvider>
   )

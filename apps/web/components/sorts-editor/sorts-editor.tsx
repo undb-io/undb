@@ -1,4 +1,4 @@
-import type { ISorts, ISortSchema, Table } from '@egodb/core'
+import type { ISorts, ISortSchema } from '@egodb/core'
 import { Box, Button, Divider, Group, IconPlus, Stack, useListState } from '@egodb/ui'
 import { FieldSort } from './field-sort'
 import useDeepCompareEffect from 'use-deep-compare-effect'
@@ -7,14 +7,15 @@ import { closestCenter, DndContext } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { getSortId } from './get-sort-id'
+import { useCurrentTable } from '../../hooks/use-current-table'
 interface IProps {
-  table: Table
   onChange?: (filters: ISorts) => void
   onApply?: (filters: ISorts) => void
   onCancel?: () => void
 }
 
-export const SortsEditor: React.FC<IProps> = ({ table, onChange, onApply, onCancel }) => {
+export const SortsEditor: React.FC<IProps> = ({ onChange, onApply, onCancel }) => {
+  const table = useCurrentTable()
   const initialSorts = table.mustGetView().sorts?.sorts ?? []
   const [sorts, handlers] = useListState<ISortSchema | null>(initialSorts.length ? initialSorts : [null])
   const validSorts = sorts.filter((f) => f !== null) as ISorts
@@ -52,7 +53,6 @@ export const SortsEditor: React.FC<IProps> = ({ table, onChange, onApply, onCanc
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
             {sorts.map((sort, index) => (
               <FieldSort
-                table={table}
                 fields={table.schema.fields}
                 index={index}
                 value={sort}

@@ -1,10 +1,11 @@
 import type { IKanbanField } from '@egodb/core'
 import { Container, Center } from '@egodb/ui'
-import type { ITableBaseProps } from '../table/table-base-props'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { KanbanBoard } from './kanban-board'
 import { SelectKanbanField } from './select-kanban-field'
 
-export const KanbanUI: React.FC<ITableBaseProps> = ({ table }) => {
+export const KanbanUI: React.FC = () => {
+  const table = useCurrentTable()
   const view = table.mustGetView()
   const fieldId = view.kanbanFieldId
 
@@ -12,7 +13,7 @@ export const KanbanUI: React.FC<ITableBaseProps> = ({ table }) => {
     return (
       <Container h="100%" w={450} sx={{ overflow: 'scroll' }}>
         <Center pb={200} h="100%" w="100%" sx={{ overflow: 'scroll' }}>
-          <SelectKanbanField table={table} />
+          <SelectKanbanField />
         </Center>
       </Container>
     )
@@ -20,5 +21,5 @@ export const KanbanUI: React.FC<ITableBaseProps> = ({ table }) => {
 
   const field = table.schema.getFieldById(fieldId.unwrap().value).unwrap()
 
-  return <KanbanBoard table={table} field={field as IKanbanField} />
+  return <KanbanBoard field={field as IKanbanField} />
 }

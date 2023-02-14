@@ -14,7 +14,6 @@ import {
   useListState,
 } from '@egodb/ui'
 import { useEffect, useState } from 'react'
-import type { ITableBaseProps } from '../table/table-base-props'
 import { KanbanLane, SortableKanbanLane } from './kanban-lane'
 import { groupBy } from '@fxts/core'
 import { KanbanCard } from './kanban-card'
@@ -27,13 +26,15 @@ import { CREATE_OPTION_MODAL_ID, UDPATE_OPTION_MODAL_ID } from '../../modals'
 import type { SelectFieldValue } from '@egodb/core'
 import type { Records } from '@egodb/core'
 import { useReorderOptionsMutation, useUpdateRecordMutation } from '@egodb/store'
+import { useCurrentTable } from '../../hooks/use-current-table'
 
-interface IProps extends ITableBaseProps {
+interface IProps {
   field: SelectField
   records: Records
 }
 
-export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) => {
+export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
+  const table = useCurrentTable()
   const [options, handlers] = useListState(field.options.options)
   const containers = [UNCATEGORIZED_OPTION_ID, ...options.map((o) => o.key.value)]
   const lastOption = options[options.length - 1]
@@ -131,7 +132,6 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
         >
           <SortableContext items={containers} strategy={horizontalListSortingStrategy}>
             <SortableKanbanLane
-              table={table}
               field={field}
               records={optionRecords[UNCATEGORIZED_OPTION_ID] ?? []}
               title={
@@ -145,7 +145,6 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
             {options.map((option) => (
               <SortableKanbanLane
                 field={field}
-                table={table}
                 records={optionRecords[option.key.value] ?? []}
                 key={option.key.value}
                 id={option.key.value}
@@ -175,7 +174,6 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
             <DragOverlay dropAnimation={dropAnimation}>
               {isActiveContainer ? (
                 <KanbanLane
-                  table={table}
                   field={field}
                   records={optionRecords[(activeId as string) || ''] ?? []}
                   id={activeContainer?.key.value ?? ''}
@@ -188,7 +186,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ table, field, records }) =
                   }
                 />
               ) : (
-                <KanbanCard record={activeItem!} table={table} />
+                <KanbanCard record={activeItem!} />
               )}
             </DragOverlay>
           </SortableContext>

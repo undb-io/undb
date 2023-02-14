@@ -6,6 +6,7 @@ import type { TRPCError } from '@egodb/trpc'
 import { Alert, Container, IconAlertCircle } from '@egodb/ui'
 import { useEffect } from 'react'
 import { TableLoading } from '../../../components/loading'
+import { CurrentTableContext } from '../../../context/current-table'
 import { useAppDispatch } from '../../../hooks'
 import Table from './table'
 
@@ -35,5 +36,9 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     return 'none'
   }
   const table = TableFactory.fromQuery(data)
-  return <Table table={table} />
+  return (
+    <CurrentTableContext.Provider value={table}>
+      <Table />
+    </CurrentTableContext.Provider>
+  )
 }

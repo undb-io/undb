@@ -1,5 +1,4 @@
 import type { FieldId, IViewDisplayType, Kanban } from '@egodb/core'
-import type { Table } from '@egodb/core'
 import type { ICalendar } from '@egodb/core/view/calendar'
 import { useSwitchDisplayTypeMutation } from '@egodb/store'
 import {
@@ -13,12 +12,14 @@ import {
   openContextModal,
   closeAllModals,
 } from '@egodb/ui'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { SELECT_CALENDAR_FIELD_MODAL_ID, SELECT_KANBAN_FIELD_MODAL_ID } from '../../modals'
 import type { ISelectKanbanFieldProps } from '../kanban-ui/select-kanban-field.props'
 import { DisplayTypeIcon } from '../view/display-type-icon'
-import type { ITableBaseProps } from './table-base-props'
 
-const StackedBy: React.FC<{ fieldId?: FieldId; table: Table }> = ({ table, fieldId }) => {
+const StackedBy: React.FC<{ fieldId?: FieldId }> = ({ fieldId }) => {
+  const table = useCurrentTable()
+
   if (!fieldId) return null
 
   const field = table.schema.getFieldById(fieldId.value).into()
@@ -46,15 +47,16 @@ const StackedBy: React.FC<{ fieldId?: FieldId; table: Table }> = ({ table, field
   )
 }
 
-const KanbanControl: React.FC<{ table: Table; kanban?: Kanban }> = ({ table, kanban }) => {
+const KanbanControl: React.FC<{ kanban?: Kanban }> = ({ kanban }) => {
   return (
     <>
-      <StackedBy fieldId={kanban?.fieldId} table={table} />
+      <StackedBy fieldId={kanban?.fieldId} />
     </>
   )
 }
 
-const UsingCalendarField: React.FC<{ fieldId?: FieldId; table: Table }> = ({ table, fieldId }) => {
+const UsingCalendarField: React.FC<{ fieldId?: FieldId }> = ({ fieldId }) => {
+  const table = useCurrentTable()
   if (!fieldId) return null
 
   const field = table.schema.getFieldById(fieldId.value).into()
@@ -82,11 +84,12 @@ const UsingCalendarField: React.FC<{ fieldId?: FieldId; table: Table }> = ({ tab
   )
 }
 
-const CalendarControl: React.FC<{ table: Table; calendar?: ICalendar }> = ({ table, calendar }) => {
-  return <UsingCalendarField fieldId={calendar?.fieldId} table={table} />
+const CalendarControl: React.FC<{ calendar?: ICalendar }> = ({ calendar }) => {
+  return <UsingCalendarField fieldId={calendar?.fieldId} />
 }
 
-export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
+export const ToolbarView: React.FC = () => {
+  const table = useCurrentTable()
   const [opened, toggle] = useDisclosure(false)
   const view = table.mustGetView()
 
@@ -134,8 +137,8 @@ export const ToolbarView: React.FC<ITableBaseProps> = ({ table }) => {
         </Popover.Dropdown>
       </Popover>
 
-      {displayType === 'kanban' ? <KanbanControl table={table} kanban={view.kanban.into()} /> : null}
-      {displayType === 'calendar' ? <CalendarControl table={table} calendar={view.calendar.into()} /> : null}
+      {displayType === 'kanban' ? <KanbanControl kanban={view.kanban.into()} /> : null}
+      {displayType === 'calendar' ? <CalendarControl calendar={view.calendar.into()} /> : null}
     </Button.Group>
   )
 }

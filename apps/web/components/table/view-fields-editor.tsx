@@ -10,8 +10,8 @@ import { ActionIcon, IconGripVertical } from '@egodb/ui'
 import { Tooltip } from '@egodb/ui'
 import { Badge, Button, Checkbox, Group, IconEye, Popover, Stack, useDisclosure } from '@egodb/ui'
 import { useEffect } from 'react'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { FieldIcon } from '../field-inputs/field-Icon'
-import type { ITableBaseProps } from './table-base-props'
 
 type OnVisibleChange = (fieldId: string, visible: boolean) => void
 
@@ -50,7 +50,8 @@ const FieldItem: React.FC<IFieldItemProps> = ({ field: f, onVisibleChange, ...re
   )
 }
 
-export const ViewFieldsEditor: React.FC<ITableBaseProps> = ({ table }) => {
+export const ViewFieldsEditor: React.FC = () => {
+  const table = useCurrentTable()
   const [opened, handler] = useDisclosure(false)
   const [setFieldVisibility, { isLoading }] = useSetVisibilityMutation()
 

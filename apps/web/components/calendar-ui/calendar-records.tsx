@@ -1,14 +1,14 @@
 import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import { RecordFactory } from '@egodb/core'
-import type { Record, ICalendarField, IQueryRecords, Table } from '@egodb/core'
+import type { Record, ICalendarField, IQueryRecords } from '@egodb/core'
 import { ActionIcon, Box, Group, IconGripVertical, Skeleton, Space, Stack, Text, Title } from '@egodb/ui'
 import { useMemo, useRef } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { useGetRecordsQuery } from '@egodb/store'
+import { useCurrentTable } from '../../hooks/use-current-table'
 
 interface IProps {
-  table: Table
   field: ICalendarField
 }
 
@@ -48,7 +48,8 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
   )
 }
 
-export const CalendarRecords: React.FC<IProps> = ({ table, field }) => {
+export const CalendarRecords: React.FC<IProps> = ({ field }) => {
+  const table = useCurrentTable()
   const { rawRecords, isLoading } = useGetRecordsQuery(
     {
       tableId: table.id.value,

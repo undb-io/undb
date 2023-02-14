@@ -1,20 +1,20 @@
-import type { Table } from '@egodb/core'
 import type { ICreateRecordInput } from '@egodb/cqrs'
 import { useCreateRecordMutation } from '@egodb/store'
 import { Alert, Button, Divider, Group, IconAlertCircle, Stack } from '@egodb/ui'
 import { DevTool } from '@hookform/devtools'
 import type { FieldPath } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { RecordInputFactory } from '../record/record-input.factory'
 
 interface IProps {
-  table: Table
   onCancel: () => void
   onSuccess?: () => void
 }
 
-export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess }) => {
+export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
   const form = useFormContext<ICreateRecordInput>()
+  const table = useCurrentTable()
 
   const [createRecord, { isLoading, isError, error, reset: resetCreateRecord }] = useCreateRecordMutation()
 
@@ -37,7 +37,7 @@ export const CreateRecordForm: React.FC<IProps> = ({ table, onCancel, onSuccess 
         <Stack>
           {table.schema.nonSystemFields.map((field, index) => {
             const name: FieldPath<ICreateRecordInput> = `value.${index}.value`
-            return <RecordInputFactory name={name} table={table} key={field.id.value} field={field} />
+            return <RecordInputFactory name={name} key={field.id.value} field={field} />
           })}
         </Stack>
 
