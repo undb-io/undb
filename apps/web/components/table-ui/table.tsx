@@ -14,10 +14,13 @@ import { getTableSelectedRecordIds, setTableSelectedRecordIds } from '@egodb/sto
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { RecordSelection } from './selection'
+import { useCurrentTable } from '../../hooks/use-current-table'
 
 const columnHelper = createColumnHelper<TData>()
 
-export const EGOTable: React.FC<IProps> = ({ table, records }) => {
+export const EGOTable: React.FC<IProps> = ({ records }) => {
+  const table = useCurrentTable()
+
   const view = table.mustGetView()
   const columnVisibility = view.getVisibility()
   const columnOrder = table.getFieldsOrder(view).order

@@ -1,6 +1,6 @@
 import { RecordFactory } from '@egodb/core'
 import { updateRecordSchema } from '@egodb/core'
-import type { IUpdateRecordValueSchema, Table as CoreTable } from '@egodb/core'
+import type { IUpdateRecordValueSchema } from '@egodb/core'
 import { ActionIcon, Drawer, IconChevronLeft, IconChevronRight } from '@egodb/ui'
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector, useConfirmModal } from '../../hooks'
@@ -8,12 +8,10 @@ import { EditRecordForm } from './edit-record-form'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { getHasSelectedRecordId, getSelectedRecordId, resetSelectedRecordId, useGetRecordQuery } from '@egodb/store'
+import { useCurrentTable } from '../../hooks/use-current-table'
 
-interface IProps {
-  table: CoreTable
-}
-
-export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
+export const EditRecordFormDrawer: React.FC = () => {
+  const table = useCurrentTable()
   const dispatch = useAppDispatch()
 
   const opened = useAppSelector(getHasSelectedRecordId)
@@ -79,7 +77,7 @@ export const EditRecordFormDrawer: React.FC<IProps> = ({ table }) => {
         position="right"
         size="xl"
       >
-        <EditRecordForm table={table} onCancel={reset} />
+        <EditRecordForm onCancel={reset} />
         <ActionIcon
           onClick={() => dispatch(resetSelectedRecordId())}
           variant="default"

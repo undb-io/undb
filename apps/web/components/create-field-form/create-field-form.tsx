@@ -10,8 +10,11 @@ import { createFieldSchema } from '@egodb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { ICreateFieldProps } from './create-field.props'
 import { useCreateFieldMutation } from '@egodb/store'
+import { useCurrentTable } from '../../hooks/use-current-table'
 
-export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ table, onCancel }) => {
+export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel }) => {
+  const table = useCurrentTable()
+
   const defaultValues: ICreateFieldSchema = {
     type: 'string',
     name: '',
@@ -50,7 +53,7 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ table, onCancel }
             )}
           />
           <TextInput {...form.register('name')} label={<FieldInputLabel>name</FieldInputLabel>} required />
-          <CreateFieldVariantControl table={table} />
+          <CreateFieldVariantControl />
 
           <Divider />
 

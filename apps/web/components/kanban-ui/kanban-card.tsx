@@ -2,26 +2,20 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { Card, Flex, Group, Stack, useEgoUITheme } from '@egodb/ui'
 import type { SortableProps } from '../sortable.interface'
-import type { ITableBaseProps } from '../table/table-base-props'
 import type { Record } from '@egodb/core'
 import type { CSSProperties } from 'react'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldValueFactory } from '../field-value/field-value.factory'
 import { setSelectedRecordId } from '@egodb/store'
 import { useAppDispatch } from '../../hooks'
+import { useCurrentTable } from '../../hooks/use-current-table'
 
-interface IProps extends ITableBaseProps {
+interface IProps {
   record: Record
 }
 
-export const KanbanCard: React.FC<IProps & SortableProps> = ({
-  table,
-  record,
-  attributes,
-  listeners,
-  setNodeRef,
-  style,
-}) => {
+export const KanbanCard: React.FC<IProps & SortableProps> = ({ record, attributes, listeners, setNodeRef, style }) => {
+  const table = useCurrentTable()
   const dispatch = useAppDispatch()
 
   return (
@@ -58,7 +52,7 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({
   )
 }
 
-export const SortableKanbanCard: React.FC<IProps> = ({ table, record }) => {
+export const SortableKanbanCard: React.FC<IProps> = ({ record }) => {
   const { attributes, listeners, setNodeRef, isDragging, transform, transition } = useSortable({
     id: record.id.value,
     data: {
@@ -77,13 +71,6 @@ export const SortableKanbanCard: React.FC<IProps> = ({ table, record }) => {
   }
 
   return (
-    <KanbanCard
-      table={table}
-      record={record}
-      attributes={attributes}
-      listeners={listeners}
-      setNodeRef={setNodeRef}
-      style={style}
-    />
+    <KanbanCard record={record} attributes={attributes} listeners={listeners} setNodeRef={setNodeRef} style={style} />
   )
 }

@@ -6,14 +6,14 @@ import { kanbanStepAtom } from './kanban-step.atom'
 import { SelectExistingField } from './select-existing-kanban-field'
 import type { ISelectKanbanFieldProps } from './select-kanban-field.props'
 
-export const SelectKanbanField: React.FC<ISelectKanbanFieldProps> = ({ table, onSuccess }) => {
+export const SelectKanbanField: React.FC<ISelectKanbanFieldProps> = ({ onSuccess }) => {
   const step = useAtomValue(kanbanStepAtom)
 
   return (
     <Box w={500}>
-      {step === 0 ? <SelectExistingField onSuccess={onSuccess} table={table} /> : null}
-      {step === 1 ? <CreateSelectField onSuccess={onSuccess} table={table} /> : null}
-      {step === 2 ? <CreateDateField onSuccess={onSuccess} table={table} /> : null}
+      {step === 0 ? <SelectExistingField onSuccess={onSuccess} /> : null}
+      {step === 1 ? <CreateSelectField onSuccess={onSuccess} /> : null}
+      {step === 2 ? <CreateDateField onSuccess={onSuccess} /> : null}
     </Box>
   )
 }

@@ -6,14 +6,16 @@ import { Button, Card, FocusTrap, Group, IconChevronLeft, Stack, Text, TextInput
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { useForm } from 'react-hook-form'
-import type { ITableBaseProps } from '../table/table-base-props'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { treeStepZeroAtom } from './tree-step.atom'
 
-interface IProps extends ITableBaseProps {
+interface IProps {
   onSuccess?: () => void
 }
 
-export const CreateTreeField: React.FC<IProps> = ({ table, onSuccess }) => {
+export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
+  const table = useCurrentTable()
+
   const form = useForm<ICreateTreeFieldSchema>({
     defaultValues: {
       type: 'tree',

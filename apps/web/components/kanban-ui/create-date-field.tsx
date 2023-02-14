@@ -6,14 +6,15 @@ import { Button, Card, FocusTrap, Group, IconChevronLeft, Stack, Text, TextInput
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { useForm } from 'react-hook-form'
-import type { ITableBaseProps } from '../table/table-base-props'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { kanbanStepZeroAtom } from './kanban-step.atom'
 
-interface IProps extends ITableBaseProps {
+interface IProps {
   onSuccess?: () => void
 }
 
-export const CreateDateField: React.FC<IProps> = ({ table, onSuccess }) => {
+export const CreateDateField: React.FC<IProps> = ({ onSuccess }) => {
+  const table = useCurrentTable()
   const form = useForm<ICreateDateFieldSchema>({
     defaultValues: {
       type: 'date',

@@ -1,13 +1,10 @@
-import type { Table } from '@egodb/core'
 import { useSetSortMutation } from '@egodb/store'
 import { Badge, Button, IconArrowsSort, Popover, useDisclosure } from '@egodb/ui'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { SortsEditor } from '../sorts-editor/sorts-editor'
 
-interface IProps {
-  table: Table
-}
-
-export const TableSortEditor: React.FC<IProps> = ({ table }) => {
+export const TableSortEditor: React.FC = () => {
+  const table = useCurrentTable()
   const [opened, toggle] = useDisclosure(false)
   const [setSortsReq] = useSetSortMutation()
   const sorts = table.mustGetView().sorts?.sorts ?? []
@@ -35,7 +32,6 @@ export const TableSortEditor: React.FC<IProps> = ({ table }) => {
 
       <Popover.Dropdown miw={300}>
         <SortsEditor
-          table={table}
           onCancel={toggle.close}
           onApply={(values) => {
             setSortsReq({

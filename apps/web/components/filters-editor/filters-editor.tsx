@@ -1,4 +1,4 @@
-import type { IFilter, IFilterOrGroupList, Table } from '@egodb/core'
+import type { IFilter, IFilterOrGroupList } from '@egodb/core'
 import { Box, Button, Divider, Group, IconPlus, Stack, useListState } from '@egodb/ui'
 import { FieldFilter } from './field-filter'
 import useDeepCompareEffect from 'use-deep-compare-effect'
@@ -7,14 +7,16 @@ import { closestCenter, DndContext } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { getFilterId } from './get-filter-id'
+import { useCurrentTable } from '../../hooks/use-current-table'
 interface IProps {
-  table: Table
   onChange?: (filters: IFilterOrGroupList) => void
   onApply?: (filters: IFilterOrGroupList) => void
   onCancel?: () => void
 }
 
-export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCancel }) => {
+export const FiltersEditor: React.FC<IProps> = ({ onChange, onApply, onCancel }) => {
+  const table = useCurrentTable()
+
   // TODO: ignore group for now
   const initialFilters = table.mustGetView().filterList as IFilter[]
   const [filters, handlers] = useListState<IFilter | null>(initialFilters.length ? initialFilters : [null])
@@ -52,7 +54,6 @@ export const FiltersEditor: React.FC<IProps> = ({ table, onChange, onApply, onCa
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
             {filters.map((filter, index) => (
               <FieldFilter
-                table={table}
                 schema={table.schema}
                 index={index}
                 value={filter}

@@ -1,17 +1,18 @@
-import type { ICalendarField, IQueryRecords, Table } from '@egodb/core'
+import type { ICalendarField, IQueryRecords } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
 import { useGetRecordsQuery } from '@egodb/store'
 import { Calendar } from '@egodb/ui'
 import { useMemo } from 'react'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { Day } from './day'
 
 interface IProps {
-  table: Table
   field: ICalendarField
 }
-export const CalendarContent: React.FC<IProps> = ({ table, field }) => {
+export const CalendarContent: React.FC<IProps> = ({ field }) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   const onChange = () => {}
+  const table = useCurrentTable()
 
   const { rawRecords } = useGetRecordsQuery(
     {

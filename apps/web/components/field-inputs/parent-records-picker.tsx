@@ -1,15 +1,15 @@
-import type { IQueryRecords, ParentField, Table } from '@egodb/core'
+import type { IQueryRecords, ParentField } from '@egodb/core'
 import { useLazyParentAvailableQuery } from '@egodb/store'
 import type { SelectProps } from '@egodb/ui'
 import { Select } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { Loader } from '@egodb/ui'
 import { forwardRef, useEffect, useState } from 'react'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { RecordId } from '../field-value/record-id'
 import { FieldIcon } from './field-Icon'
 
 interface IProps extends Omit<SelectProps, 'data'> {
-  table: Table
   field: ParentField
   recordId?: string
 }
@@ -28,7 +28,7 @@ const ParentSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, values,
   </Group>
 ))
 
-export const ParentRecordPicker: React.FC<IProps> = ({ table, field, recordId, ...rest }) => {
+export const ParentRecordPicker: React.FC<IProps> = ({ field, recordId, ...rest }) => {
   const [focused, setFocused] = useState(false)
   const [getRecords, { rawRecords, isLoading }] = useLazyParentAvailableQuery({
     selectFromResult: (result) => ({
@@ -36,6 +36,8 @@ export const ParentRecordPicker: React.FC<IProps> = ({ table, field, recordId, .
       rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
     }),
   })
+
+  const table = useCurrentTable()
 
   useEffect(() => {
     getRecords({ tableId: table.id.value, parentFieldId: field.id.value, recordId })

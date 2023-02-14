@@ -1,9 +1,10 @@
 import { Group, Text, Title } from '@egodb/ui'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { EditTableFormDrawer } from '../edit-table-form/edit-table-form-drawer'
 import { EditTableButton } from './edit-table-button'
-import type { ITableBaseProps } from './table-base-props'
 
-export const TableHaeder: React.FC<ITableBaseProps> = ({ table }) => {
+export const TableHaeder: React.FC = () => {
+  const table = useCurrentTable()
   return (
     <Group fz="md" px="md" py="xs">
       <Text fw={500} color="gray.5">
@@ -13,7 +14,7 @@ export const TableHaeder: React.FC<ITableBaseProps> = ({ table }) => {
       <Title order={3}>{table.name.value}</Title>
 
       <EditTableButton />
-      <EditTableFormDrawer table={table} />
+      <EditTableFormDrawer />
     </Group>
   )
 }

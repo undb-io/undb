@@ -21,7 +21,7 @@ import {
 } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import type { IQueryTreeRecord, IQueryTreeRecords, Table, TreeField } from '@egodb/core'
+import type { IQueryTreeRecord, IQueryTreeRecords, TreeField } from '@egodb/core'
 import type { TableSchemaIdMap } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
 import { useUpdateRecordMutation } from '@egodb/store'
@@ -29,6 +29,7 @@ import { Box } from '@egodb/ui'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { sortableTreeKeyboardCoordinates } from './keyboard-coordinates'
 import { SortableTreeItem } from './sortable-tree-view-item'
 import type {
@@ -49,7 +50,6 @@ import {
 } from './tree-view-ui.util'
 
 interface IProps {
-  table: Table
   field: TreeField
   records: IQueryTreeRecords
   indentationWidth?: number
@@ -99,7 +99,8 @@ const mapper = (schema: TableSchemaIdMap, record: IQueryTreeRecord): SortableRec
   }
 }
 
-export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50, records }) => {
+export const TreeView: React.FC<IProps> = ({ field, indentationWidth = 50, records }) => {
+  const table = useCurrentTable()
   const [updateRecord] = useUpdateRecordMutation()
   const schema = table.schema.toIdMap()
 
@@ -215,7 +216,6 @@ export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50
             const { id, children, values, collapsed, depth } = flattenedItems[virtualRow.index]
             return (
               <SortableTreeItem
-                table={table}
                 field={field}
                 values={values}
                 key={id}
@@ -232,7 +232,6 @@ export const TreeView: React.FC<IProps> = ({ table, field, indentationWidth = 50
             <DragOverlay dropAnimation={dropAnimationConfig} modifiers={[adjustTranslate]}>
               {activeId && activeItem ? (
                 <SortableTreeItem
-                  table={table}
                   field={field}
                   id={activeId}
                   values={activeItem.values}

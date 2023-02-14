@@ -6,15 +6,17 @@ import { Button, Card, FocusTrap, Group, IconChevronLeft, Stack, Text, TextInput
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { useForm } from 'react-hook-form'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { SelectFieldControl } from '../field-inputs/select-field-control'
-import type { ITableBaseProps } from '../table/table-base-props'
 import { kanbanStepZeroAtom } from './kanban-step.atom'
 
-interface IProps extends ITableBaseProps {
+interface IProps {
   onSuccess?: () => void
 }
 
-export const CreateSelectField: React.FC<IProps> = ({ table, onSuccess }) => {
+export const CreateSelectField: React.FC<IProps> = ({ onSuccess }) => {
+  const table = useCurrentTable()
+
   const form = useForm<ICreateSelectFieldSchema>({
     defaultValues: {
       type: 'select',

@@ -3,11 +3,11 @@ import { RecordFactory } from '@egodb/core'
 import { useGetRecordsQuery } from '@egodb/store'
 import type { MantineTheme } from '@egodb/ui'
 import styled from '@emotion/styled'
-import type { ITableBaseProps } from '../table/table-base-props'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { KanbanDateBoard } from './kanban-date-board'
 import { KanbanSelectBoard } from './kanban-select-board'
 
-interface IProps extends ITableBaseProps {
+interface IProps {
   field: IKanbanField
 }
 
@@ -16,7 +16,8 @@ const Wrapper = styled.div`
   height: 100%;
 `
 
-export const KanbanBoard: React.FC<IProps> = ({ field, table }) => {
+export const KanbanBoard: React.FC<IProps> = ({ field }) => {
+  const table = useCurrentTable()
   const listRecords = useGetRecordsQuery(
     {
       tableId: table.id.value,
@@ -34,7 +35,7 @@ export const KanbanBoard: React.FC<IProps> = ({ field, table }) => {
   if (field.type === 'select') {
     return (
       <Wrapper>
-        <KanbanSelectBoard field={field} table={table} records={records} />
+        <KanbanSelectBoard field={field} records={records} />
       </Wrapper>
     )
   }
@@ -42,7 +43,7 @@ export const KanbanBoard: React.FC<IProps> = ({ field, table }) => {
   if (field.type === 'date') {
     return (
       <Wrapper>
-        <KanbanDateBoard field={field} table={table} />
+        <KanbanDateBoard field={field} />
       </Wrapper>
     )
   }

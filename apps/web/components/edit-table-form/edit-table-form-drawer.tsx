@@ -6,12 +6,14 @@ import { useAtom } from 'jotai'
 import { FormProvider, useForm } from 'react-hook-form'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useConfirmModal } from '../../hooks'
-import type { ITableBaseProps } from '../table/table-base-props'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { editTableFormDrawerOpened } from './drawer-opened.atom'
 import { EditTableForm } from './edit-table-form'
 import { EditTableMenu } from './edit-table-menu'
 
-export const EditTableFormDrawer: React.FC<ITableBaseProps> = ({ table }) => {
+export const EditTableFormDrawer: React.FC = () => {
+  const table = useCurrentTable()
+
   const [opened, setOpened] = useAtom(editTableFormDrawerOpened)
 
   const defaultValues: IEditTableSchema = {
@@ -47,7 +49,7 @@ export const EditTableFormDrawer: React.FC<ITableBaseProps> = ({ table }) => {
             reset()
           }
         }}
-        title={<EditTableMenu table={table} />}
+        title={<EditTableMenu />}
         padding="xl"
         position="right"
         styles={{
@@ -57,7 +59,7 @@ export const EditTableFormDrawer: React.FC<ITableBaseProps> = ({ table }) => {
         }}
         size={700}
       >
-        <EditTableForm table={table} onCancel={() => setOpened(false)} />
+        <EditTableForm onCancel={() => setOpened(false)} />
       </Drawer>
     </FormProvider>
   )

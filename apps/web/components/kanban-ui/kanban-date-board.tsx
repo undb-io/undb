@@ -4,7 +4,6 @@ import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { RecordFactory } from '@egodb/core'
 import { Container, Group } from '@egodb/ui'
 import { useEffect, useState } from 'react'
-import type { ITableBaseProps } from '../table/table-base-props'
 import { KanbanLane } from './kanban-lane'
 import { groupBy } from '@fxts/core'
 import { KanbanCard } from './kanban-card'
@@ -16,12 +15,14 @@ import { addDays, isAfter, isBefore, isToday, isTomorrow, isYesterday, startOfDa
 import { endOfDay } from 'date-fns/esm'
 import type { DateFieldValue } from '@egodb/core'
 import { useGetRecordsQuery, useUpdateRecordMutation } from '@egodb/store'
+import { useCurrentTable } from '../../hooks/use-current-table'
 
-interface IProps extends ITableBaseProps {
+interface IProps {
   field: DateField
 }
 
-export const KanbanDateBoard: React.FC<IProps> = ({ table, field }) => {
+export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
+  const table = useCurrentTable()
   const containers = KANBAN_DATE_STACKS
 
   const listRecords = useGetRecordsQuery(
@@ -115,7 +116,6 @@ export const KanbanDateBoard: React.FC<IProps> = ({ table, field }) => {
           {KANBAN_DATE_STACKS.map((stack) => (
             <KanbanLane
               field={field}
-              table={table}
               records={dateRecords[stack] ?? []}
               key={stack}
               id={stack}
@@ -134,14 +134,13 @@ export const KanbanDateBoard: React.FC<IProps> = ({ table, field }) => {
           <DragOverlay dropAnimation={dropAnimation}>
             {isActiveContainer ? (
               <KanbanLane
-                table={table}
                 field={field}
                 records={dateRecords[(activeId as string) || ''] ?? []}
                 title={activeContainer ?? ''}
                 id={activeContainer ?? ''}
               />
             ) : (
-              <KanbanCard record={activeItem!} table={table} />
+              <KanbanCard record={activeItem!} />
             )}
           </DragOverlay>
         </DndContext>

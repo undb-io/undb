@@ -6,14 +6,15 @@ import { Button, Card, FocusTrap, Group, IconChevronLeft, Stack, Text, TextInput
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { useForm } from 'react-hook-form'
-import type { ITableBaseProps } from '../table/table-base-props'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { calendarStepZero } from './calendar-step.atom'
 
-interface IProps extends ITableBaseProps {
+interface IProps {
   onSuccess?: () => void
 }
 
-export const CreateCalendarDateRangeField: React.FC<IProps> = ({ table, onSuccess }) => {
+export const CreateCalendarDateRangeField: React.FC<IProps> = ({ onSuccess }) => {
+  const table = useCurrentTable()
   const form = useForm<ICreateDateRangeFieldSchema>({
     defaultValues: {
       type: 'date-range',
@@ -37,6 +38,8 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ table, onSucces
       tableId: table.id.value,
       field: values.id,
     })
+
+    onSuccess?.()
   })
 
   const setStepZero = useSetAtom(calendarStepZero)

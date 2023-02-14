@@ -4,10 +4,12 @@ import { useCreateOptionMutation } from '@egodb/store'
 import { Stack, TextInput, Group, Button, closeAllModals } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { OptionColorPicker } from '../field-inputs/option-color-picker'
 import type { ICreateOptionFormProps } from './create-option-form.props'
 
-export const CreateOptionForm: React.FC<ICreateOptionFormProps> = ({ table, field, color, onSuccess }) => {
+export const CreateOptionForm: React.FC<ICreateOptionFormProps> = ({ field, color, onSuccess }) => {
+  const table = useCurrentTable()
   const form = useForm<ICreateOptionSchema>({
     defaultValues: {
       name: '',

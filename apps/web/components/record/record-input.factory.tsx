@@ -1,5 +1,4 @@
 import type { Field } from '@egodb/core'
-import type { Table } from '@egodb/core'
 import { NumberInput, DatePicker, DateRangePicker, Checkbox, TextInput, ColorInput, Rating } from '@egodb/ui'
 import React from 'react'
 import { Controller } from 'react-hook-form'
@@ -11,13 +10,12 @@ import { FieldIcon } from '../field-inputs/field-Icon'
 import { ParentRecordPicker } from '../field-inputs/parent-records-picker'
 
 interface IProps {
-  table: Table
   field: Field
   name: string
   recordId?: string
 }
 
-export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recordId }) => {
+export const RecordInputFactory: React.FC<IProps> = ({ name, field, recordId }) => {
   const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
   if (field.type === 'number') {
     return (
@@ -115,7 +113,6 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
           <OptionPicker
             field={field}
             icon={<FieldIcon type={field.type} />}
-            table={table}
             label={label}
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
@@ -133,7 +130,6 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
         render={(form) => (
           <ReferenceRecordPicker
             field={field}
-            table={table}
             label={label}
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
@@ -151,7 +147,6 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
         render={(form) => (
           <TreeRecordsPicker
             field={field}
-            table={table}
             label={label}
             recordId={recordId}
             {...form.field}
@@ -170,7 +165,6 @@ export const RecordInputFactory: React.FC<IProps> = ({ table, name, field, recor
         render={(form) => (
           <ParentRecordPicker
             field={field}
-            table={table}
             label={label}
             recordId={recordId}
             {...form.field}

@@ -5,13 +5,13 @@ import { SelectExistingField } from './select-existing-tree-view-field'
 import type { ISelectTreeViewFieldProps } from './select-tree-view-field.props'
 import { treeStepAtom } from './tree-step.atom'
 
-export const SelectTreeViewField: React.FC<ISelectTreeViewFieldProps> = ({ table, onSuccess }) => {
+export const SelectTreeViewField: React.FC<ISelectTreeViewFieldProps> = ({ onSuccess }) => {
   const step = useAtomValue(treeStepAtom)
 
   return (
     <Box w={500}>
-      {step === 0 ? <SelectExistingField onSuccess={onSuccess} table={table} /> : null}
-      {step === 1 ? <CreateTreeField onSuccess={onSuccess} table={table} /> : null}
+      {step === 0 ? <SelectExistingField onSuccess={onSuccess} /> : null}
+      {step === 1 ? <CreateTreeField onSuccess={onSuccess} /> : null}
     </Box>
   )
 }

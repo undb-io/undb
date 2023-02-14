@@ -1,9 +1,8 @@
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { ActionIcon, Box, Group, IconGripVertical, IconRowInsertTop, ScrollArea, Stack, Text } from '@egodb/ui'
+import { ActionIcon, Box, Group, IconGripVertical, IconRowInsertTop, Stack, Text } from '@egodb/ui'
 import { CSS } from '@dnd-kit/utilities'
 import type { ICreateFieldValue, IKanbanField, Records } from '@egodb/core'
 import { SortableKanbanCard } from './kanban-card'
-import type { Table } from '@egodb/core'
 import { useSetAtom } from 'jotai'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
@@ -14,12 +13,12 @@ import { useMemo, useRef } from 'react'
 import { KanbanLaneMenu } from './kanban-lane-menu'
 import React from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
+import { useCurrentTable } from '../../hooks/use-current-table'
 
 interface IProps {
   renderMenu?: () => ReactNode
   id: string | null
   title: ReactNode
-  table: Table
   field: IKanbanField
   records: Records
   disableAddRecord?: boolean
@@ -31,7 +30,6 @@ type IKanbanLaneProps = IProps & SortableProps
 export const KanbanLane: React.FC<IKanbanLaneProps> = ({
   id,
   field,
-  table,
   setNodeRef,
   setActivatorNodeRef,
   style,
@@ -45,6 +43,8 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
 }) => {
   const setOpened = useSetAtom(createRecordFormDrawerOpened)
   const setCreateRecordInitialValue = useSetAtom(createRecordInitialValueAtom)
+
+  const table = useCurrentTable()
 
   const onCreateRecord = () => {
     setOpened(true)
@@ -83,7 +83,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
         </Group>
 
         {id && (
-          <KanbanLaneMenu table={table} field={field} optionKey={id}>
+          <KanbanLaneMenu field={field} optionKey={id}>
             {renderMenu?.()}
           </KanbanLaneMenu>
         )}
@@ -104,7 +104,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = ({
             )}
             {rowVirtualizer.getVirtualItems().map((virtualRow) => {
               const r = records[virtualRow.index]
-              return <SortableKanbanCard table={table} record={r} key={r.id.value} />
+              return <SortableKanbanCard record={r} key={r.id.value} />
             })}
             {paddingBottom > 0 && (
               <tr>

@@ -3,12 +3,10 @@ import { Group, ActionIcon, IconGripVertical, IconTrash, SegmentedControl } from
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useEffect, useState } from 'react'
-import type { Table } from '@egodb/core'
 import { FieldSelector } from '../field-inputs/field-selector'
 import { getSortId } from './get-sort-id'
 
 interface IProps {
-  table: Table
   fields: Field[]
   index: number
   value: ISortSchema | null

@@ -4,15 +4,16 @@ import { Card, Radio, Group, Button, Text, IconPlus, Stack, Divider } from '@ego
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { Controller, useForm } from 'react-hook-form'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { FieldIcon } from '../field-inputs/field-Icon'
-import type { ITableBaseProps } from '../table/table-base-props'
 import { kanbanStepOneAtom, kanbanStepTwoAtom } from './kanban-step.atom'
 
-interface IProps extends ITableBaseProps {
+interface IProps {
   onSuccess?: () => void
 }
 
-export const SelectExistingField: React.FC<IProps> = ({ table, onSuccess }) => {
+export const SelectExistingField: React.FC<IProps> = ({ onSuccess }) => {
+  const table = useCurrentTable()
   const kanbanFields = table.schema.kanbanFields
   const view = table.mustGetView()
   const initialKanbanFieldId = view.kanban.into()?.fieldId?.value

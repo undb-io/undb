@@ -8,9 +8,10 @@ import {
 } from '@egodb/store'
 import { Dialog, Group, Button, Text, IconDots, Menu, usePrevious } from '@egodb/ui'
 import { useAppDispatch, useAppSelector, useConfirmModal } from '../../hooks'
-import type { ITableBaseProps } from '../table/table-base-props'
+import { useCurrentTable } from '../../hooks/use-current-table'
 
-export const RecordSelectionDialog: React.FC<ITableBaseProps> = ({ table }) => {
+export const RecordSelectionDialog: React.FC = () => {
+  const table = useCurrentTable()
   const ids = useAppSelector((state) => getTableSelectedRecordIdList(state, table.id.value))
   const hasSelectedRecords = useAppSelector((state) => getTableHasSelectedRecordIds(state, table.id.value))
   const count = useAppSelector((state) => getTableSelectedRecordIdsCount(state, table.id.value))

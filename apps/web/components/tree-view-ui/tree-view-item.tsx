@@ -1,5 +1,5 @@
 import type { UniqueIdentifier } from '@dnd-kit/core'
-import type { RecordAllValues, Table, TreeField } from '@egodb/core'
+import type { RecordAllValues, TreeField } from '@egodb/core'
 import { setSelectedRecordId, useDeleteRecordMutation } from '@egodb/store'
 import {
   ActionIcon,
@@ -19,6 +19,7 @@ import type { HTMLAttributes } from 'react'
 import React, { forwardRef } from 'react'
 import { unstable_batchedUpdates } from 'react-dom'
 import { useAppDispatch, useConfirmModal } from '../../hooks'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
 import { FieldIcon } from '../field-inputs/field-Icon'
@@ -29,7 +30,6 @@ export interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
   id: UniqueIdentifier
   values: RecordAllValues
   field: TreeField
-  table: Table
   childCount?: number
   clone?: boolean
   collapsed?: boolean
@@ -49,7 +49,6 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     {
       id,
       values,
-      table,
       field,
       childCount,
       clone,
@@ -68,6 +67,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     },
     ref,
   ) => {
+    const table = useCurrentTable()
     const schema = table.schema.toIdMap()
     const theme = useEgoUITheme()
 
