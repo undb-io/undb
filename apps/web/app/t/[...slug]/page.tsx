@@ -3,12 +3,13 @@
 import { TableFactory } from '@egodb/core'
 import { setCurrentTableId, useGetTableQuery } from '@egodb/store'
 import type { TRPCError } from '@egodb/trpc'
-import { Alert, Container, IconAlertCircle } from '@egodb/ui'
+import { Alert, Container, IconAlertCircle, ModalsProvider } from '@egodb/ui'
 import { useEffect } from 'react'
 import { TableLoading } from '../../../components/loading'
 import { CurrentTableContext } from '../../../context/current-table'
 import { CurrentViewContext } from '../../../context/current-view'
 import { useAppDispatch } from '../../../hooks'
+import { modals } from '../../../modals'
 import Table from './table'
 
 export default function Page({ params: { slug } }: { params: { slug: string[] } }) {
@@ -42,7 +43,9 @@ export default function Page({ params: { slug } }: { params: { slug: string[] } 
   return (
     <CurrentTableContext.Provider value={table}>
       <CurrentViewContext.Provider value={view}>
-        <Table />
+        <ModalsProvider modals={modals}>
+          <Table />
+        </ModalsProvider>
       </CurrentViewContext.Provider>
     </CurrentTableContext.Provider>
   )

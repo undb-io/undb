@@ -4,7 +4,7 @@ import { AppShell } from '@egodb/ui'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { CreateTableFormDrawer } from '../components/create-table-form'
-import { TableNavList } from '../components/tables-nav-list/table-nav-list'
+import { TableList } from '../components/table/table-list'
 import { AtomsDevtools } from './atom-devtool'
 import RootStyleRegistry from './emotion'
 
@@ -20,9 +20,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <RootStyleRegistry>
               <AppShell
                 padding={0}
-                navbar={<TableNavList />}
-                sx={(theme) => ({ backgroundColor: theme.colors.gray[0] })}
+                // header={
+                //   <Header bg="blue" height={50} p="xs">
+                //     {/* Header content */}
+                //   </Header>
+                // }
               >
+                <TableList />
                 {children}
                 <CreateTableFormDrawer />
               </AppShell>
