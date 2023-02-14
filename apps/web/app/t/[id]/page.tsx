@@ -1,14 +1,22 @@
 'use client'
 
 import { TableFactory } from '@egodb/core'
-import { useGetTableQuery } from '@egodb/store'
+import { setCurrentTableId, useGetTableQuery } from '@egodb/store'
 import type { TRPCError } from '@egodb/trpc'
 import { Alert, Container, IconAlertCircle } from '@egodb/ui'
+import { useEffect } from 'react'
 import { TableLoading } from '../../../components/loading'
+import { useAppDispatch } from '../../../hooks'
 import Table from './table'
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const { data, isLoading, isError, error } = useGetTableQuery({ id })
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(setCurrentTableId(id))
+  }, [id])
+
   if (isLoading) {
     return <TableLoading />
   }
