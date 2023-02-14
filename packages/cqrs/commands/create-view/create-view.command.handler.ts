@@ -10,8 +10,8 @@ export class CreateViewCommandHandler implements ICreateViewCommandHandler {
   async execute(command: CreateViewCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
 
-    // const spec = table.createView(command.view)
+    const spec = table.createView(command.view)
 
-    // await this.tableRepo.updateOneById(table.id.value, spec)
+    await this.tableRepo.updateOneById(table.id.value, spec)
   }
 }
