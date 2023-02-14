@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { Controller, useForm } from 'react-hook-form'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { kanbanStepOneAtom, kanbanStepTwoAtom } from './kanban-step.atom'
 
@@ -15,7 +16,7 @@ interface IProps {
 export const SelectExistingField: React.FC<IProps> = ({ onSuccess }) => {
   const table = useCurrentTable()
   const kanbanFields = table.schema.kanbanFields
-  const view = table.mustGetView()
+  const view = useCurrentView()
   const initialKanbanFieldId = view.kanban.into()?.fieldId?.value
   const hasKanbanFields = kanbanFields.length > 0
 
@@ -31,6 +32,7 @@ export const SelectExistingField: React.FC<IProps> = ({ onSuccess }) => {
   const onSubmit = form.handleSubmit(async (values) => {
     await setKanbanField({
       tableId: table.id.value,
+      viewId: view.id.value,
       field: values.field,
     })
     onSuccess?.()

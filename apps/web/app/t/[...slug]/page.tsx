@@ -7,16 +7,18 @@ import { Alert, Container, IconAlertCircle } from '@egodb/ui'
 import { useEffect } from 'react'
 import { TableLoading } from '../../../components/loading'
 import { CurrentTableContext } from '../../../context/current-table'
+import { CurrentViewContext } from '../../../context/current-view'
 import { useAppDispatch } from '../../../hooks'
 import Table from './table'
 
-export default function Page({ params: { id } }: { params: { id: string } }) {
-  const { data, isLoading, isError, error } = useGetTableQuery({ id })
+export default function Page({ params: { slug } }: { params: { slug: string[] } }) {
+  const [tableId, viewId] = slug
+  const { data, isLoading, isError, error } = useGetTableQuery({ id: tableId })
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(setCurrentTableId(id))
-  }, [id])
+    dispatch(setCurrentTableId(tableId))
+  }, [tableId])
 
   if (isLoading) {
     return <TableLoading />
@@ -36,9 +38,12 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     return 'none'
   }
   const table = TableFactory.fromQuery(data)
+  const view = table.mustGetView(viewId)
   return (
     <CurrentTableContext.Provider value={table}>
-      <Table />
+      <CurrentViewContext.Provider value={view}>
+        <Table />
+      </CurrentViewContext.Provider>
     </CurrentTableContext.Provider>
   )
 }

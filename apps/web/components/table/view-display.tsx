@@ -1,12 +1,12 @@
-import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 import { CalendarUI } from '../calendar-ui/calendar-ui'
 import { KanbanUI } from '../kanban-ui/kanban-ui'
 import { TableUI } from '../table-ui/table-ui'
 import { TreeViewUI } from '../tree-view-ui/tree-view-ui'
 
 export const ViewDisplay: React.FC = () => {
-  const table = useCurrentTable()
-  const displayType = table.mustGetView().displayType
+  const view = useCurrentView()
+  const displayType = view.displayType
   if (displayType === 'kanban') {
     return <KanbanUI />
   }

@@ -2,14 +2,16 @@ import type { Field } from '@egodb/core'
 import { useDeleteFieldMutation } from '@egodb/store'
 import { ActionIcon, IconDots, Menu } from '@egodb/ui'
 import { useConfirmModal } from '../../hooks'
+import { useCurrentTable } from '../../hooks/use-current-table'
 
-export const HeaderMenu: React.FC<{ tableId: string; field: Field }> = ({ tableId, field }) => {
+export const HeaderMenu: React.FC<{ field: Field }> = ({ field }) => {
+  const table = useCurrentTable()
   const [deleteField] = useDeleteFieldMutation()
 
   const confirm = useConfirmModal({
     onConfirm() {
       deleteField({
-        tableId,
+        tableId: table.id.value,
         id: field.id.value,
       })
     },

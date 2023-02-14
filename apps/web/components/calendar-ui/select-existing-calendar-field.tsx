@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { Controller, useForm } from 'react-hook-form'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { calendarStepOne, calendarStepTwo } from './calendar-step.atom'
 
@@ -14,8 +15,9 @@ interface IProps {
 
 export const SelectExistingCalendarField: React.FC<IProps> = ({ onSuccess }) => {
   const table = useCurrentTable()
+  const view = useCurrentView()
+
   const calendarFields = table.schema.calendarFields
-  const view = table.mustGetView()
   const initialCalendarFieldId = view.calendar.into()?.fieldId?.value
   const hasCalendarFields = calendarFields.length > 0
 
