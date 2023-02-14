@@ -5,10 +5,11 @@ import { CSS } from '@dnd-kit/utilities'
 import type { Field } from '@egodb/core'
 import { useMoveFieldMutation, useSetVisibilityMutation } from '@egodb/store'
 import type { CheckboxProps } from '@egodb/ui'
+import { IconColumns3 } from '@egodb/ui'
 import { useListState } from '@egodb/ui'
 import { ActionIcon, IconGripVertical } from '@egodb/ui'
 import { Tooltip } from '@egodb/ui'
-import { Badge, Button, Checkbox, Group, IconEye, Popover, Stack, useDisclosure } from '@egodb/ui'
+import { Badge, Button, Checkbox, Group, Popover, Stack, useDisclosure } from '@egodb/ui'
 import { useEffect } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
@@ -89,7 +90,7 @@ export const ViewFieldsEditor: React.FC = () => {
             compact
             size="xs"
             loading={isLoading}
-            leftIcon={<IconEye size={18} />}
+            leftIcon={<IconColumns3 size={18} />}
             onClick={handler.toggle}
             rightIcon={
               hiddenCount ? (
