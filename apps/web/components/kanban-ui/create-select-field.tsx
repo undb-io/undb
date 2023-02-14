@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { useForm } from 'react-hook-form'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 import { SelectFieldControl } from '../field-inputs/select-field-control'
 import { kanbanStepZeroAtom } from './kanban-step.atom'
 
@@ -16,6 +17,7 @@ interface IProps {
 
 export const CreateSelectField: React.FC<IProps> = ({ onSuccess }) => {
   const table = useCurrentTable()
+  const view = useCurrentView()
 
   const form = useForm<ICreateSelectFieldSchema>({
     defaultValues: {
@@ -38,6 +40,7 @@ export const CreateSelectField: React.FC<IProps> = ({ onSuccess }) => {
 
     await setKanbanField({
       tableId: table.id.value,
+      viewId: view.id.value,
       field: values.id,
     })
 

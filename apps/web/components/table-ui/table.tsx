@@ -15,13 +15,14 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { RecordSelection } from './selection'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 
 const columnHelper = createColumnHelper<TData>()
 
 export const EGOTable: React.FC<IProps> = ({ records }) => {
   const table = useCurrentTable()
 
-  const view = table.mustGetView()
+  const view = useCurrentView()
   const columnVisibility = view.getVisibility()
   const columnOrder = table.getFieldsOrder(view).order
   const [fields, handlers] = useListState(table.schema.fields)
@@ -63,9 +64,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
     columnHelper.accessor(f.id.value, {
       id: f.id.value,
       enableResizing: true,
-      header: (props) => (
-        <Th key={f.id.value} column={props.column} field={f} header={props.header} tableId={table.id.value} />
-      ),
+      header: (props) => <Th key={f.id.value} column={props.column} field={f} header={props.header} />,
       size: view.getFieldWidth(f.id.value),
       cell: (props) => {
         let value: RecordAllValueType = undefined

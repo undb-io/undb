@@ -1,12 +1,13 @@
 import type { ITreeViewField } from '@egodb/core'
 import { Container, Center } from '@egodb/ui'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 import { SelectTreeViewField } from './select-tree-view-field'
 import { TreeViewBoard } from './tree-view-board'
 
 export const TreeViewUI: React.FC = () => {
   const table = useCurrentTable()
-  const view = table.mustGetView()
+  const view = useCurrentView()
   const fieldId = view.treeViewFieldId
 
   if (fieldId.isNone()) {

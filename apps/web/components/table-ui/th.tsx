@@ -8,6 +8,8 @@ import { memo } from 'react'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { HeaderMenu } from './header-menu'
 import { useSetFieldWidthMutation } from '@egodb/store'
+import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 
 const ResizerLine = styled.div<{ hidden: boolean; isResizing: boolean }>`
   display: ${(props) => (props.hidden ? 'none' : 'block')};
@@ -39,17 +41,19 @@ const Resizer = styled.div`
 interface IProps {
   header: THeader
   column: TColumn
-  tableId: string
   field: Field
 }
 
-export const Th: React.FC<IProps> = memo(({ header, tableId, field, column }) => {
+export const Th: React.FC<IProps> = memo(({ header, field, column }) => {
+  const table = useCurrentTable()
+  const view = useCurrentView()
   const [setFieldWidth] = useSetFieldWidthMutation()
 
   const onSetFieldWidth = (fieldId: string, width: number) => {
     setFieldWidth({
-      tableId,
+      tableId: table.id.value,
       fieldId,
+      viewId: view.id.value,
       width,
     })
   }
@@ -77,7 +81,7 @@ export const Th: React.FC<IProps> = memo(({ header, tableId, field, column }) =>
           </Text>
         </Group>
 
-        {!field.system && <HeaderMenu tableId={tableId} field={field} />}
+        {!field.system && <HeaderMenu field={field} />}
       </Group>
 
       <Resizer

@@ -8,6 +8,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { getSortId } from './get-sort-id'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 interface IProps {
   onChange?: (filters: ISorts) => void
   onApply?: (filters: ISorts) => void
@@ -16,7 +17,8 @@ interface IProps {
 
 export const SortsEditor: React.FC<IProps> = ({ onChange, onApply, onCancel }) => {
   const table = useCurrentTable()
-  const initialSorts = table.mustGetView().sorts?.sorts ?? []
+  const view = useCurrentView()
+  const initialSorts = view.sorts?.sorts ?? []
   const [sorts, handlers] = useListState<ISortSchema | null>(initialSorts.length ? initialSorts : [null])
   const validSorts = sorts.filter((f) => f !== null) as ISorts
 

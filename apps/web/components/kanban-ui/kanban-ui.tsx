@@ -1,12 +1,13 @@
 import type { IKanbanField } from '@egodb/core'
 import { Container, Center } from '@egodb/ui'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 import { KanbanBoard } from './kanban-board'
 import { SelectKanbanField } from './select-kanban-field'
 
 export const KanbanUI: React.FC = () => {
   const table = useCurrentTable()
-  const view = table.mustGetView()
+  const view = useCurrentView()
   const fieldId = view.kanbanFieldId
 
   if (fieldId.isNone()) {

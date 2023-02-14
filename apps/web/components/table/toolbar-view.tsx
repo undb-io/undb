@@ -13,6 +13,7 @@ import {
   closeAllModals,
 } from '@egodb/ui'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 import { SELECT_CALENDAR_FIELD_MODAL_ID, SELECT_KANBAN_FIELD_MODAL_ID } from '../../modals'
 import type { ISelectKanbanFieldProps } from '../kanban-ui/select-kanban-field.props'
 import { DisplayTypeIcon } from '../view/display-type-icon'
@@ -90,8 +91,8 @@ const CalendarControl: React.FC<{ calendar?: ICalendar }> = ({ calendar }) => {
 
 export const ToolbarView: React.FC = () => {
   const table = useCurrentTable()
+  const view = useCurrentView()
   const [opened, toggle] = useDisclosure(false)
-  const view = table.mustGetView()
 
   const displayType = view.displayType
 
@@ -125,7 +126,7 @@ export const ToolbarView: React.FC = () => {
             onChange={(type) => {
               switchDisplayType({
                 tableId: table.id.value,
-                viewId: view.name.unpack(),
+                viewId: view.id.value,
                 displayType: type as IViewDisplayType,
               }).then(() => {
                 toggle.close()

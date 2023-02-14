@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { Controller, useForm } from 'react-hook-form'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { treeStepOneAtom } from './tree-step.atom'
 
@@ -15,7 +16,7 @@ interface IProps {
 export const SelectExistingField: React.FC<IProps> = ({ onSuccess }) => {
   const table = useCurrentTable()
   const treeFields = table.schema.treeFields
-  const view = table.mustGetView()
+  const view = useCurrentView()
   const initialTreeViewFieldId = view.calendar.into()?.fieldId?.value
   const hasTreeViewFields = treeFields.length > 0
 

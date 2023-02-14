@@ -11,6 +11,7 @@ import { Tooltip } from '@egodb/ui'
 import { Badge, Button, Checkbox, Group, IconEye, Popover, Stack, useDisclosure } from '@egodb/ui'
 import { useEffect } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 import { FieldIcon } from '../field-inputs/field-Icon'
 
 type OnVisibleChange = (fieldId: string, visible: boolean) => void
@@ -55,7 +56,7 @@ export const ViewFieldsEditor: React.FC = () => {
   const [opened, handler] = useDisclosure(false)
   const [setFieldVisibility, { isLoading }] = useSetVisibilityMutation()
 
-  const view = table.mustGetView()
+  const view = useCurrentView()
   const visibility = view.getVisibility()
   const schema = table.schema.toIdMap()
   const hiddenCount = view.fieldOptions?.hiddenCount ?? 0
@@ -67,7 +68,7 @@ export const ViewFieldsEditor: React.FC = () => {
   }, [table])
 
   const onChange: OnVisibleChange = (fieldId: string, visible: boolean) => {
-    setFieldVisibility({ tableId: table.id.value, fieldId, hidden: !visible })
+    setFieldVisibility({ tableId: table.id.value, viewId: view.id.value, fieldId, hidden: !visible })
   }
 
   const [moveField] = useMoveFieldMutation()
@@ -116,7 +117,12 @@ export const ViewFieldsEditor: React.FC = () => {
                   to: over?.data.current?.sortable?.index,
                 })
 
-                moveField({ tableId: table.id.value, from: active.id as string, to: over.id as string })
+                moveField({
+                  tableId: table.id.value,
+                  viewId: view.id.value,
+                  from: active.id as string,
+                  to: over.id as string,
+                })
               }
             }}
           >

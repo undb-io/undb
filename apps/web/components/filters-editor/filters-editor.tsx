@@ -8,6 +8,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { getFilterId } from './get-filter-id'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 interface IProps {
   onChange?: (filters: IFilterOrGroupList) => void
   onApply?: (filters: IFilterOrGroupList) => void
@@ -16,9 +17,10 @@ interface IProps {
 
 export const FiltersEditor: React.FC<IProps> = ({ onChange, onApply, onCancel }) => {
   const table = useCurrentTable()
+  const view = useCurrentView()
 
   // TODO: ignore group for now
-  const initialFilters = table.mustGetView().filterList as IFilter[]
+  const initialFilters = view.filterList as IFilter[]
   const [filters, handlers] = useListState<IFilter | null>(initialFilters.length ? initialFilters : [null])
   const validFilters = filters.filter((f) => f !== null) as IFilterOrGroupList
 
