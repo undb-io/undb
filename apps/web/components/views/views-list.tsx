@@ -1,6 +1,6 @@
 import { Button, List, openContextModal, Stack } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { CREATE_VIEW_MODAL_ID } from '../../modals'
@@ -11,18 +11,36 @@ export const ViewsList: React.FC = () => {
   const table = useCurrentTable()
   const view = useCurrentView()
   const views = table.views.views
+
+  const router = useRouter()
+
   const setOpened = useSetAtom(viewsOpenedAtom)
 
   return (
     <Stack h="100%" justify="space-between">
-      <List center>
-        {views.map((v) => (
-          <List.Item icon={<DisplayTypeIcon displayType={view.displayType} />} key={v.id.value}>
-            <Link href={`/t/${table.id.value}/${v.id.value}`} onClick={() => setOpened(false)}>
+      <List center size="sm" spacing="xs">
+        {views.map((v) => {
+          const isActive = v.id.equals(view.id)
+          return (
+            <List.Item
+              px="xs"
+              py={5}
+              bg={isActive ? 'blue.0' : ''}
+              icon={<DisplayTypeIcon displayType={view.displayType} size={20} />}
+              key={v.id.value}
+              onClick={() => {
+                router.push(`/t/${table.id.value}/${v.id.value}`)
+                setOpened(false)
+              }}
+              sx={(theme) => ({
+                cursor: 'pointer',
+                ':hover': { backgroundColor: !isActive ? theme.colors.gray[0] : theme.colors.blue[0] },
+              })}
+            >
               {v.name.value}
-            </Link>
-          </List.Item>
-        ))}
+            </List.Item>
+          )
+        })}
       </List>
       <Button
         variant="light"
