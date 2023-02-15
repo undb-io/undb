@@ -6,7 +6,7 @@ export interface IProps extends TablerIconsProps {
   displayType: IViewDisplayType
 }
 
-export const getDiplayTypeColor = (displayType: IViewDisplayType): DefaultMantineColor => {
+export const getDisplayTypeColor = (displayType: IViewDisplayType): DefaultMantineColor => {
   switch (displayType) {
     case 'grid':
       return 'blue'

@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { CREATE_VIEW_MODAL_ID } from '../../modals'
-import { DisplayTypeIcon, getDiplayTypeColor } from '../view/display-type-icon'
+import { DisplayTypeIcon, getDisplayTypeColor } from '../view/display-type-icon'
 import { viewsOpenedAtom } from './views-opened.atom'
 
 export const ViewsList: React.FC = () => {
@@ -27,8 +27,8 @@ export const ViewsList: React.FC = () => {
               py={5}
               bg={isActive ? 'blue.0' : ''}
               icon={
-                <ActionIcon variant="filled" color={getDiplayTypeColor(view.displayType)} size="sm">
-                  <DisplayTypeIcon displayType={view.displayType} size={20} />
+                <ActionIcon variant="filled" color={getDisplayTypeColor(v.displayType)} size="sm">
+                  <DisplayTypeIcon displayType={v.displayType} size={20} />
                 </ActionIcon>
               }
               key={v.id.value}

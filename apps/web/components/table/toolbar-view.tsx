@@ -16,6 +16,7 @@ import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { SELECT_CALENDAR_FIELD_MODAL_ID, SELECT_KANBAN_FIELD_MODAL_ID } from '../../modals'
 import type { ISelectKanbanFieldProps } from '../kanban-ui/select-kanban-field.props'
+import { displayTypes } from '../view/display-type'
 import { DisplayTypeIcon } from '../view/display-type-icon'
 
 const StackedBy: React.FC<{ fieldId?: FieldId }> = ({ fieldId }) => {
@@ -117,12 +118,7 @@ export const ToolbarView: React.FC = () => {
 
         <Popover.Dropdown p="xs">
           <SegmentedControl
-            data={[
-              { label: 'Grid', value: 'grid' },
-              { label: 'Kanban', value: 'kanban' },
-              { label: 'Calendar', value: 'calendar' },
-              { label: 'Tree', value: 'tree' },
-            ]}
+            data={displayTypes}
             onChange={(type) => {
               switchDisplayType({
                 tableId: table.id.value,
