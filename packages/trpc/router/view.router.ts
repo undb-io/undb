@@ -3,6 +3,8 @@ import {
   createViewCommandInput,
   SwitchDisplayTypeCommand,
   switchDisplayTypeCommandInput,
+  UpdateViewNameCommand,
+  updateViewNameCommandInput,
 } from '@egodb/cqrs'
 import type { ICommandBus } from '@egodb/domain'
 import { z } from 'zod'
@@ -22,6 +24,13 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new CreateViewCommand(input)
+        return commandBus.execute(cmd)
+      }),
+    updateName: procedure
+      .input(updateViewNameCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new UpdateViewNameCommand(input)
         return commandBus.execute(cmd)
       }),
     switchDisplayType: procedure
