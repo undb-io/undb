@@ -11,7 +11,13 @@ import { Calendar } from './calendar/index.js'
 import { Kanban } from './kanban/index.js'
 import { Sorts } from './sort/sorts.js'
 import { WithDisplayType } from './specifications/display-type.specification.js'
-import { WithCalendarField, WithKanbanField, WithTreeViewField, WithViewFieldsOrder } from './specifications/index.js'
+import {
+  WithCalendarField,
+  WithKanbanField,
+  WithTreeViewField,
+  WithViewFieldsOrder,
+  WithViewName,
+} from './specifications/index.js'
 import {
   WithFieldOption,
   WithFieldVisibility,
@@ -35,6 +41,10 @@ export class View extends ValueObject<IView> {
 
   public get name() {
     return this.props.name
+  }
+
+  public set name(name: ViewName) {
+    this.props.name = name
   }
 
   public get displayType() {
@@ -164,6 +174,10 @@ export class View extends ValueObject<IView> {
 
   public setFieldWidth(fieldId: string, width: number): TableCompositeSpecificaiton {
     return new WithFieldWidth(fieldId, this, width)
+  }
+
+  public updateName(name: string): TableCompositeSpecificaiton {
+    return new WithViewName(this, ViewName.create(name))
   }
 
   public switchDisplayType(type: IViewDisplayType): TableCompositeSpecificaiton {

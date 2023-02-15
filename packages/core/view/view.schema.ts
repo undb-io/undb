@@ -21,6 +21,7 @@ export const createViewSchema = z.object({
 export type ICreateViewSchema = z.infer<typeof createViewSchema>
 
 export const updateViewNameSchema = z.object({
+  id: viewIdSchema,
   name: viewNameSchema,
 })
 

@@ -10,8 +10,8 @@ export class UpdateViewNameCommandHandler implements IUpdateViewNameCommandHandl
   async execute(command: UpdateViewNameCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
 
-    // const spec = table.updateViewName(command.view)
+    const spec = table.updateViewName(command.view)
 
-    // await this.tableRepo.updateOneById(table.id.value, spec)
+    await this.tableRepo.updateOneById(table.id.value, spec)
   }
 }
