@@ -9,6 +9,7 @@ import type {
   WithKanbanField,
   WithNewField,
   WithNewOption,
+  WithNewView,
   WithOptions,
   WithoutField,
   WithoutOption,
@@ -70,6 +71,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const table = this.table
     const view = this.getView(s.view.id.value)
     wrap(view).assign(new View(table, s.view))
+    this.em.persist(view)
+  }
+  newView(s: WithNewView): void {
+    const table = this.table
+    const view = new View(table, s.view)
     this.em.persist(view)
   }
   filterEqual(s: WithFilter): void {

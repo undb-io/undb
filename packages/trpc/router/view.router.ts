@@ -1,4 +1,9 @@
-import { SwitchDisplayTypeCommand, switchDisplayTypeCommandInput } from '@egodb/cqrs'
+import {
+  CreateViewCommand,
+  createViewCommandInput,
+  SwitchDisplayTypeCommand,
+  switchDisplayTypeCommandInput,
+} from '@egodb/cqrs'
 import type { ICommandBus } from '@egodb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
@@ -12,6 +17,13 @@ import { createViewFieldRouter } from './view-field.router.js'
 
 export const createViewRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus) =>
   router({
+    create: procedure
+      .input(createViewCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new CreateViewCommand(input)
+        return commandBus.execute(cmd)
+      }),
     switchDisplayType: procedure
       .input(switchDisplayTypeCommandInput)
       .output(z.void())

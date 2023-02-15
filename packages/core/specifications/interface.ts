@@ -15,7 +15,7 @@ import type {
   WithFieldWidth,
 } from '../view/specifications/view-field-option.specification.js'
 import type { WithViewFieldsOrder } from '../view/specifications/view-fields-order.specification.js'
-import type { WithTableView, WithTableViews } from '../view/specifications/views.specification.js'
+import type { WithNewView, WithTableView, WithTableViews } from '../view/specifications/views.specification.js'
 import type { WithNewField } from './table-field.specification.js'
 import type { WithTableId } from './table-id.specification'
 import type { WithTableName } from './table-name.specification.js'
@@ -27,6 +27,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   schemaEqual(s: WithTableSchema): void
   viewsEqual(s: WithTableViews): void
   viewEqual(s: WithTableView): void
+  newView(s: WithNewView): void
 
   sortsEqual(s: WithSorts): void
 

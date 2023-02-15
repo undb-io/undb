@@ -22,7 +22,7 @@ export class GetTreeAvailableRecordsQueryHandler
       query.tableId,
       spec,
       table.schema.toIdMap(),
-      table.mustGetView().sorts?.sorts ?? [],
+      table.mustGetView(query.viewId).sorts?.sorts ?? [],
     )
 
     return { records }

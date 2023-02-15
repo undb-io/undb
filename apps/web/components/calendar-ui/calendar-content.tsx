@@ -4,6 +4,7 @@ import { useGetRecordsQuery } from '@egodb/store'
 import { Calendar } from '@egodb/ui'
 import { useMemo } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 import { Day } from './day'
 
 interface IProps {
@@ -13,10 +14,12 @@ export const CalendarContent: React.FC<IProps> = ({ field }) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   const onChange = () => {}
   const table = useCurrentTable()
+  const view = useCurrentView()
 
   const { rawRecords } = useGetRecordsQuery(
     {
       tableId: table.id.value,
+      viewId: view.id.value,
       filter: [{ path: field.id.value, type: 'date', value: null, operator: '$neq' }],
     },
     {

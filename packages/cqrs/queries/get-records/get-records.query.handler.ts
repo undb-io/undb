@@ -23,7 +23,7 @@ export class GetRecordsQueryHandler implements IQueryHandler<GetRecordsQuery, IG
       table.id.value,
       spec,
       table.schema.toIdMap(),
-      table.mustGetView().sorts?.sorts ?? [],
+      table.mustGetView(query.viewId).sorts?.sorts ?? [],
     )
 
     return { records }

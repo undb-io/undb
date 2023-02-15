@@ -7,6 +7,7 @@ import { useMemo, useRef } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { useGetRecordsQuery } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 
 interface IProps {
   field: ICalendarField
@@ -50,9 +51,11 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
 
 export const CalendarRecords: React.FC<IProps> = ({ field }) => {
   const table = useCurrentTable()
+  const view = useCurrentView()
   const { rawRecords, isLoading } = useGetRecordsQuery(
     {
       tableId: table.id.value,
+      viewId: view.id.value,
       filter: [{ path: field.id.value, type: 'date', value: null, operator: '$eq' }],
     },
     {

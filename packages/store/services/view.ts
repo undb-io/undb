@@ -3,6 +3,10 @@ import { api } from './api'
 
 const viewApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    createView: builder.mutation({
+      query: trpc.table.view.create.mutate,
+      invalidatesTags: (_, __, { tableId }) => [{ type: 'Table', id: tableId }, 'Record'],
+    }),
     setFilter: builder.mutation({
       query: trpc.table.view.filter.set.mutate,
       invalidatesTags: (_, __, { tableId }) => [{ type: 'Table', id: tableId }, 'Record'],
@@ -19,7 +23,7 @@ const viewApi = api.injectEndpoints({
   overrideExisting: false,
 })
 
-export const { useSetFilterMutation, useSetSortMutation, useSwitchDisplayTypeMutation } = viewApi
+export const { useSetFilterMutation, useSetSortMutation, useSwitchDisplayTypeMutation, useCreateViewMutation } = viewApi
 
 const calendarApi = viewApi.injectEndpoints({
   endpoints: (builder) => ({

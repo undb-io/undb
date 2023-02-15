@@ -1,9 +1,10 @@
-import { Group } from '@egodb/ui'
+import { Divider, Group } from '@egodb/ui'
 import { TableCreateNewRecordButton } from './table-create-new-record-button'
 import { ViewFieldsEditor } from './view-fields-editor'
 import { TableFilterEditor } from './table-filter-editor'
 import { TableSortEditor } from './table-sort-editor'
 import { ToolbarView } from './toolbar-view'
+import { ViewsButton } from './views-button'
 
 export const TableToolbar: React.FC = () => {
   return (
@@ -20,6 +21,10 @@ export const TableToolbar: React.FC = () => {
         }
       }}
     >
+      <ViewsButton />
+
+      <Divider orientation="vertical" />
+
       <TableCreateNewRecordButton />
       <ToolbarView />
       <TableFilterEditor />

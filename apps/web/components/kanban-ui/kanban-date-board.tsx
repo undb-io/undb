@@ -16,6 +16,7 @@ import { endOfDay } from 'date-fns/esm'
 import type { DateFieldValue } from '@egodb/core'
 import { useGetRecordsQuery, useUpdateRecordMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 
 interface IProps {
   field: DateField
@@ -23,11 +24,13 @@ interface IProps {
 
 export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
   const table = useCurrentTable()
+  const view = useCurrentView()
   const containers = KANBAN_DATE_STACKS
 
   const listRecords = useGetRecordsQuery(
     {
       tableId: table.id.value,
+      viewId: view.id.value,
     },
     {
       selectFromResult: (result) => ({
