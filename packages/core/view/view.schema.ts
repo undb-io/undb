@@ -20,6 +20,13 @@ export const createViewSchema = z.object({
 
 export type ICreateViewSchema = z.infer<typeof createViewSchema>
 
+export const updateViewNameSchema = z.object({
+  id: viewIdSchema,
+  name: viewNameSchema,
+})
+
+export type IUpdateViewNameSchema = z.infer<typeof updateViewNameSchema>
+
 export const createViewInput_internal = z.object({
   id: viewIdSchema.optional(),
   name: viewNameSchema,

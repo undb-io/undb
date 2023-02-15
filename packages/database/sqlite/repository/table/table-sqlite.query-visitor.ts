@@ -22,6 +22,7 @@ import type {
   WithTableViews,
   WithTreeViewField,
   WithViewFieldsOrder,
+  WithViewName,
 } from '@egodb/core'
 import type { QueryBuilder } from '@mikro-orm/better-sqlite'
 import type { Table } from '../../entity/index.js'
@@ -41,6 +42,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   viewEqual(s: WithTableView): void {
+    throw new Error('Method not implemented.')
+  }
+  viewNameEqual(s: WithViewName): void {
     throw new Error('Method not implemented.')
   }
   newView(s: WithNewView): void {

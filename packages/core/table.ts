@@ -28,6 +28,7 @@ import type {
   ISetTreeViewFieldSchema,
   ISorts,
   ISwitchDisplayTypeSchema,
+  IUpdateViewNameSchema,
   ViewFieldsOrder,
 } from './view'
 import { defaultViewDiaplyType, Sorts, View, WithTableView, WithViewFieldsOrder } from './view'
@@ -174,6 +175,14 @@ export class Table {
 
   public createView(input: ICreateViewSchema): TableCompositeSpecificaiton {
     const spec = this.views.createView(input)
+    spec.mutate(this).unwrap()
+
+    return spec
+  }
+
+  public updateViewName(input: IUpdateViewNameSchema): TableCompositeSpecificaiton {
+    const view = this.mustGetView(input.id)
+    const spec = view.updateName(input.name)
     spec.mutate(this).unwrap()
 
     return spec

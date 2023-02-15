@@ -20,6 +20,7 @@ import type {
   WithTableViews,
   WithTreeViewField,
   WithViewFieldsOrder,
+  WithViewName,
 } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
@@ -71,6 +72,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const table = this.table
     const view = this.getView(s.view.id.value)
     wrap(view).assign(new View(table, s.view))
+    this.em.persist(view)
+  }
+  viewNameEqual(s: WithViewName): void {
+    const view = this.getView(s.view.id.value)
+    wrap(view).assign({ name: s.name.value })
     this.em.persist(view)
   }
   newView(s: WithNewView): void {
