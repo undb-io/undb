@@ -1,9 +1,22 @@
 import type { IViewDisplayType } from '@egodb/core'
-import type { TablerIconsProps } from '@egodb/ui'
+import type { DefaultMantineColor, TablerIconsProps } from '@egodb/ui'
 import { IconCalendar, IconHierarchy, IconLayoutKanban, IconTable } from '@egodb/ui'
 
 export interface IProps extends TablerIconsProps {
   displayType: IViewDisplayType
+}
+
+export const getDiplayTypeColor = (displayType: IViewDisplayType): DefaultMantineColor => {
+  switch (displayType) {
+    case 'grid':
+      return 'blue'
+    case 'calendar':
+      return 'pink'
+    case 'kanban':
+      return 'cyan'
+    case 'tree':
+      return 'green'
+  }
 }
 
 export const DisplayTypeIcon: React.FC<IProps> = ({ displayType, ...rest }) => {
