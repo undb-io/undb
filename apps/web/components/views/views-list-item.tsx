@@ -1,6 +1,16 @@
 import type { View } from '@egodb/core'
 import { useUpdateViewNameMutation } from '@egodb/store'
-import { ActionIcon, useDisclosure, Group, Text, IconSquareChevronDown, Menu, TextInput, FocusTrap } from '@egodb/ui'
+import {
+  ActionIcon,
+  useDisclosure,
+  Group,
+  Text,
+  Menu,
+  TextInput,
+  FocusTrap,
+  useHover,
+  IconChevronDown,
+} from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
 import { useCurrentTable } from '../../hooks/use-current-table'
@@ -18,12 +28,14 @@ export const ViewsListItem: React.FC<{ v: View }> = ({ v }) => {
   const setOpened = useSetAtom(viewsOpenedAtom)
 
   const [updateViewName] = useUpdateViewNameMutation()
+  const { ref, hovered } = useHover()
 
   return (
     <Group
       noWrap
       position="apart"
       p="xs"
+      ref={ref}
       bg={isActive ? 'blue.0' : ''}
       key={v.id.value}
       onClick={() => {
@@ -64,32 +76,35 @@ export const ViewsListItem: React.FC<{ v: View }> = ({ v }) => {
           </Text>
         )}
       </Group>
-      <Group>
-        <Menu>
-          <Menu.Target>
-            <ActionIcon
-              color="gray.5"
-              size="xs"
-              variant="filled"
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            >
-              <IconSquareChevronDown size={14} />
-            </ActionIcon>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item
-              onClick={(e) => {
-                e.stopPropagation()
-                handler.open()
-              }}
-            >
-              Update View Name
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
-      </Group>
+      {hovered && (
+        <Group>
+          <Menu>
+            <Menu.Target>
+              <ActionIcon
+                color="gray.4"
+                size="xs"
+                variant="filled"
+                radius="xl"
+                onClick={(e) => {
+                  e.stopPropagation()
+                }}
+              >
+                <IconChevronDown fontWeight={600} size={14} />
+              </ActionIcon>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu.Item
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handler.open()
+                }}
+              >
+                Update View Name
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+        </Group>
+      )}
     </Group>
   )
 }
