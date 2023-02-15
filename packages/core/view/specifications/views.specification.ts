@@ -52,3 +52,23 @@ export class WithTableView extends BaseViewSpecification {
     return Ok(undefined)
   }
 }
+
+export class WithNewView extends BaseViewSpecification {
+  constructor(public readonly view: View) {
+    super(view)
+  }
+
+  isSatisfiedBy(t: Table): boolean {
+    return true
+  }
+
+  mutate(t: Table): Result<Table, string> {
+    t.views.addView(this.view)
+    return Ok(t)
+  }
+
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.newView(this)
+    return Ok(undefined)
+  }
+}

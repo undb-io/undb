@@ -43,6 +43,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   }
   viewsEqual(): void {}
   viewEqual(): void {}
+  newView(): void {}
   filterEqual(): void {}
   newField(s: WithNewField): void {
     const field = s.field

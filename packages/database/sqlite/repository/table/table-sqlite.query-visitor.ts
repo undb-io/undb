@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type {
   ITableSpecVisitor,
   WithCalendarField,
@@ -9,6 +10,7 @@ import type {
   WithKanbanField,
   WithNewField,
   WithNewOption,
+  WithNewView,
   WithOptions,
   WithoutField,
   WithoutOption,
@@ -39,6 +41,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   viewEqual(s: WithTableView): void {
+    throw new Error('Method not implemented.')
+  }
+  newView(s: WithNewView): void {
     throw new Error('Method not implemented.')
   }
   filterEqual(s: WithFilter): void {

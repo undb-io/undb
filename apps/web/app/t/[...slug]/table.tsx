@@ -8,6 +8,7 @@ import { EditRecordFormDrawer } from '../../../components/edit-record-form/edit-
 import { RecordSelectionDialog } from '../../../components/record-selection/record-selection-dialog'
 import { TableToolbar } from '../../../components/table/table-toolbar'
 import { ViewDisplay } from '../../../components/table/view-display'
+import { ViewsListDrawer } from '../../../components/views/views-list-drawer'
 
 export default function Table() {
   const theme = useEgoUITheme()
@@ -21,6 +22,7 @@ export default function Table() {
 
       <CreateRecordFormDrawer />
       <EditRecordFormDrawer />
+      <ViewsListDrawer />
 
       <RecordSelectionDialog />
     </Stack>

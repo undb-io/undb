@@ -97,7 +97,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
               openContextModal({
                 title: 'Create New Field',
                 modal: CREATE_FIELD_MODAL_ID,
-                innerProps: { table },
+                innerProps: {},
               })
             }
           >

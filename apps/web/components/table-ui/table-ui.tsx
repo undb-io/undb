@@ -2,12 +2,15 @@ import type { IQueryRecords } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
 import { useGetRecordsQuery } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 import { EGOTable } from './table'
 
 export const TableUI: React.FC = () => {
   const table = useCurrentTable()
+  const view = useCurrentView()
+
   const { rawRecords } = useGetRecordsQuery(
-    { tableId: table.id.value },
+    { tableId: table.id.value, viewId: view.id.value },
     {
       selectFromResult: (result) => ({
         ...result,
