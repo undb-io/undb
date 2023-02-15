@@ -1,6 +1,6 @@
 'use client'
 import { createStore } from '@egodb/store'
-import { AppShell } from '@egodb/ui'
+import { AppShell, Stack } from '@egodb/ui'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { CreateTableFormDrawer } from '../components/create-table-form'
@@ -26,8 +26,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 //   </Header>
                 // }
               >
-                <TableList />
-                {children}
+                <Stack h="100vh" spacing={0} sx={{ overflow: 'hidden' }}>
+                  <TableList />
+                  {children}
+                </Stack>
                 <CreateTableFormDrawer />
               </AppShell>
             </RootStyleRegistry>
