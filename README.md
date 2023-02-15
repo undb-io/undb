@@ -12,7 +12,3 @@ $ pnpm run dev
 ```bash
 $ pnpm run commit
 ```
-
-## Api Document
-
-打开 `http://localhost:4000/api-docs` 查看 swagger 文档
