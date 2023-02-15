@@ -32,6 +32,7 @@ export const SelectExistingField: React.FC<IProps> = ({ onSuccess }) => {
   const onSubmit = form.handleSubmit(async (values) => {
     await setTreeViewField({
       tableId: table.id.value,
+      viewId: view.id.value,
       field: values.field,
     })
     onSuccess?.()

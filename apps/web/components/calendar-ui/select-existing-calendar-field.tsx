@@ -33,6 +33,7 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ onSuccess }) => 
   const onSubmit = form.handleSubmit(async (values) => {
     await setCalendarField({
       tableId: table.id.value,
+      viewId: view.id.value,
       field: values.field,
     })
 
