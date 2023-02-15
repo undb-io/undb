@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { useForm } from 'react-hook-form'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 import { calendarStepZero } from './calendar-step.atom'
 
 interface IProps {
@@ -15,6 +16,8 @@ interface IProps {
 
 export const CreateCalendarDateField: React.FC<IProps> = ({ onSuccess }) => {
   const table = useCurrentTable()
+  const view = useCurrentView()
+
   const form = useForm<ICreateDateFieldSchema>({
     defaultValues: {
       type: 'date',
@@ -34,10 +37,13 @@ export const CreateCalendarDateField: React.FC<IProps> = ({ onSuccess }) => {
       tableId: table.id.value,
       field: values,
     })
+
     await setCalendarField({
       tableId: table.id.value,
+      viewId: view.id.value,
       field: values.id,
     })
+
     setStepZero()
     onSuccess?.()
   })

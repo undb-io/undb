@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { useForm } from 'react-hook-form'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 import { treeStepZeroAtom } from './tree-step.atom'
 
 interface IProps {
@@ -15,6 +16,7 @@ interface IProps {
 
 export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
   const table = useCurrentTable()
+  const view = useCurrentView()
 
   const form = useForm<ICreateTreeFieldSchema>({
     defaultValues: {
@@ -35,6 +37,7 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
     })
     await setKanbanField({
       tableId: table.id.value,
+      viewId: view.id.value,
       field: values.id,
     })
     setStepZero()
