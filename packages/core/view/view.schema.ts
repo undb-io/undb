@@ -107,3 +107,10 @@ export const setTreeViewFieldSchema = z.object({
   field: fieldIdSchema,
 })
 export type ISetTreeViewFieldSchema = z.infer<typeof setTreeViewFieldSchema>
+
+export const moveViewSchema = z.object({
+  from: viewIdSchema,
+  to: viewIdSchema,
+})
+
+export type IMoveViewSchema = z.infer<typeof moveViewSchema>

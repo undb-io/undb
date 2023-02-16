@@ -21,6 +21,7 @@ import {
   defaultViewDiaplyType,
   ICreateViewSchema,
   IMoveFieldSchema,
+  IMoveViewSchema,
   IQueryView,
   ISetCalendarFieldSchema,
   ISetFieldVisibilitySchema,
@@ -257,6 +258,10 @@ export class Table {
     const spec = view.setTreeViewFieldSpec(field.id)
     spec.mutate(this)
     return spec
+  }
+
+  public moveView(input: IMoveViewSchema): TableCompositeSpecificaiton {
+    throw new Error('unimplemented')
   }
 
   public moveField(input: IMoveFieldSchema): TableCompositeSpecificaiton {
