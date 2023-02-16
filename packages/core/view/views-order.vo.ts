@@ -1,7 +1,10 @@
 import { OrderVO } from '@egodb/domain'
 import { Option } from 'oxide.ts'
+import { z } from 'zod'
 import { WithViewsOrder } from './specifications'
 import { View } from './view'
+
+export const viewsOrderSchema = z.string().array()
 
 export class ViewsOrder extends OrderVO {
   static fromArray(ids: string[]): ViewsOrder {

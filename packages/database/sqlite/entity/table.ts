@@ -1,5 +1,5 @@
 import type { Table as CoreTable } from '@egodb/core'
-import { Cascade, Collection, Entity, OneToMany, PrimaryKey, Property } from '@mikro-orm/core'
+import { ArrayType, Cascade, Collection, Entity, OneToMany, PrimaryKey, Property } from '@mikro-orm/core'
 import { BaseEntity } from './base.js'
 import type { IField } from './field.js'
 import { Field } from './field.js'
@@ -11,6 +11,7 @@ export class Table extends BaseEntity {
     super()
     this.id = table.id.value
     this.name = table.name.value
+    this.viewsOrder = table.viewsOrder.toJSON()
   }
 
   @PrimaryKey()
@@ -24,4 +25,7 @@ export class Table extends BaseEntity {
 
   @OneToMany(() => View, (view) => view.table, { orphanRemoval: true, cascade: [Cascade.ALL] })
   views = new Collection<View>(this)
+
+  @Property({ type: ArrayType, nullable: true })
+  viewsOrder: string[]
 }

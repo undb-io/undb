@@ -84,6 +84,7 @@ export class TableSqliteMapper {
       id: entity.id,
       name: entity.name,
       schema: entity.fields.toArray().map((table) => this.fieldToQuery(table)),
+      viewsOrder: entity.viewsOrder,
       views: entity.views.toArray().map(
         (view) =>
           ({
@@ -169,6 +170,7 @@ export class TableSqliteMapper {
         calendar: view.calendar,
         sorts: view.sorts,
       })) as ICreateViewsSchema,
+      viewsOrder: entity.viewsOrder,
     })
   }
 }

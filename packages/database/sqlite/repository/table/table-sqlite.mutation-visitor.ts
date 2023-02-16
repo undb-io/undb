@@ -22,6 +22,7 @@ import type {
   WithTreeViewField,
   WithViewFieldsOrder,
   WithViewName,
+  WithViewsOrder,
 } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
@@ -34,7 +35,6 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   constructor(private readonly tableId: string, em: EntityManager) {
     super(em)
   }
-
   private get table(): Table {
     return this.em.getReference(Table, this.tableId)
   }
@@ -90,6 +90,12 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     wrap(view).assign({ deletedAt: new Date() })
     this.em.persist(view)
   }
+  viewsOrderEqual(s: WithViewsOrder): void {
+    const table = this.table
+    wrap(table).assign({ viewsOrder: s.order.order })
+    this.em.persist(table)
+  }
+
   filterEqual(s: WithFilter): void {
     const view = this.getView(s.view.id.value)
     wrap(view).assign({ filter: s.filter })

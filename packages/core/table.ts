@@ -50,7 +50,7 @@ export interface IQueryTable {
   name: string
   schema: IQuerySchemaSchema
   views?: IQueryView[]
-  viewsOrder: string[]
+  viewsOrder?: string[]
 }
 
 export class Table {
