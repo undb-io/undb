@@ -3,7 +3,7 @@ import { type ISpecification } from '@egodb/domain'
 import type { WithoutField } from '../field/specifications/field.specification.js'
 import type { WithNewOption, WithOptions, WithoutOption } from '../field/specifications/select-field.specification.js'
 import { type Table } from '../table.js'
-import type { WithKanbanField } from '../view/index.js'
+import type { WithKanbanField, WithViewOrder } from '../view/index.js'
 import type { WithCalendarField } from '../view/specifications/calendar.specification.js'
 import type { WithDisplayType } from '../view/specifications/display-type.specification.js'
 import type { WithFilter } from '../view/specifications/filters.specificaiton.js'
@@ -36,6 +36,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   viewNameEqual(s: WithViewName): void
   newView(s: WithNewView): void
   withoutView(s: WithoutView): void
+  viewsOrderEqual(s: WithViewOrder): void
 
   sortsEqual(s: WithSorts): void
 

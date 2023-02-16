@@ -17,7 +17,8 @@ import type { IEditTableSchema } from './table.schema.js'
 import type { TableId } from './value-objects/index.js'
 import { TableSchema } from './value-objects/index.js'
 import type { TableName } from './value-objects/table-name.vo'
-import type {
+import {
+  defaultViewDiaplyType,
   ICreateViewSchema,
   IMoveFieldSchema,
   IQueryView,
@@ -29,9 +30,13 @@ import type {
   ISorts,
   ISwitchDisplayTypeSchema,
   IUpdateViewNameSchema,
+  Sorts,
+  View,
   ViewFieldsOrder,
+  ViewsOrder,
+  WithTableView,
+  WithViewFieldsOrder,
 } from './view'
-import { defaultViewDiaplyType, Sorts, View, WithTableView, WithViewFieldsOrder } from './view'
 import { WithFilter } from './view/specifications/filters.specificaiton'
 import { WithSorts } from './view/specifications/sorts.specification.js'
 import { ViewId } from './view/view-id.vo'
@@ -45,6 +50,7 @@ export interface IQueryTable {
   name: string
   schema: IQuerySchemaSchema
   views?: IQueryView[]
+  viewsOrder: string[]
 }
 
 export class Table {
@@ -52,6 +58,7 @@ export class Table {
   public name!: TableName
   public schema: TableSchema = new TableSchema([])
   public views: Views = new Views([])
+  public viewsOrder: ViewsOrder = ViewsOrder.empty()
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
@@ -75,7 +82,6 @@ export class Table {
   }
 
   private createDefaultView(viewName?: string): View {
-    // TODO: move to views value object
     return View.create({
       id: ViewId.createId(),
       name: viewName ?? this.name.value,
