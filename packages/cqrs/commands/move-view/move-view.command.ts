@@ -11,7 +11,6 @@ export class MoveViewCommand extends Command implements IMoveViewCommandInput {
   constructor(props: CommandProps<IMoveViewCommandInput>) {
     super(props)
     this.tableId = props.tableId
-    this.viewId = props.viewId
     this.from = props.from
     this.to = props.to
   }
