@@ -11,6 +11,8 @@ import {
   useDisclosure,
   openContextModal,
   closeAllModals,
+  Center,
+  Text,
 } from '@egodb/ui'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
@@ -118,7 +120,15 @@ export const ToolbarView: React.FC = () => {
 
         <Popover.Dropdown p="xs">
           <SegmentedControl
-            data={displayTypes}
+            data={displayTypes.map((d) => ({
+              ...d,
+              label: (
+                <Center>
+                  <DisplayTypeIcon displayType={d.value as IViewDisplayType} />
+                  <Text ml={10}>{d.label}</Text>
+                </Center>
+              ),
+            }))}
             onChange={(type) => {
               switchDisplayType({
                 tableId: table.id.value,
