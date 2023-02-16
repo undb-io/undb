@@ -21,5 +21,12 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, value, ...oth
 ))
 
 export const DisplayTypePicker: React.FC<Omit<SelectProps, 'data'>> = (props) => {
-  return <Select data={displayTypes} {...props} itemComponent={SelectItem} />
+  return (
+    <Select
+      icon={<DisplayTypeIcon displayType={props.value as IViewDisplayType} />}
+      data={displayTypes}
+      {...props}
+      itemComponent={SelectItem}
+    />
+  )
 }
