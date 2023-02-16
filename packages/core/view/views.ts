@@ -17,6 +17,10 @@ export class Views extends ValueObject<View[]> {
     return Option(this.views.at(0))
   }
 
+  get count() {
+    return this.views.length
+  }
+
   addView(view: View) {
     this.views.push(view)
   }
@@ -33,6 +37,10 @@ export class Views extends ValueObject<View[]> {
   }
 
   removeView(id: string): WithoutView {
+    const viewsCount = this.count
+    if (viewsCount <= 1) {
+      throw new Error('cannot remove last view')
+    }
     const view = this.getById(id).unwrap()
     return new WithoutView(view)
   }

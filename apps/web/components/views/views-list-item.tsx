@@ -21,6 +21,7 @@ import { viewsOpenedAtom } from './views-opened.atom'
 
 export const ViewsListItem: React.FC<{ v: View }> = ({ v }) => {
   const table = useCurrentTable()
+  const viewCount = table.views.count
   const view = useCurrentView()
   const isActive = view.id.equals(v.id)
   const router = useRouter()
@@ -122,17 +123,21 @@ export const ViewsListItem: React.FC<{ v: View }> = ({ v }) => {
                 Duplicate View
               </Menu.Item>
 
-              <Menu.Divider />
+              {viewCount > 1 && (
+                <>
+                  <Menu.Divider />
 
-              <Menu.Item
-                color="red"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  confirm()
-                }}
-              >
-                Delete View
-              </Menu.Item>
+                  <Menu.Item
+                    color="red"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      confirm()
+                    }}
+                  >
+                    Delete View
+                  </Menu.Item>
+                </>
+              )}
             </Menu.Dropdown>
           </Menu>
         </Group>
