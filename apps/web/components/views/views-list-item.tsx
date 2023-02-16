@@ -1,5 +1,5 @@
 import type { View } from '@egodb/core'
-import { useDeleteViewMutation, useUpdateViewNameMutation } from '@egodb/store'
+import { useDeleteViewMutation, useDuplicateViewMutation, useUpdateViewNameMutation } from '@egodb/store'
 import {
   ActionIcon,
   useDisclosure,
@@ -26,10 +26,12 @@ export const ViewsListItem: React.FC<{ v: View }> = ({ v }) => {
   const router = useRouter()
   const [isEditing, handler] = useDisclosure(false)
 
+  const { ref, hovered } = useHover()
+
   const setOpened = useSetAtom(viewsOpenedAtom)
 
   const [updateViewName] = useUpdateViewNameMutation()
-  const { ref, hovered } = useHover()
+  const [duplicateView] = useDuplicateViewMutation()
 
   const [deleteView] = useDeleteViewMutation()
   const confirm = useConfirmModal({
@@ -107,6 +109,14 @@ export const ViewsListItem: React.FC<{ v: View }> = ({ v }) => {
                 onClick={(e) => {
                   e.stopPropagation()
                   handler.open()
+                }}
+              >
+                Update View Name
+              </Menu.Item>
+              <Menu.Item
+                onClick={(e) => {
+                  e.stopPropagation()
+                  duplicateView({ tableId: table.id.value, id: v.id.value })
                 }}
               >
                 Update View Name
