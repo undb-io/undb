@@ -253,6 +253,23 @@ export class View extends ValueObject<IView> {
     return and(...specs)
   }
 
+  duplicate(input: Partial<ICreateViewInput_internal>): View {
+    const newView = View.create({
+      name: this.name.value,
+      sorts: this.sorts?.unpack(),
+      kanban: this.kanban?.into()?.toJSON(),
+      calendar: this.calendar?.into()?.toJSON(),
+      tree: this.treeView?.into()?.toJSON(),
+      displayType: this.displayType,
+      filter: this.filter?.unpack(),
+      fieldOptions: this.fieldOptions.toJSON(),
+      fieldsOrder: this.fieldsOrder?.unpack(),
+      ...input,
+    })
+
+    return newView
+  }
+
   static create(input: ICreateViewInput_internal): View {
     const parsed = createViewInput_internal.parse(input)
     const viewName = ViewName.create(parsed.name)

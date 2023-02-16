@@ -29,4 +29,10 @@ export class TreeView extends ValueObject<ITreeView> {
 
     return None
   }
+
+  public toJSON() {
+    return {
+      fieldId: this.fieldId?.value,
+    }
+  }
 }
