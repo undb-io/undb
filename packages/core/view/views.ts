@@ -3,7 +3,7 @@ import { Option } from 'oxide.ts'
 import type { Field } from '../field/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import { WithViewFieldsOrder } from './specifications/view-fields-order.specification.js'
-import { WithNewView, WithTableView } from './specifications/views.specification.js'
+import { WithNewView, WithoutView, WithTableView } from './specifications/views.specification.js'
 import { View } from './view.js'
 import { ICreateViewSchema } from './view.schema.js'
 import type { ICreateViewInput_internal } from './view.type.js'
@@ -24,6 +24,11 @@ export class Views extends ValueObject<View[]> {
   createView(input: ICreateViewSchema): WithTableView {
     const view = View.create(input)
     return new WithNewView(view)
+  }
+
+  removeView(id: string): WithoutView {
+    const view = this.getById(id).unwrap()
+    return new WithoutView(view)
   }
 
   addField(field: Field): Option<TableCompositeSpecificaiton> {

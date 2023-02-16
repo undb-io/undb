@@ -93,3 +93,17 @@ export class WithViewName extends BaseViewSpecification {
     return Ok(undefined)
   }
 }
+
+export class WithoutView extends BaseViewSpecification {
+  isSatisfiedBy(t: Table): boolean {
+    throw new Error('Method not implemented.')
+  }
+  mutate(t: Table): Result<Table, string> {
+    t.views = new Views(t.views.views.filter((v) => !v.id.equals(this.view.id)))
+    return Ok(t)
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withoutView(this)
+    return Ok(undefined)
+  }
+}

@@ -13,6 +13,7 @@ import type {
   WithOptions,
   WithoutField,
   WithoutOption,
+  WithoutView,
   WithSorts,
   WithTableName,
   WithTableSchema,
@@ -82,6 +83,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   newView(s: WithNewView): void {
     const table = this.table
     const view = new View(table, s.view)
+    this.em.persist(view)
+  }
+  withoutView(s: WithoutView): void {
+    const view = this.getView(s.view.id.value)
+    wrap(view).assign({ deletedAt: new Date() })
     this.em.persist(view)
   }
   filterEqual(s: WithFilter): void {

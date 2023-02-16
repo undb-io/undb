@@ -8,8 +8,8 @@ export class DeleteViewCommandHandler implements ICommandHandler<DeleteViewComma
   async execute(command: DeleteViewCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
 
-    // const spec = table.removeView(command.id)
+    const spec = table.removeView(command.id)
 
-    // await this.tableRepo.updateOneById(table.id.value, spec)
+    await this.tableRepo.updateOneById(table.id.value, spec)
   }
 }

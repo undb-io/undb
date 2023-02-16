@@ -36,6 +36,7 @@ export const ViewsListItem: React.FC<{ v: View }> = ({ v }) => {
     async onConfirm() {
       await deleteView({ tableId: table.id.value, id: v.id.value })
       router.replace(`/t/${table.id.value}`)
+      setOpened(false)
     },
   })
 
@@ -113,7 +114,13 @@ export const ViewsListItem: React.FC<{ v: View }> = ({ v }) => {
 
               <Menu.Divider />
 
-              <Menu.Item color="red" onClick={confirm}>
+              <Menu.Item
+                color="red"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  confirm()
+                }}
+              >
                 Delete View
               </Menu.Item>
             </Menu.Dropdown>
