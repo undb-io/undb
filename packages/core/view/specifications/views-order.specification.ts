@@ -4,9 +4,15 @@ import { ITableSpecVisitor } from '../../specifications'
 import { Table } from '../../table'
 import { ViewsOrder } from '../views-order.vo'
 
-export class WithViewOrder extends CompositeSpecification<Table, ITableSpecVisitor> {
+export class WithViewsOrder extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(public readonly order: ViewsOrder) {
     super()
+  }
+  static fromArray(ids: string[]): WithViewsOrder {
+    return new this(ViewsOrder.fromArray(ids))
+  }
+  static empty() {
+    return new this(ViewsOrder.empty())
   }
   isSatisfiedBy(t: Table): boolean {
     return this.order.equals(t.viewsOrder)

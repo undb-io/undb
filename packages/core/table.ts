@@ -180,14 +180,18 @@ export class Table {
   }
 
   public createView(input: ICreateViewSchema): TableCompositeSpecificaiton {
-    const spec = this.views.createView(input)
+    const s1 = this.views.createView(input)
+    const s2 = this.viewsOrder.addView(s1.view)
+    const spec = s1.and(s2)
     spec.mutate(this).unwrap()
 
     return spec
   }
 
   public duplicateView(id: string): TableCompositeSpecificaiton {
-    const spec = this.views.duplcateView(id)
+    const s1 = this.views.duplcateView(id)
+    const s2 = this.viewsOrder.addView(s1.view)
+    const spec = s1.and(s2)
     spec.mutate(this).unwrap()
 
     return spec
@@ -202,10 +206,12 @@ export class Table {
   }
 
   public removeView(id: string): TableCompositeSpecificaiton {
-    const spec = this.views.removeView(id)
-    spec.mutate(this).unwrap()
+    const s1 = this.views.removeView(id)
+    const s2 = this.viewsOrder.removeView(s1.view)
+    const spec = andOptions(Some(s1), s2)
+    spec.into()?.mutate(this).unwrap()
 
-    return spec
+    return spec.unwrap()
   }
 
   public setFieldWidth(input: ISetFieldWidthSchema): TableCompositeSpecificaiton {
