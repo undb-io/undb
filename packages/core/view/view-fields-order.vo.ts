@@ -32,4 +32,8 @@ export class ViewFieldsOrder extends ValueObject<string[]> {
 
     return None
   }
+
+  public toJSON() {
+    return this.props
+  }
 }

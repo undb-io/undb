@@ -256,14 +256,14 @@ export class View extends ValueObject<IView> {
   duplicate(input: Partial<ICreateViewInput_internal>): View {
     const newView = View.create({
       name: this.name.value,
-      sorts: this.sorts?.unpack(),
+      sorts: this.sorts?.toArray(),
       kanban: this.kanban?.into()?.toJSON(),
       calendar: this.calendar?.into()?.toJSON(),
       tree: this.treeView?.into()?.toJSON(),
       displayType: this.displayType,
-      filter: this.filter?.unpack(),
+      filter: this.filter?.toJSON(),
       fieldOptions: this.fieldOptions.toJSON(),
-      fieldsOrder: this.fieldsOrder?.unpack(),
+      fieldsOrder: this.fieldsOrder?.toJSON(),
       ...input,
     })
 
