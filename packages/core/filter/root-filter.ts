@@ -19,4 +19,8 @@ export class RootFilter extends ValueObject<IRootFilter> {
   public removeField(field: Field): Option<RootFilter> {
     return None
   }
+
+  public toJSON() {
+    return this.props
+  }
 }
