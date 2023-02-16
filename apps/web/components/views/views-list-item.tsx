@@ -119,7 +119,7 @@ export const ViewsListItem: React.FC<{ v: View }> = ({ v }) => {
                   duplicateView({ tableId: table.id.value, id: v.id.value })
                 }}
               >
-                Update View Name
+                Duplicate View
               </Menu.Item>
 
               <Menu.Divider />

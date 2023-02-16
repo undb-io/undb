@@ -3,7 +3,7 @@ import {
   createViewCommandInput,
   DeleteViewCommand,
   deleteViewCommandInput,
-  DuplicateRecordCommand,
+  DuplicateViewCommand,
   duplicateViewCommandInput,
   SwitchDisplayTypeCommand,
   switchDisplayTypeCommandInput,
@@ -34,7 +34,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
       .input(duplicateViewCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
-        const cmd = new DuplicateRecordCommand(input)
+        const cmd = new DuplicateViewCommand(input)
         return commandBus.execute(cmd)
       }),
     updateName: procedure

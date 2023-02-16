@@ -29,4 +29,10 @@ export class Calendar extends ValueObject<ICalendar> {
 
     return None
   }
+
+  public toJSON() {
+    return {
+      fieldId: this.fieldId?.value,
+    }
+  }
 }

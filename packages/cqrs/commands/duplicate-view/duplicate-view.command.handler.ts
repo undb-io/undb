@@ -8,8 +8,8 @@ export class DuplicateViewCommandHandler implements ICommandHandler<DuplicateVie
   async execute(command: DuplicateViewCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
 
-    // const duplicated = table.duplicateView(table.schema.toIdMap())
+    const spec = table.duplicateView(command.id)
 
-    // await this.tableRepo.updateOneById()
+    await this.tableRepo.updateOneById(table.id.value, spec)
   }
 }

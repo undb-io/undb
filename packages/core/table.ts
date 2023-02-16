@@ -180,6 +180,13 @@ export class Table {
     return spec
   }
 
+  public duplicateView(id: string): TableCompositeSpecificaiton {
+    const spec = this.views.duplcateView(id)
+    spec.mutate(this).unwrap()
+
+    return spec
+  }
+
   public updateViewName(input: IUpdateViewNameSchema): TableCompositeSpecificaiton {
     const view = this.mustGetView(input.id)
     const spec = view.updateName(input.name)

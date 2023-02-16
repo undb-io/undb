@@ -29,4 +29,10 @@ export class Kanban extends ValueObject<IKanban> {
 
     return None
   }
+
+  public toJSON() {
+    return {
+      fieldId: this.fieldId?.value,
+    }
+  }
 }

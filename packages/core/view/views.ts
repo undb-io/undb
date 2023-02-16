@@ -26,6 +26,12 @@ export class Views extends ValueObject<View[]> {
     return new WithNewView(view)
   }
 
+  duplcateView(id: string): WithTableView {
+    const view = this.getById(id)?.unwrap()
+    const newView = view.duplicate({ name: view.name.value })
+    return new WithNewView(newView)
+  }
+
   removeView(id: string): WithoutView {
     const view = this.getById(id).unwrap()
     return new WithoutView(view)
