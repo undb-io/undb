@@ -37,6 +37,7 @@ export const {
   useSwitchDisplayTypeMutation,
   useCreateViewMutation,
   useUpdateViewNameMutation,
+  useDeleteViewMutation,
 } = viewApi
 
 const calendarApi = viewApi.injectEndpoints({

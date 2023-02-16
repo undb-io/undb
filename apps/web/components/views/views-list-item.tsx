@@ -1,5 +1,5 @@
 import type { View } from '@egodb/core'
-import { useUpdateViewNameMutation } from '@egodb/store'
+import { useDeleteViewMutation, useUpdateViewNameMutation } from '@egodb/store'
 import {
   ActionIcon,
   useDisclosure,
@@ -13,6 +13,7 @@ import {
 } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
+import { useConfirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { getDisplayTypeColor, DisplayTypeIcon } from '../view/display-type-icon'
@@ -29,6 +30,14 @@ export const ViewsListItem: React.FC<{ v: View }> = ({ v }) => {
 
   const [updateViewName] = useUpdateViewNameMutation()
   const { ref, hovered } = useHover()
+
+  const [deleteView] = useDeleteViewMutation()
+  const confirm = useConfirmModal({
+    async onConfirm() {
+      await deleteView({ tableId: table.id.value, id: v.id.value })
+      router.replace(`/t/${table.id.value}`)
+    },
+  })
 
   return (
     <Group
@@ -100,6 +109,12 @@ export const ViewsListItem: React.FC<{ v: View }> = ({ v }) => {
                 }}
               >
                 Update View Name
+              </Menu.Item>
+
+              <Menu.Divider />
+
+              <Menu.Item color="red" onClick={confirm}>
+                Delete View
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>
