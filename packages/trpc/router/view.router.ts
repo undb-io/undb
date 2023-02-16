@@ -1,6 +1,8 @@
 import {
   CreateViewCommand,
   createViewCommandInput,
+  DeleteViewCommand,
+  deleteViewCommandInput,
   SwitchDisplayTypeCommand,
   switchDisplayTypeCommandInput,
   UpdateViewNameCommand,
@@ -31,6 +33,13 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new UpdateViewNameCommand(input)
+        return commandBus.execute(cmd)
+      }),
+    delete: procedure
+      .input(deleteViewCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new DeleteViewCommand(input)
         return commandBus.execute(cmd)
       }),
     switchDisplayType: procedure
