@@ -9,6 +9,7 @@ import { DeleteFieldCommandHandler } from './delete-field.command.handler'
 import { DeleteOptionCommandHandler } from './delete-option.command.handler'
 import { DeleteRecordCommandHandler } from './delete-record.command.handler'
 import { DeleteTableCommandHandler } from './delete-table.command.handler'
+import { DeleteViewCommandHandler } from './delete-view.command.handler'
 import { DuplicateRecordCommandHandler } from './duplicate-record.command.handler'
 import { EditTableCommandHandler } from './edit-table.command.handler'
 import { MoveFieldCommandHandler } from './move-field.command.handler'
@@ -51,5 +52,6 @@ export const commandHandlers = [
   DeleteTableCommandHandler,
   DeleteOptionCommandHandler,
   DeleteFieldCommandHandler,
+  DeleteViewCommandHandler,
   UpdateViewNameCommandHandler,
 ]

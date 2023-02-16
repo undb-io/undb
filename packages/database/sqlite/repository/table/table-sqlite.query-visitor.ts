@@ -14,6 +14,7 @@ import type {
   WithOptions,
   WithoutField,
   WithoutOption,
+  WithoutView,
   WithSorts,
   WithTableId,
   WithTableName,
@@ -48,6 +49,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   newView(s: WithNewView): void {
+    throw new Error('Method not implemented.')
+  }
+  withoutView(s: WithoutView): void {
     throw new Error('Method not implemented.')
   }
   filterEqual(s: WithFilter): void {

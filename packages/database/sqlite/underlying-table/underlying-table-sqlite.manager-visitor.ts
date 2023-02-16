@@ -45,6 +45,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   viewEqual(): void {}
   viewNameEqual(): void {}
   newView(): void {}
+  withoutView(): void {}
   filterEqual(): void {}
   newField(s: WithNewField): void {
     const field = s.field

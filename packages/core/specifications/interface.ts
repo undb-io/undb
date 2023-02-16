@@ -17,6 +17,7 @@ import type {
 import type { WithViewFieldsOrder } from '../view/specifications/view-fields-order.specification.js'
 import type {
   WithNewView,
+  WithoutView,
   WithTableView,
   WithTableViews,
   WithViewName,
@@ -34,6 +35,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   viewEqual(s: WithTableView): void
   viewNameEqual(s: WithViewName): void
   newView(s: WithNewView): void
+  withoutView(s: WithoutView): void
 
   sortsEqual(s: WithSorts): void
 
