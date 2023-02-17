@@ -153,7 +153,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
                       </Group>
                     }
                   >
-                    <Group spacing="xs">
+                    <Group spacing="xs" data-field-id={field.id.value}>
                       <FieldIcon color="gray" type={field.type} />
                       <FieldValueFactory field={field} value={value} displayValues={values.display_values} />
                     </Group>
