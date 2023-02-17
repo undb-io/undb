@@ -5,9 +5,12 @@ import { useCreateFieldMutation, useSetTreeFieldMutation } from '@egodb/store'
 import { Button, Card, FocusTrap, Group, IconChevronLeft, Stack, Text, TextInput } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
+import { FieldInputLabel } from '../field-inputs/field-input-label'
+import type { FieldBase } from '../field-inputs/field-picker.type'
+import { FieldsPicker } from '../field-inputs/fields-picker'
 import { treeStepZeroAtom } from './tree-step.atom'
 
 interface IProps {
@@ -43,6 +46,11 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
     setStepZero()
     onSuccess?.()
   })
+  const fields: FieldBase[] = table.schema.nonSystemFields.map((f) => ({
+    id: f.id.value,
+    name: f.name.value,
+    type: f.type,
+  }))
 
   const setStepZero = useSetAtom(treeStepZeroAtom)
   return (
@@ -57,6 +65,30 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
             <FocusTrap>
               <TextInput {...form.register('name')} placeholder="new tree field name" />
             </FocusTrap>
+            <Controller
+              control={form.control}
+              name={`parentFieldName`}
+              render={(props) => (
+                <TextInput
+                  label={<FieldInputLabel>parent field name</FieldInputLabel>}
+                  {...props.field}
+                  value={props.field.value ?? ''}
+                />
+              )}
+            />
+            <Controller
+              control={form.control}
+              name={`displayFieldIds`}
+              render={(props) => (
+                <FieldsPicker
+                  variant="default"
+                  dropdownPosition="top"
+                  fields={fields}
+                  {...props.field}
+                  onChange={(ids) => props.field.onChange(ids)}
+                />
+              )}
+            />
           </Stack>
         </Card.Section>
 
