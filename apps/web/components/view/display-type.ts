@@ -3,4 +3,4 @@ export const displayTypes = [
   { label: 'Kanban', value: 'kanban' },
   { label: 'Calendar', value: 'calendar' },
   { label: 'Tree', value: 'tree' },
-]
+] as const

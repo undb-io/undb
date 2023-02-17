@@ -3,7 +3,7 @@ import { TableCreateNewRecordButton } from './table-create-new-record-button'
 import { ViewFieldsEditor } from './view-fields-editor'
 import { TableFilterEditor } from './table-filter-editor'
 import { TableSortEditor } from './table-sort-editor'
-import { ToolbarView } from './toolbar-view'
+import { ViewMenu } from './view-menu'
 import { ViewsButton } from './views-button'
 
 export const TableToolbar: React.FC = () => {
@@ -26,7 +26,7 @@ export const TableToolbar: React.FC = () => {
       <Divider orientation="vertical" />
 
       <TableCreateNewRecordButton />
-      <ToolbarView />
+      <ViewMenu />
       <TableFilterEditor />
       <TableSortEditor />
       <ViewFieldsEditor />

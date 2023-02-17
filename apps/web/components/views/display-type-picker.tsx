@@ -1,5 +1,5 @@
 import type { IViewDisplayType } from '@egodb/core'
-import type { SelectProps } from '@egodb/ui'
+import type { SelectProps, SelectItem as SelectItemType } from '@egodb/ui'
 import { Text } from '@egodb/ui'
 import { ActionIcon, Group } from '@egodb/ui'
 import { Select } from '@egodb/ui'
@@ -24,7 +24,7 @@ export const DisplayTypePicker: React.FC<Omit<SelectProps, 'data'>> = (props) =>
   return (
     <Select
       icon={<DisplayTypeIcon displayType={props.value as IViewDisplayType} />}
-      data={displayTypes}
+      data={displayTypes as unknown as SelectItemType[]}
       {...props}
       itemComponent={SelectItem}
     />
