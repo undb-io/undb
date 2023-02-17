@@ -1,4 +1,4 @@
-import type { IFieldQueryValue, IQueryRecordSchema } from '@egodb/core'
+import type { IQueryRecordSchema } from '@egodb/core'
 import type {
   IGetParentAvailableRecordQuery,
   IGetRecordOutput,
@@ -58,26 +58,10 @@ export const recordApi = api.injectEndpoints({
     }),
     updateRecord: builder.mutation<void, IUpdateRecordCommandInput>({
       query: trpc.record.update.mutate,
-      onQueryStarted({ id, tableId, value }, { dispatch, queryFulfilled }) {
-        const patchResult = dispatch(
-          recordApi.util.updateQueryData('getRecords', { tableId }, (draft) => {
-            const origin = draft.entities[id]
-            if (origin) {
-              const newValues = value.reduce((prev, curr) => {
-                prev[curr.id] = curr.value
-                return prev
-              }, {} as Record<string, IFieldQueryValue>)
-              const values = Object.assign(origin.values, newValues)
-              draft.entities[id] = {
-                ...origin,
-                values,
-                updatedAt: new Date(),
-              }
-            }
-          }),
-        )
-        queryFulfilled.catch(patchResult.undo)
-      },
+      invalidatesTags: (_, __, { id }) => [
+        { type: 'Record', id },
+        { type: 'TreeRecord', id },
+      ],
     }),
     duplicateRecord: builder.mutation({
       query: trpc.record.duplicate.mutate,
