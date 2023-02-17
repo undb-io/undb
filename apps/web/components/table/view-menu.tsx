@@ -1,6 +1,6 @@
 import type { FieldId, Kanban } from '@egodb/core'
 import type { ICalendar } from '@egodb/core/view/calendar'
-import { useSwitchDisplayTypeMutation } from '@egodb/store'
+import { useDeleteViewMutation, useDuplicateViewMutation, useSwitchDisplayTypeMutation } from '@egodb/store'
 import {
   Button,
   IconCalendarPlus,
@@ -14,7 +14,13 @@ import {
   Group,
   IconChevronRight,
   IconCheck,
+  IconCopy,
+  IconPencil,
+  IconSwitchHorizontal,
+  IconTrash,
 } from '@egodb/ui'
+import { useRouter } from 'next/navigation'
+import { useConfirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { SELECT_CALENDAR_FIELD_MODAL_ID, SELECT_KANBAN_FIELD_MODAL_ID } from '../../modals'
@@ -96,11 +102,23 @@ const CalendarControl: React.FC<{ calendar?: ICalendar }> = ({ calendar }) => {
 export const ViewMenu: React.FC = () => {
   const table = useCurrentTable()
   const view = useCurrentView()
+  const router = useRouter()
   const [opened, toggle] = useDisclosure(false)
 
   const displayType = view.displayType
 
   const [switchDisplayType] = useSwitchDisplayTypeMutation()
+  const [duplicateView] = useDuplicateViewMutation()
+  const [deleteView] = useDeleteViewMutation()
+
+  const confirm = useConfirmModal({
+    async onConfirm() {
+      await deleteView({ tableId: table.id.value, id: view.id.value })
+      router.push(`/t/${table.id.value}`)
+    },
+  })
+
+  const canDelete = table.views.count > 1
 
   return (
     <Button.Group>
@@ -124,7 +142,9 @@ export const ViewMenu: React.FC = () => {
             <Menu trigger="hover" openDelay={100} closeDelay={100} position="right-start">
               <Menu.Target>
                 <Group position="apart" noWrap>
-                  <Menu.Item p={0}>Select Display Type</Menu.Item>
+                  <Menu.Item icon={<IconSwitchHorizontal color="gray" size={16} />} fz="xs" color="gray.9" p={0}>
+                    Select Display Type
+                  </Menu.Item>
                   <IconChevronRight size={16} />
                 </Group>
               </Menu.Target>
@@ -132,7 +152,8 @@ export const ViewMenu: React.FC = () => {
                 {displayTypes.map((d) => (
                   <Menu.Item
                     w={180}
-                    h={30}
+                    h={35}
+                    fz="xs"
                     onClick={() => {
                       switchDisplayType({
                         tableId: table.id.value,
@@ -144,7 +165,7 @@ export const ViewMenu: React.FC = () => {
                     <Group w="100%">
                       <Group sx={{ flex: 1 }}>
                         <DisplayTypeIcon displayType={d.value} size={18} color="gray" />
-                        <Text>{d.label}</Text>
+                        <Text color="gray.8">{d.label}</Text>
                       </Group>
 
                       {d.value === view.displayType && <IconCheck color="gray" size={18} />}
@@ -153,6 +174,28 @@ export const ViewMenu: React.FC = () => {
                 ))}
               </Menu.Dropdown>
             </Menu>
+          </Menu.Item>
+
+          <Menu.Divider />
+
+          <Menu.Item fz="xs" color="gray.9" icon={<IconPencil color="gray" size={16} />}>
+            Update View Name
+          </Menu.Item>
+          <Menu.Item
+            fz="xs"
+            color="gray.9"
+            icon={<IconCopy color="gray" size={16} />}
+            onClick={() => {
+              duplicateView({ tableId: table.id.value, id: view.id.value })
+            }}
+          >
+            Duplicate View
+          </Menu.Item>
+
+          <Menu.Divider />
+
+          <Menu.Item disabled={!canDelete} icon={<IconTrash size={16} />} color="red.9" fz="xs" onClick={confirm}>
+            Delete View
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
