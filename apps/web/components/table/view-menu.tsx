@@ -1,18 +1,19 @@
-import type { FieldId, IViewDisplayType, Kanban } from '@egodb/core'
+import type { FieldId, Kanban } from '@egodb/core'
 import type { ICalendar } from '@egodb/core/view/calendar'
 import { useSwitchDisplayTypeMutation } from '@egodb/store'
 import {
   Button,
   IconCalendarPlus,
   IconSelect,
-  Popover,
-  SegmentedControl,
+  Menu,
   Tooltip,
   useDisclosure,
   openContextModal,
   closeAllModals,
-  Center,
   Text,
+  Group,
+  IconChevronRight,
+  IconCheck,
 } from '@egodb/ui'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
@@ -92,7 +93,7 @@ const CalendarControl: React.FC<{ calendar?: ICalendar }> = ({ calendar }) => {
   return <UsingCalendarField fieldId={calendar?.fieldId} />
 }
 
-export const ToolbarView: React.FC = () => {
+export const ViewMenu: React.FC = () => {
   const table = useCurrentTable()
   const view = useCurrentView()
   const [opened, toggle] = useDisclosure(false)
@@ -103,8 +104,8 @@ export const ToolbarView: React.FC = () => {
 
   return (
     <Button.Group>
-      <Popover opened={opened} closeOnClickOutside onClose={toggle.close} shadow="md">
-        <Popover.Target>
+      <Menu width={250} opened={opened} closeOnClickOutside onClose={toggle.close} shadow="md">
+        <Menu.Target>
           <Tooltip label={view.displayType}>
             <Button
               size="xs"
@@ -116,33 +117,45 @@ export const ToolbarView: React.FC = () => {
               {view.name.unpack()}
             </Button>
           </Tooltip>
-        </Popover.Target>
+        </Menu.Target>
 
-        <Popover.Dropdown p="xs">
-          <SegmentedControl
-            data={displayTypes.map((d) => ({
-              ...d,
-              label: (
-                <Center>
-                  <DisplayTypeIcon displayType={d.value as IViewDisplayType} />
-                  <Text ml={10}>{d.label}</Text>
-                </Center>
-              ),
-            }))}
-            onChange={(type) => {
-              switchDisplayType({
-                tableId: table.id.value,
-                viewId: view.id.value,
-                displayType: type as IViewDisplayType,
-              }).then(() => {
-                toggle.close()
-              })
-            }}
-            value={view.displayType}
-            defaultValue={view.displayType}
-          />
-        </Popover.Dropdown>
-      </Popover>
+        <Menu.Dropdown w={300}>
+          <Menu.Item>
+            <Menu trigger="hover" openDelay={100} closeDelay={100} position="right-start">
+              <Menu.Target>
+                <Group position="apart" noWrap>
+                  <Menu.Item p={0}>Select Display Type</Menu.Item>
+                  <IconChevronRight size={16} />
+                </Group>
+              </Menu.Target>
+              <Menu.Dropdown>
+                {displayTypes.map((d) => (
+                  <Menu.Item
+                    w={180}
+                    h={30}
+                    onClick={() => {
+                      switchDisplayType({
+                        tableId: table.id.value,
+                        viewId: view.id.value,
+                        displayType: d.value,
+                      })
+                    }}
+                  >
+                    <Group w="100%">
+                      <Group sx={{ flex: 1 }}>
+                        <DisplayTypeIcon displayType={d.value} size={18} color="gray" />
+                        <Text>{d.label}</Text>
+                      </Group>
+
+                      {d.value === view.displayType && <IconCheck color="gray" size={18} />}
+                    </Group>
+                  </Menu.Item>
+                ))}
+              </Menu.Dropdown>
+            </Menu>
+          </Menu.Item>
+        </Menu.Dropdown>
+      </Menu>
 
       {displayType === 'kanban' ? <KanbanControl kanban={view.kanban.into()} /> : null}
       {displayType === 'calendar' ? <CalendarControl calendar={view.calendar.into()} /> : null}
