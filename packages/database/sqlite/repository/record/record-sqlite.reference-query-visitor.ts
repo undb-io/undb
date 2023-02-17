@@ -22,8 +22,19 @@ import type {
 } from '@egodb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
+import { isEmpty } from 'lodash-es'
 import { ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
 import { getExpandColumnName } from './record.type.js'
+
+const getDisplayFieldIds = (field: IReference): string[] => {
+  const ids = field.displayFieldIds.map((fieldId) => fieldId.value)
+
+  if (isEmpty(ids)) {
+    return [INTERNAL_COLUMN_ID_NAME]
+  }
+
+  return ids
+}
 
 export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
   constructor(
@@ -97,9 +108,9 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
       .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
       .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${rt}.${ClosureTable.CHILD_ID}`)
 
-    const jsonObjectEntries: [string, string][] = field.displayFieldIds.map((fieldId) => [
-      `'${fieldId.value}'`,
-      `json_group_array(${ft}.${fieldId.value})`,
+    const jsonObjectEntries: [string, string][] = getDisplayFieldIds(field).map((fieldId) => [
+      `'${fieldId}'`,
+      `json_group_array(${ft}.${fieldId})`,
     ])
 
     this.qb.select(
@@ -128,9 +139,9 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
       .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
       .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${rt}.${ClosureTable.PARENT_ID}`)
 
-    const jsonObjectEntries: [string, string][] = field.displayFieldIds.map((fieldId) => [
-      `'${fieldId.value}'`,
-      `${ft}.${fieldId.value}`,
+    const jsonObjectEntries: [string, string][] = getDisplayFieldIds(field).map((fieldId) => [
+      `'${fieldId}'`,
+      `${ft}.${fieldId}`,
     ])
 
     if (jsonObjectEntries.length) {
