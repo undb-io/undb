@@ -13,7 +13,7 @@ export const getDisplayTypeColor = (displayType: IViewDisplayType): DefaultManti
     case 'calendar':
       return 'pink'
     case 'kanban':
-      return 'cyan'
+      return 'orange'
     case 'tree':
       return 'green'
   }

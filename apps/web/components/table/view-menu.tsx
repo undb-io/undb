@@ -24,6 +24,7 @@ import {
   IconSwitchHorizontal,
   IconTrash,
   TextInput,
+  ActionIcon,
 } from '@egodb/ui'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -33,7 +34,7 @@ import { useCurrentView } from '../../hooks/use-current-view'
 import { SELECT_CALENDAR_FIELD_MODAL_ID, SELECT_KANBAN_FIELD_MODAL_ID } from '../../modals'
 import type { ISelectKanbanFieldProps } from '../kanban-ui/select-kanban-field.props'
 import { displayTypes } from '../view/display-type'
-import { DisplayTypeIcon } from '../view/display-type-icon'
+import { DisplayTypeIcon, getDisplayTypeColor } from '../view/display-type-icon'
 
 const StackedBy: React.FC<{ fieldId?: FieldId }> = ({ fieldId }) => {
   const table = useCurrentTable()
@@ -198,7 +199,9 @@ export const ViewMenu: React.FC = () => {
                   >
                     <Group w="100%">
                       <Group sx={{ flex: 1 }}>
-                        <DisplayTypeIcon displayType={d.value} size={18} color="gray" />
+                        <ActionIcon size="xs" variant="filled" color={getDisplayTypeColor(d.value)}>
+                          <DisplayTypeIcon displayType={d.value} size={18} />
+                        </ActionIcon>
                         <Text color="gray.8">{d.label}</Text>
                       </Group>
 
