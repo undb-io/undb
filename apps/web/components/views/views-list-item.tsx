@@ -106,12 +106,12 @@ export const ViewsListItem: React.FC<IProps> = ({ v }) => {
           )}
         </Group>
         {hovered && (
-          <Group>
+          <Group spacing={5}>
             <Menu>
               <Menu.Target>
                 <ActionIcon
-                  color="gray.4"
-                  size="xs"
+                  color="gray.5"
+                  size={12}
                   variant="filled"
                   radius="xl"
                   onClick={(e) => {
