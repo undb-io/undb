@@ -94,14 +94,15 @@ import {
 } from './id-field.type.js'
 import type { NumberFieldValue } from './number-field-value.js'
 import type { NumberField } from './number-field.js'
-import type { INumberFieldValue } from './number-field.type.js'
 import {
   createNumberFieldSchema,
   createNumberFieldValue,
   createNumberFieldValue_internal,
+  INumberFieldValue,
   numberFieldQuerySchema,
   numberFieldQueryValue,
   numberTypeSchema,
+  updateNumberFieldSchema,
 } from './number-field.type.js'
 import type { ParentFieldValue } from './parent-field-value.js'
 import type { ParentField } from './parent-field.js'
@@ -148,14 +149,15 @@ import {
 } from './select-field.type.js'
 import type { StringFieldValue } from './string-field-value.js'
 import type { StringField } from './string-field.js'
-import type { IStringFieldValue } from './string-field.type.js'
 import {
   createStringFieldSchema,
   createStringFieldValue,
   createStringFieldValue_internal,
+  IStringFieldValue,
   stringFieldQuerySchema,
   stringFieldQueryValue,
   stringTypeSchema,
+  updateStringFieldSchema,
 } from './string-field.type.js'
 import type { TreeFieldValue } from './tree-field-value.js'
 import type { TreeField } from './tree-field.js'
@@ -201,6 +203,27 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createRatingFieldSchema,
 ])
 export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
+
+export const updateFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
+  // TODO: fix all
+  // updateIdFieldSchema,
+  // updateUpdatedAtFieldSchema,
+  // updateUpdatedAtFieldSchema,
+  // updateAutoIncrementFieldSchema,
+  updateStringFieldSchema,
+  // updateEmailFieldSchema,
+  // updateColorFieldSchema,
+  updateNumberFieldSchema,
+  // updateDateFieldSchema,
+  // updateSelectFieldSchema,
+  // updateBoolFieldSchema,
+  // updateDateRangeFieldSchema,
+  // updateReferenceFieldSchema,
+  // updateTreeFieldSchema,
+  // updateParentFieldSchema,
+  // updateRatingFieldSchema,
+])
+export type IUpdateFieldSchema = z.infer<typeof updateFieldSchema>
 
 export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   idFieldQuerySchema,
