@@ -34,7 +34,7 @@ export const ViewsList: React.FC = () => {
               moveView({
                 tableId: table.id.value,
                 from: active.id as string,
-                to: active.id as string,
+                to: over.id as string,
               })
             }
           }}
