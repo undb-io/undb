@@ -6,7 +6,7 @@ import type { GetRecordsQuery } from './get-records.query.js'
 export class GetRecordsQueryHandler implements IQueryHandler<GetRecordsQuery, IGetRecordsOutput> {
   constructor(protected readonly tableRepo: ITableRepository, protected readonly rm: IRecordQueryModel) {}
 
-  async execute(query: GetRecordsQuery): Promise<IGetRecordsOutput> {
+  async execute(query: GetRecordsQuery) {
     const table = (await this.tableRepo.findOneById(query.tableId)).unwrap()
     const filter = table.getSpec(query.viewId)
 

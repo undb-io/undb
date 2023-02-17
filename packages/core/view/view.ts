@@ -232,7 +232,7 @@ export class View extends ValueObject<IView> {
       specs.push(new WithKanbanField(this, null))
     }
 
-    const order = this.fieldsOrder?.removeField(field)
+    const order = this.fieldsOrder?.remove(field.id.value)
     if (order?.isSome()) {
       this.fieldsOrder = order.unwrap()
       specs.push(new WithViewFieldsOrder(order.unwrap(), this))

@@ -50,6 +50,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "views_order": {
+          "name": "views_order",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         }
       },
       "name": "table",

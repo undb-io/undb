@@ -7,6 +7,10 @@ const viewApi = api.injectEndpoints({
       query: trpc.table.view.create.mutate,
       invalidatesTags: (_, __, { tableId }) => [{ type: 'Table', id: tableId }, 'Record'],
     }),
+    moveView: builder.mutation({
+      query: trpc.table.view.move.mutate,
+      invalidatesTags: (_, __, { tableId }) => [{ type: 'Table', id: tableId }],
+    }),
     duplicateView: builder.mutation({
       query: trpc.table.view.duplicate.mutate,
       invalidatesTags: (_, __, { tableId }) => [{ type: 'Table', id: tableId }],
@@ -42,6 +46,7 @@ export const {
   useCreateViewMutation,
   useUpdateViewNameMutation,
   useDuplicateViewMutation,
+  useMoveViewMutation,
   useDeleteViewMutation,
 } = viewApi
 

@@ -17,9 +17,11 @@ import type { IEditTableSchema } from './table.schema.js'
 import type { TableId } from './value-objects/index.js'
 import { TableSchema } from './value-objects/index.js'
 import type { TableName } from './value-objects/table-name.vo'
-import type {
+import {
+  defaultViewDiaplyType,
   ICreateViewSchema,
   IMoveFieldSchema,
+  IMoveViewSchema,
   IQueryView,
   ISetCalendarFieldSchema,
   ISetFieldVisibilitySchema,
@@ -29,9 +31,14 @@ import type {
   ISorts,
   ISwitchDisplayTypeSchema,
   IUpdateViewNameSchema,
+  Sorts,
+  View,
   ViewFieldsOrder,
+  ViewsOrder,
+  WithTableView,
+  WithViewFieldsOrder,
+  WithViewsOrder,
 } from './view'
-import { defaultViewDiaplyType, Sorts, View, WithTableView, WithViewFieldsOrder } from './view'
 import { WithFilter } from './view/specifications/filters.specificaiton'
 import { WithSorts } from './view/specifications/sorts.specification.js'
 import { ViewId } from './view/view-id.vo'
@@ -45,6 +52,7 @@ export interface IQueryTable {
   name: string
   schema: IQuerySchemaSchema
   views?: IQueryView[]
+  viewsOrder?: string[]
 }
 
 export class Table {
@@ -52,6 +60,7 @@ export class Table {
   public name!: TableName
   public schema: TableSchema = new TableSchema([])
   public views: Views = new Views([])
+  public viewsOrder: ViewsOrder = ViewsOrder.empty()
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
@@ -75,7 +84,6 @@ export class Table {
   }
 
   private createDefaultView(viewName?: string): View {
-    // TODO: move to views value object
     return View.create({
       id: ViewId.createId(),
       name: viewName ?? this.name.value,
@@ -174,14 +182,18 @@ export class Table {
   }
 
   public createView(input: ICreateViewSchema): TableCompositeSpecificaiton {
-    const spec = this.views.createView(input)
+    const s1 = this.views.createView(input)
+    const s2 = this.viewsOrder.addView(s1.view)
+    const spec = s1.and(s2)
     spec.mutate(this).unwrap()
 
     return spec
   }
 
   public duplicateView(id: string): TableCompositeSpecificaiton {
-    const spec = this.views.duplcateView(id)
+    const s1 = this.views.duplcateView(id)
+    const s2 = this.viewsOrder.addView(s1.view)
+    const spec = s1.and(s2)
     spec.mutate(this).unwrap()
 
     return spec
@@ -196,10 +208,12 @@ export class Table {
   }
 
   public removeView(id: string): TableCompositeSpecificaiton {
-    const spec = this.views.removeView(id)
-    spec.mutate(this).unwrap()
+    const s1 = this.views.removeView(id)
+    const s2 = this.viewsOrder.removeView(s1.view)
+    const spec = andOptions(Some(s1), s2)
+    spec.into()?.mutate(this).unwrap()
 
-    return spec
+    return spec.unwrap()
   }
 
   public setFieldWidth(input: ISetFieldWidthSchema): TableCompositeSpecificaiton {
@@ -245,6 +259,11 @@ export class Table {
     const spec = view.setTreeViewFieldSpec(field.id)
     spec.mutate(this)
     return spec
+  }
+
+  public moveView(input: IMoveViewSchema): TableCompositeSpecificaiton {
+    const moved = this.viewsOrder.move(input.from, input.to)
+    return WithViewsOrder.fromArray(moved.order)
   }
 
   public moveField(input: IMoveFieldSchema): TableCompositeSpecificaiton {

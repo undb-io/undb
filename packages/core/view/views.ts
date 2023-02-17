@@ -13,6 +13,10 @@ export class Views extends ValueObject<View[]> {
     return this.props
   }
 
+  get ids() {
+    return this.views.map((view) => view.id)
+  }
+
   get defaultView(): Option<View> {
     return Option(this.views.at(0))
   }

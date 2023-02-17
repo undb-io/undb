@@ -14,6 +14,7 @@ import { DuplicateRecordCommandHandler } from './duplicate-record.command.handle
 import { DuplicateViewCommandHandler } from './duplicate-view.command.handler'
 import { EditTableCommandHandler } from './edit-table.command.handler'
 import { MoveFieldCommandHandler } from './move-field.command.handler'
+import { MoveViewCommandHandler } from './move-view.command.handler'
 import { ReorderOptionsCommandHandler } from './reorder-options.command.handler'
 import { SetCalendarFieldCommandHandler } from './set-calendar-field.command.handler'
 import { SetFieldVisibilityCommandHandler } from './set-field-visibility.command.handler'
@@ -43,6 +44,7 @@ export const commandHandlers = [
   SetFieldWidthCommandHandler,
   SetFieldVisibilityCommandHandler,
   MoveFieldCommandHandler,
+  MoveViewCommandHandler,
   EditTableCommandHandler,
   ReorderOptionsCommandHandler,
   SwitchDisplayTypeCommandHandler,

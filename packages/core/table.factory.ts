@@ -1,5 +1,5 @@
 import { and } from '@egodb/domain'
-import type { Result } from 'oxide.ts'
+import { Ok, Result } from 'oxide.ts'
 import { WithTableId, WithTableName, WithTableSchema } from './specifications/index.js'
 import type { TableCompositeSpecificaiton } from './specifications/interface.js'
 import { newTableSpec } from './specifications/specifications.js'
@@ -7,7 +7,7 @@ import type { IQueryTable } from './table.js'
 import { Table } from './table.js'
 import type { ICreateTableInput_internal } from './table.schema.js'
 import type { ICreateTableSchemaInput } from './value-objects/index.js'
-import { WithTableViews } from './view/index.js'
+import { WithTableViews, WithViewsOrder } from './view/index.js'
 
 export class TableFactory {
   static create(...specs: TableCompositeSpecificaiton[]): Result<Table, string>
@@ -25,7 +25,12 @@ export class TableFactory {
 
   static from(input: ICreateTableInput_internal) {
     const spec = newTableSpec(input)
-    return this.create(spec)
+    const table = this.create(spec).unwrap()
+
+    const viewsOrder = WithViewsOrder.fromArray(table.views.ids.map((id) => id.value))
+    viewsOrder.mutate(table)
+
+    return Ok(table)
   }
 
   static unsafeCreate(input: ICreateTableInput_internal) {
@@ -33,6 +38,7 @@ export class TableFactory {
       .and(WithTableId.fromString(input.id))
       .and(WithTableSchema.unsafeFrom(input.schema))
       .and(WithTableViews.from(input.views))
+      .and(WithViewsOrder.fromArray(input.viewsOrder ?? []))
 
     return this.create(spec)
   }
@@ -42,6 +48,7 @@ export class TableFactory {
       .and(WithTableId.fromExistingString(q.id).unwrap())
       .and(WithTableSchema.unsafeFrom(q.schema as ICreateTableSchemaInput))
       .and(WithTableViews.from(q.views))
+      .and(WithViewsOrder.fromArray(q.viewsOrder ?? []))
 
     return this.create(spec).unwrap()
   }
