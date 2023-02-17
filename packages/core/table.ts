@@ -37,6 +37,7 @@ import {
   ViewsOrder,
   WithTableView,
   WithViewFieldsOrder,
+  WithViewsOrder,
 } from './view'
 import { WithFilter } from './view/specifications/filters.specificaiton'
 import { WithSorts } from './view/specifications/sorts.specification.js'
@@ -261,7 +262,8 @@ export class Table {
   }
 
   public moveView(input: IMoveViewSchema): TableCompositeSpecificaiton {
-    throw new Error('unimplemented')
+    const moved = this.viewsOrder.move(input.from, input.to)
+    return WithViewsOrder.fromArray(moved.order)
   }
 
   public moveField(input: IMoveFieldSchema): TableCompositeSpecificaiton {
