@@ -1,5 +1,5 @@
 import { and } from '@egodb/domain'
-import type { Result } from 'oxide.ts'
+import { Ok, Result } from 'oxide.ts'
 import { WithTableId, WithTableName, WithTableSchema } from './specifications/index.js'
 import type { TableCompositeSpecificaiton } from './specifications/interface.js'
 import { newTableSpec } from './specifications/specifications.js'
@@ -25,7 +25,12 @@ export class TableFactory {
 
   static from(input: ICreateTableInput_internal) {
     const spec = newTableSpec(input)
-    return this.create(spec)
+    const table = this.create(spec).unwrap()
+
+    const viewsOrder = WithViewsOrder.fromArray(table.views.ids.map((id) => id.value))
+    viewsOrder.mutate(table)
+
+    return Ok(table)
   }
 
   static unsafeCreate(input: ICreateTableInput_internal) {
