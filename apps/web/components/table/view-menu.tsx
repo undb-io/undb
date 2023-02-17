@@ -1,6 +1,11 @@
 import type { FieldId, Kanban } from '@egodb/core'
 import type { ICalendar } from '@egodb/core/view/calendar'
-import { useDeleteViewMutation, useDuplicateViewMutation, useSwitchDisplayTypeMutation } from '@egodb/store'
+import {
+  useDeleteViewMutation,
+  useDuplicateViewMutation,
+  useSwitchDisplayTypeMutation,
+  useUpdateViewNameMutation,
+} from '@egodb/store'
 import {
   Button,
   IconCalendarPlus,
@@ -18,8 +23,10 @@ import {
   IconPencil,
   IconSwitchHorizontal,
   IconTrash,
+  TextInput,
 } from '@egodb/ui'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useConfirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
@@ -104,12 +111,25 @@ export const ViewMenu: React.FC = () => {
   const view = useCurrentView()
   const router = useRouter()
   const [opened, toggle] = useDisclosure(false)
+  const [editing, toggleEditing] = useDisclosure(false)
+  const [viewName, setViewName] = useState(view.name.unpack())
 
   const displayType = view.displayType
 
   const [switchDisplayType] = useSwitchDisplayTypeMutation()
   const [duplicateView] = useDuplicateViewMutation()
+  const [updateViewName] = useUpdateViewNameMutation()
   const [deleteView] = useDeleteViewMutation()
+
+  const onUpdateViewName = async (name: string) => {
+    await updateViewName({
+      tableId: table.id.value,
+      view: { id: view.id.value, name },
+    })
+
+    setViewName(name)
+    toggleEditing.close()
+  }
 
   const confirm = useConfirmModal({
     async onConfirm() {
@@ -122,7 +142,7 @@ export const ViewMenu: React.FC = () => {
 
   return (
     <Button.Group>
-      <Menu width={250} opened={opened} closeOnClickOutside onClose={toggle.close} shadow="md">
+      <Menu width={250} disabled={editing} opened={opened} closeOnClickOutside onClose={toggle.close} shadow="md">
         <Menu.Target>
           <Tooltip label={view.displayType}>
             <Button
@@ -132,7 +152,21 @@ export const ViewMenu: React.FC = () => {
               onClick={toggle.toggle}
               leftIcon={<DisplayTypeIcon displayType={view.displayType} />}
             >
-              {view.name.unpack()}
+              {editing ? (
+                <TextInput
+                  defaultValue={viewName}
+                  onBlur={(event) => onUpdateViewName(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      onUpdateViewName((event.target as any).value)
+                    }
+                  }}
+                  size="xs"
+                  autoFocus
+                />
+              ) : (
+                viewName
+              )}
             </Button>
           </Tooltip>
         </Menu.Target>
@@ -178,7 +212,7 @@ export const ViewMenu: React.FC = () => {
 
           <Menu.Divider />
 
-          <Menu.Item fz="xs" color="gray.9" icon={<IconPencil color="gray" size={16} />}>
+          <Menu.Item fz="xs" color="gray.9" icon={<IconPencil color="gray" size={16} />} onClick={toggleEditing.open}>
             Update View Name
           </Menu.Item>
           <Menu.Item
