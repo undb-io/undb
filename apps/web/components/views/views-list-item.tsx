@@ -60,6 +60,7 @@ export const ViewsListItem: React.FC<IProps> = ({ v }) => {
   return (
     <Box ref={setNodeRef} style={style}>
       <Group
+        data-view-id={v.id.value}
         noWrap
         position="apart"
         p="xs"
