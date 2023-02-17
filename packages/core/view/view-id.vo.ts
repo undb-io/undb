@@ -11,6 +11,10 @@ export class ViewId extends NanoID {
     return this.props.value
   }
 
+  static createId(): string {
+    return this.create().value
+  }
+
   static create(): ViewId {
     const id = NanoID.createId(ViewId.VIEW_ID_PREFIX, this.VIEW_ID_SIZE)
     return new this(id)
