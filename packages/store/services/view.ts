@@ -46,6 +46,7 @@ export const {
   useCreateViewMutation,
   useUpdateViewNameMutation,
   useDuplicateViewMutation,
+  useMoveViewMutation,
   useDeleteViewMutation,
 } = viewApi
 
