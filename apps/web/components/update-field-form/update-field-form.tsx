@@ -5,30 +5,33 @@ import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldVariantControl } from '../field/field-variant-control'
 import { FieldItem } from '../field-inputs/field-item'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
-import type { ICreateFieldSchema } from '@egodb/core'
-import { createFieldSchema } from '@egodb/core'
+import type { IUpdateFieldSchema } from '@egodb/core'
+import { updateFieldSchema } from '@egodb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { ICreateFieldProps } from './create-field.props'
-import { useCreateFieldMutation } from '@egodb/store'
+import type { IUpdateFieldProps } from './update-field.props'
+import { useUpdateFieldMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 
-export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel }) => {
+export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }) => {
   const table = useCurrentTable()
 
-  const defaultValues: ICreateFieldSchema = {
-    type: 'string',
-    name: '',
+  const defaultValues: IUpdateFieldSchema = {
+    // TODO: remove ts lint
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    type: field.type,
+    name: field.name.value,
   }
 
-  const form = useForm<ICreateFieldSchema>({
+  const form = useForm<IUpdateFieldSchema>({
     defaultValues,
-    resolver: zodResolver(createFieldSchema),
+    resolver: zodResolver(updateFieldSchema),
   })
 
-  const [createField, { isLoading }] = useCreateFieldMutation()
+  const [updateField, { isLoading }] = useUpdateFieldMutation()
 
   const onSubmit = form.handleSubmit(async (values) => {
-    await createField({ tableId: table.id.value, field: values })
+    await updateField({ tableId: table.id.value, field: values })
     form.reset()
     closeAllModals()
   })
@@ -69,7 +72,7 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel }) => {
             </Button>
 
             <Button loading={isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
-              Create
+              Update
             </Button>
           </Group>
         </Stack>

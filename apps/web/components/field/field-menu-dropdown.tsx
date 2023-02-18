@@ -1,9 +1,11 @@
 import type { Field } from '@egodb/core'
 import { useDeleteFieldMutation } from '@egodb/store'
 import type { MenuItemProps } from '@egodb/ui'
+import { openContextModal } from '@egodb/ui'
 import { IconPencil, IconTrash, Menu } from '@egodb/ui'
 import { useConfirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { UPDATE_FIELD_MODAL_ID } from '../../modals'
 
 export const FieldMenuDropdown: React.FC<{ field: Field }> = ({ field }) => {
   const table = useCurrentTable()
@@ -26,7 +28,17 @@ export const FieldMenuDropdown: React.FC<{ field: Field }> = ({ field }) => {
 
   return (
     <Menu.Dropdown>
-      <Menu.Item icon={<IconPencil size={14} />} {...menuProps}>
+      <Menu.Item
+        icon={<IconPencil size={14} />}
+        {...menuProps}
+        onClick={() =>
+          openContextModal({
+            title: 'Update Field',
+            modal: UPDATE_FIELD_MODAL_ID,
+            innerProps: { field },
+          })
+        }
+      >
         Update Field
       </Menu.Item>
 

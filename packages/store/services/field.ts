@@ -18,7 +18,7 @@ const fieldApi = api.injectEndpoints({
   }),
 })
 
-export const { useCreateFieldMutation, useDeleteFieldMutation } = fieldApi
+export const { useCreateFieldMutation, useDeleteFieldMutation, useUpdateFieldMutation } = fieldApi
 
 const selectApi = fieldApi.injectEndpoints({
   endpoints: (builder) => ({
