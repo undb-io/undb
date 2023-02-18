@@ -1,4 +1,11 @@
-import { CreateFieldCommand, createFieldCommandInput, DeleteFieldCommand, deleteFieldCommandInput } from '@egodb/cqrs'
+import {
+  CreateFieldCommand,
+  createFieldCommandInput,
+  DeleteFieldCommand,
+  deleteFieldCommandInput,
+  UpdateFieldCommand,
+  updateFieldCommandInput,
+} from '@egodb/cqrs'
 import type { ICommandBus } from '@egodb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
@@ -12,6 +19,13 @@ export const createFieldRouter = (procedure: typeof publicProcedure) => (command
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new CreateFieldCommand(input)
+        return commandBus.execute(cmd)
+      }),
+    update: procedure
+      .input(updateFieldCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new UpdateFieldCommand(input)
         return commandBus.execute(cmd)
       }),
     delete: procedure

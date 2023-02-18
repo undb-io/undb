@@ -91,6 +91,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     this.#queries.push(...sqls)
   }
   fieldOptionsEqual(): void {}
+  withFieldName(): void {}
   not(): this {
     return this
   }

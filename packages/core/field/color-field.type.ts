@@ -1,6 +1,6 @@
 import * as z from 'zod'
 import { ColorField } from './color-field.js'
-import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base.js'
+import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field.base.js'
 import { FIELD_TYPE_KEY } from './field.constant.js'
 
 export const colorTypeSchema = z.literal('color')
@@ -9,6 +9,9 @@ const colorTypeObjectSchema = z.object({ [FIELD_TYPE_KEY]: colorTypeSchema })
 
 export const createColorFieldSchema = createBaseFieldsSchema.merge(colorTypeObjectSchema)
 export type ICreateColorFieldInput = z.infer<typeof createColorFieldSchema>
+
+export const updateColorFieldSchema = updateBaseFieldSchema.merge(colorTypeObjectSchema)
+export type IUpdateColorFieldInput = z.infer<typeof updateColorFieldSchema>
 
 export const colorFieldQuerySchema = baseFieldQuerySchema.merge(colorTypeObjectSchema)
 

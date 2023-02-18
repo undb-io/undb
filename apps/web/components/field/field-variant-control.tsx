@@ -8,7 +8,8 @@ import type { FieldBase } from '../field-inputs/field-picker.type'
 import { FieldsPicker } from '../field-inputs/fields-picker'
 import { SelectFieldControl } from '../field-inputs/select-field-control'
 
-export const CreateFieldVariantControl: React.FC = () => {
+// TODO: initial value
+export const FieldVariantControl: React.FC = () => {
   const table = useCurrentTable()
 
   const form = useFormContext<ICreateFieldSchema>()

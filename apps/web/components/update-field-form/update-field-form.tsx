@@ -1,34 +1,36 @@
-import { Button, closeAllModals, Divider, Group, Select, Stack, TextInput } from '@egodb/ui'
-import { FIELD_SELECT_ITEMS } from '../../constants/field.constants'
+import { Button, closeAllModals, Divider, Group, Stack, TextInput } from '@egodb/ui'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldVariantControl } from '../field/field-variant-control'
-import { FieldItem } from '../field-inputs/field-item'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
-import type { ICreateFieldSchema } from '@egodb/core'
-import { createFieldSchema } from '@egodb/core'
+import type { IUpdateFieldSchema } from '@egodb/core'
+import { updateFieldSchema } from '@egodb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { ICreateFieldProps } from './create-field.props'
-import { useCreateFieldMutation } from '@egodb/store'
+import type { IUpdateFieldProps } from './update-field.props'
+import { useUpdateFieldMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 
-export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel }) => {
+export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }) => {
   const table = useCurrentTable()
 
-  const defaultValues: ICreateFieldSchema = {
-    type: 'string',
-    name: '',
+  const defaultValues: IUpdateFieldSchema = {
+    type: field.type,
+    name: field.name.value,
   }
 
-  const form = useForm<ICreateFieldSchema>({
+  const form = useForm<IUpdateFieldSchema>({
     defaultValues,
-    resolver: zodResolver(createFieldSchema),
+    resolver: zodResolver(updateFieldSchema),
   })
 
-  const [createField, { isLoading }] = useCreateFieldMutation()
+  const [updateField, { isLoading }] = useUpdateFieldMutation()
 
   const onSubmit = form.handleSubmit(async (values) => {
-    await createField({ tableId: table.id.value, field: values })
+    await updateField({
+      tableId: table.id.value,
+      fieldId: field.id.value,
+      field: values,
+    })
     form.reset()
     closeAllModals()
   })
@@ -41,18 +43,17 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel }) => {
             name="type"
             control={form.control}
             render={(props) => (
-              <Select
+              <TextInput
                 {...props.field}
-                onChange={(type) => type && props.field.onChange(type)}
+                disabled
+                readOnly
                 required
                 label={<FieldInputLabel>type</FieldInputLabel>}
-                data={FIELD_SELECT_ITEMS}
-                itemComponent={FieldItem}
                 icon={<FieldIcon type={form.watch('type')} />}
               />
             )}
           />
-          <TextInput {...form.register('name')} label={<FieldInputLabel>name</FieldInputLabel>} required />
+          <TextInput {...form.register('name')} label={<FieldInputLabel>name</FieldInputLabel>} />
           <FieldVariantControl />
 
           <Divider />
@@ -68,8 +69,13 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel }) => {
               Cancel
             </Button>
 
-            <Button loading={isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
-              Create
+            <Button
+              loading={isLoading}
+              miw={200}
+              disabled={!form.formState.isValid || !form.formState.isDirty}
+              type="submit"
+            >
+              Update
             </Button>
           </Group>
         </Stack>

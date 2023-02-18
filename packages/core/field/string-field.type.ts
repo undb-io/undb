@@ -1,5 +1,5 @@
 import * as z from 'zod'
-import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base.js'
+import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field.base.js'
 import { FIELD_TYPE_KEY } from './field.constant.js'
 import { StringField } from './string-field.js'
 
@@ -9,6 +9,9 @@ const stringTypeObjectSchema = z.object({ [FIELD_TYPE_KEY]: stringTypeSchema })
 
 export const createStringFieldSchema = createBaseFieldsSchema.merge(stringTypeObjectSchema)
 export type ICreateStringFieldInput = z.infer<typeof createStringFieldSchema>
+
+export const updateStringFieldSchema = updateBaseFieldSchema.merge(stringTypeObjectSchema)
+export type IUpdateStringFieldInput = z.infer<typeof updateStringFieldSchema>
 
 export const stringFieldQuerySchema = baseFieldQuerySchema.merge(stringTypeObjectSchema)
 

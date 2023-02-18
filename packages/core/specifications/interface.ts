@@ -1,5 +1,6 @@
 import type { CompositeSpecification, ISpecVisitor } from '@egodb/domain'
 import { type ISpecification } from '@egodb/domain'
+import { WithFieldName } from '../field/specifications/base-field.specification.js'
 import type { WithoutField } from '../field/specifications/field.specification.js'
 import type { WithNewOption, WithOptions, WithoutOption } from '../field/specifications/select-field.specification.js'
 import { type Table } from '../table.js'
@@ -58,6 +59,8 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   optionEqual(s: WithNewOption): void
   newOption(s: WithNewOption): void
   witoutOption(s: WithoutOption): void
+
+  withFieldName(s: WithFieldName): void
 }
 
 export type ITableSpec = ISpecification<Table, ITableSpecVisitor>

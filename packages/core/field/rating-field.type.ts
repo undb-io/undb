@@ -1,5 +1,5 @@
 import * as z from 'zod'
-import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base.js'
+import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field.base.js'
 import { FIELD_TYPE_KEY } from './field.constant.js'
 import { RatingField } from './rating-field.js'
 
@@ -15,6 +15,9 @@ export const createRatingFieldSchema = createBaseFieldsSchema
   .merge(z.object({ max: z.number().positive().max(RATING_MAX).int().optional() }))
 
 export type ICreateRatingFieldInput = z.infer<typeof createRatingFieldSchema>
+
+export const updateRatingFieldSchema = updateBaseFieldSchema.merge(ratingTypeObjectSchema)
+export type IUpdateRatingFieldInput = z.infer<typeof updateRatingFieldSchema>
 
 export const ratingFieldQuerySchema = baseFieldQuerySchema
   .merge(ratingTypeObjectSchema)

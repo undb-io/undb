@@ -7,6 +7,10 @@ const fieldApi = api.injectEndpoints({
       query: trpc.table.field.create.mutate,
       invalidatesTags: (_, __, args) => [{ type: 'Table', id: args.tableId }],
     }),
+    updateField: builder.mutation({
+      query: trpc.table.field.update.mutate,
+      invalidatesTags: (_, __, args) => [{ type: 'Table', id: args.tableId }],
+    }),
     deleteField: builder.mutation({
       query: trpc.table.field.delete.mutate,
       invalidatesTags: (_, __, args) => [{ type: 'Table', id: args.tableId }],
@@ -14,7 +18,7 @@ const fieldApi = api.injectEndpoints({
   }),
 })
 
-export const { useCreateFieldMutation, useDeleteFieldMutation } = fieldApi
+export const { useCreateFieldMutation, useDeleteFieldMutation, useUpdateFieldMutation } = fieldApi
 
 const selectApi = fieldApi.injectEndpoints({
   endpoints: (builder) => ({

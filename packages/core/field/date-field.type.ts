@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { DateField } from './date-field.js'
-import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base.js'
+import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field.base.js'
 import { FIELD_TYPE_KEY } from './field.constant.js'
 
 export const dateTypeSchema = z.literal('date')
@@ -9,6 +9,9 @@ const dateTypeObjectSchema = z.object({ [FIELD_TYPE_KEY]: dateTypeSchema })
 
 export const createDateFieldSchema = createBaseFieldsSchema.merge(dateTypeObjectSchema)
 export type ICreateDateFieldSchema = z.infer<typeof createDateFieldSchema>
+
+export const updateDateFieldSchema = updateBaseFieldSchema.merge(dateTypeObjectSchema)
+export type IUpdateDateFieldInput = z.infer<typeof updateDateFieldSchema>
 
 export const dateFieldQuerySchema = baseFieldQuerySchema.merge(dateTypeObjectSchema)
 

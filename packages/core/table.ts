@@ -1,7 +1,7 @@
 import { and, andOptions } from '@egodb/domain'
 import type { Option, Result } from 'oxide.ts'
 import { None, Ok, Some } from 'oxide.ts'
-import type { ICreateFieldSchema, IQuerySchemaSchema, IReorderOptionsSchema } from './field'
+import type { ICreateFieldSchema, IQuerySchemaSchema, IReorderOptionsSchema, IUpdateFieldSchema } from './field'
 import { SelectField } from './field'
 import type { IRootFilter } from './filter/index.js'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from './option/index.js'
@@ -169,6 +169,12 @@ export class Table {
     }
 
     return andOptions(...specs).unwrap()
+  }
+
+  public updateField(id: string, input: IUpdateFieldSchema): Option<TableCompositeSpecificaiton> {
+    const field = this.schema.getFieldById(id).unwrap()
+
+    return field.update(input)
   }
 
   public removeField(id: string): TableCompositeSpecificaiton {

@@ -1,11 +1,12 @@
-import { ValueObject } from '@egodb/domain'
+import { and, ValueObject } from '@egodb/domain'
 import { map, pipe, toArray } from '@fxts/core'
-import { isEmpty, unzip } from 'lodash-es'
+import { isEmpty, isString, unzip } from 'lodash-es'
 import type { Option } from 'oxide.ts'
 import { None } from 'oxide.ts'
 import * as z from 'zod'
 import type { IFilter, IOperator } from '../filter/index.js'
 import type { IRecordDisplayValues } from '../record/index.js'
+import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import type {
   IBaseField,
   IFieldType,
@@ -16,6 +17,7 @@ import type {
   SystemField,
 } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
+import { WithFieldName } from './specifications/base-field.specification.js'
 import { fieldIdSchema } from './value-objects/field-id.schema.js'
 import { fieldNameSchema } from './value-objects/field-name.schema.js'
 import type { FieldId, FieldName } from './value-objects/index.js'
@@ -30,9 +32,17 @@ export const createBaseFieldsSchema = z
 
 export type IBaseCreateFieldsSchema = z.infer<typeof createBaseFieldsSchema>
 
+export const updateBaseFieldSchema = z
+  .object({
+    name: fieldNameSchema,
+  })
+  .partial()
+
+export type IBaseUpdateFieldSchema = z.infer<typeof updateBaseFieldSchema>
+
 export const baseFieldQuerySchema = z.object({ id: fieldIdSchema, name: fieldNameSchema }).merge(valueConstraintsSchema)
 
-export abstract class BaseField<C extends IBaseField> extends ValueObject<C> {
+export abstract class BaseField<C extends IBaseField = IBaseField> extends ValueObject<C> {
   abstract type: IFieldType
   system = false
 
@@ -48,6 +58,10 @@ export abstract class BaseField<C extends IBaseField> extends ValueObject<C> {
     return this.props.name
   }
 
+  public set name(name: FieldName) {
+    this.props.name = name
+  }
+
   public get required(): boolean {
     return this.props.valueConstrains.required
   }
@@ -55,6 +69,15 @@ export abstract class BaseField<C extends IBaseField> extends ValueObject<C> {
   abstract createFilter(operator: IOperator, value: unknown): IFilter
 
   abstract accept(visitor: IFieldVisitor): void
+
+  public update<T extends IBaseUpdateFieldSchema>(input: T): Option<TableCompositeSpecificaiton> {
+    const specs: TableCompositeSpecificaiton[] = []
+    if (isString(input.name)) {
+      const spec = WithFieldName.fromString(this, input.name)
+      specs.push(spec)
+    }
+    return and(...specs)
+  }
 }
 
 export abstract class BaseReferenceField<F extends ITreeField | IParentField | IReferenceField>

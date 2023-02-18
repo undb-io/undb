@@ -5,7 +5,6 @@ import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { AutoIncrementFieldValue } from './auto-increment-field-value.js'
 import type { AutoIncrementField } from './auto-increment-field.js'
-import type { IAutoIncrementFieldValue } from './auto-increment-field.type.js'
 import {
   autoIncrementFieldQuerySchema,
   autoIncrementQueryValue,
@@ -13,10 +12,11 @@ import {
   createAutoIncrementFieldSchema,
   createAutoIncrementFieldValue,
   createAutoIncrementFieldValue_internal,
+  IAutoIncrementFieldValue,
+  updateAutoIncrementFieldSchema,
 } from './auto-increment-field.type.js'
 import type { BoolFieldValue } from './bool-field-value.js'
 import type { BoolField } from './bool-field.js'
-import type { IBoolFieldValue } from './bool-field.type.js'
 import {
   boolFieldQuerySchema,
   boolFieldQueryValue,
@@ -24,10 +24,11 @@ import {
   createBoolFieldSchema,
   createBoolFieldValue,
   createBoolFieldValue_internal,
+  IBoolFieldValue,
+  updateBoolFieldSchema,
 } from './bool-field.type.js'
 import type { ColorFieldValue } from './color-field-value.js'
 import type { ColorField } from './color-field.js'
-import type { IColorFieldValue } from './color-field.type.js'
 import {
   colorFieldQuerySchema,
   colorFieldQueryValue,
@@ -35,10 +36,11 @@ import {
   createColorFieldSchema,
   createColorFieldValue,
   createColorFieldValue_internal,
+  IColorFieldValue,
+  updateColorFieldSchema,
 } from './color-field.type.js'
 import type { CreatedAtFieldValue } from './created-at-field-value.js'
 import type { CreatedAtField } from './created-at-field.js'
-import type { ICreatedAtFieldValue } from './created-at-field.type.js'
 import {
   createCreatedAtFieldSchema,
   createCreatedAtFieldValue,
@@ -46,10 +48,11 @@ import {
   createdAtFieldQuerySchema,
   createdAtFieldQueryValue,
   createdAtTypeSchema,
+  ICreatedAtFieldValue,
+  updateCreatedAtFieldSchema,
 } from './created-at-field.type.js'
 import type { DateFieldValue } from './date-field-value.js'
 import type { DateField } from './date-field.js'
-import type { IDateFieldValue } from './date-field.type.js'
 import {
   createDateFieldSchema,
   createDateFieldValue,
@@ -57,10 +60,11 @@ import {
   dateFieldQuerySchema,
   dateFieldQueryValue,
   dateTypeSchema,
+  IDateFieldValue,
+  updateDateFieldSchema,
 } from './date-field.type.js'
 import type { DateRangeFieldValue } from './date-range-field-value.js'
 import type { DateRangeField } from './date-range-field.js'
-import type { IDateRangeFieldValue } from './date-range-field.type.js'
 import {
   createDateRangeFieldSchema,
   createDateRangeFieldValue,
@@ -68,10 +72,11 @@ import {
   dateRangeFieldQuerySchema,
   dateRangeFieldQueryValue,
   dateRangeTypeSchema,
+  IDateRangeFieldValue,
+  updateDateRangeFieldSchema,
 } from './date-range-field.type.js'
 import type { EmailFieldValue } from './email-field-value.js'
 import type { EmailField } from './email-field.js'
-import type { IEmailFieldValue } from './email-field.type.js'
 import {
   createEmailFieldSchema,
   createEmailFieldValue,
@@ -79,11 +84,12 @@ import {
   emailFieldQuerySchema,
   emailFieldQueryValue,
   emailTypeSchema,
+  IEmailFieldValue,
+  updateEmailFieldSchema,
 } from './email-field.type.js'
 import { FIELD_TYPE_KEY } from './field.constant.js'
 import type { IdFieldValue } from './id-field-value.js'
 import type { IdField } from './id-field.js'
-import type { IIdFieldValue } from './id-field.type.js'
 import {
   createIdFieldSchema,
   createIdFieldValue,
@@ -91,39 +97,44 @@ import {
   idFieldQuerySchema,
   idFieldQueryValue,
   idTypeSchema,
+  IIdFieldValue,
+  updateIdFieldSchema,
 } from './id-field.type.js'
 import type { NumberFieldValue } from './number-field-value.js'
 import type { NumberField } from './number-field.js'
-import type { INumberFieldValue } from './number-field.type.js'
 import {
   createNumberFieldSchema,
   createNumberFieldValue,
   createNumberFieldValue_internal,
+  INumberFieldValue,
   numberFieldQuerySchema,
   numberFieldQueryValue,
   numberTypeSchema,
+  updateNumberFieldSchema,
 } from './number-field.type.js'
 import type { ParentFieldValue } from './parent-field-value.js'
 import type { ParentField } from './parent-field.js'
-import type { IParentFieldValue } from './parent-field.type.js'
 import {
   createParentFieldSchema,
   createParentFieldValue,
   createParentFieldValue_internal,
+  IParentFieldValue,
   parentFieldQuerySchema,
   parentFieldQueryValue,
   parentTypeSchema,
+  updateParentFieldSchema,
 } from './parent-field.type.js'
 import type { RatingFieldValue } from './rating-field-value.js'
 import type { RatingField } from './rating-field.js'
-import type { IRatingFieldValue } from './rating-field.type.js'
 import {
   createRatingFieldSchema,
   createRatingFieldValue,
   createRatingFieldValue_internal,
+  IRatingFieldValue,
   ratingFieldQuerySchema,
   ratingFieldQueryValue,
   ratingTypeSchema,
+  updateRatingFieldSchema,
 } from './rating-field.type.js'
 import type { ReferenceFieldValue } from './reference-field-value.js'
 import type { ReferenceField } from './reference-field.js'
@@ -134,50 +145,55 @@ import {
   referenceFieldQuerySchema,
   referenceFieldQueryValue,
   referenceTypeSchema,
+  updateReferenceFieldSchema,
 } from './reference-field.type.js'
 import type { SelectFieldValue } from './select-field-value.js'
 import type { SelectField } from './select-field.js'
-import type { ISelectFieldValue } from './select-field.type.js'
 import {
   createSelectFieldSchema,
   createSelectFieldValue,
   createSelectFieldValue_internal,
+  ISelectFieldValue,
   selectFieldQuerySchema,
   selectFieldQueryValue,
   selectTypeSchema,
+  updateSelectFieldSchema,
 } from './select-field.type.js'
 import type { StringFieldValue } from './string-field-value.js'
 import type { StringField } from './string-field.js'
-import type { IStringFieldValue } from './string-field.type.js'
 import {
   createStringFieldSchema,
   createStringFieldValue,
   createStringFieldValue_internal,
+  IStringFieldValue,
   stringFieldQuerySchema,
   stringFieldQueryValue,
   stringTypeSchema,
+  updateStringFieldSchema,
 } from './string-field.type.js'
 import type { TreeFieldValue } from './tree-field-value.js'
 import type { TreeField } from './tree-field.js'
-import type { ITreeFieldValue } from './tree-field.type.js'
 import {
   createTreeFieldSchema,
   createTreeFieldValue,
   createTreeFieldValue_internal,
+  ITreeFieldValue,
   treeFieldQuerySchema,
   treeFieldQueryValue,
   treeTypeSchema,
+  updateTreeFieldSchema,
 } from './tree-field.type.js'
 import type { UpdatedAtFieldValue } from './updated-at-field-value.js'
 import type { UpdatedAtField } from './updated-at-field.js'
-import type { IUpdatedAtFieldValue } from './updated-at-field.type.js'
 import {
   createUpdatedAtFieldSchema,
   createUpdatedAtFieldValue,
   createUpdatedAtFieldValue_internal,
+  IUpdatedAtFieldValue,
   updatedAtFieldQuerySchema,
   updatedAtFieldQueryValue,
   updatedAtTypeSchema,
+  updateUpdatedAtFieldSchema,
 } from './updated-at-field.type.js'
 import { fieldNameSchema } from './value-objects/field-name.schema.js'
 import type { DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
@@ -201,6 +217,26 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createRatingFieldSchema,
 ])
 export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
+
+export const updateFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
+  updateIdFieldSchema,
+  updateCreatedAtFieldSchema,
+  updateUpdatedAtFieldSchema,
+  updateAutoIncrementFieldSchema,
+  updateStringFieldSchema,
+  updateEmailFieldSchema,
+  updateColorFieldSchema,
+  updateNumberFieldSchema,
+  updateDateFieldSchema,
+  updateSelectFieldSchema,
+  updateBoolFieldSchema,
+  updateDateRangeFieldSchema,
+  updateReferenceFieldSchema,
+  updateTreeFieldSchema,
+  updateParentFieldSchema,
+  updateRatingFieldSchema,
+])
+export type IUpdateFieldSchema = z.infer<typeof updateFieldSchema>
 
 export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   idFieldQuerySchema,

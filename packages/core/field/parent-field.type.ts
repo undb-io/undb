@@ -1,6 +1,6 @@
 import * as z from 'zod'
 import { recordIdSchema } from '../record/value-objects/record-id.schema.js'
-import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base.js'
+import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field.base.js'
 import { FIELD_TYPE_KEY } from './field.constant.js'
 import { ParentField } from './parent-field.js'
 import { fieldIdSchema } from './value-objects/field-id.schema.js'
@@ -16,6 +16,9 @@ export const createParentFieldSchema = createBaseFieldsSchema.merge(parentTypeOb
   }),
 )
 export type ICreateParentFieldInput = z.infer<typeof createParentFieldSchema>
+
+export const updateParentFieldSchema = updateBaseFieldSchema.merge(parentTypeObjectSchema)
+export type IUpdateParentFieldInput = z.infer<typeof updateParentFieldSchema>
 
 export const parentFieldQuerySchema = baseFieldQuerySchema.merge(parentTypeObjectSchema).merge(
   z.object({
