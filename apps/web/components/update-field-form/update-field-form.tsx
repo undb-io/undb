@@ -26,7 +26,11 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
   const [updateField, { isLoading }] = useUpdateFieldMutation()
 
   const onSubmit = form.handleSubmit(async (values) => {
-    await updateField({ tableId: table.id.value, field: values })
+    await updateField({
+      tableId: table.id.value,
+      fieldId: field.id.value,
+      field: values,
+    })
     form.reset()
     closeAllModals()
   })

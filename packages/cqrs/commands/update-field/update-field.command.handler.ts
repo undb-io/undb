@@ -10,8 +10,9 @@ export class UpdateFieldCommandHandler implements IUpdateFieldCommandHandler {
   async execute(command: UpdateFieldCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
 
-    // const spec = table.updateField(command.field)
-
-    // await this.tableRepo.updateOneById(table.id.value, spec)
+    const spec = table.updateField(command.fieldId, command.field)
+    if (spec.isSome()) {
+      await this.tableRepo.updateOneById(table.id.value, spec.unwrap())
+    }
   }
 }

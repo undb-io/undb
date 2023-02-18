@@ -2,6 +2,7 @@ import type {
   ITableSpecVisitor,
   WithCalendarField,
   WithDisplayType,
+  WithFieldName,
   WithFieldOption,
   WithFieldVisibility,
   WithFieldWidth,
@@ -194,6 +195,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const view = this.getView(s.view.id.value)
     wrap(view).assign(s.options.toObject().unwrapOr({}), { mergeObjects: true })
     this.em.persist(view)
+  }
+  withFieldName(s: WithFieldName): void {
+    const field = this.getField(s.field.id.value)
+    wrap(field).assign({ name: s.name.value })
+    this.em.persist(field)
   }
   not(): this {
     return this
