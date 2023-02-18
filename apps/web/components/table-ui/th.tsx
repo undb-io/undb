@@ -6,7 +6,7 @@ import { CSS } from '@dnd-kit/utilities'
 import type { Field } from '@egodb/core'
 import { memo } from 'react'
 import { FieldIcon } from '../field-inputs/field-Icon'
-import { HeaderMenu } from './header-menu'
+import { FieldMenu } from '../field/field-menu'
 import { useSetFieldWidthMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
@@ -81,7 +81,7 @@ export const Th: React.FC<IProps> = memo(({ header, field, column }) => {
           </Text>
         </Group>
 
-        {!field.system && <HeaderMenu field={field} />}
+        {!field.system && <FieldMenu field={field} />}
       </Group>
 
       <Resizer

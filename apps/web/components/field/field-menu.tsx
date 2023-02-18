@@ -1,10 +1,11 @@
 import type { Field } from '@egodb/core'
 import { useDeleteFieldMutation } from '@egodb/store'
-import { ActionIcon, IconDots, Menu } from '@egodb/ui'
+import type { MenuItemProps } from '@egodb/ui'
+import { ActionIcon, IconDots, IconPencil, IconTrash, Menu } from '@egodb/ui'
 import { useConfirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 
-export const HeaderMenu: React.FC<{ field: Field }> = ({ field }) => {
+export const FieldMenu: React.FC<{ field: Field }> = ({ field }) => {
   const table = useCurrentTable()
   const [deleteField] = useDeleteFieldMutation()
 
@@ -17,8 +18,14 @@ export const HeaderMenu: React.FC<{ field: Field }> = ({ field }) => {
     },
   })
 
+  const menuProps: MenuItemProps = {
+    p: 'xs',
+    h: 35,
+    fz: 'xs',
+  }
+
   return (
-    <Menu>
+    <Menu width={180}>
       <Menu.Target>
         <ActionIcon>
           <IconDots size={14} />
@@ -26,7 +33,13 @@ export const HeaderMenu: React.FC<{ field: Field }> = ({ field }) => {
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Item color="red" onClick={confirm}>
+        <Menu.Item icon={<IconPencil size={14} />} {...menuProps}>
+          Update Field
+        </Menu.Item>
+
+        <Menu.Divider />
+
+        <Menu.Item icon={<IconTrash size={14} />} {...menuProps} color="red" onClick={confirm}>
           Delete Field
         </Menu.Item>
       </Menu.Dropdown>
