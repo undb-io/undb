@@ -1,9 +1,7 @@
-import { Button, closeAllModals, Divider, Group, Select, Stack, TextInput } from '@egodb/ui'
-import { FIELD_SELECT_ITEMS } from '../../constants/field.constants'
+import { Button, closeAllModals, Divider, Group, Stack, TextInput } from '@egodb/ui'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldVariantControl } from '../field/field-variant-control'
-import { FieldItem } from '../field-inputs/field-item'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import type { IUpdateFieldSchema } from '@egodb/core'
 import { updateFieldSchema } from '@egodb/core'
@@ -16,9 +14,6 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
   const table = useCurrentTable()
 
   const defaultValues: IUpdateFieldSchema = {
-    // TODO: remove ts lint
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     type: field.type,
     name: field.name.value,
   }

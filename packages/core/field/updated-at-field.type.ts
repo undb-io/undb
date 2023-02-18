@@ -1,5 +1,5 @@
 import * as z from 'zod'
-import { baseFieldQuerySchema, createBaseFieldsSchema } from './field.base.js'
+import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field.base.js'
 import { FIELD_TYPE_KEY } from './field.constant.js'
 import { UpdatedAtField } from './updated-at-field.js'
 
@@ -9,6 +9,9 @@ const updatedAtTypeObjectSchema = z.object({ [FIELD_TYPE_KEY]: updatedAtTypeSche
 
 export const createUpdatedAtFieldSchema = createBaseFieldsSchema.merge(updatedAtTypeObjectSchema)
 export type ICreateUpdatedAtFieldInput = z.infer<typeof createUpdatedAtFieldSchema>
+
+export const updateUpdatedAtFieldSchema = updateBaseFieldSchema.merge(updatedAtTypeObjectSchema)
+export type IUpdateUpdatedAtFieldInput = z.infer<typeof updateUpdatedAtFieldSchema>
 
 export const updatedAtFieldQuerySchema = baseFieldQuerySchema.merge(updatedAtTypeObjectSchema)
 
