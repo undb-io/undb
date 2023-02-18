@@ -8,6 +8,7 @@ import {
   closeAllModals,
   Container,
   Group,
+  IconPencil,
   IconPlus,
   Menu,
   openContextModal,
@@ -151,6 +152,9 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
                 title={<Option name={option.name.value} colorName={option.color.name} shade={option.color.shade} />}
                 renderMenu={() => (
                   <Menu.Item
+                    fz="xs"
+                    h={35}
+                    icon={<IconPencil size={14} color="gray" />}
                     onClick={() =>
                       openContextModal({
                         title: 'Update Option',
