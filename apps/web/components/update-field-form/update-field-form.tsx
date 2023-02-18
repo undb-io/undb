@@ -44,18 +44,17 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
             name="type"
             control={form.control}
             render={(props) => (
-              <Select
+              <TextInput
                 {...props.field}
-                onChange={(type) => type && props.field.onChange(type)}
+                disabled
+                readOnly
                 required
                 label={<FieldInputLabel>type</FieldInputLabel>}
-                data={FIELD_SELECT_ITEMS}
-                itemComponent={FieldItem}
                 icon={<FieldIcon type={form.watch('type')} />}
               />
             )}
           />
-          <TextInput {...form.register('name')} label={<FieldInputLabel>name</FieldInputLabel>} required />
+          <TextInput {...form.register('name')} label={<FieldInputLabel>name</FieldInputLabel>} />
           <FieldVariantControl />
 
           <Divider />
