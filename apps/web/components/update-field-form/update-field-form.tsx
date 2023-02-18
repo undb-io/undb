@@ -70,7 +70,12 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
               Cancel
             </Button>
 
-            <Button loading={isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
+            <Button
+              loading={isLoading}
+              miw={200}
+              disabled={!form.formState.isValid || !form.formState.isDirty}
+              type="submit"
+            >
               Update
             </Button>
           </Group>
