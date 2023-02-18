@@ -5,6 +5,9 @@ import { CSS } from '@dnd-kit/utilities'
 import type { Field } from '@egodb/core'
 import { useMoveFieldMutation, useSetVisibilityMutation } from '@egodb/store'
 import type { CheckboxProps } from '@egodb/ui'
+import { Menu } from '@egodb/ui'
+import { IconChevronDown } from '@egodb/ui'
+import { Box, useHover } from '@egodb/ui'
 import { IconColumns3 } from '@egodb/ui'
 import { useListState } from '@egodb/ui'
 import { ActionIcon, IconGripVertical } from '@egodb/ui'
@@ -14,6 +17,7 @@ import { useEffect } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { FieldIcon } from '../field-inputs/field-Icon'
+import { FieldMenuDropdown } from '../field/field-menu-dropdown'
 
 type OnVisibleChange = (fieldId: string, visible: boolean) => void
 
@@ -29,26 +33,44 @@ const FieldItem: React.FC<IFieldItemProps> = ({ field: f, onVisibleChange, ...re
     transition,
   }
 
+  const { hovered, ref } = useHover()
+
   return (
-    <Group spacing="xs" ref={setNodeRef} style={style}>
-      <ActionIcon size="xs" {...attributes} {...listeners}>
-        <IconGripVertical size={14} />
-      </ActionIcon>
-      <Checkbox
-        lh={1}
-        size="xs"
-        onChange={(e) => onVisibleChange(f.id.value, e.target.checked)}
-        key={f.id.value}
-        value={f.id.value}
-        label={
-          <Group spacing="xs">
-            <FieldIcon type={f.type} />
-            {f.name.value}
-          </Group>
-        }
-        {...rest}
-      />
-    </Group>
+    <Box ref={ref}>
+      <Group spacing="xs" ref={setNodeRef} style={style} position="apart" noWrap>
+        <Group spacing="xs">
+          <ActionIcon size="xs" {...attributes} {...listeners}>
+            <IconGripVertical size={14} />
+          </ActionIcon>
+          <Checkbox
+            lh={1}
+            size="xs"
+            onChange={(e) => onVisibleChange(f.id.value, e.target.checked)}
+            key={f.id.value}
+            value={f.id.value}
+            label={
+              <Group spacing="xs">
+                <FieldIcon type={f.type} />
+                {f.name.value}
+              </Group>
+            }
+            {...rest}
+          />
+        </Group>
+
+        <Menu width={150}>
+          {hovered && (
+            <Menu.Target>
+              <ActionIcon size="xs" color="gray.5">
+                <IconChevronDown />
+              </ActionIcon>
+            </Menu.Target>
+          )}
+
+          <FieldMenuDropdown field={f} />
+        </Menu>
+      </Group>
+    </Box>
   )
 }
 
