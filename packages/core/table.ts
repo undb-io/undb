@@ -17,8 +17,7 @@ import type { IEditTableSchema } from './table.schema.js'
 import type { TableId } from './value-objects/index.js'
 import { TableSchema } from './value-objects/index.js'
 import type { TableName } from './value-objects/table-name.vo'
-import {
-  defaultViewDiaplyType,
+import type {
   ICreateViewSchema,
   IMoveFieldSchema,
   IMoveViewSchema,
@@ -31,9 +30,12 @@ import {
   ISorts,
   ISwitchDisplayTypeSchema,
   IUpdateViewNameSchema,
+  ViewFieldsOrder,
+} from './view'
+import {
+  defaultViewDiaplyType,
   Sorts,
   View,
-  ViewFieldsOrder,
   ViewsOrder,
   WithTableView,
   WithViewFieldsOrder,
@@ -174,7 +176,7 @@ export class Table {
   public updateField(id: string, input: IUpdateFieldSchema): Option<TableCompositeSpecificaiton> {
     const field = this.schema.getFieldById(id).unwrap()
 
-    return field.update(input)
+    return field.update(input as any)
   }
 
   public removeField(id: string): TableCompositeSpecificaiton {

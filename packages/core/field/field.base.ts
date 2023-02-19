@@ -2,7 +2,7 @@ import { and, ValueObject } from '@egodb/domain'
 import { map, pipe, toArray } from '@fxts/core'
 import { isArray, isEmpty, isString, unzip } from 'lodash-es'
 import type { Option } from 'oxide.ts'
-import { None, Some } from 'oxide.ts'
+import { None } from 'oxide.ts'
 import type { IFilter, IOperator } from '../filter/index.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
@@ -14,6 +14,7 @@ import type {
   IReference,
   IReferenceField,
   ITreeField,
+  IUpdateFieldSchema,
   SystemField,
 } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
@@ -53,7 +54,11 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
 
   abstract accept(visitor: IFieldVisitor): void
 
-  public update<T extends IBaseUpdateFieldSchema>(input: T): Option<TableCompositeSpecificaiton> {
+  public update(input: IUpdateFieldSchema): Option<TableCompositeSpecificaiton> {
+    return this.updateBase(input)
+  }
+
+  protected updateBase<T extends IBaseUpdateFieldSchema>(input: T): Option<TableCompositeSpecificaiton> {
     const specs: TableCompositeSpecificaiton[] = []
     if (isString(input.name)) {
       const spec = WithFieldName.fromString(this, input.name)
@@ -79,15 +84,26 @@ export abstract class BaseReferenceField<F extends ITreeField | IParentField | I
     this.props.displayFields = new DisplayFields(ids)
   }
 
-  public updateReference<T extends IUpdateTreeFieldInput | IUpdateParentFieldInput | IUpdateReferenceFieldInput>(
+  public override update(
+    input: IUpdateTreeFieldInput | IUpdateParentFieldInput | IUpdateReferenceFieldInput,
+  ): Option<TableCompositeSpecificaiton> {
+    return this.updateReference(input)
+  }
+
+  protected updateReference<T extends IUpdateTreeFieldInput | IUpdateParentFieldInput | IUpdateReferenceFieldInput>(
     input: T,
   ): Option<TableCompositeSpecificaiton> {
-    let spec = super.update(input)
-    if (isArray(input.displayFieldIds)) {
-      spec = spec.and(Some(WithDisplayFields.fromIds(this, input.displayFieldIds)))
+    const specs: TableCompositeSpecificaiton[] = []
+    const spec = super.updateBase(input)
+    if (spec.isSome()) {
+      specs.push(spec.unwrap())
     }
 
-    return spec
+    if (isArray(input.displayFieldIds)) {
+      specs.push(WithDisplayFields.fromIds(this, input.displayFieldIds))
+    }
+
+    return and(...specs)
   }
 
   getDisplayValues(values?: IRecordDisplayValues): (string | null)[][] {
