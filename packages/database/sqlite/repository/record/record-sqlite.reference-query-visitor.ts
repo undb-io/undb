@@ -24,7 +24,7 @@ import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import { isEmpty } from 'lodash-es'
 import { ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
-import { TABLE_ALIAS } from './record.constants.js'
+import { getFTAlias, TABLE_ALIAS } from './record.constants.js'
 import { getExpandColumnName } from './record.type.js'
 
 const getDisplayFieldIds = (field: IReference): string[] => {
@@ -96,18 +96,18 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
     const { knex, index } = this
     const alias = TABLE_ALIAS
 
-    const rt = `rt${index}`
-    const ft = `ft${index}`
+    const ct = ClosureTable.getAlias(index)
+    const ft = getFTAlias(index)
 
     this.qb
-      .leftJoin(`${closure.name} as ${rt}`, function () {
-        this.on(`${alias}.${INTERNAL_COLUMN_ID_NAME}`, `${rt}.${ClosureTable.PARENT_ID}`).andOn(
-          `${rt}.${ClosureTable.DEPTH}`,
+      .leftJoin(`${closure.name} as ${ct}`, function () {
+        this.on(`${alias}.${INTERNAL_COLUMN_ID_NAME}`, `${ct}.${ClosureTable.PARENT_ID}`).andOn(
+          `${ct}.${ClosureTable.DEPTH}`,
           knex.raw('?', [1]),
         )
       })
       .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
-      .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${rt}.${ClosureTable.CHILD_ID}`)
+      .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${ct}.${ClosureTable.CHILD_ID}`)
 
     const jsonObjectEntries: [string, string][] = getDisplayFieldIds(field).map((fieldId) => [
       `'${fieldId}'`,
@@ -128,18 +128,18 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
     const { knex, index } = this
     const alias = TABLE_ALIAS
 
-    const rt = `rt${index}`
-    const ft = `ft${index}`
+    const ct = ClosureTable.getAlias(index)
+    const ft = getFTAlias(index)
 
     this.qb
-      .leftJoin(`${closure.name} as ${rt}`, function () {
-        this.on(`${alias}.${INTERNAL_COLUMN_ID_NAME}`, `${rt}.${ClosureTable.CHILD_ID}`).andOn(
-          `${rt}.${ClosureTable.DEPTH}`,
+      .leftJoin(`${closure.name} as ${ct}`, function () {
+        this.on(`${alias}.${INTERNAL_COLUMN_ID_NAME}`, `${ct}.${ClosureTable.CHILD_ID}`).andOn(
+          `${ct}.${ClosureTable.DEPTH}`,
           knex.raw('?', [1]),
         )
       })
       .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
-      .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${rt}.${ClosureTable.PARENT_ID}`)
+      .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${ct}.${ClosureTable.PARENT_ID}`)
 
     const jsonObjectEntries: [string, string][] = getDisplayFieldIds(field).map((fieldId) => [
       `'${fieldId}'`,

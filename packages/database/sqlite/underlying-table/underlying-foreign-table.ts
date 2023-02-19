@@ -10,9 +10,15 @@ abstract class BaseUnderlyingForeignTable<F extends Field> implements IUnderlyin
   abstract getCreateTableSqls(knex: Knex): string[]
 }
 
+type AdjacencyListTableAlias = `at${number}`
+
 export class AdjacencyListTable extends BaseUnderlyingForeignTable<ReferenceField> {
   static CHILD_ID = 'child_id'
   static PARENT_ID = 'parent_id'
+
+  static getAlias(index: number): AdjacencyListTableAlias {
+    return `at${index}`
+  }
 
   get name(): IUderlyingForeignTableName {
     return `${this.field.id.value}_${this.foreignTableName}_adjacency_list`
@@ -39,10 +45,16 @@ export class AdjacencyListTable extends BaseUnderlyingForeignTable<ReferenceFiel
   }
 }
 
+type ClosureTableAlias = `ct${number}`
+
 export class ClosureTable extends BaseUnderlyingForeignTable<TreeField | ParentField> {
   static CHILD_ID = 'child_id'
   static PARENT_ID = 'parent_id'
   static DEPTH = 'depth'
+
+  static getAlias(index: number): ClosureTableAlias {
+    return `ct${index}`
+  }
 
   get name(): IUderlyingForeignTableName {
     const fieldId = this.field instanceof TreeField ? this.field.id.value : this.field.treeFieldId.value
