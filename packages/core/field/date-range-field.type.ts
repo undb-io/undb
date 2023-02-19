@@ -1,7 +1,7 @@
 import { isAfter } from 'date-fns'
 import { z } from 'zod'
 import { DateRangeField } from './date-range-field.js'
-import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field.base.js'
+import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field-base.schema'
 import { FIELD_TYPE_KEY } from './field.constant.js'
 
 export const dateRangeTypeSchema = z.literal('date-range')
