@@ -34,8 +34,10 @@ let selectedStartWay: string
 ---
 
 <Layout title="Welcome to Ego." bgColor="#ffffff">
-  <div class="h-full mt-[152px] leading-9 text-center md:text-center flex flex-col items-start mx-[80px]">
-    <h1 class="open-source font-black text-8xl text-start leading-[1.5]">
+  <div
+    class="h-full mt-[152px] leading-9 text-center md:text-center flex flex-col items-start w-screen overflow-x-hidden"
+  >
+    <h1 class="open-source font-black text-8xl text-start leading-[1.5] mx-[80px]">
       Open Source
       <br />
       <span
@@ -45,7 +47,7 @@ let selectedStartWay: string
       </span>
       <span class="ml-[40px]">Platform</span>
     </h1>
-    <div class="fast-installation flex gap-[20px] my-[40px]">
+    <div class="fast-installation flex gap-[20px] my-[40px] mx-[80px]">
       <div class="flex-1 hint my-[24px] text-gray-600 text-[20px] text-start font-[200]">
         Privacy first and airtable alternative
         <br />
@@ -69,26 +71,74 @@ let selectedStartWay: string
       </div>
     </div>
 
-    <span class="font-black text-8xl leading-relaxed">Open Source, Privacy First</span>
-    <span class="font-black text-8xl text-[#05449d] leading-relaxed">Airtable Alternative</span>
-    <span class="leading-relaxed text-1xl font-extralight mt-5 mb-8 text-[#888888]"
-      >EgoDB is an open source #NoCode platform that turns any database into a smart spreadsheet.</span
-    >
-    <div class="flex flex-row gap-[30px]">
-      <button class="font-bold bg-[#0a6bde] rounded-lg py-[9px] px-[20px] text-slate-100 w-[180px] flex items-center">
-        <img src={gitHubIcon} alt="" />&nbsp Check GitHub</button
+    <div class="flex flex-col items-center justify-center w-full mt-[200px] px-[80px]">
+      <div class="items-wrapper grid grid-rows-2 grid-cols-3 gap-x-[3em] gap-y-[2em] w-full">
+        <div class="flex">
+          <div class="w-[5px] h-full bg-blue-400 shadow-blue-500/50 rounded-md"></div>
+          <div class="item-content flex flex-col items-start ml-[16px] gap-[8px]">
+            <p class="item-title text-3xl font-semibold">Flexible and configurable</p>
+            <span class="content text-start leading-[2] text-[#646676]"
+              >Configurable layouts and templates adapt to your dataset and workflow.</span
+            >
+          </div>
+        </div>
+        <div class="flex">
+          <div class="w-[5px] h-full bg-blue-400 shadow-blue-500/50 rounded-md"></div>
+          <div class="item-content flex flex-col items-start ml-[16px] gap-[8px]">
+            <p class="item-title text-3xl font-semibold text-start">Integrate with your ML/AI pipeline</p>
+            <span class="content text-start leading-[2] text-[#646676]"
+              >Webhooks, Python SDK and API allow you to authenticate, create projects, import tasks, manage model
+              predictions, and more.</span
+            >
+          </div>
+        </div>
+        <div class="flex">
+          <div class="w-[5px] h-full bg-blue-400 rounded-md"></div>
+          <div class="item-content flex flex-col items-start ml-[16px] gap-[8px]">
+            <p class="item-title text-3xl font-semibold text-start">ML-assisted labeling</p>
+            <span class="content text-start leading-[2] text-[#646676]"
+              >Save time by using predictions to assist your labeling process with ML backend integration.</span
+            >
+          </div>
+        </div>
+        <div class="flex">
+          <div class="w-[5px] h-full bg-blue-400 rounded-md"></div>
+          <div class="item-content flex flex-col items-start ml-[16px] gap-[8px]">
+            <p class="item-title text-3xl font-semibold text-start">Connect your cloud storage</p>
+            <span class="content text-start leading-[2] text-[#646676]"
+              >Connect to cloud object storage and label data there directly with S3 and GCP.</span
+            >
+          </div>
+        </div>
+        <div class="flex">
+          <div class="w-[5px] h-full bg-blue-400 rounded-md"></div>
+          <div class="item-content flex flex-col items-start ml-[16px] gap-[8px]">
+            <p class="item-title text-3xl font-semibold text-start">Explore & understand your data</p>
+            <span class="content text-start leading-[2] text-[#646676]"
+              >Prepare and manage your dataset in our Data Manager using advanced filters.</span
+            >
+          </div>
+        </div>
+        <div class="flex">
+          <div class="w-[5px] h-full bg-blue-400 shadow-blue-500/50 rounded-md"></div>
+          <div class="item-content flex flex-col items-start ml-[16px] gap-[8px]">
+            <p class="item-title text-3xl font-semibold">Multiple projects and users</p>
+            <span class="content text-start leading-[2] text-[#646676]"
+              >Support multiple projects, use cases and data types in one platform.</span
+            >
+          </div>
+        </div>
+      </div>
+      <span class="leading-relaxed text-1xl font-extralight mt-[50px] mb-8 text-[#888888]"
+        >EgoDB is an open source #NoCode platform that turns any database into a smart spreadsheet.</span
       >
-      <button class="font-bold bg-[#000000] rounded-lg py-[9px] px-[20px] text-slate-100 w-[180px] flex items-center">
-        <img class="w-[25px]" src={egoWhiteIcon} alt="" />Self Host EGO</button
-      >
-    </div>
-    <span class="leading-relaxed text-1xl font-extralight mt-5 mb-8 text-[#888888]">Supported Databases</span>
-    <div class="flex justify-center pt-[10px]">
-      {imgList.map((img, index) => <img class="h-[40px] px-[20px]" src={img} alt="" />)}
     </div>
 
-    <div class="mt-[300px] text-4xl font-mono">Do what you want to do</div>
-    <div class="w-full h-full mx-2 flex flex-col gap-[200px] mt-[40px] bg-gradient-to-b from-white to-sky-100">
+    <!-- <span class="font-black text-8xl leading-relaxed">Open Source, Privacy First</span>
+    <span class="font-black text-8xl text-[#05449d] leading-relaxed">Airtable Alternative</span> -->
+
+    <div class="mt-[300px] text-4xl font-mono w-screen font-bold">The sample template</div>
+    <div class="w-full h-full mx-2 flex flex-col gap-[200px] mt-[80px] bg-gradient-to-b from-white to-sky-100">
       <div class="item-1 mx-[100px] flex items-center">
         <div class="w-[60%] mr-[40px]">
           <img class="rounded-lg" src={'./public/images/image_1.jpg'} alt="" />
@@ -139,6 +189,24 @@ let selectedStartWay: string
             <img class="w-[16px] h-[16px]" src="./public/images/button-icons/chevron-right.svg" alt="" />
           </button>
         </span>
+      </div>
+    </div>
+    <div class="flex flex-col justify-center items-center w-full mt-[180px]">
+      <p class="label text-6xl font-mono font-bold">Global Community</p>
+      <span class="leading-relaxed text-1xl font-extralight mt-[50px] mb-8 text-[#888888]">
+        TRUSTED BY COMPANIES LARGE AND SMALL
+      </span>
+      <div class="flex flex-row gap-[30px]">
+        <button class="font-bold bg-[#0a6bde] rounded-lg py-[9px] px-[20px] text-slate-100 w-[180px] flex items-center">
+          <img src={gitHubIcon} alt="" />&nbsp Check GitHub</button
+        >
+        <button class="font-bold bg-[#000000] rounded-lg py-[9px] px-[20px] text-slate-100 w-[180px] flex items-center">
+          <img class="w-[25px]" src={egoWhiteIcon} alt="" />Self Host EGO</button
+        >
+      </div>
+      <span class="leading-relaxed text-1xl font-extralight mt-5 mb-8 text-[#888888]">Supported Databases</span>
+      <div class="flex justify-center pt-[10px]">
+        {imgList.map((img, index) => <img class="h-[40px] px-[20px]" src={img} alt="" />)}
       </div>
     </div>
     <div class="flex flex-row gap-[30px] mt-[300px] mx-[100px] mb-[200px]">

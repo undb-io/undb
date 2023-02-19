@@ -1,12 +1,15 @@
 ---
 export interface Props {
-  color:string
+  color: string
 }
-const {color} = Astro.props
+const { color } = Astro.props
 ---
 
 <div class="flex flex-col">
-  <div style={`background-color:${color}`} class="flex justify-around h-72 items-center gap-20 bg-[transparent] fixed w-full border-b px-['20px'] shadow">
+  <div
+    style={`background-color:${color}`}
+    class="flex justify-around h-72 items-center gap-20 bg-[transparent] fixed w-screen border-b px-['20px'] shadow"
+  >
     <a class="flex h-full gap-1 items-center" href="/">
       <img class="h-2/3" alt="ego.io" src="/apple-touch-icon.png" />
       <span class="font-mono text-2xl font-extrabold">ego</span>
