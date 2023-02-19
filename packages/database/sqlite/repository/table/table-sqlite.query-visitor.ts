@@ -27,6 +27,7 @@ import type {
   WithViewName,
   WithViewsOrder,
 } from '@egodb/core'
+import type { WithDisplayFields } from '@egodb/core/field/specifications/reference-field.specification.js'
 import type { QueryBuilder } from '@mikro-orm/better-sqlite'
 import type { Table } from '../../entity/index.js'
 
@@ -108,6 +109,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   withFieldName(s: WithFieldName): void {
+    throw new Error('Method not implemented.')
+  }
+  displayFieldsEqual(s: WithDisplayFields): void {
     throw new Error('Method not implemented.')
   }
 

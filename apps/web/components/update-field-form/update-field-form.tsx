@@ -3,7 +3,7 @@ import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldVariantControl } from '../field/field-variant-control'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
-import type { IUpdateFieldSchema } from '@egodb/core'
+import type { IUpdateFieldSchema, ReferenceFieldTypes } from '@egodb/core'
 import { updateFieldSchema } from '@egodb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { IUpdateFieldProps } from './update-field.props'
@@ -18,6 +18,10 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
     name: field.name.value,
   }
 
+  if (defaultValues.type === 'tree' || defaultValues.type === 'parent' || defaultValues.type === 'reference') {
+    defaultValues.displayFieldIds = (field as ReferenceFieldTypes).displayFieldIds.map((id) => id.value)
+  }
+
   const form = useForm<IUpdateFieldSchema>({
     defaultValues,
     resolver: zodResolver(updateFieldSchema),
@@ -25,7 +29,18 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
 
   const [updateField, { isLoading }] = useUpdateFieldMutation()
 
-  const onSubmit = form.handleSubmit(async (values) => {
+  const onSubmit = form.handleSubmit(async (data) => {
+    const values: IUpdateFieldSchema = { type: data.type }
+
+    for (const [key, value] of Object.entries(data)) {
+      const k = key as keyof IUpdateFieldSchema
+      if (k === 'type') continue
+      const isDirty = form.getFieldState(k).isDirty
+      if (isDirty) {
+        values[k] = value as IUpdateFieldSchema[typeof k]
+      }
+    }
+
     await updateField({
       tableId: table.id.value,
       fieldId: field.id.value,
@@ -54,6 +69,7 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
             )}
           />
           <TextInput {...form.register('name')} label={<FieldInputLabel>name</FieldInputLabel>} />
+
           <FieldVariantControl />
 
           <Divider />

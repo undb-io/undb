@@ -1,6 +1,6 @@
 import * as z from 'zod'
 import { createOptionsSchema, optionIdSchema, optionsSchema } from '../option/option.schema.js'
-import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field.base.js'
+import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field-base.schema'
 import { FIELD_TYPE_KEY } from './field.constant.js'
 import { SelectField } from './select-field.js'
 import { fieldIdSchema } from './value-objects/field-id.schema.js'

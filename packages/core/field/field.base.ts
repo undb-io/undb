@@ -1,12 +1,12 @@
 import { and, ValueObject } from '@egodb/domain'
 import { map, pipe, toArray } from '@fxts/core'
-import { isEmpty, isString, unzip } from 'lodash-es'
+import { isArray, isEmpty, isString, unzip } from 'lodash-es'
 import type { Option } from 'oxide.ts'
 import { None } from 'oxide.ts'
-import * as z from 'zod'
 import type { IFilter, IOperator } from '../filter/index.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import type { IBaseUpdateFieldSchema } from './field-base.schema'
 import type {
   IBaseField,
   IFieldType,
@@ -14,33 +14,17 @@ import type {
   IReference,
   IReferenceField,
   ITreeField,
+  IUpdateFieldSchema,
   SystemField,
 } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
+import type { IUpdateParentFieldInput } from './parent-field.type.js'
+import type { IUpdateReferenceFieldInput } from './reference-field.type.js'
 import { WithFieldName } from './specifications/base-field.specification.js'
-import { fieldIdSchema } from './value-objects/field-id.schema.js'
-import { fieldNameSchema } from './value-objects/field-name.schema.js'
+import { WithDisplayFields } from './specifications/reference-field.specification.js'
+import type { IUpdateTreeFieldInput } from './tree-field.type.js'
 import type { FieldId, FieldName } from './value-objects/index.js'
-import { valueConstraintsSchema } from './value-objects/index.js'
-
-export const createBaseFieldsSchema = z
-  .object({
-    id: fieldIdSchema.optional(),
-    name: fieldNameSchema,
-  })
-  .merge(valueConstraintsSchema)
-
-export type IBaseCreateFieldsSchema = z.infer<typeof createBaseFieldsSchema>
-
-export const updateBaseFieldSchema = z
-  .object({
-    name: fieldNameSchema,
-  })
-  .partial()
-
-export type IBaseUpdateFieldSchema = z.infer<typeof updateBaseFieldSchema>
-
-export const baseFieldQuerySchema = z.object({ id: fieldIdSchema, name: fieldNameSchema }).merge(valueConstraintsSchema)
+import { DisplayFields } from './value-objects/index.js'
 
 export abstract class BaseField<C extends IBaseField = IBaseField> extends ValueObject<C> {
   abstract type: IFieldType
@@ -70,7 +54,11 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
 
   abstract accept(visitor: IFieldVisitor): void
 
-  public update<T extends IBaseUpdateFieldSchema>(input: T): Option<TableCompositeSpecificaiton> {
+  public update(input: IUpdateFieldSchema): Option<TableCompositeSpecificaiton> {
+    return this.updateBase(input)
+  }
+
+  protected updateBase<T extends IBaseUpdateFieldSchema>(input: T): Option<TableCompositeSpecificaiton> {
     const specs: TableCompositeSpecificaiton[] = []
     if (isString(input.name)) {
       const spec = WithFieldName.fromString(this, input.name)
@@ -90,6 +78,32 @@ export abstract class BaseReferenceField<F extends ITreeField | IParentField | I
 
   get displayFieldIds(): FieldId[] {
     return this.props.displayFields?.ids ?? []
+  }
+
+  set displayFieldIds(ids: FieldId[]) {
+    this.props.displayFields = new DisplayFields(ids)
+  }
+
+  public override update(
+    input: IUpdateTreeFieldInput | IUpdateParentFieldInput | IUpdateReferenceFieldInput,
+  ): Option<TableCompositeSpecificaiton> {
+    return this.updateReference(input)
+  }
+
+  protected updateReference<T extends IUpdateTreeFieldInput | IUpdateParentFieldInput | IUpdateReferenceFieldInput>(
+    input: T,
+  ): Option<TableCompositeSpecificaiton> {
+    const specs: TableCompositeSpecificaiton[] = []
+    const spec = super.updateBase(input)
+    if (spec.isSome()) {
+      specs.push(spec.unwrap())
+    }
+
+    if (isArray(input.displayFieldIds)) {
+      specs.push(WithDisplayFields.fromIds(this, input.displayFieldIds))
+    }
+
+    return and(...specs)
   }
 
   getDisplayValues(values?: IRecordDisplayValues): (string | null)[][] {

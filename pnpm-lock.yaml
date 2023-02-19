@@ -158,6 +158,7 @@ importers:
       react-redux: ^8.0.5
       superjson: ^1.12.2
       tsconfig: ^0.0.0
+      type-fest: ^3.5.7
       typescript: ^4.9.5
       use-deep-compare-effect: ^1.8.1
     dependencies:
@@ -196,6 +197,7 @@ importers:
       '@types/react-dom': 18.0.10
       eslint: 8.34.0
       tsconfig: link:../../packages/tsconfig
+      type-fest: 3.5.7
       typescript: 4.9.5
 
   apps/www:
