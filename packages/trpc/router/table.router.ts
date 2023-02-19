@@ -4,14 +4,14 @@ import {
   createTableCommandOutput,
   DeleteTableCommand,
   deleteTableCommandInput,
-  EditTableCommand,
-  editTableCommandInput,
   GetTableQuery,
   getTableQueryOutput,
   getTableQuerySchema,
   GetTablesQuery,
   getTablesQueryOutput,
   getTablesQuerySchema,
+  UpdateTableCommand,
+  updateTableCommandInput,
 } from '@egodb/cqrs'
 import type { ICommandBus, IQueryBus } from '@egodb/domain'
 import { z } from 'zod'
@@ -44,11 +44,11 @@ export const createTableRouter =
           const cmd = new CreateTableCommand({ name: input.name, schema: input.schema })
           return commandBus.execute(cmd)
         }),
-      edit: procedure
-        .input(editTableCommandInput)
+      update: procedure
+        .input(updateTableCommandInput)
         .output(z.void())
         .mutation(({ input }) => {
-          const cmd = new EditTableCommand(input)
+          const cmd = new UpdateTableCommand(input)
           return commandBus.execute(cmd)
         }),
       delete: procedure

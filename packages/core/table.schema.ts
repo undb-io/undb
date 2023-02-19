@@ -29,10 +29,10 @@ export const queryTable = z.object({
   viewsOrder: viewsOrderSchema.optional(),
 })
 
-export const editTableSchema = z
+export const updateTableSchema = z
   .object({
     name: tableNameSchema,
   })
   .partial()
 
-export type IEditTableSchema = z.infer<typeof editTableSchema>
+export type IUpdateTableSchema = z.infer<typeof updateTableSchema>

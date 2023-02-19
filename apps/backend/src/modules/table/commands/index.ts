@@ -12,7 +12,6 @@ import { DeleteTableCommandHandler } from './delete-table.command.handler'
 import { DeleteViewCommandHandler } from './delete-view.command.handler'
 import { DuplicateRecordCommandHandler } from './duplicate-record.command.handler'
 import { DuplicateViewCommandHandler } from './duplicate-view.command.handler'
-import { EditTableCommandHandler } from './edit-table.command.handler'
 import { MoveFieldCommandHandler } from './move-field.command.handler'
 import { MoveViewCommandHandler } from './move-view.command.handler'
 import { ReorderOptionsCommandHandler } from './reorder-options.command.handler'
@@ -28,6 +27,7 @@ import { UpdateViewNameCommandHandler } from './udpate-view-name.command.handler
 import { UpdateFieldCommandHandler } from './update-field.command.handler'
 import { UpdateOptionCommandHandler } from './update-option.command.handler'
 import { UpdateRecordCommandHandler } from './update-record.command.handler'
+import { UpdateTableCommandHandler } from './update-table.command.handler'
 
 export const commandHandlers = [
   CreateTableCommandHandler,
@@ -46,7 +46,7 @@ export const commandHandlers = [
   SetFieldVisibilityCommandHandler,
   MoveFieldCommandHandler,
   MoveViewCommandHandler,
-  EditTableCommandHandler,
+  UpdateTableCommandHandler,
   ReorderOptionsCommandHandler,
   SwitchDisplayTypeCommandHandler,
   UpdateRecordCommandHandler,

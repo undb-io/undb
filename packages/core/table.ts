@@ -13,7 +13,7 @@ import { createRecordInputs } from './record/record.utils'
 import { WithRecordValues } from './record/specifications/record-values.specification.js'
 import { WithTableName } from './specifications/index.js'
 import type { TableCompositeSpecificaiton } from './specifications/interface.js'
-import type { IEditTableSchema } from './table.schema.js'
+import type { IUpdateTableSchema } from './table.schema.js'
 import type { TableId } from './value-objects/index.js'
 import { TableSchema } from './value-objects/index.js'
 import type { TableName } from './value-objects/table-name.vo'
@@ -137,7 +137,7 @@ export class Table {
     return spec
   }
 
-  public edit(input: IEditTableSchema): Option<TableCompositeSpecificaiton> {
+  public update(input: IUpdateTableSchema): Option<TableCompositeSpecificaiton> {
     const specs: TableCompositeSpecificaiton[] = []
 
     if (input.name) {

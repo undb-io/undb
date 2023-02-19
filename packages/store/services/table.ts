@@ -37,8 +37,8 @@ export const tableApi = api.injectEndpoints({
       query: trpc.table.create.mutate,
       invalidatesTags: ['Table'],
     }),
-    editTable: builder.mutation({
-      query: trpc.table.edit.mutate,
+    updateTable: builder.mutation({
+      query: trpc.table.update.mutate,
       invalidatesTags: ['Table'],
     }),
     deleteTable: builder.mutation({
@@ -53,6 +53,6 @@ export const {
   useGetTablesQuery,
   useGetTableQuery,
   useCreateTableMutation,
-  useEditTableMutation,
+  useUpdateTableMutation,
   useDeleteTableMutation,
 } = tableApi

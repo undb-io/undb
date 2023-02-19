@@ -1,5 +1,5 @@
-import type { IEditTableSchema } from '@egodb/core'
-import { editTableSchema } from '@egodb/core'
+import type { IUpdateTableSchema } from '@egodb/core'
+import { updateTableSchema } from '@egodb/core'
 import { Drawer } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom } from 'jotai'
@@ -7,16 +7,16 @@ import { FormProvider, useForm } from 'react-hook-form'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useConfirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
-import { editTableFormDrawerOpened } from './drawer-opened.atom'
-import { EditTableForm } from './edit-table-form'
-import { EditTableMenu } from './edit-table-menu'
+import { updateTableFormDrawerOpened } from './drawer-opened.atom'
+import { UpdateTableForm } from './update-table-form'
+import { UpdateTableMenu } from './update-table-menu'
 
-export const EditTableFormDrawer: React.FC = () => {
+export const UpdateTableFormDrawer: React.FC = () => {
   const table = useCurrentTable()
 
-  const [opened, setOpened] = useAtom(editTableFormDrawerOpened)
+  const [opened, setOpened] = useAtom(updateTableFormDrawerOpened)
 
-  const defaultValues: IEditTableSchema = {
+  const defaultValues: IUpdateTableSchema = {
     name: table.name.value,
   }
 
@@ -24,9 +24,9 @@ export const EditTableFormDrawer: React.FC = () => {
     form.reset(defaultValues)
   }, [defaultValues])
 
-  const form = useForm<IEditTableSchema>({
+  const form = useForm<IUpdateTableSchema>({
     defaultValues,
-    resolver: zodResolver(editTableSchema),
+    resolver: zodResolver(updateTableSchema),
   })
 
   const reset = () => {
@@ -49,7 +49,7 @@ export const EditTableFormDrawer: React.FC = () => {
             reset()
           }
         }}
-        title={<EditTableMenu />}
+        title={<UpdateTableMenu />}
         padding="xl"
         position="right"
         styles={{
@@ -59,7 +59,7 @@ export const EditTableFormDrawer: React.FC = () => {
         }}
         size={700}
       >
-        <EditTableForm onCancel={() => setOpened(false)} />
+        <UpdateTableForm onCancel={() => setOpened(false)} />
       </Drawer>
     </FormProvider>
   )

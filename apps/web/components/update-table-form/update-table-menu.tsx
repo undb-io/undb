@@ -4,12 +4,12 @@ import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
 import { useConfirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
-import { editTableFormDrawerOpened } from './drawer-opened.atom'
+import { updateTableFormDrawerOpened } from './drawer-opened.atom'
 
-export const EditTableMenu: React.FC = () => {
+export const UpdateTableMenu: React.FC = () => {
   const table = useCurrentTable()
 
-  const setOpened = useSetAtom(editTableFormDrawerOpened)
+  const setOpened = useSetAtom(updateTableFormDrawerOpened)
   const router = useRouter()
 
   const [deleteTable] = useDeleteTableMutation()
