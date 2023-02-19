@@ -5,6 +5,10 @@ import { CSS } from '@dnd-kit/utilities'
 import type { Field } from '@egodb/core'
 import { useMoveFieldMutation, useSetVisibilityMutation } from '@egodb/store'
 import type { CheckboxProps } from '@egodb/ui'
+import { Portal } from '@egodb/ui'
+import { openContextModal } from '@egodb/ui'
+import { IconColumnInsertRight } from '@egodb/ui'
+import { Divider } from '@egodb/ui'
 import { Menu } from '@egodb/ui'
 import { IconChevronDown } from '@egodb/ui'
 import { Box, useHover } from '@egodb/ui'
@@ -16,6 +20,7 @@ import { Badge, Button, Checkbox, Group, Popover, Stack, useDisclosure } from '@
 import { useEffect } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
+import { CREATE_FIELD_MODAL_ID } from '../../modals'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldMenuDropdown } from '../field/field-menu-dropdown'
 
@@ -127,45 +132,68 @@ export const ViewFieldsEditor: React.FC = () => {
         </Tooltip>
       </Popover.Target>
 
-      <Popover.Dropdown>
-        <Stack>
-          <DndContext
-            collisionDetection={closestCenter}
-            modifiers={[restrictToVerticalAxis]}
-            onDragEnd={(e) => {
-              const { over, active } = e
-              if (over) {
-                handlers.reorder({
-                  from: active.data.current?.sortable?.index,
-                  to: over?.data.current?.sortable?.index,
-                })
+      <Portal>
+        <Popover.Dropdown>
+          <Stack>
+            <DndContext
+              collisionDetection={closestCenter}
+              modifiers={[restrictToVerticalAxis]}
+              onDragEnd={(e) => {
+                const { over, active } = e
+                if (over) {
+                  handlers.reorder({
+                    from: active.data.current?.sortable?.index,
+                    to: over?.data.current?.sortable?.index,
+                  })
 
-                moveField({
-                  tableId: table.id.value,
-                  viewId: view.id.value,
-                  from: active.id as string,
-                  to: over.id as string,
-                })
-              }
+                  moveField({
+                    tableId: table.id.value,
+                    viewId: view.id.value,
+                    from: active.id as string,
+                    to: over.id as string,
+                  })
+                }
+              }}
+            >
+              <SortableContext items={order} strategy={verticalListSortingStrategy}>
+                {order.map((fieldId) => {
+                  const field = schema.get(fieldId)
+                  if (!field) return null
+                  return (
+                    <FieldItem
+                      key={field.id.value}
+                      field={field}
+                      onVisibleChange={onChange}
+                      defaultChecked={visibility[field.id.value] === undefined || !!visibility[field.id.value]}
+                    />
+                  )
+                })}
+              </SortableContext>
+            </DndContext>
+          </Stack>
+
+          <Divider my="sm" />
+
+          <Button
+            compact
+            size="xs"
+            fullWidth
+            variant="light"
+            color="gray"
+            leftIcon={<IconColumnInsertRight size={14} />}
+            onClick={() => {
+              handler.close()
+              openContextModal({
+                title: 'Create New Field',
+                modal: CREATE_FIELD_MODAL_ID,
+                innerProps: {},
+              })
             }}
           >
-            <SortableContext items={order} strategy={verticalListSortingStrategy}>
-              {order.map((fieldId) => {
-                const field = schema.get(fieldId)
-                if (!field) return null
-                return (
-                  <FieldItem
-                    key={field.id.value}
-                    field={field}
-                    onVisibleChange={onChange}
-                    defaultChecked={visibility[field.id.value] === undefined || !!visibility[field.id.value]}
-                  />
-                )
-              })}
-            </SortableContext>
-          </DndContext>
-        </Stack>
-      </Popover.Dropdown>
+            Create New Field
+          </Button>
+        </Popover.Dropdown>
+      </Portal>
     </Popover>
   )
 }
