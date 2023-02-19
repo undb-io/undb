@@ -1,5 +1,6 @@
 import { CompositeSpecification } from '@egodb/domain'
-import { Ok, Result } from 'oxide.ts'
+import type { Result } from 'oxide.ts'
+import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
 import type { BaseField } from '../field.base.js'
@@ -13,7 +14,7 @@ export abstract class BaseFieldSpecification<F extends Field> extends CompositeS
 }
 
 export class WithFieldName extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(private readonly field: BaseField, public readonly name: FieldName) {
+  constructor(public readonly field: BaseField, public readonly name: FieldName) {
     super()
   }
 

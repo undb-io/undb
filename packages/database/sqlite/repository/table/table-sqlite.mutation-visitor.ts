@@ -25,8 +25,10 @@ import type {
   WithViewName,
   WithViewsOrder,
 } from '@egodb/core'
+import type { WithDisplayFields } from '@egodb/core/field/specifications/reference-field.specification.js'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
+import type { ParentField, ReferenceField, TreeField } from '../../entity/index.js'
 import { Field, Option, SelectField, Table } from '../../entity/index.js'
 import { View } from '../../entity/view.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
@@ -199,6 +201,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   withFieldName(s: WithFieldName): void {
     const field = this.getField(s.field.id.value)
     wrap(field).assign({ name: s.name.value })
+    this.em.persist(field)
+  }
+  displayFieldsEqual(s: WithDisplayFields): void {
+    const field = this.getField(s.field.id.value) as TreeField | ParentField | ReferenceField
+    wrap(field).assign({ displayFieldIds: s.displayFields.map((id) => id.value) })
     this.em.persist(field)
   }
   not(): this {

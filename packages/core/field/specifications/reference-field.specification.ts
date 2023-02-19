@@ -10,7 +10,7 @@ import { FieldId } from '../value-objects/field-id.vo.js'
 
 export class WithDisplayFields extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(
-    private readonly field: BaseReferenceField<ITreeField | IParentField | IReferenceField>,
+    public readonly field: BaseReferenceField<ITreeField | IParentField | IReferenceField>,
     public readonly displayFields: FieldId[],
   ) {
     super()
