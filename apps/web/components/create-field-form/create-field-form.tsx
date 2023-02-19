@@ -53,7 +53,7 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel }) => {
             )}
           />
           <TextInput {...form.register('name')} label={<FieldInputLabel>name</FieldInputLabel>} required />
-          <FieldVariantControl />
+          <FieldVariantControl isNew />
 
           <Divider />
 

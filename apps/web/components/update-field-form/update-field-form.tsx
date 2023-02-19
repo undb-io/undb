@@ -70,7 +70,7 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
           />
           <TextInput {...form.register('name')} label={<FieldInputLabel>name</FieldInputLabel>} />
 
-          <FieldVariantControl />
+          <FieldVariantControl isNew={false} />
 
           <Divider />
 
