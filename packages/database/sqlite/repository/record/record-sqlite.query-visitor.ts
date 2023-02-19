@@ -46,15 +46,16 @@ import type { Knex } from '@mikro-orm/better-sqlite'
 import { endOfDay, startOfDay } from 'date-fns'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants.js'
 import { ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
+import { TABLE_ALIAS } from './record.constants.js'
 
 export class RecordSqliteQueryVisitor implements IRecordVisitor {
   constructor(
     private readonly tableId: string,
-    private readonly alias: string = 't',
     private readonly schema: TableSchemaIdMap,
     private qb: Knex.QueryBuilder,
     private knex: Knex,
   ) {
+    const alias = TABLE_ALIAS
     this.qb = qb.from(tableId + ' as ' + alias).whereNull(`${alias}.${INTERNAL_COLUMN_DELETED_AT_NAME}`)
   }
   get query() {
@@ -62,7 +63,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   }
 
   getFieldId(fieldId: string) {
-    return this.alias + '.' + fieldId
+    return TABLE_ALIAS + '.' + fieldId
   }
 
   idEqual(s: WithRecordId): void {
@@ -72,11 +73,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     this.qb.whereIn(this.getFieldId(INTERNAL_COLUMN_ID_NAME), s.idsStringList)
   }
   tableIdEqual(s: WithRecordTableId): void {
-    if (this.alias) {
-      this.qb.from(`${s.id.value} as ${this.alias}`)
-    } else {
-      this.qb.from(s.id.value)
-    }
+    this.qb.from(`${s.id.value} as ${TABLE_ALIAS}`)
   }
   createdAt(s: WithRecordCreatedAt): void {
     this.qb.where({ [this.getFieldId(INTERNAL_COLUMN_CREATED_AT_NAME)]: s.date.value })
@@ -220,7 +217,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       )
     }
 
-    const id = `${this.alias}.${INTERNAL_COLUMN_ID_NAME}`
+    const id = `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`
     this.qb.whereNotIn(id, subQuery)
     if (recordId) {
       this.qb.andWhereNot(id, recordId)
@@ -233,7 +230,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
 
     const closure = new ClosureTable(this.tableId, field)
 
-    const id = `${this.alias}.${INTERNAL_COLUMN_ID_NAME}`
+    const id = `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`
     this.qb.whereNotIn(
       id,
       this.knex.queryBuilder().select(ClosureTable.CHILD_ID).from(closure.name).where(ClosureTable.DEPTH, '>', '0'),
@@ -246,7 +243,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
 
     const recordId = s.value
     if (recordId) {
-      const id = `${this.alias}.${INTERNAL_COLUMN_ID_NAME}`
+      const id = `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`
       this.qb.whereNot(id, recordId)
     }
   }

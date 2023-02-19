@@ -24,6 +24,7 @@ import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import { isEmpty } from 'lodash-es'
 import { ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
+import { TABLE_ALIAS } from './record.constants.js'
 import { getExpandColumnName } from './record.type.js'
 
 const getDisplayFieldIds = (field: IReference): string[] => {
@@ -39,7 +40,6 @@ const getDisplayFieldIds = (field: IReference): string[] => {
 export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
   constructor(
     private readonly tableId: string,
-    private readonly alias: string = 't',
     private readonly index: number,
     private readonly qb: Knex.QueryBuilder,
     private readonly knex: Knex,
@@ -87,13 +87,14 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
   select(value: SelectField): void {
     throw new Error('Method not implemented.')
   }
-  reference(value: ReferenceField): void {
+  reference(field: ReferenceField): void {
     throw new Error('Method not implemented.')
   }
   tree(field: TreeField): void {
     const foreignTableId = this.getForeignTableId(field)
     const closure = new ClosureTable(foreignTableId, field)
-    const { alias, knex, index } = this
+    const { knex, index } = this
+    const alias = TABLE_ALIAS
 
     const rt = `rt${index}`
     const ft = `ft${index}`
@@ -124,7 +125,8 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
   parent(field: ParentField): void {
     const foreignTableId = this.getForeignTableId(field)
     const closure = new ClosureTable(foreignTableId, field)
-    const { alias, knex, index } = this
+    const { knex, index } = this
+    const alias = TABLE_ALIAS
 
     const rt = `rt${index}`
     const ft = `ft${index}`
