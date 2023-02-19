@@ -356,6 +356,8 @@ export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: 
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField | AutoIncrementField
 
+export type ReferenceFieldTypes = ReferenceField | TreeField | ParentField
+
 export type NoneSystemField =
   | StringField
   | NumberField
