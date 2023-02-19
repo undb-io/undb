@@ -14,7 +14,7 @@ interface IProps {
   onSuccess?: () => void
 }
 
-export const EditRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
+export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
   const form = useFormContext<IUpdateRecordValueSchema>()
   const table = useCurrentTable()
 
