@@ -8,8 +8,11 @@ import type { FieldBase } from '../field-inputs/field-picker.type'
 import { FieldsPicker } from '../field-inputs/fields-picker'
 import { SelectFieldControl } from '../field-inputs/select-field-control'
 
-// TODO: initial value
-export const FieldVariantControl: React.FC = () => {
+interface IProps {
+  isNew: boolean
+}
+
+export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
   const table = useCurrentTable()
 
   const form = useFormContext<ICreateFieldSchema>()
@@ -44,19 +47,21 @@ export const FieldVariantControl: React.FC = () => {
     )
   }
 
-  if (type === 'tree') {
+  if (type === 'tree' || type === 'reference' || type === 'parent') {
     return (
       <>
-        <Controller
-          name="parentFieldName"
-          render={(props) => (
-            <TextInput
-              label={<FieldInputLabel>parent field name</FieldInputLabel>}
-              {...props.field}
-              value={props.field.value ?? ''}
-            />
-          )}
-        />
+        {isNew && type === 'tree' && (
+          <Controller
+            name="parentFieldName"
+            render={(props) => (
+              <TextInput
+                label={<FieldInputLabel>parent field name</FieldInputLabel>}
+                {...props.field}
+                value={props.field.value ?? ''}
+              />
+            )}
+          />
+        )}
         <Controller
           name={'displayFieldIds'}
           render={(props) => (
