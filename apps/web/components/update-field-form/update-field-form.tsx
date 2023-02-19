@@ -25,7 +25,18 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
 
   const [updateField, { isLoading }] = useUpdateFieldMutation()
 
-  const onSubmit = form.handleSubmit(async (values) => {
+  const onSubmit = form.handleSubmit(async (data) => {
+    const values: IUpdateFieldSchema = { type: data.type }
+
+    for (const [key, value] of Object.entries(data)) {
+      const k = key as keyof IUpdateFieldSchema
+      if (k === 'type') continue
+      const isDirty = form.getFieldState(k).isDirty
+      if (isDirty) {
+        values[k] = value as IUpdateFieldSchema[typeof k]
+      }
+    }
+
     await updateField({
       tableId: table.id.value,
       fieldId: field.id.value,
@@ -54,6 +65,7 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
             )}
           />
           <TextInput {...form.register('name')} label={<FieldInputLabel>name</FieldInputLabel>} />
+
           <FieldVariantControl />
 
           <Divider />
