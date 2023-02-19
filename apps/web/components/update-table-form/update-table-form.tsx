@@ -1,5 +1,5 @@
-import type { IEditTableSchema } from '@egodb/core'
-import { useEditTableMutation } from '@egodb/store'
+import type { IUpdateTableSchema } from '@egodb/core'
+import { useUpdateTableMutation } from '@egodb/store'
 import { Alert, Button, Divider, Group, IconAlertCircle, Stack, Text, TextInput } from '@egodb/ui'
 import { useFormContext } from 'react-hook-form'
 import { useCurrentTable } from '../../hooks/use-current-table'
@@ -9,21 +9,21 @@ interface IProps {
   onSuccess?: () => void
 }
 
-export const EditTableForm: React.FC<IProps> = ({ onCancel, onSuccess: success }) => {
+export const UpdateTableForm: React.FC<IProps> = ({ onCancel, onSuccess: success }) => {
   const table = useCurrentTable()
-  const form = useFormContext<IEditTableSchema>()
+  const form = useFormContext<IUpdateTableSchema>()
 
-  const [editTable, { reset: resetEditTable, isLoading, isError, error }] = useEditTableMutation()
+  const [updateTable, { reset: resetUpdateTable, isLoading, isError, error }] = useUpdateTableMutation()
 
   const onSubmit = form.handleSubmit(async (values) => {
-    await editTable({ id: table.id.value, ...values })
+    await updateTable({ id: table.id.value, ...values })
     reset()
     success?.()
   })
 
   const reset = () => {
     onCancel()
-    resetEditTable()
+    resetUpdateTable()
     form.reset()
   }
 
