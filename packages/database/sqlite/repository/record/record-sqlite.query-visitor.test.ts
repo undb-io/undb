@@ -47,7 +47,7 @@ describe('RecordSqliteQueryVisitor', () => {
   })
 
   beforeEach(() => {
-    visitor = new RecordSqliteQueryVisitor('tabletest', 't', new Map(), knex.queryBuilder(), knex)
+    visitor = new RecordSqliteQueryVisitor('tabletest', new Map(), knex.queryBuilder(), knex)
     expect(visitor).not.to.be.undefined
     expect(visitor).to.be.instanceof(RecordSqliteQueryVisitor)
   })
@@ -297,7 +297,6 @@ describe('RecordSqliteQueryVisitor', () => {
     beforeEach(() => {
       visitor = new RecordSqliteQueryVisitor(
         'tabletest',
-        '',
         new Map([[treeFieldId, TreeField.create({ id: treeFieldId, name: 'tree' })]]),
         knex.queryBuilder(),
         knex,
@@ -308,14 +307,14 @@ describe('RecordSqliteQueryVisitor', () => {
       test('with record id', () => {
         visitor.treeAvailable(new TreeAvailableSpec(treeFieldId, 'recordId'))
         expect(visitor.query).toMatchInlineSnapshot(
-          "\"select * from `tabletest` as `` where ``.`deleted_at` is null and ``.`id` not in (select distinct `child_id` from `treefieldid_tabletest_closure_table` where `depth` > 0 union select distinct `parent_id` from `treefieldid_tabletest_closure_table` where `child_id` = 'recordId' and not `parent_id` = 'recordId') and not ``.`id` = 'recordId'\"",
+          "\"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`id` not in (select distinct `child_id` from `treefieldid_tabletest_closure_table` where `depth` > 0 union select distinct `parent_id` from `treefieldid_tabletest_closure_table` where `child_id` = 'recordId' and not `parent_id` = 'recordId') and not `t`.`id` = 'recordId'\"",
         )
       })
 
       test('without record id', () => {
         visitor.treeAvailable(new TreeAvailableSpec(treeFieldId, undefined))
         expect(visitor.query).toMatchInlineSnapshot(
-          '"select * from `tabletest` as `` where ``.`deleted_at` is null and ``.`id` not in (select distinct `child_id` from `treefieldid_tabletest_closure_table` where `depth` > 0)"',
+          '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`id` not in (select distinct `child_id` from `treefieldid_tabletest_closure_table` where `depth` > 0)"',
         )
       })
     })
@@ -324,7 +323,7 @@ describe('RecordSqliteQueryVisitor', () => {
       visitor.isTreeRoot(new IsTreeRoot(treeFieldId, undefined))
 
       expect(visitor.query).toMatchInlineSnapshot(
-        '"select * from `tabletest` as `` where ``.`deleted_at` is null and ``.`id` not in (select `child_id` from `treefieldid_tabletest_closure_table` where `depth` > \'0\')"',
+        '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`id` not in (select `child_id` from `treefieldid_tabletest_closure_table` where `depth` > \'0\')"',
       )
     })
   })

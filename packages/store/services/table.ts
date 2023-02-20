@@ -52,6 +52,7 @@ export const tableApi = api.injectEndpoints({
 export const {
   useGetTablesQuery,
   useGetTableQuery,
+  useLazyGetTableQuery,
   useCreateTableMutation,
   useUpdateTableMutation,
   useDeleteTableMutation,

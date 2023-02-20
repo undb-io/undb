@@ -1,8 +1,6 @@
-import type { Field, IFieldType } from './field.type.js'
-import type { ParentField } from './parent-field.js'
-import type { TreeField } from './tree-field.js'
+import type { Field, IFieldType, ReferenceFieldTypes } from './field.type.js'
 
-const referenceFieldTypes: IFieldType[] = ['tree', 'parent']
+const referenceFieldTypes: IFieldType[] = ['tree', 'parent', 'reference']
 
-export const getReferenceFields = (fields: Field[]): (TreeField | ParentField)[] =>
-  fields.filter((f) => referenceFieldTypes.includes(f.type)) as (TreeField | ParentField)[]
+export const getReferenceFields = (fields: Field[]): ReferenceFieldTypes[] =>
+  fields.filter((f) => referenceFieldTypes.includes(f.type)) as ReferenceFieldTypes[]

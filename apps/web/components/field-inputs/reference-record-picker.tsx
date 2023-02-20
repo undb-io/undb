@@ -1,10 +1,11 @@
 import type { IQueryRecords, ReferenceField } from '@egodb/core'
-import { useLazyGetRecordsQuery } from '@egodb/store'
+import { useGetRecordsQuery } from '@egodb/store'
 import type { MultiSelectProps } from '@egodb/ui'
+import { useDisclosure } from '@egodb/ui'
 import { Loader } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { MultiSelect } from '@egodb/ui'
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { RecordId } from '../field-value/record-id'
 import { FieldIcon } from './field-Icon'
@@ -25,19 +26,19 @@ const ReferenceSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, ...o
 ))
 
 export const ReferenceRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
-  const [focused, setFocused] = useState(false)
-  const [listRecords, { rawRecords, isLoading }] = useLazyGetRecordsQuery({
-    selectFromResult: (result) => ({
-      ...result,
-      rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
-    }),
-  })
-
   const table = useCurrentTable()
 
-  useEffect(() => {
-    listRecords({ tableId: table.id.value })
-  }, [focused])
+  const [focused, handelr] = useDisclosure(false)
+  const { rawRecords, isLoading } = useGetRecordsQuery(
+    { tableId: field.foreignTableId.into() ?? table.id.value },
+    {
+      skip: !focused,
+      selectFromResult: (result) => ({
+        ...result,
+        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+      }),
+    },
+  )
 
   const data = rawRecords.map((r) => ({ value: r.id, label: r.id })) ?? []
 
@@ -50,7 +51,7 @@ export const ReferenceRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
       itemComponent={ReferenceSelectItem}
       description={focused && !rawRecords.length ? 'no more available record to select' : undefined}
       data={data}
-      onFocus={() => setFocused(true)}
+      onFocus={handelr.open}
       placeholder={focused && isLoading ? 'loading records...' : undefined}
       disabled={focused && isLoading}
       icon={focused && isLoading ? <Loader color="gray" size={14} /> : <FieldIcon type={field.type} />}

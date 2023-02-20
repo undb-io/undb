@@ -7,6 +7,7 @@ import { ClosureTable } from '../../underlying-table/underlying-foreign-table.js
 import { RecordSqliteMapper } from './record-sqlite.mapper.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
 import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
+import { TABLE_ALIAS } from './record.constants.js'
 import type { RecordSqliteWithParent } from './record.type.js'
 import { createRecordTree } from './record.util.js'
 
@@ -24,7 +25,7 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
     const closureTable = new ClosureTable(tableId, field)
     const columns = UnderlyingColumnFactory.createMany([...schema.values()])
 
-    const alias = 't'
+    const alias = TABLE_ALIAS
 
     const qb = knex
       .queryBuilder()
@@ -39,12 +40,12 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
       .whereNull(`t2.${DELETED_AT_COLUMN_NAME}`)
       .select([...columns.map((c) => `t.${c.name}`), `c.${ClosureTable.PARENT_ID}`])
 
-    const visitor = new RecordSqliteQueryVisitor(tableId, alias, schema, qb, knex)
+    const visitor = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
     spec.accept(visitor).unwrap()
 
     const referenceFields = getReferenceFields([...schema.values()])
     for (const [index, referenceField] of referenceFields.entries()) {
-      const visitor = new RecordSqliteReferenceQueryVisitor(tableId, alias, index, qb, knex)
+      const visitor = new RecordSqliteReferenceQueryVisitor(tableId, index, qb, knex)
       referenceField.accept(visitor)
     }
 

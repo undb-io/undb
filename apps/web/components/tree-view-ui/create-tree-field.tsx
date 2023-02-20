@@ -9,7 +9,6 @@ import { Controller, useForm } from 'react-hook-form'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
-import type { FieldBase } from '../field-inputs/field-picker.type'
 import { FieldsPicker } from '../field-inputs/fields-picker'
 import { treeStepZeroAtom } from './tree-step.atom'
 
@@ -46,11 +45,6 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
     setStepZero()
     onSuccess?.()
   })
-  const fields: FieldBase[] = table.schema.nonSystemFields.map((f) => ({
-    id: f.id.value,
-    name: f.name.value,
-    type: f.type,
-  }))
 
   const setStepZero = useSetAtom(treeStepZeroAtom)
   return (
@@ -83,7 +77,6 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
                 <FieldsPicker
                   variant="default"
                   dropdownPosition="top"
-                  fields={fields}
                   {...props.field}
                   onChange={(ids) => props.field.onChange(ids)}
                 />

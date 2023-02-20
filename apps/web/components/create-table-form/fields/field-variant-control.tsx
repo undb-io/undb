@@ -3,7 +3,6 @@ import { RATING_MAX, RATING_MAX_DEFAULT } from '@egodb/core'
 import { NumberInput, TextInput } from '@egodb/ui'
 import { Controller, useFormContext } from 'react-hook-form'
 import { FieldInputLabel } from '../../field-inputs/field-input-label'
-import type { FieldBase } from '../../field-inputs/field-picker.type'
 import { FieldsPicker } from '../../field-inputs/fields-picker'
 import { SelectFieldControl } from '../../field-inputs/select-field-control'
 
@@ -14,8 +13,6 @@ interface IProps {
 export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
   const form = useFormContext<ICreateTableInput>()
   const type = form.watch(`schema.${index}.type`)
-  const id = form.watch(`schema.${index}.id`)
-  const fields = form.watch('schema')
 
   if (type === 'rating') {
     return (
@@ -34,7 +31,6 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
     )
   }
 
-  const treeFields = fields.filter((f) => f.id !== id)
   if (type === 'select') {
     return (
       <Controller
@@ -59,13 +55,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
         />
         <Controller
           name={`schema.${index}.displayFieldIds`}
-          render={(props) => (
-            <FieldsPicker
-              fields={treeFields as FieldBase[]}
-              {...props.field}
-              onChange={(ids) => props.field.onChange(ids)}
-            />
-          )}
+          render={(props) => <FieldsPicker {...props.field} onChange={(ids) => props.field.onChange(ids)} />}
         />
       </>
     )

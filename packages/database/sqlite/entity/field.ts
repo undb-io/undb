@@ -122,7 +122,11 @@ export class ReferenceField extends Field {
   constructor(table: Table, field: CoreReferenceField) {
     super(table, field)
     this.displayFieldIds = field.displayFieldIds?.map((f) => f.value)
+    this.foreignTableId = field.foreignTableId.into()
   }
+
+  @Property({ nullable: true })
+  foreignTableId?: string
 
   @Property({ type: ArrayType, nullable: true })
   displayFieldIds?: string[]

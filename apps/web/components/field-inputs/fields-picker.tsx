@@ -1,14 +1,16 @@
 import type { IFieldType } from '@egodb/core'
-import type { MultiSelectProps } from '@egodb/ui'
+import { useGetTableQuery } from '@egodb/store'
+import type { MultiSelectProps, SelectItem as SelectItemType } from '@egodb/ui'
+import { useListState } from '@egodb/ui'
 import { ActionIcon, Group, Text } from '@egodb/ui'
 import { MultiSelect } from '@egodb/ui'
-import { forwardRef } from 'react'
+import { forwardRef, useEffect } from 'react'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { FieldIcon } from './field-Icon'
 import { FieldInputLabel } from './field-input-label'
-import type { FieldBase } from './field-picker.type'
 
 interface IProps extends Omit<MultiSelectProps, 'data'> {
-  fields: FieldBase[]
+  tableId?: string
 }
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -25,15 +27,35 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, type, ...othe
   </Group>
 ))
 
-export const FieldsPicker: React.FC<IProps> = ({ fields, ...rest }) => {
-  const data = fields.map((f, index) => ({ value: f.id, label: f.name || `Field ` + (index + 1), type: f.type }))
+export const FieldsPicker: React.FC<IProps> = ({ tableId, ...props }) => {
+  const ct = useCurrentTable()
+  const tid = tableId ?? ct.id.value
+  const { data: table, refetch } = useGetTableQuery({ id: tid })
+  const [state, handlers] = useListState<string>(props.value)
+
+  useEffect(() => {
+    refetch()
+    handlers.setState(props.value ?? [])
+  }, [tid])
+
+  const data =
+    table?.schema?.map((f, index) => ({
+      value: f.id,
+      label: f.name || `Field ` + (index + 1),
+      type: f.type,
+    })) ?? ([] as SelectItemType[])
 
   return (
     <MultiSelect
       placeholder="select display fields"
       variant="filled"
       label={<FieldInputLabel>Display Fields</FieldInputLabel>}
-      {...rest}
+      {...props}
+      value={state}
+      onChange={(value) => {
+        handlers.setState(value)
+        props.onChange?.(value)
+      }}
       data={data}
       itemComponent={SelectItem}
     />

@@ -19,10 +19,12 @@ export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
   const [createRecord, { isLoading, isError, error, reset: resetCreateRecord }] = useCreateRecordMutation()
 
   const onSubmit = form.handleSubmit(async (values) => {
-    await createRecord(values)
-    reset()
-    form.reset()
-    onSuccess?.()
+    const result = await createRecord(values)
+    if (!('error' in result)) {
+      reset()
+      form.reset()
+      onSuccess?.()
+    }
   })
 
   const reset = () => {

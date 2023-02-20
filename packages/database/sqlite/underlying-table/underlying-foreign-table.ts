@@ -4,49 +4,62 @@ import type { Knex } from '@mikro-orm/better-sqlite'
 import type { IUderlyingForeignTableName, IUnderlyingForeignTable } from '../interfaces/underlying-foreign-table.js'
 
 abstract class BaseUnderlyingForeignTable<F extends Field> implements IUnderlyingForeignTable {
-  constructor(protected readonly foreignTableName: string, protected readonly field: F) {}
+  constructor(protected readonly tableId: string, protected readonly field: F) {}
 
   abstract get name(): IUderlyingForeignTableName
   abstract getCreateTableSqls(knex: Knex): string[]
 }
 
+type AdjacencyListTableAlias = `at${number}`
+
 export class AdjacencyListTable extends BaseUnderlyingForeignTable<ReferenceField> {
-  static CHILD_ID = 'child_id'
-  static PARENT_ID = 'parent_id'
+  static TO_ID = 'to_id'
+  static FROM_ID = 'from_id'
+
+  static getAlias(index: number): AdjacencyListTableAlias {
+    return `at${index}`
+  }
+
+  private get foreignTableId() {
+    return this.field.foreignTableId.into() ?? this.tableId
+  }
 
   get name(): IUderlyingForeignTableName {
-    return `${this.field.id.value}_${this.foreignTableName}_adjacency_list`
+    return `${this.field.id.value}_${this.foreignTableId}_adjacency_list`
   }
 
   getCreateTableSqls(knex: Knex): string[] {
     return [
       knex.schema
         .createTable(this.name, (tb) => {
-          tb.string(AdjacencyListTable.CHILD_ID)
+          tb.string(AdjacencyListTable.TO_ID)
             .notNullable()
             .references(INTERNAL_COLUMN_ID_NAME)
-            .inTable(this.foreignTableName)
+            .inTable(this.foreignTableId)
 
-          tb.string(AdjacencyListTable.PARENT_ID)
-            .notNullable()
-            .references(INTERNAL_COLUMN_ID_NAME)
-            .inTable(this.foreignTableName)
+          tb.string(AdjacencyListTable.FROM_ID).notNullable().references(INTERNAL_COLUMN_ID_NAME).inTable(this.tableId)
 
-          tb.primary([AdjacencyListTable.CHILD_ID, AdjacencyListTable.PARENT_ID])
+          tb.primary([AdjacencyListTable.TO_ID, AdjacencyListTable.FROM_ID])
         })
         .toQuery(),
     ]
   }
 }
 
+type ClosureTableAlias = `ct${number}`
+
 export class ClosureTable extends BaseUnderlyingForeignTable<TreeField | ParentField> {
   static CHILD_ID = 'child_id'
   static PARENT_ID = 'parent_id'
   static DEPTH = 'depth'
 
+  static getAlias(index: number): ClosureTableAlias {
+    return `ct${index}`
+  }
+
   get name(): IUderlyingForeignTableName {
     const fieldId = this.field instanceof TreeField ? this.field.id.value : this.field.treeFieldId.value
-    return `${fieldId}_${this.foreignTableName}_closure_table`
+    return `${fieldId}_${this.tableId}_closure_table`
   }
 
   getCreateTableSqls(knex: Knex): string[] {
@@ -56,13 +69,13 @@ export class ClosureTable extends BaseUnderlyingForeignTable<TreeField | ParentF
           tb.string(ClosureTable.CHILD_ID)
             .notNullable()
             .references(INTERNAL_COLUMN_ID_NAME)
-            .inTable(this.foreignTableName)
+            .inTable(this.tableId)
             .onDelete('CASCADE')
 
           tb.string(ClosureTable.PARENT_ID)
             .notNullable()
             .references(INTERNAL_COLUMN_ID_NAME)
-            .inTable(this.foreignTableName)
+            .inTable(this.tableId)
             .onDelete('CASCADE')
 
           tb.integer(ClosureTable.DEPTH).notNullable().defaultTo(0)
@@ -83,12 +96,7 @@ export class ClosureTable extends BaseUnderlyingForeignTable<TreeField | ParentF
   connect(knex: Knex, parentRecordId: string, childrenRecordIds: string[] = []): string[] {
     const queries: string[] = []
 
-    const query = knex
-      .queryBuilder()
-      .table(this.name)
-      .delete()
-      .where(AdjacencyListTable.PARENT_ID, parentRecordId)
-      .toQuery()
+    const query = knex.queryBuilder().table(this.name).delete().where(ClosureTable.PARENT_ID, parentRecordId).toQuery()
 
     queries.push(query)
 
