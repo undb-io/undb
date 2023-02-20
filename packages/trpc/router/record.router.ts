@@ -11,6 +11,9 @@ import {
   deleteRecordCommandInput,
   DuplicateRecordCommand,
   duplicateRecordCommandInput,
+  GetForeignRecordsQuery,
+  getForeignRecordsQueryInput,
+  getForeignRecordsQueryOutput,
   GetRecordQuery,
   getRecordQueryInput,
   getRecordQueryOutput,
@@ -20,9 +23,10 @@ import {
   UpdateRecordCommand,
   updateRecordCommandInput,
 } from '@egodb/cqrs'
-import { ICommandBus, IQueryBus } from '@egodb/domain'
+import type { ICommandBus, IQueryBus } from '@egodb/domain'
 import { z } from 'zod'
-import { publicProcedure, router } from '../trpc.js'
+import type { publicProcedure } from '../trpc.js'
+import { router } from '../trpc.js'
 import { createParentFieldRouter } from './parent-field.router.js'
 import { createTreeFieldRouter } from './tree-field.router.js'
 
@@ -83,6 +87,13 @@ export const createRecordRouter =
         .output(getRecordsQueryOutput)
         .query(({ input }) => {
           const query = new GetRecordsQuery(input)
+          return queryBus.execute(query)
+        }),
+      foreign: procedure
+        .input(getForeignRecordsQueryInput)
+        .output(getForeignRecordsQueryOutput)
+        .query(({ input }) => {
+          const query = new GetForeignRecordsQuery(input)
           return queryBus.execute(query)
         }),
       tree: createTreeFieldRouter(procedure)(queryBus),

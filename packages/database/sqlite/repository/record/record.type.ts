@@ -4,16 +4,9 @@ import type {
   INTERNAL_COLUMN_UPDATED_AT_NAME,
   INTERNAL_INCREAMENT_ID_NAME,
 } from '@egodb/core'
-
-export const INTERNAL_COLUMN_EXPAND_NAME = 'expand'
+import type { INTERNAL_COLUMN_EXPAND_NAME } from './record.util'
 
 export type ExpandColumnName = `${string}_${typeof INTERNAL_COLUMN_EXPAND_NAME}`
-
-export const isExpandColumnName = (str: string): str is ExpandColumnName => str.endsWith(INTERNAL_COLUMN_EXPAND_NAME)
-
-export const getExpandColumnName = (fieldId: string): ExpandColumnName => `${fieldId}_expand`
-
-export const getFieldIdFromExpand = (expand: ExpandColumnName): string => expand.split('_expand')[0]
 
 export interface RecordSqlite {
   [INTERNAL_COLUMN_ID_NAME]: string

@@ -1,4 +1,4 @@
-import { convertFilterSpec, IRecordQueryModel, ITableRepository, WithRecordTableId } from '@egodb/core'
+import { convertFilterSpec, IRecordQueryModel, ITableRepository, ViewId, WithRecordTableId } from '@egodb/core'
 import type { IQueryHandler } from '@egodb/domain'
 import type { IGetRecordsOutput } from './get-records.query.interface.js'
 import type { GetRecordsQuery } from './get-records.query.js'
@@ -19,12 +19,8 @@ export class GetRecordsQueryHandler implements IQueryHandler<GetRecordsQuery, IG
       spec = spec.and(querySpec.unwrap())
     }
 
-    const records = await this.rm.find(
-      table.id.value,
-      spec,
-      table.schema.toIdMap(),
-      table.mustGetView(query.viewId).sorts?.sorts ?? [],
-    )
+    const viewId = query.viewId ? ViewId.fromString(query.viewId) : undefined
+    const records = await this.rm.find(table, viewId, spec)
 
     return { records }
   }

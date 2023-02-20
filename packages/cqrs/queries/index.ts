@@ -1,3 +1,4 @@
+export * from './get-foreign-records/index.js'
 export * from './get-parent-available-records/index.js'
 export * from './get-record/index.js'
 export * from './get-records-tree/index.js'

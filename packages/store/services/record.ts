@@ -1,5 +1,6 @@
 import type { IQueryRecordSchema } from '@egodb/core'
 import type {
+  IGetForeignRecordsQuery,
   IGetParentAvailableRecordQuery,
   IGetRecordOutput,
   IGetRecordQuery,
@@ -31,6 +32,11 @@ export const recordApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getRecords: builder.query<QueryRecordsEntity, IGetRecordsQuery>({
       query: trpc.record.list.query,
+      providesTags,
+      transformResponse,
+    }),
+    getForeignRecords: builder.query<QueryRecordsEntity, IGetForeignRecordsQuery>({
+      query: trpc.record.foreign.query,
       providesTags,
       transformResponse,
     }),
@@ -100,6 +106,7 @@ export const recordApi = api.injectEndpoints({
 
 export const {
   useGetRecordsQuery,
+  useGetForeignRecordsQuery,
   useGetRecordQuery,
   useLazyGetRecordsQuery,
   useListTreeQuery,
