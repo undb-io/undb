@@ -125,7 +125,7 @@ export class ReferenceField extends Field {
     this.foreignTableId = field.foreignTableId.into()
   }
 
-  @Property()
+  @Property({ nullable: true })
   foreignTableId?: string
 
   @Property({ type: ArrayType, nullable: true })
