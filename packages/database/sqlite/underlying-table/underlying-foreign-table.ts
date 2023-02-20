@@ -13,8 +13,8 @@ abstract class BaseUnderlyingForeignTable<F extends Field> implements IUnderlyin
 type AdjacencyListTableAlias = `at${number}`
 
 export class AdjacencyListTable extends BaseUnderlyingForeignTable<ReferenceField> {
-  static CHILD_ID = 'child_id'
-  static PARENT_ID = 'parent_id'
+  static TO_ID = 'to_id'
+  static FROM_ID = 'from_id'
 
   static getAlias(index: number): AdjacencyListTableAlias {
     return `at${index}`
@@ -28,17 +28,17 @@ export class AdjacencyListTable extends BaseUnderlyingForeignTable<ReferenceFiel
     return [
       knex.schema
         .createTable(this.name, (tb) => {
-          tb.string(AdjacencyListTable.CHILD_ID)
+          tb.string(AdjacencyListTable.TO_ID)
             .notNullable()
             .references(INTERNAL_COLUMN_ID_NAME)
             .inTable(this.foreignTableName)
 
-          tb.string(AdjacencyListTable.PARENT_ID)
+          tb.string(AdjacencyListTable.FROM_ID)
             .notNullable()
             .references(INTERNAL_COLUMN_ID_NAME)
             .inTable(this.foreignTableName)
 
-          tb.primary([AdjacencyListTable.CHILD_ID, AdjacencyListTable.PARENT_ID])
+          tb.primary([AdjacencyListTable.TO_ID, AdjacencyListTable.FROM_ID])
         })
         .toQuery(),
     ]
@@ -95,12 +95,7 @@ export class ClosureTable extends BaseUnderlyingForeignTable<TreeField | ParentF
   connect(knex: Knex, parentRecordId: string, childrenRecordIds: string[] = []): string[] {
     const queries: string[] = []
 
-    const query = knex
-      .queryBuilder()
-      .table(this.name)
-      .delete()
-      .where(AdjacencyListTable.PARENT_ID, parentRecordId)
-      .toQuery()
+    const query = knex.queryBuilder().table(this.name).delete().where(ClosureTable.PARENT_ID, parentRecordId).toQuery()
 
     queries.push(query)
 

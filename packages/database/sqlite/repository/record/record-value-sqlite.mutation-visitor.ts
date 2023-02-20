@@ -96,7 +96,7 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
       .queryBuilder()
       .table(underlyingTable.name)
       .delete()
-      .where(AdjacencyListTable.PARENT_ID, this.recordId)
+      .where(AdjacencyListTable.FROM_ID, this.recordId)
       .toQuery()
 
     this.addQueries(query)
@@ -108,8 +108,8 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
           .queryBuilder()
           .table(underlyingTable.name)
           .insert({
-            [AdjacencyListTable.CHILD_ID]: recordId,
-            [AdjacencyListTable.PARENT_ID]: this.recordId,
+            [AdjacencyListTable.TO_ID]: recordId,
+            [AdjacencyListTable.FROM_ID]: this.recordId,
           })
           .toQuery()
 
