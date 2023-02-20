@@ -13,7 +13,7 @@ describe('RecordSqliteReferenceQueryVisitor', () => {
 
     qb = knex.queryBuilder()
 
-    visitor = new RecordSqliteReferenceQueryVisitor('tabletest', 't', 1, qb, knex)
+    visitor = new RecordSqliteReferenceQueryVisitor('tabletest', 1, qb, knex)
   })
 
   test('tree', () => {
