@@ -1,6 +1,7 @@
 import type { IFieldType } from '@egodb/core'
 import { useGetTableQuery } from '@egodb/store'
 import type { MultiSelectProps, SelectItem as SelectItemType } from '@egodb/ui'
+import { useListState } from '@egodb/ui'
 import { ActionIcon, Group, Text } from '@egodb/ui'
 import { MultiSelect } from '@egodb/ui'
 import { forwardRef, useEffect } from 'react'
@@ -30,9 +31,11 @@ export const FieldsPicker: React.FC<IProps> = ({ tableId, ...props }) => {
   const ct = useCurrentTable()
   const tid = tableId ?? ct.id.value
   const { data: table, refetch } = useGetTableQuery({ id: tid })
+  const [state, handlers] = useListState<string>()
 
   useEffect(() => {
     refetch()
+    handlers.setState([])
   }, [tid])
 
   const data =
@@ -48,6 +51,11 @@ export const FieldsPicker: React.FC<IProps> = ({ tableId, ...props }) => {
       variant="filled"
       label={<FieldInputLabel>Display Fields</FieldInputLabel>}
       {...props}
+      value={state}
+      onChange={(value) => {
+        handlers.setState(value)
+        props.onChange?.(value)
+      }}
       data={data}
       itemComponent={SelectItem}
     />
