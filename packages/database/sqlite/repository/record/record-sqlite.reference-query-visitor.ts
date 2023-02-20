@@ -102,6 +102,7 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
         `${alias}.${INTERNAL_COLUMN_ID_NAME}`,
         `${at}.${AdjacencyListTable.FROM_ID}`,
       )
+      .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
       .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${at}.${AdjacencyListTable.TO_ID}`)
 
     const jsonObjectEntries: [string, string][] = getDisplayFieldIds(field).map((fieldId) => [

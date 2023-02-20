@@ -1,4 +1,4 @@
-import { ParentField, TreeField } from '@egodb/core'
+import { ParentField, ReferenceField, TreeField } from '@egodb/core'
 import { Knex } from '@mikro-orm/better-sqlite'
 import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
 
@@ -14,6 +14,16 @@ describe('RecordSqliteReferenceQueryVisitor', () => {
     qb = knex.queryBuilder()
 
     visitor = new RecordSqliteReferenceQueryVisitor('tabletest', 1, qb, knex)
+  })
+
+  test('refenrence', () => {
+    visitor.reference(
+      ReferenceField.unsafeCreate({ id: 'field1', displayFieldIds: ['field2'], type: 'reference', name: 'reference' }),
+    )
+
+    expect(qb.toQuery()).toMatchInlineSnapshot(
+      "\"select json_object('field1',json_object('field2',json_group_array(ft1.field2))) as field1_expand left join `field1_tabletest_adjacency_list` as `at1` on `t`.`id` = `at1`.`from_id` left join `tabletest` as `ft1` on `ft1`.`id` = `at1`.`to_id` group by `t`.`id`\"",
+    )
   })
 
   test('tree', () => {
