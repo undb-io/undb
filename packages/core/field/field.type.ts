@@ -3,6 +3,7 @@ import * as z from 'zod'
 import type { IReferenceFilterValue } from '../filter/reference.filter.js'
 import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues } from '../record/index.js'
+import type { TableId } from '../value-objects/table-id.vo.js'
 import type { AutoIncrementFieldValue } from './auto-increment-field-value.js'
 import type { AutoIncrementField } from './auto-increment-field.js'
 import type { IAutoIncrementFieldValue } from './auto-increment-field.type.js'
@@ -350,7 +351,7 @@ export type ISelectField = IBaseField & {
 }
 
 export type IBoolField = IBaseField
-export type IReferenceField = IBaseField & { displayFields?: DisplayFields }
+export type IReferenceField = IBaseField & { displayFields?: DisplayFields; foreignTableId?: TableId }
 export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?: DisplayFields }
 export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: DisplayFields }
 

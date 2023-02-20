@@ -1,5 +1,6 @@
 import type { IReferenceFilterOperator } from '../filter/operators.js'
 import type { IReferenceFilter } from '../filter/reference.filter.js'
+import { TableId } from '../value-objects/table-id.vo.js'
 import { BaseReferenceField } from './field.base.js'
 import type { IReferenceField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
@@ -9,7 +10,7 @@ import type {
   ICreateReferenceFieldValue,
   ReferenceFieldType,
 } from './reference-field.type.js'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
+import { DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export class ReferenceField extends BaseReferenceField<IReferenceField> {
   type: ReferenceFieldType = 'reference'
@@ -21,6 +22,10 @@ export class ReferenceField extends BaseReferenceField<IReferenceField> {
       id: FieldId.fromNullableString(input.id),
       name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
+      foreignTableId: input.foreignTableId ? TableId.from(input.foreignTableId).unwrap() : undefined,
+      displayFields: input.displayFieldIds
+        ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
+        : undefined,
     })
   }
 
@@ -29,6 +34,10 @@ export class ReferenceField extends BaseReferenceField<IReferenceField> {
       id: FieldId.fromNullableString(input.id),
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
+      foreignTableId: input.foreignTableId ? TableId.from(input.foreignTableId).unwrap() : undefined,
+      displayFields: input.displayFieldIds
+        ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
+        : undefined,
     })
   }
 

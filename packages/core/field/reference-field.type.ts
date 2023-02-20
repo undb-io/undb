@@ -1,5 +1,6 @@
 import * as z from 'zod'
 import { recordIdSchema } from '../record/value-objects/record-id.schema.js'
+import { tableIdSchema } from '../value-objects/table-id.vo.js'
 import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field-base.schema'
 import { FIELD_TYPE_KEY } from './field.constant.js'
 import { ReferenceField } from './reference-field.js'
@@ -9,17 +10,29 @@ export const referenceTypeSchema = z.literal('reference')
 export type ReferenceFieldType = z.infer<typeof referenceTypeSchema>
 const referenceTypeObjectSchema = z.object({ [FIELD_TYPE_KEY]: referenceTypeSchema })
 
-export const createReferenceFieldSchema = createBaseFieldsSchema.merge(referenceTypeObjectSchema)
+export const createReferenceFieldSchema = createBaseFieldsSchema.merge(referenceTypeObjectSchema).merge(
+  z.object({
+    displayFieldIds: fieldIdSchema.array().optional(),
+    foreignTableId: tableIdSchema.optional(),
+  }),
+)
 export type ICreateReferenceFieldInput = z.infer<typeof createReferenceFieldSchema>
 
 export const updateReferenceFieldSchema = updateBaseFieldSchema.merge(referenceTypeObjectSchema).merge(
   z.object({
     displayFieldIds: fieldIdSchema.array().optional(),
+    foreignTableId: tableIdSchema.optional(),
   }),
 )
 export type IUpdateReferenceFieldInput = z.infer<typeof updateReferenceFieldSchema>
 
-export const referenceFieldQuerySchema = baseFieldQuerySchema.merge(referenceTypeObjectSchema)
+export const referenceFieldQuerySchema = baseFieldQuerySchema.merge(referenceTypeObjectSchema).merge(
+  z.object({
+    foreignTableId: tableIdSchema.optional(),
+    displayFieldIds: fieldIdSchema.array().optional(),
+  }),
+)
+export type IReferenceFieldQuerySchema = z.infer<typeof referenceFieldQuerySchema>
 
 export const referenceFieldValue = recordIdSchema.array().nullable()
 export type IReferenceFieldValue = z.infer<typeof referenceFieldValue>

@@ -15,12 +15,14 @@ import type {
   Table,
 } from '@egodb/core'
 import { TableFactory } from '@egodb/core'
+import type { ICreateReferenceFieldInput, IReferenceFieldQuerySchema } from '@egodb/core/field/reference-field.type.js'
 import type { EntityDTO } from '@mikro-orm/core'
 import type { Result } from 'oxide.ts'
 import type {
   Field as FieldEntity,
   ParentField,
   RatingField,
+  ReferenceField,
   SelectField,
   Table as TableEntity,
   TreeField,
@@ -42,6 +44,16 @@ export class TableSqliteMapper {
           },
         })),
       } satisfies ISelectFieldQuerySchema
+    }
+    if (entity.type === 'reference') {
+      const field = entity as EntityDTO<ReferenceField>
+      return {
+        id: entity.id,
+        name: entity.name,
+        type: 'reference',
+        foreignTableId: field.foreignTableId,
+        displayFieldIds: field.displayFieldIds,
+      } satisfies IReferenceFieldQuerySchema
     }
     if (entity.type === 'tree') {
       const field = entity as EntityDTO<TreeField>
@@ -108,6 +120,16 @@ export class TableSqliteMapper {
       id: entity.id,
       name: entity.name,
       schema: entity.fields.toArray().map((f) => {
+        if (f.type === 'reference') {
+          const field = f as EntityDTO<ReferenceField>
+          return {
+            id: f.id,
+            name: f.name,
+            type: 'reference',
+            foreignTableId: field.foreignTableId,
+            displayFieldIds: field.displayFieldIds,
+          } satisfies ICreateReferenceFieldInput
+        }
         if (f.type === 'tree') {
           const field = f as EntityDTO<TreeField>
           return {
