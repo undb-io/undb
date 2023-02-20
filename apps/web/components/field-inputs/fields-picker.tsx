@@ -31,11 +31,11 @@ export const FieldsPicker: React.FC<IProps> = ({ tableId, ...props }) => {
   const ct = useCurrentTable()
   const tid = tableId ?? ct.id.value
   const { data: table, refetch } = useGetTableQuery({ id: tid })
-  const [state, handlers] = useListState<string>()
+  const [state, handlers] = useListState<string>(props.value)
 
   useEffect(() => {
     refetch()
-    handlers.setState([])
+    handlers.setState(props.value ?? [])
   }, [tid])
 
   const data =
