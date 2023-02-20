@@ -34,6 +34,11 @@ export const recordApi = api.injectEndpoints({
       providesTags,
       transformResponse,
     }),
+    getForeignRecords: builder.query<QueryRecordsEntity, IGetRecordsQuery>({
+      query: trpc.record.foreign.query,
+      providesTags,
+      transformResponse,
+    }),
     getRecord: builder.query<IGetRecordOutput, IGetRecordQuery>({
       query: trpc.record.get.query,
       providesTags: (_, __, { id }) => [{ type: 'Record', id }],
