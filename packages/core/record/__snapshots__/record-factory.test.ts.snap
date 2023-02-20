@@ -1,40 +1,5 @@
 // Vitest Snapshot v1
 
-exports[`fromQuery > should create record from query 1`] = `
-{
-  "field1": StringFieldValue {
-    "props": {
-      "value": "hello",
-    },
-  },
-}
-`;
-
-exports[`fromQuery > should create record from query 2`] = `
-{
-  "field1": SelectFieldValue {
-    "props": {
-      "value": "opt1",
-    },
-  },
-}
-`;
-
-exports[`fromQuery > should create record from query 3`] = `
-{
-  "field1": StringFieldValue {
-    "props": {
-      "value": "hello",
-    },
-  },
-  "field2": SelectFieldValue {
-    "props": {
-      "value": "opt1",
-    },
-  },
-}
-`;
-
 exports[`fromQuery > should create record from query.js 1`] = `
 {
   "field1": StringFieldValue {

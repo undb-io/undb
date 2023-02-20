@@ -18,7 +18,7 @@ describe('UnderlyingAdjacencyListTable', () => {
     expect(query).toMatchInlineSnapshot(
       `
       [
-        "create table \`fldid_tablename_adjacency_list\` (\`child_id\` varchar(255) not null, \`parent_id\` varchar(255) not null, foreign key(\`child_id\`) references \`tablename\`(\`id\`), foreign key(\`parent_id\`) references \`tablename\`(\`id\`), primary key (\`child_id\`, \`parent_id\`))",
+        "create table \`fldid_tablename_adjacency_list\` (\`to_id\` varchar(255) not null, \`from_id\` varchar(255) not null, foreign key(\`to_id\`) references \`tablename\`(\`id\`), foreign key(\`from_id\`) references \`tablename\`(\`id\`), primary key (\`to_id\`, \`from_id\`))",
       ]
     `,
     )
