@@ -6,7 +6,7 @@
     "@egodb/cqrs": "^0.0.0",
     "@egodb/trpc": "^0.0.0",
     "@reduxjs/toolkit": "^1.9.2",
-    "@trpc/client": "^10.11.0",
+    "@trpc/client": "^10.12.0",
     "lodash": "^4.17.21",
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@egodb/eslint-config": "^0.0.0",
-    "@trpc/server": "^10.11.0",
+    "@trpc/server": "^10.12.0",
     "@types/lodash": "^4.14.191",
     "@types/redux-logger": "^3.0.9",
     "eslint": "^8.34.0",
