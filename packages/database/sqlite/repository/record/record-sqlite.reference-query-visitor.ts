@@ -23,7 +23,7 @@ import type {
 import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import { isEmpty } from 'lodash-es'
-import { ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
+import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
 import { getFTAlias, TABLE_ALIAS } from './record.constants.js'
 import { getExpandColumnName } from './record.type.js'
 
@@ -88,7 +88,34 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
     throw new Error('Method not implemented.')
   }
   reference(field: ReferenceField): void {
-    throw new Error('Method not implemented.')
+    const foreignTableId = this.getForeignTableId(field)
+    const adjacency = new AdjacencyListTable(this.tableId, field)
+    const { knex, index } = this
+    const alias = TABLE_ALIAS
+
+    const at = AdjacencyListTable.getAlias(index)
+    const ft = getFTAlias(index)
+
+    this.qb
+      .leftJoin(
+        `${adjacency.name} as ${at}`,
+        `${alias}.${INTERNAL_COLUMN_ID_NAME}`,
+        `${at}.${AdjacencyListTable.FROM_ID}`,
+      )
+      .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${at}.${AdjacencyListTable.TO_ID}`)
+
+    const jsonObjectEntries: [string, string][] = getDisplayFieldIds(field).map((fieldId) => [
+      `'${fieldId}'`,
+      `json_group_array(${ft}.${fieldId})`,
+    ])
+
+    this.qb.select(
+      knex.raw(
+        `json_object('${field.id.value}',json_object(${jsonObjectEntries
+          .map((k) => k.join(','))
+          .join(',')})) as ${getExpandColumnName(field.id.value)}`,
+      ),
+    )
   }
   tree(field: TreeField): void {
     const foreignTableId = this.getForeignTableId(field)
