@@ -3,6 +3,7 @@ import * as z from 'zod'
 
 export const getForeignRecordsQueryInput = z.object({
   tableId: tableIdSchema,
-  viewId: viewIdSchema.optional(),
+  foreignTableId: tableIdSchema,
   fieldId: fieldIdSchema,
+  viewId: viewIdSchema.optional(),
 })

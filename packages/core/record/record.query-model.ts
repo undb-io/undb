@@ -1,4 +1,5 @@
 import type { Option } from 'oxide.ts'
+import type { ReferenceFieldTypes } from '../field/field.type.js'
 import type { TableSchemaIdMap } from '../value-objects/index.js'
 import type { ISorts } from '../view/index.js'
 import type { IQueryRecords, IQueryRecordSchema } from './record.type.js'
@@ -8,4 +9,10 @@ export interface IRecordQueryModel {
   findOne(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap): Promise<Option<IQueryRecordSchema>>
   findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<IQueryRecordSchema>>
   find(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap, sorts: ISorts): Promise<IQueryRecords>
+  findForiegn(
+    tableId: string,
+    spec: IRecordSpec,
+    schema: TableSchemaIdMap,
+    field: ReferenceFieldTypes,
+  ): Promise<IQueryRecords>
 }

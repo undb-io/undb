@@ -4,6 +4,7 @@ import type {
   IRecordQueryModel,
   IRecordSpec,
   ISorts,
+  ReferenceFieldTypes,
   TableSchemaIdMap,
 } from '@egodb/core'
 import { getReferenceFields, WithRecordId } from '@egodb/core'
@@ -15,9 +16,40 @@ import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
 import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
 import { TABLE_ALIAS } from './record.constants.js'
 import type { RecordSqlite } from './record.type.js'
+import { expandField } from './record.util.js'
 
 export class RecordSqliteQueryModel implements IRecordQueryModel {
   constructor(protected readonly em: EntityManager) {}
+  async findForiegn(
+    tableId: string,
+    spec: IRecordSpec,
+    schema: TableSchemaIdMap,
+    field: ReferenceFieldTypes,
+  ): Promise<IQueryRecords> {
+    const knex = this.em.getKnex()
+    const alias = TABLE_ALIAS
+    const qb = knex.queryBuilder()
+
+    const visitor = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
+    spec.accept(visitor).unwrap()
+
+    const referenceFields = getReferenceFields([...schema.values()])
+    for (const [index, referenceField] of referenceFields.entries()) {
+      const visitor = new RecordSqliteReferenceQueryVisitor(tableId, index, qb, knex)
+      referenceField.accept(visitor)
+    }
+
+    expandField(field, alias, knex, qb, true)
+
+    const columns = UnderlyingColumnFactory.createMany([...schema.values()])
+
+    qb.select(columns.map((c) => `${alias}.${c.name}`))
+
+    const data = await this.em.execute<RecordSqlite[]>(qb)
+
+    const records = data.map((d) => RecordSqliteMapper.toQuery(tableId, schema, d))
+    return records
+  }
 
   async find(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap, sorts: ISorts): Promise<IQueryRecords> {
     const knex = this.em.getKnex()

@@ -9,7 +9,7 @@ import {
   isUnlderlyingDateTangeToColumn,
 } from '../../underlying-table/underlying-column.js'
 import type { RecordSqlite } from './record.type.js'
-import { isExpandColumnName } from './record.type.js'
+import { isExpandColumnName } from './record.util.js'
 
 export class RecordSqliteMapper {
   // TODO: refactor if else logic

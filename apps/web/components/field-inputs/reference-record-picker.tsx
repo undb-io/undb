@@ -1,5 +1,5 @@
 import type { IQueryRecords, ReferenceField } from '@egodb/core'
-import { useGetRecordsQuery } from '@egodb/store'
+import { useGetForeignRecordsQuery } from '@egodb/store'
 import type { MultiSelectProps } from '@egodb/ui'
 import { useDisclosure } from '@egodb/ui'
 import { Loader } from '@egodb/ui'
@@ -7,6 +7,7 @@ import { Group } from '@egodb/ui'
 import { MultiSelect } from '@egodb/ui'
 import { forwardRef } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 import { RecordId } from '../field-value/record-id'
 import { FieldIcon } from './field-Icon'
 
@@ -27,12 +28,13 @@ const ReferenceSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, ...o
 
 export const ReferenceRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
   const table = useCurrentTable()
+  const view = useCurrentView()
+  const foreignTableId = field.foreignTableId.into() ?? table.id.value
 
   const [focused, handelr] = useDisclosure(false)
-  const { rawRecords, isLoading } = useGetRecordsQuery(
-    { tableId: field.foreignTableId.into() ?? table.id.value },
+  const { rawRecords, isLoading } = useGetForeignRecordsQuery(
+    { tableId: table.id.value, foreignTableId, fieldId: field.id.value, viewId: view.id.value },
     {
-      skip: !focused,
       selectFromResult: (result) => ({
         ...result,
         rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
@@ -40,7 +42,7 @@ export const ReferenceRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
     },
   )
 
-  const data = rawRecords.map((r) => ({ value: r.id, label: r.id })) ?? []
+  const data = rawRecords.map((r) => ({ value: r.id, label: field.getDisplayValues(r.displayValues).toString() })) ?? []
 
   return (
     <MultiSelect
