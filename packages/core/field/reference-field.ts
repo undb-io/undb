@@ -1,3 +1,4 @@
+import { Option } from 'oxide.ts'
 import type { IReferenceFilterOperator } from '../filter/operators.js'
 import type { IReferenceFilter } from '../filter/reference.filter.js'
 import { TableId } from '../value-objects/table-id.vo.js'
@@ -14,6 +15,10 @@ import { DisplayFields, FieldId, FieldName, FieldValueConstraints } from './valu
 
 export class ReferenceField extends BaseReferenceField<IReferenceField> {
   type: ReferenceFieldType = 'reference'
+
+  override get foreignTableId(): Option<string> {
+    return Option(this.props.foreignTableId?.value)
+  }
 
   static create(input: Omit<ICreateReferenceFieldInput, 'type'>): ReferenceField {
     const fieldName = FieldName.create(input.name)
