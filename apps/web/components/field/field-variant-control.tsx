@@ -74,7 +74,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
           name={'displayFieldIds'}
           render={(props) => (
             <FieldsPicker
-              fields={fields}
+              tableId={form.getValues('foreignTableId')}
               {...props.field}
               onChange={(ids) => props.field.onChange(ids)}
               variant="default"
