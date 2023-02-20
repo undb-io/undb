@@ -8,7 +8,7 @@ import { MultiSelect } from '@egodb/ui'
 import { forwardRef } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
-import { RecordId } from '../field-value/record-id'
+import { RecordValue } from '../field-value/record-value'
 import { FieldIcon } from './field-Icon'
 
 interface IProps extends Omit<MultiSelectProps, 'data'> {
@@ -20,9 +20,9 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
   label: string
 }
 
-const ReferenceSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, ...others }: ItemProps, ref) => (
+const ReferenceSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, ...others }: ItemProps, ref) => (
   <Group ref={ref} p="xs" {...others}>
-    <RecordId id={value} />
+    <RecordValue value={label} />
   </Group>
 ))
 

@@ -91,6 +91,7 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
         `${alias}.${INTERNAL_COLUMN_ID_NAME}`,
         `${at}.${AdjacencyListTable.FROM_ID}`,
       )
+      .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
       .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${at}.${AdjacencyListTable.TO_ID}`)
 
     expandField(field, ft, knex, this.qb, true)
@@ -111,6 +112,7 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
           knex.raw('?', [1]),
         )
       })
+      .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
       .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${ct}.${ClosureTable.CHILD_ID}`)
 
     expandField(field, ft, knex, this.qb, true)
@@ -131,6 +133,7 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
           knex.raw('?', [1]),
         )
       })
+      .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
       .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${ct}.${ClosureTable.PARENT_ID}`)
 
     expandField(field, ft, knex, this.qb)

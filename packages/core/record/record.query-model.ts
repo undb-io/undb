@@ -1,18 +1,18 @@
 import type { Option } from 'oxide.ts'
 import type { ReferenceFieldTypes } from '../field/field.type.js'
-import type { TableSchemaIdMap } from '../value-objects/index.js'
-import type { ISorts } from '../view/index.js'
+import type { Table } from '../table.js'
+import type { ViewId } from '../view/index.js'
 import type { IQueryRecords, IQueryRecordSchema } from './record.type.js'
 import type { IRecordSpec } from './specifications/index.js'
 
 export interface IRecordQueryModel {
-  findOne(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap): Promise<Option<IQueryRecordSchema>>
-  findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<IQueryRecordSchema>>
-  find(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap, sorts: ISorts): Promise<IQueryRecords>
+  findOne(table: Table, spec: IRecordSpec): Promise<Option<IQueryRecordSchema>>
+  findOneById(table: Table, id: string): Promise<Option<IQueryRecordSchema>>
+  find(table: Table, viewId: ViewId | undefined, spec: IRecordSpec): Promise<IQueryRecords>
   findForiegn(
-    tableId: string,
+    table: Table,
+    viewId: ViewId | undefined,
     spec: IRecordSpec,
-    schema: TableSchemaIdMap,
     field: ReferenceFieldTypes,
   ): Promise<IQueryRecords>
 }

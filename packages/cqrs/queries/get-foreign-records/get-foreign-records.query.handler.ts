@@ -1,4 +1,4 @@
-import { IRecordQueryModel, ITableRepository, ReferenceFieldTypes, WithRecordTableId } from '@egodb/core'
+import { IRecordQueryModel, ITableRepository, ReferenceFieldTypes, ViewId, WithRecordTableId } from '@egodb/core'
 import type { IQueryHandler } from '@egodb/domain'
 import type { IGetForeignRecordsOutput } from './get-foreign-records.query.interface.js'
 import type { GetForeignRecordsQuery } from './get-foreign-records.query.js'
@@ -17,7 +17,8 @@ export class GetForeignRecordsQueryHandler implements IQueryHandler<GetForeignRe
       .map((s) => (filter.isNone() ? s : s.and(filter.unwrap())))
       .unwrap()
 
-    const records = await this.rm.findForiegn(foreignTable.id.value, spec, foreignTable.schema.toIdMap(), field)
+    const viewId = query.viewId ? ViewId.fromString(query.viewId) : undefined
+    const records = await this.rm.findForiegn(foreignTable, viewId, spec, field)
 
     return { records }
   }

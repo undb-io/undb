@@ -45,7 +45,7 @@ export const expandField = (
     multiple ? `json_group_array(${table}.${fieldId})` : `${table}.${fieldId}`,
   ])
 
-  qb.groupBy(`${table}.${INTERNAL_COLUMN_ID_NAME}`).select(
+  qb.select(
     knex.raw(
       `json_object('${field.id.value}',json_object(${jsonObjectEntries
         .map((k) => k.join(','))
