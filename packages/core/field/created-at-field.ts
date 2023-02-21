@@ -13,7 +13,9 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index
 
 export class CreatedAtField extends BaseField<ICreatedAtField> {
   type: CreatedAtFieldType = 'created-at'
-  system = true
+  override get system() {
+    return true
+  }
 
   static default(): CreatedAtField {
     return this.create({ name: 'createdAt' })

@@ -9,7 +9,9 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index
 
 export class IdField extends BaseField<IIdField> {
   type: IdFieldType = 'id'
-  system = true
+  override get system() {
+    return true
+  }
 
   static default(): IdField {
     return this.create({ name: 'id' })

@@ -13,7 +13,9 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index
 
 export class AutoIncrementField extends BaseField<IAutoIncrementField> {
   type: AutoIncrementFieldType = 'auto-increment'
-  system = true
+  override get system() {
+    return true
+  }
 
   static create(input: Omit<ICreateAutoIncrementFieldInput, 'type'>): AutoIncrementField {
     const fieldName = FieldName.create(input.name)
