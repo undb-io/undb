@@ -208,6 +208,13 @@ export class View extends ValueObject<IView> {
     return visibility
   }
 
+  public getVisibleFields(fields: Field[]): Field[] {
+    const visibility = this.getVisibility()
+
+    // undefined 也认为是可见的
+    return fields.filter((field) => visibility[field.id.value] !== false)
+  }
+
   public get filterList(): IFilterOrGroupList {
     const filters = this.filter?.value
     if (Array.isArray(filters)) return filters

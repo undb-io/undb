@@ -1,6 +1,12 @@
 import type { IRecordSpec, ReferenceFieldTypes, Table, TableSchemaIdMap, View } from '@egodb/core'
-import { getReferenceFields } from '@egodb/core'
+import {
+  getReferenceFields,
+  INTERNAL_COLUMN_CREATED_AT_NAME,
+  INTERNAL_COLUMN_ID_NAME,
+  INTERNAL_COLUMN_UPDATED_AT_NAME,
+} from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
+import { union } from 'lodash-es'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
 import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor'
@@ -82,9 +88,17 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     return this
   }
   select(): this {
-    const columns = UnderlyingColumnFactory.createMany([...this.schema.values()])
+    const fields = this.view.getVisibleFields([...this.schema.values()])
+    const columns = UnderlyingColumnFactory.createMany(fields)
 
-    this.qb.select(columns.map((c) => `${TABLE_ALIAS}.${c.name}`))
+    const names = union(
+      columns.map((c) => `${TABLE_ALIAS}.${c.name}`),
+      // always return internal fields
+      [INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_CREATED_AT_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME].map(
+        (name) => `${TABLE_ALIAS}.${name}`,
+      ),
+    )
+    this.qb.select(names)
     return this
   }
   build(): Knex.QueryBuilder {

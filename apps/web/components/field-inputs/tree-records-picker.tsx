@@ -1,5 +1,5 @@
 import type { IQueryRecords, TreeField } from '@egodb/core'
-import { useGetForeignRecordsQuery, useGetRecordsQuery, useLazyTreeAvailableQuery } from '@egodb/store'
+import { useGetForeignRecordsQuery, useLazyTreeAvailableQuery } from '@egodb/store'
 import type { MultiSelectProps } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { Loader, MultiSelect } from '@egodb/ui'
