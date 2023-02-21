@@ -9,6 +9,10 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index
 export class ColorField extends BaseField<IColorField> {
   type: ColorFieldType = 'color'
 
+  override get primitive() {
+    return true
+  }
+
   static create(input: Omit<ICreateColorFieldInput, 'type'>): ColorField {
     const fieldName = FieldName.create(input.name)
 

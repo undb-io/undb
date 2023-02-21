@@ -9,6 +9,10 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index
 export class RatingField extends BaseField<IRatingField> {
   type: RatingFieldType = 'rating'
 
+  override get primitive() {
+    return true
+  }
+
   public get max(): number {
     return this.props.max ?? 5
   }

@@ -373,6 +373,20 @@ export type NoneSystemField =
   | ParentField
   | RatingField
 
+export type PrimitiveField =
+  | StringField
+  | NumberField
+  | EmailField
+  | ColorField
+  | DateField
+  | SelectField
+  | BoolField
+  | DateRangeField
+  | RatingField
+  | CreatedAtFieldValue
+  | UpdatedAtFieldValue
+  | AutoIncrementFieldValue
+
 export type Field = SystemField | NoneSystemField
 
 export type FieldValue =

@@ -10,6 +10,10 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index
 export class BoolField extends BaseField<IBoolField> {
   type: BoolFieldType = 'bool'
 
+  override get primitive() {
+    return true
+  }
+
   static create(input: Omit<ICreateBoolFieldInput, 'type'>): BoolField {
     const fieldName = FieldName.create(input.name)
     return new BoolField({
