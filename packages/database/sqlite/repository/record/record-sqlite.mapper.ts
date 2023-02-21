@@ -1,4 +1,11 @@
-import type { IFieldQueryValue, IQueryRecordSchema, IRecordDisplayValues, Record, TableSchemaIdMap } from '@egodb/core'
+import type {
+  IFieldQueryValue,
+  IQueryRecords,
+  IQueryRecordSchema,
+  IRecordDisplayValues,
+  Record,
+  TableSchemaIdMap,
+} from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
 import { castArray, mapValues } from 'lodash-es'
 import type { Result } from 'oxide.ts'
@@ -59,6 +66,10 @@ export class RecordSqliteMapper {
       values,
       displayValues,
     }
+  }
+
+  static toQueries(tableId: string, schema: TableSchemaIdMap, data: RecordSqlite[]): IQueryRecords {
+    return data.map((d) => RecordSqliteMapper.toQuery(tableId, schema, d))
   }
 
   static toDomain(tableId: string, schema: TableSchemaIdMap, data: RecordSqlite): Result<Record, string> {
