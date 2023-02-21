@@ -173,10 +173,10 @@ export const ViewMenu: React.FC = () => {
         </Menu.Target>
 
         <Menu.Dropdown w={300}>
-          <Menu.Item>
-            <Menu trigger="hover" openDelay={100} closeDelay={100} position="right-start">
+          <Menu.Item p={0}>
+            <Menu trigger="hover" openDelay={50} closeDelay={100} position="right-start">
               <Menu.Target>
-                <Group position="apart" noWrap>
+                <Group position="apart" noWrap p="xs">
                   <Group spacing="xs">
                     <IconSwitchHorizontal color="gray" size={16} />
                     <Text size="xs">Select Display Type</Text>
