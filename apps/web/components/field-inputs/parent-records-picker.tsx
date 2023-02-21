@@ -1,5 +1,5 @@
 import type { IQueryRecords, ParentField } from '@egodb/core'
-import { useLazyParentAvailableQuery } from '@egodb/store'
+import { useGetForeignRecordsQuery, useLazyParentAvailableQuery } from '@egodb/store'
 import type { SelectProps } from '@egodb/ui'
 import { Select } from '@egodb/ui'
 import { Group } from '@egodb/ui'
@@ -26,6 +26,7 @@ const ParentSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, ...othe
 ))
 
 export const ParentRecordPicker: React.FC<IProps> = ({ field, recordId, ...rest }) => {
+  const table = useCurrentTable()
   const [focused, setFocused] = useState(false)
   const [getRecords, { rawRecords, isLoading }] = useLazyParentAvailableQuery({
     selectFromResult: (result) => ({
@@ -34,7 +35,21 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, recordId, ...rest 
     }),
   })
 
-  const table = useCurrentTable()
+  const { rawRecords: selectedRecords } = useGetForeignRecordsQuery(
+    {
+      tableId: table.id.value,
+      fieldId: field.id.value,
+      foreignTableId: field.foreignTableId.into() ?? table.id.value,
+      filter: { type: 'id', value: rest.value ?? '', operator: '$eq', path: 'id' },
+    },
+    {
+      skip: !rest.value,
+      selectFromResult: (result) => ({
+        ...result,
+        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+      }),
+    },
+  )
 
   useEffect(() => {
     getRecords({ tableId: table.id.value, parentFieldId: field.id.value, recordId })
@@ -48,7 +63,9 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, recordId, ...rest 
   ]
 
   if (rest.value && !data.find((d) => d.value === rest.value)) {
-    data.push({ value: rest.value, label: rest.value })
+    data.push(
+      ...selectedRecords.map((r) => ({ value: r.id, label: field.getDisplayValues(r.displayValues).toString() })),
+    )
   }
 
   return (

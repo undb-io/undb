@@ -1,8 +1,9 @@
 import type { IQueryRecords, TreeField } from '@egodb/core'
-import { useLazyTreeAvailableQuery } from '@egodb/store'
+import { useGetForeignRecordsQuery, useGetRecordsQuery, useLazyTreeAvailableQuery } from '@egodb/store'
 import type { MultiSelectProps } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { Loader, MultiSelect } from '@egodb/ui'
+import { isEmpty } from '@fxts/core'
 import { forwardRef, useEffect, useState } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { RecordValue } from '../field-value/record-value'
@@ -35,13 +36,32 @@ export const TreeRecordsPicker: React.FC<IProps> = ({ field, recordId, ...rest }
 
   const table = useCurrentTable()
 
+  const { rawRecords: selectedRecords } = useGetForeignRecordsQuery(
+    {
+      tableId: table.id.value,
+      fieldId: field.id.value,
+      foreignTableId: field.foreignTableId.into() ?? table.id.value,
+      filter: { type: 'id', value: rest.value ?? [], operator: '$in', path: 'id' },
+    },
+    {
+      skip: isEmpty(rest.value),
+      selectFromResult: (result) => ({
+        ...result,
+        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+      }),
+    },
+  )
+
   useEffect(() => {
     getRecords({ tableId: table.id.value, treeFieldId: field.id.value, recordId })
   }, [focused])
 
   const data = [
-    ...(rest.value?.map((id) => ({ value: id, label: id })) ?? []),
     ...(rawRecords?.map((record) => ({
+      value: record.id,
+      label: field.getDisplayValues(record.displayValues).toString(),
+    })) ?? []),
+    ...(selectedRecords?.map((record) => ({
       value: record.id,
       label: field.getDisplayValues(record.displayValues).toString(),
     })) ?? []),

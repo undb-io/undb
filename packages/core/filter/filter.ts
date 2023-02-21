@@ -27,6 +27,7 @@ import {
   StringEndsWith,
   StringEqual,
   StringStartsWith,
+  WithRecordIds,
 } from '../record/index.js'
 import type { IAutoIncrementFilter } from './auto-increment.filter.js'
 import { autoIncrementFilter, autoIncrementFilterValue } from './auto-increment.filter.js'
@@ -42,6 +43,7 @@ import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter.js'
 import type { IDateFilter } from './date.filter.js'
 import { dateFilter, dateFilterValue } from './date.filter.js'
 import { emailFilter, emailFilterValue } from './email.filter.js'
+import type { IIdFilter } from './id.filter.js'
 import { idFilter, idFilterValue } from './id.filter.js'
 import type { INumberFilter } from './number.filter.js'
 import { numberFilter, numberFilterValue } from './number.filter.js'
@@ -170,6 +172,30 @@ const isGroup = (filterOrGroup: IFilterOrGroup): filterOrGroup is IGroup => {
 
 const isFilter = (filterOrGroup: IFilterOrGroup): filterOrGroup is IFilter => {
   return Object.hasOwn(filterOrGroup, 'type') && Object.hasOwn(filterOrGroup, 'operator')
+}
+
+const convertIdFilter = (filter: IIdFilter): Option<CompositeSpecification> => {
+  if (filter.value === undefined) {
+    return None
+  }
+
+  switch (filter.operator) {
+    case '$eq': {
+      return Some(new StringEqual(filter.path, new StringFieldValue(filter.value as string)))
+    }
+    case '$neq': {
+      return Some(new StringEqual(filter.path, new StringFieldValue(filter.value as string)).not())
+    }
+    case '$in': {
+      return Some(WithRecordIds.fromIds(filter.value as string[]))
+    }
+    case '$nin': {
+      return Some(WithRecordIds.fromIds(filter.value as string[]).not())
+    }
+
+    default:
+      return None
+  }
 }
 
 const convertStringFilter = (filter: IStringFilter): Option<CompositeSpecification> => {
@@ -341,6 +367,8 @@ const convertTreeFilter = (filter: ITreeFilter): Option<CompositeSpecification> 
 
 const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
   switch (filter.type) {
+    case 'id':
+      return convertIdFilter(filter)
     case 'string':
       return convertStringFilter(filter)
     case 'number':
