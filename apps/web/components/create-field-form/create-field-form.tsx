@@ -43,6 +43,7 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel }) => {
             render={(props) => (
               <Select
                 {...props.field}
+                searchable
                 onChange={(type) => type && props.field.onChange(type)}
                 required
                 label={<FieldInputLabel>type</FieldInputLabel>}
