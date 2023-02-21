@@ -22,6 +22,10 @@ export class SelectField extends BaseField<ISelectField> {
     this.props.options = options
   }
 
+  override get primitive() {
+    return true
+  }
+
   reorder(from: string, to: string): WithOptions {
     const options = this.options.reorder(from, to)
     return new WithOptions(this, options)

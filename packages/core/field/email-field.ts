@@ -9,6 +9,10 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index
 export class EmailField extends BaseField<IEmailField> {
   type: EmailFieldType = 'email'
 
+  override get primitive() {
+    return true
+  }
+
   static create(input: Omit<ICreateEmailFieldInput, 'type'>): EmailField {
     const fieldName = FieldName.create(input.name)
 

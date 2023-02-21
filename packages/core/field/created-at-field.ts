@@ -17,6 +17,10 @@ export class CreatedAtField extends BaseField<ICreatedAtField> {
     return true
   }
 
+  override get primitive() {
+    return true
+  }
+
   static default(): CreatedAtField {
     return this.create({ name: 'createdAt' })
   }

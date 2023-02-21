@@ -9,6 +9,10 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index
 export class StringField extends BaseField<IStringField> {
   type: StringFieldType = 'string'
 
+  override get primitive() {
+    return true
+  }
+
   static create(input: Omit<ICreateStringFieldInput, 'type'>): StringField {
     const fieldName = FieldName.create(input.name)
 

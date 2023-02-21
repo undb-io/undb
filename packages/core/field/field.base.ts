@@ -15,6 +15,7 @@ import type {
   IReferenceField,
   ITreeField,
   IUpdateFieldSchema,
+  PrimitiveField,
   SystemField,
 } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
@@ -31,9 +32,16 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
   get system(): boolean {
     return false
   }
+  get primitive(): boolean {
+    return false
+  }
 
   isSystem(): this is SystemField {
     return this.system
+  }
+
+  isPrimitive(): this is PrimitiveField {
+    return this.primitive
   }
 
   public get id(): FieldId {

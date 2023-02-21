@@ -17,6 +17,10 @@ export class UpdatedAtField extends BaseField<IUpdatedAtField> {
     return true
   }
 
+  override get primitive() {
+    return true
+  }
+
   static default(): UpdatedAtField {
     return this.create({
       name: 'updatedAt',

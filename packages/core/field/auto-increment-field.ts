@@ -17,6 +17,10 @@ export class AutoIncrementField extends BaseField<IAutoIncrementField> {
     return true
   }
 
+  override get primitive() {
+    return true
+  }
+
   static create(input: Omit<ICreateAutoIncrementFieldInput, 'type'>): AutoIncrementField {
     const fieldName = FieldName.create(input.name)
     return new AutoIncrementField({
