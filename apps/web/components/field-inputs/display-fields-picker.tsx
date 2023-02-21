@@ -8,9 +8,11 @@ import { MultiSelect } from '@egodb/ui'
 import { forwardRef, useEffect } from 'react'
 import { FieldIcon } from './field-Icon'
 import { FieldInputLabel } from './field-input-label'
+import type { FieldBase } from './field-picker.type'
 
 interface IProps extends Omit<MultiSelectProps, 'data'> {
   tableId?: string
+  fields?: FieldBase[]
 }
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -27,7 +29,7 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, type, ...othe
   </Group>
 ))
 
-export const DisplayFieldsPicker: React.FC<IProps> = ({ tableId, ...props }) => {
+export const DisplayFieldsPicker: React.FC<IProps> = ({ tableId, fields, ...props }) => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const { data, refetch } = useGetTableQuery({ id: tableId! }, { skip: !tableId })
   const [state, handlers] = useListState<string>(props.value)
@@ -48,7 +50,9 @@ export const DisplayFieldsPicker: React.FC<IProps> = ({ tableId, ...props }) => 
         value: f.id.value,
         label: f.name.value || `Field ` + (index + 1),
         type: f.type,
-      })) ?? ([] as SelectItemType[])
+      })) ??
+    fields?.map((f) => ({ value: f.id, label: f.name, type: f.type })) ??
+    ([] as SelectItemType[])
 
   return (
     <MultiSelect
