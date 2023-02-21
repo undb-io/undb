@@ -9,7 +9,7 @@ import type {
   View,
   ViewId,
 } from '@egodb/core'
-import { getReferenceFields, INTERNAL_COLUMN_ID_NAME, WithRecordId } from '@egodb/core'
+import { getReferenceFields, WithRecordId } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { Option } from 'oxide.ts'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
@@ -64,11 +64,11 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     }
   }
 
-  async findForiegn(
+  async find(
     table: Table,
     viewId: ViewId | undefined,
     spec: IRecordSpec,
-    field: ReferenceFieldTypes,
+    referenceField?: ReferenceFieldTypes,
   ): Promise<IQueryRecords> {
     const tableId = table.id.value
     const schema = table.schema.toIdMap()
@@ -77,23 +77,9 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const qb = knex.queryBuilder()
 
     this.#buildQuery(knex, qb, tableId, schema, view, spec)
-    qb.groupBy(`${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
-    expandField(field, TABLE_ALIAS, knex, qb, true)
-
-    const data = await this.em.execute<RecordSqlite[]>(qb)
-
-    const records = data.map((d) => RecordSqliteMapper.toQuery(tableId, schema, d))
-    return records
-  }
-
-  async find(table: Table, viewId: ViewId | undefined, spec: IRecordSpec): Promise<IQueryRecords> {
-    const tableId = table.id.value
-    const schema = table.schema.toIdMap()
-    const view = table.mustGetView(viewId?.value)
-    const knex = this.em.getKnex()
-    const qb = knex.queryBuilder()
-
-    this.#buildQuery(knex, qb, tableId, schema, view, spec)
+    if (referenceField) {
+      expandField(referenceField, TABLE_ALIAS, knex, qb, true)
+    }
 
     const data = await this.em.execute<RecordSqlite[]>(qb)
 

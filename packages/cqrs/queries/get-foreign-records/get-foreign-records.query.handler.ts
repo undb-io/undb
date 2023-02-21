@@ -18,7 +18,7 @@ export class GetForeignRecordsQueryHandler implements IQueryHandler<GetForeignRe
       .unwrap()
 
     const viewId = query.viewId ? ViewId.fromString(query.viewId) : undefined
-    const records = await this.rm.findForiegn(foreignTable, viewId, spec, field)
+    const records = await this.rm.find(foreignTable, viewId, spec, field)
 
     return { records }
   }

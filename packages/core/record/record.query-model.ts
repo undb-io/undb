@@ -8,11 +8,10 @@ import type { IRecordSpec } from './specifications/index.js'
 export interface IRecordQueryModel {
   findOne(table: Table, spec: IRecordSpec): Promise<Option<IQueryRecordSchema>>
   findOneById(table: Table, id: string): Promise<Option<IQueryRecordSchema>>
-  find(table: Table, viewId: ViewId | undefined, spec: IRecordSpec): Promise<IQueryRecords>
-  findForiegn(
+  find(
     table: Table,
     viewId: ViewId | undefined,
     spec: IRecordSpec,
-    field: ReferenceFieldTypes,
+    referenceField?: ReferenceFieldTypes,
   ): Promise<IQueryRecords>
 }
