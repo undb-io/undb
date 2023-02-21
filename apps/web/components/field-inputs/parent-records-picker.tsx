@@ -6,7 +6,7 @@ import { Group } from '@egodb/ui'
 import { Loader } from '@egodb/ui'
 import { forwardRef, useEffect, useState } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
-import { RecordId } from '../field-value/record-id'
+import { RecordValue } from '../field-value/record-value'
 import { FieldIcon } from './field-Icon'
 
 interface IProps extends Omit<SelectProps, 'data'> {
@@ -16,15 +16,12 @@ interface IProps extends Omit<SelectProps, 'data'> {
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
   value: string
-  values: string[]
   label: string
 }
 
-const ParentSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, values, ...others }: ItemProps, ref) => (
+const ParentSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, ...others }: ItemProps, ref) => (
   <Group ref={ref} p="xs" {...others}>
-    <RecordId id={value} />
-    {/* TODO: display values */}
-    {/* <ReferenceValue values={values} /> */}
+    <RecordValue value={label} />
   </Group>
 ))
 
@@ -46,13 +43,12 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, recordId, ...rest 
   const data = [
     ...(rawRecords?.map((record) => ({
       value: record.id,
-      values: field.getDisplayValues(record.displayValues),
-      label: record.id,
+      label: field.getDisplayValues(record.displayValues).toString(),
     })) ?? []),
   ]
 
   if (rest.value && !data.find((d) => d.value === rest.value)) {
-    data.push({ value: rest.value, values: [], label: rest.value })
+    data.push({ value: rest.value, label: rest.value })
   }
 
   return (

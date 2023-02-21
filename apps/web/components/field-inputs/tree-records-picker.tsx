@@ -5,7 +5,7 @@ import { Group } from '@egodb/ui'
 import { Loader, MultiSelect } from '@egodb/ui'
 import { forwardRef, useEffect, useState } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
-import { RecordId } from '../field-value/record-id'
+import { RecordValue } from '../field-value/record-value'
 import { FieldIcon } from './field-Icon'
 
 interface IProps extends Omit<MultiSelectProps, 'data'> {
@@ -18,10 +18,9 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
   label: string
 }
 
-const TreeSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, ...others }: ItemProps, ref) => (
+const TreeSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, ...others }: ItemProps, ref) => (
   <Group ref={ref} p="xs" {...others}>
-    <RecordId id={value} />
-    {/* TODO: display values */}
+    <RecordValue value={label} />
   </Group>
 ))
 
@@ -41,12 +40,11 @@ export const TreeRecordsPicker: React.FC<IProps> = ({ field, recordId, ...rest }
   }, [focused])
 
   const data = [
+    ...(rest.value?.map((id) => ({ value: id, label: id })) ?? []),
     ...(rawRecords?.map((record) => ({
       value: record.id,
-      values: field.getDisplayValues(record.displayValues),
-      label: record.id,
+      label: field.getDisplayValues(record.displayValues).toString(),
     })) ?? []),
-    ...(rest.value?.map((id) => ({ value: id, values: [], label: id })) ?? []),
   ]
 
   return (

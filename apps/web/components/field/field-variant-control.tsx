@@ -6,12 +6,15 @@ import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { DisplayFieldsPicker } from '../field-inputs/display-fields-picker'
 import { SelectFieldControl } from '../field-inputs/select-field-control'
 import { TablePicker } from '../table/table-picker'
+import { useNullableCurrentTable } from '../../hooks/use-current-table'
 
 interface IProps {
   isNew: boolean
 }
 
 export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
+  const table = useNullableCurrentTable()
+
   type FormValues = typeof isNew extends 'true' ? ICreateFieldSchema : IUpdateFieldSchema
   const form = useFormContext<FormValues>()
   const type = form.watch('type')
@@ -65,7 +68,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
           name={'displayFieldIds'}
           render={(props) => (
             <DisplayFieldsPicker
-              tableId={form.watch('foreignTableId')}
+              tableId={form.watch('foreignTableId') ?? table?.id.value}
               {...props.field}
               onChange={(ids) => props.field.onChange(ids)}
               variant="default"

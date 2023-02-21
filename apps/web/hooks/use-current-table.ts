@@ -10,3 +10,7 @@ export const useCurrentTable = () => {
 
   return table
 }
+
+export const useNullableCurrentTable = () => {
+  return useContext(CurrentTableContext)
+}

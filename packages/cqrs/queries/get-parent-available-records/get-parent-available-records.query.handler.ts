@@ -1,4 +1,11 @@
-import { IRecordQueryModel, ITableRepository, ParentAvailableSpec, ViewId, WithRecordTableId } from '@egodb/core'
+import {
+  IRecordQueryModel,
+  ITableRepository,
+  ParentAvailableSpec,
+  ParentField,
+  ViewId,
+  WithRecordTableId,
+} from '@egodb/core'
 import type { IQueryHandler } from '@egodb/domain'
 import { andOptions } from '@egodb/domain'
 import { Option } from 'oxide.ts'
@@ -12,6 +19,7 @@ export class GetParentAvailableRecordsQueryHandler
 
   async execute(query: GetParentAvailableRecordsQuery): Promise<IGetParentAvailableRecordsOutput> {
     const table = (await this.tableRepo.findOneById(query.tableId)).unwrap()
+    const field = table.schema.getFieldByIdOfType(query.parentFieldId, ParentField).unwrap()
     const spec = andOptions(
       table.getSpec(query.viewId),
       Option(WithRecordTableId.fromString(query.tableId).unwrap()),
@@ -19,7 +27,7 @@ export class GetParentAvailableRecordsQueryHandler
     ).unwrap()
 
     const viewId = query.viewId ? ViewId.fromString(query.viewId) : undefined
-    const records = await this.rm.find(table, viewId, spec)
+    const records = await this.rm.find(table, viewId, spec, field)
 
     return { records }
   }
