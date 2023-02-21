@@ -28,7 +28,9 @@ import { DisplayFields } from './value-objects/index.js'
 
 export abstract class BaseField<C extends IBaseField = IBaseField> extends ValueObject<C> {
   abstract type: IFieldType
-  system = false
+  get system(): boolean {
+    return false
+  }
 
   isSystem(): this is SystemField {
     return this.system
