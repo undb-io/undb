@@ -5,6 +5,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { FieldInputLabel } from '../../field-inputs/field-input-label'
 import { DisplayFieldsPicker } from '../../field-inputs/display-fields-picker'
 import { SelectFieldControl } from '../../field-inputs/select-field-control'
+import { TablePicker } from '../../table/table-picker'
 
 interface IProps {
   index: number
@@ -39,23 +40,40 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
       />
     )
   }
-  if (type === 'tree') {
+
+  if (type === 'tree' || type === 'reference') {
     return (
       <>
-        <Controller
-          name={`schema.${index}.parentFieldName`}
-          render={(props) => (
-            <TextInput
-              label={<FieldInputLabel>parent field name</FieldInputLabel>}
-              {...props.field}
-              variant="filled"
-              value={props.field.value ?? ''}
-            />
-          )}
-        />
+        {type === 'tree' && (
+          <Controller
+            name={`schema.${index}.parentFieldName`}
+            render={(props) => (
+              <TextInput
+                label={<FieldInputLabel>parent field name</FieldInputLabel>}
+                {...props.field}
+                variant="filled"
+                value={props.field.value ?? ''}
+              />
+            )}
+          />
+        )}
+        {type === 'reference' && (
+          <Controller
+            name={`schema.${index}.foreignTableId`}
+            render={(props) => (
+              <TablePicker {...props.field} onChange={(tableId) => props.field.onChange(tableId)} variant="filled" />
+            )}
+          />
+        )}
         <Controller
           name={`schema.${index}.displayFieldIds`}
-          render={(props) => <DisplayFieldsPicker {...props.field} onChange={(ids) => props.field.onChange(ids)} />}
+          render={(props) => (
+            <DisplayFieldsPicker
+              tableId={form.watch(`schema.${index}.foreignTableId`)}
+              {...props.field}
+              onChange={(ids) => props.field.onChange(ids)}
+            />
+          )}
         />
       </>
     )

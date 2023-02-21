@@ -1,5 +1,16 @@
 import { useSortable } from '@dnd-kit/sortable'
-import { Accordion, Group, Text, Select, TextInput, Space, ActionIcon, IconGripVertical, Stack } from '@egodb/ui'
+import {
+  Accordion,
+  Group,
+  Text,
+  Select,
+  TextInput,
+  Space,
+  ActionIcon,
+  IconGripVertical,
+  Stack,
+  Icon123,
+} from '@egodb/ui'
 import React from 'react'
 import { CSS } from '@dnd-kit/utilities'
 import { FieldCommonControl } from './field-common-control'
@@ -33,7 +44,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
 
   return (
     <Accordion.Item id={String(id)} opacity={isDragging ? 0.5 : 1} value={String(id)}>
-      <Accordion.Control ref={setNodeRef} style={style}>
+      <Accordion.Control icon={<FieldIcon type={form.watch(`schema.${index}.type`)} />} ref={setNodeRef} style={style}>
         <Group>
           <ActionIcon {...attributes} {...listeners} component="a">
             <IconGripVertical size={12} />
@@ -51,6 +62,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
               render={(f) => (
                 <Select
                   {...f.field}
+                  searchable
                   onChange={(value) => f.field.onChange(value)}
                   label={<FieldInputLabel>type</FieldInputLabel>}
                   defaultValue="string"

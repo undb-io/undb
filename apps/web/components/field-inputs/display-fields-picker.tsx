@@ -6,7 +6,6 @@ import { useListState } from '@egodb/ui'
 import { ActionIcon, Group, Text } from '@egodb/ui'
 import { MultiSelect } from '@egodb/ui'
 import { forwardRef, useEffect } from 'react'
-import { useCurrentTable } from '../../hooks/use-current-table'
 import { FieldIcon } from './field-Icon'
 import { FieldInputLabel } from './field-input-label'
 
@@ -29,17 +28,18 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, type, ...othe
 ))
 
 export const DisplayFieldsPicker: React.FC<IProps> = ({ tableId, ...props }) => {
-  const ct = useCurrentTable()
-  const tid = tableId ?? ct.id.value
-  const { data, refetch } = useGetTableQuery({ id: tid })
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const { data, refetch } = useGetTableQuery({ id: tableId! }, { skip: !tableId })
   const [state, handlers] = useListState<string>(props.value)
 
   const table = data ? TableFactory.fromQuery(data) : undefined
 
   useEffect(() => {
-    refetch()
+    if (tableId) {
+      refetch()
+    }
     handlers.setState(props.value ?? [])
-  }, [tid])
+  }, [tableId])
 
   const items =
     table?.schema?.fields
