@@ -1,4 +1,5 @@
 import type { IFieldType } from '@egodb/core'
+import { TableFactory } from '@egodb/core'
 import { useGetTableQuery } from '@egodb/store'
 import type { MultiSelectProps, SelectItem as SelectItemType } from '@egodb/ui'
 import { useListState } from '@egodb/ui'
@@ -27,23 +28,27 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, type, ...othe
   </Group>
 ))
 
-export const FieldsPicker: React.FC<IProps> = ({ tableId, ...props }) => {
+export const DisplayFieldsPicker: React.FC<IProps> = ({ tableId, ...props }) => {
   const ct = useCurrentTable()
   const tid = tableId ?? ct.id.value
-  const { data: table, refetch } = useGetTableQuery({ id: tid })
+  const { data, refetch } = useGetTableQuery({ id: tid })
   const [state, handlers] = useListState<string>(props.value)
+
+  const table = data ? TableFactory.fromQuery(data) : undefined
 
   useEffect(() => {
     refetch()
     handlers.setState(props.value ?? [])
   }, [tid])
 
-  const data =
-    table?.schema?.map((f, index) => ({
-      value: f.id,
-      label: f.name || `Field ` + (index + 1),
-      type: f.type,
-    })) ?? ([] as SelectItemType[])
+  const items =
+    table?.schema?.fields
+      .filter((f) => f.isPrimitive())
+      .map((f, index) => ({
+        value: f.id.value,
+        label: f.name.value || `Field ` + (index + 1),
+        type: f.type,
+      })) ?? ([] as SelectItemType[])
 
   return (
     <MultiSelect
@@ -56,7 +61,7 @@ export const FieldsPicker: React.FC<IProps> = ({ tableId, ...props }) => {
         handlers.setState(value)
         props.onChange?.(value)
       }}
-      data={data}
+      data={items}
       itemComponent={SelectItem}
     />
   )

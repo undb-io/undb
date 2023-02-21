@@ -3,7 +3,7 @@ import { RATING_MAX, RATING_MAX_DEFAULT } from '@egodb/core'
 import { NumberInput, TextInput } from '@egodb/ui'
 import { Controller, useFormContext } from 'react-hook-form'
 import { FieldInputLabel } from '../../field-inputs/field-input-label'
-import { FieldsPicker } from '../../field-inputs/fields-picker'
+import { DisplayFieldsPicker } from '../../field-inputs/display-fields-picker'
 import { SelectFieldControl } from '../../field-inputs/select-field-control'
 
 interface IProps {
@@ -55,7 +55,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
         />
         <Controller
           name={`schema.${index}.displayFieldIds`}
-          render={(props) => <FieldsPicker {...props.field} onChange={(ids) => props.field.onChange(ids)} />}
+          render={(props) => <DisplayFieldsPicker {...props.field} onChange={(ids) => props.field.onChange(ids)} />}
         />
       </>
     )

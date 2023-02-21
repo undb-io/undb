@@ -9,7 +9,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
-import { FieldsPicker } from '../field-inputs/fields-picker'
+import { DisplayFieldsPicker } from '../field-inputs/display-fields-picker'
 import { treeStepZeroAtom } from './tree-step.atom'
 
 interface IProps {
@@ -74,7 +74,7 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
               control={form.control}
               name={`displayFieldIds`}
               render={(props) => (
-                <FieldsPicker
+                <DisplayFieldsPicker
                   variant="default"
                   dropdownPosition="top"
                   {...props.field}
