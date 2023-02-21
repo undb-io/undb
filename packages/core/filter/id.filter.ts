@@ -8,7 +8,7 @@ export const idFilter = z
   .object({
     type: z.literal('id'),
     operator: idFilterOperators,
-    value: idFilterValue,
+    value: idFilterValue.or(recordIdSchema.array()),
   })
   .merge(baseFilter)
 

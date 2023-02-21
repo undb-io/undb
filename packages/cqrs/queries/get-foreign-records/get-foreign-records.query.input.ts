@@ -1,4 +1,4 @@
-import { fieldIdSchema, tableIdSchema, viewIdSchema } from '@egodb/core'
+import { fieldIdSchema, rootFilter, tableIdSchema, viewIdSchema } from '@egodb/core'
 import * as z from 'zod'
 
 export const getForeignRecordsQueryInput = z.object({
@@ -6,4 +6,5 @@ export const getForeignRecordsQueryInput = z.object({
   foreignTableId: tableIdSchema,
   fieldId: fieldIdSchema,
   viewId: viewIdSchema.optional(),
+  filter: rootFilter.optional(),
 })

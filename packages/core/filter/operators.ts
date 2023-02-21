@@ -20,7 +20,7 @@ export const $lte = z.literal('$lte')
 
 export const $is_today = z.literal('$is_today')
 
-export const idFilterOperators = z.union([$eq, $neq])
+export const idFilterOperators = z.union([$eq, $neq, $in, $nin])
 export type IIdFilterOperator = z.infer<typeof idFilterOperators>
 
 export const stringFilterOperators = z.union([$eq, $neq, $contains, $starts_with, $ends_with, $regex])
