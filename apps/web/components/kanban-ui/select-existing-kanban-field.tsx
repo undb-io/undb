@@ -44,7 +44,7 @@ export const SelectExistingField: React.FC<IProps> = ({ onSuccess }) => {
   return (
     <>
       <form onSubmit={onSubmit} style={{ width: '100%' }}>
-        <Card shadow="md">
+        <Card shadow="md" withBorder sx={{ overflow: 'visible' }}>
           <Card.Section withBorder inheritPadding py="sm">
             <Text>select kanban field</Text>
           </Card.Section>
