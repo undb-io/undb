@@ -1,5 +1,5 @@
-import type { IQueryTreeRecords, IRecordSpec, IRecordTreeQueryModel, TableSchemaIdMap, TreeField } from '@egodb/core'
-import { getReferenceFields, INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
+import type { IQueryTreeRecords, IRecordSpec, IRecordTreeQueryModel, Table, TreeField } from '@egodb/core'
+import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { DELETED_AT_COLUMN_NAME } from '../../decorators/soft-delete.decorator.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
@@ -14,16 +14,13 @@ import { createRecordTree } from './record.util.js'
 export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
   constructor(private readonly em: EntityManager) {}
 
-  async findTrees(
-    tableId: string,
-    field: TreeField,
-    spec: IRecordSpec,
-    schema: TableSchemaIdMap,
-  ): Promise<IQueryTreeRecords> {
+  async findTrees(table: Table, field: TreeField, spec: IRecordSpec): Promise<IQueryTreeRecords> {
     const knex = this.em.getKnex()
+    const tableId = table.id.value
+    const schema = table.schema.toIdMap()
 
     const closureTable = new ClosureTable(tableId, field)
-    const columns = UnderlyingColumnFactory.createMany([...schema.values()])
+    const columns = UnderlyingColumnFactory.createMany(table.schema.fields)
 
     const alias = TABLE_ALIAS
 
@@ -43,7 +40,7 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
     const visitor = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
     spec.accept(visitor).unwrap()
 
-    const referenceFields = getReferenceFields([...schema.values()])
+    const referenceFields = table.schema.getReferenceFields()
     for (const [index, referenceField] of referenceFields.entries()) {
       const visitor = new RecordSqliteReferenceQueryVisitor(tableId, index, qb, knex)
       referenceField.accept(visitor)

@@ -3,6 +3,7 @@ import { castArray } from 'lodash-es'
 import { Option } from 'oxide.ts'
 import type { Class } from 'type-fest'
 import * as z from 'zod'
+import type { IFieldType, ReferenceFieldTypes } from '../field'
 import {
   createFieldSchema,
   DateField,
@@ -39,6 +40,8 @@ export const createTableSchemaSchema = z
 export type ICreateTableSchemaInput = z.infer<typeof createTableSchemaSchema>
 
 export type TableSchemaIdMap = Map<string, Field>
+
+const referenceFieldTypes: IFieldType[] = ['tree', 'parent', 'reference']
 
 /**
  * Table Schema is a collection of fields
@@ -130,5 +133,9 @@ export class TableSchema extends ValueObject<Field[]> {
     }
 
     return new WithoutField(field)
+  }
+
+  public getReferenceFields(): ReferenceFieldTypes[] {
+    return this.fields.filter((f) => referenceFieldTypes.includes(f.type)) as ReferenceFieldTypes[]
   }
 }

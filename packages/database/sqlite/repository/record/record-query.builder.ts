@@ -1,10 +1,5 @@
 import type { IRecordSpec, ReferenceFieldTypes, Table, TableSchemaIdMap, View } from '@egodb/core'
-import {
-  getReferenceFields,
-  INTERNAL_COLUMN_CREATED_AT_NAME,
-  INTERNAL_COLUMN_ID_NAME,
-  INTERNAL_COLUMN_UPDATED_AT_NAME,
-} from '@egodb/core'
+import { INTERNAL_COLUMN_CREATED_AT_NAME, INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import { union } from 'lodash-es'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory'
@@ -25,7 +20,7 @@ export interface IRecordQueryBuilder {
 
 export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   private readonly view: View
-  private readonly schema: TableSchemaIdMap
+  private readonly schemaMap: TableSchemaIdMap
   private readonly qb: Knex.QueryBuilder
 
   constructor(
@@ -36,7 +31,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   ) {
     this.qb = knex.queryBuilder()
     this.view = table.mustGetView(viewId)
-    this.schema = table.schema.toIdMap()
+    this.schemaMap = table.schema.toIdMap()
   }
 
   from(): this {
@@ -46,7 +41,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
 
   where(): this {
     if (this.spec) {
-      const visitor = new RecordSqliteQueryVisitor(this.table.id.value, this.schema, this.qb, this.knex)
+      const visitor = new RecordSqliteQueryVisitor(this.table.id.value, this.schemaMap, this.qb, this.knex)
 
       this.spec.accept(visitor).unwrap()
     }
@@ -58,7 +53,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     const sorts = this.view.sorts?.sorts ?? []
     if (sorts.length) {
       for (const sort of sorts) {
-        const field = this.schema.get(sort.fieldId)
+        const field = this.schemaMap.get(sort.fieldId)
         if (!field) continue
 
         const column = UnderlyingColumnFactory.create(field)
@@ -76,7 +71,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   }
 
   reference(): this {
-    const referenceFields = getReferenceFields([...this.schema.values()])
+    const referenceFields = this.table.schema.getReferenceFields()
     for (const [index, referenceField] of referenceFields.entries()) {
       const visitor = new RecordSqliteReferenceQueryVisitor(this.table.id.value, index, this.qb, this.knex)
       referenceField.accept(visitor)
@@ -90,7 +85,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     return this
   }
   select(): this {
-    const fields = this.view.getVisibleFields([...this.schema.values()])
+    const fields = this.view.getVisibleFields([...this.schemaMap.values()])
     const columns = UnderlyingColumnFactory.createMany(fields)
 
     const names = union(
