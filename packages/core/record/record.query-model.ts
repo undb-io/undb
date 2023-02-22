@@ -11,7 +11,7 @@ export interface IRecordQueryModel {
   find(
     table: Table,
     viewId: ViewId | undefined,
-    spec: IRecordSpec,
+    spec: IRecordSpec | null,
     referenceField?: ReferenceFieldTypes,
   ): Promise<IQueryRecords>
 }

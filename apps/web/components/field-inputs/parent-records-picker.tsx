@@ -1,17 +1,23 @@
 import type { IQueryRecords, ParentField } from '@egodb/core'
-import { useGetForeignRecordsQuery, useLazyParentAvailableQuery } from '@egodb/store'
-import type { SelectProps } from '@egodb/ui'
+import {
+  getSelectedRecordId,
+  useGetForeignRecordsQuery,
+  useGetRecordQuery,
+  useLazyParentAvailableQuery,
+} from '@egodb/store'
+import type { SelectItem, SelectProps } from '@egodb/ui'
 import { Select } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { Loader } from '@egodb/ui'
+import { isEmpty } from '@fxts/core'
 import { forwardRef, useEffect, useState } from 'react'
+import { useAppSelector } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { RecordValue } from '../field-value/record-value'
 import { FieldIcon } from './field-Icon'
 
 interface IProps extends Omit<SelectProps, 'data'> {
   field: ParentField
-  recordId?: string
 }
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -25,29 +31,26 @@ const ParentSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, ...othe
   </Group>
 ))
 
-export const ParentRecordPicker: React.FC<IProps> = ({ field, recordId, ...rest }) => {
+export const ParentRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
+  const recordId = useAppSelector(getSelectedRecordId)
   const table = useCurrentTable()
+  const displayFields = field.displayFieldIds.map((f) => f.value)
+
   const [focused, setFocused] = useState(false)
-  const [getRecords, { rawRecords, isLoading }] = useLazyParentAvailableQuery({
+  const [getRecords, { rawRecords: foreignRecords, isLoading }] = useLazyParentAvailableQuery({
     selectFromResult: (result) => ({
       ...result,
       rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
     }),
   })
 
-  const { rawRecords: selectedRecords } = useGetForeignRecordsQuery(
+  const { data: record } = useGetRecordQuery(
     {
       tableId: table.id.value,
-      fieldId: field.id.value,
-      foreignTableId: field.foreignTableId.into() ?? table.id.value,
-      filter: { type: 'id', value: rest.value ?? '', operator: '$eq', path: 'id' },
+      id: recordId,
     },
     {
-      skip: !rest.value,
-      selectFromResult: (result) => ({
-        ...result,
-        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
-      }),
+      skip: !recordId,
     },
   )
 
@@ -55,17 +58,19 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, recordId, ...rest 
     getRecords({ tableId: table.id.value, parentFieldId: field.id.value, recordId })
   }, [focused])
 
-  const data = [
-    ...(rawRecords?.map((record) => ({
-      value: record.id,
-      label: field.getDisplayValues(record.displayValues).toString(),
-    })) ?? []),
-  ]
-
-  if (rest.value && !data.find((d) => d.value === rest.value)) {
-    data.push(
-      ...selectedRecords.map((r) => ({ value: r.id, label: field.getDisplayValues(r.displayValues).toString() })),
-    )
+  const data: SelectItem[] = []
+  if (record) {
+    const foreignRecordIds = record.values[field.id.value]
+    if (Array.isArray(foreignRecordIds) && !isEmpty(foreignRecordIds)) {
+      const values = field.getDisplayValues(record.displayValues)
+      for (const [index, foreignRecordId] of foreignRecordIds.entries()) {
+        data.push({ value: foreignRecordId as string, label: values[index]?.toString() ?? '' })
+      }
+    }
+  }
+  for (const foreignRecord of foreignRecords) {
+    const values = displayFields.map((fieldId) => foreignRecord.values[fieldId]?.toString())
+    data.push({ value: foreignRecord.id, label: values.toString() })
   }
 
   return (
@@ -74,7 +79,7 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, recordId, ...rest 
       multiple
       searchable
       clearable
-      description={focused && !rawRecords.length ? 'no more available record to select' : undefined}
+      description={focused && !foreignRecords.length ? 'no more available record to select' : undefined}
       itemComponent={ParentSelectItem}
       data={data}
       onFocus={() => setFocused(true)}
