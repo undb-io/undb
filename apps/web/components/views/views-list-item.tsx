@@ -14,6 +14,9 @@ import {
   IconChevronDown,
   IconGripVertical,
   Box,
+  IconTrash,
+  IconCopy,
+  IconPencil,
 } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
@@ -123,6 +126,9 @@ export const ViewsListItem: React.FC<IProps> = ({ v }) => {
               </Menu.Target>
               <Menu.Dropdown>
                 <Menu.Item
+                  h={35}
+                  fz="xs"
+                  icon={<IconPencil size={14} />}
                   onClick={(e) => {
                     e.stopPropagation()
                     handler.open()
@@ -131,6 +137,9 @@ export const ViewsListItem: React.FC<IProps> = ({ v }) => {
                   Update View Name
                 </Menu.Item>
                 <Menu.Item
+                  h={35}
+                  fz="xs"
+                  icon={<IconCopy size={14} />}
                   onClick={(e) => {
                     e.stopPropagation()
                     duplicateView({ tableId: table.id.value, id: v.id.value })
@@ -144,6 +153,9 @@ export const ViewsListItem: React.FC<IProps> = ({ v }) => {
                     <Menu.Divider />
 
                     <Menu.Item
+                      h={35}
+                      fz="xs"
+                      icon={<IconTrash size={14} />}
                       color="red"
                       onClick={(e) => {
                         e.stopPropagation()
