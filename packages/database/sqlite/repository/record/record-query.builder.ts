@@ -1,12 +1,17 @@
 import type { IRecordSpec, ReferenceFieldTypes, Table, TableSchemaIdMap, View } from '@egodb/core'
-import { INTERNAL_COLUMN_CREATED_AT_NAME, INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
-import type { Knex } from '@mikro-orm/better-sqlite'
+import {
+  INTERNAL_COLUMN_CREATED_AT_NAME,
+  INTERNAL_COLUMN_ID_NAME,
+  INTERNAL_COLUMN_UPDATED_AT_NAME,
+  ParentField,
+} from '@egodb/core'
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { union } from 'lodash-es'
 import type { Promisable } from 'type-fest'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
 import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor'
-import { TABLE_ALIAS } from './record.constants'
+import { getFTAlias, TABLE_ALIAS } from './record.constants'
 import { expandField } from './record.util'
 
 export interface IRecordQueryBuilder {
@@ -22,15 +27,19 @@ export interface IRecordQueryBuilder {
 export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   private readonly view: View
   private readonly schemaMap: TableSchemaIdMap
+  private readonly knex: Knex
   public readonly qb: Knex.QueryBuilder
 
+  #jobs: (() => Promise<void>)[] = []
+
   constructor(
-    private readonly knex: Knex,
+    private readonly em: EntityManager,
     private readonly table: Table,
     private readonly spec: IRecordSpec | null,
     viewId?: string,
   ) {
-    this.qb = knex.queryBuilder()
+    this.knex = em.getKnex()
+    this.qb = this.knex.queryBuilder()
     this.view = table.mustGetView(viewId)
     this.schemaMap = table.schema.toIdMap()
   }
@@ -72,19 +81,34 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   }
 
   reference(): this {
-    const referenceFields = this.table.schema.getReferenceFields()
-    for (const [index, referenceField] of referenceFields.entries()) {
-      const visitor = new RecordSqliteReferenceQueryVisitor(this.table.id.value, index, this.qb, this.knex)
-      referenceField.accept(visitor)
-    }
+    this.#jobs.push(async () => {
+      const referenceFields = this.table.schema.getReferenceFields()
+      for (const [index, referenceField] of referenceFields.entries()) {
+        const visitor = new RecordSqliteReferenceQueryVisitor(this.table.id.value, index, this.qb, this.knex)
+        referenceField.accept(visitor)
+
+        await expandField(
+          referenceField,
+          getFTAlias(index),
+          this.em,
+          this.knex,
+          this.qb,
+          !(referenceField instanceof ParentField),
+        )
+      }
+    })
     return this
   }
+
   expand(field?: ReferenceFieldTypes): this {
     if (field) {
-      expandField(field, TABLE_ALIAS, this.knex, this.qb, true)
+      this.#jobs.push(async () => {
+        await expandField(field, TABLE_ALIAS, this.em, this.knex, this.qb, true)
+      })
     }
     return this
   }
+
   select(): this {
     const fields = this.view.getVisibleFields([...this.schemaMap.values()])
     const columns = UnderlyingColumnFactory.createMany(fields)
@@ -101,6 +125,8 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   }
 
   async build(): Promise<this> {
+    await Promise.all(this.#jobs.map((job) => job()))
+
     return this
   }
 }

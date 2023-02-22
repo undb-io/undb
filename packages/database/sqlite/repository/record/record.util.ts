@@ -1,7 +1,10 @@
-import type { IQueryTreeRecords, IReference, ReferenceFieldTypes } from '@egodb/core'
-import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
-import type { Knex } from '@mikro-orm/better-sqlite'
-import { isEmpty } from 'lodash-es'
+import type { IQueryTreeRecords, ReferenceFieldTypes } from '@egodb/core'
+import { FieldFactory } from '@egodb/core'
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import { Field } from '../../entity/field.js'
+import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
+import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
+import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
 import type { ExpandColumnName, RecordSqliteWithParent } from './record.type.js'
 
 export const createRecordTree = <T extends RecordSqliteWithParent>(dataset: T[]): IQueryTreeRecords => {
@@ -23,27 +26,31 @@ export const getExpandColumnName = (fieldId: string): ExpandColumnName => `${fie
 
 export const getFieldIdFromExpand = (expand: ExpandColumnName): string => expand.split('_expand')[0]
 
-export const getDisplayFieldIds = (field: IReference): string[] => {
-  const ids = field.displayFieldIds.map((fieldId) => fieldId.value)
-
-  if (isEmpty(ids)) {
-    return [INTERNAL_COLUMN_ID_NAME]
-  }
-
-  return ids
-}
-
-export const expandField = (
+// TODO: 如果 core table service 可以获取完整的 table 和其关联的 fields 那在这个函数里可以不用查询 displayFields
+export const expandField = async (
   field: ReferenceFieldTypes,
   table: string,
+  em: EntityManager,
   knex: Knex,
   qb: Knex.QueryBuilder,
   multiple = false,
-): void => {
-  const jsonObjectEntries: [string, string][] = getDisplayFieldIds(field).map((fieldId) => [
-    `'${fieldId}'`,
-    multiple ? `json_group_array(${table}.${fieldId})` : `${table}.${fieldId}`,
-  ])
+): Promise<void> => {
+  const jsonObjectEntries: [string, string][] = []
+
+  const displayFieldIds = field.displayFieldIds.map((id) => id.value)
+  for (const fieldId of displayFieldIds) {
+    const field = await em.findOne(Field, { id: fieldId })
+    if (!field) continue
+
+    let name = `'${fieldId}'`
+    const f = FieldFactory.unsafeCreate(TableSqliteMapper.fieldToDomain(field))
+    if (f.isSystem()) {
+      const c = UnderlyingColumnFactory.create(f) as IUnderlyingColumn
+      name = `'${c.name}'`
+    }
+
+    jsonObjectEntries.push([name, multiple ? `json_group_array(${table}.${name})` : `${table}.${name}`])
+  }
 
   qb.select(
     knex.raw(

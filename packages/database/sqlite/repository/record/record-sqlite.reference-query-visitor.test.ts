@@ -22,7 +22,7 @@ describe('RecordSqliteReferenceQueryVisitor', () => {
     )
 
     expect(qb.toQuery()).toMatchInlineSnapshot(
-      "\"select json_object('field1',json_object('field2',json_group_array(ft1.field2))) as field1_expand left join `field1_tabletest_adjacency_list` as `at1` on `t`.`id` = `at1`.`from_id` left join `tabletest` as `ft1` on `ft1`.`id` = `at1`.`to_id` group by `t`.`id`\"",
+      '"select * left join `field1_tabletest_adjacency_list` as `at1` on `t`.`id` = `at1`.`from_id` left join `tabletest` as `ft1` on `ft1`.`id` = `at1`.`to_id` group by `t`.`id`"',
     )
   })
 
@@ -30,7 +30,7 @@ describe('RecordSqliteReferenceQueryVisitor', () => {
     visitor.tree(TreeField.unsafeCreate({ id: 'field1', displayFieldIds: ['field2'], type: 'tree', name: 'tree' }))
 
     expect(qb.toQuery()).toMatchInlineSnapshot(
-      "\"select json_object('field1',json_object('field2',json_group_array(ft1.field2))) as field1_expand left join `field1_tabletest_closure_table` as `ct1` on `t`.`id` = `ct1`.`parent_id` and `ct1`.`depth` = 1 left join `tabletest` as `ft1` on `ft1`.`id` = `ct1`.`child_id` group by `t`.`id`\"",
+      '"select * left join `field1_tabletest_closure_table` as `ct1` on `t`.`id` = `ct1`.`parent_id` and `ct1`.`depth` = 1 left join `tabletest` as `ft1` on `ft1`.`id` = `ct1`.`child_id` group by `t`.`id`"',
     )
   })
 
@@ -46,7 +46,7 @@ describe('RecordSqliteReferenceQueryVisitor', () => {
     )
 
     expect(qb.toQuery()).toMatchInlineSnapshot(
-      "\"select json_object('field1',json_object('field2',ft1.field2)) as field1_expand left join `treefieldid1_tabletest_closure_table` as `ct1` on `t`.`id` = `ct1`.`child_id` and `ct1`.`depth` = 1 left join `tabletest` as `ft1` on `ft1`.`id` = `ct1`.`parent_id` group by `t`.`id`\"",
+      '"select * left join `treefieldid1_tabletest_closure_table` as `ct1` on `t`.`id` = `ct1`.`child_id` and `ct1`.`depth` = 1 left join `tabletest` as `ft1` on `ft1`.`id` = `ct1`.`parent_id` group by `t`.`id`"',
     )
   })
 })

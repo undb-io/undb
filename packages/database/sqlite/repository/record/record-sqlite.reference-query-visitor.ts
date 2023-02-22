@@ -24,7 +24,6 @@ import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
 import { getFTAlias, TABLE_ALIAS } from './record.constants.js'
-import { expandField } from './record.util.js'
 
 export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
   constructor(
@@ -79,7 +78,7 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
   reference(field: ReferenceField): void {
     const foreignTableId = this.getForeignTableId(field)
     const adjacency = new AdjacencyListTable(this.tableId, field)
-    const { knex, index } = this
+    const { index } = this
     const alias = TABLE_ALIAS
 
     const at = AdjacencyListTable.getAlias(index)
@@ -93,8 +92,6 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
       )
       .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
       .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${at}.${AdjacencyListTable.TO_ID}`)
-
-    expandField(field, ft, knex, this.qb, true)
   }
   tree(field: TreeField): void {
     const foreignTableId = this.getForeignTableId(field)
@@ -114,8 +111,6 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
       })
       .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
       .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${ct}.${ClosureTable.CHILD_ID}`)
-
-    expandField(field, ft, knex, this.qb, true)
   }
   parent(field: ParentField): void {
     const foreignTableId = this.getForeignTableId(field)
@@ -135,7 +130,5 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
       })
       .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
       .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${ct}.${ClosureTable.PARENT_ID}`)
-
-    expandField(field, ft, knex, this.qb)
   }
 }
