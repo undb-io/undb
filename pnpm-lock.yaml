@@ -402,6 +402,7 @@ importers:
       react: ^18.2.0
       redux: ^4.2.1
       redux-logger: ^3.0.6
+      redux-persist: ^6.0.0
       reselect: ^4.1.7
       superjson: ^1.12.2
       tsconfig: ^0.0.0
@@ -415,6 +416,7 @@ importers:
       lodash: 4.17.21
       redux: 4.2.1
       redux-logger: 3.0.6
+      redux-persist: 6.0.0_react@18.2.0+redux@4.2.1
       superjson: 1.12.2
     devDependencies:
       '@egodb/eslint-config': link:../eslint-config
@@ -10703,6 +10705,19 @@ packages:
     resolution: {integrity: sha512-JoCIok7bg/XpqA1JqCqXFypuqBbQzGQySrhFzewB7ThcnysTO30l4VCst86AuB9T9tuT03MAA56Jw2PNhRSNCg==}
     dependencies:
       deep-diff: 0.3.8
+    dev: false
+
+  /redux-persist/6.0.0_react@18.2.0+redux@4.2.1:
+    resolution: {integrity: sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ==}
+    peerDependencies:
+      react: '>=16'
+      redux: '>4.0.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      redux: 4.2.1
     dev: false
 
   /redux-thunk/2.4.2_redux@4.2.1:
