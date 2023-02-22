@@ -3,6 +3,7 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useMoveViewMutation } from '@egodb/store'
 import { Button, openContextModal, Stack, useListState } from '@egodb/ui'
+import { useEffect } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { CREATE_VIEW_MODAL_ID } from '../../modals'
 import { ViewsListItem } from './views-list-item'
@@ -14,6 +15,10 @@ export const ViewsList: React.FC = () => {
 
   const viewsOrder = table.viewsOrder.order
   const [order, handlers] = useListState(viewsOrder)
+
+  useEffect(() => {
+    handlers.setState(table.viewsOrder.order)
+  }, [table])
 
   const [moveView] = useMoveViewMutation()
 
