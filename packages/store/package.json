@@ -10,6 +10,7 @@
     "lodash": "^4.17.21",
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
+    "redux-persist": "^6.0.0",
     "superjson": "^1.12.2"
   },
   "devDependencies": {
