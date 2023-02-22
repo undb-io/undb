@@ -12,10 +12,9 @@ import { ParentRecordPicker } from '../field-inputs/parent-records-picker'
 interface IProps {
   field: Field
   name: string
-  recordId?: string
 }
 
-export const RecordInputFactory: React.FC<IProps> = ({ name, field, recordId }) => {
+export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
   const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
   if (field.type === 'number') {
     return (
@@ -148,7 +147,6 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field, recordId }) 
           <TreeRecordsPicker
             field={field}
             label={label}
-            recordId={recordId}
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? []}
@@ -166,7 +164,6 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field, recordId }) 
           <ParentRecordPicker
             field={field}
             label={label}
-            recordId={recordId}
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? ''}
@@ -179,17 +176,15 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field, recordId }) 
   return (
     <Controller
       name={name}
-      render={(form) => {
-        return (
-          <TextInput
-            data-auto-focus
-            icon={<FieldIcon type={field.type} />}
-            label={label}
-            {...form.field}
-            value={form.field.value ?? ''}
-          />
-        )
-      }}
+      render={(form) => (
+        <TextInput
+          data-auto-focus
+          icon={<FieldIcon type={field.type} />}
+          label={label}
+          {...form.field}
+          value={form.field.value ?? ''}
+        />
+      )}
     />
   )
 }

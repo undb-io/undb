@@ -31,7 +31,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   constructor(
     private readonly knex: Knex,
     private readonly table: Table,
-    private readonly spec: IRecordSpec,
+    private readonly spec: IRecordSpec | null,
     viewId?: string,
   ) {
     this.qb = knex.queryBuilder()
@@ -45,9 +45,11 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   }
 
   where(): this {
-    const visitor = new RecordSqliteQueryVisitor(this.table.id.value, this.schema, this.qb, this.knex)
+    if (this.spec) {
+      const visitor = new RecordSqliteQueryVisitor(this.table.id.value, this.schema, this.qb, this.knex)
 
-    this.spec.accept(visitor).unwrap()
+      this.spec.accept(visitor).unwrap()
+    }
 
     return this
   }

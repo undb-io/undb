@@ -20,7 +20,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
   async find(
     table: Table,
     viewId: ViewId | undefined,
-    spec: IRecordSpec,
+    spec: IRecordSpec | null,
     referenceField?: ReferenceFieldTypes,
   ): Promise<IQueryRecords> {
     const tableId = table.id.value
