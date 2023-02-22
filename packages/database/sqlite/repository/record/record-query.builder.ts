@@ -2,6 +2,7 @@ import type { IRecordSpec, ReferenceFieldTypes, Table, TableSchemaIdMap, View } 
 import { INTERNAL_COLUMN_CREATED_AT_NAME, INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import { union } from 'lodash-es'
+import type { Promisable } from 'type-fest'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
 import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor'
@@ -15,13 +16,13 @@ export interface IRecordQueryBuilder {
   reference(): this
   expand(field?: ReferenceFieldTypes): this
   select(): this
-  build(): Knex.QueryBuilder
+  build(): Promisable<this>
 }
 
 export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   private readonly view: View
   private readonly schemaMap: TableSchemaIdMap
-  private readonly qb: Knex.QueryBuilder
+  public readonly qb: Knex.QueryBuilder
 
   constructor(
     private readonly knex: Knex,
@@ -98,7 +99,8 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     this.qb.select(names)
     return this
   }
-  build(): Knex.QueryBuilder {
-    return this.qb
+
+  async build(): Promise<this> {
+    return this
   }
 }
