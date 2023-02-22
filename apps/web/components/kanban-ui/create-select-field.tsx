@@ -51,7 +51,7 @@ export const CreateSelectField: React.FC<IProps> = ({ onSuccess }) => {
   const setStepZero = useSetAtom(kanbanStepZeroAtom)
   return (
     <form onSubmit={onSubmit}>
-      <Card shadow="sm">
+      <Card shadow="sm" withBorder sx={{ overflow: 'visible' }}>
         <Card.Section withBorder inheritPadding py="sm">
           <Text>create new select field</Text>
         </Card.Section>

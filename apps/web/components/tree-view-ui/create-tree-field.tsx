@@ -49,7 +49,7 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
   const setStepZero = useSetAtom(treeStepZeroAtom)
   return (
     <form onSubmit={onSubmit}>
-      <Card shadow="sm">
+      <Card shadow="sm" withBorder radius={0} sx={{ overflow: 'visible' }}>
         <Card.Section withBorder inheritPadding py="sm">
           <Text>create new tree field</Text>
         </Card.Section>
@@ -67,16 +67,18 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
                   label={<FieldInputLabel>parent field name</FieldInputLabel>}
                   {...props.field}
                   value={props.field.value ?? ''}
+                  placeholder="new tree field parent name"
                 />
               )}
             />
             <Controller
               control={form.control}
-              name={`displayFieldIds`}
+              name="displayFieldIds"
               render={(props) => (
                 <DisplayFieldsPicker
                   variant="default"
-                  dropdownPosition="top"
+                  tableId={table.id.value}
+                  dropdownPosition="bottom"
                   {...props.field}
                   onChange={(ids) => props.field.onChange(ids)}
                 />
