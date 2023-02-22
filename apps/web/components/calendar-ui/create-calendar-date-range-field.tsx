@@ -49,7 +49,7 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ onSuccess }) =>
   const setStepZero = useSetAtom(calendarStepZero)
   return (
     <form onSubmit={onSubmit}>
-      <Card shadow="sm">
+      <Card shadow="sm" withBorder sx={{ overflow: 'visible' }}>
         <Card.Section withBorder inheritPadding py="sm">
           <Text>create new date range field</Text>
         </Card.Section>
