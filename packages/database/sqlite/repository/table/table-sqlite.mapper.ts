@@ -20,6 +20,7 @@ import type { EntityDTO } from '@mikro-orm/core'
 import type { Result } from 'oxide.ts'
 import type {
   Field as FieldEntity,
+  IField,
   ParentField,
   RatingField,
   ReferenceField,
@@ -115,71 +116,73 @@ export class TableSqliteMapper {
     }
   }
 
+  static fieldToDomain(f: IField) {
+    if (f.type === 'reference') {
+      const field = f as ReferenceField
+      return {
+        id: f.id,
+        name: f.name,
+        type: 'reference',
+        foreignTableId: field.foreignTableId,
+        displayFieldIds: field.displayFieldIds,
+      } satisfies ICreateReferenceFieldInput
+    }
+    if (f.type === 'tree') {
+      const field = f as TreeField
+      return {
+        id: f.id,
+        name: f.name,
+        type: 'tree',
+        parentFieldId: field.parentFieldId,
+        displayFieldIds: field.displayFieldIds,
+      } satisfies ICreateTreeFieldSchema
+    }
+    if (f.type === 'parent') {
+      const field = f as ParentField
+      return {
+        id: f.id,
+        name: f.name,
+        type: 'parent',
+        treeFieldId: field.treeFieldId,
+        displayFieldIds: field.displayFieldIds,
+      } satisfies ICreateParentFieldInput
+    }
+    if (f.type === 'rating') {
+      const field = f as RatingField
+      return {
+        id: f.id,
+        name: f.name,
+        type: 'rating',
+        max: field.max,
+      } satisfies ICreateRatingFieldInput
+    }
+    if (f.type === 'select') {
+      return {
+        id: f.id,
+        name: f.name,
+        type: 'select',
+        options: (f as SelectField).options.getItems().map((o) => ({
+          key: o.key,
+          name: o.name,
+          color: {
+            name: o.color.name,
+            shade: o.color.shade,
+          },
+        })),
+      } satisfies ICreateSelectFieldSchema
+    }
+    return {
+      id: f.id,
+      name: f.name,
+      type: f.type,
+    }
+  }
+
   static entityToDomain(entity: TableEntity): Result<Table, string> {
     return TableFactory.unsafeCreate({
       id: entity.id,
       name: entity.name,
-      schema: entity.fields.toArray().map((f) => {
-        if (f.type === 'reference') {
-          const field = f as EntityDTO<ReferenceField>
-          return {
-            id: f.id,
-            name: f.name,
-            type: 'reference',
-            foreignTableId: field.foreignTableId,
-            displayFieldIds: field.displayFieldIds,
-          } satisfies ICreateReferenceFieldInput
-        }
-        if (f.type === 'tree') {
-          const field = f as EntityDTO<TreeField>
-          return {
-            id: f.id,
-            name: f.name,
-            type: 'tree',
-            parentFieldId: field.parentFieldId,
-            displayFieldIds: field.displayFieldIds,
-          } satisfies ICreateTreeFieldSchema
-        }
-        if (f.type === 'parent') {
-          const field = f as EntityDTO<ParentField>
-          return {
-            id: f.id,
-            name: f.name,
-            type: 'parent',
-            treeFieldId: field.treeFieldId,
-            displayFieldIds: field.displayFieldIds,
-          } satisfies ICreateParentFieldInput
-        }
-        if (f.type === 'rating') {
-          const field = f as EntityDTO<RatingField>
-          return {
-            id: f.id,
-            name: f.name,
-            type: 'rating',
-            max: field.max,
-          } satisfies ICreateRatingFieldInput
-        }
-        if (f.type === 'select') {
-          return {
-            id: f.id,
-            name: f.name,
-            type: 'select',
-            options: (f as EntityDTO<SelectField>).options.map((o) => ({
-              key: o.key,
-              name: o.name,
-              color: {
-                name: o.color.name,
-                shade: o.color.shade,
-              },
-            })),
-          } satisfies ICreateSelectFieldSchema
-        }
-        return {
-          id: f.id,
-          name: f.name,
-          type: f.type,
-        }
-      }) as ICreateTableSchemaInput,
+      schema: entity.fields.getItems().map((f) => this.fieldToDomain(f)) as ICreateTableSchemaInput,
       views: entity.views.toArray().map((view) => ({
         id: view.id,
         name: view.name,

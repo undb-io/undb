@@ -25,12 +25,11 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
   ): Promise<IQueryRecords> {
     const tableId = table.id.value
     const schema = table.schema.toIdMap()
-    const knex = this.em.getKnex()
 
-    const builder = new RecordSqliteQueryBuilder(knex, table, spec, viewId?.value)
-    const qb = builder.select().from().where().reference().sort().expand(referenceField).build()
+    let builder = new RecordSqliteQueryBuilder(this.em.fork(), table, spec, viewId?.value)
+    builder = await builder.select().from().where().reference().sort().expand(referenceField).build()
 
-    const data = await this.em.execute<RecordSqlite[]>(qb)
+    const data = await this.em.execute<RecordSqlite[]>(builder.qb)
 
     return RecordSqliteMapper.toQueries(tableId, schema, data)
   }
@@ -38,12 +37,11 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
   async findOne(table: Table, spec: IRecordSpec): Promise<Option<IQueryRecordSchema>> {
     const tableId = table.id.value
     const schema = table.schema.toIdMap()
-    const knex = this.em.getKnex()
 
-    const builder = new RecordSqliteQueryBuilder(knex, table, spec)
-    const qb = builder.select().from().where().reference().build()
+    let builder = new RecordSqliteQueryBuilder(this.em.fork(), table, spec)
+    builder = await builder.select().from().where().reference().build()
 
-    const data = await this.em.execute<RecordSqlite[]>(qb.first())
+    const data = await this.em.execute<RecordSqlite[]>(builder.qb.first())
 
     const record = RecordSqliteMapper.toQuery(tableId, schema, data[0])
     return Option(record)
