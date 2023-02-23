@@ -1,11 +1,5 @@
 import * as z from 'zod'
-import {
-  createOptionSchema,
-  createOptionsSchema,
-  optionIdSchema,
-  optionsSchema,
-  updateOptionSchema,
-} from '../option/option.schema.js'
+import { createOptionsSchema, mutateOptionSchema, optionIdSchema, optionsSchema } from '../option/option.schema.js'
 import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field-base.schema'
 import { FIELD_TYPE_KEY } from './field.constant.js'
 import { SelectField } from './select-field.js'
@@ -27,7 +21,7 @@ export type ICreateSelectFieldSchema = z.infer<typeof createSelectFieldSchema>
 
 export const updateSelectFieldSchema = updateBaseFieldSchema.merge(selectTypeObjectSchema).merge(
   z.object({
-    options: z.array(createOptionSchema.or(updateOptionSchema)).optional(),
+    options: mutateOptionSchema.array().optional(),
   }),
 )
 export type IUpdateSelectFieldInput = z.infer<typeof updateSelectFieldSchema>
