@@ -1,10 +1,5 @@
 import type { IQueryRecords, ParentField } from '@egodb/core'
-import {
-  getSelectedRecordId,
-  useGetForeignRecordsQuery,
-  useGetRecordQuery,
-  useLazyParentAvailableQuery,
-} from '@egodb/store'
+import { getSelectedRecordId, useGetRecordQuery, useLazyParentAvailableQuery } from '@egodb/store'
 import type { SelectItem, SelectProps } from '@egodb/ui'
 import { Select } from '@egodb/ui'
 import { Group } from '@egodb/ui'
@@ -64,13 +59,13 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
     if (Array.isArray(foreignRecordIds) && !isEmpty(foreignRecordIds)) {
       const values = field.getDisplayValues(record.displayValues)
       for (const [index, foreignRecordId] of foreignRecordIds.entries()) {
-        data.push({ value: foreignRecordId as string, label: values[index]?.toString() ?? '' })
+        data.push({ value: foreignRecordId as string, label: values[index]?.filter(Boolean).toString() ?? '' })
       }
     }
   }
   for (const foreignRecord of foreignRecords) {
     const values = displayFields.map((fieldId) => foreignRecord.values[fieldId]?.toString())
-    data.push({ value: foreignRecord.id, label: values.toString() })
+    data.push({ value: foreignRecord.id, label: values.filter(Boolean).toString() })
   }
 
   return (
