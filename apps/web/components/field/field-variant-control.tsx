@@ -35,12 +35,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
     )
   }
   if (type === 'select') {
-    return (
-      <Controller
-        name="options"
-        render={(props) => <SelectFieldControl onChange={(options) => props.field.onChange(options)} />}
-      />
-    )
+    return <Controller name="options" render={(props) => <SelectFieldControl {...props.field} />} />
   }
 
   if (type === 'tree' || type === 'reference' || type === 'parent') {

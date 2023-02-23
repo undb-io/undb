@@ -17,7 +17,7 @@ import {
 } from '@egodb/ui'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { CSS } from '@dnd-kit/utilities'
-import type { ICreateOptionSchema } from '@egodb/core'
+import type { ICreateOptionSchema, IMutateOptionSchema, IOptionSchema } from '@egodb/core'
 import { OptionColor } from '@egodb/core'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { OptionColorPicker } from './option-color-picker'
@@ -70,11 +70,12 @@ const OptionControl: React.FC<IOptionControlProps> = ({ option, onNameChange, on
 }
 
 interface ISelectFieldControlProps {
-  onChange: (options: ICreateOptionSchema[]) => void
+  value: IOptionSchema[]
+  onChange: (options: IMutateOptionSchema[]) => void
 }
 
-export const SelectFieldControl: React.FC<ISelectFieldControlProps> = ({ onChange }) => {
-  const [options, handlers] = useListState<ICreateOptionSchema>()
+export const SelectFieldControl: React.FC<ISelectFieldControlProps> = ({ onChange, value }) => {
+  const [options, handlers] = useListState<ICreateOptionSchema>(value)
   useDeepCompareEffect(() => {
     onChange(options)
   }, [options])
