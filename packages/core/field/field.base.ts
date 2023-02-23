@@ -125,6 +125,7 @@ export abstract class BaseReferenceField<F extends ITreeField | IParentField | I
         unzip,
       )
     }
+
     return pipe(
       this.displayFieldIds,
       map((displayFieldId) => values?.[this.id.value]?.[displayFieldId.value] ?? []),

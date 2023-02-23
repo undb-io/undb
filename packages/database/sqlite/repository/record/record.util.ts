@@ -42,14 +42,16 @@ export const expandField = async (
     const field = await em.findOne(Field, { id: fieldId })
     if (!field) continue
 
-    let name = `'${fieldId}'`
+    const key = `'${fieldId}'`
+
+    let name = key
     const f = FieldFactory.unsafeCreate(TableSqliteMapper.fieldToDomain(field))
     if (f.isSystem()) {
       const c = UnderlyingColumnFactory.create(f) as IUnderlyingColumn
       name = `'${c.name}'`
     }
 
-    jsonObjectEntries.push([name, multiple ? `json_group_array(${table}.${name})` : `${table}.${name}`])
+    jsonObjectEntries.push([key, multiple ? `json_group_array(${table}.${name})` : `${table}.${name}`])
   }
 
   qb.select(

@@ -114,12 +114,10 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     const columns = UnderlyingColumnFactory.createMany(fields)
 
     const names = union(
-      columns.map((c) => `${TABLE_ALIAS}.${c.name}`),
-      // always return internal fields
-      [INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_CREATED_AT_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME].map(
-        (name) => `${TABLE_ALIAS}.${name}`,
-      ),
-    )
+      columns.map((c) => c.name),
+      [INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_CREATED_AT_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME],
+    ).map((name) => `${TABLE_ALIAS}.${name}`)
+
     this.qb.select(names)
     return this
   }
