@@ -70,12 +70,12 @@ const OptionControl: React.FC<IOptionControlProps> = ({ option, onNameChange, on
 }
 
 interface ISelectFieldControlProps {
-  value: IOptionSchema[]
+  value: IMutateOptionSchema[]
   onChange: (options: IMutateOptionSchema[]) => void
 }
 
 export const SelectFieldControl: React.FC<ISelectFieldControlProps> = ({ onChange, value }) => {
-  const [options, handlers] = useListState<ICreateOptionSchema>(value)
+  const [options, handlers] = useListState<IMutateOptionSchema>(value)
   useDeepCompareEffect(() => {
     onChange(options)
   }, [options])
