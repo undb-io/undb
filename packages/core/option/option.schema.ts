@@ -61,7 +61,8 @@ export type ICreateOptionColorSchema = z.infer<typeof createOptionColorSchema>
 
 export const mutateOptionSchema = z
   .object({
-    name: optionNameSchema.optional(),
+    key: optionIdSchema.optional(),
+    name: optionNameSchema,
     color: createOptionColorSchema.optional(),
   })
   .strict()

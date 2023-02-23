@@ -3,7 +3,7 @@ import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldVariantControl } from '../field/field-variant-control'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
-import type { IUpdateFieldSchema, ReferenceField, ReferenceFieldTypes } from '@egodb/core'
+import type { IUpdateFieldSchema, ReferenceField, ReferenceFieldTypes, SelectField } from '@egodb/core'
 import { updateFieldSchema } from '@egodb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { IUpdateFieldProps } from './update-field.props'
@@ -23,6 +23,9 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
   }
   if (defaultValues.type === 'tree' || defaultValues.type === 'parent' || defaultValues.type === 'reference') {
     defaultValues.displayFieldIds = (field as ReferenceFieldTypes).displayFieldIds.map((id) => id.value)
+  }
+  if (defaultValues.type === 'select') {
+    defaultValues.options = (field as SelectField).options.options.map((o) => o.toJSON())
   }
 
   const form = useForm<IUpdateFieldSchema>({

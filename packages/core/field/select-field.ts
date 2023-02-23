@@ -1,13 +1,22 @@
+import { and } from '@egodb/domain'
+import { isArray } from 'lodash-es'
+import type { Option } from 'oxide.ts'
 import type { ISelectFilterOperator } from '../filter/operators.js'
 import type { ISelectFilter, ISelectFilterValue } from '../filter/select.filter.js'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from '../option/index.js'
 import { OptionKey } from '../option/index.js'
 import { Options } from '../option/options.js'
+import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import { BaseField } from './field.base.js'
 import type { ISelectField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { SelectFieldValue } from './select-field-value.js'
-import type { ICreateSelectFieldSchema, ICreateSelectFieldValue, SelectFieldType } from './select-field.type.js'
+import type {
+  ICreateSelectFieldSchema,
+  ICreateSelectFieldValue,
+  IUpdateSelectFieldInput,
+  SelectFieldType,
+} from './select-field.type.js'
 import { WithNewOption, WithOption, WithOptions, WithoutOption } from './specifications/select-field.specification.js'
 import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
@@ -65,6 +74,21 @@ export class SelectField extends BaseField<ISelectField> {
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
       options: Options.unsafeCreate(input.options),
     })
+  }
+
+  public override update(input: IUpdateSelectFieldInput): Option<TableCompositeSpecificaiton> {
+    const specs: TableCompositeSpecificaiton[] = []
+    const spec = super.updateBase(input)
+    if (spec.isSome()) {
+      specs.push(spec.unwrap())
+    }
+
+    if (isArray(input.options)) {
+      const options = Options.create(input.options)
+      specs.push(new WithOptions(this, options))
+    }
+
+    return and(...specs)
   }
 
   createFilter(operator: ISelectFilterOperator, value: ISelectFilterValue): ISelectFilter {

@@ -3,7 +3,7 @@ import { OptionColor } from './option-color.js'
 import { OptionKey } from './option-key.vo.js'
 import { OptionName } from './option-name.vo.js'
 import type { IOption } from './option.interface.js'
-import type { ICreateOptionSchema, IMutateOptionSchema } from './option.schema.js'
+import type { ICreateOptionSchema, IMutateOptionSchema, IOptionSchema } from './option.schema.js'
 
 export const isOption = (o?: unknown): o is Option => o instanceof Option
 
@@ -42,5 +42,13 @@ export class Option extends ValueObject<IOption> {
       name: OptionName.unsafeCreate(input.name),
       color: OptionColor.create(input.color),
     })
+  }
+
+  public toJSON(): IOptionSchema {
+    return {
+      key: this.key.value,
+      name: this.name.value,
+      color: this.color.unpack(),
+    }
   }
 }

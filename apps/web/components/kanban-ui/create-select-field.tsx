@@ -61,10 +61,10 @@ export const CreateSelectField: React.FC<IProps> = ({ onSuccess }) => {
             <FocusTrap>
               <TextInput {...form.register('name')} placeholder="new select field name" />
             </FocusTrap>
-            <Controller<ICreateSelectFieldSchema>
+            <Controller
               control={form.control}
               name="options"
-              render={(props) => <SelectFieldControl onChange={(options) => props.field.onChange(options)} />}
+              render={(props) => <SelectFieldControl {...props.field} />}
             />
           </Stack>
         </Card.Section>
