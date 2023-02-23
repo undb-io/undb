@@ -1,13 +1,13 @@
 import type { IQueryRecords, ParentField } from '@egodb/core'
-import { getSelectedRecordId, useGetRecordQuery, useLazyParentAvailableQuery } from '@egodb/store'
-import type { SelectItem, SelectProps } from '@egodb/ui'
+import { getSelectedRecordId, useLazyParentAvailableQuery } from '@egodb/store'
+import type { SelectProps } from '@egodb/ui'
 import { Select } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { Loader } from '@egodb/ui'
-import { isEmpty } from '@fxts/core'
 import { forwardRef, useEffect, useState } from 'react'
 import { useAppSelector } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useReferenceDisplayValues } from '../../hooks/use-reference-display-values'
 import { RecordValue } from '../field-value/record-value'
 import { FieldIcon } from './field-Icon'
 
@@ -29,7 +29,6 @@ const ParentSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, ...othe
 export const ParentRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
   const recordId = useAppSelector(getSelectedRecordId)
   const table = useCurrentTable()
-  const displayFields = field.displayFieldIds.map((f) => f.value)
 
   const [focused, setFocused] = useState(false)
   const [getRecords, { rawRecords: foreignRecords, isLoading }] = useLazyParentAvailableQuery({
@@ -39,34 +38,11 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
     }),
   })
 
-  const { data: record } = useGetRecordQuery(
-    {
-      tableId: table.id.value,
-      id: recordId,
-    },
-    {
-      skip: !recordId,
-    },
-  )
-
   useEffect(() => {
     getRecords({ tableId: table.id.value, parentFieldId: field.id.value, recordId })
   }, [focused])
 
-  const data: SelectItem[] = []
-  if (record) {
-    const foreignRecordIds = record.values[field.id.value]
-    if (Array.isArray(foreignRecordIds) && !isEmpty(foreignRecordIds)) {
-      const values = field.getDisplayValues(record.displayValues)
-      for (const [index, foreignRecordId] of foreignRecordIds.entries()) {
-        data.push({ value: foreignRecordId as string, label: values[index]?.filter(Boolean).toString() ?? '' })
-      }
-    }
-  }
-  for (const foreignRecord of foreignRecords) {
-    const values = displayFields.map((fieldId) => foreignRecord.values[fieldId]?.toString())
-    data.push({ value: foreignRecord.id, label: values.filter(Boolean).toString() })
-  }
+  const data = useReferenceDisplayValues(field, recordId, foreignRecords)
 
   return (
     <Select
