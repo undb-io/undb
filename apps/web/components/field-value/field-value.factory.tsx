@@ -69,13 +69,13 @@ export const FieldValueFactory: React.FC<{
       return <ColorValue value={color} />
     }
     case 'parent': {
-      if (!(value as ParentFieldValue).unpack()) return null
+      if (!(value as ParentFieldValue | undefined)?.unpack()) return null
       const values = field.getDisplayValues(displayValues)[0]
       return <ReferenceValue values={values} />
     }
     case 'reference':
     case 'tree': {
-      if (!(value as ReferenceFieldValue | TreeFieldValue).unpack()) return null
+      if (!(value as ReferenceFieldValue | TreeFieldValue | undefined)?.unpack()) return null
       const values = field.getDisplayValues(displayValues)
 
       return (
