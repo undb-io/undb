@@ -44,11 +44,15 @@ export const FieldMenuDropdown: React.FC<{ field: Field }> = ({ field }) => {
           Update Field
         </Menu.Item>
 
-        <Menu.Divider />
+        {!field.system && (
+          <>
+            <Menu.Divider />
 
-        <Menu.Item icon={<IconTrash size={14} />} {...menuProps} color="red" onClick={confirm}>
-          Delete Field
-        </Menu.Item>
+            <Menu.Item icon={<IconTrash size={14} />} {...menuProps} color="red" onClick={confirm}>
+              Delete Field
+            </Menu.Item>
+          </>
+        )}
       </Menu.Dropdown>
     </Portal>
   )

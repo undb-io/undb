@@ -81,7 +81,7 @@ export const Th: React.FC<IProps> = memo(({ header, field, column }) => {
           </Text>
         </Group>
 
-        {!field.system && <TableUIFieldMenu field={field} />}
+        {<TableUIFieldMenu field={field} />}
       </Group>
 
       <Resizer
