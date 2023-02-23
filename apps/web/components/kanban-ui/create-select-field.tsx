@@ -5,7 +5,7 @@ import { useCreateFieldMutation, useSetKanbanFieldMutation } from '@egodb/store'
 import { Button, Card, FocusTrap, Group, IconChevronLeft, Stack, Text, TextInput } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { SelectFieldControl } from '../field-inputs/select-field-control'
@@ -61,7 +61,11 @@ export const CreateSelectField: React.FC<IProps> = ({ onSuccess }) => {
             <FocusTrap>
               <TextInput {...form.register('name')} placeholder="new select field name" />
             </FocusTrap>
-            <SelectFieldControl onChange={(options) => form.setValue('options', options)} />
+            <Controller<ICreateSelectFieldSchema>
+              control={form.control}
+              name="options"
+              render={(props) => <SelectFieldControl onChange={(options) => props.field.onChange(options)} />}
+            />
           </Stack>
         </Card.Section>
 
