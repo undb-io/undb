@@ -26,7 +26,7 @@ export const useReferenceDisplayValues = (
   }
   for (const foreignRecord of foreignRecords) {
     const values = displayFields.map((fieldId) => foreignRecord.values[fieldId]?.toString())
-    data.push({ value: foreignRecord.id, label: values.filter(Boolean).toString() })
+    data.push({ value: foreignRecord.id, label: values.filter(Boolean).toString() || 'Unnamed' })
   }
 
   return data
