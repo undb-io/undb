@@ -20,7 +20,7 @@ export const useReferenceDisplayValues = (
     if (Array.isArray(foreignRecordIds) && !isEmpty(foreignRecordIds)) {
       const values = field.getDisplayValues(record.displayValues)
       for (const [index, foreignRecordId] of foreignRecordIds.entries()) {
-        data.push({ value: foreignRecordId as string, label: values[index]?.filter(Boolean).toString() ?? '' })
+        data.push({ value: foreignRecordId as string, label: values[index]?.filter(Boolean).toString() || 'Unnamed' })
       }
     }
   }
