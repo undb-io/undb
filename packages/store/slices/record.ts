@@ -5,6 +5,7 @@ import { filter, keys, omit, pipe, prop, some, T } from 'lodash/fp'
 import 'reselect'
 import type { RootState } from '../reducers'
 import { recordApi } from '../services'
+import { resetCurrentTableId, setCurrentTableId } from './table'
 
 export interface RecordState {
   selectedRecordId: string
@@ -38,6 +39,12 @@ export const recordSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(setCurrentTableId, (state) => {
+        state.selectedRecordId = initialState.selectedRecordId
+      })
+      .addCase(resetCurrentTableId, (state) => {
+        state.selectedRecordId = initialState.selectedRecordId
+      })
       .addMatcher(recordApi.endpoints.deleteRecord.matchFulfilled, (state, action) => {
         const id = action.meta.arg.originalArgs.id
         if (state.selectedRecordId === id) {
