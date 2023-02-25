@@ -3,12 +3,12 @@
 import { Box } from '@egodb/ui'
 import { useEgoUITheme } from '@egodb/ui'
 import { Stack } from '@egodb/ui'
-import { CreateRecordFormDrawer } from '../../../components/create-record-form/create-record-form-drawer'
-import { UpdateRecordFormDrawer } from '../../../components/update-record-form/update-record-form-drawer'
-import { RecordSelectionDialog } from '../../../components/record-selection/record-selection-dialog'
-import { TableToolbar } from '../../../components/table/table-toolbar'
-import { ViewDisplay } from '../../../components/table/view-display'
-import { ViewsListDrawer } from '../../../components/views/views-list-drawer'
+import { CreateRecordFormDrawer } from '../../../features/create-record-form/create-record-form-drawer'
+import { UpdateRecordFormDrawer } from '../../../features/update-record-form/update-record-form-drawer'
+import { RecordSelectionDialog } from '../../../features/record-selection/record-selection-dialog'
+import { TableToolbar } from '../../../features/table/table-toolbar'
+import { ViewDisplay } from '../../../features/table/view-display'
+import { ViewsListDrawer } from '../../../features/views/views-list-drawer'
 
 export default function Table() {
   const theme = useEgoUITheme()
