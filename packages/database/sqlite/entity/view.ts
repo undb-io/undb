@@ -54,7 +54,7 @@ export class Tree {
   }
 }
 
-@Entity()
+@Entity({ tableName: 'ego_view' })
 export class View extends BaseEntity {
   @PrimaryKey()
   id: string
