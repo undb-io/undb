@@ -61,14 +61,14 @@
           "mappedType": "text"
         }
       },
-      "name": "table",
+      "name": "ego_table",
       "indexes": [
         {
           "columnNames": [
             "deleted_at"
           ],
           "composite": false,
-          "keyName": "table_deleted_at_index",
+          "keyName": "ego_table_deleted_at_index",
           "primary": false,
           "unique": false
         },
@@ -227,14 +227,14 @@
           "mappedType": "integer"
         }
       },
-      "name": "field",
+      "name": "ego_field",
       "indexes": [
         {
           "columnNames": [
             "deleted_at"
           ],
           "composite": false,
-          "keyName": "field_deleted_at_index",
+          "keyName": "ego_field_deleted_at_index",
           "primary": false,
           "unique": false
         },
@@ -243,7 +243,7 @@
             "table_id"
           ],
           "composite": false,
-          "keyName": "field_table_id_index",
+          "keyName": "ego_field_table_id_index",
           "primary": false,
           "unique": false
         },
@@ -252,7 +252,7 @@
             "type"
           ],
           "composite": false,
-          "keyName": "field_type_index",
+          "keyName": "ego_field_type_index",
           "primary": false,
           "unique": false
         },
@@ -268,16 +268,16 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "field_table_id_foreign": {
-          "constraintName": "field_table_id_foreign",
+        "ego_field_table_id_foreign": {
+          "constraintName": "ego_field_table_id_foreign",
           "columnNames": [
             "table_id"
           ],
-          "localTableName": "field",
+          "localTableName": "ego_field",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "table",
+          "referencedTableName": "ego_table",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
@@ -377,14 +377,14 @@
           "mappedType": "enum"
         }
       },
-      "name": "option",
+      "name": "ego_option",
       "indexes": [
         {
           "columnNames": [
             "deleted_at"
           ],
           "composite": false,
-          "keyName": "option_deleted_at_index",
+          "keyName": "ego_option_deleted_at_index",
           "primary": false,
           "unique": false
         },
@@ -393,7 +393,7 @@
             "field_id"
           ],
           "composite": false,
-          "keyName": "option_field_id_index",
+          "keyName": "ego_option_field_id_index",
           "primary": false,
           "unique": false
         },
@@ -409,16 +409,16 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "option_field_id_foreign": {
-          "constraintName": "option_field_id_foreign",
+        "ego_option_field_id_foreign": {
+          "constraintName": "ego_option_field_id_foreign",
           "columnNames": [
             "field_id"
           ],
-          "localTableName": "option",
+          "localTableName": "ego_option",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "field",
+          "referencedTableName": "ego_field",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
@@ -562,14 +562,14 @@
           "mappedType": "text"
         }
       },
-      "name": "view",
+      "name": "ego_view",
       "indexes": [
         {
           "columnNames": [
             "deleted_at"
           ],
           "composite": false,
-          "keyName": "view_deleted_at_index",
+          "keyName": "ego_view_deleted_at_index",
           "primary": false,
           "unique": false
         },
@@ -578,7 +578,7 @@
             "table_id"
           ],
           "composite": false,
-          "keyName": "view_table_id_index",
+          "keyName": "ego_view_table_id_index",
           "primary": false,
           "unique": false
         },
@@ -594,16 +594,16 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "view_table_id_foreign": {
-          "constraintName": "view_table_id_foreign",
+        "ego_view_table_id_foreign": {
+          "constraintName": "ego_view_table_id_foreign",
           "columnNames": [
             "table_id"
           ],
-          "localTableName": "view",
+          "localTableName": "ego_view",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "table",
+          "referencedTableName": "ego_table",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }

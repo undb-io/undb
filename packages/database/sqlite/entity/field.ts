@@ -22,7 +22,7 @@ import { BaseEntity } from './base.js'
 import { Option } from './option.js'
 import { Table } from './table.js'
 
-@Entity({ abstract: true, discriminatorColumn: 'type' })
+@Entity({ tableName: 'ego_field', abstract: true, discriminatorColumn: 'type' })
 export abstract class Field extends BaseEntity {
   constructor(table: Table, field: CoreField) {
     super()

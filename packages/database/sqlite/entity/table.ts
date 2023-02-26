@@ -5,7 +5,7 @@ import type { IField } from './field.js'
 import { Field } from './field.js'
 import { View } from './view.js'
 
-@Entity()
+@Entity({ tableName: 'ego_table' })
 export class Table extends BaseEntity {
   constructor(table: CoreTable) {
     super()

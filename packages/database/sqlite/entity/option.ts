@@ -40,7 +40,7 @@ export class OptionColor {
   shade: IOptionColorShade
 }
 
-@Entity()
+@Entity({ tableName: 'ego_option' })
 export class Option extends BaseEntity {
   constructor(field: Rel<SelectField>, option: CoreOption) {
     super()
