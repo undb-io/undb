@@ -13,7 +13,9 @@ export class TableSqliteRepository implements ITableRepository {
   constructor(protected readonly em: EntityManager, protected readonly tm: IUnderlyingTableManager) {}
 
   async findOneById(id: string): Promise<Option<CoreTable>> {
-    const table = await this.em.findOne(TableEntity, id, { populate: ['fields.options', 'views'] })
+    const table = await this.em.findOne(TableEntity, id, {
+      populate: ['fields.options', 'views', 'fields.displayFields'],
+    })
     if (!table) return None
 
     return Some(TableSqliteMapper.entityToDomain(table).unwrap())

@@ -52,7 +52,7 @@ export class TableSqliteMapper {
         name: entity.name,
         type: 'reference',
         foreignTableId: field.foreignTable?.id,
-        displayFieldIds: field.displayFieldIds,
+        displayFieldIds: field.displayFields.getItems().map((f) => f.id),
       } satisfies IReferenceFieldQuerySchema
     }
     if (entity.type === 'tree') {
@@ -62,7 +62,7 @@ export class TableSqliteMapper {
         name: entity.name,
         type: 'tree',
         parentFieldId: field.parentFieldId,
-        displayFieldIds: field.displayFieldIds,
+        displayFieldIds: field.displayFields.getItems().map((f) => f.id),
       } satisfies ITreeFieldQuerySchema
     }
     if (entity.type === 'parent') {
@@ -72,7 +72,7 @@ export class TableSqliteMapper {
         name: entity.name,
         type: 'parent',
         treeFieldId: field.treeFieldId,
-        displayFieldIds: field.displayFieldIds,
+        displayFieldIds: field.displayFields.getItems().map((f) => f.id),
       } satisfies IParentFieldQuerySchema
     }
     if (entity.type === 'rating') {
@@ -123,7 +123,7 @@ export class TableSqliteMapper {
         name: f.name,
         type: 'reference',
         foreignTableId: field.foreignTable?.id,
-        displayFieldIds: field.displayFieldIds,
+        displayFieldIds: field.displayFields.getItems().map((f) => f.id),
       } satisfies ICreateReferenceFieldInput
     }
     if (f.type === 'tree') {
@@ -133,7 +133,7 @@ export class TableSqliteMapper {
         name: f.name,
         type: 'tree',
         parentFieldId: field.parentFieldId,
-        displayFieldIds: field.displayFieldIds,
+        displayFieldIds: field.displayFields.getItems().map((f) => f.id),
       } satisfies ICreateTreeFieldSchema
     }
     if (f.type === 'parent') {
@@ -143,7 +143,7 @@ export class TableSqliteMapper {
         name: f.name,
         type: 'parent',
         treeFieldId: field.treeFieldId,
-        displayFieldIds: field.displayFieldIds,
+        displayFieldIds: field.displayFields.getItems().map((f) => f.id),
       } satisfies ICreateParentFieldInput
     }
     if (f.type === 'rating') {

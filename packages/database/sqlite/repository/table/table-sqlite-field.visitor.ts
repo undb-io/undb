@@ -30,6 +30,7 @@ import {
   DateField,
   DateRangeField,
   EmailField,
+  Field,
   IdField,
   NumberField,
   Option,
@@ -134,6 +135,7 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
     if (value.foreignTableId.isSome()) {
       field.foreignTable = this.em.getReference(Table, value.foreignTableId.unwrap())
     }
+    field.displayFields.set(value.displayFieldIds.map((fieldId) => this.em.getReference(Field, fieldId.value)))
 
     const adjacencyListTable = new AdjacencyListTable(this.table.id, value)
 

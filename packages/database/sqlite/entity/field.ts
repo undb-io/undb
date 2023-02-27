@@ -7,11 +7,11 @@ import type {
   TreeField as CoreTreeField,
 } from '@egodb/core'
 import {
-  ArrayType,
   Cascade,
   Collection,
   Entity,
   Enum,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryKey,
@@ -121,14 +121,13 @@ export class SelectField extends Field {
 export class ReferenceField extends Field {
   constructor(table: Table, field: CoreReferenceField) {
     super(table, field)
-    this.displayFieldIds = field.displayFieldIds?.map((f) => f.value)
   }
 
   @ManyToOne(() => Table)
   foreignTable?: Table
 
-  @Property({ type: ArrayType, nullable: true })
-  displayFieldIds?: string[]
+  @ManyToMany({ entity: () => Field, owner: true })
+  displayFields = new Collection<Field>(this)
 }
 
 @Entity({ discriminatorValue: 'tree' })
@@ -136,14 +135,13 @@ export class TreeField extends Field {
   constructor(table: Table, field: CoreTreeField) {
     super(table, field)
     this.parentFieldId = field.parentFieldId!.value
-    this.displayFieldIds = field.displayFieldIds?.map((f) => f.value)
   }
 
   @Property()
   parentFieldId: string
 
-  @Property({ type: ArrayType, nullable: true })
-  displayFieldIds?: string[]
+  @ManyToMany({ entity: () => Field, owner: true })
+  displayFields = new Collection<Field>(this)
 }
 
 @Entity({ discriminatorValue: 'parent' })
@@ -151,14 +149,13 @@ export class ParentField extends Field {
   constructor(table: Table, field: CoreParentField) {
     super(table, field)
     this.treeFieldId = field.treeFieldId.value
-    this.displayFieldIds = field.displayFieldIds?.map((f) => f.value)
   }
 
   @Property()
   treeFieldId!: string
 
-  @Property({ type: ArrayType, nullable: true })
-  displayFieldIds?: string[]
+  @ManyToMany({ entity: () => Field, owner: true })
+  displayFields = new Collection<Field>(this)
 }
 
 export type IField =
