@@ -144,6 +144,7 @@ importers:
       '@hookform/resolvers': ^2.9.11
       '@tanstack/react-table': ^8.7.9
       '@tanstack/react-virtual': ^3.0.0-beta.48
+      '@total-typescript/ts-reset': ^0.3.7
       '@types/lodash': ^4.14.191
       '@types/node': ^18.14.0
       '@types/react': ^18.0.28
@@ -195,6 +196,7 @@ importers:
       '@egodb/eslint-config': link:../../packages/eslint-config
       '@emotion/babel-plugin': 11.10.6
       '@hookform/devtools': 4.3.0_rhrpnuwl23ewqfh7btz44ilpmq
+      '@total-typescript/ts-reset': 0.3.7
       '@types/lodash': 4.14.191
       '@types/node': 18.14.0
       '@types/react': 18.0.28
@@ -3595,6 +3597,10 @@ packages:
   /@tootallnate/once/2.0.0:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
+    dev: true
+
+  /@total-typescript/ts-reset/0.3.7:
+    resolution: {integrity: sha512-yXt2BRRVCJVvzWaxac5n0nCXzIrQEBE/MeYlNQ8/Iq7UeelNmm/AdnUAu18ilSS893mbEQ4u6whPt/HvOPc4rw==}
     dev: true
 
   /@trpc/client/10.12.0_@trpc+server@10.12.0:

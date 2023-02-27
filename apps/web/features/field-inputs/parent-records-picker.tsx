@@ -1,4 +1,4 @@
-import type { IQueryRecords, ParentField } from '@egodb/core'
+import type { ParentField } from '@egodb/core'
 import { getSelectedRecordId, useLazyParentAvailableQuery } from '@egodb/store'
 import type { SelectProps } from '@egodb/ui'
 import { Select } from '@egodb/ui'
@@ -34,7 +34,7 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
   const [getRecords, { rawRecords: foreignRecords, isLoading }] = useLazyParentAvailableQuery({
     selectFromResult: (result) => ({
       ...result,
-      rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+      rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean),
     }),
   })
 

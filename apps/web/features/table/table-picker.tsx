@@ -12,8 +12,7 @@ export const TablePicker: React.FC<IProps> = (props) => {
       selectFromResult: (tables) => ({
         items: Object.values(tables.data?.entities ?? {})
           .filter(Boolean)
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          .map<SelectItem>((table) => ({ value: table!.id, label: table!.name })),
+          .map<SelectItem>((table) => ({ value: table.id, label: table.name })),
       }),
     },
   )

@@ -1,7 +1,7 @@
 import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import { RecordFactory } from '@egodb/core'
-import type { Record, ICalendarField, IQueryRecords } from '@egodb/core'
+import type { Record, ICalendarField } from '@egodb/core'
 import { ActionIcon, Box, Group, IconGripVertical, Skeleton, Space, Stack, Text, Title } from '@egodb/ui'
 import { useMemo, useRef } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
@@ -61,7 +61,7 @@ export const CalendarRecords: React.FC<IProps> = ({ field }) => {
     {
       selectFromResult: (result) => ({
         ...result,
-        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean),
       }),
     },
   )

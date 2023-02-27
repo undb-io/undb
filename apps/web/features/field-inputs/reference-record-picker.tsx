@@ -1,4 +1,4 @@
-import type { IQueryRecords, ReferenceField } from '@egodb/core'
+import type { ReferenceField } from '@egodb/core'
 import { getSelectedRecordId, useGetForeignRecordsQuery } from '@egodb/store'
 import type { MultiSelectProps } from '@egodb/ui'
 import { useDisclosure } from '@egodb/ui'
@@ -39,7 +39,7 @@ export const ReferenceRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
     {
       selectFromResult: (result) => ({
         ...result,
-        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean),
       }),
     },
   )

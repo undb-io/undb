@@ -1,4 +1,3 @@
-import type { IQueryRecords } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
 import { useGetRecordsQuery } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
@@ -14,7 +13,7 @@ export const TableUI: React.FC = () => {
     {
       selectFromResult: (result) => ({
         ...result,
-        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean),
       }),
       refetchOnFocus: true,
     },
