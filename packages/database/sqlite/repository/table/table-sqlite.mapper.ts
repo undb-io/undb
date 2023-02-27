@@ -16,10 +16,9 @@ import type {
 } from '@egodb/core'
 import { TableFactory } from '@egodb/core'
 import type { ICreateReferenceFieldInput, IReferenceFieldQuerySchema } from '@egodb/core/field/reference-field.type.js'
-import type { EntityDTO } from '@mikro-orm/core'
 import type { Result } from 'oxide.ts'
 import type {
-  Field as FieldEntity,
+  Field,
   IField,
   ParentField,
   RatingField,
@@ -30,13 +29,13 @@ import type {
 } from '../../entity/index.js'
 
 export class TableSqliteMapper {
-  static fieldToQuery(entity: EntityDTO<FieldEntity>): IQueryFieldSchema {
+  static fieldToQuery(entity: Field): IQueryFieldSchema {
     if (entity.type === 'select') {
       return {
         id: entity.id,
         name: entity.name,
         type: 'select',
-        options: (entity as EntityDTO<SelectField>).options.map((o) => ({
+        options: (entity as SelectField).options.getItems().map((o) => ({
           key: o.key,
           name: o.name,
           color: {
@@ -47,17 +46,17 @@ export class TableSqliteMapper {
       } satisfies ISelectFieldQuerySchema
     }
     if (entity.type === 'reference') {
-      const field = entity as EntityDTO<ReferenceField>
+      const field = entity as ReferenceField
       return {
         id: entity.id,
         name: entity.name,
         type: 'reference',
-        foreignTableId: field.foreignTableId,
+        foreignTableId: field.foreignTable?.id,
         displayFieldIds: field.displayFieldIds,
       } satisfies IReferenceFieldQuerySchema
     }
     if (entity.type === 'tree') {
-      const field = entity as EntityDTO<TreeField>
+      const field = entity as TreeField
       return {
         id: entity.id,
         name: entity.name,
@@ -67,7 +66,7 @@ export class TableSqliteMapper {
       } satisfies ITreeFieldQuerySchema
     }
     if (entity.type === 'parent') {
-      const field = entity as EntityDTO<ParentField>
+      const field = entity as ParentField
       return {
         id: entity.id,
         name: entity.name,
@@ -77,7 +76,7 @@ export class TableSqliteMapper {
       } satisfies IParentFieldQuerySchema
     }
     if (entity.type === 'rating') {
-      const field = entity as EntityDTO<RatingField>
+      const field = entity as RatingField
       return {
         id: entity.id,
         name: entity.name,
@@ -96,9 +95,9 @@ export class TableSqliteMapper {
     return {
       id: entity.id,
       name: entity.name,
-      schema: entity.fields.toArray().map((table) => this.fieldToQuery(table)),
+      schema: entity.fields.getItems().map((table) => this.fieldToQuery(table)),
       viewsOrder: entity.viewsOrder,
-      views: entity.views.toArray().map(
+      views: entity.views.getItems().map(
         (view) =>
           ({
             id: view.id,
@@ -123,7 +122,7 @@ export class TableSqliteMapper {
         id: f.id,
         name: f.name,
         type: 'reference',
-        foreignTableId: field.foreignTableId,
+        foreignTableId: field.foreignTable?.id,
         displayFieldIds: field.displayFieldIds,
       } satisfies ICreateReferenceFieldInput
     }

@@ -22,7 +22,6 @@ import type {
 import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import type { Table } from '../../entity/index.js'
 import {
   AutoIncrementField,
   BoolField,
@@ -39,6 +38,7 @@ import {
   ReferenceField,
   SelectField,
   StringField,
+  Table,
   TreeField,
   UpdatedAtField,
 } from '../../entity/index.js'
@@ -130,6 +130,10 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
   reference(value: CoreReferenceField): void {
     const field = new ReferenceField(this.table, value)
     this.em.persist(field)
+
+    if (value.foreignTableId.isSome()) {
+      field.foreignTable = this.em.getReference(Table, value.foreignTableId.unwrap())
+    }
 
     const adjacencyListTable = new AdjacencyListTable(this.table.id, value)
 
