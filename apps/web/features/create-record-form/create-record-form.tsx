@@ -1,11 +1,12 @@
 import type { ICreateRecordInput } from '@egodb/cqrs'
 import { useCreateRecordMutation } from '@egodb/store'
-import { Alert, Button, Divider, Group, IconAlertCircle, Stack } from '@egodb/ui'
+import { Alert, Button, Divider, Group, IconAlertCircle, IconPlus, openContextModal, Space, Stack } from '@egodb/ui'
 import { DevTool } from '@hookform/devtools'
 import type { FieldPath } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
+import { CREATE_FIELD_MODAL_ID } from '../../modals'
 import { RecordInputFactory } from '../record/record-input.factory'
 
 interface IProps {
@@ -46,6 +47,24 @@ export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
           })}
         </Stack>
 
+        <Space h="lg" />
+
+        <Button
+          compact
+          size="xs"
+          color="gray"
+          variant="white"
+          leftIcon={<IconPlus size={14} />}
+          onClick={() => {
+            openContextModal({
+              title: 'Create New Field',
+              modal: CREATE_FIELD_MODAL_ID,
+              innerProps: {},
+            })
+          }}
+        >
+          Add New Field to Table
+        </Button>
         <Divider my="lg" />
 
         <Group position="right">
