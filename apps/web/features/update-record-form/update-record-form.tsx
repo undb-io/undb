@@ -8,6 +8,7 @@ import type { IMutateRecordValueSchema } from '@egodb/core'
 import { getSelectedRecordId, useUpdateRecordMutation } from '@egodb/store'
 import { useAppSelector } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 
 interface IProps {
   onCancel: () => void
@@ -17,6 +18,9 @@ interface IProps {
 export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
   const form = useFormContext<IUpdateRecordValueSchema>()
   const table = useCurrentTable()
+  const view = useCurrentView()
+
+  const fields = view.getOrderedFields(table.schema.nonSystemFields)
 
   const selectedRecordId = useAppSelector(getSelectedRecordId)
 
@@ -53,7 +57,7 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
     <>
       <form onSubmit={onSubmit}>
         <Stack>
-          {table.schema.nonSystemFields.map((field, index) => {
+          {fields.map((field, index) => {
             const name: FieldPath<IUpdateRecordValueSchema> = `value.${index}.value`
             return <RecordInputFactory name={name} key={field.id.value} field={field} />
           })}

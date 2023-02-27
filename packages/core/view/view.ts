@@ -1,6 +1,7 @@
 import type { CompositeSpecification } from '@egodb/domain'
 import { and, ValueObject } from '@egodb/domain'
 import { isEmpty } from '@fxts/core'
+import { sortBy } from 'lodash-es'
 import { None, Option } from 'oxide.ts'
 import type { Field, FieldId } from '../field/index.js'
 import type { IFilterOrGroupList, IRootFilter } from '../filter/index.js'
@@ -130,6 +131,10 @@ export class View extends ValueObject<IView> {
 
   public set fieldsOrder(v: ViewFieldsOrder | undefined) {
     this.props.fieldsOrder = v
+  }
+
+  public getOrderedFields(fields: Field[]): Field[] {
+    return sortBy(fields, (field) => this.fieldsOrder?.order.indexOf(field.id.value))
   }
 
   public getFieldOption(fieldId: string): IViewFieldOption {
