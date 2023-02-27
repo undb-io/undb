@@ -20,7 +20,7 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
   const table = useCurrentTable()
   const view = useCurrentView()
 
-  const fields = view.getOrderedFields(table.schema.nonSystemFields)
+  const fields = view.getOrderedFields(table.schema.fields)
 
   const selectedRecordId = useAppSelector(getSelectedRecordId)
 
