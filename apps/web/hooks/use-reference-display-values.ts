@@ -2,6 +2,7 @@ import type { IQueryRecords, ReferenceFieldTypes } from '@egodb/core'
 import { useGetRecordQuery } from '@egodb/store'
 import type { SelectItem } from '@egodb/ui'
 import { isEmpty } from '@fxts/core'
+import { unionBy } from 'lodash'
 import { useCurrentTable } from './use-current-table'
 
 export const useReferenceDisplayValues = (
@@ -14,7 +15,7 @@ export const useReferenceDisplayValues = (
 
   const { data: record } = useGetRecordQuery({ tableId: table.id.value, id: recordId }, { skip: !recordId })
 
-  const data: SelectItem[] = []
+  let data: SelectItem[] = []
   if (record) {
     const foreignRecordIds = record.values[field.id.value]
     if (Array.isArray(foreignRecordIds) && !isEmpty(foreignRecordIds)) {
@@ -26,7 +27,7 @@ export const useReferenceDisplayValues = (
   }
   for (const foreignRecord of foreignRecords) {
     const values = displayFields.map((fieldId) => foreignRecord.values[fieldId]?.toString())
-    data.push({ value: foreignRecord.id, label: values.filter(Boolean).toString() || 'Unnamed' })
+    data = unionBy(data, [{ value: foreignRecord.id, label: values.filter(Boolean).toString() || 'Unnamed' }], 'value')
   }
 
   return data
