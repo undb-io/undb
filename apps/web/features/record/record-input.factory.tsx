@@ -179,6 +179,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
       render={(form) => (
         <TextInput
           data-auto-focus
+          disabled={field.system}
           icon={<FieldIcon type={field.type} />}
           label={label}
           {...form.field}
