@@ -208,15 +208,6 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "display_field_ids": {
-          "name": "display_field_ids",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
         "max": {
           "name": "max",
           "type": "integer",
@@ -437,6 +428,88 @@
             "field_id"
           ],
           "localTableName": "ego_option",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "ego_field",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "field_1_id": {
+          "name": "field_1_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "field_2_id": {
+          "name": "field_2_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "ego_field_display_fields",
+      "indexes": [
+        {
+          "columnNames": [
+            "field_1_id"
+          ],
+          "composite": false,
+          "keyName": "ego_field_display_fields_field_1_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "field_2_id"
+          ],
+          "composite": false,
+          "keyName": "ego_field_display_fields_field_2_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "primary",
+          "columnNames": [
+            "field_1_id",
+            "field_2_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "ego_field_display_fields_field_1_id_foreign": {
+          "constraintName": "ego_field_display_fields_field_1_id_foreign",
+          "columnNames": [
+            "field_1_id"
+          ],
+          "localTableName": "ego_field_display_fields",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "ego_field",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "ego_field_display_fields_field_2_id_foreign": {
+          "constraintName": "ego_field_display_fields_field_2_id_foreign",
+          "columnNames": [
+            "field_2_id"
+          ],
+          "localTableName": "ego_field_display_fields",
           "referencedColumnNames": [
             "id"
           ],

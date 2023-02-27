@@ -30,6 +30,7 @@ import {
   DateField,
   DateRangeField,
   EmailField,
+  Field,
   IdField,
   NumberField,
   Option,
@@ -134,6 +135,7 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
     if (value.foreignTableId.isSome()) {
       field.foreignTable = this.em.getReference(Table, value.foreignTableId.unwrap())
     }
+    field.displayFields.set(value.displayFieldIds.map((fieldId) => this.em.getReference(Field, fieldId.value)))
 
     const adjacencyListTable = new AdjacencyListTable(this.table.id, value)
 
@@ -172,12 +174,14 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
   tree(value: CoreTreeField): void {
     const field = new TreeField(this.table, value)
     this.em.persist(field)
+    field.displayFields.set(value.displayFieldIds.map((fieldId) => this.em.getReference(Field, fieldId.value)))
 
     this.initClosureTable(value)
   }
 
   parent(value: CoreParentField): void {
     const field = new ParentField(this.table, value)
+    field.displayFields.set(value.displayFieldIds.map((fieldId) => this.em.getReference(Field, fieldId.value)))
     this.em.persist(field)
   }
 }

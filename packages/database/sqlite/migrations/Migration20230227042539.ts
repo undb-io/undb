@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230227025124 extends Migration {
+export class Migration20230227042539 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `ego_table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `views_order` text null, primary key (`id`));',
@@ -8,7 +8,7 @@ export class Migration20230227025124 extends Migration {
     this.addSql('create index `ego_table_deleted_at_index` on `ego_table` (`deleted_at`);')
 
     this.addSql(
-      "create table `ego_field` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `name` text not null, `system` text not null default false, `type` text check (`type` in ('id', 'created-at', 'updated-at', 'auto-increment', 'string', 'email', 'color', 'number', 'date', 'select', 'bool', 'date-range', 'reference', 'tree', 'parent', 'rating')) not null, `foreign_table_id` text null, `parent_field_id` text null, `tree_field_id` text null, `display_field_ids` text null, `max` integer null, constraint `ego_field_table_id_foreign` foreign key(`table_id`) references `ego_table`(`id`) on delete cascade on update cascade, constraint `ego_field_foreign_table_id_foreign` foreign key(`foreign_table_id`) references `ego_table`(`id`) on delete set null on update cascade, primary key (`id`));",
+      "create table `ego_field` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `name` text not null, `system` text not null default false, `type` text check (`type` in ('id', 'created-at', 'updated-at', 'auto-increment', 'string', 'email', 'color', 'number', 'date', 'select', 'bool', 'date-range', 'reference', 'tree', 'parent', 'rating')) not null, `foreign_table_id` text null, `parent_field_id` text null, `tree_field_id` text null, `max` integer null, constraint `ego_field_table_id_foreign` foreign key(`table_id`) references `ego_table`(`id`) on delete cascade on update cascade, constraint `ego_field_foreign_table_id_foreign` foreign key(`foreign_table_id`) references `ego_table`(`id`) on delete set null on update cascade, primary key (`id`));",
     )
     this.addSql('create index `ego_field_deleted_at_index` on `ego_field` (`deleted_at`);')
     this.addSql('create index `ego_field_table_id_index` on `ego_field` (`table_id`);')
@@ -20,6 +20,16 @@ export class Migration20230227025124 extends Migration {
     )
     this.addSql('create index `ego_option_deleted_at_index` on `ego_option` (`deleted_at`);')
     this.addSql('create index `ego_option_field_id_index` on `ego_option` (`field_id`);')
+
+    this.addSql(
+      'create table `ego_field_display_fields` (`field_1_id` text not null, `field_2_id` text not null, constraint `ego_field_display_fields_field_1_id_foreign` foreign key(`field_1_id`) references `ego_field`(`id`) on delete cascade on update cascade, constraint `ego_field_display_fields_field_2_id_foreign` foreign key(`field_2_id`) references `ego_field`(`id`) on delete cascade on update cascade, primary key (`field_1_id`, `field_2_id`));',
+    )
+    this.addSql(
+      'create index `ego_field_display_fields_field_1_id_index` on `ego_field_display_fields` (`field_1_id`);',
+    )
+    this.addSql(
+      'create index `ego_field_display_fields_field_2_id_index` on `ego_field_display_fields` (`field_2_id`);',
+    )
 
     this.addSql(
       "create table `ego_view` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `name` text not null, `display_type` text check (`display_type` in ('kanban', 'calendar', 'grid', 'tree')) not null, `sorts` json null, `kanban_field_id` text null, `calendar_field_id` text null, `tree_field_id` text null, `filter` json null, `field_options` json null, `fields_order` text null, constraint `ego_view_table_id_foreign` foreign key(`table_id`) references `ego_table`(`id`) on delete cascade on update cascade, primary key (`id`));",

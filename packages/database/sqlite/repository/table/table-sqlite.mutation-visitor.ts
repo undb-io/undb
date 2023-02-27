@@ -204,9 +204,14 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.persist(field)
   }
   displayFieldsEqual(s: WithDisplayFields): void {
-    const field = this.getField(s.field.id.value) as TreeField | ParentField | ReferenceField
-    wrap(field).assign({ displayFieldIds: s.displayFields.map((id) => id.value) })
-    this.em.persist(field)
+    this.addJobs(async () => {
+      const field = (await this.em.findOne(Field, { id: s.field.id.value })) as TreeField | ParentField | ReferenceField
+      if (field) {
+        field.displayFields.set(s.displayFields.map((id) => this.em.getReference(Field, id.value)))
+
+        this.em.persist(field)
+      }
+    })
   }
   not(): this {
     return this
