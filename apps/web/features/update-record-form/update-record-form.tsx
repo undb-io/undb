@@ -1,5 +1,5 @@
 import type { IUpdateRecordValueSchema } from '@egodb/core'
-import { Alert, Button, Divider, Group, IconAlertCircle, Stack } from '@egodb/ui'
+import { Alert, Button, Divider, Group, IconAlertCircle, IconPlus, openContextModal, Space, Stack } from '@egodb/ui'
 import type { FieldPath } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 import { DevTool } from '@hookform/devtools'
@@ -9,6 +9,7 @@ import { getSelectedRecordId, useUpdateRecordMutation } from '@egodb/store'
 import { useAppSelector } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
+import { CREATE_FIELD_MODAL_ID } from '../../modals'
 
 interface IProps {
   onCancel: () => void
@@ -62,6 +63,26 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
             return <RecordInputFactory name={name} key={field.id.value} field={field} />
           })}
         </Stack>
+
+        <Space h="lg" />
+
+        <Button
+          compact
+          size="xs"
+          color="gray"
+          variant="white"
+          leftIcon={<IconPlus size={14} />}
+          onClick={() => {
+            openContextModal({
+              title: 'Create New Field',
+              modal: CREATE_FIELD_MODAL_ID,
+              innerProps: {},
+            })
+          }}
+        >
+          Add New Field to Table
+        </Button>
+
         <Divider my="lg" />
 
         <Group position="right">
