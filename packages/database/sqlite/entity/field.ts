@@ -30,6 +30,7 @@ export abstract class Field extends BaseEntity {
     this.table = table
     this.name = field.name.value
     this.type = field.type
+    this.system = field.system
   }
 
   @PrimaryKey()
