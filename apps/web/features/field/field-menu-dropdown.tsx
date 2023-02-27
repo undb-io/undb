@@ -1,7 +1,7 @@
 import type { Field } from '@egodb/core'
 import { useDeleteFieldMutation, useSetVisibilityMutation } from '@egodb/store'
 import type { MenuItemProps } from '@egodb/ui'
-import { IconEye } from '@egodb/ui'
+import { IconEyeOff } from '@egodb/ui'
 import { Portal } from '@egodb/ui'
 import { openContextModal } from '@egodb/ui'
 import { IconPencil, IconTrash, Menu } from '@egodb/ui'
@@ -52,7 +52,7 @@ export const FieldMenuDropdown: React.FC<{ field: Field }> = ({ field }) => {
         <Menu.Divider />
 
         <Menu.Item
-          icon={<IconEye size={14} />}
+          icon={<IconEyeOff size={14} />}
           {...menuProps}
           onClick={() =>
             setVisibility({ tableId: table.id.value, viewId: view.id.value, fieldId: field.id.value, hidden: true })
