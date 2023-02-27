@@ -5,6 +5,7 @@ import { DevTool } from '@hookform/devtools'
 import type { FieldPath } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 import { RecordInputFactory } from '../record/record-input.factory'
 
 interface IProps {
@@ -15,9 +16,11 @@ interface IProps {
 export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
   const form = useFormContext<ICreateRecordInput>()
   const table = useCurrentTable()
+  const view = useCurrentView()
 
   const [createRecord, { isLoading, isError, error, reset: resetCreateRecord }] = useCreateRecordMutation()
 
+  const fields = view.getOrderedFields(table.schema.nonSystemFields)
   const onSubmit = form.handleSubmit(async (values) => {
     const result = await createRecord(values)
     if (!('error' in result)) {
@@ -37,7 +40,7 @@ export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
     <>
       <form onSubmit={onSubmit}>
         <Stack>
-          {table.schema.nonSystemFields.map((field, index) => {
+          {fields.map((field, index) => {
             const name: FieldPath<ICreateRecordInput> = `value.${index}.value`
             return <RecordInputFactory name={name} key={field.id.value} field={field} />
           })}
