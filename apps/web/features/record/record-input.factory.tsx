@@ -10,6 +10,9 @@ import {
   IconExternalLink,
   ActionIcon,
   Center,
+  IconCopy,
+  useClipboard,
+  IconClipboardCheck,
 } from '@egodb/ui'
 import React from 'react'
 import { Controller } from 'react-hook-form'
@@ -27,6 +30,7 @@ interface IProps {
 }
 
 export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
+  const { copy, copied } = useClipboard({ timeout: 1500 })
   const router = useRouter()
 
   const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
@@ -197,6 +201,30 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? ''}
+          />
+        )}
+      />
+    )
+  }
+  if (field.type === 'id') {
+    return (
+      <Controller
+        name={name}
+        render={(form) => (
+          <TextInput
+            data-auto-focus
+            disabled
+            icon={<FieldIcon type={field.type} />}
+            label={label}
+            {...form.field}
+            value={form.field.value ?? ''}
+            rightSection={
+              copied ? (
+                <IconClipboardCheck size={14} color="green" />
+              ) : (
+                <IconCopy size={14} color="gray" onClick={() => copy(form.field.value)} />
+              )
+            }
           />
         )}
       />
