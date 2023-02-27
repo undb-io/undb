@@ -144,6 +144,7 @@ importers:
       '@hookform/resolvers': ^2.9.11
       '@tanstack/react-table': ^8.7.9
       '@tanstack/react-virtual': ^3.0.0-beta.48
+      '@types/lodash': ^4.14.191
       '@types/node': ^18.14.0
       '@types/react': ^18.0.28
       '@types/react-dom': ^18.0.11
@@ -151,6 +152,7 @@ importers:
       eslint: ^8.34.0
       jotai: ^2.0.2
       jotai-devtools: ^0.2.0
+      lodash: ^4.17.21
       next: ^13.1.6
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -180,6 +182,7 @@ importers:
       date-fns: 2.29.3
       jotai: 2.0.2_react@18.2.0
       jotai-devtools: 0.2.0_jotai@2.0.2+react@18.2.0
+      lodash: 4.17.21
       next: 13.1.6_pjwopsidmaokadturxaafygjp4
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -192,6 +195,7 @@ importers:
       '@egodb/eslint-config': link:../../packages/eslint-config
       '@emotion/babel-plugin': 11.10.6
       '@hookform/devtools': 4.3.0_rhrpnuwl23ewqfh7btz44ilpmq
+      '@types/lodash': 4.14.191
       '@types/node': 18.14.0
       '@types/react': 18.0.28
       '@types/react-dom': 18.0.11
