@@ -25,6 +25,7 @@ import {
   IconTrash,
   TextInput,
   ActionIcon,
+  IconChevronDown,
 } from '@egodb/ui'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -152,6 +153,7 @@ export const ViewMenu: React.FC = () => {
               variant="subtle"
               onClick={toggle.toggle}
               leftIcon={<DisplayTypeIcon displayType={view.displayType} />}
+              rightIcon={<IconChevronDown size={14} />}
             >
               {editing ? (
                 <TextInput
