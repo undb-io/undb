@@ -1,5 +1,16 @@
 import type { Field } from '@egodb/core'
-import { NumberInput, DatePicker, DateRangePicker, Checkbox, TextInput, ColorInput, Rating } from '@egodb/ui'
+import {
+  NumberInput,
+  DatePicker,
+  DateRangePicker,
+  Checkbox,
+  TextInput,
+  ColorInput,
+  Rating,
+  IconExternalLink,
+  ActionIcon,
+  Center,
+} from '@egodb/ui'
 import React from 'react'
 import { Controller } from 'react-hook-form'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
@@ -8,6 +19,7 @@ import { OptionPicker } from '../option/option-picker'
 import { ReferenceRecordPicker } from '../field-inputs/reference-record-picker'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { ParentRecordPicker } from '../field-inputs/parent-records-picker'
+import { useRouter } from 'next/navigation'
 
 interface IProps {
   field: Field
@@ -15,6 +27,8 @@ interface IProps {
 }
 
 export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
+  const router = useRouter()
+
   const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
   if (field.type === 'number') {
     return (
@@ -123,13 +137,29 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
   }
 
   if (field.type === 'reference') {
+    const foreignTable = field.foreignTableId
     return (
       <Controller
         name={name}
         render={(form) => (
           <ReferenceRecordPicker
             field={field}
-            label={label}
+            label={
+              <Center>
+                label
+                <ActionIcon
+                  ml="xs"
+                  size="xs"
+                  onClick={() => {
+                    if (foreignTable.isSome()) {
+                      router.push(`/t/${foreignTable.unwrap()}`)
+                    }
+                  }}
+                >
+                  <IconExternalLink size={14} />
+                </ActionIcon>
+              </Center>
+            }
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? []}
