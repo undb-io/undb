@@ -1,4 +1,3 @@
-import type { IQueryTable } from '@egodb/core'
 import { getCurrentTableId, useGetTablesQuery } from '@egodb/store'
 import { ActionIcon, Center, Flex, IconPlus, Tabs } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
@@ -25,14 +24,11 @@ export const TableList: React.FC = () => {
         >
           {Object.values(tables.data?.entities ?? {})
             .filter(Boolean)
-            .map((t) => {
-              t = t as IQueryTable
-              return (
-                <Tabs.Tab key={t.id} value={t.id}>
-                  {t.name}
-                </Tabs.Tab>
-              )
-            })}
+            .map((t) => (
+              <Tabs.Tab key={t.id} value={t.id}>
+                {t.name}
+              </Tabs.Tab>
+            ))}
         </Tabs>
         <ActionIcon variant="subtle" onClick={() => setOpened(true)}>
           <IconPlus size={14} />

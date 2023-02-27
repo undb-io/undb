@@ -1,5 +1,5 @@
-import type { IQueryRecords, TreeField } from '@egodb/core'
-import { getSelectedRecordId, useGetRecordQuery, useLazyTreeAvailableQuery } from '@egodb/store'
+import type { TreeField } from '@egodb/core'
+import { getSelectedRecordId, useLazyTreeAvailableQuery } from '@egodb/store'
 import type { MultiSelectProps } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { Loader, MultiSelect } from '@egodb/ui'
@@ -33,7 +33,7 @@ export const TreeRecordsPicker: React.FC<IProps> = ({ field, ...rest }) => {
   const [getRecords, { rawRecords: foreignRecords, isLoading }] = useLazyTreeAvailableQuery({
     selectFromResult: (result) => ({
       ...result,
-      rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+      rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean),
     }),
   })
 

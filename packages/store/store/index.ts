@@ -7,8 +7,7 @@ import { api } from '../services/api'
 export const createStore = () => {
   const store = configureStore({
     reducer: rootReducder,
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({ serializableCheck: false }).concat().concat(api.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(api.middleware),
     devTools: process.env.NODE_ENV !== 'production',
   })
 

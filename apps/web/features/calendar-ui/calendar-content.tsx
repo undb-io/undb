@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { ICalendarField, IQueryRecords } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
 import { useGetRecordsQuery } from '@egodb/store'
@@ -25,7 +26,7 @@ export const CalendarContent: React.FC<IProps> = ({ field }) => {
     {
       selectFromResult: (result) => ({
         ...result,
-        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
+        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean),
       }),
     },
   )
