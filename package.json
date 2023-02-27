@@ -13,7 +13,8 @@
     "syncpack": "^8.5.14",
     "taze": "^0.8.5",
     "turbo": "^1.8.1",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "zx": "^7.1.1"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -27,8 +28,6 @@
     "build": "turbo run build",
     "clean": "turbo run clean --parallel",
     "commit": "cz",
-    "db:migration:up": "FORCE_COLOR=1 turbo run db:migration:up",
-    "db:schema:fresh": "FORCE_COLOR=1 turbo run db:schema:fresh",
     "dev": "FORCE_COLOR=1 dotenv -- turbo run dev --parallel --filter=!www",
     "dev:packages": "FORCE_COLOR=1 turbo run dev --parallel --filter=./packages/*",
     "dev:www": "turbo run dev --filter www",
@@ -40,6 +39,7 @@
     "syncpack:fix": "syncpack fix-mismatches",
     "test": "FORCE_COLOR=1 TZ=UTC turbo run test",
     "test:watch": "FORCE_COLOR=1 TZ=UTC turbo run test:watch",
+    "reset-db": "zx scripts/reset-db.mjs",
     "up": "taze -r -w -i"
   },
   "workspaces": [
