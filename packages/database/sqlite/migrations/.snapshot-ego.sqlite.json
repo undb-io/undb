@@ -257,6 +257,15 @@
           "unique": false
         },
         {
+          "columnNames": [
+            "foreign_table_id"
+          ],
+          "composite": false,
+          "keyName": "ego_field_foreign_table_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "primary",
           "columnNames": [
             "id"
@@ -279,6 +288,19 @@
           ],
           "referencedTableName": "ego_table",
           "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "ego_field_foreign_table_id_foreign": {
+          "constraintName": "ego_field_foreign_table_id_foreign",
+          "columnNames": [
+            "foreign_table_id"
+          ],
+          "localTableName": "ego_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "ego_table",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
