@@ -7,6 +7,7 @@ import type {
   WithFieldVisibility,
   WithFieldWidth,
   WithFilter,
+  WithFormat,
   WithKanbanField,
   WithNewField,
   WithNewOption,
@@ -28,7 +29,15 @@ import type {
 import type { WithDisplayFields } from '@egodb/core/field/specifications/reference-field.specification.js'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import type { ParentField, ReferenceField, TreeField } from '../../entity/index.js'
+import type {
+  CreatedAtField,
+  DateField,
+  DateRangeField,
+  ParentField,
+  ReferenceField,
+  TreeField,
+  UpdatedAtField,
+} from '../../entity/index.js'
 import { Field, Option, SelectField, Table } from '../../entity/index.js'
 import { View } from '../../entity/view.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
@@ -212,6 +221,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
         this.em.persist(field)
       }
     })
+  }
+  withFormat(s: WithFormat): void {
+    const field = this.getField(s.field.id.value) as DateField | DateRangeField | CreatedAtField | UpdatedAtField
+    wrap(field).assign({ format: s.format.unpack() })
+    this.em.persist(field)
   }
   not(): this {
     return this
