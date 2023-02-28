@@ -10,8 +10,8 @@ export class SetFieldSortCommandHandler implements ISetFieldSortCommandHandler {
   async execute(command: SetFieldSortCommand): Promise<void> {
     const table = (await this.repo.findOneById(command.tableId)).unwrap()
 
-    // const spec = table.setFieldSort(command.sorts, command.viewId).unwrap()
+    const spec = table.setFieldSort(command.fieldId, command.direction, command.viewId).unwrap()
 
-    // await this.repo.updateOneById(command.tableId, spec)
+    await this.repo.updateOneById(command.tableId, spec)
   }
 }

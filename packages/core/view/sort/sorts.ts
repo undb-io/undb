@@ -1,5 +1,5 @@
 import { ValueObject } from '@egodb/domain'
-import type { ISorts } from './sort.schema.js'
+import type { ISortDirection, ISorts } from './sort.schema.js'
 
 export class Sorts extends ValueObject<ISorts> {
   public get sorts() {
@@ -12,5 +12,10 @@ export class Sorts extends ValueObject<ISorts> {
 
   public toArray() {
     return this.sorts
+  }
+
+  setFieldSort(fieldId: string, direction: ISortDirection): Sorts {
+    const sorts = this.sorts.map((sort) => (sort.fieldId === fieldId ? { fieldId, direction } : sort))
+    return new Sorts(sorts)
   }
 }
