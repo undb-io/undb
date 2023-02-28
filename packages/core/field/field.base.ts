@@ -30,7 +30,7 @@ import type { IUpdateReferenceFieldInput } from './reference-field.type.js'
 import { WithFieldName } from './specifications/base-field.specification.js'
 import { WithDisplayFields } from './specifications/reference-field.specification.js'
 import type { IUpdateTreeFieldInput } from './tree-field.type.js'
-import type { FieldId, FieldName } from './value-objects/index.js'
+import type { DateFormat, FieldId, FieldName } from './value-objects/index.js'
 import { DisplayFields } from './value-objects/index.js'
 
 export abstract class BaseField<C extends IBaseField = IBaseField> extends ValueObject<C> {
@@ -147,5 +147,9 @@ export abstract class BaseDateField<F extends IDateField | ICreatedAtField | IUp
 {
   get formatString(): string {
     return this.props.format?.unpack() ?? DEFAULT_DATE_FORMAT
+  }
+
+  get format(): DateFormat | undefined {
+    return this.props.format
   }
 }

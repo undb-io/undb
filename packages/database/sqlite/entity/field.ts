@@ -1,10 +1,14 @@
 import type {
+  CreatedAtField as CoreCreatedAtField,
+  DateField as CoreDateField,
+  DateRangeField as CoreDateRangeField,
   Field as CoreField,
   IFieldType,
   ParentField as CoreParentField,
   RatingField as CoreRatingField,
   ReferenceField as CoreReferenceField,
   TreeField as CoreTreeField,
+  UpdatedAtField as CoreUpdatedAtField,
 } from '@egodb/core'
 import {
   Cascade,
@@ -72,10 +76,24 @@ export abstract class Field extends BaseEntity {
 export class IdField extends Field {}
 
 @Entity({ discriminatorValue: 'created-at' })
-export class CreatedAtField extends Field {}
+export class CreatedAtField extends Field {
+  constructor(table: Table, field: CoreCreatedAtField) {
+    super(table, field)
+    this.format = field.formatString
+  }
+  @Property({ nullable: true })
+  format: string
+}
 
 @Entity({ discriminatorValue: 'updated-at' })
-export class UpdatedAtField extends Field {}
+export class UpdatedAtField extends Field {
+  constructor(table: Table, field: CoreUpdatedAtField) {
+    super(table, field)
+    this.format = field.formatString
+  }
+  @Property({ nullable: true })
+  format: string
+}
 
 @Entity({ discriminatorValue: 'auto-increment' })
 export class AutoIncrementField extends Field {}
@@ -107,10 +125,26 @@ export class RatingField extends Field {
 export class BoolField extends Field {}
 
 @Entity({ discriminatorValue: 'date' })
-export class DateField extends Field {}
+export class DateField extends Field {
+  constructor(table: Table, field: CoreDateField) {
+    super(table, field)
+    this.format = field.formatString
+  }
+
+  @Property({ nullable: true })
+  format: string
+}
 
 @Entity({ discriminatorValue: 'date-range' })
-export class DateRangeField extends Field {}
+export class DateRangeField extends Field {
+  constructor(table: Table, field: CoreDateRangeField) {
+    super(table, field)
+    this.format = field.formatString
+  }
+
+  @Property({ nullable: true })
+  format: string
+}
 
 @Entity({ discriminatorValue: 'select' })
 export class SelectField extends Field {
