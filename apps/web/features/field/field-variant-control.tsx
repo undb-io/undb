@@ -7,6 +7,7 @@ import { DisplayFieldsPicker } from '../field-inputs/display-fields-picker'
 import { SelectFieldControl } from '../field-inputs/select-field-control'
 import { TablePicker } from '../table/table-picker'
 import { useNullableCurrentTable } from '../../hooks/use-current-table'
+import { DateFormatPicker } from './date-format-picker'
 
 interface IProps {
   isNew: boolean
@@ -73,5 +74,10 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
       </>
     )
   }
+
+  if (type === 'date' || type === 'date-range' || type === 'created-at' || type === 'updated-at') {
+    return <Controller name="format" render={(props) => <DateFormatPicker {...props.field} variant="default" />} />
+  }
+
   return null
 }

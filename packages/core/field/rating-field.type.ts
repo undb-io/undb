@@ -1,6 +1,6 @@
 import * as z from 'zod'
 import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field-base.schema'
-import { FIELD_TYPE_KEY } from './field.constant.js'
+import { FIELD_TYPE_KEY } from './field.constants.js'
 import { RatingField } from './rating-field.js'
 
 export const RATING_MAX = 10

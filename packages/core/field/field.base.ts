@@ -7,7 +7,7 @@ import type { IFilter, IOperator } from '../filter/index.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import type { IBaseUpdateFieldSchema } from './field-base.schema'
-import { DEFAULT_DATE_FORMAT } from './field.constatnts.js'
+import { DEFAULT_DATE_FORMAT } from './field.constants.js'
 import type {
   IAbstractDateField,
   IBaseField,

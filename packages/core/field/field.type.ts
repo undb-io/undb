@@ -88,7 +88,7 @@ import {
   emailTypeSchema,
   updateEmailFieldSchema,
 } from './email-field.type.js'
-import { FIELD_TYPE_KEY } from './field.constant.js'
+import { FIELD_TYPE_KEY } from './field.constants.js'
 import type { IdFieldValue } from './id-field-value.js'
 import type { IdField } from './id-field.js'
 import type { IIdFieldValue } from './id-field.type.js'
@@ -360,6 +360,7 @@ export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField | AutoIncrementField
 
 export type ReferenceFieldTypes = ReferenceField | TreeField | ParentField
+export type DateFieldTypes = DateField | DateRangeField | CreatedAtField | UpdatedAtField
 
 export type NoneSystemField =
   | StringField

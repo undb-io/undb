@@ -7,6 +7,7 @@ import { DisplayFieldsPicker } from '../../field-inputs/display-fields-picker'
 import { SelectFieldControl } from '../../field-inputs/select-field-control'
 import { TablePicker } from '../../table/table-picker'
 import type { FieldBase } from '../../field-inputs/field-picker.type'
+import { DateFormatPicker } from '../../field/date-format-picker'
 
 interface IProps {
   index: number
@@ -75,6 +76,10 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
         />
       </>
     )
+  }
+
+  if (type === 'date' || type === 'date-range' || type === 'created-at' || type === 'updated-at') {
+    return <Controller name="format" render={(props) => <DateFormatPicker {...props.field} variant="default" />} />
   }
 
   return null

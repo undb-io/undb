@@ -2,7 +2,7 @@ import * as z from 'zod'
 import { recordIdSchema } from '../record/value-objects/record-id.schema.js'
 import { tableIdSchema } from '../value-objects/table-id.vo.js'
 import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field-base.schema'
-import { FIELD_TYPE_KEY } from './field.constant.js'
+import { FIELD_TYPE_KEY } from './field.constants.js'
 import { ReferenceField } from './reference-field.js'
 import { fieldIdSchema } from './value-objects/field-id.schema.js'
 

@@ -1,6 +1,6 @@
 import * as z from 'zod'
 import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field-base.schema'
-import { FIELD_TYPE_KEY } from './field.constant.js'
+import { FIELD_TYPE_KEY } from './field.constants.js'
 import { StringField } from './string-field.js'
 
 export const stringTypeSchema = z.literal('string')
