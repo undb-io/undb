@@ -14,7 +14,8 @@ export type ICreateDateFieldSchema = z.infer<typeof createDateFieldSchema>
 export const updateDateFieldSchema = updateBaseFieldSchema.merge(dateTypeObjectSchema).merge(dateObjectSchema)
 export type IUpdateDateFieldInput = z.infer<typeof updateDateFieldSchema>
 
-export const dateFieldQuerySchema = baseFieldQuerySchema.merge(dateTypeObjectSchema)
+export const dateFieldQuerySchema = baseFieldQuerySchema.merge(dateTypeObjectSchema).merge(dateObjectSchema)
+export type IDateFieldQuerySchema = z.infer<typeof dateFieldQuerySchema>
 
 export const dateFieldValue = z.date().or(z.null())
 export type IDateFieldValue = z.infer<typeof dateFieldValue>

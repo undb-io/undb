@@ -16,6 +16,7 @@ export const updateNumberFieldSchema = updateBaseFieldSchema.merge(numberTypeObj
 export type IUpdateNumberFieldInput = z.infer<typeof updateNumberFieldSchema>
 
 export const numberFieldQuerySchema = baseFieldQuerySchema.merge(numberTypeObjectSchema)
+export type INumberFieldQuerySchema = z.infer<typeof numberFieldQuerySchema>
 
 export const numberFieldValue = z.number().or(z.null())
 export type INumberFieldValue = z.infer<typeof numberFieldValue>

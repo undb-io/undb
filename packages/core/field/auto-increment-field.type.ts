@@ -14,6 +14,7 @@ export const updateAutoIncrementFieldSchema = updateBaseFieldSchema.merge(autoIn
 export type IUpdateAutoIncrementFieldInput = z.infer<typeof updateAutoIncrementFieldSchema>
 
 export const autoIncrementFieldQuerySchema = baseFieldQuerySchema.merge(autoIncrementTypeObjectSchema)
+export type IAutoIncrementFieldQuerySchema = z.infer<typeof autoIncrementFieldQuerySchema>
 
 export const autoIncrementFieldValue = z.number().int().positive()
 export type IAutoIncrementFieldValue = z.infer<typeof autoIncrementFieldValue>

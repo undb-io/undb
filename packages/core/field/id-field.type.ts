@@ -15,6 +15,7 @@ export const updateIdFieldSchema = updateBaseFieldSchema.merge(idTypeObjectSchem
 export type IUpdateIdFieldInput = z.infer<typeof updateIdFieldSchema>
 
 export const idFieldQuerySchema = baseFieldQuerySchema.merge(idTypeObjectSchema)
+export type IIdFieldQuerySchema = z.infer<typeof idFieldQuerySchema>
 
 export const idFieldValue = recordIdSchema
 export type IIdFieldValue = z.infer<typeof idFieldValue>

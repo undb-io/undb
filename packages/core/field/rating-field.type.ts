@@ -22,7 +22,6 @@ export type IUpdateRatingFieldInput = z.infer<typeof updateRatingFieldSchema>
 export const ratingFieldQuerySchema = baseFieldQuerySchema
   .merge(ratingTypeObjectSchema)
   .merge(z.object({ max: z.number().positive().max(RATING_MAX).int() }))
-
 export type IRatingFieldQuerySchema = z.infer<typeof ratingFieldQuerySchema>
 
 export const ratingFieldValue = z.number().nonnegative().nullable()

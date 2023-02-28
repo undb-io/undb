@@ -14,6 +14,7 @@ export const updateBoolFieldSchema = updateBaseFieldSchema.merge(boolTypeObjectS
 export type IUpdateBoolFieldInput = z.infer<typeof updateBoolFieldSchema>
 
 export const boolFieldQuerySchema = baseFieldQuerySchema.merge(boolTypeObjectSchema)
+export type IBoolFieldQuerySchema = z.infer<typeof boolFieldQuerySchema>
 
 export const boolFieldValue = z.boolean()
 export type IBoolFieldValue = z.infer<typeof boolFieldValue>

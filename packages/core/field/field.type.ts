@@ -464,5 +464,5 @@ export interface IReference {
 
 export interface IAbstractDateField {
   get formatString(): string
-  get format(): DateFormat
+  get format(): DateFormat | undefined
 }

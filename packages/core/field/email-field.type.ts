@@ -14,6 +14,7 @@ export const updateEmailFieldSchema = updateBaseFieldSchema.merge(emailTypeObjec
 export type IUpdateEmailFieldInput = z.infer<typeof updateEmailFieldSchema>
 
 export const emailFieldQuerySchema = baseFieldQuerySchema.merge(emailTypeObjectSchema)
+export type IEmailFieldQuerySchema = z.infer<typeof emailFieldQuerySchema>
 
 export const emailFieldValue = z.string().email().nullable()
 export type IEmailFieldValue = z.infer<typeof emailFieldValue>

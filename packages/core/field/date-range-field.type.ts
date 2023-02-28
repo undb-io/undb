@@ -19,7 +19,10 @@ export const updateDateRangeFieldSchema = updateBaseFieldSchema
   .merge(dateRangeObjectSchema)
 export type IUpdateDateRangeFieldInput = z.infer<typeof updateDateRangeFieldSchema>
 
-export const dateRangeFieldQuerySchema = baseFieldQuerySchema.merge(dateRangeTypeObjectSchema)
+export const dateRangeFieldQuerySchema = baseFieldQuerySchema
+  .merge(dateRangeTypeObjectSchema)
+  .merge(dateRangeObjectSchema)
+export type IDateRangeFieldQuerySchema = z.infer<typeof dateRangeFieldQuerySchema>
 
 export const dateRangeFieldValue = z
   .tuple([z.date().nullable(), z.date().nullable()])

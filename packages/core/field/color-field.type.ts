@@ -14,6 +14,7 @@ export const updateColorFieldSchema = updateBaseFieldSchema.merge(colorTypeObjec
 export type IUpdateColorFieldInput = z.infer<typeof updateColorFieldSchema>
 
 export const colorFieldQuerySchema = baseFieldQuerySchema.merge(colorTypeObjectSchema)
+export type IColorFieldQuerySchema = z.infer<typeof colorFieldQuerySchema>
 
 export const colorFieldValue = z.string().min(4).max(9).regex(/^#/).nullable()
 export type IColorFieldValue = z.infer<typeof colorFieldValue>
