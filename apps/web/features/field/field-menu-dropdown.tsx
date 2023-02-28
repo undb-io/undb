@@ -1,6 +1,8 @@
 import type { Field } from '@egodb/core'
-import { useDeleteFieldMutation, useSetVisibilityMutation } from '@egodb/store'
+import { useDeleteFieldMutation, useSetFieldSortMutation, useSetVisibilityMutation } from '@egodb/store'
 import type { MenuItemProps } from '@egodb/ui'
+import { IconSortAscending } from '@egodb/ui'
+import { IconSortDescending } from '@egodb/ui'
 import { IconEyeOff } from '@egodb/ui'
 import { Portal } from '@egodb/ui'
 import { openContextModal } from '@egodb/ui'
@@ -16,6 +18,7 @@ export const FieldMenuDropdown: React.FC<{ field: Field }> = ({ field }) => {
   const [deleteField] = useDeleteFieldMutation()
 
   const [setVisibility] = useSetVisibilityMutation()
+  const [setFieldSort] = useSetFieldSortMutation()
 
   const confirm = useConfirmModal({
     onConfirm() {
@@ -50,6 +53,35 @@ export const FieldMenuDropdown: React.FC<{ field: Field }> = ({ field }) => {
         </Menu.Item>
 
         <Menu.Divider />
+
+        <Menu.Item
+          icon={<IconSortDescending size={14} />}
+          {...menuProps}
+          onClick={() => {
+            setFieldSort({
+              tableId: table.id.value,
+              viewId: view.id.value,
+              fieldId: field.id.value,
+              direction: 'desc',
+            })
+          }}
+        >
+          Sort: Descending
+        </Menu.Item>
+        <Menu.Item
+          icon={<IconSortAscending size={14} />}
+          {...menuProps}
+          onClick={() => {
+            setFieldSort({
+              tableId: table.id.value,
+              viewId: view.id.value,
+              fieldId: field.id.value,
+              direction: 'asc',
+            })
+          }}
+        >
+          Sort: Ascending
+        </Menu.Item>
 
         <Menu.Item
           icon={<IconEyeOff size={14} />}
