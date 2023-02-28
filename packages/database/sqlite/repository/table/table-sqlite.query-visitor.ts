@@ -8,6 +8,7 @@ import type {
   WithFieldVisibility,
   WithFieldWidth,
   WithFilter,
+  WithFormat,
   WithKanbanField,
   WithNewField,
   WithNewOption,
@@ -112,6 +113,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   displayFieldsEqual(s: WithDisplayFields): void {
+    throw new Error('Method not implemented.')
+  }
+  withFormat(s: WithFormat): void {
     throw new Error('Method not implemented.')
   }
 

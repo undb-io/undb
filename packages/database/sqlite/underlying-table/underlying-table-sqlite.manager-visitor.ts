@@ -93,6 +93,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   fieldOptionsEqual(): void {}
   withFieldName(): void {}
   displayFieldsEqual(): void {}
+  withFormat(): void {}
   not(): this {
     return this
   }

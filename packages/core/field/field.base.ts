@@ -6,14 +6,23 @@ import { None } from 'oxide.ts'
 import type { IFilter, IOperator } from '../filter/index.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import type { IUpdateCreatedAtFieldInput } from './created-at-field.type.js'
+import type { IUpdateDateFieldInput } from './date-field.type.js'
+import type { IUpdateDateRangeFieldInput } from './date-range-field.type.js'
 import type { IBaseUpdateFieldSchema } from './field-base.schema'
+import { DEFAULT_DATE_FORMAT } from './field.constants.js'
 import type {
+  IAbstractDateField,
   IBaseField,
+  ICreatedAtField,
+  IDateField,
+  IDateRangeField,
   IFieldType,
   IParentField,
   IReference,
   IReferenceField,
   ITreeField,
+  IUpdatedAtField,
   IUpdateFieldSchema,
   PrimitiveField,
   SystemField,
@@ -22,9 +31,11 @@ import type { IFieldVisitor } from './field.visitor.js'
 import type { IUpdateParentFieldInput } from './parent-field.type.js'
 import type { IUpdateReferenceFieldInput } from './reference-field.type.js'
 import { WithFieldName } from './specifications/base-field.specification.js'
+import { WithFormat } from './specifications/date-field.specification.js'
 import { WithDisplayFields } from './specifications/reference-field.specification.js'
 import type { IUpdateTreeFieldInput } from './tree-field.type.js'
-import type { FieldId, FieldName } from './value-objects/index.js'
+import type { IUpdateUpdatedAtFieldInput } from './updated-at-field.type.js'
+import type { DateFormat, FieldId, FieldName } from './value-objects/index.js'
 import { DisplayFields } from './value-objects/index.js'
 
 export abstract class BaseField<C extends IBaseField = IBaseField> extends ValueObject<C> {
@@ -132,5 +143,48 @@ export abstract class BaseReferenceField<F extends ITreeField | IParentField | I
       toArray,
       unzip,
     )
+  }
+}
+
+export abstract class BaseDateField<F extends IDateField | ICreatedAtField | IUpdatedAtField | IDateRangeField>
+  extends BaseField<F>
+  implements IAbstractDateField
+{
+  get formatString(): string {
+    return this.props.format?.unpack() ?? DEFAULT_DATE_FORMAT
+  }
+
+  set format(format: DateFormat | undefined) {
+    this.props.format = format
+  }
+
+  get format(): DateFormat | undefined {
+    return this.props.format
+  }
+
+  public override update(
+    input: IUpdateDateFieldInput | IUpdateDateRangeFieldInput | IUpdateCreatedAtFieldInput | IUpdateUpdatedAtFieldInput,
+  ): Option<TableCompositeSpecificaiton> {
+    return this.updateDate(input)
+  }
+
+  protected updateDate<
+    T extends
+      | IUpdateDateFieldInput
+      | IUpdateDateRangeFieldInput
+      | IUpdateCreatedAtFieldInput
+      | IUpdateUpdatedAtFieldInput,
+  >(input: T): Option<TableCompositeSpecificaiton> {
+    const specs: TableCompositeSpecificaiton[] = []
+    const spec = super.updateBase(input)
+    if (spec.isSome()) {
+      specs.push(spec.unwrap())
+    }
+
+    if (isString(input.format)) {
+      specs.push(WithFormat.fromString(this, input.format))
+    }
+
+    return and(...specs)
   }
 }

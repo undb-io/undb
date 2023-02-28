@@ -1,101 +1,14 @@
-import type {
-  ICreateParentFieldInput,
-  ICreateRatingFieldInput,
-  ICreateSelectFieldSchema,
-  ICreateTableSchemaInput,
-  ICreateTreeFieldSchema,
-  ICreateViewsSchema,
-  IParentFieldQuerySchema,
-  IQueryFieldSchema,
-  IQueryTable,
-  IQueryView,
-  IRatingFieldQuerySchema,
-  ISelectFieldQuerySchema,
-  ITreeFieldQuerySchema,
-  Table,
-} from '@egodb/core'
-import { TableFactory } from '@egodb/core'
-import type { ICreateReferenceFieldInput, IReferenceFieldQuerySchema } from '@egodb/core/field/reference-field.type.js'
+import type { ICreateViewsSchema, IQueryTable, IQueryView, Table } from '@egodb/core'
+import { TableFactory, TableSchema } from '@egodb/core'
 import type { Result } from 'oxide.ts'
-import type {
-  Field,
-  IField,
-  ParentField,
-  RatingField,
-  ReferenceField,
-  SelectField,
-  Table as TableEntity,
-  TreeField,
-} from '../../entity/index.js'
+import type { Table as TableEntity } from '../../entity/index.js'
 
 export class TableSqliteMapper {
-  static fieldToQuery(entity: Field): IQueryFieldSchema {
-    if (entity.type === 'select') {
-      return {
-        id: entity.id,
-        name: entity.name,
-        type: 'select',
-        options: (entity as SelectField).options.getItems().map((o) => ({
-          key: o.key,
-          name: o.name,
-          color: {
-            name: o.color.name,
-            shade: o.color.shade,
-          },
-        })),
-      } satisfies ISelectFieldQuerySchema
-    }
-    if (entity.type === 'reference') {
-      const field = entity as ReferenceField
-      return {
-        id: entity.id,
-        name: entity.name,
-        type: 'reference',
-        foreignTableId: field.foreignTable?.id,
-        displayFieldIds: field.displayFields.getItems().map((f) => f.id),
-      } satisfies IReferenceFieldQuerySchema
-    }
-    if (entity.type === 'tree') {
-      const field = entity as TreeField
-      return {
-        id: entity.id,
-        name: entity.name,
-        type: 'tree',
-        parentFieldId: field.parentFieldId,
-        displayFieldIds: field.displayFields.getItems().map((f) => f.id),
-      } satisfies ITreeFieldQuerySchema
-    }
-    if (entity.type === 'parent') {
-      const field = entity as ParentField
-      return {
-        id: entity.id,
-        name: entity.name,
-        type: 'parent',
-        treeFieldId: field.treeFieldId,
-        displayFieldIds: field.displayFields.getItems().map((f) => f.id),
-      } satisfies IParentFieldQuerySchema
-    }
-    if (entity.type === 'rating') {
-      const field = entity as RatingField
-      return {
-        id: entity.id,
-        name: entity.name,
-        type: 'rating',
-        max: field.max,
-      } satisfies IRatingFieldQuerySchema
-    }
-    return {
-      id: entity.id,
-      name: entity.name,
-      type: entity.type,
-    } as IQueryFieldSchema
-  }
-
   static entityToQuery(entity: TableEntity): IQueryTable {
     return {
       id: entity.id,
       name: entity.name,
-      schema: entity.fields.getItems().map((table) => this.fieldToQuery(table)),
+      schema: entity.fields.getItems().map((field) => field.toQuery()),
       viewsOrder: entity.viewsOrder,
       views: entity.views.getItems().map(
         (view) =>
@@ -115,73 +28,11 @@ export class TableSqliteMapper {
     }
   }
 
-  static fieldToDomain(f: IField) {
-    if (f.type === 'reference') {
-      const field = f as ReferenceField
-      return {
-        id: f.id,
-        name: f.name,
-        type: 'reference',
-        foreignTableId: field.foreignTable?.id,
-        displayFieldIds: field.displayFields.getItems().map((f) => f.id),
-      } satisfies ICreateReferenceFieldInput
-    }
-    if (f.type === 'tree') {
-      const field = f as TreeField
-      return {
-        id: f.id,
-        name: f.name,
-        type: 'tree',
-        parentFieldId: field.parentFieldId,
-        displayFieldIds: field.displayFields.getItems().map((f) => f.id),
-      } satisfies ICreateTreeFieldSchema
-    }
-    if (f.type === 'parent') {
-      const field = f as ParentField
-      return {
-        id: f.id,
-        name: f.name,
-        type: 'parent',
-        treeFieldId: field.treeFieldId,
-        displayFieldIds: field.displayFields.getItems().map((f) => f.id),
-      } satisfies ICreateParentFieldInput
-    }
-    if (f.type === 'rating') {
-      const field = f as RatingField
-      return {
-        id: f.id,
-        name: f.name,
-        type: 'rating',
-        max: field.max,
-      } satisfies ICreateRatingFieldInput
-    }
-    if (f.type === 'select') {
-      return {
-        id: f.id,
-        name: f.name,
-        type: 'select',
-        options: (f as SelectField).options.getItems().map((o) => ({
-          key: o.key,
-          name: o.name,
-          color: {
-            name: o.color.name,
-            shade: o.color.shade,
-          },
-        })),
-      } satisfies ICreateSelectFieldSchema
-    }
-    return {
-      id: f.id,
-      name: f.name,
-      type: f.type,
-    }
-  }
-
   static entityToDomain(entity: TableEntity): Result<Table, string> {
     return TableFactory.unsafeCreate({
       id: entity.id,
       name: entity.name,
-      schema: entity.fields.getItems().map((f) => this.fieldToDomain(f)) as ICreateTableSchemaInput,
+      schema: [],
       views: entity.views.toArray().map((view) => ({
         id: view.id,
         name: view.name,
@@ -195,6 +46,9 @@ export class TableSqliteMapper {
         sorts: view.sorts,
       })) as ICreateViewsSchema,
       viewsOrder: entity.viewsOrder,
+    }).map((table) => {
+      table.schema = new TableSchema(entity.fields.getItems().map((field) => field.toDomain()))
+      return table
     })
   }
 }

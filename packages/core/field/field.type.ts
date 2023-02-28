@@ -88,7 +88,7 @@ import {
   emailTypeSchema,
   updateEmailFieldSchema,
 } from './email-field.type.js'
-import { FIELD_TYPE_KEY } from './field.constant.js'
+import { FIELD_TYPE_KEY } from './field.constants.js'
 import type { IdFieldValue } from './id-field-value.js'
 import type { IdField } from './id-field.js'
 import type { IIdFieldValue } from './id-field.type.js'
@@ -197,7 +197,7 @@ import {
   updateUpdatedAtFieldSchema,
 } from './updated-at-field.type.js'
 import { fieldNameSchema } from './value-objects/field-name.schema.js'
-import type { DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
+import type { DateFormat, DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createIdFieldSchema,
@@ -334,9 +334,11 @@ export interface IBaseField {
   valueConstrains: FieldValueConstraints
 }
 
+export type AbstractDateField = { format?: DateFormat }
+
 export type IIdField = IBaseField
-export type ICreatedAtField = IBaseField
-export type IUpdatedAtField = IBaseField
+export type ICreatedAtField = IBaseField & AbstractDateField
+export type IUpdatedAtField = IBaseField & AbstractDateField
 export type IAutoIncrementField = IBaseField
 export type IStringField = IBaseField
 export type IEmailField = IBaseField
@@ -344,8 +346,8 @@ export type IColorField = IBaseField
 export type INumberField = IBaseField
 export type IRatingField = IBaseField & { max?: number }
 
-export type IDateField = IBaseField
-export type IDateRangeField = IBaseField
+export type IDateField = IBaseField & AbstractDateField
+export type IDateRangeField = IBaseField & AbstractDateField
 export type ISelectField = IBaseField & {
   options: Options
 }
@@ -358,6 +360,7 @@ export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField | AutoIncrementField
 
 export type ReferenceFieldTypes = ReferenceField | TreeField | ParentField
+export type DateFieldTypes = DateField | DateRangeField | CreatedAtField | UpdatedAtField
 
 export type NoneSystemField =
   | StringField
@@ -458,4 +461,9 @@ export interface IReference {
   get foreignTableId(): Option<string>
   get displayFieldIds(): FieldId[]
   getDisplayValues(values: IRecordDisplayValues): ((string | null)[] | undefined)[]
+}
+
+export interface IAbstractDateField {
+  get formatString(): string
+  get format(): DateFormat | undefined
 }

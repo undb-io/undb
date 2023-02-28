@@ -1,7 +1,7 @@
 import * as z from 'zod'
 import { BoolField } from './bool-field.js'
 import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field-base.schema'
-import { FIELD_TYPE_KEY } from './field.constant.js'
+import { FIELD_TYPE_KEY } from './field.constants.js'
 
 export const boolTypeSchema = z.literal('bool')
 export type BoolFieldType = z.infer<typeof boolTypeSchema>
@@ -14,6 +14,7 @@ export const updateBoolFieldSchema = updateBaseFieldSchema.merge(boolTypeObjectS
 export type IUpdateBoolFieldInput = z.infer<typeof updateBoolFieldSchema>
 
 export const boolFieldQuerySchema = baseFieldQuerySchema.merge(boolTypeObjectSchema)
+export type IBoolFieldQuerySchema = z.infer<typeof boolFieldQuerySchema>
 
 export const boolFieldValue = z.boolean()
 export type IBoolFieldValue = z.infer<typeof boolFieldValue>

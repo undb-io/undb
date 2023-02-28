@@ -181,6 +181,15 @@
           ],
           "mappedType": "enum"
         },
+        "format": {
+          "name": "format",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
         "foreign_table_id": {
           "name": "foreign_table_id",
           "type": "text",

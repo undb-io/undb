@@ -1,7 +1,7 @@
 import * as z from 'zod'
 import { recordIdSchema } from '../record/value-objects/record-id.schema.js'
 import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field-base.schema'
-import { FIELD_TYPE_KEY } from './field.constant.js'
+import { FIELD_TYPE_KEY } from './field.constants.js'
 import { IdField } from './id-field.js'
 
 export const idTypeSchema = z.literal('id')
@@ -15,6 +15,7 @@ export const updateIdFieldSchema = updateBaseFieldSchema.merge(idTypeObjectSchem
 export type IUpdateIdFieldInput = z.infer<typeof updateIdFieldSchema>
 
 export const idFieldQuerySchema = baseFieldQuerySchema.merge(idTypeObjectSchema)
+export type IIdFieldQuerySchema = z.infer<typeof idFieldQuerySchema>
 
 export const idFieldValue = recordIdSchema
 export type IIdFieldValue = z.infer<typeof idFieldValue>

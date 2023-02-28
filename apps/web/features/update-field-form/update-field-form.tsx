@@ -3,7 +3,7 @@ import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldVariantControl } from '../field/field-variant-control'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
-import type { IUpdateFieldSchema, ReferenceField, ReferenceFieldTypes, SelectField } from '@egodb/core'
+import type { DateFieldTypes, IUpdateFieldSchema, ReferenceField, ReferenceFieldTypes, SelectField } from '@egodb/core'
 import { updateFieldSchema } from '@egodb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { IUpdateFieldProps } from './update-field.props'
@@ -26,6 +26,15 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
   }
   if (defaultValues.type === 'select') {
     defaultValues.options = (field as SelectField).options.options.map((o) => o.toJSON())
+  }
+
+  if (
+    defaultValues.type === 'date' ||
+    defaultValues.type === 'date-range' ||
+    defaultValues.type === 'created-at' ||
+    defaultValues.type === 'updated-at'
+  ) {
+    defaultValues.format = (field as DateFieldTypes).formatString
   }
 
   const form = useForm<IUpdateFieldSchema>({

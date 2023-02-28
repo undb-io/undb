@@ -1,10 +1,14 @@
-import type { IDateRangeFieldValue } from '@egodb/core'
+import type { DateRangeField, IDateRangeFieldValue } from '@egodb/core'
 import { format } from 'date-fns/fp'
 
-const dateFormat = format('yyyy-MM-dd')
+interface IProps {
+  field: DateRangeField
+  value: IDateRangeFieldValue | undefined
+}
 
-export const DateRangeValue: React.FC<{ value: IDateRangeFieldValue | undefined }> = ({ value }) => {
+export const DateRangeValue: React.FC<IProps> = ({ field, value }) => {
   if (!value) return null
+  const dateFormat = format(field.formatString)
 
   const [from, to] = value
   if (from && to) {

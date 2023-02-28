@@ -1,10 +1,8 @@
 import type { IQueryTreeRecords, ReferenceFieldTypes } from '@egodb/core'
-import { FieldFactory } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { Field } from '../../entity/field.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
-import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
 import type { ExpandColumnName, RecordSqliteWithParent } from './record.type.js'
 
 export const createRecordTree = <T extends RecordSqliteWithParent>(dataset: T[]): IQueryTreeRecords => {
@@ -45,7 +43,7 @@ export const expandField = async (
     const key = `'${fieldId}'`
 
     let name = key
-    const f = FieldFactory.unsafeCreate(TableSqliteMapper.fieldToDomain(field))
+    const f = field.toDomain()
     if (f.isSystem()) {
       const c = UnderlyingColumnFactory.create(f) as IUnderlyingColumn
       name = `'${c.name}'`
