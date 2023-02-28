@@ -10,6 +10,7 @@ import { WithFilter } from '../specifications/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import { Calendar } from './calendar/index.js'
 import { Kanban } from './kanban/index.js'
+import type { ISortDirection } from './sort/sort.schema.js'
 import { Sorts } from './sort/sorts.js'
 import { WithDisplayType } from './specifications/display-type.specification.js'
 import {
@@ -74,6 +75,11 @@ export class View extends ValueObject<IView> {
     } else {
       this.props.sorts = sorts
     }
+  }
+
+  public getFieldSort(fieldId: string): Option<ISortDirection> {
+    const direction = this.sorts?.sorts.find((s) => s.fieldId === fieldId)?.direction
+    return Option(direction)
   }
 
   public get kanban(): Option<Kanban> {

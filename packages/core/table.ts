@@ -27,6 +27,7 @@ import type {
   ISetFieldWidthSchema,
   ISetKanbanFieldSchema,
   ISetTreeViewFieldSchema,
+  ISortDirection,
   ISorts,
   ISwitchDisplayTypeSchema,
   IUpdateViewNameSchema,
@@ -127,6 +128,26 @@ export class Table {
   public setSorts(sorts: ISorts | null, viewId?: string): Result<TableCompositeSpecificaiton, string> {
     const view = this.mustGetView(viewId)
     const spec = new WithSorts(new Sorts(sorts ?? []), view)
+    spec.mutate(this).unwrap()
+    return Ok(spec)
+  }
+
+  public setFieldSort(
+    fieldId: string,
+    direction: ISortDirection,
+    viewId?: string,
+  ): Result<TableCompositeSpecificaiton, string> {
+    const view = this.mustGetView(viewId)
+    const sorts = view.sorts?.setFieldSort(fieldId, direction) ?? new Sorts([{ fieldId, direction }])
+    const spec = new WithSorts(sorts, view)
+    spec.mutate(this).unwrap()
+    return Ok(spec)
+  }
+
+  public resetFieldSort(fieldId: string, viewId?: string): Result<TableCompositeSpecificaiton, string> {
+    const view = this.mustGetView(viewId)
+    const sorts = view.sorts?.resetFieldSort(fieldId) ?? new Sorts([])
+    const spec = new WithSorts(sorts, view)
     spec.mutate(this).unwrap()
     return Ok(spec)
   }
