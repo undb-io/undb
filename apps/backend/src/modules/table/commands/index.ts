@@ -16,6 +16,7 @@ import { MoveFieldCommandHandler } from './move-field.command.handler'
 import { MoveViewCommandHandler } from './move-view.command.handler'
 import { ReorderOptionsCommandHandler } from './reorder-options.command.handler'
 import { SetCalendarFieldCommandHandler } from './set-calendar-field.command.handler'
+import { SetFieldSortCommandHandler } from './set-field-sort.command.handler'
 import { SetFieldVisibilityCommandHandler } from './set-field-visibility.command.handler'
 import { SetFieldWidthCommandHandler } from './set-field-width.command.handler'
 import { SetFiltersCommandHandler } from './set-filters.command.handler'
@@ -44,6 +45,7 @@ export const commandHandlers = [
   SetTreeViewFieldCommandHandler,
   SetFieldWidthCommandHandler,
   SetFieldVisibilityCommandHandler,
+  SetFieldSortCommandHandler,
   MoveFieldCommandHandler,
   MoveViewCommandHandler,
   UpdateTableCommandHandler,
