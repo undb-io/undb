@@ -35,6 +35,10 @@ const viewApi = api.injectEndpoints({
       query: trpc.table.view.sort.setFieldSort.mutate,
       invalidatesTags: (_, __, { tableId }) => [{ type: 'Table', id: tableId }, 'Record'],
     }),
+    resetFieldSort: builder.mutation({
+      query: trpc.table.view.sort.resetFieldSort.mutate,
+      invalidatesTags: (_, __, { tableId }) => [{ type: 'Table', id: tableId }, 'Record'],
+    }),
     switchDisplayType: builder.mutation({
       query: trpc.table.view.switchDisplayType.mutate,
       invalidatesTags: (_, __, { tableId }) => [{ type: 'Table', id: tableId }],
@@ -53,6 +57,7 @@ export const {
   useMoveViewMutation,
   useDeleteViewMutation,
   useSetFieldSortMutation,
+  useResetFieldSortMutation,
 } = viewApi
 
 const calendarApi = viewApi.injectEndpoints({

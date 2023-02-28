@@ -24,4 +24,9 @@ export class Sorts extends ValueObject<ISorts> {
     const sorts = [...this.sorts, { fieldId, direction }]
     return new Sorts(sorts)
   }
+
+  resetFieldSort(fieldId: string): Sorts {
+    const sorts = this.sorts.filter((s) => s.fieldId !== fieldId)
+    return new Sorts(sorts)
+  }
 }

@@ -144,6 +144,14 @@ export class Table {
     return Ok(spec)
   }
 
+  public resetFieldSort(fieldId: string, viewId?: string): Result<TableCompositeSpecificaiton, string> {
+    const view = this.mustGetView(viewId)
+    const sorts = view.sorts?.resetFieldSort(fieldId) ?? new Sorts([])
+    const spec = new WithSorts(sorts, view)
+    spec.mutate(this).unwrap()
+    return Ok(spec)
+  }
+
   public updateName(name: string): TableCompositeSpecificaiton {
     const spec = WithTableName.fromString(name)
     spec.mutate(this).unwrap()

@@ -1,4 +1,11 @@
-import { SetFieldSortCommand, setFieldSortsCommandInput, SetSortsCommand, setSortsCommandInput } from '@egodb/cqrs'
+import {
+  ResetFieldSortCommand,
+  resetFieldSortsCommandInput,
+  SetFieldSortCommand,
+  setFieldSortsCommandInput,
+  SetSortsCommand,
+  setSortsCommandInput,
+} from '@egodb/cqrs'
 import type { ICommandBus } from '@egodb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
@@ -18,6 +25,13 @@ export const createSortRouter = (procedure: typeof publicProcedure) => (commandB
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new SetFieldSortCommand(input)
+        return commandBus.execute<void>(cmd)
+      }),
+    resetFieldSort: procedure
+      .input(resetFieldSortsCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new ResetFieldSortCommand(input)
         return commandBus.execute<void>(cmd)
       }),
   })

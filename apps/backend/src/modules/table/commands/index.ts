@@ -15,6 +15,7 @@ import { DuplicateViewCommandHandler } from './duplicate-view.command.handler'
 import { MoveFieldCommandHandler } from './move-field.command.handler'
 import { MoveViewCommandHandler } from './move-view.command.handler'
 import { ReorderOptionsCommandHandler } from './reorder-options.command.handler'
+import { ResetFieldSortCommandHandler } from './reset-field-sort.command.handler'
 import { SetCalendarFieldCommandHandler } from './set-calendar-field.command.handler'
 import { SetFieldSortCommandHandler } from './set-field-sort.command.handler'
 import { SetFieldVisibilityCommandHandler } from './set-field-visibility.command.handler'
@@ -45,6 +46,7 @@ export const commandHandlers = [
   SetTreeViewFieldCommandHandler,
   SetFieldWidthCommandHandler,
   SetFieldVisibilityCommandHandler,
+  ResetFieldSortCommandHandler,
   SetFieldSortCommandHandler,
   MoveFieldCommandHandler,
   MoveViewCommandHandler,
