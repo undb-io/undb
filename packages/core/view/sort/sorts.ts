@@ -15,7 +15,13 @@ export class Sorts extends ValueObject<ISorts> {
   }
 
   setFieldSort(fieldId: string, direction: ISortDirection): Sorts {
-    const sorts = this.sorts.map((sort) => (sort.fieldId === fieldId ? { fieldId, direction } : sort))
+    const found = this.sorts.some((s) => s.fieldId === fieldId)
+    if (found) {
+      const sorts = this.sorts.map((sort) => (sort.fieldId === fieldId ? { fieldId, direction } : sort))
+      return new Sorts(sorts)
+    }
+
+    const sorts = [...this.sorts, { fieldId, direction }]
     return new Sorts(sorts)
   }
 }
