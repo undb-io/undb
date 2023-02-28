@@ -27,7 +27,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
             variant="filled"
             defaultValue={RATING_MAX_DEFAULT}
             max={RATING_MAX}
-            onChange={(number) => props.field.onChange(number)}
+            placeholder="set rating max..."
           />
         )}
       />
@@ -51,6 +51,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
                 {...props.field}
                 variant="filled"
                 value={props.field.value ?? ''}
+                placeholder="set tree field parent field name"
               />
             )}
           />
@@ -59,7 +60,12 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
           <Controller
             name={`schema.${index}.foreignTableId`}
             render={(props) => (
-              <TablePicker {...props.field} onChange={(tableId) => props.field.onChange(tableId)} variant="filled" />
+              <TablePicker
+                {...props.field}
+                onChange={(tableId) => props.field.onChange(tableId)}
+                variant="filled"
+                placeholder="select foreign table"
+              />
             )}
           />
         )}
@@ -79,7 +85,12 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
   }
 
   if (type === 'date' || type === 'date-range' || type === 'created-at' || type === 'updated-at') {
-    return <Controller name="format" render={(props) => <DateFormatPicker {...props.field} variant="default" />} />
+    return (
+      <Controller
+        name="format"
+        render={(props) => <DateFormatPicker {...props.field} variant="default" placeholder="select date format" />}
+      />
+    )
   }
 
   return null

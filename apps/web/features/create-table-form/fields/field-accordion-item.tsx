@@ -81,6 +81,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
               variant="filled"
               required={true}
               autoFocus
+              placeholder="field name"
             />
           </Group>
           <FieldVariantControl index={index} />
