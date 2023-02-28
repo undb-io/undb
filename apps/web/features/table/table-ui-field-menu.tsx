@@ -4,7 +4,7 @@ import { FieldMenuDropdown } from '../field/field-menu-dropdown'
 
 export const TableUIFieldMenu: React.FC<{ field: Field }> = ({ field }) => {
   return (
-    <Menu width={180}>
+    <Menu width={250}>
       <Menu.Target>
         <ActionIcon>
           <IconDots size={14} />
