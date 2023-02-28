@@ -15,6 +15,7 @@ import { UPDATE_FIELD_MODAL_ID } from '../../modals'
 export const FieldMenuDropdown: React.FC<{ field: Field }> = ({ field }) => {
   const table = useCurrentTable()
   const view = useCurrentView()
+  const direcgtion = view.getFieldSort(field.id.value).into()
   const [deleteField] = useDeleteFieldMutation()
 
   const [setVisibility] = useSetVisibilityMutation()
@@ -57,6 +58,7 @@ export const FieldMenuDropdown: React.FC<{ field: Field }> = ({ field }) => {
         <Menu.Item
           icon={<IconSortDescending size={14} />}
           {...menuProps}
+          sx={(theme) => ({ backgroundColor: direcgtion === 'desc' ? theme.colors.gray[2] : 'inherit' })}
           onClick={() => {
             setFieldSort({
               tableId: table.id.value,
@@ -71,6 +73,7 @@ export const FieldMenuDropdown: React.FC<{ field: Field }> = ({ field }) => {
         <Menu.Item
           icon={<IconSortAscending size={14} />}
           {...menuProps}
+          sx={(theme) => ({ backgroundColor: direcgtion === 'asc' ? theme.colors.gray[2] : 'inherit' })}
           onClick={() => {
             setFieldSort({
               tableId: table.id.value,

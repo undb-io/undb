@@ -1,18 +1,16 @@
-import { Group, Text } from '@egodb/ui'
+import { ActionIcon, Group, IconSortAscending, IconSortDescending, Text, Tooltip } from '@egodb/ui'
 import styled from '@emotion/styled'
 import type { TColumn, THeader } from './interface'
-import { useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
 import type { Field } from '@egodb/core'
 import { memo } from 'react'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { TableUIFieldMenu } from '../table/table-ui-field-menu'
-import { useSetFieldWidthMutation } from '@egodb/store'
+import { useSetFieldSortMutation, useSetFieldWidthMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 
-const ResizerLine = styled.div<{ hidden: boolean; isResizing: boolean }>`
-  display: ${(props) => (props.hidden ? 'none' : 'block')};
+const ResizerLine = styled.div<{ isResizing: boolean }>`
+  display: block;
   position: absolute;
   height: 100%;
   width: 100%;
@@ -47,7 +45,9 @@ interface IProps {
 export const Th: React.FC<IProps> = memo(({ header, field, column }) => {
   const table = useCurrentTable()
   const view = useCurrentView()
+  const direction = view.getFieldSort(field.id.value).into()
   const [setFieldWidth] = useSetFieldWidthMutation()
+  const [setFieldSort] = useSetFieldSortMutation()
 
   const onSetFieldWidth = (fieldId: string, width: number) => {
     setFieldWidth({
@@ -58,9 +58,6 @@ export const Th: React.FC<IProps> = memo(({ header, field, column }) => {
     })
   }
 
-  const { attributes, isDragging, listeners, setNodeRef, transform, transition } = useSortable({
-    id: header.id,
-  })
   return (
     <th
       data-field-id={field.id.value}
@@ -68,12 +65,9 @@ export const Th: React.FC<IProps> = memo(({ header, field, column }) => {
       style={{
         position: 'relative',
         width: header.getSize(),
-        transform: CSS.Translate.toString(transform),
-        transition,
-        cursor: isDragging ? 'grabbing' : undefined,
       }}
     >
-      <Group position="apart" ref={setNodeRef} {...attributes} {...listeners}>
+      <Group position="apart">
         <Group spacing="xs">
           <FieldIcon type={field.type} size={14} />
           <Text fz="sm" fw={500}>
@@ -81,7 +75,32 @@ export const Th: React.FC<IProps> = memo(({ header, field, column }) => {
           </Text>
         </Group>
 
-        {<TableUIFieldMenu field={field} />}
+        <Group spacing={5}>
+          {direction && (
+            <Tooltip label={`Sort by ${direction === 'asc' ? 'descending' : 'ascending'} `}>
+              <ActionIcon
+                variant="light"
+                sx={{
+                  transition: 'transform 320ms ease',
+                  ':hover': {
+                    transform: 'rotate(180deg)',
+                  },
+                }}
+                onClick={() => {
+                  setFieldSort({
+                    tableId: table.id.value,
+                    viewId: view.id.value,
+                    fieldId: field.id.value,
+                    direction: direction === 'asc' ? 'desc' : 'asc',
+                  })
+                }}
+              >
+                {direction === 'asc' ? <IconSortAscending size={14} /> : <IconSortDescending size={14} />}
+              </ActionIcon>
+            </Tooltip>
+          )}
+          <TableUIFieldMenu field={field} />
+        </Group>
       </Group>
 
       <Resizer
@@ -89,7 +108,7 @@ export const Th: React.FC<IProps> = memo(({ header, field, column }) => {
         onTouchStart={header.getResizeHandler()}
         onMouseUp={() => onSetFieldWidth(header.id, header.getSize())}
       >
-        <ResizerLine hidden={isDragging} isResizing={column.getIsResizing()} />
+        <ResizerLine isResizing={column.getIsResizing()} />
       </Resizer>
     </th>
   )
