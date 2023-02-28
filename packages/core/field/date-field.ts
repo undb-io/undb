@@ -3,12 +3,12 @@ import type { IDateFilterOperator } from '../filter/index.js'
 import { dateBuiltInOperators } from '../filter/operators.js'
 import { DateFieldValue } from './date-field-value.js'
 import type { DateType, ICreateDateFieldSchema, ICreateDateFieldValue } from './date-field.type.js'
-import { BaseField } from './field.base.js'
+import { BaseDateField } from './field.base.js'
 import type { IDateField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
+import { DateFormat, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
-export class DateField extends BaseField<IDateField> {
+export class DateField extends BaseDateField<IDateField> {
   type: DateType = 'date'
 
   override get primitive() {
@@ -21,6 +21,7 @@ export class DateField extends BaseField<IDateField> {
       id: FieldId.fromNullableString(input.id),
       name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
+      format: input.format ? DateFormat.fromString(input.format) : undefined,
     })
   }
 
@@ -29,6 +30,7 @@ export class DateField extends BaseField<IDateField> {
       id: FieldId.fromNullableString(input.id),
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
+      format: input.format ? DateFormat.fromString(input.format) : undefined,
     })
   }
 

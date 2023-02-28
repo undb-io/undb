@@ -7,13 +7,19 @@ import type { IFilter, IOperator } from '../filter/index.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import type { IBaseUpdateFieldSchema } from './field-base.schema'
+import { DEFAULT_DATE_FORMAT } from './field.constatnts.js'
 import type {
+  IAbstractDateField,
   IBaseField,
+  ICreatedAtField,
+  IDateField,
+  IDateRangeField,
   IFieldType,
   IParentField,
   IReference,
   IReferenceField,
   ITreeField,
+  IUpdatedAtField,
   IUpdateFieldSchema,
   PrimitiveField,
   SystemField,
@@ -132,5 +138,14 @@ export abstract class BaseReferenceField<F extends ITreeField | IParentField | I
       toArray,
       unzip,
     )
+  }
+}
+
+export abstract class BaseDateField<F extends IDateField | ICreatedAtField | IUpdatedAtField | IDateRangeField>
+  extends BaseField<F>
+  implements IAbstractDateField
+{
+  get formatString(): string {
+    return this.props.format?.unpack() ?? DEFAULT_DATE_FORMAT
   }
 }

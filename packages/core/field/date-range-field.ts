@@ -7,12 +7,12 @@ import type {
   ICreateDateRangeFieldValue,
   IDateRangeFieldValue,
 } from './date-range-field.type.js'
-import { BaseField } from './field.base.js'
+import { BaseDateField } from './field.base.js'
 import type { IDateRangeField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
+import { DateFormat, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
-export class DateRangeField extends BaseField<IDateRangeField> {
+export class DateRangeField extends BaseDateField<IDateRangeField> {
   type: DateRangeType = 'date-range'
 
   override get primitive() {
@@ -26,6 +26,7 @@ export class DateRangeField extends BaseField<IDateRangeField> {
       id: FieldId.fromNullableString(input.id),
       name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
+      format: input.format ? DateFormat.fromString(input.format) : undefined,
     })
   }
 
@@ -34,6 +35,7 @@ export class DateRangeField extends BaseField<IDateRangeField> {
       id: FieldId.fromNullableString(input.id),
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
+      format: input.format ? DateFormat.fromString(input.format) : undefined,
     })
   }
 

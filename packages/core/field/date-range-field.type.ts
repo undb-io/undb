@@ -7,11 +7,16 @@ import { FIELD_TYPE_KEY } from './field.constant.js'
 export const dateRangeTypeSchema = z.literal('date-range')
 export type DateRangeType = z.infer<typeof dateRangeTypeSchema>
 const dateRangeTypeObjectSchema = z.object({ [FIELD_TYPE_KEY]: dateRangeTypeSchema })
+const dateRangeObjectSchema = z.object({ format: z.string().optional() })
 
-export const createDateRangeFieldSchema = createBaseFieldsSchema.merge(dateRangeTypeObjectSchema)
+export const createDateRangeFieldSchema = createBaseFieldsSchema
+  .merge(dateRangeTypeObjectSchema)
+  .merge(dateRangeObjectSchema)
 export type ICreateDateRangeFieldSchema = z.infer<typeof createDateRangeFieldSchema>
 
-export const updateDateRangeFieldSchema = updateBaseFieldSchema.merge(dateRangeTypeObjectSchema)
+export const updateDateRangeFieldSchema = updateBaseFieldSchema
+  .merge(dateRangeTypeObjectSchema)
+  .merge(dateRangeObjectSchema)
 export type IUpdateDateRangeFieldInput = z.infer<typeof updateDateRangeFieldSchema>
 
 export const dateRangeFieldQuerySchema = baseFieldQuerySchema.merge(dateRangeTypeObjectSchema)

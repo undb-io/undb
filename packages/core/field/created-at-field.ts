@@ -6,12 +6,12 @@ import type {
   ICreateCreatedAtFieldInput,
   ICreateCreatedAtFieldValue,
 } from './created-at-field.type.js'
-import { BaseField } from './field.base.js'
+import { BaseDateField } from './field.base.js'
 import type { ICreatedAtField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
+import { DateFormat, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
-export class CreatedAtField extends BaseField<ICreatedAtField> {
+export class CreatedAtField extends BaseDateField<ICreatedAtField> {
   type: CreatedAtFieldType = 'created-at'
   override get system() {
     return true
@@ -31,6 +31,7 @@ export class CreatedAtField extends BaseField<ICreatedAtField> {
       id: FieldId.fromNullableString(input.id),
       name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
+      format: input.format ? DateFormat.fromString(input.format) : undefined,
     })
   }
 
@@ -39,6 +40,7 @@ export class CreatedAtField extends BaseField<ICreatedAtField> {
       id: FieldId.fromNullableString(input.id),
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
+      format: input.format ? DateFormat.fromString(input.format) : undefined,
     })
   }
 
