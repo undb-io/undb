@@ -36,7 +36,7 @@ export const FieldValueFactory: React.FC<{
     case 'updated-at':
     case 'created-at': {
       const date = value as Date | undefined
-      return <DateValue value={date} />
+      return <DateValue field={field} value={date} />
     }
     case 'select': {
       const option = (value as SelectFieldValue | undefined)?.getOption(field).into()
@@ -45,11 +45,11 @@ export const FieldValueFactory: React.FC<{
     }
     case 'date': {
       const date = (value as DateFieldValue | undefined)?.unpack() ?? undefined
-      return <DateValue value={date} />
+      return <DateValue value={date} field={field} />
     }
     case 'date-range': {
       const date = (value as DateRangeFieldValue | undefined)?.unpack() ?? undefined
-      return <DateRangeValue value={date} />
+      return <DateRangeValue field={field} value={date} />
     }
     case 'auto-increment': {
       const n = value as number | undefined

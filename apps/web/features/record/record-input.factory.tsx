@@ -23,7 +23,7 @@ import { ReferenceRecordPicker } from '../field-inputs/reference-record-picker'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { ParentRecordPicker } from '../field-inputs/parent-records-picker'
 import { useRouter } from 'next/navigation'
-import { dateTimeFormat } from '../field-value/date-value'
+import { format } from 'date-fns/fp'
 
 interface IProps {
   field: Field
@@ -232,6 +232,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     )
   }
   if (field.type === 'created-at' || field.type === 'updated-at') {
+    const dateFormat = format(field.formatString)
     return (
       <Controller
         name={name}
@@ -242,7 +243,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             icon={<FieldIcon type={field.type} />}
             label={label}
             {...form.field}
-            value={form.field.value ? dateTimeFormat(form.field.value) : ''}
+            value={form.field.value ? dateFormat(form.field.value) : ''}
           />
         )}
       />
