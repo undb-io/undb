@@ -62,6 +62,7 @@ export const {
   useDeleteViewMutation,
   useSetFieldSortMutation,
   useResetFieldSortMutation,
+  useSetShowSystemFieldsMutation,
 } = viewApi
 
 const calendarApi = viewApi.injectEndpoints({
