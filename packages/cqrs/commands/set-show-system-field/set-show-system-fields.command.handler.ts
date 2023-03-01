@@ -10,8 +10,8 @@ export class SetShowSystemFieldsCommandHandler implements ISetShowSystemFieldsCo
   async execute(command: SetShowSystemFieldsCommand): Promise<void> {
     const table = (await this.repo.findOneById(command.tableId)).unwrap()
 
-    // const spec = table.setShowSystemFields(command.fieldId, command.direction, command.viewId).unwrap()
+    const spec = table.setShowSystemFields(command.viewId, command.showSystemFields)
 
-    // await this.repo.updateOneById(command.tableId, spec)
+    await this.repo.updateOneById(command.tableId, spec)
   }
 }

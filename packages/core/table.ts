@@ -38,6 +38,7 @@ import {
   Sorts,
   View,
   ViewsOrder,
+  WithShowSystemFieldsSpec,
   WithTableView,
   WithViewFieldsOrder,
   WithViewsOrder,
@@ -286,6 +287,13 @@ export class Table {
     const view = this.mustGetView(input.viewId)
     const field = this.schema.getFieldById(input.field).unwrap()
     const spec = view.setTreeViewFieldSpec(field.id)
+    spec.mutate(this)
+    return spec
+  }
+
+  public setShowSystemFields(viewId: string | undefined, showSystemFields: boolean): TableCompositeSpecificaiton {
+    const view = this.mustGetView(viewId)
+    const spec = new WithShowSystemFieldsSpec(view, showSystemFields)
     spec.mutate(this)
     return spec
   }
