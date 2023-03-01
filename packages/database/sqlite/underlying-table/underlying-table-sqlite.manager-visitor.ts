@@ -94,6 +94,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   withFieldName(): void {}
   displayFieldsEqual(): void {}
   withFormat(): void {}
+  withShowSystemFields(): void {}
   not(): this {
     return this
   }
