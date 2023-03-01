@@ -7,7 +7,14 @@ module.exports = function (options, webpack) {
     mode: 'production',
     externals: [
       nodeExternals({
-        allowlist: ['webpack/hot/poll?100'],
+        allowlist: [
+          'webpack/hot/poll?100',
+          '@egodb/sqlite',
+          '@egodb/core',
+          '@egodb/domain',
+          '@egodb/trpc',
+          '@egodb/cqrs',
+        ],
       }),
     ],
   }
