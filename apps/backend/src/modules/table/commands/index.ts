@@ -22,6 +22,7 @@ import { SetFieldVisibilityCommandHandler } from './set-field-visibility.command
 import { SetFieldWidthCommandHandler } from './set-field-width.command.handler'
 import { SetFiltersCommandHandler } from './set-filters.command.handler'
 import { SetKanbanFieldCommandHandler } from './set-kanban-field.command.handler'
+import { SetShowSystemFieldsCommandHandler } from './set-show-system-fields.command.handler'
 import { SetSortsCommandHandler } from './set-sorts.command.handler'
 import { SetTreeViewFieldCommandHandler } from './set-tree-view-field.command.handler'
 import { SwitchDisplayTypeCommandHandler } from './switch-display-type.command.handler'
@@ -46,6 +47,7 @@ export const commandHandlers = [
   SetTreeViewFieldCommandHandler,
   SetFieldWidthCommandHandler,
   SetFieldVisibilityCommandHandler,
+  SetShowSystemFieldsCommandHandler,
   ResetFieldSortCommandHandler,
   SetFieldSortCommandHandler,
   MoveFieldCommandHandler,

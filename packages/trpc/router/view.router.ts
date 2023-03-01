@@ -7,6 +7,8 @@ import {
   duplicateViewCommandInput,
   MoveViewCommand,
   moveViewCommandInput,
+  SetShowSystemFieldsCommand,
+  setShowSystemFieldssCommandInput,
   SwitchDisplayTypeCommand,
   switchDisplayTypeCommandInput,
   UpdateViewNameCommand,
@@ -66,6 +68,13 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
       .mutation(({ input }) => {
         const cmd = new SwitchDisplayTypeCommand(input)
         return commandBus.execute<void>(cmd)
+      }),
+    setShowSystemFields: procedure
+      .input(setShowSystemFieldssCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new SetShowSystemFieldsCommand(input)
+        return commandBus.execute(cmd)
       }),
     field: createViewFieldRouter(procedure)(commandBus),
     filter: createFilterRouter(procedure)(commandBus),
