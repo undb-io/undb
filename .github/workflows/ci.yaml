@@ -60,4 +60,4 @@ jobs:
         uses: actions/checkout@v3
       - name: Build egodb and Push
         run: |
-          npx zx scripts/build ${{ matrix.target }} --push
+          npx zx scripts/build-image.mjs ${{ matrix.target }} --push
