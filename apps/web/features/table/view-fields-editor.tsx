@@ -81,20 +81,21 @@ const FieldItem: React.FC<IFieldItemProps> = ({ field: f, onVisibleChange, ...re
 
 export const ViewFieldsEditor: React.FC = () => {
   const table = useCurrentTable()
+  const view = useCurrentView()
+
   const [opened, handler] = useDisclosure(false)
 
   const [setFieldVisibility, { isLoading }] = useSetVisibilityMutation()
   const [setShowSystemFields] = useSetShowSystemFieldsMutation()
 
-  const view = useCurrentView()
   const visibility = view.getVisibility()
   const schema = table.schema.toIdMap()
   const hiddenCount = view.fieldOptions?.hiddenCount ?? 0
 
-  const [order, handlers] = useListState(table.getFieldsOrder(view).order)
+  const [order, handlers] = useListState(table.getFieldsOrder(view))
 
   useEffect(() => {
-    handlers.setState(table.getFieldsOrder(view).order)
+    handlers.setState(table.getFieldsOrder(view))
   }, [table])
 
   const onChange: OnVisibleChange = (fieldId: string, visible: boolean) => {

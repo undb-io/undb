@@ -170,8 +170,17 @@ export class Table {
     return and(...specs)
   }
 
-  public getFieldsOrder(view: View): ViewFieldsOrder {
+  private mustGetFielsOrder(view: View): ViewFieldsOrder {
     return view.fieldsOrder ?? this.schema.defaultFieldsOrder
+  }
+
+  public getFieldsOrder(view: View): string[] {
+    const { order } = this.mustGetFielsOrder(view)
+    if (!view.showSystemFields) {
+      const schema = this.schema.toIdMap()
+      return order.filter((fieldId) => !schema.get(fieldId)?.system)
+    }
+    return order
   }
 
   public createRecord(value: IMutateRecordValueSchema): Record {
@@ -305,7 +314,7 @@ export class Table {
 
   public moveField(input: IMoveFieldSchema): TableCompositeSpecificaiton {
     const [view, viewSpec] = this.getOrCreateDefaultView(input.viewId)
-    const viewFieldsOrder = this.getFieldsOrder(view).move(input.from, input.to)
+    const viewFieldsOrder = this.mustGetFielsOrder(view).move(input.from, input.to)
 
     const spec = new WithViewFieldsOrder(viewFieldsOrder, view)
     spec.mutate(this)

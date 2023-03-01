@@ -23,9 +23,11 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
   const table = useCurrentTable()
 
   const view = useCurrentView()
+  const schema = table.schema.toIdMap()
   const columnVisibility = view.getVisibility()
-  const columnOrder = table.getFieldsOrder(view).order
-  const [fields, handlers] = useListState(table.schema.fields)
+  const columnOrder = table.getFieldsOrder(view)
+  const initialFields = columnOrder.map((fieldId) => schema.get(fieldId)).filter(Boolean)
+  const [fields, handlers] = useListState(initialFields)
 
   const dispatch = useAppDispatch()
   const selectedRecordIds = useAppSelector((state) => getTableSelectedRecordIds(state, table.id.value))
@@ -40,7 +42,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
   }, [selectedRecordIds])
 
   useLayoutEffect(() => {
-    handlers.setState(table.schema.fields)
+    handlers.setState(initialFields)
   }, [table])
 
   const selection: ColumnDef<TData> = {
