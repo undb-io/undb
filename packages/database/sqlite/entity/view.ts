@@ -65,6 +65,9 @@ export class View extends BaseEntity {
   @Property()
   name: string
 
+  @Property({ type: 'boolean', default: false, nullable: false })
+  showSystemFields = false
+
   @Enum({ items: ['kanban', 'calendar', 'grid', 'tree'] })
   displayType: IViewDisplayType
 
@@ -95,6 +98,7 @@ export class View extends BaseEntity {
     this.name = view.name.value
     this.table = table
     this.displayType = view.displayType
+    this.showSystemFields = view.showSystemFields
     if (view.kanban.isSome()) {
       this.kanban = new Kanban(view.kanban.unwrap())
     }

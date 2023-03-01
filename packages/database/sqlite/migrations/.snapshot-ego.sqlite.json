@@ -587,6 +587,16 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "show_system_fields": {
+          "name": "show_system_fields",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "integer"
+        },
         "display_type": {
           "name": "display_type",
           "type": "text",

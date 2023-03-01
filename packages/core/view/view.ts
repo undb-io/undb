@@ -49,6 +49,14 @@ export class View extends ValueObject<IView> {
     this.props.name = name
   }
 
+  public get showSystemFields(): boolean {
+    return this.props.showSystemFields ?? false
+  }
+
+  public set showSystemFields(showSystemFields: boolean) {
+    this.props.showSystemFields = showSystemFields
+  }
+
   public get displayType() {
     return this.props.displayType
   }
@@ -275,6 +283,7 @@ export class View extends ValueObject<IView> {
     const newView = View.create({
       name: this.name.value,
       sorts: this.sorts?.toArray(),
+      showSystemFields: this.showSystemFields,
       kanban: this.kanban?.into()?.toJSON(),
       calendar: this.calendar?.into()?.toJSON(),
       tree: this.treeView?.into()?.toJSON(),
@@ -294,6 +303,7 @@ export class View extends ValueObject<IView> {
     return new View({
       id: input.id ? ViewId.fromString(input.id) : ViewId.create(),
       name: viewName,
+      showSystemFields: input.showSystemFields,
       sorts: input.sorts ? new Sorts(input.sorts) : undefined,
       kanban: input.kanban ? Kanban.from(input.kanban) : undefined,
       calendar: input.calendar ? Calendar.from(input.calendar) : undefined,

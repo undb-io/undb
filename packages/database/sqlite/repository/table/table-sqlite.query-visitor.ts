@@ -17,6 +17,7 @@ import type {
   WithoutField,
   WithoutOption,
   WithoutView,
+  WithShowSystemFieldsSpec,
   WithSorts,
   WithTableId,
   WithTableName,
@@ -116,6 +117,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   withFormat(s: WithFormat): void {
+    throw new Error('Method not implemented.')
+  }
+  withShowSystemFields(s: WithShowSystemFieldsSpec): void {
     throw new Error('Method not implemented.')
   }
 

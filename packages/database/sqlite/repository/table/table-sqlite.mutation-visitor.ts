@@ -16,6 +16,7 @@ import type {
   WithoutField,
   WithoutOption,
   WithoutView,
+  WithShowSystemFieldsSpec,
   WithSorts,
   WithTableName,
   WithTableSchema,
@@ -226,6 +227,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const field = this.getField(s.field.id.value) as DateField | DateRangeField | CreatedAtField | UpdatedAtField
     wrap(field).assign({ format: s.format.unpack() })
     this.em.persist(field)
+  }
+  withShowSystemFields(s: WithShowSystemFieldsSpec): void {
+    const view = this.getView(s.view.id.value)
+    wrap(view).assign({ showSystemFields: s.showSystemFields })
+    this.em.persist(view)
   }
   not(): this {
     return this

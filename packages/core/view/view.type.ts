@@ -15,6 +15,7 @@ import type { createViewInput_internal, viewDisplayType } from './view.schema.js
 export interface IView {
   id: ViewId
   name: ViewName
+  showSystemFields?: boolean
   sorts?: Sorts
   kanban?: Kanban
   calendar?: Calendar
@@ -28,6 +29,7 @@ export interface IView {
 export interface IQueryView {
   id: string
   name: string
+  showSystemFields?: boolean
   sorts?: ISorts
   kanban?: IKanbanSchema
   tree?: ITreeViewSchema

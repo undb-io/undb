@@ -30,6 +30,7 @@ export type IUpdateViewNameSchema = z.infer<typeof updateViewNameSchema>
 export const createViewInput_internal = z.object({
   id: viewIdSchema.optional(),
   name: viewNameSchema,
+  showSystemFields: z.boolean().optional(),
   sorts: sortsSchema.optional(),
   kanban: kanbanSchema.optional(),
   calendar: calendarSchema.optional(),
@@ -43,6 +44,7 @@ export const createViewInput_internal = z.object({
 export const queryView = z.object({
   id: viewIdSchema,
   name: z.string(),
+  showSystemFields: z.boolean().optional(),
   sorts: sortsSchema.optional(),
   kanban: kanbanSchema.optional(),
   calendar: calendarSchema.optional(),

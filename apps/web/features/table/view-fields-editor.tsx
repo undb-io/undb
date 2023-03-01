@@ -3,7 +3,7 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import type { Field } from '@egodb/core'
-import { useMoveFieldMutation, useSetVisibilityMutation } from '@egodb/store'
+import { useMoveFieldMutation, useSetShowSystemFieldsMutation, useSetVisibilityMutation } from '@egodb/store'
 import type { CheckboxProps } from '@egodb/ui'
 import { Portal } from '@egodb/ui'
 import { openContextModal } from '@egodb/ui'
@@ -81,18 +81,21 @@ const FieldItem: React.FC<IFieldItemProps> = ({ field: f, onVisibleChange, ...re
 
 export const ViewFieldsEditor: React.FC = () => {
   const table = useCurrentTable()
-  const [opened, handler] = useDisclosure(false)
-  const [setFieldVisibility, { isLoading }] = useSetVisibilityMutation()
-
   const view = useCurrentView()
+
+  const [opened, handler] = useDisclosure(false)
+
+  const [setFieldVisibility, { isLoading }] = useSetVisibilityMutation()
+  const [setShowSystemFields] = useSetShowSystemFieldsMutation()
+
   const visibility = view.getVisibility()
   const schema = table.schema.toIdMap()
   const hiddenCount = view.fieldOptions?.hiddenCount ?? 0
 
-  const [order, handlers] = useListState(table.getFieldsOrder(view).order)
+  const [order, handlers] = useListState(table.getFieldsOrder(view))
 
   useEffect(() => {
-    handlers.setState(table.getFieldsOrder(view).order)
+    handlers.setState(table.getFieldsOrder(view))
   }, [table])
 
   const onChange: OnVisibleChange = (fieldId: string, visible: boolean) => {
@@ -174,24 +177,40 @@ export const ViewFieldsEditor: React.FC = () => {
 
           <Divider my="sm" />
 
-          <Button
-            compact
-            size="xs"
-            fullWidth
-            variant="light"
-            color="gray"
-            leftIcon={<IconColumnInsertRight size={14} />}
-            onClick={() => {
-              handler.close()
-              openContextModal({
-                title: 'Create New Field',
-                modal: CREATE_FIELD_MODAL_ID,
-                innerProps: {},
-              })
-            }}
-          >
-            Create New Field
-          </Button>
+          <Stack>
+            <Checkbox
+              size="xs"
+              color="gray"
+              label="show system fields"
+              defaultChecked={view.showSystemFields}
+              onChange={(e) => {
+                setShowSystemFields({
+                  tableId: table.id.value,
+                  viewId: view.id.value,
+                  showSystemFields: e.target.checked,
+                })
+              }}
+            />
+
+            <Button
+              compact
+              size="xs"
+              fullWidth
+              variant="light"
+              color="gray"
+              leftIcon={<IconColumnInsertRight size={14} />}
+              onClick={() => {
+                handler.close()
+                openContextModal({
+                  title: 'Create New Field',
+                  modal: CREATE_FIELD_MODAL_ID,
+                  innerProps: {},
+                })
+              }}
+            >
+              Create New Field
+            </Button>
+          </Stack>
         </Popover.Dropdown>
       </Portal>
     </Popover>
