@@ -26,6 +26,7 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "build:image": "zx scripts/build-image.mjs",
     "clean": "turbo run clean --parallel",
     "commit": "cz",
     "dev": "FORCE_COLOR=1 dotenv -- turbo run dev --parallel --filter=!www",

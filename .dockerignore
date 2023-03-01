@@ -15,3 +15,4 @@ packages/ui/node_modules
 **/.DS_Store
 Dockerfile
 *.log
+docker/
