@@ -67,5 +67,5 @@ jobs:
         with:
           push: true
           context: .
-          file: '{{defaultContext}}:docker/${{ matrix.target }}/Dockerfile'
+          file: ./docker/${{ matrix.target }}/Dockerfile
           tags: egodb/${{ matrix.target }}:latest
