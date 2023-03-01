@@ -66,6 +66,5 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          context: ./docker/${{ matrix.target }}
-          file: ./Dockerfile
+          context: '{{defaultContext}}:docker/${{ matrix.target }}'
           tags: egodb/${{ matrix.target }}:latest
