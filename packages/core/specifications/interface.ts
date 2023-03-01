@@ -10,6 +10,7 @@ import type { WithKanbanField, WithViewsOrder } from '../view/index.js'
 import type { WithCalendarField } from '../view/specifications/calendar.specification.js'
 import type { WithDisplayType } from '../view/specifications/display-type.specification.js'
 import type { WithFilter } from '../view/specifications/filters.specificaiton.js'
+import type { WithShowSystemFieldsSpec } from '../view/specifications/show-system-fields.specification.js'
 import type { WithSorts } from '../view/specifications/sorts.specification.js'
 import type { WithTreeViewField } from '../view/specifications/tree-view.specification.js'
 import type {
@@ -65,6 +66,8 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withFieldName(s: WithFieldName): void
   displayFieldsEqual(s: WithDisplayFields): void
   withFormat(s: WithFormat): void
+
+  withShowSystemFields(s: WithShowSystemFieldsSpec): void
 }
 
 export type ITableSpec = ISpecification<Table, ITableSpecVisitor>
