@@ -3,6 +3,11 @@ name: CI
 on:
   push:
     branches: ['release/*', 'main']
+    paths:
+      - 'apps/**'
+      - 'packages/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
 
 jobs:
   docker:

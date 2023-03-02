@@ -28,6 +28,7 @@
     "build": "turbo run build",
     "build:image": "zx scripts/build-image.mjs",
     "clean": "turbo run clean --parallel",
+    "db:migration:up": "turbo run db:migration:up",
     "commit": "cz",
     "dev": "FORCE_COLOR=1 dotenv -- turbo run dev --parallel --filter=!www",
     "dev:packages": "FORCE_COLOR=1 turbo run dev --parallel --filter=./packages/*",
@@ -42,6 +43,7 @@
     "test": "FORCE_COLOR=1 TZ=UTC turbo run test",
     "test:watch": "FORCE_COLOR=1 TZ=UTC turbo run test:watch",
     "docker:up": "docker compose -f ./docker/docker-compose.yaml up -d",
+    "docker:down": "docker compose -f ./docker/docker-compose.yaml down",
     "up": "taze -r -w -i"
   },
   "workspaces": [
