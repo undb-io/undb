@@ -5,14 +5,14 @@ import path from 'path'
 import { entities } from './entity/index.js'
 import { Migration20230301011915 } from './migrations/Migration20230301011915.js'
 
-export const createConfig = (data: string, db = 'ego.sqlite') =>
+export const createConfig = (data: string, env = 'development') =>
   defineConfig({
     entities,
     entitiesTs: entities,
     highlighter: new SqlHighlighter(),
     metadataProvider: ReflectMetadataProvider,
     driver: BetterSqliteDriver,
-    dbName: path.join(data, db),
+    dbName: path.join(data, `ego.${env}.sqlite`),
     debug: true,
     forceUndefined: true,
     flushMode: FlushMode.COMMIT,

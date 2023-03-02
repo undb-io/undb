@@ -3,6 +3,7 @@ import { MikroORM } from '@mikro-orm/core'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import type { OnModuleInit } from '@nestjs/common'
 import { Module } from '@nestjs/common'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ClsModule } from 'nestjs-cls'
 import { LoggerModule } from 'nestjs-pino'
 import path from 'path'
@@ -12,6 +13,7 @@ import { TrpcModule } from './trpc/trpc.module'
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     ClsModule.forRoot({
       global: true,
       middleware: { mount: true },
@@ -23,7 +25,13 @@ import { TrpcModule } from './trpc/trpc.module'
         transport: process.env.NODE_ENV !== 'production' ? { target: 'pino-pretty' } : undefined,
       },
     }),
-    MikroOrmModule.forRoot(createConfig(path.resolve(process.cwd(), '../../.ego/data'))),
+    MikroOrmModule.forRootAsync({
+      useFactory: (config: ConfigService) => {
+        const data = config.get('EGODB_DATABASE_SQLITE_DATA') ?? path.resolve(process.cwd(), '../../.ego/data')
+        return createConfig(data, process.env.NODE_ENV)
+      },
+      inject: [ConfigService],
+    }),
     ...modules,
   ],
 })

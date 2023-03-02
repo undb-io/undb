@@ -46,6 +46,7 @@ importers:
       '@mikro-orm/nestjs': ^5.1.7
       '@nestjs/cli': ^9.2.0
       '@nestjs/common': ^9.3.9
+      '@nestjs/config': ^2.3.1
       '@nestjs/core': ^9.3.9
       '@nestjs/cqrs': ^9.0.3
       '@nestjs/platform-express': ^9.3.9
@@ -89,6 +90,7 @@ importers:
       '@mikro-orm/migrations': 5.6.11_@mikro-orm+core@5.6.11
       '@mikro-orm/nestjs': 5.1.7_3o4wpvwrbe3ivtollwegt2zp7m
       '@nestjs/common': 9.3.9_mnr6j2del53muneqly5h4y27ai
+      '@nestjs/config': 2.3.1_jrq2rdgfp2sx67wmylmrqliwxe
       '@nestjs/core': 9.3.9_q6agyr4hwia55oswpsa7zjxcpm
       '@nestjs/cqrs': 9.0.3_xap76i5unmrgcq3fgd6nhqgyvy
       '@nestjs/platform-express': 9.3.9_77foi4w27ghy47yutmnzv7krjy
@@ -2711,6 +2713,22 @@ packages:
       rxjs: 7.8.0
       tslib: 2.5.0
       uid: 2.0.1
+
+  /@nestjs/config/2.3.1_jrq2rdgfp2sx67wmylmrqliwxe:
+    resolution: {integrity: sha512-Ckzel0NZ9CWhNsLfE1hxfDuxJuEbhQvGxSlmZ1/X8awjRmAA/g3kT6M1+MO1SHj1wMtPyUfd9WpwkiqFbiwQgA==}
+    peerDependencies:
+      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0
+      reflect-metadata: ^0.1.13
+      rxjs: ^6.0.0 || ^7.2.0
+    dependencies:
+      '@nestjs/common': 9.3.9_mnr6j2del53muneqly5h4y27ai
+      dotenv: 16.0.3
+      dotenv-expand: 10.0.0
+      lodash: 4.17.21
+      reflect-metadata: 0.1.13
+      rxjs: 7.8.0
+      uuid: 9.0.0
+    dev: false
 
   /@nestjs/core/9.3.9_q6agyr4hwia55oswpsa7zjxcpm:
     resolution: {integrity: sha512-9g1A1G9eirLXEpH21rc6dKb08zHc2+adhCRz8NW39hbejcsxxD72FApJzt4QBQAKvu862ixt/tdpStnFT7lOSw==}
@@ -5676,7 +5694,6 @@ packages:
   /dotenv-expand/10.0.0:
     resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
     engines: {node: '>=12'}
-    dev: true
 
   /dotenv/16.0.3:
     resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
