@@ -2,11 +2,12 @@ name: CI
 
 on:
   push:
-    branches: ['release/*']
+    branches: ['release/*', 'main']
 
 jobs:
   docker:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' }}
 
     strategy:
       matrix:

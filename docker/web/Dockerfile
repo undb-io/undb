@@ -1,35 +1,38 @@
-FROM node:18 as builder
+# builder
+FROM node:18-bullseye-slim as builder
 
 WORKDIR /egodb
 
-ARG MAX_OLD_SPACE_SIZE=4096
+RUN npm install -g turbo
+COPY . .
+RUN turbo prune --scope=@egodb/web
 
-RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
+# installer
+FROM node:18-bullseye-slim AS installer
 
-COPY ./pnpm-lock.yaml ./
+RUN npm install -g pnpm
 
+WORKDIR /egodb
+
+COPY --from=builder /egodb/out/pnpm-lock.yaml ./pnpm-lock.yaml
 RUN pnpm fetch
 
-COPY . ./
+COPY --from=builder /egodb/out/ .
 
 RUN pnpm install -r --offline
+RUN pnpm run build --filter=web
+RUN pnpm prune --prod --config.ignore-scripts=true
 
-RUN pnpm run build
-
-FROM node:18-bullseye as runner
+# runner
+FROM node:18-bullseye-slim as runner
 
 WORKDIR /egodb
 
-RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
+COPY --from=installer /egodb/apps/web/next.config.js .
+COPY --from=installer /egodb/apps/web/package.json .
 
-ARG EGODB_API_TRPC_URL=http://localhost:4000/api/trpc
-ENV EGODB_API_TRPC_URL=${EGODB_API_TRPC_URL}
-ENV NODE_ENV production
+COPY --from=installer /egodb/apps/web/.next/standalone ./
+COPY --from=installer /egodb/apps/web/.next/static ./apps/web/.next/static
+COPY --from=installer /egodb/apps/web/public ./apps/web/public
 
-COPY --from=builder /egodb/package.json ./
-COPY --from=builder /egodb/node_modules ./node_modules
-COPY --from=builder /egodb/apps/web ./apps/web
-
-EXPOSE 3000
-
-CMD [ "pnpm", "--filter", "web", "run", "start" ]
+CMD ["apps/web/server.js"]
