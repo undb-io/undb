@@ -16,3 +16,4 @@ packages/ui/node_modules
 Dockerfile
 *.log
 docker/
+out/

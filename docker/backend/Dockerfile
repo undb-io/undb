@@ -1,34 +1,41 @@
-FROM node:18 as builder
+# builder
+FROM node:18-bullseye-slim as builder
 
 WORKDIR /egodb
 
-ARG MAX_OLD_SPACE_SIZE=4096
+RUN npm install -g turbo
+COPY . .
+RUN turbo prune --scope=@egodb/backend
 
-RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
+# installer
+FROM node:18-bullseye-slim AS installer
 
-COPY ./pnpm-lock.yaml ./
+RUN npm install -g pnpm
 
+WORKDIR /egodb
+
+COPY --from=builder /egodb/out/pnpm-lock.yaml ./pnpm-lock.yaml
 RUN pnpm fetch
 
-COPY . ./
+COPY --from=builder /egodb/out/ .
 
 RUN pnpm install -r --offline
 
-RUN pnpm run build
+ENV NODE_ENV production
+RUN pnpm run build --filter=backend
+RUN pnpm prune --prod --config.ignore-scripts=true
 
-FROM node:18-bullseye as runner
+# runner
+FROM node:18-bullseye-slim as runner
 
 WORKDIR /egodb
 
-RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
-
-ENV EGODB_API_TRPC_URL=http://localhost:4000/api/trpc
 ENV NODE_ENV production
 
-COPY --from=builder /egodb/package.json ./
-COPY --from=builder /egodb/node_modules ./node_modules
-COPY --from=builder /egodb/apps/backend ./apps/backend
+RUN npm install -g pnpm
 
-EXPOSE 4000
+COPY --from=installer /egodb/package.json ./
+COPY --from=installer /egodb/node_modules ./node_modules
+COPY --from=installer /egodb/apps/backend ./apps/backend
 
-CMD [ "pnpm", "--filter", "backend", "run", "start:prod" ]
+CMD ["pnpm", "--filter", "backend", "run", "start:prod"]
