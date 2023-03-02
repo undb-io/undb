@@ -32,6 +32,7 @@ FROM gcr.io/distroless/nodejs18-debian11 as runner
 WORKDIR /egodb
 
 ENV NODE_ENV production
+ENV EGODB_DATABASE_SQLITE_DATA /var/opt/.ego
 
 COPY --from=installer /egodb/node_modules ./node_modules
 COPY --from=installer /egodb/apps/backend ./apps/backend
