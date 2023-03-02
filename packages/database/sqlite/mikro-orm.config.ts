@@ -3,25 +3,30 @@ import { defineConfig, FlushMode, ReflectMetadataProvider } from '@mikro-orm/cor
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import path from 'path'
 import { entities } from './entity/index.js'
+import { Migration20230301011915 } from './migrations/Migration20230301011915.js'
 
-export const createConfig = (relativaPath: string) =>
+export const createConfig = (data: string, env = 'development') =>
   defineConfig({
     entities,
     entitiesTs: entities,
     highlighter: new SqlHighlighter(),
     metadataProvider: ReflectMetadataProvider,
     driver: BetterSqliteDriver,
-    dbName: path.resolve(process.cwd(), relativaPath, 'ego.sqlite'),
+    dbName: path.join(data, `ego.${env}.sqlite`),
     debug: true,
     forceUndefined: true,
     flushMode: FlushMode.COMMIT,
     migrations: {
       disableForeignKeys: true,
+      migrationsList: [
+        {
+          name: 'Migration20230301011915',
+          class: Migration20230301011915,
+        },
+      ],
     },
     schemaGenerator: {
       disableForeignKeys: true,
       createForeignKeyConstraints: true,
     },
   })
-
-export default createConfig('../../../.ego/data')
