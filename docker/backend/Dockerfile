@@ -26,16 +26,13 @@ RUN pnpm run build --filter=backend
 RUN pnpm prune --prod --config.ignore-scripts=true
 
 # runner
-FROM node:18-bullseye-slim as runner
+FROM gcr.io/distroless/nodejs18-debian11 as runner
 
 WORKDIR /egodb
 
 ENV NODE_ENV production
 
-RUN npm install -g pnpm
-
-COPY --from=installer /egodb/package.json ./
 COPY --from=installer /egodb/node_modules ./node_modules
 COPY --from=installer /egodb/apps/backend ./apps/backend
 
-CMD ["pnpm", "--filter", "backend", "run", "start:prod"]
+CMD ["apps/backend/dist/main.js"]

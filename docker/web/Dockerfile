@@ -24,7 +24,7 @@ RUN pnpm run build --filter=web
 RUN pnpm prune --prod --config.ignore-scripts=true
 
 # runner
-FROM node:18-bullseye-slim as runner
+FROM gcr.io/distroless/nodejs18-debian11 as runner
 
 WORKDIR /egodb
 
