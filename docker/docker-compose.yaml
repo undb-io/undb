@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  backend:
+    platform: linux/x86_64
+    container_name: egodb-backend
+    restart: unless-stopped
+    image: egodb/backend
+    environment:
+      - NODE_ENV=production
+    networks:
+      - egodb
+
+  web:
+    platform: linux/x86_64
+    container_name: egodb-web
+    restart: unless-stopped
+    depends_on:
+      - backend
+    image: egodb/web
+    environment:
+      - EGODB_API_TRPC_URL=http://backend:4000/api/trpc
+    networks:
+      - egodb
+
+networks:
+  egodb:

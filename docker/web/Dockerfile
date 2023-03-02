@@ -22,7 +22,8 @@ WORKDIR /egodb
 
 RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
 
-ENV EGODB_API_TRPC_URL=http://localhost:4000/api/trpc
+ARG EGODB_API_TRPC_URL=http://localhost:4000/api/trpc
+ENV EGODB_API_TRPC_URL=${EGODB_API_TRPC_URL}
 ENV NODE_ENV production
 
 COPY --from=builder /egodb/package.json ./
