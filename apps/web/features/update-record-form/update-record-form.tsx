@@ -21,8 +21,9 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
   const table = useCurrentTable()
   const view = useCurrentView()
 
-  const fields = view.getOrderedFields(table.schema.fields)
-
+  const schema = table.schema.toIdMap()
+  const columnOrder = table.getFieldsOrder(view)
+  const fields = columnOrder.map((fieldId) => schema.get(fieldId)).filter(Boolean)
   const selectedRecordId = useAppSelector(getSelectedRecordId)
 
   const [updateRecord, { isLoading, isError, error, reset: resetUpdateRecord }] = useUpdateRecordMutation()

@@ -17,6 +17,10 @@ export const UpdateRecordFormDrawer: React.FC = () => {
 
   const dispatch = useAppDispatch()
 
+  const schema = table.schema.toIdMap()
+  const columnOrder = table.getFieldsOrder(view)
+  const fields = columnOrder.map((fieldId) => schema.get(fieldId)).filter(Boolean)
+
   const opened = useAppSelector(getHasSelectedRecordId)
 
   const selectedRecordId = useAppSelector(getSelectedRecordId)
@@ -33,7 +37,7 @@ export const UpdateRecordFormDrawer: React.FC = () => {
 
   const defaultValues = {
     id: selectedRecord?.id.value ?? '',
-    value: view.getOrderedFields(table.schema.fields).map((field) => {
+    value: fields.map((field) => {
       let value: UnpackedFieldValue | undefined
 
       if (field.type === 'id') {
