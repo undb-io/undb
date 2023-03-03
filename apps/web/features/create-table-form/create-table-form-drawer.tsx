@@ -1,7 +1,7 @@
 import type { ICreateTableInput } from '@egodb/cqrs'
 import { createTableCommandInput } from '@egodb/cqrs'
 import { Drawer } from '@egodb/ui'
-import { DevTool } from '@hookform/devtools'
+// import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
@@ -51,7 +51,7 @@ export const CreateTableFormDrawer: React.FC = () => {
         size={700}
       >
         <CreateTableForm onCancel={reset} />
-        <DevTool control={form.control} />
+        {/* <DevTool control={form.control} /> */}
       </Drawer>
     </FormProvider>
   )
