@@ -6,7 +6,7 @@ import { dateBuiltInOperators } from '@egodb/core'
 import { DateField } from '@egodb/core'
 import { NumberField } from '@egodb/core'
 import type { IDateRangeFieldValue } from '@egodb/core/field/date-range-field.type'
-import { DatePicker, DateRangePicker, NumberInput, TextInput } from '@egodb/ui'
+import { DatePickerInput, NumberInput, TextInput } from '@egodb/ui'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { OptionPicker } from '../option/option-picker'
 
@@ -45,14 +45,17 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
     if (dateBuiltInOperators.has(operator as IDateFilterOperator)) {
       return null
     }
-    return <DatePicker size="xs" variant="filled" value={value as Date} onChange={(date) => onChange(date || null)} />
+    return (
+      <DatePickerInput size="xs" variant="filled" value={value as Date} onChange={(date) => onChange(date || null)} />
+    )
   }
 
   if (field instanceof DateRangeField) {
     return (
-      <DateRangePicker
+      <DatePickerInput
         size="xs"
         variant="filled"
+        type="range"
         value={(value as IDateRangeFieldValue) ?? undefined}
         onChange={(range) => {
           if (range.at(0) !== null && range.at !== null) {

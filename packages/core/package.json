@@ -5,7 +5,7 @@
   "author": "",
   "dependencies": {
     "@egodb/domain": "^0.0.0",
-    "@fxts/core": "^0.12.1",
+    "@fxts/core": "^0.13.0",
     "array-move": "^4.0.0",
     "date-fns": "^2.29.3",
     "lodash-es": "^4.17.21",
@@ -19,7 +19,7 @@
     "tsup": "^6.6.3",
     "type-fest": "^3.6.1",
     "typescript": "^4.9.5",
-    "vitest": "^0.28.5",
+    "vitest": "^0.29.2",
     "vitest-mock-extended": "^1.0.9"
   },
   "exports": {

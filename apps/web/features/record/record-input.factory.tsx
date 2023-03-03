@@ -1,8 +1,7 @@
 import type { Field } from '@egodb/core'
 import {
   NumberInput,
-  DatePicker,
-  DateRangePicker,
+  DatePickerInput,
   Checkbox,
   TextInput,
   ColorInput,
@@ -84,10 +83,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
       <Controller
         name={name}
         render={(form) => (
-          <DatePicker
-            allowFreeInput
-            inputFormat="YYYY-MM-DD"
-            labelFormat="YYYY-MM-DD"
+          <DatePickerInput
             label={label}
             icon={<FieldIcon type={field.type} />}
             {...form.field}
@@ -102,7 +98,8 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
       <Controller
         name={name}
         render={(form) => (
-          <DateRangePicker
+          <DatePickerInput
+            type="range"
             label={label}
             {...form.field}
             icon={<FieldIcon type={field.type} />}

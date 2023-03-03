@@ -13,7 +13,7 @@
     "@egodb/ui": "^0.0.0",
     "@emotion/styled": "^11.10.6",
     "@formkit/auto-animate": "^1.0.0-beta.6",
-    "@fxts/core": "^0.12.1",
+    "@fxts/core": "^0.13.0",
     "@hookform/resolvers": "^2.9.11",
     "@tanstack/react-table": "^8.7.9",
     "@tanstack/react-virtual": "^3.0.0-beta.52",
