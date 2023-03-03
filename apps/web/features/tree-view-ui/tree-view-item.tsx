@@ -146,6 +146,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
 
                 return (
                   <Tooltip
+                    key={fieldId}
                     label={
                       <Group spacing="xs">
                         <FieldIcon type={field.type} />

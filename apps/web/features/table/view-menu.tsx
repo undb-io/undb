@@ -230,6 +230,7 @@ export const ViewMenu: React.FC = () => {
                     w={180}
                     h={35}
                     fz="xs"
+                    key={d.value}
                     onClick={() => {
                       switchDisplayType({
                         tableId: table.id.value,

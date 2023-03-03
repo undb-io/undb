@@ -19,8 +19,8 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
   label: string
 }
 
-const TreeSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, ...others }: ItemProps, ref) => (
-  <Group ref={ref} p="xs" {...others}>
+const TreeSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, label, ...others }: ItemProps, ref) => (
+  <Group key={value} ref={ref} p="xs" {...others}>
     <RecordValue value={label} />
   </Group>
 ))
