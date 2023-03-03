@@ -57,6 +57,7 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
       placeholder={focused && isLoading ? 'loading records...' : undefined}
       disabled={focused && isLoading}
       icon={focused && isLoading ? <Loader color="gray" size={14} /> : <FieldIcon type={field.type} />}
+      withinPortal
     />
   )
 }

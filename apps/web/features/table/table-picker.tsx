@@ -17,5 +17,5 @@ export const TablePicker: React.FC<IProps> = (props) => {
     },
   )
 
-  return <Select label={<FieldInputLabel>foreign table</FieldInputLabel>} {...props} data={items} />
+  return <Select label={<FieldInputLabel>foreign table</FieldInputLabel>} {...props} data={items} withinPortal />
 }

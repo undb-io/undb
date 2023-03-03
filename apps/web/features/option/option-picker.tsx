@@ -53,6 +53,7 @@ export const OptionPicker: React.FC<IProps> = ({ field, ...rest }) => {
         </Group>
       )}
       {...rest}
+      withinPortal
     />
   )
 }

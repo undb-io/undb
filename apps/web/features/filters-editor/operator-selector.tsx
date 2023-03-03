@@ -76,6 +76,7 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
       disabled={!field}
       data={data}
       onChange={(value) => onChange(value as IOperator | null)}
+      withinPortal
     />
   )
 }
