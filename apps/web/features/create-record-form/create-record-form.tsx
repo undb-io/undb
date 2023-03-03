@@ -1,7 +1,7 @@
 import type { ICreateRecordInput } from '@egodb/cqrs'
 import { useCreateRecordMutation } from '@egodb/store'
 import { Alert, Button, Divider, Group, IconAlertCircle, IconPlus, openContextModal, Space, Stack } from '@egodb/ui'
-import { DevTool } from '@hookform/devtools'
+// import { DevTool } from '@hookform/devtools'
 import type { FieldPath } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 import { useCurrentTable } from '../../hooks/use-current-table'
@@ -84,7 +84,7 @@ export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
         )}
       </form>
 
-      <DevTool control={form.control} />
+      {/* <DevTool control={form.control} /> */}
     </>
   )
 }
