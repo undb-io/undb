@@ -49,13 +49,7 @@ export const CreateViewForm: React.FC = () => {
         <Controller
           control={form.control}
           name="displayType"
-          render={(f) => (
-            <DisplayTypePicker
-              label={<FieldInputLabel>type</FieldInputLabel>}
-              {...f.field}
-              onChange={(value) => f.field.onChange(value)}
-            />
-          )}
+          render={(f) => <DisplayTypePicker label={<FieldInputLabel>type</FieldInputLabel>} {...f.field} />}
         />
 
         <Divider />

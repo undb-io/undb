@@ -24,6 +24,7 @@ export const DisplayTypePicker: React.FC<Omit<SelectProps, 'data'>> = (props) =>
   return (
     <Select
       icon={<DisplayTypeIcon displayType={props.value as IViewDisplayType} />}
+      withinPortal
       data={displayTypes as unknown as SelectItemType[]}
       {...props}
       itemComponent={SelectItem}
