@@ -1,5 +1,5 @@
 import type { IOptionColorName, IOptionColorShade } from '@egodb/core'
-import type { BadgeVariant } from '@egodb/ui'
+import type { BadgeProps } from '@egodb/ui'
 import { Badge } from '@egodb/ui'
 
 interface IProps {
@@ -10,7 +10,7 @@ interface IProps {
 
 export const Option: React.FC<IProps> = ({ colorName, name, shade, ...rest }) => {
   const color = `${colorName}.${shade}`
-  const variant: BadgeVariant = shade < 5 ? 'light' : 'filled'
+  const variant: BadgeProps['variant'] = shade < 5 ? 'light' : 'filled'
   return (
     <Badge<'span'>
       component="span"

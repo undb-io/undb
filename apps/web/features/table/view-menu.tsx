@@ -54,7 +54,7 @@ const StackedBy: React.FC<{ fieldId?: FieldId }> = ({ fieldId }) => {
             innerProps: { table, onSuccess: () => closeAllModals() } as ISelectKanbanFieldProps,
             withCloseButton: false,
             styles: {
-              modal: { padding: '0 !important' },
+              body: { padding: '0 !important', width: '100%' },
             },
           })
         }
@@ -91,7 +91,7 @@ const UsingCalendarField: React.FC<{ fieldId?: FieldId }> = ({ fieldId }) => {
             innerProps: { table, onSucess: () => closeAllModals() },
             withCloseButton: false,
             styles: {
-              modal: { padding: '0 !important' },
+              body: { padding: '0 !important' },
             },
           })
         }

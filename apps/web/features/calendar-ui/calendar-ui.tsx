@@ -1,5 +1,5 @@
 import type { ICalendarField } from '@egodb/core'
-import { Center, Container } from '@egodb/ui'
+import { Box, Overlay } from '@egodb/ui'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { CalendarBoard } from './calendar-board'
@@ -15,10 +15,12 @@ export const CalendarUI: React.FC = () => {
   }
 
   return (
-    <Container h="100%" w={450}>
-      <Center pb={200} h="100%" w="100%">
-        <SelectCalendarField />
-      </Center>
-    </Container>
+    <Box h="100%" sx={{ position: 'relative' }}>
+      <Overlay center>
+        <Box w={500}>
+          <SelectCalendarField />
+        </Box>
+      </Overlay>
+    </Box>
   )
 }

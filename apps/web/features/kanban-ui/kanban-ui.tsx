@@ -1,5 +1,5 @@
 import type { IKanbanField } from '@egodb/core'
-import { Container, Center } from '@egodb/ui'
+import { Box, Overlay } from '@egodb/ui'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { KanbanBoard } from './kanban-board'
@@ -12,11 +12,13 @@ export const KanbanUI: React.FC = () => {
 
   if (fieldId.isNone()) {
     return (
-      <Container h="100%" w={450} sx={{ overflow: 'scroll' }}>
-        <Center pb={200} h="100%" w="100%" sx={{ overflow: 'scroll' }}>
-          <SelectKanbanField />
-        </Center>
-      </Container>
+      <Box h="100%" sx={{ position: 'relative' }}>
+        <Overlay center>
+          <Box w={500}>
+            <SelectKanbanField />
+          </Box>
+        </Overlay>
+      </Box>
     )
   }
 

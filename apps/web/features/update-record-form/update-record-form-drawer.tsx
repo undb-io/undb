@@ -75,10 +75,9 @@ export const UpdateRecordFormDrawer: React.FC = () => {
 
   return (
     <FormProvider {...form}>
-      <Drawer
+      <Drawer.Root
         target="body"
         opened={opened}
-        withOverlay={false}
         withinPortal
         trapFocus
         onClose={() => {
@@ -88,12 +87,16 @@ export const UpdateRecordFormDrawer: React.FC = () => {
             reset()
           }
         }}
-        title="Edit Record"
         padding="xl"
         position="right"
         size="xl"
       >
-        <UpdateRecordForm onCancel={reset} />
+        <Drawer.Content>
+          <Drawer.Header>Update Record</Drawer.Header>
+          <Drawer.Body>
+            <UpdateRecordForm onCancel={reset} />
+          </Drawer.Body>
+        </Drawer.Content>
         <ActionIcon
           onClick={() => dispatch(resetSelectedRecordId())}
           variant="default"
@@ -114,7 +117,7 @@ export const UpdateRecordFormDrawer: React.FC = () => {
         >
           {opened ? <IconChevronRight size={16} /> : <IconChevronLeft size={16} />}
         </ActionIcon>
-      </Drawer>
+      </Drawer.Root>
     </FormProvider>
   )
 }

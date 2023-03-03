@@ -12,8 +12,6 @@ interface IProps {
   field: ICalendarField
 }
 export const CalendarContent: React.FC<IProps> = ({ field }) => {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const onChange = () => {}
   const table = useCurrentTable()
   const view = useCurrentView()
 
@@ -35,12 +33,12 @@ export const CalendarContent: React.FC<IProps> = ({ field }) => {
 
   return (
     <Calendar
-      onChange={onChange}
       h="100%"
-      fullWidth
+      w="100%"
       bg="white"
       size="xl"
-      allowLevelChange={false}
+      withCellSpacing={false}
+      hasNextLevel={false}
       renderDay={(date) => <Day field={field} records={records} date={date} />}
       styles={(theme) => {
         const border = `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1]}`
@@ -50,16 +48,26 @@ export const CalendarContent: React.FC<IProps> = ({ field }) => {
             marginBottom: 0,
             padding: 10,
             borderLeft: border,
+            height: '40px',
+            maxWidth: '100%',
+            width: '100%',
           },
           calendarHeaderControl: {
-            height: theme.spacing.xs + 'px',
+            height: '100%',
           },
           calendarHeaderLevel: {
+            flex: 1,
+            visibility: 'hidden',
+            width: '100%',
             height: '100%',
             fontSize: theme.fontSizes.lg,
           },
           month: {
+            width: '100%',
             height: 'calc(100% - 40px)',
+          },
+          monthLevelGroup: {
+            height: '100%',
           },
           cell: {
             height: 'calc(100% / 6)',
@@ -70,9 +78,13 @@ export const CalendarContent: React.FC<IProps> = ({ field }) => {
             cursor: 'unset',
             borderRadius: 0,
             height: '100%',
-            display: 'inline-flex',
+            width: '100%',
             flexDirection: 'column',
             fontSize: theme.fontSizes.sm,
+            justifyContent: 'flex-start',
+            border: '1px solid ' + theme.colors.gray[1],
+            borderRight: 0,
+            borderBottom: 0,
           },
           weekday: { fontSize: theme.fontSizes.lg },
           weekdayCell: {

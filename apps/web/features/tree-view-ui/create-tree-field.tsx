@@ -57,7 +57,11 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
         <Card.Section withBorder inheritPadding py="sm">
           <Stack spacing="xs">
             <FocusTrap>
-              <TextInput {...form.register('name')} placeholder="new tree field name" />
+              <TextInput
+                label={<FieldInputLabel>field name</FieldInputLabel>}
+                {...form.register('name')}
+                placeholder="new tree field name"
+              />
             </FocusTrap>
             <Controller
               control={form.control}

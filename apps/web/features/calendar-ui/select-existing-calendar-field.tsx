@@ -57,24 +57,21 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ onSuccess }) => 
                 name="field"
                 control={form.control}
                 render={(f) => (
-                  <Radio.Group
-                    {...f.field}
-                    orientation="vertical"
-                    onChange={(value) => f.field.onChange(value)}
-                    withAsterisk
-                  >
-                    {calendarFields.map((f) => (
-                      <Radio
-                        key={f.id.value}
-                        value={f.id.value}
-                        label={
-                          <Group spacing="xs">
-                            <FieldIcon type={f.type} />
-                            {f.name.value}
-                          </Group>
-                        }
-                      />
-                    ))}
+                  <Radio.Group {...f.field} onChange={(value) => f.field.onChange(value)} withAsterisk>
+                    <Stack>
+                      {calendarFields.map((f) => (
+                        <Radio
+                          key={f.id.value}
+                          value={f.id.value}
+                          label={
+                            <Group spacing="xs">
+                              <FieldIcon type={f.type} />
+                              {f.name.value}
+                            </Group>
+                          }
+                        />
+                      ))}
+                    </Stack>
                   </Radio.Group>
                 )}
               />

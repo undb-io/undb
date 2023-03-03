@@ -10,7 +10,7 @@ export const SelectKanbanField: React.FC<ISelectKanbanFieldProps> = ({ onSuccess
   const step = useAtomValue(kanbanStepAtom)
 
   return (
-    <Box w={500}>
+    <Box w="100%">
       {step === 0 ? <SelectExistingField onSuccess={onSuccess} /> : null}
       {step === 1 ? <CreateSelectField onSuccess={onSuccess} /> : null}
       {step === 2 ? <CreateDateField onSuccess={onSuccess} /> : null}
