@@ -1,4 +1,4 @@
-import type { FieldId, Kanban } from '@egodb/core'
+import type { FieldId, ITreeView, Kanban } from '@egodb/core'
 import type { ICalendar } from '@egodb/core/view/calendar'
 import {
   useDeleteViewMutation,
@@ -26,13 +26,18 @@ import {
   TextInput,
   ActionIcon,
   IconChevronDown,
+  IconTree,
 } from '@egodb/ui'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useConfirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
-import { SELECT_CALENDAR_FIELD_MODAL_ID, SELECT_KANBAN_FIELD_MODAL_ID } from '../../modals'
+import {
+  SELECT_CALENDAR_FIELD_MODAL_ID,
+  SELECT_KANBAN_FIELD_MODAL_ID,
+  SELECT_TREE_VIEW_FIELD_MODAL_ID,
+} from '../../modals'
 import type { ISelectKanbanFieldProps } from '../kanban-ui/select-kanban-field.props'
 import { displayTypes } from '../view/display-type'
 import { DisplayTypeIcon, getDisplayTypeColor } from '../view/display-type-icon'
@@ -106,6 +111,39 @@ const UsingCalendarField: React.FC<{ fieldId?: FieldId }> = ({ fieldId }) => {
 
 const CalendarControl: React.FC<{ calendar?: ICalendar }> = ({ calendar }) => {
   return <UsingCalendarField fieldId={calendar?.fieldId} />
+}
+
+const UsingTreeField: React.FC<{ fieldId?: FieldId }> = ({ fieldId }) => {
+  const table = useCurrentTable()
+  if (!fieldId) return null
+
+  const field = table.schema.getFieldById(fieldId.value).into()
+  if (!field) return null
+
+  return (
+    <Tooltip label="using by">
+      <Button
+        onClick={() =>
+          openContextModal({
+            modal: SELECT_TREE_VIEW_FIELD_MODAL_ID,
+            innerProps: { onSucess: () => closeAllModals() },
+            withCloseButton: false,
+            styles: {
+              body: { padding: '0 !important' },
+            },
+          })
+        }
+        compact
+        variant="subtle"
+        size="xs"
+        leftIcon={<IconTree size={18} />}
+      >{`using "${field.name.value}" field`}</Button>
+    </Tooltip>
+  )
+}
+
+const TreeControl: React.FC<{ tree?: ITreeView }> = ({ tree }) => {
+  return <UsingTreeField fieldId={tree?.fieldId} />
 }
 
 export const ViewMenu: React.FC = () => {
@@ -242,6 +280,7 @@ export const ViewMenu: React.FC = () => {
 
       {displayType === 'kanban' ? <KanbanControl kanban={view.kanban.into()} /> : null}
       {displayType === 'calendar' ? <CalendarControl calendar={view.calendar.into()} /> : null}
+      {displayType === 'tree' ? <TreeControl tree={view.treeView.into()} /> : null}
     </Button.Group>
   )
 }
