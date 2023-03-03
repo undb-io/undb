@@ -20,7 +20,8 @@
       "cache": false
     },
     "dev": {
-      "cache": false
+      "cache": false,
+      "persistent": true
     },
     "db:schema:fresh": {
       "cache": false

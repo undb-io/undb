@@ -1,11 +1,11 @@
 import type { Provider } from '@nestjs/common'
 import { Inject } from '@nestjs/common'
-import { NestRecordSqliteQueryModel } from './sqlite/record-sqlite.query-model'
-import { NestRecordSqliteRepository } from './sqlite/record-sqlite.repository'
-import { NestRecordSqliteTreeQueryModel, RECORD_TREE_QUERY_MODEL } from './sqlite/record-sqlite.tree-query-model'
-import { NestTableSqliteManager, UNDELYING_TABLE_MANAGER } from './sqlite/table-sqlite.manager'
-import { NestTableSqliteQueryModel } from './sqlite/table-sqlite.query-model'
-import { NestTableSqliteRepository } from './sqlite/table-sqlite.repository'
+import { NestRecordSqliteQueryModel } from './sqlite/record-sqlite.query-model.js'
+import { NestRecordSqliteRepository } from './sqlite/record-sqlite.repository.js'
+import { NestRecordSqliteTreeQueryModel, RECORD_TREE_QUERY_MODEL } from './sqlite/record-sqlite.tree-query-model.js'
+import { NestTableSqliteManager, UNDELYING_TABLE_MANAGER } from './sqlite/table-sqlite.manager.js'
+import { NestTableSqliteQueryModel } from './sqlite/table-sqlite.query-model.js'
+import { NestTableSqliteRepository } from './sqlite/table-sqlite.repository.js'
 
 const TABLE_REPOSITORY = Symbol('TABLE_REPOSITORY')
 export const InjectTableReposiory = () => Inject(TABLE_REPOSITORY)

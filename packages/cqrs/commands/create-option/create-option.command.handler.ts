@@ -1,4 +1,4 @@
-import { ITableRepository } from '@egodb/core'
+import { type ITableRepository } from '@egodb/core'
 import { type ICommandHandler } from '@egodb/domain'
 import type { CreateOptionCommand } from './create-option.command.js'
 

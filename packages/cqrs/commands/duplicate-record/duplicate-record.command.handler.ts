@@ -1,4 +1,4 @@
-import { IRecordRepository, ITableRepository } from '@egodb/core'
+import { type IRecordRepository, type ITableRepository } from '@egodb/core'
 import type { ICommandHandler } from '@egodb/domain'
 import type { DuplicateRecordCommand } from './duplicate-record.comand.js'
 

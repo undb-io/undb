@@ -1,8 +1,8 @@
-import { IRecordRepository, ITableRepository } from '@egodb/core'
+import { type IRecordRepository, type ITableRepository } from '@egodb/core'
 import { DuplicateRecordCommand, DuplicateRecordCommandHandler as DomainHandler } from '@egodb/cqrs'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
-import { InjectRecordReposiory, InjectTableReposiory } from '../adapters'
+import { InjectRecordReposiory, InjectTableReposiory } from '../adapters/index.js'
 
 @CommandHandler(DuplicateRecordCommand)
 export class DuplicateRecordCommandHandler extends DomainHandler implements ICommandHandler<DuplicateRecordCommand> {

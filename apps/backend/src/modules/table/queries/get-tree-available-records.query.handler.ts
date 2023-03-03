@@ -1,9 +1,9 @@
-import { IRecordQueryModel, ITableRepository } from '@egodb/core'
+import { type IRecordQueryModel, type ITableRepository } from '@egodb/core'
 import type { IGetTreeAvailableRecordsOutput } from '@egodb/cqrs'
 import { GetTreeAvailableRecordsQuery, GetTreeAvailableRecordsQueryHandler } from '@egodb/cqrs'
 import type { IQueryHandler } from '@nestjs/cqrs'
 import { QueryHandler } from '@nestjs/cqrs'
-import { InjectRecordQueryModel, InjectTableReposiory } from '../adapters'
+import { InjectRecordQueryModel, InjectTableReposiory } from '../adapters/index.js'
 
 @QueryHandler(GetTreeAvailableRecordsQuery)
 export class NestGetTreeAvailableRecordsQueryHandelr

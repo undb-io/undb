@@ -1,5 +1,5 @@
 import type { IQueryTable } from '@egodb/core'
-import { ITableSpec } from '@egodb/core'
+import { type ITableSpec } from '@egodb/core'
 import type { EntityManager } from '@egodb/sqlite'
 import { TableSqliteQueryModel } from '@egodb/sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'

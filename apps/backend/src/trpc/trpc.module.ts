@@ -1,16 +1,16 @@
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common'
 import { Logger, Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
-import { providers } from './providers'
-import { TRPC_ENDPOINT } from './trpc.constants'
-import { TrpcMiddleware } from './trpc.middleware'
+import { providers } from './providers/index.js'
+import { TRPC_ENDPOINT } from './trpc.constants.js'
+import { TrpcMiddleware } from './trpc.middleware.js'
 
 @Module({
   imports: [CqrsModule],
   providers,
 })
 export class TrpcModule implements NestModule {
-  static logger = new Logger(TrpcModule.name)
+  static logger = new Logger('TrpcModule')
 
   configure(consumer: MiddlewareConsumer) {
     {

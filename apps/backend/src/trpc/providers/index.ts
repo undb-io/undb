@@ -1,3 +1,3 @@
-import { AppRouterProvider } from './app-router'
+import { AppRouterProvider } from './app-router.js'
 
 export const providers = [AppRouterProvider]
