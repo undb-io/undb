@@ -54,24 +54,21 @@ export const SelectExistingField: React.FC<IProps> = ({ onSuccess }) => {
                 name="field"
                 control={form.control}
                 render={(f) => (
-                  <Radio.Group
-                    {...f.field}
-                    orientation="vertical"
-                    onChange={(value) => f.field.onChange(value)}
-                    withAsterisk
-                  >
-                    {treeFields.map((f) => (
-                      <Radio
-                        key={f.id.value}
-                        value={f.id.value}
-                        label={
-                          <Group spacing="xs">
-                            <FieldIcon type={f.type} />
-                            {f.name.value}
-                          </Group>
-                        }
-                      />
-                    ))}
+                  <Radio.Group {...f.field} onChange={(value) => f.field.onChange(value)} withAsterisk>
+                    <Stack>
+                      {treeFields.map((f) => (
+                        <Radio
+                          key={f.id.value}
+                          value={f.id.value}
+                          label={
+                            <Group spacing="xs">
+                              <FieldIcon type={f.type} />
+                              {f.name.value}
+                            </Group>
+                          }
+                        />
+                      ))}
+                    </Stack>
                   </Radio.Group>
                 )}
               />

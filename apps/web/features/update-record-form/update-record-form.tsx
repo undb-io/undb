@@ -73,6 +73,7 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
           color="gray"
           variant="white"
           leftIcon={<IconPlus size={14} />}
+          tabIndex={-1}
           onClick={() => {
             openContextModal({
               title: 'Create New Field',

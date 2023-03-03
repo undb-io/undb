@@ -1,5 +1,5 @@
 import type { ITreeViewField } from '@egodb/core'
-import { Container, Center } from '@egodb/ui'
+import { Box, Overlay } from '@egodb/ui'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { SelectTreeViewField } from './select-tree-view-field'
@@ -12,11 +12,11 @@ export const TreeViewUI: React.FC = () => {
 
   if (fieldId.isNone()) {
     return (
-      <Container h="100%" w={450} sx={{ overflow: 'scroll' }}>
-        <Center pb={200} h="100%" w="100%" sx={{ overflow: 'scroll' }}>
+      <Box h="100%" sx={{ position: 'relative' }}>
+        <Overlay center>
           <SelectTreeViewField />
-        </Center>
-      </Container>
+        </Overlay>
+      </Box>
     )
   }
 
