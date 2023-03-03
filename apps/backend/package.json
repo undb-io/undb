@@ -1,7 +1,6 @@
 {
   "name": "@egodb/backend",
   "version": "0.0.0",
-  "type": "module",
   "dependencies": {
     "@egodb/core": "^0.0.0",
     "@egodb/cqrs": "^0.0.0",
@@ -74,15 +73,16 @@
   "private": true,
   "scripts": {
     "build": "swc --delete-dir-on-start --out-dir dist src",
-    "dev": "run-p build:watch start:watch",
     "build:watch": "swc --out-dir dist -w src",
-    "start:watch": "nodemon dist/main",
+    "dev": "run-p build:watch start:watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "prebuild": "rimraf dist",
+    "start:watch": "nodemon dist/main",
     "test": "jest",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:watch": "jest --watch"
-  }
+  },
+  "type": "module"
 }
