@@ -1,11 +1,10 @@
-import { Box, Tooltip } from '@egodb/ui'
+import { Group, Square, Text } from '@egodb/ui'
 
 export const ColorValue: React.FC<{ value: string }> = ({ value }) => {
   return (
-    <Tooltip label={value} color={value}>
-      <Box bg={value} w="100%" miw={20} lh={1} sx={(theme) => ({ borderRadius: theme.radius.sm })}>
-        &nbsp;
-      </Box>
-    </Tooltip>
+    <Group spacing="xs">
+      <Square bg={value} w={16} sx={(theme) => ({ borderRadius: theme.radius.sm })} />
+      <Text>{value}</Text>
+    </Group>
   )
 }
