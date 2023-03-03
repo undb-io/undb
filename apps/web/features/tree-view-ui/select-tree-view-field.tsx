@@ -9,7 +9,7 @@ export const SelectTreeViewField: React.FC<ISelectTreeViewFieldProps> = ({ onSuc
   const step = useAtomValue(treeStepAtom)
 
   return (
-    <Box w={500}>
+    <Box w="100%">
       {step === 0 ? <SelectExistingField onSuccess={onSuccess} /> : null}
       {step === 1 ? <CreateTreeField onSuccess={onSuccess} /> : null}
     </Box>

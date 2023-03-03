@@ -10,7 +10,7 @@ export const SelectCalendarField: React.FC<ISelectCalendarFieldProps> = ({ onSuc
   const step = useAtomValue(calendarStep)
 
   return (
-    <Box w={500}>
+    <Box w="100%">
       {step === 0 ? <SelectExistingCalendarField onSuccess={onSuccess} /> : null}
       {step === 1 ? <CreateCalendarDateField onSuccess={onSuccess} /> : null}
       {step === 2 ? <CreateCalendarDateRangeField onSuccess={onSuccess} /> : null}

@@ -17,7 +17,9 @@ export const CalendarUI: React.FC = () => {
   return (
     <Box h="100%" sx={{ position: 'relative' }}>
       <Overlay center>
-        <SelectCalendarField />
+        <Box w={500}>
+          <SelectCalendarField />
+        </Box>
       </Overlay>
     </Box>
   )

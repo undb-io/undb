@@ -14,7 +14,9 @@ export const TreeViewUI: React.FC = () => {
     return (
       <Box h="100%" sx={{ position: 'relative' }}>
         <Overlay center>
-          <SelectTreeViewField />
+          <Box w={500}>
+            <SelectTreeViewField />
+          </Box>
         </Overlay>
       </Box>
     )

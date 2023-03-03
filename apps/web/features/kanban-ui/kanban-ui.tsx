@@ -14,7 +14,9 @@ export const KanbanUI: React.FC = () => {
     return (
       <Box h="100%" sx={{ position: 'relative' }}>
         <Overlay center>
-          <SelectKanbanField />
+          <Box w={500}>
+            <SelectKanbanField />
+          </Box>
         </Overlay>
       </Box>
     )
