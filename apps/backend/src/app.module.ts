@@ -7,9 +7,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ClsModule } from 'nestjs-cls'
 import { LoggerModule } from 'nestjs-pino'
 import path from 'path'
-import { HealthModule } from './health/health.module'
-import { modules } from './modules'
-import { TrpcModule } from './trpc/trpc.module'
+import { HealthModule } from './health/health.module.js'
+import { modules } from './modules/index.js'
+import { TrpcModule } from './trpc/trpc.module.js'
 
 @Module({
   imports: [

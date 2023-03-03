@@ -1,10 +1,10 @@
-import { IRecordTreeQueryModel, ITableRepository } from '@egodb/core'
+import { type IRecordTreeQueryModel, type ITableRepository } from '@egodb/core'
 import type { IGetRecordsTreeOutput } from '@egodb/cqrs'
 import { GetRecordsTreeQuery, GetRecordsTreeQueryHandler } from '@egodb/cqrs'
 import type { IQueryHandler } from '@nestjs/cqrs'
 import { QueryHandler } from '@nestjs/cqrs'
-import { InjectTableReposiory } from '../adapters'
-import { InjectRecordTreeQueryModel } from '../adapters/sqlite/record-sqlite.tree-query-model'
+import { InjectTableReposiory } from '../adapters/index.js'
+import { InjectRecordTreeQueryModel } from '../adapters/sqlite/record-sqlite.tree-query-model.js'
 
 @QueryHandler(GetRecordsTreeQuery)
 export class NestGetRecordsTreeQueryHandelr

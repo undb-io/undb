@@ -1,4 +1,4 @@
-import { IRecordRepository, ITableRepository } from '@egodb/core'
+import { type IRecordRepository, type ITableRepository } from '@egodb/core'
 import type { ICommandHandler } from '@egodb/domain'
 import type { ICreateTableOutput } from '../create-table/index.js'
 import type { CreateRecordCommand } from './create-record.comand.js'

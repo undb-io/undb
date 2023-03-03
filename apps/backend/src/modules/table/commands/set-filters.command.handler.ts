@@ -1,8 +1,8 @@
-import { ITableRepository } from '@egodb/core'
+import { type ITableRepository } from '@egodb/core'
 import { SetFiltersCommandHandler as DomainHandler, SetFitlersCommand } from '@egodb/cqrs'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
-import { InjectTableReposiory } from '../adapters'
+import { InjectTableReposiory } from '../adapters/index.js'
 
 @CommandHandler(SetFitlersCommand)
 export class SetFiltersCommandHandler extends DomainHandler implements ICommandHandler<SetFitlersCommand> {

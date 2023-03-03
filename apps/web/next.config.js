@@ -8,6 +8,7 @@ const nextConfig = {
   transpilePackages: ['@egodb/ui', '@egodb/store', '@egodb/domain', '@egodb/core', '@egodb/cqrs'],
   experimental: {
     appDir: true,
+    forceSwcTransforms: true,
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
 }

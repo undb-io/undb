@@ -32,6 +32,9 @@
     "@nestjs/cli": "^9.2.0",
     "@nestjs/schematics": "^9.0.4",
     "@nestjs/testing": "^9.3.9",
+    "@swc/cli": "^0.1.62",
+    "@swc/core": "^1.3.37",
+    "@swc/helpers": "^0.4.14",
     "@types/express": "^4.17.17",
     "@types/jest": "^29.4.0",
     "@types/node": "^18.14.4",
@@ -39,16 +42,15 @@
     "eslint": "^8.35.0",
     "esm": "^3.2.25",
     "jest": "^29.4.3",
-    "run-script-webpack-plugin": "^0.1.1",
+    "nodemon": "^2.0.21",
+    "npm-run-all": "^4.1.5",
     "supertest": "^6.3.3",
     "ts-jest": "^29.0.5",
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
     "tsconfig": "^0.0.0",
     "tsconfig-paths": "^4.1.2",
-    "typescript": "^4.9.5",
-    "webpack": "^5.75.0",
-    "webpack-node-externals": "^3.0.0"
+    "typescript": "^4.9.5"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -70,17 +72,17 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "build": "nest build --webpack --webpackPath webpack.config.prod.js",
-    "dev": "nest build --webpack --webpackPath webpack-hmr.config.js --watch",
+    "build": "swc --delete-dir-on-start --out-dir dist src",
+    "build:watch": "swc --out-dir dist -w src",
+    "dev": "run-p build:watch start:watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "prebuild": "rimraf dist",
-    "start": "nest start",
-    "start:debug": "nest start --debug --watch --preserveWatchOutput",
-    "start:prod": "node dist/main",
+    "start:watch": "nodemon dist/main",
     "test": "jest",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:watch": "jest --watch"
-  }
+  },
+  "type": "module"
 }

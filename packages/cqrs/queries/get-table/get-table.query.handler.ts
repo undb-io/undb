@@ -1,4 +1,4 @@
-import { ITableQueryModel } from '@egodb/core'
+import { type ITableQueryModel } from '@egodb/core'
 import type { IQueryHandler } from '@egodb/domain'
 import type { IGetTableOutput } from './get-table.query.interface.js'
 import type { GetTableQuery } from './get-table.query.js'

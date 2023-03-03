@@ -1,11 +1,11 @@
-import { NestGetForeignRecordsQueryHandelr } from './get-foreign-records.query.handler'
-import { NestGetParentAvailableRecordsQueryHandelr } from './get-parent-available-records.query.handler'
-import { NestGetRecordQueryHandelr } from './get-record.query.handler'
-import { NestGetRecordsTreeQueryHandelr } from './get-records-tree.query.handler'
-import { NestGetRecordsQueryHandelr } from './get-records.query.handler'
-import { NestGetTableQueryHandelr } from './get-table.query.handler'
-import { NestGetTablesQueryHandelr } from './get-tables.query.handler'
-import { NestGetTreeAvailableRecordsQueryHandelr } from './get-tree-available-records.query.handler'
+import { NestGetForeignRecordsQueryHandelr } from './get-foreign-records.query.handler.js'
+import { NestGetParentAvailableRecordsQueryHandelr } from './get-parent-available-records.query.handler.js'
+import { NestGetRecordQueryHandelr } from './get-record.query.handler.js'
+import { NestGetRecordsTreeQueryHandelr } from './get-records-tree.query.handler.js'
+import { NestGetRecordsQueryHandelr } from './get-records.query.handler.js'
+import { NestGetTableQueryHandelr } from './get-table.query.handler.js'
+import { NestGetTablesQueryHandelr } from './get-tables.query.handler.js'
+import { NestGetTreeAvailableRecordsQueryHandelr } from './get-tree-available-records.query.handler.js'
 
 export const queryHandlers = [
   NestGetTableQueryHandelr,

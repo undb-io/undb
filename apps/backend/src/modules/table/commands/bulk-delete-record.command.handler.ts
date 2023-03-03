@@ -1,8 +1,8 @@
-import { IRecordRepository, ITableRepository } from '@egodb/core'
+import { type IRecordRepository, type ITableRepository } from '@egodb/core'
 import { BulkDeleteRecordsCommand, BulkDeleteRecordsCommandHandler as DomainHandler } from '@egodb/cqrs'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
-import { InjectRecordReposiory, InjectTableReposiory } from '../adapters'
+import { InjectRecordReposiory, InjectTableReposiory } from '../adapters/index.js'
 
 @CommandHandler(BulkDeleteRecordsCommand)
 export class BulkDeleteRecordsCommandHandler

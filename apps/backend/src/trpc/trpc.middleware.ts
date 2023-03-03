@@ -1,8 +1,8 @@
-import { AppRouter, createExpressMiddleware } from '@egodb/trpc'
+import { createExpressMiddleware, type AppRouter } from '@egodb/trpc'
 import type { NestMiddleware } from '@nestjs/common'
 import { Injectable } from '@nestjs/common'
 import type { NextFunction, Request, Response } from 'express'
-import { InjectAppRouter } from './providers/app-router'
+import { InjectAppRouter } from './providers/app-router.js'
 
 @Injectable()
 export class TrpcMiddleware implements NestMiddleware {
