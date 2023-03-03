@@ -1,5 +1,5 @@
 export * from '../view/specifications/filters.specificaiton'
-export { ITableSpec, ITableSpecVisitor } from './interface.js'
+export type { ITableSpec, ITableSpecVisitor } from './interface.js'
 export * from './table-field.specification.js'
 export * from './table-id.specification.js'
 export * from './table-name.specification.js'
