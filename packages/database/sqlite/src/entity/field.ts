@@ -1,15 +1,23 @@
 import type {
   Field as CoreField,
+  IAutoIncrementFieldQuerySchema,
+  IBoolFieldQuerySchema,
   IColorFieldQuerySchema,
+  ICreatedAtFieldQueryScheam,
   IDateFieldQuerySchema,
   IDateRangeFieldQuerySchema,
   IEmailFieldQuerySchema,
   IFieldType,
+  IIdFieldQuerySchema,
+  INumberFieldQuerySchema,
   IParentFieldQuerySchema,
   IQueryFieldSchema,
   IRatingFieldQuerySchema,
+  IReferenceFieldQuerySchema,
   ISelectFieldQuerySchema,
+  IStringFieldQuerySchema,
   ITreeFieldQuerySchema,
+  IUpdatedAtFieldQuerySchema,
 } from '@egodb/core'
 import {
   AutoIncrementField as CoreAutoIncrementField,
@@ -29,14 +37,6 @@ import {
   TreeField as CoreTreeField,
   UpdatedAtField as CoreUpdatedAtField,
 } from '@egodb/core'
-import type { IAutoIncrementFieldQuerySchema } from '@egodb/core/field/auto-increment-field.type.js'
-import type { IBoolFieldQuerySchema } from '@egodb/core/field/bool-field.type.js'
-import type { ICreatedAtFieldQueryScheam } from '@egodb/core/field/created-at-field.type.js'
-import type { IIdFieldQuerySchema } from '@egodb/core/field/id-field.type.js'
-import type { INumberFieldQuerySchema } from '@egodb/core/field/number-field.type.js'
-import type { IReferenceFieldQuerySchema } from '@egodb/core/field/reference-field.type.js'
-import type { IStringFieldQuerySchema } from '@egodb/core/field/string-field.type.js'
-import type { IUpdatedAtFieldQuerySchema } from '@egodb/core/field/updated-at-field.type.js'
 import {
   Cascade,
   Collection,

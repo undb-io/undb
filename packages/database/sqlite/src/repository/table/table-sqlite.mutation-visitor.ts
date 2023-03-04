@@ -1,6 +1,7 @@
 import type {
   ITableSpecVisitor,
   WithCalendarField,
+  WithDisplayFields,
   WithDisplayType,
   WithFieldName,
   WithFieldOption,
@@ -27,7 +28,6 @@ import type {
   WithViewName,
   WithViewsOrder,
 } from '@egodb/core'
-import type { WithDisplayFields } from '@egodb/core/field/specifications/reference-field.specification.js'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
 import type {

@@ -5,9 +5,8 @@ import { StringField } from '@egodb/core'
 import { dateBuiltInOperators } from '@egodb/core'
 import { DateField } from '@egodb/core'
 import { NumberField } from '@egodb/core'
-import type { IDateRangeFieldValue } from '@egodb/core/field/date-range-field.type'
+import type { IDateRangeFieldValue } from '@egodb/core'
 import { DatePickerInput, NumberInput, TextInput } from '@egodb/ui'
-import { useCurrentTable } from '../../hooks/use-current-table'
 import { OptionPicker } from '../option/option-picker'
 
 interface IProps {
@@ -18,8 +17,6 @@ interface IProps {
 }
 
 export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onChange }) => {
-  const table = useCurrentTable()
-
   if (!field) {
     return null
   }
