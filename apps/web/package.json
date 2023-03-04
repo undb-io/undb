@@ -24,7 +24,7 @@
     "next": "^13.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.43.3",
+    "react-hook-form": "^7.43.4",
     "react-redux": "^8.0.5",
     "superjson": "^1.12.2",
     "use-deep-compare-effect": "^1.8.1"
@@ -36,7 +36,7 @@
     "@hookform/devtools": "^4.3.0",
     "@total-typescript/ts-reset": "^0.3.7",
     "@types/lodash": "^4.14.191",
-    "@types/node": "^18.14.4",
+    "@types/node": "^18.14.6",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "eslint": "^8.35.0",
