@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.6",
-    "rimraf": "^4.2.0",
+    "rimraf": "^4.3.0",
     "tsconfig": "^0.0.0",
     "tsup": "^6.6.3",
     "type-fest": "^3.6.1",

@@ -19,7 +19,7 @@
     "@mikro-orm/reflection": "^5.6.13",
     "@swc/core": "^1.3.37",
     "@types/lodash-es": "^4.17.6",
-    "rimraf": "^4.2.0",
+    "rimraf": "^4.3.0",
     "ts-node": "^10.9.1",
     "tsconfig": "^0.0.0",
     "tslib": "^2.5.0",
