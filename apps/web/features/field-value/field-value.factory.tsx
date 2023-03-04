@@ -79,11 +79,11 @@ export const FieldValueFactory: React.FC<{
       const values = field.getDisplayValues(displayValues)
 
       return (
-        <Group>
+        <>
           {values.map((value, index) => (
             <ReferenceValue key={index} values={value} />
           ))}
-        </Group>
+        </>
       )
     }
 
