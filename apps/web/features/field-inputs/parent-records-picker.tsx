@@ -39,7 +39,9 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
   })
 
   useEffect(() => {
-    getRecords({ tableId: table.id.value, parentFieldId: field.id.value, recordId })
+    if (recordId) {
+      getRecords({ tableId: table.id.value, parentFieldId: field.id.value, recordId })
+    }
   }, [focused])
 
   const data = useReferenceDisplayValues(field, recordId, foreignRecords)
