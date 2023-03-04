@@ -1,6 +1,6 @@
 import type { ICreateTableInput } from '@egodb/cqrs'
 import { useCreateTableMutation } from '@egodb/store'
-import { Alert, Button, Divider, Group, IconAlertCircle, Text, Space, TextInput, Code } from '@egodb/ui'
+import { Alert, Button, Group, IconAlertCircle, Text, Space, TextInput, Code, Box } from '@egodb/ui'
 import { useRouter } from 'next/navigation'
 import { useFormContext } from 'react-hook-form'
 import { CreateTableAddFieldButton } from './create-table-add-field-button'
@@ -59,22 +59,30 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
 
       <CreateTableAddFieldButton />
 
-      <Divider my="lg" />
-
-      <Group position="right">
-        <Button variant="subtle" onClick={() => onCancel()}>
-          Cancel
-        </Button>
-        <Button loading={isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
-          Create
-        </Button>
-      </Group>
-
       {isError && (
         <Alert color="red" icon={<IconAlertCircle size={16} />} title="Oops! Create Table Error!" mt="lg">
           {(error as any).message}
         </Alert>
       )}
+
+      <Box
+        pos="fixed"
+        bottom={0}
+        right={0}
+        w="100%"
+        p="md"
+        bg="white"
+        sx={(theme) => ({ borderTop: '1px solid ' + theme.colors.gray[2] })}
+      >
+        <Group position="right">
+          <Button variant="subtle" onClick={() => onCancel()}>
+            Cancel
+          </Button>
+          <Button loading={isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
+            Create
+          </Button>
+        </Group>
+      </Box>
     </form>
   )
 }
