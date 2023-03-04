@@ -1,7 +1,8 @@
 import { defineConfig } from 'tsup'
 
 export default defineConfig({
-  entry: ['index.ts'],
+  entry: ['src/**/*.{ts,tsx}', '!src/**/*.stories.{ts,tsx}', '!src/**/*.d.{ts,tsx}'],
+  bundle: false,
   outDir: 'dist',
   splitting: true,
   sourcemap: true,

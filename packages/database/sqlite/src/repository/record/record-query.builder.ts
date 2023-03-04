@@ -8,11 +8,11 @@ import {
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { union } from 'lodash-es'
 import type { Promisable } from 'type-fest'
-import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory'
-import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor'
-import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor'
-import { getFTAlias, TABLE_ALIAS } from './record.constants'
-import { expandField } from './record.util'
+import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
+import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
+import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
+import { getFTAlias, TABLE_ALIAS } from './record.constants.js'
+import { expandField } from './record.util.js'
 
 export interface IRecordQueryBuilder {
   from(): this
