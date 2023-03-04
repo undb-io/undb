@@ -233,16 +233,18 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     return (
       <Controller
         name={name}
-        render={(form) => (
-          <TextInput
-            data-auto-focus
-            disabled
-            icon={<FieldIcon type={field.type} />}
-            label={label}
-            {...form.field}
-            value={form.field.value ? dateFormat(form.field.value) : ''}
-          />
-        )}
+        render={(form) => {
+          return (
+            <TextInput
+              data-auto-focus
+              disabled
+              icon={<FieldIcon type={field.type} />}
+              label={label}
+              {...form.field}
+              value={form.field.value ? dateFormat(form.field.value) : ''}
+            />
+          )
+        }}
       />
     )
   }

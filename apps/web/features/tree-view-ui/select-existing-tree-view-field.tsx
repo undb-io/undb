@@ -17,7 +17,7 @@ export const SelectExistingField: React.FC<IProps> = ({ onSuccess }) => {
   const table = useCurrentTable()
   const treeFields = table.schema.treeFields
   const view = useCurrentView()
-  const initialTreeViewFieldId = view.calendar.into()?.fieldId?.value
+  const initialTreeViewFieldId = view.treeView.into()?.fieldId?.value
   const hasTreeViewFields = treeFields.length > 0
 
   const [setTreeViewField, { isLoading }] = useSetTreeFieldMutation()
@@ -54,7 +54,7 @@ export const SelectExistingField: React.FC<IProps> = ({ onSuccess }) => {
                 name="field"
                 control={form.control}
                 render={(f) => (
-                  <Radio.Group {...f.field} onChange={(value) => f.field.onChange(value)} withAsterisk>
+                  <Radio.Group {...f.field} withAsterisk>
                     <Stack>
                       {treeFields.map((f) => (
                         <Radio

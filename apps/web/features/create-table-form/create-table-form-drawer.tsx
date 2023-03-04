@@ -49,6 +49,12 @@ export const CreateTableFormDrawer: React.FC = () => {
         padding="xl"
         position="right"
         size={700}
+        styles={{
+          header: { zIndex: 1000 },
+          body: {
+            paddingBottom: '80px',
+          },
+        }}
       >
         <CreateTableForm onCancel={reset} />
         {/* <DevTool control={form.control} /> */}

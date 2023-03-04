@@ -28,6 +28,7 @@ export const FieldSelector: React.FC<IProps> = ({ fields, value, onChange }) => 
         type: f.type,
       }))}
       icon={value?.type ? <FieldIcon type={value.type} /> : null}
+      withinPortal
     />
   )
 }

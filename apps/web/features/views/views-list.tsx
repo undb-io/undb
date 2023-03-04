@@ -2,7 +2,7 @@ import { closestCenter, DndContext } from '@dnd-kit/core'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useMoveViewMutation } from '@egodb/store'
-import { Button, openContextModal, Stack, useListState } from '@egodb/ui'
+import { Box, Button, openContextModal, Stack, useListState } from '@egodb/ui'
 import { useEffect } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { CREATE_VIEW_MODAL_ID } from '../../modals'
@@ -23,7 +23,7 @@ export const ViewsList: React.FC = () => {
   const [moveView] = useMoveViewMutation()
 
   return (
-    <Stack h="100%" justify="space-between">
+    <Stack justify="space-between">
       <Stack spacing={5}>
         <DndContext
           collisionDetection={closestCenter}
@@ -53,18 +53,30 @@ export const ViewsList: React.FC = () => {
           </SortableContext>
         </DndContext>
       </Stack>
-      <Button
-        variant="light"
-        onClick={() => {
-          openContextModal({
-            title: 'Create New View',
-            modal: CREATE_VIEW_MODAL_ID,
-            innerProps: {},
-          })
-        }}
+
+      <Box
+        pos="fixed"
+        bottom={0}
+        right={0}
+        w="100%"
+        p="md"
+        bg="white"
+        sx={(theme) => ({ borderTop: '1px solid ' + theme.colors.gray[1] })}
       >
-        Create New View
-      </Button>
+        <Button
+          variant="light"
+          fullWidth
+          onClick={() => {
+            openContextModal({
+              title: 'Create New View',
+              modal: CREATE_VIEW_MODAL_ID,
+              innerProps: {},
+            })
+          }}
+        >
+          Create New View
+        </Button>
+      </Box>
     </Stack>
   )
 }

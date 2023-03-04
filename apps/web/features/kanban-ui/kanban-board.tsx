@@ -13,7 +13,7 @@ interface IProps {
 }
 
 const Wrapper = styled.div`
-  padding-top: ${({ theme }) => (theme as MantineTheme).spacing.md + 'px'};
+  padding-top: ${({ theme }) => (theme as MantineTheme).spacing.md};
   height: 100%;
 `
 

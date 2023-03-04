@@ -39,7 +39,9 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
   })
 
   useEffect(() => {
-    getRecords({ tableId: table.id.value, parentFieldId: field.id.value, recordId })
+    if (recordId) {
+      getRecords({ tableId: table.id.value, parentFieldId: field.id.value, recordId })
+    }
   }, [focused])
 
   const data = useReferenceDisplayValues(field, recordId, foreignRecords)
@@ -57,6 +59,7 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
       placeholder={focused && isLoading ? 'loading records...' : undefined}
       disabled={focused && isLoading}
       icon={focused && isLoading ? <Loader color="gray" size={14} /> : <FieldIcon type={field.type} />}
+      withinPortal
     />
   )
 }

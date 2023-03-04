@@ -50,6 +50,7 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel }) => {
                 data={FIELD_SELECT_ITEMS}
                 itemComponent={FieldItem}
                 icon={<FieldIcon type={form.watch('type')} />}
+                withinPortal
               />
             )}
           />

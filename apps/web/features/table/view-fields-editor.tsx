@@ -63,7 +63,7 @@ const FieldItem: React.FC<IFieldItemProps> = ({ field: f, onVisibleChange, ...re
           />
         </Group>
 
-        <Menu width={150}>
+        <Menu width={200}>
           {hovered && (
             <Menu.Target>
               <ActionIcon size="xs" color="gray.5">

@@ -62,6 +62,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
               render={(f) => (
                 <Select
                   {...f.field}
+                  withinPortal
                   searchable
                   onChange={(value) => f.field.onChange(value)}
                   label={<FieldInputLabel>type</FieldInputLabel>}

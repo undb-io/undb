@@ -27,6 +27,7 @@ export const DisplayTypePicker: React.FC<Omit<SelectProps, 'data'>> = (props) =>
       data={displayTypes as unknown as SelectItemType[]}
       {...props}
       itemComponent={SelectItem}
+      withinPortal
     />
   )
 }

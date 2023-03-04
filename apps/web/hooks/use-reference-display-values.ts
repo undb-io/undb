@@ -2,7 +2,7 @@ import type { IQueryRecords, ReferenceFieldTypes } from '@egodb/core'
 import { useGetRecordQuery } from '@egodb/store'
 import type { SelectItem } from '@egodb/ui'
 import { isEmpty } from '@fxts/core'
-import { unionBy } from 'lodash'
+import { isString, unionBy } from 'lodash'
 import { useCurrentTable } from './use-current-table'
 
 export const useReferenceDisplayValues = (
@@ -23,6 +23,9 @@ export const useReferenceDisplayValues = (
       for (const [index, foreignRecordId] of foreignRecordIds.entries()) {
         data.push({ value: foreignRecordId as string, label: values[index]?.filter(Boolean).toString() || 'Unnamed' })
       }
+    } else if (isString(foreignRecordIds)) {
+      const values = field.getDisplayValues(record.displayValues)
+      data.push({ value: foreignRecordIds, label: values[0]?.filter(Boolean).toString() || 'Unnamed' })
     }
   }
   for (const foreignRecord of foreignRecords) {

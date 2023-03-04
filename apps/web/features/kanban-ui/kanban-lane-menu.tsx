@@ -35,7 +35,7 @@ export const KanbanLaneMenu: React.FC<IProps> = ({ field, optionKey, children })
       <Menu.Dropdown>
         {children}
 
-        <Menu.Divider />
+        {!!children && <Menu.Divider />}
 
         <Menu.Item icon={<IconTrash size={14} />} color="red" onClick={confirm} fz="xs" h={35}>
           Delete Option

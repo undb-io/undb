@@ -91,32 +91,33 @@ export const UpdateRecordFormDrawer: React.FC = () => {
         position="right"
         size="xl"
       >
-        <Drawer.Content>
+        <Drawer.Content sx={{ position: 'relative', overflow: 'visible' }}>
           <Drawer.Header>Update Record</Drawer.Header>
           <Drawer.Body>
             <UpdateRecordForm onCancel={reset} />
           </Drawer.Body>
+          <ActionIcon
+            onClick={() => dispatch(resetSelectedRecordId())}
+            variant="default"
+            radius="xl"
+            size="xl"
+            sx={(theme) => ({
+              position: 'fixed',
+              top: 'calc(50% - 40px)',
+              left: '-22px',
+              backgroundColor: theme.white,
+              boxShadow: theme.shadows.xl,
+              transition: '0.4s',
+              zIndex: 10000,
+              border: '1px solid ' + theme.colors.gray[1],
+              ':hover': {
+                boxShadow: theme.shadows.md,
+              },
+            })}
+          >
+            {opened ? <IconChevronRight size={16} /> : <IconChevronLeft size={16} />}
+          </ActionIcon>
         </Drawer.Content>
-        <ActionIcon
-          onClick={() => dispatch(resetSelectedRecordId())}
-          variant="default"
-          radius="xl"
-          size="xl"
-          sx={(theme) => ({
-            position: 'fixed',
-            top: 'calc(50% - 40px)',
-            left: '-22px',
-            backgroundColor: theme.white,
-            boxShadow: theme.shadows.xl,
-            transition: '0.4s',
-            border: '1px solid ' + theme.colors.gray[1],
-            ':hover': {
-              boxShadow: theme.shadows.md,
-            },
-          })}
-        >
-          {opened ? <IconChevronRight size={16} /> : <IconChevronLeft size={16} />}
-        </ActionIcon>
       </Drawer.Root>
     </FormProvider>
   )
