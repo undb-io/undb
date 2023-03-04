@@ -37,6 +37,7 @@ export const ViewsListItem: React.FC<IProps> = ({ v }) => {
   const isActive = view.id.equals(v.id)
   const router = useRouter()
   const [isEditing, handler] = useDisclosure(false)
+  const [opened, menuHandler] = useDisclosure(false)
 
   const { ref, hovered } = useHover()
 
@@ -108,9 +109,9 @@ export const ViewsListItem: React.FC<IProps> = ({ v }) => {
             </Text>
           )}
         </Group>
-        {hovered && (
+        {(hovered || opened) && (
           <Group spacing={5}>
-            <Menu>
+            <Menu withinPortal closeOnClickOutside closeOnItemClick opened={opened} onChange={menuHandler.toggle}>
               <Menu.Target>
                 <ActionIcon
                   color="gray.5"
