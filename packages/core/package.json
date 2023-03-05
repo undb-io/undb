@@ -36,6 +36,6 @@
     "test": "vitest run",
     "test:watch": "vitest"
   },
-  "types": "dist/index.d.ts",
-  "type": "module"
+  "type": "module",
+  "types": "dist/index.d.ts"
 }
