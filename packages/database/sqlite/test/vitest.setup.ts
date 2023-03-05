@@ -11,7 +11,7 @@ beforeAll(async () => {
       dbName: ':memory:',
       driver: BetterSqliteDriver,
       migrations: {
-        path: './migrations',
+        path: './src/migrations',
       },
     }),
   )
