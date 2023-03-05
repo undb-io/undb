@@ -9,7 +9,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
-  transpilePackages: ['@egodb/ui', '@egodb/store', '@egodb/domain', '@egodb/core', '@egodb/cqrs'],
+  transpilePackages: ['@egodb/ui', '@egodb/store', '@egodb/domain', '@egodb/core', '@egodb/cqrs', 'lodash-es'],
   experimental: {
     appDir: true,
     outputFileTracingRoot: path.join(__dirname, '../../'),
