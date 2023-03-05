@@ -27,10 +27,10 @@ export class OrderVO extends ValueObject<string[]> {
     return OrderVO.fromArray([...this.props, id])
   }
 
-  public addAfter(id: string, after?: string): OrderVO {
-    if (!after) return this.add(id)
+  public addAt(id: string, at?: number): OrderVO {
+    if (typeof at !== 'number') return this.add(id)
 
-    const order = this.props.flatMap((item) => (item === after ? [after, id] : item))
+    const order = this.props.flatMap((item, index) => (index === at ? [id, item] : item))
     return OrderVO.fromArray(order)
   }
 

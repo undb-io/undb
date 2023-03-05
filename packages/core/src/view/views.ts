@@ -50,13 +50,13 @@ export class Views extends ValueObject<View[]> {
     return new WithoutView(view)
   }
 
-  addField(field: Field, view: View, after?: string): Option<TableCompositeSpecificaiton> {
+  addField(field: Field, view: View, at?: number): Option<TableCompositeSpecificaiton> {
     const specs = this.views
       .filter((view) => !!view.fieldsOrder)
       .map((v) => {
         if (v.id.equals(view.id)) {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          const viewFieldsOrder = view.fieldsOrder!.addAfter(field.id.value, after)
+          const viewFieldsOrder = view.fieldsOrder!.addAt(field.id.value, at)
           return new WithViewFieldsOrder(viewFieldsOrder, v)
         }
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
