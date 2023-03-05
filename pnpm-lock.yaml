@@ -147,14 +147,12 @@ importers:
       '@emotion/babel-plugin': ^11.10.6
       '@emotion/styled': ^11.10.6
       '@formkit/auto-animate': ^1.0.0-beta.6
-      '@fxts/core': ^0.13.0
       '@hookform/devtools': ^4.3.0
       '@hookform/resolvers': ^2.9.11
       '@next/bundle-analyzer': ^13.2.3
       '@tanstack/react-table': ^8.7.9
       '@tanstack/react-virtual': ^3.0.0-beta.52
       '@total-typescript/ts-reset': ^0.3.7
-      '@types/lodash': ^4.14.191
       '@types/lodash-es': ^4.17.6
       '@types/node': ^18.14.6
       '@types/react': ^18.0.28
@@ -163,7 +161,6 @@ importers:
       eslint: ^8.35.0
       jotai: ^2.0.3
       jotai-devtools: ^0.2.0
-      lodash: ^4.17.21
       lodash-es: ^4.17.21
       next: ^13.2.3
       react: ^18.2.0
@@ -187,14 +184,12 @@ importers:
       '@egodb/ui': link:../../packages/ui
       '@emotion/styled': 11.10.6_pmekkgnqduwlme35zpnqhenc34
       '@formkit/auto-animate': 1.0.0-beta.6
-      '@fxts/core': 0.13.0
       '@hookform/resolvers': 2.9.11_react-hook-form@7.43.4
       '@tanstack/react-table': 8.7.9_biqbaboplfbrettd7655fr4n2y
       '@tanstack/react-virtual': 3.0.0-beta.52_react@18.2.0
       date-fns: 2.29.3
       jotai: 2.0.3_react@18.2.0
       jotai-devtools: 0.2.0_jotai@2.0.3+react@18.2.0
-      lodash: 4.17.21
       lodash-es: 4.17.21
       next: 13.2.3_6m24vuloj5ihw4zc5lbsktc4fu
       react: 18.2.0
@@ -210,7 +205,6 @@ importers:
       '@hookform/devtools': 4.3.0_etgemzlavky3k4ooobeqgg2miu
       '@next/bundle-analyzer': 13.2.3
       '@total-typescript/ts-reset': 0.3.7
-      '@types/lodash': 4.14.191
       '@types/lodash-es': 4.17.6
       '@types/node': 18.14.6
       '@types/react': 18.0.28

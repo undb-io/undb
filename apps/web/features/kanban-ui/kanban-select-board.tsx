@@ -16,7 +16,6 @@ import {
 } from '@egodb/ui'
 import { useEffect, useState } from 'react'
 import { KanbanLane, SortableKanbanLane } from './kanban-lane'
-import { groupBy } from '@fxts/core'
 import { KanbanCard } from './kanban-card'
 import { UNCATEGORIZED_OPTION_ID } from './kanban.constants'
 import { useKanban } from './use-kanban'
@@ -28,6 +27,7 @@ import type { SelectFieldValue } from '@egodb/core'
 import type { Records } from '@egodb/core'
 import { useReorderOptionsMutation, useUpdateRecordMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { groupBy } from 'lodash-es'
 
 interface IProps {
   field: SelectField
@@ -41,12 +41,12 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
   const lastOption = options[options.length - 1]
 
   const groupOptionRecords = () =>
-    groupBy((record) => {
+    groupBy(records, (record) => {
       const value = record.values.value.get(field.id.value) as SelectFieldValue | undefined
 
       if (!value?.id) return UNCATEGORIZED_OPTION_ID
       return value.id
-    }, records)
+    })
   const [optionRecords, setOptionRecords] = useState(groupOptionRecords())
 
   const [reorderOptions] = useReorderOptionsMutation()

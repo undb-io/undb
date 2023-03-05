@@ -11,18 +11,18 @@ import type {
   SelectFieldValue,
   TreeFieldValue,
 } from '@egodb/core'
-import { isNumber } from '@fxts/core'
 import React from 'react'
 import { ReferenceValue } from './reference-value'
 import { BoolValue } from './bool-value'
 import { DateRangeValue } from './date-range-value'
 import { DateValue } from './date-value'
 import { RecordId } from './record-id'
-import { Group, Rating, Text } from '@egodb/ui'
+import { Rating, Text } from '@egodb/ui'
 import type { FieldValue } from '@egodb/core'
 import { Option } from '../option/option'
 import { ColorValue } from './color-value'
 import type { IRecordDisplayValues } from '@egodb/core'
+import { isNumber } from 'lodash-es'
 
 export const FieldValueFactory: React.FC<{
   field: Field
