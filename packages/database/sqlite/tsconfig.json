@@ -12,6 +12,7 @@
     "importHelpers": true,
     "removeComments": true,
     "declaration": true,
+    "baseUrl": "./src",
     "outDir": "./dist"
   }
 }

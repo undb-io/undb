@@ -33,5 +33,6 @@
     "test": "vitest run",
     "test:watch": "vitest"
   },
-  "type": "module"
+  "type": "module",
+  "types": "dist/index.d"
 }

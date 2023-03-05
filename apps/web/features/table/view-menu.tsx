@@ -1,5 +1,5 @@
 import type { FieldId, ITreeView, Kanban } from '@egodb/core'
-import type { ICalendar } from '@egodb/core/view/calendar'
+import type { ICalendar } from '@egodb/core'
 import {
   useDeleteViewMutation,
   useDuplicateViewMutation,
