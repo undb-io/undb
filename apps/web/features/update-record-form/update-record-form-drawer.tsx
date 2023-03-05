@@ -49,7 +49,7 @@ export const UpdateRecordFormDrawer: React.FC = () => {
       } else if (field.type === 'auto-increment') {
         value = selectedRecord?.autoIncrement
       } else {
-        value = selectedRecord?.valuesJSON?.[field.id.value]?.unpack() ?? undefined
+        value = selectedRecord?.valuesJSON?.[field.id.value]?.unpack() ?? null
       }
       return {
         id: field.id.value,
