@@ -181,9 +181,9 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
           <TreeRecordsPicker
             field={field}
             label={label}
-            {...form.field}
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? []}
+            name={form.field.name}
           />
         )}
       />
@@ -198,9 +198,9 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
           <ParentRecordPicker
             field={field}
             label={label}
-            {...form.field}
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? ''}
+            name={form.field.name}
           />
         )}
       />

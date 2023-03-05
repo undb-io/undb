@@ -92,7 +92,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
     id: ACTIONS_FIELD,
     size: 50,
     header: () => (
-      <th style={{ borderBottom: '0' }}>
+      <th key={ACTIONS_FIELD} style={{ borderBottom: '0' }}>
         <Tooltip label="Add New Field">
           <ActionIcon
             onClick={() =>
