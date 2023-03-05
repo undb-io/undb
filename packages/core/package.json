@@ -10,7 +10,7 @@
     "date-fns": "^2.29.3",
     "lodash-es": "^4.17.21",
     "oxide.ts": "^1.1.0",
-    "zod": "^3.20.6"
+    "zod": "^3.21.0"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.6",

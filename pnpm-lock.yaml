@@ -151,7 +151,7 @@ importers:
       '@hookform/resolvers': ^2.9.11
       '@next/bundle-analyzer': ^13.2.3
       '@tanstack/react-table': ^8.7.9
-      '@tanstack/react-virtual': ^3.0.0-beta.52
+      '@tanstack/react-virtual': ^3.0.0-beta.53
       '@total-typescript/ts-reset': ^0.3.7
       '@types/lodash-es': ^4.17.6
       '@types/node': ^18.14.6
@@ -186,7 +186,7 @@ importers:
       '@formkit/auto-animate': 1.0.0-beta.6
       '@hookform/resolvers': 2.9.11_react-hook-form@7.43.4
       '@tanstack/react-table': 8.7.9_biqbaboplfbrettd7655fr4n2y
-      '@tanstack/react-virtual': 3.0.0-beta.52_react@18.2.0
+      '@tanstack/react-virtual': 3.0.0-beta.53_react@18.2.0
       date-fns: 2.29.3
       jotai: 2.0.3_react@18.2.0
       jotai-devtools: 0.2.0_jotai@2.0.3+react@18.2.0
@@ -252,7 +252,7 @@ importers:
       typescript: ^4.9.5
       vitest: ^0.29.2
       vitest-mock-extended: ^1.0.9
-      zod: ^3.20.6
+      zod: ^3.21.0
     dependencies:
       '@egodb/domain': link:../domain
       '@fxts/core': 0.13.0
@@ -260,7 +260,7 @@ importers:
       date-fns: 2.29.3
       lodash-es: 4.17.21
       oxide.ts: 1.1.0
-      zod: 3.20.6
+      zod: 3.21.0
     devDependencies:
       '@types/lodash-es': 4.17.6
       rimraf: 4.3.0
@@ -281,12 +281,12 @@ importers:
       tsup: ^6.6.3
       typescript: ^4.9.5
       vitest: ^0.29.2
-      zod: ^3.20.6
+      zod: ^3.21.0
     dependencies:
       '@egodb/core': link:../core
       '@egodb/domain': link:../domain
       oxide.ts: 1.1.0
-      zod: 3.20.6
+      zod: 3.21.0
     devDependencies:
       rimraf: 4.3.0
       tsconfig: link:../tsconfig
@@ -458,7 +458,7 @@ importers:
       tsup: ^6.6.3
       typescript: ^4.9.5
       vitest: ^0.29.2
-      zod: ^3.20.6
+      zod: ^3.21.0
     dependencies:
       '@egodb/core': link:../core
       '@egodb/cqrs': link:../cqrs
@@ -466,7 +466,7 @@ importers:
       '@trpc/server': 10.14.0
       superjson: 1.12.2
       swagger-ui-express: 4.6.2
-      zod: 3.20.6
+      zod: 3.21.0
     devDependencies:
       '@types/express': 4.17.17
       rimraf: 4.3.0
@@ -3550,12 +3550,12 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@tanstack/react-virtual/3.0.0-beta.52_react@18.2.0:
-    resolution: {integrity: sha512-8CahZpH2CV3gRj02MVxOfw561n0yHAuW5D8YW8YyZ8GRZTKnbF4boijc+gy8jn8hiHMTvS5AQvdjf4RkOIl8Yw==}
+  /@tanstack/react-virtual/3.0.0-beta.53_react@18.2.0:
+    resolution: {integrity: sha512-ulfIOfKm09gBXAMScH91v93roPafy1+qHnspLoa7xE7p3IfEV3x8rtg8j8QYP9nswF92P7vxO2sImOKTGFPTlQ==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@tanstack/virtual-core': 3.0.0-beta.52
+      '@tanstack/virtual-core': 3.0.0-beta.53
       react: 18.2.0
     dev: false
 
@@ -3564,8 +3564,8 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /@tanstack/virtual-core/3.0.0-beta.52:
-    resolution: {integrity: sha512-70208CgTPIf6tonbl2wmpGpeZ9geflhZKMMPddBG2dbF5XUkmuskdWDXG/H/x/Uv/K3bphl/FpbClts5GfdedA==}
+  /@tanstack/virtual-core/3.0.0-beta.53:
+    resolution: {integrity: sha512-sZWCs1GcQWpKQGbA+H6pNZ2aXED09Q8X1j3D4HYxn0Q9xs599BB9cmzfObRXqkbr8NtyHC6bcZjv43qIx53oLA==}
     dev: false
 
   /@tokenizer/token/0.3.0:
@@ -14018,6 +14018,10 @@ packages:
 
   /zod/3.20.6:
     resolution: {integrity: sha512-oyu0m54SGCtzh6EClBVqDDlAYRz4jrVtKwQ7ZnsEmMI9HnzuZFj8QFwAY1M5uniIYACdGvv0PBWPF2kO0aNofA==}
+
+  /zod/3.21.0:
+    resolution: {integrity: sha512-UYdykTcVxB6lfdyLzAqLyyYAlOcpoluECvjsdoaqfQmz9p+3LRaIqYcNiL/J2kFYp66fBM8wwBvIGVEjq7KtZw==}
+    dev: false
 
   /zwitch/2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
