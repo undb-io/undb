@@ -10,7 +10,7 @@ export class CreateFieldCommandHandler implements ICreateFieldCommandHandler {
   async execute(command: CreateFieldCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
 
-    const spec = table.createField(command.field)
+    const spec = table.createField(command.viewId, command.field)
 
     await this.tableRepo.updateOneById(table.id.value, spec)
   }

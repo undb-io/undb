@@ -194,14 +194,17 @@ export class Table {
     return RecordFactory.create(spec).unwrap()
   }
 
-  public createField(input: ICreateFieldSchema): TableCompositeSpecificaiton {
+  public createField(viewId: string | undefined, input: ICreateFieldSchema): TableCompositeSpecificaiton {
     const specs: Option<TableCompositeSpecificaiton>[] = []
     const newFieldSpecs = this.schema.createField(input)
+
+    const view = this.mustGetView(viewId)
+
     for (const spec of newFieldSpecs) {
       spec.mutate(this).unwrap()
 
       // add field to view order
-      const viewsSpec = this.views.addField(spec.field)
+      const viewsSpec = this.views.addField(spec.field, view)
 
       specs.push(Some(spec), viewsSpec)
     }

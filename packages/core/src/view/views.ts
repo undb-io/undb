@@ -3,9 +3,10 @@ import { Option } from 'oxide.ts'
 import type { Field } from '../field/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import { WithViewFieldsOrder } from './specifications/view-fields-order.specification.js'
-import { WithNewView, WithoutView, WithTableView } from './specifications/views.specification.js'
+import type { WithTableView } from './specifications/views.specification.js'
+import { WithNewView, WithoutView } from './specifications/views.specification.js'
 import { View } from './view.js'
-import { ICreateViewSchema } from './view.schema.js'
+import type { ICreateViewSchema } from './view.schema.js'
 import type { ICreateViewInput_internal } from './view.type.js'
 
 export class Views extends ValueObject<View[]> {
@@ -49,10 +50,15 @@ export class Views extends ValueObject<View[]> {
     return new WithoutView(view)
   }
 
-  addField(field: Field): Option<TableCompositeSpecificaiton> {
+  addField(field: Field, view: View, after?: string): Option<TableCompositeSpecificaiton> {
     const specs = this.views
       .filter((view) => !!view.fieldsOrder)
       .map((v) => {
+        if (v.id.equals(view.id)) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          const viewFieldsOrder = view.fieldsOrder!.addAfter(field.id.value, after)
+          return new WithViewFieldsOrder(viewFieldsOrder, v)
+        }
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const viewFieldsOrder = v.fieldsOrder!.add(field.id.value)
         return new WithViewFieldsOrder(viewFieldsOrder, v)
