@@ -15,7 +15,7 @@
     "@formkit/auto-animate": "^1.0.0-beta.6",
     "@hookform/resolvers": "^2.9.11",
     "@tanstack/react-table": "^8.7.9",
-    "@tanstack/react-virtual": "^3.0.0-beta.52",
+    "@tanstack/react-virtual": "^3.0.0-beta.53",
     "date-fns": "^2.29.3",
     "jotai": "^2.0.3",
     "jotai-devtools": "^0.2.0",
