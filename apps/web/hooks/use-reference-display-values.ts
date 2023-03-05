@@ -1,8 +1,7 @@
 import type { IQueryRecords, ReferenceFieldTypes } from '@egodb/core'
 import { useGetRecordQuery } from '@egodb/store'
 import type { SelectItem } from '@egodb/ui'
-import { isEmpty } from '@fxts/core'
-import { isString, unionBy } from 'lodash'
+import { isEmpty, isString, unionBy } from 'lodash-es'
 import { useCurrentTable } from './use-current-table'
 
 export const useReferenceDisplayValues = (

@@ -5,7 +5,6 @@ import { RecordFactory } from '@egodb/core'
 import { Container, Group } from '@egodb/ui'
 import { useEffect, useState } from 'react'
 import { KanbanLane } from './kanban-lane'
-import { groupBy } from '@fxts/core'
 import { KanbanCard } from './kanban-card'
 import { NODATE_STACK_ID } from './kanban.constants'
 import { useKanban } from './use-kanban'
@@ -17,6 +16,7 @@ import type { DateFieldValue } from '@egodb/core'
 import { useGetRecordsQuery, useUpdateRecordMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
+import { groupBy } from 'lodash-es'
 
 interface IProps {
   field: DateField
@@ -43,7 +43,7 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
   const records = RecordFactory.fromQueryRecords(listRecords.rawRecords, table.schema.toIdMap())
 
   const groupDateRecords = (): Record<string, CoreRecord[]> =>
-    groupBy((record) => {
+    groupBy(records, (record) => {
       const value = (record.values.value.get(field.id.value) as DateFieldValue | undefined)?.unpack()
       if (!value) return 'NO_DATE'
       if (isToday(value)) return 'TODAY'
@@ -52,7 +52,7 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
       if (isAfter(value, endOfDay(addDays(value, 1)))) return 'AFTER_TOMORROW'
       if (isBefore(value, startOfDay(addDays(value, -1)))) return 'AFTER_TOMORROW'
       return 'NO_DATE'
-    }, records)
+    })
   const [dateRecords, setDateRecords] = useState(groupDateRecords())
 
   useEffect(() => {
