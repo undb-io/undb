@@ -12,6 +12,7 @@ import {
   IconCopy,
   useClipboard,
   IconClipboardCheck,
+  useEgoUITheme,
 } from '@egodb/ui'
 import React from 'react'
 import { Controller } from 'react-hook-form'
@@ -23,6 +24,7 @@ import { FieldIcon } from '../field-inputs/field-Icon'
 import { ParentRecordPicker } from '../field-inputs/parent-records-picker'
 import { useRouter } from 'next/navigation'
 import { format } from 'date-fns/fp'
+import { useColors } from '../../hooks/use-colors'
 
 interface IProps {
   field: Field
@@ -32,6 +34,7 @@ interface IProps {
 export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
   const { copy, copied } = useClipboard({ timeout: 1500 })
   const router = useRouter()
+  const colors = useColors()
 
   const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
   if (field.type === 'number') {
@@ -73,6 +76,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             label={label}
             onChange={(color) => form.field.onChange(color)}
             value={form.field.value ?? ''}
+            swatches={colors}
           />
         )}
       />
