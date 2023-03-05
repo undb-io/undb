@@ -34,6 +34,7 @@
     "@egodb/eslint-config": "^0.0.0",
     "@emotion/babel-plugin": "^11.10.6",
     "@hookform/devtools": "^4.3.0",
+    "@next/bundle-analyzer": "^13.2.3",
     "@total-typescript/ts-reset": "^0.3.7",
     "@types/lodash": "^4.14.191",
     "@types/node": "^18.14.6",
@@ -46,6 +47,7 @@
   },
   "private": true,
   "scripts": {
+    "analyze": "ANALYZE=true next build",
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
