@@ -88,6 +88,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             icon={<FieldIcon type={field.type} />}
             {...form.field}
             onChange={(date) => form.field.onChange(date)}
+            valueFormat={field.formatString.toUpperCase()}
           />
         )}
       />
@@ -105,6 +106,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             icon={<FieldIcon type={field.type} />}
             value={form.field.value ?? [null, null]}
             onChange={(value) => form.field.onChange(value)}
+            valueFormat={field.formatString.toUpperCase()}
           />
         )}
       />
