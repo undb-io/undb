@@ -1,9 +1,11 @@
 import type { IKanbanField } from '@egodb/core'
 import { Box, Overlay } from '@egodb/ui'
+import dynamic from 'next/dynamic'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
-import { KanbanBoard } from './kanban-board'
 import { SelectKanbanField } from './select-kanban-field'
+
+const KanbanBoard = dynamic(() => import('./kanban-board').then((d) => d.KanbanBoard))
 
 export const KanbanUI: React.FC = () => {
   const table = useCurrentTable()

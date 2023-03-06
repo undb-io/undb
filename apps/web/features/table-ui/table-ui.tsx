@@ -1,8 +1,10 @@
 import { RecordFactory } from '@egodb/core'
 import { useGetRecordsQuery } from '@egodb/store'
+import dynamic from 'next/dynamic'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
-import { EGOTable } from './table'
+
+const EGOTable = dynamic(() => import('./table').then((d) => d.EGOTable))
 
 export const TableUI: React.FC = () => {
   const table = useCurrentTable()

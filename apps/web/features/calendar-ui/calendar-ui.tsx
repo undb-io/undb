@@ -1,9 +1,11 @@
 import type { ICalendarField } from '@egodb/core'
 import { Box, Overlay } from '@egodb/ui'
+import dynamic from 'next/dynamic'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
-import { CalendarBoard } from './calendar-board'
 import { SelectCalendarField } from './select-calendar-field'
+
+const CalendarBoard = dynamic(() => import('./calendar-board').then((d) => d.CalendarBoard))
 
 export const CalendarUI: React.FC = () => {
   const table = useCurrentTable()
