@@ -11,13 +11,29 @@ i18n
         translation: {
           hello: 'hello',
         },
+        table: {
+          'Create New Record': 'Create New Record',
+          Views: 'Views',
+          Filter: 'Filter',
+          Sort: 'Sort',
+          'Config Fields': 'Fields',
+        },
       },
       zh: {
         translation: {
           hello: '你好',
         },
+        table: {
+          'Create New Record': '创建新记录',
+          Views: '视图',
+          Filter: '筛选',
+          Sort: '排序',
+          'Config Fields': '配置列',
+        },
       },
     },
+    ns: ['translation', 'table'],
+    defaultNS: 'table',
     lng: undefined, // if you're using a language detector, do not define the lng option
     fallbackLng: 'zh',
 

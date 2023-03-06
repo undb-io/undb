@@ -1,5 +1,6 @@
 import { useSetSortMutation } from '@egodb/store'
 import { Badge, Button, IconArrowsSort, Popover, useDisclosure } from '@egodb/ui'
+import { useTranslation } from 'react-i18next'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { SortsEditor } from '../sorts-editor/sorts-editor'
@@ -11,6 +12,8 @@ export const TableSortEditor: React.FC = () => {
   const [opened, toggle] = useDisclosure(false)
   const [setSortsReq] = useSetSortMutation()
   const sorts = view.sorts?.sorts ?? []
+
+  const { t } = useTranslation()
 
   return (
     <Popover opened={opened} onChange={toggle.toggle} position="bottom-start" closeOnClickOutside shadow="md">
@@ -29,7 +32,7 @@ export const TableSortEditor: React.FC = () => {
             ) : null
           }
         >
-          Sort
+          {t('Sort')}
         </Button>
       </Popover.Target>
 

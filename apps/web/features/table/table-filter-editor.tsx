@@ -1,6 +1,7 @@
 import type { IFilter } from '@egodb/core'
 import { useSetFilterMutation } from '@egodb/store'
 import { Button, IconFilter, Popover, useDisclosure, Badge } from '@egodb/ui'
+import { useTranslation } from 'react-i18next'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { FiltersEditor } from '../filters-editor/filters-editor'
@@ -10,6 +11,7 @@ export const TableFilterEditor: React.FC = () => {
   const view = useCurrentView()
   const filters = view.filterList as IFilter[]
   const [opened, handler] = useDisclosure(false)
+  const { t } = useTranslation()
 
   const [setFilter, { isLoading }] = useSetFilterMutation()
 
@@ -31,7 +33,7 @@ export const TableFilterEditor: React.FC = () => {
             ) : null
           }
         >
-          Filter
+          {t('Filter')}
         </Button>
       </Popover.Target>
 
