@@ -30,6 +30,7 @@ import {
 } from '@egodb/ui'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useConfirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
@@ -161,6 +162,8 @@ export const ViewMenu: React.FC = () => {
   const [updateViewName] = useUpdateViewNameMutation()
   const [deleteView] = useDeleteViewMutation()
 
+  const { t } = useTranslation()
+
   const onUpdateViewName = async (name: string) => {
     await updateViewName({
       tableId: table.id.value,
@@ -219,7 +222,7 @@ export const ViewMenu: React.FC = () => {
                 <Group position="apart" noWrap p="xs">
                   <Group spacing="xs">
                     <IconSwitchHorizontal color="gray" size={16} />
-                    <Text size="xs">Select Display Type</Text>
+                    <Text size="xs">{t('Select Display Type')}</Text>
                   </Group>
                   <IconChevronRight size={16} />
                 </Group>
@@ -244,7 +247,7 @@ export const ViewMenu: React.FC = () => {
                         <ActionIcon size="xs" variant="filled" color={getDisplayTypeColor(d.value)}>
                           <DisplayTypeIcon displayType={d.value} size={18} />
                         </ActionIcon>
-                        <Text color="gray.8">{d.label}</Text>
+                        <Text color="gray.8">{t(d.label)}</Text>
                       </Group>
 
                       {d.value === view.displayType && <IconCheck color="gray" size={18} />}
@@ -258,7 +261,7 @@ export const ViewMenu: React.FC = () => {
           <Menu.Divider />
 
           <Menu.Item fz="xs" color="gray.9" icon={<IconPencil color="gray" size={16} />} onClick={toggleEditing.open}>
-            Update View Name
+            {t('Update View Name')}
           </Menu.Item>
           <Menu.Item
             fz="xs"
@@ -268,13 +271,13 @@ export const ViewMenu: React.FC = () => {
               duplicateView({ tableId: table.id.value, id: view.id.value })
             }}
           >
-            Duplicate View
+            {t('Duplicate View')}
           </Menu.Item>
 
           <Menu.Divider />
 
           <Menu.Item disabled={!canDelete} icon={<IconTrash size={16} />} color="red.9" fz="xs" onClick={confirm}>
-            Delete View
+            {t('Delete View')}
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

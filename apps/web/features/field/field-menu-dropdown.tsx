@@ -15,6 +15,7 @@ import { IconEyeOff } from '@egodb/ui'
 import { Portal } from '@egodb/ui'
 import { openContextModal } from '@egodb/ui'
 import { IconPencil, IconTrash, Menu } from '@egodb/ui'
+import { useTranslation } from 'react-i18next'
 import { useConfirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
@@ -51,9 +52,11 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index 
     fz: 'xs',
   }
 
+  const { t } = useTranslation()
+
   const insertAt = (at: number) => () =>
     openContextModal({
-      title: 'Create New Field',
+      title: t('Create New Field'),
       modal: CREATE_FIELD_MODAL_ID,
       innerProps: { at: Math.max(0, at) },
     })

@@ -11,6 +11,7 @@ import { useCurrentView } from '../../hooks/use-current-view'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { DisplayFieldsPicker } from '../field-inputs/display-fields-picker'
 import { treeStepZeroAtom } from './tree-step.atom'
+import { useTranslation } from 'react-i18next'
 
 interface IProps {
   onSuccess?: () => void
@@ -47,6 +48,8 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
   })
 
   const setStepZero = useSetAtom(treeStepZeroAtom)
+
+  const { t } = useTranslation()
   return (
     <form onSubmit={onSubmit}>
       <Card shadow="sm" withBorder radius={0} sx={{ overflow: 'visible' }}>
@@ -97,7 +100,7 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
               Select Existing Field
             </Button>
             <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={isLoading}>
-              Done
+              {t('Done', { ns: 'common' })}
             </Button>
           </Group>
         </Card.Section>

@@ -3,6 +3,7 @@ import { useCreateTableMutation } from '@egodb/store'
 import { Alert, Button, Group, IconAlertCircle, Text, Space, TextInput, Code, Box } from '@egodb/ui'
 import { useRouter } from 'next/navigation'
 import { useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { CreateTableAddFieldButton } from './create-table-add-field-button'
 import { CreateTableFormSchema } from './create-table-form-schema'
 
@@ -32,13 +33,15 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
     form.reset()
   }
 
+  const { t } = useTranslation()
+
   return (
     <form onSubmit={onSubmit}>
       <TextInput
         error={form.formState.errors['name']?.message}
         label={
-          <Text size={14} fw={700} tt="uppercase" display="inline-block">
-            name
+          <Text size={14} fw={700} display="inline-block">
+            {t('Name', { ns: 'common' })}
           </Text>
         }
         {...form.register('name')}
@@ -76,10 +79,10 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
       >
         <Group position="right">
           <Button variant="subtle" onClick={() => onCancel()}>
-            Cancel
+            {t('Cancel', { ns: 'common' })}
           </Button>
           <Button loading={isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
-            Create
+            {t('Create', { ns: 'common' })}
           </Button>
         </Group>
       </Box>

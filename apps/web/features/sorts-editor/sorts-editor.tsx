@@ -9,6 +9,7 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { getSortId } from './get-sort-id'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
+import { useTranslation } from 'react-i18next'
 interface IProps {
   onChange?: (filters: ISorts) => void
   onApply?: (filters: ISorts) => void
@@ -21,6 +22,8 @@ export const SortsEditor: React.FC<IProps> = ({ onChange, onApply, onCancel }) =
   const initialSorts = view.sorts?.sorts ?? []
   const [sorts, handlers] = useListState<ISortSchema | null>(initialSorts.length ? initialSorts : [null])
   const validSorts = sorts.filter((f) => f !== null) as ISorts
+
+  const { t } = useTranslation()
 
   const hasNull = sorts.some((f) => f === null)
 
@@ -74,14 +77,14 @@ export const SortsEditor: React.FC<IProps> = ({ onChange, onApply, onCancel }) =
             leftIcon={<IconPlus size={14} />}
             onClick={() => handlers.append(null)}
           >
-            Add new Sort
+            {t('Create New Sort')}
           </Button>
           <Group>
             <Button onClick={onCancel} variant="subtle" size="xs">
-              Cancel
+              {t('Cancel', { ns: 'common' })}
             </Button>
             <Button size="xs" onClick={() => onApply?.(validSorts)}>
-              Apply
+              {t('Apply', { ns: 'common' })}
             </Button>
           </Group>
         </Group>

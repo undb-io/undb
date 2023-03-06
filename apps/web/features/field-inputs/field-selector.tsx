@@ -1,5 +1,6 @@
 import type { Field } from '@egodb/core'
 import { Select } from '@egodb/ui'
+import { useTranslation } from 'react-i18next'
 import { FieldIcon } from './field-Icon'
 import { FieldItem } from './field-item'
 interface IProps {
@@ -9,6 +10,7 @@ interface IProps {
 }
 
 export const FieldSelector: React.FC<IProps> = ({ fields, value, onChange }) => {
+  const { t } = useTranslation()
   return (
     <Select
       searchable
@@ -20,7 +22,7 @@ export const FieldSelector: React.FC<IProps> = ({ fields, value, onChange }) => 
         const selectedColumn = value ? fields.find((f) => f.id.value === value) ?? null : null
         onChange(selectedColumn)
       }}
-      placeholder="search field"
+      placeholder={t('Search Field') as string}
       itemComponent={FieldItem}
       data={fields.map((f) => ({
         value: f.id.value,

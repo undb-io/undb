@@ -16,6 +16,7 @@ import { useVirtualizer } from '@tanstack/react-virtual'
 import { RecordSelection } from './selection'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
+import { useTranslation } from 'react-i18next'
 
 const columnHelper = createColumnHelper<TData>()
 
@@ -32,6 +33,8 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
   const dispatch = useAppDispatch()
   const selectedRecordIds = useAppSelector((state) => getTableSelectedRecordIds(state, table.id.value))
   const [rowSelection, setRowSelection] = useState(selectedRecordIds)
+
+  const { t } = useTranslation()
 
   useEffect(() => {
     dispatch(setTableSelectedRecordIds({ tableId: table.id.value, ids: rowSelection }))
@@ -95,11 +98,11 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
     size: 50,
     header: () => (
       <th key={ACTIONS_FIELD} style={{ borderBottom: '0' }}>
-        <Tooltip label="Add New Field">
+        <Tooltip label={t('Create New Field')}>
           <ActionIcon
             onClick={() =>
               openContextModal({
-                title: 'Create New Field',
+                title: t('Create New Field'),
                 modal: CREATE_FIELD_MODAL_ID,
                 innerProps: {},
               })

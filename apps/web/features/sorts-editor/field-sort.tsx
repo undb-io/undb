@@ -49,8 +49,8 @@ export const FieldSort: React.FC<IProps> = ({ fields, value, onChange, onRemove,
           }
         }}
         data={[
-          { value: 'asc', label: 'A -> Z' },
-          { value: 'desc', label: 'Z -> A' },
+          { value: 'asc', label: 'A → Z' },
+          { value: 'desc', label: 'Z → A' },
         ]}
       />
       <ActionIcon color="gray.5" variant="outline" onClick={() => onRemove(index)}>

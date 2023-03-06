@@ -2,6 +2,7 @@ import type { IUpdateTableSchema } from '@egodb/core'
 import { useUpdateTableMutation } from '@egodb/store'
 import { Alert, Button, Divider, Group, IconAlertCircle, Stack, Text, TextInput } from '@egodb/ui'
 import { useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useCurrentTable } from '../../hooks/use-current-table'
 
 interface IProps {
@@ -27,6 +28,8 @@ export const UpdateTableForm: React.FC<IProps> = ({ onCancel, onSuccess: success
     form.reset()
   }
 
+  const { t } = useTranslation()
+
   const disabled = !form.formState.isValid || !form.formState.isDirty
 
   return (
@@ -35,8 +38,8 @@ export const UpdateTableForm: React.FC<IProps> = ({ onCancel, onSuccess: success
         <TextInput
           error={form.formState.errors['name']?.message}
           label={
-            <Text size={14} fw={700} tt="uppercase" display="inline-block">
-              name
+            <Text size={14} fw={700} display="inline-block">
+              {t('Name', { ns: 'common' })}
             </Text>
           }
           {...form.register('name')}
@@ -47,10 +50,10 @@ export const UpdateTableForm: React.FC<IProps> = ({ onCancel, onSuccess: success
 
         <Group position="right">
           <Button variant="subtle" onClick={() => onCancel()}>
-            Cancel
+            {t('Cancel', { ns: 'common' })}
           </Button>
           <Button loading={isLoading} miw={200} disabled={disabled} type="submit">
-            Update
+            {t('Update', { ns: 'common' })}
           </Button>
         </Group>
 

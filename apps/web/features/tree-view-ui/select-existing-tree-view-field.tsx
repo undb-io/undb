@@ -4,6 +4,7 @@ import { Card, Radio, Group, Button, Text, IconPlus, Stack, Divider } from '@ego
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { FieldIcon } from '../field-inputs/field-Icon'
@@ -39,7 +40,7 @@ export const SelectExistingField: React.FC<IProps> = ({ onSuccess }) => {
   })
 
   const setStepOne = useSetAtom(treeStepOneAtom)
-
+  const { t } = useTranslation()
   return (
     <form onSubmit={onSubmit} style={{ width: '100%' }}>
       <Card shadow="md">
@@ -85,7 +86,7 @@ export const SelectExistingField: React.FC<IProps> = ({ onSuccess }) => {
         <Card.Section withBorder inheritPadding py="sm">
           <Group position="right">
             <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={isLoading}>
-              Done
+              {t('Done', { ns: 'common' })}
             </Button>
           </Group>
         </Card.Section>

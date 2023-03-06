@@ -12,10 +12,13 @@ import type { ICreateFieldProps } from './create-field.props'
 import { useCreateFieldMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
+import { useTranslation } from 'react-i18next'
 
 export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) => {
   const table = useCurrentTable()
   const view = useCurrentView()
+
+  const { t } = useTranslation()
 
   const defaultValues: ICreateFieldSchema = {
     type: 'string',
@@ -79,11 +82,11 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
                 closeAllModals()
               }}
             >
-              Cancel
+              {t('Cancel', { ns: 'common' })}
             </Button>
 
             <Button loading={isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
-              Create
+              {t('Create', { ns: 'common' })}
             </Button>
           </Group>
         </Stack>

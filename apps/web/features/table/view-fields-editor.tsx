@@ -207,13 +207,13 @@ export const ViewFieldsEditor: React.FC = () => {
               onClick={() => {
                 handler.close()
                 openContextModal({
-                  title: 'Create New Field',
+                  title: t('Create New Field'),
                   modal: CREATE_FIELD_MODAL_ID,
                   innerProps: {},
                 })
               }}
             >
-              Create New Field
+              {t('Create New Field')}
             </Button>
           </Stack>
         </Popover.Dropdown>

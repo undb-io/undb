@@ -20,6 +20,7 @@ import {
 } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
+import { useTranslation } from 'react-i18next'
 import { useConfirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
@@ -38,6 +39,8 @@ export const ViewsListItem: React.FC<IProps> = ({ v }) => {
   const router = useRouter()
   const [isEditing, handler] = useDisclosure(false)
   const [opened, menuHandler] = useDisclosure(false)
+
+  const { t } = useTranslation()
 
   const { ref, hovered } = useHover()
 
@@ -135,7 +138,7 @@ export const ViewsListItem: React.FC<IProps> = ({ v }) => {
                     handler.open()
                   }}
                 >
-                  Update View Name
+                  {t('Update View Name')}
                 </Menu.Item>
                 <Menu.Item
                   h={35}
@@ -146,7 +149,7 @@ export const ViewsListItem: React.FC<IProps> = ({ v }) => {
                     duplicateView({ tableId: table.id.value, id: v.id.value })
                   }}
                 >
-                  Duplicate View
+                  {t('Duplicate View')}
                 </Menu.Item>
 
                 {viewCount > 1 && (
@@ -163,7 +166,7 @@ export const ViewsListItem: React.FC<IProps> = ({ v }) => {
                         confirm()
                       }}
                     >
-                      Delete View
+                      {t('Delete View')}
                     </Menu.Item>
                   </>
                 )}
