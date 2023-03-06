@@ -11,9 +11,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import type { ICreateFieldProps } from './create-field.props'
 import { useCreateFieldMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentView } from '../../hooks/use-current-view'
 
-export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel }) => {
+export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) => {
   const table = useCurrentTable()
+  const view = useCurrentView()
 
   const defaultValues: ICreateFieldSchema = {
     type: 'string',
@@ -28,7 +30,12 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel }) => {
   const [createField, { isLoading }] = useCreateFieldMutation()
 
   const onSubmit = form.handleSubmit(async (values) => {
-    await createField({ tableId: table.id.value, field: values })
+    await createField({
+      tableId: table.id.value,
+      field: values,
+      viewId: view.id.value,
+      at,
+    })
     form.reset()
     closeAllModals()
   })

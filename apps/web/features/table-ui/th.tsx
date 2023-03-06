@@ -40,9 +40,10 @@ interface IProps {
   header: THeader
   column: TColumn
   field: Field
+  index: number
 }
 
-export const Th: React.FC<IProps> = memo(({ header, field, column }) => {
+export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
   const table = useCurrentTable()
   const view = useCurrentView()
   const direction = view.getFieldSort(field.id.value).into()
@@ -99,7 +100,7 @@ export const Th: React.FC<IProps> = memo(({ header, field, column }) => {
               </ActionIcon>
             </Tooltip>
           )}
-          <TableUIFieldMenu field={field} />
+          <TableUIFieldMenu field={field} index={index} />
         </Group>
       </Group>
 

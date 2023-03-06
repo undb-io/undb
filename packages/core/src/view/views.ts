@@ -1,11 +1,11 @@
-import { and, andOptions, ValueObject } from '@egodb/domain'
+import { andOptions, ValueObject } from '@egodb/domain'
 import { Option } from 'oxide.ts'
 import type { Field } from '../field/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
-import { WithViewFieldsOrder } from './specifications/view-fields-order.specification.js'
-import { WithNewView, WithoutView, WithTableView } from './specifications/views.specification.js'
+import type { WithTableView } from './specifications/views.specification.js'
+import { WithNewView, WithoutView } from './specifications/views.specification.js'
 import { View } from './view.js'
-import { ICreateViewSchema } from './view.schema.js'
+import type { ICreateViewSchema } from './view.schema.js'
 import type { ICreateViewInput_internal } from './view.type.js'
 
 export class Views extends ValueObject<View[]> {
@@ -47,18 +47,6 @@ export class Views extends ValueObject<View[]> {
     }
     const view = this.getById(id).unwrap()
     return new WithoutView(view)
-  }
-
-  addField(field: Field): Option<TableCompositeSpecificaiton> {
-    const specs = this.views
-      .filter((view) => !!view.fieldsOrder)
-      .map((v) => {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const viewFieldsOrder = v.fieldsOrder!.add(field.id.value)
-        return new WithViewFieldsOrder(viewFieldsOrder, v)
-      })
-
-    return and(...specs)
   }
 
   removeField(field: Field): Option<TableCompositeSpecificaiton> {

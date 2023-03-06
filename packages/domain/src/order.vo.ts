@@ -27,6 +27,13 @@ export class OrderVO extends ValueObject<string[]> {
     return OrderVO.fromArray([...this.props, id])
   }
 
+  public addAt(id: string, at?: number): OrderVO {
+    if (typeof at !== 'number') return this.add(id)
+
+    const order = this.props.flatMap((item, index) => (index === at ? [item, id] : item))
+    return OrderVO.fromArray(order)
+  }
+
   public remove(id: string): Option<OrderVO> {
     if (this.order.includes(id)) {
       return Some(new OrderVO(this.order.filter((_id) => _id !== id)))
