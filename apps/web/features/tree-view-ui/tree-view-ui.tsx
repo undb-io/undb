@@ -1,9 +1,11 @@
 import type { ITreeViewField } from '@egodb/core'
 import { Box, Overlay } from '@egodb/ui'
+import dynamic from 'next/dynamic'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { SelectTreeViewField } from './select-tree-view-field'
-import { TreeViewBoard } from './tree-view-board'
+
+const TreeViewBoard = dynamic(() => import('./tree-view-board').then((d) => d.TreeViewBoard))
 
 export const TreeViewUI: React.FC = () => {
   const table = useCurrentTable()
