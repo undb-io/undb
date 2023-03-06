@@ -1,7 +1,6 @@
 import type { IKanbanField } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
 import { useGetRecordsQuery } from '@egodb/store'
-import type { MantineTheme } from '@egodb/ui'
 import styled from '@emotion/styled'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
@@ -13,7 +12,7 @@ interface IProps {
 }
 
 const Wrapper = styled.div`
-  padding-top: ${({ theme }) => (theme as MantineTheme).spacing.md};
+  padding-top: '20px';
   height: 100%;
 `
 

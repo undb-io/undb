@@ -1,16 +1,5 @@
 import type { IUpdateRecordValueSchema } from '@egodb/core'
-import {
-  Alert,
-  Box,
-  Button,
-  Divider,
-  Group,
-  IconAlertCircle,
-  IconPlus,
-  openContextModal,
-  Space,
-  Stack,
-} from '@egodb/ui'
+import { Alert, Box, Button, Group, IconAlertCircle, IconPlus, openContextModal, Space, Stack } from '@egodb/ui'
 import type { FieldPath } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 // import { DevTool } from '@hookform/devtools'
@@ -98,8 +87,6 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
         >
           {t('Create New Field')}
         </Button>
-
-        <Divider my="lg" />
 
         {isError && (
           <Alert color="red" icon={<IconAlertCircle size={16} />} title="Oops! Create Table Error!" mt="lg">
