@@ -3,7 +3,7 @@ import { DndContext, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSen
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { RecordFactory } from '@egodb/core'
 import { Container, Group } from '@egodb/ui'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { KanbanLane } from './kanban-lane'
 import { KanbanCard } from './kanban-card'
 import { NODATE_STACK_ID } from './kanban.constants'
@@ -27,37 +27,38 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
   const view = useCurrentView()
   const containers = KANBAN_DATE_STACKS
 
-  const listRecords = useGetRecordsQuery(
+  const { groupdRecords, records, isLoading } = useGetRecordsQuery(
     {
       tableId: table.id.value,
       viewId: view.id.value,
     },
     {
-      selectFromResult: (result) => ({
-        ...result,
-        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords,
-      }),
+      selectFromResult: (result) => {
+        const rawRecords = (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords
+        const records = RecordFactory.fromQueryRecords(rawRecords, table.schema.toIdMap())
+        const groupdRecords = groupBy(records, (record) => {
+          const value = (record.values.value.get(field.id.value) as DateFieldValue | undefined)?.unpack()
+          if (!value) return 'NO_DATE'
+          if (isToday(value)) return 'TODAY'
+          if (isTomorrow(value)) return 'TOMORROW'
+          if (isYesterday(value)) return 'YESTERDAY'
+          if (isAfter(value, endOfDay(addDays(value, 1)))) return 'AFTER_TOMORROW'
+          if (isBefore(value, startOfDay(addDays(value, -1)))) return 'AFTER_TOMORROW'
+          return 'NO_DATE'
+        })
+        return {
+          ...result,
+          records,
+          groupdRecords: groupdRecords,
+        }
+      },
     },
   )
 
-  const records = RecordFactory.fromQueryRecords(listRecords.rawRecords, table.schema.toIdMap())
-
-  const groupDateRecords = (): Record<string, CoreRecord[]> =>
-    groupBy(records, (record) => {
-      const value = (record.values.value.get(field.id.value) as DateFieldValue | undefined)?.unpack()
-      if (!value) return 'NO_DATE'
-      if (isToday(value)) return 'TODAY'
-      if (isTomorrow(value)) return 'TOMORROW'
-      if (isYesterday(value)) return 'YESTERDAY'
-      if (isAfter(value, endOfDay(addDays(value, 1)))) return 'AFTER_TOMORROW'
-      if (isBefore(value, startOfDay(addDays(value, -1)))) return 'AFTER_TOMORROW'
-      return 'NO_DATE'
-    })
-  const [dateRecords, setDateRecords] = useState(groupDateRecords())
-
+  const [dateRecords, setDateRecords] = useState(groupdRecords)
   useEffect(() => {
-    setDateRecords(groupDateRecords())
-  }, [records])
+    setDateRecords(groupdRecords)
+  }, [isLoading])
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
