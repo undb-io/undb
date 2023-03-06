@@ -66,7 +66,9 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
     columnHelper.accessor(f.id.value, {
       id: f.id.value,
       enableResizing: true,
-      header: (props) => <Th key={f.id.value} column={props.column} field={f} header={props.header} />,
+      header: (props) => (
+        <Th key={f.id.value} column={props.column} field={f} header={props.header} index={props.header.index} />
+      ),
       size: view.getFieldWidth(f.id.value),
       cell: (props) => {
         let value: RecordAllValueType = undefined

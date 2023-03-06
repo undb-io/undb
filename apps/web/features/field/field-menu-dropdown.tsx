@@ -6,6 +6,9 @@ import {
   useSetVisibilityMutation,
 } from '@egodb/store'
 import type { MenuItemProps } from '@egodb/ui'
+import { IconRowInsertBottom, IconRowInsertTop } from '@egodb/ui'
+import { IconColumnInsertRight } from '@egodb/ui'
+import { IconColumnInsertLeft } from '@egodb/ui'
 import { IconSortAscending } from '@egodb/ui'
 import { IconSortDescending } from '@egodb/ui'
 import { IconEyeOff } from '@egodb/ui'
@@ -15,9 +18,15 @@ import { IconPencil, IconTrash, Menu } from '@egodb/ui'
 import { useConfirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
-import { UPDATE_FIELD_MODAL_ID } from '../../modals'
+import { CREATE_FIELD_MODAL_ID, UPDATE_FIELD_MODAL_ID } from '../../modals'
 
-export const FieldMenuDropdown: React.FC<{ field: Field }> = ({ field }) => {
+interface IProps {
+  field: Field
+  orientation: 'vertial' | 'horizontal'
+  index: number
+}
+
+export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index }) => {
   const table = useCurrentTable()
   const view = useCurrentView()
   const direction = view.getFieldSort(field.id.value).into()
@@ -42,6 +51,13 @@ export const FieldMenuDropdown: React.FC<{ field: Field }> = ({ field }) => {
     fz: 'xs',
   }
 
+  const insertAt = (at: number) => () =>
+    openContextModal({
+      title: 'Create New Field',
+      modal: CREATE_FIELD_MODAL_ID,
+      innerProps: { at: Math.max(0, at) },
+    })
+
   return (
     <Portal>
       <Menu.Dropdown>
@@ -58,6 +74,28 @@ export const FieldMenuDropdown: React.FC<{ field: Field }> = ({ field }) => {
         >
           Update Field
         </Menu.Item>
+
+        <Menu.Divider />
+
+        {orientation === 'vertial' ? (
+          <>
+            <Menu.Item onClick={insertAt(index - 1)} icon={<IconRowInsertTop size={14} />}>
+              Insert Before
+            </Menu.Item>
+            <Menu.Item onClick={insertAt(index + 1)} icon={<IconRowInsertBottom size={14} />}>
+              Insert After
+            </Menu.Item>
+          </>
+        ) : (
+          <>
+            <Menu.Item onClick={insertAt(index - 1)} icon={<IconColumnInsertLeft size={14} />}>
+              Insert Left
+            </Menu.Item>
+            <Menu.Item onClick={insertAt(index + 1)} icon={<IconColumnInsertRight size={14} />}>
+              Insert Right
+            </Menu.Item>
+          </>
+        )}
 
         <Menu.Divider />
 

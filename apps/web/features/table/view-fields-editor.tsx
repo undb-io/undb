@@ -29,9 +29,10 @@ type OnVisibleChange = (fieldId: string, visible: boolean) => void
 interface IFieldItemProps extends CheckboxProps {
   onVisibleChange: OnVisibleChange
   field: Field
+  index: number
 }
 
-const FieldItem: React.FC<IFieldItemProps> = ({ field: f, onVisibleChange, ...rest }) => {
+const FieldItem: React.FC<IFieldItemProps> = ({ field: f, onVisibleChange, index, ...rest }) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: f.id.value })
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -72,7 +73,7 @@ const FieldItem: React.FC<IFieldItemProps> = ({ field: f, onVisibleChange, ...re
             </Menu.Target>
           )}
 
-          <FieldMenuDropdown field={f} />
+          <FieldMenuDropdown field={f} orientation="vertial" index={index} />
         </Menu>
       </Group>
     </Box>
@@ -159,7 +160,7 @@ export const ViewFieldsEditor: React.FC = () => {
               }}
             >
               <SortableContext items={order} strategy={verticalListSortingStrategy}>
-                {order.map((fieldId) => {
+                {order.map((fieldId, index) => {
                   const field = schema.get(fieldId)
                   if (!field) return null
                   return (
@@ -168,6 +169,7 @@ export const ViewFieldsEditor: React.FC = () => {
                       field={field}
                       onVisibleChange={onChange}
                       defaultChecked={visibility[field.id.value] === undefined || !!visibility[field.id.value]}
+                      index={index}
                     />
                   )
                 })}
