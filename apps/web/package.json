@@ -18,6 +18,7 @@
     "@tanstack/react-virtual": "^3.0.0-beta.53",
     "date-fns": "^2.29.3",
     "i18next": "^22.4.10",
+    "i18next-browser-languagedetector": "^7.0.1",
     "jotai": "^2.0.3",
     "jotai-devtools": "^0.2.0",
     "lodash-es": "^4.17.21",

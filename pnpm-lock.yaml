@@ -158,6 +158,7 @@ importers:
       date-fns: ^2.29.3
       eslint: ^8.35.0
       i18next: ^22.4.10
+      i18next-browser-languagedetector: ^7.0.1
       jotai: ^2.0.3
       jotai-devtools: ^0.2.0
       lodash-es: ^4.17.21
@@ -189,6 +190,7 @@ importers:
       '@tanstack/react-virtual': 3.0.0-beta.53_react@18.2.0
       date-fns: 2.29.3
       i18next: 22.4.10
+      i18next-browser-languagedetector: 7.0.1
       jotai: 2.0.3_react@18.2.0
       jotai-devtools: 0.2.0_jotai@2.0.3+react@18.2.0
       lodash-es: 4.17.21
@@ -7565,6 +7567,12 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
     dev: true
+
+  /i18next-browser-languagedetector/7.0.1:
+    resolution: {integrity: sha512-Pa5kFwaczXJAeHE56CHG2aWzFBMJNUNghf0Pm4SwSrEMps/PTKqW90EYWlIvhuYStf3Sn1K0vw+gH3+TLdkH1g==}
+    dependencies:
+      '@babel/runtime': 7.20.7
+    dev: false
 
   /i18next/22.4.10:
     resolution: {integrity: sha512-3EqgGK6fAJRjnGgfkNSStl4mYLCjUoJID338yVyLMj5APT67HUtWoqSayZewiiC5elzMUB1VEUwcmSCoeQcNEA==}

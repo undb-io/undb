@@ -1,8 +1,10 @@
 import i18n from 'i18next'
+import LanguageDetector from 'i18next-browser-languagedetector'
 import { initReactI18next } from 'react-i18next'
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
+  .use(LanguageDetector)
   .init({
     resources: {
       en: {
@@ -16,7 +18,7 @@ i18n
         },
       },
     },
-    lng: 'zh', // if you're using a language detector, do not define the lng option
+    lng: undefined, // if you're using a language detector, do not define the lng option
     fallbackLng: 'zh',
 
     interpolation: {
