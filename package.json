@@ -2,7 +2,7 @@
   "name": "egodb",
   "version": "0.0.0",
   "devDependencies": {
-    "@egodb/eslint-config": "^0.0.0",
+    "@egodb/eslint-config": "0.0.0",
     "@types/node": "^18.14.6",
     "commitizen": "^4.3.0",
     "cz-emoji": "^1.3.2-canary.2",

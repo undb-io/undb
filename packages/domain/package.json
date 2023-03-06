@@ -14,7 +14,7 @@
   "devDependencies": {
     "@types/uuid": "^9.0.1",
     "rimraf": "^4.3.0",
-    "tsconfig": "^0.0.0",
+    "tsconfig": "0.0.0",
     "tsup": "^6.6.3",
     "typescript": "^4.9.5",
     "vitest": "^0.29.2"
@@ -28,7 +28,7 @@
     "build": "tsup",
     "clean": "rimraf dist",
     "coverage": "vitest run --coverage",
-    "dev": "tsup --watch --onSuccess=\"tsc --emitDeclarationOnly --declaration\" ",
+    "dev": "tsup --watch",
     "prebuild": "pnpm run clean",
     "test": "vitest run",
     "test:watch": "vitest"

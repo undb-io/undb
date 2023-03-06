@@ -30,7 +30,7 @@ const Resizer = styled.div`
   touch-action: none;
 
   :hover {
-    ${ResizerLine} {
+    .line {
       opacity: 1;
     }
   }
@@ -109,7 +109,7 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
         onTouchStart={header.getResizeHandler()}
         onMouseUp={() => onSetFieldWidth(header.id, header.getSize())}
       >
-        <ResizerLine isResizing={column.getIsResizing()} />
+        <ResizerLine className="line" isResizing={column.getIsResizing()} />
       </Resizer>
     </th>
   )

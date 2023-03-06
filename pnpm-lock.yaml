@@ -4,7 +4,7 @@ importers:
 
   .:
     specifiers:
-      '@egodb/eslint-config': ^0.0.0
+      '@egodb/eslint-config': 0.0.0
       '@types/node': ^18.14.6
       commitizen: ^4.3.0
       cz-emoji: ^1.3.2-canary.2
@@ -34,12 +34,12 @@ importers:
 
   apps/backend:
     specifiers:
-      '@egodb/core': ^0.0.0
-      '@egodb/cqrs': ^0.0.0
-      '@egodb/domain': ^0.0.0
-      '@egodb/eslint-config': ^0.0.0
-      '@egodb/sqlite': ^0.0.0
-      '@egodb/trpc': ^0.0.0
+      '@egodb/core': 0.0.0
+      '@egodb/cqrs': 0.0.0
+      '@egodb/domain': 0.0.0
+      '@egodb/eslint-config': 0.0.0
+      '@egodb/sqlite': 0.0.0
+      '@egodb/trpc': 0.0.0
       '@mikro-orm/better-sqlite': ^5.6.13
       '@mikro-orm/core': ^5.6.13
       '@mikro-orm/migrations': ^5.6.13
@@ -78,7 +78,7 @@ importers:
       ts-jest: ^29.0.5
       ts-loader: ^9.4.2
       ts-node: ^10.9.1
-      tsconfig: ^0.0.0
+      tsconfig: 0.0.0
       tsconfig-paths: ^4.1.2
       typescript: ^4.9.5
     dependencies:
@@ -133,18 +133,16 @@ importers:
 
   apps/web:
     specifiers:
-      '@babel/core': ^7.21.0
       '@dnd-kit/core': ^6.0.8
       '@dnd-kit/modifiers': ^6.0.1
       '@dnd-kit/sortable': ^7.0.2
       '@dnd-kit/utilities': ^3.2.1
-      '@egodb/core': ^0.0.0
-      '@egodb/cqrs': ^0.0.0
-      '@egodb/eslint-config': ^0.0.0
-      '@egodb/store': ^0.0.0
-      '@egodb/trpc': ^0.0.0
-      '@egodb/ui': ^0.0.0
-      '@emotion/babel-plugin': ^11.10.6
+      '@egodb/core': 0.0.0
+      '@egodb/cqrs': 0.0.0
+      '@egodb/eslint-config': 0.0.0
+      '@egodb/store': 0.0.0
+      '@egodb/trpc': 0.0.0
+      '@egodb/ui': 0.0.0
       '@emotion/styled': ^11.10.6
       '@formkit/auto-animate': ^1.0.0-beta.6
       '@hookform/devtools': ^4.3.0
@@ -168,7 +166,7 @@ importers:
       react-hook-form: ^7.43.4
       react-redux: ^8.0.5
       superjson: ^1.12.2
-      tsconfig: ^0.0.0
+      tsconfig: 0.0.0
       type-fest: ^3.6.1
       typescript: ^4.9.5
       use-deep-compare-effect: ^1.8.1
@@ -191,7 +189,7 @@ importers:
       jotai: 2.0.3_react@18.2.0
       jotai-devtools: 0.2.0_jotai@2.0.3+react@18.2.0
       lodash-es: 4.17.21
-      next: 13.2.3_6m24vuloj5ihw4zc5lbsktc4fu
+      next: 13.2.3_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-hook-form: 7.43.4_react@18.2.0
@@ -199,10 +197,8 @@ importers:
       superjson: 1.12.2
       use-deep-compare-effect: 1.8.1_react@18.2.0
     devDependencies:
-      '@babel/core': 7.21.0
       '@egodb/eslint-config': link:../../packages/eslint-config
-      '@emotion/babel-plugin': 11.10.6
-      '@hookform/devtools': 4.3.0_etgemzlavky3k4ooobeqgg2miu
+      '@hookform/devtools': 4.3.0_zula6vjvt3wdocc4mwcxqa6nzi
       '@next/bundle-analyzer': 13.2.3
       '@total-typescript/ts-reset': 0.3.7
       '@types/lodash-es': 4.17.6
@@ -218,7 +214,7 @@ importers:
     specifiers:
       '@astrojs/react': ^2.0.2
       '@astrojs/tailwind': ^3.0.1
-      '@egodb/ui': ^0.0.0
+      '@egodb/ui': 0.0.0
       '@types/react': ^18.0.28
       '@types/react-dom': ^18.0.11
       astro: ^2.0.17
@@ -238,7 +234,7 @@ importers:
 
   packages/core:
     specifiers:
-      '@egodb/domain': ^0.0.0
+      '@egodb/domain': 0.0.0
       '@fxts/core': ^0.13.0
       '@types/lodash-es': ^4.17.6
       array-move: ^4.0.0
@@ -246,7 +242,7 @@ importers:
       lodash-es: ^4.17.21
       oxide.ts: ^1.1.0
       rimraf: ^4.3.0
-      tsconfig: ^0.0.0
+      tsconfig: 0.0.0
       tsup: ^6.6.3
       type-fest: ^3.6.1
       typescript: ^4.9.5
@@ -273,11 +269,11 @@ importers:
 
   packages/cqrs:
     specifiers:
-      '@egodb/core': ^0.0.0
-      '@egodb/domain': ^0.0.0
+      '@egodb/core': 0.0.0
+      '@egodb/domain': 0.0.0
       oxide.ts: ^1.1.0
       rimraf: ^4.3.0
-      tsconfig: ^0.0.0
+      tsconfig: 0.0.0
       tsup: ^6.6.3
       typescript: ^4.9.5
       vitest: ^0.29.2
@@ -296,8 +292,8 @@ importers:
 
   packages/database/sqlite:
     specifiers:
-      '@egodb/core': ^0.0.0
-      '@egodb/domain': ^0.0.0
+      '@egodb/core': 0.0.0
+      '@egodb/domain': 0.0.0
       '@mikro-orm/better-sqlite': ^5.6.13
       '@mikro-orm/cli': ^5.6.13
       '@mikro-orm/core': ^5.6.13
@@ -312,7 +308,7 @@ importers:
       reflect-metadata: ^0.1.13
       rimraf: ^4.3.0
       ts-node: ^10.9.1
-      tsconfig: ^0.0.0
+      tsconfig: 0.0.0
       tslib: ^2.5.0
       tsup: ^6.6.3
       type-fest: ^3.6.1
@@ -354,7 +350,7 @@ importers:
       nanoid: ^4.0.1
       oxide.ts: ^1.1.0
       rimraf: ^4.3.0
-      tsconfig: ^0.0.0
+      tsconfig: 0.0.0
       tsup: ^6.6.3
       typescript: ^4.9.5
       uuid: ^9.0.0
@@ -401,10 +397,10 @@ importers:
 
   packages/store:
     specifiers:
-      '@egodb/core': ^0.0.0
-      '@egodb/cqrs': ^0.0.0
-      '@egodb/eslint-config': ^0.0.0
-      '@egodb/trpc': ^0.0.0
+      '@egodb/core': 0.0.0
+      '@egodb/cqrs': 0.0.0
+      '@egodb/eslint-config': 0.0.0
+      '@egodb/trpc': 0.0.0
       '@reduxjs/toolkit': ^1.9.3
       '@trpc/client': ^10.14.0
       '@trpc/server': ^10.14.0
@@ -419,7 +415,7 @@ importers:
       redux-persist: ^6.0.0
       reselect: ^4.1.7
       superjson: ^1.12.2
-      tsconfig: ^0.0.0
+      tsconfig: 0.0.0
       typescript: ^4.9.5
     dependencies:
       '@egodb/core': link:../core
@@ -446,15 +442,15 @@ importers:
 
   packages/trpc:
     specifiers:
-      '@egodb/core': ^0.0.0
-      '@egodb/cqrs': ^0.0.0
-      '@egodb/domain': ^0.0.0
+      '@egodb/core': 0.0.0
+      '@egodb/cqrs': 0.0.0
+      '@egodb/domain': 0.0.0
       '@trpc/server': ^10.14.0
       '@types/express': ^4.17.17
       rimraf: ^4.3.0
       superjson: ^1.12.2
       swagger-ui-express: ^4.6.2
-      tsconfig: ^0.0.0
+      tsconfig: 0.0.0
       tsup: ^6.6.3
       typescript: ^4.9.5
       vitest: ^0.29.2
@@ -481,7 +477,7 @@ importers:
   packages/ui:
     specifiers:
       '@babel/core': ^7.21.0
-      '@egodb/eslint-config': ^0.0.0
+      '@egodb/eslint-config': 0.0.0
       '@emotion/react': ^11.10.6
       '@emotion/server': ^11.10.0
       '@mantine/core': ^6.0.0
@@ -498,7 +494,7 @@ importers:
       eslint: ^8.35.0
       react: ^18.2.0
       react-dom: ^18.2.0
-      tsconfig: ^0.0.0
+      tsconfig: 0.0.0
       typescript: ^4.9.5
     dependencies:
       '@babel/core': 7.21.0
@@ -1298,7 +1294,7 @@ packages:
   /@emotion/memoize/0.8.0:
     resolution: {integrity: sha512-G/YwXTkv7Den9mXDO7AhLWkE3q+I92B+VqAE+dYG4NGPaHZGvt3G8Q0p9vmE+sq7rTGphUbAvmQ9YpbfMQGGlA==}
 
-  /@emotion/react/11.10.5_gqz5z5osutjfnjhhqhx3ybpdoy:
+  /@emotion/react/11.10.5_pmekkgnqduwlme35zpnqhenc34:
     resolution: {integrity: sha512-TZs6235tCJ/7iF6/rvTaOH4oxQg2gMAcdHemjwLKIjKz4rRuYe1HJ2TQJKnAcRAfOUDdU8XoDadCe1rl72iv8A==}
     peerDependencies:
       '@babel/core': ^7.0.0
@@ -1310,7 +1306,6 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/core': 7.21.0
       '@babel/runtime': 7.20.7
       '@emotion/babel-plugin': 11.10.6
       '@emotion/cache': 11.10.5
@@ -1383,7 +1378,7 @@ packages:
       '@babel/runtime': 7.20.7
       '@emotion/babel-plugin': 11.10.6
       '@emotion/is-prop-valid': 1.2.0
-      '@emotion/react': 11.10.5_gqz5z5osutjfnjhhqhx3ybpdoy
+      '@emotion/react': 11.10.5_pmekkgnqduwlme35zpnqhenc34
       '@emotion/serialize': 1.1.1
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.0_react@18.2.0
       '@emotion/utils': 1.2.0
@@ -1871,13 +1866,13 @@ packages:
     resolution: {integrity: sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==}
     dev: true
 
-  /@hookform/devtools/4.3.0_etgemzlavky3k4ooobeqgg2miu:
+  /@hookform/devtools/4.3.0_zula6vjvt3wdocc4mwcxqa6nzi:
     resolution: {integrity: sha512-DTTTYJ9j+L4Nd/qj0k41WNbRF/qNQfZxbHwUupFeQWu6JOJ5Ak5ksxuoCbfSWrsXV5EPSmcfhpsDos0IOlwhsg==}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
       react-dom: ^16.8.0 || ^17 || ^18
     dependencies:
-      '@emotion/react': 11.10.5_gqz5z5osutjfnjhhqhx3ybpdoy
+      '@emotion/react': 11.10.5_pmekkgnqduwlme35zpnqhenc34
       '@emotion/styled': 11.10.6_g6cddab2ma6w7rmdnelgn6dq2a
       '@types/lodash': 4.14.191
       little-state-machine: 4.8.0_react@18.2.0
@@ -9790,7 +9785,7 @@ packages:
       pino-http: 8.3.3
     dev: false
 
-  /next/13.2.3_6m24vuloj5ihw4zc5lbsktc4fu:
+  /next/13.2.3_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-nKFJC6upCPN7DWRx4+0S/1PIOT7vNlCT157w9AzbXEgKy6zkiPKEt5YyRUsRZkmpEqBVrGgOqNfwecTociyg+w==}
     engines: {node: '>=14.6.0'}
     hasBin: true
@@ -9817,7 +9812,7 @@ packages:
       postcss: 8.4.14
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      styled-jsx: 5.1.1_q2tyk3gci27qk4qoatek53e4vi
+      styled-jsx: 5.1.1_react@18.2.0
     optionalDependencies:
       '@next/swc-android-arm-eabi': 13.2.3
       '@next/swc-android-arm64': 13.2.3
@@ -12263,7 +12258,7 @@ packages:
       inline-style-parser: 0.1.1
     dev: false
 
-  /styled-jsx/5.1.1_q2tyk3gci27qk4qoatek53e4vi:
+  /styled-jsx/5.1.1_react@18.2.0:
     resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
     engines: {node: '>= 12.0.0'}
     peerDependencies:
@@ -12276,7 +12271,6 @@ packages:
       babel-plugin-macros:
         optional: true
     dependencies:
-      '@babel/core': 7.21.0
       client-only: 0.0.1
       react: 18.2.0
     dev: false

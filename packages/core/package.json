@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "author": "",
   "dependencies": {
-    "@egodb/domain": "^0.0.0",
+    "@egodb/domain": "0.0.0",
     "@fxts/core": "^0.13.0",
     "array-move": "^4.0.0",
     "date-fns": "^2.29.3",
@@ -15,7 +15,7 @@
   "devDependencies": {
     "@types/lodash-es": "^4.17.6",
     "rimraf": "^4.3.0",
-    "tsconfig": "^0.0.0",
+    "tsconfig": "0.0.0",
     "tsup": "^6.6.3",
     "type-fest": "^3.6.1",
     "typescript": "^4.9.5",
