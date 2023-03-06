@@ -92,7 +92,9 @@ export const UpdateRecordFormDrawer: React.FC = () => {
         size="xl"
       >
         <Drawer.Content sx={{ position: 'relative', overflow: 'visible' }}>
-          <Drawer.Header>Update Record</Drawer.Header>
+          <Drawer.Header sx={(theme) => ({ zIndex: 1000, borderBottom: '1px solid ' + theme.colors.gray[2] })}>
+            Update Record
+          </Drawer.Header>
           <Drawer.Body>
             <UpdateRecordForm onCancel={reset} />
           </Drawer.Body>

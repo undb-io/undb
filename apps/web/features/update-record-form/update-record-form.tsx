@@ -1,5 +1,16 @@
 import type { IUpdateRecordValueSchema } from '@egodb/core'
-import { Alert, Button, Divider, Group, IconAlertCircle, IconPlus, openContextModal, Space, Stack } from '@egodb/ui'
+import {
+  Alert,
+  Box,
+  Button,
+  Divider,
+  Group,
+  IconAlertCircle,
+  IconPlus,
+  openContextModal,
+  Space,
+  Stack,
+} from '@egodb/ui'
 import type { FieldPath } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 // import { DevTool } from '@hookform/devtools'
@@ -57,7 +68,7 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
 
   return (
     <>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} style={{ paddingBottom: '20px' }}>
         <Stack>
           {fields.map((field, index) => {
             const name: FieldPath<IUpdateRecordValueSchema> = `value.${index}.value`
@@ -87,26 +98,36 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
 
         <Divider my="lg" />
 
-        <Group position="right">
-          <Button variant="subtle" onClick={() => onCancel()}>
-            Cancel
-          </Button>
-
-          <Button
-            miw={200}
-            type="submit"
-            disabled={!form.formState.isValid || !form.formState.isDirty}
-            loading={isLoading}
-          >
-            Confirm
-          </Button>
-        </Group>
-
         {isError && (
           <Alert color="red" icon={<IconAlertCircle size={16} />} title="Oops! Create Table Error!" mt="lg">
             {(error as any).message}
           </Alert>
         )}
+
+        <Box
+          pos="fixed"
+          bottom={0}
+          right={0}
+          w="100%"
+          p="md"
+          bg="white"
+          sx={(theme) => ({ zIndex: 1000, borderTop: '1px solid ' + theme.colors.gray[2] })}
+        >
+          <Group position="right">
+            <Button variant="subtle" onClick={() => onCancel()}>
+              Cancel
+            </Button>
+
+            <Button
+              miw={200}
+              type="submit"
+              disabled={!form.formState.isValid || !form.formState.isDirty}
+              loading={isLoading}
+            >
+              Confirm
+            </Button>
+          </Group>
+        </Box>
       </form>
       {/* <DevTool control={form.control} /> */}
     </>
