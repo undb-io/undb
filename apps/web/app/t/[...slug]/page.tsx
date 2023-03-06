@@ -43,7 +43,7 @@ export default function Page({ params: { slug } }: { params: { slug: string[] } 
   return (
     <CurrentTableContext.Provider value={table}>
       <CurrentViewContext.Provider value={view}>
-        <ModalsProvider modals={modals}>
+        <ModalsProvider modals={modals as any}>
           <Table />
         </ModalsProvider>
       </CurrentViewContext.Provider>

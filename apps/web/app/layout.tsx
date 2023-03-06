@@ -3,11 +3,15 @@ import { createStore, PersistGate } from '@egodb/store'
 import { AppShell, Stack } from '@egodb/ui'
 import React from 'react'
 import { Provider } from 'react-redux'
-import { CreateTableFormDrawer } from '../features/create-table-form'
 import { TableList } from '../features/table/table-list'
 import { AtomsDevtools } from './atom-devtool'
 import RootStyleRegistry from './emotion'
 import '../i18n/client'
+import dynamic from 'next/dynamic'
+
+const CreateTableFormDrawer = dynamic(() =>
+  import('../features/create-table-form').then((m) => m.CreateTableFormDrawer),
+)
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const { store, persist } = createStore()
@@ -32,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <TableList />
                     {children}
                   </Stack>
+
                   <CreateTableFormDrawer />
                 </AppShell>
               </RootStyleRegistry>
