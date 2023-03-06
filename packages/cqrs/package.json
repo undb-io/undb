@@ -7,7 +7,7 @@
     "@egodb/core": "^0.0.0",
     "@egodb/domain": "^0.0.0",
     "oxide.ts": "^1.1.0",
-    "zod": "^3.21.0"
+    "zod": "^3.21.2"
   },
   "devDependencies": {
     "rimraf": "^4.3.0",

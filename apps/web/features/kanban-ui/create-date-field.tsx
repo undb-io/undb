@@ -6,6 +6,7 @@ import { Button, Card, FocusTrap, Group, IconChevronLeft, Stack, Text, TextInput
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { kanbanStepZeroAtom } from './kanban-step.atom'
@@ -43,6 +44,8 @@ export const CreateDateField: React.FC<IProps> = ({ onSuccess }) => {
     setStepZero()
     onSuccess?.()
   })
+
+  const { t } = useTranslation()
 
   const setStepZero = useSetAtom(kanbanStepZeroAtom)
   return (
