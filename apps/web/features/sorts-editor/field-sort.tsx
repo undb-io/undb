@@ -33,7 +33,7 @@ export const FieldSort: React.FC<IProps> = ({ fields, value, onChange, onRemove,
     if (selectedField) {
       onChange({ fieldId: selectedField.id.value, direction }, index)
     }
-  }, [selectedField, direction])
+  }, [selectedField, direction, onChange, index])
 
   const { t } = useTranslation()
 

@@ -10,9 +10,6 @@ const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
   transpilePackages: ['@egodb/ui', '@egodb/store', '@egodb/domain', '@egodb/core', '@egodb/cqrs', 'lodash-es'],
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   experimental: {
     appDir: true,
     outputFileTracingRoot: path.join(__dirname, '../../'),

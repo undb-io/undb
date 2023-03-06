@@ -2,7 +2,7 @@ import { RecordFactory } from '@egodb/core'
 import { updateRecordSchema } from '@egodb/core'
 import type { IUpdateRecordValueSchema, UnpackedFieldValue } from '@egodb/core'
 import { ActionIcon, Drawer, IconChevronLeft, IconChevronRight, LoadingOverlay } from '@egodb/ui'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useAppDispatch, useAppSelector, useConfirmModal } from '../../hooks'
 import { UpdateRecordForm } from './update-record-form'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -35,28 +35,38 @@ export const UpdateRecordFormDrawer: React.FC = () => {
     },
   )
 
-  const defaultValues = {
-    id: selectedRecord?.id.value ?? '',
-    value: fields.map((field) => {
-      let value: UnpackedFieldValue | undefined
+  const defaultValues = useMemo(
+    () => ({
+      id: selectedRecord?.id.value ?? '',
+      value: fields.map((field) => {
+        let value: UnpackedFieldValue | undefined
 
-      if (field.type === 'id') {
-        value = selectedRecord?.id.value
-      } else if (field.type === 'created-at') {
-        value = selectedRecord?.createdAt.unpack()
-      } else if (field.type === 'updated-at') {
-        value = selectedRecord?.updatedAt.unpack()
-      } else if (field.type === 'auto-increment') {
-        value = selectedRecord?.autoIncrement
-      } else {
-        value = selectedRecord?.valuesJSON?.[field.id.value]?.unpack() ?? null
-      }
-      return {
-        id: field.id.value,
-        value,
-      }
+        if (field.type === 'id') {
+          value = selectedRecord?.id.value
+        } else if (field.type === 'created-at') {
+          value = selectedRecord?.createdAt.unpack()
+        } else if (field.type === 'updated-at') {
+          value = selectedRecord?.updatedAt.unpack()
+        } else if (field.type === 'auto-increment') {
+          value = selectedRecord?.autoIncrement
+        } else {
+          value = selectedRecord?.valuesJSON?.[field.id.value]?.unpack() ?? null
+        }
+        return {
+          id: field.id.value,
+          value,
+        }
+      }),
     }),
-  }
+    [
+      fields,
+      selectedRecord?.autoIncrement,
+      selectedRecord?.createdAt,
+      selectedRecord?.id.value,
+      selectedRecord?.updatedAt,
+      selectedRecord?.valuesJSON,
+    ],
+  )
 
   const form = useForm<IUpdateRecordValueSchema>({
     defaultValues,
@@ -65,7 +75,7 @@ export const UpdateRecordFormDrawer: React.FC = () => {
 
   useEffect(() => {
     form.reset(defaultValues)
-  }, [data])
+  }, [data, defaultValues, form])
 
   const reset = () => {
     dispatch(resetSelectedRecordId())

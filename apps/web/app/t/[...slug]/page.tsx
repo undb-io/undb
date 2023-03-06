@@ -19,7 +19,7 @@ export default function Page({ params: { slug } }: { params: { slug: string[] } 
 
   useEffect(() => {
     dispatch(setCurrentTableId(tableId))
-  }, [tableId])
+  }, [dispatch, tableId])
 
   if (isLoading) {
     return <TableLoading />

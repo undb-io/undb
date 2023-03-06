@@ -20,6 +20,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
   label: string
 }
 
+// eslint-disable-next-line react/display-name
 const ParentSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, ...others }: ItemProps, ref) => (
   <Group ref={ref} p="xs" {...others}>
     <RecordValue value={label} />
@@ -42,7 +43,7 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
     if (recordId) {
       getRecords({ tableId: table.id.value, parentFieldId: field.id.value, recordId })
     }
-  }, [focused])
+  }, [field.id.value, focused, getRecords, recordId, table.id.value])
 
   const data = useReferenceDisplayValues(field, recordId, foreignRecords)
 

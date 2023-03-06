@@ -14,7 +14,7 @@ import {
   openContextModal,
   useListState,
 } from '@egodb/ui'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { KanbanLane, SortableKanbanLane } from './kanban-lane'
 import { KanbanCard } from './kanban-card'
 import { UNCATEGORIZED_OPTION_ID } from './kanban.constants'
@@ -40,24 +40,27 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
   const containers = [UNCATEGORIZED_OPTION_ID, ...options.map((o) => o.key.value)]
   const lastOption = options[options.length - 1]
 
-  const groupOptionRecords = () =>
-    groupBy(records, (record) => {
-      const value = record.values.value.get(field.id.value) as SelectFieldValue | undefined
+  const groupOptionRecords = useCallback(
+    () =>
+      groupBy(records, (record) => {
+        const value = record.values.value.get(field.id.value) as SelectFieldValue | undefined
 
-      if (!value?.id) return UNCATEGORIZED_OPTION_ID
-      return value.id
-    })
+        if (!value?.id) return UNCATEGORIZED_OPTION_ID
+        return value.id
+      }),
+    [field.id.value, records],
+  )
   const [optionRecords, setOptionRecords] = useState(groupOptionRecords())
 
   const [reorderOptions] = useReorderOptionsMutation()
 
   useEffect(() => {
     handlers.setState(field.options.options)
-  }, [field])
+  }, [field, handlers])
 
   useEffect(() => {
     setOptionRecords(groupOptionRecords())
-  }, [records])
+  }, [groupOptionRecords, records])
 
   const sensors = useSensors(
     useSensor(MouseSensor, {

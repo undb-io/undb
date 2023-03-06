@@ -108,7 +108,7 @@ export const TreeView: React.FC<IProps> = ({ field, indentationWidth = 50, recor
 
   useEffect(() => {
     setItems(records.map((r) => mapper(schema, r)))
-  }, [records])
+  }, [records, schema])
 
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [overId, setOverId] = useState<UniqueIdentifier | null>(null)

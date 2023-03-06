@@ -92,7 +92,7 @@ export const useKanban = <TContainer, TItem>({
 
       return lastOverId.current ? [{ id: lastOverId.current }] : []
     },
-    [activeId, containers],
+    [activeId, containers, getItemId, items],
   )
 
   useEffect(() => {

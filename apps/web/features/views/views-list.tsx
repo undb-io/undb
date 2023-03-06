@@ -18,7 +18,7 @@ export const ViewsList: React.FC = () => {
 
   useEffect(() => {
     handlers.setState(table.viewsOrder.order)
-  }, [table])
+  }, [handlers, table])
 
   const [moveView] = useMoveViewMutation()
 

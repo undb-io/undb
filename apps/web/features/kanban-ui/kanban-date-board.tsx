@@ -3,7 +3,7 @@ import { DndContext, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSen
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { RecordFactory } from '@egodb/core'
 import { Container, Group } from '@egodb/ui'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { KanbanLane } from './kanban-lane'
 import { KanbanCard } from './kanban-card'
 import { NODATE_STACK_ID } from './kanban.constants'
@@ -42,22 +42,25 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
 
   const records = RecordFactory.fromQueryRecords(listRecords.rawRecords, table.schema.toIdMap())
 
-  const groupDateRecords = (): Record<string, CoreRecord[]> =>
-    groupBy(records, (record) => {
-      const value = (record.values.value.get(field.id.value) as DateFieldValue | undefined)?.unpack()
-      if (!value) return 'NO_DATE'
-      if (isToday(value)) return 'TODAY'
-      if (isTomorrow(value)) return 'TOMORROW'
-      if (isYesterday(value)) return 'YESTERDAY'
-      if (isAfter(value, endOfDay(addDays(value, 1)))) return 'AFTER_TOMORROW'
-      if (isBefore(value, startOfDay(addDays(value, -1)))) return 'AFTER_TOMORROW'
-      return 'NO_DATE'
-    })
+  const groupDateRecords = useCallback(
+    (): Record<string, CoreRecord[]> =>
+      groupBy(records, (record) => {
+        const value = (record.values.value.get(field.id.value) as DateFieldValue | undefined)?.unpack()
+        if (!value) return 'NO_DATE'
+        if (isToday(value)) return 'TODAY'
+        if (isTomorrow(value)) return 'TOMORROW'
+        if (isYesterday(value)) return 'YESTERDAY'
+        if (isAfter(value, endOfDay(addDays(value, 1)))) return 'AFTER_TOMORROW'
+        if (isBefore(value, startOfDay(addDays(value, -1)))) return 'AFTER_TOMORROW'
+        return 'NO_DATE'
+      }),
+    [field.id.value, records],
+  )
   const [dateRecords, setDateRecords] = useState(groupDateRecords())
 
   useEffect(() => {
     setDateRecords(groupDateRecords())
-  }, [records])
+  }, [groupDateRecords, records])
 
   const sensors = useSensors(
     useSensor(MouseSensor, {

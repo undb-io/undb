@@ -19,6 +19,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
   label: string
 }
 
+// eslint-disable-next-line react/display-name
 const TreeSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, label, ...others }: ItemProps, ref) => (
   <Group key={value} ref={ref} p="xs" {...others}>
     <RecordValue value={label} />
@@ -39,7 +40,7 @@ export const TreeRecordsPicker: React.FC<IProps> = ({ field, ...rest }) => {
 
   useEffect(() => {
     getRecords({ tableId: table.id.value, treeFieldId: field.id.value, recordId })
-  }, [focused])
+  }, [field.id.value, focused, getRecords, recordId, table.id.value])
 
   const data = useReferenceDisplayValues(field, recordId, foreignRecords)
 

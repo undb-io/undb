@@ -1,7 +1,16 @@
 {
   "extends": "tsconfig/nextjs.json",
-  "include": ["next-env.d.ts", "emotion.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"],
+  "include": [
+    "next-env.d.ts",
+    "emotion.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "/Users/chenqinnee/egodb/apps/web/.next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
   "compilerOptions": {
     "plugins": [
       {

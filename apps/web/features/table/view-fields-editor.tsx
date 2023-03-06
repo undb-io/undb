@@ -100,7 +100,7 @@ export const ViewFieldsEditor: React.FC = () => {
 
   useEffect(() => {
     handlers.setState(table.getFieldsOrder(view))
-  }, [table])
+  }, [handlers, table, view])
 
   const onChange: OnVisibleChange = (fieldId: string, visible: boolean) => {
     setFieldVisibility({ tableId: table.id.value, viewId: view.id.value, fieldId, hidden: !visible })

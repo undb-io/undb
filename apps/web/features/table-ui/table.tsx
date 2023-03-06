@@ -38,7 +38,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
 
   useEffect(() => {
     dispatch(setTableSelectedRecordIds({ tableId: table.id.value, ids: rowSelection }))
-  }, [rowSelection])
+  }, [dispatch, rowSelection, table.id.value])
 
   useEffect(() => {
     setRowSelection(selectedRecordIds)
@@ -46,7 +46,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
 
   useLayoutEffect(() => {
     handlers.setState(initialFields)
-  }, [table])
+  }, [handlers, initialFields, table])
 
   const selection: ColumnDef<TData> = {
     enableResizing: false,
