@@ -1,4 +1,4 @@
 module.exports = {
   root: true,
-  extends: ["@egodb/eslint-config"],
-};
+  extends: ['@egodb/eslint-config', 'next'],
+}
