@@ -69,62 +69,39 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index 
           {...menuProps}
           onClick={() =>
             openContextModal({
-              title: 'Update Field',
+              title: t('Update Field'),
               modal: UPDATE_FIELD_MODAL_ID,
               innerProps: { field },
             })
           }
         >
-          Update Field
+          {t('Update Field')}
         </Menu.Item>
 
         <Menu.Divider />
 
         {orientation === 'vertial' ? (
           <>
-            <Menu.Item onClick={insertAt(index - 1)} icon={<IconRowInsertTop size={14} />}>
-              Insert Before
+            <Menu.Item {...menuProps} onClick={insertAt(index - 1)} icon={<IconRowInsertTop size={14} />}>
+              {t('Insert Field Before')}
             </Menu.Item>
-            <Menu.Item onClick={insertAt(index + 1)} icon={<IconRowInsertBottom size={14} />}>
-              Insert After
+            <Menu.Item {...menuProps} onClick={insertAt(index + 1)} icon={<IconRowInsertBottom size={14} />}>
+              {t('Insert Field After')}
             </Menu.Item>
           </>
         ) : (
           <>
-            <Menu.Item onClick={insertAt(index - 1)} icon={<IconColumnInsertLeft size={14} />}>
-              Insert Left
+            <Menu.Item {...menuProps} onClick={insertAt(index - 1)} icon={<IconColumnInsertLeft size={14} />}>
+              {t('Insert Field Left')}
             </Menu.Item>
-            <Menu.Item onClick={insertAt(index + 1)} icon={<IconColumnInsertRight size={14} />}>
-              Insert Right
+            <Menu.Item {...menuProps} onClick={insertAt(index + 1)} icon={<IconColumnInsertRight size={14} />}>
+              {t('Insert Field Right')}{' '}
             </Menu.Item>
           </>
         )}
 
         <Menu.Divider />
 
-        <Menu.Item
-          icon={<IconSortDescending size={14} />}
-          {...menuProps}
-          sx={(theme) => ({ backgroundColor: direction === 'desc' ? theme.colors.gray[2] : 'inherit' })}
-          onClick={() => {
-            if (direction === 'desc') {
-              resetFieldSort({
-                tableId: table.id.value,
-                viewId: view.id.value,
-                fieldId: field.id.value,
-              })
-            } else {
-              setFieldSort({
-                tableId: table.id.value,
-                viewId: view.id.value,
-                fieldId: field.id.value,
-                direction: 'desc',
-              })
-            }
-          }}
-        >
-          {direction === 'desc' ? 'Remove sort: Descending' : 'Sort: Descending'}
-        </Menu.Item>
         <Menu.Item
           icon={<IconSortAscending size={14} />}
           {...menuProps}
@@ -146,7 +123,30 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index 
             }
           }}
         >
-          {direction === 'asc' ? 'Remove sort: Ascending' : 'Sort: Ascending'}
+          {direction === 'asc' ? t('Delete Sort Ascending') : t('Sort Ascending')}
+        </Menu.Item>
+        <Menu.Item
+          icon={<IconSortDescending size={14} />}
+          {...menuProps}
+          sx={(theme) => ({ backgroundColor: direction === 'desc' ? theme.colors.gray[2] : 'inherit' })}
+          onClick={() => {
+            if (direction === 'desc') {
+              resetFieldSort({
+                tableId: table.id.value,
+                viewId: view.id.value,
+                fieldId: field.id.value,
+              })
+            } else {
+              setFieldSort({
+                tableId: table.id.value,
+                viewId: view.id.value,
+                fieldId: field.id.value,
+                direction: 'desc',
+              })
+            }
+          }}
+        >
+          {direction === 'desc' ? t('Delete Sort Desending') : t('Sort Desending')}
         </Menu.Item>
 
         <Menu.Item
@@ -156,12 +156,12 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index 
             setVisibility({ tableId: table.id.value, viewId: view.id.value, fieldId: field.id.value, hidden: true })
           }
         >
-          Hide Field
+          {t('Hide Field')}
         </Menu.Item>
 
         {!field.system && (
           <Menu.Item icon={<IconTrash size={14} />} {...menuProps} color="red" onClick={confirm}>
-            Delete Field
+            {t('Delete Field')}
           </Menu.Item>
         )}
       </Menu.Dropdown>
