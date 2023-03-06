@@ -13,9 +13,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   experimental: {
     appDir: true,
     outputFileTracingRoot: path.join(__dirname, '../../'),
