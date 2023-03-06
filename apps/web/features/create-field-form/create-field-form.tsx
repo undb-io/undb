@@ -12,10 +12,13 @@ import type { ICreateFieldProps } from './create-field.props'
 import { useCreateFieldMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
+import { useTranslation } from 'react-i18next'
 
 export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) => {
   const table = useCurrentTable()
   const view = useCurrentView()
+
+  const { t } = useTranslation()
 
   const defaultValues: ICreateFieldSchema = {
     type: 'string',
@@ -53,8 +56,8 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
                 searchable
                 onChange={(type) => type && props.field.onChange(type)}
                 required
-                label={<FieldInputLabel>type</FieldInputLabel>}
-                data={FIELD_SELECT_ITEMS}
+                label={<FieldInputLabel>{t('Type', { ns: 'common' })}</FieldInputLabel>}
+                data={FIELD_SELECT_ITEMS.map((item) => ({ value: item.value, label: t(item.label!) as string }))}
                 itemComponent={FieldItem}
                 icon={<FieldIcon type={form.watch('type')} />}
                 withinPortal
@@ -63,9 +66,9 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
           />
           <TextInput
             {...form.register('name')}
-            label={<FieldInputLabel>name</FieldInputLabel>}
+            label={<FieldInputLabel>{t('Name', { ns: 'common' })}</FieldInputLabel>}
             required
-            placeholder="field name"
+            placeholder={t('Field Name') as string}
           />
           <FieldVariantControl isNew />
 
@@ -79,11 +82,11 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
                 closeAllModals()
               }}
             >
-              Cancel
+              {t('Cancel', { ns: 'common' })}
             </Button>
 
             <Button loading={isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
-              Create
+              {t('Create', { ns: 'common' })}
             </Button>
           </Group>
         </Stack>

@@ -8,6 +8,7 @@ import { SelectFieldControl } from '../field-inputs/select-field-control'
 import { TablePicker } from '../table/table-picker'
 import { useNullableCurrentTable } from '../../hooks/use-current-table'
 import { DateFormatPicker } from './date-format-picker'
+import { useTranslation } from 'react-i18next'
 
 interface IProps {
   isNew: boolean
@@ -15,6 +16,8 @@ interface IProps {
 
 export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
   const table = useNullableCurrentTable()
+
+  const { t } = useTranslation()
 
   type FormValues = typeof isNew extends 'true' ? ICreateFieldSchema : IUpdateFieldSchema
   const form = useFormContext<FormValues>()
@@ -27,9 +30,10 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
         render={(props) => (
           <NumberInput
             {...props.field}
+            label={<FieldInputLabel>{t('Max', { ns: 'common' })}</FieldInputLabel>}
             defaultValue={RATING_MAX_DEFAULT}
             max={RATING_MAX}
-            placeholder="set rating max..."
+            placeholder={t('Set Rating Max') as string}
             onChange={(number) => props.field.onChange(number)}
           />
         )}
@@ -59,11 +63,11 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
         {type === 'reference' && (
           <Controller
             name="foreignTableId"
-            render={(props) => <TablePicker {...props.field} placeholder="select foreign table" />}
+            render={(props) => <TablePicker {...props.field} placeholder={t('Select Foreign Table') as string} />}
           />
         )}
         <Controller
-          name={'displayFieldIds'}
+          name="displayFieldIds"
           render={(props) => (
             <DisplayFieldsPicker
               tableId={form.watch('foreignTableId') ?? table?.id.value}
@@ -81,7 +85,9 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
     return (
       <Controller
         name="format"
-        render={(props) => <DateFormatPicker {...props.field} variant="default" placeholder="select date format" />}
+        render={(props) => (
+          <DateFormatPicker {...props.field} variant="default" placeholder={t('Select Date Format') as string} />
+        )}
       />
     )
   }

@@ -4,6 +4,7 @@ import { useCreateOptionMutation } from '@egodb/store'
 import { Stack, TextInput, Group, Button, closeAllModals } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { OptionColorPicker } from '../field-inputs/option-color-picker'
 import type { ICreateOptionFormProps } from './create-option-form.props'
@@ -18,6 +19,7 @@ export const CreateOptionForm: React.FC<ICreateOptionFormProps> = ({ field, colo
     resolver: zodResolver(createOptionSchema),
   })
 
+  const { t } = useTranslation()
   const [createOption, { isLoading }] = useCreateOptionMutation()
 
   const onSubmit = form.handleSubmit(async (values) => {
@@ -47,7 +49,7 @@ export const CreateOptionForm: React.FC<ICreateOptionFormProps> = ({ field, colo
         </Group>
         <Group position="right">
           <Button size="xs" variant="white" onClick={() => closeAllModals()}>
-            Cancel
+            {t('Cancel', { ns: 'common' })}
           </Button>
           <Button
             size="xs"
@@ -55,7 +57,7 @@ export const CreateOptionForm: React.FC<ICreateOptionFormProps> = ({ field, colo
             disabled={!form.formState.isValid || !form.formState.isDirty}
             loading={isLoading}
           >
-            Done
+            {t('Done', { ns: 'common' })}
           </Button>
         </Group>
       </Stack>

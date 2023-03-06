@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import type { IUpdateFieldProps } from './update-field.props'
 import { useUpdateFieldMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { useTranslation } from 'react-i18next'
 
 export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }) => {
   const table = useCurrentTable()
@@ -65,6 +66,8 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
     closeAllModals()
   })
 
+  const { t } = useTranslation()
+
   return (
     <FormProvider {...form}>
       <form onSubmit={onSubmit}>
@@ -78,12 +81,15 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
                 disabled
                 readOnly
                 required
-                label={<FieldInputLabel>type</FieldInputLabel>}
+                label={<FieldInputLabel>{t('Type', { ns: 'common' })}</FieldInputLabel>}
                 icon={<FieldIcon type={form.watch('type')} />}
               />
             )}
           />
-          <TextInput {...form.register('name')} label={<FieldInputLabel>name</FieldInputLabel>} />
+          <TextInput
+            {...form.register('name')}
+            label={<FieldInputLabel>{t('Name', { ns: 'common' })}</FieldInputLabel>}
+          />
 
           <FieldVariantControl isNew={false} />
 
@@ -97,7 +103,7 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
                 closeAllModals()
               }}
             >
-              Cancel
+              {t('Cancel', { ns: 'common' })}
             </Button>
 
             <Button
@@ -106,7 +112,7 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
               disabled={!form.formState.isValid || !form.formState.isDirty}
               type="submit"
             >
-              Update
+              {t('Update', { ns: 'common' })}
             </Button>
           </Group>
         </Stack>

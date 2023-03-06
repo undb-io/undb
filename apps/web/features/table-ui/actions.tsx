@@ -10,6 +10,7 @@ import {
   Menu,
   useClipboard,
 } from '@egodb/ui'
+import { useTranslation } from 'react-i18next'
 import { useConfirmModal } from '../../hooks'
 import type { TRow } from './interface'
 
@@ -29,6 +30,8 @@ export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableI
   })
 
   const [duplicateRecord] = useDuplicateRecordMutation()
+
+  const { t } = useTranslation()
 
   return (
     <Group>
@@ -50,7 +53,7 @@ export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableI
             }}
             icon={<IconRowInsertBottom size={14} />}
           >
-            Duplciate Record
+            {t('Duplicate Record')}
           </Menu.Item>
           <Menu.Item
             onClick={(e) => {
@@ -59,7 +62,7 @@ export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableI
             }}
             icon={<IconCopy size={14} />}
           >
-            Copy Record Id
+            {t('Copy Record Id')}
           </Menu.Item>
           <Menu.Item
             color="red"
@@ -69,7 +72,7 @@ export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableI
             }}
             icon={<IconTrash size={14} />}
           >
-            Delete Record
+            {t('Delete Record')}
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

@@ -66,7 +66,7 @@ export const CreateDateField: React.FC<IProps> = ({ onSuccess }) => {
               Select Existing Field
             </Button>
             <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={isLoading}>
-              Done
+              {t('Done', { ns: 'common' })}
             </Button>
           </Group>
         </Card.Section>

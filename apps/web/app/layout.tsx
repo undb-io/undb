@@ -7,6 +7,7 @@ import { CreateTableFormDrawer } from '../features/create-table-form'
 import { TableList } from '../features/table/table-list'
 import { AtomsDevtools } from './atom-devtool'
 import RootStyleRegistry from './emotion'
+import '../i18n/client'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const { store, persist } = createStore()

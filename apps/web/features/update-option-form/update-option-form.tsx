@@ -7,6 +7,7 @@ import { useUpdateOptionMutation } from '@egodb/store'
 import { Group, Button, TextInput, Stack, closeAllModals } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { OptionColorPicker } from '../field-inputs/option-color-picker'
 
 interface IProps {
@@ -38,6 +39,8 @@ export const UpdateOptionForm: React.FC<IProps> = ({ tableId, field, optionKey, 
     closeAllModals()
   })
 
+  const { t } = useTranslation()
+
   return (
     <form onSubmit={onSubmit}>
       <Stack>
@@ -54,7 +57,7 @@ export const UpdateOptionForm: React.FC<IProps> = ({ tableId, field, optionKey, 
 
         <Group position="right">
           <Button size="xs" variant="white" onClick={() => closeAllModals()}>
-            Cancel
+            {t('Cancel', { ns: 'common' })}
           </Button>
           <Button
             size="xs"
@@ -62,7 +65,7 @@ export const UpdateOptionForm: React.FC<IProps> = ({ tableId, field, optionKey, 
             disabled={!form.formState.isValid || !form.formState.isDirty}
             loading={isLoading}
           >
-            Done
+            {t('Done', { ns: 'common' })}
           </Button>
         </Group>
       </Stack>

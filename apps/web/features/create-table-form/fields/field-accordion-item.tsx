@@ -21,6 +21,7 @@ import { FieldIcon } from '../../field-inputs/field-Icon'
 import { FieldItem } from '../../field-inputs/field-item'
 import { Controller, useFormContext } from 'react-hook-form'
 import type { ICreateTableInput } from '@egodb/cqrs'
+import { useTranslation } from 'react-i18next'
 
 interface IProps {
   id: number
@@ -41,6 +42,8 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
     transform: CSS.Transform.toString(transform),
     transition,
   }
+
+  const { t } = useTranslation()
 
   return (
     <Accordion.Item id={String(id)} opacity={isDragging ? 0.5 : 1} value={String(id)}>
@@ -69,7 +72,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
                   defaultValue="string"
                   variant="filled"
                   required={true}
-                  data={FIELD_SELECT_ITEMS}
+                  data={FIELD_SELECT_ITEMS.map((item) => ({ value: item.value, label: t(item.label!) as string }))}
                   itemComponent={FieldItem}
                   icon={<FieldIcon type={form.watch(`schema.${index}.type`)} />}
                 />

@@ -6,6 +6,7 @@ import { Button, Card, FocusTrap, Group, IconChevronLeft, Stack, Text, TextInput
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { SelectFieldControl } from '../field-inputs/select-field-control'
@@ -47,7 +48,7 @@ export const CreateSelectField: React.FC<IProps> = ({ onSuccess }) => {
     setStepZero()
     onSuccess?.()
   })
-
+  const { t } = useTranslation()
   const setStepZero = useSetAtom(kanbanStepZeroAtom)
   return (
     <form onSubmit={onSubmit}>
@@ -75,7 +76,7 @@ export const CreateSelectField: React.FC<IProps> = ({ onSuccess }) => {
               Select Existing Field
             </Button>
             <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={isLoading}>
-              Done
+              {t('Done', { ns: 'common' })}
             </Button>
           </Group>
         </Card.Section>

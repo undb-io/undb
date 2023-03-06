@@ -5,6 +5,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { useEffect, useState } from 'react'
 import { FieldSelector } from '../field-inputs/field-selector'
 import { getSortId } from './get-sort-id'
+import { useTranslation } from 'react-i18next'
 
 interface IProps {
   fields: Field[]
@@ -34,6 +35,8 @@ export const FieldSort: React.FC<IProps> = ({ fields, value, onChange, onRemove,
     }
   }, [selectedField, direction])
 
+  const { t } = useTranslation()
+
   return (
     <Group ref={setNodeRef} style={style} spacing="xs">
       <ActionIcon {...attributes} {...listeners} component="a">
@@ -49,8 +52,8 @@ export const FieldSort: React.FC<IProps> = ({ fields, value, onChange, onRemove,
           }
         }}
         data={[
-          { value: 'asc', label: 'A -> Z' },
-          { value: 'desc', label: 'Z -> A' },
+          { value: 'asc', label: t('Asc', { ns: 'common' }) },
+          { value: 'desc', label: t('Desc', { ns: 'common' }) },
         ]}
       />
       <ActionIcon color="gray.5" variant="outline" onClick={() => onRemove(index)}>

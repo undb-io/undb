@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { DisplayTypePicker } from '../views/display-type-picker'
@@ -40,7 +41,7 @@ export const CreateViewForm: React.FC = () => {
     setOpened(false)
     router.push(`/t/${table.id.value}/${id}`)
   })
-
+  const { t } = useTranslation()
   return (
     <form onSubmit={onSubmit}>
       <Stack>
@@ -61,11 +62,11 @@ export const CreateViewForm: React.FC = () => {
               closeAllModals()
             }}
           >
-            Cancel
+            {t('Cancel', { ns: 'common' })}
           </Button>
 
           <Button loading={isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
-            Create
+            {t('Create', { ns: 'common' })}
           </Button>
         </Group>
       </Stack>

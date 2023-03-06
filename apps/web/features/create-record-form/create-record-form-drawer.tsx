@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useConfirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
@@ -44,6 +45,8 @@ export const CreateRecordFormDrawer: React.FC = () => {
   }
   const confirm = useConfirmModal({ onConfirm: reset })
 
+  const { t } = useTranslation()
+
   return (
     <FormProvider {...form}>
       <Drawer
@@ -57,7 +60,7 @@ export const CreateRecordFormDrawer: React.FC = () => {
             reset()
           }
         }}
-        title="New Record"
+        title={t('Create New Record')}
         padding="xl"
         position="right"
         size={700}

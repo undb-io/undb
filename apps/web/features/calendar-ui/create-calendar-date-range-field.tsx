@@ -6,6 +6,7 @@ import { Button, Card, FocusTrap, Group, IconChevronLeft, Stack, Text, TextInput
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { calendarStepZero } from './calendar-step.atom'
@@ -45,7 +46,7 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ onSuccess }) =>
 
     onSuccess?.()
   })
-
+  const { t } = useTranslation()
   const setStepZero = useSetAtom(calendarStepZero)
   return (
     <form onSubmit={onSubmit}>
@@ -68,7 +69,7 @@ export const CreateCalendarDateRangeField: React.FC<IProps> = ({ onSuccess }) =>
               Select Existing Field
             </Button>
             <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={isLoading}>
-              Done
+              {t('Done', { ns: 'common' })}
             </Button>
           </Group>
         </Card.Section>

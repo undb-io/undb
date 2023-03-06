@@ -4,6 +4,7 @@ import { Alert, Button, Divider, Group, IconAlertCircle, IconPlus, openContextMo
 // import { DevTool } from '@hookform/devtools'
 import type { FieldPath } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { CREATE_FIELD_MODAL_ID } from '../../modals'
@@ -37,6 +38,8 @@ export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
     form.reset()
   }
 
+  const { t } = useTranslation()
+
   return (
     <>
       <form onSubmit={onSubmit}>
@@ -58,23 +61,23 @@ export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
           tabIndex={-1}
           onClick={() => {
             openContextModal({
-              title: 'Create New Field',
+              title: t('Create New Field'),
               modal: CREATE_FIELD_MODAL_ID,
               innerProps: {},
             })
           }}
         >
-          Add New Field to Table
+          {t('Create New Field')}
         </Button>
         <Divider my="lg" />
 
         <Group position="right">
           <Button variant="subtle" onClick={() => onCancel()}>
-            Cancel
+            {t('Cancel', { ns: 'common' })}
           </Button>
 
           <Button loading={isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
-            Create
+            {t('Create', { ns: 'common' })}
           </Button>
         </Group>
 

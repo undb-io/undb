@@ -2,6 +2,7 @@ import type { ICreateTableInput } from '@egodb/cqrs'
 import { FieldId } from '@egodb/core'
 import { Button, IconPlus } from '@egodb/ui'
 import { useFieldArray, useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 export const CreateTableAddFieldButton: React.FC = () => {
   const form = useFormContext<ICreateTableInput>()
@@ -10,6 +11,8 @@ export const CreateTableAddFieldButton: React.FC = () => {
   })
   const len = form.watch('schema').length
   const hasSchema = len > 0
+
+  const { t } = useTranslation()
 
   return (
     <Button
@@ -21,7 +24,7 @@ export const CreateTableAddFieldButton: React.FC = () => {
       variant={hasSchema ? 'white' : 'light'}
       leftIcon={<IconPlus />}
     >
-      Add New Field
+      {t('Create New Field')}
     </Button>
   )
 }

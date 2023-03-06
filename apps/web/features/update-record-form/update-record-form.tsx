@@ -21,6 +21,7 @@ import { useAppSelector } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { CREATE_FIELD_MODAL_ID } from '../../modals'
+import { useTranslation } from 'react-i18next'
 
 interface IProps {
   onCancel: () => void
@@ -66,6 +67,8 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
     form.reset()
   }
 
+  const { t } = useTranslation()
+
   return (
     <>
       <form onSubmit={onSubmit} style={{ paddingBottom: '20px' }}>
@@ -87,13 +90,13 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
           tabIndex={-1}
           onClick={() => {
             openContextModal({
-              title: 'Create New Field',
+              title: t('Create New Field'),
               modal: CREATE_FIELD_MODAL_ID,
               innerProps: {},
             })
           }}
         >
-          Add New Field to Table
+          {t('Create New Field')}
         </Button>
 
         <Divider my="lg" />
@@ -115,7 +118,7 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
         >
           <Group position="right">
             <Button variant="subtle" onClick={() => onCancel()}>
-              Cancel
+              {t('Cancel', { ns: 'common' })}
             </Button>
 
             <Button
@@ -124,7 +127,7 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
               disabled={!form.formState.isValid || !form.formState.isDirty}
               loading={isLoading}
             >
-              Confirm
+              {t('Confirm', { ns: 'common' })}
             </Button>
           </Group>
         </Box>

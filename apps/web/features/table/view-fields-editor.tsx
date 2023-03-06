@@ -18,6 +18,7 @@ import { ActionIcon, IconGripVertical } from '@egodb/ui'
 import { Tooltip } from '@egodb/ui'
 import { Badge, Button, Checkbox, Group, Popover, Stack, useDisclosure } from '@egodb/ui'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { CREATE_FIELD_MODAL_ID } from '../../modals'
@@ -95,6 +96,8 @@ export const ViewFieldsEditor: React.FC = () => {
 
   const [order, handlers] = useListState(table.getFieldsOrder(view))
 
+  const { t } = useTranslation()
+
   useEffect(() => {
     handlers.setState(table.getFieldsOrder(view))
   }, [table])
@@ -131,7 +134,7 @@ export const ViewFieldsEditor: React.FC = () => {
               ) : null
             }
           >
-            Fields
+            {t('Config Fields')}
           </Button>
         </Tooltip>
       </Popover.Target>
@@ -204,13 +207,13 @@ export const ViewFieldsEditor: React.FC = () => {
               onClick={() => {
                 handler.close()
                 openContextModal({
-                  title: 'Create New Field',
+                  title: t('Create New Field'),
                   modal: CREATE_FIELD_MODAL_ID,
                   innerProps: {},
                 })
               }}
             >
-              Create New Field
+              {t('Create New Field')}
             </Button>
           </Stack>
         </Popover.Dropdown>

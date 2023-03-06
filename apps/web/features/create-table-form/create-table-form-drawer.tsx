@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useConfirmModal } from '../../hooks'
 import { CreateTableForm } from './create-table-form'
 import { activeFieldAtom } from './create-table-form-schema.atom'
@@ -32,6 +33,7 @@ export const CreateTableFormDrawer: React.FC = () => {
     form.reset()
   }
   const confirm = useConfirmModal({ onConfirm: reset })
+  const { t } = useTranslation()
 
   return (
     <FormProvider {...form}>
@@ -45,7 +47,7 @@ export const CreateTableFormDrawer: React.FC = () => {
             reset()
           }
         }}
-        title="New Table"
+        title={t('Create New Table')}
         padding="xl"
         position="right"
         size={700}

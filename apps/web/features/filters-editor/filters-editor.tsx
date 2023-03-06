@@ -9,6 +9,7 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { getFilterId } from './get-filter-id'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
+import { useTranslation } from 'react-i18next'
 interface IProps {
   onChange?: (filters: IFilterOrGroupList) => void
   onApply?: (filters: IFilterOrGroupList) => void
@@ -18,6 +19,8 @@ interface IProps {
 export const FiltersEditor: React.FC<IProps> = ({ onChange, onApply, onCancel }) => {
   const table = useCurrentTable()
   const view = useCurrentView()
+
+  const { t } = useTranslation()
 
   // TODO: ignore group for now
   const initialFilters = view.filterList as IFilter[]
@@ -75,14 +78,14 @@ export const FiltersEditor: React.FC<IProps> = ({ onChange, onApply, onCancel })
             leftIcon={<IconPlus size={14} />}
             onClick={() => handlers.append(null)}
           >
-            Add new filter
+            {t('Create New Filter')}
           </Button>
           <Group>
             <Button onClick={onCancel} variant="subtle" size="xs">
-              Cancel
+              {t('Cancel', { ns: 'common' })}
             </Button>
             <Button size="xs" onClick={() => onApply?.(validFilters)}>
-              Apply
+              {t('Apply', { ns: 'common' })}
             </Button>
           </Group>
         </Group>
