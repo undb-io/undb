@@ -1,7 +1,7 @@
 import { RecordFactory } from '@egodb/core'
 import { updateRecordSchema } from '@egodb/core'
 import type { IUpdateRecordValueSchema, UnpackedFieldValue } from '@egodb/core'
-import { ActionIcon, Drawer, IconChevronLeft, IconChevronRight } from '@egodb/ui'
+import { ActionIcon, Drawer, IconChevronLeft, IconChevronRight, LoadingOverlay } from '@egodb/ui'
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector, useConfirmModal } from '../../hooks'
 import { UpdateRecordForm } from './update-record-form'
@@ -24,7 +24,7 @@ export const UpdateRecordFormDrawer: React.FC = () => {
   const opened = useAppSelector(getHasSelectedRecordId)
 
   const selectedRecordId = useAppSelector(getSelectedRecordId)
-  const { selectedRecord, data } = useGetRecordQuery(
+  const { selectedRecord, data, isLoading } = useGetRecordQuery(
     { id: selectedRecordId, tableId: table.id.value },
     {
       skip: !selectedRecordId,
@@ -96,6 +96,7 @@ export const UpdateRecordFormDrawer: React.FC = () => {
             Update Record
           </Drawer.Header>
           <Drawer.Body>
+            <LoadingOverlay visible={isLoading} />
             <UpdateRecordForm onCancel={reset} />
           </Drawer.Body>
           <ActionIcon

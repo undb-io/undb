@@ -1,1 +1,1 @@
-export { Overlay } from '@mantine/core'
+export { Overlay, LoadingOverlay } from '@mantine/core'
