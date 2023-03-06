@@ -81,12 +81,15 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
                 disabled
                 readOnly
                 required
-                label={<FieldInputLabel>type</FieldInputLabel>}
+                label={<FieldInputLabel>{t('Type', { ns: 'common' })}</FieldInputLabel>}
                 icon={<FieldIcon type={form.watch('type')} />}
               />
             )}
           />
-          <TextInput {...form.register('name')} label={<FieldInputLabel>name</FieldInputLabel>} />
+          <TextInput
+            {...form.register('name')}
+            label={<FieldInputLabel>{t('Name', { ns: 'common' })}</FieldInputLabel>}
+          />
 
           <FieldVariantControl isNew={false} />
 

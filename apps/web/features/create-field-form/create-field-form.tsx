@@ -56,7 +56,7 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
                 searchable
                 onChange={(type) => type && props.field.onChange(type)}
                 required
-                label={<FieldInputLabel>type</FieldInputLabel>}
+                label={<FieldInputLabel>{t('Type', { ns: 'common' })}</FieldInputLabel>}
                 data={FIELD_SELECT_ITEMS}
                 itemComponent={FieldItem}
                 icon={<FieldIcon type={form.watch('type')} />}
@@ -66,9 +66,9 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
           />
           <TextInput
             {...form.register('name')}
-            label={<FieldInputLabel>name</FieldInputLabel>}
+            label={<FieldInputLabel>{t('Name', { ns: 'common' })}</FieldInputLabel>}
             required
-            placeholder="field name"
+            placeholder={t('Field Name') as string}
           />
           <FieldVariantControl isNew />
 

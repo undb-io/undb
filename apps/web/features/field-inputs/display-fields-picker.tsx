@@ -6,6 +6,7 @@ import { useListState } from '@egodb/ui'
 import { ActionIcon, Group, Text } from '@egodb/ui'
 import { MultiSelect } from '@egodb/ui'
 import { forwardRef, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FieldIcon } from './field-Icon'
 import { FieldInputLabel } from './field-input-label'
 import type { FieldBase } from './field-picker.type'
@@ -43,6 +44,8 @@ export const DisplayFieldsPicker: React.FC<IProps> = ({ tableId, fields, ...prop
     handlers.setState(props.value ?? [])
   }, [tableId])
 
+  const { t } = useTranslation()
+
   const items =
     table?.schema?.fields
       .filter((f) => f.isPrimitive())
@@ -56,9 +59,9 @@ export const DisplayFieldsPicker: React.FC<IProps> = ({ tableId, fields, ...prop
 
   return (
     <MultiSelect
-      placeholder="select display fields"
+      placeholder={t('Select Display Fields') as string}
       variant="filled"
-      label={<FieldInputLabel>Display Fields</FieldInputLabel>}
+      label={<FieldInputLabel>{t('Display Fields')}</FieldInputLabel>}
       {...props}
       value={state}
       onChange={(value) => {

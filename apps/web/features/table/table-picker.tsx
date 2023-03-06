@@ -1,11 +1,13 @@
 import { useGetTablesQuery } from '@egodb/store'
 import type { SelectItem, SelectProps } from '@egodb/ui'
 import { Select } from '@egodb/ui'
+import { useTranslation } from 'react-i18next'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 
 type IProps = Omit<SelectProps, 'data'>
 
 export const TablePicker: React.FC<IProps> = (props) => {
+  const { t } = useTranslation()
   const { items } = useGetTablesQuery(
     {},
     {
@@ -17,5 +19,5 @@ export const TablePicker: React.FC<IProps> = (props) => {
     },
   )
 
-  return <Select label={<FieldInputLabel>foreign table</FieldInputLabel>} {...props} data={items} withinPortal />
+  return <Select label={<FieldInputLabel>{t('Foreign Table')}</FieldInputLabel>} {...props} data={items} withinPortal />
 }
