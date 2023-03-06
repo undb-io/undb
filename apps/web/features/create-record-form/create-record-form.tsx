@@ -1,6 +1,6 @@
 import type { ICreateRecordInput } from '@egodb/cqrs'
 import { useCreateRecordMutation } from '@egodb/store'
-import { Alert, Button, Divider, Group, IconAlertCircle, IconPlus, openContextModal, Space, Stack } from '@egodb/ui'
+import { Alert, Box, Button, Group, IconAlertCircle, IconPlus, openContextModal, Space, Stack } from '@egodb/ui'
 // import { DevTool } from '@hookform/devtools'
 import type { FieldPath } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
@@ -69,23 +69,32 @@ export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
         >
           {t('Create New Field')}
         </Button>
-        <Divider my="lg" />
-
-        <Group position="right">
-          <Button variant="subtle" onClick={() => onCancel()}>
-            {t('Cancel', { ns: 'common' })}
-          </Button>
-
-          <Button loading={isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
-            {t('Create', { ns: 'common' })}
-          </Button>
-        </Group>
 
         {isError && (
           <Alert color="red" icon={<IconAlertCircle size={16} />} title="Oops! Create Record Error!" mt="lg">
             {(error as any).message}
           </Alert>
         )}
+
+        <Box
+          pos="fixed"
+          bottom={0}
+          right={0}
+          w="100%"
+          p="md"
+          bg="white"
+          sx={(theme) => ({ zIndex: 1000, borderTop: '1px solid ' + theme.colors.gray[2] })}
+        >
+          <Group position="right">
+            <Button variant="subtle" onClick={() => onCancel()}>
+              {t('Cancel', { ns: 'common' })}
+            </Button>
+
+            <Button loading={isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
+              {t('Create', { ns: 'common' })}
+            </Button>
+          </Group>
+        </Box>
       </form>
 
       {/* <DevTool control={form.control} /> */}
