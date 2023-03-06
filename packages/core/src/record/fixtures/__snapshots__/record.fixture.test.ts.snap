@@ -3,7 +3,7 @@
 exports[`createTestRecord 1`] = `
 Record {
   "autoIncrement": undefined,
-  "createdAt": DateVO {
+  "createdAt": c {
     "props": {
       "value": 2022-02-01T00:00:00.000Z,
     },
@@ -21,7 +21,7 @@ Record {
       "value": "tableId",
     },
   },
-  "updatedAt": DateVO {
+  "updatedAt": c {
     "props": {
       "value": 2022-02-01T00:00:00.000Z,
     },
@@ -41,7 +41,7 @@ Record {
 exports[`createTestRecord 2`] = `
 Record {
   "autoIncrement": undefined,
-  "createdAt": DateVO {
+  "createdAt": c {
     "props": {
       "value": 2022-02-01T00:00:00.000Z,
     },
@@ -59,7 +59,7 @@ Record {
       "value": "tableId",
     },
   },
-  "updatedAt": DateVO {
+  "updatedAt": c {
     "props": {
       "value": 2022-02-01T00:00:00.000Z,
     },
@@ -79,7 +79,7 @@ Record {
 exports[`createTestRecord 3`] = `
 Record {
   "autoIncrement": undefined,
-  "createdAt": DateVO {
+  "createdAt": c {
     "props": {
       "value": 2022-02-01T00:00:00.000Z,
     },
@@ -97,7 +97,7 @@ Record {
       "value": "tableId",
     },
   },
-  "updatedAt": DateVO {
+  "updatedAt": c {
     "props": {
       "value": 2022-02-01T00:00:00.000Z,
     },

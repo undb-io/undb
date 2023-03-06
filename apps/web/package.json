@@ -29,9 +29,7 @@
     "use-deep-compare-effect": "^1.8.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.0",
     "@egodb/eslint-config": "^0.0.0",
-    "@emotion/babel-plugin": "^11.10.6",
     "@hookform/devtools": "^4.3.0",
     "@next/bundle-analyzer": "^13.2.3",
     "@total-typescript/ts-reset": "^0.3.7",

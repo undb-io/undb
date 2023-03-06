@@ -28,7 +28,7 @@
     "build": "tsup",
     "clean": "rimraf dist",
     "coverage": "vitest run --coverage",
-    "dev": "tsup --watch --onSuccess=\"tsc --emitDeclarationOnly --declaration\" ",
+    "dev": "tsup --watch",
     "prebuild": "pnpm run clean",
     "test": "vitest run",
     "test:watch": "vitest"
