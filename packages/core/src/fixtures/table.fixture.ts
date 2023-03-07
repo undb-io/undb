@@ -1,9 +1,10 @@
-import type { StringField } from '../field/index.js'
-import { FieldFactory } from '../field/index.js'
+import type { ICreateSelectFieldSchema, ICreateStringFieldInput } from '../field/index.js'
+import { FieldFactory, SelectField, StringField } from '../field/index.js'
 import { WithNewField, WithTableId, WithTableName } from '../specifications/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import { TableFactory } from '../table.factory.js'
-import { Views } from '../view/index.js'
+import type { ICreateViewInput_internal } from '../view/index.js'
+import { View, Views } from '../view/index.js'
 import { WithTableViews } from '../view/specifications/views.specification.js'
 
 export const createTestTable = (...specs: TableCompositeSpecificaiton[]) => {
@@ -18,4 +19,32 @@ export const createTestTable = (...specs: TableCompositeSpecificaiton[]) => {
   }
 
   return TableFactory.create(spec).unwrap()
+}
+
+export const createTestView = (input: Partial<ICreateViewInput_internal> = {}): View => {
+  return View.create({
+    id: 'viw1',
+    name: 'view',
+    ...input,
+  })
+}
+
+export const createTestStringField = (input: Partial<Omit<ICreateStringFieldInput, 'type'>> = {}): StringField => {
+  return StringField.create({
+    id: 'fld1',
+    name: 'select',
+    ...input,
+  })
+}
+
+export const createTestSelectField = (input: Partial<Omit<ICreateSelectFieldSchema, 'type'>> = {}): SelectField => {
+  return SelectField.create({
+    id: 'fld1',
+    name: 'select',
+    options: [
+      { key: 'opt1', name: 'opt1' },
+      { key: 'opt2', name: 'opt2' },
+    ],
+    ...input,
+  })
 }
