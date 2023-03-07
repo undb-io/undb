@@ -1,16 +1,30 @@
+import { AppRouter } from '@egodb/trpc'
 import { NestFactory } from '@nestjs/core'
-import { json, urlencoded } from 'express'
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
+import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify'
 import { Logger } from 'nestjs-pino'
 import { AppModule } from './app.module.js'
+import { AppRouterSymbol } from './trpc/providers/app-router.js'
+import { TRPC_ENDPOINT } from './trpc/trpc.constants.js'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { bufferLogs: true })
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter({ maxParamLength: 5000 }),
+    {
+      bufferLogs: true,
+    },
+  )
   app.useLogger(app.get(Logger))
 
   app.enableCors()
-  app.use(json({ limit: '50mb' }))
-  app.use(urlencoded({ extended: true, limit: '50mb' }))
   app.enableShutdownHooks()
+
+  const router = app.get<AppRouter>(AppRouterSymbol)
+  await app.register(fastifyTRPCPlugin, {
+    prefix: TRPC_ENDPOINT,
+    trpcOptions: { router },
+  })
 
   await app.listen(4000)
 }
