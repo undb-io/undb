@@ -1,8 +1,10 @@
 import type { Field } from '@egodb/core'
 import { ActionIcon, IconDots, Menu } from '@egodb/ui'
+import React from 'react'
 import { FieldMenuDropdown } from '../field/field-menu-dropdown'
 
-export const TableUIFieldMenu: React.FC<{ field: Field; index: number }> = ({ field, index }) => {
+// eslint-disable-next-line react/display-name
+export const TableUIFieldMenu: React.FC<{ field: Field; index: number }> = React.memo(({ field, index }) => {
   return (
     <Menu width={250}>
       <Menu.Target>
@@ -14,4 +16,4 @@ export const TableUIFieldMenu: React.FC<{ field: Field; index: number }> = ({ fi
       <FieldMenuDropdown field={field} orientation="horizontal" index={index} />
     </Menu>
   )
-}
+})

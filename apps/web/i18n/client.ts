@@ -77,6 +77,8 @@ i18n
           'Copy Record Id': 'Copy Record Id',
           'Update Record': 'Update Record',
           'Delete Record': 'Delete Record',
+          'System fields': 'System fields',
+          'Show System Fields': 'Show System Fields',
         },
       },
       zh: {
@@ -149,6 +151,8 @@ i18n
           'Copy Record Id': '拷贝行 Id',
           'Update Record': '更新记录',
           'Delete Record': '删除记录',
+          'System fields': '系统列',
+          'Show System Fields': '显示系统列',
         },
       },
     },

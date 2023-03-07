@@ -1,5 +1,6 @@
 import { setSelectedRecordId } from '@egodb/store'
 import { flexRender } from '@tanstack/react-table'
+import React from 'react'
 import { useAppDispatch } from '../../hooks'
 import type { TRow } from './interface'
 
@@ -7,7 +8,9 @@ interface IProps {
   row: TRow
   id: string
 }
-export const Tr: React.FC<IProps> = ({ row, id }) => {
+
+// eslint-disable-next-line react/display-name
+export const Tr: React.FC<IProps> = React.memo(({ row, id }) => {
   const dispatch = useAppDispatch()
 
   return (
@@ -22,4 +25,4 @@ export const Tr: React.FC<IProps> = ({ row, id }) => {
       ))}
     </tr>
   )
-}
+})

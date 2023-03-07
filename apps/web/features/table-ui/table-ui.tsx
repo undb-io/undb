@@ -10,18 +10,21 @@ export const TableUI: React.FC = () => {
   const table = useCurrentTable()
   const view = useCurrentView()
 
-  const { rawRecords } = useGetRecordsQuery(
+  const { records } = useGetRecordsQuery(
     { tableId: table.id.value, viewId: view.id.value },
     {
-      selectFromResult: (result) => ({
-        ...result,
-        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean),
-      }),
+      selectFromResult: (result) => {
+        const rawRecords = (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean)
+        const records = RecordFactory.fromQueryRecords(rawRecords, table.schema.toIdMap())
+        return {
+          ...result,
+          rawRecords,
+          records,
+        }
+      },
       refetchOnFocus: true,
     },
   )
-
-  const records = RecordFactory.fromQueryRecords(rawRecords, table.schema.toIdMap())
 
   return <EGOTable records={records} />
 }
