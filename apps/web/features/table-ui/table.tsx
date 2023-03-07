@@ -1,6 +1,6 @@
 import { Checkbox, Table, useListState } from '@egodb/ui'
 import type { ColumnDef } from '@tanstack/react-table'
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ACTIONS_FIELD, SELECTION_ID } from '../../constants/field.constants'
 import { RecordActions } from './actions'
@@ -51,8 +51,8 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
 
   const view = useCurrentView()
   const schema = table.schema.toIdMap()
-  const columnVisibility = view.getVisibility()
-  const columnOrder = table.getFieldsOrder(view)
+  const columnVisibility = useMemo(() => view.getVisibility(), [view])
+  const columnOrder = useMemo(() => table.getFieldsOrder(view), [table, view])
   const initialFields = useMemo(
     () => columnOrder.map((fieldId) => schema.get(fieldId)).filter(Boolean),
     [columnOrder, schema],
