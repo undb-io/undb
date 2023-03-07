@@ -1,15 +1,15 @@
-import { Checkbox, Table, useListState } from '@egodb/ui'
+import { Table, useListState } from '@egodb/ui'
 import type { ColumnDef } from '@tanstack/react-table'
+import { flexRender } from '@tanstack/react-table'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ACTIONS_FIELD, SELECTION_ID } from '../../constants/field.constants'
 import { RecordActions } from './actions'
 import type { IProps, TData } from './interface'
 import { Th } from './th'
-import { Tr } from './tr'
 import type { RecordAllValueType } from '@egodb/core'
 import { FieldValueFactory } from '../field-value/field-value.factory'
-import { getTableSelectedRecordIds, setTableSelectedRecordIds } from '@egodb/store'
+import { getTableSelectedRecordIds, setSelectedRecordId, setTableSelectedRecordIds } from '@egodb/store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { RecordSelection } from './selection'
@@ -17,6 +17,7 @@ import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { ActionHeader } from './action-header'
 import { Thead } from './thead'
+import { SelectionCell } from './selection-cell'
 
 const columnHelper = createColumnHelper<TData>()
 
@@ -24,18 +25,7 @@ const selection: ColumnDef<TData> = {
   enableResizing: false,
   id: SELECTION_ID,
   size: 40,
-  header: (props) => {
-    return (
-      <th key={SELECTION_ID} style={{ width: '40px' }}>
-        <Checkbox
-          size="xs"
-          checked={props.table.getIsAllRowsSelected()}
-          onChange={props.table.getToggleAllRowsSelectedHandler()}
-          indeterminate={props.table.getIsSomeRowsSelected()}
-        />
-      </th>
-    )
-  },
+  header: (props) => <SelectionCell table={props.table} />,
   cell: ({ row }) => <RecordSelection row={row} />,
 }
 
@@ -206,7 +196,18 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
           )}
           {rowVirtualizer.getVirtualItems().map((virtualRow) => {
             const row = rows[virtualRow.index]
-            return <Tr key={row.id} id={row.id} row={row} />
+            return (
+              <tr
+                key={row.id}
+                onClick={() => {
+                  dispatch(setSelectedRecordId(row.id))
+                }}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                ))}
+              </tr>
+            )
           })}
           {paddingBottom > 0 && (
             <tr>
