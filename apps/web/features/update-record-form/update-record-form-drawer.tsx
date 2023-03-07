@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { getHasSelectedRecordId, getSelectedRecordId, resetSelectedRecordId, useGetRecordQuery } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
+import { useTranslation } from 'react-i18next'
 
 export const UpdateRecordFormDrawer: React.FC = () => {
   const table = useCurrentTable()
@@ -73,6 +74,8 @@ export const UpdateRecordFormDrawer: React.FC = () => {
   }
   const confirm = useConfirmModal({ onConfirm: reset })
 
+  const { t } = useTranslation()
+
   return (
     <FormProvider {...form}>
       <Drawer.Root
@@ -93,9 +96,9 @@ export const UpdateRecordFormDrawer: React.FC = () => {
       >
         <Drawer.Content sx={{ position: 'relative', overflow: 'visible' }}>
           <Drawer.Header sx={(theme) => ({ zIndex: 1000, borderBottom: '1px solid ' + theme.colors.gray[2] })}>
-            Update Record
+            {t('Update Record')}
           </Drawer.Header>
-          <Drawer.Body>
+          <Drawer.Body pb="80px">
             <LoadingOverlay visible={isLoading} />
             <UpdateRecordForm onCancel={reset} />
           </Drawer.Body>
