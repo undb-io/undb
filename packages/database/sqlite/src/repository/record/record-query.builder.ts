@@ -1,14 +1,16 @@
-import type { IRecordSpec, ReferenceFieldTypes, Table, TableSchemaIdMap, View } from '@egodb/core'
+import type { IRecordSpec, ReferenceFieldTypes, Table as CoreTable, TableSchemaIdMap, View } from '@egodb/core'
 import {
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
   ParentField,
+  SelectField as CoreSelectField,
 } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { union } from 'lodash-es'
 import type { Promisable } from 'type-fest'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
+import { UnderlyingSelectColumn } from '../../underlying-table/underlying-column.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
 import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
 import { getFTAlias, TABLE_ALIAS } from './record.constants.js'
@@ -34,7 +36,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
 
   constructor(
     private readonly em: EntityManager,
-    private readonly table: Table,
+    private readonly table: CoreTable,
     private readonly spec: IRecordSpec | null,
     viewId?: string,
   ) {
@@ -66,13 +68,23 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
         const field = this.schemaMap.get(sort.fieldId)
         if (!field) continue
 
-        const column = UnderlyingColumnFactory.create(field)
-        if (Array.isArray(column)) {
-          for (const c of column) {
-            this.qb.orderBy(`${TABLE_ALIAS}.${c.name}`, sort.direction)
-          }
+        if (field instanceof CoreSelectField) {
+          const column = new UnderlyingSelectColumn(field)
+          const order = sort.direction === 'asc' ? field.options.options : [...field.options.options].reverse()
+          this.qb.orderByRaw(`
+            CASE ${TABLE_ALIAS}.${column.name}
+              ${order.map((option, index) => `WHEN '${option.key.value}' THEN ${index} `).join('\n')}
+            END
+          `)
         } else {
-          this.qb.orderBy(`${TABLE_ALIAS}.${column.name}`, sort.direction)
+          const column = UnderlyingColumnFactory.create(field)
+          if (Array.isArray(column)) {
+            for (const c of column) {
+              this.qb.orderBy(`${TABLE_ALIAS}.${c.name}`, sort.direction)
+            }
+          } else {
+            this.qb.orderBy(`${TABLE_ALIAS}.${column.name}`, sort.direction)
+          }
         }
       }
     }

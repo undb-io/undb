@@ -14,7 +14,7 @@ import {
   UnderlyingParentColumn,
   UnderlyingRatingColumn,
   UnderlyingReferenceColumn,
-  UnderlyingSelectFromColumn,
+  UnderlyingSelectColumn,
   UnderlyingStringColumn,
   UnderlyingTreeColumn,
   UnderlyingUpdatedAtColumn,
@@ -48,7 +48,7 @@ export class UnderlyingColumnFactory {
       case 'date-range':
         return [new UnderlyingDateRangeFromColumn(field), new UnderlyingDateRangeToFromColumn(field)]
       case 'select':
-        return new UnderlyingSelectFromColumn(field)
+        return new UnderlyingSelectColumn(field)
       case 'reference':
         return new UnderlyingReferenceColumn(field)
       case 'tree':
