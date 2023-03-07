@@ -74,6 +74,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
           this.qb.orderByRaw(`
             CASE ${TABLE_ALIAS}.${column.name}
               ${order.map((option, index) => `WHEN '${option.key.value}' THEN ${index} `).join('\n')}
+              ELSE ${sort.direction === 'asc' ? -1 : order.length}
             END
           `)
         } else {
