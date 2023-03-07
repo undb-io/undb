@@ -21,6 +21,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
   label: string
   type: IFieldType
 }
+// eslint-disable-next-line react/display-name
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, type, ...others }: ItemProps, ref) => (
   <Group ref={ref} p="xs" {...others}>
     <ActionIcon size="sm">
@@ -70,6 +71,7 @@ export const DisplayFieldsPicker: React.FC<IProps> = ({ tableId, fields, ...prop
       }}
       data={items}
       itemComponent={SelectItem}
+      withinPortal
     />
   )
 }
