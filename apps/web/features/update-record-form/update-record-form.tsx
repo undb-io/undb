@@ -2,7 +2,7 @@ import type { IUpdateRecordValueSchema } from '@egodb/core'
 import { Alert, Box, Button, Group, IconAlertCircle, IconPlus, openContextModal, Space, Stack } from '@egodb/ui'
 import type { FieldPath } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
-// import { DevTool } from '@hookform/devtools'
+import { DevTool } from '@hookform/devtools'
 import { RecordInputFactory } from '../record/record-input.factory'
 import type { IMutateRecordValueSchema } from '@egodb/core'
 import { getSelectedRecordId, useUpdateRecordMutation } from '@egodb/store'
@@ -119,7 +119,7 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
           </Group>
         </Box>
       </form>
-      {/* <DevTool control={form.control} /> */}
+      <DevTool control={form.control} />
     </Box>
   )
 }
