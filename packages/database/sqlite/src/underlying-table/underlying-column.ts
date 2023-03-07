@@ -168,7 +168,7 @@ export class UnderlyingDateRangeToFromColumn extends UnderlyingFieldColumn<DateR
   }
 }
 
-export class UnderlyingSelectFromColumn extends UnderlyingFieldColumn<SelectField> {
+export class UnderlyingSelectColumn extends UnderlyingFieldColumn<SelectField> {
   build(tb: Knex.TableBuilder): void {
     tb.string(this.name)
   }
