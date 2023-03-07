@@ -51,7 +51,8 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
       <Space h="xs" />
 
       <Text size="xs" color="gray">
-        System fields: <Code fw={600}>id</Code> , <Code fw={600}>createdAt</Code> , <Code fw={600}>updatedAt</Code> .
+        {t('System fields')}: <Code fw={600}>id</Code> , <Code fw={600}>createdAt</Code> ,{' '}
+        <Code fw={600}>updatedAt</Code> .
       </Text>
 
       <Space h="xs" />

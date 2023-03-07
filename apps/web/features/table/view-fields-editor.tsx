@@ -190,7 +190,7 @@ export const ViewFieldsEditor: React.FC = () => {
           <Checkbox
             size="xs"
             color="gray"
-            label="show system fields"
+            label={t('Show System Fields')}
             defaultChecked={view.showSystemFields}
             onChange={(e) => {
               setShowSystemFields({
