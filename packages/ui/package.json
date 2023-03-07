@@ -12,7 +12,7 @@
     "@mantine/next": "^6.0.0",
     "@mantine/notifications": "^6.0.0",
     "@mantine/utils": "^6.0.0",
-    "@tabler/icons-react": "^2.7.0",
+    "@tabler/icons-react": "^2.8.0",
     "dayjs": "^1.11.7",
     "react-dom": "^18.2.0"
   },
