@@ -1,6 +1,12 @@
 import { flexRender } from '@tanstack/react-table'
-import type { THeader } from './interface'
+import React from 'react'
+import type { THeaderGroup } from './interface'
 
-export const Thead: React.FC<{ header: THeader }> = ({ header }) => {
-  return <th>{flexRender(header.column.columnDef.header, header.getContext())}</th>
-}
+// eslint-disable-next-line react/display-name
+export const Thead: React.FC<{ headerGroup: THeaderGroup }> = React.memo(({ headerGroup }) => {
+  return (
+    <tr key={headerGroup.id}>
+      {headerGroup.headers.map((header) => flexRender(header.column.columnDef.header, header.getContext()))}
+    </tr>
+  )
+})

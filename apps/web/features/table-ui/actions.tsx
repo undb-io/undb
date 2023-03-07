@@ -12,9 +12,13 @@ import {
 } from '@egodb/ui'
 import { useTranslation } from 'react-i18next'
 import { useConfirmModal } from '../../hooks'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import type { TRow } from './interface'
 
-export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableId, row }) => {
+export const RecordActions: React.FC<{ row: TRow }> = ({ row }) => {
+  const table = useCurrentTable()
+  const tableId = table.id.value
+
   const { copy } = useClipboard({ timeout: 500 })
   const [deleteRecord, { isLoading }] = useDeleteRecordMutation()
 
