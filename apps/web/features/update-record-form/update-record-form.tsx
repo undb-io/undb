@@ -59,8 +59,8 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
   const { t } = useTranslation()
 
   return (
-    <>
-      <form onSubmit={onSubmit} style={{ paddingBottom: '20px' }}>
+    <Box pt="sm">
+      <form onSubmit={onSubmit}>
         <Stack>
           {fields.map((field, index) => {
             const name: FieldPath<IUpdateRecordValueSchema> = `value.${index}.value`
@@ -120,6 +120,6 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
         </Box>
       </form>
       {/* <DevTool control={form.control} /> */}
-    </>
+    </Box>
   )
 }
