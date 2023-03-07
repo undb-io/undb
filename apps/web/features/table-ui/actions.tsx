@@ -10,12 +10,14 @@ import {
   Menu,
   useClipboard,
 } from '@egodb/ui'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useConfirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import type { TRow } from './interface'
 
-export const RecordActions: React.FC<{ row: TRow }> = ({ row }) => {
+// eslint-disable-next-line react/display-name
+export const RecordActions: React.FC<{ row: TRow }> = React.memo(({ row }) => {
   const table = useCurrentTable()
   const tableId = table.id.value
 
@@ -39,7 +41,7 @@ export const RecordActions: React.FC<{ row: TRow }> = ({ row }) => {
 
   return (
     <Group>
-      <Menu width={200}>
+      <Menu withinPortal width={200}>
         <Menu.Target>
           <ActionIcon onClick={(e) => e.stopPropagation()} size="sm">
             <IconDots />
@@ -85,4 +87,4 @@ export const RecordActions: React.FC<{ row: TRow }> = ({ row }) => {
       </Menu>
     </Group>
   )
-}
+})

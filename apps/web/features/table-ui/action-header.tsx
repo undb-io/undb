@@ -1,9 +1,11 @@
 import { Tooltip, ActionIcon, openContextModal, IconColumnInsertRight } from '@egodb/ui'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ACTIONS_FIELD } from '../../constants/field.constants'
 import { CREATE_FIELD_MODAL_ID } from '../../modals'
 
-export const ActionHeader: React.FC = () => {
+// eslint-disable-next-line react/display-name
+export const ActionHeader: React.FC = React.memo(() => {
   const { t } = useTranslation()
 
   return (
@@ -23,4 +25,4 @@ export const ActionHeader: React.FC = () => {
       </Tooltip>
     </th>
   )
-}
+})
