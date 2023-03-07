@@ -35,7 +35,7 @@ export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableI
 
   return (
     <Group>
-      <Menu>
+      <Menu width={200}>
         <Menu.Target>
           <ActionIcon onClick={(e) => e.stopPropagation()} size="sm">
             <IconDots />
@@ -44,6 +44,7 @@ export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableI
 
         <Menu.Dropdown>
           <Menu.Item
+            fz="xs"
             onClick={(e) => {
               e.stopPropagation()
               duplicateRecord({
@@ -56,6 +57,7 @@ export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableI
             {t('Duplicate Record')}
           </Menu.Item>
           <Menu.Item
+            fz="xs"
             onClick={(e) => {
               e.stopPropagation()
               copy(row.id)
@@ -65,6 +67,7 @@ export const RecordActions: React.FC<{ row: TRow; tableId: string }> = ({ tableI
             {t('Copy Record Id')}
           </Menu.Item>
           <Menu.Item
+            fz="xs"
             color="red"
             onClick={(e) => {
               e.stopPropagation()
