@@ -201,9 +201,6 @@ export class Table {
     const selectedView = this.mustGetView(viewId)
 
     for (const spec of newFieldSpecs) {
-      spec.mutate(this).unwrap()
-      specs.push(Some(spec))
-
       for (const view of this.views.views) {
         const viewFieldsOrder = this.mustGetFielsOrder(view).addAt(
           spec.field.id.value,
@@ -211,6 +208,9 @@ export class Table {
         )
         specs.push(Some(new WithViewFieldsOrder(viewFieldsOrder, view)))
       }
+
+      spec.mutate(this).unwrap()
+      specs.push(Some(spec))
     }
 
     return andOptions(...specs).unwrap()
