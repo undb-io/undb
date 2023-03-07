@@ -1,6 +1,7 @@
 import { RecordFactory } from '@egodb/core'
 import { useGetRecordsQuery } from '@egodb/store'
 import dynamic from 'next/dynamic'
+import { useMemo } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 
@@ -10,20 +11,14 @@ export const TableUI: React.FC = () => {
   const table = useCurrentTable()
   const view = useCurrentView()
 
-  const { records } = useGetRecordsQuery(
-    { tableId: table.id.value, viewId: view.id.value },
-    {
-      selectFromResult: (result) => {
-        const rawRecords = (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean)
-        const records = RecordFactory.fromQueryRecords(rawRecords, table.schema.toIdMap())
-        return {
-          ...result,
-          rawRecords,
-          records,
-        }
-      },
-      refetchOnFocus: true,
-    },
+  const { data } = useGetRecordsQuery({ tableId: table.id.value, viewId: view.id.value })
+  const records = useMemo(
+    () =>
+      RecordFactory.fromQueryRecords(
+        (Object.values(data?.entities ?? {}) ?? []).filter(Boolean),
+        table.schema.toIdMap(),
+      ),
+    [data, table.schema],
   )
 
   return <EGOTable records={records} />
