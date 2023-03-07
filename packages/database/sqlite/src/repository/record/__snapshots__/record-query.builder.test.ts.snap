@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`RecordSqliteQueryBuilder > sort > sort select > should order by select option asc 1`] = `
+"select * order by 
+            CASE t.fld1
+              WHEN 'opt1' THEN 0 
+WHEN 'opt2' THEN 1 
+              ELSE -1
+            END
+          "
+`;
+
+exports[`RecordSqliteQueryBuilder > sort > sort select > should order by select option desc 1`] = `
+"select * order by 
+            CASE t.fld1
+              WHEN 'opt2' THEN 0 
+WHEN 'opt1' THEN 1 
+              ELSE 2
+            END
+          "
+`;
+
+exports[`RecordSqliteQueryBuilder > sort > sort string field > should order by string option asc 1`] = `"select * order by \`t\`.\`fld1\` asc"`;
+
+exports[`RecordSqliteQueryBuilder > sort > sort string field > should order by string option desc 1`] = `"select * order by \`t\`.\`fld1\` desc"`;
