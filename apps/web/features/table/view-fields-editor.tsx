@@ -5,7 +5,7 @@ import { CSS } from '@dnd-kit/utilities'
 import type { Field } from '@egodb/core'
 import { useMoveFieldMutation, useSetShowSystemFieldsMutation, useSetVisibilityMutation } from '@egodb/store'
 import type { CheckboxProps } from '@egodb/ui'
-import { Portal } from '@egodb/ui'
+import { ScrollArea } from '@egodb/ui'
 import { openContextModal } from '@egodb/ui'
 import { IconColumnInsertRight } from '@egodb/ui'
 import { Divider } from '@egodb/ui'
@@ -17,8 +17,8 @@ import { useListState } from '@egodb/ui'
 import { ActionIcon, IconGripVertical } from '@egodb/ui'
 import { Tooltip } from '@egodb/ui'
 import { Badge, Button, Checkbox, Group, Popover, Stack, useDisclosure } from '@egodb/ui'
-import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { CREATE_FIELD_MODAL_ID } from '../../modals'
@@ -85,6 +85,8 @@ export const ViewFieldsEditor: React.FC = () => {
   const table = useCurrentTable()
   const view = useCurrentView()
 
+  const fieldsOrder = table.getFieldsOrder(view)
+
   const [opened, handler] = useDisclosure(false)
 
   const [setFieldVisibility, { isLoading }] = useSetVisibilityMutation()
@@ -94,13 +96,13 @@ export const ViewFieldsEditor: React.FC = () => {
   const schema = table.schema.toIdMap()
   const hiddenCount = view.fieldOptions?.hiddenCount ?? 0
 
-  const [order, handlers] = useListState(table.getFieldsOrder(view))
+  const [order, handlers] = useListState(fieldsOrder)
 
   const { t } = useTranslation()
 
-  useEffect(() => {
-    handlers.setState(table.getFieldsOrder(view))
-  }, [table])
+  useDeepCompareEffect(() => {
+    handlers.setState(fieldsOrder)
+  }, [fieldsOrder])
 
   const onChange: OnVisibleChange = (fieldId: string, visible: boolean) => {
     setFieldVisibility({ tableId: table.id.value, viewId: view.id.value, fieldId, hidden: !visible })
@@ -116,6 +118,7 @@ export const ViewFieldsEditor: React.FC = () => {
       onChange={handler.toggle}
       closeOnClickOutside
       shadow="md"
+      withinPortal
     >
       <Popover.Target>
         <Tooltip label="reorder or hide fields">
@@ -139,8 +142,8 @@ export const ViewFieldsEditor: React.FC = () => {
         </Tooltip>
       </Popover.Target>
 
-      <Portal>
-        <Popover.Dropdown>
+      <Popover.Dropdown>
+        <ScrollArea.Autosize mah={300}>
           <Stack>
             <DndContext
               collisionDetection={closestCenter}
@@ -179,45 +182,45 @@ export const ViewFieldsEditor: React.FC = () => {
               </SortableContext>
             </DndContext>
           </Stack>
+        </ScrollArea.Autosize>
 
-          <Divider my="sm" />
+        <Divider my="sm" />
 
-          <Stack>
-            <Checkbox
-              size="xs"
-              color="gray"
-              label="show system fields"
-              defaultChecked={view.showSystemFields}
-              onChange={(e) => {
-                setShowSystemFields({
-                  tableId: table.id.value,
-                  viewId: view.id.value,
-                  showSystemFields: e.target.checked,
-                })
-              }}
-            />
+        <Stack>
+          <Checkbox
+            size="xs"
+            color="gray"
+            label="show system fields"
+            defaultChecked={view.showSystemFields}
+            onChange={(e) => {
+              setShowSystemFields({
+                tableId: table.id.value,
+                viewId: view.id.value,
+                showSystemFields: e.target.checked,
+              })
+            }}
+          />
 
-            <Button
-              compact
-              size="xs"
-              fullWidth
-              variant="light"
-              color="gray"
-              leftIcon={<IconColumnInsertRight size={14} />}
-              onClick={() => {
-                handler.close()
-                openContextModal({
-                  title: t('Create New Field'),
-                  modal: CREATE_FIELD_MODAL_ID,
-                  innerProps: {},
-                })
-              }}
-            >
-              {t('Create New Field')}
-            </Button>
-          </Stack>
-        </Popover.Dropdown>
-      </Portal>
+          <Button
+            compact
+            size="xs"
+            fullWidth
+            variant="light"
+            color="gray"
+            leftIcon={<IconColumnInsertRight size={14} />}
+            onClick={() => {
+              handler.close()
+              openContextModal({
+                title: t('Create New Field'),
+                modal: CREATE_FIELD_MODAL_ID,
+                innerProps: {},
+              })
+            }}
+          >
+            {t('Create New Field')}
+          </Button>
+        </Stack>
+      </Popover.Dropdown>
     </Popover>
   )
 }
