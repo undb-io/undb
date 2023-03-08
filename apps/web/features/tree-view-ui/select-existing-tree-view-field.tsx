@@ -45,7 +45,7 @@ export const SelectExistingField: React.FC<IProps> = ({ onSuccess }) => {
     <form onSubmit={onSubmit} style={{ width: '100%' }}>
       <Card shadow="md">
         <Card.Section withBorder inheritPadding py="sm">
-          <Text>select tree field</Text>
+          <Text>{t('Select Tree Field')}</Text>
         </Card.Section>
 
         <Card.Section withBorder inheritPadding py="sm">
@@ -75,10 +75,10 @@ export const SelectExistingField: React.FC<IProps> = ({ onSuccess }) => {
               />
             ) : null}
 
-            {hasTreeViewFields && <Divider label="or" labelPosition="center" />}
+            {hasTreeViewFields && <Divider label={t('or', { ns: 'common' })} labelPosition="center" />}
 
             <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setStepOne}>
-              add new tree field
+              {t('Create New Tree Field')}
             </Button>
           </Stack>
         </Card.Section>

@@ -37,6 +37,7 @@ export const CalendarContent: React.FC<IProps> = ({ field }) => {
       w="100%"
       bg="white"
       size="xl"
+      hideWeekdays
       withCellSpacing={false}
       hasNextLevel={false}
       renderDay={(date) => <Day field={field} records={records} date={date} />}

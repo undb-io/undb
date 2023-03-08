@@ -52,7 +52,7 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ onSuccess }) => 
         </Card.Section>
 
         <Card.Section withBorder inheritPadding py="sm">
-          <Stack spacing="xs">
+          <Stack spacing={0}>
             {hasCalendarFields ? (
               <Controller
                 name="field"
@@ -78,7 +78,7 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ onSuccess }) => 
               />
             ) : null}
 
-            {hasCalendarFields && <Divider label="or" labelPosition="center" />}
+            {hasCalendarFields && <Divider my="xs" label={t('or', { ns: 'common' })} labelPosition="center" />}
 
             <Button
               size="xs"

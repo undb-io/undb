@@ -45,12 +45,18 @@ export const CreateViewForm: React.FC = () => {
   return (
     <form onSubmit={onSubmit}>
       <Stack>
-        <TextInput {...form.register('name')} label={<FieldInputLabel>name</FieldInputLabel>} required />
+        <TextInput
+          {...form.register('name')}
+          label={<FieldInputLabel>{t('Name', { ns: 'common' })}</FieldInputLabel>}
+          required
+        />
 
         <Controller
           control={form.control}
           name="displayType"
-          render={(f) => <DisplayTypePicker label={<FieldInputLabel>type</FieldInputLabel>} {...f.field} />}
+          render={(f) => (
+            <DisplayTypePicker label={<FieldInputLabel>{t('Type', { ns: 'common' })}</FieldInputLabel>} {...f.field} />
+          )}
         />
 
         <Divider />

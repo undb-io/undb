@@ -77,7 +77,7 @@ export const SelectExistingField: React.FC<IProps> = ({ onSuccess }) => {
                 />
               ) : null}
 
-              {hasKanbanFields && <Divider label="or" labelPosition="center" />}
+              {hasKanbanFields && <Divider label={t('or', { ns: 'common' })} labelPosition="center" />}
 
               <Button
                 size="xs"

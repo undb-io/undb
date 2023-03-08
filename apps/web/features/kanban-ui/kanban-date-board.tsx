@@ -17,6 +17,7 @@ import { useGetRecordsQuery, useUpdateRecordMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { groupBy } from 'lodash-es'
+import { useTranslation } from 'react-i18next'
 
 interface IProps {
   field: DateField
@@ -49,7 +50,7 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
         return {
           ...result,
           records,
-          groupdRecords: groupdRecords,
+          groupdRecords,
         }
       },
     },
@@ -107,6 +108,8 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
     getContainer: (activeId) => containers.find((stack) => stack === activeId),
   })
 
+  const { t } = useTranslation()
+
   return (
     <Container fluid ml={0} pt="xs">
       <Group align="start" noWrap>
@@ -123,7 +126,7 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
               records={dateRecords[stack] ?? []}
               key={stack}
               id={stack}
-              title={stack}
+              title={t(stack, { ns: 'common' })}
               disableAddRecord={RElAVANT_DATES.includes(stack)}
               getRecordValue={(id) => {
                 if (id === NODATE_STACK_ID) return null
