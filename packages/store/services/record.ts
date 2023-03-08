@@ -12,7 +12,8 @@ import type {
   IUpdateRecordCommandInput,
 } from '@egodb/cqrs'
 import type { EntityState } from '@reduxjs/toolkit'
-import { createEntityAdapter } from '@reduxjs/toolkit'
+import { createEntityAdapter, createSelector } from '@reduxjs/toolkit'
+import type { RootState } from '../reducers'
 import { trpc } from '../trpc'
 import { api } from './api'
 
@@ -20,13 +21,17 @@ const recordAdapter: ReturnType<typeof createEntityAdapter<IQueryRecordSchema>> 
   createEntityAdapter<IQueryRecordSchema>()
 const initialState = recordAdapter.getInitialState()
 
-type QueryRecordsEntity = EntityState<IQueryRecordSchema>
+type QueryRecordsEntity = EntityState<IQueryRecordSchema> & { total: number }
 
 const providesTags = (result: QueryRecordsEntity | undefined) => [
   'Record' as const,
   ...(result?.ids?.map((id) => ({ type: 'Record' as const, id })) ?? []),
 ]
-const transformResponse = (result: IGetRecordsOutput) => recordAdapter.setAll(initialState, result.records)
+
+const transformResponse = (result: IGetRecordsOutput) => {
+  const entities = recordAdapter.setAll(initialState, result.records)
+  return { ...entities, total: result.total }
+}
 
 export const recordApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -88,7 +93,7 @@ export const recordApi = api.injectEndpoints({
         queryFulfilled.catch(patchResult.undo)
       },
     }),
-    BulkDeleteRecords: builder.mutation({
+    bulkDeleteRecords: builder.mutation({
       query: trpc.record.bulkDelete.mutate,
       onQueryStarted({ ids, tableId }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
@@ -121,3 +126,8 @@ export const {
   useDeleteRecordMutation,
   useBulkDeleteRecordsMutation,
 } = recordApi
+
+const getCurrentTableRecords = (state: RootState) =>
+  recordApi.endpoints.getRecords.select({ tableId: state.table.currentTableId })(state)
+
+export const getCurrentTableRecordsTotal = createSelector(getCurrentTableRecords, (result) => result.data?.total ?? 0)

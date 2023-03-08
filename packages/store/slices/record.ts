@@ -10,11 +10,13 @@ import { resetCurrentTableId, setCurrentTableId } from './table'
 export interface RecordState {
   selectedRecordId: string
   selectedRecordIds: Record<string, Record<string, boolean>>
+  total: Record<string, number>
 }
 
 const initialState: RecordState = {
   selectedRecordId: '',
   selectedRecordIds: {},
+  total: {},
 }
 
 export const recordSlice = createSlice({
@@ -51,7 +53,7 @@ export const recordSlice = createSlice({
           state.selectedRecordId = initialState.selectedRecordId
         }
       })
-      .addMatcher(recordApi.endpoints.BulkDeleteRecords.matchFulfilled, (state, action) => {
+      .addMatcher(recordApi.endpoints.bulkDeleteRecords.matchFulfilled, (state, action) => {
         const { ids, tableId } = action.meta.arg.originalArgs
         state.selectedRecordIds = omit(ids, state.selectedRecordIds[tableId])
       })
