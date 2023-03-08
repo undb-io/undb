@@ -1,9 +1,9 @@
 import type { TreeField } from '@egodb/core'
-import { getSelectedRecordId, useLazyTreeAvailableQuery } from '@egodb/store'
+import { getSelectedRecordId, useTreeAvailableQuery } from '@egodb/store'
 import type { MultiSelectProps } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { Loader, MultiSelect } from '@egodb/ui'
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useState } from 'react'
 import { useAppSelector } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useReferenceDisplayValues } from '../../hooks/use-reference-display-values'
@@ -19,6 +19,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
   label: string
 }
 
+// eslint-disable-next-line react/display-name
 const TreeSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, label, ...others }: ItemProps, ref) => (
   <Group key={value} ref={ref} p="xs" {...others}>
     <RecordValue value={label} />
@@ -30,16 +31,20 @@ export const TreeRecordsPicker: React.FC<IProps> = ({ field, ...rest }) => {
   const table = useCurrentTable()
 
   const [focused, setFocused] = useState(false)
-  const [getRecords, { rawRecords: foreignRecords, isLoading }] = useLazyTreeAvailableQuery({
-    selectFromResult: (result) => ({
-      ...result,
-      rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean),
-    }),
-  })
-
-  useEffect(() => {
-    getRecords({ tableId: table.id.value, treeFieldId: field.id.value, recordId })
-  }, [focused])
+  const { rawRecords: foreignRecords, isLoading } = useTreeAvailableQuery(
+    {
+      tableId: table.id.value,
+      treeFieldId: field.id.value,
+      recordId,
+    },
+    {
+      skip: !focused,
+      selectFromResult: (result) => ({
+        ...result,
+        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean),
+      }),
+    },
+  )
 
   const data = useReferenceDisplayValues(field, recordId, foreignRecords)
 
@@ -49,7 +54,7 @@ export const TreeRecordsPicker: React.FC<IProps> = ({ field, ...rest }) => {
       multiple
       searchable
       clearable
-      description={focused && !foreignRecords.length ? 'no more available record to select' : undefined}
+      description={focused && !isLoading && !foreignRecords.length ? 'no more available record to select' : undefined}
       itemComponent={TreeSelectItem}
       data={data}
       onFocus={() => setFocused(true)}

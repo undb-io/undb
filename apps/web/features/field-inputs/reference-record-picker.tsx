@@ -21,6 +21,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
   label: string
 }
 
+// eslint-disable-next-line react/display-name
 const ReferenceSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, ...others }: ItemProps, ref) => (
   <Group ref={ref} p="xs" {...others}>
     <RecordValue value={label} />
@@ -37,6 +38,7 @@ export const ReferenceRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
   const { rawRecords: foreignRecords, isLoading } = useGetForeignRecordsQuery(
     { tableId: table.id.value, foreignTableId, fieldId: field.id.value },
     {
+      skip: !focused,
       selectFromResult: (result) => ({
         ...result,
         rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean),
@@ -53,7 +55,7 @@ export const ReferenceRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
       clearable
       searchable
       itemComponent={ReferenceSelectItem}
-      description={focused && !foreignRecords.length ? 'no more available record to select' : undefined}
+      description={focused && !isLoading && !foreignRecords.length ? 'no more available record to select' : undefined}
       data={data}
       onFocus={handelr.open}
       placeholder={focused && isLoading ? 'loading records...' : undefined}

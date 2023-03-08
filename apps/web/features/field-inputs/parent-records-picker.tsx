@@ -1,10 +1,10 @@
 import type { ParentField } from '@egodb/core'
-import { getSelectedRecordId, useLazyParentAvailableQuery } from '@egodb/store'
+import { getSelectedRecordId, useParentAvailableQuery } from '@egodb/store'
 import type { SelectProps } from '@egodb/ui'
 import { Select } from '@egodb/ui'
 import { Group } from '@egodb/ui'
 import { Loader } from '@egodb/ui'
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useState } from 'react'
 import { useAppSelector } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useReferenceDisplayValues } from '../../hooks/use-reference-display-values'
@@ -20,6 +20,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
   label: string
 }
 
+// eslint-disable-next-line react/display-name
 const ParentSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, ...others }: ItemProps, ref) => (
   <Group ref={ref} p="xs" {...others}>
     <RecordValue value={label} />
@@ -31,18 +32,20 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
   const table = useCurrentTable()
 
   const [focused, setFocused] = useState(false)
-  const [getRecords, { rawRecords: foreignRecords, isLoading }] = useLazyParentAvailableQuery({
-    selectFromResult: (result) => ({
-      ...result,
-      rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean),
-    }),
-  })
-
-  useEffect(() => {
-    if (recordId) {
-      getRecords({ tableId: table.id.value, parentFieldId: field.id.value, recordId })
-    }
-  }, [focused])
+  const { rawRecords: foreignRecords, isLoading } = useParentAvailableQuery(
+    {
+      tableId: table.id.value,
+      parentFieldId: field.id.value,
+      recordId,
+    },
+    {
+      skip: !focused,
+      selectFromResult: (result) => ({
+        ...result,
+        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean),
+      }),
+    },
+  )
 
   const data = useReferenceDisplayValues(field, recordId, foreignRecords)
 
@@ -52,7 +55,7 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
       multiple
       searchable
       clearable
-      description={focused && !foreignRecords.length ? 'no more available record to select' : undefined}
+      description={focused && !isLoading && !foreignRecords.length ? 'no more available record to select' : undefined}
       itemComponent={ParentSelectItem}
       data={data}
       onFocus={() => setFocused(true)}
