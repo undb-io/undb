@@ -16,7 +16,6 @@ import { RecordSelection } from './selection'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { ActionHeader } from './action-header'
-import { Thead } from './thead'
 import { SelectionCell } from './selection-cell'
 
 const columnHelper = createColumnHelper<TData>()
@@ -185,7 +184,9 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
       >
         <thead>
           {rt.getHeaderGroups().map((headerGroup) => (
-            <Thead key={headerGroup.id} headerGroup={headerGroup} />
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => flexRender(header.column.columnDef.header, header.getContext()))}
+            </tr>
           ))}
         </thead>
         <tbody>
