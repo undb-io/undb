@@ -6,8 +6,12 @@ import { TableSortEditor } from './table-sort-editor'
 import { ViewMenu } from './view-menu'
 import { ViewsButton } from './views-button'
 import { RecordsTotal } from './records-total'
+import { useAppSelector } from '../../hooks'
+import { getIsLoadedCurrentRecords } from '@egodb/store'
 
 export const TableToolbar: React.FC = () => {
+  const isLoadedRecords = useAppSelector(getIsLoadedCurrentRecords)
+
   return (
     <Group
       px="md"
@@ -32,7 +36,7 @@ export const TableToolbar: React.FC = () => {
       <TableSortEditor />
       <ViewFieldsEditor />
 
-      <RecordsTotal />
+      {isLoadedRecords && <RecordsTotal />}
     </Group>
   )
 }

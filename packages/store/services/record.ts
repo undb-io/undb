@@ -133,3 +133,5 @@ const getCurrentTableRecords = (state: RootState) =>
   )
 
 export const getCurrentTableRecordsTotal = createSelector(getCurrentTableRecords, (result) => result.data?.total ?? 0)
+
+export const getIsLoadedCurrentRecords = createSelector(getCurrentTableRecords, (result) => result.isSuccess)
