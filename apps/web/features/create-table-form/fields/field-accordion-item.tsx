@@ -1,16 +1,5 @@
 import { useSortable } from '@dnd-kit/sortable'
-import {
-  Accordion,
-  Group,
-  Text,
-  Select,
-  TextInput,
-  Space,
-  ActionIcon,
-  IconGripVertical,
-  Stack,
-  Icon123,
-} from '@egodb/ui'
+import { Accordion, Group, Text, Select, TextInput, Space, ActionIcon, IconGripVertical, Stack } from '@egodb/ui'
 import React from 'react'
 import { CSS } from '@dnd-kit/utilities'
 import { FieldCommonControl } from './field-common-control'
@@ -53,7 +42,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
             <IconGripVertical size={12} />
           </ActionIcon>
           <Text fz="sm" fw={500}>
-            {name || `Field ${index + 1}`}
+            {name || `${t('Field')} ${index + 1}`}
           </Text>
         </Group>
       </Accordion.Control>
@@ -68,7 +57,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
                   withinPortal
                   searchable
                   onChange={(value) => f.field.onChange(value)}
-                  label={<FieldInputLabel>type</FieldInputLabel>}
+                  label={<FieldInputLabel>{t('Name', { ns: 'common' })}</FieldInputLabel>}
                   defaultValue="string"
                   variant="filled"
                   required={true}
@@ -81,11 +70,11 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
 
             <TextInput
               {...form.register(`schema.${index}.name`)}
-              label={<FieldInputLabel>name</FieldInputLabel>}
+              label={<FieldInputLabel>{t('Name', { ns: 'common' })}</FieldInputLabel>}
               variant="filled"
               required={true}
               autoFocus
-              placeholder="field name"
+              placeholder={t('Field Name') as string}
             />
           </Group>
           <FieldVariantControl index={index} />

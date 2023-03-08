@@ -11,7 +11,6 @@ import {
   IconCalendarPlus,
   IconSelect,
   Menu,
-  Tooltip,
   useDisclosure,
   openContextModal,
   closeAllModals,
@@ -45,6 +44,7 @@ import { DisplayTypeIcon, getDisplayTypeColor } from '../view/display-type-icon'
 
 const StackedBy: React.FC<{ fieldId?: FieldId }> = ({ fieldId }) => {
   const table = useCurrentTable()
+  const { t } = useTranslation()
 
   if (!fieldId) return null
 
@@ -52,24 +52,24 @@ const StackedBy: React.FC<{ fieldId?: FieldId }> = ({ fieldId }) => {
   if (!field) return null
 
   return (
-    <Tooltip label="stacked by">
-      <Button
-        onClick={() =>
-          openContextModal({
-            modal: SELECT_KANBAN_FIELD_MODAL_ID,
-            innerProps: { table, onSuccess: () => closeAllModals() } as ISelectKanbanFieldProps,
-            withCloseButton: false,
-            styles: {
-              body: { padding: '0 !important', width: '100%' },
-            },
-          })
-        }
-        compact
-        size="xs"
-        variant="subtle"
-        leftIcon={<IconSelect size={18} />}
-      >{`stacked by "${field.name.value}"`}</Button>
-    </Tooltip>
+    <Button
+      onClick={() =>
+        openContextModal({
+          modal: SELECT_KANBAN_FIELD_MODAL_ID,
+          innerProps: { table, onSuccess: () => closeAllModals() } as ISelectKanbanFieldProps,
+          withCloseButton: false,
+          styles: {
+            body: { padding: '0 !important', width: '100%' },
+          },
+        })
+      }
+      compact
+      size="xs"
+      variant="subtle"
+      leftIcon={<IconSelect size={18} />}
+    >
+      {t('Using Field', { name: field.name.value })}
+    </Button>
   )
 }
 
@@ -83,30 +83,31 @@ const KanbanControl: React.FC<{ kanban?: Kanban }> = ({ kanban }) => {
 
 const UsingCalendarField: React.FC<{ fieldId?: FieldId }> = ({ fieldId }) => {
   const table = useCurrentTable()
+  const { t } = useTranslation()
   if (!fieldId) return null
 
   const field = table.schema.getFieldById(fieldId.value).into()
   if (!field) return null
 
   return (
-    <Tooltip label="stacked by">
-      <Button
-        onClick={() =>
-          openContextModal({
-            modal: SELECT_CALENDAR_FIELD_MODAL_ID,
-            innerProps: { table, onSucess: () => closeAllModals() },
-            withCloseButton: false,
-            styles: {
-              body: { padding: '0 !important' },
-            },
-          })
-        }
-        compact
-        variant="subtle"
-        size="xs"
-        leftIcon={<IconCalendarPlus size={18} />}
-      >{`using "${field.name.value}" field`}</Button>
-    </Tooltip>
+    <Button
+      onClick={() =>
+        openContextModal({
+          modal: SELECT_CALENDAR_FIELD_MODAL_ID,
+          innerProps: { table, onSucess: () => closeAllModals() },
+          withCloseButton: false,
+          styles: {
+            body: { padding: '0 !important' },
+          },
+        })
+      }
+      compact
+      variant="subtle"
+      size="xs"
+      leftIcon={<IconCalendarPlus size={18} />}
+    >
+      {t('Using Field', { name: field.name.value })}
+    </Button>
   )
 }
 
@@ -116,30 +117,31 @@ const CalendarControl: React.FC<{ calendar?: ICalendar }> = ({ calendar }) => {
 
 const UsingTreeField: React.FC<{ fieldId?: FieldId }> = ({ fieldId }) => {
   const table = useCurrentTable()
+  const { t } = useTranslation()
   if (!fieldId) return null
 
   const field = table.schema.getFieldById(fieldId.value).into()
   if (!field) return null
 
   return (
-    <Tooltip label="using by">
-      <Button
-        onClick={() =>
-          openContextModal({
-            modal: SELECT_TREE_VIEW_FIELD_MODAL_ID,
-            innerProps: { onSucess: () => closeAllModals() },
-            withCloseButton: false,
-            styles: {
-              body: { padding: '0 !important' },
-            },
-          })
-        }
-        compact
-        variant="subtle"
-        size="xs"
-        leftIcon={<IconTree size={18} />}
-      >{`using "${field.name.value}" field`}</Button>
-    </Tooltip>
+    <Button
+      onClick={() =>
+        openContextModal({
+          modal: SELECT_TREE_VIEW_FIELD_MODAL_ID,
+          innerProps: { onSucess: () => closeAllModals() },
+          withCloseButton: false,
+          styles: {
+            body: { padding: '0 !important' },
+          },
+        })
+      }
+      compact
+      variant="subtle"
+      size="xs"
+      leftIcon={<IconTree size={18} />}
+    >
+      {t('Using Field', { name: field.name.value })}
+    </Button>
   )
 }
 

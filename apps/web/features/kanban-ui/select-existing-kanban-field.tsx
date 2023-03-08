@@ -47,7 +47,7 @@ export const SelectExistingField: React.FC<IProps> = ({ onSuccess }) => {
       <form onSubmit={onSubmit} style={{ width: '100%' }}>
         <Card shadow="md" withBorder sx={{ overflow: 'visible' }}>
           <Card.Section withBorder inheritPadding py="sm">
-            <Text>select kanban field</Text>
+            <Text>{t('Select Kanban Field')}</Text>
           </Card.Section>
 
           <Card.Section withBorder inheritPadding py="sm">
@@ -77,13 +77,25 @@ export const SelectExistingField: React.FC<IProps> = ({ onSuccess }) => {
                 />
               ) : null}
 
-              {hasKanbanFields && <Divider label="or" labelPosition="center" />}
+              {hasKanbanFields && <Divider label={t('or', { ns: 'common' })} labelPosition="center" />}
 
-              <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setKanbanStepOne}>
-                add new select field
+              <Button
+                size="xs"
+                variant="subtle"
+                leftIcon={<IconPlus size={14} />}
+                onClick={setKanbanStepOne}
+                rightIcon={<FieldIcon type="select" />}
+              >
+                {t('Create New Select Field')}
               </Button>
-              <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setKanbanStepTwo}>
-                add new date field
+              <Button
+                size="xs"
+                variant="subtle"
+                leftIcon={<IconPlus size={14} />}
+                onClick={setKanbanStepTwo}
+                rightIcon={<FieldIcon type="date" />}
+              >
+                {t('Create New Date Field')}
               </Button>
             </Stack>
           </Card.Section>

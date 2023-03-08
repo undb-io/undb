@@ -28,6 +28,7 @@ import type { Records } from '@egodb/core'
 import { useReorderOptionsMutation, useUpdateRecordMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { groupBy } from 'lodash-es'
+import { useTranslation } from 'react-i18next'
 
 interface IProps {
   field: SelectField
@@ -121,8 +122,10 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
     getContainer: (activeId) => options.find((o) => o.key.value === activeId),
   })
 
+  const { t } = useTranslation()
+
   return (
-    <Container fluid ml={0} h="100%" sx={{ overflow: 'scroll' }}>
+    <Container fluid ml={0} h="100%" pt="xs" sx={{ overflow: 'scroll' }}>
       <Group align="start" noWrap h="100%">
         <DndContext
           sensors={sensors}
@@ -136,8 +139,8 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
               field={field}
               records={optionRecords[UNCATEGORIZED_OPTION_ID] ?? []}
               title={
-                <Badge radius="xs" color="gray">
-                  uncategorized
+                <Badge radius="xs" color="gray" sx={{ textTransform: 'unset' }}>
+                  {t('Uncategorized')}
                 </Badge>
               }
               id={UNCATEGORIZED_OPTION_ID}
@@ -157,7 +160,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
                     icon={<IconPencil size={14} color="gray" />}
                     onClick={() =>
                       openContextModal({
-                        title: 'Update Option',
+                        title: t('Update Option'),
                         modal: UDPATE_OPTION_MODAL_ID,
                         innerProps: {
                           tableId: table.id.value,
@@ -168,7 +171,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
                       })
                     }
                   >
-                    Update Option
+                    {t('Update Option')}
                   </Menu.Item>
                 )}
                 getRecordValue={(id) => (id === UNCATEGORIZED_OPTION_ID ? null : id)}
@@ -200,7 +203,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
           <Button
             onClick={() =>
               openContextModal({
-                title: 'Create New Option',
+                title: t('Create New Option'),
                 modal: CREATE_OPTION_MODAL_ID,
                 trapFocus: true,
                 innerProps: {
@@ -215,7 +218,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
             variant="outline"
             leftIcon={<IconPlus />}
           >
-            New Stack
+            {t('Create New Option')}
           </Button>
         </Box>
       </Group>

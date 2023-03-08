@@ -8,6 +8,7 @@ import { useVirtualizer } from '@tanstack/react-virtual'
 import { useGetRecordsQuery } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
+import { useTranslation } from 'react-i18next'
 
 interface IProps {
   field: ICalendarField
@@ -82,10 +83,12 @@ export const CalendarRecords: React.FC<IProps> = ({ field }) => {
         (rowVirtualizer.getVirtualItems()?.[rowVirtualizer.getVirtualItems().length - 1]?.end || 0)
       : 0
 
+  const { t } = useTranslation()
+
   if (isLoading) {
     return (
       <Box p="md">
-        <Title size={20}>Records</Title>
+        <Title size={20}>{t('Unscheduled Records')}</Title>
         <Space h="md" />
         <Stack>
           <Skeleton h={50} />
@@ -105,7 +108,7 @@ export const CalendarRecords: React.FC<IProps> = ({ field }) => {
 
   return (
     <Box p="md" bg="white" h="100%">
-      <Title size={20}>Records</Title>
+      <Title size={20}>{t('Unscheduled Records')}</Title>
       <Space h="md" />
       {records.length ? (
         <Stack ref={tableContainerRef} h="100%" sx={{ overflow: 'auto', overflowX: 'hidden' }}>
@@ -136,7 +139,7 @@ export const CalendarRecords: React.FC<IProps> = ({ field }) => {
           })}
           color="gray"
         >
-          There are no more unscheduled records.
+          {t('No More Unscheduled Records')}
         </Box>
       )}
     </Box>

@@ -8,8 +8,8 @@ export const useConfirmModal = (props: OpenConfirmModal) => {
   const { t } = useTranslation()
   const open = () =>
     openConfirmModal({
-      title: 'Please confirm your action',
-      children: <Text size="sm">You have unsaved changes. Do you really want to close the panel?</Text>,
+      title: t('Please confirm your action'),
+      children: <Text size="sm">{t('Confirm action content')}</Text>,
       ...props,
       target: 'body',
       labels: { confirm: t('Confirm', { ns: 'common' }), cancel: t('Cancel', { ns: 'common' }) },

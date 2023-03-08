@@ -4,6 +4,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useMoveViewMutation } from '@egodb/store'
 import { Box, Button, openContextModal, Stack, useListState } from '@egodb/ui'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { CREATE_VIEW_MODAL_ID } from '../../modals'
 import { ViewsListItem } from './views-list-item'
@@ -21,6 +22,8 @@ export const ViewsList: React.FC = () => {
   }, [table])
 
   const [moveView] = useMoveViewMutation()
+
+  const { t } = useTranslation()
 
   return (
     <Stack justify="space-between">
@@ -68,13 +71,13 @@ export const ViewsList: React.FC = () => {
           fullWidth
           onClick={() => {
             openContextModal({
-              title: 'Create New View',
+              title: t('Create New View'),
               modal: CREATE_VIEW_MODAL_ID,
               innerProps: {},
             })
           }}
         >
-          Create New View
+          {t('Create New View')}
         </Button>
       </Box>
     </Stack>

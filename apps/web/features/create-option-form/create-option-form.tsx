@@ -45,7 +45,12 @@ export const CreateOptionForm: React.FC<ICreateOptionFormProps> = ({ field, colo
               <OptionColorPicker {...props.field} option={{ name: form.watch('name'), color: props.field.value }} />
             )}
           />
-          <TextInput data-autofocus variant="unstyled" placeholder="option name" {...form.register('name')} />
+          <TextInput
+            data-autofocus
+            variant="unstyled"
+            placeholder={t('Option Name') as string}
+            {...form.register('name')}
+          />
         </Group>
         <Group position="right">
           <Button size="xs" variant="white" onClick={() => closeAllModals()}>

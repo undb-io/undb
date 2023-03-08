@@ -54,16 +54,16 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
     <form onSubmit={onSubmit}>
       <Card shadow="sm" withBorder radius={0} sx={{ overflow: 'visible' }}>
         <Card.Section withBorder inheritPadding py="sm">
-          <Text>create new tree field</Text>
+          <Text>{t('Create New Tree Field')}</Text>
         </Card.Section>
 
         <Card.Section withBorder inheritPadding py="sm">
           <Stack spacing="xs">
             <FocusTrap>
               <TextInput
-                label={<FieldInputLabel>field name</FieldInputLabel>}
+                label={<FieldInputLabel>{t('Name', { ns: 'common' })}</FieldInputLabel>}
                 {...form.register('name')}
-                placeholder="new tree field name"
+                placeholder={t('Field Name') as string}
               />
             </FocusTrap>
             <Controller
@@ -71,10 +71,10 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
               name={`parentFieldName`}
               render={(props) => (
                 <TextInput
-                  label={<FieldInputLabel>parent field name</FieldInputLabel>}
+                  label={<FieldInputLabel>{t('Parent Field Name')}</FieldInputLabel>}
                   {...props.field}
                   value={props.field.value ?? ''}
-                  placeholder="new tree field parent name"
+                  placeholder={t('Field Name') as string}
                 />
               )}
             />
@@ -97,7 +97,7 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
         <Card.Section withBorder inheritPadding py="sm">
           <Group position="right">
             <Button leftIcon={<IconChevronLeft size={14} />} size="xs" variant="white" onClick={setStepZero}>
-              Select Existing Field
+              {t('Select Existing Field')}
             </Button>
             <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={isLoading}>
               {t('Done', { ns: 'common' })}

@@ -48,11 +48,11 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ onSuccess }) => 
     <form onSubmit={onSubmit} style={{ width: '100%' }}>
       <Card shadow="md" withBorder sx={{ overflow: 'visible' }}>
         <Card.Section withBorder inheritPadding py="sm">
-          <Text>select calendar field</Text>
+          <Text>{t('Select Calendar Field')}</Text>
         </Card.Section>
 
         <Card.Section withBorder inheritPadding py="sm">
-          <Stack spacing="xs">
+          <Stack spacing={0}>
             {hasCalendarFields ? (
               <Controller
                 name="field"
@@ -78,13 +78,25 @@ export const SelectExistingCalendarField: React.FC<IProps> = ({ onSuccess }) => 
               />
             ) : null}
 
-            {hasCalendarFields && <Divider label="or" labelPosition="center" />}
+            {hasCalendarFields && <Divider my="xs" label={t('or', { ns: 'common' })} labelPosition="center" />}
 
-            <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setStepOne}>
-              add new date field
+            <Button
+              size="xs"
+              variant="subtle"
+              leftIcon={<IconPlus size={14} />}
+              onClick={setStepOne}
+              rightIcon={<FieldIcon type="date" />}
+            >
+              {t('Create New Date Field')}
             </Button>
-            <Button size="xs" variant="subtle" leftIcon={<IconPlus size={14} />} onClick={setStepTwo}>
-              add new date range field
+            <Button
+              size="xs"
+              variant="subtle"
+              leftIcon={<IconPlus size={14} />}
+              onClick={setStepTwo}
+              rightIcon={<FieldIcon type="date-range" />}
+            >
+              {t('Create New Date Range Field')}
             </Button>
           </Stack>
         </Card.Section>
