@@ -8,6 +8,7 @@ import { SelectFieldControl } from '../../field-inputs/select-field-control'
 import { TablePicker } from '../../table/table-picker'
 import type { FieldBase } from '../../field-inputs/field-picker.type'
 import { DateFormatPicker } from '../../field/date-format-picker'
+import { useTranslation } from 'react-i18next'
 
 interface IProps {
   index: number
@@ -16,6 +17,8 @@ interface IProps {
 export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
   const form = useFormContext<ICreateTableInput>()
   const type = form.watch(`schema.${index}.type`)
+
+  const { t } = useTranslation()
 
   if (type === 'rating') {
     return (
@@ -28,6 +31,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
             defaultValue={RATING_MAX_DEFAULT}
             max={RATING_MAX}
             placeholder="set rating max..."
+            label={<FieldInputLabel>{t('Max', { ns: 'common' })}</FieldInputLabel>}
           />
         )}
       />
@@ -47,11 +51,11 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
             name={`schema.${index}.parentFieldName`}
             render={(props) => (
               <TextInput
-                label={<FieldInputLabel>parent field name</FieldInputLabel>}
+                label={<FieldInputLabel>{t('Parent Field Name')}</FieldInputLabel>}
                 {...props.field}
                 variant="filled"
                 value={props.field.value ?? ''}
-                placeholder="set tree field parent field name"
+                placeholder={t('Set Parent Field Name') as string}
               />
             )}
           />
@@ -64,7 +68,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
                 {...props.field}
                 onChange={(tableId) => props.field.onChange(tableId)}
                 variant="filled"
-                placeholder="select foreign table"
+                placeholder={t('Select Foreign Table') as string}
               />
             )}
           />
@@ -88,7 +92,9 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
     return (
       <Controller
         name="format"
-        render={(props) => <DateFormatPicker {...props.field} variant="default" placeholder="select date format" />}
+        render={(props) => (
+          <DateFormatPicker {...props.field} variant="default" placeholder={t('Select Date Format') as string} />
+        )}
       />
     )
   }

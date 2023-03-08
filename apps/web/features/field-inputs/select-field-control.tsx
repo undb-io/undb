@@ -17,11 +17,12 @@ import {
 } from '@egodb/ui'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { CSS } from '@dnd-kit/utilities'
-import type { ICreateOptionSchema, IMutateOptionSchema, IOptionSchema } from '@egodb/core'
+import type { ICreateOptionSchema, IMutateOptionSchema } from '@egodb/core'
 import { OptionColor } from '@egodb/core'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { OptionColorPicker } from './option-color-picker'
 import type { OnColorChange } from './type'
+import { useTranslation } from 'react-i18next'
 
 interface IOptionControlProps {
   option: ICreateOptionSchema
@@ -37,6 +38,8 @@ const OptionControl: React.FC<IOptionControlProps> = ({ option, onNameChange, on
     transform: CSS.Transform.toString(transform),
     transition,
   }
+
+  const { t } = useTranslation()
 
   return (
     <Grid align="center" grow ref={setNodeRef} style={style}>
@@ -54,7 +57,7 @@ const OptionControl: React.FC<IOptionControlProps> = ({ option, onNameChange, on
               variant="unstyled"
               value={option.name}
               onChange={(e) => onNameChange(e.target.value)}
-              placeholder="option name..."
+              placeholder={t('Option Name') as string}
             />
           </FocusTrap>
         </Group>
@@ -88,6 +91,8 @@ export const SelectFieldControl: React.FC<ISelectFieldControlProps> = ({ onChang
       enableAnimations(true)
     })
   }, [items])
+
+  const { t } = useTranslation()
 
   return (
     <Stack spacing={0}>
@@ -141,7 +146,7 @@ export const SelectFieldControl: React.FC<ISelectFieldControlProps> = ({ onChang
           })
         }}
       >
-        Add new option
+        {t('Create New Option')}
       </Button>
     </Stack>
   )

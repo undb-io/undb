@@ -1,4 +1,4 @@
-import { BUILT_IN_DATE_FORMATS } from '@egodb/core'
+import { BUILT_IN_DATE_FORMATS, DEFAULT_DATE_FORMAT } from '@egodb/core'
 import type { SelectItem, SelectProps } from '@egodb/ui'
 import { Select } from '@egodb/ui'
 import { useTranslation } from 'react-i18next'
@@ -11,5 +11,13 @@ type IProps = Omit<SelectProps, 'data'>
 export const DateFormatPicker: React.FC<IProps> = (props) => {
   const { t } = useTranslation()
 
-  return <Select withinPortal label={<FieldInputLabel>{t('Date Format')}</FieldInputLabel>} {...props} data={data} />
+  return (
+    <Select
+      withinPortal
+      label={<FieldInputLabel>{t('Date Format')}</FieldInputLabel>}
+      defaultValue={DEFAULT_DATE_FORMAT}
+      {...props}
+      data={data}
+    />
+  )
 }

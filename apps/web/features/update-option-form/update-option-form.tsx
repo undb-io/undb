@@ -52,7 +52,12 @@ export const UpdateOptionForm: React.FC<IProps> = ({ tableId, field, optionKey, 
               <OptionColorPicker {...props.field} option={{ name: form.watch('name'), color: props.field.value }} />
             )}
           />
-          <TextInput data-autofocus placeholder="option name..." variant="unstyled" {...form.register('name')} />
+          <TextInput
+            data-autofocus
+            placeholder={t('Option Name') as string}
+            variant="unstyled"
+            {...form.register('name')}
+          />
         </Group>
 
         <Group position="right">
