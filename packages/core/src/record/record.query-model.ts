@@ -14,4 +14,10 @@ export interface IRecordQueryModel {
     spec: IRecordSpec | null,
     referenceField?: ReferenceFieldTypes,
   ): Promise<IQueryRecords>
+  findAndCount(
+    table: Table,
+    viewId: ViewId | undefined,
+    spec: IRecordSpec | null,
+    referenceField?: ReferenceFieldTypes,
+  ): Promise<{ records: IQueryRecords; total: number }>
 }

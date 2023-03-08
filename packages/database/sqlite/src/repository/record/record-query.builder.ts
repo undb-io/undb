@@ -13,7 +13,7 @@ import { UnderlyingColumnFactory } from '../../underlying-table/underlying-colum
 import { UnderlyingSelectColumn } from '../../underlying-table/underlying-column.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
 import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
-import { getFTAlias, TABLE_ALIAS } from './record.constants.js'
+import { getFTAlias, INTERNAL_COLUMN_NAME_TOTAL, TABLE_ALIAS } from './record.constants.js'
 import { expandField } from './record.util.js'
 
 export interface IRecordQueryBuilder {
@@ -23,6 +23,7 @@ export interface IRecordQueryBuilder {
   reference(): this
   expand(field?: ReferenceFieldTypes): this
   select(): this
+  count(): this
   build(): Promisable<this>
 }
 
@@ -44,6 +45,10 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     this.qb = this.knex.queryBuilder()
     this.view = table.mustGetView(viewId)
     this.schemaMap = table.schema.toIdMap()
+  }
+
+  clone(): RecordSqliteQueryBuilder {
+    return new RecordSqliteQueryBuilder(this.em, this.table, this.spec, this.view.id.value)
   }
 
   from(): this {
@@ -132,6 +137,11 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     ).map((name) => `${TABLE_ALIAS}.${name}`)
 
     this.qb.select(names)
+    return this
+  }
+
+  count(): this {
+    this.qb.count(`id AS ${INTERNAL_COLUMN_NAME_TOTAL}`)
     return this
   }
 

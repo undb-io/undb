@@ -1,7 +1,7 @@
 'use client'
 
 import { TableFactory } from '@egodb/core'
-import { setCurrentTableId, useGetTableQuery } from '@egodb/store'
+import { setCurrentTableId, setCurrentViewId, useGetTableQuery } from '@egodb/store'
 import type { TRPCError } from '@egodb/trpc'
 import { Alert, Container, IconAlertCircle, ModalsProvider } from '@egodb/ui'
 import { useEffect } from 'react'
@@ -40,6 +40,7 @@ export default function Page({ params: { slug } }: { params: { slug: string[] } 
   }
   const table = TableFactory.fromQuery(data)
   const view = table.mustGetView(viewId)
+
   return (
     <CurrentTableContext.Provider value={table}>
       <CurrentViewContext.Provider value={view}>

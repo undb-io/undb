@@ -82,6 +82,7 @@ i18n
           'Update Table': 'Update Table',
           'Update Table Name': 'Update Table Name',
           'Delete Table': 'Delete Table',
+          'Total Records': 'loaded {{total}} records',
         },
       },
       zh: {
@@ -159,6 +160,7 @@ i18n
           'Update Table': '更新表',
           'Update Table Name': '更新表名',
           'Delete Table': '删除表',
+          'Total Records': '载入 {{total}} 行记录',
         },
       },
     },
