@@ -61,7 +61,7 @@ export const CreateCalendarDateField: React.FC<IProps> = ({ onSuccess }) => {
         <Card.Section withBorder inheritPadding py="sm">
           <Stack spacing="xs">
             <FocusTrap>
-              <TextInput {...form.register('name')} placeholder="new date field name" />
+              <TextInput {...form.register('name')} placeholder={t('Field Name') as string} />
             </FocusTrap>
           </Stack>
         </Card.Section>
@@ -69,7 +69,7 @@ export const CreateCalendarDateField: React.FC<IProps> = ({ onSuccess }) => {
         <Card.Section withBorder inheritPadding py="sm">
           <Group position="right">
             <Button leftIcon={<IconChevronLeft size={14} />} size="xs" variant="white" onClick={setStepZero}>
-              Select Existing Field
+              {t('Select Existing Field')}
             </Button>
             <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={isLoading}>
               {t('Done', { ns: 'common' })}
