@@ -31,6 +31,9 @@ export const TableSortEditor: React.FC = () => {
               </Badge>
             ) : null
           }
+          sx={(theme) => ({
+            backgroundColor: opened ? theme.colors[theme.primaryColor][0] : 'initial',
+          })}
         >
           {t('Sort')}
         </Button>

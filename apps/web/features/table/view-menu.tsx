@@ -187,32 +187,35 @@ export const ViewMenu: React.FC = () => {
     <Button.Group>
       <Menu width={250} disabled={editing} opened={opened} closeOnClickOutside onClose={toggle.close} shadow="md">
         <Menu.Target>
-          <Tooltip label={view.displayType}>
-            <Button
-              size="xs"
-              compact
-              variant="subtle"
-              onClick={toggle.toggle}
-              leftIcon={<DisplayTypeIcon displayType={view.displayType} />}
-              rightIcon={<IconChevronDown size={14} />}
-            >
-              {editing ? (
-                <TextInput
-                  defaultValue={viewName}
-                  onBlur={(event) => onUpdateViewName(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter') {
-                      onUpdateViewName((event.target as any).value)
-                    }
-                  }}
-                  size="xs"
-                  autoFocus
-                />
-              ) : (
-                viewName
-              )}
-            </Button>
-          </Tooltip>
+          <Button
+            size="xs"
+            compact
+            variant="subtle"
+            onClick={toggle.toggle}
+            leftIcon={<DisplayTypeIcon displayType={view.displayType} />}
+            rightIcon={<IconChevronDown size={14} />}
+            sx={(theme) => ({
+              '&[data-expanded]': {
+                backgroundColor: theme.colors[theme.primaryColor][0],
+              },
+            })}
+          >
+            {editing ? (
+              <TextInput
+                defaultValue={viewName}
+                onBlur={(event) => onUpdateViewName(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') {
+                    onUpdateViewName((event.target as any).value)
+                  }
+                }}
+                size="xs"
+                autoFocus
+              />
+            ) : (
+              viewName
+            )}
+          </Button>
         </Menu.Target>
 
         <Menu.Dropdown w={300}>

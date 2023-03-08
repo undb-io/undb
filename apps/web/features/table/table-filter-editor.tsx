@@ -32,6 +32,9 @@ export const TableFilterEditor: React.FC = () => {
               </Badge>
             ) : null
           }
+          sx={(theme) => ({
+            backgroundColor: opened ? theme.colors[theme.primaryColor][0] : 'initial',
+          })}
         >
           {t('Filter')}
         </Button>

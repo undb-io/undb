@@ -41,6 +41,7 @@ const FieldItem: React.FC<IFieldItemProps> = ({ field: f, onVisibleChange, index
   }
 
   const { hovered, ref } = useHover()
+  const [opened, handler] = useDisclosure()
 
   return (
     <Box ref={ref}>
@@ -65,8 +66,8 @@ const FieldItem: React.FC<IFieldItemProps> = ({ field: f, onVisibleChange, index
           />
         </Group>
 
-        <Menu width={200}>
-          {hovered && (
+        <Menu width={200} opened={opened} onChange={handler.toggle} closeOnClickOutside closeOnItemClick>
+          {(hovered || opened) && (
             <Menu.Target>
               <ActionIcon size="xs" color="gray.5">
                 <IconChevronDown />
@@ -136,6 +137,9 @@ export const ViewFieldsEditor: React.FC = () => {
                 </Badge>
               ) : null
             }
+            sx={(theme) => ({
+              backgroundColor: opened ? theme.colors[theme.primaryColor][0] : 'initial',
+            })}
           >
             {t('Config Fields')}
           </Button>
