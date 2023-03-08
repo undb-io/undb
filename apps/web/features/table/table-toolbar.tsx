@@ -5,6 +5,7 @@ import { TableFilterEditor } from './table-filter-editor'
 import { TableSortEditor } from './table-sort-editor'
 import { ViewMenu } from './view-menu'
 import { ViewsButton } from './views-button'
+import { RecordsTotal } from './records-total'
 
 export const TableToolbar: React.FC = () => {
   return (
@@ -30,6 +31,8 @@ export const TableToolbar: React.FC = () => {
       <TableFilterEditor />
       <TableSortEditor />
       <ViewFieldsEditor />
+
+      <RecordsTotal />
     </Group>
   )
 }

@@ -7,11 +7,13 @@ import { tableApi } from '../services'
 
 export interface TableState {
   currentTableId: string
+  currentViewId: string
   totalCount: number
 }
 
 const initialState: TableState = {
   currentTableId: '',
+  currentViewId: '',
   totalCount: 0,
 }
 
@@ -25,6 +27,9 @@ export const tableSlice = createSlice({
     resetCurrentTableId: (state) => {
       state.currentTableId = ''
     },
+    setCurrentViewId: (state, action: PayloadAction<string>) => {
+      state.currentViewId = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addMatcher(tableApi.endpoints.getTables.matchFulfilled, (state, action) => {
@@ -33,7 +38,7 @@ export const tableSlice = createSlice({
   },
 })
 
-export const { setCurrentTableId, resetCurrentTableId } = tableSlice.actions
+export const { setCurrentTableId, resetCurrentTableId, setCurrentViewId } = tableSlice.actions
 
 export const tableReducer = tableSlice.reducer
 

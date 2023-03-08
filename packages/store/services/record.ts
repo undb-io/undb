@@ -128,6 +128,8 @@ export const {
 } = recordApi
 
 const getCurrentTableRecords = (state: RootState) =>
-  recordApi.endpoints.getRecords.select({ tableId: state.table.currentTableId })(state)
+  recordApi.endpoints.getRecords.select({ tableId: state.table.currentTableId, viewId: state.table.currentViewId })(
+    state,
+  )
 
 export const getCurrentTableRecordsTotal = createSelector(getCurrentTableRecords, (result) => result.data?.total ?? 0)
