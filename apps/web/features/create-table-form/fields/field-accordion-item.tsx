@@ -42,7 +42,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
             <IconGripVertical size={12} />
           </ActionIcon>
           <Text fz="sm" fw={500}>
-            {name || `Field ${index + 1}`}
+            {name || `${t('Field')} ${index + 1}`}
           </Text>
         </Group>
       </Accordion.Control>

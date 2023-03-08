@@ -1,6 +1,7 @@
 import type { Field } from '@egodb/core'
 import { useDeleteOptionMutation } from '@egodb/store'
 import { ActionIcon, IconDots, IconTrash, Menu } from '@egodb/ui'
+import { useTranslation } from 'react-i18next'
 import { useConfirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 
@@ -24,6 +25,8 @@ export const KanbanLaneMenu: React.FC<IProps> = ({ field, optionKey, children })
     },
   })
 
+  const { t } = useTranslation()
+
   return (
     <Menu>
       <Menu.Target>
@@ -38,7 +41,7 @@ export const KanbanLaneMenu: React.FC<IProps> = ({ field, optionKey, children })
         {!!children && <Menu.Divider />}
 
         <Menu.Item icon={<IconTrash size={14} />} color="red" onClick={confirm} fz="xs" h={35}>
-          Delete Option
+          {t('Delete Option')}
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

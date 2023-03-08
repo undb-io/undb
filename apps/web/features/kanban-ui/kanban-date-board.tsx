@@ -108,7 +108,7 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
   })
 
   return (
-    <Container fluid ml={0}>
+    <Container fluid ml={0} pt="xs">
       <Group align="start" noWrap>
         <DndContext
           sensors={sensors}

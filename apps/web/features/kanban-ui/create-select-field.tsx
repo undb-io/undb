@@ -54,13 +54,13 @@ export const CreateSelectField: React.FC<IProps> = ({ onSuccess }) => {
     <form onSubmit={onSubmit}>
       <Card shadow="sm" withBorder sx={{ overflow: 'visible' }}>
         <Card.Section withBorder inheritPadding py="sm">
-          <Text>create new select field</Text>
+          <Text>{t('Create New Select Field')}</Text>
         </Card.Section>
 
         <Card.Section withBorder inheritPadding py="sm">
           <Stack spacing="xs">
             <FocusTrap>
-              <TextInput {...form.register('name')} placeholder="new select field name" />
+              <TextInput {...form.register('name')} placeholder={t('Field Name') as string} />
             </FocusTrap>
             <Controller
               control={form.control}
@@ -73,7 +73,7 @@ export const CreateSelectField: React.FC<IProps> = ({ onSuccess }) => {
         <Card.Section withBorder inheritPadding py="sm">
           <Group position="right">
             <Button leftIcon={<IconChevronLeft size={14} />} size="xs" variant="white" onClick={setStepZero}>
-              Select Existing Field
+              {t('Select Existing Field')}
             </Button>
             <Button size="xs" type="submit" disabled={!form.formState.isValid} loading={isLoading}>
               {t('Done', { ns: 'common' })}

@@ -55,7 +55,7 @@ export const CreateCalendarDateField: React.FC<IProps> = ({ onSuccess }) => {
     <form onSubmit={onSubmit}>
       <Card shadow="sm">
         <Card.Section withBorder inheritPadding py="sm">
-          <Text>create new date field</Text>
+          <Text>{t('Create New Date Field')}</Text>
         </Card.Section>
 
         <Card.Section withBorder inheritPadding py="sm">

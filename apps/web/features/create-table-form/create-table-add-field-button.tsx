@@ -22,7 +22,7 @@ export const CreateTableAddFieldButton: React.FC = () => {
       fullWidth
       color={hasSchema ? 'gray' : 'orange'}
       variant={hasSchema ? 'white' : 'light'}
-      leftIcon={<IconPlus />}
+      leftIcon={<IconPlus size={16} />}
     >
       {t('Create New Field')}
     </Button>
