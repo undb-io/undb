@@ -22,7 +22,7 @@
   "lint-staged": {
     "*.{ts,tsx,md}": "prettier --write"
   },
-  "packageManager": "pnpm@7.29.0",
+  "packageManager": "pnpm@7.29.1",
   "private": true,
   "scripts": {
     "build": "turbo run build",
