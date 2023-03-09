@@ -2,6 +2,8 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSelector, createSlice } from '@reduxjs/toolkit'
 import 'immer'
 import { filter, keys, omit, pipe, prop, some, T } from 'lodash/fp'
+import { persistReducer } from 'redux-persist'
+import sessionStorage from 'redux-persist/es/storage/session'
 import 'reselect'
 import type { RootState } from '../reducers'
 import { recordApi } from '../services'
@@ -66,7 +68,13 @@ export const recordSlice = createSlice({
 export const { setSelectedRecordId, resetSelectedRecordId, setTableSelectedRecordIds, resetSelectedRecordIds } =
   recordSlice.actions
 
-export const recordReducer = recordSlice.reducer
+export const recordReducer = persistReducer(
+  {
+    key: recordSlice.name,
+    storage: sessionStorage,
+  },
+  recordSlice.reducer,
+)
 
 export const getSelectedRecordId = (state: RootState) => state.record.selectedRecordId
 
