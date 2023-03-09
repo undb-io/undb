@@ -130,7 +130,11 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     this.qb.where(this.getFieldId(s.fieldId), '<=', s.value.unpack())
   }
   dateEqual(s: DateEqual): void {
-    this.qb.where({ [this.getFieldId(s.fieldId)]: s.value.toString()! })
+    if (s.value.unpack() === null) {
+      this.qb.whereNull(this.getFieldId(s.fieldId))
+    } else {
+      this.qb.where({ [this.getFieldId(s.fieldId)]: s.value.toString()! })
+    }
   }
   dateGreaterThan(s: DateGreaterThan): void {
     if (s.value.unpack() === null) {

@@ -158,70 +158,72 @@ describe('RecordSqliteQueryVisitor', () => {
     )
   })
 
-  test('dateEqual', () => {
+  test('dateEqual date', () => {
     visitor.dateEqual(new DateEqual('fieldId', new DateFieldValue(date)))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` = \\"2022-03-02T00:00:00.000Z\\""',
+      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` = \'2022-03-02T00:00:00.000Z\'"',
     )
+  })
 
+  test('dateEqual null', () => {
     visitor.dateEqual(new DateEqual('fieldId', new DateFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` = \\"2022-03-02T00:00:00.000Z\\" and `t`.`fieldId` is null"',
+      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` is null"',
     )
   })
 
   test('dateGreaterThan', () => {
     visitor.dateGreaterThan(new DateGreaterThan('fieldId', new DateFieldValue(date)))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` > \\"2022-03-02T00:00:00.000Z\\""',
+      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` > \'2022-03-02T00:00:00.000Z\'"',
     )
 
     visitor.dateGreaterThan(new DateGreaterThan('fieldId', new DateFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` > \\"2022-03-02T00:00:00.000Z\\" and `t`.`fieldId` is null"',
+      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` > \'2022-03-02T00:00:00.000Z\' and `t`.`fieldId` is null"',
     )
   })
 
   test('dateGreaterThanOrEqual', () => {
     visitor.dateGreaterThanOrEqual(new DateGreaterThanOrEqual('fieldId', new DateFieldValue(date)))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` >= \\"2022-03-02T00:00:00.000Z\\""',
+      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` >= \'2022-03-02T00:00:00.000Z\'"',
     )
 
     visitor.dateGreaterThanOrEqual(new DateGreaterThanOrEqual('fieldId', new DateFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` >= \\"2022-03-02T00:00:00.000Z\\" and `t`.`fieldId` is null"',
+      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` >= \'2022-03-02T00:00:00.000Z\' and `t`.`fieldId` is null"',
     )
   })
 
   test('dateLessThan', () => {
     visitor.dateLessThan(new DateLessThan('fieldId', new DateFieldValue(date)))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` < \\"2022-03-02T00:00:00.000Z\\""',
+      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` < \'2022-03-02T00:00:00.000Z\'"',
     )
 
     visitor.dateLessThan(new DateLessThan('fieldId', new DateFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` < \\"2022-03-02T00:00:00.000Z\\" and `t`.`fieldId` is null"',
+      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` < \'2022-03-02T00:00:00.000Z\' and `t`.`fieldId` is null"',
     )
   })
 
   test('dateLessThanOrEqual', () => {
     visitor.dateLessThanOrEqual(new DateLessThanOrEqual('fieldId', new DateFieldValue(date)))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` <= \\"2022-03-02T00:00:00.000Z\\""',
+      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` <= \'2022-03-02T00:00:00.000Z\'"',
     )
 
     visitor.dateLessThanOrEqual(new DateLessThanOrEqual('fieldId', new DateFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` <= \\"2022-03-02T00:00:00.000Z\\" and `t`.`fieldId` is null"',
+      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` <= \'2022-03-02T00:00:00.000Z\' and `t`.`fieldId` is null"',
     )
   })
 
   test('dateIsToday', () => {
     visitor.dateIsToday(new DateIsToday('fieldId'))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` between \\"2022-03-02T00:00:00.000Z\\" and \\"2022-03-02T23:59:59.999Z\\""',
+      "\"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` between '2022-03-02T00:00:00.000Z' and '2022-03-02T23:59:59.999Z'\"",
     )
   })
 
