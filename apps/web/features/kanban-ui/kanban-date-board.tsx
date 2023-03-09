@@ -3,7 +3,7 @@ import { DndContext, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSen
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { RecordFactory } from '@egodb/core'
 import { Container, Group } from '@egodb/ui'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { KanbanLane } from './kanban-lane'
 import { KanbanCard } from './kanban-card'
 import { NODATE_STACK_ID } from './kanban.constants'
@@ -111,8 +111,8 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
   const { t } = useTranslation()
 
   return (
-    <Container fluid ml={0} pt="xs">
-      <Group align="start" noWrap>
+    <Container fluid ml={0} pt="xs" h="100%" sx={{ overflow: 'scroll' }}>
+      <Group align="start" noWrap h="100%">
         <DndContext
           sensors={sensors}
           onDragStart={onDragStart}
