@@ -170,7 +170,6 @@ importers:
       react-hook-form: ^7.43.5
       react-i18next: ^12.2.0
       react-redux: ^8.0.5
-      superjson: ^1.12.2
       tsconfig: ^0.0.0
       type-fest: ^3.6.1
       typescript: ^4.9.5
@@ -203,7 +202,6 @@ importers:
       react-hook-form: 7.43.5_react@18.2.0
       react-i18next: 12.2.0_nuvg7z3l7c7q3mgp6kac62miay
       react-redux: 8.0.5_3xleytyzprlgycb2ded54tx72i
-      superjson: 1.12.2
       use-deep-compare-effect: 1.8.1_react@18.2.0
     devDependencies:
       '@egodb/eslint-config': link:../../packages/eslint-config
@@ -424,7 +422,6 @@ importers:
       redux-logger: ^3.0.6
       redux-persist: ^6.0.0
       reselect: ^4.1.7
-      superjson: ^1.12.2
       tsconfig: ^0.0.0
       typescript: ^4.9.5
     dependencies:
@@ -437,7 +434,6 @@ importers:
       redux: 4.2.1
       redux-logger: 3.0.6
       redux-persist: 6.0.0_react@18.2.0+redux@4.2.1
-      superjson: 1.12.2
     devDependencies:
       '@egodb/eslint-config': link:../eslint-config
       '@trpc/server': 10.14.0
@@ -457,7 +453,6 @@ importers:
       '@egodb/domain': ^0.0.0
       '@trpc/server': ^10.14.0
       rimraf: ^4.3.1
-      superjson: ^1.12.2
       tsconfig: ^0.0.0
       tsup: ^6.6.3
       typescript: ^4.9.5
@@ -468,7 +463,6 @@ importers:
       '@egodb/cqrs': link:../cqrs
       '@egodb/domain': link:../domain
       '@trpc/server': 10.14.0
-      superjson: 1.12.2
       zod: 3.21.3
     devDependencies:
       rimraf: 4.3.1
@@ -5466,13 +5460,6 @@ packages:
     resolution: {integrity: sha512-JxbCBUdrfr6AQjOXrxoTvAMJO4HBTUIlBzslcJPAz+/KT8yk53fXun51u+RenNYvad/+Vc2DIz5o9UxlCDymFQ==}
     dev: true
 
-  /copy-anything/3.0.2:
-    resolution: {integrity: sha512-CzATjGXzUQ0EvuvgOCI6A4BGOo2bcVx8B+eC2nF862iv9fopnPQwlrbACakNCHRIJbCSBj+J/9JeDf60k64MkA==}
-    engines: {node: '>=12.13'}
-    dependencies:
-      is-what: 4.1.7
-    dev: false
-
   /core-js-pure/3.26.1:
     resolution: {integrity: sha512-VVXcDpp/xJ21KdULRq/lXdLzQAtX7+37LzpyfFM973il0tWSsDEoyzG38G14AjTpK9VTfiNM9jnFauq/CpaWGQ==}
     requiresBuild: true
@@ -8011,11 +7998,6 @@ packages:
     resolution: {integrity: sha512-qctsuLZmIQ0+vSSMfoVvyFe2+GSEvnmZ2ezTup1SBse9+twCCeial6EEi3Nc2KFcf6+qz2FBPnjXsk8xhKSaPQ==}
     dependencies:
       call-bind: 1.0.2
-
-  /is-what/4.1.7:
-    resolution: {integrity: sha512-DBVOQNiPKnGMxRMLIYSwERAS5MVY1B7xYiGnpgctsOFvVDz9f9PFXXxMcTOHuoqYp4NK9qFYQaIC1NRRxLMpBQ==}
-    engines: {node: '>=12.13'}
-    dev: false
 
   /is-windows/1.0.2:
     resolution: {integrity: sha512-eXK1UInq2bPmjyX6e3VHIzMLobc4J94i4AWn+Hpq3OU5KkrRC96OAcR3PRJ/pGu6m8TRnBHP9dkXQVsT/COVIA==}
@@ -12327,13 +12309,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /superjson/1.12.2:
-    resolution: {integrity: sha512-ugvUo9/WmvWOjstornQhsN/sR9mnGtWGYeTxFuqLb4AiT4QdUavjGFRALCPKWWnAiUJ4HTpytj5e0t5HoMRkXg==}
-    engines: {node: '>=10'}
-    dependencies:
-      copy-anything: 3.0.2
-    dev: false
 
   /supertest/6.3.3:
     resolution: {integrity: sha512-EMCG6G8gDu5qEqRQ3JjjPs6+FYT1a7Hv5ApHvtSghmOFJYtsU5S+pSb6Y2EUeCEY3CmEL3mmQ8YWlPOzQomabA==}

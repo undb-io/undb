@@ -29,7 +29,6 @@
     "react-hook-form": "^7.43.5",
     "react-i18next": "^12.2.0",
     "react-redux": "^8.0.5",
-    "superjson": "^1.12.2",
     "use-deep-compare-effect": "^1.8.1"
   },
   "devDependencies": {
