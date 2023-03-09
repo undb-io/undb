@@ -112,7 +112,13 @@ export const ViewFieldsEditor: React.FC = () => {
 
   const [moveField] = useMoveFieldMutation()
 
-  const [parent] = useAutoAnimate({ duration: 150 })
+  const [parent, enableAnimations] = useAutoAnimate({ duration: 150 })
+
+  useDeepCompareEffect(() => {
+    requestAnimationFrame(() => {
+      enableAnimations(true)
+    })
+  }, [order])
 
   return (
     <Popover
@@ -155,6 +161,7 @@ export const ViewFieldsEditor: React.FC = () => {
             <DndContext
               collisionDetection={closestCenter}
               modifiers={[restrictToVerticalAxis]}
+              onDragStart={() => enableAnimations(false)}
               onDragEnd={(e) => {
                 const { over, active } = e
                 if (over) {
