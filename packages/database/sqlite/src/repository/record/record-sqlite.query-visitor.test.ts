@@ -158,17 +158,15 @@ describe('RecordSqliteQueryVisitor', () => {
     )
   })
 
-  test('dateEqual date', () => {
+  test('dateEqual', () => {
     visitor.dateEqual(new DateEqual('fieldId', new DateFieldValue(date)))
     expect(visitor.query).toMatchInlineSnapshot(
       '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` = \'2022-03-02T00:00:00.000Z\'"',
     )
-  })
 
-  test('dateEqual null', () => {
     visitor.dateEqual(new DateEqual('fieldId', new DateFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` is null"',
+      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`fieldId` = \'2022-03-02T00:00:00.000Z\' and `t`.`fieldId` is null"',
     )
   })
 

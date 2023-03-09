@@ -1,4 +1,5 @@
 import type { Field, IOperator } from '@egodb/core'
+import { CreatedAtField, UpdatedAtField } from '@egodb/core'
 import { TreeField } from '@egodb/core'
 import { DateRangeField } from '@egodb/core'
 import { SelectField } from '@egodb/core'
@@ -40,7 +41,7 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
       { value: '$lt', label: t('LESS THAN', { ns: 'common' }) as string },
       { value: '$lte', label: t('LESS THAN OR EQUAL', { ns: 'common' }) as string },
     ]
-  } else if (field instanceof DateField) {
+  } else if (field instanceof DateField || field instanceof CreatedAtField || field instanceof UpdatedAtField) {
     data = [
       { value: '$eq', label: t('EQUAL', { ns: 'common' }) as string },
       { value: '$neq', label: t('NOT EQUAL', { ns: 'common' }) as string },
