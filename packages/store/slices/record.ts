@@ -1,13 +1,15 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSelector, createSlice } from '@reduxjs/toolkit'
 import 'immer'
-import { filter, keys, omit, pipe, prop, some, T } from 'lodash/fp'
+import fp from 'lodash/fp.js'
 import { persistReducer } from 'redux-persist'
 import sessionStorage from 'redux-persist/es/storage/session'
 import 'reselect'
 import type { RootState } from '../reducers'
 import { recordApi } from '../services'
 import { resetCurrentTableId, setCurrentTableId } from './table'
+
+const { filter, keys, omit, pipe, prop, some, T } = fp
 
 export interface RecordState {
   selectedRecordId: string

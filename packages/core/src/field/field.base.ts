@@ -1,6 +1,6 @@
 import { and, ValueObject } from '@egodb/domain'
-import { map, pipe, toArray } from '@fxts/core'
 import { isArray, isEmpty, isString, unzip } from 'lodash-es'
+import fp from 'lodash/fp.js'
 import type { Option } from 'oxide.ts'
 import { None } from 'oxide.ts'
 import type { IFilter, IOperator } from '../filter/index.js'
@@ -37,6 +37,8 @@ import type { IUpdateTreeFieldInput } from './tree-field.type.js'
 import type { IUpdateUpdatedAtFieldInput } from './updated-at-field.type.js'
 import type { DateFormat, FieldId, FieldName } from './value-objects/index.js'
 import { DisplayFields } from './value-objects/index.js'
+
+const { map, pipe } = fp
 
 export abstract class BaseField<C extends IBaseField = IBaseField> extends ValueObject<C> {
   abstract type: IFieldType
@@ -130,19 +132,15 @@ export abstract class BaseReferenceField<F extends ITreeField | IParentField | I
   getDisplayValues(values?: IRecordDisplayValues): (string | null)[][] {
     if (isEmpty(this.displayFieldIds)) {
       return pipe(
-        ['id'],
-        map((id) => values?.[this.id.value]?.[id] ?? []),
-        toArray,
+        map((id: string) => values?.[this.id.value]?.[id] ?? []),
         unzip,
-      )
+      )(['id'])
     }
 
     return pipe(
-      this.displayFieldIds,
-      map((displayFieldId) => values?.[this.id.value]?.[displayFieldId.value] ?? []),
-      toArray,
+      map((displayFieldId: FieldId) => values?.[this.id.value]?.[displayFieldId.value] ?? []),
       unzip,
-    )
+    )(this.displayFieldIds)
   }
 }
 
