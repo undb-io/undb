@@ -34,6 +34,7 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
       w="100%"
       spacing="xs"
       role="button"
+      noWrap
       sx={(theme) => ({
         textAlign: 'start',
         borderRadius: theme.radius.xs,
@@ -83,7 +84,7 @@ export const Day: React.FC<IProps> = ({ date, field, records }) => {
     <Box w="100%" h="100%" ref={ref}>
       <Stack
         ref={setNodeRef}
-        spacing="xs"
+        spacing="sm"
         px={5}
         py="xs"
         w="100%"
