@@ -16,7 +16,7 @@ export const rootReducder = persistReducer(
     key: 'root',
     version: 1,
     storage,
-    blacklist: [api.reducerPath],
+    blacklist: [api.reducerPath, recordSlice.name],
   },
   reducer,
 )
