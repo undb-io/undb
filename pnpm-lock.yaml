@@ -156,6 +156,7 @@ importers:
       '@types/react': ^18.0.28
       '@types/react-dom': ^18.0.11
       date-fns: ^2.29.3
+      dayjs: ^1.11.7
       eslint: ^8.35.0
       eslint-config-next: ^13.2.3
       i18next: ^22.4.11
@@ -190,6 +191,7 @@ importers:
       '@tanstack/react-table': 8.7.9_biqbaboplfbrettd7655fr4n2y
       '@tanstack/react-virtual': 3.0.0-beta.54_react@18.2.0
       date-fns: 2.29.3
+      dayjs: 1.11.7
       i18next: 22.4.11
       i18next-browser-languagedetector: 7.0.1
       jotai: 2.0.3_react@18.2.0

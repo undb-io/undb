@@ -17,6 +17,7 @@
     "@tanstack/react-table": "^8.7.9",
     "@tanstack/react-virtual": "^3.0.0-beta.54",
     "date-fns": "^2.29.3",
+    "dayjs": "^1.11.7",
     "i18next": "^22.4.11",
     "i18next-browser-languagedetector": "^7.0.1",
     "jotai": "^2.0.3",
