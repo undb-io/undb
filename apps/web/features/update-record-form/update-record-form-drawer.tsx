@@ -1,6 +1,5 @@
-import { RecordFactory } from '@egodb/core'
 import { updateRecordSchema } from '@egodb/core'
-import type { IUpdateRecordValueSchema, UnpackedFieldValue } from '@egodb/core'
+import type { IUpdateRecordValueSchema, IFieldQueryValue } from '@egodb/core'
 import { ActionIcon, Drawer, IconChevronLeft, IconChevronRight, LoadingOverlay } from '@egodb/ui'
 import { useEffect, useMemo } from 'react'
 import { useAppDispatch, useAppSelector, useConfirmModal } from '../../hooks'
@@ -25,33 +24,27 @@ export const UpdateRecordFormDrawer: React.FC = () => {
   const opened = useAppSelector(getHasSelectedRecordId)
 
   const selectedRecordId = useAppSelector(getSelectedRecordId)
-  const { selectedRecord, data, isLoading } = useGetRecordQuery(
+  const { data, isLoading } = useGetRecordQuery(
     { id: selectedRecordId, tableId: table.id.value },
-    {
-      skip: !selectedRecordId,
-      selectFromResult: (result) => ({
-        ...result,
-        selectedRecord: result.data ? RecordFactory.fromQuery(result.data, table.schema.toIdMap()).unwrap() : undefined,
-      }),
-    },
+    { skip: !selectedRecordId },
   )
 
   const defaultValues = useMemo(
     () => ({
-      id: selectedRecord?.id.value ?? '',
+      id: data?.id ?? '',
       value: fields.map((field) => {
-        let value: UnpackedFieldValue | undefined
+        let value: IFieldQueryValue | undefined
 
         if (field.type === 'id') {
-          value = selectedRecord?.id.value
+          value = data?.id
         } else if (field.type === 'created-at') {
-          value = selectedRecord?.createdAt.unpack()
+          value = data?.createdAt
         } else if (field.type === 'updated-at') {
-          value = selectedRecord?.updatedAt.unpack()
+          value = data?.updatedAt
         } else if (field.type === 'auto-increment') {
-          value = selectedRecord?.autoIncrement
+          value = data?.autoIncrement
         } else {
-          value = selectedRecord?.valuesJSON?.[field.id.value]?.unpack() ?? null
+          value = data?.values?.[field.id.value] ?? null
         }
         return {
           id: field.id.value,

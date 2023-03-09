@@ -29,8 +29,8 @@ export class Record {
   get internalValuesJSON(): IInternalRecordValues {
     return {
       id: this.id.value,
-      created_at: this.createdAt.value,
-      updated_at: this.updatedAt.value,
+      created_at: this.createdAt.value.toISOString(),
+      updated_at: this.updatedAt.value.toISOString(),
       auto_increment: this.autoIncrement,
       display_values: this.displayValues?.values,
     }

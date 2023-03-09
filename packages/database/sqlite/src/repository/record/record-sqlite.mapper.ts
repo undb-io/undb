@@ -59,8 +59,8 @@ export class RecordSqliteMapper {
 
     return {
       id,
-      createdAt: new Date(created_at),
-      updatedAt: new Date(updated_at),
+      createdAt: new Date(created_at).toISOString(),
+      updatedAt: new Date(updated_at).toISOString(),
       autoIncrement: auto_increment,
       tableId,
       values,

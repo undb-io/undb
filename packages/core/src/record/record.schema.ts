@@ -31,8 +31,8 @@ export type IUpdateRecordValueSchema = z.infer<typeof updateRecordSchema>
 
 export const internalRecordValues = z.object({
   [INTERNAL_COLUMN_ID_NAME]: recordIdSchema,
-  [INTERNAL_COLUMN_CREATED_AT_NAME]: z.date(),
-  [INTERNAL_COLUMN_UPDATED_AT_NAME]: z.date(),
+  [INTERNAL_COLUMN_CREATED_AT_NAME]: z.string().datetime(),
+  [INTERNAL_COLUMN_UPDATED_AT_NAME]: z.string().datetime(),
   [INTERNAL_INCREAMENT_ID_NAME]: z.number().optional(),
   [INTERNAL_DISPLAY_VALUES_NAME]: recordDisplayValues.optional(),
 })
