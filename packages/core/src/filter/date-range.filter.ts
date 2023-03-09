@@ -1,9 +1,9 @@
 import { z } from 'zod'
-import { dateRangeFieldValue } from '../field/date-range-field.type.js'
 import { baseFilter } from './filter.base.js'
 import { dateRangeFilterOperators } from './operators.js'
 
-export const dateRangeFilterValue = dateRangeFieldValue
+const datetime = z.string().datetime().nullable()
+export const dateRangeFilterValue = z.tuple([datetime, datetime])
 export const dateRangeFilter = z
   .object({
     type: z.literal('date-range'),

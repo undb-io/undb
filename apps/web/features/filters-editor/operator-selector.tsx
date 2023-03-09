@@ -8,6 +8,7 @@ import { DateField } from '@egodb/core'
 import { NumberField } from '@egodb/core'
 import type { SelectItem } from '@egodb/ui'
 import { Select } from '@egodb/ui'
+import { useTranslation } from 'react-i18next'
 
 interface IProps {
   field: Field | null
@@ -18,54 +19,56 @@ interface IProps {
 export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) => {
   let data: SelectItem[] = []
 
+  const { t } = useTranslation()
+
   // TODO: optimize if else
   if (field instanceof StringField) {
     data = [
-      { value: '$eq', label: 'equal' },
-      { value: '$neq', label: 'not equal' },
-      { value: '$contains', label: 'contains' },
-      { value: '$starts_with', label: 'startsWith' },
-      { value: '$ends_with', label: 'endsWith' },
-      { value: '$regex', label: 'regex' },
+      { value: '$eq', label: t('EQUAL', { ns: 'common' }) as string },
+      { value: '$neq', label: t('NOT EQUAL', { ns: 'common' }) as string },
+      { value: '$CONTAINS', label: t('CONTAINS', { ns: 'common' }) as string },
+      { value: '$starts_with', label: t('STARTS WITH', { ns: 'common' }) as string },
+      { value: '$ends_with', label: t('ENDS WITH', { ns: 'common' }) as string },
+      { value: '$regex', label: t('REGEX', { ns: 'common' }) as string },
     ]
   } else if (field instanceof NumberField) {
     data = [
-      { value: '$eq', label: 'equal' },
-      { value: '$neq', label: 'not equal' },
-      { value: '$gt', label: 'greater than' },
-      { value: '$gte', label: 'greater than or equal' },
-      { value: '$lt', label: 'less than' },
-      { value: '$lte', label: 'less than or equal' },
+      { value: '$eq', label: t('EQUAL', { ns: 'common' }) as string },
+      { value: '$neq', label: t('NOT EQUAL', { ns: 'common' }) as string },
+      { value: '$gt', label: t('GREATER THAN', { ns: 'common' }) as string },
+      { value: '$gte', label: t('GREATER THAN OR EQUAL', { ns: 'common' }) as string },
+      { value: '$lt', label: t('LESS THAN', { ns: 'common' }) as string },
+      { value: '$lte', label: t('LESS THAN OR EQUAL', { ns: 'common' }) as string },
     ]
   } else if (field instanceof DateField) {
     data = [
-      { value: '$eq', label: 'equal' },
-      { value: '$neq', label: 'not equal' },
-      { value: '$gt', label: 'greater than' },
-      { value: '$gte', label: 'greater than or equal' },
-      { value: '$lt', label: 'less than' },
-      { value: '$lte', label: 'less than or equal' },
-      { value: '$is_today', label: 'is today' },
+      { value: '$eq', label: t('EQUAL', { ns: 'common' }) as string },
+      { value: '$neq', label: t('NOT EQUAL', { ns: 'common' }) as string },
+      { value: '$gt', label: t('GREATER THAN', { ns: 'common' }) as string },
+      { value: '$gte', label: t('GREATER THAN OR EQUAL', { ns: 'common' }) as string },
+      { value: '$lt', label: t('LESS THAN', { ns: 'common' }) as string },
+      { value: '$lte', label: t('LESS THAN OR EQUAL', { ns: 'common' }) as string },
+      { value: '$is_today', label: t('IS TODAY', { ns: 'common' }) as string },
     ]
   } else if (field instanceof DateRangeField) {
     data = [
-      { value: '$eq', label: 'equal' },
-      { value: '$neq', label: 'not equal' },
+      { value: '$eq', label: t('EQUAL', { ns: 'common' }) as string },
+      { value: '$neq', label: t('NOT EQUAL', { ns: 'common' }) as string },
     ]
   } else if (field instanceof BoolField) {
     data = [
-      { value: '$is_true', label: 'is true' },
-      { value: '$is_false', label: 'is false' },
+      { value: '$is_true', label: t('IS TRUE', { ns: 'common' }) as string },
+      { value: '$is_false', label: t('IS FALSE', { ns: 'common' }) as string },
     ]
   } else if (field instanceof SelectField) {
     data = [
-      { value: '$eq', label: 'equal' },
-      { value: '$neq', label: 'not equal' },
-      { value: '$in', label: 'in' },
-      { value: '$nin', label: 'not in' },
+      { value: '$eq', label: t('EQUAL', { ns: 'common' }) as string },
+      { value: '$neq', label: t('NOT EQUAL', { ns: 'common' }) as string },
+      { value: '$in', label: t('IN', { ns: 'common' }) as string },
+      { value: '$nin', label: t('NOT IN', { ns: 'common' }) as string },
     ]
   } else if (field instanceof TreeField) {
-    data = [{ value: '$is_root', label: 'is root' }]
+    data = [{ value: '$is_root', label: t('IS ROOT', { ns: 'common' }) as string }]
   }
 
   return (

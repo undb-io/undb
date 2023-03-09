@@ -50,7 +50,7 @@ export class UpdatedAtField extends BaseDateField<IUpdatedAtField> {
     return new UpdatedAtFieldValue(value)
   }
 
-  createFilter(operator: IUpdatedAtFilterOperator, value: Date | null): IUpdatedAtFilter {
+  createFilter(operator: IUpdatedAtFilterOperator, value: string | null): IUpdatedAtFilter {
     return { operator, value, path: this.id.value, type: 'updated-at' }
   }
 

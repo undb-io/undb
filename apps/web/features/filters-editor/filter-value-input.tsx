@@ -1,11 +1,11 @@
-import type { Field, IDateFilterOperator, IFieldQueryValue, IOperator } from '@egodb/core'
+import { CreatedAtField, UpdatedAtField } from '@egodb/core'
 import { DateRangeField } from '@egodb/core'
 import { SelectField } from '@egodb/core'
 import { StringField } from '@egodb/core'
 import { dateBuiltInOperators } from '@egodb/core'
 import { DateField } from '@egodb/core'
 import { NumberField } from '@egodb/core'
-import type { IDateRangeFieldValue } from '@egodb/core'
+import type { IDateRangeFieldValue, Field, IDateFilterOperator, IFieldQueryValue, IOperator } from '@egodb/core'
 import { DatePickerInput, NumberInput, TextInput } from '@egodb/ui'
 import { OptionPicker } from '../option/option-picker'
 
@@ -38,12 +38,19 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
     )
   }
 
-  if (field instanceof DateField) {
+  if (field instanceof DateField || field instanceof CreatedAtField || field instanceof UpdatedAtField) {
     if (dateBuiltInOperators.has(operator as IDateFilterOperator)) {
       return null
     }
     return (
-      <DatePickerInput size="xs" variant="filled" value={value as Date} onChange={(date) => onChange(date || null)} />
+      <DatePickerInput
+        size="xs"
+        variant="filled"
+        miw={150}
+        value={value ? new Date(value as string) : new Date()}
+        onChange={(date) => onChange(date?.toISOString() || null)}
+        valueFormat={field.formatString.toUpperCase()}
+      />
     )
   }
 
