@@ -114,7 +114,7 @@ i18n
           'Using Field': 'using "{{name}}" field',
         },
       },
-      zh: {
+      'zh-CN': {
         common: {
           Apply: '应用',
           Cancel: '取消',
@@ -225,7 +225,7 @@ i18n
     ns: ['common', 'table'],
     defaultNS: 'table',
     lng: undefined, // if you're using a language detector, do not define the lng option
-    fallbackLng: 'zh',
+    fallbackLng: 'zh-CN',
 
     interpolation: {
       escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape

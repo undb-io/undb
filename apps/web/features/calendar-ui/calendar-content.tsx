@@ -37,7 +37,6 @@ export const CalendarContent: React.FC<IProps> = ({ field }) => {
       w="100%"
       bg="white"
       size="xl"
-      hideWeekdays
       withCellSpacing={false}
       hasNextLevel={false}
       renderDay={(date) => <Day field={field} records={records} date={date} />}
@@ -58,7 +57,7 @@ export const CalendarContent: React.FC<IProps> = ({ field }) => {
           },
           calendarHeaderLevel: {
             flex: 1,
-            visibility: 'hidden',
+            // visibility: 'hidden',
             width: '100%',
             height: '100%',
             fontSize: theme.fontSizes.lg,
@@ -73,7 +72,7 @@ export const CalendarContent: React.FC<IProps> = ({ field }) => {
           cell: {
             height: 'calc(100% / 6)',
             overflowY: 'scroll',
-            border: border,
+            border,
           },
           day: {
             cursor: 'unset',
@@ -90,7 +89,7 @@ export const CalendarContent: React.FC<IProps> = ({ field }) => {
           weekday: { fontSize: theme.fontSizes.lg },
           weekdayCell: {
             fontSize: theme.fontSizes.xs,
-            border: border,
+            border,
             height: 20,
           },
         }
