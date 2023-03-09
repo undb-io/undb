@@ -29,7 +29,7 @@ export type IUpdatedAtFieldValue = z.infer<typeof updatedAtFieldValue>
 export const createUpdatedAtFieldValue = updatedAtFieldValue
 export type ICreateUpdatedAtFieldValue = z.infer<typeof createUpdatedAtFieldValue>
 
-export const updatedAtFieldQueryValue = updatedAtFieldValue
+export const updatedAtFieldQueryValue = z.string().datetime()
 export type IUpdatedAtFieldQueryValue = z.infer<typeof updatedAtFieldQueryValue>
 
 export const createUpdatedAtFieldValue_internal = z

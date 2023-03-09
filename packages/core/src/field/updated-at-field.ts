@@ -6,7 +6,7 @@ import type { IFieldVisitor } from './field.visitor.js'
 import { UpdatedAtFieldValue } from './updated-at-field-value.js'
 import type {
   ICreateUpdatedAtFieldInput,
-  ICreateUpdatedAtFieldValue,
+  IUpdatedAtFieldQueryValue,
   UpdatedAtFieldType,
 } from './updated-at-field.type.js'
 import { DateFormat, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
@@ -46,8 +46,8 @@ export class UpdatedAtField extends BaseDateField<IUpdatedAtField> {
     })
   }
 
-  createValue(value: ICreateUpdatedAtFieldValue): UpdatedAtFieldValue {
-    return new UpdatedAtFieldValue(value)
+  createValue(value: IUpdatedAtFieldQueryValue): UpdatedAtFieldValue {
+    return UpdatedAtFieldValue.fromQuery(value)
   }
 
   createFilter(operator: IUpdatedAtFilterOperator, value: string | null): IUpdatedAtFilter {

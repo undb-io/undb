@@ -4,7 +4,7 @@ import { CreatedAtFieldValue } from './created-at-field-value.js'
 import type {
   CreatedAtFieldType,
   ICreateCreatedAtFieldInput,
-  ICreateCreatedAtFieldValue,
+  ICreatedAtFieldQueryValue,
 } from './created-at-field.type.js'
 import { BaseDateField } from './field.base.js'
 import type { ICreatedAtField } from './field.type.js'
@@ -44,8 +44,8 @@ export class CreatedAtField extends BaseDateField<ICreatedAtField> {
     })
   }
 
-  createValue(value: ICreateCreatedAtFieldValue): CreatedAtFieldValue {
-    return new CreatedAtFieldValue(value)
+  createValue(value: ICreatedAtFieldQueryValue): CreatedAtFieldValue {
+    return CreatedAtFieldValue.fromQuery(value)
   }
 
   createFilter(operator: ICreatedAtFilterOperator, value: string | null): ICreatedAtFilter {

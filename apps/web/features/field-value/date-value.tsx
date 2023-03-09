@@ -1,5 +1,6 @@
 import type { DateFieldTypes } from '@egodb/core'
-import { format } from 'date-fns/fp'
+import { Text } from '@egodb/ui'
+import { format } from 'date-fns'
 
 interface IProps {
   field: DateFieldTypes
@@ -9,7 +10,5 @@ interface IProps {
 export const DateValue: React.FC<IProps> = ({ field, value }) => {
   if (!value) return null
 
-  const dateTimeFormat = format(field.formatString)
-
-  return <>{dateTimeFormat(value)}</>
+  return <Text>{format(value, field.formatString)}</Text>
 }

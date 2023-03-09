@@ -36,8 +36,9 @@ export const FieldValueFactory: React.FC<{
     }
     case 'updated-at':
     case 'created-at': {
-      const date = value as Date | undefined
-      return <DateValue field={field} value={date} />
+      const date = value as Date | string | undefined
+      if (!date) return null
+      return <DateValue field={field} value={date instanceof Date ? date : new Date(date)} />
     }
     case 'select': {
       const option = (value as SelectFieldValue | undefined)?.getOption(field).into()

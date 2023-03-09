@@ -46,7 +46,7 @@ export class RecordSqliteMapper {
 
         const fieldId = field.id.value
         if (field.type === 'date') {
-          values[fieldId] = value ? new Date(value) : null
+          values[fieldId] = value ? value : null
         } else if (field.type === 'reference' || field.type === 'tree') {
           values[fieldId] = typeof value === 'string' ? JSON.parse(value) : value
         } else if (field.type === 'bool') {
