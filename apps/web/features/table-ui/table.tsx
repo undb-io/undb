@@ -1,8 +1,8 @@
 import { Table, useListState } from '@egodb/ui'
 import type { ColumnDef } from '@tanstack/react-table'
-import { flexRender } from '@tanstack/react-table'
+import { flexRender, Row } from '@tanstack/react-table'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ACTIONS_FIELD, SELECTION_ID } from '../../constants/field.constants'
 import { RecordActions } from './actions'
 import type { IProps, TData } from './interface'
@@ -197,18 +197,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
           )}
           {rowVirtualizer.getVirtualItems().map((virtualRow) => {
             const row = rows[virtualRow.index]
-            return (
-              <tr
-                key={row.id}
-                onClick={() => {
-                  dispatch(setSelectedRecordId(row.id))
-                }}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-                ))}
-              </tr>
-            )
+            return <Row key={row.id} row={row} checked={row.getIsSelected()} />
           })}
           {paddingBottom > 0 && (
             <tr>
@@ -220,3 +209,21 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
     </div>
   )
 }
+
+// eslint-disable-next-line react/display-name
+const Row: React.FC<{ row: Row<TData>; checked: boolean }> = React.memo(({ row }) => {
+  const dispatch = useAppDispatch()
+
+  return (
+    <tr
+      key={row.id}
+      onClick={() => {
+        dispatch(setSelectedRecordId(row.id))
+      }}
+    >
+      {row.getVisibleCells().map((cell) => {
+        return <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+      })}
+    </tr>
+  )
+})
