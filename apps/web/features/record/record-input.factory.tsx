@@ -93,6 +93,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             {...form.field}
             onChange={(date) => form.field.onChange(date)}
             valueFormat={field.formatString.toUpperCase()}
+            popoverProps={{ withinPortal: true }}
           />
         )}
       />
@@ -111,6 +112,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             value={form.field.value ?? [null, null]}
             onChange={(value) => form.field.onChange(value)}
             valueFormat={field.formatString.toUpperCase()}
+            popoverProps={{ withinPortal: true }}
           />
         )}
       />
