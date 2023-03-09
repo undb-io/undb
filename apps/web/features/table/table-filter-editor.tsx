@@ -10,6 +10,7 @@ export const TableFilterEditor: React.FC = () => {
   const table = useCurrentTable()
   const view = useCurrentView()
   const filters = view.filterList as IFilter[]
+  const hasFilter = !!filters.length
   const [opened, handler] = useDisclosure(false)
   const { t } = useTranslation()
 
@@ -21,19 +22,19 @@ export const TableFilterEditor: React.FC = () => {
         <Button
           compact
           size="xs"
-          variant={filters.length ? 'light' : 'subtle'}
+          variant={hasFilter ? 'light' : 'subtle'}
           loading={isLoading}
           leftIcon={<IconFilter size={18} />}
           onClick={handler.toggle}
           rightIcon={
-            filters.length ? (
+            hasFilter ? (
               <Badge variant="filled" size="xs">
                 {filters.length}
               </Badge>
             ) : null
           }
           sx={(theme) => ({
-            backgroundColor: opened ? theme.colors[theme.primaryColor][0] : 'initial',
+            backgroundColor: opened || hasFilter ? theme.colors[theme.primaryColor][0] : 'initial',
           })}
         >
           {t('Filter')}

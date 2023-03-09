@@ -17,6 +17,7 @@ import { useListState } from '@egodb/ui'
 import { ActionIcon, IconGripVertical } from '@egodb/ui'
 import { Tooltip } from '@egodb/ui'
 import { Badge, Button, Checkbox, Group, Popover, Stack, useDisclosure } from '@egodb/ui'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useTranslation } from 'react-i18next'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useCurrentTable } from '../../hooks/use-current-table'
@@ -111,6 +112,8 @@ export const ViewFieldsEditor: React.FC = () => {
 
   const [moveField] = useMoveFieldMutation()
 
+  const [parent] = useAutoAnimate({ duration: 150 })
+
   return (
     <Popover
       width={250}
@@ -148,7 +151,7 @@ export const ViewFieldsEditor: React.FC = () => {
 
       <Popover.Dropdown>
         <ScrollArea.Autosize mah={300}>
-          <Stack>
+          <Stack ref={parent}>
             <DndContext
               collisionDetection={closestCenter}
               modifiers={[restrictToVerticalAxis]}
