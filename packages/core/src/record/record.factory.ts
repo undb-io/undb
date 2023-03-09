@@ -34,8 +34,8 @@ export class RecordFactory {
   static fromQuery(r: IQueryRecordSchema, schema: TableSchemaIdMap): Result<Record, string> {
     let spec = WithRecordId.fromString(r.id)
       .and(WithRecordTableId.fromString(r.tableId).unwrap())
-      .and(WithRecordCreatedAt.fromDate(r.createdAt))
-      .and(WithRecordUpdatedAt.fromDate(r.updatedAt))
+      .and(WithRecordCreatedAt.fromString(r.createdAt))
+      .and(WithRecordUpdatedAt.fromString(r.updatedAt))
       .and(WithRecordValues.fromObject(schema, r.values))
       .and(WithDisplayValues.from(r.displayValues))
 
