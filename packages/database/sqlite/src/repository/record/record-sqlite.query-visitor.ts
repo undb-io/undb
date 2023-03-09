@@ -44,7 +44,9 @@ import {
 } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import { endOfDay, startOfDay } from 'date-fns'
+import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants.js'
+import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import { ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
 import { TABLE_ALIAS } from './record.constants.js'
 
@@ -63,7 +65,12 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   }
 
   getFieldId(fieldId: string) {
-    return TABLE_ALIAS + '.' + fieldId
+    const field = this.schema.get(fieldId)
+    if (!field) return TABLE_ALIAS + '.' + fieldId
+
+    // TODO: handle date range
+    const column = UnderlyingColumnFactory.create(field) as IUnderlyingColumn
+    return TABLE_ALIAS + '.' + column.name
   }
 
   idEqual(s: WithRecordId): void {
