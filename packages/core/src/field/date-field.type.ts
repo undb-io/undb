@@ -20,7 +20,7 @@ export type IDateFieldQuerySchema = z.infer<typeof dateFieldQuerySchema>
 export const dateFieldValue = z.date().or(z.null())
 export type IDateFieldValue = z.infer<typeof dateFieldValue>
 
-export const createDateFieldValue = dateFieldValue
+export const createDateFieldValue = z.string().datetime().nullable()
 export type ICreateDateFieldValue = z.infer<typeof createDateFieldValue>
 
 export const dateFieldQueryValue = z.string().datetime().nullable()
