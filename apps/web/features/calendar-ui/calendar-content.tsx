@@ -69,8 +69,10 @@ export const CalendarContent: React.FC<IProps> = ({ field }) => {
           monthLevelGroup: {
             height: '100%',
           },
-          cell: {
+          monthRow: {
             height: 'calc(100% / 6)',
+          },
+          cell: {
             overflowY: 'scroll',
             border,
           },
