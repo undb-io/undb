@@ -43,7 +43,12 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
       return null
     }
     return (
-      <DatePickerInput size="xs" variant="filled" value={value as Date} onChange={(date) => onChange(date || null)} />
+      <DatePickerInput
+        size="xs"
+        variant="filled"
+        value={new Date(value as string)}
+        onChange={(date) => onChange(date || null)}
+      />
     )
   }
 

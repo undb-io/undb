@@ -9,6 +9,10 @@ export class DateFieldValue extends FieldValueBase<IDateFieldValue> {
     super({ value })
   }
 
+  static fromString(str: string): DateFieldValue {
+    return new this(new Date(str))
+  }
+
   public equals(vo?: ValueObject<Date | null> | undefined): boolean {
     if (!this.props.value) return !vo?.unpack()
     if (!vo?.unpack()) return !this.props.value

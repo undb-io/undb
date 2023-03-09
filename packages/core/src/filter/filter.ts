@@ -331,22 +331,22 @@ const convertDateFilter = (
 
   switch (filter.operator) {
     case '$eq': {
-      return Some(new DateEqual(filter.path, new DateFieldValue(filter.value)))
+      return Some(new DateEqual(filter.path, DateFieldValue.fromString(filter.value as string)))
     }
     case '$neq': {
-      return Some(new DateEqual(filter.path, new DateFieldValue(filter.value)).not())
+      return Some(new DateEqual(filter.path, DateFieldValue.fromString(filter.value as string)).not())
     }
     case '$gt': {
-      return Some(new DateGreaterThan(filter.path, new DateFieldValue(filter.value)))
+      return Some(new DateGreaterThan(filter.path, DateFieldValue.fromString(filter.value as string)))
     }
     case '$gte': {
-      return Some(new DateGreaterThanOrEqual(filter.path, new DateFieldValue(filter.value)))
+      return Some(new DateGreaterThanOrEqual(filter.path, DateFieldValue.fromString(filter.value as string)))
     }
     case '$lt': {
-      return Some(new DateLessThan(filter.path, new DateFieldValue(filter.value)))
+      return Some(new DateLessThan(filter.path, DateFieldValue.fromString(filter.value as string)))
     }
     case '$lte': {
-      return Some(new DateLessThanOrEqual(filter.path, new DateFieldValue(filter.value)))
+      return Some(new DateLessThanOrEqual(filter.path, DateFieldValue.fromString(filter.value as string)))
     }
     default:
       return None
