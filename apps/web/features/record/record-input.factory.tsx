@@ -12,7 +12,6 @@ import {
   IconCopy,
   useClipboard,
   IconClipboardCheck,
-  useEgoUITheme,
 } from '@egodb/ui'
 import React from 'react'
 import { Controller } from 'react-hook-form'
@@ -94,6 +93,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             onChange={(date) => form.field.onChange(date)}
             valueFormat={field.formatString.toUpperCase()}
             popoverProps={{ withinPortal: true }}
+            clearable
           />
         )}
       />
@@ -108,6 +108,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             type="range"
             label={label}
             {...form.field}
+            clearable
             icon={<FieldIcon type={field.type} />}
             value={form.field.value ?? [null, null]}
             onChange={(value) => form.field.onChange(value)}

@@ -1,15 +1,15 @@
 import { DragOverlay, PointerSensor } from '@dnd-kit/core'
 import { DndContext, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
-import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
+import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { RecordFactory } from '@egodb/core'
 import { Container, Group } from '@egodb/ui'
-import { useEffect, useMemo, useState } from 'react'
-import { KanbanLane } from './kanban-lane'
+import { useEffect, useState } from 'react'
+import type { IProps as KanbanLaneProps } from './kanban-lane'
+import { KanbanLane, SortableKanbanLane } from './kanban-lane'
 import { KanbanCard } from './kanban-card'
-import { NODATE_STACK_ID } from './kanban.constants'
 import { useKanban } from './use-kanban'
 import type { Record as CoreRecord, DateField, IQueryRecords } from '@egodb/core'
-import { KANBAN_DATE_STACKS, RElAVANT_DATES } from './kanban-date.utils'
+import { getDateValue, KANBAN_DATE_STACKS, RElAVANT_DATES } from './kanban-date.utils'
 import { addDays, isAfter, isBefore, isToday, isTomorrow, isYesterday, startOfDay } from 'date-fns'
 import { endOfDay } from 'date-fns/esm'
 import type { DateFieldValue } from '@egodb/core'
@@ -26,7 +26,7 @@ interface IProps {
 export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
   const table = useCurrentTable()
   const view = useCurrentView()
-  const containers = KANBAN_DATE_STACKS
+  const containers = KANBAN_DATE_STACKS as unknown as string[]
 
   const { groupdRecords, records, isLoading } = useGetRecordsQuery(
     {
@@ -80,17 +80,10 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
 
   const [updateRecord] = useUpdateRecordMutation()
 
-  const {
-    collisionDetectionStrategy,
-    onDragStart,
-    onDragOver,
-    onDragEnd,
-    isActiveContainer,
-    activeId,
-    activeItem,
-    dropAnimation,
-    activeContainer,
-  } = useKanban<string, CoreRecord>({
+  const { collisionDetectionStrategy, onDragStart, onDragOver, onDragEnd, activeItem, dropAnimation } = useKanban<
+    string,
+    CoreRecord
+  >({
     containers,
     items: dateRecords,
     setItems: setDateRecords,
@@ -101,7 +94,7 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
       updateRecord({
         tableId: table.id.value,
         id: e.active.id as string,
-        value: [{ id: field.id.value, value: overContainer === NODATE_STACK_ID ? null : overContainer }],
+        value: [{ id: field.id.value, value: getDateValue(overContainer as any) }],
       })
     },
 
@@ -111,8 +104,8 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
   const { t } = useTranslation()
 
   return (
-    <Container fluid ml={0} pt="xs">
-      <Group align="start" noWrap>
+    <Container fluid ml={0} pt="xs" h="100%" sx={{ overflow: 'scroll' }}>
+      <Group align="start" noWrap h="100%">
         <DndContext
           sensors={sensors}
           onDragStart={onDragStart}
@@ -120,36 +113,27 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
           onDragEnd={onDragEnd}
           collisionDetection={collisionDetectionStrategy}
         >
-          {KANBAN_DATE_STACKS.map((stack) => (
-            <KanbanLane
-              field={field}
-              records={dateRecords[stack] ?? []}
-              key={stack}
-              id={stack}
-              title={t(stack, { ns: 'common' })}
-              disableAddRecord={RElAVANT_DATES.includes(stack)}
-              getRecordValue={(id) => {
-                if (id === NODATE_STACK_ID) return null
-                if (id === 'TODAY') return startOfDay(new Date())
-                if (id === 'YESTERDAY') return startOfDay(addDays(new Date(), -1))
-                if (id === 'TOMORROW') return startOfDay(addDays(new Date(), 1))
-                return null
-              }}
-            />
-          ))}
+          <SortableContext items={containers} strategy={horizontalListSortingStrategy}>
+            {KANBAN_DATE_STACKS.map((stack) => {
+              const props: KanbanLaneProps = {
+                field: field,
+                records: dateRecords[stack] ?? [],
+                id: stack,
+                title: t(stack, { ns: 'common' }),
+                disableAddRecord: RElAVANT_DATES.includes(stack as any),
+                getRecordValue: (id) => (id ? getDateValue(id as any) : null),
+              }
+              return RElAVANT_DATES.includes(stack as any) ? (
+                <KanbanLane key={stack} {...props} />
+              ) : (
+                <SortableKanbanLane key={stack} {...props} />
+              )
+            })}
 
-          <DragOverlay dropAnimation={dropAnimation}>
-            {isActiveContainer ? (
-              <KanbanLane
-                field={field}
-                records={dateRecords[(activeId as string) || ''] ?? []}
-                title={activeContainer ?? ''}
-                id={activeContainer ?? ''}
-              />
-            ) : (
+            <DragOverlay dropAnimation={dropAnimation}>
               <KanbanCard record={activeItem!} />
-            )}
-          </DragOverlay>
+            </DragOverlay>
+          </SortableContext>
         </DndContext>
       </Group>
     </Container>
