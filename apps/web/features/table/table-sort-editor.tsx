@@ -12,6 +12,7 @@ export const TableSortEditor: React.FC = () => {
   const [opened, toggle] = useDisclosure(false)
   const [setSortsReq] = useSetSortMutation()
   const sorts = view.sorts?.sorts ?? []
+  const hasSort = !!sorts.length
 
   const { t } = useTranslation()
 
@@ -21,18 +22,18 @@ export const TableSortEditor: React.FC = () => {
         <Button
           compact
           size="xs"
-          variant={sorts.length ? 'light' : 'subtle'}
+          variant={hasSort ? 'light' : 'subtle'}
           leftIcon={<IconArrowsSort size={16} />}
           onClick={toggle.toggle}
           rightIcon={
-            sorts.length ? (
+            hasSort ? (
               <Badge variant="filled" size="xs">
                 {sorts.length}
               </Badge>
             ) : null
           }
           sx={(theme) => ({
-            backgroundColor: opened ? theme.colors[theme.primaryColor][0] : 'initial',
+            backgroundColor: opened || hasSort ? theme.colors[theme.primaryColor][0] : 'initial',
           })}
         >
           {t('Sort')}
