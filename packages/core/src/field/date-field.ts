@@ -38,7 +38,7 @@ export class DateField extends BaseDateField<IDateField> {
     return new DateFieldValue(value)
   }
 
-  createFilter(operator: IDateFilterOperator, value: Date | null): IDateFilter {
+  createFilter(operator: IDateFilterOperator, value: string | null): IDateFilter {
     // built in operators ignore value
     let v = value
     if (dateBuiltInOperators.has(operator)) {

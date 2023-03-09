@@ -11,6 +11,13 @@ export class DateRangeEqual extends BaseRecordSpecification<DateRangeFieldValue>
     return new this(fieldId, new DateRangeFieldValue(value))
   }
 
+  static fromString(fieldId: string, value: [string | null, string | null]): DateRangeEqual {
+    return new this(
+      fieldId,
+      new DateRangeFieldValue([value[0] ? new Date(value[0]) : null, value[1] ? new Date(value[1]) : null]),
+    )
+  }
+
   isSatisfiedBy(r: Record): boolean {
     const value = r.values.value.get(this.fieldId)
 

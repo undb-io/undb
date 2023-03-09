@@ -47,7 +47,7 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
         size="xs"
         variant="filled"
         value={new Date(value as string)}
-        onChange={(date) => onChange(date || null)}
+        onChange={(date) => onChange(date?.toISOString() || null)}
       />
     )
   }

@@ -48,7 +48,7 @@ export class CreatedAtField extends BaseDateField<ICreatedAtField> {
     return new CreatedAtFieldValue(value)
   }
 
-  createFilter(operator: ICreatedAtFilterOperator, value: Date | null): ICreatedAtFilter {
+  createFilter(operator: ICreatedAtFilterOperator, value: string | null): ICreatedAtFilter {
     return { operator, value, path: this.id.value, type: 'created-at' }
   }
 

@@ -148,13 +148,13 @@ export type IFilters = IFilter[]
 
 export interface IGroup {
   conjunction: IConjunction
-  children: IFilterOrGroupList
+  children?: IFilterOrGroupList
 }
 
 const group: z.ZodType<IGroup> = z.lazy(() =>
   z.object({
     conjunction: conjunctions,
-    children: z.union([group, filter]).array().nonempty(),
+    children: z.union([group, filter]).array().nonempty().optional(),
   }),
 )
 
@@ -163,7 +163,7 @@ export type IFilterOrGroup = z.infer<typeof filterOrGroup>
 
 export const filterOrGroupList = filterOrGroup.array()
 export type IFilterOrGroupList = z.infer<typeof filterOrGroupList>
-export const rootFilter = z.union([filterOrGroup, filterOrGroupList])
+export const rootFilter = filterOrGroup.or(filterOrGroupList)
 export type IRootFilter = z.infer<typeof rootFilter>
 
 const isGroup = (filterOrGroup: IFilterOrGroup): filterOrGroup is IGroup => {
@@ -309,9 +309,9 @@ const convertBoolFilter = (filter: IBoolFilter): Option<CompositeSpecification> 
 const convertDateRangeFilter = (filter: IDateRangeFilter): Option<CompositeSpecification> => {
   switch (filter.operator) {
     case $eq.value:
-      return Some(DateRangeEqual.from(filter.path, filter.value))
+      return Some(DateRangeEqual.fromString(filter.path, filter.value))
     case $neq.value:
-      return Some(DateRangeEqual.from(filter.path, filter.value).not())
+      return Some(DateRangeEqual.fromString(filter.path, filter.value).not())
 
     default:
       return None
@@ -405,7 +405,7 @@ const convertFilterOrGroup = (filterOrGroup: IFilterOrGroup): Option<CompositeSp
 }
 
 const convertFilterOrGroupList = (
-  filterOrGroupList: IFilterOrGroupList,
+  filterOrGroupList: IFilterOrGroupList = [],
   conjunction: IConjunction = '$and',
 ): Option<CompositeSpecification> => {
   let spec: Option<CompositeSpecification> = None
