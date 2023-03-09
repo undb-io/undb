@@ -7,10 +7,10 @@
     "@egodb/core": "^0.0.0",
     "@egodb/domain": "^0.0.0",
     "oxide.ts": "^1.1.0",
-    "zod": "^3.21.3"
+    "zod": "^3.21.4"
   },
   "devDependencies": {
-    "rimraf": "^4.3.1",
+    "rimraf": "^4.4.0",
     "tsconfig": "^0.0.0",
     "tsup": "^6.6.3",
     "typescript": "^4.9.5",
