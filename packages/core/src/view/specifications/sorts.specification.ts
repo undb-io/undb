@@ -1,4 +1,4 @@
-import { isEmpty } from '@fxts/core'
+import { isEmpty } from 'lodash-es'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/interface.js'
