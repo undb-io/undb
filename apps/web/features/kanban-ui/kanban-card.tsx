@@ -9,6 +9,7 @@ import { FieldValueFactory } from '../field-value/field-value.factory'
 import { setSelectedRecordId } from '@egodb/store'
 import { useAppDispatch } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import React from 'react'
 
 interface IProps {
   record: Record
@@ -52,7 +53,7 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({ record, attribute
   )
 }
 
-export const SortableKanbanCard: React.FC<IProps> = ({ record }) => {
+export const SortableKanbanCard: React.FC<IProps> = React.memo(({ record }) => {
   const { attributes, listeners, setNodeRef, isDragging, transform, transition } = useSortable({
     id: record.id.value,
     data: {
@@ -73,4 +74,4 @@ export const SortableKanbanCard: React.FC<IProps> = ({ record }) => {
   return (
     <KanbanCard record={record} attributes={attributes} listeners={listeners} setNodeRef={setNodeRef} style={style} />
   )
-}
+})
