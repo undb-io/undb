@@ -13,6 +13,11 @@ export class DateFieldValue extends FieldValueBase<IDateFieldValue> {
     return new this(new Date(str))
   }
 
+  static fromNullableString(str: string | null): DateFieldValue {
+    if (str === null) return new this(null)
+    return new this(new Date(str))
+  }
+
   public equals(vo?: ValueObject<Date | null> | undefined): boolean {
     if (!this.props.value) return !vo?.unpack()
     if (!vo?.unpack()) return !this.props.value

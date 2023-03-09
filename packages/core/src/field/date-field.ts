@@ -2,7 +2,7 @@ import type { IDateFilter } from '../filter/date.filter.js'
 import type { IDateFilterOperator } from '../filter/index.js'
 import { dateBuiltInOperators } from '../filter/operators.js'
 import { DateFieldValue } from './date-field-value.js'
-import type { DateType, ICreateDateFieldSchema, ICreateDateFieldValue } from './date-field.type.js'
+import type { DateType, ICreateDateFieldSchema, IDateFieldQueryValue } from './date-field.type.js'
 import { BaseDateField } from './field.base.js'
 import type { IDateField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
@@ -34,8 +34,8 @@ export class DateField extends BaseDateField<IDateField> {
     })
   }
 
-  createValue(value: ICreateDateFieldValue): DateFieldValue {
-    return new DateFieldValue(value)
+  createValue(value: IDateFieldQueryValue): DateFieldValue {
+    return DateFieldValue.fromNullableString(value)
   }
 
   createFilter(operator: IDateFilterOperator, value: string | null): IDateFilter {

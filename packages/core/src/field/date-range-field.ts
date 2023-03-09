@@ -1,7 +1,7 @@
 import type { IDateRangeFilter } from '../filter/date-range.filter.js'
 import type { IDateRangeFilterOperator } from '../filter/index.js'
 import { DateRangeFieldValue } from './date-range-field-value.js'
-import type { DateRangeType, ICreateDateRangeFieldSchema, ICreateDateRangeFieldValue } from './date-range-field.type.js'
+import type { DateRangeType, ICreateDateRangeFieldSchema, IDateRangeFieldQueryValue } from './date-range-field.type.js'
 import { BaseDateField } from './field.base.js'
 import type { IDateRangeField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
@@ -34,8 +34,8 @@ export class DateRangeField extends BaseDateField<IDateRangeField> {
     })
   }
 
-  createValue(value: ICreateDateRangeFieldValue): DateRangeFieldValue {
-    return new DateRangeFieldValue(value)
+  createValue(value: IDateRangeFieldQueryValue): DateRangeFieldValue {
+    return DateRangeFieldValue.fromQuery(value)
   }
 
   createFilter(operator: IDateRangeFilterOperator, value: [string | null, string | null] | null): IDateRangeFilter {

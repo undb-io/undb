@@ -1,11 +1,16 @@
 import { Option } from 'oxide.ts'
-import type { IDateRangeFieldValue } from './date-range-field.type.js'
+import type { IDateRangeFieldQueryValue, IDateRangeFieldValue } from './date-range-field.type.js'
 import { FieldValueBase } from './field-value.base.js'
 import type { IFieldValueVisitor } from './field-value.visitor.js'
 
 export class DateRangeFieldValue extends FieldValueBase<IDateRangeFieldValue> {
   constructor(value: IDateRangeFieldValue) {
     super(value ? value : { value })
+  }
+
+  static fromQuery(dateRange: IDateRangeFieldQueryValue) {
+    if (dateRange === null) return new this(null)
+    return new this([dateRange[0] ? new Date(dateRange[0]) : null, dateRange[1] ? new Date(dateRange[1]) : null])
   }
 
   unpack() {

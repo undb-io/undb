@@ -61,11 +61,7 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
         variant="filled"
         type="range"
         value={(value as IDateRangeFieldValue) ?? undefined}
-        onChange={(range) => {
-          if (range.at(0) !== null && range.at !== null) {
-            return onChange((range as IDateRangeFieldValue) || null)
-          }
-        }}
+        onChange={(range) => onChange([range.at(0)?.toISOString() ?? null, range.at(1)?.toISOString() ?? null])}
       />
     )
   }
