@@ -23,6 +23,10 @@ export class DateFieldValue extends FieldValueBase<IDateFieldValue> {
     return new this(new Date())
   }
 
+  public toString(): string | undefined {
+    return this.props.value?.toISOString()
+  }
+
   accept(visitor: IFieldValueVisitor): void {
     visitor.date(this)
   }

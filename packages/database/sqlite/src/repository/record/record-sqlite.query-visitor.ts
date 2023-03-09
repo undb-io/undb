@@ -130,38 +130,41 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     this.qb.where(this.getFieldId(s.fieldId), '<=', s.value.unpack())
   }
   dateEqual(s: DateEqual): void {
-    this.qb.where({ [this.getFieldId(s.fieldId)]: s.value.unpack() })
+    this.qb.where({ [this.getFieldId(s.fieldId)]: s.value.toString()! })
   }
   dateGreaterThan(s: DateGreaterThan): void {
     if (s.value.unpack() === null) {
       this.qb.whereNull(this.getFieldId(s.fieldId))
     } else {
-      this.qb.where(this.getFieldId(s.fieldId), '>', s.value.unpack())
+      this.qb.where(this.getFieldId(s.fieldId), '>', s.value.toString()!)
     }
   }
   dateLessThan(s: DateLessThan): void {
     if (s.value.unpack() === null) {
       this.qb.whereNull(this.getFieldId(s.fieldId))
     } else {
-      this.qb.where(this.getFieldId(s.fieldId), '<', s.value.unpack())
+      this.qb.where(this.getFieldId(s.fieldId), '<', s.value.toString()!)
     }
   }
   dateGreaterThanOrEqual(s: DateGreaterThanOrEqual): void {
     if (s.value.unpack() === null) {
       this.qb.whereNull(this.getFieldId(s.fieldId))
     } else {
-      this.qb.where(this.getFieldId(s.fieldId), '>=', s.value.unpack())
+      this.qb.where(this.getFieldId(s.fieldId), '>=', s.value.toString()!)
     }
   }
   dateLessThanOrEqual(s: DateLessThanOrEqual): void {
     if (s.value.unpack() === null) {
       this.qb.whereNull(this.getFieldId(s.fieldId))
     } else {
-      this.qb.where(this.getFieldId(s.fieldId), '<=', s.value.unpack())
+      this.qb.where(this.getFieldId(s.fieldId), '<=', s.value.toString()!)
     }
   }
   dateIsToday(s: DateIsToday): void {
-    this.qb.whereBetween(this.getFieldId(s.fieldId), [startOfDay(new Date()), endOfDay(new Date())])
+    this.qb.whereBetween(this.getFieldId(s.fieldId), [
+      startOfDay(new Date()).toISOString(),
+      endOfDay(new Date()).toISOString(),
+    ])
   }
   dateRangeEqual(s: DateRangeEqual): void {
     const range = s.value.unpack()
