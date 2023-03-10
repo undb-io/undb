@@ -30,7 +30,7 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
       { value: '$CONTAINS', label: t('CONTAINS', { ns: 'common' }) as string },
       { value: '$starts_with', label: t('STARTS WITH', { ns: 'common' }) as string },
       { value: '$ends_with', label: t('ENDS WITH', { ns: 'common' }) as string },
-      { value: '$regex', label: t('REGEX', { ns: 'common' }) as string },
+      // { value: '$regex', label: t('REGEX', { ns: 'common' }) as string },
     ]
   } else if (field instanceof NumberField) {
     data = [
