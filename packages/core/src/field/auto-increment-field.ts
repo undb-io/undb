@@ -14,7 +14,7 @@ import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index
 export class AutoIncrementField extends BaseField<IAutoIncrementField> {
   type: AutoIncrementFieldType = 'auto-increment'
   override get system() {
-    return true
+    return false
   }
 
   override get primitive() {

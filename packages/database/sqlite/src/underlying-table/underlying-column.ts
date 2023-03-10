@@ -24,6 +24,9 @@ import type { IUnderlyingColumn } from '../interfaces/underlying-column.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from './constants.js'
 
 export abstract class UnderlyingColumn implements IUnderlyingColumn {
+  get system(): boolean {
+    return true
+  }
   abstract get name(): string
   abstract build(tb: Knex.TableBuilder, knex: Knex): void
 }
@@ -80,6 +83,9 @@ export class UnderlyingDeletedAtColumn extends UnderlyingColumn {
 
 abstract class UnderlyingFieldColumn<F extends Field> implements IUnderlyingColumn {
   constructor(protected readonly field: F) {}
+  get system(): boolean {
+    return false
+  }
   get name(): string {
     return this.field.id.value
   }
