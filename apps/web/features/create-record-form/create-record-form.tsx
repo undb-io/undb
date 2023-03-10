@@ -22,9 +22,11 @@ export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
 
   const [createRecord, { isLoading, isError, error, reset: resetCreateRecord }] = useCreateRecordMutation()
 
+  const schema = table.schema.toIdMap()
   const fields = view.getOrderedFields(table.schema.nonSystemFields)
-  const onSubmit = form.handleSubmit(async (values) => {
-    const result = await createRecord(values)
+  const onSubmit = form.handleSubmit(async (data) => {
+    const value = data.value.filter((value) => !schema.get(value.id)?.controlled)
+    const result = await createRecord({ ...data, value })
     if (!('error' in result)) {
       reset()
       form.reset()

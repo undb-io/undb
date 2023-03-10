@@ -42,6 +42,9 @@ const { map, pipe } = fp
 
 export abstract class BaseField<C extends IBaseField = IBaseField> extends ValueObject<C> {
   abstract type: IFieldType
+  get controlled(): boolean {
+    return false
+  }
   get system(): boolean {
     return false
   }
