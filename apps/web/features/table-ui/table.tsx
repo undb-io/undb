@@ -1,5 +1,5 @@
 import { Table, useListState } from '@egodb/ui'
-import type { ColumnDef } from '@tanstack/react-table'
+import type { ColumnDef, ColumnPinningState } from '@tanstack/react-table'
 import { flexRender, Row } from '@tanstack/react-table'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
@@ -23,6 +23,7 @@ const columnHelper = createColumnHelper<TData>()
 const selection: ColumnDef<TData> = {
   enableResizing: false,
   id: SELECTION_ID,
+  enablePinning: true,
   size: 40,
   header: (props) => <SelectionCell table={props.table} />,
   cell: ({ row }) => <RecordSelection row={row} />,
@@ -47,6 +48,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
     [columnOrder, schema],
   )
   const [fields, handlers] = useListState(initialFields)
+  const [columnPinning, setColumnPinning] = useState<ColumnPinningState>({ left: [SELECTION_ID] })
 
   const dispatch = useAppDispatch()
   const selectedRecordIds = useAppSelector((state) => getTableSelectedRecordIds(state, table.id.value))
@@ -70,6 +72,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
       columnHelper.accessor(f.id.value, {
         id: f.id.value,
         enableResizing: true,
+        enablePinning: true,
         header: (props) => (
           <Th key={f.id.value} column={props.column} field={f} header={props.header} index={props.header.index} />
         ),
@@ -89,7 +92,11 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
             value = props.getValue()
           }
 
-          return <FieldValueFactory field={f} value={value} displayValues={props.row.original.display_values} />
+          return (
+            <td>
+              <FieldValueFactory field={f} value={value} displayValues={props.row.original.display_values} />
+            </td>
+          )
         },
       }),
     ),
@@ -103,13 +110,16 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
     state: {
       columnVisibility,
       columnOrder: [SELECTION_ID, ...columnOrder, ACTIONS_FIELD],
+      columnPinning,
       rowSelection,
     },
-    enableRowSelection: true,
-    onRowSelectionChange: setRowSelection,
     getRowId: (r) => r.id,
-    columnResizeMode: 'onChange',
     getCoreRowModel: getCoreRowModel(),
+    columnResizeMode: 'onChange',
+    enableRowSelection: true,
+    enablePinning: true,
+    onRowSelectionChange: setRowSelection,
+    onColumnPinningChange: setColumnPinning,
   })
   const { rows } = rt.getRowModel()
 
@@ -160,18 +170,22 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
             border: '0',
             outline: '1px solid ' + theme.colors.gray[2],
           },
+          'thead tr td': {
+            borderRight: '1px solid ' + theme.colors.gray[2],
+          },
           'thead tr th': {
             position: 'relative',
             userSelect: 'none',
             backgroundColor: theme.white,
+            borderBottom: 0,
           },
           'tbody tr': {
             cursor: 'pointer',
             height: 32,
+            borderBottom: '1px solid ' + theme.colors.gray[2],
           },
           'tbody tr td': {
             borderRight: '1px solid ' + theme.colors.gray[2],
-            borderBottom: '1px solid ' + theme.colors.gray[2],
             ':last-child': {
               border: '0',
             },
@@ -222,7 +236,7 @@ const Row: React.FC<{ row: Row<TData>; checked: boolean }> = React.memo(({ row }
       }}
     >
       {row.getVisibleCells().map((cell) => {
-        return <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+        return flexRender(cell.column.columnDef.cell, cell.getContext())
       })}
     </tr>
   )

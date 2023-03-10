@@ -6,13 +6,24 @@ import type { TData } from './interface'
 
 export const SelectionCell: React.FC<{ table: Table<TData> }> = ({ table }) => {
   return (
-    <th key={SELECTION_ID} style={{ width: '40px' }}>
-      <Checkbox
-        size="xs"
-        checked={table.getIsAllRowsSelected()}
-        onChange={table.getToggleAllRowsSelectedHandler()}
-        indeterminate={table.getIsSomeRowsSelected()}
-      />
-    </th>
+    <td
+      style={{
+        width: '40px',
+        position: 'sticky',
+        left: 0,
+        top: 0,
+        zIndex: 1,
+        backgroundColor: 'white',
+      }}
+    >
+      <th key={SELECTION_ID}>
+        <Checkbox
+          size="xs"
+          checked={table.getIsAllRowsSelected()}
+          onChange={table.getToggleAllRowsSelectedHandler()}
+          indeterminate={table.getIsSomeRowsSelected()}
+        />
+      </th>
+    </td>
   )
 }

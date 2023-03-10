@@ -17,14 +17,25 @@ export const RecordSelection: React.FC<{ row: Row<TData> }> = ({ row }) => {
     />
   )
   return (
-    <Box ref={ref} onClick={(e) => e.stopPropagation()}>
-      {showCheckbox ? (
-        checkbox
-      ) : (
-        <Text align="center" color="gray.6" size="sm">
-          {row.index + 1}
-        </Text>
-      )}
-    </Box>
+    <td
+      style={{
+        width: '40px',
+        position: 'sticky',
+        left: 0,
+        top: 0,
+        zIndex: 1,
+        backgroundColor: 'white',
+      }}
+    >
+      <Box ref={ref} onClick={(e) => e.stopPropagation()}>
+        {showCheckbox ? (
+          checkbox
+        ) : (
+          <Text align="center" color="gray.6" size="sm">
+            {row.index + 1}
+          </Text>
+        )}
+      </Box>
+    </td>
   )
 }
