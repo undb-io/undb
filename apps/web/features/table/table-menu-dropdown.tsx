@@ -2,7 +2,7 @@ import { useDeleteTableMutation } from '@egodb/store'
 import { IconPencil, IconTrash, Menu, Text } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { useTranslation } from 'react-i18next'
-import { useConfirmModal } from '../../hooks'
+import { confirmModal } from '../../hooks'
 import { updateTableFormDrawerOpened } from '../update-table-form/drawer-opened.atom'
 
 interface IProps {
@@ -15,7 +15,7 @@ export const TableMenuDropdown: React.FC<IProps> = ({ tableId }) => {
 
   const [deleteTable] = useDeleteTableMutation()
 
-  const confirm = useConfirmModal({
+  const confirm = confirmModal({
     children: <Text size="sm">{t('Confirm Delete Table')}</Text>,
     onConfirm() {
       deleteTable({

@@ -10,8 +10,10 @@ import {
   Group,
   IconPencil,
   IconPlus,
+  IconTrash,
   Menu,
   openContextModal,
+  Text,
   useListState,
 } from '@egodb/ui'
 import { useEffect, useState } from 'react'
@@ -25,10 +27,11 @@ import type { IUpdateOptionModalProps } from '../update-option-form/update-optio
 import { CREATE_OPTION_MODAL_ID, UDPATE_OPTION_MODAL_ID } from '../../modals'
 import type { SelectFieldValue } from '@egodb/core'
 import type { Records } from '@egodb/core'
-import { useReorderOptionsMutation, useUpdateRecordMutation } from '@egodb/store'
+import { useDeleteOptionMutation, useReorderOptionsMutation, useUpdateRecordMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { groupBy } from 'lodash-es'
 import { useTranslation } from 'react-i18next'
+import { confirmModal } from '../../hooks'
 
 interface IProps {
   field: SelectField
@@ -51,6 +54,19 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
   const [optionRecords, setOptionRecords] = useState(groupOptionRecords())
 
   const [reorderOptions] = useReorderOptionsMutation()
+  const [deleteOption] = useDeleteOptionMutation()
+
+  const confirm = (id: string) =>
+    confirmModal({
+      children: <Text size="sm">{t('Confirm Delete Option')}</Text>,
+      onConfirm() {
+        deleteOption({
+          tableId: table.id.value,
+          fieldId: field.id.value,
+          id,
+        })
+      },
+    })
 
   useEffect(() => {
     handlers.setState(field.options.options)
@@ -154,25 +170,39 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
                 id={option.key.value}
                 title={<Option name={option.name.value} colorName={option.color.name} shade={option.color.shade} />}
                 renderMenu={() => (
-                  <Menu.Item
-                    fz="xs"
-                    h={35}
-                    icon={<IconPencil size={14} color="gray" />}
-                    onClick={() =>
-                      openContextModal({
-                        title: t('Update Option'),
-                        modal: UDPATE_OPTION_MODAL_ID,
-                        innerProps: {
-                          tableId: table.id.value,
-                          field,
-                          optionKey: option.key.value,
-                          option: { name: option.name.value, color: option.color.unpack() },
-                        } as IUpdateOptionModalProps,
-                      })
-                    }
-                  >
-                    {t('Update Option')}
-                  </Menu.Item>
+                  <>
+                    <Menu.Item
+                      fz="xs"
+                      h={35}
+                      icon={<IconPencil size={14} color="gray" />}
+                      onClick={() =>
+                        openContextModal({
+                          title: t('Update Option'),
+                          modal: UDPATE_OPTION_MODAL_ID,
+                          innerProps: {
+                            tableId: table.id.value,
+                            field,
+                            optionKey: option.key.value,
+                            option: { name: option.name.value, color: option.color.unpack() },
+                          } as IUpdateOptionModalProps,
+                        })
+                      }
+                    >
+                      {t('Update Option')}
+                    </Menu.Item>
+
+                    <Menu.Divider />
+
+                    <Menu.Item
+                      icon={<IconTrash size="14" />}
+                      color="red"
+                      onClick={() => confirm(option.key.value)()}
+                      fz="xs"
+                      h={35}
+                    >
+                      {t('Delete Option')}
+                    </Menu.Item>
+                  </>
                 )}
                 getRecordValue={(id) => (id === UNCATEGORIZED_OPTION_ID ? null : id)}
               />

@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom } from 'jotai'
 import { FormProvider, useForm } from 'react-hook-form'
 import useDeepCompareEffect from 'use-deep-compare-effect'
-import { useConfirmModal } from '../../hooks'
+import { confirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { updateTableFormDrawerOpened } from './drawer-opened.atom'
 import { UpdateTableForm } from './update-table-form'
@@ -34,7 +34,7 @@ export const UpdateTableFormDrawer: React.FC = () => {
     form.clearErrors()
     form.reset()
   }
-  const confirm = useConfirmModal({ onConfirm: reset })
+  const confirm = confirmModal({ onConfirm: reset })
 
   return (
     <FormProvider {...form}>

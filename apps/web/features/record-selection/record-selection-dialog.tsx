@@ -7,7 +7,7 @@ import {
   useBulkDuplicateRecordMutation,
 } from '@egodb/store'
 import { Dialog, Group, Button, Text, IconDots, Menu, usePrevious } from '@egodb/ui'
-import { useAppDispatch, useAppSelector, useConfirmModal } from '../../hooks'
+import { useAppDispatch, useAppSelector, confirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 
 export const RecordSelectionDialog: React.FC = () => {
@@ -21,7 +21,7 @@ export const RecordSelectionDialog: React.FC = () => {
   const [bulkDeleteRecords] = useBulkDeleteRecordsMutation()
   const [bulkdDuplciateRecords] = useBulkDuplicateRecordMutation()
 
-  const confirm = useConfirmModal({
+  const confirm = confirmModal({
     async onConfirm() {
       await bulkDeleteRecords({
         tableId: table.id.value,

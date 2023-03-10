@@ -16,7 +16,7 @@ import { Portal } from '@egodb/ui'
 import { openContextModal } from '@egodb/ui'
 import { IconPencil, IconTrash, Menu } from '@egodb/ui'
 import { useTranslation } from 'react-i18next'
-import { useConfirmModal } from '../../hooks'
+import { confirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { CREATE_FIELD_MODAL_ID, UPDATE_FIELD_MODAL_ID } from '../../modals'
@@ -37,7 +37,7 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index 
   const [setFieldSort] = useSetFieldSortMutation()
   const [resetFieldSort] = useResetFieldSortMutation()
 
-  const confirm = useConfirmModal({
+  const confirm = confirmModal({
     onConfirm() {
       deleteField({
         tableId: table.id.value,

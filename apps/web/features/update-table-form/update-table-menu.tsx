@@ -3,7 +3,7 @@ import { Group, ActionIcon, IconDots, Text, Menu, IconTrash } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
-import { useConfirmModal } from '../../hooks'
+import { confirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { updateTableFormDrawerOpened } from './drawer-opened.atom'
 
@@ -15,7 +15,7 @@ export const UpdateTableMenu: React.FC = () => {
 
   const [deleteTable] = useDeleteTableMutation()
 
-  const confirm = useConfirmModal({
+  const confirm = confirmModal({
     async onConfirm() {
       await deleteTable({
         id: table.id.value,
