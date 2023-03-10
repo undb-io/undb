@@ -32,10 +32,13 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
   const onSubmit = form.handleSubmit(async (data) => {
     const values: IMutateRecordValueSchema = []
 
-    for (const [index, field] of data.value.entries()) {
+    for (const [index, value] of data.value.entries()) {
+      const field = schema.get(value.id)
+      if (field?.controlled) continue
+
       const isDirty = form.getFieldState(`value.${index}.value`).isDirty
       if (isDirty) {
-        values.push(field)
+        values.push(value)
       }
     }
 

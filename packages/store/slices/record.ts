@@ -9,7 +9,7 @@ import type { RootState } from '../reducers'
 import { recordApi } from '../services'
 import { resetCurrentTableId, setCurrentTableId } from './table'
 
-const { filter, keys, omit, pipe, prop, some, T } = fp
+const { filter, keys, omit, pipe, some, T, propOr } = fp
 
 export interface RecordState {
   selectedRecordId: string
@@ -91,6 +91,9 @@ export const getTableSelectedRecordIds = createSelector(
 
 export const getTableSelectedRecordIdList = createSelector(getTableSelectedRecordIds, keys)
 
-export const getTableSelectedRecordIdsCount = createSelector(getTableSelectedRecordIds, pipe(filter(T), prop('length')))
+export const getTableSelectedRecordIdsCount = createSelector(
+  getTableSelectedRecordIds,
+  pipe(filter(T), propOr(0, 'length')),
+)
 
 export const getTableHasSelectedRecordIds = createSelector(getTableSelectedRecordIds, some(T))

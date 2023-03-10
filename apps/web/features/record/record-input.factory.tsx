@@ -24,6 +24,7 @@ import { ParentRecordPicker } from '../field-inputs/parent-records-picker'
 import { useRouter } from 'next/navigation'
 import { format } from 'date-fns/fp'
 import { useColors } from '../../hooks/use-colors'
+import { AutoIncrementInput } from '../field-inputs/auto-increment-input'
 
 interface IProps {
   field: Field
@@ -256,6 +257,12 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
           )
         }}
       />
+    )
+  }
+
+  if (field.type === 'auto-increment') {
+    return (
+      <Controller name={name} render={(form) => <AutoIncrementInput field={field} defaultValue={form.field.value} />} />
     )
   }
 

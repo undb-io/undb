@@ -13,6 +13,10 @@ import { DateFormat, FieldId, FieldName, FieldValueConstraints } from './value-o
 
 export class CreatedAtField extends BaseDateField<ICreatedAtField> {
   type: CreatedAtFieldType = 'created-at'
+  override get controlled() {
+    return true
+  }
+
   override get system() {
     return true
   }
