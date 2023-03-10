@@ -6,7 +6,7 @@ export const ReferenceValue: React.FC<{ values?: (string | undefined | null)[] }
   return (
     <Group spacing="xs">
       <Badge color="gray" size="xs" sx={{ textTransform: 'unset' }}>
-        {visibleValues.length ? visibleValues.toString() : <>Unnamed</>}
+        {visibleValues.toString() || <>Unnamed</>}
       </Badge>
     </Group>
   )

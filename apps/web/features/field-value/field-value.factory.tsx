@@ -77,8 +77,19 @@ export const FieldValueFactory: React.FC<{
     }
     case 'reference':
     case 'tree': {
-      if (!(value as ReferenceFieldValue | TreeFieldValue | undefined)?.unpack()) return null
+      const unpacked = (value as ReferenceFieldValue | TreeFieldValue | undefined)?.unpack()
+      if (!unpacked) return null
       const values = field.getDisplayValues(displayValues)
+
+      if (unpacked?.length && !values?.length) {
+        return (
+          <>
+            {unpacked.map((_, index) => (
+              <ReferenceValue key={index} />
+            ))}
+          </>
+        )
+      }
 
       return (
         <>
