@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSelector, createSlice } from '@reduxjs/toolkit'
 import 'immer'
-import fp from 'lodash/fp.js'
+import fp, { propOr } from 'lodash/fp.js'
 import { persistReducer } from 'redux-persist'
 import sessionStorage from 'redux-persist/es/storage/session'
 import 'reselect'
@@ -91,6 +91,9 @@ export const getTableSelectedRecordIds = createSelector(
 
 export const getTableSelectedRecordIdList = createSelector(getTableSelectedRecordIds, keys)
 
-export const getTableSelectedRecordIdsCount = createSelector(getTableSelectedRecordIds, pipe(filter(T), prop('length')))
+export const getTableSelectedRecordIdsCount = createSelector(
+  getTableSelectedRecordIds,
+  pipe(filter(T), propOr(0, 'length')),
+)
 
 export const getTableHasSelectedRecordIds = createSelector(getTableSelectedRecordIds, some(T))
