@@ -6,17 +6,18 @@ import { useEffect, useState } from 'react'
 import { FieldSelector } from '../field-inputs/field-selector'
 import { getSortId } from './get-sort-id'
 import { useTranslation } from 'react-i18next'
+import { useOrderedFields } from '../../hooks/use-ordered-fields'
 
 interface IProps {
-  fields: Field[]
   index: number
   value: ISortSchema | null
   onChange: (filter: ISortSchema | null, index: number) => void
   onRemove: (index: number) => void
 }
 
-export const FieldSort: React.FC<IProps> = ({ fields, value, onChange, onRemove, index }) => {
+export const FieldSort: React.FC<IProps> = ({ value, onChange, onRemove, index }) => {
   const fieldId = value?.fieldId
+  const fields = useOrderedFields()
   const field = fieldId ? fields.find((f) => f.id.value === fieldId) ?? null : null
 
   const [selectedField, setField] = useState<Field | null>(field)

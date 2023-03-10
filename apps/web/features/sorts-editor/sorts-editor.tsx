@@ -7,7 +7,6 @@ import { closestCenter, DndContext } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { getSortId } from './get-sort-id'
-import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { useTranslation } from 'react-i18next'
 interface IProps {
@@ -17,7 +16,6 @@ interface IProps {
 }
 
 export const SortsEditor: React.FC<IProps> = ({ onChange, onApply, onCancel }) => {
-  const table = useCurrentTable()
   const view = useCurrentView()
   const initialSorts = view.sorts?.sorts ?? []
   const [sorts, handlers] = useListState<ISortSchema | null>(initialSorts.length ? initialSorts : [null])
@@ -58,7 +56,6 @@ export const SortsEditor: React.FC<IProps> = ({ onChange, onApply, onCancel }) =
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
             {sorts.map((sort, index) => (
               <FieldSort
-                fields={table.schema.fields}
                 index={index}
                 value={sort}
                 key={getSortId(sort, index)}
