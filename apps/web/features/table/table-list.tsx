@@ -44,7 +44,7 @@ export const TableList: React.FC = () => {
                         </Menu.Target>
 
                         <Menu.Dropdown>
-                          <TableMenuDropdown />
+                          <TableMenuDropdown tableId={t.id} />
                         </Menu.Dropdown>
                       </Menu>
                       <CurrentTableContext.Provider value={TableFactory.fromQuery(t)}>
