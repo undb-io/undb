@@ -81,7 +81,9 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
     const underlyingColumns = UnderlyingColumnFactory.createMany(fields)
 
     for (const column of underlyingColumns) {
-      column.build(this.tb, this.knex)
+      if (!column.system) {
+        column.build(this.tb, this.knex)
+      }
     }
 
     return this

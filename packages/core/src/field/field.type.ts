@@ -357,7 +357,7 @@ export type IReferenceField = IBaseField & { displayFields?: DisplayFields; fore
 export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?: DisplayFields }
 export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: DisplayFields }
 
-export type SystemField = IdField | CreatedAtField | UpdatedAtField | AutoIncrementField
+export type SystemField = IdField | CreatedAtField | UpdatedAtField
 
 export type ReferenceFieldTypes = ReferenceField | TreeField | ParentField
 export type DateFieldTypes = DateField | DateRangeField | CreatedAtField | UpdatedAtField
@@ -375,6 +375,7 @@ export type NoneSystemField =
   | TreeField
   | ParentField
   | RatingField
+  | AutoIncrementField
 
 export type PrimitiveField =
   | StringField
