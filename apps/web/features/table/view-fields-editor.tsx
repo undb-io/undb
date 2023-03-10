@@ -150,7 +150,7 @@ export const ViewFieldsEditor: React.FC = () => {
               backgroundColor: opened ? theme.colors[theme.primaryColor][0] : 'initial',
             })}
           >
-            {t('Config Fields')}
+            {t('Manage Fields')}
           </Button>
         </Tooltip>
       </Popover.Target>

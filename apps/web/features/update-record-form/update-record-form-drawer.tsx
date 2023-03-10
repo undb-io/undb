@@ -8,18 +8,14 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { getHasSelectedRecordId, getSelectedRecordId, resetSelectedRecordId, useGetRecordQuery } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
-import { useCurrentView } from '../../hooks/use-current-view'
 import { useTranslation } from 'react-i18next'
+import { useOrderedFields } from '../../hooks/use-ordered-fields'
 
 export const UpdateRecordFormDrawer: React.FC = () => {
   const table = useCurrentTable()
-  const view = useCurrentView()
+  const fields = useOrderedFields()
 
   const dispatch = useAppDispatch()
-
-  const schema = table.schema.toIdMap()
-  const columnOrder = table.getFieldsOrder(view)
-  const fields = columnOrder.map((fieldId) => schema.get(fieldId)).filter(Boolean)
 
   const opened = useAppSelector(getHasSelectedRecordId)
 

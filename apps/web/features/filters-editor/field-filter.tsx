@@ -8,6 +8,7 @@ import { FilterValueInput } from './filter-value-input'
 import { OperatorSelector } from './operator-selector'
 import { getFilterId } from './get-filter-id'
 import type { IFieldQueryValue } from '@egodb/core'
+import { useOrderedFields } from '../../hooks/use-ordered-fields'
 
 interface IProps {
   schema: TableSchema
@@ -21,6 +22,8 @@ export const FieldFilter: React.FC<IProps> = ({ schema, value, onChange, onRemov
   // TODO: path maybe string list
   const fieldId = value?.path as string
   const field = fieldId ? schema.getFieldById(fieldId).into(null) : null
+
+  const fields = useOrderedFields()
 
   const [selectedField, setField] = useState<Field | null>(field)
   const [operator, setOperator] = useState<IOperator | null>(value?.operator ?? null)
@@ -51,7 +54,7 @@ export const FieldFilter: React.FC<IProps> = ({ schema, value, onChange, onRemov
       <ActionIcon {...attributes} {...listeners} component="a">
         <IconGripVertical size={12} />
       </ActionIcon>
-      <FieldSelector fields={schema.fields} value={selectedField} onChange={setField} />
+      <FieldSelector fields={fields} value={selectedField} onChange={setField} />
       <OperatorSelector field={selectedField} value={operator} onChange={setOperator} />
       <FilterValueInput field={selectedField} value={fieldValue} onChange={setValue} operator={operator} />
       <ActionIcon color="gray.5" variant="outline" onClick={() => onRemove(index)}>
