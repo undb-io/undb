@@ -12,7 +12,7 @@ import {
 } from '@egodb/ui'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useConfirmModal } from '../../hooks'
+import { confirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import type { TRow } from './interface'
 
@@ -24,7 +24,7 @@ export const RecordActions: React.FC<{ row: TRow }> = React.memo(({ row }) => {
   const { copy } = useClipboard({ timeout: 500 })
   const [deleteRecord, { isLoading }] = useDeleteRecordMutation()
 
-  const confirm = useConfirmModal({
+  const confirm = confirmModal({
     children: <Alert color="red">Confirm to Delete Record {row.id} ?</Alert>,
     confirmProps: { loading: isLoading },
     onConfirm: () => {

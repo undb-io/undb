@@ -85,11 +85,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = React.memo(
             {React.isValidElement(title) ? title : <Text weight={500}>{title}</Text>}
           </Group>
 
-          {id && (
-            <KanbanLaneMenu field={field} optionKey={id}>
-              {renderMenu?.()}
-            </KanbanLaneMenu>
-          )}
+          {id && renderMenu && <KanbanLaneMenu>{renderMenu?.()}</KanbanLaneMenu>}
         </Group>
         {!disableAddRecord ? (
           <ActionIcon w="100%" color="gray" variant="light" onClick={onCreateRecord}>

@@ -2,7 +2,7 @@ import { updateRecordSchema } from '@egodb/core'
 import type { IUpdateRecordValueSchema, IFieldQueryValue } from '@egodb/core'
 import { ActionIcon, Drawer, IconChevronLeft, IconChevronRight, LoadingOverlay } from '@egodb/ui'
 import { useEffect, useMemo } from 'react'
-import { useAppDispatch, useAppSelector, useConfirmModal } from '../../hooks'
+import { useAppDispatch, useAppSelector, confirmModal } from '../../hooks'
 import { UpdateRecordForm } from './update-record-form'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -68,7 +68,7 @@ export const UpdateRecordFormDrawer: React.FC = () => {
     dispatch(resetSelectedRecordId())
     form.reset()
   }
-  const confirm = useConfirmModal({ onConfirm: reset })
+  const confirm = confirmModal({ onConfirm: reset })
 
   const { t } = useTranslation()
 

@@ -18,7 +18,7 @@ import { useSetAtom } from 'jotai'
 import type { HTMLAttributes } from 'react'
 import React, { forwardRef } from 'react'
 import { unstable_batchedUpdates } from 'react-dom'
-import { useAppDispatch, useConfirmModal } from '../../hooks'
+import { useAppDispatch, confirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
@@ -77,7 +77,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     const setCreateRecordInitialValue = useSetAtom(createRecordInitialValueAtom)
 
     const [deleteRecord] = useDeleteRecordMutation()
-    const confirm = useConfirmModal({
+    const confirm = confirmModal({
       onConfirm() {
         deleteRecord({
           tableId: table.id.value,

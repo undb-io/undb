@@ -7,7 +7,7 @@ import { useAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useConfirmModal } from '../../hooks'
+import { confirmModal } from '../../hooks'
 import { CreateTableForm } from './create-table-form'
 import { activeFieldAtom } from './create-table-form-schema.atom'
 import { createTableFormDrawerOpened } from './drawer-opened.atom'
@@ -32,7 +32,7 @@ export const CreateTableFormDrawer: React.FC = () => {
     form.clearErrors()
     form.reset()
   }
-  const confirm = useConfirmModal({ onConfirm: reset })
+  const confirm = confirmModal({ onConfirm: reset })
   const { t } = useTranslation()
 
   return (

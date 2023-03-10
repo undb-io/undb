@@ -7,7 +7,7 @@ import { useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import useDeepCompareEffect from 'use-deep-compare-effect'
-import { useConfirmModal } from '../../hooks'
+import { confirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { CreateRecordForm } from './create-record-form'
 import { createRecordInitialValueAtom } from './create-record-initial-value.atom'
@@ -43,7 +43,7 @@ export const CreateRecordFormDrawer: React.FC = () => {
     setOpened(false)
     form.clearErrors()
   }
-  const confirm = useConfirmModal({ onConfirm: reset })
+  const confirm = confirmModal({ onConfirm: reset })
 
   const { t } = useTranslation()
 

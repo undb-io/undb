@@ -30,7 +30,7 @@ import {
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useConfirmModal } from '../../hooks'
+import { confirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import {
@@ -176,7 +176,7 @@ export const ViewMenu: React.FC = () => {
     toggleEditing.close()
   }
 
-  const confirm = useConfirmModal({
+  const confirm = confirmModal({
     async onConfirm() {
       await deleteView({ tableId: table.id.value, id: view.id.value })
       router.push(`/t/${table.id.value}`)

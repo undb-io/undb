@@ -21,7 +21,7 @@ import {
 import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
-import { useConfirmModal } from '../../hooks'
+import { confirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { getDisplayTypeColor, DisplayTypeIcon } from '../view/display-type-icon'
@@ -50,7 +50,7 @@ export const ViewsListItem: React.FC<IProps> = ({ v }) => {
   const [duplicateView] = useDuplicateViewMutation()
 
   const [deleteView] = useDeleteViewMutation()
-  const confirm = useConfirmModal({
+  const confirm = confirmModal({
     async onConfirm() {
       await deleteView({ tableId: table.id.value, id: v.id.value })
       router.replace(`/t/${table.id.value}`)
