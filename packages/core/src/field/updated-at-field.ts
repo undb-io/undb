@@ -13,6 +13,10 @@ import { DateFormat, FieldId, FieldName, FieldValueConstraints } from './value-o
 
 export class UpdatedAtField extends BaseDateField<IUpdatedAtField> {
   type: UpdatedAtFieldType = 'updated-at'
+  override get controlled() {
+    return true
+  }
+
   override get system() {
     return true
   }
