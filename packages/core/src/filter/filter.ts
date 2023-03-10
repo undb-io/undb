@@ -26,6 +26,7 @@ import {
   StringContain,
   StringEndsWith,
   StringEqual,
+  StringRegex,
   StringStartsWith,
   WithRecordIds,
 } from '../record/index.js'
@@ -218,6 +219,9 @@ const convertStringFilter = (filter: IStringFilter): Option<CompositeSpecificati
     }
     case '$ends_with': {
       return Some(new StringEndsWith(filter.path, new StringFieldValue(filter.value)))
+    }
+    case '$regex': {
+      return Some(new StringRegex(filter.path, new StringFieldValue(filter.value)))
     }
 
     default:

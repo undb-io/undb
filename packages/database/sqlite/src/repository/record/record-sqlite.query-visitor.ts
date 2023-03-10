@@ -119,7 +119,11 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     }
   }
   stringRegex(s: StringRegex): void {
-    throw new Error('Method not implemented.')
+    if (s.value.unpack() === null) {
+      this.qb.whereNull(this.getFieldId(s.fieldId))
+    } else {
+      this.qb.whereRaw(`${this.getFieldId(s.fieldId)} REGEXP ?`, [s.value.unpack()])
+    }
   }
   numberEqual(s: NumberEqual): void {
     this.qb.where({ [this.getFieldId(s.fieldId)]: s.value.unpack() })
