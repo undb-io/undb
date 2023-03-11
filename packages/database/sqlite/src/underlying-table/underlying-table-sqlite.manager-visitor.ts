@@ -76,6 +76,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   newOption(): void {}
   optionEqual(): void {}
   sortsEqual(): void {}
+  pinnedFields(): void {}
 
   witoutOption(s: WithoutOption): void {
     this.qb = this.#qb.from(this.tableName).where(s.field.id.value, s.optionKey.value).update(s.field.id.value, null)

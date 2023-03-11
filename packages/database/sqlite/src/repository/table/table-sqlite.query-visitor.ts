@@ -28,6 +28,7 @@ import type {
   WithTreeViewField,
   WithViewFieldsOrder,
   WithViewName,
+  WithViewPinnedFields,
   WithViewsOrder,
 } from '@egodb/core'
 import type { QueryBuilder } from '@mikro-orm/better-sqlite'
@@ -120,6 +121,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   withShowSystemFields(s: WithShowSystemFieldsSpec): void {
+    throw new Error('Method not implemented.')
+  }
+  pinnedFields(s: WithViewPinnedFields): void {
     throw new Error('Method not implemented.')
   }
 

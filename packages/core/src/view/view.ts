@@ -151,6 +151,10 @@ export class View extends ValueObject<IView> {
     return this.props.pinnedFields
   }
 
+  public set pinnedFields(pf: ViewPinnedFields | undefined) {
+    this.props.pinnedFields = pf
+  }
+
   public getOrderedFields(fields: Field[]): Field[] {
     return sortBy(fields, (field) => this.fieldsOrder?.order.indexOf(field.id.value))
   }
