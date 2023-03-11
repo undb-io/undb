@@ -30,6 +30,7 @@ import { ViewFieldOptions } from './view-field-options.js'
 import { ViewFieldsOrder } from './view-fields-order.vo.js'
 import { ViewId } from './view-id.vo.js'
 import { ViewName } from './view-name.vo.js'
+import { ViewPinnedFields } from './view-pinned-fields.js'
 import { createViewInput_internal } from './view.schema.js'
 import type { ICreateViewInput_internal, IView, IViewDisplayType } from './view.type.js'
 
@@ -144,6 +145,10 @@ export class View extends ValueObject<IView> {
 
   public set fieldsOrder(v: ViewFieldsOrder | undefined) {
     this.props.fieldsOrder = v
+  }
+
+  public get pinnedFields() {
+    return this.props.pinnedFields
   }
 
   public getOrderedFields(fields: Field[]): Field[] {
@@ -290,6 +295,7 @@ export class View extends ValueObject<IView> {
       filter: this.filter?.toJSON(),
       fieldOptions: this.fieldOptions.toJSON(),
       fieldsOrder: this.fieldsOrder?.toJSON(),
+      pinnedFields: this.pinnedFields?.toJSON(),
       ...input,
     })
 
@@ -311,6 +317,7 @@ export class View extends ValueObject<IView> {
       filter: parsed.filter ? new RootFilter(parsed.filter) : undefined,
       fieldOptions: ViewFieldOptions.from(input.fieldOptions),
       fieldsOrder: input.fieldsOrder?.length ? ViewFieldsOrder.fromArray(input.fieldsOrder) : undefined,
+      pinnedFields: input.pinnedFields ? new ViewPinnedFields(input.pinnedFields) : undefined,
     })
   }
 }

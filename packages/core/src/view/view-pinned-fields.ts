@@ -1,0 +1,32 @@
+import { ValueObject } from '@egodb/domain'
+import type { ZodArray, ZodString } from 'zod'
+import { z } from 'zod'
+
+export type PinnedPosition = 'left' | 'right'
+
+export const viewPinnedFields = z.object<{ [key in PinnedPosition]: ZodArray<ZodString> }>({
+  left: z.string().array(),
+  right: z.string().array(),
+})
+
+export interface IViewPinnedFields {
+  left: string[]
+  right: string[]
+}
+
+export class ViewPinnedFields extends ValueObject<IViewPinnedFields> {
+  public get left() {
+    return this.props.left
+  }
+
+  public get right() {
+    return this.props.right
+  }
+
+  public toJSON() {
+    return {
+      left: this.left,
+      right: this.right,
+    }
+  }
+}
