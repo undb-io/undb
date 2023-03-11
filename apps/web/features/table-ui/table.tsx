@@ -12,11 +12,11 @@ import { FieldValueFactory } from '../field-value/field-value.factory'
 import { getTableSelectedRecordIds, setSelectedRecordId, setTableSelectedRecordIds } from '@egodb/store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { RecordSelection } from './selection'
+import { SelectionCell } from './selection-cell'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { ActionHeader } from './action-header'
-import { SelectionCell } from './selection-cell'
+import { SelectionHeader } from './selection-header'
 
 const columnHelper = createColumnHelper<TData>()
 
@@ -25,8 +25,8 @@ const selection: ColumnDef<TData> = {
   id: SELECTION_ID,
   enablePinning: true,
   size: 40,
-  header: (props) => <SelectionCell table={props.table} />,
-  cell: ({ row }) => <RecordSelection row={row} />,
+  header: (props) => <SelectionHeader table={props.table} />,
+  cell: ({ row }) => <SelectionCell row={row} />,
 }
 
 const action = columnHelper.display({
@@ -146,7 +146,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
         withColumnBorders
         verticalSpacing={5}
         sx={(theme) => ({
-          borderCollapse: 'collapse',
+          borderCollapse: 'separate',
           borderSpacing: 0,
           tableLayout: 'fixed',
           backgroundColor: theme.white,

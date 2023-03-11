@@ -1,29 +1,34 @@
-import { Checkbox } from '@egodb/ui'
-import type { Table } from '@tanstack/react-table'
-import React from 'react'
-import { SELECTION_ID } from '../../constants/field.constants'
+import { Checkbox, Box, useHover, Text } from '@egodb/ui'
+import type { Row } from '@tanstack/react-table'
 import type { TData } from './interface'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { PinnedSelection, PinnedTD } from './styles'
 
-export const SelectionCell: React.FC<{ table: Table<TData> }> = ({ table }) => {
+export const SelectionCell: React.FC<{ row: Row<TData> }> = ({ row }) => {
+  const { hovered, ref } = useHover()
+
+  const isSelected = row.getIsSelected()
+  const showCheckbox = isSelected || hovered
+
+  const checkbox = (
+    <Checkbox
+      size="xs"
+      checked={row.getIsSelected()}
+      onChange={row.getToggleSelectedHandler()}
+      disabled={!row.getCanSelect()}
+    />
+  )
   return (
-    <td
-      style={{
-        width: '40px',
-        position: 'sticky',
-        left: 0,
-        top: 0,
-        zIndex: 1,
-        backgroundColor: 'white',
-      }}
-    >
-      <th key={SELECTION_ID}>
-        <Checkbox
-          size="xs"
-          checked={table.getIsAllRowsSelected()}
-          onChange={table.getToggleAllRowsSelectedHandler()}
-          indeterminate={table.getIsSomeRowsSelected()}
-        />
-      </th>
-    </td>
+    <PinnedSelection>
+      <Box ref={ref} onClick={(e) => e.stopPropagation()}>
+        {showCheckbox ? (
+          checkbox
+        ) : (
+          <Text align="center" color="gray.6" size="sm">
+            {row.index + 1}
+          </Text>
+        )}
+      </Box>
+    </PinnedSelection>
   )
 }
