@@ -155,8 +155,6 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
           backgroundColor: theme.white,
           borderTop: '0',
           borderLeft: '0',
-          borderRight: '0',
-          borderBottom: '0',
           width: rt.getCenterTotalSize(),
           table: {
             border: '0',
