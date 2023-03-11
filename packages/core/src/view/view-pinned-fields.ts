@@ -9,10 +9,7 @@ export const viewPinnedFields = z.object<{ [key in PinnedPosition]: ZodArray<Zod
   right: z.string().array(),
 })
 
-export interface IViewPinnedFields {
-  left: string[]
-  right: string[]
-}
+export type IViewPinnedFields = z.infer<typeof viewPinnedFields>
 
 export class ViewPinnedFields extends ValueObject<IViewPinnedFields> {
   public get left() {

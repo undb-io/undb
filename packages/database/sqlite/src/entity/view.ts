@@ -4,6 +4,7 @@ import type {
   ISorts,
   IViewDisplayType,
   IViewFieldOption,
+  IViewPinnedFields,
   Kanban as CoreKanban,
   TreeView as CoreTreeView,
   View as CoreView,
@@ -92,6 +93,9 @@ export class View extends BaseEntity {
   @Property({ type: ArrayType, nullable: true })
   fieldsOrder?: string[]
 
+  @Property({ type: JsonType, nullable: true })
+  pinnedFields?: IViewPinnedFields
+
   constructor(table: Rel<Table>, view: CoreView) {
     super()
     this.id = view.id.value
@@ -116,6 +120,7 @@ export class View extends BaseEntity {
     if (view.sorts) {
       this.sorts = view.sorts.unpack()
     }
+    this.pinnedFields = view.pinnedFields?.toJSON()
   }
 }
 
