@@ -42,6 +42,8 @@
     "syncpack:fix": "syncpack fix-mismatches",
     "test": "FORCE_COLOR=1 TZ=UTC turbo run test",
     "test:watch": "FORCE_COLOR=1 TZ=UTC turbo run test:watch",
+    "db:schema:fresh": "turbo run db:schema:fresh",
+    "db:migration:create": "turbo run db:migration:create",
     "up": "taze -r -w -i"
   },
   "workspaces": [

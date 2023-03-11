@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230301011915 extends Migration {
+export class Migration20230311120218 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `ego_table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `views_order` text null, primary key (`id`));',
@@ -32,7 +32,7 @@ export class Migration20230301011915 extends Migration {
     )
 
     this.addSql(
-      "create table `ego_view` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `name` text not null, `show_system_fields` integer not null default false, `display_type` text check (`display_type` in ('kanban', 'calendar', 'grid', 'tree')) not null, `sorts` json null, `kanban_field_id` text null, `calendar_field_id` text null, `tree_field_id` text null, `filter` json null, `field_options` json null, `fields_order` text null, constraint `ego_view_table_id_foreign` foreign key(`table_id`) references `ego_table`(`id`) on delete cascade on update cascade, primary key (`id`));",
+      "create table `ego_view` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `name` text not null, `show_system_fields` integer not null default false, `display_type` text check (`display_type` in ('kanban', 'calendar', 'grid', 'tree')) not null, `sorts` json null, `kanban_field_id` text null, `calendar_field_id` text null, `tree_field_id` text null, `filter` json null, `field_options` json null, `fields_order` text null, `pinned_fields` json null, constraint `ego_view_table_id_foreign` foreign key(`table_id`) references `ego_table`(`id`) on delete cascade on update cascade, primary key (`id`));",
     )
     this.addSql('create index `ego_view_deleted_at_index` on `ego_view` (`deleted_at`);')
     this.addSql('create index `ego_view_table_id_index` on `ego_view` (`table_id`);')
