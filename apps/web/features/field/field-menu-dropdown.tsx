@@ -25,9 +25,10 @@ interface IProps {
   field: Field
   orientation: 'vertial' | 'horizontal'
   index: number
+  pinLeft?: () => void
 }
 
-export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index }) => {
+export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index, pinLeft }) => {
   const table = useCurrentTable()
   const view = useCurrentView()
   const direction = view.getFieldSort(field.id.value).into()
@@ -98,6 +99,12 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index 
               {t('Insert Field Right')}{' '}
             </Menu.Item>
           </>
+        )}
+
+        {pinLeft && (
+          <Menu.Item {...menuProps} onClick={pinLeft}>
+            {t('Pin Field')}
+          </Menu.Item>
         )}
 
         <Menu.Divider />

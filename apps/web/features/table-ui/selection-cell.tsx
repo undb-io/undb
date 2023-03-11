@@ -1,8 +1,7 @@
 import { Checkbox, Box, useHover, Text } from '@egodb/ui'
 import type { Row } from '@tanstack/react-table'
 import type { TData } from './interface'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { PinnedSelection, PinnedTD } from './styles'
+import { PinnedSelection } from './styles'
 
 export const SelectionCell: React.FC<{ row: Row<TData> }> = ({ row }) => {
   const { hovered, ref } = useHover()
@@ -19,7 +18,7 @@ export const SelectionCell: React.FC<{ row: Row<TData> }> = ({ row }) => {
     />
   )
   return (
-    <PinnedSelection>
+    <PinnedSelection pinned>
       <Box ref={ref} onClick={(e) => e.stopPropagation()}>
         {showCheckbox ? (
           checkbox

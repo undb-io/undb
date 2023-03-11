@@ -17,6 +17,7 @@ import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { ActionHeader } from './action-header'
 import { SelectionHeader } from './selection-header'
+import { Td } from './styles'
 
 const columnHelper = createColumnHelper<TData>()
 
@@ -92,10 +93,12 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
             value = props.getValue()
           }
 
+          const pinned = props.column.getIsPinned()
+
           return (
-            <td>
+            <Td pinned={!!pinned} data-pinned={pinned}>
               <FieldValueFactory field={f} value={value} displayValues={props.row.original.display_values} />
-            </td>
+            </Td>
           )
         },
       }),

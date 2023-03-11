@@ -1,15 +1,23 @@
 import styled from '@emotion/styled'
-import type { StyledComponent } from '@emotion/styled/types'
+import { css } from '@emotion/react'
 
-export const PinnedTD: StyledComponent<object> = styled.td`
-  position: sticky;
-  left: 0;
-  top: 0;
-  z-index: 1;
+interface PinnedTDProps {
+  pinned?: boolean
+}
+
+export const Td = styled.td<PinnedTDProps>`
   background-color: white;
+  ${(props) =>
+    props.pinned &&
+    css`
+      position: sticky;
+      left: 0;
+      top: 0;
+      z-index: 1;
+    `}
 `
 
-export const PinnedSelection: StyledComponent<object> = styled(PinnedTD)`
+export const PinnedSelection = styled(Td)`
   width: 40px;
   border-right: red;
 `

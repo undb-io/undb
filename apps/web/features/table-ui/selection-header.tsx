@@ -7,7 +7,7 @@ import { PinnedSelection } from './styles'
 
 export const SelectionHeader: React.FC<{ table: Table<TData> }> = ({ table }) => {
   return (
-    <PinnedSelection>
+    <PinnedSelection pinned>
       <th key={SELECTION_ID}>
         <Checkbox
           size="xs"

@@ -101,7 +101,7 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
               </ActionIcon>
             </Tooltip>
           )}
-          <TableUIFieldMenu field={field} index={index} />
+          <TableUIFieldMenu field={field} index={index} header={header} />
         </Group>
       </Group>
 

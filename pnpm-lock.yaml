@@ -143,6 +143,7 @@ importers:
       '@egodb/store': ^0.0.0
       '@egodb/trpc': ^0.0.0
       '@egodb/ui': ^0.0.0
+      '@emotion/react': ^11.10.6
       '@emotion/styled': ^11.10.6
       '@formkit/auto-animate': ^1.0.0-beta.6
       '@hookform/devtools': ^4.3.1
@@ -184,7 +185,8 @@ importers:
       '@egodb/store': link:../../packages/store
       '@egodb/trpc': link:../../packages/trpc
       '@egodb/ui': link:../../packages/ui
-      '@emotion/styled': 11.10.6_pmekkgnqduwlme35zpnqhenc34
+      '@emotion/react': 11.10.6_pmekkgnqduwlme35zpnqhenc34
+      '@emotion/styled': 11.10.6_oouaibmszuch5k64ms7uxp2aia
       '@formkit/auto-animate': 1.0.0-beta.6
       '@hookform/resolvers': 2.9.11_react-hook-form@7.43.5
       '@tanstack/react-table': 8.7.9_biqbaboplfbrettd7655fr4n2y
@@ -1361,27 +1363,6 @@ packages:
       '@emotion/utils': 1.2.0
       '@types/react': 18.0.28
       react: 18.2.0
-    dev: true
-
-  /@emotion/styled/11.10.6_pmekkgnqduwlme35zpnqhenc34:
-    resolution: {integrity: sha512-OXtBzOmDSJo5Q0AFemHCfl+bUueT8BIcPSxu0EGTpGk6DmI5dnhSzQANm1e1ze0YZL7TDyAyy6s/b/zmGOS3Og==}
-    peerDependencies:
-      '@emotion/react': ^11.0.0-rc.0
-      '@types/react': '*'
-      react: '>=16.8.0'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.20.7
-      '@emotion/babel-plugin': 11.10.6
-      '@emotion/is-prop-valid': 1.2.0
-      '@emotion/serialize': 1.1.1
-      '@emotion/use-insertion-effect-with-fallbacks': 1.0.0_react@18.2.0
-      '@emotion/utils': 1.2.0
-      '@types/react': 18.0.28
-      react: 18.2.0
-    dev: false
 
   /@emotion/unitless/0.8.0:
     resolution: {integrity: sha512-VINS5vEYAscRl2ZUDiT3uMPlrFQupiKgHz5AA4bCH1miKBg4qtwkim1qPmJj/4WG6TreYMY111rEFsjupcOKHw==}
