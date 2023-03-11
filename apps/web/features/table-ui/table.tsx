@@ -4,7 +4,7 @@ import { flexRender, Row } from '@tanstack/react-table'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ACTIONS_FIELD, SELECTION_ID } from '../../constants/field.constants'
-import { RecordActions } from './actions'
+import { ActionsCell } from './actions-cell'
 import type { IProps, TData } from './interface'
 import { Th } from './th'
 import type { RecordAllValueType } from '@egodb/core'
@@ -15,7 +15,7 @@ import { useVirtualizer } from '@tanstack/react-virtual'
 import { SelectionCell } from './selection-cell'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
-import { ActionHeader } from './action-header'
+import { ActionsHeader } from './actions-header'
 import { SelectionHeader } from './selection-header'
 import { Td } from './styles'
 
@@ -33,8 +33,8 @@ const selection: ColumnDef<TData> = {
 const action = columnHelper.display({
   id: ACTIONS_FIELD,
   size: 50,
-  header: () => <ActionHeader />,
-  cell: (props) => <RecordActions row={props.row} />,
+  header: () => <ActionsHeader />,
+  cell: (props) => <ActionsCell row={props.row} />,
 })
 
 export const EGOTable: React.FC<IProps> = ({ records }) => {
