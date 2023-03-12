@@ -61,6 +61,7 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
   }
 
   const pinned = header.column.getIsPinned()
+  const isLastPinned = header.column.getPinnedIndex() === header.getContext().table.getLeftLeafHeaders().length - 1
 
   return (
     <Box
@@ -72,6 +73,7 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
         width: header.getSize(),
         zIndex: pinned ? 1 : 'unset',
         left: pinned ? header.getStart() + 'px' : undefined,
+        boxShadow: isLastPinned ? 'rgb(7 0 20 / 10%) 1px 0px 3px 0px, rgb(7 0 20 / 6%) 1px 0px 2px 0px' : 'unset',
       }}
     >
       <Group position="apart">
