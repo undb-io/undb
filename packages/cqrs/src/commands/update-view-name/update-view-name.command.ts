@@ -1,7 +1,7 @@
 import { IUpdateViewNameSchema } from '@egodb/core'
 import type { CommandProps } from '@egodb/domain'
 import { Command } from '@egodb/domain'
-import type { IUpdateViewNameCommandInput } from './udpate-view-name.command.interface.js'
+import type { IUpdateViewNameCommandInput } from './update-view-name.command.interface.js'
 
 export class UpdateViewNameCommand extends Command implements IUpdateViewNameCommandInput {
   public readonly tableId: string

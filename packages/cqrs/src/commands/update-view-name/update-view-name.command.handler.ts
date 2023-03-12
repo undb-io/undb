@@ -1,6 +1,6 @@
 import { type ITableRepository } from '@egodb/core'
 import type { ICommandHandler } from '@egodb/domain'
-import type { UpdateViewNameCommand } from './udpate-view-name.command.js'
+import type { UpdateViewNameCommand } from './update-view-name.command.js'
 
 type IUpdateViewNameCommandHandler = ICommandHandler<UpdateViewNameCommand, void>
 
