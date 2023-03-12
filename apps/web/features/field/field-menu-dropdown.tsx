@@ -6,6 +6,7 @@ import {
   useSetVisibilityMutation,
 } from '@egodb/store'
 import type { MenuItemProps } from '@egodb/ui'
+import { IconPinned } from '@egodb/ui'
 import { IconRowInsertBottom, IconRowInsertTop } from '@egodb/ui'
 import { IconColumnInsertRight } from '@egodb/ui'
 import { IconColumnInsertLeft } from '@egodb/ui'
@@ -102,7 +103,7 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index,
         )}
 
         {pinLeft && (
-          <Menu.Item {...menuProps} onClick={pinLeft}>
+          <Menu.Item {...menuProps} onClick={pinLeft} icon={<IconPinned size={14} />}>
             {t('Pin Field')}
           </Menu.Item>
         )}
