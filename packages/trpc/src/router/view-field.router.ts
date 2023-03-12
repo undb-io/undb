@@ -5,6 +5,8 @@ import {
   setFieldVisibilityCommandInput,
   SetFieldWidthCommand,
   setFieldWidthCommandInput,
+  SetPinnedFieldsCommand,
+  setPinnedFieldsCommandInput,
 } from '@egodb/cqrs'
 import type { ICommandBus } from '@egodb/domain'
 import { z } from 'zod'
@@ -32,6 +34,13 @@ export const createViewFieldRouter = (procedure: typeof publicProcedure) => (com
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new MoveFieldCommand(input)
+        return commandBus.execute<void>(cmd)
+      }),
+    setPinned: procedure
+      .input(setPinnedFieldsCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new SetPinnedFieldsCommand(input)
         return commandBus.execute<void>(cmd)
       }),
   })
