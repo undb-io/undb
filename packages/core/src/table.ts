@@ -31,6 +31,7 @@ import type {
   ISetFieldVisibilitySchema,
   ISetFieldWidthSchema,
   ISetKanbanFieldSchema,
+  ISetPinnedFieldsSchema,
   ISetTreeViewFieldSchema,
   ISortDirection,
   ISorts,
@@ -284,6 +285,13 @@ export class Table {
   public setFieldVisibility(input: ISetFieldVisibilitySchema): TableCompositeSpecificaiton {
     const view = this.mustGetView(input.viewId)
     const spec = view.setFieldVisibility(input.fieldId, input.hidden)
+    spec.mutate(this)
+    return spec
+  }
+
+  public setPinnedFields(input: ISetPinnedFieldsSchema): TableCompositeSpecificaiton {
+    const view = this.mustGetView(input.viewId)
+    const spec = view.setPinnedFields(input.pinnedFields)
     spec.mutate(this)
     return spec
   }
