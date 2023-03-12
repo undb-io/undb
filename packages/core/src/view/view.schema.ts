@@ -119,3 +119,10 @@ export const moveViewSchema = z.object({
 })
 
 export type IMoveViewSchema = z.infer<typeof moveViewSchema>
+
+export const setPinnedFieldsSchema = z.object({
+  viewId: viewIdSchema.optional(),
+  pinnedFields: viewPinnedFields,
+})
+
+export type ISetPinnedFieldsSchema = z.infer<typeof setPinnedFieldsSchema>
