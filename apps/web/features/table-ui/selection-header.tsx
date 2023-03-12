@@ -1,13 +1,15 @@
-import { Checkbox } from '@egodb/ui'
+import { Box, Checkbox } from '@egodb/ui'
 import type { Table } from '@tanstack/react-table'
 import React from 'react'
 import { SELECTION_ID } from '../../constants/field.constants'
 import type { TData } from './interface'
-import { PinnedSelection } from './styles'
+import { usePinnedStyles } from './styles'
 
 export const SelectionHeader: React.FC<{ table: Table<TData> }> = ({ table }) => {
+  const { classes, cx } = usePinnedStyles({})
+
   return (
-    <PinnedSelection pinned>
+    <Box component="td" className={cx([classes.cell, classes.sticky])} w="40px">
       <th key={SELECTION_ID}>
         <Checkbox
           size="xs"
@@ -16,6 +18,6 @@ export const SelectionHeader: React.FC<{ table: Table<TData> }> = ({ table }) =>
           indeterminate={table.getIsSomeRowsSelected()}
         />
       </th>
-    </PinnedSelection>
+    </Box>
   )
 }

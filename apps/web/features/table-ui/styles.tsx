@@ -1,27 +1,22 @@
-import styled from '@emotion/styled'
-import { css } from '@emotion/react'
+import { createStyles } from '@egodb/ui'
 
 interface PinnedTDProps {
-  pinned?: boolean
   left?: number
-  isLast?: boolean
 }
 
-export const Td = styled.td<PinnedTDProps>`
-  background-color: white;
-  ${(props) =>
-    props.pinned &&
-    css`
-      position: sticky;
-      left: ${props.left ? props.left + 'px' : 0};
-      top: 0;
-      z-index: 1;
-
-      box-shadow: ${props.isLast ? 'rgb(7 0 20 / 10%) 1px 0px 3px 0px, rgb(7 0 20 / 6%) 1px 0px 2px 0px' : 'unset'};
-    `}
-`
-
-export const PinnedSelection = styled(Td)`
-  width: 40px;
-  border-right: red;
-`
+export const usePinnedStyles: ReturnType<typeof createStyles<string, PinnedTDProps>> = createStyles(
+  (theme, { left }: PinnedTDProps) => ({
+    cell: {
+      backgroundColor: theme.white,
+    },
+    sticky: {
+      position: 'sticky',
+      left: left ? left + 'px' : 0,
+      top: 0,
+      zIndex: 1,
+    },
+    last: {
+      boxShadow: 'rgb(7 0 20 / 10%) 1px 0px 3px 0px, rgb(7 0 20 / 6%) 1px 0px 2px 0px',
+    },
+  }),
+)

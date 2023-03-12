@@ -2,6 +2,7 @@ import { useDeleteRecordMutation, useDuplicateRecordMutation } from '@egodb/stor
 import {
   ActionIcon,
   Alert,
+  Box,
   Group,
   IconCopy,
   IconDots,
@@ -15,7 +16,6 @@ import { useTranslation } from 'react-i18next'
 import { confirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import type { TRow } from './interface'
-import { Td } from './styles'
 
 // eslint-disable-next-line react/display-name
 export const ActionsCell: React.FC<{ row: TRow }> = React.memo(({ row }) => {
@@ -41,7 +41,7 @@ export const ActionsCell: React.FC<{ row: TRow }> = React.memo(({ row }) => {
   const { t } = useTranslation()
 
   return (
-    <Td>
+    <Box component="td">
       <Group>
         <Menu withinPortal width={200}>
           <Menu.Target>
@@ -88,6 +88,6 @@ export const ActionsCell: React.FC<{ row: TRow }> = React.memo(({ row }) => {
           </Menu.Dropdown>
         </Menu>
       </Group>
-    </Td>
+    </Box>
   )
 })

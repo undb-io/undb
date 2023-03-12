@@ -7,8 +7,6 @@ import { ACTIONS_FIELD, SELECTION_ID } from '../../constants/field.constants'
 import { ActionsCell } from './actions-cell'
 import type { IProps, TData } from './interface'
 import { Th } from './th'
-import type { RecordAllValueType } from '@egodb/core'
-import { FieldValueFactory } from '../field-value/field-value.factory'
 import {
   getTableSelectedRecordIds,
   setSelectedRecordId,
@@ -22,8 +20,8 @@ import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { ActionsHeader } from './actions-header'
 import { SelectionHeader } from './selection-header'
-import { Td } from './styles'
 import type { ISetPinnedFieldsCommandInput } from '@egodb/cqrs/dist'
+import { Cell } from './cell'
 
 const columnHelper = createColumnHelper<TData>()
 
@@ -99,33 +97,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
           <Th key={f.id.value} column={props.column} field={f} header={props.header} index={props.header.index} />
         ),
         size: view.getFieldWidth(f.id.value),
-        cell: (props) => {
-          let value: RecordAllValueType = undefined
-
-          if (f.type === 'id') {
-            value = props.row.original.id
-          } else if (f.type === 'created-at') {
-            value = props.row.original.created_at
-          } else if (f.type === 'updated-at') {
-            value = props.row.original.updated_at
-          } else if (f.type === 'auto-increment') {
-            value = props.row.original.auto_increment
-          } else {
-            value = props.getValue()
-          }
-
-          const pinned = props.column.getIsPinned()
-          const isLast = props.column.getPinnedIndex() === props.table.getLeftLeafHeaders().length - 1
-
-          const header = props.table.getLeftLeafHeaders()?.find((h) => h.column.id === f.id.value)
-          const left = header?.getStart()
-
-          return (
-            <Td pinned={!!pinned} data-pinned={pinned} left={left} isLast={isLast}>
-              <FieldValueFactory field={f} value={value} displayValues={props.row.original.display_values} />
-            </Td>
-          )
-        },
+        cell: (props) => <Cell cell={props} field={f} />,
       }),
     ),
     action,
