@@ -1,6 +1,7 @@
 import type { Field, FieldValue, RecordAllValueType } from '@egodb/core'
 import { Box } from '@egodb/ui'
 import type { CellContext } from '@tanstack/react-table'
+import React, { useMemo } from 'react'
 import { FieldValueFactory } from '../field-value/field-value.factory'
 import type { TData } from './interface'
 import { usePinnedStyles } from './styles'
@@ -9,12 +10,25 @@ interface IProps {
   cell: CellContext<TData, FieldValue>
   field: Field
 }
-export const Cell: React.FC<IProps> = ({ cell, field }) => {
+// eslint-disable-next-line react/display-name
+export const Cell: React.FC<IProps> = React.memo(({ cell, field }) => {
   const pinned = cell.column.getIsPinned()
-  const isLast = cell.column.getPinnedIndex() === cell.table.getLeftLeafHeaders().length - 1
 
-  const header = cell.table.getLeftLeafHeaders()?.find((h) => h.column.id === field.id.value)
-  const left = header?.getStart()
+  const isLast = useMemo(
+    () => (pinned ? cell.column.getPinnedIndex() === cell.table.getLeftLeafHeaders().length - 1 : undefined),
+    [],
+  )
+
+  const left = useMemo(
+    () =>
+      pinned
+        ? cell.table
+            .getLeftLeafHeaders()
+            ?.find((h) => h.column.id === field.id.value)
+            ?.getStart()
+        : undefined,
+    [],
+  )
 
   const { classes, cx } = usePinnedStyles({ left })
 
@@ -41,4 +55,4 @@ export const Cell: React.FC<IProps> = ({ cell, field }) => {
       <FieldValueFactory field={field} value={value} displayValues={cell.row.original.display_values} />
     </Box>
   )
-}
+})
