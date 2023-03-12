@@ -99,9 +99,9 @@ export const ViewsListItem: React.FC<IProps> = ({ v }) => {
                   })
                   setOpened(false)
                 }}
-                placeholder={v.name.value}
                 size="xs"
                 lh={1}
+                defaultValue={v.name.value}
                 onClick={(e) => e.stopPropagation()}
                 variant="unstyled"
               />

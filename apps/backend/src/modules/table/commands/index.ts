@@ -27,11 +27,11 @@ import { SetShowSystemFieldsCommandHandler } from './set-show-system-fields.comm
 import { SetSortsCommandHandler } from './set-sorts.command.handler.js'
 import { SetTreeViewFieldCommandHandler } from './set-tree-view-field.command.handler.js'
 import { SwitchDisplayTypeCommandHandler } from './switch-display-type.command.handler.js'
-import { UpdateViewNameCommandHandler } from './udpate-view-name.command.handler.js'
 import { UpdateFieldCommandHandler } from './update-field.command.handler.js'
 import { UpdateOptionCommandHandler } from './update-option.command.handler.js'
 import { UpdateRecordCommandHandler } from './update-record.command.handler.js'
 import { UpdateTableCommandHandler } from './update-table.command.handler.js'
+import { UpdateViewNameCommandHandler } from './update-view-name.command.handler.js'
 
 export const commandHandlers = [
   CreateTableCommandHandler,
