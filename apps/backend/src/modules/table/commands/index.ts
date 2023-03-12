@@ -22,6 +22,7 @@ import { SetFieldVisibilityCommandHandler } from './set-field-visibility.command
 import { SetFieldWidthCommandHandler } from './set-field-width.command.handler.js'
 import { SetFiltersCommandHandler } from './set-filters.command.handler.js'
 import { SetKanbanFieldCommandHandler } from './set-kanban-field.command.handler.js'
+import { SetPinnedFieldsCommandHandler } from './set-pinned-fields.command.handler.js'
 import { SetShowSystemFieldsCommandHandler } from './set-show-system-fields.command.handler.js'
 import { SetSortsCommandHandler } from './set-sorts.command.handler.js'
 import { SetTreeViewFieldCommandHandler } from './set-tree-view-field.command.handler.js'
@@ -44,6 +45,7 @@ export const commandHandlers = [
   SetSortsCommandHandler,
   SetKanbanFieldCommandHandler,
   SetCalendarFieldCommandHandler,
+  SetPinnedFieldsCommandHandler,
   SetTreeViewFieldCommandHandler,
   SetFieldWidthCommandHandler,
   SetFieldVisibilityCommandHandler,
