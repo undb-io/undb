@@ -2,14 +2,19 @@ import { Table, useListState } from '@egodb/ui'
 import type { ColumnDef, ColumnPinningState } from '@tanstack/react-table'
 import { flexRender, Row } from '@tanstack/react-table'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ACTIONS_FIELD, SELECTION_ID } from '../../constants/field.constants'
 import { ActionsCell } from './actions-cell'
 import type { IProps, TData } from './interface'
 import { Th } from './th'
 import type { RecordAllValueType } from '@egodb/core'
 import { FieldValueFactory } from '../field-value/field-value.factory'
-import { getTableSelectedRecordIds, setSelectedRecordId, setTableSelectedRecordIds } from '@egodb/store'
+import {
+  getTableSelectedRecordIds,
+  setSelectedRecordId,
+  setTableSelectedRecordIds,
+  useSetPinnedFieldsMutation,
+} from '@egodb/store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { SelectionCell } from './selection-cell'
@@ -18,6 +23,7 @@ import { useCurrentView } from '../../hooks/use-current-view'
 import { ActionsHeader } from './actions-header'
 import { SelectionHeader } from './selection-header'
 import { Td } from './styles'
+import type { ISetPinnedFieldsCommandInput } from '@egodb/cqrs/dist'
 
 const columnHelper = createColumnHelper<TData>()
 
@@ -43,17 +49,32 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
   const view = useCurrentView()
   const schema = table.schema.toIdMap()
   const columnVisibility = useMemo(() => view.getVisibility(), [view])
+  const pinned = useMemo(() => view.pinnedFields?.toJSON() ?? { left: [], right: [] }, [view])
   const columnOrder = useMemo(() => table.getFieldsOrder(view), [table, view])
   const initialFields = useMemo(
     () => columnOrder.map((fieldId) => schema.get(fieldId)).filter(Boolean),
     [columnOrder, schema],
   )
   const [fields, handlers] = useListState(initialFields)
-  const [columnPinning, setColumnPinning] = useState<ColumnPinningState>({ left: [SELECTION_ID] })
+  const [columnPinning, setColumnPinning] = useState<ColumnPinningState>({
+    left: [SELECTION_ID, ...pinned.left],
+    right: pinned.right,
+  })
 
   const dispatch = useAppDispatch()
   const selectedRecordIds = useAppSelector((state) => getTableSelectedRecordIds(state, table.id.value))
   const [rowSelection, setRowSelection] = useState(selectedRecordIds)
+
+  const [setPinnedFields] = useSetPinnedFieldsMutation()
+
+  useEffect(() => {
+    const { left: [, ...left] = [], right = [] } = columnPinning
+    const pinned: ISetPinnedFieldsCommandInput['pinnedFields'] = {
+      left,
+      right,
+    }
+    setPinnedFields({ tableId: table.id.value, viewId: view.id.value, pinnedFields: pinned })
+  }, [columnPinning, setPinnedFields])
 
   useEffect(() => {
     dispatch(setTableSelectedRecordIds({ tableId: table.id.value, ids: rowSelection }))
