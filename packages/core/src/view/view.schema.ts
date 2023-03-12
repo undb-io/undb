@@ -9,6 +9,7 @@ import { treeViewSchema } from './tree-view/index.js'
 import { fieldHiddenSchema, fieldWidthSchema, viewFieldOption } from './view-field-options.js'
 import { viewIdSchema } from './view-id.vo.js'
 import { viewNameSchema } from './view-name.vo.js'
+import { viewPinnedFields } from './view-pinned-fields.js'
 
 export const viewDisplayType = z.enum(['grid', 'kanban', 'calendar', 'tree'])
 
@@ -39,6 +40,7 @@ export const createViewInput_internal = z.object({
   filter: rootFilter.optional(),
   fieldOptions: z.record(viewFieldOption).optional(),
   fieldsOrder: z.string().array().optional(),
+  pinnedFields: viewPinnedFields.optional(),
 })
 
 export const queryView = z.object({
@@ -53,6 +55,7 @@ export const queryView = z.object({
   filter: rootFilter.optional(),
   fieldOptions: z.record(viewFieldOption).optional(),
   fieldsOrder: z.string().array().optional(),
+  pinnedFields: viewPinnedFields.optional(),
 })
 
 export const queryViews = z.array(queryView).optional()
@@ -116,3 +119,10 @@ export const moveViewSchema = z.object({
 })
 
 export type IMoveViewSchema = z.infer<typeof moveViewSchema>
+
+export const setPinnedFieldsSchema = z.object({
+  viewId: viewIdSchema.optional(),
+  pinnedFields: viewPinnedFields,
+})
+
+export type ISetPinnedFieldsSchema = z.infer<typeof setPinnedFieldsSchema>

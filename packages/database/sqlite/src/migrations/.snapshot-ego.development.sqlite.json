@@ -674,6 +674,15 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "pinned_fields": {
+          "name": "pinned_fields",
+          "type": "json",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
         }
       },
       "name": "ego_view",

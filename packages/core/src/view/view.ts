@@ -18,6 +18,7 @@ import {
   WithTreeViewField,
   WithViewFieldsOrder,
   WithViewName,
+  WithViewPinnedFields,
 } from './specifications/index.js'
 import {
   WithFieldOption,
@@ -30,6 +31,8 @@ import { ViewFieldOptions } from './view-field-options.js'
 import { ViewFieldsOrder } from './view-fields-order.vo.js'
 import { ViewId } from './view-id.vo.js'
 import { ViewName } from './view-name.vo.js'
+import type { IViewPinnedFields } from './view-pinned-fields.js'
+import { ViewPinnedFields } from './view-pinned-fields.js'
 import { createViewInput_internal } from './view.schema.js'
 import type { ICreateViewInput_internal, IView, IViewDisplayType } from './view.type.js'
 
@@ -146,6 +149,14 @@ export class View extends ValueObject<IView> {
     this.props.fieldsOrder = v
   }
 
+  public get pinnedFields() {
+    return this.props.pinnedFields
+  }
+
+  public set pinnedFields(pf: ViewPinnedFields | undefined) {
+    this.props.pinnedFields = pf
+  }
+
   public getOrderedFields(fields: Field[]): Field[] {
     return sortBy(fields, (field) => this.fieldsOrder?.order.indexOf(field.id.value))
   }
@@ -204,6 +215,10 @@ export class View extends ValueObject<IView> {
 
   public setFieldVisibility(fieldId: string, hidden: boolean): TableCompositeSpecificaiton {
     return new WithFieldVisibility(fieldId, this, hidden)
+  }
+
+  public setPinnedFields(pf: IViewPinnedFields): TableCompositeSpecificaiton {
+    return new WithViewPinnedFields(new ViewPinnedFields(pf), this)
   }
 
   public setKanbanFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
@@ -290,6 +305,7 @@ export class View extends ValueObject<IView> {
       filter: this.filter?.toJSON(),
       fieldOptions: this.fieldOptions.toJSON(),
       fieldsOrder: this.fieldsOrder?.toJSON(),
+      pinnedFields: this.pinnedFields?.toJSON(),
       ...input,
     })
 
@@ -311,6 +327,7 @@ export class View extends ValueObject<IView> {
       filter: parsed.filter ? new RootFilter(parsed.filter) : undefined,
       fieldOptions: ViewFieldOptions.from(input.fieldOptions),
       fieldsOrder: input.fieldsOrder?.length ? ViewFieldsOrder.fromArray(input.fieldsOrder) : undefined,
+      pinnedFields: input.pinnedFields ? new ViewPinnedFields(input.pinnedFields) : undefined,
     })
   }
 }

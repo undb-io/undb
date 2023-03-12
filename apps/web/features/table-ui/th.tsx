@@ -1,4 +1,4 @@
-import { ActionIcon, Group, IconSortAscending, IconSortDescending, Text, Tooltip } from '@egodb/ui'
+import { ActionIcon, Box, Group, IconSortAscending, IconSortDescending, Text, Tooltip } from '@egodb/ui'
 import styled from '@emotion/styled'
 import type { TColumn, THeader } from './interface'
 import type { Field } from '@egodb/core'
@@ -8,6 +8,7 @@ import { TableUIFieldMenu } from '../table/table-ui-field-menu'
 import { useSetFieldSortMutation, useSetFieldWidthMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
+import { usePinnedStyles } from './styles'
 
 const ResizerLine = styled.div<{ isResizing: boolean }>`
   display: block;
@@ -60,14 +61,18 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
     })
   }
 
+  const pinned = header.column.getIsPinned()
+  const isLastPinned = header.column.getPinnedIndex() === header.getContext().table.getLeftLeafHeaders().length - 1
+
+  const { classes, cx } = usePinnedStyles({ left: header.getStart() })
+
   return (
-    <th
+    <Box
+      component="th"
       data-field-id={field.id.value}
       key={header.id}
-      style={{
-        position: 'relative',
-        width: header.getSize(),
-      }}
+      className={cx(classes.cell, { [classes.sticky]: pinned, [classes.last]: isLastPinned })}
+      w={header.getSize()}
     >
       <Group position="apart">
         <Group spacing="xs">
@@ -101,7 +106,7 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
               </ActionIcon>
             </Tooltip>
           )}
-          <TableUIFieldMenu field={field} index={index} />
+          <TableUIFieldMenu field={field} index={index} header={header} />
         </Group>
       </Group>
 
@@ -112,6 +117,6 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
       >
         <ResizerLine className="line" isResizing={column.getIsResizing()} />
       </Resizer>
-    </th>
+    </Box>
   )
 })

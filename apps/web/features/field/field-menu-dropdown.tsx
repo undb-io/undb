@@ -6,6 +6,8 @@ import {
   useSetVisibilityMutation,
 } from '@egodb/store'
 import type { MenuItemProps } from '@egodb/ui'
+import { IconPinnedOff } from '@egodb/ui'
+import { IconPinned } from '@egodb/ui'
 import { IconRowInsertBottom, IconRowInsertTop } from '@egodb/ui'
 import { IconColumnInsertRight } from '@egodb/ui'
 import { IconColumnInsertLeft } from '@egodb/ui'
@@ -25,9 +27,11 @@ interface IProps {
   field: Field
   orientation: 'vertial' | 'horizontal'
   index: number
+  pinned?: boolean
+  pinLeft?: () => void
 }
 
-export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index }) => {
+export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index, pinned, pinLeft }) => {
   const table = useCurrentTable()
   const view = useCurrentView()
   const direction = view.getFieldSort(field.id.value).into()
@@ -100,12 +104,25 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index 
           </>
         )}
 
+        {pinLeft && (
+          <Menu.Item
+            {...menuProps}
+            onClick={pinLeft}
+            icon={pinned ? <IconPinnedOff size={14} /> : <IconPinned size={14} />}
+            sx={(theme) => ({
+              backgroundColor: pinned ? theme.colors.gray[0] : 'inherit',
+            })}
+          >
+            {pinned ? t('Unset Pin Field') : t('Pin Field')}
+          </Menu.Item>
+        )}
+
         <Menu.Divider />
 
         <Menu.Item
           icon={<IconSortAscending size={14} />}
           {...menuProps}
-          sx={(theme) => ({ backgroundColor: direction === 'asc' ? theme.colors.gray[2] : 'inherit' })}
+          sx={(theme) => ({ backgroundColor: direction === 'asc' ? theme.colors.gray[0] : 'inherit' })}
           onClick={() => {
             if (direction === 'asc') {
               resetFieldSort({
@@ -128,7 +145,7 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index 
         <Menu.Item
           icon={<IconSortDescending size={14} />}
           {...menuProps}
-          sx={(theme) => ({ backgroundColor: direction === 'desc' ? theme.colors.gray[2] : 'inherit' })}
+          sx={(theme) => ({ backgroundColor: direction === 'desc' ? theme.colors.gray[0] : 'inherit' })}
           onClick={() => {
             if (direction === 'desc') {
               resetFieldSort({

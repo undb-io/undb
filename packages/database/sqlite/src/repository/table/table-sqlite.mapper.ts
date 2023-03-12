@@ -24,6 +24,7 @@ export class TableSqliteMapper {
             tree: view.tree,
             calendar: view.calendar,
             sorts: view.sorts,
+            pinnedFields: view.pinnedFields,
           } as IQueryView),
       ),
     }
@@ -46,6 +47,7 @@ export class TableSqliteMapper {
         tree: view.tree,
         calendar: view.calendar,
         sorts: view.sorts,
+        pinnedFields: view.pinnedFields,
       })) as ICreateViewsSchema,
       viewsOrder: entity.viewsOrder,
     }).map((table) => {

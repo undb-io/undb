@@ -47,6 +47,10 @@ const viewApi = api.injectEndpoints({
       query: trpc.table.view.setShowSystemFields.mutate,
       invalidatesTags: (_, __, { tableId }) => [{ type: 'Table', id: tableId }, 'Record', 'TreeRecord'],
     }),
+    setPinnedFields: builder.mutation({
+      query: trpc.table.view.field.setPinned.mutate,
+      invalidatesTags: (_, __, { tableId }) => [{ type: 'Table', id: tableId }],
+    }),
   }),
   overrideExisting: false,
 })
@@ -63,6 +67,7 @@ export const {
   useSetFieldSortMutation,
   useResetFieldSortMutation,
   useSetShowSystemFieldsMutation,
+  useSetPinnedFieldsMutation,
 } = viewApi
 
 const calendarApi = viewApi.injectEndpoints({

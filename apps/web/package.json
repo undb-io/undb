@@ -11,6 +11,7 @@
     "@egodb/store": "^0.0.0",
     "@egodb/trpc": "^0.0.0",
     "@egodb/ui": "^0.0.0",
+    "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@formkit/auto-animate": "^1.0.0-beta.6",
     "@hookform/resolvers": "^2.9.11",

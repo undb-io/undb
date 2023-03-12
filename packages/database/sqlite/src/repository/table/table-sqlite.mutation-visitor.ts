@@ -26,6 +26,7 @@ import type {
   WithTreeViewField,
   WithViewFieldsOrder,
   WithViewName,
+  WithViewPinnedFields,
   WithViewsOrder,
 } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
@@ -151,6 +152,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
       wrap(view).assign({ fieldOptions: { [s.fieldId]: { hidden: s.hidden } } }, { mergeObjects: true })
       this.em.persist(view)
     })
+  }
+  pinnedFields(s: WithViewPinnedFields): void {
+    const view = this.getView(s.view.id.value)
+    wrap(view).assign({ pinnedFields: s.pinnedFields.toJSON() })
+    this.em.persist(view)
   }
   displayTypeEqual(s: WithDisplayType): void {
     const view = this.getView(s.view.id.value)

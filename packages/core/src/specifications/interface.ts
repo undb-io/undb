@@ -19,6 +19,7 @@ import type {
   WithFieldWidth,
 } from '../view/specifications/view-field-option.specification.js'
 import type { WithViewFieldsOrder } from '../view/specifications/view-fields-order.specification.js'
+import type { WithViewPinnedFields } from '../view/specifications/view-pinned-fields.specification.js'
 import type {
   WithNewView,
   WithoutView,
@@ -49,6 +50,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   fieldOptionsEqual(s: WithFieldOption): void
   fieldWidthEqual(s: WithFieldWidth): void
   fieldVisibility(s: WithFieldVisibility): void
+  pinnedFields(s: WithViewPinnedFields): void
 
   displayTypeEqual(s: WithDisplayType): void
   kanbanFieldEqual(s: WithKanbanField): void

@@ -1,18 +1,36 @@
-import { Checkbox } from '@egodb/ui'
-import type { Table } from '@tanstack/react-table'
-import React from 'react'
-import { SELECTION_ID } from '../../constants/field.constants'
+import { Checkbox, Box, useHover, Text } from '@egodb/ui'
+import type { Row } from '@tanstack/react-table'
 import type { TData } from './interface'
+import { usePinnedStyles } from './styles'
 
-export const SelectionCell: React.FC<{ table: Table<TData> }> = ({ table }) => {
+export const SelectionCell: React.FC<{ row: Row<TData> }> = ({ row }) => {
+  const { hovered, ref } = useHover()
+
+  const isSelected = row.getIsSelected()
+  const showCheckbox = isSelected || hovered
+
+  const checkbox = (
+    <Checkbox
+      size="xs"
+      checked={row.getIsSelected()}
+      onChange={row.getToggleSelectedHandler()}
+      disabled={!row.getCanSelect()}
+    />
+  )
+
+  const { classes, cx } = usePinnedStyles({})
+
   return (
-    <th key={SELECTION_ID} style={{ width: '40px' }}>
-      <Checkbox
-        size="xs"
-        checked={table.getIsAllRowsSelected()}
-        onChange={table.getToggleAllRowsSelectedHandler()}
-        indeterminate={table.getIsSomeRowsSelected()}
-      />
-    </th>
+    <Box component="td" className={cx([classes.cell, classes.sticky])} w="40px">
+      <Box ref={ref} onClick={(e) => e.stopPropagation()}>
+        {showCheckbox ? (
+          checkbox
+        ) : (
+          <Text align="center" color="gray.6" size="sm">
+            {row.index + 1}
+          </Text>
+        )}
+      </Box>
+    </Box>
   )
 }
