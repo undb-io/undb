@@ -22,6 +22,7 @@ import { ActionsHeader } from './actions-header'
 import { SelectionHeader } from './selection-header'
 import type { ISetPinnedFieldsCommandInput } from '@egodb/cqrs/dist'
 import { Cell } from './cell'
+import { tableStyles } from './styles'
 
 const columnHelper = createColumnHelper<TData>()
 
@@ -140,59 +141,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
 
   return (
     <div ref={tableContainerRef} style={{ height: '100%', overflow: 'auto' }}>
-      <Table
-        withBorder
-        highlightOnHover
-        withColumnBorders
-        verticalSpacing={5}
-        sx={(theme) => ({
-          borderCollapse: 'separate',
-          borderSpacing: 0,
-          tableLayout: 'fixed',
-          backgroundColor: theme.white,
-          borderTop: '0',
-          borderLeft: '0',
-          width: rt.getTotalSize(),
-          table: {
-            border: '0',
-          },
-          thead: {
-            margin: 0,
-            position: 'sticky',
-            top: 0,
-            border: 0,
-            zIndex: 100,
-            backgroundColor: theme.white,
-          },
-          'thead tr': {
-            border: '0',
-            outline: '1px solid ' + theme.colors.gray[2],
-          },
-          'thead tr td': {
-            borderRight: '1px solid ' + theme.colors.gray[2],
-          },
-          'thead tr th': {
-            userSelect: 'none',
-            backgroundColor: theme.white,
-            borderBottom: 0,
-          },
-          'tbody tr': {
-            cursor: 'pointer',
-            height: 32,
-            borderBottom: '1px solid ' + theme.colors.gray[2],
-          },
-          'tbody tr td': {
-            borderRight: '1px solid ' + theme.colors.gray[2],
-            ':last-child': {
-              border: '0',
-            },
-          },
-          'tbody tr:hover td:last-child': {
-            cursor: 'unset',
-            backgroundColor: theme.white,
-          },
-        })}
-      >
+      <Table withBorder highlightOnHover withColumnBorders verticalSpacing={5} w={rt.getTotalSize()} sx={tableStyles}>
         <thead>
           {rt.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>

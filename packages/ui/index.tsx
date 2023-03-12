@@ -42,3 +42,5 @@ export * from './hooks'
 export * from './theme'
 export * from './notification'
 export * from './modal'
+
+export type { CSSObject } from '@mantine/core'
