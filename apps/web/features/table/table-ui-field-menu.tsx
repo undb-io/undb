@@ -13,6 +13,8 @@ interface IProps {
 
 // eslint-disable-next-line react/display-name
 export const TableUIFieldMenu: React.FC<IProps> = React.memo(({ field, index, header }) => {
+  const pinned = header.column.getIsPinned()
+
   return (
     <Menu width={250}>
       <Menu.Target>
@@ -25,7 +27,8 @@ export const TableUIFieldMenu: React.FC<IProps> = React.memo(({ field, index, he
         field={field}
         orientation="horizontal"
         index={index}
-        pinLeft={() => header.column.pin('left')}
+        pinned={!!pinned}
+        pinLeft={() => (pinned ? header.column.pin(false) : header.column.pin('left'))}
       />
     </Menu>
   )

@@ -131,6 +131,7 @@ i18n
           'No More Unscheduled Records': 'There are no more unscheduled records.',
           'Using Field': 'using "{{name}}" field',
           'Pin Field': 'Pin',
+          'Unset Pin Field': 'Unset Pin',
         },
       },
       'zh-CN': {
@@ -257,6 +258,7 @@ i18n
           'No More Unscheduled Records': '没有更多未计划的记录。',
           'Using Field': '使用 "{{name}}" 列',
           'Pin Field': '固定列',
+          'Unset Pin Field': '取消固定列',
         },
       },
     },
