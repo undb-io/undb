@@ -4,7 +4,9 @@ interface PinnedTDProps {
   left?: number
 }
 
-export const usePinnedStyles: ReturnType<typeof createStyles<string, PinnedTDProps>> = createStyles(
+type PinnedClassName = 'cell' | 'sticky' | 'last'
+
+export const usePinnedStyles: ReturnType<typeof createStyles<PinnedClassName, PinnedTDProps>> = createStyles(
   (theme, { left }: PinnedTDProps) => ({
     cell: {
       backgroundColor: theme.white,
