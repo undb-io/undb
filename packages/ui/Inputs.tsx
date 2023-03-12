@@ -8,5 +8,6 @@ export {
   FocusTrap,
   MultiSelect,
   ColorInput,
+  Switch,
 } from '@mantine/core'
 export type { SelectProps, SelectItem, MultiSelectProps, CheckboxProps } from '@mantine/core'

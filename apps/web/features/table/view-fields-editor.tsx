@@ -5,6 +5,7 @@ import { CSS } from '@dnd-kit/utilities'
 import type { Field } from '@egodb/core'
 import { useMoveFieldMutation, useSetShowSystemFieldsMutation, useSetVisibilityMutation } from '@egodb/store'
 import type { CheckboxProps } from '@egodb/ui'
+import { Switch } from '@egodb/ui'
 import { ScrollArea } from '@egodb/ui'
 import { openContextModal } from '@egodb/ui'
 import { IconColumnInsertRight } from '@egodb/ui'
@@ -201,9 +202,8 @@ export const ViewFieldsEditor: React.FC = () => {
         <Divider my="sm" />
 
         <Stack>
-          <Checkbox
+          <Switch
             size="xs"
-            color="gray"
             label={t('Show System Fields')}
             defaultChecked={view.showSystemFields}
             onChange={(e) => {
