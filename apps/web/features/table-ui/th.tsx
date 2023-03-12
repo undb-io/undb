@@ -73,6 +73,7 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
       key={header.id}
       className={cx(classes.cell, { [classes.sticky]: pinned, [classes.last]: isLastPinned })}
       w={header.getSize()}
+      sx={{ zIndex: isLastPinned ? 1 : 'unset' }}
     >
       <Group position="apart">
         <Group spacing="xs">
