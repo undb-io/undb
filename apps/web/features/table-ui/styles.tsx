@@ -10,6 +10,7 @@ export const usePinnedStyles: ReturnType<typeof createStyles<PinnedClassName, Pi
   (theme, { left }: PinnedTDProps) => ({
     cell: {
       backgroundColor: theme.white,
+      position: 'relative',
     },
     sticky: {
       position: 'sticky',
