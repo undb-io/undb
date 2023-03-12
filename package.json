@@ -29,6 +29,8 @@
     "build:image": "zx scripts/build-image.mjs",
     "clean": "turbo run clean --parallel",
     "commit": "cz",
+    "db:migration:create": "turbo run db:migration:create",
+    "db:schema:fresh": "turbo run db:schema:fresh",
     "dev": "FORCE_COLOR=1 dotenv -- turbo run dev --parallel --filter=!www",
     "dev:packages": "FORCE_COLOR=1 turbo run dev --parallel --filter=./packages/*",
     "dev:www": "turbo run dev --filter www",
@@ -42,8 +44,6 @@
     "syncpack:fix": "syncpack fix-mismatches",
     "test": "FORCE_COLOR=1 TZ=UTC turbo run test",
     "test:watch": "FORCE_COLOR=1 TZ=UTC turbo run test:watch",
-    "db:schema:fresh": "turbo run db:schema:fresh",
-    "db:migration:create": "turbo run db:migration:create",
     "up": "taze -r -w -i"
   },
   "workspaces": [
