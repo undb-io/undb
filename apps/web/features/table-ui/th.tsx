@@ -1,4 +1,4 @@
-import { ActionIcon, Group, IconSortAscending, IconSortDescending, Text, Tooltip } from '@egodb/ui'
+import { ActionIcon, Box, Group, IconSortAscending, IconSortDescending, Text, Tooltip } from '@egodb/ui'
 import styled from '@emotion/styled'
 import type { TColumn, THeader } from './interface'
 import type { Field } from '@egodb/core'
@@ -60,13 +60,18 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
     })
   }
 
+  const pinned = header.column.getIsPinned()
+
   return (
-    <th
+    <Box
+      component="th"
       data-field-id={field.id.value}
       key={header.id}
-      style={{
-        position: 'relative',
+      sx={{
+        position: 'sticky',
         width: header.getSize(),
+        zIndex: pinned ? 1 : 'unset',
+        left: pinned ? header.getStart() + 'px' : undefined,
       }}
     >
       <Group position="apart">
@@ -112,6 +117,6 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
       >
         <ResizerLine className="line" isResizing={column.getIsResizing()} />
       </Resizer>
-    </th>
+    </Box>
   )
 })

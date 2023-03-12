@@ -3,6 +3,7 @@ import { css } from '@emotion/react'
 
 interface PinnedTDProps {
   pinned?: boolean
+  left?: number
 }
 
 export const Td = styled.td<PinnedTDProps>`
@@ -11,7 +12,7 @@ export const Td = styled.td<PinnedTDProps>`
     props.pinned &&
     css`
       position: sticky;
-      left: 0;
+      left: ${props.left ? props.left + 'px' : 0};
       top: 0;
       z-index: 1;
     `}

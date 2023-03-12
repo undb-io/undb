@@ -116,8 +116,11 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
 
           const pinned = props.column.getIsPinned()
 
+          const header = props.table.getLeftLeafHeaders()?.find((h) => h.column.id === f.id.value)
+          const left = header?.getStart()
+
           return (
-            <Td pinned={!!pinned} data-pinned={pinned}>
+            <Td pinned={!!pinned} data-pinned={pinned} left={left}>
               <FieldValueFactory field={f} value={value} displayValues={props.row.original.display_values} />
             </Td>
           )
@@ -196,7 +199,6 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
             borderRight: '1px solid ' + theme.colors.gray[2],
           },
           'thead tr th': {
-            position: 'relative',
             userSelect: 'none',
             backgroundColor: theme.white,
             borderBottom: 0,
