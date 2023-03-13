@@ -33,17 +33,10 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, type, ...othe
 
 export const DisplayFieldsPicker: React.FC<IProps> = ({ tableId, fields, ...props }) => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const { data, refetch } = useGetTableQuery({ id: tableId! }, { skip: !tableId })
+  const { data } = useGetTableQuery({ id: tableId! }, { skip: !tableId })
   const [state, handlers] = useListState<string>(props.value)
 
   const table = data ? TableFactory.fromQuery(data) : undefined
-
-  useEffect(() => {
-    if (tableId) {
-      refetch()
-    }
-    handlers.setState(props.value ?? [])
-  }, [tableId])
 
   const { t } = useTranslation()
 

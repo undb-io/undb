@@ -1,7 +1,7 @@
 'use client'
 
 import { TableFactory } from '@egodb/core'
-import { setCurrentTableId, setCurrentViewId, useGetTableQuery } from '@egodb/store'
+import { setCurrentTableId, useGetTableQuery } from '@egodb/store'
 import type { TRPCError } from '@egodb/trpc'
 import { Alert, Container, IconAlertCircle, ModalsProvider } from '@egodb/ui'
 import { useEffect } from 'react'
