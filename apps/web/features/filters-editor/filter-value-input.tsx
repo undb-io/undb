@@ -1,12 +1,19 @@
-import { CreatedAtField, IdField, UpdatedAtField } from '@egodb/core'
+import { CreatedAtField, IdField, RatingField, UpdatedAtField } from '@egodb/core'
 import { DateRangeField } from '@egodb/core'
 import { SelectField } from '@egodb/core'
 import { StringField } from '@egodb/core'
 import { dateBuiltInOperators } from '@egodb/core'
 import { DateField } from '@egodb/core'
 import { NumberField } from '@egodb/core'
-import type { IDateRangeFieldValue, Field, IDateFilterOperator, IFieldQueryValue, IOperator } from '@egodb/core'
-import { DatePickerInput, NumberInput, TextInput } from '@egodb/ui'
+import type {
+  IDateRangeFieldValue,
+  Field,
+  IDateFilterOperator,
+  IFieldQueryValue,
+  IOperator,
+  IRatingFieldValue,
+} from '@egodb/core'
+import { DatePickerInput, NumberInput, Rating, TextInput } from '@egodb/ui'
 import { OptionPicker } from '../option/option-picker'
 import { RecordsPicker } from '../field-inputs/records-picker'
 import { castArray } from 'lodash-es'
@@ -64,6 +71,17 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
         type="range"
         value={(value as IDateRangeFieldValue) ?? undefined}
         onChange={(range) => onChange([range.at(0)?.toISOString() ?? null, range.at(1)?.toISOString() ?? null])}
+      />
+    )
+  }
+
+  if (field instanceof RatingField) {
+    return (
+      <Rating
+        size="xs"
+        value={(value as IRatingFieldValue) ?? 0}
+        count={field.max}
+        onChange={(value) => onChange(value)}
       />
     )
   }

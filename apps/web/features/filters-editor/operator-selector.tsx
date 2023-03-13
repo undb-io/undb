@@ -1,4 +1,5 @@
 import type { Field, IOperator } from '@egodb/core'
+import { RatingField } from '@egodb/core'
 import { IdField } from '@egodb/core'
 import { CreatedAtField, UpdatedAtField } from '@egodb/core'
 import { TreeField } from '@egodb/core'
@@ -33,7 +34,7 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
       { value: '$ends_with', label: t('ENDS WITH', { ns: 'common' }) as string },
       // { value: '$regex', label: t('REGEX', { ns: 'common' }) as string },
     ]
-  } else if (field instanceof NumberField) {
+  } else if (field instanceof NumberField || field instanceof RatingField) {
     data = [
       { value: '$eq', label: t('EQUAL', { ns: 'common' }) as string },
       { value: '$neq', label: t('NOT EQUAL', { ns: 'common' }) as string },
