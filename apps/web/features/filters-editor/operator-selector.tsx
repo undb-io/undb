@@ -1,4 +1,5 @@
 import type { Field, IOperator } from '@egodb/core'
+import { IdField } from '@egodb/core'
 import { CreatedAtField, UpdatedAtField } from '@egodb/core'
 import { TreeField } from '@egodb/core'
 import { DateRangeField } from '@egodb/core'
@@ -27,7 +28,7 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
     data = [
       { value: '$eq', label: t('EQUAL', { ns: 'common' }) as string },
       { value: '$neq', label: t('NOT EQUAL', { ns: 'common' }) as string },
-      { value: '$CONTAINS', label: t('CONTAINS', { ns: 'common' }) as string },
+      { value: '$contains', label: t('CONTAINS', { ns: 'common' }) as string },
       { value: '$starts_with', label: t('STARTS WITH', { ns: 'common' }) as string },
       { value: '$ends_with', label: t('ENDS WITH', { ns: 'common' }) as string },
       // { value: '$regex', label: t('REGEX', { ns: 'common' }) as string },
@@ -70,6 +71,13 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
     ]
   } else if (field instanceof TreeField) {
     data = [{ value: '$is_root', label: t('IS ROOT', { ns: 'common' }) as string }]
+  } else if (field instanceof IdField) {
+    data = [
+      { value: '$eq', label: t('EQUAL', { ns: 'common' }) as string },
+      { value: '$neq', label: t('NOT EQUAL', { ns: 'common' }) as string },
+      { value: '$in', label: t('IN', { ns: 'common' }) as string },
+      { value: '$nin', label: t('NOT IN', { ns: 'common' }) as string },
+    ]
   }
 
   return (

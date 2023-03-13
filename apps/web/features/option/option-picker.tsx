@@ -65,6 +65,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
   shade: IOptionColorShade
 }
 
+// eslint-disable-next-line react/display-name
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
   ({ value, label, colorName, shade, ...others }: ItemProps, ref) => (
     <Group ref={ref} p="xs" {...others}>
