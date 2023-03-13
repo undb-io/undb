@@ -6,7 +6,7 @@
     "@egodb/core": "^0.0.0",
     "@egodb/cqrs": "^0.0.0",
     "@egodb/domain": "^0.0.0",
-    "@trpc/server": "^10.14.1",
+    "@trpc/server": "^10.15.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
