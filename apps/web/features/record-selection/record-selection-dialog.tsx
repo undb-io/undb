@@ -6,7 +6,8 @@ import {
   useBulkDeleteRecordsMutation,
   useBulkDuplicateRecordMutation,
 } from '@egodb/store'
-import { Dialog, Group, Button, Text, IconDots, Menu, usePrevious } from '@egodb/ui'
+import { Dialog, Group, Button, Text, IconDots, Menu, usePrevious, IconTrash, IconCopy } from '@egodb/ui'
+import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector, confirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 
@@ -30,6 +31,8 @@ export const RecordSelectionDialog: React.FC = () => {
     },
   })
 
+  const { t } = useTranslation()
+
   return (
     <Dialog
       position={{ left: '50%', bottom: 50 }}
@@ -44,14 +47,10 @@ export const RecordSelectionDialog: React.FC = () => {
       <Group position="apart">
         <Group spacing="xs">
           <Text size="sm" fw={500} color="gray.7">
-            selected{' '}
-            <Text span c="blue" fw={600}>
-              {count === 0 ? previousCount : count}
-            </Text>{' '}
-            records
+            {t('Selected N Records', { n: count === 0 ? previousCount : count })}
           </Text>
           <Button compact size="xs" color="dark" variant="outline" onClick={() => dispatch(resetSelectedRecordIds())}>
-            Reset
+            {t('Reset', { ns: 'common' })}
           </Button>
         </Group>
         <Button.Group>
@@ -59,9 +58,10 @@ export const RecordSelectionDialog: React.FC = () => {
             compact
             size="xs"
             variant="outline"
+            leftIcon={<IconCopy size={14} />}
             onClick={() => bulkdDuplciateRecords({ tableId: table.id.value, ids: ids as [string, ...string[]] })}
           >
-            Duplicate Selected
+            {t('Duplicate Selected Record')}
           </Button>
           <Menu position="top">
             <Menu.Target>
@@ -71,8 +71,8 @@ export const RecordSelectionDialog: React.FC = () => {
             </Menu.Target>
 
             <Menu.Dropdown>
-              <Menu.Item color="red" onClick={confirm}>
-                Delete Selected
+              <Menu.Item h="xs" color="red" onClick={confirm} fz="xs" icon={<IconTrash size={14} />}>
+                {t('Delete Selected Record')}
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>
