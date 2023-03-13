@@ -1,4 +1,4 @@
-import { CreatedAtField, UpdatedAtField } from '@egodb/core'
+import { CreatedAtField, IdField, UpdatedAtField } from '@egodb/core'
 import { DateRangeField } from '@egodb/core'
 import { SelectField } from '@egodb/core'
 import { StringField } from '@egodb/core'
@@ -8,6 +8,8 @@ import { NumberField } from '@egodb/core'
 import type { IDateRangeFieldValue, Field, IDateFilterOperator, IFieldQueryValue, IOperator } from '@egodb/core'
 import { DatePickerInput, NumberInput, TextInput } from '@egodb/ui'
 import { OptionPicker } from '../option/option-picker'
+import { RecordsPicker } from '../field-inputs/records-picker'
+import { castArray } from 'lodash-es'
 
 interface IProps {
   field: Field | null
@@ -76,6 +78,32 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
         onChange={(option) => onChange(option || null)}
       />
     )
+  }
+
+  if (field instanceof IdField) {
+    if (operator === '$eq' || operator === '$neq') {
+      return (
+        <TextInput
+          size="xs"
+          variant="filled"
+          value={value as string}
+          onChange={(event) => onChange(event.target.value)}
+        />
+      )
+    }
+
+    if (operator === '$in' || operator === '$nin') {
+      return (
+        <RecordsPicker
+          size="xs"
+          variant="filled"
+          value={castArray(value) as string[]}
+          onChange={(value) => onChange(value)}
+        />
+      )
+    }
+
+    return null
   }
 
   return null
