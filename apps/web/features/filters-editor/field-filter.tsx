@@ -1,5 +1,5 @@
 import type { TableSchema, Field, IOperator, IFilter } from '@egodb/core'
-import { Group, ActionIcon, IconGripVertical, IconTrash } from '@egodb/ui'
+import { Group, ActionIcon, IconGripVertical, IconTrash, usePrevious } from '@egodb/ui'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useEffect, useLayoutEffect, useState } from 'react'
@@ -26,6 +26,7 @@ export const FieldFilter: React.FC<IProps> = ({ schema, value, onChange, onRemov
   const fields = useOrderedFields()
 
   const [selectedField, setField] = useState<Field | null>(field)
+  const previousField = usePrevious(selectedField)
   const [operator, setOperator] = useState<IOperator | null>(value?.operator ?? null)
   const [fieldValue, setValue] = useState<IFieldQueryValue | null>((value?.value as never) ?? null)
 
@@ -44,11 +45,13 @@ export const FieldFilter: React.FC<IProps> = ({ schema, value, onChange, onRemov
   }, [selectedField, operator, fieldValue])
 
   useLayoutEffect(() => {
-    setValue(null)
+    if (selectedField && previousField && !selectedField.id.equals(previousField.id)) {
+      setValue(null)
+    }
     if (!selectedField) {
       setOperator(null)
     }
-  }, [selectedField])
+  }, [previousField, selectedField])
 
   return (
     <Group ref={setNodeRef} style={style} spacing="xs">
