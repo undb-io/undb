@@ -16,6 +16,8 @@ export const usePinnedStyles: ReturnType<typeof createStyles<PinnedClassName, Pi
       position: 'sticky',
       left: left ? left + 'px' : 0,
       top: 0,
+      zIndex: 100,
+      backgroundColor: theme.white,
     },
     last: {
       boxShadow: 'rgb(7 0 20 / 10%) 1px 0px 3px 0px, rgb(7 0 20 / 6%) 1px 0px 2px 0px',
@@ -26,6 +28,7 @@ export const usePinnedStyles: ReturnType<typeof createStyles<PinnedClassName, Pi
 export const tableStyles = (theme: MantineTheme): CSSObject => ({
   borderCollapse: 'separate',
   borderSpacing: 0,
+  outline: 0,
   tableLayout: 'fixed',
   backgroundColor: theme.white,
   borderTop: '0',
@@ -35,23 +38,18 @@ export const tableStyles = (theme: MantineTheme): CSSObject => ({
   },
   thead: {
     margin: 0,
+    backgroundColor: theme.white,
     position: 'sticky',
     top: 0,
     border: 0,
-    zIndex: 100,
-    backgroundColor: theme.white,
+    zIndex: 101,
   },
   'thead tr': {
     border: '0',
-    outline: '1px solid ' + theme.colors.gray[2],
-  },
-  'thead tr td': {
-    borderRight: '1px solid ' + theme.colors.gray[2],
   },
   'thead tr th': {
     userSelect: 'none',
     backgroundColor: theme.white,
-    borderBottom: 0,
   },
   'tbody tr': {
     cursor: 'pointer',
@@ -59,7 +57,6 @@ export const tableStyles = (theme: MantineTheme): CSSObject => ({
     borderBottom: '1px solid ' + theme.colors.gray[2],
   },
   'tbody tr td': {
-    borderRight: '1px solid ' + theme.colors.gray[2],
     ':last-child': {
       border: '0',
     },
