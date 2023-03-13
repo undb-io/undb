@@ -44,6 +44,7 @@ export const FieldFilter: React.FC<IProps> = ({ schema, value, onChange, onRemov
   }, [selectedField, operator, fieldValue])
 
   useLayoutEffect(() => {
+    setValue(null)
     if (!selectedField) {
       setOperator(null)
     }
