@@ -1,8 +1,8 @@
 import { Table, useListState } from '@egodb/ui'
-import type { ColumnDef, ColumnPinningState } from '@tanstack/react-table'
+import type { ColumnDef, ColumnPinningState, OnChangeFn } from '@tanstack/react-table'
 import { flexRender, Row } from '@tanstack/react-table'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ACTIONS_FIELD, SELECTION_ID } from '../../constants/field.constants'
 import { ActionsCell } from './actions-cell'
 import type { IProps, TData } from './interface'
@@ -67,17 +67,22 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
   const [setPinnedFields] = useSetPinnedFieldsMutation()
 
   useEffect(() => {
-    const { left: [, ...left] = [], right = [] } = columnPinning
-    const pinned: ISetPinnedFieldsCommandInput['pinnedFields'] = {
-      left,
-      right,
-    }
-    setPinnedFields({ tableId: table.id.value, viewId: view.id.value, pinnedFields: pinned })
-  }, [columnPinning, setPinnedFields])
-
-  useEffect(() => {
     dispatch(setTableSelectedRecordIds({ tableId: table.id.value, ids: rowSelection }))
   }, [rowSelection])
+
+  const onColumnPinningChange: OnChangeFn<ColumnPinningState> = useCallback(
+    (state) => {
+      setColumnPinning(state)
+      const next = typeof state === 'function' ? state(columnPinning) : state
+      const { left: [, ...left] = [], right = [] } = next
+      const pinned: ISetPinnedFieldsCommandInput['pinnedFields'] = {
+        left,
+        right,
+      }
+      setPinnedFields({ tableId: table.id.value, viewId: view.id.value, pinnedFields: pinned })
+    },
+    [columnPinning, setPinnedFields, table.id.value, view.id.value],
+  )
 
   useEffect(() => {
     setRowSelection(selectedRecordIds)
@@ -120,7 +125,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
     enableRowSelection: true,
     enablePinning: true,
     onRowSelectionChange: setRowSelection,
-    onColumnPinningChange: setColumnPinning,
+    onColumnPinningChange,
   })
   const { rows } = rt.getRowModel()
 
