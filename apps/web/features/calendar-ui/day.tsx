@@ -10,6 +10,7 @@ import { isEqual, isToday } from 'date-fns'
 import { useAtom } from 'jotai'
 import { useMemo } from 'react'
 import { useAppDispatch } from '../../hooks'
+import { useCloseAllDrawers } from '../../hooks/use-close-all-drawers'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
 
@@ -78,6 +79,7 @@ export const Day: React.FC<IProps> = ({ date, field, records }) => {
   const { hovered, ref } = useHover()
 
   const [opened, setCreateRecordOpened] = useAtom(createRecordFormDrawerOpened)
+  const close = useCloseAllDrawers()
   const [initialValue, setRecordInitialValue] = useAtom(createRecordInitialValueAtom)
 
   return (
@@ -109,6 +111,7 @@ export const Day: React.FC<IProps> = ({ date, field, records }) => {
 
           <ActionIcon
             onClick={() => {
+              close()
               setCreateRecordOpened(true)
               setRecordInitialValue({ [field.id.value]: date })
             }}
