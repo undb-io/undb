@@ -45,6 +45,8 @@ i18n
           'NOT IN': 'not in',
           'IS ROOT': 'is root',
           Reset: 'Reset',
+          'Sort By Ascending': 'Sort By Ascending',
+          'Sort By Desending': 'Sort By Desending',
         },
         table: {
           'Create New Record': 'Create New Record',
@@ -136,6 +138,7 @@ i18n
           'Pin Field': 'Pin',
           'Unset Pin Field': 'Unset Pin',
           'Selected N Records': 'Selected {{n}} Record(s)',
+          'N Views': '{{n}} view(s)',
         },
       },
       'zh-CN': {
@@ -176,6 +179,8 @@ i18n
           'NOT IN': '不包含在',
           'IS ROOT': '是根',
           Reset: '重置',
+          'Sort By Ascending': '正序排序',
+          'Sort By Desending': '倒序排序',
         },
         table: {
           'Create New Record': '创建新记录',
@@ -267,6 +272,7 @@ i18n
           'Pin Field': '固定列',
           'Unset Pin Field': '取消固定列',
           'Selected N Records': '选择了 {{n}} 条记录',
+          'N Views': '{{n}} 个视图',
         },
       },
     },

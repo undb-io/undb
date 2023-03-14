@@ -52,10 +52,10 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
             name="parentFieldName"
             render={(props) => (
               <TextInput
-                label={<FieldInputLabel>parent field name</FieldInputLabel>}
+                label={<FieldInputLabel>{t('Parent Field Name')}</FieldInputLabel>}
                 {...props.field}
                 value={props.field.value ?? ''}
-                placeholder="set tree field parent field name"
+                placeholder={t('Set Parent Field Name') as string}
               />
             )}
           />
