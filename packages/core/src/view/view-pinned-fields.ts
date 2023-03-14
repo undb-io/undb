@@ -20,6 +20,11 @@ export class ViewPinnedFields extends ValueObject<IViewPinnedFields> {
     return this.props.right
   }
 
+  public getPinnedPosition(fieldId: string): PinnedPosition | undefined {
+    if (this.left.find((id) => id === fieldId)) return 'left'
+    if (this.right.find((id) => id === fieldId)) return 'right'
+  }
+
   public toJSON() {
     return {
       left: this.left,

@@ -1,4 +1,5 @@
 import { and, andOptions } from '@egodb/domain'
+import { difference } from 'lodash-es'
 import type { Option, Result } from 'oxide.ts'
 import { None, Ok, Some } from 'oxide.ts'
 import type {
@@ -181,12 +182,16 @@ export class Table {
   }
 
   public getFieldsOrder(view: View): string[] {
-    const { order } = this.mustGetFielsOrder(view)
+    let { order } = this.mustGetFielsOrder(view)
+    const pinnedFields = view.pinnedFields
+    const left = pinnedFields?.left ?? []
+    const right = pinnedFields?.right ?? []
     if (!view.showSystemFields) {
       const schema = this.schema.toIdMap()
-      return order.filter((fieldId) => !schema.get(fieldId)?.system)
+      order = order.filter((fieldId) => !schema.get(fieldId)?.system)
     }
-    return order
+
+    return [...left, ...difference(order, left.concat(right)), ...right]
   }
 
   public createRecord(value: IMutateRecordValueSchema): Record {
