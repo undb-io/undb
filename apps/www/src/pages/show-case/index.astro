@@ -1,0 +1,39 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import case_image1 from './public/images/case-1.jpg'
+import Footer from '../../components/PageFooter.astro'
+---
+
+<Layout title="Show Case" bgColor="#dbeafe">
+  <div
+    class="h-full py-[152px] px-[80px] leading-9 text-center md:text-center flex flex-col items-start w-screen overflow-x-hidden bg-blue-50"
+  >
+    <span class="font-black text-6xl text-start leading-[1.5]">HR & Recruiting</span>
+    <div class="fast-installation flex gap-[20px] my-[40px]">
+      <span class="flex-[3_3_0%] my-[24px] text-gray-600 text-[20px] text-start font-[200]">
+        Communicate and manage your employee policies with a searchable knowledge base. Share it with new team members
+        to help them ramp up to your organization's policies and perks, or with clients to minimize one-off requests.
+        <br />
+        Always keep your HR information up-to-date with reminders to review topics and detailed change history.
+      </span>
+      <div class="flex-[2_2_0%] flex items-center justify-center">
+        <button
+          class="font-bold bg-[#0a6bde] rounded-lg py-[9px] px-[20px] text-slate-100 w-[180px] flex justify-center"
+          >Get Started</button
+        >
+      </div>
+    </div>
+    <div class="image-1 my-[40px]">
+      <img src={case_image1} alt="" class="rounded-xl drop-shadow-xl" />
+    </div>
+    <div class="my-[40px] mx-[40px] text-gray-800 text-[18px] text-start font-[300] leading-[2.3]">
+      If you’re in charge of a group of skilled people or have been part of a large workforce, you may have had regular
+      staff evaluations. Most companies with long-term staff members conduct periodic employee performance reviews.
+      Employee performance reviews are an essential part of management and human resources. They also contribute to the
+      success of a business, as well. Regular reviews of employees or staff members foster an ethical work environment.
+      It also makes sure that employees’ achievements and growth are recognized. You can use this template to make sure
+      that your team and the company are moving in the right direction with its most important asset—its employees.
+    </div>
+  </div>
+  <Footer />
+</Layout>

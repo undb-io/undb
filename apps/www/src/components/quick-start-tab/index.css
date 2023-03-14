@@ -1,0 +1,9 @@
+.tab-item {
+  counter-increment: code-block-counter;
+  content: counter(code-block-counter);
+  margin-right: 1em;
+}
+
+.active-bg {
+  background-color: #0384c7 !important;
+}

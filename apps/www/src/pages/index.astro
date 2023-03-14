@@ -15,6 +15,8 @@ import gitHub from './public/images/brand-github.svg'
 import linkedin from './public/images/brand-linkedin.svg'
 import twitter from './public/images/brand-twitter.svg'
 import youTuBe from './public/images/brand-youtube.svg'
+import { QuickStartTab } from '../components/quick-start-tab'
+import Footer from '../components/PageFooter.astro'
 
 const imgList = [
   mySqlImg,
@@ -48,27 +50,13 @@ let selectedStartWay: string
       <span class="ml-[40px]">Platform</span>
     </h1>
     <div class="fast-installation flex gap-[20px] my-[40px] mx-[80px]">
-      <div class="flex-1 hint my-[24px] text-gray-600 text-[20px] text-start font-[200]">
+      <div class="flex-1 my-[24px] text-gray-600 text-[20px] text-start font-[200]">
         Privacy first and airtable alternative
         <br />
         Create your own online database without technical experience. Our user friendly no-code tool gives you the powers
         of a developer without leaving your browser.
       </div>
-      <div class="code-container flex-1 w-full bg-[#131522] rounded-xl p-[20px] text-start">
-        <div class="title-wrapper flex justify-between">
-          <span class="text-[2.5rem] text-white font-bold"> Quick Start</span>
-          <div class="tab-btn h-[38px] bg-[#505263] rounded-2xl py-[4px] px-[8px] flex gap-[4px]">
-            {
-              ['PIP', 'BREW', 'GIT', 'DOCKER'].map((item) => (
-                <a class="rounded-2xl hover:bg-[#323443] p-[4px] text-center leading-[25px] cursor-pointer active:bg-sky-600 text-white text-[14px]">
-                  {item}
-                </a>
-              ))
-            }
-          </div>
-        </div>
-        <code> </code>
-      </div>
+      <QuickStartTab client:only="react" />
     </div>
 
     <div class="flex flex-col items-center justify-center w-full mt-[200px] px-[80px]">
@@ -137,7 +125,7 @@ let selectedStartWay: string
     <!-- <span class="font-black text-8xl leading-relaxed">Open Source, Privacy First</span>
     <span class="font-black text-8xl text-[#05449d] leading-relaxed">Airtable Alternative</span> -->
 
-    <div class="mt-[300px] text-4xl font-mono w-screen font-bold">The sample template</div>
+    <div class="mt-[300px] text-4xl w-screen font-bold leading-[1.5]">What can EgoDB be used for?</div>
     <div class="w-full h-full mx-2 flex flex-col gap-[200px] mt-[80px] bg-gradient-to-b from-white to-sky-100">
       <div class="item-1 mx-[100px] flex items-center">
         <div class="w-[60%] mr-[40px]">
@@ -308,32 +296,9 @@ let selectedStartWay: string
       </button>
       <span class="mt-[8px] text-[0.8125rem] font-[300] text-sky-800">Free forever. No credit card.</span>
     </div>
-    <div
-      class="footer-content-container w-screen flex px-[80px] justify-start items-start gap-[80px] my-[40px] font-[300] text-[14px]"
-    >
-      <div class="flex justify-start items-center gap-[4px]">
-        <img class="h-[32px]" src="/apple-touch-icon.png" alt="" />
-        <span class="font-[700] text-[16px]">ego.db</span>
-      </div>
-      <div class="flex flex-col gap-[16px] justify-start items-start">
-        <button class="hover:text-sky-500 cursor-pointer">Pricing</button>
-        <button class="hover:text-sky-500 cursor-pointer">About us</button>
-      </div>
-      <div class="flex flex-col gap-[16px] justify-start items-start">
-        <button class="hover:text-sky-500 cursor-pointer">Support</button>
-        <button class="hover:text-sky-500 cursor-pointer">Customer stories</button>
-      </div>
-      <div class="flex flex-col gap-[16px] justify-start items-start">
-        <button class="hover:text-sky-500 cursor-pointer">Contact sales</button>
-        <button class="hover:text-sky-500 cursor-pointer">Enterpries</button>
-      </div>
-      <div class="flex flex-col gap-[16px] justify-start items-start">
-        <button class="hover:text-sky-500 cursor-pointer">Integrations</button>
-        <button class="hover:text-sky-500 cursor-pointer">Templates</button>
-      </div>
-    </div>
-    <div class="divide w-screen mx-[80px] border-b"></div>
-    <div class="flex gap-[20px] m-[80px]">
+    <Footer />
+    <div class="divide w-screen border-b"></div>
+    <div class="flex gap-[20px] m-[80px] w-screen">
       <p>Follow EgoDB On</p>
       {iconList.map((item) => <img src={item} alt={`ego.${item}`} />)}
     </div>

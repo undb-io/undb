@@ -1,5 +1,5 @@
 ---
-import Navbar from '../components/Navbar.astro'
+import { Navbar } from '../components/Navbar'
 
 export interface Props {
   title: string
@@ -16,7 +16,7 @@ const { title, bgColor } = Astro.props as Props
     <title>{title}</title>
   </head>
   <body style="margin:0;padding:0" class="flex flex-col">
-    <Navbar color={bgColor} />
+    <Navbar color={bgColor} client:only="react" />
     <slot />
   </body>
 </html>
