@@ -3,8 +3,10 @@ import { getCurrentTableId, useGetTablesQuery } from '@egodb/store'
 import { ActionIcon, Center, Flex, IconChevronDown, IconPlus, Menu, Tabs } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
+import { unstable_batchedUpdates } from 'react-dom'
 import { CurrentTableContext } from '../../context/current-table'
 import { useAppSelector } from '../../hooks'
+import { useCloseAllDrawers } from '../../hooks/use-close-all-drawers'
 import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.atom'
 import { UpdateTableFormDrawer } from '../update-table-form/update-table-form-drawer'
 import { TableMenuDropdown } from './table-menu-dropdown'
@@ -16,6 +18,7 @@ export const TableList: React.FC = () => {
   const tables = useGetTablesQuery({})
 
   const setOpened = useSetAtom(createTableFormDrawerOpened)
+  const close = useCloseAllDrawers()
 
   return (
     <Flex>
@@ -58,7 +61,15 @@ export const TableList: React.FC = () => {
               </Tabs.Tab>
             ))}
         </Tabs>
-        <ActionIcon variant="subtle" onClick={() => setOpened(true)}>
+        <ActionIcon
+          variant="subtle"
+          onClick={() => {
+            unstable_batchedUpdates(() => {
+              close()
+              setOpened(true)
+            })
+          }}
+        >
           <IconPlus size={14} />
         </ActionIcon>
       </Center>
