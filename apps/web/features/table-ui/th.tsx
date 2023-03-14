@@ -63,7 +63,8 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
   }
 
   const pinned = header.column.getIsPinned()
-  const isLastPinned = header.column.getPinnedIndex() === header.getContext().table.getLeftLeafHeaders().length - 1
+  const isLastPinned =
+    pinned && header.column.getPinnedIndex() === header.getContext().table.getLeftLeafHeaders().length - 1
 
   const { classes, cx } = usePinnedStyles({ left: header.getStart() })
   const { t } = useTranslation()
