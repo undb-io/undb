@@ -92,7 +92,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             icon={<FieldIcon type={field.type} />}
             {...form.field}
             value={form.field.value ? new Date(form.field.value) : undefined}
-            onChange={(date) => form.field.onChange(date)}
+            onChange={(date) => form.field.onChange(date?.toISOString())}
             valueFormat={field.formatString.toUpperCase()}
             popoverProps={{ withinPortal: true }}
             clearable
@@ -112,8 +112,17 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             {...form.field}
             clearable
             icon={<FieldIcon type={field.type} />}
-            value={form.field.value ?? [null, null]}
-            onChange={(value) => form.field.onChange(value)}
+            value={
+              form.field.value
+                ? [
+                    form.field.value.at(0) ? new Date(form.field.value.at(0)) : null,
+                    form.field.value.at(1) ? new Date(form.field.value.at(1)) : null,
+                  ]
+                : [null, null]
+            }
+            onChange={(value) =>
+              form.field.onChange(value ? [value.at(0)?.toISOString() ?? null, value.at(1)?.toISOString()] : null)
+            }
             valueFormat={field.formatString.toUpperCase()}
             popoverProps={{ withinPortal: true }}
           />

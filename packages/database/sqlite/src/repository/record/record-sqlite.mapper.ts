@@ -35,11 +35,11 @@ export class RecordSqliteMapper {
       } else if (isUnlderlyingDateTangeFromColumn(columnName)) {
         const fieldId = getFieldIdFromDateRangeFromColumnName(columnName)
         values[fieldId] ??= []
-        ;(values[fieldId] as Array<Date | null>)[0] = value ? new Date(value) : null
+        ;(values[fieldId] as Array<string | null>)[0] = value ? new Date(value).toISOString() : null
       } else if (isUnlderlyingDateTangeToColumn(columnName)) {
         const fieldId = getFieldIdFromDateRangeToColumnName(columnName)
         values[fieldId] ??= []
-        ;(values[fieldId] as Array<Date | null>)[1] = value ? new Date(value) : null
+        ;(values[fieldId] as Array<string | null>)[1] = value ? new Date(value).toISOString() : null
       } else {
         const field = schema.get(columnName)
         if (!field) continue

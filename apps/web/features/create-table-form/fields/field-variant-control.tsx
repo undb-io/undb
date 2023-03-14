@@ -93,7 +93,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
       <Controller
         name="format"
         render={(props) => (
-          <DateFormatPicker {...props.field} variant="default" placeholder={t('Select Date Format') as string} />
+          <DateFormatPicker {...props.field} variant="filled" placeholder={t('Select Date Format') as string} />
         )}
       />
     )
