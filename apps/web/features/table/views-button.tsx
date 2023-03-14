@@ -15,7 +15,7 @@ export const ViewsButton: React.FC = () => {
   const viewsCount = table.views.count
 
   return (
-    <Tooltip label={viewsCount > 1 ? `${viewsCount} views` : `${viewsCount} view`}>
+    <Tooltip label={t('N Views', { n: viewsCount })}>
       <Button
         compact
         size="xs"

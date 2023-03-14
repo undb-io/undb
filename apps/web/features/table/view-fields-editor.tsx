@@ -16,7 +16,6 @@ import { Box, useHover } from '@egodb/ui'
 import { IconColumns3 } from '@egodb/ui'
 import { useListState } from '@egodb/ui'
 import { ActionIcon, IconGripVertical } from '@egodb/ui'
-import { Tooltip } from '@egodb/ui'
 import { Badge, Button, Checkbox, Group, Popover, Stack, useDisclosure } from '@egodb/ui'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useTranslation } from 'react-i18next'
@@ -132,28 +131,26 @@ export const ViewFieldsEditor: React.FC = () => {
       withinPortal
     >
       <Popover.Target>
-        <Tooltip label="reorder or hide fields">
-          <Button
-            variant={hiddenCount ? 'light' : 'subtle'}
-            compact
-            size="xs"
-            loading={isLoading}
-            leftIcon={<IconColumns3 size={18} />}
-            onClick={handler.toggle}
-            rightIcon={
-              hiddenCount ? (
-                <Badge variant="filled" size="xs">
-                  {hiddenCount}
-                </Badge>
-              ) : null
-            }
-            sx={(theme) => ({
-              backgroundColor: opened ? theme.colors[theme.primaryColor][0] : 'initial',
-            })}
-          >
-            {t('Manage Fields')}
-          </Button>
-        </Tooltip>
+        <Button
+          variant={hiddenCount ? 'light' : 'subtle'}
+          compact
+          size="xs"
+          loading={isLoading}
+          leftIcon={<IconColumns3 size={18} />}
+          onClick={handler.toggle}
+          rightIcon={
+            hiddenCount ? (
+              <Badge variant="filled" size="xs">
+                {hiddenCount}
+              </Badge>
+            ) : null
+          }
+          sx={(theme) => ({
+            backgroundColor: opened ? theme.colors[theme.primaryColor][0] : 'initial',
+          })}
+        >
+          {t('Manage Fields')}
+        </Button>
       </Popover.Target>
 
       <Popover.Dropdown>

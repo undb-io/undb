@@ -9,6 +9,7 @@ import { useSetFieldSortMutation, useSetFieldWidthMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { usePinnedStyles } from './styles'
+import { useTranslation } from 'react-i18next'
 
 const ResizerLine = styled.div<{ isResizing: boolean }>`
   display: block;
@@ -65,6 +66,7 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
   const isLastPinned = header.column.getPinnedIndex() === header.getContext().table.getLeftLeafHeaders().length - 1
 
   const { classes, cx } = usePinnedStyles({ left: header.getStart() })
+  const { t } = useTranslation()
 
   return (
     <Box
@@ -85,7 +87,13 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
 
         <Group spacing={5}>
           {direction && (
-            <Tooltip label={`Sort by ${direction === 'asc' ? 'descending' : 'ascending'} `}>
+            <Tooltip
+              label={
+                direction === 'asc'
+                  ? (t('Sort By Desending', { ns: 'common' }) as string)
+                  : t('Sort By Ascending', { ns: 'common' })
+              }
+            >
               <ActionIcon
                 variant="light"
                 sx={{
