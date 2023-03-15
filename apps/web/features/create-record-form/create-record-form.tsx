@@ -1,3 +1,4 @@
+import type { IMutateRecordValueSchema } from '@egodb/core'
 import type { ICreateRecordInput } from '@egodb/cqrs'
 import { useCreateRecordMutation } from '@egodb/store'
 import { Alert, Box, Button, Group, IconAlertCircle, IconPlus, openContextModal, Space, Stack } from '@egodb/ui'
@@ -17,7 +18,7 @@ interface IProps {
 }
 
 export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
-  const form = useFormContext<ICreateRecordInput>()
+  const form = useFormContext<IMutateRecordValueSchema>()
   const table = useCurrentTable()
   const view = useCurrentView()
 
@@ -26,8 +27,8 @@ export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
   const schema = table.schema.toIdMap()
   const fields = view.getOrderedFields(table.schema.nonSystemFields)
   const onSubmit = form.handleSubmit(async (data) => {
-    const values = pickBy(data.values, (_, id) => !schema.get(id)?.controlled)
-    const result = await createRecord({ ...data, values })
+    const values = pickBy(data, (_, id) => !schema.get(id)?.controlled)
+    const result = await createRecord({ tableId: table.id.value, values })
     if (!('error' in result)) {
       reset()
       form.reset()
@@ -48,7 +49,7 @@ export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
       <form onSubmit={onSubmit}>
         <Stack>
           {fields.map((field) => {
-            const name: FieldPath<ICreateRecordInput> = `values.${field.id.value}`
+            const name: FieldPath<ICreateRecordInput> = field.id.value as never
             return <RecordInputFactory name={name} key={field.id.value} field={field} />
           })}
         </Stack>

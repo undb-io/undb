@@ -1,5 +1,5 @@
-import type { ICreateRecordInput } from '@egodb/cqrs'
-import { createCreateRecordCommandInput } from '@egodb/cqrs'
+import type { IMutateRecordValueSchema } from '@egodb/core'
+import { createMutateRecordValuesSchema } from '@egodb/core'
 import { Drawer } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom, useAtomValue } from 'jotai'
@@ -19,21 +19,19 @@ export const CreateRecordFormDrawer: React.FC = () => {
   const initialCreateRecordValue = useAtomValue(createRecordInitialValueAtom)
 
   const defaultValues = useMemo(
-    () => ({
-      tableId: table.id.value,
-      values: table.schema.nonSystemFields.reduce(
+    () =>
+      table.schema.nonSystemFields.reduce(
         (curr, prev) => ({
           ...curr,
           [prev.id.value]: initialCreateRecordValue[prev.id.value] ?? (prev.type === 'bool' ? false : null),
         }),
         {},
       ),
-    }),
     [initialCreateRecordValue],
   )
 
-  const schema = createCreateRecordCommandInput(table.schema)
-  const form = useForm<ICreateRecordInput>({
+  const schema = createMutateRecordValuesSchema(table.schema)
+  const form = useForm<IMutateRecordValueSchema>({
     defaultValues,
     resolver: zodResolver(schema),
   })
