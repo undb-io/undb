@@ -1,7 +1,7 @@
 import type { ICreateTableInput } from '@egodb/cqrs'
-import { ActionIcon, Text, Button, Group, IconDots, Menu } from '@egodb/ui'
+import { ActionIcon, Text, Button, Group, IconDots, Menu, Switch } from '@egodb/ui'
 import { useResetAtom } from 'jotai/utils'
-import { useFieldArray } from 'react-hook-form'
+import { useFieldArray, useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { activeFieldAtom } from '../create-table-form-schema.atom'
 
@@ -10,6 +10,8 @@ interface IProps {
 }
 
 export const FieldCommonControl: React.FC<IProps> = ({ index }) => {
+  const form = useFormContext<ICreateTableInput>()
+
   const { remove } = useFieldArray<ICreateTableInput>({
     name: 'schema',
   })
@@ -17,6 +19,7 @@ export const FieldCommonControl: React.FC<IProps> = ({ index }) => {
   const resetActiveField = useResetAtom(activeFieldAtom)
   return (
     <Group position="right">
+      <Switch {...form.register(`schema.${index}.required`)} size="xs" label={t('Required', { ns: 'common' })} />
       <Menu>
         <Menu.Target>
           <ActionIcon variant="subtle">

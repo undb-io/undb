@@ -1,4 +1,15 @@
-import { Button, closeAllModals, Divider, Group, IconPlus, Select, Stack, TextInput, useDisclosure } from '@egodb/ui'
+import {
+  Button,
+  closeAllModals,
+  Divider,
+  Group,
+  IconPlus,
+  Select,
+  Stack,
+  Switch,
+  TextInput,
+  useDisclosure,
+} from '@egodb/ui'
 import { FIELD_SELECT_ITEMS } from '../../constants/field.constants'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { FieldIcon } from '../field-inputs/field-Icon'
@@ -90,6 +101,7 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
               {t('Add Description')}
             </Button>
             <Group position="right">
+              <Switch {...form.register('required')} size="xs" label={t('Required', { ns: 'common' })} />
               <Button
                 variant="subtle"
                 compact

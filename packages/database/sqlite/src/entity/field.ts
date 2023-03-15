@@ -38,6 +38,7 @@ import {
   UpdatedAtField as CoreUpdatedAtField,
 } from '@egodb/core'
 import {
+  BooleanType,
   Cascade,
   Collection,
   Entity,
@@ -78,10 +79,10 @@ export abstract class Field extends BaseEntity {
   @Property({ nullable: true })
   description?: string
 
-  @Property({ type: 'bool', default: false })
+  @Property({ type: BooleanType, default: false })
   system = false
 
-  @Property({ type: 'bool', default: false })
+  @Property({ type: BooleanType, default: false })
   required = false
 
   @Enum({
@@ -118,7 +119,7 @@ export class IdField extends Field {
       name: this.name,
       description: this.description,
       type: 'id',
-      required: this.required,
+      required: !!this.required,
     })
   }
 
@@ -128,7 +129,7 @@ export class IdField extends Field {
       name: this.name,
       description: this.description,
       type: 'id',
-      required: this.required,
+      required: !!this.required,
     }
   }
 }
@@ -150,7 +151,7 @@ export class CreatedAtField extends Field {
       type: 'created-at',
       description: this.description,
       format: this.format,
-      required: this.required,
+      required: !!this.required,
     })
   }
 
@@ -161,7 +162,7 @@ export class CreatedAtField extends Field {
       type: 'created-at',
       description: this.description,
       format: this.format,
-      required: this.required,
+      required: !!this.required,
     }
   }
 }
@@ -183,7 +184,7 @@ export class UpdatedAtField extends Field {
       type: 'updated-at',
       description: this.description,
       format: this.format,
-      required: this.required,
+      required: !!this.required,
     })
   }
 
@@ -194,7 +195,7 @@ export class UpdatedAtField extends Field {
       type: 'updated-at',
       description: this.description,
       format: this.format,
-      required: this.required,
+      required: !!this.required,
     }
   }
 }
@@ -207,7 +208,7 @@ export class AutoIncrementField extends Field {
       name: this.name,
       type: 'auto-increment',
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     })
   }
 
@@ -217,7 +218,7 @@ export class AutoIncrementField extends Field {
       name: this.name,
       type: 'auto-increment',
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     }
   }
 }
@@ -230,7 +231,7 @@ export class StringField extends Field {
       name: this.name,
       type: 'string',
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     })
   }
 
@@ -240,7 +241,7 @@ export class StringField extends Field {
       name: this.name,
       type: 'string',
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     }
   }
 }
@@ -253,7 +254,7 @@ export class EmailField extends Field {
       name: this.name,
       type: 'email',
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     })
   }
 
@@ -263,7 +264,7 @@ export class EmailField extends Field {
       name: this.name,
       type: 'email',
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     }
   }
 }
@@ -276,7 +277,7 @@ export class ColorField extends Field {
       name: this.name,
       type: 'color',
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     })
   }
 
@@ -286,7 +287,7 @@ export class ColorField extends Field {
       name: this.name,
       type: 'color',
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     }
   }
 }
@@ -299,7 +300,7 @@ export class NumberField extends Field {
       name: this.name,
       type: 'number',
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     })
   }
 
@@ -309,7 +310,7 @@ export class NumberField extends Field {
       name: this.name,
       type: 'number',
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     }
   }
 }
@@ -331,7 +332,7 @@ export class RatingField extends Field {
       type: 'rating',
       max: this.max,
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     })
   }
 
@@ -342,7 +343,7 @@ export class RatingField extends Field {
       type: 'rating',
       max: this.max,
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     }
   }
 }
@@ -355,7 +356,7 @@ export class BoolField extends Field {
       name: this.name,
       type: 'bool',
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     })
   }
 
@@ -365,7 +366,7 @@ export class BoolField extends Field {
       name: this.name,
       type: 'bool',
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     }
   }
 }
@@ -387,7 +388,7 @@ export class DateField extends Field {
       type: 'date',
       format: this.format,
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     })
   }
 
@@ -398,7 +399,7 @@ export class DateField extends Field {
       type: 'date',
       format: this.format,
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     }
   }
 }
@@ -420,7 +421,7 @@ export class DateRangeField extends Field {
       type: 'date-range',
       format: this.format,
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     })
   }
 
@@ -431,7 +432,7 @@ export class DateRangeField extends Field {
       type: 'date-range',
       format: this.format,
       description: this.description,
-      required: this.required,
+      required: !!this.required,
     }
   }
 }
@@ -447,7 +448,7 @@ export class SelectField extends Field {
       name: this.name,
       type: 'select',
       description: this.description,
-      required: this.required,
+      required: !!this.required,
       // FIXME: should check?
       options: this.options.isInitialized()
         ? this.options.getItems().map((o) => ({
@@ -468,7 +469,7 @@ export class SelectField extends Field {
       name: this.name,
       type: 'select',
       description: this.description,
-      required: this.required,
+      required: !!this.required,
       options: this.options.getItems().map((o) => ({
         key: o.key,
         name: o.name,
@@ -501,7 +502,7 @@ export class ReferenceField extends Field {
       type: 'reference',
       foreignTableId: this.foreignTable?.id,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id),
-      required: this.required,
+      required: !!this.required,
     })
   }
 
@@ -513,7 +514,7 @@ export class ReferenceField extends Field {
       type: 'reference',
       foreignTableId: this.foreignTable?.id,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id),
-      required: this.required,
+      required: !!this.required,
     }
   }
 }
@@ -539,7 +540,7 @@ export class TreeField extends Field {
       type: 'tree',
       parentFieldId: this.parentFieldId,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id),
-      required: this.required,
+      required: !!this.required,
     })
   }
 
@@ -551,7 +552,7 @@ export class TreeField extends Field {
       type: 'tree',
       parentFieldId: this.parentFieldId,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id),
-      required: this.required,
+      required: !!this.required,
     }
   }
 }
@@ -577,7 +578,7 @@ export class ParentField extends Field {
       type: 'parent',
       treeFieldId: this.treeFieldId,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id),
-      required: this.required,
+      required: !!this.required,
     })
   }
 
@@ -589,7 +590,7 @@ export class ParentField extends Field {
       type: 'parent',
       treeFieldId: this.treeFieldId,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id),
-      required: this.required,
+      required: !!this.required,
     }
   }
 }

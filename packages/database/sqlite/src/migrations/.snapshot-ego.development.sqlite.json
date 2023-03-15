@@ -155,23 +155,23 @@
         },
         "system": {
           "name": "system",
-          "type": "text",
+          "type": "integer",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
           "default": "false",
-          "mappedType": "text"
+          "mappedType": "integer"
         },
         "required": {
           "name": "required",
-          "type": "text",
+          "type": "integer",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
           "default": "false",
-          "mappedType": "text"
+          "mappedType": "integer"
         },
         "type": {
           "name": "type",
