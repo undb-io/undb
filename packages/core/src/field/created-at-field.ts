@@ -9,7 +9,6 @@ import type {
 import { BaseDateField } from './field.base.js'
 import type { ICreatedAtField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
-import { DateFormat, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export class CreatedAtField extends BaseDateField<ICreatedAtField> {
   type: CreatedAtFieldType = 'created-at'
@@ -30,22 +29,11 @@ export class CreatedAtField extends BaseDateField<ICreatedAtField> {
   }
 
   static create(input: Omit<ICreateCreatedAtFieldInput, 'type'>): CreatedAtField {
-    const fieldName = FieldName.create(input.name)
-    return new CreatedAtField({
-      id: FieldId.fromNullableString(input.id),
-      name: fieldName,
-      valueConstrains: FieldValueConstraints.create({ required: input.required }),
-      format: input.format ? DateFormat.fromString(input.format) : undefined,
-    })
+    return new CreatedAtField(super.createBase(input))
   }
 
   static unsafeCreate(input: ICreateCreatedAtFieldInput): CreatedAtField {
-    return new CreatedAtField({
-      id: FieldId.fromNullableString(input.id),
-      name: FieldName.unsafaCreate(input.name),
-      valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
-      format: input.format ? DateFormat.fromString(input.format) : undefined,
-    })
+    return new CreatedAtField(super.unsafeCreateBase(input))
   }
 
   createValue(value: ICreatedAtFieldQueryValue): CreatedAtFieldValue {

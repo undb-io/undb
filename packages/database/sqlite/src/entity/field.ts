@@ -62,6 +62,7 @@ export abstract class Field extends BaseEntity {
     this.name = field.name.value
     this.type = field.type
     this.system = field.system
+    this.description = field.description?.value
   }
 
   @PrimaryKey()
@@ -72,6 +73,9 @@ export abstract class Field extends BaseEntity {
 
   @Property()
   name: string
+
+  @Property({ nullable: true })
+  description?: string
 
   @Property({ type: 'bool', default: false })
   system = false
@@ -108,6 +112,7 @@ export class IdField extends Field {
     return CoreIdField.unsafeCreate({
       id: this.id,
       name: this.name,
+      description: this.description,
       type: 'id',
     })
   }
@@ -116,6 +121,7 @@ export class IdField extends Field {
     return {
       id: this.id,
       name: this.name,
+      description: this.description,
       type: 'id',
     }
   }
@@ -136,6 +142,7 @@ export class CreatedAtField extends Field {
       id: this.id,
       name: this.name,
       type: 'created-at',
+      description: this.description,
       format: this.format,
     })
   }
@@ -145,6 +152,7 @@ export class CreatedAtField extends Field {
       id: this.id,
       name: this.name,
       type: 'created-at',
+      description: this.description,
       format: this.format,
     }
   }
@@ -165,6 +173,7 @@ export class UpdatedAtField extends Field {
       id: this.id,
       name: this.name,
       type: 'updated-at',
+      description: this.description,
       format: this.format,
     })
   }
@@ -174,6 +183,7 @@ export class UpdatedAtField extends Field {
       id: this.id,
       name: this.name,
       type: 'updated-at',
+      description: this.description,
       format: this.format,
     }
   }
@@ -186,6 +196,7 @@ export class AutoIncrementField extends Field {
       id: this.id,
       name: this.name,
       type: 'auto-increment',
+      description: this.description,
     })
   }
 
@@ -194,6 +205,7 @@ export class AutoIncrementField extends Field {
       id: this.id,
       name: this.name,
       type: 'auto-increment',
+      description: this.description,
     }
   }
 }
@@ -205,6 +217,7 @@ export class StringField extends Field {
       id: this.id,
       name: this.name,
       type: 'string',
+      description: this.description,
     })
   }
 
@@ -213,6 +226,7 @@ export class StringField extends Field {
       id: this.id,
       name: this.name,
       type: 'string',
+      description: this.description,
     }
   }
 }
@@ -224,6 +238,7 @@ export class EmailField extends Field {
       id: this.id,
       name: this.name,
       type: 'email',
+      description: this.description,
     })
   }
 
@@ -232,6 +247,7 @@ export class EmailField extends Field {
       id: this.id,
       name: this.name,
       type: 'email',
+      description: this.description,
     }
   }
 }
@@ -243,6 +259,7 @@ export class ColorField extends Field {
       id: this.id,
       name: this.name,
       type: 'color',
+      description: this.description,
     })
   }
 
@@ -251,6 +268,7 @@ export class ColorField extends Field {
       id: this.id,
       name: this.name,
       type: 'color',
+      description: this.description,
     }
   }
 }
@@ -262,6 +280,7 @@ export class NumberField extends Field {
       id: this.id,
       name: this.name,
       type: 'number',
+      description: this.description,
     })
   }
 
@@ -270,6 +289,7 @@ export class NumberField extends Field {
       id: this.id,
       name: this.name,
       type: 'number',
+      description: this.description,
     }
   }
 }
@@ -290,6 +310,7 @@ export class RatingField extends Field {
       name: this.name,
       type: 'rating',
       max: this.max,
+      description: this.description,
     })
   }
 
@@ -299,6 +320,7 @@ export class RatingField extends Field {
       name: this.name,
       type: 'rating',
       max: this.max,
+      description: this.description,
     }
   }
 }
@@ -310,6 +332,7 @@ export class BoolField extends Field {
       id: this.id,
       name: this.name,
       type: 'bool',
+      description: this.description,
     })
   }
 
@@ -318,6 +341,7 @@ export class BoolField extends Field {
       id: this.id,
       name: this.name,
       type: 'bool',
+      description: this.description,
     }
   }
 }
@@ -338,6 +362,7 @@ export class DateField extends Field {
       name: this.name,
       type: 'date',
       format: this.format,
+      description: this.description,
     })
   }
 
@@ -347,6 +372,7 @@ export class DateField extends Field {
       name: this.name,
       type: 'date',
       format: this.format,
+      description: this.description,
     }
   }
 }
@@ -367,6 +393,7 @@ export class DateRangeField extends Field {
       name: this.name,
       type: 'date-range',
       format: this.format,
+      description: this.description,
     })
   }
 
@@ -376,6 +403,7 @@ export class DateRangeField extends Field {
       name: this.name,
       type: 'date-range',
       format: this.format,
+      description: this.description,
     }
   }
 }
@@ -390,6 +418,7 @@ export class SelectField extends Field {
       id: this.id,
       name: this.name,
       type: 'select',
+      description: this.description,
       // FIXME: should check?
       options: this.options.isInitialized()
         ? this.options.getItems().map((o) => ({
@@ -409,6 +438,7 @@ export class SelectField extends Field {
       id: this.id,
       name: this.name,
       type: 'select',
+      description: this.description,
       options: this.options.getItems().map((o) => ({
         key: o.key,
         name: o.name,
@@ -437,6 +467,7 @@ export class ReferenceField extends Field {
     return CoreReferenceField.unsafeCreate({
       id: this.id,
       name: this.name,
+      description: this.description,
       type: 'reference',
       foreignTableId: this.foreignTable?.id,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id),
@@ -447,6 +478,7 @@ export class ReferenceField extends Field {
     return {
       id: this.id,
       name: this.name,
+      description: this.description,
       type: 'reference',
       foreignTableId: this.foreignTable?.id,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id),
@@ -471,6 +503,7 @@ export class TreeField extends Field {
     return CoreTreeField.unsafeCreate({
       id: this.id,
       name: this.name,
+      description: this.description,
       type: 'tree',
       parentFieldId: this.parentFieldId,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id),
@@ -481,6 +514,7 @@ export class TreeField extends Field {
     return {
       id: this.id,
       name: this.name,
+      description: this.description,
       type: 'tree',
       parentFieldId: this.parentFieldId,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id),
@@ -505,6 +539,7 @@ export class ParentField extends Field {
     return CoreParentField.unsafeCreate({
       id: this.id,
       name: this.name,
+      description: this.description,
       type: 'parent',
       treeFieldId: this.treeFieldId,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id),
@@ -515,6 +550,7 @@ export class ParentField extends Field {
     return {
       id: this.id,
       name: this.name,
+      description: this.description,
       type: 'parent',
       treeFieldId: this.treeFieldId,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id),

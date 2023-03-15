@@ -196,6 +196,7 @@ import {
   updatedAtTypeSchema,
   updateUpdatedAtFieldSchema,
 } from './updated-at-field.type.js'
+import type { FieldDescription } from './value-objects/field-description.js'
 import { fieldNameSchema } from './value-objects/field-name.schema.js'
 import type { DateFormat, DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
@@ -331,6 +332,7 @@ export interface IBaseField {
   id: FieldId
   system?: boolean
   name: FieldName
+  description?: FieldDescription
   valueConstrains: FieldValueConstraints
 }
 
@@ -359,7 +361,9 @@ export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: 
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField
 
+export type IReferenceFieldTypes = IReferenceField | ITreeField | IParentField
 export type ReferenceFieldTypes = ReferenceField | TreeField | ParentField
+export type IDateFieldTypes = IDateField | IDateRangeField | ICreatedAtField | IUpdatedAtField
 export type DateFieldTypes = DateField | DateRangeField | CreatedAtField | UpdatedAtField
 
 export type NoneSystemField =

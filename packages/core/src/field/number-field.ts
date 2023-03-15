@@ -4,7 +4,6 @@ import type { INumberField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { NumberFieldValue } from './number-field-value.js'
 import type { ICreateNumberFieldInput, ICreateNumberFieldValue, NumberType } from './number-field.type.js'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export class NumberField extends BaseField<INumberField> {
   type: NumberType = 'number'
@@ -14,21 +13,11 @@ export class NumberField extends BaseField<INumberField> {
   }
 
   static create(input: Omit<ICreateNumberFieldInput, 'type'>): NumberField {
-    const fieldName = FieldName.create(input.name)
-
-    return new NumberField({
-      id: FieldId.fromNullableString(input.id),
-      name: fieldName,
-      valueConstrains: FieldValueConstraints.create({ required: input.required }),
-    })
+    return new NumberField(super.createBase(input))
   }
 
   static unsafeCreate(input: ICreateNumberFieldInput): NumberField {
-    return new NumberField({
-      id: FieldId.fromNullableString(input.id),
-      name: FieldName.unsafaCreate(input.name),
-      valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
-    })
+    return new NumberField(super.unsafeCreateBase(input))
   }
 
   createValue(value: ICreateNumberFieldValue): NumberFieldValue {

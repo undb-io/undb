@@ -18,7 +18,6 @@ import type {
   SelectFieldType,
 } from './select-field.type.js'
 import { WithNewOption, WithOption, WithOptions, WithoutOption } from './specifications/select-field.specification.js'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export class SelectField extends BaseField<ISelectField> {
   type: SelectFieldType = 'select'
@@ -57,21 +56,15 @@ export class SelectField extends BaseField<ISelectField> {
   }
 
   static create(input: Omit<ICreateSelectFieldSchema, 'type'>): SelectField {
-    const fieldName = FieldName.create(input.name)
-
     return new SelectField({
-      id: FieldId.fromNullableString(input.id),
-      name: fieldName,
-      valueConstrains: FieldValueConstraints.create({ required: input.required }),
+      ...super.createBase(input),
       options: Options.create(input.options),
     })
   }
 
   static unsafeCreate(input: ICreateSelectFieldSchema): SelectField {
     return new SelectField({
-      id: FieldId.fromNullableString(input.id),
-      name: FieldName.unsafaCreate(input.name),
-      valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
+      ...super.unsafeCreateBase(input),
       options: Options.unsafeCreate(input.options),
     })
   }

@@ -9,7 +9,6 @@ import type {
   IUpdatedAtFieldQueryValue,
   UpdatedAtFieldType,
 } from './updated-at-field.type.js'
-import { DateFormat, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export class UpdatedAtField extends BaseDateField<IUpdatedAtField> {
   type: UpdatedAtFieldType = 'updated-at'
@@ -32,22 +31,11 @@ export class UpdatedAtField extends BaseDateField<IUpdatedAtField> {
   }
 
   static create(input: Omit<ICreateUpdatedAtFieldInput, 'type'>): UpdatedAtField {
-    const fieldName = FieldName.create(input.name)
-    return new UpdatedAtField({
-      id: FieldId.fromNullableString(input.id),
-      name: fieldName,
-      valueConstrains: FieldValueConstraints.create({ required: input.required }),
-      format: input.format ? DateFormat.fromString(input.format) : undefined,
-    })
+    return new UpdatedAtField(super.createBase(input))
   }
 
   static unsafeCreate(input: ICreateUpdatedAtFieldInput): UpdatedAtField {
-    return new UpdatedAtField({
-      id: FieldId.fromNullableString(input.id),
-      name: FieldName.unsafaCreate(input.name),
-      valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
-      format: input.format ? DateFormat.fromString(input.format) : undefined,
-    })
+    return new UpdatedAtField(super.unsafeCreateBase(input))
   }
 
   createValue(value: IUpdatedAtFieldQueryValue): UpdatedAtFieldValue {

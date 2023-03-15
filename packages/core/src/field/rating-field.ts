@@ -4,7 +4,6 @@ import type { IRatingField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { RatingFieldValue } from './rating-field-value.js'
 import type { ICreateRatingFieldInput, ICreateRatingFieldValue, RatingFieldType } from './rating-field.type.js'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export class RatingField extends BaseField<IRatingField> {
   type: RatingFieldType = 'rating'
@@ -18,23 +17,11 @@ export class RatingField extends BaseField<IRatingField> {
   }
 
   static create(input: Omit<ICreateRatingFieldInput, 'type'>): RatingField {
-    const fieldName = FieldName.create(input.name)
-
-    return new RatingField({
-      id: FieldId.fromNullableString(input.id),
-      name: fieldName,
-      valueConstrains: FieldValueConstraints.create({ required: input.required }),
-      max: input.max,
-    })
+    return new RatingField(super.createBase(input))
   }
 
   static unsafeCreate(input: ICreateRatingFieldInput): RatingField {
-    return new RatingField({
-      id: FieldId.fromNullableString(input.id),
-      name: FieldName.unsafaCreate(input.name),
-      valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
-      max: input.max,
-    })
+    return new RatingField(super.unsafeCreateBase(input))
   }
 
   createValue(value: ICreateRatingFieldValue): RatingFieldValue {

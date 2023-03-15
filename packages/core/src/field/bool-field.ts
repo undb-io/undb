@@ -5,7 +5,6 @@ import type { BoolFieldType, ICreateBoolFieldInput, ICreateBoolFieldValue } from
 import { BaseField } from './field.base.js'
 import type { IBoolField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export class BoolField extends BaseField<IBoolField> {
   type: BoolFieldType = 'bool'
@@ -15,20 +14,11 @@ export class BoolField extends BaseField<IBoolField> {
   }
 
   static create(input: Omit<ICreateBoolFieldInput, 'type'>): BoolField {
-    const fieldName = FieldName.create(input.name)
-    return new BoolField({
-      id: FieldId.fromNullableString(input.id),
-      name: fieldName,
-      valueConstrains: FieldValueConstraints.create({ required: input.required }),
-    })
+    return new BoolField(super.createBase(input))
   }
 
   static unsafeCreate(input: ICreateBoolFieldInput): BoolField {
-    return new BoolField({
-      id: FieldId.fromNullableString(input.id),
-      name: FieldName.unsafaCreate(input.name),
-      valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
-    })
+    return new BoolField(super.unsafeCreateBase(input))
   }
 
   createValue(value: ICreateBoolFieldValue): BoolFieldValue {

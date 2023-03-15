@@ -6,7 +6,7 @@ import type { IFieldVisitor } from './field.visitor.js'
 import { ParentField } from './parent-field.js'
 import { TreeFieldValue } from './tree-field-value.js'
 import type { ICreateTreeFieldSchema, ICreateTreeFieldValue, TreeFieldType } from './tree-field.type.js'
-import { DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
+import { FieldId } from './value-objects/index.js'
 
 export class TreeField extends BaseReferenceField<ITreeField> {
   type: TreeFieldType = 'tree'
@@ -28,28 +28,16 @@ export class TreeField extends BaseReferenceField<ITreeField> {
   }
 
   static create(input: Omit<ICreateTreeFieldSchema, 'type'>): TreeField {
-    const fieldName = FieldName.create(input.name)
-
     return new TreeField({
-      id: FieldId.fromNullableString(input.id),
-      name: fieldName,
+      ...super.createBase(input),
       parentFieldId: FieldId.fromNullableString(input.parentFieldId),
-      displayFields: input.displayFieldIds
-        ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
-        : undefined,
-      valueConstrains: FieldValueConstraints.create({ required: input.required }),
     })
   }
 
   static unsafeCreate(input: ICreateTreeFieldSchema): TreeField {
     return new TreeField({
-      id: FieldId.fromNullableString(input.id),
-      name: FieldName.unsafaCreate(input.name),
+      ...super.unsafeCreateBase(input),
       parentFieldId: FieldId.fromNullableString(input.parentFieldId),
-      displayFields: input.displayFieldIds
-        ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
-        : undefined,
-      valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
     })
   }
 
