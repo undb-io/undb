@@ -131,7 +131,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
       updateRecord({
         tableId: table.id.value,
         id: e.active.id as string,
-        value: [{ id: field.id.value, value: overContainer === UNCATEGORIZED_OPTION_ID ? null : overContainer }],
+        values: { [field.id.value]: overContainer === UNCATEGORIZED_OPTION_ID ? null : overContainer },
       })
     },
 

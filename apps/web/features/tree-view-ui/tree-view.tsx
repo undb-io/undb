@@ -299,7 +299,7 @@ export const TreeView: React.FC<IProps> = ({ field, indentationWidth = 50, recor
         updateRecord({
           tableId: table.id.value,
           id: activeId as string,
-          value: [{ id: field.parentFieldId.value, value: parentId }],
+          values: { [field.parentFieldId.value]: parentId },
         })
       }
     }

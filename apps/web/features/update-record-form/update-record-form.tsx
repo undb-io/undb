@@ -1,4 +1,3 @@
-import type { IUpdateRecordValueSchema } from '@egodb/core'
 import { Alert, Box, Button, Group, IconAlertCircle, IconPlus, openContextModal, Space, Stack } from '@egodb/ui'
 import type { FieldPath } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
@@ -18,7 +17,7 @@ interface IProps {
 }
 
 export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
-  const form = useFormContext<IUpdateRecordValueSchema>()
+  const form = useFormContext<IMutateRecordValueSchema>()
   const table = useCurrentTable()
   const view = useCurrentView()
 
@@ -30,23 +29,23 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
   const [updateRecord, { isLoading, isError, error, reset: resetUpdateRecord }] = useUpdateRecordMutation()
 
   const onSubmit = form.handleSubmit(async (data) => {
-    const values: IMutateRecordValueSchema = []
+    const values: IMutateRecordValueSchema = {}
 
-    for (const [index, value] of data.value.entries()) {
-      const field = schema.get(value.id)
+    for (const [fieldId, value] of Object.entries(data)) {
+      const field = schema.get(fieldId)
       if (field?.controlled) continue
 
-      const isDirty = form.getFieldState(`value.${index}.value`).isDirty
+      const isDirty = form.getFieldState(fieldId as never).isDirty
       if (isDirty) {
-        values.push(value)
+        ;(values as any)[fieldId] = value
       }
     }
 
-    if (selectedRecordId && values.length) {
+    if (selectedRecordId && Object.keys(values).length) {
       await updateRecord({
         tableId: table.id.value,
-        id: data.id,
-        value: values,
+        id: selectedRecordId,
+        values,
       })
       reset()
       onSuccess?.()
@@ -65,8 +64,8 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
     <Box pt="sm">
       <form onSubmit={onSubmit}>
         <Stack>
-          {fields.map((field, index) => {
-            const name: FieldPath<IUpdateRecordValueSchema> = `value.${index}.value`
+          {fields.map((field) => {
+            const name: FieldPath<IMutateRecordValueSchema> = field.id.value as never
             return <RecordInputFactory name={name} key={field.id.value} field={field} />
           })}
         </Stack>

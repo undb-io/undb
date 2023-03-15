@@ -1,5 +1,5 @@
-import type { ICreateRecordInput } from '@egodb/cqrs'
-import { createRecordCommandInput } from '@egodb/cqrs'
+import type { IMutateRecordValueSchema } from '@egodb/core'
+import { createMutateRecordValuesSchema } from '@egodb/core'
 import { Drawer } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom, useAtomValue } from 'jotai'
@@ -19,20 +19,22 @@ export const CreateRecordFormDrawer: React.FC = () => {
   const initialCreateRecordValue = useAtomValue(createRecordInitialValueAtom)
 
   const defaultValues = useMemo(
-    () => ({
-      tableId: table.id.value,
-      value: table.schema.nonSystemFields.map((field) => ({
-        id: field.id.value,
-        // TODO: get field default value
-        value: initialCreateRecordValue[field.id.value] ?? (field.type === 'bool' ? false : null),
-      })),
-    }),
+    () =>
+      table.schema.nonSystemFields.reduce(
+        (curr, prev) => ({
+          ...curr,
+          [prev.id.value]: initialCreateRecordValue[prev.id.value] ?? (prev.type === 'bool' ? false : null),
+        }),
+        {},
+      ),
     [initialCreateRecordValue],
   )
 
-  const form = useForm<ICreateRecordInput>({
+  const schema = createMutateRecordValuesSchema(table.schema.fields)
+  const form = useForm<IMutateRecordValueSchema>({
     defaultValues,
-    resolver: zodResolver(createRecordCommandInput),
+    resolver: zodResolver(schema),
+    mode: 'onBlur',
   })
 
   useDeepCompareEffect(() => {

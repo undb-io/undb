@@ -1,5 +1,5 @@
-import { updateRecordSchema } from '@egodb/core'
-import type { IUpdateRecordValueSchema, IFieldQueryValue } from '@egodb/core'
+import type { IMutateRecordValueSchema, IFieldQueryValue } from '@egodb/core'
+import { createMutateRecordValuesSchema } from '@egodb/core'
 import { ActionIcon, Drawer, IconChevronLeft, IconChevronRight, LoadingOverlay } from '@egodb/ui'
 import { useEffect, useMemo } from 'react'
 import { useAppDispatch, useAppSelector, confirmModal } from '../../hooks'
@@ -26,9 +26,8 @@ export const UpdateRecordFormDrawer: React.FC = () => {
   )
 
   const defaultValues = useMemo(
-    () => ({
-      id: data?.id ?? '',
-      value: fields.map((field) => {
+    () =>
+      fields.reduce((curr, field) => {
         let value: IFieldQueryValue | undefined
 
         if (field.type === 'id') {
@@ -43,17 +42,17 @@ export const UpdateRecordFormDrawer: React.FC = () => {
           value = data?.values?.[field.id.value] ?? null
         }
         return {
-          id: field.id.value,
-          value,
+          ...curr,
+          [field.id.value]: value,
         }
-      }),
-    }),
+      }, {}),
     [data],
   )
 
-  const form = useForm<IUpdateRecordValueSchema>({
+  const form = useForm<IMutateRecordValueSchema>({
     defaultValues,
-    resolver: zodResolver(updateRecordSchema),
+    resolver: zodResolver(createMutateRecordValuesSchema(table.schema.fields)),
+    mode: 'onBlur',
   })
 
   useEffect(() => {

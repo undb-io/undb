@@ -5,7 +5,6 @@ import {
   BulkDuplicateRecordsCommand,
   bulkDuplicateRecordsCommandInput,
   CreateRecordCommand,
-  createRecordCommandInput,
   createRecordCommandOutput,
   DeleteRecordCommand,
   deleteRecordCommandInput,
@@ -21,7 +20,6 @@ import {
   getRecordsQueryInput,
   getRecordsQueryOutput,
   UpdateRecordCommand,
-  updateRecordCommandInput,
 } from '@egodb/cqrs'
 import type { ICommandBus, IQueryBus } from '@egodb/domain'
 import { z } from 'zod'
@@ -34,7 +32,7 @@ export const createRecordRouter =
   (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
     router({
       create: procedure
-        .input(createRecordCommandInput)
+        .input(z.any())
         .output(createRecordCommandOutput)
         .mutation(({ input }) => {
           const cmd = new CreateRecordCommand(input)
@@ -55,7 +53,7 @@ export const createRecordRouter =
           return commandBus.execute(cmd)
         }),
       update: procedure
-        .input(updateRecordCommandInput)
+        .input(z.any())
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new UpdateRecordCommand(input)
