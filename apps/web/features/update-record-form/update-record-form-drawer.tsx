@@ -85,6 +85,11 @@ export const UpdateRecordFormDrawer: React.FC = () => {
         padding="xl"
         position="right"
         size="xl"
+        styles={{
+          inner: {
+            zIndex: 199,
+          },
+        }}
       >
         <Drawer.Content sx={{ position: 'relative', overflow: 'visible' }}>
           <Drawer.Header sx={(theme) => ({ zIndex: 1000, borderBottom: '1px solid ' + theme.colors.gray[2] })}>
