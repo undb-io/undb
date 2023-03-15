@@ -1,4 +1,4 @@
-import { Button, closeAllModals, Divider, Group, Select, Stack, TextInput } from '@egodb/ui'
+import { Button, closeAllModals, Divider, Group, IconPlus, Select, Stack, TextInput, useDisclosure } from '@egodb/ui'
 import { FIELD_SELECT_ITEMS } from '../../constants/field.constants'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { FieldIcon } from '../field-inputs/field-Icon'
@@ -17,6 +17,8 @@ import { useTranslation } from 'react-i18next'
 export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) => {
   const table = useCurrentTable()
   const view = useCurrentView()
+
+  const [display, handler] = useDisclosure()
 
   const { t } = useTranslation()
 
@@ -72,22 +74,38 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
           />
           <FieldVariantControl isNew />
 
+          {display && (
+            <TextInput
+              {...form.register('description')}
+              autoFocus
+              label={<FieldInputLabel>{t('Description', { ns: 'common' })}</FieldInputLabel>}
+              placeholder={t('Description', { ns: 'common' }) as string}
+            />
+          )}
+
           <Divider />
 
-          <Group position="right">
-            <Button
-              variant="subtle"
-              onClick={() => {
-                onCancel?.()
-                closeAllModals()
-              }}
-            >
-              {t('Cancel', { ns: 'common' })}
+          <Group position="apart">
+            <Button compact size="xs" leftIcon={<IconPlus size={14} />} variant="white" onClick={handler.open}>
+              {t('Add Description')}
             </Button>
+            <Group position="right">
+              <Button
+                variant="subtle"
+                compact
+                size="xs"
+                onClick={() => {
+                  onCancel?.()
+                  closeAllModals()
+                }}
+              >
+                {t('Cancel', { ns: 'common' })}
+              </Button>
 
-            <Button loading={isLoading} miw={200} disabled={!form.formState.isValid} type="submit">
-              {t('Create', { ns: 'common' })}
-            </Button>
+              <Button compact size="xs" loading={isLoading} disabled={!form.formState.isValid} type="submit">
+                {t('Create', { ns: 'common' })}
+              </Button>
+            </Group>
           </Group>
         </Stack>
       </form>
