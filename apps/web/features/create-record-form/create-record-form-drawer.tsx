@@ -30,7 +30,7 @@ export const CreateRecordFormDrawer: React.FC = () => {
     [initialCreateRecordValue],
   )
 
-  const schema = createMutateRecordValuesSchema(table.schema)
+  const schema = createMutateRecordValuesSchema(table.schema.fields)
   const form = useForm<IMutateRecordValueSchema>({
     defaultValues,
     resolver: zodResolver(schema),

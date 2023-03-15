@@ -1,11 +1,11 @@
-import { createMutateRecordValuesSchema, recordIdSchema, tableIdSchema, TableSchema } from '@egodb/core'
+import { createMutateRecordValuesSchema, Field, recordIdSchema, tableIdSchema } from '@egodb/core'
 import * as z from 'zod'
 
-export const createCreateRecordCommandInput = (schema: TableSchema) =>
+export const createCreateRecordCommandInput = (fields: Field[]) =>
   z.object({
     tableId: tableIdSchema,
     id: recordIdSchema.optional(),
-    values: createMutateRecordValuesSchema(schema),
+    values: createMutateRecordValuesSchema(fields),
   })
 
 export type ICreateRecordInput = z.infer<ReturnType<typeof createCreateRecordCommandInput>>
