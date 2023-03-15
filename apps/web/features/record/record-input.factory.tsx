@@ -38,6 +38,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
 
   const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
   const desciption = field.description?.value
+  const required = field.required
   if (field.type === 'number') {
     return (
       <Controller
@@ -49,6 +50,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             label={label}
             placeholder={desciption}
             onChange={(number) => form.field.onChange(number)}
+            required={required}
           />
         )}
       />
@@ -85,6 +87,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             value={form.field.value ?? ''}
             swatches={colors}
             placeholder={desciption}
+            required={required}
           />
         )}
       />
@@ -105,6 +108,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             popoverProps={{ withinPortal: true }}
             clearable
             placeholder={desciption}
+            required={required}
           />
         )}
       />
@@ -135,6 +139,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             valueFormat={field.formatString.toUpperCase()}
             popoverProps={{ withinPortal: true }}
             placeholder={desciption}
+            required={required}
           />
         )}
       />
@@ -152,6 +157,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             checked={form.field.value}
             label={label}
             placeholder={desciption}
+            required={required}
           />
         )}
       />
@@ -170,6 +176,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? ''}
             placeholder={desciption}
+            required={required}
           />
         )}
       />
@@ -204,6 +211,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? []}
             placeholder={desciption}
+            required={required}
           />
         )}
       />
@@ -222,6 +230,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             value={form.field.value ?? []}
             name={form.field.name}
             placeholder={desciption}
+            required={required}
           />
         )}
       />
@@ -240,6 +249,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             value={form.field.value ?? ''}
             name={form.field.name}
             placeholder={desciption}
+            required={required}
           />
         )}
       />
@@ -265,6 +275,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
               )
             }
             placeholder={desciption}
+            required={required}
           />
         )}
       />
@@ -284,6 +295,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
               {...form.field}
               value={form.field.value ? format(new Date(form.field.value), field.formatString) : ''}
               placeholder={desciption}
+              required={required}
             />
           )
         }}
@@ -295,7 +307,14 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     return (
       <Controller
         name={name}
-        render={(form) => <AutoIncrementInput field={field} defaultValue={form.field.value} placeholder={desciption} />}
+        render={(form) => (
+          <AutoIncrementInput
+            field={field}
+            defaultValue={form.field.value}
+            placeholder={desciption}
+            required={required}
+          />
+        )}
       />
     )
   }
@@ -312,6 +331,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
           {...form.field}
           value={form.field.value ?? ''}
           placeholder={desciption}
+          required={required}
         />
       )}
     />

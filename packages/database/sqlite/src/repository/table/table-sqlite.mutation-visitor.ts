@@ -6,6 +6,7 @@ import type {
   WithFieldDescription,
   WithFieldName,
   WithFieldOption,
+  WithFieldRequirement,
   WithFieldVisibility,
   WithFieldWidth,
   WithFilter,
@@ -244,6 +245,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const view = this.getView(s.view.id.value)
     wrap(view).assign({ showSystemFields: s.showSystemFields })
     this.em.persist(view)
+  }
+  withFieldRequirement(s: WithFieldRequirement): void {
+    const field = this.getField(s.field.id.value)
+    wrap(field).assign({ required: s.required })
+    this.em.persist(field)
   }
   not(): this {
     return this

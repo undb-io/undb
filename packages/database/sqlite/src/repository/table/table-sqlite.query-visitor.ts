@@ -7,6 +7,7 @@ import type {
   WithFieldDescription,
   WithFieldName,
   WithFieldOption,
+  WithFieldRequirement,
   WithFieldVisibility,
   WithFieldWidth,
   WithFilter,
@@ -128,6 +129,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   pinnedFields(s: WithViewPinnedFields): void {
+    throw new Error('Method not implemented.')
+  }
+  withFieldRequirement(s: WithFieldRequirement): void {
     throw new Error('Method not implemented.')
   }
 
