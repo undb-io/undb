@@ -65,6 +65,12 @@ export const CreateRecordFormDrawer: React.FC = () => {
         padding="xl"
         position="right"
         size={700}
+        overlayProps={{ sx: { zIndex: 198 } }}
+        styles={{
+          inner: {
+            zIndex: 199,
+          },
+        }}
       >
         <CreateRecordForm onCancel={reset} />
       </Drawer>
