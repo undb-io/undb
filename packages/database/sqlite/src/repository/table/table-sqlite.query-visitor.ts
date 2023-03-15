@@ -4,6 +4,7 @@ import type {
   WithCalendarField,
   WithDisplayFields,
   WithDisplayType,
+  WithFieldDescription,
   WithFieldName,
   WithFieldOption,
   WithFieldVisibility,
@@ -112,6 +113,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   withFieldName(s: WithFieldName): void {
+    throw new Error('Method not implemented.')
+  }
+  withFieldDescription(s: WithFieldDescription): void {
     throw new Error('Method not implemented.')
   }
   displayFieldsEqual(s: WithDisplayFields): void {

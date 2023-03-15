@@ -5,7 +5,7 @@ import type { IParentField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { ParentFieldValue } from './parent-field-value.js'
 import type { ICreateParentFieldInput, ICreateParentFieldValue, ParentFieldType } from './parent-field.type.js'
-import { DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
+import { FieldId } from './value-objects/index.js'
 
 export class ParentField extends BaseReferenceField<IParentField> {
   type: ParentFieldType = 'parent'
@@ -15,28 +15,16 @@ export class ParentField extends BaseReferenceField<IParentField> {
   }
 
   static create(input: Omit<ICreateParentFieldInput, 'type'>): ParentField {
-    const fieldName = FieldName.create(input.name)
-
     return new ParentField({
-      id: FieldId.fromNullableString(input.id),
-      name: fieldName,
+      ...super.createBase(input),
       treeFieldId: FieldId.fromString(input.treeFieldId),
-      valueConstrains: FieldValueConstraints.create({ required: input.required }),
-      displayFields: input.displayFieldIds
-        ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
-        : undefined,
     })
   }
 
   static unsafeCreate(input: ICreateParentFieldInput): ParentField {
     return new ParentField({
-      id: FieldId.fromNullableString(input.id),
-      name: FieldName.unsafaCreate(input.name),
+      ...super.unsafeCreateBase(input),
       treeFieldId: FieldId.fromString(input.treeFieldId),
-      valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
-      displayFields: input.displayFieldIds
-        ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
-        : undefined,
     })
   }
 

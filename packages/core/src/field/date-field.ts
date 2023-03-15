@@ -6,7 +6,6 @@ import type { DateType, ICreateDateFieldSchema, IDateFieldQueryValue } from './d
 import { BaseDateField } from './field.base.js'
 import type { IDateField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
-import { DateFormat, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export class DateField extends BaseDateField<IDateField> {
   type: DateType = 'date'
@@ -16,22 +15,11 @@ export class DateField extends BaseDateField<IDateField> {
   }
 
   static create(input: Omit<ICreateDateFieldSchema, 'type'>): DateField {
-    const fieldName = FieldName.create(input.name)
-    return new DateField({
-      id: FieldId.fromNullableString(input.id),
-      name: fieldName,
-      valueConstrains: FieldValueConstraints.create({ required: input.required }),
-      format: input.format ? DateFormat.fromString(input.format) : undefined,
-    })
+    return new DateField(super.createBase(input))
   }
 
   static unsafeCreate(input: ICreateDateFieldSchema): DateField {
-    return new DateField({
-      id: FieldId.fromNullableString(input.id),
-      name: FieldName.unsafaCreate(input.name),
-      valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
-      format: input.format ? DateFormat.fromString(input.format) : undefined,
-    })
+    return new DateField(super.unsafeCreateBase(input))
   }
 
   createValue(value: IDateFieldQueryValue): DateFieldValue {

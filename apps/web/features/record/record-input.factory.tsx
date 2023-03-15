@@ -37,6 +37,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
   const colors = useColors()
 
   const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>
+  const desciption = field.description?.value
   if (field.type === 'number') {
     return (
       <Controller
@@ -46,6 +47,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             {...form.field}
             icon={<FieldIcon type={field.type} />}
             label={label}
+            placeholder={desciption}
             onChange={(number) => form.field.onChange(number)}
           />
         )}
@@ -59,7 +61,12 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
         render={(form) => (
           <>
             <FieldInputLabel>{field.name.value}</FieldInputLabel>
-            <Rating {...form.field} count={field.max} onChange={(number) => form.field.onChange(number)} />
+            <Rating
+              {...form.field}
+              count={field.max}
+              onChange={(number) => form.field.onChange(number)}
+              placeholder={desciption}
+            />
           </>
         )}
       />
@@ -77,6 +84,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             onChange={(color) => form.field.onChange(color)}
             value={form.field.value ?? ''}
             swatches={colors}
+            placeholder={desciption}
           />
         )}
       />
@@ -96,6 +104,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             valueFormat={field.formatString.toUpperCase()}
             popoverProps={{ withinPortal: true }}
             clearable
+            placeholder={desciption}
           />
         )}
       />
@@ -125,6 +134,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             }
             valueFormat={field.formatString.toUpperCase()}
             popoverProps={{ withinPortal: true }}
+            placeholder={desciption}
           />
         )}
       />
@@ -135,7 +145,14 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
       <Controller
         name={name}
         render={(form) => (
-          <Checkbox lh={1} key={field.id.value} {...form.field} checked={form.field.value} label={label} />
+          <Checkbox
+            lh={1}
+            key={field.id.value}
+            {...form.field}
+            checked={form.field.value}
+            label={label}
+            placeholder={desciption}
+          />
         )}
       />
     )
@@ -152,6 +169,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? ''}
+            placeholder={desciption}
           />
         )}
       />
@@ -185,6 +203,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? []}
+            placeholder={desciption}
           />
         )}
       />
@@ -202,6 +221,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? []}
             name={form.field.name}
+            placeholder={desciption}
           />
         )}
       />
@@ -219,6 +239,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? ''}
             name={form.field.name}
+            placeholder={desciption}
           />
         )}
       />
@@ -243,6 +264,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
                 <IconCopy size={14} color="gray" onClick={() => copy(form.field.value)} />
               )
             }
+            placeholder={desciption}
           />
         )}
       />
@@ -261,6 +283,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
               label={label}
               {...form.field}
               value={form.field.value ? format(new Date(form.field.value), field.formatString) : ''}
+              placeholder={desciption}
             />
           )
         }}
@@ -270,7 +293,10 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
 
   if (field.type === 'auto-increment') {
     return (
-      <Controller name={name} render={(form) => <AutoIncrementInput field={field} defaultValue={form.field.value} />} />
+      <Controller
+        name={name}
+        render={(form) => <AutoIncrementInput field={field} defaultValue={form.field.value} placeholder={desciption} />}
+      />
     )
   }
 
@@ -285,6 +311,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
           label={label}
           {...form.field}
           value={form.field.value ?? ''}
+          placeholder={desciption}
         />
       )}
     />

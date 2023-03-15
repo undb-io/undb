@@ -1,4 +1,4 @@
-import { Button, closeAllModals, Divider, Group, Stack, TextInput } from '@egodb/ui'
+import { Button, closeAllModals, Divider, Group, IconPlus, Stack, TextInput, useDisclosure } from '@egodb/ui'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldVariantControl } from '../field/field-variant-control'
@@ -14,9 +14,13 @@ import { useTranslation } from 'react-i18next'
 export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }) => {
   const table = useCurrentTable()
 
+  const [display, handler] = useDisclosure()
+
+  const description = field.description?.value
   const defaultValues: IUpdateFieldSchema = {
     type: field.type,
     name: field.name.value,
+    description,
   }
 
   if (defaultValues.type === 'reference') {
@@ -91,29 +95,53 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
             label={<FieldInputLabel>{t('Name', { ns: 'common' })}</FieldInputLabel>}
           />
 
+          {(!!description || display) && (
+            <TextInput
+              {...form.register('description')}
+              autoFocus
+              label={<FieldInputLabel>{t('Description', { ns: 'common' })}</FieldInputLabel>}
+            />
+          )}
+
           <FieldVariantControl isNew={false} />
 
           <Divider />
 
-          <Group position="right">
+          <Group position="apart">
             <Button
-              variant="subtle"
-              onClick={() => {
-                onCancel?.()
-                closeAllModals()
-              }}
+              leftIcon={<IconPlus size={14} />}
+              compact
+              size="xs"
+              variant="white"
+              onClick={handler.open}
+              sx={{ visibility: description || display ? 'hidden' : 'visible' }}
             >
-              {t('Cancel', { ns: 'common' })}
+              {t('Add Description')}
             </Button>
 
-            <Button
-              loading={isLoading}
-              miw={200}
-              disabled={!form.formState.isValid || !form.formState.isDirty}
-              type="submit"
-            >
-              {t('Update', { ns: 'common' })}
-            </Button>
+            <Group position="right">
+              <Button
+                compact
+                size="xs"
+                variant="subtle"
+                onClick={() => {
+                  onCancel?.()
+                  closeAllModals()
+                }}
+              >
+                {t('Cancel', { ns: 'common' })}
+              </Button>
+
+              <Button
+                compact
+                size="xs"
+                loading={isLoading}
+                disabled={!form.formState.isValid || !form.formState.isDirty}
+                type="submit"
+              >
+                {t('Update', { ns: 'common' })}
+              </Button>
+            </Group>
           </Group>
         </Stack>
       </form>

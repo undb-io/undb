@@ -3,6 +3,7 @@ import type {
   WithCalendarField,
   WithDisplayFields,
   WithDisplayType,
+  WithFieldDescription,
   WithFieldName,
   WithFieldOption,
   WithFieldVisibility,
@@ -217,6 +218,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   withFieldName(s: WithFieldName): void {
     const field = this.getField(s.field.id.value)
     wrap(field).assign({ name: s.name.value })
+    this.em.persist(field)
+  }
+  withFieldDescription(s: WithFieldDescription): void {
+    const field = this.getField(s.field.id.value)
+    wrap(field).assign({ description: s.description.value })
     this.em.persist(field)
   }
   displayFieldsEqual(s: WithDisplayFields): void {

@@ -5,6 +5,7 @@ import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
 import type { BaseField } from '../field.base.js'
 import type { Field } from '../field.type.js'
+import { FieldDescription } from '../value-objects/field-description.js'
 import { FieldName } from '../value-objects/field-name.vo.js'
 
 export abstract class BaseFieldSpecification<F extends Field> extends CompositeSpecification<Table, ITableSpecVisitor> {
@@ -33,6 +34,30 @@ export class WithFieldName extends CompositeSpecification<Table, ITableSpecVisit
 
   accept(v: ITableSpecVisitor): Result<void, string> {
     v.withFieldName(this)
+    return Ok(undefined)
+  }
+}
+
+export class WithFieldDescription extends CompositeSpecification<Table, ITableSpecVisitor> {
+  constructor(public readonly field: BaseField, public readonly description: FieldDescription) {
+    super()
+  }
+
+  static fromString(field: BaseField, description: string) {
+    return new this(field, new FieldDescription({ value: description }))
+  }
+
+  isSatisfiedBy(t: Table): boolean {
+    return !!this.field.description?.equals(this.description)
+  }
+
+  mutate(t: Table): Result<Table, string> {
+    this.field.description = this.description
+    return Ok(t)
+  }
+
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withFieldDescription(this)
     return Ok(undefined)
   }
 }

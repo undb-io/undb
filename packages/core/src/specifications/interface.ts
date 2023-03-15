@@ -1,6 +1,6 @@
 import type { CompositeSpecification, ISpecVisitor } from '@egodb/domain'
 import { type ISpecification } from '@egodb/domain'
-import type { WithFieldName } from '../field/specifications/base-field.specification.js'
+import type { WithFieldDescription, WithFieldName } from '../field/specifications/base-field.specification.js'
 import type { WithFormat } from '../field/specifications/date-field.specification.js'
 import type { WithoutField } from '../field/specifications/field.specification.js'
 import type { WithDisplayFields } from '../field/specifications/reference-field.specification.js'
@@ -66,6 +66,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   witoutOption(s: WithoutOption): void
 
   withFieldName(s: WithFieldName): void
+  withFieldDescription(s: WithFieldDescription): void
   displayFieldsEqual(s: WithDisplayFields): void
   withFormat(s: WithFormat): void
 

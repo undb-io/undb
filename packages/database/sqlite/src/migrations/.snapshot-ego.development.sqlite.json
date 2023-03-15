@@ -144,6 +144,15 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
         "system": {
           "name": "system",
           "type": "text",

@@ -1,5 +1,18 @@
 import { useSortable } from '@dnd-kit/sortable'
-import { Accordion, Group, Text, Select, TextInput, Space, ActionIcon, IconGripVertical, Stack } from '@egodb/ui'
+import {
+  Accordion,
+  Group,
+  Text,
+  Select,
+  TextInput,
+  Space,
+  ActionIcon,
+  IconGripVertical,
+  Stack,
+  Button,
+  IconPlus,
+  useDisclosure,
+} from '@egodb/ui'
 import React from 'react'
 import { CSS } from '@dnd-kit/utilities'
 import { FieldCommonControl } from './field-common-control'
@@ -33,6 +46,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
   }
 
   const { t } = useTranslation()
+  const [display, handler] = useDisclosure()
 
   return (
     <Accordion.Item id={String(id)} opacity={isDragging ? 0.5 : 1} value={String(id)}>
@@ -78,9 +92,24 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
             />
           </Group>
           <FieldVariantControl index={index} />
+
+          {display && (
+            <TextInput
+              {...form.register(`schema.${index}.description`)}
+              autoFocus
+              variant="filled"
+              label={<FieldInputLabel>{t('Description', { ns: 'common' })}</FieldInputLabel>}
+              placeholder={t('Description', { ns: 'common' }) as string}
+            />
+          )}
         </Stack>
         <Space h="lg" />
-        <FieldCommonControl index={index} />
+        <Group position="apart">
+          <Button compact size="xs" leftIcon={<IconPlus size={14} />} variant="subtle" onClick={handler.open}>
+            {t('Add Description')}
+          </Button>
+          <FieldCommonControl index={index} />
+        </Group>
       </Accordion.Panel>
     </Accordion.Item>
   )

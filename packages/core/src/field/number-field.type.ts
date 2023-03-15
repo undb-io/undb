@@ -1,5 +1,5 @@
 import * as z from 'zod'
-import { baseFieldQuerySchema, createBaseFieldsSchema, updateBaseFieldSchema } from './field-base.schema.js'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
 import { NumberField } from './number-field.js'
 
@@ -9,7 +9,7 @@ const numberTypeObjectSchema = z.object({
   [FIELD_TYPE_KEY]: numberTypeSchema,
 })
 
-export const createNumberFieldSchema = createBaseFieldsSchema.merge(numberTypeObjectSchema)
+export const createNumberFieldSchema = createBaseFieldSchema.merge(numberTypeObjectSchema)
 export type ICreateNumberFieldInput = z.infer<typeof createNumberFieldSchema>
 
 export const updateNumberFieldSchema = updateBaseFieldSchema.merge(numberTypeObjectSchema)

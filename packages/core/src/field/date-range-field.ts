@@ -5,7 +5,6 @@ import type { DateRangeType, ICreateDateRangeFieldSchema, IDateRangeFieldQueryVa
 import { BaseDateField } from './field.base.js'
 import type { IDateRangeField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
-import { DateFormat, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export class DateRangeField extends BaseDateField<IDateRangeField> {
   type: DateRangeType = 'date-range'
@@ -15,23 +14,11 @@ export class DateRangeField extends BaseDateField<IDateRangeField> {
   }
 
   static create(input: Omit<ICreateDateRangeFieldSchema, 'type'>): DateRangeField {
-    const fieldName = FieldName.create(input.name)
-
-    return new DateRangeField({
-      id: FieldId.fromNullableString(input.id),
-      name: fieldName,
-      valueConstrains: FieldValueConstraints.create({ required: input.required }),
-      format: input.format ? DateFormat.fromString(input.format) : undefined,
-    })
+    return new DateRangeField(super.createBase(input))
   }
 
   static unsafeCreate(input: ICreateDateRangeFieldSchema): DateRangeField {
-    return new DateRangeField({
-      id: FieldId.fromNullableString(input.id),
-      name: FieldName.unsafaCreate(input.name),
-      valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
-      format: input.format ? DateFormat.fromString(input.format) : undefined,
-    })
+    return new DateRangeField(super.unsafeCreateBase(input))
   }
 
   createValue(value: IDateRangeFieldQueryValue): DateRangeFieldValue {

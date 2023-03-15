@@ -4,7 +4,6 @@ import type { ColorFieldType, ICreateColorFieldInput, ICreateColorFieldValue } f
 import { BaseField } from './field.base.js'
 import type { IColorField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
-import { FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export class ColorField extends BaseField<IColorField> {
   type: ColorFieldType = 'color'
@@ -14,21 +13,11 @@ export class ColorField extends BaseField<IColorField> {
   }
 
   static create(input: Omit<ICreateColorFieldInput, 'type'>): ColorField {
-    const fieldName = FieldName.create(input.name)
-
-    return new ColorField({
-      id: FieldId.fromNullableString(input.id),
-      name: fieldName,
-      valueConstrains: FieldValueConstraints.create({ required: input.required }),
-    })
+    return new ColorField(super.createBase(input))
   }
 
   static unsafeCreate(input: ICreateColorFieldInput): ColorField {
-    return new ColorField({
-      id: FieldId.fromNullableString(input.id),
-      name: FieldName.unsafaCreate(input.name),
-      valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
-    })
+    return new ColorField(super.unsafeCreateBase(input))
   }
 
   createValue(value: ICreateColorFieldValue): ColorFieldValue {
