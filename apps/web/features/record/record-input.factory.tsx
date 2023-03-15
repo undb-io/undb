@@ -43,6 +43,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     return (
       <Controller
         name={name}
+        rules={{ required: field.required }}
         render={(form) => (
           <NumberInput
             {...form.field}
@@ -51,6 +52,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             placeholder={desciption}
             onChange={(number) => form.field.onChange(number)}
             required={required}
+            error={form.fieldState.error?.message}
           />
         )}
       />
@@ -60,6 +62,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     return (
       <Controller
         name={name}
+        rules={{ required: field.required }}
         render={(form) => (
           <>
             <FieldInputLabel>{field.name.value}</FieldInputLabel>
@@ -78,6 +81,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     return (
       <Controller
         name={name}
+        rules={{ required: field.required }}
         render={(form) => (
           <ColorInput
             {...form.field}
@@ -88,6 +92,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             swatches={colors}
             placeholder={desciption}
             required={required}
+            error={form.fieldState.error?.message}
           />
         )}
       />
@@ -97,6 +102,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     return (
       <Controller
         name={name}
+        rules={{ required: field.required }}
         render={(form) => (
           <DatePickerInput
             label={label}
@@ -109,6 +115,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             clearable
             placeholder={desciption}
             required={required}
+            error={form.fieldState.error?.message}
           />
         )}
       />
@@ -118,6 +125,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     return (
       <Controller
         name={name}
+        rules={{ required: field.required }}
         render={(form) => (
           <DatePickerInput
             type="range"
@@ -140,6 +148,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             popoverProps={{ withinPortal: true }}
             placeholder={desciption}
             required={required}
+            error={form.fieldState.error?.message}
           />
         )}
       />
@@ -149,6 +158,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     return (
       <Controller
         name={name}
+        rules={{ required: field.required }}
         render={(form) => (
           <Checkbox
             lh={1}
@@ -158,6 +168,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             label={label}
             placeholder={desciption}
             required={required}
+            error={form.fieldState.error?.message}
           />
         )}
       />
@@ -167,6 +178,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     return (
       <Controller
         name={name}
+        rules={{ required: field.required }}
         render={(form) => (
           <OptionPicker
             field={field}
@@ -177,6 +189,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             value={form.field.value ?? ''}
             placeholder={desciption}
             required={required}
+            error={form.fieldState.error?.message}
           />
         )}
       />
@@ -188,6 +201,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     return (
       <Controller
         name={name}
+        rules={{ required: field.required }}
         render={(form) => (
           <ReferenceRecordPicker
             field={field}
@@ -212,6 +226,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             value={form.field.value ?? []}
             placeholder={desciption}
             required={required}
+            error={form.fieldState.error?.message}
           />
         )}
       />
@@ -222,6 +237,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     return (
       <Controller
         name={name}
+        rules={{ required: field.required }}
         render={(form) => (
           <TreeRecordsPicker
             field={field}
@@ -231,6 +247,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             name={form.field.name}
             placeholder={desciption}
             required={required}
+            error={form.fieldState.error?.message}
           />
         )}
       />
@@ -241,6 +258,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     return (
       <Controller
         name={name}
+        rules={{ required: field.required }}
         render={(form) => (
           <ParentRecordPicker
             field={field}
@@ -250,6 +268,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             name={form.field.name}
             placeholder={desciption}
             required={required}
+            error={form.fieldState.error?.message}
           />
         )}
       />
@@ -259,6 +278,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     return (
       <Controller
         name={name}
+        rules={{ required: field.required }}
         render={(form) => (
           <TextInput
             data-auto-focus
@@ -276,6 +296,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             }
             placeholder={desciption}
             required={required}
+            error={form.fieldState.error?.message}
           />
         )}
       />
@@ -285,6 +306,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     return (
       <Controller
         name={name}
+        rules={{ required: field.required }}
         render={(form) => {
           return (
             <TextInput
@@ -296,6 +318,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
               value={form.field.value ? format(new Date(form.field.value), field.formatString) : ''}
               placeholder={desciption}
               required={required}
+              error={form.fieldState.error?.message}
             />
           )
         }}
@@ -307,12 +330,14 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     return (
       <Controller
         name={name}
+        rules={{ required: field.required }}
         render={(form) => (
           <AutoIncrementInput
             field={field}
             defaultValue={form.field.value}
             placeholder={desciption}
             required={required}
+            error={form.fieldState.error?.message}
           />
         )}
       />
@@ -322,6 +347,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
   return (
     <Controller
       name={name}
+      rules={{ required: field.required }}
       render={(form) => (
         <TextInput
           data-auto-focus
@@ -332,6 +358,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
           value={form.field.value ?? ''}
           placeholder={desciption}
           required={required}
+          error={form.fieldState.error?.message}
         />
       )}
     />

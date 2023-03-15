@@ -34,6 +34,7 @@ export const CreateRecordFormDrawer: React.FC = () => {
   const form = useForm<IMutateRecordValueSchema>({
     defaultValues,
     resolver: zodResolver(schema),
+    mode: 'onBlur',
   })
 
   useDeepCompareEffect(() => {

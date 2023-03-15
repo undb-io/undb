@@ -94,7 +94,7 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
       updateRecord({
         tableId: table.id.value,
         id: e.active.id as string,
-        value: [{ id: field.id.value, value: getDateValue(overContainer as any) }],
+        values: { [field.id.value]: getDateValue(overContainer as any) },
       })
     },
 
