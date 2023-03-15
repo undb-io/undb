@@ -3,6 +3,7 @@ import { isArray, isBoolean, isEmpty, isString, unzip } from 'lodash-es'
 import fp from 'lodash/fp.js'
 import type { Option } from 'oxide.ts'
 import { None } from 'oxide.ts'
+import type { ZodTypeAny } from 'zod'
 import type { IFilter, IOperator } from '../filter/index.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
@@ -103,6 +104,8 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
   public set required(required: boolean) {
     this.props.valueConstrains = this.props.valueConstrains.setRequired(required)
   }
+
+  abstract get valueSchema(): ZodTypeAny
 
   abstract createFilter(operator: IOperator, value: unknown): IFilter
 

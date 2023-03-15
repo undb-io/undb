@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import type { IDateRangeFilter } from '../filter/date-range.filter.js'
 import type { IDateRangeFilterOperator } from '../filter/index.js'
 import { DateRangeFieldValue } from './date-range-field-value.js'
@@ -36,5 +37,11 @@ export class DateRangeField extends BaseDateField<IDateRangeField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.dateRange(this)
+  }
+
+  get valueSchema() {
+    const dateRange = z.tuple([z.string().datetime().nullable(), z.string().datetime().nullable()])
+
+    return this.required ? dateRange : dateRange.nullable()
   }
 }

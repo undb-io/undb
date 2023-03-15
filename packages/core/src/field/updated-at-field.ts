@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import type { IUpdatedAtFilterOperator } from '../filter/operators.js'
 import type { IUpdatedAtFilter } from '../filter/updated-at.filter.js'
 import { BaseDateField } from './field.base.js'
@@ -48,5 +49,9 @@ export class UpdatedAtField extends BaseDateField<IUpdatedAtField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.updatedAt(this)
+  }
+
+  get valueSchema() {
+    return z.string().datetime()
   }
 }

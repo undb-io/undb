@@ -1,5 +1,4 @@
 import type { Merge, ValueOf } from 'type-fest'
-import type { ZodAny, ZodNullable, ZodOptional, ZodType } from 'zod'
 import { z } from 'zod'
 import type { Field, FieldValue } from '../field/index.js'
 import {
@@ -8,7 +7,6 @@ import {
   INTERNAL_COLUMN_UPDATED_AT_NAME,
   INTERNAL_DISPLAY_VALUES_NAME,
   INTERNAL_INCREAMENT_ID_NAME,
-  mutateFieldValueSchemaMap,
 } from '../field/index.js'
 import { recordDisplayValues } from './record.type.js'
 import { recordIdSchema } from './value-objects/record-id.schema.js'
@@ -33,18 +31,8 @@ export const createMutateRecordValuesSchema = (fields: Field[]) => {
   let schema = z.object({})
 
   for (const field of fields) {
-    let fieldSchema: ZodType = mutateFieldValueSchemaMap[field.type]
-    if (!field.required) {
-      fieldSchema = fieldSchema.optional()
-    } else {
-      if (fieldSchema.isNullable()) {
-        fieldSchema = (fieldSchema as ZodNullable<ZodAny>).unwrap()
-      }
-      if (fieldSchema.isOptional()) {
-        fieldSchema = (fieldSchema as ZodOptional<ZodAny>).unwrap()
-      }
-    }
-    schema = schema.setKey(field.id.value, fieldSchema)
+    if (field.controlled) continue
+    schema = schema.setKey(field.id.value, field.valueSchema)
   }
 
   return schema

@@ -1,3 +1,5 @@
+import type { ZodTypeAny } from 'zod'
+import { z } from 'zod'
 import type { ICreatedAtFilter } from '../filter/created-at.filter.js'
 import type { ICreatedAtFilterOperator } from '../filter/operators.js'
 import { CreatedAtFieldValue } from './created-at-field-value.js'
@@ -46,5 +48,9 @@ export class CreatedAtField extends BaseDateField<ICreatedAtField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.createdAt(this)
+  }
+
+  get valueSchema(): ZodTypeAny {
+    return z.string().datetime()
   }
 }

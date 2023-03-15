@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import type { IBoolFilter } from '../filter/bool.filter.js'
 import type { IBoolFilterOperator } from '../filter/operators.js'
 import { BoolFieldValue } from './bool-field-value.js'
@@ -31,5 +32,11 @@ export class BoolField extends BaseField<IBoolField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.bool(this)
+  }
+
+  get valueSchema() {
+    const bool = z.boolean()
+
+    return this.required ? bool : bool.nullable()
   }
 }

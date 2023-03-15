@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import type { IEmailFilter, IEmailFilterOperator } from '../filter/email.filter.js'
 import { EmailFieldValue } from './email-field-value.js'
 import type { EmailFieldType, ICreateEmailFieldInput, ICreateEmailFieldValue } from './email-field.type.js'
@@ -30,5 +31,10 @@ export class EmailField extends BaseField<IEmailField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.email(this)
+  }
+
+  get valueSchema() {
+    const email = z.string().email()
+    return this.required ? email : email.nullable()
   }
 }

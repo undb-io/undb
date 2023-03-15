@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import type { IAutoIncrementFilter } from '../filter/auto-increment.filter.js'
 import type { IAutoIncrementFilterOperator } from '../filter/operators.js'
 import { AutoIncrementFieldValue } from './auto-increment-field-value.js'
@@ -42,5 +43,9 @@ export class AutoIncrementField extends BaseField<IAutoIncrementField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.autoIncrement(this)
+  }
+
+  get valueSchema() {
+    return z.number().int().positive()
   }
 }

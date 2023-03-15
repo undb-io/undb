@@ -1,7 +1,7 @@
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { ActionIcon, Box, Group, IconGripVertical, IconRowInsertTop, Stack, Text } from '@egodb/ui'
 import { CSS } from '@dnd-kit/utilities'
-import type { ICreateFieldValue, IKanbanField, Records } from '@egodb/core'
+import type { IKanbanField, Records } from '@egodb/core'
 import { SortableKanbanCard } from './kanban-card'
 import { useSetAtom } from 'jotai'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
@@ -22,7 +22,7 @@ export interface IProps {
   field: IKanbanField
   records: Records
   disableAddRecord?: boolean
-  getRecordValue?: (id: string | null) => ICreateFieldValue
+  getRecordValue?: (id: string | null) => any
 }
 
 type IKanbanLaneProps = IProps & SortableProps

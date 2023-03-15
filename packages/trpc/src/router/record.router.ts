@@ -18,7 +18,6 @@ import {
   getRecordQueryOutput,
   GetRecordsQuery,
   getRecordsQueryInput,
-  getRecordsQueryOutput,
   UpdateRecordCommand,
 } from '@egodb/cqrs'
 import type { ICommandBus, IQueryBus } from '@egodb/domain'
@@ -82,7 +81,7 @@ export const createRecordRouter =
         }),
       list: procedure
         .input(getRecordsQueryInput)
-        .output(getRecordsQueryOutput)
+        .output(z.any())
         .query(({ input }) => {
           const query = new GetRecordsQuery(input)
           return queryBus.execute(query)
