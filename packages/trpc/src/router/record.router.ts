@@ -20,7 +20,6 @@ import {
   getRecordsQueryInput,
   getRecordsQueryOutput,
   UpdateRecordCommand,
-  updateRecordCommandInput,
 } from '@egodb/cqrs'
 import type { ICommandBus, IQueryBus } from '@egodb/domain'
 import { z } from 'zod'
@@ -54,7 +53,7 @@ export const createRecordRouter =
           return commandBus.execute(cmd)
         }),
       update: procedure
-        .input(updateRecordCommandInput)
+        .input(z.any())
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new UpdateRecordCommand(input)

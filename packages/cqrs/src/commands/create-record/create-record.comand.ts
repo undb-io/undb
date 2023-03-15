@@ -1,3 +1,4 @@
+import { IMutateRecordValueSchema } from '@egodb/core'
 import type { CommandProps } from '@egodb/domain'
 import { Command } from '@egodb/domain'
 import type { ICreateRecordInput } from './create-record.command.input.js'
@@ -5,7 +6,7 @@ import type { ICreateRecordInput } from './create-record.command.input.js'
 export class CreateRecordCommand extends Command {
   readonly id?: string
   readonly tableId: string
-  readonly values: ICreateRecordInput['values']
+  readonly values: IMutateRecordValueSchema
 
   constructor(props: CommandProps<ICreateRecordInput>) {
     super(props)

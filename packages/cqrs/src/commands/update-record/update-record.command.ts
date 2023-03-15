@@ -6,12 +6,12 @@ import type { IUpdateRecordCommandInput } from './update-record.command.input.js
 export class UpdateRecordCommand extends Command implements IUpdateRecordCommandInput {
   readonly id: string
   readonly tableId: string
-  readonly value: IMutateRecordValueSchema
+  readonly values: IMutateRecordValueSchema
 
   constructor(props: CommandProps<IUpdateRecordCommandInput>) {
     super(props)
     this.tableId = props.tableId
     this.id = props.id
-    this.value = props.value
+    this.values = props.values
   }
 }

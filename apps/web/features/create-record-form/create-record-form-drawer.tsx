@@ -32,9 +32,7 @@ export const CreateRecordFormDrawer: React.FC = () => {
     [initialCreateRecordValue],
   )
 
-  const schema = createCreateRecordCommandInput(
-    table.schema.fields.map((field) => ({ id: field.id.value, type: field.type, required: field.required })),
-  )
+  const schema = createCreateRecordCommandInput(table.schema)
   const form = useForm<ICreateRecordInput>({
     defaultValues,
     resolver: zodResolver(schema),
