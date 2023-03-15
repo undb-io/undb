@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import type { IIdFilter } from '../filter/id.filter.js'
 import type { IIdFilterOperator } from '../filter/operators.js'
 import { BaseField } from './field.base.js'
@@ -8,6 +9,9 @@ import type { ICreateIdFieldInput, ICreateIdFieldValue, IdFieldType } from './id
 
 export class IdField extends BaseField<IIdField> {
   type: IdFieldType = 'id'
+  override get controlled() {
+    return true
+  }
   override get system() {
     return true
   }
@@ -34,5 +38,9 @@ export class IdField extends BaseField<IIdField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.id(this)
+  }
+
+  get valueSchema() {
+    return z.string()
   }
 }

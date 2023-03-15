@@ -12,7 +12,6 @@ import {
   autoIncrementQueryValue,
   autoIncrementTypeSchema,
   createAutoIncrementFieldSchema,
-  createAutoIncrementFieldValue,
   createAutoIncrementFieldValue_internal,
   updateAutoIncrementFieldSchema,
 } from './auto-increment-field.type.js'
@@ -24,7 +23,6 @@ import {
   boolFieldQueryValue,
   boolTypeSchema,
   createBoolFieldSchema,
-  createBoolFieldValue,
   createBoolFieldValue_internal,
   updateBoolFieldSchema,
 } from './bool-field.type.js'
@@ -36,7 +34,6 @@ import {
   colorFieldQueryValue,
   colorTypeSchema,
   createColorFieldSchema,
-  createColorFieldValue,
   createColorFieldValue_internal,
   updateColorFieldSchema,
 } from './color-field.type.js'
@@ -45,7 +42,6 @@ import type { CreatedAtField } from './created-at-field.js'
 import type { ICreatedAtFieldValue } from './created-at-field.type.js'
 import {
   createCreatedAtFieldSchema,
-  createCreatedAtFieldValue,
   createCreatedAtFieldValue_internal,
   createdAtFieldQuerySchema,
   createdAtFieldQueryValue,
@@ -57,7 +53,6 @@ import type { DateField } from './date-field.js'
 import type { IDateFieldValue } from './date-field.type.js'
 import {
   createDateFieldSchema,
-  createDateFieldValue,
   createDateFieldValue_internal,
   dateFieldQuerySchema,
   dateFieldQueryValue,
@@ -69,7 +64,6 @@ import type { DateRangeField } from './date-range-field.js'
 import type { IDateRangeFieldValue } from './date-range-field.type.js'
 import {
   createDateRangeFieldSchema,
-  createDateRangeFieldValue,
   createDateRangeFieldValue_internal,
   dateRangeFieldQuerySchema,
   dateRangeFieldQueryValue,
@@ -81,7 +75,6 @@ import type { EmailField } from './email-field.js'
 import type { IEmailFieldValue } from './email-field.type.js'
 import {
   createEmailFieldSchema,
-  createEmailFieldValue,
   createEmailFieldValue_internal,
   emailFieldQuerySchema,
   emailFieldQueryValue,
@@ -94,7 +87,6 @@ import type { IdField } from './id-field.js'
 import type { IIdFieldValue } from './id-field.type.js'
 import {
   createIdFieldSchema,
-  createIdFieldValue,
   createIdFieldValue_internal,
   idFieldQuerySchema,
   idFieldQueryValue,
@@ -106,7 +98,6 @@ import type { NumberField } from './number-field.js'
 import type { INumberFieldValue } from './number-field.type.js'
 import {
   createNumberFieldSchema,
-  createNumberFieldValue,
   createNumberFieldValue_internal,
   numberFieldQuerySchema,
   numberFieldQueryValue,
@@ -118,7 +109,6 @@ import type { ParentField } from './parent-field.js'
 import type { IParentFieldValue } from './parent-field.type.js'
 import {
   createParentFieldSchema,
-  createParentFieldValue,
   createParentFieldValue_internal,
   parentFieldQuerySchema,
   parentFieldQueryValue,
@@ -130,7 +120,6 @@ import type { RatingField } from './rating-field.js'
 import type { IRatingFieldValue } from './rating-field.type.js'
 import {
   createRatingFieldSchema,
-  createRatingFieldValue,
   createRatingFieldValue_internal,
   ratingFieldQuerySchema,
   ratingFieldQueryValue,
@@ -141,7 +130,6 @@ import type { ReferenceFieldValue } from './reference-field-value.js'
 import type { ReferenceField } from './reference-field.js'
 import {
   createReferenceFieldSchema,
-  createReferenceFieldValue,
   createReferenceFieldValue_internal,
   referenceFieldQuerySchema,
   referenceFieldQueryValue,
@@ -153,7 +141,6 @@ import type { SelectField } from './select-field.js'
 import type { ISelectFieldValue } from './select-field.type.js'
 import {
   createSelectFieldSchema,
-  createSelectFieldValue,
   createSelectFieldValue_internal,
   selectFieldQuerySchema,
   selectFieldQueryValue,
@@ -165,7 +152,6 @@ import type { StringField } from './string-field.js'
 import type { IStringFieldValue } from './string-field.type.js'
 import {
   createStringFieldSchema,
-  createStringFieldValue,
   createStringFieldValue_internal,
   stringFieldQuerySchema,
   stringFieldQueryValue,
@@ -177,7 +163,6 @@ import type { TreeField } from './tree-field.js'
 import type { ITreeFieldValue } from './tree-field.type.js'
 import {
   createTreeFieldSchema,
-  createTreeFieldValue,
   createTreeFieldValue_internal,
   treeFieldQuerySchema,
   treeFieldQueryValue,
@@ -189,7 +174,6 @@ import type { UpdatedAtField } from './updated-at-field.js'
 import type { IUpdatedAtFieldValue } from './updated-at-field.type.js'
 import {
   createUpdatedAtFieldSchema,
-  createUpdatedAtFieldValue,
   createUpdatedAtFieldValue_internal,
   updatedAtFieldQuerySchema,
   updatedAtFieldQueryValue,
@@ -197,7 +181,6 @@ import {
   updateUpdatedAtFieldSchema,
 } from './updated-at-field.type.js'
 import type { FieldDescription } from './value-objects/field-description.js'
-import { fieldNameSchema } from './value-objects/field-name.schema.js'
 import type { DateFormat, DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
@@ -281,48 +264,6 @@ export const fieldTypes = z.union([
   ratingTypeSchema,
 ])
 export type IFieldType = z.infer<typeof fieldTypes>
-
-export const mutateFieldValueSchemaMap = {
-  string: createStringFieldValue,
-  number: createNumberFieldValue,
-  id: createIdFieldValue,
-  date: createDateFieldValue,
-  'created-at': createCreatedAtFieldValue,
-  'updated-at': createUpdatedAtFieldValue,
-  'auto-increment': createAutoIncrementFieldValue,
-  email: createEmailFieldValue,
-  color: createColorFieldValue,
-  select: createSelectFieldValue,
-  bool: createBoolFieldValue,
-  'date-range': createDateRangeFieldValue,
-  reference: createReferenceFieldValue,
-  tree: createTreeFieldValue,
-  parent: createParentFieldValue,
-  rating: createRatingFieldValue,
-}
-
-export const createFieldValueSchema = z.union([
-  createIdFieldValue,
-  createCreatedAtFieldValue,
-  createUpdatedAtFieldValue,
-  createAutoIncrementFieldValue,
-  createStringFieldValue,
-  createEmailFieldValue,
-  createColorFieldValue,
-  createNumberFieldValue,
-  createDateFieldValue,
-  createDateRangeFieldValue,
-  createSelectFieldValue,
-  createBoolFieldValue,
-  createReferenceFieldValue,
-  createTreeFieldValue,
-  createParentFieldValue,
-  createRatingFieldValue,
-])
-export type ICreateFieldValue = z.infer<typeof createFieldValueSchema>
-
-export const createFieldValueObject = z.record(fieldNameSchema, createFieldValueSchema)
-export type ICreateFieldValueObject = z.infer<typeof createFieldValueObject>
 
 export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createIdFieldValue_internal,

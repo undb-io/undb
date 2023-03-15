@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import type { IDateFilter } from '../filter/date.filter.js'
 import type { IDateFilterOperator } from '../filter/index.js'
 import { dateBuiltInOperators } from '../filter/operators.js'
@@ -37,5 +38,10 @@ export class DateField extends BaseDateField<IDateField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.date(this)
+  }
+
+  get valueSchema() {
+    const date = z.string().datetime()
+    return this.required ? date : date.nullable()
   }
 }

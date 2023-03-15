@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import type { IColorFilter, IColorFilterOperator } from '../filter/color.filter.js'
 import { ColorFieldValue } from './color-field-value.js'
 import type { ColorFieldType, ICreateColorFieldInput, ICreateColorFieldValue } from './color-field.type.js'
@@ -30,5 +31,10 @@ export class ColorField extends BaseField<IColorField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.color(this)
+  }
+
+  get valueSchema() {
+    const color = z.string().min(4).max(9).regex(/^#/)
+    return this.required ? color : color.nullable()
   }
 }

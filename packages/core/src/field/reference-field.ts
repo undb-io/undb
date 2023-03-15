@@ -1,4 +1,5 @@
 import { Option } from 'oxide.ts'
+import { z } from 'zod'
 import type { IReferenceFilterOperator } from '../filter/operators.js'
 import type { IReferenceFilter } from '../filter/reference.filter.js'
 import { TableId } from '../value-objects/table-id.vo.js'
@@ -43,5 +44,9 @@ export class ReferenceField extends BaseReferenceField<IReferenceField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.reference(this)
+  }
+
+  get valueSchema() {
+    return this.required ? z.string().array() : z.string().array().nullable()
   }
 }

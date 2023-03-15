@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import type { INumberFilter, INumberFilterOperator } from '../filter/number.filter.js'
 import { BaseField } from './field.base.js'
 import type { INumberField } from './field.type.js'
@@ -30,5 +31,10 @@ export class NumberField extends BaseField<INumberField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.number(this)
+  }
+
+  get valueSchema() {
+    const number = z.number()
+    return this.required ? number : number.nullable()
   }
 }

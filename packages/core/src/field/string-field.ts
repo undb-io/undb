@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import type { IStringFilter, IStringFilterOperator } from '../filter/string.filter.js'
 import { BaseField } from './field.base.js'
 import type { IStringField } from './field.type.js'
@@ -30,5 +31,10 @@ export class StringField extends BaseField<IStringField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.string(this)
+  }
+
+  get valueSchema() {
+    const str = z.string()
+    return this.required ? str : str.nullable()
   }
 }

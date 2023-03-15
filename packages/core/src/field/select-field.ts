@@ -1,6 +1,7 @@
 import { and } from '@egodb/domain'
 import { isArray } from 'lodash-es'
 import type { Option } from 'oxide.ts'
+import { z } from 'zod'
 import type { ISelectFilterOperator } from '../filter/operators.js'
 import type { ISelectFilter, ISelectFilterValue } from '../filter/select.filter.js'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from '../option/index.js'
@@ -100,5 +101,9 @@ export class SelectField extends BaseField<ISelectField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.select(this)
+  }
+
+  get valueSchema() {
+    return this.required ? z.string() : z.string().nullable()
   }
 }

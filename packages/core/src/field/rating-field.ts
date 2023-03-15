@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import type { IRatingFilter, IRatingFilterOperator } from '../filter/rating.filter.js'
 import { BaseField } from './field.base.js'
 import type { IRatingField } from './field.type.js'
@@ -34,5 +35,10 @@ export class RatingField extends BaseField<IRatingField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.rating(this)
+  }
+
+  get valueSchema() {
+    const rating = z.number().nonnegative().max(this.max)
+    return this.required ? rating : rating.nullable()
   }
 }

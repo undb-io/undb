@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import type { IParentFilterOperator } from '../filter/operators.js'
 import type { IParentFilter } from '../filter/parent.filter.js'
 import { BaseReferenceField } from './field.base.js'
@@ -38,5 +39,9 @@ export class ParentField extends BaseReferenceField<IParentField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.parent(this)
+  }
+
+  get valueSchema() {
+    return this.required ? z.string() : z.string().nullable()
   }
 }

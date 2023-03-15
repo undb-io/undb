@@ -1,3 +1,4 @@
+import { z } from 'zod'
 import type { ITreeFilterOperator } from '../filter/operators.js'
 import type { ITreeFilter } from '../filter/tree.filter.js'
 import { BaseReferenceField } from './field.base.js'
@@ -51,5 +52,9 @@ export class TreeField extends BaseReferenceField<ITreeField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.tree(this)
+  }
+
+  get valueSchema() {
+    return this.required ? z.string().array() : z.string().array().nullable()
   }
 }
