@@ -1,5 +1,6 @@
 export { WithFieldDescription, WithFieldName } from './base-field.specification.js'
 export * from './date-field.specification.js'
+export * from './field-constraints.specification'
 export * from './field.specification.js'
 export * from './reference-field.specification.js'
 export * from './select-field.specification.js'

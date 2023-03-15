@@ -1,5 +1,5 @@
 import { and, ValueObject } from '@egodb/domain'
-import { isArray, isEmpty, isString, unzip } from 'lodash-es'
+import { isArray, isBoolean, isEmpty, isString, unzip } from 'lodash-es'
 import fp from 'lodash/fp.js'
 import type { Option } from 'oxide.ts'
 import { None } from 'oxide.ts'
@@ -27,6 +27,7 @@ import type { ICreateParentFieldInput, IUpdateParentFieldInput } from './parent-
 import type { ICreateReferenceFieldInput, IUpdateReferenceFieldInput } from './reference-field.type.js'
 import { WithFieldDescription, WithFieldName } from './specifications/base-field.specification.js'
 import { WithFormat } from './specifications/date-field.specification.js'
+import { WithFieldRequirement } from './specifications/field-constraints.specification.js'
 import { WithDisplayFields } from './specifications/reference-field.specification.js'
 import type { ICreateTreeFieldSchema, IUpdateTreeFieldInput } from './tree-field.type.js'
 import type { ICreateUpdatedAtFieldInput, IUpdateUpdatedAtFieldInput } from './updated-at-field.type.js'
@@ -99,6 +100,10 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
     return this.props.valueConstrains.required
   }
 
+  public set required(required: boolean) {
+    this.props.valueConstrains = this.props.valueConstrains.setRequired(required)
+  }
+
   abstract createFilter(operator: IOperator, value: unknown): IFilter
 
   abstract accept(visitor: IFieldVisitor): void
@@ -116,6 +121,9 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
     if (isString(input.description)) {
       const spec = WithFieldDescription.fromString(this, input.description)
       specs.push(spec)
+    }
+    if (isBoolean(input.required)) {
+      specs.push(new WithFieldRequirement(this, input.required))
     }
     return and(...specs)
   }

@@ -20,7 +20,7 @@ import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { ActionsHeader } from './actions-header'
 import { SelectionHeader } from './selection-header'
-import type { ISetPinnedFieldsCommandInput } from '@egodb/cqrs/dist'
+import type { ISetPinnedFieldsCommandInput } from '@egodb/cqrs'
 import { Cell } from './cell'
 import { tableStyles } from './styles'
 

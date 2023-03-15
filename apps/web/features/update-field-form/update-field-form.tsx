@@ -1,4 +1,4 @@
-import { Button, closeAllModals, Divider, Group, IconPlus, Stack, TextInput, useDisclosure } from '@egodb/ui'
+import { Button, closeAllModals, Divider, Group, IconPlus, Stack, Switch, TextInput, useDisclosure } from '@egodb/ui'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldVariantControl } from '../field/field-variant-control'
@@ -21,6 +21,7 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
     type: field.type,
     name: field.name.value,
     description,
+    required: field.required,
   }
 
   if (defaultValues.type === 'reference') {
@@ -57,7 +58,7 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
       if (k === 'type') continue
       const isDirty = form.getFieldState(k).isDirty
       if (isDirty) {
-        values[k] = value as IUpdateFieldSchema[typeof k]
+        values[k] = value
       }
     }
 
@@ -120,6 +121,12 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
             </Button>
 
             <Group position="right">
+              <Switch
+                {...form.register('required')}
+                checked={form.watch('required')}
+                size="xs"
+                label={t('Required', { ns: 'common' })}
+              />
               <Button
                 compact
                 size="xs"

@@ -19,6 +19,7 @@ export const updateBaseFieldSchema = z
     name: fieldNameSchema,
     description: fieldDescriptionSchema,
   })
+  .merge(valueConstraintsSchema)
   .partial()
 
 export type IBaseUpdateFieldSchema = z.infer<typeof updateBaseFieldSchema>

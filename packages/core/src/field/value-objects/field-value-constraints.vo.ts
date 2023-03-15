@@ -23,4 +23,11 @@ export class FieldValueConstraints extends ValueObject<IValueConstraint> {
   public get required(): boolean {
     return !!this.props.required
   }
+
+  public setRequired(required: boolean): FieldValueConstraints {
+    return new FieldValueConstraints({
+      ...this.props,
+      required,
+    })
+  }
 }
