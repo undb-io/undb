@@ -5,12 +5,12 @@ import type { ICreateRecordInput } from './create-record.command.input.js'
 export class CreateRecordCommand extends Command {
   readonly id?: string
   readonly tableId: string
-  readonly value: ICreateRecordInput['value']
+  readonly values: ICreateRecordInput['values']
 
   constructor(props: CommandProps<ICreateRecordInput>) {
     super(props)
     this.tableId = props.tableId
     this.id = props.id
-    this.value = props.value
+    this.values = props.values
   }
 }

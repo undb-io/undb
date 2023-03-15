@@ -282,6 +282,25 @@ export const fieldTypes = z.union([
 ])
 export type IFieldType = z.infer<typeof fieldTypes>
 
+export const mutateFieldValueSchemaMap = {
+  string: createStringFieldValue,
+  number: createNumberFieldValue,
+  id: createIdFieldValue,
+  date: createDateFieldValue,
+  'created-at': createCreatedAtFieldValue,
+  'updated-at': createUpdatedAtFieldValue,
+  'auto-increment': createAutoIncrementFieldValue,
+  email: createEmailFieldValue,
+  color: createColorFieldValue,
+  select: createSelectFieldValue,
+  bool: createBoolFieldValue,
+  'date-range': createDateRangeFieldValue,
+  reference: createReferenceFieldValue,
+  tree: createTreeFieldValue,
+  parent: createParentFieldValue,
+  rating: createRatingFieldValue,
+}
+
 export const createFieldValueSchema = z.union([
   createIdFieldValue,
   createCreatedAtFieldValue,

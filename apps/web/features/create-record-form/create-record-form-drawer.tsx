@@ -1,5 +1,5 @@
 import type { ICreateRecordInput } from '@egodb/cqrs'
-import { createRecordCommandInput } from '@egodb/cqrs'
+import { createCreateRecordCommandInput } from '@egodb/cqrs'
 import { Drawer } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom, useAtomValue } from 'jotai'
@@ -21,18 +21,23 @@ export const CreateRecordFormDrawer: React.FC = () => {
   const defaultValues = useMemo(
     () => ({
       tableId: table.id.value,
-      value: table.schema.nonSystemFields.map((field) => ({
-        id: field.id.value,
-        // TODO: get field default value
-        value: initialCreateRecordValue[field.id.value] ?? (field.type === 'bool' ? false : null),
-      })),
+      values: table.schema.nonSystemFields.reduce(
+        (curr, prev) => ({
+          ...curr,
+          [prev.id.value]: initialCreateRecordValue[prev.id.value] ?? (prev.type === 'bool' ? false : null),
+        }),
+        {},
+      ),
     }),
     [initialCreateRecordValue],
   )
 
+  const schema = createCreateRecordCommandInput(
+    table.schema.fields.map((field) => ({ id: field.id.value, type: field.type, required: field.required })),
+  )
   const form = useForm<ICreateRecordInput>({
     defaultValues,
-    resolver: zodResolver(createRecordCommandInput),
+    resolver: zodResolver(schema),
   })
 
   useDeepCompareEffect(() => {

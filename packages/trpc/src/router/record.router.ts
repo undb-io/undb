@@ -5,7 +5,6 @@ import {
   BulkDuplicateRecordsCommand,
   bulkDuplicateRecordsCommandInput,
   CreateRecordCommand,
-  createRecordCommandInput,
   createRecordCommandOutput,
   DeleteRecordCommand,
   deleteRecordCommandInput,
@@ -34,7 +33,7 @@ export const createRecordRouter =
   (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
     router({
       create: procedure
-        .input(createRecordCommandInput)
+        .input(z.any())
         .output(createRecordCommandOutput)
         .mutation(({ input }) => {
           const cmd = new CreateRecordCommand(input)
