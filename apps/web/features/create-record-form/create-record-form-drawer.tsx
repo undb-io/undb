@@ -35,6 +35,9 @@ export const CreateRecordFormDrawer: React.FC = () => {
     defaultValues,
     resolver: zodResolver(schema),
     mode: 'onBlur',
+    delayError: 300,
+    criteriaMode: 'all',
+    reValidateMode: 'onChange',
   })
 
   useDeepCompareEffect(() => {
