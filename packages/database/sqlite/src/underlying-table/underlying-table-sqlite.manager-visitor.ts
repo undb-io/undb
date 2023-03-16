@@ -37,8 +37,9 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   nameEqual(): void {}
   schemaEqual(s: WithTableSchema): void {
     this.sb = this.#sb.alterTable(this.tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(this.knex, tb)
+      const builder = new UnderlyingColumnBuilder(this.knex, tb, this.tableName)
       builder.createUnderlying(s.schema.nonSystemFields)
+      this.#queries.push(...builder.queries)
     })
   }
   viewsEqual(): void {}
@@ -56,8 +57,9 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
 
     const query = this.#sb
       .alterTable(this.tableName, (tb) => {
-        const builder = new UnderlyingColumnBuilder(this.knex, tb)
+        const builder = new UnderlyingColumnBuilder(this.knex, tb, this.tableName)
         builder.createUnderlying([field])
+        this.#queries.push(...builder.queries)
       })
       .toQuery()
 
@@ -82,7 +84,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     this.qb = this.#qb.from(this.tableName).where(s.field.id.value, s.optionKey.value).update(s.field.id.value, null)
   }
   withoutField(s: WithoutField): void {
-    const fields = UnderlyingColumnFactory.createMany([s.field])
+    const fields = UnderlyingColumnFactory.createMany([s.field], this.tableName)
     const sqls = fields.map(
       (f) =>
         `

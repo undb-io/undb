@@ -196,7 +196,8 @@
             "reference",
             "tree",
             "parent",
-            "rating"
+            "rating",
+            "count"
           ],
           "mappedType": "enum"
         },
@@ -244,6 +245,15 @@
           "primary": false,
           "nullable": true,
           "mappedType": "integer"
+        },
+        "reference_field_id_id": {
+          "name": "reference_field_id_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         }
       },
       "name": "ego_field",
@@ -285,6 +295,15 @@
           "unique": false
         },
         {
+          "columnNames": [
+            "reference_field_id_id"
+          ],
+          "composite": false,
+          "keyName": "ego_field_reference_field_id_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
           "keyName": "primary",
           "columnNames": [
             "id"
@@ -319,6 +338,19 @@
             "id"
           ],
           "referencedTableName": "ego_table",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "ego_field_reference_field_id_id_foreign": {
+          "constraintName": "ego_field_reference_field_id_id_foreign",
+          "columnNames": [
+            "reference_field_id_id"
+          ],
+          "localTableName": "ego_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "ego_field",
           "deleteRule": "set null",
           "updateRule": "cascade"
         }

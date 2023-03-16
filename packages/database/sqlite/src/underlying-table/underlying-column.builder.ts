@@ -12,8 +12,13 @@ import {
 } from './underlying-column.js'
 
 export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
-  constructor(private readonly knex: Knex, private readonly tb: Knex.TableBuilder) {}
-  private queries: string[] = []
+  constructor(
+    private readonly knex: Knex,
+    private readonly tb: Knex.TableBuilder,
+    private readonly tableName: string,
+    private readonly isNewTable?: boolean,
+  ) {}
+  public queries: string[] = []
 
   private addQueries(...queries: string[]) {
     for (const query of queries) {
@@ -26,19 +31,19 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
   }
 
   createAutoIncrement(): this {
-    new UnderlyingAutoIncreamentColumn().build(this.tb)
+    new UnderlyingAutoIncreamentColumn(this.tableName).build(this.tb)
 
     return this
   }
 
-  createId(tableName: string): this {
-    const column = new UnderlyingIdColumn()
+  createId(): this {
+    const column = new UnderlyingIdColumn(this.tableName)
     column.build(this.tb)
 
     const unique = this.knex
       .raw(
         `
-      create unique index \`${tableName}_${column.name}_unique\` on \`${tableName}\` (\`${column.name}\`)
+      create unique index \`${this.tableName}_${column.name}_unique\` on \`${this.tableName}\` (\`${column.name}\`)
       `,
       )
       .toQuery()
@@ -49,19 +54,19 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
   }
 
   createCreatedAt(): this {
-    new UnderlyingCreatedAtColumn().build(this.tb, this.knex)
+    new UnderlyingCreatedAtColumn(this.tableName).build(this.tb, this.knex)
     return this
   }
 
-  createUpdatedAt(tableName: string): this {
-    new UnderlyingUpdatedAtColumn().build(this.tb, this.knex)
+  createUpdatedAt(): this {
+    new UnderlyingUpdatedAtColumn(this.tableName).build(this.tb, this.knex)
 
     const query = this.knex
       .raw(
         `
-		CREATE TRIGGER update_at_update_${tableName} AFTER UPDATE ON \`${tableName}\`
+		CREATE TRIGGER update_at_update_${this.tableName} AFTER UPDATE ON \`${this.tableName}\`
 		BEGIN
-			update \`${tableName}\` SET ${INTERNAL_COLUMN_UPDATED_AT_NAME} = datetime('now') WHERE ${INTERNAL_COLUMN_ID_NAME} = NEW.${INTERNAL_COLUMN_ID_NAME};
+			update \`${this.tableName}\` SET ${INTERNAL_COLUMN_UPDATED_AT_NAME} = datetime('now') WHERE ${INTERNAL_COLUMN_ID_NAME} = NEW.${INTERNAL_COLUMN_ID_NAME};
 		END;
 	 `,
       )
@@ -73,16 +78,17 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
   }
 
   createDeletedAt(): this {
-    new UnderlyingDeletedAtColumn().build(this.tb)
+    new UnderlyingDeletedAtColumn(this.tableName).build(this.tb)
     return this
   }
 
   createUnderlying(fields: NoneSystemField[]): this {
-    const underlyingColumns = UnderlyingColumnFactory.createMany(fields)
+    const underlyingColumns = UnderlyingColumnFactory.createMany(fields, this.tableName)
 
     for (const column of underlyingColumns) {
       if (!column.system) {
-        column.build(this.tb, this.knex)
+        column.build(this.tb, this.knex, this.isNewTable)
+        this.addQueries(...column.queries)
       }
     }
 

@@ -4,6 +4,7 @@ import {
   UnderlyingAutoIncreamentColumn,
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
+  UnderlyingCountColumn,
   UnderlyingCreatedAtColumn,
   UnderlyingDateColumn,
   UnderlyingDateRangeFromColumn,
@@ -21,44 +22,49 @@ import {
 } from './underlying-column.js'
 
 export class UnderlyingColumnFactory {
-  static create(field: Field): IUnderlyingColumn | IUnderlyingColumn[] {
+  static create(field: Field, tableName: string): IUnderlyingColumn | IUnderlyingColumn[] {
     switch (field.type) {
       case 'id':
-        return new UnderlyingIdColumn()
+        return new UnderlyingIdColumn(tableName)
       case 'created-at':
-        return new UnderlyingCreatedAtColumn()
+        return new UnderlyingCreatedAtColumn(tableName)
       case 'updated-at':
-        return new UnderlyingUpdatedAtColumn()
+        return new UnderlyingUpdatedAtColumn(tableName)
       case 'auto-increment':
-        return new UnderlyingAutoIncreamentColumn()
+        return new UnderlyingAutoIncreamentColumn(tableName)
       case 'string':
-        return new UnderlyingStringColumn(field)
+        return new UnderlyingStringColumn(field, tableName)
       case 'email':
-        return new UnderlyingEmailColumn(field)
+        return new UnderlyingEmailColumn(field, tableName)
       case 'rating':
-        return new UnderlyingRatingColumn(field)
+        return new UnderlyingRatingColumn(field, tableName)
       case 'color':
-        return new UnderlyingColorColumn(field)
+        return new UnderlyingColorColumn(field, tableName)
       case 'number':
-        return new UnderlyingNumberColumn(field)
+        return new UnderlyingNumberColumn(field, tableName)
       case 'bool':
-        return new UnderlyingBoolColumn(field)
+        return new UnderlyingBoolColumn(field, tableName)
       case 'date':
-        return new UnderlyingDateColumn(field)
+        return new UnderlyingDateColumn(field, tableName)
       case 'date-range':
-        return [new UnderlyingDateRangeFromColumn(field), new UnderlyingDateRangeToFromColumn(field)]
+        return [
+          new UnderlyingDateRangeFromColumn(field, tableName),
+          new UnderlyingDateRangeToFromColumn(field, tableName),
+        ]
       case 'select':
-        return new UnderlyingSelectColumn(field)
+        return new UnderlyingSelectColumn(field, tableName)
       case 'reference':
-        return new UnderlyingReferenceColumn(field)
+        return new UnderlyingReferenceColumn(field, tableName)
       case 'tree':
-        return new UnderlyingTreeColumn(field)
+        return new UnderlyingTreeColumn(field, tableName)
       case 'parent':
-        return new UnderlyingParentColumn(field)
+        return new UnderlyingParentColumn(field, tableName)
+      case 'count':
+        return new UnderlyingCountColumn(field, tableName)
     }
   }
 
-  static createMany(fields: Field[]): IUnderlyingColumn[] {
-    return fields.flatMap((field) => this.create(field))
+  static createMany(fields: Field[], tableName: string): IUnderlyingColumn[] {
+    return fields.flatMap((field) => this.create(field, tableName))
   }
 }

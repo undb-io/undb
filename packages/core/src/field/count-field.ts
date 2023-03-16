@@ -14,6 +14,10 @@ export class CountField extends BaseField<ICountField> {
     return true
   }
 
+  get referenceFieldId() {
+    return this.props.referenceFieldId
+  }
+
   static create(input: Omit<ICreateCountFieldInput, 'type'>): CountField {
     return new CountField({
       ...super.createBase(input),

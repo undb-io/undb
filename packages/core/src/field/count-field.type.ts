@@ -20,7 +20,11 @@ export type ICreateCountFieldInput = z.infer<typeof createCountFieldSchema>
 export const updateCountFieldSchema = updateBaseFieldSchema.merge(countTypeObjectSchema)
 export type IUpdateCountFieldInput = z.infer<typeof updateCountFieldSchema>
 
-export const countFieldQuerySchema = baseFieldQuerySchema.merge(countTypeObjectSchema)
+export const countFieldQuerySchema = baseFieldQuerySchema.merge(countTypeObjectSchema).merge(
+  z.object({
+    referenceFieldId: fieldIdSchema,
+  }),
+)
 export type ICountFieldQuerySchema = z.infer<typeof countFieldQuerySchema>
 
 export const countFieldValue = z.number().nullable()

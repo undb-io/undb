@@ -4,6 +4,7 @@ import type {
   AutoIncrementField as CoreAutoIncrementField,
   BoolField as CoreBoolField,
   ColorField as CoreColorField,
+  CountField as CoreCountField,
   CreatedAtField as CoreCreatedAtField,
   DateField as CoreDateField,
   DateRangeField as CoreDateRangeField,
@@ -26,6 +27,7 @@ import {
   AutoIncrementField,
   BoolField,
   ColorField,
+  CountField,
   CreatedAtField,
   DateField,
   DateRangeField,
@@ -144,6 +146,11 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
     this.addQueries(...queries)
   }
 
+  count(value: CoreCountField): void {
+    const field = new CountField(this.table, value)
+
+    this.em.persist(field)
+  }
   private initClosureTable(value: CoreTreeField | CoreParentField) {
     const tableId = this.table.id
 
