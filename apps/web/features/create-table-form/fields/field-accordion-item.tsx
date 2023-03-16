@@ -38,6 +38,7 @@ export type Props = {
 export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
   const form = useFormContext<ICreateTableInput>()
   const name = form.watch(`schema.${index}.name`)
+  const type = form.watch(`schema.${index}.type`)
 
   const { attributes, listeners, isDragging, setNodeRef, transform, transition } = useSortable({ id })
   const style = {
@@ -77,7 +78,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
                   required={true}
                   data={FIELD_SELECT_ITEMS.map((item) => ({ value: item.value, label: t(item.label!) as string }))}
                   itemComponent={FieldItem}
-                  icon={<FieldIcon type={form.watch(`schema.${index}.type`)} />}
+                  icon={<FieldIcon type={type} />}
                 />
               )}
             />

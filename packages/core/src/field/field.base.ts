@@ -23,6 +23,7 @@ import type {
   PrimitiveField,
   SystemField,
 } from './field.type.js'
+import { isControlledFieldType } from './field.util.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import type { ICreateParentFieldInput, IUpdateParentFieldInput } from './parent-field.type.js'
 import type { ICreateReferenceFieldInput, IUpdateReferenceFieldInput } from './reference-field.type.js'
@@ -60,7 +61,7 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
 
   abstract type: IFieldType
   get controlled(): boolean {
-    return false
+    return isControlledFieldType(this.type)
   }
   get system(): boolean {
     return false
@@ -125,7 +126,7 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
       const spec = WithFieldDescription.fromString(this, input.description)
       specs.push(spec)
     }
-    if (isBoolean(input.required)) {
+    if (isBoolean(input.required) && !this.controlled) {
       specs.push(new WithFieldRequirement(this, input.required))
     }
     return and(...specs)

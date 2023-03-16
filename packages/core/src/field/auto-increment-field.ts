@@ -13,9 +13,6 @@ import type { IFieldVisitor } from './field.visitor.js'
 
 export class AutoIncrementField extends BaseField<IAutoIncrementField> {
   type: AutoIncrementFieldType = 'auto-increment'
-  override get controlled() {
-    return true
-  }
 
   override get system() {
     return false
