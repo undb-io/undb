@@ -8,7 +8,7 @@ export const SelectionHeader: React.FC<{ table: Table<TData> }> = ({ table }) =>
   const { classes, cx } = usePinnedStyles({})
 
   return (
-    <Box component="th" className={cx([classes.cell, classes.sticky])} w="40px">
+    <Box component="th" className={cx([classes.cell, classes.sticky])} w="40px" sx={{ zIndex: 1000 }}>
       <Checkbox
         size="xs"
         checked={table.getIsAllRowsSelected()}

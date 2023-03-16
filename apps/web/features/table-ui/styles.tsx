@@ -57,6 +57,10 @@ export const tableStyles = (theme: MantineTheme): CSSObject => ({
     borderBottom: '1px solid ' + theme.colors.gray[2],
   },
   'tbody tr td': {
+    ':first-child': {
+      paddingRight: 3,
+      paddingLeft: 3,
+    },
     ':last-child': {
       border: '0',
     },
