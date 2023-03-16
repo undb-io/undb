@@ -74,7 +74,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
         if (!field) continue
 
         if (field instanceof CoreSelectField) {
-          const column = new UnderlyingSelectColumn(field)
+          const column = new UnderlyingSelectColumn(field, this.table.id.value)
           const order = sort.direction === 'asc' ? field.options.options : [...field.options.options].reverse()
           this.qb.orderByRaw(`
             CASE ${TABLE_ALIAS}.${column.name}
@@ -83,7 +83,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
             END
           `)
         } else {
-          const column = UnderlyingColumnFactory.create(field)
+          const column = UnderlyingColumnFactory.create(field, this.table.id.value)
           if (Array.isArray(column)) {
             for (const c of column) {
               this.qb.orderBy(`${TABLE_ALIAS}.${c.name}`, sort.direction)
@@ -129,7 +129,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
 
   select(): this {
     const fields = this.view.getVisibleFields([...this.schemaMap.values()])
-    const columns = UnderlyingColumnFactory.createMany(fields)
+    const columns = UnderlyingColumnFactory.createMany(fields, this.table.id.value)
 
     const names = union(
       columns.map((c) => c.name),

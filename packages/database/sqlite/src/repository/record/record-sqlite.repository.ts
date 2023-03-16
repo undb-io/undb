@@ -70,7 +70,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     const qb = knex.queryBuilder()
     const spec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
 
-    const columns = UnderlyingColumnFactory.createMany([...schema.values()])
+    const columns = UnderlyingColumnFactory.createMany([...schema.values()], tableId)
     qb.select(columns.map((c) => c.name))
 
     const qv = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
@@ -86,7 +86,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     const knex = this.em.getKnex()
     const qb = knex.queryBuilder().from(tableId)
 
-    const columns = UnderlyingColumnFactory.createMany([...schema.values()])
+    const columns = UnderlyingColumnFactory.createMany([...schema.values()], tableId)
     qb.select(columns.map((c) => c.name))
 
     const qv = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)

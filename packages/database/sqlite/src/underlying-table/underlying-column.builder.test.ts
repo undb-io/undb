@@ -22,7 +22,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create auto increment column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb)
+      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
       builder.createAutoIncrement()
     })
 
@@ -34,8 +34,8 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create id column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb)
-      builder.createId(tableName)
+      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
+      builder.createId()
     })
 
     expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`id` varchar(255) not null)"')
@@ -44,7 +44,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create created_at column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb)
+      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
       builder.createCreatedAt()
     })
 
@@ -56,8 +56,8 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create updated_at column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb)
-      builder.createUpdatedAt(tableName)
+      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
+      builder.createUpdatedAt()
     })
 
     expect(sb.toQuery()).toMatchInlineSnapshot(
@@ -68,7 +68,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create string column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb)
+      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
       builder.createUnderlying([StringField.create({ id: 'fldid', name: 'name' })])
     })
 
@@ -78,7 +78,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create number column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb)
+      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
       builder.createUnderlying([NumberField.create({ id: 'fldid', name: 'name' })])
     })
 
@@ -88,7 +88,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create bool column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb)
+      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
       builder.createUnderlying([BoolField.create({ id: 'fldid', name: 'name' })])
     })
 
@@ -98,7 +98,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create date column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb)
+      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
       builder.createUnderlying([DateField.create({ id: 'fldid', name: 'name' })])
     })
 
@@ -108,7 +108,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create date range column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb)
+      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
       builder.createUnderlying([DateRangeField.create({ id: 'fldid', name: 'name' })])
     })
 
@@ -120,7 +120,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create select column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb)
+      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
       builder.createUnderlying([SelectField.create({ id: 'fldid', name: 'name', options: [] })])
     })
 
@@ -130,7 +130,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create reference column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb)
+      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
       builder.createUnderlying([ReferenceField.create({ id: 'fldid', name: 'name' })])
     })
 
@@ -140,7 +140,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create tree column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb)
+      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
       builder.createUnderlying([TreeField.create({ id: 'fldid', name: 'name' })])
     })
 

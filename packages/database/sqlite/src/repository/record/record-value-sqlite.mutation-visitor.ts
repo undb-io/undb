@@ -4,6 +4,7 @@ import type {
   AutoIncrementFieldValue,
   BoolFieldValue,
   ColorFieldValue,
+  CountFieldValue,
   CreatedAtFieldValue,
   DateFieldValue,
   DateRangeFieldValue,
@@ -235,5 +236,9 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
         await this.em.execute(update)
       }
     })
+  }
+
+  count(value: CountFieldValue): void {
+    throw new Error('Method not implemented.')
   }
 }

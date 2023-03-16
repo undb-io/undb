@@ -207,7 +207,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             field={field}
             label={
               <Center>
-                label
+                {label}
                 <ActionIcon
                   ml="xs"
                   size="xs"
@@ -351,7 +351,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
       render={(form) => (
         <TextInput
           data-auto-focus
-          disabled={field.system}
+          disabled={field.system || field.controlled}
           icon={<FieldIcon type={field.type} />}
           label={label}
           {...form.field}
@@ -359,6 +359,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
           placeholder={desciption}
           required={required}
           error={form.fieldState.error?.message}
+          readOnly={field.controlled}
         />
       )}
     />

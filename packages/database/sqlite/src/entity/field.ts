@@ -3,6 +3,7 @@ import type {
   IAutoIncrementFieldQuerySchema,
   IBoolFieldQuerySchema,
   IColorFieldQuerySchema,
+  ICountFieldQuerySchema,
   ICreatedAtFieldQueryScheam,
   IDateFieldQuerySchema,
   IDateRangeFieldQuerySchema,
@@ -23,6 +24,7 @@ import {
   AutoIncrementField as CoreAutoIncrementField,
   BoolField as CoreBoolField,
   ColorField as CoreColorField,
+  CountField as CoreCountField,
   CreatedAtField as CoreCreatedAtField,
   DateField as CoreDateField,
   DateRangeField as CoreDateRangeField,
@@ -46,6 +48,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryKey,
   Property,
   SmallIntType,
@@ -103,6 +106,7 @@ export abstract class Field extends BaseEntity {
       'tree',
       'parent',
       'rating',
+      'count',
     ],
   })
   type: IFieldType
@@ -565,7 +569,7 @@ export class ParentField extends Field {
   }
 
   @Property()
-  treeFieldId!: string
+  treeFieldId: string
 
   @ManyToMany({ entity: () => Field, owner: true })
   displayFields = new Collection<Field>(this)
@@ -595,6 +599,38 @@ export class ParentField extends Field {
   }
 }
 
+@Entity({ discriminatorValue: 'count' })
+export class CountField extends Field {
+  constructor(table: Table, field: CoreCountField) {
+    super(table, field)
+  }
+
+  @OneToOne({ entity: () => Field })
+  referenceField!: Field
+
+  toDomain(): CoreCountField {
+    return CoreCountField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'count',
+      required: !!this.required,
+      referenceFieldId: this.referenceField.id,
+    })
+  }
+
+  toQuery(): ICountFieldQuerySchema {
+    return {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'count',
+      referenceFieldId: this.referenceField.id,
+      required: !!this.required,
+    }
+  }
+}
+
 export type IField =
   | IdField
   | CreatedAtField
@@ -612,6 +648,7 @@ export type IField =
   | TreeField
   | ParentField
   | RatingField
+  | CountField
 
 export const fieldEntities = [
   IdField,
@@ -630,4 +667,5 @@ export const fieldEntities = [
   TreeField,
   ParentField,
   RatingField,
+  CountField,
 ]

@@ -9,6 +9,7 @@ import { TablePicker } from '../table/table-picker'
 import { useNullableCurrentTable } from '../../hooks/use-current-table'
 import { DateFormatPicker } from './date-format-picker'
 import { useTranslation } from 'react-i18next'
+import { FieldPicker } from '../field-inputs/field-picker'
 
 interface IProps {
   isNew: boolean
@@ -78,6 +79,25 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
           )}
         />
       </>
+    )
+  }
+
+  if (type === 'count') {
+    return (
+      <Controller
+        name="referenceFieldId"
+        render={(props) => (
+          <FieldPicker
+            label={<FieldInputLabel>{t('Reference Field')}</FieldInputLabel>}
+            fields={
+              table?.schema.fields
+                .filter((f) => f.type === 'reference')
+                .map((f) => ({ id: f.id.value, type: f.type, name: f.name.value })) ?? []
+            }
+            {...props.field}
+          />
+        )}
+      />
     )
   }
 

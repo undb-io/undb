@@ -1,6 +1,7 @@
 import type { AutoIncrementField } from './auto-increment-field.js'
 import type { BoolField } from './bool-field.js'
 import type { ColorField } from './color-field.js'
+import type { CountField } from './count-field.js'
 import type { CreatedAtField } from './created-at-field.js'
 import type { DateField } from './date-field.js'
 import type { DateRangeField } from './date-range-field.js'
@@ -32,4 +33,5 @@ export interface IFieldVisitor {
   tree(field: TreeField): void
   parent(field: ParentField): void
   rating(field: RatingField): void
+  count(field: CountField): void
 }

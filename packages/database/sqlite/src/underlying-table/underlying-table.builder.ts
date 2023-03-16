@@ -11,11 +11,11 @@ export class UnderlyingTableBuilder extends BaseEntityManager {
     const knex = this.em.getKnex()
     const query = knex.schema
       .createTable(table.id.value, (tb) => {
-        const queries = new UnderlyingColumnBuilder(knex, tb)
+        const queries = new UnderlyingColumnBuilder(knex, tb, table.id.value, true)
           .createAutoIncrement()
-          .createId(table.id.value)
+          .createId()
           .createCreatedAt()
-          .createUpdatedAt(table.id.value)
+          .createUpdatedAt()
           .createDeletedAt()
           .createUnderlying(table.schema.nonSystemFields)
           .build()

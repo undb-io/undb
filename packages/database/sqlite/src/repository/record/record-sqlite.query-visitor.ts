@@ -69,7 +69,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     if (!field) return TABLE_ALIAS + '.' + fieldId
 
     // TODO: handle date range
-    const column = UnderlyingColumnFactory.create(field) as IUnderlyingColumn
+    const column = UnderlyingColumnFactory.create(field, this.tableId) as IUnderlyingColumn
     return TABLE_ALIAS + '.' + column.name
   }
 

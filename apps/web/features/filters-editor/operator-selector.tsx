@@ -1,4 +1,5 @@
 import type { Field, IOperator } from '@egodb/core'
+import { CountField } from '@egodb/core'
 import { ColorField } from '@egodb/core'
 import { EmailField } from '@egodb/core'
 import { RatingField } from '@egodb/core'
@@ -49,7 +50,7 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
       { value: '$eq', label: t('EQUAL', { ns: 'common' }) as string },
       { value: '$neq', label: t('NOT EQUAL', { ns: 'common' }) as string },
     ]
-  } else if (field instanceof NumberField || field instanceof RatingField) {
+  } else if (field instanceof NumberField || field instanceof RatingField || field instanceof CountField) {
     data = [
       { value: '$eq', label: t('EQUAL', { ns: 'common' }) as string },
       { value: '$neq', label: t('NOT EQUAL', { ns: 'common' }) as string },

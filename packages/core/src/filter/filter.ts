@@ -38,6 +38,8 @@ import type { IColorFilter } from './color.filter.js'
 import { colorFilter } from './color.filter.js'
 import type { IConjunction } from './conjunction.js'
 import { conjunctions } from './conjunction.js'
+import type { ICountFilter } from './count.filter.js'
+import { countFilter, countFilterValue } from './count.filter.js'
 import type { ICreatedAtFilter } from './created-at.filter.js'
 import { createdAtFilter, createdAtFilterValue } from './created-at.filter.js'
 import type { IDateRangeFilter } from './date-range.filter.js'
@@ -60,6 +62,7 @@ import {
   autoIncrementFilterOperators,
   boolFilterOperators,
   colorFilterOperators,
+  countFilterOperators,
   createdAtFilterOperators,
   dateFilterOperators,
   dateRangeFilterOperators,
@@ -104,6 +107,7 @@ export const filterValue = z.union([
   treeFilterValue,
   parentFilterValue,
   ratingFilterValue,
+  countFilterValue,
 ])
 export type IFilterValue = z.infer<typeof filterValue>
 
@@ -124,6 +128,7 @@ export const operaotrs = z.union([
   treeFilterOperators,
   parentFilterOperators,
   ratingFilterOperators,
+  countFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
@@ -144,6 +149,7 @@ const filter = z.discriminatedUnion('type', [
   treeFilter,
   parentFilter,
   ratingFilter,
+  countFilter,
 ])
 
 export type IFilter = z.infer<typeof filter>
@@ -232,7 +238,7 @@ const convertStringFilter = (filter: IStringFilter | IEmailFilter | IColorFilter
 }
 
 const convertNumberFilter = (
-  filter: INumberFilter | IAutoIncrementFilter | IRatingFilter,
+  filter: INumberFilter | IAutoIncrementFilter | IRatingFilter | ICountFilter,
 ): Option<CompositeSpecification> => {
   if (filter.value === undefined) {
     return None
@@ -382,6 +388,7 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
     case 'number':
     case 'rating':
     case 'auto-increment':
+    case 'count':
       return convertNumberFilter(filter)
     case 'date':
     case 'created-at':

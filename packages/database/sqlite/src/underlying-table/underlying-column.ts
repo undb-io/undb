@@ -1,6 +1,7 @@
 import type {
   BoolField,
   ColorField,
+  CountField,
   DateField,
   DateRangeField,
   EmailField,
@@ -20,15 +21,20 @@ import {
   INTERNAL_INCREAMENT_ID_NAME as INTERNAL_AUTO_INCREAMENT_ID_NAME,
 } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
+import type { Promisable } from 'type-fest'
 import type { IUnderlyingColumn } from '../interfaces/underlying-column.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from './constants.js'
 
 export abstract class UnderlyingColumn implements IUnderlyingColumn {
+  constructor(protected readonly tableName: string) {}
+
+  public readonly queries: string[] = []
   get system(): boolean {
     return true
   }
+
   abstract get name(): string
-  abstract build(tb: Knex.TableBuilder, knex: Knex): void
+  abstract build(tb: Knex.TableBuilder, knex: Knex, isNewTable?: boolean): Promisable<void>
 }
 
 export class UnderlyingIdColumn extends UnderlyingColumn {
@@ -82,14 +88,15 @@ export class UnderlyingDeletedAtColumn extends UnderlyingColumn {
 }
 
 abstract class UnderlyingFieldColumn<F extends Field> implements IUnderlyingColumn {
-  constructor(protected readonly field: F) {}
+  constructor(protected readonly field: F, protected readonly tableName: string) {}
+  public readonly queries: string[] = []
   get system(): boolean {
     return false
   }
   get name(): string {
     return this.field.id.value
   }
-  abstract build(tb: Knex.TableBuilder, knex: Knex): void
+  abstract build(tb: Knex.TableBuilder, knex: Knex, isNewTable?: boolean): Promisable<void>
 }
 
 export class UnderlyingStringColumn extends UnderlyingFieldColumn<StringField> {
@@ -195,5 +202,26 @@ export class UnderlyingTreeColumn extends UnderlyingFieldColumn<TreeField> {
 export class UnderlyingParentColumn extends UnderlyingFieldColumn<ParentField> {
   build(tb: Knex.TableBuilder): void {
     tb.string(this.name).nullable()
+  }
+}
+
+export class UnderlyingCountColumn extends UnderlyingFieldColumn<CountField> {
+  /**
+   * 创建 generated column 类型
+   * @param tb -
+   * @param knex -
+   * @param isNewTable - knex 不支持通过 schemaBuilder 创建 generated column，如果支持可以支持创建 stored 类型的 generated column
+   */
+  build(tb: Knex.TableBuilder, knex: Knex, isNewTable?: boolean): void {
+    const query = knex
+      .raw(
+        `
+    ALTER TABLE ${this.tableName} ADD COLUMN
+    ${this.name} INTEGER
+    GENERATED ALWAYS AS (json_array_length(${this.field.referenceFieldId.value})) VIRTUAL
+    `,
+      )
+      .toQuery()
+    this.queries.push(query)
   }
 }

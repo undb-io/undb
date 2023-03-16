@@ -4,6 +4,7 @@ import type {
   AutoIncrementField,
   BoolField,
   ColorField,
+  CountField,
   CreatedAtField,
   DateField,
   DateRangeField,
@@ -73,6 +74,9 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
     throw new Error('Method not implemented.')
   }
   select(value: SelectField): void {
+    throw new Error('Method not implemented.')
+  }
+  count(field: CountField): void {
     throw new Error('Method not implemented.')
   }
   reference(field: ReferenceField): void {

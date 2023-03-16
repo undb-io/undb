@@ -21,7 +21,7 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
     const schema = table.schema.toIdMap()
 
     const closureTable = new ClosureTable(tableId, field)
-    const columns = UnderlyingColumnFactory.createMany(table.schema.fields)
+    const columns = UnderlyingColumnFactory.createMany(table.schema.fields, tableId)
 
     const alias = TABLE_ALIAS
 

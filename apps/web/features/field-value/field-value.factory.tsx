@@ -17,7 +17,7 @@ import { BoolValue } from './bool-value'
 import { DateRangeValue } from './date-range-value'
 import { DateValue } from './date-value'
 import { RecordId } from './record-id'
-import { Rating, Text } from '@egodb/ui'
+import { Flex, Group, Rating, Text } from '@egodb/ui'
 import type { FieldValue } from '@egodb/core'
 import { Option } from '../option/option'
 import { ColorValue } from './color-value'
@@ -83,20 +83,20 @@ export const FieldValueFactory: React.FC<{
 
       if (unpacked?.length && !values?.length) {
         return (
-          <>
+          <Group spacing={3}>
             {unpacked.map((_, index) => (
               <ReferenceValue key={index} />
             ))}
-          </>
+          </Group>
         )
       }
 
       return (
-        <>
+        <Group spacing={3}>
           {values.map((value, index) => (
             <ReferenceValue key={index} values={value} />
           ))}
-        </>
+        </Group>
       )
     }
 

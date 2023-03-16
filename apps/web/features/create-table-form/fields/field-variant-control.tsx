@@ -9,6 +9,7 @@ import { TablePicker } from '../../table/table-picker'
 import type { FieldBase } from '../../field-inputs/field-picker.type'
 import { DateFormatPicker } from '../../field/date-format-picker'
 import { useTranslation } from 'react-i18next'
+import { FieldPicker } from '../../field-inputs/field-picker'
 
 interface IProps {
   index: number
@@ -88,6 +89,27 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
     )
   }
 
+  if (type === 'count') {
+    const schema = form.watch('schema')
+
+    return (
+      <Controller
+        name={`schema.${index}.referenceFieldId`}
+        render={(props) => (
+          <FieldPicker
+            variant="filled"
+            label={<FieldInputLabel>{t('Reference Field')}</FieldInputLabel>}
+            fields={
+              schema
+                .filter((f) => f.type === 'reference')
+                .map((f) => ({ id: f.id, type: f.type, name: f.name })) as FieldBase[]
+            }
+            {...props.field}
+          />
+        )}
+      />
+    )
+  }
   if (type === 'date' || type === 'date-range' || type === 'created-at' || type === 'updated-at') {
     return (
       <Controller
