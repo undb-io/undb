@@ -1,4 +1,5 @@
 import type { Field, IOperator } from '@egodb/core'
+import { ColorField } from '@egodb/core'
 import { EmailField } from '@egodb/core'
 import { RatingField } from '@egodb/core'
 import { IdField } from '@egodb/core'
@@ -42,6 +43,11 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
       { value: '$contains', label: t('CONTAINS', { ns: 'common' }) as string },
       { value: '$starts_with', label: t('STARTS WITH', { ns: 'common' }) as string },
       { value: '$ends_with', label: t('ENDS WITH', { ns: 'common' }) as string },
+    ]
+  } else if (field instanceof ColorField) {
+    data = [
+      { value: '$eq', label: t('EQUAL', { ns: 'common' }) as string },
+      { value: '$neq', label: t('NOT EQUAL', { ns: 'common' }) as string },
     ]
   } else if (field instanceof NumberField || field instanceof RatingField) {
     data = [
