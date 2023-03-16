@@ -1,4 +1,4 @@
-import { Checkbox, Box, useHover, Text } from '@egodb/ui'
+import { Checkbox, Box, useHover, Text, Center } from '@egodb/ui'
 import type { Row } from '@tanstack/react-table'
 import type { TData } from './interface'
 import { usePinnedStyles } from './styles'
@@ -24,9 +24,15 @@ export const SelectionCell: React.FC<{ row: Row<TData> }> = ({ row }) => {
     <Box component="td" className={cx([classes.cell, classes.sticky])} w="40px">
       <Box ref={ref} onClick={(e) => e.stopPropagation()}>
         {showCheckbox ? (
-          checkbox
+          <Center>{checkbox}</Center>
         ) : (
-          <Text align="center" color="gray.6" size="sm">
+          <Text
+            align="center"
+            color="gray.6"
+            fz="xs"
+            size="sm"
+            sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+          >
             {row.index + 1}
           </Text>
         )}
