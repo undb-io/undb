@@ -34,6 +34,7 @@ import type { IAutoIncrementFilter } from './auto-increment.filter.js'
 import { autoIncrementFilter, autoIncrementFilterValue } from './auto-increment.filter.js'
 import type { IBoolFilter } from './bool.filter.js'
 import { boolFilter, boolFilterValue } from './bool.filter.js'
+import type { IColorFilter } from './color.filter.js'
 import { colorFilter } from './color.filter.js'
 import type { IConjunction } from './conjunction.js'
 import { conjunctions } from './conjunction.js'
@@ -200,7 +201,7 @@ const convertIdFilter = (filter: IIdFilter): Option<CompositeSpecification> => {
   }
 }
 
-const convertStringFilter = (filter: IStringFilter | IEmailFilter): Option<CompositeSpecification> => {
+const convertStringFilter = (filter: IStringFilter | IEmailFilter | IColorFilter): Option<CompositeSpecification> => {
   if (filter.value === undefined) {
     return None
   }
@@ -376,6 +377,7 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
       return convertIdFilter(filter)
     case 'string':
     case 'email':
+    case 'color':
       return convertStringFilter(filter)
     case 'number':
     case 'rating':

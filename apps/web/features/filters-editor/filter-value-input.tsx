@@ -1,4 +1,4 @@
-import { CreatedAtField, EmailField, IdField, RatingField, UpdatedAtField } from '@egodb/core'
+import { ColorField, CreatedAtField, EmailField, IdField, RatingField, UpdatedAtField } from '@egodb/core'
 import { DateRangeField } from '@egodb/core'
 import { SelectField } from '@egodb/core'
 import { StringField } from '@egodb/core'
@@ -13,10 +13,11 @@ import type {
   IOperator,
   IRatingFieldValue,
 } from '@egodb/core'
-import { DatePickerInput, NumberInput, Rating, TextInput } from '@egodb/ui'
+import { ColorInput, DatePickerInput, NumberInput, Rating, TextInput } from '@egodb/ui'
 import { OptionPicker } from '../option/option-picker'
 import { RecordsPicker } from '../field-inputs/records-picker'
 import { castArray } from 'lodash-es'
+import { useColors } from '../../hooks/use-colors'
 
 interface IProps {
   field: Field | null
@@ -26,6 +27,8 @@ interface IProps {
 }
 
 export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onChange }) => {
+  const colors = useColors()
+
   if (!field) {
     return null
   }
@@ -37,6 +40,20 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
         variant="filled"
         value={(value ?? '') as string}
         onChange={(event) => onChange(event.target.value)}
+      />
+    )
+  }
+
+  if (field instanceof ColorField) {
+    return (
+      <ColorInput
+        size="xs"
+        variant="filled"
+        onChange={(color) => onChange(color)}
+        value={(value as string) ?? ''}
+        swatches={colors}
+        withinPortal
+        closeOnColorSwatchClick
       />
     )
   }

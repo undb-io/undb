@@ -17,7 +17,14 @@ export const TableFilterEditor: React.FC = () => {
   const [setFilter, { isLoading }] = useSetFilterMutation()
 
   return (
-    <Popover position="bottom-start" opened={opened} onChange={handler.toggle} closeOnClickOutside shadow="md">
+    <Popover
+      position="bottom-start"
+      opened={opened}
+      onChange={handler.toggle}
+      closeOnEscape
+      closeOnClickOutside={false}
+      shadow="md"
+    >
       <Popover.Target>
         <Button
           compact
