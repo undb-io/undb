@@ -1,4 +1,4 @@
-import { CreatedAtField, IdField, RatingField, UpdatedAtField } from '@egodb/core'
+import { CreatedAtField, EmailField, IdField, RatingField, UpdatedAtField } from '@egodb/core'
 import { DateRangeField } from '@egodb/core'
 import { SelectField } from '@egodb/core'
 import { StringField } from '@egodb/core'
@@ -30,7 +30,7 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
     return null
   }
 
-  if (field instanceof StringField) {
+  if (field instanceof StringField || field instanceof EmailField) {
     return (
       <TextInput
         size="xs"

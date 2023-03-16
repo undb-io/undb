@@ -43,6 +43,7 @@ import type { IDateRangeFilter } from './date-range.filter.js'
 import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter.js'
 import type { IDateFilter } from './date.filter.js'
 import { dateFilter, dateFilterValue } from './date.filter.js'
+import type { IEmailFilter } from './email.filter.js'
 import { emailFilter, emailFilterValue } from './email.filter.js'
 import type { IIdFilter } from './id.filter.js'
 import { idFilter, idFilterValue } from './id.filter.js'
@@ -199,7 +200,7 @@ const convertIdFilter = (filter: IIdFilter): Option<CompositeSpecification> => {
   }
 }
 
-const convertStringFilter = (filter: IStringFilter): Option<CompositeSpecification> => {
+const convertStringFilter = (filter: IStringFilter | IEmailFilter): Option<CompositeSpecification> => {
   if (filter.value === undefined) {
     return None
   }
@@ -374,6 +375,7 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
     case 'id':
       return convertIdFilter(filter)
     case 'string':
+    case 'email':
       return convertStringFilter(filter)
     case 'number':
     case 'rating':

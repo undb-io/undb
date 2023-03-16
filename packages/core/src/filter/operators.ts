@@ -26,7 +26,7 @@ export type IIdFilterOperator = z.infer<typeof idFilterOperators>
 export const stringFilterOperators = z.union([$eq, $neq, $contains, $starts_with, $ends_with, $regex])
 export type IStringFilterOperator = z.infer<typeof stringFilterOperators>
 
-export const emailFilterOperators = z.union([$eq, $neq])
+export const emailFilterOperators = z.union([$eq, $neq, $starts_with, $ends_with, $contains])
 export type IEmailFilterOperator = z.infer<typeof emailFilterOperators>
 
 export const colorFilterOperators = z.union([$eq, $neq])
