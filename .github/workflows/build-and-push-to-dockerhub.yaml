@@ -36,8 +36,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/${{ github.repository }}/{{ matrix.target }}
-            docker.io/egodb/{{ matrix.target }}:latest
+            ghcr.io/${{ github.repository }}/${{ matrix.target }}
+            docker.io/egodb/${{ matrix.target }}:latest
 
       - name: Build egodb/${{ matrix.target }} and push
         uses: docker/build-push-action@v4
