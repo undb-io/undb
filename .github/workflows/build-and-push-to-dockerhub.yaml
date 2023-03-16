@@ -31,10 +31,19 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          image: |
+            ghcr.io/${{ github.repository }}/{{ matrix.target }}:latest
+            docker.io/egodb/{{ matrix.target }}:latest
+
       - name: Build egodb/${{ matrix.target }} and push
         uses: docker/build-push-action@v4
         with:
           push: true
           context: .
           file: ./docker/${{ matrix.target }}/Dockerfile
-          tags: egodb/${{ matrix.target }}:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
