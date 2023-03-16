@@ -35,7 +35,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          image: |
+          images: |
             ghcr.io/${{ github.repository }}/{{ matrix.target }}:latest
             docker.io/egodb/{{ matrix.target }}:latest
 
