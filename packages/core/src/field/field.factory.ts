@@ -1,6 +1,7 @@
 import { AutoIncrementField } from './auto-increment-field.js'
 import { BoolField } from './bool-field.js'
 import { ColorField } from './color-field.js'
+import { CountField } from './count-field.js'
 import { CreatedAtField } from './created-at-field.js'
 import { DateField } from './date-field.js'
 import { DateRangeField } from './date-range-field.js'
@@ -68,6 +69,9 @@ export class FieldFactory {
       case 'parent': {
         return ParentField.create(input)
       }
+      case 'count': {
+        return CountField.create(input)
+      }
     }
   }
 
@@ -120,6 +124,9 @@ export class FieldFactory {
       }
       case 'parent': {
         return ParentField.unsafeCreate(input)
+      }
+      case 'count': {
+        return CountField.unsafeCreate(input)
       }
     }
   }
