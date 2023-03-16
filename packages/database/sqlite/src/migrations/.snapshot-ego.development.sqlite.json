@@ -299,9 +299,9 @@
             "reference_field_id"
           ],
           "composite": false,
-          "keyName": "ego_field_reference_field_id_unique",
+          "keyName": "ego_field_reference_field_id_index",
           "primary": false,
-          "unique": true
+          "unique": false
         },
         {
           "keyName": "primary",
