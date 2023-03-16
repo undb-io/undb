@@ -14,9 +14,6 @@ import type { IFieldVisitor } from './field.visitor.js'
 
 export class CreatedAtField extends BaseDateField<ICreatedAtField> {
   type: CreatedAtFieldType = 'created-at'
-  override get controlled() {
-    return true
-  }
 
   override get system() {
     return true

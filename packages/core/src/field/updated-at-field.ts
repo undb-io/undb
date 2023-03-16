@@ -13,9 +13,6 @@ import type {
 
 export class UpdatedAtField extends BaseDateField<IUpdatedAtField> {
   type: UpdatedAtFieldType = 'updated-at'
-  override get controlled() {
-    return true
-  }
 
   override get system() {
     return true

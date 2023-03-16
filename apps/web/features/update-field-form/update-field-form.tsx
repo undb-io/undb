@@ -121,12 +121,14 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
             </Button>
 
             <Group position="right">
-              <Switch
-                {...form.register('required')}
-                checked={form.watch('required')}
-                size="xs"
-                label={t('Required', { ns: 'common' })}
-              />
+              {!field.controlled && (
+                <Switch
+                  {...form.register('required')}
+                  checked={form.watch('required')}
+                  size="xs"
+                  label={t('Required', { ns: 'common' })}
+                />
+              )}
               <Button
                 compact
                 size="xs"

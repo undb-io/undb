@@ -17,6 +17,7 @@ import { FieldVariantControl } from '../field/field-variant-control'
 import { FieldItem } from '../field-inputs/field-item'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import type { ICreateFieldSchema } from '@egodb/core'
+import { isControlledFieldType } from '@egodb/core'
 import { createFieldSchema } from '@egodb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { ICreateFieldProps } from './create-field.props'
@@ -56,6 +57,8 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
     closeAllModals()
   })
 
+  const type = form.watch('type')
+
   return (
     <FormProvider {...form}>
       <form onSubmit={onSubmit}>
@@ -72,7 +75,7 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
                 label={<FieldInputLabel>{t('Type', { ns: 'common' })}</FieldInputLabel>}
                 data={FIELD_SELECT_ITEMS.map((item) => ({ value: item.value, label: t(item.label!) as string }))}
                 itemComponent={FieldItem}
-                icon={<FieldIcon type={form.watch('type')} />}
+                icon={<FieldIcon type={type} />}
                 withinPortal
               />
             )}
@@ -101,7 +104,9 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
               {t('Add Description')}
             </Button>
             <Group position="right">
-              <Switch {...form.register('required')} size="xs" label={t('Required', { ns: 'common' })} />
+              {!isControlledFieldType(type) && (
+                <Switch {...form.register('required')} size="xs" label={t('Required', { ns: 'common' })} />
+              )}
               <Button
                 variant="subtle"
                 compact

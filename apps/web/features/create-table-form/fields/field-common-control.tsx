@@ -1,3 +1,4 @@
+import { isControlledFieldType } from '@egodb/core'
 import type { ICreateTableInput } from '@egodb/cqrs'
 import { ActionIcon, Text, Button, Group, IconDots, Menu, Switch } from '@egodb/ui'
 import { useResetAtom } from 'jotai/utils'
@@ -11,6 +12,7 @@ interface IProps {
 
 export const FieldCommonControl: React.FC<IProps> = ({ index }) => {
   const form = useFormContext<ICreateTableInput>()
+  const type = form.watch(`schema.${index}.type`)
 
   const { remove } = useFieldArray<ICreateTableInput>({
     name: 'schema',
@@ -19,7 +21,9 @@ export const FieldCommonControl: React.FC<IProps> = ({ index }) => {
   const resetActiveField = useResetAtom(activeFieldAtom)
   return (
     <Group position="right">
-      <Switch {...form.register(`schema.${index}.required`)} size="xs" label={t('Required', { ns: 'common' })} />
+      {!isControlledFieldType(type) && (
+        <Switch {...form.register(`schema.${index}.required`)} size="xs" label={t('Required', { ns: 'common' })} />
+      )}
       <Menu>
         <Menu.Target>
           <ActionIcon variant="subtle">
