@@ -336,7 +336,7 @@ export type IReferenceField = IBaseField & { displayFields?: DisplayFields; fore
 export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?: DisplayFields }
 export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: DisplayFields }
 
-export type ICountField = IBaseField
+export type ICountField = IBaseField & { referenceFieldId: FieldId }
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField
 

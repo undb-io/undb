@@ -5,6 +5,7 @@ import type { CountType, ICreateCountFieldInput, ICreateCountFieldValue } from '
 import { BaseField } from './field.base.js'
 import type { ICountField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
+import { FieldId } from './value-objects/field-id.vo.js'
 
 export class CountField extends BaseField<ICountField> {
   type: CountType = 'count'
@@ -14,11 +15,17 @@ export class CountField extends BaseField<ICountField> {
   }
 
   static create(input: Omit<ICreateCountFieldInput, 'type'>): CountField {
-    return new CountField(super.createBase(input))
+    return new CountField({
+      ...super.createBase(input),
+      referenceFieldId: FieldId.fromString(input.referenceFieldId),
+    })
   }
 
   static unsafeCreate(input: ICreateCountFieldInput): CountField {
-    return new CountField(super.unsafeCreateBase(input))
+    return new CountField({
+      ...super.unsafeCreateBase(input),
+      referenceFieldId: FieldId.fromString(input.referenceFieldId),
+    })
   }
 
   createValue(value: ICreateCountFieldValue): CountFieldValue {

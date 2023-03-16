@@ -2,6 +2,7 @@ import * as z from 'zod'
 import { CountField } from './count-field.js'
 import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
+import { fieldIdSchema } from './value-objects/field-id.schema.js'
 
 export const countTypeSchema = z.literal('count')
 export type CountType = z.infer<typeof countTypeSchema>
@@ -9,7 +10,11 @@ const countTypeObjectSchema = z.object({
   [FIELD_TYPE_KEY]: countTypeSchema,
 })
 
-export const createCountFieldSchema = createBaseFieldSchema.merge(countTypeObjectSchema)
+export const createCountFieldSchema = createBaseFieldSchema.merge(countTypeObjectSchema).merge(
+  z.object({
+    referenceFieldId: fieldIdSchema,
+  }),
+)
 export type ICreateCountFieldInput = z.infer<typeof createCountFieldSchema>
 
 export const updateCountFieldSchema = updateBaseFieldSchema.merge(countTypeObjectSchema)
