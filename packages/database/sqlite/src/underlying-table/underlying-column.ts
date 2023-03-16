@@ -206,6 +206,12 @@ export class UnderlyingParentColumn extends UnderlyingFieldColumn<ParentField> {
 }
 
 export class UnderlyingCountColumn extends UnderlyingFieldColumn<CountField> {
+  /**
+   * 创建 generated column 类型
+   * @param tb -
+   * @param knex -
+   * @param isNewTable - knex 不支持通过 schemaBuilder 创建 generated column，如果支持可以支持创建 stored 类型的 generated column
+   */
   build(tb: Knex.TableBuilder, knex: Knex, isNewTable?: boolean): void {
     const query = knex
       .raw(

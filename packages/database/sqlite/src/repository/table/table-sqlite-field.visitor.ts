@@ -148,6 +148,7 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   count(value: CoreCountField): void {
     const field = new CountField(this.table, value)
+    field.referenceField = this.em.getReference(Field, value.referenceFieldId.value)
 
     this.em.persist(field)
   }

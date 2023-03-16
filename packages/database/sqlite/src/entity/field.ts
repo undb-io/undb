@@ -603,11 +603,10 @@ export class ParentField extends Field {
 export class CountField extends Field {
   constructor(table: Table, field: CoreCountField) {
     super(table, field)
-    this.referenceFieldId = field.referenceFieldId.value
   }
 
   @OneToOne({ entity: () => Field })
-  referenceFieldId: string
+  referenceField!: Field
 
   toDomain(): CoreCountField {
     return CoreCountField.unsafeCreate({
@@ -616,7 +615,7 @@ export class CountField extends Field {
       description: this.description,
       type: 'count',
       required: !!this.required,
-      referenceFieldId: this.referenceFieldId,
+      referenceFieldId: this.referenceField.id,
     })
   }
 
@@ -626,7 +625,7 @@ export class CountField extends Field {
       name: this.name,
       description: this.description,
       type: 'count',
-      referenceFieldId: this.referenceFieldId,
+      referenceFieldId: this.referenceField.id,
       required: !!this.required,
     }
   }

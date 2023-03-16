@@ -246,8 +246,8 @@
           "nullable": true,
           "mappedType": "integer"
         },
-        "reference_field_id_id": {
-          "name": "reference_field_id_id",
+        "reference_field_id": {
+          "name": "reference_field_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -296,10 +296,10 @@
         },
         {
           "columnNames": [
-            "reference_field_id_id"
+            "reference_field_id"
           ],
           "composite": false,
-          "keyName": "ego_field_reference_field_id_id_unique",
+          "keyName": "ego_field_reference_field_id_unique",
           "primary": false,
           "unique": true
         },
@@ -341,10 +341,10 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "ego_field_reference_field_id_id_foreign": {
-          "constraintName": "ego_field_reference_field_id_id_foreign",
+        "ego_field_reference_field_id_foreign": {
+          "constraintName": "ego_field_reference_field_id_foreign",
           "columnNames": [
-            "reference_field_id_id"
+            "reference_field_id"
           ],
           "localTableName": "ego_field",
           "referencedColumnNames": [

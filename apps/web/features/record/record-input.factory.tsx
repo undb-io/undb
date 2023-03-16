@@ -207,7 +207,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             field={field}
             label={
               <Center>
-                label
+                {label}
                 <ActionIcon
                   ml="xs"
                   size="xs"
