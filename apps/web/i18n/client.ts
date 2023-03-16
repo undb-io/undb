@@ -1,6 +1,8 @@
 import i18n from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import { initReactI18next } from 'react-i18next'
+import zodEn from 'zod-i18n-map/locales/en/zod.json'
+import zodZh from 'zod-i18n-map/locales/zh-CN/zod.json'
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -143,6 +145,7 @@ i18n
           'N Views': '{{n}} view(s)',
           'Add Description': 'Add Description',
         },
+        zod: zodEn,
       },
       'zh-CN': {
         common: {
@@ -280,9 +283,10 @@ i18n
           'N Views': '{{n}} 个视图',
           'Add Description': '添加列描述',
         },
+        zod: zodZh,
       },
     },
-    ns: ['common', 'table'],
+    ns: ['common', 'table', 'zod'],
     defaultNS: 'table',
     lng: undefined, // if you're using a language detector, do not define the lng option
     fallbackLng: 'zh-CN',

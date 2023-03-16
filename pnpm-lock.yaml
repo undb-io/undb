@@ -175,6 +175,7 @@ importers:
       type-fest: ^3.6.1
       typescript: ^4.9.5
       use-deep-compare-effect: ^1.8.1
+      zod-i18n-map: ^2.8.0
     dependencies:
       '@dnd-kit/core': 6.0.8_biqbaboplfbrettd7655fr4n2y
       '@dnd-kit/modifiers': 6.0.1_52scne4zmdeyjh2otzkgz2xfvu
@@ -205,6 +206,7 @@ importers:
       react-i18next: 12.2.0_nuvg7z3l7c7q3mgp6kac62miay
       react-redux: 8.0.5_3xleytyzprlgycb2ded54tx72i
       use-deep-compare-effect: 1.8.1_react@18.2.0
+      zod-i18n-map: 2.8.0_i18next@22.4.11
     devDependencies:
       '@egodb/eslint-config': link:../../packages/eslint-config
       '@hookform/devtools': 4.3.1_zula6vjvt3wdocc4mwcxqa6nzi
@@ -260,6 +262,7 @@ importers:
       vitest: ^0.29.2
       vitest-mock-extended: ^1.1.0
       zod: ^3.21.4
+      zod-i18n-map: ^2.8.0
     dependencies:
       '@egodb/domain': link:../domain
       array-move: 4.0.0
@@ -268,6 +271,7 @@ importers:
       lodash-es: 4.17.21
       oxide.ts: 1.1.0
       zod: 3.21.4
+      zod-i18n-map: 2.8.0_zod@3.21.4
     devDependencies:
       '@types/lodash': 4.14.191
       '@types/lodash-es': 4.17.6
@@ -13937,6 +13941,24 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
+
+  /zod-i18n-map/2.8.0_i18next@22.4.11:
+    resolution: {integrity: sha512-1ydKp+XNwzw0L7L9VgNVP7wNAX8Bv947yflRyOo+6ZXiMUFyjlXw5+cGes2mFIU2j5WicihT4apzytoNmP0UtQ==}
+    peerDependencies:
+      i18next: '>=21.3.0'
+      zod: '>=3.17.0'
+    dependencies:
+      i18next: 22.4.11
+    dev: false
+
+  /zod-i18n-map/2.8.0_zod@3.21.4:
+    resolution: {integrity: sha512-1ydKp+XNwzw0L7L9VgNVP7wNAX8Bv947yflRyOo+6ZXiMUFyjlXw5+cGes2mFIU2j5WicihT4apzytoNmP0UtQ==}
+    peerDependencies:
+      i18next: '>=21.3.0'
+      zod: '>=3.17.0'
+    dependencies:
+      zod: 3.21.4
+    dev: false
 
   /zod/3.20.6:
     resolution: {integrity: sha512-oyu0m54SGCtzh6EClBVqDDlAYRz4jrVtKwQ7ZnsEmMI9HnzuZFj8QFwAY1M5uniIYACdGvv0PBWPF2kO0aNofA==}

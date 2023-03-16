@@ -1,3 +1,5 @@
+import './setup-zod'
+
 export * from './field/index.js'
 export * from './filter/index.js'
 export * from './fixtures/index.js'
