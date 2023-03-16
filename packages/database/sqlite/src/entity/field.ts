@@ -48,7 +48,6 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryKey,
   Property,
   SmallIntType,
@@ -498,6 +497,9 @@ export class ReferenceField extends Field {
   @ManyToMany({ entity: () => Field, owner: true })
   displayFields = new Collection<Field>(this)
 
+  @OneToMany(() => CountField, (f) => f.referenceField)
+  countFields = new Collection<CountField>(this)
+
   toDomain(): CoreReferenceField {
     return CoreReferenceField.unsafeCreate({
       id: this.id,
@@ -535,6 +537,9 @@ export class TreeField extends Field {
 
   @ManyToMany({ entity: () => Field, owner: true })
   displayFields = new Collection<Field>(this)
+
+  @OneToMany(() => CountField, (f) => f.referenceField)
+  countFields = new Collection<CountField>(this)
 
   toDomain(): CoreTreeField {
     return CoreTreeField.unsafeCreate({
@@ -605,8 +610,8 @@ export class CountField extends Field {
     super(table, field)
   }
 
-  @OneToOne({ entity: () => Field })
-  referenceField!: Field
+  @ManyToOne({ entity: () => ReferenceField || TreeField, inversedBy: (f) => f.countFields })
+  referenceField!: ReferenceField | TreeField
 
   toDomain(): CoreCountField {
     return CoreCountField.unsafeCreate({

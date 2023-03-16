@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230316080811 extends Migration {
+export class Migration20230316113524 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `ego_table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `views_order` text null, primary key (`id`));',
@@ -14,7 +14,7 @@ export class Migration20230316080811 extends Migration {
     this.addSql('create index `ego_field_table_id_index` on `ego_field` (`table_id`);')
     this.addSql('create index `ego_field_type_index` on `ego_field` (`type`);')
     this.addSql('create index `ego_field_foreign_table_id_index` on `ego_field` (`foreign_table_id`);')
-    this.addSql('create unique index `ego_field_reference_field_id_unique` on `ego_field` (`reference_field_id`);')
+    this.addSql('create index `ego_field_reference_field_id_index` on `ego_field` (`reference_field_id`);')
 
     this.addSql(
       "create table `ego_option` (`key` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `field_id` text null, `name` text not null, `color_name` text check (`color_name` in ('dark', 'gray', 'red', 'pink', 'grape', 'violet', 'indigo', 'blue', 'cyan', 'teal', 'green', 'lime', 'yellow', 'orange')) not null, `color_shade` integer not null, constraint `ego_option_field_id_foreign` foreign key(`field_id`) references `ego_field`(`id`) on delete cascade on update cascade, primary key (`key`));",
