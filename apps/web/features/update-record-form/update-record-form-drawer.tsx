@@ -53,6 +53,9 @@ export const UpdateRecordFormDrawer: React.FC = () => {
     defaultValues,
     resolver: zodResolver(createMutateRecordValuesSchema(table.schema.fields)),
     mode: 'onBlur',
+    delayError: 300,
+    criteriaMode: 'all',
+    reValidateMode: 'onChange',
   })
 
   useEffect(() => {
