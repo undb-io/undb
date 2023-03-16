@@ -93,6 +93,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             placeholder={desciption}
             required={required}
             error={form.fieldState.error?.message}
+            withinPortal
           />
         )}
       />
@@ -190,6 +191,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             placeholder={desciption}
             required={required}
             error={form.fieldState.error?.message}
+            withinPortal
           />
         )}
       />
@@ -227,6 +229,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             placeholder={desciption}
             required={required}
             error={form.fieldState.error?.message}
+            withinPortal
           />
         )}
       />
@@ -248,6 +251,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             placeholder={desciption}
             required={required}
             error={form.fieldState.error?.message}
+            withinPortal
           />
         )}
       />
@@ -269,6 +273,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             placeholder={desciption}
             required={required}
             error={form.fieldState.error?.message}
+            withinPortal
           />
         )}
       />
