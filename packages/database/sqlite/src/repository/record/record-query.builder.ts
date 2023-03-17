@@ -109,7 +109,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     this.#jobs.push(async () => {
       const lookingField = this.table.schema.getLookingFields()
       for (const [index, looking] of lookingField.entries()) {
-        const visitor = new RecordSqliteReferenceQueryVisitor(this.table.id.value, index, this.qb, this.knex)
+        const visitor = new RecordSqliteReferenceQueryVisitor(this.table, index, this.qb, this.knex)
         looking.accept(visitor)
 
         await expandField(looking, getFTAlias(index), this.em, this.knex, this.qb)

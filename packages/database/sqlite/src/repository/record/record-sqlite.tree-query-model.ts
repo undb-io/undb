@@ -43,7 +43,7 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
 
     const lookingFields = table.schema.getLookingFields()
     for (const [index, lookingField] of lookingFields.entries()) {
-      const visitor = new RecordSqliteReferenceQueryVisitor(tableId, index, qb, knex)
+      const visitor = new RecordSqliteReferenceQueryVisitor(table, index, qb, knex)
       lookingField.accept(visitor)
       await expandField(lookingField, alias, em, knex, qb)
     }

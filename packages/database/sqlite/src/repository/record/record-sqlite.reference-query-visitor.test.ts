@@ -1,4 +1,4 @@
-import { ParentField, ReferenceField, TreeField } from '@egodb/core'
+import { createTestTable, ParentField, ReferenceField, Table, TreeField, WithTableId } from '@egodb/core'
 import { Knex } from '@mikro-orm/better-sqlite'
 import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
 
@@ -7,13 +7,19 @@ describe('RecordSqliteReferenceQueryVisitor', () => {
 
   let qb: Knex.QueryBuilder
 
+  let table: Table
+
+  beforeAll(() => {
+    table = createTestTable(WithTableId.fromExistingString('tableTest').unwrap())
+  })
+
   beforeEach(() => {
     // @ts-ignore
     const knex: Knex = global.knex
 
     qb = knex.queryBuilder()
 
-    visitor = new RecordSqliteReferenceQueryVisitor('tabletest', 1, qb, knex)
+    visitor = new RecordSqliteReferenceQueryVisitor(table, 1, qb, knex)
   })
 
   test('refenrence', () => {
