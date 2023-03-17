@@ -360,6 +360,7 @@ export type SystemField = IdField | CreatedAtField | UpdatedAtField
 
 export type IReferenceFieldTypes = IReferenceField | ITreeField | IParentField
 export type ReferenceFieldTypes = ReferenceField | TreeField | ParentField
+export type LookingFieldTypes = ReferenceFieldTypes | LookupField
 export type IDateFieldTypes = IDateField | IDateRangeField | ICreatedAtField | IUpdatedAtField
 export type DateFieldTypes = DateField | DateRangeField | CreatedAtField | UpdatedAtField
 export type ILookupFieldTypes = ICountField | ILookupField
@@ -471,6 +472,7 @@ export const INTERNAL_COLUMN_UPDATED_AT_NAME = 'updated_at'
 export const INTERNAL_DISPLAY_VALUES_NAME = 'display_values'
 
 export interface IAbstractReferenceField {
+  get multiple(): boolean
   get foreignTableId(): Option<string>
   get displayFieldIds(): FieldId[]
   getDisplayValues(values: IRecordDisplayValues): ((string | null)[] | undefined)[]

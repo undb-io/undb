@@ -28,7 +28,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const schema = table.schema.toIdMap()
 
     let builder = new RecordSqliteQueryBuilder(this.em.fork(), table, spec, viewId?.value)
-    builder = await builder.select().from().where().reference().sort().expand(referenceField).build()
+    builder = await builder.select().from().where().looking().sort().expand(referenceField).build()
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb)
 
@@ -45,7 +45,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const schema = table.schema.toIdMap()
 
     let builder = new RecordSqliteQueryBuilder(this.em.fork(), table, spec, viewId?.value)
-    builder = await builder.select().from().where().reference().sort().expand(referenceField).build()
+    builder = await builder.select().from().where().looking().sort().expand(referenceField).build()
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb)
 
@@ -63,7 +63,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const schema = table.schema.toIdMap()
 
     let builder = new RecordSqliteQueryBuilder(this.em.fork(), table, spec)
-    builder = await builder.select().from().where().reference().build()
+    builder = await builder.select().from().where().looking().build()
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb.first())
 

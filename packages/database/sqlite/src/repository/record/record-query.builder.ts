@@ -1,9 +1,15 @@
-import type { IRecordSpec, ReferenceFieldTypes, Table as CoreTable, TableSchemaIdMap, View } from '@egodb/core'
+import type {
+  IRecordSpec,
+  LookupField,
+  ReferenceFieldTypes,
+  Table as CoreTable,
+  TableSchemaIdMap,
+  View,
+} from '@egodb/core'
 import {
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
-  ParentField,
   SelectField as CoreSelectField,
 } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
@@ -20,7 +26,7 @@ export interface IRecordQueryBuilder {
   from(): this
   where(): this
   sort(): this
-  reference(): this
+  looking(): this
   expand(field?: ReferenceFieldTypes): this
   select(): this
   count(): this
@@ -99,30 +105,23 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     return this
   }
 
-  reference(): this {
+  looking(): this {
     this.#jobs.push(async () => {
-      const referenceFields = this.table.schema.getReferenceFields()
-      for (const [index, referenceField] of referenceFields.entries()) {
+      const lookingField = this.table.schema.getLookingFields()
+      for (const [index, looking] of lookingField.entries()) {
         const visitor = new RecordSqliteReferenceQueryVisitor(this.table.id.value, index, this.qb, this.knex)
-        referenceField.accept(visitor)
+        looking.accept(visitor)
 
-        await expandField(
-          referenceField,
-          getFTAlias(index),
-          this.em,
-          this.knex,
-          this.qb,
-          !(referenceField instanceof ParentField),
-        )
+        await expandField(looking, getFTAlias(index), this.em, this.knex, this.qb)
       }
     })
     return this
   }
 
-  expand(field?: ReferenceFieldTypes): this {
+  expand(field?: ReferenceFieldTypes | LookupField): this {
     if (field) {
       this.#jobs.push(async () => {
-        await expandField(field, TABLE_ALIAS, this.em, this.knex, this.qb, true)
+        await expandField(field, TABLE_ALIAS, this.em, this.knex, this.qb)
       })
     }
     return this
@@ -138,6 +137,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     ).map((name) => `${TABLE_ALIAS}.${name}`)
 
     this.qb.select(names)
+
     return this
   }
 

@@ -1,4 +1,4 @@
-import type { IQueryTreeRecords, ReferenceFieldTypes } from '@egodb/core'
+import type { IQueryTreeRecords, LookupField, ReferenceFieldTypes } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { Field } from '../../entity/field.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
@@ -26,12 +26,11 @@ export const getFieldIdFromExpand = (expand: ExpandColumnName): string => expand
 
 // TODO: 如果 core table service 可以获取完整的 table 和其关联的 fields 那在这个函数里可以不用查询 displayFields
 export const expandField = async (
-  field: ReferenceFieldTypes,
+  field: ReferenceFieldTypes | LookupField,
   table: string,
   em: EntityManager,
   knex: Knex,
   qb: Knex.QueryBuilder,
-  multiple = false,
 ): Promise<void> => {
   const jsonObjectEntries: [string, string][] = []
 
@@ -48,7 +47,7 @@ export const expandField = async (
       key = c.name
     }
 
-    jsonObjectEntries.push([`'${key}'`, multiple ? `json_group_array(${table}.${key})` : `${table}.${key}`])
+    jsonObjectEntries.push([`'${key}'`, field.multiple ? `json_group_array(${table}.${key})` : `${table}.${key}`])
   }
 
   qb.select(

@@ -11,6 +11,10 @@ import { FieldId } from './value-objects/index.js'
 export class ParentField extends BaseReferenceField<IParentField> {
   type: ParentFieldType = 'parent'
 
+  override get multiple() {
+    return false
+  }
+
   get treeFieldId() {
     return this.props.treeFieldId
   }

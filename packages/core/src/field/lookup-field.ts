@@ -12,6 +12,10 @@ import { FieldId } from './value-objects/field-id.vo.js'
 export class LookupField extends BaseLookupField<ILookupField> {
   type: LookupType = 'lookup'
 
+  get multiple() {
+    return true
+  }
+
   override get primitive() {
     return false
   }

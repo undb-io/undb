@@ -149,6 +149,9 @@ export abstract class BaseReferenceField<F extends IReferenceFieldTypes>
   extends BaseField<F>
   implements IAbstractReferenceField
 {
+  get multiple(): boolean {
+    return true
+  }
   protected static override createBase(input: ICreateReferenceBaseSchema): IReferenceFieldTypes {
     return {
       ...super.createBase(input),

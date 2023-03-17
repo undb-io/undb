@@ -1,5 +1,5 @@
 import type { IQueryTreeRecords, IRecordSpec, IRecordTreeQueryModel, Table, TreeField } from '@egodb/core'
-import { INTERNAL_COLUMN_ID_NAME, ParentField } from '@egodb/core'
+import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { DELETED_AT_COLUMN_NAME } from '../../decorators/soft-delete.decorator.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
@@ -41,11 +41,11 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
     const visitor = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
     spec.accept(visitor).unwrap()
 
-    const referenceFields = table.schema.getReferenceFields()
-    for (const [index, referenceField] of referenceFields.entries()) {
+    const lookingFields = table.schema.getLookingFields()
+    for (const [index, lookingField] of lookingFields.entries()) {
       const visitor = new RecordSqliteReferenceQueryVisitor(tableId, index, qb, knex)
-      referenceField.accept(visitor)
-      await expandField(referenceField, alias, em, knex, qb, !(referenceField instanceof ParentField))
+      lookingField.accept(visitor)
+      await expandField(lookingField, alias, em, knex, qb)
     }
 
     const data = await em.execute<RecordSqliteWithParent[]>(qb)
