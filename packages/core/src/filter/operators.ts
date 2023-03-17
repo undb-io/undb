@@ -58,6 +58,9 @@ export const dateBuiltInOperators = new Set<IDateFilterOperator>([$is_today.valu
 export const referenceFilterOperators = z.union([$eq, $neq])
 export type IReferenceFilterOperator = z.infer<typeof referenceFilterOperators>
 
+export const lookupFilterOperators = z.union([$eq, $neq])
+export type ILookupFilterOperator = z.infer<typeof lookupFilterOperators>
+
 export const $is_root = z.literal('$is_root')
 
 export const treeFilterOperators = z.union([$eq, $neq, $is_root])

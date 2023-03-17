@@ -7,6 +7,7 @@ import type { DateFieldValue } from './date-field-value.js'
 import type { DateRangeFieldValue } from './date-range-field-value.js'
 import type { EmailFieldValue } from './email-field-value.js'
 import type { IdFieldValue } from './id-field-value.js'
+import type { LookupFieldValue } from './lookup-field-value.js'
 import type { NumberFieldValue } from './number-field-value.js'
 import type { ParentFieldValue } from './parent-field-value.js'
 import type { RatingFieldValue } from './rating-field-value.js'
@@ -34,4 +35,5 @@ export interface IFieldValueVisitor {
   parent(value: ParentFieldValue): void
   rating(value: RatingFieldValue): void
   count(value: CountFieldValue): void
+  lookup(value: LookupFieldValue): void
 }

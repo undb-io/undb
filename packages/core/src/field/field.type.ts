@@ -104,6 +104,17 @@ import {
   idTypeSchema,
   updateIdFieldSchema,
 } from './id-field.type.js'
+import type { LookupFieldValue } from './lookup-field-value.js'
+import type { LookupField } from './lookup-field.js'
+import type { ILookupFieldValue } from './lookup-field.type.js'
+import {
+  createLookupFieldSchema,
+  createLookupFieldValue_internal,
+  lookupFieldQuerySchema,
+  lookupFieldQueryValue,
+  lookupTypeSchema,
+  updateLookupFieldSchema,
+} from './lookup-field.type.js'
 import type { NumberFieldValue } from './number-field-value.js'
 import type { NumberField } from './number-field.js'
 import type { INumberFieldValue } from './number-field.type.js'
@@ -212,6 +223,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createParentFieldSchema,
   createRatingFieldSchema,
   createCountFieldSchema,
+  createLookupFieldSchema,
 ])
 export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
 
@@ -233,6 +245,7 @@ export const updateFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   updateParentFieldSchema,
   updateRatingFieldSchema,
   updateCountFieldSchema,
+  updateLookupFieldSchema,
 ])
 export type IUpdateFieldSchema = z.infer<typeof updateFieldSchema>
 
@@ -254,6 +267,7 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   parentFieldQuerySchema,
   ratingFieldQuerySchema,
   countFieldQuerySchema,
+  lookupFieldQuerySchema,
 ])
 export type IQueryFieldSchema = z.infer<typeof queryFieldSchema>
 export const querySchemaSchema = z.array(queryFieldSchema)
@@ -277,6 +291,7 @@ export const fieldTypes = z.union([
   parentTypeSchema,
   ratingTypeSchema,
   countTypeSchema,
+  lookupTypeSchema,
 ])
 export type IFieldType = z.infer<typeof fieldTypes>
 
@@ -298,6 +313,7 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createParentFieldValue_internal,
   createRatingFieldValue_internal,
   createCountFieldValue_internal,
+  createLookupFieldValue_internal,
 ])
 export type ICreateFieldValueSchema_internal = z.infer<typeof createFieldValueSchema_internal>
 
@@ -337,6 +353,7 @@ export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?:
 export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: DisplayFields }
 
 export type ICountField = IBaseField & { referenceFieldId: FieldId }
+export type ILookupField = IBaseField & { referenceFieldId: FieldId }
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField
 
@@ -360,6 +377,7 @@ export type NoneSystemField =
   | RatingField
   | AutoIncrementField
   | CountField
+  | LookupField
 
 export type PrimitiveField =
   | StringField
@@ -396,6 +414,7 @@ export type FieldValue =
   | ParentFieldValue
   | RatingFieldValue
   | CountFieldValue
+  | LookupFieldValue
 
 export type FieldValues = FieldValue[]
 
@@ -417,6 +436,7 @@ export type UnpackedFieldValue =
   | IParentFieldValue
   | IRatingFieldValue
   | ICountFieldValue
+  | ILookupFieldValue
 
 export const fieldQueryValue = z.union([
   treeFieldQueryValue,
@@ -436,6 +456,7 @@ export const fieldQueryValue = z.union([
   updatedAtFieldQueryValue,
   ratingFieldQueryValue,
   countFieldQueryValue,
+  lookupFieldQueryValue,
 ])
 
 export type IFieldQueryValue = z.infer<typeof fieldQueryValue>
@@ -446,7 +467,7 @@ export const INTERNAL_COLUMN_CREATED_AT_NAME = 'created_at'
 export const INTERNAL_COLUMN_UPDATED_AT_NAME = 'updated_at'
 export const INTERNAL_DISPLAY_VALUES_NAME = 'display_values'
 
-export interface IReference {
+export interface IAbstractReferenceField {
   get foreignTableId(): Option<string>
   get displayFieldIds(): FieldId[]
   getDisplayValues(values: IRecordDisplayValues): ((string | null)[] | undefined)[]

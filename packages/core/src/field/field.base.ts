@@ -14,10 +14,10 @@ import type { IBaseCreateFieldSchema, IBaseUpdateFieldSchema } from './field-bas
 import { DEFAULT_DATE_FORMAT } from './field.constants.js'
 import type {
   IAbstractDateField,
+  IAbstractReferenceField,
   IBaseField,
   IDateFieldTypes,
   IFieldType,
-  IReference,
   IReferenceFieldTypes,
   IUpdateFieldSchema,
   PrimitiveField,
@@ -138,7 +138,10 @@ type ICreateReferenceBaseSchema = Omit<
   'type'
 >
 
-export abstract class BaseReferenceField<F extends IReferenceFieldTypes> extends BaseField<F> implements IReference {
+export abstract class BaseReferenceField<F extends IReferenceFieldTypes>
+  extends BaseField<F>
+  implements IAbstractReferenceField
+{
   protected static override createBase(input: ICreateReferenceBaseSchema): IReferenceFieldTypes {
     return {
       ...super.createBase(input),

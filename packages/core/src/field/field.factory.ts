@@ -8,6 +8,7 @@ import { DateRangeField } from './date-range-field.js'
 import { EmailField } from './email-field.js'
 import type { Field, ICreateFieldSchema } from './field.type.js'
 import { IdField } from './id-field.js'
+import { LookupField } from './lookup-field.js'
 import { NumberField } from './number-field.js'
 import { ParentField } from './parent-field.js'
 import { RatingField } from './rating-field.js'
@@ -72,6 +73,9 @@ export class FieldFactory {
       case 'count': {
         return CountField.create(input)
       }
+      case 'lookup': {
+        return LookupField.create(input)
+      }
     }
   }
 
@@ -127,6 +131,9 @@ export class FieldFactory {
       }
       case 'count': {
         return CountField.unsafeCreate(input)
+      }
+      case 'lookup': {
+        return LookupField.unsafeCreate(input)
       }
     }
   }

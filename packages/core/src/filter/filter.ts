@@ -50,6 +50,7 @@ import type { IEmailFilter } from './email.filter.js'
 import { emailFilter, emailFilterValue } from './email.filter.js'
 import type { IIdFilter } from './id.filter.js'
 import { idFilter, idFilterValue } from './id.filter.js'
+import { lookupFilter, lookupFilterValue } from './lookup.filter.js'
 import type { INumberFilter } from './number.filter.js'
 import { numberFilter, numberFilterValue } from './number.filter.js'
 import {
@@ -108,6 +109,7 @@ export const filterValue = z.union([
   parentFilterValue,
   ratingFilterValue,
   countFilterValue,
+  lookupFilterValue,
 ])
 export type IFilterValue = z.infer<typeof filterValue>
 
@@ -129,6 +131,7 @@ export const operaotrs = z.union([
   parentFilterOperators,
   ratingFilterOperators,
   countFilterOperators,
+  lookupFilterValue,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
@@ -150,6 +153,7 @@ const filter = z.discriminatedUnion('type', [
   parentFilter,
   ratingFilter,
   countFilter,
+  lookupFilter,
 ])
 
 export type IFilter = z.infer<typeof filter>
