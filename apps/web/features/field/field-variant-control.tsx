@@ -1,4 +1,4 @@
-import type { ICreateFieldSchema, IUpdateFieldSchema } from '@egodb/core'
+import type { ICreateFieldSchema, IUpdateFieldSchema, ReferenceField, TreeField } from '@egodb/core'
 import { RATING_MAX, RATING_MAX_DEFAULT } from '@egodb/core'
 import { NumberInput, TextInput } from '@egodb/ui'
 import { Controller, useFormContext } from 'react-hook-form'
@@ -6,7 +6,7 @@ import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { DisplayFieldsPicker } from '../field-inputs/display-fields-picker'
 import { SelectFieldControl } from '../field-inputs/select-field-control'
 import { TablePicker } from '../table/table-picker'
-import { useNullableCurrentTable } from '../../hooks/use-current-table'
+import { useCurrentTable } from '../../hooks/use-current-table'
 import { DateFormatPicker } from './date-format-picker'
 import { useTranslation } from 'react-i18next'
 import { FieldPicker } from '../field-inputs/field-picker'
@@ -16,7 +16,7 @@ interface IProps {
 }
 
 export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
-  const table = useNullableCurrentTable()
+  const table = useCurrentTable()
 
   const { t } = useTranslation()
 
@@ -83,21 +83,41 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
   }
 
   if (type === 'count' || type === 'lookup') {
+    const schema = table.schema.toIdMap()
+    const referenceFieldId = form.watch('referenceFieldId')
     return (
-      <Controller
-        name="referenceFieldId"
-        render={(props) => (
-          <FieldPicker
-            label={<FieldInputLabel>{t('Reference Field')}</FieldInputLabel>}
-            fields={
-              table?.schema.fields
-                .filter((f) => f.type === 'reference')
-                .map((f) => ({ id: f.id.value, type: f.type, name: f.name.value })) ?? []
-            }
-            {...props.field}
-          />
-        )}
-      />
+      <>
+        <Controller
+          name="referenceFieldId"
+          render={(props) => (
+            <FieldPicker
+              label={<FieldInputLabel>{t('Reference Field')}</FieldInputLabel>}
+              fields={
+                table?.schema.fields
+                  .filter((f) => f.type === 'reference' || f.type === 'tree')
+                  .map((f) => ({ id: f.id.value, type: f.type, name: f.name.value })) ?? []
+              }
+              {...props.field}
+            />
+          )}
+        />
+        <Controller
+          name="displayFieldIds"
+          render={(props) => (
+            <DisplayFieldsPicker
+              tableId={
+                referenceFieldId
+                  ? (schema.get(referenceFieldId) as ReferenceField | TreeField | undefined)?.foreignTableId.into()
+                  : undefined
+              }
+              {...props.field}
+              onChange={(ids) => props.field.onChange(ids)}
+              variant="default"
+              disabled={!referenceFieldId}
+            />
+          )}
+        />
+      </>
     )
   }
 

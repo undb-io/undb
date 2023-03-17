@@ -7,6 +7,8 @@ import type { ZodTypeAny } from 'zod'
 import type { IFilter, IOperator } from '../filter/index.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
+import type { ICreateCountFieldInput } from './count-field.type.js'
 import type { ICreateCreatedAtFieldInput, IUpdateCreatedAtFieldInput } from './created-at-field.type.js'
 import type { ICreateDateFieldSchema, IUpdateDateFieldInput } from './date-field.type.js'
 import type { ICreateDateRangeFieldSchema, IUpdateDateRangeFieldInput } from './date-range-field.type.js'
@@ -14,10 +16,12 @@ import type { IBaseCreateFieldSchema, IBaseUpdateFieldSchema } from './field-bas
 import { DEFAULT_DATE_FORMAT } from './field.constants.js'
 import type {
   IAbstractDateField,
+  IAbstractLookupField,
   IAbstractReferenceField,
   IBaseField,
   IDateFieldTypes,
   IFieldType,
+  ILookupFieldTypes,
   IReferenceFieldTypes,
   IUpdateFieldSchema,
   PrimitiveField,
@@ -25,12 +29,15 @@ import type {
 } from './field.type.js'
 import { isControlledFieldType } from './field.util.js'
 import type { IFieldVisitor } from './field.visitor.js'
+import type { ICreateLookupFieldInput } from './lookup-field.type.js'
 import type { ICreateParentFieldInput, IUpdateParentFieldInput } from './parent-field.type.js'
+import type { ReferenceField } from './reference-field.js'
 import type { ICreateReferenceFieldInput, IUpdateReferenceFieldInput } from './reference-field.type.js'
 import { WithFieldDescription, WithFieldName } from './specifications/base-field.specification.js'
 import { WithFormat } from './specifications/date-field.specification.js'
 import { WithFieldRequirement } from './specifications/field-constraints.specification.js'
 import { WithDisplayFields } from './specifications/reference-field.specification.js'
+import type { TreeField } from './tree-field.js'
 import type { ICreateTreeFieldSchema, IUpdateTreeFieldInput } from './tree-field.type.js'
 import type { ICreateUpdatedAtFieldInput, IUpdateUpdatedAtFieldInput } from './updated-at-field.type.js'
 import { FieldDescription } from './value-objects/field-description.js'
@@ -263,5 +270,40 @@ export abstract class BaseDateField<F extends IDateFieldTypes> extends BaseField
     }
 
     return and(...specs)
+  }
+}
+
+type ICreateLookupBaseSchema = Omit<ICreateCountFieldInput | ICreateLookupFieldInput, 'type'>
+
+export abstract class BaseLookupField<F extends ILookupFieldTypes>
+  extends BaseField<F>
+  implements IAbstractLookupField
+{
+  get referenceFieldId(): FieldId {
+    return this.props.referenceFieldId
+  }
+
+  protected static override createBase(input: ICreateLookupBaseSchema): ILookupFieldTypes {
+    return {
+      ...super.createBase(input),
+      referenceFieldId: FieldId.fromString(input.referenceFieldId),
+    }
+  }
+  protected static override unsafeCreateBase(input: ICreateLookupBaseSchema): ILookupFieldTypes {
+    return {
+      ...super.createBase(input),
+      referenceFieldId: FieldId.fromString(input.referenceFieldId),
+    }
+  }
+  getReferenceField(schema: TableSchemaIdMap): ReferenceField | TreeField {
+    const referenceField = schema.get(this.referenceFieldId.value)
+    if (!referenceField) {
+      throw new Error('missing reference field for lookup field')
+    }
+
+    return referenceField as ReferenceField | TreeField
+  }
+  getForeignTableId(schema: TableSchemaIdMap): Option<string> {
+    return this.getReferenceField(schema).foreignTableId
   }
 }

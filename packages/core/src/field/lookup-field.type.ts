@@ -13,16 +13,23 @@ const lookupTypeObjectSchema = z.object({
 export const createLookupFieldSchema = createBaseFieldSchema.merge(lookupTypeObjectSchema).merge(
   z.object({
     referenceFieldId: fieldIdSchema,
+    displayFieldIds: fieldIdSchema.array().nonempty(),
   }),
 )
 export type ICreateLookupFieldInput = z.infer<typeof createLookupFieldSchema>
 
-export const updateLookupFieldSchema = updateBaseFieldSchema.merge(lookupTypeObjectSchema)
+export const updateLookupFieldSchema = updateBaseFieldSchema.merge(lookupTypeObjectSchema).merge(
+  z.object({
+    referenceFieldId: fieldIdSchema,
+    displayFieldIds: fieldIdSchema.array().nonempty(),
+  }),
+)
 export type IUpdateLookupFieldInput = z.infer<typeof updateLookupFieldSchema>
 
 export const lookupFieldQuerySchema = baseFieldQuerySchema.merge(lookupTypeObjectSchema).merge(
   z.object({
     referenceFieldId: fieldIdSchema,
+    displayFieldIds: fieldIdSchema.array().nonempty(),
   }),
 )
 export type ILookupFieldQuerySchema = z.infer<typeof lookupFieldQuerySchema>

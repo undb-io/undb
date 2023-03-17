@@ -2,34 +2,23 @@ import { z } from 'zod'
 import type { ICountFilter, ICountFilterOperator } from '../filter/count.filter.js'
 import { CountFieldValue } from './count-field-value.js'
 import type { CountType, ICreateCountFieldInput, ICreateCountFieldValue } from './count-field.type.js'
-import { BaseField } from './field.base.js'
+import { BaseLookupField } from './field.base.js'
 import type { ICountField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
-import { FieldId } from './value-objects/field-id.vo.js'
 
-export class CountField extends BaseField<ICountField> {
+export class CountField extends BaseLookupField<ICountField> {
   type: CountType = 'count'
 
   override get primitive() {
     return true
   }
 
-  get referenceFieldId() {
-    return this.props.referenceFieldId
-  }
-
   static create(input: Omit<ICreateCountFieldInput, 'type'>): CountField {
-    return new CountField({
-      ...super.createBase(input),
-      referenceFieldId: FieldId.fromString(input.referenceFieldId),
-    })
+    return new CountField(super.createBase(input))
   }
 
   static unsafeCreate(input: ICreateCountFieldInput): CountField {
-    return new CountField({
-      ...super.unsafeCreateBase(input),
-      referenceFieldId: FieldId.fromString(input.referenceFieldId),
-    })
+    return new CountField(super.unsafeCreateBase(input))
   }
 
   createValue(value: ICreateCountFieldValue): CountFieldValue {

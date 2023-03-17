@@ -4,6 +4,7 @@ import type { IReferenceFilterValue } from '../filter/reference.filter.js'
 import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableId } from '../value-objects/table-id.vo.js'
+import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
 import type { AutoIncrementFieldValue } from './auto-increment-field-value.js'
 import type { AutoIncrementField } from './auto-increment-field.js'
 import type { IAutoIncrementFieldValue } from './auto-increment-field.type.js'
@@ -353,7 +354,7 @@ export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?:
 export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: DisplayFields }
 
 export type ICountField = IBaseField & { referenceFieldId: FieldId }
-export type ILookupField = IBaseField & { referenceFieldId: FieldId }
+export type ILookupField = IBaseField & { referenceFieldId: FieldId; displayFields: DisplayFields }
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField
 
@@ -361,6 +362,8 @@ export type IReferenceFieldTypes = IReferenceField | ITreeField | IParentField
 export type ReferenceFieldTypes = ReferenceField | TreeField | ParentField
 export type IDateFieldTypes = IDateField | IDateRangeField | ICreatedAtField | IUpdatedAtField
 export type DateFieldTypes = DateField | DateRangeField | CreatedAtField | UpdatedAtField
+export type ILookupFieldTypes = ICountField | ILookupField
+export type LookupFieldTypes = CountField | LookupField
 
 export type NoneSystemField =
   | StringField
@@ -476,4 +479,10 @@ export interface IAbstractReferenceField {
 export interface IAbstractDateField {
   get formatString(): string
   get format(): DateFormat | undefined
+}
+
+export interface IAbstractLookupField {
+  get referenceFieldId(): FieldId
+  getReferenceField(schema: TableSchemaIdMap): ReferenceField | TreeField
+  getForeignTableId(schema: TableSchemaIdMap): Option<string>
 }

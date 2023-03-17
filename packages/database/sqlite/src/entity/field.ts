@@ -657,6 +657,9 @@ export class LookupField extends Field {
   @ManyToOne({ entity: () => ReferenceField || TreeField, inversedBy: (f) => f.lookupFields })
   referenceField!: ReferenceField | TreeField
 
+  @ManyToMany({ entity: () => Field, owner: true })
+  displayFields = new Collection<Field>(this)
+
   toDomain(): CoreLookupField {
     return CoreLookupField.unsafeCreate({
       id: this.id,
@@ -665,6 +668,7 @@ export class LookupField extends Field {
       type: 'lookup',
       required: !!this.required,
       referenceFieldId: this.referenceField.id,
+      displayFieldIds: this.displayFields.getItems().map((f) => f.id) as [string, ...string[]],
     })
   }
 
@@ -676,6 +680,7 @@ export class LookupField extends Field {
       type: 'lookup',
       referenceFieldId: this.referenceField.id,
       required: !!this.required,
+      displayFieldIds: this.displayFields.getItems().map((f) => f.id) as [string, ...string[]],
     }
   }
 }
