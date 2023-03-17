@@ -9,9 +9,10 @@ import type {
   DateField,
   DateRangeField,
   EmailField,
+  IAbstractReferenceField,
   IdField,
   IFieldVisitor,
-  IReference,
+  LookupField,
   NumberField,
   ParentField,
   RatingField,
@@ -33,7 +34,7 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
     private readonly qb: Knex.QueryBuilder,
     private readonly knex: Knex,
   ) {}
-  private getForeignTableId(field: IReference): string {
+  private getForeignTableId(field: IAbstractReferenceField): string {
     return field.foreignTableId.unwrapOr(this.tableId)
   }
 
@@ -134,5 +135,8 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
       })
       .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
       .leftJoin(`${foreignTableId} as ${ft}`, `${ft}.${INTERNAL_COLUMN_ID_NAME}`, `${ct}.${ClosureTable.PARENT_ID}`)
+  }
+  lookup(field: LookupField): void {
+    throw new Error('Method not implemented.')
   }
 }
