@@ -199,6 +199,7 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
   lookup(value: CoreLookupField): void {
     const field = new LookupField(this.table, value)
     field.referenceField = this.em.getReference(Field, value.referenceFieldId.value) as ReferenceField | TreeField
+    field.displayFields.set(value.displayFieldIds.map((fieldId) => this.em.getReference(Field, fieldId.value)))
 
     this.em.persist(field)
   }

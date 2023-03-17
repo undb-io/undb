@@ -11,6 +11,7 @@ import {
   UnderlyingDateRangeToFromColumn,
   UnderlyingEmailColumn,
   UnderlyingIdColumn,
+  UnderlyingLookupColumn,
   UnderlyingNumberColumn,
   UnderlyingParentColumn,
   UnderlyingRatingColumn,
@@ -61,6 +62,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingParentColumn(field, tableName)
       case 'count':
         return new UnderlyingCountColumn(field, tableName)
+      case 'lookup':
+        return new UnderlyingLookupColumn(field, tableName)
     }
   }
 

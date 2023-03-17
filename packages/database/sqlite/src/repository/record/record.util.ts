@@ -45,7 +45,7 @@ export const expandField = async (
     let name = key
     const f = field.toDomain()
     if (f.isSystem()) {
-      const c = UnderlyingColumnFactory.create(f) as IUnderlyingColumn
+      const c = UnderlyingColumnFactory.create(f, table) as IUnderlyingColumn
       name = `'${c.name}'`
     }
 

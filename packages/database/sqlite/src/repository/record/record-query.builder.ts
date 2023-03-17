@@ -86,9 +86,10 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
           const column = UnderlyingColumnFactory.create(field, this.table.id.value)
           if (Array.isArray(column)) {
             for (const c of column) {
+              if (c.virtual) continue
               this.qb.orderBy(`${TABLE_ALIAS}.${c.name}`, sort.direction)
             }
-          } else {
+          } else if (!column.virtual) {
             this.qb.orderBy(`${TABLE_ALIAS}.${column.name}`, sort.direction)
           }
         }
@@ -132,7 +133,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     const columns = UnderlyingColumnFactory.createMany(fields, this.table.id.value)
 
     const names = union(
-      columns.map((c) => c.name),
+      columns.filter((c) => !c.virtual).map((c) => c.name),
       [INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_CREATED_AT_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME],
     ).map((name) => `${TABLE_ALIAS}.${name}`)
 
