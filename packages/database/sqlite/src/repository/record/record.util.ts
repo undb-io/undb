@@ -36,20 +36,19 @@ export const expandField = async (
   const jsonObjectEntries: [string, string][] = []
 
   const displayFieldIds = field.displayFieldIds.map((id) => id.value)
-  for (const fieldId of displayFieldIds) {
-    const field = await em.findOne(Field, { id: fieldId })
-    if (!field) continue
+  for (const displayFieldId of displayFieldIds) {
+    const displayField = await em.findOne(Field, { id: displayFieldId })
+    if (!displayField) continue
 
-    const key = `'${fieldId}'`
+    let key = displayFieldId
 
-    let name = key
-    const f = field.toDomain()
+    const f = displayField.toDomain()
     if (f.isSystem()) {
       const c = UnderlyingColumnFactory.create(f, table) as IUnderlyingColumn
-      name = `'${c.name}'`
+      key = c.name
     }
 
-    jsonObjectEntries.push([key, multiple ? `json_group_array(${table}.${name})` : `${table}.${name}`])
+    jsonObjectEntries.push([`'${key}'`, multiple ? `json_group_array(${table}.${key})` : `${table}.${key}`])
   }
 
   qb.select(
