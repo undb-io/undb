@@ -89,7 +89,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
     )
   }
 
-  if (type === 'count') {
+  if (type === 'count' || type === 'lookup') {
     const schema = form.watch('schema')
 
     return (

@@ -82,7 +82,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
     )
   }
 
-  if (type === 'count') {
+  if (type === 'count' || type === 'lookup') {
     return (
       <Controller
         name="referenceFieldId"
