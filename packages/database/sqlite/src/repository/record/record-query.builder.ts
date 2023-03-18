@@ -1,9 +1,15 @@
-import type { IRecordSpec, ReferenceFieldTypes, Table as CoreTable, TableSchemaIdMap, View } from '@egodb/core'
+import type {
+  IRecordSpec,
+  LookupField,
+  ReferenceFieldTypes,
+  Table as CoreTable,
+  TableSchemaIdMap,
+  View,
+} from '@egodb/core'
 import {
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
-  ParentField,
   SelectField as CoreSelectField,
 } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
@@ -12,15 +18,14 @@ import type { Promisable } from 'type-fest'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import { UnderlyingSelectColumn } from '../../underlying-table/underlying-column.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
-import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
-import { getFTAlias, INTERNAL_COLUMN_NAME_TOTAL, TABLE_ALIAS } from './record.constants.js'
-import { expandField } from './record.util.js'
+import { RecordSqliteReferenceQueryVisitorHelper } from './record-sqlite.reference-query-visitor.helper.js'
+import { INTERNAL_COLUMN_NAME_TOTAL, TABLE_ALIAS } from './record.constants.js'
 
 export interface IRecordQueryBuilder {
   from(): this
   where(): this
   sort(): this
-  reference(): this
+  looking(): this
   expand(field?: ReferenceFieldTypes): this
   select(): this
   count(): this
@@ -86,9 +91,10 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
           const column = UnderlyingColumnFactory.create(field, this.table.id.value)
           if (Array.isArray(column)) {
             for (const c of column) {
+              if (c.virtual) continue
               this.qb.orderBy(`${TABLE_ALIAS}.${c.name}`, sort.direction)
             }
-          } else {
+          } else if (!column.virtual) {
             this.qb.orderBy(`${TABLE_ALIAS}.${column.name}`, sort.direction)
           }
         }
@@ -98,30 +104,20 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     return this
   }
 
-  reference(): this {
+  looking(): this {
     this.#jobs.push(async () => {
-      const referenceFields = this.table.schema.getReferenceFields()
-      for (const [index, referenceField] of referenceFields.entries()) {
-        const visitor = new RecordSqliteReferenceQueryVisitor(this.table.id.value, index, this.qb, this.knex)
-        referenceField.accept(visitor)
-
-        await expandField(
-          referenceField,
-          getFTAlias(index),
-          this.em,
-          this.knex,
-          this.qb,
-          !(referenceField instanceof ParentField),
-        )
-      }
+      await new RecordSqliteReferenceQueryVisitorHelper(this.em, this.knex, this.qb).visit(this.table)
     })
     return this
   }
 
-  expand(field?: ReferenceFieldTypes): this {
+  expand(field?: ReferenceFieldTypes | LookupField): this {
     if (field) {
       this.#jobs.push(async () => {
-        await expandField(field, TABLE_ALIAS, this.em, this.knex, this.qb, true)
+        await new RecordSqliteReferenceQueryVisitorHelper(this.em, this.knex, this.qb).expandField(
+          field,
+          this.table.schema.toIdMap(),
+        )
       })
     }
     return this
@@ -132,11 +128,12 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     const columns = UnderlyingColumnFactory.createMany(fields, this.table.id.value)
 
     const names = union(
-      columns.map((c) => c.name),
+      columns.filter((c) => !c.virtual).map((c) => c.name),
       [INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_CREATED_AT_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME],
     ).map((name) => `${TABLE_ALIAS}.${name}`)
 
     this.qb.select(names)
+
     return this
   }
 

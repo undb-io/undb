@@ -6,7 +6,7 @@ import * as z from 'zod'
 import { CreatedAtField } from '../field/created-at-field.js'
 import { FieldFactory } from '../field/field.factory.js'
 import { IdField } from '../field/id-field.js'
-import type { Field, ICreateFieldSchema, IFieldType, NoneSystemField, ReferenceFieldTypes } from '../field/index.js'
+import type { Field, ICreateFieldSchema, IFieldType, LookingFieldTypes, NoneSystemField } from '../field/index.js'
 import {
   createFieldSchema,
   DateField,
@@ -40,7 +40,7 @@ export type ICreateTableSchemaInput = z.infer<typeof createTableSchemaSchema>
 
 export type TableSchemaIdMap = Map<string, Field>
 
-const referenceFieldTypes: IFieldType[] = ['tree', 'parent', 'reference']
+const lookingFieldTypes: IFieldType[] = ['tree', 'parent', 'reference', 'lookup']
 
 /**
  * Table Schema is a collection of fields
@@ -134,7 +134,7 @@ export class TableSchema extends ValueObject<Field[]> {
     return new WithoutField(field)
   }
 
-  public getReferenceFields(): ReferenceFieldTypes[] {
-    return this.fields.filter((f) => referenceFieldTypes.includes(f.type)) as ReferenceFieldTypes[]
+  public getLookingFields(): LookingFieldTypes[] {
+    return this.fields.filter((f) => lookingFieldTypes.includes(f.type)) as LookingFieldTypes[]
   }
 }

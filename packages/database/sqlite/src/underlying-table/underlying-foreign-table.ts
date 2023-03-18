@@ -3,6 +3,10 @@ import { INTERNAL_COLUMN_ID_NAME, TreeField } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import type { IUderlyingForeignTableName, IUnderlyingForeignTable } from '../interfaces/underlying-foreign-table.js'
 
+export type UnderlyingTableForeignTableAlias = `uta_${string}`
+
+export const getUnderlyingTableAlias = (field: Field): UnderlyingTableForeignTableAlias => `uta_${field.id.value}`
+
 abstract class BaseUnderlyingForeignTable<F extends Field> implements IUnderlyingForeignTable {
   constructor(protected readonly tableId: string, protected readonly field: F) {}
 
@@ -10,15 +14,9 @@ abstract class BaseUnderlyingForeignTable<F extends Field> implements IUnderlyin
   abstract getCreateTableSqls(knex: Knex): string[]
 }
 
-type AdjacencyListTableAlias = `at${number}`
-
 export class AdjacencyListTable extends BaseUnderlyingForeignTable<ReferenceField> {
   static TO_ID = 'to_id'
   static FROM_ID = 'from_id'
-
-  static getAlias(index: number): AdjacencyListTableAlias {
-    return `at${index}`
-  }
 
   private get foreignTableId() {
     return this.field.foreignTableId.into() ?? this.tableId
@@ -46,16 +44,10 @@ export class AdjacencyListTable extends BaseUnderlyingForeignTable<ReferenceFiel
   }
 }
 
-type ClosureTableAlias = `ct${number}`
-
 export class ClosureTable extends BaseUnderlyingForeignTable<TreeField | ParentField> {
   static CHILD_ID = 'child_id'
   static PARENT_ID = 'parent_id'
   static DEPTH = 'depth'
-
-  static getAlias(index: number): ClosureTableAlias {
-    return `ct${index}`
-  }
 
   get name(): IUderlyingForeignTableName {
     const fieldId = this.field instanceof TreeField ? this.field.id.value : this.field.treeFieldId.value

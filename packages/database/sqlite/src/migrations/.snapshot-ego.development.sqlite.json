@@ -189,6 +189,7 @@
             "email",
             "color",
             "number",
+            "percentage",
             "date",
             "select",
             "bool",
@@ -197,7 +198,10 @@
             "tree",
             "parent",
             "rating",
-            "count"
+            "count",
+            "lookup",
+            "sum",
+            "average"
           ],
           "mappedType": "enum"
         },

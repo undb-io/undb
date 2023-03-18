@@ -1,15 +1,15 @@
 import type { IQueryTreeRecords, IRecordSpec, IRecordTreeQueryModel, Table, TreeField } from '@egodb/core'
-import { INTERNAL_COLUMN_ID_NAME, ParentField } from '@egodb/core'
+import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { DELETED_AT_COLUMN_NAME } from '../../decorators/soft-delete.decorator.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import { ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
 import { RecordSqliteMapper } from './record-sqlite.mapper.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
-import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
+import { RecordSqliteReferenceQueryVisitorHelper } from './record-sqlite.reference-query-visitor.helper.js'
 import { TABLE_ALIAS } from './record.constants.js'
 import type { RecordSqliteWithParent } from './record.type.js'
-import { createRecordTree, expandField } from './record.util.js'
+import { createRecordTree } from './record.util.js'
 
 export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
   constructor(private readonly em: EntityManager) {}
@@ -41,12 +41,7 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
     const visitor = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
     spec.accept(visitor).unwrap()
 
-    const referenceFields = table.schema.getReferenceFields()
-    for (const [index, referenceField] of referenceFields.entries()) {
-      const visitor = new RecordSqliteReferenceQueryVisitor(tableId, index, qb, knex)
-      referenceField.accept(visitor)
-      await expandField(referenceField, alias, em, knex, qb, !(referenceField instanceof ParentField))
-    }
+    await new RecordSqliteReferenceQueryVisitorHelper(em, knex, qb).visit(table)
 
     const data = await em.execute<RecordSqliteWithParent[]>(qb)
     const records = data.map((r) => {

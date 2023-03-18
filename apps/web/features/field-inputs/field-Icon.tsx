@@ -14,6 +14,7 @@ import {
   IconPalette,
   IconQuestionMark,
   IconRelationManyToMany,
+  IconSearch,
   IconSortAscendingNumbers,
   IconSquareCheck,
   IconStars,
@@ -61,6 +62,8 @@ export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16, color }) => {
       return <IconHierarchy size={size} color={color} />
     case 'parent':
       return <IconBinaryTree size={size} color={color} />
+    case 'lookup':
+      return <IconSearch size={size} color={color} />
     default:
       return <IconQuestionMark size={size} color={color} />
   }

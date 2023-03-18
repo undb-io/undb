@@ -11,6 +11,7 @@ import type {
   EmailField as CoreEmailField,
   IdField as CoreIdField,
   IFieldVisitor,
+  LookupField as CoreLookupField,
   NumberField as CoreNumberField,
   ParentField as CoreParentField,
   RatingField as CoreRatingField,
@@ -34,6 +35,7 @@ import {
   EmailField,
   Field,
   IdField,
+  LookupField,
   NumberField,
   Option,
   ParentField,
@@ -148,10 +150,11 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   count(value: CoreCountField): void {
     const field = new CountField(this.table, value)
-    field.referenceField = this.em.getReference(Field, value.referenceFieldId.value)
+    field.referenceField = this.em.getReference(Field, value.referenceFieldId.value) as ReferenceField | TreeField
 
     this.em.persist(field)
   }
+
   private initClosureTable(value: CoreTreeField | CoreParentField) {
     const tableId = this.table.id
 
@@ -190,6 +193,14 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
   parent(value: CoreParentField): void {
     const field = new ParentField(this.table, value)
     field.displayFields.set(value.displayFieldIds.map((fieldId) => this.em.getReference(Field, fieldId.value)))
+    this.em.persist(field)
+  }
+
+  lookup(value: CoreLookupField): void {
+    const field = new LookupField(this.table, value)
+    field.referenceField = this.em.getReference(Field, value.referenceFieldId.value) as ReferenceField | TreeField
+    field.displayFields.set(value.displayFieldIds.map((fieldId) => this.em.getReference(Field, fieldId.value)))
+
     this.em.persist(field)
   }
 }

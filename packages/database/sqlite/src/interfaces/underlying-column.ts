@@ -1,6 +1,7 @@
 import type { Knex } from '@mikro-orm/better-sqlite'
 
 export interface IUnderlyingColumn {
+  get virtual(): boolean
   get queries(): string[]
   get system(): boolean
   get name(): string

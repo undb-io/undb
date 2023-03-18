@@ -11,6 +11,7 @@ import type {
   EmailFieldValue,
   IdFieldValue,
   IFieldValueVisitor,
+  LookupFieldValue,
   NumberFieldValue,
   ParentFieldValue,
   RatingFieldValue,
@@ -239,6 +240,9 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
   }
 
   count(value: CountFieldValue): void {
+    throw new Error('Method not implemented.')
+  }
+  lookup(value: LookupFieldValue): void {
     throw new Error('Method not implemented.')
   }
 }

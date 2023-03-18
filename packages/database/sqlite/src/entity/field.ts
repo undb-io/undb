@@ -10,6 +10,7 @@ import type {
   IEmailFieldQuerySchema,
   IFieldType,
   IIdFieldQuerySchema,
+  ILookupFieldQuerySchema,
   INumberFieldQuerySchema,
   IParentFieldQuerySchema,
   IQueryFieldSchema,
@@ -30,6 +31,7 @@ import {
   DateRangeField as CoreDateRangeField,
   EmailField as CoreEmailField,
   IdField as CoreIdField,
+  LookupField as CoreLookupField,
   NumberField as CoreNumberField,
   ParentField as CoreParentField,
   RatingField as CoreRatingField,
@@ -97,6 +99,7 @@ export abstract class Field extends BaseEntity {
       'email',
       'color',
       'number',
+      'percentage',
       'date',
       'select',
       'bool',
@@ -106,6 +109,9 @@ export abstract class Field extends BaseEntity {
       'parent',
       'rating',
       'count',
+      'lookup',
+      'sum',
+      'average',
     ],
   })
   type: IFieldType
@@ -500,6 +506,9 @@ export class ReferenceField extends Field {
   @OneToMany(() => CountField, (f) => f.referenceField)
   countFields = new Collection<CountField>(this)
 
+  @OneToMany(() => CountField, (f) => f.referenceField)
+  lookupFields = new Collection<LookupField>(this)
+
   toDomain(): CoreReferenceField {
     return CoreReferenceField.unsafeCreate({
       id: this.id,
@@ -540,6 +549,9 @@ export class TreeField extends Field {
 
   @OneToMany(() => CountField, (f) => f.referenceField)
   countFields = new Collection<CountField>(this)
+
+  @OneToMany(() => CountField, (f) => f.referenceField)
+  lookupFields = new Collection<LookupField>(this)
 
   toDomain(): CoreTreeField {
     return CoreTreeField.unsafeCreate({
@@ -636,6 +648,43 @@ export class CountField extends Field {
   }
 }
 
+@Entity({ discriminatorValue: 'lookup' })
+export class LookupField extends Field {
+  constructor(table: Table, field: CoreLookupField) {
+    super(table, field)
+  }
+
+  @ManyToOne({ entity: () => ReferenceField || TreeField, inversedBy: (f) => f.lookupFields })
+  referenceField!: ReferenceField | TreeField
+
+  @ManyToMany({ entity: () => Field, owner: true })
+  displayFields = new Collection<Field>(this)
+
+  toDomain(): CoreLookupField {
+    return CoreLookupField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'lookup',
+      required: !!this.required,
+      referenceFieldId: this.referenceField.id,
+      displayFieldIds: this.displayFields.getItems().map((f) => f.id) as [string, ...string[]],
+    })
+  }
+
+  toQuery(): ILookupFieldQuerySchema {
+    return {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'lookup',
+      referenceFieldId: this.referenceField.id,
+      required: !!this.required,
+      displayFieldIds: this.displayFields.getItems().map((f) => f.id) as [string, ...string[]],
+    }
+  }
+}
+
 export type IField =
   | IdField
   | CreatedAtField
@@ -654,6 +703,7 @@ export type IField =
   | ParentField
   | RatingField
   | CountField
+  | LookupField
 
 export const fieldEntities = [
   IdField,
@@ -673,4 +723,5 @@ export const fieldEntities = [
   ParentField,
   RatingField,
   CountField,
+  LookupField,
 ]

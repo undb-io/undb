@@ -12,6 +12,7 @@ export const FIELD_SELECT_ITEMS: SelectItem[] = [
   { value: 'bool', label: 'Bool' },
   { value: 'select', label: 'Select' },
   { value: 'reference', label: 'Reference' },
+  { value: 'lookup', label: 'Lookup' },
   { value: 'count', label: 'Count' },
   { value: 'tree', label: 'Tree' },
 ]
