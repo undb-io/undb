@@ -20,7 +20,6 @@ import { UnderlyingSelectColumn } from '../../underlying-table/underlying-column
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
 import { RecordSqliteReferenceQueryVisitorHelper } from './record-sqlite.reference-query-visitor.helper.js'
 import { INTERNAL_COLUMN_NAME_TOTAL, TABLE_ALIAS } from './record.constants.js'
-import { expandField } from './record.util.js'
 
 export interface IRecordQueryBuilder {
   from(): this
@@ -115,7 +114,10 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   expand(field?: ReferenceFieldTypes | LookupField): this {
     if (field) {
       this.#jobs.push(async () => {
-        await expandField(field, this.table.schema.toIdMap(), this.em, this.knex, this.qb)
+        await new RecordSqliteReferenceQueryVisitorHelper(this.em, this.knex, this.qb).expandField(
+          field,
+          this.table.schema.toIdMap(),
+        )
       })
     }
     return this
