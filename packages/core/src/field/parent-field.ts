@@ -1,14 +1,17 @@
+import { andOptions } from '@egodb/domain'
+import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
 import type { IParentFilterOperator } from '../filter/operators.js'
 import type { IParentFilter } from '../filter/parent.filter.js'
-import { BaseReferenceField } from './field.base.js'
+import { AbstractLookingField, AbstractReferenceField } from './field.base.js'
 import type { IParentField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { ParentFieldValue } from './parent-field-value.js'
 import type { ICreateParentFieldInput, ICreateParentFieldValue, ParentFieldType } from './parent-field.type.js'
-import { FieldId } from './value-objects/index.js'
+import type { IUpdateReferenceFieldInput } from './reference-field.type.js'
+import { DisplayFields, FieldId } from './value-objects/index.js'
 
-export class ParentField extends BaseReferenceField<IParentField> {
+export class ParentField extends Mixin(AbstractReferenceField<IParentField>, AbstractLookingField<IParentField>) {
   type: ParentFieldType = 'parent'
 
   override get multiple() {
@@ -23,6 +26,9 @@ export class ParentField extends BaseReferenceField<IParentField> {
     return new ParentField({
       ...super.createBase(input),
       treeFieldId: FieldId.fromString(input.treeFieldId),
+      displayFields: input.displayFieldIds
+        ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
+        : undefined,
     })
   }
 
@@ -30,7 +36,14 @@ export class ParentField extends BaseReferenceField<IParentField> {
     return new ParentField({
       ...super.unsafeCreateBase(input),
       treeFieldId: FieldId.fromString(input.treeFieldId),
+      displayFields: input.displayFieldIds
+        ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
+        : undefined,
     })
+  }
+
+  public override update(input: IUpdateReferenceFieldInput) {
+    return andOptions(this.updateBase(input), this.updateDisplayFieldIds(input.displayFieldIds))
   }
 
   createValue(value: ICreateParentFieldValue): ParentFieldValue {

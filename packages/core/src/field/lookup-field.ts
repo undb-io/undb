@@ -1,20 +1,24 @@
-import { isEmpty, unzip } from 'lodash-es'
-import fp from 'lodash/fp.js'
+import { andOptions } from '@egodb/domain'
+import type { Option } from 'oxide.ts'
+import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
 import type { ILookupFilter } from '../filter/lookup.filter.js'
 import type { ILookupFilterOperator } from '../filter/operators.js'
-import type { IRecordDisplayValues } from '../record/record.type.js'
-import { BaseLookupField } from './field.base.js'
+import type { TableCompositeSpecificaiton } from '../specifications/index.js'
+import { AbstractLookingField, AbstractLookupField, BaseField } from './field.base.js'
 import type { ILookupField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { LookupFieldValue } from './lookup-field-value.js'
-import type { ICreateLookupFieldInput, ICreateLookupFieldValue, LookupType } from './lookup-field.type.js'
+import type {
+  ICreateLookupFieldInput,
+  ICreateLookupFieldValue,
+  IUpdateLookupFieldInput,
+  LookupType,
+} from './lookup-field.type.js'
 import { DisplayFields } from './value-objects/display-fields.vo.js'
 import { FieldId } from './value-objects/field-id.vo.js'
 
-const { map, pipe } = fp
-
-export class LookupField extends BaseLookupField<ILookupField> {
+export class LookupField extends Mixin(AbstractLookingField<ILookupField>, AbstractLookupField<ILookupField>) {
   type: LookupType = 'lookup'
 
   get multiple() {
@@ -25,26 +29,28 @@ export class LookupField extends BaseLookupField<ILookupField> {
     return false
   }
 
-  get displayFieldIds(): FieldId[] {
-    return this.props.displayFields?.ids ?? []
-  }
-
-  set displayFieldIds(ids: FieldId[]) {
-    this.props.displayFields = new DisplayFields(ids)
-  }
-
   static create(input: Omit<ICreateLookupFieldInput, 'type'>): LookupField {
     return new LookupField({
-      ...super.createBase(input),
+      ...BaseField.createBase(input),
+      referenceFieldId: FieldId.fromString(input.referenceFieldId),
       displayFields: new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id))),
     })
   }
 
   static unsafeCreate(input: ICreateLookupFieldInput): LookupField {
     return new LookupField({
-      ...super.unsafeCreateBase(input),
+      ...BaseField.unsafeCreateBase(input),
+      referenceFieldId: FieldId.fromString(input.referenceFieldId),
       displayFields: new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id))),
     })
+  }
+
+  public override update(input: IUpdateLookupFieldInput): Option<TableCompositeSpecificaiton> {
+    return andOptions(
+      super.updateBase(input),
+      this.updateDisplayFieldIds(input.displayFieldIds),
+      this.updateReferenceId(input.referenceFieldId),
+    )
   }
 
   createValue(value: ICreateLookupFieldValue): LookupFieldValue {
@@ -61,19 +67,5 @@ export class LookupField extends BaseLookupField<ILookupField> {
 
   get valueSchema() {
     return z.string().array().nullable()
-  }
-
-  getDisplayValues(values?: IRecordDisplayValues): (string | null)[][] {
-    if (isEmpty(this.displayFieldIds)) {
-      return pipe(
-        map((id: string) => values?.[this.id.value]?.[id] ?? []),
-        unzip,
-      )(['id'])
-    }
-
-    return pipe(
-      map((displayFieldId: FieldId) => values?.[this.id.value]?.[displayFieldId.value] ?? []),
-      unzip,
-    )(this.displayFieldIds)
   }
 }
