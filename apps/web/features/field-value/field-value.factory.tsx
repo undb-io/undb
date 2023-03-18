@@ -17,7 +17,7 @@ import { BoolValue } from './bool-value'
 import { DateRangeValue } from './date-range-value'
 import { DateValue } from './date-value'
 import { RecordId } from './record-id'
-import { Group, Rating, Text } from '@egodb/ui'
+import { Divider, Group, Rating, Text } from '@egodb/ui'
 import type { FieldValue } from '@egodb/core'
 import { Option } from '../option/option'
 import { ColorValue } from './color-value'
@@ -106,7 +106,10 @@ export const FieldValueFactory: React.FC<{
       return (
         <Group spacing={3}>
           {values.map((value, index) => (
-            <Text key={index}>{value.toString()}</Text>
+            <>
+              {index === 0 ? null : <Divider orientation="vertical" mx={5} size="xs" />}
+              <Text key={index}>{value.toString()}</Text>
+            </>
           ))}
         </Group>
       )
