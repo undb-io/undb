@@ -2,16 +2,16 @@
   "name": "@egodb/ui",
   "version": "0.0.0",
   "dependencies": {
-    "@babel/core": "^7.21.0",
+    "@babel/core": "^7.21.3",
     "@emotion/react": "^11.10.6",
     "@emotion/server": "^11.10.0",
-    "@mantine/core": "^6.0.1",
-    "@mantine/dates": "^6.0.1",
-    "@mantine/hooks": "^6.0.1",
-    "@mantine/modals": "^6.0.1",
-    "@mantine/next": "^6.0.1",
-    "@mantine/notifications": "^6.0.1",
-    "@mantine/utils": "^6.0.1",
+    "@mantine/core": "^6.0.2",
+    "@mantine/dates": "^6.0.2",
+    "@mantine/hooks": "^6.0.2",
+    "@mantine/modals": "^6.0.2",
+    "@mantine/next": "^6.0.2",
+    "@mantine/notifications": "^6.0.2",
+    "@mantine/utils": "^6.0.2",
     "@tabler/icons-react": "^2.10.0",
     "dayjs": "^1.11.7",
     "react-dom": "^18.2.0"
@@ -23,7 +23,7 @@
     "eslint": "^8.36.0",
     "react": "^18.2.0",
     "tsconfig": "^0.0.0",
-    "typescript": "^4.9.5"
+    "typescript": "^5.0.2"
   },
   "main": "./index.tsx",
   "scripts": {

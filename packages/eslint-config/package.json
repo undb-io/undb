@@ -9,11 +9,11 @@
     "eslint-plugin-react": "^7.32.2"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.54.1",
-    "@typescript-eslint/parser": "^5.54.1",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
     "eslint-import-resolver-typescript": "^3.5.3",
     "eslint-plugin-tsdoc": "^0.2.17",
-    "typescript": "^4.9.5"
+    "typescript": "^5.0.2"
   },
   "license": "MIT",
   "main": "index.js",
