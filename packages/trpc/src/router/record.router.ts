@@ -15,7 +15,6 @@ import {
   getForeignRecordsQueryOutput,
   GetRecordQuery,
   getRecordQueryInput,
-  getRecordQueryOutput,
   GetRecordsQuery,
   getRecordsQueryInput,
   UpdateRecordCommand,
@@ -74,7 +73,7 @@ export const createRecordRouter =
         }),
       get: procedure
         .input(getRecordQueryInput)
-        .output(getRecordQueryOutput)
+        .output(z.any())
         .query(({ input }) => {
           const query = new GetRecordQuery(input)
           return queryBus.execute(query)
