@@ -69,6 +69,7 @@ import {
   dateRangeFilterOperators,
   emailFilterOperators,
   idFilterOperators,
+  lookupFilterOperators,
   numberFilterOperators,
   parentFilterOperators,
   ratingFilterOperators,
@@ -131,7 +132,7 @@ export const operaotrs = z.union([
   parentFilterOperators,
   ratingFilterOperators,
   countFilterOperators,
-  lookupFilterValue,
+  lookupFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
