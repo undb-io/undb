@@ -19,7 +19,7 @@
     "@tanstack/react-virtual": "^3.0.0-beta.54",
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.7",
-    "i18next": "^22.4.11",
+    "i18next": "^22.4.12",
     "i18next-browser-languagedetector": "^7.0.1",
     "jotai": "^2.0.3",
     "jotai-devtools": "^0.2.0",
@@ -27,26 +27,26 @@
     "next": "^13.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.43.5",
+    "react-hook-form": "^7.43.7",
     "react-i18next": "^12.2.0",
     "react-redux": "^8.0.5",
     "use-deep-compare-effect": "^1.8.1",
-    "zod-i18n-map": "^2.8.0"
+    "zod-i18n-map": "^2.8.1"
   },
   "devDependencies": {
     "@egodb/eslint-config": "^0.0.0",
     "@hookform/devtools": "^4.3.1",
     "@next/bundle-analyzer": "^13.2.4",
     "@total-typescript/ts-reset": "^0.3.7",
-    "@types/lodash-es": "^4.17.6",
-    "@types/node": "^18.15.1",
+    "@types/lodash-es": "^4.17.7",
+    "@types/node": "^18.15.3",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "eslint": "^8.36.0",
     "eslint-config-next": "^13.2.4",
     "tsconfig": "^0.0.0",
     "type-fest": "^3.6.1",
-    "typescript": "^4.9.5"
+    "typescript": "^5.0.2"
   },
   "private": true,
   "scripts": {
