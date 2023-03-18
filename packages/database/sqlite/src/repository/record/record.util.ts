@@ -1,8 +1,9 @@
-import type { IQueryTreeRecords, LookupField, ReferenceFieldTypes } from '@egodb/core'
+import type { IQueryTreeRecords, LookupField, ReferenceFieldTypes, TableSchemaIdMap } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { Field } from '../../entity/field.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
+import { getForeignTableAlias } from './record.constants.js'
 import type { ExpandColumnName, RecordSqliteWithParent } from './record.type.js'
 
 export const createRecordTree = <T extends RecordSqliteWithParent>(dataset: T[]): IQueryTreeRecords => {
@@ -27,12 +28,13 @@ export const getFieldIdFromExpand = (expand: ExpandColumnName): string => expand
 // TODO: 如果 core table service 可以获取完整的 table 和其关联的 fields 那在这个函数里可以不用查询 displayFields
 export const expandField = async (
   field: ReferenceFieldTypes | LookupField,
-  table: string,
+  schema: TableSchemaIdMap,
   em: EntityManager,
   knex: Knex,
   qb: Knex.QueryBuilder,
 ): Promise<void> => {
   const jsonObjectEntries: [string, string][] = []
+  const table = getForeignTableAlias(field, schema)
 
   const displayFieldIds = field.displayFieldIds.map((id) => id.value)
   for (const displayFieldId of displayFieldIds) {

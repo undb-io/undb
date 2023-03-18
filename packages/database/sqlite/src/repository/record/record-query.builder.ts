@@ -18,8 +18,8 @@ import type { Promisable } from 'type-fest'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import { UnderlyingSelectColumn } from '../../underlying-table/underlying-column.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
-import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
-import { getFTAlias, INTERNAL_COLUMN_NAME_TOTAL, TABLE_ALIAS } from './record.constants.js'
+import { RecordSqliteReferenceQueryVisitorHelper } from './record-sqlite.reference-query-visitor.helper.js'
+import { INTERNAL_COLUMN_NAME_TOTAL, TABLE_ALIAS } from './record.constants.js'
 import { expandField } from './record.util.js'
 
 export interface IRecordQueryBuilder {
@@ -107,13 +107,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
 
   looking(): this {
     this.#jobs.push(async () => {
-      const lookingField = this.table.schema.getLookingFields()
-      for (const [index, looking] of lookingField.entries()) {
-        const visitor = new RecordSqliteReferenceQueryVisitor(this.table, index, this.qb, this.knex)
-        looking.accept(visitor)
-
-        await expandField(looking, getFTAlias(index), this.em, this.knex, this.qb)
-      }
+      await new RecordSqliteReferenceQueryVisitorHelper(this.em, this.knex, this.qb).visit(this.table)
     })
     return this
   }
@@ -121,7 +115,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   expand(field?: ReferenceFieldTypes | LookupField): this {
     if (field) {
       this.#jobs.push(async () => {
-        await expandField(field, TABLE_ALIAS, this.em, this.knex, this.qb)
+        await expandField(field, this.table.schema.toIdMap(), this.em, this.knex, this.qb)
       })
     }
     return this

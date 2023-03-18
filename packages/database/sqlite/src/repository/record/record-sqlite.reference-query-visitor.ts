@@ -20,24 +20,31 @@ import type {
   SelectField,
   StringField,
   Table,
+  TableSchemaIdMap,
   TreeField,
   UpdatedAtField,
 } from '@egodb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import { UnderlyingForeignTableFactory } from '../../underlying-table/undelying-foreign-table.factory.js'
-import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
-import { getFTAlias, TABLE_ALIAS } from './record.constants.js'
+import {
+  AdjacencyListTable,
+  ClosureTable,
+  getUnderlyingTableAlias,
+} from '../../underlying-table/underlying-foreign-table.js'
+import { getForeignTableAlias, TABLE_ALIAS } from './record.constants.js'
 
 export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
   private readonly tableId: string
+  private readonly schema: TableSchemaIdMap
   constructor(
     private readonly table: Table,
-    private readonly index: number,
     private readonly qb: Knex.QueryBuilder,
     private readonly knex: Knex,
+    private readonly visited: Set<string>,
   ) {
     this.tableId = table.id.value
+    this.schema = table.schema.toIdMap()
   }
 
   private getForeignTableId(field: IAbstractReferenceField): string {
@@ -87,64 +94,67 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
     throw new Error('Method not implemented.')
   }
   reference(field: ReferenceField): void {
+    if (this.visited.has(field.id.value)) return
+
     const foreignTableId = this.getForeignTableId(field)
     const foreignTable = UnderlyingForeignTableFactory.create(foreignTableId, field)
-    const { index } = this
     const alias = TABLE_ALIAS
 
-    const ata = AdjacencyListTable.getAlias(index)
-    const fta = getFTAlias(index)
+    const uta = getUnderlyingTableAlias(field)
+    const fta = getForeignTableAlias(field, this.schema)
 
     this.qb
       .leftJoin(
-        `${foreignTable.name} as ${ata}`,
+        `${foreignTable.name} as ${uta}`,
         `${alias}.${INTERNAL_COLUMN_ID_NAME}`,
-        `${ata}.${AdjacencyListTable.FROM_ID}`,
+        `${uta}.${AdjacencyListTable.FROM_ID}`,
       )
       .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
       .leftJoin(
         `${foreignTableId} as ${fta}`,
         `${fta}.${INTERNAL_COLUMN_ID_NAME}`,
-        `${ata}.${AdjacencyListTable.TO_ID}`,
+        `${uta}.${AdjacencyListTable.TO_ID}`,
       )
+
+    this.visited.add(field.id.value)
   }
   tree(field: TreeField): void {
     const foreignTableId = this.getForeignTableId(field)
     const foreignTable = UnderlyingForeignTableFactory.create(foreignTableId, field)
-    const { knex, index } = this
+    const { knex } = this
     const alias = TABLE_ALIAS
 
-    const cta = ClosureTable.getAlias(index)
-    const fta = getFTAlias(index)
+    const uta = getUnderlyingTableAlias(field)
+    const fta = getForeignTableAlias(field, this.schema)
 
     this.qb
-      .leftJoin(`${foreignTable.name} as ${cta}`, function () {
-        this.on(`${alias}.${INTERNAL_COLUMN_ID_NAME}`, `${cta}.${ClosureTable.PARENT_ID}`).andOn(
-          `${cta}.${ClosureTable.DEPTH}`,
+      .leftJoin(`${foreignTable.name} as ${uta}`, function () {
+        this.on(`${alias}.${INTERNAL_COLUMN_ID_NAME}`, `${uta}.${ClosureTable.PARENT_ID}`).andOn(
+          `${uta}.${ClosureTable.DEPTH}`,
           knex.raw('?', [1]),
         )
       })
       .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
-      .leftJoin(`${foreignTableId} as ${fta}`, `${fta}.${INTERNAL_COLUMN_ID_NAME}`, `${cta}.${ClosureTable.CHILD_ID}`)
+      .leftJoin(`${foreignTableId} as ${fta}`, `${fta}.${INTERNAL_COLUMN_ID_NAME}`, `${uta}.${ClosureTable.CHILD_ID}`)
   }
   parent(field: ParentField): void {
     const foreignTableId = this.getForeignTableId(field)
     const foreignTable = UnderlyingForeignTableFactory.create(foreignTableId, field)
-    const { knex, index } = this
+    const { knex } = this
     const alias = TABLE_ALIAS
 
-    const cta = ClosureTable.getAlias(index)
-    const fta = getFTAlias(index)
+    const uta = getUnderlyingTableAlias(field)
+    const fta = getForeignTableAlias(field, this.schema)
 
     this.qb
-      .leftJoin(`${foreignTable.name} as ${cta}`, function () {
-        this.on(`${alias}.${INTERNAL_COLUMN_ID_NAME}`, `${cta}.${ClosureTable.CHILD_ID}`).andOn(
-          `${cta}.${ClosureTable.DEPTH}`,
+      .leftJoin(`${foreignTable.name} as ${uta}`, function () {
+        this.on(`${alias}.${INTERNAL_COLUMN_ID_NAME}`, `${uta}.${ClosureTable.CHILD_ID}`).andOn(
+          `${uta}.${ClosureTable.DEPTH}`,
           knex.raw('?', [1]),
         )
       })
       .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
-      .leftJoin(`${foreignTableId} as ${fta}`, `${fta}.${INTERNAL_COLUMN_ID_NAME}`, `${cta}.${ClosureTable.PARENT_ID}`)
+      .leftJoin(`${foreignTableId} as ${fta}`, `${fta}.${INTERNAL_COLUMN_ID_NAME}`, `${uta}.${ClosureTable.PARENT_ID}`)
   }
   lookup(field: LookupField): void {
     const schema = this.table.schema.toIdMap()

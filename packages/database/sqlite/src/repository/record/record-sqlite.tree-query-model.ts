@@ -6,10 +6,10 @@ import { UnderlyingColumnFactory } from '../../underlying-table/underlying-colum
 import { ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
 import { RecordSqliteMapper } from './record-sqlite.mapper.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
-import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
+import { RecordSqliteReferenceQueryVisitorHelper } from './record-sqlite.reference-query-visitor.helper.js'
 import { TABLE_ALIAS } from './record.constants.js'
 import type { RecordSqliteWithParent } from './record.type.js'
-import { createRecordTree, expandField } from './record.util.js'
+import { createRecordTree } from './record.util.js'
 
 export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
   constructor(private readonly em: EntityManager) {}
@@ -41,12 +41,7 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
     const visitor = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
     spec.accept(visitor).unwrap()
 
-    const lookingFields = table.schema.getLookingFields()
-    for (const [index, lookingField] of lookingFields.entries()) {
-      const visitor = new RecordSqliteReferenceQueryVisitor(table, index, qb, knex)
-      lookingField.accept(visitor)
-      await expandField(lookingField, alias, em, knex, qb)
-    }
+    await new RecordSqliteReferenceQueryVisitorHelper(em, knex, qb).visit(table)
 
     const data = await em.execute<RecordSqliteWithParent[]>(qb)
     const records = data.map((r) => {
