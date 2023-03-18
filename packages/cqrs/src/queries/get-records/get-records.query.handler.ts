@@ -20,7 +20,7 @@ export class GetRecordsQueryHandler implements IQueryHandler<GetRecordsQuery, IG
     }
 
     const viewId = query.viewId ? ViewId.fromString(query.viewId) : undefined
-    const { records, total } = await this.rm.findAndCount(table, viewId, spec)
+    const { records, total } = await this.rm.findAndCount(table.id.value, viewId, spec)
 
     return { records, total }
   }

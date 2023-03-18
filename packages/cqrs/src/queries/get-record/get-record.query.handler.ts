@@ -7,9 +7,7 @@ export class GetRecordQueryHandler implements IQueryHandler<GetRecordQuery, IGet
   constructor(protected readonly tableRepo: ITableRepository, protected readonly rm: IRecordQueryModel) {}
 
   async execute(query: GetRecordQuery): Promise<IGetRecordOutput> {
-    const table = (await this.tableRepo.findOneById(query.tableId)).unwrap()
-
-    const record = (await this.rm.findOneById(table, query.id)).into()
+    const record = (await this.rm.findOneById(query.tableId, query.id)).into()
 
     return record
   }

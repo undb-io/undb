@@ -4,31 +4,40 @@ import type {
   IRecordQueryModel,
   IRecordSpec,
   ReferenceFieldTypes,
-  Table,
   ViewId,
 } from '@egodb/core'
 import { WithRecordId } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { Option } from 'oxide.ts'
+import { Table as TableEntity } from '../../entity/table.js'
+import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
 import { RecordSqliteQueryBuilder } from './record-query.builder.js'
 import { RecordSqliteMapper } from './record-sqlite.mapper.js'
 import { INTERNAL_COLUMN_NAME_TOTAL } from './record.constants.js'
 import type { RecordSqlite } from './record.type.js'
 
 export class RecordSqliteQueryModel implements IRecordQueryModel {
-  constructor(protected readonly em: EntityManager) {}
+  protected readonly em: EntityManager
+  constructor(em: EntityManager) {
+    this.em = em.fork()
+  }
 
   async find(
-    table: Table,
+    tableId: string,
     viewId: ViewId | undefined,
     spec: IRecordSpec | null,
     referenceField?: ReferenceFieldTypes,
   ): Promise<IQueryRecords> {
-    const tableId = table.id.value
+    const tableEntity = await this.em.findOneOrFail(
+      TableEntity,
+      { id: tableId },
+      { populate: ['fields.displayFields'] },
+    )
+    const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
 
-    let builder = new RecordSqliteQueryBuilder(this.em.fork(), table, spec, viewId?.value)
-    builder = await builder.select().from().where().looking().sort().expand(referenceField).build()
+    let builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec, viewId?.value)
+    builder = builder.select().from().where().looking().sort().expand(referenceField).build()
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb)
 
@@ -36,20 +45,25 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
   }
 
   async findAndCount(
-    table: Table,
+    tableId: string,
     viewId: ViewId | undefined,
     spec: IRecordSpec | null,
     referenceField?: ReferenceFieldTypes,
   ): Promise<{ records: IQueryRecords; total: number }> {
-    const tableId = table.id.value
+    const tableEntity = await this.em.findOneOrFail(
+      TableEntity,
+      { id: tableId },
+      { populate: ['fields.displayFields'] },
+    )
+    const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
 
-    let builder = new RecordSqliteQueryBuilder(this.em.fork(), table, spec, viewId?.value)
-    builder = await builder.select().from().where().looking().sort().expand(referenceField).build()
+    let builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec, viewId?.value)
+    builder = builder.select().from().where().looking().sort().expand(referenceField).build()
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb)
 
-    const tb = await builder.clone().from().where().count().build()
+    const tb = builder.clone().from().where().count().build()
     const td = await this.em.execute<{ total: number }[]>(tb.qb.first())
 
     const records = RecordSqliteMapper.toQueries(tableId, schema, data)
@@ -58,12 +72,17 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     return { records, total: total }
   }
 
-  async findOne(table: Table, spec: IRecordSpec): Promise<Option<IQueryRecordSchema>> {
-    const tableId = table.id.value
+  async findOne(tableId: string, spec: IRecordSpec): Promise<Option<IQueryRecordSchema>> {
+    const tableEntity = await this.em.findOneOrFail(
+      TableEntity,
+      { id: tableId },
+      { populate: ['fields.displayFields'] },
+    )
+    const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
 
-    let builder = new RecordSqliteQueryBuilder(this.em.fork(), table, spec)
-    builder = await builder.select().from().where().looking().build()
+    let builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec)
+    builder = builder.select().from().where().looking().build()
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb.first())
 
@@ -71,7 +90,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     return Option(record)
   }
 
-  findOneById(table: Table, id: string): Promise<Option<IQueryRecordSchema>> {
-    return this.findOne(table, WithRecordId.fromString(id))
+  findOneById(tableId: string, id: string): Promise<Option<IQueryRecordSchema>> {
+    return this.findOne(tableId, WithRecordId.fromString(id))
   }
 }
