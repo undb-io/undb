@@ -29,6 +29,10 @@ export class LookupField extends BaseLookupField<ILookupField> {
     return this.props.displayFields?.ids ?? []
   }
 
+  set displayFieldIds(ids: FieldId[]) {
+    this.props.displayFields = new DisplayFields(ids)
+  }
+
   static create(input: Omit<ICreateLookupFieldInput, 'type'>): LookupField {
     return new LookupField({
       ...super.createBase(input),
