@@ -27,7 +27,7 @@ export class GetParentAvailableRecordsQueryHandler
     ).unwrap()
 
     const viewId = query.viewId ? ViewId.fromString(query.viewId) : undefined
-    const records = await this.rm.find(table, viewId, spec, field)
+    const records = await this.rm.find(table.id.value, viewId, spec, field)
 
     return { records }
   }

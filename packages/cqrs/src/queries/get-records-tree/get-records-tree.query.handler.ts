@@ -15,7 +15,7 @@ export class GetRecordsTreeQueryHandler implements IQueryHandler<GetRecordsTreeQ
       .map((s) => (filter.isNone() ? s : s.and(filter.unwrap())))
       .unwrap()
 
-    const records = await this.rm.findTrees(table, field, spec)
+    const records = await this.rm.findTrees(table.id.value, field, spec)
 
     return { records }
   }

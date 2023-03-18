@@ -1,6 +1,7 @@
-import type { LookingFieldTypes, Table, TableSchemaIdMap } from '@egodb/core'
+import type { Table as CoreTable, LookingFieldTypes, TableSchemaIdMap } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import { Field } from '../../entity/field.js'
+import type { LookupField, ParentField, ReferenceField, TreeField } from '../../entity/field.js'
+import type { Table } from '../../entity/table.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
@@ -15,23 +16,28 @@ export class RecordSqliteReferenceQueryVisitorHelper {
     private readonly qb: Knex.QueryBuilder,
   ) {}
 
-  public async visit(table: Table): Promise<void> {
+  public visit(table: CoreTable, tableEntity: Table): void {
     const { knex, qb, visited } = this
     const lookingFields = table.schema.getLookingFields()
     for (const lookingField of lookingFields) {
       const visitor = new RecordSqliteReferenceQueryVisitor(table, qb, knex, visited)
       lookingField.accept(visitor)
-      await this.expandField(lookingField, table.schema.toIdMap())
+      this.expandField(lookingField, table.schema.toIdMap(), tableEntity)
     }
   }
 
-  public async expandField(field: LookingFieldTypes, schema: TableSchemaIdMap) {
+  public expandField(field: LookingFieldTypes, schema: TableSchemaIdMap, tableEntity: Table) {
     const jsonObjectEntries: [string, string][] = []
     const table = getForeignTableAlias(field, schema)
 
+    const columns = tableEntity.fields.getItems()
+    const column = columns.find((c) => c.id === field.id.value)
+
     const displayFieldIds = field.displayFieldIds.map((id) => id.value)
     for (const displayFieldId of displayFieldIds) {
-      const displayField = await this.em.findOne(Field, { id: displayFieldId })
+      const displayField = (column as ReferenceField | TreeField | ParentField | LookupField).displayFields
+        .getItems()
+        .find((c) => c.id === displayFieldId)
       if (!displayField) continue
 
       let key = displayFieldId
