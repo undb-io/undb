@@ -1,18 +1,23 @@
+import { andOptions } from '@egodb/domain'
+import type { Option } from 'oxide.ts'
 import type { ZodTypeAny } from 'zod'
 import { z } from 'zod'
 import type { ICreatedAtFilter } from '../filter/created-at.filter.js'
 import type { ICreatedAtFilterOperator } from '../filter/operators.js'
+import type { TableCompositeSpecificaiton } from '../specifications/index.js'
 import { CreatedAtFieldValue } from './created-at-field-value.js'
 import type {
   CreatedAtFieldType,
   ICreateCreatedAtFieldInput,
   ICreatedAtFieldQueryValue,
+  IUpdateCreatedAtFieldInput,
 } from './created-at-field.type.js'
-import { BaseDateField } from './field.base.js'
+import { AbstractDateField } from './field.base.js'
 import type { ICreatedAtField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
+import { DateFormat } from './value-objects/date-format.vo.js'
 
-export class CreatedAtField extends BaseDateField<ICreatedAtField> {
+export class CreatedAtField extends AbstractDateField<ICreatedAtField> {
   type: CreatedAtFieldType = 'created-at'
 
   override get system() {
@@ -28,11 +33,21 @@ export class CreatedAtField extends BaseDateField<ICreatedAtField> {
   }
 
   static create(input: Omit<ICreateCreatedAtFieldInput, 'type'>): CreatedAtField {
-    return new CreatedAtField(super.createBase(input))
+    return new CreatedAtField({
+      ...super.createBase(input),
+      format: input.format ? DateFormat.fromString(input.format) : undefined,
+    })
   }
 
   static unsafeCreate(input: ICreateCreatedAtFieldInput): CreatedAtField {
-    return new CreatedAtField(super.unsafeCreateBase(input))
+    return new CreatedAtField({
+      ...super.unsafeCreateBase(input),
+      format: input.format ? DateFormat.fromString(input.format) : undefined,
+    })
+  }
+
+  public override update(input: IUpdateCreatedAtFieldInput): Option<TableCompositeSpecificaiton> {
+    return andOptions(this.updateBase(input), this.updateFormat(input.format))
   }
 
   createValue(value: ICreatedAtFieldQueryValue): CreatedAtFieldValue {

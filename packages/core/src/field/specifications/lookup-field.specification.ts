@@ -3,19 +3,15 @@ import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
-import type { BaseLookupField } from '../field.base.js'
-import type { ICountField, ILookupField } from '../field.type.js'
+import type { IAbstractLookupField } from '../field.type.js'
 import { FieldId } from '../value-objects/index.js'
 
 export class WithReferenceFieldId extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(
-    private readonly field: BaseLookupField<ILookupField | ICountField>,
-    private readonly referenceFieldId: FieldId,
-  ) {
+  constructor(private readonly field: IAbstractLookupField, private readonly referenceFieldId: FieldId) {
     super()
   }
 
-  static fromString(field: BaseLookupField<ILookupField | ICountField>, fieldId: string) {
+  static fromString(field: IAbstractLookupField, fieldId: string) {
     return new this(field, FieldId.fromString(fieldId))
   }
 

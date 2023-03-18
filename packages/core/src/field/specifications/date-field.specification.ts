@@ -3,21 +3,14 @@ import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
-import type { BaseDateField } from '../field.base.js'
-import type { ICreatedAtField, IDateField, IDateRangeField, IUpdatedAtField } from '../field.type.js'
+import type { AbstractDateField } from '../field.base.js'
 import { DateFormat } from '../value-objects/date-format.vo.js'
 
 export class WithFormat extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(
-    public readonly field: BaseDateField<IDateField | IDateRangeField | IUpdatedAtField | ICreatedAtField>,
-    public readonly format: DateFormat,
-  ) {
+  constructor(public readonly field: AbstractDateField, public readonly format: DateFormat) {
     super()
   }
-  static fromString(
-    field: BaseDateField<IDateField | IDateRangeField | IUpdatedAtField | ICreatedAtField>,
-    format: string,
-  ) {
+  static fromString(field: AbstractDateField, format: string) {
     return new this(field, DateFormat.fromString(format))
   }
   isSatisfiedBy(t: Table): boolean {

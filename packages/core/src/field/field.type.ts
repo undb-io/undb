@@ -3,6 +3,7 @@ import * as z from 'zod'
 import type { IReferenceFilterValue } from '../filter/reference.filter.js'
 import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues } from '../record/index.js'
+import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import type { TableId } from '../value-objects/table-id.vo.js'
 import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
 import type { AutoIncrementFieldValue } from './auto-increment-field-value.js'
@@ -329,11 +330,11 @@ export interface IBaseField {
   valueConstrains: FieldValueConstraints
 }
 
-export type AbstractDateField = { format?: DateFormat }
+export type BaseDateField = { format?: DateFormat }
 
 export type IIdField = IBaseField
-export type ICreatedAtField = IBaseField & AbstractDateField
-export type IUpdatedAtField = IBaseField & AbstractDateField
+export type ICreatedAtField = IBaseField & BaseDateField
+export type IUpdatedAtField = IBaseField & BaseDateField
 export type IAutoIncrementField = IBaseField
 export type IStringField = IBaseField
 export type IEmailField = IBaseField
@@ -342,8 +343,8 @@ export type IColorField = IBaseField
 export type INumberField = IBaseField
 export type IRatingField = IBaseField & { max?: number }
 
-export type IDateField = IBaseField & AbstractDateField
-export type IDateRangeField = IBaseField & AbstractDateField
+export type IDateField = IBaseField & BaseDateField
+export type IDateRangeField = IBaseField & BaseDateField
 export type ISelectField = IBaseField & {
   options: Options
 }
@@ -360,6 +361,7 @@ export type SystemField = IdField | CreatedAtField | UpdatedAtField
 
 export type IReferenceFieldTypes = IReferenceField | ITreeField | IParentField
 export type ReferenceFieldTypes = ReferenceField | TreeField | ParentField
+export type ILookingFieldTypes = IReferenceFieldTypes | ILookupField
 export type LookingFieldTypes = ReferenceFieldTypes | LookupField
 export type IDateFieldTypes = IDateField | IDateRangeField | ICreatedAtField | IUpdatedAtField
 export type DateFieldTypes = DateField | DateRangeField | CreatedAtField | UpdatedAtField
@@ -472,19 +474,28 @@ export const INTERNAL_COLUMN_UPDATED_AT_NAME = 'updated_at'
 export const INTERNAL_DISPLAY_VALUES_NAME = 'display_values'
 
 export interface IAbstractReferenceField {
-  get multiple(): boolean
   get foreignTableId(): Option<string>
+}
+
+export interface IAbstractLookingField {
+  get multiple(): boolean
   get displayFieldIds(): FieldId[]
+  set displayFieldIds(fieldIds: FieldId[])
   getDisplayValues(values: IRecordDisplayValues): ((string | null)[] | undefined)[]
+  updateDisplayFieldIds(displayFieldIds?: string[]): Option<TableCompositeSpecificaiton>
 }
 
 export interface IAbstractDateField {
   get formatString(): string
   get format(): DateFormat | undefined
+  set format(format: DateFormat | undefined)
+  updateFormat(format?: string): Option<TableCompositeSpecificaiton>
 }
 
 export interface IAbstractLookupField {
   get referenceFieldId(): FieldId
+  set referenceFieldId(fieldId: FieldId)
   getReferenceField(schema: TableSchemaIdMap): ReferenceField | TreeField
   getForeignTableId(schema: TableSchemaIdMap): Option<string>
+  updateReferenceId(referenceId?: string): Option<TableCompositeSpecificaiton>
 }

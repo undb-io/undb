@@ -255,6 +255,7 @@ importers:
       lodash-es: ^4.17.21
       oxide.ts: ^1.1.0
       rimraf: ^4.4.0
+      ts-mixer: ^6.0.3
       tsconfig: ^0.0.0
       tsup: ^6.6.3
       type-fest: ^3.6.1
@@ -270,6 +271,7 @@ importers:
       lodash: 4.17.21
       lodash-es: 4.17.21
       oxide.ts: 1.1.0
+      ts-mixer: 6.0.3
       zod: 3.21.4
       zod-i18n-map: 2.8.1_zod@3.21.4
     devDependencies:
@@ -12705,6 +12707,10 @@ packages:
       semver: 7.3.8
       typescript: 5.0.2
     dev: true
+
+  /ts-mixer/6.0.3:
+    resolution: {integrity: sha512-k43M7uCG1AkTyxgnmI5MPwKoUvS/bRvLvUb7+Pgpdlmok8AoqmUaZxUUw8zKM5B1lqZrt41GjYgnvAi0fppqgQ==}
+    dev: false
 
   /ts-morph/17.0.1:
     resolution: {integrity: sha512-10PkHyXmrtsTvZSL+cqtJLTgFXkU43Gd0JCc0Rw6GchWbqKe0Rwgt1v3ouobTZwQzF1mGhDeAlWYBMGRV7y+3g==}
