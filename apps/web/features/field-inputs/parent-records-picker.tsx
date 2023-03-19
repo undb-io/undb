@@ -36,7 +36,7 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
     {
       tableId: table.id.value,
       parentFieldId: field.id.value,
-      recordId,
+      recordId: recordId || undefined,
     },
     {
       skip: !focused,
