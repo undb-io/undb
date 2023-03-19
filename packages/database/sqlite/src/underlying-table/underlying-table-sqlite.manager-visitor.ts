@@ -2,7 +2,6 @@
 import type { ITableSpecVisitor, WithNewField, WithoutField, WithoutOption, WithTableSchema } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { UnderlyingColumnBuilder } from './underlying-column.builder.js'
-import { UnderlyingColumnFactory } from './underlying-column.factory.js'
 
 export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   private readonly knex: Knex
@@ -84,14 +83,14 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     this.qb = this.#qb.from(this.tableName).where(s.field.id.value, s.optionKey.value).update(s.field.id.value, null)
   }
   withoutField(s: WithoutField): void {
-    const fields = UnderlyingColumnFactory.createMany([s.field], this.tableName)
-    const sqls = fields.map(
-      (f) =>
-        `
-    alter table \`${this.tableName}\` drop column \`${f.name}\`;
-    `,
-    )
-    this.#queries.push(...sqls)
+    // const fields = UnderlyingColumnFactory.createMany([s.field], this.tableName)
+    // const sqls = fields.map(
+    //   (f) =>
+    //     `
+    // alter table \`${this.tableName}\` drop column \`${f.name}\`;
+    // `,
+    // )
+    // this.#queries.push(...sqls)
   }
   fieldOptionsEqual(): void {}
   withFieldName(): void {}
