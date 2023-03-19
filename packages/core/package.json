@@ -23,7 +23,7 @@
     "type-fest": "^3.6.1",
     "typescript": "^5.0.2",
     "vitest": "^0.29.3",
-    "vitest-mock-extended": "^1.1.1"
+    "vitest-mock-extended": "^1.1.3"
   },
   "exports": {
     "import": "./dist/index.js",
