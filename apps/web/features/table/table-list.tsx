@@ -27,7 +27,11 @@ export const TableList: React.FC = () => {
           variant="default"
           display="flex"
           value={currentTableId}
-          onTabChange={(value) => router.push(`/t/${value}`)}
+          onTabChange={(value) => {
+            if (value !== currentTableId) {
+              router.push(`/t/${value}`)
+            }
+          }}
         >
           {Object.values(tables.data?.entities ?? {})
             .filter(Boolean)
@@ -63,7 +67,8 @@ export const TableList: React.FC = () => {
         </Tabs>
         <ActionIcon
           variant="subtle"
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation()
             unstable_batchedUpdates(() => {
               close()
               setOpened(true)
