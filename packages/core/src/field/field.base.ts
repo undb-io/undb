@@ -72,6 +72,10 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
     return false
   }
 
+  get valueConstrains() {
+    return this.props.valueConstrains
+  }
+
   isSystem(): this is SystemField {
     return this.system
   }

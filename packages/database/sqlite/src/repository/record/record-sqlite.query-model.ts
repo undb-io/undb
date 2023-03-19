@@ -17,10 +17,7 @@ import { INTERNAL_COLUMN_NAME_TOTAL } from './record.constants.js'
 import type { RecordSqlite } from './record.type.js'
 
 export class RecordSqliteQueryModel implements IRecordQueryModel {
-  protected readonly em: EntityManager
-  constructor(em: EntityManager) {
-    this.em = em.fork()
-  }
+  constructor(protected readonly em: EntityManager) {}
 
   async find(
     tableId: string,
@@ -53,7 +50,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const tableEntity = await this.em.findOneOrFail(
       TableEntity,
       { id: tableId },
-      { populate: ['fields.displayFields'], populateWhere: { fields: { deletedAt: null } } },
+      { populate: ['fields', 'fields.displayFields'] },
     )
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()

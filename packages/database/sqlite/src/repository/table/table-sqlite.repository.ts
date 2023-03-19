@@ -1,4 +1,4 @@
-import type { ITableRepository, ITableSpec, Table as CoreTable } from '@egodb/core'
+import type { Table as CoreTable, ITableRepository, ITableSpec } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
