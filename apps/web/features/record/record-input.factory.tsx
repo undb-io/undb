@@ -211,6 +211,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
               <Center>
                 {label}
                 <ActionIcon
+                  tabIndex={-1}
                   ml="xs"
                   size="xs"
                   onClick={() => {

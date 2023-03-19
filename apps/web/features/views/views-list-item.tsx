@@ -38,7 +38,6 @@ export const ViewsListItem: React.FC<IProps> = ({ v }) => {
   const isActive = view.id.equals(v.id)
   const router = useRouter()
   const [isEditing, handler] = useDisclosure(false)
-  const [opened, menuHandler] = useDisclosure(false)
 
   const { t } = useTranslation()
 
@@ -112,72 +111,70 @@ export const ViewsListItem: React.FC<IProps> = ({ v }) => {
             </Text>
           )}
         </Group>
-        {(hovered || opened) && (
-          <Group spacing={5}>
-            <Menu withinPortal closeOnClickOutside closeOnItemClick opened={opened} onChange={menuHandler.toggle}>
-              <Menu.Target>
-                <ActionIcon
-                  color="gray.5"
-                  size={12}
-                  variant="filled"
-                  radius="xl"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                  }}
-                >
-                  <IconChevronDown fontWeight={600} size={14} />
-                </ActionIcon>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Item
-                  h={35}
-                  fz="xs"
-                  icon={<IconPencil size={14} />}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handler.open()
-                  }}
-                >
-                  {t('Update View Name')}
-                </Menu.Item>
-                <Menu.Item
-                  h={35}
-                  fz="xs"
-                  icon={<IconCopy size={14} />}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    duplicateView({ tableId: table.id.value, id: v.id.value })
-                  }}
-                >
-                  {t('Duplicate View')}
-                </Menu.Item>
+        <Group spacing={5} sx={{ visibility: hovered ? 'visible' : 'hidden' }}>
+          <Menu withinPortal closeOnClickOutside closeOnItemClick>
+            <Menu.Target>
+              <ActionIcon
+                color="gray.5"
+                size={12}
+                variant="filled"
+                radius="xl"
+                onClick={(e) => {
+                  e.stopPropagation()
+                }}
+              >
+                <IconChevronDown fontWeight={600} size={14} />
+              </ActionIcon>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu.Item
+                h={35}
+                fz="xs"
+                icon={<IconPencil size={14} />}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handler.open()
+                }}
+              >
+                {t('Update View Name')}
+              </Menu.Item>
+              <Menu.Item
+                h={35}
+                fz="xs"
+                icon={<IconCopy size={14} />}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  duplicateView({ tableId: table.id.value, id: v.id.value })
+                }}
+              >
+                {t('Duplicate View')}
+              </Menu.Item>
 
-                {viewCount > 1 && (
-                  <>
-                    <Menu.Divider />
+              {viewCount > 1 && (
+                <>
+                  <Menu.Divider />
 
-                    <Menu.Item
-                      h={35}
-                      fz="xs"
-                      icon={<IconTrash size={14} />}
-                      color="red"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        confirm()
-                      }}
-                    >
-                      {t('Delete View')}
-                    </Menu.Item>
-                  </>
-                )}
-              </Menu.Dropdown>
-            </Menu>
+                  <Menu.Item
+                    h={35}
+                    fz="xs"
+                    icon={<IconTrash size={14} />}
+                    color="red"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      confirm()
+                    }}
+                  >
+                    {t('Delete View')}
+                  </Menu.Item>
+                </>
+              )}
+            </Menu.Dropdown>
+          </Menu>
 
-            <ActionIcon {...attributes} {...listeners} size="xs" component="a">
-              <IconGripVertical size={12} />
-            </ActionIcon>
-          </Group>
-        )}
+          <ActionIcon {...attributes} {...listeners} size="xs" component="a">
+            <IconGripVertical size={12} />
+          </ActionIcon>
+        </Group>
       </Group>
     </Box>
   )
