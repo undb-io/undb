@@ -119,6 +119,8 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
     this.visited.add(field.id.value)
   }
   tree(field: TreeField): void {
+    if (this.visited.has(field.id.value)) return
+
     const foreignTableId = this.getForeignTableId(field)
     const foreignTable = UnderlyingForeignTableFactory.create(foreignTableId, field)
     const { knex } = this
@@ -136,8 +138,12 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
       })
       .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
       .leftJoin(`${foreignTableId} as ${fta}`, `${fta}.${INTERNAL_COLUMN_ID_NAME}`, `${uta}.${ClosureTable.CHILD_ID}`)
+
+    this.visited.add(field.id.value)
   }
   parent(field: ParentField): void {
+    if (this.visited.has(field.id.value)) return
+
     const foreignTableId = this.getForeignTableId(field)
     const foreignTable = UnderlyingForeignTableFactory.create(foreignTableId, field)
     const { knex } = this
@@ -155,6 +161,8 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
       })
       .groupBy(`${alias}.${INTERNAL_COLUMN_ID_NAME}`)
       .leftJoin(`${foreignTableId} as ${fta}`, `${fta}.${INTERNAL_COLUMN_ID_NAME}`, `${uta}.${ClosureTable.PARENT_ID}`)
+
+    this.visited.add(field.id.value)
   }
   lookup(field: LookupField): void {
     const schema = this.table.schema.toIdMap()

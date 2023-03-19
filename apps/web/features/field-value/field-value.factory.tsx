@@ -105,10 +105,10 @@ export const FieldValueFactory: React.FC<{
 
       return (
         <Group spacing={3}>
-          {values.map((value, index) => (
+          {values.filter(Boolean).map((value, index) => (
             <>
               {index === 0 ? null : <Divider orientation="vertical" mx={5} size="xs" />}
-              <Text key={index}>{value.toString()}</Text>
+              <Text key={index}>{value.filter(Boolean).toString()}</Text>
             </>
           ))}
         </Group>

@@ -1,5 +1,4 @@
-import type { Provider } from '@nestjs/common'
-import { Inject } from '@nestjs/common'
+import { Inject, Provider } from '@nestjs/common'
 import { NestRecordSqliteQueryModel } from './sqlite/record-sqlite.query-model.js'
 import { NestRecordSqliteRepository } from './sqlite/record-sqlite.repository.js'
 import { NestRecordSqliteTreeQueryModel, RECORD_TREE_QUERY_MODEL } from './sqlite/record-sqlite.tree-query-model.js'
