@@ -32,7 +32,7 @@ export type IUpdateLookupFieldInput = z.infer<typeof updateLookupFieldSchema>
 export const lookupFieldQuerySchema = baseFieldQuerySchema.merge(lookupTypeObjectSchema).merge(
   z.object({
     referenceFieldId: fieldIdSchema,
-    displayFieldIds: fieldIdSchema.array().nonempty(),
+    displayFieldIds: fieldIdSchema.array(),
   }),
 )
 export type ILookupFieldQuerySchema = z.infer<typeof lookupFieldQuerySchema>
