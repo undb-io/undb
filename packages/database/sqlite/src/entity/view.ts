@@ -1,13 +1,13 @@
 import type {
   Calendar as CoreCalendar,
+  Kanban as CoreKanban,
+  TreeView as CoreTreeView,
+  View as CoreView,
   IRootFilter,
   ISorts,
   IViewDisplayType,
   IViewFieldOption,
   IViewPinnedFields,
-  Kanban as CoreKanban,
-  TreeView as CoreTreeView,
-  View as CoreView,
 } from '@egodb/core'
 import type { Rel } from '@mikro-orm/core'
 import {
@@ -27,7 +27,12 @@ import { Table } from './table.js'
 
 @Embeddable()
 export class Kanban {
-  @Property({ nullable: true })
+  @Property({
+    nullable: true,
+    serializer(value) {
+      return value || undefined
+    },
+  })
   fieldId?: string
 
   constructor(kanban: CoreKanban) {
@@ -37,7 +42,12 @@ export class Kanban {
 
 @Embeddable()
 export class Calendar {
-  @Property({ nullable: true })
+  @Property({
+    nullable: true,
+    serializer(value) {
+      return value || undefined
+    },
+  })
   fieldId?: string
 
   constructor(calendar: CoreCalendar) {
@@ -47,7 +57,12 @@ export class Calendar {
 
 @Embeddable()
 export class Tree {
-  @Property({ nullable: true })
+  @Property({
+    nullable: true,
+    serializer(value) {
+      return value || undefined
+    },
+  })
   fieldId?: string
 
   constructor(tree: CoreTreeView) {
