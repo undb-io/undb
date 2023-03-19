@@ -8,7 +8,6 @@ export class GetRecordsQueryHandler implements IQueryHandler<GetRecordsQuery, IG
 
   async execute(query: GetRecordsQuery) {
     const table = (await this.tableRepo.findOneById(query.tableId)).unwrap()
-    console.log(table.schema.fields.map((f) => f.id.value + ':' + f.name.value))
     const filter = table.getSpec(query.viewId)
 
     let spec = WithRecordTableId.fromString(query.tableId)
