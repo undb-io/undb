@@ -1,4 +1,4 @@
-import { Table } from '@egodb/core'
+import type { ITableSpec, Table } from '@egodb/core'
 import type { EntityManager } from '@egodb/sqlite'
 import { UnderlyingTableSqliteManager } from '@egodb/sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
@@ -16,5 +16,15 @@ export class NestTableSqliteManager extends UnderlyingTableSqliteManager {
   @UseRequestContext()
   create(table: Table): Promise<void> {
     return super.create(table)
+  }
+
+  @UseRequestContext()
+  update(tableId: string, spec: ITableSpec): Promise<void> {
+    return super.update(tableId, spec)
+  }
+
+  @UseRequestContext()
+  delete(tableId: string): Promise<void> {
+    return super.delete(tableId)
   }
 }

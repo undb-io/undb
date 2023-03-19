@@ -23,10 +23,7 @@ import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation
 import type { RecordSqlite } from './record.type.js'
 
 export class RecordSqliteRepository implements IRecordRepository {
-  protected readonly em: EntityManager
-  constructor(em: EntityManager) {
-    this.em = em.fork()
-  }
+  constructor(protected readonly em: EntityManager) {}
 
   private async _insert(em: EntityManager, record: CoreRecord, schema: TableSchemaIdMap) {
     const data: globalThis.Record<string, Knex.Value> = {

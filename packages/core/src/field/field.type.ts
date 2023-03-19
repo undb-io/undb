@@ -199,10 +199,10 @@ import type { IUpdatedAtFieldValue } from './updated-at-field.type.js'
 import {
   createUpdatedAtFieldSchema,
   createUpdatedAtFieldValue_internal,
+  updateUpdatedAtFieldSchema,
   updatedAtFieldQuerySchema,
   updatedAtFieldQueryValue,
   updatedAtTypeSchema,
-  updateUpdatedAtFieldSchema,
 } from './updated-at-field.type.js'
 import type { FieldDescription } from './value-objects/field-description.js'
 import type { DateFormat, DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
@@ -477,7 +477,7 @@ export interface IAbstractReferenceField {
   get foreignTableId(): Option<string>
 }
 
-export interface IAbstractLookingField {
+export interface IAbstractLookingField extends IBaseField {
   get multiple(): boolean
   get displayFieldIds(): FieldId[]
   set displayFieldIds(fieldIds: FieldId[])
