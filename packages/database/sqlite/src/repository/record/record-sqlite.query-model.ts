@@ -53,7 +53,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const tableEntity = await this.em.findOneOrFail(
       TableEntity,
       { id: tableId },
-      { populate: ['fields.displayFields'] },
+      { populate: ['fields.displayFields'], populateWhere: { fields: { deletedAt: null } } },
     )
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()

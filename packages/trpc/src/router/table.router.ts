@@ -5,10 +5,8 @@ import {
   DeleteTableCommand,
   deleteTableCommandInput,
   GetTableQuery,
-  getTableQueryOutput,
   getTableQuerySchema,
   GetTablesQuery,
-  getTablesQueryOutput,
   getTablesQuerySchema,
   UpdateTableCommand,
   updateTableCommandInput,
@@ -25,14 +23,14 @@ export const createTableRouter =
     router({
       get: procedure
         .input(getTableQuerySchema)
-        .output(getTableQueryOutput)
+        .output(z.any())
         .query(({ input }) => {
           const query = new GetTableQuery({ id: input.id })
           return queryBus.execute(query)
         }),
       list: procedure
         .input(getTablesQuerySchema)
-        .output(getTablesQueryOutput)
+        .output(z.any())
         .query(() => {
           const query = new GetTablesQuery()
           return queryBus.execute(query)
