@@ -8,7 +8,6 @@ export class GetTablesQueryHandler implements IQueryHandler<GetTablesQuery, IGet
 
   async execute(query: GetTablesQuery): Promise<IGetTablesOutput> {
     const tables = await this.rm.find()
-    console.log(tables)
 
     return tables
   }

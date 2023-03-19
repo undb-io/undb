@@ -107,7 +107,8 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
             <DisplayFieldsPicker
               tableId={
                 referenceFieldId
-                  ? (schema.get(referenceFieldId) as ReferenceField | TreeField | undefined)?.foreignTableId.into()
+                  ? (schema.get(referenceFieldId) as ReferenceField | TreeField | undefined)?.foreignTableId.into() ??
+                    table.id.value
                   : undefined
               }
               {...props.field}

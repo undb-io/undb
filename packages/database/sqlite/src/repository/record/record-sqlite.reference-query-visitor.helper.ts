@@ -9,7 +9,6 @@ import { getForeignTableAlias } from './record.constants.js'
 import { getExpandColumnName } from './record.util.js'
 
 export class RecordSqliteReferenceQueryVisitorHelper {
-  private readonly visited = new Set<string>()
   constructor(
     private readonly em: EntityManager,
     private readonly knex: Knex,
@@ -17,7 +16,8 @@ export class RecordSqliteReferenceQueryVisitorHelper {
   ) {}
 
   public visit(table: CoreTable, tableEntity: Table): void {
-    const { knex, qb, visited } = this
+    const visited = new Set<string>()
+    const { knex, qb } = this
     const lookingFields = table.schema.getLookingFields()
     for (const lookingField of lookingFields) {
       const visitor = new RecordSqliteReferenceQueryVisitor(table, qb, knex, visited)
