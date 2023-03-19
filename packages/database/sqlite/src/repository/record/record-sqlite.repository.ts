@@ -1,4 +1,4 @@
-import type { IRecordRepository, IRecordSpec, Record as CoreRecord, TableSchemaIdMap } from '@egodb/core'
+import type { Record as CoreRecord, IRecordRepository, IRecordSpec, TableSchemaIdMap } from '@egodb/core'
 import {
   INTERNAL_COLUMN_ID_NAME,
   ParentField,
@@ -11,9 +11,11 @@ import { and } from '@egodb/domain'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type { Option } from 'oxide.ts'
 import { Some } from 'oxide.ts'
+import { Table } from '../../entity/table.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants.js'
-import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import type { Job } from '../base-entity-manager.js'
+import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
+import { RecordSqliteQueryBuilder } from './record-query.builder.js'
 import { RecordSqliteMapper } from './record-sqlite.mapper.js'
 import { RecordSqliteMutationVisitor } from './record-sqlite.mutation-visitor.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
@@ -21,7 +23,10 @@ import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation
 import type { RecordSqlite } from './record.type.js'
 
 export class RecordSqliteRepository implements IRecordRepository {
-  constructor(protected readonly em: EntityManager) {}
+  protected readonly em: EntityManager
+  constructor(em: EntityManager) {
+    this.em = em.fork()
+  }
 
   private async _insert(em: EntityManager, record: CoreRecord, schema: TableSchemaIdMap) {
     const data: globalThis.Record<string, Knex.Value> = {
@@ -66,33 +71,25 @@ export class RecordSqliteRepository implements IRecordRepository {
   }
 
   async findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<CoreRecord>> {
-    const knex = this.em.getKnex()
-    const qb = knex.queryBuilder()
+    const tableEntity = await this.em.findOneOrFail(Table, { id: tableId }, { populate: ['fields.displayFields'] })
+    const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const spec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
 
-    const columns = UnderlyingColumnFactory.createMany([...schema.values()], tableId)
-    qb.select(columns.map((c) => c.name))
+    const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec).select().from().where().build()
 
-    const qv = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
-    spec.accept(qv)
-
-    const data = await this.em.execute<RecordSqlite[]>(qb.first())
+    const data = await this.em.execute<RecordSqlite[]>(builder.qb.first())
 
     const record = RecordSqliteMapper.toDomain(tableId, schema, data[0]).unwrap()
     return Some(record)
   }
 
   async find(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap): Promise<CoreRecord[]> {
-    const knex = this.em.getKnex()
-    const qb = knex.queryBuilder().from(tableId)
+    const tableEntity = await this.em.findOneOrFail(Table, { id: tableId }, { populate: ['fields.displayFields'] })
+    const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
 
-    const columns = UnderlyingColumnFactory.createMany([...schema.values()], tableId)
-    qb.select(columns.map((c) => c.name))
+    const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec).select().from().where().build()
 
-    const qv = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
-    spec.accept(qv)
-
-    const data = await this.em.execute<RecordSqlite[]>(qb)
+    const data = await this.em.execute<RecordSqlite[]>(builder.qb)
 
     const record = data.map((r) => RecordSqliteMapper.toDomain(tableId, schema, r).unwrap())
     return record
