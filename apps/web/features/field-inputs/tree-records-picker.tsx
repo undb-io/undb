@@ -35,7 +35,7 @@ export const TreeRecordsPicker: React.FC<IProps> = ({ field, ...rest }) => {
     {
       tableId: table.id.value,
       treeFieldId: field.id.value,
-      recordId,
+      recordId: recordId || undefined,
     },
     {
       skip: !focused,
