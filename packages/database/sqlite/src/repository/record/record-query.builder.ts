@@ -1,11 +1,4 @@
-import type {
-  Table as CoreTable,
-  IRecordSpec,
-  LookupField,
-  ReferenceFieldTypes,
-  TableSchemaIdMap,
-  View,
-} from '@egodb/core'
+import type { Table as CoreTable, IRecordSpec, LookupField, ReferenceFieldTypes } from '@egodb/core'
 import {
   SelectField as CoreSelectField,
   INTERNAL_COLUMN_CREATED_AT_NAME,
@@ -34,8 +27,6 @@ export interface IRecordQueryBuilder {
 }
 
 export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
-  private readonly view: View
-  private readonly schemaMap: TableSchemaIdMap
   private readonly knex: Knex
   public readonly qb: Knex.QueryBuilder
 
@@ -44,16 +35,15 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     private readonly table: CoreTable,
     private readonly tableEntity: Table,
     private readonly spec: IRecordSpec | null,
-    viewId?: string,
+    private readonly viewId?: string,
   ) {
     this.knex = em.getKnex()
     this.qb = this.knex.queryBuilder()
-    this.view = table.mustGetView(viewId)
-    this.schemaMap = table.schema.toIdMap()
   }
 
   clone(): RecordSqliteQueryBuilder {
-    return new RecordSqliteQueryBuilder(this.em, this.table, this.tableEntity, this.spec, this.view.id.value)
+    const view = this.table.mustGetView(this.viewId)
+    return new RecordSqliteQueryBuilder(this.em, this.table, this.tableEntity, this.spec, view.id.value)
   }
 
   from(): this {
@@ -63,7 +53,8 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
 
   where(): this {
     if (this.spec) {
-      const visitor = new RecordSqliteQueryVisitor(this.table.id.value, this.schemaMap, this.qb, this.knex)
+      const schema = this.table.schema.toIdMap()
+      const visitor = new RecordSqliteQueryVisitor(this.table.id.value, schema, this.qb, this.knex)
 
       this.spec.accept(visitor).unwrap()
     }
@@ -72,10 +63,12 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   }
 
   sort(): this {
-    const sorts = this.view.sorts?.sorts ?? []
+    const schema = this.table.schema.toIdMap()
+    const view = this.table.mustGetView(this.viewId)
+    const sorts = view.sorts?.sorts ?? []
     if (sorts.length) {
       for (const sort of sorts) {
-        const field = this.schemaMap.get(sort.fieldId)
+        const field = schema.get(sort.fieldId)
         if (!field) continue
 
         if (field instanceof CoreSelectField) {
@@ -121,7 +114,9 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   }
 
   select(): this {
-    const fields = this.view.getVisibleFields([...this.schemaMap.values()])
+    const schema = this.table.schema
+    const view = this.table.mustGetView(this.viewId)
+    const fields = view.getVisibleFields(schema.fields)
     const columns = UnderlyingColumnFactory.createMany(fields, this.table.id.value)
 
     const names = union(
