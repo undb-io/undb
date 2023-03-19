@@ -349,6 +349,10 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     )
   }
 
+  if (field.type === 'lookup') {
+    return null
+  }
+
   return (
     <Controller
       name={name}
