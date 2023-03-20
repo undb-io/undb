@@ -52,7 +52,7 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
         onChange={(color) => onChange(color)}
         value={(value as string) ?? ''}
         swatches={colors}
-        withinPortal
+        withinPortal={false}
         closeOnColorSwatchClick
       />
     )
