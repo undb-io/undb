@@ -59,6 +59,7 @@ export const CreateRecordFormDrawer: React.FC = () => {
         opened={opened}
         withinPortal
         withCloseButton={false}
+        trapFocus={false}
         onClose={() => {
           if (form.formState.isDirty) {
             confirm()

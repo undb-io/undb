@@ -36,6 +36,7 @@ export const RecordsPicker: React.FC<IProps> = (props) => {
       multiple
       searchable
       clearable
+      onBlur={handler.close}
       onFocus={handler.open}
       disabled={focused && isLoading}
       data={items}
