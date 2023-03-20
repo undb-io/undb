@@ -50,7 +50,7 @@ export const Cell: React.FC<IProps> = React.memo(({ cell, field }) => {
       className={cx(classes.cell, { [classes.sticky]: pinned, [classes.last]: isLast })}
       h="32px"
       w={cell.column.getSize() + 'px'}
-      sx={{ position: 'absolute', left }}
+      sx={{ position: pinned ? 'sticky' : 'absolute', left }}
     >
       <FieldValueFactory field={field} value={value} displayValues={cell.row.original.display_values} />
     </Box>

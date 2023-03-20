@@ -81,7 +81,7 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
       sx={{
         overflow: 'hidden',
         zIndex: pinned ? 1000 : 999,
-        position: 'absolute',
+        position: pinned ? 'sticky' : 'absolute',
         left,
       }}
     >
