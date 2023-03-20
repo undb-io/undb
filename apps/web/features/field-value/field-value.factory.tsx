@@ -28,8 +28,7 @@ export const FieldValueFactory: React.FC<{
   field: Field
   value: RecordAllValueType
   displayValues?: IRecordDisplayValues
-  // eslint-disable-next-line react/display-name
-}> = React.memo(({ field, value, displayValues }) => {
+}> = ({ field, value, displayValues }) => {
   switch (field.type) {
     case 'id': {
       return <RecordId id={value as string} />
@@ -116,6 +115,6 @@ export const FieldValueFactory: React.FC<{
     }
 
     default:
-      return <Text>{(value as FieldValue | undefined)?.unpack()?.toString()}</Text>
+      return <span>{(value as FieldValue | undefined)?.unpack()?.toString()}</span>
   }
-})
+}
