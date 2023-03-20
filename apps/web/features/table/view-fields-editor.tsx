@@ -42,7 +42,6 @@ const FieldItem: React.FC<IFieldItemProps> = ({ field: f, onVisibleChange, index
   }
 
   const { hovered, ref } = useHover()
-  const [opened, handler] = useDisclosure()
 
   return (
     <Box ref={ref}>
@@ -67,10 +66,10 @@ const FieldItem: React.FC<IFieldItemProps> = ({ field: f, onVisibleChange, index
           />
         </Group>
 
-        <Menu width={200} opened={opened} onChange={handler.toggle} closeOnClickOutside closeOnItemClick>
-          {(hovered || opened) && (
+        <Menu width={200} closeOnClickOutside closeOnItemClick>
+          {hovered && (
             <Menu.Target>
-              <ActionIcon size="xs" color="gray.5">
+              <ActionIcon size="xs" color="gray.5" mr="md">
                 <IconChevronDown />
               </ActionIcon>
             </Menu.Target>
