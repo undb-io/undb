@@ -58,7 +58,7 @@ export const FieldFilter: React.FC<IProps> = ({ schema, value, onChange, onRemov
       <ActionIcon {...attributes} {...listeners} component="a">
         <IconGripVertical size={12} />
       </ActionIcon>
-      <FieldSelector fields={fields} value={selectedField} onChange={setField} />
+      <FieldSelector fields={fields.filter((f) => f.filterable)} value={selectedField} onChange={setField} />
       <OperatorSelector field={selectedField} value={operator} onChange={setOperator} />
       <FilterValueInput field={selectedField} value={fieldValue} onChange={setValue} operator={operator} />
       <ActionIcon color="gray.5" variant="outline" onClick={() => onRemove(index)}>

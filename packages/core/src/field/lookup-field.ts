@@ -29,6 +29,10 @@ export class LookupField extends Mixin(AbstractLookingField<ILookupField>, Abstr
     return false
   }
 
+  override get filterable() {
+    return false
+  }
+
   static create(input: Omit<ICreateLookupFieldInput, 'type'>): LookupField {
     return new LookupField({
       ...BaseField.createBase(input),
