@@ -74,7 +74,9 @@ export const ViewsListItem: React.FC<IProps> = ({ v }) => {
         bg={isActive ? 'blue.0' : ''}
         key={v.id.value}
         onClick={() => {
-          router.push(`/t/${table.id.value}/${v.id.value}`)
+          if (!isActive) {
+            router.push(`/t/${table.id.value}/${v.id.value}`)
+          }
           setOpened(false)
         }}
         sx={(theme) => ({
