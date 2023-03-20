@@ -76,7 +76,7 @@ export const UpdateRecordFormDrawer: React.FC = () => {
         target="body"
         opened={opened}
         withinPortal
-        trapFocus
+        trapFocus={false}
         onClose={() => {
           if (form.formState.isDirty) {
             confirm()
