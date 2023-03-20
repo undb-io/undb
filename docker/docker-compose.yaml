@@ -10,6 +10,8 @@ services:
       - 4000:4000
     environment:
       - NODE_ENV=production
+    volumes:
+      - ~/.ego/:/var/opt/.ego
     networks:
       - egodb
 
