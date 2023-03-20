@@ -1,20 +1,20 @@
 import type { SelectItem } from '@egodb/ui'
 
 export const FIELD_SELECT_ITEMS: SelectItem[] = [
-  { value: 'string', label: 'String' },
-  { value: 'email', label: 'Email' },
-  { value: 'color', label: 'Color' },
-  { value: 'number', label: 'Number' },
-  { value: 'rating', label: 'Rating' },
-  { value: 'date', label: 'Date' },
-  { value: 'date-range', label: 'DateRange' },
-  { value: 'auto-increment', label: 'AutoIncrement' },
-  { value: 'bool', label: 'Bool' },
-  { value: 'select', label: 'Select' },
-  { value: 'reference', label: 'Reference' },
-  { value: 'lookup', label: 'Lookup' },
-  { value: 'count', label: 'Count' },
-  { value: 'tree', label: 'Tree' },
+  { value: 'string', label: 'String', group: 'Base' },
+  { value: 'email', label: 'Email', group: 'Base' },
+  { value: 'color', label: 'Color', group: 'Base' },
+  { value: 'bool', label: 'Bool', group: 'Base' },
+  { value: 'number', label: 'Number', group: 'Base' },
+  { value: 'rating', label: 'Rating', group: 'Base' },
+  { value: 'date', label: 'Date', group: 'Base' },
+  { value: 'date-range', label: 'DateRange', group: 'Base' },
+  { value: 'auto-increment', label: 'AutoIncrement', group: 'System' },
+  { value: 'select', label: 'Select', group: 'Base' },
+  { value: 'reference', label: 'Reference', group: 'Reference' },
+  { value: 'tree', label: 'Tree', group: 'Reference' },
+  { value: 'lookup', label: 'Lookup', group: 'Lookup' },
+  { value: 'count', label: 'Count', group: 'Lookup' },
 ]
 
 export const ACTIONS_FIELD = 'actions'
