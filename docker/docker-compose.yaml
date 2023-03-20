@@ -5,13 +5,13 @@ services:
     platform: linux/x86_64
     container_name: egodb-backend
     restart: unless-stopped
-    image: egodb/backend
+    image: egodb/backend:main
     ports:
       - 4000:4000
     environment:
       - NODE_ENV=production
     volumes:
-      - ~/.ego/:/var/opt/.ego
+      - ~/.ego/data/:/var/opt/.ego/data
     networks:
       - egodb
 
@@ -21,7 +21,7 @@ services:
     restart: unless-stopped
     depends_on:
       - backend
-    image: egodb/web
+    image: egodb/web:main
     ports:
       - 3000:3000
     environment:
