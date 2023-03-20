@@ -22,7 +22,7 @@ export const TableFilterEditor: React.FC = () => {
       opened={opened}
       onChange={handler.toggle}
       closeOnEscape
-      closeOnClickOutside={false}
+      closeOnClickOutside
       shadow="md"
     >
       <Popover.Target>
