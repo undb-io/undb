@@ -11,7 +11,7 @@ interface IProps {
   field: Field
 }
 // eslint-disable-next-line react/display-name
-export const Cell: React.FC<IProps> = React.memo(({ cell, field }) => {
+export const Cell: React.FC<IProps> = ({ cell, field }) => {
   const pinned = cell.column.getIsPinned()
 
   const isLast = useMemo(
@@ -55,4 +55,4 @@ export const Cell: React.FC<IProps> = React.memo(({ cell, field }) => {
       <FieldValueFactory field={field} value={value} displayValues={cell.row.original.display_values} />
     </Box>
   )
-})
+}
