@@ -19,6 +19,7 @@
     "@nestjs/platform-fastify": "^9.3.10",
     "@nestjs/terminus": "^9.2.1",
     "@trpc/server": "^10.16.0",
+    "i18next": "^22.4.12",
     "nestjs-cls": "^3.2.1",
     "nestjs-pino": "^3.1.2",
     "oxide.ts": "^1.1.0",
