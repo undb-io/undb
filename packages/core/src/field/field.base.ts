@@ -71,6 +71,9 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
   get primitive(): boolean {
     return false
   }
+  get filterable(): boolean {
+    return true
+  }
 
   get valueConstrains() {
     return this.props.valueConstrains
