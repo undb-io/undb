@@ -51,6 +51,10 @@ i18n
           'Sort By Ascending': 'Sort By Ascending',
           'Sort By Desending': 'Sort By Desending',
           Required: 'Required',
+          System: 'System',
+          Base: 'Base',
+          Lookup: 'Lookup',
+          Reference: 'Reference',
         },
         table: {
           'Create New Record': 'Create New Record',
@@ -192,6 +196,10 @@ i18n
           'Sort By Ascending': '正序排序',
           'Sort By Desending': '倒序排序',
           Required: '必填',
+          System: '系统',
+          Base: '基础',
+          Lookup: '查看',
+          Reference: '关联',
         },
         table: {
           'Create New Record': '创建新记录',

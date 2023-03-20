@@ -73,7 +73,11 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
                 onChange={(type) => type && props.field.onChange(type)}
                 required
                 label={<FieldInputLabel>{t('Type', { ns: 'common' })}</FieldInputLabel>}
-                data={FIELD_SELECT_ITEMS.map((item) => ({ value: item.value, label: t(item.label!) as string }))}
+                data={FIELD_SELECT_ITEMS.map((item) => ({
+                  value: item.value,
+                  label: t(item.label!) as string,
+                  group: t(item.group!, { ns: 'common' }) as string,
+                }))}
                 itemComponent={FieldItem}
                 icon={<FieldIcon type={type} />}
                 withinPortal

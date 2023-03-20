@@ -76,7 +76,11 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
                   defaultValue="string"
                   variant="filled"
                   required={true}
-                  data={FIELD_SELECT_ITEMS.map((item) => ({ value: item.value, label: t(item.label!) as string }))}
+                  data={FIELD_SELECT_ITEMS.map((item) => ({
+                    value: item.value,
+                    label: t(item.label!) as string,
+                    group: t(item.group!) as string,
+                  }))}
                   itemComponent={FieldItem}
                   icon={<FieldIcon type={type} />}
                 />
