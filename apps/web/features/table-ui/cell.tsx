@@ -21,12 +21,10 @@ export const Cell: React.FC<IProps> = React.memo(({ cell, field }) => {
 
   const left = useMemo(
     () =>
-      pinned
-        ? cell.table
-            .getLeftLeafHeaders()
-            ?.find((h) => h.column.id === field.id.value)
-            ?.getStart()
-        : undefined,
+      cell.table
+        .getFlatHeaders()
+        ?.find((h) => h.column.id === field.id.value)
+        ?.getStart(),
     [],
   )
 
@@ -50,7 +48,9 @@ export const Cell: React.FC<IProps> = React.memo(({ cell, field }) => {
     <Box
       component="td"
       className={cx(classes.cell, { [classes.sticky]: pinned, [classes.last]: isLast })}
-      w={cell.column.getSize()}
+      h="32px"
+      w={cell.column.getSize() + 'px'}
+      sx={{ position: 'absolute', left }}
     >
       <FieldValueFactory field={field} value={value} displayValues={cell.row.original.display_values} />
     </Box>

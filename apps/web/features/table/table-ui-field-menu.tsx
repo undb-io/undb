@@ -18,7 +18,7 @@ export const TableUIFieldMenu: React.FC<IProps> = React.memo(({ field, index, he
   return (
     <Menu width={250}>
       <Menu.Target>
-        <ActionIcon>
+        <ActionIcon size="sm" variant="light">
           <IconDots size={14} />
         </ActionIcon>
       </Menu.Target>

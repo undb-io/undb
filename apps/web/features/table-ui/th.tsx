@@ -66,7 +66,8 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
   const isLastPinned =
     pinned && header.column.getPinnedIndex() === header.getContext().table.getLeftLeafHeaders().length - 1
 
-  const { classes, cx } = usePinnedStyles({ left: header.getStart() })
+  const left = header.getStart()
+  const { classes, cx } = usePinnedStyles({ left })
   const { t } = useTranslation()
 
   return (
@@ -76,49 +77,53 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
       key={header.id}
       className={cx(classes.cell, { [classes.sticky]: pinned, [classes.last]: isLastPinned })}
       w={header.getSize() + 'px'}
-      sx={{ zIndex: pinned ? 1000 : 999 }}
+      h="38px"
+      sx={{
+        overflow: 'hidden',
+        zIndex: pinned ? 1000 : 999,
+        position: 'absolute',
+        left,
+      }}
     >
-      <Group position="apart">
-        <Group spacing="xs">
-          <FieldIcon type={field.type} size={14} />
-          <Text fz="sm" fw={500}>
-            {field.name.value}
-          </Text>
-        </Group>
-
-        <Group spacing={5}>
-          {direction && (
-            <Tooltip
-              label={
-                direction === 'asc'
-                  ? (t('Sort By Desending', { ns: 'common' }) as string)
-                  : t('Sort By Ascending', { ns: 'common' })
-              }
-            >
-              <ActionIcon
-                variant="light"
-                sx={{
-                  transition: 'transform 320ms ease',
-                  ':hover': {
-                    transform: 'rotate(180deg)',
-                  },
-                }}
-                onClick={() => {
-                  setFieldSort({
-                    tableId: table.id.value,
-                    viewId: view.id.value,
-                    fieldId: field.id.value,
-                    direction: direction === 'asc' ? 'desc' : 'asc',
-                  })
-                }}
-              >
-                {direction === 'asc' ? <IconSortAscending size={14} /> : <IconSortDescending size={14} />}
-              </ActionIcon>
-            </Tooltip>
-          )}
-          <TableUIFieldMenu field={field} index={index} header={header} />
-        </Group>
+      <Group spacing="xs" noWrap h="100%">
+        <FieldIcon type={field.type} size={14} />
+        <Text fz="sm" fw={500} sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {field.name.value}
+        </Text>
       </Group>
+
+      <Box sx={{ position: 'absolute', right: 5, top: '50%', transform: 'translateY(-50%)' }}>
+        {direction && (
+          <Tooltip
+            label={
+              direction === 'asc'
+                ? (t('Sort By Desending', { ns: 'common' }) as string)
+                : t('Sort By Ascending', { ns: 'common' })
+            }
+          >
+            <ActionIcon
+              variant="light"
+              sx={{
+                transition: 'transform 320ms ease',
+                ':hover': {
+                  transform: 'rotate(180deg)',
+                },
+              }}
+              onClick={() => {
+                setFieldSort({
+                  tableId: table.id.value,
+                  viewId: view.id.value,
+                  fieldId: field.id.value,
+                  direction: direction === 'asc' ? 'desc' : 'asc',
+                })
+              }}
+            >
+              {direction === 'asc' ? <IconSortAscending size={14} /> : <IconSortDescending size={14} />}
+            </ActionIcon>
+          </Tooltip>
+        )}
+        <TableUIFieldMenu field={field} index={index} header={header} />
+      </Box>
 
       <Resizer
         onMouseDown={header.getResizeHandler()}
