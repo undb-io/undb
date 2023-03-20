@@ -52,11 +52,15 @@ export const tableStyles = (theme: MantineTheme): CSSObject => ({
     backgroundColor: theme.white,
   },
   'tbody tr': {
+    position: 'relative',
     cursor: 'pointer',
     height: 32,
     borderBottom: '1px solid ' + theme.colors.gray[2],
   },
   'tbody tr td': {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
     ':first-child': {
       paddingRight: 3,
       paddingLeft: 3,

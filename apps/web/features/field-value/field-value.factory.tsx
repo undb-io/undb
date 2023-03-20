@@ -83,7 +83,7 @@ export const FieldValueFactory: React.FC<{
 
       if (unpacked?.length && !values?.length) {
         return (
-          <Group spacing={3}>
+          <Group spacing={3} noWrap sx={{ overflow: 'hidden' }} h="100%">
             {unpacked.map((_, index) => (
               <ReferenceValue key={index} />
             ))}
@@ -92,7 +92,7 @@ export const FieldValueFactory: React.FC<{
       }
 
       return (
-        <Group spacing={3}>
+        <Group spacing={3} noWrap sx={{ overflow: 'hidden' }} align="center" h="100%">
           {values.map((value, index) => (
             <ReferenceValue key={index} values={value} />
           ))}
@@ -104,7 +104,7 @@ export const FieldValueFactory: React.FC<{
       const values = field.getDisplayValues(displayValues)
 
       return (
-        <Group spacing={3}>
+        <Group spacing={3} noWrap sx={{ overflow: 'hidden' }} h="100%">
           {values.filter(Boolean).map((value, index) => (
             <>
               {index === 0 ? null : <Divider orientation="vertical" mx={5} size="xs" />}
