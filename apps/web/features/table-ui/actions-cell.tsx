@@ -11,14 +11,16 @@ import {
   Menu,
   useClipboard,
 } from '@egodb/ui'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { confirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
-import type { TRow } from './interface'
+import type { TData, TRow } from './interface'
+import type { Table } from '@tanstack/react-table'
+import { ACTIONS_FIELD } from '../../constants/field.constants'
 
 // eslint-disable-next-line react/display-name
-export const ActionsCell: React.FC<{ row: TRow }> = React.memo(({ row }) => {
+export const ActionsCell: React.FC<{ row: TRow; table: Table<TData> }> = React.memo(({ row, table: tb }) => {
   const table = useCurrentTable()
   const tableId = table.id.value
 
@@ -35,13 +37,20 @@ export const ActionsCell: React.FC<{ row: TRow }> = React.memo(({ row }) => {
       })
     },
   })
-
+  const left = useMemo(
+    () =>
+      tb
+        .getFlatHeaders()
+        ?.find((h) => h.column.id === ACTIONS_FIELD)
+        ?.getStart(),
+    [],
+  )
   const [duplicateRecord] = useDuplicateRecordMutation()
 
   const { t } = useTranslation()
 
   return (
-    <Box component="td">
+    <Box component="td" sx={{ position: 'absolute', left }}>
       <Group>
         <Menu withinPortal width={200}>
           <Menu.Target>

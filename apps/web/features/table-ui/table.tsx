@@ -38,8 +38,8 @@ const selection: ColumnDef<TData> = {
 const action = columnHelper.display({
   id: ACTIONS_FIELD,
   size: 50,
-  header: () => <ActionsHeader />,
-  cell: (props) => <ActionsCell row={props.row} />,
+  header: (props) => <ActionsHeader table={props.table} />,
+  cell: (props) => <ActionsCell row={props.row} table={props.table} />,
 })
 
 export const EGOTable: React.FC<IProps> = ({ records }) => {
