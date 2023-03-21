@@ -91,7 +91,14 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
     throw new Error('Method not implemented.')
   }
   count(field: CountField): void {
-    throw new Error('Method not implemented.')
+    const schema = this.table.schema.toIdMap()
+    const reference = field.getReferenceField(schema)
+
+    reference.accept(this)
+
+    const fta = getForeignTableAlias(reference, this.schema)
+
+    this.qb.select(this.knex.raw(`count(${fta}.${INTERNAL_COLUMN_ID_NAME}) as ${field.id.value}`))
   }
   reference(field: ReferenceField): void {
     if (this.visited.has(field.id.value)) return

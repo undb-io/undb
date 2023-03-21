@@ -363,6 +363,7 @@ export type IReferenceFieldTypes = IReferenceField | ITreeField | IParentField
 export type ReferenceFieldTypes = ReferenceField | TreeField | ParentField
 export type ILookingFieldTypes = IReferenceFieldTypes | ILookupField
 export type LookingFieldTypes = ReferenceFieldTypes | LookupField
+export type AggregateFieldType = CountField
 export type IDateFieldTypes = IDateField | IDateRangeField | ICreatedAtField | IUpdatedAtField
 export type DateFieldTypes = DateField | DateRangeField | CreatedAtField | UpdatedAtField
 export type ILookupFieldTypes = ICountField | ILookupField
