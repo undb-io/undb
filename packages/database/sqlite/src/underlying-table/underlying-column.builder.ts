@@ -43,7 +43,7 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
     const unique = this.knex
       .raw(
         `
-      create unique index \`${this.tableName}_${column.name}_unique\` on \`${this.tableName}\` (\`${column.name}\`)
+      create unique index IF NOT EXISTS \`${this.tableName}_${column.name}_unique\` on \`${this.tableName}\` (\`${column.name}\`)
       `,
       )
       .toQuery()
@@ -64,7 +64,7 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
     const query = this.knex
       .raw(
         `
-		CREATE TRIGGER update_at_update_${this.tableName} AFTER UPDATE ON \`${this.tableName}\`
+		CREATE TRIGGER IF NOT EXISTS update_at_update_${this.tableName} AFTER UPDATE ON \`${this.tableName}\`
 		BEGIN
 			update \`${this.tableName}\` SET ${INTERNAL_COLUMN_UPDATED_AT_NAME} = datetime('now') WHERE ${INTERNAL_COLUMN_ID_NAME} = NEW.${INTERNAL_COLUMN_ID_NAME};
 		END;
