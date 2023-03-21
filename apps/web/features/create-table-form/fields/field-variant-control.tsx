@@ -107,6 +107,8 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
                   .map((f) => ({ id: f.id, type: f.type, name: f.name })) as FieldBase[]
               }
               {...props.field}
+              placeholder={t('Select Reference Field') as string}
+              withinPortal
             />
           )}
         />

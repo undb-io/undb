@@ -98,26 +98,30 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
                   .map((f) => ({ id: f.id.value, type: f.type, name: f.name.value })) ?? []
               }
               {...props.field}
+              placeholder={t('Select Reference Field') as string}
+              withinPortal
             />
           )}
         />
-        <Controller
-          name="displayFieldIds"
-          render={(props) => (
-            <DisplayFieldsPicker
-              tableId={
-                referenceFieldId
-                  ? (schema.get(referenceFieldId) as ReferenceField | TreeField | undefined)?.foreignTableId.into() ??
-                    table.id.value
-                  : undefined
-              }
-              {...props.field}
-              onChange={(ids) => props.field.onChange(ids)}
-              variant="default"
-              disabled={!referenceFieldId}
-            />
-          )}
-        />
+        {type === 'lookup' && (
+          <Controller
+            name="displayFieldIds"
+            render={(props) => (
+              <DisplayFieldsPicker
+                tableId={
+                  referenceFieldId
+                    ? (schema.get(referenceFieldId) as ReferenceField | TreeField | undefined)?.foreignTableId.into() ??
+                      table.id.value
+                    : undefined
+                }
+                {...props.field}
+                onChange={(ids) => props.field.onChange(ids)}
+                variant="default"
+                disabled={!referenceFieldId}
+              />
+            )}
+          />
+        )}
       </>
     )
   }
