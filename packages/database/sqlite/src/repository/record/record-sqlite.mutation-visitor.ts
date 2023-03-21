@@ -36,6 +36,7 @@ import type {
   WithRecordValues,
 } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import { isEmpty } from 'lodash-es'
 import { BaseEntityManager } from '../base-entity-manager.js'
 import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation-visitor.js'
 
@@ -79,8 +80,10 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
       value.accept(valueVisitor)
 
       this.addJobs(...valueVisitor.jobs)
-      const update = this.qb.update(valueVisitor.data).toQuery()
-      this.addQueries(update)
+      if (!isEmpty(valueVisitor.data)) {
+        const update = this.qb.update(valueVisitor.data).toQuery()
+        this.addQueries(update)
+      }
       this.addQueries(...valueVisitor.queries)
     }
   }

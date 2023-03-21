@@ -516,7 +516,7 @@ export class ReferenceField extends Field {
       description: this.description,
       type: 'reference',
       foreignTableId: this.foreignTable?.id,
-      displayFieldIds: this.displayFields.getItems().map((f) => f.id),
+      displayFieldIds: this.displayFields.isInitialized() ? this.displayFields.getItems().map((f) => f.id) : [],
       required: !!this.required,
     })
   }
@@ -528,7 +528,7 @@ export class ReferenceField extends Field {
       description: this.description,
       type: 'reference',
       foreignTableId: this.foreignTable?.id,
-      displayFieldIds: this.displayFields.getItems().map((f) => f.id),
+      displayFieldIds: this.displayFields.isInitialized() ? this.displayFields.getItems().map((f) => f.id) : [],
       required: !!this.required,
     }
   }

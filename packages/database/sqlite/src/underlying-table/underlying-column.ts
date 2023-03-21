@@ -16,10 +16,10 @@ import type {
   TreeField,
 } from '@egodb/core'
 import {
+  INTERNAL_INCREAMENT_ID_NAME as INTERNAL_AUTO_INCREAMENT_ID_NAME,
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
-  INTERNAL_INCREAMENT_ID_NAME as INTERNAL_AUTO_INCREAMENT_ID_NAME,
 } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import type { Promisable } from 'type-fest'
@@ -195,21 +195,28 @@ export class UnderlyingSelectColumn extends UnderlyingFieldColumn<SelectField> {
 }
 
 export class UnderlyingReferenceColumn extends UnderlyingFieldColumn<ReferenceField> {
-  build(tb: Knex.TableBuilder): void {
-    tb.json(this.name)
+  override get virtual() {
+    return true
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  build(): void {}
 }
 
 export class UnderlyingTreeColumn extends UnderlyingFieldColumn<TreeField> {
-  build(tb: Knex.TableBuilder): void {
-    tb.json(this.name)
+  override get virtual() {
+    return true
   }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  build(): void {}
 }
 
 export class UnderlyingParentColumn extends UnderlyingFieldColumn<ParentField> {
-  build(tb: Knex.TableBuilder): void {
-    tb.string(this.name).nullable()
+  override get virtual() {
+    return true
   }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  build(): void {}
 }
 
 export class UnderlyingCountColumn extends UnderlyingFieldColumn<CountField> {

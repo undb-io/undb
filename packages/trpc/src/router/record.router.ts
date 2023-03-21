@@ -12,7 +12,6 @@ import {
   duplicateRecordCommandInput,
   GetForeignRecordsQuery,
   getForeignRecordsQueryInput,
-  getForeignRecordsQueryOutput,
   GetRecordQuery,
   getRecordQueryInput,
   GetRecordsQuery,
@@ -87,7 +86,7 @@ export const createRecordRouter =
         }),
       foreign: procedure
         .input(getForeignRecordsQueryInput)
-        .output(getForeignRecordsQueryOutput)
+        .output(z.any())
         .query(({ input }) => {
           const query = new GetForeignRecordsQuery(input)
           return queryBus.execute(query)

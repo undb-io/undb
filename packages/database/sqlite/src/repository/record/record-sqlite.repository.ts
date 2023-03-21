@@ -19,6 +19,7 @@ import { RecordSqliteQueryBuilder } from './record-query.builder.js'
 import { RecordSqliteMapper } from './record-sqlite.mapper.js'
 import { RecordSqliteMutationVisitor } from './record-sqlite.mutation-visitor.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
+import { RecordSqliteReferenceDleteVisitor } from './record-sqlite.reference-delete-visitor.js'
 import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation-visitor.js'
 import type { RecordSqlite } from './record.type.js'
 
@@ -109,6 +110,7 @@ export class RecordSqliteRepository implements IRecordRepository {
 
   async deleteOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<void> {
     await this.em.transactional(async (em) => {
+      const table = await em.findOneOrFail(Table, tableId, { populate: ['referencedBy'] })
       const knex = em.getKnex()
       const qb = knex.queryBuilder()
 
@@ -127,11 +129,17 @@ export class RecordSqliteRepository implements IRecordRepository {
       }
 
       const spec = and(...specs).into()
-
       spec?.accept(mv)
 
       await em.execute(qb)
       await mv.commit()
+
+      const referenceFields = table.referencedBy.getItems().map((f) => f.toDomain())
+      for (const referenceField of referenceFields) {
+        const visitor = new RecordSqliteReferenceDleteVisitor(em, table, id)
+        referenceField.accept(visitor)
+        await visitor.commit()
+      }
     })
   }
 
