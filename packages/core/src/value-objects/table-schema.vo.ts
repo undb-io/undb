@@ -6,15 +6,22 @@ import * as z from 'zod'
 import { CreatedAtField } from '../field/created-at-field.js'
 import { FieldFactory } from '../field/field.factory.js'
 import { IdField } from '../field/id-field.js'
-import type { Field, ICreateFieldSchema, IFieldType, LookingFieldTypes, NoneSystemField } from '../field/index.js'
+import type {
+  AggregateFieldType,
+  Field,
+  ICreateFieldSchema,
+  IFieldType,
+  LookingFieldTypes,
+  NoneSystemField,
+} from '../field/index.js'
 import {
-  createFieldSchema,
   DateField,
   DateRangeField,
   ReferenceField,
   SelectField,
   TreeField,
   WithoutField,
+  createFieldSchema,
 } from '../field/index.js'
 import { UpdatedAtField } from '../field/updated-at-field.js'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema.js'
@@ -41,6 +48,7 @@ export type ICreateTableSchemaInput = z.infer<typeof createTableSchemaSchema>
 export type TableSchemaIdMap = Map<string, Field>
 
 const lookingFieldTypes: IFieldType[] = ['tree', 'parent', 'reference', 'lookup']
+const aggregateFieldTypes: IFieldType[] = ['count']
 
 /**
  * Table Schema is a collection of fields
@@ -136,5 +144,9 @@ export class TableSchema extends ValueObject<Field[]> {
 
   public getLookingFields(): LookingFieldTypes[] {
     return this.fields.filter((f) => lookingFieldTypes.includes(f.type)) as LookingFieldTypes[]
+  }
+
+  public getAggregateFields(): AggregateFieldType[] {
+    return this.fields.filter((f) => aggregateFieldTypes.includes(f.type)) as AggregateFieldType[]
   }
 }

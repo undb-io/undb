@@ -24,6 +24,11 @@ export class RecordSqliteReferenceQueryVisitorHelper {
       lookingField.accept(visitor)
       this.expandField(lookingField, table.schema.toIdMap(), tableEntity)
     }
+
+    for (const aggregateField of table.schema.getAggregateFields()) {
+      const visitor = new RecordSqliteReferenceQueryVisitor(table, qb, knex, visited)
+      aggregateField.accept(visitor)
+    }
   }
 
   public expandField(field: LookingFieldTypes, schema: TableSchemaIdMap, tableEntity: Table) {

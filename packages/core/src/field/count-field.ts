@@ -20,6 +20,10 @@ export class CountField extends AbstractLookupField<ICountField> {
     return true
   }
 
+  override get isAggregate() {
+    return true
+  }
+
   static create(input: Omit<ICreateCountFieldInput, 'type'>): CountField {
     return new CountField({
       ...BaseField.createBase(input),

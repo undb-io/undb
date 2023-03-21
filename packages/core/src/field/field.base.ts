@@ -87,6 +87,10 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
     return this.primitive
   }
 
+  get isAggregate(): boolean {
+    return false
+  }
+
   public get id(): FieldId {
     return this.props.id
   }

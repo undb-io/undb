@@ -13,7 +13,6 @@ import { Table as TableEntity } from '../../entity/table.js'
 import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
 import { RecordSqliteQueryBuilder } from './record-query.builder.js'
 import { RecordSqliteMapper } from './record-sqlite.mapper.js'
-import { INTERNAL_COLUMN_NAME_TOTAL } from './record.constants.js'
 import type { RecordSqlite } from './record.type.js'
 
 export class RecordSqliteQueryModel implements IRecordQueryModel {
@@ -60,11 +59,9 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb)
 
-    const tb = builder.clone().from().where().count().build()
-    const td = await this.em.execute<{ total: number }[]>(tb.qb.first())
-
     const records = RecordSqliteMapper.toQueries(tableId, schema, data)
-    const total = td[0]?.[INTERNAL_COLUMN_NAME_TOTAL]
+    // TODO: 分页需要从 query 中获取
+    const total = records.length
 
     return { records, total: total }
   }
