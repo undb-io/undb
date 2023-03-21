@@ -28,7 +28,7 @@ describe('RecordSqliteReferenceQueryVisitor', () => {
     )
 
     expect(qb.toQuery()).toMatchInlineSnapshot(
-      '"select json_group_array(uta_field1.to_id) filter (where uta_field1.to_id is not null) as field1 left join `field1_tableTest_adjacency_list` as `uta_field1` on `t`.`id` = `uta_field1`.`from_id` left join `tableTest` as `ft_field1` on `ft_field1`.`id` = `uta_field1`.`to_id` group by `t`.`id`"',
+      '"select json_group_array(distinct uta_field1.to_id) filter (where uta_field1.to_id is not null) as field1 left join `field1_tableTest_adjacency_list` as `uta_field1` on `t`.`id` = `uta_field1`.`from_id` left join `tableTest` as `ft_field1` on `ft_field1`.`id` = `uta_field1`.`to_id` group by `t`.`id`"',
     )
   })
 
@@ -36,7 +36,7 @@ describe('RecordSqliteReferenceQueryVisitor', () => {
     visitor.tree(TreeField.unsafeCreate({ id: 'field1', displayFieldIds: ['field2'], type: 'tree', name: 'tree' }))
 
     expect(qb.toQuery()).toMatchInlineSnapshot(
-      '"select json_group_array(uta_field1.child_id) filter (where uta_field1.child_id is not null) as field1 left join `field1_tableTest_closure_table` as `uta_field1` on `t`.`id` = `uta_field1`.`parent_id` and `uta_field1`.`depth` = 1 left join `tableTest` as `ft_field1` on `ft_field1`.`id` = `uta_field1`.`child_id` group by `t`.`id`"',
+      '"select json_group_array(distinct uta_field1.child_id) filter (where uta_field1.child_id is not null) as field1 left join `field1_tableTest_closure_table` as `uta_field1` on `t`.`id` = `uta_field1`.`parent_id` and `uta_field1`.`depth` = 1 left join `tableTest` as `ft_field1` on `ft_field1`.`id` = `uta_field1`.`child_id` group by `t`.`id`"',
     )
   })
 

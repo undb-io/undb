@@ -124,7 +124,7 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
       )
       .select(
         this.knex.raw(
-          `json_group_array(${uta}.${AdjacencyListTable.TO_ID}) filter (where ${uta}.${AdjacencyListTable.TO_ID} is not null) as ${field.id.value}`,
+          `json_group_array(distinct ${uta}.${AdjacencyListTable.TO_ID}) filter (where ${uta}.${AdjacencyListTable.TO_ID} is not null) as ${field.id.value}`,
         ),
       )
 
@@ -152,7 +152,7 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
       .leftJoin(`${foreignTableId} as ${fta}`, `${fta}.${INTERNAL_COLUMN_ID_NAME}`, `${uta}.${ClosureTable.CHILD_ID}`)
       .select(
         this.knex.raw(
-          `json_group_array(${uta}.${ClosureTable.CHILD_ID}) filter (where ${uta}.${ClosureTable.CHILD_ID} is not null) as ${field.id.value}`,
+          `json_group_array(distinct ${uta}.${ClosureTable.CHILD_ID}) filter (where ${uta}.${ClosureTable.CHILD_ID} is not null) as ${field.id.value}`,
         ),
       )
 

@@ -56,7 +56,7 @@ export class RecordSqliteReferenceQueryVisitorHelper {
       jsonObjectEntries.push([
         `'${key}'`,
         field.multiple
-          ? `json_group_array(${table}.${key}) filter (where ${table}.${key} is not null)`
+          ? `json_group_array(distinct ${table}.${key}) filter (where ${table}.${key} is not null)`
           : `${table}.${key}`,
       ])
     }
