@@ -6,15 +6,15 @@
     "@egodb/core": "^0.0.0",
     "@egodb/cqrs": "^0.0.0",
     "@egodb/domain": "^0.0.0",
-    "@trpc/server": "^10.16.0",
+    "@trpc/server": "^10.17.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
     "rimraf": "^4.4.0",
     "tsconfig": "^0.0.0",
-    "tsup": "^6.6.3",
+    "tsup": "^6.7.0",
     "typescript": "^5.0.2",
-    "vitest": "^0.29.3"
+    "vitest": "^0.29.7"
   },
   "exports": {
     "import": "./dist/index.js",
