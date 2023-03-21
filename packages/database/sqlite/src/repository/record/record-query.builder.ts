@@ -13,7 +13,7 @@ import { UnderlyingColumnFactory } from '../../underlying-table/underlying-colum
 import { UnderlyingSelectColumn } from '../../underlying-table/underlying-column.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
 import { RecordSqliteReferenceQueryVisitorHelper } from './record-sqlite.reference-query-visitor.helper.js'
-import { INTERNAL_COLUMN_NAME_TOTAL, TABLE_ALIAS } from './record.constants.js'
+import { TABLE_ALIAS } from './record.constants.js'
 
 export interface IRecordQueryBuilder {
   from(): this
@@ -22,7 +22,6 @@ export interface IRecordQueryBuilder {
   looking(): this
   expand(field?: ReferenceFieldTypes): this
   select(): this
-  count(): this
   build(): Promisable<this>
 }
 
@@ -126,11 +125,6 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
 
     this.qb.select(names)
 
-    return this
-  }
-
-  count(): this {
-    this.qb.count(`id AS ${INTERNAL_COLUMN_NAME_TOTAL}`)
     return this
   }
 
