@@ -2,7 +2,6 @@ import { Inject, Provider } from '@nestjs/common'
 import { NestRecordSqliteQueryModel } from './sqlite/record-sqlite.query-model.js'
 import { NestRecordSqliteRepository } from './sqlite/record-sqlite.repository.js'
 import { NestRecordSqliteTreeQueryModel, RECORD_TREE_QUERY_MODEL } from './sqlite/record-sqlite.tree-query-model.js'
-import { NestTableSqliteManager, UNDELYING_TABLE_MANAGER } from './sqlite/table-sqlite.manager.js'
 import { NestTableSqliteQueryModel } from './sqlite/table-sqlite.query-model.js'
 import { NestTableSqliteRepository } from './sqlite/table-sqlite.repository.js'
 
@@ -38,9 +37,5 @@ export const dbAdapters: Provider[] = [
   {
     provide: RECORD_TREE_QUERY_MODEL,
     useClass: NestRecordSqliteTreeQueryModel,
-  },
-  {
-    provide: UNDELYING_TABLE_MANAGER,
-    useClass: NestTableSqliteManager,
   },
 ]
