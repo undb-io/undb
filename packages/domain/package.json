@@ -15,9 +15,9 @@
     "@types/uuid": "^9.0.1",
     "rimraf": "^4.4.0",
     "tsconfig": "^0.0.0",
-    "tsup": "^6.6.3",
+    "tsup": "^6.7.0",
     "typescript": "^5.0.2",
-    "vitest": "^0.29.3"
+    "vitest": "^0.29.7"
   },
   "exports": {
     "import": "./dist/index.js",
