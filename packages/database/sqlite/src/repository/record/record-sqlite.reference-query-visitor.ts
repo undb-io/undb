@@ -98,7 +98,7 @@ export class RecordSqliteReferenceQueryVisitor implements IFieldVisitor {
 
     const fta = getForeignTableAlias(reference, this.schema)
 
-    this.qb.select(this.knex.raw(`count(${fta}.${INTERNAL_COLUMN_ID_NAME}) as ${field.id.value}`))
+    this.qb.select(this.knex.raw(`count(distinct ${fta}.${INTERNAL_COLUMN_ID_NAME}) as ${field.id.value}`))
   }
   reference(field: ReferenceField): void {
     if (this.visited.has(field.id.value)) return
