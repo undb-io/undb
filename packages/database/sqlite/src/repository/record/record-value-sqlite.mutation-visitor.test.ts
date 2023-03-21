@@ -96,8 +96,6 @@ describe('RecordValueSqliteVisitor', () => {
       expect(visitor.data).not.to.be.null
       expect(visitor.queries).toMatchInlineSnapshot(`
         [
-          "update \`tableId\` set \`fld2\` = NULL where \`id\` in (select \`child_id\` from \`fld1_tableId_closure_table\` where \`parent_id\` = 'recordtest' and \`depth\` = 1)",
-          "update \`tableId\` set \`fld2\` = 'recordtest' where \`id\` in ('foreign_record1', 'foreign_record_2')",
           "delete from \`fld1_tableId_closure_table\` where \`parent_id\` = 'recordtest'",
           "insert into \`fld1_tableId_closure_table\` (\`child_id\`, \`depth\`, \`parent_id\`) values ('recordtest', 0, 'recordtest')",
           "
