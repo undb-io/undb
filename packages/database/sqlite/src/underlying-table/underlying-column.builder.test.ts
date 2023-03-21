@@ -1,13 +1,4 @@
-import {
-  BoolField,
-  DateField,
-  DateRangeField,
-  NumberField,
-  ReferenceField,
-  SelectField,
-  StringField,
-  TreeField,
-} from '@egodb/core'
+import { BoolField, DateField, DateRangeField, NumberField, SelectField, StringField } from '@egodb/core'
 import { Knex } from '@mikro-orm/better-sqlite'
 import { UnderlyingColumnBuilder } from './underlying-column.builder.js'
 
@@ -125,25 +116,5 @@ describe('UnderlyingColumnBuilder', () => {
     })
 
     expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`fldid` varchar(255))"')
-  })
-
-  test('should create reference column', () => {
-    const sb = knex.schema
-    sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
-      builder.createUnderlying([ReferenceField.create({ id: 'fldid', name: 'name' })])
-    })
-
-    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`fldid` json)"')
-  })
-
-  test('should create tree column', () => {
-    const sb = knex.schema
-    sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
-      builder.createUnderlying([TreeField.create({ id: 'fldid', name: 'name' })])
-    })
-
-    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`fldid` json)"')
   })
 })

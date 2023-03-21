@@ -4,13 +4,13 @@ import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { Table, Table as TableEntity } from '../../entity/index.js'
 import { View as ViewEntity } from '../../entity/view.js'
-import type { IUnderlyingTableManager } from '../../underlying-table/underlying-table-sqlite.manager.js'
+import { UnderlyingTableSqliteManager } from '../../underlying-table/underlying-table-sqlite.manager.js'
 import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
 import { TableSqliteMapper } from './table-sqlite.mapper.js'
 import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor.js'
 
 export class TableSqliteRepository implements ITableRepository {
-  constructor(protected readonly em: EntityManager, protected readonly tm: IUnderlyingTableManager) {}
+  constructor(protected readonly em: EntityManager) {}
 
   async findOneById(id: string): Promise<Option<CoreTable>> {
     const table = await this.em.findOne(TableEntity, id, {
@@ -31,7 +31,8 @@ export class TableSqliteRepository implements ITableRepository {
 
   async insert(table: CoreTable): Promise<void> {
     await this.em.transactional(async (em) => {
-      await this.tm.create(table)
+      const tm = new UnderlyingTableSqliteManager(em)
+      await tm.create(table)
 
       const tableEntity = new TableEntity(table)
 
@@ -57,14 +58,16 @@ export class TableSqliteRepository implements ITableRepository {
       spec.accept(visitor)
 
       await visitor.commit()
-      await this.tm.update(id, spec)
+      const tm = new UnderlyingTableSqliteManager(em)
+      await tm.update(id, spec)
     })
   }
 
   async deleteOneById(id: string): Promise<void> {
     await this.em.transactional(async (em) => {
       await em.qb(Table).update({ deletedAt: new Date() }).where({ id })
-      await this.tm.delete(id)
+      const tm = new UnderlyingTableSqliteManager(em)
+      await tm.delete(id)
     })
   }
 }

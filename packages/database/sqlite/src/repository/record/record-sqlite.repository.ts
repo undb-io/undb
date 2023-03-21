@@ -9,10 +9,12 @@ import {
 } from '@egodb/core'
 import { and } from '@egodb/domain'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import { LockMode } from '@mikro-orm/core'
 import type { Option } from 'oxide.ts'
 import { Some } from 'oxide.ts'
 import { Table } from '../../entity/table.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants.js'
+import { UnderlyingTableSqliteManager } from '../../underlying-table/underlying-table-sqlite.manager.js'
 import type { Job } from '../base-entity-manager.js'
 import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
 import { RecordSqliteQueryBuilder } from './record-query.builder.js'
@@ -109,6 +111,10 @@ export class RecordSqliteRepository implements IRecordRepository {
 
   async deleteOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<void> {
     await this.em.transactional(async (em) => {
+      const table = await em.findOneOrFail(Table, tableId, {
+        populate: ['referencedBy'],
+        lockMode: LockMode.PESSIMISTIC_WRITE,
+      })
       const knex = em.getKnex()
       const qb = knex.queryBuilder()
 
@@ -127,16 +133,23 @@ export class RecordSqliteRepository implements IRecordRepository {
       }
 
       const spec = and(...specs).into()
-
       spec?.accept(mv)
 
       await em.execute(qb)
       await mv.commit()
+
+      const tm = new UnderlyingTableSqliteManager(em)
+      await tm.deleteRecord(table, id)
     })
   }
 
   async deleteManyByIds(tableId: string, ids: string[], schema: TableSchemaIdMap): Promise<void> {
     await this.em.transactional(async (em) => {
+      const table = await em.findOneOrFail(Table, tableId, {
+        populate: ['referencedBy'],
+        lockMode: LockMode.PESSIMISTIC_WRITE,
+      })
+
       const knex = em.getKnex()
       const qb = knex
         .queryBuilder()
@@ -159,6 +172,8 @@ export class RecordSqliteRepository implements IRecordRepository {
 
         spec?.accept(mv)
         await mv.commit()
+        const tm = new UnderlyingTableSqliteManager(em)
+        await tm.deleteRecord(table, id)
       }
 
       await em.execute(qb)

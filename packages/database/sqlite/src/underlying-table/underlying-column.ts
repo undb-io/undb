@@ -16,10 +16,10 @@ import type {
   TreeField,
 } from '@egodb/core'
 import {
+  INTERNAL_INCREAMENT_ID_NAME as INTERNAL_AUTO_INCREAMENT_ID_NAME,
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
-  INTERNAL_INCREAMENT_ID_NAME as INTERNAL_AUTO_INCREAMENT_ID_NAME,
 } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 import type { Promisable } from 'type-fest'
@@ -195,49 +195,37 @@ export class UnderlyingSelectColumn extends UnderlyingFieldColumn<SelectField> {
 }
 
 export class UnderlyingReferenceColumn extends UnderlyingFieldColumn<ReferenceField> {
-  build(tb: Knex.TableBuilder): void {
-    tb.json(this.name)
+  override get virtual() {
+    return true
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  build(): void {}
 }
 
 export class UnderlyingTreeColumn extends UnderlyingFieldColumn<TreeField> {
-  build(tb: Knex.TableBuilder): void {
-    tb.json(this.name)
+  override get virtual() {
+    return true
   }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  build(): void {}
 }
 
 export class UnderlyingParentColumn extends UnderlyingFieldColumn<ParentField> {
-  build(tb: Knex.TableBuilder): void {
-    tb.string(this.name).nullable()
+  override get virtual() {
+    return true
   }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  build(): void {}
 }
 
 export class UnderlyingCountColumn extends UnderlyingFieldColumn<CountField> {
-  /**
-   * 在没有筛选条件的时候 count column 不是虚拟的
-   * 如果将来有筛选条件，需要根据情况返回
-   */
   override get virtual() {
-    return false
+    return true
   }
-  /**
-   * 创建 generated column 类型
-   * @param tb -
-   * @param knex -
-   * @param isNewTable - knex 不支持通过 schemaBuilder 创建 generated column，如果支持可以支持创建 stored 类型的 generated column
-   */
-  build(tb: Knex.TableBuilder, knex: Knex, isNewTable?: boolean): void {
-    const query = knex
-      .raw(
-        `
-    ALTER TABLE ${this.tableName} ADD COLUMN
-    ${this.name} INTEGER
-    GENERATED ALWAYS AS (json_array_length(${this.field.referenceFieldId.value})) VIRTUAL
-    `,
-      )
-      .toQuery()
-    this.queries.push(query)
-  }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  build(): void {}
 }
 
 export class UnderlyingLookupColumn extends UnderlyingFieldColumn<LookupField> {

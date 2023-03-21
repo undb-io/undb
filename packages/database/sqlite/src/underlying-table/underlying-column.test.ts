@@ -1,12 +1,10 @@
-import { ReferenceField, StringField, TreeField } from '@egodb/core'
+import { StringField } from '@egodb/core'
 import { Knex } from '@mikro-orm/better-sqlite'
 import {
   UnderlyingCreatedAtColumn,
   UnderlyingDeletedAtColumn,
   UnderlyingIdColumn,
-  UnderlyingReferenceColumn,
   UnderlyingStringColumn,
-  UnderlyingTreeColumn,
   UnderlyingUpdatedAtColumn,
 } from './underlying-column.js'
 
@@ -25,7 +23,7 @@ describe('UnderlyingColumn', () => {
   })
 
   test('UnderlyingIdColumn', async () => {
-    const id = new UnderlyingIdColumn()
+    const id = new UnderlyingIdColumn('tabletest')
 
     await knex.schema.createTable(tableName, (tb) => {
       id.build(tb)
@@ -46,7 +44,7 @@ describe('UnderlyingColumn', () => {
   })
 
   test('UnderlyingCreatedAtColumn', async () => {
-    const id = new UnderlyingCreatedAtColumn()
+    const id = new UnderlyingCreatedAtColumn('tabletest')
 
     await knex.schema.createTable(tableName, (tb) => {
       id.build(tb, knex)
@@ -67,7 +65,7 @@ describe('UnderlyingColumn', () => {
   })
 
   test('UnderlyingUpdatedAtColumn', async () => {
-    const id = new UnderlyingUpdatedAtColumn()
+    const id = new UnderlyingUpdatedAtColumn('tabletest')
 
     await knex.schema.createTable(tableName, (tb) => {
       id.build(tb, knex)
@@ -88,7 +86,7 @@ describe('UnderlyingColumn', () => {
   })
 
   test('UnderlyingDeletedAtColumn', async () => {
-    const id = new UnderlyingDeletedAtColumn()
+    const id = new UnderlyingDeletedAtColumn('tabletest')
 
     await knex.schema.createTable(tableName, (tb) => {
       id.build(tb)
@@ -110,7 +108,7 @@ describe('UnderlyingColumn', () => {
 
   describe('UnderlyingFieldColumn', () => {
     test('UnderlyingStringColumn', async () => {
-      const field = new UnderlyingStringColumn(StringField.create({ id: 'fld1', name: 'name' }))
+      const field = new UnderlyingStringColumn(StringField.create({ id: 'fld1', name: 'name' }), 'tabletest')
 
       await knex.schema.createTable(tableName, (tb) => {
         field.build(tb)
@@ -124,46 +122,6 @@ describe('UnderlyingColumn', () => {
             "maxLength": "255",
             "nullable": true,
             "type": "varchar",
-          },
-        }
-      `)
-    })
-
-    test('UnderlyingReferenceColumn', async () => {
-      const field = new UnderlyingReferenceColumn(ReferenceField.create({ id: 'fld1', name: 'name' }))
-
-      await knex.schema.createTable(tableName, (tb) => {
-        field.build(tb)
-      })
-
-      const info = await knex(tableName).columnInfo()
-      expect(info).toMatchInlineSnapshot(`
-        {
-          "fld1": {
-            "defaultValue": null,
-            "maxLength": null,
-            "nullable": true,
-            "type": "json",
-          },
-        }
-      `)
-    })
-
-    test('UnderlyingTreeColumn', async () => {
-      const field = new UnderlyingTreeColumn(TreeField.create({ id: 'fld1', name: 'name' }))
-
-      await knex.schema.createTable(tableName, (tb) => {
-        field.build(tb)
-      })
-
-      const info = await knex(tableName).columnInfo()
-      expect(info).toMatchInlineSnapshot(`
-        {
-          "fld1": {
-            "defaultValue": null,
-            "maxLength": null,
-            "nullable": true,
-            "type": "json",
           },
         }
       `)
