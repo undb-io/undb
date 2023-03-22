@@ -10,6 +10,7 @@ import type {
   DateField,
   DateRangeField,
   EmailField,
+  Field,
   IFieldVisitor,
   IdField,
   LookupField,
@@ -48,7 +49,19 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
     for (const lookingField of lookingFields) {
       lookingField.accept(this)
     }
+    for (const aggregateField of table.schema.getAggregateFields()) {
+      aggregateField.accept(this)
+    }
     return
+  }
+
+  #mustGetColumn(field: Field) {
+    const fieldId = field.id.value
+    const columns = this.tableEntity.fields.getItems()
+    const column = columns.find((c) => c.id === fieldId)
+    if (!column) throw new Error('missing undelying column')
+
+    return column
   }
 
   id(field: IdField): void {}
@@ -68,16 +81,14 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
       return
     }
 
-    const columns = this.tableEntity.fields.getItems()
-    const column = columns.find((c) => c.id === field.id.value)
-    if (!column) throw new Error('missing undelying column')
+    const column = this.#mustGetColumn(field) as ReferenceField
+    const displayColumns = column.displayFields.getItems().map((field) => field.toDomain())
+    const countFields = column.countFields.getItems().map((f) => f.toDomain())
 
     const foreignTableId = field.foreignTableId.unwrapOr(this.table.id.value)
 
     const expandColumnName = getExpandColumnName(field.id.value)
     const adjacency = new AdjacencyListTable(foreignTableId, field)
-
-    const displayColumns = (column as ReferenceField).displayFields.getItems().map((field) => field.toDomain())
 
     const uta = getUnderlyingTableAlias(field)
     const fta = getForeignTableAlias(field, this.table.schema.toIdMap())
@@ -88,6 +99,7 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
         AdjacencyListTable.TO_ID,
         this.knex.raw(`json_group_array(${AdjacencyListTable.TO_ID}) as ${field.id.value}`),
         ...displayColumns.map((f) => this.knex.raw(`json_group_array(${fta}.${f.id.value}) as ${f.id.value}`)),
+        ...countFields.map((f) => this.knex.raw(`count(*) as ${f.id.value}`)),
       )
       .from(adjacency.name)
       .groupBy(AdjacencyListTable.FROM_ID)
@@ -119,6 +131,7 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
       .select(
         `${uta}.${field.id.value} as ${field.id.value}`,
         this.knex.raw(`json_object('${field.id.value}', json_object(${select})) as ${expandColumnName}`),
+        ...countFields.map((c) => `${uta}.${c.id.value} as ${c.id.value}`),
       )
       .leftJoin(subQuery, `${uta}.${AdjacencyListTable.FROM_ID}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
   }
