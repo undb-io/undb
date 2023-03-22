@@ -93,6 +93,10 @@ export class TableSchema extends ValueObject<Field[]> {
     return this.fields.filter((f) => f instanceof TreeField) as ITreeViewField[]
   }
 
+  public get referenceMap() {
+    return
+  }
+
   get fieldsNames(): string[] {
     return this.props.map((f) => f.name.value)
   }

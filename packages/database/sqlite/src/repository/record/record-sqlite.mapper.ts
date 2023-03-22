@@ -7,7 +7,7 @@ import type {
   TableSchemaIdMap,
 } from '@egodb/core'
 import { RecordFactory } from '@egodb/core'
-import { castArray, mapValues } from 'lodash-es'
+import { mapValues } from 'lodash-es'
 import type { Result } from 'oxide.ts'
 import {
   getFieldIdFromDateRangeFromColumnName,
@@ -30,7 +30,7 @@ export class RecordSqliteMapper {
       if (isExpandColumnName(columnName)) {
         Object.assign(
           displayValues,
-          mapValues(JSON.parse(value), (expanded) => mapValues(expanded, castArray)),
+          mapValues(JSON.parse(value), (expanded) => mapValues(expanded, JSON.parse)),
         )
       } else if (isUnlderlyingDateTangeFromColumn(columnName)) {
         const fieldId = getFieldIdFromDateRangeFromColumnName(columnName)
