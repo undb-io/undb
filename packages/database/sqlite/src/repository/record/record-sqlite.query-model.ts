@@ -1,11 +1,4 @@
-import type {
-  IQueryRecords,
-  IQueryRecordSchema,
-  IRecordQueryModel,
-  IRecordSpec,
-  ReferenceFieldTypes,
-  ViewId,
-} from '@egodb/core'
+import type { IQueryRecords, IQueryRecordSchema, IRecordQueryModel, IRecordSpec, ViewId } from '@egodb/core'
 import { WithRecordId } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { Option } from 'oxide.ts'
@@ -18,12 +11,7 @@ import type { RecordSqlite } from './record.type.js'
 export class RecordSqliteQueryModel implements IRecordQueryModel {
   constructor(protected readonly em: EntityManager) {}
 
-  async find(
-    tableId: string,
-    viewId: ViewId | undefined,
-    spec: IRecordSpec | null,
-    referenceField?: ReferenceFieldTypes,
-  ): Promise<IQueryRecords> {
+  async find(tableId: string, viewId: ViewId | undefined, spec: IRecordSpec | null): Promise<IQueryRecords> {
     const tableEntity = await this.em.findOneOrFail(
       TableEntity,
       { id: tableId },
@@ -45,7 +33,6 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     tableId: string,
     viewId: ViewId | undefined,
     spec: IRecordSpec | null,
-    referenceField?: ReferenceFieldTypes,
   ): Promise<{ records: IQueryRecords; total: number }> {
     const tableEntity = await this.em.findOneOrFail(
       TableEntity,
@@ -56,7 +43,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const schema = table.schema.toIdMap()
 
     let builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec, viewId?.value)
-    builder = builder.select().from().where().looking().sort().expand(referenceField).build()
+    builder = builder.select().from().where().looking().sort().build()
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb)
 
