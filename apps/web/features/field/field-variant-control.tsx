@@ -129,19 +129,22 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
         {type === 'sum' && (
           <Controller
             name="aggregateFieldId"
-            render={(props) => (
-              <ForeignFieldsPicker
-                {...props.field}
-                onChange={(ids) => props.field.onChange(ids[0])}
-                foreignTableId={foreignTableId}
-                variant="default"
-                disabled={!referenceFieldId}
-                placeholder={t('Select Aggregate Field') as string}
-                label={<FieldInputLabel>{t('Aggregate Field')}</FieldInputLabel>}
-                fieldFilter={(f) => f.isNumeric && !f.isAggregate}
-                multiple={false}
-              />
-            )}
+            render={(props) => {
+              return (
+                <ForeignFieldsPicker
+                  {...props.field}
+                  value={props.field.value ? [props.field.value] : []}
+                  onChange={(ids) => props.field.onChange(ids[0])}
+                  foreignTableId={foreignTableId}
+                  variant="default"
+                  disabled={!referenceFieldId}
+                  placeholder={t('Select Aggregate Field') as string}
+                  label={<FieldInputLabel>{t('Aggregate Field')}</FieldInputLabel>}
+                  fieldFilter={(f) => f.isNumeric && !f.isAggregate}
+                  multiple={false}
+                />
+              )
+            }}
           />
         )}
       </>
