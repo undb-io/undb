@@ -18,6 +18,7 @@ import type {
   IReferenceFieldQuerySchema,
   ISelectFieldQuerySchema,
   IStringFieldQuerySchema,
+  ISumFieldQuerySchema,
   ITreeFieldQuerySchema,
   IUpdatedAtFieldQuerySchema,
 } from '@egodb/core'
@@ -38,6 +39,7 @@ import {
   ReferenceField as CoreReferenceField,
   SelectField as CoreSelectField,
   StringField as CoreStringField,
+  SumField as CoreSumField,
   TreeField as CoreTreeField,
   UpdatedAtField as CoreUpdatedAtField,
 } from '@egodb/core'
@@ -648,6 +650,38 @@ export class CountField extends Field {
   }
 }
 
+@Entity({ discriminatorValue: 'sum' })
+export class SumField extends Field {
+  constructor(table: Table, field: CoreSumField) {
+    super(table, field)
+  }
+
+  @ManyToOne({ entity: () => ReferenceField || TreeField, inversedBy: (f) => f.countFields })
+  countReferenceField!: ReferenceField | TreeField
+
+  toDomain(): CoreSumField {
+    return CoreSumField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'sum',
+      required: !!this.required,
+      referenceFieldId: this.countReferenceField.id,
+    })
+  }
+
+  toQuery(): ISumFieldQuerySchema {
+    return {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'sum',
+      referenceFieldId: this.countReferenceField.id,
+      required: !!this.required,
+    }
+  }
+}
+
 @Entity({ discriminatorValue: 'lookup' })
 export class LookupField extends Field {
   constructor(table: Table, field: CoreLookupField) {
@@ -704,6 +738,7 @@ export type IField =
   | RatingField
   | CountField
   | LookupField
+  | SumField
 
 export const fieldEntities = [
   IdField,
@@ -724,4 +759,5 @@ export const fieldEntities = [
   RatingField,
   CountField,
   LookupField,
+  SumField,
 ]

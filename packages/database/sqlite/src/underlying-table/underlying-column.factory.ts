@@ -18,6 +18,7 @@ import {
   UnderlyingReferenceColumn,
   UnderlyingSelectColumn,
   UnderlyingStringColumn,
+  UnderlyingSumColumn,
   UnderlyingTreeColumn,
   UnderlyingUpdatedAtColumn,
 } from './underlying-column.js'
@@ -62,6 +63,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingParentColumn(field, tableName)
       case 'count':
         return new UnderlyingCountColumn(field, tableName)
+      case 'sum':
+        return new UnderlyingSumColumn(field, tableName)
       case 'lookup':
         return new UnderlyingLookupColumn(field, tableName)
     }
