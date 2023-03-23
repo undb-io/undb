@@ -4,12 +4,14 @@ import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldVariantControl } from '../field/field-variant-control'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import type {
+  CountField,
   DateFieldTypes,
   IUpdateFieldSchema,
   LookupField,
   ReferenceField,
   ReferenceFieldTypes,
   SelectField,
+  SumField,
 } from '@egodb/core'
 import { updateFieldSchema } from '@egodb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -41,6 +43,12 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
     defaultValues.type === 'lookup'
   ) {
     defaultValues.displayFieldIds = (field as ReferenceFieldTypes).displayFieldIds.map((id) => id.value)
+  }
+  if (defaultValues.type === 'count' || defaultValues.type === 'sum') {
+    defaultValues.referenceFieldId = (field as CountField | SumField).referenceFieldId.value
+  }
+  if (defaultValues.type === 'sum') {
+    defaultValues.aggregateFieldId = (field as SumField).aggregateFieldId.value
   }
   if (defaultValues.type === 'lookup') {
     defaultValues.referenceFieldId = (field as LookupField).referenceFieldId.value
