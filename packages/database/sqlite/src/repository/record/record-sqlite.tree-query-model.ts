@@ -22,7 +22,7 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
     const tableEntity = await this.em.findOneOrFail(
       TableEntity,
       { id: tableId },
-      { populate: ['fields.displayFields'] },
+      { populate: ['fields.displayFields', 'fields.countFields', 'fields.lookupFields'] },
     )
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()

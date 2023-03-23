@@ -156,6 +156,8 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
       return
     }
 
+    const { knex } = this
+
     const column = this.#mustGetColumn(field) as TreeField
     const countFields = column.countFields.getItems().map((f) => f.toDomain())
     const lookupFields = column.lookupFields.getItems()
@@ -170,20 +172,21 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
 
     const uta = getUnderlyingTableAlias(field)
     const fta = getForeignTableAlias(field, this.table.schema.toIdMap())
-    const subQuery = this.knex
+    const subQuery = knex
       .queryBuilder()
       .select(
         ClosureTable.PARENT_ID,
         ClosureTable.CHILD_ID,
-        this.knex.raw(`json_group_array(${ClosureTable.CHILD_ID}) as ${field.id.value}`),
-        ...displayColumns.map((f) => this.knex.raw(`json_group_array(${fta}.${f.id.value}) as ${f.id.value}`)),
-        ...countFields.map((f) => this.knex.raw(`count(*) as ${f.id.value}`)),
+        ClosureTable.DEPTH,
+        knex.raw(`json_group_array(${ClosureTable.CHILD_ID}) as ${field.id.value}`),
+        ...displayColumns.map((f) => knex.raw(`json_group_array(${fta}.${f.id.value}) as ${f.id.value}`)),
+        ...countFields.map((f) => knex.raw(`count(*) as ${f.id.value}`)),
       )
       .from(closure.name)
-      .groupBy(ClosureTable.PARENT_ID)
+      .groupBy(ClosureTable.PARENT_ID, ClosureTable.CHILD_ID)
       .as(uta)
 
-    const nestSubQuery = this.knex
+    const nestSubQuery = knex
       .queryBuilder()
       .select(
         INTERNAL_COLUMN_ID_NAME,
@@ -215,12 +218,18 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
         ...lookupFields.map((c) => getFieldExpand(c)),
         ...countFields.map((c) => `${uta}.${c.id.value} as ${c.id.value}`),
       )
-      .leftJoin(subQuery, `${uta}.${ClosureTable.PARENT_ID}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
+      .leftJoin(subQuery, function () {
+        this.on(`${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`, `${uta}.${ClosureTable.PARENT_ID}`).andOn(
+          `${uta}.${ClosureTable.DEPTH}`,
+          knex.raw('?', [1]),
+        )
+      })
   }
   parent(field: CoreParentField): void {
     if (this.#visited.has(field.id.value)) {
       return
     }
+    const { knex } = this
     const column = this.#mustGetColumn(field) as ParentField
     const displayFields = column.displayFields.getItems()
     const displayColumns = uniqBy(displayFields, (f) => f.id).map((field) => field.toDomain())
@@ -228,29 +237,33 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
     const closure = new ClosureTable(foreignTableId, field)
     const uta = getUnderlyingTableAlias(field)
     const fta = getForeignTableAlias(field, this.table.schema.toIdMap())
-    const subQuery = this.knex
+    const subQuery = knex
       .queryBuilder()
       .select(
         ClosureTable.PARENT_ID,
         ClosureTable.CHILD_ID,
+        ClosureTable.DEPTH,
         `${ClosureTable.PARENT_ID} as ${field.id.value}`,
         // ...displayColumns.map((f) => `${fta}.${f.id.value} as ${f.id.value}`),
       )
       .from(closure.name)
-      .groupBy(ClosureTable.CHILD_ID)
+      .groupBy(ClosureTable.CHILD_ID, ClosureTable.PARENT_ID)
       .as(uta)
 
     const getFieldExpand = (column: LookupField | ParentField) =>
-      this.knex.raw(
+      knex.raw(
         `json_object('${column.id}', json_object(${column.displayFields
           .getItems()
           .flatMap((c) => [`'${c.id}'`, `${uta}.${c.id}`])
           .join(',')})) as ${getExpandColumnName(column.id)}`,
       )
 
-    this.qb
-      .select(`${uta}.${field.id.value} as ${field.id.value}`)
-      .leftJoin(subQuery, `${uta}.${ClosureTable.CHILD_ID}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
+    this.qb.select(`${uta}.${field.id.value} as ${field.id.value}`).leftJoin(subQuery, function () {
+      this.on(`${uta}.${ClosureTable.CHILD_ID}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`).andOn(
+        `${uta}.${ClosureTable.DEPTH}`,
+        knex.raw('?', [1]),
+      )
+    })
 
     this.#visited.add(field.id.value)
   }

@@ -27,13 +27,14 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const tableEntity = await this.em.findOneOrFail(
       TableEntity,
       { id: tableId },
-      { populate: ['fields.displayFields'] },
+      { populate: ['fields.displayFields', 'fields.countFields', 'fields.lookupFields'] },
     )
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
 
     let builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec, viewId?.value)
-    builder = builder.select().from().where().looking().sort().expand(referenceField).build()
+    // TODO: expand reference field
+    builder = builder.select().from().where().looking().sort().build()
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb)
 
