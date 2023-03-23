@@ -254,6 +254,7 @@ i18n
           Select: '单选',
           Reference: '关联',
           Count: '计数',
+          Sum: '求和',
           Tree: '树形',
           Lookup: '查看',
           'Duplicate Record': '复制记录',

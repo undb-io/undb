@@ -82,7 +82,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
     )
   }
 
-  if (type === 'count' || type === 'lookup') {
+  if (type === 'count' || type === 'sum' || type === 'lookup') {
     const schema = table.schema.toIdMap()
     const referenceFieldId = form.watch('referenceFieldId')
     return (
