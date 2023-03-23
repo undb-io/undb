@@ -4,16 +4,16 @@ import type {
   AutoIncrementField,
   BoolField,
   ColorField,
+  Field as CoreField,
+  LookupField as CoreLookupField,
   ReferenceField as CoreReferenceField,
   CountField,
   CreatedAtField,
   DateField,
   DateRangeField,
   EmailField,
-  Field,
   IFieldVisitor,
   IdField,
-  LookupField,
   NumberField,
   ParentField,
   RatingField,
@@ -26,7 +26,7 @@ import type {
 import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { uniqBy } from 'lodash-es'
-import type { ReferenceField } from '../../entity/field.js'
+import type { LookupField, ReferenceField } from '../../entity/field.js'
 import type { Table as TableEntity } from '../../entity/table.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
@@ -43,7 +43,7 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
     private readonly tableEntity: TableEntity,
   ) {}
 
-  #subQueries = new Map<string, Knex.QueryBuilder>()
+  #visited = new Set<string>()
 
   public visit(table: Table): void {
     const lookingFields = table.schema.getLookingFields()
@@ -56,7 +56,7 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
     return
   }
 
-  #mustGetColumn(field: Field) {
+  #mustGetColumn(field: CoreField) {
     const fieldId = field.id.value
     const columns = this.tableEntity.fields.getItems()
     const column = columns.find((c) => c.id === fieldId)
@@ -78,7 +78,7 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
   dateRange(field: DateRangeField): void {}
   select(field: SelectField): void {}
   reference(field: CoreReferenceField): void {
-    if (this.#subQueries.has(field.id.value)) {
+    if (this.#visited.has(field.id.value)) {
       return
     }
 
@@ -92,7 +92,6 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
 
     const foreignTableId = field.foreignTableId.unwrapOr(this.table.id.value)
 
-    const expandColumnName = getExpandColumnName(field.id.value)
     const adjacency = new AdjacencyListTable(foreignTableId, field)
 
     const uta = getUnderlyingTableAlias(field)
@@ -129,16 +128,21 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
       `${adjacency.name}.${AdjacencyListTable.TO_ID}`,
       `${fta}.${INTERNAL_COLUMN_ID_NAME}`,
     )
-    this.#subQueries.set(field.id.value, subQuery)
+    this.#visited.add(field.id.value)
 
-    const select = displayColumns.flatMap((c) => [`'${c.id.value}'`, `${uta}.${c.id.value}`]).join(',')
+    const getFieldExpand = (column: ReferenceField | LookupField) =>
+      this.knex.raw(
+        `json_object('${column.id}', json_object(${column.displayFields
+          .getItems()
+          .flatMap((c) => [`'${c.id}'`, `${uta}.${c.id}`])
+          .join(',')})) as ${getExpandColumnName(column.id)}`,
+      )
+
     this.qb
       .select(
         `${uta}.${field.id.value} as ${field.id.value}`,
-        this.knex.raw(`json_object('${field.id.value}', json_object(${select})) as ${expandColumnName}`),
-        ...lookupFields.map((c) =>
-          this.knex.raw(`json_object('${c.id}', json_object(${select})) as ${getExpandColumnName(c.id)}`),
-        ),
+        getFieldExpand(column),
+        ...lookupFields.map((c) => getFieldExpand(c)),
         ...countFields.map((c) => `${uta}.${c.id.value} as ${c.id.value}`),
       )
       .leftJoin(subQuery, `${uta}.${AdjacencyListTable.FROM_ID}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
@@ -154,7 +158,7 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
     const reference = field.getReferenceField(this.table.schema.toIdMap())
     reference.accept(this)
   }
-  lookup(field: LookupField): void {
+  lookup(field: CoreLookupField): void {
     const reference = field.getReferenceField(this.table.schema.toIdMap())
     reference.accept(this)
   }

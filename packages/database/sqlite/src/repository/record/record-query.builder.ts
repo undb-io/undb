@@ -99,7 +99,6 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
 
   looking(): this {
     new RecordSqliteReferenceManager(this.em, this.knex, this.qb, this.table, this.tableEntity).visit(this.table)
-    // new RecordSqliteReferenceQueryVisitorHelper(this.em, this.knex, this.qb).visit(this.table, this.tableEntity)
     return this
   }
 
