@@ -25,6 +25,7 @@ import type {
 } from '@egodb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import { uniqBy } from 'lodash-es'
 import type { ReferenceField } from '../../entity/field.js'
 import type { Table as TableEntity } from '../../entity/table.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
@@ -82,8 +83,12 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
     }
 
     const column = this.#mustGetColumn(field) as ReferenceField
-    const displayColumns = column.displayFields.getItems().map((field) => field.toDomain())
     const countFields = column.countFields.getItems().map((f) => f.toDomain())
+    const lookupFields = column.lookupFields.getItems()
+    const displayFields = column.displayFields
+      .getItems()
+      .concat(lookupFields.flatMap((c) => c.displayFields.getItems()))
+    const displayColumns = uniqBy(displayFields, (f) => f.id).map((field) => field.toDomain())
 
     const foreignTableId = field.foreignTableId.unwrapOr(this.table.id.value)
 
@@ -131,6 +136,9 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
       .select(
         `${uta}.${field.id.value} as ${field.id.value}`,
         this.knex.raw(`json_object('${field.id.value}', json_object(${select})) as ${expandColumnName}`),
+        ...lookupFields.map((c) =>
+          this.knex.raw(`json_object('${c.id}', json_object(${select})) as ${getExpandColumnName(c.id)}`),
+        ),
         ...countFields.map((c) => `${uta}.${c.id.value} as ${c.id.value}`),
       )
       .leftJoin(subQuery, `${uta}.${AdjacencyListTable.FROM_ID}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)

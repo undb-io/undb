@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import type {
+  UpdatedAtField as CoereUpdatedAtField,
   AutoIncrementField as CoreAutoIncrementField,
   BoolField as CoreBoolField,
   ColorField as CoreColorField,
@@ -10,7 +11,6 @@ import type {
   DateRangeField as CoreDateRangeField,
   EmailField as CoreEmailField,
   IdField as CoreIdField,
-  IFieldVisitor,
   LookupField as CoreLookupField,
   NumberField as CoreNumberField,
   ParentField as CoreParentField,
@@ -19,7 +19,7 @@ import type {
   SelectField as CoreSelectField,
   StringField as CoreStringField,
   TreeField as CoreTreeField,
-  UpdatedAtField as CoereUpdatedAtField,
+  IFieldVisitor,
 } from '@egodb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
@@ -150,7 +150,7 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   count(value: CoreCountField): void {
     const field = new CountField(this.table, value)
-    field.referenceField = this.em.getReference(Field, value.referenceFieldId.value) as ReferenceField | TreeField
+    field.countReferenceField = this.em.getReference(Field, value.referenceFieldId.value) as ReferenceField | TreeField
 
     this.em.persist(field)
   }
@@ -198,7 +198,7 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   lookup(value: CoreLookupField): void {
     const field = new LookupField(this.table, value)
-    field.referenceField = this.em.getReference(Field, value.referenceFieldId.value) as ReferenceField | TreeField
+    field.lookupReferenceField = this.em.getReference(Field, value.referenceFieldId.value) as ReferenceField | TreeField
     field.displayFields.set(value.displayFieldIds.map((fieldId) => this.em.getReference(Field, fieldId.value)))
 
     this.em.persist(field)

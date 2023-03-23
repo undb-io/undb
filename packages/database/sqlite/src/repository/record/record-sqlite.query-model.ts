@@ -49,7 +49,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const tableEntity = await this.em.findOneOrFail(
       TableEntity,
       { id: tableId },
-      { populate: ['fields', 'fields.displayFields', 'fields.countFields'] },
+      { populate: ['fields', 'fields.displayFields', 'fields.countFields', 'fields.lookupFields'] },
     )
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
@@ -70,7 +70,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const tableEntity = await this.em.findOneOrFail(
       TableEntity,
       { id: tableId },
-      { populate: ['fields.displayFields', 'fields.countFields'] },
+      { populate: ['fields.displayFields', 'fields.countFields', 'fields.lookupFields'] },
     )
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
