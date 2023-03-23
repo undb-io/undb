@@ -75,7 +75,16 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const tableEntity = await this.em.findOneOrFail(
       TableEntity,
       { id: tableId },
-      { populate: ['fields.displayFields', 'fields.countFields', 'fields.lookupFields'] },
+      {
+        populate: [
+          'fields',
+          'fields.displayFields',
+          'fields.countFields',
+          'fields.sumFields',
+          'fields.sumAggregateField',
+          'fields.lookupFields',
+        ],
+      },
     )
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
