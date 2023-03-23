@@ -503,10 +503,10 @@ export class ReferenceField extends Field {
   @ManyToMany({ entity: () => Field, owner: true })
   displayFields = new Collection<Field>(this)
 
-  @OneToMany(() => CountField, (f) => f.referenceField)
+  @OneToMany(() => CountField, (f) => f.countReferenceField)
   countFields = new Collection<CountField>(this)
 
-  @OneToMany(() => CountField, (f) => f.referenceField)
+  @OneToMany(() => LookupField, (f) => f.lookupReferenceField)
   lookupFields = new Collection<LookupField>(this)
 
   toDomain(): CoreReferenceField {
@@ -547,10 +547,10 @@ export class TreeField extends Field {
   @ManyToMany({ entity: () => Field, owner: true })
   displayFields = new Collection<Field>(this)
 
-  @OneToMany(() => CountField, (f) => f.referenceField)
+  @OneToMany(() => CountField, (f) => f.countReferenceField)
   countFields = new Collection<CountField>(this)
 
-  @OneToMany(() => CountField, (f) => f.referenceField)
+  @OneToMany(() => LookupField, (f) => f.lookupReferenceField)
   lookupFields = new Collection<LookupField>(this)
 
   toDomain(): CoreTreeField {
@@ -623,7 +623,7 @@ export class CountField extends Field {
   }
 
   @ManyToOne({ entity: () => ReferenceField || TreeField, inversedBy: (f) => f.countFields })
-  referenceField!: ReferenceField | TreeField
+  countReferenceField!: ReferenceField | TreeField
 
   toDomain(): CoreCountField {
     return CoreCountField.unsafeCreate({
@@ -632,7 +632,7 @@ export class CountField extends Field {
       description: this.description,
       type: 'count',
       required: !!this.required,
-      referenceFieldId: this.referenceField.id,
+      referenceFieldId: this.countReferenceField.id,
     })
   }
 
@@ -642,7 +642,7 @@ export class CountField extends Field {
       name: this.name,
       description: this.description,
       type: 'count',
-      referenceFieldId: this.referenceField.id,
+      referenceFieldId: this.countReferenceField.id,
       required: !!this.required,
     }
   }
@@ -655,7 +655,7 @@ export class LookupField extends Field {
   }
 
   @ManyToOne({ entity: () => ReferenceField || TreeField, inversedBy: (f) => f.lookupFields })
-  referenceField!: ReferenceField | TreeField
+  lookupReferenceField!: ReferenceField | TreeField
 
   @ManyToMany({ entity: () => Field, owner: true })
   displayFields = new Collection<Field>(this)
@@ -667,7 +667,7 @@ export class LookupField extends Field {
       description: this.description,
       type: 'lookup',
       required: !!this.required,
-      referenceFieldId: this.referenceField.id,
+      referenceFieldId: this.lookupReferenceField.id,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id) as [string, ...string[]],
     })
   }
@@ -678,7 +678,7 @@ export class LookupField extends Field {
       name: this.name,
       description: this.description,
       type: 'lookup',
-      referenceFieldId: this.referenceField.id,
+      referenceFieldId: this.lookupReferenceField.id,
       required: !!this.required,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id) as [string, ...string[]],
     }

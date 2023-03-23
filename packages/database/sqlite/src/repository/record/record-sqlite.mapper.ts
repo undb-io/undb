@@ -30,7 +30,7 @@ export class RecordSqliteMapper {
       if (isExpandColumnName(columnName)) {
         Object.assign(
           displayValues,
-          mapValues(JSON.parse(value), (expanded) => mapValues(expanded, castArray)),
+          mapValues(JSON.parse(value), (expanded) => mapValues(expanded, (v) => castArray(JSON.parse(v)))),
         )
       } else if (isUnlderlyingDateTangeFromColumn(columnName)) {
         const fieldId = getFieldIdFromDateRangeFromColumnName(columnName)

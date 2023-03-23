@@ -250,8 +250,17 @@
           "nullable": true,
           "mappedType": "integer"
         },
-        "reference_field_id": {
-          "name": "reference_field_id",
+        "count_reference_field_id": {
+          "name": "count_reference_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "lookup_reference_field_id": {
+          "name": "lookup_reference_field_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -300,10 +309,19 @@
         },
         {
           "columnNames": [
-            "reference_field_id"
+            "count_reference_field_id"
           ],
           "composite": false,
-          "keyName": "ego_field_reference_field_id_index",
+          "keyName": "ego_field_count_reference_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "lookup_reference_field_id"
+          ],
+          "composite": false,
+          "keyName": "ego_field_lookup_reference_field_id_index",
           "primary": false,
           "unique": false
         },
@@ -345,10 +363,23 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "ego_field_reference_field_id_foreign": {
-          "constraintName": "ego_field_reference_field_id_foreign",
+        "ego_field_count_reference_field_id_foreign": {
+          "constraintName": "ego_field_count_reference_field_id_foreign",
           "columnNames": [
-            "reference_field_id"
+            "count_reference_field_id"
+          ],
+          "localTableName": "ego_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "ego_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "ego_field_lookup_reference_field_id_foreign": {
+          "constraintName": "ego_field_lookup_reference_field_id_foreign",
+          "columnNames": [
+            "lookup_reference_field_id"
           ],
           "localTableName": "ego_field",
           "referencedColumnNames": [

@@ -1,4 +1,4 @@
-import type { Table as CoreTable, IRecordSpec, LookupField, ReferenceFieldTypes } from '@egodb/core'
+import type { Table as CoreTable, IRecordSpec } from '@egodb/core'
 import {
   SelectField as CoreSelectField,
   INTERNAL_COLUMN_CREATED_AT_NAME,
@@ -12,7 +12,7 @@ import type { Table } from '../../entity/table.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import { UnderlyingSelectColumn } from '../../underlying-table/underlying-column.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
-import { RecordSqliteReferenceQueryVisitorHelper } from './record-sqlite.reference-query-visitor.helper.js'
+import { RecordSqliteReferenceManager } from './record-sqlite.reference-manager.js'
 import { TABLE_ALIAS } from './record.constants.js'
 
 export interface IRecordQueryBuilder {
@@ -20,7 +20,6 @@ export interface IRecordQueryBuilder {
   where(): this
   sort(): this
   looking(): this
-  expand(field?: ReferenceFieldTypes): this
   select(): this
   build(): Promisable<this>
 }
@@ -97,18 +96,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   }
 
   looking(): this {
-    new RecordSqliteReferenceQueryVisitorHelper(this.em, this.knex, this.qb).visit(this.table, this.tableEntity)
-    return this
-  }
-
-  expand(field?: ReferenceFieldTypes | LookupField): this {
-    if (field) {
-      new RecordSqliteReferenceQueryVisitorHelper(this.em, this.knex, this.qb).expandField(
-        field,
-        this.table.schema.toIdMap(),
-        this.tableEntity,
-      )
-    }
+    new RecordSqliteReferenceManager(this.em, this.knex, this.qb, this.table, this.tableEntity).visit(this.table)
     return this
   }
 

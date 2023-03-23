@@ -74,6 +74,9 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
 
     // TODO: handle date range
     const column = UnderlyingColumnFactory.create(field, this.tableId) as IUnderlyingColumn
+    if (column.virtual) {
+      return column.name
+    }
     return TABLE_ALIAS + '.' + column.name
   }
 
@@ -130,44 +133,19 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     }
   }
   numberEqual(s: NumberEqual): void {
-    const field = this.getField(s.fieldId)
-    if (field?.isAggregate) {
-      this.qb.having(s.fieldId, '=', s.value.unpack())
-    } else {
-      this.qb.where({ [this.getFieldId(s.fieldId)]: s.value.unpack() })
-    }
+    this.qb.where({ [this.getFieldId(s.fieldId)]: s.value.unpack() })
   }
   numberGreaterThan(s: NumberGreaterThan): void {
-    const field = this.getField(s.fieldId)
-    if (field?.isAggregate) {
-      this.qb.having(s.fieldId, '>', s.value.unpack())
-    } else {
-      this.qb.where(this.getFieldId(s.fieldId), '>', s.value.unpack())
-    }
+    this.qb.where(this.getFieldId(s.fieldId), '>', s.value.unpack())
   }
   numberLessThan(s: NumberLessThan): void {
-    const field = this.getField(s.fieldId)
-    if (field?.isAggregate) {
-      this.qb.having(s.fieldId, '<', s.value.unpack())
-    } else {
-      this.qb.where(this.getFieldId(s.fieldId), '<', s.value.unpack())
-    }
+    this.qb.where(this.getFieldId(s.fieldId), '<', s.value.unpack())
   }
   numberGreaterThanOrEqual(s: NumberGreaterThanOrEqual): void {
-    const field = this.getField(s.fieldId)
-    if (field?.isAggregate) {
-      this.qb.having(s.fieldId, '>=', s.value.unpack())
-    } else {
-      this.qb.where(this.getFieldId(s.fieldId), '>=', s.value.unpack())
-    }
+    this.qb.where(this.getFieldId(s.fieldId), '>=', s.value.unpack())
   }
   numberLessThanOrEqual(s: NumberLessThanOrEqual): void {
-    const field = this.getField(s.fieldId)
-    if (field?.isAggregate) {
-      this.qb.having(s.fieldId, '<=', s.value.unpack())
-    } else {
-      this.qb.where(this.getFieldId(s.fieldId), '<=', s.value.unpack())
-    }
+    this.qb.where(this.getFieldId(s.fieldId), '<=', s.value.unpack())
   }
   dateEqual(s: DateEqual): void {
     if (s.value.unpack() === null) {

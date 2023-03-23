@@ -8,7 +8,7 @@ import { ClosureTable } from '../../underlying-table/underlying-foreign-table.js
 import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
 import { RecordSqliteMapper } from './record-sqlite.mapper.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
-import { RecordSqliteReferenceQueryVisitorHelper } from './record-sqlite.reference-query-visitor.helper.js'
+import { RecordSqliteReferenceManager } from './record-sqlite.reference-manager.js'
 import { TABLE_ALIAS } from './record.constants.js'
 import type { RecordSqliteWithParent } from './record.type.js'
 import { createRecordTree } from './record.util.js'
@@ -22,7 +22,7 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
     const tableEntity = await this.em.findOneOrFail(
       TableEntity,
       { id: tableId },
-      { populate: ['fields.displayFields'] },
+      { populate: ['fields.displayFields', 'fields.countFields', 'fields.lookupFields'] },
     )
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
@@ -43,12 +43,12 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
       })
       .leftOuterJoin(`${tableId} as t2`, `t2.${INTERNAL_COLUMN_ID_NAME}`, `c.${ClosureTable.PARENT_ID}`)
       .whereNull(`t2.${DELETED_AT_COLUMN_NAME}`)
-      .select([...columns.map((c) => `t.${c.name}`), `c.${ClosureTable.PARENT_ID}`])
+      .select([...columns.filter((c) => !c.virtual).map((c) => `t.${c.name}`), `c.${ClosureTable.PARENT_ID}`])
 
     const visitor = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
     spec.accept(visitor).unwrap()
 
-    new RecordSqliteReferenceQueryVisitorHelper(em, knex, qb).visit(table, tableEntity)
+    new RecordSqliteReferenceManager(em, knex, qb, table, tableEntity).visit(table)
 
     const data = await em.execute<RecordSqliteWithParent[]>(qb)
     const records = data.map((r) => {
