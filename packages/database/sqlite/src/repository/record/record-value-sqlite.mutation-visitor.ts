@@ -18,6 +18,7 @@ import type {
   ReferenceFieldValue,
   SelectFieldValue,
   StringFieldValue,
+  SumFieldValue,
   TableSchemaIdMap,
   TreeFieldValue,
   UpdatedAtFieldValue,
@@ -141,8 +142,10 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
     const moveParentQueries = closure.moveParent(knex, this.recordId, parentId)
     this.addQueries(...moveParentQueries)
   }
-
   count(value: CountFieldValue): void {
+    throw new Error('Method not implemented.')
+  }
+  sum(value: SumFieldValue): void {
     throw new Error('Method not implemented.')
   }
   lookup(value: LookupFieldValue): void {

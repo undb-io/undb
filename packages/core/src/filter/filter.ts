@@ -76,6 +76,7 @@ import {
   referenceFilterOperators,
   selectFilterOperators,
   stringFilterOperators,
+  sumFilterOperators,
   treeFilterOperators,
   updatedAtFilterOperators,
 } from './operators.js'
@@ -87,6 +88,8 @@ import type { ISelectFilter } from './select.filter.js'
 import { selectFilter, selectFilterValue } from './select.filter.js'
 import type { IStringFilter } from './string.filter.js'
 import { stringFilter, stringFilterValue } from './string.filter.js'
+import type { ISumFilter } from './sum.filter.js'
+import { sumFilter, sumFilterValue } from './sum.filter.js'
 import type { ITreeFilter } from './tree.filter.js'
 import { treeFilter, treeFilterValue } from './tree.filter.js'
 import type { IUpdatedAtFilter } from './updated-at.filter.js'
@@ -111,6 +114,7 @@ export const filterValue = z.union([
   ratingFilterValue,
   countFilterValue,
   lookupFilterValue,
+  sumFilterValue,
 ])
 export type IFilterValue = z.infer<typeof filterValue>
 
@@ -133,6 +137,7 @@ export const operaotrs = z.union([
   ratingFilterOperators,
   countFilterOperators,
   lookupFilterOperators,
+  sumFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
@@ -155,6 +160,7 @@ const filter = z.discriminatedUnion('type', [
   ratingFilter,
   countFilter,
   lookupFilter,
+  sumFilter,
 ])
 
 export type IFilter = z.infer<typeof filter>
@@ -243,7 +249,7 @@ const convertStringFilter = (filter: IStringFilter | IEmailFilter | IColorFilter
 }
 
 const convertNumberFilter = (
-  filter: INumberFilter | IAutoIncrementFilter | IRatingFilter | ICountFilter,
+  filter: INumberFilter | IAutoIncrementFilter | IRatingFilter | ICountFilter | ISumFilter,
 ): Option<CompositeSpecification> => {
   if (filter.value === undefined) {
     return None
@@ -394,6 +400,7 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
     case 'rating':
     case 'auto-increment':
     case 'count':
+    case 'sum':
       return convertNumberFilter(filter)
     case 'date':
     case 'created-at':

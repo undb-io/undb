@@ -13,6 +13,7 @@ import type {
   ReferenceField,
   SelectField,
   StringField,
+  SumField,
   TreeField,
 } from '@egodb/core'
 import {
@@ -220,6 +221,15 @@ export class UnderlyingParentColumn extends UnderlyingFieldColumn<ParentField> {
 }
 
 export class UnderlyingCountColumn extends UnderlyingFieldColumn<CountField> {
+  override get virtual() {
+    return true
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  build(): void {}
+}
+
+export class UnderlyingSumColumn extends UnderlyingFieldColumn<SumField> {
   override get virtual() {
     return true
   }

@@ -182,6 +182,17 @@ import {
   stringTypeSchema,
   updateStringFieldSchema,
 } from './string-field.type.js'
+import type { SumFieldValue } from './sum-field-value.js'
+import type { SumField } from './sum-field.js'
+import type { ISumFieldValue } from './sum-field.type.js'
+import {
+  createSumFieldSchema,
+  createSumFieldValue_internal,
+  sumFieldQuerySchema,
+  sumFieldQueryValue,
+  sumTypeSchema,
+  updateSumFieldSchema,
+} from './sum-field.type.js'
 import type { TreeFieldValue } from './tree-field-value.js'
 import type { TreeField } from './tree-field.js'
 import type { ITreeFieldValue } from './tree-field.type.js'
@@ -226,6 +237,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createRatingFieldSchema,
   createCountFieldSchema,
   createLookupFieldSchema,
+  createSumFieldSchema,
 ])
 export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
 
@@ -248,6 +260,7 @@ export const updateFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   updateRatingFieldSchema,
   updateCountFieldSchema,
   updateLookupFieldSchema,
+  updateSumFieldSchema,
 ])
 export type IUpdateFieldSchema = z.infer<typeof updateFieldSchema>
 
@@ -270,6 +283,7 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   ratingFieldQuerySchema,
   countFieldQuerySchema,
   lookupFieldQuerySchema,
+  sumFieldQuerySchema,
 ])
 export type IQueryFieldSchema = z.infer<typeof queryFieldSchema>
 export const querySchemaSchema = z.array(queryFieldSchema)
@@ -294,6 +308,7 @@ export const fieldTypes = z.union([
   ratingTypeSchema,
   countTypeSchema,
   lookupTypeSchema,
+  sumTypeSchema,
 ])
 export type IFieldType = z.infer<typeof fieldTypes>
 
@@ -316,6 +331,7 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createRatingFieldValue_internal,
   createCountFieldValue_internal,
   createLookupFieldValue_internal,
+  createSumFieldValue_internal,
 ])
 export type ICreateFieldValueSchema_internal = z.infer<typeof createFieldValueSchema_internal>
 
@@ -355,6 +371,7 @@ export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?:
 export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: DisplayFields }
 
 export type ICountField = IBaseField & { referenceFieldId: FieldId }
+export type ISumField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }
 export type ILookupField = IBaseField & { referenceFieldId: FieldId; displayFields: DisplayFields }
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField
@@ -363,7 +380,8 @@ export type IReferenceFieldTypes = IReferenceField | ITreeField | IParentField
 export type ReferenceFieldTypes = ReferenceField | TreeField | ParentField
 export type ILookingFieldTypes = IReferenceFieldTypes | ILookupField
 export type LookingFieldTypes = ReferenceFieldTypes | LookupField
-export type AggregateFieldType = CountField
+export type AggregateFieldType = CountField | SumField
+export type INumberAggregateFieldType = ISumField
 export type IDateFieldTypes = IDateField | IDateRangeField | ICreatedAtField | IUpdatedAtField
 export type DateFieldTypes = DateField | DateRangeField | CreatedAtField | UpdatedAtField
 export type ILookupFieldTypes = ICountField | ILookupField
@@ -385,6 +403,7 @@ export type NoneSystemField =
   | AutoIncrementField
   | CountField
   | LookupField
+  | SumField
 
 export type PrimitiveField =
   | StringField
@@ -400,6 +419,7 @@ export type PrimitiveField =
   | UpdatedAtFieldValue
   | AutoIncrementFieldValue
   | CountField
+  | SumField
 
 export type Field = SystemField | NoneSystemField
 
@@ -422,6 +442,7 @@ export type FieldValue =
   | RatingFieldValue
   | CountFieldValue
   | LookupFieldValue
+  | SumFieldValue
 
 export type FieldValues = FieldValue[]
 
@@ -444,6 +465,7 @@ export type UnpackedFieldValue =
   | IRatingFieldValue
   | ICountFieldValue
   | ILookupFieldValue
+  | ISumFieldValue
 
 export const fieldQueryValue = z.union([
   treeFieldQueryValue,
@@ -464,6 +486,7 @@ export const fieldQueryValue = z.union([
   ratingFieldQueryValue,
   countFieldQueryValue,
   lookupFieldQueryValue,
+  sumFieldQueryValue,
 ])
 
 export type IFieldQueryValue = z.infer<typeof fieldQueryValue>
@@ -499,4 +522,10 @@ export interface IAbstractLookupField {
   getReferenceField(schema: TableSchemaIdMap): ReferenceField | TreeField
   getForeignTableId(schema: TableSchemaIdMap): Option<string>
   updateReferenceId(referenceId?: string): Option<TableCompositeSpecificaiton>
+}
+
+export interface IAbstractAggregateField {
+  get aggregateFieldId(): FieldId
+  set aggregateFieldId(fieldId: FieldId)
+  updateAggregateFieldId(aggregateFieldId?: string): Option<TableCompositeSpecificaiton>
 }

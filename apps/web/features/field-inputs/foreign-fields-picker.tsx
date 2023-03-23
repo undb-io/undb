@@ -1,4 +1,4 @@
-import type { IFieldType } from '@egodb/core'
+import type { Field, IFieldType } from '@egodb/core'
 import { TableFactory } from '@egodb/core'
 import { useGetTableQuery } from '@egodb/store'
 import type { MultiSelectProps, SelectItem as SelectItemType } from '@egodb/ui'
@@ -6,14 +6,15 @@ import { useListState } from '@egodb/ui'
 import { ActionIcon, Group, Text } from '@egodb/ui'
 import { MultiSelect } from '@egodb/ui'
 import { forwardRef } from 'react'
-import { useTranslation } from 'react-i18next'
 import { FieldIcon } from './field-Icon'
-import { FieldInputLabel } from './field-input-label'
 import type { FieldBase } from './field-picker.type'
+import { identity } from 'lodash-es'
 
 interface IProps extends Omit<MultiSelectProps, 'data'> {
-  tableId?: string
+  foreignTableId?: string
   fields?: FieldBase[]
+  fieldFilter?: (f: Field) => boolean
+  multiple?: boolean
 }
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -31,31 +32,33 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, type, ...othe
   </Group>
 ))
 
-export const DisplayFieldsPicker: React.FC<IProps> = ({ tableId, fields, ...props }) => {
+export const ForeignFieldsPicker: React.FC<IProps> = ({
+  foreignTableId,
+  fields,
+  fieldFilter,
+  multiple = true,
+  ...props
+}) => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const { data } = useGetTableQuery({ id: tableId! }, { skip: !tableId })
+  const { data } = useGetTableQuery({ id: foreignTableId! }, { skip: !foreignTableId })
   const [state, handlers] = useListState<string>(props.value)
 
   const table = data ? TableFactory.fromQuery(data) : undefined
 
-  const { t } = useTranslation()
-
   const items =
-    table?.schema?.fields
-      .filter((f) => f.isPrimitive())
-      .map((f, index) => ({
-        value: f.id.value,
-        label: f.name.value || `Field ` + (index + 1),
-        type: f.type,
-      })) ??
+    table?.schema?.fields.filter(fieldFilter ?? identity).map((f, index) => ({
+      value: f.id.value,
+      label: f.name.value || `Field ` + (index + 1),
+      type: f.type,
+    })) ??
     fields?.map((f) => ({ value: f.id, label: f.name, type: f.type })) ??
     ([] as SelectItemType[])
 
   return (
     <MultiSelect
-      placeholder={t('Select Display Fields') as string}
+      maxSelectedValues={multiple ? undefined : 1}
       variant="filled"
-      label={<FieldInputLabel>{t('Display Fields')}</FieldInputLabel>}
+      multiple={multiple}
       {...props}
       value={state}
       onChange={(value) => {

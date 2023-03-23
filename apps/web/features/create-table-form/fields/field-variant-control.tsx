@@ -3,7 +3,7 @@ import { RATING_MAX, RATING_MAX_DEFAULT } from '@egodb/core'
 import { NumberInput, TextInput } from '@egodb/ui'
 import { Controller, useFormContext } from 'react-hook-form'
 import { FieldInputLabel } from '../../field-inputs/field-input-label'
-import { DisplayFieldsPicker } from '../../field-inputs/display-fields-picker'
+import { ForeignFieldsPicker } from '../../field-inputs/foreign-fields-picker'
 import { SelectFieldControl } from '../../field-inputs/select-field-control'
 import { TablePicker } from '../../table/table-picker'
 import type { FieldBase } from '../../field-inputs/field-picker.type'
@@ -77,11 +77,14 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
         <Controller
           name={`schema.${index}.displayFieldIds`}
           render={(props) => (
-            <DisplayFieldsPicker
+            <ForeignFieldsPicker
               fields={schema as FieldBase[]}
-              tableId={form.watch(`schema.${index}.foreignTableId`)}
+              foreignTableId={form.watch(`schema.${index}.foreignTableId`)}
               {...props.field}
               onChange={(ids) => props.field.onChange(ids)}
+              fieldFilter={(f) => f.isPrimitive()}
+              placeholder={t('Select Display Fields') as string}
+              label={<FieldInputLabel>{t('Display Fields')}</FieldInputLabel>}
             />
           )}
         />
@@ -89,7 +92,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
     )
   }
 
-  if (type === 'count' || type === 'lookup') {
+  if (type === 'count' || type === 'sum' || type === 'lookup') {
     const schema = form.watch('schema')
     // const referenceFieldId = form.watch(`schema.${index}.referenceFieldId`)
 

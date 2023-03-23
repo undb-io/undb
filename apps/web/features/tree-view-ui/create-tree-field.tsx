@@ -9,7 +9,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
-import { DisplayFieldsPicker } from '../field-inputs/display-fields-picker'
+import { ForeignFieldsPicker } from '../field-inputs/foreign-fields-picker'
 import { treeStepZeroAtom } from './tree-step.atom'
 import { useTranslation } from 'react-i18next'
 
@@ -82,12 +82,15 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
               control={form.control}
               name="displayFieldIds"
               render={(props) => (
-                <DisplayFieldsPicker
+                <ForeignFieldsPicker
                   variant="default"
-                  tableId={table.id.value}
+                  foreignTableId={table.id.value}
                   dropdownPosition="bottom"
                   {...props.field}
                   onChange={(ids) => props.field.onChange(ids)}
+                  fieldFilter={(f) => f.isPrimitive()}
+                  placeholder={t('Select Display Fields') as string}
+                  label={<FieldInputLabel>{t('Display Fields')}</FieldInputLabel>}
                 />
               )}
             />
