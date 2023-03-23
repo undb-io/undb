@@ -18,6 +18,7 @@ import type {
   ReferenceField as CoreReferenceField,
   SelectField as CoreSelectField,
   StringField as CoreStringField,
+  SumField as CoreSumField,
   TreeField as CoreTreeField,
   IFieldVisitor,
 } from '@egodb/core'
@@ -43,6 +44,7 @@ import {
   ReferenceField,
   SelectField,
   StringField,
+  SumField,
   Table,
   TreeField,
   UpdatedAtField,
@@ -151,6 +153,13 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
   count(value: CoreCountField): void {
     const field = new CountField(this.table, value)
     field.countReferenceField = this.em.getReference(Field, value.referenceFieldId.value) as ReferenceField | TreeField
+
+    this.em.persist(field)
+  }
+
+  sum(value: CoreSumField): void {
+    const field = new SumField(this.table, value)
+    field.sumReferenceField = this.em.getReference(Field, value.referenceFieldId.value) as ReferenceField | TreeField
 
     this.em.persist(field)
   }

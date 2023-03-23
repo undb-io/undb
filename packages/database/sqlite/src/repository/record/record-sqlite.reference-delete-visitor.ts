@@ -17,6 +17,7 @@ import type {
   ReferenceField,
   SelectField,
   StringField,
+  SumField,
   TreeField,
   UpdatedAtField,
 } from '@egodb/core'
@@ -87,6 +88,9 @@ export class RecordSqliteReferenceDleteVisitor extends BaseEntityManager impleme
     throw new Error('Method not implemented.')
   }
   count(field: CountField): void {
+    throw new Error('Method not implemented.')
+  }
+  sum(field: SumField): void {
     throw new Error('Method not implemented.')
   }
   lookup(field: LookupField): void {

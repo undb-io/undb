@@ -20,6 +20,7 @@ import type {
   RatingField,
   SelectField,
   StringField,
+  SumField,
   Table,
   UpdatedAtField,
 } from '@egodb/core'
@@ -46,7 +47,6 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
     private readonly table: Table,
     private readonly tableEntity: TableEntity,
   ) {}
-
   #visited = new Set<string>()
 
   public visit(table: Table): void {
@@ -285,6 +285,11 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
     this.#visited.add(field.id.value)
   }
   rating(field: RatingField): void {}
+  sum(field: SumField): void {
+    const reference = field.getReferenceField(this.table.schema.toIdMap())
+    reference.accept(this)
+  }
+
   count(field: CountField): void {
     const reference = field.getReferenceField(this.table.schema.toIdMap())
     reference.accept(this)
