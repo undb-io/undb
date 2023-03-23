@@ -371,7 +371,7 @@ export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?:
 export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: DisplayFields }
 
 export type ICountField = IBaseField & { referenceFieldId: FieldId }
-export type ISumField = IBaseField & { referenceFieldId: FieldId }
+export type ISumField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }
 export type ILookupField = IBaseField & { referenceFieldId: FieldId; displayFields: DisplayFields }
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField
@@ -381,6 +381,7 @@ export type ReferenceFieldTypes = ReferenceField | TreeField | ParentField
 export type ILookingFieldTypes = IReferenceFieldTypes | ILookupField
 export type LookingFieldTypes = ReferenceFieldTypes | LookupField
 export type AggregateFieldType = CountField | SumField
+export type INumberAggregateFieldType = ISumField
 export type IDateFieldTypes = IDateField | IDateRangeField | ICreatedAtField | IUpdatedAtField
 export type DateFieldTypes = DateField | DateRangeField | CreatedAtField | UpdatedAtField
 export type ILookupFieldTypes = ICountField | ILookupField
@@ -521,4 +522,10 @@ export interface IAbstractLookupField {
   getReferenceField(schema: TableSchemaIdMap): ReferenceField | TreeField
   getForeignTableId(schema: TableSchemaIdMap): Option<string>
   updateReferenceId(referenceId?: string): Option<TableCompositeSpecificaiton>
+}
+
+export interface IAbstractAggregateField {
+  get aggregateFieldId(): FieldId
+  set aggregateFieldId(fieldId: FieldId)
+  updateAggregateFieldId(aggregateFieldId?: string): Option<TableCompositeSpecificaiton>
 }

@@ -276,6 +276,15 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "sum_aggregate_field_id": {
+          "name": "sum_aggregate_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         }
       },
       "name": "ego_field",
@@ -340,6 +349,15 @@
           ],
           "composite": false,
           "keyName": "ego_field_sum_reference_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "sum_aggregate_field_id"
+          ],
+          "composite": false,
+          "keyName": "ego_field_sum_aggregate_field_id_index",
           "primary": false,
           "unique": false
         },
@@ -411,6 +429,19 @@
           "constraintName": "ego_field_sum_reference_field_id_foreign",
           "columnNames": [
             "sum_reference_field_id"
+          ],
+          "localTableName": "ego_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "ego_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "ego_field_sum_aggregate_field_id_foreign": {
+          "constraintName": "ego_field_sum_aggregate_field_id_foreign",
+          "columnNames": [
+            "sum_aggregate_field_id"
           ],
           "localTableName": "ego_field",
           "referencedColumnNames": [

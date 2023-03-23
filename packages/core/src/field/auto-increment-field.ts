@@ -22,6 +22,10 @@ export class AutoIncrementField extends BaseField<IAutoIncrementField> {
     return true
   }
 
+  override get isNumeric() {
+    return true
+  }
+
   static create(input: Omit<ICreateAutoIncrementFieldInput, 'type'>): AutoIncrementField {
     return new AutoIncrementField(super.createBase(input))
   }

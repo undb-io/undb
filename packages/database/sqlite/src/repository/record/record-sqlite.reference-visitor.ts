@@ -39,7 +39,7 @@ import {
 import { TABLE_ALIAS, getForeignTableAlias } from './record.constants.js'
 import { getExpandColumnName } from './record.util.js'
 
-export class RecordSqliteReferenceManager implements IFieldVisitor {
+export class RecordSqliteReferenceVisitor implements IFieldVisitor {
   constructor(
     private readonly em: EntityManager,
     private readonly knex: Knex,
@@ -88,10 +88,12 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
 
     const column = this.#mustGetColumn(field) as ReferenceField
     const countFields = column.countFields.getItems().map((f) => f.toDomain())
+    const sumFields = column.sumFields.getItems()
     const lookupFields = column.lookupFields.getItems()
     const displayFields = column.displayFields
       .getItems()
       .concat(lookupFields.flatMap((c) => c.displayFields.getItems()))
+      .concat(sumFields.map((c) => c.sumAggregateField))
     const displayColumns = uniqBy(displayFields, (f) => f.id).map((field) => field.toDomain())
 
     const foreignTableId = field.foreignTableId.unwrapOr(this.table.id.value)
@@ -108,6 +110,7 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
         this.knex.raw(`json_group_array(${AdjacencyListTable.TO_ID}) as ${field.id.value}`),
         ...displayColumns.map((f) => this.knex.raw(`json_group_array(${fta}.${f.id.value}) as ${f.id.value}`)),
         ...countFields.map((f) => this.knex.raw(`count(*) as ${f.id.value}`)),
+        ...sumFields.map((f) => this.knex.raw(`sum(${fta}.${f.sumAggregateField.id}) as ${f.id}`)),
       )
       .from(adjacency.name)
       .groupBy(AdjacencyListTable.FROM_ID)
@@ -147,7 +150,7 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
         `${uta}.${field.id.value} as ${field.id.value}`,
         getFieldExpand(column),
         ...lookupFields.map((c) => getFieldExpand(c)),
-        ...countFields.map((c) => `${uta}.${c.id.value} as ${c.id.value}`),
+        ...[...countFields, ...sumFields.map((f) => f.toDomain())].map((c) => `${uta}.${c.id.value} as ${c.id.value}`),
       )
       .leftJoin(subQuery, `${uta}.${AdjacencyListTable.FROM_ID}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
   }
@@ -160,10 +163,12 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
 
     const column = this.#mustGetColumn(field) as TreeField
     const countFields = column.countFields.getItems().map((f) => f.toDomain())
+    const sumFields = column.sumFields.getItems()
     const lookupFields = column.lookupFields.getItems()
     const displayFields = column.displayFields
       .getItems()
       .concat(lookupFields.flatMap((c) => c.displayFields.getItems()))
+      .concat(sumFields.map((c) => c.sumAggregateField))
     const displayColumns = uniqBy(displayFields, (f) => f.id).map((field) => field.toDomain())
 
     const foreignTableId = field.foreignTableId.unwrapOr(this.table.id.value)
@@ -181,6 +186,7 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
         knex.raw(`json_group_array(${ClosureTable.CHILD_ID}) as ${field.id.value}`),
         ...displayColumns.map((f) => knex.raw(`json_group_array(${fta}.${f.id.value}) as ${f.id.value}`)),
         ...countFields.map((f) => knex.raw(`count(*) as ${f.id.value}`)),
+        ...sumFields.map((f) => this.knex.raw(`sum(${fta}.${f.sumAggregateField.id}) as ${f.id}`)),
       )
       .from(closure.name)
       .groupBy(ClosureTable.PARENT_ID, ClosureTable.CHILD_ID)
@@ -216,7 +222,7 @@ export class RecordSqliteReferenceManager implements IFieldVisitor {
         `${uta}.${field.id.value} as ${field.id.value}`,
         getFieldExpand(column),
         ...lookupFields.map((c) => getFieldExpand(c)),
-        ...countFields.map((c) => `${uta}.${c.id.value} as ${c.id.value}`),
+        ...[...countFields, ...sumFields.map((f) => f.toDomain())].map((c) => `${uta}.${c.id.value} as ${c.id.value}`),
       )
       .leftJoin(subQuery, function () {
         this.on(`${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`, `${uta}.${ClosureTable.PARENT_ID}`).andOn(

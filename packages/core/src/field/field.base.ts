@@ -11,6 +11,7 @@ import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
 import type { IBaseCreateFieldSchema, IBaseUpdateFieldSchema } from './field-base.schema.js'
 import { DEFAULT_DATE_FORMAT } from './field.constants.js'
 import type {
+  IAbstractAggregateField,
   IAbstractDateField,
   IAbstractLookingField,
   IAbstractLookupField,
@@ -20,6 +21,7 @@ import type {
   IFieldType,
   ILookingFieldTypes,
   ILookupFieldTypes,
+  INumberAggregateFieldType,
   IReferenceFieldTypes,
   IUpdateFieldSchema,
   PrimitiveField,
@@ -28,6 +30,7 @@ import type {
 import { isControlledFieldType } from './field.util.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import type { ReferenceField } from './reference-field.js'
+import { WithAggregateFieldId } from './specifications/aggregate-field.specification.js'
 import { WithFieldDescription, WithFieldName } from './specifications/base-field.specification.js'
 import { WithFormat } from './specifications/date-field.specification.js'
 import { WithFieldRequirement } from './specifications/field-constraints.specification.js'
@@ -77,6 +80,10 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
 
   get valueConstrains() {
     return this.props.valueConstrains
+  }
+
+  get isNumeric(): boolean {
+    return false
   }
 
   isSystem(): this is SystemField {
@@ -243,6 +250,31 @@ export abstract class AbstractLookupField<F extends ILookupFieldTypes>
   updateReferenceId(referenceId?: string): Option<TableCompositeSpecificaiton> {
     if (isString(referenceId)) {
       return Some(WithReferenceFieldId.fromString(this, referenceId))
+    }
+
+    return None
+  }
+}
+
+export abstract class AbstractAggregateField<F extends INumberAggregateFieldType>
+  extends BaseField<F>
+  implements IAbstractAggregateField
+{
+  get aggregateFieldId(): FieldId {
+    return this.props.aggregateFieldId
+  }
+
+  set referenceFieldId(fieldId: FieldId) {
+    this.props.aggregateFieldId = fieldId
+  }
+
+  override get isAggregate() {
+    return true
+  }
+
+  updateAggregateFieldId(aggregateFieldId?: string): Option<TableCompositeSpecificaiton> {
+    if (isString(aggregateFieldId)) {
+      return Some(WithAggregateFieldId.fromString(this, aggregateFieldId))
     }
 
     return None

@@ -1,21 +1,22 @@
 import { andOptions } from '@egodb/domain'
+import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
 import type { ISumFilter, ISumFilterOperator } from '../filter/sum.filter.js'
-import { AbstractLookupField, BaseField } from './field.base.js'
+import { AbstractAggregateField, AbstractLookupField, BaseField } from './field.base.js'
 import type { ISumField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { SumFieldValue } from './sum-field-value.js'
 import type { ICreateSumFieldInput, ICreateSumFieldValue, IUpdateSumFieldInput, SumType } from './sum-field.type.js'
 import { FieldId } from './value-objects/field-id.vo.js'
 
-export class SumField extends AbstractLookupField<ISumField> {
+export class SumField extends Mixin(AbstractAggregateField<ISumField>, AbstractLookupField<ISumField>) {
   type: SumType = 'sum'
 
   override get primitive() {
     return true
   }
 
-  override get isAggregate() {
+  override get isNumeric() {
     return true
   }
 
@@ -23,6 +24,7 @@ export class SumField extends AbstractLookupField<ISumField> {
     return new SumField({
       ...BaseField.createBase(input),
       referenceFieldId: FieldId.fromString(input.referenceFieldId),
+      aggregateFieldId: FieldId.fromString(input.aggregateFieldId),
     })
   }
 
@@ -30,11 +32,16 @@ export class SumField extends AbstractLookupField<ISumField> {
     return new SumField({
       ...BaseField.unsafeCreateBase(input),
       referenceFieldId: FieldId.fromString(input.referenceFieldId),
+      aggregateFieldId: FieldId.fromString(input.aggregateFieldId),
     })
   }
 
   public override update(input: IUpdateSumFieldInput) {
-    return andOptions(this.updateBase(input), this.updateReferenceId(input.referenceFieldId))
+    return andOptions(
+      this.updateBase(input),
+      this.updateReferenceId(input.referenceFieldId),
+      this.updateAggregateFieldId(input.aggregateFieldId),
+    )
   }
 
   createValue(value: ICreateSumFieldValue): SumFieldValue {

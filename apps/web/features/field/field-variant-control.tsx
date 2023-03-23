@@ -3,7 +3,7 @@ import { RATING_MAX, RATING_MAX_DEFAULT } from '@egodb/core'
 import { NumberInput, TextInput } from '@egodb/ui'
 import { Controller, useFormContext } from 'react-hook-form'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
-import { DisplayFieldsPicker } from '../field-inputs/display-fields-picker'
+import { ForeignFieldsPicker } from '../field-inputs/foreign-fields-picker'
 import { SelectFieldControl } from '../field-inputs/select-field-control'
 import { TablePicker } from '../table/table-picker'
 import { useCurrentTable } from '../../hooks/use-current-table'
@@ -70,11 +70,14 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
         <Controller
           name="displayFieldIds"
           render={(props) => (
-            <DisplayFieldsPicker
-              tableId={form.watch('foreignTableId') ?? table?.id.value}
+            <ForeignFieldsPicker
+              foreignTableId={form.watch('foreignTableId') ?? table?.id.value}
               {...props.field}
               onChange={(ids) => props.field.onChange(ids)}
               variant="default"
+              fieldFilter={(f) => f.isPrimitive()}
+              placeholder={t('Select Display Fields') as string}
+              label={<FieldInputLabel>{t('Display Fields')}</FieldInputLabel>}
             />
           )}
         />
@@ -85,6 +88,10 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
   if (type === 'count' || type === 'sum' || type === 'lookup') {
     const schema = table.schema.toIdMap()
     const referenceFieldId = form.watch('referenceFieldId')
+    const foreignTableId = referenceFieldId
+      ? (schema.get(referenceFieldId) as ReferenceField | TreeField | undefined)?.foreignTableId.into() ??
+        table.id.value
+      : undefined
     return (
       <>
         <Controller
@@ -107,17 +114,32 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
           <Controller
             name="displayFieldIds"
             render={(props) => (
-              <DisplayFieldsPicker
-                tableId={
-                  referenceFieldId
-                    ? (schema.get(referenceFieldId) as ReferenceField | TreeField | undefined)?.foreignTableId.into() ??
-                      table.id.value
-                    : undefined
-                }
+              <ForeignFieldsPicker
                 {...props.field}
+                foreignTableId={foreignTableId}
                 onChange={(ids) => props.field.onChange(ids)}
                 variant="default"
                 disabled={!referenceFieldId}
+                placeholder={t('Select Display Fields') as string}
+                label={<FieldInputLabel>{t('Display Fields')}</FieldInputLabel>}
+              />
+            )}
+          />
+        )}
+        {type === 'sum' && (
+          <Controller
+            name="aggregateFieldId"
+            render={(props) => (
+              <ForeignFieldsPicker
+                {...props.field}
+                onChange={(ids) => props.field.onChange(ids[0])}
+                foreignTableId={foreignTableId}
+                variant="default"
+                disabled={!referenceFieldId}
+                placeholder={t('Select Aggregate Field') as string}
+                label={<FieldInputLabel>{t('Aggregate Field')}</FieldInputLabel>}
+                fieldFilter={(f) => f.isNumeric && !f.isAggregate}
+                multiple={false}
               />
             )}
           />

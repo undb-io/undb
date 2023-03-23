@@ -12,7 +12,7 @@ import type { Table } from '../../entity/table.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import { UnderlyingSelectColumn } from '../../underlying-table/underlying-column.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
-import { RecordSqliteReferenceManager } from './record-sqlite.reference-manager.js'
+import { RecordSqliteReferenceVisitor } from './record-sqlite.reference-visitor.js'
 import { TABLE_ALIAS } from './record.constants.js'
 
 export interface IRecordQueryBuilder {
@@ -96,7 +96,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   }
 
   looking(): this {
-    new RecordSqliteReferenceManager(this.em, this.knex, this.qb, this.table, this.tableEntity).visit(this.table)
+    new RecordSqliteReferenceVisitor(this.em, this.knex, this.qb, this.table, this.tableEntity).visit(this.table)
     return this
   }
 

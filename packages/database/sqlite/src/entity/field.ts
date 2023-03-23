@@ -555,6 +555,9 @@ export class TreeField extends Field {
   @OneToMany(() => CountField, (f) => f.countReferenceField)
   countFields = new Collection<CountField>(this)
 
+  @OneToMany(() => SumField, (f) => f.sumReferenceField)
+  sumFields = new Collection<SumField>(this)
+
   @OneToMany(() => LookupField, (f) => f.lookupReferenceField)
   lookupFields = new Collection<LookupField>(this)
 
@@ -662,6 +665,9 @@ export class SumField extends Field {
   @ManyToOne({ entity: () => ReferenceField || TreeField, inversedBy: (f) => f.countFields })
   sumReferenceField!: ReferenceField | TreeField
 
+  @ManyToOne({ entity: () => Field })
+  sumAggregateField!: Field
+
   toDomain(): CoreSumField {
     return CoreSumField.unsafeCreate({
       id: this.id,
@@ -670,6 +676,7 @@ export class SumField extends Field {
       type: 'sum',
       required: !!this.required,
       referenceFieldId: this.sumReferenceField.id,
+      aggregateFieldId: this.sumAggregateField.id,
     })
   }
 
@@ -680,6 +687,7 @@ export class SumField extends Field {
       description: this.description,
       type: 'sum',
       referenceFieldId: this.sumReferenceField.id,
+      aggregateFieldId: this.sumAggregateField.id,
       required: !!this.required,
     }
   }

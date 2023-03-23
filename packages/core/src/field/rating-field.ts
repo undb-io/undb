@@ -17,6 +17,10 @@ export class RatingField extends BaseField<IRatingField> {
     return this.props.max ?? 5
   }
 
+  override get isNumeric() {
+    return true
+  }
+
   static create(input: Omit<ICreateRatingFieldInput, 'type'>): RatingField {
     return new RatingField(super.createBase(input))
   }

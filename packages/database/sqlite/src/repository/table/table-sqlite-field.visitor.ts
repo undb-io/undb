@@ -159,7 +159,9 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   sum(value: CoreSumField): void {
     const field = new SumField(this.table, value)
+
     field.sumReferenceField = this.em.getReference(Field, value.referenceFieldId.value) as ReferenceField | TreeField
+    field.sumAggregateField = this.em.getReference(Field, value.aggregateFieldId.value)
 
     this.em.persist(field)
   }
