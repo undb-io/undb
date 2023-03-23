@@ -14,6 +14,7 @@ import type { RatingFieldValue } from './rating-field-value.js'
 import type { ReferenceFieldValue } from './reference-field-value.js'
 import type { SelectFieldValue } from './select-field-value.js'
 import type { StringFieldValue } from './string-field-value.js'
+import type { SumFieldValue } from './sum-field-value.js'
 import type { TreeFieldValue } from './tree-field-value.js'
 import type { UpdatedAtFieldValue } from './updated-at-field-value.js'
 
@@ -35,5 +36,6 @@ export interface IFieldValueVisitor {
   parent(value: ParentFieldValue): void
   rating(value: RatingFieldValue): void
   count(value: CountFieldValue): void
+  sum(value: SumFieldValue): void
   lookup(value: LookupFieldValue): void
 }

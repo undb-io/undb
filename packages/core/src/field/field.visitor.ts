@@ -14,6 +14,7 @@ import type { RatingField } from './rating-field.js'
 import type { ReferenceField } from './reference-field.js'
 import type { SelectField } from './select-field.js'
 import type { StringField } from './string-field.js'
+import type { SumField } from './sum-field.js'
 import type { TreeField } from './tree-field.js'
 import type { UpdatedAtField } from './updated-at-field.js'
 
@@ -35,5 +36,6 @@ export interface IFieldVisitor {
   parent(field: ParentField): void
   rating(field: RatingField): void
   count(field: CountField): void
+  sum(field: SumField): void
   lookup(field: LookupField): void
 }

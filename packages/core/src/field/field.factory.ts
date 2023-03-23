@@ -15,6 +15,7 @@ import { RatingField } from './rating-field.js'
 import { ReferenceField } from './reference-field.js'
 import { SelectField } from './select-field.js'
 import { StringField } from './string-field.js'
+import { SumField } from './sum-field.js'
 import { TreeField } from './tree-field.js'
 import { UpdatedAtField } from './updated-at-field.js'
 
@@ -72,6 +73,9 @@ export class FieldFactory {
       }
       case 'count': {
         return CountField.create(input)
+      }
+      case 'sum': {
+        return SumField.create(input)
       }
       case 'lookup': {
         return LookupField.create(input)
@@ -131,6 +135,9 @@ export class FieldFactory {
       }
       case 'count': {
         return CountField.unsafeCreate(input)
+      }
+      case 'sum': {
+        return SumField.unsafeCreate(input)
       }
       case 'lookup': {
         return LookupField.unsafeCreate(input)
