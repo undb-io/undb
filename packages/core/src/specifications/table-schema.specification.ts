@@ -29,6 +29,7 @@ export class WithTableSchema extends CompositeSpecification<Table, ITableSpecVis
   }
 
   accept(v: ITableSpecVisitor): Result<void, string> {
-    throw new Error('Method not implemented.')
+    v.schemaEqual(this)
+    return Ok(undefined)
   }
 }

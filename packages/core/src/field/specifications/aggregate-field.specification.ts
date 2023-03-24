@@ -23,6 +23,6 @@ export class WithAggregateFieldId extends CompositeSpecification<Table, ITableSp
     return Ok(t)
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
-    throw new Error('Method not implemented.')
+    return Ok(undefined)
   }
 }
