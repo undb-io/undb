@@ -19,7 +19,7 @@ export interface IRecordQueryBuilder {
   from(): this
   where(): this
   sort(): this
-  looking(): this
+  reference(): this
   select(): this
   build(): Promisable<this>
 }
@@ -95,7 +95,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     return this
   }
 
-  looking(): this {
+  reference(): this {
     new RecordSqliteReferenceVisitor(this.em, this.knex, this.qb, this.table, this.tableEntity).visit(this.table)
     return this
   }
