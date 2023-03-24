@@ -14,6 +14,8 @@ export const createReferenceFieldSchema = createBaseFieldSchema.merge(referenceT
   z.object({
     displayFieldIds: fieldIdSchema.array().optional(),
     foreignTableId: tableIdSchema.optional(),
+    bidirectional: z.boolean().optional(),
+    symmetricReferenceFieldId: fieldIdSchema.optional(),
   }),
 )
 export type ICreateReferenceFieldInput = z.infer<typeof createReferenceFieldSchema>
@@ -30,6 +32,7 @@ export const referenceFieldQuerySchema = baseFieldQuerySchema.merge(referenceTyp
   z.object({
     foreignTableId: tableIdSchema.optional(),
     displayFieldIds: fieldIdSchema.array().optional(),
+    symmetricReferenceFieldId: fieldIdSchema.optional(),
   }),
 )
 export type IReferenceFieldQuerySchema = z.infer<typeof referenceFieldQuerySchema>

@@ -1,4 +1,4 @@
-import { type ITableRepository } from '@egodb/core'
+import { ForeignTableDomainSpecificationVisitor, type ITableRepository } from '@egodb/core'
 import type { ICommandHandler } from '@egodb/domain'
 import type { CreateFieldCommand } from './create-field.command.js'
 
@@ -13,5 +13,20 @@ export class CreateFieldCommandHandler implements ICreateFieldCommandHandler {
     const spec = table.createField(command.viewId, command.field, command.at)
 
     await this.tableRepo.updateOneById(table.id.value, spec)
+
+    // TODO: optimize get foreign table logic
+    if (
+      command.field.type === 'reference' &&
+      command.field.foreignTableId &&
+      command.field.foreignTableId !== table.id.value
+    ) {
+      const foreignTable = (await this.tableRepo.findOneById(command.field.foreignTableId)).unwrap()
+      const visitor = new ForeignTableDomainSpecificationVisitor(table, foreignTable)
+      spec.accept(visitor)
+      const foreignSpec = visitor.spec.into()
+      if (foreignSpec) {
+        await this.tableRepo.updateOneById(foreignTable.id.value, foreignSpec)
+      }
+    }
   }
 }

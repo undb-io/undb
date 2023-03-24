@@ -4,7 +4,10 @@ import type { WithFieldDescription, WithFieldName } from '../field/specification
 import type { WithFormat } from '../field/specifications/date-field.specification.js'
 import type { WithFieldRequirement } from '../field/specifications/field-constraints.specification.js'
 import type { WithoutField } from '../field/specifications/field.specification.js'
-import type { WithDisplayFields } from '../field/specifications/reference-field.specification.js'
+import type {
+  WithDisplayFields,
+  WithSymmetricReferenceField,
+} from '../field/specifications/reference-field.specification.js'
 import type { WithNewOption, WithOptions, WithoutOption } from '../field/specifications/select-field.specification.js'
 import { type Table } from '../table.js'
 import type { WithKanbanField, WithViewsOrder } from '../view/index.js'
@@ -23,10 +26,10 @@ import type { WithViewFieldsOrder } from '../view/specifications/view-fields-ord
 import type { WithViewPinnedFields } from '../view/specifications/view-pinned-fields.specification.js'
 import type {
   WithNewView,
-  WithoutView,
   WithTableView,
   WithTableViews,
   WithViewName,
+  WithoutView,
 } from '../view/specifications/views.specification.js'
 import type { WithNewField } from './table-field.specification.js'
 import type { WithTableId } from './table-id.specification'
@@ -74,6 +77,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withShowSystemFields(s: WithShowSystemFieldsSpec): void
 
   withFieldRequirement(s: WithFieldRequirement): void
+  symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void
 }
 
 export type ITableSpec = ISpecification<Table, ITableSpecVisitor>

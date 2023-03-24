@@ -142,6 +142,9 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
       field.foreignTable = this.em.getReference(Table, value.foreignTableId.unwrap())
     }
     field.displayFields.set(value.displayFieldIds.map((fieldId) => this.em.getReference(Field, fieldId.value)))
+    if (value.symmetricReferenceFieldId) {
+      field.symmetricReferenceField = this.em.getReference(ReferenceField, value.symmetricReferenceFieldId.value)
+    }
 
     const adjacencyListTable = new AdjacencyListTable(this.table.id, value)
 
