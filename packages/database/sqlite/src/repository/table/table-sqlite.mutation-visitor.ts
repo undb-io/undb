@@ -21,6 +21,7 @@ import type {
   WithoutView,
   WithShowSystemFieldsSpec,
   WithSorts,
+  WithSymmetricReferenceField,
   WithTableName,
   WithTableSchema,
   WithTableView,
@@ -249,6 +250,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   withFieldRequirement(s: WithFieldRequirement): void {
     const field = this.getField(s.field.id.value)
     wrap(field).assign({ required: s.required })
+    this.em.persist(field)
+  }
+  symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {
+    const field = this.getField(s.field.id.value) as ReferenceField
+    wrap(field).assign({ symmetricReferenceField: s.symmetricReferenceFieldId.value })
     this.em.persist(field)
   }
   not(): this {

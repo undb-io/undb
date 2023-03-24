@@ -32,12 +32,28 @@ export class ReferenceField extends Mixin(
     return Option(this.props.foreignTableId?.value)
   }
 
+  get symmetricReferenceFieldId() {
+    return this.props.symmetricReferenceFieldId
+  }
+
+  set symmetricReferenceFieldId(fieldId: FieldId | undefined) {
+    this.props.symmetricReferenceFieldId = fieldId
+  }
+
+  get isOwner() {
+    return this.props.isOwner ?? false
+  }
+
   static create(input: Omit<ICreateReferenceFieldInput, 'type'>): ReferenceField {
     return new ReferenceField({
       ...super.createBase(input),
       foreignTableId: input.foreignTableId ? TableId.from(input.foreignTableId).unwrap() : undefined,
       displayFields: input.displayFieldIds
         ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
+        : undefined,
+      isOwner: !!input.bidirectional,
+      symmetricReferenceFieldId: input.symmetricReferenceFieldId
+        ? FieldId.fromString(input.symmetricReferenceFieldId)
         : undefined,
     })
   }
@@ -48,6 +64,10 @@ export class ReferenceField extends Mixin(
       foreignTableId: input.foreignTableId ? TableId.from(input.foreignTableId).unwrap() : undefined,
       displayFields: input.displayFieldIds
         ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
+        : undefined,
+      isOwner: !!input.bidirectional,
+      symmetricReferenceFieldId: input.symmetricReferenceFieldId
+        ? FieldId.fromString(input.symmetricReferenceFieldId)
         : undefined,
     })
   }

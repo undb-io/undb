@@ -22,6 +22,7 @@ import type {
   WithoutView,
   WithShowSystemFieldsSpec,
   WithSorts,
+  WithSymmetricReferenceField,
   WithTableId,
   WithTableName,
   WithTableSchema,
@@ -132,6 +133,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   withFieldRequirement(s: WithFieldRequirement): void {
+    throw new Error('Method not implemented.')
+  }
+  symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {
     throw new Error('Method not implemented.')
   }
 

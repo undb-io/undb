@@ -1,11 +1,4 @@
-import type {
-  IQueryRecordSchema,
-  IQueryRecords,
-  IRecordQueryModel,
-  IRecordSpec,
-  ReferenceFieldTypes,
-  ViewId,
-} from '@egodb/core'
+import type { IQueryRecordSchema, IQueryRecords, IRecordQueryModel, IRecordSpec, ViewId } from '@egodb/core'
 import type { EntityManager } from '@egodb/sqlite'
 import { RecordSqliteQueryModel } from '@egodb/sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
@@ -19,13 +12,8 @@ export class NestRecordSqliteQueryModel extends RecordSqliteQueryModel implement
   }
 
   @UseRequestContext()
-  find(
-    tableId: string,
-    viewId: ViewId | undefined,
-    spec: IRecordSpec | null,
-    referenceField?: ReferenceFieldTypes | undefined,
-  ): Promise<IQueryRecords> {
-    return super.find(tableId, viewId, spec, referenceField)
+  find(tableId: string, viewId: ViewId | undefined, spec: IRecordSpec | null): Promise<IQueryRecords> {
+    return super.find(tableId, viewId, spec)
   }
 
   @UseRequestContext()
@@ -33,9 +21,8 @@ export class NestRecordSqliteQueryModel extends RecordSqliteQueryModel implement
     tableId: string,
     viewId: ViewId | undefined,
     spec: IRecordSpec | null,
-    referenceField?: ReferenceFieldTypes,
   ): Promise<{ records: IQueryRecords; total: number }> {
-    return super.findAndCount(tableId, viewId, spec, referenceField)
+    return super.findAndCount(tableId, viewId, spec)
   }
 
   @UseRequestContext()

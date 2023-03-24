@@ -1,6 +1,7 @@
 import type { ICreateFieldSchema, IUpdateFieldSchema, ReferenceField, TreeField } from '@egodb/core'
 import { RATING_MAX, RATING_MAX_DEFAULT } from '@egodb/core'
-import { NumberInput, TextInput } from '@egodb/ui'
+import { NumberInput, Switch, TextInput } from '@egodb/ui'
+import type { UseFormReturn } from 'react-hook-form'
 import { Controller, useFormContext } from 'react-hook-form'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { ForeignFieldsPicker } from '../field-inputs/foreign-fields-picker'
@@ -46,6 +47,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
   }
 
   if (type === 'tree' || type === 'reference' || type === 'parent') {
+    const foreignTableId = form.watch('foreignTableId')
     return (
       <>
         {isNew && type === 'tree' && (
@@ -67,11 +69,17 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
             render={(props) => <TablePicker {...props.field} placeholder={t('Select Foreign Table') as string} />}
           />
         )}
+        {isNew && type === 'reference' && !!foreignTableId && foreignTableId !== table.id.value && (
+          <Switch
+            label={t('Bidirectional')}
+            {...(form as UseFormReturn<ICreateFieldSchema>).register('bidirectional')}
+          />
+        )}
         <Controller
           name="displayFieldIds"
           render={(props) => (
             <ForeignFieldsPicker
-              foreignTableId={form.watch('foreignTableId') ?? table?.id.value}
+              foreignTableId={foreignTableId ?? table?.id.value}
               {...props.field}
               onChange={(ids) => props.field.onChange(ids)}
               variant="default"

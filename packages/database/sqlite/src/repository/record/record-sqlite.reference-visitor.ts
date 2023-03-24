@@ -107,7 +107,10 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
 
     const foreignTableId = field.foreignTableId.unwrapOr(this.table.id.value)
 
-    const adjacency = new AdjacencyListTable(foreignTableId, field)
+    const adjacency = new AdjacencyListTable(this.table.id.value, field)
+
+    const foreignIdField = field.isOwner ? AdjacencyListTable.TO_ID : AdjacencyListTable.FROM_ID
+    const currentIdField = field.isOwner ? AdjacencyListTable.FROM_ID : AdjacencyListTable.TO_ID
 
     const uta = getUnderlyingTableAlias(field)
     const fta = getForeignTableAlias(field, this.table.schema.toIdMap())
@@ -116,13 +119,13 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
       .select(
         AdjacencyListTable.FROM_ID,
         AdjacencyListTable.TO_ID,
-        this.knex.raw(`json_group_array(${AdjacencyListTable.TO_ID}) as ${field.id.value}`),
+        this.knex.raw(`json_group_array(${foreignIdField}) as ${field.id.value}`),
         ...displayColumns.map((f) => this.knex.raw(`json_group_array(${fta}.${f.id.value}) as ${f.id.value}`)),
         ...countFields.map((f) => this.knex.raw(`count(*) as ${f.id.value}`)),
         ...sumFields.map((f) => this.knex.raw(`sum(${fta}.${f.sumAggregateField.id}) as ${f.id}`)),
       )
       .from(adjacency.name)
-      .groupBy(AdjacencyListTable.FROM_ID)
+      .groupBy(currentIdField)
       .as(uta)
 
     const nestSubQuery = this.knex
@@ -139,11 +142,7 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
       .groupBy(INTERNAL_COLUMN_ID_NAME)
       .as(fta)
 
-    subQuery.leftJoin(
-      nestSubQuery,
-      `${adjacency.name}.${AdjacencyListTable.TO_ID}`,
-      `${fta}.${INTERNAL_COLUMN_ID_NAME}`,
-    )
+    subQuery.leftJoin(nestSubQuery, `${adjacency.name}.${foreignIdField}`, `${fta}.${INTERNAL_COLUMN_ID_NAME}`)
     this.#visited.add(field.id.value)
 
     this.qb
@@ -153,7 +152,7 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
         ...lookupFields.map((c) => this.#getFieldExpand(uta, c)),
         ...[...countFields, ...sumFields.map((f) => f.toDomain())].map((c) => `${uta}.${c.id.value} as ${c.id.value}`),
       )
-      .leftJoin(subQuery, `${uta}.${AdjacencyListTable.FROM_ID}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
+      .leftJoin(subQuery, `${uta}.${currentIdField}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
   }
   tree(field: CoreTreeField): void {
     if (this.#visited.has(field.id.value)) {
@@ -174,7 +173,7 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
 
     const foreignTableId = field.foreignTableId.unwrapOr(this.table.id.value)
 
-    const closure = new ClosureTable(foreignTableId, field)
+    const closure = new ClosureTable(this.table.id.value, field)
 
     const uta = getUnderlyingTableAlias(field)
     const fta = getForeignTableAlias(field, this.table.schema.toIdMap())
@@ -236,7 +235,7 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
       .concat(lookupFields.flatMap((f) => f.displayFields.getItems()))
     const displayColumns = uniqBy(displayFields, (f) => f.id).map((field) => field.toDomain())
     const foreignTableId = field.foreignTableId.unwrapOr(this.table.id.value)
-    const closure = new ClosureTable(foreignTableId, field)
+    const closure = new ClosureTable(this.table.id.value, field)
     const uta = getUnderlyingTableAlias(field)
     const fta = getForeignTableAlias(field, this.table.schema.toIdMap())
     const subQuery = knex

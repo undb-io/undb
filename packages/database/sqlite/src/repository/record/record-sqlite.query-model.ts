@@ -30,7 +30,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
 
     let builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec, viewId?.value)
     // TODO: expand reference field
-    builder = builder.select().from().where().looking().sort().build()
+    builder = builder.select().from().where().reference().sort().build()
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb)
 
@@ -60,7 +60,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const schema = table.schema.toIdMap()
 
     let builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec, viewId?.value)
-    builder = builder.select().from().where().looking().sort().build()
+    builder = builder.select().from().where().reference().sort().build()
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb)
 
@@ -90,7 +90,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const schema = table.schema.toIdMap()
 
     let builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec)
-    builder = builder.select().from().where().looking().build()
+    builder = builder.select().from().where().reference().build()
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb.first())
 

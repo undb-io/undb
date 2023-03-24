@@ -366,7 +366,12 @@ export type ISelectField = IBaseField & {
 }
 
 export type IBoolField = IBaseField
-export type IReferenceField = IBaseField & { displayFields?: DisplayFields; foreignTableId?: TableId }
+export type IReferenceField = IBaseField & {
+  displayFields?: DisplayFields
+  foreignTableId?: TableId
+  isOwner?: boolean
+  symmetricReferenceFieldId?: FieldId
+}
 export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?: DisplayFields }
 export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: DisplayFields }
 

@@ -52,6 +52,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryKey,
   Property,
   SmallIntType,
@@ -497,6 +498,7 @@ export class SelectField extends Field {
 export class ReferenceField extends Field {
   constructor(table: Table, field: CoreReferenceField) {
     super(table, field)
+    this.isOwner = field.isOwner
   }
 
   @ManyToOne(() => Table)
@@ -514,6 +516,12 @@ export class ReferenceField extends Field {
   @OneToMany(() => LookupField, (f) => f.lookupReferenceField)
   lookupFields = new Collection<LookupField>(this)
 
+  @OneToOne(() => ReferenceField, { nullable: true })
+  symmetricReferenceField?: ReferenceField
+
+  @Property({ type: BooleanType, default: false, nullable: false })
+  isOwner?: boolean
+
   toDomain(): CoreReferenceField {
     return CoreReferenceField.unsafeCreate({
       id: this.id,
@@ -522,7 +530,9 @@ export class ReferenceField extends Field {
       type: 'reference',
       foreignTableId: this.foreignTable?.id,
       displayFieldIds: this.displayFields.isInitialized() ? this.displayFields.getItems().map((f) => f.id) : [],
+      symmetricReferenceFieldId: this.symmetricReferenceField?.id,
       required: !!this.required,
+      bidirectional: !!this.isOwner,
     })
   }
 
@@ -534,6 +544,7 @@ export class ReferenceField extends Field {
       type: 'reference',
       foreignTableId: this.foreignTable?.id,
       displayFieldIds: this.displayFields.isInitialized() ? this.displayFields.getItems().map((f) => f.id) : [],
+      symmetricReferenceFieldId: this.symmetricReferenceField?.id,
       required: !!this.required,
     }
   }

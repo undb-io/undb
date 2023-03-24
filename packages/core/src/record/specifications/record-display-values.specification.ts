@@ -26,6 +26,6 @@ export class WithDisplayValues extends CompositeSpecification<Record, IRecordVis
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
-    throw new Error('[WithDisplayValues.accept] not implemented')
+    return Ok(undefined)
   }
 }

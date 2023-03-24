@@ -23,13 +23,21 @@ export class AdjacencyListTable extends BaseUnderlyingForeignTable<ReferenceFiel
   }
 
   get name(): IUderlyingForeignTableName {
-    return `${this.field.id.value}_${this.foreignTableId}_adjacency_list`
+    if (this.field.isOwner) {
+      return `${this.field.id.value}_${this.foreignTableId}_adjacency_list`
+    }
+    const symmetricReferenceId = this.field.symmetricReferenceFieldId?.value
+    if (!symmetricReferenceId) {
+      return `${this.field.id.value}_${this.foreignTableId}_adjacency_list`
+    }
+
+    return `${symmetricReferenceId}_${this.tableId}_adjacency_list`
   }
 
   getCreateTableSqls(knex: Knex): string[] {
     return [
       knex.schema
-        .createTable(this.name, (tb) => {
+        .createTableIfNotExists(this.name, (tb) => {
           tb.string(AdjacencyListTable.TO_ID)
             .notNullable()
             .references(INTERNAL_COLUMN_ID_NAME)

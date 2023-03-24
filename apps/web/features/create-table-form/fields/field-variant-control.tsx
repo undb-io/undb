@@ -1,7 +1,7 @@
 import type { ICreateTableInput } from '@egodb/cqrs'
-import { RATING_MAX, RATING_MAX_DEFAULT } from '@egodb/core'
-import { NumberInput, TextInput } from '@egodb/ui'
-import { Controller, useFormContext } from 'react-hook-form'
+import { ICreateFieldSchema, RATING_MAX, RATING_MAX_DEFAULT } from '@egodb/core'
+import { NumberInput, Switch, TextInput } from '@egodb/ui'
+import { Controller, UseFormReturn, useFormContext } from 'react-hook-form'
 import { FieldInputLabel } from '../../field-inputs/field-input-label'
 import { ForeignFieldsPicker } from '../../field-inputs/foreign-fields-picker'
 import { SelectFieldControl } from '../../field-inputs/select-field-control'
@@ -44,6 +44,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
   }
 
   if (type === 'tree' || type === 'reference') {
+    const foreignTableId = form.watch(`schema.${index}.foreignTableId`)
     const schema = form.watch('schema')
     return (
       <>
@@ -74,6 +75,10 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
             )}
           />
         )}
+        {type === 'reference' && !!foreignTableId && (
+          <Switch label={t('Bidirectional')} {...form.register(`schema.${index}.bidirectional`)} />
+        )}
+
         <Controller
           name={`schema.${index}.displayFieldIds`}
           render={(props) => (
