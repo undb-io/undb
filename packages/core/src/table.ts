@@ -41,7 +41,6 @@ import type {
   ViewFieldsOrder,
 } from './view/index.js'
 import {
-  defaultViewDiaplyType,
   Sorts,
   View,
   ViewsOrder,
@@ -49,6 +48,7 @@ import {
   WithTableView,
   WithViewFieldsOrder,
   WithViewsOrder,
+  defaultViewDiaplyType,
 } from './view/index.js'
 import { WithFilter } from './view/specifications/filters.specificaiton.js'
 import { WithSorts } from './view/specifications/sorts.specification.js'
@@ -212,7 +212,9 @@ export class Table {
           spec.field.id.value,
           view.id.equals(selectedView.id) ? at : undefined,
         )
-        specs.push(Some(new WithViewFieldsOrder(viewFieldsOrder, view)))
+        const vo = new WithViewFieldsOrder(viewFieldsOrder, view)
+        vo.mutate(this).unwrap()
+        specs.push(Some(vo))
       }
 
       spec.mutate(this).unwrap()
