@@ -69,6 +69,15 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
     return column
   }
 
+  #getFieldExpand(table: string, column: ReferenceField | LookupField | ParentField | TreeField) {
+    return this.knex.raw(
+      `json_object('${column.id}', json_object(${column.displayFields
+        .getItems()
+        .flatMap((c) => [`'${c.id}'`, `${table}.${c.id}`])
+        .join(',')})) as ${getExpandColumnName(column.id)}`,
+    )
+  }
+
   id(field: IdField): void {}
   createdAt(field: CreatedAtField): void {}
   updatedAt(field: UpdatedAtField): void {}
@@ -137,19 +146,11 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
     )
     this.#visited.add(field.id.value)
 
-    const getFieldExpand = (column: ReferenceField | LookupField) =>
-      this.knex.raw(
-        `json_object('${column.id}', json_object(${column.displayFields
-          .getItems()
-          .flatMap((c) => [`'${c.id}'`, `${uta}.${c.id}`])
-          .join(',')})) as ${getExpandColumnName(column.id)}`,
-      )
-
     this.qb
       .select(
         `${uta}.${field.id.value} as ${field.id.value}`,
-        getFieldExpand(column),
-        ...lookupFields.map((c) => getFieldExpand(c)),
+        this.#getFieldExpand(uta, column),
+        ...lookupFields.map((c) => this.#getFieldExpand(uta, c)),
         ...[...countFields, ...sumFields.map((f) => f.toDomain())].map((c) => `${uta}.${c.id.value} as ${c.id.value}`),
       )
       .leftJoin(subQuery, `${uta}.${AdjacencyListTable.FROM_ID}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
@@ -209,19 +210,11 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
     subQuery.leftJoin(nestSubQuery, `${closure.name}.${ClosureTable.CHILD_ID}`, `${fta}.${INTERNAL_COLUMN_ID_NAME}`)
     this.#visited.add(field.id.value)
 
-    const getFieldExpand = (column: LookupField | TreeField) =>
-      this.knex.raw(
-        `json_object('${column.id}', json_object(${column.displayFields
-          .getItems()
-          .flatMap((c) => [`'${c.id}'`, `${uta}.${c.id}`])
-          .join(',')})) as ${getExpandColumnName(column.id)}`,
-      )
-
     this.qb
       .select(
         `${uta}.${field.id.value} as ${field.id.value}`,
-        getFieldExpand(column),
-        ...lookupFields.map((c) => getFieldExpand(c)),
+        this.#getFieldExpand(uta, column),
+        ...lookupFields.map((c) => this.#getFieldExpand(uta, c)),
         ...[...countFields, ...sumFields.map((f) => f.toDomain())].map((c) => `${uta}.${c.id.value} as ${c.id.value}`),
       )
       .leftJoin(subQuery, function () {
@@ -237,7 +230,10 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
     }
     const { knex } = this
     const column = this.#mustGetColumn(field) as ParentField
-    const displayFields = column.displayFields.getItems()
+    const lookupFields = column.lookupFields.getItems()
+    const displayFields = column.displayFields
+      .getItems()
+      .concat(lookupFields.flatMap((f) => f.displayFields.getItems()))
     const displayColumns = uniqBy(displayFields, (f) => f.id).map((field) => field.toDomain())
     const foreignTableId = field.foreignTableId.unwrapOr(this.table.id.value)
     const closure = new ClosureTable(foreignTableId, field)
@@ -256,14 +252,6 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
       .groupBy(ClosureTable.CHILD_ID, ClosureTable.PARENT_ID)
       .as(uta)
 
-    const getFieldExpand = (column: LookupField | ParentField) =>
-      knex.raw(
-        `json_object('${column.id}', json_object(${column.displayFields
-          .getItems()
-          .flatMap((c) => [`'${c.id}'`, `${uta}.${c.id}`])
-          .join(',')})) as ${getExpandColumnName(column.id)}`,
-      )
-
     const nestSubQuery = knex
       .queryBuilder()
       .select(
@@ -280,7 +268,11 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
     subQuery.leftJoin(nestSubQuery, `${closure.name}.${ClosureTable.PARENT_ID}`, `${fta}.${INTERNAL_COLUMN_ID_NAME}`)
 
     this.qb
-      .select(`${uta}.${field.id.value} as ${field.id.value}`, getFieldExpand(column))
+      .select(
+        `${uta}.${field.id.value} as ${field.id.value}`,
+        this.#getFieldExpand(uta, column),
+        ...lookupFields.map((c) => this.#getFieldExpand(uta, c)),
+      )
       .leftJoin(subQuery, function () {
         this.on(`${uta}.${ClosureTable.CHILD_ID}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`).andOn(
           `${uta}.${ClosureTable.DEPTH}`,
