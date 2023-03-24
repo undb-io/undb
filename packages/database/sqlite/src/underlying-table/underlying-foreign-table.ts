@@ -28,7 +28,7 @@ export class AdjacencyListTable extends BaseUnderlyingForeignTable<ReferenceFiel
     }
     const symmetricReferenceId = this.field.symmetricReferenceFieldId?.value
     if (!symmetricReferenceId) {
-      throw new Error('missin foreign reference field id')
+      return `${this.field.id.value}_${this.foreignTableId}_adjacency_list`
     }
 
     return `${symmetricReferenceId}_${this.tableId}_adjacency_list`
