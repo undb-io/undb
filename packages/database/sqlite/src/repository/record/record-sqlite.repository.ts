@@ -113,6 +113,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
 
     const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec).select().from().where().build()
+    new RecordSqliteReferenceVisitor(this.em, builder.knex, builder.qb, table, tableEntity).visit(table)
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb)
 
