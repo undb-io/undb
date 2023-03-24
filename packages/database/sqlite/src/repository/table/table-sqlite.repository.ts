@@ -12,7 +12,7 @@ import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor.js'
 export class TableSqliteRepository implements ITableRepository {
   constructor(protected em: EntityManager) {}
   async findOneById(id: string): Promise<Option<CoreTable>> {
-    const table = await this.em.fork().findOne(TableEntity, id, {
+    const table = await this.em.findOne(TableEntity, id, {
       populate: ['fields.options', 'views', 'fields.displayFields'],
     })
     if (!table) return None
