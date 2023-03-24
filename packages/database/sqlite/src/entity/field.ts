@@ -599,6 +599,9 @@ export class ParentField extends Field {
   @ManyToMany({ entity: () => Field, owner: true })
   displayFields = new Collection<Field>(this)
 
+  @OneToMany(() => LookupField, (f) => f.lookupReferenceField)
+  lookupFields = new Collection<LookupField>(this)
+
   toDomain(): CoreParentField {
     return CoreParentField.unsafeCreate({
       id: this.id,
@@ -699,8 +702,8 @@ export class LookupField extends Field {
     super(table, field)
   }
 
-  @ManyToOne({ entity: () => ReferenceField || TreeField, inversedBy: (f) => f.lookupFields })
-  lookupReferenceField!: ReferenceField | TreeField
+  @ManyToOne({ entity: () => ReferenceField || TreeField || ParentField, inversedBy: (f) => f.lookupFields })
+  lookupReferenceField!: ReferenceField | TreeField | ParentField
 
   @ManyToMany({ entity: () => Field, owner: true })
   displayFields = new Collection<Field>(this)

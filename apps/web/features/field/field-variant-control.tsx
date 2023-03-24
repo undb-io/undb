@@ -101,7 +101,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
               label={<FieldInputLabel>{t('Reference Field')}</FieldInputLabel>}
               fields={
                 table?.schema.fields
-                  .filter((f) => f.type === 'reference' || f.type === 'tree')
+                  .filter((f) => f.type === 'reference' || f.type === 'tree' || f.type === 'parent')
                   .map((f) => ({ id: f.id.value, type: f.type, name: f.name.value })) ?? []
               }
               {...props.field}
