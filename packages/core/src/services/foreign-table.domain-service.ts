@@ -99,7 +99,7 @@ export class ForeignTableDomainService implements ITableSpecVisitor, IFieldVisit
   select(field: SelectField): void {}
   reference(field: ReferenceField): void {
     const foreignTableId = field.foreignTableId.unwrap()
-    if (!field.isOwner && foreignTableId !== this.table.id.value) {
+    if (field.isOwner && foreignTableId !== this.table.id.value) {
       this.#foregnTableIds.push(foreignTableId)
     }
   }
