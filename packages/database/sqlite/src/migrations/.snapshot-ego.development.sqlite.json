@@ -223,6 +223,25 @@
           "nullable": true,
           "mappedType": "text"
         },
+        "symmetric_reference_field_id": {
+          "name": "symmetric_reference_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "is_owner": {
+          "name": "is_owner",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "false",
+          "mappedType": "integer"
+        },
         "parent_field_id": {
           "name": "parent_field_id",
           "type": "text",
@@ -327,6 +346,15 @@
         },
         {
           "columnNames": [
+            "symmetric_reference_field_id"
+          ],
+          "composite": false,
+          "keyName": "ego_field_symmetric_reference_field_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "columnNames": [
             "count_reference_field_id"
           ],
           "composite": false,
@@ -396,6 +424,19 @@
             "id"
           ],
           "referencedTableName": "ego_table",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "ego_field_symmetric_reference_field_id_foreign": {
+          "constraintName": "ego_field_symmetric_reference_field_id_foreign",
+          "columnNames": [
+            "symmetric_reference_field_id"
+          ],
+          "localTableName": "ego_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "ego_field",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },

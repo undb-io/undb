@@ -25,6 +25,7 @@ export class CreateFieldCommandHandler implements ICreateFieldCommandHandler {
       spec.accept(visitor)
       const foreignSpec = visitor.spec.into()
       if (foreignSpec) {
+        foreignSpec.mutate(foreignTable)
         await this.tableRepo.updateOneById(foreignTable.id.value, foreignSpec)
       }
     }

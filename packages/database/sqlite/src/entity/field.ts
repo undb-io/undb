@@ -519,7 +519,7 @@ export class ReferenceField extends Field {
   @OneToOne(() => ReferenceField, { nullable: true })
   symmetricReferenceField?: ReferenceField
 
-  @Property({ type: 'bool', default: false, nullable: false })
+  @Property({ type: BooleanType, default: false, nullable: false })
   isOwner?: boolean
 
   toDomain(): CoreReferenceField {
