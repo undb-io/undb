@@ -1,11 +1,4 @@
-import {
-  IRecordQueryModel,
-  ITableRepository,
-  TreeAvailableSpec,
-  TreeField,
-  ViewId,
-  WithRecordTableId,
-} from '@egodb/core'
+import { IRecordQueryModel, ITableRepository, TreeAvailableSpec, ViewId, WithRecordTableId } from '@egodb/core'
 import type { IQueryHandler } from '@egodb/domain'
 import { andOptions } from '@egodb/domain'
 import { Option } from 'oxide.ts'
@@ -19,7 +12,6 @@ export class GetTreeAvailableRecordsQueryHandler
 
   async execute(query: GetTreeAvailableRecordsQuery): Promise<IGetTreeAvailableRecordsOutput> {
     const table = (await this.tableRepo.findOneById(query.tableId)).unwrap()
-    const field = table.schema.getFieldByIdOfType(query.treeFieldId, TreeField).unwrap()
     const spec = andOptions(
       table.getSpec(query.viewId),
       Option(WithRecordTableId.fromString(query.tableId).unwrap()),
@@ -27,7 +19,7 @@ export class GetTreeAvailableRecordsQueryHandler
     ).unwrap()
 
     const viewId = query.viewId ? ViewId.fromString(query.viewId) : undefined
-    const records = await this.rm.find(table.id.value, viewId, spec, field)
+    const records = await this.rm.find(table.id.value, viewId, spec)
 
     return { records }
   }

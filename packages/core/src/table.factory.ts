@@ -1,5 +1,6 @@
 import { and } from '@egodb/domain'
-import { Ok, Result } from 'oxide.ts'
+import type { Result } from 'oxide.ts'
+import { Ok } from 'oxide.ts'
 import { WithTableId, WithTableName, WithTableSchema } from './specifications/index.js'
 import type { TableCompositeSpecificaiton } from './specifications/interface.js'
 import { newTableSpec } from './specifications/specifications.js'

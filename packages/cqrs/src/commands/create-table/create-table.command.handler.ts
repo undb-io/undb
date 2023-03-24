@@ -9,20 +9,13 @@ export class CreateTableCommandHandler implements ICreateTableCommandHandler {
   constructor(protected readonly tableRepo: ITableRepository) {}
 
   async execute(command: CreateTableCommand): Promise<ICreateTableOutput> {
-    try {
-      await this.tableRepo.begin()
-      const table = TableFactory.from(command).unwrap()
+    const table = TableFactory.from(command).unwrap()
 
-      await this.tableRepo.insert(table)
+    await this.tableRepo.insert(table)
 
-      const fts = new ForeignTableDomainService(this.tableRepo, table)
-      await fts.handle(new WithTableSchema(table.schema))
+    const fts = new ForeignTableDomainService(this.tableRepo, table)
+    await fts.handle(new WithTableSchema(table.schema))
 
-      await this.tableRepo.commit()
-      return { id: table.id.value }
-    } catch (error) {
-      await this.tableRepo.rollback()
-      throw error
-    }
+    return { id: table.id.value }
   }
 }

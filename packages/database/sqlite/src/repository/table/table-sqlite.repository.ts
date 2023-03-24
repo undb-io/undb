@@ -11,19 +11,8 @@ import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor.js'
 
 export class TableSqliteRepository implements ITableRepository {
   constructor(protected em: EntityManager) {}
-  async begin(): Promise<void> {
-    this.em = this.em.fork()
-    await this.em.begin()
-  }
-  async commit(): Promise<void> {
-    await this.em.commit()
-  }
-  async rollback(): Promise<void> {
-    await this.em.rollback()
-  }
-
   async findOneById(id: string): Promise<Option<CoreTable>> {
-    const table = await this.em.findOne(TableEntity, id, {
+    const table = await this.em.fork().findOne(TableEntity, id, {
       populate: ['fields.options', 'views', 'fields.displayFields'],
     })
     if (!table) return None
