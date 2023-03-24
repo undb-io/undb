@@ -10,7 +10,17 @@ import { TableSqliteMapper } from './table-sqlite.mapper.js'
 import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor.js'
 
 export class TableSqliteRepository implements ITableRepository {
-  constructor(protected readonly em: EntityManager) {}
+  constructor(protected em: EntityManager) {}
+  async begin(): Promise<void> {
+    this.em = this.em.fork()
+    await this.em.begin()
+  }
+  async commit(): Promise<void> {
+    await this.em.commit()
+  }
+  async rollback(): Promise<void> {
+    await this.em.rollback()
+  }
 
   async findOneById(id: string): Promise<Option<CoreTable>> {
     const table = await this.em.findOne(TableEntity, id, {

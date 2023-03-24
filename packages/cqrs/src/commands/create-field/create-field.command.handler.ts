@@ -12,22 +12,29 @@ export class CreateFieldCommandHandler implements ICreateFieldCommandHandler {
 
     const spec = table.createField(command.viewId, command.field, command.at)
 
-    await this.tableRepo.updateOneById(table.id.value, spec)
+    try {
+      await this.tableRepo.begin()
+      await this.tableRepo.updateOneById(table.id.value, spec)
 
-    // TODO: optimize get foreign table logic
-    if (
-      command.field.type === 'reference' &&
-      command.field.foreignTableId &&
-      command.field.foreignTableId !== table.id.value
-    ) {
-      const foreignTable = (await this.tableRepo.findOneById(command.field.foreignTableId)).unwrap()
-      const visitor = new ForeignTableDomainSpecificationVisitor(table, foreignTable)
-      spec.accept(visitor)
-      const foreignSpec = visitor.spec.into()
-      if (foreignSpec) {
-        foreignSpec.mutate(foreignTable)
-        await this.tableRepo.updateOneById(foreignTable.id.value, foreignSpec)
+      // TODO: optimize get foreign table logic
+      if (
+        command.field.type === 'reference' &&
+        command.field.foreignTableId &&
+        command.field.foreignTableId !== table.id.value
+      ) {
+        const foreignTable = (await this.tableRepo.findOneById(command.field.foreignTableId)).unwrap()
+        const visitor = new ForeignTableDomainSpecificationVisitor(table, foreignTable)
+        spec.accept(visitor)
+        const foreignSpec = visitor.spec.into()
+        if (foreignSpec) {
+          foreignSpec.mutate(foreignTable)
+          await this.tableRepo.updateOneById(foreignTable.id.value, foreignSpec)
+        }
       }
+      await this.tableRepo.commit()
+    } catch (error) {
+      await this.tableRepo.rollback()
+      throw error
     }
   }
 }
