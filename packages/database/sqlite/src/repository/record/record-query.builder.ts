@@ -25,7 +25,7 @@ export interface IRecordQueryBuilder {
 }
 
 export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
-  private readonly knex: Knex
+  public readonly knex: Knex
   public readonly qb: Knex.QueryBuilder
 
   constructor(
