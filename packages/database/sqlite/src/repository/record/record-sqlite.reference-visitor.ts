@@ -250,7 +250,7 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
         ClosureTable.CHILD_ID,
         ClosureTable.DEPTH,
         `${ClosureTable.PARENT_ID} as ${field.id.value}`,
-        ...displayColumns.map((f) => `${fta}.${f.id.value} as ${f.id.value}`),
+        ...displayColumns.map((f) => knex.raw(`json_array(${fta}.${f.id.value}) as ${f.id.value}`)),
       )
       .from(closure.name)
       .groupBy(ClosureTable.CHILD_ID, ClosureTable.PARENT_ID)
