@@ -119,6 +119,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
                 foreignTableId={foreignTableId}
                 onChange={(ids) => props.field.onChange(ids)}
                 variant="default"
+                fieldFilter={(f) => f.isPrimitive()}
                 disabled={!referenceFieldId}
                 placeholder={t('Select Display Fields') as string}
                 label={<FieldInputLabel>{t('Display Fields')}</FieldInputLabel>}
