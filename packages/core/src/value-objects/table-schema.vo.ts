@@ -153,4 +153,15 @@ export class TableSchema extends ValueObject<Field[]> {
   public getAggregateFields(): AggregateFieldType[] {
     return this.fields.filter((f) => aggregateFieldTypes.includes(f.type)) as AggregateFieldType[]
   }
+
+  public getNextFieldName(fieldName?: string): string {
+    if (!fieldName) return `Field (${this.fields.length + 1})`
+
+    const found = this.fieldsNames.find((n) => n === fieldName)
+    if (!found) {
+      return fieldName
+    }
+
+    return fieldName + ' (1)'
+  }
 }

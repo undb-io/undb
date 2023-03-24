@@ -55,8 +55,7 @@ export class ForeignTableDomainFieldVisitor implements IFieldVisitor {
       type: 'reference',
       id,
       foreignTableId: this.table.id.value,
-      // TODO: get safe name
-      name: field.id.value,
+      name: this.foreignTable.schema.getNextFieldName(this.table.name.value),
       symmetricReferenceFieldId: field.id.value,
     })
 
