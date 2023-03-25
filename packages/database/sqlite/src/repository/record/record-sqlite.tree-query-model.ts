@@ -8,7 +8,7 @@ import { ClosureTable } from '../../underlying-table/underlying-foreign-table.js
 import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
 import { RecordSqliteMapper } from './record-sqlite.mapper.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
-import { RecordSqliteReferenceVisitor } from './record-sqlite.reference-visitor.js'
+import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
 import { TABLE_ALIAS } from './record.constants.js'
 import type { RecordSqliteWithParent } from './record.type.js'
 import { createRecordTree } from './record.util.js'
@@ -48,7 +48,7 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
     const visitor = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
     spec.accept(visitor).unwrap()
 
-    new RecordSqliteReferenceVisitor(em, knex, qb, table, tableEntity).visit(table)
+    new RecordSqliteReferenceQueryVisitor(em, knex, qb, table, tableEntity).visit(table)
 
     const data = await em.execute<RecordSqliteWithParent[]>(qb)
     const records = data.map((r) => {
