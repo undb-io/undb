@@ -28,7 +28,7 @@ import type { IUnderlyingColumn } from '../interfaces/underlying-column.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from './constants.js'
 
 export abstract class UnderlyingColumn implements IUnderlyingColumn {
-  constructor(protected readonly tableName: string) {}
+  constructor(public readonly field: Field, protected readonly tableName: string) {}
 
   public readonly queries: string[] = []
   get system(): boolean {
@@ -93,7 +93,7 @@ export class UnderlyingDeletedAtColumn extends UnderlyingColumn {
 }
 
 abstract class UnderlyingFieldColumn<F extends Field> implements IUnderlyingColumn {
-  constructor(protected readonly field: F, protected readonly tableName: string) {}
+  constructor(public readonly field: F, protected readonly tableName: string) {}
   public readonly queries: string[] = []
   get system(): boolean {
     return false

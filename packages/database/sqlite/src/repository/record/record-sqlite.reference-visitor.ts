@@ -29,7 +29,6 @@ import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { uniqBy } from 'lodash-es'
 import type { LookupField, ParentField, ReferenceField, TreeField } from '../../entity/field.js'
 import type { Table as TableEntity } from '../../entity/table.js'
-import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import {
   AdjacencyListTable,
@@ -132,11 +131,9 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
       .queryBuilder()
       .select(
         INTERNAL_COLUMN_ID_NAME,
-        ...displayColumns.map((f) =>
-          f.isSystem()
-            ? (UnderlyingColumnFactory.create(f, foreignTableId) as IUnderlyingColumn).name + ` as ${f.id.value}`
-            : f.id.value,
-        ),
+        ...displayColumns
+          .flatMap((f) => UnderlyingColumnFactory.create(f, foreignTableId))
+          .map((c) => (c.system ? c.name + ` as ${c.field.id.value}` : c.field.id.value)),
       )
       .from(foreignTableId)
       .groupBy(INTERNAL_COLUMN_ID_NAME)
@@ -196,11 +193,9 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
       .queryBuilder()
       .select(
         INTERNAL_COLUMN_ID_NAME,
-        ...displayColumns.map((f) =>
-          f.isSystem()
-            ? (UnderlyingColumnFactory.create(f, foreignTableId) as IUnderlyingColumn).name + ` as ${f.id.value}`
-            : f.id.value,
-        ),
+        ...displayColumns
+          .flatMap((f) => UnderlyingColumnFactory.create(f, foreignTableId))
+          .map((c) => (c.system ? c.name + ` as ${c.field.id.value}` : c.field.id.value)),
       )
       .from(foreignTableId)
       .groupBy(INTERNAL_COLUMN_ID_NAME)
@@ -255,11 +250,9 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
       .queryBuilder()
       .select(
         INTERNAL_COLUMN_ID_NAME,
-        ...displayColumns.map((f) =>
-          f.isSystem()
-            ? (UnderlyingColumnFactory.create(f, foreignTableId) as IUnderlyingColumn).name + ` as ${f.id.value}`
-            : f.id.value,
-        ),
+        ...displayColumns
+          .flatMap((f) => UnderlyingColumnFactory.create(f, foreignTableId))
+          .map((c) => (c.system ? c.name + ` as ${c.field.id.value}` : c.field.id.value)),
       )
       .from(foreignTableId)
       .groupBy(INTERNAL_COLUMN_ID_NAME)

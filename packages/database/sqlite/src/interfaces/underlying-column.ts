@@ -1,6 +1,8 @@
+import type { Field } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 
 export interface IUnderlyingColumn {
+  get field(): Field
   get virtual(): boolean
   get queries(): string[]
   get system(): boolean
