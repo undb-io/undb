@@ -5,7 +5,7 @@ import { NestRecordSqliteTreeQueryModel, RECORD_TREE_QUERY_MODEL } from './sqlit
 import { NestTableSqliteQueryModel } from './sqlite/table-sqlite.query-model.js'
 import { NestTableSqliteRepository } from './sqlite/table-sqlite.repository.js'
 
-const TABLE_REPOSITORY = Symbol('TABLE_REPOSITORY')
+export const TABLE_REPOSITORY = Symbol('TABLE_REPOSITORY')
 export const InjectTableReposiory = () => Inject(TABLE_REPOSITORY)
 
 const TABLE_QUERY_MODEL = Symbol('TABLE_QUERY_MODEL')

@@ -1,4 +1,4 @@
-import { type ITableRepository } from '@egodb/core'
+import { TableSpecHandler, type ITableRepository } from '@egodb/core'
 import { CreateTableCommand, CreateTableCommandHandler as DomainHandler } from '@egodb/cqrs'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
@@ -9,7 +9,8 @@ export class CreateTableCommandHandler extends DomainHandler implements ICommand
   constructor(
     @InjectTableReposiory()
     protected readonly repo: ITableRepository,
+    protected readonly handler: TableSpecHandler,
   ) {
-    super(repo)
+    super(repo, handler)
   }
 }
