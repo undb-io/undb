@@ -12,7 +12,8 @@
     "date-fns": "^2.29.3",
     "lodash-es": "^4.17.21",
     "oxide.ts": "^1.1.0",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "ts-mixer": "^6.0.3"
   },
   "devDependencies": {
     "@mikro-orm/cli": "^5.6.15",
