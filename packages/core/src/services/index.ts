@@ -1,3 +1,3 @@
-export * from './foreign-table-domain-field.visitor.js'
-export * from './foreign-table-domain-specification.visitor.js'
-export * from './foreign-table.domain-service.js'
+export * from './foreign-table-reference.handler.js'
+export * from './foreign-table.collector.js'
+export * from './table-spec.handler.js'

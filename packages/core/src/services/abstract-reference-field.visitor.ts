@@ -1,8 +1,26 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { andOptions } from '@egodb/domain'
-import type { Option } from 'oxide.ts'
 import type {
+  AutoIncrementField,
+  BoolField,
+  ColorField,
+  CountField,
+  CreatedAtField,
+  DateField,
+  DateRangeField,
+  EmailField,
+  IFieldVisitor,
+  IdField,
+  LookupField,
+  NumberField,
+  ParentField,
+  RatingField,
+  ReferenceField,
+  SelectField,
+  StringField,
+  SumField,
+  TreeField,
+  UpdatedAtField,
   WithDisplayFields,
   WithFieldDescription,
   WithFieldName,
@@ -16,14 +34,12 @@ import type {
 } from '../field/index.js'
 import type {
   ITableSpecVisitor,
-  TableCompositeSpecificaiton,
   WithFilter,
   WithNewField,
   WithTableId,
   WithTableName,
   WithTableSchema,
 } from '../specifications/index.js'
-import type { Table } from '../table.js'
 import type {
   WithCalendarField,
   WithDisplayType,
@@ -43,25 +59,32 @@ import type {
   WithViewsOrder,
   WithoutView,
 } from '../view/index.js'
-import { ForeignTableDomainFieldVisitor } from './foreign-table-domain-field.visitor.js'
 
-export class ForeignTableDomainSpecificationVisitor implements ITableSpecVisitor {
-  constructor(private readonly table: Table, private readonly foreignTable: Table) {}
-
-  #specs: Option<TableCompositeSpecificaiton>[] = []
-
-  get spec() {
-    return andOptions(...this.#specs)
-  }
-
+export abstract class AbstractReferenceFieldVisitor implements ITableSpecVisitor, IFieldVisitor {
+  id(field: IdField): void {}
+  createdAt(field: CreatedAtField): void {}
+  updatedAt(field: UpdatedAtField): void {}
+  autoIncrement(field: AutoIncrementField): void {}
+  string(field: StringField): void {}
+  email(field: EmailField): void {}
+  color(field: ColorField): void {}
+  number(field: NumberField): void {}
+  bool(field: BoolField): void {}
+  date(field: DateField): void {}
+  dateRange(field: DateRangeField): void {}
+  select(field: SelectField): void {}
+  abstract reference(field: ReferenceField): void
+  abstract tree(field: TreeField): void
+  abstract parent(field: ParentField): void
+  rating(field: RatingField): void {}
+  count(field: CountField): void {}
+  sum(field: SumField): void {}
+  lookup(field: LookupField): void {}
   idEqual(s: WithTableId): void {}
   nameEqual(s: WithTableName): void {}
   schemaEqual(s: WithTableSchema): void {
     for (const field of s.schema.fields) {
-      const v = new ForeignTableDomainFieldVisitor(this.table, this.foreignTable)
-      field.accept(v)
-
-      this.#specs.push(v.spec)
+      field.accept(this)
     }
   }
   viewsEqual(s: WithTableViews): void {}
@@ -82,10 +105,7 @@ export class ForeignTableDomainSpecificationVisitor implements ITableSpecVisitor
   calendarFieldEqual(s: WithCalendarField): void {}
   treeViewFieldEqual(s: WithTreeViewField): void {}
   newField(s: WithNewField): void {
-    const v = new ForeignTableDomainFieldVisitor(this.table, this.foreignTable)
-    s.field.accept(v)
-
-    this.#specs.push(v.spec)
+    s.field.accept(this)
   }
   withoutField(s: WithoutField): void {}
   optionsEqual(s: WithOptions): void {}
