@@ -49,6 +49,7 @@ import {
   Collection,
   Entity,
   Enum,
+  LoadStrategy,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -501,7 +502,7 @@ export class ReferenceField extends Field {
     this.isOwner = field.isOwner
   }
 
-  @ManyToOne(() => Table)
+  @ManyToOne(() => Table, { strategy: LoadStrategy.JOINED })
   foreignTable?: Table
 
   @ManyToMany({ entity: () => Field, owner: true })

@@ -1,30 +1,17 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type {
-  AutoIncrementField,
-  BoolField,
-  ColorField,
   Field as CoreField,
   LookupField as CoreLookupField,
   ParentField as CoreParentField,
   ReferenceField as CoreReferenceField,
   TreeField as CoreTreeField,
   CountField,
-  CreatedAtField,
-  DateField,
-  DateRangeField,
-  EmailField,
   IFieldVisitor,
-  IdField,
-  NumberField,
-  RatingField,
-  SelectField,
-  StringField,
   SumField,
   Table,
-  UpdatedAtField,
 } from '@egodb/core'
-import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
+import { AbstractReferenceFieldVisitor, INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { uniqBy } from 'lodash-es'
 import type { LookupField, ParentField, ReferenceField, TreeField } from '../../entity/field.js'
@@ -38,14 +25,16 @@ import {
 import { TABLE_ALIAS, getForeignTableAlias } from './record.constants.js'
 import { getExpandColumnName } from './record.util.js'
 
-export class RecordSqliteReferenceVisitor implements IFieldVisitor {
+export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVisitor implements IFieldVisitor {
   constructor(
     private readonly em: EntityManager,
     private readonly knex: Knex,
     private readonly qb: Knex.QueryBuilder,
     private readonly table: Table,
     private readonly tableEntity: TableEntity,
-  ) {}
+  ) {
+    super()
+  }
   #visited = new Set<string>()
 
   public visit(table: Table): void {
@@ -77,24 +66,17 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
     )
   }
 
-  id(field: IdField): void {}
-  createdAt(field: CreatedAtField): void {}
-  updatedAt(field: UpdatedAtField): void {}
-  autoIncrement(field: AutoIncrementField): void {}
-  string(field: StringField): void {}
-  email(field: EmailField): void {}
-  color(field: ColorField): void {}
-  number(field: NumberField): void {}
-  bool(field: BoolField): void {}
-  date(field: DateField): void {}
-  dateRange(field: DateRangeField): void {}
-  select(field: SelectField): void {}
   reference(field: CoreReferenceField): void {
     if (this.#visited.has(field.id.value)) {
       return
     }
 
     const column = this.#mustGetColumn(field) as ReferenceField
+    const foreignTable = column.foreignTable
+    if (foreignTable?.deletedAt) {
+      return
+    }
+
     const countFields = column.countFields.getItems().map((f) => f.toDomain())
     const sumFields = column.sumFields.getItems()
     const lookupFields = column.lookupFields.getItems()
@@ -274,17 +256,16 @@ export class RecordSqliteReferenceVisitor implements IFieldVisitor {
 
     this.#visited.add(field.id.value)
   }
-  rating(field: RatingField): void {}
-  sum(field: SumField): void {
+  override sum(field: SumField): void {
     const reference = field.getReferenceField(this.table.schema.toIdMap())
     reference.accept(this)
   }
 
-  count(field: CountField): void {
+  override count(field: CountField): void {
     const reference = field.getReferenceField(this.table.schema.toIdMap())
     reference.accept(this)
   }
-  lookup(field: CoreLookupField): void {
+  override lookup(field: CoreLookupField): void {
     const reference = field.getReferenceField(this.table.schema.toIdMap())
     reference.accept(this)
   }

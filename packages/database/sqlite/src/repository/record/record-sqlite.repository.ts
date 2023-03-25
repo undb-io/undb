@@ -21,7 +21,7 @@ import { RecordSqliteQueryBuilder } from './record-query.builder.js'
 import { RecordSqliteMapper } from './record-sqlite.mapper.js'
 import { RecordSqliteMutationVisitor } from './record-sqlite.mutation-visitor.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
-import { RecordSqliteReferenceVisitor } from './record-sqlite.reference-visitor.js'
+import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
 import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation-visitor.js'
 import type { RecordSqlite } from './record.type.js'
 
@@ -88,7 +88,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     const spec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
 
     const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec).select().from().where().build()
-    new RecordSqliteReferenceVisitor(this.em, builder.knex, builder.qb, table, tableEntity).visit(table)
+    new RecordSqliteReferenceQueryVisitor(this.em, builder.knex, builder.qb, table, tableEntity).visit(table)
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb.first())
 
@@ -113,7 +113,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
 
     const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec).select().from().where().build()
-    new RecordSqliteReferenceVisitor(this.em, builder.knex, builder.qb, table, tableEntity).visit(table)
+    new RecordSqliteReferenceQueryVisitor(this.em, builder.knex, builder.qb, table, tableEntity).visit(table)
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb)
 
