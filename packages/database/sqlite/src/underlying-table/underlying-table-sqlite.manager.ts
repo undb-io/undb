@@ -1,7 +1,7 @@
 import type { ITableSpec, Table } from '@egodb/core'
 import type { Table as TableEntity } from '../entity/table.js'
 import { BaseEntityManager } from '../repository/base-entity-manager.js'
-import { RecordSqliteReferenceDleteVisitor } from '../repository/record/record-sqlite.reference-delete-visitor.js'
+import { RecordSqliteReferenceDeleteVisitor } from '../repository/record/record-sqlite.reference-delete-visitor.js'
 import { UnderlyingTableSqliteManagerVisitor } from './underlying-table-sqlite.manager-visitor.js'
 import { UnderlyingTableBuilder } from './underlying-table.builder.js'
 
@@ -38,7 +38,7 @@ export class UnderlyingTableSqliteManager extends BaseEntityManager implements I
   async deleteRecord(table: TableEntity, id: string): Promise<void> {
     const referenceFields = table.referencedBy.getItems().map((f) => f.toDomain())
     for (const referenceField of referenceFields) {
-      const visitor = new RecordSqliteReferenceDleteVisitor(this.em, table, id)
+      const visitor = new RecordSqliteReferenceDeleteVisitor(this.em, table, id)
       referenceField.accept(visitor)
       await visitor.commit()
     }

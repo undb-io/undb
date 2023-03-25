@@ -7,9 +7,9 @@ import type { ParentField, ReferenceField, TreeField } from '../field/index.js'
 import { FieldId, WithSymmetricReferenceField } from '../field/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/index.js'
 import type { Table } from '../table.js'
-import { AbstractReferenceFieldVisitor } from './abstract-reference-field.visitor.js'
+import { AbstractReferenceFieldSpecVisitor } from './abstract-reference-field-spec.visitor.js'
 
-export class ForeignTableReferenceHandler extends AbstractReferenceFieldVisitor {
+export class ForeignTableReferenceHandler extends AbstractReferenceFieldSpecVisitor {
   constructor(private readonly table: Table, private readonly foreignTable: Table) {
     super()
   }

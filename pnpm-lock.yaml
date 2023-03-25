@@ -327,6 +327,7 @@ importers:
       oxide.ts: ^1.1.0
       reflect-metadata: ^0.1.13
       rimraf: ^4.4.0
+      ts-mixer: ^6.0.3
       ts-node: ^10.9.1
       tsconfig: ^0.0.0
       tslib: ^2.5.0
@@ -346,6 +347,7 @@ importers:
       lodash-es: 4.17.21
       oxide.ts: 1.1.0
       reflect-metadata: 0.1.13
+      ts-mixer: 6.0.3
     devDependencies:
       '@mikro-orm/cli': 5.6.15_2pquts6zdo5s7nts7zzjvzzt34
       '@mikro-orm/reflection': 5.6.15_@mikro-orm+core@5.6.15
