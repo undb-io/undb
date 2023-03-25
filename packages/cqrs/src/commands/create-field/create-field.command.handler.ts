@@ -1,4 +1,4 @@
-import { ForeignTableDomainService, type ITableRepository } from '@egodb/core'
+import { TableSpecHandler, type ITableRepository } from '@egodb/core'
 import type { ICommandHandler } from '@egodb/domain'
 import type { CreateFieldCommand } from './create-field.command.js'
 
@@ -13,7 +13,7 @@ export class CreateFieldCommandHandler implements ICreateFieldCommandHandler {
 
     await this.tableRepo.updateOneById(table.id.value, spec)
 
-    const fts = new ForeignTableDomainService(this.tableRepo, table)
-    await fts.handle(spec)
+    const tsh = new TableSpecHandler(this.tableRepo)
+    await tsh.handle(table, spec)
   }
 }
