@@ -17,6 +17,17 @@ import {
   createAutoIncrementFieldValue_internal,
   updateAutoIncrementFieldSchema,
 } from './auto-increment-field.type.js'
+import type { AverageFieldValue } from './average-field-value.js'
+import type { AverageField } from './average-field.js'
+import type { IAverageFieldValue } from './average-field.type.js'
+import {
+  averageFieldQuerySchema,
+  averageFieldQueryValue,
+  averageTypeSchema,
+  createAverageFieldSchema,
+  createAverageFieldValue_internal,
+  updateAverageFieldSchema,
+} from './average-field.type.js'
 import type { BoolFieldValue } from './bool-field-value.js'
 import type { BoolField } from './bool-field.js'
 import type { IBoolFieldValue } from './bool-field.type.js'
@@ -238,6 +249,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createCountFieldSchema,
   createLookupFieldSchema,
   createSumFieldSchema,
+  createAverageFieldSchema,
 ])
 export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
 
@@ -261,6 +273,7 @@ export const updateFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   updateCountFieldSchema,
   updateLookupFieldSchema,
   updateSumFieldSchema,
+  updateAverageFieldSchema,
 ])
 export type IUpdateFieldSchema = z.infer<typeof updateFieldSchema>
 
@@ -284,6 +297,7 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   countFieldQuerySchema,
   lookupFieldQuerySchema,
   sumFieldQuerySchema,
+  averageFieldQuerySchema,
 ])
 export type IQueryFieldSchema = z.infer<typeof queryFieldSchema>
 export const querySchemaSchema = z.array(queryFieldSchema)
@@ -309,6 +323,7 @@ export const fieldTypes = z.union([
   countTypeSchema,
   lookupTypeSchema,
   sumTypeSchema,
+  averageTypeSchema,
 ])
 export type IFieldType = z.infer<typeof fieldTypes>
 
@@ -332,6 +347,7 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createCountFieldValue_internal,
   createLookupFieldValue_internal,
   createSumFieldValue_internal,
+  createAverageFieldValue_internal,
 ])
 export type ICreateFieldValueSchema_internal = z.infer<typeof createFieldValueSchema_internal>
 
@@ -377,6 +393,7 @@ export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: 
 
 export type ICountField = IBaseField & { referenceFieldId: FieldId }
 export type ISumField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }
+export type IAverageField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }
 export type ILookupField = IBaseField & { referenceFieldId: FieldId; displayFields: DisplayFields }
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField
@@ -386,7 +403,7 @@ export type ReferenceFieldTypes = ReferenceField | TreeField | ParentField
 export type ILookingFieldTypes = IReferenceFieldTypes | ILookupField
 export type LookingFieldTypes = ReferenceFieldTypes | LookupField
 export type AggregateFieldType = CountField | SumField
-export type INumberAggregateFieldType = ISumField
+export type INumberAggregateFieldType = ISumField | IAverageField
 export type IDateFieldTypes = IDateField | IDateRangeField | ICreatedAtField | IUpdatedAtField
 export type DateFieldTypes = DateField | DateRangeField | CreatedAtField | UpdatedAtField
 export type ILookupFieldTypes = ICountField | ILookupField
@@ -409,6 +426,7 @@ export type NoneSystemField =
   | CountField
   | LookupField
   | SumField
+  | AverageField
 
 export type PrimitiveField =
   | StringField
@@ -425,6 +443,7 @@ export type PrimitiveField =
   | AutoIncrementFieldValue
   | CountField
   | SumField
+  | AverageField
 
 export type Field = SystemField | NoneSystemField
 
@@ -448,6 +467,7 @@ export type FieldValue =
   | CountFieldValue
   | LookupFieldValue
   | SumFieldValue
+  | AverageFieldValue
 
 export type FieldValues = FieldValue[]
 
@@ -471,6 +491,7 @@ export type UnpackedFieldValue =
   | ICountFieldValue
   | ILookupFieldValue
   | ISumFieldValue
+  | IAverageFieldValue
 
 export const fieldQueryValue = z.union([
   treeFieldQueryValue,
@@ -492,6 +513,7 @@ export const fieldQueryValue = z.union([
   countFieldQueryValue,
   lookupFieldQueryValue,
   sumFieldQueryValue,
+  averageFieldQueryValue,
 ])
 
 export type IFieldQueryValue = z.infer<typeof fieldQueryValue>

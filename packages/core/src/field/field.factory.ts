@@ -1,4 +1,5 @@
 import { AutoIncrementField } from './auto-increment-field.js'
+import { AverageField } from './average-field.js'
 import { BoolField } from './bool-field.js'
 import { ColorField } from './color-field.js'
 import { CountField } from './count-field.js'
@@ -77,6 +78,9 @@ export class FieldFactory {
       case 'sum': {
         return SumField.create(input)
       }
+      case 'average': {
+        return AverageField.create(input)
+      }
       case 'lookup': {
         return LookupField.create(input)
       }
@@ -138,6 +142,9 @@ export class FieldFactory {
       }
       case 'sum': {
         return SumField.unsafeCreate(input)
+      }
+      case 'average': {
+        return AverageField.unsafeCreate(input)
       }
       case 'lookup': {
         return LookupField.unsafeCreate(input)

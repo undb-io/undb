@@ -44,6 +44,9 @@ export type ICountFilterOperator = z.infer<typeof countFilterOperators>
 export const sumFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
 export type ISumFilterOperator = z.infer<typeof sumFilterOperators>
 
+export const averageFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
+export type IAverageFilterOperator = z.infer<typeof averageFilterOperators>
+
 export const boolFilterOperators = z.union([$is_true, $is_false])
 export type IBoolFilterOperator = z.infer<typeof boolFilterOperators>
 
