@@ -584,6 +584,9 @@ export class TreeField extends Field {
   @OneToMany(() => SumField, (f) => f.sumReferenceField)
   sumFields = new Collection<SumField>(this)
 
+  @OneToMany(() => AverageField, (f) => f.averageReferenceField)
+  averageFields = new Collection<AverageField>(this)
+
   @OneToMany(() => LookupField, (f) => f.lookupReferenceField)
   lookupFields = new Collection<LookupField>(this)
 
