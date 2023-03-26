@@ -12,4 +12,8 @@ export abstract class BaseEntity {
   @Index()
   @Property({ nullable: true })
   deletedAt?: Date
+
+  public get isDeleted() {
+    return !!this.deletedAt
+  }
 }
