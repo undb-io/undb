@@ -43,7 +43,7 @@ export const FieldSort: React.FC<IProps> = ({ value, onChange, onRemove, index }
       <ActionIcon {...attributes} {...listeners} component="a">
         <IconGripVertical size={12} />
       </ActionIcon>
-      <FieldSelector fields={fields} value={selectedField} onChange={setField} />
+      <FieldSelector fields={fields.filter((f) => f.sortable)} value={selectedField} onChange={setField} />
       <SegmentedControl
         size="xs"
         value={direction}

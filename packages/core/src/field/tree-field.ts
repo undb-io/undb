@@ -27,6 +27,10 @@ export class TreeField extends Mixin(AbstractReferenceField<ITreeField>, Abstrac
     return this.props.parentFieldId
   }
 
+  override get sortable() {
+    return false
+  }
+
   createParentField(name: string = this.name.value + ' Parent'): ParentField {
     const parentField = ParentField.create({
       name,

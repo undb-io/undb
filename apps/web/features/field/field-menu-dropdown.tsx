@@ -119,52 +119,56 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index,
 
         <Menu.Divider />
 
-        <Menu.Item
-          icon={<IconSortAscending size={14} />}
-          {...menuProps}
-          sx={(theme) => ({ backgroundColor: direction === 'asc' ? theme.colors.gray[0] : 'inherit' })}
-          onClick={() => {
-            if (direction === 'asc') {
-              resetFieldSort({
-                tableId: table.id.value,
-                viewId: view.id.value,
-                fieldId: field.id.value,
-              })
-            } else {
-              setFieldSort({
-                tableId: table.id.value,
-                viewId: view.id.value,
-                fieldId: field.id.value,
-                direction: 'asc',
-              })
-            }
-          }}
-        >
-          {direction === 'asc' ? t('Delete Sort Ascending') : t('Sort Ascending')}
-        </Menu.Item>
-        <Menu.Item
-          icon={<IconSortDescending size={14} />}
-          {...menuProps}
-          sx={(theme) => ({ backgroundColor: direction === 'desc' ? theme.colors.gray[0] : 'inherit' })}
-          onClick={() => {
-            if (direction === 'desc') {
-              resetFieldSort({
-                tableId: table.id.value,
-                viewId: view.id.value,
-                fieldId: field.id.value,
-              })
-            } else {
-              setFieldSort({
-                tableId: table.id.value,
-                viewId: view.id.value,
-                fieldId: field.id.value,
-                direction: 'desc',
-              })
-            }
-          }}
-        >
-          {direction === 'desc' ? t('Delete Sort Desending') : t('Sort Desending')}
-        </Menu.Item>
+        {field.sortable && (
+          <>
+            <Menu.Item
+              icon={<IconSortAscending size={14} />}
+              {...menuProps}
+              sx={(theme) => ({ backgroundColor: direction === 'asc' ? theme.colors.gray[0] : 'inherit' })}
+              onClick={() => {
+                if (direction === 'asc') {
+                  resetFieldSort({
+                    tableId: table.id.value,
+                    viewId: view.id.value,
+                    fieldId: field.id.value,
+                  })
+                } else {
+                  setFieldSort({
+                    tableId: table.id.value,
+                    viewId: view.id.value,
+                    fieldId: field.id.value,
+                    direction: 'asc',
+                  })
+                }
+              }}
+            >
+              {direction === 'asc' ? t('Delete Sort Ascending') : t('Sort Ascending')}
+            </Menu.Item>
+            <Menu.Item
+              icon={<IconSortDescending size={14} />}
+              {...menuProps}
+              sx={(theme) => ({ backgroundColor: direction === 'desc' ? theme.colors.gray[0] : 'inherit' })}
+              onClick={() => {
+                if (direction === 'desc') {
+                  resetFieldSort({
+                    tableId: table.id.value,
+                    viewId: view.id.value,
+                    fieldId: field.id.value,
+                  })
+                } else {
+                  setFieldSort({
+                    tableId: table.id.value,
+                    viewId: view.id.value,
+                    fieldId: field.id.value,
+                    direction: 'desc',
+                  })
+                }
+              }}
+            >
+              {direction === 'desc' ? t('Delete Sort Desending') : t('Sort Desending')}
+            </Menu.Item>
+          </>
+        )}
 
         <Menu.Item
           icon={<IconEyeOff size={14} />}
