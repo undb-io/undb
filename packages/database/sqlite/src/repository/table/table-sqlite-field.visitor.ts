@@ -3,6 +3,7 @@
 import type {
   UpdatedAtField as CoereUpdatedAtField,
   AutoIncrementField as CoreAutoIncrementField,
+  AverageField as CoreAverageField,
   BoolField as CoreBoolField,
   ColorField as CoreColorField,
   CountField as CoreCountField,
@@ -27,6 +28,7 @@ import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
 import {
   AutoIncrementField,
+  AverageField,
   BoolField,
   ColorField,
   CountField,
@@ -165,6 +167,17 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
     field.sumReferenceField = this.em.getReference(Field, value.referenceFieldId.value) as ReferenceField | TreeField
     field.sumAggregateField = this.em.getReference(Field, value.aggregateFieldId.value)
+
+    this.em.persist(field)
+  }
+
+  average(value: CoreAverageField): void {
+    const field = new AverageField(this.table, value)
+
+    field.averageReferenceField = this.em.getReference(Field, value.referenceFieldId.value) as
+      | ReferenceField
+      | TreeField
+    field.averageAggregateField = this.em.getReference(Field, value.aggregateFieldId.value)
 
     this.em.persist(field)
   }

@@ -93,7 +93,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
     )
   }
 
-  if (type === 'count' || type === 'sum' || type === 'lookup') {
+  if (type === 'count' || type === 'sum' || type === 'average' || type === 'lookup') {
     const schema = table.schema.toIdMap()
     const referenceFieldId = form.watch('referenceFieldId')
     const foreignTableId = referenceFieldId
@@ -135,7 +135,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
             )}
           />
         )}
-        {type === 'sum' && (
+        {(type === 'sum' || type === 'average') && (
           <Controller
             name="aggregateFieldId"
             render={(props) => {

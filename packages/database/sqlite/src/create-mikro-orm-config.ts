@@ -3,7 +3,7 @@ import { defineConfig, FlushMode, ReflectMetadataProvider } from '@mikro-orm/cor
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import path from 'path'
 import { entities } from './entity/index.js'
-import { Migration20230324062853 } from './migrations/Migration20230324062853.js'
+import { Migration20230326065027 } from './migrations/Migration20230326065027.js'
 
 export const createConfig = (data: string, env = 'development') =>
   defineConfig({
@@ -22,7 +22,7 @@ export const createConfig = (data: string, env = 'development') =>
       migrationsList: [
         {
           name: 'initial',
-          class: Migration20230324062853,
+          class: Migration20230326065027,
         },
       ],
     },

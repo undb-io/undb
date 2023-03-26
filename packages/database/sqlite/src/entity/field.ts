@@ -1,6 +1,7 @@
 import type {
   Field as CoreField,
   IAutoIncrementFieldQuerySchema,
+  IAverageFieldQuerySchema,
   IBoolFieldQuerySchema,
   IColorFieldQuerySchema,
   ICountFieldQuerySchema,
@@ -24,6 +25,7 @@ import type {
 } from '@egodb/core'
 import {
   AutoIncrementField as CoreAutoIncrementField,
+  AverageField as CoreAverageField,
   BoolField as CoreBoolField,
   ColorField as CoreColorField,
   CountField as CoreCountField,
@@ -514,6 +516,9 @@ export class ReferenceField extends Field {
   @OneToMany(() => SumField, (f) => f.sumReferenceField)
   sumFields = new Collection<SumField>(this)
 
+  @OneToMany(() => AverageField, (f) => f.averageReferenceField)
+  averageFields = new Collection<AverageField>(this)
+
   @OneToMany(() => LookupField, (f) => f.lookupReferenceField)
   lookupFields = new Collection<LookupField>(this)
 
@@ -686,7 +691,7 @@ export class SumField extends Field {
     super(table, field)
   }
 
-  @ManyToOne({ entity: () => ReferenceField || TreeField, inversedBy: (f) => f.countFields })
+  @ManyToOne({ entity: () => ReferenceField || TreeField, inversedBy: (f) => f.sumFields })
   sumReferenceField!: ReferenceField | TreeField
 
   @ManyToOne({ entity: () => Field })
@@ -712,6 +717,43 @@ export class SumField extends Field {
       type: 'sum',
       referenceFieldId: this.sumReferenceField.id,
       aggregateFieldId: this.sumAggregateField.id,
+      required: !!this.required,
+    }
+  }
+}
+
+@Entity({ discriminatorValue: 'average' })
+export class AverageField extends Field {
+  constructor(table: Table, field: CoreAverageField) {
+    super(table, field)
+  }
+
+  @ManyToOne({ entity: () => ReferenceField || TreeField, inversedBy: (f) => f.averageFields })
+  averageReferenceField!: ReferenceField | TreeField
+
+  @ManyToOne({ entity: () => Field })
+  averageAggregateField!: Field
+
+  toDomain(): CoreAverageField {
+    return CoreAverageField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'average',
+      required: !!this.required,
+      referenceFieldId: this.averageReferenceField.id,
+      aggregateFieldId: this.averageAggregateField.id,
+    })
+  }
+
+  toQuery(): IAverageFieldQuerySchema {
+    return {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'average',
+      referenceFieldId: this.averageReferenceField.id,
+      aggregateFieldId: this.averageAggregateField.id,
       required: !!this.required,
     }
   }
@@ -774,6 +816,7 @@ export type IField =
   | CountField
   | LookupField
   | SumField
+  | AverageField
 
 export const fieldEntities = [
   IdField,
@@ -795,4 +838,5 @@ export const fieldEntities = [
   CountField,
   LookupField,
   SumField,
+  AverageField,
 ]

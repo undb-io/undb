@@ -1,4 +1,14 @@
-import { ColorField, CountField, CreatedAtField, EmailField, IdField, RatingField, UpdatedAtField } from '@egodb/core'
+import {
+  AverageField,
+  ColorField,
+  CountField,
+  CreatedAtField,
+  EmailField,
+  IdField,
+  RatingField,
+  SumField,
+  UpdatedAtField,
+} from '@egodb/core'
 import { DateRangeField } from '@egodb/core'
 import { SelectField } from '@egodb/core'
 import { StringField } from '@egodb/core'
@@ -58,7 +68,12 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
     )
   }
 
-  if (field instanceof NumberField || field instanceof CountField) {
+  if (
+    field instanceof NumberField ||
+    field instanceof CountField ||
+    field instanceof SumField ||
+    field instanceof AverageField
+  ) {
     return (
       <NumberInput size="xs" variant="filled" value={value as number} onChange={(number) => onChange(number || null)} />
     )

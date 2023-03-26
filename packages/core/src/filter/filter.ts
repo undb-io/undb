@@ -32,6 +32,8 @@ import {
 } from '../record/index.js'
 import type { IAutoIncrementFilter } from './auto-increment.filter.js'
 import { autoIncrementFilter, autoIncrementFilterValue } from './auto-increment.filter.js'
+import type { IAverageFilter } from './average.filter.js'
+import { averageFilter, averageFilterValue } from './average.filter.js'
 import type { IBoolFilter } from './bool.filter.js'
 import { boolFilter, boolFilterValue } from './bool.filter.js'
 import type { IColorFilter } from './color.filter.js'
@@ -61,6 +63,7 @@ import {
   $is_true,
   $neq,
   autoIncrementFilterOperators,
+  averageFilterOperators,
   boolFilterOperators,
   colorFilterOperators,
   countFilterOperators,
@@ -115,6 +118,7 @@ export const filterValue = z.union([
   countFilterValue,
   lookupFilterValue,
   sumFilterValue,
+  averageFilterValue,
 ])
 export type IFilterValue = z.infer<typeof filterValue>
 
@@ -138,6 +142,7 @@ export const operaotrs = z.union([
   countFilterOperators,
   lookupFilterOperators,
   sumFilterOperators,
+  averageFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
@@ -161,6 +166,7 @@ const filter = z.discriminatedUnion('type', [
   countFilter,
   lookupFilter,
   sumFilter,
+  averageFilter,
 ])
 
 export type IFilter = z.infer<typeof filter>
@@ -249,7 +255,7 @@ const convertStringFilter = (filter: IStringFilter | IEmailFilter | IColorFilter
 }
 
 const convertNumberFilter = (
-  filter: INumberFilter | IAutoIncrementFilter | IRatingFilter | ICountFilter | ISumFilter,
+  filter: INumberFilter | IAutoIncrementFilter | IRatingFilter | ICountFilter | ISumFilter | IAverageFilter,
 ): Option<CompositeSpecification> => {
   if (filter.value === undefined) {
     return None
@@ -401,6 +407,7 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
     case 'auto-increment':
     case 'count':
     case 'sum':
+    case 'average':
       return convertNumberFilter(filter)
     case 'date':
     case 'created-at':

@@ -1,4 +1,5 @@
 import type {
+  AverageField,
   BoolField,
   ColorField,
   CountField,
@@ -230,6 +231,15 @@ export class UnderlyingCountColumn extends UnderlyingFieldColumn<CountField> {
 }
 
 export class UnderlyingSumColumn extends UnderlyingFieldColumn<SumField> {
+  override get virtual() {
+    return true
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  build(): void {}
+}
+
+export class UnderlyingAverageColumn extends UnderlyingFieldColumn<AverageField> {
   override get virtual() {
     return true
   }

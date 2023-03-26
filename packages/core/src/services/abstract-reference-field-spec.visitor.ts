@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import type { AverageField } from '../field/average-field.js'
 import type {
   AutoIncrementField,
   BoolField,
@@ -79,6 +80,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   rating(field: RatingField): void {}
   count(field: CountField): void {}
   sum(field: SumField): void {}
+  average(field: AverageField): void {}
   lookup(field: LookupField): void {}
   idEqual(s: WithTableId): void {}
   nameEqual(s: WithTableName): void {}

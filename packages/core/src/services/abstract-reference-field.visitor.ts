@@ -22,6 +22,7 @@ import type {
   TreeField,
   UpdatedAtField,
 } from '../field'
+import type { AverageField } from '../field/average-field'
 
 export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   id(field: IdField): void {}
@@ -42,5 +43,6 @@ export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   rating(field: RatingField): void {}
   count(field: CountField): void {}
   sum(field: SumField): void {}
+  average(field: AverageField): void {}
   lookup(field: LookupField): void {}
 }

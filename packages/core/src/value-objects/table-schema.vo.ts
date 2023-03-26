@@ -48,7 +48,7 @@ export type ICreateTableSchemaInput = z.infer<typeof createTableSchemaSchema>
 export type TableSchemaIdMap = Map<string, Field>
 
 const lookingFieldTypes: IFieldType[] = ['tree', 'parent', 'reference', 'lookup']
-const aggregateFieldTypes: IFieldType[] = ['count', 'sum']
+const aggregateFieldTypes: IFieldType[] = ['count', 'sum', 'average']
 
 /**
  * Table Schema is a collection of fields

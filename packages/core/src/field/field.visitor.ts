@@ -1,4 +1,5 @@
 import type { AutoIncrementField } from './auto-increment-field.js'
+import type { AverageField } from './average-field.js'
 import type { BoolField } from './bool-field.js'
 import type { ColorField } from './color-field.js'
 import type { CountField } from './count-field.js'
@@ -37,5 +38,6 @@ export interface IFieldVisitor {
   rating(field: RatingField): void
   count(field: CountField): void
   sum(field: SumField): void
+  average(field: AverageField): void
   lookup(field: LookupField): void
 }

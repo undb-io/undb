@@ -304,6 +304,24 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "average_reference_field_id": {
+          "name": "average_reference_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "average_aggregate_field_id": {
+          "name": "average_aggregate_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         }
       },
       "name": "ego_field",
@@ -386,6 +404,24 @@
           ],
           "composite": false,
           "keyName": "ego_field_sum_aggregate_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "average_reference_field_id"
+          ],
+          "composite": false,
+          "keyName": "ego_field_average_reference_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "average_aggregate_field_id"
+          ],
+          "composite": false,
+          "keyName": "ego_field_average_aggregate_field_id_index",
           "primary": false,
           "unique": false
         },
@@ -483,6 +519,32 @@
           "constraintName": "ego_field_sum_aggregate_field_id_foreign",
           "columnNames": [
             "sum_aggregate_field_id"
+          ],
+          "localTableName": "ego_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "ego_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "ego_field_average_reference_field_id_foreign": {
+          "constraintName": "ego_field_average_reference_field_id_foreign",
+          "columnNames": [
+            "average_reference_field_id"
+          ],
+          "localTableName": "ego_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "ego_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "ego_field_average_aggregate_field_id_foreign": {
+          "constraintName": "ego_field_average_aggregate_field_id_foreign",
+          "columnNames": [
+            "average_aggregate_field_id"
           ],
           "localTableName": "ego_field",
           "referencedColumnNames": [

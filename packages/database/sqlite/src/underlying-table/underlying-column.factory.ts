@@ -2,6 +2,7 @@ import type { Field } from '@egodb/core'
 import type { IUnderlyingColumn } from '../interfaces/underlying-column.js'
 import {
   UnderlyingAutoIncreamentColumn,
+  UnderlyingAverageColumn,
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
   UnderlyingCountColumn,
@@ -65,6 +66,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingCountColumn(field, tableName)
       case 'sum':
         return new UnderlyingSumColumn(field, tableName)
+      case 'average':
+        return new UnderlyingAverageColumn(field, tableName)
       case 'lookup':
         return new UnderlyingLookupColumn(field, tableName)
     }
