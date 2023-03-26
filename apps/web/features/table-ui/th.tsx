@@ -19,6 +19,7 @@ import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { usePinnedStyles } from './styles'
 import { useTranslation } from 'react-i18next'
+import { FieldIssue } from '../field/field-issue'
 
 const ResizerLine = styled.div<{ isResizing: boolean }>`
   display: block;
@@ -102,7 +103,7 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
       </Group>
 
       <Box sx={{ position: 'absolute', right: 5, top: '50%', transform: 'translateY(-50%)' }}>
-        <Group spacing={3}>
+        <Group spacing="xs">
           {direction && (
             <Tooltip
               label={
@@ -132,13 +133,7 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
               </ActionIcon>
             </Tooltip>
           )}
-          {field.hasIssue && (
-            <Tooltip label={field.issues.map((issue) => t(issue.unpack()))} withinPortal>
-              <ActionIcon size="sm" color="red.5" variant="filled">
-                <IconExclamationCircle />
-              </ActionIcon>
-            </Tooltip>
-          )}
+          {field.hasIssue && <FieldIssue field={field} />}
           <TableUIFieldMenu field={field} index={index} header={header} />
         </Group>
       </Box>

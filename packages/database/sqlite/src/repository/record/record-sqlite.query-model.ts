@@ -22,6 +22,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
           'fields.sumAggregateField',
           'fields.sumFields',
           'fields.lookupFields',
+          'fields.foreignTable',
         ],
       },
     )
@@ -84,6 +85,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
           'fields.sumFields',
           'fields.sumAggregateField',
           'fields.lookupFields',
+          'fields.foreignTable',
         ],
       },
     )

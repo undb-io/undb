@@ -25,6 +25,7 @@ import { useRouter } from 'next/navigation'
 import { useColors } from '../../hooks/use-colors'
 import { AutoIncrementInput } from '../field-inputs/auto-increment-input'
 import { format } from 'date-fns'
+import { FieldIssue } from '../field/field-issue'
 
 interface IProps {
   field: Field
@@ -210,18 +211,21 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             label={
               <Center>
                 {label}
-                <ActionIcon
-                  tabIndex={-1}
-                  ml="xs"
-                  size="xs"
-                  onClick={() => {
-                    if (foreignTable.isSome()) {
-                      router.push(`/t/${foreignTable.unwrap()}`)
-                    }
-                  }}
-                >
-                  <IconExternalLink size={14} />
-                </ActionIcon>
+                {field.hasIssue && <FieldIssue field={field} ml="xs" size={16} />}
+                {foreignTable.isSome() && (
+                  <ActionIcon
+                    tabIndex={-1}
+                    ml="xs"
+                    size="xs"
+                    onClick={() => {
+                      if (foreignTable.isSome()) {
+                        router.push(`/t/${foreignTable.unwrap()}`)
+                      }
+                    }}
+                  >
+                    <IconExternalLink size={14} />
+                  </ActionIcon>
+                )}
               </Center>
             }
             {...form.field}
@@ -231,6 +235,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             required={required}
             error={form.fieldState.error?.message}
             withinPortal
+            disabled={field.hasIssue}
           />
         )}
       />
