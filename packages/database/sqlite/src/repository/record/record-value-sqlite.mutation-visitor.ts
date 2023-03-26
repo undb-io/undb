@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type {
   AutoIncrementFieldValue,
+  AverageFieldValue,
   BoolFieldValue,
   ColorFieldValue,
   CountFieldValue,
@@ -144,5 +145,6 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
   }
   count(value: CountFieldValue): void {}
   sum(value: SumFieldValue): void {}
+  average(value: AverageFieldValue): void {}
   lookup(value: LookupFieldValue): void {}
 }
