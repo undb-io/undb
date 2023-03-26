@@ -32,7 +32,7 @@ export class ReferenceField extends Mixin(
   }
 
   override get sortable(): boolean {
-    return !this.hasIssue
+    return false
   }
 
   override get foreignTableId(): Option<string> {
