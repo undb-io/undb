@@ -14,6 +14,10 @@ export class Sorts extends ValueObject<ISorts> {
     return this.sorts
   }
 
+  *[Symbol.iterator]() {
+    yield* this.sorts ?? []
+  }
+
   setFieldSort(fieldId: string, direction: ISortDirection): Sorts {
     const found = this.sorts.some((s) => s.fieldId === fieldId)
     if (found) {

@@ -86,6 +86,10 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
     return false
   }
 
+  get sortable(): boolean {
+    return true
+  }
+
   isSystem(): this is SystemField {
     return this.system
   }

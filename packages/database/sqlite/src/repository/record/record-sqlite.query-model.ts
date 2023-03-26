@@ -17,6 +17,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
       { id: tableId },
       {
         populate: [
+          'views',
           'fields.displayFields',
           'fields.countFields',
           'fields.sumAggregateField',
@@ -51,6 +52,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
       {
         populate: [
           'fields',
+          'views',
           'fields.displayFields',
           'fields.countFields',
           'fields.sumFields',
@@ -84,6 +86,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
       {
         populate: [
           'fields',
+          'views',
           'fields.displayFields',
           'fields.countFields',
           'fields.sumFields',

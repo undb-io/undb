@@ -31,6 +31,10 @@ export class ReferenceField extends Mixin(
     return true
   }
 
+  override get sortable(): boolean {
+    return !this.hasIssue
+  }
+
   override get foreignTableId(): Option<string> {
     return Option(this.props.foreignTableId?.value)
   }
