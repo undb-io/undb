@@ -1,4 +1,13 @@
-import { ActionIcon, Box, Group, IconSortAscending, IconSortDescending, Text, Tooltip } from '@egodb/ui'
+import {
+  ActionIcon,
+  Box,
+  Group,
+  IconExclamationCircle,
+  IconSortAscending,
+  IconSortDescending,
+  Text,
+  Tooltip,
+} from '@egodb/ui'
 import styled from '@emotion/styled'
 import type { TColumn, THeader } from './interface'
 import type { Field } from '@egodb/core'
@@ -93,36 +102,45 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
       </Group>
 
       <Box sx={{ position: 'absolute', right: 5, top: '50%', transform: 'translateY(-50%)' }}>
-        {direction && (
-          <Tooltip
-            label={
-              direction === 'asc'
-                ? (t('Sort By Desending', { ns: 'common' }) as string)
-                : t('Sort By Ascending', { ns: 'common' })
-            }
-          >
-            <ActionIcon
-              variant="light"
-              sx={{
-                transition: 'transform 320ms ease',
-                ':hover': {
-                  transform: 'rotate(180deg)',
-                },
-              }}
-              onClick={() => {
-                setFieldSort({
-                  tableId: table.id.value,
-                  viewId: view.id.value,
-                  fieldId: field.id.value,
-                  direction: direction === 'asc' ? 'desc' : 'asc',
-                })
-              }}
+        <Group spacing={3}>
+          {direction && (
+            <Tooltip
+              label={
+                direction === 'asc'
+                  ? (t('Sort By Desending', { ns: 'common' }) as string)
+                  : t('Sort By Ascending', { ns: 'common' })
+              }
             >
-              {direction === 'asc' ? <IconSortAscending size={14} /> : <IconSortDescending size={14} />}
-            </ActionIcon>
-          </Tooltip>
-        )}
-        <TableUIFieldMenu field={field} index={index} header={header} />
+              <ActionIcon
+                variant="light"
+                sx={{
+                  transition: 'transform 320ms ease',
+                  ':hover': {
+                    transform: 'rotate(180deg)',
+                  },
+                }}
+                onClick={() => {
+                  setFieldSort({
+                    tableId: table.id.value,
+                    viewId: view.id.value,
+                    fieldId: field.id.value,
+                    direction: direction === 'asc' ? 'desc' : 'asc',
+                  })
+                }}
+              >
+                {direction === 'asc' ? <IconSortAscending size={14} /> : <IconSortDescending size={14} />}
+              </ActionIcon>
+            </Tooltip>
+          )}
+          {field.hasIssue && (
+            <Tooltip label={field.issues.map((issue) => t(issue.unpack()))} withinPortal>
+              <ActionIcon size="sm" color="red.5" variant="filled">
+                <IconExclamationCircle />
+              </ActionIcon>
+            </Tooltip>
+          )}
+          <TableUIFieldMenu field={field} index={index} header={header} />
+        </Group>
       </Box>
 
       <Resizer

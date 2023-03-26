@@ -12,11 +12,14 @@ import { ReferenceFieldValue } from './reference-field-value.js'
 import type {
   ICreateReferenceFieldInput,
   ICreateReferenceFieldValue,
+  IReferenceFieldIssues,
   IUpdateReferenceFieldInput,
+  ReferenceFieldIssue,
   ReferenceFieldType,
 } from './reference-field.type.js'
 import { DisplayFields } from './value-objects/display-fields.vo.js'
 import { FieldId } from './value-objects/field-id.vo.js'
+import { FieldIssue } from './value-objects/field-issue.vo.js'
 
 export class ReferenceField extends Mixin(
   AbstractReferenceField<IReferenceField>,
@@ -30,6 +33,16 @@ export class ReferenceField extends Mixin(
 
   override get foreignTableId(): Option<string> {
     return Option(this.props.foreignTableId?.value)
+  }
+
+  override get issues(): ReferenceFieldIssue[] {
+    const issues: ReferenceFieldIssue[] = []
+
+    if (this.foreignTableId.isNone()) {
+      issues.push(new FieldIssue<IReferenceFieldIssues>({ value: 'Missing Foreign Table' }))
+    }
+
+    return issues
   }
 
   get symmetricReferenceFieldId() {
