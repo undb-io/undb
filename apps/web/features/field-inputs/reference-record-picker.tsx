@@ -60,7 +60,7 @@ export const ReferenceRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
       onFocus={handler.open}
       onBlur={handler.close}
       placeholder={focused && isLoading ? 'loading records...' : undefined}
-      disabled={focused && isLoading}
+      disabled={(focused && isLoading) || rest.disabled}
       icon={focused && isLoading ? <Loader color="gray" size={14} /> : <FieldIcon type={field.type} />}
     />
   )
