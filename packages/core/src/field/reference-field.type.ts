@@ -5,6 +5,7 @@ import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } fr
 import { FIELD_TYPE_KEY } from './field.constants.js'
 import { ReferenceField } from './reference-field.js'
 import { fieldIdSchema } from './value-objects/field-id.schema.js'
+import type { FieldIssue } from './value-objects/field-issue.vo.js'
 
 export const referenceTypeSchema = z.literal('reference')
 export type ReferenceFieldType = z.infer<typeof referenceTypeSchema>
@@ -51,3 +52,8 @@ export const createReferenceFieldValue_internal = z
   .merge(referenceTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(ReferenceField) }))
 export type ICreateReferenceFieldValue_internal = z.infer<typeof createReferenceFieldValue_internal>
+
+export const referenceFieldIssues = z.enum(['Missing Foreign Table'])
+export type IReferenceFieldIssues = z.infer<typeof referenceFieldIssues>
+
+export type ReferenceFieldIssue = FieldIssue<IReferenceFieldIssues>

@@ -38,7 +38,7 @@ import { WithReferenceFieldId } from './specifications/lookup-field.specificatio
 import { WithDisplayFields } from './specifications/reference-field.specification.js'
 import type { TreeField } from './tree-field.js'
 import { FieldDescription } from './value-objects/field-description.js'
-import type { DateFormat } from './value-objects/index.js'
+import type { DateFormat, FieldIssue } from './value-objects/index.js'
 import { DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 const { map, pipe } = fp
@@ -131,6 +131,14 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
   abstract createFilter(operator: IOperator, value: unknown): IFilter
 
   abstract accept(visitor: IFieldVisitor): void
+
+  public get issues(): FieldIssue<string>[] {
+    return []
+  }
+
+  public get hasIssue() {
+    return !!this.issues.length
+  }
 
   public update(input: IUpdateFieldSchema): Option<TableCompositeSpecificaiton> {
     return this.updateBase(input)

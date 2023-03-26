@@ -24,7 +24,7 @@ export class TableSqliteQueryModel implements ITableQueryModel {
     const table = await visitor.qb.getSingleResult()
     if (!table) return None
 
-    await this.em.populate(table, ['fields.options', 'views', 'fields.displayFields'])
+    await this.em.populate(table, ['fields.options', 'views', 'fields.displayFields', 'fields.foreignTable'])
 
     return Some(TableSqliteMapper.entityToQuery(table))
   }
@@ -33,7 +33,7 @@ export class TableSqliteQueryModel implements ITableQueryModel {
     const table = await this.em.findOne(Table, id)
     if (!table) return None
 
-    await this.em.populate(table, ['fields.options', 'views', 'fields.displayFields'])
+    await this.em.populate(table, ['fields.options', 'views', 'fields.displayFields', 'fields.foreignTable'])
     return Some(TableSqliteMapper.entityToQuery(table))
   }
 }

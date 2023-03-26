@@ -529,7 +529,7 @@ export class ReferenceField extends Field {
       name: this.name,
       description: this.description,
       type: 'reference',
-      foreignTableId: this.foreignTable?.id,
+      foreignTableId: this.foreignTable?.isDeleted ? undefined : this.foreignTable?.id,
       displayFieldIds: this.displayFields.isInitialized() ? this.displayFields.getItems().map((f) => f.id) : [],
       symmetricReferenceFieldId: this.symmetricReferenceField?.id,
       required: !!this.required,
@@ -538,14 +538,23 @@ export class ReferenceField extends Field {
   }
 
   toQuery(): IReferenceFieldQuerySchema {
+    const isForeignTableDeleted = this.foreignTable?.isDeleted
     return {
       id: this.id,
       name: this.name,
       description: this.description,
       type: 'reference',
-      foreignTableId: this.foreignTable?.id,
-      displayFieldIds: this.displayFields.isInitialized() ? this.displayFields.getItems().map((f) => f.id) : [],
-      symmetricReferenceFieldId: this.symmetricReferenceField?.id,
+      foreignTableId: isForeignTableDeleted ? undefined : this.foreignTable?.id,
+      displayFieldIds: isForeignTableDeleted
+        ? []
+        : this.displayFields.isInitialized()
+        ? this.displayFields.getItems().map((f) => f.id)
+        : [],
+      symmetricReferenceFieldId: isForeignTableDeleted
+        ? undefined
+        : this.symmetricReferenceField?.isDeleted
+        ? undefined
+        : this.symmetricReferenceField?.id,
       required: !!this.required,
     }
   }
