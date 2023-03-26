@@ -34,5 +34,5 @@
     "test:watch": "vitest"
   },
   "type": "module",
-  "types": "dist/index.d"
+  "types": "src/index.ts"
 }

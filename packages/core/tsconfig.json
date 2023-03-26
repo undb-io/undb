@@ -3,6 +3,7 @@
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "declarationMap": true
   }
 }

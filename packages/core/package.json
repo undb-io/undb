@@ -34,11 +34,11 @@
     "build": "tsup",
     "clean": "rimraf dist",
     "coverage": "vitest run --coverage",
-    "dev": "tsup --watch",
+    "dev": "tsup --watch --onSuccess=\"tsc --emitDeclarationOnly --declaration\"",
     "prebuild": "pnpm run clean",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "type": "module",
-  "types": "dist/index.d.ts"
+  "types": "src/index.ts"
 }
