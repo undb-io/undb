@@ -9,6 +9,7 @@ import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { union } from 'lodash-es'
 import type { Promisable } from 'type-fest'
 import type { Table } from '../../entity/table.js'
+import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import { UnderlyingSelectColumn } from '../../underlying-table/underlying-column.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
@@ -61,33 +62,33 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   }
 
   sort(): this {
-    const schema = this.table.schema.toIdMap()
     const view = this.table.mustGetView(this.viewId)
-    const sorts = view.sorts?.sorts ?? []
-    if (sorts.length) {
-      for (const sort of sorts) {
-        const field = schema.get(sort.fieldId)
-        if (!field) continue
+    if (!view.sorts) return this
 
-        if (field instanceof CoreSelectField) {
-          const column = new UnderlyingSelectColumn(field, this.table.id.value)
-          const order = sort.direction === 'asc' ? field.options.options : [...field.options.options].reverse()
-          this.qb.orderByRaw(`
+    const schema = this.table.schema.toIdMap()
+    for (const sort of view.sorts) {
+      const field = schema.get(sort.fieldId)
+      if (!field) continue
+      if (!field.sortable) continue
+
+      if (field instanceof CoreSelectField) {
+        const column = new UnderlyingSelectColumn(field, this.table.id.value)
+        const order = sort.direction === 'asc' ? field.options.options : [...field.options.options].reverse()
+        this.qb.orderByRaw(`
             CASE ${TABLE_ALIAS}.${column.name}
               ${order.map((option, index) => `WHEN '${option.key.value}' THEN ${index} `).join('\n')}
               ELSE ${sort.direction === 'asc' ? -1 : order.length}
             END
           `)
-        } else {
-          const column = UnderlyingColumnFactory.create(field, this.table.id.value)
-          if (Array.isArray(column)) {
-            for (const c of column) {
-              if (c.virtual) continue
-              this.qb.orderBy(`${TABLE_ALIAS}.${c.name}`, sort.direction)
-            }
-          } else if (!column.virtual) {
-            this.qb.orderBy(`${TABLE_ALIAS}.${column.name}`, sort.direction)
+      } else {
+        const column = UnderlyingColumnFactory.create(field, this.table.id.value)
+        const getName = (column: IUnderlyingColumn) => (column.virtual ? column.name : `${TABLE_ALIAS}.${column.name}`)
+        if (Array.isArray(column)) {
+          for (const c of column) {
+            this.qb.orderBy(getName(c), sort.direction)
           }
+        } else {
+          this.qb.orderBy(getName(column), sort.direction)
         }
       }
     }
