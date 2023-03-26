@@ -7,6 +7,7 @@ const controlledFieldTypes: IFieldType[] = [
   'updated-at',
   'count',
   'sum',
+  'average',
   'lookup',
 ]
 

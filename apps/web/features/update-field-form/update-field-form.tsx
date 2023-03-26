@@ -44,10 +44,10 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
   ) {
     defaultValues.displayFieldIds = (field as ReferenceFieldTypes).displayFieldIds.map((id) => id.value)
   }
-  if (defaultValues.type === 'count' || defaultValues.type === 'sum') {
+  if (defaultValues.type === 'count' || defaultValues.type === 'sum' || defaultValues.type === 'average') {
     defaultValues.referenceFieldId = (field as CountField | SumField).referenceFieldId.value
   }
-  if (defaultValues.type === 'sum') {
+  if (defaultValues.type === 'sum' || defaultValues.type === 'average') {
     defaultValues.aggregateFieldId = (field as SumField).aggregateFieldId.value
   }
   if (defaultValues.type === 'lookup') {

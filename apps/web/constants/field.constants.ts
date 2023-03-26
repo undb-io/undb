@@ -16,6 +16,7 @@ export const FIELD_SELECT_ITEMS: SelectItem[] = [
   { value: 'lookup', label: 'Lookup', group: 'Lookup' },
   { value: 'count', label: 'Count', group: 'Lookup' },
   { value: 'sum', label: 'Sum', group: 'Lookup' },
+  { value: 'average', label: 'Average', group: 'Lookup' },
 ]
 
 export const ACTIONS_FIELD = 'actions'

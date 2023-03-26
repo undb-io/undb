@@ -73,25 +73,29 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
 
     const column = this.#mustGetColumn(field) as ReferenceField
     const foreignTable = column.foreignTable
-    if (foreignTable?.deletedAt) {
+    if (foreignTable?.isDeleted) {
       return
     }
 
     const countFields = column.countFields.getItems().map((f) => f.toDomain())
     const sumFields = column.sumFields.getItems()
     const lookupFields = column.lookupFields.getItems()
+    const averageFields = column.averageFields.getItems()
     const displayFields = column.displayFields
       .getItems()
       .concat(lookupFields.flatMap((c) => c.displayFields.getItems()))
       .concat(sumFields.map((c) => c.sumAggregateField))
+      .concat(averageFields.map((c) => c.averageAggregateField))
     const displayColumns = uniqBy(displayFields, (f) => f.id).map((field) => field.toDomain())
 
     const foreignTableId = field.foreignTableId.unwrapOr(this.table.id.value)
 
     const adjacency = new AdjacencyListTable(this.table.id.value, field)
 
-    const foreignIdField = field.isOwner ? AdjacencyListTable.TO_ID : AdjacencyListTable.FROM_ID
-    const currentIdField = field.isOwner ? AdjacencyListTable.FROM_ID : AdjacencyListTable.TO_ID
+    const foreignIdField =
+      !!field.symmetricReferenceFieldId && !field.isOwner ? AdjacencyListTable.FROM_ID : AdjacencyListTable.TO_ID
+    const currentIdField =
+      !!field.symmetricReferenceFieldId && !field.isOwner ? AdjacencyListTable.TO_ID : AdjacencyListTable.FROM_ID
 
     const uta = getUnderlyingTableAlias(field)
     const fta = getForeignTableAlias(field, this.table.schema.toIdMap())
@@ -104,6 +108,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         ...displayColumns.map((f) => this.knex.raw(`json_group_array(${fta}.${f.id.value}) as ${f.id.value}`)),
         ...countFields.map((f) => this.knex.raw(`count(*) as ${f.id.value}`)),
         ...sumFields.map((f) => this.knex.raw(`sum(${fta}.${f.sumAggregateField.id}) as ${f.id}`)),
+        ...averageFields.map((f) => this.knex.raw(`avg(${fta}.${f.averageAggregateField.id}) as ${f.id}`)),
       )
       .from(adjacency.name)
       .groupBy(currentIdField)
@@ -129,7 +134,9 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         `${uta}.${field.id.value} as ${field.id.value}`,
         this.#getFieldExpand(uta, column),
         ...lookupFields.map((c) => this.#getFieldExpand(uta, c)),
-        ...[...countFields, ...sumFields.map((f) => f.toDomain())].map((c) => `${uta}.${c.id.value} as ${c.id.value}`),
+        ...[...countFields, ...[...sumFields, ...averageFields].map((f) => f.toDomain())].map(
+          (c) => `${uta}.${c.id.value} as ${c.id.value}`,
+        ),
       )
       .leftJoin(subQuery, `${uta}.${currentIdField}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
   }

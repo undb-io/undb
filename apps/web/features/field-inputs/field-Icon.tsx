@@ -11,6 +11,7 @@ import {
   IconLetterT,
   IconListCheck,
   IconMail,
+  IconMathXDivideY2,
   IconPalette,
   IconQuestionMark,
   IconRelationManyToMany,
@@ -61,6 +62,8 @@ export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16, color }) => {
       return <IconCalculator size={size} color={color} />
     case 'sum':
       return <IconSum size={size} color={color} />
+    case 'average':
+      return <IconMathXDivideY2 size={size} color={color} />
     case 'tree':
       return <IconHierarchy size={size} color={color} />
     case 'parent':
