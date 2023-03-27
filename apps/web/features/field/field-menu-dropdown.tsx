@@ -22,6 +22,8 @@ import { confirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { CREATE_FIELD_MODAL_ID, UPDATE_FIELD_MODAL_ID } from '../../modals'
+import { FieldMenuItemVariant } from './field-menu-item-variants'
+import { useMenuStyle } from './menu-item'
 
 interface IProps {
   field: Field
@@ -50,12 +52,6 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index,
     },
   })
 
-  const menuProps: MenuItemProps = {
-    p: 'xs',
-    h: 35,
-    fz: 'xs',
-  }
-
   const { t } = useTranslation()
 
   const insertAt = (at: number) => () =>
@@ -65,12 +61,16 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index,
       innerProps: { at: Math.max(0, at) },
     })
 
+  const fieldMenu = <FieldMenuItemVariant field={field} />
+
+  const { classes } = useMenuStyle({})
+
   return (
     <Portal>
       <Menu.Dropdown>
         <Menu.Item
           icon={<IconPencil size={14} />}
-          {...menuProps}
+          className={classes.menu}
           onClick={() =>
             openContextModal({
               title: t('Update Field'),
@@ -84,21 +84,32 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index,
 
         <Menu.Divider />
 
+        {fieldMenu ? (
+          <>
+            {fieldMenu}
+            <Menu.Divider />
+          </>
+        ) : null}
+
         {orientation === 'vertial' ? (
           <>
-            <Menu.Item {...menuProps} onClick={insertAt(index - 1)} icon={<IconRowInsertTop size={14} />}>
+            <Menu.Item className={classes.menu} onClick={insertAt(index - 1)} icon={<IconRowInsertTop size={14} />}>
               {t('Insert Field Before')}
             </Menu.Item>
-            <Menu.Item {...menuProps} onClick={insertAt(index + 1)} icon={<IconRowInsertBottom size={14} />}>
+            <Menu.Item className={classes.menu} onClick={insertAt(index + 1)} icon={<IconRowInsertBottom size={14} />}>
               {t('Insert Field After')}
             </Menu.Item>
           </>
         ) : (
           <>
-            <Menu.Item {...menuProps} onClick={insertAt(index - 1)} icon={<IconColumnInsertLeft size={14} />}>
+            <Menu.Item className={classes.menu} onClick={insertAt(index - 1)} icon={<IconColumnInsertLeft size={14} />}>
               {t('Insert Field Left')}
             </Menu.Item>
-            <Menu.Item {...menuProps} onClick={insertAt(index + 1)} icon={<IconColumnInsertRight size={14} />}>
+            <Menu.Item
+              className={classes.menu}
+              onClick={insertAt(index + 1)}
+              icon={<IconColumnInsertRight size={14} />}
+            >
               {t('Insert Field Right')}{' '}
             </Menu.Item>
           </>
@@ -106,7 +117,7 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index,
 
         {pinLeft && (
           <Menu.Item
-            {...menuProps}
+            className={classes.menu}
             onClick={pinLeft}
             icon={pinned ? <IconPinnedOff size={14} /> : <IconPinned size={14} />}
             sx={(theme) => ({
@@ -123,7 +134,7 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index,
           <>
             <Menu.Item
               icon={<IconSortAscending size={14} />}
-              {...menuProps}
+              className={classes.menu}
               sx={(theme) => ({ backgroundColor: direction === 'asc' ? theme.colors.gray[0] : 'inherit' })}
               onClick={() => {
                 if (direction === 'asc') {
@@ -146,7 +157,7 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index,
             </Menu.Item>
             <Menu.Item
               icon={<IconSortDescending size={14} />}
-              {...menuProps}
+              className={classes.menu}
               sx={(theme) => ({ backgroundColor: direction === 'desc' ? theme.colors.gray[0] : 'inherit' })}
               onClick={() => {
                 if (direction === 'desc') {
@@ -172,7 +183,7 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index,
 
         <Menu.Item
           icon={<IconEyeOff size={14} />}
-          {...menuProps}
+          className={classes.menu}
           onClick={() =>
             setVisibility({ tableId: table.id.value, viewId: view.id.value, fieldId: field.id.value, hidden: true })
           }
@@ -181,7 +192,7 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index,
         </Menu.Item>
 
         {!field.system && (
-          <Menu.Item icon={<IconTrash size={14} />} {...menuProps} color="red" onClick={confirm}>
+          <Menu.Item icon={<IconTrash size={14} />} className={classes.menu} color="red" onClick={confirm}>
             {t('Delete Field')}
           </Menu.Item>
         )}
