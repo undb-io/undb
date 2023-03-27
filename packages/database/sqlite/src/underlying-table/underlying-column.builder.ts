@@ -31,13 +31,13 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
   }
 
   createAutoIncrement(): this {
-    new UnderlyingAutoIncreamentColumn(this.tableName).build(this.tb)
+    new UnderlyingAutoIncreamentColumn(undefined, this.tableName).build(this.tb)
 
     return this
   }
 
   createId(): this {
-    const column = new UnderlyingIdColumn(this.tableName)
+    const column = new UnderlyingIdColumn(undefined, this.tableName)
     column.build(this.tb)
 
     const unique = this.knex
@@ -54,12 +54,12 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
   }
 
   createCreatedAt(): this {
-    new UnderlyingCreatedAtColumn(this.tableName).build(this.tb, this.knex)
+    new UnderlyingCreatedAtColumn(undefined, this.tableName).build(this.tb, this.knex)
     return this
   }
 
   createUpdatedAt(): this {
-    new UnderlyingUpdatedAtColumn(this.tableName).build(this.tb, this.knex)
+    new UnderlyingUpdatedAtColumn(undefined, this.tableName).build(this.tb, this.knex)
 
     const query = this.knex
       .raw(
@@ -78,7 +78,7 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
   }
 
   createDeletedAt(): this {
-    new UnderlyingDeletedAtColumn(this.tableName).build(this.tb)
+    new UnderlyingDeletedAtColumn(undefined, this.tableName).build(this.tb)
     return this
   }
 

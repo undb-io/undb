@@ -2,7 +2,7 @@ import type { Field } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
 
 export interface IUnderlyingColumn {
-  get field(): Field
+  get field(): Field | undefined
   get virtual(): boolean
   get queries(): string[]
   get system(): boolean
