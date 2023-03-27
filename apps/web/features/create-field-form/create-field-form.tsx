@@ -25,6 +25,9 @@ import { useCreateFieldMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { useTranslation } from 'react-i18next'
+import { useAtomValue } from 'jotai'
+import { createFieldInitialValueAtom } from './create-field-initial-value.atom'
+import type { ICreateFieldCommandInput } from '@egodb/cqrs/dist'
 
 export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) => {
   const table = useCurrentTable()
@@ -34,10 +37,8 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
 
   const { t } = useTranslation()
 
-  const defaultValues: ICreateFieldSchema = {
-    type: 'string',
-    name: '',
-  }
+  const initialValue = useAtomValue(createFieldInitialValueAtom)
+  const defaultValues: ICreateFieldSchema = initialValue as ICreateFieldCommandInput['field']
 
   const form = useForm<ICreateFieldSchema>({
     defaultValues,
