@@ -27,7 +27,7 @@ import { useCurrentView } from '../../hooks/use-current-view'
 import { useTranslation } from 'react-i18next'
 import { useAtomValue } from 'jotai'
 import { createFieldInitialValueAtom } from './create-field-initial-value.atom'
-import type { ICreateFieldCommandInput } from '@egodb/cqrs/dist'
+import type { ICreateFieldCommandInput } from '@egodb/cqrs'
 
 export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) => {
   const table = useCurrentTable()

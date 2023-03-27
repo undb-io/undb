@@ -29,7 +29,7 @@ import type { IUnderlyingColumn } from '../interfaces/underlying-column.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from './constants.js'
 
 export abstract class UnderlyingColumn implements IUnderlyingColumn {
-  constructor(public readonly field: Field, protected readonly tableName: string) {}
+  constructor(public readonly field: Field | undefined, protected readonly tableName: string) {}
 
   public readonly queries: string[] = []
   get system(): boolean {
