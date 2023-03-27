@@ -75,7 +75,15 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
     field instanceof AverageField
   ) {
     return (
-      <NumberInput size="xs" variant="filled" value={value as number} onChange={(number) => onChange(number || null)} />
+      <TextInput
+        type="number"
+        size="xs"
+        variant="filled"
+        value={value as number}
+        onChange={(e) => {
+          return onChange(Number(e.target.value) ?? null)
+        }}
+      />
     )
   }
 
