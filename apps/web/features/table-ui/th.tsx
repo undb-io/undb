@@ -1,13 +1,4 @@
-import {
-  ActionIcon,
-  Box,
-  Group,
-  IconExclamationCircle,
-  IconSortAscending,
-  IconSortDescending,
-  Text,
-  Tooltip,
-} from '@egodb/ui'
+import { ActionIcon, Box, Group, IconSortAscending, IconSortDescending, Text, Tooltip } from '@egodb/ui'
 import styled from '@emotion/styled'
 import type { TColumn, THeader } from './interface'
 import type { Field } from '@egodb/core'
