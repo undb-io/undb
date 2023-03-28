@@ -12,7 +12,7 @@ import { useCurrentTable } from '../../hooks/use-current-table'
 import { DateFormatPicker } from './date-format-picker'
 import { useTranslation } from 'react-i18next'
 import { FieldPicker } from '../field-inputs/field-picker'
-import { DisplayFieldsPicker } from '../field-inputs/display-fields-picker'
+import { CustomDisplayFieldsPicker } from '../field-inputs/custom-display-fields-picker'
 
 interface IProps {
   isNew: boolean
@@ -89,7 +89,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
           name="displayFieldIds"
           render={(props) =>
             isNew ? (
-              <DisplayFieldsPicker {...props.field} {...foreignFieldPickerProps} />
+              <CustomDisplayFieldsPicker {...props.field} {...foreignFieldPickerProps} />
             ) : (
               <ForeignFieldsPicker {...props.field} {...foreignFieldPickerProps} />
             )

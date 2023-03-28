@@ -7,12 +7,12 @@ import { ForeignFieldsPicker } from './foreign-fields-picker'
 import { useLayoutEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-export const DisplayFieldsPicker: React.FC<IForeignTablePickerProps> = (props) => {
+export const CustomDisplayFieldsPicker: React.FC<IForeignTablePickerProps> = (props) => {
   const { foreignTableId } = props
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const { data } = useGetTableQuery({ id: foreignTableId! }, { skip: !foreignTableId })
   const table = useMemo(() => (data ? TableFactory.fromQuery(data) : undefined), [data])
-  const displayFields = table?.schema.displayFields?.map((f) => ({ name: f.name.value })) ?? []
+  const displayFields = table?.schema.displayFields?.map((f) => ({ id: f.id.value, name: f.name.value })) ?? []
 
   const [custom, setCustom] = useState(!displayFields.length)
   const { t } = useTranslation()
@@ -33,7 +33,7 @@ export const DisplayFieldsPicker: React.FC<IForeignTablePickerProps> = (props) =
         label={t('Custom Display Fields') as string}
       />
       {!!displayFields.length && !custom && <DisplayFields displayFields={displayFields} />}
-      {custom && <ForeignFieldsPicker {...props} />}
+      {custom && <ForeignFieldsPicker {...props} value={displayFields.map((f) => f.id)} />}
     </Stack>
   )
 }

@@ -10,7 +10,7 @@ import type { FieldBase } from '../../field-inputs/field-picker.type'
 import { DateFormatPicker } from '../../field/date-format-picker'
 import { useTranslation } from 'react-i18next'
 import { FieldPicker } from '../../field-inputs/field-picker'
-import { DisplayFieldsPicker } from '../../field-inputs/display-fields-picker'
+import { CustomDisplayFieldsPicker } from '../../field-inputs/custom-display-fields-picker'
 
 interface IProps {
   index: number
@@ -84,7 +84,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
           name={`schema.${index}.displayFieldIds`}
           render={(props) =>
             type === 'reference' ? (
-              <DisplayFieldsPicker
+              <CustomDisplayFieldsPicker
                 fields={schema.filter((schema) => canDisplay(schema.type)) as FieldBase[]}
                 foreignTableId={form.watch(`schema.${index}.foreignTableId`)}
                 {...props.field}
