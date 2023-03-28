@@ -93,10 +93,6 @@ export class TableSchema extends ValueObject<Field[]> {
     return this.fields.filter((f) => f instanceof TreeField) as ITreeViewField[]
   }
 
-  public get referenceMap() {
-    return
-  }
-
   get fieldsNames(): string[] {
     return this.props.map((f) => f.name.value)
   }
@@ -146,11 +142,11 @@ export class TableSchema extends ValueObject<Field[]> {
     return new WithoutField(field)
   }
 
-  public getLookingFields(): LookingFieldTypes[] {
+  public get lookingFields(): LookingFieldTypes[] {
     return this.fields.filter((f) => lookingFieldTypes.includes(f.type)) as LookingFieldTypes[]
   }
 
-  public getAggregateFields(): AggregateFieldType[] {
+  public get aggregateFields(): AggregateFieldType[] {
     return this.fields.filter((f) => aggregateFieldTypes.includes(f.type)) as AggregateFieldType[]
   }
 
