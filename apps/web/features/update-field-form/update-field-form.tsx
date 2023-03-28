@@ -34,6 +34,7 @@ import { useUpdateFieldMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useTranslation } from 'react-i18next'
 import { DisplayFields } from '../field/display-fields'
+import { DevTool } from '@hookform/devtools'
 
 export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }) => {
   const table = useCurrentTable()
@@ -46,7 +47,7 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
     name: field.name.value,
     description,
     required: field.required,
-    display: field.display,
+    display: !!field.display,
   }
 
   if (defaultValues.type === 'reference') {
@@ -217,6 +218,8 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
             </Group>
           </Group>
         </Stack>
+
+        <DevTool control={form.control} />
       </form>
     </FormProvider>
   )

@@ -7,7 +7,7 @@ import type { Table } from '@tanstack/react-table'
 import type { TData } from './interface'
 
 // eslint-disable-next-line react/display-name
-export const ActionsHeader: React.FC<{ table: Table<TData> }> = React.memo(() => {
+export const ActionsHeader: React.FC<{ table: Table<TData> }> = () => {
   const { t } = useTranslation()
 
   return (
@@ -30,4 +30,4 @@ export const ActionsHeader: React.FC<{ table: Table<TData> }> = React.memo(() =>
       </Center>
     </th>
   )
-})
+}
