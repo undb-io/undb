@@ -139,8 +139,8 @@ export const ViewFieldsEditor: React.FC = () => {
           onClick={handler.toggle}
           rightIcon={
             hiddenCount ? (
-              <Badge variant="filled" size="xs">
-                {hiddenCount}
+              <Badge variant="filled" size="xs" color="gray.5">
+                {t('{{n}} Fields Hidden', { n: hiddenCount })}
               </Badge>
             ) : null
           }
