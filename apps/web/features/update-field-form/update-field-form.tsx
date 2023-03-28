@@ -13,12 +13,14 @@ import type {
   SelectField,
   SumField,
 } from '@egodb/core'
+import { canDisplay } from '@egodb/core'
 import { updateFieldSchema } from '@egodb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { IUpdateFieldProps } from './update-field.props'
 import { useUpdateFieldMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useTranslation } from 'react-i18next'
+import { DisplayFields } from '../field/display-fields'
 
 export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }) => {
   const table = useCurrentTable()
@@ -31,6 +33,7 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
     name: field.name.value,
     description,
     required: field.required,
+    display: field.display,
   }
 
   if (defaultValues.type === 'reference') {
@@ -94,12 +97,21 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
     closeAllModals()
   })
 
+  const displayField = form.watch('display')
+
   const { t } = useTranslation()
+
+  const displayFields = table.schema.displayFields.filter(
+    (f) => f.id.value !== field.id.value || (f.id.value === field.id.value && displayField),
+  )
 
   return (
     <FormProvider {...form}>
       <form onSubmit={onSubmit}>
         <Stack>
+          {!!displayFields.length && (
+            <DisplayFields displayFields={displayFields.map((f) => ({ name: f.name.value }))} />
+          )}
           <Controller
             name="type"
             control={form.control}
@@ -150,6 +162,14 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
                   checked={form.watch('required')}
                   size="xs"
                   label={t('Required', { ns: 'common' })}
+                />
+              )}
+              {canDisplay(field.type) && (
+                <Switch
+                  {...form.register('display')}
+                  checked={displayField}
+                  size="xs"
+                  label={t('Display', { ns: 'common' })}
                 />
               )}
               <Button

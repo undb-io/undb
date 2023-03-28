@@ -6,6 +6,7 @@ import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { CreateTableAddFieldButton } from './create-table-add-field-button'
 import { CreateTableFormSchema } from './create-table-form-schema'
+import { DisplayFields } from '../field/display-fields'
 
 interface IProps {
   onCancel: () => void
@@ -61,16 +62,7 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
 
       {!!displayFields.length && (
         <>
-          <Group>
-            <Text size="xs" fs="xs" color="gray">{`${t('Display', { ns: 'common' })}: `}</Text>
-            <Group>
-              {displayFields.map((f, index) => (
-                <Badge sx={{ textTransform: 'unset' }} key={index}>
-                  {f.name || `${t('Field')} ${index + 1}`}
-                </Badge>
-              ))}
-            </Group>
-          </Group>
+          <DisplayFields displayFields={displayFields} />
           <Space h="xs" />
         </>
       )}

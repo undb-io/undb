@@ -118,6 +118,10 @@ export class TableSchema extends ValueObject<Field[]> {
     this.fields.push(field)
   }
 
+  public get displayFields() {
+    return this.fields.filter((f) => f.display)
+  }
+
   public get defaultFieldsOrder(): ViewFieldsOrder {
     const order = this.props.map((v) => v.id.value)
     return ViewFieldsOrder.fromArray(order)
