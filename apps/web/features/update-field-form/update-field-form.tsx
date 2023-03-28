@@ -186,7 +186,7 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
                       />
                     </Box>
                   </HoverCard.Target>
-                  <HoverCard.Dropdown>
+                  <HoverCard.Dropdown display={displayFields.length ? 'visible' : 'none'}>
                     {!!displayFields.length && (
                       <DisplayFields displayFields={displayFields.map((f) => ({ name: f.name.value }))} />
                     )}

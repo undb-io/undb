@@ -25,6 +25,7 @@ import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opene
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldValueFactory } from '../field-value/field-value.factory'
 import { RecordId } from '../field-value/record-id'
+import { RecordValues } from '../record/record-values'
 
 export interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
   id: UniqueIdentifier
@@ -44,6 +45,7 @@ export interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
   wrapperRef?(node: HTMLDivElement): void
 }
 
+// eslint-disable-next-line react/display-name
 export const TreeItem = forwardRef<HTMLDivElement, Props>(
   (
     {
@@ -140,27 +142,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
             </Group>
             <Group>
               <RecordId id={id as string} />
-              {Object.entries(values).map(([fieldId, value]) => {
-                const field = schema.get(fieldId)
-                if (!field) return null
-
-                return (
-                  <Tooltip
-                    key={fieldId}
-                    label={
-                      <Group spacing="xs">
-                        <FieldIcon type={field.type} />
-                        <Text>{field.name.value}</Text>
-                      </Group>
-                    }
-                  >
-                    <Group spacing="xs" data-field-id={field.id.value}>
-                      <FieldIcon color="gray" type={field.type} />
-                      <FieldValueFactory field={field} value={value} displayValues={values.display_values} />
-                    </Group>
-                  </Tooltip>
-                )
-              })}
+              <RecordValues values={values} />
             </Group>
             {clone && childCount && childCount > 1 ? <Badge radius="xl">{childCount}</Badge> : null}
           </Group>
