@@ -1,6 +1,6 @@
 'use client'
 
-import { getCurrentTableId } from '@egodb/store'
+import { getCurrentTableId, getCurrentViewId } from '@egodb/store'
 import { redirect } from 'next/navigation'
 import { useEffect } from 'react'
 import { useAppSelector } from '../hooks'
@@ -8,12 +8,17 @@ import App from './App'
 
 export default function Page() {
   const currentTableId = useAppSelector(getCurrentTableId)
+  const currentViewId = useAppSelector(getCurrentViewId)
 
   useEffect(() => {
     if (currentTableId) {
-      redirect(`/t/${currentTableId}`)
+      if (currentViewId) {
+        redirect(`/t/${currentTableId}/${currentViewId}`)
+      } else {
+        redirect(`/t/${currentTableId}`)
+      }
     }
-  }, [currentTableId])
+  }, [currentTableId, currentViewId])
 
   return <App />
 }
