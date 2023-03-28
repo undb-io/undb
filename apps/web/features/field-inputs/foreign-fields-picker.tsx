@@ -10,7 +10,7 @@ import { FieldIcon } from './field-Icon'
 import type { FieldBase } from './field-picker.type'
 import { identity } from 'lodash-es'
 
-interface IProps extends Omit<MultiSelectProps, 'data'> {
+export interface IForeignTablePickerProps extends Omit<MultiSelectProps, 'data'> {
   foreignTableId?: string
   fields?: FieldBase[]
   fieldFilter?: (f: Field) => boolean
@@ -32,7 +32,7 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, type, ...othe
   </Group>
 ))
 
-export const ForeignFieldsPicker: React.FC<IProps> = ({
+export const ForeignFieldsPicker: React.FC<IForeignTablePickerProps> = ({
   foreignTableId,
   fields,
   fieldFilter,

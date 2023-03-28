@@ -4,6 +4,7 @@ import { NumberInput, Switch, TextInput } from '@egodb/ui'
 import type { UseFormReturn } from 'react-hook-form'
 import { Controller, useFormContext } from 'react-hook-form'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
+import type { IForeignTablePickerProps } from '../field-inputs/foreign-fields-picker'
 import { ForeignFieldsPicker } from '../field-inputs/foreign-fields-picker'
 import { SelectFieldControl } from '../field-inputs/select-field-control'
 import { TablePicker } from '../table/table-picker'
@@ -11,6 +12,7 @@ import { useCurrentTable } from '../../hooks/use-current-table'
 import { DateFormatPicker } from './date-format-picker'
 import { useTranslation } from 'react-i18next'
 import { FieldPicker } from '../field-inputs/field-picker'
+import { DisplayFieldsPicker } from '../field-inputs/display-fields-picker'
 
 interface IProps {
   isNew: boolean
@@ -48,6 +50,14 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
 
   if (type === 'tree' || type === 'reference' || type === 'parent') {
     const foreignTableId = form.watch('foreignTableId')
+    const foreignFieldPickerProps: IForeignTablePickerProps = {
+      foreignTableId,
+      disabled: type === 'reference' && !foreignTableId,
+      variant: 'default',
+      fieldFilter: (f) => f.isPrimitive(),
+      placeholder: t('Select Display Fields') as string,
+      label: <FieldInputLabel>{t('Display Fields')}</FieldInputLabel>,
+    }
     return (
       <>
         {isNew && type === 'tree' && (
@@ -77,17 +87,13 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
         )}
         <Controller
           name="displayFieldIds"
-          render={(props) => (
-            <ForeignFieldsPicker
-              foreignTableId={foreignTableId ?? table?.id.value}
-              {...props.field}
-              onChange={(ids) => props.field.onChange(ids)}
-              variant="default"
-              fieldFilter={(f) => f.isPrimitive()}
-              placeholder={t('Select Display Fields') as string}
-              label={<FieldInputLabel>{t('Display Fields')}</FieldInputLabel>}
-            />
-          )}
+          render={(props) =>
+            isNew ? (
+              <DisplayFieldsPicker {...props.field} {...foreignFieldPickerProps} />
+            ) : (
+              <ForeignFieldsPicker {...props.field} {...foreignFieldPickerProps} />
+            )
+          }
         />
       </>
     )
@@ -128,7 +134,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
                 onChange={(ids) => props.field.onChange(ids)}
                 variant="default"
                 fieldFilter={(f) => f.isPrimitive()}
-                disabled={!referenceFieldId}
+                disabled={!referenceFieldId || !foreignTableId}
                 placeholder={t('Select Display Fields') as string}
                 label={<FieldInputLabel>{t('Display Fields')}</FieldInputLabel>}
               />

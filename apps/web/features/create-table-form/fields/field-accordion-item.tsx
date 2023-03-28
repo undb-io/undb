@@ -13,7 +13,7 @@ import {
   IconPlus,
   useDisclosure,
 } from '@egodb/ui'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CSS } from '@dnd-kit/utilities'
 import { FieldCommonControl } from './field-common-control'
 import { FieldInputLabel } from '../../field-inputs/field-input-label'

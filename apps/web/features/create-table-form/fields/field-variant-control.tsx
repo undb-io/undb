@@ -1,7 +1,7 @@
 import type { ICreateTableInput } from '@egodb/cqrs'
-import { ICreateFieldSchema, RATING_MAX, RATING_MAX_DEFAULT } from '@egodb/core'
+import { RATING_MAX, RATING_MAX_DEFAULT, canDisplay } from '@egodb/core'
 import { NumberInput, Switch, TextInput } from '@egodb/ui'
-import { Controller, UseFormReturn, useFormContext } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import { FieldInputLabel } from '../../field-inputs/field-input-label'
 import { ForeignFieldsPicker } from '../../field-inputs/foreign-fields-picker'
 import { SelectFieldControl } from '../../field-inputs/select-field-control'
@@ -10,6 +10,7 @@ import type { FieldBase } from '../../field-inputs/field-picker.type'
 import { DateFormatPicker } from '../../field/date-format-picker'
 import { useTranslation } from 'react-i18next'
 import { FieldPicker } from '../../field-inputs/field-picker'
+import { DisplayFieldsPicker } from '../../field-inputs/display-fields-picker'
 
 interface IProps {
   index: number
@@ -81,17 +82,29 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
 
         <Controller
           name={`schema.${index}.displayFieldIds`}
-          render={(props) => (
-            <ForeignFieldsPicker
-              fields={schema as FieldBase[]}
-              foreignTableId={form.watch(`schema.${index}.foreignTableId`)}
-              {...props.field}
-              onChange={(ids) => props.field.onChange(ids)}
-              fieldFilter={(f) => f.isPrimitive()}
-              placeholder={t('Select Display Fields') as string}
-              label={<FieldInputLabel>{t('Display Fields')}</FieldInputLabel>}
-            />
-          )}
+          render={(props) =>
+            type === 'reference' ? (
+              <DisplayFieldsPicker
+                fields={schema.filter((schema) => canDisplay(schema.type)) as FieldBase[]}
+                foreignTableId={form.watch(`schema.${index}.foreignTableId`)}
+                {...props.field}
+                onChange={(ids) => props.field.onChange(ids)}
+                fieldFilter={(f) => f.isPrimitive()}
+                placeholder={t('Select Display Fields') as string}
+                label={<FieldInputLabel>{t('Display Fields')}</FieldInputLabel>}
+              />
+            ) : (
+              <ForeignFieldsPicker
+                fields={schema.filter((schema) => canDisplay(schema.type)) as FieldBase[]}
+                foreignTableId={form.watch(`schema.${index}.foreignTableId`)}
+                {...props.field}
+                onChange={(ids) => props.field.onChange(ids)}
+                fieldFilter={(f) => f.isPrimitive()}
+                placeholder={t('Select Display Fields') as string}
+                label={<FieldInputLabel>{t('Display Fields')}</FieldInputLabel>}
+              />
+            )
+          }
         />
       </>
     )

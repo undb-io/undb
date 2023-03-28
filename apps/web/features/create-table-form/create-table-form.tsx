@@ -1,6 +1,6 @@
 import type { ICreateTableInput } from '@egodb/cqrs'
 import { useCreateTableMutation } from '@egodb/store'
-import { Alert, Button, Group, IconAlertCircle, Text, Space, TextInput, Code, Box, Badge } from '@egodb/ui'
+import { Alert, Button, Group, IconAlertCircle, Text, Space, TextInput, Code, Box } from '@egodb/ui'
 import { useRouter } from 'next/navigation'
 import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -36,7 +36,7 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
 
   const { t } = useTranslation()
 
-  const displayFields = form.watch('schema').filter((s) => !!s.display)
+  const displayFields = form.watch('schema').filter((s) => !!s?.display)
 
   return (
     <form onSubmit={onSubmit}>
