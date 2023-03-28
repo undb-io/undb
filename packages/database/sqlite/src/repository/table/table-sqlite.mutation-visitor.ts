@@ -4,6 +4,7 @@ import type {
   WithDisplayFields,
   WithDisplayType,
   WithFieldDescription,
+  WithFieldDisplay,
   WithFieldName,
   WithFieldOption,
   WithFieldRequirement,
@@ -225,6 +226,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   withFieldDescription(s: WithFieldDescription): void {
     const field = this.getField(s.field.id.value)
     wrap(field).assign({ description: s.description.value })
+    this.em.persist(field)
+  }
+  withFieldDisplay(s: WithFieldDisplay): void {
+    const field = this.getField(s.field.id.value)
+    wrap(field).assign({ display: s.display })
     this.em.persist(field)
   }
   displayFieldsEqual(s: WithDisplayFields): void {

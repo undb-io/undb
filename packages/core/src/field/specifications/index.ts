@@ -1,5 +1,5 @@
 export * from './aggregate-field.specification.js'
-export { WithFieldDescription, WithFieldName } from './base-field.specification.js'
+export { WithFieldDescription, WithFieldDisplay, WithFieldName } from './base-field.specification.js'
 export * from './date-field.specification.js'
 export * from './field-constraints.specification'
 export * from './field.specification.js'

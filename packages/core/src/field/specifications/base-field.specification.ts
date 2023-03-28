@@ -61,3 +61,22 @@ export class WithFieldDescription extends CompositeSpecification<Table, ITableSp
     return Ok(undefined)
   }
 }
+export class WithFieldDisplay extends CompositeSpecification<Table, ITableSpecVisitor> {
+  constructor(public readonly field: BaseField, public readonly display: boolean) {
+    super()
+  }
+
+  isSatisfiedBy(t: Table): boolean {
+    return !!this.field.display === this.display
+  }
+
+  mutate(t: Table): Result<Table, string> {
+    this.field.display = this.display
+    return Ok(t)
+  }
+
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withFieldDisplay(this)
+    return Ok(undefined)
+  }
+}
