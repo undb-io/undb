@@ -360,10 +360,10 @@ const convertDateFilter = (
 
   switch (filter.operator) {
     case '$eq': {
-      return Some(new DateEqual(filter.path, DateFieldValue.fromString(filter.value as string)))
+      return Some(new DateEqual(filter.path, DateFieldValue.fromNullableString(filter.value as string)))
     }
     case '$neq': {
-      return Some(new DateEqual(filter.path, DateFieldValue.fromString(filter.value as string)).not())
+      return Some(new DateEqual(filter.path, DateFieldValue.fromNullableString(filter.value as string)).not())
     }
     case '$gt': {
       return Some(new DateGreaterThan(filter.path, DateFieldValue.fromString(filter.value as string)))

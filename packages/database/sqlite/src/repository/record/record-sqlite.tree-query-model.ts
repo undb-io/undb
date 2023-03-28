@@ -2,6 +2,7 @@ import type { IQueryTreeRecords, IRecordSpec, IRecordTreeQueryModel, TreeField }
 import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { DELETED_AT_COLUMN_NAME } from '../../decorators/soft-delete.decorator.js'
+import { ReferenceField } from '../../entity/field.js'
 import { Table as TableEntity } from '../../entity/table.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import { ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
@@ -22,8 +23,27 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
     const tableEntity = await this.em.findOneOrFail(
       TableEntity,
       { id: tableId },
-      { populate: ['fields.displayFields', 'fields.countFields', 'fields.lookupFields'] },
+      {
+        populate: [
+          'fields',
+          'views',
+          'fields.displayFields',
+          'fields.countFields',
+          'fields.sumFields',
+          'fields.sumAggregateField',
+          'fields.averageFields',
+          'fields.averageAggregateField',
+          'fields.lookupFields',
+          'fields.foreignTable',
+        ],
+      },
     )
+    for (const field of tableEntity.fields) {
+      if (field instanceof ReferenceField) {
+        await field.foreignTable?.fields.init({ where: { display: true } })
+      }
+    }
+
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
 

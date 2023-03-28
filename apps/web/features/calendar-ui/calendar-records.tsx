@@ -2,13 +2,15 @@ import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import { RecordFactory } from '@egodb/core'
 import type { Record, ICalendarField } from '@egodb/core'
-import { ActionIcon, Box, Group, IconGripVertical, Skeleton, Space, Stack, Text, Title } from '@egodb/ui'
+import { ActionIcon, Box, Group, IconGripVertical, Skeleton, Space, Stack, Title } from '@egodb/ui'
 import { useMemo, useRef } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { useGetRecordsQuery } from '@egodb/store'
+import { setSelectedRecordId, useGetRecordsQuery } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { useTranslation } from 'react-i18next'
+import { RecordValues } from '../record/record-values'
+import { useAppDispatch } from '../../hooks'
 
 interface IProps {
   field: ICalendarField
@@ -19,21 +21,30 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
     id: record.id.value,
   })
 
+  const dispatch = useAppDispatch()
+
   return (
     <Box
       ref={setNodeRef}
       w="100%"
-      p="sm"
+      px="xs"
+      py="sm"
+      onClick={(e) => {
+        e.stopPropagation()
+        dispatch(setSelectedRecordId(record.id.value))
+      }}
       sx={(theme) => ({
+        cursor: 'pointer',
         transform: CSS.Translate.toString(transform),
         zIndex: isDragging ? 1000 : undefined,
         opacity: isDragging ? 0.7 : undefined,
-        backgroundColor: theme.colors[theme.primaryColor][theme.fn.primaryShade()],
         borderRadius: theme.radius.sm,
+        border: '1px solid ' + theme.colors.gray[3],
         boxShadow: theme.shadows.lg,
+        overflow: 'hidden',
       })}
     >
-      <Group>
+      <Group noWrap sx={{ overflow: 'hidden' }}>
         <ActionIcon
           size={18}
           variant="transparent"
@@ -42,9 +53,9 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
           {...listeners}
           sx={{ cursor: isDragging ? 'grabbing' : 'grab' }}
         >
-          <IconGripVertical color="white" />
+          <IconGripVertical color="gray" />
         </ActionIcon>
-        <Text color="white">{record.id.value}</Text>
+        <RecordValues values={record.valuesJSON} />
       </Group>
     </Box>
   )
@@ -111,7 +122,7 @@ export const CalendarRecords: React.FC<IProps> = ({ field }) => {
       <Title size={20}>{t('Unscheduled Records')}</Title>
       <Space h="md" />
       {records.length ? (
-        <Stack ref={tableContainerRef} h="100%" sx={{ overflow: 'auto', overflowX: 'hidden' }}>
+        <Stack ref={tableContainerRef} h="100%">
           {paddingTop > 0 && (
             <tr>
               <td style={{ height: `${paddingTop}px` }} />

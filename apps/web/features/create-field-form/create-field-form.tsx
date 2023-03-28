@@ -135,7 +135,7 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
                       />
                     </Box>
                   </HoverCard.Target>
-                  <HoverCard.Dropdown>
+                  <HoverCard.Dropdown display={displayFields.length ? 'visible' : 'none'}>
                     {!!displayFields.length && (
                       <DisplayFields displayFields={displayFields.map((f) => ({ name: f.name }))} />
                     )}

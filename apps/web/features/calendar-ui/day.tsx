@@ -1,11 +1,10 @@
 import { useDraggable, useDroppable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
-import type { ICalendarField, Records } from '@egodb/core'
-import type { Record } from '@egodb/core'
+import type { Record, ICalendarField, Records } from '@egodb/core'
 import { DateFieldValue } from '@egodb/core'
 import { DateEqual } from '@egodb/core'
 import { setSelectedRecordId } from '@egodb/store'
-import { ActionIcon, Box, Group, IconGripVertical, IconPlus, Stack, Text, useHover } from '@egodb/ui'
+import { ActionIcon, Box, Group, IconGripVertical, IconPlus, Stack, useHover } from '@egodb/ui'
 import { isEqual, isToday } from 'date-fns'
 import { useAtom } from 'jotai'
 import { useMemo } from 'react'
@@ -13,6 +12,7 @@ import { useAppDispatch } from '../../hooks'
 import { useCloseAllDrawers } from '../../hooks/use-close-all-drawers'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
+import { RecordValues } from '../record/record-values'
 
 interface IProps {
   records: Records
@@ -31,7 +31,7 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
     <Group
       ref={setNodeRef}
       bg="white"
-      px="xs"
+      px={0}
       w="100%"
       spacing="xs"
       role="button"
@@ -43,6 +43,7 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
         boxShadow: theme.shadows.xs,
         lineHeight: theme.fontSizes.sm + 'px',
         cursor: 'pointer',
+        overflow: 'hidden',
         transform: CSS.Translate.toString(transform),
         opacity: isDragging ? 0.5 : undefined,
         zIndex: isDragging ? 1000 : undefined,
@@ -60,7 +61,7 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
         }}
         size={12}
       />
-      <Text color="dark">{record.id.value}</Text>
+      <RecordValues values={record.valuesJSON} />
     </Group>
   )
 }

@@ -10,5 +10,9 @@ interface IProps {
 export const DateValue: React.FC<IProps> = ({ field, value }) => {
   if (!value) return null
 
-  return <Text>{format(value, field.formatString)}</Text>
+  return (
+    <Text sx={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
+      {format(value, field.formatString)}
+    </Text>
+  )
 }
