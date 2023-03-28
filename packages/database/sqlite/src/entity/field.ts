@@ -558,6 +558,20 @@ export class ReferenceField extends Field {
   @Property({ type: BooleanType, default: false, nullable: false })
   isOwner?: boolean
 
+  get foreignDisplayFields() {
+    if (!this.displayFields.isInitialized()) {
+      return []
+    }
+
+    let displayFields = this.displayFields.getItems()
+    if (!displayFields.length) {
+      if (!this.foreignTable?.fields?.isInitialized()) return []
+      displayFields = this.foreignTable?.fields?.getItems().filter((f) => f.display) ?? []
+    }
+
+    return displayFields
+  }
+
   toDomain(): CoreReferenceField {
     return CoreReferenceField.unsafeCreate({
       id: this.id,
@@ -565,7 +579,7 @@ export class ReferenceField extends Field {
       description: this.description,
       type: 'reference',
       foreignTableId: this.foreignTable?.isDeleted ? undefined : this.foreignTable?.id,
-      displayFieldIds: this.displayFields.isInitialized() ? this.displayFields.getItems().map((f) => f.id) : [],
+      displayFieldIds: this.foreignDisplayFields?.map((f) => f.id),
       symmetricReferenceFieldId: this.symmetricReferenceField?.id,
       required: !!this.required,
       display: this.display,
@@ -581,11 +595,7 @@ export class ReferenceField extends Field {
       description: this.description,
       type: 'reference',
       foreignTableId: isForeignTableDeleted ? undefined : this.foreignTable?.id,
-      displayFieldIds: isForeignTableDeleted
-        ? []
-        : this.displayFields.isInitialized()
-        ? this.displayFields.getItems().map((f) => f.id)
-        : [],
+      displayFieldIds: isForeignTableDeleted ? [] : this.foreignDisplayFields?.map((f) => f.id),
       symmetricReferenceFieldId: isForeignTableDeleted
         ? undefined
         : this.symmetricReferenceField?.isDeleted
@@ -621,6 +631,15 @@ export class TreeField extends Field {
 
   @OneToMany(() => LookupField, (f) => f.lookupReferenceField)
   lookupFields = new Collection<LookupField>(this)
+
+  get foreignDisplayFields() {
+    let displayFields = this.displayFields.getItems()
+    if (!displayFields.length) {
+      displayFields = this.table.fields.getItems().filter((f) => f.display)
+    }
+
+    return displayFields
+  }
 
   toDomain(): CoreTreeField {
     return CoreTreeField.unsafeCreate({
@@ -664,6 +683,15 @@ export class ParentField extends Field {
 
   @OneToMany(() => LookupField, (f) => f.lookupReferenceField)
   lookupFields = new Collection<LookupField>(this)
+
+  get foreignDisplayFields() {
+    let displayFields = this.displayFields.getItems()
+    if (!displayFields.length) {
+      displayFields = this.table.fields.getItems().filter((f) => f.display)
+    }
+
+    return displayFields
+  }
 
   toDomain(): CoreParentField {
     return CoreParentField.unsafeCreate({
@@ -815,6 +843,14 @@ export class LookupField extends Field {
 
   @ManyToMany({ entity: () => Field, owner: true })
   displayFields = new Collection<Field>(this)
+
+  get foreignDisplayFields() {
+    const displayFieleds = this.displayFields.getItems()
+    if (!displayFieleds.length) {
+      return this.lookupReferenceField.foreignDisplayFields
+    }
+    return displayFieleds
+  }
 
   toDomain(): CoreLookupField {
     return CoreLookupField.unsafeCreate({

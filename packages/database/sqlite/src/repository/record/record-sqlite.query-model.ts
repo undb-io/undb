@@ -2,6 +2,7 @@ import type { IQueryRecords, IQueryRecordSchema, IRecordQueryModel, IRecordSpec,
 import { WithRecordId } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { Option } from 'oxide.ts'
+import { ReferenceField } from '../../entity/field.js'
 import { Table as TableEntity } from '../../entity/table.js'
 import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
 import { RecordSqliteQueryBuilder } from './record-query.builder.js'
@@ -11,17 +12,18 @@ import type { RecordSqlite } from './record.type.js'
 export class RecordSqliteQueryModel implements IRecordQueryModel {
   constructor(protected readonly em: EntityManager) {}
 
-  async find(tableId: string, viewId: ViewId | undefined, spec: IRecordSpec | null): Promise<IQueryRecords> {
+  async #getTable(tableId: string): Promise<TableEntity> {
     const tableEntity = await this.em.findOneOrFail(
       TableEntity,
       { id: tableId },
       {
         populate: [
+          'fields',
           'views',
           'fields.displayFields',
           'fields.countFields',
-          'fields.sumAggregateField',
           'fields.sumFields',
+          'fields.sumAggregateField',
           'fields.averageFields',
           'fields.averageAggregateField',
           'fields.lookupFields',
@@ -29,6 +31,18 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
         ],
       },
     )
+
+    for (const field of tableEntity.fields) {
+      if (field instanceof ReferenceField) {
+        await field.foreignTable?.fields.init({ where: { display: true } })
+      }
+    }
+
+    return tableEntity
+  }
+
+  async find(tableId: string, viewId: ViewId | undefined, spec: IRecordSpec | null): Promise<IQueryRecords> {
+    const tableEntity = await this.#getTable(tableId)
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
 
@@ -46,24 +60,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     viewId: ViewId | undefined,
     spec: IRecordSpec | null,
   ): Promise<{ records: IQueryRecords; total: number }> {
-    const tableEntity = await this.em.findOneOrFail(
-      TableEntity,
-      { id: tableId },
-      {
-        populate: [
-          'fields',
-          'views',
-          'fields.displayFields',
-          'fields.countFields',
-          'fields.sumFields',
-          'fields.sumAggregateField',
-          'fields.averageFields',
-          'fields.averageAggregateField',
-          'fields.lookupFields',
-          'fields.foreignTable',
-        ],
-      },
-    )
+    const tableEntity = await this.#getTable(tableId)
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
 
@@ -80,24 +77,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
   }
 
   async findOne(tableId: string, spec: IRecordSpec): Promise<Option<IQueryRecordSchema>> {
-    const tableEntity = await this.em.findOneOrFail(
-      TableEntity,
-      { id: tableId },
-      {
-        populate: [
-          'fields',
-          'views',
-          'fields.displayFields',
-          'fields.countFields',
-          'fields.sumFields',
-          'fields.averageFields',
-          'fields.sumAggregateField',
-          'fields.averageAggregateField',
-          'fields.lookupFields',
-          'fields.foreignTable',
-        ],
-      },
-    )
+    const tableEntity = await this.#getTable(tableId)
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
 
