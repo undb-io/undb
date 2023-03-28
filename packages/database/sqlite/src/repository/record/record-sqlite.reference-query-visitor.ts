@@ -38,11 +38,10 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
   #visited = new Set<string>()
 
   public visit(table: Table): void {
-    const lookingFields = table.schema.getLookingFields()
-    for (const lookingField of lookingFields) {
+    for (const lookingField of table.schema.lookingFields) {
       lookingField.accept(this)
     }
-    for (const aggregateField of table.schema.getAggregateFields()) {
+    for (const aggregateField of table.schema.aggregateFields) {
       aggregateField.accept(this)
     }
     return
