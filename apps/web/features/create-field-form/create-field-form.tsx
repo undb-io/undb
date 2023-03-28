@@ -1,8 +1,10 @@
 import {
+  Box,
   Button,
   closeAllModals,
   Divider,
   Group,
+  HoverCard,
   IconPlus,
   Select,
   Stack,
@@ -73,8 +75,6 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
     <FormProvider {...form}>
       <form onSubmit={onSubmit}>
         <Stack>
-          {!!displayFields.length && <DisplayFields displayFields={displayFields.map((f) => ({ name: f.name }))} />}
-
           <Controller
             name="type"
             control={form.control}
@@ -124,12 +124,23 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
                 <Switch {...form.register('required')} size="xs" label={t('Required', { ns: 'common' })} />
               )}
               {canDisplay(type) && (
-                <Switch
-                  {...form.register('display')}
-                  checked={displayField}
-                  size="xs"
-                  label={t('Display', { ns: 'common' })}
-                />
+                <HoverCard closeDelay={300} withinPortal>
+                  <HoverCard.Target>
+                    <Box>
+                      <Switch
+                        {...form.register('display')}
+                        checked={displayField}
+                        size="xs"
+                        label={t('Display', { ns: 'common' })}
+                      />
+                    </Box>
+                  </HoverCard.Target>
+                  <HoverCard.Dropdown>
+                    {!!displayFields.length && (
+                      <DisplayFields displayFields={displayFields.map((f) => ({ name: f.name }))} />
+                    )}
+                  </HoverCard.Dropdown>
+                </HoverCard>
               )}
               <Button
                 variant="subtle"

@@ -1,4 +1,17 @@
-import { Button, closeAllModals, Divider, Group, IconPlus, Stack, Switch, TextInput, useDisclosure } from '@egodb/ui'
+import {
+  Box,
+  Button,
+  closeAllModals,
+  Divider,
+  Group,
+  HoverCard,
+  IconPlus,
+  Popover,
+  Stack,
+  Switch,
+  TextInput,
+  useDisclosure,
+} from '@egodb/ui'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldVariantControl } from '../field/field-variant-control'
@@ -109,9 +122,6 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
     <FormProvider {...form}>
       <form onSubmit={onSubmit}>
         <Stack>
-          {!!displayFields.length && (
-            <DisplayFields displayFields={displayFields.map((f) => ({ name: f.name.value }))} />
-          )}
           <Controller
             name="type"
             control={form.control}
@@ -165,12 +175,23 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
                 />
               )}
               {canDisplay(field.type) && (
-                <Switch
-                  {...form.register('display')}
-                  checked={displayField}
-                  size="xs"
-                  label={t('Display', { ns: 'common' })}
-                />
+                <HoverCard closeDelay={300} withinPortal>
+                  <HoverCard.Target>
+                    <Box>
+                      <Switch
+                        {...form.register('display')}
+                        checked={displayField}
+                        size="xs"
+                        label={t('Display', { ns: 'common' })}
+                      />
+                    </Box>
+                  </HoverCard.Target>
+                  <HoverCard.Dropdown>
+                    {!!displayFields.length && (
+                      <DisplayFields displayFields={displayFields.map((f) => ({ name: f.name.value }))} />
+                    )}
+                  </HoverCard.Dropdown>
+                </HoverCard>
               )}
               <Button
                 compact
