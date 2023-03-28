@@ -95,6 +95,9 @@ export abstract class Field extends BaseEntity {
   @Property({ type: BooleanType, default: false })
   required = false
 
+  @Property({ type: BooleanType, default: false })
+  display = false
+
   @Enum({
     items: [
       'id',
