@@ -10,16 +10,13 @@ const EGOTable = dynamic(() => import('./table').then((d) => d.EGOTable))
 
 export const TableUI: React.FC = () => {
   const table = useCurrentTable()
+  const schema = table.schema.toIdMap()
   const view = useCurrentView()
 
   const { data, isLoading } = useGetRecordsQuery({ tableId: table.id.value, viewId: view.id.value })
   const records = useMemo(
-    () =>
-      RecordFactory.fromQueryRecords(
-        (Object.values(data?.entities ?? {}) ?? []).filter(Boolean),
-        table.schema.toIdMap(),
-      ),
-    [data, table.schema],
+    () => RecordFactory.fromQueryRecords((Object.values(data?.entities ?? {}) ?? []).filter(Boolean), schema),
+    [data, schema],
   )
 
   if (isLoading) {

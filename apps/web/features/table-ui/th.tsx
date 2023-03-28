@@ -2,7 +2,6 @@ import { ActionIcon, Box, Group, IconSortAscending, IconSortDescending, Text, To
 import styled from '@emotion/styled'
 import type { TColumn, THeader } from './interface'
 import type { Field } from '@egodb/core'
-import { memo } from 'react'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { TableUIFieldMenu } from '../table/table-ui-field-menu'
 import { useSetFieldSortMutation, useSetFieldWidthMutation } from '@egodb/store'
@@ -47,7 +46,7 @@ interface IProps {
 }
 
 // eslint-disable-next-line react/display-name
-export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
+export const Th: React.FC<IProps> = ({ header, field, column, index }) => {
   const table = useCurrentTable()
   const view = useCurrentView()
   const direction = view.getFieldSort(field.id.value).into()
@@ -138,4 +137,4 @@ export const Th: React.FC<IProps> = memo(({ header, field, column, index }) => {
       </Resizer>
     </Box>
   )
-})
+}
