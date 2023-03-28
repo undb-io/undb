@@ -7,13 +7,12 @@ import { tableApi } from '../services'
 
 export interface TableState {
   currentTableId: string
-  currentViewId: string
+  currentViewId?: string
   totalCount: number
 }
 
 const initialState: TableState = {
   currentTableId: '',
-  currentViewId: '',
   totalCount: 0,
 }
 
@@ -27,7 +26,7 @@ export const tableSlice = createSlice({
     resetCurrentTableId: (state) => {
       state.currentTableId = ''
     },
-    setCurrentViewId: (state, action: PayloadAction<string>) => {
+    setCurrentViewId: (state, action: PayloadAction<string | undefined>) => {
       state.currentViewId = action.payload
     },
   },
@@ -45,5 +44,6 @@ export const tableReducer = tableSlice.reducer
 const self = (state: RootState) => state
 
 export const getCurrentTableId = createSelector(self, (state) => state.table.currentTableId)
+export const getCurrentViewId = createSelector(self, (state) => state.table.currentViewId)
 
 export const getTotalCount = createSelector(self, (state) => state.table.totalCount)

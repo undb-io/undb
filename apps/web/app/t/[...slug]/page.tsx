@@ -1,7 +1,7 @@
 'use client'
 
 import { TableFactory } from '@egodb/core'
-import { setCurrentTableId, useGetTableQuery } from '@egodb/store'
+import { setCurrentTableId, setCurrentViewId, useGetTableQuery } from '@egodb/store'
 import type { TRPCError } from '@egodb/trpc'
 import { Alert, Container, IconAlertCircle, ModalsProvider } from '@egodb/ui'
 import { useEffect } from 'react'
@@ -11,6 +11,7 @@ import { CurrentViewContext } from '../../../context/current-view'
 import { useAppDispatch } from '../../../hooks'
 import { modals } from '../../../modals'
 import Table from './table'
+import { unstable_batchedUpdates } from 'react-dom'
 
 export default function Page({ params: { slug } }: { params: { slug: string[] } }) {
   const [tableId, viewId] = slug
@@ -18,8 +19,11 @@ export default function Page({ params: { slug } }: { params: { slug: string[] } 
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(setCurrentTableId(tableId))
-  }, [tableId])
+    unstable_batchedUpdates(() => {
+      dispatch(setCurrentTableId(tableId))
+      dispatch(setCurrentViewId(viewId || undefined))
+    })
+  }, [tableId, viewId])
 
   if (isLoading) {
     return <TableLoading />
