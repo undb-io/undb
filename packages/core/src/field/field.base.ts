@@ -52,6 +52,7 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
       name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
       description: input.description ? new FieldDescription({ value: input.description }) : undefined,
+      display: input.display,
     }
   }
 
@@ -61,6 +62,7 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
       description: input.description ? new FieldDescription({ value: input.description }) : undefined,
+      display: input.display,
     }
   }
 
@@ -88,6 +90,10 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
 
   get sortable(): boolean {
     return true
+  }
+
+  get display(): boolean {
+    return this.props.display ?? false
   }
 
   isSystem(): this is SystemField {
