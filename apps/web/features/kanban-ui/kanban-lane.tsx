@@ -1,5 +1,5 @@
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { ActionIcon, Box, Group, IconGripVertical, IconRowInsertTop, Stack, Text } from '@egodb/ui'
+import { ActionIcon, Badge, Box, Group, IconGripVertical, IconRowInsertTop, Stack, Text } from '@egodb/ui'
 import { CSS } from '@dnd-kit/utilities'
 import type { IKanbanField, Records } from '@egodb/core'
 import { SortableKanbanCard } from './kanban-card'
@@ -83,6 +83,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = React.memo(
               </ActionIcon>
             ) : null}
             {React.isValidElement(title) ? title : <Text weight={500}>{title}</Text>}
+            <Badge color="gray">{items.length}</Badge>
           </Group>
 
           {id && renderMenu && <KanbanLaneMenu>{renderMenu?.()}</KanbanLaneMenu>}
