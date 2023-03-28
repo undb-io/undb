@@ -9,6 +9,7 @@ export const createBaseFieldSchema = z
     id: fieldIdSchema.optional(),
     name: fieldNameSchema,
     description: fieldDescriptionSchema.optional(),
+    display: z.boolean().optional(),
   })
   .merge(valueConstraintsSchema)
 
@@ -18,6 +19,7 @@ export const updateBaseFieldSchema = z
   .object({
     name: fieldNameSchema,
     description: fieldDescriptionSchema,
+    display: z.boolean().optional(),
   })
   .merge(valueConstraintsSchema)
   .partial()
@@ -29,5 +31,6 @@ export const baseFieldQuerySchema = z
     id: fieldIdSchema,
     name: fieldNameSchema,
     description: fieldDescriptionSchema.optional(),
+    display: z.boolean(),
   })
   .merge(valueConstraintsSchema)

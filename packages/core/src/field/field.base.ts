@@ -27,11 +27,11 @@ import type {
   PrimitiveField,
   SystemField,
 } from './field.type.js'
-import { isControlledFieldType } from './field.util.js'
+import { canDisplay, isControlledFieldType } from './field.util.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import type { ReferenceField } from './reference-field.js'
 import { WithAggregateFieldId } from './specifications/aggregate-field.specification.js'
-import { WithFieldDescription, WithFieldName } from './specifications/base-field.specification.js'
+import { WithFieldDescription, WithFieldDisplay, WithFieldName } from './specifications/base-field.specification.js'
 import { WithFormat } from './specifications/date-field.specification.js'
 import { WithFieldRequirement } from './specifications/field-constraints.specification.js'
 import { WithReferenceFieldId } from './specifications/lookup-field.specification.js'
@@ -52,6 +52,7 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
       name: fieldName,
       valueConstrains: FieldValueConstraints.create({ required: input.required }),
       description: input.description ? new FieldDescription({ value: input.description }) : undefined,
+      display: input.display,
     }
   }
 
@@ -61,6 +62,7 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
       name: FieldName.unsafaCreate(input.name),
       valueConstrains: FieldValueConstraints.unsafeCreate({ required: input.required }),
       description: input.description ? new FieldDescription({ value: input.description }) : undefined,
+      display: input.display,
     }
   }
 
@@ -88,6 +90,14 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
 
   get sortable(): boolean {
     return true
+  }
+
+  get display(): boolean {
+    return this.props.display ?? false
+  }
+
+  set display(display: boolean) {
+    this.props.display = display
   }
 
   isSystem(): this is SystemField {
@@ -160,6 +170,9 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
     }
     if (isBoolean(input.required) && !this.controlled) {
       specs.push(new WithFieldRequirement(this, input.required))
+    }
+    if (isBoolean(input.display) && canDisplay(this.type)) {
+      specs.push(new WithFieldDisplay(this, input.display))
     }
     return and(...specs)
   }

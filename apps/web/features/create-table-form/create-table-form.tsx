@@ -6,6 +6,7 @@ import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { CreateTableAddFieldButton } from './create-table-add-field-button'
 import { CreateTableFormSchema } from './create-table-form-schema'
+import { DisplayFields } from '../field/display-fields'
 
 interface IProps {
   onCancel: () => void
@@ -35,6 +36,8 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
 
   const { t } = useTranslation()
 
+  const displayFields = form.watch('schema').filter((s) => !!s?.display)
+
   return (
     <form onSubmit={onSubmit}>
       <TextInput
@@ -56,6 +59,13 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
       </Text>
 
       <Space h="xs" />
+
+      {!!displayFields.length && (
+        <>
+          <DisplayFields displayFields={displayFields} />
+          <Space h="xs" />
+        </>
+      )}
 
       <CreateTableFormSchema />
 

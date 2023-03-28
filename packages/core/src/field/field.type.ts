@@ -357,6 +357,7 @@ export type ICreateFieldsSchema_internal = z.infer<typeof createFieldsSchema_int
 export interface IBaseField {
   id: FieldId
   system?: boolean
+  display?: boolean
   name: FieldName
   description?: FieldDescription
   valueConstrains: FieldValueConstraints

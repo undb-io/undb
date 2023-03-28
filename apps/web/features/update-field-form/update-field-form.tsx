@@ -1,4 +1,17 @@
-import { Button, closeAllModals, Divider, Group, IconPlus, Stack, Switch, TextInput, useDisclosure } from '@egodb/ui'
+import {
+  Box,
+  Button,
+  closeAllModals,
+  Divider,
+  Group,
+  HoverCard,
+  IconPlus,
+  Popover,
+  Stack,
+  Switch,
+  TextInput,
+  useDisclosure,
+} from '@egodb/ui'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldVariantControl } from '../field/field-variant-control'
@@ -13,12 +26,14 @@ import type {
   SelectField,
   SumField,
 } from '@egodb/core'
+import { canDisplay } from '@egodb/core'
 import { updateFieldSchema } from '@egodb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { IUpdateFieldProps } from './update-field.props'
 import { useUpdateFieldMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useTranslation } from 'react-i18next'
+import { DisplayFields } from '../field/display-fields'
 
 export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }) => {
   const table = useCurrentTable()
@@ -31,6 +46,7 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
     name: field.name.value,
     description,
     required: field.required,
+    display: field.display,
   }
 
   if (defaultValues.type === 'reference') {
@@ -94,7 +110,13 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
     closeAllModals()
   })
 
+  const displayField = form.watch('display')
+
   const { t } = useTranslation()
+
+  const displayFields = table.schema.displayFields.filter(
+    (f) => f.id.value !== field.id.value || (f.id.value === field.id.value && displayField),
+  )
 
   return (
     <FormProvider {...form}>
@@ -151,6 +173,25 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
                   size="xs"
                   label={t('Required', { ns: 'common' })}
                 />
+              )}
+              {canDisplay(field.type) && (
+                <HoverCard closeDelay={300} withinPortal>
+                  <HoverCard.Target>
+                    <Box>
+                      <Switch
+                        {...form.register('display')}
+                        checked={displayField}
+                        size="xs"
+                        label={t('Display', { ns: 'common' })}
+                      />
+                    </Box>
+                  </HoverCard.Target>
+                  <HoverCard.Dropdown>
+                    {!!displayFields.length && (
+                      <DisplayFields displayFields={displayFields.map((f) => ({ name: f.name.value }))} />
+                    )}
+                  </HoverCard.Dropdown>
+                </HoverCard>
               )}
               <Button
                 compact

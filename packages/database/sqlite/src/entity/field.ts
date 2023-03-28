@@ -75,6 +75,7 @@ export abstract class Field extends BaseEntity {
     this.system = field.system
     this.description = field.description?.value
     this.required = field.required
+    this.display = field.display
   }
 
   @PrimaryKey()
@@ -94,6 +95,9 @@ export abstract class Field extends BaseEntity {
 
   @Property({ type: BooleanType, default: false })
   required = false
+
+  @Property({ type: BooleanType, default: false })
+  display = false
 
   @Enum({
     items: [
@@ -135,6 +139,7 @@ export class IdField extends Field {
       description: this.description,
       type: 'id',
       required: !!this.required,
+      display: this.display,
     })
   }
 
@@ -145,6 +150,7 @@ export class IdField extends Field {
       description: this.description,
       type: 'id',
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -167,6 +173,7 @@ export class CreatedAtField extends Field {
       description: this.description,
       format: this.format,
       required: !!this.required,
+      display: this.display,
     })
   }
 
@@ -178,6 +185,7 @@ export class CreatedAtField extends Field {
       description: this.description,
       format: this.format,
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -200,6 +208,7 @@ export class UpdatedAtField extends Field {
       description: this.description,
       format: this.format,
       required: !!this.required,
+      display: this.display,
     })
   }
 
@@ -211,6 +220,7 @@ export class UpdatedAtField extends Field {
       description: this.description,
       format: this.format,
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -224,6 +234,7 @@ export class AutoIncrementField extends Field {
       type: 'auto-increment',
       description: this.description,
       required: !!this.required,
+      display: this.display,
     })
   }
 
@@ -234,6 +245,7 @@ export class AutoIncrementField extends Field {
       type: 'auto-increment',
       description: this.description,
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -247,6 +259,7 @@ export class StringField extends Field {
       type: 'string',
       description: this.description,
       required: !!this.required,
+      display: this.display,
     })
   }
 
@@ -257,6 +270,7 @@ export class StringField extends Field {
       type: 'string',
       description: this.description,
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -270,6 +284,7 @@ export class EmailField extends Field {
       type: 'email',
       description: this.description,
       required: !!this.required,
+      display: this.display,
     })
   }
 
@@ -280,6 +295,7 @@ export class EmailField extends Field {
       type: 'email',
       description: this.description,
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -293,6 +309,7 @@ export class ColorField extends Field {
       type: 'color',
       description: this.description,
       required: !!this.required,
+      display: this.display,
     })
   }
 
@@ -303,6 +320,7 @@ export class ColorField extends Field {
       type: 'color',
       description: this.description,
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -316,6 +334,7 @@ export class NumberField extends Field {
       type: 'number',
       description: this.description,
       required: !!this.required,
+      display: this.display,
     })
   }
 
@@ -326,6 +345,7 @@ export class NumberField extends Field {
       type: 'number',
       description: this.description,
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -348,6 +368,7 @@ export class RatingField extends Field {
       max: this.max,
       description: this.description,
       required: !!this.required,
+      display: this.display,
     })
   }
 
@@ -359,6 +380,7 @@ export class RatingField extends Field {
       max: this.max,
       description: this.description,
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -372,6 +394,7 @@ export class BoolField extends Field {
       type: 'bool',
       description: this.description,
       required: !!this.required,
+      display: this.display,
     })
   }
 
@@ -382,6 +405,7 @@ export class BoolField extends Field {
       type: 'bool',
       description: this.description,
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -404,6 +428,7 @@ export class DateField extends Field {
       format: this.format,
       description: this.description,
       required: !!this.required,
+      display: this.display,
     })
   }
 
@@ -415,6 +440,7 @@ export class DateField extends Field {
       format: this.format,
       description: this.description,
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -437,6 +463,7 @@ export class DateRangeField extends Field {
       format: this.format,
       description: this.description,
       required: !!this.required,
+      display: this.display,
     })
   }
 
@@ -448,6 +475,7 @@ export class DateRangeField extends Field {
       format: this.format,
       description: this.description,
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -464,6 +492,7 @@ export class SelectField extends Field {
       type: 'select',
       description: this.description,
       required: !!this.required,
+      display: this.display,
       // FIXME: should check?
       options: this.options.isInitialized()
         ? this.options.getItems().map((o) => ({
@@ -485,6 +514,7 @@ export class SelectField extends Field {
       type: 'select',
       description: this.description,
       required: !!this.required,
+      display: this.display,
       options: this.options.getItems().map((o) => ({
         key: o.key,
         name: o.name,
@@ -528,6 +558,20 @@ export class ReferenceField extends Field {
   @Property({ type: BooleanType, default: false, nullable: false })
   isOwner?: boolean
 
+  get foreignDisplayFields() {
+    if (!this.displayFields.isInitialized()) {
+      return []
+    }
+
+    let displayFields = this.displayFields.getItems()
+    if (!displayFields.length) {
+      if (!this.foreignTable?.fields?.isInitialized()) return []
+      displayFields = this.foreignTable?.fields?.getItems().filter((f) => f.display) ?? []
+    }
+
+    return displayFields
+  }
+
   toDomain(): CoreReferenceField {
     return CoreReferenceField.unsafeCreate({
       id: this.id,
@@ -535,9 +579,10 @@ export class ReferenceField extends Field {
       description: this.description,
       type: 'reference',
       foreignTableId: this.foreignTable?.isDeleted ? undefined : this.foreignTable?.id,
-      displayFieldIds: this.displayFields.isInitialized() ? this.displayFields.getItems().map((f) => f.id) : [],
+      displayFieldIds: this.foreignDisplayFields?.map((f) => f.id),
       symmetricReferenceFieldId: this.symmetricReferenceField?.id,
       required: !!this.required,
+      display: this.display,
       bidirectional: !!this.isOwner,
     })
   }
@@ -550,17 +595,14 @@ export class ReferenceField extends Field {
       description: this.description,
       type: 'reference',
       foreignTableId: isForeignTableDeleted ? undefined : this.foreignTable?.id,
-      displayFieldIds: isForeignTableDeleted
-        ? []
-        : this.displayFields.isInitialized()
-        ? this.displayFields.getItems().map((f) => f.id)
-        : [],
+      displayFieldIds: isForeignTableDeleted ? [] : this.foreignDisplayFields?.map((f) => f.id),
       symmetricReferenceFieldId: isForeignTableDeleted
         ? undefined
         : this.symmetricReferenceField?.isDeleted
         ? undefined
         : this.symmetricReferenceField?.id,
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -590,6 +632,15 @@ export class TreeField extends Field {
   @OneToMany(() => LookupField, (f) => f.lookupReferenceField)
   lookupFields = new Collection<LookupField>(this)
 
+  get foreignDisplayFields() {
+    let displayFields = this.displayFields.getItems()
+    if (!displayFields.length) {
+      displayFields = this.table.fields.getItems().filter((f) => f.display)
+    }
+
+    return displayFields
+  }
+
   toDomain(): CoreTreeField {
     return CoreTreeField.unsafeCreate({
       id: this.id,
@@ -599,6 +650,7 @@ export class TreeField extends Field {
       parentFieldId: this.parentFieldId,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id),
       required: !!this.required,
+      display: this.display,
     })
   }
 
@@ -611,6 +663,7 @@ export class TreeField extends Field {
       parentFieldId: this.parentFieldId,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id),
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -631,6 +684,15 @@ export class ParentField extends Field {
   @OneToMany(() => LookupField, (f) => f.lookupReferenceField)
   lookupFields = new Collection<LookupField>(this)
 
+  get foreignDisplayFields() {
+    let displayFields = this.displayFields.getItems()
+    if (!displayFields.length) {
+      displayFields = this.table.fields.getItems().filter((f) => f.display)
+    }
+
+    return displayFields
+  }
+
   toDomain(): CoreParentField {
     return CoreParentField.unsafeCreate({
       id: this.id,
@@ -640,6 +702,7 @@ export class ParentField extends Field {
       treeFieldId: this.treeFieldId,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id),
       required: !!this.required,
+      display: this.display,
     })
   }
 
@@ -652,6 +715,7 @@ export class ParentField extends Field {
       treeFieldId: this.treeFieldId,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id),
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -672,6 +736,7 @@ export class CountField extends Field {
       description: this.description,
       type: 'count',
       required: !!this.required,
+      display: this.display,
       referenceFieldId: this.countReferenceField.id,
     })
   }
@@ -684,6 +749,7 @@ export class CountField extends Field {
       type: 'count',
       referenceFieldId: this.countReferenceField.id,
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -707,6 +773,7 @@ export class SumField extends Field {
       description: this.description,
       type: 'sum',
       required: !!this.required,
+      display: this.display,
       referenceFieldId: this.sumReferenceField.id,
       aggregateFieldId: this.sumAggregateField.id,
     })
@@ -721,6 +788,7 @@ export class SumField extends Field {
       referenceFieldId: this.sumReferenceField.id,
       aggregateFieldId: this.sumAggregateField.id,
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -744,6 +812,7 @@ export class AverageField extends Field {
       description: this.description,
       type: 'average',
       required: !!this.required,
+      display: this.display,
       referenceFieldId: this.averageReferenceField.id,
       aggregateFieldId: this.averageAggregateField.id,
     })
@@ -758,6 +827,7 @@ export class AverageField extends Field {
       referenceFieldId: this.averageReferenceField.id,
       aggregateFieldId: this.averageAggregateField.id,
       required: !!this.required,
+      display: this.display,
     }
   }
 }
@@ -774,6 +844,14 @@ export class LookupField extends Field {
   @ManyToMany({ entity: () => Field, owner: true })
   displayFields = new Collection<Field>(this)
 
+  get foreignDisplayFields() {
+    const displayFieleds = this.displayFields.getItems()
+    if (!displayFieleds.length) {
+      return this.lookupReferenceField.foreignDisplayFields
+    }
+    return displayFieleds
+  }
+
   toDomain(): CoreLookupField {
     return CoreLookupField.unsafeCreate({
       id: this.id,
@@ -781,6 +859,7 @@ export class LookupField extends Field {
       description: this.description,
       type: 'lookup',
       required: !!this.required,
+      display: this.display,
       referenceFieldId: this.lookupReferenceField.id,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id) as [string, ...string[]],
     })
@@ -794,6 +873,7 @@ export class LookupField extends Field {
       type: 'lookup',
       referenceFieldId: this.lookupReferenceField.id,
       required: !!this.required,
+      display: this.display,
       displayFieldIds: this.displayFields.getItems().map((f) => f.id) as [string, ...string[]],
     }
   }

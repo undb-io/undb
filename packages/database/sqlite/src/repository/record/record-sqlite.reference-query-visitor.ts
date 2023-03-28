@@ -58,8 +58,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
 
   #getFieldExpand(table: string, column: ReferenceField | LookupField | ParentField | TreeField) {
     return this.knex.raw(
-      `json_object('${column.id}', json_object(${column.displayFields
-        .getItems()
+      `json_object('${column.id}', json_object(${column.foreignDisplayFields
         .flatMap((c) => [`'${c.id}'`, `${table}.${c.id}`])
         .join(',')})) as ${getExpandColumnName(column.id)}`,
     )
@@ -80,9 +79,8 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
     const sumFields = column.sumFields.getItems()
     const lookupFields = column.lookupFields.getItems()
     const averageFields = column.averageFields.getItems()
-    const displayFields = column.displayFields
-      .getItems()
-      .concat(lookupFields.flatMap((c) => c.displayFields.getItems()))
+    const displayFields = column.foreignDisplayFields
+      .concat(lookupFields.flatMap((c) => c.foreignDisplayFields))
       .concat(sumFields.map((c) => c.sumAggregateField))
       .concat(averageFields.map((c) => c.averageAggregateField))
     const displayColumns = uniqBy(displayFields, (f) => f.id).map((field) => field.toDomain())
@@ -151,8 +149,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
     const sumFields = column.sumFields.getItems()
     const averageFields = column.averageFields.getItems()
     const lookupFields = column.lookupFields.getItems()
-    const displayFields = column.displayFields
-      .getItems()
+    const displayFields = column.foreignDisplayFields
       .concat(lookupFields.flatMap((c) => c.displayFields.getItems()))
       .concat(sumFields.map((c) => c.sumAggregateField))
       .concat(averageFields.map((c) => c.averageAggregateField))
@@ -218,9 +215,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
     const { knex } = this
     const column = this.#mustGetColumn(field) as ParentField
     const lookupFields = column.lookupFields.getItems()
-    const displayFields = column.displayFields
-      .getItems()
-      .concat(lookupFields.flatMap((f) => f.displayFields.getItems()))
+    const displayFields = column.foreignDisplayFields.concat(lookupFields.flatMap((f) => f.foreignDisplayFields))
     const displayColumns = uniqBy(displayFields, (f) => f.id).map((field) => field.toDomain())
     const foreignTableId = field.foreignTableId.unwrapOr(this.table.id.value)
     const closure = new ClosureTable(this.table.id.value, field)

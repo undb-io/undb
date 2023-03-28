@@ -24,6 +24,7 @@ import type {
   UpdatedAtField,
   WithDisplayFields,
   WithFieldDescription,
+  WithFieldDisplay,
   WithFieldName,
   WithFieldRequirement,
   WithFormat,
@@ -116,6 +117,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   witoutOption(s: WithoutOption): void {}
   withFieldName(s: WithFieldName): void {}
   withFieldDescription(s: WithFieldDescription): void {}
+  withFieldDisplay(s: WithFieldDisplay): void {}
   displayFieldsEqual(s: WithDisplayFields): void {}
   withFormat(s: WithFormat): void {}
   withShowSystemFields(s: WithShowSystemFieldsSpec): void {}

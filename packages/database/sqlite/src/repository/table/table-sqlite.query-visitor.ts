@@ -5,6 +5,7 @@ import type {
   WithDisplayFields,
   WithDisplayType,
   WithFieldDescription,
+  WithFieldDisplay,
   WithFieldName,
   WithFieldOption,
   WithFieldRequirement,
@@ -118,6 +119,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   withFieldDescription(s: WithFieldDescription): void {
+    throw new Error('Method not implemented.')
+  }
+  withFieldDisplay(s: WithFieldDisplay): void {
     throw new Error('Method not implemented.')
   }
   displayFieldsEqual(s: WithDisplayFields): void {

@@ -173,6 +173,16 @@
           "default": "false",
           "mappedType": "integer"
         },
+        "display": {
+          "name": "display",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "integer"
+        },
         "type": {
           "name": "type",
           "type": "text",

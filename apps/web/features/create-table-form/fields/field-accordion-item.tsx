@@ -13,7 +13,7 @@ import {
   IconPlus,
   useDisclosure,
 } from '@egodb/ui'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CSS } from '@dnd-kit/utilities'
 import { FieldCommonControl } from './field-common-control'
 import { FieldInputLabel } from '../../field-inputs/field-input-label'
@@ -47,7 +47,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
   }
 
   const { t } = useTranslation()
-  const [display, handler] = useDisclosure()
+  const [displayDiscription, handler] = useDisclosure()
 
   return (
     <Accordion.Item id={String(id)} opacity={isDragging ? 0.5 : 1} value={String(id)}>
@@ -72,7 +72,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
                   withinPortal
                   searchable
                   onChange={(value) => f.field.onChange(value)}
-                  label={<FieldInputLabel>{t('Name', { ns: 'common' })}</FieldInputLabel>}
+                  label={<FieldInputLabel>{t('Type', { ns: 'common' })}</FieldInputLabel>}
                   defaultValue="string"
                   variant="filled"
                   required={true}
@@ -98,7 +98,7 @@ export const FieldAccordionItem: React.FC<IProps> = ({ index, id }) => {
           </Group>
           <FieldVariantControl index={index} />
 
-          {display && (
+          {displayDiscription && (
             <TextInput
               {...form.register(`schema.${index}.description`)}
               autoFocus

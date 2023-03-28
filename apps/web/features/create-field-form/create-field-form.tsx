@@ -1,8 +1,10 @@
 import {
+  Box,
   Button,
   closeAllModals,
   Divider,
   Group,
+  HoverCard,
   IconPlus,
   Select,
   Stack,
@@ -17,6 +19,7 @@ import { FieldVariantControl } from '../field/field-variant-control'
 import { FieldItem } from '../field-inputs/field-item'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import type { ICreateFieldSchema } from '@egodb/core'
+import { canDisplay } from '@egodb/core'
 import { isControlledFieldType } from '@egodb/core'
 import { createFieldSchema } from '@egodb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -28,6 +31,7 @@ import { useTranslation } from 'react-i18next'
 import { useAtomValue } from 'jotai'
 import { createFieldInitialValueAtom } from './create-field-initial-value.atom'
 import type { ICreateFieldCommandInput } from '@egodb/cqrs'
+import { DisplayFields } from '../field/display-fields'
 
 export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) => {
   const table = useCurrentTable()
@@ -59,6 +63,13 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
   })
 
   const type = form.watch('type')
+  const displayField = form.watch('display')
+
+  const displayFields = table.schema.displayFields.map((f) => ({ name: f.name.value }))
+
+  if (displayField) {
+    displayFields.push({ name: form.watch('name') })
+  }
 
   return (
     <FormProvider {...form}>
@@ -111,6 +122,25 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
             <Group position="right">
               {!isControlledFieldType(type) && (
                 <Switch {...form.register('required')} size="xs" label={t('Required', { ns: 'common' })} />
+              )}
+              {canDisplay(type) && (
+                <HoverCard closeDelay={300} withinPortal>
+                  <HoverCard.Target>
+                    <Box>
+                      <Switch
+                        {...form.register('display')}
+                        checked={displayField}
+                        size="xs"
+                        label={t('Display', { ns: 'common' })}
+                      />
+                    </Box>
+                  </HoverCard.Target>
+                  <HoverCard.Dropdown>
+                    {!!displayFields.length && (
+                      <DisplayFields displayFields={displayFields.map((f) => ({ name: f.name }))} />
+                    )}
+                  </HoverCard.Dropdown>
+                </HoverCard>
               )}
               <Button
                 variant="subtle"
