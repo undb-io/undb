@@ -1,4 +1,4 @@
-import { isControlledFieldType } from '@egodb/core'
+import { canDisplay, isControlledFieldType } from '@egodb/core'
 import type { ICreateTableInput } from '@egodb/cqrs'
 import { ActionIcon, Text, Button, Group, IconDots, Menu, Switch } from '@egodb/ui'
 import { useResetAtom } from 'jotai/utils'
@@ -23,6 +23,9 @@ export const FieldCommonControl: React.FC<IProps> = ({ index }) => {
     <Group position="right">
       {!isControlledFieldType(type) && (
         <Switch {...form.register(`schema.${index}.required`)} size="xs" label={t('Required', { ns: 'common' })} />
+      )}
+      {canDisplay(type) && (
+        <Switch {...form.register(`schema.${index}.display`)} size="xs" label={t('Display', { ns: 'common' })} />
       )}
       <Menu>
         <Menu.Target>

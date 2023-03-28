@@ -1,6 +1,6 @@
 import type { IFieldType } from './field.type'
 
-const controlledFieldTypes: IFieldType[] = [
+const controlledFieldTypes: Set<IFieldType> = new Set([
   'id',
   'auto-increment',
   'created-at',
@@ -9,6 +9,18 @@ const controlledFieldTypes: IFieldType[] = [
   'sum',
   'average',
   'lookup',
-]
+])
 
-export const isControlledFieldType = (type: IFieldType): boolean => controlledFieldTypes.includes(type)
+export const isControlledFieldType = (type: IFieldType): boolean => controlledFieldTypes.has(type)
+
+const displayFieldTypes: Set<IFieldType> = new Set<IFieldType>([
+  'auto-increment',
+  'color',
+  'date',
+  'email',
+  'number',
+  'rating',
+  'string',
+])
+
+export const canDisplay = (type: IFieldType): boolean => displayFieldTypes.has(type)

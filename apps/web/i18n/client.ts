@@ -55,6 +55,7 @@ i18n
           Base: 'Base',
           Lookup: 'Lookup',
           Reference: 'Reference',
+          Display: 'Display Field',
         },
         table: {
           'Create New Record': 'Create New Record',
@@ -212,6 +213,7 @@ i18n
           Base: '基础',
           Lookup: '查看',
           Reference: '关联',
+          Display: '展示列',
         },
         table: {
           'Create New Record': '创建新记录',

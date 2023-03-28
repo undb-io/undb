@@ -82,7 +82,7 @@ export const FieldMenuDropdown: React.FC<IProps> = ({ field, orientation, index,
           {t('Update Field')}
         </Menu.Item>
 
-        <Menu.Divider />
+        {/* <Menu.Divider /> */}
 
         {fieldMenu ? (
           <>
