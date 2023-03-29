@@ -1,11 +1,11 @@
-import { type MemoryStorageFile } from '@blazity/nest-file-fastify'
-import { Controller, Post, UploadedFile } from '@nestjs/common'
+import { Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
+import { FileFastifyInterceptor } from 'fastify-file-interceptor'
 
 @Controller('attachment')
 export class AttachmentController {
   @Post('upload')
-  // @UseInterceptors(FileInterceptor('file'))
-  upload(@UploadedFile() file: MemoryStorageFile) {
+  @UseInterceptors(FileFastifyInterceptor('file'))
+  upload(@UploadedFile() file: Express.Multer.File) {
     console.log(file)
   }
 }
