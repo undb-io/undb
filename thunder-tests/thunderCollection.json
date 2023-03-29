@@ -13,5 +13,12 @@
         "sortNum": 10000
       }
     ]
+  },
+  {
+    "_id": "c1df72ee-7774-47f4-9190-e7dc8cf5b9f3",
+    "colName": "attachment",
+    "created": "2023-03-29T11:11:27.980Z",
+    "sortNum": 20000,
+    "folders": []
   }
 ]
