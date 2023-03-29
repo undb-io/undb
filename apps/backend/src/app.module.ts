@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ClsModule } from 'nestjs-cls'
 import { LoggerModule } from 'nestjs-pino'
 import path from 'path'
+import { AttachmentModule } from './attachment/attachment.module.js'
 import { HealthModule } from './health/health.module.js'
 import { modules } from './modules/index.js'
 import { TrpcModule } from './trpc/trpc.module.js'
@@ -33,6 +34,7 @@ import { TrpcModule } from './trpc/trpc.module.js'
       inject: [ConfigService],
     }),
     ...modules,
+    AttachmentModule,
   ],
 })
 export class AppModule implements OnModuleInit {

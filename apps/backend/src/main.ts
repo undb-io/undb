@@ -1,5 +1,6 @@
 import { AppRouter } from '@egodb/trpc'
 import compression from '@fastify/compress'
+import multipart from '@fastify/multipart'
 import { NestFactory } from '@nestjs/core'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
 import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify'
@@ -28,6 +29,7 @@ async function bootstrap() {
   })
 
   await app.register(compression)
+  await app.register(multipart)
 
   await app.listen(4000, '0.0.0.0')
 }
