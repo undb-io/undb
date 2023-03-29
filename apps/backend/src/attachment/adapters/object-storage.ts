@@ -1,3 +1,3 @@
 export interface IObjectStorage {
-  put(): Promise<void>
+  put(buffer: Buffer, originalname: string): Promise<void>
 }

@@ -9,7 +9,6 @@ export class AttachmentController {
   @Post('upload')
   @UseInterceptors(FileFastifyInterceptor('file'))
   async upload(@UploadedFile() file: Express.Multer.File) {
-    console.log(file)
-    await this.attachmentService.uploadFile()
+    await this.attachmentService.uploadFile(file.buffer, file.originalname)
   }
 }

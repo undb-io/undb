@@ -6,7 +6,7 @@ import { InjectObjectStorage } from './adapters/provider.js'
 export class AttachmentService {
   constructor(@InjectObjectStorage() private readonly storage: IObjectStorage) {}
 
-  public async uploadFile() {
-    await this.storage.put()
+  public async uploadFile(buffer: Buffer, originalname: string) {
+    await this.storage.put(buffer, originalname)
   }
 }
