@@ -211,7 +211,8 @@
             "count",
             "lookup",
             "sum",
-            "average"
+            "average",
+            "attachment"
           ],
           "mappedType": "enum"
         },

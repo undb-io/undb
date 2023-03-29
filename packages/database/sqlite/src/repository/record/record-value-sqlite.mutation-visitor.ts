@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type {
+  AttachmentFieldValue,
   AutoIncrementFieldValue,
   AverageFieldValue,
   BoolFieldValue,
@@ -82,6 +83,9 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
   }
   select(value: SelectFieldValue): void {
     this.setData(this.fieldId, value.unpack())
+  }
+  attachment(value: AttachmentFieldValue): void {
+    throw new Error('Method not implemented.')
   }
   reference(value: ReferenceFieldValue): void {
     const field = this.schema.get(this.fieldId)

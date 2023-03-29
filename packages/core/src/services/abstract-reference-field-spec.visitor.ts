@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { AverageField } from '../field/average-field.js'
 import type {
+  AttachmentField,
   AutoIncrementField,
   BoolField,
   ColorField,
@@ -66,6 +67,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   id(field: IdField): void {}
   createdAt(field: CreatedAtField): void {}
   updatedAt(field: UpdatedAtField): void {}
+  attachment(field: AttachmentField): void {}
   autoIncrement(field: AutoIncrementField): void {}
   string(field: StringField): void {}
   email(field: EmailField): void {}

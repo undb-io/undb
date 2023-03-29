@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import type {
   UpdatedAtField as CoereUpdatedAtField,
+  AttachmentField as CoreAttachmentField,
   AutoIncrementField as CoreAutoIncrementField,
   AverageField as CoreAverageField,
   BoolField as CoreBoolField,
@@ -27,6 +28,7 @@ import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
 import {
+  AttachmentField,
   AutoIncrementField,
   AverageField,
   BoolField,
@@ -133,6 +135,12 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
   select(value: CoreSelectField): void {
     const field = new SelectField(this.table, value)
     wrap(field).assign({ options: value.options.options.map((option) => new Option(field, option)) })
+    this.em.persist(field)
+  }
+
+  attachment(value: CoreAttachmentField): void {
+    const field = new AttachmentField(this.table, value)
+
     this.em.persist(field)
   }
 

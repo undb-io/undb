@@ -1,5 +1,6 @@
 import type {
   Field as CoreField,
+  IAttachmentFieldQuerySchema,
   IAutoIncrementFieldQuerySchema,
   IAverageFieldQuerySchema,
   IBoolFieldQuerySchema,
@@ -24,6 +25,7 @@ import type {
   IUpdatedAtFieldQuerySchema,
 } from '@egodb/core'
 import {
+  AttachmentField as CoreAttachmentField,
   AutoIncrementField as CoreAutoIncrementField,
   AverageField as CoreAverageField,
   BoolField as CoreBoolField,
@@ -122,6 +124,7 @@ export abstract class Field extends BaseEntity {
       'lookup',
       'sum',
       'average',
+      'attachment',
     ],
   })
   type: IFieldType
@@ -293,6 +296,31 @@ export class EmailField extends Field {
       id: this.id,
       name: this.name,
       type: 'email',
+      description: this.description,
+      required: !!this.required,
+      display: this.display,
+    }
+  }
+}
+
+@Entity({ discriminatorValue: 'attachment' })
+export class AttachmentField extends Field {
+  toDomain(): CoreAttachmentField {
+    return CoreAttachmentField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      type: 'attachment',
+      description: this.description,
+      required: !!this.required,
+      display: this.display,
+    })
+  }
+
+  toQuery(): IAttachmentFieldQuerySchema {
+    return {
+      id: this.id,
+      name: this.name,
+      type: 'attachment',
       description: this.description,
       required: !!this.required,
       display: this.display,
@@ -900,6 +928,7 @@ export type IField =
   | LookupField
   | SumField
   | AverageField
+  | AttachmentField
 
 export const fieldEntities = [
   IdField,
@@ -922,4 +951,5 @@ export const fieldEntities = [
   LookupField,
   SumField,
   AverageField,
+  AttachmentField,
 ]
