@@ -1,4 +1,5 @@
 export * from './api'
+export * from './attachment'
 export * from './field'
 export * from './record'
 export * from './table'

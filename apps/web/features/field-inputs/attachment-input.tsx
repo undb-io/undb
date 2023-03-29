@@ -1,8 +1,18 @@
+import { useUploadMutation } from '@egodb/store'
 import { Text, Dropzone, Group, IconUpload, IconX, IconPhoto } from '@egodb/ui'
 
 export const AttachmentInput: React.FC = () => {
+  const [upload, { isLoading }] = useUploadMutation()
+
   return (
-    <Dropzone onDrop={console.log}>
+    <Dropzone
+      onDrop={(files) => {
+        const formData = new FormData()
+        formData.set('file', files[0])
+        upload(formData)
+      }}
+      loading={isLoading}
+    >
       <Group position="center" spacing="xs" style={{ pointerEvents: 'none' }}>
         <Dropzone.Accept>
           <IconUpload size="3.2rem" stroke={1.5} />
