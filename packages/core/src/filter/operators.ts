@@ -29,6 +29,9 @@ export type IStringFilterOperator = z.infer<typeof stringFilterOperators>
 export const emailFilterOperators = z.union([$eq, $neq, $starts_with, $ends_with, $contains])
 export type IEmailFilterOperator = z.infer<typeof emailFilterOperators>
 
+export const attachmentFilterOperators = z.union([$eq, $neq])
+export type IAttachmentFilterOperator = z.infer<typeof attachmentFilterOperators>
+
 export const colorFilterOperators = z.union([$eq, $neq])
 export type IColorFilterOperator = z.infer<typeof colorFilterOperators>
 

@@ -1,3 +1,4 @@
+import { AttachmentField } from './attachment-field.js'
 import { AutoIncrementField } from './auto-increment-field.js'
 import { AverageField } from './average-field.js'
 import { BoolField } from './bool-field.js'
@@ -84,6 +85,9 @@ export class FieldFactory {
       case 'lookup': {
         return LookupField.create(input)
       }
+      case 'attachment': {
+        return AttachmentField.create(input)
+      }
     }
   }
 
@@ -148,6 +152,9 @@ export class FieldFactory {
       }
       case 'lookup': {
         return LookupField.unsafeCreate(input)
+      }
+      case 'attachment': {
+        return AttachmentField.unsafeCreate(input)
       }
     }
   }
