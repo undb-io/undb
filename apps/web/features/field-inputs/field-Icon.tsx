@@ -13,6 +13,7 @@ import {
   IconMail,
   IconMathXDivideY2,
   IconPalette,
+  IconPaperclip,
   IconQuestionMark,
   IconRelationManyToMany,
   IconSearch,
@@ -36,6 +37,8 @@ export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16, color }) => {
       return <IconLetterT size={size} color={color} />
     case 'email':
       return <IconMail size={size} color={color} />
+    case 'attachment':
+      return <IconPaperclip size={size} color={color} />
     case 'color':
       return <IconPalette size={size} color={color} />
     case 'number':

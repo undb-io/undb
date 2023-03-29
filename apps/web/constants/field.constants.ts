@@ -3,6 +3,7 @@ import type { SelectItem } from '@egodb/ui'
 export const FIELD_SELECT_ITEMS: SelectItem[] = [
   { value: 'string', label: 'String', group: 'Base' },
   { value: 'email', label: 'Email', group: 'Base' },
+  { value: 'attachment', label: 'Attachment', group: 'Base' },
   { value: 'color', label: 'Color', group: 'Base' },
   { value: 'bool', label: 'Bool', group: 'Base' },
   { value: 'number', label: 'Number', group: 'Base' },

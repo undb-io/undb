@@ -1,4 +1,5 @@
 import type {
+  AttachmentField,
   AverageField,
   BoolField,
   ColorField,
@@ -115,6 +116,12 @@ export class UnderlyingStringColumn extends UnderlyingFieldColumn<StringField> {
 }
 
 export class UnderlyingEmailColumn extends UnderlyingFieldColumn<EmailField> {
+  build(tb: Knex.TableBuilder): void {
+    tb.string(this.name)
+  }
+}
+
+export class UnderlyingAttachmentColumn extends UnderlyingFieldColumn<AttachmentField> {
   build(tb: Knex.TableBuilder): void {
     tb.string(this.name)
   }
