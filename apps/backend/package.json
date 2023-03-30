@@ -21,6 +21,8 @@
     "@nestjs/serve-static": "^3.0.1",
     "@nestjs/terminus": "^9.2.1",
     "@trpc/server": "^10.18.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
     "fastify-file-interceptor": "^1.0.8",
     "i18next": "^22.4.13",
     "joi": "^17.9.1",

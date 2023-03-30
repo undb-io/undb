@@ -10,24 +10,28 @@ import { IObjectStorage } from './object-storage.js'
 export class LocalObjectStorage implements IObjectStorage {
   constructor(@InjectObjectStorageConfig() private readonly config: ConfigType<typeof objectStorageConfig>) {}
 
-  get #path() {
+  get #nestedPath() {
     const now = new Date()
-    return path.join(
-      this.config.local.path,
-      now.getFullYear().toString(),
-      (now.getMonth() + 1).toString(),
-      now.getDate().toString(),
-    )
+    return path.join(now.getFullYear().toString(), (now.getMonth() + 1).toString(), now.getDate().toString())
   }
 
-  async #getPath(name: string) {
-    const p = this.#path
+  async #getPath(nestedPath: string) {
+    const p = path.join(this.config.local.path, nestedPath)
     await fs.promises.mkdir(p, { recursive: true })
-    return path.join(p, name)
+    return p
   }
 
-  async put(buffer: Buffer, originalname: string): Promise<void> {
-    const name = v4() + '_' + originalname
-    await fs.promises.writeFile(await this.#getPath(name), buffer)
+  #getFull(p: string, token: string, name: string) {
+    return path.join(p, token + '_' + name)
+  }
+
+  async put(buffer: Buffer, originalname: string): Promise<{ token: string; id: string }> {
+    const nestedPath = this.#nestedPath
+    const p = await this.#getPath(nestedPath)
+    const id = v4()
+    const token = path.join(nestedPath, id)
+    const full = this.#getFull(p, id, originalname)
+    await fs.promises.writeFile(full, buffer)
+    return { token, id }
   }
 }
