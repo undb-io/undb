@@ -4,7 +4,7 @@ import type { IFieldValueVisitor } from './field-value.visitor.js'
 
 export class AttachmentFieldValue extends FieldValueBase<IAttachmentFieldValue> {
   constructor(value: IAttachmentFieldValue) {
-    super({ value })
+    super(value)
   }
 
   accept(visitor: IFieldValueVisitor): void {
