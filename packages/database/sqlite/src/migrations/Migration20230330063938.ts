@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230330060849 extends Migration {
+export class Migration20230330063938 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `ego_table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `views_order` text null, primary key (`id`));',
@@ -47,7 +47,7 @@ export class Migration20230330060849 extends Migration {
     )
 
     this.addSql(
-      'create table `ego_attachment` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `record_id` text not null, `table_id` text not null, `mime_type` text not null, `size` integer not null, `token` text not null, constraint `ego_attachment_table_id_foreign` foreign key(`table_id`) references `ego_table`(`id`) on update cascade, primary key (`id`));',
+      'create table `ego_attachment` (`id` text not null, `record_id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text not null, `mime_type` text not null, `size` integer not null, `token` text not null, constraint `ego_attachment_table_id_foreign` foreign key(`table_id`) references `ego_table`(`id`) on update cascade, primary key (`id`, `record_id`));',
     )
     this.addSql('create index `ego_attachment_deleted_at_index` on `ego_attachment` (`deleted_at`);')
     this.addSql('create index `ego_attachment_table_id_index` on `ego_attachment` (`table_id`);')

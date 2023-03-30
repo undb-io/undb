@@ -1,6 +1,6 @@
 import type { IAttachmentItem } from '@egodb/core'
 import type { Rel } from '@mikro-orm/core'
-import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
+import { Entity, ManyToOne, PrimaryKey, PrimaryKeyType, Property } from '@mikro-orm/core'
 import { BaseEntity } from './base.js'
 import { Table } from './table.js'
 
@@ -9,8 +9,10 @@ export class Attachment extends BaseEntity {
   @PrimaryKey()
   id: string
 
-  @Property()
-  recordId: string
+  @PrimaryKey()
+  recordId: string;
+
+  [PrimaryKeyType]?: [string, string]
 
   @ManyToOne(() => Table)
   table: Rel<Table>

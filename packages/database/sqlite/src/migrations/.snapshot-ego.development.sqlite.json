@@ -801,6 +801,15 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "record_id": {
+          "name": "record_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "created_at": {
           "name": "created_at",
           "type": "datetime",
@@ -830,15 +839,6 @@
           "nullable": true,
           "length": 0,
           "mappedType": "datetime"
-        },
-        "record_id": {
-          "name": "record_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
         },
         "table_id": {
           "name": "table_id",
@@ -900,9 +900,10 @@
         {
           "keyName": "primary",
           "columnNames": [
-            "id"
+            "id",
+            "record_id"
           ],
-          "composite": false,
+          "composite": true,
           "primary": true,
           "unique": true
         }

@@ -122,9 +122,12 @@ export class UnderlyingEmailColumn extends UnderlyingFieldColumn<EmailField> {
 }
 
 export class UnderlyingAttachmentColumn extends UnderlyingFieldColumn<AttachmentField> {
-  build(tb: Knex.TableBuilder): void {
-    tb.string(this.name)
+  override get virtual() {
+    return true
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
+  build(tb: Knex.TableBuilder): void {}
 }
 
 export class UnderlyingColorColumn extends UnderlyingFieldColumn<ColorField> {
