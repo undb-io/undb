@@ -21,6 +21,9 @@ export class Attachment extends BaseEntity {
   @Property()
   size: number
 
+  @Property()
+  token: string
+
   constructor(table: Rel<Table>, recordId: string, attachment: IAttachmentItem) {
     super()
     this.table = table
@@ -28,5 +31,6 @@ export class Attachment extends BaseEntity {
     this.id = attachment.id
     this.mimeType = attachment.mimeType
     this.size = attachment.size
+    this.token = attachment.token
   }
 }
