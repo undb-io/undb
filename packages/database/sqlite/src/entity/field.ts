@@ -47,6 +47,7 @@ import {
   TreeField as CoreTreeField,
   UpdatedAtField as CoreUpdatedAtField,
 } from '@egodb/core'
+import type { Rel } from '@mikro-orm/core'
 import {
   BooleanType,
   Cascade,
@@ -68,7 +69,7 @@ import { Table } from './table.js'
 
 @Entity({ tableName: 'ego_field', abstract: true, discriminatorColumn: 'type' })
 export abstract class Field extends BaseEntity {
-  constructor(table: Table, field: CoreField) {
+  constructor(table: Rel<Table>, field: CoreField) {
     super()
     this.id = field.id.value
     this.table = table
@@ -84,7 +85,7 @@ export abstract class Field extends BaseEntity {
   id: string
 
   @ManyToOne(() => Table, { cascade: [Cascade.ALL] })
-  table: Table
+  table: Rel<Table>
 
   @Property()
   name: string
@@ -160,7 +161,7 @@ export class IdField extends Field {
 
 @Entity({ discriminatorValue: 'created-at' })
 export class CreatedAtField extends Field {
-  constructor(table: Table, field: CoreCreatedAtField) {
+  constructor(table: Rel<Table>, field: CoreCreatedAtField) {
     super(table, field)
     this.format = field.formatString
   }
@@ -195,7 +196,7 @@ export class CreatedAtField extends Field {
 
 @Entity({ discriminatorValue: 'updated-at' })
 export class UpdatedAtField extends Field {
-  constructor(table: Table, field: CoreUpdatedAtField) {
+  constructor(table: Rel<Table>, field: CoreUpdatedAtField) {
     super(table, field)
     this.format = field.formatString
   }
@@ -380,7 +381,7 @@ export class NumberField extends Field {
 
 @Entity({ discriminatorValue: 'rating' })
 export class RatingField extends Field {
-  constructor(table: Table, field: CoreRatingField) {
+  constructor(table: Rel<Table>, field: CoreRatingField) {
     super(table, field)
     this.max = field.max
   }
@@ -440,7 +441,7 @@ export class BoolField extends Field {
 
 @Entity({ discriminatorValue: 'date' })
 export class DateField extends Field {
-  constructor(table: Table, field: CoreDateField) {
+  constructor(table: Rel<Table>, field: CoreDateField) {
     super(table, field)
     this.format = field.formatString
   }
@@ -475,7 +476,7 @@ export class DateField extends Field {
 
 @Entity({ discriminatorValue: 'date-range' })
 export class DateRangeField extends Field {
-  constructor(table: Table, field: CoreDateRangeField) {
+  constructor(table: Rel<Table>, field: CoreDateRangeField) {
     super(table, field)
     this.format = field.formatString
   }
@@ -557,13 +558,13 @@ export class SelectField extends Field {
 
 @Entity({ discriminatorValue: 'reference' })
 export class ReferenceField extends Field {
-  constructor(table: Table, field: CoreReferenceField) {
+  constructor(table: Rel<Table>, field: CoreReferenceField) {
     super(table, field)
     this.isOwner = field.isOwner
   }
 
   @ManyToOne(() => Table, { strategy: LoadStrategy.JOINED })
-  foreignTable?: Table
+  foreignTable?: Rel<Table>
 
   @ManyToMany({ entity: () => Field, owner: true })
   displayFields = new Collection<Field>(this)
@@ -637,7 +638,7 @@ export class ReferenceField extends Field {
 
 @Entity({ discriminatorValue: 'tree' })
 export class TreeField extends Field {
-  constructor(table: Table, field: CoreTreeField) {
+  constructor(table: Rel<Table>, field: CoreTreeField) {
     super(table, field)
     this.parentFieldId = field.parentFieldId!.value
   }
@@ -698,7 +699,7 @@ export class TreeField extends Field {
 
 @Entity({ discriminatorValue: 'parent' })
 export class ParentField extends Field {
-  constructor(table: Table, field: CoreParentField) {
+  constructor(table: Rel<Table>, field: CoreParentField) {
     super(table, field)
     this.treeFieldId = field.treeFieldId.value
   }
@@ -750,7 +751,7 @@ export class ParentField extends Field {
 
 @Entity({ discriminatorValue: 'count' })
 export class CountField extends Field {
-  constructor(table: Table, field: CoreCountField) {
+  constructor(table: Rel<Table>, field: CoreCountField) {
     super(table, field)
   }
 
@@ -784,7 +785,7 @@ export class CountField extends Field {
 
 @Entity({ discriminatorValue: 'sum' })
 export class SumField extends Field {
-  constructor(table: Table, field: CoreSumField) {
+  constructor(table: Rel<Table>, field: CoreSumField) {
     super(table, field)
   }
 
@@ -823,7 +824,7 @@ export class SumField extends Field {
 
 @Entity({ discriminatorValue: 'average' })
 export class AverageField extends Field {
-  constructor(table: Table, field: CoreAverageField) {
+  constructor(table: Rel<Table>, field: CoreAverageField) {
     super(table, field)
   }
 
@@ -862,7 +863,7 @@ export class AverageField extends Field {
 
 @Entity({ discriminatorValue: 'lookup' })
 export class LookupField extends Field {
-  constructor(table: Table, field: CoreLookupField) {
+  constructor(table: Rel<Table>, field: CoreLookupField) {
     super(table, field)
   }
 

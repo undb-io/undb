@@ -16,7 +16,7 @@ export type IUpdateAttachmentFieldInput = z.infer<typeof updateAttachmentFieldSc
 export const attachmentFieldQuerySchema = baseFieldQuerySchema.merge(attachmentTypeObjectSchema)
 export type IAttachmentFieldQuerySchema = z.infer<typeof attachmentFieldQuerySchema>
 
-export const attachmentFieldValue = z
+export const attachmentItem = z
   .object({
     size: z.number().nonnegative(),
     mimeType: z.string(),
@@ -24,7 +24,9 @@ export const attachmentFieldValue = z
     token: z.string(),
   })
   .strict()
-  .array()
+export type IAttachmentItem = z.infer<typeof attachmentItem>
+
+export const attachmentFieldValue = attachmentItem.array()
 export type IAttachmentFieldValue = z.infer<typeof attachmentFieldValue>
 
 export const createAttachmentFieldValue = attachmentFieldValue
