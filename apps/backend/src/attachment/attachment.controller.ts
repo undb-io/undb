@@ -14,6 +14,7 @@ export class AttachmentController {
     const { token, id } = await this.attachmentService.uploadFile(file.buffer, file.originalname)
 
     return plainToClass(AttachmentResponseDto, {
+      name: file.originalname,
       size: file.size,
       mimeType: file.mimetype,
       id,

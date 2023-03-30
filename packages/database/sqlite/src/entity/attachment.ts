@@ -21,6 +21,9 @@ export class Attachment extends BaseEntity {
   mimeType: string
 
   @Property()
+  name: string
+
+  @Property()
   size: number
 
   @Property()
@@ -33,6 +36,7 @@ export class Attachment extends BaseEntity {
     this.id = attachment.id
     this.mimeType = attachment.mimeType
     this.size = attachment.size
+    this.name = attachment.name
     this.token = attachment.token
   }
 }

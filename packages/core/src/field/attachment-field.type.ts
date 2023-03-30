@@ -18,6 +18,7 @@ export type IAttachmentFieldQuerySchema = z.infer<typeof attachmentFieldQuerySch
 
 export const attachmentItem = z
   .object({
+    name: z.string(),
     size: z.number().nonnegative(),
     mimeType: z.string(),
     id: z.string(),

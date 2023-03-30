@@ -2,6 +2,7 @@ import { createNumberFieldSchema } from './number-field.type.js'
 import { createStringFieldSchema } from './string-field.type.js'
 
 export * from './attachment-field-value.js'
+export * from './attachment-field-value.util.js'
 export * from './attachment-field.js'
 export * from './attachment-field.type.js'
 export * from './auto-increment-field-value.js'

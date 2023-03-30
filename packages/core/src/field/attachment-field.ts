@@ -40,6 +40,7 @@ export class AttachmentField extends BaseField<IAttachmentField> {
   get valueSchema() {
     const attachment = z
       .object({
+        name: z.string(),
         size: z.number().nonnegative(),
         mimeType: z.string(),
         id: z.string(),

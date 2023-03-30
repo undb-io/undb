@@ -271,10 +271,12 @@ importers:
       '@egodb/domain': ^0.0.0
       '@types/lodash': ^4.14.191
       '@types/lodash-es': ^4.17.7
+      '@types/mime-types': ^2.1.1
       array-move: ^4.0.0
       date-fns: ^2.29.3
       lodash: ^4.17.21
       lodash-es: ^4.17.21
+      mime-types: ^2.1.35
       oxide.ts: ^1.1.0
       rimraf: ^4.4.1
       ts-mixer: ^6.0.3
@@ -292,6 +294,7 @@ importers:
       date-fns: 2.29.3
       lodash: 4.17.21
       lodash-es: 4.17.21
+      mime-types: 2.1.35
       oxide.ts: 1.1.0
       ts-mixer: 6.0.3
       zod: 3.21.4
@@ -299,6 +302,7 @@ importers:
     devDependencies:
       '@types/lodash': 4.14.191
       '@types/lodash-es': 4.17.7
+      '@types/mime-types': 2.1.1
       rimraf: 4.4.1
       tsconfig: link:../tsconfig
       tsup: 6.7.0_typescript@5.0.2
@@ -4056,6 +4060,10 @@ packages:
     dependencies:
       '@types/unist': 2.0.6
     dev: false
+
+  /@types/mime-types/2.1.1:
+    resolution: {integrity: sha512-vXOTGVSLR2jMw440moWTC7H19iUyLtP3Z1YTj7cSsubOICinjMxFeb/V57v9QdyyPGbbWolUFSSmSiRSn94tFw==}
+    dev: true
 
   /@types/mime/3.0.1:
     resolution: {integrity: sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==}
