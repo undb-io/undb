@@ -16,7 +16,7 @@ import { TrpcModule } from './trpc/trpc.module.js'
 
 @Module({
   imports: [
-    ConfigModule,
+    ConfigModule.register(),
     ClsModule.forRoot({
       global: true,
       middleware: { mount: true },
@@ -24,7 +24,6 @@ import { TrpcModule } from './trpc/trpc.module.js'
     HealthModule,
     TrpcModule,
     LoggerModule.forRootAsync({
-      imports: [ConfigModule],
       useFactory: (config: BaseConfigService) => ({
         pinoHttp: {
           transport: !config.isProd ? { target: 'pino-pretty' } : undefined,
