@@ -1,19 +1,22 @@
 import { BoolField, DateField, DateRangeField, NumberField, SelectField, StringField } from '@egodb/core'
-import { Knex } from '@mikro-orm/better-sqlite'
+import { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { UnderlyingColumnBuilder } from './underlying-column.builder.js'
 
 describe('UnderlyingColumnBuilder', () => {
   const tableName = 'tableName'
+  let em: EntityManager
   let knex: Knex
   beforeAll(() => {
     // @ts-expect-error
     knex = global.knex
+    // @ts-expect-error
+    em = global.em
   })
 
   test('should create auto increment column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
+      const builder = new UnderlyingColumnBuilder(em, knex, tb, tableName)
       builder.createAutoIncrement()
     })
 
@@ -25,7 +28,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create id column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
+      const builder = new UnderlyingColumnBuilder(em, knex, tb, tableName)
       builder.createId()
     })
 
@@ -35,7 +38,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create created_at column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
+      const builder = new UnderlyingColumnBuilder(em, knex, tb, tableName)
       builder.createCreatedAt()
     })
 
@@ -47,7 +50,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create updated_at column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
+      const builder = new UnderlyingColumnBuilder(em, knex, tb, tableName)
       builder.createUpdatedAt()
     })
 
@@ -59,7 +62,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create string column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
+      const builder = new UnderlyingColumnBuilder(em, knex, tb, tableName)
       builder.createUnderlying([StringField.create({ id: 'fldid', name: 'name' })])
     })
 
@@ -69,7 +72,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create number column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
+      const builder = new UnderlyingColumnBuilder(em, knex, tb, tableName)
       builder.createUnderlying([NumberField.create({ id: 'fldid', name: 'name' })])
     })
 
@@ -79,7 +82,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create bool column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
+      const builder = new UnderlyingColumnBuilder(em, knex, tb, tableName)
       builder.createUnderlying([BoolField.create({ id: 'fldid', name: 'name' })])
     })
 
@@ -89,7 +92,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create date column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
+      const builder = new UnderlyingColumnBuilder(em, knex, tb, tableName)
       builder.createUnderlying([DateField.create({ id: 'fldid', name: 'name' })])
     })
 
@@ -99,7 +102,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create date range column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
+      const builder = new UnderlyingColumnBuilder(em, knex, tb, tableName)
       builder.createUnderlying([DateRangeField.create({ id: 'fldid', name: 'name' })])
     })
 
@@ -111,7 +114,7 @@ describe('UnderlyingColumnBuilder', () => {
   test('should create select column', () => {
     const sb = knex.schema
     sb.createTable(tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(knex, tb, tableName)
+      const builder = new UnderlyingColumnBuilder(em, knex, tb, tableName)
       builder.createUnderlying([SelectField.create({ id: 'fldid', name: 'name', options: [] })])
     })
 

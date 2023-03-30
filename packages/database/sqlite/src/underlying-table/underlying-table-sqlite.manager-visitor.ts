@@ -36,7 +36,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   nameEqual(): void {}
   schemaEqual(s: WithTableSchema): void {
     this.sb = this.#sb.alterTable(this.tableName, (tb) => {
-      const builder = new UnderlyingColumnBuilder(this.knex, tb, this.tableName)
+      const builder = new UnderlyingColumnBuilder(this.em, this.knex, tb, this.tableName)
       builder.createUnderlying(s.schema.nonSystemFields)
       this.#queries.push(...builder.queries)
     })
@@ -56,7 +56,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
 
     const query = this.#sb
       .alterTable(this.tableName, (tb) => {
-        const builder = new UnderlyingColumnBuilder(this.knex, tb, this.tableName)
+        const builder = new UnderlyingColumnBuilder(this.em, this.knex, tb, this.tableName)
         builder.createUnderlying([field])
         this.#queries.push(...builder.queries)
       })

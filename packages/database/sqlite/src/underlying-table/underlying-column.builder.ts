@@ -1,6 +1,7 @@
 import type { NoneSystemField } from '@egodb/core'
 import { INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
-import type { Knex } from '@mikro-orm/better-sqlite'
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import { Attachment } from '../entity/attachment.js'
 import type { IUnderlyingColumnBuilder } from '../interfaces/underlying-table.builder.js'
 import { UnderlyingColumnFactory } from './underlying-column.factory.js'
 import {
@@ -13,6 +14,7 @@ import {
 
 export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
   constructor(
+    private readonly em: EntityManager,
     private readonly knex: Knex,
     private readonly tb: Knex.TableBuilder,
     private readonly tableName: string,
@@ -47,6 +49,10 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
       `,
       )
       .toQuery()
+
+    const meta = this.em.getMetadata().get(Attachment.name)
+    const recordIdName = meta.properties.recordId.name
+    this.tb.foreign(column.name).references(recordIdName).inTable(meta.tableName)
 
     this.addQueries(unique)
 
