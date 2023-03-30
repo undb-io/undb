@@ -12,12 +12,6 @@ import {
   IconCopy,
   useClipboard,
   IconClipboardCheck,
-  Dropzone,
-  Group,
-  IconPhoto,
-  IconUpload,
-  IconX,
-  Text,
 } from '@egodb/ui'
 import React from 'react'
 import { Controller } from 'react-hook-form'
@@ -322,7 +316,13 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
   }
 
   if (field.type === 'attachment') {
-    return <AttachmentInput />
+    return (
+      <Controller
+        name={name}
+        rules={{ required: field.required }}
+        render={(form) => <AttachmentInput {...form.field} />}
+      />
+    )
   }
 
   if (field.type === 'created-at' || field.type === 'updated-at') {

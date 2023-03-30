@@ -4,8 +4,7 @@ export const attachment = createApi({
   reducerPath: 'attachment',
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:4000' }),
   endpoints: (builder) => ({
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    upload: builder.mutation<{}, FormData>({
+    upload: builder.mutation<{ size: number; mimeType: string; token: string; id: string }, FormData>({
       query: (data) => ({
         url: 'attachment/upload',
         method: 'POST',

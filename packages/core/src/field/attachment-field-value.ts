@@ -7,6 +7,10 @@ export class AttachmentFieldValue extends FieldValueBase<IAttachmentFieldValue> 
     super(value)
   }
 
+  unpack() {
+    return this.props
+  }
+
   accept(visitor: IFieldValueVisitor): void {
     visitor.attachment(this)
   }

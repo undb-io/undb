@@ -38,7 +38,15 @@ export class AttachmentField extends BaseField<IAttachmentField> {
   }
 
   get valueSchema() {
-    const attachment = z.string()
-    return this.required ? attachment : attachment.nullable()
+    const attachment = z
+      .object({
+        size: z.number().nonnegative(),
+        mimeType: z.string(),
+        id: z.string(),
+        token: z.string(),
+      })
+      .strict()
+      .array()
+    return this.required ? attachment.nonempty() : attachment
   }
 }
