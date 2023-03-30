@@ -21,6 +21,7 @@
     "@trpc/server": "^10.18.0",
     "fastify-file-interceptor": "^1.0.8",
     "i18next": "^22.4.13",
+    "joi": "^17.9.1",
     "nestjs-cls": "^3.3.1",
     "nestjs-pino": "^3.1.2",
     "oxide.ts": "^1.1.0",
