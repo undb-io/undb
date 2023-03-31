@@ -8,7 +8,7 @@ COPY . .
 RUN turbo prune --scope=@egodb/web
 
 # installer
-FROM node:18-bullseye-slim AS installer
+FROM node:18-bullseye AS installer
 
 RUN npm install -g pnpm
 
