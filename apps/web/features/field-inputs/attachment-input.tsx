@@ -1,12 +1,48 @@
 import type { IAttachmentItem } from '@egodb/core'
 import { useUploadMutation } from '@egodb/store'
-import { Text, Dropzone, Group, IconUpload, IconX, IconPhoto, useListState, AspectRatio, Box } from '@egodb/ui'
+import {
+  Text,
+  Dropzone,
+  Group,
+  IconUpload,
+  IconX,
+  IconPhoto,
+  useListState,
+  AspectRatio,
+  Box,
+  CloseButton,
+  useHover,
+} from '@egodb/ui'
 import { useDeepCompareEffectNoCheck } from 'use-deep-compare-effect'
 import { AttachmentValue } from '../field-value/attachment-value'
 
 interface IProps {
   value: IAttachmentItem[]
   onChange(items: IAttachmentItem[]): void
+}
+
+const AttachmentItem: React.FC<{ attachment: IAttachmentItem; onRemove?: (attachment: IAttachmentItem) => void }> = ({
+  attachment,
+  onRemove,
+}) => {
+  const { hovered, ref } = useHover()
+  return (
+    <Box key={attachment.id} pos="relative" w={60} ref={ref}>
+      {hovered && (
+        <CloseButton
+          variant="filled"
+          pos="absolute"
+          right={-5}
+          top={-3}
+          sx={{ zIndex: 1000 }}
+          onClick={() => onRemove?.(attachment)}
+        />
+      )}
+      <AspectRatio ratio={1} h="100%" w={60}>
+        <AttachmentValue attachment={attachment} />
+      </AspectRatio>
+    </Box>
+  )
 }
 
 export const AttachmentInput: React.FC<IProps> = ({ onChange, value = [] }) => {
@@ -59,12 +95,8 @@ export const AttachmentInput: React.FC<IProps> = ({ onChange, value = [] }) => {
       </Dropzone>
       {!!attachments.length && (
         <Group h={60}>
-          {attachments.map((file) => (
-            <Box key={file.id} pos="relative">
-              <AspectRatio ratio={1} h="100%" w={60}>
-                <AttachmentValue attachment={file} />
-              </AspectRatio>
-            </Box>
+          {attachments.map((attachment, index) => (
+            <AttachmentItem key={attachment.id} attachment={attachment} onRemove={() => handler.remove(index)} />
           ))}
         </Group>
       )}
