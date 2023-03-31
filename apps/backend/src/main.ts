@@ -25,7 +25,7 @@ async function bootstrap() {
         router,
       }),
     )
-    .use(helmet())
+    .use(helmet({ contentSecurityPolicy: false, crossOriginResourcePolicy: false }))
     .use(compression())
 
   await app.listen(4000, '0.0.0.0')
