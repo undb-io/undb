@@ -1,4 +1,5 @@
 import type {
+  AttachmentFieldValue,
   BoolFieldValue,
   ColorFieldValue,
   DateFieldValue,
@@ -17,12 +18,13 @@ import { BoolValue } from './bool-value'
 import { DateRangeValue } from './date-range-value'
 import { DateValue } from './date-value'
 import { RecordId } from './record-id'
-import { Divider, Group, Rating, Text } from '@egodb/ui'
+import { AspectRatio, Divider, Group, Rating, Text } from '@egodb/ui'
 import type { FieldValue } from '@egodb/core'
 import { Option } from '../option/option'
 import { ColorValue } from './color-value'
 import type { IRecordDisplayValues } from '@egodb/core'
 import { isNumber } from 'lodash-es'
+import { AttachmentValue } from './attachment-value'
 
 export const FieldValueFactory: React.FC<{
   field: Field
@@ -94,6 +96,21 @@ export const FieldValueFactory: React.FC<{
         <Group spacing={3} noWrap sx={{ overflow: 'hidden' }} align="center" h="100%">
           {values.map((value, index) => (
             <ReferenceValue key={index} values={value} />
+          ))}
+        </Group>
+      )
+    }
+
+    case 'attachment': {
+      const unpacked = (value as AttachmentFieldValue | undefined)?.unpack()
+      if (!unpacked?.length) return null
+
+      return (
+        <Group h="100%">
+          {unpacked.map((value) => (
+            <AspectRatio key={value.id} ratio={1} h="100%" w="20px">
+              <AttachmentValue attachment={value} />
+            </AspectRatio>
           ))}
         </Group>
       )

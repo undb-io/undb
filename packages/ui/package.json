@@ -15,12 +15,14 @@
     "@mantine/utils": "^6.0.4",
     "@tabler/icons-react": "^2.11.0",
     "dayjs": "^1.11.7",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-file-icon": "^1.3.0"
   },
   "devDependencies": {
     "@egodb/eslint-config": "^0.0.0",
     "@types/react": "^18.0.29",
     "@types/react-dom": "^18.0.11",
+    "@types/react-file-icon": "^1.0.1",
     "eslint": "^8.36.0",
     "react": "^18.2.0",
     "tsconfig": "^0.0.0",
