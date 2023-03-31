@@ -62,12 +62,15 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
    * @param schema - table schema
    */
   duplicate(schema: TableSchemaIdMap): RecordValues {
-    const props = new Map(this.props)
+    const props = new Map()
 
-    for (const [fieldId, field] of schema) {
-      if (field instanceof TreeField) {
-        props.delete(fieldId)
-      }
+    for (const [fieldId, fieldValue] of this.props.entries()) {
+      const field = schema.get(fieldId)
+      if (!field) continue
+
+      if (field instanceof TreeField) continue
+
+      props.set(fieldId, fieldValue)
     }
 
     return new RecordValues(props)

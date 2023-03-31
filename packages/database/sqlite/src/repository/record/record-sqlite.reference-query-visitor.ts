@@ -80,7 +80,9 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
           '${size.name}', ${tableName}.${size.fieldNames[0]},
           '${token.name}', ${tableName}.${token.fieldNames[0]}
         )
-      ) as ${field.id.value}
+      )
+      filter (where ${tableName}.${id.fieldNames[0]} is not null)
+      as ${field.id.value}
         `),
       )
       .leftJoin(tableName, `${tableName}.${recordId.fieldNames[0]}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
