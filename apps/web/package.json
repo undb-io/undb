@@ -27,11 +27,11 @@
     "next": "^13.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.43.8",
+    "react-hook-form": "^7.43.9",
     "react-i18next": "^12.2.0",
     "react-redux": "^8.0.5",
     "use-deep-compare-effect": "^1.8.1",
-    "zod-i18n-map": "^2.8.1"
+    "zod-i18n-map": "^2.9.0"
   },
   "devDependencies": {
     "@egodb/eslint-config": "^0.0.0",
@@ -39,14 +39,14 @@
     "@next/bundle-analyzer": "^13.2.4",
     "@total-typescript/ts-reset": "^0.3.7",
     "@types/lodash-es": "^4.17.7",
-    "@types/node": "^18.15.10",
-    "@types/react": "^18.0.29",
+    "@types/node": "^18.15.11",
+    "@types/react": "^18.0.31",
     "@types/react-dom": "^18.0.11",
-    "eslint": "^8.36.0",
+    "eslint": "^8.37.0",
     "eslint-config-next": "^13.2.4",
     "tsconfig": "^0.0.0",
-    "type-fest": "^3.7.1",
-    "typescript": "^5.0.2"
+    "type-fest": "^3.7.2",
+    "typescript": "^5.0.3"
   },
   "private": true,
   "scripts": {
