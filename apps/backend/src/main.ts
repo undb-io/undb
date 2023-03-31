@@ -1,6 +1,7 @@
 import { AppRouter } from '@egodb/trpc'
 import { NestFactory } from '@nestjs/core'
 import * as trpcExpress from '@trpc/server/adapters/express'
+import compression from 'compression'
 import helmet from 'helmet'
 import { Logger } from 'nestjs-pino'
 import { AppModule } from './app.module.js'
@@ -25,6 +26,7 @@ async function bootstrap() {
       }),
     )
     .use(helmet())
+    .use(compression())
 
   await app.listen(4000, '0.0.0.0')
 }
