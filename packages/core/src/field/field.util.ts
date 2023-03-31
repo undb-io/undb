@@ -18,6 +18,7 @@ const displayFieldTypes: Set<IFieldType> = new Set<IFieldType>([
   'color',
   'date',
   'email',
+  'attachment',
   'number',
   'rating',
   'string',

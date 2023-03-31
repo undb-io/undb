@@ -26,6 +26,7 @@ import { useColors } from '../../hooks/use-colors'
 import { AutoIncrementInput } from '../field-inputs/auto-increment-input'
 import { format } from 'date-fns'
 import { FieldIssue } from '../field/field-issue'
+import { AttachmentInput } from '../field-inputs/attachment-input'
 
 interface IProps {
   field: Field
@@ -313,6 +314,17 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
       />
     )
   }
+
+  if (field.type === 'attachment') {
+    return (
+      <Controller
+        name={name}
+        rules={{ required: field.required }}
+        render={(form) => <AttachmentInput {...form.field} />}
+      />
+    )
+  }
+
   if (field.type === 'created-at' || field.type === 'updated-at') {
     return (
       <Controller

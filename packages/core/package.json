@@ -9,6 +9,7 @@
     "date-fns": "^2.29.3",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
+    "mime-types": "^2.1.35",
     "oxide.ts": "^1.1.0",
     "ts-mixer": "^6.0.3",
     "zod": "^3.21.4",
@@ -17,6 +18,7 @@
   "devDependencies": {
     "@types/lodash": "^4.14.191",
     "@types/lodash-es": "^4.17.7",
+    "@types/mime-types": "^2.1.1",
     "rimraf": "^4.4.1",
     "tsconfig": "^0.0.0",
     "tsup": "^6.7.0",

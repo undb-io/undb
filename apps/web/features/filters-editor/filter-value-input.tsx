@@ -23,7 +23,7 @@ import type {
   IOperator,
   IRatingFieldValue,
 } from '@egodb/core'
-import { ColorInput, DatePickerInput, NumberInput, Rating, TextInput } from '@egodb/ui'
+import { ColorInput, DatePickerInput, Rating, TextInput } from '@egodb/ui'
 import { OptionPicker } from '../option/option-picker'
 import { RecordsPicker } from '../field-inputs/records-picker'
 import { castArray } from 'lodash-es'
@@ -155,7 +155,7 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
         <RecordsPicker
           size="xs"
           variant="filled"
-          value={castArray(value) as string[]}
+          value={castArray(value as any) as string[]}
           onChange={(value) => onChange(value)}
         />
       )

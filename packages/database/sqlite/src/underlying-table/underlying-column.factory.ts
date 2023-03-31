@@ -1,6 +1,7 @@
 import type { Field } from '@egodb/core'
 import type { IUnderlyingColumn } from '../interfaces/underlying-column.js'
 import {
+  UnderlyingAttachmentColumn,
   UnderlyingAutoIncreamentColumn,
   UnderlyingAverageColumn,
   UnderlyingBoolColumn,
@@ -39,6 +40,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingStringColumn(field, tableName)
       case 'email':
         return new UnderlyingEmailColumn(field, tableName)
+      case 'attachment':
+        return new UnderlyingAttachmentColumn(field, tableName)
       case 'rating':
         return new UnderlyingRatingColumn(field, tableName)
       case 'color':

@@ -11,7 +11,7 @@ export class UnderlyingTableBuilder extends BaseEntityManager {
     const knex = this.em.getKnex()
     const query = knex.schema
       .createTableIfNotExists(table.id.value, (tb) => {
-        const queries = new UnderlyingColumnBuilder(knex, tb, table.id.value, true)
+        const queries = new UnderlyingColumnBuilder(this.em, knex, tb, table.id.value, true)
           .createAutoIncrement()
           .createId()
           .createCreatedAt()

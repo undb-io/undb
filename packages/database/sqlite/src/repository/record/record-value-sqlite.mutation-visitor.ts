@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type {
+  AttachmentFieldValue,
   AutoIncrementFieldValue,
   AverageFieldValue,
   BoolFieldValue,
@@ -26,6 +27,8 @@ import type {
 } from '@egodb/core'
 import { ParentField, ReferenceField, TreeField } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import { Attachment } from '../../entity/attachment.js'
+import { Table } from '../../entity/table.js'
 import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
 
@@ -82,6 +85,15 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
   }
   select(value: SelectFieldValue): void {
     this.setData(this.fieldId, value.unpack())
+  }
+  attachment(value: AttachmentFieldValue): void {
+    this.addJobs(async () => {
+      await this.em.nativeDelete(Attachment, { recordId: this.recordId })
+      const attachments = value
+        .unpack()
+        .map((item) => new Attachment(this.em.getReference(Table, this.tableId), this.recordId, item))
+      this.em.persist(attachments)
+    })
   }
   reference(value: ReferenceFieldValue): void {
     const field = this.schema.get(this.fieldId)

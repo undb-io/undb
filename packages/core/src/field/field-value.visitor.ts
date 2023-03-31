@@ -1,3 +1,4 @@
+import type { AttachmentFieldValue } from './attachment-field-value.js'
 import type { AutoIncrementFieldValue } from './auto-increment-field-value.js'
 import type { AverageFieldValue } from './average-field-value.js'
 import type { BoolFieldValue } from './bool-field-value.js'
@@ -23,6 +24,7 @@ export interface IFieldValueVisitor {
   id(value: IdFieldValue): void
   createdAt(value: CreatedAtFieldValue): void
   updatedAt(value: UpdatedAtFieldValue): void
+  attachment(value: AttachmentFieldValue): void
   autoIncrement(value: AutoIncrementFieldValue): void
   string(value: StringFieldValue): void
   email(value: EmailFieldValue): void

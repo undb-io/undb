@@ -1,4 +1,5 @@
 import type {
+  AttachmentField,
   AverageField,
   BoolField,
   ColorField,
@@ -118,6 +119,15 @@ export class UnderlyingEmailColumn extends UnderlyingFieldColumn<EmailField> {
   build(tb: Knex.TableBuilder): void {
     tb.string(this.name)
   }
+}
+
+export class UnderlyingAttachmentColumn extends UnderlyingFieldColumn<AttachmentField> {
+  override get virtual() {
+    return true
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
+  build(tb: Knex.TableBuilder): void {}
 }
 
 export class UnderlyingColorColumn extends UnderlyingFieldColumn<ColorField> {

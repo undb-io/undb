@@ -56,6 +56,7 @@ i18n
           Lookup: 'Lookup',
           Reference: 'Reference',
           Display: 'Display Field',
+          'Drag Or Click': 'Drag images here or click to select files',
         },
         table: {
           'Create New Record': 'Create New Record',
@@ -99,6 +100,7 @@ i18n
           'Select Date Format': 'Select Date Format',
           String: 'String',
           Email: 'Email',
+          Attachment: 'Attachment',
           Color: 'Color',
           Number: 'Number',
           Rating: 'Rating',
@@ -216,6 +218,7 @@ i18n
           Lookup: '查看',
           Reference: '关联',
           Display: '显示列',
+          'Drag Or Click': '拖拽或点击此处上传文件',
         },
         table: {
           'Create New Record': '创建新记录',
@@ -259,6 +262,7 @@ i18n
           'Select Date Format': '选择日期格式',
           String: '文本',
           Email: '邮件',
+          Attachment: '附件',
           Color: '颜色',
           Number: '数字',
           Rating: '评分',

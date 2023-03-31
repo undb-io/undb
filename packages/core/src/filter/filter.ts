@@ -30,6 +30,7 @@ import {
   StringStartsWith,
   WithRecordIds,
 } from '../record/index.js'
+import { attachmentFilter, attachmentFilterValue } from './attachment.filter.js'
 import type { IAutoIncrementFilter } from './auto-increment.filter.js'
 import { autoIncrementFilter, autoIncrementFilterValue } from './auto-increment.filter.js'
 import type { IAverageFilter } from './average.filter.js'
@@ -62,6 +63,7 @@ import {
   $is_today,
   $is_true,
   $neq,
+  attachmentFilterOperators,
   autoIncrementFilterOperators,
   averageFilterOperators,
   boolFilterOperators,
@@ -119,6 +121,7 @@ export const filterValue = z.union([
   lookupFilterValue,
   sumFilterValue,
   averageFilterValue,
+  attachmentFilterValue,
 ])
 export type IFilterValue = z.infer<typeof filterValue>
 
@@ -143,6 +146,7 @@ export const operaotrs = z.union([
   lookupFilterOperators,
   sumFilterOperators,
   averageFilterOperators,
+  attachmentFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
@@ -167,6 +171,7 @@ const filter = z.discriminatedUnion('type', [
   lookupFilter,
   sumFilter,
   averageFilter,
+  attachmentFilter,
 ])
 
 export type IFilter = z.infer<typeof filter>

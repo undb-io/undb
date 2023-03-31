@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type {
+  AttachmentField,
   Field as CoreField,
   LookupField as CoreLookupField,
   ParentField as CoreParentField,
@@ -14,6 +15,7 @@ import type {
 import { AbstractReferenceFieldVisitor, INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { uniqBy } from 'lodash-es'
+import { Attachment } from '../../entity/attachment.js'
 import type { LookupField, ParentField, ReferenceField, TreeField } from '../../entity/field.js'
 import type { Table as TableEntity } from '../../entity/table.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
@@ -38,11 +40,8 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
   #visited = new Set<string>()
 
   public visit(table: Table): void {
-    for (const lookingField of table.schema.lookingFields) {
-      lookingField.accept(this)
-    }
-    for (const aggregateField of table.schema.aggregateFields) {
-      aggregateField.accept(this)
+    for (const field of table.schema.fields) {
+      field.accept(this)
     }
     return
   }
@@ -62,6 +61,30 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         .flatMap((c) => [`'${c.id}'`, `${table}.${c.id}`])
         .join(',')})) as ${getExpandColumnName(column.id)}`,
     )
+  }
+
+  attachment(field: AttachmentField): void {
+    const attachmentTable = this.em.getMetadata().get(Attachment.name)
+    const {
+      tableName,
+      properties: { recordId, name, mimeType, id, size, token },
+    } = attachmentTable
+    this.qb
+      .select(
+        this.knex.raw(`
+      json_group_array(
+        json_object(
+          '${name.name}', ${tableName}.${name.fieldNames[0]},
+          '${mimeType.name}', ${tableName}.${mimeType.fieldNames[0]},
+          '${id.name}', ${tableName}.${id.fieldNames[0]},
+          '${size.name}', ${tableName}.${size.fieldNames[0]},
+          '${token.name}', ${tableName}.${token.fieldNames[0]}
+        )
+      ) as ${field.id.value}
+        `),
+      )
+      .leftJoin(tableName, `${tableName}.${recordId.fieldNames[0]}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
+      .groupBy(`${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
   }
 
   reference(field: CoreReferenceField): void {

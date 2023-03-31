@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type {
+  AttachmentField,
   AutoIncrementField,
   BoolField,
   ColorField,
@@ -28,6 +29,7 @@ export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   id(field: IdField): void {}
   createdAt(field: CreatedAtField): void {}
   updatedAt(field: UpdatedAtField): void {}
+  attachment(field: AttachmentField): void {}
   autoIncrement(field: AutoIncrementField): void {}
   string(field: StringField): void {}
   email(field: EmailField): void {}

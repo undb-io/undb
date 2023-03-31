@@ -6,6 +6,17 @@ import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import type { TableId } from '../value-objects/table-id.vo.js'
 import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
+import type { AttachmentFieldValue } from './attachment-field-value.js'
+import type { AttachmentField } from './attachment-field.js'
+import type { IAttachmentFieldValue } from './attachment-field.type.js'
+import {
+  attachmentFieldQuerySchema,
+  attachmentFieldQueryValue,
+  attachmentTypeSchema,
+  createAttachmentFieldSchema,
+  createAttachmentFieldValue_internal,
+  updateAttachmentFieldSchema,
+} from './attachment-field.type.js'
 import type { AutoIncrementFieldValue } from './auto-increment-field-value.js'
 import type { AutoIncrementField } from './auto-increment-field.js'
 import type { IAutoIncrementFieldValue } from './auto-increment-field.type.js'
@@ -250,6 +261,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createLookupFieldSchema,
   createSumFieldSchema,
   createAverageFieldSchema,
+  createAttachmentFieldSchema,
 ])
 export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
 
@@ -274,6 +286,7 @@ export const updateFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   updateLookupFieldSchema,
   updateSumFieldSchema,
   updateAverageFieldSchema,
+  updateAttachmentFieldSchema,
 ])
 export type IUpdateFieldSchema = z.infer<typeof updateFieldSchema>
 
@@ -298,6 +311,7 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   lookupFieldQuerySchema,
   sumFieldQuerySchema,
   averageFieldQuerySchema,
+  attachmentFieldQuerySchema,
 ])
 export type IQueryFieldSchema = z.infer<typeof queryFieldSchema>
 export const querySchemaSchema = z.array(queryFieldSchema)
@@ -324,6 +338,7 @@ export const fieldTypes = z.union([
   lookupTypeSchema,
   sumTypeSchema,
   averageTypeSchema,
+  attachmentTypeSchema,
 ])
 export type IFieldType = z.infer<typeof fieldTypes>
 
@@ -348,6 +363,7 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createLookupFieldValue_internal,
   createSumFieldValue_internal,
   createAverageFieldValue_internal,
+  createAttachmentFieldValue_internal,
 ])
 export type ICreateFieldValueSchema_internal = z.infer<typeof createFieldValueSchema_internal>
 
@@ -371,6 +387,7 @@ export type IUpdatedAtField = IBaseField & BaseDateField
 export type IAutoIncrementField = IBaseField
 export type IStringField = IBaseField
 export type IEmailField = IBaseField
+export type IAttachmentField = IBaseField
 export type IColorField = IBaseField
 
 export type INumberField = IBaseField
@@ -428,6 +445,7 @@ export type NoneSystemField =
   | LookupField
   | SumField
   | AverageField
+  | AttachmentField
 
 export type PrimitiveField =
   | StringField
@@ -469,6 +487,7 @@ export type FieldValue =
   | LookupFieldValue
   | SumFieldValue
   | AverageFieldValue
+  | AttachmentFieldValue
 
 export type FieldValues = FieldValue[]
 
@@ -493,6 +512,7 @@ export type UnpackedFieldValue =
   | ILookupFieldValue
   | ISumFieldValue
   | IAverageFieldValue
+  | IAttachmentFieldValue
 
 export const fieldQueryValue = z.union([
   treeFieldQueryValue,
@@ -515,6 +535,7 @@ export const fieldQueryValue = z.union([
   lookupFieldQueryValue,
   sumFieldQueryValue,
   averageFieldQueryValue,
+  attachmentFieldQueryValue,
 ])
 
 export type IFieldQueryValue = z.infer<typeof fieldQueryValue>
