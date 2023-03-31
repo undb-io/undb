@@ -15,6 +15,7 @@ import {
 } from '@egodb/ui'
 import { useDeepCompareEffectNoCheck } from 'use-deep-compare-effect'
 import { AttachmentValue } from '../field-value/attachment-value'
+import { useTranslation } from 'react-i18next'
 
 interface IProps {
   value: IAttachmentItem[]
@@ -49,6 +50,8 @@ export const AttachmentInput: React.FC<IProps> = ({ onChange, value = [] }) => {
   const [attachments, handler] = useListState<IAttachmentItem>(value ?? [])
   const [upload, { isLoading }] = useUploadMutation()
 
+  const { t } = useTranslation()
+
   useDeepCompareEffectNoCheck(() => {
     onChange(attachments)
   }, [attachments])
@@ -74,21 +77,18 @@ export const AttachmentInput: React.FC<IProps> = ({ onChange, value = [] }) => {
       >
         <Group position="center" spacing="xs" style={{ pointerEvents: 'none' }}>
           <Dropzone.Accept>
-            <IconUpload size="3.2rem" stroke={1.5} />
+            <IconUpload size="2.0rem" color="gray" stroke={1.5} />
           </Dropzone.Accept>
           <Dropzone.Reject>
-            <IconX size="3.2rem" stroke={1.5} />
+            <IconX size="2.0rem" color="gray" stroke={1.5} />
           </Dropzone.Reject>
           <Dropzone.Idle>
-            <IconPhoto size="3.2rem" stroke={1.5} />
+            <IconPhoto size="2.0rem" color="gray" stroke={1.5} />
           </Dropzone.Idle>
 
           <div>
-            <Text size="xl" inline>
-              Drag images here or click to select files
-            </Text>
-            <Text size="sm" color="dimmed" inline mt={7}>
-              Attach as many files as you like, each file should not exceed 5mb
+            <Text size="md" color="dimmed" inline>
+              {t('Drag Or Click', { ns: 'common' })}
             </Text>
           </div>
         </Group>

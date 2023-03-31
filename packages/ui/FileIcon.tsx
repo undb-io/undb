@@ -1,1 +1,1 @@
-export { FileIcon, defaultStyles, DefaultExtensionType } from 'react-file-icon'
+export { FileIcon, defaultStyles, type DefaultExtensionType } from 'react-file-icon'
