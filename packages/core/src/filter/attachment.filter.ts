@@ -2,7 +2,10 @@ import { z } from 'zod'
 import { baseFilter } from './filter.base.js'
 import { attachmentFilterOperators } from './operators.js'
 
-export const attachmentFilterValue = z.string().nullable()
+const attachmentFilterTypeValue = z.enum(['image', 'video', 'text'])
+export type IAttachmentFilterTypeValue = z.infer<typeof attachmentFilterTypeValue>
+export const attachmentFilterValue = z.string().nullable().or(attachmentFilterTypeValue)
+
 export const attachmentFilter = z
   .object({
     type: z.literal('attachment'),

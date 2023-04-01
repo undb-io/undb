@@ -31,23 +31,26 @@ import {
   WithRecordId,
   WithRecordUpdatedAt,
 } from '@egodb/core'
-import { Knex } from '@mikro-orm/better-sqlite'
+import { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { addDays, subDays } from 'date-fns'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
 
 const date = new Date(2022, 2, 2)
 describe('RecordSqliteQueryVisitor', () => {
+  let em: EntityManager
   let knex: Knex
   let visitor: RecordSqliteQueryVisitor
 
   beforeAll(async () => {
+    // @ts-expect-error type
+    em = global.em
     // @ts-expect-error type
     knex = global.knex
     vi.setSystemTime(date)
   })
 
   beforeEach(() => {
-    visitor = new RecordSqliteQueryVisitor('tabletest', new Map(), knex.queryBuilder(), knex)
+    visitor = new RecordSqliteQueryVisitor('tabletest', new Map(), em, knex.queryBuilder(), knex)
     expect(visitor).not.to.be.undefined
     expect(visitor).to.be.instanceof(RecordSqliteQueryVisitor)
   })
@@ -298,6 +301,7 @@ describe('RecordSqliteQueryVisitor', () => {
       visitor = new RecordSqliteQueryVisitor(
         'tabletest',
         new Map([[treeFieldId, TreeField.create({ id: treeFieldId, name: 'tree' })]]),
+        em,
         knex.queryBuilder(),
         knex,
       )

@@ -53,7 +53,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   where(): this {
     if (this.spec) {
       const schema = this.table.schema.toIdMap()
-      const visitor = new RecordSqliteQueryVisitor(this.table.id.value, schema, this.qb, this.knex)
+      const visitor = new RecordSqliteQueryVisitor(this.table.id.value, schema, this.em, this.qb, this.knex)
 
       this.spec.accept(visitor).unwrap()
     }

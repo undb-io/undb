@@ -15,6 +15,8 @@ import {
   DateLessThan,
   DateLessThanOrEqual,
   DateRangeEqual,
+  HasFileType,
+  IsAttachmentEmpty,
   IsTreeRoot,
   NumberEqual,
   NumberGreaterThan,
@@ -30,6 +32,7 @@ import {
   StringStartsWith,
   WithRecordIds,
 } from '../record/index.js'
+import type { IAttachmentFilter, IAttachmentFilterTypeValue } from './attachment.filter.js'
 import { attachmentFilter, attachmentFilterValue } from './attachment.filter.js'
 import type { IAutoIncrementFilter } from './auto-increment.filter.js'
 import { autoIncrementFilter, autoIncrementFilterValue } from './auto-increment.filter.js'
@@ -399,6 +402,17 @@ const convertTreeFilter = (filter: ITreeFilter): Option<CompositeSpecification> 
   }
 }
 
+const convertAttachmentFilter = (filter: IAttachmentFilter): Option<CompositeSpecification> => {
+  switch (filter.operator) {
+    case '$has_file_type':
+      return Some(new HasFileType(filter.path, filter.value as IAttachmentFilterTypeValue))
+    case '$is_empty':
+      return Some(new IsAttachmentEmpty(filter.path, undefined))
+    case '$is_not_empty':
+      return Some(new IsAttachmentEmpty(filter.path, undefined).not())
+  }
+}
+
 const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
   switch (filter.type) {
     case 'id':
@@ -428,6 +442,8 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
       throw new Error('convertFilter.reference not implemented')
     case 'tree':
       return convertTreeFilter(filter)
+    case 'attachment':
+      return convertAttachmentFilter(filter)
     default:
       return None
   }
