@@ -69,23 +69,29 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
       tableName,
       properties: { recordId, name, mimeType, id, size, token },
     } = attachmentTable
+
+    const alias = `r__${field.id.value}__${tableName}`
     this.qb
       .select(
         this.knex.raw(`
       json_group_array(
         json_object(
-          '${name.name}', ${tableName}.${name.fieldNames[0]},
-          '${mimeType.name}', ${tableName}.${mimeType.fieldNames[0]},
-          '${id.name}', ${tableName}.${id.fieldNames[0]},
-          '${size.name}', ${tableName}.${size.fieldNames[0]},
-          '${token.name}', ${tableName}.${token.fieldNames[0]}
+          '${name.name}', ${alias}.${name.fieldNames[0]},
+          '${mimeType.name}', ${alias}.${mimeType.fieldNames[0]},
+          '${id.name}', ${alias}.${id.fieldNames[0]},
+          '${size.name}', ${alias}.${size.fieldNames[0]},
+          '${token.name}', ${alias}.${token.fieldNames[0]}
         )
       )
-      filter (where ${tableName}.${id.fieldNames[0]} is not null)
+      filter (where ${alias}.${id.fieldNames[0]} is not null)
       as ${field.id.value}
         `),
       )
-      .leftJoin(tableName, `${tableName}.${recordId.fieldNames[0]}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
+      .leftJoin(
+        `${tableName} as ${alias}`,
+        `${alias}.${recordId.fieldNames[0]}`,
+        `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`,
+      )
       .groupBy(`${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
   }
 

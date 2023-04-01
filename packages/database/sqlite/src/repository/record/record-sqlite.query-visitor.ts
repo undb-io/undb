@@ -8,6 +8,7 @@ import type {
   DateLessThan,
   DateLessThanOrEqual,
   DateRangeEqual,
+  HasFileType,
   IRecordVisitor,
   IsTreeRoot,
   NumberEqual,
@@ -42,8 +43,9 @@ import {
   ParentField,
   TreeField,
 } from '@egodb/core'
-import type { Knex } from '@mikro-orm/better-sqlite'
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { endOfDay, startOfDay } from 'date-fns'
+import { Attachment } from '../../entity/attachment.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
@@ -54,6 +56,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   constructor(
     private readonly tableId: string,
     private readonly schema: TableSchemaIdMap,
+    private readonly em: EntityManager,
     private qb: Knex.QueryBuilder,
     private knex: Knex,
   ) {
@@ -201,7 +204,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   }
   selectIn(s: SelectIn): void {
     this.qb.whereIn(
-      s.fielId,
+      s.fieldId,
       s.value.map((v) => v.id),
     )
   }
@@ -216,7 +219,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   }
 
   treeAvailable(s: TreeAvailableSpec): void {
-    const field = this.schema.get(s.fielId)
+    const field = this.schema.get(s.fieldId)
     if (!(field instanceof TreeField)) return
 
     const closureTable = new ClosureTable(this.tableId, field)
@@ -250,7 +253,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   }
 
   isTreeRoot(s: IsTreeRoot): void {
-    const field = this.schema.get(s.fielId)
+    const field = this.schema.get(s.fieldId)
     if (!(field instanceof TreeField)) return
 
     const closure = new ClosureTable(this.tableId, field)
@@ -263,7 +266,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   }
 
   parentAvailable(s: ParentAvailableSpec): void {
-    const field = this.schema.get(s.fielId)
+    const field = this.schema.get(s.fieldId)
     if (!(field instanceof ParentField)) return
 
     const recordId = s.value
@@ -271,6 +274,21 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       const id = `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`
       this.qb.whereNot(id, recordId)
     }
+  }
+  hasFileType(s: HasFileType): void {
+    const meta = this.em.getMetadata().get(Attachment.name)
+    const {
+      tableName,
+      properties: { recordId, mimeType },
+    } = meta
+    const alias = `f__${s.fieldId}__${tableName}`
+    this.qb
+      .leftJoin(
+        `${tableName} as ${alias}`,
+        `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`,
+        `${alias}.${recordId.fieldNames[0]}`,
+      )
+      .whereLike(`${alias}.${mimeType.fieldNames[0]}`, `${s.value}%`)
   }
 
   not(): this {

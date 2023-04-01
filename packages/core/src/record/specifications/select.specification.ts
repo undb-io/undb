@@ -29,7 +29,7 @@ export class SelectIn extends BaseRecordQuerySpecification<SelectFieldValue[]> {
    * @returns bool
    */
   isSatisfiedBy(r: Record): boolean {
-    const value = r.values.value.get(this.fielId)
+    const value = r.values.value.get(this.fieldId)
     if (!(value instanceof SelectFieldValue)) return false
     const option = value.unpack()
     return !!option && this.value.map((v) => v.id).includes(option)

@@ -92,9 +92,7 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
         size="xs"
         variant="filled"
         value={value as number}
-        onChange={(e) => {
-          return onChange(Number(e.target.value) ?? null)
-        }}
+        onChange={(e) => onChange(Number(e.target.value) ?? null)}
       />
     )
   }
@@ -133,6 +131,8 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
         <Select
           size="xs"
           variant="filled"
+          value={value as string}
+          onChange={(item) => onChange(item)}
           data={[
             { value: 'image', label: t('Image', { ns: 'common' }) as string },
             { value: 'text', label: t('Text', { ns: 'common' }) as string },

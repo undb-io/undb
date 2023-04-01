@@ -3,6 +3,7 @@ import { baseFilter } from './filter.base.js'
 import { attachmentFilterOperators } from './operators.js'
 
 const attachmentFilterTypeValue = z.enum(['image', 'video', 'text'])
+export type IAttachmentFilterTypeValue = z.infer<typeof attachmentFilterTypeValue>
 export const attachmentFilterValue = z.string().nullable().or(attachmentFilterTypeValue)
 
 export const attachmentFilter = z

@@ -130,7 +130,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       const knex = em.getKnex()
       const qb = knex.queryBuilder()
 
-      const qv = new RecordSqliteQueryVisitor(tableId, schema, qb, knex)
+      const qv = new RecordSqliteQueryVisitor(tableId, schema, em, qb, knex)
       WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id)).accept(qv)
 
       const mv = new RecordSqliteMutationVisitor(tableId, id, schema, em, qb)
