@@ -16,6 +16,7 @@ import {
   DateLessThanOrEqual,
   DateRangeEqual,
   HasFileType,
+  IsAttachmentEmpty,
   IsTreeRoot,
   NumberEqual,
   NumberGreaterThan,
@@ -406,8 +407,9 @@ const convertAttachmentFilter = (filter: IAttachmentFilter): Option<CompositeSpe
     case '$has_file_type':
       return Some(new HasFileType(filter.path, filter.value as IAttachmentFilterTypeValue))
     case '$is_empty':
+      return Some(new IsAttachmentEmpty(filter.path, undefined))
     case '$is_not_empty':
-      return None
+      return Some(new IsAttachmentEmpty(filter.path, undefined).not())
   }
 }
 

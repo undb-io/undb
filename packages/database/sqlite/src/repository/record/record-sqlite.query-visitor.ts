@@ -10,6 +10,7 @@ import type {
   DateRangeEqual,
   HasFileType,
   IRecordVisitor,
+  IsAttachmentEmpty,
   IsTreeRoot,
   NumberEqual,
   NumberGreaterThan,
@@ -284,7 +285,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       tableName,
       properties: { recordId, mimeType },
     } = meta
-    const alias = `f__${s.fieldId}__${tableName}`
+    const alias = `has_file_type__${s.fieldId}__${tableName}`
     this.qb
       .leftJoin(
         `${tableName} as ${alias}`,
@@ -292,6 +293,24 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
         `${alias}.${recordId.fieldNames[0]}`,
       )
       .whereLike(`${alias}.${mimeType.fieldNames[0]}`, `${s.value}%`)
+  }
+  isAttachmentEmpty(s: IsAttachmentEmpty): void {
+    const {
+      tableName,
+      properties: { recordId },
+    } = this.em.getMetadata().get(Attachment.name)
+    const alias = `is_attachment_empty__${s.fieldId}__${tableName}`
+
+    const subQuery = this.knex
+      .queryBuilder()
+      .select(recordId.fieldNames[0], this.knex.raw(`COUNT(*) as ${s.fieldId}`))
+      .from(tableName)
+      .as(alias)
+
+    this.qb
+      .leftJoin(subQuery, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`, `${alias}.${recordId.fieldNames[0]}`)
+      .select(`${alias}.${s.fieldId} as ${s.fieldId}`)
+      .whereNull(s.fieldId)
   }
 
   not(): this {

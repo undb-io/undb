@@ -1,7 +1,7 @@
 import type { CompositeSpecification, ISpecVisitor } from '@egodb/domain'
 import { type ISpecification } from '@egodb/domain'
 import { type Record } from '../record.js'
-import type { HasFileType } from './attachment.specification.js'
+import type { HasFileType, IsAttachmentEmpty } from './attachment.specification.js'
 import type { BoolIsFalse, BoolIsTrue } from './bool.specification.js'
 import type { DateRangeEqual } from './date-range.specification.js'
 import type {
@@ -86,6 +86,7 @@ interface IRecordValueVisitor {
   parentAvailable(s: ParentAvailableSpec): void
 
   hasFileType(s: HasFileType): void
+  isAttachmentEmpty(s: IsAttachmentEmpty): void
 }
 
 export type RecordCompositeSpecification = CompositeSpecification<Record, IRecordVisitor>

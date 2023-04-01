@@ -18,3 +18,16 @@ export class HasFileType extends BaseRecordQuerySpecification<IAttachmentFilterT
     return Ok(undefined)
   }
 }
+
+export class IsAttachmentEmpty extends BaseRecordQuerySpecification<void> {
+  isSatisfiedBy(r: Record): boolean {
+    const value = r.values.value.get(this.fieldId)
+
+    return value instanceof AttachmentFieldValue && value.isEmpty()
+  }
+
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.isAttachmentEmpty(this)
+    return Ok(undefined)
+  }
+}

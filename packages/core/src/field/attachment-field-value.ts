@@ -19,4 +19,8 @@ export class AttachmentFieldValue extends FieldValueBase<IAttachmentFieldValue> 
   public hasFileType(type: string): boolean {
     return this.props.some((attachment) => getMimeType(attachment) === type)
   }
+
+  public isEmpty(): boolean {
+    return !this.props.length
+  }
 }

@@ -11,6 +11,7 @@ import type {
   DateRangeEqual,
   HasFileType,
   IRecordVisitor,
+  IsAttachmentEmpty,
   IsTreeRoot,
   NumberEqual,
   NumberGreaterThan,
@@ -164,6 +165,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     throw new Error('Method not implemented.')
   }
   hasFileType(s: HasFileType): void {
+    throw new Error('Method not implemented.')
+  }
+  isAttachmentEmpty(s: IsAttachmentEmpty): void {
     throw new Error('Method not implemented.')
   }
 
