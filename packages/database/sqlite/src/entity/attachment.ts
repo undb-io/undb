@@ -1,6 +1,6 @@
 import type { IAttachmentItem } from '@egodb/core'
 import type { Rel } from '@mikro-orm/core'
-import { Entity, ManyToOne, PrimaryKey, PrimaryKeyType, Property } from '@mikro-orm/core'
+import { Entity, Index, ManyToOne, PrimaryKey, PrimaryKeyType, Property } from '@mikro-orm/core'
 import { BaseEntity } from './base.js'
 import { Table } from './table.js'
 
@@ -18,12 +18,15 @@ export class Attachment extends BaseEntity {
   table: Rel<Table>
 
   @Property()
+  @Index()
   mimeType: string
 
   @Property()
+  @Index()
   name: string
 
   @Property()
+  @Index()
   size: number
 
   @Property()

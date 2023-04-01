@@ -907,6 +907,33 @@
           "unique": false
         },
         {
+          "columnNames": [
+            "mime_type"
+          ],
+          "composite": false,
+          "keyName": "ego_attachment_mime_type_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "name"
+          ],
+          "composite": false,
+          "keyName": "ego_attachment_name_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "size"
+          ],
+          "composite": false,
+          "keyName": "ego_attachment_size_index",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "primary",
           "columnNames": [
             "id",
