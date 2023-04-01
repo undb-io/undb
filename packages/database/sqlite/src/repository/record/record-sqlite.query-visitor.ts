@@ -276,6 +276,9 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     }
   }
   hasFileType(s: HasFileType): void {
+    const value = s.value
+    if (!value) return
+
     const meta = this.em.getMetadata().get(Attachment.name)
     const {
       tableName,

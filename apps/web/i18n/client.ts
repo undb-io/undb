@@ -61,6 +61,7 @@ i18n
           Display: 'Display Field',
           'Drag Or Click': 'Drag images here or click to select files',
           Image: 'Image',
+          Video: 'Video',
           Text: 'Text',
         },
         table: {
@@ -228,6 +229,7 @@ i18n
           Display: '显示列',
           'Drag Or Click': '拖拽或点击此处上传文件',
           Image: '图像',
+          Video: '视频',
           Text: '文本',
         },
         table: {

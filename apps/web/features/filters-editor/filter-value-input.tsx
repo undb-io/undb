@@ -136,6 +136,7 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
           data={[
             { value: 'image', label: t('Image', { ns: 'common' }) as string },
             { value: 'text', label: t('Text', { ns: 'common' }) as string },
+            { value: 'video', label: t('Video', { ns: 'common' }) as string },
           ]}
         />
       )
