@@ -12,6 +12,7 @@ import {
   IconCopy,
   useClipboard,
   IconClipboardCheck,
+  Group,
 } from '@egodb/ui'
 import React from 'react'
 import { Controller } from 'react-hook-form'
@@ -320,7 +321,15 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
       <Controller
         name={name}
         rules={{ required: field.required }}
-        render={(form) => <AttachmentInput {...form.field} />}
+        render={(form) => (
+          <>
+            <Group spacing="xs">
+              <FieldIcon type={field.type} />
+              <FieldInputLabel>{field.name.value}</FieldInputLabel>
+            </Group>
+            <AttachmentInput {...form.field} />
+          </>
+        )}
       />
     )
   }
