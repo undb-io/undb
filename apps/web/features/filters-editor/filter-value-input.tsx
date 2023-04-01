@@ -1,4 +1,5 @@
 import {
+  AttachmentField,
   AverageField,
   ColorField,
   CountField,
@@ -8,6 +9,7 @@ import {
   RatingField,
   SumField,
   UpdatedAtField,
+  isOperatorWithoutValue,
 } from '@egodb/core'
 import { DateRangeField } from '@egodb/core'
 import { SelectField } from '@egodb/core'
@@ -23,11 +25,12 @@ import type {
   IOperator,
   IRatingFieldValue,
 } from '@egodb/core'
-import { ColorInput, DatePickerInput, Rating, TextInput } from '@egodb/ui'
+import { ColorInput, DatePickerInput, Rating, Select, TextInput } from '@egodb/ui'
 import { OptionPicker } from '../option/option-picker'
 import { RecordsPicker } from '../field-inputs/records-picker'
 import { castArray } from 'lodash-es'
 import { useColors } from '../../hooks/use-colors'
+import { useTranslation } from 'react-i18next'
 
 interface IProps {
   field: Field | null
@@ -38,8 +41,17 @@ interface IProps {
 
 export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onChange }) => {
   const colors = useColors()
+  const { t } = useTranslation()
 
   if (!field) {
+    return null
+  }
+
+  if (!operator) {
+    return null
+  }
+
+  if (isOperatorWithoutValue(operator)) {
     return null
   }
 
@@ -113,6 +125,23 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
         onChange={(range) => onChange([range.at(0)?.toISOString() ?? null, range.at(1)?.toISOString() ?? null])}
       />
     )
+  }
+
+  if (field instanceof AttachmentField) {
+    if (operator === '$has_file_type') {
+      return (
+        <Select
+          size="xs"
+          variant="filled"
+          data={[
+            { value: 'image', label: t('Image', { ns: 'common' }) as string },
+            { value: 'text', label: t('Text', { ns: 'common' }) as string },
+          ]}
+        />
+      )
+    }
+
+    return null
   }
 
   if (field instanceof RatingField) {

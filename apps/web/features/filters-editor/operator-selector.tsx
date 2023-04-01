@@ -1,4 +1,5 @@
 import type { Field, IOperator } from '@egodb/core'
+import { AttachmentField } from '@egodb/core'
 import { AverageField, SumField } from '@egodb/core'
 import { CountField } from '@egodb/core'
 import { ColorField } from '@egodb/core'
@@ -65,6 +66,12 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
       { value: '$gte', label: t('GREATER THAN OR EQUAL', { ns: 'common' }) as string },
       { value: '$lt', label: t('LESS THAN', { ns: 'common' }) as string },
       { value: '$lte', label: t('LESS THAN OR EQUAL', { ns: 'common' }) as string },
+    ]
+  } else if (field instanceof AttachmentField) {
+    data = [
+      { value: '$is_empty', label: t('IS EMPTY', { ns: 'common' }) as string },
+      { value: '$is_not_empty', label: t('IS NOT EMPTY', { ns: 'common' }) as string },
+      { value: '$has_file_type', label: t('HAS FILE TYPE', { ns: 'common' }) as string },
     ]
   } else if (field instanceof DateField || field instanceof CreatedAtField || field instanceof UpdatedAtField) {
     data = [
