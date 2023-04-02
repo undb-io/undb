@@ -140,6 +140,7 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
             { value: 'document', label: t('Document', { ns: 'common' }) as string },
             { value: 'excel', label: t('Excel', { ns: 'common' }) as string },
             { value: 'ppt', label: t('PPT', { ns: 'common' }) as string },
+            { value: 'pdf', label: t('PDF', { ns: 'common' }) as string },
           ]}
         />
       )

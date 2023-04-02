@@ -294,7 +294,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     )
 
     const getFieldName = (property: EntityProperty<unknown>) => `${alias}.${property.fieldNames[0]}`
-    if (value === 'image' || value === 'text') {
+    if (value === 'image' || value === 'text' || value === 'video') {
       this.qb.whereLike(getFieldName(mimeType), `${s.value}%`)
     } else if (value === 'document') {
       this.qb.whereIn(getFieldName(extension), ['.doc', '.docx'])
@@ -302,6 +302,8 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       this.qb.whereIn(getFieldName(extension), ['.xls', '.xlsx'])
     } else if (value === 'ppt') {
       this.qb.whereIn(getFieldName(extension), ['.ppt', '.pptx'])
+    } else if (value === 'pdf') {
+      this.qb.where(getFieldName(extension), '=', '.pdf')
     }
   }
   isAttachmentEmpty(s: IsAttachmentEmpty): void {
