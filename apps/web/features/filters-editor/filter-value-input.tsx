@@ -137,6 +137,9 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
             { value: 'image', label: t('Image', { ns: 'common' }) as string },
             { value: 'text', label: t('Text', { ns: 'common' }) as string },
             { value: 'video', label: t('Video', { ns: 'common' }) as string },
+            { value: 'document', label: t('Document', { ns: 'common' }) as string },
+            { value: 'excel', label: t('Excel', { ns: 'common' }) as string },
+            { value: 'ppt', label: t('PPT', { ns: 'common' }) as string },
           ]}
         />
       )

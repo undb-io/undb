@@ -62,6 +62,9 @@ i18n
           'Drag Or Click': 'Drag images here or click to select files',
           Image: 'Image',
           Video: 'Video',
+          Document: 'Document',
+          Excel: 'Excel',
+          PPT: 'PPT',
           Text: 'Text',
         },
         table: {
@@ -230,6 +233,9 @@ i18n
           'Drag Or Click': '拖拽或点击此处上传文件',
           Image: '图像',
           Video: '视频',
+          Document: '文档',
+          Excel: '电子表格',
+          PPT: 'PPT',
           Text: '文本',
         },
         table: {
