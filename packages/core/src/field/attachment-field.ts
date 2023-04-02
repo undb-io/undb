@@ -13,6 +13,10 @@ import type { IFieldVisitor } from './field.visitor.js'
 export class AttachmentField extends BaseField<IAttachmentField> {
   type: AttachmentFieldType = 'attachment'
 
+  override get sortable() {
+    return false
+  }
+
   override get primitive() {
     return true
   }
