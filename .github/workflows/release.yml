@@ -32,4 +32,5 @@ jobs:
       - name: Create Release Pull Request
         uses: changesets/action@v1
         env:
+          HUSKY_SKIP_HOOKS: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
