@@ -1,9 +1,9 @@
-name: CI
+name: Build and push to registry
 
 on:
   push:
     tags:
-      - v*
+      - '**'
 
 jobs:
   docker:

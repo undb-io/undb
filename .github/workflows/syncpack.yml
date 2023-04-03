@@ -1,3 +1,5 @@
+name: Syncpack
+
 on:
   # Run whenever a pull request is updated
   pull_request:
