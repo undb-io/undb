@@ -43,8 +43,8 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
           if (isToday(value)) return 'TODAY'
           if (isTomorrow(value)) return 'TOMORROW'
           if (isYesterday(value)) return 'YESTERDAY'
-          if (isAfter(value, endOfDay(addDays(value, 1)))) return 'AFTER_TOMORROW'
-          if (isBefore(value, startOfDay(addDays(value, -1)))) return 'AFTER_TOMORROW'
+          if (isAfter(value, endOfDay(addDays(new Date(), 1)))) return 'AFTER_TOMORROW'
+          if (isBefore(value, startOfDay(addDays(new Date(), -1)))) return 'BEFORE_YESTERDAY'
           return 'NO_DATE'
         })
         return {
