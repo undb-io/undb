@@ -24,6 +24,7 @@ export const $is_not_empty = z.literal('$is_not_empty')
 export const $is_today = z.literal('$is_today')
 
 export const $has_file_type = z.literal('$has_file_type')
+export const $has_file_extension = z.literal('$has_file_extension')
 
 export const operatorsWihtoutValue = z.union([$is_empty, $is_not_empty])
 
@@ -38,7 +39,7 @@ export type IStringFilterOperator = z.infer<typeof stringFilterOperators>
 export const emailFilterOperators = z.union([$eq, $neq, $starts_with, $ends_with, $contains])
 export type IEmailFilterOperator = z.infer<typeof emailFilterOperators>
 
-export const attachmentFilterOperators = z.union([$has_file_type, $is_empty, $is_not_empty])
+export const attachmentFilterOperators = z.union([$has_file_type, $is_empty, $is_not_empty, $has_file_extension])
 export type IAttachmentFilterOperator = z.infer<typeof attachmentFilterOperators>
 
 export const colorFilterOperators = z.union([$eq, $neq])

@@ -1,6 +1,7 @@
 import type { IAttachmentItem } from '@egodb/core'
 import type { Rel } from '@mikro-orm/core'
 import { Entity, Index, ManyToOne, PrimaryKey, PrimaryKeyType, Property } from '@mikro-orm/core'
+import path from 'path'
 import { BaseEntity } from './base.js'
 import { Table } from './table.js'
 
@@ -31,6 +32,12 @@ export class Attachment extends BaseEntity {
 
   @Property()
   token: string
+
+  @Property({ type: 'string' })
+  @Index()
+  get extension(): string {
+    return path.extname(this.name)
+  }
 
   constructor(table: Rel<Table>, recordId: string, attachment: IAttachmentItem) {
     super()

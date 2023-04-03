@@ -8,6 +8,7 @@ import type {
   DateLessThan,
   DateLessThanOrEqual,
   DateRangeEqual,
+  HasExtension,
   HasFileType,
   IRecordVisitor,
   IsAttachmentEmpty,
@@ -45,6 +46,7 @@ import {
   TreeField,
 } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import type { EntityProperty } from '@mikro-orm/core'
 import { endOfDay, startOfDay } from 'date-fns'
 import { Attachment } from '../../entity/attachment.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
@@ -283,16 +285,45 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     const meta = this.em.getMetadata().get(Attachment.name)
     const {
       tableName,
-      properties: { recordId, mimeType },
+      properties: { recordId, mimeType, extension },
     } = meta
     const alias = `has_file_type__${s.fieldId}__${tableName}`
+    this.qb.leftJoin(
+      `${tableName} as ${alias}`,
+      `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`,
+      `${alias}.${recordId.fieldNames[0]}`,
+    )
+
+    const getFieldName = (property: EntityProperty<unknown>) => `${alias}.${property.fieldNames[0]}`
+    if (value === 'image' || value === 'text' || value === 'video') {
+      this.qb.whereLike(getFieldName(mimeType), `${s.value}%`)
+    } else if (value === 'document') {
+      this.qb.whereIn(getFieldName(extension), ['.doc', '.docx'])
+    } else if (value === 'excel') {
+      this.qb.whereIn(getFieldName(extension), ['.xls', '.xlsx'])
+    } else if (value === 'ppt') {
+      this.qb.whereIn(getFieldName(extension), ['.ppt', '.pptx'])
+    } else if (value === 'pdf') {
+      this.qb.where(getFieldName(extension), '=', '.pdf')
+    }
+  }
+  hasExtension(s: HasExtension): void {
+    const value = s.value
+    if (!value) return
+
+    const meta = this.em.getMetadata().get(Attachment.name)
+    const {
+      tableName,
+      properties: { recordId, extension },
+    } = meta
+    const alias = `has_extension__${s.fieldId}__${tableName}`
     this.qb
       .leftJoin(
         `${tableName} as ${alias}`,
         `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`,
         `${alias}.${recordId.fieldNames[0]}`,
       )
-      .whereLike(`${alias}.${mimeType.fieldNames[0]}`, `${s.value}%`)
+      .where(`${alias}.${extension.fieldNames[0]}`, '=', value)
   }
   isAttachmentEmpty(s: IsAttachmentEmpty): void {
     const {

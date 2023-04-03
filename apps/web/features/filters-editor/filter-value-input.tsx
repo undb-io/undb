@@ -137,6 +137,28 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
             { value: 'image', label: t('Image', { ns: 'common' }) as string },
             { value: 'text', label: t('Text', { ns: 'common' }) as string },
             { value: 'video', label: t('Video', { ns: 'common' }) as string },
+            { value: 'document', label: t('Document', { ns: 'common' }) as string },
+            { value: 'excel', label: t('Excel', { ns: 'common' }) as string },
+            { value: 'ppt', label: t('PPT', { ns: 'common' }) as string },
+            { value: 'pdf', label: t('PDF', { ns: 'common' }) as string },
+          ]}
+        />
+      )
+    }
+
+    if (operator === '$has_file_extension') {
+      return (
+        <Select
+          size="xs"
+          variant="filled"
+          value={value as string}
+          onChange={(item) => onChange(item)}
+          data={[
+            { value: '.pdf', label: '.pdf' },
+            { value: '.docx', label: '.docx' },
+            { value: '.xlsx', label: '.xlsx' },
+            { value: '.pptx', label: '.pptx' },
+            { value: '.txt', label: '.txt' },
           ]}
         />
       )

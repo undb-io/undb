@@ -884,6 +884,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "extension": {
+          "name": "extension",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
         }
       },
       "name": "ego_attachment",
@@ -930,6 +939,15 @@
           ],
           "composite": false,
           "keyName": "ego_attachment_size_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "extension"
+          ],
+          "composite": false,
+          "keyName": "ego_attachment_extension_index",
           "primary": false,
           "unique": false
         },
