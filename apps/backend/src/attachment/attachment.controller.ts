@@ -9,7 +9,14 @@ export class AttachmentController {
   constructor(private readonly attachmentService: AttachmentService) {}
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      fileFilter(req, file, callback) {
+        file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8')
+        callback(null, true)
+      },
+    }),
+  )
   async upload(@UploadedFile() file: Express.Multer.File): Promise<AttachmentResponseDto> {
     const { token, id } = await this.attachmentService.uploadFile(file.buffer, file.originalname)
 
