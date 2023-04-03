@@ -29,6 +29,7 @@
     "typescript": "^5.0.3"
   },
   "main": "./index.tsx",
+  "private": true,
   "scripts": {
     "lint": "eslint *.ts*"
   },

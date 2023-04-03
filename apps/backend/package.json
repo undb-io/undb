@@ -80,7 +80,6 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },
-  "license": "UNLICENSED",
   "private": true,
   "scripts": {
     "build": "swc --delete-dir-on-start --out-dir dist src",

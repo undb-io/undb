@@ -41,6 +41,7 @@
       "./src/mikro-orm.config.ts"
     ]
   },
+  "private": true,
   "scripts": {
     "build": "tsup",
     "clean": "rimraf dist",

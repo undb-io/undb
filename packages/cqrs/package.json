@@ -22,6 +22,7 @@
   },
   "keywords": [],
   "main": "./dist/index",
+  "private": true,
   "scripts": {
     "build": "tsup",
     "clean": "rimraf dist",

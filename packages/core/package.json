@@ -32,6 +32,7 @@
     "require": "./dist/index.js"
   },
   "keywords": [],
+  "private": true,
   "scripts": {
     "build": "tsup",
     "clean": "rimraf dist",
