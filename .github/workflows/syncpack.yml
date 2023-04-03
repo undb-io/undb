@@ -2,7 +2,7 @@ on:
   # Run whenever a pull request is updated
   pull_request:
     branches:
-      - main
+      - develop
 jobs:
   syncpack:
     runs-on: ubuntu-latest
