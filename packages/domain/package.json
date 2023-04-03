@@ -1,7 +1,6 @@
 {
   "name": "@egodb/domain",
   "description": "",
-  "private": true,
   "version": "0.0.0",
   "author": "",
   "dependencies": {
@@ -25,6 +24,7 @@
     "require": "./dist/index.js"
   },
   "keywords": [],
+  "private": true,
   "scripts": {
     "build": "tsup",
     "clean": "rimraf dist",

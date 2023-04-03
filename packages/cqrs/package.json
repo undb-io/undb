@@ -1,7 +1,6 @@
 {
   "name": "@egodb/cqrs",
   "description": "",
-  "private": true,
   "version": "0.0.0",
   "author": "",
   "dependencies": {
@@ -23,6 +22,7 @@
   },
   "keywords": [],
   "main": "./dist/index",
+  "private": true,
   "scripts": {
     "build": "tsup",
     "clean": "rimraf dist",

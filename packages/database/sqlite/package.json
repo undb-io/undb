@@ -1,7 +1,6 @@
 {
   "name": "@egodb/sqlite",
   "description": "",
-  "private": true,
   "version": "0.0.0",
   "dependencies": {
     "@egodb/core": "^0.0.0",
@@ -42,6 +41,7 @@
       "./src/mikro-orm.config.ts"
     ]
   },
+  "private": true,
   "scripts": {
     "build": "tsup",
     "clean": "rimraf dist",

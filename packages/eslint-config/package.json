@@ -1,6 +1,5 @@
 {
   "name": "@egodb/eslint-config",
-  "private": true,
   "version": "0.0.0",
   "dependencies": {
     "eslint": "^8.37.0",
@@ -17,6 +16,7 @@
     "typescript": "^5.0.3"
   },
   "main": "index.js",
+  "private": true,
   "publishConfig": {
     "access": "public"
   }

@@ -1,6 +1,5 @@
 {
   "name": "@egodb/store",
-  "private": true,
   "version": "0.0.0",
   "dependencies": {
     "@egodb/core": "^0.0.0",
@@ -26,6 +25,7 @@
     "typescript": "^5.0.3"
   },
   "main": "./index.ts",
+  "private": true,
   "scripts": {
     "lint": "eslint *.ts*"
   }

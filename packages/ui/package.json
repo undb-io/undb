@@ -1,6 +1,5 @@
 {
   "name": "@egodb/ui",
-  "private": true,
   "version": "0.0.0",
   "dependencies": {
     "@babel/core": "^7.21.4",
@@ -30,6 +29,7 @@
     "typescript": "^5.0.3"
   },
   "main": "./index.tsx",
+  "private": true,
   "scripts": {
     "lint": "eslint *.ts*"
   },
