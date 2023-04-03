@@ -1,5 +1,6 @@
 {
   "name": "@egodb/store",
+  "private": true,
   "version": "0.0.0",
   "dependencies": {
     "@egodb/core": "^0.0.0",

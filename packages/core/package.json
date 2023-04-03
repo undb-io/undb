@@ -1,6 +1,7 @@
 {
   "name": "@egodb/core",
   "description": "",
+  "private": true,
   "version": "0.0.0",
   "author": "",
   "dependencies": {
