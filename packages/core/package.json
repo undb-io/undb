@@ -1,10 +1,10 @@
 {
   "name": "@egodb/core",
   "description": "",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": "",
   "dependencies": {
-    "@egodb/domain": "^0.0.0",
+    "@egodb/domain": "^0.1.0",
     "array-move": "^4.0.0",
     "date-fns": "^2.29.3",
     "lodash": "^4.17.21",
@@ -20,7 +20,7 @@
     "@types/lodash-es": "^4.17.7",
     "@types/mime-types": "^2.1.1",
     "rimraf": "^4.4.1",
-    "tsconfig": "^0.0.0",
+    "tsconfig": "^0.1.0",
     "tsup": "^6.7.0",
     "type-fest": "^3.7.2",
     "typescript": "^5.0.3",

@@ -1,17 +1,17 @@
 {
   "name": "@egodb/cqrs",
   "description": "",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": "",
   "dependencies": {
-    "@egodb/core": "^0.0.0",
-    "@egodb/domain": "^0.0.0",
+    "@egodb/core": "^0.1.0",
+    "@egodb/domain": "^0.1.0",
     "oxide.ts": "^1.1.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
     "rimraf": "^4.4.1",
-    "tsconfig": "^0.0.0",
+    "tsconfig": "^0.1.0",
     "tsup": "^6.7.0",
     "typescript": "^5.0.3",
     "vitest": "^0.29.8"

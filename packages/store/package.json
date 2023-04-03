@@ -1,10 +1,10 @@
 {
   "name": "@egodb/store",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "dependencies": {
-    "@egodb/core": "^0.0.0",
-    "@egodb/cqrs": "^0.0.0",
-    "@egodb/trpc": "^0.0.0",
+    "@egodb/core": "^0.1.0",
+    "@egodb/cqrs": "^0.1.0",
+    "@egodb/trpc": "^0.1.0",
     "@reduxjs/toolkit": "^1.9.3",
     "@trpc/client": "^10.18.0",
     "lodash": "^4.17.21",
@@ -13,7 +13,7 @@
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {
-    "@egodb/eslint-config": "^0.0.0",
+    "@egodb/eslint-config": "^0.1.0",
     "@trpc/server": "^10.18.0",
     "@types/lodash": "^4.14.192",
     "@types/redux-logger": "^3.0.9",
@@ -21,7 +21,7 @@
     "immer": "^9.0.21",
     "react": "^18.2.0",
     "reselect": "^4.1.7",
-    "tsconfig": "^0.0.0",
+    "tsconfig": "^0.1.0",
     "typescript": "^5.0.3"
   },
   "main": "./index.ts",

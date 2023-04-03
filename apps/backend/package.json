@@ -1,12 +1,12 @@
 {
   "name": "@egodb/backend",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "dependencies": {
-    "@egodb/core": "^0.0.0",
-    "@egodb/cqrs": "^0.0.0",
-    "@egodb/domain": "^0.0.0",
-    "@egodb/sqlite": "^0.0.0",
-    "@egodb/trpc": "^0.0.0",
+    "@egodb/core": "^0.1.0",
+    "@egodb/cqrs": "^0.1.0",
+    "@egodb/domain": "^0.1.0",
+    "@egodb/sqlite": "^0.1.0",
+    "@egodb/trpc": "^0.1.0",
     "@mikro-orm/better-sqlite": "^5.6.15",
     "@mikro-orm/core": "^5.6.15",
     "@mikro-orm/migrations": "^5.6.15",
@@ -36,7 +36,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@egodb/eslint-config": "^0.0.0",
+    "@egodb/eslint-config": "^0.1.0",
     "@nestjs/cli": "^9.3.0",
     "@nestjs/schematics": "^9.1.0",
     "@nestjs/testing": "^9.3.12",
@@ -59,7 +59,7 @@
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
-    "tsconfig": "^0.0.0",
+    "tsconfig": "^0.1.0",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.0.3"
   },

@@ -1,16 +1,16 @@
 {
   "name": "@egodb/web",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "dependencies": {
     "@dnd-kit/core": "^6.0.8",
     "@dnd-kit/modifiers": "^6.0.1",
     "@dnd-kit/sortable": "^7.0.2",
     "@dnd-kit/utilities": "^3.2.1",
-    "@egodb/core": "^0.0.0",
-    "@egodb/cqrs": "^0.0.0",
-    "@egodb/store": "^0.0.0",
-    "@egodb/trpc": "^0.0.0",
-    "@egodb/ui": "^0.0.0",
+    "@egodb/core": "^0.1.0",
+    "@egodb/cqrs": "^0.1.0",
+    "@egodb/store": "^0.1.0",
+    "@egodb/trpc": "^0.1.0",
+    "@egodb/ui": "^0.1.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@formkit/auto-animate": "^1.0.0-beta.6",
@@ -34,7 +34,7 @@
     "zod-i18n-map": "^2.9.0"
   },
   "devDependencies": {
-    "@egodb/eslint-config": "^0.0.0",
+    "@egodb/eslint-config": "^0.1.0",
     "@hookform/devtools": "^4.3.1",
     "@next/bundle-analyzer": "^13.2.4",
     "@total-typescript/ts-reset": "^0.3.7",
@@ -44,7 +44,7 @@
     "@types/react-dom": "^18.0.11",
     "eslint": "^8.37.0",
     "eslint-config-next": "^13.2.4",
-    "tsconfig": "^0.0.0",
+    "tsconfig": "^0.1.0",
     "type-fest": "^3.7.2",
     "typescript": "^5.0.3"
   },
