@@ -14,6 +14,7 @@ import { KanbanLaneMenu } from './kanban-lane-menu'
 import React from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import { KANBAN_DATE_STACKS } from './kanban-date.utils'
 
 export interface IProps {
   renderMenu?: () => ReactNode
@@ -122,7 +123,7 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = React.memo(
 export const SortableKanbanLane: React.FC<IProps> = (props) => {
   const { attributes, listeners, isDragging, setNodeRef, setActivatorNodeRef, transform, transition } = useSortable({
     id: props.id as string,
-    disabled: props.id === UNCATEGORIZED_OPTION_ID,
+    disabled: props.id === UNCATEGORIZED_OPTION_ID || (!!props.id && KANBAN_DATE_STACKS.includes(props.id as any)),
     data: {
       type: 'container',
     },
