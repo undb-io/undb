@@ -9,7 +9,7 @@ jobs:
   create-tag:
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+      GITHUB_TOKEN: '${{ secrets.PAT }}'
     steps:
       - uses: actions/checkout@v2
       - name: 'Create version tag'
