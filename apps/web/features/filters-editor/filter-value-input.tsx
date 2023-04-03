@@ -146,6 +146,24 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
       )
     }
 
+    if (operator === '$has_file_extension') {
+      return (
+        <Select
+          size="xs"
+          variant="filled"
+          value={value as string}
+          onChange={(item) => onChange(item)}
+          data={[
+            { value: '.pdf', label: '.pdf' },
+            { value: '.docx', label: '.docx' },
+            { value: '.xlsx', label: '.xlsx' },
+            { value: '.pptx', label: '.pptx' },
+            { value: '.txt', label: '.txt' },
+          ]}
+        />
+      )
+    }
+
     return null
   }
 

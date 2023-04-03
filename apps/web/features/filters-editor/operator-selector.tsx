@@ -72,6 +72,7 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
       { value: '$is_empty', label: t('IS EMPTY', { ns: 'common' }) as string },
       { value: '$is_not_empty', label: t('IS NOT EMPTY', { ns: 'common' }) as string },
       { value: '$has_file_type', label: t('HAS FILE TYPE', { ns: 'common' }) as string },
+      { value: '$has_file_extension', label: t('HAS FILE EXTENSION', { ns: 'common' }) as string },
     ]
   } else if (field instanceof DateField || field instanceof CreatedAtField || field instanceof UpdatedAtField) {
     data = [

@@ -33,9 +33,11 @@ export class Attachment extends BaseEntity {
   @Property()
   token: string
 
-  @Property()
+  @Property({ type: 'string' })
   @Index()
-  extension: string
+  get extension(): string {
+    return path.extname(this.name)
+  }
 
   constructor(table: Rel<Table>, recordId: string, attachment: IAttachmentItem) {
     super()
@@ -46,6 +48,5 @@ export class Attachment extends BaseEntity {
     this.size = attachment.size
     this.name = attachment.name
     this.token = attachment.token
-    this.extension = path.extname(this.name)
   }
 }

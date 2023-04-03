@@ -1,4 +1,4 @@
-import { getMimeType } from './attachment-field-value.util.js'
+import { getExtension, getMimeType } from './attachment-field-value.util.js'
 import type { IAttachmentFieldValue } from './attachment-field.type.js'
 import { FieldValueBase } from './field-value.base.js'
 import type { IFieldValueVisitor } from './field-value.visitor.js'
@@ -22,5 +22,9 @@ export class AttachmentFieldValue extends FieldValueBase<IAttachmentFieldValue> 
 
   public isEmpty(): boolean {
     return !this.props.length
+  }
+
+  public hasExtension(extension: string): boolean {
+    return this.props.some((attachment) => getExtension(attachment.mimeType) === extension)
   }
 }

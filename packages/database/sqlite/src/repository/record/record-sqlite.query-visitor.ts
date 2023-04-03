@@ -8,6 +8,7 @@ import type {
   DateLessThan,
   DateLessThanOrEqual,
   DateRangeEqual,
+  HasExtension,
   HasFileType,
   IRecordVisitor,
   IsAttachmentEmpty,
@@ -305,6 +306,24 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     } else if (value === 'pdf') {
       this.qb.where(getFieldName(extension), '=', '.pdf')
     }
+  }
+  hasExtension(s: HasExtension): void {
+    const value = s.value
+    if (!value) return
+
+    const meta = this.em.getMetadata().get(Attachment.name)
+    const {
+      tableName,
+      properties: { recordId, extension },
+    } = meta
+    const alias = `has_extension__${s.fieldId}__${tableName}`
+    this.qb
+      .leftJoin(
+        `${tableName} as ${alias}`,
+        `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`,
+        `${alias}.${recordId.fieldNames[0]}`,
+      )
+      .where(`${alias}.${extension.fieldNames[0]}`, '=', value)
   }
   isAttachmentEmpty(s: IsAttachmentEmpty): void {
     const {

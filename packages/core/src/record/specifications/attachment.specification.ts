@@ -31,3 +31,16 @@ export class IsAttachmentEmpty extends BaseRecordQuerySpecification<void> {
     return Ok(undefined)
   }
 }
+
+export class HasExtension extends BaseRecordQuerySpecification<string> {
+  isSatisfiedBy(r: Record): boolean {
+    const value = r.values.value.get(this.fieldId)
+
+    return value instanceof AttachmentFieldValue && value.hasExtension(this.value)
+  }
+
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.hasExtension(this)
+    return Ok(undefined)
+  }
+}
