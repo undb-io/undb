@@ -28,7 +28,7 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
   const view = useCurrentView()
   const containers = KANBAN_DATE_STACKS as unknown as string[]
 
-  const { groupdRecords, records, isLoading } = useGetRecordsQuery(
+  const { groupdRecords, records, isLoading, isFetching } = useGetRecordsQuery(
     {
       tableId: table.id.value,
       viewId: view.id.value,
@@ -59,7 +59,7 @@ export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
   const [dateRecords, setDateRecords] = useState(groupdRecords)
   useEffect(() => {
     setDateRecords(groupdRecords)
-  }, [isLoading])
+  }, [isLoading, isFetching])
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
