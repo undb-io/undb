@@ -50,9 +50,6 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
     display: !!field.display,
   }
 
-  if (defaultValues.type === 'reference') {
-    defaultValues.foreignTableId = (field as ReferenceField).foreignTableId.into()
-  }
   if (
     defaultValues.type === 'tree' ||
     defaultValues.type === 'parent' ||
@@ -150,7 +147,7 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
             />
           )}
 
-          <FieldVariantControl isNew={false} />
+          <FieldVariantControl isNew={false} field={field} />
 
           <Divider />
 
