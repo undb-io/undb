@@ -1,4 +1,4 @@
-import type { ICreateFieldSchema, IUpdateFieldSchema, ReferenceField, TreeField } from '@egodb/core'
+import type { Field, ICreateFieldSchema, IUpdateFieldSchema, ParentField, ReferenceField, TreeField } from '@egodb/core'
 import { RATING_MAX, RATING_MAX_DEFAULT } from '@egodb/core'
 import { NumberInput, Switch, TextInput } from '@egodb/ui'
 import type { UseFormReturn } from 'react-hook-form'
@@ -16,9 +16,10 @@ import { CustomDisplayFieldsPicker } from '../field-inputs/custom-display-fields
 
 interface IProps {
   isNew: boolean
+  field?: Field
 }
 
-export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
+export const FieldVariantControl: React.FC<IProps> = ({ isNew = false, field }) => {
   const table = useCurrentTable()
 
   const { t } = useTranslation()
@@ -49,14 +50,17 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
   }
 
   if (type === 'tree' || type === 'reference' || type === 'parent') {
-    const foreignTableId = form.watch('foreignTableId')
+    const foreignTableId = isNew
+      ? (form as UseFormReturn<ICreateFieldSchema>).watch('foreignTableId')
+      : (field as TreeField | ReferenceField | ParentField).foreignTableId.into()
     const foreignFieldPickerProps: IForeignTablePickerProps = {
-      foreignTableId,
+      foreignTableId: foreignTableId ?? table.id.value,
       disabled: type === 'reference' && !foreignTableId,
       variant: 'default',
       fieldFilter: (f) => f.isPrimitive(),
       placeholder: t('Select Display Fields') as string,
       label: <FieldInputLabel>{t('Display Fields')}</FieldInputLabel>,
+      value: form.watch('displayFieldIds'),
     }
     return (
       <>
@@ -76,7 +80,14 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
         {type === 'reference' && (
           <Controller
             name="foreignTableId"
-            render={(props) => <TablePicker {...props.field} placeholder={t('Select Foreign Table') as string} />}
+            render={(props) => (
+              <TablePicker
+                disabled={!isNew}
+                {...props.field}
+                value={isNew ? props.field.value : foreignTableId}
+                placeholder={t('Select Foreign Table') as string}
+              />
+            )}
           />
         )}
         {isNew && type === 'reference' && !!foreignTableId && foreignTableId !== table.id.value && (

@@ -61,7 +61,7 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
           .on(`${alias}.${INTERNAL_COLUMN_ID_NAME}`, '=', `c.${ClosureTable.CHILD_ID}`)
           .andOn(`c.${ClosureTable.DEPTH}`, '=', knex.raw('?', [1]))
       })
-      .leftOuterJoin(`${tableId} as t2`, `t2.${INTERNAL_COLUMN_ID_NAME}`, `c.${ClosureTable.PARENT_ID}`)
+      .leftJoin(`${tableId} as t2`, `t2.${INTERNAL_COLUMN_ID_NAME}`, `c.${ClosureTable.PARENT_ID}`)
       .whereNull(`t2.${DELETED_AT_COLUMN_NAME}`)
       .select([...columns.filter((c) => !c.virtual).map((c) => `t.${c.name}`), `c.${ClosureTable.PARENT_ID}`])
 

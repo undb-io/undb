@@ -33,10 +33,11 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
       bg="white"
       px={0}
       w="100%"
-      spacing="xs"
+      spacing={0}
       role="button"
       noWrap
       sx={(theme) => ({
+        color: theme.colors.dark,
         textAlign: 'start',
         borderRadius: theme.radius.xs,
         border: `1px ${theme.colors.gray[2]} solid`,

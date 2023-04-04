@@ -64,7 +64,7 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
 export const CalendarRecords: React.FC<IProps> = ({ field }) => {
   const table = useCurrentTable()
   const view = useCurrentView()
-  const { rawRecords, isLoading } = useGetRecordsQuery(
+  const { rawRecords, isLoading, isFetching } = useGetRecordsQuery(
     {
       tableId: table.id.value,
       viewId: view.id.value,
@@ -78,7 +78,10 @@ export const CalendarRecords: React.FC<IProps> = ({ field }) => {
     },
   )
 
-  const records = useMemo(() => RecordFactory.fromQueryRecords(rawRecords, table.schema.toIdMap()), [rawRecords])
+  const records = useMemo(
+    () => RecordFactory.fromQueryRecords(rawRecords, table.schema.toIdMap()),
+    [rawRecords, isLoading, isFetching],
+  )
 
   const tableContainerRef = useRef<HTMLDivElement>(null)
   const rowVirtualizer = useVirtualizer({

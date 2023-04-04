@@ -112,7 +112,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             label={label}
             icon={<FieldIcon type={field.type} />}
             {...form.field}
-            value={form.field.value ? new Date(form.field.value) : undefined}
+            value={form.field.value ? new Date(form.field.value) : null}
             onChange={(date) => form.field.onChange(date?.toISOString())}
             valueFormat={field.formatString.toUpperCase()}
             popoverProps={{ withinPortal: true }}

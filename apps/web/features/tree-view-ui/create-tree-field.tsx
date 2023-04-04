@@ -2,16 +2,16 @@ import type { ICreateTreeFieldSchema } from '@egodb/core'
 import { FieldId } from '@egodb/core'
 import { createTreeFieldSchema } from '@egodb/core'
 import { useCreateFieldMutation, useSetTreeFieldMutation } from '@egodb/store'
-import { Button, Card, FocusTrap, Group, IconChevronLeft, Stack, Text, TextInput } from '@egodb/ui'
+import { Button, Card, Group, IconChevronLeft, Stack, Text, TextInput } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetAtom } from 'jotai'
 import { Controller, useForm } from 'react-hook-form'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
-import { ForeignFieldsPicker } from '../field-inputs/foreign-fields-picker'
 import { treeStepZeroAtom } from './tree-step.atom'
 import { useTranslation } from 'react-i18next'
+import { CustomDisplayFieldsPicker } from '../field-inputs/custom-display-fields-picker'
 
 interface IProps {
   onSuccess?: () => void
@@ -59,13 +59,12 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
 
         <Card.Section withBorder inheritPadding py="sm">
           <Stack spacing="xs">
-            <FocusTrap>
-              <TextInput
-                label={<FieldInputLabel>{t('Name', { ns: 'common' })}</FieldInputLabel>}
-                {...form.register('name')}
-                placeholder={t('Field Name') as string}
-              />
-            </FocusTrap>
+            <TextInput
+              label={<FieldInputLabel>{t('Name', { ns: 'common' })}</FieldInputLabel>}
+              {...form.register('name')}
+              autoFocus
+              placeholder={t('Field Name') as string}
+            />
             <Controller
               control={form.control}
               name={`parentFieldName`}
@@ -82,7 +81,7 @@ export const CreateTreeField: React.FC<IProps> = ({ onSuccess }) => {
               control={form.control}
               name="displayFieldIds"
               render={(props) => (
-                <ForeignFieldsPicker
+                <CustomDisplayFieldsPicker
                   variant="default"
                   foreignTableId={table.id.value}
                   dropdownPosition="bottom"

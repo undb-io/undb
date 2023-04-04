@@ -15,7 +15,7 @@ export const CalendarContent: React.FC<IProps> = ({ field }) => {
   const table = useCurrentTable()
   const view = useCurrentView()
 
-  const { rawRecords } = useGetRecordsQuery(
+  const { rawRecords, isLoading, isFetching } = useGetRecordsQuery(
     {
       tableId: table.id.value,
       viewId: view.id.value,
@@ -29,7 +29,10 @@ export const CalendarContent: React.FC<IProps> = ({ field }) => {
     },
   )
 
-  const records = useMemo(() => RecordFactory.fromQueryRecords(rawRecords, table.schema.toIdMap()), [rawRecords])
+  const records = useMemo(
+    () => RecordFactory.fromQueryRecords(rawRecords, table.schema.toIdMap()),
+    [rawRecords, isLoading, isFetching],
+  )
 
   return (
     <Calendar
