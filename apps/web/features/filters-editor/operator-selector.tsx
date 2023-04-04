@@ -1,4 +1,5 @@
 import type { Field, IOperator } from '@egodb/core'
+import { AutoIncrementField } from '@egodb/core'
 import { AttachmentField } from '@egodb/core'
 import { AverageField, SumField } from '@egodb/core'
 import { CountField } from '@egodb/core'
@@ -57,7 +58,8 @@ export const OperatorSelector: React.FC<IProps> = ({ value, field, onChange }) =
     field instanceof RatingField ||
     field instanceof CountField ||
     field instanceof SumField ||
-    field instanceof AverageField
+    field instanceof AverageField ||
+    field instanceof AutoIncrementField
   ) {
     data = [
       { value: '$eq', label: t('EQUAL', { ns: 'common' }) as string },

@@ -1,7 +1,7 @@
 'use client'
 
 import { TableFactory } from '@egodb/core'
-import { setCurrentTableId, setCurrentViewId, useGetTableQuery } from '@egodb/store'
+import { resetCurrentTableId, setCurrentTableId, setCurrentViewId, useGetTableQuery } from '@egodb/store'
 import type { TRPCError } from '@egodb/trpc'
 import { Alert, Container, IconAlertCircle, ModalsProvider } from '@egodb/ui'
 import { useEffect } from 'react'
@@ -12,11 +12,13 @@ import { useAppDispatch } from '../../../hooks'
 import { modals } from '../../../modals'
 import Table from './table'
 import { unstable_batchedUpdates } from 'react-dom'
+import { useRouter } from 'next/navigation'
 
 export default function Page({ params: { slug } }: { params: { slug: string[] } }) {
   const [tableId, viewId] = slug
   const { data, isLoading, isError, error } = useGetTableQuery({ id: tableId })
   const dispatch = useAppDispatch()
+  const router = useRouter()
 
   useEffect(() => {
     unstable_batchedUpdates(() => {
@@ -40,7 +42,9 @@ export default function Page({ params: { slug } }: { params: { slug: string[] } 
   }
 
   if (!data) {
-    return 'none'
+    dispatch(resetCurrentTableId())
+    router.replace('/')
+    return null
   }
   const table = TableFactory.fromQuery(data)
   const view = table.mustGetView(viewId)

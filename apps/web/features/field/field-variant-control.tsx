@@ -82,9 +82,9 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false, field }) 
             name="foreignTableId"
             render={(props) => (
               <TablePicker
-                disabled
+                disabled={!isNew}
                 {...props.field}
-                value={foreignTableId}
+                value={isNew ? props.field.value : foreignTableId}
                 placeholder={t('Select Foreign Table') as string}
               />
             )}

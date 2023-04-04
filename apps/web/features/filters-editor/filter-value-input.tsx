@@ -1,5 +1,6 @@
 import {
   AttachmentField,
+  AutoIncrementField,
   AverageField,
   ColorField,
   CountField,
@@ -84,7 +85,8 @@ export const FilterValueInput: React.FC<IProps> = ({ operator, field, value, onC
     field instanceof NumberField ||
     field instanceof CountField ||
     field instanceof SumField ||
-    field instanceof AverageField
+    field instanceof AverageField ||
+    field instanceof AutoIncrementField
   ) {
     return (
       <TextInput
