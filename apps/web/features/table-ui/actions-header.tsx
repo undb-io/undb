@@ -6,7 +6,6 @@ import { CREATE_FIELD_MODAL_ID } from '../../modals'
 import type { Table } from '@tanstack/react-table'
 import type { TData } from './interface'
 
-// eslint-disable-next-line react/display-name
 export const ActionsHeader: React.FC<{ table: Table<TData> }> = () => {
   const { t } = useTranslation()
 

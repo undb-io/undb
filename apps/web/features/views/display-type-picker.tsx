@@ -12,7 +12,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
   value: IViewDisplayType
   label: string
 }
-// eslint-disable-next-line react/display-name
+
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, value, ...others }: ItemProps, ref) => {
   const { t } = useTranslation()
   return (

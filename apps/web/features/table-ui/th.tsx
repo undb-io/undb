@@ -45,7 +45,6 @@ interface IProps {
   index: number
 }
 
-// eslint-disable-next-line react/display-name
 export const Th: React.FC<IProps> = ({ header, field, column, index }) => {
   const table = useCurrentTable()
   const view = useCurrentView()

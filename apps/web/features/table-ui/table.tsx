@@ -179,7 +179,6 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
   )
 }
 
-// eslint-disable-next-line react/display-name
 const Record: React.FC<{ row: Row<TData>; checked: boolean; columnLength: number }> = React.memo(({ row }) => {
   const dispatch = useAppDispatch()
 

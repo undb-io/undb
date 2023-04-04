@@ -28,7 +28,6 @@ export interface IProps {
 
 type IKanbanLaneProps = IProps & SortableProps
 
-// eslint-disable-next-line react/display-name
 export const KanbanLane: React.FC<IKanbanLaneProps> = React.memo(
   ({
     id,

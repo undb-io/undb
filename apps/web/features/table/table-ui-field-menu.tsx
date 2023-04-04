@@ -11,7 +11,6 @@ interface IProps {
   header: Header<TData, unknown>
 }
 
-// eslint-disable-next-line react/display-name
 export const TableUIFieldMenu: React.FC<IProps> = React.memo(({ field, index, header }) => {
   const pinned = header.column.getIsPinned()
 

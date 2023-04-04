@@ -10,7 +10,7 @@ interface IProps {
   cell: CellContext<TData, FieldValue>
   field: Field
 }
-// eslint-disable-next-line react/display-name
+
 export const Cell: React.FC<IProps> = ({ cell, field }) => {
   const pinned = cell.column.getIsPinned()
 

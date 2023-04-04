@@ -19,7 +19,6 @@ import type { TData, TRow } from './interface'
 import type { Table } from '@tanstack/react-table'
 import { ACTIONS_FIELD } from '../../constants/field.constants'
 
-// eslint-disable-next-line react/display-name
 export const ActionsCell: React.FC<{ row: TRow; table: Table<TData> }> = ({ row, table: tb }) => {
   const table = useCurrentTable()
   const tableId = table.id.value

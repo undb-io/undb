@@ -20,7 +20,6 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
   label: string
 }
 
-// eslint-disable-next-line react/display-name
 const TreeSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, label, ...others }: ItemProps, ref) => (
   <Group key={value} ref={ref} p="xs" {...others}>
     <RecordValue value={label} />

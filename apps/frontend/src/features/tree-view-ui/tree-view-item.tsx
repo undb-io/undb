@@ -45,7 +45,6 @@ export interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
   wrapperRef?(node: HTMLDivElement): void
 }
 
-// eslint-disable-next-line react/display-name
 export const TreeItem = forwardRef<HTMLDivElement, Props>(
   (
     {
