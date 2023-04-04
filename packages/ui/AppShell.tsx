@@ -1,1 +1,1 @@
-export { AppShell, Navbar, Header, Aside, Footer, ScrollArea } from '@mantine/core'
+export { AppShell, Navbar, Header, Aside, Footer } from '@mantine/core'
