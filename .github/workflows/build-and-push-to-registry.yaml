@@ -29,7 +29,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/egodb
+            ghcr.io/${{ github.repository }}
 
       - name: Build egodb and push
         uses: docker/build-push-action@v4
