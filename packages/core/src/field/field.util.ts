@@ -18,7 +18,8 @@ const displayFieldTypes: Set<IFieldType> = new Set<IFieldType>([
   'color',
   'date',
   'email',
-  'attachment',
+  // FIXME: https://github.com/ego-io/egodb/issues/780
+  // 'attachment',
   'number',
   'rating',
   'string',
