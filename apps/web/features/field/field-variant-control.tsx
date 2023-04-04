@@ -49,7 +49,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
   }
 
   if (type === 'tree' || type === 'reference' || type === 'parent') {
-    const foreignTableId = form.watch('foreignTableId')
+    const foreignTableId = form.watch('foreignTableId') ?? table.id.value
     const foreignFieldPickerProps: IForeignTablePickerProps = {
       foreignTableId,
       disabled: type === 'reference' && !foreignTableId,
@@ -57,6 +57,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ isNew = false }) => {
       fieldFilter: (f) => f.isPrimitive(),
       placeholder: t('Select Display Fields') as string,
       label: <FieldInputLabel>{t('Display Fields')}</FieldInputLabel>,
+      value: form.watch('displayFieldIds'),
     }
     return (
       <>
