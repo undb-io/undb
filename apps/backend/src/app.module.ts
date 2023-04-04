@@ -4,8 +4,10 @@ import { MikroOrmModule } from '@mikro-orm/nestjs'
 import type { OnModuleInit } from '@nestjs/common'
 import { Module } from '@nestjs/common'
 import { ConfigType } from '@nestjs/config'
+import { ServeStaticModule } from '@nestjs/serve-static'
 import { ClsModule } from 'nestjs-cls'
 import { LoggerModule } from 'nestjs-pino'
+import path from 'path'
 import { AttachmentModule } from './attachment/attachment.module.js'
 import { BaseConfigService } from './configs/base-config.service.js'
 import { ConfigModule } from './configs/config.module.js'
@@ -37,6 +39,9 @@ import { TrpcModule } from './trpc/trpc.module.js'
     }),
     ...modules,
     AttachmentModule,
+    ServeStaticModule.forRoot({
+      rootPath: path.resolve(process.cwd(), './out'),
+    }),
   ],
 })
 export class AppModule implements OnModuleInit {

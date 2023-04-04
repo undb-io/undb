@@ -1,7 +1,7 @@
 import type { ICreateTableInput } from '@egodb/cqrs'
 import { useCreateTableMutation } from '@egodb/store'
 import { Alert, Button, Group, IconAlertCircle, Text, Space, TextInput, Code, Box } from '@egodb/ui'
-import { useRouter } from 'next/navigation'
+import { useNavigate } from 'react-router-dom'
 import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { CreateTableAddFieldButton } from './create-table-add-field-button'

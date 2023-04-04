@@ -1,4 +1,3 @@
-export * from './next'
 export * from './emotion'
 
 export * from './Alert'
