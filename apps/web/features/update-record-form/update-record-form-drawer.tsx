@@ -97,7 +97,7 @@ export const UpdateRecordFormDrawer: React.FC = () => {
           <Drawer.Header sx={(theme) => ({ zIndex: 1000, borderBottom: '1px solid ' + theme.colors.gray[2] })}>
             {t('Update Record')}
           </Drawer.Header>
-          <Drawer.Body pb="80px">
+          <Drawer.Body pb="80px" h="calc(100% - 80px)" sx={{ overflow: 'scroll' }}>
             <LoadingOverlay visible={isLoading} />
             <UpdateRecordForm onCancel={reset} />
           </Drawer.Body>
