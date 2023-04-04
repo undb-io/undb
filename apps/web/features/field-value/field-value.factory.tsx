@@ -106,7 +106,7 @@ export const FieldValueFactory: React.FC<{
       if (!unpacked?.length) return null
 
       return (
-        <Group h="100%">
+        <Group h="100%" noWrap>
           {unpacked.map((value) => (
             <AspectRatio key={value.id} ratio={1} h="100%" w="20px">
               <AttachmentValue attachment={value} />
