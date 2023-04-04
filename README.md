@@ -15,6 +15,14 @@ Private first, self-hosted no code database.
 - :sparkles: Multiple built-in field types
 - :city_sunset: Different types of views
 
+## Deploy with docker
+
+```
+docker run -d --name egodb -p 4000:4000 --platform linux/x86_64 -v ~/.egodb/:/var/opts/.ego ghcr.io/ego-io/egodb:latest
+```
+
+> And then you can visit http://localhost:4000 and get started
+
 ## License
 
 egodb is open-source under the GNU Affero General Public License Version 3 (AGPLv3). You can find it [here](./LICENSE).
