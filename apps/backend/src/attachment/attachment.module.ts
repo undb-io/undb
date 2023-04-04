@@ -9,7 +9,12 @@ import { AttachmentService } from './attachment.service.js'
 @Module({
   imports: [
     ServeStaticModule.forRootAsync({
-      useFactory: (config: ConfigType<typeof objectStorageConfig>) => [{ rootPath: config.local.path }],
+      useFactory: (config: ConfigType<typeof objectStorageConfig>) => [
+        {
+          rootPath: config.local.path,
+          serveRoot: '/public',
+        },
+      ],
       inject: [objectStorageConfig.KEY],
     }),
   ],

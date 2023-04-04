@@ -16,7 +16,7 @@ export const AttachmentValue: React.FC<IProps> = ({ attachment }) => {
   if (isImage(attachment)) {
     return (
       <Tooltip label={attachment.name} withinPortal color="blue">
-        <Image src={`http://localhost:4000/${attachment.token}_${attachment.name}`} alt={attachment.name} />
+        <Image src={`http://localhost:4000/public/${attachment.token}_${attachment.name}`} alt={attachment.name} />
       </Tooltip>
     )
   }
