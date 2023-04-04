@@ -8,12 +8,12 @@ Private first, self-hosted no code database.
 
 ## Features
 
-- :wrench: Private first
+- :closed_lock_with_key: Private first
 - :balloon: Light weight, requires just one file storage by default
 - :computer: Self hosted in seconds
 - :pencil: Customizable
-- :sparkles: Multiple built-in field types
-- :city_sunset: Different types of views
+- :sparkles: Multiple built-in field types and variants
+- :city_sunset: Different types of views, including grid, kanban, tree, calendar and more
 
 ## Deploy with docker
 
