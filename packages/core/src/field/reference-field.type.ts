@@ -24,7 +24,6 @@ export type ICreateReferenceFieldInput = z.infer<typeof createReferenceFieldSche
 export const updateReferenceFieldSchema = updateBaseFieldSchema.merge(referenceTypeObjectSchema).merge(
   z.object({
     displayFieldIds: fieldIdSchema.array().optional(),
-    foreignTableId: tableIdSchema.optional(),
   }),
 )
 export type IUpdateReferenceFieldInput = z.infer<typeof updateReferenceFieldSchema>

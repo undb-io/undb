@@ -2,7 +2,6 @@ export {
   TextInput,
   NumberInput,
   Select,
-  Checkbox,
   SegmentedControl,
   Radio,
   FocusTrap,

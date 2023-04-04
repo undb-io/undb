@@ -31,6 +31,11 @@ export class ReferenceField extends Mixin(
     return true
   }
 
+  // https://github.com/ego-io/egodb/issues/781
+  override get filterable(): boolean {
+    return false
+  }
+
   override get sortable(): boolean {
     return false
   }

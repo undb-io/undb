@@ -13,13 +13,12 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   }
 
   static fromObject(schema: TableSchemaIdMap, inputs: IQueryRecordValues): RecordValues {
-    const values = new Map(
-      Object.entries(inputs).map(([fieldId, fieldValue]) => [
-        fieldId,
-        // TODO: handler missing field
-        schema.get(fieldId)!.createValue(fieldValue as never),
-      ]),
-    )
+    const values = new Map()
+    for (const [fieldId, fieldValue] of Object.entries(inputs)) {
+      const field = schema.get(fieldId)
+      if (!field) continue
+      values.set(fieldId, field.createValue(fieldValue as never))
+    }
 
     return new RecordValues(values)
   }

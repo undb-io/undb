@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
 
-    strategy:
-      matrix:
-        target: [web, backend]
     steps:
       - name: Fetch Sources
         uses: actions/checkout@v3
@@ -37,14 +34,13 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/${{ github.repository }}/${{ matrix.target }}
-            docker.io/egodb/${{ matrix.target }}
+            ghcr.io/${{ github.repository }}/egodb
 
-      - name: Build egodb/${{ matrix.target }} and push
+      - name: Build egodb and push
         uses: docker/build-push-action@v4
         with:
           push: true
           context: .
-          file: ./docker/${{ matrix.target }}/Dockerfile
+          file: ./docker/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

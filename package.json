@@ -1,6 +1,6 @@
 {
   "name": "egodb",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "devDependencies": {
     "@egodb/eslint-config": "^0.0.0",
     "@types/node": "^18.15.11",

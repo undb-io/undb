@@ -53,11 +53,11 @@ export class RecordSqliteRepository implements IRecordRepository {
     }
 
     const qb = em.getKnex().insert(data).into(record.tableId.value)
+    await em.execute(qb)
     for (const query of queries) {
       await em.execute(query)
     }
     await Promise.all(jobs.map((job) => job()))
-    await em.execute(qb)
   }
 
   async insert(record: CoreRecord, schema: TableSchemaIdMap): Promise<void> {
