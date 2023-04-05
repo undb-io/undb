@@ -1,0 +1,16 @@
+version: "3.0"
+
+# uffizzi integration
+x-uffizzi:
+  ingress:
+    service: egodb
+    port: 4000
+
+services:
+  egodb:
+    image: "${EGODB_IMAGE}"
+    volumes:
+      - egodb_volume:/var/opt/.ego
+
+volumes:
+  egodb_volume:
