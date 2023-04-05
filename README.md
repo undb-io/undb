@@ -1,8 +1,10 @@
 # egodb
 
-<img height="40px" src="./docs/logo.png" alt="egodb" align="right" />
+<img height="50px" src="./docs/logo.png" alt="egodb" align="right" />
 
 Private first, self-hosted no code database.
+
+<a href="https://demo.egodb.io/">Live Demo</a>
 
 ![ego](./docs/ego.png)
 
