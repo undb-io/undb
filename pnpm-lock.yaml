@@ -255,8 +255,8 @@ importers:
         specifier: ^1.0.0-beta.6
         version: 1.0.0-beta.6
       '@hookform/resolvers':
-        specifier: ^2.9.11
-        version: 2.9.11(react-hook-form@7.43.9)
+        specifier: ^3.0.0
+        version: 3.0.0(react-hook-form@7.43.9)
       '@tanstack/react-table':
         specifier: ^8.8.5
         version: 8.8.5(react-dom@18.2.0)(react@18.2.0)
@@ -1936,8 +1936,8 @@ packages:
       - '@types/react'
     dev: true
 
-  /@hookform/resolvers@2.9.11(react-hook-form@7.43.9):
-    resolution: {integrity: sha512-bA3aZ79UgcHj7tFV7RlgThzwSSHZgvfbt2wprldRkYBcMopdMvHyO17Wwp/twcJasNFischFfS7oz8Katz8DdQ==}
+  /@hookform/resolvers@3.0.0(react-hook-form@7.43.9):
+    resolution: {integrity: sha512-SQPefakODpyq25b/phHXDKCdRrEfPcCXV7B4nAa139wE1DxufYbbNAjeo0T04ZXBokRxZ+wD8iA1kkVMa3QwjQ==}
     peerDependencies:
       react-hook-form: ^7.0.0
     dependencies:
