@@ -31,7 +31,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           context: ./
-          file: docker/Dockerfile
+          file: Dockerfile
 
   render-compose-file:
     name: Render Docker Compose File
