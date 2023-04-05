@@ -28,9 +28,6 @@ importers:
       prettier:
         specifier: ^2.8.7
         version: 2.8.7
-      syncpack:
-        specifier: ^9.8.4
-        version: 9.8.4
       taze:
         specifier: ^0.9.1
         version: 0.9.1
@@ -2634,11 +2631,6 @@ packages:
     dependencies:
       ansi-colors: 4.1.3
     dev: false
-
-  /@mobily/ts-belt@3.13.1:
-    resolution: {integrity: sha512-K5KqIhPI/EoCTbA6CGbrenM9s41OouyK8A03fGJJcla/zKucsgLbz8HNbeseoLarRPgyWJsUyCYqFhI7t3Ra9Q==}
-    engines: {node: '>= 10.*'}
-    dev: true
 
   /@mole-inc/bin-wrapper@8.0.1:
     resolution: {integrity: sha512-sTGoeZnjI8N4KS+sW2AN95gDBErhAguvkw/tWdCjeM8bvxpz5lqrnd0vOJABA1A+Ic3zED7PYoLP/RANLgVotA==}
@@ -5555,6 +5547,7 @@ packages:
       parse-json: 5.2.0
       path-type: 4.0.0
     dev: true
+    optional: true
 
   /create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
@@ -6508,10 +6501,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       homedir-polyfill: 1.0.3
-    dev: true
-
-  /expect-more@1.3.0:
-    resolution: {integrity: sha512-HnXT5nJb9V3DMnr5RgA1TiKbu5kRaJ0GD1JkuhZvnr1Qe3HJq+ESnrcl/jmVUZ8Ycnl3Sp0OTYUhmO36d2+zow==}
     dev: true
 
   /expect@29.5.0:
@@ -11037,14 +11026,6 @@ packages:
       type-fest: 0.6.0
     dev: true
 
-  /read-yaml-file@2.1.0:
-    resolution: {integrity: sha512-UkRNRIwnhG+y7hpqnycCL/xbTk7+ia9VuVTC0S+zVbwd65DI9eUpRMfsWIGrCWxTU/mi+JW8cHQCrv+zfCbEPQ==}
-    engines: {node: '>=10.13'}
-    dependencies:
-      js-yaml: 4.1.0
-      strip-bom: 4.0.0
-    dev: true
-
   /readable-stream@2.3.7:
     resolution: {integrity: sha512-Ebho8K4jIbHAxnuxi7o42OrZgF/ZTNcsZj6nRKyUmkhLFq8CHItp/fy6hQZuZmP/n3yZ9VBUbp4zz/mX8hmYPw==}
     dependencies:
@@ -12175,23 +12156,6 @@ packages:
     dependencies:
       '@pkgr/utils': 2.3.1
       tslib: 2.5.0
-
-  /syncpack@9.8.4:
-    resolution: {integrity: sha512-i81rO+dHuJ2dO8YQq6SCExcyN0x9ZVTY7cVPn8pWjS5Dml0A8uM0cOaneOludFesdrLXMZUA/uEWa74ddBgkPQ==}
-    engines: {node: '>=14'}
-    dependencies:
-      '@mobily/ts-belt': 3.13.1
-      chalk: 4.1.2
-      commander: 10.0.0
-      cosmiconfig: 8.0.0
-      expect-more: 1.3.0
-      fs-extra: 11.1.0
-      glob: 8.1.0
-      minimatch: 6.2.0
-      read-yaml-file: 2.1.0
-      semver: 7.3.8
-      zod: 3.20.6
-    dev: true
 
   /tabbable@6.0.1:
     resolution: {integrity: sha512-SYJSIgeyXW7EuX1ytdneO5e8jip42oHWg9xl/o3oTYhmXusZVgiA+VlPvjIN+kHii9v90AmzTZEBcsEvuAY+TA==}
@@ -13662,10 +13626,6 @@ packages:
       i18next: 22.4.14
       zod: 3.21.4
     dev: false
-
-  /zod@3.20.6:
-    resolution: {integrity: sha512-oyu0m54SGCtzh6EClBVqDDlAYRz4jrVtKwQ7ZnsEmMI9HnzuZFj8QFwAY1M5uniIYACdGvv0PBWPF2kO0aNofA==}
-    dev: true
 
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
