@@ -12,6 +12,6 @@ variable "IMAGE_TAG" {
 
 target "egodb" {
 	context = "."
-  dockerfile = "docker/Dockerfile"
+  dockerfile = "Dockerfile"
   tags = ["${IMAGE_REGISTRY}/egodb:latest", "${IMAGE_REGISTRY}/egodb:${IMAGE_TAG}"]
 }
