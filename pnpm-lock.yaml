@@ -331,8 +331,8 @@ importers:
         specifier: ^13.2.4
         version: 13.2.4
       '@total-typescript/ts-reset':
-        specifier: ^0.3.7
-        version: 0.3.7
+        specifier: ^0.4.0
+        version: 0.4.0
       '@types/lodash-es':
         specifier: ^4.17.7
         version: 4.17.7
@@ -3529,8 +3529,8 @@ packages:
     engines: {node: '>= 10'}
     dev: true
 
-  /@total-typescript/ts-reset@0.3.7:
-    resolution: {integrity: sha512-yXt2BRRVCJVvzWaxac5n0nCXzIrQEBE/MeYlNQ8/Iq7UeelNmm/AdnUAu18ilSS893mbEQ4u6whPt/HvOPc4rw==}
+  /@total-typescript/ts-reset@0.4.0:
+    resolution: {integrity: sha512-MRKBiDrOUdJowL8EZtQgPoNoDsB5q/TT003kGZJTnNIaKNWtblHCXp8kYBAufYfzECxJFYHEeWaJcb1DMQhi8w==}
     dev: true
 
   /@trpc/client@10.18.0(@trpc/server@10.18.0):
