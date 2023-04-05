@@ -16,6 +16,7 @@ async function bootstrap() {
 
   app.enableCors()
   app.enableShutdownHooks()
+  app.setGlobalPrefix('/api')
 
   const router = app.get<AppRouter>(AppRouterSymbol)
   app
