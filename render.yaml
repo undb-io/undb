@@ -8,5 +8,5 @@ services:
     plan: starter
     branch: develop
     rootDir: .
-    numInstances: 2
+    numInstances: 1
     healthCheckPath: /health
