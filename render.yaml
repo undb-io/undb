@@ -1,0 +1,12 @@
+services:
+  # A Docker web service
+  - type: web
+    name: egodb
+    env: docker
+    repo: https://github.com/ego-io/egodb.git
+    region: Singapore
+    plan: starter
+    branch: develop
+    rootDir: .
+    numInstances: 2
+    healthCheckPath: /health
