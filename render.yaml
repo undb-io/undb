@@ -4,9 +4,12 @@ services:
     name: egodb
     env: docker
     repo: https://github.com/ego-io/egodb.git
-    region: Singapore
+    region: singapore
     plan: starter
     branch: develop
     rootDir: .
     numInstances: 1
     healthCheckPath: /health
+    pullRequestPreviewsEnabled: true
+    domains:
+      - demo.egodb.io
