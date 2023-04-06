@@ -29,7 +29,9 @@ docker run -d --name egodb -p 4000:4000 --platform linux/x86_64 -v ~/.egodb/:/va
 
 ### Deploy with Render.com
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+<a href="https://render.com/deploy?repo=https://github.com/ego-io/egodb">
+  <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
+</a>
 
 > You'll need a render account to deploy your own egodb instance
 
