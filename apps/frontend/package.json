@@ -14,7 +14,7 @@
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@formkit/auto-animate": "^1.0.0-beta.6",
-    "@hookform/resolvers": "^2.9.11",
+    "@hookform/resolvers": "^3.0.0",
     "@tanstack/react-table": "^8.8.5",
     "@tanstack/react-virtual": "^3.0.0-beta.54",
     "date-fns": "^2.29.3",
