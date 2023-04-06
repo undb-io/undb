@@ -1,6 +1,6 @@
 import { TableFactory } from '@egodb/core'
 import { getCurrentTableId, useGetTablesQuery } from '@egodb/store'
-import { ActionIcon, Center, Flex, IconChevronDown, IconPlus, Menu, Tabs } from '@egodb/ui'
+import { ActionIcon, Button, Center, Flex, IconChevronDown, IconPlus, Loader, Menu, Tabs } from '@egodb/ui'
 import { useSetAtom } from 'jotai'
 import { useNavigate, useParams } from 'react-router-dom'
 import { unstable_batchedUpdates } from 'react-dom'
@@ -11,6 +11,7 @@ import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.
 import { UpdateTableFormDrawer } from '../update-table-form/update-table-form-drawer'
 import { TableMenuDropdown } from './table-menu-dropdown'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export const TableList: React.FC = () => {
   const navigate = useNavigate()
@@ -18,20 +19,37 @@ export const TableList: React.FC = () => {
 
   const currentTableId = useAppSelector(getCurrentTableId)
 
-  const tables = useGetTablesQuery({})
+  const { data, isLoading } = useGetTablesQuery({})
 
   useEffect(() => {
     if (!tableId) {
       if (currentTableId) {
         navigate(`/t/${currentTableId}`, { replace: true })
-      } else if (tables.data?.ids.length) {
-        navigate(`/t/${tables.data.ids.at(0)}`, { replace: true })
+      } else if (data?.ids.length) {
+        navigate(`/t/${data.ids.at(0)}`, { replace: true })
       }
     }
   }, [])
 
   const setOpened = useSetAtom(createTableFormDrawerOpened)
   const close = useCloseAllDrawers()
+  const { t } = useTranslation()
+
+  if (isLoading) {
+    return (
+      <Center w="100%" h="100%">
+        <Loader />
+      </Center>
+    )
+  }
+
+  if (!data?.ids.length) {
+    return (
+      <Center w="100%" h="100%">
+        <Button onClick={() => setOpened(true)}>{t('Create New Table')}</Button>
+      </Center>
+    )
+  }
 
   return (
     <Flex>
@@ -46,7 +64,7 @@ export const TableList: React.FC = () => {
             }
           }}
         >
-          {Object.values(tables.data?.entities ?? {})
+          {Object.values(data?.entities ?? {})
             .filter(Boolean)
             .map((t) => (
               <Tabs.Tab
