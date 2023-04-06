@@ -11,7 +11,7 @@ jobs:
     env:
       GITHUB_TOKEN: '${{ secrets.PAT }}'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: 'Create version tag'
         id: 'main'
         uses: Klemensas/action-autotag@stable

@@ -23,7 +23,7 @@ RUN pnpm install -r --offline
 
 ENV NODE_ENV production
 RUN pnpm run build --filter=backend --filter=frontend
-# RUN pnpm prune --prod --config.ignore-scripts=true
+RUN pnpm prune --prod --config.ignore-scripts=true
 
 # runner
 FROM gcr.io/distroless/nodejs18-debian11 as runner

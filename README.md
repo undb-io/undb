@@ -1,19 +1,39 @@
 # egodb
 
-<img height="40px" src="./docs/logo.png" alt="egodb" align="right" />
+<img height="50px" src="./docs/logo.png" alt="egodb" align="right" />
 
 Private first, self-hosted no code database.
+
+<a href="https://demo.egodb.io/">Live Demo</a>
 
 ![ego](./docs/ego.png)
 
 ## Features
 
-- :wrench: Private first
+- :closed_lock_with_key: Private first
 - :balloon: Light weight, requires just one file storage by default
 - :computer: Self hosted in seconds
 - :pencil: Customizable
-- :sparkles: Multiple built-in field types
-- :city_sunset: Different types of views
+- :sparkles: Multiple built-in field types and variants
+- :city_sunset: Different types of views, including grid, kanban, tree, calendar and more
+
+## Deploy
+
+### Deploy with docker
+
+```
+docker run -d --name egodb -p 4000:4000 --platform linux/x86_64 -v ~/.egodb/:/var/opts/.ego ghcr.io/ego-io/egodb:latest
+```
+
+> And then you can visit http://localhost:4000 and get started
+
+### Deploy with Render.com
+
+<a href="https://render.com/deploy?repo=https://github.com/ego-io/egodb">
+  <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
+</a>
+
+> You'll need a render account to deploy your own egodb instance
 
 ## License
 

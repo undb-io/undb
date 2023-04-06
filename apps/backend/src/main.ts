@@ -16,6 +16,7 @@ async function bootstrap() {
 
   app.enableCors()
   app.enableShutdownHooks()
+  app.setGlobalPrefix('/api', { exclude: ['health'] })
 
   const router = app.get<AppRouter>(AppRouterSymbol)
   app
