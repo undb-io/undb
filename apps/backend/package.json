@@ -29,7 +29,7 @@
     "nestjs-pino": "^3.1.2",
     "oxide.ts": "^1.1.0",
     "pino-http": "^8.3.3",
-    "pino-pretty": "^9.4.0",
+    "pino-pretty": "^10.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^4.4.1",
     "rxjs": "^7.8.0",
