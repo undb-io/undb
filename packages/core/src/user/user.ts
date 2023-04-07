@@ -1,7 +1,3 @@
-export interface IQueryUser {
-  username: string
-}
-
 export class User {
-  constructor(public readonly username: string) {}
+  constructor(public readonly userId: string, public readonly username: string) {}
 }
