@@ -1,8 +1,14 @@
 import { TableFactory } from '@egodb/core'
-import { resetCurrentTableId, setCurrentTableId, setCurrentViewId, useGetTableQuery } from '@egodb/store'
+import {
+  resetCurrentTableId,
+  resetCurrentViewId,
+  setCurrentTableId,
+  setCurrentViewId,
+  useGetTableQuery,
+} from '@egodb/store'
 import type { TRPCError } from '@egodb/trpc'
 import { Alert, Box, Container, IconAlertCircle, ModalsProvider, Stack, useEgoUITheme } from '@egodb/ui'
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
 import { unstable_batchedUpdates } from 'react-dom'
 import { CurrentTableContext } from '../context/current-table'
 import { CurrentViewContext } from '../context/current-view'
@@ -19,7 +25,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 export const Table = () => {
   const { tableId, viewId } = useParams()
-  const { data, isLoading, isError, error } = useGetTableQuery({ id: tableId! })
+  const { data, isSuccess, isLoading, isError, error } = useGetTableQuery({ id: tableId! })
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const theme = useEgoUITheme()
@@ -31,7 +37,16 @@ export const Table = () => {
     })
   }, [tableId, viewId])
 
-  if (isLoading) {
+  useLayoutEffect(() => {
+    if (isSuccess && !data) {
+      unstable_batchedUpdates(() => {
+        dispatch(resetCurrentTableId())
+        dispatch(resetCurrentViewId())
+      })
+    }
+  }, [])
+
+  if (isLoading && tableId) {
     return <TableLoading />
   }
 
