@@ -6,7 +6,7 @@ export const TableLoading: React.FC = () => {
     <Group fz="md" p="md">
       <Skeleton h="30px" />
       <Skeleton h="30px" />
-      <Skeleton h="100vh" />
+      <Skeleton h="calc(100vh - 60px)" />
     </Group>
   )
 }

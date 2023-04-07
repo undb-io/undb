@@ -29,6 +29,9 @@ export const tableSlice = createSlice({
     setCurrentViewId: (state, action: PayloadAction<string | undefined>) => {
       state.currentViewId = action.payload
     },
+    resetCurrentViewId: (state) => {
+      state.currentViewId = undefined
+    },
   },
   extraReducers(builder) {
     builder.addMatcher(tableApi.endpoints.getTables.matchFulfilled, (state, action) => {
@@ -37,7 +40,7 @@ export const tableSlice = createSlice({
   },
 })
 
-export const { setCurrentTableId, resetCurrentTableId, setCurrentViewId } = tableSlice.actions
+export const { setCurrentTableId, resetCurrentTableId, setCurrentViewId, resetCurrentViewId } = tableSlice.actions
 
 export const tableReducer = tableSlice.reducer
 
