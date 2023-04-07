@@ -1,7 +1,7 @@
+import { LoginCommand } from '@egodb/cqrs'
 import { Injectable } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { User, UserService } from '../modules/user/user.service.js'
-import { LoginCommand } from './commands/index.js'
 import { GetMeQuery } from './queries/index.js'
 
 @Injectable()
