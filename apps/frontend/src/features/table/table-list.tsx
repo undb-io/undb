@@ -19,7 +19,7 @@ export const TableList: React.FC = () => {
 
   const currentTableId = useAppSelector(getCurrentTableId)
 
-  const { data, isLoading } = useGetTablesQuery({})
+  const { data, isLoading, isSuccess } = useGetTablesQuery({})
 
   useEffect(() => {
     if (!tableId) {
@@ -96,18 +96,20 @@ export const TableList: React.FC = () => {
               </Tabs.Tab>
             ))}
         </Tabs>
-        <ActionIcon
-          variant="subtle"
-          onClick={(e) => {
-            e.stopPropagation()
-            unstable_batchedUpdates(() => {
-              close()
-              setOpened(true)
-            })
-          }}
-        >
-          <IconPlus size={14} />
-        </ActionIcon>
+        {!!(isSuccess && data.ids.length) && (
+          <ActionIcon
+            variant="subtle"
+            onClick={(e) => {
+              e.stopPropagation()
+              unstable_batchedUpdates(() => {
+                close()
+                setOpened(true)
+              })
+            }}
+          >
+            <IconPlus size={14} />
+          </ActionIcon>
+        )}
       </Center>
     </Flex>
   )
