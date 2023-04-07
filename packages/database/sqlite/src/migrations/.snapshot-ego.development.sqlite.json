@@ -1028,6 +1028,15 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "password": {
           "name": "password",
           "type": "text",
@@ -1057,6 +1066,24 @@
           "keyName": "ego_user_username_index",
           "primary": false,
           "unique": false
+        },
+        {
+          "columnNames": [
+            "email"
+          ],
+          "composite": false,
+          "keyName": "ego_user_email_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "email"
+          ],
+          "composite": false,
+          "keyName": "ego_user_email_unique",
+          "primary": false,
+          "unique": true
         },
         {
           "keyName": "primary",

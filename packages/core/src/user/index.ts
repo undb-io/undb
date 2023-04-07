@@ -1,3 +1,4 @@
+export * from './specifications/index.js'
 export * from './user.js'
 export * from './user.query-model.js'
 export * from './user.repository.js'

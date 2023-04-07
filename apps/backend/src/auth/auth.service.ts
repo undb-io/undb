@@ -1,4 +1,4 @@
-import { IQueryUser } from '@egodb/core'
+import { IQueryUser, WithUserEmail } from '@egodb/core'
 import { GetMeQuery, LoginCommand } from '@egodb/cqrs'
 import { Injectable } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
@@ -12,8 +12,8 @@ export class AuthService {
     private readonly queryBus: QueryBus,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username)
+  async validateUser(email: string, pass: string): Promise<any> {
+    const user = await this.usersService.findOne(WithUserEmail.fromString(email))
     // @ts-ignore
     if (user && user.password === pass) {
       // @ts-ignore
