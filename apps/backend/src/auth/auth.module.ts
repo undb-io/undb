@@ -9,10 +9,10 @@ import { NestLgoinCommandHandler } from './commands/index.js'
 import { jwtConstants } from './constants.js'
 import { JwtStrategy } from './jwt.strategy.js'
 import { LocalStrategy } from './local.strategy.js'
-import { GetMeQueryHandler } from './queries/index.js'
+import { NestGetMeQueryHandler } from './queries/index.js'
 
 const CommandHandlers = [NestLgoinCommandHandler]
-const QueryHandlers = [GetMeQueryHandler]
+const QueryHandlers = [NestGetMeQueryHandler]
 
 @Module({
   imports: [
