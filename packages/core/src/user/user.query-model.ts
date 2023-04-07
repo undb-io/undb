@@ -1,4 +1,4 @@
-import type { IQueryUser } from './user.js'
+import type { IQueryUser } from './user.type'
 
 export interface IUserQueryModel {
   findOneById: (id: string) => Promise<IQueryUser>
