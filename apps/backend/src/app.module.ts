@@ -16,7 +16,6 @@ import { sqliteConfig } from './configs/sqlite.js'
 import { HealthModule } from './health/health.module.js'
 import { modules } from './modules/index.js'
 import { TrpcModule } from './trpc/trpc.module.js'
-import { UsersModule } from './users/users.module.js'
 
 @Module({
   imports: [
@@ -45,7 +44,6 @@ import { UsersModule } from './users/users.module.js'
       rootPath: path.resolve(process.cwd(), './out'),
     }),
     AuthModule,
-    UsersModule,
   ],
 })
 export class AppModule implements OnModuleInit {

@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
-import { User, UsersService } from '../users/users.service.js'
+import { User, UserService } from '../modules/user/user.service.js'
 import { LoginCommand } from './commands/index.js'
 import { GetMeQuery } from './queries/index.js'
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
+    private usersService: UserService,
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
   ) {}
