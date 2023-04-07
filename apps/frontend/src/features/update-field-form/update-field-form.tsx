@@ -6,7 +6,6 @@ import {
   Group,
   HoverCard,
   IconPlus,
-  Popover,
   Stack,
   Switch,
   TextInput,
@@ -21,7 +20,6 @@ import type {
   DateFieldTypes,
   IUpdateFieldSchema,
   LookupField,
-  ReferenceField,
   ReferenceFieldTypes,
   SelectField,
   SumField,
@@ -34,7 +32,6 @@ import { useUpdateFieldMutation } from '@egodb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useTranslation } from 'react-i18next'
 import { DisplayFields } from '../field/display-fields'
-import { DevTool } from '@hookform/devtools'
 
 export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }) => {
   const table = useCurrentTable()
@@ -215,8 +212,6 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
             </Group>
           </Group>
         </Stack>
-
-        <DevTool control={form.control} />
       </form>
     </FormProvider>
   )

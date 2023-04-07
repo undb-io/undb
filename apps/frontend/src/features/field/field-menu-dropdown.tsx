@@ -5,7 +5,6 @@ import {
   useSetFieldSortMutation,
   useSetVisibilityMutation,
 } from '@egodb/store'
-import type { MenuItemProps } from '@egodb/ui'
 import { IconPinnedOff } from '@egodb/ui'
 import { IconPinned } from '@egodb/ui'
 import { IconRowInsertBottom, IconRowInsertTop } from '@egodb/ui'
