@@ -36,7 +36,7 @@ import type {
   WithoutView,
 } from '../view/specifications/views.specification.js'
 import type { WithNewField } from './table-field.specification.js'
-import type { WithTableId } from './table-id.specification'
+import type { WithTableId } from './table-id.specification.js'
 import type { WithTableName } from './table-name.specification.js'
 import type { WithTableSchema } from './table-schema.specification.js'
 
