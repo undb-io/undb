@@ -123,6 +123,7 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
             render={(props) => (
               <TextInput
                 {...props.field}
+                value={t(props.field.value) as string}
                 disabled
                 readOnly
                 required
