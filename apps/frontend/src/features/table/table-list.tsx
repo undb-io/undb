@@ -35,7 +35,7 @@ export const TableList: React.FC = () => {
   const close = useCloseAllDrawers()
   const { t } = useTranslation()
 
-  if (isLoading) {
+  if (isLoading && !currentTableId) {
     return (
       <Center w="100%" h="100%">
         <Loader />
@@ -43,7 +43,7 @@ export const TableList: React.FC = () => {
     )
   }
 
-  if (!data?.ids.length) {
+  if (!data?.ids.length && !currentTableId) {
     return (
       <Center w="100%" h="100%">
         <Button onClick={() => setOpened(true)}>{t('Create New Table')}</Button>
