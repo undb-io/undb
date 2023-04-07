@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
 import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
-import { UsersModule } from '../users/users.module.js'
+import { UserModule } from '../modules/user/user.module.js'
 import { AuthController } from './auth.controller.js'
 import { AuthService } from './auth.service.js'
 import { LgoinCommandHandler } from './commands/login/login.command.hander.js'
@@ -17,7 +17,7 @@ const QueryHandlers = [GetMeQueryHandler]
 @Module({
   imports: [
     CqrsModule,
-    UsersModule,
+    UserModule,
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
