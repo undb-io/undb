@@ -1,22 +1,12 @@
-import { IQueryUser } from '@egodb/core'
+import { IQueryUser, type IUserQueryModel } from '@egodb/core'
 import { Injectable } from '@nestjs/common'
+import { InjectUserQueryModel } from './adapters/index.js'
 
 @Injectable()
 export class UserService {
-  private readonly users = [
-    {
-      userId: '1',
-      username: 'john',
-      password: 'changeme',
-    },
-    {
-      userId: '2',
-      username: 'maria',
-      password: 'guess',
-    },
-  ]
+  constructor(@InjectUserQueryModel() private readonly rm: IUserQueryModel) {}
 
   async findOne(id: string): Promise<IQueryUser | undefined> {
-    return this.users.find((user) => user.userId === id)
+    return (await this.rm.findOneById(id)).into()
   }
 }
