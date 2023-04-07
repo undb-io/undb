@@ -1,7 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/es/storage'
-import { api, attachment } from '../services'
+import { api, attachment, auth } from '../services'
 import { tableReducer, tableSlice } from '../slices'
 import { recordReducer, recordSlice } from '../slices/record'
 
@@ -10,6 +10,7 @@ export const reducer = combineReducers({
   [tableSlice.name]: tableReducer,
   [api.reducerPath]: api.reducer,
   [attachment.reducerPath]: attachment.reducer,
+  [auth.reducerPath]: auth.reducer,
 })
 
 export const rootReducder = persistReducer(
