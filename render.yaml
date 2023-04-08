@@ -1,3 +1,4 @@
+previewsEnabled: true
 services:
   # A Docker web service
   - type: web
@@ -10,7 +11,6 @@ services:
     rootDir: .
     numInstances: 1
     healthCheckPath: /health
-    pullRequestPreviewsEnabled: true
     envVars:
       - key: EGODB_ADMIN_EMAIL
         value: test@example.com
