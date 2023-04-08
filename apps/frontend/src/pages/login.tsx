@@ -27,11 +27,11 @@ export const Login: React.FC = () => {
     reValidateMode: 'onChange',
   })
 
-  const [login] = useLoginMutation()
+  const [login, { isLoading }] = useLoginMutation()
 
   const onSubmit = form.handleSubmit(async (values) => {
     await login(values).unwrap()
-    navigate(redirectUrl || '/', { replace: true, relative: 'route' })
+    navigate(redirectUrl || '/', { replace: true })
   })
 
   return (
@@ -51,7 +51,7 @@ export const Login: React.FC = () => {
             placeholder="password"
           />
           <Space h="lg" />
-          <Button type="submit" fullWidth disabled={!form.formState.isValid}>
+          <Button type="submit" fullWidth disabled={!form.formState.isValid} loading={isLoading}>
             Login
           </Button>
         </form>

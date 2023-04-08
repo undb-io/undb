@@ -25,11 +25,11 @@ export const Register: React.FC = () => {
     reValidateMode: 'onChange',
   })
 
-  const [register] = useRegisterMutation()
+  const [register, { isLoading }] = useRegisterMutation()
 
   const onSubmit = form.handleSubmit(async (values) => {
     await register(values).unwrap()
-    navigate(redirectUrl || '/', { replace: true, relative: 'route' })
+    navigate(redirectUrl || '/', { replace: true })
   })
 
   return (
@@ -49,7 +49,7 @@ export const Register: React.FC = () => {
             placeholder="password"
           />
           <Space h="lg" />
-          <Button type="submit" fullWidth disabled={!form.formState.isValid}>
+          <Button type="submit" fullWidth disabled={!form.formState.isValid} loading={isLoading}>
             Register
           </Button>
         </form>
