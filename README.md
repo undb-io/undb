@@ -2,9 +2,9 @@
 
 <img height="50px" src="./docs/logo.png" alt="undb" align="right" />
 
-Private first, self-hosted no code database.
+Private first, unified, self-hosted no code database.
 
-<a href="https://demo.undb.io/">Live Demo</a>
+<a href="https://demo.undb.xyz/">Live Demo</a>
 
 > use email `test@example.com` and password `123456` to login
 
