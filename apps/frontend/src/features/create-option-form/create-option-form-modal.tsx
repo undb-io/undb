@@ -1,4 +1,4 @@
-import type { ContextModalProps } from '@egodb/ui'
+import type { ContextModalProps } from '@undb/ui'
 import { CreateOptionForm } from './create-option-form'
 import type { ICreateOptionFormProps } from './create-option-form.props'
 

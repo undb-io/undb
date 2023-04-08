@@ -1,4 +1,4 @@
-import { and } from '@egodb/domain'
+import { and } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import { WithTableId, WithTableName, WithTableSchema } from './specifications/index.js'

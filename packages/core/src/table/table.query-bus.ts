@@ -1,3 +1,3 @@
-import type { IQueryBus } from '@egodb/domain'
+import type { IQueryBus } from '@undb/domain'
 
 export type ITableQueryBus = IQueryBus

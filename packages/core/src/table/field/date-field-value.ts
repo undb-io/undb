@@ -1,4 +1,4 @@
-import type { ValueObject } from '@egodb/domain'
+import type { ValueObject } from '@undb/domain'
 import { isEqual } from 'date-fns'
 import type { IDateFieldValue } from './date-field.type.js'
 import { FieldValueBase } from './field-value.base.js'

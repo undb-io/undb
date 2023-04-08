@@ -1,4 +1,4 @@
-import { tableIdSchema, updateViewNameSchema } from '@egodb/core'
+import { tableIdSchema, updateViewNameSchema } from '@undb/core'
 import { z } from 'zod'
 
 export const updateViewNameCommandInput = z.object({

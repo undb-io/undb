@@ -1,4 +1,4 @@
-import type { Field } from '@egodb/core'
+import type { Field } from '@undb/core'
 import type { IUnderlyingColumn } from '../interfaces/underlying-column.js'
 import {
   UnderlyingAttachmentColumn,

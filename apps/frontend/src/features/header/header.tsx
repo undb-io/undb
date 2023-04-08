@@ -1,7 +1,7 @@
-import { ActionIcon, Center, Group, IconLanguage, Image, Menu, Text, Avatar } from '@egodb/ui'
+import { ActionIcon, Center, Group, IconLanguage, Image, Menu, Text, Avatar } from '@undb/ui'
 import logo from '../../assets/logo.svg'
 import { useTranslation } from 'react-i18next'
-import { getMe } from '@egodb/store'
+import { getMe } from '@undb/store'
 import { useSelector } from 'react-redux'
 
 export const Header: React.FC = () => {
@@ -12,8 +12,8 @@ export const Header: React.FC = () => {
   return (
     <Group px="xs" py={6} sx={(theme) => ({ borderBottom: '1px solid ' + theme.colors.gray[3] })} position="apart">
       <Center>
-        <Image src={logo} alt="egodb" width="20px" height="20px" />
-        <Text pl="xs">egodb</Text>
+        <Image src={logo} alt="undb" width="20px" height="20px" />
+        <Text pl="xs">undb</Text>
       </Center>
 
       <Center mr="lg">

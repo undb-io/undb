@@ -1,3 +1,4 @@
+import { EntityManager } from '@mikro-orm/better-sqlite'
 import {
   createTestTable,
   FieldId,
@@ -6,8 +7,7 @@ import {
   StringField,
   TableSchema,
   WithTableSchema,
-} from '@egodb/core'
-import { EntityManager } from '@mikro-orm/better-sqlite'
+} from '@undb/core'
 import { UnderlyingTableBuilder } from './underlying-table.builder.js'
 
 describe('UnderlyingTableBuilder', () => {

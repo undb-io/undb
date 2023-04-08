@@ -1,6 +1,6 @@
-import { IMutateRecordValueSchema } from '@egodb/core'
-import type { CommandProps } from '@egodb/domain'
-import { Command } from '@egodb/domain'
+import { IMutateRecordValueSchema } from '@undb/core'
+import type { CommandProps } from '@undb/domain'
+import { Command } from '@undb/domain'
 import type { ICreateRecordInput } from './create-record.command.input.js'
 
 export class CreateRecordCommand extends Command {

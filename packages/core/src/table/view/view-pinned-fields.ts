@@ -1,4 +1,4 @@
-import { ValueObject } from '@egodb/domain'
+import { ValueObject } from '@undb/domain'
 import type { ZodArray, ZodString } from 'zod'
 import { z } from 'zod'
 

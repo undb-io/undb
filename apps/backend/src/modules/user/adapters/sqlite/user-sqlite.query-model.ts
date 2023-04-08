@@ -1,7 +1,7 @@
-import { IQueryUser } from '@egodb/core'
-import { EntityManager, UserSqliteQueryModel } from '@egodb/sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
+import { IQueryUser } from '@undb/core'
+import { EntityManager, UserSqliteQueryModel } from '@undb/sqlite'
 import { Option } from 'oxide.ts'
 
 @Injectable()

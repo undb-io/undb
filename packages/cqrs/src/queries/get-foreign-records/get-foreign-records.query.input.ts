@@ -1,4 +1,4 @@
-import { fieldIdSchema, rootFilter, tableIdSchema, viewIdSchema } from '@egodb/core'
+import { fieldIdSchema, rootFilter, tableIdSchema, viewIdSchema } from '@undb/core'
 import * as z from 'zod'
 
 export const getForeignRecordsQueryInput = z.object({

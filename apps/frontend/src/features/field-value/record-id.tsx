@@ -1,4 +1,4 @@
-import { Badge } from '@egodb/ui'
+import { Badge } from '@undb/ui'
 
 export const RecordId: React.FC<{ id: string }> = ({ id }) => {
   return (

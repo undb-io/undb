@@ -1,4 +1,4 @@
-import type { ContextModalProps } from '@egodb/ui'
+import type { ContextModalProps } from '@undb/ui'
 import { SelectCalendarField } from './select-calendar-field'
 import type { ISelectCalendarFieldProps } from './select-calendar-field.props'
 

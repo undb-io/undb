@@ -1,5 +1,5 @@
-import type { Field, TableSchemaIdMap } from '@egodb/core'
-import { LookupField } from '@egodb/core'
+import type { Field, TableSchemaIdMap } from '@undb/core'
+import { LookupField } from '@undb/core'
 
 export const TABLE_ALIAS = 't'
 export const FOREIGN_TABLE_ALIAS_PREFIX = 'ft'

@@ -1,7 +1,7 @@
-import { IQueryUser, WithUserEmail } from '@egodb/core'
-import { GetMeQuery, LoginCommand, RegisterCommand } from '@egodb/cqrs'
 import { Injectable } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
+import { IQueryUser, WithUserEmail } from '@undb/core'
+import { GetMeQuery, LoginCommand, RegisterCommand } from '@undb/cqrs'
 import * as bcrypt from 'bcrypt'
 import { UserService } from '../modules/user/user.service.js'
 

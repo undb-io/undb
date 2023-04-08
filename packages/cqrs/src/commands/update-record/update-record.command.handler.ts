@@ -1,5 +1,5 @@
-import { createMutateRecordValuesSchema, IRecordRepository, ITableRepository } from '@egodb/core'
-import type { ICommandHandler } from '@egodb/domain'
+import { createMutateRecordValuesSchema, IRecordRepository, ITableRepository } from '@undb/core'
+import type { ICommandHandler } from '@undb/domain'
 import type * as updateRecordCommandJs from './update-record.command.js'
 
 export class UpdateRecordCommandHandler implements ICommandHandler<updateRecordCommandJs.UpdateRecordCommand, void> {

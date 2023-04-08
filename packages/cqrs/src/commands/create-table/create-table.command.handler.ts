@@ -1,5 +1,5 @@
-import { ITableRepository, ITableSpecHandler, TableFactory, WithTableSchema } from '@egodb/core'
-import { type ICommandHandler } from '@egodb/domain'
+import { ITableRepository, ITableSpecHandler, TableFactory, WithTableSchema } from '@undb/core'
+import { type ICommandHandler } from '@undb/domain'
 import type { ICreateTableOutput } from './create-table.command.interface.js'
 import type { CreateTableCommand } from './create-table.command.js'
 

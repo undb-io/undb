@@ -1,5 +1,5 @@
-import type { IQueryTable, ITableQueryModel, ITableSpec } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
+import type { IQueryTable, ITableQueryModel, ITableSpec } from '@undb/core'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { ReferenceField, Table } from '../../entity/index.js'

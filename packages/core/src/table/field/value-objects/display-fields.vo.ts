@@ -1,4 +1,4 @@
-import { ValueObject } from '@egodb/domain'
+import { ValueObject } from '@undb/domain'
 import type { FieldId } from './field-id.vo.js'
 
 export class DisplayFields extends ValueObject<FieldId[]> {

@@ -1,4 +1,4 @@
-import { and } from '@egodb/domain'
+import { and } from '@undb/domain'
 import type { UserSpecification } from './specifications/index.js'
 import { WithUserEmail, WithUserId, WithUserPassword, WithUsername } from './specifications/index.js'
 import { User } from './user'

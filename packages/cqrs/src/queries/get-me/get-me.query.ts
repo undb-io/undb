@@ -1,5 +1,5 @@
-import { IQueryUser } from '@egodb/core'
-import { Query } from '@egodb/domain'
+import { IQueryUser } from '@undb/core'
+import { Query } from '@undb/domain'
 import type { IGetMeQuery } from './get-me.query.interface.js'
 
 export class GetMeQuery extends Query implements IGetMeQuery {

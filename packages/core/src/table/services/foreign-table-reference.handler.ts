@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { andOptions } from '@egodb/domain'
+import { andOptions } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { Some } from 'oxide.ts'
 import type { ParentField, ReferenceField, TreeField } from '../field/index.js'

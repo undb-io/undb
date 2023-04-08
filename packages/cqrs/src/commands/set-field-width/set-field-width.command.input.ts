@@ -1,4 +1,4 @@
-import { setFieldWidthSchema, tableIdSchema } from '@egodb/core'
+import { setFieldWidthSchema, tableIdSchema } from '@undb/core'
 import { z } from 'zod'
 
 export const setFieldWidthCommandInput = z

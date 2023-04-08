@@ -1,5 +1,5 @@
-import { type IRecordRepository, type ITableRepository } from '@egodb/core'
-import type { ICommandHandler } from '@egodb/domain'
+import { type IRecordRepository, type ITableRepository } from '@undb/core'
+import type { ICommandHandler } from '@undb/domain'
 import type { DeleteRecordCommand } from './delete-record.comand.js'
 
 export class DeleteRecordCommandHandler implements ICommandHandler<DeleteRecordCommand, void> {

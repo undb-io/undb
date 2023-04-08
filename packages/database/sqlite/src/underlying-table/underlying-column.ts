@@ -1,3 +1,4 @@
+import type { Knex } from '@mikro-orm/better-sqlite'
 import type {
   AttachmentField,
   AverageField,
@@ -17,14 +18,13 @@ import type {
   StringField,
   SumField,
   TreeField,
-} from '@egodb/core'
+} from '@undb/core'
 import {
   INTERNAL_INCREAMENT_ID_NAME as INTERNAL_AUTO_INCREAMENT_ID_NAME,
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
-} from '@egodb/core'
-import type { Knex } from '@mikro-orm/better-sqlite'
+} from '@undb/core'
 import type { Promisable } from 'type-fest'
 import type { IUnderlyingColumn } from '../interfaces/underlying-column.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from './constants.js'

@@ -11,18 +11,18 @@ import type {
   ReferenceFieldValue,
   SelectFieldValue,
   TreeFieldValue,
-} from '@egodb/core'
+} from '@undb/core'
 import React from 'react'
 import { ReferenceValue } from './reference-value'
 import { BoolValue } from './bool-value'
 import { DateRangeValue } from './date-range-value'
 import { DateValue } from './date-value'
 import { RecordId } from './record-id'
-import { AspectRatio, Divider, Group, Rating, Text } from '@egodb/ui'
-import type { FieldValue } from '@egodb/core'
+import { AspectRatio, Divider, Group, Rating, Text } from '@undb/ui'
+import type { FieldValue } from '@undb/core'
 import { Option } from '../option/option'
 import { ColorValue } from './color-value'
-import type { IRecordDisplayValues } from '@egodb/core'
+import type { IRecordDisplayValues } from '@undb/core'
 import { isNumber } from 'lodash-es'
 import { AttachmentValue } from './attachment-value'
 

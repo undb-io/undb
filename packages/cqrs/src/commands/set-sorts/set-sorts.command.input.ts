@@ -1,4 +1,4 @@
-import { sortsSchema, tableIdSchema, viewIdSchema } from '@egodb/core'
+import { sortsSchema, tableIdSchema, viewIdSchema } from '@undb/core'
 import { z } from 'zod'
 
 export const setSortsCommandInput = z.object({

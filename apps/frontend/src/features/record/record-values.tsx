@@ -1,5 +1,5 @@
-import type { RecordAllValues } from '@egodb/core'
-import { Tooltip, Group, Text } from '@egodb/ui'
+import type { RecordAllValues } from '@undb/core'
+import { Tooltip, Group, Text } from '@undb/ui'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldValueFactory } from '../field-value/field-value.factory'
 import { useCurrentTable } from '../../hooks/use-current-table'

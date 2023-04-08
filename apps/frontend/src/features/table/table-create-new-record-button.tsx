@@ -1,5 +1,5 @@
-import { resetSelectedRecordId } from '@egodb/store'
-import { Button, IconRowInsertBottom } from '@egodb/ui'
+import { resetSelectedRecordId } from '@undb/store'
+import { Button, IconRowInsertBottom } from '@undb/ui'
 import { useSetAtom } from 'jotai'
 import { unstable_batchedUpdates } from 'react-dom'
 import { useTranslation } from 'react-i18next'

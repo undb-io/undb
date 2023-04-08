@@ -1,4 +1,4 @@
-import type { IQueryTreeRecords } from '@egodb/core'
+import type { IQueryTreeRecords } from '@undb/core'
 import type { ExpandColumnName, RecordSqliteWithParent } from './record.type.js'
 
 export const createRecordTree = <T extends RecordSqliteWithParent>(dataset: T[]): IQueryTreeRecords => {

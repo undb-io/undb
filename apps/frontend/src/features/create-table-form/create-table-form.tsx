@@ -1,6 +1,6 @@
-import type { ICreateTableInput } from '@egodb/cqrs'
-import { useCreateTableMutation } from '@egodb/store'
-import { Alert, Button, Group, IconAlertCircle, Text, Space, TextInput, Code, Box } from '@egodb/ui'
+import type { ICreateTableInput } from '@undb/cqrs'
+import { useCreateTableMutation } from '@undb/store'
+import { Alert, Button, Group, IconAlertCircle, Text, Space, TextInput, Code, Box } from '@undb/ui'
 import { useNavigate } from 'react-router-dom'
 
 import { useFormContext } from 'react-hook-form'

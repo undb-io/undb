@@ -1,6 +1,6 @@
-import { useGetTablesQuery } from '@egodb/store'
-import type { SelectItem, SelectProps } from '@egodb/ui'
-import { Select } from '@egodb/ui'
+import { useGetTablesQuery } from '@undb/store'
+import type { SelectItem, SelectProps } from '@undb/ui'
+import { Select } from '@undb/ui'
 import { useTranslation } from 'react-i18next'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 

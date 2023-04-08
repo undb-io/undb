@@ -1,4 +1,4 @@
-import { setTreeViewFieldSchema, tableIdSchema, viewIdSchema } from '@egodb/core'
+import { setTreeViewFieldSchema, tableIdSchema, viewIdSchema } from '@undb/core'
 import { z } from 'zod'
 
 export const setTreeViewFieldCommandInput = z

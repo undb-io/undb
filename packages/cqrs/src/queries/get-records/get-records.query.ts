@@ -1,5 +1,5 @@
-import { IRootFilter } from '@egodb/core'
-import { Query } from '@egodb/domain'
+import { IRootFilter } from '@undb/core'
+import { Query } from '@undb/domain'
 import type { IGetRecordsQuery } from './get-records.query.interface.js'
 
 export class GetRecordsQuery extends Query implements IGetRecordsQuery {

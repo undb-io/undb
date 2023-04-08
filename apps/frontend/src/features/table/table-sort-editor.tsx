@@ -1,5 +1,5 @@
-import { useSetSortMutation } from '@egodb/store'
-import { Badge, Button, IconArrowsSort, Popover, useDisclosure } from '@egodb/ui'
+import { useSetSortMutation } from '@undb/store'
+import { Badge, Button, IconArrowsSort, Popover, useDisclosure } from '@undb/ui'
 import { useTranslation } from 'react-i18next'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'

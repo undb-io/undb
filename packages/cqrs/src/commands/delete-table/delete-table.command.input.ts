@@ -1,4 +1,4 @@
-import { tableIdSchema } from '@egodb/core'
+import { tableIdSchema } from '@undb/core'
 import * as z from 'zod'
 
 export const deleteTableCommandInput = z.object({

@@ -1,4 +1,4 @@
-import { useEgoUITheme } from '@egodb/ui'
+import { useEgoUITheme } from '@undb/ui'
 import { useMemo } from 'react'
 
 export const useColors = () => {

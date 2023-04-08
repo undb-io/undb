@@ -1,5 +1,5 @@
-import type { AppRouter } from '@egodb/trpc'
 import { createTRPCProxyClient, httpBatchLink } from '@trpc/client'
+import type { AppRouter } from '@undb/trpc'
 
 export const trpc: ReturnType<typeof createTRPCProxyClient<AppRouter>> = createTRPCProxyClient<AppRouter>({
   links: [

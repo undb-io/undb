@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { IFieldVisitor, ParentField, ReferenceField, TreeField } from '@egodb/core'
-import { AbstractReferenceFieldVisitor } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import type { IFieldVisitor, ParentField, ReferenceField, TreeField } from '@undb/core'
+import { AbstractReferenceFieldVisitor } from '@undb/core'
 import { Mixin } from 'ts-mixer'
 import type { Table as TableEntity } from '../../entity/table.js'
 import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table.js'

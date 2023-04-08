@@ -11,13 +11,13 @@ import {
   SumField,
   UpdatedAtField,
   isOperatorWithoutValue,
-} from '@egodb/core'
-import { DateRangeField } from '@egodb/core'
-import { SelectField } from '@egodb/core'
-import { StringField } from '@egodb/core'
-import { dateBuiltInOperators } from '@egodb/core'
-import { DateField } from '@egodb/core'
-import { NumberField } from '@egodb/core'
+} from '@undb/core'
+import { DateRangeField } from '@undb/core'
+import { SelectField } from '@undb/core'
+import { StringField } from '@undb/core'
+import { dateBuiltInOperators } from '@undb/core'
+import { DateField } from '@undb/core'
+import { NumberField } from '@undb/core'
 import type {
   IDateRangeFieldValue,
   Field,
@@ -25,8 +25,8 @@ import type {
   IFieldQueryValue,
   IOperator,
   IRatingFieldValue,
-} from '@egodb/core'
-import { ColorInput, DatePickerInput, Rating, Select, TextInput } from '@egodb/ui'
+} from '@undb/core'
+import { ColorInput, DatePickerInput, Rating, Select, TextInput } from '@undb/ui'
 import { OptionPicker } from '../option/option-picker'
 import { RecordsPicker } from '../field-inputs/records-picker'
 import { castArray } from 'lodash-es'

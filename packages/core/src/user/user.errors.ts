@@ -1,4 +1,4 @@
-import { ExceptionBase } from '@egodb/domain'
+import { ExceptionBase } from '@undb/domain'
 
 export class InvalidUserIdError extends ExceptionBase {
   code = 'USER.INVALID_ID'

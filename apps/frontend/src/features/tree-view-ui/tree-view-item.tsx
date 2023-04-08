@@ -1,6 +1,6 @@
 import type { UniqueIdentifier } from '@dnd-kit/core'
-import type { RecordAllValues, TreeField } from '@egodb/core'
-import { setSelectedRecordId, useDeleteRecordMutation } from '@egodb/store'
+import type { RecordAllValues, TreeField } from '@undb/core'
+import { setSelectedRecordId, useDeleteRecordMutation } from '@undb/store'
 import {
   ActionIcon,
   Badge,
@@ -13,7 +13,7 @@ import {
   Text,
   Tooltip,
   useEgoUITheme,
-} from '@egodb/ui'
+} from '@undb/ui'
 import { useSetAtom } from 'jotai'
 import type { HTMLAttributes } from 'react'
 import React, { forwardRef } from 'react'

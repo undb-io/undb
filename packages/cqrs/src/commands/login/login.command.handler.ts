@@ -1,4 +1,4 @@
-import type { ICommandHandler } from '@egodb/domain'
+import type { ICommandHandler } from '@undb/domain'
 import { ILoginCommandOutput } from './login.command.interface.js'
 import type { LoginCommand } from './login.command.js'
 

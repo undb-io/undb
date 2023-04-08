@@ -1,4 +1,4 @@
-import { ValueObject } from '@egodb/domain'
+import { ValueObject } from '@undb/domain'
 import type { ICreateOptionColorSchema, IOptionColor, IOptionColorName, IOptionColorShade } from './option.schema.js'
 import { optionColorOrder } from './option.schema.js'
 

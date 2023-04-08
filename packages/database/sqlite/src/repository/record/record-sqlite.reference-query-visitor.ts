@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type {
   AttachmentField,
   Field as CoreField,
@@ -11,9 +12,8 @@ import type {
   IFieldVisitor,
   SumField,
   Table,
-} from '@egodb/core'
-import { AbstractReferenceFieldVisitor, INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
-import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+} from '@undb/core'
+import { AbstractReferenceFieldVisitor, INTERNAL_COLUMN_ID_NAME } from '@undb/core'
 import { uniqBy } from 'lodash-es'
 import { Attachment } from '../../entity/attachment.js'
 import type { LookupField, ParentField, ReferenceField, TreeField } from '../../entity/field.js'

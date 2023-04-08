@@ -1,4 +1,4 @@
-import { CompositeSpecification } from '@egodb/domain'
+import { CompositeSpecification } from '@undb/domain'
 import { isEqual } from 'lodash-es'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'

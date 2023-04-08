@@ -1,5 +1,5 @@
-import type { Field } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
+import type { Field } from '@undb/core'
 
 export interface IUnderlyingColumn {
   get field(): Field | undefined

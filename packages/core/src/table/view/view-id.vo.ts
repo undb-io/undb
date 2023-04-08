@@ -1,4 +1,4 @@
-import { NanoID } from '@egodb/domain'
+import { NanoID } from '@undb/domain'
 import { z } from 'zod'
 
 export const viewIdSchema = z.string().min(1)

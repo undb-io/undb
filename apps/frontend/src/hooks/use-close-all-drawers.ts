@@ -1,4 +1,4 @@
-import { resetSelectedRecordId } from '@egodb/store'
+import { resetSelectedRecordId } from '@undb/store'
 import { useSetAtom } from 'jotai'
 import { useDispatch } from 'react-redux'
 import { createRecordFormDrawerOpened } from '../features/create-record-form/drawer-opened.atom'

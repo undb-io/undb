@@ -1,5 +1,5 @@
-import type { User as CoreUser, IUserRepository, UserSpecification } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
+import type { User as CoreUser, IUserRepository, UserSpecification } from '@undb/core'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { User } from '../../entity/user.js'

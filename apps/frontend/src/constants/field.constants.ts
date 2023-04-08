@@ -1,4 +1,4 @@
-import type { SelectItem } from '@egodb/ui'
+import type { SelectItem } from '@undb/ui'
 
 export const FIELD_SELECT_ITEMS: SelectItem[] = [
   { value: 'string', label: 'String', group: 'Base' },

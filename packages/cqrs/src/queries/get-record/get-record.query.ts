@@ -1,4 +1,4 @@
-import { Query } from '@egodb/domain'
+import { Query } from '@undb/domain'
 import type { IGetRecordQuery } from './get-record.query.interface.js'
 
 export class GetRecordQuery extends Query implements IGetRecordQuery {

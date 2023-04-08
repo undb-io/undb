@@ -1,5 +1,5 @@
-import { convertFilterSpec, IRecordQueryModel, ITableRepository, ViewId, WithRecordTableId } from '@egodb/core'
-import type { IQueryHandler } from '@egodb/domain'
+import { convertFilterSpec, IRecordQueryModel, ITableRepository, ViewId, WithRecordTableId } from '@undb/core'
+import type { IQueryHandler } from '@undb/domain'
 import type { IGetForeignRecordsOutput } from './get-foreign-records.query.interface.js'
 import type { GetForeignRecordsQuery } from './get-foreign-records.query.js'
 

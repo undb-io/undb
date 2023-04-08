@@ -5,8 +5,8 @@ import {
   resetSelectedRecordIds,
   useBulkDeleteRecordsMutation,
   useBulkDuplicateRecordMutation,
-} from '@egodb/store'
-import { Dialog, Group, Button, Text, IconDots, Menu, usePrevious, IconTrash, IconCopy } from '@egodb/ui'
+} from '@undb/store'
+import { Dialog, Group, Button, Text, IconDots, Menu, usePrevious, IconTrash, IconCopy } from '@undb/ui'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector, confirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'

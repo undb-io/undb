@@ -1,3 +1,3 @@
-import { OrderVO } from '@egodb/domain'
+import { OrderVO } from '@undb/domain'
 
 export class ViewFieldsOrder extends OrderVO {}

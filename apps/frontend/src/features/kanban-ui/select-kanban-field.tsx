@@ -1,4 +1,4 @@
-import { Box } from '@egodb/ui'
+import { Box } from '@undb/ui'
 import { useAtomValue } from 'jotai'
 import { CreateDateField } from './create-date-field'
 import { CreateSelectField } from './create-select-field'

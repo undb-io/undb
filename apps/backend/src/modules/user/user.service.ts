@@ -1,3 +1,5 @@
+import { Injectable } from '@nestjs/common'
+import { type ConfigType } from '@nestjs/config'
 import {
   IQueryUser,
   User,
@@ -9,9 +11,7 @@ import {
   WithUsername,
   type IUserQueryModel,
   type IUserRepository,
-} from '@egodb/core'
-import { Injectable } from '@nestjs/common'
-import { type ConfigType } from '@nestjs/config'
+} from '@undb/core'
 import bcrypt from 'bcrypt'
 import { InjectAuthConfig, authConfig } from '../../configs/auth.config.js'
 import { InjectUserQueryModel, InjectUserRepository } from './adapters/index.js'

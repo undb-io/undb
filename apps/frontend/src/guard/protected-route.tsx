@@ -1,4 +1,4 @@
-import { getIsAuthorized } from '@egodb/store'
+import { getIsAuthorized } from '@undb/store'
 import { useSelector } from 'react-redux'
 import { Navigate, createSearchParams, useLocation } from 'react-router-dom'
 

@@ -1,4 +1,4 @@
-import { ValueObject } from '@egodb/domain'
+import { ValueObject } from '@undb/domain'
 import { z } from 'zod'
 
 export const viewNameSchema = z.string().min(1, { message: 'view name should has at least one character' })

@@ -1,4 +1,4 @@
-import { OrderVO } from '@egodb/domain'
+import { OrderVO } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { z } from 'zod'
 import { WithViewsOrder } from './specifications/index.js'

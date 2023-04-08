@@ -1,6 +1,6 @@
 import { useRoutes } from 'react-router-dom'
 import { routes } from './router'
-import { getIsAuthorized, useMeQuery } from '@egodb/store'
+import { getIsAuthorized, useMeQuery } from '@undb/store'
 import { useSelector } from 'react-redux'
 
 function App() {

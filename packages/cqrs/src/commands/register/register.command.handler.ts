@@ -1,5 +1,5 @@
-import { IUserRepository, UserFactory, WithUserEmail, WithUserId, WithUserPassword, WithUsername } from '@egodb/core'
-import type { ICommandHandler } from '@egodb/domain'
+import { IUserRepository, UserFactory, WithUserEmail, WithUserId, WithUserPassword, WithUsername } from '@undb/core'
+import type { ICommandHandler } from '@undb/domain'
 import { IRegisterCommandOutput } from './register.command.interface.js'
 import type { RegisterCommand } from './register.command.js'
 

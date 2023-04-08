@@ -1,13 +1,13 @@
-import { TableFactory } from '@egodb/core'
+import { TableFactory } from '@undb/core'
 import {
   resetCurrentTableId,
   resetCurrentViewId,
   setCurrentTableId,
   setCurrentViewId,
   useGetTableQuery,
-} from '@egodb/store'
-import type { TRPCError } from '@egodb/trpc'
-import { Alert, Box, Container, IconAlertCircle, ModalsProvider, Stack, useEgoUITheme } from '@egodb/ui'
+} from '@undb/store'
+import type { TRPCError } from '@undb/trpc'
+import { Alert, Box, Container, IconAlertCircle, ModalsProvider, Stack, useEgoUITheme } from '@undb/ui'
 import { useEffect, useLayoutEffect } from 'react'
 import { unstable_batchedUpdates } from 'react-dom'
 import { CurrentTableContext } from '../context/current-table'

@@ -1,3 +1,5 @@
+import type { EntityManager } from '@mikro-orm/better-sqlite'
+import { wrap } from '@mikro-orm/core'
 import type {
   ITableSpecVisitor,
   WithCalendarField,
@@ -32,9 +34,7 @@ import type {
   WithViewName,
   WithViewPinnedFields,
   WithViewsOrder,
-} from '@egodb/core'
-import type { EntityManager } from '@mikro-orm/better-sqlite'
-import { wrap } from '@mikro-orm/core'
+} from '@undb/core'
 import type {
   CreatedAtField,
   DateField,

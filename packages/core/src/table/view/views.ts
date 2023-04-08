@@ -1,4 +1,4 @@
-import { andOptions, ValueObject } from '@egodb/domain'
+import { andOptions, ValueObject } from '@undb/domain'
 import { Option } from 'oxide.ts'
 import type { Field } from '../field/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'

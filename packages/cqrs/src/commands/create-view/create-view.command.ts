@@ -1,6 +1,6 @@
-import { ICreateViewSchema } from '@egodb/core'
-import type { CommandProps } from '@egodb/domain'
-import { Command } from '@egodb/domain'
+import { ICreateViewSchema } from '@undb/core'
+import type { CommandProps } from '@undb/domain'
+import { Command } from '@undb/domain'
 import type { ICreateViewCommandInput } from './create-view.command.interface.js'
 
 export class CreateViewCommand extends Command implements ICreateViewCommandInput {

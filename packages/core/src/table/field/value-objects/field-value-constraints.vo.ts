@@ -1,4 +1,4 @@
-import { ValueObject } from '@egodb/domain'
+import { ValueObject } from '@undb/domain'
 import * as z from 'zod'
 
 export const valueConstraintsSchema = z.object({

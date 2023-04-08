@@ -1,5 +1,5 @@
-import type { SelectProps } from '@egodb/ui'
-import { Select } from '@egodb/ui'
+import type { SelectProps } from '@undb/ui'
+import { Select } from '@undb/ui'
 import type { FieldBase } from './field-picker.type'
 
 interface IProps extends Omit<SelectProps, 'data'> {

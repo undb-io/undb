@@ -1,11 +1,11 @@
-import type {
-  IOptionColorName,
-  IOptionColorShade,
-  Option as CoreOption,
-  OptionColor as CoreOptionColor,
-} from '@egodb/core'
 import type { Rel } from '@mikro-orm/core'
 import { Cascade, Embeddable, Embedded, Entity, Enum, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
+import type {
+  Option as CoreOption,
+  OptionColor as CoreOptionColor,
+  IOptionColorName,
+  IOptionColorShade,
+} from '@undb/core'
 import { BaseEntity } from './base.js'
 import { SelectField } from './field.js'
 
@@ -40,7 +40,7 @@ export class OptionColor {
   shade: IOptionColorShade
 }
 
-@Entity({ tableName: 'ego_option' })
+@Entity({ tableName: 'undb_option' })
 export class Option extends BaseEntity {
   constructor(field: Rel<SelectField>, option: CoreOption) {
     super()

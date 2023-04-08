@@ -2,18 +2,18 @@ previewsEnabled: true
 services:
   # A Docker web service
   - type: web
-    name: egodb
+    name: undb
     env: docker
-    repo: https://github.com/ego-io/egodb.git
+    repo: https://github.com/undb-xyz/undb.git
     region: singapore
     plan: starter
     rootDir: .
     numInstances: 1
     healthCheckPath: /health
     envVars:
-      - key: EGODB_ADMIN_EMAIL
+      - key: UNDB_ADMIN_EMAIL
         value: test@example.com
-      - key: EGODB_ADMIN_PASSWORD
+      - key: UNDB_ADMIN_PASSWORD
         value: 123456
     domains:
-      - demo.egodb.io
+      - demo.undb.xyz

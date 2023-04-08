@@ -1,4 +1,4 @@
-import '@egodb/core'
+import '@undb/core'
 import {
   BulkDeleteRecordsCommand,
   bulkDeleteRecordsCommandInput,
@@ -17,8 +17,8 @@ import {
   GetRecordsQuery,
   getRecordsQueryInput,
   UpdateRecordCommand,
-} from '@egodb/cqrs'
-import type { ICommandBus, IQueryBus } from '@egodb/domain'
+} from '@undb/cqrs'
+import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'

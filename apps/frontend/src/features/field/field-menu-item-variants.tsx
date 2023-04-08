@@ -1,4 +1,4 @@
-import type { Field } from '@egodb/core'
+import type { Field } from '@undb/core'
 import { ReferenceFieldMenuItems } from './reference-field-menu-items'
 
 interface IProps {

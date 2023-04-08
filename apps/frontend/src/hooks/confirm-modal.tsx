@@ -1,7 +1,7 @@
-import type { OpenConfirmModal } from '@egodb/ui'
-import { modalStyles } from '@egodb/ui'
-import { Text } from '@egodb/ui'
-import { openConfirmModal } from '@egodb/ui'
+import type { OpenConfirmModal } from '@undb/ui'
+import { modalStyles } from '@undb/ui'
+import { Text } from '@undb/ui'
+import { openConfirmModal } from '@undb/ui'
 import { Translation } from 'react-i18next'
 
 export const confirmModal = (props: OpenConfirmModal) => {

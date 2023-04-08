@@ -1,5 +1,5 @@
-import { createTestTable, TreeField } from '@egodb/core'
 import { EntityManager } from '@mikro-orm/better-sqlite'
+import { createTestTable, TreeField } from '@undb/core'
 import { Table } from '../../entity/index.js'
 import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
 

@@ -1,4 +1,4 @@
-import { Group, Square, Text } from '@egodb/ui'
+import { Group, Square, Text } from '@undb/ui'
 
 export const ColorValue: React.FC<{ value: string }> = ({ value }) => {
   return (

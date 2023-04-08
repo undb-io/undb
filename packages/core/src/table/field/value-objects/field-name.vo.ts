@@ -1,4 +1,4 @@
-import { ValueObject } from '@egodb/domain'
+import { ValueObject } from '@undb/domain'
 import { fieldNameSchema } from './field-name.schema.js'
 
 export class FieldName extends ValueObject<string> {

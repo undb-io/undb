@@ -1,3 +1,4 @@
+import { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import {
   BoolIsFalse,
   BoolIsTrue,
@@ -30,8 +31,7 @@ import {
   WithRecordCreatedAt,
   WithRecordId,
   WithRecordUpdatedAt,
-} from '@egodb/core'
-import { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+} from '@undb/core'
 import { addDays, subDays } from 'date-fns'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
 

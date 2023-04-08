@@ -1,11 +1,11 @@
-import type { FieldId, ITreeView, Kanban } from '@egodb/core'
-import type { ICalendar } from '@egodb/core'
+import type { FieldId, ITreeView, Kanban } from '@undb/core'
+import type { ICalendar } from '@undb/core'
 import {
   useDeleteViewMutation,
   useDuplicateViewMutation,
   useSwitchDisplayTypeMutation,
   useUpdateViewNameMutation,
-} from '@egodb/store'
+} from '@undb/store'
 import {
   Button,
   IconCalendarPlus,
@@ -26,7 +26,7 @@ import {
   ActionIcon,
   IconChevronDown,
   IconTree,
-} from '@egodb/ui'
+} from '@undb/ui'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'

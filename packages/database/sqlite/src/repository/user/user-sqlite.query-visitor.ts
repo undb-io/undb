@@ -1,5 +1,5 @@
-import type { IUserSpecVisitor, WithUserEmail, WithUserId, WithUsername } from '@egodb/core'
 import type { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
+import type { IUserSpecVisitor, WithUserEmail, WithUserId, WithUsername } from '@undb/core'
 import { User } from '../../entity/user.js'
 
 export class UserSqliteQueryVisitor implements IUserSpecVisitor {

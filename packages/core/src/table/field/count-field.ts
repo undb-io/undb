@@ -1,4 +1,4 @@
-import { andOptions } from '@egodb/domain'
+import { andOptions } from '@undb/domain'
 import { z } from 'zod'
 import type { ICountFilter, ICountFilterOperator } from '../filter/count.filter.js'
 import { CountFieldValue } from './count-field-value.js'

@@ -1,4 +1,4 @@
-import { NanoID } from '@egodb/domain'
+import { NanoID } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Err, Ok } from 'oxide.ts'
 import { InvalidUserIdError } from '../user.errors.js'

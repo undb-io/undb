@@ -18,7 +18,7 @@ const displayFieldTypes: Set<IFieldType> = new Set<IFieldType>([
   'color',
   'date',
   'email',
-  // FIXME: https://github.com/ego-io/egodb/issues/780
+  // FIXME: https://github.com/undb-xyz/undb/issues/780
   // 'attachment',
   'number',
   'rating',

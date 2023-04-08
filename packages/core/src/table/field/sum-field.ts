@@ -1,4 +1,4 @@
-import { andOptions } from '@egodb/domain'
+import { andOptions } from '@undb/domain'
 import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
 import type { ISumFilter, ISumFilterOperator } from '../filter/sum.filter.js'

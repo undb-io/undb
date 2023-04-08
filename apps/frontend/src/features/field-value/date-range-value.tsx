@@ -1,4 +1,4 @@
-import type { DateRangeField, IDateRangeFieldValue } from '@egodb/core'
+import type { DateRangeField, IDateRangeFieldValue } from '@undb/core'
 import { format } from 'date-fns/fp'
 
 interface IProps {

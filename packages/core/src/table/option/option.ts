@@ -1,4 +1,4 @@
-import { ValueObject } from '@egodb/domain'
+import { ValueObject } from '@undb/domain'
 import { OptionColor } from './option-color.js'
 import { OptionKey } from './option-key.vo.js'
 import { OptionName } from './option-name.vo.js'

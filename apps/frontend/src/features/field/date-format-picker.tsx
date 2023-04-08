@@ -1,6 +1,6 @@
-import { BUILT_IN_DATE_FORMATS, DEFAULT_DATE_FORMAT } from '@egodb/core'
-import type { SelectItem, SelectProps } from '@egodb/ui'
-import { Select } from '@egodb/ui'
+import { BUILT_IN_DATE_FORMATS, DEFAULT_DATE_FORMAT } from '@undb/core'
+import type { SelectItem, SelectProps } from '@undb/ui'
+import { Select } from '@undb/ui'
 import { useTranslation } from 'react-i18next'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 

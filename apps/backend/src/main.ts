@@ -1,6 +1,6 @@
-import { AppRouter } from '@egodb/trpc'
 import { NestFactory } from '@nestjs/core'
 import * as trpcExpress from '@trpc/server/adapters/express'
+import { AppRouter } from '@undb/trpc'
 import compression from 'compression'
 import helmet from 'helmet'
 import { Logger } from 'nestjs-pino'

@@ -1,4 +1,4 @@
-import { NanoID } from '@egodb/domain'
+import { NanoID } from '@undb/domain'
 import { optionIdSchema } from './option.schema.js'
 
 export class OptionKey extends NanoID {

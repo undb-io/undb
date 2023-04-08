@@ -1,5 +1,5 @@
-import type { IMutateOptionSchema, SelectField } from '@egodb/core'
-import type { ContextModalProps } from '@egodb/ui'
+import type { IMutateOptionSchema, SelectField } from '@undb/core'
+import type { ContextModalProps } from '@undb/ui'
 import { UpdateOptionForm } from './update-option-form'
 
 export type IUpdateOptionModalProps = {

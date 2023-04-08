@@ -1,3 +1,4 @@
+import { EntityManager } from '@mikro-orm/better-sqlite'
 import {
   Table as CoreTable,
   View as CoreView,
@@ -8,8 +9,7 @@ import {
   WithTableSchema,
   WithTableViews,
   createTestTable,
-} from '@egodb/core'
-import { EntityManager } from '@mikro-orm/better-sqlite'
+} from '@undb/core'
 import { Field, Table } from '../../entity/index.js'
 import { View } from '../../entity/view.js'
 import { AdjacencyListTable } from '../../underlying-table/underlying-foreign-table.js'

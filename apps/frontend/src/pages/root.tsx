@@ -1,4 +1,4 @@
-import { AppShell, Stack } from '@egodb/ui'
+import { AppShell, Stack } from '@undb/ui'
 import { Outlet } from 'react-router-dom'
 import { TableList } from '../features/table/table-list'
 import { CreateTableFormDrawer } from '../features/create-table-form'

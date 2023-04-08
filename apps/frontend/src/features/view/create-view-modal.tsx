@@ -1,4 +1,4 @@
-import type { ContextModalProps } from '@egodb/ui'
+import type { ContextModalProps } from '@undb/ui'
 import { CreateViewForm } from './create-view-form'
 
 export const CreateViewModal = ({ innerProps }: ContextModalProps) => {

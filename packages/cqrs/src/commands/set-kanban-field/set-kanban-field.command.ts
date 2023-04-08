@@ -1,5 +1,5 @@
-import type { CommandProps } from '@egodb/domain'
-import { Command } from '@egodb/domain'
+import type { CommandProps } from '@undb/domain'
+import { Command } from '@undb/domain'
 import type { ISetKanbanFieldCommandInput } from './set-kanban-field.command.interface.js'
 
 export class SetKanbanFieldCommand extends Command implements ISetKanbanFieldCommandInput {

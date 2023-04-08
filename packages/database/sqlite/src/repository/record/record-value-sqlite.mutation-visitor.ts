@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type {
   AttachmentFieldValue,
   AutoIncrementFieldValue,
@@ -24,9 +25,8 @@ import type {
   TableSchemaIdMap,
   TreeFieldValue,
   UpdatedAtFieldValue,
-} from '@egodb/core'
-import { ParentField, ReferenceField, TreeField } from '@egodb/core'
-import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+} from '@undb/core'
+import { ParentField, ReferenceField, TreeField } from '@undb/core'
 import { Attachment } from '../../entity/attachment.js'
 import { Table } from '../../entity/table.js'
 import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table.js'

@@ -1,7 +1,7 @@
 import { DndContext, rectIntersection } from '@dnd-kit/core'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { SortableContext, useSortable } from '@dnd-kit/sortable'
-import { OptionKey } from '@egodb/core'
+import { OptionKey } from '@undb/core'
 import {
   useListState,
   Stack,
@@ -14,11 +14,11 @@ import {
   FocusTrap,
   IconTrash,
   Grid,
-} from '@egodb/ui'
+} from '@undb/ui'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { CSS } from '@dnd-kit/utilities'
-import type { ICreateOptionSchema, IMutateOptionSchema } from '@egodb/core'
-import { OptionColor } from '@egodb/core'
+import type { ICreateOptionSchema, IMutateOptionSchema } from '@undb/core'
+import { OptionColor } from '@undb/core'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { OptionColorPicker } from './option-color-picker'
 import type { OnColorChange } from './type'

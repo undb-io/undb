@@ -1,5 +1,5 @@
-import type { ParentField, ReferenceField, TreeField } from '@egodb/core'
-import { Group, IconChevronRight, IconSearch, Menu, Text, openContextModal } from '@egodb/ui'
+import type { ParentField, ReferenceField, TreeField } from '@undb/core'
+import { Group, IconChevronRight, IconSearch, Menu, Text, openContextModal } from '@undb/ui'
 import { useTranslation } from 'react-i18next'
 import { useMenuStyle } from './menu-item'
 import { FieldIcon } from '../field-inputs/field-Icon'

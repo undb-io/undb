@@ -1,5 +1,5 @@
-import { StringField } from '@egodb/core'
 import { Knex } from '@mikro-orm/better-sqlite'
+import { StringField } from '@undb/core'
 import {
   UnderlyingCreatedAtColumn,
   UnderlyingDeletedAtColumn,

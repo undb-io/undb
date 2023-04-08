@@ -1,4 +1,4 @@
-import { useDeleteRecordMutation, useDuplicateRecordMutation } from '@egodb/store'
+import { useDeleteRecordMutation, useDuplicateRecordMutation } from '@undb/store'
 import {
   ActionIcon,
   Alert,
@@ -10,7 +10,7 @@ import {
   IconTrash,
   Menu,
   useClipboard,
-} from '@egodb/ui'
+} from '@undb/ui'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { confirmModal } from '../../hooks'

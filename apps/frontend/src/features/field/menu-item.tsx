@@ -1,4 +1,4 @@
-import { createStyles } from '@egodb/ui'
+import { createStyles } from '@undb/ui'
 import '@emotion/react'
 
 export const useMenuStyle: ReturnType<typeof createStyles<'menu', object>> = createStyles((theme) => ({

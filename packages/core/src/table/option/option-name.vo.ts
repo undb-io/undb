@@ -1,4 +1,4 @@
-import { ValueObject } from '@egodb/domain'
+import { ValueObject } from '@undb/domain'
 import { optionNameSchema } from './option.schema.js'
 
 export class OptionName extends ValueObject<string> {

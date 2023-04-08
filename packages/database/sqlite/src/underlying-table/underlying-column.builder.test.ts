@@ -1,5 +1,5 @@
-import { BoolField, DateField, DateRangeField, NumberField, SelectField, StringField } from '@egodb/core'
 import { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import { BoolField, DateField, DateRangeField, NumberField, SelectField, StringField } from '@undb/core'
 import { UnderlyingColumnBuilder } from './underlying-column.builder.js'
 
 describe('UnderlyingColumnBuilder', () => {
