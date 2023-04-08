@@ -1,19 +1,26 @@
+import type { User as CoreUser } from '@egodb/core'
 import { Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core'
 import { BaseEntity } from './base.js'
 
 @Entity({ tableName: 'ego_user' })
 export class User extends BaseEntity {
+  constructor(user: CoreUser) {
+    super()
+    this.id = user.userId
+    this.email = user.email
+    this.username = user.username
+  }
   @PrimaryKey()
-  id!: string
+  id: string
 
   @Property()
   @Index()
-  username!: string
+  username: string
 
   @Property()
   @Index()
   @Unique()
-  email!: string
+  email: string
 
   @Property()
   password!: string

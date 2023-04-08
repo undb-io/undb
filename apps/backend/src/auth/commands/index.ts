@@ -1,1 +1,1 @@
-export * from './login/login.command.hander.js'
+export * from './login.command.hander.js'
