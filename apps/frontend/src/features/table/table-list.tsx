@@ -29,7 +29,7 @@ export const TableList: React.FC = () => {
         navigate(`/t/${data.ids.at(0)}`, { replace: true })
       }
     }
-  }, [])
+  }, [tableId])
 
   const setOpened = useSetAtom(createTableFormDrawerOpened)
   const close = useCloseAllDrawers()

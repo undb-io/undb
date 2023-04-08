@@ -21,7 +21,7 @@ const QueryHandlers = [NestGetMeQueryHandler]
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '20d' },
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy, ...CommandHandlers, ...QueryHandlers],

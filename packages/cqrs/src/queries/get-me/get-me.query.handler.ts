@@ -9,8 +9,6 @@ export class GetMeQueryHandler implements IQueryHandler<GetMeQuery, IGetMeOutput
     const user = (await this.rm.findOneById(query.me.userId)).into()
     if (!user) throw new Error('not found me')
 
-    console.log(user)
-
     return {
       me: user,
     }
