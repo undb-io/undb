@@ -2,12 +2,16 @@ import { useRegisterMutation } from '@egodb/store'
 import { Center, Paper, TextInput, PasswordInput, Space, Button, Divider } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 import { FieldInputLabel } from '../features/field-inputs/field-input-label'
+import { StringParam, useQueryParam } from 'use-query-params'
 
 export const Register: React.FC = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const [redirectUrl] = useQueryParam('redirectUrl', StringParam)
+
   const form = useForm({
     defaultValues: { email: '', password: '' },
     resolver: zodResolver(
@@ -25,7 +29,7 @@ export const Register: React.FC = () => {
 
   const onSubmit = form.handleSubmit(async (values) => {
     await register(values).unwrap()
-    navigate('/', { replace: true })
+    navigate(redirectUrl || '/', { replace: true, relative: 'route' })
   })
 
   return (
@@ -53,7 +57,7 @@ export const Register: React.FC = () => {
         <Divider label="has account?" labelPosition="center" my="sm" />
 
         <Center>
-          <Link to="/login">
+          <Link to={{ pathname: '/login', search: location.search }}>
             <Button compact variant="white">
               login
             </Button>

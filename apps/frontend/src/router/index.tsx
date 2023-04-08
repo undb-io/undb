@@ -5,7 +5,7 @@ import { Login } from '../pages/login'
 import { ProtectedRoute } from '../guard/protected-route'
 import { Register } from '../pages/register'
 
-export const router = createBrowserRouter([
+export const routes = [
   {
     path: '/',
     element: (
@@ -28,4 +28,4 @@ export const router = createBrowserRouter([
     path: '/register',
     element: <Register />,
   },
-])
+]
