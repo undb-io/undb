@@ -32,6 +32,8 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.10.0",
     "use-deep-compare-effect": "^1.8.1",
+    "use-query-params": "^2.2.1",
+    "zod": "^3.21.4",
     "zod-i18n-map": "^2.9.0"
   },
   "devDependencies": {

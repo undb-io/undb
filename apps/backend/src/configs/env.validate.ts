@@ -13,4 +13,7 @@ export const configSchema = Joi.object({
     is: 'local',
     then: Joi.string().default(path.resolve(process.cwd(), './attachments')),
   }),
+  EGODB_JWT_SECRET: Joi.string().default('jwt_secret'),
+  EGODB_ADMIN_EMAIL: Joi.string().email().optional(),
+  EGODB_ADMIN_PASSWORD: Joi.string().optional(),
 })

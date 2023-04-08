@@ -1,24 +1,15 @@
-import { createStore, PersistGate } from '@egodb/store'
-import { Provider } from 'react-redux'
-import { RouterProvider } from 'react-router-dom'
-import { router } from './router'
-import { EgoUIProvider } from '@egodb/ui'
-import { I18n } from './i18n/i18n'
+import { useRoutes } from 'react-router-dom'
+import { routes } from './router'
+import { getIsAuthorized, useMeQuery } from '@egodb/store'
+import { useSelector } from 'react-redux'
 
 function App() {
-  const { store, persist } = createStore()
+  const isAuthorized = useSelector(getIsAuthorized)
+  useMeQuery(undefined, { refetchOnMountOrArgChange: true, skip: !isAuthorized })
 
-  return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persist}>
-        <I18n>
-          <EgoUIProvider theme={{ primaryColor: 'indigo' }} withGlobalStyles withNormalizeCSS>
-            <RouterProvider router={router} />
-          </EgoUIProvider>
-        </I18n>
-      </PersistGate>
-    </Provider>
-  )
+  const element = useRoutes(routes)
+
+  return element
 }
 
 export default App

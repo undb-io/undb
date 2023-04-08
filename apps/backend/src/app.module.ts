@@ -9,11 +9,13 @@ import { ClsModule } from 'nestjs-cls'
 import { LoggerModule } from 'nestjs-pino'
 import path from 'path'
 import { AttachmentModule } from './attachment/attachment.module.js'
+import { AuthModule } from './auth/auth.module.js'
 import { BaseConfigService } from './configs/base-config.service.js'
 import { ConfigModule } from './configs/config.module.js'
-import { sqliteConfig } from './configs/sqlite.js'
+import { sqliteConfig } from './configs/sqlite.config.js'
 import { HealthModule } from './health/health.module.js'
 import { modules } from './modules/index.js'
+import { UserService } from './modules/user/user.service.js'
 import { TrpcModule } from './trpc/trpc.module.js'
 
 @Module({
@@ -42,12 +44,14 @@ import { TrpcModule } from './trpc/trpc.module.js'
     ServeStaticModule.forRoot({
       rootPath: path.resolve(process.cwd(), './out'),
     }),
+    AuthModule,
   ],
 })
 export class AppModule implements OnModuleInit {
-  constructor(private readonly orm: MikroORM) {}
+  constructor(private readonly orm: MikroORM, private readonly userService: UserService) {}
 
   async onModuleInit() {
     await this.orm.getMigrator().up()
+    await this.userService.createAdmin()
   }
 }

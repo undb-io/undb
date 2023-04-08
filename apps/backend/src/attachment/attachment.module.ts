@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { ConfigType } from '@nestjs/config'
 import { ServeStaticModule } from '@nestjs/serve-static'
-import { objectStorageConfig } from '../configs/object-storage.js'
+import { objectStorageConfig } from '../configs/object-storage.config.js'
 import { objectStorage } from './adapters/provider.js'
 import { AttachmentController } from './attachment.controller.js'
 import { AttachmentService } from './attachment.service.js'

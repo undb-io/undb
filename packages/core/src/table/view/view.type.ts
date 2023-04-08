@@ -1,6 +1,6 @@
 import type { z } from 'zod'
 import type { IRootFilter } from '../filter/index.js'
-import type { RootFilter } from '../filter/root-filter'
+import type { RootFilter } from '../filter/root-filter.js'
 import type { Calendar, ICalendarSchema } from './calendar/index.js'
 import type { IKanbanSchema, Kanban } from './kanban/index.js'
 import type { ISorts } from './sort/sort.schema.js'

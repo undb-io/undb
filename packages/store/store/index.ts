@@ -2,14 +2,17 @@ import { configureStore } from '@reduxjs/toolkit'
 import { persistStore } from 'redux-persist'
 import { rootReducder } from '../reducers'
 
-import { attachment } from '../services'
+import { attachment, authApi } from '../services'
 import { api } from '../services/api'
 
 export const createStore = () => {
   const store = configureStore({
     reducer: rootReducder,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({ serializableCheck: false }).concat(api.middleware).concat(attachment.middleware),
+      getDefaultMiddleware({ serializableCheck: false })
+        .concat(api.middleware)
+        .concat(attachment.middleware)
+        .concat(authApi.middleware),
     devTools: process.env.NODE_ENV !== 'production',
   })
 

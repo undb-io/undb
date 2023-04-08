@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230402044954 extends Migration {
+export class Migration20230407135852 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `ego_table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `views_order` text null, primary key (`id`));',
@@ -55,6 +55,14 @@ export class Migration20230402044954 extends Migration {
     this.addSql('create index `ego_attachment_name_index` on `ego_attachment` (`name`);')
     this.addSql('create index `ego_attachment_size_index` on `ego_attachment` (`size`);')
     this.addSql('create index `ego_attachment_extension_index` on `ego_attachment` (`extension`);')
+
+    this.addSql(
+      'create table `ego_user` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `username` text not null, `email` text not null, `password` text not null, primary key (`id`));',
+    )
+    this.addSql('create index `ego_user_deleted_at_index` on `ego_user` (`deleted_at`);')
+    this.addSql('create index `ego_user_username_index` on `ego_user` (`username`);')
+    this.addSql('create index `ego_user_email_index` on `ego_user` (`email`);')
+    this.addSql('create unique index `ego_user_email_unique` on `ego_user` (`email`);')
 
     this.addSql(
       "create table `ego_view` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `name` text not null, `show_system_fields` integer not null default false, `display_type` text check (`display_type` in ('kanban', 'calendar', 'grid', 'tree')) not null, `sorts` json null, `kanban_field_id` text null, `calendar_field_id` text null, `tree_field_id` text null, `filter` json null, `field_options` json null, `fields_order` text null, `pinned_fields` json null, constraint `ego_view_table_id_foreign` foreign key(`table_id`) references `ego_table`(`id`) on delete cascade on update cascade, primary key (`id`));",
