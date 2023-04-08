@@ -5,13 +5,13 @@ import { PassportModule } from '@nestjs/passport'
 import { UserModule } from '../modules/user/user.module.js'
 import { AuthController } from './auth.controller.js'
 import { AuthService } from './auth.service.js'
-import { NestLgoinCommandHandler } from './commands/index.js'
+import { NestLgoinCommandHandler, NestRegisterCommandHandler } from './commands/index.js'
 import { jwtConstants } from './constants.js'
 import { JwtStrategy } from './jwt.strategy.js'
 import { LocalStrategy } from './local.strategy.js'
 import { NestGetMeQueryHandler } from './queries/index.js'
 
-const CommandHandlers = [NestLgoinCommandHandler]
+const CommandHandlers = [NestLgoinCommandHandler, NestRegisterCommandHandler]
 const QueryHandlers = [NestGetMeQueryHandler]
 
 @Module({

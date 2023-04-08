@@ -4,6 +4,6 @@ import { UserService } from './user.service.js'
 
 @Module({
   providers: [UserService, ...dbAdapters],
-  exports: [UserService],
+  exports: [UserService, ...dbAdapters],
 })
 export class UserModule {}

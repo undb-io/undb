@@ -1,5 +1,5 @@
-import type { IQueryUser } from '@egodb/core'
-import { User as CoreUser } from '@egodb/core'
+import type { User as CoreUser, IQueryUser } from '@egodb/core'
+import { UserFactory } from '@egodb/core'
 import type { User } from '../../entity/user.js'
 
 export class UserSqliteMapper {
@@ -12,6 +12,11 @@ export class UserSqliteMapper {
   }
 
   static toDomain(user: User): CoreUser {
-    return new CoreUser(user.id, user.username, user.email)
+    return UserFactory.unsafeCreate({
+      email: user.email,
+      userId: user.id,
+      username: user.username,
+      password: user.password,
+    })
   }
 }
