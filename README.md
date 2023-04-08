@@ -6,6 +6,8 @@ Private first, self-hosted no code database.
 
 <a href="https://demo.egodb.io/">Live Demo</a>
 
+> use email `test@example.com` and password `123456` to login
+
 ![ego](./docs/ego.png)
 
 ## Features
