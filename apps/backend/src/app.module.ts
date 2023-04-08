@@ -51,6 +51,7 @@ export class AppModule implements OnModuleInit {
   constructor(private readonly orm: MikroORM, private readonly userService: UserService) {}
 
   async onModuleInit() {
-    await Promise.all([this.orm.getMigrator().up(), this.userService.createAdmin()])
+    await this.orm.getMigrator().up()
+    await this.userService.createAdmin()
   }
 }
