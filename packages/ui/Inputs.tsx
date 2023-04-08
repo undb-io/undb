@@ -1,4 +1,5 @@
 export {
+  Input,
   TextInput,
   NumberInput,
   Select,
@@ -8,5 +9,6 @@ export {
   MultiSelect,
   ColorInput,
   Switch,
+  PasswordInput,
 } from '@mantine/core'
 export type { SelectProps, SelectItem, MultiSelectProps, CheckboxProps, NumberInputProps } from '@mantine/core'

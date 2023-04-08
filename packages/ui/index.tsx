@@ -1,6 +1,7 @@
 export * from './emotion'
 
 export * from './Alert'
+export * from './Paper'
 export * from './Accordion'
 export * from './Autocomplete'
 export * from './Icon'

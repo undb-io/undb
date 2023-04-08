@@ -13,7 +13,7 @@ export class AuthService {
     private readonly queryBus: QueryBus,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
+  async validateUser(email: string, pass: string): Promise<IQueryUser | null> {
     const user = await this.usersService.findOne(WithUserEmail.fromString(email))
     if (!user) return null
 
