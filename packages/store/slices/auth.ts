@@ -25,13 +25,18 @@ export const authSlice = createSlice({
       .addMatcher(authApi.endpoints.me.matchRejected, (state, action) => {
         if (action.payload?.status === 401) {
           state.token = undefined
+          localStorage.removeItem('access_token')
         }
       })
       .addMatcher(authApi.endpoints.login.matchFulfilled, (state, action) => {
-        state.token = action.payload.access_token
+        const access_token = action.payload.access_token
+        localStorage.setItem('access_token', access_token)
+        state.token = access_token
       })
       .addMatcher(authApi.endpoints.register.matchFulfilled, (state, action) => {
-        state.token = action.payload.access_token
+        const access_token = action.payload.access_token
+        localStorage.setItem('access_token', access_token)
+        state.token = access_token
       })
   },
 })
