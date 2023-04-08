@@ -1,5 +1,5 @@
-import type { IFilter, IFilterOrGroupList } from '@egodb/core'
-import { Box, Button, Divider, Group, IconPlus, Stack, useListState } from '@egodb/ui'
+import type { IFilter, IFilterOrGroupList } from '@undb/core'
+import { Box, Button, Divider, Group, IconPlus, Stack, useListState } from '@undb/ui'
 import { FieldFilter } from './field-filter'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useLayoutEffect } from 'react'

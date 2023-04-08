@@ -1,7 +1,7 @@
-import { type IRecordRepository, type ITableRepository } from '@egodb/core'
-import { UpdateRecordCommand, UpdateRecordCommandHandler as DomainHandler } from '@egodb/cqrs'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
+import { type IRecordRepository, type ITableRepository } from '@undb/core'
+import { UpdateRecordCommandHandler as DomainHandler, UpdateRecordCommand } from '@undb/cqrs'
 import { InjectRecordReposiory, InjectTableReposiory } from '../adapters/index.js'
 
 @CommandHandler(UpdateRecordCommand)

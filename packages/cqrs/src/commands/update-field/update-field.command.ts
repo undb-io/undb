@@ -1,6 +1,6 @@
-import { IUpdateFieldSchema } from '@egodb/core'
-import type { CommandProps } from '@egodb/domain'
-import { Command } from '@egodb/domain'
+import { IUpdateFieldSchema } from '@undb/core'
+import type { CommandProps } from '@undb/domain'
+import { Command } from '@undb/domain'
 import type { IUpdateFieldCommandInput } from './update-field.command.interface.js'
 
 export class UpdateFieldCommand extends Command implements IUpdateFieldCommandInput {

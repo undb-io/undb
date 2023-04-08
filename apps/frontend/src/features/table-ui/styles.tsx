@@ -1,5 +1,5 @@
-import type { CSSObject, MantineTheme } from '@egodb/ui'
-import { createStyles } from '@egodb/ui'
+import type { CSSObject, MantineTheme } from '@undb/ui'
+import { createStyles } from '@undb/ui'
 
 interface PinnedTDProps {
   left?: number

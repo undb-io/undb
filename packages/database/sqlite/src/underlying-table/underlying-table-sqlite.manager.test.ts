@@ -1,10 +1,10 @@
+import { EntityManager } from '@mikro-orm/better-sqlite'
 import {
   createTestTable,
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
-} from '@egodb/core'
-import { EntityManager } from '@mikro-orm/better-sqlite'
+} from '@undb/core'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from './constants.js'
 import { UnderlyingTableSqliteManager } from './underlying-table-sqlite.manager.js'
 

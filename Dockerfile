@@ -1,23 +1,23 @@
 # builder
 FROM node:18-bullseye-slim as builder
 
-WORKDIR /egodb
+WORKDIR /undb
 
 RUN npm install -g turbo
 COPY . .
-RUN turbo prune --scope=@egodb/backend --scope=@egodb/frontend
+RUN turbo prune --scope=@undb/backend --scope=@undb/frontend
 
 # installer
 FROM node:18-bullseye AS installer
 
 RUN npm install -g pnpm
 
-WORKDIR /egodb
+WORKDIR /undb
 
-COPY --from=builder /egodb/out/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=builder /undb/out/pnpm-lock.yaml ./pnpm-lock.yaml
 RUN pnpm fetch
 
-COPY --from=builder /egodb/out/ .
+COPY --from=builder /undb/out/ .
 
 RUN pnpm install -r --offline
 
@@ -28,14 +28,14 @@ RUN pnpm prune --prod --config.ignore-scripts=true
 # runner
 FROM gcr.io/distroless/nodejs18-debian11 as runner
 
-WORKDIR /egodb
+WORKDIR /undb
 
 ENV NODE_ENV production
-ENV EGODB_DATABASE_SQLITE_DATA /var/opt/.ego
+ENV UNDB_DATABASE_SQLITE_DATA /var/opt/.undb
 
-COPY --from=installer /egodb/node_modules ./node_modules
-COPY --from=installer /egodb/packages ./packages
-COPY --from=installer /egodb/apps/backend ./apps/backend
-COPY --from=installer /egodb/apps/frontend/dist ./out
+COPY --from=installer /undb/node_modules ./node_modules
+COPY --from=installer /undb/packages ./packages
+COPY --from=installer /undb/apps/backend ./apps/backend
+COPY --from=installer /undb/apps/frontend/dist ./out
 
 CMD ["apps/backend/dist/main.js"]

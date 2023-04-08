@@ -1,8 +1,8 @@
-import { type IRecordTreeQueryModel, type ITableRepository } from '@egodb/core'
-import type { IGetRecordsTreeOutput } from '@egodb/cqrs'
-import { GetRecordsTreeQuery, GetRecordsTreeQueryHandler } from '@egodb/cqrs'
 import type { IQueryHandler } from '@nestjs/cqrs'
 import { QueryHandler } from '@nestjs/cqrs'
+import { type IRecordTreeQueryModel, type ITableRepository } from '@undb/core'
+import type { IGetRecordsTreeOutput } from '@undb/cqrs'
+import { GetRecordsTreeQuery, GetRecordsTreeQueryHandler } from '@undb/cqrs'
 import { InjectTableReposiory } from '../adapters/index.js'
 import { InjectRecordTreeQueryModel } from '../adapters/sqlite/record-sqlite.tree-query-model.js'
 

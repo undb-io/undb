@@ -1,14 +1,3 @@
-import type {
-  Calendar as CoreCalendar,
-  Kanban as CoreKanban,
-  TreeView as CoreTreeView,
-  View as CoreView,
-  IRootFilter,
-  ISorts,
-  IViewDisplayType,
-  IViewFieldOption,
-  IViewPinnedFields,
-} from '@egodb/core'
 import type { Rel } from '@mikro-orm/core'
 import {
   ArrayType,
@@ -22,6 +11,17 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core'
+import type {
+  Calendar as CoreCalendar,
+  Kanban as CoreKanban,
+  TreeView as CoreTreeView,
+  View as CoreView,
+  IRootFilter,
+  ISorts,
+  IViewDisplayType,
+  IViewFieldOption,
+  IViewPinnedFields,
+} from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Table } from './table.js'
 
@@ -70,7 +70,7 @@ export class Tree {
   }
 }
 
-@Entity({ tableName: 'ego_view' })
+@Entity({ tableName: 'undb_view' })
 export class View extends BaseEntity {
   @PrimaryKey()
   id: string

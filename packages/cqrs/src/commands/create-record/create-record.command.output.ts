@@ -1,4 +1,4 @@
-import { recordIdSchema } from '@egodb/core'
+import { recordIdSchema } from '@undb/core'
 import * as z from 'zod'
 
 export const createRecordCommandOutput = z.object({

@@ -4,8 +4,8 @@ import {
   GetTreeAvailableRecordsQuery,
   getTreeAvailableRecordsQueryInput,
   getTreeAvailableRecordsQueryOutput,
-} from '@egodb/cqrs'
-import type { IQueryBus } from '@egodb/domain'
+} from '@undb/cqrs'
+import type { IQueryBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'

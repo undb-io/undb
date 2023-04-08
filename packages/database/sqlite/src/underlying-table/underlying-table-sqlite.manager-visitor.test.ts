@@ -1,3 +1,4 @@
+import { EntityManager } from '@mikro-orm/better-sqlite'
 import {
   FieldId,
   FieldName,
@@ -6,8 +7,7 @@ import {
   TableSchema,
   WithNewField,
   WithTableSchema,
-} from '@egodb/core'
-import { EntityManager } from '@mikro-orm/better-sqlite'
+} from '@undb/core'
 import { UnderlyingTableSqliteManagerVisitor } from './underlying-table-sqlite.manager-visitor.js'
 
 describe('UnderlyingTableSqliteManagerVisitor', () => {

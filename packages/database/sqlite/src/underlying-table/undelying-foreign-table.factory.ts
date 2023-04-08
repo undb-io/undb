@@ -1,4 +1,4 @@
-import type { ReferenceFieldTypes } from '@egodb/core'
+import type { ReferenceFieldTypes } from '@undb/core'
 import type { IUnderlyingForeignTable } from '../interfaces/underlying-foreign-table.js'
 import { AdjacencyListTable, ClosureTable } from './underlying-foreign-table.js'
 

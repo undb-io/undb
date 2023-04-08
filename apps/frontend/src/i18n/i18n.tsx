@@ -1,4 +1,4 @@
-import { DatesProvider } from '@egodb/ui'
+import { DatesProvider } from '@undb/ui'
 import i18n from './client'
 import 'dayjs/locale/zh-cn'
 

@@ -1,10 +1,10 @@
 {
-  "name": "@egodb/store",
+  "name": "@undb/store",
   "version": "0.0.0",
   "dependencies": {
-    "@egodb/core": "^0.0.0",
-    "@egodb/cqrs": "^0.0.0",
-    "@egodb/trpc": "^0.0.0",
+    "@undb/core": "^0.0.0",
+    "@undb/cqrs": "^0.0.0",
+    "@undb/trpc": "^0.0.0",
     "@reduxjs/toolkit": "^1.9.3",
     "@trpc/client": "^10.18.0",
     "lodash": "^4.17.21",
@@ -13,7 +13,7 @@
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {
-    "@egodb/eslint-config": "^0.0.0",
+    "@undb/eslint-config": "^0.0.0",
     "@trpc/server": "^10.18.0",
     "@types/lodash": "^4.14.192",
     "@types/redux-logger": "^3.0.9",

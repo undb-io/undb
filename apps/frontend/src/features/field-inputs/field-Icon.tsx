@@ -21,7 +21,7 @@ import {
   IconSquareCheck,
   IconStars,
   IconSum,
-} from '@egodb/ui'
+} from '@undb/ui'
 import React from 'react'
 interface FieldProps {
   type?: string

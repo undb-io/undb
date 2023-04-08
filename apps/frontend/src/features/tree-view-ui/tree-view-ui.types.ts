@@ -1,5 +1,5 @@
 import type { UniqueIdentifier } from '@dnd-kit/core'
-import type { RecordAllValues } from '@egodb/core'
+import type { RecordAllValues } from '@undb/core'
 import type { MutableRefObject } from 'react'
 
 export type SensorContext = MutableRefObject<{

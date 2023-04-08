@@ -1,4 +1,6 @@
-import type { IQueryTable } from '@egodb/core'
+import type { EntityState } from '@reduxjs/toolkit'
+import { createEntityAdapter } from '@reduxjs/toolkit'
+import type { IQueryTable } from '@undb/core'
 import type {
   ICreateTableInput,
   ICreateTableOutput,
@@ -6,9 +8,7 @@ import type {
   IGetTableQuery,
   IGetTablesOutput,
   IGetTablesQuery,
-} from '@egodb/cqrs'
-import type { EntityState } from '@reduxjs/toolkit'
-import { createEntityAdapter } from '@reduxjs/toolkit'
+} from '@undb/cqrs'
 import { trpc } from '../trpc'
 import { api } from './api'
 

@@ -1,6 +1,6 @@
-import { IFilterOrGroupList } from '@egodb/core'
-import type { CommandProps } from '@egodb/domain'
-import { Command } from '@egodb/domain'
+import { IFilterOrGroupList } from '@undb/core'
+import type { CommandProps } from '@undb/domain'
+import { Command } from '@undb/domain'
 import type { ISetFilterCommandInput } from './set-filters.command.interface.js'
 
 export class SetFitlersCommand extends Command implements ISetFilterCommandInput {

@@ -1,4 +1,4 @@
-import type { View } from '@egodb/core'
+import type { View } from '@undb/core'
 import React from 'react'
 
 export const CurrentViewContext = React.createContext<View | null>(null)

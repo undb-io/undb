@@ -1,5 +1,5 @@
-import type { ITreeViewField } from '@egodb/core'
-import { Box, Overlay } from '@egodb/ui'
+import type { ITreeViewField } from '@undb/core'
+import { Box, Overlay } from '@undb/ui'
 import dynamic from 'next/dynamic'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'

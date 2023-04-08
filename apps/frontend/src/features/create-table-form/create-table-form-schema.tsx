@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState } from 'react'
-import { Accordion, usePrevious } from '@egodb/ui'
+import { Accordion, usePrevious } from '@undb/ui'
 import { FieldAccordionItem } from './fields/field-accordion-item'
 import { useAtom } from 'jotai'
 import { activeFieldAtom } from './create-table-form-schema.atom'
@@ -8,7 +8,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { useResetAtom } from 'jotai/utils'
 import { useFieldArray, useFormContext } from 'react-hook-form'
-import type { ICreateTableInput } from '@egodb/cqrs'
+import type { ICreateTableInput } from '@undb/cqrs'
 
 export const CreateTableFormSchema: React.FC = () => {
   const form = useFormContext<ICreateTableInput>()

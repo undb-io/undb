@@ -1,4 +1,4 @@
-import { Group, Badge, Text } from '@egodb/ui'
+import { Group, Badge, Text } from '@undb/ui'
 import { useTranslation } from 'react-i18next'
 
 export const DisplayFields: React.FC<{ displayFields: { name: string }[] }> = ({ displayFields }) => {

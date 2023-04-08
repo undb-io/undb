@@ -1,5 +1,5 @@
-import { ITableRepository, TableSpecHandler } from '@egodb/core'
 import { Provider } from '@nestjs/common'
+import { ITableRepository, TableSpecHandler } from '@undb/core'
 import { TABLE_REPOSITORY } from '../adapters/index.js'
 
 export const tableSpecHandler: Provider = {

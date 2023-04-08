@@ -1,6 +1,6 @@
-import type { ICreateTableInput } from '@egodb/cqrs'
-import { FieldId } from '@egodb/core'
-import { Button, IconPlus } from '@egodb/ui'
+import type { ICreateTableInput } from '@undb/cqrs'
+import { FieldId } from '@undb/core'
+import { Button, IconPlus } from '@undb/ui'
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 

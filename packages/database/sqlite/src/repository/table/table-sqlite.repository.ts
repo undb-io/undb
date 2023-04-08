@@ -1,5 +1,5 @@
-import type { Table as CoreTable, ITableRepository, ITableSpec } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
+import type { Table as CoreTable, ITableRepository, ITableSpec } from '@undb/core'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { Table, Table as TableEntity } from '../../entity/index.js'

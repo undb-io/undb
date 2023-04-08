@@ -11,26 +11,26 @@ import {
   Switch,
   TextInput,
   useDisclosure,
-} from '@egodb/ui'
+} from '@undb/ui'
 import { FIELD_SELECT_ITEMS } from '../../constants/field.constants'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldVariantControl } from '../field/field-variant-control'
 import { FieldItem } from '../field-inputs/field-item'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
-import type { ICreateFieldSchema } from '@egodb/core'
-import { canDisplay } from '@egodb/core'
-import { isControlledFieldType } from '@egodb/core'
-import { createFieldSchema } from '@egodb/core'
+import type { ICreateFieldSchema } from '@undb/core'
+import { canDisplay } from '@undb/core'
+import { isControlledFieldType } from '@undb/core'
+import { createFieldSchema } from '@undb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { ICreateFieldProps } from './create-field.props'
-import { useCreateFieldMutation } from '@egodb/store'
+import { useCreateFieldMutation } from '@undb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { useTranslation } from 'react-i18next'
 import { useAtomValue } from 'jotai'
 import { createFieldInitialValueAtom } from './create-field-initial-value.atom'
-import type { ICreateFieldCommandInput } from '@egodb/cqrs'
+import type { ICreateFieldCommandInput } from '@undb/cqrs'
 import { DisplayFields } from '../field/display-fields'
 
 export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) => {
@@ -87,7 +87,7 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
                 label={<FieldInputLabel>{t('Type', { ns: 'common' })}</FieldInputLabel>}
                 data={FIELD_SELECT_ITEMS.map((item) => ({
                   value: item.value,
-                  label: t(item.label!) as string,
+                  label: t(item.value!) as string,
                   group: t(item.group!, { ns: 'common' }) as string,
                 }))}
                 itemComponent={FieldItem}

@@ -1,6 +1,6 @@
-import type { IQueryRecords, ReferenceFieldTypes } from '@egodb/core'
-import { useGetRecordQuery } from '@egodb/store'
-import type { SelectItem } from '@egodb/ui'
+import type { IQueryRecords, ReferenceFieldTypes } from '@undb/core'
+import { useGetRecordQuery } from '@undb/store'
+import type { SelectItem } from '@undb/ui'
 import { isEmpty, isString, unionBy } from 'lodash-es'
 import { useCurrentTable } from './use-current-table'
 

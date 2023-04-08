@@ -1,4 +1,4 @@
-import { createMutateRecordValuesSchema, Field, recordIdSchema, tableIdSchema } from '@egodb/core'
+import { createMutateRecordValuesSchema, Field, recordIdSchema, tableIdSchema } from '@undb/core'
 import * as z from 'zod'
 
 export const createCreateRecordCommandInput = (fields: Field[]) =>

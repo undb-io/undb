@@ -1,4 +1,4 @@
-import { Button, IconMenu2, Tooltip } from '@egodb/ui'
+import { Button, IconMenu2, Tooltip } from '@undb/ui'
 import { useAtom } from 'jotai'
 import { unstable_batchedUpdates } from 'react-dom'
 import { useTranslation } from 'react-i18next'

@@ -1,4 +1,4 @@
-import { setCalendarFieldSchema, tableIdSchema, viewIdSchema } from '@egodb/core'
+import { setCalendarFieldSchema, tableIdSchema, viewIdSchema } from '@undb/core'
 import { z } from 'zod'
 
 export const setCalendarFieldCommandInput = z

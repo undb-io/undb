@@ -1,6 +1,6 @@
-import { ISorts } from '@egodb/core'
-import type { CommandProps } from '@egodb/domain'
-import { Command } from '@egodb/domain'
+import { ISorts } from '@undb/core'
+import type { CommandProps } from '@undb/domain'
+import { Command } from '@undb/domain'
 import type { ISetSortsCommandInput } from './set-sorts.command.interface.js'
 
 export class SetSortsCommand extends Command implements ISetSortsCommandInput {

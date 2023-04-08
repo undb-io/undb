@@ -1,10 +1,10 @@
 {
-  "name": "@egodb/core",
+  "name": "@undb/core",
   "description": "",
   "version": "0.0.0",
   "author": "",
   "dependencies": {
-    "@egodb/domain": "^0.0.0",
+    "@undb/domain": "^0.0.0",
     "array-move": "^4.0.0",
     "date-fns": "^2.29.3",
     "lodash": "^4.17.21",

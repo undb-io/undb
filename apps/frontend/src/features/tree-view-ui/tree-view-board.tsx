@@ -1,5 +1,5 @@
-import type { ITreeViewField } from '@egodb/core'
-import { useListTreeQuery } from '@egodb/store'
+import type { ITreeViewField } from '@undb/core'
+import { useListTreeQuery } from '@undb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { TreeView } from './tree-view'
 

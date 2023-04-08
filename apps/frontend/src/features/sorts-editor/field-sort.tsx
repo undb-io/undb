@@ -1,5 +1,5 @@
-import type { Field, ISortDirection, ISortSchema } from '@egodb/core'
-import { Group, ActionIcon, IconGripVertical, IconTrash, SegmentedControl } from '@egodb/ui'
+import type { Field, ISortDirection, ISortSchema } from '@undb/core'
+import { Group, ActionIcon, IconGripVertical, IconTrash, SegmentedControl } from '@undb/ui'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useEffect, useState } from 'react'

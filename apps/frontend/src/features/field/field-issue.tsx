@@ -1,6 +1,6 @@
-import type { Field } from '@egodb/core'
-import type { ActionIconProps } from '@egodb/ui'
-import { Tooltip, ActionIcon, IconExclamationCircle } from '@egodb/ui'
+import type { Field } from '@undb/core'
+import type { ActionIconProps } from '@undb/ui'
+import { Tooltip, ActionIcon, IconExclamationCircle } from '@undb/ui'
 import { t } from 'i18next'
 
 interface IProps extends ActionIconProps {

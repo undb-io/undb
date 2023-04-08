@@ -1,4 +1,4 @@
-import type { Field } from '@egodb/core'
+import type { Field } from '@undb/core'
 import {
   NumberInput,
   DatePickerInput,
@@ -13,7 +13,7 @@ import {
   useClipboard,
   IconClipboardCheck,
   Group,
-} from '@egodb/ui'
+} from '@undb/ui'
 import React from 'react'
 import { Controller } from 'react-hook-form'
 import { FieldInputLabel } from '../field-inputs/field-input-label'

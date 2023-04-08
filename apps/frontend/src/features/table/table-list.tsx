@@ -1,6 +1,6 @@
-import { TableFactory } from '@egodb/core'
-import { getCurrentTableId, useGetTablesQuery } from '@egodb/store'
-import { ActionIcon, Button, Center, Flex, IconChevronDown, IconPlus, Loader, Menu, Tabs } from '@egodb/ui'
+import { TableFactory } from '@undb/core'
+import { getCurrentTableId, useGetTablesQuery } from '@undb/store'
+import { ActionIcon, Button, Center, Flex, IconChevronDown, IconPlus, Loader, Menu, Tabs } from '@undb/ui'
 import { useSetAtom } from 'jotai'
 import { useNavigate, useParams } from 'react-router-dom'
 import { unstable_batchedUpdates } from 'react-dom'
@@ -19,7 +19,7 @@ export const TableList: React.FC = () => {
 
   const currentTableId = useAppSelector(getCurrentTableId)
 
-  const { data, isLoading } = useGetTablesQuery({})
+  const { data, isLoading, isSuccess } = useGetTablesQuery({})
 
   useEffect(() => {
     if (!tableId) {
@@ -29,13 +29,13 @@ export const TableList: React.FC = () => {
         navigate(`/t/${data.ids.at(0)}`, { replace: true })
       }
     }
-  }, [])
+  }, [tableId])
 
   const setOpened = useSetAtom(createTableFormDrawerOpened)
   const close = useCloseAllDrawers()
   const { t } = useTranslation()
 
-  if (isLoading) {
+  if (isLoading && !currentTableId) {
     return (
       <Center w="100%" h="100%">
         <Loader />
@@ -43,7 +43,7 @@ export const TableList: React.FC = () => {
     )
   }
 
-  if (!data?.ids.length) {
+  if (!data?.ids.length && !currentTableId) {
     return (
       <Center w="100%" h="100%">
         <Button onClick={() => setOpened(true)}>{t('Create New Table')}</Button>
@@ -96,18 +96,20 @@ export const TableList: React.FC = () => {
               </Tabs.Tab>
             ))}
         </Tabs>
-        <ActionIcon
-          variant="subtle"
-          onClick={(e) => {
-            e.stopPropagation()
-            unstable_batchedUpdates(() => {
-              close()
-              setOpened(true)
-            })
-          }}
-        >
-          <IconPlus size={14} />
-        </ActionIcon>
+        {!!(isSuccess && data.ids.length) && (
+          <ActionIcon
+            variant="subtle"
+            onClick={(e) => {
+              e.stopPropagation()
+              unstable_batchedUpdates(() => {
+                close()
+                setOpened(true)
+              })
+            }}
+          >
+            <IconPlus size={14} />
+          </ActionIcon>
+        )}
       </Center>
     </Flex>
   )

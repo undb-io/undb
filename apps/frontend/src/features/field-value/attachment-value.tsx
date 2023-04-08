@@ -1,10 +1,10 @@
-import type { IAttachmentItem } from '@egodb/core'
-import { isImage } from '@egodb/core'
-import { getExtension } from '@egodb/core'
-import type { DefaultExtensionType } from '@egodb/ui'
-import { Box } from '@egodb/ui'
-import { Tooltip, Image } from '@egodb/ui'
-import { FileIcon, defaultStyles } from '@egodb/ui'
+import type { IAttachmentItem } from '@undb/core'
+import { isImage } from '@undb/core'
+import { getExtension } from '@undb/core'
+import type { DefaultExtensionType } from '@undb/ui'
+import { Box } from '@undb/ui'
+import { Tooltip, Image } from '@undb/ui'
+import { FileIcon, defaultStyles } from '@undb/ui'
 
 interface IProps {
   attachment: IAttachmentItem

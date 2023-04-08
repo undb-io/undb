@@ -1,3 +1,5 @@
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import type { EntityProperty } from '@mikro-orm/core'
 import type {
   BoolIsFalse,
   BoolIsTrue,
@@ -36,7 +38,7 @@ import type {
   WithRecordTableId,
   WithRecordUpdatedAt,
   WithRecordValues,
-} from '@egodb/core'
+} from '@undb/core'
 import {
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_ID_NAME,
@@ -44,9 +46,7 @@ import {
   INTERNAL_INCREAMENT_ID_NAME,
   ParentField,
   TreeField,
-} from '@egodb/core'
-import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import type { EntityProperty } from '@mikro-orm/core'
+} from '@undb/core'
 import { endOfDay, startOfDay } from 'date-fns'
 import { Attachment } from '../../entity/attachment.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'

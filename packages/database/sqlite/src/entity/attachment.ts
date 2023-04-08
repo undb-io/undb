@@ -1,11 +1,11 @@
-import type { IAttachmentItem } from '@egodb/core'
 import type { Rel } from '@mikro-orm/core'
 import { Entity, Index, ManyToOne, PrimaryKey, PrimaryKeyType, Property } from '@mikro-orm/core'
+import type { IAttachmentItem } from '@undb/core'
 import path from 'path'
 import { BaseEntity } from './base.js'
 import { Table } from './table.js'
 
-@Entity({ tableName: 'ego_attachment' })
+@Entity({ tableName: 'undb_attachment' })
 export class Attachment extends BaseEntity {
   @PrimaryKey()
   id: string

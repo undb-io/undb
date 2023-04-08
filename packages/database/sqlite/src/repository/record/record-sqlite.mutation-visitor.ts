@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type {
   BoolIsFalse,
   BoolIsTrue,
@@ -37,8 +38,7 @@ import type {
   WithRecordTableId,
   WithRecordUpdatedAt,
   WithRecordValues,
-} from '@egodb/core'
-import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+} from '@undb/core'
 import { isEmpty } from 'lodash-es'
 import { BaseEntityManager } from '../base-entity-manager.js'
 import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation-visitor.js'

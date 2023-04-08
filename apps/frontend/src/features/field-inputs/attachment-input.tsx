@@ -1,5 +1,5 @@
-import type { IAttachmentItem } from '@egodb/core'
-import { useUploadMutation } from '@egodb/store'
+import type { IAttachmentItem } from '@undb/core'
+import { useUploadMutation } from '@undb/store'
 import {
   Text,
   Dropzone,
@@ -12,7 +12,7 @@ import {
   Box,
   CloseButton,
   useHover,
-} from '@egodb/ui'
+} from '@undb/ui'
 import { useDeepCompareEffectNoCheck } from 'use-deep-compare-effect'
 import { AttachmentValue } from '../field-value/attachment-value'
 import { useTranslation } from 'react-i18next'

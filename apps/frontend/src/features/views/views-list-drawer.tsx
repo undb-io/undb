@@ -1,4 +1,4 @@
-import { Drawer } from '@egodb/ui'
+import { Drawer } from '@undb/ui'
 import { useAtom } from 'jotai'
 import { useTranslation } from 'react-i18next'
 import { ViewsList } from './views-list'

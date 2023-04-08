@@ -1,4 +1,4 @@
-import type { AppDispatch, RootState } from '@egodb/store'
+import type { AppDispatch, RootState } from '@undb/store'
 import type { TypedUseSelectorHook } from 'react-redux'
 import { useDispatch, useSelector } from 'react-redux'
 

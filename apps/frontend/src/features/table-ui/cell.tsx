@@ -1,5 +1,5 @@
-import type { Field, FieldValue, RecordAllValueType } from '@egodb/core'
-import { Box } from '@egodb/ui'
+import type { Field, FieldValue, RecordAllValueType } from '@undb/core'
+import { Box } from '@undb/ui'
 import type { CellContext } from '@tanstack/react-table'
 import React, { useMemo } from 'react'
 import { FieldValueFactory } from '../field-value/field-value.factory'

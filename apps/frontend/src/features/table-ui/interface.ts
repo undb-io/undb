@@ -1,5 +1,5 @@
-import type { RecordAllValues, Records } from '@egodb/core'
 import type { Column, Header, HeaderGroup, Row } from '@tanstack/react-table'
+import type { RecordAllValues, Records } from '@undb/core'
 
 export type TData = RecordAllValues
 

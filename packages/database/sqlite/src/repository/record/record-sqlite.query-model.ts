@@ -1,6 +1,6 @@
-import type { IQueryRecords, IQueryRecordSchema, IRecordQueryModel, IRecordSpec, ViewId } from '@egodb/core'
-import { WithRecordId } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
+import type { IQueryRecords, IQueryRecordSchema, IRecordQueryModel, IRecordSpec, ViewId } from '@undb/core'
+import { WithRecordId } from '@undb/core'
 import { Option } from 'oxide.ts'
 import { ReferenceField } from '../../entity/field.js'
 import { Table as TableEntity } from '../../entity/table.js'

@@ -1,10 +1,10 @@
 {
-  "name": "@egodb/www",
+  "name": "@undb/www",
   "version": "0.0.1",
   "dependencies": {
     "@astrojs/react": "^2.1.1",
     "@astrojs/tailwind": "^3.1.1",
-    "@egodb/ui": "^0.0.0",
+    "@undb/ui": "^0.0.0",
     "@types/react": "^18.0.32",
     "@types/react-dom": "^18.0.11",
     "astro": "^2.1.9",

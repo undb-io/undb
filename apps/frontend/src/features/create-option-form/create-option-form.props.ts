@@ -1,4 +1,4 @@
-import type { IOptionColor, SelectField } from '@egodb/core'
+import type { IOptionColor, SelectField } from '@undb/core'
 
 export type ICreateOptionFormProps = {
   field: SelectField

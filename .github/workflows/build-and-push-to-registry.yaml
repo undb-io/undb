@@ -31,7 +31,7 @@ jobs:
           images: |
             ghcr.io/${{ github.repository }}
 
-      - name: Build egodb and push
+      - name: Build undb and push
         uses: docker/build-push-action@v4
         with:
           push: true

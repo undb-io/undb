@@ -1,5 +1,5 @@
-import { type ITableRepository } from '@egodb/core'
-import type { ICommandHandler } from '@egodb/domain'
+import { type ITableRepository } from '@undb/core'
+import type { ICommandHandler } from '@undb/domain'
 import type { UpdateFieldCommand } from './update-field.command.js'
 
 type IUpdateFieldCommandHandler = ICommandHandler<UpdateFieldCommand, void>

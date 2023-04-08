@@ -1,4 +1,4 @@
-import { Checkbox, Box, useHover, Text, Center } from '@egodb/ui'
+import { Checkbox, Box, useHover, Text, Center } from '@undb/ui'
 import type { Row } from '@tanstack/react-table'
 import type { TData } from './interface'
 import { usePinnedStyles } from './styles'

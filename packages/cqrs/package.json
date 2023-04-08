@@ -1,11 +1,11 @@
 {
-  "name": "@egodb/cqrs",
+  "name": "@undb/cqrs",
   "description": "",
   "version": "0.0.0",
   "author": "",
   "dependencies": {
-    "@egodb/core": "^0.0.0",
-    "@egodb/domain": "^0.0.0",
+    "@undb/core": "^0.0.0",
+    "@undb/domain": "^0.0.0",
     "oxide.ts": "^1.1.0",
     "zod": "^3.21.4"
   },

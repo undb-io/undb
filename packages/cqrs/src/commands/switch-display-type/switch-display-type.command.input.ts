@@ -1,4 +1,4 @@
-import { switchDisplayTypeSchema, tableIdSchema } from '@egodb/core'
+import { switchDisplayTypeSchema, tableIdSchema } from '@undb/core'
 import { z } from 'zod'
 
 export const switchDisplayTypeCommandInput = z

@@ -1,4 +1,6 @@
-import type { IQueryRecordSchema } from '@egodb/core'
+import type { EntityState } from '@reduxjs/toolkit'
+import { createEntityAdapter, createSelector } from '@reduxjs/toolkit'
+import type { IQueryRecordSchema } from '@undb/core'
 import type {
   IGetForeignRecordsQuery,
   IGetParentAvailableRecordQuery,
@@ -10,9 +12,7 @@ import type {
   IGetRecordsTreeQuery,
   IGetTreeAvailableRecordsQuery,
   IUpdateRecordCommandInput,
-} from '@egodb/cqrs'
-import type { EntityState } from '@reduxjs/toolkit'
-import { createEntityAdapter, createSelector } from '@reduxjs/toolkit'
+} from '@undb/cqrs'
 import type { RootState } from '../reducers'
 import { trpc } from '../trpc'
 import { api } from './api'

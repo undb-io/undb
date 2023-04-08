@@ -1,4 +1,4 @@
-import { reorderOptionsSchema, tableIdSchema } from '@egodb/core'
+import { reorderOptionsSchema, tableIdSchema } from '@undb/core'
 import { z } from 'zod'
 
 export const reorderOptionsCommandInput = z

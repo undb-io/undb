@@ -1,4 +1,4 @@
-import { Box } from '@egodb/ui'
+import { Box } from '@undb/ui'
 import { useAtomValue } from 'jotai'
 import { calendarStep } from './calendar-step.atom'
 import { CreateCalendarDateField } from './create-calendar-date-field'

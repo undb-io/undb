@@ -1,6 +1,6 @@
 import type { UniqueIdentifier } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
-import type { RecordAllValues } from '@egodb/core'
+import type { RecordAllValues } from '@undb/core'
 import type { FlattenedSortableRecord, SortableRecordItem, SortableRecordItems } from './tree-view-ui.types'
 
 function flatten(

@@ -1,5 +1,5 @@
-import { IRecordRepository, ITableRepository, WithRecordIds } from '@egodb/core'
-import type { ICommandHandler } from '@egodb/domain'
+import { IRecordRepository, ITableRepository, WithRecordIds } from '@undb/core'
+import type { ICommandHandler } from '@undb/domain'
 import type { BulkDuplicateRecordsCommand } from './bulk-duplicate-records.comand.js'
 
 export class BulkDuplicateRecordsCommandHandler implements ICommandHandler<BulkDuplicateRecordsCommand, void> {

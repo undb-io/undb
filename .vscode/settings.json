@@ -4,8 +4,8 @@
     {
       "previewLimit": 50,
       "driver": "SQLite",
-      "name": "ego",
-      "database": "${workspaceFolder:egodb}/.ego/data/ego.development.sqlite"
+      "name": "undb",
+      "database": "${workspaceFolder:undb}/.undb/data/undb.development.sqlite"
     }
   ],
   "sqltools.useNodeRuntime": true

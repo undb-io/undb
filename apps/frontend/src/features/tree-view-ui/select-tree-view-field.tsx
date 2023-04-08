@@ -1,4 +1,4 @@
-import { Box } from '@egodb/ui'
+import { Box } from '@undb/ui'
 import { useAtomValue } from 'jotai'
 import { CreateTreeField } from './create-tree-field'
 import { SelectExistingField } from './select-existing-tree-view-field'

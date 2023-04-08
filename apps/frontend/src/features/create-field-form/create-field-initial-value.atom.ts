@@ -1,4 +1,4 @@
-import type { ICreateFieldCommandInput } from '@egodb/cqrs'
+import type { ICreateFieldCommandInput } from '@undb/cqrs'
 import { atom } from 'jotai'
 import type { SetRequired } from 'type-fest'
 

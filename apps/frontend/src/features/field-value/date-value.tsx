@@ -1,5 +1,5 @@
-import type { DateFieldTypes } from '@egodb/core'
-import { Text } from '@egodb/ui'
+import type { DateFieldTypes } from '@undb/core'
+import { Text } from '@undb/ui'
 import { format } from 'date-fns'
 
 interface IProps {

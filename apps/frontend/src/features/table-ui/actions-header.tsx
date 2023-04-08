@@ -1,4 +1,4 @@
-import { Tooltip, ActionIcon, openContextModal, IconColumnInsertRight, Center } from '@egodb/ui'
+import { Tooltip, ActionIcon, openContextModal, IconColumnInsertRight, Center } from '@undb/ui'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ACTIONS_FIELD } from '../../constants/field.constants'

@@ -1,4 +1,4 @@
-import { Query } from '@egodb/domain'
+import { Query } from '@undb/domain'
 import type { IGetTableQuery } from './get-table.query.interface.js'
 
 export class GetTableQuery extends Query {

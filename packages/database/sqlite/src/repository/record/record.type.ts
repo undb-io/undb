@@ -3,7 +3,7 @@ import type {
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
   INTERNAL_INCREAMENT_ID_NAME,
-} from '@egodb/core'
+} from '@undb/core'
 import type { INTERNAL_COLUMN_EXPAND_NAME } from './record.util'
 
 export type ExpandColumnName = `${string}_${typeof INTERNAL_COLUMN_EXPAND_NAME}`

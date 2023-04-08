@@ -1,5 +1,5 @@
-import { type IRecordQueryModel, type ITableRepository } from '@egodb/core'
-import type { IQueryHandler } from '@egodb/domain'
+import { type IRecordQueryModel, type ITableRepository } from '@undb/core'
+import type { IQueryHandler } from '@undb/domain'
 import type { IGetRecordOutput } from './get-record.query.interface.js'
 import type { GetRecordQuery } from './get-record.query.js'
 

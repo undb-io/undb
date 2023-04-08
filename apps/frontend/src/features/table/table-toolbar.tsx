@@ -1,4 +1,4 @@
-import { Divider, Group } from '@egodb/ui'
+import { Divider, Group } from '@undb/ui'
 import { TableCreateNewRecordButton } from './table-create-new-record-button'
 import { ViewFieldsEditor } from './view-fields-editor'
 import { TableFilterEditor } from './table-filter-editor'
@@ -7,7 +7,7 @@ import { ViewMenu } from './view-menu'
 import { ViewsButton } from './views-button'
 import { RecordsTotal } from './records-total'
 import { useAppSelector } from '../../hooks'
-import { getIsLoadedCurrentRecords } from '@egodb/store'
+import { getIsLoadedCurrentRecords } from '@undb/store'
 
 export const TableToolbar: React.FC = () => {
   const isLoadedRecords = useAppSelector(getIsLoadedCurrentRecords)

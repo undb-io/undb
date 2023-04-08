@@ -1,4 +1,4 @@
-import { setPinnedFieldsSchema, tableIdSchema } from '@egodb/core'
+import { setPinnedFieldsSchema, tableIdSchema } from '@undb/core'
 import { z } from 'zod'
 
 export const setPinnedFieldsCommandInput = z

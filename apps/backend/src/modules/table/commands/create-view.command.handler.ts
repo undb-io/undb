@@ -1,7 +1,7 @@
-import { type ITableRepository } from '@egodb/core'
-import { CreateViewCommand, CreateViewCommandHandler as DomainHandler } from '@egodb/cqrs'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
+import { type ITableRepository } from '@undb/core'
+import { CreateViewCommand, CreateViewCommandHandler as DomainHandler } from '@undb/cqrs'
 import { InjectTableReposiory } from '../adapters/index.js'
 
 @CommandHandler(CreateViewCommand)

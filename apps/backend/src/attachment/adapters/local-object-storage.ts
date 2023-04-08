@@ -3,7 +3,7 @@ import type { ConfigType } from '@nestjs/config'
 import fs from 'node:fs'
 import path from 'node:path'
 import { v4 } from 'uuid'
-import { InjectObjectStorageConfig, objectStorageConfig } from '../../configs/object-storage.js'
+import { InjectObjectStorageConfig, objectStorageConfig } from '../../configs/object-storage.config.js'
 import { IObjectStorage } from './object-storage.js'
 
 @Injectable()

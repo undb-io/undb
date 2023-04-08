@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import type { QueryBuilder } from '@mikro-orm/better-sqlite'
 import type {
   ITableSpecVisitor,
   WithCalendarField,
@@ -34,8 +35,7 @@ import type {
   WithViewName,
   WithViewPinnedFields,
   WithViewsOrder,
-} from '@egodb/core'
-import type { QueryBuilder } from '@mikro-orm/better-sqlite'
+} from '@undb/core'
 import type { Table } from '../../entity/index.js'
 
 export class TableSqliteQueryVisitor implements ITableSpecVisitor {

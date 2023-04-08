@@ -1,4 +1,4 @@
-import { Table, useListState } from '@egodb/ui'
+import { Table, useListState } from '@undb/ui'
 import type { ColumnDef, ColumnPinningState, OnChangeFn, Row } from '@tanstack/react-table'
 import { flexRender } from '@tanstack/react-table'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
@@ -12,7 +12,7 @@ import {
   setSelectedRecordId,
   setTableSelectedRecordIds,
   useSetPinnedFieldsMutation,
-} from '@egodb/store'
+} from '@undb/store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { SelectionCell } from './selection-cell'
@@ -20,7 +20,7 @@ import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { ActionsHeader } from './actions-header'
 import { SelectionHeader } from './selection-header'
-import type { ISetPinnedFieldsCommandInput } from '@egodb/cqrs'
+import type { ISetPinnedFieldsCommandInput } from '@undb/cqrs'
 import { Cell } from './cell'
 import { tableStyles } from './styles'
 

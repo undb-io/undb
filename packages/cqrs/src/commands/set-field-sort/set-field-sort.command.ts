@@ -1,6 +1,6 @@
-import { ISortDirection } from '@egodb/core'
-import type { CommandProps } from '@egodb/domain'
-import { Command } from '@egodb/domain'
+import { ISortDirection } from '@undb/core'
+import type { CommandProps } from '@undb/domain'
+import { Command } from '@undb/domain'
 import type { ISetFieldSortCommandInput } from './set-field-sort.command.interface.js'
 
 export class SetFieldSortCommand extends Command implements ISetFieldSortCommandInput {
