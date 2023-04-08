@@ -7,10 +7,13 @@ import { z } from 'zod'
 import { useLoginMutation } from '@egodb/store'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { StringParam, useQueryParam } from 'use-query-params'
+import { useTranslation } from 'react-i18next'
 
 export const Login: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
+
+  const { t } = useTranslation()
 
   const [redirectUrl] = useQueryParam('redirectUrl', StringParam)
 
@@ -41,27 +44,27 @@ export const Login: React.FC = () => {
           <TextInput
             type="email"
             {...form.register('email')}
-            label={<FieldInputLabel>email</FieldInputLabel>}
-            placeholder="email"
+            label={<FieldInputLabel>{t('email', { ns: 'auth' })}</FieldInputLabel>}
+            placeholder={t('email placeholder', { ns: 'auth' }) as string}
             error={form.formState.errors.email?.message}
           />
           <PasswordInput
             {...form.register('password')}
-            label={<FieldInputLabel>password</FieldInputLabel>}
-            placeholder="password"
+            label={<FieldInputLabel>{t('password', { ns: 'auth' })}</FieldInputLabel>}
+            placeholder={t('password placeholder', { ns: 'auth' }) as string}
           />
           <Space h="lg" />
           <Button type="submit" fullWidth disabled={!form.formState.isValid} loading={isLoading}>
-            Login
+            {t('login', { ns: 'auth' })}
           </Button>
         </form>
 
-        <Divider label="or" labelPosition="center" my="sm" />
+        <Divider label={t('has no account', { ns: 'auth' })} labelPosition="center" my="sm" />
 
         <Center>
           <Link to={{ pathname: '/register', search: location.search }}>
             <Button compact variant="white">
-              register
+              {t('register', { ns: 'auth' })}
             </Button>
           </Link>
         </Center>

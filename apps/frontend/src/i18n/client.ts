@@ -10,6 +10,16 @@ i18n
   .init({
     resources: {
       en: {
+        auth: {
+          login: 'login',
+          register: 'register',
+          email: 'email',
+          'email placeholder': 'your email address',
+          password: 'password',
+          'password placeholder': 'password',
+          'has no account': "has't account yet?",
+          'has account': 'already has an account?',
+        },
         common: {
           Apply: 'Apply',
           Cancel: 'Cancel',
@@ -183,6 +193,16 @@ i18n
         zod: zodEn,
       },
       'zh-CN': {
+        auth: {
+          login: '登录',
+          register: '注册',
+          email: '邮箱',
+          'email placeholder': '邮箱地址',
+          password: '密码',
+          'password placeholder': '密码',
+          'has no account': '还没有账号？',
+          'has account': '已有账号？',
+        },
         common: {
           Apply: '应用',
           Cancel: '取消',
