@@ -8,7 +8,6 @@ import { UserSqliteQueryVisitor } from './user-sqlite.query-visitor.js'
 
 export class UserSqliteRepository implements IUserRepository {
   constructor(private readonly em: EntityManager) {}
-
   async insert(user: CoreUser): Promise<void> {
     const entity = new User(user)
     await this.em.persistAndFlush(entity)
@@ -19,6 +18,17 @@ export class UserSqliteRepository implements IUserRepository {
     if (!user) {
       return None
     }
+    return Some(UserSqliteMapper.toDomain(user))
+  }
+
+  async findOne(spec: UserSpecification): Promise<Option<CoreUser>> {
+    const qb = this.em.qb(User)
+    const visitor = new UserSqliteQueryVisitor(this.em, qb)
+    spec.accept(visitor)
+
+    const user = await qb.getSingleResult()
+    if (!user) return None
+
     return Some(UserSqliteMapper.toDomain(user))
   }
 

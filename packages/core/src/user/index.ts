@@ -1,5 +1,5 @@
-export * from './jwt.service.js'
 export * from './specifications/index.js'
+export * from './user.factory.js'
 export * from './user.js'
 export * from './user.query-model.js'
 export * from './user.repository.js'

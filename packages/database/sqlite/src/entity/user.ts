@@ -6,9 +6,10 @@ import { BaseEntity } from './base.js'
 export class User extends BaseEntity {
   constructor(user: CoreUser) {
     super()
-    this.id = user.userId
+    this.id = user.userId.value
     this.email = user.email
     this.username = user.username
+    this.password = user.password
   }
   @PrimaryKey()
   id: string

@@ -1,7 +1,8 @@
 import { IQueryUser, WithUserEmail } from '@egodb/core'
-import { GetMeQuery, LoginCommand } from '@egodb/cqrs'
+import { GetMeQuery, LoginCommand, RegisterCommand } from '@egodb/cqrs'
 import { Injectable } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
+import * as bcrypt from 'bcrypt'
 import { UserService } from '../modules/user/user.service.js'
 
 @Injectable()
@@ -14,13 +15,16 @@ export class AuthService {
 
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne(WithUserEmail.fromString(email))
-    // @ts-ignore
-    if (user && user.password === pass) {
-      // @ts-ignore
-      const { password, ...result } = user
-      return result
-    }
+    if (!user) return null
+
+    const isPasswordMatch = await bcrypt.compare(pass, user.password)
+    if (isPasswordMatch) return user.toQuery()
     return null
+  }
+
+  async register(email: string, password: string) {
+    const hashedPassword = await bcrypt.hash(password, 10)
+    return this.commandBus.execute(new RegisterCommand({ email, password: hashedPassword }))
   }
 
   async login(user: IQueryUser) {
