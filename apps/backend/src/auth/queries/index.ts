@@ -1,1 +1,1 @@
-export * from './me/index.js'
+export * from './get-me.query.handler.js'

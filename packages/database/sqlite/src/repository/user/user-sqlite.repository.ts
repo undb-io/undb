@@ -9,6 +9,11 @@ import { UserSqliteQueryVisitor } from './user-sqlite.query-visitor.js'
 export class UserSqliteRepository implements IUserRepository {
   constructor(private readonly em: EntityManager) {}
 
+  async insert(user: CoreUser): Promise<void> {
+    const entity = new User(user)
+    await this.em.persistAndFlush(entity)
+  }
+
   async findOneById(id: string): Promise<Option<CoreUser>> {
     const user = await this.em.findOne(User, id)
     if (!user) {
