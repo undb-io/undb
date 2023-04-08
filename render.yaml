@@ -7,7 +7,6 @@ services:
     repo: https://github.com/ego-io/egodb.git
     region: singapore
     plan: starter
-    branch: develop
     rootDir: .
     numInstances: 1
     healthCheckPath: /health
