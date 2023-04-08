@@ -11,5 +11,11 @@ services:
     numInstances: 1
     healthCheckPath: /health
     pullRequestPreviewsEnabled: true
+    envVars:
+      - key: EGODB_ADMIN_EMAIL
+        value: test@example.com
+      - key: EGODB_ADMIN_PASSWORD
+        value: 123456
+
     domains:
       - demo.egodb.io
