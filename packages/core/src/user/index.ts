@@ -1,3 +1,4 @@
+export * from './jwt.service.js'
 export * from './specifications/index.js'
 export * from './user.js'
 export * from './user.query-model.js'
