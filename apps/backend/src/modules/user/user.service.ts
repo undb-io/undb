@@ -12,6 +12,7 @@ import {
 } from '@egodb/core'
 import { Injectable } from '@nestjs/common'
 import { type ConfigType } from '@nestjs/config'
+import bcrypt from 'bcrypt'
 import { InjectAuthConfig, authConfig } from '../../configs/auth.config.js'
 import { InjectUserQueryModel, InjectUserRepository } from './adapters/index.js'
 
@@ -26,13 +27,15 @@ export class UserService {
   async createAdmin() {
     const { admin } = this.config
     if (admin.email && admin.password) {
+      const hashedPassword = await bcrypt.hash(admin.password, 10)
+
       const email = WithUserEmail.fromString(admin.email)
       const exists = await this.repo.exists(email)
       if (exists) return
 
       const user = UserFactory.create(
         email,
-        WithUserPassword.fromString(admin.password),
+        WithUserPassword.fromString(hashedPassword),
         admin.username ? WithUsername.fromString(admin.username) : WithUsername.fromEmail(admin.email),
         WithUserId.create(),
       )
