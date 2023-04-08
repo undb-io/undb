@@ -1,10 +1,13 @@
-import { ActionIcon, Center, Group, IconLanguage, Image, Menu, Text } from '@egodb/ui'
+import { ActionIcon, Center, Group, IconLanguage, Image, Menu, Text, Avatar } from '@egodb/ui'
 import logo from '../../assets/logo.svg'
 import { useTranslation } from 'react-i18next'
+import { getMe } from '@egodb/store'
+import { useSelector } from 'react-redux'
 
 export const Header: React.FC = () => {
   const { i18n } = useTranslation()
   const language = i18n.language
+  const me = useSelector(getMe)
 
   return (
     <Group px="xs" py={6} sx={(theme) => ({ borderBottom: '1px solid ' + theme.colors.gray[3] })} position="apart">
@@ -29,6 +32,9 @@ export const Header: React.FC = () => {
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
+        <Avatar radius="xl" ml="sm">
+          {me?.username.slice(0, 2).toUpperCase()}
+        </Avatar>
       </Center>
     </Group>
   )

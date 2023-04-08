@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 
 function App() {
   const isAuthorized = useSelector(getIsAuthorized)
-  useMeQuery(undefined, { skip: !isAuthorized })
+  useMeQuery(undefined, { refetchOnMountOrArgChange: true, skip: !isAuthorized })
 
   const element = useRoutes(routes)
 
