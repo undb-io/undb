@@ -5,10 +5,15 @@ import { FieldInputLabel } from '../features/field-inputs/field-input-label'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useLoginMutation } from '@egodb/store'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { StringParam, useQueryParam } from 'use-query-params'
 
 export const Login: React.FC = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const [redirectUrl] = useQueryParam('redirectUrl', StringParam)
+
   const form = useForm({
     defaultValues: { email: '', password: '' },
     resolver: zodResolver(
@@ -26,7 +31,7 @@ export const Login: React.FC = () => {
 
   const onSubmit = form.handleSubmit(async (values) => {
     await login(values).unwrap()
-    navigate('/', { replace: true })
+    navigate(redirectUrl || '/', { replace: true, relative: 'route' })
   })
 
   return (
@@ -54,7 +59,7 @@ export const Login: React.FC = () => {
         <Divider label="or" labelPosition="center" my="sm" />
 
         <Center>
-          <Link to="/register">
+          <Link to={{ pathname: '/register', search: location.search }}>
             <Button compact variant="white">
               register
             </Button>
