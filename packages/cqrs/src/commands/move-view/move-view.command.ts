@@ -1,5 +1,5 @@
-import type { CommandProps } from '@egodb/domain'
-import { Command } from '@egodb/domain'
+import type { CommandProps } from '@undb/domain'
+import { Command } from '@undb/domain'
 import type { IMoveViewCommandInput } from './move-view.command.interface.js'
 
 export class MoveViewCommand extends Command implements IMoveViewCommandInput {

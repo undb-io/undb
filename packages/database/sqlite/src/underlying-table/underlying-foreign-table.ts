@@ -1,6 +1,6 @@
-import type { Field, ParentField, ReferenceField } from '@egodb/core'
-import { INTERNAL_COLUMN_ID_NAME, TreeField } from '@egodb/core'
 import type { Knex } from '@mikro-orm/better-sqlite'
+import type { Field, ParentField, ReferenceField } from '@undb/core'
+import { INTERNAL_COLUMN_ID_NAME, TreeField } from '@undb/core'
 import type { IUderlyingForeignTableName, IUnderlyingForeignTable } from '../interfaces/underlying-foreign-table.js'
 
 export type UnderlyingTableForeignTableAlias = `uta_${string}`

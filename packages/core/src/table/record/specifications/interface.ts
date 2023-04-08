@@ -1,5 +1,5 @@
-import type { CompositeSpecification, ISpecVisitor } from '@egodb/domain'
-import { type ISpecification } from '@egodb/domain'
+import type { CompositeSpecification, ISpecVisitor } from '@undb/domain'
+import { type ISpecification } from '@undb/domain'
 import { type Record } from '../record.js'
 import type { HasExtension, HasFileType, IsAttachmentEmpty } from './attachment.specification.js'
 import type { BoolIsFalse, BoolIsTrue } from './bool.specification.js'

@@ -1,5 +1,5 @@
-import type { CommandProps } from '@egodb/domain'
-import { Command } from '@egodb/domain'
+import type { CommandProps } from '@undb/domain'
+import { Command } from '@undb/domain'
 import type { IDuplicateRecordInput } from './duplicate-record.command.input.js'
 
 export class DuplicateRecordCommand extends Command {

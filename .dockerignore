@@ -8,4 +8,4 @@ node_modules
 *.log
 docker
 out
-.ego
+.undb

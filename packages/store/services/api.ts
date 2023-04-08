@@ -1,5 +1,5 @@
-import type { TRPCError } from '@egodb/trpc'
 import { createApi } from '@reduxjs/toolkit/query/react'
+import type { TRPCError } from '@undb/trpc'
 
 export const api = createApi({
   reducerPath: 'api',

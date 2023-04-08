@@ -1,8 +1,8 @@
-import { type IRecordQueryModel, type ITableRepository } from '@egodb/core'
-import type { IGetRecordOutput } from '@egodb/cqrs'
-import { GetRecordQuery, GetRecordQueryHandler } from '@egodb/cqrs'
 import type { IQueryHandler } from '@nestjs/cqrs'
 import { QueryHandler } from '@nestjs/cqrs'
+import { type IRecordQueryModel, type ITableRepository } from '@undb/core'
+import type { IGetRecordOutput } from '@undb/cqrs'
+import { GetRecordQuery, GetRecordQueryHandler } from '@undb/cqrs'
 import { InjectRecordQueryModel, InjectTableReposiory } from '../adapters/index.js'
 
 @QueryHandler(GetRecordQuery)

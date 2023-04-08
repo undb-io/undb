@@ -1,5 +1,5 @@
-import type { TableSchema, Field, IOperator, IFilter } from '@egodb/core'
-import { Group, ActionIcon, IconGripVertical, IconTrash, usePrevious } from '@egodb/ui'
+import type { TableSchema, Field, IOperator, IFilter } from '@undb/core'
+import { Group, ActionIcon, IconGripVertical, IconTrash, usePrevious } from '@undb/ui'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useEffect, useLayoutEffect, useState } from 'react'
@@ -7,7 +7,7 @@ import { FieldSelector } from '../field-inputs/field-selector'
 import { FilterValueInput } from './filter-value-input'
 import { OperatorSelector } from './operator-selector'
 import { getFilterId } from './get-filter-id'
-import type { IFieldQueryValue } from '@egodb/core'
+import type { IFieldQueryValue } from '@undb/core'
 import { useOrderedFields } from '../../hooks/use-ordered-fields'
 
 interface IProps {

@@ -1,5 +1,5 @@
-import { IRootFilter } from '@egodb/core'
-import { Query } from '@egodb/domain'
+import { IRootFilter } from '@undb/core'
+import { Query } from '@undb/domain'
 import type { IGetForeignRecordsQuery } from './get-foreign-records.query.interface.js'
 
 export class GetForeignRecordsQuery extends Query implements IGetForeignRecordsQuery {

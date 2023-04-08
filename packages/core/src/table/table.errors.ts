@@ -1,4 +1,4 @@
-import { ExceptionBase } from '@egodb/domain'
+import { ExceptionBase } from '@undb/domain'
 
 export class InvalidTableIdError extends ExceptionBase {
   code = 'TABLE.INVALID_ID'

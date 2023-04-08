@@ -1,7 +1,7 @@
-import { TableSpecHandler, type ITableRepository } from '@egodb/core'
-import { CreateFieldCommand, CreateFieldCommandHandler as DomainHandler } from '@egodb/cqrs'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
+import { TableSpecHandler, type ITableRepository } from '@undb/core'
+import { CreateFieldCommand, CreateFieldCommandHandler as DomainHandler } from '@undb/cqrs'
 import { InjectTableReposiory } from '../adapters/index.js'
 
 @CommandHandler(CreateFieldCommand)

@@ -1,4 +1,4 @@
-import { CompositeSpecification } from '@egodb/domain'
+import { CompositeSpecification } from '@undb/domain'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
 import type { View } from '../view.js'

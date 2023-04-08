@@ -1,5 +1,5 @@
-import type { Field } from '@egodb/core'
-import { ActionIcon, IconDots, Menu } from '@egodb/ui'
+import type { Field } from '@undb/core'
+import { ActionIcon, IconDots, Menu } from '@undb/ui'
 import type { Header } from '@tanstack/react-table'
 import React from 'react'
 import { FieldMenuDropdown } from '../field/field-menu-dropdown'

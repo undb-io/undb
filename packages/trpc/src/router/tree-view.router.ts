@@ -1,5 +1,5 @@
-import { SetTreeViewFieldCommand, setTreeViewFieldCommandInput } from '@egodb/cqrs'
-import type { ICommandBus } from '@egodb/domain'
+import { SetTreeViewFieldCommand, setTreeViewFieldCommandInput } from '@undb/cqrs'
+import type { ICommandBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'

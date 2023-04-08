@@ -61,22 +61,18 @@
           "mappedType": "text"
         }
       },
-      "name": "ego_table",
+      "name": "undb_table",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
-          "keyName": "ego_table_deleted_at_index",
+          "keyName": "undb_table_deleted_at_index",
           "primary": false,
           "unique": false
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -335,112 +331,88 @@
           "mappedType": "text"
         }
       },
-      "name": "ego_field",
+      "name": "undb_field",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
-          "keyName": "ego_field_deleted_at_index",
+          "keyName": "undb_field_deleted_at_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "table_id"
-          ],
+          "columnNames": ["table_id"],
           "composite": false,
-          "keyName": "ego_field_table_id_index",
+          "keyName": "undb_field_table_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "type"
-          ],
+          "columnNames": ["type"],
           "composite": false,
-          "keyName": "ego_field_type_index",
+          "keyName": "undb_field_type_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "foreign_table_id"
-          ],
+          "columnNames": ["foreign_table_id"],
           "composite": false,
-          "keyName": "ego_field_foreign_table_id_index",
+          "keyName": "undb_field_foreign_table_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "symmetric_reference_field_id"
-          ],
+          "columnNames": ["symmetric_reference_field_id"],
           "composite": false,
-          "keyName": "ego_field_symmetric_reference_field_id_unique",
+          "keyName": "undb_field_symmetric_reference_field_id_unique",
           "primary": false,
           "unique": true
         },
         {
-          "columnNames": [
-            "count_reference_field_id"
-          ],
+          "columnNames": ["count_reference_field_id"],
           "composite": false,
-          "keyName": "ego_field_count_reference_field_id_index",
+          "keyName": "undb_field_count_reference_field_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "lookup_reference_field_id"
-          ],
+          "columnNames": ["lookup_reference_field_id"],
           "composite": false,
-          "keyName": "ego_field_lookup_reference_field_id_index",
+          "keyName": "undb_field_lookup_reference_field_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "sum_reference_field_id"
-          ],
+          "columnNames": ["sum_reference_field_id"],
           "composite": false,
-          "keyName": "ego_field_sum_reference_field_id_index",
+          "keyName": "undb_field_sum_reference_field_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "sum_aggregate_field_id"
-          ],
+          "columnNames": ["sum_aggregate_field_id"],
           "composite": false,
-          "keyName": "ego_field_sum_aggregate_field_id_index",
+          "keyName": "undb_field_sum_aggregate_field_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "average_reference_field_id"
-          ],
+          "columnNames": ["average_reference_field_id"],
           "composite": false,
-          "keyName": "ego_field_average_reference_field_id_index",
+          "keyName": "undb_field_average_reference_field_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "average_aggregate_field_id"
-          ],
+          "columnNames": ["average_aggregate_field_id"],
           "composite": false,
-          "keyName": "ego_field_average_aggregate_field_id_index",
+          "keyName": "undb_field_average_aggregate_field_id_index",
           "primary": false,
           "unique": false
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -448,120 +420,84 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "ego_field_table_id_foreign": {
-          "constraintName": "ego_field_table_id_foreign",
-          "columnNames": [
-            "table_id"
-          ],
-          "localTableName": "ego_field",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "ego_table",
+        "undb_field_table_id_foreign": {
+          "constraintName": "undb_field_table_id_foreign",
+          "columnNames": ["table_id"],
+          "localTableName": "undb_field",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "undb_table",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "ego_field_foreign_table_id_foreign": {
-          "constraintName": "ego_field_foreign_table_id_foreign",
-          "columnNames": [
-            "foreign_table_id"
-          ],
-          "localTableName": "ego_field",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "ego_table",
+        "undb_field_foreign_table_id_foreign": {
+          "constraintName": "undb_field_foreign_table_id_foreign",
+          "columnNames": ["foreign_table_id"],
+          "localTableName": "undb_field",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "undb_table",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "ego_field_symmetric_reference_field_id_foreign": {
-          "constraintName": "ego_field_symmetric_reference_field_id_foreign",
-          "columnNames": [
-            "symmetric_reference_field_id"
-          ],
-          "localTableName": "ego_field",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "ego_field",
+        "undb_field_symmetric_reference_field_id_foreign": {
+          "constraintName": "undb_field_symmetric_reference_field_id_foreign",
+          "columnNames": ["symmetric_reference_field_id"],
+          "localTableName": "undb_field",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "undb_field",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "ego_field_count_reference_field_id_foreign": {
-          "constraintName": "ego_field_count_reference_field_id_foreign",
-          "columnNames": [
-            "count_reference_field_id"
-          ],
-          "localTableName": "ego_field",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "ego_field",
+        "undb_field_count_reference_field_id_foreign": {
+          "constraintName": "undb_field_count_reference_field_id_foreign",
+          "columnNames": ["count_reference_field_id"],
+          "localTableName": "undb_field",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "undb_field",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "ego_field_lookup_reference_field_id_foreign": {
-          "constraintName": "ego_field_lookup_reference_field_id_foreign",
-          "columnNames": [
-            "lookup_reference_field_id"
-          ],
-          "localTableName": "ego_field",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "ego_field",
+        "undb_field_lookup_reference_field_id_foreign": {
+          "constraintName": "undb_field_lookup_reference_field_id_foreign",
+          "columnNames": ["lookup_reference_field_id"],
+          "localTableName": "undb_field",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "undb_field",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "ego_field_sum_reference_field_id_foreign": {
-          "constraintName": "ego_field_sum_reference_field_id_foreign",
-          "columnNames": [
-            "sum_reference_field_id"
-          ],
-          "localTableName": "ego_field",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "ego_field",
+        "undb_field_sum_reference_field_id_foreign": {
+          "constraintName": "undb_field_sum_reference_field_id_foreign",
+          "columnNames": ["sum_reference_field_id"],
+          "localTableName": "undb_field",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "undb_field",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "ego_field_sum_aggregate_field_id_foreign": {
-          "constraintName": "ego_field_sum_aggregate_field_id_foreign",
-          "columnNames": [
-            "sum_aggregate_field_id"
-          ],
-          "localTableName": "ego_field",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "ego_field",
+        "undb_field_sum_aggregate_field_id_foreign": {
+          "constraintName": "undb_field_sum_aggregate_field_id_foreign",
+          "columnNames": ["sum_aggregate_field_id"],
+          "localTableName": "undb_field",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "undb_field",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "ego_field_average_reference_field_id_foreign": {
-          "constraintName": "ego_field_average_reference_field_id_foreign",
-          "columnNames": [
-            "average_reference_field_id"
-          ],
-          "localTableName": "ego_field",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "ego_field",
+        "undb_field_average_reference_field_id_foreign": {
+          "constraintName": "undb_field_average_reference_field_id_foreign",
+          "columnNames": ["average_reference_field_id"],
+          "localTableName": "undb_field",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "undb_field",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "ego_field_average_aggregate_field_id_foreign": {
-          "constraintName": "ego_field_average_aggregate_field_id_foreign",
-          "columnNames": [
-            "average_aggregate_field_id"
-          ],
-          "localTableName": "ego_field",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "ego_field",
+        "undb_field_average_aggregate_field_id_foreign": {
+          "constraintName": "undb_field_average_aggregate_field_id_foreign",
+          "columnNames": ["average_aggregate_field_id"],
+          "localTableName": "undb_field",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "undb_field",
           "deleteRule": "set null",
           "updateRule": "cascade"
         }
@@ -661,31 +597,25 @@
           "mappedType": "enum"
         }
       },
-      "name": "ego_option",
+      "name": "undb_option",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
-          "keyName": "ego_option_deleted_at_index",
+          "keyName": "undb_option_deleted_at_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "field_id"
-          ],
+          "columnNames": ["field_id"],
           "composite": false,
-          "keyName": "ego_option_field_id_index",
+          "keyName": "undb_option_field_id_index",
           "primary": false,
           "unique": false
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "key"
-          ],
+          "columnNames": ["key"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -693,16 +623,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "ego_option_field_id_foreign": {
-          "constraintName": "ego_option_field_id_foreign",
-          "columnNames": [
-            "field_id"
-          ],
-          "localTableName": "ego_option",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "ego_field",
+        "undb_option_field_id_foreign": {
+          "constraintName": "undb_option_field_id_foreign",
+          "columnNames": ["field_id"],
+          "localTableName": "undb_option",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "undb_field",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
@@ -729,32 +655,25 @@
           "mappedType": "text"
         }
       },
-      "name": "ego_field_display_fields",
+      "name": "undb_field_display_fields",
       "indexes": [
         {
-          "columnNames": [
-            "field_1_id"
-          ],
+          "columnNames": ["field_1_id"],
           "composite": false,
-          "keyName": "ego_field_display_fields_field_1_id_index",
+          "keyName": "undb_field_display_fields_field_1_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "field_2_id"
-          ],
+          "columnNames": ["field_2_id"],
           "composite": false,
-          "keyName": "ego_field_display_fields_field_2_id_index",
+          "keyName": "undb_field_display_fields_field_2_id_index",
           "primary": false,
           "unique": false
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "field_1_id",
-            "field_2_id"
-          ],
+          "columnNames": ["field_1_id", "field_2_id"],
           "composite": true,
           "primary": true,
           "unique": true
@@ -762,29 +681,21 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "ego_field_display_fields_field_1_id_foreign": {
-          "constraintName": "ego_field_display_fields_field_1_id_foreign",
-          "columnNames": [
-            "field_1_id"
-          ],
-          "localTableName": "ego_field_display_fields",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "ego_field",
+        "undb_field_display_fields_field_1_id_foreign": {
+          "constraintName": "undb_field_display_fields_field_1_id_foreign",
+          "columnNames": ["field_1_id"],
+          "localTableName": "undb_field_display_fields",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "undb_field",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "ego_field_display_fields_field_2_id_foreign": {
-          "constraintName": "ego_field_display_fields_field_2_id_foreign",
-          "columnNames": [
-            "field_2_id"
-          ],
-          "localTableName": "ego_field_display_fields",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "ego_field",
+        "undb_field_display_fields_field_2_id_foreign": {
+          "constraintName": "undb_field_display_fields_field_2_id_foreign",
+          "columnNames": ["field_2_id"],
+          "localTableName": "undb_field_display_fields",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "undb_field",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
@@ -895,68 +806,53 @@
           "mappedType": "text"
         }
       },
-      "name": "ego_attachment",
+      "name": "undb_attachment",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
-          "keyName": "ego_attachment_deleted_at_index",
+          "keyName": "undb_attachment_deleted_at_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "table_id"
-          ],
+          "columnNames": ["table_id"],
           "composite": false,
-          "keyName": "ego_attachment_table_id_index",
+          "keyName": "undb_attachment_table_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "mime_type"
-          ],
+          "columnNames": ["mime_type"],
           "composite": false,
-          "keyName": "ego_attachment_mime_type_index",
+          "keyName": "undb_attachment_mime_type_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "name"
-          ],
+          "columnNames": ["name"],
           "composite": false,
-          "keyName": "ego_attachment_name_index",
+          "keyName": "undb_attachment_name_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "size"
-          ],
+          "columnNames": ["size"],
           "composite": false,
-          "keyName": "ego_attachment_size_index",
+          "keyName": "undb_attachment_size_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "extension"
-          ],
+          "columnNames": ["extension"],
           "composite": false,
-          "keyName": "ego_attachment_extension_index",
+          "keyName": "undb_attachment_extension_index",
           "primary": false,
           "unique": false
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "id",
-            "record_id"
-          ],
+          "columnNames": ["id", "record_id"],
           "composite": true,
           "primary": true,
           "unique": true
@@ -964,16 +860,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "ego_attachment_table_id_foreign": {
-          "constraintName": "ego_attachment_table_id_foreign",
-          "columnNames": [
-            "table_id"
-          ],
-          "localTableName": "ego_attachment",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "ego_table",
+        "undb_attachment_table_id_foreign": {
+          "constraintName": "undb_attachment_table_id_foreign",
+          "columnNames": ["table_id"],
+          "localTableName": "undb_attachment",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "undb_table",
           "updateRule": "cascade"
         }
       }
@@ -1047,49 +939,39 @@
           "mappedType": "text"
         }
       },
-      "name": "ego_user",
+      "name": "undb_user",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
-          "keyName": "ego_user_deleted_at_index",
+          "keyName": "undb_user_deleted_at_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "username"
-          ],
+          "columnNames": ["username"],
           "composite": false,
-          "keyName": "ego_user_username_index",
+          "keyName": "undb_user_username_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "email"
-          ],
+          "columnNames": ["email"],
           "composite": false,
-          "keyName": "ego_user_email_index",
+          "keyName": "undb_user_email_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "email"
-          ],
+          "columnNames": ["email"],
           "composite": false,
-          "keyName": "ego_user_email_unique",
+          "keyName": "undb_user_email_unique",
           "primary": false,
           "unique": true
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1174,12 +1056,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "kanban",
-            "calendar",
-            "grid",
-            "tree"
-          ],
+          "enumItems": ["kanban", "calendar", "grid", "tree"],
           "mappedType": "enum"
         },
         "sorts": {
@@ -1255,31 +1132,25 @@
           "mappedType": "json"
         }
       },
-      "name": "ego_view",
+      "name": "undb_view",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
-          "keyName": "ego_view_deleted_at_index",
+          "keyName": "undb_view_deleted_at_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "table_id"
-          ],
+          "columnNames": ["table_id"],
           "composite": false,
-          "keyName": "ego_view_table_id_index",
+          "keyName": "undb_view_table_id_index",
           "primary": false,
           "unique": false
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1287,16 +1158,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "ego_view_table_id_foreign": {
-          "constraintName": "ego_view_table_id_foreign",
-          "columnNames": [
-            "table_id"
-          ],
-          "localTableName": "ego_view",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "ego_table",
+        "undb_view_table_id_foreign": {
+          "constraintName": "undb_view_table_id_foreign",
+          "columnNames": ["table_id"],
+          "localTableName": "undb_view",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "undb_table",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }

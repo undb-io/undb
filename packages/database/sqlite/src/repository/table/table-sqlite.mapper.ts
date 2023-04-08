@@ -1,5 +1,5 @@
-import type { ICreateViewsSchema, IQueryTable, IQueryView, Table } from '@egodb/core'
-import { TableFactory, TableSchema } from '@egodb/core'
+import type { ICreateViewsSchema, IQueryTable, IQueryView, Table } from '@undb/core'
+import { TableFactory, TableSchema } from '@undb/core'
 import type { Result } from 'oxide.ts'
 import type { Table as TableEntity } from '../../entity/index.js'
 

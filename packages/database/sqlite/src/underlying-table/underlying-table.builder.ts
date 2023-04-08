@@ -1,4 +1,4 @@
-import type { Table } from '@egodb/core'
+import type { Table } from '@undb/core'
 import { BaseEntityManager } from '../repository/base-entity-manager.js'
 import { UnderlyingColumnBuilder } from './underlying-column.builder.js'
 

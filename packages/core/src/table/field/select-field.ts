@@ -1,4 +1,4 @@
-import { and } from '@egodb/domain'
+import { and } from '@undb/domain'
 import { isArray } from 'lodash-es'
 import type { Option } from 'oxide.ts'
 import { z } from 'zod'

@@ -1,5 +1,5 @@
-import type { CompositeSpecification } from '@egodb/domain'
-import { ValueObject } from '@egodb/domain'
+import type { CompositeSpecification } from '@undb/domain'
+import { ValueObject } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None } from 'oxide.ts'
 import type { Field } from '../field'

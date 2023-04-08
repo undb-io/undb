@@ -1,4 +1,4 @@
-import { fieldIdSchema, tableIdSchema, updateFieldSchema } from '@egodb/core'
+import { fieldIdSchema, tableIdSchema, updateFieldSchema } from '@undb/core'
 import { z } from 'zod'
 
 export const updateFieldCommandInput = z.object({

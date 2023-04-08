@@ -1,4 +1,4 @@
-import { ValueObject } from '@egodb/domain'
+import { ValueObject } from '@undb/domain'
 import type { ISortDirection, ISorts } from './sort.schema.js'
 
 export class Sorts extends ValueObject<ISorts> {

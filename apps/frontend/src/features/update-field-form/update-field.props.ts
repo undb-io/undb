@@ -1,4 +1,4 @@
-import type { Field } from '@egodb/core'
+import type { Field } from '@undb/core'
 
 export type IUpdateFieldProps = {
   field: Field

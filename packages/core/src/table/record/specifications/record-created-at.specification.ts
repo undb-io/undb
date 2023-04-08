@@ -1,4 +1,4 @@
-import { CompositeSpecification, DateVO } from '@egodb/domain'
+import { CompositeSpecification, DateVO } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { Record } from '../record.js'

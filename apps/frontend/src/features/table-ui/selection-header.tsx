@@ -1,4 +1,4 @@
-import { Box, Checkbox } from '@egodb/ui'
+import { Box, Checkbox } from '@undb/ui'
 import type { Table } from '@tanstack/react-table'
 import React from 'react'
 import type { TData } from './interface'

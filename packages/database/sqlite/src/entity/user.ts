@@ -1,8 +1,8 @@
-import type { User as CoreUser } from '@egodb/core'
 import { Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core'
+import type { User as CoreUser } from '@undb/core'
 import { BaseEntity } from './base.js'
 
-@Entity({ tableName: 'ego_user' })
+@Entity({ tableName: 'undb_user' })
 export class User extends BaseEntity {
   constructor(user: CoreUser) {
     super()

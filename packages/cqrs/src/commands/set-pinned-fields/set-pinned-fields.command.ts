@@ -1,6 +1,6 @@
-import { IViewPinnedFields } from '@egodb/core'
-import type { CommandProps } from '@egodb/domain'
-import { Command } from '@egodb/domain'
+import { IViewPinnedFields } from '@undb/core'
+import type { CommandProps } from '@undb/domain'
+import { Command } from '@undb/domain'
 import type { ISetPinnedFieldsCommandInput } from './set-pinned-fields.command.interface.js'
 
 export class SetPinnedFieldsCommand extends Command implements ISetPinnedFieldsCommandInput {

@@ -1,5 +1,5 @@
-import { type ITableQueryModel } from '@egodb/core'
-import type { IQueryHandler } from '@egodb/domain'
+import { type ITableQueryModel } from '@undb/core'
+import type { IQueryHandler } from '@undb/domain'
 import type { IGetTablesOutput } from './get-tables.query.interface.js'
 import type { GetTablesQuery } from './get-tables.query.js'
 

@@ -12,7 +12,7 @@ import {
   Button,
   IconPlus,
   useDisclosure,
-} from '@egodb/ui'
+} from '@undb/ui'
 import React, { useEffect } from 'react'
 import { CSS } from '@dnd-kit/utilities'
 import { FieldCommonControl } from './field-common-control'
@@ -22,7 +22,7 @@ import { FieldVariantControl } from './field-variant-control'
 import { FieldIcon } from '../../field-inputs/field-Icon'
 import { FieldItem } from '../../field-inputs/field-item'
 import { Controller, useFormContext } from 'react-hook-form'
-import type { ICreateTableInput } from '@egodb/cqrs'
+import type { ICreateTableInput } from '@undb/cqrs'
 import { useTranslation } from 'react-i18next'
 
 interface IProps {

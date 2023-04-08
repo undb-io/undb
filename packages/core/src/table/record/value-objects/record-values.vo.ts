@@ -1,4 +1,4 @@
-import { ValueObject } from '@egodb/domain'
+import { ValueObject } from '@undb/domain'
 import { Option } from 'oxide.ts'
 import type { FieldValue, ICreateFieldsSchema_internal, UnpackedFieldValue } from '../../field/index.js'
 import { TreeField } from '../../field/index.js'

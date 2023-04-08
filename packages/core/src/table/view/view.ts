@@ -1,5 +1,5 @@
-import type { CompositeSpecification } from '@egodb/domain'
-import { and, ValueObject } from '@egodb/domain'
+import type { CompositeSpecification } from '@undb/domain'
+import { and, ValueObject } from '@undb/domain'
 import { isEmpty, sortBy } from 'lodash-es'
 import { None, Option } from 'oxide.ts'
 import type { Field, FieldId } from '../field/index.js'

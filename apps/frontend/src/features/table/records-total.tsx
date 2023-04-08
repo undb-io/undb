@@ -1,5 +1,5 @@
-import { getCurrentTableRecordsTotal } from '@egodb/store'
-import { Text } from '@egodb/ui'
+import { getCurrentTableRecordsTotal } from '@undb/store'
+import { Text } from '@undb/ui'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from '../../hooks'
 

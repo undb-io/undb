@@ -1,4 +1,4 @@
-import { and } from '@egodb/domain'
+import { and } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import type { TableSchemaIdMap } from '../value-objects/index.js'
 import { Record } from './record.js'

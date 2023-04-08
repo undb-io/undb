@@ -1,4 +1,4 @@
-import { Group, Skeleton } from '@egodb/ui'
+import { Group, Skeleton } from '@undb/ui'
 import React from 'react'
 
 export const TableLoading: React.FC = () => {

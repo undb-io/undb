@@ -1,6 +1,6 @@
-import { ICreateOptionSchema } from '@egodb/core'
-import type { CommandProps } from '@egodb/domain'
-import { Command } from '@egodb/domain'
+import { ICreateOptionSchema } from '@undb/core'
+import type { CommandProps } from '@undb/domain'
+import { Command } from '@undb/domain'
 import type { ICreateOptionCommandInput } from './create-option.command.interface.js'
 
 export class CreateOptionCommand extends Command implements ICreateOptionCommandInput {

@@ -1,5 +1,5 @@
-import type { ITableRepository } from '@egodb/core'
-import type { ICommandHandler } from '@egodb/domain'
+import type { ITableRepository } from '@undb/core'
+import type { ICommandHandler } from '@undb/domain'
 import type { SetShowSystemFieldsCommand } from './set-show-system-fields.command.js'
 
 type ISetShowSystemFieldsCommandHandler = ICommandHandler<SetShowSystemFieldsCommand, void>

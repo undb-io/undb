@@ -1,6 +1,6 @@
-import type { IQueryTreeRecords, IRecordSpec, IRecordTreeQueryModel, TreeField } from '@egodb/core'
-import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
 import type { EntityManager } from '@mikro-orm/better-sqlite'
+import type { IQueryTreeRecords, IRecordSpec, IRecordTreeQueryModel, TreeField } from '@undb/core'
+import { INTERNAL_COLUMN_ID_NAME } from '@undb/core'
 import { DELETED_AT_COLUMN_NAME } from '../../decorators/soft-delete.decorator.js'
 import { ReferenceField } from '../../entity/field.js'
 import { Table as TableEntity } from '../../entity/table.js'

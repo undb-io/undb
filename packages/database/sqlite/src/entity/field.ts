@@ -1,3 +1,19 @@
+import type { Rel } from '@mikro-orm/core'
+import {
+  BooleanType,
+  Cascade,
+  Collection,
+  Entity,
+  Enum,
+  LoadStrategy,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryKey,
+  Property,
+  SmallIntType,
+} from '@mikro-orm/core'
 import type {
   Field as CoreField,
   IAttachmentFieldQuerySchema,
@@ -23,7 +39,7 @@ import type {
   ISumFieldQuerySchema,
   ITreeFieldQuerySchema,
   IUpdatedAtFieldQuerySchema,
-} from '@egodb/core'
+} from '@undb/core'
 import {
   AttachmentField as CoreAttachmentField,
   AutoIncrementField as CoreAutoIncrementField,
@@ -46,28 +62,12 @@ import {
   SumField as CoreSumField,
   TreeField as CoreTreeField,
   UpdatedAtField as CoreUpdatedAtField,
-} from '@egodb/core'
-import type { Rel } from '@mikro-orm/core'
-import {
-  BooleanType,
-  Cascade,
-  Collection,
-  Entity,
-  Enum,
-  LoadStrategy,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryKey,
-  Property,
-  SmallIntType,
-} from '@mikro-orm/core'
+} from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Option } from './option.js'
 import { Table } from './table.js'
 
-@Entity({ tableName: 'ego_field', abstract: true, discriminatorColumn: 'type' })
+@Entity({ tableName: 'undb_field', abstract: true, discriminatorColumn: 'type' })
 export abstract class Field extends BaseEntity {
   constructor(table: Rel<Table>, field: CoreField) {
     super()

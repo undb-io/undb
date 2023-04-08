@@ -1,5 +1,5 @@
-import type { User as CoreUser, IQueryUser } from '@egodb/core'
-import { UserFactory } from '@egodb/core'
+import type { User as CoreUser, IQueryUser } from '@undb/core'
+import { UserFactory } from '@undb/core'
 import type { User } from '../../entity/user.js'
 
 export class UserSqliteMapper {

@@ -1,6 +1,6 @@
-import type { NoneSystemField } from '@egodb/core'
-import { INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@egodb/core'
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import type { NoneSystemField } from '@undb/core'
+import { INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@undb/core'
 import type { IUnderlyingColumnBuilder } from '../interfaces/underlying-table.builder.js'
 import { UnderlyingColumnFactory } from './underlying-column.factory.js'
 import {

@@ -1,4 +1,4 @@
-import { and, andOptions } from '@egodb/domain'
+import { and, andOptions } from '@undb/domain'
 import { difference } from 'lodash-es'
 import type { Option, Result } from 'oxide.ts'
 import { None, Ok, Some } from 'oxide.ts'

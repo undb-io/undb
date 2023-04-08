@@ -1,6 +1,6 @@
-import type { IQueryUser } from '@egodb/core'
 import { createSelector } from '@reduxjs/toolkit'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import type { IQueryUser } from '@undb/core'
 import type { RootState } from '../reducers'
 
 export const authApi = createApi({

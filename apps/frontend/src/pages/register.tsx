@@ -1,5 +1,5 @@
-import { useRegisterMutation } from '@egodb/store'
-import { Center, Paper, TextInput, PasswordInput, Space, Button, Divider } from '@egodb/ui'
+import { useRegisterMutation } from '@undb/store'
+import { Center, Paper, TextInput, PasswordInput, Space, Button, Divider } from '@undb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Link, useLocation, useNavigate } from 'react-router-dom'

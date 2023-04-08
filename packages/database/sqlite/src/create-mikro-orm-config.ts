@@ -12,7 +12,7 @@ export const createConfig = (data: string, env = 'development') =>
     highlighter: new SqlHighlighter(),
     metadataProvider: ReflectMetadataProvider,
     driver: BetterSqliteDriver,
-    dbName: path.join(data, `ego.${env}.sqlite`),
+    dbName: path.join(data, `undb.${env}.sqlite`),
     debug: env !== 'production',
     forceUndefined: true,
     flushMode: FlushMode.COMMIT,

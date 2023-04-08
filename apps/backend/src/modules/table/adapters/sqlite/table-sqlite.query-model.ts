@@ -1,9 +1,9 @@
-import type { IQueryTable } from '@egodb/core'
-import { type ITableSpec } from '@egodb/core'
-import type { EntityManager } from '@egodb/sqlite'
-import { TableSqliteQueryModel } from '@egodb/sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
+import type { IQueryTable } from '@undb/core'
+import { type ITableSpec } from '@undb/core'
+import type { EntityManager } from '@undb/sqlite'
+import { TableSqliteQueryModel } from '@undb/sqlite'
 import type { Option } from 'oxide.ts'
 
 @Injectable()

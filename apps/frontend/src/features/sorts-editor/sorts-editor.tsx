@@ -1,5 +1,5 @@
-import type { ISorts, ISortSchema } from '@egodb/core'
-import { Box, Button, Divider, Group, IconPlus, Stack, useListState } from '@egodb/ui'
+import type { ISorts, ISortSchema } from '@undb/core'
+import { Box, Button, Divider, Group, IconPlus, Stack, useListState } from '@undb/ui'
 import { FieldSort } from './field-sort'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import { useLayoutEffect } from 'react'

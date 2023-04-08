@@ -1,5 +1,5 @@
-import { Table as CoreTable, WithTableName, createTestTable } from '@egodb/core'
 import { EntityManager } from '@mikro-orm/better-sqlite'
+import { Table as CoreTable, WithTableName, createTestTable } from '@undb/core'
 import { FILTER_SOFT_DELETE } from '../../decorators/soft-delete.decorator.js'
 import { Table } from '../../entity/index.js'
 import { TableSqliteRepository } from './table-sqlite.repository.js'

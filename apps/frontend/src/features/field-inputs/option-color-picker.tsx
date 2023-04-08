@@ -1,9 +1,9 @@
-import { optionColorOrder } from '@egodb/core'
-import { ActionIcon, IconCircleChevronDown, Popover, SimpleGrid, UnstyledButton, useDisclosure } from '@egodb/ui'
-import { OptionColor } from '@egodb/core'
+import { optionColorOrder } from '@undb/core'
+import { ActionIcon, IconCircleChevronDown, Popover, SimpleGrid, UnstyledButton, useDisclosure } from '@undb/ui'
+import { OptionColor } from '@undb/core'
 import { Option } from '../option/option'
 import type { OnColorChange } from './type'
-import type { IMutateOptionSchema } from '@egodb/core'
+import type { IMutateOptionSchema } from '@undb/core'
 
 export interface IOptionColorPickerProps {
   option: IMutateOptionSchema

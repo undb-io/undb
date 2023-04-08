@@ -1,4 +1,4 @@
-import { and, ValueObject } from '@egodb/domain'
+import { and, ValueObject } from '@undb/domain'
 import { isArray, isBoolean, isEmpty, isString, unzip } from 'lodash-es'
 import fp from 'lodash/fp.js'
 import type { Option } from 'oxide.ts'

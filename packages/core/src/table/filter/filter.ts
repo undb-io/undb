@@ -1,4 +1,4 @@
-import type { CompositeSpecification } from '@egodb/domain'
+import type { CompositeSpecification } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'

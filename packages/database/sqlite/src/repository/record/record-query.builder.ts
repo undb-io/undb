@@ -1,11 +1,11 @@
-import type { Table as CoreTable, IRecordSpec } from '@egodb/core'
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import type { Table as CoreTable, IRecordSpec } from '@undb/core'
 import {
   SelectField as CoreSelectField,
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
-} from '@egodb/core'
-import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+} from '@undb/core'
 import { union } from 'lodash-es'
 import type { Promisable } from 'type-fest'
 import type { Table } from '../../entity/table.js'

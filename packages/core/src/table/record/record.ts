@@ -1,4 +1,4 @@
-import { DateVO } from '@egodb/domain'
+import { DateVO } from '@undb/domain'
 import type { TableId, TableSchema, TableSchemaIdMap } from '../value-objects/index.js'
 import { RecordFactory } from './record.factory.js'
 import type { IInternalRecordValues, IMutateRecordValueSchema, RecordAllValues } from './record.schema.js'

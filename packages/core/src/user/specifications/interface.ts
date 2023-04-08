@@ -1,4 +1,4 @@
-import type { CompositeSpecification } from '@egodb/domain'
+import type { CompositeSpecification } from '@undb/domain'
 import type { User } from '../user.js'
 import type { WithUserEmail } from './user-email.specification.js'
 import type { WithUserId } from './user-id.specification.js'

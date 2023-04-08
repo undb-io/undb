@@ -1,4 +1,4 @@
-import type { ITableSpec, Table } from '@egodb/core'
+import type { ITableSpec, Table } from '@undb/core'
 import type { Table as TableEntity } from '../entity/table.js'
 import { BaseEntityManager } from '../repository/base-entity-manager.js'
 import { RecordSqliteReferenceDeleteVisitor } from '../repository/record/record-sqlite.reference-delete-visitor.js'

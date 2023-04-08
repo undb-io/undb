@@ -1,4 +1,4 @@
-import { Skeleton, Stack } from '@egodb/ui'
+import { Skeleton, Stack } from '@undb/ui'
 
 export const LoadingTable: React.FC = () => {
   return (

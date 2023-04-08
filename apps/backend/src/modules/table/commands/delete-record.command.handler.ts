@@ -1,7 +1,7 @@
-import { type IRecordRepository, type ITableRepository } from '@egodb/core'
-import { DeleteRecordCommand, DeleteRecordCommandHandler as DomainHandler } from '@egodb/cqrs'
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
+import { type IRecordRepository, type ITableRepository } from '@undb/core'
+import { DeleteRecordCommand, DeleteRecordCommandHandler as DomainHandler } from '@undb/cqrs'
 import { InjectRecordReposiory, InjectTableReposiory } from '../adapters/index.js'
 
 @CommandHandler(DeleteRecordCommand)

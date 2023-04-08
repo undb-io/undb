@@ -1,4 +1,6 @@
-import type { Record as CoreRecord, IRecordRepository, IRecordSpec, TableSchemaIdMap } from '@egodb/core'
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import { LockMode } from '@mikro-orm/core'
+import type { Record as CoreRecord, IRecordRepository, IRecordSpec, TableSchemaIdMap } from '@undb/core'
 import {
   INTERNAL_COLUMN_ID_NAME,
   ParentField,
@@ -6,10 +8,8 @@ import {
   WithRecordId,
   WithRecordTableId,
   WithRecordValues,
-} from '@egodb/core'
-import { and } from '@egodb/domain'
-import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import { LockMode } from '@mikro-orm/core'
+} from '@undb/core'
+import { and } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { Some } from 'oxide.ts'
 import { Table } from '../../entity/table.js'

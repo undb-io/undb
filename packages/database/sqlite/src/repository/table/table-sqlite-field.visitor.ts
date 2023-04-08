@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
+import type { EntityManager } from '@mikro-orm/better-sqlite'
+import { wrap } from '@mikro-orm/core'
 import type {
   UpdatedAtField as CoereUpdatedAtField,
   AttachmentField as CoreAttachmentField,
@@ -23,10 +25,8 @@ import type {
   SumField as CoreSumField,
   TreeField as CoreTreeField,
   IFieldVisitor,
-} from '@egodb/core'
-import { INTERNAL_COLUMN_ID_NAME } from '@egodb/core'
-import type { EntityManager } from '@mikro-orm/better-sqlite'
-import { wrap } from '@mikro-orm/core'
+} from '@undb/core'
+import { INTERNAL_COLUMN_ID_NAME } from '@undb/core'
 import {
   AttachmentField,
   AutoIncrementField,

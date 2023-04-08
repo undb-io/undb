@@ -1,4 +1,4 @@
-import { ValueObject } from '@egodb/domain'
+import { ValueObject } from '@undb/domain'
 import type { IRecordDisplayValues } from '../record.type.js'
 
 export class RecordDisplayValues extends ValueObject<IRecordDisplayValues> {

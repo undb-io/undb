@@ -1,5 +1,5 @@
-import { createMutateRecordValuesSchema, type IRecordRepository, type ITableRepository } from '@egodb/core'
-import type { ICommandHandler } from '@egodb/domain'
+import { createMutateRecordValuesSchema, type IRecordRepository, type ITableRepository } from '@undb/core'
+import type { ICommandHandler } from '@undb/domain'
 import type { ICreateTableOutput } from '../create-table/index.js'
 import type { CreateRecordCommand } from './create-record.comand.js'
 

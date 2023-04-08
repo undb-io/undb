@@ -1,5 +1,5 @@
-import { useDeleteTableMutation } from '@egodb/store'
-import { IconPencil, IconTrash, Menu, Text } from '@egodb/ui'
+import { useDeleteTableMutation } from '@undb/store'
+import { IconPencil, IconTrash, Menu, Text } from '@undb/ui'
 import { useSetAtom } from 'jotai'
 import { useTranslation } from 'react-i18next'
 import { confirmModal } from '../../hooks'

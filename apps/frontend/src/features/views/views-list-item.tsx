@@ -1,7 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import type { View } from '@egodb/core'
-import { useDeleteViewMutation, useDuplicateViewMutation, useUpdateViewNameMutation } from '@egodb/store'
+import type { View } from '@undb/core'
+import { useDeleteViewMutation, useDuplicateViewMutation, useUpdateViewNameMutation } from '@undb/store'
 import {
   ActionIcon,
   useDisclosure,
@@ -17,7 +17,7 @@ import {
   IconTrash,
   IconCopy,
   IconPencil,
-} from '@egodb/ui'
+} from '@undb/ui'
 import { useSetAtom } from 'jotai'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'

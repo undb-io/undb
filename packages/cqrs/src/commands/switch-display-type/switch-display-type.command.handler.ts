@@ -1,5 +1,5 @@
-import type { ITableRepository } from '@egodb/core'
-import type { ICommandHandler } from '@egodb/domain'
+import type { ITableRepository } from '@undb/core'
+import type { ICommandHandler } from '@undb/domain'
 import type { SwitchDisplayTypeCommand } from './switch-display-type.command.js'
 
 export class SwitchDisplayTypeCommandHandler implements ICommandHandler<SwitchDisplayTypeCommand, void> {

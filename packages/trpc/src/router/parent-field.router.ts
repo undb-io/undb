@@ -1,5 +1,5 @@
-import { GetParentAvailableRecordsQuery, getParentAvailableRecordsQueryInput } from '@egodb/cqrs'
-import type { IQueryBus } from '@egodb/domain'
+import { GetParentAvailableRecordsQuery, getParentAvailableRecordsQueryInput } from '@undb/cqrs'
+import type { IQueryBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'

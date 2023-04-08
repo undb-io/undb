@@ -1,4 +1,4 @@
-import type { ContextModalProps } from '@egodb/ui'
+import type { ContextModalProps } from '@undb/ui'
 import { UpdateFieldForm } from './update-field-form'
 import type { IUpdateFieldProps } from './update-field.props'
 

@@ -1,6 +1,6 @@
-import type { IOptionColorName, IOptionColorShade } from '@egodb/core'
-import type { BadgeProps } from '@egodb/ui'
-import { Badge } from '@egodb/ui'
+import type { IOptionColorName, IOptionColorShade } from '@undb/core'
+import type { BadgeProps } from '@undb/ui'
+import { Badge } from '@undb/ui'
 
 interface IProps {
   colorName: IOptionColorName

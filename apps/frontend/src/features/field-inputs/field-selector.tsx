@@ -1,5 +1,5 @@
-import type { Field } from '@egodb/core'
-import { Select } from '@egodb/ui'
+import type { Field } from '@undb/core'
+import { Select } from '@undb/ui'
 import { useTranslation } from 'react-i18next'
 import { FieldIcon } from './field-Icon'
 import { FieldItem } from './field-item'

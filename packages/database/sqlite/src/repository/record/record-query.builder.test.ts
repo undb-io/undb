@@ -1,3 +1,4 @@
+import { EntityManager } from '@mikro-orm/better-sqlite'
 import {
   createTestSelectField,
   createTestStringField,
@@ -7,8 +8,7 @@ import {
   Views,
   WithTableSchema,
   WithTableViews,
-} from '@egodb/core'
-import { EntityManager } from '@mikro-orm/better-sqlite'
+} from '@undb/core'
 import { RecordSqliteQueryBuilder } from './record-query.builder'
 
 const directions = ['asc', 'desc'] as const

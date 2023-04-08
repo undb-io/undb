@@ -10,7 +10,7 @@ import {
   Switch,
   TextInput,
   useDisclosure,
-} from '@egodb/ui'
+} from '@undb/ui'
 import { FieldInputLabel } from '../field-inputs/field-input-label'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldVariantControl } from '../field/field-variant-control'
@@ -23,12 +23,12 @@ import type {
   ReferenceFieldTypes,
   SelectField,
   SumField,
-} from '@egodb/core'
-import { canDisplay } from '@egodb/core'
-import { updateFieldSchema } from '@egodb/core'
+} from '@undb/core'
+import { canDisplay } from '@undb/core'
+import { updateFieldSchema } from '@undb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { IUpdateFieldProps } from './update-field.props'
-import { useUpdateFieldMutation } from '@egodb/store'
+import { useUpdateFieldMutation } from '@undb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useTranslation } from 'react-i18next'
 import { DisplayFields } from '../field/display-fields'

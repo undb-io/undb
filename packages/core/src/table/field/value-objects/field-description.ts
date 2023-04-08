@@ -1,4 +1,4 @@
-import { ValueObject } from '@egodb/domain'
+import { ValueObject } from '@undb/domain'
 import { z } from 'zod'
 
 export const fieldDescriptionSchema = z.string()

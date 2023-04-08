@@ -1,3 +1,3 @@
-import type { ICommandBus } from '@egodb/domain'
+import type { ICommandBus } from '@undb/domain'
 
 export type ITableCommandBus = ICommandBus

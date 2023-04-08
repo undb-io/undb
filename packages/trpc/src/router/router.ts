@@ -1,4 +1,4 @@
-import type { ICommandBus, IQueryBus } from '@egodb/domain'
+import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { middleware, publicProcedure, router } from '../trpc.js'
 import type { ILogger } from '../type.js'
 import { createRecordRouter } from './record.router.js'

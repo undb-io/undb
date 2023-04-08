@@ -1,4 +1,4 @@
-import { setKanbanFieldSchema, tableIdSchema, viewIdSchema } from '@egodb/core'
+import { setKanbanFieldSchema, tableIdSchema, viewIdSchema } from '@undb/core'
 import { z } from 'zod'
 
 export const setKanbanFieldCommandInput = z

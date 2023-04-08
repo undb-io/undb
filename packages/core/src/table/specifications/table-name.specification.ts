@@ -1,4 +1,4 @@
-import { CompositeSpecification } from '@egodb/domain'
+import { CompositeSpecification } from '@undb/domain'
 import { Ok, type Result } from 'oxide.ts'
 import { type Table } from '../table.js'
 import { TableName } from '../value-objects/index.js'

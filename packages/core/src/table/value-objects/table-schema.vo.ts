@@ -1,4 +1,4 @@
-import { ValueObject } from '@egodb/domain'
+import { ValueObject } from '@undb/domain'
 import { castArray } from 'lodash-es'
 import { Option } from 'oxide.ts'
 import type { Class } from 'type-fest'

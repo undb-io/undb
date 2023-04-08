@@ -1,5 +1,5 @@
-import { RecordFactory } from '@egodb/core'
-import { useGetRecordsQuery } from '@egodb/store'
+import { RecordFactory } from '@undb/core'
+import { useGetRecordsQuery } from '@undb/store'
 import dynamic from 'next/dynamic'
 import { useMemo } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'

@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { ICalendarField, IQueryRecords } from '@egodb/core'
-import { RecordFactory } from '@egodb/core'
-import { useGetRecordsQuery } from '@egodb/store'
-import { Calendar } from '@egodb/ui'
+import type { ICalendarField, IQueryRecords } from '@undb/core'
+import { RecordFactory } from '@undb/core'
+import { useGetRecordsQuery } from '@undb/store'
+import { Calendar } from '@undb/ui'
 import { useMemo } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'

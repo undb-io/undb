@@ -1,4 +1,4 @@
-import { NanoID } from '@egodb/domain'
+import { NanoID } from '@undb/domain'
 
 export class FieldId extends NanoID {
   public static readonly FIELD_ID_PREFIX = 'fld'

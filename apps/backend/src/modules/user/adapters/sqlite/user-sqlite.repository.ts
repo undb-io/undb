@@ -1,7 +1,7 @@
-import { User, type UserSpecification } from '@egodb/core'
-import { EntityManager, UserSqliteRepository } from '@egodb/sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
+import { User, type UserSpecification } from '@undb/core'
+import { EntityManager, UserSqliteRepository } from '@undb/sqlite'
 import { Option } from 'oxide.ts'
 
 @Injectable()

@@ -1,4 +1,4 @@
-import type { ContextModalProps } from '@egodb/ui'
+import type { ContextModalProps } from '@undb/ui'
 import { SelectTreeViewField } from './select-tree-view-field'
 import type { ISelectTreeViewFieldProps } from './select-tree-view-field.props'
 

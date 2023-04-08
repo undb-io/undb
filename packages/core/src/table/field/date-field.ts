@@ -1,4 +1,4 @@
-import { andOptions } from '@egodb/domain'
+import { andOptions } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { z } from 'zod'
 import type { IDateFilter } from '../filter/date.filter.js'

@@ -1,6 +1,6 @@
-import { type IUserQueryModel } from '@egodb/core'
-import { GetMeQuery, GetMeQueryHandler } from '@egodb/cqrs'
 import { QueryHandler } from '@nestjs/cqrs'
+import { type IUserQueryModel } from '@undb/core'
+import { GetMeQuery, GetMeQueryHandler } from '@undb/cqrs'
 import { InjectUserQueryModel } from '../../modules/user/adapters/index.js'
 
 @QueryHandler(GetMeQuery)

@@ -1,4 +1,4 @@
-import { ValueObject } from '@egodb/domain'
+import { ValueObject } from '@undb/domain'
 import type { IFieldValueVisitor } from './field-value.visitor.js'
 import type { UnpackedFieldValue } from './field.type.js'
 

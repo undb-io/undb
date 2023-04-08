@@ -1,6 +1,6 @@
-import type { IViewDisplayType } from '@egodb/core'
-import type { DefaultMantineColor, TablerIconsProps } from '@egodb/ui'
-import { IconCalendar, IconHierarchy, IconLayoutKanban, IconTable } from '@egodb/ui'
+import type { IViewDisplayType } from '@undb/core'
+import type { DefaultMantineColor, TablerIconsProps } from '@undb/ui'
+import { IconCalendar, IconHierarchy, IconLayoutKanban, IconTable } from '@undb/ui'
 
 export interface IProps extends TablerIconsProps {
   displayType: IViewDisplayType

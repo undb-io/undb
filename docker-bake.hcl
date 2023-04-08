@@ -1,5 +1,5 @@
 group "default" {
-  targets = ["egodb"]
+  targets = ["undb"]
 }
 
 variable "IMAGE_REGISTRY" {
@@ -10,8 +10,8 @@ variable "IMAGE_TAG" {
   default = "latest"
 }
 
-target "egodb" {
+target "undb" {
 	context = "."
   dockerfile = "Dockerfile"
-  tags = ["${IMAGE_REGISTRY}/egodb:latest", "${IMAGE_REGISTRY}/egodb:${IMAGE_TAG}"]
+  tags = ["${IMAGE_REGISTRY}/undb:latest", "${IMAGE_REGISTRY}/undb:${IMAGE_TAG}"]
 }

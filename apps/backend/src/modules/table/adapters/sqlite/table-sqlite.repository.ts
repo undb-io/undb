@@ -1,8 +1,8 @@
-import type { ITableSpec, Table } from '@egodb/core'
-import { TableSqliteRepository } from '@egodb/sqlite'
 import { EntityManager } from '@mikro-orm/better-sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
+import type { ITableSpec, Table } from '@undb/core'
+import { TableSqliteRepository } from '@undb/sqlite'
 import { Option } from 'oxide.ts'
 @Injectable()
 export class NestTableSqliteRepository extends TableSqliteRepository {

@@ -1,4 +1,4 @@
-import { ValueObject } from '@egodb/domain'
+import { ValueObject } from '@undb/domain'
 import { arrayMoveImmutable } from 'array-move'
 import { Option as O } from 'oxide.ts'
 import { OptionColor } from './option-color.js'

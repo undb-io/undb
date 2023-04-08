@@ -1,5 +1,5 @@
-import { useDeleteTableMutation } from '@egodb/store'
-import { Group, ActionIcon, IconDots, Text, Menu, IconTrash } from '@egodb/ui'
+import { useDeleteTableMutation } from '@undb/store'
+import { Group, ActionIcon, IconDots, Text, Menu, IconTrash } from '@undb/ui'
 import { useSetAtom } from 'jotai'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'

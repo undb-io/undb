@@ -1,14 +1,14 @@
-# egodb
+# undb
 
-<img height="50px" src="./docs/logo.png" alt="egodb" align="right" />
+<img height="50px" src="./docs/logo.png" alt="undb" align="right" />
 
-Private first, self-hosted no code database.
+Private first, unified, self-hosted no code database.
 
-<a href="https://demo.egodb.io/">Live Demo</a>
+<a href="https://demo.undb.xyz/">Live Demo</a>
 
 > use email `test@example.com` and password `123456` to login
 
-![ego](./docs/ego.png)
+![undb](./docs/undb.png)
 
 ## Features
 
@@ -24,19 +24,19 @@ Private first, self-hosted no code database.
 ### Deploy with docker
 
 ```
-docker run -d --name egodb -p 4000:4000 --platform linux/x86_64 -v ~/.egodb/:/var/opts/.ego ghcr.io/ego-io/egodb:latest
+docker run -d --name undb -p 4000:4000 --platform linux/x86_64 -v ~/.undb/:/var/opts/.undb ghcr.io/undb-xyz/undb:latest
 ```
 
 > And then you can visit http://localhost:4000 and get started
 
 ### Deploy with Render.com
 
-<a href="https://render.com/deploy?repo=https://github.com/ego-io/egodb">
+<a href="https://render.com/deploy?repo=https://github.com/undb-xyz/undb">
   <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
 </a>
 
-> You'll need a render account to deploy your own egodb instance
+> You'll need a render account to deploy your own undb instance
 
 ## License
 
-egodb is open-source under the GNU Affero General Public License Version 3 (AGPLv3). You can find it [here](./LICENSE).
+undb is open-source under the GNU Affero General Public License Version 3 (AGPLv3). You can find it [here](./LICENSE).

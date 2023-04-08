@@ -1,5 +1,5 @@
-import { TreeField, WithRecordTableId, type IRecordTreeQueryModel, type ITableRepository } from '@egodb/core'
-import type { IQueryHandler } from '@egodb/domain'
+import { TreeField, WithRecordTableId, type IRecordTreeQueryModel, type ITableRepository } from '@undb/core'
+import type { IQueryHandler } from '@undb/domain'
 import type { IGetRecordsTreeOutput } from './get-records-tree.query.interface.js'
 import type { GetRecordsTreeQuery } from './get-records-tree.query.js'
 

@@ -1,4 +1,4 @@
-import type { ContextModalProps } from '@egodb/ui'
+import type { ContextModalProps } from '@undb/ui'
 import { CreateFieldForm } from './create-field-form'
 import type { ICreateFieldProps } from './create-field.props'
 

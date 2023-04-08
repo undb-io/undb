@@ -5,8 +5,8 @@ import type {
   IRecordDisplayValues,
   Record,
   TableSchemaIdMap,
-} from '@egodb/core'
-import { RecordFactory } from '@egodb/core'
+} from '@undb/core'
+import { RecordFactory } from '@undb/core'
 import { castArray, mapValues } from 'lodash-es'
 import type { Result } from 'oxide.ts'
 import {

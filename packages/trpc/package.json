@@ -1,11 +1,11 @@
 {
-  "name": "@egodb/trpc",
+  "name": "@undb/trpc",
   "description": "",
   "version": "0.0.0",
   "dependencies": {
-    "@egodb/core": "^0.0.0",
-    "@egodb/cqrs": "^0.0.0",
-    "@egodb/domain": "^0.0.0",
+    "@undb/core": "^0.0.0",
+    "@undb/cqrs": "^0.0.0",
+    "@undb/domain": "^0.0.0",
     "@trpc/server": "^10.18.0",
     "zod": "^3.21.4"
   },

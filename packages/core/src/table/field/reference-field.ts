@@ -1,4 +1,4 @@
-import { andOptions } from '@egodb/domain'
+import { andOptions } from '@undb/domain'
 import { Option } from 'oxide.ts'
 import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
@@ -31,7 +31,7 @@ export class ReferenceField extends Mixin(
     return true
   }
 
-  // https://github.com/ego-io/egodb/issues/781
+  // https://github.com/undb-xyz/undb/issues/781
   override get filterable(): boolean {
     return false
   }

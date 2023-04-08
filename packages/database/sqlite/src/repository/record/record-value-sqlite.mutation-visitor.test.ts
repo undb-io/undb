@@ -1,3 +1,4 @@
+import { EntityManager } from '@mikro-orm/better-sqlite'
 import {
   createTestTable,
   DateRangeFieldValue,
@@ -5,8 +6,7 @@ import {
   Table,
   TreeFieldValue,
   WithTableSchema,
-} from '@egodb/core'
-import { EntityManager } from '@mikro-orm/better-sqlite'
+} from '@undb/core'
 import { addDays } from 'date-fns'
 import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation-visitor.js'
 

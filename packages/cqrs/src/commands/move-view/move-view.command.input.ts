@@ -1,4 +1,4 @@
-import { moveViewSchema, tableIdSchema } from '@egodb/core'
+import { moveViewSchema, tableIdSchema } from '@undb/core'
 import { z } from 'zod'
 
 export const moveViewCommandInput = z

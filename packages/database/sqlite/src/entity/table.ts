@@ -1,11 +1,11 @@
-import type { Table as CoreTable } from '@egodb/core'
 import { ArrayType, Cascade, Collection, Entity, OneToMany, PrimaryKey, Property } from '@mikro-orm/core'
+import type { Table as CoreTable } from '@undb/core'
 import { BaseEntity } from './base.js'
 import type { IField } from './field.js'
 import { Field, ReferenceField } from './field.js'
 import { View } from './view.js'
 
-@Entity({ tableName: 'ego_table' })
+@Entity({ tableName: 'undb_table' })
 export class Table extends BaseEntity {
   constructor(table: CoreTable) {
     super()

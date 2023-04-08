@@ -1,4 +1,4 @@
-import { ActionIcon, IconDots, Menu } from '@egodb/ui'
+import { ActionIcon, IconDots, Menu } from '@undb/ui'
 
 interface IProps {
   children?: React.ReactNode

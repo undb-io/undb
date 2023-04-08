@@ -1,4 +1,4 @@
-import type { NoneSystemField } from '@egodb/core'
+import type { NoneSystemField } from '@undb/core'
 
 export interface IUnderlyingColumnBuilder {
   createAutoIncrement(): this

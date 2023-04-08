@@ -1,5 +1,5 @@
-import type { CompositeSpecification, ISpecVisitor } from '@egodb/domain'
-import { type ISpecification } from '@egodb/domain'
+import type { CompositeSpecification, ISpecVisitor } from '@undb/domain'
+import { type ISpecification } from '@undb/domain'
 import type {
   WithFieldDescription,
   WithFieldDisplay,

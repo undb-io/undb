@@ -1,4 +1,4 @@
-import { fieldIdSchema, recordIdSchema, tableIdSchema, viewIdSchema } from '@egodb/core'
+import { fieldIdSchema, recordIdSchema, tableIdSchema, viewIdSchema } from '@undb/core'
 import * as z from 'zod'
 
 export const getTreeAvailableRecordsQueryInput = z.object({
