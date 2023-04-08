@@ -1,5 +1,6 @@
 export * from './emotion'
 
+export * from './Avatar'
 export * from './Alert'
 export * from './Paper'
 export * from './Accordion'

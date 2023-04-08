@@ -1,7 +1,5 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
-import { persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
 import type { RootState } from '../reducers'
 import { authApi } from '../services'
 
@@ -40,12 +38,6 @@ export const authSlice = createSlice({
 
 export const { setToken, resetToken } = authSlice.actions
 
-export const authReducer = persistReducer(
-  {
-    key: authSlice.name,
-    storage,
-  },
-  authSlice.reducer,
-)
+export const authReducer = authSlice.reducer
 
 export const getIsAuthorized = (state: RootState) => !!state.auth.token

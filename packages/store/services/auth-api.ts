@@ -39,4 +39,4 @@ export const { useLoginMutation, useMeQuery, useRegisterMutation } = authApi
 
 const selectMe = authApi.endpoints.me.select(undefined)
 
-export const getMe = createSelector(selectMe, (me) => me.data)
+export const getMe = createSelector(selectMe, (me) => me.data?.me)
