@@ -11,6 +11,11 @@ export class NestUserSqliteRepository extends UserSqliteRepository {
   }
 
   @UseRequestContext()
+  exists(spec: UserSpecification): Promise<boolean> {
+    return super.exists(spec)
+  }
+
+  @UseRequestContext()
   insert(user: User): Promise<void> {
     return super.insert(user)
   }
