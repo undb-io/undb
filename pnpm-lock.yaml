@@ -335,6 +335,9 @@ importers:
       use-deep-compare-effect:
         specifier: ^1.8.1
         version: 1.8.1(react@18.2.0)
+      zod:
+        specifier: ^3.21.4
+        version: 3.21.4
       zod-i18n-map:
         specifier: ^2.9.0
         version: 2.9.0(i18next@22.4.14)(zod@3.21.4)
