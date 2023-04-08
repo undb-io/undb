@@ -1,7 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-export type User = any
-
 export const auth = createApi({
   reducerPath: 'auth',
   baseQuery: fetchBaseQuery({ baseUrl: '/api/auth' }),
@@ -9,7 +7,14 @@ export const auth = createApi({
     me: builder.query({
       query: () => 'me',
     }),
-    login: builder.mutation<{ access_token: string }, { username: string; password: string }>({
+    register: builder.mutation<{ access_token: string }, { email: string; password: string }>({
+      query: (data) => ({
+        url: 'register',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    login: builder.mutation<{ access_token: string }, { email: string; password: string }>({
       query: (data) => ({
         url: 'login',
         method: 'POST',
@@ -19,4 +24,4 @@ export const auth = createApi({
   }),
 })
 
-export const { useLoginMutation, useMeQuery } = auth
+export const { useLoginMutation, useMeQuery, useRegisterMutation } = auth
