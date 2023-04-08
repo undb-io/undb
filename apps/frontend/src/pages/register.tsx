@@ -1,13 +1,12 @@
-import { Button, Center, Divider, Paper, PasswordInput, Space, TextInput } from '@egodb/ui'
-import React from 'react'
-import { useForm } from 'react-hook-form'
-import { FieldInputLabel } from '../features/field-inputs/field-input-label'
+import { useRegisterMutation } from '@egodb/store'
+import { Center, Paper, TextInput, PasswordInput, Space, Button, Divider } from '@egodb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { useLoginMutation } from '@egodb/store'
+import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
+import { z } from 'zod'
+import { FieldInputLabel } from '../features/field-inputs/field-input-label'
 
-export const Login: React.FC = () => {
+export const Register: React.FC = () => {
   const navigate = useNavigate()
   const form = useForm({
     defaultValues: { email: '', password: '' },
@@ -22,10 +21,10 @@ export const Login: React.FC = () => {
     reValidateMode: 'onChange',
   })
 
-  const [login] = useLoginMutation()
+  const [register] = useRegisterMutation()
 
   const onSubmit = form.handleSubmit(async (values) => {
-    await login(values).unwrap()
+    await register(values).unwrap()
     navigate('/', { replace: true })
   })
 
@@ -47,16 +46,16 @@ export const Login: React.FC = () => {
           />
           <Space h="lg" />
           <Button type="submit" fullWidth disabled={!form.formState.isValid}>
-            Login
+            Register
           </Button>
         </form>
 
-        <Divider label="or" labelPosition="center" my="sm" />
+        <Divider label="has account?" labelPosition="center" my="sm" />
 
         <Center>
-          <Link to="/register">
+          <Link to="/login">
             <Button compact variant="white">
-              register
+              login
             </Button>
           </Link>
         </Center>
