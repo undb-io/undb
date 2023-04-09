@@ -4,9 +4,9 @@ import { useMemo } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { LoadingTable } from './loading'
-import React from 'react'
+import loadable from '@loadable/component'
 
-const EGOTable = React.lazy(() => import('./table'))
+const EGOTable = loadable(() => import('./table'))
 
 export const TableUI: React.FC = () => {
   const table = useCurrentTable()

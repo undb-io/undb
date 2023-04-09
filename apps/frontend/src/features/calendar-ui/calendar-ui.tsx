@@ -3,9 +3,9 @@ import { Box, Overlay } from '@undb/ui'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { SelectCalendarField } from './select-calendar-field'
-import { lazy } from 'react'
+import loadable from '@loadable/component'
 
-const CalendarBoard = lazy(() => import('./calendar-board'))
+const CalendarBoard = loadable(() => import('./calendar-board'))
 
 export const CalendarUI: React.FC = () => {
   const table = useCurrentTable()
