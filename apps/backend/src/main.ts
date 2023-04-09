@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core'
+import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import * as trpcExpress from '@trpc/server/adapters/express'
 import { AppRouter } from '@undb/trpc'
 import compression from 'compression'
@@ -7,6 +7,7 @@ import { Logger } from 'nestjs-pino'
 import passport from 'passport'
 import { AppModule } from './app.module.js'
 import { JwtStrategy } from './auth/jwt.strategy.js'
+import { AllExceptionsFilter } from './filters/http-exception.filter.js'
 import { AppRouterSymbol } from './trpc/providers/app-router.js'
 import { TRPC_ENDPOINT } from './trpc/trpc.constants.js'
 
@@ -19,6 +20,9 @@ async function bootstrap() {
   app.enableCors()
   app.enableShutdownHooks()
   app.setGlobalPrefix('/api', { exclude: ['health'] })
+
+  const httpAdapterHost = app.get(HttpAdapterHost)
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost))
 
   const router = app.get<AppRouter>(AppRouterSymbol)
   const jwt = app.get(JwtStrategy)
