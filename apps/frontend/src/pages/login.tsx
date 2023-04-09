@@ -1,4 +1,4 @@
-import { Button, Center, Divider, Paper, PasswordInput, Space, TextInput } from '@undb/ui'
+import { Button, Center, Divider, Paper, PasswordInput, Space, TextInput, notifications } from '@undb/ui'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { FieldInputLabel } from '../features/field-inputs/field-input-label'
@@ -33,8 +33,16 @@ export const Login: React.FC = () => {
   const [login, { isLoading }] = useLoginMutation()
 
   const onSubmit = form.handleSubmit(async (values) => {
-    await login(values).unwrap()
-    navigate(redirectUrl || '/', { replace: true })
+    try {
+      await login(values).unwrap()
+      navigate(redirectUrl || '/', { replace: true })
+    } catch (error) {
+      notifications.show({
+        color: 'red',
+        title: 'login error',
+        message: (error as any).data?.message,
+      })
+    }
   })
 
   return (
