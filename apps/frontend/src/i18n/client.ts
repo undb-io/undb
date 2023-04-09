@@ -12,6 +12,7 @@ i18n
       en: {
         auth: {
           login: 'login',
+          logout: 'logout',
           register: 'register',
           email: 'email',
           'email placeholder': 'your email address',
@@ -195,6 +196,7 @@ i18n
       'zh-CN': {
         auth: {
           login: '登录',
+          logout: '退出登录',
           register: '注册',
           email: '邮箱',
           'email placeholder': '邮箱地址',

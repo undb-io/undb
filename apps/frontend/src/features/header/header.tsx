@@ -5,7 +5,7 @@ import { getMe, logout } from '@undb/store'
 import { useDispatch, useSelector } from 'react-redux'
 
 export const Header: React.FC = () => {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
   const language = i18n.language
   const me = useSelector(getMe)
   const dispatch = useDispatch()
@@ -48,7 +48,7 @@ export const Header: React.FC = () => {
 
           <Menu.Dropdown>
             <Menu.Item icon={<IconLogout />} onClick={() => dispatch(logout())}>
-              Logout
+              {t('logout', { ns: 'auth' })}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
