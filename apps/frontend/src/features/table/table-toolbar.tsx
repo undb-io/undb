@@ -15,7 +15,7 @@ export const TableToolbar: React.FC = () => {
   return (
     <Group
       px="md"
-      py="xs"
+      h={40}
       spacing="xs"
       sx={(theme) => {
         const border = '1px solid ' + theme.colors.gray[3]

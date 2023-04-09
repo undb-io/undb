@@ -72,9 +72,9 @@ export const Table = () => {
     <CurrentTableContext.Provider value={table}>
       <CurrentViewContext.Provider value={view}>
         <ModalsProvider modals={modals as any}>
-          <Stack h="100%" spacing={0}>
+          <Box h="calc(100% - 90px)">
             <TableToolbar />
-            <Box w="100%" h="100%" bg={theme.white} sx={{ overflow: 'scroll', flex: '1 1 auto' }}>
+            <Box w="100%" h="calc(100% - 40px)" bg={theme.white} sx={{ flex: '1 1 auto' }}>
               <ViewDisplay />
             </Box>
 
@@ -83,7 +83,7 @@ export const Table = () => {
             <ViewsListDrawer />
 
             <RecordSelectionDialog />
-          </Stack>
+          </Box>
         </ModalsProvider>
       </CurrentViewContext.Provider>
     </CurrentTableContext.Provider>

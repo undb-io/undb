@@ -1,4 +1,4 @@
-import { Table, useListState } from '@undb/ui'
+import { Box, Table, useListState } from '@undb/ui'
 import type { ColumnDef, ColumnPinningState, OnChangeFn, Row } from '@tanstack/react-table'
 import { flexRender } from '@tanstack/react-table'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
@@ -149,7 +149,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
       : 0
 
   return (
-    <div ref={tableContainerRef} style={{ height: '100%', overflow: 'auto' }}>
+    <Box ref={tableContainerRef} h="100%" sx={{ overflowY: 'scroll' }}>
       <Table withBorder highlightOnHover withColumnBorders verticalSpacing={5} w={rt.getTotalSize()} sx={tableStyles}>
         <thead>
           {rt.getHeaderGroups().map((headerGroup) => (
@@ -175,7 +175,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
           )}
         </tbody>
       </Table>
-    </div>
+    </Box>
   )
 }
 

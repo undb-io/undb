@@ -10,7 +10,13 @@ export const Header: React.FC = () => {
   const me = useSelector(getMe)
 
   return (
-    <Group px="xs" py={6} sx={(theme) => ({ borderBottom: '1px solid ' + theme.colors.gray[3] })} position="apart">
+    <Group
+      px="xs"
+      h={50}
+      py={6}
+      sx={(theme) => ({ borderBottom: '1px solid ' + theme.colors.gray[3] })}
+      position="apart"
+    >
       <Center>
         <Image src={logo} alt="undb" width="20px" height="20px" />
         <Text pl="xs">undb</Text>
