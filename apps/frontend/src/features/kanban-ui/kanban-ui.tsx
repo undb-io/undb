@@ -3,9 +3,9 @@ import { Box, Overlay } from '@undb/ui'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { SelectKanbanField } from './select-kanban-field'
-import { lazy } from 'react'
+import loadable from '@loadable/component'
 
-const KanbanBoard = lazy(() => import('./kanban-board'))
+const KanbanBoard = loadable(() => import('./kanban-board'))
 
 export const KanbanUI: React.FC = () => {
   const table = useCurrentTable()

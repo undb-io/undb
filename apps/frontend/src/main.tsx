@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import { PersistGate, createStore } from '@undb/store'
@@ -18,11 +18,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <I18n>
           <EgoUIProvider theme={{ primaryColor: 'indigo' }} withGlobalStyles withNormalizeCSS>
             <BrowserRouter>
-              <Suspense>
-                <QueryParamProvider adapter={ReactRouter6Adapter}>
-                  <App />
-                </QueryParamProvider>
-              </Suspense>
+              <QueryParamProvider adapter={ReactRouter6Adapter}>
+                <App />
+              </QueryParamProvider>
             </BrowserRouter>
           </EgoUIProvider>
         </I18n>

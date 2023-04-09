@@ -1,13 +1,13 @@
-import { lazy } from 'react'
+import loadable from '@loadable/component'
 
-const SelectCalendarFieldModal = lazy(() => import('./features/calendar-ui/select-calendar-field-modal'))
-const CreateFieldModal = lazy(() => import('./features/create-field-form/create-field-modal'))
-const CreateOptionModal = lazy(() => import('./features/create-option-form/create-option-form-modal'))
-const SelectKanbanFieldModal = lazy(() => import('./features/kanban-ui/select-kanban-field-modal'))
-const SelectTreeViewFieldModal = lazy(() => import('./features/tree-view-ui/select-tree-view-field-modal'))
-const UpdateFieldModal = lazy(() => import('./features/update-field-form/update-field-modal'))
-const UpdateOptionModal = lazy(() => import('./features/update-option-form/update-option-modal'))
-const CreateViewModal = lazy(() => import('./features/view/create-view-modal'))
+const SelectCalendarFieldModal = loadable(() => import('./features/calendar-ui/select-calendar-field-modal'))
+const CreateFieldModal = loadable(() => import('./features/create-field-form/create-field-modal'))
+const CreateOptionModal = loadable(() => import('./features/create-option-form/create-option-form-modal'))
+const SelectKanbanFieldModal = loadable(() => import('./features/kanban-ui/select-kanban-field-modal'))
+const SelectTreeViewFieldModal = loadable(() => import('./features/tree-view-ui/select-tree-view-field-modal'))
+const UpdateFieldModal = loadable(() => import('./features/update-field-form/update-field-modal'))
+const UpdateOptionModal = loadable(() => import('./features/update-option-form/update-option-modal'))
+const CreateViewModal = loadable(() => import('./features/view/create-view-modal'))
 
 export const CREATE_FIELD_MODAL_ID = 'CREATE_FIELD'
 export const UPDATE_FIELD_MODAL_ID = 'UPDATE_FIELD'
