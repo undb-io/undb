@@ -40,3 +40,5 @@ export const CalendarBoard: React.FC<IProps> = ({ field }) => {
     </DndContext>
   )
 }
+
+export default CalendarBoard

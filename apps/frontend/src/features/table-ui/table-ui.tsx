@@ -1,12 +1,12 @@
 import { RecordFactory } from '@undb/core'
 import { useGetRecordsQuery } from '@undb/store'
-import dynamic from 'next/dynamic'
 import { useMemo } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { LoadingTable } from './loading'
+import React from 'react'
 
-const EGOTable = dynamic(() => import('./table').then((d) => d.EGOTable))
+const EGOTable = React.lazy(() => import('./table'))
 
 export const TableUI: React.FC = () => {
   const table = useCurrentTable()

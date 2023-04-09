@@ -5,3 +5,5 @@ import type { ISelectKanbanFieldProps } from './select-kanban-field.props'
 export const SelectKanbanFieldModal = ({ innerProps }: ContextModalProps<ISelectKanbanFieldProps>) => (
   <SelectKanbanField {...innerProps} />
 )
+
+export default SelectKanbanFieldModal

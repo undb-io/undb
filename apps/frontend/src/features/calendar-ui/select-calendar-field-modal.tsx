@@ -5,3 +5,5 @@ import type { ISelectCalendarFieldProps } from './select-calendar-field.props'
 export const SelectCalendarFieldModal = ({ innerProps }: ContextModalProps<ISelectCalendarFieldProps>) => (
   <SelectCalendarField {...innerProps} />
 )
+
+export default SelectCalendarFieldModal

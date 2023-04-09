@@ -17,3 +17,5 @@ export const Root = () => {
     </AppShell>
   )
 }
+
+export default Root

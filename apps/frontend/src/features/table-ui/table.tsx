@@ -192,3 +192,5 @@ const Record: React.FC<{ row: Row<TData>; checked: boolean; columnLength: number
     </tr>
   )
 })
+
+export default EGOTable

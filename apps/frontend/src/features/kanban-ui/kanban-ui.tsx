@@ -1,11 +1,11 @@
 import type { IKanbanField } from '@undb/core'
 import { Box, Overlay } from '@undb/ui'
-import dynamic from 'next/dynamic'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { SelectKanbanField } from './select-kanban-field'
+import { lazy } from 'react'
 
-const KanbanBoard = dynamic(() => import('./kanban-board').then((d) => d.KanbanBoard))
+const KanbanBoard = lazy(() => import('./kanban-board'))
 
 export const KanbanUI: React.FC = () => {
   const table = useCurrentTable()
