@@ -41,6 +41,7 @@ import {
 import type { ISelectKanbanFieldProps } from '../kanban-ui/select-kanban-field.props'
 import { displayTypes } from '../view/display-type'
 import { DisplayTypeIcon, getDisplayTypeColor } from '../view/display-type-icon'
+import { useFixedCacheKey } from '../../hooks/use-fixed-cache-key'
 
 const StackedBy: React.FC<{ fieldId?: FieldId }> = ({ fieldId }) => {
   const table = useCurrentTable()
@@ -152,6 +153,7 @@ const TreeControl: React.FC<{ tree?: ITreeView }> = ({ tree }) => {
 export const ViewMenu: React.FC = () => {
   const table = useCurrentTable()
   const view = useCurrentView()
+  const cacheKey = useFixedCacheKey()
   const navigate = useNavigate()
   const [opened, toggle] = useDisclosure(false)
   const [editing, toggleEditing] = useDisclosure(false)
@@ -159,7 +161,9 @@ export const ViewMenu: React.FC = () => {
 
   const displayType = view.displayType
 
-  const [switchDisplayType] = useSwitchDisplayTypeMutation()
+  const [switchDisplayType] = useSwitchDisplayTypeMutation({
+    fixedCacheKey: cacheKey,
+  })
   const [duplicateView] = useDuplicateViewMutation()
   const [updateViewName] = useUpdateViewNameMutation()
   const [deleteView] = useDeleteViewMutation()
