@@ -18,7 +18,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <I18n>
           <EgoUIProvider theme={{ primaryColor: 'indigo' }} withGlobalStyles withNormalizeCSS>
             <BrowserRouter>
-              <Suspense fallback={null}>
+              <Suspense>
                 <QueryParamProvider adapter={ReactRouter6Adapter}>
                   <App />
                 </QueryParamProvider>
