@@ -52,7 +52,7 @@ export const TableList: React.FC = () => {
   }
 
   return (
-    <Flex>
+    <Flex h={40}>
       <Center>
         <Tabs
           variant="default"
