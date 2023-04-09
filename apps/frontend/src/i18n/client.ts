@@ -10,6 +10,10 @@ i18n
   .init({
     resources: {
       en: {
+        error: {
+          'AUTH.USER_NOT_FOUND': 'user not found',
+          'AUTH.INVALID_PASSWORD': 'invalid password',
+        },
         auth: {
           login: 'login',
           logout: 'logout',
@@ -22,6 +26,7 @@ i18n
           'has account': 'already has an account?',
         },
         common: {
+          error: 'some error happened',
           Apply: 'Apply',
           Cancel: 'Cancel',
           Confirm: 'Confirm',
@@ -194,6 +199,10 @@ i18n
         zod: zodEn,
       },
       'zh-CN': {
+        error: {
+          'AUTH.USER_NOT_FOUND': '没有找到用户',
+          'AUTH.INVALID_PASSWORD': '密码不正确',
+        },
         auth: {
           login: '登录',
           logout: '退出登录',
@@ -206,6 +215,7 @@ i18n
           'has account': '已有账号？',
         },
         common: {
+          error: '发生错误',
           Apply: '应用',
           Cancel: '取消',
           Confirm: '确认',
