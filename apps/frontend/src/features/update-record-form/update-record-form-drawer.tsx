@@ -1,6 +1,6 @@
 import type { IMutateRecordValueSchema, IFieldQueryValue } from '@undb/core'
 import { createMutateRecordValuesSchema } from '@undb/core'
-import { ActionIcon, Drawer, IconChevronLeft, IconChevronRight, LoadingOverlay } from '@undb/ui'
+import { ActionIcon, Drawer, IconChevronLeft, IconChevronRight, LoadingOverlay, useDebouncedValue } from '@undb/ui'
 import { useEffect, useMemo } from 'react'
 import { useAppDispatch, useAppSelector, confirmModal } from '../../hooks'
 import { UpdateRecordForm } from './update-record-form'
@@ -20,10 +20,12 @@ export const UpdateRecordFormDrawer: React.FC = () => {
   const opened = useAppSelector(getHasSelectedRecordId)
 
   const selectedRecordId = useAppSelector(getSelectedRecordId)
-  const { data, isLoading } = useGetRecordQuery(
+  const { data, isFetching } = useGetRecordQuery(
     { id: selectedRecordId, tableId: table.id.value },
     { skip: !selectedRecordId },
   )
+
+  const [deboundedIsFetching] = useDebouncedValue(isFetching, 200)
 
   const defaultValues = useMemo(
     () =>
@@ -98,7 +100,7 @@ export const UpdateRecordFormDrawer: React.FC = () => {
             {t('Update Record')}
           </Drawer.Header>
           <Drawer.Body pb="80px" h="calc(100% - 80px)" sx={{ overflow: 'scroll' }}>
-            <LoadingOverlay visible={isLoading} />
+            <LoadingOverlay visible={deboundedIsFetching} />
             <UpdateRecordForm onCancel={reset} />
           </Drawer.Body>
           <ActionIcon
