@@ -1,13 +1,14 @@
-import { ActionIcon, Center, Group, IconLanguage, Image, Menu, Text, Avatar } from '@undb/ui'
+import { ActionIcon, Center, Group, IconLanguage, Image, Menu, Text, Avatar, IconLogout } from '@undb/ui'
 import logo from '../../assets/logo.svg'
 import { useTranslation } from 'react-i18next'
-import { getMe } from '@undb/store'
-import { useSelector } from 'react-redux'
+import { getMe, logout } from '@undb/store'
+import { useDispatch, useSelector } from 'react-redux'
 
 export const Header: React.FC = () => {
   const { i18n } = useTranslation()
   const language = i18n.language
   const me = useSelector(getMe)
+  const dispatch = useDispatch()
 
   return (
     <Group
@@ -38,9 +39,19 @@ export const Header: React.FC = () => {
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
-        <Avatar radius="xl" ml="sm">
-          {me?.username.slice(0, 2).toUpperCase()}
-        </Avatar>
+        <Menu width={200}>
+          <Menu.Target>
+            <Avatar radius="xl" ml="sm" role="button" sx={{ cursor: 'pointer' }}>
+              {me?.username.slice(0, 2).toUpperCase()}
+            </Avatar>
+          </Menu.Target>
+
+          <Menu.Dropdown>
+            <Menu.Item icon={<IconLogout />} onClick={() => dispatch(logout())}>
+              Logout
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
       </Center>
     </Group>
   )
