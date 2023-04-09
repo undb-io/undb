@@ -19,7 +19,7 @@
     "@types/lodash": "^4.14.192",
     "@types/lodash-es": "^4.17.7",
     "@types/mime-types": "^2.1.1",
-    "rimraf": "^4.4.1",
+    "rimraf": "^5.0.0",
     "tsconfig": "^0.0.0",
     "tsup": "^6.7.0",
     "type-fest": "^3.7.2",
