@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "dependencies": {
     "eslint": "^8.37.0",
-    "eslint-config-next": "^13.2.4",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-turbo": "^1.0.0",
     "eslint-plugin-react": "^7.32.2"

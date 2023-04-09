@@ -89,3 +89,5 @@ export const Table = () => {
     </CurrentTableContext.Provider>
   )
 }
+
+export default Table

@@ -72,3 +72,5 @@ export const Login: React.FC = () => {
     </Center>
   )
 }
+
+export default Login

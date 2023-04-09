@@ -1,11 +1,11 @@
 import type { ITreeViewField } from '@undb/core'
 import { Box, Overlay } from '@undb/ui'
-import dynamic from 'next/dynamic'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { SelectTreeViewField } from './select-tree-view-field'
+import { lazy } from 'react'
 
-const TreeViewBoard = dynamic(() => import('./tree-view-board').then((d) => d.TreeViewBoard))
+const TreeViewBoard = lazy(() => import('./tree-view-board'))
 
 export const TreeViewUI: React.FC = () => {
   const table = useCurrentTable()

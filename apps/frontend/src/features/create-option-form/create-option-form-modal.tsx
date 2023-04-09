@@ -7,3 +7,5 @@ export const CreateOptionModal = ({ innerProps }: ContextModalProps<ICreateOptio
     <CreateOptionForm {...innerProps} />
   </>
 )
+
+export default CreateOptionModal

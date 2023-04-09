@@ -1,9 +1,10 @@
-import { createBrowserRouter } from 'react-router-dom'
-import { Table } from '../pages/table'
-import { Root } from '../pages/root'
-import { Login } from '../pages/login'
+import { lazy } from 'react'
 import { ProtectedRoute } from '../guard/protected-route'
-import { Register } from '../pages/register'
+
+const Table = lazy(() => import('../pages/table'))
+const Root = lazy(() => import('../pages/root'))
+const Login = lazy(() => import('../pages/login'))
+const Register = lazy(() => import('../pages/register'))
 
 export const routes = [
   {

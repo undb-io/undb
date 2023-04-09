@@ -22,3 +22,5 @@ export const TreeViewBoard: React.FC<IProps> = ({ field, ...rest }) => {
 
   return <TreeView field={field} records={listRecords.data?.records ?? []} {...rest} />
 }
+
+export default TreeViewBoard

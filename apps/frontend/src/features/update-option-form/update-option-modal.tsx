@@ -14,3 +14,5 @@ export const UpdateOptionModal = ({ innerProps }: ContextModalProps<IUpdateOptio
     <UpdateOptionForm {...innerProps} />
   </>
 )
+
+export default UpdateOptionModal

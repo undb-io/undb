@@ -70,3 +70,5 @@ export const Register: React.FC = () => {
     </Center>
   )
 }
+
+export default Register

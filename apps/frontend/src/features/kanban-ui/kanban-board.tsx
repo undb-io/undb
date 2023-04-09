@@ -52,3 +52,5 @@ export const KanbanBoard: React.FC<IProps> = ({ field }) => {
 
   return null
 }
+
+export default KanbanBoard
