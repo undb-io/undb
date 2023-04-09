@@ -1,7 +1,7 @@
 {
   "name": "@undb/frontend",
   "version": "0.0.0",
-  "dependencies": {
+  "devDependencies": {
     "@dnd-kit/core": "^6.0.8",
     "@dnd-kit/modifiers": "^6.0.1",
     "@dnd-kit/sortable": "^7.0.2",
@@ -33,9 +33,7 @@
     "use-deep-compare-effect": "^1.8.1",
     "use-query-params": "^2.2.1",
     "zod": "^3.21.4",
-    "zod-i18n-map": "^2.9.0"
-  },
-  "devDependencies": {
+    "zod-i18n-map": "^2.9.0",
     "@undb/eslint-config": "^0.0.0",
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@hookform/devtools": "^4.3.1",
