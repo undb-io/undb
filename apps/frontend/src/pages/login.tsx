@@ -37,11 +37,15 @@ export const Login: React.FC = () => {
       await login(values).unwrap()
       navigate(redirectUrl || '/', { replace: true })
     } catch (error) {
-      notifications.show({
-        color: 'red',
-        title: 'login error',
-        message: (error as any).data?.message,
-      })
+      const data = (error as any).data
+      if (data) {
+        const message = data.code ? t(data.code, { ns: 'error' }) : data.message
+        notifications.show({
+          color: 'red',
+          title: t('error', { ns: 'common' }),
+          message,
+        })
+      }
     }
   })
 
