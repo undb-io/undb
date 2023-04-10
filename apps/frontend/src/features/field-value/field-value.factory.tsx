@@ -1,6 +1,7 @@
 import type {
   AttachmentFieldValue,
   BoolFieldValue,
+  CollaboratorFieldValue,
   ColorFieldValue,
   DateFieldValue,
   DateRangeFieldValue,
@@ -25,6 +26,7 @@ import { ColorValue } from './color-value'
 import type { IRecordDisplayValues } from '@undb/core'
 import { isNumber } from 'lodash-es'
 import { AttachmentValue } from './attachment-value'
+import { CollaboratorValue } from './collaborator-value'
 
 export const FieldValueFactory: React.FC<{
   field: Field
@@ -75,6 +77,19 @@ export const FieldValueFactory: React.FC<{
       if (!(value as ParentFieldValue | undefined)?.unpack()) return null
       const values = field.getDisplayValues(displayValues)[0]
       return <ReferenceValue values={values} />
+    }
+    case 'collaborator': {
+      const userIds = (value as CollaboratorFieldValue | undefined)?.unpack()
+      if (!userIds) return null
+      const values = field.getDisplayValues(displayValues)
+
+      return (
+        <Group spacing={3} noWrap sx={{ overflow: 'hidden' }} h="100%">
+          {values.map((value, index) => (
+            <CollaboratorValue key={index} values={value} />
+          ))}
+        </Group>
+      )
     }
     case 'reference':
     case 'tree': {

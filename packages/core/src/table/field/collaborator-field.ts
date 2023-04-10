@@ -1,6 +1,8 @@
+import { unzip } from 'lodash-es'
 import { z } from 'zod'
 import type { ICollaboratorFilter } from '../filter/collaborator.filter.js'
 import type { ICollaboratorFilterOperator } from '../filter/operators.js'
+import type { IRecordDisplayValues } from '../record/record.type.js'
 import { CollaboratorFieldValue } from './collaborator-field-value.js'
 import type {
   CollaboratorFieldType,
@@ -54,6 +56,10 @@ export class CollaboratorField extends BaseField<ICollaboratorField> {
 
   accept(visitor: IFieldVisitor): void {
     visitor.collaborator(this)
+  }
+
+  getDisplayValues(values?: IRecordDisplayValues): (string | null)[][] {
+    return unzip([values?.[this.id.value]?.username ?? [], values?.[this.id.value]?.avatar ?? []])
   }
 
   get valueSchema() {
