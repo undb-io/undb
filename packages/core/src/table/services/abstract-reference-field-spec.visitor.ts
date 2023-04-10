@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { AverageField } from '../field/average-field.js'
+import type { CollaboratorField } from '../field/collaborator-field.js'
 import type {
   AttachmentField,
   AutoIncrementField,
@@ -80,6 +81,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   abstract reference(field: ReferenceField): void
   abstract tree(field: TreeField): void
   abstract parent(field: ParentField): void
+  collaborator(field: CollaboratorField): void {}
   rating(field: RatingField): void {}
   count(field: CountField): void {}
   sum(field: SumField): void {}

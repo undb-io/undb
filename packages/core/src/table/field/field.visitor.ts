@@ -2,6 +2,7 @@ import type { AttachmentField } from './attachment-field.js'
 import type { AutoIncrementField } from './auto-increment-field.js'
 import type { AverageField } from './average-field.js'
 import type { BoolField } from './bool-field.js'
+import type { CollaboratorField } from './collaborator-field.js'
 import type { ColorField } from './color-field.js'
 import type { CountField } from './count-field.js'
 import type { CreatedAtField } from './created-at-field.js'
@@ -42,4 +43,5 @@ export interface IFieldVisitor {
   sum(field: SumField): void
   average(field: AverageField): void
   lookup(field: LookupField): void
+  collaborator(field: CollaboratorField): void
 }

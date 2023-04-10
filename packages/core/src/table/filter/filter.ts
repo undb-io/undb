@@ -41,6 +41,7 @@ import type { IAverageFilter } from './average.filter.js'
 import { averageFilter, averageFilterValue } from './average.filter.js'
 import type { IBoolFilter } from './bool.filter.js'
 import { boolFilter, boolFilterValue } from './bool.filter.js'
+import { collaboratorFilter, collaboratorFilterValue } from './collaborator.filter.js'
 import type { IColorFilter } from './color.filter.js'
 import { colorFilter } from './color.filter.js'
 import type { IConjunction } from './conjunction.js'
@@ -71,6 +72,7 @@ import {
   autoIncrementFilterOperators,
   averageFilterOperators,
   boolFilterOperators,
+  collaboratorFilterOperators,
   colorFilterOperators,
   countFilterOperators,
   createdAtFilterOperators,
@@ -126,6 +128,7 @@ export const filterValue = z.union([
   sumFilterValue,
   averageFilterValue,
   attachmentFilterValue,
+  collaboratorFilterValue,
 ])
 export type IFilterValue = z.infer<typeof filterValue>
 
@@ -151,6 +154,7 @@ export const operaotrs = z.union([
   sumFilterOperators,
   averageFilterOperators,
   attachmentFilterOperators,
+  collaboratorFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
@@ -176,6 +180,7 @@ const filter = z.discriminatedUnion('type', [
   sumFilter,
   averageFilter,
   attachmentFilter,
+  collaboratorFilter,
 ])
 
 export type IFilter = z.infer<typeof filter>

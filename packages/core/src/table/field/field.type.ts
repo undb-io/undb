@@ -50,6 +50,17 @@ import {
   createBoolFieldValue_internal,
   updateBoolFieldSchema,
 } from './bool-field.type.js'
+import type { CollaboratorFieldValue } from './collaborator-field-value.js'
+import type { CollaboratorField } from './collaborator-field.js'
+import type { ICollaboratorFieldValue } from './collaborator-field.type.js'
+import {
+  collaboratorFieldQuerySchema,
+  collaboratorFieldQueryValue,
+  collaboratorTypeSchema,
+  createCollaboratorFieldSchema,
+  createCollaboratorFieldValue_internal,
+  updateCollaboratorFieldSchema,
+} from './collaborator-field.type.js'
 import type { ColorFieldValue } from './color-field-value.js'
 import type { ColorField } from './color-field.js'
 import type { IColorFieldValue } from './color-field.type.js'
@@ -262,6 +273,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createSumFieldSchema,
   createAverageFieldSchema,
   createAttachmentFieldSchema,
+  createCollaboratorFieldSchema,
 ])
 export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
 
@@ -287,6 +299,7 @@ export const updateFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   updateSumFieldSchema,
   updateAverageFieldSchema,
   updateAttachmentFieldSchema,
+  updateCollaboratorFieldSchema,
 ])
 export type IUpdateFieldSchema = z.infer<typeof updateFieldSchema>
 
@@ -312,6 +325,7 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   sumFieldQuerySchema,
   averageFieldQuerySchema,
   attachmentFieldQuerySchema,
+  collaboratorFieldQuerySchema,
 ])
 export type IQueryFieldSchema = z.infer<typeof queryFieldSchema>
 export const querySchemaSchema = z.array(queryFieldSchema)
@@ -339,6 +353,7 @@ export const fieldTypes = z.union([
   sumTypeSchema,
   averageTypeSchema,
   attachmentTypeSchema,
+  collaboratorTypeSchema,
 ])
 export type IFieldType = z.infer<typeof fieldTypes>
 
@@ -364,6 +379,7 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createSumFieldValue_internal,
   createAverageFieldValue_internal,
   createAttachmentFieldValue_internal,
+  createCollaboratorFieldValue_internal,
 ])
 export type ICreateFieldValueSchema_internal = z.infer<typeof createFieldValueSchema_internal>
 
@@ -400,6 +416,9 @@ export type ISelectField = IBaseField & {
 }
 
 export type IBoolField = IBaseField
+
+export type ICollaboratorField = IBaseField
+
 export type IReferenceField = IBaseField & {
   displayFields?: DisplayFields
   foreignTableId?: TableId
@@ -446,6 +465,7 @@ export type NoneSystemField =
   | SumField
   | AverageField
   | AttachmentField
+  | CollaboratorField
 
 export type PrimitiveField =
   | StringField
@@ -488,6 +508,7 @@ export type FieldValue =
   | SumFieldValue
   | AverageFieldValue
   | AttachmentFieldValue
+  | CollaboratorFieldValue
 
 export type FieldValues = FieldValue[]
 
@@ -513,6 +534,7 @@ export type UnpackedFieldValue =
   | ISumFieldValue
   | IAverageFieldValue
   | IAttachmentFieldValue
+  | ICollaboratorFieldValue
 
 export const fieldQueryValue = z.union([
   treeFieldQueryValue,
@@ -536,6 +558,7 @@ export const fieldQueryValue = z.union([
   sumFieldQueryValue,
   averageFieldQueryValue,
   attachmentFieldQueryValue,
+  collaboratorFieldQueryValue,
 ])
 
 export type IFieldQueryValue = z.infer<typeof fieldQueryValue>

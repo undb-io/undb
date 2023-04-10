@@ -2,6 +2,7 @@ import { AttachmentField } from './attachment-field.js'
 import { AutoIncrementField } from './auto-increment-field.js'
 import { AverageField } from './average-field.js'
 import { BoolField } from './bool-field.js'
+import { CollaboratorField } from './collaborator-field.js'
 import { ColorField } from './color-field.js'
 import { CountField } from './count-field.js'
 import { CreatedAtField } from './created-at-field.js'
@@ -88,6 +89,9 @@ export class FieldFactory {
       case 'attachment': {
         return AttachmentField.create(input)
       }
+      case 'collaborator': {
+        return CollaboratorField.create(input)
+      }
     }
   }
 
@@ -155,6 +159,9 @@ export class FieldFactory {
       }
       case 'attachment': {
         return AttachmentField.unsafeCreate(input)
+      }
+      case 'collaborator': {
+        return CollaboratorField.unsafeCreate(input)
       }
     }
   }
