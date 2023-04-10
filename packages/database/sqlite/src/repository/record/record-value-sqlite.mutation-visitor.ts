@@ -6,14 +6,15 @@ import type {
   AutoIncrementFieldValue,
   AverageFieldValue,
   BoolFieldValue,
+  CollaboratorFieldValue,
   ColorFieldValue,
   CountFieldValue,
   CreatedAtFieldValue,
   DateFieldValue,
   DateRangeFieldValue,
   EmailFieldValue,
-  IdFieldValue,
   IFieldValueVisitor,
+  IdFieldValue,
   LookupFieldValue,
   NumberFieldValue,
   ParentFieldValue,
@@ -94,6 +95,9 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
         .map((item) => new Attachment(this.em.getReference(Table, this.tableId), this.recordId, item))
       this.em.persist(attachments)
     })
+  }
+  collaborator(value: CollaboratorFieldValue): void {
+    throw new Error('Method not implemented.')
   }
   reference(value: ReferenceFieldValue): void {
     const field = this.schema.get(this.fieldId)

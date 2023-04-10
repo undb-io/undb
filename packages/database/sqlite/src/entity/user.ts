@@ -2,7 +2,9 @@ import { Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core'
 import type { User as CoreUser } from '@undb/core'
 import { BaseEntity } from './base.js'
 
-@Entity({ tableName: 'undb_user' })
+export const USER_TABLE_NAME = 'undb_user'
+
+@Entity({ tableName: USER_TABLE_NAME })
 export class User extends BaseEntity {
   constructor(user: CoreUser) {
     super()

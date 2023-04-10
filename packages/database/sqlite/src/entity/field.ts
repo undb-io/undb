@@ -20,6 +20,7 @@ import type {
   IAutoIncrementFieldQuerySchema,
   IAverageFieldQuerySchema,
   IBoolFieldQuerySchema,
+  ICollaboratorFieldQuerySchema,
   IColorFieldQuerySchema,
   ICountFieldQuerySchema,
   ICreatedAtFieldQueryScheam,
@@ -45,6 +46,7 @@ import {
   AutoIncrementField as CoreAutoIncrementField,
   AverageField as CoreAverageField,
   BoolField as CoreBoolField,
+  CollaboratorField as CoreCollaboratorField,
   ColorField as CoreColorField,
   CountField as CoreCountField,
   CreatedAtField as CoreCreatedAtField,
@@ -126,6 +128,7 @@ export abstract class Field extends BaseEntity {
       'sum',
       'average',
       'attachment',
+      'collaborator',
     ],
   })
   type: IFieldType
@@ -636,6 +639,31 @@ export class ReferenceField extends Field {
   }
 }
 
+@Entity({ discriminatorValue: 'collaborator' })
+export class CollaboratorField extends Field {
+  toDomain(): CoreCollaboratorField {
+    return CoreCollaboratorField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      type: 'collaborator',
+      description: this.description,
+      required: !!this.required,
+      display: this.display,
+    })
+  }
+
+  toQuery(): ICollaboratorFieldQuerySchema {
+    return {
+      id: this.id,
+      name: this.name,
+      type: 'collaborator',
+      description: this.description,
+      required: !!this.required,
+      display: this.display,
+    }
+  }
+}
+
 @Entity({ discriminatorValue: 'tree' })
 export class TreeField extends Field {
   constructor(table: Rel<Table>, field: CoreTreeField) {
@@ -930,6 +958,7 @@ export type IField =
   | SumField
   | AverageField
   | AttachmentField
+  | CollaboratorField
 
 export const fieldEntities = [
   IdField,
@@ -953,4 +982,5 @@ export const fieldEntities = [
   SumField,
   AverageField,
   AttachmentField,
+  CollaboratorField,
 ]

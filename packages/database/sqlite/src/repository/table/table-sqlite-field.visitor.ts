@@ -8,6 +8,7 @@ import type {
   AutoIncrementField as CoreAutoIncrementField,
   AverageField as CoreAverageField,
   BoolField as CoreBoolField,
+  CollaboratorField as CoreCollaboratorField,
   ColorField as CoreColorField,
   CountField as CoreCountField,
   CreatedAtField as CoreCreatedAtField,
@@ -32,6 +33,7 @@ import {
   AutoIncrementField,
   AverageField,
   BoolField,
+  CollaboratorField,
   ColorField,
   CountField,
   CreatedAtField,
@@ -53,7 +55,11 @@ import {
   TreeField,
   UpdatedAtField,
 } from '../../entity/index.js'
-import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
+import {
+  AdjacencyListTable,
+  ClosureTable,
+  CollaboratorForeignTable,
+} from '../../underlying-table/underlying-foreign-table.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
 
 export class TableSqliteFieldVisitor extends BaseEntityManager implements IFieldVisitor {
@@ -237,5 +243,16 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
     field.displayFields.set(value.displayFieldIds.map((fieldId) => this.em.getReference(Field, fieldId.value)))
 
     this.em.persist(field)
+  }
+
+  collaborator(value: CoreCollaboratorField): void {
+    const field = new CollaboratorField(this.table, value)
+
+    this.em.persist(field)
+
+    const ft = new CollaboratorForeignTable(this.table.id, value)
+    const queries = ft.getCreateTableSqls(this.em.getKnex())
+
+    this.addQueries(...queries)
   }
 }
