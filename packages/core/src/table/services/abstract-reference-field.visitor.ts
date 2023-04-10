@@ -24,6 +24,7 @@ import type {
   UpdatedAtField,
 } from '../field'
 import type { AverageField } from '../field/average-field'
+import type { CollaboratorField } from '../field/collaborator-field'
 
 export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   id(field: IdField): void {}
@@ -47,4 +48,5 @@ export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   sum(field: SumField): void {}
   average(field: AverageField): void {}
   lookup(field: LookupField): void {}
+  collaborator(field: CollaboratorField): void {}
 }

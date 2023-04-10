@@ -2,6 +2,7 @@ import type { AttachmentFieldValue } from './attachment-field-value.js'
 import type { AutoIncrementFieldValue } from './auto-increment-field-value.js'
 import type { AverageFieldValue } from './average-field-value.js'
 import type { BoolFieldValue } from './bool-field-value.js'
+import type { CollaboratorFieldValue } from './collaborator-field-value.js'
 import type { ColorFieldValue } from './color-field-value.js'
 import type { CountFieldValue } from './count-field-value.js'
 import type { CreatedAtFieldValue } from './created-at-field-value.js'
@@ -42,4 +43,5 @@ export interface IFieldValueVisitor {
   sum(value: SumFieldValue): void
   average(value: AverageFieldValue): void
   lookup(value: LookupFieldValue): void
+  collaborator(value: CollaboratorFieldValue): void
 }

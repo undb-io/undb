@@ -5,6 +5,7 @@ import {
   UnderlyingAutoIncreamentColumn,
   UnderlyingAverageColumn,
   UnderlyingBoolColumn,
+  UnderlyingCollaboratorColumn,
   UnderlyingColorColumn,
   UnderlyingCountColumn,
   UnderlyingCreatedAtColumn,
@@ -59,6 +60,8 @@ export class UnderlyingColumnFactory {
         ]
       case 'select':
         return new UnderlyingSelectColumn(field, tableName)
+      case 'collaborator':
+        return new UnderlyingCollaboratorColumn(field, tableName)
       case 'reference':
         return new UnderlyingReferenceColumn(field, tableName)
       case 'tree':

@@ -77,6 +77,9 @@ export const dateBuiltInOperators = new Set<IDateFilterOperator>([$is_today.valu
 export const referenceFilterOperators = z.union([$eq, $neq])
 export type IReferenceFilterOperator = z.infer<typeof referenceFilterOperators>
 
+export const collaboratorFilterOperators = z.union([$eq, $neq])
+export type ICollaboratorFilterOperator = z.infer<typeof collaboratorFilterOperators>
+
 export const lookupFilterOperators = z.union([$eq, $neq])
 export type ILookupFilterOperator = z.infer<typeof lookupFilterOperators>
 

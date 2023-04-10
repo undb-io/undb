@@ -6,14 +6,15 @@ import type {
   AutoIncrementFieldValue,
   AverageFieldValue,
   BoolFieldValue,
+  CollaboratorFieldValue,
   ColorFieldValue,
   CountFieldValue,
   CreatedAtFieldValue,
   DateFieldValue,
   DateRangeFieldValue,
   EmailFieldValue,
-  IdFieldValue,
   IFieldValueVisitor,
+  IdFieldValue,
   LookupFieldValue,
   NumberFieldValue,
   ParentFieldValue,
@@ -26,10 +27,14 @@ import type {
   TreeFieldValue,
   UpdatedAtFieldValue,
 } from '@undb/core'
-import { ParentField, ReferenceField, TreeField } from '@undb/core'
+import { CollaboratorField, ParentField, ReferenceField, TreeField } from '@undb/core'
 import { Attachment } from '../../entity/attachment.js'
 import { Table } from '../../entity/table.js'
-import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
+import {
+  AdjacencyListTable,
+  ClosureTable,
+  CollaboratorForeignTable,
+} from '../../underlying-table/underlying-foreign-table.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
 
 export class RecordValueSqliteMutationVisitor extends BaseEntityManager implements IFieldValueVisitor {
@@ -95,6 +100,40 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
       this.em.persist(attachments)
     })
   }
+  collaborator(value: CollaboratorFieldValue): void {
+    const field = this.schema.get(this.fieldId)
+    if (!(field instanceof CollaboratorField)) {
+      return
+    }
+
+    const knex = this.em.getKnex()
+    const ft = new CollaboratorForeignTable(this.tableId, field)
+
+    const query = knex
+      .queryBuilder()
+      .table(ft.name)
+      .delete()
+      .where(CollaboratorForeignTable.RECORD_ID, this.recordId)
+      .toQuery()
+    this.addQueries(query)
+
+    const userIds = value.unpack()
+    if (userIds?.length) {
+      for (const userId of userIds) {
+        const query = knex
+          .queryBuilder()
+          .table(ft.name)
+          .insert({
+            [CollaboratorForeignTable.RECORD_ID]: this.recordId,
+            [CollaboratorForeignTable.USER_ID]: userId,
+          })
+          .toQuery()
+
+        this.addQueries(query)
+      }
+    }
+  }
+
   reference(value: ReferenceFieldValue): void {
     const field = this.schema.get(this.fieldId)
     if (!(field instanceof ReferenceField)) {

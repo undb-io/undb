@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import type { Knex } from '@mikro-orm/better-sqlite'
 import type {
   AttachmentField,
   AverageField,
   BoolField,
+  CollaboratorField,
   ColorField,
   CountField,
   DateField,
@@ -109,6 +111,14 @@ abstract class UnderlyingFieldColumn<F extends Field> implements IUnderlyingColu
   abstract build(tb: Knex.TableBuilder, knex: Knex, isNewTable?: boolean): Promisable<void>
 }
 
+abstract class UnderlyingVirtualColumn<F extends Field> extends UnderlyingFieldColumn<F> {
+  override get virtual() {
+    return true
+  }
+
+  build(): Promisable<void> {}
+}
+
 export class UnderlyingStringColumn extends UnderlyingFieldColumn<StringField> {
   build(tb: Knex.TableBuilder): void {
     tb.string(this.name)
@@ -206,63 +216,18 @@ export class UnderlyingSelectColumn extends UnderlyingFieldColumn<SelectField> {
   }
 }
 
-export class UnderlyingReferenceColumn extends UnderlyingFieldColumn<ReferenceField> {
-  override get virtual() {
-    return true
-  }
+export class UnderlyingCollaboratorColumn extends UnderlyingVirtualColumn<CollaboratorField> {}
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  build(): void {}
-}
+export class UnderlyingReferenceColumn extends UnderlyingVirtualColumn<ReferenceField> {}
 
-export class UnderlyingTreeColumn extends UnderlyingFieldColumn<TreeField> {
-  override get virtual() {
-    return true
-  }
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  build(): void {}
-}
+export class UnderlyingTreeColumn extends UnderlyingVirtualColumn<TreeField> {}
 
-export class UnderlyingParentColumn extends UnderlyingFieldColumn<ParentField> {
-  override get virtual() {
-    return true
-  }
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  build(): void {}
-}
+export class UnderlyingParentColumn extends UnderlyingVirtualColumn<ParentField> {}
 
-export class UnderlyingCountColumn extends UnderlyingFieldColumn<CountField> {
-  override get virtual() {
-    return true
-  }
+export class UnderlyingCountColumn extends UnderlyingVirtualColumn<CountField> {}
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  build(): void {}
-}
+export class UnderlyingSumColumn extends UnderlyingVirtualColumn<SumField> {}
 
-export class UnderlyingSumColumn extends UnderlyingFieldColumn<SumField> {
-  override get virtual() {
-    return true
-  }
+export class UnderlyingAverageColumn extends UnderlyingVirtualColumn<AverageField> {}
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  build(): void {}
-}
-
-export class UnderlyingAverageColumn extends UnderlyingFieldColumn<AverageField> {
-  override get virtual() {
-    return true
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  build(): void {}
-}
-
-export class UnderlyingLookupColumn extends UnderlyingFieldColumn<LookupField> {
-  override get virtual(): boolean {
-    return true
-  }
-  // do nothing
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  build(): void {}
-}
+export class UnderlyingLookupColumn extends UnderlyingVirtualColumn<LookupField> {}
