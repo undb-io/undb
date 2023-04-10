@@ -4,6 +4,7 @@ import type { UserId } from './value-objects/index.js'
 export class User {
   public userId!: UserId
   public username!: string
+  public avatar?: string
   public email!: string
   public password!: string
 
@@ -16,6 +17,7 @@ export class User {
       userId: this.userId.value,
       username: this.username,
       email: this.email,
+      avatar: this.avatar,
     }
   }
 }

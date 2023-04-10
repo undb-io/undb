@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230407135852 extends Migration {
+export class Migration20230410051934 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `undb_table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `views_order` text null, primary key (`id`));',
@@ -39,16 +39,6 @@ export class Migration20230407135852 extends Migration {
     this.addSql('create index `undb_option_field_id_index` on `undb_option` (`field_id`);')
 
     this.addSql(
-      'create table `undb_field_display_fields` (`field_1_id` text not null, `field_2_id` text not null, constraint `undb_field_display_fields_field_1_id_foreign` foreign key(`field_1_id`) references `undb_field`(`id`) on delete cascade on update cascade, constraint `undb_field_display_fields_field_2_id_foreign` foreign key(`field_2_id`) references `undb_field`(`id`) on delete cascade on update cascade, primary key (`field_1_id`, `field_2_id`));',
-    )
-    this.addSql(
-      'create index `undb_field_display_fields_field_1_id_index` on `undb_field_display_fields` (`field_1_id`);',
-    )
-    this.addSql(
-      'create index `undb_field_display_fields_field_2_id_index` on `undb_field_display_fields` (`field_2_id`);',
-    )
-
-    this.addSql(
       'create table `undb_attachment` (`id` text not null, `record_id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text not null, `mime_type` text not null, `name` text not null, `size` integer not null, `token` text not null, `extension` text not null, constraint `undb_attachment_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on update cascade, primary key (`id`, `record_id`));',
     )
     this.addSql('create index `undb_attachment_deleted_at_index` on `undb_attachment` (`deleted_at`);')
@@ -59,7 +49,17 @@ export class Migration20230407135852 extends Migration {
     this.addSql('create index `undb_attachment_extension_index` on `undb_attachment` (`extension`);')
 
     this.addSql(
-      'create table `undb_user` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `username` text not null, `email` text not null, `password` text not null, primary key (`id`));',
+      'create table `undb_field_display_fields` (`field_1_id` text not null, `field_2_id` text not null, constraint `undb_field_display_fields_field_1_id_foreign` foreign key(`field_1_id`) references `undb_field`(`id`) on delete cascade on update cascade, constraint `undb_field_display_fields_field_2_id_foreign` foreign key(`field_2_id`) references `undb_field`(`id`) on delete cascade on update cascade, primary key (`field_1_id`, `field_2_id`));',
+    )
+    this.addSql(
+      'create index `undb_field_display_fields_field_1_id_index` on `undb_field_display_fields` (`field_1_id`);',
+    )
+    this.addSql(
+      'create index `undb_field_display_fields_field_2_id_index` on `undb_field_display_fields` (`field_2_id`);',
+    )
+
+    this.addSql(
+      'create table `undb_user` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `avatar` text null, `username` text not null, `email` text not null, `password` text not null, primary key (`id`));',
     )
     this.addSql('create index `undb_user_deleted_at_index` on `undb_user` (`deleted_at`);')
     this.addSql('create index `undb_user_username_index` on `undb_user` (`username`);')
