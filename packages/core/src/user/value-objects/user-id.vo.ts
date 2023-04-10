@@ -4,7 +4,7 @@ import { Err, Ok } from 'oxide.ts'
 import { InvalidUserIdError } from '../user.errors.js'
 
 export class UserId extends NanoID {
-  private static USER_ID_PREFIX = 'tbl'
+  private static USER_ID_PREFIX = 'usr'
   private static USER_ID_SIZE = 8
 
   static create(): UserId {
