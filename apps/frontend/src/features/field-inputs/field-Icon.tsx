@@ -21,6 +21,7 @@ import {
   IconSquareCheck,
   IconStars,
   IconSum,
+  IconUser,
 } from '@undb/ui'
 import React from 'react'
 interface FieldProps {
@@ -61,6 +62,8 @@ export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16, color }) => {
       return <IconListCheck size={size} color={color} />
     case 'reference':
       return <IconRelationManyToMany size={size} color={color} />
+    case 'collaborator':
+      return <IconUser size={size} color={color} />
     case 'count':
       return <IconCalculator size={size} color={color} />
     case 'sum':
