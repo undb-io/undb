@@ -5,6 +5,7 @@ export const queryUser = z
     userId: z.string(),
     username: z.string(),
     email: z.string().email(),
+    avatar: z.string().optional(),
   })
   .strict()
 
@@ -13,4 +14,5 @@ export const unsafeCreateUserSchema = z.object({
   username: z.string(),
   email: z.string().email(),
   password: z.string(),
+  avatar: z.string().optional(),
 })

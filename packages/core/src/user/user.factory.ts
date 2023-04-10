@@ -1,6 +1,6 @@
 import { and } from '@undb/domain'
 import type { UserSpecification } from './specifications/index.js'
-import { WithUserEmail, WithUserId, WithUserPassword, WithUsername } from './specifications/index.js'
+import { WithUserAvatar, WithUserEmail, WithUserId, WithUserPassword, WithUsername } from './specifications/index.js'
 import { User } from './user'
 import type { IUnsafeCreateUser } from './user.type.js'
 
@@ -18,6 +18,7 @@ export class UserFactory {
       WithUserId.fromString(input.userId),
       WithUserPassword.fromString(input.password),
       WithUsername.fromString(input.username),
+      WithUserAvatar.fromString(input.avatar),
     )
   }
 }

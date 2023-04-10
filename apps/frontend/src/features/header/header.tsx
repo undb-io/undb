@@ -39,19 +39,23 @@ export const Header: React.FC = () => {
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
-        <Menu width={200}>
-          <Menu.Target>
-            <Avatar radius="xl" ml="sm" role="button" sx={{ cursor: 'pointer' }}>
-              {me?.username.slice(0, 2).toUpperCase()}
-            </Avatar>
-          </Menu.Target>
+        {me && (
+          <Menu width={200}>
+            <Menu.Target>
+              <Avatar radius="xl" ml="sm" role="button" sx={{ cursor: 'pointer' }}>
+                {me.username.slice(0, 2).toUpperCase()}
+              </Avatar>
+            </Menu.Target>
 
-          <Menu.Dropdown>
-            <Menu.Item icon={<IconLogout />} onClick={() => dispatch(logout())}>
-              {t('logout', { ns: 'auth' })}
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
+            <Menu.Dropdown>
+              <Menu.Item fw={600}>{me.username}</Menu.Item>
+              <Menu.Divider />
+              <Menu.Item icon={<IconLogout size={16} />} onClick={() => dispatch(logout())}>
+                {t('logout', { ns: 'auth' })}
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+        )}
       </Center>
     </Group>
   )

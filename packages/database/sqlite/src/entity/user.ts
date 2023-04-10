@@ -10,9 +10,13 @@ export class User extends BaseEntity {
     this.email = user.email
     this.username = user.username
     this.password = user.password
+    this.avatar = user.avatar
   }
   @PrimaryKey()
   id: string
+
+  @Property({ nullable: true })
+  avatar?: string
 
   @Property()
   @Index()
@@ -24,5 +28,5 @@ export class User extends BaseEntity {
   email: string
 
   @Property()
-  password!: string
+  password: string
 }
