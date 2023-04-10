@@ -212,7 +212,8 @@
             "lookup",
             "sum",
             "average",
-            "attachment"
+            "attachment",
+            "collaborator"
           ],
           "mappedType": "enum"
         },

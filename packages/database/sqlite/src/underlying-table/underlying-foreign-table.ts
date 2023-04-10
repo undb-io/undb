@@ -20,7 +20,7 @@ export class CollaboratorForeignTable extends BaseUnderlyingForeignTable<Collabo
   static USER_ID = 'user_id'
 
   get name(): IUderlyingForeignTableName {
-    return `${this.field.id.value}_${USER_TABLE_NAME}_collaborator`
+    return `${this.field.id.value}_collaborator`
   }
 
   getCreateTableSqls(knex: Knex<any, any[]>): string[] {
