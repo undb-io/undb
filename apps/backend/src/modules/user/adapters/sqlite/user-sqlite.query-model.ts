@@ -1,6 +1,6 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
-import { IQueryUser } from '@undb/core'
+import { IQueryUser, type UserSpecification } from '@undb/core'
 import { EntityManager, UserSqliteQueryModel } from '@undb/sqlite'
 import { Option } from 'oxide.ts'
 
@@ -8,6 +8,16 @@ import { Option } from 'oxide.ts'
 export class NestUserSqliteQueryModel extends UserSqliteQueryModel {
   constructor(protected readonly orm: MikroORM) {
     super(orm.em as EntityManager)
+  }
+
+  @UseRequestContext()
+  override find() {
+    return super.find()
+  }
+
+  @UseRequestContext()
+  override findOne(spec: UserSpecification) {
+    return super.findOne(spec)
   }
 
   @UseRequestContext()

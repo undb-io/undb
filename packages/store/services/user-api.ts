@@ -6,7 +6,7 @@ import type { IGetUsersOutput, IGetUsersQuery } from '@undb/cqrs'
 import type { TRPCError } from '@undb/trpc'
 import { trpc } from '../trpc'
 
-const userAdapter = createEntityAdapter<IQueryUser>()
+const userAdapter = createEntityAdapter<IQueryUser>({ selectId: (u) => u.userId })
 const initialState = userAdapter.getInitialState()
 
 type QueryUserEntityState = EntityState<IQueryUser>

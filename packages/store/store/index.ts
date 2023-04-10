@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { persistStore } from 'redux-persist'
 import { rootReducder } from '../reducers'
 
-import { attachment, authApi } from '../services'
+import { attachment, authApi, userApi } from '../services'
 import { api } from '../services/api'
 
 export const createStore = () => {
@@ -12,7 +12,8 @@ export const createStore = () => {
       getDefaultMiddleware({ serializableCheck: false })
         .concat(api.middleware)
         .concat(attachment.middleware)
-        .concat(authApi.middleware),
+        .concat(authApi.middleware)
+        .concat(userApi.middleware),
     devTools: process.env.NODE_ENV !== 'production',
   })
 
