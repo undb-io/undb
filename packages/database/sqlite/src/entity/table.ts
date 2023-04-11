@@ -11,6 +11,7 @@ export class Table extends BaseEntity {
     super()
     this.id = table.id.value
     this.name = table.name.value
+    this.emoji = table.emoji.unpack()
     this.viewsOrder = table.viewsOrder.toJSON()
   }
 
@@ -19,6 +20,9 @@ export class Table extends BaseEntity {
 
   @Property()
   name!: string
+
+  @Property()
+  emoji!: string
 
   @OneToMany(() => Field, (field) => field.table, { orphanRemoval: true, cascade: [Cascade.ALL] })
   fields = new Collection<IField>(this)

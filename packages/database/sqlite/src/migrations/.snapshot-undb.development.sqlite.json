@@ -51,6 +51,15 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "emoji": {
+          "name": "emoji",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "views_order": {
           "name": "views_order",
           "type": "text",

@@ -22,6 +22,7 @@ import type { TableCompositeSpecificaiton } from './specifications/interface.js'
 import type { IUpdateTableSchema } from './table.schema.js'
 import type { TableId } from './value-objects/index.js'
 import { TableSchema } from './value-objects/index.js'
+import type { TableEmoji } from './value-objects/table-emoji.vo.js'
 import type { TableName } from './value-objects/table-name.vo.js'
 import type {
   ICreateViewSchema,
@@ -61,6 +62,7 @@ import { Views } from './view/views.js'
 export interface IQueryTable {
   id: string
   name: string
+  emoji: string
   schema: IQuerySchemaSchema
   views?: IQueryView[]
   viewsOrder?: string[]
@@ -70,6 +72,7 @@ export class Table {
   public id!: TableId
   public name!: TableName
   public schema: TableSchema = new TableSchema([])
+  public emoji!: TableEmoji
   public views: Views = new Views([])
   public viewsOrder: ViewsOrder = ViewsOrder.empty()
 
