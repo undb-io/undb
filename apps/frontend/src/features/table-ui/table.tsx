@@ -115,6 +115,9 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
   const data = useMemo(() => records.map((r) => r.valuesJSON), [records])
   const rt = useReactTable({
     data,
+    meta: {
+      tableId: table.id.value,
+    },
     columns,
     state: {
       columnVisibility,
@@ -166,7 +169,15 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
           )}
           {rowVirtualizer.getVirtualItems().map((virtualRow) => {
             const row = rows[virtualRow.index]
-            return <Record key={row.id} row={row} checked={row.getIsSelected()} columnLength={columns.length} />
+            return (
+              <Record
+                key={row.id}
+                row={row}
+                checked={row.getIsSelected()}
+                columnLength={columns.length}
+                tableId={table.id.value}
+              />
+            )
           })}
           {paddingBottom > 0 && (
             <tr>
@@ -179,18 +190,20 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
   )
 }
 
-const Record: React.FC<{ row: Row<TData>; checked: boolean; columnLength: number }> = React.memo(({ row }) => {
-  const dispatch = useAppDispatch()
+const Record: React.FC<{ row: Row<TData>; checked: boolean; columnLength: number; tableId: string }> = React.memo(
+  ({ row }) => {
+    const dispatch = useAppDispatch()
 
-  return (
-    <tr
-      onClick={() => {
-        dispatch(setSelectedRecordId(row.id))
-      }}
-    >
-      {row.getVisibleCells().map((cell) => flexRender(cell.column.columnDef.cell, cell.getContext()))}
-    </tr>
-  )
-})
+    return (
+      <tr
+        onClick={() => {
+          dispatch(setSelectedRecordId(row.id))
+        }}
+      >
+        {row.getVisibleCells().map((cell) => flexRender(cell.column.columnDef.cell, cell.getContext()))}
+      </tr>
+    )
+  },
+)
 
 export default EGOTable
