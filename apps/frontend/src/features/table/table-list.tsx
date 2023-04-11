@@ -1,6 +1,6 @@
 import { TableFactory } from '@undb/core'
 import { getCurrentTableId, useGetTablesQuery } from '@undb/store'
-import { ActionIcon, Button, Center, Flex, IconChevronDown, IconPlus, Loader, Menu, Tabs } from '@undb/ui'
+import { ActionIcon, Center, Flex, IconChevronDown, IconPlus, Loader, Menu, Tabs } from '@undb/ui'
 import { useSetAtom } from 'jotai'
 import { useNavigate, useParams } from 'react-router-dom'
 import { unstable_batchedUpdates } from 'react-dom'
@@ -11,7 +11,7 @@ import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.
 import { UpdateTableFormDrawer } from '../update-table-form/update-table-form-drawer'
 import { TableMenuDropdown } from './table-menu-dropdown'
 import { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
+import { EmptyTableList } from './empty-table-list'
 
 export const TableList: React.FC = () => {
   const navigate = useNavigate()
@@ -33,7 +33,6 @@ export const TableList: React.FC = () => {
 
   const setOpened = useSetAtom(createTableFormDrawerOpened)
   const close = useCloseAllDrawers()
-  const { t } = useTranslation()
 
   if (isLoading && !currentTableId) {
     return (
@@ -44,11 +43,7 @@ export const TableList: React.FC = () => {
   }
 
   if (!data?.ids.length && !currentTableId) {
-    return (
-      <Center w="100%" h="100%">
-        <Button onClick={() => setOpened(true)}>{t('Create New Table')}</Button>
-      </Center>
-    )
+    return <EmptyTableList />
   }
 
   return (
