@@ -11,12 +11,14 @@ import { confirmModal } from '../../hooks'
 import { CreateTableForm } from './create-table-form'
 import { activeFieldAtom } from './create-table-form-schema.atom'
 import { createTableFormDrawerOpened } from './drawer-opened.atom'
+import { DEFAULT_TABLE_EMOJI } from '@undb/core'
 
 export const CreateTableFormDrawer: React.FC = () => {
   const [opened, setOpened] = useAtom(createTableFormDrawerOpened)
 
   const defaultValues: ICreateTableInput = {
     name: '',
+    emoji: DEFAULT_TABLE_EMOJI,
     schema: [],
   }
 
