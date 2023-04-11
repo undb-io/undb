@@ -3,6 +3,7 @@ import logo from '../../assets/logo.svg'
 import { useTranslation } from 'react-i18next'
 import { getMe, logout } from '@undb/store'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 export const Header: React.FC = () => {
   const { i18n, t } = useTranslation()
@@ -19,8 +20,12 @@ export const Header: React.FC = () => {
       position="apart"
     >
       <Center>
-        <Image src={logo} alt="undb" width="20px" height="20px" />
-        <Text pl="xs">undb</Text>
+        <Link to="/" style={{ display: 'flex', textDecorationLine: 'none', alignItems: 'center', userSelect: 'none' }}>
+          <Image src={logo} alt="undb" width="20px" height="20px" />
+          <Text pl="xs" color="blue.9" fw={600}>
+            undb
+          </Text>
+        </Link>
       </Center>
 
       <Center mr="lg">
