@@ -86,6 +86,7 @@ i18n
           Text: 'Text',
         },
         table: {
+          'shortcut T': 'Use shortcut {{ shortcut }} to create project from anywhere.',
           'Create New Record': 'Create New Record',
           Views: 'Views',
           Field: 'Field',
@@ -276,6 +277,7 @@ i18n
           Text: '文本',
         },
         table: {
+          'shortcut T': '使用快捷键 <0>{{shortcut}}</0> 在任何页面创建表。',
           'Create New Record': '创建新记录',
           Views: '视图',
           Field: '列',
@@ -294,7 +296,7 @@ i18n
           'Duplicate View': '复制视图',
           'Delete View': '删除视图',
           'Search Field': '搜索列',
-          'Create New Table': '创建表',
+          'Create New Table': '创建新表',
           'Create New Field': '创建列',
           'Create New Filter': '添加筛选',
           'Create New Sort': '添加排序',
