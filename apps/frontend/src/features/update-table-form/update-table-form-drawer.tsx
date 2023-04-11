@@ -1,5 +1,5 @@
 import type { IUpdateTableSchema } from '@undb/core'
-import { updateTableSchema } from '@undb/core'
+import { DEFAULT_TABLE_EMOJI, updateTableSchema } from '@undb/core'
 import { Drawer } from '@undb/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom } from 'jotai'
@@ -17,6 +17,7 @@ export const UpdateTableFormDrawer: React.FC = () => {
   const [opened, setOpened] = useAtom(updateTableFormDrawerOpened)
 
   const defaultValues: IUpdateTableSchema = {
+    emoji: table.emoji.unpack() ?? DEFAULT_TABLE_EMOJI,
     name: table.name.value,
   }
 

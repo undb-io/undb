@@ -40,6 +40,7 @@ import type {
   ITableSpecVisitor,
   WithFilter,
   WithNewField,
+  WithTableEmoji,
   WithTableId,
   WithTableName,
   WithTableSchema,
@@ -98,6 +99,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   viewEqual(s: WithTableView): void {}
   viewNameEqual(s: WithViewName): void {}
   newView(s: WithNewView): void {}
+  emojiEqual(s: WithTableEmoji): void {}
   withoutView(s: WithoutView): void {}
   viewsOrderEqual(s: WithViewsOrder): void {}
   sortsEqual(s: WithSorts): void {}

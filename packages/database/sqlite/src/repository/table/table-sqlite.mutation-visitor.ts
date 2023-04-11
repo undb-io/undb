@@ -25,6 +25,7 @@ import type {
   WithShowSystemFieldsSpec,
   WithSorts,
   WithSymmetricReferenceField,
+  WithTableEmoji,
   WithTableName,
   WithTableSchema,
   WithTableView,
@@ -71,6 +72,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   nameEqual(s: WithTableName): void {
     const table = this.table
     wrap(table).assign({ name: s.name.value })
+    this.em.persist(table)
+  }
+  emojiEqual(s: WithTableEmoji): void {
+    const table = this.table
+    wrap(table).assign({ emoji: s.emoji.unpack() })
     this.em.persist(table)
   }
   schemaEqual(s: WithTableSchema): void {

@@ -12,6 +12,7 @@ import { UpdateTableFormDrawer } from '../update-table-form/update-table-form-dr
 import { TableMenuDropdown } from './table-menu-dropdown'
 import { useEffect } from 'react'
 import { EmptyTableList } from './empty-table-list'
+import { Emoji } from 'emoji-picker-react'
 
 export const TableList: React.FC = () => {
   const navigate = useNavigate()
@@ -66,6 +67,7 @@ export const TableList: React.FC = () => {
                 key={t.id}
                 value={t.id}
                 p="xs"
+                icon={<Emoji size={14} unified={t.emoji} />}
                 rightSection={
                   t.id === currentTableId && (
                     <>

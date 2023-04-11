@@ -8,6 +8,7 @@ export class TableSqliteMapper {
     return {
       id: entity.id,
       name: entity.name,
+      emoji: entity.emoji,
       schema: entity.fields.getItems().map((field) => field.toQuery()),
       viewsOrder: entity.viewsOrder,
       views: entity.views.getItems().map(
@@ -35,6 +36,7 @@ export class TableSqliteMapper {
       id: entity.id,
       name: entity.name,
       schema: [],
+      emoji: entity.emoji,
       views: entity.views.toArray().map((view) => ({
         id: view.id,
         name: view.name,
