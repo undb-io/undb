@@ -5,6 +5,8 @@
 Private first, unified, self-hosted no code database.
 
 <a href="https://demo.undb.xyz/">Live Demo</a>
+·
+<a href="https://docs.undb.xyz/">Documentation</a>
 
 > use email `test@example.com` and password `123456` to login
 
