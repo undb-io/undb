@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import type { ITableSpecVisitor, WithNewField, WithoutField, WithoutOption, WithTableSchema } from '@undb/core'
+import type { ITableSpecVisitor, WithNewField, WithTableSchema, WithoutField, WithoutOption } from '@undb/core'
 import { UnderlyingColumnBuilder } from './underlying-column.builder.js'
 
 export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
@@ -34,6 +34,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   nameEqual(): void {}
+  emojiEqual(): void {}
   schemaEqual(s: WithTableSchema): void {
     this.sb = this.#sb.alterTable(this.tableName, (tb) => {
       const builder = new UnderlyingColumnBuilder(this.em, this.knex, tb, this.tableName)

@@ -1,5 +1,5 @@
 import { and, andOptions } from '@undb/domain'
-import { difference } from 'lodash-es'
+import { difference, isString } from 'lodash-es'
 import type { Option, Result } from 'oxide.ts'
 import { None, Ok, Some } from 'oxide.ts'
 import type {
@@ -17,7 +17,7 @@ import { RecordFactory } from './record/record.factory.js'
 import type { IMutateRecordValueSchema } from './record/record.schema.js'
 import { createRecordInputs } from './record/record.utils.js'
 import { WithRecordValues } from './record/specifications/record-values.specification.js'
-import { WithTableName } from './specifications/index.js'
+import { WithTableEmoji, WithTableName } from './specifications/index.js'
 import type { TableCompositeSpecificaiton } from './specifications/interface.js'
 import type { IUpdateTableSchema } from './table.schema.js'
 import type { TableId } from './value-objects/index.js'
@@ -169,11 +169,21 @@ export class Table {
     return spec
   }
 
+  public updateEmoji(emoji: string): TableCompositeSpecificaiton {
+    const spec = WithTableEmoji.fromString(emoji)
+    spec.mutate(this).unwrap()
+    return spec
+  }
+
   public update(input: IUpdateTableSchema): Option<TableCompositeSpecificaiton> {
     const specs: TableCompositeSpecificaiton[] = []
 
-    if (input.name) {
+    if (isString(input.name)) {
       const spec = this.updateName(input.name)
+      specs.push(spec)
+    }
+    if (isString(input.emoji)) {
+      const spec = this.updateEmoji(input.emoji)
       specs.push(spec)
     }
 

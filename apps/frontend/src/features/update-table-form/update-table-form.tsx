@@ -1,9 +1,22 @@
-import type { IUpdateTableSchema } from '@undb/core'
+import { DEFAULT_TABLE_EMOJI, type IUpdateTableSchema } from '@undb/core'
 import { useUpdateTableMutation } from '@undb/store'
-import { Alert, Box, Button, Divider, Group, IconAlertCircle, Stack, Text, TextInput } from '@undb/ui'
-import { useFormContext } from 'react-hook-form'
+import {
+  ActionIcon,
+  Alert,
+  Box,
+  Button,
+  Divider,
+  Group,
+  IconAlertCircle,
+  Popover,
+  Stack,
+  Text,
+  TextInput,
+} from '@undb/ui'
+import { Controller, useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useCurrentTable } from '../../hooks/use-current-table'
+import EmojiPicker, { Emoji } from 'emoji-picker-react'
 
 interface IProps {
   onCancel: () => void
@@ -35,16 +48,32 @@ export const UpdateTableForm: React.FC<IProps> = ({ onCancel, onSuccess: success
   return (
     <form onSubmit={onSubmit}>
       <Stack>
-        <TextInput
-          error={form.formState.errors['name']?.message}
-          label={
-            <Text size={14} fw={700} display="inline-block">
-              {t('Name', { ns: 'common' })}
-            </Text>
-          }
-          {...form.register('name')}
-          required={true}
-        />
+        <Group>
+          <Popover>
+            <Popover.Target>
+              <ActionIcon mb={10} size="xs" sx={{ alignSelf: 'end' }}>
+                <Emoji size={20} unified={form.watch('emoji') ?? DEFAULT_TABLE_EMOJI} />
+              </ActionIcon>
+            </Popover.Target>
+            <Popover.Dropdown>
+              <Controller
+                name="emoji"
+                render={(form) => <EmojiPicker onEmojiClick={(emoji) => form.field.onChange(emoji.unified)} />}
+              />
+            </Popover.Dropdown>
+          </Popover>
+          <TextInput
+            error={form.formState.errors['name']?.message}
+            label={
+              <Text size={14} fw={700} display="inline-block">
+                {t('Name', { ns: 'common' })}
+              </Text>
+            }
+            {...form.register('name')}
+            required={true}
+            sx={{ flex: 1 }}
+          />
+        </Group>
 
         <Divider />
         {isError && (
