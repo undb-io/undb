@@ -24,9 +24,9 @@ export class RecordFactory {
     if (Array.isArray(spec)) {
       return and(...spec)
         .unwrap()
-        .mutate(Record.create())
+        .mutate(Record.empty())
     }
-    return spec.mutate(Record.create())
+    return spec.mutate(Record.empty())
   }
 
   static fromQueryRecords(rs: IQueryRecordSchema[], schema: TableSchemaIdMap): Records {

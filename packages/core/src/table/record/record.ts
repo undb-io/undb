@@ -22,7 +22,7 @@ export class Record {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  static create() {
+  static empty() {
     const record = new Record()
 
     return record
