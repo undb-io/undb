@@ -8,6 +8,7 @@ import {
   UnderlyingCreatedAtColumn,
   UnderlyingCreatedByColumn,
   UnderlyingDeletedAtColumn,
+  UnderlyingDeletedByColumn,
   UnderlyingIdColumn,
   UnderlyingUpdatedAtColumn,
   UnderlyingUpdatedByColumn,
@@ -92,6 +93,11 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
 
   createDeletedAt(): this {
     new UnderlyingDeletedAtColumn(undefined, this.tableName).build(this.tb)
+    return this
+  }
+
+  createDeletedBy(): this {
+    new UnderlyingDeletedByColumn(undefined, this.tableName).build(this.tb)
     return this
   }
 

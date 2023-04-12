@@ -19,6 +19,7 @@ export class UnderlyingTableBuilder extends BaseEntityManager {
           .createUpdatedAt()
           .createUpdatedBy()
           .createDeletedAt()
+          .createDeletedBy()
           .createUnderlying(table.schema.nonSystemFields)
           .build()
 

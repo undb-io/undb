@@ -59,6 +59,6 @@ export class UpdatedByField extends BaseField<IUpdatedByField> {
   }
 
   get valueSchema(): ZodTypeAny {
-    return z.string().datetime()
+    return z.any()
   }
 }

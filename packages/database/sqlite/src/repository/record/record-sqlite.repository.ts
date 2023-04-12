@@ -15,7 +15,7 @@ import { and } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { Some } from 'oxide.ts'
 import { Table } from '../../entity/table.js'
-import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants.js'
+import { INTERNAL_COLUMN_DELETED_AT_NAME, INTERNAL_COLUMN_DELETED_BY_NAME } from '../../underlying-table/constants.js'
 import { UnderlyingTableSqliteManager } from '../../underlying-table/underlying-table-sqlite.manager.js'
 import type { Job } from '../base-entity-manager.js'
 import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
@@ -147,6 +147,8 @@ export class RecordSqliteRepository implements IRecordRepository {
   }
 
   async deleteOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<void> {
+    const userId = this.cls.get('user.userId')
+
     await this.em.transactional(async (em) => {
       const table = await em.findOneOrFail(Table, tableId, {
         populate: ['referencedBy'],
@@ -156,7 +158,10 @@ export class RecordSqliteRepository implements IRecordRepository {
       const qb = knex.queryBuilder()
 
       qb.from(tableId)
-        .update({ [INTERNAL_COLUMN_DELETED_AT_NAME]: new Date() })
+        .update({
+          [INTERNAL_COLUMN_DELETED_AT_NAME]: new Date(),
+          [INTERNAL_COLUMN_DELETED_BY_NAME]: userId,
+        })
         .where({ id })
 
       const mv = new RecordSqliteMutationVisitor(this.cls, tableId, id, schema, em, qb)
@@ -181,6 +186,8 @@ export class RecordSqliteRepository implements IRecordRepository {
   }
 
   async deleteManyByIds(tableId: string, ids: string[], schema: TableSchemaIdMap): Promise<void> {
+    const userId = this.cls.get('user.userId')
+
     await this.em.transactional(async (em) => {
       const table = await em.findOneOrFail(Table, tableId, {
         populate: ['referencedBy'],
@@ -192,6 +199,7 @@ export class RecordSqliteRepository implements IRecordRepository {
         .queryBuilder()
         .from(tableId)
         .update(INTERNAL_COLUMN_DELETED_AT_NAME, new Date())
+        .update(INTERNAL_COLUMN_DELETED_BY_NAME, userId)
         .whereIn(INTERNAL_COLUMN_ID_NAME, ids)
 
       for (const id of ids) {

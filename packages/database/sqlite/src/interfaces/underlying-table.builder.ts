@@ -8,5 +8,6 @@ export interface IUnderlyingColumnBuilder {
   createUpdatedAt(): this
   createUpdatedBy(): this
   createDeletedAt(): this
+  createDeletedBy(): this
   createUnderlying(fields: NoneSystemField[]): this
 }

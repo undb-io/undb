@@ -59,6 +59,6 @@ export class CreatedByField extends BaseField<ICreatedByField> {
   }
 
   get valueSchema(): ZodTypeAny {
-    return z.string().datetime()
+    return z.any()
   }
 }
