@@ -48,6 +48,7 @@ describe('RecordValueSqliteVisitor', () => {
         {
           "fld1_from": 2022-03-02T00:00:00.000Z,
           "fld1_to": 2022-03-03T00:00:00.000Z,
+          "updated_by": undefined,
         }
       `)
 
@@ -73,7 +74,11 @@ describe('RecordValueSqliteVisitor', () => {
     test('should insert into data to adjacency list table', () => {
       visitor.reference(new ReferenceFieldValue(['foreign_record1', 'foreign_record_2']))
 
-      expect(visitor.data).toMatchInlineSnapshot('{}')
+      expect(visitor.data).toMatchInlineSnapshot(`
+        {
+          "updated_by": undefined,
+        }
+      `)
       expect(visitor.queries).toMatchInlineSnapshot('[]')
     })
   })
