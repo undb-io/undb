@@ -6,6 +6,7 @@ import { CollaboratorField } from './collaborator-field.js'
 import { ColorField } from './color-field.js'
 import { CountField } from './count-field.js'
 import { CreatedAtField } from './created-at-field.js'
+import { CreatedByField } from './created-by-field.js'
 import { DateField } from './date-field.js'
 import { DateRangeField } from './date-range-field.js'
 import { EmailField } from './email-field.js'
@@ -92,6 +93,9 @@ export class FieldFactory {
       case 'collaborator': {
         return CollaboratorField.create(input)
       }
+      case 'created-by': {
+        return CreatedByField.create(input)
+      }
     }
   }
 
@@ -162,6 +166,9 @@ export class FieldFactory {
       }
       case 'collaborator': {
         return CollaboratorField.unsafeCreate(input)
+      }
+      case 'created-by': {
+        return CreatedByField.unsafeCreate(input)
       }
     }
   }

@@ -6,6 +6,7 @@ import type { CollaboratorFieldValue } from './collaborator-field-value.js'
 import type { ColorFieldValue } from './color-field-value.js'
 import type { CountFieldValue } from './count-field-value.js'
 import type { CreatedAtFieldValue } from './created-at-field-value.js'
+import type { CreatedByFieldValue } from './created-by-field-value.js'
 import type { DateFieldValue } from './date-field-value.js'
 import type { DateRangeFieldValue } from './date-range-field-value.js'
 import type { EmailFieldValue } from './email-field-value.js'
@@ -24,6 +25,7 @@ import type { UpdatedAtFieldValue } from './updated-at-field-value.js'
 export interface IFieldValueVisitor {
   id(value: IdFieldValue): void
   createdAt(value: CreatedAtFieldValue): void
+  createdBy(value: CreatedByFieldValue): void
   updatedAt(value: UpdatedAtFieldValue): void
   attachment(value: AttachmentFieldValue): void
   autoIncrement(value: AutoIncrementFieldValue): void

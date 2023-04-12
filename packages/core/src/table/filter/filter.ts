@@ -50,6 +50,7 @@ import type { ICountFilter } from './count.filter.js'
 import { countFilter, countFilterValue } from './count.filter.js'
 import type { ICreatedAtFilter } from './created-at.filter.js'
 import { createdAtFilter, createdAtFilterValue } from './created-at.filter.js'
+import { createdByFilter, createdByFilterValue } from './created-by.filter.js'
 import type { IDateRangeFilter } from './date-range.filter.js'
 import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter.js'
 import type { IDateFilter } from './date.filter.js'
@@ -76,6 +77,7 @@ import {
   colorFilterOperators,
   countFilterOperators,
   createdAtFilterOperators,
+  createdByFilterOperators,
   dateFilterOperators,
   dateRangeFilterOperators,
   emailFilterOperators,
@@ -129,6 +131,7 @@ export const filterValue = z.union([
   averageFilterValue,
   attachmentFilterValue,
   collaboratorFilterValue,
+  createdByFilterValue,
 ])
 export type IFilterValue = z.infer<typeof filterValue>
 
@@ -155,6 +158,7 @@ export const operaotrs = z.union([
   averageFilterOperators,
   attachmentFilterOperators,
   collaboratorFilterOperators,
+  createdByFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
@@ -181,6 +185,7 @@ const filter = z.discriminatedUnion('type', [
   averageFilter,
   attachmentFilter,
   collaboratorFilter,
+  createdByFilter,
 ])
 
 export type IFilter = z.infer<typeof filter>
