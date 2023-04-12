@@ -12,6 +12,7 @@ import type {
   ColorField as CoreColorField,
   CountField as CoreCountField,
   CreatedAtField as CoreCreatedAtField,
+  CreatedByField as CoreCreatedByField,
   DateField as CoreDateField,
   DateRangeField as CoreDateRangeField,
   EmailField as CoreEmailField,
@@ -37,6 +38,7 @@ import {
   ColorField,
   CountField,
   CreatedAtField,
+  CreatedByField,
   DateField,
   DateRangeField,
   EmailField,
@@ -74,6 +76,12 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   createdAt(value: CoreCreatedAtField): void {
     const field = new CreatedAtField(this.table, value)
+
+    this.em.persist(field)
+  }
+
+  createdBy(value: CoreCreatedByField): void {
+    const field = new CreatedByField(this.table, value)
 
     this.em.persist(field)
   }

@@ -6,6 +6,7 @@ import { UnderlyingColumnFactory } from './underlying-column.factory.js'
 import {
   UnderlyingAutoIncreamentColumn,
   UnderlyingCreatedAtColumn,
+  UnderlyingCreatedByColumn,
   UnderlyingDeletedAtColumn,
   UnderlyingIdColumn,
   UnderlyingUpdatedAtColumn,
@@ -56,6 +57,11 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
 
   createCreatedAt(): this {
     new UnderlyingCreatedAtColumn(undefined, this.tableName).build(this.tb, this.knex)
+    return this
+  }
+
+  createCreatedBy(): this {
+    new UnderlyingCreatedByColumn(undefined, this.tableName).build(this.tb)
     return this
   }
 

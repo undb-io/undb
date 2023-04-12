@@ -7,6 +7,7 @@ import type {
   ColorField,
   CountField,
   CreatedAtField,
+  CreatedByField,
   DateField,
   DateRangeField,
   EmailField,
@@ -29,6 +30,7 @@ import type { CollaboratorField } from '../field/collaborator-field'
 export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   id(field: IdField): void {}
   createdAt(field: CreatedAtField): void {}
+  createdBy(field: CreatedByField): void {}
   updatedAt(field: UpdatedAtField): void {}
   attachment(field: AttachmentField): void {}
   autoIncrement(field: AutoIncrementField): void {}

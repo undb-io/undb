@@ -1,8 +1,10 @@
 import type { Merge, ValueOf } from 'type-fest'
 import { z } from 'zod'
+import { userIdSchema } from '../../user/value-objects/user-id.vo.js'
 import type { Field, FieldValue } from '../field/index.js'
 import {
   INTERNAL_COLUMN_CREATED_AT_NAME,
+  INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
   INTERNAL_DISPLAY_VALUES_NAME,
@@ -14,6 +16,7 @@ import { recordIdSchema } from './value-objects/record-id.schema.js'
 export const internalRecordValues = z.object({
   [INTERNAL_COLUMN_ID_NAME]: recordIdSchema,
   [INTERNAL_COLUMN_CREATED_AT_NAME]: z.string().datetime(),
+  [INTERNAL_COLUMN_CREATED_BY_NAME]: userIdSchema,
   [INTERNAL_COLUMN_UPDATED_AT_NAME]: z.string().datetime(),
   [INTERNAL_INCREAMENT_ID_NAME]: z.number().optional(),
   [INTERNAL_DISPLAY_VALUES_NAME]: recordDisplayValues.optional(),

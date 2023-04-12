@@ -22,6 +22,7 @@ import type {
 import type { ParentAvailableSpec } from './parent.specification.js'
 import type { WithRecordAutoIncrement } from './record-auto-increment.specification.js'
 import type { WithRecordCreatedAt } from './record-created-at.specification.js'
+import type { WithRecordCreatedBy } from './record-created-by.specification.js'
 import type { WithRecordId, WithRecordIds } from './record-id.specification.js'
 import type { WithRecordTableId } from './record-table-id.specification.js'
 import type { WithRecordUpdatedAt } from './record-updated-at.specification.js'
@@ -43,6 +44,7 @@ interface IRecordSpecVisitor {
   tableIdEqual(s: WithRecordTableId): void
 
   createdAt(s: WithRecordCreatedAt): void
+  createdBy(s: WithRecordCreatedBy): void
   updatedAt(s: WithRecordUpdatedAt): void
 
   autoIncrement(s: WithRecordAutoIncrement): void

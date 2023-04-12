@@ -10,9 +10,11 @@ import type {
   ColorFieldValue,
   CountFieldValue,
   CreatedAtFieldValue,
+  CreatedByFieldValue,
   DateFieldValue,
   DateRangeFieldValue,
   EmailFieldValue,
+  IClsService,
   IFieldValueVisitor,
   IdFieldValue,
   LookupFieldValue,
@@ -27,7 +29,7 @@ import type {
   TreeFieldValue,
   UpdatedAtFieldValue,
 } from '@undb/core'
-import { CollaboratorField, ParentField, ReferenceField, TreeField } from '@undb/core'
+import { CollaboratorField, INTERNAL_COLUMN_CREATED_BY_NAME, ParentField, ReferenceField, TreeField } from '@undb/core'
 import { Attachment } from '../../entity/attachment.js'
 import { Table } from '../../entity/table.js'
 import {
@@ -49,6 +51,7 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
   }
 
   constructor(
+    private readonly cls: IClsService,
     private readonly tableId: string,
     private readonly fieldId: string,
     private readonly recordId: string,
@@ -60,6 +63,12 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
   }
   id(value: IdFieldValue): void {}
   createdAt(value: CreatedAtFieldValue): void {}
+  createdBy(value: CreatedByFieldValue): void {
+    if (this.isNew) {
+      const userId = this.cls.get('user.userId')
+      this.setData(INTERNAL_COLUMN_CREATED_BY_NAME, userId)
+    }
+  }
   updatedAt(value: UpdatedAtFieldValue): void {}
   autoIncrement(value: AutoIncrementFieldValue): void {}
 

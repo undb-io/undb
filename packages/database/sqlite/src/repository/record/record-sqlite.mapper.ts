@@ -21,7 +21,7 @@ import { isExpandColumnName } from './record.util.js'
 export class RecordSqliteMapper {
   // TODO: refactor if else logic
   static toQuery(tableId: string, schema: TableSchemaIdMap, data: RecordSqlite): IQueryRecordSchema {
-    const { id, created_at, updated_at, auto_increment, ...rest } = data
+    const { id, created_at, created_by, updated_at, auto_increment, ...rest } = data
 
     const values: globalThis.Record<string, IFieldQueryValue> = {}
     const displayValues: IRecordDisplayValues = {}
@@ -65,6 +65,7 @@ export class RecordSqliteMapper {
     return {
       id,
       createdAt: new Date(created_at).toISOString(),
+      createdBy: created_by,
       updatedAt: new Date(updated_at).toISOString(),
       autoIncrement: auto_increment,
       tableId,

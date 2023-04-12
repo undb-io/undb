@@ -24,6 +24,7 @@ import type {
 import {
   INTERNAL_INCREAMENT_ID_NAME as INTERNAL_AUTO_INCREAMENT_ID_NAME,
   INTERNAL_COLUMN_CREATED_AT_NAME,
+  INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
 } from '@undb/core'
@@ -73,6 +74,16 @@ export class UnderlyingCreatedAtColumn extends UnderlyingColumn {
 
   build(tb: Knex.TableBuilder, knex: Knex): void {
     tb.datetime(this.name).notNullable().defaultTo(knex.fn.now())
+  }
+}
+
+export class UnderlyingCreatedByColumn extends UnderlyingColumn {
+  get name(): string {
+    return INTERNAL_COLUMN_CREATED_BY_NAME
+  }
+
+  build(tb: Knex.TableBuilder): void {
+    tb.string(this.name).notNullable()
   }
 }
 

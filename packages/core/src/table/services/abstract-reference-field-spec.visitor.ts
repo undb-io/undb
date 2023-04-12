@@ -9,6 +9,7 @@ import type {
   ColorField,
   CountField,
   CreatedAtField,
+  CreatedByField,
   DateField,
   DateRangeField,
   EmailField,
@@ -68,6 +69,7 @@ import type {
 export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVisitor, IFieldVisitor {
   id(field: IdField): void {}
   createdAt(field: CreatedAtField): void {}
+  createdBy(field: CreatedByField): void {}
   updatedAt(field: UpdatedAtField): void {}
   attachment(field: AttachmentField): void {}
   autoIncrement(field: AutoIncrementField): void {}

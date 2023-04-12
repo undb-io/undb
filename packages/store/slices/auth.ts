@@ -29,10 +29,8 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addMatcher(authApi.endpoints.me.matchRejected, (state, action) => {
-        if (action.payload?.status === 401) {
-          state.token = undefined
-          localStorage.removeItem('access_token')
-        }
+        state.token = undefined
+        localStorage.removeItem('access_token')
       })
       .addMatcher(authApi.endpoints.login.matchFulfilled, (state, action) => {
         const access_token = action.payload.access_token

@@ -4,7 +4,6 @@ import {
   Cascade,
   Collection,
   Entity,
-  Enum,
   LoadStrategy,
   ManyToMany,
   ManyToOne,
@@ -24,6 +23,7 @@ import type {
   IColorFieldQuerySchema,
   ICountFieldQuerySchema,
   ICreatedAtFieldQueryScheam,
+  ICreatedByFieldQueryScheam,
   IDateFieldQuerySchema,
   IDateRangeFieldQuerySchema,
   IEmailFieldQuerySchema,
@@ -50,6 +50,7 @@ import {
   ColorField as CoreColorField,
   CountField as CoreCountField,
   CreatedAtField as CoreCreatedAtField,
+  CreatedByField as CoreCreatedByField,
   DateField as CoreDateField,
   DateRangeField as CoreDateRangeField,
   EmailField as CoreEmailField,
@@ -104,33 +105,7 @@ export abstract class Field extends BaseEntity {
   @Property({ type: BooleanType, default: false })
   display = false
 
-  @Enum({
-    items: [
-      'id',
-      'created-at',
-      'updated-at',
-      'auto-increment',
-      'string',
-      'email',
-      'color',
-      'number',
-      'percentage',
-      'date',
-      'select',
-      'bool',
-      'date-range',
-      'reference',
-      'tree',
-      'parent',
-      'rating',
-      'count',
-      'lookup',
-      'sum',
-      'average',
-      'attachment',
-      'collaborator',
-    ],
-  })
+  @Property({ type: 'string' })
   type: IFieldType
 
   abstract toDomain(): CoreField
@@ -191,6 +166,31 @@ export class CreatedAtField extends Field {
       type: 'created-at',
       description: this.description,
       format: this.format,
+      required: !!this.required,
+      display: this.display,
+    }
+  }
+}
+
+@Entity({ discriminatorValue: 'created-by' })
+export class CreatedByField extends Field {
+  toDomain(): CoreCreatedByField {
+    return CoreCreatedByField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      type: 'created-by',
+      description: this.description,
+      required: !!this.required,
+      display: this.display,
+    })
+  }
+
+  toQuery(): ICreatedByFieldQueryScheam {
+    return {
+      id: this.id,
+      name: this.name,
+      type: 'created-by',
+      description: this.description,
       required: !!this.required,
       display: this.display,
     }
@@ -959,6 +959,7 @@ export type IField =
   | AverageField
   | AttachmentField
   | CollaboratorField
+  | CreatedByField
 
 export const fieldEntities = [
   IdField,
@@ -983,4 +984,5 @@ export const fieldEntities = [
   AverageField,
   AttachmentField,
   CollaboratorField,
+  CreatedByField,
 ]

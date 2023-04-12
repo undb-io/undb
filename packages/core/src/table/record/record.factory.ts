@@ -6,6 +6,7 @@ import type { IQueryRecordSchema, Records } from './record.type.js'
 import {
   WithDisplayValues,
   WithRecordCreatedAt,
+  WithRecordCreatedBy,
   WithRecordId,
   WithRecordTableId,
   WithRecordUpdatedAt,
@@ -35,6 +36,7 @@ export class RecordFactory {
     let spec = WithRecordId.fromString(r.id)
       .and(WithRecordTableId.fromString(r.tableId).unwrap())
       .and(WithRecordCreatedAt.fromString(r.createdAt))
+      .and(WithRecordCreatedBy.fromString(r.createdBy))
       .and(WithRecordUpdatedAt.fromString(r.updatedAt))
       .and(WithRecordValues.fromObject(schema, r.values))
       .and(WithDisplayValues.from(r.displayValues))
