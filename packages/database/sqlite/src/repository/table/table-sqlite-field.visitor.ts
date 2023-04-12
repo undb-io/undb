@@ -26,6 +26,7 @@ import type {
   StringField as CoreStringField,
   SumField as CoreSumField,
   TreeField as CoreTreeField,
+  UpdatedByField as CoreUpdatedByField,
   IFieldVisitor,
 } from '@undb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@undb/core'
@@ -56,6 +57,7 @@ import {
   Table,
   TreeField,
   UpdatedAtField,
+  UpdatedByField,
 } from '../../entity/index.js'
 import {
   AdjacencyListTable,
@@ -88,6 +90,12 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   updatedAt(value: CoereUpdatedAtField): void {
     const field = new UpdatedAtField(this.table, value)
+
+    this.em.persist(field)
+  }
+
+  updatedBy(value: CoreUpdatedByField): void {
+    const field = new UpdatedByField(this.table, value)
 
     this.em.persist(field)
   }

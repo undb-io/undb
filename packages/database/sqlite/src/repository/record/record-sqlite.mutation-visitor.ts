@@ -39,6 +39,7 @@ import type {
   WithRecordIds,
   WithRecordTableId,
   WithRecordUpdatedAt,
+  WithRecordUpdatedBy,
   WithRecordValues,
 } from '@undb/core'
 import { isEmpty } from 'lodash-es'
@@ -88,6 +89,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     throw new Error('Method not implemented.')
   }
   updatedAt(s: WithRecordUpdatedAt): void {
+    throw new Error('Method not implemented.')
+  }
+  updatedBy(s: WithRecordUpdatedBy): void {
     throw new Error('Method not implemented.')
   }
   values(s: WithRecordValues): void {

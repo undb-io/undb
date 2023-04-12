@@ -26,6 +26,7 @@ import type { WithRecordCreatedBy } from './record-created-by.specification.js'
 import type { WithRecordId, WithRecordIds } from './record-id.specification.js'
 import type { WithRecordTableId } from './record-table-id.specification.js'
 import type { WithRecordUpdatedAt } from './record-updated-at.specification.js'
+import type { WithRecordUpdatedBy } from './record-updated-by.specification.js'
 import type { WithRecordValues } from './record-values.specification.js'
 import type { ReferenceEqual } from './reference.specification.js'
 import type { SelectEqual, SelectIn } from './select.specification.js'
@@ -46,6 +47,7 @@ interface IRecordSpecVisitor {
   createdAt(s: WithRecordCreatedAt): void
   createdBy(s: WithRecordCreatedBy): void
   updatedAt(s: WithRecordUpdatedAt): void
+  updatedBy(s: WithRecordUpdatedBy): void
 
   autoIncrement(s: WithRecordAutoIncrement): void
 

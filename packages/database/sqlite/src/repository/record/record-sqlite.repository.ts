@@ -4,6 +4,7 @@ import type { Record as CoreRecord, IClsService, IRecordRepository, IRecordSpec,
 import {
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
+  INTERNAL_COLUMN_UPDATED_BY_NAME,
   ParentField,
   TreeField,
   WithRecordId,
@@ -34,6 +35,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     const data: globalThis.Record<string, Knex.Value> = {
       id: record.id.value,
       [INTERNAL_COLUMN_CREATED_BY_NAME]: userId,
+      [INTERNAL_COLUMN_UPDATED_BY_NAME]: userId,
     }
     const queries: string[] = []
     const jobs: Job[] = []

@@ -9,6 +9,7 @@ import {
   UnderlyingColorColumn,
   UnderlyingCountColumn,
   UnderlyingCreatedAtColumn,
+  UnderlyingCreatedByColumn,
   UnderlyingDateColumn,
   UnderlyingDateRangeFromColumn,
   UnderlyingDateRangeToFromColumn,
@@ -24,6 +25,7 @@ import {
   UnderlyingSumColumn,
   UnderlyingTreeColumn,
   UnderlyingUpdatedAtColumn,
+  UnderlyingUpdatedByColumn,
 } from './underlying-column.js'
 
 export class UnderlyingColumnFactory {
@@ -76,6 +78,10 @@ export class UnderlyingColumnFactory {
         return new UnderlyingAverageColumn(field, tableName)
       case 'lookup':
         return new UnderlyingLookupColumn(field, tableName)
+      case 'created-by':
+        return new UnderlyingCreatedByColumn(field, tableName)
+      case 'updated-by':
+        return new UnderlyingUpdatedByColumn(field, tableName)
     }
   }
 

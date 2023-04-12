@@ -25,6 +25,7 @@ import type {
   SumField,
   TreeField,
   UpdatedAtField,
+  UpdatedByField,
   WithDisplayFields,
   WithFieldDescription,
   WithFieldDisplay,
@@ -70,6 +71,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   id(field: IdField): void {}
   createdAt(field: CreatedAtField): void {}
   createdBy(field: CreatedByField): void {}
+  updatedBy(field: UpdatedByField): void {}
   updatedAt(field: UpdatedAtField): void {}
   attachment(field: AttachmentField): void {}
   autoIncrement(field: AutoIncrementField): void {}

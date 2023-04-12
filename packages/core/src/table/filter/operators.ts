@@ -106,5 +106,8 @@ export const updatedAtBuiltInOperators = dateBuiltInOperators
 export const createdByFilterOperators = z.union([$eq, $neq])
 export type ICreatedByFilterOperator = z.infer<typeof createdByFilterOperators>
 
+export const updatedByFilterOperators = z.union([$eq, $neq])
+export type IUpdatedByFilterOperator = z.infer<typeof updatedByFilterOperators>
+
 export const autoIncrementFilterOperators = numberFilterOperators
 export type IAutoIncrementFilterOperator = z.infer<typeof autoIncrementFilterOperators>

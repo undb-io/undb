@@ -22,6 +22,7 @@ import { StringField } from './string-field.js'
 import { SumField } from './sum-field.js'
 import { TreeField } from './tree-field.js'
 import { UpdatedAtField } from './updated-at-field.js'
+import { UpdatedByField } from './updated-by-field.js'
 
 export class FieldFactory {
   static create(input: ICreateFieldSchema): Field | Field[] {
@@ -96,6 +97,9 @@ export class FieldFactory {
       case 'created-by': {
         return CreatedByField.create(input)
       }
+      case 'updated-by': {
+        return UpdatedByField.create(input)
+      }
     }
   }
 
@@ -169,6 +173,9 @@ export class FieldFactory {
       }
       case 'created-by': {
         return CreatedByField.unsafeCreate(input)
+      }
+      case 'updated-by': {
+        return UpdatedByField.unsafeCreate(input)
       }
     }
   }

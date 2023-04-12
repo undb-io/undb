@@ -21,12 +21,14 @@ import type { StringFieldValue } from './string-field-value.js'
 import type { SumFieldValue } from './sum-field-value.js'
 import type { TreeFieldValue } from './tree-field-value.js'
 import type { UpdatedAtFieldValue } from './updated-at-field-value.js'
+import type { UpdatedByFieldValue } from './updated-by-field-value.js'
 
 export interface IFieldValueVisitor {
   id(value: IdFieldValue): void
   createdAt(value: CreatedAtFieldValue): void
   createdBy(value: CreatedByFieldValue): void
   updatedAt(value: UpdatedAtFieldValue): void
+  updatedBy(value: UpdatedByFieldValue): void
   attachment(value: AttachmentFieldValue): void
   autoIncrement(value: AutoIncrementFieldValue): void
   string(value: StringFieldValue): void

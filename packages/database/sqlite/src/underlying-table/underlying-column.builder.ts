@@ -10,6 +10,7 @@ import {
   UnderlyingDeletedAtColumn,
   UnderlyingIdColumn,
   UnderlyingUpdatedAtColumn,
+  UnderlyingUpdatedByColumn,
 } from './underlying-column.js'
 
 export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
@@ -81,6 +82,11 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
 
     this.addQueries(query)
 
+    return this
+  }
+
+  createUpdatedBy(): this {
+    new UnderlyingUpdatedByColumn(undefined, this.tableName).build(this.tb)
     return this
   }
 

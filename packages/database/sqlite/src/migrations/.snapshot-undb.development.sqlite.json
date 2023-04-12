@@ -208,11 +208,10 @@
             "email",
             "color",
             "number",
-            "percentage",
-            "date",
-            "select",
             "bool",
+            "date",
             "date-range",
+            "select",
             "reference",
             "tree",
             "parent",
@@ -222,9 +221,11 @@
             "sum",
             "average",
             "attachment",
-            "collaborator"
+            "collaborator",
+            "created-by",
+            "updated-by"
           ],
-          "mappedType": "enum"
+          "mappedType": "text"
         },
         "format": {
           "name": "format",

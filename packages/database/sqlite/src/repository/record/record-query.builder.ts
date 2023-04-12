@@ -6,6 +6,7 @@ import {
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
+  INTERNAL_COLUMN_UPDATED_BY_NAME,
 } from '@undb/core'
 import { union } from 'lodash-es'
 import type { Promisable } from 'type-fest'
@@ -113,8 +114,9 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
       [
         INTERNAL_COLUMN_ID_NAME,
         INTERNAL_COLUMN_CREATED_AT_NAME,
-        INTERNAL_COLUMN_UPDATED_AT_NAME,
         INTERNAL_COLUMN_CREATED_BY_NAME,
+        INTERNAL_COLUMN_UPDATED_AT_NAME,
+        INTERNAL_COLUMN_UPDATED_BY_NAME,
       ],
     ).map((name) => `${TABLE_ALIAS}.${name}`)
 

@@ -27,6 +27,7 @@ import {
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
+  INTERNAL_COLUMN_UPDATED_BY_NAME,
 } from '@undb/core'
 import type { Promisable } from 'type-fest'
 import type { IUnderlyingColumn } from '../interfaces/underlying-column.js'
@@ -80,6 +81,16 @@ export class UnderlyingCreatedAtColumn extends UnderlyingColumn {
 export class UnderlyingCreatedByColumn extends UnderlyingColumn {
   get name(): string {
     return INTERNAL_COLUMN_CREATED_BY_NAME
+  }
+
+  build(tb: Knex.TableBuilder): void {
+    tb.string(this.name).notNullable()
+  }
+}
+
+export class UnderlyingUpdatedByColumn extends UnderlyingColumn {
+  get name(): string {
+    return INTERNAL_COLUMN_UPDATED_BY_NAME
   }
 
   build(tb: Knex.TableBuilder): void {

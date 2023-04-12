@@ -7,6 +7,7 @@ import {
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
+  INTERNAL_COLUMN_UPDATED_BY_NAME,
   INTERNAL_DISPLAY_VALUES_NAME,
   INTERNAL_INCREAMENT_ID_NAME,
 } from '../field/index.js'
@@ -18,6 +19,7 @@ export const internalRecordValues = z.object({
   [INTERNAL_COLUMN_CREATED_AT_NAME]: z.string().datetime(),
   [INTERNAL_COLUMN_CREATED_BY_NAME]: userIdSchema,
   [INTERNAL_COLUMN_UPDATED_AT_NAME]: z.string().datetime(),
+  [INTERNAL_COLUMN_UPDATED_BY_NAME]: userIdSchema,
   [INTERNAL_INCREAMENT_ID_NAME]: z.number().optional(),
   [INTERNAL_DISPLAY_VALUES_NAME]: recordDisplayValues.optional(),
 })

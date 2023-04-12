@@ -28,8 +28,16 @@ import type {
   TableSchemaIdMap,
   TreeFieldValue,
   UpdatedAtFieldValue,
+  UpdatedByFieldValue,
 } from '@undb/core'
-import { CollaboratorField, INTERNAL_COLUMN_CREATED_BY_NAME, ParentField, ReferenceField, TreeField } from '@undb/core'
+import {
+  CollaboratorField,
+  INTERNAL_COLUMN_CREATED_BY_NAME,
+  INTERNAL_COLUMN_UPDATED_BY_NAME,
+  ParentField,
+  ReferenceField,
+  TreeField,
+} from '@undb/core'
 import { Attachment } from '../../entity/attachment.js'
 import { Table } from '../../entity/table.js'
 import {
@@ -60,6 +68,8 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
     em: EntityManager,
   ) {
     super(em)
+    const userId = this.cls.get('user.userId')
+    this.setData(INTERNAL_COLUMN_UPDATED_BY_NAME, userId)
   }
   id(value: IdFieldValue): void {}
   createdAt(value: CreatedAtFieldValue): void {}
@@ -70,6 +80,10 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
     }
   }
   updatedAt(value: UpdatedAtFieldValue): void {}
+  updatedBy(value: UpdatedByFieldValue): void {
+    const userId = this.cls.get('user.userId')
+    this.setData(INTERNAL_COLUMN_CREATED_BY_NAME, userId)
+  }
   autoIncrement(value: AutoIncrementFieldValue): void {}
 
   string(value: StringFieldValue): void {

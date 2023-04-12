@@ -79,5 +79,8 @@ export * from './tree-field.type.js'
 export * from './updated-at-field-value.js'
 export * from './updated-at-field.js'
 export * from './updated-at-field.type.js'
+export * from './updated-by-field-value.js'
+export * from './updated-by-field.js'
+export * from './updated-by-field.type.js'
 export * from './value-objects/index.js'
 export { createNumberFieldSchema, createStringFieldSchema }

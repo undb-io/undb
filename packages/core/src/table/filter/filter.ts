@@ -92,6 +92,7 @@ import {
   sumFilterOperators,
   treeFilterOperators,
   updatedAtFilterOperators,
+  updatedByFilterOperators,
 } from './operators.js'
 import { parentFilter, parentFilterValue } from './parent.filter.js'
 import type { IRatingFilter } from './rating.filter.js'
@@ -107,6 +108,7 @@ import type { ITreeFilter } from './tree.filter.js'
 import { treeFilter, treeFilterValue } from './tree.filter.js'
 import type { IUpdatedAtFilter } from './updated-at.filter.js'
 import { updatedAtFilter, updatedAtFilterValue } from './updated-at.filter.js'
+import { updatedByFilter, updatedByFilterValue } from './updated-by.filter.js'
 
 export const filterValue = z.union([
   idFilterValue,
@@ -132,6 +134,7 @@ export const filterValue = z.union([
   attachmentFilterValue,
   collaboratorFilterValue,
   createdByFilterValue,
+  updatedByFilterValue,
 ])
 export type IFilterValue = z.infer<typeof filterValue>
 
@@ -159,6 +162,7 @@ export const operaotrs = z.union([
   attachmentFilterOperators,
   collaboratorFilterOperators,
   createdByFilterOperators,
+  updatedByFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
@@ -186,6 +190,7 @@ const filter = z.discriminatedUnion('type', [
   attachmentFilter,
   collaboratorFilter,
   createdByFilter,
+  updatedByFilter,
 ])
 
 export type IFilter = z.infer<typeof filter>

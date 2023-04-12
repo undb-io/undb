@@ -1,4 +1,3 @@
-import { andOptions } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import type { ZodTypeAny } from 'zod'
 import { z } from 'zod'
@@ -12,11 +11,11 @@ import type {
   ICreatedByFieldQueryValue,
   IUpdateCreatedByFieldInput,
 } from './created-by-field.type.js'
-import { AbstractDateField } from './field.base.js'
+import { BaseField } from './field.base.js'
 import type { ICreatedByField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 
-export class CreatedByField extends AbstractDateField<ICreatedByField> {
+export class CreatedByField extends BaseField<ICreatedByField> {
   type: CreatedByFieldType = 'created-by'
 
   override get system() {
@@ -44,7 +43,7 @@ export class CreatedByField extends AbstractDateField<ICreatedByField> {
   }
 
   public override update(input: IUpdateCreatedByFieldInput): Option<TableCompositeSpecificaiton> {
-    return andOptions(this.updateBase(input), this.updateFormat(input.format))
+    return this.updateBase(input)
   }
 
   createValue(value: ICreatedByFieldQueryValue): CreatedByFieldValue {

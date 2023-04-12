@@ -27,6 +27,7 @@ export const queryRecordSchema = z.object({
   createdAt: z.string().datetime(),
   createdBy: userIdSchema,
   updatedAt: z.string().datetime(),
+  updatedBy: userIdSchema,
   autoIncrement: z.number().int().positive().optional(),
   values: queryRecordValues,
   displayValues: recordDisplayValues,

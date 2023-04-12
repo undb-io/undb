@@ -40,6 +40,7 @@ import type {
   ISumFieldQuerySchema,
   ITreeFieldQuerySchema,
   IUpdatedAtFieldQuerySchema,
+  IUpdatedByFieldQueryScheam,
 } from '@undb/core'
 import {
   AttachmentField as CoreAttachmentField,
@@ -65,6 +66,7 @@ import {
   SumField as CoreSumField,
   TreeField as CoreTreeField,
   UpdatedAtField as CoreUpdatedAtField,
+  UpdatedByField as CoreUpdatedByField,
 } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Option } from './option.js'
@@ -190,6 +192,31 @@ export class CreatedByField extends Field {
       id: this.id,
       name: this.name,
       type: 'created-by',
+      description: this.description,
+      required: !!this.required,
+      display: this.display,
+    }
+  }
+}
+
+@Entity({ discriminatorValue: 'updated-by' })
+export class UpdatedByField extends Field {
+  toDomain(): CoreUpdatedByField {
+    return CoreUpdatedByField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      type: 'updated-by',
+      description: this.description,
+      required: !!this.required,
+      display: this.display,
+    })
+  }
+
+  toQuery(): IUpdatedByFieldQueryScheam {
+    return {
+      id: this.id,
+      name: this.name,
+      type: 'updated-by',
       description: this.description,
       required: !!this.required,
       display: this.display,
@@ -960,6 +987,7 @@ export type IField =
   | AttachmentField
   | CollaboratorField
   | CreatedByField
+  | UpdatedByField
 
 export const fieldEntities = [
   IdField,
@@ -985,4 +1013,5 @@ export const fieldEntities = [
   AttachmentField,
   CollaboratorField,
   CreatedByField,
+  UpdatedByField,
 ]

@@ -5,7 +5,8 @@ export interface IUnderlyingColumnBuilder {
   createId(tableName: string): this
   createCreatedAt(): this
   createCreatedBy(): this
-  createUpdatedAt(tableName: string): this
+  createUpdatedAt(): this
+  createUpdatedBy(): this
   createDeletedAt(): this
   createUnderlying(fields: NoneSystemField[]): this
 }

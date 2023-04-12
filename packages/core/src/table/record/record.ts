@@ -15,6 +15,7 @@ export class Record {
   public displayValues?: RecordDisplayValues = RecordDisplayValues.empty()
   public createdAt: DateVO = DateVO.now()
   public createdBy!: string
+  public updatedBy!: string
   public updatedAt: DateVO = DateVO.now()
   public autoIncrement?: number
 
@@ -33,6 +34,7 @@ export class Record {
       created_at: this.createdAt.value.toISOString(),
       created_by: this.createdBy,
       updated_at: this.updatedAt.value.toISOString(),
+      updated_by: this.updatedBy,
       auto_increment: this.autoIncrement,
       display_values: this.displayValues?.values,
     }
