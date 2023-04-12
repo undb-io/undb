@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { userIdSchema } from '../../user/value-objects/user-id.vo.js'
 import { createFieldsSchema_internal, fieldQueryValue } from '../field/index.js'
 import { fieldIdSchema } from '../field/value-objects/field-id.schema.js'
 import { TableId, tableIdSchema } from '../value-objects/index.js'
@@ -24,7 +25,9 @@ export const queryRecordSchema = z.object({
   id: recordIdSchema,
   tableId: tableIdSchema,
   createdAt: z.string().datetime(),
+  createdBy: userIdSchema,
   updatedAt: z.string().datetime(),
+  updatedBy: userIdSchema,
   autoIncrement: z.number().int().positive().optional(),
   values: queryRecordValues,
   displayValues: recordDisplayValues,

@@ -24,12 +24,14 @@ import type {
 import {
   INTERNAL_INCREAMENT_ID_NAME as INTERNAL_AUTO_INCREAMENT_ID_NAME,
   INTERNAL_COLUMN_CREATED_AT_NAME,
+  INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
+  INTERNAL_COLUMN_UPDATED_BY_NAME,
 } from '@undb/core'
 import type { Promisable } from 'type-fest'
 import type { IUnderlyingColumn } from '../interfaces/underlying-column.js'
-import { INTERNAL_COLUMN_DELETED_AT_NAME } from './constants.js'
+import { INTERNAL_COLUMN_DELETED_AT_NAME, INTERNAL_COLUMN_DELETED_BY_NAME } from './constants.js'
 
 export abstract class UnderlyingColumn implements IUnderlyingColumn {
   constructor(public readonly field: Field | undefined, protected readonly tableName: string) {}
@@ -76,6 +78,26 @@ export class UnderlyingCreatedAtColumn extends UnderlyingColumn {
   }
 }
 
+export class UnderlyingCreatedByColumn extends UnderlyingColumn {
+  get name(): string {
+    return INTERNAL_COLUMN_CREATED_BY_NAME
+  }
+
+  build(tb: Knex.TableBuilder): void {
+    tb.string(this.name).notNullable()
+  }
+}
+
+export class UnderlyingUpdatedByColumn extends UnderlyingColumn {
+  get name(): string {
+    return INTERNAL_COLUMN_UPDATED_BY_NAME
+  }
+
+  build(tb: Knex.TableBuilder): void {
+    tb.string(this.name).notNullable()
+  }
+}
+
 export class UnderlyingUpdatedAtColumn extends UnderlyingColumn {
   get name(): string {
     return INTERNAL_COLUMN_UPDATED_AT_NAME
@@ -93,6 +115,16 @@ export class UnderlyingDeletedAtColumn extends UnderlyingColumn {
 
   build(tb: Knex.TableBuilder): void {
     tb.datetime(this.name).nullable()
+  }
+}
+
+export class UnderlyingDeletedByColumn extends UnderlyingColumn {
+  get name(): string {
+    return INTERNAL_COLUMN_DELETED_BY_NAME
+  }
+
+  build(tb: Knex.TableBuilder): void {
+    tb.string(this.name)
   }
 }
 

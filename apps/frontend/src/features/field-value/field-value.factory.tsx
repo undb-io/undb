@@ -146,6 +146,12 @@ export const FieldValueFactory: React.FC<{
       )
     }
 
+    case 'updated-by':
+    case 'created-by': {
+      // TODO: use display field value
+      return null
+    }
+
     default:
       return <span>{(value as FieldValue | undefined)?.unpack()?.toString()}</span>
   }

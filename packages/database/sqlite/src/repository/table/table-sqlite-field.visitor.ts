@@ -12,6 +12,7 @@ import type {
   ColorField as CoreColorField,
   CountField as CoreCountField,
   CreatedAtField as CoreCreatedAtField,
+  CreatedByField as CoreCreatedByField,
   DateField as CoreDateField,
   DateRangeField as CoreDateRangeField,
   EmailField as CoreEmailField,
@@ -25,6 +26,7 @@ import type {
   StringField as CoreStringField,
   SumField as CoreSumField,
   TreeField as CoreTreeField,
+  UpdatedByField as CoreUpdatedByField,
   IFieldVisitor,
 } from '@undb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@undb/core'
@@ -37,6 +39,7 @@ import {
   ColorField,
   CountField,
   CreatedAtField,
+  CreatedByField,
   DateField,
   DateRangeField,
   EmailField,
@@ -54,6 +57,7 @@ import {
   Table,
   TreeField,
   UpdatedAtField,
+  UpdatedByField,
 } from '../../entity/index.js'
 import {
   AdjacencyListTable,
@@ -78,8 +82,20 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
     this.em.persist(field)
   }
 
+  createdBy(value: CoreCreatedByField): void {
+    const field = new CreatedByField(this.table, value)
+
+    this.em.persist(field)
+  }
+
   updatedAt(value: CoereUpdatedAtField): void {
     const field = new UpdatedAtField(this.table, value)
+
+    this.em.persist(field)
+  }
+
+  updatedBy(value: CoreUpdatedByField): void {
+    const field = new UpdatedByField(this.table, value)
 
     this.em.persist(field)
   }

@@ -10,9 +10,11 @@ import type {
   ColorFieldValue,
   CountFieldValue,
   CreatedAtFieldValue,
+  CreatedByFieldValue,
   DateFieldValue,
   DateRangeFieldValue,
   EmailFieldValue,
+  IClsService,
   IFieldValueVisitor,
   IdFieldValue,
   LookupFieldValue,
@@ -26,8 +28,16 @@ import type {
   TableSchemaIdMap,
   TreeFieldValue,
   UpdatedAtFieldValue,
+  UpdatedByFieldValue,
 } from '@undb/core'
-import { CollaboratorField, ParentField, ReferenceField, TreeField } from '@undb/core'
+import {
+  CollaboratorField,
+  INTERNAL_COLUMN_CREATED_BY_NAME,
+  INTERNAL_COLUMN_UPDATED_BY_NAME,
+  ParentField,
+  ReferenceField,
+  TreeField,
+} from '@undb/core'
 import { Attachment } from '../../entity/attachment.js'
 import { Table } from '../../entity/table.js'
 import {
@@ -49,6 +59,7 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
   }
 
   constructor(
+    private readonly cls: IClsService,
     private readonly tableId: string,
     private readonly fieldId: string,
     private readonly recordId: string,
@@ -57,10 +68,22 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
     em: EntityManager,
   ) {
     super(em)
+    const userId = this.cls.get('user.userId')
+    this.setData(INTERNAL_COLUMN_UPDATED_BY_NAME, userId)
   }
   id(value: IdFieldValue): void {}
   createdAt(value: CreatedAtFieldValue): void {}
+  createdBy(value: CreatedByFieldValue): void {
+    if (this.isNew) {
+      const userId = this.cls.get('user.userId')
+      this.setData(INTERNAL_COLUMN_CREATED_BY_NAME, userId)
+    }
+  }
   updatedAt(value: UpdatedAtFieldValue): void {}
+  updatedBy(value: UpdatedByFieldValue): void {
+    const userId = this.cls.get('user.userId')
+    this.setData(INTERNAL_COLUMN_CREATED_BY_NAME, userId)
+  }
   autoIncrement(value: AutoIncrementFieldValue): void {}
 
   string(value: StringFieldValue): void {

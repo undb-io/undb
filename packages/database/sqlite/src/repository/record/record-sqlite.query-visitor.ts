@@ -33,16 +33,20 @@ import type {
   TreeAvailableSpec,
   WithRecordAutoIncrement,
   WithRecordCreatedAt,
+  WithRecordCreatedBy,
   WithRecordId,
   WithRecordIds,
   WithRecordTableId,
   WithRecordUpdatedAt,
+  WithRecordUpdatedBy,
   WithRecordValues,
 } from '@undb/core'
 import {
   INTERNAL_COLUMN_CREATED_AT_NAME,
+  INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
+  INTERNAL_COLUMN_UPDATED_BY_NAME,
   INTERNAL_INCREAMENT_ID_NAME,
   ParentField,
   TreeField,
@@ -98,8 +102,14 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   createdAt(s: WithRecordCreatedAt): void {
     this.qb.where({ [this.getFieldId(INTERNAL_COLUMN_CREATED_AT_NAME)]: s.date.value })
   }
+  createdBy(s: WithRecordCreatedBy): void {
+    this.qb.where({ [this.getFieldId(INTERNAL_COLUMN_CREATED_BY_NAME)]: s.user })
+  }
   updatedAt(s: WithRecordUpdatedAt): void {
     this.qb.where({ [this.getFieldId(INTERNAL_COLUMN_UPDATED_AT_NAME)]: s.date.value })
+  }
+  updatedBy(s: WithRecordUpdatedBy): void {
+    this.qb.where({ [this.getFieldId(INTERNAL_COLUMN_UPDATED_BY_NAME)]: s.user })
   }
   autoIncrement(s: WithRecordAutoIncrement): void {
     this.qb.where(this.getFieldId(INTERNAL_INCREAMENT_ID_NAME), s.n)

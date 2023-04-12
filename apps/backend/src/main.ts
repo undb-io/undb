@@ -2,9 +2,12 @@ import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import * as trpcExpress from '@trpc/server/adapters/express'
 import { AppRouter } from '@undb/trpc'
 import compression from 'compression'
+import { Request } from 'express'
 import helmet from 'helmet'
+import { ClsMiddleware } from 'nestjs-cls'
 import { Logger } from 'nestjs-pino'
 import passport from 'passport'
+import { v4 } from 'uuid'
 import { AppModule } from './app.module.js'
 import { JwtStrategy } from './auth/jwt.strategy.js'
 import { AllExceptionsFilter } from './filters/http-exception.filter.js'
@@ -27,6 +30,12 @@ async function bootstrap() {
   const router = app.get<AppRouter>(AppRouterSymbol)
   const jwt = app.get(JwtStrategy)
   app
+    .use(
+      new ClsMiddleware({
+        generateId: true,
+        idGenerator: (req: Request) => (req.headers['X-Request-Id'] as string) ?? v4(),
+      }).use,
+    )
     .use(
       TRPC_ENDPOINT,
       trpcExpress.createExpressMiddleware({

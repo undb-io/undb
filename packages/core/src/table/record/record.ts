@@ -14,13 +14,15 @@ export class Record {
   public values: RecordValues = RecordValues.empty()
   public displayValues?: RecordDisplayValues = RecordDisplayValues.empty()
   public createdAt: DateVO = DateVO.now()
+  public createdBy!: string
+  public updatedBy!: string
   public updatedAt: DateVO = DateVO.now()
   public autoIncrement?: number
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  static create() {
+  static empty() {
     const record = new Record()
 
     return record
@@ -30,7 +32,9 @@ export class Record {
     return {
       id: this.id.value,
       created_at: this.createdAt.value.toISOString(),
+      created_by: this.createdBy,
       updated_at: this.updatedAt.value.toISOString(),
+      updated_by: this.updatedBy,
       auto_increment: this.autoIncrement,
       display_values: this.displayValues?.values,
     }

@@ -6,6 +6,7 @@ import type { CollaboratorField } from './collaborator-field.js'
 import type { ColorField } from './color-field.js'
 import type { CountField } from './count-field.js'
 import type { CreatedAtField } from './created-at-field.js'
+import type { CreatedByField } from './created-by-field.js'
 import type { DateField } from './date-field.js'
 import type { DateRangeField } from './date-range-field.js'
 import type { EmailField } from './email-field.js'
@@ -20,11 +21,14 @@ import type { StringField } from './string-field.js'
 import type { SumField } from './sum-field.js'
 import type { TreeField } from './tree-field.js'
 import type { UpdatedAtField } from './updated-at-field.js'
+import type { UpdatedByField } from './updated-by-field.js'
 
 export interface IFieldVisitor {
   id(field: IdField): void
   createdAt(field: CreatedAtField): void
+  createdBy(field: CreatedByField): void
   updatedAt(field: UpdatedAtField): void
+  updatedBy(field: UpdatedByField): void
   attachment(field: AttachmentField): void
   autoIncrement(field: AutoIncrementField): void
   string(field: StringField): void

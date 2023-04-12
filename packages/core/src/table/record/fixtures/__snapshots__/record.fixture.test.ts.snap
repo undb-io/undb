@@ -8,6 +8,7 @@ Record {
       "value": 2022-02-01T00:00:00.000Z,
     },
   },
+  "createdBy": undefined,
   "displayValues": RecordDisplayValues {
     "props": {},
   },
@@ -26,6 +27,7 @@ Record {
       "value": 2022-02-01T00:00:00.000Z,
     },
   },
+  "updatedBy": undefined,
   "values": RecordValues {
     "props": Map {
       "hello" => StringFieldValue {
@@ -46,6 +48,7 @@ Record {
       "value": 2022-02-01T00:00:00.000Z,
     },
   },
+  "createdBy": undefined,
   "displayValues": RecordDisplayValues {
     "props": {},
   },
@@ -64,6 +67,7 @@ Record {
       "value": 2022-02-01T00:00:00.000Z,
     },
   },
+  "updatedBy": undefined,
   "values": RecordValues {
     "props": Map {
       "hello" => NumberFieldValue {
@@ -84,6 +88,7 @@ Record {
       "value": 2022-02-01T00:00:00.000Z,
     },
   },
+  "createdBy": undefined,
   "displayValues": RecordDisplayValues {
     "props": {},
   },
@@ -102,6 +107,7 @@ Record {
       "value": 2022-02-01T00:00:00.000Z,
     },
   },
+  "updatedBy": undefined,
   "values": RecordValues {
     "props": Map {
       "hello" => StringFieldValue {

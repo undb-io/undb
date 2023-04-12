@@ -6,9 +6,12 @@ import { UnderlyingColumnFactory } from './underlying-column.factory.js'
 import {
   UnderlyingAutoIncreamentColumn,
   UnderlyingCreatedAtColumn,
+  UnderlyingCreatedByColumn,
   UnderlyingDeletedAtColumn,
+  UnderlyingDeletedByColumn,
   UnderlyingIdColumn,
   UnderlyingUpdatedAtColumn,
+  UnderlyingUpdatedByColumn,
 } from './underlying-column.js'
 
 export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
@@ -59,6 +62,11 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
     return this
   }
 
+  createCreatedBy(): this {
+    new UnderlyingCreatedByColumn(undefined, this.tableName).build(this.tb)
+    return this
+  }
+
   createUpdatedAt(): this {
     new UnderlyingUpdatedAtColumn(undefined, this.tableName).build(this.tb, this.knex)
 
@@ -78,8 +86,18 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
     return this
   }
 
+  createUpdatedBy(): this {
+    new UnderlyingUpdatedByColumn(undefined, this.tableName).build(this.tb)
+    return this
+  }
+
   createDeletedAt(): this {
     new UnderlyingDeletedAtColumn(undefined, this.tableName).build(this.tb)
+    return this
+  }
+
+  createDeletedBy(): this {
+    new UnderlyingDeletedByColumn(undefined, this.tableName).build(this.tb)
     return this
   }
 

@@ -6,6 +6,7 @@ import { CollaboratorField } from './collaborator-field.js'
 import { ColorField } from './color-field.js'
 import { CountField } from './count-field.js'
 import { CreatedAtField } from './created-at-field.js'
+import { CreatedByField } from './created-by-field.js'
 import { DateField } from './date-field.js'
 import { DateRangeField } from './date-range-field.js'
 import { EmailField } from './email-field.js'
@@ -21,6 +22,7 @@ import { StringField } from './string-field.js'
 import { SumField } from './sum-field.js'
 import { TreeField } from './tree-field.js'
 import { UpdatedAtField } from './updated-at-field.js'
+import { UpdatedByField } from './updated-by-field.js'
 
 export class FieldFactory {
   static create(input: ICreateFieldSchema): Field | Field[] {
@@ -92,6 +94,12 @@ export class FieldFactory {
       case 'collaborator': {
         return CollaboratorField.create(input)
       }
+      case 'created-by': {
+        return CreatedByField.create(input)
+      }
+      case 'updated-by': {
+        return UpdatedByField.create(input)
+      }
     }
   }
 
@@ -162,6 +170,12 @@ export class FieldFactory {
       }
       case 'collaborator': {
         return CollaboratorField.unsafeCreate(input)
+      }
+      case 'created-by': {
+        return CreatedByField.unsafeCreate(input)
+      }
+      case 'updated-by': {
+        return UpdatedByField.unsafeCreate(input)
       }
     }
   }

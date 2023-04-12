@@ -12,6 +12,7 @@ import type {
   DateRangeEqual,
   HasExtension,
   HasFileType,
+  IClsService,
   IRecordVisitor,
   IsAttachmentEmpty,
   IsTreeRoot,
@@ -33,10 +34,12 @@ import type {
   TreeAvailableSpec,
   WithRecordAutoIncrement,
   WithRecordCreatedAt,
+  WithRecordCreatedBy,
   WithRecordId,
   WithRecordIds,
   WithRecordTableId,
   WithRecordUpdatedAt,
+  WithRecordUpdatedBy,
   WithRecordValues,
 } from '@undb/core'
 import { isEmpty } from 'lodash-es'
@@ -45,6 +48,7 @@ import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation
 
 export class RecordSqliteMutationVisitor extends BaseEntityManager implements IRecordVisitor {
   constructor(
+    private readonly cls: IClsService,
     private readonly tableId: string,
     private readonly recordId: string,
     private readonly schema: TableSchemaIdMap,
@@ -54,7 +58,15 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     super(em)
   }
   private createRecordValueVisitor(fieldId: string) {
-    return new RecordValueSqliteMutationVisitor(this.tableId, fieldId, this.recordId, false, this.schema, this.em)
+    return new RecordValueSqliteMutationVisitor(
+      this.cls,
+      this.tableId,
+      fieldId,
+      this.recordId,
+      false,
+      this.schema,
+      this.em,
+    )
   }
 
   idEqual(s: WithRecordId): void {
@@ -73,7 +85,13 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
   createdAt(s: WithRecordCreatedAt): void {
     throw new Error('Method not implemented.')
   }
+  createdBy(s: WithRecordCreatedBy): void {
+    throw new Error('Method not implemented.')
+  }
   updatedAt(s: WithRecordUpdatedAt): void {
+    throw new Error('Method not implemented.')
+  }
+  updatedBy(s: WithRecordUpdatedBy): void {
     throw new Error('Method not implemented.')
   }
   values(s: WithRecordValues): void {

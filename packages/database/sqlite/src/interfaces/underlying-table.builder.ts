@@ -4,7 +4,10 @@ export interface IUnderlyingColumnBuilder {
   createAutoIncrement(): this
   createId(tableName: string): this
   createCreatedAt(): this
-  createUpdatedAt(tableName: string): this
+  createCreatedBy(): this
+  createUpdatedAt(): this
+  createUpdatedBy(): this
   createDeletedAt(): this
+  createDeletedBy(): this
   createUnderlying(fields: NoneSystemField[]): this
 }

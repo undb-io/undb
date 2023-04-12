@@ -15,11 +15,13 @@ import type {
   NoneSystemField,
 } from '../field/index.js'
 import {
+  CreatedByField,
   DateField,
   DateRangeField,
   ReferenceField,
   SelectField,
   TreeField,
+  UpdatedByField,
   WithoutField,
   createFieldSchema,
 } from '../field/index.js'
@@ -57,7 +59,14 @@ export class TableSchema extends ValueObject<Field[]> {
   static create(inputs: ICreateTableSchemaInput): TableSchema {
     const fields = createTableSchemaSchema.parse(inputs).flatMap(FieldFactory.create)
 
-    return new TableSchema([IdField.default(), ...fields, CreatedAtField.default(), UpdatedAtField.default()])
+    return new TableSchema([
+      IdField.default(),
+      ...fields,
+      CreatedAtField.default(),
+      CreatedByField.default(),
+      UpdatedAtField.default(),
+      UpdatedByField.default(),
+    ])
   }
 
   static unsafeCreate(inputs: ICreateTableSchemaInput): TableSchema {
