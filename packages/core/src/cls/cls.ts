@@ -56,6 +56,10 @@ export declare type StringIfNever<C> = TypeIfNever<C, string>
 export interface ClsStore {
   [key: symbol]: any
   requestId: string
+  lang: 'en' | 'zh-CN'
+  user: {
+    userId: string
+  }
 }
 
 export interface IClsService {
