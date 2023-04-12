@@ -76,6 +76,10 @@ export const FieldIcon: React.FC<FieldProps> = ({ type, size = 16, color }) => {
       return <IconBinaryTree size={size} color={color} />
     case 'lookup':
       return <IconSearch size={size} color={color} />
+    case 'created-by':
+      return <IconCalendarPlus size={size} color={color} />
+    case 'updated-by':
+      return <IconCalendarStats size={size} color={color} />
     default:
       return <IconQuestionMark size={size} color={color} />
   }
