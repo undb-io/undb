@@ -7,6 +7,7 @@ import {
   WithDisplayValues,
   WithRecordCreatedAt,
   WithRecordCreatedBy,
+  WithRecordCreatedByProfile,
   WithRecordId,
   WithRecordTableId,
   WithRecordUpdatedAt,
@@ -14,7 +15,7 @@ import {
 } from './specifications/index.js'
 import type { RecordCompositeSpecification } from './specifications/interface.js'
 import { WithRecordAutoIncrement } from './specifications/record-auto-increment.specification.js'
-import { WithRecordUpdatedBy } from './specifications/record-updated-by.specification.js'
+import { WithRecordUpdatedBy, WithRecordUpdatedByProfile } from './specifications/record-updated-by.specification.js'
 
 export class RecordFactory {
   static create(...specs: RecordCompositeSpecification[]): Result<Record, string>
@@ -38,8 +39,10 @@ export class RecordFactory {
       .and(WithRecordTableId.fromString(r.tableId).unwrap())
       .and(WithRecordCreatedAt.fromString(r.createdAt))
       .and(WithRecordCreatedBy.fromString(r.createdBy))
+      .and(new WithRecordCreatedByProfile(r.createdByProfile))
       .and(WithRecordUpdatedAt.fromString(r.updatedAt))
       .and(WithRecordUpdatedBy.fromString(r.updatedBy))
+      .and(new WithRecordUpdatedByProfile(r.updatedByProfile))
       .and(WithRecordValues.fromObject(schema, r.values))
       .and(WithDisplayValues.from(r.displayValues))
 

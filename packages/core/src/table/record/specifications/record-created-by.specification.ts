@@ -1,6 +1,7 @@
 import { CompositeSpecification } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
+import type { ICollaboratorProfile } from '../../field/collaborator-field.type.js'
 import type { Record } from '../record.js'
 import type { IRecordVisitor } from './interface.js'
 
@@ -24,6 +25,25 @@ export class WithRecordCreatedBy extends CompositeSpecification<Record, IRecordV
 
   accept(v: IRecordVisitor): Result<void, string> {
     v.createdBy(this)
+    return Ok(undefined)
+  }
+}
+
+export class WithRecordCreatedByProfile extends CompositeSpecification<Record, IRecordVisitor> {
+  constructor(public readonly profile: ICollaboratorProfile | null) {
+    super()
+  }
+
+  isSatisfiedBy(t: Record): boolean {
+    throw new Error('not implemented')
+  }
+
+  mutate(r: Record): Result<Record, string> {
+    r.createdByProfile = this.profile
+    return Ok(r)
+  }
+
+  accept(v: IRecordVisitor): Result<void, string> {
     return Ok(undefined)
   }
 }
