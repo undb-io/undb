@@ -153,7 +153,17 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
 
   return (
     <Box ref={tableContainerRef} h="100%" sx={{ overflowY: 'scroll' }}>
-      <Table withBorder highlightOnHover withColumnBorders verticalSpacing={5} w={rt.getTotalSize()} sx={tableStyles}>
+      <Table
+        withBorder
+        highlightOnHover
+        withColumnBorders
+        verticalSpacing={5}
+        w={rt.getTotalSize()}
+        sx={[
+          tableStyles,
+          (theme) => ({ 'thead tr th': { borderBottom: rows.length ? '1px sold ' + theme.colors.gray[2] : 0 } }),
+        ]}
+      >
         <thead>
           {rt.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
