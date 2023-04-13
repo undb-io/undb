@@ -88,7 +88,8 @@ i18n
           Text: 'Text',
         },
         table: {
-          'shortcut T': 'Use shortcut {{ shortcut }} to create project from anywhere.',
+          'shortcut T': 'Use shortcut {{ shortcut }} to create table from anywhere.',
+          'shortcut R': 'Use shortcut {{ shortcut }} to create record in table.',
           'Create New Record': 'Create New Record',
           Views: 'Views',
           Field: 'Field',
@@ -282,6 +283,7 @@ i18n
         },
         table: {
           'shortcut T': '使用快捷键 <0>{{shortcut}}</0> 在任何页面创建表。',
+          'shortcut R': '使用快捷键 <0>{{shortcut}}</0> 在表格内创建记录。',
           'Create New Record': '创建新记录',
           Views: '视图',
           Field: '列',

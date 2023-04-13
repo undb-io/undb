@@ -23,6 +23,7 @@ import { SelectionHeader } from './selection-header'
 import type { ISetPinnedFieldsCommandInput } from '@undb/cqrs'
 import { Cell } from './cell'
 import { tableStyles } from './styles'
+import { EmptyTable } from './empty-table'
 
 const columnHelper = createColumnHelper<TData>()
 
@@ -196,6 +197,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
           )}
         </tbody>
       </Table>
+      {!rows.length && <EmptyTable />}
     </Box>
   )
 }
