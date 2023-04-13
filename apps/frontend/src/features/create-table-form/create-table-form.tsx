@@ -1,6 +1,20 @@
 import type { ICreateTableInput } from '@undb/cqrs'
 import { useCreateTableMutation } from '@undb/store'
-import { Alert, Button, Group, IconAlertCircle, Text, Space, TextInput, Code, Box, ActionIcon, Popover } from '@undb/ui'
+import {
+  Alert,
+  Button,
+  Group,
+  IconAlertCircle,
+  Text,
+  Space,
+  TextInput,
+  Code,
+  Box,
+  ActionIcon,
+  Popover,
+  Center,
+  Flex,
+} from '@undb/ui'
 import { useNavigate } from 'react-router-dom'
 
 import { Controller, useFormContext } from 'react-hook-form'
@@ -10,6 +24,7 @@ import { CreateTableFormSchema } from './create-table-form-schema'
 import { DisplayFields } from '../field/display-fields'
 import EmojiPicker, { Emoji } from 'emoji-picker-react'
 import { DEFAULT_TABLE_EMOJI } from '@undb/core'
+import { FieldIcon } from '../field-inputs/field-Icon'
 
 interface IProps {
   onCancel: () => void
@@ -73,8 +88,44 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
       <Space h="xs" />
 
       <Text size="xs" color="gray">
-        {t('System fields')}: <Code fw={600}>id</Code>, <Code fw={600}>createdAt</Code>, <Code fw={600}>createdBy</Code>
-        , <Code fw={600}>updatedAt</Code>, <Code fw={600}>updatedBy</Code> .
+        <Flex align="center">
+          {t('System fields')}:
+          <Center ml={5}>
+            <FieldIcon type="id" size={12} />{' '}
+          </Center>
+          <Code ml={5} fw={600}>
+            id
+          </Code>
+          ,{' '}
+          <Center ml={5}>
+            <FieldIcon type="created-at" size={12} />
+          </Center>
+          <Code ml={5} fw={600}>
+            {t('createdAt')}
+          </Code>
+          ,{' '}
+          <Center ml={5}>
+            <FieldIcon type="created-by" size={12} />
+          </Center>
+          <Code ml={5} fw={600}>
+            {t('createdBy')}
+          </Code>
+          ,{' '}
+          <Center ml={5}>
+            <FieldIcon type="updated-at" size={12} />
+          </Center>
+          <Code ml={5} fw={600}>
+            {t('updatedAt')}
+          </Code>
+          ,{' '}
+          <Center ml={5}>
+            <FieldIcon type="updated-by" size={12} />
+          </Center>
+          <Code ml={5} fw={600}>
+            {t('updatedBy')}
+          </Code>{' '}
+          .
+        </Flex>
       </Text>
 
       <Space h="xs" />

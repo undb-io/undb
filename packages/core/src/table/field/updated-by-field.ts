@@ -26,8 +26,8 @@ export class UpdatedByField extends BaseField<IUpdatedByField> {
     return true
   }
 
-  static default(): UpdatedByField {
-    return this.create({ name: 'updatedBy' })
+  static default(name: string): UpdatedByField {
+    return this.create({ name })
   }
 
   static create(input: Omit<ICreateUpdatedByFieldInput, 'type'>): UpdatedByField {

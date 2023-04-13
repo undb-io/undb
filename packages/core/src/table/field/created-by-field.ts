@@ -26,8 +26,8 @@ export class CreatedByField extends BaseField<ICreatedByField> {
     return true
   }
 
-  static default(): CreatedByField {
-    return this.create({ name: 'createdBy' })
+  static default(name: string): CreatedByField {
+    return this.create({ name })
   }
 
   static create(input: Omit<ICreateCreatedByFieldInput, 'type'>): CreatedByField {

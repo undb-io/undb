@@ -1,5 +1,6 @@
 import { EntityManager } from '@mikro-orm/better-sqlite'
 import {
+  ClsStore,
   Table as CoreTable,
   View as CoreView,
   ReferenceField,
@@ -10,6 +11,8 @@ import {
   WithTableViews,
   createTestTable,
 } from '@undb/core'
+import { identity } from 'lodash-es'
+import { mockDeep } from 'vitest-mock-extended'
 import { Field, Table } from '../../entity/index.js'
 import { View } from '../../entity/view.js'
 import { AdjacencyListTable } from '../../underlying-table/underlying-foreign-table.js'
@@ -21,10 +24,12 @@ describe('TableSqliteMutationVisitor', () => {
   let em: EntityManager
   let mv: TableSqliteMutationVisitor
   let repo: TableSqliteRepository
+  let ctx: ClsStore
 
   beforeAll(() => {
     // @ts-expect-error
     em = global.em
+    ctx = mockDeep<ClsStore>({ t: identity })
   })
 
   beforeEach(async () => {
@@ -53,7 +58,7 @@ describe('TableSqliteMutationVisitor', () => {
   })
 
   test('schemaEqual', async () => {
-    mv.schemaEqual(WithTableSchema.from([{ id: 'fld1', name: 'field1', type: 'string' }]))
+    mv.schemaEqual(WithTableSchema.from([{ id: 'fld1', name: 'field1', type: 'string' }], ctx))
 
     await em.flush()
 

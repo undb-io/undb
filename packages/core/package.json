@@ -19,6 +19,7 @@
     "@types/lodash": "^4.14.192",
     "@types/lodash-es": "^4.17.7",
     "@types/mime-types": "^2.1.1",
+    "i18next": "^22.4.14",
     "rimraf": "^5.0.0",
     "tsconfig": "^0.0.0",
     "tsup": "^6.7.0",
@@ -40,7 +41,7 @@
     "dev": "tsup --watch",
     "prebuild": "pnpm run clean",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "TZ=UTC vitest"
   },
   "type": "module",
   "types": "dist/index.d.ts"

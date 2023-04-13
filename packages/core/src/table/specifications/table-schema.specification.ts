@@ -1,6 +1,7 @@
 import { CompositeSpecification } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
+import type { ClsStore } from '../../cls/cls.js'
 import type { Table } from '../table.js'
 import type { ICreateTableSchemaInput } from '../value-objects/index.js'
 import { TableSchema } from '../value-objects/index.js'
@@ -11,8 +12,8 @@ export class WithTableSchema extends CompositeSpecification<Table, ITableSpecVis
     super()
   }
 
-  static from(input: ICreateTableSchemaInput): WithTableSchema {
-    return new this(TableSchema.create(input))
+  static from(input: ICreateTableSchemaInput, ctx: ClsStore): WithTableSchema {
+    return new this(TableSchema.create(input, ctx))
   }
 
   static unsafeFrom(input: ICreateTableSchemaInput): WithTableSchema {

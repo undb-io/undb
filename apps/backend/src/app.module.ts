@@ -16,6 +16,7 @@ import { BaseConfigService } from './configs/base-config.service.js'
 import { ConfigModule } from './configs/config.module.js'
 import { sqliteConfig } from './configs/sqlite.config.js'
 import { HealthModule } from './health/health.module.js'
+import { I18nModule } from './i18n/i18n.module.js'
 import { modules } from './modules/index.js'
 import { UserService } from './modules/user/user.service.js'
 import { TrpcModule } from './trpc/trpc.module.js'
@@ -51,6 +52,7 @@ import { TrpcModule } from './trpc/trpc.module.js'
       rootPath: path.resolve(process.cwd(), './out'),
     }),
     AuthModule,
+    I18nModule,
   ],
 })
 export class AppModule implements OnModuleInit {

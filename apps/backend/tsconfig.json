@@ -3,6 +3,7 @@
   "include": ["**/*.ts"],
   "exclude": ["node_modules"],
   "compilerOptions": {
+    "resolveJsonModule": true,
     "outDir": "./dist"
   }
 }
