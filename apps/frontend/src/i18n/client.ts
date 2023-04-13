@@ -17,6 +17,8 @@ i18n
         auth: {
           login: 'login',
           logout: 'logout',
+          'login to undb': 'login to undb',
+          'register to undb': 'register to undb',
           register: 'register',
           email: 'email',
           'email placeholder': 'your email address',
@@ -215,6 +217,8 @@ i18n
           'password placeholder': '密码',
           'has no account': '还没有账号？',
           'has account': '已有账号？',
+          'login to undb': '登录到 undb',
+          'register to undb': '注册 undb 账号',
         },
         common: {
           error: '发生错误',

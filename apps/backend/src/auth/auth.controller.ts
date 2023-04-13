@@ -11,7 +11,8 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('register')
   async register(@Body() body: { password: string; email: string }) {
-    return this.authService.register(body.email, body.password)
+    const payload = await this.authService.register(body.email, body.password)
+    return { access_token: this.jwtService.sign(payload) }
   }
 
   @HttpCode(HttpStatus.OK)
