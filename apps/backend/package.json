@@ -19,6 +19,7 @@
     "@undb/core": "^0.0.0",
     "@undb/cqrs": "^0.0.0",
     "@undb/domain": "^0.0.0",
+    "@undb/i18n": "^0.0.0",
     "@undb/sqlite": "^0.0.0",
     "@undb/trpc": "^0.0.0",
     "bcrypt": "^5.1.0",

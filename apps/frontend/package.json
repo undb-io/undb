@@ -15,6 +15,7 @@
     "@tanstack/react-virtual": "^3.0.0-beta.54",
     "@undb/core": "^0.0.0",
     "@undb/cqrs": "^0.0.0",
+    "@undb/i18n": "^0.0.0",
     "@undb/store": "^0.0.0",
     "@undb/trpc": "^0.0.0",
     "@undb/ui": "^0.0.0",
