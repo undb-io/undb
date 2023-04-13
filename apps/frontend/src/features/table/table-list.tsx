@@ -23,7 +23,6 @@ export const TableList: React.FC = () => {
   const { data, isLoading, isSuccess } = useGetTablesQuery({})
 
   useEffect(() => {
-    console.log(tableId, currentTableId)
     if (!tableId) {
       if (currentTableId) {
         navigate(`/t/${currentTableId}`, { replace: true })
