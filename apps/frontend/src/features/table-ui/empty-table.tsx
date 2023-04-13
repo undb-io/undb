@@ -8,7 +8,7 @@ export const EmptyTable: React.FC = () => {
   const setOpened = useSetAtom(createRecordFormDrawerOpened)
 
   return (
-    <Center h="100%">
+    <Center h="100%" mt={'-5%'}>
       <Stack>
         <Center>
           <Text size="lg" fw={600}>
