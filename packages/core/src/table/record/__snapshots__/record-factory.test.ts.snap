@@ -45,6 +45,7 @@ ResultType {
       },
     },
     "createdBy": undefined,
+    "createdByProfile": null,
     "displayValues": RecordDisplayValues {
       "props": {},
     },
@@ -64,6 +65,7 @@ ResultType {
       },
     },
     "updatedBy": undefined,
+    "updatedByProfile": null,
     "values": RecordValues {
       "props": Map {},
     },
