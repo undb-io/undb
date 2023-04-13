@@ -1,10 +1,11 @@
-import { mock } from 'vitest-mock-extended'
+import { identity } from 'lodash'
+import { mockDeep } from 'vitest-mock-extended'
 import { ClsStore } from '../cls/cls.js'
 import { TableFactory } from './table.factory.js'
 import { ICreateTableInput_internal } from './table.schema.js'
 
 describe('TableFactory', () => {
-  const ctx = mock<ClsStore>()
+  const ctx = mockDeep<ClsStore>({ t: identity })
   test.each<ICreateTableInput_internal>([
     {
       id: 'table',

@@ -1,5 +1,6 @@
 import { EntityManager } from '@mikro-orm/better-sqlite'
 import {
+  ClsStore,
   createTestTable,
   DateRangeFieldValue,
   IClsService,
@@ -9,7 +10,8 @@ import {
   WithTableSchema,
 } from '@undb/core'
 import { addDays } from 'date-fns'
-import { mock } from 'vitest-mock-extended'
+import { identity } from 'lodash-es'
+import { mock, mockDeep } from 'vitest-mock-extended'
 import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation-visitor.js'
 
 describe('RecordValueSqliteVisitor', () => {
@@ -17,6 +19,7 @@ describe('RecordValueSqliteVisitor', () => {
   let em: EntityManager
   let table: Table
   let cls: IClsService
+  let ctx: ClsStore
 
   beforeAll(() => {
     // @ts-expect-error
@@ -24,11 +27,12 @@ describe('RecordValueSqliteVisitor', () => {
     vi.setSystemTime(new Date(2022, 2, 2))
 
     cls = mock<IClsService>()
+    ctx = mockDeep<ClsStore>({ t: identity })
   })
 
   describe('dateRange', () => {
     beforeAll(() => {
-      table = createTestTable(WithTableSchema.from([{ id: 'fld1', name: 'range', type: 'date-range' }]))
+      table = createTestTable(WithTableSchema.from([{ id: 'fld1', name: 'range', type: 'date-range' }], ctx))
 
       visitor = new RecordValueSqliteMutationVisitor(
         cls,
@@ -58,7 +62,7 @@ describe('RecordValueSqliteVisitor', () => {
 
   describe('refenrence', () => {
     beforeAll(() => {
-      table = createTestTable(WithTableSchema.from([{ id: 'fld1', name: 'reference', type: 'reference' }]))
+      table = createTestTable(WithTableSchema.from([{ id: 'fld1', name: 'reference', type: 'reference' }], ctx))
 
       visitor = new RecordValueSqliteMutationVisitor(
         cls,

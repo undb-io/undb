@@ -41,7 +41,7 @@
     "dev": "tsup --watch",
     "prebuild": "pnpm run clean",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "TZ=UTC vitest"
   },
   "type": "module",
   "types": "dist/index.d.ts"
