@@ -28,8 +28,8 @@ export class CreatedAtField extends AbstractDateField<ICreatedAtField> {
     return true
   }
 
-  static default(): CreatedAtField {
-    return this.create({ name: 'createdAt' })
+  static default(name: string): CreatedAtField {
+    return this.create({ name })
   }
 
   static create(input: Omit<ICreateCreatedAtFieldInput, 'type'>): CreatedAtField {

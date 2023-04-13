@@ -27,10 +27,8 @@ export class UpdatedAtField extends AbstractDateField<IUpdatedAtField> {
     return true
   }
 
-  static default(): UpdatedAtField {
-    return this.create({
-      name: 'updatedAt',
-    })
+  static default(name: string): UpdatedAtField {
+    return this.create({ name })
   }
 
   static create(input: Omit<ICreateUpdatedAtFieldInput, 'type'>): UpdatedAtField {

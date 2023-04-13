@@ -451,6 +451,9 @@ importers:
       '@types/mime-types':
         specifier: ^2.1.1
         version: 2.1.1
+      i18next:
+        specifier: ^22.4.14
+        version: 22.4.14
       rimraf:
         specifier: ^5.0.0
         version: 5.0.0

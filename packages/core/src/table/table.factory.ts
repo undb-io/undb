@@ -1,6 +1,7 @@
 import { and } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
+import type { ClsStore } from '../cls/cls.js'
 import { WithTableEmoji, WithTableId, WithTableName, WithTableSchema } from './specifications/index.js'
 import type { TableCompositeSpecificaiton } from './specifications/interface.js'
 import { newTableSpec } from './specifications/specifications.js'
@@ -24,8 +25,8 @@ export class TableFactory {
     return spec.mutate(table).map(() => table)
   }
 
-  static from(input: ICreateTableInput_internal) {
-    const spec = newTableSpec(input)
+  static from(input: ICreateTableInput_internal, ctx: ClsStore) {
+    const spec = newTableSpec(input, ctx)
     const table = this.create(spec).unwrap()
 
     const viewsOrder = WithViewsOrder.fromArray(table.views.ids.map((id) => id.value))

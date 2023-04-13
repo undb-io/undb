@@ -3,6 +3,7 @@ import { castArray } from 'lodash-es'
 import { Option } from 'oxide.ts'
 import type { Class } from 'type-fest'
 import * as z from 'zod'
+import type { ClsStore } from '../../cls/cls.js'
 import { CreatedAtField } from '../field/created-at-field.js'
 import { FieldFactory } from '../field/field.factory.js'
 import { IdField } from '../field/id-field.js'
@@ -56,16 +57,16 @@ const aggregateFieldTypes: IFieldType[] = ['count', 'sum', 'average']
  * Table Schema is a collection of fields
  */
 export class TableSchema extends ValueObject<Field[]> {
-  static create(inputs: ICreateTableSchemaInput): TableSchema {
+  static create(inputs: ICreateTableSchemaInput, ctx: ClsStore): TableSchema {
     const fields = createTableSchemaSchema.parse(inputs).flatMap(FieldFactory.create)
 
     return new TableSchema([
       IdField.default(),
       ...fields,
-      CreatedAtField.default(),
-      CreatedByField.default(),
-      UpdatedAtField.default(),
-      UpdatedByField.default(),
+      CreatedAtField.default(ctx.t('createdAt')),
+      CreatedByField.default(ctx.t('createdBy')),
+      UpdatedAtField.default(ctx.t('updatedAt')),
+      UpdatedByField.default(ctx.t('updatedBy')),
     ])
   }
 

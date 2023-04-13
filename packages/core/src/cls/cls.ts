@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const TERMINAL_BRAND: unique symbol
 export declare class BrandedTerminal {
@@ -57,6 +58,7 @@ export interface ClsStore {
   [key: symbol]: any
   requestId: string
   lang: 'en' | 'zh-CN'
+  t: TFunction
   user: {
     userId: string
   }

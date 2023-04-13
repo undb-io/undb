@@ -1,15 +1,20 @@
-import { MiddlewareConsumer, Module, NestModule, OnModuleInit } from '@nestjs/common'
+import { MiddlewareConsumer, Module, NestModule, OnModuleInit, RequestMethod } from '@nestjs/common'
 import { config } from '@undb/i18n'
-import i18next from 'i18next'
+import { type i18n } from 'i18next'
 import middleware from 'i18next-http-middleware'
+import { InjectI18Next, i18nextProvider } from './i18next.provider.js'
 
-@Module({})
+@Module({
+  providers: [i18nextProvider],
+})
 export class I18nModule implements NestModule, OnModuleInit {
+  constructor(@InjectI18Next() private i18next: i18n) {}
+
   onModuleInit() {
-    i18next.use(middleware.LanguageDetector).init(config)
+    this.i18next.use(middleware.LanguageDetector).init(config)
   }
 
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(middleware.handle(i18next)).forRoutes('*')
+    consumer.apply(middleware.handle(this.i18next)).forRoutes({ path: '*', method: RequestMethod.ALL })
   }
 }

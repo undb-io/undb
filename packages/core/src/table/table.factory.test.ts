@@ -1,7 +1,10 @@
+import { mock } from 'vitest-mock-extended'
+import { ClsStore } from '../cls/cls.js'
 import { TableFactory } from './table.factory.js'
 import { ICreateTableInput_internal } from './table.schema.js'
 
 describe('TableFactory', () => {
+  const ctx = mock<ClsStore>()
   test.each<ICreateTableInput_internal>([
     {
       id: 'table',
@@ -15,7 +18,7 @@ describe('TableFactory', () => {
       ],
     },
   ])('should create table', (input) => {
-    const table = TableFactory.from(input)
+    const table = TableFactory.from(input, ctx)
     expect(table.isOk()).to.be.true
     expect(table.unwrap().schema.fields).to.have.length(6)
     expect(table.unwrap().schema.fields.at(0)!.type).not.to.be.undefined
