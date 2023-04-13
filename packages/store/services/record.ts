@@ -84,6 +84,7 @@ export const recordApi = api.injectEndpoints({
     }),
     deleteRecord: builder.mutation({
       query: trpc.record.delete.mutate,
+      invalidatesTags: ['Record'],
       onQueryStarted({ id, tableId }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           recordApi.util.updateQueryData('getRecords', { tableId }, (draft) => {

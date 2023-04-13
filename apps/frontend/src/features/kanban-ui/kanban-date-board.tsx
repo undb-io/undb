@@ -3,21 +3,21 @@ import { DndContext, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSen
 import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { RecordFactory } from '@undb/core'
 import { Container, Group } from '@undb/ui'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { IProps as KanbanLaneProps } from './kanban-lane'
 import { KanbanLane, SortableKanbanLane } from './kanban-lane'
 import { KanbanCard } from './kanban-card'
 import { useKanban } from './use-kanban'
-import type { Record as CoreRecord, DateField, IQueryRecords } from '@undb/core'
+import type { Record as CoreRecord, DateField } from '@undb/core'
 import { getDateValue, KANBAN_DATE_STACKS, RElAVANT_DATES } from './kanban-date.utils'
 import { addDays, isAfter, isBefore, isToday, isTomorrow, isYesterday, startOfDay } from 'date-fns'
 import { endOfDay } from 'date-fns/esm'
 import type { DateFieldValue } from '@undb/core'
-import { useGetRecordsQuery, useUpdateRecordMutation } from '@undb/store'
+import { useUpdateRecordMutation } from '@undb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
-import { useCurrentView } from '../../hooks/use-current-view'
 import { groupBy } from 'lodash-es'
 import { useTranslation } from 'react-i18next'
+import { useFetchRecords } from '../../hooks/use-fetch-records'
 
 interface IProps {
   field: DateField
@@ -25,35 +25,24 @@ interface IProps {
 
 export const KanbanDateBoard: React.FC<IProps> = ({ field }) => {
   const table = useCurrentTable()
-  const view = useCurrentView()
   const containers = KANBAN_DATE_STACKS as unknown as string[]
 
-  const { groupdRecords, records, isLoading, isFetching } = useGetRecordsQuery(
-    {
-      tableId: table.id.value,
-      viewId: view.id.value,
-    },
-    {
-      selectFromResult: (result) => {
-        const rawRecords = (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean) as IQueryRecords
-        const records = RecordFactory.fromQueryRecords(rawRecords, table.schema.toIdMap())
-        const groupdRecords = groupBy(records, (record) => {
-          const value = (record.values.value.get(field.id.value) as DateFieldValue | undefined)?.unpack()
-          if (!value) return 'NO_DATE'
-          if (isToday(value)) return 'TODAY'
-          if (isTomorrow(value)) return 'TOMORROW'
-          if (isYesterday(value)) return 'YESTERDAY'
-          if (isAfter(value, endOfDay(addDays(new Date(), 1)))) return 'AFTER_TOMORROW'
-          if (isBefore(value, startOfDay(addDays(new Date(), -1)))) return 'BEFORE_YESTERDAY'
-          return 'NO_DATE'
-        })
-        return {
-          ...result,
-          records,
-          groupdRecords,
-        }
-      },
-    },
+  const { rawRecords, isLoading, isFetching } = useFetchRecords()
+
+  const records = useMemo(() => RecordFactory.fromQueryRecords(rawRecords, table.schema.toIdMap()), [rawRecords])
+  const groupdRecords = useMemo(
+    () =>
+      groupBy(records, (record) => {
+        const value = (record.values.value.get(field.id.value) as DateFieldValue | undefined)?.unpack()
+        if (!value) return 'NO_DATE'
+        if (isToday(value)) return 'TODAY'
+        if (isTomorrow(value)) return 'TOMORROW'
+        if (isYesterday(value)) return 'YESTERDAY'
+        if (isAfter(value, endOfDay(addDays(new Date(), 1)))) return 'AFTER_TOMORROW'
+        if (isBefore(value, startOfDay(addDays(new Date(), -1)))) return 'BEFORE_YESTERDAY'
+        return 'NO_DATE'
+      }),
+    [records],
   )
 
   const [dateRecords, setDateRecords] = useState(groupdRecords)
