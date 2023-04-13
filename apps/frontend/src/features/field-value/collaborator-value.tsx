@@ -1,16 +1,15 @@
-import { Avatar, Center, Text } from '@undb/ui'
+import type { ICollaboratorProfile } from '@undb/core'
+import { Avatar, Group, Text } from '@undb/ui'
 
 interface IProps {
-  values: (string | null)[]
+  collaborator: ICollaboratorProfile
 }
 
-export const CollaboratorValue: React.FC<IProps> = ({ values }) => {
-  const [username] = values
-
+export const CollaboratorValue: React.FC<IProps> = ({ collaborator }) => {
   return (
-    <Center>
-      <Avatar size="xs">{username?.slice(0, 2)}</Avatar>
-      <Text ml="xs">{username}</Text>
-    </Center>
+    <Group spacing={3}>
+      <Avatar size="xs">{collaborator.username?.slice(0, 2)}</Avatar>
+      <Text ml="xs">{collaborator.username}</Text>
+    </Group>
   )
 }

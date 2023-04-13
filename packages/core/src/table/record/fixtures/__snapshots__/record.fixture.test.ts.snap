@@ -9,6 +9,7 @@ Record {
     },
   },
   "createdBy": undefined,
+  "createdByProfile": null,
   "displayValues": RecordDisplayValues {
     "props": {},
   },
@@ -28,6 +29,7 @@ Record {
     },
   },
   "updatedBy": undefined,
+  "updatedByProfile": null,
   "values": RecordValues {
     "props": Map {
       "hello" => StringFieldValue {
@@ -49,6 +51,7 @@ Record {
     },
   },
   "createdBy": undefined,
+  "createdByProfile": null,
   "displayValues": RecordDisplayValues {
     "props": {},
   },
@@ -68,6 +71,7 @@ Record {
     },
   },
   "updatedBy": undefined,
+  "updatedByProfile": null,
   "values": RecordValues {
     "props": Map {
       "hello" => NumberFieldValue {
@@ -89,6 +93,7 @@ Record {
     },
   },
   "createdBy": undefined,
+  "createdByProfile": null,
   "displayValues": RecordDisplayValues {
     "props": {},
   },
@@ -108,6 +113,7 @@ Record {
     },
   },
   "updatedBy": undefined,
+  "updatedByProfile": null,
   "values": RecordValues {
     "props": Map {
       "hello" => StringFieldValue {

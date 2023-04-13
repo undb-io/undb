@@ -6,6 +6,7 @@ import type {
   DateFieldValue,
   DateRangeFieldValue,
   Field,
+  ICollaboratorProfile,
   ParentFieldValue,
   RatingFieldValue,
   RecordAllValueType,
@@ -26,6 +27,7 @@ import { ColorValue } from './color-value'
 import type { IRecordDisplayValues } from '@undb/core'
 import { isNumber } from 'lodash-es'
 import { AttachmentValue } from './attachment-value'
+import { CollaboratorsValue } from './collaborators-value'
 import { CollaboratorValue } from './collaborator-value'
 
 export const FieldValueFactory: React.FC<{
@@ -86,7 +88,7 @@ export const FieldValueFactory: React.FC<{
       return (
         <Group spacing={3} noWrap sx={{ overflow: 'hidden' }} h="100%">
           {values.map((value, index) => (
-            <CollaboratorValue key={index} values={value} />
+            <CollaboratorsValue key={index} values={value} />
           ))}
         </Group>
       )
@@ -148,8 +150,8 @@ export const FieldValueFactory: React.FC<{
 
     case 'updated-by':
     case 'created-by': {
-      // TODO: use display field value
-      return null
+      if (!value) return null
+      return <CollaboratorValue collaborator={value as ICollaboratorProfile} />
     }
 
     default:
