@@ -56,3 +56,10 @@ export const collaboratorFieldIssues = z.enum(['Missing Foreign Table'])
 export type ICollaboratorFieldIssues = z.infer<typeof collaboratorFieldIssues>
 
 export type CollaboratorFieldIssue = FieldIssue<ICollaboratorFieldIssues>
+
+export const collaboratorProfile = z.object({
+  avatar: z.string().nullable(),
+  username: z.string(),
+})
+
+export type ICollaboratorProfile = z.infer<typeof collaboratorProfile>

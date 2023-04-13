@@ -4,17 +4,24 @@ import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type {
   AttachmentField,
   CollaboratorField as CoreCollaboratorField,
+  CreatedByField as CoreCreatedByField,
   Field as CoreField,
   LookupField as CoreLookupField,
   ParentField as CoreParentField,
   ReferenceField as CoreReferenceField,
   TreeField as CoreTreeField,
+  UpdatedByField as CoreUpdatedByField,
   CountField,
   IFieldVisitor,
   SumField,
   Table,
 } from '@undb/core'
-import { AbstractReferenceFieldVisitor, INTERNAL_COLUMN_ID_NAME } from '@undb/core'
+import {
+  AbstractReferenceFieldVisitor,
+  INTERNAL_COLUMN_CREATED_BY_NAME,
+  INTERNAL_COLUMN_ID_NAME,
+  INTERNAL_COLUMN_UPDATED_BY_NAME,
+} from '@undb/core'
 import { uniqBy } from 'lodash-es'
 import { Attachment } from '../../entity/attachment.js'
 import type { CollaboratorField, LookupField, ParentField, ReferenceField, TreeField } from '../../entity/field.js'
@@ -96,6 +103,65 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`,
       )
       .groupBy(`${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
+  }
+
+  createdBy(field: CoreCreatedByField): void {
+    if (this.#visited.has(field.id.value)) {
+      return
+    }
+
+    const {
+      properties: { id, avatar, username },
+      tableName,
+    } = this.em.getMetadata().get(User.name)
+
+    const alias = INTERNAL_COLUMN_CREATED_BY_NAME + '_' + tableName
+    this.qb
+      .select(
+        this.knex.raw(
+          `json_object(
+            '${username.fieldNames[0]}', ${alias}.${username.fieldNames[0]},
+            '${avatar.fieldNames[0]}', ${alias}.${avatar.fieldNames[0]}
+          ) as created_by_profile`,
+        ),
+      )
+      .leftJoin(
+        `${tableName} as ${alias}`,
+        `${alias}.${id.fieldNames[0]}`,
+        `${TABLE_ALIAS}.${INTERNAL_COLUMN_CREATED_BY_NAME}`,
+      )
+
+    this.#visited.add(field.id.value)
+  }
+
+  updatedBy(field: CoreUpdatedByField): void {
+    if (this.#visited.has(field.id.value)) {
+      return
+    }
+
+    const {
+      properties: { id, avatar, username },
+      tableName,
+    } = this.em.getMetadata().get(User.name)
+
+    const alias = INTERNAL_COLUMN_UPDATED_BY_NAME + '_' + tableName
+
+    this.qb
+      .select(
+        this.knex.raw(
+          `json_object(
+            '${username.fieldNames[0]}', ${alias}.${username.fieldNames[0]},
+            '${avatar.fieldNames[0]}', ${alias}.${avatar.fieldNames[0]}
+          ) as updated_by_profile`,
+        ),
+      )
+      .leftJoin(
+        `${tableName} as ${alias}`,
+        `${alias}.${id.fieldNames[0]}`,
+        `${TABLE_ALIAS}.${INTERNAL_COLUMN_UPDATED_BY_NAME}`,
+      )
+
+    this.#visited.add(field.id.value)
   }
 
   collaborator(field: CoreCollaboratorField): void {
