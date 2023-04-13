@@ -1,4 +1,4 @@
-import { ActionIcon, Divider, Group, IconRefresh, Tooltip } from '@undb/ui'
+import { ActionIcon, Divider, Group, IconRefresh, IconSettingsFilled, Tooltip } from '@undb/ui'
 import { TableCreateNewRecordButton } from './table-create-new-record-button'
 import { ViewFieldsEditor } from './view-fields-editor'
 import { TableFilterEditor } from './table-filter-editor'
@@ -10,11 +10,14 @@ import { useAppSelector } from '../../hooks'
 import { getIsLoadedCurrentRecords } from '@undb/store'
 import { useTranslation } from 'react-i18next'
 import { useFetchRecords } from '../../hooks/use-fetch-records'
+import { useSetAtom } from 'jotai'
+import { updateTableFormDrawerOpened } from '../update-table-form/drawer-opened.atom'
 
 export const TableToolbar: React.FC = () => {
   const isLoadedRecords = useAppSelector(getIsLoadedCurrentRecords)
   const { t } = useTranslation()
   const { refetch } = useFetchRecords()
+  const setUpdateTableOpened = useSetAtom(updateTableFormDrawerOpened)
 
   return (
     <Group
@@ -49,6 +52,11 @@ export const TableToolbar: React.FC = () => {
         <Tooltip label={t('Force Refresh')}>
           <ActionIcon onClick={() => refetch()}>
             <IconRefresh size={16} />
+          </ActionIcon>
+        </Tooltip>
+        <Tooltip label={t('Update Table')}>
+          <ActionIcon onClick={() => setUpdateTableOpened(true)}>
+            <IconSettingsFilled size={16} />
           </ActionIcon>
         </Tooltip>
       </Group>
