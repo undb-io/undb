@@ -118,6 +118,9 @@ importers:
       i18next:
         specifier: ^22.4.14
         version: 22.4.14
+      i18next-http-middleware:
+        specifier: ^3.3.0
+        version: 3.3.0
       joi:
         specifier: ^17.9.1
         version: 17.9.1
@@ -6890,6 +6893,10 @@ packages:
     resolution: {integrity: sha512-Pa5kFwaczXJAeHE56CHG2aWzFBMJNUNghf0Pm4SwSrEMps/PTKqW90EYWlIvhuYStf3Sn1K0vw+gH3+TLdkH1g==}
     dependencies:
       '@babel/runtime': 7.20.7
+    dev: false
+
+  /i18next-http-middleware@3.3.0:
+    resolution: {integrity: sha512-WX6uqxNwXccdNm/md5VJ+Q47DF2gjqLvygvgNzb2tCJWPM86FCi2LIvKco70EttlpV9IkfkCVNVF07/56EsSEw==}
     dev: false
 
   /i18next@22.4.14:
