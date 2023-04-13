@@ -23,6 +23,7 @@ export const TableList: React.FC = () => {
   const { data, isLoading, isSuccess } = useGetTablesQuery({})
 
   useEffect(() => {
+    console.log(tableId, currentTableId)
     if (!tableId) {
       if (currentTableId) {
         navigate(`/t/${currentTableId}`, { replace: true })
@@ -30,7 +31,7 @@ export const TableList: React.FC = () => {
         navigate(`/t/${data.ids.at(0)}`, { replace: true })
       }
     }
-  }, [tableId])
+  }, [tableId, data?.ids])
 
   const setOpened = useSetAtom(createTableFormDrawerOpened)
   const close = useCloseAllDrawers()
