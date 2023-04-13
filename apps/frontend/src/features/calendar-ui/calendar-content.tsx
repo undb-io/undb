@@ -1,33 +1,21 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { ICalendarField, IQueryRecords } from '@undb/core'
 import { RecordFactory } from '@undb/core'
-import { useGetRecordsQuery } from '@undb/store'
 import { Calendar } from '@undb/ui'
 import { useMemo } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
-import { useCurrentView } from '../../hooks/use-current-view'
 import { Day } from './day'
+import { useFetchRecords } from '../../hooks/use-fetch-records'
 
 interface IProps {
   field: ICalendarField
 }
 export const CalendarContent: React.FC<IProps> = ({ field }) => {
   const table = useCurrentTable()
-  const view = useCurrentView()
 
-  const { rawRecords, isLoading, isFetching } = useGetRecordsQuery(
-    {
-      tableId: table.id.value,
-      viewId: view.id.value,
-      filter: [{ path: field.id.value, type: 'date', value: null, operator: '$neq' }],
-    },
-    {
-      selectFromResult: (result) => ({
-        ...result,
-        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean),
-      }),
-    },
-  )
+  const { rawRecords, isLoading, isFetching } = useFetchRecords([
+    { path: field.id.value, type: 'date', value: null, operator: '$neq' },
+  ])
 
   const records = useMemo(
     () => RecordFactory.fromQueryRecords(rawRecords, table.schema.toIdMap()),

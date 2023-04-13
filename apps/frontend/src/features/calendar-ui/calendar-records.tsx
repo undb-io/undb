@@ -5,12 +5,12 @@ import type { Record, ICalendarField } from '@undb/core'
 import { ActionIcon, Box, Group, IconGripVertical, Skeleton, Space, Stack, Title } from '@undb/ui'
 import { useMemo, useRef } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { setSelectedRecordId, useGetRecordsQuery } from '@undb/store'
+import { setSelectedRecordId } from '@undb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
-import { useCurrentView } from '../../hooks/use-current-view'
 import { useTranslation } from 'react-i18next'
 import { RecordValues } from '../record/record-values'
 import { useAppDispatch } from '../../hooks'
+import { useFetchRecords } from '../../hooks/use-fetch-records'
 
 interface IProps {
   field: ICalendarField
@@ -63,20 +63,9 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
 
 export const CalendarRecords: React.FC<IProps> = ({ field }) => {
   const table = useCurrentTable()
-  const view = useCurrentView()
-  const { rawRecords, isLoading, isFetching } = useGetRecordsQuery(
-    {
-      tableId: table.id.value,
-      viewId: view.id.value,
-      filter: [{ path: field.id.value, type: 'date', value: null, operator: '$eq' }],
-    },
-    {
-      selectFromResult: (result) => ({
-        ...result,
-        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(Boolean),
-      }),
-    },
-  )
+  const { rawRecords, isLoading, isFetching } = useFetchRecords([
+    { path: field.id.value, type: 'date', value: null, operator: '$eq' },
+  ])
 
   const records = useMemo(
     () => RecordFactory.fromQueryRecords(rawRecords, table.schema.toIdMap()),
