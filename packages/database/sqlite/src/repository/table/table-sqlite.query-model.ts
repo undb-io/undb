@@ -1,8 +1,8 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
-import type { IQueryTable, ITableQueryModel, ITableSpec } from '@undb/core'
+import { type IQueryTable, type ITableQueryModel, type ITableSpec } from '@undb/core'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
-import { ReferenceField, Table } from '../../entity/index.js'
+import { Table } from '../../entity/index.js'
 import { TableSqliteMapper } from './table-sqlite.mapper.js'
 import { TableSqliteQueryVisitor } from './table-sqlite.query-visitor.js'
 
@@ -15,12 +15,7 @@ export class TableSqliteQueryModel implements ITableQueryModel {
   }
 
   async #populateTable(table: Table) {
-    await this.em.populate(table, ['fields.options', 'views', 'fields.displayFields', 'fields.foreignTable'])
-    for (const field of table.fields) {
-      if (field instanceof ReferenceField) {
-        await field.foreignTable?.fields?.init({ where: { display: true } })
-      }
-    }
+    await this.em.populate(table, ['fields', 'fields.options', 'views', 'fields.displayFields', 'fields.foreignTable'])
   }
 
   async findOne(spec: ITableSpec): Promise<Option<IQueryTable>> {
