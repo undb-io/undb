@@ -23,17 +23,6 @@ jobs:
           git config user.name "GitHub actions"
           git config user.email noreply@github.com
 
-      - name: Conventional Changelog Action
-        uses: TriPSs/conventional-changelog-action@v3
-        with:
-          github-token: ${{ secrets.github_token }}
-          skip-tag: true
-          skip-commit: true
-          skip-git-pull: true
-          skip-version-file: true
-          skip-ci: true
-          git-push: false
-
       # This step will differ depending on your project setup
       # Fortunately, yarn has a built-in command for doing this!
       - name: Bump version in package.json
@@ -42,7 +31,7 @@ jobs:
       - name: Commit manifest files
         id: make-commit
         run: |
-          git add CHANGELOG.md package.json
+          git add package.json
           git commit --message "Prepare release ${{ github.event.inputs.version }}"
 
           echo "::set-output name=commit::$(git rev-parse HEAD)"
