@@ -1,5 +1,5 @@
 # builder
-FROM node:18-bullseye-slim as builder
+FROM node:19-bullseye-slim as builder
 
 WORKDIR /undb
 
@@ -8,7 +8,7 @@ COPY . .
 RUN turbo prune --scope=@undb/backend --scope=@undb/frontend
 
 # installer
-FROM node:18-bullseye AS installer
+FROM node:19-bullseye AS installer
 
 RUN npm install -g pnpm
 
