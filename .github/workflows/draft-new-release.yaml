@@ -29,6 +29,10 @@ jobs:
           github-token: ${{ secrets.github_token }}
           skip-tag: true
           skip-commit: true
+          skip-git-pull: true
+          skip-version-file: true
+          skip-ci: true
+          git-push: false
 
       # This step will differ depending on your project setup
       # Fortunately, yarn has a built-in command for doing this!
