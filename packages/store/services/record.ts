@@ -69,10 +69,7 @@ export const recordApi = api.injectEndpoints({
     }),
     updateRecord: builder.mutation<void, IUpdateRecordCommandInput>({
       query: trpc.record.update.mutate,
-      invalidatesTags: (_, __, { id }) => [
-        { type: 'Record', id },
-        { type: 'TreeRecord', id },
-      ],
+      invalidatesTags: ['Record', 'TreeRecord'],
     }),
     duplicateRecord: builder.mutation({
       query: trpc.record.duplicate.mutate,
