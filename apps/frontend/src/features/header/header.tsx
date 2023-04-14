@@ -73,7 +73,16 @@ export const Header: React.FC = () => {
             </Menu.Target>
 
             <Menu.Dropdown>
-              <Menu.Item fw={600}>{me.username}</Menu.Item>
+              <Link to="/me/profile">
+                <Menu.Item fw={600}>
+                  <Group spacing="xs">
+                    <Avatar size="xs" src={me.avatar}>
+                      {me.username.slice(0, 2)}
+                    </Avatar>
+                    {me.username}
+                  </Group>
+                </Menu.Item>
+              </Link>
               <Menu.Divider />
               <Menu.Item icon={<IconLogout size={16} />} onClick={() => dispatch(logout())}>
                 {t('logout', { ns: 'auth' })}
