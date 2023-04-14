@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { AverageField } from '../field/average-field.js'
+import type { CollaboratorField } from '../field/collaborator-field.js'
 import type {
   AttachmentField,
   AutoIncrementField,
@@ -8,6 +9,7 @@ import type {
   ColorField,
   CountField,
   CreatedAtField,
+  CreatedByField,
   DateField,
   DateRangeField,
   EmailField,
@@ -23,6 +25,7 @@ import type {
   SumField,
   TreeField,
   UpdatedAtField,
+  UpdatedByField,
   WithDisplayFields,
   WithFieldDescription,
   WithFieldDisplay,
@@ -39,6 +42,7 @@ import type {
   ITableSpecVisitor,
   WithFilter,
   WithNewField,
+  WithTableEmoji,
   WithTableId,
   WithTableName,
   WithTableSchema,
@@ -66,6 +70,8 @@ import type {
 export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVisitor, IFieldVisitor {
   id(field: IdField): void {}
   createdAt(field: CreatedAtField): void {}
+  createdBy(field: CreatedByField): void {}
+  updatedBy(field: UpdatedByField): void {}
   updatedAt(field: UpdatedAtField): void {}
   attachment(field: AttachmentField): void {}
   autoIncrement(field: AutoIncrementField): void {}
@@ -80,6 +86,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   abstract reference(field: ReferenceField): void
   abstract tree(field: TreeField): void
   abstract parent(field: ParentField): void
+  collaborator(field: CollaboratorField): void {}
   rating(field: RatingField): void {}
   count(field: CountField): void {}
   sum(field: SumField): void {}
@@ -96,6 +103,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   viewEqual(s: WithTableView): void {}
   viewNameEqual(s: WithViewName): void {}
   newView(s: WithNewView): void {}
+  emojiEqual(s: WithTableEmoji): void {}
   withoutView(s: WithoutView): void {}
   viewsOrderEqual(s: WithViewsOrder): void {}
   sortsEqual(s: WithSorts): void {}

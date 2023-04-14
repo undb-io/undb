@@ -1,6 +1,6 @@
 import { TableFactory } from '@undb/core'
 import { getCurrentTableId, useGetTablesQuery } from '@undb/store'
-import { ActionIcon, Button, Center, Flex, IconChevronDown, IconPlus, Loader, Menu, Tabs } from '@undb/ui'
+import { ActionIcon, Center, Flex, IconChevronDown, IconPlus, Loader, Menu, Tabs } from '@undb/ui'
 import { useSetAtom } from 'jotai'
 import { useNavigate, useParams } from 'react-router-dom'
 import { unstable_batchedUpdates } from 'react-dom'
@@ -11,7 +11,8 @@ import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.
 import { UpdateTableFormDrawer } from '../update-table-form/update-table-form-drawer'
 import { TableMenuDropdown } from './table-menu-dropdown'
 import { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
+import { EmptyTableList } from './empty-table-list'
+import { Emoji } from 'emoji-picker-react'
 
 export const TableList: React.FC = () => {
   const navigate = useNavigate()
@@ -29,11 +30,10 @@ export const TableList: React.FC = () => {
         navigate(`/t/${data.ids.at(0)}`, { replace: true })
       }
     }
-  }, [tableId])
+  }, [tableId, data?.ids])
 
   const setOpened = useSetAtom(createTableFormDrawerOpened)
   const close = useCloseAllDrawers()
-  const { t } = useTranslation()
 
   if (isLoading && !currentTableId) {
     return (
@@ -44,15 +44,11 @@ export const TableList: React.FC = () => {
   }
 
   if (!data?.ids.length && !currentTableId) {
-    return (
-      <Center w="100%" h="100%">
-        <Button onClick={() => setOpened(true)}>{t('Create New Table')}</Button>
-      </Center>
-    )
+    return <EmptyTableList />
   }
 
   return (
-    <Flex>
+    <Flex h={40}>
       <Center>
         <Tabs
           variant="default"
@@ -71,6 +67,7 @@ export const TableList: React.FC = () => {
                 key={t.id}
                 value={t.id}
                 p="xs"
+                icon={<Emoji size={14} unified={t.emoji} />}
                 rightSection={
                   t.id === currentTableId && (
                     <>

@@ -8,9 +8,11 @@ import type {
   AutoIncrementField as CoreAutoIncrementField,
   AverageField as CoreAverageField,
   BoolField as CoreBoolField,
+  CollaboratorField as CoreCollaboratorField,
   ColorField as CoreColorField,
   CountField as CoreCountField,
   CreatedAtField as CoreCreatedAtField,
+  CreatedByField as CoreCreatedByField,
   DateField as CoreDateField,
   DateRangeField as CoreDateRangeField,
   EmailField as CoreEmailField,
@@ -24,6 +26,7 @@ import type {
   StringField as CoreStringField,
   SumField as CoreSumField,
   TreeField as CoreTreeField,
+  UpdatedByField as CoreUpdatedByField,
   IFieldVisitor,
 } from '@undb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@undb/core'
@@ -32,9 +35,11 @@ import {
   AutoIncrementField,
   AverageField,
   BoolField,
+  CollaboratorField,
   ColorField,
   CountField,
   CreatedAtField,
+  CreatedByField,
   DateField,
   DateRangeField,
   EmailField,
@@ -52,8 +57,13 @@ import {
   Table,
   TreeField,
   UpdatedAtField,
+  UpdatedByField,
 } from '../../entity/index.js'
-import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
+import {
+  AdjacencyListTable,
+  ClosureTable,
+  CollaboratorForeignTable,
+} from '../../underlying-table/underlying-foreign-table.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
 
 export class TableSqliteFieldVisitor extends BaseEntityManager implements IFieldVisitor {
@@ -72,8 +82,20 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
     this.em.persist(field)
   }
 
+  createdBy(value: CoreCreatedByField): void {
+    const field = new CreatedByField(this.table, value)
+
+    this.em.persist(field)
+  }
+
   updatedAt(value: CoereUpdatedAtField): void {
     const field = new UpdatedAtField(this.table, value)
+
+    this.em.persist(field)
+  }
+
+  updatedBy(value: CoreUpdatedByField): void {
+    const field = new UpdatedByField(this.table, value)
 
     this.em.persist(field)
   }
@@ -237,5 +259,16 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
     field.displayFields.set(value.displayFieldIds.map((fieldId) => this.em.getReference(Field, fieldId.value)))
 
     this.em.persist(field)
+  }
+
+  collaborator(value: CoreCollaboratorField): void {
+    const field = new CollaboratorField(this.table, value)
+
+    this.em.persist(field)
+
+    const ft = new CollaboratorForeignTable(this.table.id, value)
+    const queries = ft.getCreateTableSqls(this.em.getKnex())
+
+    this.addQueries(...queries)
   }
 }

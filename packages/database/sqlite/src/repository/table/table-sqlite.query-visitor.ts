@@ -25,6 +25,7 @@ import type {
   WithShowSystemFieldsSpec,
   WithSorts,
   WithSymmetricReferenceField,
+  WithTableEmoji,
   WithTableId,
   WithTableName,
   WithTableSchema,
@@ -45,6 +46,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   }
   nameEqual(s: WithTableName): void {
     this.qb.where({ name: s.name.value })
+  }
+  emojiEqual(s: WithTableEmoji): void {
+    throw new Error('Method not implemented.')
   }
   schemaEqual(s: WithTableSchema): void {
     throw new Error('Method not implemented.')

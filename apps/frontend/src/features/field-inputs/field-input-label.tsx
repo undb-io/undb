@@ -1,5 +1,4 @@
 import { Group, Text } from '@undb/ui'
-import React from 'react'
 
 export const FieldInputLabel: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (

@@ -7,7 +7,7 @@ import {
   useGetTableQuery,
 } from '@undb/store'
 import type { TRPCError } from '@undb/trpc'
-import { Alert, Box, Container, IconAlertCircle, ModalsProvider, Stack, useEgoUITheme } from '@undb/ui'
+import { Alert, Box, Container, IconAlertCircle, ModalsProvider, Stack, useEgoUITheme, useHotkeys } from '@undb/ui'
 import { useEffect, useLayoutEffect } from 'react'
 import { unstable_batchedUpdates } from 'react-dom'
 import { CurrentTableContext } from '../context/current-table'
@@ -22,6 +22,8 @@ import { ViewsListDrawer } from '../features/views/views-list-drawer'
 import { useAppDispatch } from '../hooks'
 import { modals } from '../modals'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useSetAtom } from 'jotai'
+import { createRecordFormDrawerOpened } from '../features/create-record-form/drawer-opened.atom'
 
 export const Table = () => {
   const { tableId, viewId } = useParams()
@@ -29,6 +31,10 @@ export const Table = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const theme = useEgoUITheme()
+
+  const setOpened = useSetAtom(createRecordFormDrawerOpened)
+
+  useHotkeys([['r', () => setOpened(true)]])
 
   useEffect(() => {
     unstable_batchedUpdates(() => {
@@ -72,9 +78,9 @@ export const Table = () => {
     <CurrentTableContext.Provider value={table}>
       <CurrentViewContext.Provider value={view}>
         <ModalsProvider modals={modals as any}>
-          <Stack h="100%" spacing={0}>
+          <Box h="calc(100% - 90px)">
             <TableToolbar />
-            <Box w="100%" h="100%" bg={theme.white} sx={{ overflow: 'scroll', flex: '1 1 auto' }}>
+            <Box w="100%" h="calc(100% - 40px)" bg={theme.white} sx={{ flex: '1 1 auto' }}>
               <ViewDisplay />
             </Box>
 
@@ -83,9 +89,11 @@ export const Table = () => {
             <ViewsListDrawer />
 
             <RecordSelectionDialog />
-          </Stack>
+          </Box>
         </ModalsProvider>
       </CurrentViewContext.Provider>
     </CurrentTableContext.Provider>
   )
 }
+
+export default Table

@@ -1,27 +1,30 @@
 import { RecordFactory } from '@undb/core'
-import { useGetRecordsQuery } from '@undb/store'
-import dynamic from 'next/dynamic'
 import { useMemo } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
-import { useCurrentView } from '../../hooks/use-current-view'
 import { LoadingTable } from './loading'
+import loadable from '@loadable/component'
+import { LoadingOverlay, useDebouncedValue } from '@undb/ui'
+import { useFetchRecords } from '../../hooks/use-fetch-records'
 
-const EGOTable = dynamic(() => import('./table').then((d) => d.EGOTable))
+const EGOTable = loadable(() => import('./table'))
 
 export const TableUI: React.FC = () => {
   const table = useCurrentTable()
   const schema = table.schema.toIdMap()
-  const view = useCurrentView()
 
-  const { data, isLoading } = useGetRecordsQuery({ tableId: table.id.value, viewId: view.id.value })
-  const records = useMemo(
-    () => RecordFactory.fromQueryRecords((Object.values(data?.entities ?? {}) ?? []).filter(Boolean), schema),
-    [data, schema],
-  )
+  const { rawRecords, isLoading, isFetching } = useFetchRecords()
+  const records = useMemo(() => RecordFactory.fromQueryRecords(rawRecords, schema), [rawRecords, schema])
+
+  const [deboundedIsFetching] = useDebouncedValue(isFetching, 200)
 
   if (isLoading) {
     return <LoadingTable />
   }
 
-  return <EGOTable records={records} />
+  return (
+    <>
+      <LoadingOverlay visible={deboundedIsFetching} />
+      <EGOTable records={records} />
+    </>
+  )
 }

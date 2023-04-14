@@ -77,6 +77,9 @@ export const dateBuiltInOperators = new Set<IDateFilterOperator>([$is_today.valu
 export const referenceFilterOperators = z.union([$eq, $neq])
 export type IReferenceFilterOperator = z.infer<typeof referenceFilterOperators>
 
+export const collaboratorFilterOperators = z.union([$eq, $neq])
+export type ICollaboratorFilterOperator = z.infer<typeof collaboratorFilterOperators>
+
 export const lookupFilterOperators = z.union([$eq, $neq])
 export type ILookupFilterOperator = z.infer<typeof lookupFilterOperators>
 
@@ -99,6 +102,12 @@ export const createdAtBuiltInOperators = dateBuiltInOperators
 export const updatedAtFilterOperators = dateFilterOperators
 export type IUpdatedAtFilterOperator = z.infer<typeof dateFilterOperators>
 export const updatedAtBuiltInOperators = dateBuiltInOperators
+
+export const createdByFilterOperators = z.union([$eq, $neq])
+export type ICreatedByFilterOperator = z.infer<typeof createdByFilterOperators>
+
+export const updatedByFilterOperators = z.union([$eq, $neq])
+export type IUpdatedByFilterOperator = z.infer<typeof updatedByFilterOperators>
 
 export const autoIncrementFilterOperators = numberFilterOperators
 export type IAutoIncrementFilterOperator = z.infer<typeof autoIncrementFilterOperators>

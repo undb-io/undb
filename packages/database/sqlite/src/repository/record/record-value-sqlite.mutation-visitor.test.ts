@@ -1,31 +1,41 @@
 import { EntityManager } from '@mikro-orm/better-sqlite'
 import {
+  ClsStore,
   createTestTable,
   DateRangeFieldValue,
+  IClsService,
   ReferenceFieldValue,
   Table,
   TreeFieldValue,
   WithTableSchema,
 } from '@undb/core'
 import { addDays } from 'date-fns'
+import { identity } from 'lodash-es'
+import { mock, mockDeep } from 'vitest-mock-extended'
 import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation-visitor.js'
 
 describe('RecordValueSqliteVisitor', () => {
   let visitor: RecordValueSqliteMutationVisitor
   let em: EntityManager
   let table: Table
+  let cls: IClsService
+  let ctx: ClsStore
 
   beforeAll(() => {
     // @ts-expect-error
     em = global.em as EntityManager
     vi.setSystemTime(new Date(2022, 2, 2))
+
+    cls = mock<IClsService>()
+    ctx = mockDeep<ClsStore>({ t: identity })
   })
 
   describe('dateRange', () => {
     beforeAll(() => {
-      table = createTestTable(WithTableSchema.from([{ id: 'fld1', name: 'range', type: 'date-range' }]))
+      table = createTestTable(WithTableSchema.from([{ id: 'fld1', name: 'range', type: 'date-range' }], ctx))
 
       visitor = new RecordValueSqliteMutationVisitor(
+        cls,
         table.id.value,
         table.schema.fieldsIds[1],
         'recordtest',
@@ -42,6 +52,7 @@ describe('RecordValueSqliteVisitor', () => {
         {
           "fld1_from": 2022-03-02T00:00:00.000Z,
           "fld1_to": 2022-03-03T00:00:00.000Z,
+          "updated_by": undefined,
         }
       `)
 
@@ -51,9 +62,10 @@ describe('RecordValueSqliteVisitor', () => {
 
   describe('refenrence', () => {
     beforeAll(() => {
-      table = createTestTable(WithTableSchema.from([{ id: 'fld1', name: 'reference', type: 'reference' }]))
+      table = createTestTable(WithTableSchema.from([{ id: 'fld1', name: 'reference', type: 'reference' }], ctx))
 
       visitor = new RecordValueSqliteMutationVisitor(
+        cls,
         table.id.value,
         table.schema.fieldsIds[0],
         'recordtest',
@@ -66,7 +78,11 @@ describe('RecordValueSqliteVisitor', () => {
     test('should insert into data to adjacency list table', () => {
       visitor.reference(new ReferenceFieldValue(['foreign_record1', 'foreign_record_2']))
 
-      expect(visitor.data).toMatchInlineSnapshot('{}')
+      expect(visitor.data).toMatchInlineSnapshot(`
+        {
+          "updated_by": undefined,
+        }
+      `)
       expect(visitor.queries).toMatchInlineSnapshot('[]')
     })
   })
@@ -81,6 +97,7 @@ describe('RecordValueSqliteVisitor', () => {
       )
 
       visitor = new RecordValueSqliteMutationVisitor(
+        cls,
         table.id.value,
         table.schema.fieldsIds[0],
         'recordtest',

@@ -2,7 +2,9 @@ import { Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core'
 import type { User as CoreUser } from '@undb/core'
 import { BaseEntity } from './base.js'
 
-@Entity({ tableName: 'undb_user' })
+export const USER_TABLE_NAME = 'undb_user'
+
+@Entity({ tableName: USER_TABLE_NAME })
 export class User extends BaseEntity {
   constructor(user: CoreUser) {
     super()
@@ -10,9 +12,13 @@ export class User extends BaseEntity {
     this.email = user.email
     this.username = user.username
     this.password = user.password
+    this.avatar = user.avatar
   }
   @PrimaryKey()
   id: string
+
+  @Property({ nullable: true })
+  avatar?: string
 
   @Property()
   @Index()
@@ -24,5 +30,5 @@ export class User extends BaseEntity {
   email: string
 
   @Property()
-  password!: string
+  password: string
 }

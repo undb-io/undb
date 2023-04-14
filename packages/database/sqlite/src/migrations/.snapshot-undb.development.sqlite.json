@@ -1,0 +1,1326 @@
+{
+  "namespaces": [],
+  "tables": [
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "emoji": {
+          "name": "emoji",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "views_order": {
+          "name": "views_order",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        }
+      },
+      "name": "undb_table",
+      "indexes": [
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "undb_table_deleted_at_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "primary",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "table_id": {
+          "name": "table_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "system": {
+          "name": "system",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "integer"
+        },
+        "required": {
+          "name": "required",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "integer"
+        },
+        "display": {
+          "name": "display",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "integer"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "id",
+            "created-at",
+            "updated-at",
+            "auto-increment",
+            "string",
+            "email",
+            "color",
+            "number",
+            "bool",
+            "date",
+            "date-range",
+            "select",
+            "reference",
+            "tree",
+            "parent",
+            "rating",
+            "count",
+            "lookup",
+            "sum",
+            "average",
+            "attachment",
+            "collaborator",
+            "created-by",
+            "updated-by"
+          ],
+          "mappedType": "text"
+        },
+        "format": {
+          "name": "format",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "foreign_table_id": {
+          "name": "foreign_table_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "symmetric_reference_field_id": {
+          "name": "symmetric_reference_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "is_owner": {
+          "name": "is_owner",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "false",
+          "mappedType": "integer"
+        },
+        "parent_field_id": {
+          "name": "parent_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "tree_field_id": {
+          "name": "tree_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "max": {
+          "name": "max",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "count_reference_field_id": {
+          "name": "count_reference_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "lookup_reference_field_id": {
+          "name": "lookup_reference_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "sum_reference_field_id": {
+          "name": "sum_reference_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "sum_aggregate_field_id": {
+          "name": "sum_aggregate_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "average_reference_field_id": {
+          "name": "average_reference_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "average_aggregate_field_id": {
+          "name": "average_aggregate_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        }
+      },
+      "name": "undb_field",
+      "indexes": [
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "undb_field_deleted_at_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "table_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_table_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "type"
+          ],
+          "composite": false,
+          "keyName": "undb_field_type_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "foreign_table_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_foreign_table_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "symmetric_reference_field_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_symmetric_reference_field_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "columnNames": [
+            "count_reference_field_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_count_reference_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "lookup_reference_field_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_lookup_reference_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "sum_reference_field_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_sum_reference_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "sum_aggregate_field_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_sum_aggregate_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "average_reference_field_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_average_reference_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "average_aggregate_field_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_average_aggregate_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "primary",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "undb_field_table_id_foreign": {
+          "constraintName": "undb_field_table_id_foreign",
+          "columnNames": [
+            "table_id"
+          ],
+          "localTableName": "undb_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_table",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "undb_field_foreign_table_id_foreign": {
+          "constraintName": "undb_field_foreign_table_id_foreign",
+          "columnNames": [
+            "foreign_table_id"
+          ],
+          "localTableName": "undb_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_table",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "undb_field_symmetric_reference_field_id_foreign": {
+          "constraintName": "undb_field_symmetric_reference_field_id_foreign",
+          "columnNames": [
+            "symmetric_reference_field_id"
+          ],
+          "localTableName": "undb_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "undb_field_count_reference_field_id_foreign": {
+          "constraintName": "undb_field_count_reference_field_id_foreign",
+          "columnNames": [
+            "count_reference_field_id"
+          ],
+          "localTableName": "undb_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "undb_field_lookup_reference_field_id_foreign": {
+          "constraintName": "undb_field_lookup_reference_field_id_foreign",
+          "columnNames": [
+            "lookup_reference_field_id"
+          ],
+          "localTableName": "undb_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "undb_field_sum_reference_field_id_foreign": {
+          "constraintName": "undb_field_sum_reference_field_id_foreign",
+          "columnNames": [
+            "sum_reference_field_id"
+          ],
+          "localTableName": "undb_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "undb_field_sum_aggregate_field_id_foreign": {
+          "constraintName": "undb_field_sum_aggregate_field_id_foreign",
+          "columnNames": [
+            "sum_aggregate_field_id"
+          ],
+          "localTableName": "undb_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "undb_field_average_reference_field_id_foreign": {
+          "constraintName": "undb_field_average_reference_field_id_foreign",
+          "columnNames": [
+            "average_reference_field_id"
+          ],
+          "localTableName": "undb_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "undb_field_average_aggregate_field_id_foreign": {
+          "constraintName": "undb_field_average_aggregate_field_id_foreign",
+          "columnNames": [
+            "average_aggregate_field_id"
+          ],
+          "localTableName": "undb_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "key": {
+          "name": "key",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "field_id": {
+          "name": "field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "color_name": {
+          "name": "color_name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "dark",
+            "gray",
+            "red",
+            "pink",
+            "grape",
+            "violet",
+            "indigo",
+            "blue",
+            "cyan",
+            "teal",
+            "green",
+            "lime",
+            "yellow",
+            "orange"
+          ],
+          "mappedType": "enum"
+        },
+        "color_shade": {
+          "name": "color_shade",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "enum"
+        }
+      },
+      "name": "undb_option",
+      "indexes": [
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "undb_option_deleted_at_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "field_id"
+          ],
+          "composite": false,
+          "keyName": "undb_option_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "primary",
+          "columnNames": [
+            "key"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "undb_option_field_id_foreign": {
+          "constraintName": "undb_option_field_id_foreign",
+          "columnNames": [
+            "field_id"
+          ],
+          "localTableName": "undb_option",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "record_id": {
+          "name": "record_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "table_id": {
+          "name": "table_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "mime_type": {
+          "name": "mime_type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "size": {
+          "name": "size",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "token": {
+          "name": "token",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "extension": {
+          "name": "extension",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "undb_attachment",
+      "indexes": [
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "undb_attachment_deleted_at_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "table_id"
+          ],
+          "composite": false,
+          "keyName": "undb_attachment_table_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "mime_type"
+          ],
+          "composite": false,
+          "keyName": "undb_attachment_mime_type_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "name"
+          ],
+          "composite": false,
+          "keyName": "undb_attachment_name_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "size"
+          ],
+          "composite": false,
+          "keyName": "undb_attachment_size_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "extension"
+          ],
+          "composite": false,
+          "keyName": "undb_attachment_extension_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "primary",
+          "columnNames": [
+            "id",
+            "record_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "undb_attachment_table_id_foreign": {
+          "constraintName": "undb_attachment_table_id_foreign",
+          "columnNames": [
+            "table_id"
+          ],
+          "localTableName": "undb_attachment",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_table",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "field_1_id": {
+          "name": "field_1_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "field_2_id": {
+          "name": "field_2_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "undb_field_display_fields",
+      "indexes": [
+        {
+          "columnNames": [
+            "field_1_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_display_fields_field_1_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "field_2_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_display_fields_field_2_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "primary",
+          "columnNames": [
+            "field_1_id",
+            "field_2_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "undb_field_display_fields_field_1_id_foreign": {
+          "constraintName": "undb_field_display_fields_field_1_id_foreign",
+          "columnNames": [
+            "field_1_id"
+          ],
+          "localTableName": "undb_field_display_fields",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "undb_field_display_fields_field_2_id_foreign": {
+          "constraintName": "undb_field_display_fields_field_2_id_foreign",
+          "columnNames": [
+            "field_2_id"
+          ],
+          "localTableName": "undb_field_display_fields",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "avatar": {
+          "name": "avatar",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "password": {
+          "name": "password",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "undb_user",
+      "indexes": [
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "undb_user_deleted_at_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "username"
+          ],
+          "composite": false,
+          "keyName": "undb_user_username_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "email"
+          ],
+          "composite": false,
+          "keyName": "undb_user_email_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "email"
+          ],
+          "composite": false,
+          "keyName": "undb_user_email_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "primary",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "table_id": {
+          "name": "table_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "show_system_fields": {
+          "name": "show_system_fields",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "integer"
+        },
+        "display_type": {
+          "name": "display_type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "kanban",
+            "calendar",
+            "grid",
+            "tree"
+          ],
+          "mappedType": "enum"
+        },
+        "sorts": {
+          "name": "sorts",
+          "type": "json",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "kanban_field_id": {
+          "name": "kanban_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "calendar_field_id": {
+          "name": "calendar_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "tree_field_id": {
+          "name": "tree_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "filter": {
+          "name": "filter",
+          "type": "json",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "field_options": {
+          "name": "field_options",
+          "type": "json",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "fields_order": {
+          "name": "fields_order",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "pinned_fields": {
+          "name": "pinned_fields",
+          "type": "json",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        }
+      },
+      "name": "undb_view",
+      "indexes": [
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "undb_view_deleted_at_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "table_id"
+          ],
+          "composite": false,
+          "keyName": "undb_view_table_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "primary",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "undb_view_table_id_foreign": {
+          "constraintName": "undb_view_table_id_foreign",
+          "columnNames": [
+            "table_id"
+          ],
+          "localTableName": "undb_view",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_table",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    }
+  ]
+}

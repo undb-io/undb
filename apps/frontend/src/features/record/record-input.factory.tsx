@@ -28,6 +28,8 @@ import { AutoIncrementInput } from '../field-inputs/auto-increment-input'
 import { format } from 'date-fns'
 import { FieldIssue } from '../field/field-issue'
 import { AttachmentInput } from '../field-inputs/attachment-input'
+import { UsersPicker } from '../field-inputs/users-picker'
+import { forIn } from 'lodash-es'
 
 interface IProps {
   field: Field
@@ -195,6 +197,27 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             required={required}
             error={form.fieldState.error?.message}
             withinPortal
+          />
+        )}
+      />
+    )
+  }
+
+  if (field.type === 'collaborator') {
+    return (
+      <Controller
+        name={name}
+        rules={{ required: field.required }}
+        render={(form) => (
+          <UsersPicker
+            {...form.field}
+            onChange={(value) => form.field.onChange(value)}
+            value={form.field.value ?? []}
+            placeholder={desciption}
+            required={required}
+            error={form.fieldState.error?.message}
+            withinPortal
+            disabled={field.hasIssue}
           />
         )}
       />

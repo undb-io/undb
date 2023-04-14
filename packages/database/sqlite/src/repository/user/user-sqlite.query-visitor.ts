@@ -1,5 +1,5 @@
 import type { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
-import type { IUserSpecVisitor, WithUserEmail, WithUserId, WithUsername } from '@undb/core'
+import type { IUserSpecVisitor, WithUserAvatar, WithUserEmail, WithUserId, WithUsername } from '@undb/core'
 import { User } from '../../entity/user.js'
 
 export class UserSqliteQueryVisitor implements IUserSpecVisitor {
@@ -12,6 +12,10 @@ export class UserSqliteQueryVisitor implements IUserSpecVisitor {
   usernameEqual(s: WithUsername): void {
     const nameFieldName = this.em.getMetadata().get(User.name).properties.username.fieldNames[0]
     this.qb.where({ [nameFieldName]: s.username })
+  }
+
+  avatarEqual(s: WithUserAvatar): void {
+    throw new Error('Method not implemented.')
   }
 
   emailEqual(s: WithUserEmail): void {

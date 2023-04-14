@@ -1,11 +1,13 @@
-import { SelectCalendarFieldModal } from './features/calendar-ui/select-calendar-field-modal'
-import { CreateFieldModal } from './features/create-field-form/create-field-modal'
-import { CreateOptionModal } from './features/create-option-form/create-option-form-modal'
-import { SelectKanbanFieldModal } from './features/kanban-ui/select-kanban-field-modal'
-import { SelectTreeViewFieldModal } from './features/tree-view-ui/select-tree-view-field-modal'
-import { UpdateFieldModal } from './features/update-field-form/update-field-modal'
-import { UpdateOptionModal } from './features/update-option-form/update-option-modal'
-import { CreateViewModal } from './features/view/create-view-modal'
+import loadable from '@loadable/component'
+
+const SelectCalendarFieldModal = loadable(() => import('./features/calendar-ui/select-calendar-field-modal'))
+const CreateFieldModal = loadable(() => import('./features/create-field-form/create-field-modal'))
+const CreateOptionModal = loadable(() => import('./features/create-option-form/create-option-form-modal'))
+const SelectKanbanFieldModal = loadable(() => import('./features/kanban-ui/select-kanban-field-modal'))
+const SelectTreeViewFieldModal = loadable(() => import('./features/tree-view-ui/select-tree-view-field-modal'))
+const UpdateFieldModal = loadable(() => import('./features/update-field-form/update-field-modal'))
+const UpdateOptionModal = loadable(() => import('./features/update-option-form/update-option-modal'))
+const CreateViewModal = loadable(() => import('./features/view/create-view-modal'))
 
 export const CREATE_FIELD_MODAL_ID = 'CREATE_FIELD'
 export const UPDATE_FIELD_MODAL_ID = 'UPDATE_FIELD'

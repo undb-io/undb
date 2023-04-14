@@ -1,0 +1,33 @@
+{
+  "name": "@undb/i18n",
+  "description": "",
+  "version": "0.0.0",
+  "author": "",
+  "devDependencies": {
+    "@types/uuid": "^9.0.1",
+    "i18next": "^22.4.14",
+    "rimraf": "^5.0.0",
+    "tsconfig": "^0.0.0",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.3",
+    "vitest": "^0.30.0"
+  },
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/index.js"
+  },
+  "keywords": [],
+  "private": true,
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf dist",
+    "coverage": "vitest run --coverage",
+    "dev": "tsup --watch",
+    "prebuild": "pnpm run clean"
+  },
+  "type": "module",
+  "types": "dist/index.d",
+  "dependencies": {
+    "zod-i18n-map": "^2.9.0"
+  }
+}

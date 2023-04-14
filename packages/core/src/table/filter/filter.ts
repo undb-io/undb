@@ -41,6 +41,7 @@ import type { IAverageFilter } from './average.filter.js'
 import { averageFilter, averageFilterValue } from './average.filter.js'
 import type { IBoolFilter } from './bool.filter.js'
 import { boolFilter, boolFilterValue } from './bool.filter.js'
+import { collaboratorFilter, collaboratorFilterValue } from './collaborator.filter.js'
 import type { IColorFilter } from './color.filter.js'
 import { colorFilter } from './color.filter.js'
 import type { IConjunction } from './conjunction.js'
@@ -49,6 +50,7 @@ import type { ICountFilter } from './count.filter.js'
 import { countFilter, countFilterValue } from './count.filter.js'
 import type { ICreatedAtFilter } from './created-at.filter.js'
 import { createdAtFilter, createdAtFilterValue } from './created-at.filter.js'
+import { createdByFilter, createdByFilterValue } from './created-by.filter.js'
 import type { IDateRangeFilter } from './date-range.filter.js'
 import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter.js'
 import type { IDateFilter } from './date.filter.js'
@@ -71,9 +73,11 @@ import {
   autoIncrementFilterOperators,
   averageFilterOperators,
   boolFilterOperators,
+  collaboratorFilterOperators,
   colorFilterOperators,
   countFilterOperators,
   createdAtFilterOperators,
+  createdByFilterOperators,
   dateFilterOperators,
   dateRangeFilterOperators,
   emailFilterOperators,
@@ -88,6 +92,7 @@ import {
   sumFilterOperators,
   treeFilterOperators,
   updatedAtFilterOperators,
+  updatedByFilterOperators,
 } from './operators.js'
 import { parentFilter, parentFilterValue } from './parent.filter.js'
 import type { IRatingFilter } from './rating.filter.js'
@@ -103,6 +108,7 @@ import type { ITreeFilter } from './tree.filter.js'
 import { treeFilter, treeFilterValue } from './tree.filter.js'
 import type { IUpdatedAtFilter } from './updated-at.filter.js'
 import { updatedAtFilter, updatedAtFilterValue } from './updated-at.filter.js'
+import { updatedByFilter, updatedByFilterValue } from './updated-by.filter.js'
 
 export const filterValue = z.union([
   idFilterValue,
@@ -126,6 +132,9 @@ export const filterValue = z.union([
   sumFilterValue,
   averageFilterValue,
   attachmentFilterValue,
+  collaboratorFilterValue,
+  createdByFilterValue,
+  updatedByFilterValue,
 ])
 export type IFilterValue = z.infer<typeof filterValue>
 
@@ -151,6 +160,9 @@ export const operaotrs = z.union([
   sumFilterOperators,
   averageFilterOperators,
   attachmentFilterOperators,
+  collaboratorFilterOperators,
+  createdByFilterOperators,
+  updatedByFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
@@ -176,6 +188,9 @@ const filter = z.discriminatedUnion('type', [
   sumFilter,
   averageFilter,
   attachmentFilter,
+  collaboratorFilter,
+  createdByFilter,
+  updatedByFilter,
 ])
 
 export type IFilter = z.infer<typeof filter>

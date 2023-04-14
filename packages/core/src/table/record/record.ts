@@ -1,4 +1,5 @@
 import { DateVO } from '@undb/domain'
+import type { ICollaboratorProfile } from '../field/collaborator-field.type.js'
 import type { TableId, TableSchema, TableSchemaIdMap } from '../value-objects/index.js'
 import { RecordFactory } from './record.factory.js'
 import type { IInternalRecordValues, IMutateRecordValueSchema, RecordAllValues } from './record.schema.js'
@@ -14,13 +15,17 @@ export class Record {
   public values: RecordValues = RecordValues.empty()
   public displayValues?: RecordDisplayValues = RecordDisplayValues.empty()
   public createdAt: DateVO = DateVO.now()
+  public createdBy!: string
+  public createdByProfile: ICollaboratorProfile | null = null
+  public updatedBy!: string
+  public updatedByProfile: ICollaboratorProfile | null = null
   public updatedAt: DateVO = DateVO.now()
   public autoIncrement?: number
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  static create() {
+  static empty() {
     const record = new Record()
 
     return record
@@ -30,7 +35,11 @@ export class Record {
     return {
       id: this.id.value,
       created_at: this.createdAt.value.toISOString(),
+      created_by: this.createdBy,
+      created_by_profile: this.createdByProfile,
       updated_at: this.updatedAt.value.toISOString(),
+      updated_by: this.updatedBy,
+      updated_by_profile: this.updatedByProfile,
       auto_increment: this.autoIncrement,
       display_values: this.displayValues?.values,
     }

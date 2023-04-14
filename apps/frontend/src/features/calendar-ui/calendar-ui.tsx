@@ -1,11 +1,11 @@
 import type { ICalendarField } from '@undb/core'
 import { Box, Overlay } from '@undb/ui'
-import dynamic from 'next/dynamic'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { SelectCalendarField } from './select-calendar-field'
+import loadable from '@loadable/component'
 
-const CalendarBoard = dynamic(() => import('./calendar-board').then((d) => d.CalendarBoard))
+const CalendarBoard = loadable(() => import('./calendar-board'))
 
 export const CalendarUI: React.FC = () => {
   const table = useCurrentTable()

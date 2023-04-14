@@ -15,8 +15,11 @@ export class UnderlyingTableBuilder extends BaseEntityManager {
           .createAutoIncrement()
           .createId()
           .createCreatedAt()
+          .createCreatedBy()
           .createUpdatedAt()
+          .createUpdatedBy()
           .createDeletedAt()
+          .createDeletedBy()
           .createUnderlying(table.schema.nonSystemFields)
           .build()
 

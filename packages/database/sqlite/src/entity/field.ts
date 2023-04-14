@@ -4,7 +4,6 @@ import {
   Cascade,
   Collection,
   Entity,
-  Enum,
   LoadStrategy,
   ManyToMany,
   ManyToOne,
@@ -20,9 +19,11 @@ import type {
   IAutoIncrementFieldQuerySchema,
   IAverageFieldQuerySchema,
   IBoolFieldQuerySchema,
+  ICollaboratorFieldQuerySchema,
   IColorFieldQuerySchema,
   ICountFieldQuerySchema,
   ICreatedAtFieldQueryScheam,
+  ICreatedByFieldQueryScheam,
   IDateFieldQuerySchema,
   IDateRangeFieldQuerySchema,
   IEmailFieldQuerySchema,
@@ -39,15 +40,18 @@ import type {
   ISumFieldQuerySchema,
   ITreeFieldQuerySchema,
   IUpdatedAtFieldQuerySchema,
+  IUpdatedByFieldQueryScheam,
 } from '@undb/core'
 import {
   AttachmentField as CoreAttachmentField,
   AutoIncrementField as CoreAutoIncrementField,
   AverageField as CoreAverageField,
   BoolField as CoreBoolField,
+  CollaboratorField as CoreCollaboratorField,
   ColorField as CoreColorField,
   CountField as CoreCountField,
   CreatedAtField as CoreCreatedAtField,
+  CreatedByField as CoreCreatedByField,
   DateField as CoreDateField,
   DateRangeField as CoreDateRangeField,
   EmailField as CoreEmailField,
@@ -62,6 +66,7 @@ import {
   SumField as CoreSumField,
   TreeField as CoreTreeField,
   UpdatedAtField as CoreUpdatedAtField,
+  UpdatedByField as CoreUpdatedByField,
 } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Option } from './option.js'
@@ -102,32 +107,7 @@ export abstract class Field extends BaseEntity {
   @Property({ type: BooleanType, default: false })
   display = false
 
-  @Enum({
-    items: [
-      'id',
-      'created-at',
-      'updated-at',
-      'auto-increment',
-      'string',
-      'email',
-      'color',
-      'number',
-      'percentage',
-      'date',
-      'select',
-      'bool',
-      'date-range',
-      'reference',
-      'tree',
-      'parent',
-      'rating',
-      'count',
-      'lookup',
-      'sum',
-      'average',
-      'attachment',
-    ],
-  })
+  @Property({ type: 'string' })
   type: IFieldType
 
   abstract toDomain(): CoreField
@@ -188,6 +168,56 @@ export class CreatedAtField extends Field {
       type: 'created-at',
       description: this.description,
       format: this.format,
+      required: !!this.required,
+      display: this.display,
+    }
+  }
+}
+
+@Entity({ discriminatorValue: 'created-by' })
+export class CreatedByField extends Field {
+  toDomain(): CoreCreatedByField {
+    return CoreCreatedByField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      type: 'created-by',
+      description: this.description,
+      required: !!this.required,
+      display: this.display,
+    })
+  }
+
+  toQuery(): ICreatedByFieldQueryScheam {
+    return {
+      id: this.id,
+      name: this.name,
+      type: 'created-by',
+      description: this.description,
+      required: !!this.required,
+      display: this.display,
+    }
+  }
+}
+
+@Entity({ discriminatorValue: 'updated-by' })
+export class UpdatedByField extends Field {
+  toDomain(): CoreUpdatedByField {
+    return CoreUpdatedByField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      type: 'updated-by',
+      description: this.description,
+      required: !!this.required,
+      display: this.display,
+    })
+  }
+
+  toQuery(): IUpdatedByFieldQueryScheam {
+    return {
+      id: this.id,
+      name: this.name,
+      type: 'updated-by',
+      description: this.description,
       required: !!this.required,
       display: this.display,
     }
@@ -636,6 +666,31 @@ export class ReferenceField extends Field {
   }
 }
 
+@Entity({ discriminatorValue: 'collaborator' })
+export class CollaboratorField extends Field {
+  toDomain(): CoreCollaboratorField {
+    return CoreCollaboratorField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      type: 'collaborator',
+      description: this.description,
+      required: !!this.required,
+      display: this.display,
+    })
+  }
+
+  toQuery(): ICollaboratorFieldQuerySchema {
+    return {
+      id: this.id,
+      name: this.name,
+      type: 'collaborator',
+      description: this.description,
+      required: !!this.required,
+      display: this.display,
+    }
+  }
+}
+
 @Entity({ discriminatorValue: 'tree' })
 export class TreeField extends Field {
   constructor(table: Rel<Table>, field: CoreTreeField) {
@@ -930,6 +985,9 @@ export type IField =
   | SumField
   | AverageField
   | AttachmentField
+  | CollaboratorField
+  | CreatedByField
+  | UpdatedByField
 
 export const fieldEntities = [
   IdField,
@@ -953,4 +1011,7 @@ export const fieldEntities = [
   SumField,
   AverageField,
   AttachmentField,
+  CollaboratorField,
+  CreatedByField,
+  UpdatedByField,
 ]

@@ -4,6 +4,8 @@ import { IQueryUser, WithUserEmail } from '@undb/core'
 import { GetMeQuery, LoginCommand, RegisterCommand } from '@undb/cqrs'
 import * as bcrypt from 'bcrypt'
 import { UserService } from '../modules/user/user.service.js'
+import { InvalidPassword } from './errors/invalid-password.error.js'
+import { UserNotFound } from './errors/user-not-found.error.js'
 
 @Injectable()
 export class AuthService {
@@ -13,13 +15,17 @@ export class AuthService {
     private readonly queryBus: QueryBus,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<IQueryUser | null> {
+  async validateUser(email: string, pass: string): Promise<IQueryUser> {
     const user = await this.usersService.findOne(WithUserEmail.fromString(email))
-    if (!user) return null
+    if (!user) {
+      throw new UserNotFound()
+    }
 
     const isPasswordMatch = await bcrypt.compare(pass, user.password)
-    if (isPasswordMatch) return user.toQuery()
-    return null
+    if (!isPasswordMatch) {
+      throw new InvalidPassword()
+    }
+    return user.toQuery()
   }
 
   async register(email: string, password: string) {

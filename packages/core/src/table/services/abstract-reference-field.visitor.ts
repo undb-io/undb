@@ -7,6 +7,7 @@ import type {
   ColorField,
   CountField,
   CreatedAtField,
+  CreatedByField,
   DateField,
   DateRangeField,
   EmailField,
@@ -22,12 +23,16 @@ import type {
   SumField,
   TreeField,
   UpdatedAtField,
+  UpdatedByField,
 } from '../field'
 import type { AverageField } from '../field/average-field'
+import type { CollaboratorField } from '../field/collaborator-field'
 
 export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   id(field: IdField): void {}
   createdAt(field: CreatedAtField): void {}
+  createdBy(field: CreatedByField): void {}
+  updatedBy(field: UpdatedByField): void {}
   updatedAt(field: UpdatedAtField): void {}
   attachment(field: AttachmentField): void {}
   autoIncrement(field: AutoIncrementField): void {}
@@ -47,4 +52,5 @@ export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   sum(field: SumField): void {}
   average(field: AverageField): void {}
   lookup(field: LookupField): void {}
+  collaborator(field: CollaboratorField): void {}
 }

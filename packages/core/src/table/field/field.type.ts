@@ -50,6 +50,17 @@ import {
   createBoolFieldValue_internal,
   updateBoolFieldSchema,
 } from './bool-field.type.js'
+import type { CollaboratorFieldValue } from './collaborator-field-value.js'
+import type { CollaboratorField } from './collaborator-field.js'
+import type { ICollaboratorFieldValue } from './collaborator-field.type.js'
+import {
+  collaboratorFieldQuerySchema,
+  collaboratorFieldQueryValue,
+  collaboratorTypeSchema,
+  createCollaboratorFieldSchema,
+  createCollaboratorFieldValue_internal,
+  updateCollaboratorFieldSchema,
+} from './collaborator-field.type.js'
 import type { ColorFieldValue } from './color-field-value.js'
 import type { ColorField } from './color-field.js'
 import type { IColorFieldValue } from './color-field.type.js'
@@ -83,6 +94,17 @@ import {
   createdAtTypeSchema,
   updateCreatedAtFieldSchema,
 } from './created-at-field.type.js'
+import type { CreatedByFieldValue } from './created-by-field-value.js'
+import type { CreatedByField } from './created-by-field.js'
+import type { ICreatedByFieldValue } from './created-by-field.type.js'
+import {
+  createCreatedByFieldSchema,
+  createCreatedByFieldValue_internal,
+  createdByFieldQuerySchema,
+  createdByFieldQueryValue,
+  createdByTypeSchema,
+  updateCreatedByFieldSchema,
+} from './created-by-field.type.js'
 import type { DateFieldValue } from './date-field-value.js'
 import type { DateField } from './date-field.js'
 import type { IDateFieldValue } from './date-field.type.js'
@@ -237,6 +259,17 @@ import {
   updatedAtFieldQueryValue,
   updatedAtTypeSchema,
 } from './updated-at-field.type.js'
+import type { UpdatedByFieldValue } from './updated-by-field-value.js'
+import type { UpdatedByField } from './updated-by-field.js'
+import type { IUpdatedByFieldValue } from './updated-by-field.type.js'
+import {
+  createUpdatedByFieldSchema,
+  createUpdatedByFieldValue_internal,
+  updateUpdatedByFieldSchema,
+  updatedByFieldQuerySchema,
+  updatedByFieldQueryValue,
+  updatedByTypeSchema,
+} from './updated-by-field.type.js'
 import type { FieldDescription } from './value-objects/field-description.js'
 import type { DateFormat, DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
@@ -262,6 +295,9 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createSumFieldSchema,
   createAverageFieldSchema,
   createAttachmentFieldSchema,
+  createCollaboratorFieldSchema,
+  createCreatedByFieldSchema,
+  createUpdatedByFieldSchema,
 ])
 export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
 
@@ -287,6 +323,9 @@ export const updateFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   updateSumFieldSchema,
   updateAverageFieldSchema,
   updateAttachmentFieldSchema,
+  updateCollaboratorFieldSchema,
+  updateCreatedByFieldSchema,
+  updateUpdatedByFieldSchema,
 ])
 export type IUpdateFieldSchema = z.infer<typeof updateFieldSchema>
 
@@ -312,6 +351,9 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   sumFieldQuerySchema,
   averageFieldQuerySchema,
   attachmentFieldQuerySchema,
+  collaboratorFieldQuerySchema,
+  createdByFieldQuerySchema,
+  updatedByFieldQuerySchema,
 ])
 export type IQueryFieldSchema = z.infer<typeof queryFieldSchema>
 export const querySchemaSchema = z.array(queryFieldSchema)
@@ -339,6 +381,9 @@ export const fieldTypes = z.union([
   sumTypeSchema,
   averageTypeSchema,
   attachmentTypeSchema,
+  collaboratorTypeSchema,
+  createdByTypeSchema,
+  updatedByTypeSchema,
 ])
 export type IFieldType = z.infer<typeof fieldTypes>
 
@@ -364,6 +409,9 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createSumFieldValue_internal,
   createAverageFieldValue_internal,
   createAttachmentFieldValue_internal,
+  createCollaboratorFieldValue_internal,
+  createCreatedByFieldValue_internal,
+  createUpdatedByFieldValue_internal,
 ])
 export type ICreateFieldValueSchema_internal = z.infer<typeof createFieldValueSchema_internal>
 
@@ -383,7 +431,9 @@ export type BaseDateField = { format?: DateFormat }
 
 export type IIdField = IBaseField
 export type ICreatedAtField = IBaseField & BaseDateField
+export type ICreatedByField = IBaseField
 export type IUpdatedAtField = IBaseField & BaseDateField
+export type IUpdatedByField = IBaseField
 export type IAutoIncrementField = IBaseField
 export type IStringField = IBaseField
 export type IEmailField = IBaseField
@@ -400,6 +450,9 @@ export type ISelectField = IBaseField & {
 }
 
 export type IBoolField = IBaseField
+
+export type ICollaboratorField = IBaseField
+
 export type IReferenceField = IBaseField & {
   displayFields?: DisplayFields
   foreignTableId?: TableId
@@ -414,7 +467,7 @@ export type ISumField = IBaseField & { referenceFieldId: FieldId; aggregateField
 export type IAverageField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }
 export type ILookupField = IBaseField & { referenceFieldId: FieldId; displayFields: DisplayFields }
 
-export type SystemField = IdField | CreatedAtField | UpdatedAtField
+export type SystemField = IdField | CreatedAtField | UpdatedAtField | CreatedByField | UpdatedByField
 
 export type IReferenceFieldTypes = IReferenceField | ITreeField | IParentField
 export type ReferenceFieldTypes = ReferenceField | TreeField | ParentField
@@ -446,6 +499,7 @@ export type NoneSystemField =
   | SumField
   | AverageField
   | AttachmentField
+  | CollaboratorField
 
 export type PrimitiveField =
   | StringField
@@ -488,6 +542,9 @@ export type FieldValue =
   | SumFieldValue
   | AverageFieldValue
   | AttachmentFieldValue
+  | CollaboratorFieldValue
+  | CreatedByFieldValue
+  | UpdatedByFieldValue
 
 export type FieldValues = FieldValue[]
 
@@ -513,6 +570,9 @@ export type UnpackedFieldValue =
   | ISumFieldValue
   | IAverageFieldValue
   | IAttachmentFieldValue
+  | ICollaboratorFieldValue
+  | ICreatedByFieldValue
+  | IUpdatedByFieldValue
 
 export const fieldQueryValue = z.union([
   treeFieldQueryValue,
@@ -536,6 +596,9 @@ export const fieldQueryValue = z.union([
   sumFieldQueryValue,
   averageFieldQueryValue,
   attachmentFieldQueryValue,
+  collaboratorFieldQueryValue,
+  createdByFieldQueryValue,
+  updatedByFieldQueryValue,
 ])
 
 export type IFieldQueryValue = z.infer<typeof fieldQueryValue>
@@ -543,7 +606,9 @@ export type IFieldQueryValue = z.infer<typeof fieldQueryValue>
 export const INTERNAL_COLUMN_ID_NAME = 'id'
 export const INTERNAL_INCREAMENT_ID_NAME = 'auto_increment'
 export const INTERNAL_COLUMN_CREATED_AT_NAME = 'created_at'
+export const INTERNAL_COLUMN_CREATED_BY_NAME = 'created_by'
 export const INTERNAL_COLUMN_UPDATED_AT_NAME = 'updated_at'
+export const INTERNAL_COLUMN_UPDATED_BY_NAME = 'updated_by'
 export const INTERNAL_DISPLAY_VALUES_NAME = 'display_values'
 
 export interface IAbstractReferenceField {

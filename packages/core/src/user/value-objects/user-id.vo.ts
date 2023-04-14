@@ -1,10 +1,11 @@
 import { NanoID } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Err, Ok } from 'oxide.ts'
+import { z } from 'zod'
 import { InvalidUserIdError } from '../user.errors.js'
 
 export class UserId extends NanoID {
-  private static USER_ID_PREFIX = 'tbl'
+  public static USER_ID_PREFIX = 'usr'
   private static USER_ID_SIZE = 8
 
   static create(): UserId {
@@ -26,3 +27,5 @@ export class UserId extends NanoID {
     return UserId.from(id).unwrap()
   }
 }
+
+export const userIdSchema = z.string().startsWith(UserId.USER_ID_PREFIX)

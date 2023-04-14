@@ -3,25 +3,35 @@
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type {
   AttachmentField,
+  CollaboratorField as CoreCollaboratorField,
+  CreatedByField as CoreCreatedByField,
   Field as CoreField,
   LookupField as CoreLookupField,
   ParentField as CoreParentField,
   ReferenceField as CoreReferenceField,
   TreeField as CoreTreeField,
+  UpdatedByField as CoreUpdatedByField,
   CountField,
   IFieldVisitor,
   SumField,
   Table,
 } from '@undb/core'
-import { AbstractReferenceFieldVisitor, INTERNAL_COLUMN_ID_NAME } from '@undb/core'
+import {
+  AbstractReferenceFieldVisitor,
+  INTERNAL_COLUMN_CREATED_BY_NAME,
+  INTERNAL_COLUMN_ID_NAME,
+  INTERNAL_COLUMN_UPDATED_BY_NAME,
+} from '@undb/core'
 import { uniqBy } from 'lodash-es'
 import { Attachment } from '../../entity/attachment.js'
-import type { LookupField, ParentField, ReferenceField, TreeField } from '../../entity/field.js'
+import type { CollaboratorField, LookupField, ParentField, ReferenceField, TreeField } from '../../entity/field.js'
 import type { Table as TableEntity } from '../../entity/table.js'
+import { User } from '../../entity/user.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import {
   AdjacencyListTable,
   ClosureTable,
+  CollaboratorForeignTable,
   getUnderlyingTableAlias,
 } from '../../underlying-table/underlying-foreign-table.js'
 import { TABLE_ALIAS, getForeignTableAlias } from './record.constants.js'
@@ -93,6 +103,118 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`,
       )
       .groupBy(`${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
+  }
+
+  createdBy(field: CoreCreatedByField): void {
+    if (this.#visited.has(field.id.value)) {
+      return
+    }
+
+    const {
+      properties: { id, avatar, username },
+      tableName,
+    } = this.em.getMetadata().get(User.name)
+
+    const alias = INTERNAL_COLUMN_CREATED_BY_NAME + '_' + tableName
+    this.qb
+      .select(
+        this.knex.raw(
+          `json_object(
+            '${username.fieldNames[0]}', ${alias}.${username.fieldNames[0]},
+            '${avatar.fieldNames[0]}', ${alias}.${avatar.fieldNames[0]}
+          ) as created_by_profile`,
+        ),
+      )
+      .leftJoin(
+        `${tableName} as ${alias}`,
+        `${alias}.${id.fieldNames[0]}`,
+        `${TABLE_ALIAS}.${INTERNAL_COLUMN_CREATED_BY_NAME}`,
+      )
+
+    this.#visited.add(field.id.value)
+  }
+
+  updatedBy(field: CoreUpdatedByField): void {
+    if (this.#visited.has(field.id.value)) {
+      return
+    }
+
+    const {
+      properties: { id, avatar, username },
+      tableName,
+    } = this.em.getMetadata().get(User.name)
+
+    const alias = INTERNAL_COLUMN_UPDATED_BY_NAME + '_' + tableName
+
+    this.qb
+      .select(
+        this.knex.raw(
+          `json_object(
+            '${username.fieldNames[0]}', ${alias}.${username.fieldNames[0]},
+            '${avatar.fieldNames[0]}', ${alias}.${avatar.fieldNames[0]}
+          ) as updated_by_profile`,
+        ),
+      )
+      .leftJoin(
+        `${tableName} as ${alias}`,
+        `${alias}.${id.fieldNames[0]}`,
+        `${TABLE_ALIAS}.${INTERNAL_COLUMN_UPDATED_BY_NAME}`,
+      )
+
+    this.#visited.add(field.id.value)
+  }
+
+  collaborator(field: CoreCollaboratorField): void {
+    if (this.#visited.has(field.id.value)) {
+      return
+    }
+
+    const ft = new CollaboratorForeignTable(this.table.id.value, field)
+    const uta = getUnderlyingTableAlias(field)
+    const fta = getForeignTableAlias(field, this.table.schema.toIdMap())
+
+    const {
+      properties: { id, avatar, username },
+      tableName,
+    } = this.em.getMetadata().get(User.name)
+
+    const subQuery = this.knex
+      .queryBuilder()
+      .select(
+        CollaboratorForeignTable.RECORD_ID,
+        CollaboratorForeignTable.USER_ID,
+        this.knex.raw(`json_group_array(${CollaboratorForeignTable.USER_ID}) as ${field.id.value}`),
+        this.knex.raw(`json_group_array(${fta}.${username.fieldNames[0]}) as ${username.fieldNames[0]}`),
+        this.knex.raw(`json_group_array(${fta}.${avatar.fieldNames[0]}) as ${avatar.fieldNames[0]}`),
+      )
+      .from(ft.name)
+      .groupBy(CollaboratorForeignTable.RECORD_ID)
+      .as(uta)
+
+    const nestSubQuery = this.knex
+      .queryBuilder()
+      .select(id.fieldNames[0], avatar.fieldNames[0], username.fieldNames[0])
+      .from(tableName)
+      .groupBy(id.fieldNames[0])
+      .as(fta)
+
+    subQuery.leftJoin(nestSubQuery, `${ft.name}.${CollaboratorForeignTable.USER_ID}`, `${fta}.${id.fieldNames[0]}`)
+
+    const column = this.#mustGetColumn(field) as CollaboratorField
+    this.qb
+      .select(
+        `${uta}.${field.id.value} as ${field.id.value}`,
+        this.knex.raw(
+          `json_object('${column.id}', json_object(
+            '${username.fieldNames[0]}', ${uta}.${username.fieldNames[0]},
+            '${avatar.fieldNames[0]}', ${uta}.${avatar.fieldNames[0]}
+            )
+          ) as ${getExpandColumnName(column.id)}`,
+        ),
+      )
+      .leftJoin(subQuery, `${uta}.${CollaboratorForeignTable.RECORD_ID}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
+
+    this.#visited.add(field.id.value)
   }
 
   reference(field: CoreReferenceField): void {

@@ -1,8 +1,10 @@
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { LockMode } from '@mikro-orm/core'
-import type { Record as CoreRecord, IRecordRepository, IRecordSpec, TableSchemaIdMap } from '@undb/core'
+import type { Record as CoreRecord, IClsService, IRecordRepository, IRecordSpec, TableSchemaIdMap } from '@undb/core'
 import {
+  INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
+  INTERNAL_COLUMN_UPDATED_BY_NAME,
   ParentField,
   TreeField,
   WithRecordId,
@@ -13,7 +15,7 @@ import { and } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { Some } from 'oxide.ts'
 import { Table } from '../../entity/table.js'
-import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants.js'
+import { INTERNAL_COLUMN_DELETED_AT_NAME, INTERNAL_COLUMN_DELETED_BY_NAME } from '../../underlying-table/constants.js'
 import { UnderlyingTableSqliteManager } from '../../underlying-table/underlying-table-sqlite.manager.js'
 import type { Job } from '../base-entity-manager.js'
 import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
@@ -26,17 +28,21 @@ import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation
 import type { RecordSqlite } from './record.type.js'
 
 export class RecordSqliteRepository implements IRecordRepository {
-  constructor(protected readonly em: EntityManager) {}
+  constructor(protected readonly em: EntityManager, protected readonly cls: IClsService) {}
 
   private async _insert(em: EntityManager, record: CoreRecord, schema: TableSchemaIdMap) {
+    const userId = this.cls.get('user.userId')
     const data: globalThis.Record<string, Knex.Value> = {
       id: record.id.value,
+      [INTERNAL_COLUMN_CREATED_BY_NAME]: userId,
+      [INTERNAL_COLUMN_UPDATED_BY_NAME]: userId,
     }
     const queries: string[] = []
     const jobs: Job[] = []
 
     for (const [fieldId, value] of record.values) {
       const visitor = new RecordValueSqliteMutationVisitor(
+        this.cls,
         record.tableId.value,
         fieldId,
         record.id.value,
@@ -133,7 +139,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       const qv = new RecordSqliteQueryVisitor(tableId, schema, em, qb, knex)
       WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id)).accept(qv)
 
-      const mv = new RecordSqliteMutationVisitor(tableId, id, schema, em, qb)
+      const mv = new RecordSqliteMutationVisitor(this.cls, tableId, id, schema, em, qb)
       spec.accept(mv)
 
       await mv.commit()
@@ -141,6 +147,8 @@ export class RecordSqliteRepository implements IRecordRepository {
   }
 
   async deleteOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<void> {
+    const userId = this.cls.get('user.userId')
+
     await this.em.transactional(async (em) => {
       const table = await em.findOneOrFail(Table, tableId, {
         populate: ['referencedBy'],
@@ -150,10 +158,13 @@ export class RecordSqliteRepository implements IRecordRepository {
       const qb = knex.queryBuilder()
 
       qb.from(tableId)
-        .update({ [INTERNAL_COLUMN_DELETED_AT_NAME]: new Date() })
+        .update({
+          [INTERNAL_COLUMN_DELETED_AT_NAME]: new Date(),
+          [INTERNAL_COLUMN_DELETED_BY_NAME]: userId,
+        })
         .where({ id })
 
-      const mv = new RecordSqliteMutationVisitor(tableId, id, schema, em, qb)
+      const mv = new RecordSqliteMutationVisitor(this.cls, tableId, id, schema, em, qb)
       const specs: WithRecordValues[] = []
 
       for (const [fieldId, field] of schema.entries()) {
@@ -175,6 +186,8 @@ export class RecordSqliteRepository implements IRecordRepository {
   }
 
   async deleteManyByIds(tableId: string, ids: string[], schema: TableSchemaIdMap): Promise<void> {
+    const userId = this.cls.get('user.userId')
+
     await this.em.transactional(async (em) => {
       const table = await em.findOneOrFail(Table, tableId, {
         populate: ['referencedBy'],
@@ -186,10 +199,11 @@ export class RecordSqliteRepository implements IRecordRepository {
         .queryBuilder()
         .from(tableId)
         .update(INTERNAL_COLUMN_DELETED_AT_NAME, new Date())
+        .update(INTERNAL_COLUMN_DELETED_BY_NAME, userId)
         .whereIn(INTERNAL_COLUMN_ID_NAME, ids)
 
       for (const id of ids) {
-        const mv = new RecordSqliteMutationVisitor(tableId, id, schema, em, qb)
+        const mv = new RecordSqliteMutationVisitor(this.cls, tableId, id, schema, em, qb)
         const specs: WithRecordValues[] = []
 
         for (const [fieldId, field] of schema.entries()) {

@@ -1,9 +1,10 @@
-import { createBrowserRouter } from 'react-router-dom'
-import { Table } from '../pages/table'
-import { Root } from '../pages/root'
-import { Login } from '../pages/login'
 import { ProtectedRoute } from '../guard/protected-route'
-import { Register } from '../pages/register'
+import loadable from '@loadable/component'
+
+const Table = loadable(() => import('../pages/table'))
+const Root = loadable(() => import('../pages/root'))
+const Login = loadable(() => import('../pages/login'))
+const Register = loadable(() => import('../pages/register'))
 
 export const routes = [
   {

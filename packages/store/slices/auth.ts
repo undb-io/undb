@@ -15,18 +15,22 @@ export const authSlice = createSlice({
   reducers: {
     setToken: (state, action: PayloadAction<string>) => {
       state.token = action.payload
+      localStorage.setItem('access_token', action.payload)
     },
     resetToken: (state) => {
       state.token = undefined
+      localStorage.removeItem('access_token')
+    },
+    logout: (state) => {
+      state.token = undefined
+      localStorage.removeItem('access_token')
     },
   },
   extraReducers: (builder) => {
     builder
       .addMatcher(authApi.endpoints.me.matchRejected, (state, action) => {
-        if (action.payload?.status === 401) {
-          state.token = undefined
-          localStorage.removeItem('access_token')
-        }
+        state.token = undefined
+        localStorage.removeItem('access_token')
       })
       .addMatcher(authApi.endpoints.login.matchFulfilled, (state, action) => {
         const access_token = action.payload.access_token
@@ -41,7 +45,7 @@ export const authSlice = createSlice({
   },
 })
 
-export const { setToken, resetToken } = authSlice.actions
+export const { setToken, resetToken, logout } = authSlice.actions
 
 export const authReducer = authSlice.reducer
 

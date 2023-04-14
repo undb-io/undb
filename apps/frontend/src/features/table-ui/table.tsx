@@ -1,4 +1,4 @@
-import { Table, useListState } from '@undb/ui'
+import { Box, Table, useListState } from '@undb/ui'
 import type { ColumnDef, ColumnPinningState, OnChangeFn, Row } from '@tanstack/react-table'
 import { flexRender } from '@tanstack/react-table'
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
@@ -23,6 +23,7 @@ import { SelectionHeader } from './selection-header'
 import type { ISetPinnedFieldsCommandInput } from '@undb/cqrs'
 import { Cell } from './cell'
 import { tableStyles } from './styles'
+import { EmptyTable } from './empty-table'
 
 const columnHelper = createColumnHelper<TData>()
 
@@ -115,6 +116,9 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
   const data = useMemo(() => records.map((r) => r.valuesJSON), [records])
   const rt = useReactTable({
     data,
+    meta: {
+      tableId: table.id.value,
+    },
     columns,
     state: {
       columnVisibility,
@@ -149,8 +153,18 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
       : 0
 
   return (
-    <div ref={tableContainerRef} style={{ height: '100%', overflow: 'auto' }}>
-      <Table withBorder highlightOnHover withColumnBorders verticalSpacing={5} w={rt.getTotalSize()} sx={tableStyles}>
+    <Box ref={tableContainerRef} h="100%" sx={{ overflowY: 'scroll' }}>
+      <Table
+        withBorder
+        highlightOnHover
+        withColumnBorders
+        verticalSpacing={5}
+        w={rt.getTotalSize()}
+        sx={[
+          tableStyles,
+          (theme) => ({ 'thead tr th': { borderBottom: rows.length ? '1px sold ' + theme.colors.gray[2] : 0 } }),
+        ]}
+      >
         <thead>
           {rt.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -166,7 +180,15 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
           )}
           {rowVirtualizer.getVirtualItems().map((virtualRow) => {
             const row = rows[virtualRow.index]
-            return <Record key={row.id} row={row} checked={row.getIsSelected()} columnLength={columns.length} />
+            return (
+              <Record
+                key={row.id}
+                row={row}
+                checked={row.getIsSelected()}
+                columnLength={columns.length}
+                tableId={table.id.value}
+              />
+            )
           })}
           {paddingBottom > 0 && (
             <tr>
@@ -175,20 +197,25 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
           )}
         </tbody>
       </Table>
-    </div>
+      {!rows.length && <EmptyTable />}
+    </Box>
   )
 }
 
-const Record: React.FC<{ row: Row<TData>; checked: boolean; columnLength: number }> = React.memo(({ row }) => {
-  const dispatch = useAppDispatch()
+const Record: React.FC<{ row: Row<TData>; checked: boolean; columnLength: number; tableId: string }> = React.memo(
+  ({ row }) => {
+    const dispatch = useAppDispatch()
 
-  return (
-    <tr
-      onClick={() => {
-        dispatch(setSelectedRecordId(row.id))
-      }}
-    >
-      {row.getVisibleCells().map((cell) => flexRender(cell.column.columnDef.cell, cell.getContext()))}
-    </tr>
-  )
-})
+    return (
+      <tr
+        onClick={() => {
+          dispatch(setSelectedRecordId(row.id))
+        }}
+      >
+        {row.getVisibleCells().map((cell) => flexRender(cell.column.columnDef.cell, cell.getContext()))}
+      </tr>
+    )
+  },
+)
+
+export default EGOTable

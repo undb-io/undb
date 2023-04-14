@@ -1,6 +1,6 @@
 {
   "name": "undb",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "devDependencies": {
     "@undb/eslint-config": "^0.0.0",
     "@types/node": "^18.15.11",
@@ -21,7 +21,7 @@
   "lint-staged": {
     "*.{ts,tsx,md}": "prettier --write"
   },
-  "packageManager": "pnpm@8.1.1",
+  "packageManager": "pnpm@8.2.0",
   "private": true,
   "scripts": {
     "build": "turbo run build",
@@ -30,9 +30,8 @@
     "commit": "cz",
     "db:migration:create": "turbo run db:migration:create",
     "db:schema:fresh": "turbo run db:schema:fresh",
-    "dev": "FORCE_COLOR=1 dotenv -- turbo run dev --parallel --filter=!www --concurrency=12",
+    "dev": "FORCE_COLOR=1 dotenv -- turbo run dev --parallel --concurrency=12",
     "dev:packages": "FORCE_COLOR=1 turbo run dev --parallel --filter=./packages/*",
-    "dev:www": "turbo run dev --filter www",
     "docker:down": "docker compose -f ./docker/docker-compose.yaml down",
     "docker:up": "docker compose -f ./docker/docker-compose.yaml up -d",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",

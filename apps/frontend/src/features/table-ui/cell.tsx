@@ -36,8 +36,12 @@ export const Cell: React.FC<IProps> = ({ cell, field }) => {
     value = cell.row.original.id
   } else if (field.type === 'created-at') {
     value = cell.row.original.created_at
+  } else if (field.type === 'created-by') {
+    value = cell.row.original.created_by_profile
   } else if (field.type === 'updated-at') {
     value = cell.row.original.updated_at
+  } else if (field.type === 'updated-by') {
+    value = cell.row.original.updated_by_profile
   } else if (field.type === 'auto-increment') {
     value = cell.row.original.auto_increment
   } else {

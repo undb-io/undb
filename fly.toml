@@ -1,0 +1,30 @@
+# fly.toml file generated for undb on 2023-04-13T21:54:17+08:00
+
+app = "undb"
+kill_signal = "SIGINT"
+kill_timeout = 5
+mounts = []
+primary_region = "lax"
+processes = []
+
+[[services]]
+  internal_port = 4000
+  processes = ["app"]
+  protocol = "tcp"
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+[env]
+  UNDB_ADMIN_EMAIL = "test@example.com"
+  UNDB_ADMIN_PASSWORD = "123456"

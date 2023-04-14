@@ -11,6 +11,7 @@ export const FIELD_SELECT_ITEMS: SelectItem[] = [
   { value: 'date', label: 'Date', group: 'Base' },
   { value: 'date-range', label: 'DateRange', group: 'Base' },
   { value: 'auto-increment', label: 'AutoIncrement', group: 'System' },
+  { value: 'collaborator', label: 'Collaborator', group: 'System' },
   { value: 'select', label: 'Select', group: 'Base' },
   { value: 'reference', label: 'Reference', group: 'Reference' },
   { value: 'tree', label: 'Tree', group: 'Reference' },
