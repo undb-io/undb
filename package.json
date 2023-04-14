@@ -1,6 +1,6 @@
 {
   "name": "undb",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "devDependencies": {
     "@undb/eslint-config": "^0.0.0",
     "@types/node": "^18.15.11",
