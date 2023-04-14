@@ -2,6 +2,7 @@ import type { RouteObject } from 'react-router-dom'
 import { ProtectedRoute } from '../guard/protected-route'
 import loadable from '@loadable/component'
 import { Members } from '../pages/members'
+import { MyProfile } from '../pages/my-profile'
 
 const Table = loadable(() => import('../pages/table'))
 const Root = loadable(() => import('../pages/root'))
@@ -28,6 +29,14 @@ export const routes: RouteObject[] = [
     element: (
       <ProtectedRoute>
         <Members />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/me/profile',
+    element: (
+      <ProtectedRoute>
+        <MyProfile />
       </ProtectedRoute>
     ),
   },
