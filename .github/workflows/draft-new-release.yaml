@@ -1,0 +1,64 @@
+name: 'Draft new release'
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The version you want to release.'
+        required: true
+
+jobs:
+  draft-new-release:
+    name: 'Draft a new release'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Create release branch
+        run: git checkout -b release/${{ github.event.inputs.version }}
+
+      - name: Update changelog
+        uses: thomaseizinger/keep-a-changelog-new-release@1.1.0
+        with:
+          version: ${{ github.event.inputs.version }}
+
+      - name: Initialize mandatory git config
+        run: |
+          git config user.name "GitHub actions"
+          git config user.email noreply@github.com
+
+      # This step will differ depending on your project setup
+      # Fortunately, yarn has a built-in command for doing this!
+      - name: Bump version in package.json
+        run: pnpm version ${{ github.event.inputs.version }} --no-git-tag-version
+
+      - name: Commit changelog and manifest files
+        id: make-commit
+        run: |
+          git add CHANGELOG.md package.json
+          git commit --message "Prepare release ${{ github.event.inputs.version }}"
+
+          echo "::set-output name=commit::$(git rev-parse HEAD)"
+
+      - name: Push new branch
+        run: git push origin release/${{ github.event.inputs.version }}
+
+      - name: Create pull request
+        uses: thomaseizinger/create-pull-request@1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          head: release/${{ github.event.inputs.version }}
+          base: main
+          title: Release version ${{ github.event.inputs.version }}
+          reviewers: ${{ github.actor }} # By default, we request a review from the person who triggered the workflow.
+          # Write a nice message to the user.
+          # We are claiming things here based on the `publish-new-release.yml` workflow.
+          # You should obviously adopt it to say the truth depending on your release workflow :)
+          body: |
+            Hi @${{ github.actor }}!
+
+            This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
+            I've updated the changelog and bumped the versions in the manifest files in this commit: ${{ steps.make-commit.outputs.commit }}.
+
+            Merging this PR will create a GitHub release and upload any assets that are created as part of the release build.
