@@ -32,17 +32,16 @@ jobs:
 
           echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: Fetch Sources
-        uses: actions/checkout@v3
-
-      - name: Create Gtihub Tag
-        uses: Klemensas/action-autotag@stable
+      - name: Create Release
+        uses: thomaseizinger/create-release@1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-          tag_prefix: 'v'
-
-      - name: Create Github Release
-        uses: softprops/action-gh-release@v1
+          target_commitish: ${{ github.event.pull_request.merge_commit_sha }}
+          tag_name: ${{ env.RELEASE_VERSION }}
+          name: ${{ env.RELEASE_VERSION }}
+          draft: false
+          prerelease: false
 
       - name: Merge main into develop branch
         uses: thomaseizinger/create-pull-request@1.3.0
@@ -55,30 +54,3 @@ jobs:
           body: |
             This PR merges the main branch back into develop.
             This happens to ensure that the updates that happend on the release branch, i.e. CHANGELOG and manifest updates are also present on the develop branch.
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Log in to the Container registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: |
-            ghcr.io/${{ github.repository }}
-
-      - name: Build undb and push
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          context: .
-          file: Dockerfile
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
