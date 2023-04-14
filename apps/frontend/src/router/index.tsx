@@ -25,7 +25,11 @@ export const routes: RouteObject[] = [
   },
   {
     path: '/members',
-    element: <Members />,
+    element: (
+      <ProtectedRoute>
+        <Members />
+      </ProtectedRoute>
+    ),
   },
   {
     path: '/login',
