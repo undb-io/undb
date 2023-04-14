@@ -61,7 +61,7 @@ export const tableStyles = (theme: MantineTheme): CSSObject => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    ':first-child': {
+    ':first-of-type': {
       paddingRight: 3,
       paddingLeft: 3,
     },
