@@ -82,6 +82,7 @@ export const config: InitOptions = {
         PPT: 'PPT',
         Text: 'Text',
         Members: 'Members',
+        You: 'You',
       },
       table: {
         'shortcut T': 'Use shortcut {{ shortcut }} to create table from anywhere.',
@@ -282,6 +283,7 @@ export const config: InitOptions = {
         PPT: 'PPT',
         Text: '文本',
         Members: '成员管理',
+        You: '本人',
       },
       table: {
         'shortcut T': '使用快捷键 <0>{{shortcut}}</0> 在任何页面创建表。',
