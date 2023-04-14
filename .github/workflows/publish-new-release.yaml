@@ -81,5 +81,5 @@ jobs:
           push: true
           context: .
           file: Dockerfile
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ env.RELEASE_VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
