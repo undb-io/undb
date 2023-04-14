@@ -81,6 +81,7 @@ export const config: InitOptions = {
         Excel: 'Excel',
         PPT: 'PPT',
         Text: 'Text',
+        Members: 'Members',
       },
       table: {
         'shortcut T': 'Use shortcut {{ shortcut }} to create table from anywhere.',
@@ -280,6 +281,7 @@ export const config: InitOptions = {
         Excel: '电子表格',
         PPT: 'PPT',
         Text: '文本',
+        Members: '成员管理',
       },
       table: {
         'shortcut T': '使用快捷键 <0>{{shortcut}}</0> 在任何页面创建表。',

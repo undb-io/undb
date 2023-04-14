@@ -2,7 +2,7 @@ import { TableFactory } from '@undb/core'
 import { getCurrentTableId, useGetTablesQuery } from '@undb/store'
 import { ActionIcon, Center, Flex, IconChevronDown, IconPlus, Loader, Menu, Tabs } from '@undb/ui'
 import { useSetAtom } from 'jotai'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { unstable_batchedUpdates } from 'react-dom'
 import { CurrentTableContext } from '../../context/current-table'
 import { useAppSelector } from '../../hooks'
@@ -16,6 +16,7 @@ import { Emoji } from 'emoji-picker-react'
 
 export const TableList: React.FC = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const { tableId } = useParams()
 
   const currentTableId = useAppSelector(getCurrentTableId)
@@ -23,7 +24,7 @@ export const TableList: React.FC = () => {
   const { data, isLoading, isSuccess } = useGetTablesQuery({})
 
   useEffect(() => {
-    if (!tableId) {
+    if (!tableId && location.pathname === '/') {
       if (currentTableId) {
         navigate(`/t/${currentTableId}`, { replace: true })
       } else if (data?.ids.length) {
