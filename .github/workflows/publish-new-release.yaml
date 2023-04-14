@@ -57,6 +57,8 @@ jobs:
 
       # if needed, you can checkout the latest main here, build artifacts and publish / deploy them somewhere
       # the create-release action has an output `upload_url` output that you can use to upload assets
+      - name: Fetch Sources
+        uses: actions/checkout@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
