@@ -1,4 +1,17 @@
-import { ActionIcon, Center, Group, IconLanguage, Image, Menu, Text, Avatar, IconLogout } from '@undb/ui'
+import {
+  ActionIcon,
+  Center,
+  Group,
+  IconLanguage,
+  Image,
+  Menu,
+  Text,
+  Avatar,
+  IconLogout,
+  Divider,
+  Button,
+  IconUsersGroup,
+} from '@undb/ui'
 import logo from '../../assets/logo.svg'
 import { useTranslation } from 'react-i18next'
 import { getMe, logout } from '@undb/store'
@@ -15,6 +28,7 @@ export const Header: React.FC = () => {
     <Group
       px="xs"
       h={50}
+      bg="white"
       py={6}
       sx={(theme) => ({ borderBottom: '1px solid ' + theme.colors.gray[3] })}
       position="apart"
@@ -29,6 +43,12 @@ export const Header: React.FC = () => {
       </Center>
 
       <Center mr="lg">
+        <Link to="/members">
+          <Button compact size="sm" color="gray" variant="subtle" leftIcon={<IconUsersGroup size={16} />}>
+            {t('Members', { ns: 'common' })}
+          </Button>
+        </Link>
+        <Divider mx={20} size="xs" orientation="vertical" />
         <Menu>
           <Menu.Target>
             <ActionIcon>
