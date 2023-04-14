@@ -12,15 +12,10 @@ jobs:
     name: 'Draft a new release'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Create release branch
         run: git checkout -b release/${{ github.event.inputs.version }}
-
-      - name: Update changelog
-        uses: thomaseizinger/keep-a-changelog-new-release@1.1.0
-        with:
-          version: ${{ github.event.inputs.version }}
 
       - name: Initialize mandatory git config
         run: |
@@ -32,10 +27,10 @@ jobs:
       - name: Bump version in package.json
         run: pnpm version ${{ github.event.inputs.version }} --no-git-tag-version
 
-      - name: Commit changelog and manifest files
+      - name: Commit manifest files
         id: make-commit
         run: |
-          git add CHANGELOG.md package.json
+          git add package.json
           git commit --message "Prepare release ${{ github.event.inputs.version }}"
 
           echo "::set-output name=commit::$(git rev-parse HEAD)"
