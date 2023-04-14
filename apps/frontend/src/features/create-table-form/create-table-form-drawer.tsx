@@ -42,6 +42,7 @@ export const CreateTableFormDrawer: React.FC = () => {
       <Drawer
         target="body"
         opened={opened}
+        withinPortal
         onClose={() => {
           if (form.formState.isDirty) {
             confirm()
@@ -53,9 +54,13 @@ export const CreateTableFormDrawer: React.FC = () => {
         padding="xl"
         position="right"
         size={700}
+        overlayProps={{ sx: { zIndex: 198 } }}
         styles={{
           header: { zIndex: 1000 },
+          inner: { zIndex: 199 },
           body: {
+            height: 'calc(100% - 80px)',
+            overflow: 'scroll',
             paddingBottom: '80px',
           },
         }}

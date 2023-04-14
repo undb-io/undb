@@ -24,8 +24,7 @@ import type {
   SelectField,
   SumField,
 } from '@undb/core'
-import { canDisplay } from '@undb/core'
-import { updateFieldSchema } from '@undb/core'
+import { canDisplay, createUpdateFieldSchema } from '@undb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { IUpdateFieldProps } from './update-field.props'
 import { useUpdateFieldMutation } from '@undb/store'
@@ -79,7 +78,9 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
 
   const form = useForm<IUpdateFieldSchema>({
     defaultValues,
-    resolver: zodResolver(updateFieldSchema),
+    resolver: zodResolver(createUpdateFieldSchema(table)),
+    reValidateMode: 'onChange',
+    mode: 'onChange',
   })
 
   const [updateField, { isLoading }] = useUpdateFieldMutation()
@@ -134,6 +135,8 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
           />
           <TextInput
             {...form.register('name')}
+            error={form.getFieldState('name').error?.message}
+            required
             label={<FieldInputLabel>{t('Name', { ns: 'common' })}</FieldInputLabel>}
           />
 

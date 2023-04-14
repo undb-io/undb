@@ -26,7 +26,7 @@ export const EmptyTable: React.FC = () => {
           </Text>
         </Center>
         <Button miw={150} onClick={() => setOpened(true)} leftIcon={<IconPlus size={16} />}>
-          {t('Create New Table')}
+          {t('Create New Record')}
         </Button>
       </Stack>
     </Center>
