@@ -95,7 +95,7 @@ export const UpdateRecordFormDrawer: React.FC<{ recordId: string }> = ({ recordI
         size="xl"
         styles={{
           inner: {
-            zIndex: 199,
+            zIndex: 99,
           },
         }}
       >
