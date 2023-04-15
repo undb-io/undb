@@ -113,7 +113,7 @@ export const UpdateRecordFormDrawer: React.FC<{ recordId: string }> = ({ recordI
             onClick={() => {
               handler.close()
               setTimeout(() => {
-                navigate('../..')
+                navigate('..')
               }, 300)
             }}
             variant="default"
