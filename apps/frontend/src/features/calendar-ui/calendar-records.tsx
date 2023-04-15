@@ -5,12 +5,11 @@ import type { Record, ICalendarField } from '@undb/core'
 import { ActionIcon, Box, Group, IconGripVertical, Skeleton, Space, Stack, Title } from '@undb/ui'
 import { useMemo, useRef } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { setSelectedRecordId } from '@undb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useTranslation } from 'react-i18next'
 import { RecordValues } from '../record/record-values'
-import { useAppDispatch } from '../../hooks'
 import { useFetchRecords } from '../../hooks/use-fetch-records'
+import { useNavigate } from 'react-router-dom'
 
 interface IProps {
   field: ICalendarField
@@ -20,8 +19,7 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
   const { setNodeRef, attributes, listeners, setActivatorNodeRef, transform, isDragging } = useDraggable({
     id: record.id.value,
   })
-
-  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   return (
     <Box
@@ -31,7 +29,7 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
       py="sm"
       onClick={(e) => {
         e.stopPropagation()
-        dispatch(setSelectedRecordId(record.id.value))
+        navigate(`r/${record.id.value}`)
       }}
       sx={(theme) => ({
         cursor: 'pointer',

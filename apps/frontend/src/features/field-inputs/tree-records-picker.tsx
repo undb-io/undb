@@ -1,15 +1,15 @@
 import type { TreeField } from '@undb/core'
-import { getSelectedRecordId, useTreeAvailableQuery } from '@undb/store'
+import { useTreeAvailableQuery } from '@undb/store'
 import type { MultiSelectProps } from '@undb/ui'
 import { useDisclosure } from '@undb/ui'
 import { Group } from '@undb/ui'
 import { Loader, MultiSelect } from '@undb/ui'
-import { forwardRef, useState } from 'react'
-import { useAppSelector } from '../../hooks'
+import { forwardRef } from 'react'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useReferenceDisplayValues } from '../../hooks/use-reference-display-values'
 import { RecordValue } from '../field-value/record-value'
 import { FieldIcon } from './field-Icon'
+import { useParams } from 'react-router-dom'
 
 interface IProps extends Omit<MultiSelectProps, 'data'> {
   field: TreeField
@@ -27,7 +27,7 @@ const TreeSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ value, label, ..
 ))
 
 export const TreeRecordsPicker: React.FC<IProps> = ({ field, ...rest }) => {
-  const recordId = useAppSelector(getSelectedRecordId)
+  const { recordId } = useParams()
   const table = useCurrentTable()
 
   const [focused, handler] = useDisclosure(false)
@@ -46,7 +46,7 @@ export const TreeRecordsPicker: React.FC<IProps> = ({ field, ...rest }) => {
     },
   )
 
-  const data = useReferenceDisplayValues(field, recordId, foreignRecords)
+  const data = useReferenceDisplayValues(field, recordId!, foreignRecords)
 
   return (
     <MultiSelect

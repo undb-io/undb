@@ -7,7 +7,7 @@ import {
   useGetTableQuery,
 } from '@undb/store'
 import type { TRPCError } from '@undb/trpc'
-import { Alert, Box, Container, IconAlertCircle, ModalsProvider, Stack, useEgoUITheme, useHotkeys } from '@undb/ui'
+import { Alert, Box, Container, IconAlertCircle, ModalsProvider, useEgoUITheme, useHotkeys } from '@undb/ui'
 import { useEffect, useLayoutEffect } from 'react'
 import { unstable_batchedUpdates } from 'react-dom'
 import { CurrentTableContext } from '../context/current-table'
@@ -17,11 +17,10 @@ import { TableLoading } from '../features/loading'
 import { RecordSelectionDialog } from '../features/record-selection/record-selection-dialog'
 import { TableToolbar } from '../features/table/table-toolbar'
 import { ViewDisplay } from '../features/table/view-display'
-import { UpdateRecordFormDrawer } from '../features/update-record-form/update-record-form-drawer'
 import { ViewsListDrawer } from '../features/views/views-list-drawer'
 import { useAppDispatch } from '../hooks'
 import { modals } from '../modals'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import { useSetAtom } from 'jotai'
 import { createRecordFormDrawerOpened } from '../features/create-record-form/drawer-opened.atom'
 
@@ -85,7 +84,7 @@ export const Table = () => {
             </Box>
 
             <CreateRecordFormDrawer />
-            <UpdateRecordFormDrawer />
+            <Outlet />
             <ViewsListDrawer />
 
             <RecordSelectionDialog />

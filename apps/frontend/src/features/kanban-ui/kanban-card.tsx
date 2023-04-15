@@ -6,10 +6,9 @@ import type { Record } from '@undb/core'
 import type { CSSProperties } from 'react'
 import { FieldIcon } from '../field-inputs/field-Icon'
 import { FieldValueFactory } from '../field-value/field-value.factory'
-import { setSelectedRecordId } from '@undb/store'
-import { useAppDispatch } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface IProps {
   record: Record
@@ -17,7 +16,7 @@ interface IProps {
 
 export const KanbanCard: React.FC<IProps & SortableProps> = ({ record, attributes, listeners, setNodeRef, style }) => {
   const table = useCurrentTable()
-  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   return (
     <Card
@@ -31,7 +30,7 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({ record, attribute
       style={style}
       onClick={(e) => {
         e.stopPropagation()
-        dispatch(setSelectedRecordId(record.id.value))
+        navigate(`r/${record.id.value}`)
       }}
     >
       <Stack spacing={8} sx={(theme) => ({ fontSize: theme.fontSizes.sm })}>

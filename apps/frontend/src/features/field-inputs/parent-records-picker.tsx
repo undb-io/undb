@@ -1,15 +1,15 @@
 import type { ParentField } from '@undb/core'
-import { getSelectedRecordId, useParentAvailableQuery } from '@undb/store'
+import { useParentAvailableQuery } from '@undb/store'
 import type { SelectProps } from '@undb/ui'
 import { Select } from '@undb/ui'
 import { Group } from '@undb/ui'
 import { Loader } from '@undb/ui'
 import { forwardRef, useState } from 'react'
-import { useAppSelector } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useReferenceDisplayValues } from '../../hooks/use-reference-display-values'
 import { RecordValue } from '../field-value/record-value'
 import { FieldIcon } from './field-Icon'
+import { useParams } from 'react-router-dom'
 
 interface IProps extends Omit<SelectProps, 'data'> {
   field: ParentField
@@ -27,7 +27,7 @@ const ParentSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, ...othe
 ))
 
 export const ParentRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
-  const recordId = useAppSelector(getSelectedRecordId)
+  const { recordId } = useParams()
   const table = useCurrentTable()
 
   const [focused, setFocused] = useState(false)
@@ -46,7 +46,7 @@ export const ParentRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
     },
   )
 
-  const data = useReferenceDisplayValues(field, recordId, foreignRecords)
+  const data = useReferenceDisplayValues(field, recordId!, foreignRecords)
 
   return (
     <Select
