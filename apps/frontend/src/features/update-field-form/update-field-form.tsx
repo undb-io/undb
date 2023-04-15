@@ -20,6 +20,7 @@ import type {
   DateFieldTypes,
   IUpdateFieldSchema,
   LookupField,
+  RatingField,
   ReferenceFieldTypes,
   SelectField,
   SumField,
@@ -39,6 +40,7 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
 
   const description = field.description?.value
   const defaultValues: IUpdateFieldSchema = {
+    id: field.id.value,
     type: field.type,
     name: field.name.value,
     description,
@@ -74,6 +76,10 @@ export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({ field, onCancel }
     defaultValues.type === 'updated-at'
   ) {
     defaultValues.format = (field as DateFieldTypes).formatString
+  }
+
+  if (defaultValues.type === 'rating') {
+    defaultValues.max = (field as RatingField).max
   }
 
   const form = useForm<IUpdateFieldSchema>({

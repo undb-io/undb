@@ -34,6 +34,7 @@ import type {
   WithFormat,
   WithNewOption,
   WithOptions,
+  WithRatingMax,
   WithSymmetricReferenceField,
   WithoutField,
   WithoutOption,
@@ -68,6 +69,7 @@ import type {
 } from '../view/index.js'
 
 export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVisitor, IFieldVisitor {
+  ratingMaxEqual(s: WithRatingMax): void {}
   id(field: IdField): void {}
   createdAt(field: CreatedAtField): void {}
   createdBy(field: CreatedByField): void {}

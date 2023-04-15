@@ -6,17 +6,22 @@ import { RatingField } from './rating-field.js'
 export const RATING_MAX = 10
 export const RATING_MAX_DEFAULT = 5
 
+const ratingMaxSchema = z.number().positive().max(RATING_MAX).int().optional()
+
 export const ratingTypeSchema = z.literal('rating')
 export type RatingFieldType = z.infer<typeof ratingTypeSchema>
 const ratingTypeObjectSchema = z.object({ [FIELD_TYPE_KEY]: ratingTypeSchema })
 
 export const createRatingFieldSchema = createBaseFieldSchema
   .merge(ratingTypeObjectSchema)
-  .merge(z.object({ max: z.number().positive().max(RATING_MAX).int().optional() }))
+  .merge(z.object({ max: ratingMaxSchema }))
 
 export type ICreateRatingFieldInput = z.infer<typeof createRatingFieldSchema>
 
-export const updateRatingFieldSchema = updateBaseFieldSchema.merge(ratingTypeObjectSchema)
+export const updateRatingFieldSchema = updateBaseFieldSchema
+  .merge(ratingTypeObjectSchema)
+  .merge(z.object({ max: ratingMaxSchema }).partial())
+
 export type IUpdateRatingFieldInput = z.infer<typeof updateRatingFieldSchema>
 
 export const ratingFieldQuerySchema = baseFieldQuerySchema
