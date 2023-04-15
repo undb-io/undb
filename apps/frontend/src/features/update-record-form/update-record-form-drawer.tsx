@@ -11,9 +11,11 @@ import { useCurrentTable } from '../../hooks/use-current-table'
 import { useTranslation } from 'react-i18next'
 import { useOrderedFields } from '../../hooks/use-ordered-fields'
 import { useNavigate } from 'react-router-dom'
+import { useCurrentView } from '../../hooks/use-current-view'
 
 export const UpdateRecordFormDrawer: React.FC<{ recordId: string }> = ({ recordId }) => {
   const table = useCurrentTable()
+  const view = useCurrentView()
   const fields = useOrderedFields()
   const navigate = useNavigate()
 
@@ -111,7 +113,7 @@ export const UpdateRecordFormDrawer: React.FC<{ recordId: string }> = ({ recordI
             onClick={() => {
               handler.close()
               setTimeout(() => {
-                navigate(-1)
+                navigate('../..')
               }, 300)
             }}
             variant="default"
