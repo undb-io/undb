@@ -99,7 +99,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         }}
         sx={{
           cursor: 'pointer',
-          ':first-child': {
+          ':first-of-type': {
             marginTop: '-1px',
           },
         }}

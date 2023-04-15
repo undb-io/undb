@@ -63,7 +63,7 @@ export class RecordSqliteMapper {
           field.type === 'attachment' ||
           field.type === 'collaborator'
         ) {
-          values[fieldId] = typeof value === 'string' ? JSON.parse(value) : value
+          values[fieldId] = typeof value === 'string' && !!value ? JSON.parse(value) : value
         } else if (field.type === 'bool') {
           values[fieldId] = !!value
         } else {
@@ -76,10 +76,10 @@ export class RecordSqliteMapper {
       id,
       createdAt: new Date(created_at).toISOString(),
       createdBy: created_by,
-      createdByProfile: JSON.parse(created_by_profile),
+      createdByProfile: created_by_profile ? JSON.parse(created_by_profile) : null,
       updatedAt: new Date(updated_at).toISOString(),
       updatedBy: updated_by,
-      updatedByProfile: JSON.parse(updated_by_profile),
+      updatedByProfile: updated_by_profile ? JSON.parse(updated_by_profile) : null,
       autoIncrement: auto_increment,
       tableId,
       values,

@@ -35,7 +35,14 @@ export const FieldCommonControl: React.FC<IProps> = ({ index }) => {
         </Menu.Target>
 
         <Menu.Dropdown>
-          <Menu.Item h={30} color="red" onClick={() => remove(index)}>
+          <Menu.Item
+            h={30}
+            color="red"
+            onClick={() => {
+              remove(index)
+              form.trigger('schema')
+            }}
+          >
             <Text size={14}>{t('Delete', { ns: 'common' })}</Text>
           </Menu.Item>
         </Menu.Dropdown>
