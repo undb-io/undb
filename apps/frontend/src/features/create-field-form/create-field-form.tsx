@@ -19,9 +19,8 @@ import { FieldVariantControl } from '../field/field-variant-control'
 import { FieldItem } from '../field-inputs/field-item'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import type { ICreateFieldSchema } from '@undb/core'
-import { canDisplay } from '@undb/core'
+import { canDisplay, createCreateFieldSchema } from '@undb/core'
 import { isControlledFieldType } from '@undb/core'
-import { createFieldSchema } from '@undb/core'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { ICreateFieldProps } from './create-field.props'
 import { useCreateFieldMutation } from '@undb/store'
@@ -46,7 +45,9 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
 
   const form = useForm<ICreateFieldSchema>({
     defaultValues,
-    resolver: zodResolver(createFieldSchema),
+    resolver: zodResolver(createCreateFieldSchema(table)),
+    reValidateMode: 'onChange',
+    mode: 'onChange',
   })
 
   const [createField, { isLoading }] = useCreateFieldMutation()
@@ -101,6 +102,7 @@ export const CreateFieldForm: React.FC<ICreateFieldProps> = ({ onCancel, at }) =
             label={<FieldInputLabel>{t('Name', { ns: 'common' })}</FieldInputLabel>}
             required
             placeholder={t('Field Name') as string}
+            error={form.getFieldState('name').error?.message}
           />
           <FieldVariantControl isNew />
 

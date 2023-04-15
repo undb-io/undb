@@ -1,6 +1,6 @@
 import type { UniqueIdentifier } from '@dnd-kit/core'
 import type { RecordAllValues, TreeField } from '@undb/core'
-import { setSelectedRecordId, useDeleteRecordMutation } from '@undb/store'
+import { useDeleteRecordMutation } from '@undb/store'
 import {
   ActionIcon,
   Badge,
@@ -10,22 +10,19 @@ import {
   IconGripVertical,
   IconPlus,
   IconTrashX,
-  Text,
-  Tooltip,
   useEgoUITheme,
 } from '@undb/ui'
 import { useSetAtom } from 'jotai'
 import type { HTMLAttributes } from 'react'
-import React, { forwardRef } from 'react'
+import { forwardRef } from 'react'
 import { unstable_batchedUpdates } from 'react-dom'
-import { useAppDispatch, confirmModal } from '../../hooks'
+import { confirmModal } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
-import { FieldIcon } from '../field-inputs/field-Icon'
-import { FieldValueFactory } from '../field-value/field-value.factory'
 import { RecordId } from '../field-value/record-id'
 import { RecordValues } from '../record/record-values'
+import { useNavigate } from 'react-router-dom'
 
 export interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
   id: UniqueIdentifier
@@ -69,10 +66,9 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     ref,
   ) => {
     const table = useCurrentTable()
-    const schema = table.schema.toIdMap()
     const theme = useEgoUITheme()
 
-    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const setCreateOpened = useSetAtom(createRecordFormDrawerOpened)
     const setCreateRecordInitialValue = useSetAtom(createRecordInitialValueAtom)
@@ -95,11 +91,11 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         {...props}
         pl={indentationWidth * depth}
         onClick={() => {
-          dispatch(setSelectedRecordId(id as string))
+          navigate(`r/${id}`)
         }}
         sx={{
           cursor: 'pointer',
-          ':first-child': {
+          ':first-of-type': {
             marginTop: '-1px',
           },
         }}

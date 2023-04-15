@@ -2,7 +2,6 @@ import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { IQueryRecords, IQueryRecordSchema, IRecordQueryModel, IRecordSpec, ViewId } from '@undb/core'
 import { WithRecordId } from '@undb/core'
 import { Option } from 'oxide.ts'
-import { ReferenceField } from '../../entity/field.js'
 import { Table as TableEntity } from '../../entity/table.js'
 import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
 import { RecordSqliteQueryBuilder } from './record-query.builder.js'
@@ -31,12 +30,6 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
         ],
       },
     )
-
-    for (const field of tableEntity.fields) {
-      if (field instanceof ReferenceField) {
-        await field.foreignTable?.fields.init({ where: { display: true } })
-      }
-    }
 
     return tableEntity
   }

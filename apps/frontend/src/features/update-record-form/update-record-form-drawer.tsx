@@ -1,29 +1,33 @@
 import type { IMutateRecordValueSchema, IFieldQueryValue } from '@undb/core'
 import { createMutateRecordValuesSchema } from '@undb/core'
-import { ActionIcon, Drawer, IconChevronLeft, IconChevronRight, LoadingOverlay, useDebouncedValue } from '@undb/ui'
+import { ActionIcon, Drawer, IconChevronRight, LoadingOverlay, useDebouncedValue, useDisclosure } from '@undb/ui'
 import { useEffect, useMemo } from 'react'
-import { useAppDispatch, useAppSelector, confirmModal } from '../../hooks'
+import { confirmModal } from '../../hooks'
 import { UpdateRecordForm } from './update-record-form'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { getHasSelectedRecordId, getSelectedRecordId, resetSelectedRecordId, useGetRecordQuery } from '@undb/store'
+import { useGetRecordQuery } from '@undb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useTranslation } from 'react-i18next'
 import { useOrderedFields } from '../../hooks/use-ordered-fields'
+import { useNavigate } from 'react-router-dom'
 
-export const UpdateRecordFormDrawer: React.FC = () => {
+export const UpdateRecordFormDrawer: React.FC<{ recordId: string }> = ({ recordId }) => {
   const table = useCurrentTable()
   const fields = useOrderedFields()
+  const navigate = useNavigate()
 
-  const dispatch = useAppDispatch()
+  const [opened, handler] = useDisclosure()
 
-  const opened = useAppSelector(getHasSelectedRecordId)
+  useEffect(() => {
+    if (!opened) {
+      setTimeout(() => {
+        handler.open()
+      }, 0)
+    }
+  }, [])
 
-  const selectedRecordId = useAppSelector(getSelectedRecordId)
-  const { data, isFetching } = useGetRecordQuery(
-    { id: selectedRecordId, tableId: table.id.value },
-    { skip: !selectedRecordId },
-  )
+  const { data, isFetching } = useGetRecordQuery({ id: recordId, tableId: table.id.value }, { skip: !recordId })
 
   const [deboundedIsFetching] = useDebouncedValue(isFetching, 200)
 
@@ -65,7 +69,7 @@ export const UpdateRecordFormDrawer: React.FC = () => {
   }, [data, defaultValues, form])
 
   const reset = () => {
-    dispatch(resetSelectedRecordId())
+    navigate(-1)
     form.reset()
   }
   const confirm = confirmModal({ onConfirm: reset })
@@ -104,7 +108,12 @@ export const UpdateRecordFormDrawer: React.FC = () => {
             <UpdateRecordForm onCancel={reset} />
           </Drawer.Body>
           <ActionIcon
-            onClick={() => dispatch(resetSelectedRecordId())}
+            onClick={() => {
+              handler.close()
+              setTimeout(() => {
+                navigate(-1)
+              }, 300)
+            }}
             variant="default"
             radius="xl"
             size="xl"
@@ -122,7 +131,7 @@ export const UpdateRecordFormDrawer: React.FC = () => {
               },
             })}
           >
-            {opened ? <IconChevronRight size={16} /> : <IconChevronLeft size={16} />}
+            <IconChevronRight size={16} />
           </ActionIcon>
         </Drawer.Content>
       </Drawer.Root>

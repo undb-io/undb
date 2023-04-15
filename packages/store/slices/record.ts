@@ -7,18 +7,15 @@ import sessionStorage from 'redux-persist/es/storage/session'
 import 'reselect'
 import type { RootState } from '../reducers'
 import { recordApi } from '../services'
-import { resetCurrentTableId, setCurrentTableId } from './table'
 
 const { filter, keys, omit, pipe, some, T, propOr } = fp
 
 export interface RecordState {
-  selectedRecordId: string
   selectedRecordIds: Record<string, Record<string, boolean>>
   total: Record<string, number>
 }
 
 const initialState: RecordState = {
-  selectedRecordId: '',
   selectedRecordIds: {},
   total: {},
 }
@@ -27,12 +24,6 @@ export const recordSlice = createSlice({
   name: 'record',
   initialState,
   reducers: {
-    setSelectedRecordId: (state, action: PayloadAction<string>) => {
-      state.selectedRecordId = action.payload
-    },
-    resetSelectedRecordId: (state) => {
-      state.selectedRecordId = initialState.selectedRecordId
-    },
     setTableSelectedRecordIds: (state, action: PayloadAction<{ tableId: string; ids: Record<string, boolean> }>) => {
       state.selectedRecordIds[action.payload.tableId] = action.payload.ids
     },
@@ -45,18 +36,6 @@ export const recordSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(setCurrentTableId, (state) => {
-        state.selectedRecordId = initialState.selectedRecordId
-      })
-      .addCase(resetCurrentTableId, (state) => {
-        state.selectedRecordId = initialState.selectedRecordId
-      })
-      .addMatcher(recordApi.endpoints.deleteRecord.matchFulfilled, (state, action) => {
-        const id = action.meta.arg.originalArgs.id
-        if (state.selectedRecordId === id) {
-          state.selectedRecordId = initialState.selectedRecordId
-        }
-      })
       .addMatcher(recordApi.endpoints.bulkDeleteRecords.matchFulfilled, (state, action) => {
         const { ids, tableId } = action.meta.arg.originalArgs
         state.selectedRecordIds = omit(ids, state.selectedRecordIds[tableId])
@@ -67,8 +46,7 @@ export const recordSlice = createSlice({
   },
 })
 
-export const { setSelectedRecordId, resetSelectedRecordId, setTableSelectedRecordIds, resetSelectedRecordIds } =
-  recordSlice.actions
+export const { setTableSelectedRecordIds, resetSelectedRecordIds } = recordSlice.actions
 
 export const recordReducer = persistReducer(
   {
@@ -77,10 +55,6 @@ export const recordReducer = persistReducer(
   },
   recordSlice.reducer,
 )
-
-export const getSelectedRecordId = (state: RootState) => state.record.selectedRecordId
-
-export const getHasSelectedRecordId = createSelector(getSelectedRecordId, Boolean)
 
 export const getSelectedRecordIds = (state: RootState) => state.record.selectedRecordIds
 
