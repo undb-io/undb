@@ -7,12 +7,7 @@ import { ACTIONS_FIELD, SELECTION_ID } from '../../constants/field.constants'
 import { ActionsCell } from './actions-cell'
 import type { IProps, TData } from './interface'
 import { Th } from './th'
-import {
-  getTableSelectedRecordIds,
-  setSelectedRecordId,
-  setTableSelectedRecordIds,
-  useSetPinnedFieldsMutation,
-} from '@undb/store'
+import { getTableSelectedRecordIds, setTableSelectedRecordIds, useSetPinnedFieldsMutation } from '@undb/store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { SelectionCell } from './selection-cell'
@@ -24,6 +19,7 @@ import type { ISetPinnedFieldsCommandInput } from '@undb/cqrs'
 import { Cell } from './cell'
 import { tableStyles } from './styles'
 import { EmptyTable } from './empty-table'
+import { useNavigate } from 'react-router-dom'
 
 const columnHelper = createColumnHelper<TData>()
 
@@ -204,12 +200,12 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
 
 const Record: React.FC<{ row: Row<TData>; checked: boolean; columnLength: number; tableId: string }> = React.memo(
   ({ row }) => {
-    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     return (
       <tr
         onClick={() => {
-          dispatch(setSelectedRecordId(row.id))
+          navigate(`r/${row.id}`)
         }}
       >
         {row.getVisibleCells().map((cell) => flexRender(cell.column.columnDef.cell, cell.getContext()))}

@@ -4,12 +4,12 @@ import { useFormContext } from 'react-hook-form'
 import { DevTool } from '@hookform/devtools'
 import { RecordInputFactory } from '../record/record-input.factory'
 import type { IMutateRecordValueSchema } from '@undb/core'
-import { getSelectedRecordId, useUpdateRecordMutation } from '@undb/store'
-import { useAppSelector } from '../../hooks'
+import { useUpdateRecordMutation } from '@undb/store'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useCurrentView } from '../../hooks/use-current-view'
 import { CREATE_FIELD_MODAL_ID } from '../../modals'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 
 interface IProps {
   onCancel: () => void
@@ -24,7 +24,7 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
   const schema = table.schema.toIdMap()
   const columnOrder = table.getFieldsOrder(view)
   const fields = columnOrder.map((fieldId) => schema.get(fieldId)).filter(Boolean)
-  const selectedRecordId = useAppSelector(getSelectedRecordId)
+  const { recordId } = useParams()
 
   const [updateRecord, { isLoading, isError, error, reset: resetUpdateRecord }] = useUpdateRecordMutation()
 
@@ -41,10 +41,10 @@ export const UpdateRecordForm: React.FC<IProps> = ({ onSuccess, onCancel }) => {
       }
     }
 
-    if (selectedRecordId && Object.keys(values).length) {
+    if (recordId && Object.keys(values).length) {
       await updateRecord({
         tableId: table.id.value,
-        id: selectedRecordId,
+        id: recordId,
         values,
       })
       reset()

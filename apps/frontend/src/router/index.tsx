@@ -3,6 +3,7 @@ import { ProtectedRoute } from '../guard/protected-route'
 import loadable from '@loadable/component'
 import { Members } from '../pages/members'
 import { MyProfile } from '../pages/my-profile'
+import { Record } from '../pages/record'
 
 const Table = loadable(() => import('../pages/table'))
 const Root = loadable(() => import('../pages/root'))
@@ -21,6 +22,12 @@ export const routes: RouteObject[] = [
       {
         path: 't/:tableId/:viewId?',
         element: <Table />,
+        children: [
+          {
+            path: 'r/:recordId',
+            element: <Record />,
+          },
+        ],
       },
     ],
   },

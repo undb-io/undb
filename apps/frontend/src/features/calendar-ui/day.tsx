@@ -3,16 +3,15 @@ import { CSS } from '@dnd-kit/utilities'
 import type { Record, ICalendarField, Records } from '@undb/core'
 import { DateFieldValue } from '@undb/core'
 import { DateEqual } from '@undb/core'
-import { setSelectedRecordId } from '@undb/store'
 import { ActionIcon, Box, Group, IconGripVertical, IconPlus, Stack, useHover } from '@undb/ui'
 import { isEqual, isToday } from 'date-fns'
 import { useAtom } from 'jotai'
 import { useMemo } from 'react'
-import { useAppDispatch } from '../../hooks'
 import { useCloseAllDrawers } from '../../hooks/use-close-all-drawers'
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom'
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom'
 import { RecordValues } from '../record/record-values'
+import { useNavigate } from 'react-router-dom'
 
 interface IProps {
   records: Records
@@ -25,7 +24,7 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
     id: record.id.value,
   })
 
-  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   return (
     <Group
@@ -51,7 +50,7 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
       })}
       onClick={(e) => {
         e.stopPropagation()
-        dispatch(setSelectedRecordId(record.id.value))
+        navigate(`r/${record.id.value}`)
       }}
     >
       <IconGripVertical

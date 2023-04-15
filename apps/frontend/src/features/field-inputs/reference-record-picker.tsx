@@ -1,16 +1,16 @@
 import type { ReferenceField } from '@undb/core'
-import { getSelectedRecordId, useGetForeignRecordsQuery } from '@undb/store'
+import { useGetForeignRecordsQuery } from '@undb/store'
 import type { MultiSelectProps } from '@undb/ui'
 import { useDisclosure } from '@undb/ui'
 import { Loader } from '@undb/ui'
 import { Group } from '@undb/ui'
 import { MultiSelect } from '@undb/ui'
 import { forwardRef } from 'react'
-import { useAppSelector } from '../../hooks'
 import { useCurrentTable } from '../../hooks/use-current-table'
 import { useReferenceDisplayValues } from '../../hooks/use-reference-display-values'
 import { RecordValue } from '../field-value/record-value'
 import { FieldIcon } from './field-Icon'
+import { useParams } from 'react-router-dom'
 
 interface IProps extends Omit<MultiSelectProps, 'data'> {
   field: ReferenceField
@@ -28,7 +28,7 @@ const ReferenceSelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, ...o
 ))
 
 export const ReferenceRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
-  const recordId = useAppSelector(getSelectedRecordId)
+  const { recordId } = useParams()
   const table = useCurrentTable()
   const foreignTableId = field.foreignTableId.into() ?? table.id.value
 
@@ -45,7 +45,7 @@ export const ReferenceRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
     },
   )
 
-  const data = useReferenceDisplayValues(field, recordId, foreignRecords)
+  const data = useReferenceDisplayValues(field, recordId!, foreignRecords)
 
   return (
     <MultiSelect
