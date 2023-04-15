@@ -1,4 +1,4 @@
-import type { IGetRecordsQuery } from '@undb/cqrs/dist'
+import type { IGetRecordsQuery } from '@undb/cqrs'
 import { useGetRecordsQuery } from '@undb/store'
 import { useCurrentTable } from './use-current-table'
 import { useCurrentView } from './use-current-view'

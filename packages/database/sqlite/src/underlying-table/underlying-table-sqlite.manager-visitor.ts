@@ -49,6 +49,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   withoutView(): void {}
   viewsOrderEqual(): void {}
   filterEqual(): void {}
+  ratingMaxEqual(): void {}
   newField(s: WithNewField): void {
     const field = s.field
     if (field.isSystem()) {

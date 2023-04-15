@@ -22,6 +22,7 @@ import type {
   WithoutField,
   WithoutOption,
   WithoutView,
+  WithRatingMax,
   WithShowSystemFieldsSpec,
   WithSorts,
   WithSymmetricReferenceField,
@@ -45,7 +46,7 @@ import type {
   TreeField,
   UpdatedAtField,
 } from '../../entity/index.js'
-import { Field, Option, SelectField, Table } from '../../entity/index.js'
+import { Field, Option, RatingField, SelectField, Table } from '../../entity/index.js'
 import { View } from '../../entity/view.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
 import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
@@ -267,6 +268,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {
     const field = this.getField(s.field.id.value) as ReferenceField
     wrap(field).assign({ symmetricReferenceField: s.symmetricReferenceFieldId.value })
+    this.em.persist(field)
+  }
+  ratingMaxEqual(s: WithRatingMax): void {
+    const field = this.em.getReference(RatingField, s.field.id.value)
+    wrap(field).assign({ max: s.max })
     this.em.persist(field)
   }
   not(): this {

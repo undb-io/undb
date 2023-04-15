@@ -31,6 +31,7 @@ export const FieldVariantControl: React.FC<IProps> = ({ index }) => {
             {...props.field}
             variant="filled"
             defaultValue={RATING_MAX_DEFAULT}
+            min={1}
             max={RATING_MAX}
             placeholder="set rating max..."
             label={<FieldInputLabel>{t('Max', { ns: 'common' })}</FieldInputLabel>}
