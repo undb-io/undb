@@ -71,7 +71,7 @@ export const UpdateRecordFormDrawer: React.FC<{ recordId: string }> = ({ recordI
   }, [data, defaultValues, form])
 
   const reset = () => {
-    navigate(-1)
+    navigate('..')
     form.reset()
   }
   const confirm = confirmModal({ onConfirm: reset })
@@ -97,7 +97,7 @@ export const UpdateRecordFormDrawer: React.FC<{ recordId: string }> = ({ recordI
         size="xl"
         styles={{
           inner: {
-            zIndex: 99,
+            zIndex: 102,
           },
         }}
       >
