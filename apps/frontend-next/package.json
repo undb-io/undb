@@ -38,11 +38,18 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@popperjs/core": "^2.11.7",
+		"@revolist/revogrid": "^3.5.2",
+		"@revolist/svelte-datagrid": "^3.2.16",
 		"@rgossiaux/svelte-headlessui": "^1.0.2",
+		"@tanstack/svelte-table": "^8.8.5",
 		"@trpc/client": "^10.18.0",
 		"@trpc/server": "^10.18.0",
 		"@undb/core": "workspace:^0.0.0",
 		"@undb/trpc": "workspace:^0.0.0",
+		"classnames": "^2.3.2",
+		"flowbite": "^1.6.5",
+		"flowbite-svelte": "^0.34.9",
 		"svelte-heros-v2": "^0.4.2",
 		"trpc-sveltekit": "^3.5.5"
 	}

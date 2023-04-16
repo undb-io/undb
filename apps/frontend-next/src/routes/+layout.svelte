@@ -1,33 +1,23 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { trpc } from '$lib/trpc/client';
-	import type { IQueryTable } from '@undb/core';
-	import '../app.postcss';
+	import cx from 'classnames'
+	import '../app.postcss'
 
-	import { Dialog, DialogOverlay, TransitionChild, TransitionRoot } from '@rgossiaux/svelte-headlessui';
-	import { onMount } from 'svelte';
-	import { Bars3, Users, TableCells, XMark } from 'svelte-heros-v2';
+	import { Dialog, DialogOverlay, TransitionChild, TransitionRoot } from '@rgossiaux/svelte-headlessui'
+	import { Bars3, Users, TableCells, XMark } from 'svelte-heros-v2'
+	import type { LayoutData } from './$types'
 
 	const navigation = [
-		{ name: 'Tables', href: '#', icon: TableCells, current: false },
-		{ name: 'Members', href: '#', icon: Users, current: false },
-	];
+		{ name: 'Tables', href: '/', icon: TableCells, current: false },
+		{ name: 'Members', href: '/members', icon: Users, current: false },
+	]
 
-	let sidebarOpen = false;
-	const setSidebarOpen = () => (sidebarOpen = true);
-	const setSidebarClose = () => (sidebarOpen = false);
+	let sidebarOpen = false
+	const setSidebarOpen = () => (sidebarOpen = true)
+	const setSidebarClose = () => (sidebarOpen = false)
 
-	function classNames(...classes: string[]) {
-		return classes.filter(Boolean).join(' ');
-	}
+	export let data: LayoutData
 
-	let tables: IQueryTable[] = [];
-
-	onMount(async () => {
-		tables = await trpc($page).table.list.query({});
-	});
-
-	$: console.log(tables);
+	$: tables = data.tables
 </script>
 
 <div>
@@ -85,7 +75,7 @@
 												<li>
 													<a
 														href={item.href}
-														class={classNames(
+														class={cx(
 															item.current
 																? 'bg-gray-50 text-indigo-600'
 																: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
@@ -94,7 +84,7 @@
 													>
 														<svelte:component
 															this={item.icon}
-															class={classNames(
+															class={cx(
 																item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
 																'h-6 w-6 shrink-0',
 															)}
@@ -112,14 +102,14 @@
 											{#each tables as table}
 												<li>
 													<a
-														href="#"
-														class={classNames(
+														href={`/t/${table.id}`}
+														class={cx(
 															'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
 															'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
 														)}
 													>
 														<span
-															class={classNames(
+															class={cx(
 																'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
 																'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white',
 															)}
@@ -158,7 +148,7 @@
 								<li>
 									<a
 										href={item.href}
-										class={classNames(
+										class={cx(
 											item.current
 												? 'bg-gray-50 text-indigo-600'
 												: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
@@ -167,7 +157,7 @@
 									>
 										<svelte:component
 											this={item.icon}
-											class={classNames(
+											class={cx(
 												item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
 												'h-6 w-6 shrink-0',
 											)}
@@ -185,14 +175,14 @@
 							{#each tables as table}
 								<li>
 									<a
-										href="#"
-										class={classNames(
+										href={`/t/${table.id}`}
+										class={cx(
 											'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
 											'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
 										)}
 									>
 										<span
-											class={classNames(
+											class={cx(
 												'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
 												'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white',
 											)}
@@ -240,8 +230,8 @@
 		</a>
 	</div>
 
-	<main class="py-10 lg:pl-72">
-		<div class="px-4 sm:px-6 lg:px-8">
+	<main class="py-10 lg:pl-72 h-[100vh]">
+		<div class="px-4 sm:px-6 lg:px-8 h-full">
 			<slot />
 		</div>
 	</main>

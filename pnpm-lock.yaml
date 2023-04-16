@@ -417,9 +417,21 @@ importers:
 
   apps/frontend-next:
     dependencies:
+      '@popperjs/core':
+        specifier: ^2.11.7
+        version: 2.11.7
+      '@revolist/revogrid':
+        specifier: ^3.5.2
+        version: 3.5.2
+      '@revolist/svelte-datagrid':
+        specifier: ^3.2.16
+        version: 3.2.16
       '@rgossiaux/svelte-headlessui':
         specifier: ^1.0.2
         version: 1.0.2(svelte@3.54.0)
+      '@tanstack/svelte-table':
+        specifier: ^8.8.5
+        version: 8.8.5(svelte@3.54.0)
       '@trpc/client':
         specifier: ^10.18.0
         version: 10.18.0(@trpc/server@10.18.0)
@@ -432,6 +444,15 @@ importers:
       '@undb/trpc':
         specifier: workspace:^0.0.0
         version: link:../../packages/trpc
+      classnames:
+        specifier: ^2.3.2
+        version: 2.3.2
+      flowbite:
+        specifier: ^1.6.5
+        version: 1.6.5
+      flowbite-svelte:
+        specifier: ^0.34.9
+        version: 0.34.9(@popperjs/core@2.11.7)(classnames@2.3.2)(flowbite@1.6.5)(svelte@3.54.0)
       svelte-heros-v2:
         specifier: ^0.4.2
         version: 0.4.2(svelte@3.54.0)
@@ -3187,6 +3208,10 @@ packages:
   /@polka/url@1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
 
+  /@popperjs/core@2.11.7:
+    resolution: {integrity: sha512-Cr4OjIkipTtcXKjAsm8agyleBuDHvxzeBoa1v543lbv1YaIwQjESsVcmjiWiPEbC1FIeHOG/Op9kdCmAmiS3Kw==}
+    dev: false
+
   /@radix-ui/number@1.0.0:
     resolution: {integrity: sha512-Ofwh/1HX69ZfJRiRBMTy7rgjAzHmwe4kW9C9Y99HTRUcYLUuVT0KESFj15rPjRgKJs20GPq8Bm5aEDJ8DuA3vA==}
     dependencies:
@@ -3332,6 +3357,19 @@ packages:
     engines: {node: '>=14'}
     dev: false
 
+  /@revolist/revogrid@3.5.2:
+    resolution: {integrity: sha512-qFDPzb2Ox14nl5walh86tF8FoFJWv5f3HuxDH/6umcBrO0xRfUR2yWttzJ7tN54LeEk3NJqh3dsmr6Sk1A0orw==}
+    dependencies:
+      lodash: 4.17.21
+    dev: false
+
+  /@revolist/svelte-datagrid@3.2.16:
+    resolution: {integrity: sha512-zSLpHxg/2hAo85UFCUFYK3+T7TVwZI1hSNdYguPiUt0m4zygdLL8YpPYv3x4pEOM5G6JzyciDtxlzB5u9iA0GQ==}
+    dependencies:
+      '@revolist/revogrid': 3.5.2
+      '@stencil/core': 2.17.4
+    dev: false
+
   /@rgossiaux/svelte-headlessui@1.0.2(svelte@3.54.0):
     resolution: {integrity: sha512-sauopYTSivhzXe1kAvgawkhyYJcQlK8Li3p0d2OtcCIVprOzdbard5lbqWB4xHDv83zAobt2mR08oizO2poHLQ==}
     peerDependencies:
@@ -3446,6 +3484,12 @@ packages:
     dependencies:
       '@sinonjs/commons': 2.0.0
     dev: true
+
+  /@stencil/core@2.17.4:
+    resolution: {integrity: sha512-SGRlHpjV1RyFvzw6jFMVKpLNox9Eds3VvpbpD2SW9CuxdLonHDSFtQks5zmT4zs1Rse9I6kFc2mFK/dHNTalkg==}
+    engines: {node: '>=12.10.0', npm: '>=6.0.0'}
+    hasBin: true
+    dev: false
 
   /@sveltejs/adapter-auto@2.0.0(@sveltejs/kit@1.5.0):
     resolution: {integrity: sha512-b+gkHFZgD771kgV3aO4avHFd7y1zhmMYy9i6xOK7m/rwmwaRO8gnF5zBc0Rgca80B2PMU1bKNxyBTHA14OzUAQ==}
@@ -3695,6 +3739,16 @@ packages:
     dependencies:
       '@tanstack/virtual-core': 3.0.0-beta.54
       react: 18.2.0
+    dev: false
+
+  /@tanstack/svelte-table@8.8.5(svelte@3.54.0):
+    resolution: {integrity: sha512-d33JJwEe5AbwH6sBnRDfTL3gianA7if0fUTqxLNKK6P51IAIgMgAW+ahbCeg+5wJ9KcMSyTEOHs2Fg03oP6tvA==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      svelte: ^3.49.0
+    dependencies:
+      '@tanstack/table-core': 8.8.5
+      svelte: 3.54.0
     dev: false
 
   /@tanstack/table-core@8.8.5:
@@ -5321,6 +5375,10 @@ packages:
       '@types/validator': 13.7.14
       libphonenumber-js: 1.10.24
       validator: 13.9.0
+
+  /classnames@2.3.2:
+    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
+    dev: false
 
   /clean-stack@2.2.0:
     resolution: {integrity: sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==}
@@ -7076,6 +7134,28 @@ packages:
 
   /flatted@3.2.7:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
+
+  /flowbite-svelte@0.34.9(@popperjs/core@2.11.7)(classnames@2.3.2)(flowbite@1.6.5)(svelte@3.54.0):
+    resolution: {integrity: sha512-HtDpkYYWyQ6oLYn0ramv6euWiq6wtDizPxcbcM2ytvepHZ2aNMsekNstzBv2R3K4jOJv3lYwrndQzeqC1aP0PQ==}
+    engines: {node: '>=16.0.0', npm: '>=7.0.0'}
+    peerDependencies:
+      '@popperjs/core': ^2.11.6
+      classnames: ^2.3.2
+      flowbite: ^1.6.3
+      svelte: ^3.55.1
+    dependencies:
+      '@popperjs/core': 2.11.7
+      classnames: 2.3.2
+      flowbite: 1.6.5
+      svelte: 3.54.0
+    dev: false
+
+  /flowbite@1.6.5:
+    resolution: {integrity: sha512-eI4h3pIRI9d7grlYq14r0A01KUtw7189sPLLx/O2i7JyPEWpbleScfYuEc48XTeNjk1xxm/JHgZkD9kjyOWAlA==}
+    dependencies:
+      '@popperjs/core': 2.11.7
+      mini-svg-data-uri: 1.4.4
+    dev: false
 
   /fork-ts-checker-webpack-plugin@8.0.0(typescript@4.9.5)(webpack@5.76.2):
     resolution: {integrity: sha512-mX3qW3idpueT2klaQXBzrIM/pHw+T0B/V9KHEvNrqijTq9NFnMZU6oreVxDYcf33P8a5cW+67PjodNHthGnNVg==}
@@ -9180,6 +9260,11 @@ packages:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
     engines: {node: '>=4'}
     dev: true
+
+  /mini-svg-data-uri@1.4.4:
+    resolution: {integrity: sha512-r9deDe9p5FJUPZAk3A59wGH7Ii9YrjjWw0jmw/liSbHl2CHiyXj6FcDXDu2K3TjVAXqiJdaw3xxwlZZr9E6nHg==}
+    hasBin: true
+    dev: false
 
   /minimatch@3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
