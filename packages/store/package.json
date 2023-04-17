@@ -18,7 +18,7 @@
     "@types/lodash": "^4.14.192",
     "@types/redux-logger": "^3.0.9",
     "eslint": "^8.37.0",
-    "immer": "^9.0.21",
+    "immer": "^10.0.0",
     "react": "^18.2.0",
     "reselect": "^4.1.7",
     "tsconfig": "^0.0.0",
