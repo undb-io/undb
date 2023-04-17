@@ -230,8 +230,8 @@
 		</a>
 	</div>
 
-	<main class="py-10 lg:pl-72 h-[100vh]">
-		<div class="px-4 sm:px-6 lg:px-8 h-full">
+	<main class="lg:pl-72 h-[100vh]">
+		<div class="h-full">
 			<slot />
 		</div>
 	</main>
