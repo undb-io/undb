@@ -1,19 +1,15 @@
 <script lang="ts">
-	import {
-		RecordFactory,
-		TableFactory,
-		type PinnedPosition,
-		type Field,
-		type IQueryTable,
-		type IQueryRecords,
-	} from '@undb/core'
+	import { RecordFactory, TableFactory, type PinnedPosition, type IQueryTable, type IQueryRecords } from '@undb/core'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
+	import { Button, P, Spinner, Toast } from 'flowbite-svelte'
 	import type { RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
 	import type { Components, RevoGridCustomEvent } from '@revolist/revogrid'
 	import { defineCustomElements } from '@revolist/revogrid/loader'
 	import { cellTemplateMap } from '$lib/cell/cell-template'
 	import { trpc } from '$lib/trpc/client'
 	import { page } from '$app/stores'
+	import { slide } from 'svelte/transition'
+	import { quintOut } from 'svelte/easing'
 	import { writable } from 'svelte/store'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
@@ -124,6 +120,46 @@
 			}
 		}
 	}
+
+	$: selectedRecords = Object.entries($select)
+		.filter(([, value]) => value)
+		.map(([key]) => key)
+	$: selectedCount = Object.values($select).filter(Boolean).length
+	$: toastOpen = !!selectedCount
+
+	let loadingDuplicate = false
+	const duplicateRecords = async () => {
+		if (!selectedRecords.length) {
+			return
+		}
+
+		try {
+			loadingDuplicate = true
+			await trpc($page).record.bulkDuplicate.mutate({
+				tableId: table.id,
+				ids: selectedRecords as [string, ...string[]],
+			})
+		} finally {
+			loadingDuplicate = false
+		}
+	}
 </script>
 
 <RevoGrid source={rows} resize="true" {columns} theme="compact" on:aftercolumnresize={onAfterColumnResize} range />
+<Toast
+	open={toastOpen}
+	position="bottom-right"
+	class="z-50 shadow-md max-w-md"
+	transition={slide}
+	params={{ delay: 100, duration: 200, easing: quintOut }}
+>
+	<div class="flex items-center space-x-5 justify-between">
+		<P>selected {selectedCount} records</P>
+		<Button color="alternative" size="xs" on:click={duplicateRecords}>
+			{#if loadingDuplicate}
+				<Spinner class="mr-3" size="4" />
+			{/if}
+			Duplicate records</Button
+		>
+	</div>
+</Toast>

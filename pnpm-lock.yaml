@@ -514,6 +514,9 @@ importers:
       svelte-preprocess:
         specifier: ^4.10.7
         version: 4.10.7(postcss-load-config@4.0.1)(postcss@8.4.21)(svelte@3.54.0)(typescript@5.0.3)
+      sveltekit-superforms:
+        specifier: ^0.7.0
+        version: 0.7.0(@sveltejs/kit@1.5.0)(svelte@3.54.0)(zod@3.21.4)
       tailwindcss:
         specifier: ^3.1.5
         version: 3.1.5(postcss@8.4.21)(ts-node@10.9.1)
@@ -529,6 +532,9 @@ importers:
       vitest:
         specifier: ^0.25.3
         version: 0.25.3
+      zod:
+        specifier: ^3.21.4
+        version: 3.21.4
 
   packages/core:
     dependencies:
@@ -12045,6 +12051,18 @@ packages:
     resolution: {integrity: sha512-tdrgeJU0hob0ZWAMoKXkhcxXA7dpTg6lZGxUeko5YqvPdJBiyRspGsCwV27kIrbrqPP2WUoSV9ca0gnLlw8YzQ==}
     engines: {node: '>= 8'}
 
+  /sveltekit-superforms@0.7.0(@sveltejs/kit@1.5.0)(svelte@3.54.0)(zod@3.21.4):
+    resolution: {integrity: sha512-JIxsWaSTS+VBP4+4UZO/y8sxtaOakbx/6KnLEtl4nHiMHDWS3042HAk+aWp5BRejAkEEgSIypS4BPF3+krTjBg==}
+    peerDependencies:
+      '@sveltejs/kit': 1.x
+      svelte: 3.x
+      zod: 3.x
+    dependencies:
+      '@sveltejs/kit': 1.5.0(svelte@3.54.0)(vite@4.2.0)
+      svelte: 3.54.0
+      zod: 3.21.4
+    dev: true
+
   /symbol-observable@4.0.0:
     resolution: {integrity: sha512-b19dMThMV4HVFynSAM1++gBHAbk2Tc/osgLIBZMKsyqh34jb2e8Os7T6ZW/Bt3pJFdBTd2JwAnAAEQV7rSNvcQ==}
     engines: {node: '>=0.10'}
@@ -13460,7 +13478,6 @@ packages:
 
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
-    dev: false
 
   /zx@7.2.1:
     resolution: {integrity: sha512-TgKwppaMLMNAXHhlhbBh7rMoOSx3/9qqnkv8frmhVlSomEuWkDijh/BCmYntkoS7ZQyemApAUyEi24jIrrS+hA==}

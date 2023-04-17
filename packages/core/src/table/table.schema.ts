@@ -14,6 +14,8 @@ export const createTableInput = z.object({
   schema: createTableSchemaSchema,
 })
 
+export type ICreateTableInput = z.infer<typeof createTableInput>
+
 export const createTableInput_internal = createTableInput.merge(
   z.object({
     views: createViewsSchema,

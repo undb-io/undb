@@ -3,8 +3,12 @@
 	import '../app.postcss'
 
 	import { Dialog, DialogOverlay, TransitionChild, TransitionRoot } from '@rgossiaux/svelte-headlessui'
-	import { Bars3, Users, TableCells, XMark } from 'svelte-heros-v2'
-	import type { LayoutData } from './$types'
+	import { Bars3, Users, TableCells, XMark, Plus } from 'svelte-heros-v2'
+	import type { LayoutData, PageData } from './$types'
+	import CreateTable from '$lib/table/CreateTable.svelte'
+	import { Button } from 'flowbite-svelte'
+	import { createTableHidden } from '$lib/store'
+	import { page } from '$app/stores'
 
 	const navigation = [
 		{ name: 'Tables', href: '/', icon: TableCells, current: false },
@@ -114,7 +118,7 @@
 																'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white',
 															)}
 														>
-															{table.name.slice(0, 2)}
+															{table.name.slice(0, 1)}
 														</span>
 														<span class="truncate">{table.name}</span>
 													</a>
@@ -187,13 +191,18 @@
 												'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white',
 											)}
 										>
-											{table.name.slice(0, 2)}
+											{table.name.slice(0, 1)}
 										</span>
 										<span class="truncate">{table.name}</span>
 									</a>
 								</li>
 							{/each}
 						</ul>
+
+						<Button size="xs" class="w-full mt-2" outline on:click={() => createTableHidden.set(false)}>
+							<Plus size="16" />
+							Create New Table</Button
+						>
 					</li>
 					<li class="-mx-6 mt-auto">
 						<a
@@ -235,4 +244,6 @@
 			<slot />
 		</div>
 	</main>
+
+	<CreateTable form={$page.data.form} />
 </div>
