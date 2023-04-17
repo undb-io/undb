@@ -11,6 +11,7 @@
 	import { slide } from 'svelte/transition'
 	import { quintOut } from 'svelte/easing'
 	import { writable } from 'svelte/store'
+	import EmptyTable from './EmptyTable.svelte'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -125,6 +126,7 @@
 		.filter(([, value]) => value)
 		.map(([key]) => key)
 	$: selectedCount = Object.values($select).filter(Boolean).length
+	$: hasRecord = !!records.length
 	$: toastOpen = !!selectedCount
 
 	let loadingDuplicate = false
@@ -145,7 +147,16 @@
 	}
 </script>
 
-<RevoGrid source={rows} resize="true" {columns} theme="compact" on:aftercolumnresize={onAfterColumnResize} range />
+{#if hasRecord}
+	<RevoGrid source={rows} resize="true" {columns} theme="compact" on:aftercolumnresize={onAfterColumnResize} range />
+{:else}
+	<div class="h-[50px]">
+		<RevoGrid source={rows} resize="true" {columns} theme="compact" on:aftercolumnresize={onAfterColumnResize} range />
+	</div>
+{/if}
+{#if !hasRecord}
+	<EmptyTable />
+{/if}
 <Toast
 	open={toastOpen}
 	position="bottom-right"

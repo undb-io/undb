@@ -3,6 +3,7 @@
 	import { Plus } from 'svelte-heros-v2'
 	import type { LayoutData, PageData } from './$types'
 	import { createTableHidden } from '$lib/store'
+	import Empty from '$lib/table/Empty.svelte'
 
 	export let data: LayoutData
 </script>
@@ -16,10 +17,14 @@
 	</div>
 </nav>
 
-<main class="container p-10 grid grid-cols-4 gap-4">
-	{#each data.tables as table}
-		<Card href={`/t/${table.id}`}>
-			<h5 class="font-semibold">{table.name}</h5>
-		</Card>
-	{/each}
-</main>
+{#if !!data.tables.length}
+	<main class="w-full p-10 grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-4">
+		{#each data.tables as table}
+			<Card href={`/t/${table.id}`}>
+				<h5 class="font-semibold">{table.name}</h5>
+			</Card>
+		{/each}
+	</main>
+{:else}
+	<Empty />
+{/if}
