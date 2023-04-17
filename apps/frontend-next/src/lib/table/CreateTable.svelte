@@ -13,7 +13,6 @@
 	} from 'flowbite-svelte'
 	import type { Validation } from 'sveltekit-superforms'
 	import { sineIn } from 'svelte/easing'
-	import { invalidateAll, goto } from '$app/navigation'
 	import { FieldId, type ICreateTableInput, type createTableInput } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { Plus } from 'svelte-heros-v2'
@@ -22,7 +21,7 @@
 
 	export let form: Validation<typeof createTableInput>
 
-	let schema: ICreateTableInput['schema'] = form.data.schema ?? []
+	let schema: ICreateTableInput['schema'] = form?.data?.schema ?? []
 
 	$: hasField = !!schema.length
 
