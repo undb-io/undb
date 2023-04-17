@@ -45,6 +45,7 @@
 		"@revolist/revogrid": "^3.5.2",
 		"@revolist/svelte-datagrid": "^3.2.16",
 		"@rgossiaux/svelte-headlessui": "^1.0.2",
+		"@tabler/icons-svelte": "^2.16.0",
 		"@tanstack/svelte-table": "^8.8.5",
 		"@trpc/client": "^10.18.0",
 		"@trpc/server": "^10.18.0",

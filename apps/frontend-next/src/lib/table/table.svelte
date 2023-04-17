@@ -12,6 +12,7 @@
 	import { quintOut } from 'svelte/easing'
 	import { writable } from 'svelte/store'
 	import EmptyTable from './EmptyTable.svelte'
+	import TableToolBar from './TableToolBar.svelte'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -146,6 +147,8 @@
 		}
 	}
 </script>
+
+<TableToolBar />
 
 {#if hasRecord}
 	<RevoGrid source={rows} resize="true" {columns} theme="compact" on:aftercolumnresize={onAfterColumnResize} range />
