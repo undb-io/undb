@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { RecordFactory, TableFactory, type PinnedPosition, type IQueryTable, type IQueryRecords } from '@undb/core'
+	import type { PinnedPosition, Records } from '@undb/core'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
 	import { Button, P, Spinner, Toast } from 'flowbite-svelte'
 	import type { RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
@@ -13,30 +13,28 @@
 	import { writable } from 'svelte/store'
 	import EmptyTable from './EmptyTable.svelte'
 	import TableToolBar from './TableToolBar.svelte'
+	import { getTable, getView } from '$lib/context'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
 		right: 'colPinEnd',
 	}
 
-	export let table: IQueryTable
-	export let records: IQueryRecords
-
-	$: coreTable = TableFactory.fromQuery(table)
-	$: view = coreTable.mustGetView()
-	$: coreRecords = RecordFactory.fromQueryRecords(records, coreTable.schema.toIdMap())
+	export let records: Records
+	const table = getTable()
+	const view = getView()
 
 	let rows: Components.RevoGrid['source']
 	let columns: Components.RevoGrid['columns']
 
 	const select = writable<Record<string, boolean>>({})
-	$: table, select.set({})
+	$: $table, select.set({})
 
 	const updateSelect = (recordId: string, selected: boolean) => ($select[recordId] = selected)
-	$: allSelected = Object.entries($select).filter(([, value]) => value).length === coreRecords.length
+	$: allSelected = Object.entries($select).filter(([, value]) => value).length === records.length
 	const updateAllSelect = (s: boolean) => {
 		const selected: Record<string, boolean> = {}
-		for (const record of coreRecords) {
+		for (const record of records) {
 			selected[record.id.value] = s
 		}
 
@@ -45,7 +43,7 @@
 
 	$: {
 		defineCustomElements().then(() => {
-			rows = coreRecords.map((record) => record.valuesJSON)
+			rows = records.map((record) => record.valuesJSON)
 			columns = [
 				{
 					prop: 'selection',
@@ -56,7 +54,7 @@
 							class: '!p-0 text-center border-r border-b border-gray-200',
 						}
 					},
-					columnTemplate: (h, props) => {
+					columnTemplate: (h) => {
 						return h('input', {
 							type: 'checkbox',
 							checked: allSelected,
@@ -83,19 +81,19 @@
 					},
 					size: 40,
 				},
-				...coreTable.schema.fields.map<Components.RevoGrid['columns'][0]>((field) => {
-					const position = view.pinnedFields?.getPinnedPosition(field.id.value)
+				...$table.schema.fields.map<Components.RevoGrid['columns'][0]>((field) => {
+					const position = $view.pinnedFields?.getPinnedPosition(field.id.value)
 					return {
 						prop: field.id.value,
 						name: field.name.value,
-						size: view.getFieldWidth(field.id.value),
+						size: $view.getFieldWidth(field.id.value),
 						pin: position ? pinnedPositionMap[position] : undefined,
 						autoSize: true,
 						cellTemplate: cellTemplateMap[field.type],
 						columnProperties: () => ({
 							class: 'border-r border-b border-gray-200',
 						}),
-						cellProperties: ({ prop, model, data, column }) => {
+						cellProperties: () => {
 							return {
 								class: 'flex items-center border-r border-b border-gray-100',
 							}
@@ -112,11 +110,11 @@
 	) => {
 		for (const [fieldId, field] of Object.entries(event.detail)) {
 			const width = field.size
-			if (width && view.getFieldWidth(fieldId) !== width) {
+			if (width && $view.getFieldWidth(fieldId) !== width) {
 				await trpc($page).table.view.field.setWidth.mutate({
-					tableId: coreTable.id.value,
+					tableId: $table.id.value,
 					fieldId,
-					viewId: view.id.value,
+					viewId: $view.id.value,
 					width,
 				})
 			}
@@ -139,7 +137,7 @@
 		try {
 			loadingDuplicate = true
 			await trpc($page).record.bulkDuplicate.mutate({
-				tableId: table.id,
+				tableId: $table.id.value,
 				ids: selectedRecords as [string, ...string[]],
 			})
 		} finally {

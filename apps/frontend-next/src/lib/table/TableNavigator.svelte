@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
+	import { getTable } from '$lib/context'
 	import { IconChevronLeft } from '@tabler/icons-svelte'
 	import { Button, P } from 'flowbite-svelte'
 
 	const back = () => goto('/')
+
+	const table = getTable()
 </script>
 
 <div class="flex items-center gap-2">
@@ -11,5 +14,5 @@
 		<IconChevronLeft size={16} />
 	</Button>
 
-	<P size="sm" color="text-gray-700">tablename placeholder</P>
+	<P size="sm" color="text-gray-700">{$table.name.value}</P>
 </div>
