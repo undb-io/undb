@@ -28,6 +28,8 @@
 
 	export let type: IFieldType
 
+	export let size: number | undefined = undefined
+
 	const map: Record<IFieldType, ComponentType> = {
 		string: IconLetterT,
 		number: Icon123,
@@ -56,4 +58,4 @@
 	}
 </script>
 
-<svelte:component this={map[type]} />
+<svelte:component this={map[type]} {size} />

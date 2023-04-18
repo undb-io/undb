@@ -5,7 +5,11 @@
 
 	const view = getView()
 
-	$: field = $view.kanban.into()?.fieldId
+	$: fieldId = $view.kanbanFieldIdString
 </script>
 
-<svelte:component this={!field ? KanbanSelectField : KanbanView} />
+{#if fieldId}
+	<KanbanView {fieldId} />
+{:else}
+	<KanbanSelectField />
+{/if}

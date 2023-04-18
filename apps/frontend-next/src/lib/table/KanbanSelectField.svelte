@@ -25,7 +25,7 @@
 
 <div class="flex items-center justify-center h-screen w-full bg-gray-100">
 	<Card class="flex-1">
-		<form class="flex flex-col space-y-6" action="?/selectKanbanField">
+		<form class="flex flex-col space-y-6 space-x-2" action="?/selectKanbanField">
 			{#each kanbanFields as field}
 				<Radio bind:group={$kanbanField} name="kanbanFieldId" value={field.id.value} on:change={onChange}>
 					<FieldIcon type={field.type} />

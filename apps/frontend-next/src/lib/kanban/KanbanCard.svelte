@@ -1,0 +1,25 @@
+<script lang="ts">
+	import CellComponent from '$lib/cell/CellComponent.svelte'
+	import { getCellValue } from '$lib/cell/get-cell-value'
+	import { getTable, getView } from '$lib/context'
+	import FieldIcon from '$lib/field/FieldIcon.svelte'
+	import type { Record } from '@undb/core'
+	import { Card } from 'flowbite-svelte'
+
+	export let record: Record
+	const table = getTable()
+	const view = getView()
+
+	$: fields = $table.getFieldsOrder($view)
+	$: values = record.values.valueJSON
+</script>
+
+<Card rounded={false} class="!py-5">
+	{#each Object.entries(values) as [key, value]}
+		{@const field = $table.schema.getFieldById(key).unwrap()}
+		<div class="flex items-center gap-2">
+			<FieldIcon size={20} type={field.type} />
+			<CellComponent type={field.type} value={getCellValue(field, value)} />
+		</div>
+	{/each}
+</Card>
