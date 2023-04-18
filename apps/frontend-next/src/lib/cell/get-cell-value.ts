@@ -8,6 +8,6 @@ export const getCellValue = (field: Field, value: RecordAllValueType) => {
 		}
 
 		default:
-			throw new Error('not implemented')
+			return value
 	}
 }

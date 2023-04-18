@@ -1,13 +1,14 @@
 <script lang="ts">
-	import type { FieldValue, IFieldType, Option } from '@undb/core'
+	import type { Field, IFieldType, Option, RecordAllValueType } from '@undb/core'
 	import type { ComponentType } from 'svelte'
 	import String from './String.svelte'
 	import Number from './Number.svelte'
 	import Select from './Select.svelte'
 	import Id from './Id.svelte'
+	import Rating from './Rating.svelte'
 
-	export let type: IFieldType
-	export let value: FieldValue | Option | undefined
+	export let field: Field
+	export let value: RecordAllValueType | Option
 
 	const map: Record<IFieldType, ComponentType> = {
 		string: String,
@@ -25,7 +26,7 @@
 		reference: String,
 		tree: String,
 		parent: String,
-		rating: String,
+		rating: Rating,
 		count: String,
 		lookup: String,
 		sum: String,
@@ -40,5 +41,5 @@
 {#if !value}
 	<span />
 {:else}
-	<svelte:component this={map[type]} {value} />
+	<svelte:component this={map[field.type]} {value} {field} />
 {/if}

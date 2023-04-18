@@ -10,8 +10,7 @@
 	const table = getTable()
 	const view = getView()
 
-	$: fields = $table.getFieldsOrder($view)
-	$: values = record.values.valueJSON
+	const values = record.values.valueJSON
 </script>
 
 <Card rounded={false} class="!py-4 !px-4 shadow-sm hover:shadow-lg duration-200 cursor-grab select-none">
@@ -19,7 +18,7 @@
 		{@const field = $table.schema.getFieldById(key).unwrap()}
 		<div class="flex items-center gap-2">
 			<FieldIcon size={20} type={field.type} />
-			<CellComponent type={field.type} value={getCellValue(field, value)} />
+			<CellComponent {field} value={getCellValue(field, value)} />
 		</div>
 	{/each}
 </Card>
