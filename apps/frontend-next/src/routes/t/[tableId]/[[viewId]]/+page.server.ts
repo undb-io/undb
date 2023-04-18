@@ -1,14 +1,10 @@
 import { trpc } from '$lib/trpc/client'
 import type { PageServerLoad } from './$types'
 
-export const load: PageServerLoad = async (page) => {
-	const id = page.params.tableId
-	const [table, { records }] = await Promise.all([
-		trpc(page).table.get.query({ id }),
-		trpc(page).record.list.query({ tableId: id }),
-	])
+export const load: PageServerLoad = async (event) => {
+	const id = event.params.tableId
+
 	return {
-		table,
-		records,
+		records: trpc(event).record.list.query({ tableId: id }),
 	}
 }

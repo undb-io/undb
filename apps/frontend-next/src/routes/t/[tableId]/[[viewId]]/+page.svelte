@@ -1,5 +1,20 @@
 <script lang="ts">
+	import { getTable, setRecords } from '$lib/context'
 	import TableIndex from '$lib/table/TableIndex.svelte'
+	import { RecordFactory } from '@undb/core'
+	import { writable } from 'svelte/store'
+	import type { PageServerData } from './$types'
+	import TableToolBar from '$lib/table/TableToolBar.svelte'
+	import CreateOption from '$lib/option/CreateOption.svelte'
+
+	const table = getTable()
+	export let data: PageServerData
+
+	const records = writable(RecordFactory.fromQueryRecords(data.records.records, $table.schema.toIdMap()))
+	$: records.set(RecordFactory.fromQueryRecords(data.records.records, $table.schema.toIdMap()))
+	setRecords(records)
 </script>
 
+<TableToolBar />
 <TableIndex />
+<CreateOption />
