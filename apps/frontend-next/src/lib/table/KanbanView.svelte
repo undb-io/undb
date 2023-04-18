@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { getRecords, getTable } from '$lib/context'
-	import KanbanLane from '$lib/kanban/KanbanLane.svelte'
 	import { flip } from 'svelte/animate'
 	import Option from '$lib/option/Option.svelte'
 	import { dndzone } from 'svelte-dnd-action'
@@ -8,23 +7,32 @@
 	import type { SelectField, SelectFieldValue } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
 	import { page } from '$app/stores'
+	import KanbanCard from '$lib/kanban/KanbanCard.svelte'
+	import { IconRowInsertTop } from '@tabler/icons-svelte'
+	import { Button } from 'flowbite-svelte'
 
 	export let fieldId: string
 	const flipDurationMs = 200
 
 	const table = getTable()
 	const records = getRecords()
-	$: field = $table.schema.getFieldById(fieldId).into() as SelectField
+	const field = $table.schema.getFieldById(fieldId).into() as SelectField
 
-	$: options = field.options.options
-	$: items = options.map((option) => ({ id: option.key.value, name: option.name.value, option }))
+	const options = field.options.options
 
-	$: groupedRecords = groupBy($records, (record) => {
+	const groupedRecords = groupBy($records, (record) => {
 		const value = record.values.value.get(field.id.value) as SelectFieldValue | undefined
 
 		if (!value?.id) return null
 		return value.id
 	})
+
+	let items = options.map((option) => ({
+		id: option.key.value,
+		name: option.name.value,
+		option,
+		records: groupedRecords[option.key.value]?.map((record) => ({ id: record.id.value, record })) ?? [],
+	}))
 
 	function handleDndConsiderColumns(e: any) {
 		items = e.detail.items
@@ -44,21 +52,55 @@
 			})
 		}
 	}
+
+	function handleDndConsiderCards(cid: string, e: any) {
+		const colIdx = items.findIndex((c) => c.id === cid)
+		if (items[colIdx]) {
+			items[colIdx].records = e.detail.items
+			items = [...items]
+		}
+	}
+	function handleDndFinalizeCards(cid: string, e: any) {
+		const colIdx = items.findIndex((c) => c.id === cid)
+		if (items[colIdx]) {
+			items[colIdx].records = e.detail.items
+			items = [...items]
+		}
+	}
 </script>
 
 <section
 	class="flex gap-5 h-full w-full px-10 py-5 overflow-scroll"
-	use:dndzone={{ items, flipDurationMs }}
+	use:dndzone={{ items, flipDurationMs, type: 'columns', dropTargetStyle: {} }}
 	on:consider={handleDndConsiderColumns}
 	on:finalize={handleDndFinalizeColumns}
 >
 	{#each items as item (item.id)}
 		<div animate:flip={{ duration: flipDurationMs }}>
-			<KanbanLane records={groupedRecords[item.option.key.value]}>
-				<svelte:fragment slot="title">
-					<Option option={item.option} />
-				</svelte:fragment>
-			</KanbanLane>
+			<div class="w-[350px] flex flex-col h-full">
+				<div class="mb-3 flex-0">
+					<div class="min-h-[40px]">
+						<Option option={item.option} />
+					</div>
+
+					<Button color="alternative" class="w-full rounded-none h-8" size="xs">
+						<IconRowInsertTop />
+					</Button>
+				</div>
+
+				<div
+					class="flex flex-col gap-2 flex-1"
+					use:dndzone={{ items: item.records, flipDurationMs, dropTargetStyle: {} }}
+					on:consider={(e) => handleDndConsiderCards(item.id, e)}
+					on:finalize={(e) => handleDndFinalizeCards(item.id, e)}
+				>
+					{#each item.records as record (record.id)}
+						<div animate:flip={{ duration: flipDurationMs }}>
+							<KanbanCard record={record.record} />
+						</div>
+					{/each}
+				</div>
+			</div>
 		</div>
 	{/each}
 </section>
