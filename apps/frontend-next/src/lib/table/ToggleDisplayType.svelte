@@ -1,0 +1,40 @@
+<script lang="ts">
+	import { page } from '$app/stores'
+	import { getTable, getView } from '$lib/context'
+	import { trpc } from '$lib/trpc/client'
+	import ViewIcon from '$lib/view/ViewIcon.svelte'
+	import { Button, ButtonGroup, Radio, Tooltip } from 'flowbite-svelte'
+
+	const table = getTable()
+	const view = getView()
+
+	const displayTypes = ['grid', 'kanban'] as const
+
+	const onChange = async () => {
+		await trpc($page).table.view.switchDisplayType.mutate({
+			tableId: $table.id.value,
+			viewId: $view.id.value,
+			displayType: $view.displayType,
+		})
+	}
+</script>
+
+<div class="flex gap-2">
+	{#each displayTypes as displayType}
+		<Radio
+			class="display-type cursor-pointer"
+			name="displayType"
+			bind:group={$view.displayType}
+			on:change={onChange}
+			value={displayType}
+			custom
+		>
+			<div
+				class="grid h-7 w-7 place-items-center rounded p-1 duration-300  hover:bg-gray-200 text-gray-400 peer-checked:bg-gray-200   peer-checked:border-gray-600 peer-checked:text-gray-600 hover:text-gray-500  "
+			>
+				<ViewIcon type={displayType} />
+			</div>
+			<Tooltip placement="bottom">{displayType}</Tooltip>
+		</Radio>
+	{/each}
+</div>

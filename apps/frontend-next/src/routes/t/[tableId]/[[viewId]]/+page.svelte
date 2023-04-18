@@ -13,8 +13,8 @@
 	$: table.set(TableFactory.fromQuery(data.table))
 	setTable(table)
 
-	const view = writable(coreTable.mustGetView($page.params.viewId))
-	$: view.set(coreTable.mustGetView($page.params.viewId))
+	const view = writable($table.mustGetView($page.params.viewId))
+	$: view.set($table.mustGetView($page.params.viewId))
 	setView(view)
 
 	let records: Records = []
