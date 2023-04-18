@@ -14,7 +14,7 @@
 	$: values = record.values.valueJSON
 </script>
 
-<Card rounded={false} class="!py-5">
+<Card rounded={false} class="!py-5 shadow-sm hover:shadow-lg duration-200 cursor-grab select-none">
 	{#each Object.entries(values) as [key, value]}
 		{@const field = $table.schema.getFieldById(key).unwrap()}
 		<div class="flex items-center gap-2">

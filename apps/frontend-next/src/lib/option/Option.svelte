@@ -8,6 +8,6 @@
 	const textColor = option.color.shade > 5 ? '!text-dark' : '!text-white'
 </script>
 
-<Badge class={cx(`bg-${option.color.name}-${option.color.shade * 100}`, textColor)}>
+<Badge class={cx(`bg-${option.color.name}-${option.color.shade * 100}`, textColor, 'select-none')}>
 	{option.name.value}
 </Badge>

@@ -520,6 +520,9 @@ importers:
       svelte-check:
         specifier: ^3.0.1
         version: 3.0.1(postcss-load-config@4.0.1)(postcss@8.4.21)(svelte@3.54.0)
+      svelte-dnd-action:
+        specifier: ^0.9.22
+        version: 0.9.22(svelte@3.54.0)
       svelte-preprocess:
         specifier: ^4.10.7
         version: 4.10.7(postcss-load-config@4.0.1)(postcss@8.4.21)(svelte@3.54.0)(typescript@5.0.3)
@@ -11912,6 +11915,14 @@ packages:
       - sass
       - stylus
       - sugarss
+    dev: true
+
+  /svelte-dnd-action@0.9.22(svelte@3.54.0):
+    resolution: {integrity: sha512-lOQJsNLM1QWv5mdxIkCVtk6k4lHCtLgfE59y8rs7iOM6erchbLC9hMEFYSveZz7biJV0mpg7yDSs4bj/RT/YkA==}
+    peerDependencies:
+      svelte: '>=3.23.0'
+    dependencies:
+      svelte: 3.54.0
     dev: true
 
   /svelte-heros-v2@0.4.2(svelte@3.54.0):
