@@ -1,8 +1,9 @@
 import type { CompositeSpecification } from '@undb/domain'
 import { and, ValueObject } from '@undb/domain'
 import { isEmpty, sortBy } from 'lodash-es'
-import { None, Option } from 'oxide.ts'
-import type { Field, FieldId } from '../field/index.js'
+import { None, Option, Some } from 'oxide.ts'
+import type { Field } from '../field/index.js'
+import { FieldId } from '../field/index.js'
 import type { IFilterOrGroupList, IRootFilter } from '../filter/index.js'
 import { RootFilter } from '../filter/index.js'
 import { WithFilter } from '../specifications/index.js'
@@ -102,6 +103,19 @@ export class View extends ValueObject<IView> {
 
   public get kanbanFieldId(): Option<FieldId> {
     return this.kanban.mapOr(None, (kanban) => Option(kanban.fieldId))
+  }
+
+  public get kanbanFieldIdString() {
+    return this.kanban.into()?.fieldId?.value
+  }
+
+  public set kanbanFieldIdString(fieldId: string | undefined) {
+    const kanban = this.kanban.into()
+    if (kanban) {
+      kanban.fieldId = fieldId ? FieldId.fromString(fieldId) : undefined
+    } else if (fieldId) {
+      this.kanban = Some(new Kanban({ fieldId: FieldId.fromString(fieldId) }))
+    }
   }
 
   public get calendar(): Option<Calendar> {

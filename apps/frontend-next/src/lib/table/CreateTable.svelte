@@ -16,8 +16,8 @@
 	import { FieldId, type ICreateTableInput, type createTableInput } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { Plus } from 'svelte-heros-v2'
-	import Icon from '$lib/column/ColumnIcon.svelte'
-	import { FIELD_SELECT_ITEMS } from '$lib/column/types'
+	import Icon from '$lib/field/FieldIcon.svelte'
+	import { FIELD_SELECT_ITEMS } from '$lib/field/types'
 
 	export let form: Validation<typeof createTableInput>
 

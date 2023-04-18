@@ -12,17 +12,16 @@
 	import { quintOut } from 'svelte/easing'
 	import { writable } from 'svelte/store'
 	import EmptyTable from './EmptyTable.svelte'
-	import TableToolBar from './TableToolBar.svelte'
-	import { getTable, getView } from '$lib/context'
+	import { getRecords, getTable, getView } from '$lib/context'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
 		right: 'colPinEnd',
 	}
 
-	export let records: Records
 	const table = getTable()
 	const view = getView()
+	const records = getRecords()
 
 	let rows: Components.RevoGrid['source']
 	let columns: Components.RevoGrid['columns']
@@ -31,10 +30,10 @@
 	$: $table, select.set({})
 
 	const updateSelect = (recordId: string, selected: boolean) => ($select[recordId] = selected)
-	$: allSelected = Object.entries($select).filter(([, value]) => value).length === records.length
+	$: allSelected = Object.entries($select).filter(([, value]) => value).length === $records.length
 	const updateAllSelect = (s: boolean) => {
 		const selected: Record<string, boolean> = {}
-		for (const record of records) {
+		for (const record of $records) {
 			selected[record.id.value] = s
 		}
 
@@ -43,7 +42,7 @@
 
 	$: {
 		defineCustomElements().then(() => {
-			rows = records.map((record) => record.valuesJSON)
+			rows = $records.map((record) => record.valuesJSON)
 			columns = [
 				{
 					prop: 'selection',
@@ -125,7 +124,7 @@
 		.filter(([, value]) => value)
 		.map(([key]) => key)
 	$: selectedCount = Object.values($select).filter(Boolean).length
-	$: hasRecord = !!records.length
+	$: hasRecord = !!$records.length
 	$: toastOpen = !!selectedCount
 
 	let loadingDuplicate = false
@@ -145,8 +144,6 @@
 		}
 	}
 </script>
-
-<TableToolBar />
 
 {#if hasRecord}
 	<RevoGrid source={rows} resize="true" {columns} theme="compact" on:aftercolumnresize={onAfterColumnResize} range />
