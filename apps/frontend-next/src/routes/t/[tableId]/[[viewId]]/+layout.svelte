@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores'
 	import { setRecords, setTable, setView } from '$lib/context'
+	import CreateOption from '$lib/option/CreateOption.svelte'
 	import TableToolBar from '$lib/table/TableToolBar.svelte'
 	import { RecordFactory, TableFactory } from '@undb/core'
 	import { writable } from 'svelte/store'
@@ -22,4 +23,6 @@
 <div class="w-full h-full flex flex-col">
 	<TableToolBar />
 	<slot />
+
+	<CreateOption />
 </div>

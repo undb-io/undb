@@ -26,7 +26,7 @@
 
 <div>
 	<TransitionRoot show={sidebarOpen}>
-		<Dialog as="div" class="relative z-50 lg:hidden" on:close={setSidebarOpen}>
+		<Dialog as="div" class="relative z-30 lg:hidden" on:close={setSidebarOpen}>
 			<TransitionChild
 				enter="transition-opacity ease-linear duration-300"
 				enterFrom="opacity-0"
@@ -135,7 +135,7 @@
 		</Dialog>
 	</TransitionRoot>
 
-	<div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+	<div class="hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-72 lg:flex-col">
 		<div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
 			<div class="flex h-16 shrink-0 items-center">
 				<img

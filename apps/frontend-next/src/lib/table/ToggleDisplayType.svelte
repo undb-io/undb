@@ -3,7 +3,7 @@
 	import { getTable, getView } from '$lib/context'
 	import { trpc } from '$lib/trpc/client'
 	import ViewIcon from '$lib/view/ViewIcon.svelte'
-	import { Button, ButtonGroup, Radio, Tooltip } from 'flowbite-svelte'
+	import { Radio, Tooltip } from 'flowbite-svelte'
 
 	const table = getTable()
 	const view = getView()

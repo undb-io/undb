@@ -158,7 +158,7 @@
 <Toast
 	open={toastOpen}
 	position="bottom-right"
-	class="z-50 shadow-md max-w-md"
+	class="z-30 shadow-md max-w-md"
 	transition={slide}
 	params={{ delay: 100, duration: 200, easing: quintOut }}
 >

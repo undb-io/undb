@@ -10,6 +10,7 @@
 	import KanbanCard from '$lib/kanban/KanbanCard.svelte'
 	import { IconRowInsertTop } from '@tabler/icons-svelte'
 	import { Button } from 'flowbite-svelte'
+	import { createOptionOpen } from '$lib/store'
 
 	export let fieldId: string
 	const flipDurationMs = 200
@@ -103,4 +104,10 @@
 			</div>
 		</div>
 	{/each}
+
+	<div class="w-[350px]">
+		<Button on:click={() => createOptionOpen.set(true)} size="xs" color="light" outline class="w-full rounded-sm"
+			>Create New Option</Button
+		>
+	</div>
 </section>
