@@ -5,7 +5,6 @@
 	import { writable } from 'svelte/store'
 	import type { PageServerData } from './$types'
 	import TableToolBar from '$lib/table/TableToolBar.svelte'
-	import CreateOption from '$lib/option/CreateOption.svelte'
 
 	const table = getTable()
 	export let data: PageServerData
@@ -17,4 +16,3 @@
 
 <TableToolBar />
 <TableIndex />
-<CreateOption />

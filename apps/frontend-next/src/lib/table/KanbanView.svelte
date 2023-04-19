@@ -90,7 +90,7 @@
 				</div>
 
 				<div
-					class="flex flex-col gap-2 flex-1 overflow-scroll"
+					class="flex flex-col gap-2 flex-1 overflow-y-scroll"
 					use:dndzone={{ items: item.records, flipDurationMs, dropTargetStyle: {} }}
 					on:consider={(e) => handleDndConsiderCards(item.id, e)}
 					on:finalize={(e) => handleDndFinalizeCards(item.id, e)}

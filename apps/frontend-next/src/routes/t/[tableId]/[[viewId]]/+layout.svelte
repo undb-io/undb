@@ -2,7 +2,6 @@
 	import { page } from '$app/stores'
 	import { setTable, setView } from '$lib/context'
 	import CreateOption from '$lib/option/CreateOption.svelte'
-	import TableToolBar from '$lib/table/TableToolBar.svelte'
 	import { TableFactory } from '@undb/core'
 	import { writable } from 'svelte/store'
 	import type { LayoutServerData } from './$types'
@@ -21,4 +20,5 @@
 
 <div class="w-full h-full flex flex-col">
 	<slot />
+	<CreateOption />
 </div>
