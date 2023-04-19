@@ -21,7 +21,7 @@ export const actions: Actions = {
 			return fail(400, { form })
 		}
 
-		const response = await event.fetch('http://127.0.0.1:4000/api/auth/login', {
+		const response = await event.fetch('http://127.0.0.1:4000/api/auth/register', {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',

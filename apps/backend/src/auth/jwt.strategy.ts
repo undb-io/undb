@@ -18,7 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   private static extractJWT(req: Request): string | null {
-    return req.cookies?.['undb'] ?? null
+    return req.cookies?.['undb_auth'] ?? null
   }
 
   async validate(payload: any) {

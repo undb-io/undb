@@ -5,7 +5,7 @@
 	import { Bars3, Users, TableCells, XMark, Plus } from 'svelte-heros-v2'
 	import type { LayoutData } from './$types'
 	import CreateTable from '$lib/table/CreateTable.svelte'
-	import { Button } from 'flowbite-svelte'
+	import { Avatar, Button, Dropdown, DropdownItem } from 'flowbite-svelte'
 	import { createTableHidden } from '$lib/store'
 	import { page } from '$app/stores'
 
@@ -21,6 +21,7 @@
 	export let data: LayoutData
 
 	$: tables = data.tables
+	$: me = data.me.me
 </script>
 
 <div>
@@ -210,18 +211,32 @@
 						>
 					</li>
 					<li class="-mx-6 mt-auto">
-						<a
-							href="#"
-							class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50"
+						<button
+							id="me-button"
+							class="w-full flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50"
 						>
-							<img
-								class="h-8 w-8 rounded-full bg-gray-50"
-								src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-								alt=""
-							/>
+							{#if me.avatar}
+								<Avatar src={me.avatar} />
+							{:else}
+								<Avatar>{me.username.slice(0, 2)}</Avatar>
+							{/if}
 							<span class="sr-only">Your profile</span>
-							<span aria-hidden="true">Tom Cook</span>
-						</a>
+							<span aria-hidden="true">{me.username}</span>
+						</button>
+
+						<Dropdown
+							triggeredBy="#me-button"
+							placement="top"
+							frameClass="w-full"
+							class="w-full shadow-sm border border-gray-100"
+						>
+							<DropdownItem>Settings</DropdownItem>
+							<DropdownItem>
+								<form action="/logout" method="POST">
+									<button class="w-full h-full text-left" type="submit">Logout</button>
+								</form>
+							</DropdownItem>
+						</Dropdown>
 					</li>
 				</ul>
 			</nav>
