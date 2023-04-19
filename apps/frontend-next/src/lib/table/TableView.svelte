@@ -13,6 +13,7 @@
 	import { writable } from 'svelte/store'
 	import EmptyTable from './EmptyTable.svelte'
 	import { getRecords, getTable, getView } from '$lib/context'
+	import { invalidate } from '$app/navigation'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -139,6 +140,8 @@
 				tableId: $table.id.value,
 				ids: selectedRecords as [string, ...string[]],
 			})
+
+			invalidate(`records:${$table.id.value}`)
 
 			select.set({})
 		} finally {
