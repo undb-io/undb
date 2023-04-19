@@ -6,6 +6,7 @@
 	import { createMutateRecordValuesSchema } from '@undb/core'
 	import { Button, Hr, Modal } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -16,12 +17,13 @@
 
 	const { form, constraints } = superForm(createRecord, {
 		validators,
+		dataType: 'json',
 	})
 </script>
 
 <Modal title="Create New Record" class="w-full" size="md" bind:open={$createRecordOpen}>
 	<form method="POST" action={`/t/${$table.id.value}?/createRecord`}>
-		<div class="grid grid-cols-2">
+		<div class="grid grid-cols-2 gap-x-3 gap-y-4">
 			{#each fields as field}
 				<div>
 					<CellInput {field} bind:value={$form[field.id.value]} {...$constraints[field.id.value]} />
@@ -33,4 +35,6 @@
 
 		<Button class="w-full rounded-sm" type="submit">Create New Record</Button>
 	</form>
+
+	<SuperDebug data={$form} />
 </Modal>

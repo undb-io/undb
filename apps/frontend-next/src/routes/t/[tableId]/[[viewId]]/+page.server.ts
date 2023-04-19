@@ -26,18 +26,6 @@ export const actions: Actions = {
 
 		const form = await superValidate(event, createMutateRecordValuesSchema(coreTable.schema.fields))
 
-		console.log(form.valid)
-		console.log(form.valid)
-		console.log(form.valid)
-		console.log(form.valid)
-		console.log(form.valid)
-		console.log(form.valid)
-		console.log(form.valid)
-		console.log(form.valid)
-		console.log(form.valid)
-		console.log(form.valid)
-		console.log(form.valid)
-
 		if (!form.valid) {
 			return fail(400, { createRecord: form })
 		}

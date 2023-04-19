@@ -20,7 +20,8 @@ export class AuthController {
   @Post('login')
   async login(@Request() req: Express.Request) {
     const payload = await this.authService.login(req.user as any)
-    return { access_token: this.jwtService.sign(payload) }
+    const token = this.jwtService.sign(payload)
+    return { access_token: token }
   }
 
   @HttpCode(HttpStatus.OK)
