@@ -139,6 +139,8 @@
 				tableId: $table.id.value,
 				ids: selectedRecords as [string, ...string[]],
 			})
+
+			select.set({})
 		} finally {
 			loadingDuplicate = false
 		}

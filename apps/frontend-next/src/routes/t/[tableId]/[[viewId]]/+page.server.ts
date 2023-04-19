@@ -1,5 +1,5 @@
 import { trpc } from '$lib/trpc/client'
-import { fail, redirect } from '@sveltejs/kit'
+import { fail } from '@sveltejs/kit'
 import { TableFactory, createMutateRecordValuesSchema } from '@undb/core'
 import { superValidate } from 'sveltekit-superforms/server'
 import type { Actions, PageServerLoad } from './$types'
@@ -35,10 +35,6 @@ export const actions: Actions = {
 			values: form.data,
 		})
 
-		if (id) {
-			throw redirect(303, `/t/${tableId}/r/${id}`)
-		}
-
-		return { form, id }
+		return { createRecord: form, id }
 	},
 }

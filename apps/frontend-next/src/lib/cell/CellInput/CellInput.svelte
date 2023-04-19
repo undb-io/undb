@@ -3,9 +3,6 @@
 	import type { ComponentType } from 'svelte'
 	import String from './String.svelte'
 	import Number from './Number.svelte'
-	import Select from '../Select.svelte'
-	import Id from '../Id.svelte'
-	import Rating from '../Rating.svelte'
 	import Base from './Base.svelte'
 
 	export let field: Field

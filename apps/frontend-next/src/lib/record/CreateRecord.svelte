@@ -4,7 +4,7 @@
 	import { getTable, getView } from '$lib/context'
 	import { createRecordOpen } from '$lib/store'
 	import { createMutateRecordValuesSchema } from '@undb/core'
-	import { Button, Hr, Modal } from 'flowbite-svelte'
+	import { Button, Hr, Modal, Spinner } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
@@ -15,14 +15,19 @@
 	$: createRecord = $page.data.createRecord
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
-	const { form, constraints } = superForm(createRecord, {
+	const { form, enhance, constraints, delayed } = superForm(createRecord, {
 		validators,
 		dataType: 'json',
+		delayMs: 100,
+		clearOnSubmit: 'errors-and-message',
+		onResult() {
+			createRecordOpen.set(false)
+		},
 	})
 </script>
 
 <Modal title="Create New Record" class="w-full" size="md" bind:open={$createRecordOpen}>
-	<form method="POST" action={`/t/${$table.id.value}?/createRecord`}>
+	<form method="POST" action={`/t/${$table.id.value}?/createRecord`} use:enhance>
 		<div class="grid grid-cols-2 gap-x-3 gap-y-4">
 			{#each fields as field}
 				<div>
@@ -33,7 +38,12 @@
 
 		<Hr class="my-5" />
 
-		<Button class="w-full rounded-sm" type="submit">Create New Record</Button>
+		<Button class="w-full rounded-sm gap-4" type="submit">
+			{#if $delayed}
+				<Spinner size="5" />
+			{/if}
+			Create New Record</Button
+		>
 	</form>
 
 	<SuperDebug data={$form} />
