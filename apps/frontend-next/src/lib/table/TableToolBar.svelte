@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { Button } from 'flowbite-svelte'
-	import { IconRowInsertBottom } from '@tabler/icons-svelte'
+	import { Button, Tooltip } from 'flowbite-svelte'
+	import { IconColumnInsertRight, IconRowInsertBottom } from '@tabler/icons-svelte'
 	import ViewMenu from './ViewMenu.svelte'
 	import FilterMenu from './FilterMenu.svelte'
 	import SortMenu from './SortMenu.svelte'
 	import ManageFieldsMenu from './ManageFieldsMenu.svelte'
 	import TableNavigator from './TableNavigator.svelte'
 	import ToggleDisplayType from './ToggleDisplayType.svelte'
-	import { createRecordOpen } from '$lib/store'
+	import { createFieldOpen, createRecordOpen } from '$lib/store'
 </script>
 
 <div class="h-[44px] flex items-center border-b px-5 rounded-none justify-between">
@@ -23,6 +23,15 @@
 		<FilterMenu />
 		<SortMenu />
 		<ManageFieldsMenu />
+
+		<Button
+			on:click={() => createFieldOpen.set(true)}
+			size="xs"
+			class="h-[26px] aspect-square !px-0 !rounded-sm inline-flex items-center"
+		>
+			<IconColumnInsertRight size={14} /></Button
+		>
+		<Tooltip placement="bottom">Insert Field</Tooltip>
 	</div>
 
 	<div>
