@@ -230,7 +230,9 @@
 							frameClass="w-full"
 							class="w-full shadow-sm border border-gray-100"
 						>
-							<DropdownItem>Settings</DropdownItem>
+							<a href="/me">
+								<DropdownItem>Settings</DropdownItem>
+							</a>
 							<DropdownItem>
 								<form action="/logout" method="POST">
 									<button class="w-full h-full text-left" type="submit">Logout</button>
