@@ -23,7 +23,9 @@ export const actions: Actions = {
 
 		const { id } = await trpc({ fetch, url }).table.create.mutate(form.data)
 
-		throw redirect(303, `/t/${id}`)
+		if (id) {
+			throw redirect(303, `/t/${id}`)
+		}
 
 		return { form, id }
 	},

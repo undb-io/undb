@@ -7,7 +7,6 @@
 
 	let dropdownOpen = false
 	export let value = OptionColor.defaultColorName
-	$: console.log(value)
 </script>
 
 <button

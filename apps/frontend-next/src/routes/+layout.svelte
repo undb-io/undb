@@ -4,7 +4,7 @@
 
 	import { Dialog, DialogOverlay, TransitionChild, TransitionRoot } from '@rgossiaux/svelte-headlessui'
 	import { Bars3, Users, TableCells, XMark, Plus } from 'svelte-heros-v2'
-	import type { LayoutData, PageData } from './$types'
+	import type { LayoutData } from './$types'
 	import CreateTable from '$lib/table/CreateTable.svelte'
 	import { Button } from 'flowbite-svelte'
 	import { createTableHidden } from '$lib/store'

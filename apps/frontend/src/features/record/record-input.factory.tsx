@@ -29,7 +29,6 @@ import { format } from 'date-fns'
 import { FieldIssue } from '../field/field-issue'
 import { AttachmentInput } from '../field-inputs/attachment-input'
 import { UsersPicker } from '../field-inputs/users-picker'
-import { forIn } from 'lodash-es'
 
 interface IProps {
   field: Field

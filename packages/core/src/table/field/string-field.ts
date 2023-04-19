@@ -35,6 +35,6 @@ export class StringField extends BaseField<IStringField> {
 
   get valueSchema() {
     const str = z.string()
-    return this.required ? str : str.nullable()
+    return this.required ? str.min(1) : str.nullable()
   }
 }

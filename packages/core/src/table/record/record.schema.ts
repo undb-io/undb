@@ -36,14 +36,14 @@ export type RecordAllValues = Merge<RecordValueJSON, IInternalRecordValues>
 export type RecordAllValueType = ValueOf<RecordAllValues> | ValueOf<IInternalRecordValues> | ICollaboratorProfile
 
 export const createMutateRecordValuesSchema = (fields: Field[]) => {
-  let schema = z.object({})
+  let schema = z.object<{ [key: string]: any }>({})
 
   for (const field of fields) {
     if (field.controlled) continue
     schema = schema.setKey(field.id.value, field.valueSchema)
   }
 
-  return schema
+  return schema.strict()
 }
 
 export type IMutateRecordValueSchema = z.infer<ReturnType<typeof createMutateRecordValuesSchema>>

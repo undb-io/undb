@@ -7,12 +7,14 @@
 	import ManageFieldsMenu from './ManageFieldsMenu.svelte'
 	import TableNavigator from './TableNavigator.svelte'
 	import ToggleDisplayType from './ToggleDisplayType.svelte'
+	import { createRecordOpen } from '$lib/store'
 </script>
 
 <div class="h-[44px] flex items-center border-b px-5 rounded-none justify-between">
 	<div class="flex items-center justify-center content-center gap-4">
 		<TableNavigator />
-		<Button size="xs" class="h-[26px] !rounded-sm inline-flex items-center">
+
+		<Button on:click={() => createRecordOpen.set(true)} size="xs" class="h-[26px] !rounded-sm inline-flex items-center">
 			<IconRowInsertBottom size={16} class="mr-2" />
 			Create New Record</Button
 		>
