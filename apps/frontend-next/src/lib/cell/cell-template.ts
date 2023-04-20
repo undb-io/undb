@@ -121,7 +121,7 @@ const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile)
 						'div',
 						{
 							class:
-								'relative inline-flex items-center justify-center w-5 h-5 overflow-hidden bg-blue-100 rounded-full dark:bg-blue-600',
+								'relative inline-flex items-center text-blue-900 justify-center w-5 h-5 overflow-hidden bg-indigo-100 rounded-full dark:bg-indigo-600 border border-gray-300',
 						},
 						h('span', { class: 'font-medium text-gray-600 dark:text-gray-300' }, collaborator.username.slice(0, 2)),
 				  )
@@ -249,7 +249,8 @@ const referenceComponent = (h: HyperFunc, value: (string | null)[]) => {
 	return h(
 		'span',
 		{
-			class: 'bg-blue-50 text-blue-900 text-xs font-sm mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300',
+			class:
+				'bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300',
 		},
 		value.filter(Boolean).toString(),
 	)

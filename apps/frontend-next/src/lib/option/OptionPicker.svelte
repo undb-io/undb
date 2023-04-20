@@ -23,7 +23,7 @@
 		<span>Select Option</span>
 	{/if}
 </Button>
-<Dropdown bind:open>
+<Dropdown bind:open placement="bottom-start">
 	{#each options as option}
 		<DropdownItem>
 			<Radio

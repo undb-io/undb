@@ -13,6 +13,7 @@
 	import Email from './Email.svelte'
 	import Attachment from './Attachment.svelte'
 	import OptionPicker from '$lib/option/OptionPicker.svelte'
+	import Collaborator from './Collaborator.svelte'
 
 	export let field: Field
 	export let value: any | undefined = undefined
@@ -39,7 +40,7 @@
 		sum: Readonly,
 		average: Readonly,
 		attachment: Attachment,
-		collaborator: String,
+		collaborator: Collaborator,
 		'created-by': String,
 		'updated-by': String,
 	}
