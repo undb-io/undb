@@ -60,7 +60,7 @@ export class DateField extends AbstractDateField<IDateField> {
   }
 
   get valueSchema() {
-    const date = z.string().datetime()
+    const date = z.string()
     return this.required ? date : date.nullable()
   }
 }

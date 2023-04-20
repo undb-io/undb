@@ -7,9 +7,9 @@
 	$: members = data.members.users
 </script>
 
-<ul class="gap-4 flex flex-col">
+<ul class="gap-4 flex flex-col w-full">
 	{#each members as member}
-		<Card class="w-full max-w-none shadow-sm">
+		<Card class="w-full !max-w-none shadow-sm">
 			<div class="flex items-center">
 				<div class="flex min-w-0 flex-1 items-center">
 					<div class="flex-shrink-0">

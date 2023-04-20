@@ -13,5 +13,5 @@
 			<span class="text-red-500">*</span>
 		{/if}
 	</div>
-	<slot fieldName={field.id.value} placeholder={field.description?.value ?? ''} />
+	<slot {field} fieldName={field.id.value} placeholder={field.description?.value ?? ''} />
 </Label>

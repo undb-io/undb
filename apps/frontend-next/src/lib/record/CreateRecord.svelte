@@ -5,7 +5,7 @@
 	import { getTable, getView } from '$lib/context'
 	import { createRecordOpen } from '$lib/store'
 	import { trpc } from '$lib/trpc/client'
-	import { createFieldSchema, createMutateRecordValuesSchema } from '@undb/core'
+	import { createMutateRecordValuesSchema } from '@undb/core'
 	import { Button, Hr, Modal, Spinner } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
@@ -34,8 +34,8 @@
 	})
 </script>
 
-<Modal title="Create New Record" class="w-full" size="md" bind:open={$createRecordOpen}>
-	<form method="POST" use:enhance>
+<form class="space-y-5" method="POST" use:enhance>
+	<Modal title="Create New Record" class="w-full" size="xl" bind:open={$createRecordOpen}>
 		<div class="grid grid-cols-2 gap-x-3 gap-y-4">
 			{#each fields as field}
 				<div>
@@ -44,15 +44,17 @@
 			{/each}
 		</div>
 
-		<Hr class="my-5" />
+		<SuperDebug data={$form} />
 
-		<Button class="w-full rounded-sm gap-4" type="submit">
-			{#if $delayed}
-				<Spinner size="5" />
-			{/if}
-			Create New Record</Button
-		>
-	</form>
-
-	<SuperDebug data={$form} />
-</Modal>
+		<svelte:fragment slot="footer">
+			<div class="w-full flex justify-end">
+				<Button class="!rounded-sm gap-4" type="submit">
+					{#if $delayed}
+						<Spinner size="5" />
+					{/if}
+					Create New Record</Button
+				>
+			</div>
+		</svelte:fragment>
+	</Modal>
+</form>

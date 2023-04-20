@@ -6,6 +6,7 @@
 	import Select from './Select.svelte'
 	import Id from './Id.svelte'
 	import Rating from './Rating.svelte'
+	import Attachment from './Attachment.svelte'
 
 	export let field: Field
 	export let value: RecordAllValueType | Option
@@ -31,7 +32,7 @@
 		lookup: String,
 		sum: String,
 		average: String,
-		attachment: String,
+		attachment: Attachment,
 		collaborator: String,
 		'created-by': String,
 		'updated-by': String,

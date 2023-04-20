@@ -8,11 +8,11 @@
 	import { superForm } from 'sveltekit-superforms/client'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidateAll } from '$app/navigation'
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
 	const table = getTable()
 
 	$: createField = $page.data.createField
-	$: console.log(createField)
 
 	const { form, enhance } = superForm(createField, {
 		id: 'createField',
@@ -27,7 +27,7 @@
 	})
 </script>
 
-<Modal title="Create New Field" placement="top-center" class="w-full" size="md" bind:open={$createFieldOpen}>
+<Modal title="Create New Field" placement="top-center" class="w-full rounded-sm" size="md" bind:open={$createFieldOpen}>
 	<form method="POST" use:enhance>
 		<div class="grid grid-cols-2 gap-x-3 gap-y-4">
 			<Label class="flex flex-col gap-2">
@@ -52,6 +52,8 @@
 
 		<Hr class="my-5" />
 
-		<Button class="w-full rounded-sm gap-4" type="submit">Create New Field</Button>
+		<Button class="w-full !rounded-sm gap-4" type="submit">Create New Field</Button>
 	</form>
+
+	<SuperDebug data={$form} />
 </Modal>

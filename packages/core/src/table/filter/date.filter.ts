@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { baseFilter } from './filter.base.js'
 import { dateFilterOperators } from './operators.js'
 
-export const dateFilterValue = z.string().datetime().nullable()
+export const dateFilterValue = z.string().nullable()
 export const dateFilter = z
   .object({
     type: z.literal('date'),

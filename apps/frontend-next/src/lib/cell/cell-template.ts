@@ -1,37 +1,40 @@
 import type { RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
 import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime'
-import type {
-	AutoIncrementFieldValue,
-	AverageFieldValue,
-	BoolFieldValue,
-	CollaboratorField,
-	CollaboratorFieldValue,
-	ColorFieldValue,
-	CountFieldValue,
-	CreatedAtField,
-	DateField,
-	DateFieldValue,
-	DateRangeField,
-	DateRangeFieldValue,
-	EmailFieldValue,
-	ICollaboratorProfile,
-	IFieldType,
-	IOptionSchema,
-	LookupField,
-	NumberFieldValue,
-	ParentField,
-	ParentFieldValue,
-	RatingField,
-	RatingFieldValue,
-	ReferenceField,
-	ReferenceFieldValue,
-	SelectField,
-	SelectFieldValue,
-	StringFieldValue,
-	SumFieldValue,
-	TreeField,
-	TreeFieldValue,
-	UpdatedAtField,
+import {
+	isImage,
+	type AttachmentFieldValue,
+	type AutoIncrementFieldValue,
+	type AverageFieldValue,
+	type BoolFieldValue,
+	type CollaboratorField,
+	type CollaboratorFieldValue,
+	type ColorFieldValue,
+	type CountFieldValue,
+	type CreatedAtField,
+	type DateField,
+	type DateFieldValue,
+	type DateRangeField,
+	type DateRangeFieldValue,
+	type EmailFieldValue,
+	type IAttachmentItem,
+	type ICollaboratorProfile,
+	type IFieldType,
+	type IOptionSchema,
+	type LookupField,
+	type NumberFieldValue,
+	type ParentField,
+	type ParentFieldValue,
+	type RatingField,
+	type RatingFieldValue,
+	type ReferenceField,
+	type ReferenceFieldValue,
+	type SelectField,
+	type SelectFieldValue,
+	type StringFieldValue,
+	type SumFieldValue,
+	type TreeField,
+	type TreeFieldValue,
+	type UpdatedAtField,
 } from '@undb/core'
 import cx from 'classnames'
 import { format } from 'date-fns'
@@ -63,7 +66,8 @@ const id: TemplateFunc = (h, props) => {
 	)
 }
 
-const dateComponent = (h: HyperFunc, dateString: string, formatString: string) => {
+const dateComponent = (h: HyperFunc, dateString: string | null, formatString: string) => {
+	if (!dateString) return null
 	const date = new Date(dateString)
 
 	return h('span', {}, format(date, formatString))
@@ -75,9 +79,13 @@ const dateRange: TemplateFunc = (h, props) => {
 
 	const field = props.column.field as DateRangeField
 
+	const from = value.from.into(null)?.toISOString()
+	const to = value.to.into(null)?.toISOString()
+
 	return h('div', { class: 'flex items-center' }, [
-		dateComponent(h, value.from.unwrap().toISOString(), field.formatString),
-		dateComponent(h, value.to.unwrap().toISOString(), field.formatString),
+		dateComponent(h, value.from.into(null)?.toISOString() ?? null, field.formatString),
+		from && to ? h('span', { class: 'mx-1' }, '-') : null,
+		dateComponent(h, value.to.into(null)?.toISOString() ?? null, field.formatString),
 	])
 }
 
@@ -297,8 +305,31 @@ const lookup: TemplateFunc = (h, props) => {
 	)
 }
 
+const attachmentItem = (h: HyperFunc, attachment: IAttachmentItem) => {
+	const img = isImage(attachment)
+	if (img) {
+		return h('img', { src: `/public/${attachment.token}_${attachment.name}`, alt: attachment.name })
+	}
+
+	// TODO: render file icon
+	return h('span', {}, attachment.name)
+}
+
+const attachment: TemplateFunc = (h, props) => {
+	const value = props.model[props.prop] as AttachmentFieldValue | undefined
+	if (!value) return null
+
+	const attachments = value.unpack()
+
+	return h(
+		'div',
+		{ class: 'inline-flex h-full gap-2 p-1' },
+		attachments.map((attachment) => attachmentItem(h, attachment)),
+	)
+}
+
 export const cellTemplateMap: Record<IFieldType, TemplateFunc> = {
-	attachment: (h, props) => h('div', {}, props.model[props.prop] || ''),
+	attachment,
 	'auto-increment': autoIncreament,
 	id,
 	date,
