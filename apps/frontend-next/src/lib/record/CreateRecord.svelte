@@ -6,7 +6,7 @@
 	import { createRecordOpen } from '$lib/store'
 	import { trpc } from '$lib/trpc/client'
 	import { createMutateRecordValuesSchema } from '@undb/core'
-	import { Button, Hr, Modal, Spinner } from 'flowbite-svelte'
+	import { Button, Hr, Label, Modal, Spinner } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
@@ -36,10 +36,16 @@
 
 <form class="space-y-5" method="POST" use:enhance>
 	<Modal title="Create New Record" class="w-full" size="xl" bind:open={$createRecordOpen}>
-		<div class="grid grid-cols-2 gap-x-3 gap-y-4">
+		<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 			{#each fields as field}
-				<div>
-					<CellInput {field} bind:value={$form[field.id.value]} {...$constraints[field.id.value]} />
+				<Label class="h-full inline-flex items-center gap-1" for={field.id.value}>
+					{field.name.value}
+					{#if field.required}
+						<span class="text-red-500">*</span>
+					{/if}
+				</Label>
+				<div class="col-span-4">
+					<CellInput id={field.id.value} {field} bind:value={$form[field.id.value]} {...$constraints[field.id.value]} />
 				</div>
 			{/each}
 		</div>
@@ -48,7 +54,7 @@
 
 		<svelte:fragment slot="footer">
 			<div class="w-full flex justify-end">
-				<Button class="!rounded-sm gap-4" type="submit">
+				<Button class="gap-4" type="submit">
 					{#if $delayed}
 						<Spinner size="5" />
 					{/if}

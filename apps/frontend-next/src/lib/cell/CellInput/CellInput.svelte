@@ -3,7 +3,6 @@
 	import type { ComponentType } from 'svelte'
 	import String from './String.svelte'
 	import Number from './Number.svelte'
-	import Base from './Base.svelte'
 	import Checkbox from './Checkbox.svelte'
 	import Readonly from './Readonly.svelte'
 	import Rating from './Rating.svelte'
@@ -46,6 +45,11 @@
 	}
 </script>
 
-<Base {field} let:fieldName let:placeholder>
-	<svelte:component this={map[field.type]} name={fieldName} {placeholder} bind:value {field} {...$$restProps} />
-</Base>
+<svelte:component
+	this={map[field.type]}
+	name={field.name}
+	placeholder={field.description?.value}
+	bind:value
+	{field}
+	{...$$restProps}
+/>
