@@ -17,7 +17,7 @@
 	$: createRecord = $page.data.createRecord
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
-	const { form, enhance, constraints, delayed } = superForm(createRecord, {
+	const { form, enhance, constraints, delayed, reset } = superForm(createRecord, {
 		id: 'createRecord',
 		SPA: true,
 		validators,
@@ -32,10 +32,14 @@
 			createRecordOpen.set(false)
 		},
 	})
+
+	$: if (!$createRecordOpen) {
+		reset()
+	}
 </script>
 
 <form class="space-y-5" method="POST" use:enhance>
-	<Modal title="Create New Record" class="w-full" size="xl" bind:open={$createRecordOpen}>
+	<Modal title="Create New Record" class="w-full" size="lg" bind:open={$createRecordOpen}>
 		<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 			{#each fields as field}
 				<Label class="h-full inline-flex items-center gap-1" for={field.id.value}>
@@ -53,7 +57,8 @@
 		<SuperDebug data={$form} />
 
 		<svelte:fragment slot="footer">
-			<div class="w-full flex justify-end">
+			<div class="w-full flex justify-end gap-2">
+				<Button color="alternative" on:click={() => createRecordOpen.set(false)}>Discard</Button>
 				<Button class="gap-4" type="submit">
 					{#if $delayed}
 						<Spinner size="5" />
