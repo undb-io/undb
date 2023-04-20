@@ -17,7 +17,7 @@
 	$: createRecord = $page.data.createRecord
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
-	const { form, enhance, constraints, delayed, reset } = superForm(createRecord, {
+	const { form, enhance, constraints, delayed, reset, submitting } = superForm(createRecord, {
 		id: 'createRecord',
 		SPA: true,
 		validators,
@@ -58,7 +58,7 @@
 		<svelte:fragment slot="footer">
 			<div class="w-full flex justify-end gap-2">
 				<Button color="alternative" on:click={() => createRecordOpen.set(false)}>Discard</Button>
-				<Button class="gap-4" type="submit">
+				<Button class="gap-4" type="submit" disabled={$submitting}>
 					{#if $delayed}
 						<Spinner size="5" />
 					{/if}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getTable } from '$lib/context'
 	import { createFieldOpen } from '$lib/store'
-	import { Button, Hr, Input, Label, Modal, Select } from 'flowbite-svelte'
+	import { Button, Input, Label, Modal, Select, Spinner } from 'flowbite-svelte'
 	import FieldIcon from './FieldIcon.svelte'
 	import { FIELD_SELECT_ITEMS } from './types'
 	import { page } from '$app/stores'
@@ -27,7 +27,7 @@
 		},
 	})
 
-	const { form, enhance } = superFrm
+	const { form, enhance, delayed, submitting } = superFrm
 </script>
 
 <form method="POST" use:enhance>
@@ -66,7 +66,12 @@
 		<svelte:fragment slot="footer">
 			<div class="w-full flex justify-end gap-2">
 				<Button color="alternative" on:click={() => createFieldOpen.set(false)}>Discard</Button>
-				<Button class="gap-4" type="submit">Create New Field</Button>
+				<Button class="gap-4" type="submit" disabled={$submitting}>
+					{#if $delayed}
+						<Spinner size="5" />
+					{/if}
+					Create New Field</Button
+				>
 			</div>
 		</svelte:fragment>
 	</Modal>
