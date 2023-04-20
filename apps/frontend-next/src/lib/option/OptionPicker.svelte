@@ -25,17 +25,15 @@
 </Button>
 <Dropdown bind:open placement="bottom-start">
 	{#each options as option}
-		<DropdownItem>
-			<Radio
-				class="cursor-pointer"
-				bind:group
-				value={option.key.value}
-				{...$$restProps}
-				custom
-				on:change={() => (open = false)}
-			>
-				<Option {option} />
-			</Radio>
-		</DropdownItem>
+		<Radio
+			class="cursor-pointer px-3 py-2 hover:bg-gray-100 transition"
+			bind:group
+			value={option.key.value}
+			{...$$restProps}
+			custom
+			on:change={() => (open = false)}
+		>
+			<Option {option} />
+		</Radio>
 	{/each}
 </Dropdown>

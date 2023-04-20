@@ -51,7 +51,7 @@
 					readonly: true,
 					columnProperties: () => {
 						return {
-							class: '!p-0 text-center border-r border-b border-gray-200',
+							class: '!p-0 text-center border-r border-b border-gray-200 !bg-white',
 						}
 					},
 					columnTemplate: (h) => {
@@ -66,7 +66,7 @@
 						})
 					},
 					cellProperties: () => ({
-						class: '!p-0 text-center border-r border-b border-gray-200',
+						class: '!p-0 text-center border-r border-b border-gray-200 !bg-white',
 					}),
 					cellTemplate: (h, props) => {
 						return h('input', {
@@ -150,13 +150,9 @@
 	}
 </script>
 
-{#if hasRecord}
-	<RevoGrid source={rows} resize="true" {columns} theme="compact" on:aftercolumnresize={onAfterColumnResize} range />
-{:else}
-	<div class="h-[50px]">
-		<RevoGrid source={rows} resize="true" {columns} theme="compact" on:aftercolumnresize={onAfterColumnResize} range />
-	</div>
-{/if}
+<div class:h-[50px]={!hasRecord} class:h-full={hasRecord}>
+	<RevoGrid source={rows} resize="true" {columns} theme="compact" range on:aftercolumnresize={onAfterColumnResize} />
+</div>
 {#if !hasRecord}
 	<EmptyTable />
 {/if}

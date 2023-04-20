@@ -8,13 +8,14 @@
 	import { superForm } from 'sveltekit-superforms/client'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidateAll } from '$app/navigation'
+	import CreateFieldComponent from './CreateFieldComponent/CreateFieldComponent.svelte'
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
 	const table = getTable()
 
 	$: createField = $page.data.createField
 
-	const { form, enhance } = superForm(createField, {
+	const superFrm = superForm(createField, {
 		id: 'createField',
 		SPA: true,
 		dataType: 'json',
@@ -25,10 +26,18 @@
 			createFieldOpen.set(false)
 		},
 	})
+
+	const { form, enhance } = superFrm
 </script>
 
-<Modal title="Create New Field" placement="top-center" class="w-full rounded-sm" size="md" bind:open={$createFieldOpen}>
-	<form method="POST" use:enhance>
+<form method="POST" use:enhance>
+	<Modal
+		title="Create New Field"
+		placement="top-center"
+		class="w-full rounded-sm"
+		size="md"
+		bind:open={$createFieldOpen}
+	>
 		<div class="grid grid-cols-2 gap-x-3 gap-y-4">
 			<Label class="flex flex-col gap-2">
 				<div class="flex gap-2 items-center">
@@ -50,10 +59,15 @@
 			</Label>
 		</div>
 
-		<Hr class="my-5" />
+		<CreateFieldComponent type={$form.type} form={superFrm} />
 
-		<Button class="w-full !rounded-sm gap-4" type="submit">Create New Field</Button>
-	</form>
+		<SuperDebug data={$form} />
 
-	<SuperDebug data={$form} />
-</Modal>
+		<svelte:fragment slot="footer">
+			<div class="w-full flex justify-end gap-2">
+				<Button color="alternative" on:click={() => createFieldOpen.set(false)}>Discard</Button>
+				<Button class="gap-4" type="submit">Create New Field</Button>
+			</div>
+		</svelte:fragment>
+	</Modal>
+</form>

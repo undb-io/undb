@@ -39,7 +39,7 @@
 </script>
 
 <form class="space-y-5" method="POST" use:enhance>
-	<Modal title="Create New Record" class="w-full" size="lg" bind:open={$createRecordOpen}>
+	<Modal title="Create New Record" class="w-full h-[70%]" size="lg" bind:open={$createRecordOpen}>
 		<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 			{#each fields as field}
 				<Label class="h-full inline-flex items-center gap-1" for={field.id.value}>
@@ -53,8 +53,6 @@
 				</div>
 			{/each}
 		</div>
-
-		<SuperDebug data={$form} />
 
 		<svelte:fragment slot="footer">
 			<div class="w-full flex justify-end gap-2">
