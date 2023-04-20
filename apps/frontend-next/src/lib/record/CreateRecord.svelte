@@ -36,6 +36,7 @@
 	$: if (!$createRecordOpen) {
 		reset()
 	}
+	$: $table, reset()
 </script>
 
 <form class="space-y-5" method="POST" use:enhance>
