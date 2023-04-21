@@ -5,6 +5,7 @@
 	const table = getTable()
 
 	export let value: string
+	export let required = false
 
 	const items =
 		$table.schema.fields
@@ -14,7 +15,12 @@
 
 <div>
 	<Label class="space-y-2">
-		<span>referenecFieldId</span>
+		<span class="space-x-1">
+			<span>referenecFieldId</span>
+			{#if required}
+				<span class="text-red-500">*</span>
+			{/if}
+		</span>
 		<Select bind:value {items} />
 	</Label>
 </div>

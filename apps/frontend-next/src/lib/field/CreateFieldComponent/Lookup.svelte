@@ -8,7 +8,6 @@
 	import type { IQueryTable, ReferenceField, TreeField } from '@undb/core'
 	import { page } from '$app/stores'
 	import { Label } from 'flowbite-svelte'
-	$: console.log($page)
 
 	const table = getTable()
 

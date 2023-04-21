@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Count from './Count.svelte'
+
 	import Lookup from './Lookup.svelte'
 
 	import type { SuperForm } from 'sveltekit-superforms/client'
@@ -23,6 +25,7 @@
 		date: Date,
 		'date-range': DateRange,
 		lookup: Lookup,
+		count: Count,
 	}
 </script>
 
