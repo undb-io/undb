@@ -2,7 +2,7 @@
 	import { Input, Label } from 'flowbite-svelte'
 	import { fieldProxy, formFieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
-	import FieldsPicker from '../Inputs/FieldsPicker.svelte'
+	import FieldsPicker from '../CreateFieldInputs/FieldsPicker.svelte'
 	import { getTable } from '$lib/context'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>

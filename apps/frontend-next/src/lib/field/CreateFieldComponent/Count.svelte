@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms/index'
-	import ReferenceFieldPicker from '../Inputs/ReferenceFieldPicker.svelte'
+	import ReferenceFieldPicker from '../CreateFieldInputs/ReferenceFieldPicker.svelte'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 

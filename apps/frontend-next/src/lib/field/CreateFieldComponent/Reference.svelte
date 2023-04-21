@@ -4,8 +4,8 @@
 	import { formFieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
 	import { TableFactory, type IQueryTable } from '@undb/core'
-	import FieldsPicker from '../Inputs/FieldsPicker.svelte'
-	import TablePicker from '../Inputs/TablePicker.svelte'
+	import FieldsPicker from '../CreateFieldInputs/FieldsPicker.svelte'
+	import TablePicker from '../CreateFieldInputs/TablePicker.svelte'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 

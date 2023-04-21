@@ -7,31 +7,31 @@
 	import { page } from '$app/stores'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { trpc } from '$lib/trpc/client'
-	import { invalidateAll } from '$app/navigation'
+	import { invalidate } from '$app/navigation'
 	import CreateFieldComponent from './CreateFieldComponent/CreateFieldComponent.svelte'
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 	import { IconEyeClosed, IconPlus } from '@tabler/icons-svelte'
 	import { canDisplay } from '@undb/core'
+	import type { Validation } from 'sveltekit-superforms/index'
 
 	const table = getTable()
 
-	$: createField = $page.data.createField
+	export let data: Validation<any>
 
-	const superFrm = superForm(createField, {
+	const superFrm = superForm(data, {
 		id: 'createField',
 		SPA: true,
 		dataType: 'json',
 		clearOnSubmit: 'errors-and-message',
+		invalidateAll: false,
 		resetForm: true,
 		async onUpdate(event) {
 			await trpc($page).table.field.create.mutate({ tableId: $table.id.value, field: event.form.data as any })
-			await invalidateAll()
-			reset()
+			await invalidate(`table:${$table.id.value}`)
 			createFieldOpen.set(false)
 		},
 	})
 
-	const { form, enhance, delayed, reset, submitting } = superFrm
+	const { form, enhance, delayed, submitting } = superFrm
 
 	$: showDescription = false
 	$: if (!showDescription) {
@@ -47,14 +47,8 @@
 		.filter(Boolean)
 </script>
 
-<form method="POST" use:enhance>
-	<Modal
-		title="Create New Field"
-		placement="top-center"
-		class="w-full rounded-sm"
-		size="lg"
-		bind:open={$createFieldOpen}
-	>
+<Modal title="Create New Field" placement="top-center" class="w-full rounded-sm" size="lg" bind:open={$createFieldOpen}>
+	<form method="POST" id="createField" use:enhance>
 		<div class="grid grid-cols-2 gap-x-3 gap-y-4">
 			<Label class="flex flex-col gap-2">
 				<div class="flex gap-2 items-center">
@@ -94,48 +88,46 @@
 		{/if}
 
 		<CreateFieldComponent type={$form.type} form={superFrm} />
+	</form>
 
-		<SuperDebug data={$form} />
-
-		<svelte:fragment slot="footer">
-			<div class="w-full flex items-center justify-between">
-				<div class="flex-1">
-					<Button size="xs" color="alternative" class="space-x-1" on:click={() => (showDescription = !showDescription)}>
-						{#if showDescription}
-							<IconEyeClosed size={16} />
-						{:else}
-							<IconPlus size={16} />
+	<svelte:fragment slot="footer">
+		<div class="w-full flex items-center justify-between">
+			<div class="flex-1">
+				<Button size="xs" color="alternative" class="space-x-1" on:click={() => (showDescription = !showDescription)}>
+					{#if showDescription}
+						<IconEyeClosed size={16} />
+					{:else}
+						<IconPlus size={16} />
+					{/if}
+					<span>{showDescription ? 'hide' : 'show'} description </span>
+				</Button>
+			</div>
+			<div class="flex justify-end items-center gap-4">
+				<div class="flex gap-2 items-center">
+					<Toggle bind:checked={$form.required}>required</Toggle>
+					{#if canDisplay($form.type)}
+						<Toggle bind:checked={$form.display}>display</Toggle>
+						{#if displayFields.length}
+							<Popover class="w-64 text-sm font-light " title="display fields">
+								<div class="flex gap-2">
+									{#each displayFields as field}
+										<Badge>{field}</Badge>
+									{/each}
+								</div>
+							</Popover>
 						{/if}
-						<span>{showDescription ? 'hide' : 'show'} description </span>
-					</Button>
+					{/if}
 				</div>
-				<div class="flex justify-end items-center gap-4">
-					<div class="flex gap-2 items-center">
-						<Toggle bind:checked={$form.required}>required</Toggle>
-						{#if canDisplay($form.type)}
-							<Toggle bind:checked={$form.display}>display</Toggle>
-							{#if displayFields.length}
-								<Popover class="w-64 text-sm font-light " title="display fields">
-									<div class="flex gap-2">
-										{#each displayFields as field}
-											<Badge>{field}</Badge>
-										{/each}
-									</div>
-								</Popover>
-							{/if}
+				<div class="space-x-2">
+					<Button color="alternative" on:click={() => createFieldOpen.set(false)}>Discard</Button>
+					<Button class="gap-4" type="submit" form="createField" disabled={$submitting}>
+						{#if $delayed}
+							<Spinner size="5" />
 						{/if}
-					</div>
-					<div class="space-x-2">
-						<Button color="alternative" on:click={() => createFieldOpen.set(false)}>Discard</Button>
-						<Button class="gap-4" type="submit" disabled={$submitting}>
-							{#if $delayed}
-								<Spinner size="5" />
-							{/if}
-							Create New Field</Button
-						>
-					</div>
+						Create New Field</Button
+					>
 				</div>
 			</div>
-		</svelte:fragment>
-	</Modal>
-</form>
+		</div>
+	</svelte:fragment>
+</Modal>

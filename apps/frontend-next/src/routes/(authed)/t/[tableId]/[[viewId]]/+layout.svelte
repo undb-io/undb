@@ -5,8 +5,6 @@
 	import { TableFactory } from '@undb/core'
 	import { writable } from 'svelte/store'
 	import type { LayoutServerData } from './$types'
-	import CreateRecord from '$lib/record/CreateRecord.svelte'
-	import CreateField from '$lib/field/CreateField.svelte'
 
 	export let data: LayoutServerData
 
@@ -25,5 +23,3 @@
 </div>
 
 <CreateOption />
-<CreateRecord />
-<CreateField />

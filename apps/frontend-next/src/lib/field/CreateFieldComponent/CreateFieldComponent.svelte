@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Select from './Select.svelte'
+
 	import Tree from './Tree.svelte'
 
 	import Average from './Average.svelte'
@@ -35,6 +37,7 @@
 		sum: Sum,
 		average: Average,
 		tree: Tree,
+		select: Select,
 	}
 </script>
 

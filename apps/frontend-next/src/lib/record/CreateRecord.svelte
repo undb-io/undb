@@ -8,39 +8,37 @@
 	import { createMutateRecordValuesSchema } from '@undb/core'
 	import { Button, Hr, Label, Modal, Spinner } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
+	import type { Validation } from 'sveltekit-superforms'
 
 	const table = getTable()
 	const view = getView()
 
+	export let data: Validation<any>
 	$: validators = createMutateRecordValuesSchema(fields ?? [])
-	$: createRecord = $page.data.createRecord
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
-	const { form, enhance, constraints, delayed, reset, submitting } = superForm(createRecord, {
+	const { form, enhance, constraints, delayed, reset, submitting } = superForm(data, {
 		id: 'createRecord',
 		SPA: true,
 		validators,
 		dataType: 'json',
+		invalidateAll: false,
+		resetForm: true,
 		delayMs: 100,
 		clearOnSubmit: 'errors-and-message',
 		async onUpdate(event) {
 			await trpc($page).record.create.mutate({ tableId: $table.id.value, values: event.form.data })
-			invalidate(`records:${$table.id.value}`)
-		},
-		onResult() {
+			await invalidate(`records:${$table.id.value}`)
+			reset()
 			createRecordOpen.set(false)
 		},
 	})
 
-	$: if (!$createRecordOpen) {
-		reset()
-	}
 	$: $table, reset()
 </script>
 
-<form class="space-y-5" method="POST" use:enhance>
-	<Modal title="Create New Record" class="w-full h-[70%]" size="lg" bind:open={$createRecordOpen}>
+<Modal title="Create New Record" class="w-full h-[70%]" size="lg" bind:open={$createRecordOpen}>
+	<form id="createRecord" class="space-y-5" method="POST" use:enhance>
 		<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 			{#each fields as field}
 				<Label class="h-full inline-flex items-center gap-1" for={field.id.value}>
@@ -54,17 +52,17 @@
 				</div>
 			{/each}
 		</div>
+	</form>
 
-		<svelte:fragment slot="footer">
-			<div class="w-full flex justify-end gap-2">
-				<Button color="alternative" on:click={() => createRecordOpen.set(false)}>Discard</Button>
-				<Button class="gap-4" type="submit" disabled={$submitting}>
-					{#if $delayed}
-						<Spinner size="5" />
-					{/if}
-					Create New Record</Button
-				>
-			</div>
-		</svelte:fragment>
-	</Modal>
-</form>
+	<svelte:fragment slot="footer">
+		<div class="w-full flex justify-end gap-2">
+			<Button color="alternative" on:click={() => createRecordOpen.set(false)}>Discard</Button>
+			<Button class="gap-4" type="submit" form="createRecord" disabled={$submitting}>
+				{#if $delayed}
+					<Spinner size="5" />
+				{/if}
+				Create New Record</Button
+			>
+		</div>
+	</svelte:fragment>
+</Modal>

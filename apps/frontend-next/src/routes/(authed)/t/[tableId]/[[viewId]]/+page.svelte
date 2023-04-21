@@ -5,6 +5,8 @@
 	import { writable } from 'svelte/store'
 	import type { PageData } from './$types'
 	import TableToolBar from '$lib/table/TableToolBar.svelte'
+	import CreateRecord from '$lib/record/CreateRecord.svelte'
+	import CreateField from '$lib/field/CreateField.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -16,3 +18,6 @@
 
 <TableToolBar />
 <TableIndex />
+
+<CreateRecord data={data.createRecord} />
+<CreateField data={data.createField} />

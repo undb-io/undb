@@ -13,15 +13,15 @@ export const load: PageServerLoad = async () => {
 }
 
 export const actions: Actions = {
-	createTable: async ({ request, fetch, url }) => {
-		const form = await superValidate(request, createTableInput)
+	createTable: async (event) => {
+		const form = await superValidate(event.request, createTableInput)
 
 		if (!form.valid) {
 			// Again, always return { form } and things will just work.
 			return fail(400, { form })
 		}
 
-		const { id } = await trpc({ fetch, url }).table.create.mutate(form.data)
+		const { id } = await trpc(event).table.create.mutate(form.data)
 
 		if (id) {
 			throw redirect(303, `/t/${id}`)
