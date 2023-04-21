@@ -4,7 +4,7 @@
 	import { formFieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
 	import type { IQueryTable } from '@undb/core'
-	import DisplayFields from '../Inputs/DisplayFieldsPicker.svelte'
+	import FieldsPicker from '../Inputs/FieldsPicker.svelte'
 	import TablePicker from '../Inputs/TablePicker.svelte'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
@@ -27,7 +27,7 @@
 		</Label>
 		{#if table}
 			<div>
-				<DisplayFields {table} bind:group={$displayFieldIds} disabled={!table} />
+				<FieldsPicker {table} bind:group={$displayFieldIds} disabled={!table} />
 			</div>
 		{/if}
 	</div>

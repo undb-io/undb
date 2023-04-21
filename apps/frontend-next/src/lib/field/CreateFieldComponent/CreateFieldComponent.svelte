@@ -1,4 +1,8 @@
 <script lang="ts">
+	import Average from './Average.svelte'
+
+	import Sum from './Sum.svelte'
+
 	import Count from './Count.svelte'
 
 	import Lookup from './Lookup.svelte'
@@ -26,6 +30,8 @@
 		'date-range': DateRange,
 		lookup: Lookup,
 		count: Count,
+		sum: Sum,
+		average: Average,
 	}
 </script>
 
