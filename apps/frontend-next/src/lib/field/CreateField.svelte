@@ -10,7 +10,8 @@
 	import { invalidateAll } from '$app/navigation'
 	import CreateFieldComponent from './CreateFieldComponent/CreateFieldComponent.svelte'
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
-	import { IconPlus } from '@tabler/icons-svelte'
+	import { IconEyeClosed, IconPlus } from '@tabler/icons-svelte'
+	import { canDisplay } from '@undb/core'
 
 	const table = getTable()
 
@@ -24,10 +25,8 @@
 		async onUpdate(event) {
 			await trpc($page).table.field.create.mutate({ tableId: $table.id.value, field: event.form.data as any })
 			await invalidateAll()
-			createFieldOpen.set(false)
-		},
-		onResult(event) {
 			reset()
+			createFieldOpen.set(false)
 		},
 	})
 
@@ -36,6 +35,9 @@
 	$: showDescription = false
 	$: if (!showDescription) {
 		$form.description = ''
+	}
+	$: if (!canDisplay($form.type)) {
+		$form.display = false
 	}
 
 	$: displayFields = $table.schema.displayFields
@@ -91,22 +93,28 @@
 			<div class="w-full flex items-center justify-between">
 				<div class="flex-1">
 					<Button size="xs" color="alternative" class="space-x-1" on:click={() => (showDescription = !showDescription)}>
-						<IconPlus size={16} />
+						{#if showDescription}
+							<IconEyeClosed size={16} />
+						{:else}
+							<IconPlus size={16} />
+						{/if}
 						<span>{showDescription ? 'hide' : 'show'} description </span>
 					</Button>
 				</div>
 				<div class="flex justify-end items-center gap-4">
 					<div class="flex gap-2 items-center">
 						<Toggle bind:checked={$form.required}>required</Toggle>
-						<Toggle bind:checked={$form.display}>display</Toggle>
-						{#if displayFields.length}
-							<Popover class="w-64 text-sm font-light " title="display fields">
-								<div class="flex gap-2">
-									{#each displayFields as field}
-										<Badge>{field}</Badge>
-									{/each}
-								</div>
-							</Popover>
+						{#if canDisplay($form.type)}
+							<Toggle bind:checked={$form.display}>display</Toggle>
+							{#if displayFields.length}
+								<Popover class="w-64 text-sm font-light " title="display fields">
+									<div class="flex gap-2">
+										{#each displayFields as field}
+											<Badge>{field}</Badge>
+										{/each}
+									</div>
+								</Popover>
+							{/if}
 						{/if}
 					</div>
 					<div class="space-x-2">

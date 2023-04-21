@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Lookup from './Lookup.svelte'
+
 	import type { SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms/index'
 	import type { AnyZodObject } from 'zod'
@@ -20,6 +22,7 @@
 		rating: Rating,
 		date: Date,
 		'date-range': DateRange,
+		lookup: Lookup,
 	}
 </script>
 
