@@ -3,7 +3,7 @@
 	import { IconColumns3 } from '@tabler/icons-svelte'
 </script>
 
-<Button size="xs" color="alternative" class="h-[26px] !rounded-sm gap-2">
+<Button size="xs" color="alternative" class="h-full !rounded-md gap-2">
 	<IconColumns3 size={16} />
 	Manage Fields</Button
 >

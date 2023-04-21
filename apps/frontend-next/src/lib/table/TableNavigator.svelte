@@ -10,7 +10,7 @@
 </script>
 
 <div class="flex items-center gap-2">
-	<Button outline pill color="light" size="xs" class="h-[26px] gap-2 !px-1" on:click={back}>
+	<Button outline pill color="light" size="xs" class="h-[26px] w-[26px] rounded-full gap-2 !px-1" on:click={back}>
 		<IconChevronLeft size={16} />
 	</Button>
 

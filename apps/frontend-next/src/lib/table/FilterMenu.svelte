@@ -13,14 +13,14 @@
 	const table = getTable()
 
 	let field: Field | undefined
-	let open = true
+	let open = false
 </script>
 
-<Button id="filters" size="xs" color="alternative" class="h-[26px] !rounded-sm gap-2">
+<Button id="filters" size="xs" color="alternative" class="h-full !rounded-md gap-2">
 	<IconFilter size={16} />
 	Filters</Button
 >
-<Dropdown inline {open} triggeredBy="#filters" class="p-3 w-[500px]" frameClass="shadow-2xl">
+<Dropdown inline bind:open triggeredBy="#filters" class="p-3 w-[500px]" frameClass="shadow-2xl">
 	<span slot="header" class="px-4 text-xs font-medium text-gray-500">set filters in this view</span>
 	<ul class="space-y-2" use:autoAnimate={{ duration: 100 }}>
 		{#each $filters as filter, index}

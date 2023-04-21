@@ -10,11 +10,11 @@
 	import { createFieldOpen, createRecordOpen } from '$lib/store/modal'
 </script>
 
-<div class="h-[44px] flex items-center border-b px-5 rounded-none justify-between">
+<div class="flex w-full flex-row items-center justify-between gap-y-4 border-b bg-white px-5 py-4 ">
 	<div class="flex items-center justify-center content-center gap-4">
 		<TableNavigator />
 
-		<Button on:click={() => createRecordOpen.set(true)} size="xs" class="h-[26px] !rounded-sm inline-flex items-center">
+		<Button on:click={() => createRecordOpen.set(true)} size="xs" class="h-full !rounded-md inline-flex items-center">
 			<IconRowInsertBottom size={16} class="mr-2" />
 			Create New Record</Button
 		>
@@ -27,7 +27,7 @@
 		<Button
 			on:click={() => createFieldOpen.set(true)}
 			size="xs"
-			class="h-[26px] aspect-square !px-0 !rounded-sm inline-flex items-center"
+			class="h-full w-8 px-0 !rounded-md inline-flex items-center"
 		>
 			<IconColumnInsertRight size={14} /></Button
 		>

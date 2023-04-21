@@ -6,7 +6,7 @@
 	const view = getView()
 </script>
 
-<Button size="xs" color="alternative" class="h-[26px] !rounded-sm gap-2">
+<Button size="xs" color="alternative" class="h-full !rounded-md gap-2">
 	<ViewIcon type={$view.displayType} />
 	<Chevron>{$view.name.value}</Chevron></Button
 >
