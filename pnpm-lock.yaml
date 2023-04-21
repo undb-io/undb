@@ -541,6 +541,9 @@ importers:
       svelte-dnd-action:
         specifier: ^0.9.22
         version: 0.9.22(svelte@3.54.0)
+      svelte-portal:
+        specifier: ^2.2.0
+        version: 2.2.0
       svelte-preprocess:
         specifier: ^4.10.7
         version: 4.10.7(postcss-load-config@4.0.1)(postcss@8.4.21)(svelte@3.54.0)(typescript@5.0.3)
@@ -11988,6 +11991,10 @@ packages:
       svelte: '>=3.19.0'
     dependencies:
       svelte: 3.54.0
+
+  /svelte-portal@2.2.0:
+    resolution: {integrity: sha512-jhtZWtD6cUE2nMw46dJ5VXWYiqnER+JH+V/BmNBQ5fNP/YdsJCpJi+DemUy9msklqGb0f+wLhJPBtKHLWQvzjg==}
+    dev: true
 
   /svelte-preprocess@4.10.7(postcss-load-config@4.0.1)(postcss@8.4.21)(svelte@3.54.0)(typescript@5.0.3):
     resolution: {integrity: sha512-sNPBnqYD6FnmdBrUmBCaqS00RyCsCpj2BG58A1JBswNF7b0OKviwxqVrOL/CKyJrLSClrSeqQv5BXNg2RUbPOw==}

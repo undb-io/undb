@@ -2,6 +2,7 @@
 	import { Badge, Button, Checkbox, Dropdown, Popover } from 'flowbite-svelte'
 	import type { Field, Table } from '@undb/core'
 	import { identity } from 'lodash'
+	import Portal from 'svelte-portal'
 
 	export let group: string[] | undefined
 	export let table: Table
@@ -11,7 +12,7 @@
 	$: selected = fields.filter((f) => group?.includes(f.id.value))
 </script>
 
-<Button color="alternative" class="max-w-max" {...$$restProps}>
+<Button id="displayFieldIds" color="alternative" class="max-w-max" {...$$restProps}>
 	{@const first = fields.find((f) => f.id.value === group?.[0])}
 	{#if !group?.length}
 		{@const displayFields = table.schema.displayFields}
@@ -44,18 +45,25 @@
 		</Popover>
 	{/if}
 </Button>
-<Dropdown class="max-h-64 w-48 overflow-y-auto py-1 shadow-md">
-	{#if !fields.length}
-		<div class="px-3 py-2">
-			<slot name="empty" />
-		</div>
-	{/if}
+<Portal target="body">
+	<Dropdown
+		triggeredBy="#displayFieldIds"
+		inline
+		class="max-h-64 w-48 overflow-y-auto py-1 shadow-md"
+		frameClass="z-[100]"
+	>
+		{#if !fields.length}
+			<div class="px-3 py-2">
+				<slot name="empty" />
+			</div>
+		{/if}
 
-	{#each fields as field}
-		<li>
-			<Checkbox value={field.id.value} bind:group class="px-3 py-2 hover:bg-gray-100">
-				{field.name.value}
-			</Checkbox>
-		</li>
-	{/each}
-</Dropdown>
+		{#each fields as field}
+			<li>
+				<Checkbox value={field.id.value} bind:group class="px-3 py-2 hover:bg-gray-100">
+					{field.name.value}
+				</Checkbox>
+			</li>
+		{/each}
+	</Dropdown>
+</Portal>
