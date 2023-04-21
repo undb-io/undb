@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getTable } from '$lib/context'
 	import { createFieldOpen } from '$lib/store'
-	import { Button, Input, Label, Modal, Select, Spinner, Toggle, A, Popover, Badge } from 'flowbite-svelte'
+	import { Button, Input, Label, Modal, Select, Spinner, Toggle, A, Popover, Badge, Textarea } from 'flowbite-svelte'
 	import FieldIcon from './FieldIcon.svelte'
 	import { FIELD_SELECT_ITEMS } from './types'
 	import { page } from '$app/stores'
@@ -38,7 +38,10 @@
 		$form.description = ''
 	}
 
-	$: displayFields = $table.schema.displayFields.map((f) => f.name.value).concat($form.display ? $form.name : undefined)
+	$: displayFields = $table.schema.displayFields
+		.map((f) => f.name.value)
+		.concat($form.display ? $form.name : undefined)
+		.filter(Boolean)
 </script>
 
 <form method="POST" use:enhance>
@@ -76,7 +79,7 @@
 					<span>description</span>
 				</div>
 
-				<Input class="rounded-sm" name="description" required bind:value={$form.description} />
+				<Textarea class="rounded-sm" name="description" bind:value={$form.description} />
 			</Label>
 		{/if}
 
@@ -96,7 +99,7 @@
 					<div class="flex gap-2 items-center">
 						<Toggle bind:checked={$form.required}>required</Toggle>
 						<Toggle bind:checked={$form.display}>display</Toggle>
-						{#if $form.display}
+						{#if displayFields.length}
 							<Popover class="w-64 text-sm font-light " title="display fields">
 								<div class="flex gap-2">
 									{#each displayFields as field}
