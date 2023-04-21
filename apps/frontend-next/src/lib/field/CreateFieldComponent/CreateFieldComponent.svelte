@@ -1,13 +1,14 @@
 <script lang="ts">
-	import Rating from './Rating.svelte'
-
 	import type { SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms/index'
 	import type { AnyZodObject } from 'zod'
-
 	import type { IFieldType } from '@undb/core'
 	import type { ComponentType } from 'svelte'
+
 	import Reference from './Reference.svelte'
+	import Date from './Date.svelte'
+	import DateRange from './DateRange.svelte'
+	import Rating from './Rating.svelte'
 
 	export let type: IFieldType
 
@@ -17,6 +18,8 @@
 	const map: Partial<Record<IFieldType, ComponentType>> = {
 		reference: Reference,
 		rating: Rating,
+		date: Date,
+		'date-range': DateRange,
 	}
 </script>
 
