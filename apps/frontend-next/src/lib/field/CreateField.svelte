@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getTable } from '$lib/context'
-	import { createFieldOpen } from '$lib/store'
+	import { createFieldOpen } from '$lib/store/modal'
 	import { Button, Input, Label, Modal, Select, Spinner, Toggle, A, Popover, Badge, Textarea } from 'flowbite-svelte'
 	import FieldIcon from './FieldIcon.svelte'
 	import { FIELD_SELECT_ITEMS } from './types'

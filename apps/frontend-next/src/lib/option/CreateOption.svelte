@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createOptionOpen } from '$lib/store'
+	import { createOptionOpen } from '$lib/store/modal'
 	import { Button, Input, Modal } from 'flowbite-svelte'
 	import OptionColorPicker from './OptionColorPicker.svelte'
 	import type { IOptionColorName } from '@undb/core'

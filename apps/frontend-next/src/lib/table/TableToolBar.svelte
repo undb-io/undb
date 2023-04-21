@@ -7,7 +7,7 @@
 	import ManageFieldsMenu from './ManageFieldsMenu.svelte'
 	import TableNavigator from './TableNavigator.svelte'
 	import ToggleDisplayType from './ToggleDisplayType.svelte'
-	import { createFieldOpen, createRecordOpen } from '$lib/store'
+	import { createFieldOpen, createRecordOpen } from '$lib/store/modal'
 </script>
 
 <div class="h-[44px] flex items-center border-b px-5 rounded-none justify-between">

@@ -3,7 +3,7 @@
 	import { page } from '$app/stores'
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import { getTable, getView } from '$lib/context'
-	import { createRecordOpen } from '$lib/store'
+	import { createRecordOpen } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import { createMutateRecordValuesSchema } from '@undb/core'
 	import { Button, Hr, Label, Modal, Spinner } from 'flowbite-svelte'

@@ -6,7 +6,7 @@
 	import type { LayoutData } from './$types'
 	import CreateTable from '$lib/table/CreateTable.svelte'
 	import { Avatar, Button, Dropdown, DropdownItem } from 'flowbite-svelte'
-	import { createTableHidden } from '$lib/store'
+	import { createTableHidden } from '$lib/store/modal'
 	import { page } from '$app/stores'
 
 	const navigation = [

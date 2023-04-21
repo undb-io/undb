@@ -2,7 +2,7 @@
 	import { Button, Card, P } from 'flowbite-svelte'
 	import { Plus } from 'svelte-heros-v2'
 	import type { LayoutData, PageData } from './$types'
-	import { createTableHidden } from '$lib/store'
+	import { createTableHidden } from '$lib/store/modal'
 	import Empty from '$lib/table/Empty.svelte'
 
 	export let data: LayoutData

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createTableHidden } from '$lib/store'
+	import { createTableHidden } from '$lib/store/modal'
 	import {
 		Drawer,
 		CloseButton,

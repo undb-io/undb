@@ -10,7 +10,7 @@
 	import KanbanCard from '$lib/kanban/KanbanCard.svelte'
 	import { IconRowInsertTop } from '@tabler/icons-svelte'
 	import { Button } from 'flowbite-svelte'
-	import { createOptionOpen } from '$lib/store'
+	import { createOptionOpen } from '$lib/store/modal'
 
 	export let fieldId: string
 	const flipDurationMs = 200

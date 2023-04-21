@@ -1,5 +1,5 @@
 <script>
-	import { createRecordOpen } from '$lib/store'
+	import { createRecordOpen } from '$lib/store/modal'
 	import { P, Button } from 'flowbite-svelte'
 </script>
 
