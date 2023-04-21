@@ -63,7 +63,14 @@
 					<span class="text-red-500">*</span>
 				</div>
 
-				<Select class="rounded-sm" items={FIELD_SELECT_ITEMS} bind:value={$form.type} required />
+				<div class="flex">
+					<div
+						class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm text-center text-gray-500 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600 !border-r-0"
+					>
+						<FieldIcon size={14} type={$form.type} />
+					</div>
+					<Select class="rounded-sm !rounded-l-none" items={FIELD_SELECT_ITEMS} bind:value={$form.type} required />
+				</div>
 			</Label>
 
 			<Label class="flex flex-col gap-2">

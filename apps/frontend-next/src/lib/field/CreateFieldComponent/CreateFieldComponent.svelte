@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Tree from './Tree.svelte'
+
 	import Average from './Average.svelte'
 
 	import Sum from './Sum.svelte'
@@ -32,6 +34,7 @@
 		count: Count,
 		sum: Sum,
 		average: Average,
+		tree: Tree,
 	}
 </script>
 

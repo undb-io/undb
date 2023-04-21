@@ -1,27 +1,56 @@
 <script lang="ts">
-	import { Badge, Button, Checkbox, Dropdown } from 'flowbite-svelte'
-	import { TableFactory, type IQueryTable, type Field } from '@undb/core'
+	import { Badge, Button, Checkbox, Dropdown, Popover } from 'flowbite-svelte'
+	import type { Field, Table } from '@undb/core'
 	import { identity } from 'lodash'
 
 	export let group: string[] | undefined
-	export let table: IQueryTable
+	export let table: Table
 	export let filter: (field: Field) => boolean = identity
 
-	$: coreTable = TableFactory.fromQuery(table)
-	$: fields = coreTable.schema.fields.filter(filter)
+	$: fields = table.schema.fields.filter(filter)
+	$: selected = fields.filter((f) => group?.includes(f.id.value))
 </script>
 
 <Button color="alternative" class="max-w-max" {...$$restProps}>
 	{@const first = fields.find((f) => f.id.value === group?.[0])}
 	{#if !group?.length}
-		<span>select field</span>
+		{@const displayFields = table.schema.displayFields}
+		<span>
+			{#if !displayFields.length}
+				no display field in <Badge color="dark">{table.name.value}</Badge>
+			{:else}
+				<span>Auto</span>
+				<Popover class="w-64 text-sm font-light" title="display fields">
+					<div class="flex gap-2">
+						{#each displayFields as field}
+							<Badge>{field.name.value}</Badge>
+						{/each}
+					</div>
+				</Popover>
+			{/if}
+		</span>
 	{:else if group?.length === 1}
 		<Badge color="dark">{first?.name.value ?? ''}</Badge>
 	{:else}
-		<Badge color="dark" class="mr-2">{first?.name.value ?? ''}</Badge> and {group?.length - 1} more
+		<span>
+			<Badge color="dark" class="mr-2">{first?.name.value ?? ''}</Badge> and {group?.length - 1} more
+		</span>
+		<Popover class="w-64 text-sm font-light" title="display fields">
+			<div class="flex gap-2">
+				{#each selected as field}
+					<Badge>{field.name.value}</Badge>
+				{/each}
+			</div>
+		</Popover>
 	{/if}
 </Button>
 <Dropdown class="max-h-64 w-48 overflow-y-auto py-1 shadow-md">
+	{#if !fields.length}
+		<div class="px-3 py-2">
+			<slot name="empty" />
+		</div>
+	{/if}
+
 	{#each fields as field}
 		<li>
 			<Checkbox value={field.id.value} bind:group class="px-3 py-2 hover:bg-gray-100">

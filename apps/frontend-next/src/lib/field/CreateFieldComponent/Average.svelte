@@ -3,9 +3,9 @@
 	import type { UnwrapEffects } from 'sveltekit-superforms/index'
 	import ReferenceFieldPicker from '../Inputs/ReferenceFieldPicker.svelte'
 	import { getTable } from '$lib/context'
-	import type { IQueryTable, ReferenceField, TreeField } from '@undb/core'
+	import { TableFactory, type IQueryTable, type ReferenceField, type TreeField } from '@undb/core'
 	import { page } from '$app/stores'
-	import { Label } from 'flowbite-svelte'
+	import { Alert, Label } from 'flowbite-svelte'
 	import FieldPicker from '../Inputs/FieldPicker.svelte'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
@@ -22,21 +22,27 @@
 		: undefined
 	$: tables = ($page.data.tables ?? []) as IQueryTable[]
 	$: foreignTable = tables.find((t) => t.id === foreignTableId)
+
+	$: coreTable = foreignTable ? TableFactory.fromQuery(foreignTable) : undefined
 </script>
 
 <div class="grid grid-cols-2 gap-2">
 	<ReferenceFieldPicker bind:value={$referenceFieldId} required {...$$restProps} />
-	{#if foreignTable}
+	{#if coreTable}
 		<div class="space-y-2">
 			<Label>
 				<span>display fields</span>
 			</Label>
 			<FieldPicker
-				table={foreignTable}
+				table={coreTable}
 				bind:value={$aggregateFieldId}
 				{...$$restProps}
 				filter={(f) => f.isNumeric && !f.isAggregate}
-			/>
+			>
+				<Alert slot="empty" color="yellow">
+					<span class="font-medium">Warning alert!</span> No numeric field for averageaggregate.
+				</Alert>
+			</FieldPicker>
 		</div>
 	{/if}
 </div>

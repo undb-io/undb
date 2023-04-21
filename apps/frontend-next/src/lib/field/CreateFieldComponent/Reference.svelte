@@ -3,7 +3,7 @@
 	import { Label } from 'flowbite-svelte'
 	import { formFieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
-	import type { IQueryTable } from '@undb/core'
+	import { TableFactory, type IQueryTable } from '@undb/core'
 	import FieldsPicker from '../Inputs/FieldsPicker.svelte'
 	import TablePicker from '../Inputs/TablePicker.svelte'
 
@@ -16,19 +16,21 @@
 	$: table = tables.find((table) => table.id === $foreignTableId)
 
 	$: table, ($displayFieldIds = [] as never)
+
+	$: coreTable = table ? TableFactory.fromQuery(table) : undefined
 </script>
 
 <div class="grid grid-cols-2 gap-2">
 	<TablePicker bind:value={$foreignTableId} name="foreignTableId" />
 
-	<div class="space-y-2">
-		<Label class="inline-flex items-center gap-2">
-			<span>display fields</span>
-		</Label>
-		{#if table}
+	{#if coreTable}
+		<div class="space-y-2">
+			<Label class="inline-flex items-center gap-2">
+				<span>display fields</span>
+			</Label>
 			<div>
-				<FieldsPicker {table} bind:group={$displayFieldIds} disabled={!table} />
+				<FieldsPicker table={coreTable} bind:group={$displayFieldIds} disabled={!table} />
 			</div>
-		{/if}
-	</div>
+		</div>
+	{/if}
 </div>

@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { Badge, Button, Checkbox, Dropdown, Radio } from 'flowbite-svelte'
-	import { TableFactory, type IQueryTable, type Field } from '@undb/core'
+	import type { Field, Table } from '@undb/core'
+	import { Badge, Button, Dropdown, Radio } from 'flowbite-svelte'
 	import { identity } from 'lodash'
 
 	export let value: string
-	export let table: IQueryTable
+	export let table: Table
 	export let filter: (field: Field) => boolean = identity
 
-	$: coreTable = TableFactory.fromQuery(table)
-	$: fields = coreTable.schema.fields.filter(filter)
+	$: fields = table.schema.fields.filter(filter)
 
 	$: selected = value ? fields.find((f) => f.id.value === value) : undefined
 
@@ -22,7 +21,13 @@
 		<Badge color="dark">{selected.name.value}</Badge>
 	{/if}
 </Button>
-<Dropdown class="max-h-64 w-48 overflow-y-auto py-1 shadow-md" bind:open>
+<Dropdown class="max-h-64 min-w-48 overflow-y-auto py-1 shadow-md" bind:open>
+	{#if !fields.length}
+		<div class="px-3 py-2">
+			<slot name="empty" />
+		</div>
+	{/if}
+
 	{#each fields as field}
 		<li>
 			<Radio
