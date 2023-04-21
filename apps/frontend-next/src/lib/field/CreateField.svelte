@@ -1,4 +1,5 @@
 <script lang="ts">
+	import autoAnimate from '@formkit/auto-animate'
 	import { getTable } from '$lib/context'
 	import { createFieldOpen } from '$lib/store/modal'
 	import { Button, Input, Label, Modal, Select, Spinner, Toggle, A, Popover, Badge, Textarea } from 'flowbite-svelte'
@@ -49,45 +50,47 @@
 
 <Modal title="Create New Field" placement="top-center" class="w-full rounded-sm" size="lg" bind:open={$createFieldOpen}>
 	<form method="POST" id="createField" use:enhance>
-		<div class="grid grid-cols-2 gap-x-3 gap-y-4">
-			<Label class="flex flex-col gap-2">
-				<div class="flex gap-2 items-center">
-					<FieldIcon size={14} type={$form.type} />
-					<span>type</span>
-					<span class="text-red-500">*</span>
-				</div>
-
-				<div class="flex">
-					<div
-						class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm text-center text-gray-500 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600 !border-r-0"
-					>
+		<div class="space-y-2" use:autoAnimate={{ duration: 100 }}>
+			<div class="grid grid-cols-2 gap-x-3 gap-y-4">
+				<Label class="flex flex-col gap-2">
+					<div class="flex gap-2 items-center">
 						<FieldIcon size={14} type={$form.type} />
+						<span>type</span>
+						<span class="text-red-500">*</span>
 					</div>
-					<Select class="rounded-sm !rounded-l-none" items={FIELD_SELECT_ITEMS} bind:value={$form.type} required />
-				</div>
-			</Label>
 
-			<Label class="flex flex-col gap-2">
-				<div class="flex gap-2 items-center">
-					<span>name</span>
-					<span class="text-red-500">*</span>
-				</div>
+					<div class="flex">
+						<div
+							class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm text-center text-gray-500 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600 !border-r-0"
+						>
+							<FieldIcon size={14} type={$form.type} />
+						</div>
+						<Select class="rounded-sm !rounded-l-none" items={FIELD_SELECT_ITEMS} bind:value={$form.type} required />
+					</div>
+				</Label>
 
-				<Input class="rounded-sm" name="name" required bind:value={$form.name} />
-			</Label>
+				<Label class="flex flex-col gap-2">
+					<div class="flex gap-2 items-center">
+						<span>name</span>
+						<span class="text-red-500">*</span>
+					</div>
+
+					<Input class="rounded-sm" name="name" required bind:value={$form.name} />
+				</Label>
+			</div>
+
+			{#if showDescription}
+				<Label class="flex flex-col gap-2">
+					<div class="flex gap-2 items-center">
+						<span>description</span>
+					</div>
+
+					<Textarea class="rounded-sm" name="description" bind:value={$form.description} />
+				</Label>
+			{/if}
+
+			<CreateFieldComponent type={$form.type} form={superFrm} />
 		</div>
-
-		{#if showDescription}
-			<Label class="flex flex-col gap-2">
-				<div class="flex gap-2 items-center">
-					<span>description</span>
-				</div>
-
-				<Textarea class="rounded-sm" name="description" bind:value={$form.description} />
-			</Label>
-		{/if}
-
-		<CreateFieldComponent type={$form.type} form={superFrm} />
 	</form>
 
 	<svelte:fragment slot="footer">

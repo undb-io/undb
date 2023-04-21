@@ -25,7 +25,7 @@
 		<Badge color="dark">{selected.name.value}</Badge>
 	{/if}
 </Button>
-<Dropdown class="max-h-64 w-48 overflow-y-auto py-1 shadow-md" bind:open>
+<Dropdown inline class="max-h-64 w-48 overflow-y-auto py-1 shadow-md" bind:open>
 	{#if !fields.length}
 		<div class="px-3 py-2">
 			<slot name="empty" />

@@ -4,6 +4,7 @@
 	import { Button, Input } from 'flowbite-svelte'
 	import { onMount } from 'svelte'
 	import type { SetRequired } from 'type-fest'
+	import autoAnimate from '@formkit/auto-animate'
 
 	export let value: SetRequired<IMutateOptionSchema, 'color'>[] = []
 
@@ -19,7 +20,7 @@
 	}
 </script>
 
-<div class="space-y-2">
+<div class="space-y-2" use:autoAnimate={{ duration: 100 }}>
 	{#each value ?? [] as option}
 		<div class="flex">
 			<OptionColorPicker class="rounded-r-none rounded-l-md" bind:value={option.color.name} />
