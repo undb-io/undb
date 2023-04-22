@@ -24,6 +24,7 @@
 		dataType: 'json',
 		clearOnSubmit: 'errors-and-message',
 		invalidateAll: false,
+		taintedMessage: null,
 		resetForm: true,
 		async onUpdate(event) {
 			await trpc($page).table.field.create.mutate({ tableId: $table.id.value, field: event.form.data as any })

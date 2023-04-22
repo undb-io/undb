@@ -13,6 +13,7 @@
 	import Attachment from './Attachment.svelte'
 	import OptionPicker from '$lib/option/OptionPicker.svelte'
 	import Collaborator from './Collaborator.svelte'
+	import Reference from './Reference.svelte'
 
 	export let field: Field
 	export let value: any | undefined = undefined
@@ -30,7 +31,7 @@
 		select: OptionPicker,
 		bool: Checkbox,
 		'date-range': DateRange,
-		reference: String,
+		reference: Reference,
 		tree: String,
 		parent: String,
 		rating: Rating,

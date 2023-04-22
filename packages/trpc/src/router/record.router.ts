@@ -1,5 +1,5 @@
 import '@undb/core'
-import type { IGetRecordOutput, IGetRecordsOutput } from '@undb/cqrs'
+import type { IGetForeignRecordsOutput, IGetRecordOutput, IGetRecordsOutput } from '@undb/cqrs'
 import {
   BulkDeleteRecordsCommand,
   BulkDuplicateRecordsCommand,
@@ -88,7 +88,7 @@ export const createRecordRouter =
       foreign: procedure
         .input(getForeignRecordsQueryInput)
         .output(z.any())
-        .query(({ input }) => {
+        .query<IGetForeignRecordsOutput>(({ input }) => {
           const query = new GetForeignRecordsQuery(input)
           return queryBus.execute(query)
         }),

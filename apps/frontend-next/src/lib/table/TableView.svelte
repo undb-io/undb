@@ -151,7 +151,7 @@
 				ids: selectedRecords as [string, ...string[]],
 			})
 
-			invalidate(`records:${$table.id.value}`)
+			await invalidate(`records:${$table.id.value}`)
 
 			select.set({})
 		} finally {

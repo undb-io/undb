@@ -6,9 +6,10 @@
 	import { createRecordOpen } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import { createMutateRecordValuesSchema } from '@undb/core'
-	import { Button, Hr, Label, Modal, Spinner } from 'flowbite-svelte'
+	import { Button, Label, Modal, Spinner } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms'
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -26,6 +27,7 @@
 		resetForm: true,
 		delayMs: 100,
 		clearOnSubmit: 'errors-and-message',
+		taintedMessage: null,
 		async onUpdate(event) {
 			await trpc($page).record.create.mutate({ tableId: $table.id.value, values: event.form.data })
 			await invalidate(`records:${$table.id.value}`)
@@ -53,6 +55,8 @@
 			{/each}
 		</div>
 	</form>
+
+	<SuperDebug data={$form} />
 
 	<svelte:fragment slot="footer">
 		<div class="w-full flex justify-end gap-2">
