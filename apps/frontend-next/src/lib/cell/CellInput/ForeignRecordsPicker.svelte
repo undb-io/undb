@@ -3,10 +3,11 @@
 	import { getTable } from '$lib/context'
 	import RecordCard from '$lib/record/RecordCard.svelte'
 	import { TableFactory, type IQueryTable, type Records, type Table } from '@undb/core'
-	import { Alert, Button, Checkbox, Modal } from 'flowbite-svelte'
+	import { Alert, Button, Checkbox, Modal, Spinner } from 'flowbite-svelte'
 	import { onMount } from 'svelte'
 	import VirtualList from 'svelte-tiny-virtual-list'
 
+	let loading = false
 	let open = false
 
 	const table = getTable()
@@ -34,7 +35,9 @@
 	let records: Records = []
 
 	async function initRecords() {
+		loading = true
 		records = await getForeignRecords()
+		loading = false
 	}
 
 	$: if (open) foreignTableId, initRecords()
@@ -42,7 +45,11 @@
 
 <Button color="alternative" on:click={() => (open = true)} {...$$restProps}>Select Record</Button>
 <Modal title="Select Record" bind:open size="md" class="w-[700px] h-[600px]">
-	{#if !records.length}
+	{#if loading}
+		<div class="flex w-full h-full items-center justify-center">
+			<Spinner />
+		</div>
+	{:else if !records.length}
 		<Alert>no records available</Alert>
 	{:else}
 		<VirtualList height={600} width="100%" itemCount={records.length} itemSize={62}>
