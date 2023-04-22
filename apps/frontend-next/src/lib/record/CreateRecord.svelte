@@ -10,6 +10,7 @@
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms'
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
+	import FieldIcon from '$lib/field/FieldIcon.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -44,7 +45,12 @@
 		<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 			{#each fields as field}
 				<Label class="h-full inline-flex items-start gap-1" for={field.id.value}>
-					{field.name.value}
+					<div class="inline-flex items-center gap-2">
+						<FieldIcon type={field.type} size={16} />
+						<span>
+							{field.name.value}
+						</span>
+					</div>
 					{#if field.required}
 						<span class="text-red-500">*</span>
 					{/if}
