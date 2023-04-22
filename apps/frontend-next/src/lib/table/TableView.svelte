@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { PinnedPosition, Records } from '@undb/core'
+	import type { PinnedPosition } from '@undb/core'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
 	import { Button, P, Spinner, Toast } from 'flowbite-svelte'
-	import type { RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
+	import type { Edition, RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
 	import type { Components, RevoGridCustomEvent } from '@revolist/revogrid'
 	import { defineCustomElements } from '@revolist/revogrid/loader'
 	import { cellTemplateMap } from '$lib/cell/cell-template'
@@ -107,7 +107,7 @@
 
 	const onAfterColumnResize = async (
 		event: RevoGridCustomEvent<Record<RevoGridType.ColumnProp, RevoGridType.ColumnRegular>>,
-	) => {
+	): Promise<void> => {
 		for (const [fieldId, field] of Object.entries(event.detail)) {
 			const width = field.size
 			if (width && $view.getFieldWidth(fieldId) !== width) {
@@ -119,6 +119,10 @@
 				})
 			}
 		}
+	}
+
+	const onCellFocus = async (event: RevoGridCustomEvent<Edition.BeforeSaveDataDetails>) => {
+		const recordId = event.detail.model.id
 	}
 
 	$: selectedRecords = Object.entries($select)
@@ -151,7 +155,16 @@
 </script>
 
 <div class:h-[50px]={!hasRecord} class:h-full={hasRecord}>
-	<RevoGrid source={rows} resize="true" {columns} theme="compact" range on:aftercolumnresize={onAfterColumnResize} />
+	<RevoGrid
+		source={rows}
+		resize="true"
+		{columns}
+		theme="compact"
+		range
+		readonly
+		on:aftercolumnresize={onAfterColumnResize}
+		on:beforecellfocus={onCellFocus}
+	/>
 </div>
 {#if !hasRecord}
 	<EmptyTable />

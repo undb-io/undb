@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte'
 	import type { SetRequired } from 'type-fest'
 	import autoAnimate from '@formkit/auto-animate'
+	import { IconTrash } from '@tabler/icons-svelte'
 
 	export let value: SetRequired<IMutateOptionSchema, 'color'>[] = []
 
@@ -16,15 +17,33 @@
 	})
 
 	function addOption() {
-		value = [...value, { name: '', color: { name: OptionColor.defaultColorName, shade: OptionColor.defaultShade } }]
+		const color =
+			value.length === 0
+				? OptionColor.defaultColor
+				: OptionColor.create(value[value.length - 1]?.color)
+						.next()
+						.unpack()
+		value = [...value, { name: '', color }]
+	}
+
+	function removeOption(index: number) {
+		value = value.filter((_, i) => i !== index)
 	}
 </script>
 
 <div class="space-y-2" use:autoAnimate={{ duration: 100 }}>
-	{#each value ?? [] as option}
+	{#each value ?? [] as option, index}
 		<div class="flex">
 			<OptionColorPicker class="rounded-r-none rounded-l-md" bind:value={option.color.name} />
-			<Input class="rounded-l-none border-l-0 h-[28px]" bind:value={option.name} />
+			<Input class="!rounded-none !focus:rounded-none border-gray-100 h-[28px]" bind:value={option.name} />
+			<Button
+				color="light"
+				class="w-[28px] aspect-square !rounded-l-none !rounded-r-sm !p-0 border-l-0 border-gray-200"
+				size="xs"
+				on:click={() => removeOption(index)}
+			>
+				<IconTrash color="gray" size={14} />
+			</Button>
 		</div>
 	{/each}
 </div>

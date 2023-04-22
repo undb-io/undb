@@ -2,17 +2,14 @@ import type { IFilter } from '@undb/core'
 import { writable } from 'svelte/store'
 
 function createFiltersStore() {
-	const { subscribe, update, set } = writable<Partial<IFilter>[]>([{}])
+	const { subscribe, update, set } = writable<Partial<IFilter>[]>([])
 	return {
 		subscribe,
 		update,
 		set,
 		add: () => update((filters) => [...filters, {}]),
-		remove: (index: number) =>
-			update((filters) => {
-				if (filters.length <= 1) return [{}]
-				return filters.filter((_, i) => i !== index)
-			}),
+		reset: (index: number) => update((filters) => filters.map((f, i) => (i === index ? { path: f.path } : f))),
+		remove: (index: number) => update((filters) => filters.filter((_, i) => i !== index)),
 	}
 }
 

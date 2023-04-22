@@ -1,8 +1,11 @@
 <script lang="ts">
+	import cx from 'classnames'
+	import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@rgossiaux/svelte-headlessui'
 	import type { Field, IFieldType, Table } from '@undb/core'
-	import { Badge, Button, Dropdown, Radio } from 'flowbite-svelte'
+	import { Button } from 'flowbite-svelte'
 	import { identity } from 'lodash'
-	import Portal from 'svelte-portal'
+	import FieldIcon from '../FieldIcon.svelte'
+	import { IconCheck } from '@tabler/icons-svelte'
 
 	export let value: string = ''
 	export let table: Table
@@ -15,44 +18,34 @@
 
 	$: selected = value ? fields.find((f) => f.id.value === value) : undefined
 	$: type = selected?.type
-
-	$: open = false
 </script>
 
-<Button id={'filter' + selected?.id.value} color="alternative" class="max-w-max" {...$$restProps}>
-	{#if !selected}
-		Select Field
-	{:else}
-		<Badge color="dark">{selected.name.value}</Badge>
-	{/if}
-</Button>
-
-<Portal target="body">
-	<Dropdown
-		triggeredBy={'#filter' + selected?.id.value}
-		inline
-		class="max-h-64 w-48 overflow-y-auto py-1 shadow-md"
-		bind:open
-		frameClass="z-[100]"
-	>
-		{#if !fields.length}
-			<div class="px-3 py-2">
-				<slot name="empty" />
-			</div>
-		{/if}
-
-		{#each fields as field}
-			<li>
-				<Radio
-					value={field.id.value}
-					bind:group={value}
-					class="px-3 py-2 hover:bg-gray-100"
-					custom
-					on:change={() => (open = false)}
-				>
+<Listbox class="relative" {value} on:change={(e) => (value = e.detail)}>
+	<ListboxButton as="div" class="box-border">
+		<Button color="alternative" {...$$restProps} class={cx($$restProps.class, 'gap-2')}>
+			{#if selected}
+				<FieldIcon type={selected.type} size={14} />
+				{selected?.name.value}
+			{:else}
+				<span class="text-gray-400">Name...</span>
+			{/if}
+		</Button>
+	</ListboxButton>
+	<ListboxOptions class="absolute bg-white py-1 border border-gray-100 shadow-md h-64 overflow-y-auto w-48 z-50">
+		{#each fields as field (field.id)}
+			<ListboxOption
+				value={field.id.value}
+				let:selected={selectedItem}
+				class="p-2 cursor-pointer hover:bg-gray-100 text-xs text-gray-700 flex gap-2 justify-between"
+			>
+				<div class="inline-flex gap-2">
+					<FieldIcon size={14} type={field.type} />
 					{field.name.value}
-				</Radio>
-			</li>
+				</div>
+				{#if selectedItem}
+					<IconCheck size={14} />
+				{/if}
+			</ListboxOption>
 		{/each}
-	</Dropdown>
-</Portal>
+	</ListboxOptions>
+</Listbox>
