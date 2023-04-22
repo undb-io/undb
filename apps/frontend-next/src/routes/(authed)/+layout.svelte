@@ -9,9 +9,9 @@
 	import { page } from '$app/stores'
 	import { IconTable, IconUsers } from '@tabler/icons-svelte'
 
-	const navigation = [
+	$: navigation = [
 		{ name: 'Tables', href: '/', icon: IconTable, current: $page.url.pathname === '/' },
-		{ name: 'Members', href: '/members', icon: IconUsers, current: false },
+		{ name: 'Members', href: '/members', icon: IconUsers, current: $page.url.pathname === '/members' },
 	]
 
 	let sidebarOpen = false

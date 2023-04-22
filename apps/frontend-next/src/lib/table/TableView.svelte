@@ -24,6 +24,8 @@
 	const view = getView()
 	const records = getRecords()
 
+	$: schema = $table.schema.toIdMap()
+
 	let rows: Components.RevoGrid['source']
 	let columns: Components.RevoGrid['columns']
 
@@ -31,7 +33,8 @@
 	$: $table, select.set({})
 
 	const updateSelect = (recordId: string, selected: boolean) => ($select[recordId] = selected)
-	$: allSelected = Object.entries($select).filter(([, value]) => value).length === $records.length
+	$: allSelected =
+		$records.length > 0 && Object.entries($select).filter(([, value]) => value).length === $records.length
 	const updateAllSelect = (s: boolean) => {
 		const selected: Record<string, boolean> = {}
 		for (const record of $records) {
@@ -40,6 +43,9 @@
 
 		select.set(selected)
 	}
+
+	$: ordered = $table.getFieldsOrder($view)
+	$: fields = ordered.map((fieldId) => schema.get(fieldId)).filter(Boolean)
 
 	$: {
 		defineCustomElements().then(() => {
@@ -81,7 +87,7 @@
 					},
 					size: 40,
 				},
-				...$table.schema.fields.map<Components.RevoGrid['columns'][0]>((field) => {
+				...fields.map<Components.RevoGrid['columns'][0]>((field) => {
 					const position = $view.pinnedFields?.getPinnedPosition(field.id.value)
 					return {
 						prop: field.id.value,

@@ -5,8 +5,13 @@
 	import { TableFactory } from '@undb/core'
 	import { writable } from 'svelte/store'
 	import type { LayoutServerData } from './$types'
+	import { goto } from '$app/navigation'
 
 	export let data: LayoutServerData
+
+	if (!data.table) {
+		goto('/', { replaceState: true })
+	}
 
 	const coreTable = TableFactory.fromQuery(data.table)
 	const table = writable(coreTable)

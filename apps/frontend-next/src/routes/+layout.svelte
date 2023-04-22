@@ -21,6 +21,10 @@
 
 <slot />
 
+<svelte:head>
+	<title>undb</title>
+</svelte:head>
+
 <style>
 	:global(#nprogress) {
 		position: relative;

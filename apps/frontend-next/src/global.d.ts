@@ -6,3 +6,4 @@ declare namespace svelte.JSX {
 		onfinalize?: (event: CustomEvent<DndEvent<ItemType>> & { target: EventTarget & T }) => void
 	}
 }
+import '@total-typescript/ts-reset/dist/filter-boolean'

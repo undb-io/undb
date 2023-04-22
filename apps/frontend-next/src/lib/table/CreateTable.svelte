@@ -145,7 +145,7 @@
 				</Accordion>
 			</div>
 
-			<Button color="dark" outline={hasField} class="w-full my-3" on:click={addField}>
+			<Button color="yellow" outline class="w-full my-3" on:click={addField}>
 				<IconPlus class="mr-4" size={16} />
 				Add Field</Button
 			>
