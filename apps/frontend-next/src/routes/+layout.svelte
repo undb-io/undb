@@ -4,6 +4,8 @@
 	import { navigating } from '$app/stores'
 
 	import 'nprogress/nprogress.css'
+	import { onMount } from 'svelte'
+	import { browser } from '$app/environment'
 
 	NProgress.configure({
 		minimum: 0.16,
@@ -17,6 +19,12 @@
 			NProgress.done()
 		}
 	}
+
+	onMount(() => {
+		if (browser) {
+			window.onbeforeunload = null
+		}
+	})
 </script>
 
 <slot />
