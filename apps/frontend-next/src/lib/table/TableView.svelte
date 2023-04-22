@@ -186,3 +186,9 @@
 		>
 	</div>
 </Toast>
+
+<style>
+	:global(.rgRow:hover) {
+		background-color: #eff6ff;
+	}
+</style>

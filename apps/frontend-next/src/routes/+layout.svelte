@@ -20,3 +20,10 @@
 </script>
 
 <slot />
+
+<style>
+	:global(#nprogress) {
+		position: relative;
+		z-index: 9999999;
+	}
+</style>

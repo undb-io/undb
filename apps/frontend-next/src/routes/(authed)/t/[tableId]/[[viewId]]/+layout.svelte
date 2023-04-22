@@ -22,4 +22,7 @@
 	<slot />
 </div>
 
+<svelte:head>
+	<title>{$table.name.value}</title>
+</svelte:head>
 <CreateOption />

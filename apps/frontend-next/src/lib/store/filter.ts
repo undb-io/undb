@@ -8,7 +8,8 @@ function createFiltersStore() {
 		update,
 		set,
 		add: () => update((filters) => [...filters, {}]),
-		reset: (index: number) => update((filters) => filters.map((f, i) => (i === index ? { path: f.path } : f))),
+		reset: (index: number) =>
+			update((filters) => filters.map((f, i) => (i === index ? { path: f.path, type: f.type } : f))),
 		remove: (index: number) => update((filters) => filters.filter((_, i) => i !== index)),
 	}
 }
