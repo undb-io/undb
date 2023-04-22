@@ -2,16 +2,16 @@
 	import cx from 'classnames'
 
 	import { Dialog, DialogOverlay, TransitionChild, TransitionRoot } from '@rgossiaux/svelte-headlessui'
-	import { Bars3, Users, TableCells, XMark, Plus } from 'svelte-heros-v2'
 	import type { LayoutData } from './$types'
 	import CreateTable from '$lib/table/CreateTable.svelte'
 	import { Avatar, Button, Dropdown, DropdownItem } from 'flowbite-svelte'
 	import { createTableHidden } from '$lib/store/modal'
 	import { page } from '$app/stores'
+	import { IconTable, IconUsers } from '@tabler/icons-svelte'
 
 	const navigation = [
-		{ name: 'Tables', href: '/', icon: TableCells, current: $page.url.pathname === '/' },
-		{ name: 'Members', href: '/members', icon: Users, current: false },
+		{ name: 'Tables', href: '/', icon: IconTable, current: $page.url.pathname === '/' },
+		{ name: 'Members', href: '/members', icon: IconUsers, current: false },
 	]
 
 	let sidebarOpen = false
@@ -59,7 +59,6 @@
 							<div class="absolute left-full top-0 flex w-16 justify-center pt-5">
 								<button type="button" class="-m-2.5 p-2.5" on:click={setSidebarClose}>
 									<span class="sr-only">Close sidebar</span>
-									<XMark class="h-6 w-6 text-white" aria-hidden="true" />
 								</button>
 							</div>
 						</TransitionChild>
@@ -206,7 +205,6 @@
 						</ul>
 
 						<Button size="xs" class="w-full mt-2" outline on:click={() => createTableHidden.set(false)}>
-							<Plus size="16" />
 							Create New Table</Button
 						>
 					</li>
@@ -248,7 +246,6 @@
 	<div class="sticky top-0 z-40 flex items-center gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-6 lg:hidden">
 		<button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" on:click={setSidebarOpen}>
 			<span class="sr-only">Open sidebar</span>
-			<Bars3 class="h-6 w-6" aria-hidden="true" />
 		</button>
 		<div class="flex-1 text-sm font-semibold leading-6 text-gray-900">Dashboard</div>
 		<a href="#">

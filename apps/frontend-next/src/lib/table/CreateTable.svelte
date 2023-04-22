@@ -15,9 +15,9 @@
 	import { sineIn } from 'svelte/easing'
 	import { FieldId, type ICreateTableInput, type createTableInput } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
-	import { Plus } from 'svelte-heros-v2'
 	import Icon from '$lib/field/FieldIcon.svelte'
 	import { FIELD_SELECT_ITEMS } from '$lib/field/types'
+	import { IconPlus } from '@tabler/icons-svelte'
 
 	export let form: Validation<typeof createTableInput>
 
@@ -146,7 +146,7 @@
 			</div>
 
 			<Button color="dark" outline={hasField} class="w-full my-3" on:click={addField}>
-				<Plus class="mr-4" size="16" />
+				<IconPlus class="mr-4" size={16} />
 				Add Field</Button
 			>
 		</div>
