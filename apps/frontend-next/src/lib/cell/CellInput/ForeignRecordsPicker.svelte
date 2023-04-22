@@ -58,14 +58,14 @@
 </script>
 
 <div class="space-y-2">
-	<div class="max-h-[300px] space-y-2">
+	<div class="space-y-2">
 		{#each selected as record}
 			{#if !!record}
 				<div class="group relative">
 					<RecordCard
 						{record}
 						{schema}
-						class="!py-4 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 max-w-none"
+						class="!py-4 !sm:py-4 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 max-w-none"
 						role="button"
 					/>
 					<CloseButton

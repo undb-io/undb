@@ -43,7 +43,7 @@
 	<form id="createRecord" class="space-y-5" method="POST" use:enhance>
 		<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 			{#each fields as field}
-				<Label class="h-full inline-flex items-center gap-1" for={field.id.value}>
+				<Label class="h-full inline-flex items-start gap-1" for={field.id.value}>
 					{field.name.value}
 					{#if field.required}
 						<span class="text-red-500">*</span>
@@ -55,8 +55,6 @@
 			{/each}
 		</div>
 	</form>
-
-	<SuperDebug data={$form} />
 
 	<svelte:fragment slot="footer">
 		<div class="w-full flex justify-end gap-2">
