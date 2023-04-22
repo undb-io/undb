@@ -3,9 +3,11 @@
 	import { Card } from 'flowbite-svelte'
 
 	export let schema: TableSchemaIdMap
-	export let record: Record
+	export let record: Record | undefined
 </script>
 
-<Card {...$$restProps}>
-	{record.id.value}
-</Card>
+{#if record}
+	<Card {...$$restProps}>
+		{record.id.value}
+	</Card>
+{/if}

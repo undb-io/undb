@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { RecordFactory, type ReferenceField } from '@undb/core'
+	import { RecordFactory, type Records, type ReferenceField } from '@undb/core'
 	import ForeignRecordsPicker from './ForeignRecordsPicker.svelte'
 	import { getRecords, getTable } from '$lib/context'
 	import { page } from '$app/stores'

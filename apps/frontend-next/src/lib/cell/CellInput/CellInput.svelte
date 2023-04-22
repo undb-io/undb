@@ -15,6 +15,7 @@
 	import Collaborator from './Collaborator.svelte'
 	import Reference from './Reference.svelte'
 	import Tree from './Tree.svelte'
+	import Parent from './Parent.svelte'
 
 	export let field: Field
 	export let value: any | undefined = undefined
@@ -23,8 +24,8 @@
 		string: String,
 		number: Number,
 		id: Readonly,
-		'created-at': String,
-		'updated-at': String,
+		'created-at': Readonly,
+		'updated-at': Readonly,
 		'auto-increment': Readonly,
 		color: Color,
 		email: Email,
@@ -34,7 +35,7 @@
 		'date-range': DateRange,
 		reference: Reference,
 		tree: Tree,
-		parent: String,
+		parent: Parent,
 		rating: Rating,
 		count: Readonly,
 		lookup: Readonly,
@@ -42,8 +43,8 @@
 		average: Readonly,
 		attachment: Attachment,
 		collaborator: Collaborator,
-		'created-by': String,
-		'updated-by': String,
+		'created-by': Readonly,
+		'updated-by': Readonly,
 	}
 </script>
 
