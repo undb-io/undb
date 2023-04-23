@@ -3,6 +3,8 @@
 	import type { Field, Table } from '@undb/core'
 	import { identity } from 'lodash'
 	import Portal from 'svelte-portal'
+	import FieldIcon from '../FieldIcon.svelte'
+	import { IconCheck } from '@tabler/icons-svelte'
 
 	export let group: string[] | undefined
 	export let table: Table
@@ -22,7 +24,7 @@
 			{:else}
 				<span>Auto</span>
 				<Popover class="w-64 text-sm font-light" title="display fields">
-					<div class="flex gap-2">
+					<div class="flex flex-wrap gap-2">
 						{#each displayFields as field}
 							<Badge>{field.name.value}</Badge>
 						{/each}
@@ -37,7 +39,7 @@
 			<Badge color="dark" class="mr-2">{first?.name.value ?? ''}</Badge> and {group?.length - 1} more
 		</span>
 		<Popover class="w-64 text-sm font-light" title="display fields">
-			<div class="flex gap-2">
+			<div class="flex flex-wrap gap-2">
 				{#each selected as field}
 					<Badge>{field.name.value}</Badge>
 				{/each}
@@ -59,11 +61,20 @@
 		{/if}
 
 		{#each fields as field}
-			<li>
-				<Checkbox value={field.id.value} bind:group class="px-3 py-2 hover:bg-gray-100">
-					{field.name.value}
-				</Checkbox>
-			</li>
+			{@const selected = !!group?.includes(field.id.value)}
+			<Checkbox value={field.id.value} bind:group class="px-3 py-2 hover:bg-gray-100 cursor-pointer" custom>
+				<li class="w-full flex justify-between items-center text-gray-500">
+					<div class="flex flex-1 items-center gap-2">
+						<FieldIcon type={field.type} size={16} />
+						<span>
+							{field.name.value}
+						</span>
+					</div>
+					{#if selected}
+						<IconCheck size={16} />
+					{/if}
+				</li>
+			</Checkbox>
 		{/each}
 	</Dropdown>
 </Portal>
