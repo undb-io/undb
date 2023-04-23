@@ -72,6 +72,7 @@
 						return h('input', {
 							type: 'checkbox',
 							checked: allSelected,
+							disabled: !$records.length,
 							onChange: (event: any) => {
 								updateAllSelect(event.target.checked)
 							},

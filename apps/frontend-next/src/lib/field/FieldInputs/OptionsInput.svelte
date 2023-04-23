@@ -19,7 +19,7 @@
 	function addOption() {
 		const color =
 			value.length === 0
-				? OptionColor.defaultColor
+				? OptionColor.defaultColor.unpack()
 				: OptionColor.create(value[value.length - 1]?.color)
 						.next()
 						.unpack()
