@@ -1,18 +1,42 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { Label, Select } from 'flowbite-svelte'
+	import cx from 'classnames'
+	import { Button, Label, Select } from 'flowbite-svelte'
 	import type { IQueryTable } from '@undb/core'
+	import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@rgossiaux/svelte-headlessui'
+	import { IconCheck } from '@tabler/icons-svelte'
 
 	export let value: string
 
 	$: tables = $page.data.tables as IQueryTable[]
 	$: items = tables.map((table) => ({ name: table.name, value: table.id }))
+	$: selected = value ? tables.find((t) => t.id === value) : undefined
 </script>
 
-<div class="space-y-2">
-	<Label class="inline-flex items-center gap-1">
-		foreign table
-		<span class="text-red-500">*</span>
-	</Label>
-	<Select bind:value {items} {...$$restProps} />
-</div>
+<Listbox class="relative" {value} on:change={(e) => (value = e.detail)}>
+	<ListboxButton as="div" class="box-border">
+		<Button color="alternative" {...$$restProps} class={cx($$restProps.class, 'gap-2')}>
+			{#if selected}
+				{selected.name}
+			{:else}
+				<span class="text-gray-400">Table...</span>
+			{/if}
+		</Button>
+	</ListboxButton>
+	<ListboxOptions class="absolute bg-white py-1 border border-gray-100 shadow-lg overflow-y-auto w-full mt-2 z-50">
+		{#each tables as table (table.id)}
+			<ListboxOption
+				value={table.id}
+				let:selected={selectedItem}
+				class="p-2 cursor-pointer hover:bg-gray-100 text-xs text-gray-700 flex gap-2 justify-between"
+			>
+				<div class="inline-flex gap-2">
+					{table.name}
+				</div>
+				{#if selectedItem}
+					<IconCheck size={14} />
+				{/if}
+			</ListboxOption>
+		{/each}
+	</ListboxOptions>
+</Listbox>

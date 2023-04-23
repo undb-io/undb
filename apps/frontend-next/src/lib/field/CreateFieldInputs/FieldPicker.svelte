@@ -31,7 +31,7 @@
 			{/if}
 		</Button>
 	</ListboxButton>
-	<ListboxOptions class="absolute bg-white py-1 border border-gray-100 shadow-md h-64 overflow-y-auto w-48 z-50">
+	<ListboxOptions class="absolute bg-white py-1 border border-gray-100 shadow-md h-64 overflow-y-auto w-full z-50">
 		{#each fields as field (field.id)}
 			<ListboxOption
 				value={field.id.value}

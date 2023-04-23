@@ -27,8 +27,14 @@
 </script>
 
 <div class="grid grid-cols-2 gap-2">
-	<TablePicker bind:value={$foreignTableId} name="foreignTableId" />
+	<div class="space-y-2">
+		<Label class="inline-flex items-center gap-2">
+			<span>foreign table</span>
+			<span class="text-red-500">*</span>
+		</Label>
 
+		<TablePicker bind:value={$foreignTableId} name="foreignTableId" class="w-full !justify-start" />
+	</div>
 	{#if coreForeignTable}
 		<div class="space-y-2">
 			<Label class="inline-flex items-center gap-2">
