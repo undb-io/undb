@@ -249,10 +249,9 @@ const referenceComponent = (h: HyperFunc, value: (string | null)[]) => {
 	return h(
 		'span',
 		{
-			class:
-				'bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300',
+			class: 'bg-gray-100 text-xs mr-2 px-2.5 py-0.5 rounded ',
 		},
-		value.filter(Boolean).toString(),
+		value.filter(Boolean).toString() || 'unnamed',
 	)
 }
 
@@ -263,9 +262,16 @@ const reference: TemplateFunc = (h, props) => {
 	const field = props.column.field as ReferenceField | TreeField
 	const values = field.getDisplayValues(displayValues)
 
+	if (unpacked?.length && !values?.length) {
+		return h(
+			'div',
+			{ class: 'flex items-center space-x-2 text-gray-400 font-light' },
+			unpacked.map(() => referenceComponent(h, ['unamed'])),
+		)
+	}
 	return h(
 		'div',
-		{ class: 'flex items-center space-x-2' },
+		{ class: 'flex items-center space-x-2 text-gray-800  dark:bg-gray-700 dark:text-gray-300 font-medium ' },
 		values.map((value) => referenceComponent(h, value)),
 	)
 }
