@@ -25,5 +25,6 @@ export const load: PageLoad = async (event) => {
 			}),
 			{ id: 'createField' },
 		),
+		updateField: superValidate(z.object<{ [key: string]: any }>({}), { id: 'updateField' }),
 	}
 }

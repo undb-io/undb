@@ -7,6 +7,8 @@
 	import TableToolBar from '$lib/table/TableToolBar.svelte'
 	import CreateRecord from '$lib/record/CreateRecord.svelte'
 	import CreateField from '$lib/field/CreateField.svelte'
+	import UpdateField from '$lib/field/UpdateField.svelte'
+	import { currentField } from '$lib/store/table'
 
 	const table = getTable()
 	export let data: PageData
@@ -21,3 +23,8 @@
 
 <CreateRecord data={data.createRecord} />
 <CreateField data={data.createField} />
+{#if $currentField}
+	{#key $currentField}
+		<UpdateField field={$currentField} data={data.updateField} />
+	{/key}
+{/if}

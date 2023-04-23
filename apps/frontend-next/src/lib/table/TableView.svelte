@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PinnedPosition } from '@undb/core'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
-	import { Button, P, Spinner, Toast } from 'flowbite-svelte'
+	import { Button, Dropdown, P, Spinner, Toast } from 'flowbite-svelte'
 	import type { Edition, RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
 	import type { Components, RevoGridCustomEvent } from '@revolist/revogrid'
 	import { defineCustomElements } from '@revolist/revogrid/loader'
@@ -14,6 +14,9 @@
 	import EmptyTable from './EmptyTable.svelte'
 	import { getRecords, getTable, getView } from '$lib/context'
 	import { invalidate } from '$app/navigation'
+	import FieldMenu from '$lib/field/FieldMenu.svelte'
+	import Portal from 'svelte-portal'
+	import { currentField } from '$lib/store/table'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -21,10 +24,16 @@
 	}
 
 	const table = getTable()
+	$: schema = $table.schema.toIdMap()
 	const view = getView()
 	const records = getRecords()
 
-	$: schema = $table.schema.toIdMap()
+	let fieldMenuId: string | undefined = undefined
+	$: if (fieldMenuId) {
+		currentField.set(schema.get(fieldMenuId) ?? null)
+	}
+	const getFieldDomId = (fieldId?: string | number) => (fieldId ? `field_menu_${fieldId}` : undefined)
+	$: fieldMenuDOMId = getFieldDomId(fieldMenuId)
 
 	let rows: Components.RevoGrid['source']
 	let columns: Components.RevoGrid['columns']
@@ -96,9 +105,49 @@
 						pin: position ? pinnedPositionMap[position] : undefined,
 						autoSize: true,
 						cellTemplate: cellTemplateMap[field.type],
-						columnProperties: () => ({
-							class: 'border-r border-b border-gray-200',
-						}),
+						columnTemplate: (h, column) => {
+							const id = getFieldDomId(column.prop)
+							return h('div', { class: 'inline-flex w-full justify-between items-center group' }, [
+								h('span', {}, column.name),
+								h(
+									'button',
+									{
+										id,
+										onClick: () => {
+											fieldMenuId = column.prop as string
+										},
+										class:
+											'w-[24px] h-[24px] rounded-sm hover:bg-gray-100 opacity-0 group-hover:opacity-100 transition inline-flex items-center justify-center',
+									},
+									h(
+										'svg',
+										{
+											xmlns: 'http://www.w3.org/2000/svg',
+											class: 'icon icon-tabler icon-tabler-dots text-gray-400 ',
+											'stroke-width': '2',
+											stroke: 'currentColor',
+											fill: 'none',
+											'stroke-linecap': 'round',
+											'stroke-linejoin': 'rouned',
+											width: 16,
+											height: 16,
+											viewBox: '0 0 24 24',
+										},
+										[
+											h('path', { stroke: 'none', d: 'M0 0h24v24H0z', fill: 'none' }),
+											h('path', { d: 'M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0' }),
+											h('path', { d: 'M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0' }),
+											h('path', { d: 'M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0' }),
+										],
+									),
+								),
+							])
+						},
+						columnProperties: () => {
+							return {
+								class: 'border-r border-b border-gray-200 hover:bg-gray-50 transition',
+							}
+						},
 						cellProperties: () => {
 							return {
 								class: 'flex items-center border-r border-b border-gray-100',
@@ -192,6 +241,17 @@
 		>
 	</div>
 </Toast>
+
+{#if fieldMenuDOMId}
+	{#key fieldMenuDOMId}
+		{fieldMenuDOMId}
+		<Portal target="body">
+			<Dropdown open triggeredBy={`#${fieldMenuDOMId}`}>
+				<FieldMenu />
+			</Dropdown>
+		</Portal>
+	{/key}
+{/if}
 
 <style>
 	:global(.rgRow:hover) {

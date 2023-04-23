@@ -6,6 +6,7 @@
 	import { getTable } from '$lib/context'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
+	export let isNew = false
 
 	const parentFieldName = fieldProxy(form.form, 'parentFieldName')
 
@@ -15,19 +16,21 @@
 </script>
 
 <div class="grid grid-cols-2 gap-2">
-	<div class="space-y-2	">
-		<Label class="inline-flex items-center">
-			<span>parent field name</span>
-		</Label>
-		<Input bind:value={$parentFieldName} name="parentFieldName" />
-	</div>
+	{#if isNew}
+		<div class="space-y-2	">
+			<Label class="inline-flex items-center">
+				<span>parent field name</span>
+			</Label>
+			<Input bind:value={$parentFieldName} name="parentFieldName" />
+		</div>
+	{/if}
 
 	<div class="space-y-2">
 		<Label class="inline-flex items-center gap-2">
 			<span>display fields</span>
 		</Label>
 		<div>
-			<FieldsPicker table={$table} bind:group={$displayFieldIds} disabled={!table} />
+			<FieldsPicker class="w-full !justify-start" table={$table} bind:group={$displayFieldIds} disabled={!table} />
 		</div>
 	</div>
 </div>

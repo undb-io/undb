@@ -23,6 +23,7 @@
 	import Rating from './Rating.svelte'
 
 	export let type: IFieldType
+	export let isNew = false
 
 	type T = $$Generic<AnyZodObject>
 	export let form: SuperForm<UnwrapEffects<T>, unknown>
@@ -41,4 +42,4 @@
 	}
 </script>
 
-<svelte:component this={map[type]} {form} />
+<svelte:component this={map[type]} {form} {isNew} />

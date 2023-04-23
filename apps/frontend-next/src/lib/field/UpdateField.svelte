@@ -1,7 +1,7 @@
 <script lang="ts">
 	import autoAnimate from '@formkit/auto-animate'
 	import { getTable } from '$lib/context'
-	import { createFieldOpen } from '$lib/store/modal'
+	import { updateFieldOpen } from '$lib/store/modal'
 	import { Button, Input, Label, Modal, Spinner, Toggle, Popover, Badge, Textarea } from 'flowbite-svelte'
 	import FieldIcon from './FieldIcon.svelte'
 	import { page } from '$app/stores'
@@ -10,16 +10,17 @@
 	import { invalidate } from '$app/navigation'
 	import MutateFieldComponent from './MutateFieldComponent/MutateFieldComponent.svelte'
 	import { IconEyeClosed, IconPlus } from '@tabler/icons-svelte'
-	import { canDisplay } from '@undb/core'
+	import { canDisplay, type Field } from '@undb/core'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
 
 	const table = getTable()
 
+	export let field: Field
 	export let data: Validation<any>
 
 	const superFrm = superForm(data, {
-		id: 'createField',
+		id: 'updateField',
 		SPA: true,
 		dataType: 'json',
 		clearOnSubmit: 'errors-and-message',
@@ -27,13 +28,60 @@
 		taintedMessage: null,
 		resetForm: true,
 		async onUpdate(event) {
-			await trpc($page).table.field.create.mutate({ tableId: $table.id.value, field: event.form.data as any })
+			await trpc($page).table.field.update.mutate({
+				tableId: $table.id.value,
+				fieldId: field.id.value,
+				field: event.form.data as any,
+			})
 			await invalidate(`table:${$table.id.value}`)
-			createFieldOpen.set(false)
+			updateFieldOpen.set(false)
 		},
 	})
 
 	const { form, enhance, delayed, submitting } = superFrm
+
+	$: {
+		$form.type = field.type
+		$form.name = field.name.value
+		$form.id = field.id.value
+		$form.description = field.description?.value
+		$form.required = field.required
+		$form.display = !!field.display
+
+		if (field.type === 'tree' || field.type === 'parent' || field.type === 'reference' || field.type === 'lookup') {
+			$form.displayFieldIds = field.displayFieldIds.map((id) => id.value)
+		}
+		if (field.type === 'reference') {
+			$form.foreignTableId = field.foreignTableId.into(null)
+		}
+		if (field.type === 'count' || field.type === 'sum' || field.type === 'average') {
+			$form.referenceFieldId = field.referenceFieldId.value
+		}
+		if (field.type === 'sum' || field.type === 'average') {
+			$form.aggregateFieldId = field.aggregateFieldId.value
+		}
+		if (field.type === 'lookup') {
+			$form.referenceFieldId = field.referenceFieldId.value
+		}
+		if (field.type === 'select') {
+			$form.options = field.options.options.map((o) => o.toJSON())
+		}
+
+		if (
+			field.type === 'date' ||
+			field.type === 'date-range' ||
+			field.type === 'created-at' ||
+			field.type === 'updated-at'
+		) {
+			$form.format = field.formatString
+		}
+
+		if (field.type === 'rating') {
+			$form.max = field.max
+		}
+	}
+
+	console.log($form)
 
 	$: showDescription = false
 	$: if (!showDescription) {
@@ -50,13 +98,13 @@
 </script>
 
 <Modal
-	title="Create New Field"
+	title="Update New Field"
 	placement="top-center"
 	class="static w-full rounded-sm"
 	size="lg"
-	bind:open={$createFieldOpen}
+	bind:open={$updateFieldOpen}
 >
-	<form method="POST" id="createField" use:enhance>
+	<form method="POST" id="updateField" use:enhance>
 		<div class="space-y-2" use:autoAnimate={{ duration: 100 }}>
 			<div class="grid grid-cols-2 gap-x-3 gap-y-4">
 				<Label class="flex flex-col gap-2">
@@ -66,7 +114,7 @@
 						<span class="text-red-500">*</span>
 					</div>
 
-					<FieldTypePicker bind:value={$form.type} class="w-full !justify-start" />
+					<FieldTypePicker disabled bind:value={$form.type} class="w-full !justify-start" />
 				</Label>
 
 				<Label class="flex flex-col gap-2">
@@ -89,7 +137,7 @@
 				</Label>
 			{/if}
 
-			<MutateFieldComponent type={$form.type} form={superFrm} isNew />
+			<MutateFieldComponent type={$form.type} form={superFrm} />
 		</div>
 	</form>
 
@@ -122,12 +170,12 @@
 					{/if}
 				</div>
 				<div class="space-x-2">
-					<Button color="alternative" on:click={() => createFieldOpen.set(false)}>Discard</Button>
-					<Button class="gap-4" type="submit" form="createField" disabled={$submitting}>
+					<Button color="alternative" on:click={() => updateFieldOpen.set(false)}>Discard</Button>
+					<Button class="gap-4" type="submit" form="updateField" disabled={$submitting}>
 						{#if $delayed}
 							<Spinner size="5" />
 						{/if}
-						Create New Field</Button
+						Update New Field</Button
 					>
 				</div>
 			</div>

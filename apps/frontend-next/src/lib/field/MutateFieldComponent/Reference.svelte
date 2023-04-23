@@ -10,6 +10,7 @@
 	import { getTable } from '$lib/context'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
+	export let isNew = false
 
 	const { value: foreignTableId } = formFieldProxy(form, 'foreignTableId')
 	const { value: displayFieldIds } = formFieldProxy(form, 'displayFieldIds')
@@ -21,7 +22,7 @@
 	$: coreForeignTable = foreignTable ? TableFactory.fromQuery(foreignTable) : undefined
 
 	const [, previousForeignTableId] = withPrevious($foreignTableId)
-	$: if ($foreignTableId && $foreignTableId !== previousForeignTableId) {
+	$: if (isNew && $foreignTableId && previousForeignTableId && $foreignTableId !== previousForeignTableId) {
 		$displayFieldIds = [] as never
 	}
 </script>
@@ -33,16 +34,21 @@
 			<span class="text-red-500">*</span>
 		</Label>
 
-		<TablePicker bind:value={$foreignTableId} name="foreignTableId" class="w-full !justify-start" />
+		<TablePicker disabled={!isNew} bind:value={$foreignTableId} name="foreignTableId" class="w-full !justify-start" />
 	</div>
 	{#if coreForeignTable}
 		<div class="space-y-2">
 			<Label class="inline-flex items-center gap-2">
 				<span>display fields</span>
 			</Label>
-			<div class="grid grid-cols-2 gap-2">
-				<FieldsPicker table={coreForeignTable} bind:group={$displayFieldIds} disabled={!foreignTable} />
-				{#if $table.id.value !== $foreignTableId}
+			<div class="flex gap-2">
+				<FieldsPicker
+					class="w-full !justify-start"
+					table={coreForeignTable}
+					bind:group={$displayFieldIds}
+					disabled={!foreignTable}
+				/>
+				{#if $table.id.value !== $foreignTableId && isNew}
 					<Toggle bind:checked={$bidirectional}>bidirectional</Toggle>
 				{/if}
 			</div>
