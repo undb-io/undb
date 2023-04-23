@@ -81,8 +81,6 @@
 		}
 	}
 
-	console.log($form)
-
 	$: showDescription = false
 	$: if (!showDescription) {
 		$form.description = ''

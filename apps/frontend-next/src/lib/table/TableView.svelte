@@ -53,8 +53,7 @@
 		select.set(selected)
 	}
 
-	$: ordered = $table.getFieldsOrder($view)
-	$: fields = ordered.map((fieldId) => schema.get(fieldId)).filter(Boolean)
+	$: fields = $table.getOrderedFields($view)
 
 	$: {
 		defineCustomElements().then(() => {
@@ -117,7 +116,7 @@
 											fieldMenuId = column.prop as string
 										},
 										class:
-											'w-[24px] h-[24px] rounded-sm hover:bg-gray-100 opacity-0 group-hover:opacity-100 transition inline-flex items-center justify-center',
+											'w-[24px] h-[24px] rounded-sm hover:bg-gray-200 opacity-0 group-hover:opacity-100 transition inline-flex items-center justify-center',
 									},
 									h(
 										'svg',

@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store'
 
-export const createTableHidden = writable<boolean>(true)
+export const createTableOpen = writable<boolean>(false)
 
 export const createOptionOpen = writable<boolean>(false)
 

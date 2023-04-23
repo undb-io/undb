@@ -245,13 +245,14 @@ const count: TemplateFunc = (h, props) => {
 	return n(h, count.unpack())
 }
 
-const referenceComponent = (h: HyperFunc, value: (string | null)[]) => {
+const referenceComponent = (h: HyperFunc, value: (string | null)[] = []) => {
+	const content = value.filter(Boolean).toString()
 	return h(
 		'span',
 		{
-			class: 'bg-gray-100 text-xs mr-2 px-2.5 py-0.5 rounded ',
+			class: cx('bg-gray-100 text-xs mr-2 px-2.5 py-0.5 rounded', !content && 'text-gray-400 font-normal'),
 		},
-		value.filter(Boolean).toString() || 'unnamed',
+		content || 'unnamed',
 	)
 }
 
@@ -266,7 +267,7 @@ const reference: TemplateFunc = (h, props) => {
 		return h(
 			'div',
 			{ class: 'flex items-center space-x-2 text-gray-400 font-light' },
-			unpacked.map(() => referenceComponent(h, ['unamed'])),
+			unpacked.map(() => referenceComponent(h, [null])),
 		)
 	}
 	return h(
@@ -294,9 +295,17 @@ const select: TemplateFunc = (h, props) => {
 }
 
 const parent: TemplateFunc = (h, props) => {
-	if (!(props.model[props.prop] as ParentFieldValue | undefined)?.unpack()) return null
+	const unpacked = (props.model[props.prop] as ParentFieldValue | undefined)?.unpack()
+	if (!unpacked) return null
 	const field = props.column.field as ParentField
 	const value = field.getDisplayValues(props.model.display_values)[0]
+
+	if (!value) {
+		if (unpacked) {
+			return referenceComponent(h, [null])
+		}
+		return null
+	}
 
 	return referenceComponent(h, value)
 }

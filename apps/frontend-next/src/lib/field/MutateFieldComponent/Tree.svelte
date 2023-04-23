@@ -4,11 +4,13 @@
 	import type { UnwrapEffects } from 'sveltekit-superforms'
 	import FieldsPicker from '../FieldInputs/FieldsPicker.svelte'
 	import { getTable } from '$lib/context'
+	import type { Writable } from 'svelte/store'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 	export let isNew = false
+	export let path: any[] = []
 
-	const parentFieldName = fieldProxy(form.form, 'parentFieldName')
+	const parentFieldName = fieldProxy(form.form, [...path, 'parentFieldName'] as any) as Writable<string>
 
 	const { value: displayFieldIds } = formFieldProxy(form, 'displayFieldIds')
 

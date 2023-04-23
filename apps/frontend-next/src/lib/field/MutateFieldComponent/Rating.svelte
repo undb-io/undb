@@ -1,13 +1,16 @@
 <script lang="ts">
+	import type { Writable } from 'svelte/store'
+
 	import { Label, NumberInput } from 'flowbite-svelte'
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
 	import { RATING_MAX, RATING_MAX_DEFAULT } from '@undb/core'
 	import { onMount } from 'svelte'
 
+	export let path: any[] = []
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 
-	const max = fieldProxy(form.form, 'max')
+	const max = fieldProxy(form.form, [...path, 'max'] as any) as Writable<number>
 
 	onMount(() => {
 		$max = RATING_MAX_DEFAULT as never

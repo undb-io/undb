@@ -5,16 +5,17 @@
 	import FieldsPicker from '../FieldInputs/FieldsPicker.svelte'
 	import type { Writable } from 'svelte/store'
 	import { getTable } from '$lib/context'
-	import type { IQueryTable, ReferenceField, TreeField } from '@undb/core'
+	import { TableFactory, type IQueryTable, type ReferenceField, type TreeField } from '@undb/core'
 	import { page } from '$app/stores'
 	import { Label } from 'flowbite-svelte'
 
 	const table = getTable()
+	export let path: any[] = []
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 
-	const referenceFieldId = fieldProxy(form.form, 'referenceFieldId')
-	const displayFieldIds = fieldProxy(form.form, 'displayFieldIds') as Writable<string[]>
+	const referenceFieldId = fieldProxy(form.form, [...path, 'referenceFieldId'] as any) as Writable<string>
+	const displayFieldIds = fieldProxy(form.form, [...path, 'displayFieldIds'] as any) as Writable<string[]>
 
 	$: schema = $table.schema.toIdMap()
 
@@ -25,16 +26,22 @@
 
 	$: tables = ($page.data.tables ?? []) as IQueryTable[]
 	$: foreignTable = tables.find((t) => t.id === foreignTableId)
+	$: coreForeignTable = foreignTable ? TableFactory.fromQuery(foreignTable) : undefined
 </script>
 
 <div class="grid grid-cols-2 gap-2">
 	<ReferenceFieldPicker bind:value={$referenceFieldId} {...$$restProps} />
-	{#if foreignTable}
+	{#if coreForeignTable}
 		<div class="space-y-2">
 			<Label>
 				<span>display fields</span>
 			</Label>
-			<FieldsPicker table={foreignTable} bind:group={$displayFieldIds} {...$$restProps} />
+			<FieldsPicker
+				table={coreForeignTable}
+				bind:group={$displayFieldIds}
+				{...$$restProps}
+				filter={(f) => f.isPrimitive()}
+			/>
 		</div>
 	{/if}
 </div>

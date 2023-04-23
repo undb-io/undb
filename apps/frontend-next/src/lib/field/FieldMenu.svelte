@@ -1,7 +1,12 @@
 <script lang="ts">
+	import { getView } from '$lib/context'
 	import { updateFieldOpen } from '$lib/store/modal'
-	import { IconEdit } from '@tabler/icons-svelte'
-	import { DropdownItem } from 'flowbite-svelte'
+	import { currentField } from '$lib/store/table'
+	import { IconEdit, IconPin, IconPinnedOff } from '@tabler/icons-svelte'
+	import { DropdownDivider, DropdownItem } from 'flowbite-svelte'
+
+	const view = getView()
+	const pinned = !!$view.pinnedFields?.getPinnedPosition($currentField!.id.value)
 </script>
 
 <DropdownItem
@@ -10,4 +15,13 @@
 >
 	<IconEdit size={16} />
 	<span>Update Field</span>
+</DropdownItem>
+<DropdownDivider />
+<DropdownItem class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium">
+	{#if pinned}
+		<IconPinnedOff size={16} />
+	{:else}
+		<IconPin size={16} />
+	{/if}
+	<span>Pin</span>
 </DropdownItem>

@@ -15,7 +15,7 @@ export const createConfig = (data: string, env = 'development') =>
     dbName: path.join(data, `undb.${env}.sqlite`),
     debug: env !== 'production',
     forceUndefined: true,
-    flushMode: FlushMode.COMMIT,
+    flushMode: FlushMode.ALWAYS,
     migrations: {
       disableForeignKeys: true,
       snapshot: true,

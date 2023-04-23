@@ -2,19 +2,21 @@
 	import { page } from '$app/stores'
 	import { Label, Toggle } from 'flowbite-svelte'
 	import { withPrevious } from 'svelte-previous'
-	import { fieldProxy, formFieldProxy, type SuperForm } from 'sveltekit-superforms/client'
+	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
 	import { TableFactory, type IQueryTable } from '@undb/core'
 	import FieldsPicker from '../FieldInputs/FieldsPicker.svelte'
 	import TablePicker from '../FieldInputs/TablePicker.svelte'
 	import { getTable } from '$lib/context'
+	import type { Writable } from 'svelte/store'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 	export let isNew = false
+	export let path: any[] = []
 
-	const { value: foreignTableId } = formFieldProxy(form, 'foreignTableId')
-	const { value: displayFieldIds } = formFieldProxy(form, 'displayFieldIds')
-	const bidirectional = fieldProxy(form.form, 'bidirectional')
+	const foreignTableId = fieldProxy(form.form, [...path, 'foreignTableId'] as any) as Writable<string>
+	const displayFieldIds = fieldProxy(form.form, [...path, 'displayFieldIds'] as any) as Writable<string[]>
+	const bidirectional = fieldProxy(form.form, [...path, 'bidirectional'] as any) as Writable<boolean>
 
 	const table = getTable()
 	$: tables = $page.data.tables as IQueryTable[]
@@ -22,7 +24,7 @@
 	$: coreForeignTable = foreignTable ? TableFactory.fromQuery(foreignTable) : undefined
 
 	const [, previousForeignTableId] = withPrevious($foreignTableId)
-	$: if (isNew && $foreignTableId && previousForeignTableId && $foreignTableId !== previousForeignTableId) {
+	$: if (isNew && $foreignTableId && previousForeignTableId && $foreignTableId !== $previousForeignTableId) {
 		$displayFieldIds = [] as never
 	}
 </script>
@@ -48,7 +50,7 @@
 					bind:group={$displayFieldIds}
 					disabled={!foreignTable}
 				/>
-				{#if $table.id.value !== $foreignTableId && isNew}
+				{#if $table?.id.value !== $foreignTableId && isNew}
 					<Toggle bind:checked={$bidirectional}>bidirectional</Toggle>
 				{/if}
 			</div>

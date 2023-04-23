@@ -6,27 +6,27 @@ import type { PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async () => {
 	// Server API:
-	const form = await superValidate(createTableInput)
+	const createTable = await superValidate(createTableInput)
 
 	// Always return { form } in load and form actions.
-	return { form }
+	return { createTable }
 }
 
 export const actions: Actions = {
 	createTable: async (event) => {
-		const form = await superValidate(event.request, createTableInput)
+		const createTable = await superValidate(event.request, createTableInput)
 
-		if (!form.valid) {
+		if (!createTable.valid) {
 			// Again, always return { form } and things will just work.
-			return fail(400, { form })
+			return fail(400, { form: createTable })
 		}
 
-		const { id } = await trpc(event).table.create.mutate(form.data)
+		const { id } = await trpc(event).table.create.mutate(createTable.data)
 
 		if (id) {
 			throw redirect(303, `/t/${id}`)
 		}
 
-		return { form, id }
+		return { form: createTable, id }
 	},
 }

@@ -610,6 +610,9 @@ importers:
         specifier: ^2.9.0
         version: 2.9.0(i18next@22.4.14)(zod@3.21.4)
     devDependencies:
+      '@total-typescript/ts-reset':
+        specifier: github:total-typescript/ts-reset
+        version: github.com/total-typescript/ts-reset/4d44ea0eee4709bcc0317592eb9ca157785122d4
       '@types/lodash':
         specifier: ^4.14.192
         version: 4.14.192
@@ -625,6 +628,9 @@ importers:
       rimraf:
         specifier: ^5.0.0
         version: 5.0.0
+      t:
+        specifier: ^0.5.1
+        version: 0.5.1
       tsconfig:
         specifier: ^0.0.0
         version: link:../tsconfig
@@ -12184,6 +12190,10 @@ packages:
       tslib: 2.5.0
     dev: true
 
+  /t@0.5.1:
+    resolution: {integrity: sha512-VPWkKwJPOldeqDKesRwOLhKNbVRUbzh8yoFWqwMTXqQ2BpdY7SHJqPbIRb6qfidlFhh2LBNBDJQGjPnqQcwSgg==}
+    dev: true
+
   /tabbable@6.0.1:
     resolution: {integrity: sha512-SYJSIgeyXW7EuX1ytdneO5e8jip42oHWg9xl/o3oTYhmXusZVgiA+VlPvjIN+kHii9v90AmzTZEBcsEvuAY+TA==}
     dev: false
@@ -13606,4 +13616,10 @@ packages:
       webpod: 0.0.2
       which: 3.0.0
       yaml: 2.2.1
+    dev: true
+
+  github.com/total-typescript/ts-reset/4d44ea0eee4709bcc0317592eb9ca157785122d4:
+    resolution: {tarball: https://codeload.github.com/total-typescript/ts-reset/tar.gz/4d44ea0eee4709bcc0317592eb9ca157785122d4}
+    name: '@total-typescript/ts-reset'
+    version: 0.4.2
     dev: true

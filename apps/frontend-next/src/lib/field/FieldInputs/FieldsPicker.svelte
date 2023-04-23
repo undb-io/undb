@@ -10,7 +10,7 @@
 	export let table: Table
 	export let filter: (field: Field) => boolean = identity
 
-	$: fields = table.schema.fields.filter(filter)
+	$: fields = table.getOrderedFields().filter(filter)
 	$: selected = fields.filter((f) => group?.includes(f.id.value))
 </script>
 
@@ -51,7 +51,7 @@
 	<Dropdown
 		triggeredBy="#displayFieldIds"
 		inline
-		class="max-h-64 w-48 overflow-y-auto py-1 shadow-md"
+		class="max-h-64 w-64 overflow-y-auto py-1 shadow-md"
 		frameClass="z-[100]"
 	>
 		{#if !fields.length}

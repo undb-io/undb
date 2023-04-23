@@ -5,16 +5,18 @@
 	import { getTable } from '$lib/context'
 	import { TableFactory, type IQueryTable, type ReferenceField, type TreeField } from '@undb/core'
 	import { page } from '$app/stores'
-	import { Alert, Label } from 'flowbite-svelte'
+	import { Label } from 'flowbite-svelte'
 	import FieldPicker from '../FieldInputs/FieldPicker.svelte'
+	import type { Writable } from 'svelte/store'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
+	export let path: any[] = []
 
 	const table = getTable()
 	$: schema = $table.schema.toIdMap()
 
-	const referenceFieldId = fieldProxy(form.form, 'referenceFieldId')
-	const aggregateFieldId = fieldProxy(form.form, 'aggregateFieldId')
+	const referenceFieldId = fieldProxy(form.form, [...path, 'referenceFieldId'] as any) as Writable<string>
+	const aggregateFieldId = fieldProxy(form.form, [...path, 'aggregateFieldId'] as any) as Writable<string>
 
 	$: foreignTableId = $referenceFieldId
 		? (schema.get($referenceFieldId) as ReferenceField | TreeField | undefined)?.foreignTableId.into() ??
@@ -38,11 +40,7 @@
 				bind:value={$aggregateFieldId}
 				{...$$restProps}
 				filter={(f) => f.isNumeric && !f.isAggregate}
-			>
-				<Alert slot="empty" color="yellow">
-					<span class="font-medium">Warning alert!</span> No numeric field for averageaggregate.
-				</Alert>
-			</FieldPicker>
+			/>
 		</div>
 	{/if}
 </div>

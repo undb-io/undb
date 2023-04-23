@@ -5,7 +5,7 @@
 	import type { LayoutData } from './$types'
 	import CreateTable from '$lib/table/CreateTable.svelte'
 	import { Avatar, Button, Dropdown, DropdownItem } from 'flowbite-svelte'
-	import { createTableHidden } from '$lib/store/modal'
+	import { createTableOpen } from '$lib/store/modal'
 	import { page } from '$app/stores'
 	import { IconTable, IconUsers } from '@tabler/icons-svelte'
 
@@ -204,7 +204,7 @@
 							{/each}
 						</ul>
 
-						<Button size="xs" class="w-full mt-2" outline on:click={() => createTableHidden.set(false)}>
+						<Button size="xs" class="w-full mt-2" outline on:click={() => createTableOpen.set(true)}>
 							Create New Table</Button
 						>
 					</li>
@@ -264,5 +264,5 @@
 		</div>
 	</main>
 
-	<CreateTable form={$page.data.form} />
+	<CreateTable data={$page.data.form} />
 </div>

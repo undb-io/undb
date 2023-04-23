@@ -7,8 +7,9 @@
 	import type { Writable } from 'svelte/store'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
+	export let path: any[] = []
 
-	const format = fieldProxy(form.form, 'format') as Writable<string>
+	const format = fieldProxy(form.form, [...path, 'format'] as any) as Writable<string>
 
 	onMount(() => {
 		$format = DEFAULT_DATE_FORMAT

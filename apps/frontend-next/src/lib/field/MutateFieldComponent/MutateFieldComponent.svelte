@@ -1,4 +1,7 @@
 <script lang="ts">
+	export let path: any[] = []
+	import Parent from './Parent.svelte'
+
 	import Select from './Select.svelte'
 
 	import Tree from './Tree.svelte'
@@ -39,7 +42,8 @@
 		average: Average,
 		tree: Tree,
 		select: Select,
+		parent: Parent,
 	}
 </script>
 
-<svelte:component this={map[type]} {form} {isNew} />
+<svelte:component this={map[type]} {form} {isNew} {path} />
