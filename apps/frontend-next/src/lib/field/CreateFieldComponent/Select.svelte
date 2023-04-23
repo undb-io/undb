@@ -2,7 +2,7 @@
 	import { Label } from 'flowbite-svelte'
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
-	import OptionsInput from '../CreateFieldInputs/OptionsInput.svelte'
+	import OptionsInput from '../FieldInputs/OptionsInput.svelte'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 

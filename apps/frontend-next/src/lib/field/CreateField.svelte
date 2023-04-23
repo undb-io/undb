@@ -2,9 +2,8 @@
 	import autoAnimate from '@formkit/auto-animate'
 	import { getTable } from '$lib/context'
 	import { createFieldOpen } from '$lib/store/modal'
-	import { Button, Input, Label, Modal, Select, Spinner, Toggle, A, Popover, Badge, Textarea } from 'flowbite-svelte'
+	import { Button, Input, Label, Modal, Spinner, Toggle, Popover, Badge, Textarea } from 'flowbite-svelte'
 	import FieldIcon from './FieldIcon.svelte'
-	import { FIELD_SELECT_ITEMS } from './types'
 	import { page } from '$app/stores'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { trpc } from '$lib/trpc/client'
@@ -13,7 +12,7 @@
 	import { IconEyeClosed, IconPlus } from '@tabler/icons-svelte'
 	import { canDisplay } from '@undb/core'
 	import type { Validation } from 'sveltekit-superforms/index'
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
+	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
 
 	const table = getTable()
 
@@ -50,7 +49,13 @@
 		.filter(Boolean)
 </script>
 
-<Modal title="Create New Field" placement="top-center" class="w-full rounded-sm" size="lg" bind:open={$createFieldOpen}>
+<Modal
+	title="Create New Field"
+	placement="top-center"
+	class="static w-full rounded-sm"
+	size="lg"
+	bind:open={$createFieldOpen}
+>
 	<form method="POST" id="createField" use:enhance>
 		<div class="space-y-2" use:autoAnimate={{ duration: 100 }}>
 			<div class="grid grid-cols-2 gap-x-3 gap-y-4">
@@ -61,14 +66,7 @@
 						<span class="text-red-500">*</span>
 					</div>
 
-					<div class="flex">
-						<div
-							class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm text-center text-gray-500 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600 !border-r-0"
-						>
-							<FieldIcon size={14} type={$form.type} />
-						</div>
-						<Select class="rounded-sm !rounded-l-none" items={FIELD_SELECT_ITEMS} bind:value={$form.type} required />
-					</div>
+					<FieldTypePicker bind:value={$form.type} class="w-full !justify-start" />
 				</Label>
 
 				<Label class="flex flex-col gap-2">
@@ -94,8 +92,6 @@
 			<CreateFieldComponent type={$form.type} form={superFrm} />
 		</div>
 	</form>
-
-	<SuperDebug data={$form} />
 
 	<svelte:fragment slot="footer">
 		<div class="w-full flex items-center justify-between">

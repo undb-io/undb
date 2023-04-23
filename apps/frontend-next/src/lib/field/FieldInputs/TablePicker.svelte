@@ -23,7 +23,7 @@
 			{/if}
 		</Button>
 	</ListboxButton>
-	<ListboxOptions class="absolute bg-white py-1 border border-gray-100 shadow-lg overflow-y-auto w-full mt-2 z-50">
+	<ListboxOptions class="fixed bg-white py-1 border border-gray-100 shadow-lg overflow-y-auto min-w-[200px] mt-2 z-50">
 		{#each tables as table (table.id)}
 			<ListboxOption
 				value={table.id}

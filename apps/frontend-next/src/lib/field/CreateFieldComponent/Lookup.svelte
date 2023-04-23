@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms/index'
-	import ReferenceFieldPicker from '../CreateFieldInputs/ReferenceFieldPicker.svelte'
-	import FieldsPicker from '../CreateFieldInputs/FieldsPicker.svelte'
+	import ReferenceFieldPicker from '../FieldInputs/ReferenceFieldPicker.svelte'
+	import FieldsPicker from '../FieldInputs/FieldsPicker.svelte'
 	import type { Writable } from 'svelte/store'
 	import { getTable } from '$lib/context'
 	import type { IQueryTable, ReferenceField, TreeField } from '@undb/core'

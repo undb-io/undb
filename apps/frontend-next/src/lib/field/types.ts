@@ -17,4 +17,4 @@ export const FIELD_SELECT_ITEMS = [
 	{ value: 'count', name: 'Count', group: 'Lookup' },
 	{ value: 'sum', name: 'Sum', group: 'Lookup' },
 	{ value: 'average', name: 'Average', group: 'Lookup' },
-]
+] as const

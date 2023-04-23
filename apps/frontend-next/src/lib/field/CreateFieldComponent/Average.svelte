@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms/index'
-	import ReferenceFieldPicker from '../CreateFieldInputs/ReferenceFieldPicker.svelte'
+	import ReferenceFieldPicker from '../FieldInputs/ReferenceFieldPicker.svelte'
 	import { getTable } from '$lib/context'
 	import { TableFactory, type IQueryTable, type ReferenceField, type TreeField } from '@undb/core'
 	import { page } from '$app/stores'
 	import { Alert, Label } from 'flowbite-svelte'
-	import FieldPicker from '../CreateFieldInputs/FieldPicker.svelte'
+	import FieldPicker from '../FieldInputs/FieldPicker.svelte'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 

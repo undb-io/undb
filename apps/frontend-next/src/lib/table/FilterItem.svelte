@@ -1,6 +1,6 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import FieldPicker from '$lib/field/CreateFieldInputs/FieldPicker.svelte'
+	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
 	import { filters } from '$lib/store/filter'
 	import { IconTrash } from '@tabler/icons-svelte'
 	import { Button } from 'flowbite-svelte'
