@@ -13,6 +13,7 @@
 	import { IconEyeClosed, IconPlus } from '@tabler/icons-svelte'
 	import { canDisplay } from '@undb/core'
 	import type { Validation } from 'sveltekit-superforms/index'
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
 	const table = getTable()
 
@@ -93,6 +94,8 @@
 			<CreateFieldComponent type={$form.type} form={superFrm} />
 		</div>
 	</form>
+
+	<SuperDebug data={$form} />
 
 	<svelte:fragment slot="footer">
 		<div class="w-full flex items-center justify-between">

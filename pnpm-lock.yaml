@@ -543,6 +543,9 @@ importers:
       svelte-preprocess:
         specifier: ^4.10.7
         version: 4.10.7(postcss-load-config@4.0.1)(postcss@8.4.21)(svelte@3.54.0)(typescript@5.0.3)
+      svelte-previous:
+        specifier: ^2.1.3
+        version: 2.1.3(svelte@3.54.0)
       svelte-tiny-virtual-list:
         specifier: ^2.0.5
         version: 2.0.5
@@ -12137,6 +12140,14 @@ packages:
       strip-indent: 3.0.0
       svelte: 3.54.0
       typescript: 4.9.5
+    dev: true
+
+  /svelte-previous@2.1.3(svelte@3.54.0):
+    resolution: {integrity: sha512-6+AsoLftHkQC0OjJbyimiLRRAc7eBnUYurrBn4HPRJ87CyviDBp/4lvduf16P9hW7r/oETcCdEZUhHFfh4+VPg==}
+    peerDependencies:
+      svelte: ^3.49.0
+    dependencies:
+      svelte: 3.54.0
     dev: true
 
   /svelte-tiny-virtual-list@2.0.5:
