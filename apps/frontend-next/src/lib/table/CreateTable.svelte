@@ -1,23 +1,12 @@
 <script lang="ts">
 	import { createTableOpen } from '$lib/store/modal'
-	import {
-		FloatingLabelInput,
-		Accordion,
-		AccordionItem,
-		Button,
-		Alert,
-		Label,
-		Modal,
-		Input,
-		Spinner,
-	} from 'flowbite-svelte'
+	import { Accordion, AccordionItem, Button, Alert, Label, Modal, Input, Spinner, Toggle } from 'flowbite-svelte'
 	import type { Validation } from 'sveltekit-superforms'
-	import { FieldId, type ICreateTableInput, type createTableInput } from '@undb/core'
+	import { FieldId, canDisplay, type ICreateTableInput, type createTableInput } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
-	import { IconPlus } from '@tabler/icons-svelte'
+	import { IconCircleChevronDown, IconCircleChevronUp, IconPlus } from '@tabler/icons-svelte'
 	import FieldTypePicker from '$lib/field/FieldInputs/FieldTypePicker.svelte'
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 	import MutateFieldComponent from '$lib/field/MutateFieldComponent/MutateFieldComponent.svelte'
 
 	export let data: Validation<typeof createTableInput>
@@ -86,45 +75,65 @@
 					<Alert>{$errors.name}</Alert>
 				{/if}
 
-				<Accordion class="my-4 space-y-2">
-					{#each schema as field, i}
-						<AccordionItem
-							bind:open={opened[field.id ?? '']}
-							defaultClass="flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl !py-2"
-						>
-							<span slot="header">
-								<div class="flex items-center text-sm gap-2">
-									<FieldIcon size={16} type={field.type} />
-									{field.name || `Field ${schema.findIndex((f) => f.id === field.id) + 1}`}
-								</div>
-							</span>
+				{#if $form.schema.length}
+					<Accordion class="my-4">
+						{#each $form.schema as field, i}
+							<AccordionItem
+								bind:open={opened[field.id ?? '']}
+								defaultClass="flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl !py-2"
+							>
+								<span slot="header" class="text-sm">
+									<div class="flex items-center text-sm gap-2">
+										<FieldIcon size={14} type={field.type} />
+										{field.name || `Field ${schema.findIndex((f) => f.id === field.id) + 1}`}
+									</div>
+								</span>
 
-							<div class="space-y-2">
-								<div class="grid grid-cols-2 gap-4">
-									<div>
-										<Label class="space-y-2">
-											<span>Type</span>
-											<FieldTypePicker class="w-full !justify-start" bind:value={$form.schema[i].type} />
-										</Label>
+								<div slot="arrowup">
+									<IconCircleChevronUp size={16} />
+								</div>
+								<div slot="arrowdown">
+									<IconCircleChevronDown size={16} />
+								</div>
+
+								<div class="space-y-2">
+									<div class="grid grid-cols-2 gap-4">
+										<div>
+											<Label class="space-y-2">
+												<span>Type</span>
+												<FieldTypePicker class="w-full !justify-start" bind:value={$form.schema[i].type} />
+											</Label>
+										</div>
+										<div>
+											<Label class="space-y-2">
+												<span>name</span>
+												<Input
+													type="text"
+													placeholder={field.description ?? 'name'}
+													required
+													data-invalid={$errors.schema?.[i]}
+													bind:value={$form.schema[i].name}
+												/>
+											</Label>
+										</div>
 									</div>
-									<div>
-										<Label class="space-y-2">
-											<span>name</span>
-											<Input
-												type="text"
-												placeholder={field.description ?? 'name'}
-												required
-												data-invalid={$errors.schema?.[i]}
-												bind:value={$form.schema[i].name}
-											/>
-										</Label>
+									<MutateFieldComponent type={$form.schema[i].type} form={superFrm} isNew path={['schema', i]} />
+								</div>
+
+								<div class="flex justify-between mt-5">
+									<div />
+									<div class="flex gap-4">
+										<Toggle bind:checked={$form.schema[i].required}>required</Toggle>
+										{#if canDisplay($form.schema[i].type)}
+											<Toggle bind:checked={$form.schema[i].display}>display</Toggle>
+										{/if}
+										<Button size="xs" color="light" on:click={() => (opened[field.id ?? ''] = false)}>ok</Button>
 									</div>
 								</div>
-								<MutateFieldComponent type={$form.schema[i].type} form={superFrm} isNew path={['schema', i]} />
-							</div>
-						</AccordionItem>
-					{/each}
-				</Accordion>
+							</AccordionItem>
+						{/each}
+					</Accordion>
+				{/if}
 			</div>
 
 			<Button color="light" outline class="w-full my-3" on:click={addField}>
@@ -133,8 +142,6 @@
 			>
 		</div>
 	</form>
-
-	<SuperDebug data={$form} />
 
 	<svelte:fragment slot="footer">
 		<div class="w-full flex justify-end gap-2">
