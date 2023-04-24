@@ -34,7 +34,7 @@ export const KanbanCard: React.FC<IProps & SortableProps> = ({ record, attribute
       }}
     >
       <Stack spacing={8} sx={(theme) => ({ fontSize: theme.fontSizes.sm })}>
-        {Object.entries(record.values.valueJSON).map(([key, value]) => {
+        {Object.entries(record.values.valuesPair).map(([key, value]) => {
           const field = table.schema.getFieldById(key)
           if (field.isNone()) return null
           const f = field.unwrap()

@@ -53,7 +53,7 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
         >
           <IconGripVertical color="gray" />
         </ActionIcon>
-        <RecordValues values={record.valuesJSON} />
+        <RecordValues values={record.valuesPair} />
       </Group>
     </Box>
   )

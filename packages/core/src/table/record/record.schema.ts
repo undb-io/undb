@@ -29,9 +29,12 @@ export const internalRecordValues = z.object({
 
 export type IInternalRecordValues = z.infer<typeof internalRecordValues>
 
-export type RecordValueJSON = Record<string, FieldValue>
+export type RecordValuePair = Record<string, FieldValue>
+// TODO: type values
+export type RecordValueJSON = Record<string, any>
 
-export type RecordAllValues = Merge<RecordValueJSON, IInternalRecordValues>
+export type RecordAllValues = Merge<RecordValuePair, IInternalRecordValues>
+export type RecordAllJSON = Merge<RecordValueJSON, IInternalRecordValues>
 
 export type RecordAllValueType = ValueOf<RecordAllValues> | ValueOf<IInternalRecordValues> | ICollaboratorProfile
 

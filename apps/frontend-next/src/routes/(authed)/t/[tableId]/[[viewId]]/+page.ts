@@ -13,11 +13,15 @@ export const load: PageLoad = async (event) => {
 	const view = coreTable.mustGetView(viewId)
 	const fields = view.getOrderedFields(coreTable.schema.nonSystemFields)
 
+	const recordId = event.url.searchParams.get('r')
+
 	event.depends(`records:${tableId}`)
 
 	return {
 		records: trpc(event).record.list.query({ tableId }),
+		record: recordId ? trpc(event).record.get.query({ tableId, id: recordId }) : null,
 		createRecord: superValidate(createMutateRecordValuesSchema(fields), { id: 'createRecord' }),
+		updateRecord: superValidate(createMutateRecordValuesSchema(fields), { id: 'updateRecord' }),
 		createField: superValidate(
 			{ type: 'string' },
 			z.object<{ [key: string]: any }>({

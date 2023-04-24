@@ -1,5 +1,5 @@
 import { page } from '$app/stores'
-import type { Records, Table, View } from '@undb/core'
+import type { Record, Records, Table, View } from '@undb/core'
 import { derived, writable } from 'svelte/store'
 
 export const currentTable = writable<Table>()
@@ -10,6 +10,9 @@ export const getView = () => currentView
 
 export const records = writable<Records>()
 export const getRecords = () => records
+
+export const currentRecord = writable<Record | undefined>()
+export const getRecord = () => currentRecord
 
 export const currentFieldId = writable<string | undefined>()
 export const currentField = derived([currentTable, currentFieldId], ([table, fieldId]) =>

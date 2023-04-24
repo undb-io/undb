@@ -10,7 +10,7 @@
 	const table = getTable()
 	const view = getView()
 
-	const values = record.values.valueJSON
+	const values = record.values.valuesPair
 </script>
 
 <Card rounded={false} class="!py-4 !px-4 shadow-sm hover:shadow-lg duration-200 cursor-grab select-none">

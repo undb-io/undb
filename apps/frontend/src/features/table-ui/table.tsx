@@ -109,7 +109,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
     [fields],
   )
 
-  const data = useMemo(() => records.map((r) => r.valuesJSON), [records])
+  const data = useMemo(() => records.map((r) => r.valuesPair), [records])
   const rt = useReactTable({
     data,
     meta: {

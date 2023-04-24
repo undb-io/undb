@@ -61,7 +61,7 @@ const DraggableRecord: React.FC<{ record: Record }> = ({ record }) => {
         }}
         size={12}
       />
-      <RecordValues values={record.valuesJSON} />
+      <RecordValues values={record.valuesPair} />
     </Group>
   )
 }

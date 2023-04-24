@@ -94,7 +94,7 @@ const mapper = (schema: TableSchemaIdMap, record: IQueryTreeRecord): SortableRec
   const r = RecordFactory.fromQuery(record, schema).unwrap()
   return {
     id: r.id.value,
-    values: r.valuesJSON,
+    values: r.valuesPair,
     children: record.children.map((r) => mapper(schema, r)),
   }
 }

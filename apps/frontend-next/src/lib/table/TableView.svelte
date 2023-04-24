@@ -82,7 +82,7 @@
 	let grid: RevoGrid
 	$: if (grid) handleRevogrid(grid)
 	$: if (grid) {
-		rows = $records.map((record) => record.valuesJSON)
+		rows = $records.map((record) => record.valuesPair)
 	}
 
 	$: if (grid) {
