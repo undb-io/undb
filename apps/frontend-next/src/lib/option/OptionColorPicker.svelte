@@ -1,5 +1,4 @@
 <script>
-	import { IconCircleChevronDown } from '@tabler/icons-svelte'
 	import { optionColorOrder, Option as CoreOption, OptionColor } from '@undb/core'
 	import Option from '$lib/option/Option.svelte'
 	import cx from 'classnames'
@@ -16,7 +15,7 @@
 			$$restProps.class,
 		)}
 	>
-		<IconCircleChevronDown size={14} />
+		<i class="ti ti-circle-chevron-down text-sm" />
 	</ListboxButton>
 	<ListboxOptions
 		class="fixed bg-white py-1 px-3 border border-gray-100 shadow-md h-64 overflow-y-auto z-50 grid grid-cols-2 gap-y-1 gap-x-3 place-items-center"

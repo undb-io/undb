@@ -1,5 +1,6 @@
 <script>
 	import '../app.postcss'
+	import '@tabler/icons-webfont/tabler-icons.min.css'
 	import NProgress from 'nprogress'
 	import { navigating } from '$app/stores'
 

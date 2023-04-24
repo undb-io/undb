@@ -5,7 +5,6 @@
 	import { onMount } from 'svelte'
 	import type { SetRequired } from 'type-fest'
 	import autoAnimate from '@formkit/auto-animate'
-	import { IconTrash } from '@tabler/icons-svelte'
 
 	export let value: SetRequired<IMutateOptionSchema, 'color'>[] = []
 
@@ -42,7 +41,7 @@
 				size="xs"
 				on:click={() => removeOption(index)}
 			>
-				<IconTrash color="gray" size={14} />
+				<i class="ti ti-trash text-sm" />
 			</Button>
 		</div>
 	{/each}

@@ -5,7 +5,6 @@
 	import { TableFactory, type IQueryTable, type Records, type Table, Record } from '@undb/core'
 	import { Alert, Button, Checkbox, CloseButton, Modal, Spinner } from 'flowbite-svelte'
 	import VirtualList from 'svelte-tiny-virtual-list'
-	import { IconPlus } from '@tabler/icons-svelte'
 	import { onMount } from 'svelte'
 	import { getTable } from '$lib/store/table'
 
@@ -82,7 +81,7 @@
 		{...$$restProps}
 		class={cx('space-x-2', $$restProps.class)}
 	>
-		<IconPlus />
+		<i class="ti ti-plus" />
 		<span> Add Record </span>
 	</Button>
 	<Modal title="Select Record" bind:open size="md" class="w-[700px] h-[600px]">

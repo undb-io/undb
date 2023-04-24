@@ -4,7 +4,6 @@
 	import { identity } from 'lodash'
 	import Portal from 'svelte-portal'
 	import FieldIcon from '../FieldIcon.svelte'
-	import { IconCheck } from '@tabler/icons-svelte'
 
 	export let group: string[] | undefined
 	export let table: Table
@@ -71,7 +70,7 @@
 						</span>
 					</div>
 					{#if selected}
-						<IconCheck size={16} />
+						<i class="ti ti-check text-sm" />
 					{/if}
 				</li>
 			</Checkbox>

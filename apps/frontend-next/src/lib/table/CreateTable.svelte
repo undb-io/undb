@@ -2,9 +2,8 @@
 	import { createTableOpen } from '$lib/store/modal'
 	import { Accordion, Button, Alert, Label, Modal, Input, Spinner } from 'flowbite-svelte'
 	import type { Validation } from 'sveltekit-superforms'
-	import { FieldId, type ICreateTableInput, type createTableInput } from '@undb/core'
+	import { FieldId, type createTableInput } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
-	import { IconPlus } from '@tabler/icons-svelte'
 	import CreateTableFieldAccordionItem from './CreateTableFieldAccordionItem.svelte'
 
 	export let data: Validation<typeof createTableInput>
@@ -83,7 +82,7 @@
 			</div>
 
 			<Button color="light" outline class="w-full my-3" on:click={addField}>
-				<IconPlus class="mr-4" size={16} />
+				<i class="ti ti-plus text-sm mr-4" />
 				Add Field</Button
 			>
 		</div>

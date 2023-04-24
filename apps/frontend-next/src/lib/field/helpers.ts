@@ -18,6 +18,7 @@ import {
 	TreeField,
 	UpdatedAtField,
 	type Field,
+	type IFieldType,
 } from '@undb/core'
 import type { Select } from 'flowbite-svelte'
 
@@ -108,3 +109,32 @@ export function getFilterOperators(field: Field | undefined) {
 
 	return data
 }
+
+export const icons: Record<IFieldType, string> = {
+	string: 'letter-t',
+	number: '123',
+	id: 'key',
+	'auto-increment': 'sort-ascending-2',
+	average: 'math-x-divide-2',
+	bool: 'square-check',
+	collaborator: 'user',
+	'date-range': 'calendar-time',
+	select: 'list-check',
+	date: 'calendar',
+	'created-at': 'calendar-plus',
+	'updated-at': 'calendar-stats',
+	email: 'mail',
+	color: 'palette',
+	reference: 'relation-many-to-many',
+	tree: 'hierarchy',
+	parent: 'binary-tree',
+	rating: 'stars',
+	count: 'calculator',
+	lookup: 'search',
+	sum: 'sum',
+	attachment: 'paperclip',
+	'created-by': 'calendar-plus',
+	'updated-by': 'calendar-stats',
+}
+
+export const getIconClass = (type: IFieldType) => `ti ti-${icons[type]}`

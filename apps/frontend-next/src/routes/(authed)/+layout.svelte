@@ -7,11 +7,10 @@
 	import { Avatar, Button, Dropdown, DropdownItem } from 'flowbite-svelte'
 	import { createTableOpen } from '$lib/store/modal'
 	import { page } from '$app/stores'
-	import { IconTable, IconUsers } from '@tabler/icons-svelte'
 
 	$: navigation = [
-		{ name: 'Tables', href: '/', icon: IconTable, current: $page.url.pathname === '/' },
-		{ name: 'Members', href: '/members', icon: IconUsers, current: $page.url.pathname === '/members' },
+		{ name: 'Tables', href: '/', icon: 'table', current: $page.url.pathname === '/' },
+		{ name: 'Members', href: '/members', icon: 'users', current: $page.url.pathname === '/members' },
 	]
 
 	let sidebarOpen = false
@@ -85,14 +84,17 @@
 															'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
 														)}
 													>
-														<svelte:component
-															this={item.icon}
-															class={cx(
-																item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
-																'h-6 w-6 shrink-0',
-															)}
-															aria-hidden="true"
-														/>
+														<div class="h-6 w-6 flex justify-center items-center">
+															<i
+																class={cx(
+																	item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
+																	'shrink-0 text-lg',
+																	`ti ti-${item.icon}`,
+																)}
+																aria-hidden="true"
+															/>
+														</div>
+
 														{item.name}
 													</a>
 												</li>
@@ -158,14 +160,16 @@
 											'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
 										)}
 									>
-										<svelte:component
-											this={item.icon}
-											class={cx(
-												item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
-												'h-6 w-6 shrink-0',
-											)}
-											aria-hidden="true"
-										/>
+										<div class="h-6 w-6 flex justify-center items-center">
+											<i
+												class={cx(
+													item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
+													'shrink-0 text-lg',
+													`ti ti-${item.icon}`,
+												)}
+												aria-hidden="true"
+											/>
+										</div>
 										{item.name}
 									</a>
 								</li>

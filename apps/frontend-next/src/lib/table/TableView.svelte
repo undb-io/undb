@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { IViewPinnedFields, PinnedPosition } from '@undb/core'
+	import cx from 'classnames'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
 	import { Button, Dropdown, P, Spinner, Toast } from 'flowbite-svelte'
 	import type { Edition, RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
@@ -16,6 +17,7 @@
 	import { invalidate } from '$app/navigation'
 	import FieldMenu from '$lib/field/FieldMenu.svelte'
 	import Portal from 'svelte-portal'
+	import { getIconClass } from '$lib/field/helpers'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -59,7 +61,8 @@
 					readonly: true,
 					columnProperties: () => {
 						return {
-							class: '!p-0 text-center border-r border-b border-gray-200 !bg-white',
+							class:
+								'!p-0 text-center border-r border-b border-gray-300 flex items-center justify-center bg-gray-100 hover:bg-gray-50',
 						}
 					},
 					columnTemplate: (h) => {
@@ -101,45 +104,42 @@
 						cellTemplate: cellTemplateMap[field.type],
 						columnTemplate: (h, column) => {
 							const id = getFieldDomId(column.prop)
-							return h('div', { class: 'inline-flex w-full justify-between items-center group' }, [
-								h('span', {}, column.name),
-								h(
-									'button',
-									{
-										id,
-										onClick: () => {
-											currentFieldId.set(column.prop as string)
-										},
-										class:
-											'w-[24px] h-[24px] rounded-sm hover:bg-gray-200 opacity-0 group-hover:opacity-100 inline-flex items-center justify-center',
-									},
+							return h(
+								'div',
+								{ class: 'inline-flex w-full justify-between items-center text-xs text-gray-700 font-medium' },
+								[
 									h(
-										'svg',
+										'div',
 										{
-											xmlns: 'http://www.w3.org/2000/svg',
-											class: 'icon icon-tabler icon-tabler-dots text-gray-400 ',
-											'stroke-width': '2',
-											stroke: 'currentColor',
-											fill: 'none',
-											'stroke-linecap': 'round',
-											'stroke-linejoin': 'rouned',
-											width: 16,
-											height: 16,
-											viewBox: '0 0 24 24',
+											class: 'space-x-2',
 										},
-										[
-											h('path', { stroke: 'none', d: 'M0 0h24v24H0z', fill: 'none' }),
-											h('path', { d: 'M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0' }),
-											h('path', { d: 'M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0' }),
-											h('path', { d: 'M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0' }),
-										],
+										[h('i', { class: getIconClass(column.field.type) }), h('span', {}, column.name)],
 									),
-								),
-							])
+									h(
+										'button',
+										{
+											id,
+											onClick: () => {
+												currentFieldId.set(column.prop as string)
+											},
+											class: 'w-[24px] h-[24px] rounded-sm hover:bg-gray-200 inline-flex items-center justify-center',
+										},
+										h('i', {
+											class: 'ti ti-chevron-down',
+										}),
+									),
+								],
+							)
 						},
-						columnProperties: () => {
+						columnProperties: (column: RevoGridType.ColumnRegular) => {
+							const sort = $view.getFieldSort(column.prop as string).into()
 							return {
-								class: 'border-r border-b border-gray-200 hover:bg-gray-50 transition-[background]',
+								class: cx(
+									'border-r border-b border-gray-300 hover:bg-gray-50 transition-[background] group flex justify-between bg-gray-100',
+									{
+										'bg-blue-50': !!sort,
+									},
+								),
 							}
 						},
 						cellProperties: () => {
@@ -281,5 +281,13 @@
 <style>
 	:global(.rgRow:hover) {
 		background-color: #eff6ff;
+	}
+
+	:global(revo-grid[theme='compact'] revogr-header .header-rgRow) {
+		height: 32px;
+	}
+
+	:global(revo-grid[theme='compact'] revogr-header) {
+		line-height: 32px;
 	}
 </style>

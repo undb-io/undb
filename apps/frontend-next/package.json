@@ -22,7 +22,7 @@
 		"@rgossiaux/svelte-headlessui": "^1.0.2",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.5.0",
-		"@tabler/icons-svelte": "^2.16.0",
+		"@tabler/icons-webfont": "^2.17.0",
 		"@tailwindcss/forms": "^0.5.3",
 		"@total-typescript/ts-reset": "^0.4.0",
 		"@trpc/client": "^10.18.0",

@@ -15,3 +15,5 @@ export const currentField = derived([currentTable, currentFieldId], ([table, fie
 	fieldId ? table.schema.getFieldById(fieldId).into(null) : null,
 )
 export const getField = () => currentField
+
+export const sorts = derived(currentView, (view) => view.sorts?.sorts ?? [])

@@ -5,7 +5,6 @@
 	import { Button } from 'flowbite-svelte'
 	import { identity } from 'lodash'
 	import FieldIcon from '../FieldIcon.svelte'
-	import { IconCheck } from '@tabler/icons-svelte'
 
 	export let value: string = ''
 	export let table: Table
@@ -16,7 +15,7 @@
 
 	$: fields = table.schema.fields.filter(filter)
 
-	$: selected = value ? fields.find((f) => f.id.value === value) : undefined
+	$: selected = value ? table.schema.fields.find((f) => f.id.value === value) : undefined
 	$: type = selected?.type
 </script>
 
@@ -43,7 +42,7 @@
 					{field.name.value}
 				</div>
 				{#if selectedItem}
-					<IconCheck size={14} />
+					<i class="ti ti-check text-sm" />
 				{/if}
 			</ListboxOption>
 		{/each}

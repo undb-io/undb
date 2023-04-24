@@ -192,7 +192,7 @@ export class UnderlyingRatingColumn extends UnderlyingFieldColumn<RatingField> {
 
 export class UnderlyingBoolColumn extends UnderlyingFieldColumn<BoolField> {
   build(tb: Knex.TableBuilder): void {
-    tb.boolean(this.name)
+    tb.boolean(this.name).defaultTo(false)
   }
 }
 

@@ -8,7 +8,6 @@
 	import { trpc } from '$lib/trpc/client'
 	import { page } from '$app/stores'
 	import KanbanCard from '$lib/kanban/KanbanCard.svelte'
-	import { IconRowInsertTop } from '@tabler/icons-svelte'
 	import { Button } from 'flowbite-svelte'
 	import { createOptionOpen } from '$lib/store/modal'
 
@@ -85,7 +84,7 @@
 					</div>
 
 					<Button color="alternative" class="w-full rounded-none h-8" size="xs">
-						<IconRowInsertTop />
+						<i class="ti ti-row-insert-top text-sm" />
 					</Button>
 				</div>
 

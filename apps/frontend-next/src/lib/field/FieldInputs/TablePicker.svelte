@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores'
 	import cx from 'classnames'
-	import { Button, Label, Select } from 'flowbite-svelte'
+	import { Button } from 'flowbite-svelte'
 	import type { IQueryTable } from '@undb/core'
 	import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@rgossiaux/svelte-headlessui'
-	import { IconCheck } from '@tabler/icons-svelte'
 
 	export let value: string
 
@@ -34,7 +33,7 @@
 					{table.name}
 				</div>
 				{#if selectedItem}
-					<IconCheck size={14} />
+					<i class="ti ti-check text-sm" />
 				{/if}
 			</ListboxOption>
 		{/each}

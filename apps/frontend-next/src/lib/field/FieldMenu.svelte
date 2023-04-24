@@ -4,7 +4,6 @@
 	import { currentFieldId, getField, getTable, getView } from '$lib/store/table'
 	import { updateFieldOpen } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
-	import { IconEdit, IconPin, IconPinnedOff, IconSortAscending2, IconSortDescending2 } from '@tabler/icons-svelte'
 	import type { ISortDirection } from '@undb/core'
 	import { DropdownDivider, DropdownItem } from 'flowbite-svelte'
 	import { noop } from 'lodash'
@@ -34,7 +33,7 @@
 	class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium"
 	on:click={() => updateFieldOpen.set(true)}
 >
-	<IconEdit size={16} />
+	<i class="ti ti-edit text-sm" />
 	<span>Update Field</span>
 </DropdownItem>
 
@@ -49,9 +48,9 @@
 	}}
 >
 	{#if pinned}
-		<IconPinnedOff size={16} />
+		<i class="ti ti-pinned-off text-sm" />
 	{:else}
-		<IconPin size={16} />
+		<i class="ti ti-pin text-sm" />
 	{/if}
 	<span>Pin</span>
 </DropdownItem>
@@ -59,10 +58,10 @@
 <DropdownDivider />
 
 <DropdownItem class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium" on:click={() => sort('asc')}>
-	<IconSortAscending2 size={16} />
+	<i class="ti ti-sort-ascending2 text-sm" />
 	<span>Asc</span>
 </DropdownItem>
 <DropdownItem class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium" on:click={() => sort('desc')}>
-	<IconSortDescending2 size={16} />
+	<i class="ti ti-sort-descending2 text-sm" />
 	<span>Desc</span>
 </DropdownItem>

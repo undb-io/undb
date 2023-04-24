@@ -3,7 +3,6 @@
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import FieldTypePicker from '$lib/field/FieldInputs/FieldTypePicker.svelte'
 	import MutateFieldComponent from '$lib/field/MutateFieldComponent/MutateFieldComponent.svelte'
-	import { IconCircleChevronUp, IconCircleChevronDown, IconEyeClosed, IconPlus, IconDots } from '@tabler/icons-svelte'
 	import { isControlledFieldType, canDisplay, type ICreateTableInput, createTableInput } from '@undb/core'
 	import { AccordionItem, Label, Input, Toggle, Button, Textarea, Dropdown, DropdownItem } from 'flowbite-svelte'
 	import type { SuperForm } from 'sveltekit-superforms/client'
@@ -38,10 +37,10 @@
 	</span>
 
 	<div slot="arrowup">
-		<IconCircleChevronUp size={16} />
+		<i class="ti ti-circle-cheveron-up text-sm" />
 	</div>
 	<div slot="arrowdown">
-		<IconCircleChevronDown size={16} />
+		<i class="ti ti-circle-cheveron-down text-sm" />
 	</div>
 
 	<div class="space-y-2" use:autoAnimate={{ duration: 100 }}>
@@ -83,9 +82,9 @@
 		<div>
 			<Button size="xs" color="alternative" class="space-x-1" on:click={() => (showDescription = !showDescription)}>
 				{#if showDescription}
-					<IconEyeClosed size={16} />
+					<i class="ti ti-eye-closed text-sm" />
 				{:else}
-					<IconPlus size={16} />
+					<i class="ti ti-plus text-sm" />
 				{/if}
 				<span>{showDescription ? 'hide' : 'show'} description </span>
 			</Button>
@@ -98,7 +97,7 @@
 				<Toggle bind:checked={field.display}>display</Toggle>
 			{/if}
 			<button on:click|preventDefault|stopPropagation class="hover:bg-gray-100 px-3 rounded-sm">
-				<IconDots size={14} />
+				<i class="ti ti-dots text-sm" />
 			</button>
 			<Dropdown>
 				<DropdownItem class="text-red-500 font-normal" on:click={remove}>remove</DropdownItem>

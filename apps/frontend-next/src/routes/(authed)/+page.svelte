@@ -3,7 +3,6 @@
 	import type { LayoutData } from './$types'
 	import { createTableOpen } from '$lib/store/modal'
 	import Empty from '$lib/table/Empty.svelte'
-	import { IconPlus } from '@tabler/icons-svelte'
 
 	export let data: LayoutData
 </script>
@@ -11,7 +10,7 @@
 <nav class="bg-white border-b border-gray-200 dark:bg-gray-900">
 	<div class="w-full px-5 py-4 flex justify-end" id="navbar-default">
 		<Button size="sm" on:click={() => createTableOpen.set(true)}>
-			<IconPlus size={16} class="mr-3" />
+			<i class="ti ti-plus text-sm mr-3" />
 			create new table</Button
 		>
 	</div>

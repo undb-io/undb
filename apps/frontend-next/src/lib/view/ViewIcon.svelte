@@ -1,16 +1,14 @@
 <script lang="ts">
-	import { IconCalendar, IconHierarchy, IconLayoutKanban, IconTable, type IconProps } from '@tabler/icons-svelte'
 	import type { IViewDisplayType } from '@undb/core'
-	import type { ComponentType } from 'svelte'
 
 	export let type: IViewDisplayType
 
-	const map: Record<IViewDisplayType, ComponentType> = {
-		tree: IconHierarchy,
-		grid: IconTable,
-		kanban: IconLayoutKanban,
-		calendar: IconCalendar,
+	const map: Record<IViewDisplayType, string> = {
+		tree: 'hierarchy',
+		grid: 'table',
+		kanban: 'layout-kanban',
+		calendar: 'calendar',
 	}
 </script>
 
-<svelte:component this={map[type]} size="16" />
+<i class={`ti ti-${map[type]} text-sm`} />

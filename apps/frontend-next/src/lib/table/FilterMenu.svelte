@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Popover, PopoverButton, PopoverPanel } from '@rgossiaux/svelte-headlessui'
 	import { Button, Hr } from 'flowbite-svelte'
-	import { IconFilter } from '@tabler/icons-svelte'
 	import { filters } from '$lib/store/filter'
 	import autoAnimate from '@formkit/auto-animate'
 	import { fade } from 'svelte/transition'
@@ -38,7 +37,7 @@
 <Popover class="relative z-10" let:open>
 	<PopoverButton as="div" use={[popperRef]}>
 		<Button id="filters-menu" size="xs" color="alternative" class="h-full !rounded-md gap-2">
-			<IconFilter size={16} />
+			<i class="ti ti-filter text-sm" />
 			Filters</Button
 		>
 	</PopoverButton>

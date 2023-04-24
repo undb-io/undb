@@ -450,9 +450,9 @@ importers:
       '@sveltejs/kit':
         specifier: ^1.5.0
         version: 1.5.0(svelte@3.54.0)(vite@4.2.0)
-      '@tabler/icons-svelte':
-        specifier: ^2.16.0
-        version: 2.16.0(svelte@3.54.0)
+      '@tabler/icons-webfont':
+        specifier: ^2.17.0
+        version: 2.17.0
       '@tailwindcss/forms':
         specifier: ^0.5.3
         version: 0.5.3(tailwindcss@3.1.5)
@@ -3780,13 +3780,10 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@tabler/icons-svelte@2.16.0(svelte@3.54.0):
-    resolution: {integrity: sha512-gOhGl8c53ao7Y7ZsjRNCRMogTVlzGf8B7qkzX+52CVeGCYBR1wIu2cDIz9Nq51lVTmZBzr5Ogr5Bv89H2a7heg==}
-    peerDependencies:
-      svelte: ^3.49.0
+  /@tabler/icons-webfont@2.17.0:
+    resolution: {integrity: sha512-jgRZWiWCaG++jFTIU/dbOT+JmSgoFlALwBUUS31mt1b5py7B0YWelnfxf5s3ctE+0dlnoIS+r7rDOeDSAWx8SA==}
     dependencies:
-      '@tabler/icons': 2.16.0
-      svelte: 3.54.0
+      '@tabler/icons': 2.17.0
     dev: true
 
   /@tabler/icons@1.119.0(react-dom@18.2.0)(react@18.2.0):
@@ -3808,8 +3805,8 @@ packages:
     resolution: {integrity: sha512-hQkYW9+tnRUlnm3WDpNGLEB2FS6gyMdDb7eubmGjaWOtc9SK4CdBus465UGfx3M8FahlcOoS5BdzuaABrl/OMw==}
     dev: false
 
-  /@tabler/icons@2.16.0:
-    resolution: {integrity: sha512-1kaPH5APIWGtXe0W0eQ9g4MdfaQJ2gh95TAa94lNAqRR0JeC3fkD0yXGCcUiNK4GnGDv3UtPSCd3dbdKTe1b2A==}
+  /@tabler/icons@2.17.0:
+    resolution: {integrity: sha512-UeJaylOGNRhQKyDlgZfrQ3UPSGlfVQuXcmCsTYeXioKKepibW6VZ3H36Lo1jvBTBkQD2e9m+k2NxwkztOTXwrA==}
     dev: true
 
   /@tailwindcss/forms@0.5.3(tailwindcss@3.1.5):

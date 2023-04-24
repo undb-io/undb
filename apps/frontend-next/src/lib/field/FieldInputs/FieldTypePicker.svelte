@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { IconCheck } from '@tabler/icons-svelte'
 	import { Button, Dropdown, Radio } from 'flowbite-svelte'
 	import Portal from 'svelte-portal'
 	import FieldIcon from '../FieldIcon.svelte'
@@ -46,7 +45,7 @@
 						</span>
 					</div>
 					{#if selected}
-						<IconCheck size={16} />
+						<i class="ti ti-check text-sm" />
 					{/if}
 				</li>
 			</Radio>

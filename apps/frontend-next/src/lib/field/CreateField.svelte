@@ -9,7 +9,6 @@
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import MutateFieldComponent from './MutateFieldComponent/MutateFieldComponent.svelte'
-	import { IconEyeClosed, IconPlus } from '@tabler/icons-svelte'
 	import { canDisplay, isControlledFieldType } from '@undb/core'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
@@ -98,9 +97,9 @@
 			<div class="flex-1">
 				<Button size="xs" color="alternative" class="space-x-1" on:click={() => (showDescription = !showDescription)}>
 					{#if showDescription}
-						<IconEyeClosed size={16} />
+						<i class="ti ti-eye-closed text-[16px]" />
 					{:else}
-						<IconPlus size={16} />
+						<i class="ti ti-plus text-[16px]" />
 					{/if}
 					<span>{showDescription ? 'hide' : 'show'} description </span>
 				</Button>

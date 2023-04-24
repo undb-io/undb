@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Button, Tooltip } from 'flowbite-svelte'
-	import { IconColumnInsertRight, IconRowInsertBottom } from '@tabler/icons-svelte'
 	import ViewMenu from './ViewMenu.svelte'
 	import FilterMenu from './FilterMenu.svelte'
 	import SortMenu from './SortMenu.svelte'
@@ -15,7 +14,7 @@
 		<TableNavigator />
 
 		<Button on:click={() => createRecordOpen.set(true)} size="xs" class="h-full !rounded-md inline-flex items-center">
-			<IconRowInsertBottom size={16} class="mr-2" />
+			<i class="ti ti-row-insert-bottom text-sm mr-2" />
 			Create New Record</Button
 		>
 
@@ -29,8 +28,8 @@
 			size="xs"
 			class="h-full w-8 px-0 !rounded-md inline-flex items-center"
 		>
-			<IconColumnInsertRight size={14} /></Button
-		>
+			<i class="ti ti-column-insert-right text-sm" />
+		</Button>
 		<Tooltip placement="bottom">Insert Field</Tooltip>
 	</div>
 
