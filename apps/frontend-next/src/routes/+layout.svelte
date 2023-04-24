@@ -10,9 +10,15 @@
 		minimum: 0.16,
 	})
 
+	const { page } = getStores()
+
 	$: {
-		if ($navigating) {
-			NProgress.start()
+		const r = $page.url.searchParams.get('r')
+		// TODO: 判断前后是否一致
+		if (!r) {
+			if ($navigating) {
+				NProgress.start()
+			}
 		}
 		if (!$navigating) {
 			NProgress.done()

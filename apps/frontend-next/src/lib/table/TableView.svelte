@@ -18,6 +18,7 @@
 	import FieldMenu from '$lib/field/FieldMenu.svelte'
 	import Portal from 'svelte-portal'
 	import { getIconClass } from '$lib/field/helpers'
+	import { onMount } from 'svelte'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -51,112 +52,155 @@
 
 	$: fields = $table.getOrderedFields($view)
 
-	$: {
-		defineCustomElements().then(() => {
-			rows = $records.map((record) => record.valuesJSON)
-			columns.set([
-				{
-					prop: 'selection',
-					pin: 'colPinStart',
-					readonly: true,
-					columnProperties: () => {
-						return {
-							class:
-								'!p-0 text-center border-r border-b border-gray-300 flex items-center justify-center bg-gray-100 hover:bg-gray-50',
-						}
-					},
-					columnTemplate: (h) => {
-						return h('input', {
-							type: 'checkbox',
-							checked: allSelected,
-							disabled: !$records.length,
-							onChange: (event: any) => {
-								updateAllSelect(event.target.checked)
+	onMount(async () => {
+		await defineCustomElements()
+	})
+
+	let row: HTMLElement | undefined | null
+	function handleRevogrid(grid: RevoGrid) {
+		// @ts-ignore
+		const gridInstance = grid.getWebComponent() as HTMLRevoGridElement | undefined
+		if (gridInstance) {
+			gridInstance.addEventListener('mousemove', (e) => {
+				// @ts-ignore
+				const ele = e.toElement as HTMLElement
+				if (ele) {
+					const cell = ele.closest('.rgCell')
+					const id = cell?.getAttribute('data-record-id') ?? undefined
+					const elements = gridInstance.querySelectorAll('.rgRow')
+					for (const element of elements) {
+						element.classList.remove('hovered', 'bg-gray-100')
+					}
+					const rows = gridInstance.querySelectorAll(`.${id}`)
+					for (const row of rows) {
+						row.classList.add('hovered', 'bg-gray-100')
+					}
+				}
+			})
+		}
+	}
+	let grid: RevoGrid
+	$: if (grid) handleRevogrid(grid)
+	$: if (grid) {
+		rows = $records.map((record) => record.valuesJSON)
+	}
+
+	$: if (grid) {
+		columns.set([
+			{
+				prop: 'selection',
+				pin: 'colPinStart',
+				readonly: true,
+				columnProperties: () => {
+					return {
+						class:
+							'!p-0 text-center border-r border-b border-gray-300 flex items-center justify-center bg-gray-100 hover:bg-gray-50',
+					}
+				},
+				columnTemplate: (h) => {
+					return h('input', {
+						type: 'checkbox',
+						checked: allSelected,
+						disabled: !$records.length,
+						onChange: (event: any) => {
+							updateAllSelect(event.target.checked)
+						},
+						class:
+							'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center',
+					})
+				},
+				cellProperties: () => ({
+					class: '!p-0 text-center border-r border-b border-gray-200 group',
+				}),
+				cellTemplate: (h, props) => {
+					const checked = !!$select[props.model.id]
+					return h('div', {}, [
+						h(
+							'span',
+							{
+								class: cx(
+									'undb-row-index text-gray-400 text-xs opacity-100 text-ellipsis whitespace-nowrap group-hover:hidden',
+									checked && 'hidden',
+								),
 							},
-							class:
-								'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center',
-						})
-					},
-					cellProperties: () => ({
-						class: '!p-0 text-center border-r border-b border-gray-200 !bg-white',
-					}),
-					cellTemplate: (h, props) => {
-						return h('input', {
+							String(props.rowIndex + 1),
+						),
+						h('input', {
 							type: 'checkbox',
-							checked: !!$select[props.model.id],
+							checked,
 							onChange: (event: any) => {
 								updateSelect(props.model.id, event.target.checked)
 							},
-							class:
-								'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center',
-						})
-					},
-					size: 40,
+							class: cx(
+								'undb-select absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center group-hover:opacity-100',
+								!checked && 'opacity-0',
+							),
+						}),
+					])
 				},
-				...fields.map<Components.RevoGrid['columns'][0]>((field) => {
-					const position = $view.pinnedFields?.getPinnedPosition(field.id.value)
-					return {
-						prop: field.id.value,
-						name: field.name.value,
-						size: $view.getFieldWidth(field.id.value),
-						pin: position ? pinnedPositionMap[position] : undefined,
-						autoSize: true,
-						cellTemplate: cellTemplateMap[field.type],
-						columnTemplate: (h, column) => {
-							const id = getFieldDomId(column.prop)
-							return h(
-								'div',
-								{
-									class: 'inline-flex w-full justify-between items-center text-xs text-gray-700 font-medium',
-								},
-								[
-									h(
-										'div',
-										{
-											class: 'space-x-2',
-										},
-										[
-											h('i', { class: cx(getIconClass(column.field.type), 'text-gray-600') }),
-											h('span', {}, column.name),
-										],
-									),
-									h(
-										'button',
-										{
-											id,
-											onClick: () => {
-												currentFieldId.set(column.prop as string)
-											},
-											class: 'w-[24px] h-[24px] rounded-sm hover:bg-gray-200 inline-flex items-center justify-center',
-										},
-										h('i', {
-											class: 'ti ti-chevron-down text-gray-500',
-										}),
-									),
-								],
-							)
-						},
-						columnProperties: (column: RevoGridType.ColumnRegular) => {
-							const sort = $view.getFieldSort(column.prop as string).into()
-							return {
-								class: cx(
-									'border-r border-b border-gray-300 hover:bg-gray-50 transition-[background] group flex justify-between bg-gray-100 !px-2',
+				size: 40,
+			},
+			...fields.map<Components.RevoGrid['columns'][0]>((field) => {
+				const position = $view.pinnedFields?.getPinnedPosition(field.id.value)
+				return {
+					prop: field.id.value,
+					name: field.name.value,
+					size: $view.getFieldWidth(field.id.value),
+					pin: position ? pinnedPositionMap[position] : undefined,
+					autoSize: true,
+					cellTemplate: cellTemplateMap[field.type],
+					columnTemplate: (h, column) => {
+						const id = getFieldDomId(column.prop)
+						return h(
+							'div',
+							{
+								class: 'inline-flex w-full justify-between items-center text-xs text-gray-700 font-medium',
+							},
+							[
+								h(
+									'div',
 									{
-										'bg-blue-50': !!sort,
+										class: 'space-x-2',
 									},
+									[h('i', { class: cx(getIconClass(column.field.type), 'text-gray-600') }), h('span', {}, column.name)],
 								),
-							}
-						},
-						cellProperties: () => {
-							return {
-								class: 'flex items-center border-r border-b border-gray-100',
-							}
-						},
-						field,
-					}
-				}),
-			])
-		})
+								h(
+									'button',
+									{
+										id,
+										onClick: () => {
+											currentFieldId.set(column.prop as string)
+										},
+										class: 'w-[24px] h-[24px] rounded-sm hover:bg-gray-200 inline-flex items-center justify-center',
+									},
+									h('i', {
+										class: 'ti ti-chevron-down text-gray-500',
+									}),
+								),
+							],
+						)
+					},
+					columnProperties: (column: RevoGridType.ColumnRegular) => {
+						const sort = $view.getFieldSort(column.prop as string).into()
+						return {
+							class: cx(
+								'border-r border-b border-gray-300 hover:bg-gray-50 transition-[background] group flex justify-between bg-gray-100 !px-2',
+								{
+									'bg-blue-50': !!sort,
+								},
+							),
+						}
+					},
+					cellProperties: (cell) => {
+						return {
+							'data-record-id': cell.model.id,
+							class: 'flex items-center border-r border-b border-gray-100',
+						}
+					},
+					field,
+				}
+			}),
+		])
 	}
 
 	$: pinned = $view.pinnedFields?.toJSON() ?? { left: [], right: [] }
@@ -204,10 +248,14 @@
 	}
 
 	const onCellFocus = async (event: RevoGridCustomEvent<Edition.BeforeSaveDataDetails>) => {
+		if (event.detail.prop === 'selection') return
 		const recordId = event.detail.model.id
 		const search = new URLSearchParams($page.url.searchParams)
-		search.set('r', recordId)
-		goto(`?${search.toString()}`)
+		const r = search.get('r')
+		if (r !== recordId) {
+			search.set('r', recordId)
+			goto(`?${search.toString()}`)
+		}
 	}
 
 	$: selectedRecords = Object.entries($select)
@@ -241,12 +289,14 @@
 
 <div class:h-[32px]={!hasRecord} class:h-full={hasRecord}>
 	<RevoGrid
+		bind:this={grid}
 		source={rows}
 		resize="true"
 		columns={$columns}
 		theme="compact"
 		range
 		readonly
+		rowClass="id"
 		on:aftercolumnresize={onAfterColumnResize}
 		on:beforecellfocus={onCellFocus}
 	/>
@@ -293,5 +343,13 @@
 
 	:global(revo-grid[theme='compact'] revogr-header) {
 		line-height: 32px;
+	}
+
+	:global(revo-grid .hovered .undb-select) {
+		opacity: 1;
+	}
+
+	:global(revo-grid .hovered .undb-row-index) {
+		display: none;
 	}
 </style>
