@@ -35,7 +35,7 @@ export class BoolField extends BaseField<IBoolField> {
   }
 
   get valueSchema() {
-    const bool = z.boolean()
+    const bool = z.boolean().default(false)
 
     return this.required ? bool : bool.nullable()
   }
