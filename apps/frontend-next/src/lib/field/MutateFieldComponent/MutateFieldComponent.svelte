@@ -15,8 +15,6 @@
 	import Lookup from './Lookup.svelte'
 
 	import type { SuperForm } from 'sveltekit-superforms/client'
-	import type { UnwrapEffects } from 'sveltekit-superforms/index'
-	import type { AnyZodObject } from 'zod'
 	import type { IFieldType } from '@undb/core'
 	import type { ComponentType } from 'svelte'
 
@@ -28,8 +26,7 @@
 	export let type: IFieldType
 	export let isNew = false
 
-	type T = $$Generic<AnyZodObject>
-	export let form: SuperForm<UnwrapEffects<T>, unknown>
+	export let form: SuperForm<any, any>
 
 	const map: Partial<Record<IFieldType, ComponentType>> = {
 		reference: Reference,

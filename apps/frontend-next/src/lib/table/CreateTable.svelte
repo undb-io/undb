@@ -8,12 +8,11 @@
 	import CreateTableFieldAccordionItem from './CreateTableFieldAccordionItem.svelte'
 
 	export let data: Validation<typeof createTableInput>
-	let schema: ICreateTableInput['schema'] = data?.data?.schema ?? []
 	let opened: Record<string, boolean> = {}
 
 	const addField = () => {
 		const id = FieldId.createId()
-		schema = [...schema, { id, type: 'string', name: '' }]
+		$form.schema = [...$form.schema, { id, type: 'string', name: '' }]
 		opened = { [id]: true }
 	}
 
@@ -26,14 +25,15 @@
 		taintedMessage: null,
 		onResult() {
 			reset()
-			schema = []
 			createTableOpen.set(false)
 		},
 	})
 
-	const { form, errors, reset, constraints, enhance, delayed, submitting } = superFrm
+	$: {
+		$form.schema = []
+	}
 
-	$: form.update((prev) => ({ ...prev, schema }))
+	const { form, errors, reset, constraints, enhance, delayed, submitting } = superFrm
 </script>
 
 <Modal
@@ -75,8 +75,8 @@
 
 				{#if $form.schema.length}
 					<Accordion class="my-4">
-						{#each $form.schema as field, i}
-							<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} {schema} />
+						{#each $form.schema as field, i (field.id)}
+							<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} />
 						{/each}
 					</Accordion>
 				{/if}

@@ -3,15 +3,14 @@
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import FieldTypePicker from '$lib/field/FieldInputs/FieldTypePicker.svelte'
 	import MutateFieldComponent from '$lib/field/MutateFieldComponent/MutateFieldComponent.svelte'
-	import { IconCircleChevronUp, IconCircleChevronDown, IconEyeClosed, IconPlus } from '@tabler/icons-svelte'
-	import { isControlledFieldType, canDisplay, type ICreateTableInput } from '@undb/core'
-	import { AccordionItem, Label, Input, Toggle, Button, Textarea } from 'flowbite-svelte'
+	import { IconCircleChevronUp, IconCircleChevronDown, IconEyeClosed, IconPlus, IconDots } from '@tabler/icons-svelte'
+	import { isControlledFieldType, canDisplay, type ICreateTableInput, createTableInput } from '@undb/core'
+	import { AccordionItem, Label, Input, Toggle, Button, Textarea, Dropdown, DropdownItem } from 'flowbite-svelte'
 	import type { SuperForm } from 'sveltekit-superforms/client'
 
 	export let open: boolean
-	export let schema: ICreateTableInput['schema']
 	export let field: ICreateTableInput['schema'][number]
-	export let superFrm: SuperForm<any, any>
+	export let superFrm: SuperForm<typeof createTableInput, string>
 	export let i: number
 
 	$: form = superFrm.form
@@ -19,7 +18,11 @@
 
 	$: showDescription = false
 	$: if (!showDescription) {
-		$form.schema[i].description = ''
+		field.description = ''
+	}
+
+	function remove() {
+		$form.schema = $form.schema.filter((_, index) => index !== i)
 	}
 </script>
 
@@ -30,7 +33,7 @@
 	<span slot="header" class="text-sm">
 		<div class="flex items-center text-sm gap-2">
 			<FieldIcon size={14} type={field.type} />
-			{field.name || `Field ${schema.findIndex((f) => f.id === field.id) + 1}`}
+			{field.name || `Field ${$form.schema.findIndex((f) => f.id === field.id) + 1}`}
 		</div>
 	</span>
 
@@ -46,7 +49,7 @@
 			<div>
 				<Label class="space-y-2">
 					<span>Type</span>
-					<FieldTypePicker class="w-full !justify-start" bind:value={$form.schema[i].type} />
+					<FieldTypePicker class="w-full !justify-start" bind:value={field.type} />
 				</Label>
 			</div>
 			<div>
@@ -57,7 +60,7 @@
 						placeholder={field.description ?? 'name'}
 						required
 						data-invalid={$errors.schema?.[i]}
-						bind:value={$form.schema[i].name}
+						bind:value={field.name}
 					/>
 				</Label>
 			</div>
@@ -69,11 +72,11 @@
 					<span>description</span>
 				</div>
 
-				<Textarea class="rounded-sm" name="description" bind:value={$form.schema[i].description} />
+				<Textarea class="rounded-sm" name="description" bind:value={field.description} />
 			</Label>
 		{/if}
 
-		<MutateFieldComponent type={$form.schema[i].type} form={superFrm} isNew path={['schema', i]} />
+		<MutateFieldComponent type={field.type} form={superFrm} isNew path={['schema', i]} />
 	</div>
 
 	<div class="flex justify-between mt-5">
@@ -88,12 +91,18 @@
 			</Button>
 		</div>
 		<div class="flex gap-4">
-			{#if !isControlledFieldType($form.schema[i].type)}
-				<Toggle bind:checked={$form.schema[i].required}>required</Toggle>
+			{#if !isControlledFieldType(field.type)}
+				<Toggle bind:checked={field.required}>required</Toggle>
 			{/if}
-			{#if canDisplay($form.schema[i].type)}
-				<Toggle bind:checked={$form.schema[i].display}>display</Toggle>
+			{#if canDisplay(field.type)}
+				<Toggle bind:checked={field.display}>display</Toggle>
 			{/if}
+			<button on:click|preventDefault|stopPropagation class="hover:bg-gray-100 px-3 rounded-sm">
+				<IconDots size={14} />
+			</button>
+			<Dropdown>
+				<DropdownItem class="text-red-500 font-normal" on:click={remove}>remove</DropdownItem>
+			</Dropdown>
 			<Button size="xs" color="light" on:click={() => (open = false)}>ok</Button>
 		</div>
 	</div>

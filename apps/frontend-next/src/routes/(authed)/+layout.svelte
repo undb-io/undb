@@ -264,5 +264,7 @@
 		</div>
 	</main>
 
-	<CreateTable data={$page.data.form} />
+	{#if $createTableOpen}
+		<CreateTable data={$page.data.form} />
+	{/if}
 </div>
