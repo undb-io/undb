@@ -113,7 +113,10 @@
 										{
 											class: 'space-x-2',
 										},
-										[h('i', { class: getIconClass(column.field.type) }), h('span', {}, column.name)],
+										[
+											h('i', { class: cx(getIconClass(column.field.type), 'text-gray-600') }),
+											h('span', {}, column.name),
+										],
 									),
 									h(
 										'button',
@@ -125,7 +128,7 @@
 											class: 'w-[24px] h-[24px] rounded-sm hover:bg-gray-200 inline-flex items-center justify-center',
 										},
 										h('i', {
-											class: 'ti ti-chevron-down',
+											class: 'ti ti-chevron-down text-gray-500',
 										}),
 									),
 								],
@@ -135,7 +138,7 @@
 							const sort = $view.getFieldSort(column.prop as string).into()
 							return {
 								class: cx(
-									'border-r border-b border-gray-300 hover:bg-gray-50 transition-[background] group flex justify-between bg-gray-100',
+									'border-r border-b border-gray-300 hover:bg-gray-50 transition-[background] group flex justify-between bg-gray-100 !px-2',
 									{
 										'bg-blue-50': !!sort,
 									},

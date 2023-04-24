@@ -63,28 +63,38 @@
 					{#if $value.length}
 						<span class="text-xs font-medium text-gray-500">set filters in this view</span>
 						<ul class="w-full items-center space-y-2" use:autoAnimate={{ duration: 100 }}>
-							{#each $value as sort}
-								<li class="flex">
-									<FieldPicker
-										bind:value={sort.fieldId}
-										table={$table}
-										size="xs"
-										class="w-48 rounded-r-none !justify-start border-r-0"
-										filter={(f) => f.sortable && !selected.includes(f.id.value)}
-									/>
-									<div class="inline-flex w-1/2">
-										{#each directions as direction, i}
-											<Button
-												size="xs"
-												class={cx('!rounded-none', i === 1 && '!rounded-r-md border-l-0')}
-												on:click={() => {
-													sort.direction = direction
-													value.set($value)
-												}}
-												color={sort.direction === direction ? 'blue' : 'light'}>{direction}</Button
-											>
-										{/each}
+							{#each $value as sort, i}
+								<li class="flex justify-between">
+									<div class="flex">
+										<FieldPicker
+											bind:value={sort.fieldId}
+											table={$table}
+											size="xs"
+											class="w-48 rounded-r-none !justify-start border-r-0"
+											filter={(f) => f.sortable && !selected.includes(f.id.value)}
+										/>
+										<div class="inline-flex w-1/2">
+											{#each directions as direction, i}
+												<Button
+													size="xs"
+													class={cx('!rounded-none', i === 1 && '!rounded-r-md border-l-0')}
+													on:click={() => {
+														sort.direction = direction
+														value.set($value)
+													}}
+													color={sort.direction === direction ? 'blue' : 'light'}>{direction}</Button
+												>
+											{/each}
+										</div>
 									</div>
+
+									<button
+										on:click|preventDefault|stopPropagation={() => {
+											value.update((sorts) => sorts.filter((_, index) => index !== i))
+										}}
+									>
+										<i class="ti ti-trash text-gray-500" />
+									</button>
 								</li>
 							{/each}
 						</ul>
