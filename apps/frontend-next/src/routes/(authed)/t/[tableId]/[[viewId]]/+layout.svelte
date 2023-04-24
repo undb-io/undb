@@ -12,12 +12,9 @@
 		goto('/', { replaceState: true })
 	}
 
-	const coreTable = TableFactory.fromQuery(data.table)
 	$: data.table, currentTable.set(TableFactory.fromQuery(data.table))
-	currentTable.set(coreTable)
 
-	currentView.set(coreTable.mustGetView($page.params.viewId))
-	$: currentView.set(coreTable.mustGetView($page.params.viewId))
+	$: currentView.set($currentTable.mustGetView($page.params.viewId))
 </script>
 
 <div class="w-full h-full flex flex-col">

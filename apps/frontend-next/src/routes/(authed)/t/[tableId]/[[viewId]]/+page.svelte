@@ -11,7 +11,6 @@
 	const table = getTable()
 	export let data: PageData
 
-	records.set(RecordFactory.fromQueryRecords(data.records.records, $table.schema.toIdMap()))
 	$: records.set(RecordFactory.fromQueryRecords(data.records.records, $table.schema.toIdMap()))
 
 	const field = getField()
