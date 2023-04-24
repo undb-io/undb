@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getView } from '$lib/context'
+	import { getView } from '$lib/store/table'
 	import ViewIcon from '$lib/view/ViewIcon.svelte'
 	import { Button, Chevron } from 'flowbite-svelte'
 

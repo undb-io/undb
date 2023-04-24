@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getRecords, getTable } from '$lib/context'
+	import { getRecords, getTable } from '$lib/store/table'
 	import { flip } from 'svelte/animate'
 	import Option from '$lib/option/Option.svelte'
 	import { dndzone } from 'svelte-dnd-action'

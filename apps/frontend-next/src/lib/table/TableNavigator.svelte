@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getTable } from '$lib/context'
+	import { getTable } from '$lib/store/table'
 	import { Breadcrumb, BreadcrumbItem, Button, P } from 'flowbite-svelte'
 
 	const table = getTable()

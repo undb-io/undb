@@ -3,7 +3,7 @@
 	import { fieldProxy, formFieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
 	import FieldsPicker from '../FieldInputs/FieldsPicker.svelte'
-	import { getTable } from '$lib/context'
+	import { getTable } from '$lib/store/table'
 	import type { Writable } from 'svelte/store'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>

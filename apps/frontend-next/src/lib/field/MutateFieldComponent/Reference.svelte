@@ -7,7 +7,7 @@
 	import { TableFactory, type IQueryTable } from '@undb/core'
 	import FieldsPicker from '../FieldInputs/FieldsPicker.svelte'
 	import TablePicker from '../FieldInputs/TablePicker.svelte'
-	import { getTable } from '$lib/context'
+	import { getTable } from '$lib/store/table'
 	import type { Writable } from 'svelte/store'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>

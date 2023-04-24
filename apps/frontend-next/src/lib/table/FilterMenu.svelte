@@ -9,7 +9,7 @@
 	import { createPopperActions } from 'svelte-popperjs'
 	import { trpc } from '$lib/trpc/client'
 	import { page } from '$app/stores'
-	import { getTable, getView } from '$lib/context'
+	import { getTable, getView } from '$lib/store/table'
 	import type { IFilter } from '@undb/core'
 	import { invalidate } from '$app/navigation'
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { getTable, getView } from '$lib/context'
+	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import ViewIcon from '$lib/view/ViewIcon.svelte'
 	import { Radio, Tooltip } from 'flowbite-svelte'

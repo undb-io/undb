@@ -7,7 +7,7 @@
 	import FilterOperatorPicker from './FilterOperatorPicker.svelte'
 	import FilterValue from './FilterValue.svelte'
 	import type { Field, IFilter } from '@undb/core'
-	import { getTable } from '$lib/context'
+	import { getTable } from '$lib/store/table'
 
 	export let filter: Partial<IFilter>
 	export let index: number

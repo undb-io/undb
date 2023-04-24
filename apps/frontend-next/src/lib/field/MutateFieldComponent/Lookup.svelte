@@ -4,7 +4,7 @@
 	import ReferenceFieldPicker from '../FieldInputs/ReferenceFieldPicker.svelte'
 	import FieldsPicker from '../FieldInputs/FieldsPicker.svelte'
 	import type { Writable } from 'svelte/store'
-	import { getTable } from '$lib/context'
+	import { getTable } from '$lib/store/table'
 	import { TableFactory, type IQueryTable, type ReferenceField, type TreeField } from '@undb/core'
 	import { page } from '$app/stores'
 	import { Label } from 'flowbite-svelte'

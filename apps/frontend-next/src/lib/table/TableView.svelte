@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ISetPinnedFieldsSchema, IViewPinnedFields, PinnedPosition } from '@undb/core'
+	import type { IViewPinnedFields, PinnedPosition } from '@undb/core'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
 	import { Button, Dropdown, P, Spinner, Toast } from 'flowbite-svelte'
 	import type { Edition, RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
@@ -12,11 +12,10 @@
 	import { quintOut } from 'svelte/easing'
 	import { writable } from 'svelte/store'
 	import EmptyTable from './EmptyTable.svelte'
-	import { getRecords, getTable, getView } from '$lib/context'
+	import { currentFieldId, getRecords, getTable, getView } from '$lib/store/table'
 	import { invalidate } from '$app/navigation'
 	import FieldMenu from '$lib/field/FieldMenu.svelte'
 	import Portal from 'svelte-portal'
-	import { currentField } from '$lib/store/table'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -24,16 +23,11 @@
 	}
 
 	const table = getTable()
-	$: schema = $table.schema.toIdMap()
 	const view = getView()
 	const records = getRecords()
 
-	let fieldMenuId: string | undefined = undefined
-	$: if (fieldMenuId) {
-		currentField.set(schema.get(fieldMenuId) ?? null)
-	}
 	const getFieldDomId = (fieldId?: string | number) => (fieldId ? `field_menu_${fieldId}` : undefined)
-	$: fieldMenuDOMId = getFieldDomId(fieldMenuId)
+	$: fieldMenuDOMId = getFieldDomId($currentFieldId)
 
 	let rows: Components.RevoGrid['source']
 	let columns = writable<RevoGridType.ColumnRegular[]>([])
@@ -114,7 +108,7 @@
 									{
 										id,
 										onClick: () => {
-											fieldMenuId = column.prop as string
+											currentFieldId.set(column.prop as string)
 										},
 										class:
 											'w-[24px] h-[24px] rounded-sm hover:bg-gray-200 opacity-0 group-hover:opacity-100 inline-flex items-center justify-center',
@@ -177,7 +171,6 @@
 
 		const left = $columns.filter((c) => !!c.field && c.pin === 'colPinStart').map((c) => c.prop as string)
 		const pinnedFields: IViewPinnedFields = { left, right: pinned.right }
-		fieldMenuId = undefined
 
 		await trpc($page).table.view.field.setPinned.mutate({
 			tableId: $table.id.value,
@@ -186,6 +179,7 @@
 		})
 
 		await invalidate(`table:${$table.id.value}`)
+		currentFieldId.set(undefined)
 	}
 
 	const onAfterColumnResize = async (
@@ -273,7 +267,11 @@
 {#if fieldMenuDOMId}
 	{#key fieldMenuDOMId}
 		<Portal target="body">
-			<Dropdown open triggeredBy={`#${fieldMenuDOMId}`}>
+			<Dropdown
+				open
+				triggeredBy={`#${fieldMenuDOMId}`}
+				class="w-[250px] shadow-lg border border-gray-200 rounded-md py-1"
+			>
 				<FieldMenu {togglePin} />
 			</Dropdown>
 		</Portal>

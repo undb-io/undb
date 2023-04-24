@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { setTable, setView } from '$lib/context'
 	import CreateOption from '$lib/option/CreateOption.svelte'
 	import { TableFactory } from '@undb/core'
-	import { writable } from 'svelte/store'
 	import type { LayoutServerData } from './$types'
 	import { goto } from '$app/navigation'
+	import { currentTable, currentView } from '$lib/store/table'
 
 	export let data: LayoutServerData
 
@@ -14,13 +13,11 @@
 	}
 
 	const coreTable = TableFactory.fromQuery(data.table)
-	const table = writable(coreTable)
-	$: table.set(TableFactory.fromQuery(data.table))
-	setTable(table)
+	$: data.table, currentTable.set(TableFactory.fromQuery(data.table))
+	currentTable.set(coreTable)
 
-	const view = writable($table.mustGetView($page.params.viewId))
-	$: view.set($table.mustGetView($page.params.viewId))
-	setView(view)
+	currentView.set(coreTable.mustGetView($page.params.viewId))
+	$: currentView.set(coreTable.mustGetView($page.params.viewId))
 </script>
 
 <div class="w-full h-full flex flex-col">
@@ -28,6 +25,6 @@
 </div>
 
 <svelte:head>
-	<title>{$table.name.value}</title>
+	<title>{$currentTable.name.value}</title>
 </svelte:head>
 <CreateOption />

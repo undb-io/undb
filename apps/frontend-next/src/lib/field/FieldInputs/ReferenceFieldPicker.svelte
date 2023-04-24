@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Label, Select } from 'flowbite-svelte'
-	import { getTable } from '$lib/context'
+	import { getTable } from '$lib/store/table'
 
 	const table = getTable()
 

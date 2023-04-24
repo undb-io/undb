@@ -1,13 +1,13 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import { page } from '$app/stores'
-	import { getTable } from '$lib/context'
 	import RecordCard from '$lib/record/RecordCard.svelte'
 	import { TableFactory, type IQueryTable, type Records, type Table, Record } from '@undb/core'
 	import { Alert, Button, Checkbox, CloseButton, Modal, Spinner } from 'flowbite-svelte'
 	import VirtualList from 'svelte-tiny-virtual-list'
 	import { IconPlus } from '@tabler/icons-svelte'
 	import { onMount } from 'svelte'
+	import { getTable } from '$lib/store/table'
 
 	let loading = false
 	let open = false

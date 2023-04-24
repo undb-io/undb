@@ -1,21 +1,20 @@
 <script lang="ts">
-	import { getTable, setRecords } from '$lib/context'
+	import { getField, getTable, records } from '$lib/store/table'
 	import TableIndex from '$lib/table/TableIndex.svelte'
 	import { RecordFactory } from '@undb/core'
-	import { writable } from 'svelte/store'
 	import type { PageData } from './$types'
 	import TableToolBar from '$lib/table/TableToolBar.svelte'
 	import CreateRecord from '$lib/record/CreateRecord.svelte'
 	import CreateField from '$lib/field/CreateField.svelte'
 	import UpdateField from '$lib/field/UpdateField.svelte'
-	import { currentField } from '$lib/store/table'
 
 	const table = getTable()
 	export let data: PageData
 
-	const records = writable(RecordFactory.fromQueryRecords(data.records.records, $table.schema.toIdMap()))
+	records.set(RecordFactory.fromQueryRecords(data.records.records, $table.schema.toIdMap()))
 	$: records.set(RecordFactory.fromQueryRecords(data.records.records, $table.schema.toIdMap()))
-	setRecords(records)
+
+	const field = getField()
 </script>
 
 <TableToolBar />
@@ -23,8 +22,8 @@
 
 <CreateRecord data={data.createRecord} />
 <CreateField data={data.createField} />
-{#if $currentField}
-	{#key $currentField}
-		<UpdateField field={$currentField} data={data.updateField} />
+{#if $field}
+	{#key $field}
+		<UpdateField field={$field} data={data.updateField} />
 	{/key}
 {/if}

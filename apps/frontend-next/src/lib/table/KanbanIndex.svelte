@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getView } from '$lib/context'
+	import { getView } from '$lib/store/table'
 	import KanbanSelectField from './KanbanSelectField.svelte'
 	import KanbanView from './KanbanView.svelte'
 

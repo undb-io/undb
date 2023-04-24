@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getTable, getView } from '$lib/context'
+	import { getTable, getView } from '$lib/store/table'
 	import { Card, Radio } from 'flowbite-svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { trpc } from '$lib/trpc/client'

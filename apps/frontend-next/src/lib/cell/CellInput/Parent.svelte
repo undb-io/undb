@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ParentField, RecordFactory, TreeField } from '@undb/core'
 	import ForeignRecordsPicker from './ForeignRecordsPicker.svelte'
-	import { getTable } from '$lib/context'
+	import { getTable } from '$lib/store/table'
 	import { page } from '$app/stores'
 	import { trpc } from '$lib/trpc/client'
 

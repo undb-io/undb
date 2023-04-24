@@ -1,7 +1,7 @@
 <script lang="ts">
 	import CellComponent from '$lib/cell/CellComponent.svelte'
 	import { getCellValue } from '$lib/cell/get-cell-value'
-	import { getTable, getView } from '$lib/context'
+	import { getTable, getView } from '$lib/store/table'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import type { Record } from '@undb/core'
 	import { Card } from 'flowbite-svelte'

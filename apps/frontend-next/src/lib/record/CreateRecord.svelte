@@ -2,7 +2,7 @@
 	import { invalidate } from '$app/navigation'
 	import { page } from '$app/stores'
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
-	import { getTable, getView } from '$lib/context'
+	import { getTable, getView } from '$lib/store/table'
 	import { createRecordOpen } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import { createMutateRecordValuesSchema } from '@undb/core'
