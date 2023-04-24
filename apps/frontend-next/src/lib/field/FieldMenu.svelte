@@ -58,10 +58,10 @@
 <DropdownDivider />
 
 <DropdownItem class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium" on:click={() => sort('asc')}>
-	<i class="ti ti-sort-ascending2 text-sm" />
+	<i class="ti ti-sort-ascending-2 text-sm" />
 	<span>Asc</span>
 </DropdownItem>
 <DropdownItem class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium" on:click={() => sort('desc')}>
-	<i class="ti ti-sort-descending2 text-sm" />
+	<i class="ti ti-sort-descending-2 text-sm" />
 	<span>Desc</span>
 </DropdownItem>
