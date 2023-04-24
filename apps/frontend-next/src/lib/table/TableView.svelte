@@ -14,11 +14,10 @@
 	import { writable } from 'svelte/store'
 	import EmptyTable from './EmptyTable.svelte'
 	import { currentFieldId, getRecords, getTable, getView } from '$lib/store/table'
-	import { invalidate } from '$app/navigation'
+	import { goto, invalidate } from '$app/navigation'
 	import FieldMenu from '$lib/field/FieldMenu.svelte'
 	import Portal from 'svelte-portal'
 	import { getIconClass } from '$lib/field/helpers'
-	import { onMount } from 'svelte'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -206,6 +205,9 @@
 
 	const onCellFocus = async (event: RevoGridCustomEvent<Edition.BeforeSaveDataDetails>) => {
 		const recordId = event.detail.model.id
+		const search = new URLSearchParams($page.url.searchParams)
+		search.set('r', recordId)
+		goto(`?${search.toString()}`)
 	}
 
 	$: selectedRecords = Object.entries($select)

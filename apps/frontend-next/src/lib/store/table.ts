@@ -1,3 +1,4 @@
+import { page } from '$app/stores'
 import type { Records, Table, View } from '@undb/core'
 import { derived, writable } from 'svelte/store'
 
@@ -17,3 +18,5 @@ export const currentField = derived([currentTable, currentFieldId], ([table, fie
 export const getField = () => currentField
 
 export const sorts = derived(currentView, (view) => view.sorts?.sorts ?? [])
+
+export const isRecordOpen = derived(page, (page) => !!page.url.searchParams.get('r'))
