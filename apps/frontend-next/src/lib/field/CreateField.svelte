@@ -10,7 +10,7 @@
 	import { invalidate } from '$app/navigation'
 	import MutateFieldComponent from './MutateFieldComponent/MutateFieldComponent.svelte'
 	import { IconEyeClosed, IconPlus } from '@tabler/icons-svelte'
-	import { canDisplay } from '@undb/core'
+	import { canDisplay, isControlledFieldType } from '@undb/core'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
 
@@ -107,7 +107,9 @@
 			</div>
 			<div class="flex justify-end items-center gap-4">
 				<div class="flex gap-2 items-center">
-					<Toggle bind:checked={$form.required}>required</Toggle>
+					{#if !isControlledFieldType($form.type)}
+						<Toggle bind:checked={$form.required}>required</Toggle>
+					{/if}
 					{#if canDisplay($form.type)}
 						<Toggle bind:checked={$form.display}>display</Toggle>
 						{#if displayFields.length}
