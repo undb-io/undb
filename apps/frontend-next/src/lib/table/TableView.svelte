@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PinnedPosition } from '@undb/core'
+	import type { ISetPinnedFieldsSchema, IViewPinnedFields, PinnedPosition } from '@undb/core'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
 	import { Button, Dropdown, P, Spinner, Toast } from 'flowbite-svelte'
 	import type { Edition, RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
@@ -36,7 +36,7 @@
 	$: fieldMenuDOMId = getFieldDomId(fieldMenuId)
 
 	let rows: Components.RevoGrid['source']
-	let columns: Components.RevoGrid['columns']
+	let columns = writable<RevoGridType.ColumnRegular[]>([])
 
 	const select = writable<Record<string, boolean>>({})
 	$: $table, select.set({})
@@ -58,7 +58,7 @@
 	$: {
 		defineCustomElements().then(() => {
 			rows = $records.map((record) => record.valuesJSON)
-			columns = [
+			columns.set([
 				{
 					prop: 'selection',
 					pin: 'colPinStart',
@@ -117,7 +117,7 @@
 											fieldMenuId = column.prop as string
 										},
 										class:
-											'w-[24px] h-[24px] rounded-sm hover:bg-gray-200 opacity-0 group-hover:opacity-100 transition inline-flex items-center justify-center',
+											'w-[24px] h-[24px] rounded-sm hover:bg-gray-200 opacity-0 group-hover:opacity-100 inline-flex items-center justify-center',
 									},
 									h(
 										'svg',
@@ -145,7 +145,7 @@
 						},
 						columnProperties: () => {
 							return {
-								class: 'border-r border-b border-gray-200 hover:bg-gray-50 transition',
+								class: 'border-r border-b border-gray-200 hover:bg-gray-50 transition-[background]',
 							}
 						},
 						cellProperties: () => {
@@ -156,8 +156,36 @@
 						field,
 					}
 				}),
-			]
+			])
 		})
+	}
+
+	$: pinned = $view.pinnedFields?.toJSON() ?? { left: [], right: [] }
+
+	async function togglePin(fieldId: string) {
+		const column = $columns.find((c) => c.prop === fieldId)
+		if (!column) return
+
+		columns.update((columns) => {
+			return columns.map((column) => {
+				if (column.prop === fieldId) {
+					return { ...column, pin: column.pin === 'colPinStart' ? undefined : 'colPinStart' }
+				}
+				return column
+			})
+		})
+
+		const left = $columns.filter((c) => !!c.field && c.pin === 'colPinStart').map((c) => c.prop as string)
+		const pinnedFields: IViewPinnedFields = { left, right: pinned.right }
+		fieldMenuId = undefined
+
+		await trpc($page).table.view.field.setPinned.mutate({
+			tableId: $table.id.value,
+			pinnedFields,
+			viewId: $view.id.value,
+		})
+
+		await invalidate(`table:${$table.id.value}`)
 	}
 
 	const onAfterColumnResize = async (
@@ -213,7 +241,7 @@
 	<RevoGrid
 		source={rows}
 		resize="true"
-		{columns}
+		columns={$columns}
 		theme="compact"
 		range
 		readonly
@@ -244,10 +272,9 @@
 
 {#if fieldMenuDOMId}
 	{#key fieldMenuDOMId}
-		{fieldMenuDOMId}
 		<Portal target="body">
 			<Dropdown open triggeredBy={`#${fieldMenuDOMId}`}>
-				<FieldMenu />
+				<FieldMenu {togglePin} />
 			</Dropdown>
 		</Portal>
 	{/key}
