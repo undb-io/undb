@@ -1,4 +1,5 @@
 <script lang="ts">
+	import cx from 'classnames'
 	import { invalidate } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { currentFieldId, getField, getTable, getView } from '$lib/store/table'
@@ -13,17 +14,26 @@
 	const table = getTable()
 	const view = getView()
 	const field = getField()
-	const pinned = !!$view.pinnedFields?.getPinnedPosition($field!.id.value)
+	$: pinned = !!$view.pinnedFields?.getPinnedPosition($field!.id.value)
+
+	$: fieldDirection = $field ? $view.getFieldSort($field.id.value).into() : undefined
 
 	async function sort(direction: ISortDirection) {
 		if (!$field) return
-		await trpc($page).table.view.sort.setFieldSort.mutate({
-			tableId: $table.id.value,
-			viewId: $view.id.value,
-			fieldId: $field.id.value,
-			direction,
-		})
-
+		if (direction === fieldDirection) {
+			await trpc($page).table.view.sort.resetFieldSort.mutate({
+				tableId: $table.id.value,
+				viewId: $view.id.value,
+				fieldId: $field.id.value,
+			})
+		} else {
+			await trpc($page).table.view.sort.setFieldSort.mutate({
+				tableId: $table.id.value,
+				viewId: $view.id.value,
+				fieldId: $field.id.value,
+				direction,
+			})
+		}
 		await invalidate(`table:${$table.id.value}`)
 		currentFieldId.set(undefined)
 	}
@@ -57,11 +67,35 @@
 
 <DropdownDivider />
 
-<DropdownItem class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium" on:click={() => sort('asc')}>
+<DropdownItem
+	class={cx(
+		'inline-flex items-center gap-2 text-xs text-gray-500 font-medium',
+		fieldDirection === 'asc' && 'bg-gray-100',
+	)}
+	on:click={() => sort('asc')}
+>
 	<i class="ti ti-sort-ascending-2 text-sm" />
-	<span>Asc</span>
+	<span>
+		{#if fieldDirection === 'asc'}
+			Remove Asc
+		{:else}
+			Asc
+		{/if}
+	</span>
 </DropdownItem>
-<DropdownItem class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium" on:click={() => sort('desc')}>
+<DropdownItem
+	class={cx(
+		'inline-flex items-center gap-2 text-xs text-gray-500 font-medium',
+		fieldDirection === 'desc' && 'bg-gray-100',
+	)}
+	on:click={() => sort('desc')}
+>
 	<i class="ti ti-sort-descending-2 text-sm" />
-	<span>Desc</span>
+	<span>
+		{#if fieldDirection === 'desc'}
+			Remove Desc
+		{:else}
+			Desc
+		{/if}
+	</span>
 </DropdownItem>

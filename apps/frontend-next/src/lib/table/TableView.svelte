@@ -237,7 +237,7 @@
 	}
 </script>
 
-<div class:h-[50px]={!hasRecord} class:h-full={hasRecord}>
+<div class:h-[32px]={!hasRecord} class:h-full={hasRecord}>
 	<RevoGrid
 		source={rows}
 		resize="true"

@@ -17,7 +17,6 @@
 	const table = getTable()
 	const view = getView()
 
-	const color = $sorts.length ? 'blue' : 'alternative'
 	const value = writable<SetOptional<ISortSchema, 'fieldId'>[]>([])
 	$: value.set($sorts.length ? [...$sorts] : [{ direction: 'asc' }])
 	$: selected = $value.filter((v) => !!v.fieldId).map((v) => v.fieldId)
