@@ -2,7 +2,7 @@
 	import { createTableOpen } from '$lib/store/modal'
 	import { Accordion, AccordionItem, Button, Alert, Label, Modal, Input, Spinner, Toggle } from 'flowbite-svelte'
 	import type { Validation } from 'sveltekit-superforms'
-	import { FieldId, canDisplay, type ICreateTableInput, type createTableInput } from '@undb/core'
+	import { FieldId, canDisplay, type ICreateTableInput, type createTableInput, isControlledFieldType } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { IconCircleChevronDown, IconCircleChevronUp, IconPlus } from '@tabler/icons-svelte'
@@ -123,7 +123,9 @@
 								<div class="flex justify-between mt-5">
 									<div />
 									<div class="flex gap-4">
-										<Toggle bind:checked={$form.schema[i].required}>required</Toggle>
+										{#if !isControlledFieldType($form.schema[i].type)}
+											<Toggle bind:checked={$form.schema[i].required}>required</Toggle>
+										{/if}
 										{#if canDisplay($form.schema[i].type)}
 											<Toggle bind:checked={$form.schema[i].display}>display</Toggle>
 										{/if}

@@ -3,7 +3,6 @@ import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime
 import {
 	isImage,
 	type AttachmentFieldValue,
-	type AutoIncrementFieldValue,
 	type AverageFieldValue,
 	type BoolFieldValue,
 	type CollaboratorField,
@@ -192,11 +191,11 @@ const rating: TemplateFunc = (h, props) => {
 }
 
 const autoIncreament: TemplateFunc = (h, props) => {
-	const value = props.model[props.prop] as AutoIncrementFieldValue | undefined
+	const value = props.model.auto_increment as number | undefined
 
 	if (!value) return
 
-	return n(h, value.unpack())
+	return n(h, value)
 }
 
 const bool: TemplateFunc = (h, props) => {
