@@ -90,11 +90,10 @@
 			{
 				prop: 'selection',
 				pin: 'colPinStart',
-				readonly: true,
 				columnProperties: () => {
 					return {
 						class:
-							'!p-0 text-center border-r border-b border-gray-300 flex items-center justify-center bg-gray-100 hover:bg-gray-50',
+							'!p-0 relative text-center border-r border-b border-gray-300 flex items-center justify-center bg-gray-100 hover:bg-gray-50',
 					}
 				},
 				columnTemplate: (h) => {
@@ -106,24 +105,35 @@
 							updateAllSelect(event.target.checked)
 						},
 						class:
-							'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center',
+							'w-4 h-4 text-blue-600 absolute top-1/2 left-1/4 translate-y-[-50%] translate-x-[-50%] bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center',
 					})
 				},
-				cellProperties: () => ({
+				cellProperties: (cell) => ({
+					'data-record-id': cell.model.id,
 					class: '!p-0 text-center border-r border-b border-gray-200 group',
 				}),
 				cellTemplate: (h, props) => {
 					const checked = !!$select[props.model.id]
-					return h('div', {}, [
+					return h('div', { class: 'flex items-center h-full' }, [
 						h(
 							'span',
 							{
 								class: cx(
-									'undb-row-index text-gray-400 text-xs opacity-100 text-ellipsis whitespace-nowrap group-hover:hidden',
+									'undb-row-index relative basis-[50%] text-gray-400 text-xs opacity-100 text-ellipsis whitespace-nowrap group-hover:hidden',
 									checked && 'hidden',
 								),
 							},
 							String(props.rowIndex + 1),
+						),
+						h(
+							'button',
+							{
+								onClick: () => expand(props.model.id),
+								class: cx(
+									'undb-row-expand absolute w-6 h-6 rounded-full hover:bg-blue-100 top-1/2 left-3/4 translate-y-[-50%] translate-x-[-50%] text-xs opacity-0 text-gray-400',
+								),
+							},
+							h('i', { class: 'ti ti-arrows-diagonal' }),
 						),
 						h('input', {
 							type: 'checkbox',
@@ -132,13 +142,13 @@
 								updateSelect(props.model.id, event.target.checked)
 							},
 							class: cx(
-								'undb-select absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center group-hover:opacity-100',
+								'undb-select absolute top-1/2 left-1/4 translate-y-[-50%] translate-x-[-50%] w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center group-hover:opacity-100',
 								!checked && 'opacity-0',
 							),
 						}),
 					])
 				},
-				size: 40,
+				size: 80,
 			},
 			...fields.map<Components.RevoGrid['columns'][0]>((field) => {
 				const position = $view.pinnedFields?.getPinnedPosition(field.id.value)
@@ -231,6 +241,15 @@
 		currentFieldId.set(undefined)
 	}
 
+	const expand = (recordId: string) => {
+		const search = new URLSearchParams($page.url.searchParams)
+		const r = search.get('r')
+		if (r !== recordId) {
+			search.set('r', recordId)
+			goto(`?${search.toString()}`)
+		}
+	}
+
 	const onAfterColumnResize = async (
 		event: RevoGridCustomEvent<Record<RevoGridType.ColumnProp, RevoGridType.ColumnRegular>>,
 	): Promise<void> => {
@@ -244,17 +263,6 @@
 					width,
 				})
 			}
-		}
-	}
-
-	const onCellFocus = async (event: RevoGridCustomEvent<Edition.BeforeSaveDataDetails>) => {
-		if (event.detail.prop === 'selection') return
-		const recordId = event.detail.model.id
-		const search = new URLSearchParams($page.url.searchParams)
-		const r = search.get('r')
-		if (r !== recordId) {
-			search.set('r', recordId)
-			goto(`?${search.toString()}`)
 		}
 	}
 
@@ -298,7 +306,6 @@
 		readonly
 		rowClass="id"
 		on:aftercolumnresize={onAfterColumnResize}
-		on:beforecellfocus={onCellFocus}
 	/>
 </div>
 {#if !hasRecord}
@@ -346,6 +353,10 @@
 	}
 
 	:global(revo-grid .hovered .undb-select) {
+		opacity: 1;
+	}
+
+	:global(revo-grid .hovered .undb-row-expand) {
 		opacity: 1;
 	}
 
