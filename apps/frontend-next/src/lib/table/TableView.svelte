@@ -18,6 +18,7 @@
 	import FieldMenu from '$lib/field/FieldMenu.svelte'
 	import Portal from 'svelte-portal'
 	import { getIconClass } from '$lib/field/helpers'
+	import { onMount } from 'svelte'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -106,7 +107,9 @@
 							const id = getFieldDomId(column.prop)
 							return h(
 								'div',
-								{ class: 'inline-flex w-full justify-between items-center text-xs text-gray-700 font-medium' },
+								{
+									class: 'inline-flex w-full justify-between items-center text-xs text-gray-700 font-medium',
+								},
 								[
 									h(
 										'div',
@@ -282,10 +285,6 @@
 {/if}
 
 <style>
-	:global(.rgRow:hover) {
-		background-color: #eff6ff;
-	}
-
 	:global(revo-grid[theme='compact'] revogr-header .header-rgRow) {
 		height: 32px;
 	}

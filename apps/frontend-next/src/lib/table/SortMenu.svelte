@@ -46,12 +46,16 @@
 
 <Popover class="relative z-10" let:open>
 	<PopoverButton as="div" use={[popperRef]}>
-		<Button size="xs" outline={!!$sorts.length} {color} gradient class="h-full !rounded-md">
+		<Button
+			size="xs"
+			color="light"
+			class={cx('h-full !rounded-md', !!$sorts.length && 'bg-blue-50 hover:bg-blue-100 border-0')}
+		>
 			<span class="inline-flex items-center gap-2">
 				<i class="ti ti-arrows-sort text-sm" />
 				<span>Sorts</span>
 				{#if !!$sorts.length}
-					<Badge>{$sorts.length}</Badge>
+					<Badge class="rounded-full h-4 px-2 bg-blue-500 !text-white">{$sorts.length}</Badge>
 				{/if}
 			</span>
 		</Button>
@@ -63,7 +67,7 @@
 					{#if $value.length}
 						<span class="text-xs font-medium text-gray-500">set filters in this view</span>
 						<ul class="w-full items-center space-y-2" use:autoAnimate={{ duration: 100 }}>
-							{#each $value as sort, i}
+							{#each $value as sort, idx}
 								<li class="flex justify-between">
 									<div class="flex">
 										<FieldPicker
@@ -74,13 +78,12 @@
 											filter={(f) => f.sortable && !selected.includes(f.id.value)}
 										/>
 										<div class="inline-flex w-1/2">
-											{#each directions as direction, i}
+											{#each directions as direction, i (direction)}
 												<Button
 													size="xs"
 													class={cx('!rounded-none', i === 1 && '!rounded-r-md border-l-0')}
 													on:click={() => {
-														sort.direction = direction
-														value.set($value)
+														value.update((sort) => sort.map((s, index) => (index === idx ? { ...s, direction } : s)))
 													}}
 													color={sort.direction === direction ? 'blue' : 'light'}>{direction}</Button
 												>
@@ -90,7 +93,7 @@
 
 									<button
 										on:click|preventDefault|stopPropagation={() => {
-											value.update((sorts) => sorts.filter((_, index) => index !== i))
+											value.update((sorts) => sorts.filter((_, index) => index !== idx))
 										}}
 									>
 										<i class="ti ti-trash text-gray-500" />
