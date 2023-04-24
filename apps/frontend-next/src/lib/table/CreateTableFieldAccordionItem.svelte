@@ -1,10 +1,11 @@
 <script lang="ts">
+	import autoAnimate from '@formkit/auto-animate'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import FieldTypePicker from '$lib/field/FieldInputs/FieldTypePicker.svelte'
 	import MutateFieldComponent from '$lib/field/MutateFieldComponent/MutateFieldComponent.svelte'
-	import { IconCircleChevronUp, IconCircleChevronDown } from '@tabler/icons-svelte'
+	import { IconCircleChevronUp, IconCircleChevronDown, IconEyeClosed, IconPlus } from '@tabler/icons-svelte'
 	import { isControlledFieldType, canDisplay, type ICreateTableInput } from '@undb/core'
-	import { AccordionItem, Label, Input, Toggle, Button } from 'flowbite-svelte'
+	import { AccordionItem, Label, Input, Toggle, Button, Textarea } from 'flowbite-svelte'
 	import type { SuperForm } from 'sveltekit-superforms/client'
 
 	export let open: boolean
@@ -15,6 +16,11 @@
 
 	$: form = superFrm.form
 	$: errors = superFrm.errors
+
+	$: showDescription = false
+	$: if (!showDescription) {
+		$form.schema[i].description = ''
+	}
 </script>
 
 <AccordionItem
@@ -35,7 +41,7 @@
 		<IconCircleChevronDown size={16} />
 	</div>
 
-	<div class="space-y-2">
+	<div class="space-y-2" use:autoAnimate={{ duration: 100 }}>
 		<div class="grid grid-cols-2 gap-4">
 			<div>
 				<Label class="space-y-2">
@@ -56,11 +62,31 @@
 				</Label>
 			</div>
 		</div>
+
+		{#if showDescription}
+			<Label class="flex flex-col gap-2">
+				<div class="flex gap-2 items-center">
+					<span>description</span>
+				</div>
+
+				<Textarea class="rounded-sm" name="description" bind:value={$form.schema[i].description} />
+			</Label>
+		{/if}
+
 		<MutateFieldComponent type={$form.schema[i].type} form={superFrm} isNew path={['schema', i]} />
 	</div>
 
 	<div class="flex justify-between mt-5">
-		<div />
+		<div>
+			<Button size="xs" color="alternative" class="space-x-1" on:click={() => (showDescription = !showDescription)}>
+				{#if showDescription}
+					<IconEyeClosed size={16} />
+				{:else}
+					<IconPlus size={16} />
+				{/if}
+				<span>{showDescription ? 'hide' : 'show'} description </span>
+			</Button>
+		</div>
 		<div class="flex gap-4">
 			{#if !isControlledFieldType($form.schema[i].type)}
 				<Toggle bind:checked={$form.schema[i].required}>required</Toggle>
