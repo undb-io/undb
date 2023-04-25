@@ -10,7 +10,7 @@ const schema = z.object({
 })
 
 export const load: PageLoad = async () => {
-	const form = await superValidate(schema)
+	const form = await superValidate({}, schema)
 
 	return { form }
 }
