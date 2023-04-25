@@ -36,7 +36,6 @@
 			goto(`?${search.toString()}`, { invalidateAll: false })
 		}
 		if (!$currentRecordId) {
-			console.log('iojoijjiji')
 			goto($page.url.pathname, { invalidateAll: false })
 		}
 	}

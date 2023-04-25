@@ -59,6 +59,11 @@
 </script>
 
 <Modal title="Update Record" class="w-full h-[70%]" size="lg" bind:open={$open}>
+	{#if !$record}
+		<div class="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
+			<Spinner />
+		</div>
+	{/if}
 	<form id="updateRecord" class="space-y-5" method="POST" use:enhance>
 		<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 			{#each fields as field}

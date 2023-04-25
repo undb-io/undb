@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { ParentField, RecordFactory, TreeField } from '@undb/core'
 	import ForeignRecordsPicker from './ForeignRecordsPicker.svelte'
-	import { getTable } from '$lib/store/table'
+	import { getRecords, getTable } from '$lib/store/table'
 	import { page } from '$app/stores'
 	import { trpc } from '$lib/trpc/client'
 
-	export let value: string
+	export let value: string | null
 	export let field: ParentField
 
 	const table = getTable()
@@ -19,9 +19,21 @@
 		return RecordFactory.fromQueryRecords(data.records, $table.schema.toIdMap())
 	}
 
-	let group: string[] = []
+	const tableRecords = getRecords()
+
+	async function getInitRecords() {
+		return $tableRecords.filter((r) => value === r.id.value)
+	}
+
+	let group: string[] = value ? [value] : []
 
 	$: value = group[0] ?? null
 </script>
 
-<ForeignRecordsPicker {getForeignRecords} bind:value={group} foreignTableId={$table.id.value} {...$$restProps} />
+<ForeignRecordsPicker
+	{getForeignRecords}
+	{getInitRecords}
+	bind:value={group}
+	foreignTableId={$table.id.value}
+	{...$$restProps}
+/>

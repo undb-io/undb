@@ -7,8 +7,10 @@
 	import VirtualList from 'svelte-tiny-virtual-list'
 	import { onMount } from 'svelte'
 	import { getTable } from '$lib/store/table'
+	import { writable } from 'svelte/store'
 
 	let loading = false
+	let initialLoading = false
 	let open = false
 
 	const table = getTable()
@@ -16,10 +18,20 @@
 
 	export let foreignTableId: string
 	export let value: string[] = []
-	const recordsMap = new Map<string, Record>()
+	let records: Records = []
+	const recordsMap = writable(new Map<string, Record>())
 	export let getForeignRecords: () => Promise<Records>
+	export let getInitRecords: () => Promise<Records>
 
-	onMount(() => {
+	$: if (value?.length) getInitial()
+
+	async function getInitial() {
+		initialLoading = true
+		records = await getInitRecords()
+		initialLoading = false
+	}
+
+	onMount(async () => {
 		value ||= []
 	})
 
@@ -34,15 +46,13 @@
 
 	$: schema = foreignTable.schema.toIdMap()
 
-	let records: Records = []
-
 	$: {
 		for (const record of records) {
-			recordsMap.set(record.id.value, record)
+			recordsMap.set($recordsMap.set(record.id.value, record))
 		}
 	}
 
-	async function initRecords() {
+	async function getForeign() {
 		loading = true
 		records = await getForeignRecords()
 		loading = false
@@ -52,8 +62,8 @@
 		value = value?.filter((r) => r !== recordId) ?? []
 	}
 
-	$: if (open) foreignTableId, initRecords()
-	$: selected = value?.map((r) => recordsMap.get(r)!) ?? []
+	$: if (open) foreignTableId, getForeign()
+	$: selected = value?.map((r) => $recordsMap.get(r)!) ?? []
 </script>
 
 <div class="space-y-2">
@@ -81,8 +91,12 @@
 		{...$$restProps}
 		class={cx('space-x-2', $$restProps.class)}
 	>
-		<i class="ti ti-plus" />
-		<span> Add Record </span>
+		{#if initialLoading}
+			<Spinner size="4" />
+		{:else}
+			<i class="ti ti-plus" />
+			<span> Add Record </span>
+		{/if}
 	</Button>
 	<Modal title="Select Record" bind:open size="md" class="w-[700px] h-[600px]">
 		{#if loading}

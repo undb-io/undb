@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { RecordFactory, type Records, type ReferenceField } from '@undb/core'
+	import { RecordFactory, type IGroup, type Records, type ReferenceField } from '@undb/core'
 	import ForeignRecordsPicker from './ForeignRecordsPicker.svelte'
 	import { getRecords, getTable } from '$lib/store/table'
 	import { page } from '$app/stores'
@@ -26,6 +26,18 @@
 			return RecordFactory.fromQueryRecords(data.records, $table.schema.toIdMap())
 		}
 	}
+	async function getInitRecords() {
+		if ($table.id.value === foreignTableId) {
+			return $tableRecords.filter((r) => value.includes(r.id.value))
+		} else {
+			const data = await trpc($page).record.list.query({
+				tableId: foreignTableId,
+				filter: [{ type: 'id', path: 'id', operator: '$in', value: value ?? [] }],
+			})
+
+			return RecordFactory.fromQueryRecords(data.records, $table.schema.toIdMap())
+		}
+	}
 </script>
 
-<ForeignRecordsPicker {getForeignRecords} bind:value {foreignTableId} {...$$restProps} />
+<ForeignRecordsPicker {getForeignRecords} {getInitRecords} bind:value {foreignTableId} {...$$restProps} />

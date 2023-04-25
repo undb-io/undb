@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { RecordFactory, TreeField } from '@undb/core'
 	import ForeignRecordsPicker from './ForeignRecordsPicker.svelte'
-	import { getTable } from '$lib/store/table'
+	import { getRecords, getTable } from '$lib/store/table'
 	import { page } from '$app/stores'
 	import { trpc } from '$lib/trpc/client'
 
@@ -18,6 +18,17 @@
 
 		return RecordFactory.fromQueryRecords(data.records, $table.schema.toIdMap())
 	}
+
+	const tableRecords = getRecords()
+	async function getInitRecords() {
+		return $tableRecords.filter((r) => value.includes(r.id.value))
+	}
 </script>
 
-<ForeignRecordsPicker {getForeignRecords} bind:value foreignTableId={$table.id.value} {...$$restProps} />
+<ForeignRecordsPicker
+	{getForeignRecords}
+	{getInitRecords}
+	bind:value
+	foreignTableId={$table.id.value}
+	{...$$restProps}
+/>
