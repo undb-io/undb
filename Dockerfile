@@ -36,6 +36,6 @@ ENV UNDB_DATABASE_SQLITE_DATA /var/opt/.undb
 COPY --from=installer /undb/node_modules ./node_modules
 COPY --from=installer /undb/packages ./packages
 COPY --from=installer /undb/apps/backend ./apps/backend
-COPY --from=installer /undb/apps/frontend/dist ./out
+COPY --from=installer /undb/apps/frontend/build ./out
 
 CMD ["apps/backend/dist/main.js"]
