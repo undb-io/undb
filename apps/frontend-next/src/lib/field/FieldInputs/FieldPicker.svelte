@@ -3,7 +3,7 @@
 	import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@rgossiaux/svelte-headlessui'
 	import type { Field, IFieldType, Table } from '@undb/core'
 	import { Button } from 'flowbite-svelte'
-	import { identity } from 'lodash'
+	import { identity } from 'lodash-es'
 	import FieldIcon from '../FieldIcon.svelte'
 
 	export let value: string = ''

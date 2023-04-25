@@ -465,9 +465,9 @@ importers:
       '@trpc/server':
         specifier: ^10.18.0
         version: 10.18.0
-      '@types/lodash':
-        specifier: ^4.14.192
-        version: 4.14.192
+      '@types/lodash-es':
+        specifier: ^4.17.7
+        version: 4.17.7
       '@types/nprogress':
         specifier: ^0.2.0
         version: 0.2.0
@@ -507,7 +507,7 @@ importers:
       flowbite-svelte:
         specifier: ^0.34.9
         version: 0.34.9(@popperjs/core@2.11.7)(classnames@2.3.2)(flowbite@1.6.5)(svelte@3.54.0)
-      lodash:
+      lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
       nprogress:
@@ -9036,7 +9036,6 @@ packages:
 
   /lodash-es@4.17.21:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
-    dev: false
 
   /lodash.camelcase@4.3.0:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}

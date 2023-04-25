@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Badge, Button, Checkbox, Dropdown, Popover } from 'flowbite-svelte'
 	import type { Field, Table } from '@undb/core'
-	import { identity } from 'lodash'
+	import { identity } from 'lodash-es'
 	import Portal from 'svelte-portal'
 	import FieldIcon from '../FieldIcon.svelte'
 

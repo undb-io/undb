@@ -7,7 +7,7 @@
 	import { trpc } from '$lib/trpc/client'
 	import type { ISortDirection } from '@undb/core'
 	import { DropdownDivider, DropdownItem } from 'flowbite-svelte'
-	import { noop } from 'lodash'
+	import { noop } from 'lodash-es'
 
 	export let togglePin: (fieldId: string) => void = noop
 

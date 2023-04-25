@@ -1,5 +1,5 @@
 import type { Merge, ValueOf } from 'type-fest'
-import type { ZodDefault, ZodTypeAny } from 'zod'
+import type { ZodDefault, ZodObject, ZodRawShape, ZodTypeAny } from 'zod'
 import { z } from 'zod'
 import { userIdSchema } from '../../user/value-objects/user-id.vo.js'
 import type { Field, FieldValue, ICollaboratorProfile } from '../field/index.js'
@@ -39,16 +39,19 @@ export type RecordAllJSON = Merge<RecordValueJSON, IInternalRecordValues>
 
 export type RecordAllValueType = ValueOf<RecordAllValues> | ValueOf<IInternalRecordValues> | ICollaboratorProfile
 
-export const createMutateRecordValuesSchema = (fields: Field[], defaultValues: Record<string, any> = {}) => {
-  let schema = z.object<{ [key: string]: any }>({})
+export const createMutateRecordValuesSchema = (
+  fields: Field[],
+  defaultValues: Record<string, any> = {},
+): ZodObject<any> => {
+  const shape: ZodRawShape = {}
 
   for (const field of fields) {
     if (field.controlled) continue
     const fieldSchema = field.valueSchema as ZodDefault<ZodTypeAny>
-    schema = schema.setKey(field.id.value, fieldSchema.default(defaultValues[field.id.value]))
+    shape[field.id.value] = fieldSchema.default(defaultValues[field.id.value])
   }
 
-  return schema.strict()
+  return z.object(shape)
 }
 
 export type IMutateRecordValueSchema = z.infer<ReturnType<typeof createMutateRecordValuesSchema>>

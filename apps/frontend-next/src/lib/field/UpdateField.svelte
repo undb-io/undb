@@ -12,6 +12,7 @@
 	import { canDisplay, type Field } from '@undb/core'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
+	import { z } from 'zod'
 
 	const table = getTable()
 
@@ -25,6 +26,7 @@
 		clearOnSubmit: 'errors-and-message',
 		invalidateAll: false,
 		taintedMessage: null,
+		validators: z.object({}),
 		resetForm: true,
 		async onUpdate(event) {
 			await trpc($page).table.field.update.mutate({

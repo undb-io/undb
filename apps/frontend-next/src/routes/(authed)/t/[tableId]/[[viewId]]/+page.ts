@@ -19,8 +19,11 @@ export const load: PageLoad = async (event) => {
 	const coreRecord = record ? RecordFactory.fromQuery(record, coreTable.schema.toIdMap()).unwrap() : undefined
 	return {
 		record,
-		createRecord: superValidate(createMutateRecordValuesSchema(fields), { id: 'createRecord' }),
-		updateRecord: superValidate(createMutateRecordValuesSchema(fields, coreRecord?.valuesJSON), { id: 'updateRecord' }),
+		createRecord: superValidate(event, createMutateRecordValuesSchema(fields), { id: 'createRecord', errors: false }),
+		updateRecord: superValidate(event, createMutateRecordValuesSchema(fields, coreRecord?.valuesJSON), {
+			id: 'updateRecord',
+			errors: false,
+		}),
 		createField: superValidate(
 			{ type: 'string' },
 			z.object<{ [key: string]: any }>({
@@ -28,6 +31,8 @@ export const load: PageLoad = async (event) => {
 			}),
 			{ id: 'createField' },
 		),
-		updateField: superValidate(z.object<{ [key: string]: any }>({}), { id: 'updateField' }),
+		updateField: superValidate({ type: 'string' }, z.object<{ [key: string]: any }>({ type: z.string() }), {
+			id: 'updateField',
+		}),
 	}
 }

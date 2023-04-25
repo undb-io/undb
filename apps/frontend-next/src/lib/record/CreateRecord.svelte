@@ -15,13 +15,11 @@
 	const view = getView()
 
 	export let data: Validation<any>
-	$: validators = createMutateRecordValuesSchema(fields ?? [])
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
 	const { form, enhance, constraints, delayed, reset, submitting } = superForm(data, {
 		id: 'createRecord',
 		SPA: true,
-		validators,
 		dataType: 'json',
 		invalidateAll: false,
 		resetForm: true,

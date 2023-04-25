@@ -3,7 +3,7 @@
 	import { flip } from 'svelte/animate'
 	import Option from '$lib/option/Option.svelte'
 	import { dndzone } from 'svelte-dnd-action'
-	import { groupBy } from 'lodash'
+	import { groupBy } from 'lodash-es'
 	import type { SelectField, SelectFieldValue } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
 	import { page } from '$app/stores'

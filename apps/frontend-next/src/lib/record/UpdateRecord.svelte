@@ -10,8 +10,7 @@
 	import { trpc } from '$lib/trpc/client'
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
-	import { pick } from 'lodash'
-	import { keys } from 'lodash'
+	import { pick, keys } from 'lodash-es'
 
 	const table = getTable()
 	const view = getView()
