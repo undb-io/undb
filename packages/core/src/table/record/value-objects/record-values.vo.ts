@@ -39,7 +39,7 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
     const result: RecordValueJSON = {}
 
     for (const [key, value] of this.value) {
-      result[key] = value.unpack()
+      result[key] = value.json
     }
 
     return result

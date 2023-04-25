@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { IQueryUser } from '@undb/core'
-	import { Button, Checkbox, Dropdown, DropdownItem } from 'flowbite-svelte'
+	import { Button, Checkbox, Dropdown } from 'flowbite-svelte'
 	import Collaborator from '../Collaborator.svelte'
 
 	export let value: string[] | undefined

@@ -57,7 +57,7 @@
 					</Label>
 				</div>
 				<div class="col-span-4">
-					<CellInput id={field.id.value} {field} bind:value={$form[field.id.value]} {...$constraints[field.id.value]} />
+					<CellInput {field} bind:value={$form[field.id.value]} {...$constraints[field.id.value]} />
 				</div>
 			{/each}
 		</div>

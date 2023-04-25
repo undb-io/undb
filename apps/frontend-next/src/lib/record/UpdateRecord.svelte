@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { goto, invalidate } from '$app/navigation'
 	import { page } from '$app/stores'
-	import { getRecord, getTable, getView, isRecordOpen } from '$lib/store/table'
-	import { createMutateRecordValuesSchema } from '@undb/core'
+	import { currentRecordId, getRecord, getTable, getView } from '$lib/store/table'
+	import { Record, createMutateRecordValuesSchema } from '@undb/core'
 	import { Button, Label, Modal, Spinner } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { writable } from 'svelte/store'
@@ -10,49 +10,51 @@
 	import { trpc } from '$lib/trpc/client'
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
-
-	const open = writable(false)
-
-	$: if ($isRecordOpen) {
-		open.set(true)
-	}
-
-	$: if (!$open) {
-		goto($page.url.pathname)
-	}
+	import { pick } from 'lodash'
+	import { keys } from 'lodash'
 
 	const table = getTable()
 	const view = getView()
-
 	const record = getRecord()
 
 	export let data: Validation<any>
+
 	$: validators = createMutateRecordValuesSchema(fields ?? [])
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
-	const { form, enhance, constraints, delayed, reset, submitting } = superForm(data, {
+	const superFrm = superForm(data, {
 		id: 'updateRecord',
 		SPA: true,
+		applyAction: true,
 		validators,
 		dataType: 'json',
-		// invalidateAll: false,
-		// resetForm: true,
-		delayMs: 100,
-		// clearOnSubmit: 'errors-and-message',
+		invalidateAll: false,
+		resetForm: true,
+		clearOnSubmit: 'errors-and-message',
 		taintedMessage: null,
+		delayMs: 100,
 		async onUpdate(event) {
-			await trpc($page).record.update.mutate({ tableId: $table.id.value, values: event.form.data })
+			if (!$record) return
+			const taintedKeys = keys($tainted)
+			const values = pick(event.form.data, taintedKeys)
+			await trpc($page).record.update.mutate({
+				tableId: $table.id.value,
+				id: $record.id.value,
+				values,
+			})
 			await invalidate(`records:${$table.id.value}`)
-			reset()
-			goto($page.url.pathname)
+			currentRecordId.set(undefined)
 		},
 	})
 
-	$: values = $record?.valuesJSON
-	$: if (values && $record) {
-		for (const [fieldId, value] of Object.entries(values)) {
-			$form[fieldId] = value
-		}
+	const { form, enhance, delayed, tainted, submitting } = superFrm
+
+	const open = writable<boolean>(false)
+	$: {
+		open.set(!!$currentRecordId)
+	}
+	$: if (!$open) {
+		currentRecordId.set(undefined)
 	}
 </script>
 
@@ -74,7 +76,7 @@
 					</Label>
 				</div>
 				<div class="col-span-4">
-					<CellInput id={field.id.value} {field} bind:value={$form[field.id.value]} {...$constraints[field.id.value]} />
+					<CellInput {field} bind:value={$form[field.id.value]} />
 				</div>
 			{/each}
 		</div>
@@ -87,7 +89,7 @@
 				{#if $delayed}
 					<Spinner size="5" />
 				{/if}
-				Create New Record</Button
+				Update Record</Button
 			>
 		</div>
 	</svelte:fragment>

@@ -13,12 +13,12 @@
 	import { quintOut } from 'svelte/easing'
 	import { writable } from 'svelte/store'
 	import EmptyTable from './EmptyTable.svelte'
-	import { currentFieldId, getRecords, getTable, getView } from '$lib/store/table'
+	import { currentFieldId, currentRecordId, getRecords, getTable, getView } from '$lib/store/table'
 	import { goto, invalidate } from '$app/navigation'
 	import FieldMenu from '$lib/field/FieldMenu.svelte'
 	import Portal from 'svelte-portal'
 	import { getIconClass } from '$lib/field/helpers'
-	import { onMount } from 'svelte'
+	import { onMount, tick } from 'svelte'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -56,7 +56,6 @@
 		await defineCustomElements()
 	})
 
-	let row: HTMLElement | undefined | null
 	function handleRevogrid(grid: RevoGrid) {
 		// @ts-ignore
 		const gridInstance = grid.getWebComponent() as HTMLRevoGridElement | undefined
@@ -241,13 +240,9 @@
 		currentFieldId.set(undefined)
 	}
 
-	const expand = (recordId: string) => {
-		const search = new URLSearchParams($page.url.searchParams)
-		const r = search.get('r')
-		if (r !== recordId) {
-			search.set('r', recordId)
-			goto(`?${search.toString()}`)
-		}
+	const expand = async (recordId: string) => {
+		await tick()
+		currentRecordId.set(recordId)
 	}
 
 	const onAfterColumnResize = async (

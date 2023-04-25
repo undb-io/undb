@@ -6,4 +6,4 @@
 	export let field: SelectField
 </script>
 
-<OptionPicker {field} bind:value {...$$restProps} />
+<OptionPicker {field} bind:group={value} {...$$restProps} />

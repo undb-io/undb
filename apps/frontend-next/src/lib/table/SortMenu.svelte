@@ -48,13 +48,13 @@
 		<Button
 			size="xs"
 			color="light"
-			class={cx('h-full !rounded-md', !!$sorts.length && 'bg-blue-50 hover:bg-blue-100 border-0 text-blue-700')}
+			class={cx('h-full !rounded-md', !!$sorts.length && 'bg-blue-100 hover:bg-blue-100 border-0 ')}
 		>
-			<span class="inline-flex items-center gap-2">
+			<span class="inline-flex items-center gap-2 text-blue-600">
 				<i class="ti ti-arrows-sort text-sm" />
 				<span>Sorts</span>
 				{#if !!$sorts.length}
-					<Badge class="rounded-full h-4 px-2 bg-blue-500 !text-white">{$sorts.length}</Badge>
+					<Badge class="rounded-full h-4 px-2 bg-blue-700 !text-white">{$sorts.length}</Badge>
 				{/if}
 			</span>
 		</Button>

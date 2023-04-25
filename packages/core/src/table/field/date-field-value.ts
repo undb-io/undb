@@ -1,10 +1,14 @@
 import type { ValueObject } from '@undb/domain'
 import { isEqual } from 'date-fns'
+import type { JsonValue } from 'type-fest'
 import type { IDateFieldValue } from './date-field.type.js'
 import { FieldValueBase } from './field-value.base.js'
 import type { IFieldValueVisitor } from './field-value.visitor.js'
 
 export class DateFieldValue extends FieldValueBase<IDateFieldValue> {
+  get json(): JsonValue {
+    return this.props.value?.toISOString() ?? null
+  }
   constructor(value: IDateFieldValue) {
     super({ value })
   }

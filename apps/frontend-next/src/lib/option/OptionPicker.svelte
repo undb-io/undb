@@ -3,15 +3,12 @@
 	import { Button, Dropdown, DropdownItem, Radio } from 'flowbite-svelte'
 	import Option from './Option.svelte'
 
-	export let value: string | undefined
 	export let field: SelectField
 
-	let group: string | undefined
+	export let group: string | undefined
 
 	$: option = group ? field.options.getById(group).into() : null
 	$: options = field.options.options
-
-	$: value = group
 
 	$: open = false
 </script>

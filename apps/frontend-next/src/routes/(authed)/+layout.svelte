@@ -7,6 +7,9 @@
 	import { Avatar, Button, Dropdown, DropdownItem } from 'flowbite-svelte'
 	import { createTableOpen } from '$lib/store/modal'
 	import { page } from '$app/stores'
+	import { currentRecordId } from '$lib/store/table'
+	import { goto } from '$app/navigation'
+	import { browser } from '$app/environment'
 
 	$: navigation = [
 		{ name: 'Tables', href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -21,6 +24,22 @@
 
 	$: tables = data.tables
 	$: me = data.me.me
+
+	const r = $page.url.searchParams.get('r')
+	$: if (r) {
+		currentRecordId.set(r)
+	}
+	$: if (browser) {
+		if ($currentRecordId) {
+			const search = $page.url.searchParams
+			search.set('r', $currentRecordId)
+			goto(`?${search.toString()}`, { invalidateAll: false })
+		}
+		if (!$currentRecordId) {
+			console.log('iojoijjiji')
+			goto($page.url.pathname, { invalidateAll: false })
+		}
+	}
 </script>
 
 <div>

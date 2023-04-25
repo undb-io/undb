@@ -11,11 +11,11 @@
 	import Color from './Color.svelte'
 	import Email from './Email.svelte'
 	import Attachment from './Attachment.svelte'
-	import OptionPicker from '$lib/option/OptionPicker.svelte'
 	import Collaborator from './Collaborator.svelte'
 	import Reference from './Reference.svelte'
 	import Tree from './Tree.svelte'
 	import Parent from './Parent.svelte'
+	import Select from './Select.svelte'
 
 	export let field: Field
 	export let value: any | undefined = undefined
@@ -30,7 +30,7 @@
 		color: Color,
 		email: Email,
 		date: Date,
-		select: OptionPicker,
+		select: Select,
 		bool: Checkbox,
 		'date-range': DateRange,
 		reference: Reference,
@@ -50,7 +50,7 @@
 
 <svelte:component
 	this={map[field.type]}
-	name={field.name}
+	name={field.id.value}
 	placeholder={field.description?.value}
 	bind:value
 	{field}
