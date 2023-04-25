@@ -1,7 +1,9 @@
 import { trpc } from '$lib/trpc/client'
-import type { LayoutServerLoad } from './$types'
+import type { LayoutLoad } from './$types'
 
-export const load: LayoutServerLoad = (event) => {
+export const ssr = false
+export const prerender = 'auto'
+export const load: LayoutLoad = (event) => {
 	const id = event.params.tableId
 
 	event.depends(`table:${id}`)

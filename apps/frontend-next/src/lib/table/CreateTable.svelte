@@ -5,6 +5,9 @@
 	import { FieldId, type createTableInput } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
 	import CreateTableFieldAccordionItem from './CreateTableFieldAccordionItem.svelte'
+	import { trpc } from '$lib/trpc/client'
+	import { page } from '$app/stores'
+	import { goto } from '$app/navigation'
 
 	export let data: Validation<typeof createTableInput>
 	let opened: Record<string, boolean> = {}
@@ -16,15 +19,19 @@
 	}
 
 	const superFrm = superForm(data, {
+		id: 'createTable',
+		SPA: true,
 		applyAction: true,
 		resetForm: true,
 		invalidateAll: true,
 		clearOnSubmit: 'errors-and-message',
 		dataType: 'json',
 		taintedMessage: null,
-		onResult() {
+		async onUpdate(event) {
 			reset()
 			createTableOpen.set(false)
+			const { id } = await trpc($page).table.create.mutate(event.form.data)
+			goto(`/t/${id}`)
 		},
 	})
 

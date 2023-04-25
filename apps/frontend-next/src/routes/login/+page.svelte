@@ -5,7 +5,18 @@
 
 	export let data: PageData
 
-	const { form, enhance, constraints } = superForm(data.form)
+	const { form, enhance, constraints } = superForm(data.form, {
+		async onUpdate(event) {
+			const response = await fetch('http://127.0.0.1:4000/api/auth/login', {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(event.form.data),
+			})
+		},
+	})
 </script>
 
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">

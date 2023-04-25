@@ -5,7 +5,7 @@ import { z } from 'zod'
 import type { PageLoad } from './$types'
 
 export const ssr = false
-
+export const prerender = 'auto'
 export const load: PageLoad = async (event) => {
 	const { tableId, viewId } = event.params
 	const { table } = await event.parent()
