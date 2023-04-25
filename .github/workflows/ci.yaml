@@ -34,7 +34,7 @@ jobs:
           version: 8.3.1
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm build
