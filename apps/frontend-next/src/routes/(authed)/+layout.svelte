@@ -254,9 +254,8 @@
 								<DropdownItem>Settings</DropdownItem>
 							</a>
 							<DropdownItem>
-								<form action="/logout" method="POST">
-									<button class="w-full h-full text-left" type="submit">Logout</button>
-								</form>
+								<!-- TODO: logout -->
+								<button class="w-full h-full text-left" type="submit">Logout</button>
 							</DropdownItem>
 						</Dropdown>
 					</li>

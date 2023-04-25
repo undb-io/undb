@@ -14,7 +14,7 @@ export function trpc(init?: TRPCClientInit & { cookies?: Cookies }) {
 		url: '/api/trpc',
 		links: [
 			httpBatchLink({
-				url: isBrowser ? '/api/trpc' : 'http://0.0.0.0:4000/api/trpc',
+				url: '/api/trpc',
 				headers: {
 					Authorization: 'Bearer ' + init?.cookies?.get('undb_auth'),
 				},

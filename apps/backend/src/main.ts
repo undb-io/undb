@@ -7,6 +7,7 @@ import { Request } from 'express'
 import helmet from 'helmet'
 import { ClsMiddleware, ClsService } from 'nestjs-cls'
 import { Logger } from 'nestjs-pino'
+import passport from 'passport'
 import { v4 } from 'uuid'
 import { AppModule } from './app.module.js'
 import { JwtStrategy } from './auth/jwt.strategy.js'
@@ -48,7 +49,7 @@ async function bootstrap() {
       TRPC_ENDPOINT,
       trpcExpress.createExpressMiddleware({
         router,
-        // middleware: passport.authenticate(jwt, { session: false }),
+        middleware: passport.authenticate(jwt, { session: false }),
       }),
     )
     .use(helmet({ contentSecurityPolicy: false, crossOriginResourcePolicy: false }))

@@ -2,10 +2,26 @@
 	import { Button, A } from 'flowbite-svelte'
 	import type { PageData } from './$types'
 	import { superForm } from 'sveltekit-superforms/client'
+	import { goto } from '$app/navigation'
+	import { page } from '$app/stores'
 
 	export let data: PageData
 
-	const { form, enhance, constraints } = superForm(data.form)
+	const { form, enhance, constraints } = superForm(data.form, {
+		SPA: true,
+		async onUpdate(event) {
+			await fetch('/api/auth/register', {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(event.form.data),
+			})
+
+			await goto($page.url.searchParams.get('redirectTo') || '/')
+		},
+	})
 </script>
 
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">

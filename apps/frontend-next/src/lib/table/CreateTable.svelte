@@ -75,9 +75,6 @@
 						{...$constraints.name}
 					/>
 				</Label>
-				{#if $errors.name}
-					<Alert>{$errors.name}</Alert>
-				{/if}
 
 				{#if $form.schema.length}
 					<Accordion class="my-4">

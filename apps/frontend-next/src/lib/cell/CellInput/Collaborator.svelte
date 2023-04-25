@@ -2,6 +2,8 @@
 	import type { IQueryUser } from '@undb/core'
 	import { Button, Checkbox, Dropdown } from 'flowbite-svelte'
 	import Collaborator from '../Collaborator.svelte'
+	import { trpc } from '$lib/trpc/client'
+	import { page } from '$app/stores'
 
 	export let value: string[] | undefined
 
@@ -17,9 +19,9 @@
 	}
 
 	async function fetchMembers() {
-		members = await fetch('/members')
-			.then((r) => r.json())
-			.then((m) => m.users)
+		const { users } = await trpc($page).user.users.query({})
+
+		members = users
 	}
 	$: if (opened) {
 		fetchMembers()
