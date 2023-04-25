@@ -11,6 +11,8 @@ export const load: LayoutLoad = async (event) => {
 		throw redirect(303, `/login?redirectTo=${event.url.pathname}`)
 	}
 
+	event.depends('tables')
+
 	const me = await event.fetch('/api/auth/me', {})
 
 	return {

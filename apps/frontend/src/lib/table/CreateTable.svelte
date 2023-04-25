@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { createTableOpen } from '$lib/store/modal'
-	import { Accordion, Button, Alert, Label, Modal, Input, Spinner } from 'flowbite-svelte'
+	import { Accordion, Button, Label, Modal, Input, Spinner } from 'flowbite-svelte'
 	import type { Validation } from 'sveltekit-superforms'
 	import { FieldId, type createTableInput } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
 	import CreateTableFieldAccordionItem from './CreateTableFieldAccordionItem.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { page } from '$app/stores'
-	import { goto } from '$app/navigation'
+	import { goto, invalidate } from '$app/navigation'
 
 	export let data: Validation<typeof createTableInput>
 	let opened: Record<string, boolean> = {}
@@ -21,17 +21,19 @@
 	const superFrm = superForm(data, {
 		id: 'createTable',
 		SPA: true,
-		applyAction: true,
+		applyAction: false,
 		resetForm: true,
-		invalidateAll: true,
+		invalidateAll: false,
 		clearOnSubmit: 'errors-and-message',
 		dataType: 'json',
 		taintedMessage: null,
 		async onUpdate(event) {
 			reset()
-			createTableOpen.set(false)
 			const { id } = await trpc($page).table.create.mutate(event.form.data)
+			await invalidate('tables')
 			goto(`/t/${id}`)
+
+			createTableOpen.set(false)
 		},
 	})
 
