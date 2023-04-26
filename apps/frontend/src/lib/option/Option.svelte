@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Option } from '@undb/core'
 	import cx from 'classnames'
-	import { Badge } from 'flowbite-svelte'
 
 	export let option: Option
 
@@ -10,6 +9,7 @@
 
 <div
 	{...$$restProps}
+	data-option-id={option.key.value}
 	class={cx(
 		`bg-${option.color.name}-${option.color.shade * 100}`,
 		textColor,

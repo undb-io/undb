@@ -2,7 +2,7 @@
 	import { currentFieldId, currentRecordId, getRecords, getTable } from '$lib/store/table'
 	import { flip } from 'svelte/animate'
 	import Option from '$lib/option/Option.svelte'
-	import { dndzone } from 'svelte-dnd-action'
+	import { TRIGGERS, dndzone } from 'svelte-dnd-action'
 	import { groupBy } from 'lodash-es'
 	import type { SelectField, SelectFieldValue } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
@@ -10,6 +10,7 @@
 	import KanbanCard from '$lib/kanban/KanbanCard.svelte'
 	import { Button } from 'flowbite-svelte'
 	import { createOptionOpen, createRecordInitial, createRecordOpen } from '$lib/store/modal'
+	import { invalidate } from '$app/navigation'
 
 	export let fieldId: string
 	const flipDurationMs = 200
@@ -39,6 +40,7 @@
 	}
 	async function handleDndFinalizeColumns(e: any) {
 		items = e.detail.items
+		console.log(e)
 
 		const from = e.detail.info.id
 		const toIndex = items.findIndex((i) => i.id === from)
@@ -60,11 +62,20 @@
 			items = [...items]
 		}
 	}
-	function handleDndFinalizeCards(cid: string, e: any) {
+	async function handleDndFinalizeCards(cid: string, e: any) {
 		const colIdx = items.findIndex((c) => c.id === cid)
 		if (items[colIdx]) {
 			items[colIdx].records = e.detail.items
 			items = [...items]
+		}
+
+		if (field && e.detail.info.trigger === TRIGGERS.DROPPED_INTO_ZONE) {
+			await trpc($page).record.update.mutate({
+				tableId: $table.id.value,
+				id: e.detail.info.id,
+				values: { [field.id.value]: e.target.dataset.containerId },
+			})
+			await invalidate(`records:${$table.id.value}`)
 		}
 	}
 </script>
@@ -102,6 +113,7 @@
 
 				<div
 					class="flex flex-col gap-2 flex-1 overflow-y-scroll"
+					data-container-id={item.id}
 					use:dndzone={{ items: item.records, flipDurationMs, dropTargetStyle: {} }}
 					on:consider={(e) => handleDndConsiderCards(item.id, e)}
 					on:finalize={(e) => handleDndFinalizeCards(item.id, e)}
@@ -109,6 +121,7 @@
 					{#each item.records as record (record.id)}
 						<div animate:flip={{ duration: flipDurationMs }}>
 							<button
+								data-record-id={record.id}
 								class="!block w-full"
 								on:click|preventDefault|stopPropagation={() => {
 									$currentRecordId = record.id
