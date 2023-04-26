@@ -42,5 +42,5 @@
 {#if !value}
 	<span />
 {:else}
-	<svelte:component this={map[field.type]} {value} {field} />
+	<svelte:component this={map[field.type]} {value} {field} {...$$restProps} />
 {/if}

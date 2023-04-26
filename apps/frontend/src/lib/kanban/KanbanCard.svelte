@@ -8,12 +8,15 @@
 
 	export let record: Record
 	const table = getTable()
-	const view = getView()
 
-	const values = record.values.valuesPair
+	$: values = record.values.valuesPair
 </script>
 
-<Card rounded={false} class="!py-4 !px-4 shadow-sm hover:shadow-lg duration-200 cursor-grab select-none">
+<Card
+	rounded={false}
+	class="!py-4 !px-4 shadow-sm hover:shadow-lg duration-200 cursor-grab select-none space-y-2"
+	{...$$restProps}
+>
 	{#each Object.entries(values) as [key, value]}
 		{@const field = $table.schema.getFieldById(key).unwrap()}
 		<div class="flex items-center gap-2">

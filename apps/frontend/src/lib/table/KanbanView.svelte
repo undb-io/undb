@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentFieldId, getRecords, getTable } from '$lib/store/table'
+	import { currentFieldId, currentRecordId, getRecords, getTable } from '$lib/store/table'
 	import { flip } from 'svelte/animate'
 	import Option from '$lib/option/Option.svelte'
 	import { dndzone } from 'svelte-dnd-action'
@@ -108,7 +108,14 @@
 				>
 					{#each item.records as record (record.id)}
 						<div animate:flip={{ duration: flipDurationMs }}>
-							<KanbanCard record={record.record} />
+							<button
+								class="!block w-full"
+								on:click|preventDefault|stopPropagation={() => {
+									$currentRecordId = record.id
+								}}
+							>
+								<KanbanCard record={record.record} />
+							</button>
 						</div>
 					{/each}
 				</div>
