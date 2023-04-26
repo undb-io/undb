@@ -11,13 +11,13 @@
 	<div class="w-full px-5 py-4 flex justify-end" id="navbar-default">
 		<Button size="sm" on:click={() => createTableOpen.set(true)}>
 			<i class="ti ti-plus text-sm mr-3" />
-			create new table</Button
+			Create New Table</Button
 		>
 	</div>
 </nav>
 
 {#if !!data.tables.length}
-	<main class="w-full p-10 grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-4">
+	<main class="w-full p-10 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
 		{#each data.tables as table}
 			<Card href={`/t/${table.id}`}>
 				<h5 class="font-semibold">{table.name}</h5>

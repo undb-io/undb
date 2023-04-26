@@ -96,9 +96,9 @@
 			{#if canDisplay(field.type)}
 				<Toggle bind:checked={field.display}>display</Toggle>
 			{/if}
-			<button on:click|preventDefault|stopPropagation class="hover:bg-gray-100 px-3 rounded-sm">
+			<div class="hover:bg-gray-100 px-3 rounded-sm">
 				<i class="ti ti-dots text-sm" />
-			</button>
+			</div>
 			<Dropdown>
 				<DropdownItem class="text-red-500 font-normal" on:click={remove}>remove</DropdownItem>
 			</Dropdown>

@@ -78,7 +78,7 @@
 					/>
 				</Label>
 
-				{#if $form.schema.length}
+				{#if $form.schema?.length}
 					<Accordion class="my-4">
 						{#each $form.schema as field, i (field.id)}
 							<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} />
