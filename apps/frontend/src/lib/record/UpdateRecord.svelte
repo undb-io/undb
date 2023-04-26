@@ -57,57 +57,59 @@
 	}
 </script>
 
-<Modal class="w-full h-[70%]" size="lg" bind:open={$open}>
-	{#if !$record}
-		<div class="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
-			<Spinner />
-		</div>
-	{/if}
-	<svelte:fragment slot="header">
-		<div class="flex items-center space-x-4">
-			<P>Update Record</P>
-			<ButtonGroup size="xs">
-				<Button size="xs" disabled={!$previousRecord} on:click={() => ($currentRecordId = $previousRecord?.id.value)}>
-					<i class="ti ti-chevron-left text-gray-500 text-base" />
-				</Button>
-				<Button size="xs" disabled={!$nextRecord} on:click={() => ($currentRecordId = $nextRecord?.id.value)}>
-					<i class="ti ti-chevron-right text-gray-500 text-base" />
-				</Button>
-			</ButtonGroup>
-		</div>
-	</svelte:fragment>
-	<form id="updateRecord" class="space-y-5" method="POST" use:enhance>
-		<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
-			{#each fields as field}
-				<div class="h-full items-start gap-1 pt-2">
-					<Label class="leading-5" for={field.id.value}>
-						<div class="inline-flex items-center gap-2">
-							<FieldIcon type={field.type} size={16} />
-							<span>
-								{field.name.value}
-							</span>
-						</div>
-						{#if field.required}
-							<span class="text-red-500">*</span>
-						{/if}
-					</Label>
-				</div>
-				<div class="col-span-4">
-					<CellInput record={$record} {field} bind:value={$form[field.id.value]} />
-				</div>
-			{/each}
-		</div>
-	</form>
+{#key $record}
+	<Modal class="w-full h-[70%]" size="lg" bind:open={$open}>
+		{#if !$record}
+			<div class="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
+				<Spinner />
+			</div>
+		{/if}
+		<svelte:fragment slot="header">
+			<div class="flex items-center space-x-4">
+				<P>Update Record</P>
+				<ButtonGroup size="xs">
+					<Button size="xs" disabled={!$previousRecord} on:click={() => ($currentRecordId = $previousRecord?.id.value)}>
+						<i class="ti ti-chevron-left text-gray-500 text-base" />
+					</Button>
+					<Button size="xs" disabled={!$nextRecord} on:click={() => ($currentRecordId = $nextRecord?.id.value)}>
+						<i class="ti ti-chevron-right text-gray-500 text-base" />
+					</Button>
+				</ButtonGroup>
+			</div>
+		</svelte:fragment>
+		<form id="updateRecord" class="space-y-5" method="POST" use:enhance>
+			<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
+				{#each fields as field}
+					<div class="h-full items-start gap-1 pt-2">
+						<Label class="leading-5" for={field.id.value}>
+							<div class="inline-flex items-center gap-2">
+								<FieldIcon type={field.type} size={16} />
+								<span>
+									{field.name.value}
+								</span>
+							</div>
+							{#if field.required}
+								<span class="text-red-500">*</span>
+							{/if}
+						</Label>
+					</div>
+					<div class="col-span-4">
+						<CellInput record={$record} {field} bind:value={$form[field.id.value]} />
+					</div>
+				{/each}
+			</div>
+		</form>
 
-	<svelte:fragment slot="footer">
-		<div class="w-full flex justify-end gap-2">
-			<Button color="alternative" on:click={() => goto($page.url.pathname)}>Discard</Button>
-			<Button class="gap-4" type="submit" form="updateRecord" disabled={$submitting}>
-				{#if $delayed}
-					<Spinner size="5" />
-				{/if}
-				Update Record</Button
-			>
-		</div>
-	</svelte:fragment>
-</Modal>
+		<svelte:fragment slot="footer">
+			<div class="w-full flex justify-end gap-2">
+				<Button color="alternative" on:click={() => goto($page.url.pathname)}>Discard</Button>
+				<Button class="gap-4" type="submit" form="updateRecord" disabled={$submitting}>
+					{#if $delayed}
+						<Spinner size="5" />
+					{/if}
+					Update Record</Button
+				>
+			</div>
+		</svelte:fragment>
+	</Modal>
+{/key}

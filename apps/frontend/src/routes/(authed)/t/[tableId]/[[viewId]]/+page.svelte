@@ -37,7 +37,7 @@
 
 <CreateRecord data={data.createRecord} />
 <CreateField data={data.createField} />
-{#if $currentRecord}
+{#if $currentRecordId}
 	<UpdateRecord data={data.updateRecord} />
 {/if}
 {#if $currentFieldId}
