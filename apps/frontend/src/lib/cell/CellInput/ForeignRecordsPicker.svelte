@@ -12,9 +12,9 @@
 	} from '@undb/core'
 	import { Alert, Button, Checkbox, CloseButton, Modal, Spinner } from 'flowbite-svelte'
 	import VirtualList from 'svelte-tiny-virtual-list'
-	import { onMount, tick } from 'svelte'
 	import { getTable } from '$lib/store/table'
 	import { writable } from 'svelte/store'
+	import { union } from 'lodash-es'
 
 	let loading = false
 	let initialLoading = false
@@ -25,21 +25,27 @@
 
 	export let foreignTableId: string
 	export let value: string[] = []
-	$: if (!value) value = []
 	export let field: ReferenceFieldTypes
-	export let record: Record | undefined = undefined
 	export let getForeignRecords: () => Promise<Records>
 	export let getInitRecords: () => Promise<Records>
 
+	// checkbox select record ids
+	let group: string[] = []
+	$: {
+		value = union(value, group)
+	}
+
 	let records = writable<Records>([])
+	let initialRecords: Records = []
 	const recordsMap = writable(new Map<string, Record>())
 
+	let loaded = false
 	async function getInitial() {
-		if (!open) {
+		if (!open && !loaded && value.length) {
 			initialLoading = true
-			records.set(await getInitRecords())
-
+			initialRecords = await getInitRecords()
 			initialLoading = false
+			loaded = true
 		}
 	}
 
@@ -47,8 +53,9 @@
 
 	let foreignTable: Table
 	$: {
-		if (foreignTableId === $table.id.value) foreignTable = $table
-		else {
+		if (foreignTableId === $table.id.value) {
+			foreignTable = $table
+		} else {
 			const ft = tables.find((t) => t.id === foreignTableId)
 			if (ft) foreignTable = TableFactory.fromQuery(ft)
 		}
@@ -57,6 +64,9 @@
 	$: schema = foreignTable.schema
 
 	$: {
+		for (const record of initialRecords) {
+			recordsMap.set($recordsMap.set(record.id.value, record))
+		}
 		for (const record of $records) {
 			recordsMap.set($recordsMap.set(record.id.value, record))
 		}
@@ -122,7 +132,7 @@
 					<Checkbox
 						inline
 						value={$records[index].id.value}
-						bind:group={value}
+						bind:group
 						custom
 						on:change={() => (open = false)}
 						class="w-full"
