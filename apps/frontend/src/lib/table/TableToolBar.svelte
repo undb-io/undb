@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Tooltip } from 'flowbite-svelte'
+	import { Button, P, Tooltip } from 'flowbite-svelte'
 	import ViewMenu from './ViewMenu.svelte'
 	import FilterMenu from './FilterMenu.svelte'
 	import SortMenu from './SortMenu.svelte'
@@ -7,6 +7,7 @@
 	import TableNavigator from './TableNavigator.svelte'
 	import ToggleDisplayType from './ToggleDisplayType.svelte'
 	import { createFieldOpen, createRecordOpen } from '$lib/store/modal'
+	import { records } from '$lib/store/table'
 </script>
 
 <div class="flex w-full flex-row items-center justify-between gap-y-4 border-b bg-white px-5 py-2">
@@ -35,6 +36,10 @@
 			<i class="ti ti-column-insert-right text-sm" />
 		</Button>
 		<Tooltip placement="bottom">Insert Field</Tooltip>
+
+		{#if $records.length}
+			<P class="!text-gray-400 text-xs">loaded {$records.length} records</P>
+		{/if}
 	</div>
 
 	<div class="ml-2">
