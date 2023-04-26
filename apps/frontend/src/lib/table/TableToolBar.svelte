@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Button, P, Tooltip } from 'flowbite-svelte'
-	import ViewMenu from './ViewMenu.svelte'
 	import FilterMenu from './FilterMenu.svelte'
 	import SortMenu from './SortMenu.svelte'
 	import ManageFieldsMenu from './ManageFieldsMenu.svelte'
@@ -23,7 +22,6 @@
 			Create New Record</Button
 		>
 
-		<ViewMenu />
 		<FilterMenu />
 		<SortMenu />
 		<ManageFieldsMenu />
