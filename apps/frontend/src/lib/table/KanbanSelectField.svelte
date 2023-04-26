@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { getTable, getView } from '$lib/store/table'
-	import { Card, Radio } from 'flowbite-svelte'
+	import { Button, Card, Hr, Radio } from 'flowbite-svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { page } from '$app/stores'
 	import { writable } from 'svelte/store'
+	import { createFieldInitial, createFieldOpen } from '$lib/store/modal'
 
 	const table = getTable()
 	const view = getView()
@@ -25,13 +26,36 @@
 
 <div class="flex items-center justify-center h-screen w-full bg-gray-100">
 	<Card class="flex-1">
-		<form class="flex flex-col space-y-6 space-x-2" action="?/selectKanbanField">
+		<div class="flex flex-col space-y-6 space-x-2">
 			{#each kanbanFields as field}
-				<Radio bind:group={$kanbanField} name="kanbanFieldId" value={field.id.value} on:change={onChange}>
-					<FieldIcon type={field.type} />
-					{field.name.value}</Radio
+				<Radio
+					bind:group={$kanbanField}
+					name="kanbanFieldId"
+					value={field.id.value}
+					on:change={onChange}
+					class="space-x-1"
 				>
+					<FieldIcon type={field.type} />
+					<span>{field.name.value}</span>
+				</Radio>
 			{/each}
-		</form>
+		</div>
+
+		{#if kanbanFields.length}
+			<Hr class="my-6">
+				<span class="text-gray-400 text-sm font-normal">or</span></Hr
+			>
+		{/if}
+
+		<Button
+			size="xs"
+			color="light"
+			on:click={() => {
+				$createFieldInitial = {
+					type: 'select',
+				}
+				$createFieldOpen = true
+			}}>create new select field</Button
+		>
 	</Card>
 </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getRecords, getTable } from '$lib/store/table'
+	import { currentFieldId, getRecords, getTable } from '$lib/store/table'
 	import { flip } from 'svelte/animate'
 	import Option from '$lib/option/Option.svelte'
 	import { dndzone } from 'svelte-dnd-action'
@@ -16,18 +16,18 @@
 
 	const table = getTable()
 	const records = getRecords()
-	const field = $table.schema.getFieldById(fieldId).into() as SelectField
 
-	const options = field.options.options
+	$: field = $table.schema.getFieldById(fieldId).into() as SelectField | undefined
+	$: options = field?.options?.options ?? []
 
 	const groupedRecords = groupBy($records, (record) => {
-		const value = record.values.value.get(field.id.value) as SelectFieldValue | undefined
+		const value = (field ? record.values.value.get(field.id.value) : undefined) as SelectFieldValue | undefined
 
 		if (!value?.id) return null
 		return value.id
 	})
 
-	let items = options.map((option) => ({
+	$: items = options.map((option) => ({
 		id: option.key.value,
 		name: option.name.value,
 		option,
@@ -43,10 +43,10 @@
 		const from = e.detail.info.id
 		const toIndex = items.findIndex((i) => i.id === from)
 		const to = options[toIndex]?.key.value
-		if (to && to !== from) {
-			await trpc($page).table.field.select.reorderOptions.mutate({
+		if (to && to !== from && field) {
+			await trpc($page).table.field?.select.reorderOptions.mutate({
 				tableId: $table.id.value,
-				fieldId: field.id.value,
+				fieldId: field?.id.value,
 				from,
 				to,
 			})
@@ -104,9 +104,16 @@
 		</div>
 	{/each}
 
-	<div class="w-[350px]">
-		<Button on:click={() => createOptionOpen.set(true)} size="xs" color="light" outline class="w-full rounded-sm"
-			>Create New Option</Button
+	<div class="w-[350px] shrink-0">
+		<Button
+			on:click={() => {
+				currentFieldId.set(field?.id.value)
+				createOptionOpen.set(true)
+			}}
+			size="xs"
+			color="light"
+			outline
+			class="w-full rounded-sm whitespace-nowrap">Create New Option</Button
 		>
 	</div>
 </section>

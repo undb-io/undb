@@ -63,7 +63,7 @@ export const mutateOptionSchema = z
   .object({
     key: optionIdSchema.optional(),
     name: optionNameSchema,
-    color: createOptionColorSchema.optional(),
+    color: createOptionColorSchema.optional().default({ name: 'indigo', shade: 5 }),
   })
   .strict()
 

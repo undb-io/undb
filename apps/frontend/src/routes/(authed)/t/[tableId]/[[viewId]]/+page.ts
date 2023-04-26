@@ -1,5 +1,5 @@
 import { trpc } from '$lib/trpc/client'
-import { RecordFactory, TableFactory, createMutateRecordValuesSchema } from '@undb/core'
+import { RecordFactory, TableFactory, createMutateRecordValuesSchema, createOptionSchema } from '@undb/core'
 import { superValidate } from 'sveltekit-superforms/server'
 import { z } from 'zod'
 import type { PageLoad } from './$types'
@@ -9,6 +9,9 @@ export const prerender = 'auto'
 export const load: PageLoad = async (event) => {
 	const { tableId, viewId } = event.params
 	const { table } = await event.parent()
+	if (!table) {
+		throw new Error('not found table')
+	}
 	const coreTable = TableFactory.fromQuery(table)
 	const view = coreTable.mustGetView(viewId)
 	const fields = view.getOrderedFields(coreTable.schema.nonSystemFields)
@@ -34,5 +37,6 @@ export const load: PageLoad = async (event) => {
 		updateField: superValidate({ type: 'string' }, z.object<{ [key: string]: any }>({ type: z.string() }), {
 			id: 'updateField',
 		}),
+		createOption: superValidate({}, createOptionSchema, { id: 'createOption' }),
 	}
 }

@@ -1,5 +1,13 @@
 <script lang="ts">
-	import { currentRecord, currentRecordId, getField, getRecord, getTable, records } from '$lib/store/table'
+	import {
+		currentFieldId,
+		currentRecord,
+		currentRecordId,
+		getField,
+		getRecord,
+		getTable,
+		records,
+	} from '$lib/store/table'
 	import TableIndex from '$lib/table/TableIndex.svelte'
 	import { RecordFactory } from '@undb/core'
 	import type { PageData } from './$types'
@@ -32,7 +40,9 @@
 {#if $currentRecordId}
 	<UpdateRecord data={data.updateRecord} />
 {/if}
-<CreateOption />
+{#if $currentFieldId}
+	<CreateOption data={data.createOption} />
+{/if}
 {#if $field}
 	{#key $field}
 		<UpdateField field={$field} data={data.updateField} />

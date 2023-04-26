@@ -37,7 +37,7 @@
 		</Button>
 		<Tooltip placement="bottom">Insert Field</Tooltip>
 
-		{#if $records.length}
+		{#if $records?.length}
 			<P class="!text-gray-400 text-xs">loaded {$records.length} records</P>
 		{/if}
 	</div>

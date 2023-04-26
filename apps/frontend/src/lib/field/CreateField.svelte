@@ -1,7 +1,7 @@
 <script lang="ts">
 	import autoAnimate from '@formkit/auto-animate'
 	import { getTable } from '$lib/store/table'
-	import { createFieldOpen } from '$lib/store/modal'
+	import { createFieldInitial, createFieldOpen } from '$lib/store/modal'
 	import { Button, Input, Label, Modal, Spinner, Toggle, Popover, Badge, Textarea } from 'flowbite-svelte'
 	import FieldIcon from './FieldIcon.svelte'
 	import { page } from '$app/stores'
@@ -31,6 +31,11 @@
 			createFieldOpen.set(false)
 		},
 	})
+
+	$: {
+		$form.type = $createFieldInitial?.type
+		$form.name = $createFieldInitial?.name
+	}
 
 	const { form, enhance, delayed, submitting } = superFrm
 
@@ -74,7 +79,7 @@
 						<span class="text-red-500">*</span>
 					</div>
 
-					<Input class="rounded-sm" name="name" required bind:value={$form.name} />
+					<Input name="name" required bind:value={$form.name} />
 				</Label>
 			</div>
 
@@ -84,7 +89,7 @@
 						<span>description</span>
 					</div>
 
-					<Textarea class="rounded-sm" name="description" bind:value={$form.description} />
+					<Textarea name="description" bind:value={$form.description} />
 				</Label>
 			{/if}
 

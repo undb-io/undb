@@ -2,10 +2,42 @@
 	import { createOptionOpen } from '$lib/store/modal'
 	import { Button, Input, Modal } from 'flowbite-svelte'
 	import OptionColorPicker from './OptionColorPicker.svelte'
-	import type { IOptionColorName } from '@undb/core'
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
+	import { OptionColor, type SelectField, type createOptionSchema } from '@undb/core'
+	import { superForm } from 'sveltekit-superforms/client'
+	import type { Validation } from 'sveltekit-superforms/index'
+	import { trpc } from '$lib/trpc/client'
+	import { page } from '$app/stores'
+	import { getField, getTable } from '$lib/store/table'
 
-	let color: IOptionColorName
-	let name = ''
+	export let data: Validation<typeof createOptionSchema>
+
+	const table = getTable()
+	const field = getField()
+
+	const { form, enhance, reset } = superForm(data, {
+		id: 'createOption',
+		SPA: true,
+		dataType: 'json',
+		invalidateAll: true,
+		applyAction: true,
+		async onUpdate(event) {
+			if (!$field) return
+			await trpc($page).table.field.select.createOption.mutate({
+				tableId: $table.id.value,
+				fieldId: $field?.id.value,
+				option: event.form.data,
+			})
+		},
+		onResult() {
+			reset()
+			$createOptionOpen = false
+		},
+	})
+
+	$: {
+		$form.color = ($field as SelectField).options.lastOption.into()?.color.next().unpack() || OptionColor.defaultColor
+	}
 </script>
 
 <Modal
@@ -16,23 +48,24 @@
 	size="sm"
 	autoclose
 >
-	<div class="flex gap-2 items-center">
-		<OptionColorPicker bind:value={color} />
+	<form id="createOption" class="flex gap-2 items-center" method="POST" use:enhance>
+		<OptionColorPicker bind:value={$form.color.name} name={$form.name} />
 		<Input
 			class="rounded-none outline-none border-none"
 			autoFucus
 			name="name"
 			size="sm"
 			type="text"
-			bind:value={name}
+			bind:value={$form.name}
 			placeholder="name"
 		/>
-	</div>
+	</form>
 
+	<SuperDebug data={$form} />
 	<svelte:fragment slot="footer">
 		<div class="w-full flex justify-end gap-4">
 			<Button size="xs" color="alternative">Cancel</Button>
-			<Button size="xs" on:click={() => alert(`${name}, ${color}`)}>Confirm</Button>
+			<Button size="xs" form="createOption">Confirm</Button>
 		</div>
 	</svelte:fragment>
 </Modal>
