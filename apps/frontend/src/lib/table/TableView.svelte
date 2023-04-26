@@ -358,4 +358,8 @@
 	:global(revo-grid .hovered .undb-row-index) {
 		display: none;
 	}
+
+	:global(revogr-header .header-rgRow) {
+		background-color: #f7f7f7;
+	}
 </style>

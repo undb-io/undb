@@ -21,3 +21,19 @@ export const currentField = derived([currentTable, currentFieldId], ([table, fie
 export const getField = () => currentField
 
 export const sorts = derived(currentView, (view) => view.sorts?.sorts ?? [])
+
+export const currentRecordIndex = derived([currentRecordId, records], ([$id, $records]) =>
+	$id ? $records.findIndex((r) => r.id.value === $id) : undefined,
+)
+
+export const nextRecord = derived([currentRecordIndex, records], ([$index, $records]) => {
+	if (typeof $index === 'undefined') return undefined
+	if ($index === $records.length - 1) return undefined
+	return $records[$index + 1]
+})
+
+export const previousRecord = derived([currentRecordIndex, records], ([$index, $records]) => {
+	if (typeof $index === 'undefined') return undefined
+	if ($index === 0) return undefined
+	return $records[$index - 1]
+})

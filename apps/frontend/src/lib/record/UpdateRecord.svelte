@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { goto, invalidate } from '$app/navigation'
 	import { page } from '$app/stores'
-	import { currentRecordId, getRecord, getTable, getView } from '$lib/store/table'
+	import { currentRecordId, getRecord, getTable, getView, nextRecord, previousRecord } from '$lib/store/table'
 	import { Record, createMutateRecordValuesSchema } from '@undb/core'
-	import { Button, Label, Modal, Spinner } from 'flowbite-svelte'
+	import { Button, ButtonGroup, Label, Modal, P, Spinner } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { writable } from 'svelte/store'
 	import type { Validation } from 'sveltekit-superforms/index'
@@ -57,12 +57,25 @@
 	}
 </script>
 
-<Modal title="Update Record" class="w-full h-[70%]" size="lg" bind:open={$open}>
+<Modal class="w-full h-[70%]" size="lg" bind:open={$open}>
 	{#if !$record}
 		<div class="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
 			<Spinner />
 		</div>
 	{/if}
+	<svelte:fragment slot="header">
+		<div class="flex items-center space-x-4">
+			<P>Update Record</P>
+			<ButtonGroup size="xs">
+				<Button size="xs" disabled={!$previousRecord} on:click={() => ($currentRecordId = $previousRecord?.id.value)}>
+					<i class="ti ti-chevron-left text-gray-500 text-base" />
+				</Button>
+				<Button size="xs" disabled={!$nextRecord} on:click={() => ($currentRecordId = $nextRecord?.id.value)}>
+					<i class="ti ti-chevron-right text-gray-500 text-base" />
+				</Button>
+			</ButtonGroup>
+		</div>
+	</svelte:fragment>
 	<form id="updateRecord" class="space-y-5" method="POST" use:enhance>
 		<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 			{#each fields as field}
