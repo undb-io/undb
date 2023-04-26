@@ -5,7 +5,7 @@
 	const table = getTable()
 </script>
 
-<Breadcrumb aria-label="undb navigator">
+<Breadcrumb aria-label="undb navigator" class="flex">
 	<BreadcrumbItem href="/" home>Home</BreadcrumbItem>
-	<BreadcrumbItem>{$table.name.value}</BreadcrumbItem>
+	<BreadcrumbItem class="whitespace-nowrap flex items-center">{$table.name.value}</BreadcrumbItem>
 </Breadcrumb>

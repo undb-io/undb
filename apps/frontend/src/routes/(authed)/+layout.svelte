@@ -10,6 +10,7 @@
 	import { currentRecordId } from '$lib/store/table'
 	import { goto } from '$app/navigation'
 	import { browser } from '$app/environment'
+	import logo from '$lib/assets/logo.svg'
 
 	$: navigation = [
 		{ name: 'Tables', href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -80,12 +81,9 @@
 							</div>
 						</TransitionChild>
 						<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2">
-							<div class="flex h-16 shrink-0 items-center">
-								<img
-									class="h-8 w-auto"
-									src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-									alt="Your Company"
-								/>
+							<div class="flex h-16 shrink-0 items-center px-6 gap-2">
+								<img class="h-6 w-auto" src={logo} alt="undb" />
+								<P size="lg" class="font-semibold select-none !text-blue-600">undb</P>
 							</div>
 							<nav class="flex flex-1 flex-col">
 								<ul class="flex flex-1 flex-col gap-y-7">
@@ -156,12 +154,9 @@
 
 	<div class="hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-72 lg:flex-col h-screen">
 		<div class="flex flex-1 grow flex-col gap-y-0 overflow-y-hidden border-r border-gray-200 bg-white h-full">
-			<div class="flex h-16 shrink-0 items-center px-6">
-				<img
-					class="h-8 w-auto"
-					src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-					alt="Your Company"
-				/>
+			<div class="flex h-16 shrink-0 items-center px-6 gap-2">
+				<img class="h-6 w-auto" src={logo} alt="undb" />
+				<P size="lg" class="font-semibold select-none !text-blue-600">undb</P>
 			</div>
 			<div class="border-b">
 				<ul class="px-6 -mx-2 space-y-1 py-2">
@@ -194,7 +189,7 @@
 				<P class="text-sm font-normal leading-6 !text-gray-400">tables</P>
 			</div>
 			<nav class="flex flex-1 flex-col px-6 h-full overflow-y-auto">
-				<ul class="-mx-2 mt-2 space-y-1">
+				<ul class="-mx-2 space-y-1 pb-2">
 					{#each tables as table}
 						<li>
 							<a
