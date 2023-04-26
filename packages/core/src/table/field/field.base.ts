@@ -5,9 +5,9 @@ import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import type { ZodType } from 'zod'
 import type { IFilter, IOperator } from '../filter/index.js'
-import type { IRecordDisplayValues } from '../record/index.js'
+import type { IRecordDisplayValues, Record } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
-import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
+import type { TableSchema, TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
 import type { IBaseCreateFieldSchema, IBaseUpdateFieldSchema } from './field-base.schema.js'
 import { DEFAULT_DATE_FORMAT } from './field.constants.js'
 import type {
@@ -224,6 +224,25 @@ export abstract class AbstractLookingField<F extends ILookingFieldTypes>
 
   set displayFieldIds(ids: FieldId[]) {
     this.props.displayFields = new DisplayFields(ids)
+  }
+
+  getDisplayFieldIds(schema: TableSchema) {
+    let displayFields = this.props.displayFields?.ids.filter(Boolean) ?? []
+    if (!displayFields.length) {
+      displayFields = schema.displayFields.map((f) => f.id)
+    }
+
+    return displayFields as FieldId[]
+  }
+
+  getForeignDisplayValues(foreignRecord: Record, foreignSchema: TableSchema) {
+    const displayFieldIds = this.getDisplayFieldIds(foreignSchema)
+    if (!displayFieldIds.length) {
+      return ['unamed']
+    }
+
+    const json = foreignRecord.valuesJSON
+    return displayFieldIds.map((f) => json[f.value])
   }
 
   getDisplayValues(values?: IRecordDisplayValues): (string | null)[][] {

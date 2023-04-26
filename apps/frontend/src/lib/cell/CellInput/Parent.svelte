@@ -33,6 +33,7 @@
 <ForeignRecordsPicker
 	{getForeignRecords}
 	{getInitRecords}
+	{field}
 	bind:value={group}
 	foreignTableId={$table.id.value}
 	{...$$restProps}

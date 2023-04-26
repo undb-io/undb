@@ -1,13 +1,16 @@
 <script lang="ts">
-	import type { Record, TableSchemaIdMap } from '@undb/core'
+	import type { Record, ReferenceFieldTypes, TableSchema } from '@undb/core'
 	import { Card } from 'flowbite-svelte'
 
-	export let schema: TableSchemaIdMap
+	export let schema: TableSchema
+	export let field: ReferenceFieldTypes
 	export let record: Record | undefined
+
+	$: value = record ? field.getForeignDisplayValues(record, schema) : []
 </script>
 
 {#if record}
 	<Card {...$$restProps}>
-		{record.id.value}
+		{value.toString()}
 	</Card>
 {/if}

@@ -26,6 +26,7 @@
 </script>
 
 <ForeignRecordsPicker
+	{field}
 	{getForeignRecords}
 	{getInitRecords}
 	bind:value

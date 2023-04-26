@@ -80,7 +80,7 @@
 					</Label>
 				</div>
 				<div class="col-span-4">
-					<CellInput {field} bind:value={$form[field.id.value]} />
+					<CellInput record={$record} {field} bind:value={$form[field.id.value]} />
 				</div>
 			{/each}
 		</div>

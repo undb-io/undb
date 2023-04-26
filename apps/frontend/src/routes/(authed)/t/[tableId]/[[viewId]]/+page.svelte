@@ -23,14 +23,15 @@
 	}
 
 	const field = getField()
-	const record = getRecord()
 </script>
 
 <TableIndex />
 
 <CreateRecord data={data.createRecord} />
 <CreateField data={data.createField} />
-<UpdateRecord data={data.updateRecord} />
+{#if $currentRecordId}
+	<UpdateRecord data={data.updateRecord} />
+{/if}
 <CreateOption />
 {#if $field}
 	{#key $field}

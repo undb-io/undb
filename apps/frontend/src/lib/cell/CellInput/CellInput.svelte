@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Field, IFieldType } from '@undb/core'
+	import type { Field, IFieldType, Record } from '@undb/core'
 	import type { ComponentType } from 'svelte'
 	import String from './String.svelte'
 	import Number from './Number.svelte'
@@ -18,9 +18,10 @@
 	import Select from './Select.svelte'
 
 	export let field: Field
+	export let record: Record | undefined = undefined
 	export let value: any | undefined = undefined
 
-	const map: Record<IFieldType, ComponentType> = {
+	const map: globalThis.Record<IFieldType, ComponentType> = {
 		string: String,
 		number: Number,
 		id: Readonly,
@@ -54,5 +55,6 @@
 	placeholder={field.description?.value}
 	bind:value
 	{field}
+	{record}
 	{...$$restProps}
 />
