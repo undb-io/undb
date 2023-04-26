@@ -50,7 +50,7 @@
 			color="light"
 			class={cx('h-full !rounded-md', !!$sorts.length && 'bg-blue-100 hover:bg-blue-100 border-0 whitespace-nowrap')}
 		>
-			<span class="inline-flex items-center gap-2 text-blue-600">
+			<span class="inline-flex items-center gap-2" class:text-blue-600={!!$sorts.length}>
 				<i class="ti ti-arrows-sort text-sm" />
 				<span>Sorts</span>
 				{#if !!$sorts.length}
