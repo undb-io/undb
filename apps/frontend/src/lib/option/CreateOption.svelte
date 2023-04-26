@@ -35,37 +35,39 @@
 		},
 	})
 
-	$: {
-		$form.color = ($field as SelectField).options.lastOption.into()?.color.next().unpack() || OptionColor.defaultColor
+	$: if ($field?.type === 'select') {
+		$form.color = $field.options.lastOption.into()?.color.next().unpack() || OptionColor.defaultColor
 	}
 </script>
 
-<Modal
-	title="Create New Options"
-	bind:open={$createOptionOpen}
-	placement="top-center"
-	class="w-full rounded-sm"
-	size="sm"
-	autoclose
->
-	<form id="createOption" class="flex gap-2 items-center" method="POST" use:enhance>
-		<OptionColorPicker bind:value={$form.color.name} name={$form.name} />
-		<Input
-			class="rounded-none outline-none border-none"
-			autoFucus
-			name="name"
-			size="sm"
-			type="text"
-			bind:value={$form.name}
-			placeholder="name"
-		/>
-	</form>
+{#if $field?.type === 'select'}
+	<Modal
+		title="Create New Options"
+		bind:open={$createOptionOpen}
+		placement="top-center"
+		class="w-full rounded-sm"
+		size="sm"
+		autoclose
+	>
+		<form id="createOption" class="flex gap-2 items-center" method="POST" use:enhance>
+			<OptionColorPicker bind:value={$form.color.name} name={$form.name} />
+			<Input
+				class="rounded-none outline-none border-none"
+				autoFucus
+				name="name"
+				size="sm"
+				type="text"
+				bind:value={$form.name}
+				placeholder="name"
+			/>
+		</form>
 
-	<SuperDebug data={$form} />
-	<svelte:fragment slot="footer">
-		<div class="w-full flex justify-end gap-4">
-			<Button size="xs" color="alternative">Cancel</Button>
-			<Button size="xs" form="createOption">Confirm</Button>
-		</div>
-	</svelte:fragment>
-</Modal>
+		<SuperDebug data={$form} />
+		<svelte:fragment slot="footer">
+			<div class="w-full flex justify-end gap-4">
+				<Button size="xs" color="alternative">Cancel</Button>
+				<Button size="xs" form="createOption">Confirm</Button>
+			</div>
+		</svelte:fragment>
+	</Modal>
+{/if}
