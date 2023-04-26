@@ -36,7 +36,7 @@
 
 <Popover class="relative z-10" let:open>
 	<PopoverButton as="div" use={[popperRef]}>
-		<Button id="filters-menu" size="xs" color="alternative" class="h-full !rounded-md gap-2">
+		<Button id="filters-menu" size="xs" color="alternative" class="h-full !rounded-md gap-2 whitespace-nowrap">
 			<i class="ti ti-filter text-sm" />
 			Filters</Button
 		>

@@ -13,7 +13,11 @@
 	<div class="flex items-center justify-center content-center gap-4">
 		<TableNavigator />
 
-		<Button on:click={() => createRecordOpen.set(true)} size="xs" class="h-full !rounded-md inline-flex items-center">
+		<Button
+			on:click={() => createRecordOpen.set(true)}
+			size="xs"
+			class="h-full !rounded-md inline-flex items-center whitespace-nowrap"
+		>
 			<i class="ti ti-row-insert-bottom text-sm mr-2" />
 			Create New Record</Button
 		>
@@ -26,14 +30,14 @@
 		<Button
 			on:click={() => createFieldOpen.set(true)}
 			size="xs"
-			class="h-full w-8 px-0 !rounded-md inline-flex items-center"
+			class="h-full w-8 px-0 !rounded-md inline-flex items-center whitespace-nowrap"
 		>
 			<i class="ti ti-column-insert-right text-sm" />
 		</Button>
 		<Tooltip placement="bottom">Insert Field</Tooltip>
 	</div>
 
-	<div>
+	<div class="ml-2">
 		<ToggleDisplayType />
 	</div>
 </div>
