@@ -55,14 +55,14 @@
 				bind:value={name}
 				on:blur={update}
 				on:keydown={(e) => {}}
-				class="outline-none border-none p-0 h-4 !focus:outline-none !focus-within:outline-none text-xs w-14"
+				class="outline-none border-none p-0 h-4 !focus:outline-none !focus-within:outline-none text-xs"
 			/>
 		</form>
 	{:else}
 		<Chevron>{$view.name.value}</Chevron>
 	{/if}
 </Button>
-<Dropdown bind:open>
+<Dropdown {open}>
 	<DropdownItem on:click={() => (updating = true)} class="text-sm font-normal inline-flex items-center gap-2">
 		<i class="ti ti-pencil text-gray-400" />
 		<span>update view name</span>

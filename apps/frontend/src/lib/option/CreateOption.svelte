@@ -2,8 +2,7 @@
 	import { createOptionOpen } from '$lib/store/modal'
 	import { Button, Input, Modal } from 'flowbite-svelte'
 	import OptionColorPicker from './OptionColorPicker.svelte'
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
-	import { OptionColor, type SelectField, type createOptionSchema } from '@undb/core'
+	import { OptionColor, type createOptionSchema } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import { trpc } from '$lib/trpc/client'
@@ -62,7 +61,6 @@
 			/>
 		</form>
 
-		<SuperDebug data={$form} />
 		<svelte:fragment slot="footer">
 			<div class="w-full flex justify-end gap-4">
 				<Button size="xs" color="alternative">Cancel</Button>
