@@ -2,7 +2,7 @@
 	import { goto, invalidate } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { currentRecordId, getRecord, getTable, getView, nextRecord, previousRecord } from '$lib/store/table'
-	import { Record, createMutateRecordValuesSchema } from '@undb/core'
+	import { createMutateRecordValuesSchema } from '@undb/core'
 	import { Button, ButtonGroup, Label, Modal, P, Spinner } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { writable } from 'svelte/store'
