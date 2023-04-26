@@ -9,7 +9,7 @@
 	import { page } from '$app/stores'
 	import KanbanCard from '$lib/kanban/KanbanCard.svelte'
 	import { Button } from 'flowbite-svelte'
-	import { createOptionOpen } from '$lib/store/modal'
+	import { createOptionOpen, createRecordInitial, createRecordOpen } from '$lib/store/modal'
 
 	export let fieldId: string
 	const flipDurationMs = 200
@@ -20,7 +20,7 @@
 	$: field = $table.schema.getFieldById(fieldId).into() as SelectField | undefined
 	$: options = field?.options?.options ?? []
 
-	const groupedRecords = groupBy($records, (record) => {
+	$: groupedRecords = groupBy($records, (record) => {
 		const value = (field ? record.values.value.get(field.id.value) : undefined) as SelectFieldValue | undefined
 
 		if (!value?.id) return null
@@ -83,7 +83,19 @@
 						<Option option={item.option} />
 					</div>
 
-					<Button color="alternative" class="w-full rounded-none h-8" size="xs">
+					<Button
+						color="alternative"
+						class="w-full rounded-none h-8"
+						size="xs"
+						on:click={() => {
+							if (field) {
+								$createRecordInitial = {
+									[field.id.value]: item.id,
+								}
+							}
+							$createRecordOpen = true
+						}}
+					>
 						<i class="ti ti-row-insert-top text-sm" />
 					</Button>
 				</div>

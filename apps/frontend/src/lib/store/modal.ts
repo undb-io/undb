@@ -1,4 +1,4 @@
-import type { ICreateFieldSchema } from '@undb/core'
+import type { ICreateFieldSchema, RecordValueJSON } from '@undb/core'
 import { writable } from 'svelte/store'
 
 export const createTableOpen = writable<boolean>(false)
@@ -6,6 +6,7 @@ export const createTableOpen = writable<boolean>(false)
 export const createOptionOpen = writable<boolean>(false)
 
 export const createRecordOpen = writable<boolean>(false)
+export const createRecordInitial = writable<RecordValueJSON | undefined>()
 
 export const createFieldOpen = writable<boolean>(false)
 export const createFieldInitial = writable<Partial<ICreateFieldSchema> | undefined>()

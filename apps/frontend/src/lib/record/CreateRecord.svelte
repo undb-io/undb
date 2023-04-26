@@ -3,9 +3,8 @@
 	import { page } from '$app/stores'
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import { getTable, getView } from '$lib/store/table'
-	import { createRecordOpen } from '$lib/store/modal'
+	import { createRecordInitial, createRecordOpen } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
-	import { createMutateRecordValuesSchema } from '@undb/core'
 	import { Button, Label, Modal, Spinner } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms'
@@ -33,6 +32,12 @@
 			createRecordOpen.set(false)
 		},
 	})
+
+	$: if ($createRecordInitial) {
+		for (const [key, value] of Object.entries($createRecordInitial)) {
+			$form[key] = value
+		}
+	}
 
 	$: $table, reset()
 </script>
