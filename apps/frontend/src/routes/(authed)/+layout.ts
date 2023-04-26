@@ -13,10 +13,8 @@ export const load: LayoutLoad = async (event) => {
 
 	event.depends('tables')
 
-	const me = await event.fetch('/api/auth/me', {})
-
 	return {
 		tables: trpc(event).table.list.query({}),
-		me: me.json() as Promise<{ me: ICollaboratorProfile }>,
+		me: event.fetch('/api/auth/me', {}).then((me) => me.json()) as Promise<{ me: ICollaboratorProfile }>,
 	}
 }
