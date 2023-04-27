@@ -1,11 +1,21 @@
 <script lang="ts">
-	import { getTable } from '$lib/store/table'
+	import { getTable, getView } from '$lib/store/table'
+	import ViewIcon from '$lib/view/ViewIcon.svelte'
 	import { Breadcrumb, BreadcrumbItem, Button, P } from 'flowbite-svelte'
 
 	const table = getTable()
+	const view = getView()
 </script>
 
 <Breadcrumb aria-label="undb navigator" class="flex">
 	<BreadcrumbItem href="/" home>Home</BreadcrumbItem>
 	<BreadcrumbItem class="whitespace-nowrap flex items-center">{$table.name.value}</BreadcrumbItem>
+	<BreadcrumbItem class="whitespace-nowrap flex items-center">
+		<span class="inline-flex items-center gap-2">
+			<ViewIcon type={$view.displayType} class="!text-gray-500" />
+			<span>
+				{$view.name.value}
+			</span>
+		</span>
+	</BreadcrumbItem>
 </Breadcrumb>
