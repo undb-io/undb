@@ -20,6 +20,7 @@
 		dataType: 'json',
 		invalidateAll: true,
 		applyAction: true,
+		taintedMessage: null,
 		async onUpdate(event) {
 			if (!$field) return
 			await trpc($page).table.field.select.createOption.mutate({
