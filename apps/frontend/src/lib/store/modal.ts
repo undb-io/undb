@@ -3,6 +3,7 @@ import { writable } from 'svelte/store'
 
 export const createTableOpen = writable<boolean>(false)
 export const createViewOpen = writable<boolean>(false)
+export const configViewOpen = writable<boolean>(false)
 
 export const createOptionOpen = writable<boolean>(false)
 

@@ -16,6 +16,8 @@
 	import UpdateField from '$lib/field/UpdateField.svelte'
 	import UpdateRecord from '$lib/record/UpdateRecord.svelte'
 	import CreateOption from '$lib/option/CreateOption.svelte'
+	import CreateView from '$lib/view/CreateView.svelte'
+	import ViewConfigModal from '$lib/view/ViewConfigModal.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -35,6 +37,8 @@
 
 <TableIndex />
 
+<CreateView data={data.createView} />
+<ViewConfigModal />
 <CreateRecord data={data.createRecord} />
 <CreateField data={data.createField} />
 {#if $currentRecordId}

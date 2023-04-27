@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getView } from '$lib/store/table'
-	import KanbanSelectField from './KanbanSelectField.svelte'
+	import KanbanConfig from '$lib/view/KanbanConfig.svelte'
+	import { Card } from 'flowbite-svelte'
 	import KanbanView from './KanbanView.svelte'
 
 	const view = getView()
@@ -11,5 +12,9 @@
 {#if fieldId}
 	<KanbanView {fieldId} />
 {:else}
-	<KanbanSelectField />
+	<div class="flex items-center justify-center h-screen w-full bg-gray-100">
+		<Card class="flex-1">
+			<KanbanConfig />
+		</Card>
+	</div>
 {/if}

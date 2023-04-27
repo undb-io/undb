@@ -12,6 +12,7 @@
 	import { canDisplay, isControlledFieldType } from '@undb/core'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
+	import Portal from 'svelte-portal'
 
 	const table = getTable()
 
@@ -53,90 +54,92 @@
 		.filter(Boolean)
 </script>
 
-<Modal
-	title="Create New Field"
-	placement="top-center"
-	class="static w-full rounded-sm"
-	size="lg"
-	bind:open={$createFieldOpen}
->
-	<form method="POST" id="createField" use:enhance>
-		<div class="space-y-2" use:autoAnimate={{ duration: 100 }}>
-			<div class="grid grid-cols-2 gap-x-3 gap-y-4">
-				<Label class="flex flex-col gap-2">
-					<div class="flex gap-2 items-center">
-						<FieldIcon size={14} type={$form.type} />
-						<span>type</span>
-						<span class="text-red-500">*</span>
-					</div>
+<Portal target="body">
+	<Modal
+		title="Create New Field"
+		placement="top-center"
+		class="static w-full rounded-sm"
+		size="lg"
+		bind:open={$createFieldOpen}
+	>
+		<form method="POST" id="createField" use:enhance>
+			<div class="space-y-2" use:autoAnimate={{ duration: 100 }}>
+				<div class="grid grid-cols-2 gap-x-3 gap-y-4">
+					<Label class="flex flex-col gap-2">
+						<div class="flex gap-2 items-center">
+							<FieldIcon size={14} type={$form.type} />
+							<span>type</span>
+							<span class="text-red-500">*</span>
+						</div>
 
-					<FieldTypePicker bind:value={$form.type} class="w-full !justify-start" />
-				</Label>
+						<FieldTypePicker bind:value={$form.type} class="w-full !justify-start" />
+					</Label>
 
-				<Label class="flex flex-col gap-2">
-					<div class="flex gap-2 items-center">
-						<span>name</span>
-						<span class="text-red-500">*</span>
-					</div>
+					<Label class="flex flex-col gap-2">
+						<div class="flex gap-2 items-center">
+							<span>name</span>
+							<span class="text-red-500">*</span>
+						</div>
 
-					<Input name="name" required bind:value={$form.name} />
-				</Label>
-			</div>
-
-			{#if showDescription}
-				<Label class="flex flex-col gap-2">
-					<div class="flex gap-2 items-center">
-						<span>description</span>
-					</div>
-
-					<Textarea name="description" bind:value={$form.description} />
-				</Label>
-			{/if}
-
-			<MutateFieldComponent type={$form.type} form={superFrm} isNew />
-		</div>
-	</form>
-
-	<svelte:fragment slot="footer">
-		<div class="w-full flex items-center justify-between">
-			<div class="flex-1">
-				<Button size="xs" color="alternative" class="space-x-1" on:click={() => (showDescription = !showDescription)}>
-					{#if showDescription}
-						<i class="ti ti-eye-closed text-[16px]" />
-					{:else}
-						<i class="ti ti-plus text-[16px]" />
-					{/if}
-					<span>{showDescription ? 'hide' : 'show'} description </span>
-				</Button>
-			</div>
-			<div class="flex justify-end items-center gap-4">
-				<div class="flex gap-2 items-center">
-					{#if !isControlledFieldType($form.type)}
-						<Toggle bind:checked={$form.required}>required</Toggle>
-					{/if}
-					{#if canDisplay($form.type)}
-						<Toggle bind:checked={$form.display}>display</Toggle>
-						{#if displayFields.length}
-							<Popover class="w-64 text-sm font-light " title="display fields">
-								<div class="flex gap-2">
-									{#each displayFields as field}
-										<Badge>{field}</Badge>
-									{/each}
-								</div>
-							</Popover>
-						{/if}
-					{/if}
+						<Input name="name" required bind:value={$form.name} />
+					</Label>
 				</div>
-				<div class="space-x-2">
-					<Button color="alternative" on:click={() => createFieldOpen.set(false)}>Discard</Button>
-					<Button class="gap-4" type="submit" form="createField" disabled={$submitting}>
-						{#if $delayed}
-							<Spinner size="5" />
+
+				{#if showDescription}
+					<Label class="flex flex-col gap-2">
+						<div class="flex gap-2 items-center">
+							<span>description</span>
+						</div>
+
+						<Textarea name="description" bind:value={$form.description} />
+					</Label>
+				{/if}
+
+				<MutateFieldComponent type={$form.type} form={superFrm} isNew />
+			</div>
+		</form>
+
+		<svelte:fragment slot="footer">
+			<div class="w-full flex items-center justify-between">
+				<div class="flex-1">
+					<Button size="xs" color="alternative" class="space-x-1" on:click={() => (showDescription = !showDescription)}>
+						{#if showDescription}
+							<i class="ti ti-eye-closed text-[16px]" />
+						{:else}
+							<i class="ti ti-plus text-[16px]" />
 						{/if}
-						Create New Field</Button
-					>
+						<span>{showDescription ? 'hide' : 'show'} description </span>
+					</Button>
+				</div>
+				<div class="flex justify-end items-center gap-4">
+					<div class="flex gap-2 items-center">
+						{#if !isControlledFieldType($form.type)}
+							<Toggle bind:checked={$form.required}>required</Toggle>
+						{/if}
+						{#if canDisplay($form.type)}
+							<Toggle bind:checked={$form.display}>display</Toggle>
+							{#if displayFields.length}
+								<Popover class="w-64 text-sm font-light " title="display fields">
+									<div class="flex gap-2">
+										{#each displayFields as field}
+											<Badge>{field}</Badge>
+										{/each}
+									</div>
+								</Popover>
+							{/if}
+						{/if}
+					</div>
+					<div class="space-x-2">
+						<Button color="alternative" on:click={() => createFieldOpen.set(false)}>Discard</Button>
+						<Button class="gap-4" type="submit" form="createField" disabled={$submitting}>
+							{#if $delayed}
+								<Spinner size="5" />
+							{/if}
+							Create New Field</Button
+						>
+					</div>
 				</div>
 			</div>
-		</div>
-	</svelte:fragment>
-</Modal>
+		</svelte:fragment>
+	</Modal>
+</Portal>

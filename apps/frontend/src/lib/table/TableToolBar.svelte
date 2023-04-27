@@ -7,6 +7,7 @@
 	import ToggleDisplayType from './ToggleDisplayType.svelte'
 	import { createFieldOpen, createRecordOpen } from '$lib/store/modal'
 	import { records } from '$lib/store/table'
+	import ViewConfigMenu from '$lib/view/ViewConfigMenu.svelte'
 </script>
 
 <div class="flex w-full flex-row items-center justify-between gap-y-4 border-b bg-white px-5 py-2">
@@ -22,6 +23,7 @@
 			Create New Record</Button
 		>
 
+		<ViewConfigMenu />
 		<FilterMenu />
 		<SortMenu />
 		<ManageFieldsMenu />

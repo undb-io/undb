@@ -3,7 +3,6 @@
 	import { Tooltip } from 'flowbite-svelte'
 	import TableViewTabItem from './TableViewTabItem.svelte'
 	import { createViewOpen } from '$lib/store/modal'
-	import CreateView from '$lib/view/CreateView.svelte'
 
 	const table = getTable()
 
@@ -21,4 +20,3 @@
 	</button>
 	<Tooltip placement="bottom">create new view</Tooltip>
 </section>
-<CreateView />
