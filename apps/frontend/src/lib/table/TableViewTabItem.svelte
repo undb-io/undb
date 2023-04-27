@@ -17,7 +17,7 @@
 
 	$: active = $currentView.id.value === view.id.value
 
-	let name = view.name.value
+	$: name = view.name.value
 
 	let updating = false
 	let open = false
@@ -33,18 +33,16 @@
 
 	const update = async () => {
 		updating = false
-		if (name !== view.name.value) {
-			await trpc($page).table.view.updateName.mutate({
-				tableId: $table.id.value,
-				view: {
-					id: view.id.value,
-					name,
-				},
-			})
-			await invalidate(`table:${$table.id.value}`)
-			view.name = new ViewName({ value: name })
-			open = false
-		}
+		await trpc($page).table.view.updateName.mutate({
+			tableId: $table.id.value,
+			view: {
+				id: view.id.value,
+				name,
+			},
+		})
+		await invalidate(`table:${$table.id.value}`)
+		view.name = new ViewName({ value: name })
+		open = false
 	}
 
 	const duplicateView = async () => {
@@ -91,7 +89,7 @@
 					<input
 						bind:this={input}
 						type="text"
-						bind:value={name}
+						bind:value={view.name.value}
 						on:blur={update}
 						on:keydown={(e) => {}}
 						class="outline-none border-none p-0 h-4 !focus:outline-none !focus-within:outline-none text-xs"
