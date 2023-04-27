@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230412072027 extends Migration {
+export class Migration20230427030721 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `undb_table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `emoji` text not null, `views_order` text null, primary key (`id`));',
@@ -33,7 +33,7 @@ export class Migration20230412072027 extends Migration {
     )
 
     this.addSql(
-      "create table `undb_option` (`key` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `field_id` text null, `name` text not null, `color_name` text check (`color_name` in ('dark', 'gray', 'red', 'pink', 'grape', 'violet', 'indigo', 'blue', 'cyan', 'teal', 'green', 'lime', 'yellow', 'orange')) not null, `color_shade` integer not null, constraint `undb_option_field_id_foreign` foreign key(`field_id`) references `undb_field`(`id`) on delete cascade on update cascade, primary key (`key`));",
+      'create table `undb_option` (`key` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `field_id` text null, `name` text not null, `color_name` text not null, `color_shade` integer not null, constraint `undb_option_field_id_foreign` foreign key(`field_id`) references `undb_field`(`id`) on delete cascade on update cascade, primary key (`key`));',
     )
     this.addSql('create index `undb_option_deleted_at_index` on `undb_option` (`deleted_at`);')
     this.addSql('create index `undb_option_field_id_index` on `undb_option` (`field_id`);')

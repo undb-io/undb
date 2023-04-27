@@ -1,6 +1,5 @@
 import { trpc } from '$lib/trpc/client'
 import { redirect } from '@sveltejs/kit'
-import type { ICollaboratorProfile } from '@undb/core'
 import Cookies from 'js-cookie'
 import type { LayoutLoad } from './$types'
 
@@ -11,10 +10,15 @@ export const load: LayoutLoad = async (event) => {
 		throw redirect(303, `/login?redirectTo=${event.url.pathname}`)
 	}
 
+	const { me } = await event.parent()
+	if (!me.me) {
+		throw redirect(303, `/login?redirectTo=${event.url.pathname}`)
+	}
+
 	event.depends('tables')
 
 	return {
 		tables: trpc(event).table.list.query({}),
-		me: event.fetch('/api/auth/me', {}).then((me) => me.json()) as Promise<{ me: ICollaboratorProfile }>,
+		me,
 	}
 }

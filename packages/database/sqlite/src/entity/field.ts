@@ -31,6 +31,7 @@ import type {
   IIdFieldQuerySchema,
   ILookupFieldQuerySchema,
   INumberFieldQuerySchema,
+  IOptionColorName,
   IParentFieldQuerySchema,
   IQueryFieldSchema,
   IRatingFieldQuerySchema,
@@ -558,7 +559,7 @@ export class SelectField extends Field {
             key: o.key,
             name: o.name,
             color: {
-              name: o.color.name,
+              name: o.color.name as IOptionColorName,
               shade: o.color.shade,
             },
           }))
@@ -578,7 +579,7 @@ export class SelectField extends Field {
         key: o.key,
         name: o.name,
         color: {
-          name: o.color.name,
+          name: o.color.name as IOptionColorName,
           shade: o.color.shade,
         },
       })),

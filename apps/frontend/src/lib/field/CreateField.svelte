@@ -32,9 +32,9 @@
 		},
 	})
 
-	$: {
-		$form.type = $createFieldInitial?.type
-		$form.name = $createFieldInitial?.name
+	$: if ($createFieldInitial) {
+		$form.type = $createFieldInitial.type
+		$form.name = $createFieldInitial.name
 	}
 
 	const { form, enhance, delayed, submitting } = superFrm

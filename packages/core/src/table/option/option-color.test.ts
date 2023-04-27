@@ -9,16 +9,16 @@ describe('create', () => {
   })
 
   test('should create option color with value', () => {
-    const oc = OptionColor.create({ name: 'dark', shade: 0 })
+    const oc = OptionColor.create({ name: 'blue', shade: 0 })
     expect(oc).to.be.instanceOf(OptionColor)
-    expect(oc.name).to.be.eq('dark')
+    expect(oc.name).to.be.eq('blue')
     expect(oc.shade).to.be.eq(0)
   })
 
   test('should create option color with only name', () => {
-    const oc = OptionColor.create({ name: 'dark' })
+    const oc = OptionColor.create({ name: 'blue' })
     expect(oc).to.be.instanceOf(OptionColor)
-    expect(oc.name).to.be.eq('dark')
+    expect(oc.name).to.be.eq('blue')
     expect(oc.shade).to.be.eq(5)
   })
 
@@ -45,7 +45,7 @@ describe('next', () => {
 
   test('should get next color for last color name', () => {
     const color = OptionColor.create({ name: 'orange' })
-    expect(color.next().name).to.be.eq('dark')
+    expect(color.next().name).to.be.eq('blue')
   })
 })
 
