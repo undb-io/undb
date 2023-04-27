@@ -8,6 +8,7 @@
 	import { View, ViewName } from '@undb/core'
 	import { tick } from 'svelte'
 	import { goto, invalidate } from '$app/navigation'
+	import Portal from 'svelte-portal'
 
 	const table = getTable()
 	const currentView = getView()
@@ -105,22 +106,24 @@
 		{/if}
 	</a>
 	{#if active}
-		<Dropdown triggeredBy={`#${view.id.value}`} {open}>
-			<DropdownItem on:click={() => (updating = true)} class="text-sm font-normal inline-flex items-center gap-2">
-				<i class="ti ti-pencil text-gray-400" />
-				<span>update view name</span>
-			</DropdownItem>
-			<DropdownItem on:click={duplicateView} class="text-sm font-normal inline-flex items-center gap-2">
-				<i class="ti ti-copy text-gray-400" />
-				<span>duplicate view</span>
-			</DropdownItem>
-			{#if $table.views.count > 1}
-				<DropdownDivider />
-				<DropdownItem class="text-red-400 text-sm font-normal inline-flex items-center gap-2" on:click={deleteView}>
-					<i class="ti ti-trash" />
-					<span>delete view</span>
+		<Portal target="body">
+			<Dropdown triggeredBy={`#${view.id.value}`} {open} frameClass="z-[100]">
+				<DropdownItem on:click={() => (updating = true)} class="text-sm font-normal inline-flex items-center gap-2">
+					<i class="ti ti-pencil text-gray-400" />
+					<span>update view name</span>
 				</DropdownItem>
-			{/if}
-		</Dropdown>
+				<DropdownItem on:click={duplicateView} class="text-sm font-normal inline-flex items-center gap-2">
+					<i class="ti ti-copy text-gray-400" />
+					<span>duplicate view</span>
+				</DropdownItem>
+				{#if $table.views.count > 1}
+					<DropdownDivider />
+					<DropdownItem class="text-red-400 text-sm font-normal inline-flex items-center gap-2" on:click={deleteView}>
+						<i class="ti ti-trash" />
+						<span>delete view</span>
+					</DropdownItem>
+				{/if}
+			</Dropdown>
+		</Portal>
 	{/if}
 </li>
