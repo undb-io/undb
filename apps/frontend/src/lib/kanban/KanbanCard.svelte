@@ -1,7 +1,7 @@
 <script lang="ts">
 	import CellComponent from '$lib/cell/CellComponent.svelte'
 	import { getCellValue } from '$lib/cell/get-cell-value'
-	import { getTable, getView } from '$lib/store/table'
+	import { getTable } from '$lib/store/table'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import type { Record } from '@undb/core'
 	import { Card } from 'flowbite-svelte'
@@ -14,7 +14,7 @@
 
 <Card
 	rounded={false}
-	class="!py-4 !px-4 shadow-sm hover:shadow-lg duration-200 cursor-grab select-none space-y-2"
+	class="!py-4 !px-4 shadow-sm rounded-md hover:shadow-md duration-200 cursor-grab select-none space-y-2"
 	{...$$restProps}
 >
 	{#each Object.entries(values) as [key, value]}

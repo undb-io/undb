@@ -18,10 +18,10 @@
 	function addOption() {
 		const color =
 			value.length === 0
-				? OptionColor.defaultColor.unpack()
+				? OptionColor.defaultColor.toJSON()
 				: OptionColor.create(value[value.length - 1]?.color)
 						.next()
-						.unpack()
+						.toJSON()
 		value = [...value, { name: '', color }]
 	}
 

@@ -35,7 +35,7 @@
 	})
 
 	$: if ($field?.type === 'select') {
-		$form.color = $field.options.lastOption.into()?.color.next().unpack() || OptionColor.defaultColor
+		$form.color = $field.options.lastOption.into()?.color.next().toJSON() || OptionColor.defaultColor.toJSON()
 	}
 </script>
 

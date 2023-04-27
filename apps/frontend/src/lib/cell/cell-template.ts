@@ -1,3 +1,4 @@
+import { colors } from '$lib/field/helpers'
 import type { RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
 import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime'
 import {
@@ -272,10 +273,11 @@ const reference: TemplateFunc = (h, props) => {
 
 const optionComponent = (h: HyperFunc, { color, name }: IOptionSchema) => {
 	const textColor = color.shade > 5 ? 'text-dark' : 'text-white'
+	const c = colors[color.name]
 	return h(
 		'span',
 		{
-			class: cx(`bg-${color.name}-${color.shade * 100}`, textColor, 'text-xs font-medium mr-2 px-2.5 py-0.5 rounded'),
+			class: cx(c, textColor, 'text-xs font-medium mr-2 px-2.5 py-0.5 rounded'),
 		},
 		name,
 	)

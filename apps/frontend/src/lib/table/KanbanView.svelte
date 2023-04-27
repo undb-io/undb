@@ -40,7 +40,6 @@
 	}
 	async function handleDndFinalizeColumns(e: any) {
 		items = e.detail.items
-		console.log(e)
 
 		const from = e.detail.info.id
 		const toIndex = items.findIndex((i) => i.id === from)
@@ -96,7 +95,7 @@
 
 					<Button
 						color="alternative"
-						class="w-full rounded-none h-8"
+						class="w-full rounded-md transition h-8"
 						size="xs"
 						on:click={() => {
 							if (field) {

@@ -23,8 +23,8 @@ export const optionColorOrder = [
   'blue',
   'indigo',
   'violet',
-  'pruple',
-  'fushia',
+  'purple',
+  'fuchsia',
   'pink',
   'rose',
 ] as const

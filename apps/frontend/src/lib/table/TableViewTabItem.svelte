@@ -72,33 +72,35 @@
 	}
 </script>
 
-<li class="group">
+<li class="group min-w-[125px]">
 	<a
 		href={active ? $page.url.pathname : `/t/${$table.id.value}/${view.id.value}`}
 		type="button"
 		role="tab"
 		class={cx(
-			'inline-flex items-center gap-2 text-sm font-medium text-center disabled:cursor-not-allowed px-4 py-2 border-b-2',
+			'inline-flex w-full justify-between items-center gap-2 text-sm font-medium text-center disabled:cursor-not-allowed px-4 py-2 border-b-2',
 			active
 				? 'text-blue-600  border-blue-600 dark:text-blue-500 dark:border-blue-500 active'
 				: 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 text-gray-500 dark:text-gray-400',
 		)}
 	>
-		<ViewIcon type={view.displayType} />
-		{#if updating}
-			<form on:submit|preventDefault|stopPropagation={update}>
-				<input
-					bind:this={input}
-					type="text"
-					bind:value={name}
-					on:blur={update}
-					on:keydown={(e) => {}}
-					class="outline-none border-none p-0 h-4 !focus:outline-none !focus-within:outline-none text-xs"
-				/>
-			</form>
-		{:else}
-			<span>{view.name.value}</span>
-		{/if}
+		<span>
+			<ViewIcon type={view.displayType} />
+			{#if updating}
+				<form on:submit|preventDefault|stopPropagation={update}>
+					<input
+						bind:this={input}
+						type="text"
+						bind:value={name}
+						on:blur={update}
+						on:keydown={(e) => {}}
+						class="outline-none border-none p-0 h-4 !focus:outline-none !focus-within:outline-none text-xs"
+					/>
+				</form>
+			{:else}
+				<span>{view.name.value}</span>
+			{/if}
+		</span>
 		{#if active}
 			<span id={view.id.value} class="w-4 inline-block" on:click|preventDefault|stopPropagation={() => (open = true)}>
 				<i class="ti ti-dots" />
