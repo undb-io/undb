@@ -47,7 +47,7 @@
 		<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 			{#each fields as field}
 				<div class="h-full items-start gap-1 pt-2">
-					<Label class="leading-5" for={field.id.value}>
+					<Label class="leading-5" for={field.id.value} data-field-id={field.id.value}>
 						<div class="inline-flex items-center gap-2">
 							<FieldIcon type={field.type} size={16} />
 							<span>

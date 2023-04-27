@@ -8,7 +8,7 @@
 	import { trpc } from '$lib/trpc/client'
 	import { page } from '$app/stores'
 	import KanbanCard from '$lib/kanban/KanbanCard.svelte'
-	import { Button } from 'flowbite-svelte'
+	import { Badge, Button } from 'flowbite-svelte'
 	import { createOptionOpen, createRecordInitial, createRecordOpen } from '$lib/store/modal'
 	import { invalidate } from '$app/navigation'
 
@@ -21,28 +21,38 @@
 	$: field = $table.schema.getFieldById(fieldId).into() as SelectField | undefined
 	$: options = field?.options?.options ?? []
 
+	const UNCATEGORIZED = 'uncategorized'
 	$: groupedRecords = groupBy($records, (record) => {
 		const value = (field ? record.values.value.get(field.id.value) : undefined) as SelectFieldValue | undefined
 
-		if (!value?.id) return null
+		if (!value?.id) return UNCATEGORIZED
 		return value.id
 	})
 
-	$: items = options.map((option) => ({
-		id: option.key.value,
-		name: option.name.value,
-		option,
-		records: groupedRecords[option.key.value]?.map((record) => ({ id: record.id.value, record })) ?? [],
-	}))
+	$: items = [
+		{
+			id: UNCATEGORIZED,
+			name: UNCATEGORIZED,
+			option: null,
+			records: groupedRecords[UNCATEGORIZED]?.map((record) => ({ id: record.id.value, record })) ?? [],
+		},
+		...options.map((option) => ({
+			id: option.key.value,
+			name: option.name.value,
+			option,
+			records: groupedRecords[option.key.value]?.map((record) => ({ id: record.id.value, record })) ?? [],
+		})),
+	]
 
 	function handleDndConsiderColumns(e: any) {
 		items = e.detail.items
 	}
 	async function handleDndFinalizeColumns(e: any) {
+		if (e.detail.info.id === UNCATEGORIZED) return
 		items = e.detail.items
 
-		const from = e.detail.info.id
-		const toIndex = items.findIndex((i) => i.id === from)
+		const from = e.detail.info.id + 1
+		const toIndex = items.findIndex((i) => i.id === from) + 1
 		const to = options[toIndex]?.key.value
 		if (to && to !== from && field) {
 			await trpc($page).table.field?.select.reorderOptions.mutate({
@@ -69,17 +79,18 @@
 		}
 
 		if (field && e.detail.info.trigger === TRIGGERS.DROPPED_INTO_ZONE) {
+			const optionId = e.target.dataset.containerId === UNCATEGORIZED ? null : e.target.dataset.containerId
 			await trpc($page).record.update.mutate({
 				tableId: $table.id.value,
 				id: e.detail.info.id,
-				values: { [field.id.value]: e.target.dataset.containerId },
+				values: { [field.id.value]: optionId },
 			})
 			await invalidate(`records:${$table.id.value}`)
 		}
 	}
 </script>
 
-<section
+<div
 	class="flex gap-5 h-full w-full px-10 py-5 overflow-scroll"
 	use:dndzone={{ items, flipDurationMs, type: 'columns', dropTargetStyle: {} }}
 	on:consider={handleDndConsiderColumns}
@@ -90,7 +101,11 @@
 			<div class="w-[350px] flex flex-col h-full">
 				<div class="mb-3 flex-0">
 					<div class="min-h-[40px]">
-						<Option option={item.option} />
+						{#if item.option}
+							<Option option={item.option} />
+						{:else}
+							<Badge color="dark">{item.name}</Badge>
+						{/if}
 					</div>
 
 					<Button
@@ -98,7 +113,7 @@
 						class="w-full rounded-md transition h-8"
 						size="xs"
 						on:click={() => {
-							if (field) {
+							if (field && item.id !== UNCATEGORIZED) {
 								$createRecordInitial = {
 									[field.id.value]: item.id,
 								}
@@ -147,4 +162,4 @@
 			class="w-full rounded-sm whitespace-nowrap">Create New Option</Button
 		>
 	</div>
-</section>
+</div>

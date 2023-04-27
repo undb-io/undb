@@ -48,7 +48,7 @@ export const createMutateRecordValuesSchema = (
   for (const field of fields) {
     if (field.controlled) continue
     const fieldSchema = field.valueSchema as ZodDefault<ZodTypeAny>
-    shape[field.id.value] = fieldSchema.default(defaultValues[field.id.value])
+    shape[field.id.value] = fieldSchema.default(defaultValues[field.id.value]).optional()
   }
 
   return z.object(shape)
