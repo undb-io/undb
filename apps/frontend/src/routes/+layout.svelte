@@ -16,7 +16,7 @@
 		const r = $page.url.searchParams.get('r')
 		// TODO: 判断前后是否一致
 		if (!r) {
-			if ($navigating) {
+			if ($navigating && $navigating.from?.route.id !== $navigating.to?.route.id) {
 				NProgress.start()
 			}
 		}
