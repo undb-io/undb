@@ -72,7 +72,7 @@
 	}
 </script>
 
-<li class="group min-w-[125px]">
+<li class={cx('group', active && 'min-w-[100px]')}>
 	<a
 		href={active ? $page.url.pathname : `/t/${$table.id.value}/${view.id.value}`}
 		type="button"
@@ -84,8 +84,8 @@
 				: 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 text-gray-500 dark:text-gray-400',
 		)}
 	>
-		<span>
-			<ViewIcon type={view.displayType} />
+		<span class="inline-flex items-center gap-2">
+			<ViewIcon type={view.displayType} class={cx(!active ? '!text-gray-500' : '!font-semibold')} />
 			{#if updating}
 				<form on:submit|preventDefault|stopPropagation={update}>
 					<input

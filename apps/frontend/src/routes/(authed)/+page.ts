@@ -4,6 +4,9 @@ import type { PageLoad } from './$types'
 
 export const ssr = false
 export const prerender = true
+
 export const load: PageLoad = async () => {
-	return { createTable: superValidate({ name: '', schema: [] }, createTableInput, { id: 'createTable' }) }
+	return {
+		createTable: superValidate({ name: '', schema: [] }, createTableInput, { id: 'createTable' }),
+	}
 }

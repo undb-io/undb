@@ -1,16 +1,24 @@
 <script lang="ts">
 	import { getTable } from '$lib/store/table'
+	import { Tooltip } from 'flowbite-svelte'
 	import TableViewTabItem from './TableViewTabItem.svelte'
+	import { createViewOpen } from '$lib/store/modal'
+	import CreateView from '$lib/view/CreateView.svelte'
 
 	const table = getTable()
 
 	$: views = $table.views.views ?? []
 </script>
 
-<section class="w-full mx-auto bg-gradient-to-r bg-white dark:bg-gray-900 border-b">
+<section class="w-full mx-auto bg-gradient-to-r bg-white dark:bg-gray-900 border-b flex space-x-2 items-center">
 	<ul class="flex flex-wrap space-x-2">
 		{#each views as view}
 			<TableViewTabItem {view} />
 		{/each}
 	</ul>
+	<button class="w-7 h-7 hover:bg-gray-100 transition" on:click={() => ($createViewOpen = true)}>
+		<i class="ti ti-plus text-gray-500" />
+	</button>
+	<Tooltip placement="bottom">create new view</Tooltip>
 </section>
+<CreateView />

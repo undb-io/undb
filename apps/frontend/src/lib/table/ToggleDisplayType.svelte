@@ -30,7 +30,7 @@
 			custom
 		>
 			<div
-				class="grid h-7 w-7 place-items-center rounded p-1 duration-300  hover:bg-gray-200 text-gray-400 peer-checked:bg-gray-200   peer-checked:border-gray-600 peer-checked:text-gray-600 hover:text-gray-500  "
+				class="grid h-7 w-7 place-items-center rounded p-1 duration-300 hover:bg-gray-100 text-gray-400 peer-checked:bg-gray-100 peer-checked:border-gray-600 peer-checked:text-gray-600 hover:text-gray-500"
 			>
 				<ViewIcon type={displayType} />
 			</div>

@@ -1,5 +1,11 @@
 import { trpc } from '$lib/trpc/client'
-import { RecordFactory, TableFactory, createMutateRecordValuesSchema, createOptionSchema } from '@undb/core'
+import {
+	RecordFactory,
+	TableFactory,
+	createMutateRecordValuesSchema,
+	createOptionSchema,
+	createViewSchema,
+} from '@undb/core'
 import { superValidate } from 'sveltekit-superforms/server'
 import { z } from 'zod'
 import type { PageLoad } from './$types'
@@ -22,6 +28,7 @@ export const load: PageLoad = async (event) => {
 	const coreRecord = record ? RecordFactory.fromQuery(record, coreTable.schema.toIdMap()).unwrap() : undefined
 	return {
 		record,
+		createView: superValidate({}, createViewSchema, { id: 'createView', errors: false }),
 		createRecord: superValidate(event, createMutateRecordValuesSchema(fields), { id: 'createRecord', errors: false }),
 		updateRecord: superValidate(event, createMutateRecordValuesSchema(fields, coreRecord?.valuesJSON), {
 			id: 'updateRecord',

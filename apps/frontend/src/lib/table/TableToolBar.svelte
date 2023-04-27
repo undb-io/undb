@@ -29,7 +29,8 @@
 		<Button
 			on:click={() => createFieldOpen.set(true)}
 			size="xs"
-			class="h-full w-8 px-0 !rounded-md inline-flex items-center whitespace-nowrap"
+			outline
+			class="h-full w-8 px-0 !rounded-md inline-flex items-center whitespace-nowrap transition"
 		>
 			<i class="ti ti-column-insert-right text-sm" />
 		</Button>
