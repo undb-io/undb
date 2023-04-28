@@ -4,11 +4,11 @@
 	import { Button } from 'flowbite-svelte'
 	import type { IQueryTable } from '@undb/core'
 	import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@rgossiaux/svelte-headlessui'
+	import { t } from '$lib/i18n'
 
 	export let value: string
 
 	$: tables = $page.data.tables as IQueryTable[]
-	$: items = tables.map((table) => ({ name: table.name, value: table.id }))
 	$: selected = value ? tables.find((t) => t.id === value) : undefined
 </script>
 
@@ -18,7 +18,7 @@
 			{#if selected}
 				{selected.name}
 			{:else}
-				<span class="text-gray-400">Table...</span>
+				<span class="text-gray-400">{$t('Select Table')}</span>
 			{/if}
 		</Button>
 	</ListboxButton>
@@ -29,7 +29,7 @@
 			<ListboxOption
 				value={table.id}
 				let:selected={selectedItem}
-				class="p-2 cursor-pointer hover:bg-gray-100 text-xs text-gray-700 flex gap-2 justify-between"
+				class="p-2 cursor-pointer hover:bg-gray-100 text-gray-700 flex gap-2 justify-between"
 			>
 				<div class="inline-flex gap-2">
 					{table.name}

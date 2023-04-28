@@ -11,6 +11,7 @@
 	import { createOptionOpen, createRecordInitial, createRecordOpen } from '$lib/store/modal'
 	import { invalidate } from '$app/navigation'
 	import { slide } from 'svelte/transition'
+	import { t } from '$lib/i18n'
 
 	export let fieldId: string
 	const flipDurationMs = 200
@@ -21,7 +22,7 @@
 	$: field = $table.schema.getFieldById(fieldId).into() as SelectField | undefined
 	$: options = field?.options?.options ?? []
 
-	const UNCATEGORIZED = 'uncategorized'
+	const UNCATEGORIZED = 'Uncategorized'
 	$: groupedRecords = groupBy($records, (record) => {
 		const value = (field ? record.values.value.get(field.id.value) : undefined) as SelectFieldValue | undefined
 
@@ -32,7 +33,7 @@
 	$: items = [
 		{
 			id: UNCATEGORIZED,
-			name: UNCATEGORIZED,
+			name: $t(UNCATEGORIZED),
 			option: null,
 			records: groupedRecords[UNCATEGORIZED]?.map((record) => ({ id: record.id.value, record })) ?? [],
 		},
@@ -89,11 +90,13 @@
 
 		if (field && e.detail.info.trigger === TRIGGERS.DROPPED_INTO_ZONE) {
 			const optionId = e.target.dataset.containerId === UNCATEGORIZED ? null : e.target.dataset.containerId
-			$updateRecord.mutate({
-				tableId: $table.id.value,
-				id: e.detail.info.id,
-				values: { [field.id.value]: optionId },
-			})
+			if (!field.required) {
+				$updateRecord.mutate({
+					tableId: $table.id.value,
+					id: e.detail.info.id,
+					values: { [field.id.value]: optionId },
+				})
+			}
 		}
 	}
 </script>
@@ -167,7 +170,10 @@
 			size="xs"
 			color="light"
 			outline
-			class="w-full rounded-sm whitespace-nowrap">Create New Option</Button
+			class="w-full rounded-sm whitespace-nowrap inline-flex gap-2"
+		>
+			<i class="ti ti-plus" />
+			{$t('Create New Option')}</Button
 		>
 	</div>
 </div>

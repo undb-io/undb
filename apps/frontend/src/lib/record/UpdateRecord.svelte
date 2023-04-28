@@ -12,6 +12,7 @@
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { pick, keys } from 'lodash-es'
 	import { slide } from 'svelte/transition'
+	import { t } from '$lib/i18n'
 
 	const table = getTable()
 	const view = getView()
@@ -69,7 +70,7 @@
 		{/if}
 		<svelte:fragment slot="header">
 			<div class="flex items-center space-x-4">
-				<P>Update Record</P>
+				<P>{$t('Update Record')}</P>
 				<ButtonGroup size="xs">
 					<Button size="xs" disabled={!$previousRecord} on:click={() => ($currentRecordId = $previousRecord?.id.value)}>
 						<i class="ti ti-chevron-left text-gray-500 text-base" />
@@ -105,12 +106,12 @@
 
 		<svelte:fragment slot="footer">
 			<div class="w-full flex justify-end gap-2">
-				<Button color="alternative" on:click={() => goto($page.url.pathname)}>Discard</Button>
+				<Button color="alternative" on:click={() => goto($page.url.pathname)}>{$t('Cancel', { ns: 'common' })}</Button>
 				<Button class="gap-4" type="submit" form="updateRecord" disabled={$submitting}>
 					{#if $delayed}
 						<Spinner size="5" />
 					{/if}
-					Update Record</Button
+					{$t('Update Record')}</Button
 				>
 			</div>
 		</svelte:fragment>

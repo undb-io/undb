@@ -9,6 +9,7 @@
 	import { tick } from 'svelte'
 	import { goto, invalidate } from '$app/navigation'
 	import Portal from 'svelte-portal'
+	import { t } from '$lib/i18n'
 
 	const table = getTable()
 	const currentView = getView()
@@ -120,20 +121,20 @@
 	</a>
 	{#if active}
 		<Portal target="body">
-			<Dropdown triggeredBy={`#${view.id.value}`} {open} frameClass="z-[100]">
+			<Dropdown triggeredBy={`#${view.id.value}`} bind:open frameClass="z-[100]">
 				<DropdownItem on:click={() => (updating = true)} class="text-sm font-normal inline-flex items-center gap-2">
 					<i class="ti ti-pencil text-gray-400" />
-					<span>update view name</span>
+					<span>{$t('Update View Name')}</span>
 				</DropdownItem>
 				<DropdownItem on:click={duplicateView} class="text-sm font-normal inline-flex items-center gap-2">
 					<i class="ti ti-copy text-gray-400" />
-					<span>duplicate view</span>
+					<span>{$t('Duplicate View')}</span>
 				</DropdownItem>
 				{#if $table.views.count > 1}
 					<DropdownDivider />
 					<DropdownItem class="text-red-400 text-sm font-normal inline-flex items-center gap-2" on:click={deleteView}>
 						<i class="ti ti-trash" />
-						<span>delete view</span>
+						<span>{$t('Delete View')}</span>
 					</DropdownItem>
 				{/if}
 			</Dropdown>

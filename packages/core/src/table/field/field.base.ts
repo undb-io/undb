@@ -238,7 +238,7 @@ export abstract class AbstractLookingField<F extends ILookingFieldTypes>
   getForeignDisplayValues(foreignRecord: Record, foreignSchema: TableSchema) {
     const displayFieldIds = this.getDisplayFieldIds(foreignSchema)
     if (!displayFieldIds.length) {
-      return ['unamed']
+      return undefined
     }
 
     const json = foreignRecord.valuesJSON

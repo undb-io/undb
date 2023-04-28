@@ -10,6 +10,7 @@
 	import type { Field, IFilter } from '@undb/core'
 	import { invalidateAll } from '$app/navigation'
 	import { writable } from 'svelte/store'
+	import { t } from '$lib/i18n'
 
 	const [popperRef, popperContent] = createPopperActions()
 
@@ -55,7 +56,7 @@
 	<PopoverButton as="div" use={[popperRef]}>
 		<Button id="filters-menu" size="xs" color="alternative" class="h-full !rounded-md gap-2 whitespace-nowrap">
 			<i class="ti ti-filter text-sm" />
-			Filters</Button
+			{$t('Filter')}</Button
 		>
 	</PopoverButton>
 	{#if open}
@@ -63,19 +64,19 @@
 			<PopoverPanel class="absolute" use={[[popperContent, popperOptions]]} let:close>
 				<div class="rounded-sm shadow-xl bg-white w-[600px] px-3 py-3 space-y-2 border border-gray-200">
 					{#if $value.length}
-						<span class="text-xs font-medium text-gray-500">set filters in this view</span>
+						<span class="text-xs font-medium text-gray-500">{$t('set filters in this view')}</span>
 						<ul class="space-y-2" use:autoAnimate={{ duration: 100 }}>
 							{#each $value as filter, index}
 								<FilterItem {filter} {index} {reset} {remove} />
 							{/each}
 						</ul>
 					{:else}
-						<span class="text-xs font-medium text-gray-400">no filters applied</span>
+						<span class="text-xs font-medium text-gray-400">{$t('no filters applied')}</span>
 					{/if}
 					<Hr />
 					<div class="flex justify-between">
 						<div>
-							<Button color="alternative" size="xs" on:click={add}>Add New Filter</Button>
+							<Button color="alternative" size="xs" on:click={add}>{$t('Create New Filter')}</Button>
 						</div>
 						<div>
 							<Button
@@ -83,7 +84,7 @@
 								on:click={async () => {
 									await apply()
 									close(null)
-								}}>Apply</Button
+								}}>{$t('Apply', { ns: 'common' })}</Button
 							>
 						</div>
 					</div>

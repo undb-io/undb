@@ -13,6 +13,7 @@
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
 	import { z } from 'zod'
 	import { slide } from 'svelte/transition'
+	import { t } from '$lib/i18n'
 
 	const table = getTable()
 
@@ -102,7 +103,7 @@
 </script>
 
 <Modal
-	title="Update New Field"
+	title={$t('Update Field') ?? undefined}
 	placement="top-center"
 	class="static w-full rounded-sm"
 	size="lg"
@@ -114,7 +115,7 @@
 				<Label class="flex flex-col gap-2">
 					<div class="flex gap-2 items-center">
 						<FieldIcon size={14} type={$form.type} />
-						<span>type</span>
+						<span>{$t('Type', { ns: 'common' })}</span>
 						<span class="text-red-500">*</span>
 					</div>
 
@@ -123,7 +124,7 @@
 
 				<Label class="flex flex-col gap-2">
 					<div class="flex gap-2 items-center">
-						<span>name</span>
+						<span>{$t('Name', { ns: 'common' })}</span>
 						<span class="text-red-500">*</span>
 					</div>
 
@@ -134,7 +135,7 @@
 			{#if showDescription}
 				<Label class="flex flex-col gap-2">
 					<div class="flex gap-2 items-center">
-						<span>description</span>
+						<span>{$t('Description', { ns: 'common' })}</span>
 					</div>
 
 					<Textarea class="rounded-sm" name="description" bind:value={$form.description} />
@@ -154,16 +155,16 @@
 					{:else}
 						<i class="ti ti-plus text-sm" />
 					{/if}
-					<span>{showDescription ? 'hide' : 'show'} description </span>
+					<span>{$t('Add Description')}</span>
 				</Button>
 			</div>
 			<div class="flex justify-end items-center gap-4">
 				<div class="flex gap-2 items-center">
-					<Toggle bind:checked={$form.required}>required</Toggle>
+					<Toggle bind:checked={$form.required}>{$t('Required', { ns: 'common' })}</Toggle>
 					{#if canDisplay($form.type)}
-						<Toggle bind:checked={$form.display}>display</Toggle>
+						<Toggle bind:checked={$form.display}>{$t('Display', { ns: 'common' })}</Toggle>
 						{#if displayFields.length}
-							<Popover class="w-64 text-sm font-light " title="display fields">
+							<Popover class="w-64 text-sm font-light " title={$t('Display Fields') ?? undefined}>
 								<div class="flex gap-2">
 									{#each displayFields as field}
 										<Badge>{field}</Badge>
@@ -174,12 +175,14 @@
 					{/if}
 				</div>
 				<div class="space-x-2">
-					<Button color="alternative" on:click={() => updateFieldOpen.set(false)}>Discard</Button>
+					<Button color="alternative" on:click={() => updateFieldOpen.set(false)}
+						>{$t('Cancel', { ns: 'common' })}</Button
+					>
 					<Button class="gap-4" type="submit" form="updateField" disabled={$submitting}>
 						{#if $delayed}
 							<Spinner size="5" />
 						{/if}
-						Update New Field</Button
+						{$t('Update Field')}</Button
 					>
 				</div>
 			</div>

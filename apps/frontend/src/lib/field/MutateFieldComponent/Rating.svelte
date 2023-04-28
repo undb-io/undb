@@ -6,6 +6,7 @@
 	import type { UnwrapEffects } from 'sveltekit-superforms'
 	import { RATING_MAX, RATING_MAX_DEFAULT } from '@undb/core'
 	import { onMount } from 'svelte'
+	import { t } from '$lib/i18n'
 
 	export let path: any[] = []
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
@@ -19,7 +20,7 @@
 
 <div>
 	<Label class="space-y-2">
-		<span>max</span>
+		<span>{$t('Max', { ns: 'common' })}</span>
 		<NumberInput bind:value={$max} min={0} max={RATING_MAX} />
 	</Label>
 </div>

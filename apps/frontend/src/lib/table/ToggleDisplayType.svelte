@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from '$lib/i18n'
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import ViewIcon from '$lib/view/ViewIcon.svelte'
@@ -34,7 +35,7 @@
 			>
 				<ViewIcon type={displayType} />
 			</div>
-			<Tooltip placement="bottom">{displayType}</Tooltip>
+			<Tooltip placement="bottom">{$t(displayType)}</Tooltip>
 		</Radio>
 	{/each}
 </div>

@@ -10,6 +10,7 @@
 	import { goto, invalidate } from '$app/navigation'
 	import { tick } from 'svelte'
 	import { slide } from 'svelte/transition'
+	import { t } from '$lib/i18n'
 
 	const table = getTable()
 
@@ -39,7 +40,7 @@
 </script>
 
 <Modal
-	title="Create New View"
+	title={$t('Create New View') ?? undefined}
 	size="md"
 	placement="top-center"
 	class="static w-full rounded-sm"

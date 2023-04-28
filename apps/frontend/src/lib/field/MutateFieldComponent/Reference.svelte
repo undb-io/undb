@@ -9,6 +9,7 @@
 	import TablePicker from '../FieldInputs/TablePicker.svelte'
 	import { getTable } from '$lib/store/table'
 	import type { Writable } from 'svelte/store'
+	import { t } from '$lib/i18n'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 	export let isNew = false
@@ -32,7 +33,7 @@
 <div class="grid grid-cols-2 gap-2">
 	<div class="space-y-2">
 		<Label class="inline-flex items-center gap-2">
-			<span>foreign table</span>
+			<span>{$t('Foreign Table')}</span>
 			<span class="text-red-500">*</span>
 		</Label>
 
@@ -41,7 +42,7 @@
 	{#if coreForeignTable}
 		<div class="space-y-2">
 			<Label class="inline-flex items-center gap-2">
-				<span>display fields</span>
+				<span>{$t('Display Fields')}</span>
 			</Label>
 			<div class="flex gap-2">
 				<FieldsPicker
@@ -49,9 +50,10 @@
 					table={coreForeignTable}
 					bind:group={$displayFieldIds}
 					disabled={!foreignTable}
+					filter={(f) => f.isPrimitive()}
 				/>
 				{#if $table?.id.value !== $foreignTableId && isNew}
-					<Toggle bind:checked={$bidirectional}>bidirectional</Toggle>
+					<Toggle size="small" bind:checked={$bidirectional} class="whitespace-nowrap">{$t('Bidirectional')}</Toggle>
 				{/if}
 			</div>
 		</div>

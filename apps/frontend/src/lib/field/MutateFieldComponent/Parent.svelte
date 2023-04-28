@@ -5,6 +5,7 @@
 	import FieldsPicker from '../FieldInputs/FieldsPicker.svelte'
 	import { getTable } from '$lib/store/table'
 	import type { Writable } from 'svelte/store'
+	import { t } from '$lib/i18n'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 	export let isNew = false
@@ -19,7 +20,7 @@
 	<div class="grid grid-cols-2 gap-2">
 		<div class="space-y-2">
 			<Label class="inline-flex items-center gap-2">
-				<span>display fields</span>
+				<span>{$t('Display Fields') ?? undefined}</span>
 			</Label>
 			<div>
 				<FieldsPicker

@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { RecordFactory, type IGroup, type Records, type ReferenceField, TableFactory, Record } from '@undb/core'
+	import { RecordFactory, type ReferenceField, TableFactory, Record } from '@undb/core'
 	import ForeignRecordsPicker from './ForeignRecordsPicker.svelte'
 	import { getRecords, getTable } from '$lib/store/table'
-	import { page } from '$app/stores'
 	import { trpc } from '$lib/trpc/client'
 
 	export let value: string[] = []
@@ -21,7 +20,7 @@
 			const foreignTable = await trpc.table.get.utils.fetch({ id: foreignTableId })
 			if (foreignTable) {
 				const ft = TableFactory.fromQuery(foreignTable)
-				const data = await trpc($page).record.foreign.query({
+				const data = await trpc.record.foreign.utils.fetch({
 					tableId: $table.id.value,
 					fieldId: field.id.value,
 					foreignTableId,

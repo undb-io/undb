@@ -5,6 +5,7 @@
 	import { trpc } from '$lib/trpc/client'
 	import { writable } from 'svelte/store'
 	import { createFieldInitial, createFieldOpen } from '$lib/store/modal'
+	import { t } from '$lib/i18n'
 
 	const table = getTable()
 	const view = getView()
@@ -38,7 +39,7 @@
 
 {#if kanbanFields.length}
 	<Hr class="my-6">
-		<span class="text-gray-400 text-sm font-normal">or</span></Hr
+		<span class="text-gray-400 text-sm font-normal">{$t('or', { ns: 'common' })}</span></Hr
 	>
 {/if}
 
@@ -55,7 +56,7 @@
 		}}
 	>
 		<i class="ti ti-plus" />
-		<span>create new select field</span>
+		<span>{$t('Create New Select Field')}</span>
 		<FieldIcon type="select" />
 	</Button>
 </div>

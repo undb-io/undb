@@ -11,10 +11,16 @@
 	import { goto } from '$app/navigation'
 	import { browser } from '$app/environment'
 	import logo from '$lib/assets/logo.svg'
+	import { t } from '$lib/i18n'
 
 	$: navigation = [
-		{ name: 'Tables', href: '/', icon: 'table', current: $page.url.pathname === '/' },
-		{ name: 'Members', href: '/members', icon: 'users', current: $page.url.pathname === '/members' },
+		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
+		{
+			name: $t('Members', { ns: 'common' }),
+			href: '/members',
+			icon: 'users',
+			current: $page.url.pathname === '/members',
+		},
 	]
 
 	let sidebarOpen = false
@@ -26,7 +32,7 @@
 	$: tables = data.tables
 	$: me = data.me.me
 
-	const r = $page.url.searchParams.get('r')
+	$: r = $page.url.searchParams.get('r')
 	$: if (r) {
 		currentRecordId.set(r)
 	}
@@ -118,7 +124,7 @@
 										</ul>
 									</li>
 									<li>
-										<div class="text-xs font-semibold leading-6 text-gray-400">tables</div>
+										<div class="text-xs font-semibold leading-6 text-gray-400">{$t('Tables', { ns: 'common' })}</div>
 										<ul class="-mx-2 mt-2 space-y-1">
 											{#each tables as table}
 												<li>
@@ -186,7 +192,7 @@
 				</ul>
 			</div>
 			<div class="px-6 py-4">
-				<P class="text-sm font-normal leading-6 !text-gray-400">tables</P>
+				<P class="text-sm font-normal leading-6 !text-gray-400">{$t('Tables', { ns: 'common' })}</P>
 			</div>
 			<nav class="flex flex-1 flex-col px-6 h-full overflow-y-auto">
 				<ul class="-mx-2 space-y-1 pb-2">
@@ -221,7 +227,9 @@
 			</nav>
 			<ul class="flex flex-col border-t pt-4 space-y-2">
 				<li class="px-6">
-					<Button size="xs" class="w-full" outline on:click={() => createTableOpen.set(true)}>Create New Table</Button>
+					<Button size="xs" class="w-full" outline on:click={() => createTableOpen.set(true)}
+						>{$t('Create New Table')}</Button
+					>
 				</li>
 
 				<button
@@ -271,7 +279,7 @@
 	</div>
 
 	<main class="lg:pl-72 h-[100vh]">
-		<div class="h-full">
+		<div class="h-full flex flex-col">
 			<slot />
 		</div>
 	</main>

@@ -4,6 +4,7 @@
 	import type { UnwrapEffects } from 'sveltekit-superforms'
 	import OptionsInput from '../FieldInputs/OptionsInput.svelte'
 	import type { Writable } from 'svelte/store'
+	import { t } from '$lib/i18n'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 	export let path: any[] = []
@@ -13,7 +14,7 @@
 
 <div class="space-y-2">
 	<Label class="space-y-2">
-		<span>options</span>
+		<span>{$t('Options')}</span>
 	</Label>
 	<OptionsInput bind:value={$options} />
 </div>

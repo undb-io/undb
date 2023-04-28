@@ -12,6 +12,7 @@
 	import type { SetOptional } from 'type-fest'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
+	import { t } from '$lib/i18n'
 
 	const table = getTable()
 	const view = getView()
@@ -54,7 +55,7 @@
 		>
 			<span class="inline-flex items-center gap-2" class:text-blue-600={!!$sorts.length}>
 				<i class="ti ti-arrows-sort text-sm" />
-				<span>Sorts</span>
+				<span class="whitespace-nowrap">{$t('Sort')}</span>
 				{#if !!$sorts.length}
 					<Badge class="rounded-full h-4 px-2 bg-blue-700 !text-white">{$sorts.length}</Badge>
 				{/if}
@@ -66,7 +67,7 @@
 			<PopoverPanel class="absolute" use={[[popperContent, popperOptions]]} let:close>
 				<div class="rounded-sm shadow-xl bg-white w-[400px] px-3 py-3 space-y-2 border border-gray-200">
 					{#if $value.length}
-						<span class="text-xs font-medium text-gray-500">set filters in this view</span>
+						<span class="text-xs font-medium text-gray-500">{$t('set sorts in this view')}</span>
 						<ul class="w-full items-center space-y-2" use:autoAnimate={{ duration: 100 }}>
 							{#each $value as sort, idx}
 								<li class="flex justify-between">
@@ -86,7 +87,8 @@
 													on:click={() => {
 														value.update((sort) => sort.map((s, index) => (index === idx ? { ...s, direction } : s)))
 													}}
-													color={sort.direction === direction ? 'blue' : 'light'}>{direction}</Button
+													color={sort.direction === direction ? 'blue' : 'light'}
+													>{$t(direction, { ns: 'common' })}</Button
 												>
 											{/each}
 										</div>
@@ -103,7 +105,7 @@
 							{/each}
 						</ul>
 					{:else}
-						<span class="text-xs font-medium text-gray-400">no filters applied</span>
+						<span class="text-xs font-medium text-gray-400">{$t('no sorts applied')}</span>
 					{/if}
 					<Hr />
 					<div class="flex justify-between">
@@ -111,7 +113,8 @@
 							<Button
 								color="alternative"
 								size="xs"
-								on:click={() => value.update((sorts) => [...sorts, { direction: 'asc' }])}>Add New Sort</Button
+								on:click={() => value.update((sorts) => [...sorts, { direction: 'asc' }])}
+								>{$t('Create New Sort')}</Button
 							>
 						</div>
 						<div>
@@ -120,7 +123,7 @@
 								on:click={async () => {
 									await sort()
 									close(null)
-								}}>Apply</Button
+								}}>{$t('Apply', { ns: 'common' })}</Button
 							>
 						</div>
 					</div>

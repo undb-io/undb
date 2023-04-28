@@ -6,6 +6,7 @@
 	import { isControlledFieldType, canDisplay, type ICreateTableInput, createTableInput } from '@undb/core'
 	import { AccordionItem, Label, Input, Toggle, Button, Textarea, Dropdown, DropdownItem } from 'flowbite-svelte'
 	import type { SuperForm } from 'sveltekit-superforms/client'
+	import { t } from '$lib/i18n'
 
 	export let open: boolean
 	export let field: ICreateTableInput['schema'][number]
@@ -32,7 +33,7 @@
 	<span slot="header" class="text-sm">
 		<div class="flex items-center text-sm gap-2">
 			<FieldIcon size={14} type={field.type} />
-			{field.name || `Field ${$form.schema.findIndex((f) => f.id === field.id) + 1}`}
+			{field.name || `${$t('Field')} ${$form.schema.findIndex((f) => f.id === field.id) + 1}`}
 		</div>
 	</span>
 
@@ -47,13 +48,13 @@
 		<div class="grid grid-cols-2 gap-4">
 			<div>
 				<Label class="space-y-2">
-					<span>Type</span>
+					<span>{$t('Type', { ns: 'common' })}</span>
 					<FieldTypePicker class="w-full !justify-start" bind:value={field.type} />
 				</Label>
 			</div>
 			<div>
 				<Label class="space-y-2">
-					<span>name</span>
+					<span>{$t('Name', { ns: 'common' })}</span>
 					<Input
 						type="text"
 						placeholder={field.description ?? 'name'}
@@ -68,7 +69,7 @@
 		{#if showDescription}
 			<Label class="flex flex-col gap-2">
 				<div class="flex gap-2 items-center">
-					<span>description</span>
+					<span>{$t('Description', { ns: 'common' })}</span>
 				</div>
 
 				<Textarea class="rounded-sm" name="description" bind:value={field.description} />
@@ -86,23 +87,23 @@
 				{:else}
 					<i class="ti ti-plus text-sm" />
 				{/if}
-				<span>{showDescription ? 'hide' : 'show'} description </span>
+				<span>{$t('Add Description')}</span>
 			</Button>
 		</div>
-		<div class="flex gap-4">
+		<div class="flex gap-4 items-center">
 			{#if !isControlledFieldType(field.type)}
-				<Toggle bind:checked={field.required}>required</Toggle>
+				<Toggle size="small" bind:checked={field.required}>{$t('Required', { ns: 'common' })}</Toggle>
 			{/if}
 			{#if canDisplay(field.type)}
-				<Toggle bind:checked={field.display}>display</Toggle>
+				<Toggle size="small" bind:checked={field.display}>{$t('Display', { ns: 'common' })}</Toggle>
 			{/if}
-			<div class="hover:bg-gray-100 px-3 rounded-sm">
+			<span role="button" class="hover:bg-gray-100 px-3 rounded-sm flex items-center justify-center w-7 h-7">
 				<i class="ti ti-dots text-sm" />
-			</div>
+			</span>
 			<Dropdown>
 				<DropdownItem class="text-red-500 font-normal" on:click={remove}>remove</DropdownItem>
 			</Dropdown>
-			<Button size="xs" color="light" on:click={() => (open = false)}>ok</Button>
+			<Button size="xs" color="light" on:click={() => (open = false)}>{$t('Done', { ns: 'common' })}</Button>
 		</div>
 	</div>
 </AccordionItem>

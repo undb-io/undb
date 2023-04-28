@@ -2,6 +2,7 @@
 	import { Button, Dropdown, DropdownItem, Radio } from 'flowbite-svelte'
 	import ViewIcon from './ViewIcon.svelte'
 	import type { IViewDisplayType } from '@undb/core'
+	import { t } from '$lib/i18n'
 
 	let open = false
 
@@ -13,9 +14,11 @@
 	export let value: IViewDisplayType = 'grid'
 </script>
 
-<Button color="alternative" class="text-left flex items-center gap-2" on:click={() => (open = true)}>
+<Button color="alternative" class="text-left flex items-center gap-2 whitespace-nowrap" on:click={() => (open = true)}>
 	<ViewIcon type={value} />
-	{value}
+	<span>
+		{$t(value)}
+	</span>
 </Button>
 <Dropdown bind:open>
 	{#each items as item}
@@ -23,7 +26,7 @@
 			<Radio custom value={item.value} bind:group={value} on:change={() => (open = false)}>
 				<div role="button" class="flex items-center w-full h-full gap-2">
 					<ViewIcon type={item.value} />
-					{item.value}
+					{$t(item.value)}
 				</div>
 			</Radio>
 		</DropdownItem>

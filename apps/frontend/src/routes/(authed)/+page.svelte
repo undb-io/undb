@@ -3,6 +3,7 @@
 	import type { LayoutData } from './$types'
 	import { createTableOpen } from '$lib/store/modal'
 	import Empty from '$lib/table/Empty.svelte'
+	import { t } from '$lib/i18n'
 
 	export let data: LayoutData
 </script>
@@ -11,7 +12,7 @@
 	<div class="w-full px-5 py-4 flex justify-end" id="navbar-default">
 		<Button size="sm" on:click={() => createTableOpen.set(true)}>
 			<i class="ti ti-plus text-sm mr-3" />
-			Create New Table</Button
+			{$t('Create New Table')}</Button
 		>
 	</div>
 </nav>

@@ -23,7 +23,7 @@
 	<FieldPicker
 		bind:selected={field}
 		size="xs"
-		class="h-8 rounded-l-sm rounded-r-none w-32"
+		class="h-8 rounded-l-sm rounded-r-none w-32 !justify-start"
 		table={$table}
 		bind:value={filter.path}
 		bind:type={filter.type}

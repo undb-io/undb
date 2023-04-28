@@ -13,6 +13,7 @@
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
 	import Portal from 'svelte-portal'
 	import { slide } from 'svelte/transition'
+	import { t } from '$lib/i18n'
 
 	const table = getTable()
 
@@ -55,13 +56,13 @@
 
 	$: displayFields = $table.schema.displayFields
 		.map((f) => f.name.value)
-		.concat($form.display ? $form.name || 'unamed' : undefined)
+		.concat($form.display ? $form.name || $t('unamed') : undefined)
 		.filter(Boolean)
 </script>
 
 <Portal target="body">
 	<Modal
-		title="Create New Field"
+		title={$t('Create New Field') ?? undefined}
 		placement="top-center"
 		class="static w-full rounded-sm"
 		size="lg"
@@ -73,7 +74,7 @@
 					<Label class="flex flex-col gap-2">
 						<div class="flex gap-2 items-center">
 							<FieldIcon size={14} type={$form.type} />
-							<span>type</span>
+							<span>{$t('Type', { ns: 'common' })}</span>
 							<span class="text-red-500">*</span>
 						</div>
 
@@ -82,7 +83,7 @@
 
 					<Label class="flex flex-col gap-2">
 						<div class="flex gap-2 items-center">
-							<span>name</span>
+							<span>{$t('Name', { ns: 'common' })}</span>
 							<span class="text-red-500">*</span>
 						</div>
 
@@ -93,7 +94,7 @@
 				{#if showDescription}
 					<Label class="flex flex-col gap-2">
 						<div class="flex gap-2 items-center">
-							<span>description</span>
+							<span>{$t('Description', { ns: 'common' })}</span>
 						</div>
 
 						<Textarea name="description" bind:value={$form.description} />
@@ -113,18 +114,22 @@
 						{:else}
 							<i class="ti ti-plus text-[16px]" />
 						{/if}
-						<span>{showDescription ? 'hide' : 'show'} description </span>
+						<span>{$t('Add Description')}</span>
 					</Button>
 				</div>
 				<div class="flex justify-end items-center gap-4">
-					<div class="flex gap-2 items-center">
+					<div class="flex gap-2 items-center" use:autoAnimate>
 						{#if !isControlledFieldType($form.type)}
-							<Toggle bind:checked={$form.required}>required</Toggle>
+							<Toggle class="whitespace-nowrap" size="small" bind:checked={$form.required}
+								>{$t('Required', { ns: 'common' })}</Toggle
+							>
 						{/if}
 						{#if canDisplay($form.type)}
-							<Toggle bind:checked={$form.display}>display</Toggle>
+							<Toggle class="whitespace-nowrap" size="small" bind:checked={$form.display}
+								>{$t('Display', { ns: 'common' })}</Toggle
+							>
 							{#if displayFields.length}
-								<Popover class="w-64 text-sm font-light " title="display fields">
+								<Popover class="w-64 text-sm font-light " title={$t('Display Fields') ?? undefined}>
 									<div class="flex gap-2">
 										{#each displayFields as field}
 											<Badge>{field}</Badge>
@@ -135,12 +140,14 @@
 						{/if}
 					</div>
 					<div class="space-x-2">
-						<Button color="alternative" on:click={() => createFieldOpen.set(false)}>Discard</Button>
+						<Button color="alternative" on:click={() => createFieldOpen.set(false)}
+							>{$t('Cancel', { ns: 'common' })}</Button
+						>
 						<Button class="gap-4" type="submit" form="createField" disabled={$submitting}>
 							{#if $delayed}
 								<Spinner size="5" />
 							{/if}
-							Create New Field</Button
+							{$t('Create New Field')}</Button
 						>
 					</div>
 				</div>

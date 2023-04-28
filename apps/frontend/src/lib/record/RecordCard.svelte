@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from '$lib/i18n'
 	import type { Record, ReferenceFieldTypes, TableSchema } from '@undb/core'
 	import { Card } from 'flowbite-svelte'
 
@@ -6,7 +7,7 @@
 	export let field: ReferenceFieldTypes
 	export let record: Record | undefined
 
-	$: value = record ? field.getForeignDisplayValues(record, schema) : []
+	$: value = record ? field.getForeignDisplayValues(record, schema) ?? [$t('unamed')] : []
 </script>
 
 {#if record}

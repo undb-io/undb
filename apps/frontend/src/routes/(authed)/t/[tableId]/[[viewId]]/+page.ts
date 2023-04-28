@@ -26,6 +26,7 @@ export const load: PageLoad = async (event) => {
 
 	const record = recordId ? await trpc.record.get.utils.fetch({ tableId, id: recordId }) : undefined
 	const coreRecord = record ? RecordFactory.fromQuery(record, coreTable.schema.toIdMap()).unwrap() : undefined
+	console.log(coreRecord?.valuesJSON)
 	return {
 		record,
 		createRecord: superValidate(event, createMutateRecordValuesSchema(fields), { id: 'createRecord', errors: false }),

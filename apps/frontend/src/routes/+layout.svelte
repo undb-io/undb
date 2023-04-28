@@ -2,8 +2,8 @@
 	import '../app.postcss'
 	import '@tabler/icons-webfont/tabler-icons.min.css'
 	import NProgress from 'nprogress'
-	import { navigating, getStores } from '$app/stores'
-	import { QueryClientProvider, QueryClient } from '@tanstack/svelte-query'
+	import { navigating, page } from '$app/stores'
+	import { QueryClientProvider } from '@tanstack/svelte-query'
 	import { trpc } from '$lib/trpc/client'
 
 	import 'nprogress/nprogress.css'
@@ -11,8 +11,6 @@
 	NProgress.configure({
 		minimum: 0.16,
 	})
-
-	const { page } = getStores()
 
 	$: {
 		const r = $page.url.searchParams.get('r')

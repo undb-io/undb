@@ -13,7 +13,7 @@
 	data-option-id={option.key.value}
 	class={cx(
 		textColor,
-		'text-xs inline-block font-medium px-2.5 py-0.5 rounded text-center overflow-hidden text-ellipsis whitespace-nowrap',
+		'text-xs inline-flex items-center justify-center px-2.5 py-0.5 rounded text-center overflow-hidden text-ellipsis whitespace-nowrap',
 		$$restProps.class,
 		colors[option.color.name],
 	)}

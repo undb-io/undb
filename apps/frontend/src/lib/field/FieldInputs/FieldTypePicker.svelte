@@ -1,9 +1,11 @@
 <script lang="ts">
+	import cx from 'classnames'
 	import { Button, Dropdown, Radio } from 'flowbite-svelte'
 	import Portal from 'svelte-portal'
 	import FieldIcon from '../FieldIcon.svelte'
 	import { FIELD_SELECT_ITEMS } from '../types'
 	import type { IFieldType } from '@undb/core'
+	import { t } from '$lib/i18n'
 
 	export let value: IFieldType | undefined
 	export let types = FIELD_SELECT_ITEMS
@@ -14,7 +16,7 @@
 	{#if value}
 		<div class="flex items-center gap-2">
 			<FieldIcon size={16} type={value} />
-			<span>{value}</span>
+			<span>{$t(value)}</span>
 		</div>
 	{:else}
 		Type...
@@ -25,7 +27,7 @@
 		triggeredBy="#field_type_picker"
 		bind:open
 		inline
-		class="max-h-64 w-[400px] overflow-y-auto py-1 shadow-md"
+		class="w-[400px] overflow-y-auto py-1 shadow-md"
 		frameClass="z-[100]"
 	>
 		{#each types as type}
@@ -33,15 +35,15 @@
 			<Radio
 				value={type.value}
 				bind:group={value}
-				class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+				class={cx('px-3 py-2 hover:bg-gray-100 cursor-pointer', selected && 'bg-gray-100')}
 				custom
 				on:change={() => (open = false)}
 			>
-				<li class="w-full flex justify-between items-center text-gray-500">
+				<li class="w-full flex justify-between items-center text-gray-700">
 					<div class="flex flex-1 items-center gap-2">
 						<FieldIcon type={type.value} size={16} />
 						<span>
-							{type.name}
+							{$t(type.value)}
 						</span>
 					</div>
 					{#if selected}

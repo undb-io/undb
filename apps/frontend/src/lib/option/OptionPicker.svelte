@@ -2,6 +2,7 @@
 	import type { SelectField } from '@undb/core'
 	import { Button, Dropdown, DropdownItem, Radio } from 'flowbite-svelte'
 	import Option from './Option.svelte'
+	import { t } from '$lib/i18n'
 
 	export let field: SelectField
 
@@ -17,7 +18,10 @@
 	{#if option}
 		<Option {option} />
 	{:else}
-		<span>Select Option</span>
+		<span class="inline-flex items-center gap-2">
+			<i class="ti ti-plus" />
+			<span>{$t('Select Option')}</span>
+		</span>
 	{/if}
 </Button>
 <Dropdown bind:open placement="bottom-start">

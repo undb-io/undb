@@ -553,17 +553,14 @@ export class SelectField extends Field {
       description: this.description,
       required: !!this.required,
       display: this.display,
-      // FIXME: should check?
-      options: this.options.isInitialized()
-        ? this.options.getItems().map((o) => ({
-            key: o.key,
-            name: o.name,
-            color: {
-              name: o.color.name as IOptionColorName,
-              shade: o.color.shade,
-            },
-          }))
-        : [],
+      options: this.options.getItems().map((o) => ({
+        key: o.key,
+        name: o.name,
+        color: {
+          name: o.color.name as IOptionColorName,
+          shade: o.color.shade,
+        },
+      })),
     })
   }
 

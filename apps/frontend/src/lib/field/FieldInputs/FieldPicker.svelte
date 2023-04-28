@@ -5,6 +5,7 @@
 	import { Button } from 'flowbite-svelte'
 	import { identity } from 'lodash-es'
 	import FieldIcon from '../FieldIcon.svelte'
+	import { t } from '$lib/i18n'
 
 	export let value: string = ''
 	export let table: Table
@@ -32,25 +33,33 @@
 				<FieldIcon type={selected.type} size={14} />
 				{selected?.name.value}
 			{:else}
-				<span class="text-gray-400">Name...</span>
+				<span class="text-gray-500 font-normal">{$t('Select Field')}</span>
 			{/if}
 		</Button>
 	</ListboxButton>
-	<ListboxOptions class="absolute bg-white py-1 border border-gray-100 shadow-md h-64 overflow-y-auto w-full z-50">
-		{#each fields as field (field.id)}
-			<ListboxOption
-				value={field.id.value}
-				let:selected={selectedItem}
-				class="p-2 cursor-pointer hover:bg-gray-100 text-xs text-gray-700 flex gap-2 justify-between"
-			>
-				<div class="inline-flex gap-2">
-					<FieldIcon size={14} type={field.type} />
-					{field.name.value}
-				</div>
-				{#if selectedItem}
-					<i class="ti ti-check text-sm" />
-				{/if}
-			</ListboxOption>
-		{/each}
+	<ListboxOptions
+		class="fixed bg-white py-1 border border-gray-100 shadow-md h-64 overflow-y-auto w-full z-50 max-w-[300px] mt-2"
+	>
+		{#if fields.length}
+			{#each fields as field (field.id)}
+				<ListboxOption
+					value={field.id.value}
+					let:selected={selectedItem}
+					class="p-2 cursor-pointer hover:bg-gray-100 text-xs text-gray-700 flex gap-2 justify-between"
+				>
+					<div class="inline-flex gap-2">
+						<FieldIcon size={14} type={field.type} />
+						{field.name.value}
+					</div>
+					{#if selectedItem}
+						<i class="ti ti-check text-sm" />
+					{/if}
+				</ListboxOption>
+			{/each}
+		{:else}
+			<div class="p-2">
+				<slot name="empty" />
+			</div>
+		{/if}
 	</ListboxOptions>
 </Listbox>

@@ -9,6 +9,7 @@
 	import { DropdownDivider, DropdownItem, Toast } from 'flowbite-svelte'
 	import { noop } from 'lodash-es'
 	import { slide } from 'svelte/transition'
+	import { t } from '$lib/i18n'
 
 	export let togglePin: (fieldId: string) => void = noop
 
@@ -56,7 +57,7 @@
 	on:click={() => updateFieldOpen.set(true)}
 >
 	<i class="ti ti-edit text-sm" />
-	<span>Update Field</span>
+	<span>{$t('Update Field')}</span>
 </DropdownItem>
 
 <DropdownDivider />
@@ -71,10 +72,11 @@
 >
 	{#if pinned}
 		<i class="ti ti-pinned-off text-sm" />
+		<span>{$t('Unset Pin Field')}</span>
 	{:else}
 		<i class="ti ti-pin text-sm" />
+		<span>{$t('Pin Field')}</span>
 	{/if}
-	<span>Pin</span>
 </DropdownItem>
 
 <DropdownDivider />
@@ -89,9 +91,9 @@
 	<i class="ti ti-sort-ascending-2 text-sm" />
 	<span>
 		{#if fieldDirection === 'asc'}
-			Remove Asc
+			{$t('Delete Sort Ascending')}
 		{:else}
-			Asc
+			{$t('Sort Ascending')}
 		{/if}
 	</span>
 </DropdownItem>
@@ -105,9 +107,9 @@
 	<i class="ti ti-sort-descending-2 text-sm" />
 	<span>
 		{#if fieldDirection === 'desc'}
-			Remove Desc
+			{$t('Delete Sort Desending')}
 		{:else}
-			Desc
+			{$t('Sort Desending')}
 		{/if}
 	</span>
 </DropdownItem>

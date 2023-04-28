@@ -4,6 +4,7 @@
 	import { identity } from 'lodash-es'
 	import Portal from 'svelte-portal'
 	import FieldIcon from '../FieldIcon.svelte'
+	import { t } from '$lib/i18n'
 
 	export let group: string[] | undefined
 	export let table: Table
@@ -19,10 +20,10 @@
 		{@const displayFields = table.schema.displayFields}
 		<span>
 			{#if !displayFields.length}
-				no display field in <Badge color="dark">{table.name.value}</Badge>
+				{$t('no display fields in', { table: table.name.value })}
 			{:else}
 				<span>Auto</span>
-				<Popover class="w-64 text-sm font-light" title="display fields">
+				<Popover class="w-64 text-sm font-light" title={$t('Display Fields') ?? undefined}>
 					<div class="flex flex-wrap gap-2">
 						{#each displayFields as field}
 							<Badge>{field.name.value}</Badge>
@@ -35,9 +36,12 @@
 		<Badge color="dark">{first?.name.value ?? ''}</Badge>
 	{:else}
 		<span>
-			<Badge color="dark" class="mr-2">{first?.name.value ?? ''}</Badge> and {group?.length - 1} more
-		</span>
-		<Popover class="w-64 text-sm font-light" title="display fields">
+			<Badge color="dark" class="mr-2">{first?.name.value ?? ''}</Badge>{$t('and n more', {
+				ns: 'common',
+				n: group?.length,
+			})}</span
+		>
+		<Popover class="w-64 text-sm font-light" title={$t('Display Fields') ?? undefined}>
 			<div class="flex flex-wrap gap-2">
 				{#each selected as field}
 					<Badge>{field.name.value}</Badge>

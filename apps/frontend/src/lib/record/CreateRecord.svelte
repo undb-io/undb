@@ -9,6 +9,7 @@
 	import type { Validation } from 'sveltekit-superforms'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { slide } from 'svelte/transition'
+	import { t } from '$lib/i18n'
 
 	const table = getTable()
 	const view = getView()
@@ -44,7 +45,7 @@
 	$: $table, reset()
 </script>
 
-<Modal title="Create New Record" class="w-full h-[70%]" size="lg" bind:open={$createRecordOpen}>
+<Modal title={$t('Create New Record') ?? undefined} class="w-full h-[70%]" size="lg" bind:open={$createRecordOpen}>
 	<form id="createRecord" class="space-y-5" method="POST" use:enhance>
 		<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 			{#each fields as field}
@@ -70,12 +71,12 @@
 
 	<svelte:fragment slot="footer">
 		<div class="w-full flex justify-end gap-2">
-			<Button color="alternative" on:click={() => createRecordOpen.set(false)}>Discard</Button>
+			<Button color="alternative" on:click={() => createRecordOpen.set(false)}>{$t('Cancel', { ns: 'common' })}</Button>
 			<Button class="gap-4" type="submit" form="createRecord" disabled={$submitting}>
 				{#if $delayed}
 					<Spinner size="5" />
 				{/if}
-				Create New Record</Button
+				{$t('Create New Record')}</Button
 			>
 		</div>
 	</svelte:fragment>

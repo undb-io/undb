@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from '$lib/i18n'
 	import { configViewOpen } from '$lib/store/modal'
 	import { getTable, getView } from '$lib/store/table'
 	import { Button } from 'flowbite-svelte'
@@ -12,6 +13,6 @@
 {#if field}
 	<Button color="alternative" size="xs" class="text-xs gap-2" on:click={() => ($configViewOpen = true)}>
 		<i class="ti ti-select" />
-		<span>{field.name.value}</span>
+		<span>{$t('Using Field', { name: $table.name.value })}</span>
 	</Button>
 {/if}

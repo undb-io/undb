@@ -8,6 +8,7 @@
 	import { createFieldOpen, createRecordOpen } from '$lib/store/modal'
 	import { records } from '$lib/store/table'
 	import ViewConfigMenu from '$lib/view/ViewConfigMenu.svelte'
+	import { t } from '$lib/i18n'
 </script>
 
 <div class="flex w-full flex-row items-center justify-between gap-y-4 border-b bg-white px-5 py-2">
@@ -20,7 +21,7 @@
 			class="h-full !rounded-md inline-flex items-center whitespace-nowrap"
 		>
 			<i class="ti ti-row-insert-bottom text-sm mr-2" />
-			Create New Record</Button
+			{$t('Create New Record')}</Button
 		>
 
 		<ViewConfigMenu />
@@ -36,10 +37,10 @@
 		>
 			<i class="ti ti-column-insert-right text-sm" />
 		</Button>
-		<Tooltip placement="bottom">Insert Field</Tooltip>
+		<Tooltip placement="bottom">{$t('Insert Field Right')}</Tooltip>
 
 		{#if $records?.length}
-			<P class="!text-gray-400 text-xs">loaded {$records.length} records</P>
+			<P class="!text-gray-400 text-xs whitespace-nowrap">{$t('Total Records', { total: $records.length })}</P>
 		{/if}
 	</div>
 

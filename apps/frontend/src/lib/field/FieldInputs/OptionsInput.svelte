@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte'
 	import type { SetRequired } from 'type-fest'
 	import autoAnimate from '@formkit/auto-animate'
+	import { t } from '$lib/i18n'
 
 	export let value: SetRequired<IMutateOptionSchema, 'color'>[] = []
 
@@ -33,11 +34,11 @@
 <div class="space-y-2" use:autoAnimate={{ duration: 100 }}>
 	{#each value ?? [] as option, index}
 		<div class="flex">
-			<OptionColorPicker class="rounded-r-none rounded-l-md" bind:value={option.color.name} />
-			<Input class="!rounded-none !focus:rounded-none border-gray-100 h-[28px]" bind:value={option.name} />
+			<OptionColorPicker class="rounded-r-none rounded-l-md" bind:value={option.color.name} name={option.name} />
+			<Input class="!rounded-none !focus:rounded-none border-gray-100 h-[40px]" bind:value={option.name} />
 			<Button
 				color="light"
-				class="w-[28px] aspect-square !rounded-l-none !rounded-r-sm !p-0 border-l-0 border-gray-200"
+				class="w-[40px] aspect-square !rounded-l-none !p-0 border-l-0 border-gray-200"
 				size="xs"
 				on:click={() => removeOption(index)}
 			>
@@ -46,4 +47,4 @@
 		</div>
 	{/each}
 </div>
-<Button color="alternative" size="xs" on:click={addOption}>Add New Option</Button>
+<Button color="alternative" size="xs" on:click={addOption}>{$t('Create New Option')}</Button>

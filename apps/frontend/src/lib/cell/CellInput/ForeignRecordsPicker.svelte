@@ -14,7 +14,8 @@
 	import VirtualList from 'svelte-tiny-virtual-list'
 	import { getTable } from '$lib/store/table'
 	import { writable } from 'svelte/store'
-	import { union } from 'lodash-es'
+	import { t } from '$lib/i18n'
+	import { uniq } from 'lodash-es'
 
 	let loading = false
 	let initialLoading = false
@@ -31,8 +32,8 @@
 
 	// checkbox select record ids
 	let group: string[] = []
-	$: {
-		value = union(value, group)
+	$: if (open) {
+		value = uniq([...value, ...group])
 	}
 
 	let records = writable<Records>([])
@@ -116,16 +117,16 @@
 			<Spinner size="4" />
 		{:else}
 			<i class="ti ti-plus" />
-			<span> Add Record </span>
+			<span>{$t('Select Record')}</span>
 		{/if}
 	</Button>
-	<Modal title="Select Record" bind:open size="md" class="w-[700px] h-[600px]">
+	<Modal title={$t('Select Record') ?? undefined} bind:open size="md" class="w-[700px] h-[600px]">
 		{#if loading}
 			<div class="flex w-full h-full items-center justify-center">
 				<Spinner />
 			</div>
 		{:else if !$records.length}
-			<Alert>no records available</Alert>
+			<Alert>{$t('no record available')}</Alert>
 		{:else}
 			<VirtualList height={600} width="100%" itemCount={$records.length} itemSize={62}>
 				<div slot="item" let:index let:style {style} class="flex items-stretch mb-2">
