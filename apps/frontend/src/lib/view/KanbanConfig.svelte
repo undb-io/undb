@@ -3,7 +3,6 @@
 	import { Button, Hr, Radio } from 'flowbite-svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { trpc } from '$lib/trpc/client'
-	import { page } from '$app/stores'
 	import { writable } from 'svelte/store'
 	import { createFieldInitial, createFieldOpen } from '$lib/store/modal'
 
@@ -12,14 +11,18 @@
 	$: kanbanFields = $table.schema.kanbanFields
 
 	const kanbanField = writable($view.kanbanFieldIdString)
+	const setField = trpc.table.view.kanban.setField.mutation({
+		onSuccess(data, variables, context) {
+			$view.kanbanFieldIdString = $kanbanField
+		},
+	})
 	const onChange = async () => {
 		if (kanbanField) {
-			await trpc($page).table.view.kanban.setField.mutate({
+			$setField.mutate({
 				tableId: $table.id.value,
 				viewId: $view.id.value,
 				field: $kanbanField,
 			})
-			$view.kanbanFieldIdString = $kanbanField
 		}
 	}
 </script>

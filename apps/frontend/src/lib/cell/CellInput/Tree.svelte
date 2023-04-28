@@ -11,7 +11,7 @@
 	const table = getTable()
 
 	async function getForeignRecords() {
-		const data = await trpc($page).record.tree.available.query({
+		const data = await trpc.record.tree.available.utils.fetch({
 			tableId: $table.id.value,
 			treeFieldId: field.id.value,
 		})

@@ -1,13 +1,10 @@
 <script lang="ts">
-	import type { IQueryUser } from '@undb/core'
 	import { Button, Checkbox, Dropdown } from 'flowbite-svelte'
 	import Collaborator from '../Collaborator.svelte'
 	import { trpc } from '$lib/trpc/client'
-	import { page } from '$app/stores'
+	import { writable } from 'svelte/store'
 
 	export let value: string[] | undefined
-
-	let members: IQueryUser[] = []
 
 	let group: string[]
 
@@ -18,14 +15,8 @@
 		opened = true
 	}
 
-	async function fetchMembers() {
-		const { users } = await trpc($page).user.users.query({})
-
-		members = users
-	}
-	$: if (opened) {
-		fetchMembers()
-	}
+	$: query = trpc.user.users.query({}, { enabled: opened })
+	$: members = $query.data?.users ?? []
 
 	$: value = group
 

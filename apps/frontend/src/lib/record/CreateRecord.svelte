@@ -1,20 +1,22 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation'
-	import { page } from '$app/stores'
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import { getTable, getView } from '$lib/store/table'
 	import { createRecordInitial, createRecordOpen } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
-	import { Button, Label, Modal, Spinner } from 'flowbite-svelte'
+	import { Button, Label, Modal, Spinner, Toast } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
+	import { slide } from 'svelte/transition'
 
 	const table = getTable()
 	const view = getView()
 
 	export let data: Validation<any>
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
+
+	const createRecord = trpc.record.create.mutation()
 
 	const { form, enhance, constraints, delayed, reset, submitting } = superForm(data, {
 		id: 'createRecord',
@@ -26,7 +28,7 @@
 		clearOnSubmit: 'errors-and-message',
 		taintedMessage: null,
 		async onUpdate(event) {
-			await trpc($page).record.create.mutate({ tableId: $table.id.value, values: event.form.data })
+			await $createRecord.mutateAsync({ tableId: $table.id.value, values: event.form.data })
 			await invalidate(`records:${$table.id.value}`)
 			reset()
 			createRecordOpen.set(false)
@@ -78,3 +80,12 @@
 		</div>
 	</svelte:fragment>
 </Modal>
+
+{#if $createRecord.error}
+	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{$createRecord.error.message}
+		</span>
+	</Toast>
+{/if}

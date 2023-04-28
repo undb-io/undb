@@ -31,42 +31,55 @@
 	}
 	$: if (updating) handleUpdating()
 
+	const updateName = trpc.table.view.updateName.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+			view.name = new ViewName({ value: name })
+			open = false
+		},
+	})
 	const update = async () => {
 		updating = false
-		await trpc($page).table.view.updateName.mutate({
+		$updateName.mutate({
 			tableId: $table.id.value,
 			view: {
 				id: view.id.value,
 				name,
 			},
 		})
-		await invalidate(`table:${$table.id.value}`)
-		view.name = new ViewName({ value: name })
-		open = false
 	}
 
+	const duplicate = trpc.table.view.duplicate.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+			open = false
+			await tick()
+			goto(`/t/${$table.id.value}/${$table.viewsOrder.last}`)
+		},
+	})
 	const duplicateView = async () => {
-		await trpc($page).table.view.duplicate.mutate({
+		$duplicate.mutate({
 			tableId: $table.id.value,
 			id: view.id.value,
 		})
-		await invalidate(`table:${$table.id.value}`)
-		open = false
-		await tick()
-		goto(`/t/${$table.id.value}/${$table.viewsOrder.last}`)
 	}
+
+	const deleteMutation = trpc.table.view.delete.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+		},
+	})
 
 	const deleteView = async () => {
 		const index = $table.viewsOrder.order.findIndex((id) => id === view.id.value)
-		await trpc($page).table.view.delete.mutate({
+		await $deleteMutation.mutateAsync({
 			tableId: $table.id.value,
 			id: view.id.value,
 		})
-		await invalidate(`table:${$table.id.value}`)
-		open = false
-		await tick()
 		const previous = $table.viewsOrder.order[index - 1] ?? $table.viewsOrder.order[0]
 		goto(`/t/${$table.id.value}/${previous}`)
+		open = false
+		await tick()
 	}
 </script>
 

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores'
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import ViewIcon from '$lib/view/ViewIcon.svelte'
@@ -10,8 +9,9 @@
 
 	const displayTypes = ['grid', 'kanban'] as const
 
+	const switchDisplayType = trpc.table.view.switchDisplayType.mutation()
 	const onChange = async () => {
-		await trpc($page).table.view.switchDisplayType.mutate({
+		$switchDisplayType.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
 			displayType: $view.displayType,

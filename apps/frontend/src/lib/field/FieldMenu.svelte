@@ -6,8 +6,9 @@
 	import { updateFieldOpen } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import type { ISortDirection } from '@undb/core'
-	import { DropdownDivider, DropdownItem } from 'flowbite-svelte'
+	import { DropdownDivider, DropdownItem, Toast } from 'flowbite-svelte'
 	import { noop } from 'lodash-es'
+	import { slide } from 'svelte/transition'
 
 	export let togglePin: (fieldId: string) => void = noop
 
@@ -18,24 +19,35 @@
 
 	$: fieldDirection = $field ? $view.getFieldSort($field.id.value).into() : undefined
 
+	const resetFieldSort = trpc.table.view.sort.resetFieldSort.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+			currentFieldId.set(undefined)
+		},
+	})
+	const setFieldSort = trpc.table.view.sort.setFieldSort.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+			currentFieldId.set(undefined)
+		},
+	})
+
 	async function sort(direction: ISortDirection) {
 		if (!$field) return
 		if (direction === fieldDirection) {
-			await trpc($page).table.view.sort.resetFieldSort.mutate({
+			$resetFieldSort.mutateAsync({
 				tableId: $table.id.value,
 				viewId: $view.id.value,
 				fieldId: $field.id.value,
 			})
 		} else {
-			await trpc($page).table.view.sort.setFieldSort.mutate({
+			$setFieldSort.mutateAsync({
 				tableId: $table.id.value,
 				viewId: $view.id.value,
 				fieldId: $field.id.value,
 				direction,
 			})
 		}
-		await invalidate(`table:${$table.id.value}`)
-		currentFieldId.set(undefined)
 	}
 </script>
 
@@ -99,3 +111,21 @@
 		{/if}
 	</span>
 </DropdownItem>
+
+{#if $resetFieldSort.error}
+	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{$resetFieldSort.error.message}
+		</span>
+	</Toast>
+{/if}
+
+{#if $setFieldSort.error}
+	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{$setFieldSort.error.message}
+		</span>
+	</Toast>
+{/if}

@@ -1,18 +1,20 @@
 <script lang="ts">
 	import { createOptionOpen } from '$lib/store/modal'
-	import { Button, Input, Modal } from 'flowbite-svelte'
+	import { Button, Input, Modal, Toast } from 'flowbite-svelte'
 	import OptionColorPicker from './OptionColorPicker.svelte'
 	import { OptionColor, type createOptionSchema } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import { trpc } from '$lib/trpc/client'
-	import { page } from '$app/stores'
 	import { getField, getTable } from '$lib/store/table'
+	import { slide } from 'svelte/transition'
 
 	export let data: Validation<typeof createOptionSchema>
 
 	const table = getTable()
 	const field = getField()
+
+	const createOption = trpc.table.field.select.createOption.mutation()
 
 	const { form, enhance, reset } = superForm(data, {
 		id: 'createOption',
@@ -23,7 +25,7 @@
 		taintedMessage: null,
 		async onUpdate(event) {
 			if (!$field) return
-			await trpc($page).table.field.select.createOption.mutate({
+			$createOption.mutate({
 				tableId: $table.id.value,
 				fieldId: $field?.id.value,
 				option: event.form.data,
@@ -69,4 +71,13 @@
 			</div>
 		</svelte:fragment>
 	</Modal>
+{/if}
+
+{#if $createOption.error}
+	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{$createOption.error.message}
+		</span>
+	</Toast>
 {/if}

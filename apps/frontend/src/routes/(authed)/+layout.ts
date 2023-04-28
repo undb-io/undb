@@ -18,7 +18,7 @@ export const load: LayoutLoad = async (event) => {
 	event.depends('tables')
 
 	return {
-		tables: trpc(event).table.list.query({}),
+		tables: trpc.table.list.utils.fetch({}),
 		me,
 	}
 }

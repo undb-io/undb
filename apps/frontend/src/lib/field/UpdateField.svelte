@@ -2,9 +2,8 @@
 	import autoAnimate from '@formkit/auto-animate'
 	import { getTable } from '$lib/store/table'
 	import { updateFieldOpen } from '$lib/store/modal'
-	import { Button, Input, Label, Modal, Spinner, Toggle, Popover, Badge, Textarea } from 'flowbite-svelte'
+	import { Button, Input, Label, Modal, Spinner, Toggle, Popover, Badge, Textarea, Toast } from 'flowbite-svelte'
 	import FieldIcon from './FieldIcon.svelte'
-	import { page } from '$app/stores'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
@@ -13,11 +12,19 @@
 	import type { Validation } from 'sveltekit-superforms/index'
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
 	import { z } from 'zod'
+	import { slide } from 'svelte/transition'
 
 	const table = getTable()
 
 	export let field: Field
 	export let data: Validation<any>
+
+	const updateField = trpc.table.field.update.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+			updateFieldOpen.set(false)
+		},
+	})
 
 	const superFrm = superForm(data, {
 		id: 'updateField',
@@ -29,13 +36,11 @@
 		validators: z.object({}),
 		resetForm: true,
 		async onUpdate(event) {
-			await trpc($page).table.field.update.mutate({
+			$updateField.mutate({
 				tableId: $table.id.value,
 				fieldId: field.id.value,
 				field: event.form.data as any,
 			})
-			await invalidate(`table:${$table.id.value}`)
-			updateFieldOpen.set(false)
 		},
 	})
 
@@ -181,3 +186,12 @@
 		</div>
 	</svelte:fragment>
 </Modal>
+
+{#if $updateField.error}
+	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{$updateField.error.message}
+		</span>
+	</Toast>
+{/if}

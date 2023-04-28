@@ -6,11 +6,11 @@
 	import { groupBy } from 'lodash-es'
 	import type { SelectField, SelectFieldValue } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
-	import { page } from '$app/stores'
 	import KanbanCard from '$lib/kanban/KanbanCard.svelte'
-	import { Badge, Button } from 'flowbite-svelte'
+	import { Badge, Button, Toast } from 'flowbite-svelte'
 	import { createOptionOpen, createRecordInitial, createRecordOpen } from '$lib/store/modal'
 	import { invalidate } from '$app/navigation'
+	import { slide } from 'svelte/transition'
 
 	export let fieldId: string
 	const flipDurationMs = 200
@@ -47,6 +47,9 @@
 	function handleDndConsiderColumns(e: any) {
 		items = e.detail.items
 	}
+
+	const reorderOptions = trpc.table.field.select.reorderOptions.mutation()
+
 	async function handleDndFinalizeColumns(e: any) {
 		if (e.detail.info.id === UNCATEGORIZED) return
 		items = e.detail.items
@@ -55,7 +58,7 @@
 		const toIndex = items.findIndex((i) => i.id === from) + 1
 		const to = options[toIndex]?.key.value
 		if (to && to !== from && field) {
-			await trpc($page).table.field?.select.reorderOptions.mutate({
+			$reorderOptions.mutate({
 				tableId: $table.id.value,
 				fieldId: field?.id.value,
 				from,
@@ -71,6 +74,12 @@
 			items = [...items]
 		}
 	}
+
+	const updateRecord = trpc.record.update.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`records:${$table.id.value}`)
+		},
+	})
 	async function handleDndFinalizeCards(cid: string, e: any) {
 		const colIdx = items.findIndex((c) => c.id === cid)
 		if (items[colIdx]) {
@@ -80,12 +89,11 @@
 
 		if (field && e.detail.info.trigger === TRIGGERS.DROPPED_INTO_ZONE) {
 			const optionId = e.target.dataset.containerId === UNCATEGORIZED ? null : e.target.dataset.containerId
-			await trpc($page).record.update.mutate({
+			$updateRecord.mutate({
 				tableId: $table.id.value,
 				id: e.detail.info.id,
 				values: { [field.id.value]: optionId },
 			})
-			await invalidate(`records:${$table.id.value}`)
 		}
 	}
 </script>
@@ -163,3 +171,21 @@
 		>
 	</div>
 </div>
+
+{#if $reorderOptions.error}
+	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{$reorderOptions.error.message}
+		</span>
+	</Toast>
+{/if}
+
+{#if $updateRecord.error}
+	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{$updateRecord.error.message}
+		</span>
+	</Toast>
+{/if}

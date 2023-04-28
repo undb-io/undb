@@ -24,7 +24,7 @@ export const load: PageLoad = async (event) => {
 
 	const recordId = event.url.searchParams.get('r')
 
-	const record = recordId ? await trpc(event).record.get.query({ tableId, id: recordId }) : undefined
+	const record = recordId ? await trpc.record.get.utils.fetch({ tableId, id: recordId }) : undefined
 	const coreRecord = record ? RecordFactory.fromQuery(record, coreTable.schema.toIdMap()).unwrap() : undefined
 	return {
 		record,

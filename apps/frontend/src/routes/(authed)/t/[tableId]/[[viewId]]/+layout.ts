@@ -10,7 +10,7 @@ export const load: LayoutLoad = (event) => {
 	event.depends(`records:${tableId}`)
 
 	return {
-		table: trpc(event).table.get.query({ id: tableId }),
-		records: trpc(event).record.list.query({ tableId, viewId }),
+		table: trpc.table.get.utils.fetch({ id: tableId }),
+		records: trpc.record.list.utils.fetch({ tableId, viewId }),
 	}
 }

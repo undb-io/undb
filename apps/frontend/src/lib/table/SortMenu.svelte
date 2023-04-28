@@ -1,17 +1,16 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Badge, Button, Hr } from 'flowbite-svelte'
+	import { Badge, Button, Hr, Toast } from 'flowbite-svelte'
 	import { getTable, getView, sorts } from '$lib/store/table'
 	import type { ISortSchema } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
 	import { writable } from 'svelte/store'
 	import { Popover, PopoverButton, PopoverPanel } from '@rgossiaux/svelte-headlessui'
 	import autoAnimate from '@formkit/auto-animate'
-	import { fade } from 'svelte/transition'
+	import { fade, slide } from 'svelte/transition'
 	import { createPopperActions } from 'svelte-popperjs'
 	import type { SetOptional } from 'type-fest'
 	import { trpc } from '$lib/trpc/client'
-	import { page } from '$app/stores'
 	import { invalidate } from '$app/navigation'
 
 	const table = getTable()
@@ -30,16 +29,19 @@
 		modifiers: [{ name: 'offset', options: { offset: [0, 10] } }],
 	}
 
+	const setSort = trpc.table.view.sort.set.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+		},
+	})
 	async function sort() {
 		const validSorts = $value.filter((v) => !!v.fieldId && v.direction) as ISortSchema[]
 
-		await trpc($page).table.view.sort.set.mutate({
+		$setSort.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
 			sorts: validSorts,
 		})
-
-		await invalidate(`table:${$table.id.value}`)
 	}
 </script>
 
@@ -127,3 +129,12 @@
 		</div>
 	{/if}
 </Popover>
+
+{#if $setSort.error}
+	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{$setSort.error.message}
+		</span>
+	</Toast>
+{/if}

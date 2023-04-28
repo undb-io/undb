@@ -3,18 +3,17 @@
 	import cx from 'classnames'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
 	import { Button, Dropdown, P, Spinner, Toast } from 'flowbite-svelte'
-	import type { Edition, RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
+	import type { RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
 	import type { Components, RevoGridCustomEvent } from '@revolist/revogrid'
 	import { defineCustomElements } from '@revolist/revogrid/loader'
 	import { cellTemplateMap } from '$lib/cell/cell-template'
 	import { trpc } from '$lib/trpc/client'
-	import { page } from '$app/stores'
 	import { slide } from 'svelte/transition'
 	import { quintOut } from 'svelte/easing'
 	import { writable } from 'svelte/store'
 	import EmptyTable from './EmptyTable.svelte'
 	import { currentFieldId, currentRecordId, getRecords, getTable, getView } from '$lib/store/table'
-	import { goto, invalidate } from '$app/navigation'
+	import { invalidate } from '$app/navigation'
 	import FieldMenu from '$lib/field/FieldMenu.svelte'
 	import Portal from 'svelte-portal'
 	import { getIconClass } from '$lib/field/helpers'
@@ -214,6 +213,12 @@
 
 	$: pinned = $view.pinnedFields?.toJSON() ?? { left: [], right: [] }
 
+	const pin = trpc.table.view.field.setPinned.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+			currentFieldId.set(undefined)
+		},
+	})
 	async function togglePin(fieldId: string) {
 		const column = $columns.find((c) => c.prop === fieldId)
 		if (!column) return
@@ -230,14 +235,11 @@
 		const left = $columns.filter((c) => !!c.field && c.pin === 'colPinStart').map((c) => c.prop as string)
 		const pinnedFields: IViewPinnedFields = { left, right: pinned.right }
 
-		await trpc($page).table.view.field.setPinned.mutate({
+		$pin.mutate({
 			tableId: $table.id.value,
 			pinnedFields,
 			viewId: $view.id.value,
 		})
-
-		await invalidate(`table:${$table.id.value}`)
-		currentFieldId.set(undefined)
 	}
 
 	const expand = async (recordId: string) => {
@@ -245,13 +247,14 @@
 		currentRecordId.set(recordId)
 	}
 
+	const setWidth = trpc.table.view.field.setWidth.mutation()
 	const onAfterColumnResize = async (
 		event: RevoGridCustomEvent<Record<RevoGridType.ColumnProp, RevoGridType.ColumnRegular>>,
 	): Promise<void> => {
 		for (const [fieldId, field] of Object.entries(event.detail)) {
 			const width = field.size
 			if (width && $view.getFieldWidth(fieldId) !== width) {
-				await trpc($page).table.view.field.setWidth.mutate({
+				$setWidth.mutate({
 					tableId: $table.id.value,
 					fieldId,
 					viewId: $view.id.value,
@@ -268,25 +271,22 @@
 	$: hasRecord = !!$records.length
 	$: toastOpen = !!selectedCount
 
-	let loadingDuplicate = false
+	const duplicateRecordsMutation = trpc.record.bulkDuplicate.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`records:${$table.id.value}`)
+
+			select.set({})
+		},
+	})
 	const duplicateRecords = async () => {
 		if (!selectedRecords.length) {
 			return
 		}
 
-		try {
-			loadingDuplicate = true
-			await trpc($page).record.bulkDuplicate.mutate({
-				tableId: $table.id.value,
-				ids: selectedRecords as [string, ...string[]],
-			})
-
-			await invalidate(`records:${$table.id.value}`)
-
-			select.set({})
-		} finally {
-			loadingDuplicate = false
-		}
+		$duplicateRecordsMutation.mutate({
+			tableId: $table.id.value,
+			ids: selectedRecords as [string, ...string[]],
+		})
 	}
 </script>
 
@@ -316,7 +316,7 @@
 	<div class="flex items-center space-x-5 justify-between">
 		<P>selected {selectedCount} records</P>
 		<Button color="alternative" size="xs" on:click={duplicateRecords}>
-			{#if loadingDuplicate}
+			{#if $duplicateRecordsMutation.isLoading}
 				<Spinner class="mr-3" size="4" />
 			{/if}
 			Duplicate records</Button

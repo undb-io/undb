@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { Popover, PopoverButton, PopoverPanel } from '@rgossiaux/svelte-headlessui'
-	import { Button, Hr } from 'flowbite-svelte'
+	import { Button, Hr, Toast } from 'flowbite-svelte'
 	import autoAnimate from '@formkit/auto-animate'
-	import { fade } from 'svelte/transition'
+	import { fade, slide } from 'svelte/transition'
 	import FilterItem from './FilterItem.svelte'
 	import { createPopperActions } from 'svelte-popperjs'
 	import { trpc } from '$lib/trpc/client'
-	import { page } from '$app/stores'
 	import { filters, getTable, getView } from '$lib/store/table'
 	import type { Field, IFilter } from '@undb/core'
 	import { invalidateAll } from '$app/navigation'
@@ -36,14 +35,19 @@
 		$value = $value.filter((f, i) => i !== index)
 	}
 
+	const setFilter = trpc.table.view.filter.set.mutation({
+		async onSuccess() {
+			await invalidateAll()
+		},
+	})
 	async function apply() {
 		const validFilters = $value.filter((v) => !!v.path && !!v.operator && !!v.type) as IFilter[]
-		await trpc($page).table.view.filter.set.mutate({
+
+		$setFilter.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
 			filter: validFilters,
 		})
-		await invalidateAll()
 	}
 </script>
 
@@ -88,3 +92,12 @@
 		</div>
 	{/if}
 </Popover>
+
+{#if $setFilter.error}
+	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{$setFilter.error.message}
+		</span>
+	</Toast>
+{/if}

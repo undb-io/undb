@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { createTableOpen } from '$lib/store/modal'
-	import { Accordion, Button, Label, Modal, Input, Spinner } from 'flowbite-svelte'
+	import { Accordion, Button, Label, Modal, Input, Spinner, Toast } from 'flowbite-svelte'
 	import type { Validation } from 'sveltekit-superforms'
 	import { FieldId, type createTableInput } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
 	import CreateTableFieldAccordionItem from './CreateTableFieldAccordionItem.svelte'
 	import { trpc } from '$lib/trpc/client'
-	import { page } from '$app/stores'
 	import { goto, invalidate } from '$app/navigation'
+	import { slide } from 'svelte/transition'
 
 	export let data: Validation<typeof createTableInput>
 	let opened: Record<string, boolean> = {}
@@ -17,6 +17,15 @@
 		$form.schema = [...$form.schema, { id, type: 'string', name: '' }]
 		opened = { [id]: true }
 	}
+
+	const createTable = trpc.table.create.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate('tables')
+			goto(`/t/${data.id}`)
+
+			createTableOpen.set(false)
+		},
+	})
 
 	const superFrm = superForm(data, {
 		id: 'createTable',
@@ -29,11 +38,7 @@
 		taintedMessage: null,
 		async onUpdate(event) {
 			reset()
-			const { id } = await trpc($page).table.create.mutate(event.form.data)
-			await invalidate('tables')
-			goto(`/t/${id}`)
-
-			createTableOpen.set(false)
+			$createTable.mutate(event.form.data)
 		},
 	})
 
@@ -106,3 +111,12 @@
 		</div>
 	</svelte:fragment>
 </Modal>
+
+{#if $createTable.error}
+	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{$createTable.error.message}
+		</span>
+	</Toast>
+{/if}

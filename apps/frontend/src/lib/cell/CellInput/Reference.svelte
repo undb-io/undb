@@ -18,7 +18,7 @@
 		if ($table.id.value === foreignTableId) {
 			return $tableRecords.filter((r) => !value.includes(r.id.value))
 		} else {
-			const foreignTable = await trpc($page).table.get.query({ id: foreignTableId })
+			const foreignTable = await trpc.table.get.utils.fetch({ id: foreignTableId })
 			if (foreignTable) {
 				const ft = TableFactory.fromQuery(foreignTable)
 				const data = await trpc($page).record.foreign.query({
@@ -39,11 +39,11 @@
 			return $tableRecords.filter((r) => value.includes(r.id.value))
 		} else {
 			if (!value?.length) return []
-			const foreignTable = await trpc($page).table.get.query({ id: foreignTableId })
+			const foreignTable = await trpc.table.get.utils.fetch({ id: foreignTableId })
 			if (foreignTable) {
 				const ft = TableFactory.fromQuery(foreignTable)
 
-				const data = await trpc($page).record.list.query({
+				const data = await trpc.record.list.utils.fetch({
 					tableId: foreignTableId,
 					filter: [{ type: 'id', path: 'id', operator: '$in', value: value ?? [] }],
 				})

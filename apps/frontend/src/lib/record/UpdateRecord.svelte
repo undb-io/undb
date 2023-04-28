@@ -3,7 +3,7 @@
 	import { page } from '$app/stores'
 	import { currentRecordId, getRecord, getTable, getView, nextRecord, previousRecord } from '$lib/store/table'
 	import { createMutateRecordValuesSchema } from '@undb/core'
-	import { Button, ButtonGroup, Label, Modal, P, Spinner } from 'flowbite-svelte'
+	import { Button, ButtonGroup, Label, Modal, P, Spinner, Toast } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { writable } from 'svelte/store'
 	import type { Validation } from 'sveltekit-superforms/index'
@@ -11,6 +11,7 @@
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { pick, keys } from 'lodash-es'
+	import { slide } from 'svelte/transition'
 
 	const table = getTable()
 	const view = getView()
@@ -20,6 +21,8 @@
 
 	$: validators = createMutateRecordValuesSchema(fields ?? [], $record?.valuesJSON)
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
+
+	const updateRecord = trpc.record.update.mutation()
 
 	const superFrm = superForm(data, {
 		id: 'updateRecord',
@@ -36,7 +39,7 @@
 			if (!$record) return
 			const taintedKeys = keys($tainted)
 			const values = pick(event.form.data, taintedKeys)
-			await trpc($page).record.update.mutate({
+			await $updateRecord.mutateAsync({
 				tableId: $table.id.value,
 				id: $record.id.value,
 				values,
@@ -113,3 +116,12 @@
 		</svelte:fragment>
 	</Modal>
 {/key}
+
+{#if $updateRecord.error}
+	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{$updateRecord.error.message}
+		</span>
+	</Toast>
+{/if}

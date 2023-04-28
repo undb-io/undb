@@ -3,6 +3,8 @@
 	import '@tabler/icons-webfont/tabler-icons.min.css'
 	import NProgress from 'nprogress'
 	import { navigating, getStores } from '$app/stores'
+	import { QueryClientProvider, QueryClient } from '@tanstack/svelte-query'
+	import { trpc } from '$lib/trpc/client'
 
 	import 'nprogress/nprogress.css'
 
@@ -26,7 +28,9 @@
 	}
 </script>
 
-<slot />
+<QueryClientProvider client={trpc.queryClient}>
+	<slot />
+</QueryClientProvider>
 
 <svelte:head>
 	<title>undb</title>
