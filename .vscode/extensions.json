@@ -9,6 +9,7 @@
     "esbenp.prettier-vscode",
     "rangav.vscode-thunder-client",
     "ms-azuretools.vscode-docker",
-    "alexcvzz.vscode-sqlite"
+    "alexcvzz.vscode-sqlite",
+    "bierner.lit-html"
   ]
 }

@@ -359,6 +359,9 @@ importers:
       flowbite-svelte:
         specifier: ^0.34.9
         version: 0.34.9(@popperjs/core@2.11.7)(classnames@2.3.2)(flowbite@1.6.5)(svelte@3.58.0)
+      htm:
+        specifier: ^3.1.1
+        version: 3.1.1
       i18next:
         specifier: ^22.4.15
         version: 22.4.15
@@ -6463,6 +6466,10 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
     dependencies:
       lru-cache: 7.18.3
+    dev: true
+
+  /htm@3.1.1:
+    resolution: {integrity: sha512-983Vyg8NwUE7JkZ6NmOqpCZ+sh1bKv2iYTlUkzlWmA5JD2acKoxd4KVxbMmxX/85mtfdnDmTFoNKcg5DGAvxNQ==}
     dev: true
 
   /html-escaper@2.0.2:

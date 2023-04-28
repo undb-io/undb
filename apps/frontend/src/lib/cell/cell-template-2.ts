@@ -52,31 +52,32 @@ const string: TemplateFunc = (h, props) => {
 }
 
 const email: TemplateFunc = (h, props) => {
+	const html = htm.bind(h)
 	const value = props.model[props.prop] as EmailFieldValue | undefined
 	if (!value) return null
-	return h('span', { class: 'text-sm' }, value.unpack()?.toString() ?? '')
+	return html`<span class="text-sm>${value.unpack()?.toString() ?? ''}</span>`
 }
 
 const id: TemplateFunc = (h, props) => {
+	const html = htm.bind(h)
 	const id = props.model.id as string
-	return h(
-		'span',
-		{
-			class:
-				'bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300',
-		},
-		id,
-	)
+
+	return html`<span
+		class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
+		>${id}</span
+	>`
 }
 
 const dateComponent = (h: HyperFunc, dateString: string | null, formatString: string) => {
 	if (!dateString) return null
 	const date = new Date(dateString)
+	const html = htm.bind(h)
 
-	return h('span', {}, format(date, formatString))
+	return html`<span>${format(date, formatString)}</span>`
 }
 
 const dateRange: TemplateFunc = (h, props) => {
+	const html = htm.bind(h)
 	const value = props.model[props.prop] as DateRangeFieldValue | undefined
 	if (!value) return null
 
@@ -85,11 +86,13 @@ const dateRange: TemplateFunc = (h, props) => {
 	const from = value.from.into(null)?.toISOString()
 	const to = value.to.into(null)?.toISOString()
 
-	return h('div', { class: 'flex items-center' }, [
-		dateComponent(h, value.from.into(null)?.toISOString() ?? null, field.formatString),
-		from && to ? h('span', { class: 'mx-1' }, '-') : null,
-		dateComponent(h, value.to.into(null)?.toISOString() ?? null, field.formatString),
-	])
+	return html`
+		<div class="flex items-center">
+			${dateComponent(h, value.from.into(null)?.toISOString() ?? null, field.formatString)}
+			${from && to ? `<span class="mx-1">-</span>` : null}
+			${dateComponent(h, value.to.into(null)?.toISOString() ?? null, field.formatString)}
+		</div>
+	`
 }
 
 const createdAt: TemplateFunc = (h, props) => {
@@ -112,30 +115,26 @@ const date: TemplateFunc = (h, props) => {
 }
 
 const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile) => {
-	const html = htm.bind(h)
-
-	return html`
-		<div
-			class="flex items-center space-x-2 bg-gray-100 text-gray-800 text-xs font-medium pr-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300 h-5"
-		>
-			${!collaborator.avatar
-				? html`
-						<div
-							class="relative inline-flex items-center text-blue-900 justify-center w-5 h-5 overflow-hidden bg-indigo-100 rounded-full dark:bg-indigo-600 border border-gray-300"
-						>
-							<span class="font-medium text-gray-600 dark:text-gray-300"> ${collaborator.username.slice(0, 2)} </span>
-						</div>
-				  `
-				: html`
-						<div class="font-medium dark:text-white">
-							<span>${collaborator.username}</span>
-						</div>
-				  `}
-			<div class="font-medium dark:text-white">
-				<span>${collaborator.username}</span>
-			</div>
-		</div>
-	`
+	return h(
+		'div',
+		{
+			class:
+				'flex items-center space-x-2 bg-gray-100 text-gray-800 text-xs font-medium pr-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300 h-5',
+		},
+		[
+			!collaborator.avatar
+				? h(
+						'div',
+						{
+							class:
+								'relative inline-flex items-center text-blue-900 justify-center w-5 h-5 overflow-hidden bg-indigo-100 rounded-full dark:bg-indigo-600 border border-gray-300',
+						},
+						h('span', { class: 'font-medium text-gray-600 dark:text-gray-300' }, collaborator.username.slice(0, 2)),
+				  )
+				: h('img', { class: 'w-5 h-5 rounded-full', src: collaborator.avatar, alt: collaborator.username }),
+			h('div', { class: 'font-medium dark:text-white' }, h('span', {}, collaborator.username)),
+		],
+	)
 }
 
 const createdBy: TemplateFunc = (h, props) => {
@@ -213,21 +212,20 @@ const bool: TemplateFunc = (h, props) => {
 }
 
 const collaborator: TemplateFunc = (h, props) => {
-	const html = htm.bind(h)
 	const collaborator = props.model[props.prop] as CollaboratorFieldValue | undefined
 	if (!collaborator) return null
 	const field = props.column.field as CollaboratorField
 
 	const value = field.getDisplayValues(props.model.display_values)
 
-	return html`
-		<div class="flex items-center space-x-2">
-			${value.map(([username, avatar]) => {
-				if (!username) return null
-				return collaboratorComponent(h, { username, avatar })
-			})}
-		</div>
-	`
+	return h(
+		'div',
+		{ class: 'flex items-center space-x-2' },
+		value.map(([username, avatar]) => {
+			if (!username) return null
+			return collaboratorComponent(h, { username, avatar })
+		}),
+	)
 }
 
 const color: TemplateFunc = (h, props) => {
