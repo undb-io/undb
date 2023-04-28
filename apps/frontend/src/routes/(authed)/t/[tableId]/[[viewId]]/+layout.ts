@@ -4,13 +4,13 @@ import type { LayoutLoad } from './$types'
 export const ssr = false
 export const prerender = 'auto'
 export const load: LayoutLoad = (event) => {
-	const id = event.params.tableId
+	const { tableId, viewId } = event.params
 
-	event.depends(`table:${id}`)
-	event.depends(`records:${id}`)
+	event.depends(`table:${tableId}`)
+	event.depends(`records:${tableId}`)
 
 	return {
-		table: trpc(event).table.get.query({ id }),
-		records: trpc(event).record.list.query({ tableId: id }),
+		table: trpc(event).table.get.query({ id: tableId }),
+		records: trpc(event).record.list.query({ tableId, viewId }),
 	}
 }

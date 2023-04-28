@@ -18,7 +18,7 @@
 
 	export let data: Validation<any>
 
-	$: validators = createMutateRecordValuesSchema(fields ?? [])
+	$: validators = createMutateRecordValuesSchema(fields ?? [], $record?.valuesJSON)
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
 	const superFrm = superForm(data, {

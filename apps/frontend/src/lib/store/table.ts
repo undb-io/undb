@@ -1,4 +1,4 @@
-import type { Record, Records, Table, View } from '@undb/core'
+import type { IFilters, Record, Records, Table, View } from '@undb/core'
 import { derived, writable } from 'svelte/store'
 
 export const currentTable = writable<Table>()
@@ -21,6 +21,8 @@ export const currentField = derived([currentTable, currentFieldId], ([table, fie
 export const getField = () => currentField
 
 export const sorts = derived(currentView, (view) => view.sorts?.sorts ?? [])
+// TODO: nested should be IFilters
+export const filters = derived(currentView, (view) => (view.filter?.group.children ?? []) as IFilters)
 
 export const currentRecordIndex = derived([currentRecordId, records], ([$id, $records]) =>
 	$id ? $records.findIndex((r) => r.id.value === $id) : undefined,

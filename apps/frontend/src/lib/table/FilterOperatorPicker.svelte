@@ -8,7 +8,7 @@
 	export let value: string = ''
 	export let field: Field | undefined
 
-	$: data = getFilterOperators(field)
+	$: data = getFilterOperators(field?.type)
 </script>
 
 <Listbox class="relative" {value} on:change={(e) => (value = e.detail)}>

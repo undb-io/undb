@@ -19,7 +19,13 @@
 	$: type = selected?.type
 </script>
 
-<Listbox class="relative" {value} on:change={(e) => (value = e.detail)}>
+<Listbox
+	class="relative"
+	{value}
+	on:change={(e) => {
+		value = e.detail
+	}}
+>
 	<ListboxButton as="div" class="box-border">
 		<Button color="alternative" {...$$restProps} class={cx($$restProps.class, 'gap-2')}>
 			{#if selected}

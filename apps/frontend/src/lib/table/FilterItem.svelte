@@ -1,21 +1,22 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
-	import { filters } from '$lib/store/filter'
 	import { Button } from 'flowbite-svelte'
 	import FilterOperatorPicker from './FilterOperatorPicker.svelte'
-	import FilterValue from './FilterValue.svelte'
 	import type { Field, IFilter } from '@undb/core'
 	import { getTable } from '$lib/store/table'
+	import FilterValue from './FilterValue.svelte'
 
 	export let filter: Partial<IFilter>
 	export let index: number
+	export let reset: (index: number, field: Field | undefined) => void
+	export let remove: (index: number) => void
 
 	const table = getTable()
 
 	let field: Field | undefined
 
-	$: field?.id.value, filters.reset(index)
+	// $: field?.id.value, reset(index)
 </script>
 
 <li class="flex h-8 items-center">
@@ -27,6 +28,7 @@
 		bind:value={filter.path}
 		bind:type={filter.type}
 		filter={(f) => f.filterable}
+		on:change={() => reset(index, field)}
 	/>
 	<FilterOperatorPicker
 		{field}
@@ -39,7 +41,7 @@
 		color="light"
 		class="h-8 aspect-square !rounded-l-none !rounded-r-sm !p-0 border-l-0 border-gray-200"
 		size="xs"
-		on:click={() => filters.remove(index)}
+		on:click={() => remove(index)}
 	>
 		<i class="ti ti-trash text-sm" />
 	</Button>

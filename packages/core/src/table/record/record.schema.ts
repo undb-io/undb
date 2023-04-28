@@ -41,14 +41,15 @@ export type RecordAllValueType = ValueOf<RecordAllValues> | ValueOf<IInternalRec
 
 export const createMutateRecordValuesSchema = (
   fields: Field[],
-  defaultValues: Record<string, any> = {},
+  defaultValues: Record<string, any> | undefined = undefined,
 ): ZodObject<any> => {
   const shape: ZodRawShape = {}
 
   for (const field of fields) {
     if (field.controlled) continue
     const fieldSchema = field.valueSchema as ZodDefault<ZodTypeAny>
-    shape[field.id.value] = fieldSchema.default(defaultValues[field.id.value]).optional()
+    const nested = fieldSchema
+    shape[field.id.value] = defaultValues ? nested.default(defaultValues[field.id.value]) : nested.optional()
   }
 
   return z.object(shape)

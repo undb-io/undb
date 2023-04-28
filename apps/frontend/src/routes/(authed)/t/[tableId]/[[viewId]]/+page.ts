@@ -28,7 +28,6 @@ export const load: PageLoad = async (event) => {
 	const coreRecord = record ? RecordFactory.fromQuery(record, coreTable.schema.toIdMap()).unwrap() : undefined
 	return {
 		record,
-		createView: superValidate({}, createViewSchema, { id: 'createView', errors: false }),
 		createRecord: superValidate(event, createMutateRecordValuesSchema(fields), { id: 'createRecord', errors: false }),
 		updateRecord: superValidate(event, createMutateRecordValuesSchema(fields, coreRecord?.valuesJSON), {
 			id: 'updateRecord',
@@ -45,5 +44,6 @@ export const load: PageLoad = async (event) => {
 			id: 'updateField',
 		}),
 		createOption: superValidate({}, createOptionSchema, { id: 'createOption' }),
+		createView: superValidate({}, createViewSchema, { id: 'createView', errors: false }),
 	}
 }

@@ -1,31 +1,9 @@
-import {
-	AttachmentField,
-	AutoIncrementField,
-	AverageField,
-	BoolField,
-	ColorField,
-	CountField,
-	CreatedAtField,
-	DateField,
-	DateRangeField,
-	EmailField,
-	IdField,
-	NumberField,
-	RatingField,
-	SelectField,
-	StringField,
-	SumField,
-	TreeField,
-	UpdatedAtField,
-	type Field,
-	type IFieldType,
-	type IOptionColorName,
-} from '@undb/core'
+import type { IFieldType, IOptionColorName } from '@undb/core'
 import type { Select } from 'flowbite-svelte'
 
-export function getFilterOperators(field: Field | undefined) {
+export function getFilterOperators(type: IFieldType | undefined) {
 	let data: Select['$$prop_def']['items'] = []
-	if (field instanceof StringField) {
+	if (type === 'string') {
 		data = [
 			{ value: '$eq', name: 'EQUAL' },
 			{ value: '$neq', name: 'NOT EQUAL' },
@@ -34,7 +12,7 @@ export function getFilterOperators(field: Field | undefined) {
 			{ value: '$ends_with', name: 'ENDS WITH' },
 			// { value: '$regex', name: 'REGEX',},
 		]
-	} else if (field instanceof EmailField) {
+	} else if (type === 'email') {
 		data = [
 			{ value: '$eq', name: 'EQUAL' },
 			{ value: '$neq', name: 'NOT EQUAL' },
@@ -42,18 +20,18 @@ export function getFilterOperators(field: Field | undefined) {
 			{ value: '$starts_with', name: 'STARTS WITH' },
 			{ value: '$ends_with', name: 'ENDS WITH' },
 		]
-	} else if (field instanceof ColorField) {
+	} else if (type === 'color') {
 		data = [
 			{ value: '$eq', name: 'EQUAL' },
 			{ value: '$neq', name: 'NOT EQUAL' },
 		]
 	} else if (
-		field instanceof NumberField ||
-		field instanceof RatingField ||
-		field instanceof CountField ||
-		field instanceof SumField ||
-		field instanceof AverageField ||
-		field instanceof AutoIncrementField
+		type === 'number' ||
+		type === 'rating' ||
+		type === 'count' ||
+		type === 'sum' ||
+		type === 'average' ||
+		type === 'auto-increment'
 	) {
 		data = [
 			{ value: '$eq', name: 'EQUAL' },
@@ -63,14 +41,14 @@ export function getFilterOperators(field: Field | undefined) {
 			{ value: '$lt', name: 'LESS THAN' },
 			{ value: '$lte', name: 'LESS THAN OR EQUAL' },
 		]
-	} else if (field instanceof AttachmentField) {
+	} else if (type === 'attachment') {
 		data = [
 			{ value: '$is_empty', name: 'IS EMPTY' },
 			{ value: '$is_not_empty', name: 'IS NOT EMPTY' },
 			{ value: '$has_file_type', name: 'HAS FILE TYPE' },
 			{ value: '$has_file_extension', name: 'HAS FILE EXTENSION' },
 		]
-	} else if (field instanceof DateField || field instanceof CreatedAtField || field instanceof UpdatedAtField) {
+	} else if (type === 'date' || type === 'created-at' || type === 'updated-at') {
 		data = [
 			{ value: '$eq', name: 'EQUAL' },
 			{ value: '$neq', name: 'NOT EQUAL' },
@@ -80,26 +58,26 @@ export function getFilterOperators(field: Field | undefined) {
 			{ value: '$lte', name: 'LESS THAN OR EQUAL' },
 			{ value: '$is_today', name: 'IS TODAY' },
 		]
-	} else if (field instanceof DateRangeField) {
+	} else if (type === 'date-range') {
 		data = [
 			{ value: '$eq', name: 'EQUAL' },
 			{ value: '$neq', name: 'NOT EQUAL' },
 		]
-	} else if (field instanceof BoolField) {
+	} else if (type === 'bool') {
 		data = [
 			{ value: '$is_true', name: 'IS TRUE' },
 			{ value: '$is_false', name: 'IS FALSE' },
 		]
-	} else if (field instanceof SelectField) {
+	} else if (type === 'select') {
 		data = [
 			{ value: '$eq', name: 'EQUAL' },
 			{ value: '$neq', name: 'NOT EQUAL' },
 			{ value: '$in', name: 'IN' },
 			{ value: '$nin', name: 'NOT IN' },
 		]
-	} else if (field instanceof TreeField) {
+	} else if (type === 'tree') {
 		data = [{ value: '$is_root', name: 'IS ROOT' }]
-	} else if (field instanceof IdField) {
+	} else if (type === 'id') {
 		data = [
 			{ value: '$eq', name: 'EQUAL' },
 			{ value: '$neq', name: 'NOT EQUAL' },

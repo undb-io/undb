@@ -216,11 +216,11 @@ export type IFilterOrGroupList = z.infer<typeof filterOrGroupList>
 export const rootFilter = filterOrGroup.or(filterOrGroupList)
 export type IRootFilter = z.infer<typeof rootFilter>
 
-const isGroup = (filterOrGroup: IFilterOrGroup): filterOrGroup is IGroup => {
+export const isGroup = (filterOrGroup: IFilterOrGroup): filterOrGroup is IGroup => {
   return Object.hasOwn(filterOrGroup, 'conjunction')
 }
 
-const isFilter = (filterOrGroup: IFilterOrGroup): filterOrGroup is IFilter => {
+export const isFilter = (filterOrGroup: IFilterOrGroup): filterOrGroup is IFilter => {
   return Object.hasOwn(filterOrGroup, 'type') && Object.hasOwn(filterOrGroup, 'operator')
 }
 
