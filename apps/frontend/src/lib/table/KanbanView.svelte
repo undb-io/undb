@@ -51,8 +51,8 @@
 	const reorderOptions = trpc.table.field.select.reorderOptions.mutation()
 
 	async function handleDndFinalizeColumns(e: any) {
-		if (e.detail.info.id === UNCATEGORIZED) return
 		items = e.detail.items
+		if (e.detail.info.id === UNCATEGORIZED) return
 
 		const from = e.detail.info.id + 1
 		const toIndex = items.findIndex((i) => i.id === from) + 1
