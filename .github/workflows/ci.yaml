@@ -21,20 +21,18 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 18.16.0
 
       - uses: pnpm/action-setup@v2.2.4
         with:
           version: 8.3.1
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
 
       - name: Build
         run: pnpm build
