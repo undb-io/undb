@@ -7,6 +7,7 @@
 	import Id from './Id.svelte'
 	import Rating from './Rating.svelte'
 	import Attachment from './Attachment.svelte'
+	import Bool from './Bool.svelte'
 
 	export let field: Field
 	export let value: RecordAllValueType | Option
@@ -22,7 +23,7 @@
 		email: String,
 		date: String,
 		select: Select,
-		bool: String,
+		bool: Bool,
 		'date-range': String,
 		reference: String,
 		tree: String,
@@ -39,8 +40,6 @@
 	}
 </script>
 
-{#if !value}
-	<span />
-{:else}
+{#if value}
 	<svelte:component this={map[field.type]} {value} {field} {...$$restProps} />
 {/if}

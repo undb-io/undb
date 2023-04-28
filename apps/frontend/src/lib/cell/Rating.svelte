@@ -6,4 +6,4 @@
 	export let field: RatingField
 </script>
 
-<Rating total={field.max} rating={value.unpack() ?? 0} />
+<Rating size={'18'} total={field.max} rating={value.unpack() ?? 0} />

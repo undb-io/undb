@@ -90,13 +90,12 @@
 
 		if (field && e.detail.info.trigger === TRIGGERS.DROPPED_INTO_ZONE) {
 			const optionId = e.target.dataset.containerId === UNCATEGORIZED ? null : e.target.dataset.containerId
-			if (!field.required) {
-				$updateRecord.mutate({
-					tableId: $table.id.value,
-					id: e.detail.info.id,
-					values: { [field.id.value]: optionId },
-				})
-			}
+			if (cid === UNCATEGORIZED && field.required) return
+			$updateRecord.mutate({
+				tableId: $table.id.value,
+				id: e.detail.info.id,
+				values: { [field.id.value]: optionId },
+			})
 		}
 	}
 </script>
