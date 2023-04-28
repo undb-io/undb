@@ -365,4 +365,8 @@
 	:global(revogr-header .header-rgRow) {
 		background-color: #f7f7f7;
 	}
+
+	:global(revogr-header .rgHeaderCell > .resizable-r) {
+		width: 2px;
+	}
 </style>
