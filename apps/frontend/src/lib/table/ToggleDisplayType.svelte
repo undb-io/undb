@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation'
 	import { t } from '$lib/i18n'
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
@@ -10,7 +11,11 @@
 
 	const displayTypes = ['grid', 'kanban'] as const
 
-	const switchDisplayType = trpc.table.view.switchDisplayType.mutation()
+	const switchDisplayType = trpc.table.view.switchDisplayType.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+		},
+	})
 	const onChange = async () => {
 		$switchDisplayType.mutate({
 			tableId: $table.id.value,
