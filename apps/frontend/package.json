@@ -26,7 +26,6 @@
 		"@tabler/icons-webfont": "^2.17.0",
 		"@tailwindcss/forms": "^0.5.3",
 		"@tanstack/svelte-query": "^4.29.5",
-		"@total-typescript/ts-reset": "^0.4.2",
 		"@trpc/client": "^10.21.2",
 		"@trpc/server": "^10.21.2",
 		"@types/js-cookie": "^3.0.3",

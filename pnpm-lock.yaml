@@ -305,9 +305,6 @@ importers:
       '@tanstack/svelte-query':
         specifier: ^4.29.5
         version: 4.29.5(svelte@3.58.0)
-      '@total-typescript/ts-reset':
-        specifier: ^0.4.2
-        version: 0.4.2
       '@trpc/client':
         specifier: ^10.21.2
         version: 10.21.2(@trpc/server@10.21.2)
@@ -474,9 +471,6 @@ importers:
         specifier: ^2.10.0
         version: 2.10.0(i18next@22.4.15)(zod@3.21.4)
     devDependencies:
-      '@total-typescript/ts-reset':
-        specifier: github:total-typescript/ts-reset
-        version: github.com/total-typescript/ts-reset/4d44ea0eee4709bcc0317592eb9ca157785122d4
       '@types/lodash':
         specifier: ^4.14.194
         version: 4.14.194
@@ -2953,10 +2947,6 @@ packages:
   /@tootallnate/once@2.0.0:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
-    dev: true
-
-  /@total-typescript/ts-reset@0.4.2:
-    resolution: {integrity: sha512-vqd7ZUDSrXFVT1n8b2kc3LnklncDQFPvR58yUS1kEP23/nHPAO9l1lMjUfnPrXYYk4Hj54rrLKMW5ipwk7k09A==}
     dev: true
 
   /@trpc/client@10.21.2(@trpc/server@10.21.2):
@@ -11823,10 +11813,4 @@ packages:
       webpod: 0.0.2
       which: 3.0.0
       yaml: 2.2.2
-    dev: true
-
-  github.com/total-typescript/ts-reset/4d44ea0eee4709bcc0317592eb9ca157785122d4:
-    resolution: {tarball: https://codeload.github.com/total-typescript/ts-reset/tar.gz/4d44ea0eee4709bcc0317592eb9ca157785122d4}
-    name: '@total-typescript/ts-reset'
-    version: 0.4.2
     dev: true
