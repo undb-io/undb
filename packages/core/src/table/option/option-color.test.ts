@@ -34,18 +34,16 @@ describe('next', () => {
   test('should get next color', () => {
     const color = OptionColor.create()
     expect(color.next()).toMatchInlineSnapshot(`
-      OptionColor {
-        "props": {
-          "name": "blue",
-          "shade": 5,
-        },
+      {
+        "name": "violet",
+        "shade": 5,
       }
     `)
   })
 
   test('should get next color for last color name', () => {
     const color = OptionColor.create({ name: 'orange' })
-    expect(color.next().name).to.be.eq('blue')
+    expect(color.next().name).toMatchInlineSnapshot('"amber"')
   })
 })
 
