@@ -1,36 +1,43 @@
 <script lang="ts">
-	import { Button, A } from 'flowbite-svelte'
+	import { Button, A, Toast } from 'flowbite-svelte'
 	import type { PageData } from './$types'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { goto } from '$app/navigation'
+	import { createMutation } from '@tanstack/svelte-query'
+	import logo from '$lib/assets/logo.svg'
 	import { page } from '$app/stores'
+	import { slide } from 'svelte/transition'
 
 	export let data: PageData
 
-	const { form, enhance, constraints } = superForm(data.form, {
-		SPA: true,
-		async onUpdate(event) {
-			await fetch('/api/auth/register', {
+	const register = createMutation<unknown, unknown, { email: string; password: string }>({
+		mutationKey: ['register'],
+		mutationFn: (body) =>
+			fetch('/api/auth/register', {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(event.form.data),
-			})
+				body: JSON.stringify(body),
+			}),
 
+		async onSuccess(data, variables, context) {
 			await goto($page.url.searchParams.get('redirectTo') || '/')
+		},
+	})
+
+	const { form, enhance, constraints } = superForm(data.form, {
+		SPA: true,
+		onUpdate(event) {
+			$register.mutate(event.form.data)
 		},
 	})
 </script>
 
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
 	<div class="sm:mx-auto sm:w-full sm:max-w-sm">
-		<img
-			class="mx-auto h-10 w-auto"
-			src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-			alt="Your Company"
-		/>
+		<img class="mx-auto h-10 w-auto" src={logo} alt="undb" />
 		<h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Register to undb</h2>
 	</div>
 
@@ -78,3 +85,12 @@
 		</p>
 	</div>
 </div>
+
+{#if $register.error}
+	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{$register.error}
+		</span>
+	</Toast>
+{/if}
