@@ -90,7 +90,7 @@ export function getFilterOperators(type: IFieldType | undefined) {
 }
 
 export const icons: Record<IFieldType, string> = {
-	string: 'letter-t',
+	string: 'circle-letter-a',
 	number: '123',
 	id: 'key',
 	'auto-increment': 'sort-ascending-2',

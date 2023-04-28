@@ -4,9 +4,6 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
 	build: {
 		target: 'esnext',
-		rollupOptions: {
-			external: ['svelte-i18next', '@undb/i18n', 'i18next'],
-		},
 	},
 	plugins: [sveltekit()],
 	server: {
@@ -24,7 +21,7 @@ export default defineConfig({
 		},
 	},
 	ssr: {
-		external: ['@undb/core', '@revolist/revogrid'],
+		external: ['@undb/core', '@undb/i18n', '@undb/trpc', '@revolist/revogrid'],
 	},
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}'],

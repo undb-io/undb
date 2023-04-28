@@ -166,11 +166,14 @@
 							},
 							[
 								h(
-									'div',
+									'span',
 									{
-										class: 'space-x-2',
+										class: 'inline-flex items-center gap-1',
 									},
-									[h('i', { class: cx(getIconClass(column.field.type), 'text-gray-600') }), h('span', {}, column.name)],
+									[
+										h('i', { class: cx(getIconClass(column.field.type), 'text-gray-600 text-lg') }),
+										h('span', {}, column.name),
+									],
 								),
 								h(
 									'button',

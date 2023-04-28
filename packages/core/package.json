@@ -13,7 +13,7 @@
     "oxide.ts": "^1.1.0",
     "ts-mixer": "^6.0.3",
     "zod": "^3.21.4",
-    "zod-i18n-map": "^2.9.1"
+    "zod-i18n-map": "^2.10.0"
   },
   "devDependencies": {
     "@total-typescript/ts-reset": "github:total-typescript/ts-reset",
