@@ -8,6 +8,7 @@
 	import { trpc } from '$lib/trpc/client'
 	import { getField, getTable } from '$lib/store/table'
 	import { slide } from 'svelte/transition'
+	import { t } from '$lib/i18n'
 
 	export let data: Validation<typeof createOptionSchema>
 
@@ -44,7 +45,7 @@
 
 {#if $field?.type === 'select'}
 	<Modal
-		title="Create New Options"
+		title={$t('Create New Option') ?? undefined}
 		bind:open={$createOptionOpen}
 		placement="top-center"
 		class="w-full rounded-sm"
@@ -53,21 +54,13 @@
 	>
 		<form id="createOption" class="flex gap-2 items-center" method="POST" use:enhance>
 			<OptionColorPicker bind:value={$form.color.name} name={$form.name} />
-			<Input
-				class="rounded-none outline-none border-none"
-				autoFucus
-				name="name"
-				size="sm"
-				type="text"
-				bind:value={$form.name}
-				placeholder="name"
-			/>
+			<Input class="rounded-none outline-none border-none" name="name" size="sm" type="text" bind:value={$form.name} />
 		</form>
 
 		<svelte:fragment slot="footer">
 			<div class="w-full flex justify-end gap-4">
-				<Button size="xs" color="alternative">Cancel</Button>
-				<Button size="xs" form="createOption">Confirm</Button>
+				<Button size="xs" color="alternative">{$t('Cancel', { ns: 'common' })}</Button>
+				<Button size="xs" form="createOption">{$t('Confirm', { ns: 'common' })}</Button>
 			</div>
 		</svelte:fragment>
 	</Modal>

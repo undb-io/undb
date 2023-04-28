@@ -18,7 +18,7 @@
 	on:click|preventDefault
 	id="option_color_picker"
 	class={cx(
-		'inline-flex text-white w-[40px] h-[40px] aspect-square justify-center items-center cursor-pointer',
+		'inline-flex text-white w-[30px] h-[30px] aspect-square justify-center items-center cursor-pointer rounded-sm',
 		selected,
 		$$restProps.class,
 	)}
@@ -34,7 +34,7 @@
 		frameClass="z-[100]"
 	>
 		{#each optionColorOrder as color}
-			<Radio class="h-[30px]" value={color} bind:group={value} custom on:change={() => (open = false)}>
+			<Radio class="h-[24px]" value={color} bind:group={value} custom on:change={() => (open = false)}>
 				<Option
 					option={CoreOption.create({
 						name: name || 'a',
