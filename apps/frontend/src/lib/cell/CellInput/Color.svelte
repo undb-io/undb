@@ -1,11 +1,5 @@
 <script lang="ts">
-	import { DEFAULT_COLOR } from '@undb/core'
-
-	export let value: string | undefined = DEFAULT_COLOR
-
-	$: if (!value) {
-		value = DEFAULT_COLOR
-	}
+	export let value: string | undefined = undefined
 </script>
 
 <div class="inline-flex gap-2">
