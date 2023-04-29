@@ -21,6 +21,9 @@ COPY --from=builder /undb/out/ .
 
 RUN pnpm install -r --offline
 
+ARG PUBLIC_UNDB_ADMIN_EMAIL
+ARG PUBLIC_UNDB_ADMIN_PASSWORD
+
 ENV NODE_ENV production
 RUN pnpm run build --filter=backend --filter=frontend
 RUN pnpm prune --prod --config.ignore-scripts=true

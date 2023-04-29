@@ -7,7 +7,7 @@
 	import { page } from '$app/stores'
 	import { createMutation } from '@tanstack/svelte-query'
 	import { slide } from 'svelte/transition'
-	import { PUBLIC_UNDB_ADMIN_EMAIL, PUBLIC_UNDB_ADMIN_PASSWORD } from '$env/static/public'
+	import { env } from '$env/dynamic/public'
 	import { t } from '$lib/i18n'
 
 	export let data: PageData
@@ -36,6 +36,7 @@
 		},
 	})
 
+	const { PUBLIC_UNDB_ADMIN_EMAIL, PUBLIC_UNDB_ADMIN_PASSWORD } = env
 	$: {
 		$form.email = PUBLIC_UNDB_ADMIN_EMAIL ?? ''
 		$form.password = PUBLIC_UNDB_ADMIN_PASSWORD ?? ''
