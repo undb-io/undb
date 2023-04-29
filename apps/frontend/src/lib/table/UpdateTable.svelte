@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { updateTableOpen } from '$lib/store/modal'
-	import { Button, Label, Modal, Input, Spinner, Toast } from 'flowbite-svelte'
+	import { Button, Label, Modal, Input, Spinner, Toast, Dropdown, DropdownItem } from 'flowbite-svelte'
 	import type { Validation } from 'sveltekit-superforms'
 	import { FieldId, createUpdateTableSchema, updateTableSchema } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
@@ -8,6 +8,7 @@
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import { getTable } from '$lib/store/table'
+	import { goto, invalidateAll } from '$app/navigation'
 
 	export let data: Validation<ReturnType<typeof createUpdateTableSchema>>
 	let opened: Record<string, boolean> = {}
@@ -22,6 +23,13 @@
 	const updateTable = trpc.table.update.mutation({
 		async onSuccess(data, variables, context) {
 			updateTableOpen.set(false)
+		},
+	})
+
+	const deleteTable = trpc.table.delete.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidateAll()
+			await goto('/')
 		},
 	})
 
@@ -42,15 +50,25 @@
 	})
 
 	const { form, errors, reset, constraints, enhance, delayed, submitting } = superFrm
+
+	let confirmDeleteTable = false
 </script>
 
-<Modal
-	title={$t('Update Table') ?? undefined}
-	placement="top-center"
-	class="static w-full rounded-sm"
-	size="lg"
-	bind:open={$updateTableOpen}
->
+<Modal placement="top-center" class="static w-full rounded-sm" size="lg" bind:open={$updateTableOpen}>
+	<svelte:fragment slot="header">
+		<div class="flex justify-between w-full mr-6">
+			<p class="text-lg dark:text-white">{$t('Update Table')}</p>
+			<button>
+				<i class="ti ti-dots" />
+			</button>
+			<Dropdown>
+				<DropdownItem class="inline-flex items-center gap-2 text-red-400" on:click={() => (confirmDeleteTable = true)}>
+					<i class="ti ti-trash" />
+					<span class="text-xs">{$t('Delete Table')}</span>
+				</DropdownItem>
+			</Dropdown>
+		</div>
+	</svelte:fragment>
 	<form id="updateTable" class="flex flex-col justify-between flex-1 gap-2" method="POST" use:enhance>
 		<div>
 			<div>
@@ -109,3 +127,36 @@
 		</span>
 	</Toast>
 {/if}
+
+<Modal bind:open={confirmDeleteTable} size="xs">
+	<div class="text-center">
+		<svg
+			aria-hidden="true"
+			class="mx-auto mb-4 w-14 h-14 text-gray-400 dark:text-gray-200"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+			><path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+			/></svg
+		>
+		<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+			{$t('Confirm Delete Table')}
+		</h3>
+		<Button
+			color="red"
+			class="mr-2 gap-2"
+			on:click={() => {
+				$deleteTable.mutate({ id: $table.id.value })
+			}}
+		>
+			<i class="ti ti-circle-check text-lg" />
+			{$t('Confirm Yes', { ns: 'common' })}</Button
+		>
+		<Button color="alternative">{$t('Confirm No', { ns: 'common' })}</Button>
+	</div>
+</Modal>
