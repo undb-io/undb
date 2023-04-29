@@ -3,6 +3,7 @@
 	import Collaborator from '../Collaborator.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { writable } from 'svelte/store'
+	import { t } from '$lib/i18n'
 
 	export let value: string[] | undefined
 
@@ -30,7 +31,7 @@
 			<Collaborator username={member.username} avatar={member.avatar} />
 		{/each}
 	{:else}
-		Select Collaborator
+		{$t('Select Collaborator')}
 	{/if}
 </Button>
 <Dropdown bind:open>

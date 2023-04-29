@@ -18,6 +18,7 @@
 	import Portal from 'svelte-portal'
 	import { getIconClass } from '$lib/field/helpers'
 	import { onMount, tick } from 'svelte'
+	import { editors } from '$lib/cell/CellEditors/editors'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -153,6 +154,7 @@
 				return {
 					prop: field.id.value,
 					name: field.name.value,
+					editor: field.type,
 					size: $view.getFieldWidth(field.id.value),
 					pin: position ? pinnedPositionMap[position] : undefined,
 					autoSize: true,
@@ -301,8 +303,9 @@
 		columns={$columns}
 		theme="compact"
 		range
-		readonly
 		rowClass="id"
+		readonly
+		{editors}
 		on:aftercolumnresize={onAfterColumnResize}
 	/>
 </div>
@@ -368,5 +371,9 @@
 
 	:global(revogr-header .rgHeaderCell > .resizable-r) {
 		width: 2px;
+	}
+
+	:global(revogr-focus) {
+		border: 1px solid transparent;
 	}
 </style>

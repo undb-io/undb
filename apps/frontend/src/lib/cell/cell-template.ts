@@ -154,7 +154,6 @@ const sum: TemplateFunc = (h, props) => {
 
 const rating: TemplateFunc = (h, props) => {
 	const rating = props.model[props.prop] as number | undefined
-	if (!rating) return null
 
 	const field = props.column.field as RatingField
 	const max = field.max
