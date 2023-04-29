@@ -45,7 +45,7 @@
 	$: $table, reset()
 </script>
 
-<Modal title={$t('Create New Record') ?? undefined} class="w-full h-[70%]" size="lg" bind:open={$createRecordOpen}>
+<Modal title={$t('Create New Record') ?? undefined} class="w-full" size="lg" bind:open={$createRecordOpen}>
 	<form id="createRecord" class="space-y-5" method="POST" use:enhance>
 		<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 			{#each fields as field}

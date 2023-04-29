@@ -62,7 +62,7 @@
 </script>
 
 {#key $record}
-	<Modal class="w-full h-[70%]" size="lg" bind:open={$open}>
+	<Modal class="w-full " size="lg" bind:open={$open}>
 		{#if !$record}
 			<div class="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
 				<Spinner />
