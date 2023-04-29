@@ -11,7 +11,7 @@
 	import { t } from '$lib/i18n'
 </script>
 
-<div class="flex w-full flex-row items-center justify-between gap-y-4 border-b bg-white px-5 py-2">
+<div class="flex w-full flex-row items-center justify-between gap-y-4 border-b bg-white px-5 py-2 overflow-x-auto">
 	<div class="flex items-center justify-center content-center gap-4">
 		<TableNavigator />
 

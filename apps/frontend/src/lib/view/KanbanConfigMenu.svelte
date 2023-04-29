@@ -13,6 +13,6 @@
 {#if field}
 	<Button color="alternative" size="xs" class="text-xs gap-2" on:click={() => ($configViewOpen = true)}>
 		<i class="ti ti-select" />
-		<span>{$t('Using Field', { name: $table.name.value })}</span>
+		<span class="whitespace-nowrap">{$t('Using Field', { name: $table.name.value })}</span>
 	</Button>
 {/if}
