@@ -58,7 +58,6 @@
 
 	const open = writable<boolean>(false)
 	$: {
-		console.log($currentRecordId)
 		open.set(!!$currentRecordId)
 	}
 	$: if (!$open) {

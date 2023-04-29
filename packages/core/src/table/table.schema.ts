@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { querySchemaSchema } from './field/index.js'
+import type { Table } from './table.js'
 import { createTableSchemaSchema, tableIdSchema, tableNameSchema } from './value-objects/index.js'
 import { tableEmojiSchema } from './value-objects/table-emoji.vo.js'
 import { createViewInput_internal, queryViews, viewsOrderSchema } from './view/index.js'
@@ -40,5 +41,14 @@ export const updateTableSchema = z
     emoji: tableEmojiSchema,
   })
   .partial()
+
+export const createUpdateTableSchema = (table: Table) => {
+  return z
+    .object({
+      name: tableNameSchema.default(table.name.value),
+      emoji: tableEmojiSchema.default(table.emoji.unpack()),
+    })
+    .partial()
+}
 
 export type IUpdateTableSchema = z.infer<typeof updateTableSchema>

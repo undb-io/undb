@@ -2,14 +2,14 @@
 	import { updateTableOpen } from '$lib/store/modal'
 	import { Button, Label, Modal, Input, Spinner, Toast } from 'flowbite-svelte'
 	import type { Validation } from 'sveltekit-superforms'
-	import { FieldId, updateTableSchema } from '@undb/core'
+	import { FieldId, createUpdateTableSchema, updateTableSchema } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { trpc } from '$lib/trpc/client'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import { getTable } from '$lib/store/table'
 
-	export let data: Validation<typeof updateTableSchema>
+	export let data: Validation<ReturnType<typeof createUpdateTableSchema>>
 	let opened: Record<string, boolean> = {}
 
 	const table = getTable()
@@ -26,7 +26,7 @@
 	})
 
 	const superFrm = superForm(data, {
-		id: 'createTable',
+		id: 'updateTable',
 		SPA: true,
 		applyAction: false,
 		resetForm: true,
@@ -34,6 +34,7 @@
 		clearOnSubmit: 'errors-and-message',
 		dataType: 'json',
 		taintedMessage: null,
+		validators: createUpdateTableSchema($table),
 		async onUpdate(event) {
 			reset()
 			$updateTable.mutate({ id: $table.id.value, ...event.form.data })
@@ -50,7 +51,7 @@
 	size="lg"
 	bind:open={$updateTableOpen}
 >
-	<form id="createTable" class="flex flex-col justify-between flex-1 gap-2" method="POST" use:enhance>
+	<form id="updateTable" class="flex flex-col justify-between flex-1 gap-2" method="POST" use:enhance>
 		<div>
 			<div>
 				<Label class="space-y-2">
@@ -90,7 +91,7 @@
 	<svelte:fragment slot="footer">
 		<div class="w-full flex justify-end gap-2">
 			<Button color="alternative" on:click={() => updateTableOpen.set(false)}>{$t('Cancel', { ns: 'common' })}</Button>
-			<Button class="gap-4" type="submit" form="createTable" disabled={$submitting}>
+			<Button class="gap-4" type="submit" form="updateTable" disabled={$submitting}>
 				{#if $delayed}
 					<Spinner size="5" />
 				{/if}

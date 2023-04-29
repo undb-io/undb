@@ -4,6 +4,7 @@ import {
 	TableFactory,
 	createMutateRecordValuesSchema,
 	createOptionSchema,
+	createUpdateTableSchema,
 	createViewSchema,
 } from '@undb/core'
 import { superValidate } from 'sveltekit-superforms/server'
@@ -28,6 +29,9 @@ export const load: PageLoad = async (event) => {
 	const coreRecord = record ? RecordFactory.fromQuery(record, coreTable.schema.toIdMap()).unwrap() : undefined
 	return {
 		record,
+		updateTable: superValidate({ name: coreTable.name.value }, createUpdateTableSchema(coreTable), {
+			id: 'updateTable',
+		}),
 		createRecord: superValidate(event, createMutateRecordValuesSchema(fields), { id: 'createRecord', errors: false }),
 		updateRecord: superValidate(event, createMutateRecordValuesSchema(fields, coreRecord?.valuesJSON), {
 			id: 'updateRecord',
