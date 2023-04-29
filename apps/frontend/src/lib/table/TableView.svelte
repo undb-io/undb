@@ -165,7 +165,7 @@
 						return h(
 							'div',
 							{
-								class: 'inline-flex w-full justify-between items-center text-xs text-gray-700 font-medium',
+								class: 'h-full inline-flex w-full justify-between items-center text-xs text-gray-700 font-medium',
 							},
 							[
 								h(

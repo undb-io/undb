@@ -48,6 +48,12 @@
 	}
 
 	const { form, errors, reset, constraints, enhance, delayed, submitting } = superFrm
+
+	const onBlur = () => {
+		if (!$form.schema.length) {
+			addField()
+		}
+	}
 </script>
 
 <Modal
@@ -80,6 +86,7 @@
 						bind:value={$form.name}
 						data-invalid={$errors.name}
 						required
+						on:blur={onBlur}
 						{...$constraints.name}
 					/>
 				</Label>
