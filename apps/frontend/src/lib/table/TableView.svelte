@@ -19,6 +19,7 @@
 	import { getIconClass } from '$lib/field/helpers'
 	import { onMount, tick } from 'svelte'
 	import { editors } from '$lib/cell/CellEditors/editors'
+	import { t } from '$lib/i18n'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -320,12 +321,19 @@
 	params={{ delay: 100, duration: 200, easing: quintOut }}
 >
 	<div class="flex items-center space-x-5 justify-between">
-		<P>selected {selectedCount} records</P>
-		<Button color="alternative" size="xs" on:click={duplicateRecords}>
+		<P class="text-sm !text-gray-700">{$t('Selected N Records', { n: selectedCount })}</P>
+		<Button
+			color="alternative"
+			class="inline-flex gap-2 items-center text-gray-600"
+			size="xs"
+			on:click={duplicateRecords}
+		>
 			{#if $duplicateRecordsMutation.isLoading}
 				<Spinner class="mr-3" size="4" />
+			{:else}
+				<i class="ti ti-copy text-lg" />
 			{/if}
-			Duplicate records</Button
+			{$t('Duplicate Selected Record')}</Button
 		>
 	</div>
 </Toast>

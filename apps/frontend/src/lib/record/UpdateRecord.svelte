@@ -110,9 +110,11 @@
 		<svelte:fragment slot="footer">
 			<div class="w-full flex justify-end gap-2">
 				<Button color="alternative" on:click={() => goto($page.url.pathname)}>{$t('Cancel', { ns: 'common' })}</Button>
-				<Button class="gap-4" type="submit" form="updateRecord" disabled={$submitting}>
+				<Button class="gap-2" type="submit" form="updateRecord" disabled={$submitting}>
 					{#if $delayed}
 						<Spinner size="5" />
+					{:else}
+						<i class="ti ti-edit" />
 					{/if}
 					{$t('Update Record')}</Button
 				>

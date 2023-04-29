@@ -79,9 +79,11 @@
 	<svelte:fragment slot="footer">
 		<div class="w-full flex justify-end gap-2">
 			<Button color="alternative" on:click={() => createRecordOpen.set(false)}>{$t('Cancel', { ns: 'common' })}</Button>
-			<Button class="gap-4" type="submit" form="createRecord" disabled={$submitting}>
+			<Button class="gap-2" type="submit" form="createRecord" disabled={$submitting}>
 				{#if $delayed}
 					<Spinner size="5" />
+				{:else}
+					<i class="ti ti-row-insert-bottom" />
 				{/if}
 				{$t('Create New Record')}</Button
 			>
