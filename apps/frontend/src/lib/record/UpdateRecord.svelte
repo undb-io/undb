@@ -3,7 +3,7 @@
 	import { page } from '$app/stores'
 	import { currentRecordId, getRecord, getTable, getView, nextRecord, previousRecord } from '$lib/store/table'
 	import { createMutateRecordValuesSchema } from '@undb/core'
-	import { Button, ButtonGroup, Label, Modal, P, Spinner, Toast } from 'flowbite-svelte'
+	import { Button, ButtonGroup, Dropdown, DropdownItem, Label, Modal, P, Spinner, Toast } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { writable } from 'svelte/store'
 	import type { Validation } from 'sveltekit-superforms/index'
@@ -13,6 +13,7 @@
 	import { pick, keys } from 'lodash-es'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
+	import UpdateRecordMenu from './UpdateRecordMenu.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -57,6 +58,7 @@
 
 	const open = writable<boolean>(false)
 	$: {
+		console.log($currentRecordId)
 		open.set(!!$currentRecordId)
 	}
 	$: if (!$open) {
@@ -72,16 +74,24 @@
 			</div>
 		{/if}
 		<svelte:fragment slot="header">
-			<div class="flex items-center space-x-4">
-				<P>{$t('Update Record')}</P>
-				<ButtonGroup size="xs">
-					<Button size="xs" disabled={!$previousRecord} on:click={() => ($currentRecordId = $previousRecord?.id.value)}>
-						<i class="ti ti-chevron-left text-gray-500 text-base" />
-					</Button>
-					<Button size="xs" disabled={!$nextRecord} on:click={() => ($currentRecordId = $nextRecord?.id.value)}>
-						<i class="ti ti-chevron-right text-gray-500 text-base" />
-					</Button>
-				</ButtonGroup>
+			<div class="flex items-center w-full justify-between mr-6">
+				<div class="flex items-center space-x-4">
+					<P>{$t('Update Record')}</P>
+					<ButtonGroup size="xs">
+						<Button
+							size="xs"
+							disabled={!$previousRecord}
+							on:click={() => ($currentRecordId = $previousRecord?.id.value)}
+						>
+							<i class="ti ti-chevron-left text-gray-500 text-base" />
+						</Button>
+						<Button size="xs" disabled={!$nextRecord} on:click={() => ($currentRecordId = $nextRecord?.id.value)}>
+							<i class="ti ti-chevron-right text-gray-500 text-base" />
+						</Button>
+					</ButtonGroup>
+				</div>
+
+				<UpdateRecordMenu record={$record} />
 			</div>
 		</svelte:fragment>
 		<form id="updateRecord" class="space-y-5" method="POST" use:enhance>

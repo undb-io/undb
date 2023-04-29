@@ -5,31 +5,31 @@ export type Job = () => Promise<void>
 export abstract class BaseEntityManager {
   constructor(protected readonly em: EntityManager) {}
 
-  #jobs: Job[] = []
+  protected _jobs: Job[] = []
   public get jobs(): ReadonlyArray<Job> {
-    return this.#jobs
+    return this._jobs
   }
   protected addJobs(...jobs: Job[]) {
-    this.#jobs.push(...jobs)
+    this._jobs.push(...jobs)
   }
 
-  #queries: string[] = []
+  protected _queries: string[] = []
   public get queries(): ReadonlyArray<string> {
-    return this.#queries
+    return this._queries
   }
   public addQueries(...queries: string[]) {
-    this.#queries.push(...queries)
+    this._queries.push(...queries)
   }
   public unshiftQueries(...queries: string[]) {
     for (const query of queries) {
-      this.#queries.unshift(query)
+      this._queries.unshift(query)
     }
   }
 
   public async commit() {
-    await Promise.all(this.#jobs.map((job) => job()))
+    await Promise.all(this._jobs.map((job) => job()))
 
-    for (const query of this.#queries) {
+    for (const query of this._queries) {
       await this.em.execute(query)
     }
   }
