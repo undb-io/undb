@@ -35,10 +35,10 @@
 	{#each value ?? [] as option, index}
 		<div class="flex">
 			<OptionColorPicker class="rounded-r-none rounded-l-md" bind:value={option.color.name} name={option.name} />
-			<Input class="!rounded-none !focus:rounded-none border-gray-100 h-[40px]" bind:value={option.name} />
+			<Input class="!rounded-none !focus:rounded-none border-gray-100 h-[30px]" bind:value={option.name} />
 			<Button
 				color="light"
-				class="w-[40px] aspect-square !rounded-l-none !p-0 border-l-0 border-gray-200"
+				class="w-[30px] aspect-square !rounded-l-none !p-0 border-l-0 border-gray-200"
 				size="xs"
 				on:click={() => removeOption(index)}
 			>

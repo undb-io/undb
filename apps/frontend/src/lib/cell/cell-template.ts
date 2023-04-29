@@ -4,37 +4,21 @@ import type { RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
 import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime'
 import {
 	isImage,
-	type AttachmentFieldValue,
-	type AverageFieldValue,
-	type BoolFieldValue,
 	type CollaboratorField,
-	type CollaboratorFieldValue,
-	type ColorFieldValue,
-	type CountFieldValue,
 	type CreatedAtField,
 	type DateField,
-	type DateFieldValue,
 	type DateRangeField,
-	type DateRangeFieldValue,
-	type EmailFieldValue,
 	type IAttachmentItem,
 	type ICollaboratorProfile,
+	type IDateRangeFieldQueryValue,
 	type IFieldType,
 	type IOptionSchema,
 	type LookupField,
-	type NumberFieldValue,
 	type ParentField,
-	type ParentFieldValue,
 	type RatingField,
-	type RatingFieldValue,
 	type ReferenceField,
-	type ReferenceFieldValue,
 	type SelectField,
-	type SelectFieldValue,
-	type StringFieldValue,
-	type SumFieldValue,
 	type TreeField,
-	type TreeFieldValue,
 	type UpdatedAtField,
 } from '@undb/core'
 import cx from 'classnames'
@@ -46,15 +30,15 @@ type HyperFunc = RevoGrid.HyperFunc<VNode>
 
 const string: TemplateFunc = (h, props) => {
 	const html = htm.bind(h)
-	const value = props.model[props.prop] as StringFieldValue | undefined
+	const value = props.model[props.prop] as string | undefined
 	if (!value) return null
-	return html`<span class="text-sm">${value.unpack()?.toString() ?? ''}</span>`
+	return html`<span class="text-sm">${value ?? ''}</span>`
 }
 
 const email: TemplateFunc = (h, props) => {
-	const value = props.model[props.prop] as EmailFieldValue | undefined
+	const value = props.model[props.prop] as string | undefined
 	if (!value) return null
-	return h('span', { class: 'text-sm' }, value.unpack()?.toString() ?? '')
+	return h('span', { class: 'text-sm' }, value.toString() ?? '')
 }
 
 const id: TemplateFunc = (h, props) => {
@@ -77,38 +61,37 @@ const dateComponent = (h: HyperFunc, dateString: string | null, formatString: st
 }
 
 const dateRange: TemplateFunc = (h, props) => {
-	const value = props.model[props.prop] as DateRangeFieldValue | undefined
+	const value = props.model[props.prop] as IDateRangeFieldQueryValue | undefined
 	if (!value) return null
 
 	const field = props.column.field as DateRangeField
 
-	const from = value.from.into(null)?.toISOString()
-	const to = value.to.into(null)?.toISOString()
+	const [from, to] = value
 
 	return h('div', { class: 'flex items-center' }, [
-		dateComponent(h, value.from.into(null)?.toISOString() ?? null, field.formatString),
+		dateComponent(h, from ?? null, field.formatString),
 		from && to ? h('span', { class: 'mx-1' }, '-') : null,
-		dateComponent(h, value.to.into(null)?.toISOString() ?? null, field.formatString),
+		dateComponent(h, to ?? null, field.formatString),
 	])
 }
 
 const createdAt: TemplateFunc = (h, props) => {
-	const createdAt = props.model.created_at
+	const createdAt = props.model.created_at as string
 	const field = props.column.field as CreatedAtField
 	return dateComponent(h, createdAt, field.formatString)
 }
 
 const updatedAt: TemplateFunc = (h, props) => {
-	const updatedAt = props.model.updated_at
+	const updatedAt = props.model.updated_at as string
 	const field = props.column.field as UpdatedAtField
 	return dateComponent(h, updatedAt, field.formatString)
 }
 
 const date: TemplateFunc = (h, props) => {
-	const value = props.model[props.prop] as DateFieldValue | undefined
-	if (!value || !value.unpack()) return null
+	const value = props.model[props.prop] as string | undefined
+	if (!value) return null
 	const field = props.column.field as DateField
-	return dateComponent(h, value.unpack()?.toISOString() ?? '', field.formatString)
+	return dateComponent(h, value ?? '', field.formatString)
 }
 
 const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile) => {
@@ -155,27 +138,27 @@ const n = (h: HyperFunc, n?: number | null) => {
 }
 
 const number: TemplateFunc = (h, props) => {
-	const number = props.model[props.prop] as NumberFieldValue | undefined
-	return n(h, number?.unpack())
+	const number = props.model[props.prop] as number | undefined
+	return n(h, number)
 }
 
 const average: TemplateFunc = (h, props) => {
-	const average = props.model[props.prop] as AverageFieldValue | undefined
-	return n(h, average?.unpack())
+	const average = props.model[props.prop] as number | undefined
+	return n(h, average)
 }
 
 const sum: TemplateFunc = (h, props) => {
-	const sum = props.model[props.prop] as SumFieldValue | undefined
-	return n(h, sum?.unpack())
+	const sum = props.model[props.prop] as number | undefined
+	return n(h, sum)
 }
 
 const rating: TemplateFunc = (h, props) => {
-	const rating = props.model[props.prop] as RatingFieldValue | undefined
+	const rating = props.model[props.prop] as number | undefined
 	if (!rating) return null
 
 	const field = props.column.field as RatingField
 	const max = field.max
-	const value = rating.unpack() ?? 0
+	const value = rating ?? 0
 
 	return h(
 		'div',
@@ -200,21 +183,20 @@ const autoIncreament: TemplateFunc = (h, props) => {
 }
 
 const bool: TemplateFunc = (h, props) => {
-	const value = props.model[props.prop] as BoolFieldValue | undefined
-	if (!value) return null
+	const value = props.model[props.prop] as boolean | undefined
 
 	return h('input', {
 		type: 'checkbox',
 		class:
 			'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600',
 		disabled: true,
-		checked: !!value.unpack(),
+		checked: !!value,
 	})
 }
 
 const collaborator: TemplateFunc = (h, props) => {
 	const html = htm.bind(h)
-	const collaborator = props.model[props.prop] as CollaboratorFieldValue | undefined
+	const collaborator = props.model[props.prop] as string[] | undefined
 	if (!collaborator) return null
 	const field = props.column.field as CollaboratorField
 
@@ -231,20 +213,20 @@ const collaborator: TemplateFunc = (h, props) => {
 }
 
 const color: TemplateFunc = (h, props) => {
-	const color = props.model[props.prop] as ColorFieldValue | undefined
+	const color = props.model[props.prop] as string | undefined
 	if (!color) return null
 
 	return h('div', { class: 'flex items-center space-x-2' }, [
-		h('div', { class: 'w-5 h-5', style: { backgroundColor: color.unpack() } }),
-		h('div', {}, color.unpack() ?? ''),
+		h('div', { class: 'w-5 h-5', style: { backgroundColor: color } }),
+		h('div', {}, color ?? ''),
 	])
 }
 
 const count: TemplateFunc = (h, props) => {
-	const count = props.model[props.prop] as CountFieldValue | undefined
+	const count = props.model[props.prop] as number | undefined
 	if (!count) return null
 
-	return n(h, count.unpack())
+	return n(h, count)
 }
 
 const referenceComponent = (h: HyperFunc, value: (string | null)[] = []) => {
@@ -259,7 +241,7 @@ const referenceComponent = (h: HyperFunc, value: (string | null)[] = []) => {
 }
 
 const reference: TemplateFunc = (h, props) => {
-	const unpacked = (props.model[props.prop] as ReferenceFieldValue | TreeFieldValue | undefined)?.unpack()
+	const unpacked = props.model[props.prop] as string[] | undefined
 	if (!unpacked) return null
 	const displayValues = props.model.display_values
 	const field = props.column.field as ReferenceField | TreeField
@@ -293,14 +275,15 @@ const optionComponent = (h: HyperFunc, { color, name }: IOptionSchema) => {
 
 const select: TemplateFunc = (h, props) => {
 	const field = props.column.field as SelectField
-	const option = (props.model[props.prop] as SelectFieldValue | undefined)?.getOption(field).into()
+	const value = props.model[props.prop] as string | undefined
+	const option = value ? field.options.getById(value).into() : undefined
 	if (!option) return null
 
 	return optionComponent(h, option.toJSON())
 }
 
 const parent: TemplateFunc = (h, props) => {
-	const unpacked = (props.model[props.prop] as ParentFieldValue | undefined)?.unpack()
+	const unpacked = props.model[props.prop] as string | undefined
 	if (!unpacked) return null
 	const field = props.column.field as ParentField
 	const value = field.getDisplayValues(props.model.display_values)[0]
@@ -337,10 +320,10 @@ const attachmentItem = (h: HyperFunc, attachment: IAttachmentItem) => {
 }
 
 const attachment: TemplateFunc = (h, props) => {
-	const value = props.model[props.prop] as AttachmentFieldValue | undefined
+	const value = props.model[props.prop] as IAttachmentItem[] | undefined
 	if (!value) return null
 
-	const attachments = value.unpack()
+	const attachments = value
 
 	return h(
 		'div',

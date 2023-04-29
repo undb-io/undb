@@ -128,7 +128,7 @@
 						<span class="text-red-500">*</span>
 					</div>
 
-					<Input class="rounded-sm" name="name" required bind:value={$form.name} />
+					<Input name="name" required bind:value={$form.name} />
 				</Label>
 			</div>
 
@@ -138,7 +138,7 @@
 						<span>{$t('Description', { ns: 'common' })}</span>
 					</div>
 
-					<Textarea class="rounded-sm" name="description" bind:value={$form.description} />
+					<Textarea name="description" bind:value={$form.description} />
 				</Label>
 			{/if}
 
