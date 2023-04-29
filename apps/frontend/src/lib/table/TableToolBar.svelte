@@ -6,9 +6,16 @@
 	import TableNavigator from './TableNavigator.svelte'
 	import ToggleDisplayType from './ToggleDisplayType.svelte'
 	import { createFieldOpen, createRecordOpen, updateTableOpen } from '$lib/store/modal'
-	import { records } from '$lib/store/table'
+	import { getTable, records } from '$lib/store/table'
 	import ViewConfigMenu from '$lib/view/ViewConfigMenu.svelte'
 	import { t } from '$lib/i18n'
+	import { invalidate } from '$app/navigation'
+
+	const table = getTable()
+
+	const refresh = async () => {
+		await invalidate(`records:${$table.id.value}`)
+	}
 </script>
 
 <div class="flex w-full flex-row items-center justify-between gap-y-4 border-b bg-white px-5 py-2 overflow-x-auto">
@@ -45,9 +52,18 @@
 	</div>
 
 	<div class="flex items-center ml-2 gap-3">
+		<button on:click={refresh}>
+			<i class="ti ti-refresh text-gray-600" />
+		</button>
+		<Tooltip placement="bottom">
+			{$t('Force Refresh')}
+		</Tooltip>
 		<button on:click={() => ($updateTableOpen = true)}>
 			<i class="ti ti-settings text-gray-600" />
 		</button>
+		<Tooltip placement="bottom">
+			{$t('Edit Table')}
+		</Tooltip>
 		<ToggleDisplayType />
 	</div>
 </div>
