@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, A, Toast } from 'flowbite-svelte'
+	import { Button, A, Toast, Banner } from 'flowbite-svelte'
 	import type { PageData } from './$types'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { goto } from '$app/navigation'
@@ -7,6 +7,8 @@
 	import { page } from '$app/stores'
 	import { createMutation } from '@tanstack/svelte-query'
 	import { slide } from 'svelte/transition'
+	import { env } from '$env/dynamic/public'
+	import { t } from '$lib/i18n'
 
 	export let data: PageData
 
@@ -33,6 +35,14 @@
 			$login.mutate(event.form.data)
 		},
 	})
+
+	const { PUBLIC_UNDB_IS_DEMO, PUBLIC_UNDB_ADMIN_EMAIL, PUBLIC_UNDB_ADMIN_PASSWORD } = env
+	const isDemo = PUBLIC_UNDB_IS_DEMO === 'true'
+
+	$: if (isDemo) {
+		$form.email = PUBLIC_UNDB_ADMIN_EMAIL ?? ''
+		$form.password = PUBLIC_UNDB_ADMIN_PASSWORD ?? ''
+	}
 </script>
 
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -99,4 +109,15 @@
 			{$login.error}
 		</span>
 	</Toast>
+{/if}
+
+{#if isDemo && !!PUBLIC_UNDB_ADMIN_EMAIL && !!PUBLIC_UNDB_ADMIN_PASSWORD}
+	<Banner id="default-banner" position="absolute">
+		<p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
+			<span class="inline-flex p-1 mr-3 bg-gray-200 rounded-full dark:bg-gray-600">
+				<i class="ti ti-bulb-filled" />
+			</span>
+			<span>{$t('demo', { ns: 'common', email: PUBLIC_UNDB_ADMIN_EMAIL, password: PUBLIC_UNDB_ADMIN_PASSWORD })}</span>
+		</p>
+	</Banner>
 {/if}

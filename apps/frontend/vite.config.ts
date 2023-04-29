@@ -5,6 +5,7 @@ export default defineConfig({
 	build: {
 		target: 'esnext',
 	},
+	envPrefix: 'PUBLIC_UNDB_',
 	plugins: [sveltekit()],
 	server: {
 		host: '0.0.0.0',

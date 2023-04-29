@@ -32,13 +32,9 @@
 
 <svelte:head>
 	<title>undb</title>
+	{#if import.meta.env.PUBLIC_UNDB_ANALYTICS}
+		{import.meta.env.PUBLIC_UNDB_ANALYTICS}
+	{/if}
 </svelte:head>
 
 <svelte:window on:beforeunload={null} />
-
-<style>
-	:global(#nprogress) {
-		position: relative;
-		z-index: 9999999;
-	}
-</style>

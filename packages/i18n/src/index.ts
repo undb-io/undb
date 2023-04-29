@@ -23,6 +23,7 @@ export const config: InitOptions = {
         'has account': 'already has an account?',
       },
       common: {
+        demo: 'this is a demo site for undb, you can use email: {{email}} and password: {{password}} to login',
         unamed: 'unamed',
         error: 'some error happened',
         Apply: 'Apply',
@@ -240,6 +241,7 @@ export const config: InitOptions = {
         'register to undb': '注册 undb 账号',
       },
       common: {
+        demo: '这是 undb 的 demo 网站，你可以使用邮箱: {{email}} 和密码：{{password}} 登录',
         unamed: '未命名记录',
         error: '发生错误',
         Apply: '应用',
