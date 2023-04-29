@@ -26,7 +26,9 @@ ARG PUBLIC_UNDB_ADMIN_PASSWORD
 
 ENV NODE_ENV production
 RUN pnpm run build --filter=backend --filter=frontend
-RUN pnpm recursive prune --prod --config.ignore-scripts=true
+
+RUN rm -rf ./node_modules
+RUN pnpm install -r --prod
 
 # runner
 FROM gcr.io/distroless/nodejs18-debian11 as runner
