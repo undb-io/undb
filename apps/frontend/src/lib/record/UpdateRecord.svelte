@@ -23,7 +23,12 @@
 	$: validators = createMutateRecordValuesSchema(fields ?? [], $record?.valuesJSON)
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
-	const updateRecord = trpc.record.update.mutation()
+	const updateRecord = trpc.record.update.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`records:${$table.id.value}`)
+			currentRecordId.set(undefined)
+		},
+	})
 
 	const superFrm = superForm(data, {
 		id: 'updateRecord',
@@ -40,13 +45,11 @@
 			if (!$record) return
 			const taintedKeys = keys($tainted)
 			const values = pick(event.form.data, taintedKeys)
-			await $updateRecord.mutateAsync({
+			$updateRecord.mutate({
 				tableId: $table.id.value,
 				id: $record.id.value,
 				values,
 			})
-			await invalidate(`records:${$table.id.value}`)
-			currentRecordId.set(undefined)
 		},
 	})
 

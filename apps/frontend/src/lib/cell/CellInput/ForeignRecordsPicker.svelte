@@ -33,7 +33,7 @@
 	// checkbox select record ids
 	let group: string[] = []
 	$: if (open) {
-		value = uniq([...value, ...group])
+		value = uniq([...(value ?? []), ...group])
 	}
 
 	let records = writable<Records>([])
@@ -42,7 +42,7 @@
 
 	let loaded = false
 	async function getInitial() {
-		if (!open && !loaded && value.length) {
+		if (!open && !loaded && value?.length) {
 			initialLoading = true
 			initialRecords = await getInitRecords()
 			initialLoading = false

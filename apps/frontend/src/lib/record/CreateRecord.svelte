@@ -10,6 +10,8 @@
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
+	import { keys } from 'lodash-es'
+	import { pick } from 'lodash-es'
 
 	const table = getTable()
 	const view = getView()
@@ -17,9 +19,15 @@
 	export let data: Validation<any>
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
-	const createRecord = trpc.record.create.mutation()
+	const createRecord = trpc.record.create.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`records:${$table.id.value}`)
+			reset()
+			createRecordOpen.set(false)
+		},
+	})
 
-	const { form, enhance, constraints, delayed, reset, submitting } = superForm(data, {
+	const { form, enhance, constraints, delayed, reset, submitting, tainted } = superForm(data, {
 		id: 'createRecord',
 		SPA: true,
 		dataType: 'json',
@@ -29,10 +37,9 @@
 		clearOnSubmit: 'errors-and-message',
 		taintedMessage: null,
 		async onUpdate(event) {
-			await $createRecord.mutateAsync({ tableId: $table.id.value, values: event.form.data })
-			await invalidate(`records:${$table.id.value}`)
-			reset()
-			createRecordOpen.set(false)
+			const taintedKeys = keys($tainted)
+			const values = pick(event.form.data, taintedKeys)
+			$createRecord.mutate({ tableId: $table.id.value, values })
 		},
 	})
 
