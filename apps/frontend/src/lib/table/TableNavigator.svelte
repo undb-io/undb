@@ -8,8 +8,10 @@
 	const view = getView()
 </script>
 
-<Breadcrumb aria-label="undb navigator" class="flex">
-	<BreadcrumbItem class="whitespace-nowrap" href="/" home>{$t('Home', { ns: 'common' })}</BreadcrumbItem>
+<Breadcrumb aria-label="undb navigator">
+	<BreadcrumbItem class="whitespace-nowrap flex items-center" href="/" home
+		>{$t('Home', { ns: 'common' })}</BreadcrumbItem
+	>
 	<BreadcrumbItem class="whitespace-nowrap flex items-center">{$table.name.value}</BreadcrumbItem>
 	<BreadcrumbItem class="whitespace-nowrap flex items-center">
 		<span class="inline-flex items-center gap-2">
