@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { Button, Checkbox, Dropdown } from 'flowbite-svelte'
-	import Collaborator from '../Collaborator.svelte'
+	import CollaboratorComponent from '../CellComponents/CollaboratorComponent.svelte'
 	import { trpc } from '$lib/trpc/client'
-	import { writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
 
 	export let value: string[] | undefined
@@ -28,7 +27,7 @@
 <Button color="alternative" class="inline-flex gap-3 max-h-10 max-w-max">
 	{#if selected.length}
 		{#each selected as member}
-			<Collaborator username={member.username} avatar={member.avatar} />
+			<CollaboratorComponent username={member.username} avatar={member.avatar} />
 		{/each}
 	{:else}
 		{$t('Select Collaborator')}
@@ -38,7 +37,7 @@
 	{#each members as member}
 		<Checkbox bind:group value={member.userId} custom>
 			<div class="px-4 py-2 cursor-pointer w-full hover:bg-gray-100">
-				<Collaborator username={member.username} avatar={member.avatar} />
+				<CollaboratorComponent username={member.username} avatar={member.avatar} />
 			</div>
 		</Checkbox>
 	{/each}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CellComponent from '$lib/cell/CellComponent.svelte'
+	import CellComponent from '$lib/cell/CellComponents/CellComponent.svelte'
 	import { getCellValue } from '$lib/cell/get-cell-value'
 	import { getTable } from '$lib/store/table'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
@@ -25,7 +25,7 @@
 			<Tooltip class="z-[999]" transition={fade} params={{ delay: 100, duration: 200 }} placement="left" arrow={false}>
 				{field.name.value}
 			</Tooltip>
-			<CellComponent {field} value={getCellValue(field, value)} />
+			<CellComponent {field} value={getCellValue(field, value)} displayValues={record.displayValues?.unpack()} />
 		</div>
 	{/each}
 </Card>

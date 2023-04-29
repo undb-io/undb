@@ -6,7 +6,7 @@
 	import type { RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
 	import type { Components, RevoGridCustomEvent } from '@revolist/revogrid'
 	import { defineCustomElements } from '@revolist/revogrid/loader'
-	import { cellTemplateMap } from '$lib/cell/cell-template'
+	import { cellTemplateMap } from '$lib/cell/CellComponents/cell-template'
 	import { trpc } from '$lib/trpc/client'
 	import { slide } from 'svelte/transition'
 	import { quintOut } from 'svelte/easing'

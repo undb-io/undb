@@ -6,6 +6,6 @@
 	export let field: StringField
 </script>
 
-<Input bind:value class="rounded-sm" {...$$restProps} autocomplete="off" type="email">
+<Input bind:value {...$$restProps} autocomplete="off" type="email">
 	<FieldIcon size={16} type={field.type} slot="left" />
 </Input>

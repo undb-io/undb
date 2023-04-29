@@ -4,4 +4,4 @@
 	export let value: StringFieldValue
 </script>
 
-<span>{value.unpack()}</span>
+<span>{value.unpack() ?? ''} </span>
