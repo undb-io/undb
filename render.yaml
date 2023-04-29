@@ -16,6 +16,6 @@ services:
       - key: PUBLIC_UNDB_ADMIN_PASSWORD
         value: 123456
       - key: PUBLIC_UNDB_IS_DEMO
-        value: true
+        value: 'true'
     domains:
       - demo.undb.xyz
