@@ -2,7 +2,7 @@
 	import type { IViewPinnedFields, PinnedPosition } from '@undb/core'
 	import cx from 'classnames'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
-	import { Button, Dropdown, P, Spinner, Toast } from 'flowbite-svelte'
+	import { Button, Dropdown, Modal, P, Spinner, Toast } from 'flowbite-svelte'
 	import type { RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
 	import type { Components, RevoGridCustomEvent } from '@revolist/revogrid'
 	import { defineCustomElements } from '@revolist/revogrid/loader'
@@ -277,22 +277,29 @@
 	$: hasRecord = !!$records.length
 	$: toastOpen = !!selectedCount
 
-	const duplicateRecordsMutation = trpc.record.bulkDuplicate.mutation({
+	const bulkDeleteRecordsMutation = trpc.record.bulkDelete.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`records:${$table.id.value}`)
 
 			select.set({})
 		},
 	})
-	const duplicateRecords = async () => {
+
+	let confirmBulkDelete = false
+	const confirm = () => {
+		confirmBulkDelete = true
+	}
+
+	const bulkDeleteRecords = async () => {
 		if (!selectedRecords.length) {
 			return
 		}
 
-		$duplicateRecordsMutation.mutate({
+		$bulkDeleteRecordsMutation.mutate({
 			tableId: $table.id.value,
 			ids: selectedRecords as [string, ...string[]],
 		})
+		confirmBulkDelete = false
 	}
 </script>
 
@@ -322,18 +329,13 @@
 >
 	<div class="flex items-center space-x-5 justify-between">
 		<P class="text-sm !text-gray-700">{$t('Selected N Records', { n: selectedCount })}</P>
-		<Button
-			color="alternative"
-			class="inline-flex gap-2 items-center text-gray-600"
-			size="xs"
-			on:click={duplicateRecords}
-		>
-			{#if $duplicateRecordsMutation.isLoading}
+		<Button color="alternative" class="inline-flex gap-2 items-center text-red-400" size="xs" on:click={confirm}>
+			{#if $bulkDeleteRecordsMutation.isLoading}
 				<Spinner class="mr-3" size="4" />
 			{:else}
 				<i class="ti ti-copy text-lg" />
 			{/if}
-			{$t('Duplicate Selected Record')}</Button
+			{$t('Delete Selected Record')}</Button
 		>
 	</div>
 </Toast>
@@ -351,6 +353,33 @@
 		</Portal>
 	{/key}
 {/if}
+
+<Modal bind:open={confirmBulkDelete} size="xs">
+	<div class="text-center">
+		<svg
+			aria-hidden="true"
+			class="mx-auto mb-4 w-14 h-14 text-gray-400 dark:text-gray-200"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+			><path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+			/></svg
+		>
+		<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+			{$t('Confirm Delete Record')}
+		</h3>
+		<Button color="red" class="mr-2 gap-2" on:click={bulkDeleteRecords}>
+			<i class="ti ti-circle-check text-lg" />
+			{$t('Confirm Yes', { ns: 'common' })}</Button
+		>
+		<Button color="alternative">{$t('Confirm No', { ns: 'common' })}</Button>
+	</div>
+</Modal>
 
 <style>
 	:global(revo-grid[theme='compact'] revogr-header .header-rgRow) {
