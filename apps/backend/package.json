@@ -15,7 +15,7 @@
     "@nestjs/platform-express": "^9.4.0",
     "@nestjs/serve-static": "^3.0.1",
     "@nestjs/terminus": "^9.2.2",
-    "@trpc/server": "^10.21.2",
+    "@trpc/server": "^10.22.0",
     "@undb/core": "^0.0.0",
     "@undb/cqrs": "^0.0.0",
     "@undb/domain": "^0.0.0",

@@ -89,8 +89,8 @@ importers:
         specifier: ^9.2.2
         version: 9.2.2(@mikro-orm/core@5.7.3)(@mikro-orm/nestjs@5.1.8)(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@trpc/server':
-        specifier: ^10.21.2
-        version: 10.21.2
+        specifier: ^10.22.0
+        version: 10.22.0
       '@undb/core':
         specifier: ^0.0.0
         version: link:../../packages/core
@@ -306,11 +306,11 @@ importers:
         specifier: ^4.29.5
         version: 4.29.5(svelte@3.58.0)
       '@trpc/client':
-        specifier: ^10.21.2
-        version: 10.21.2(@trpc/server@10.21.2)
+        specifier: ^10.22.0
+        version: 10.22.0(@trpc/server@10.22.0)
       '@trpc/server':
-        specifier: ^10.21.2
-        version: 10.21.2
+        specifier: ^10.22.0
+        version: 10.22.0
       '@types/js-cookie':
         specifier: ^3.0.3
         version: 3.0.3
@@ -421,7 +421,7 @@ importers:
         version: 3.3.2(ts-node@10.9.1)
       trpc-svelte-query:
         specifier: ^0.0.2
-        version: 0.0.2(@tanstack/svelte-query@4.29.5)(@trpc/client@10.21.2)(@trpc/server@10.21.2)(svelte@3.58.0)
+        version: 0.0.2(@tanstack/svelte-query@4.29.5)(@trpc/client@10.22.0)(@trpc/server@10.22.0)(svelte@3.58.0)
       tslib:
         specifier: ^2.5.0
         version: 2.5.0
@@ -720,8 +720,8 @@ importers:
   packages/trpc:
     dependencies:
       '@trpc/server':
-        specifier: ^10.21.2
-        version: 10.21.2
+        specifier: ^10.22.0
+        version: 10.22.0
       '@undb/core':
         specifier: ^0.0.0
         version: link:../core
@@ -2952,16 +2952,16 @@ packages:
     engines: {node: '>= 10'}
     dev: true
 
-  /@trpc/client@10.21.2(@trpc/server@10.21.2):
-    resolution: {integrity: sha512-It5NjrdOqT9UyrJPzpSfT9SAECFt2QxTM/XOX7PQ2s/CnvFCc4420UITV7lYJiWLsD8zdG1CLLO6KdFvDL11FQ==}
+  /@trpc/client@10.22.0(@trpc/server@10.22.0):
+    resolution: {integrity: sha512-zM1JKYWHg8O19JtqZnXQpwRjCcW9iGVmuxj+gKGr0Xmfy8OQRzYVxs625WHXzFt//UtuCjX24YBVjWMDcadAyg==}
     peerDependencies:
-      '@trpc/server': 10.21.2
+      '@trpc/server': 10.22.0
     dependencies:
-      '@trpc/server': 10.21.2
+      '@trpc/server': 10.22.0
     dev: true
 
-  /@trpc/server@10.21.2:
-    resolution: {integrity: sha512-4v9FIOQw1J06OLICLj0M5jmrVF1XCEyu1FXvZA4wB/om1q18NWENXaLjcisgvV/h2gBxx8iN00t9/bE9jn2+fw==}
+  /@trpc/server@10.22.0:
+    resolution: {integrity: sha512-je1onD7yyjJjhy9kiqMmf8TN93hhE+aWO6N3sVmQBh0Q8bCvJ4d24GdEOhI2yvj5tHTpARTvYtsZMkX9GuyTpw==}
 
   /@ts-morph/common@0.19.0:
     resolution: {integrity: sha512-Unz/WHmd4pGax91rdIKWi51wnVUW11QttMEPpBiBgIewnc9UQIX7UDLxr5vRlqeByXCwhkF6VabSsI0raWcyAQ==}
@@ -10822,7 +10822,7 @@ packages:
       escape-string-regexp: 5.0.0
     dev: true
 
-  /trpc-svelte-query@0.0.2(@tanstack/svelte-query@4.29.5)(@trpc/client@10.21.2)(@trpc/server@10.21.2)(svelte@3.58.0):
+  /trpc-svelte-query@0.0.2(@tanstack/svelte-query@4.29.5)(@trpc/client@10.22.0)(@trpc/server@10.22.0)(svelte@3.58.0):
     resolution: {integrity: sha512-YMMZQJqG1O5AQVIBFS/eTkumpAjBineC3ao6P90GptySssc8FMMEJ1N5Z87HxSwMQsp3IWUY3UhEvnv4yUBOsA==}
     peerDependencies:
       '@tanstack/svelte-query': ^4.3.8
@@ -10831,8 +10831,8 @@ packages:
       svelte: ^3.55.1
     dependencies:
       '@tanstack/svelte-query': 4.29.5(svelte@3.58.0)
-      '@trpc/client': 10.21.2(@trpc/server@10.21.2)
-      '@trpc/server': 10.21.2
+      '@trpc/client': 10.22.0(@trpc/server@10.22.0)
+      '@trpc/server': 10.22.0
       esm-env: 1.0.0
       svelte: 3.58.0
     dev: true
