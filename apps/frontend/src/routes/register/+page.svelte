@@ -7,6 +7,7 @@
 	import logo from '$lib/assets/logo.svg'
 	import { page } from '$app/stores'
 	import { slide } from 'svelte/transition'
+	import { t } from '$lib/i18n'
 
 	export let data: PageData
 
@@ -29,6 +30,7 @@
 
 	const { form, enhance, constraints } = superForm(data.form, {
 		SPA: true,
+		taintedMessage: null,
 		onUpdate(event) {
 			$register.mutate(event.form.data)
 		},
@@ -38,13 +40,17 @@
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
 	<div class="sm:mx-auto sm:w-full sm:max-w-sm">
 		<img class="mx-auto h-10 w-auto" src={logo} alt="undb" />
-		<h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Register to undb</h2>
+		<h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+			{$t('register to undb', { ns: 'auth' })}
+		</h2>
 	</div>
 
 	<div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
 		<form class="space-y-6" action="/register" method="POST" use:enhance>
 			<div>
-				<label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
+				<label for="email" class="block text-sm font-medium leading-6 text-gray-900"
+					>{$t('email', { ns: 'auth' })}</label
+				>
 				<div class="mt-2">
 					<input
 						id="email"
@@ -60,6 +66,9 @@
 			</div>
 
 			<div>
+				<label for="email" class="block text-sm font-medium leading-6 text-gray-900"
+					>{$t('password', { ns: 'auth' })}</label
+				>
 				<div class="mt-2">
 					<input
 						id="password"
@@ -75,13 +84,13 @@
 			</div>
 
 			<div>
-				<Button type="submit" class="w-full">Register</Button>
+				<Button type="submit" class="w-full">{$t('register', { ns: 'auth' })}</Button>
 			</div>
 		</form>
 
 		<p class="mt-10 text-center text-sm text-gray-500">
-			Already a member?
-			<A class="ml-1" href="/login">Login</A>
+			{$t('has account', { ns: 'auth' })}
+			<A class="ml-1" href="/login">{$t('login', { ns: 'auth' })}</A>
 		</p>
 	</div>
 </div>

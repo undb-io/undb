@@ -19,8 +19,8 @@ export const config: InitOptions = {
         'email placeholder': 'your email address',
         password: 'password',
         'password placeholder': 'password',
-        'has no account': "has't account yet?",
-        'has account': 'already has an account?',
+        'has no account': "Has't account yet?",
+        'has account': 'Already has an account?',
       },
       common: {
         demo: 'this is a demo site for undb, you can use email: {{email}} and password: {{password}} to login',
