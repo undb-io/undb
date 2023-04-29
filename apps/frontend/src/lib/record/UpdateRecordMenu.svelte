@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { goto } from '$app/navigation'
+	import { goto, invalidate } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { t } from '$lib/i18n'
 	import { currentRecordId, getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { Record } from '@undb/core'
-	import { Button, Dropdown, DropdownItem, Modal } from 'flowbite-svelte'
+	import { Button, Dropdown, DropdownDivider, DropdownItem, Modal } from 'flowbite-svelte'
 
 	let confirmDeleteOpen = false
 
@@ -18,12 +18,31 @@
 			await goto($page.url.pathname)
 		},
 	})
+
+	const duplicateRecord = trpc.record.duplicate.mutation({
+		async onSuccess(data, variables, context) {
+			$currentRecordId = undefined
+			await invalidate(`records:${$table.id.value}`)
+		},
+	})
 </script>
 
 <button>
 	<i class="ti ti-dots" />
 </button>
 <Dropdown>
+	<DropdownItem
+		on:click={() => {
+			if (record) {
+				$duplicateRecord.mutate({ tableId: $table.id.value, id: record.id.value })
+			}
+		}}
+		class="inline-flex items-center gap-2"
+	>
+		<i class="ti ti-trash" />
+		<span class="text-xs">{$t('Duplicate Record')}</span>
+	</DropdownItem>
+	<DropdownDivider />
 	<DropdownItem on:click={() => (confirmDeleteOpen = true)} class="inline-flex items-center gap-2 text-red-400">
 		<i class="ti ti-trash" />
 		<span class="text-xs">{$t('Delete Record')}</span>
