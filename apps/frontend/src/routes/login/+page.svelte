@@ -36,10 +36,9 @@
 		},
 	})
 
-	const { PUBLIC_UNDB_IS_DEMO, PUBLIC_UNDB_ADMIN_EMAIL, PUBLIC_UNDB_ADMIN_PASSWORD } = env
-	const isDemo = PUBLIC_UNDB_IS_DEMO === 'true'
+	const { PUBLIC_UNDB_ADMIN_EMAIL, PUBLIC_UNDB_ADMIN_PASSWORD } = env
 
-	$: if (isDemo) {
+	$: {
 		$form.email = PUBLIC_UNDB_ADMIN_EMAIL ?? ''
 		$form.password = PUBLIC_UNDB_ADMIN_PASSWORD ?? ''
 	}
@@ -111,7 +110,7 @@
 	</Toast>
 {/if}
 
-{#if isDemo && !!PUBLIC_UNDB_ADMIN_EMAIL && !!PUBLIC_UNDB_ADMIN_PASSWORD}
+{#if !!PUBLIC_UNDB_ADMIN_EMAIL && !!PUBLIC_UNDB_ADMIN_PASSWORD}
 	<Banner id="default-banner" position="absolute">
 		<p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
 			<span class="inline-flex p-1 mr-3 bg-gray-200 rounded-full dark:bg-gray-600">
