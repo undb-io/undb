@@ -1,13 +1,5 @@
 <script lang="ts">
-	import {
-		currentFieldId,
-		currentRecord,
-		currentRecordId,
-		getField,
-		getRecord,
-		getTable,
-		records,
-	} from '$lib/store/table'
+	import { currentFieldId, currentRecord, currentRecordId, getField, getTable, records } from '$lib/store/table'
 	import TableIndex from '$lib/table/TableIndex.svelte'
 	import { RecordFactory } from '@undb/core'
 	import type { PageData } from './$types'
@@ -18,6 +10,7 @@
 	import CreateOption from '$lib/option/CreateOption.svelte'
 	import CreateView from '$lib/view/CreateView.svelte'
 	import ViewConfigModal from '$lib/view/ViewConfigModal.svelte'
+	import UpdateTable from '$lib/table/UpdateTable.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -37,6 +30,7 @@
 
 <TableIndex />
 
+<UpdateTable data={data.updateTable} />
 <CreateView data={data.createView} />
 <ViewConfigModal />
 <CreateRecord data={data.createRecord} />

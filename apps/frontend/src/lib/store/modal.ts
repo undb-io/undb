@@ -2,6 +2,7 @@ import type { ICreateFieldSchema, RecordValueJSON } from '@undb/core'
 import { writable } from 'svelte/store'
 
 export const createTableOpen = writable<boolean>(false)
+export const updateTableOpen = writable<boolean>(false)
 export const createViewOpen = writable<boolean>(false)
 export const configViewOpen = writable<boolean>(false)
 

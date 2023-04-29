@@ -5,7 +5,7 @@
 	import ManageFieldsMenu from './ManageFieldsMenu.svelte'
 	import TableNavigator from './TableNavigator.svelte'
 	import ToggleDisplayType from './ToggleDisplayType.svelte'
-	import { createFieldOpen, createRecordOpen } from '$lib/store/modal'
+	import { createFieldOpen, createRecordOpen, updateTableOpen } from '$lib/store/modal'
 	import { records } from '$lib/store/table'
 	import ViewConfigMenu from '$lib/view/ViewConfigMenu.svelte'
 	import { t } from '$lib/i18n'
@@ -44,7 +44,10 @@
 		{/if}
 	</div>
 
-	<div class="ml-2">
+	<div class="flex items-center ml-2 gap-3">
+		<button on:click={() => ($updateTableOpen = true)}>
+			<i class="ti ti-settings text-gray-600" />
+		</button>
 		<ToggleDisplayType />
 	</div>
 </div>
