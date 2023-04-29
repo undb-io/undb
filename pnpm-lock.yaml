@@ -3,6 +3,10 @@ lockfileVersion: '6.0'
 importers:
 
   .:
+    dependencies:
+      husky:
+        specifier: ^8.0.3
+        version: 8.0.3
     devDependencies:
       '@commitlint/cli':
         specifier: ^17.6.1
@@ -25,9 +29,6 @@ importers:
       dotenv-cli:
         specifier: ^7.2.1
         version: 7.2.1
-      husky:
-        specifier: ^8.0.3
-        version: 8.0.3
       lint-staged:
         specifier: ^13.2.2
         version: 13.2.2
@@ -6554,7 +6555,7 @@ packages:
     resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
     engines: {node: '>=14'}
     hasBin: true
-    dev: true
+    dev: false
 
   /i18next-http-middleware@3.3.0:
     resolution: {integrity: sha512-WX6uqxNwXccdNm/md5VJ+Q47DF2gjqLvygvgNzb2tCJWPM86FCi2LIvKco70EttlpV9IkfkCVNVF07/56EsSEw==}
