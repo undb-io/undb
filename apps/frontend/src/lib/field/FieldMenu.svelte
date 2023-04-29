@@ -1,12 +1,11 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import { invalidate } from '$app/navigation'
-	import { page } from '$app/stores'
 	import { currentFieldId, getField, getTable, getView } from '$lib/store/table'
-	import { updateFieldOpen } from '$lib/store/modal'
+	import { confirmDeleteField, updateFieldOpen } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import type { ISortDirection } from '@undb/core'
-	import { DropdownDivider, DropdownItem, Toast } from 'flowbite-svelte'
+	import { DropdownDivider, DropdownItem, Modal, Toast } from 'flowbite-svelte'
 	import { noop } from 'lodash-es'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
@@ -111,6 +110,16 @@
 		{:else}
 			{$t('Sort Desending')}
 		{/if}
+	</span>
+</DropdownItem>
+<DropdownDivider />
+<DropdownItem
+	class={'inline-flex items-center gap-2 text-xs text-red-400'}
+	on:click={() => ($confirmDeleteField = true)}
+>
+	<i class="ti ti-trash text-sm" />
+	<span>
+		{$t('Delete Field')}
 	</span>
 </DropdownItem>
 
