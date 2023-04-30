@@ -1,42 +1,43 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Badge, Button, Hr, Toast } from 'flowbite-svelte'
+	import { Badge, Button, Modal, Toast } from 'flowbite-svelte'
 	import { getTable, getView, sorts } from '$lib/store/table'
 	import type { ISortSchema } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
 	import { writable } from 'svelte/store'
-	import { Popover, PopoverButton, PopoverPanel } from '@rgossiaux/svelte-headlessui'
-	import autoAnimate from '@formkit/auto-animate'
-	import { fade, slide } from 'svelte/transition'
-	import { createPopperActions } from 'svelte-popperjs'
-	import type { SetOptional } from 'type-fest'
+	import { slide } from 'svelte/transition'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import { t } from '$lib/i18n'
+	import { dndzone } from 'svelte-dnd-action'
+	import { flip } from 'svelte/animate'
 
 	const table = getTable()
 	const view = getView()
 
-	const value = writable<SetOptional<ISortSchema, 'fieldId'>[]>([])
-	$: value.set($sorts.length ? [...$sorts] : [{ direction: 'asc' }])
-	$: selected = $value.filter((v) => !!v.fieldId).map((v) => v.fieldId)
+	const TEMP_ID = '__TEMP'
+	const value = writable<(Omit<ISortSchema, 'fieldId'> & { id?: string })[]>([])
+	$: value.set(
+		$sorts.length
+			? [...$sorts.map((s) => ({ id: s.fieldId, direction: s.direction }))]
+			: [{ id: TEMP_ID, direction: 'asc' }],
+	)
+
+	$: selected = $value.filter((v) => !!v.id).map((v) => v.id)
 
 	const directions = ['asc', 'desc'] as const
-
-	const [popperRef, popperContent] = createPopperActions()
-
-	const popperOptions = {
-		strategy: 'fixed',
-		modifiers: [{ name: 'offset', options: { offset: [0, 10] } }],
-	}
 
 	const setSort = trpc.table.view.sort.set.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
+			open = false
 		},
 	})
+
 	async function sort() {
-		const validSorts = $value.filter((v) => !!v.fieldId && v.direction) as ISortSchema[]
+		const validSorts = $value
+			.filter((v) => !!v.id && v.direction)
+			.map((v) => ({ fieldId: v.id, direction: v.direction })) as ISortSchema[]
 
 		$setSort.mutate({
 			tableId: $table.id.value,
@@ -44,94 +45,91 @@
 			sorts: validSorts,
 		})
 	}
+	function handleDndConsider(e: CustomEvent) {
+		$value = e.detail.items
+	}
+	function handleDndFinalize(e: CustomEvent) {
+		$value = e.detail.items
+	}
+
+	let open = false
 </script>
 
-<Popover class="relative z-10" let:open>
-	<PopoverButton as="div" use={[popperRef]}>
-		<Button
-			size="xs"
-			color="light"
-			class={cx('h-full !rounded-md whitespace-nowrap', !!$sorts.length && 'bg-blue-100 hover:bg-blue-100 border-0')}
-		>
-			<span class="inline-flex items-center gap-2" class:text-blue-600={!!$sorts.length}>
-				<i class="ti ti-arrows-sort text-sm" />
-				<span class="whitespace-nowrap">{$t('Sort')}</span>
-				{#if !!$sorts.length}
-					<Badge class="rounded-full h-4 px-2 bg-blue-700 !text-white">{$sorts.length}</Badge>
-				{/if}
-			</span>
-		</Button>
-	</PopoverButton>
-	{#if open}
-		<div transition:fade={{ duration: 100 }}>
-			<PopoverPanel class="absolute" use={[[popperContent, popperOptions]]} let:close>
-				<div class="rounded-sm shadow-xl bg-white w-[400px] px-3 py-3 space-y-2 border border-gray-200">
-					{#if $value.length}
-						<span class="text-xs font-medium text-gray-500">{$t('set sorts in this view')}</span>
-						<ul class="w-full items-center space-y-2" use:autoAnimate={{ duration: 100 }}>
-							{#each $value as sort, idx}
-								<li class="flex justify-between">
-									<div class="flex">
-										<FieldPicker
-											bind:value={sort.fieldId}
-											table={$table}
-											size="xs"
-											class="w-48 rounded-r-none !justify-start border-r-0"
-											filter={(f) => f.sortable && !selected.includes(f.id.value)}
-										/>
-										<div class="inline-flex w-1/2">
-											{#each directions as direction, i (direction)}
-												<Button
-													size="xs"
-													class={cx('!rounded-none', i === 1 && '!rounded-r-md border-l-0')}
-													on:click={() => {
-														value.update((sort) => sort.map((s, index) => (index === idx ? { ...s, direction } : s)))
-													}}
-													color={sort.direction === direction ? 'blue' : 'light'}
-													>{$t(direction, { ns: 'common' })}</Button
-												>
-											{/each}
-										</div>
-									</div>
+<Button
+	size="xs"
+	color="light"
+	class={cx('h-full !rounded-md whitespace-nowrap', !!$sorts.length && 'bg-blue-100 hover:bg-blue-100 border-0')}
+	on:click={() => (open = true)}
+>
+	<span class="inline-flex items-center gap-2" class:text-blue-600={!!$sorts.length}>
+		<i class="ti ti-arrows-sort text-sm" />
+		<span class="whitespace-nowrap">{$t('Sort')}</span>
+		{#if !!$sorts.length}
+			<Badge class="rounded-full h-4 px-2 bg-blue-700 !text-white">{$sorts.length}</Badge>
+		{/if}
+	</span>
+</Button>
 
-									<button
-										on:click|preventDefault|stopPropagation={() => {
-											value.update((sorts) => sorts.filter((_, index) => index !== idx))
+<Modal bind:open class="w-full" size="sm" placement="top-center">
+	<form id="sort_menu" class="space-y-4" on:submit={sort}>
+		{#if $value.length}
+			<span class="text-xs font-medium text-gray-500">{$t('set sorts in this view')}</span>
+			<ul
+				use:dndzone={{ items: $value, type: 'sorts', dropTargetStyle: {} }}
+				class="w-full items-center space-y-2"
+				on:consider={handleDndConsider}
+				on:finalize={handleDndFinalize}
+			>
+				{#each $value as sort, idx (sort.id)}
+					<li animate:flip={{ duration: 200 }} class="flex justify-between">
+						<div class="flex">
+							<FieldPicker
+								bind:value={sort.id}
+								table={$table}
+								size="xs"
+								class="w-48 rounded-r-none !justify-start border-r-0"
+								filter={(f) => f.sortable && !selected.includes(f.id.value)}
+							/>
+							<div class="inline-flex w-1/2">
+								{#each directions as direction, i (direction)}
+									<Button
+										size="xs"
+										class={cx('!rounded-none', i === 1 && '!rounded-r-md border-l-0')}
+										on:click={() => {
+											value.update((sort) => sort.map((s, index) => (index === idx ? { ...s, direction } : s)))
 										}}
+										color={sort.direction === direction ? 'blue' : 'light'}>{$t(direction, { ns: 'common' })}</Button
 									>
-										<i class="ti ti-trash text-gray-500" />
-									</button>
-								</li>
-							{/each}
-						</ul>
-					{:else}
-						<span class="text-xs font-medium text-gray-400">{$t('no sorts applied')}</span>
-					{/if}
-					<Hr />
-					<div class="flex justify-between">
-						<div>
-							<Button
-								color="alternative"
-								size="xs"
-								on:click={() => value.update((sorts) => [...sorts, { direction: 'asc' }])}
-								>{$t('Create New Sort')}</Button
-							>
+								{/each}
+							</div>
 						</div>
-						<div>
-							<Button
-								size="xs"
-								on:click={async () => {
-									await sort()
-									close(null)
-								}}>{$t('Apply', { ns: 'common' })}</Button
-							>
-						</div>
-					</div>
-				</div>
-			</PopoverPanel>
+
+						<button
+							on:click|preventDefault|stopPropagation={() => {
+								value.update((sorts) => sorts.filter((_, index) => index !== idx))
+							}}
+						>
+							<i class="ti ti-trash text-gray-500" />
+						</button>
+					</li>
+				{/each}
+			</ul>
+		{:else}
+			<span class="text-xs font-medium text-gray-400">{$t('no sorts applied')}</span>
+		{/if}
+	</form>
+	<svelte:fragment slot="footer">
+		<div class="flex w-full justify-between">
+			<Button
+				color="alternative"
+				size="xs"
+				on:click={() => value.update((sorts) => [...sorts, { id: TEMP_ID, direction: 'asc' }])}
+				disabled={$value.some((v) => v.id === TEMP_ID)}>{$t('Create New Sort')}</Button
+			>
+			<Button size="xs" type="submit" form="sort_menu">{$t('Apply', { ns: 'common' })}</Button>
 		</div>
-	{/if}
-</Popover>
+	</svelte:fragment>
+</Modal>
 
 {#if $setSort.error}
 	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
