@@ -3,4 +3,4 @@
 	export let value: boolean = false
 </script>
 
-<Checkbox bind:checked={value} {...$$restProps} size="18" />
+<Checkbox bind:checked={value} {...$$restProps} class="max-w-xs" size="18" />
