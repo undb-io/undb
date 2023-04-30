@@ -6,10 +6,10 @@
 	import type { Field, IFilter } from '@undb/core'
 	import { getTable } from '$lib/store/table'
 	import FilterValue from './FilterValue.svelte'
+	import { withPrevious } from 'svelte-previous'
 
 	export let filter: Partial<IFilter>
 	export let index: number
-	export let reset: (index: number, field: Field | undefined) => void
 	export let remove: (index: number) => void
 
 	const table = getTable()
@@ -26,12 +26,11 @@
 		bind:value={filter.path}
 		bind:type={filter.type}
 		filter={(f) => f.filterable}
-		on:change={() => reset(index, field)}
 	/>
 	<FilterOperatorPicker
 		{field}
 		size="sm"
-		class={cx('h-8 !rounded-none w-full border-l-0 border-r-0 py-1')}
+		class={cx('h-8 !rounded-none w-full border-l-0 py-1')}
 		bind:value={filter.operator}
 	/>
 	<FilterValue {field} operator={filter.operator} bind:value={filter.value} class="h-8 !rounded-none rounded-r-sm" />

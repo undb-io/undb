@@ -30,7 +30,7 @@
 	}
 
 	const reset = (index: number, field: Field | undefined) => {
-		$value = $value.map((f, i) => (i !== index ? f : { path: field?.id.value, type: field?.type }))
+		$value = $value.map((f, i) => (i !== index ? f : { path: field?.id.value, type: field?.type, value: undefined }))
 	}
 
 	const remove = (index: number) => {
@@ -88,7 +88,7 @@
 						<span class="text-xs font-medium text-gray-500">{$t('set filters in this view')}</span>
 						<ul class="space-y-2" use:autoAnimate={{ duration: 100 }}>
 							{#each $value as filter, index}
-								<FilterItem {filter} {index} {reset} {remove} />
+								<FilterItem {filter} {index} {remove} />
 							{/each}
 						</ul>
 					{:else}

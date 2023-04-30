@@ -20,15 +20,14 @@
 	}
 </script>
 
-<!-- <NumberInput bind:value {...$$restProps} min={0} max={field.max} /> -->
-<div class="flex items-center" on:mouseleave={onMouseLeave}>
+<div class={cx('h-full flex items-center', $$restProps.class)} on:mouseleave={onMouseLeave}>
 	<!-- svelte-ignore a11y-interactive-supports-focus -->
 	{#each Array(max) as _, i}
 		<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 		<!-- svelte-ignore a11y-interactive-supports-focus -->
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<span
-			class="w-5 h-5 transition hover:scale-125"
+			class="inline-flex items-center justify-center w-5 h-5 transition hover:scale-125"
 			role="button"
 			on:mouseover={() => onMouseOver(i)}
 			on:click={() => onClick(i)}

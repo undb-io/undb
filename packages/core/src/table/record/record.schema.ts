@@ -18,10 +18,10 @@ import { recordIdSchema } from './value-objects/record-id.schema.js'
 
 export const internalRecordValues = z.object({
   [INTERNAL_COLUMN_ID_NAME]: recordIdSchema,
-  [INTERNAL_COLUMN_CREATED_AT_NAME]: z.string().datetime(),
+  [INTERNAL_COLUMN_CREATED_AT_NAME]: z.string(),
   [INTERNAL_COLUMN_CREATED_BY_NAME]: userIdSchema,
   created_by_profile: collaboratorProfile.nullable(),
-  [INTERNAL_COLUMN_UPDATED_AT_NAME]: z.string().datetime(),
+  [INTERNAL_COLUMN_UPDATED_AT_NAME]: z.string(),
   [INTERNAL_COLUMN_UPDATED_BY_NAME]: userIdSchema,
   updated_by_profile: collaboratorProfile.nullable(),
   [INTERNAL_INCREAMENT_ID_NAME]: z.number().optional(),

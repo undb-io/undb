@@ -11,7 +11,7 @@
 
 	$: data = getFilterOperators(field?.type)
 	$: if (!!field && !data.some((v) => v.value === value)) {
-		value = data[0].value
+		value = data[0]?.value ?? ''
 	}
 </script>
 

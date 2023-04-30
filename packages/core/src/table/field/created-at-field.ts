@@ -63,6 +63,6 @@ export class CreatedAtField extends AbstractDateField<ICreatedAtField> {
   }
 
   get valueSchema(): ZodTypeAny {
-    return z.string().datetime()
+    return z.string()
   }
 }

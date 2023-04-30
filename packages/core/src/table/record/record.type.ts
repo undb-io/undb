@@ -24,10 +24,10 @@ export type IRecordDisplayValues = z.infer<typeof recordDisplayValues>
 export const queryRecordSchema = z.object({
   id: recordIdSchema,
   tableId: tableIdSchema,
-  createdAt: z.string().datetime(),
+  createdAt: z.string(),
   createdBy: userIdSchema,
   createdByProfile: collaboratorProfile.nullable(),
-  updatedAt: z.string().datetime(),
+  updatedAt: z.string(),
   updatedBy: userIdSchema,
   updatedByProfile: collaboratorProfile.nullable(),
   autoIncrement: z.number().int().positive().optional(),

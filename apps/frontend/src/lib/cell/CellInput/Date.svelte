@@ -2,9 +2,9 @@
 	import { format } from 'date-fns'
 	import { Input } from 'flowbite-svelte'
 
-	export let value: string | null
+	export let value: string | undefined = undefined
 
-	$: date = value ? format(new Date(value), 'yyyy-MM-dd') : ''
+	$: value = value ? format(new Date(value), 'yyyy-MM-dd') : ''
 </script>
 
-<Input type="date" bind:value={date} {...$$restProps} />
+<Input type="date" bind:value {...$$restProps} />
