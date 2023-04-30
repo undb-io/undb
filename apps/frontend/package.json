@@ -25,7 +25,7 @@
     "i18next": "^22.4.14",
     "i18next-browser-languagedetector": "^7.0.1",
     "jotai": "^2.0.3",
-    "jotai-devtools": "^0.4.0",
+    "jotai-devtools": "^0.5.0",
     "lodash-es": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
