@@ -15,15 +15,13 @@
 	const table = getTable()
 
 	let field: Field | undefined
-
-	// $: field?.id.value, reset(index)
 </script>
 
 <li class="flex h-8 items-center">
 	<FieldPicker
 		bind:selected={field}
 		size="xs"
-		class="h-8 rounded-l-sm rounded-r-none w-32 !justify-start"
+		class="h-8 rounded-l-md rounded-r-none w-32 !justify-start"
 		table={$table}
 		bind:value={filter.path}
 		bind:type={filter.type}
@@ -39,7 +37,7 @@
 	<FilterValue {field} operator={filter.operator} bind:value={filter.value} class="h-8 !rounded-none rounded-r-sm" />
 	<Button
 		color="light"
-		class="h-8 aspect-square !rounded-l-none !rounded-r-sm !p-0 border-l-0 border-gray-200"
+		class="h-8 aspect-square !rounded-l-none !rounded-r-md !p-0 border-l-0 border-gray-100"
 		size="xs"
 		on:click={() => remove(index)}
 	>

@@ -1,6 +1,7 @@
 <script lang="ts">
+	import cx from 'classnames'
 	import { Popover, PopoverButton, PopoverPanel } from '@rgossiaux/svelte-headlessui'
-	import { Button, Hr, Toast } from 'flowbite-svelte'
+	import { Badge, Button, Hr, Toast } from 'flowbite-svelte'
 	import autoAnimate from '@formkit/auto-animate'
 	import { fade, slide } from 'svelte/transition'
 	import FilterItem from './FilterItem.svelte'
@@ -54,15 +55,35 @@
 
 <Popover class="relative z-10" let:open>
 	<PopoverButton as="div" use={[popperRef]}>
-		<Button id="filters-menu" size="xs" color="alternative" class="h-full !rounded-md gap-2 whitespace-nowrap">
-			<i class="ti ti-filter text-sm" />
-			{$t('Filter')}</Button
+		<Button
+			id="filters-menu"
+			size="xs"
+			color="alternative"
+			class={cx(
+				'h-full !rounded-md gap-2 whitespace-nowrap',
+				!!$filters.length && 'bg-blue-100 hover:bg-blue-100 border-0',
+			)}
 		>
+			<span class="inline-flex items-center gap-2" class:text-blue-600={!!$filters.length}>
+				<i class="ti ti-filter text-sm" />
+				{$t('Filter')}
+
+				{#if !!$filters.length}
+					<Badge class="rounded-full h-4 px-2 bg-blue-700 !text-white">{$filters.length}</Badge>
+				{/if}
+			</span>
+		</Button>
 	</PopoverButton>
 	{#if open}
 		<div transition:fade={{ duration: 100 }}>
 			<PopoverPanel class="absolute" use={[[popperContent, popperOptions]]} let:close>
-				<div class="rounded-sm shadow-xl bg-white w-[600px] px-3 py-3 space-y-2 border border-gray-200">
+				<form
+					on:submit|preventDefault={async () => {
+						await apply()
+						close(null)
+					}}
+					class="rounded-sm shadow-xl bg-white w-[600px] px-3 py-3 space-y-2 border border-gray-200"
+				>
 					{#if $value.length}
 						<span class="text-xs font-medium text-gray-500">{$t('set filters in this view')}</span>
 						<ul class="space-y-2" use:autoAnimate={{ duration: 100 }}>
@@ -79,16 +100,10 @@
 							<Button color="alternative" size="xs" on:click={add}>{$t('Create New Filter')}</Button>
 						</div>
 						<div>
-							<Button
-								size="xs"
-								on:click={async () => {
-									await apply()
-									close(null)
-								}}>{$t('Apply', { ns: 'common' })}</Button
-							>
+							<Button size="xs" type="submit">{$t('Apply', { ns: 'common' })}</Button>
 						</div>
 					</div>
-				</div>
+				</form>
 			</PopoverPanel>
 		</div>
 	{/if}

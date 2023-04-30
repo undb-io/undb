@@ -10,6 +10,9 @@
 	export let field: Field | undefined
 
 	$: data = getFilterOperators(field?.type)
+	$: if (!!field && !data.some((v) => v.value === value)) {
+		value = data[0].value
+	}
 </script>
 
 <Listbox class="relative" {value} on:change={(e) => (value = e.detail)}>

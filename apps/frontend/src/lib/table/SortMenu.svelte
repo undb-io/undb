@@ -51,7 +51,7 @@
 		<Button
 			size="xs"
 			color="light"
-			class={cx('h-full !rounded-md', !!$sorts.length && 'bg-blue-100 hover:bg-blue-100 border-0 whitespace-nowrap')}
+			class={cx('h-full !rounded-md whitespace-nowrap', !!$sorts.length && 'bg-blue-100 hover:bg-blue-100 border-0')}
 		>
 			<span class="inline-flex items-center gap-2" class:text-blue-600={!!$sorts.length}>
 				<i class="ti ti-arrows-sort text-sm" />
