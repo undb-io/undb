@@ -1,24 +1,15 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Popover, PopoverButton, PopoverPanel } from '@rgossiaux/svelte-headlessui'
-	import { Badge, Button, Hr, Toast } from 'flowbite-svelte'
+	import { Badge, Button, Modal, Toast } from 'flowbite-svelte'
 	import autoAnimate from '@formkit/auto-animate'
-	import { fade, slide } from 'svelte/transition'
+	import { slide } from 'svelte/transition'
 	import FilterItem from './FilterItem.svelte'
-	import { createPopperActions } from 'svelte-popperjs'
 	import { trpc } from '$lib/trpc/client'
 	import { filters, getTable, getView } from '$lib/store/table'
-	import type { Field, IFilter } from '@undb/core'
+	import { isOperatorWithoutValue, type IFilter } from '@undb/core'
 	import { invalidateAll } from '$app/navigation'
 	import { writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
-
-	const [popperRef, popperContent] = createPopperActions()
-
-	const popperOptions = {
-		strategy: 'fixed',
-		modifiers: [{ name: 'offset', options: { offset: [0, 10] } }],
-	}
 
 	const value = writable<Partial<IFilter>[]>([...$filters])
 
@@ -29,10 +20,6 @@
 		$value = [...$value, {}]
 	}
 
-	const reset = (index: number, field: Field | undefined) => {
-		$value = $value.map((f, i) => (i !== index ? f : { path: field?.id.value, type: field?.type, value: undefined }))
-	}
-
 	const remove = (index: number) => {
 		$value = $value.filter((f, i) => i !== index)
 	}
@@ -40,10 +27,13 @@
 	const setFilter = trpc.table.view.filter.set.mutation({
 		async onSuccess() {
 			await invalidateAll()
+			open = false
 		},
 	})
 	async function apply() {
-		const validFilters = $value.filter((v) => !!v.path && !!v.operator && !!v.type) as IFilter[]
+		const validFilters = $value.filter(
+			(v) => !!v.path && !!v.operator && !!v.type && (isOperatorWithoutValue(v.operator) ? true : !!v.value),
+		) as IFilter[]
 
 		$setFilter.mutate({
 			tableId: $table.id.value,
@@ -51,63 +41,49 @@
 			filter: validFilters,
 		})
 	}
+
+	let open = false
 </script>
 
-<Popover class="relative z-10" let:open>
-	<PopoverButton as="div" use={[popperRef]}>
-		<Button
-			id="filters-menu"
-			size="xs"
-			color="alternative"
-			class={cx(
-				'h-full !rounded-md gap-2 whitespace-nowrap',
-				!!$filters.length && 'bg-blue-100 hover:bg-blue-100 border-0',
-			)}
-		>
-			<span class="inline-flex items-center gap-2" class:text-blue-600={!!$filters.length}>
-				<i class="ti ti-filter text-sm" />
-				{$t('Filter')}
+<Button
+	id="filters-menu"
+	size="xs"
+	color="alternative"
+	on:click={() => (open = true)}
+	class={cx(
+		'h-full !rounded-md gap-2 whitespace-nowrap',
+		!!$filters.length && 'bg-blue-100 hover:bg-blue-100 border-0',
+	)}
+>
+	<span class="inline-flex items-center gap-2" class:text-blue-600={!!$filters.length}>
+		<i class="ti ti-filter text-sm" />
+		{$t('Filter')}
 
-				{#if !!$filters.length}
-					<Badge class="rounded-full h-4 px-2 bg-blue-700 !text-white">{$filters.length}</Badge>
-				{/if}
-			</span>
-		</Button>
-	</PopoverButton>
-	{#if open}
-		<div transition:fade={{ duration: 100 }}>
-			<PopoverPanel class="absolute" use={[[popperContent, popperOptions]]} let:close>
-				<form
-					on:submit|preventDefault={async () => {
-						await apply()
-						close(null)
-					}}
-					class="rounded-sm shadow-xl bg-white w-[600px] px-3 py-3 space-y-2 border border-gray-200"
-				>
-					{#if $value.length}
-						<span class="text-xs font-medium text-gray-500">{$t('set filters in this view')}</span>
-						<ul class="space-y-2" use:autoAnimate={{ duration: 100 }}>
-							{#each $value as filter, index}
-								<FilterItem {filter} {index} {remove} />
-							{/each}
-						</ul>
-					{:else}
-						<span class="text-xs font-medium text-gray-400">{$t('no filters applied')}</span>
-					{/if}
-					<Hr />
-					<div class="flex justify-between">
-						<div>
-							<Button color="alternative" size="xs" on:click={add}>{$t('Create New Filter')}</Button>
-						</div>
-						<div>
-							<Button size="xs" type="submit">{$t('Apply', { ns: 'common' })}</Button>
-						</div>
-					</div>
-				</form>
-			</PopoverPanel>
+		{#if !!$filters.length}
+			<Badge class="rounded-full h-4 px-2 bg-blue-700 !text-white">{$filters.length}</Badge>
+		{/if}
+	</span>
+</Button>
+<Modal placement="top-center" bind:open class="w-full" size="sm">
+	<form on:submit|preventDefault={apply} id="filter_menu" class="space-y-4">
+		{#if $value.length}
+			<span class="text-xs font-medium text-gray-500">{$t('set filters in this view')}</span>
+			<ul class="space-y-2" use:autoAnimate={{ duration: 100 }}>
+				{#each $value as filter, index}
+					<FilterItem {filter} {index} {remove} />
+				{/each}
+			</ul>
+		{:else}
+			<span class="text-xs font-medium text-gray-400">{$t('no filters applied')}</span>
+		{/if}
+	</form>
+	<svelte:fragment slot="footer">
+		<div class="flex w-full justify-between">
+			<Button color="alternative" size="xs" on:click={add}>{$t('Create New Filter')}</Button>
+			<Button size="xs" type="submit" form="filter_menu">{$t('Apply', { ns: 'common' })}</Button>
 		</div>
-	{/if}
-</Popover>
+	</svelte:fragment>
+</Modal>
 
 {#if $setFilter.error}
 	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">

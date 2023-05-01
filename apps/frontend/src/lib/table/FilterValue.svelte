@@ -6,7 +6,7 @@
 	import Select from '$lib/cell/CellInput/Select.svelte'
 	import String from '$lib/cell/CellInput/String.svelte'
 	import OptionsPicker from '$lib/option/OptionsPicker.svelte'
-	import type { Field } from '@undb/core'
+	import { isBuiltInDateOperator, type Field, type IDateFilterOperator } from '@undb/core'
 	import type { ComponentType } from 'svelte'
 	import { withPrevious } from 'svelte-previous'
 
@@ -19,7 +19,7 @@
 	const [currentField, previousField] = withPrevious(field?.id.value)
 	$: $currentField = field?.id.value
 	$: if (!!$currentField && !!$previousField && $currentField !== $previousField) {
-		value = undefined
+		value = null
 	}
 
 	$: type = field?.type
@@ -29,7 +29,12 @@
 		} else if (type === 'email') {
 			component = Email
 		} else if (type === 'date' || type === 'updated-at' || type === 'created-at') {
-			component = Date
+			if (isBuiltInDateOperator(operator as IDateFilterOperator)) {
+				component = undefined
+				value = null
+			} else {
+				component = Date
+			}
 		} else if (
 			type === 'number' ||
 			type === 'auto-increment' ||

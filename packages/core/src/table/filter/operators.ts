@@ -26,10 +26,6 @@ export const $is_today = z.literal('$is_today')
 export const $has_file_type = z.literal('$has_file_type')
 export const $has_file_extension = z.literal('$has_file_extension')
 
-export const operatorsWihtoutValue = z.union([$is_empty, $is_not_empty])
-
-export const isOperatorWithoutValue = (value: string): boolean => operatorsWihtoutValue.safeParse(value).success
-
 export const idFilterOperators = z.union([$eq, $neq, $in, $nin])
 export type IIdFilterOperator = z.infer<typeof idFilterOperators>
 
@@ -74,6 +70,8 @@ export type IDateFilterOperator = z.infer<typeof dateFilterOperators>
  */
 export const dateBuiltInOperators = new Set<IDateFilterOperator>([$is_today.value])
 
+export const isBuiltInDateOperator = (operator: IDateFilterOperator) => dateBuiltInOperators.has(operator)
+
 export const referenceFilterOperators = z.union([$eq, $neq])
 export type IReferenceFilterOperator = z.infer<typeof referenceFilterOperators>
 
@@ -111,3 +109,6 @@ export type IUpdatedByFilterOperator = z.infer<typeof updatedByFilterOperators>
 
 export const autoIncrementFilterOperators = numberFilterOperators
 export type IAutoIncrementFilterOperator = z.infer<typeof autoIncrementFilterOperators>
+
+export const operatorsWihtoutValue = z.union([$is_empty, $is_not_empty, $is_today, $is_root])
+export const isOperatorWithoutValue = (value: string): boolean => operatorsWihtoutValue.safeParse(value).success
