@@ -31,7 +31,7 @@
 	</ListboxButton>
 	<ListboxOptions class="fixed bg-white py-1 border border-gray-100 shadow-md overflow-y-auto w-48 z-50">
 		{#each data as item}
-			<ListboxOption value={item.value} class="p-2 cursor-pointer hover:bg-gray-100 text-xs text-gray-500">
+			<ListboxOption value={item.value} class="p-2 cursor-pointer hover:bg-gray-100 text-xs text-gray-700">
 				{$t(item.value, { ns: 'common' })}
 			</ListboxOption>
 		{/each}

@@ -53,7 +53,7 @@
 		select.set(selected)
 	}
 
-	$: fields = $table.getOrderedFields($view)
+	$: fields = $table.getOrderedFields($view, false)
 
 	onMount(async () => {
 		await defineCustomElements()

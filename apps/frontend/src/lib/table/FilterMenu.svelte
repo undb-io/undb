@@ -70,7 +70,7 @@
 		{#if $value.length}
 			<span class="text-xs font-medium text-gray-500">{$t('set filters in this view')}</span>
 			<ul class="space-y-2">
-				{#each $value as filter, index (filter.path)}
+				{#each $value as filter, index}
 					<FilterItem {filter} {index} {remove} />
 				{/each}
 			</ul>
