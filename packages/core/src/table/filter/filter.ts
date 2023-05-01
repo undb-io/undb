@@ -427,7 +427,7 @@ const convertAttachmentFilter = (filter: IAttachmentFilter): Option<CompositeSpe
     case '$is_not_empty':
       return Some(new IsAttachmentEmpty(filter.path, undefined).not())
     case '$has_file_extension':
-      return Some(new HasExtension(filter.path, filter.value as string))
+      return Some(new HasExtension(filter.path, filter.value as string[]))
   }
 }
 

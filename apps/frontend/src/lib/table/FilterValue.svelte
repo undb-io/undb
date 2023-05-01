@@ -1,6 +1,8 @@
 <script lang="ts">
 	import Date from '$lib/cell/CellInput/Date.svelte'
 	import Email from '$lib/cell/CellInput/Email.svelte'
+	import FilterExtensionPicker from '$lib/cell/CellInput/FilterExtensionPicker.svelte'
+	import FilterTypePicker from '$lib/cell/CellInput/FilterTypePicker.svelte'
 	import Number from '$lib/cell/CellInput/Number.svelte'
 	import Rating from '$lib/cell/CellInput/Rating.svelte'
 	import Select from '$lib/cell/CellInput/Select.svelte'
@@ -53,6 +55,14 @@
 			}
 		} else if (type === 'bool') {
 			component = undefined
+		} else if (type === 'attachment') {
+			if (operator === '$has_file_type') {
+				component = FilterTypePicker
+			} else if (operator === '$has_file_extension') {
+				component = FilterExtensionPicker
+			} else {
+				component = undefined
+			}
 		}
 	}
 

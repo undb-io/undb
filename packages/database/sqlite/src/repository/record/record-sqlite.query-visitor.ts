@@ -52,6 +52,7 @@ import {
   TreeField,
 } from '@undb/core'
 import { endOfDay, startOfDay } from 'date-fns'
+import { castArray } from 'lodash-es'
 import { Attachment } from '../../entity/attachment.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants.js'
@@ -333,7 +334,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
         `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`,
         `${alias}.${recordId.fieldNames[0]}`,
       )
-      .where(`${alias}.${extension.fieldNames[0]}`, '=', value)
+      .whereIn(`${alias}.${extension.fieldNames[0]}`, castArray(value))
   }
   isAttachmentEmpty(s: IsAttachmentEmpty): void {
     const {

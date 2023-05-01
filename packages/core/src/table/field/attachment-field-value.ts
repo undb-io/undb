@@ -28,7 +28,10 @@ export class AttachmentFieldValue extends FieldValueBase<IAttachmentFieldValue> 
     return !this.props.length
   }
 
-  public hasExtension(extension: string): boolean {
-    return this.props.some((attachment) => getExtension(attachment.mimeType) === extension)
+  public hasExtension(extension: string[]): boolean {
+    return this.props.some((attachment) => {
+      const ext = getExtension(attachment.mimeType)
+      return !!ext && extension.includes(ext)
+    })
   }
 }
