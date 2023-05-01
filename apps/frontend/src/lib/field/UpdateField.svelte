@@ -1,5 +1,4 @@
 <script lang="ts">
-	import autoAnimate from '@formkit/auto-animate'
 	import { getTable } from '$lib/store/table'
 	import { updateFieldOpen } from '$lib/store/modal'
 	import { Button, Input, Label, Modal, Spinner, Toggle, Popover, Badge, Textarea, Toast } from 'flowbite-svelte'
@@ -110,7 +109,7 @@
 	bind:open={$updateFieldOpen}
 >
 	<form method="POST" id="updateField" use:enhance>
-		<div class="space-y-2" use:autoAnimate={{ duration: 100 }}>
+		<div class="space-y-2">
 			<div class="grid grid-cols-2 gap-x-3 gap-y-4">
 				<Label class="flex flex-col gap-2">
 					<div class="flex gap-2 items-center">

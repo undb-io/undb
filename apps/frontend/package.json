@@ -13,7 +13,6 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@formkit/auto-animate": "^1.0.0-beta.6",
 		"@playwright/test": "^1.33.0",
 		"@popperjs/core": "^2.11.7",
 		"@revolist/revogrid": "^3.6.3",

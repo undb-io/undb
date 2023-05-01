@@ -48,7 +48,7 @@ export class Option extends ValueObject<IOption> {
     return {
       key: this.key.value,
       name: this.name.value,
-      color: this.color.unpack(),
+      color: this.color.toJSON(),
     }
   }
 }

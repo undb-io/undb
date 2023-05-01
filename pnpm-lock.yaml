@@ -270,9 +270,6 @@ importers:
 
   apps/frontend:
     devDependencies:
-      '@formkit/auto-animate':
-        specifier: ^1.0.0-beta.6
-        version: 1.0.0-beta.6
       '@playwright/test':
         specifier: ^1.33.0
         version: 1.33.0
@@ -1622,10 +1619,6 @@ packages:
     resolution: {integrity: sha512-DyqylONj1ZaBnzj+uBnVfzdjjCkFCL2aA9ESHLyUOGSqb03RpbLMImP1ekIQXYs4KLk9jAjJfZAU8hXfWSahEg==}
     dependencies:
       '@floating-ui/core': 1.2.6
-    dev: true
-
-  /@formkit/auto-animate@1.0.0-beta.6:
-    resolution: {integrity: sha512-PVDhLAlr+B4Xb7e+1wozBUWmXa6BFU8xUPR/W/E+TsQhPS1qkAdAsJ25keEnFrcePSnXHrOsh3tiFbEToOzV9w==}
     dev: true
 
   /@gar/promisify@1.1.3:

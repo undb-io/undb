@@ -1,5 +1,4 @@
 <script lang="ts">
-	import autoAnimate from '@formkit/auto-animate'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import FieldTypePicker from '$lib/field/FieldInputs/FieldTypePicker.svelte'
 	import MutateFieldComponent from '$lib/field/MutateFieldComponent/MutateFieldComponent.svelte'
@@ -44,7 +43,7 @@
 		<i class="ti ti-circle-cheveron-down text-sm" />
 	</div>
 
-	<div class="space-y-2" use:autoAnimate={{ duration: 100 }}>
+	<div class="space-y-2">
 		<div class="grid grid-cols-2 gap-4">
 			<div>
 				<Label class="space-y-2">
