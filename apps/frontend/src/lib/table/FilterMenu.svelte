@@ -11,6 +11,7 @@
 	import { t } from '$lib/i18n'
 
 	const value = writable<Partial<IFilter>[]>([...$filters])
+	$: value.set([...$filters])
 
 	const table = getTable()
 	const view = getView()
