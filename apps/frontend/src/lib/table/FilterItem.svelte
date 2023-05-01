@@ -6,7 +6,6 @@
 	import type { Field, IFilter } from '@undb/core'
 	import { getTable } from '$lib/store/table'
 	import FilterValue from './FilterValue.svelte'
-	import { withPrevious } from 'svelte-previous'
 
 	export let filter: Partial<IFilter>
 	export let index: number

@@ -6,6 +6,9 @@
 	let open = false
 
 	export let value: string[] = []
+	$: {
+		if (!value) value = []
+	}
 
 	const types = [
 		{ value: '.pdf', label: '.pdf' },
@@ -22,7 +25,7 @@
 <Button
 	color="alternative"
 	{...$$restProps}
-	class={cx($$restProps.class, 'gap-2 field_picker')}
+	class={cx($$restProps.class, 'gap-2 extension_picker')}
 	on:click={() => (open = true)}
 >
 	{#each selected as item}
@@ -33,7 +36,7 @@
 	{/each}
 </Button>
 <Portal target="body">
-	<Dropdown triggeredBy=".field_picker" frameClass="z-[100]" bind:open>
+	<Dropdown triggeredBy=".extension_picker" frameClass="z-[100]" bind:open>
 		{#each types as type (type.value)}
 			{@const selected = value.includes(type.value)}
 			<Checkbox value={type.value} bind:group={value} custom on:change={() => (open = false)}>

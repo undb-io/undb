@@ -11,7 +11,7 @@
 
 	const displayTypes = ['grid', 'kanban'] as const
 
-	const switchDisplayType = trpc.table.view.switchDisplayType.mutation({
+	const switchDisplayType = trpc().table.view.switchDisplayType.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 		},

@@ -16,7 +16,7 @@
 
 	export let data: Validation<typeof createViewSchema>
 
-	const createView = trpc.table.view.create.mutation({
+	const createView = trpc().table.view.create.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			await tick()

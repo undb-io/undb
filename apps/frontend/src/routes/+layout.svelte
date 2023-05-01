@@ -26,7 +26,7 @@
 	}
 </script>
 
-<QueryClientProvider client={trpc.queryClient}>
+<QueryClientProvider client={trpc().queryClient}>
 	<slot />
 </QueryClientProvider>
 

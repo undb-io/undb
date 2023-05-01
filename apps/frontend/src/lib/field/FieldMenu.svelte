@@ -19,13 +19,13 @@
 
 	$: fieldDirection = $field ? $view.getFieldSort($field.id.value).into() : undefined
 
-	const resetFieldSort = trpc.table.view.sort.resetFieldSort.mutation({
+	const resetFieldSort = trpc().table.view.sort.resetFieldSort.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			currentFieldId.set(undefined)
 		},
 	})
-	const setFieldSort = trpc.table.view.sort.setFieldSort.mutation({
+	const setFieldSort = trpc().table.view.sort.setFieldSort.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			currentFieldId.set(undefined)

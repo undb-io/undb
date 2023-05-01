@@ -19,7 +19,7 @@
 	export let data: Validation<any>
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
-	const createRecord = trpc.record.create.mutation({
+	const createRecord = trpc().record.create.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`records:${$table.id.value}`)
 			reset()

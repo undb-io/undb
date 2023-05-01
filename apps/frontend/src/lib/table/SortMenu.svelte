@@ -15,8 +15,8 @@
 	const table = getTable()
 	const view = getView()
 
-	const TEMP_ID = '__TEMP'
-	const value = writable<(Omit<ISortSchema, 'fieldId'> & { id?: string })[]>([])
+	const TEMP_ID = '__TEMP_ID'
+	const value = writable<(Omit<ISortSchema, 'fieldId'> & { id: string })[]>([])
 	$: value.set(
 		$sorts.length
 			? [...$sorts.map((s) => ({ id: s.fieldId, direction: s.direction }))]
@@ -27,7 +27,7 @@
 
 	const directions = ['asc', 'desc'] as const
 
-	const setSort = trpc.table.view.sort.set.mutation({
+	const setSort = trpc().table.view.sort.set.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			open = false
@@ -80,11 +80,11 @@
 				on:consider={handleDndConsider}
 				on:finalize={handleDndFinalize}
 			>
-				{#each $value as sort, idx (sort.id)}
+				{#each $value as sort, idx (idx)}
 					<li animate:flip={{ duration: 200 }} class="flex justify-between">
 						<div class="flex">
 							<FieldPicker
-								bind:value={sort.id}
+								bind:value={$value[idx].id}
 								table={$table}
 								size="xs"
 								class="w-48 rounded-r-none !justify-start border-r-0"

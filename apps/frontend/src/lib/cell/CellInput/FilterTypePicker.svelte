@@ -24,7 +24,7 @@
 <Button
 	color="alternative"
 	{...$$restProps}
-	class={cx($$restProps.class, 'gap-2 field_picker')}
+	class={cx($$restProps.class, 'gap-2 attachment_type_picker')}
 	on:click={() => (open = true)}
 >
 	<i class={`ti ti-${selected?.icon}`} />
@@ -33,7 +33,7 @@
 	</span>
 </Button>
 <Portal target="body">
-	<Dropdown triggeredBy=".field_picker" frameClass="z-[100]" bind:open>
+	<Dropdown triggeredBy=".attachment_type_picker" frameClass="z-[100]" bind:open>
 		{#each types as type (type.value)}
 			<Radio value={type.value} bind:group={value} custom on:change={() => (open = false)}>
 				<div

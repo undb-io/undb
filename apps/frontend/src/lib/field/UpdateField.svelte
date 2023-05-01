@@ -20,7 +20,7 @@
 	export let field: Field
 	export let data: Validation<any>
 
-	const updateField = trpc.table.field.update.mutation({
+	const updateField = trpc().table.field.update.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			updateFieldOpen.set(false)

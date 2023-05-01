@@ -20,13 +20,13 @@
 		opened = { [id]: true }
 	}
 
-	const updateTable = trpc.table.update.mutation({
+	const updateTable = trpc().table.update.mutation({
 		async onSuccess(data, variables, context) {
 			updateTableOpen.set(false)
 		},
 	})
 
-	const deleteTable = trpc.table.delete.mutation({
+	const deleteTable = trpc().table.delete.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidateAll()
 			await goto('/')

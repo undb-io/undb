@@ -24,7 +24,7 @@
 	$: validators = createMutateRecordValuesSchema(fields ?? [], $record?.valuesJSON)
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
-	const updateRecord = trpc.record.update.mutation({
+	const updateRecord = trpc().record.update.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`records:${$table.id.value}`)
 			currentRecordId.set(undefined)

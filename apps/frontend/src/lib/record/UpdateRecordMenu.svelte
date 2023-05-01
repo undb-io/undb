@@ -12,14 +12,14 @@
 	const table = getTable()
 	export let record: Record | undefined
 
-	const deleteRecord = trpc.record.delete.mutation({
+	const deleteRecord = trpc().record.delete.mutation({
 		async onSuccess(data, variables, context) {
 			$currentRecordId = undefined
 			await goto($page.url.pathname)
 		},
 	})
 
-	const duplicateRecord = trpc.record.duplicate.mutation({
+	const duplicateRecord = trpc().record.duplicate.mutation({
 		async onSuccess(data, variables, context) {
 			$currentRecordId = undefined
 			await invalidate(`records:${$table.id.value}`)

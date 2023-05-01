@@ -19,7 +19,7 @@
 		opened = { [id]: true }
 	}
 
-	const createTable = trpc.table.create.mutation({
+	const createTable = trpc().table.create.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate('tables')
 			goto(`/t/${data.id}`)

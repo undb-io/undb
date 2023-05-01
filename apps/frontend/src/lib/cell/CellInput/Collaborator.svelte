@@ -15,7 +15,7 @@
 		opened = true
 	}
 
-	$: query = trpc.user.users.query({}, { enabled: opened })
+	$: query = trpc().user.users.query({}, { enabled: opened })
 	$: members = $query.data?.users ?? []
 
 	$: value = group

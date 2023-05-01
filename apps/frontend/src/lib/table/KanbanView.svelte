@@ -49,7 +49,7 @@
 		items = e.detail.items
 	}
 
-	const reorderOptions = trpc.table.field.select.reorderOptions.mutation()
+	const reorderOptions = trpc().table.field.select.reorderOptions.mutation()
 
 	async function handleDndFinalizeColumns(e: any) {
 		items = e.detail.items
@@ -76,7 +76,7 @@
 		}
 	}
 
-	const updateRecord = trpc.record.update.mutation({
+	const updateRecord = trpc().record.update.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`records:${$table.id.value}`)
 		},

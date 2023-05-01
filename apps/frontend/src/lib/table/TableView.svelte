@@ -221,7 +221,7 @@
 
 	$: pinned = $view.pinnedFields?.toJSON() ?? { left: [], right: [] }
 
-	const pin = trpc.table.view.field.setPinned.mutation({
+	const pin = trpc().table.view.field.setPinned.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			currentFieldId.set(undefined)
@@ -255,7 +255,7 @@
 		currentRecordId.set(recordId)
 	}
 
-	const setWidth = trpc.table.view.field.setWidth.mutation()
+	const setWidth = trpc().table.view.field.setWidth.mutation()
 	const onAfterColumnResize = async (
 		event: RevoGridCustomEvent<Record<RevoGridType.ColumnProp, RevoGridType.ColumnRegular>>,
 	): Promise<void> => {
@@ -279,7 +279,7 @@
 	$: hasRecord = !!$records.length
 	$: toastOpen = !!selectedCount
 
-	const bulkDeleteRecordsMutation = trpc.record.bulkDelete.mutation({
+	const bulkDeleteRecordsMutation = trpc().record.bulkDelete.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`records:${$table.id.value}`)
 
@@ -304,7 +304,7 @@
 		confirmBulkDelete = false
 	}
 
-	const deleteField = trpc.table.field.delete.mutation({
+	const deleteField = trpc().table.field.delete.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			$confirmDeleteField = false

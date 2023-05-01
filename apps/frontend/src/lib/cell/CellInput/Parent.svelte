@@ -10,7 +10,7 @@
 	const table = getTable()
 
 	async function getForeignRecords() {
-		const data = await trpc.record.parent.available.utils.fetch({
+		const data = await trpc().record.parent.available.utils.fetch({
 			tableId: $table.id.value,
 			parentFieldId: field.id.value,
 		})

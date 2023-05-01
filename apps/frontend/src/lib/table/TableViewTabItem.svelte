@@ -32,7 +32,7 @@
 	}
 	$: if (updating) handleUpdating()
 
-	const updateName = trpc.table.view.updateName.mutation({
+	const updateName = trpc().table.view.updateName.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			view.name = new ViewName({ value: name })
@@ -50,7 +50,7 @@
 		})
 	}
 
-	const duplicate = trpc.table.view.duplicate.mutation({
+	const duplicate = trpc().table.view.duplicate.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			open = false
@@ -65,7 +65,7 @@
 		})
 	}
 
-	const deleteMutation = trpc.table.view.delete.mutation({
+	const deleteMutation = trpc().table.view.delete.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 		},

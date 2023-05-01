@@ -15,7 +15,7 @@
 	const table = getTable()
 	const field = getField()
 
-	const createOption = trpc.table.field.select.createOption.mutation()
+	const createOption = trpc().table.field.select.createOption.mutation()
 
 	const { form, enhance, reset } = superForm(data, {
 		id: 'createOption',

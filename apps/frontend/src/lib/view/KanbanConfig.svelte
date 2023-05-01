@@ -12,7 +12,7 @@
 	$: kanbanFields = $table.schema.kanbanFields
 
 	const kanbanField = writable($view.kanbanFieldIdString)
-	const setField = trpc.table.view.kanban.setField.mutation({
+	const setField = trpc().table.view.kanban.setField.mutation({
 		onSuccess(data, variables, context) {
 			$view.kanbanFieldIdString = $kanbanField
 		},

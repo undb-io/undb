@@ -1,7 +1,6 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import { Badge, Button, Modal, Toast } from 'flowbite-svelte'
-	import autoAnimate from '@formkit/auto-animate'
 	import { slide } from 'svelte/transition'
 	import FilterItem from './FilterItem.svelte'
 	import { trpc } from '$lib/trpc/client'
@@ -16,15 +15,17 @@
 	const table = getTable()
 	const view = getView()
 
+	const TEMP_ID = '__TEMP_ID'
+
 	const add = () => {
-		$value = [...$value, {}]
+		$value = [...$value, { path: TEMP_ID }]
 	}
 
 	const remove = (index: number) => {
 		$value = $value.filter((f, i) => i !== index)
 	}
 
-	const setFilter = trpc.table.view.filter.set.mutation({
+	const setFilter = trpc().table.view.filter.set.mutation({
 		async onSuccess() {
 			await invalidateAll()
 			open = false
@@ -68,8 +69,8 @@
 	<form on:submit|preventDefault={apply} id="filter_menu" class="space-y-4">
 		{#if $value.length}
 			<span class="text-xs font-medium text-gray-500">{$t('set filters in this view')}</span>
-			<ul class="space-y-2" use:autoAnimate={{ duration: 100 }}>
-				{#each $value as filter, index}
+			<ul class="space-y-2">
+				{#each $value as filter, index (filter.path)}
 					<FilterItem {filter} {index} {remove} />
 				{/each}
 			</ul>
@@ -79,7 +80,9 @@
 	</form>
 	<svelte:fragment slot="footer">
 		<div class="flex w-full justify-between">
-			<Button color="alternative" size="xs" on:click={add}>{$t('Create New Filter')}</Button>
+			<Button color="alternative" size="xs" on:click={add} disabled={$value.some((v) => v.path === TEMP_ID)}
+				>{$t('Create New Filter')}</Button
+			>
 			<Button size="xs" type="submit" form="filter_menu">{$t('Apply', { ns: 'common' })}</Button>
 		</div>
 	</svelte:fragment>
