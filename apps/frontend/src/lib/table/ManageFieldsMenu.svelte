@@ -1,4 +1,5 @@
 <script lang="ts">
+	import cx from 'classnames'
 	import { invalidate } from '$app/navigation'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { t } from '$lib/i18n'
@@ -6,18 +7,21 @@
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { Field } from '@undb/core'
-	import { Button, Checkbox, Hr, Modal, Toggle } from 'flowbite-svelte'
+	import { Badge, Button, Checkbox, Hr, Modal, Toggle } from 'flowbite-svelte'
+	import { filter } from 'lodash-es'
 	import { dndzone } from 'svelte-dnd-action'
 	import { flip } from 'svelte/animate'
 
 	const table = getTable()
 	const view = getView()
 
-	let open = true
+	let open = false
 
 	$: fields = $table.getOrderedFields($view)
 	$: items = fields.map((field) => ({ field, id: field.id.value }))
 	$: visibility = $view.getVisibility()
+	$: hiddenCount = filter(visibility, (f) => f === false).length
+	$: console.log(hiddenCount)
 
 	const setVisibility = trpc().table.view.field.setVisibility.mutation({
 		async onSuccess(data, variables, context) {
@@ -52,24 +56,47 @@
 		})
 	}
 
+	const moveFields = trpc().table.view.field.move.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+		},
+	})
+
 	const flipDurationMs = 200
 	function handleDndConsider(e: CustomEvent) {
 		items = e.detail.items
 	}
 	function handleDndFinalize(e: CustomEvent) {
 		items = e.detail.items
+		const from = e.detail.info.id
+		const toIndex = items.findIndex((i) => i.id === from)
+		const to = fields[toIndex]?.id.value
+		$moveFields.mutate({
+			tableId: $table.id.value,
+			viewId: $view.id.value,
+			from,
+			to,
+		})
 	}
 </script>
 
 <Button
 	size="xs"
 	color="alternative"
-	class="h-full !rounded-md gap-2 whitespace-nowrap border-0 hover:!bg-blue-50 !text-blue-600"
+	class={cx(
+		'h-full !rounded-md gap-2 whitespace-nowrap border-0 hover:!bg-blue-50 !text-blue-600',
+		!!hiddenCount && '!bg-blue-50',
+	)}
 	on:click={() => (open = true)}
 >
 	<i class="ti ti-columns-3 text-sm" />
-	{$t('Manage Fields')}</Button
->
+	<span>
+		{$t('Manage Fields')}
+	</span>
+	{#if hiddenCount}
+		<Badge color="dark">{$t('N Fields Hidden', { n: hiddenCount })}</Badge>
+	{/if}
+</Button>
 
 <Modal bind:open size="xs" class="w-full" placement="top-center">
 	<ul
