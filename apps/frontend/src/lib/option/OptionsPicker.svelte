@@ -32,6 +32,7 @@
 <Dropdown bind:open placement="bottom-start">
 	<div class="w-full">
 		{#each options as option}
+			{@const select = selected.some((s) => s.key.value === option.key.value)}
 			<Checkbox
 				class="cursor-pointer flex "
 				bind:group={value}
@@ -40,8 +41,11 @@
 				custom
 				on:change={() => (open = false)}
 			>
-				<span role="button" class="inline-flex w-full px-3 py-2 hover:bg-gray-100 transition">
+				<span role="button" class="inline-flex justify-between w-full px-3 py-2 hover:bg-gray-100 transition">
 					<Option {option} />
+					{#if select}
+						<i class="ti ti-check" />
+					{/if}
 				</span>
 			</Checkbox>
 		{/each}
