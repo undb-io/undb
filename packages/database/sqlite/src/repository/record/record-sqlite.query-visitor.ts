@@ -149,6 +149,9 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       this.qb.whereRaw(`${this.getFieldId(s.fieldId)} REGEXP ?`, [s.value.unpack()])
     }
   }
+  stringEmpty(s: StringEqual): void {
+    this.qb.whereNull(this.getFieldId(s.fieldId))
+  }
   numberEqual(s: NumberEqual): void {
     this.qb.where({ [this.getFieldId(s.fieldId)]: s.value.unpack() })
   }

@@ -123,6 +123,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
   stringRegex(s: StringRegex): void {
     throw new Error('Method not implemented.')
   }
+  stringEmpty(s: StringEqual): void {
+    throw new Error('Method not implemented.')
+  }
   numberEqual(s: NumberEqual): void {
     throw new Error('Method not implemented.')
   }

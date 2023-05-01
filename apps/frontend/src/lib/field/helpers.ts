@@ -5,6 +5,8 @@ export function getFilterOperators(type: IFieldType | undefined) {
 	let data: Select['$$prop_def']['items'] = []
 	if (type === 'string') {
 		data = [
+			{ value: '$is_empty', name: 'IS EMPTY' },
+			{ value: '$is_not_empty', name: 'IS NOT EMPTY' },
 			{ value: '$eq', name: 'EQUAL' },
 			{ value: '$neq', name: 'NOT EQUAL' },
 			{ value: '$contains', name: 'CONTAINS' },
@@ -14,6 +16,8 @@ export function getFilterOperators(type: IFieldType | undefined) {
 		]
 	} else if (type === 'email') {
 		data = [
+			{ value: '$is_empty', name: 'IS EMPTY' },
+			{ value: '$is_not_empty', name: 'IS NOT EMPTY' },
 			{ value: '$eq', name: 'EQUAL' },
 			{ value: '$neq', name: 'NOT EQUAL' },
 			{ value: '$contains', name: 'CONTAINS' },
@@ -22,6 +26,8 @@ export function getFilterOperators(type: IFieldType | undefined) {
 		]
 	} else if (type === 'color') {
 		data = [
+			{ value: '$is_empty', name: 'IS EMPTY' },
+			{ value: '$is_not_empty', name: 'IS NOT EMPTY' },
 			{ value: '$eq', name: 'EQUAL' },
 			{ value: '$neq', name: 'NOT EQUAL' },
 		]

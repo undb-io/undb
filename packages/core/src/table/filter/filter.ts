@@ -27,6 +27,7 @@ import {
   SelectEqual,
   SelectIn,
   StringContain,
+  StringEmpty,
   StringEndsWith,
   StringEqual,
   StringRegex,
@@ -271,6 +272,12 @@ const convertStringFilter = (filter: IStringFilter | IEmailFilter | IColorFilter
     }
     case '$regex': {
       return Some(new StringRegex(filter.path, new StringFieldValue(filter.value)))
+    }
+    case '$is_empty': {
+      return Some(new StringEmpty(filter.path))
+    }
+    case '$is_not_empty': {
+      return Some(new StringEmpty(filter.path).not())
     }
 
     default:

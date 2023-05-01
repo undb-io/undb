@@ -29,16 +29,25 @@ export const $has_file_extension = z.literal('$has_file_extension')
 export const idFilterOperators = z.union([$eq, $neq, $in, $nin])
 export type IIdFilterOperator = z.infer<typeof idFilterOperators>
 
-export const stringFilterOperators = z.union([$eq, $neq, $contains, $starts_with, $ends_with, $regex])
+export const stringFilterOperators = z.union([
+  $eq,
+  $neq,
+  $contains,
+  $starts_with,
+  $ends_with,
+  $regex,
+  $is_empty,
+  $is_not_empty,
+])
 export type IStringFilterOperator = z.infer<typeof stringFilterOperators>
 
-export const emailFilterOperators = z.union([$eq, $neq, $starts_with, $ends_with, $contains])
+export const emailFilterOperators = z.union([$eq, $neq, $starts_with, $ends_with, $contains, $is_empty, $is_not_empty])
 export type IEmailFilterOperator = z.infer<typeof emailFilterOperators>
 
 export const attachmentFilterOperators = z.union([$has_file_type, $is_empty, $is_not_empty, $has_file_extension])
 export type IAttachmentFilterOperator = z.infer<typeof attachmentFilterOperators>
 
-export const colorFilterOperators = z.union([$eq, $neq])
+export const colorFilterOperators = z.union([$is_empty, $is_not_empty, $eq, $neq])
 export type IColorFilterOperator = z.infer<typeof colorFilterOperators>
 
 export const numberFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])

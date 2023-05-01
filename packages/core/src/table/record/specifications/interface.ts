@@ -60,6 +60,7 @@ interface IRecordValueVisitor {
   stringStartsWith(s: StringStartsWith): void
   stringEndsWith(s: StringEndsWith): void
   stringRegex(s: StringRegex): void
+  stringEmpty(s: StringEqual): void
 
   numberEqual(s: NumberEqual): void
   numberGreaterThan(s: NumberGreaterThan): void

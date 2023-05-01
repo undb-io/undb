@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Color from '$lib/cell/CellInput/Color.svelte'
 	import Date from '$lib/cell/CellInput/Date.svelte'
 	import Email from '$lib/cell/CellInput/Email.svelte'
 	import FilterExtensionPicker from '$lib/cell/CellInput/FilterExtensionPicker.svelte'
@@ -8,7 +9,13 @@
 	import Select from '$lib/cell/CellInput/Select.svelte'
 	import String from '$lib/cell/CellInput/String.svelte'
 	import OptionsPicker from '$lib/option/OptionsPicker.svelte'
-	import { isBuiltInDateOperator, type Field, type IDateFilterOperator } from '@undb/core'
+	import {
+		isBuiltInDateOperator,
+		type Field,
+		type IDateFilterOperator,
+		isOperatorWithoutValue,
+		type IOperator,
+	} from '@undb/core'
 	import type { ComponentType } from 'svelte'
 	import { withPrevious } from 'svelte-previous'
 
@@ -60,6 +67,12 @@
 				component = FilterTypePicker
 			} else if (operator === '$has_file_extension') {
 				component = FilterExtensionPicker
+			} else {
+				component = undefined
+			}
+		} else if (type === 'color') {
+			if (!isOperatorWithoutValue(operator as IOperator)) {
+				component = Color
 			} else {
 				component = undefined
 			}
