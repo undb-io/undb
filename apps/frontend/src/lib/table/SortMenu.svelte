@@ -58,10 +58,10 @@
 <Button
 	size="xs"
 	color="light"
-	class={cx('h-full !rounded-md whitespace-nowrap', !!$sorts.length && 'bg-blue-100 hover:bg-blue-100 border-0')}
+	class={cx('h-full !rounded-md whitespace-nowrap border-0 hover:!bg-blue-50', !!$sorts.length && '!bg-blue-50')}
 	on:click={() => (open = true)}
 >
-	<span class="inline-flex items-center gap-2" class:text-blue-600={!!$sorts.length}>
+	<span class="inline-flex items-center gap-2 !text-blue-600">
 		<i class="ti ti-arrows-sort text-sm" />
 		<span class="whitespace-nowrap">{$t('Sort')}</span>
 		{#if !!$sorts.length}

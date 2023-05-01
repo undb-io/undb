@@ -27,7 +27,7 @@
 		<Button
 			on:click={() => createRecordOpen.set(true)}
 			size="xs"
-			class="h-full !rounded-md inline-flex items-center whitespace-nowrap"
+			class="h-full !rounded-md inline-flex items-center whitespace-nowrap bg-blue-500"
 		>
 			<i class="ti ti-row-insert-bottom text-sm mr-2" />
 			{$t('Create New Record')}</Button
