@@ -6,14 +6,14 @@
   "dependencies": {
     "@undb/domain": "^0.0.0",
     "array-move": "^4.0.0",
-    "date-fns": "^2.29.3",
+    "date-fns": "^2.30.0",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "mime-types": "^2.1.35",
     "oxide.ts": "^1.1.0",
     "ts-mixer": "^6.0.3",
     "zod": "^3.21.4",
-    "zod-i18n-map": "^2.10.0"
+    "zod-i18n-map": "^2.11.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.194",

@@ -4,17 +4,17 @@
   "devDependencies": {
     "@commitlint/cli": "^17.6.1",
     "@commitlint/config-conventional": "^17.6.1",
-    "@types/node": "^18.16.2",
+    "@types/node": "^18.16.3",
     "@undb/eslint-config": "^0.0.0",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "dotenv-cli": "^7.2.1",
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8",
-    "taze": "^0.9.2",
+    "taze": "^0.10.0",
     "turbo": "^1.9.3",
     "typescript": "^5.0.4",
-    "zx": "^7.2.1"
+    "zx": "^7.2.2"
   },
   "engines": {
     "node": ">=18.0.0"
