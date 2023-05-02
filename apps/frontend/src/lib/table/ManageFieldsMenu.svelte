@@ -21,7 +21,6 @@
 	$: items = fields.map((field) => ({ field, id: field.id.value }))
 	$: visibility = $view.getVisibility()
 	$: hiddenCount = filter(visibility, (f) => f === false).length
-	$: console.log(hiddenCount)
 
 	const setVisibility = trpc().table.view.field.setVisibility.mutation({
 		async onSuccess(data, variables, context) {
