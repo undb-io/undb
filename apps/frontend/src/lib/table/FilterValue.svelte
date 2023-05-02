@@ -8,6 +8,7 @@
 	import Rating from '$lib/cell/CellInput/Rating.svelte'
 	import Select from '$lib/cell/CellInput/Select.svelte'
 	import String from '$lib/cell/CellInput/String.svelte'
+	import UserPicker from '$lib/cell/CellInput/UserPicker.svelte'
 	import OptionsPicker from '$lib/option/OptionsPicker.svelte'
 	import {
 		isBuiltInDateOperator,
@@ -76,6 +77,16 @@
 			} else {
 				component = undefined
 			}
+		} else if (type === 'collaborator' || type === 'created-by' || type === 'updated-by') {
+			if (operator === '$eq' || operator === '$neq') {
+				component = UserPicker
+			}
+		} else {
+			component = undefined
+		}
+
+		if (operator && isOperatorWithoutValue(operator)) {
+			value = null
 		}
 	}
 

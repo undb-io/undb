@@ -8,6 +8,8 @@ import type { ISelectFieldValue } from '../field/select-field.type.js'
 import {
   BoolIsFalse,
   BoolIsTrue,
+  CollaboratorEqual,
+  CollaboratorIsEmpty,
   DateEqual,
   DateGreaterThan,
   DateGreaterThanOrEqual,
@@ -42,6 +44,7 @@ import type { IAverageFilter } from './average.filter.js'
 import { averageFilter, averageFilterValue } from './average.filter.js'
 import type { IBoolFilter } from './bool.filter.js'
 import { boolFilter, boolFilterValue } from './bool.filter.js'
+import type { ICollaboratorFilter } from './collaborator.filter.js'
 import { collaboratorFilter, collaboratorFilterValue } from './collaborator.filter.js'
 import type { IColorFilter } from './color.filter.js'
 import { colorFilter } from './color.filter.js'
@@ -51,6 +54,7 @@ import type { ICountFilter } from './count.filter.js'
 import { countFilter, countFilterValue } from './count.filter.js'
 import type { ICreatedAtFilter } from './created-at.filter.js'
 import { createdAtFilter, createdAtFilterValue } from './created-at.filter.js'
+import type { ICreatedByFilter } from './created-by.filter.js'
 import { createdByFilter, createdByFilterValue } from './created-by.filter.js'
 import type { IDateRangeFilter } from './date-range.filter.js'
 import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter.js'
@@ -109,6 +113,7 @@ import type { ITreeFilter } from './tree.filter.js'
 import { treeFilter, treeFilterValue } from './tree.filter.js'
 import type { IUpdatedAtFilter } from './updated-at.filter.js'
 import { updatedAtFilter, updatedAtFilterValue } from './updated-at.filter.js'
+import type { IUpdatedByFilter } from './updated-by.filter.js'
 import { updatedByFilter, updatedByFilterValue } from './updated-by.filter.js'
 
 export const filterValue = z.union([
@@ -438,6 +443,23 @@ const convertAttachmentFilter = (filter: IAttachmentFilter): Option<CompositeSpe
   }
 }
 
+const convertCollaboratorFilter = (
+  filter: ICollaboratorFilter | ICreatedByFilter | IUpdatedByFilter,
+): Option<CompositeSpecification> => {
+  switch (filter.operator) {
+    case '$eq':
+      return Some(CollaboratorEqual.fromString(filter.path, filter.value as string))
+    case '$neq':
+      return Some(CollaboratorEqual.fromString(filter.path, filter.value as string).not())
+    case '$is_empty':
+      return Some(new CollaboratorIsEmpty(filter.path))
+    case '$is_not_empty':
+      return Some(new CollaboratorIsEmpty(filter.path).not())
+
+    default:
+      return None
+  }
+}
 const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
   switch (filter.type) {
     case 'id':
@@ -453,6 +475,10 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
     case 'sum':
     case 'average':
       return convertNumberFilter(filter)
+    case 'collaborator':
+    case 'created-by':
+    case 'updated-by':
+      return convertCollaboratorFilter(filter)
     case 'date':
     case 'created-at':
     case 'updated-at':

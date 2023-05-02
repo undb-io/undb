@@ -3,6 +3,8 @@ import type { EntityProperty } from '@mikro-orm/core'
 import type {
   BoolIsFalse,
   BoolIsTrue,
+  CollaboratorEqual,
+  CollaboratorIsEmpty,
   DateEqual,
   DateGreaterThan,
   DateGreaterThanOrEqual,
@@ -42,6 +44,8 @@ import type {
   WithRecordValues,
 } from '@undb/core'
 import {
+  CollaboratorField,
+  CreatedByField,
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
@@ -50,6 +54,7 @@ import {
   INTERNAL_INCREAMENT_ID_NAME,
   ParentField,
   TreeField,
+  UpdatedByField,
 } from '@undb/core'
 import { endOfDay, startOfDay } from 'date-fns'
 import { castArray } from 'lodash-es'
@@ -57,8 +62,8 @@ import { Attachment } from '../../entity/attachment.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
-import { ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
-import { TABLE_ALIAS } from './record.constants.js'
+import { ClosureTable, CollaboratorForeignTable } from '../../underlying-table/underlying-foreign-table.js'
+import { TABLE_ALIAS, getForeignTableAlias } from './record.constants.js'
 
 export class RecordSqliteQueryVisitor implements IRecordVisitor {
   constructor(
@@ -214,6 +219,47 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       this.qb.whereBetween(this.getFieldId(s.fieldId), range)
     } else {
       this.qb.whereNull(this.getFieldId(s.fieldId))
+    }
+  }
+  collaboratorEqual(s: CollaboratorEqual): void {
+    const field = this.getField(s.fieldId)
+    const value = s.value.unpack()
+    if (!value?.length) return
+
+    if (field instanceof UpdatedByField || field instanceof CreatedByField) {
+      this.qb.where(this.getFieldId(s.fieldId), value.at(0))
+    } else if (field instanceof CollaboratorField) {
+      const ft = new CollaboratorForeignTable(this.tableId, field)
+      const alias = getForeignTableAlias(field, this.schema)
+      this.qb
+        .leftJoin(
+          `${ft.name} as ${alias}`,
+          `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`,
+          `${alias}.${CollaboratorForeignTable.RECORD_ID}`,
+        )
+        .whereIn(`${alias}.${CollaboratorForeignTable.USER_ID}`, castArray(value))
+    }
+  }
+  collaboratorIsEmpqy(s: CollaboratorIsEmpty): void {
+    const field = this.getField(s.fieldId)
+    if (field instanceof CollaboratorField) {
+      const ft = new CollaboratorForeignTable(this.tableId, field)
+      const alias = 'collaborator_is_empty_' + getForeignTableAlias(field, this.schema)
+      const subQuery = this.knex
+        .queryBuilder()
+        .select(CollaboratorForeignTable.RECORD_ID, this.knex.raw(`COUNT(*) as xxxx_${s.fieldId}`))
+        .from(ft.name)
+        .groupBy(CollaboratorForeignTable.RECORD_ID)
+        .as(alias)
+
+      this.qb
+        .leftOuterJoin(
+          subQuery,
+          `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`,
+          `${alias}.${CollaboratorForeignTable.RECORD_ID}`,
+        )
+        .select(`${alias}.xxxx_${s.fieldId} as xxxx_${s.fieldId}`)
+        .whereNull(`${alias}.xxxx_${s.fieldId}`)
     }
   }
   selectEqual(s: SelectEqual): void {

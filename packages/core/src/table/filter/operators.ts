@@ -84,7 +84,7 @@ export const isBuiltInDateOperator = (operator: IDateFilterOperator) => dateBuil
 export const referenceFilterOperators = z.union([$eq, $neq])
 export type IReferenceFilterOperator = z.infer<typeof referenceFilterOperators>
 
-export const collaboratorFilterOperators = z.union([$eq, $neq])
+export const collaboratorFilterOperators = z.union([$eq, $neq, $in, $nin, $is_empty, $is_not_empty])
 export type ICollaboratorFilterOperator = z.infer<typeof collaboratorFilterOperators>
 
 export const lookupFilterOperators = z.union([$eq, $neq])
@@ -110,10 +110,10 @@ export const updatedAtFilterOperators = dateFilterOperators
 export type IUpdatedAtFilterOperator = z.infer<typeof dateFilterOperators>
 export const updatedAtBuiltInOperators = dateBuiltInOperators
 
-export const createdByFilterOperators = z.union([$eq, $neq])
+export const createdByFilterOperators = collaboratorFilterOperators
 export type ICreatedByFilterOperator = z.infer<typeof createdByFilterOperators>
 
-export const updatedByFilterOperators = z.union([$eq, $neq])
+export const updatedByFilterOperators = collaboratorFilterOperators
 export type IUpdatedByFilterOperator = z.infer<typeof updatedByFilterOperators>
 
 export const autoIncrementFilterOperators = numberFilterOperators

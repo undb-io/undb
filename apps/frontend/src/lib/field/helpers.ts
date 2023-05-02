@@ -90,6 +90,18 @@ export function getFilterOperators(type: IFieldType | undefined) {
 			{ value: '$in', name: 'IN' },
 			{ value: '$nin', name: 'NOT IN' },
 		]
+	} else if (type === 'collaborator') {
+		data = [
+			{ value: '$eq', name: 'EQUAL' },
+			{ value: '$neq', name: 'NOT EQUAL' },
+			{ value: '$is_empty', name: 'IS EMPTY' },
+			{ value: '$is_not_empty', name: 'IS NOT EMPTY' },
+		]
+	} else if (type === 'created-by' || type === 'updated-by') {
+		data = [
+			{ value: '$eq', name: 'EQUAL' },
+			{ value: '$neq', name: 'NOT EQUAL' },
+		]
 	}
 
 	return data

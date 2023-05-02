@@ -1,5 +1,6 @@
 export * from './attachment.specification.js'
 export * from './bool.specification.js'
+export * from './collaborator.specification.js'
 export * from './date-range.specification.js'
 export * from './date.specification.js'
 export type { IRecordSpec, IRecordVisitor } from './interface.js'

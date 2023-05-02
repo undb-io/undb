@@ -199,6 +199,7 @@
 					columnProperties: (column: RevoGridType.ColumnRegular) => {
 						const sort = $view.getFieldSort(column.prop as string).into()
 						return {
+							'data-field-id': column.field.id.value,
 							class: cx(
 								'border-r border-b border-gray-300 hover:bg-gray-50 transition-[background] group flex justify-between bg-gray-100 !px-2',
 								{
