@@ -12,6 +12,7 @@
 	import { browser } from '$app/environment'
 	import logo from '$lib/assets/logo.svg'
 	import { t } from '$lib/i18n'
+	import { createMutation } from '@tanstack/svelte-query'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -46,6 +47,17 @@
 			goto($page.url.pathname, { invalidateAll: false })
 		}
 	}
+
+	const logout = createMutation({
+		mutationKey: ['logout'],
+		mutationFn: () =>
+			fetch('/api/auth/logout', {
+				method: 'POST',
+			}),
+		async onSuccess(data, variables, context) {
+			await goto('/login')
+		},
+	})
 </script>
 
 <div>
@@ -252,11 +264,16 @@
 					class="w-full shadow-sm border border-gray-100"
 				>
 					<a href="/me">
-						<DropdownItem>Settings</DropdownItem>
+						<DropdownItem>
+							<i class="ti ti-settings" />
+							{$t('Setting', { ns: 'auth' })}
+						</DropdownItem>
 					</a>
 					<DropdownItem>
-						<!-- TODO: logout -->
-						<button class="w-full h-full text-left" type="submit">Logout</button>
+						<button on:click={() => $logout.mutate()} class="w-full h-full text-left text-red-400" type="submit">
+							<i class="ti ti-logout" />
+							{$t('logout', { ns: 'auth' })}
+						</button>
 					</DropdownItem>
 				</Dropdown>
 			</ul>

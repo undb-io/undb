@@ -29,6 +29,13 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @Post('logout')
+  async logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('undb_auth')
+    return { access_token: null }
+  }
+
+  @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
   @Get('me')
   getProfile(@Request() req: Express.Request) {

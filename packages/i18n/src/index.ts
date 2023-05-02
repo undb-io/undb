@@ -21,6 +21,7 @@ export const config: InitOptions = {
         'password placeholder': 'password',
         'has no account': "Has't account yet?",
         'has account': 'Already has an account?',
+        Setting: 'Setting',
       },
       common: {
         demo: 'this is a demo site for undb, you can use email: {{email}} and password: {{password}} to login',
@@ -245,6 +246,7 @@ export const config: InitOptions = {
         'has account': '已有账号？',
         'login to undb': '登录到 undb',
         'register to undb': '注册 undb 账号',
+        Setting: '设置账号',
       },
       common: {
         demo: '这是 undb 的 demo 网站，你可以使用邮箱: {{email}} 和密码：{{password}} 登录',
