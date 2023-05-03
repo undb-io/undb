@@ -25,13 +25,15 @@ export class LocalObjectStorage implements IObjectStorage {
     return path.join(p, token + '_' + name)
   }
 
-  async put(buffer: Buffer, originalname: string): Promise<{ token: string; id: string }> {
+  async put(buffer: Buffer, originalname: string): Promise<{ url: string; token: string; id: string }> {
     const nestedPath = this.#nestedPath
     const p = await this.#getPath(nestedPath)
     const id = v4()
     const token = path.join(nestedPath, id)
     const full = this.#getFull(p, id, originalname)
     await fs.promises.writeFile(full, buffer)
-    return { token, id }
+
+    const url = `/public/${token}_${originalname}`
+    return { token, id, url }
   }
 }

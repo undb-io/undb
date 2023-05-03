@@ -12,7 +12,7 @@
 		{#if extension}
 			{@const img = isImage(attachment)}
 			{#if img}
-				<Img src={`/public/${attachment.token}_${attachment.name}`} alt={attachment.name} />
+				<Img src={attachment.url} alt={attachment.name} />
 			{:else}
 				{extension}
 			{/if}

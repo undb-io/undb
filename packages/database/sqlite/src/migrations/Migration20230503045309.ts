@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230428042636 extends Migration {
+export class Migration20230503045309 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `undb_table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `emoji` text not null, `views_order` text null, primary key (`id`));',
@@ -39,7 +39,7 @@ export class Migration20230428042636 extends Migration {
     this.addSql('create index `undb_option_field_id_index` on `undb_option` (`field_id`);')
 
     this.addSql(
-      'create table `undb_attachment` (`id` text not null, `record_id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text not null, `mime_type` text not null, `name` text not null, `size` integer not null, `token` text not null, `extension` text not null, constraint `undb_attachment_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on update cascade, primary key (`id`, `record_id`));',
+      'create table `undb_attachment` (`id` text not null, `record_id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text not null, `mime_type` text not null, `name` text not null, `size` integer not null, `token` text not null, `url` text not null, `extension` text not null, constraint `undb_attachment_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on update cascade, primary key (`id`, `record_id`));',
     )
     this.addSql('create index `undb_attachment_deleted_at_index` on `undb_attachment` (`deleted_at`);')
     this.addSql('create index `undb_attachment_table_id_index` on `undb_attachment` (`table_id`);')

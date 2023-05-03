@@ -798,6 +798,15 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "extension": {
           "name": "extension",
           "type": "text",

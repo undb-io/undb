@@ -311,7 +311,7 @@ const lookup: TemplateFunc = (h, props) => {
 const attachmentItem = (h: HyperFunc, attachment: IAttachmentItem) => {
 	const img = isImage(attachment)
 	if (img) {
-		return h('img', { src: `/public/${attachment.token}_${attachment.name}`, alt: attachment.name })
+		return h('img', { class: 'object-cover w-full h-auto', src: attachment.url, alt: attachment.name })
 	}
 
 	// TODO: render file icon
