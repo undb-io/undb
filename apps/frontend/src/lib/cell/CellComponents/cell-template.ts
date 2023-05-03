@@ -96,7 +96,6 @@ const date: TemplateFunc = (h, props) => {
 
 const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile) => {
 	const html = htm.bind(h)
-	console.log(collaborator)
 
 	return html`
 		<div
