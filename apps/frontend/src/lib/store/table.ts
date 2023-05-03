@@ -39,3 +39,8 @@ export const previousRecord = derived([currentRecordIndex, currentRecords], ([$i
 	if ($index === 0) return undefined
 	return $records[$index - 1]
 })
+
+export const recordHash = derived(
+	[currentTable, currentView],
+	([$table, $view]) => `records:${$table.id.value}:${$view.id.value}:${$view.displayType}`,
+)

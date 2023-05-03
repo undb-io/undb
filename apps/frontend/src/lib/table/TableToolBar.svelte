@@ -6,7 +6,7 @@
 	import TableNavigator from './TableNavigator.svelte'
 	import ToggleDisplayType from './ToggleDisplayType.svelte'
 	import { createFieldOpen, createRecordOpen, updateTableOpen } from '$lib/store/modal'
-	import { getTable, currentRecords, getView } from '$lib/store/table'
+	import { getTable, getView } from '$lib/store/table'
 	import ViewConfigMenu from '$lib/view/ViewConfigMenu.svelte'
 	import { t } from '$lib/i18n'
 	import { trpc } from '$lib/trpc/client'
@@ -54,8 +54,8 @@
 		</Button>
 		<Tooltip placement="bottom">{$t('Insert Field Right')}</Tooltip>
 
-		{#if $currentRecords?.length}
-			<P class="!text-gray-400 text-xs whitespace-nowrap">{$t('Total Records', { total: $currentRecords.length })}</P>
+		{#if $records.data?.total}
+			<P class="!text-gray-400 text-xs whitespace-nowrap">{$t('Total Records', { total: $records.data?.total })}</P>
 		{/if}
 	</div>
 

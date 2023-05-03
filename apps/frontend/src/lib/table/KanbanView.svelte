@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { currentFieldId, currentRecordId, getRecords, getTable } from '$lib/store/table'
+	import { currentFieldId, currentRecordId, getRecords, getTable, getView, recordHash } from '$lib/store/table'
 	import { flip } from 'svelte/animate'
 	import Option from '$lib/option/Option.svelte'
 	import { TRIGGERS, dndzone } from 'svelte-dnd-action'
 	import { groupBy } from 'lodash-es'
-	import type { SelectField, SelectFieldValue } from '@undb/core'
+	import { Record, RecordFactory, type SelectField, type SelectFieldValue } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
 	import KanbanCard from '$lib/kanban/KanbanCard.svelte'
 	import { Badge, Button, Toast } from 'flowbite-svelte'
@@ -17,13 +17,19 @@
 	const flipDurationMs = 200
 
 	const table = getTable()
-	const records = getRecords()
+	const view = getView()
+	const data = trpc().record.list.query(
+		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ queryHash: $recordHash },
+	)
+
+	$: records = RecordFactory.fromQueryRecords($data.data?.records ?? [], $table.schema.toIdMap())
 
 	$: field = $table.schema.getFieldById(fieldId).into() as SelectField | undefined
 	$: options = field?.options?.options ?? []
 
 	const UNCATEGORIZED = 'Uncategorized'
-	$: groupedRecords = groupBy($records, (record) => {
+	$: groupedRecords = groupBy(records, (record: Record) => {
 		const value = (field ? record.values.value.get(field.id.value) : undefined) as SelectFieldValue | undefined
 
 		if (!value?.id) return UNCATEGORIZED
@@ -35,13 +41,13 @@
 			id: UNCATEGORIZED,
 			name: $t(UNCATEGORIZED),
 			option: null,
-			records: groupedRecords[UNCATEGORIZED]?.map((record) => ({ id: record.id.value, record })) ?? [],
+			records: groupedRecords[UNCATEGORIZED]?.map((record: Record) => ({ id: record.id.value, record })) ?? [],
 		},
 		...options.map((option) => ({
 			id: option.key.value,
 			name: option.name.value,
 			option,
-			records: groupedRecords[option.key.value]?.map((record) => ({ id: record.id.value, record })) ?? [],
+			records: groupedRecords[option.key.value]?.map((record: Record) => ({ id: record.id.value, record })) ?? [],
 		})),
 	]
 
