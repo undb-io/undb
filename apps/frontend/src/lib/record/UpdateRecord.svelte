@@ -1,9 +1,17 @@
 <script lang="ts">
-	import { goto, invalidate } from '$app/navigation'
+	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
-	import { currentRecordId, getRecord, getTable, getView, nextRecord, previousRecord } from '$lib/store/table'
+	import {
+		currentRecordId,
+		getRecord,
+		getTable,
+		getView,
+		nextRecord,
+		previousRecord,
+		recordHash,
+	} from '$lib/store/table'
 	import { createMutateRecordValuesSchema } from '@undb/core'
-	import { Button, ButtonGroup, Dropdown, DropdownItem, Label, Modal, P, Spinner, Toast } from 'flowbite-svelte'
+	import { Button, ButtonGroup, Label, Modal, P, Spinner, Toast } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { writable } from 'svelte/store'
 	import type { Validation } from 'sveltekit-superforms/index'
@@ -23,10 +31,14 @@
 
 	$: validators = createMutateRecordValuesSchema(fields ?? [], $record?.valuesJSON)
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
+	const records = trpc().record.list.query(
+		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ queryHash: $recordHash },
+	)
 
 	const updateRecord = trpc().record.update.mutation({
 		async onSuccess(data, variables, context) {
-			await invalidate(`records:${$table.id.value}`)
+			await $records.refetch()
 			currentRecordId.set(undefined)
 		},
 	})

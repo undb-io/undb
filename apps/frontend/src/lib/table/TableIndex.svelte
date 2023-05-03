@@ -3,7 +3,6 @@
 	import type { IViewDisplayType, Records } from '@undb/core'
 	import type { ComponentType } from 'svelte'
 	import TableView from './TableView.svelte'
-	import KanbanView from './KanbanView.svelte'
 	import KanbanIndex from './KanbanIndex.svelte'
 
 	const view = getView()
