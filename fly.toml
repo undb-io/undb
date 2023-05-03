@@ -26,5 +26,5 @@ processes = []
     port = 443
 
 [env]
-  UNDB_ADMIN_EMAIL = "test@example.com"
-  UNDB_ADMIN_PASSWORD = "123456"
+  PUBLIC_UNDB_ADMIN_EMAIL = "test@example.com"
+  PUBLIC_UNDB_ADMIN_PASSWORD = "123456"

@@ -1,4 +1,5 @@
 import type { Merge, ValueOf } from 'type-fest'
+import type { ZodDefault, ZodObject, ZodRawShape, ZodTypeAny } from 'zod'
 import { z } from 'zod'
 import { userIdSchema } from '../../user/value-objects/user-id.vo.js'
 import type { Field, FieldValue, ICollaboratorProfile } from '../field/index.js'
@@ -17,10 +18,10 @@ import { recordIdSchema } from './value-objects/record-id.schema.js'
 
 export const internalRecordValues = z.object({
   [INTERNAL_COLUMN_ID_NAME]: recordIdSchema,
-  [INTERNAL_COLUMN_CREATED_AT_NAME]: z.string().datetime(),
+  [INTERNAL_COLUMN_CREATED_AT_NAME]: z.string(),
   [INTERNAL_COLUMN_CREATED_BY_NAME]: userIdSchema,
   created_by_profile: collaboratorProfile.nullable(),
-  [INTERNAL_COLUMN_UPDATED_AT_NAME]: z.string().datetime(),
+  [INTERNAL_COLUMN_UPDATED_AT_NAME]: z.string(),
   [INTERNAL_COLUMN_UPDATED_BY_NAME]: userIdSchema,
   updated_by_profile: collaboratorProfile.nullable(),
   [INTERNAL_INCREAMENT_ID_NAME]: z.number().optional(),
@@ -29,21 +30,29 @@ export const internalRecordValues = z.object({
 
 export type IInternalRecordValues = z.infer<typeof internalRecordValues>
 
-export type RecordValueJSON = Record<string, FieldValue>
+export type RecordValuePair = Record<string, FieldValue>
+// TODO: type values
+export type RecordValueJSON = Record<string, any>
 
-export type RecordAllValues = Merge<RecordValueJSON, IInternalRecordValues>
+export type RecordAllValues = Merge<RecordValuePair, IInternalRecordValues>
+export type RecordAllJSON = Merge<RecordValueJSON, IInternalRecordValues>
 
 export type RecordAllValueType = ValueOf<RecordAllValues> | ValueOf<IInternalRecordValues> | ICollaboratorProfile
 
-export const createMutateRecordValuesSchema = (fields: Field[]) => {
-  let schema = z.object({})
+export const createMutateRecordValuesSchema = (
+  fields: Field[],
+  defaultValues: Record<string, any> | undefined = undefined,
+): ZodObject<any> => {
+  const shape: ZodRawShape = {}
 
   for (const field of fields) {
     if (field.controlled) continue
-    schema = schema.setKey(field.id.value, field.valueSchema)
+    const fieldSchema = field.valueSchema as ZodDefault<ZodTypeAny>
+    const nested = fieldSchema
+    shape[field.id.value] = defaultValues ? nested.default(defaultValues[field.id.value]) : nested.optional()
   }
 
-  return schema
+  return z.object(shape)
 }
 
 export type IMutateRecordValueSchema = z.infer<ReturnType<typeof createMutateRecordValuesSchema>>

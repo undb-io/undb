@@ -12,7 +12,7 @@ describe('Record', () => {
     vi.setSystemTime(new Date(2022, 2, 2))
   })
 
-  test('valuesJSON', () => {
+  test('valuesPair', () => {
     const record = createTestRecord(
       WithRecordValues.fromArray([
         {
@@ -23,7 +23,7 @@ describe('Record', () => {
       ]),
     )
 
-    const valuesJson = record.valuesJSON
+    const valuesJson = record.valuesPair
 
     expect(valuesJson).to.have.property(INTERNAL_COLUMN_ID_NAME)
     expect(valuesJson).to.have.property(INTERNAL_COLUMN_CREATED_AT_NAME)

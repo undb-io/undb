@@ -8,6 +8,7 @@ import type {
 import type { WithFormat } from '../field/specifications/date-field.specification.js'
 import type { WithFieldRequirement } from '../field/specifications/field-constraints.specification.js'
 import type { WithoutField } from '../field/specifications/field.specification.js'
+import type { WithRatingMax } from '../field/specifications/rating-field.specification.js'
 import type {
   WithDisplayFields,
   WithSymmetricReferenceField,
@@ -61,6 +62,8 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   fieldWidthEqual(s: WithFieldWidth): void
   fieldVisibility(s: WithFieldVisibility): void
   pinnedFields(s: WithViewPinnedFields): void
+
+  ratingMaxEqual(s: WithRatingMax): void
 
   displayTypeEqual(s: WithDisplayType): void
   kanbanFieldEqual(s: WithKanbanField): void

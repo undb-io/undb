@@ -7,6 +7,13 @@ export class OptionColor extends ValueObject<IOptionColor> {
     return this.props.name
   }
 
+  public toJSON() {
+    return {
+      name: this.name,
+      shade: this.shade,
+    }
+  }
+
   get shade() {
     return this.props.shade
   }

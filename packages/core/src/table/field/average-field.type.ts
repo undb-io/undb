@@ -10,15 +10,12 @@ const averageTypeObjectSchema = z.object({
   [FIELD_TYPE_KEY]: averageTypeSchema,
 })
 
-export const createAverageFieldSchema = createBaseFieldSchema
-  .merge(averageTypeObjectSchema)
-  .merge(
-    z.object({
-      referenceFieldId: fieldIdSchema,
-      aggregateFieldId: fieldIdSchema,
-    }),
-  )
-  .strict()
+export const createAverageFieldSchema = createBaseFieldSchema.merge(averageTypeObjectSchema).merge(
+  z.object({
+    referenceFieldId: fieldIdSchema,
+    aggregateFieldId: fieldIdSchema,
+  }),
+)
 export type ICreateAverageFieldInput = z.infer<typeof createAverageFieldSchema>
 
 export const updateAverageFieldSchema = updateBaseFieldSchema.merge(averageTypeObjectSchema).merge(

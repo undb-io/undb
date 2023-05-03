@@ -116,9 +116,9 @@ describe('fromQuery', () => {
     const record = RecordFactory.fromQuery(r, field)
 
     expect(record.isOk()).toBeTruthy()
-    expect(record.unwrap().values.valueJSON).not.to.be.empty
+    expect(record.unwrap().values.valuesPair).not.to.be.empty
     expect(record.unwrap().id.value).to.be.eq('rec1')
     expect(record.unwrap().tableId.value).to.be.eq('tbl1')
-    expect(record.unwrap().values.valueJSON).toMatchSnapshot()
+    expect(record.unwrap().values.valuesPair).toMatchSnapshot()
   })
 })

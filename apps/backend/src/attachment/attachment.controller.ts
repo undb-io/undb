@@ -18,7 +18,7 @@ export class AttachmentController {
     }),
   )
   async upload(@UploadedFile() file: Express.Multer.File): Promise<AttachmentResponseDto> {
-    const { token, id } = await this.attachmentService.uploadFile(file.buffer, file.originalname)
+    const { url, token, id } = await this.attachmentService.uploadFile(file.buffer, file.originalname)
 
     return plainToClass(AttachmentResponseDto, {
       name: file.originalname,
@@ -26,6 +26,7 @@ export class AttachmentController {
       mimeType: file.mimetype,
       id,
       token,
+      url,
     })
   }
 }

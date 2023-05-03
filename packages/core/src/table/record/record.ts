@@ -2,7 +2,12 @@ import { DateVO } from '@undb/domain'
 import type { ICollaboratorProfile } from '../field/collaborator-field.type.js'
 import type { TableId, TableSchema, TableSchemaIdMap } from '../value-objects/index.js'
 import { RecordFactory } from './record.factory.js'
-import type { IInternalRecordValues, IMutateRecordValueSchema, RecordAllValues } from './record.schema.js'
+import type {
+  IInternalRecordValues,
+  IMutateRecordValueSchema,
+  RecordAllJSON,
+  RecordAllValues,
+} from './record.schema.js'
 import { createRecordInputs } from './record.utils.js'
 import { WithRecordId, WithRecordTableId, WithRecordValues } from './specifications/index.js'
 import type { RecordCompositeSpecification } from './specifications/interface.js'
@@ -45,8 +50,12 @@ export class Record {
     }
   }
 
-  get valuesJSON(): RecordAllValues {
-    return Object.assign({}, this.internalValuesJSON, this.values.valueJSON)
+  get valuesPair(): RecordAllValues {
+    return Object.assign({}, this.internalValuesJSON, this.values.valuesPair)
+  }
+
+  get valuesJSON(): RecordAllJSON {
+    return Object.assign({}, this.internalValuesJSON, this.values.valuesJSON)
   }
 
   updateRecord(schema: TableSchema, value: IMutateRecordValueSchema): RecordCompositeSpecification {

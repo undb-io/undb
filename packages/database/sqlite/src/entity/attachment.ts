@@ -33,6 +33,9 @@ export class Attachment extends BaseEntity {
   @Property()
   token: string
 
+  @Property()
+  url: string
+
   @Property({ type: 'string' })
   @Index()
   get extension(): string {
@@ -48,5 +51,6 @@ export class Attachment extends BaseEntity {
     this.size = attachment.size
     this.name = attachment.name
     this.token = attachment.token
+    this.url = attachment.url
   }
 }

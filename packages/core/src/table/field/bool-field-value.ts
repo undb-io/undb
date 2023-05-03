@@ -1,3 +1,4 @@
+import type { JsonValue } from 'type-fest'
 import type { IBoolFieldValue } from './bool-field.type.js'
 import { FieldValueBase } from './field-value.base.js'
 import type { IFieldValueVisitor } from './field-value.visitor.js'
@@ -5,6 +6,10 @@ import type { IFieldValueVisitor } from './field-value.visitor.js'
 export class BoolFieldValue extends FieldValueBase<IBoolFieldValue> {
   constructor(value: IBoolFieldValue) {
     super({ value })
+  }
+
+  get json(): JsonValue {
+    return this.props.value
   }
 
   static get T(): BoolFieldValue {

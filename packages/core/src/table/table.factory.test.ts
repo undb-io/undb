@@ -1,4 +1,4 @@
-import { identity } from 'lodash'
+import { identity } from 'lodash-es'
 import { mockDeep } from 'vitest-mock-extended'
 import { ClsStore } from '../cls/cls.js'
 import { TableFactory } from './table.factory.js'

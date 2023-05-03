@@ -21,9 +21,14 @@ COPY --from=builder /undb/out/ .
 
 RUN pnpm install -r --offline
 
+ARG PUBLIC_UNDB_ADMIN_EMAIL
+ARG PUBLIC_UNDB_ADMIN_PASSWORD
+
 ENV NODE_ENV production
 RUN pnpm run build --filter=backend --filter=frontend
-RUN pnpm prune --prod --config.ignore-scripts=true
+
+RUN rm -rf ./node_modules
+RUN HUSKY=0 pnpm install -r --prod
 
 # runner
 FROM gcr.io/distroless/nodejs18-debian11 as runner
@@ -36,6 +41,6 @@ ENV UNDB_DATABASE_SQLITE_DATA /var/opt/.undb
 COPY --from=installer /undb/node_modules ./node_modules
 COPY --from=installer /undb/packages ./packages
 COPY --from=installer /undb/apps/backend ./apps/backend
-COPY --from=installer /undb/apps/frontend/dist ./out
+COPY --from=installer /undb/apps/frontend/build ./out
 
 CMD ["apps/backend/dist/main.js"]

@@ -18,7 +18,7 @@ export class UserFactory {
       WithUserId.fromString(input.userId),
       WithUserPassword.fromString(input.password),
       WithUsername.fromString(input.username),
-      WithUserAvatar.fromString(input.avatar),
+      WithUserAvatar.fromNullableString(input.avatar),
     )
   }
 }

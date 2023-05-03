@@ -82,6 +82,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       { id: tableId },
       {
         populate: [
+          'fields.options',
           'fields.displayFields',
           'fields.countFields',
           'fields.sumAggregateField',
@@ -110,6 +111,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       { id: tableId },
       {
         populate: [
+          'fields.options',
           'fields.displayFields',
           'fields.countFields',
           'fields.sumAggregateField',

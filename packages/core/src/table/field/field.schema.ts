@@ -16,7 +16,13 @@ export const createCreateFieldSchema = (table: Table) => {
 export const createUpdateFieldSchema = (table: Table) => {
   return updateFieldSchema.refine(
     (checker) => {
-      if (checker.name && table.schema.fieldsNames.includes(checker.name)) {
+      if (
+        checker.name &&
+        table.schema.fields
+          .filter((f) => f.id.value !== checker.id)
+          .map((f) => f.name.value)
+          .includes(checker.name)
+      ) {
         return false
       }
       return true

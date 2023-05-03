@@ -8,6 +8,10 @@ export class ViewName extends ValueObject<string> {
     return this.props.value
   }
 
+  public set value(value: string) {
+    this.props.value = value
+  }
+
   static create(name: string): ViewName {
     return new ViewName({ value: viewNameSchema.parse(name) })
   }

@@ -3,6 +3,7 @@ import { type ISpecification } from '@undb/domain'
 import { type Record } from '../record.js'
 import type { HasExtension, HasFileType, IsAttachmentEmpty } from './attachment.specification.js'
 import type { BoolIsFalse, BoolIsTrue } from './bool.specification.js'
+import type { CollaboratorEqual, CollaboratorIsEmpty } from './collaborator.specification.js'
 import type { DateRangeEqual } from './date-range.specification.js'
 import type {
   DateEqual,
@@ -60,6 +61,7 @@ interface IRecordValueVisitor {
   stringStartsWith(s: StringStartsWith): void
   stringEndsWith(s: StringEndsWith): void
   stringRegex(s: StringRegex): void
+  stringEmpty(s: StringEqual): void
 
   numberEqual(s: NumberEqual): void
   numberGreaterThan(s: NumberGreaterThan): void
@@ -75,6 +77,9 @@ interface IRecordValueVisitor {
   dateIsToday(s: DateIsToday): void
 
   dateRangeEqual(s: DateRangeEqual): void
+
+  collaboratorEqual(s: CollaboratorEqual): void
+  collaboratorIsEmpqy(s: CollaboratorIsEmpty): void
 
   selectEqual(s: SelectEqual): void
   selectIn(s: SelectIn): void

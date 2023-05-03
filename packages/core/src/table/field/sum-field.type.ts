@@ -10,15 +10,12 @@ const sumTypeObjectSchema = z.object({
   [FIELD_TYPE_KEY]: sumTypeSchema,
 })
 
-export const createSumFieldSchema = createBaseFieldSchema
-  .merge(sumTypeObjectSchema)
-  .merge(
-    z.object({
-      referenceFieldId: fieldIdSchema,
-      aggregateFieldId: fieldIdSchema,
-    }),
-  )
-  .strict()
+export const createSumFieldSchema = createBaseFieldSchema.merge(sumTypeObjectSchema).merge(
+  z.object({
+    referenceFieldId: fieldIdSchema,
+    aggregateFieldId: fieldIdSchema,
+  }),
+)
 export type ICreateSumFieldInput = z.infer<typeof createSumFieldSchema>
 
 export const updateSumFieldSchema = updateBaseFieldSchema.merge(sumTypeObjectSchema).merge(

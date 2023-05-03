@@ -15,6 +15,7 @@ export class TableSqliteRepository implements ITableRepository {
     const table = await this.em.findOne(TableEntity, id, {
       populate: ['fields.options', 'views', 'fields.displayFields'],
     })
+
     if (!table) return None
 
     return Some(TableSqliteMapper.entityToDomain(table).unwrap())

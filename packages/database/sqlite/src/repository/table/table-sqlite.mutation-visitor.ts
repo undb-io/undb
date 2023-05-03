@@ -1,6 +1,7 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
 import type {
+  BaseField,
   ITableSpecVisitor,
   WithCalendarField,
   WithDisplayFields,
@@ -19,9 +20,7 @@ import type {
   WithNewOption,
   WithNewView,
   WithOptions,
-  WithoutField,
-  WithoutOption,
-  WithoutView,
+  WithRatingMax,
   WithShowSystemFieldsSpec,
   WithSorts,
   WithSymmetricReferenceField,
@@ -35,17 +34,38 @@ import type {
   WithViewName,
   WithViewPinnedFields,
   WithViewsOrder,
+  WithoutField,
+  WithoutOption,
+  WithoutView,
 } from '@undb/core'
-import type {
-  CreatedAtField,
+import type { CreatedAtField, UpdatedAtField } from '../../entity/index.js'
+import {
+  AttachmentField,
+  AutoIncrementField,
+  AverageField,
+  BoolField,
+  CollaboratorField,
+  ColorField,
+  CountField,
+  CreatedByField,
   DateField,
   DateRangeField,
+  EmailField,
+  Field,
+  IdField,
+  LookupField,
+  NumberField,
+  Option,
   ParentField,
+  RatingField,
   ReferenceField,
+  SelectField,
+  StringField,
+  SumField,
+  Table,
   TreeField,
-  UpdatedAtField,
+  UpdatedByField,
 } from '../../entity/index.js'
-import { Field, Option, SelectField, Table } from '../../entity/index.js'
 import { View } from '../../entity/view.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
 import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
@@ -62,8 +82,61 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     return this.em.getReference(View, id)
   }
 
-  private getField(id: string): Field {
-    return this.em.getReference(Field, id)
+  #getField(field: BaseField): Field {
+    const {
+      type,
+      id: { value: id },
+    } = field
+    switch (type) {
+      case 'date':
+        return this.em.getReference(DateField, id)
+      case 'string':
+        return this.em.getReference(StringField, id)
+      case 'number':
+        return this.em.getReference(NumberField, id)
+      case 'id':
+        return this.em.getReference(IdField, id)
+      case 'created-at':
+        return this.em.getReference(CreatedByField, id)
+      case 'updated-at':
+        return this.em.getReference(UpdatedByField, id)
+      case 'auto-increment':
+        return this.em.getReference(AutoIncrementField, id)
+      case 'color':
+        return this.em.getReference(ColorField, id)
+      case 'email':
+        return this.em.getReference(EmailField, id)
+      case 'select':
+        return this.em.getReference(SelectField, id)
+      case 'bool':
+        return this.em.getReference(BoolField, id)
+      case 'date-range':
+        return this.em.getReference(DateRangeField, id)
+      case 'reference':
+        return this.em.getReference(ReferenceField, id)
+      case 'tree':
+        return this.em.getReference(TreeField, id)
+      case 'parent':
+        return this.em.getReference(ParentField, id)
+      case 'rating':
+        return this.em.getReference(RatingField, id)
+      case 'count':
+        return this.em.getReference(CountField, id)
+      case 'lookup':
+        return this.em.getReference(LookupField, id)
+      case 'sum':
+        return this.em.getReference(SumField, id)
+      case 'average':
+        return this.em.getReference(AverageField, id)
+      case 'attachment':
+        return this.em.getReference(AttachmentField, id)
+      case 'collaborator':
+        return this.em.getReference(CollaboratorField, id)
+      case 'created-by':
+        return this.em.getReference(CreatedByField, id)
+      case 'updated-by':
+        return this.em.getReference(UpdatedByField, id)
+    }
   }
 
   idEqual(): void {
@@ -206,7 +279,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.persist(option)
   }
   newOption(s: WithNewOption): void {
-    const field = this.getField(s.field.id.value) as SelectField
+    const field = this.em.getReference(SelectField, s.field.id.value)
     const option = new Option(field, s.option)
     this.em.persist(option)
   }
@@ -215,7 +288,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.remove(option)
   }
   withoutField(s: WithoutField): void {
-    const field = this.getField(s.field.id.value)
+    const field = this.#getField(s.field)
     wrap(field).assign({ deletedAt: new Date() })
     this.em.persist(field)
   }
@@ -225,17 +298,17 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.persist(view)
   }
   withFieldName(s: WithFieldName): void {
-    const field = this.getField(s.field.id.value)
+    const field = this.#getField(s.field)
     wrap(field).assign({ name: s.name.value })
     this.em.persist(field)
   }
   withFieldDescription(s: WithFieldDescription): void {
-    const field = this.getField(s.field.id.value)
+    const field = this.#getField(s.field)
     wrap(field).assign({ description: s.description.value })
     this.em.persist(field)
   }
   withFieldDisplay(s: WithFieldDisplay): void {
-    const field = this.getField(s.field.id.value)
+    const field = this.#getField(s.field)
     wrap(field).assign({ display: s.display })
     this.em.persist(field)
   }
@@ -244,13 +317,12 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
       const field = (await this.em.findOne(Field, { id: s.field.id.value })) as TreeField | ParentField | ReferenceField
       if (field) {
         field.displayFields.set(s.displayFields.map((id) => this.em.getReference(Field, id.value)))
-
         this.em.persist(field)
       }
     })
   }
   withFormat(s: WithFormat): void {
-    const field = this.getField(s.field.id.value) as DateField | DateRangeField | CreatedAtField | UpdatedAtField
+    const field = this.#getField(s.field) as DateField | DateRangeField | CreatedAtField | UpdatedAtField
     wrap(field).assign({ format: s.format.unpack() })
     this.em.persist(field)
   }
@@ -260,13 +332,18 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.persist(view)
   }
   withFieldRequirement(s: WithFieldRequirement): void {
-    const field = this.getField(s.field.id.value)
+    const field = this.#getField(s.field)
     wrap(field).assign({ required: s.required })
     this.em.persist(field)
   }
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {
-    const field = this.getField(s.field.id.value) as ReferenceField
+    const field = this.em.getReference(ReferenceField, s.field.id.value)
     wrap(field).assign({ symmetricReferenceField: s.symmetricReferenceFieldId.value })
+    this.em.persist(field)
+  }
+  ratingMaxEqual(s: WithRatingMax): void {
+    const field = this.em.getReference(RatingField, s.field.id.value)
+    wrap(field).assign({ max: s.max })
     this.em.persist(field)
   }
   not(): this {

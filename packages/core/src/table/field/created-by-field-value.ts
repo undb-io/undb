@@ -1,8 +1,12 @@
+import type { JsonValue } from 'type-fest'
 import type { ICreatedByFieldQueryValue, ICreatedByFieldValue } from './created-by-field.type.js'
 import { FieldValueBase } from './field-value.base.js'
 import type { IFieldValueVisitor } from './field-value.visitor.js'
 
 export class CreatedByFieldValue extends FieldValueBase<ICreatedByFieldValue> {
+  get json(): JsonValue {
+    return this.props.value
+  }
   constructor(value: ICreatedByFieldValue) {
     super({ value })
   }

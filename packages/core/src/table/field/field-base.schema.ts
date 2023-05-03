@@ -17,6 +17,7 @@ export type IBaseCreateFieldSchema = z.infer<typeof createBaseFieldSchema>
 
 export const updateBaseFieldSchema = z
   .object({
+    id: fieldIdSchema,
     name: fieldNameSchema,
     description: fieldDescriptionSchema,
     display: z.boolean().optional(),

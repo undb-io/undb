@@ -19,6 +19,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
         populate: [
           'fields',
           'views',
+          'fields.options',
           'fields.displayFields',
           'fields.countFields',
           'fields.sumFields',

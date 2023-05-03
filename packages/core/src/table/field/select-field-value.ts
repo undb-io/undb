@@ -1,5 +1,6 @@
 import type { Option as O } from 'oxide.ts'
 import { None } from 'oxide.ts'
+import type { JsonValue } from 'type-fest'
 import type { Option } from '../option/index.js'
 import { FieldValueBase } from './field-value.base.js'
 import type { IFieldValueVisitor } from './field-value.visitor.js'
@@ -8,6 +9,9 @@ import type { SelectField } from './select-field.js'
 import type { ISelectFieldValue } from './select-field.type.js'
 
 export class SelectFieldValue extends FieldValueBase<ISelectFieldValue> {
+  get json(): JsonValue {
+    return this.props.value
+  }
   constructor(value: ISelectFieldValue) {
     super({ value })
   }

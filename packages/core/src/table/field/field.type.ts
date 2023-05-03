@@ -138,6 +138,7 @@ import {
   emailTypeSchema,
   updateEmailFieldSchema,
 } from './email-field.type.js'
+import type { BaseField } from './field.base.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
 import type { IdFieldValue } from './id-field-value.js'
 import type { IdField } from './id-field.js'
@@ -615,7 +616,7 @@ export interface IAbstractReferenceField {
   get foreignTableId(): Option<string>
 }
 
-export interface IAbstractLookingField extends IBaseField {
+export interface IAbstractLookingField extends BaseField {
   get multiple(): boolean
   get displayFieldIds(): FieldId[]
   set displayFieldIds(fieldIds: FieldId[])

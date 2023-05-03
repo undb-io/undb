@@ -49,6 +49,7 @@ export class AttachmentField extends BaseField<IAttachmentField> {
         mimeType: z.string(),
         id: z.string(),
         token: z.string(),
+        url: z.string(),
       })
       .strict()
       .array()

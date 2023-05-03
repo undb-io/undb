@@ -86,7 +86,7 @@ describe('UnderlyingColumnBuilder', () => {
       builder.createUnderlying([BoolField.create({ id: 'fldid', name: 'name' })])
     })
 
-    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`fldid` boolean)"')
+    expect(sb.toQuery()).toMatchInlineSnapshot('"create table `tableName` (`fldid` boolean default \'0\')"')
   })
 
   test('should create date column', () => {

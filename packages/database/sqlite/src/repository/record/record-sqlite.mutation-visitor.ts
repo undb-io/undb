@@ -3,6 +3,8 @@ import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type {
   BoolIsFalse,
   BoolIsTrue,
+  CollaboratorEqual,
+  CollaboratorIsEmpty,
   DateEqual,
   DateGreaterThan,
   DateGreaterThanOrEqual,
@@ -56,6 +58,12 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     private readonly qb: Knex.QueryBuilder,
   ) {
     super(em)
+  }
+  collaboratorEqual(s: CollaboratorEqual): void {
+    throw new Error('Method not implemented.')
+  }
+  collaboratorIsEmpqy(s: CollaboratorIsEmpty): void {
+    throw new Error('Method not implemented.')
   }
   private createRecordValueVisitor(fieldId: string) {
     return new RecordValueSqliteMutationVisitor(
@@ -121,6 +129,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     throw new Error('Method not implemented.')
   }
   stringRegex(s: StringRegex): void {
+    throw new Error('Method not implemented.')
+  }
+  stringEmpty(s: StringEqual): void {
     throw new Error('Method not implemented.')
   }
   numberEqual(s: NumberEqual): void {

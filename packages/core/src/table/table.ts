@@ -3,6 +3,7 @@ import { difference, isString } from 'lodash-es'
 import type { Option, Result } from 'oxide.ts'
 import { None, Ok, Some } from 'oxide.ts'
 import type {
+  Field,
   ICreateFieldSchema,
   IQuerySchemaSchema,
   IReorderOptionsSchema,
@@ -205,6 +206,18 @@ export class Table {
     }
 
     return [...left, ...difference(order, left.concat(right)), ...right]
+  }
+
+  public getOrderedFields(view: View = this.mustGetView(), withHidden = true): Field[] {
+    const order = this.getFieldsOrder(view)
+    const schema = this.schema.toIdMap()
+
+    const fields = order.map((fieldId) => schema.get(fieldId)).filter(Boolean) as Field[]
+    if (!withHidden) {
+      const visibility = view.getVisibility()
+      return fields.filter((f) => visibility[f.id.value] === undefined || !!visibility[f.id.value])
+    }
+    return fields
   }
 
   public createRecord(value: IMutateRecordValueSchema): Record {

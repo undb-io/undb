@@ -59,7 +59,7 @@ export class DateRangeField extends AbstractDateField<IDateRangeField> {
   }
 
   get valueSchema() {
-    const dateRange = z.tuple([z.string().datetime().nullable(), z.string().datetime().nullable()])
+    const dateRange = z.tuple([z.string().nullable(), z.string().nullable()])
 
     return this.required ? dateRange : dateRange.nullable()
   }

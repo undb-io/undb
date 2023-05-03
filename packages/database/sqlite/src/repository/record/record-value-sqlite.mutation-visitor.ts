@@ -105,11 +105,11 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
     this.setData(this.fieldId, value.unpack())
   }
   date(value: DateFieldValue): void {
-    this.setData(this.fieldId, value.unpack())
+    this.setData(this.fieldId, value.unpack()?.toISOString() ?? null)
   }
   dateRange(value: DateRangeFieldValue): void {
-    this.setData(this.fieldId + '_from', value.from.into(null))
-    this.setData(this.fieldId + '_to', value.to.into(null))
+    this.setData(this.fieldId + '_from', value.from.into(null)?.toISOString() ?? null)
+    this.setData(this.fieldId + '_to', value.to.into(null)?.toISOString() ?? null)
   }
   select(value: SelectFieldValue): void {
     this.setData(this.fieldId, value.unpack())

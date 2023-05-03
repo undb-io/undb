@@ -22,6 +22,7 @@ import type {
   WithoutField,
   WithoutOption,
   WithoutView,
+  WithRatingMax,
   WithShowSystemFieldsSpec,
   WithSorts,
   WithSymmetricReferenceField,
@@ -144,6 +145,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {
+    throw new Error('Method not implemented.')
+  }
+  ratingMaxEqual(s: WithRatingMax): void {
     throw new Error('Method not implemented.')
   }
 

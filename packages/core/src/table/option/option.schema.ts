@@ -5,20 +5,28 @@ export const optionNameSchema = z.string().min(1)
 export const optionIdSchema = z.string().min(1)
 
 export const optionColorOrder = [
-  'dark',
+  'slate',
   'gray',
+  'zinc',
+  'neutral',
+  'stone',
   'red',
-  'pink',
-  'grape',
-  'violet',
-  'indigo',
-  'blue',
-  'cyan',
-  'teal',
-  'green',
-  'lime',
-  'yellow',
   'orange',
+  'amber',
+  'yellow',
+  'lime',
+  'green',
+  'emerald',
+  'teal',
+  'cyan',
+  'sky',
+  'blue',
+  'indigo',
+  'violet',
+  'purple',
+  'fuchsia',
+  'pink',
+  'rose',
 ] as const
 
 export const optionColorName = z.enum(optionColorOrder)
@@ -63,7 +71,7 @@ export const mutateOptionSchema = z
   .object({
     key: optionIdSchema.optional(),
     name: optionNameSchema,
-    color: createOptionColorSchema.optional(),
+    color: createOptionColorSchema.optional().default({ name: 'indigo', shade: 5 }),
   })
   .strict()
 
