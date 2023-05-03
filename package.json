@@ -1,6 +1,6 @@
 {
   "name": "undb",
-  "version": "0.2.12",
+  "version": "0.3.0",
   "devDependencies": {
     "@commitlint/cli": "^17.6.1",
     "@commitlint/config-conventional": "^17.6.1",
