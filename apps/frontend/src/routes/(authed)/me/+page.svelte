@@ -2,11 +2,32 @@
 	import { page } from '$app/stores'
 	import { t } from '$lib/i18n'
 	import { createMutation } from '@tanstack/svelte-query'
+	import type { IAttachmentItem } from '@undb/core'
 	import { Fileupload, Label } from 'flowbite-svelte'
 
 	$: me = $page.data.me?.me
-	let value: string
-	let files: FileList
+	let attachment: IAttachmentItem | undefined
+
+	const upload = createMutation<any, unknown, FormData>({
+		mutationKey: ['upload'],
+		mutationFn: (body) =>
+			fetch('/api/attachment/upload', {
+				method: 'POST',
+				body,
+			}),
+		async onSuccess(data, variables, context) {
+			attachment = await data.json()
+		},
+	})
+
+	const onChange = async (e: Event) => {
+		const target = e.target as HTMLInputElement
+		const files = target.files
+		if (!files?.[0]) return
+		const formData = new FormData()
+		formData.set('file', files[0])
+		$upload.mutate(formData)
+	}
 
 	const updateProfile = createMutation<unknown, unknown, { username?: string; avatar?: string | null }>({
 		mutationKey: ['updateProfile'],
@@ -34,7 +55,10 @@
 		<form
 			class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2"
 			on:submit={() => {
-				$updateProfile.mutate({ username: me?.username })
+				$updateProfile.mutate({
+					username: me?.username,
+					avatar: attachment?.url ?? me.avatar,
+				})
 			}}
 		>
 			<div class="px-4 py-6 sm:p-8">
@@ -62,8 +86,13 @@
 					<div class="col-span-full">
 						<Label class="space-y-2 mb-2">
 							<span>{$t('avatar', { ns: 'auth' })}</span>
-							<Fileupload bind:value bind:files accept="image/png, image/jpeg" />
+							<Fileupload accept="image/png, image/jpeg" on:change={onChange} />
 						</Label>
+						{#if attachment}
+							<img src={attachment.url} alt={attachment.name} />
+						{:else if me.avatar}
+							<img src={me.avatar} alt={me.username} />
+						{/if}
 					</div>
 				</div>
 			</div>

@@ -96,6 +96,7 @@ const date: TemplateFunc = (h, props) => {
 
 const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile) => {
 	const html = htm.bind(h)
+	console.log(collaborator)
 
 	return html`
 		<div
@@ -109,11 +110,7 @@ const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile)
 							<span class="font-medium text-gray-600 dark:text-gray-300"> ${collaborator.username.slice(0, 2)} </span>
 						</div>
 				  `
-				: html`
-						<div class="font-medium dark:text-white">
-							<span>${collaborator.username}</span>
-						</div>
-				  `}
+				: html` <img class="w-5 h-5 rounded-full" src="${collaborator.avatar}" alt="${collaborator.username}" /> `}
 			<div class="font-medium dark:text-white">
 				<span>${collaborator.username}</span>
 			</div>
