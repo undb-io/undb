@@ -19,9 +19,14 @@
 	export let data: Validation<any>
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
+	const records = trpc().record.list.query(
+		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ queryHash: ['records', $table.id.value, $view.id.value].toString() },
+	)
+
 	const createRecord = trpc().record.create.mutation({
 		async onSuccess(data, variables, context) {
-			await invalidate(`records:${$table.id.value}`)
+			await $records.refetch()
 			reset()
 			createRecordOpen.set(false)
 		},

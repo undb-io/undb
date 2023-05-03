@@ -2,7 +2,7 @@
 	import { goto, invalidate } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { t } from '$lib/i18n'
-	import { currentRecordId, getTable } from '$lib/store/table'
+	import { currentRecordId, getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { Record } from '@undb/core'
 	import { Button, Dropdown, DropdownDivider, DropdownItem, Modal } from 'flowbite-svelte'
@@ -10,6 +10,7 @@
 	let confirmDeleteOpen = false
 
 	const table = getTable()
+	const view = getView()
 	export let record: Record | undefined
 
 	const deleteRecord = trpc().record.delete.mutation({
@@ -19,10 +20,15 @@
 		},
 	})
 
+	const records = trpc().record.list.query(
+		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ queryHash: ['records', $table.id.value, $view.id.value].toString() },
+	)
+
 	const duplicateRecord = trpc().record.duplicate.mutation({
 		async onSuccess(data, variables, context) {
 			$currentRecordId = undefined
-			await invalidate(`records:${$table.id.value}`)
+			await $records.refetch()
 		},
 	})
 </script>

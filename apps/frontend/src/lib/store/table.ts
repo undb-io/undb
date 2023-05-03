@@ -7,8 +7,8 @@ export const getTable = () => currentTable
 export const currentView = writable<View>()
 export const getView = () => currentView
 
-export const records = writable<Records>()
-export const getRecords = () => records
+export const currentRecords = writable<Records>()
+export const getRecords = () => currentRecords
 
 export const currentRecordId = writable<string | undefined>()
 export const currentRecord = writable<Record | undefined>()
@@ -24,17 +24,17 @@ export const sorts = derived(currentView, (view) => view.sorts?.sorts ?? [])
 // TODO: nested should be IFilters
 export const filters = derived(currentView, (view) => (view.filter?.group.children ?? []) as IFilters)
 
-export const currentRecordIndex = derived([currentRecordId, records], ([$id, $records]) =>
+export const currentRecordIndex = derived([currentRecordId, currentRecords], ([$id, $records]) =>
 	$id ? $records.findIndex((r) => r.id.value === $id) : undefined,
 )
 
-export const nextRecord = derived([currentRecordIndex, records], ([$index, $records]) => {
+export const nextRecord = derived([currentRecordIndex, currentRecords], ([$index, $records]) => {
 	if (typeof $index === 'undefined') return undefined
 	if ($index === $records.length - 1) return undefined
 	return $records[$index + 1]
 })
 
-export const previousRecord = derived([currentRecordIndex, records], ([$index, $records]) => {
+export const previousRecord = derived([currentRecordIndex, currentRecords], ([$index, $records]) => {
 	if (typeof $index === 'undefined') return undefined
 	if ($index === 0) return undefined
 	return $records[$index - 1]

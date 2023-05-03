@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentFieldId, currentRecord, currentRecordId, getField, getTable, records } from '$lib/store/table'
+	import { currentFieldId, currentRecord, currentRecordId, getField, getTable } from '$lib/store/table'
 	import TableIndex from '$lib/table/TableIndex.svelte'
 	import { RecordFactory } from '@undb/core'
 	import type { PageData } from './$types'
@@ -12,13 +12,13 @@
 	import ViewConfigModal from '$lib/view/ViewConfigModal.svelte'
 	import UpdateTable from '$lib/table/UpdateTable.svelte'
 	import { createTableOpen, createRecordOpen } from '$lib/store/modal'
+	import { trpc } from '$lib/trpc/client'
 
 	const table = getTable()
 	export let data: PageData
 
 	$: schema = $table.schema.toIdMap()
 
-	$: records.set(RecordFactory.fromQueryRecords(data.records.records, schema))
 	$: if (data.record) {
 		currentRecord.set(RecordFactory.fromQuery(data.record, schema).unwrap())
 	}
