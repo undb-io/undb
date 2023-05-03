@@ -11,9 +11,11 @@ services:
     numInstances: 1
     healthCheckPath: /health
     envVars:
-      - key: UNDB_ADMIN_EMAIL
+      - key: PUBLIC_UNDB_ADMIN_EMAIL
         value: test@example.com
-      - key: UNDB_ADMIN_PASSWORD
+      - key: PUBLIC_UNDB_ADMIN_PASSWORD
         value: 123456
+      - key: PUBLIC_UNDB_IS_DEMO
+        value: 'true'
     domains:
       - demo.undb.xyz

@@ -4,7 +4,7 @@ import { attachmentFilterOperators } from './operators.js'
 
 const attachmentFilterTypeValue = z.enum(['image', 'video', 'text', 'document', 'excel', 'ppt', 'pdf'])
 export type IAttachmentFilterTypeValue = z.infer<typeof attachmentFilterTypeValue>
-export const attachmentFilterValue = z.string().nullable().or(attachmentFilterTypeValue)
+export const attachmentFilterValue = z.string().or(attachmentFilterTypeValue).or(z.string().array()).nullable()
 
 export const attachmentFilter = z
   .object({

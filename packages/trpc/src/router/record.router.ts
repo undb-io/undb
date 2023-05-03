@@ -1,22 +1,23 @@
 import '@undb/core'
+import type { IGetForeignRecordsOutput, IGetRecordOutput, IGetRecordsOutput } from '@undb/cqrs'
 import {
   BulkDeleteRecordsCommand,
-  bulkDeleteRecordsCommandInput,
   BulkDuplicateRecordsCommand,
-  bulkDuplicateRecordsCommandInput,
   CreateRecordCommand,
-  createRecordCommandOutput,
   DeleteRecordCommand,
-  deleteRecordCommandInput,
   DuplicateRecordCommand,
-  duplicateRecordCommandInput,
   GetForeignRecordsQuery,
-  getForeignRecordsQueryInput,
   GetRecordQuery,
-  getRecordQueryInput,
   GetRecordsQuery,
-  getRecordsQueryInput,
   UpdateRecordCommand,
+  bulkDeleteRecordsCommandInput,
+  bulkDuplicateRecordsCommandInput,
+  createRecordCommandOutput,
+  deleteRecordCommandInput,
+  duplicateRecordCommandInput,
+  getForeignRecordsQueryInput,
+  getRecordQueryInput,
+  getRecordsQueryInput,
 } from '@undb/cqrs'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
@@ -73,21 +74,21 @@ export const createRecordRouter =
       get: procedure
         .input(getRecordQueryInput)
         .output(z.any())
-        .query(({ input }) => {
+        .query<IGetRecordOutput>(({ input }) => {
           const query = new GetRecordQuery(input)
           return queryBus.execute(query)
         }),
       list: procedure
         .input(getRecordsQueryInput)
         .output(z.any())
-        .query(({ input }) => {
+        .query<IGetRecordsOutput>(({ input }) => {
           const query = new GetRecordsQuery(input)
           return queryBus.execute(query)
         }),
       foreign: procedure
         .input(getForeignRecordsQueryInput)
         .output(z.any())
-        .query(({ input }) => {
+        .query<IGetForeignRecordsOutput>(({ input }) => {
           const query = new GetForeignRecordsQuery(input)
           return queryBus.execute(query)
         }),

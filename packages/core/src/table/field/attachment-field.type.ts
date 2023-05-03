@@ -23,6 +23,7 @@ export const attachmentItem = z
     mimeType: z.string(),
     id: z.string(),
     token: z.string(),
+    url: z.string(),
   })
   .strict()
 export type IAttachmentItem = z.infer<typeof attachmentItem>

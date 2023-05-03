@@ -9,14 +9,11 @@ export const selectTypeSchema = z.literal('select')
 export type SelectFieldType = z.infer<typeof selectTypeSchema>
 const selectTypeObjectSchema = z.object({ [FIELD_TYPE_KEY]: selectTypeSchema })
 
-export const createSelectFieldSchema = createBaseFieldSchema
-  .merge(selectTypeObjectSchema)
-  .merge(
-    z.object({
-      options: createOptionsSchema.min(1),
-    }),
-  )
-  .strict()
+export const createSelectFieldSchema = createBaseFieldSchema.merge(selectTypeObjectSchema).merge(
+  z.object({
+    options: createOptionsSchema.min(1),
+  }),
+)
 export type ICreateSelectFieldSchema = z.infer<typeof createSelectFieldSchema>
 
 export const updateSelectFieldSchema = updateBaseFieldSchema.merge(selectTypeObjectSchema).merge(

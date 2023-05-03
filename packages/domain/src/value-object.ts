@@ -14,7 +14,7 @@ export abstract class ValueObject<T = any> {
     if (vo === null || vo === undefined) {
       return false
     }
-    return equal(this, vo)
+    return equal(vo, this)
   }
 
   static isValueObject(obj: unknown): obj is ValueObject<unknown> {

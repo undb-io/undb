@@ -1,3 +1,4 @@
+import type { IGetParentAvailableRecordsOutput } from '@undb/cqrs'
 import { GetParentAvailableRecordsQuery, getParentAvailableRecordsQueryInput } from '@undb/cqrs'
 import type { IQueryBus } from '@undb/domain'
 import { z } from 'zod'
@@ -9,7 +10,7 @@ export const createParentFieldRouter = (procedure: typeof publicProcedure) => (q
     available: procedure
       .input(getParentAvailableRecordsQueryInput)
       .output(z.any())
-      .query(({ input }) => {
+      .query<IGetParentAvailableRecordsOutput>(({ input }) => {
         const query = new GetParentAvailableRecordsQuery(input)
         return queryBus.execute(query)
       }),

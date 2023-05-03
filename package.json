@@ -2,20 +2,19 @@
   "name": "undb",
   "version": "0.2.12",
   "devDependencies": {
-    "@commitlint/cli": "^17.6.0",
-    "@commitlint/config-conventional": "^17.6.0",
-    "@types/node": "^18.15.11",
+    "@commitlint/cli": "^17.6.1",
+    "@commitlint/config-conventional": "^17.6.1",
+    "@types/node": "^18.16.3",
     "@undb/eslint-config": "^0.0.0",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
-    "dotenv-cli": "^7.1.0",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.0",
-    "prettier": "^2.8.7",
-    "taze": "^0.9.1",
-    "turbo": "^1.8.8",
-    "typescript": "^5.0.3",
-    "zx": "^7.2.1"
+    "dotenv-cli": "^7.2.1",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8",
+    "taze": "^0.10.0",
+    "turbo": "^1.9.3",
+    "typescript": "^5.0.4",
+    "zx": "^7.2.2"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -42,11 +41,14 @@
     "prepare": "husky install",
     "test": "FORCE_COLOR=1 TZ=UTC turbo run test",
     "test:watch": "FORCE_COLOR=1 TZ=UTC turbo run test:watch",
-    "up": "taze -r -w -i"
+    "up": "taze major -r -w -i"
   },
   "workspaces": [
     "apps/*",
     "packages/*",
     "packages/database/*"
-  ]
+  ],
+  "dependencies": {
+    "husky": "^8.0.3"
+  }
 }

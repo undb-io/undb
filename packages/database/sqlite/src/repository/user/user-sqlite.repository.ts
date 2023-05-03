@@ -4,6 +4,7 @@ import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { User } from '../../entity/user.js'
 import { UserSqliteMapper } from './user-sqlite.mapper.js'
+import { UserSqliteMutationVisitor } from './user-sqlite.mutation-visitor.js'
 import { UserSqliteQueryVisitor } from './user-sqlite.query-visitor.js'
 
 export class UserSqliteRepository implements IUserRepository {
@@ -11,6 +12,13 @@ export class UserSqliteRepository implements IUserRepository {
   async insert(user: CoreUser): Promise<void> {
     const entity = new User(user)
     await this.em.persistAndFlush(entity)
+  }
+
+  async updateOneById(id: string, spec: UserSpecification): Promise<void> {
+    const visitor = new UserSqliteMutationVisitor(id, this.em)
+    spec.accept(visitor)
+
+    await this.em.flush()
   }
 
   async findOneById(id: string): Promise<Option<CoreUser>> {

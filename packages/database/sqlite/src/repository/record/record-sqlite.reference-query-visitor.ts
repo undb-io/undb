@@ -77,7 +77,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
     const attachmentTable = this.em.getMetadata().get(Attachment.name)
     const {
       tableName,
-      properties: { recordId, name, mimeType, id, size, token },
+      properties: { recordId, name, mimeType, id, size, token, url },
     } = attachmentTable
 
     const alias = `r__${field.id.value}__${tableName}`
@@ -90,7 +90,8 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
           '${mimeType.name}', ${alias}.${mimeType.fieldNames[0]},
           '${id.name}', ${alias}.${id.fieldNames[0]},
           '${size.name}', ${alias}.${size.fieldNames[0]},
-          '${token.name}', ${alias}.${token.fieldNames[0]}
+          '${token.name}', ${alias}.${token.fieldNames[0]},
+          '${url.name}', ${alias}.${url.fieldNames[0]}
         )
       )
       filter (where ${alias}.${id.fieldNames[0]} is not null)

@@ -7,12 +7,16 @@ import { authConfig } from '../configs/auth.config.js'
 import { UserModule } from '../modules/user/user.module.js'
 import { AuthController } from './auth.controller.js'
 import { AuthService } from './auth.service.js'
-import { NestLgoinCommandHandler, NestRegisterCommandHandler } from './commands/index.js'
+import {
+  NestLgoinCommandHandler,
+  NestRegisterCommandHandler,
+  NestUpdateProfileCommandHandler,
+} from './commands/index.js'
 import { JwtStrategy } from './jwt.strategy.js'
 import { LocalStrategy } from './local.strategy.js'
 import { NestGetMeQueryHandler } from './queries/index.js'
 
-const CommandHandlers = [NestLgoinCommandHandler, NestRegisterCommandHandler]
+const CommandHandlers = [NestLgoinCommandHandler, NestRegisterCommandHandler, NestUpdateProfileCommandHandler]
 const QueryHandlers = [NestGetMeQueryHandler]
 
 @Module({

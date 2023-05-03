@@ -1,14 +1,15 @@
+import type { IGetTableOutput, IGetTablesOutput } from '@undb/cqrs'
 import {
   CreateTableCommand,
+  DeleteTableCommand,
+  GetTableQuery,
+  GetTablesQuery,
+  UpdateTableCommand,
   createTableCommandInput,
   createTableCommandOutput,
-  DeleteTableCommand,
   deleteTableCommandInput,
-  GetTableQuery,
   getTableQuerySchema,
-  GetTablesQuery,
   getTablesQuerySchema,
-  UpdateTableCommand,
   updateTableCommandInput,
 } from '@undb/cqrs'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
@@ -24,14 +25,14 @@ export const createTableRouter =
       get: procedure
         .input(getTableQuerySchema)
         .output(z.any())
-        .query(({ input }) => {
+        .query<IGetTableOutput>(({ input }) => {
           const query = new GetTableQuery({ id: input.id })
           return queryBus.execute(query)
         }),
       list: procedure
         .input(getTablesQuerySchema)
         .output(z.any())
-        .query(() => {
+        .query<IGetTablesOutput>(() => {
           const query = new GetTablesQuery()
           return queryBus.execute(query)
         }),

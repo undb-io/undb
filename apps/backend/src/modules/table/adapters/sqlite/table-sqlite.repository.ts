@@ -6,8 +6,8 @@ import { TableSqliteRepository } from '@undb/sqlite'
 import { Option } from 'oxide.ts'
 @Injectable()
 export class NestTableSqliteRepository extends TableSqliteRepository {
-  constructor(public readonly orm: MikroORM, public readonly em: EntityManager) {
-    super(em)
+  constructor(public readonly orm: MikroORM) {
+    super(orm.em as EntityManager)
   }
 
   @UseRequestContext()

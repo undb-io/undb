@@ -18,7 +18,7 @@ export class User extends BaseEntity {
   id: string
 
   @Property({ nullable: true })
-  avatar?: string
+  avatar?: string | null
 
   @Property()
   @Index()

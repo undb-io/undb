@@ -3,7 +3,7 @@ import { Option } from 'oxide.ts'
 import type { FieldValue, ICreateFieldsSchema_internal, UnpackedFieldValue } from '../../field/index.js'
 import { TreeField } from '../../field/index.js'
 import type { TableSchemaIdMap } from '../../value-objects/index.js'
-import type { RecordValueJSON } from '../record.schema.js'
+import type { RecordValueJSON, RecordValuePair } from '../record.schema.js'
 import type { IQueryRecordValues } from '../record.type.js'
 
 export class RecordValues extends ValueObject<Map<string, FieldValue>> {
@@ -31,8 +31,18 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
     return this.props
   }
 
-  public get valueJSON(): RecordValueJSON {
+  public get valuesPair(): RecordValuePair {
     return Object.fromEntries(this.value)
+  }
+
+  public get valuesJSON(): RecordValueJSON {
+    const result: RecordValueJSON = {}
+
+    for (const [key, value] of this.value) {
+      result[key] = value.json
+    }
+
+    return result
   }
 
   *[Symbol.iterator]() {

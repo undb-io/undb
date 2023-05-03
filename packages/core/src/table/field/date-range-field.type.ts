@@ -43,14 +43,11 @@ export const dateRangeFieldValue = z
 
 export type IDateRangeFieldValue = z.infer<typeof dateRangeFieldValue>
 
-export const dateRangeFieldQueryValue = z
-  .tuple([z.string().datetime().nullable(), z.string().datetime().nullable()])
-  .nullable()
+export const dateRangeFieldQueryValue = z.tuple([z.string().nullable(), z.string().nullable()]).nullable()
+export type IDateRangeFieldQueryValue = z.infer<typeof dateRangeFieldQueryValue>
 
 export const createDateRangeFieldValue = dateRangeFieldQueryValue
 export type ICreateDateRangeFieldValue = z.infer<typeof createDateRangeFieldValue>
-
-export type IDateRangeFieldQueryValue = z.infer<typeof dateRangeFieldQueryValue>
 
 export const createDateRangeFieldValue_internal = z
   .object({ value: createDateRangeFieldValue })

@@ -43,8 +43,8 @@ export const createTestSelectField = (input: Partial<Omit<ICreateSelectFieldSche
     id: 'fld1',
     name: 'select',
     options: [
-      { key: 'opt1', name: 'opt1' },
-      { key: 'opt2', name: 'opt2' },
+      { key: 'opt1', name: 'opt1', color: { name: 'blue', shade: 5 } },
+      { key: 'opt2', name: 'opt2', color: { name: 'cyan', shade: 5 } },
     ],
     ...input,
   })

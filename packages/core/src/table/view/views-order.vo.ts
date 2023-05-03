@@ -14,6 +14,10 @@ export class ViewsOrder extends OrderVO {
     return new this([])
   }
 
+  public get last() {
+    return this.props[this.props.length - 1]
+  }
+
   public addView(view: View): WithViewsOrder {
     const order = this.add(view.id.value)
     const vo = new ViewsOrder(order.order)

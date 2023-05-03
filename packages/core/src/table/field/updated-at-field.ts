@@ -62,6 +62,6 @@ export class UpdatedAtField extends AbstractDateField<IUpdatedAtField> {
   }
 
   get valueSchema() {
-    return z.string().datetime()
+    return z.string()
   }
 }

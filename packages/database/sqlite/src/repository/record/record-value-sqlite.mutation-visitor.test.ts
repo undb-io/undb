@@ -50,8 +50,8 @@ describe('RecordValueSqliteVisitor', () => {
 
       expect(visitor.data).toMatchInlineSnapshot(`
         {
-          "fld1_from": 2022-03-02T00:00:00.000Z,
-          "fld1_to": 2022-03-03T00:00:00.000Z,
+          "fld1_from": "2022-03-02T00:00:00.000Z",
+          "fld1_to": "2022-03-03T00:00:00.000Z",
           "updated_by": undefined,
         }
       `)

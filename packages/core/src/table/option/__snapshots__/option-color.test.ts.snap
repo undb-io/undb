@@ -2,34 +2,26 @@
 
 exports[`createColors > should create colors if has input 1`] = `
 [
-  OptionColor {
-    "props": {
-      "name": "blue",
-      "shade": 5,
-    },
+  {
+    "name": "blue",
+    "shade": 5,
   },
-  OptionColor {
-    "props": {
-      "name": "red",
-      "shade": 5,
-    },
+  {
+    "name": "red",
+    "shade": 5,
   },
 ]
 `;
 
 exports[`createColors > should create colors if no input 1`] = `
 [
-  OptionColor {
-    "props": {
-      "name": "indigo",
-      "shade": 5,
-    },
+  {
+    "name": "indigo",
+    "shade": 5,
   },
-  OptionColor {
-    "props": {
-      "name": "blue",
-      "shade": 5,
-    },
+  {
+    "name": "violet",
+    "shade": 5,
   },
 ]
 `;

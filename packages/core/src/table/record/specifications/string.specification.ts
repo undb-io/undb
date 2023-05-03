@@ -106,3 +106,20 @@ export class StringRegex extends BaseRecordSpecification<StringFieldValue> {
     return Ok(undefined)
   }
 }
+
+export class StringEmpty extends BaseRecordSpecification<StringFieldValue> {
+  constructor(fieldId: string) {
+    super(fieldId, new StringFieldValue(null))
+  }
+
+  isSatisfiedBy(r: Record): boolean {
+    const value = r.values.value.get(this.fieldId)
+
+    return value instanceof StringFieldValue && !value.unpack()
+  }
+
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.stringEmpty(this)
+    return Ok(undefined)
+  }
+}

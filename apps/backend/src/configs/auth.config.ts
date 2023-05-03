@@ -8,8 +8,8 @@ export const authConfig = registerAs('auth', () => ({
     secret: process.env.UNDB_JWT_SECRET!,
   },
   admin: {
-    email: process.env.UNDB_ADMIN_EMAIL,
-    password: process.env.UNDB_ADMIN_PASSWORD,
-    username: process.env.UNDB_ADMIN_USERNAME,
+    email: process.env.PUBLIC_UNDB_ADMIN_EMAIL,
+    password: process.env.PUBLIC_UNDB_ADMIN_PASSWORD,
+    username: process.env.PUBLIC_UNDB_ADMIN_USERNAME,
   },
 }))

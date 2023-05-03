@@ -35,6 +35,6 @@ export class ColorField extends BaseField<IColorField> {
 
   get valueSchema() {
     const color = z.string().min(4).max(9).regex(/^#/)
-    return this.required ? color : color.nullable()
+    return this.required ? color : color.nullable().or(z.string().length(0))
   }
 }

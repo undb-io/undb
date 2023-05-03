@@ -21,11 +21,6 @@ export class CollaboratorField extends BaseField<ICollaboratorField> {
     return true
   }
 
-  // https://github.com/undb-xyz/undb/issues/781
-  override get filterable(): boolean {
-    return false
-  }
-
   override get sortable(): boolean {
     return false
   }

@@ -5,11 +5,11 @@ import type { User } from '../user.js'
 import type { IUserSpecVisitor } from './interface.js'
 
 export class WithUserAvatar extends CompositeSpecification<User, IUserSpecVisitor> {
-  constructor(public readonly avatar?: string) {
+  constructor(public readonly avatar?: string | null) {
     super()
   }
 
-  static fromString(avatar?: string): WithUserAvatar {
+  static fromNullableString(avatar?: string | null): WithUserAvatar {
     return new WithUserAvatar(avatar)
   }
 

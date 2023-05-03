@@ -31,7 +31,7 @@ export type IUpdatedByFieldValue = z.infer<typeof updatedByFieldValue>
 export const createUpdatedByFieldValue = updatedByFieldValue
 export type ICreateUpdatedByFieldValue = z.infer<typeof createUpdatedByFieldValue>
 
-export const updatedByFieldQueryValue = z.string().datetime()
+export const updatedByFieldQueryValue = z.string()
 export type IUpdatedByFieldQueryValue = z.infer<typeof updatedByFieldQueryValue>
 
 export const createUpdatedByFieldValue_internal = z

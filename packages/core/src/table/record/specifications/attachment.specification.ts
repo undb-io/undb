@@ -32,7 +32,7 @@ export class IsAttachmentEmpty extends BaseRecordQuerySpecification<void> {
   }
 }
 
-export class HasExtension extends BaseRecordQuerySpecification<string> {
+export class HasExtension extends BaseRecordQuerySpecification<string[]> {
   isSatisfiedBy(r: Record): boolean {
     const value = r.values.value.get(this.fieldId)
 
