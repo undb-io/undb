@@ -122,7 +122,13 @@
 			<span class="inline-flex p-1 mr-3 bg-gray-200 rounded-full dark:bg-gray-600">
 				<i class="ti ti-bulb-filled" />
 			</span>
-			<span>{$t('demo', { ns: 'common', email: PUBLIC_UNDB_ADMIN_EMAIL, password: PUBLIC_UNDB_ADMIN_PASSWORD })}</span>
+			<span
+				>{@html $t('demo', {
+					ns: 'common',
+					email: PUBLIC_UNDB_ADMIN_EMAIL,
+					password: PUBLIC_UNDB_ADMIN_PASSWORD,
+				})}</span
+			>
 		</p>
 	</Banner>
 {/if}

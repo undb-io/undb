@@ -6,6 +6,12 @@
 	import { t } from '$lib/i18n'
 
 	export let data: LayoutData
+
+	const onKeydown = (event: KeyboardEvent) => {
+		if (event.key === 't') {
+			$createTableOpen = true
+		}
+	}
 </script>
 
 <nav class="bg-white border-b border-gray-200 dark:bg-gray-900">
@@ -28,3 +34,5 @@
 {:else}
 	<Empty />
 {/if}
+
+<svelte:window on:keydown|preventDefault={onKeydown} />
