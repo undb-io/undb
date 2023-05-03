@@ -14,7 +14,7 @@
 				<div class="flex min-w-0 flex-1 items-center">
 					<div class="flex-shrink-0">
 						{#if member.avatar}
-							<Avatar src="member.avatar" />
+							<Avatar src={member.avatar} />
 						{:else}
 							<Avatar>{member.username.slice(0, 2)}</Avatar>
 						{/if}
