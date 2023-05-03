@@ -378,6 +378,9 @@ importers:
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
+      plausible-tracker:
+        specifier: ^0.3.8
+        version: 0.3.8
       postcss:
         specifier: ^8.4.23
         version: 8.4.23
@@ -9161,6 +9164,11 @@ packages:
       jsonc-parser: 3.2.0
       mlly: 1.2.0
       pathe: 1.1.0
+    dev: true
+
+  /plausible-tracker@0.3.8:
+    resolution: {integrity: sha512-lmOWYQ7s9KOUJ1R+YTOR3HrjdbxIS2Z4de0P/Jx2dQPteznJl2eX3tXxKClpvbfyGP59B5bbhW8ftN59HbbFSg==}
+    engines: {node: '>=10'}
     dev: true
 
   /playwright-core@1.33.0:

@@ -17,14 +17,7 @@ services:
         value: 123456
       - key: PUBLIC_UNDB_IS_DEMO
         value: 'true'
-      - key: PUBLIC_UNDB_ANALYTICS
-        value: '/stats/js/script.js'
+      - key: PUBLIC_UNDB_ANALYTICS_DOMAIN
+        value: demo.undb.xyz
     domains:
       - demo.undb.xyz
-    routes:
-      - type: rewrite
-        source: /stats/js/script.js
-        destination: https://plausible.io/js/script.js
-      - type: rewrite
-        source: /stats/api/event
-        destination: https://plausible.io/api/event
