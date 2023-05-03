@@ -326,7 +326,7 @@ const attachment: TemplateFunc = (h, props) => {
 
 	return h(
 		'div',
-		{ class: 'inline-flex h-full gap-2 p-1' },
+		{ class: 'inline-flex items-center h-full gap-2 p-1' },
 		attachments.map((attachment) => attachmentItem(h, attachment)),
 	)
 }

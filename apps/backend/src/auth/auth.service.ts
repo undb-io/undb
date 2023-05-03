@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { IQueryUser, WithUserEmail } from '@undb/core'
-import { GetMeQuery, LoginCommand, RegisterCommand } from '@undb/cqrs'
+import { GetMeQuery, LoginCommand, RegisterCommand, UpdateProfileCommand } from '@undb/cqrs'
 import * as bcrypt from 'bcrypt'
 import { UserService } from '../modules/user/user.service.js'
 import { InvalidPassword } from './errors/invalid-password.error.js'
@@ -39,5 +39,9 @@ export class AuthService {
 
   async me(user: IQueryUser) {
     return this.queryBus.execute(new GetMeQuery({ me: user }))
+  }
+
+  async updateProfile(userId: string, profile: { username?: string; avatar?: string | null }) {
+    return this.commandBus.execute(new UpdateProfileCommand({ userId, ...profile }))
   }
 }

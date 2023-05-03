@@ -22,6 +22,10 @@ export const config: InitOptions = {
         'has no account': "Has't account yet?",
         'has account': 'Already has an account?',
         Setting: 'Setting',
+        Profile: 'Profile',
+        username: 'username',
+        avatar: 'avatar',
+        'Profile Helper': 'Edit your personal profile.',
       },
       common: {
         demo: 'this is a demo site for undb, you can use email: {{email}} and password: {{password}} to login',
@@ -247,6 +251,10 @@ export const config: InitOptions = {
         'login to undb': '登录到 undb',
         'register to undb': '注册 undb 账号',
         Setting: '设置账号',
+        Profile: '简介',
+        username: '用户名',
+        avatar: '头像',
+        'Profile Helper': '编辑你的个人简介',
       },
       common: {
         demo: '这是 undb 的 demo 网站，你可以使用邮箱: {{email}} 和密码：{{password}} 登录',

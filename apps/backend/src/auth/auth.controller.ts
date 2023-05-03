@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, Res, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put, Request, Res, UseGuards } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import type { Response } from 'express'
 import { AuthService } from './auth.service.js'
@@ -40,5 +40,12 @@ export class AuthController {
   @Get('me')
   getProfile(@Request() req: Express.Request) {
     return this.authService.me(req.user as any)
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
+  @Put('me')
+  updateMyProfile(@Request() req: Express.Request, @Body() body: { username: string; avatar: string }) {
+    return this.authService.updateProfile((req.user as any).userId, body)
   }
 }

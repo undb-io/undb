@@ -20,7 +20,7 @@
 {#if !!data.tables.length}
 	<main class="w-full p-10 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
 		{#each data.tables as table}
-			<Card href={`/t/${table.id}`} class="max-w-none">
+			<Card href={`/t/${table.id}`} class="!max-w-none">
 				<h5 class="font-semibold">{table.name}</h5>
 			</Card>
 		{/each}

@@ -94,6 +94,8 @@
 	$: {
 		if (type === 'rating') {
 			wrapperClass += ' box-border border px-2'
+		} else if (type === 'color') {
+			wrapperClass += ' border border-r-1'
 		}
 	}
 </script>
