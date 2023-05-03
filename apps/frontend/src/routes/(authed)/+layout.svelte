@@ -4,14 +4,14 @@
 	import { Dialog, DialogOverlay, TransitionChild, TransitionRoot } from '@rgossiaux/svelte-headlessui'
 	import type { LayoutData } from './$types'
 	import CreateTable from '$lib/table/CreateTable.svelte'
-	import { Avatar, Button, Dropdown, DropdownItem, P } from 'flowbite-svelte'
+	import { Avatar, Button, Chevron, Dropdown, DropdownItem, P } from 'flowbite-svelte'
 	import { createTableOpen } from '$lib/store/modal'
 	import { page } from '$app/stores'
 	import { currentRecordId } from '$lib/store/table'
 	import { goto } from '$app/navigation'
 	import { browser } from '$app/environment'
 	import logo from '$lib/assets/logo.svg'
-	import { t } from '$lib/i18n'
+	import { i18n, t } from '$lib/i18n'
 	import { createMutation } from '@tanstack/svelte-query'
 
 	$: navigation = [
@@ -263,12 +263,33 @@
 					frameClass="w-full"
 					class="w-full shadow-sm border border-gray-100"
 				>
-					<a href="/me">
-						<DropdownItem>
-							<i class="ti ti-settings" />
-							{$t('Setting', { ns: 'auth' })}
+					<DropdownItem href="/me">
+						<i class="ti ti-settings" />
+						{$t('Setting', { ns: 'auth' })}
+					</DropdownItem>
+					<DropdownItem class="flex items-center justify-between">
+						<Chevron placement="right">
+							<div>
+								<i class="ti ti-world" />
+								{$t('language', { ns: 'common' })}
+							</div>
+						</Chevron>
+					</DropdownItem>
+					<Dropdown placement="right-start">
+						<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('zh-CN')}>
+							<span>简体中文</span>
+							{#if $i18n.language === 'zh-CN'}
+								<i class="ti ti-check" />
+							{/if}
 						</DropdownItem>
-					</a>
+						<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('en')}>
+							<span>English</span>
+							{#if $i18n.language === 'en'}
+								<i class="ti ti-check" />
+							{/if}
+						</DropdownItem>
+					</Dropdown>
+
 					<DropdownItem>
 						<button on:click={() => $logout.mutate()} class="w-full h-full text-left text-red-400" type="submit">
 							<i class="ti ti-logout" />

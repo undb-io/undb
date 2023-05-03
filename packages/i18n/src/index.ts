@@ -96,6 +96,7 @@ export const config: InitOptions = {
         'and n more': 'and {{n}} more',
         'Confirm Yes': "Yes, I'm sure",
         'Confirm No': 'No, cancel',
+        language: 'language',
       },
       table: {
         'shortcut T': 'Use shortcut {{ shortcut }} to create table from anywhere.',
@@ -325,6 +326,7 @@ export const config: InitOptions = {
         'and n more': '等 {{n}} 个',
         'Confirm Yes': '确认删除',
         'Confirm No': '取消操作',
+        language: '多语言',
       },
       table: {
         'shortcut T': '使用快捷键 <0>{{shortcut}}</0> 在任何页面创建表。',
