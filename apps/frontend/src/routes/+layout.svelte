@@ -34,7 +34,7 @@
 <svelte:head>
 	<title>undb</title>
 	{#if env.PUBLIC_UNDB_ANALYTICS}
-		<script defer data-domain="demo.undb.xyz" src={env.PUBLIC_UNDB_ANALYTICS}></script>
+		<script defer data-domain="demo.undb.xyz" src={env.PUBLIC_UNDB_ANALYTICS} data-api="/stats/api/event"></script>
 	{/if}
 </svelte:head>
 
