@@ -11,6 +11,7 @@
 	import CreateView from '$lib/view/CreateView.svelte'
 	import ViewConfigModal from '$lib/view/ViewConfigModal.svelte'
 	import UpdateTable from '$lib/table/UpdateTable.svelte'
+	import { createTableOpen, createRecordOpen } from '$lib/store/modal'
 
 	const table = getTable()
 	export let data: PageData
@@ -26,6 +27,14 @@
 	}
 
 	const field = getField()
+
+	const onKeydown = (event: KeyboardEvent) => {
+		if (event.key === 't') {
+			$createTableOpen = true
+		} else if (event.key === 'r') {
+			$createRecordOpen = true
+		}
+	}
 </script>
 
 <TableIndex />
@@ -46,3 +55,5 @@
 		<UpdateField field={$field} data={data.updateField} />
 	{/key}
 {/if}
+
+<svelte:window on:keydown|preventDefault={onKeydown} />

@@ -28,7 +28,7 @@ export const config: InitOptions = {
         'Profile Helper': 'Edit your personal profile.',
       },
       common: {
-        demo: 'this is a demo site for undb, you can use email: {{email}} and password: {{password}} to login',
+        demo: 'this is a demo site for undb, you can use email: <strong>{{email}}</strong> and password: <strong>{{password}}</strong> to login',
         unamed: 'unamed',
         error: 'some error happened',
         Apply: 'Apply',
@@ -258,7 +258,7 @@ export const config: InitOptions = {
         'Profile Helper': '编辑你的个人简介',
       },
       common: {
-        demo: '这是 undb 的 demo 网站，你可以使用邮箱: {{email}} 和密码：{{password}} 登录',
+        demo: '这是 undb 的 demo 网站，你可以使用邮箱: <strong>{{email}}</strong> 和密码：<strong>{{password}}</strong> 登录',
         unamed: '未命名记录',
         error: '发生错误',
         Apply: '应用',
@@ -329,8 +329,10 @@ export const config: InitOptions = {
         language: '多语言',
       },
       table: {
-        'shortcut T': '使用快捷键 <0>{{shortcut}}</0> 在任何页面创建表。',
-        'shortcut R': '使用快捷键 <0>{{shortcut}}</0> 在表格内创建记录。',
+        'shortcut T':
+          '使用快捷键 <span class="bg-gray-100 text-gray-800 text-xs font-medium mx-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">{{shortcut}}</span> 在任何页面创建表。',
+        'shortcut R':
+          '使用快捷键 <span class="bg-gray-100 text-gray-800 text-xs font-medium mx-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">{{shortcut}}</span> 在表格内创建记录。',
         'Create New Record': '创建新记录',
         Views: '视图',
         Field: '列',
