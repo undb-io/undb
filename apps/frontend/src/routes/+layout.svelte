@@ -5,6 +5,7 @@
 	import { navigating, page } from '$app/stores'
 	import { QueryClientProvider } from '@tanstack/svelte-query'
 	import { trpc } from '$lib/trpc/client'
+	import { env } from '$env/dynamic/public'
 
 	import 'nprogress/nprogress.css'
 
@@ -32,8 +33,8 @@
 
 <svelte:head>
 	<title>undb</title>
-	{#if import.meta.env.PUBLIC_UNDB_ANALYTICS}
-		{import.meta.env.PUBLIC_UNDB_ANALYTICS}
+	{#if env.PUBLIC_UNDB_ANALYTICS}
+		<script defer data-domain="demo.undb.xyz" src={env.PUBLIC_UNDB_ANALYTICS}></script>
 	{/if}
 </svelte:head>
 

@@ -21,6 +21,7 @@ COPY --from=builder /undb/out/ .
 
 RUN pnpm install -r --offline
 
+ARG PUBLIC_UNDB_ANALYTICS
 ARG PUBLIC_UNDB_ADMIN_EMAIL
 ARG PUBLIC_UNDB_ADMIN_PASSWORD
 
