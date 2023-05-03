@@ -20,6 +20,7 @@
 		getRecords,
 		getTable,
 		getView,
+		recordHash,
 	} from '$lib/store/table'
 	import { invalidate } from '$app/navigation'
 	import FieldMenu from '$lib/field/FieldMenu.svelte'
@@ -39,7 +40,7 @@
 	const view = getView()
 	const data = trpc().record.list.query(
 		{ tableId: $table.id.value, viewId: $view.id.value },
-		{ queryHash: ['records', $table.id.value, $view.id.value].toString() },
+		{ queryHash: $recordHash },
 	)
 	$: records = RecordFactory.fromQueryRecords($data.data?.records ?? [], $table.schema.toIdMap())
 	$: $currentRecords = records

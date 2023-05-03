@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation'
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
-	import { getTable, getView } from '$lib/store/table'
+	import { getTable, getView, recordHash } from '$lib/store/table'
 	import { createRecordInitial, createRecordOpen } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import { Button, Label, Modal, Spinner, Toast } from 'flowbite-svelte'
@@ -21,7 +21,7 @@
 
 	const records = trpc().record.list.query(
 		{ tableId: $table.id.value, viewId: $view.id.value },
-		{ queryHash: ['records', $table.id.value, $view.id.value].toString() },
+		{ queryHash: $recordHash },
 	)
 
 	const createRecord = trpc().record.create.mutation({

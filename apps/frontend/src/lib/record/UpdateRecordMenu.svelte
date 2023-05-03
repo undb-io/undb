@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { goto, invalidate } from '$app/navigation'
+	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { t } from '$lib/i18n'
-	import { currentRecordId, getTable, getView } from '$lib/store/table'
+	import { currentRecordId, getTable, getView, recordHash } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { Record } from '@undb/core'
 	import { Button, Dropdown, DropdownDivider, DropdownItem, Modal } from 'flowbite-svelte'
@@ -22,7 +22,7 @@
 
 	const records = trpc().record.list.query(
 		{ tableId: $table.id.value, viewId: $view.id.value },
-		{ queryHash: ['records', $table.id.value, $view.id.value].toString() },
+		{ queryHash: $recordHash },
 	)
 
 	const duplicateRecord = trpc().record.duplicate.mutation({

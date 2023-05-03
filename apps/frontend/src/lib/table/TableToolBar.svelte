@@ -6,7 +6,7 @@
 	import TableNavigator from './TableNavigator.svelte'
 	import ToggleDisplayType from './ToggleDisplayType.svelte'
 	import { createFieldOpen, createRecordOpen, updateTableOpen } from '$lib/store/modal'
-	import { getTable, getView } from '$lib/store/table'
+	import { getTable, getView, recordHash } from '$lib/store/table'
 	import ViewConfigMenu from '$lib/view/ViewConfigMenu.svelte'
 	import { t } from '$lib/i18n'
 	import { trpc } from '$lib/trpc/client'
@@ -16,7 +16,7 @@
 
 	const records = trpc().record.list.query(
 		{ tableId: $table.id.value, viewId: $view.id.value },
-		{ queryHash: ['records', $table.id.value, $view.id.value].toString() },
+		{ queryHash: $recordHash },
 	)
 
 	const refresh = async () => {
