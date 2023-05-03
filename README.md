@@ -41,6 +41,8 @@ docker run -d --name undb -p 4000:4000 --platform linux/x86_64 -v ~/.undb/:/var/
 
 > You'll need a render account to deploy your own undb instance
 
+![Alt](https://repobeats.axiom.co/api/embed/4e19a26c5f110e58bbcce4bb6a79c144a481c3dd.svg "Repobeats analytics image")
+
 ## License
 
 undb is open-source under the GNU Affero General Public License Version 3 (AGPLv3). You can find it [here](./LICENSE).
