@@ -8,7 +8,7 @@
 	export let data: LayoutData
 
 	const onKeydown = (event: KeyboardEvent) => {
-		if (event.key === 't') {
+		if (event.key === 't' && !(event.ctrlKey || event.altKey || event.metaKey)) {
 			$createTableOpen = true
 		}
 	}
@@ -35,4 +35,4 @@
 	<Empty />
 {/if}
 
-<svelte:window on:keydown|preventDefault={onKeydown} />
+<svelte:window on:keydown={onKeydown} />

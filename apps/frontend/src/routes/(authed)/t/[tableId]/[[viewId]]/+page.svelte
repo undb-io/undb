@@ -29,9 +29,9 @@
 	const field = getField()
 
 	const onKeydown = (event: KeyboardEvent) => {
-		if (event.key === 't') {
+		if (event.key === 't' && !(event.ctrlKey || event.altKey || event.metaKey)) {
 			$createTableOpen = true
-		} else if (event.key === 'r') {
+		} else if (event.key === 'r' && !(event.ctrlKey || event.altKey || event.metaKey)) {
 			$createRecordOpen = true
 		}
 	}
@@ -56,4 +56,4 @@
 	{/key}
 {/if}
 
-<svelte:window on:keydown|preventDefault={onKeydown} />
+<svelte:window on:keydown={onKeydown} />
