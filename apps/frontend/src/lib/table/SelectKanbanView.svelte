@@ -22,7 +22,7 @@
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 
-	export let fieldId: string
+	export let field: SelectField
 	const flipDurationMs = 200
 
 	const table = getTable()
@@ -35,7 +35,6 @@
 	$: records = RecordFactory.fromQueryRecords($data.data?.records ?? [], $table.schema.toIdMap())
 	$: $currentRecords = records
 
-	$: field = $table.schema.getFieldById(fieldId).into() as SelectField | undefined
 	$: options = field?.options?.options ?? []
 
 	const UNCATEGORIZED = 'Uncategorized'
