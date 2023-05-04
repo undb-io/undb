@@ -1,6 +1,6 @@
 <script>
 	import { optionColorOrder, Option as CoreOption, OptionColor } from '@undb/core'
-	import { Dropdown, Radio } from 'flowbite-svelte'
+	import { Dropdown, Radio, Button } from 'flowbite-svelte'
 	import Option from '$lib/option/Option.svelte'
 	import cx from 'classnames'
 	import { colors } from '$lib/field/helpers'
@@ -12,8 +12,7 @@
 	$: selected = colors[value]
 </script>
 
-<button
-	on:click|preventDefault
+<div
 	class={cx(
 		'inline-flex text-white w-[30px] h-[30px] aspect-square justify-center items-center cursor-pointer rounded-sm',
 		selected,
@@ -21,7 +20,7 @@
 	)}
 >
 	<i class="ti ti-circle-chevron-down text-sm" />
-</button>
+</div>
 <Dropdown
 	bind:open
 	inline

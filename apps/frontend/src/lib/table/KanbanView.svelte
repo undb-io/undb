@@ -142,7 +142,7 @@
 				</div>
 
 				<div
-					class="flex flex-col gap-2 flex-1 overflow-y-scroll"
+					class="flex flex-col gap-2 flex-1 overflow-y-auto"
 					data-container-id={item.id}
 					use:dndzone={{ items: item.records, flipDurationMs, dropTargetStyle: {} }}
 					on:consider={(e) => handleDndConsiderCards(item.id, e)}
