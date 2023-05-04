@@ -18,7 +18,6 @@
 
 	const createOption = trpc().table.field.select.createOption.mutation({
 		async onSuccess(data, variables, context) {
-			console.log('wtf')
 			reset()
 			await invalidate(`table:${$table.id.value}`)
 			$createOptionOpen = false
@@ -32,7 +31,6 @@
 		applyAction: true,
 		taintedMessage: null,
 		async onUpdate(event) {
-			console.log(field)
 			if (!$field) return
 			$createOption.mutate({
 				tableId: $table.id.value,
