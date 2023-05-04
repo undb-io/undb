@@ -1,4 +1,4 @@
-import type { IFilters, Record, Records, Table, View } from '@undb/core'
+import type { IFilters, Option, Record, Records, Table, View } from '@undb/core'
 import { derived, writable } from 'svelte/store'
 
 export const currentTable = writable<Table>()
@@ -44,3 +44,6 @@ export const recordHash = derived(
 	[currentTable, currentView],
 	([$table, $view]) => `records:${$table.id.value}:${$view.id.value}:${$view.displayType}`,
 )
+
+export const currentOption = writable<Option | null>()
+export const getOption = () => currentOption

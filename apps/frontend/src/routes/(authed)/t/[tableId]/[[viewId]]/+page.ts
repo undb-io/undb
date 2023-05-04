@@ -6,6 +6,7 @@ import {
 	createOptionSchema,
 	createUpdateTableSchema,
 	createViewSchema,
+	updateOptionSchema,
 } from '@undb/core'
 import { superValidate } from 'sveltekit-superforms/server'
 import { z } from 'zod'
@@ -48,6 +49,7 @@ export const load: PageLoad = async (event) => {
 			id: 'updateField',
 		}),
 		createOption: superValidate({}, createOptionSchema, { id: 'createOption' }),
+		updateOption: superValidate({}, updateOptionSchema, { id: 'createOption' }),
 		createView: superValidate({}, createViewSchema, { id: 'createView', errors: false }),
 	}
 }

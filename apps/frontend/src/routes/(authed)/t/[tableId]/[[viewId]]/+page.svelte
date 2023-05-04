@@ -13,6 +13,7 @@
 	import UpdateTable from '$lib/table/UpdateTable.svelte'
 	import { createTableOpen, createRecordOpen } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
+	import UpdateOption from '$lib/option/UpdateOption.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -50,6 +51,7 @@
 {#if $currentFieldId}
 	<CreateOption data={data.createOption} />
 {/if}
+<UpdateOption data={data.updateOption} />
 {#if $field}
 	{#key $field}
 		<UpdateField field={$field} data={data.updateField} />
