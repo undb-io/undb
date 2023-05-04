@@ -14,9 +14,9 @@
 	const table = getTable()
 	const view = getView()
 
-	const records = trpc().record.list.query(
+	$: records = trpc().record.list.query(
 		{ tableId: $table.id.value, viewId: $view.id.value },
-		{ queryHash: $recordHash },
+		{ queryHash: $recordHash, enabled: false },
 	)
 
 	const refresh = async () => {
@@ -25,7 +25,7 @@
 </script>
 
 <div
-	class="flex w-full flex-row items-center justify-between gap-y-4 border-b bg-white px-5 py-2 overflow-x-auto overflow-y-hidden"
+	class="flex w-full flex-row items-center justify-between gap-y-4 border-b bg-white px-5 py-2 overflow-x-auto overflow-y-hidden shrink-0"
 >
 	<div class="flex items-center justify-center content-center gap-4">
 		<TableNavigator />

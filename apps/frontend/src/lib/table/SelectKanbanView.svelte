@@ -27,10 +27,8 @@
 
 	const table = getTable()
 	const view = getView()
-	const data = trpc().record.list.query(
-		{ tableId: $table.id.value, viewId: $view.id.value },
-		{ queryHash: $recordHash },
-	)
+
+	$: data = trpc().record.list.query({ tableId: $table.id.value, viewId: $view.id.value }, { queryHash: $recordHash })
 
 	$: records = RecordFactory.fromQueryRecords($data.data?.records ?? [], $table.schema.toIdMap())
 	$: $currentRecords = records
