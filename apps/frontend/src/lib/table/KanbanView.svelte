@@ -55,14 +55,18 @@
 		items = e.detail.items
 	}
 
-	const reorderOptions = trpc().table.field.select.reorderOptions.mutation()
+	const reorderOptions = trpc().table.field.select.reorderOptions.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+		},
+	})
 
 	async function handleDndFinalizeColumns(e: any) {
 		items = e.detail.items
 		if (e.detail.info.id === UNCATEGORIZED) return
 
-		const from = e.detail.info.id + 1
-		const toIndex = items.findIndex((i) => i.id === from) + 1
+		const from = e.detail.info.id
+		const toIndex = items.findIndex((i) => i.id === from) - 1
 		const to = options[toIndex]?.key.value
 		if (to && to !== from && field) {
 			$reorderOptions.mutate({
@@ -142,7 +146,7 @@
 				</div>
 
 				<div
-					class="flex flex-col gap-2 flex-1 overflow-y-scroll"
+					class="flex flex-col gap-2 flex-1 overflow-y-auto"
 					data-container-id={item.id}
 					use:dndzone={{ items: item.records, flipDurationMs, dropTargetStyle: {} }}
 					on:consider={(e) => handleDndConsiderCards(item.id, e)}

@@ -9,19 +9,25 @@
 	import { getField, getTable } from '$lib/store/table'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
+	import { invalidate } from '$app/navigation'
 
 	export let data: Validation<typeof createOptionSchema>
 
 	const table = getTable()
 	const field = getField()
 
-	const createOption = trpc().table.field.select.createOption.mutation()
+	const createOption = trpc().table.field.select.createOption.mutation({
+		async onSuccess(data, variables, context) {
+			reset()
+			await invalidate(`table:${$table.id.value}`)
+			$createOptionOpen = false
+		},
+	})
 
 	const { form, enhance, reset } = superForm(data, {
 		id: 'createOption',
 		SPA: true,
 		dataType: 'json',
-		invalidateAll: true,
 		applyAction: true,
 		taintedMessage: null,
 		async onUpdate(event) {
@@ -31,10 +37,6 @@
 				fieldId: $field?.id.value,
 				option: event.form.data,
 			})
-		},
-		onResult() {
-			reset()
-			$createOptionOpen = false
 		},
 	})
 
@@ -50,7 +52,6 @@
 		placement="top-center"
 		class="w-full rounded-sm"
 		size="sm"
-		autoclose
 	>
 		<form id="createOption" class="flex gap-2 items-center" method="POST" use:enhance>
 			<OptionColorPicker bind:value={$form.color.name} name={$form.name} />
