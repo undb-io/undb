@@ -7,7 +7,7 @@ export const getTable = () => currentTable
 export const currentView = writable<View>()
 export const getView = () => currentView
 
-export const currentRecords = writable<Records>()
+export const currentRecords = writable<Records>([])
 export const getRecords = () => currentRecords
 
 export const currentRecordId = writable<string | undefined>()
