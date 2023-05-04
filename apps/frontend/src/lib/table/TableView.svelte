@@ -30,6 +30,7 @@
 	import { editors } from '$lib/cell/CellEditors/editors'
 	import { t } from '$lib/i18n'
 	import { confirmDeleteField } from '$lib/store/modal'
+	import LoadingTable from './LoadingTable.svelte'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -326,7 +327,7 @@
 	})
 </script>
 
-<div class:h-[32px]={!hasRecord} class:h-full={hasRecord}>
+<div class:h-[32px]={!hasRecord || !$data.isLoading} class:h-full={hasRecord}>
 	<RevoGrid
 		bind:this={grid}
 		source={rows}
@@ -340,7 +341,9 @@
 		on:aftercolumnresize={onAfterColumnResize}
 	/>
 </div>
-{#if !hasRecord}
+{#if $data.isLoading}
+	<LoadingTable />
+{:else if !hasRecord}
 	<EmptyTable />
 {/if}
 <Toast
