@@ -99,6 +99,7 @@ export const config: InitOptions = {
         language: 'language',
       },
       table: {
+        'Auto Display Field': 'using <strong>{{table}}</strong> display field',
         'shortcut T': 'Use shortcut {{ shortcut }} to create table from anywhere.',
         'shortcut R': 'Use shortcut {{ shortcut }} to create record in table.',
         'Create New Record': 'Create New Record',
@@ -329,6 +330,7 @@ export const config: InitOptions = {
         language: '多语言',
       },
       table: {
+        'Auto Display Field': '使用 <strong>{{table}}</strong> 表中设置的显示列',
         'shortcut T':
           '使用快捷键 <span class="bg-gray-100 text-gray-800 text-xs font-medium mx-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">{{shortcut}}</span> 在任何页面创建表。',
         'shortcut R':

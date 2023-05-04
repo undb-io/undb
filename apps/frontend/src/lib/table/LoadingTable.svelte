@@ -1,0 +1,27 @@
+<ul class="mt-5 space-y-3 px-10 h-full overflow-y-auto">
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+	<li class="w-full h-6 bg-gray-100 rounded-md dark:bg-gray-700" />
+</ul>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { CollaboratorField, CollaboratorFieldValue, IRecordDisplayValues } from '@undb/core'
 	import CollaboratorComponent from './CollaboratorComponent.svelte'
+	import { getTable } from '$lib/store/table'
 
 	export let value: CollaboratorFieldValue
 	export let field: CollaboratorField

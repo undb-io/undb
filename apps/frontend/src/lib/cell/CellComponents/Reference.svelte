@@ -1,13 +1,15 @@
 <script lang="ts">
 	import type { IRecordDisplayValues, ReferenceField, ReferenceFieldValue } from '@undb/core'
 	import ReferenceComponent from './ReferenceComponent.svelte'
+	import { getTable } from '$lib/store/table'
 
+	const table = getTable()
 	export let value: ReferenceFieldValue
 	export let field: ReferenceField
 	export let displayValues: IRecordDisplayValues
 
 	$: unpacked = value.unpack() ?? []
-	$: values = field.getDisplayValues(displayValues)
+	$: values = field.getDisplayValues($table.schema, displayValues)
 </script>
 
 {#if unpacked.length && !values.length}

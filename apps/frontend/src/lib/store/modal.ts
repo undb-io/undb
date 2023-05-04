@@ -7,6 +7,7 @@ export const createViewOpen = writable<boolean>(false)
 export const configViewOpen = writable<boolean>(false)
 
 export const createOptionOpen = writable<boolean>(false)
+export const updateOptionOpen = writable<boolean>(false)
 
 export const createRecordOpen = writable<boolean>(false)
 export const createRecordInitial = writable<RecordValueJSON | undefined>()

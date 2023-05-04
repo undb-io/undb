@@ -25,7 +25,15 @@
 			currentFieldId.set(undefined)
 		},
 	})
+
 	const setFieldSort = trpc().table.view.sort.setFieldSort.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+			currentFieldId.set(undefined)
+		},
+	})
+
+	const hideField = trpc().table.view.field.setVisibility.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			currentFieldId.set(undefined)
@@ -76,6 +84,17 @@
 		<i class="ti ti-pin text-sm" />
 		<span>{$t('Pin Field')}</span>
 	{/if}
+</DropdownItem>
+<DropdownItem
+	class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium"
+	on:click={() => {
+		if ($field) {
+			$hideField.mutate({ tableId: $table.id.value, fieldId: $field.id.value, viewId: $view.id.value, hidden: true })
+		}
+	}}
+>
+	<i class="ti ti-eye-closed text-sm" />
+	<span>{$t('Hide Field')}</span>
 </DropdownItem>
 
 <DropdownDivider />

@@ -1,29 +1,42 @@
 <script lang="ts">
-	import { currentFieldId, currentRecordId, getRecords, getTable } from '$lib/store/table'
+	import {
+		currentFieldId,
+		currentOption,
+		currentRecordId,
+		currentRecords,
+		getRecords,
+		getTable,
+		getView,
+		recordHash,
+	} from '$lib/store/table'
 	import { flip } from 'svelte/animate'
 	import Option from '$lib/option/Option.svelte'
 	import { TRIGGERS, dndzone } from 'svelte-dnd-action'
 	import { groupBy } from 'lodash-es'
-	import type { SelectField, SelectFieldValue } from '@undb/core'
+	import { Record, RecordFactory, type SelectField, type SelectFieldValue } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
 	import KanbanCard from '$lib/kanban/KanbanCard.svelte'
-	import { Badge, Button, Toast } from 'flowbite-svelte'
-	import { createOptionOpen, createRecordInitial, createRecordOpen } from '$lib/store/modal'
+	import { Badge, Button, Dropdown, DropdownItem, Toast } from 'flowbite-svelte'
+	import { createOptionOpen, createRecordInitial, createRecordOpen, updateOptionOpen } from '$lib/store/modal'
 	import { invalidate } from '$app/navigation'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 
-	export let fieldId: string
+	export let field: SelectField
 	const flipDurationMs = 200
 
 	const table = getTable()
-	const records = getRecords()
+	const view = getView()
 
-	$: field = $table.schema.getFieldById(fieldId).into() as SelectField | undefined
+	$: data = trpc().record.list.query({ tableId: $table.id.value, viewId: $view.id.value }, { queryHash: $recordHash })
+
+	$: records = RecordFactory.fromQueryRecords($data.data?.records ?? [], $table.schema.toIdMap())
+	$: $currentRecords = records
+
 	$: options = field?.options?.options ?? []
 
 	const UNCATEGORIZED = 'Uncategorized'
-	$: groupedRecords = groupBy($records, (record) => {
+	$: groupedRecords = groupBy(records, (record: Record) => {
 		const value = (field ? record.values.value.get(field.id.value) : undefined) as SelectFieldValue | undefined
 
 		if (!value?.id) return UNCATEGORIZED
@@ -35,13 +48,13 @@
 			id: UNCATEGORIZED,
 			name: $t(UNCATEGORIZED),
 			option: null,
-			records: groupedRecords[UNCATEGORIZED]?.map((record) => ({ id: record.id.value, record })) ?? [],
+			records: groupedRecords[UNCATEGORIZED]?.map((record: Record) => ({ id: record.id.value, record })) ?? [],
 		},
 		...options.map((option) => ({
 			id: option.key.value,
 			name: option.name.value,
 			option,
-			records: groupedRecords[option.key.value]?.map((record) => ({ id: record.id.value, record })) ?? [],
+			records: groupedRecords[option.key.value]?.map((record: Record) => ({ id: record.id.value, record })) ?? [],
 		})),
 	]
 
@@ -49,14 +62,24 @@
 		items = e.detail.items
 	}
 
-	const reorderOptions = trpc().table.field.select.reorderOptions.mutation()
+	const reorderOptions = trpc().table.field.select.reorderOptions.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+		},
+	})
+
+	const deleteOption = trpc().table.field.select.deleteOption.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+		},
+	})
 
 	async function handleDndFinalizeColumns(e: any) {
 		items = e.detail.items
 		if (e.detail.info.id === UNCATEGORIZED) return
 
-		const from = e.detail.info.id + 1
-		const toIndex = items.findIndex((i) => i.id === from) + 1
+		const from = e.detail.info.id
+		const toIndex = items.findIndex((i) => i.id === from) - 1
 		const to = options[toIndex]?.key.value
 		if (to && to !== from && field) {
 			$reorderOptions.mutate({
@@ -78,7 +101,7 @@
 
 	const updateRecord = trpc().record.update.mutation({
 		async onSuccess(data, variables, context) {
-			await invalidate(`records:${$table.id.value}`)
+			await $data.refetch()
 		},
 	})
 	async function handleDndFinalizeCards(cid: string, e: any) {
@@ -112,7 +135,42 @@
 				<div class="mb-3 flex-0">
 					<div class="min-h-[40px]">
 						{#if item.option}
-							<Option option={item.option} />
+							<div class="flex items-center justify-between pr-2">
+								<Option option={item.option} />
+								<i class="ti ti-dots text-gray-400" />
+								<Dropdown>
+									<DropdownItem
+										class="text-gray-600 text-xs space-y-2"
+										on:click={() => {
+											$currentFieldId = field?.id.value
+											$currentOption = item.option
+											$updateOptionOpen = true
+										}}
+									>
+										<i class="ti ti-pencil" />
+										<span>
+											{$t('Update Option')}
+										</span>
+									</DropdownItem>
+									<DropdownItem
+										class="text-red-400 text-xs space-y-2"
+										on:click={() => {
+											if (item.option && field) {
+												$deleteOption.mutate({
+													tableId: $table.id.value,
+													fieldId: field.id.value,
+													id: item.option.key.value,
+												})
+											}
+										}}
+									>
+										<i class="ti ti-trash" />
+										<span>
+											{$t('Delete Option')}
+										</span>
+									</DropdownItem>
+								</Dropdown>
+							</div>
 						{:else}
 							<Badge color="dark">{item.name}</Badge>
 						{/if}
@@ -136,7 +194,7 @@
 				</div>
 
 				<div
-					class="flex flex-col gap-2 flex-1 overflow-y-scroll"
+					class="flex flex-col gap-2 flex-1 overflow-y-auto"
 					data-container-id={item.id}
 					use:dndzone={{ items: item.records, flipDurationMs, dropTargetStyle: {} }}
 					on:consider={(e) => handleDndConsiderCards(item.id, e)}

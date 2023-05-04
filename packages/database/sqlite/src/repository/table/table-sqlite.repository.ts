@@ -13,7 +13,7 @@ export class TableSqliteRepository implements ITableRepository {
   constructor(protected em: EntityManager) {}
   async findOneById(id: string): Promise<Option<CoreTable>> {
     const table = await this.em.findOne(TableEntity, id, {
-      populate: ['fields.options', 'views', 'fields.displayFields'],
+      populate: ['fields.options', 'views', 'fields.displayFields', 'fields.foreignTable', 'fields'],
     })
 
     if (!table) return None

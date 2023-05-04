@@ -19,7 +19,7 @@ export class OptionColor {
   @Property()
   name: IOptionColorName
 
-  @Enum({ items: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] })
+  @Enum({ type: 'numeric', items: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] })
   shade: IOptionColorShade
 }
 

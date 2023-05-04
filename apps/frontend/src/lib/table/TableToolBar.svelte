@@ -6,20 +6,26 @@
 	import TableNavigator from './TableNavigator.svelte'
 	import ToggleDisplayType from './ToggleDisplayType.svelte'
 	import { createFieldOpen, createRecordOpen, updateTableOpen } from '$lib/store/modal'
-	import { getTable, records } from '$lib/store/table'
+	import { getTable, getView, recordHash } from '$lib/store/table'
 	import ViewConfigMenu from '$lib/view/ViewConfigMenu.svelte'
 	import { t } from '$lib/i18n'
-	import { invalidate } from '$app/navigation'
+	import { trpc } from '$lib/trpc/client'
 
 	const table = getTable()
+	const view = getView()
+
+	$: records = trpc().record.list.query(
+		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ queryHash: $recordHash, enabled: false },
+	)
 
 	const refresh = async () => {
-		await invalidate(`records:${$table.id.value}`)
+		await $records.refetch()
 	}
 </script>
 
 <div
-	class="flex w-full flex-row items-center justify-between gap-y-4 border-b bg-white px-5 py-2 overflow-x-auto overflow-y-hidden"
+	class="flex w-full flex-row items-center justify-between gap-y-4 border-b bg-white px-5 py-2 overflow-x-auto overflow-y-hidden shrink-0"
 >
 	<div class="flex items-center justify-center content-center gap-4">
 		<TableNavigator />
@@ -48,14 +54,14 @@
 		</Button>
 		<Tooltip placement="bottom">{$t('Insert Field Right')}</Tooltip>
 
-		{#if $records?.length}
-			<P class="!text-gray-400 text-xs whitespace-nowrap">{$t('Total Records', { total: $records.length })}</P>
+		{#if $records.data?.total}
+			<P class="!text-gray-400 text-xs whitespace-nowrap">{$t('Total Records', { total: $records.data?.total })}</P>
 		{/if}
 	</div>
 
 	<div class="flex items-center ml-2 gap-3">
 		<button on:click={refresh}>
-			<i class="ti ti-refresh text-gray-600" />
+			<i class="ti ti-refresh text-gray-600" class:animate-spin={$records.isRefetching} />
 		</button>
 		<Tooltip placement="bottom">
 			{$t('Force Refresh')}

@@ -49,6 +49,7 @@
 		"keycode": "^2.2.1",
 		"lodash-es": "^4.17.21",
 		"nprogress": "^0.2.0",
+		"plausible-tracker": "^0.3.8",
 		"postcss": "^8.4.23",
 		"postcss-load-config": "^4.0.1",
 		"prettier": "^2.8.8",

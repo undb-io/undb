@@ -3,7 +3,7 @@
 	import FieldTypePicker from '$lib/field/FieldInputs/FieldTypePicker.svelte'
 	import MutateFieldComponent from '$lib/field/MutateFieldComponent/MutateFieldComponent.svelte'
 	import { isControlledFieldType, canDisplay, type ICreateTableInput, createTableInput } from '@undb/core'
-	import { AccordionItem, Label, Input, Toggle, Button, Textarea, Dropdown, DropdownItem } from 'flowbite-svelte'
+	import { AccordionItem, Label, Input, Toggle, Button, Textarea, Dropdown, DropdownItem, Badge } from 'flowbite-svelte'
 	import type { SuperForm } from 'sveltekit-superforms/client'
 	import { t } from '$lib/i18n'
 
@@ -32,7 +32,13 @@
 	<span slot="header" class="text-sm">
 		<div class="flex items-center text-sm gap-2">
 			<FieldIcon size={14} type={field.type} />
-			{field.name || `${$t('Field')} ${$form.schema.findIndex((f) => f.id === field.id) + 1}`}
+			<span>
+				{field.name || `${$t('Field')} ${$form.schema.findIndex((f) => f.id === field.id) + 1}`}
+			</span>
+
+			{#if field.display}
+				<Badge>{$t('Display Fields')}</Badge>
+			{/if}
 		</div>
 	</span>
 

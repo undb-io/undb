@@ -5,8 +5,10 @@
 	import { navigating, page } from '$app/stores'
 	import { QueryClientProvider } from '@tanstack/svelte-query'
 	import { trpc } from '$lib/trpc/client'
+	import { env } from '$env/dynamic/public'
 
 	import 'nprogress/nprogress.css'
+	import { onMount } from 'svelte'
 
 	NProgress.configure({
 		minimum: 0.16,
@@ -24,6 +26,15 @@
 			NProgress.done()
 		}
 	}
+
+	onMount(async () => {
+		if (env.PUBLIC_UNDB_ANALYTICS_DOMAIN) {
+			const Plausible = await import('plausible-tracker').then((m) => m.default)
+			Plausible({
+				domain: env.PUBLIC_UNDB_ANALYTICS_DOMAIN,
+			})
+		}
+	})
 </script>
 
 <QueryClientProvider client={trpc().queryClient}>
@@ -32,9 +43,6 @@
 
 <svelte:head>
 	<title>undb</title>
-	{#if import.meta.env.PUBLIC_UNDB_ANALYTICS}
-		{import.meta.env.PUBLIC_UNDB_ANALYTICS}
-	{/if}
 </svelte:head>
 
 <svelte:window on:beforeunload={null} />

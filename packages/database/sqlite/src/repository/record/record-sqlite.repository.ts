@@ -90,6 +90,7 @@ export class RecordSqliteRepository implements IRecordRepository {
           'fields.averageFields',
           'fields.averageAggregateField',
           'fields.lookupFields',
+          'fields.foreignTable',
         ],
       },
     )
@@ -119,6 +120,7 @@ export class RecordSqliteRepository implements IRecordRepository {
           'fields.averageFields',
           'fields.averageAggregateField',
           'fields.lookupFields',
+          'fields.foreignTable',
         ],
       },
     )

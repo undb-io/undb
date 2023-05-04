@@ -22,7 +22,7 @@
 			{#if !displayFields.length}
 				{$t('no display fields in', { table: table.name.value })}
 			{:else}
-				<span>Auto</span>
+				<span>{@html $t('Auto Display Field', { table: table.name.value })}</span>
 				<Popover class="w-64 text-sm font-light" title={$t('Display Fields') ?? undefined}>
 					<div class="flex flex-wrap gap-2">
 						{#each displayFields as field}

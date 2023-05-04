@@ -17,5 +17,7 @@ services:
         value: 123456
       - key: PUBLIC_UNDB_IS_DEMO
         value: 'true'
+      - key: PUBLIC_UNDB_ANALYTICS_DOMAIN
+        value: demo.undb.xyz
     domains:
       - demo.undb.xyz

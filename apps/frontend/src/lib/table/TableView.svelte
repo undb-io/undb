@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { IViewPinnedFields, PinnedPosition } from '@undb/core'
+	import { RecordFactory, type IViewPinnedFields, type PinnedPosition } from '@undb/core'
 	import cx from 'classnames'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
 	import { Button, Dropdown, Modal, P, Spinner, Toast } from 'flowbite-svelte'
@@ -12,7 +12,16 @@
 	import { quintOut } from 'svelte/easing'
 	import { writable } from 'svelte/store'
 	import EmptyTable from './EmptyTable.svelte'
-	import { currentFieldId, currentRecordId, getField, getRecords, getTable, getView } from '$lib/store/table'
+	import {
+		currentFieldId,
+		currentRecordId,
+		currentRecords,
+		getField,
+		getRecords,
+		getTable,
+		getView,
+		recordHash,
+	} from '$lib/store/table'
 	import { invalidate } from '$app/navigation'
 	import FieldMenu from '$lib/field/FieldMenu.svelte'
 	import Portal from 'svelte-portal'
@@ -21,6 +30,7 @@
 	import { editors } from '$lib/cell/CellEditors/editors'
 	import { t } from '$lib/i18n'
 	import { confirmDeleteField } from '$lib/store/modal'
+	import LoadingTable from './LoadingTable.svelte'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -29,7 +39,9 @@
 
 	const table = getTable()
 	const view = getView()
-	const records = getRecords()
+	$: data = trpc().record.list.query({ tableId: $table.id.value, viewId: $view.id.value }, { queryHash: $recordHash })
+	$: records = RecordFactory.fromQueryRecords($data.data?.records ?? [], $table.schema.toIdMap())
+	$: $currentRecords = records
 	const field = getField()
 
 	const getFieldDomId = (fieldId?: string | number) => (fieldId ? `field_menu_${fieldId}` : undefined)
@@ -42,11 +54,10 @@
 	$: $table, select.set({})
 
 	const updateSelect = (recordId: string, selected: boolean) => ($select[recordId] = selected)
-	$: allSelected =
-		$records.length > 0 && Object.entries($select).filter(([, value]) => value).length === $records.length
+	$: allSelected = records.length > 0 && Object.entries($select).filter(([, value]) => value).length === records.length
 	const updateAllSelect = (s: boolean) => {
 		const selected: Record<string, boolean> = {}
-		for (const record of $records) {
+		for (const record of records) {
 			selected[record.id.value] = s
 		}
 
@@ -84,7 +95,7 @@
 	let grid: RevoGrid
 	$: if (grid) handleRevogrid(grid)
 	$: if (grid) {
-		rows = $records.map((record) => record.valuesJSON)
+		rows = records.map((record) => record.valuesJSON)
 	}
 
 	$: if (grid) {
@@ -102,7 +113,7 @@
 					return h('input', {
 						type: 'checkbox',
 						checked: allSelected,
-						disabled: !$records.length,
+						disabled: !records.length,
 						onChange: (event: any) => {
 							updateAllSelect(event.target.checked)
 						},
@@ -215,6 +226,7 @@
 						}
 					},
 					field,
+					table: $table,
 				}
 			}),
 		])
@@ -277,12 +289,12 @@
 		.filter(([, value]) => value)
 		.map(([key]) => key)
 	$: selectedCount = Object.values($select).filter(Boolean).length
-	$: hasRecord = !!$records.length
+	$: hasRecord = !!records.length
 	$: toastOpen = !!selectedCount
 
 	const bulkDeleteRecordsMutation = trpc().record.bulkDelete.mutation({
 		async onSuccess(data, variables, context) {
-			await invalidate(`records:${$table.id.value}`)
+			await $data.refetch()
 
 			select.set({})
 		},
@@ -313,7 +325,7 @@
 	})
 </script>
 
-<div class:h-[32px]={!hasRecord} class:h-full={hasRecord}>
+<div class:h-[32px]={!hasRecord || !$data.isLoading} class:h-full={hasRecord}>
 	<RevoGrid
 		bind:this={grid}
 		source={rows}
@@ -327,7 +339,9 @@
 		on:aftercolumnresize={onAfterColumnResize}
 	/>
 </div>
-{#if !hasRecord}
+{#if $data.isLoading}
+	<LoadingTable />
+{:else if !hasRecord}
 	<EmptyTable />
 {/if}
 <Toast

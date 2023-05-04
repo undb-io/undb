@@ -87,6 +87,7 @@
 
 		if (operator && isOperatorWithoutValue(operator)) {
 			value = null
+			component = undefined
 		}
 	}
 

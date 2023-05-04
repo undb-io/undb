@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createTableOpen } from '$lib/store/modal'
-	import { Accordion, Button, Label, Modal, Input, Spinner, Toast } from 'flowbite-svelte'
+	import { Accordion, Button, Label, Modal, Input, Spinner, Toast, P, Badge } from 'flowbite-svelte'
 	import type { Validation } from 'sveltekit-superforms'
 	import { FieldId, type createTableInput } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
@@ -15,15 +15,14 @@
 
 	const addField = () => {
 		const id = FieldId.createId()
-		$form.schema = [...$form.schema, { id, type: 'string', name: '' }]
+		$form.schema = [...$form.schema, { id, type: 'string', name: '', display: !displayFields.length }]
 		opened = { [id]: true }
 	}
 
 	const createTable = trpc().table.create.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate('tables')
-			goto(`/t/${data.id}`)
-
+			await goto(`/t/${data.id}`)
 			createTableOpen.set(false)
 		},
 	})
@@ -33,7 +32,7 @@
 		SPA: true,
 		applyAction: false,
 		resetForm: true,
-		invalidateAll: false,
+		invalidateAll: true,
 		clearOnSubmit: 'errors-and-message',
 		dataType: 'json',
 		taintedMessage: null,
@@ -43,11 +42,10 @@
 		},
 	})
 
-	$: {
-		$form.schema = []
-	}
-
 	const { form, errors, reset, constraints, enhance, delayed, submitting } = superFrm
+
+	$: $form.schema = []
+	$: displayFields = $form.schema?.filter((f) => !!f.display) ?? []
 
 	const onBlur = () => {
 		if (!$form.schema.length) {
@@ -65,7 +63,7 @@
 >
 	<form id="createTable" class="flex flex-col justify-between flex-1 gap-2" method="POST" use:enhance>
 		<div>
-			<div>
+			<div class="space-y-4">
 				<Label class="space-y-2">
 					<span>
 						<span>{$t('Name', { ns: 'common' })}</span>
@@ -84,6 +82,15 @@
 						{...$constraints.name}
 					/>
 				</Label>
+
+				<P class="flex text-xs items-center !font-bold gap-2">
+					<span>{$t('System fields')}: </span>
+					<Badge color="dark">id</Badge>,
+					<Badge color="dark">{$t('created-at')}</Badge>,
+					<Badge color="dark">{$t('created-by')}</Badge>,
+					<Badge color="dark">{$t('created-by')}</Badge>,
+					<Badge color="dark">{$t('created-by')}</Badge>
+				</P>
 
 				{#if $form.schema?.length}
 					<Accordion class="my-4">
