@@ -3,6 +3,7 @@
 		currentFieldId,
 		currentOption,
 		currentRecordId,
+		currentRecords,
 		getRecords,
 		getTable,
 		getView,
@@ -32,6 +33,7 @@
 	)
 
 	$: records = RecordFactory.fromQueryRecords($data.data?.records ?? [], $table.schema.toIdMap())
+	$: $currentRecords = records
 
 	$: field = $table.schema.getFieldById(fieldId).into() as SelectField | undefined
 	$: options = field?.options?.options ?? []
