@@ -183,8 +183,8 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
           .queryBuilder()
           .table(underlyingTable.name)
           .insert({
-            [AdjacencyListTable.TO_ID]: recordId,
-            [AdjacencyListTable.FROM_ID]: this.recordId,
+            [field.isOwner ? AdjacencyListTable.TO_ID : AdjacencyListTable.FROM_ID]: recordId,
+            [field.isOwner ? AdjacencyListTable.FROM_ID : AdjacencyListTable.TO_ID]: this.recordId,
           })
           .toQuery()
 
