@@ -1,0 +1,18 @@
+version: "3.0"
+services:
+  undb:
+    image: ghcr.io/undb-xyz/undb:latest
+    platform: linux/x86_64
+    container_name: undb
+    volumes:
+      - ~/.undb/:/var/opt/undb
+    ports:
+      - 4000:4000
+  minio:
+    image: minio/minio:latest
+    platform: linux/x86_64
+    container_name: minio
+    command: server /data --console-address ":9001"
+    ports:
+      - 9000:9000
+      - 9001:9001

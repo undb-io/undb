@@ -7,6 +7,9 @@ RUN npm install -g turbo
 COPY . .
 RUN turbo prune --scope=@undb/backend --scope=@undb/frontend
 
+ADD https://github.com/benbjohnson/litestream/releases/download/v0.3.8/litestream-v0.3.8-linux-amd64-static.tar.gz /tmp/litestream.tar.gz
+RUN tar -C /usr/local/bin -xzf /tmp/litestream.tar.gz
+
 # installer
 FROM node:18-bullseye AS installer
 
@@ -32,16 +35,24 @@ RUN rm -rf ./node_modules
 RUN HUSKY=0 pnpm install -r --prod
 
 # runner
-FROM gcr.io/distroless/nodejs18-debian11 as runner
+FROM node:18-bullseye-slim as runner
 
 WORKDIR /undb
 
+EXPOSE 4000
+
 ENV NODE_ENV production
 ENV UNDB_DATABASE_SQLITE_DATA /var/opt/.undb
+
+RUN npm install -g zx
 
 COPY --from=installer /undb/node_modules ./node_modules
 COPY --from=installer /undb/packages ./packages
 COPY --from=installer /undb/apps/backend ./apps/backend
 COPY --from=installer /undb/apps/frontend/build ./out
+COPY --from=builder /usr/local/bin/litestream /usr/local/bin/litestream
+COPY scripts/start.mjs ./scripts/start.mjs
 
-CMD ["apps/backend/dist/main.js"]
+COPY litestream/etc/litestream.yml /etc/litestream.yml
+
+CMD ["scripts/start.mjs"]
