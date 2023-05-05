@@ -6,9 +6,9 @@
 
 	const map: Record<IViewDisplayType, string> = {
 		tree: 'hierarchy',
-		grid: 'table',
+		grid: 'table-filled',
 		kanban: 'layout-kanban',
-		calendar: 'calendar',
+		calendar: 'calendar-event',
 	}
 
 	const colors: Record<IViewDisplayType, string> = {

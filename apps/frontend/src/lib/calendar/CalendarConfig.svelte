@@ -65,4 +65,20 @@
 		<span>{$t('Create New Date Field')}</span>
 		<FieldIcon type="date" />
 	</Button>
+
+	<Button
+		size="xs"
+		color="light"
+		class="flex gap-2"
+		on:click={() => {
+			$createFieldInitial = {
+				type: 'date-range',
+			}
+			$createFieldOpen = true
+		}}
+	>
+		<i class="ti ti-plus" />
+		<span>{$t('Create New Date Range Field')}</span>
+		<FieldIcon type="date-range" />
+	</Button>
 </div>

@@ -6,6 +6,8 @@
 	$: if (!value) {
 		value = [undefined, undefined]
 	}
+
+	$: console.log(value)
 </script>
 
 <div class="flex gap-2 items-center">
