@@ -43,11 +43,11 @@
 	>
 {/if}
 
-<div class="flex justify-center">
+<div class="flex flex-col justify-center gap-2">
 	<Button
 		size="xs"
 		color="light"
-		class="inline-flex gap-2"
+		class="flex gap-2"
 		on:click={() => {
 			$createFieldInitial = {
 				type: 'select',
@@ -58,5 +58,21 @@
 		<i class="ti ti-plus" />
 		<span>{$t('Create New Select Field')}</span>
 		<FieldIcon type="select" />
+	</Button>
+
+	<Button
+		size="xs"
+		color="light"
+		class="flex gap-2"
+		on:click={() => {
+			$createFieldInitial = {
+				type: 'date',
+			}
+			$createFieldOpen = true
+		}}
+	>
+		<i class="ti ti-plus" />
+		<span>{$t('Create New Date Field')}</span>
+		<FieldIcon type="date" />
 	</Button>
 </div>
