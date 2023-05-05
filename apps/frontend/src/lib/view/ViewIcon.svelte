@@ -15,7 +15,7 @@
 		tree: 'text-green-500',
 		grid: 'text-sky-500',
 		kanban: 'text-orange-500',
-		calendar: 'text-yello-500',
+		calendar: 'text-green-500',
 	}
 </script>
 
