@@ -1,0 +1,4 @@
+dbs:
+  - path: /var/opt/.undb/undb.db
+    replicas:
+      - url: ${UNDB_LITESTREAM_REPLICA_URL}
