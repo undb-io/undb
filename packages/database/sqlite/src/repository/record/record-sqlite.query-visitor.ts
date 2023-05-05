@@ -5,6 +5,7 @@ import type {
   BoolIsTrue,
   CollaboratorEqual,
   CollaboratorIsEmpty,
+  DateBetween,
   DateEqual,
   DateGreaterThan,
   DateGreaterThanOrEqual,
@@ -220,6 +221,12 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     } else {
       this.qb.whereNull(this.getFieldId(s.fieldId))
     }
+  }
+  dateBetween(s: DateBetween): void {
+    const start = s.date1
+    const end = s.date2
+
+    this.qb.whereBetween(this.getFieldId(s.fieldId), [start.toISOString(), end.toISOString()])
   }
   collaboratorEqual(s: CollaboratorEqual): void {
     const field = this.getField(s.fieldId)

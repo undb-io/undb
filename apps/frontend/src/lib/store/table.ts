@@ -45,5 +45,7 @@ export const recordHash = derived(
 	([$table, $view]) => `records:${$table.id.value}:${$view.id.value}:${$view.displayType}`,
 )
 
+export const getGroupRecordsHash = (id: string) => derived(recordHash, ($recordHash) => $recordHash + id)
+
 export const currentOption = writable<Option | null>()
 export const getOption = () => currentOption
