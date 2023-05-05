@@ -4,20 +4,36 @@ services:
     image: ghcr.io/undb-xyz/undb:latest
     platform: linux/x86_64
     container_name: undb
+    depends_on:
+      - createbuckets
     volumes:
       - ~/.undb/:/var/opt/undb
     ports:
       - 4000:4000
+    environment:
+      - UNDB_LITESTREAM_REPLICA_URL=s3://undb.minio:9000/undb.db
+      - LITESTREAM_ACCESS_KEY_ID=minioadmin
+      - LITESTREAM_SECRET_ACCESS_KEY=minioadmin
   minio:
     image: minio/minio:latest
     platform: linux/x86_64
     container_name: minio
     command: server /data --console-address ":9001"
     environment:
-      - UNDB_LITESTREAM_REPLICA_URL=s3://undb.localhost:9000/undb.db
-      - LITESTREAM_ACCESS_KEY_ID=minioadmin
-      - LITESTREAM_SECRET_ACCESS_KEY=minioadmin
+      - "MINIO_ACCESS_KEY=minioadmin"
+      - "MINIO_SECRET_KEY=minioadmin"
 
     ports:
       - 9000:9000
       - 9001:9001
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set undb_minio http://minio:9000 minioadmin minioadmin;
+      /usr/bin/mc mb undb_minio/undb;
+      /usr/bin/mc policy set public undb_minio/undb;
+      exit 0;
+      "
