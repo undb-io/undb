@@ -55,4 +55,9 @@ COPY scripts/start.mjs ./scripts/start.mjs
 
 COPY litestream/etc/litestream.yml /etc/litestream.yml
 
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends ca-certificates
+
+RUN update-ca-certificates
+
 CMD ["scripts/start.mjs"]
