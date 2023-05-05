@@ -5,6 +5,8 @@
 	import { trpc } from '$lib/trpc/client'
 	import { RecordFactory, type IFilters, type Field, type IKanbanField } from '@undb/core'
 	import { flip } from 'svelte/animate'
+	import { Toast } from 'flowbite-svelte'
+	import { slide } from 'svelte/transition'
 
 	const flipDurationMs = 200
 
@@ -73,3 +75,12 @@
 		</div>
 	{/each}
 </div>
+
+{#if $updateRecord.error}
+	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{$updateRecord.error.message}
+		</span>
+	</Toast>
+{/if}

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { currentFieldId, currentOption, getTable, getView, recordHash } from '$lib/store/table'
+	import { currentFieldId, currentOption, getTable } from '$lib/store/table'
 	import { flip } from 'svelte/animate'
 	import Option from '$lib/option/Option.svelte'
-	import { TRIGGERS, dndzone } from 'svelte-dnd-action'
+	import { dndzone } from 'svelte-dnd-action'
 	import type { SelectField } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
 	import { Badge, Button, Dropdown, DropdownItem, Toast } from 'flowbite-svelte'
@@ -66,8 +66,6 @@
 			})
 		}
 	}
-
-	const updateRecord = trpc().record.update.mutation()
 </script>
 
 <div
@@ -180,15 +178,6 @@
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$reorderOptions.error.message}
-		</span>
-	</Toast>
-{/if}
-
-{#if $updateRecord.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$updateRecord.error.message}
 		</span>
 	</Toast>
 {/if}
