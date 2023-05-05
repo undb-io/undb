@@ -6,6 +6,7 @@ import type { BoolIsFalse, BoolIsTrue } from './bool.specification.js'
 import type { CollaboratorEqual, CollaboratorIsEmpty } from './collaborator.specification.js'
 import type { DateRangeEqual } from './date-range.specification.js'
 import type {
+  DateBetween,
   DateEqual,
   DateGreaterThan,
   DateGreaterThanOrEqual,
@@ -75,6 +76,7 @@ interface IRecordValueVisitor {
   dateGreaterThanOrEqual(s: DateGreaterThanOrEqual): void
   dateLessThanOrEqual(s: DateLessThanOrEqual): void
   dateIsToday(s: DateIsToday): void
+  dateBetween(s: DateBetween): void
 
   dateRangeEqual(s: DateRangeEqual): void
 

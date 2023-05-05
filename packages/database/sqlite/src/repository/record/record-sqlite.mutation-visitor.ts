@@ -5,6 +5,7 @@ import type {
   BoolIsTrue,
   CollaboratorEqual,
   CollaboratorIsEmpty,
+  DateBetween,
   DateEqual,
   DateGreaterThan,
   DateGreaterThanOrEqual,
@@ -168,6 +169,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     throw new Error('Method not implemented.')
   }
   dateRangeEqual(s: DateRangeEqual): void {
+    throw new Error('Method not implemented.')
+  }
+  dateBetween(s: DateBetween): void {
     throw new Error('Method not implemented.')
   }
   selectEqual(s: SelectEqual): void {

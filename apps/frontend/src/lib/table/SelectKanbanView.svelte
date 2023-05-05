@@ -16,7 +16,6 @@
 	const flipDurationMs = 200
 
 	const table = getTable()
-	const view = getView()
 
 	$: options = field?.options?.options ?? []
 
@@ -68,21 +67,7 @@
 		}
 	}
 
-	async function handleDndConsiderCards(cid: string, e: any) {}
-
 	const updateRecord = trpc().record.update.mutation()
-
-	async function handleDndFinalizeCards(cid: string, e: any) {
-		if (field && e.detail.info.trigger === TRIGGERS.DROPPED_INTO_ZONE) {
-			const optionId = e.target.dataset.containerId === UNCATEGORIZED ? null : e.target.dataset.containerId
-			if (cid === UNCATEGORIZED && field.required) return
-			await $updateRecord.mutateAsync({
-				tableId: $table.id.value,
-				id: e.detail.info.id,
-				values: { [field.id.value]: optionId },
-			})
-		}
-	}
 </script>
 
 <div
@@ -158,8 +143,8 @@
 				<KanbanLane
 					data-container-id={item.id}
 					kanbanId={item.id}
-					handleDndConsider={handleDndConsiderCards}
-					handleDndFinalize={handleDndFinalizeCards}
+					{field}
+					value={item.id}
 					filter={[
 						{
 							path: field.id.value,

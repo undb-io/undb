@@ -10,6 +10,7 @@ import {
   BoolIsTrue,
   CollaboratorEqual,
   CollaboratorIsEmpty,
+  DateBetween,
   DateEqual,
   DateGreaterThan,
   DateGreaterThanOrEqual,
@@ -412,6 +413,15 @@ const convertDateFilter = (
     }
     case '$lte': {
       return Some(new DateLessThanOrEqual(filter.path, DateFieldValue.fromString(filter.value as string)))
+    }
+    case '$between': {
+      return Some(
+        new DateBetween(
+          filter.path,
+          new Date((filter.value as [string, string])[0]),
+          new Date((filter.value as [string, string])[1]),
+        ),
+      )
     }
     default:
       return None

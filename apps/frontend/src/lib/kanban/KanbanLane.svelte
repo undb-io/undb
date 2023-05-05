@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { currentRecordId, getGroupRecordsHash, getTable, getView } from '$lib/store/table'
-	import { dndzone } from 'svelte-dnd-action'
+	import { TRIGGERS, dndzone } from 'svelte-dnd-action'
 	import KanbanCard from './KanbanCard.svelte'
 	import { trpc } from '$lib/trpc/client'
-	import { RecordFactory, type IFilters } from '@undb/core'
+	import { RecordFactory, type IFilters, type Field, type IKanbanField } from '@undb/core'
 	import { flip } from 'svelte/animate'
 
 	const flipDurationMs = 200
@@ -13,8 +13,8 @@
 
 	export let kanbanId: string
 	export let filter: IFilters | undefined = undefined
-	export let handleDndConsider: (id: string, e: any) => Promise<void>
-	export let handleDndFinalize: (id: string, e: any) => Promise<void>
+	export let value: any
+	export let field: IKanbanField
 
 	$: hash = getGroupRecordsHash(kanbanId)
 
@@ -31,14 +31,24 @@
 
 	$: items = records.map((record) => ({ id: record.id.value, record }))
 
-	async function handleDndConsiderCards(kanbanId: string, e: CustomEvent) {
+	const updateRecord = trpc().record.update.mutation({
+		async onSuccess(data, variables, context) {
+			await $data.refetch()
+		},
+	})
+
+	function handleDndConsiderCards(kanbanId: string, e: CustomEvent) {
 		items = e.detail.items
-		await handleDndConsider(kanbanId, e)
 	}
-	async function handleDndFinalizeCards(kanbanId: string, e: CustomEvent) {
+	function handleDndFinalizeCards(kanbanId: string, e: CustomEvent) {
 		items = e.detail.items
-		await handleDndFinalize(kanbanId, e)
-		await $data.refetch()
+		if (e.detail.info.trigger === TRIGGERS.DROPPED_INTO_ZONE && !(!value && field.required)) {
+			$updateRecord.mutate({
+				tableId: $table.id.value,
+				id: e.detail.info.id,
+				values: { [field.id.value]: value },
+			})
+		}
 	}
 </script>
 

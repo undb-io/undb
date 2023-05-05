@@ -8,7 +8,7 @@
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import { NODATE_STACK_ID } from '$lib/kanban/kanban.constants'
-	import { KANBAN_DATE_STACKS, RElAVANT_DATES, getDateValue } from '$lib/kanban/kanban-date.utils'
+	import { KANBAN_DATE_STACKS, RElAVANT_DATES, getDateFilter, getDateValue } from '$lib/kanban/kanban-date.utils'
 	import { createRecordInitial, createRecordOpen } from '$lib/store/modal'
 	import KanbanLane from '$lib/kanban/KanbanLane.svelte'
 
@@ -70,16 +70,9 @@
 				<KanbanLane
 					data-container-id={item.id}
 					kanbanId={item.id}
-					handleDndConsider={handleDndConsiderCards}
-					handleDndFinalize={handleDndFinalizeCards}
-					filter={[
-						{
-							path: field.id.value,
-							type: field.type,
-							value: item.id === NODATE_STACK_ID ? null : getDateValue(item.id)?.toISOString() ?? null,
-							operator: '$eq',
-						},
-					]}
+					{field}
+					value={getDateValue(item.id)}
+					filter={getDateFilter(field, item.id)}
 				/>
 			</div>
 		</div>

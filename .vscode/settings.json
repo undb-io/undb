@@ -5,7 +5,7 @@
       "previewLimit": 50,
       "driver": "SQLite",
       "name": "undb",
-      "database": "${workspaceFolder:undb}/.undb/data/undb.development.sqlite"
+      "database": "${workspaceFolder:undb}/.undb/data/undb.db"
     }
   ],
   "sqltools.useNodeRuntime": true

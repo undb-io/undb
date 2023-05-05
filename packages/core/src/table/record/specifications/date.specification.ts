@@ -1,4 +1,5 @@
-import { isAfter, isBefore, isEqual, isToday } from 'date-fns'
+import { CompositeSpecification } from '@undb/domain'
+import { isAfter, isBefore, isEqual, isToday, isWithinInterval } from 'date-fns'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import { DateFieldValue } from '../../field/index.js'
@@ -98,6 +99,30 @@ export class DateIsToday extends BaseRecordSpecification<DateFieldValue> {
 
   accept(v: IRecordVisitor): Result<void, string> {
     v.dateIsToday(this)
+    return Ok(undefined)
+  }
+}
+
+export class DateBetween extends CompositeSpecification<Record, IRecordVisitor> {
+  constructor(public readonly fieldId: string, public readonly date1: Date, public readonly date2: Date) {
+    super()
+  }
+
+  isSatisfiedBy(r: Record): boolean {
+    const value = r.values.value.get(this.fieldId)
+    if (!(value instanceof DateFieldValue)) return false
+
+    const date = value.unpack()
+
+    return !!date && isWithinInterval(date, { start: this.date1, end: this.date2 })
+  }
+
+  mutate(): Result<Record, string> {
+    throw new Error('Method not implemented.')
+  }
+
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.dateBetween(this)
     return Ok(undefined)
   }
 }
