@@ -13,6 +13,11 @@ services:
     platform: linux/x86_64
     container_name: minio
     command: server /data --console-address ":9001"
+    environment:
+      - UNDB_LITESTREAM_REPLICA_URL=s3://undb.localhost:9000/undb.db
+      - LITESTREAM_ACCESS_KEY_ID=minioadmin
+      - LITESTREAM_SECRET_ACCESS_KEY=minioadmin
+
     ports:
       - 9000:9000
       - 9001:9001
