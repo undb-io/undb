@@ -15,6 +15,7 @@
 	import { page } from '$app/stores'
 	import { createRecordInitial, createRecordOpen } from '$lib/store/modal'
 	import { addDays, format } from 'date-fns'
+	import { theme } from './calendar-theme'
 
 	export let field: DateRangeField
 
@@ -121,6 +122,7 @@
 				},
 			})
 		},
+		theme,
 	}
 </script>
 

@@ -14,6 +14,7 @@
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { createRecordInitial, createRecordOpen } from '$lib/store/modal'
+	import { theme } from './calendar-theme'
 
 	export let field: DateField
 
@@ -100,6 +101,7 @@
 				},
 			})
 		},
+		theme,
 	}
 </script>
 
