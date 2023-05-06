@@ -3,6 +3,7 @@
 	import type { IViewDisplayType } from '@undb/core'
 	import type { ComponentType } from 'svelte'
 	import KanbanConfigMenu from './KanbanConfigMenu.svelte'
+	import CalendarConfigMenu from '$lib/calendar/CalendarConfigMenu.svelte'
 
 	const view = getView()
 
@@ -10,6 +11,7 @@
 
 	const components: Partial<Record<IViewDisplayType, ComponentType>> = {
 		kanban: KanbanConfigMenu,
+		calendar: CalendarConfigMenu,
 	}
 </script>
 

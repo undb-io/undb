@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentRecordId, getTable, getView } from '$lib/store/table'
+	import { currentRecordId, getTable, getView, recordHash } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 
 	// @ts-ignore
@@ -14,7 +14,7 @@
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { createRecordInitial, createRecordOpen } from '$lib/store/modal'
-	import { format } from 'date-fns'
+	import { addDays, format } from 'date-fns'
 
 	export let field: DateRangeField
 
@@ -32,18 +32,23 @@
 		},
 	})
 
-	$: data = trpc().record.list.query({
-		tableId: $table.id.value,
-		viewId: $view.id.value,
-		// filter: [
-		// 	{
-		// 		path: field.id.value,
-		// 		type: field.type,
-		// 		value: [start?.toISOString(), end?.toISOString()],
-		// 		operator: '$between',
-		// 	},
-		// ],
-	})
+	$: data = trpc().record.list.query(
+		{
+			tableId: $table.id.value,
+			viewId: $view.id.value,
+			// filter: [
+			// 	{
+			// 		path: field.id.value,
+			// 		type: field.type,
+			// 		value: [start?.toISOString(), end?.toISOString()],
+			// 		operator: '$between',
+			// 	},
+			// ],
+		},
+		{
+			queryHash: $recordHash,
+		},
+	)
 
 	$: records =
 		RecordFactory.fromQueryRecords($data?.data?.records ?? [], $table.schema.toIdMap()).map((r) => r.valuesJSON) ?? []
@@ -79,14 +84,15 @@
 		dayMaxEvents: true,
 		nowIndicator: true,
 		dateClick: (info: { date: Date }) => {
-			$createRecordInitial = { [field.id.value]: info.date.toISOString() }
+			$createRecordInitial = { [field.id.value]: [format(info.date, 'yyyy-MM-dd'), format(info.date, 'yyyy-MM-dd')] }
 			$createRecordOpen = true
 		},
 		events,
 		selectable: true,
 		select: (info: { start: Date; end: Date }) => {
+			console.log(info)
 			$createRecordInitial = {
-				[field.id.value]: [format(info.start, 'yyyy-MM-dd'), format(info.end, 'yyyy-MM-dd')],
+				[field.id.value]: [format(info.start, 'yyyy-MM-dd'), format(addDays(info.end, -1), 'yyyy-MM-dd')],
 			}
 			$createRecordOpen = true
 		},
@@ -97,12 +103,21 @@
 			goto(`?${search.toString()}`, { invalidateAll: false })
 		},
 		eventTimeFormat: () => null,
+		eventResize: (info: { event: { id: string; start: Date; end: Date } }) => {
+			$updateRecord.mutate({
+				tableId: $table.id.value,
+				id: info.event.id,
+				values: {
+					[field.id.value]: [info.event.start, info.event.end],
+				},
+			})
+		},
 		eventDrop: (info: { event: { id: string; start: Date; end: Date } }) => {
 			$updateRecord.mutate({
 				tableId: $table.id.value,
 				id: info.event.id,
 				values: {
-					[field.id.value]: info.event.start,
+					[field.id.value]: [info.event.start, info.event.end],
 				},
 			})
 		},

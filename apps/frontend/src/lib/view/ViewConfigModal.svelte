@@ -5,6 +5,7 @@
 	import { Modal } from 'flowbite-svelte'
 	import { configViewOpen } from '$lib/store/modal'
 	import KanbanConfig from './KanbanConfig.svelte'
+	import CalendarConfig from '$lib/calendar/CalendarConfig.svelte'
 
 	const view = getView()
 
@@ -12,6 +13,7 @@
 
 	const components: Partial<Record<IViewDisplayType, ComponentType>> = {
 		kanban: KanbanConfig,
+		calendar: CalendarConfig,
 	}
 </script>
 

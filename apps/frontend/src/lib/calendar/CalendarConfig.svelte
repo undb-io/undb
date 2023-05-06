@@ -4,8 +4,9 @@
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { writable } from 'svelte/store'
-	import { createFieldInitial, createFieldOpen } from '$lib/store/modal'
+	import { configViewOpen, createFieldInitial, createFieldOpen } from '$lib/store/modal'
 	import { t } from '$lib/i18n'
+	import { invalidate } from '$app/navigation'
 
 	const table = getTable()
 	const view = getView()
@@ -13,8 +14,10 @@
 
 	const calendarFieldId = writable($view.calendarFieldIdString)
 	const setField = trpc().table.view.calendar.setField.mutation({
-		onSuccess(data, variables, context) {
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
 			$view.calendarFieldIdString = $calendarFieldId
+			$configViewOpen = false
 		},
 	})
 	const onChange = async () => {

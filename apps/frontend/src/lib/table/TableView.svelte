@@ -17,7 +17,6 @@
 		currentRecordId,
 		currentRecords,
 		getField,
-		getRecords,
 		getTable,
 		getView,
 		recordHash,
