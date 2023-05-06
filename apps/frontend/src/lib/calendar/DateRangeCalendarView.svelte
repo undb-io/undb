@@ -36,16 +36,17 @@
 		{
 			tableId: $table.id.value,
 			viewId: $view.id.value,
-			// filter: [
-			// 	{
-			// 		path: field.id.value,
-			// 		type: field.type,
-			// 		value: [start?.toISOString(), end?.toISOString()],
-			// 		operator: '$between',
-			// 	},
-			// ],
+			filter: [
+				{
+					path: field.id.value,
+					type: field.type,
+					value: [start?.toISOString()!, end?.toISOString()!],
+					operator: '$between',
+				},
+			],
 		},
 		{
+			enabled: !!start && !!end,
 			queryHash: $recordHash,
 			refetchOnMount: false,
 			refetchOnWindowFocus: false,

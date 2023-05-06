@@ -12,7 +12,7 @@ import {
   UnderlyingCreatedByColumn,
   UnderlyingDateColumn,
   UnderlyingDateRangeFromColumn,
-  UnderlyingDateRangeToFromColumn,
+  UnderlyingDateRangeToColumn,
   UnderlyingEmailColumn,
   UnderlyingIdColumn,
   UnderlyingLookupColumn,
@@ -56,10 +56,7 @@ export class UnderlyingColumnFactory {
       case 'date':
         return new UnderlyingDateColumn(field, tableName)
       case 'date-range':
-        return [
-          new UnderlyingDateRangeFromColumn(field, tableName),
-          new UnderlyingDateRangeToFromColumn(field, tableName),
-        ]
+        return [new UnderlyingDateRangeFromColumn(field, tableName), new UnderlyingDateRangeToColumn(field, tableName)]
       case 'select':
         return new UnderlyingSelectColumn(field, tableName)
       case 'collaborator':
