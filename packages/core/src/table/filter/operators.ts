@@ -100,7 +100,7 @@ export const treeBuiltInOperators = new Set<ITreeFilterOperator>([$is_root.value
 export const parentFilterOperators = z.union([$eq, $neq])
 export type IParentFilterOperator = z.infer<typeof parentFilterOperators>
 
-export const dateRangeFilterOperators = z.union([$eq, $neq])
+export const dateRangeFilterOperators = z.union([$eq, $neq, $between])
 export type IDateRangeFilterOperator = z.infer<typeof dateRangeFilterOperators>
 
 export const createdAtFilterOperators = dateFilterOperators

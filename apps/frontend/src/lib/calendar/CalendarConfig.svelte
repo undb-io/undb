@@ -10,59 +10,49 @@
 
 	const table = getTable()
 	const view = getView()
-	$: kanbanFields = $table.schema.kanbanFields
+	$: calendarFields = $table.schema.calendarFields
 
-	const kanbanField = writable($view.kanbanFieldIdString)
-	const setField = trpc().table.view.kanban.setField.mutation({
+	const calendarFieldId = writable($view.calendarFieldIdString)
+	const setField = trpc().table.view.calendar.setField.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
-			$view.kanbanFieldIdString = $kanbanField
+			$view.calendarFieldIdString = $calendarFieldId
 			$configViewOpen = false
 		},
 	})
 	const onChange = async () => {
-		if (kanbanField) {
+		if (calendarFieldId) {
 			$setField.mutate({
 				tableId: $table.id.value,
 				viewId: $view.id.value,
-				field: $kanbanField,
+				field: $calendarFieldId,
 			})
 		}
 	}
 </script>
 
 <div class="flex flex-col space-y-2">
-	{#each kanbanFields as field}
-		<Radio bind:group={$kanbanField} name="kanbanFieldId" value={field.id.value} on:change={onChange} class="space-x-1">
+	{#each calendarFields as field}
+		<Radio
+			bind:group={$calendarFieldId}
+			name="calendarFieldId"
+			value={field.id.value}
+			on:change={onChange}
+			class="space-x-1"
+		>
 			<FieldIcon type={field.type} />
 			<span>{field.name.value}</span>
 		</Radio>
 	{/each}
 </div>
 
-{#if kanbanFields.length}
+{#if calendarFields.length}
 	<Hr class="my-6">
 		<span class="text-gray-400 text-sm font-normal">{$t('or', { ns: 'common' })}</span></Hr
 	>
 {/if}
 
 <div class="flex flex-col justify-center gap-2">
-	<Button
-		size="xs"
-		color="light"
-		class="flex gap-2"
-		on:click={() => {
-			$createFieldInitial = {
-				type: 'select',
-			}
-			$createFieldOpen = true
-		}}
-	>
-		<i class="ti ti-plus" />
-		<span>{$t('Create New Select Field')}</span>
-		<FieldIcon type="select" />
-	</Button>
-
 	<Button
 		size="xs"
 		color="light"
@@ -77,5 +67,21 @@
 		<i class="ti ti-plus" />
 		<span>{$t('Create New Date Field')}</span>
 		<FieldIcon type="date" />
+	</Button>
+
+	<Button
+		size="xs"
+		color="light"
+		class="flex gap-2"
+		on:click={() => {
+			$createFieldInitial = {
+				type: 'date-range',
+			}
+			$createFieldOpen = true
+		}}
+	>
+		<i class="ti ti-plus" />
+		<span>{$t('Create New Date Range Field')}</span>
+		<FieldIcon type="date-range" />
 	</Button>
 </div>

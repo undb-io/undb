@@ -17,7 +17,6 @@
 		currentRecordId,
 		currentRecords,
 		getField,
-		getRecords,
 		getTable,
 		getView,
 		recordHash,
@@ -39,7 +38,10 @@
 
 	const table = getTable()
 	const view = getView()
-	$: data = trpc().record.list.query({ tableId: $table.id.value, viewId: $view.id.value }, { queryHash: $recordHash })
+	$: data = trpc().record.list.query(
+		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ refetchOnMount: false, refetchOnWindowFocus: false, queryHash: $recordHash },
+	)
 	$: records = RecordFactory.fromQueryRecords($data.data?.records ?? [], $table.schema.toIdMap())
 	$: $currentRecords = records
 	const field = getField()
@@ -352,7 +354,7 @@
 	params={{ delay: 100, duration: 200, easing: quintOut }}
 >
 	<div class="flex items-center space-x-5 justify-between">
-		<P class="text-sm !text-gray-700">{$t('Selected N Records', { n: selectedCount })}</P>
+		<P class="text-sm !text-gray-700">{@html $t('Selected N Records', { n: selectedCount })}</P>
 		<Button color="alternative" class="inline-flex gap-2 items-center text-red-400" size="xs" on:click={confirm}>
 			{#if $bulkDeleteRecordsMutation.isLoading}
 				<Spinner class="mr-3" size="4" />

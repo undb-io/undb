@@ -26,7 +26,7 @@
 			viewId: $view.id.value,
 			filter,
 		},
-		{ queryHash: $hash },
+		{ queryHash: $hash, refetchOnMount: false, refetchOnWindowFocus: false },
 	)
 
 	$: records = RecordFactory.fromQueryRecords($data.data?.records ?? [], $table.schema.toIdMap())

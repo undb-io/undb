@@ -1,5 +1,6 @@
 import { DateVO } from '@undb/domain'
 import type { ICollaboratorProfile } from '../field/collaborator-field.type.js'
+import type { Table } from '../table.js'
 import type { TableId, TableSchema, TableSchemaIdMap } from '../value-objects/index.js'
 import { RecordFactory } from './record.factory.js'
 import type {
@@ -73,5 +74,15 @@ export class Record {
         .and(new WithRecordTableId(this.tableId))
         .and(new WithRecordValues(this.values.duplicate(schema))),
     ).unwrap()
+  }
+
+  public getDisplayFieldsValue(table: Table): string {
+    const displayFields = table.schema.displayFields
+    const values = this.valuesJSON
+
+    return displayFields
+      .map((field) => values[field.id.value])
+      .filter(Boolean)
+      .join(' ')
   }
 }

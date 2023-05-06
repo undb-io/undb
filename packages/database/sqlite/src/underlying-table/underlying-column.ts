@@ -232,7 +232,7 @@ export const isUnlderlyingDateTangeToColumn = (str: string): str is UnderlyingDa
 export const getFieldIdFromDateRangeToColumnName = (name: UnderlyingDateRangeToColumnName): string =>
   name.replace(UNDERLYING_DATE_RANGE_TO, '')
 
-export class UnderlyingDateRangeToFromColumn extends UnderlyingFieldColumn<DateRangeField> {
+export class UnderlyingDateRangeToColumn extends UnderlyingFieldColumn<DateRangeField> {
   get name(): UnderlyingDateRangeToColumnName {
     return `${super.name}${UNDERLYING_DATE_RANGE_TO}`
   }

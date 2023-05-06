@@ -77,7 +77,7 @@
 	{#each items as item (item.id)}
 		<div animate:flip={{ duration: flipDurationMs }}>
 			<div class="w-[350px] flex flex-col h-full">
-				<div class="mb-3 flex-0">
+				<div class="flex-0">
 					<div class="min-h-[40px]">
 						{#if item.option}
 							<div class="flex items-center justify-between pr-2">
@@ -123,7 +123,7 @@
 
 					<Button
 						color="alternative"
-						class="w-full rounded-md transition h-8"
+						class="w-full rounded-md transition h-8 mb-4"
 						size="xs"
 						on:click={() => {
 							if (field && item.id !== UNCATEGORIZED) {

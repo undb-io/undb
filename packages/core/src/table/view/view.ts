@@ -130,6 +130,19 @@ export class View extends ValueObject<IView> {
     return this.calendar.mapOr(None, (calendar) => Option(calendar.fieldId))
   }
 
+  public get calendarFieldIdString() {
+    return this.calendar.into()?.fieldId?.value
+  }
+
+  public set calendarFieldIdString(fieldId: string | undefined) {
+    const calendar = this.calendar.into()
+    if (calendar) {
+      calendar.fieldId = fieldId ? FieldId.fromString(fieldId) : undefined
+    } else if (fieldId) {
+      this.calendar = Some(new Calendar({ fieldId: FieldId.fromString(fieldId) }))
+    }
+  }
+
   public get treeView(): Option<TreeView> {
     return Option(this.props.tree)
   }
