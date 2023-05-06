@@ -11,11 +11,10 @@
 	// @ts-ignore
 	import Interaction from '@event-calendar/interaction'
 	import { RecordFactory, type DateRangeField } from '@undb/core'
-	import { goto } from '$app/navigation'
-	import { page } from '$app/stores'
 	import { createRecordInitial, createRecordOpen } from '$lib/store/modal'
 	import { addDays, format } from 'date-fns'
 	import { theme } from './calendar-theme'
+	import { t } from '$lib/i18n'
 
 	export let field: DateRangeField
 
@@ -48,18 +47,23 @@
 		},
 		{
 			queryHash: $recordHash,
+			refetchOnMount: false,
+			refetchOnWindowFocus: false,
 		},
 	)
 
-	$: records =
-		RecordFactory.fromQueryRecords($data?.data?.records ?? [], $table.schema.toIdMap()).map((r) => r.valuesJSON) ?? []
+	$: records = RecordFactory.fromQueryRecords($data?.data?.records ?? [], $table.schema.toIdMap()) ?? []
 
 	$: events =
 		records?.map((record) => {
-			const [start, end] = record[field.id.value] ?? []
+			const values = record.valuesJSON
+			const [start, end] = values[field.id.value] ?? []
+			const title = record.getDisplayFieldsValue($table)
+			const titleHTML = !title ? `<span class="opacity-80">${$t('unamed', { ns: 'common' })}</span>` : ''
 			return {
-				id: record.id,
-				title: record.id,
+				id: record.id.value,
+				title,
+				titleHTML,
 				start: new Date(start),
 				end: new Date(end),
 			}
@@ -91,17 +95,13 @@
 		events,
 		selectable: true,
 		select: (info: { start: Date; end: Date }) => {
-			console.log(info)
 			$createRecordInitial = {
 				[field.id.value]: [format(info.start, 'yyyy-MM-dd'), format(addDays(info.end, -1), 'yyyy-MM-dd')],
 			}
 			$createRecordOpen = true
 		},
 		eventClick: (info: { event: { id: string } }) => {
-			const search = $page.url.searchParams
 			$currentRecordId = info.event.id
-			search.set('r', $currentRecordId!)
-			goto(`?${search.toString()}`, { invalidateAll: false })
 		},
 		eventTimeFormat: () => null,
 		eventResize: (info: { event: { id: string; start: Date; end: Date } }) => {
@@ -133,5 +133,9 @@
 <style>
 	:global(.ec-event.ec-preview) {
 		z-index: 49;
+	}
+
+	:global(.ec-popup) {
+		z-index: 10;
 	}
 </style>

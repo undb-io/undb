@@ -31,9 +31,9 @@
 
 	$: validators = createMutateRecordValuesSchema(fields ?? [], $record?.valuesJSON)
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
-	const records = trpc().record.list.query(
+	$: records = trpc().record.list.query(
 		{ tableId: $table.id.value, viewId: $view.id.value },
-		{ queryHash: $recordHash },
+		{ queryHash: $recordHash, enabled: false, refetchOnMount: false, refetchOnWindowFocus: false },
 	)
 
 	const updateRecord = trpc().record.update.mutation({

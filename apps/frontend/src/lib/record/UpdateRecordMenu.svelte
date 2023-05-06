@@ -20,9 +20,9 @@
 		},
 	})
 
-	const records = trpc().record.list.query(
+	$: records = trpc().record.list.query(
 		{ tableId: $table.id.value, viewId: $view.id.value },
-		{ queryHash: $recordHash },
+		{ queryHash: $recordHash, enabled: false },
 	)
 
 	const duplicateRecord = trpc().record.duplicate.mutation({

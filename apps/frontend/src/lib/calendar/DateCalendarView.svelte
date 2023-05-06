@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentRecordId, getTable, getView } from '$lib/store/table'
+	import { currentRecordId, getTable, getView, recordHash } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 
 	// @ts-ignore
@@ -11,10 +11,9 @@
 	// @ts-ignore
 	import Interaction from '@event-calendar/interaction'
 	import { RecordFactory, type DateField } from '@undb/core'
-	import { goto } from '$app/navigation'
-	import { page } from '$app/stores'
 	import { createRecordInitial, createRecordOpen } from '$lib/store/modal'
 	import { theme } from './calendar-theme'
+	import { t } from '$lib/i18n'
 
 	export let field: DateField
 
@@ -40,25 +39,33 @@
 				{
 					path: field.id.value,
 					type: field.type,
-					value: [start?.toISOString(), end?.toISOString()],
+					value: [start?.toISOString()!, end?.toISOString()!],
 					operator: '$between',
 				},
 			],
 		},
 		{
+			queryHash: $recordHash,
 			enabled: !!start && !!end,
+			refetchOnMount: false,
+			refetchOnWindowFocus: false,
 		},
 	)
 
-	$: records =
-		RecordFactory.fromQueryRecords($data?.data?.records ?? [], $table.schema.toIdMap()).map((r) => r.valuesJSON) ?? []
+	$: records = RecordFactory.fromQueryRecords($data?.data?.records ?? [], $table.schema.toIdMap()) ?? []
 	$: events =
-		records?.map((record) => ({
-			id: record.id,
-			title: record.id,
-			start: new Date(record[field.id.value]),
-			end: new Date(record[field.id.value]),
-		})) ?? []
+		records?.map((record) => {
+			const values = record.valuesJSON
+			const title = record.getDisplayFieldsValue($table)
+			const titleHTML = !title ? `<span class="opacity-80">${$t('unamed', { ns: 'common' })}</span>` : ''
+			return {
+				id: record.id.value,
+				title,
+				titleHTML,
+				start: new Date(values[field.id.value]),
+				end: new Date(values[field.id.value]),
+			}
+		}) ?? []
 
 	let plugins = [TimeGrid, DayGrid, Interaction]
 	$: options = {
@@ -85,10 +92,7 @@
 		},
 		events,
 		eventClick: (info: { event: { id: string } }) => {
-			const search = $page.url.searchParams
 			$currentRecordId = info.event.id
-			search.set('r', $currentRecordId!)
-			goto(`?${search.toString()}`, { invalidateAll: false })
 		},
 		eventDurationEditable: false,
 		eventTimeFormat: () => null,
