@@ -4,8 +4,9 @@
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { writable } from 'svelte/store'
-	import { createFieldInitial, createFieldOpen } from '$lib/store/modal'
+	import { configViewOpen, createFieldInitial, createFieldOpen } from '$lib/store/modal'
 	import { t } from '$lib/i18n'
+	import { invalidate } from '$app/navigation'
 
 	const table = getTable()
 	const view = getView()
@@ -13,8 +14,10 @@
 
 	const kanbanField = writable($view.kanbanFieldIdString)
 	const setField = trpc().table.view.kanban.setField.mutation({
-		onSuccess(data, variables, context) {
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
 			$view.kanbanFieldIdString = $kanbanField
+			$configViewOpen = false
 		},
 	})
 	const onChange = async () => {
@@ -43,11 +46,11 @@
 	>
 {/if}
 
-<div class="flex justify-center">
+<div class="flex flex-col justify-center gap-2">
 	<Button
 		size="xs"
 		color="light"
-		class="inline-flex gap-2"
+		class="flex gap-2"
 		on:click={() => {
 			$createFieldInitial = {
 				type: 'select',
@@ -58,5 +61,21 @@
 		<i class="ti ti-plus" />
 		<span>{$t('Create New Select Field')}</span>
 		<FieldIcon type="select" />
+	</Button>
+
+	<Button
+		size="xs"
+		color="light"
+		class="flex gap-2"
+		on:click={() => {
+			$createFieldInitial = {
+				type: 'date',
+			}
+			$createFieldOpen = true
+		}}
+	>
+		<i class="ti ti-plus" />
+		<span>{$t('Create New Date Field')}</span>
+		<FieldIcon type="date" />
 	</Button>
 </div>

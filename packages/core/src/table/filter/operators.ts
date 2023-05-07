@@ -22,6 +22,7 @@ export const $is_empty = z.literal('$is_empty')
 export const $is_not_empty = z.literal('$is_not_empty')
 
 export const $is_today = z.literal('$is_today')
+export const $between = z.literal('$between')
 
 export const $has_file_type = z.literal('$has_file_type')
 export const $has_file_extension = z.literal('$has_file_extension')
@@ -71,7 +72,7 @@ export type IBoolFilterOperator = z.infer<typeof boolFilterOperators>
 export const selectFilterOperators = z.union([$eq, $neq, $in, $nin])
 export type ISelectFilterOperator = z.infer<typeof selectFilterOperators>
 
-export const dateFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte, $is_today])
+export const dateFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte, $between, $is_today])
 export type IDateFilterOperator = z.infer<typeof dateFilterOperators>
 
 /**
@@ -99,7 +100,7 @@ export const treeBuiltInOperators = new Set<ITreeFilterOperator>([$is_root.value
 export const parentFilterOperators = z.union([$eq, $neq])
 export type IParentFilterOperator = z.infer<typeof parentFilterOperators>
 
-export const dateRangeFilterOperators = z.union([$eq, $neq])
+export const dateRangeFilterOperators = z.union([$eq, $neq, $between])
 export type IDateRangeFilterOperator = z.infer<typeof dateRangeFilterOperators>
 
 export const createdAtFilterOperators = dateFilterOperators

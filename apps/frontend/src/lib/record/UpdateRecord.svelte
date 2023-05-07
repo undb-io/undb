@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation'
-	import { page } from '$app/stores'
 	import {
 		currentRecordId,
 		getRecord,
@@ -31,9 +29,9 @@
 
 	$: validators = createMutateRecordValuesSchema(fields ?? [], $record?.valuesJSON)
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
-	const records = trpc().record.list.query(
+	$: records = trpc().record.list.query(
 		{ tableId: $table.id.value, viewId: $view.id.value },
-		{ queryHash: $recordHash },
+		{ queryHash: $recordHash, enabled: false, refetchOnMount: false, refetchOnWindowFocus: false },
 	)
 
 	const updateRecord = trpc().record.update.mutation({
@@ -130,7 +128,9 @@
 
 		<svelte:fragment slot="footer">
 			<div class="w-full flex justify-end gap-2">
-				<Button color="alternative" on:click={() => goto($page.url.pathname)}>{$t('Cancel', { ns: 'common' })}</Button>
+				<Button color="alternative" on:click={() => ($currentRecordId = undefined)}
+					>{$t('Cancel', { ns: 'common' })}</Button
+				>
 				<Button class="gap-2" type="submit" form="updateRecord" disabled={$submitting}>
 					{#if $delayed}
 						<Spinner size="5" />

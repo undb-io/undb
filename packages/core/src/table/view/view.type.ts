@@ -11,6 +11,7 @@ import type { ViewFieldsOrder } from './view-fields-order.vo.js'
 import type { ViewId } from './view-id.vo.js'
 import type { ViewName } from './view-name.vo.js'
 import type { IViewPinnedFields, ViewPinnedFields } from './view-pinned-fields.js'
+import type { IViewRowHeight, ViewRowHeight } from './view-row-height.vo.js'
 import type { createViewInput_internal, viewDisplayType } from './view.schema.js'
 
 export interface IView {
@@ -26,6 +27,7 @@ export interface IView {
   fieldOptions: ViewFieldOptions
   fieldsOrder?: ViewFieldsOrder
   pinnedFields?: ViewPinnedFields
+  rowHeight?: ViewRowHeight
 }
 
 export interface IQueryView {
@@ -41,6 +43,7 @@ export interface IQueryView {
   fieldOptions?: Record<string, IViewFieldOption>
   fieldsOrder?: string[]
   pinnedFields?: IViewPinnedFields
+  rowHeight?: IViewRowHeight
 }
 export type IViewDisplayType = z.infer<typeof viewDisplayType>
 export type ICreateViewInput_internal = z.infer<typeof createViewInput_internal>

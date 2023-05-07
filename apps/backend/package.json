@@ -27,7 +27,7 @@
     "class-validator": "^0.14.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
-    "helmet": "^6.1.5",
+    "helmet": "^7.0.0",
     "i18next": "^22.4.15",
     "i18next-http-middleware": "^3.3.0",
     "joi": "^17.9.2",

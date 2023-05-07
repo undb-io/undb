@@ -16,6 +16,7 @@ import { WithDisplayType } from './specifications/display-type.specification.js'
 import {
   WithCalendarField,
   WithKanbanField,
+  WithRowHeight,
   WithTreeViewField,
   WithViewFieldsOrder,
   WithViewName,
@@ -34,6 +35,8 @@ import { ViewId } from './view-id.vo.js'
 import { ViewName } from './view-name.vo.js'
 import type { IViewPinnedFields } from './view-pinned-fields.js'
 import { ViewPinnedFields } from './view-pinned-fields.js'
+import type { IViewRowHeight } from './view-row-height.vo.js'
+import { ViewRowHeight } from './view-row-height.vo.js'
 import { createViewInput_internal } from './view.schema.js'
 import type { ICreateViewInput_internal, IView, IViewDisplayType } from './view.type.js'
 
@@ -130,6 +133,19 @@ export class View extends ValueObject<IView> {
     return this.calendar.mapOr(None, (calendar) => Option(calendar.fieldId))
   }
 
+  public get calendarFieldIdString() {
+    return this.calendar.into()?.fieldId?.value
+  }
+
+  public set calendarFieldIdString(fieldId: string | undefined) {
+    const calendar = this.calendar.into()
+    if (calendar) {
+      calendar.fieldId = fieldId ? FieldId.fromString(fieldId) : undefined
+    } else if (fieldId) {
+      this.calendar = Some(new Calendar({ fieldId: FieldId.fromString(fieldId) }))
+    }
+  }
+
   public get treeView(): Option<TreeView> {
     return Option(this.props.tree)
   }
@@ -169,6 +185,14 @@ export class View extends ValueObject<IView> {
 
   public set pinnedFields(pf: ViewPinnedFields | undefined) {
     this.props.pinnedFields = pf
+  }
+
+  public get rowHeight() {
+    return this.props.rowHeight ?? new ViewRowHeight({ value: 'short' })
+  }
+
+  public set rowHeight(rh: ViewRowHeight | undefined) {
+    this.props.rowHeight = rh
   }
 
   public getOrderedFields(fields: Field[]): Field[] {
@@ -225,6 +249,10 @@ export class View extends ValueObject<IView> {
 
   public switchDisplayType(type: IViewDisplayType): TableCompositeSpecificaiton {
     return new WithDisplayType(this, type)
+  }
+
+  public setRowHeight(rowHeight: IViewRowHeight): TableCompositeSpecificaiton {
+    return new WithRowHeight(this, ViewRowHeight.from(rowHeight))
   }
 
   public setFieldVisibility(fieldId: string, hidden: boolean): TableCompositeSpecificaiton {
@@ -320,6 +348,7 @@ export class View extends ValueObject<IView> {
       fieldOptions: this.fieldOptions.toJSON(),
       fieldsOrder: this.fieldsOrder?.toJSON(),
       pinnedFields: this.pinnedFields?.toJSON(),
+      rowHeight: this.rowHeight?.unpack(),
       ...input,
     })
 
@@ -342,6 +371,7 @@ export class View extends ValueObject<IView> {
       fieldOptions: ViewFieldOptions.from(input.fieldOptions),
       fieldsOrder: input.fieldsOrder?.length ? ViewFieldsOrder.fromArray(input.fieldsOrder) : undefined,
       pinnedFields: input.pinnedFields ? new ViewPinnedFields(input.pinnedFields) : undefined,
+      rowHeight: input.rowHeight ? ViewRowHeight.from(input.rowHeight) : undefined,
     })
   }
 }

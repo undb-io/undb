@@ -10,6 +10,7 @@ import {
   BoolIsTrue,
   CollaboratorEqual,
   CollaboratorIsEmpty,
+  DateBetween,
   DateEqual,
   DateGreaterThan,
   DateGreaterThanOrEqual,
@@ -68,6 +69,7 @@ import { lookupFilter, lookupFilterValue } from './lookup.filter.js'
 import type { INumberFilter } from './number.filter.js'
 import { numberFilter, numberFilterValue } from './number.filter.js'
 import {
+  $between,
   $eq,
   $is_false,
   $is_root,
@@ -377,6 +379,11 @@ const convertDateRangeFilter = (filter: IDateRangeFilter): Option<CompositeSpeci
       return Some(DateRangeEqual.fromString(filter.path, filter.value))
     case $neq.value:
       return Some(DateRangeEqual.fromString(filter.path, filter.value).not())
+    case $between.value: {
+      const [from, to] = filter.value
+      if (!from || !to) return None
+      return Some(new DateBetween(filter.path, new Date(from), new Date(to)))
+    }
 
     default:
       return None
@@ -412,6 +419,15 @@ const convertDateFilter = (
     }
     case '$lte': {
       return Some(new DateLessThanOrEqual(filter.path, DateFieldValue.fromString(filter.value as string)))
+    }
+    case '$between': {
+      return Some(
+        new DateBetween(
+          filter.path,
+          new Date((filter.value as [string, string])[0]),
+          new Date((filter.value as [string, string])[1]),
+        ),
+      )
     }
     default:
       return None

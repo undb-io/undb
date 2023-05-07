@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { RecordFactory, type IViewPinnedFields, type PinnedPosition } from '@undb/core'
+	import { RecordFactory, type IViewPinnedFields, type PinnedPosition, type IViewRowHeight } from '@undb/core'
 	import cx from 'classnames'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
 	import { Button, Dropdown, Modal, P, Spinner, Toast } from 'flowbite-svelte'
@@ -17,7 +17,6 @@
 		currentRecordId,
 		currentRecords,
 		getField,
-		getRecords,
 		getTable,
 		getView,
 		recordHash,
@@ -39,7 +38,20 @@
 
 	const table = getTable()
 	const view = getView()
-	$: data = trpc().record.list.query({ tableId: $table.id.value, viewId: $view.id.value }, { queryHash: $recordHash })
+
+	$: rowHeight = $view.rowHeight?.unpack() ?? 'short'
+
+	const heights: Record<IViewRowHeight, number> = {
+		short: 32,
+		medium: 55,
+		tall: 88,
+	}
+	$: rowSize = heights[rowHeight]
+
+	$: data = trpc().record.list.query(
+		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash },
+	)
 	$: records = RecordFactory.fromQueryRecords($data.data?.records ?? [], $table.schema.toIdMap())
 	$: $currentRecords = records
 	const field = getField()
@@ -48,6 +60,7 @@
 	$: fieldMenuDOMId = getFieldDomId($currentFieldId)
 
 	let rows: Components.RevoGrid['source']
+	let rowDefinitions: RevoGridType.RowDefinition[]
 	let columns = writable<RevoGridType.ColumnRegular[]>([])
 
 	const select = writable<Record<string, boolean>>({})
@@ -96,6 +109,10 @@
 	$: if (grid) handleRevogrid(grid)
 	$: if (grid) {
 		rows = records.map((record) => record.valuesJSON)
+	}
+
+	$: if (grid) {
+		rowDefinitions = records.map((_, index) => ({ type: 'rgRow', index, size: rowSize }))
 	}
 
 	$: if (grid) {
@@ -325,7 +342,7 @@
 	})
 </script>
 
-<div class:h-[32px]={!hasRecord || !$data.isLoading} class:h-full={hasRecord}>
+<div class:h-[35px]={!hasRecord || $data.isLoading} class:h-full={hasRecord}>
 	<RevoGrid
 		bind:this={grid}
 		source={rows}
@@ -335,6 +352,7 @@
 		range
 		rowClass="id"
 		readonly
+		{rowDefinitions}
 		{editors}
 		on:aftercolumnresize={onAfterColumnResize}
 	/>
@@ -352,7 +370,7 @@
 	params={{ delay: 100, duration: 200, easing: quintOut }}
 >
 	<div class="flex items-center space-x-5 justify-between">
-		<P class="text-sm !text-gray-700">{$t('Selected N Records', { n: selectedCount })}</P>
+		<P class="text-sm !text-gray-700">{@html $t('Selected N Records', { n: selectedCount })}</P>
 		<Button color="alternative" class="inline-flex gap-2 items-center text-red-400" size="xs" on:click={confirm}>
 			{#if $bulkDeleteRecordsMutation.isLoading}
 				<Spinner class="mr-3" size="4" />
@@ -397,8 +415,17 @@
 		<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 			{$t('Confirm Delete Record')}
 		</h3>
-		<Button color="red" class="mr-2 gap-2" on:click={bulkDeleteRecords}>
-			<i class="ti ti-circle-check text-lg" />
+		<Button
+			color="red"
+			class="mr-2 gap-2 whitespace-nowrap"
+			disabled={$bulkDeleteRecordsMutation.isLoading}
+			on:click={bulkDeleteRecords}
+		>
+			{#if $bulkDeleteRecordsMutation.isLoading}
+				<Spinner size="xs" />
+			{:else}
+				<i class="ti ti-circle-check text-lg" />
+			{/if}
 			{$t('Confirm Yes', { ns: 'common' })}</Button
 		>
 		<Button color="alternative">{$t('Confirm No', { ns: 'common' })}</Button>
@@ -427,14 +454,19 @@
 			</h3>
 			<Button
 				color="red"
-				class="mr-2 gap-2"
+				class="mr-2 gap-2 whitespace-nowrap"
+				disabled={$deleteField.isLoading}
 				on:click={() => {
 					if ($field) {
 						$deleteField.mutate({ tableId: $table.id.value, id: $field.id.value })
 					}
 				}}
 			>
-				<i class="ti ti-circle-check text-lg" />
+				{#if $deleteField.isLoading}
+					<Spinner size="xs" />
+				{:else}
+					<i class="ti ti-circle-check text-lg" />
+				{/if}
 				{$t('Confirm Yes', { ns: 'common' })}</Button
 			>
 			<Button color="alternative">{$t('Confirm No', { ns: 'common' })}</Button>

@@ -5,7 +5,7 @@
 	import { currentRecordId, getTable, getView, recordHash } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { Record } from '@undb/core'
-	import { Button, Dropdown, DropdownDivider, DropdownItem, Modal } from 'flowbite-svelte'
+	import { Button, Dropdown, DropdownDivider, DropdownItem, Modal, Spinner } from 'flowbite-svelte'
 
 	let confirmDeleteOpen = false
 
@@ -20,9 +20,9 @@
 		},
 	})
 
-	const records = trpc().record.list.query(
+	$: records = trpc().record.list.query(
 		{ tableId: $table.id.value, viewId: $view.id.value },
-		{ queryHash: $recordHash },
+		{ queryHash: $recordHash, enabled: false },
 	)
 
 	const duplicateRecord = trpc().record.duplicate.mutation({
@@ -76,14 +76,19 @@
 		</h3>
 		<Button
 			color="red"
-			class="mr-2 gap-2"
+			class="mr-2 gap-2 whitespace-nowrap"
+			disabled={$deleteRecord.isLoading}
 			on:click={() => {
 				if (record) {
 					$deleteRecord.mutate({ tableId: $table.id.value, id: record.id.value })
 				}
 			}}
 		>
-			<i class="ti ti-circle-check text-lg" />
+			{#if $deleteRecord.isLoading}
+				<Spinner size="xs" />
+			{:else}
+				<i class="ti ti-circle-check text-lg" />
+			{/if}
 			{$t('Confirm Yes', { ns: 'common' })}</Button
 		>
 		<Button color="alternative">{$t('Confirm No', { ns: 'common' })}</Button>

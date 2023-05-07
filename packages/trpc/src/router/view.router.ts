@@ -7,6 +7,8 @@ import {
   duplicateViewCommandInput,
   MoveViewCommand,
   moveViewCommandInput,
+  SetRowHeightCommand,
+  setRowHeightCommandInput,
   SetShowSystemFieldsCommand,
   setShowSystemFieldssCommandInput,
   SwitchDisplayTypeCommand,
@@ -74,6 +76,13 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new SetShowSystemFieldsCommand(input)
+        return commandBus.execute(cmd)
+      }),
+    setRowHeight: procedure
+      .input(setRowHeightCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new SetRowHeightCommand(input)
         return commandBus.execute(cmd)
       }),
     field: createViewFieldRouter(procedure)(commandBus),

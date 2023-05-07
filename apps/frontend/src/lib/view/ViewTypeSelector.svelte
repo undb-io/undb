@@ -9,6 +9,7 @@
 	const items = [
 		{ value: 'grid', label: 'Grid' },
 		{ value: 'kanban', label: 'Kanban' },
+		{ value: 'calendar', label: 'Calendar' },
 	] as const
 
 	export let value: IViewDisplayType = 'grid'

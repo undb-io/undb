@@ -13,15 +13,24 @@
 
 	const register = createMutation<unknown, unknown, { email: string; password: string }>({
 		mutationKey: ['register'],
-		mutationFn: (body) =>
-			fetch('/api/auth/register', {
+		mutationFn: async (body) => {
+			const response = await fetch('/api/auth/register', {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify(body),
-			}),
+			})
+			if (!response.ok) {
+				const text = await response.text()
+				const { code } = JSON.parse(text)
+
+				throw new Error($t(code, { ns: 'error' }) ?? undefined)
+			}
+
+			return response.json()
+		},
 
 		async onSuccess(data, variables, context) {
 			await goto($page.url.searchParams.get('redirectTo') || '/')

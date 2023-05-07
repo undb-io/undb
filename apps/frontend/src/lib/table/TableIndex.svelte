@@ -4,16 +4,16 @@
 	import type { ComponentType } from 'svelte'
 	import TableView from './TableView.svelte'
 	import KanbanIndex from './KanbanIndex.svelte'
+	import CalendarIndex from '$lib/calendar/CalendarIndex.svelte'
 
 	const view = getView()
 
 	$: displayType = $view.displayType
 
-	const map: Record<IViewDisplayType, ComponentType> = {
+	const map: Partial<Record<IViewDisplayType, ComponentType>> = {
 		grid: TableView,
 		kanban: KanbanIndex,
-		calendar: TableView,
-		tree: TableView,
+		calendar: CalendarIndex,
 	}
 </script>
 

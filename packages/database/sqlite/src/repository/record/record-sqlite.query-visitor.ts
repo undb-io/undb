@@ -5,6 +5,7 @@ import type {
   BoolIsTrue,
   CollaboratorEqual,
   CollaboratorIsEmpty,
+  DateBetween,
   DateEqual,
   DateGreaterThan,
   DateGreaterThanOrEqual,
@@ -46,6 +47,7 @@ import type {
 import {
   CollaboratorField,
   CreatedByField,
+  DateRangeField,
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
@@ -62,6 +64,7 @@ import { Attachment } from '../../entity/attachment.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
+import { UnderlyingDateRangeFromColumn, UnderlyingDateRangeToColumn } from '../../underlying-table/underlying-column.js'
 import { ClosureTable, CollaboratorForeignTable } from '../../underlying-table/underlying-foreign-table.js'
 import { TABLE_ALIAS, getForeignTableAlias } from './record.constants.js'
 
@@ -219,6 +222,21 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       this.qb.whereBetween(this.getFieldId(s.fieldId), range)
     } else {
       this.qb.whereNull(this.getFieldId(s.fieldId))
+    }
+  }
+  dateBetween(s: DateBetween): void {
+    const start = s.date1
+    const end = s.date2
+    const field = this.getField(s.fieldId)
+    if (field instanceof DateRangeField) {
+      const from = new UnderlyingDateRangeFromColumn(field, this.tableId)
+      const to = new UnderlyingDateRangeToColumn(field, this.tableId)
+      const fromId = TABLE_ALIAS + '.' + from.name
+      const toId = TABLE_ALIAS + '.' + to.name
+
+      this.qb.where(toId, '>=', start.toISOString()).andWhere(fromId, '<=', end.toISOString())
+    } else {
+      this.qb.whereBetween(this.getFieldId(s.fieldId), [start.toISOString(), end.toISOString()])
     }
   }
   collaboratorEqual(s: CollaboratorEqual): void {
