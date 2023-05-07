@@ -40,7 +40,7 @@
 	const view = getView()
 	$: data = trpc().record.list.query(
 		{ tableId: $table.id.value, viewId: $view.id.value },
-		{ refetchOnMount: false, refetchOnWindowFocus: false, queryHash: $recordHash },
+		{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash },
 	)
 	$: records = RecordFactory.fromQueryRecords($data.data?.records ?? [], $table.schema.toIdMap())
 	$: $currentRecords = records
