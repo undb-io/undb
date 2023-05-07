@@ -327,7 +327,7 @@
 	})
 </script>
 
-<div class:h-[32px]={!hasRecord || !$data.isLoading} class:h-full={hasRecord}>
+<div class:h-[35px]={!hasRecord || $data.isLoading} class:h-full={hasRecord}>
 	<RevoGrid
 		bind:this={grid}
 		source={rows}
