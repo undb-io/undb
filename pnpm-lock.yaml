@@ -126,8 +126,8 @@ importers:
         specifier: ^1.4.6
         version: 1.4.6
       helmet:
-        specifier: ^6.1.5
-        version: 6.1.5
+        specifier: ^7.0.0
+        version: 7.0.0
       i18next:
         specifier: ^22.4.15
         version: 22.4.15
@@ -6587,9 +6587,9 @@ packages:
     dependencies:
       function-bind: 1.1.1
 
-  /helmet@6.1.5:
-    resolution: {integrity: sha512-UgAvdoG0BhF9vcCh/j0bWtElo2ZHHk6OzC98NLCM6zK03DEVSM0vUAtT7iR+oTo2Mi6sGelAH3tL6B/uUWxV4g==}
-    engines: {node: '>=14.0.0'}
+  /helmet@7.0.0:
+    resolution: {integrity: sha512-MsIgYmdBh460ZZ8cJC81q4XJknjG567wzEmv46WOBblDb6TUd3z8/GhgmsM9pn8g2B80tAJ4m5/d3Bi1KrSUBQ==}
+    engines: {node: '>=16.0.0'}
     dev: false
 
   /help-me@4.2.0:
