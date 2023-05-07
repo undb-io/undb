@@ -14,15 +14,23 @@
 
 	const login = createMutation<unknown, unknown, { email: string; password: string }>({
 		mutationKey: ['login'],
-		mutationFn: (body) =>
-			fetch('/api/auth/login', {
+		mutationFn: async (body) => {
+			const response = await fetch('/api/auth/login', {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify(body),
-			}),
+			})
+			if (!response.ok) {
+				const text = await response.text()
+				const { code } = JSON.parse(text)
+
+				throw new Error($t(code, { ns: 'error' }) ?? undefined)
+			}
+			return response.json()
+		},
 
 		async onSuccess(data, variables, context) {
 			await goto($page.url.searchParams.get('redirectTo') || '/')
@@ -32,6 +40,11 @@
 	const { form, enhance, constraints } = superForm(data.form, {
 		SPA: true,
 		taintedMessage: null,
+		validators: false,
+		dataType: 'json',
+		clearOnSubmit: 'errors-and-message',
+		resetForm: false,
+		invalidateAll: false,
 		onUpdate(event) {
 			$login.mutate(event.form.data)
 		},
