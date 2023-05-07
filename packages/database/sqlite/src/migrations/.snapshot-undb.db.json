@@ -1266,6 +1266,20 @@
           "primary": false,
           "nullable": true,
           "mappedType": "json"
+        },
+        "row_height": {
+          "name": "row_height",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "enumItems": [
+            "short",
+            "medium",
+            "tall"
+          ],
+          "mappedType": "enum"
         }
       },
       "name": "undb_view",

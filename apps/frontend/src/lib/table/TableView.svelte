@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { RecordFactory, type IViewPinnedFields, type PinnedPosition } from '@undb/core'
+	import { RecordFactory, type IViewPinnedFields, type PinnedPosition, type IViewRowHeight } from '@undb/core'
 	import cx from 'classnames'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
 	import { Button, Dropdown, Modal, P, Spinner, Toast } from 'flowbite-svelte'
@@ -38,6 +38,16 @@
 
 	const table = getTable()
 	const view = getView()
+
+	$: rowHeight = $view.rowHeight?.unpack() ?? 'short'
+
+	const heights: Record<IViewRowHeight, number> = {
+		short: 32,
+		medium: 55,
+		tall: 88,
+	}
+	$: rowSize = heights[rowHeight]
+
 	$: data = trpc().record.list.query(
 		{ tableId: $table.id.value, viewId: $view.id.value },
 		{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash },
@@ -50,6 +60,7 @@
 	$: fieldMenuDOMId = getFieldDomId($currentFieldId)
 
 	let rows: Components.RevoGrid['source']
+	let rowDefinitions: RevoGridType.RowDefinition[]
 	let columns = writable<RevoGridType.ColumnRegular[]>([])
 
 	const select = writable<Record<string, boolean>>({})
@@ -98,6 +109,10 @@
 	$: if (grid) handleRevogrid(grid)
 	$: if (grid) {
 		rows = records.map((record) => record.valuesJSON)
+	}
+
+	$: if (grid) {
+		rowDefinitions = records.map((_, index) => ({ type: 'rgRow', index, size: rowSize }))
 	}
 
 	$: if (grid) {
@@ -337,6 +352,7 @@
 		range
 		rowClass="id"
 		readonly
+		{rowDefinitions}
 		{editors}
 		on:aftercolumnresize={onAfterColumnResize}
 	/>

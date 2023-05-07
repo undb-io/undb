@@ -11,16 +11,18 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core'
-import type {
-  Calendar as CoreCalendar,
-  Kanban as CoreKanban,
-  TreeView as CoreTreeView,
-  View as CoreView,
-  IRootFilter,
-  ISorts,
-  IViewDisplayType,
-  IViewFieldOption,
-  IViewPinnedFields,
+import type { IViewRowHeight } from '@undb/core'
+import {
+  viewRowHeights,
+  type Calendar as CoreCalendar,
+  type Kanban as CoreKanban,
+  type TreeView as CoreTreeView,
+  type View as CoreView,
+  type IRootFilter,
+  type ISorts,
+  type IViewDisplayType,
+  type IViewFieldOption,
+  type IViewPinnedFields,
 } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Table } from './table.js'
@@ -111,6 +113,9 @@ export class View extends BaseEntity {
   @Property({ type: JsonType, nullable: true })
   pinnedFields?: IViewPinnedFields
 
+  @Enum({ items: viewRowHeights, nullable: true })
+  rowHeight?: IViewRowHeight
+
   constructor(table: Rel<Table>, view: CoreView) {
     super()
     this.id = view.id.value
@@ -136,6 +141,7 @@ export class View extends BaseEntity {
       this.sorts = view.sorts.unpack()
     }
     this.pinnedFields = view.pinnedFields?.toJSON()
+    this.rowHeight = view.rowHeight?.unpack()
   }
 }
 

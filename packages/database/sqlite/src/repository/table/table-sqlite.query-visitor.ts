@@ -23,6 +23,7 @@ import type {
   WithoutOption,
   WithoutView,
   WithRatingMax,
+  WithRowHeight,
   WithShowSystemFieldsSpec,
   WithSorts,
   WithSymmetricReferenceField,
@@ -97,6 +98,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   calendarFieldEqual(s: WithCalendarField): void {
+    throw new Error('Method not implemented.')
+  }
+  rowHeightEqual(s: WithRowHeight): void {
     throw new Error('Method not implemented.')
   }
   optionsEqual(s: WithOptions): void {

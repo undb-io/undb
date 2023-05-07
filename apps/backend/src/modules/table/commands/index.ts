@@ -23,6 +23,7 @@ import { SetFieldWidthCommandHandler } from './set-field-width.command.handler.j
 import { SetFiltersCommandHandler } from './set-filters.command.handler.js'
 import { SetKanbanFieldCommandHandler } from './set-kanban-field.command.handler.js'
 import { SetPinnedFieldsCommandHandler } from './set-pinned-fields.command.handler.js'
+import { SetRowHeightCommandHandler } from './set-row-height.command.handler.js'
 import { SetShowSystemFieldsCommandHandler } from './set-show-system-fields.command.handler.js'
 import { SetSortsCommandHandler } from './set-sorts.command.handler.js'
 import { SetTreeViewFieldCommandHandler } from './set-tree-view-field.command.handler.js'
@@ -57,6 +58,7 @@ export const commandHandlers = [
   UpdateTableCommandHandler,
   ReorderOptionsCommandHandler,
   SwitchDisplayTypeCommandHandler,
+  SetRowHeightCommandHandler,
   UpdateRecordCommandHandler,
   UpdateOptionCommandHandler,
   DeleteRecordCommandHandler,
