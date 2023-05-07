@@ -1,4 +1,5 @@
 <script lang="ts">
+	import cx from 'classnames'
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms/index'
 	import ReferenceFieldPicker from '../FieldInputs/ReferenceFieldPicker.svelte'
@@ -40,6 +41,7 @@
 				table={coreTable}
 				bind:value={$aggregateFieldId}
 				{...$$restProps}
+				class={cx('w-full !justify-start', $$restProps.class)}
 				filter={(f) => f.isNumeric && !f.isAggregate}
 			/>
 		</div>

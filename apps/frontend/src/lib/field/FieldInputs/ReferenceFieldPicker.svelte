@@ -10,19 +10,17 @@
 	export let required = false
 </script>
 
-<div>
-	<Label class="space-y-2">
-		<span class="space-x-1">
-			<span>{$t('Reference Field')}</span>
-			{#if required}
-				<span class="text-red-500">*</span>
-			{/if}
-		</span>
-		<FieldPicker
-			{...$$restProps}
-			bind:value
-			table={$table}
-			filter={(f) => f.type === 'reference' || f.type === 'tree' || f.type === 'parent'}
-		/>
-	</Label>
-</div>
+<Label class="space-y-2">
+	<div class="space-x-1">
+		<span>{$t('Reference Field')}</span>
+		{#if required}
+			<span class="text-red-500">*</span>
+		{/if}
+	</div>
+	<FieldPicker
+		{...$$restProps}
+		bind:value
+		table={$table}
+		filter={(f) => f.type === 'reference' || f.type === 'tree' || f.type === 'parent'}
+	/>
+</Label>
