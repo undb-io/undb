@@ -56,6 +56,7 @@ import type {
   WithFieldWidth,
   WithKanbanField,
   WithNewView,
+  WithRowHeight,
   WithShowSystemFieldsSpec,
   WithSorts,
   WithTableView,
@@ -69,6 +70,7 @@ import type {
 } from '../view/index.js'
 
 export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVisitor, IFieldVisitor {
+  rowHeightEqual(s: WithRowHeight): void {}
   ratingMaxEqual(s: WithRatingMax): void {}
   id(field: IdField): void {}
   createdAt(field: CreatedAtField): void {}

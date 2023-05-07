@@ -21,6 +21,7 @@ import type {
   WithNewView,
   WithOptions,
   WithRatingMax,
+  WithRowHeight,
   WithShowSystemFieldsSpec,
   WithSorts,
   WithSymmetricReferenceField,
@@ -244,6 +245,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   displayTypeEqual(s: WithDisplayType): void {
     const view = this.getView(s.view.id.value)
     wrap(view).assign({ displayType: s.displayType })
+    this.em.persist(view)
+  }
+  rowHeightEqual(s: WithRowHeight): void {
+    const view = this.getView(s.view.id.value)
+    wrap(view).assign({ rowHeight: s.rowHeight.unpack() })
     this.em.persist(view)
   }
   kanbanFieldEqual(s: WithKanbanField): void {

@@ -10,6 +10,7 @@ import { fieldHiddenSchema, fieldWidthSchema, viewFieldOption } from './view-fie
 import { viewIdSchema } from './view-id.vo.js'
 import { viewNameSchema } from './view-name.vo.js'
 import { viewPinnedFields } from './view-pinned-fields.js'
+import { viewRowHeightSchema } from './view-row-height.vo.js'
 
 export const viewDisplayType = z.enum(['grid', 'kanban', 'calendar', 'tree'])
 
@@ -41,6 +42,7 @@ export const createViewInput_internal = z.object({
   fieldOptions: z.record(viewFieldOption).optional(),
   fieldsOrder: z.string().array().optional(),
   pinnedFields: viewPinnedFields.optional(),
+  rowHeight: viewRowHeightSchema.optional(),
 })
 
 export const queryView = z.object({
@@ -56,6 +58,7 @@ export const queryView = z.object({
   fieldOptions: z.record(viewFieldOption).optional(),
   fieldsOrder: z.string().array().optional(),
   pinnedFields: viewPinnedFields.optional(),
+  rowHeight: viewRowHeightSchema.optional(),
 })
 
 export const queryViews = z.array(queryView).optional()
@@ -94,6 +97,12 @@ export const switchDisplayTypeSchema = z.object({
 })
 
 export type ISwitchDisplayTypeSchema = z.infer<typeof switchDisplayTypeSchema>
+
+export const setRowHeight = z.object({
+  viewId: viewIdSchema.optional(),
+  rowHeight: viewRowHeightSchema,
+})
+export type ISetRowHeight = z.infer<typeof setRowHeight>
 
 export const setKanbanFieldSchema = z.object({
   viewId: viewIdSchema.optional(),

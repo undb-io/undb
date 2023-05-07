@@ -19,6 +19,7 @@ import type { WithKanbanField, WithViewsOrder } from '../view/index.js'
 import type { WithCalendarField } from '../view/specifications/calendar.specification.js'
 import type { WithDisplayType } from '../view/specifications/display-type.specification.js'
 import type { WithFilter } from '../view/specifications/filters.specificaiton.js'
+import type { WithRowHeight } from '../view/specifications/row-height.specification.js'
 import type { WithShowSystemFieldsSpec } from '../view/specifications/show-system-fields.specification.js'
 import type { WithSorts } from '../view/specifications/sorts.specification.js'
 import type { WithTreeViewField } from '../view/specifications/tree-view.specification.js'
@@ -65,6 +66,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
 
   ratingMaxEqual(s: WithRatingMax): void
 
+  rowHeightEqual(s: WithRowHeight): void
   displayTypeEqual(s: WithDisplayType): void
   kanbanFieldEqual(s: WithKanbanField): void
   calendarFieldEqual(s: WithCalendarField): void

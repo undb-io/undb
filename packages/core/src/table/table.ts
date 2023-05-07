@@ -35,6 +35,7 @@ import type {
   ISetFieldWidthSchema,
   ISetKanbanFieldSchema,
   ISetPinnedFieldsSchema,
+  ISetRowHeight,
   ISetTreeViewFieldSchema,
   ISortDirection,
   ISorts,
@@ -311,6 +312,13 @@ export class Table {
   public switchDisplayType(input: ISwitchDisplayTypeSchema): TableCompositeSpecificaiton {
     const view = this.mustGetView(input.viewId)
     const spec = view.switchDisplayType(input.displayType)
+    spec.mutate(this)
+    return spec
+  }
+
+  public setRowHeight(input: ISetRowHeight): TableCompositeSpecificaiton {
+    const view = this.mustGetView(input.viewId)
+    const spec = view.setRowHeight(input.rowHeight)
     spec.mutate(this)
     return spec
   }

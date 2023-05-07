@@ -8,6 +8,7 @@
 	import { createFieldOpen, createRecordOpen, updateTableOpen } from '$lib/store/modal'
 	import ViewConfigMenu from '$lib/view/ViewConfigMenu.svelte'
 	import { t } from '$lib/i18n'
+	import ViewToolBarControls from '$lib/view/ViewToolBarControls.svelte'
 </script>
 
 <div
@@ -29,6 +30,8 @@
 		<FilterMenu />
 		<SortMenu />
 		<ManageFieldsMenu />
+
+		<ViewToolBarControls />
 
 		<Button
 			on:click={() => createFieldOpen.set(true)}
