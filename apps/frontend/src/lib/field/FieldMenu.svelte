@@ -15,7 +15,7 @@
 	const table = getTable()
 	const view = getView()
 	const field = getField()
-	$: pinned = !!$view.pinnedFields?.getPinnedPosition($field!.id.value)
+	$: pinned = !!$field && !!$view.pinnedFields?.getPinnedPosition($field.id.value)
 
 	$: fieldDirection = $field ? $view.getFieldSort($field.id.value).into() : undefined
 
