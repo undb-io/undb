@@ -23,6 +23,10 @@
 	function remove() {
 		$form.schema = $form.schema.filter((_, index) => index !== i)
 	}
+
+	$: if (!canDisplay(field.type)) {
+		field.display = false
+	}
 </script>
 
 <AccordionItem
