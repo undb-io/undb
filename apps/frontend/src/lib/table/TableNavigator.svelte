@@ -8,7 +8,7 @@
 	const view = getView()
 </script>
 
-<Breadcrumb aria-label="undb navigator">
+<Breadcrumb aria-label="undb navigator" class="hidden xl:block">
 	<BreadcrumbItem class="whitespace-nowrap flex items-center" href="/" home
 		>{$t('Home', { ns: 'common' })}</BreadcrumbItem
 	>
