@@ -14,6 +14,7 @@ import {
 import { and } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { Some } from 'oxide.ts'
+import { ReferenceField, SelectField } from '../../entity/field.js'
 import { Table } from '../../entity/table.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME, INTERNAL_COLUMN_DELETED_BY_NAME } from '../../underlying-table/constants.js'
 import { UnderlyingTableSqliteManager } from '../../underlying-table/underlying-table-sqlite.manager.js'
@@ -76,6 +77,19 @@ export class RecordSqliteRepository implements IRecordRepository {
     })
   }
 
+  private async _populateTable(table: Table) {
+    for (const field of table.fields) {
+      if (field instanceof ReferenceField) {
+        const displayFields = field.displayFields.getItems()
+        for (const f of displayFields) {
+          if (f instanceof SelectField) {
+            await f.options.init()
+          }
+        }
+      }
+    }
+  }
+
   async findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<CoreRecord>> {
     const tableEntity = await this.em.findOneOrFail(
       Table,
@@ -94,6 +108,7 @@ export class RecordSqliteRepository implements IRecordRepository {
         ],
       },
     )
+    await this._populateTable(tableEntity)
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const spec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
 
