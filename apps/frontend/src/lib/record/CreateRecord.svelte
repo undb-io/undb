@@ -19,7 +19,7 @@
 	export let data: Validation<any>
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
-	const records = trpc().record.list.query(
+	$: records = trpc().record.list.query(
 		{ tableId: $table.id.value, viewId: $view.id.value },
 		{
 			queryHash: $recordHash,
