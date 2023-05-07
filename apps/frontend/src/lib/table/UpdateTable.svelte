@@ -149,12 +149,17 @@
 		</h3>
 		<Button
 			color="red"
-			class="mr-2 gap-2"
+			class="inline-flex whitespace-nowrap mr-2 gap-2"
+			disabled={$deleteTable.isLoading}
 			on:click={() => {
 				$deleteTable.mutate({ id: $table.id.value })
 			}}
 		>
-			<i class="ti ti-circle-check text-lg" />
+			{#if $deleteTable.isLoading}
+				<Spinner size="xs" />
+			{:else}
+				<i class="ti ti-circle-check text-lg" />
+			{/if}
 			{$t('Confirm Yes', { ns: 'common' })}</Button
 		>
 		<Button color="alternative">{$t('Confirm No', { ns: 'common' })}</Button>

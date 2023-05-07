@@ -399,8 +399,17 @@
 		<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 			{$t('Confirm Delete Record')}
 		</h3>
-		<Button color="red" class="mr-2 gap-2" on:click={bulkDeleteRecords}>
-			<i class="ti ti-circle-check text-lg" />
+		<Button
+			color="red"
+			class="mr-2 gap-2 whitespace-nowrap"
+			disabled={$bulkDeleteRecordsMutation.isLoading}
+			on:click={bulkDeleteRecords}
+		>
+			{#if $bulkDeleteRecordsMutation.isLoading}
+				<Spinner size="xs" />
+			{:else}
+				<i class="ti ti-circle-check text-lg" />
+			{/if}
 			{$t('Confirm Yes', { ns: 'common' })}</Button
 		>
 		<Button color="alternative">{$t('Confirm No', { ns: 'common' })}</Button>
@@ -429,14 +438,19 @@
 			</h3>
 			<Button
 				color="red"
-				class="mr-2 gap-2"
+				class="mr-2 gap-2 whitespace-nowrap"
+				disabled={$deleteField.isLoading}
 				on:click={() => {
 					if ($field) {
 						$deleteField.mutate({ tableId: $table.id.value, id: $field.id.value })
 					}
 				}}
 			>
-				<i class="ti ti-circle-check text-lg" />
+				{#if $deleteField.isLoading}
+					<Spinner size="xs" />
+				{:else}
+					<i class="ti ti-circle-check text-lg" />
+				{/if}
 				{$t('Confirm Yes', { ns: 'common' })}</Button
 			>
 			<Button color="alternative">{$t('Confirm No', { ns: 'common' })}</Button>
