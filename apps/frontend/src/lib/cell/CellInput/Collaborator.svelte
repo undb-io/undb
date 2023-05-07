@@ -7,7 +7,7 @@
 	export let field: CollaboratorField
 
 	$: displayValues = record?.displayValues?.values
-	$: values = field.getDisplayValues(displayValues)
+	$: values = field.getDisplayValues(displayValues) ?? []
 	$: initialMembers = new Map(
 		value?.map((userId, index) => {
 			const [username, avatar] = values[index]

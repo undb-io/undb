@@ -13,6 +13,10 @@
 	let open = false
 	let opened = false
 
+	$: if (!value) {
+		value = []
+	}
+
 	$: if (open) {
 		opened = true
 	}
