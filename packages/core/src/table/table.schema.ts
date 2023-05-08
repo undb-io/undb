@@ -1,7 +1,12 @@
 import { z } from 'zod'
 import { querySchemaSchema } from './field/index.js'
 import type { Table } from './table.js'
-import { createTableSchemaSchema, tableIdSchema, tableNameSchema } from './value-objects/index.js'
+import {
+  createTableSchemaSchema,
+  tableIdSchema,
+  tableNameSchema,
+  updateTableSchemaSchema,
+} from './value-objects/index.js'
 import { tableEmojiSchema } from './value-objects/table-emoji.vo.js'
 import { createViewInput_internal, queryViews, viewsOrderSchema } from './view/index.js'
 
@@ -39,6 +44,7 @@ export const updateTableSchema = z
   .object({
     name: tableNameSchema,
     emoji: tableEmojiSchema,
+    schema: updateTableSchemaSchema,
   })
   .partial()
 
@@ -47,6 +53,7 @@ export const createUpdateTableSchema = (table: Table) => {
     .object({
       name: tableNameSchema.default(table.name.value),
       emoji: tableEmojiSchema.default(table.emoji.unpack()),
+      schema: updateTableSchemaSchema.default(table.schema.fields.map((field) => field.json as any)),
     })
     .partial()
 }

@@ -23,6 +23,13 @@ import { WithNewOption, WithOption, WithOptions, WithoutOption } from './specifi
 export class SelectField extends BaseField<ISelectField> {
   type: SelectFieldType = 'select'
 
+  override get json() {
+    return {
+      ...super.json,
+      options: this.options.options.map((option) => option.toJSON()),
+    }
+  }
+
   get options() {
     return this.props.options
   }

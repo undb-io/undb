@@ -19,6 +19,13 @@ import { DateFormat } from './value-objects/date-format.vo.js'
 export class DateRangeField extends AbstractDateField<IDateRangeField> {
   type: DateRangeType = 'date-range'
 
+  override get json() {
+    return {
+      ...super.json,
+      format: this.formatString,
+    }
+  }
+
   override get primitive() {
     return true
   }

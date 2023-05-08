@@ -19,6 +19,13 @@ import { DateFormat } from './value-objects/date-format.vo.js'
 export class UpdatedAtField extends AbstractDateField<IUpdatedAtField> {
   type: UpdatedAtFieldType = 'updated-at'
 
+  override get json() {
+    return {
+      ...super.json,
+      format: this.formatString,
+    }
+  }
+
   override get system() {
     return true
   }

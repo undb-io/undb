@@ -15,6 +15,12 @@ import { FieldId } from './value-objects/field-id.vo.js'
 
 export class CountField extends AbstractLookupField<ICountField> {
   type: CountType = 'count'
+  override get json() {
+    return {
+      ...super.json,
+      referenceFieldId: this.referenceFieldId.value,
+    }
+  }
 
   override get primitive() {
     return true

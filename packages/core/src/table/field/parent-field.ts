@@ -14,6 +14,13 @@ import { DisplayFields, FieldId } from './value-objects/index.js'
 export class ParentField extends Mixin(AbstractReferenceField<IParentField>, AbstractLookingField<IParentField>) {
   type: ParentFieldType = 'parent'
 
+  override get json() {
+    return {
+      ...super.json,
+      displayFieldIds: this.displayFieldIds.map((id) => id.value),
+    }
+  }
+
   override get multiple() {
     return false
   }

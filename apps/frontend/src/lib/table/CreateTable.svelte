@@ -21,9 +21,9 @@
 
 	const createTable = trpc().table.create.mutation({
 		async onSuccess(data, variables, context) {
+			createTableOpen.set(false)
 			await invalidate('tables')
 			await goto(`/t/${data.id}`)
-			createTableOpen.set(false)
 		},
 	})
 
@@ -95,7 +95,7 @@
 				{#if $form.schema?.length}
 					<Accordion class="my-4">
 						{#each $form.schema as field, i (field.id)}
-							<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} />
+							<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} isNew />
 						{/each}
 					</Accordion>
 				{/if}

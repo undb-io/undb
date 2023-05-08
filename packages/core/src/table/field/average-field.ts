@@ -17,6 +17,14 @@ import { FieldId } from './value-objects/field-id.vo.js'
 export class AverageField extends Mixin(AbstractAggregateField<IAverageField>, AbstractLookupField<IAverageField>) {
   type: AverageType = 'average'
 
+  override get json() {
+    return {
+      ...super.json,
+      referenceFieldId: this.referenceFieldId.value,
+      aggregateFieldId: this.aggregateFieldId.value,
+    }
+  }
+
   override get primitive() {
     return true
   }

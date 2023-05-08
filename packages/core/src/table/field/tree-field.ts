@@ -18,6 +18,12 @@ import { DisplayFields, FieldId } from './value-objects/index.js'
 
 export class TreeField extends Mixin(AbstractReferenceField<ITreeField>, AbstractLookingField<ITreeField>) {
   type: TreeFieldType = 'tree'
+  override get json() {
+    return {
+      ...super.json,
+      displayFieldIds: this.displayFieldIds.map((id) => id.value),
+    }
+  }
 
   get multiple() {
     return true

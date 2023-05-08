@@ -46,46 +46,8 @@
 
 	const { form, enhance, delayed, submitting } = superFrm
 
-	$: {
-		$form.type = field.type
-		$form.name = field.name.value
-		$form.id = field.id.value
-		$form.description = field.description?.value
-		$form.required = field.required
-		$form.display = !!field.display
-
-		if (field.type === 'tree' || field.type === 'parent' || field.type === 'reference' || field.type === 'lookup') {
-			$form.displayFieldIds = field.displayFieldIds.map((id) => id.value)
-		}
-		if (field.type === 'reference') {
-			$form.foreignTableId = field.foreignTableId.into(null)
-		}
-		if (field.type === 'count' || field.type === 'sum' || field.type === 'average') {
-			$form.referenceFieldId = field.referenceFieldId.value
-		}
-		if (field.type === 'sum' || field.type === 'average') {
-			$form.aggregateFieldId = field.aggregateFieldId.value
-		}
-		if (field.type === 'lookup') {
-			$form.referenceFieldId = field.referenceFieldId.value
-		}
-		if (field.type === 'select') {
-			$form.options = field.options.options.map((o) => o.toJSON())
-		}
-
-		if (
-			field.type === 'date' ||
-			field.type === 'date-range' ||
-			field.type === 'created-at' ||
-			field.type === 'updated-at'
-		) {
-			$form.format = field.formatString
-		}
-
-		if (field.type === 'rating') {
-			$form.max = field.max
-		}
-	}
+	// set initial values
+	$: $form = field.json
 
 	$: showDescription = false
 	$: if (!showDescription) {

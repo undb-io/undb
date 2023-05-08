@@ -20,6 +20,13 @@ import { DateFormat } from './value-objects/date-format.vo.js'
 export class CreatedAtField extends AbstractDateField<ICreatedAtField> {
   type: CreatedAtFieldType = 'created-at'
 
+  override get json() {
+    return {
+      ...super.json,
+      format: this.formatString,
+    }
+  }
+
   override get system() {
     return true
   }

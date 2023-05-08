@@ -2,15 +2,22 @@
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import FieldTypePicker from '$lib/field/FieldInputs/FieldTypePicker.svelte'
 	import MutateFieldComponent from '$lib/field/MutateFieldComponent/MutateFieldComponent.svelte'
-	import { isControlledFieldType, canDisplay, type ICreateTableInput, createTableInput } from '@undb/core'
+	import {
+		isControlledFieldType,
+		canDisplay,
+		type ICreateTableInput,
+		createTableInput,
+		updateTableSchema,
+	} from '@undb/core'
 	import { AccordionItem, Label, Input, Toggle, Button, Textarea, Dropdown, DropdownItem, Badge } from 'flowbite-svelte'
 	import type { SuperForm } from 'sveltekit-superforms/client'
 	import { t } from '$lib/i18n'
 
 	export let open: boolean
 	export let field: ICreateTableInput['schema'][number]
-	export let superFrm: SuperForm<typeof createTableInput, string>
+	export let superFrm: SuperForm<typeof createTableInput | typeof updateTableSchema, string>
 	export let i: number
+	export let isNew = false
 
 	$: form = superFrm.form
 	$: errors = superFrm.errors
@@ -21,7 +28,7 @@
 	}
 
 	function remove() {
-		$form.schema = $form.schema.filter((_, index) => index !== i)
+		$form.schema = $form.schema?.filter((_, index) => index !== i) ?? []
 	}
 
 	$: if (!canDisplay(field.type)) {
@@ -31,20 +38,25 @@
 
 <AccordionItem
 	bind:open
-	defaultClass="flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl !py-2"
+	defaultClass="flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl !py-4"
 >
-	<span slot="header" class="text-sm">
-		<div class="flex items-center text-sm gap-2">
-			<FieldIcon size={14} type={field.type} />
-			<span>
-				{field.name || `${$t('Field')} ${$form.schema.findIndex((f) => f.id === field.id) + 1}`}
-			</span>
+	<div slot="header" class="w-full text-sm">
+		<div class="w-full flex items-center justify-between text-sm gap-2">
+			<div class="flex items-center gap-2">
+				<FieldIcon size={14} type={field.type} />
+				<span>
+					{field.name || `${$t('Field')} ${$form.schema?.findIndex((f) => f.id === field.id) ?? 0 + 1}`}
+				</span>
 
-			{#if field.display}
-				<Badge>{$t('Display Fields')}</Badge>
-			{/if}
+				{#if field.display}
+					<Badge>{$t('Display Fields')}</Badge>
+				{/if}
+			</div>
+			<div>
+				<slot name="header" />
+			</div>
 		</div>
-	</span>
+	</div>
 
 	<div slot="arrowup">
 		<i class="ti ti-circle-cheveron-up text-sm" />
@@ -58,7 +70,7 @@
 			<div>
 				<Label class="space-y-2">
 					<span>{$t('Type', { ns: 'common' })}</span>
-					<FieldTypePicker class="w-full !justify-start" bind:value={field.type} />
+					<FieldTypePicker disabled={!isNew} class="w-full !justify-start" bind:value={field.type} />
 				</Label>
 			</div>
 			<div>
@@ -85,7 +97,7 @@
 			</Label>
 		{/if}
 
-		<MutateFieldComponent type={field.type} form={superFrm} isNew path={['schema', i]} />
+		<MutateFieldComponent type={field.type} form={superFrm} {isNew} path={['schema', i]} />
 	</div>
 
 	<div class="flex justify-between mt-5">
