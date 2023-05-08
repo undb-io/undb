@@ -4,11 +4,11 @@ import type { Field } from '../field/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import type { WithTableView } from './specifications/views.specification.js'
 import { WithNewView, WithoutView } from './specifications/views.specification.js'
-import { View } from './view.js'
 import type { ICreateViewSchema } from './view.schema.js'
 import type { ICreateViewInput_internal } from './view.type.js'
+import { ViewVO } from './view.vo.js'
 
-export class Views extends ValueObject<View[]> {
+export class Views extends ValueObject<ViewVO[]> {
   get views() {
     return this.props
   }
@@ -17,7 +17,7 @@ export class Views extends ValueObject<View[]> {
     return this.views.map((view) => view.id)
   }
 
-  get defaultView(): Option<View> {
+  get defaultView(): Option<ViewVO> {
     return Option(this.views.at(0))
   }
 
@@ -25,12 +25,12 @@ export class Views extends ValueObject<View[]> {
     return this.views.length
   }
 
-  addView(view: View) {
+  addView(view: ViewVO) {
     this.views.push(view)
   }
 
   createView(input: ICreateViewSchema): WithTableView {
-    const view = View.create(input)
+    const view = ViewVO.create(input)
     return new WithNewView(view)
   }
 
@@ -55,10 +55,10 @@ export class Views extends ValueObject<View[]> {
   }
 
   static create(views: ICreateViewInput_internal[] = []): Views {
-    return new this(views.map((v) => View.create(v)))
+    return new this(views.map((v) => ViewVO.create(v)))
   }
 
-  getById(viewId?: string): Option<View> {
+  getById(viewId?: string): Option<ViewVO> {
     return Option(this.views.find((v) => v.id.value === viewId))
   }
 }

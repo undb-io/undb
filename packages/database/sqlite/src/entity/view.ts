@@ -17,7 +17,7 @@ import {
   type Calendar as CoreCalendar,
   type Kanban as CoreKanban,
   type TreeView as CoreTreeView,
-  type View as CoreView,
+  type ViewVO as CoreView,
   type IRootFilter,
   type ISorts,
   type IViewDisplayType,
@@ -26,6 +26,30 @@ import {
 } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Table } from './table.js'
+
+@Embeddable()
+export class Layout {
+  @Property()
+  x!: number
+  @Property()
+  y!: number
+  @Property()
+  h!: number
+  @Property()
+  w!: number
+}
+
+@Embeddable()
+export class Widge {
+  @Embedded({ object: true })
+  layout!: Layout
+}
+
+@Embeddable()
+export class Dashboard {
+  @Embedded(() => Widge, { array: true })
+  widges: Widge[] = []
+}
 
 @Embeddable()
 export class Kanban {
@@ -86,7 +110,7 @@ export class View extends BaseEntity {
   @Property({ type: 'boolean', default: false, nullable: false })
   showSystemFields = false
 
-  @Enum({ items: ['kanban', 'calendar', 'grid', 'tree'] })
+  @Enum({ items: ['kanban', 'calendar', 'grid', 'tree', 'dashboard'] })
   displayType: IViewDisplayType
 
   @Property({ type: JsonType, nullable: true })
@@ -97,6 +121,9 @@ export class View extends BaseEntity {
 
   @Embedded({ nullable: true })
   calendar?: Calendar
+
+  @Embedded({ nullable: true })
+  dashboard?: Dashboard
 
   @Embedded({ nullable: true })
   tree?: Tree
@@ -145,4 +172,4 @@ export class View extends BaseEntity {
   }
 }
 
-export const viewEntities = [View, Kanban, Calendar, Tree]
+export const viewEntities = [View, Kanban, Calendar, Tree, Dashboard, Widge, Layout]

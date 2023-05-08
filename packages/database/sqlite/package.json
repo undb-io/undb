@@ -48,6 +48,7 @@
     "coverage": "vitest run --coverage",
     "db:migration:create": "NODE_OPTIONS=\"--loader ts-node/esm\" mikro-orm migration:create",
     "db:schema:fresh": "NODE_OPTIONS=\"--loader ts-node/esm\" mikro-orm schema:fresh -r",
+    "db:schema:update": "NODE_OPTIONS=\"--loader ts-node/esm\" mikro-orm schema:update -r",
     "dev": "tsup --watch",
     "prebuild": "pnpm run clean",
     "test": "TZ=UTC NODE_OPTIONS=\"--loader ts-node/esm\" vitest run",

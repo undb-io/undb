@@ -2,11 +2,11 @@ import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
-import type { View } from '../view.js'
+import type { ViewVO } from '../view.vo.js'
 import { BaseViewSpecification } from './base-view-specification.js'
 
 export class WithShowSystemFieldsSpec extends BaseViewSpecification {
-  constructor(view: View, public readonly showSystemFields = false) {
+  constructor(view: ViewVO, public readonly showSystemFields = false) {
     super(view)
   }
   isSatisfiedBy(t: Table): boolean {

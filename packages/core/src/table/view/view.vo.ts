@@ -42,7 +42,7 @@ import type { ICreateViewInput_internal, IView, IViewDisplayType } from './view.
 
 export const defaultViewDiaplyType: IViewDisplayType = 'grid'
 
-export class View extends ValueObject<IView> {
+export class ViewVO extends ValueObject<IView> {
   public get id() {
     return this.props.id
   }
@@ -335,8 +335,8 @@ export class View extends ValueObject<IView> {
     return and(...specs)
   }
 
-  duplicate(input: Partial<ICreateViewInput_internal>): View {
-    const newView = View.create({
+  duplicate(input: Partial<ICreateViewInput_internal>): ViewVO {
+    const newView = ViewVO.create({
       name: this.name.value,
       sorts: this.sorts?.toArray(),
       showSystemFields: this.showSystemFields,
@@ -355,10 +355,10 @@ export class View extends ValueObject<IView> {
     return newView
   }
 
-  static create(input: ICreateViewInput_internal): View {
+  static create(input: ICreateViewInput_internal): ViewVO {
     const parsed = createViewInput_internal.parse(input)
     const viewName = ViewName.create(parsed.name)
-    return new View({
+    return new ViewVO({
       id: input.id ? ViewId.fromString(input.id) : ViewId.create(),
       name: viewName,
       showSystemFields: input.showSystemFields,

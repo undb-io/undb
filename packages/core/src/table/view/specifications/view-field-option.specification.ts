@@ -3,15 +3,15 @@ import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
 import type { IViewFieldOption, ViewFieldOptions } from '../view-field-options.js'
-import type { View } from '../view.js'
+import type { ViewVO } from '../view.vo.js'
 import { BaseViewSpecification } from './base-view-specification.js'
 
 abstract class BaseViewFieldOptionSpec extends BaseViewSpecification {
-  constructor(public readonly fieldId: string, public readonly view: View) {
+  constructor(public readonly fieldId: string, public readonly view: ViewVO) {
     super(view)
   }
 
-  protected getView(t: Table): View {
+  protected getView(t: Table): ViewVO {
     return this.view
   }
 
@@ -25,7 +25,7 @@ abstract class BaseViewFieldOptionSpec extends BaseViewSpecification {
 }
 
 export class WithFieldOption extends BaseViewSpecification {
-  constructor(public readonly view: View, public readonly options: ViewFieldOptions) {
+  constructor(public readonly view: ViewVO, public readonly options: ViewFieldOptions) {
     super(view)
   }
 
@@ -45,7 +45,7 @@ export class WithFieldOption extends BaseViewSpecification {
 }
 
 export class WithFieldWidth extends BaseViewFieldOptionSpec {
-  constructor(fieldId: string, view: View, public readonly width: number) {
+  constructor(fieldId: string, view: ViewVO, public readonly width: number) {
     super(fieldId, view)
   }
 
@@ -65,7 +65,7 @@ export class WithFieldWidth extends BaseViewFieldOptionSpec {
 }
 
 export class WithFieldVisibility extends BaseViewFieldOptionSpec {
-  constructor(fieldId: string, view: View, public readonly hidden: boolean) {
+  constructor(fieldId: string, view: ViewVO, public readonly hidden: boolean) {
     super(fieldId, view)
   }
   isSatisfiedBy(t: Table): boolean {

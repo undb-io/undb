@@ -9,6 +9,7 @@
 	const items = [
 		{ value: 'grid', label: 'Grid' },
 		{ value: 'kanban', label: 'Kanban' },
+		{ value: 'dashboard', label: 'Dashboard' },
 		{ value: 'calendar', label: 'Calendar' },
 	] as const
 

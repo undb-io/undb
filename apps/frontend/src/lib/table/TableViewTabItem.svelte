@@ -5,7 +5,7 @@
 	import ViewIcon from '$lib/view/ViewIcon.svelte'
 	import { Dropdown, DropdownDivider, DropdownItem } from 'flowbite-svelte'
 	import { trpc } from '$lib/trpc/client'
-	import { View, ViewName } from '@undb/core'
+	import { ViewVO, ViewName } from '@undb/core'
 	import { tick } from 'svelte'
 	import { goto, invalidate } from '$app/navigation'
 	import Portal from 'svelte-portal'
@@ -14,7 +14,7 @@
 	const table = getTable()
 	const currentView = getView()
 
-	export let view: View
+	export let view: ViewVO
 
 	$: active = $currentView.id.value === view.id.value
 

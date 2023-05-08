@@ -2,6 +2,8 @@ import type { z } from 'zod'
 import type { IRootFilter } from '../filter/index.js'
 import type { RootFilter } from '../filter/root-filter.js'
 import type { Calendar, ICalendarSchema } from './calendar/index.js'
+import type { IDashboardSchema } from './dashboard/dashboard.type.js'
+import type { Dashboard } from './dashboard/dashboard.vo.js'
 import type { IKanbanSchema, Kanban } from './kanban/index.js'
 import type { ISorts } from './sort/sort.schema.js'
 import type { Sorts } from './sort/sorts.js'
@@ -22,6 +24,7 @@ export interface IView {
   sorts?: Sorts
   kanban?: Kanban
   calendar?: Calendar
+  dashboard?: Dashboard
   tree?: TreeView
   filter?: RootFilter
   fieldOptions: ViewFieldOptions
@@ -38,6 +41,7 @@ export interface IQueryView {
   kanban?: IKanbanSchema
   tree?: ITreeViewSchema
   calendar?: ICalendarSchema
+  dashboard?: IDashboardSchema
   displayType: IViewDisplayType
   filter?: IRootFilter
   fieldOptions?: Record<string, IViewFieldOption>

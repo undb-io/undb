@@ -1,10 +1,10 @@
-import type { IFilters, Option, Record, Records, Table, View } from '@undb/core'
+import type { IFilters, Option, Record, Records, Table, ViewVO } from '@undb/core'
 import { derived, writable } from 'svelte/store'
 
 export const currentTable = writable<Table>()
 export const getTable = () => currentTable
 
-export const currentView = writable<View>()
+export const currentView = writable<ViewVO>()
 export const getView = () => currentView
 
 export const currentRecords = writable<Records>([])

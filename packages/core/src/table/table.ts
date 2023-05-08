@@ -45,7 +45,7 @@ import type {
 } from './view/index.js'
 import {
   Sorts,
-  View,
+  ViewVO,
   ViewsOrder,
   WithShowSystemFieldsSpec,
   WithTableView,
@@ -85,7 +85,7 @@ export class Table {
     return new Table()
   }
 
-  public getOrCreateDefaultView(viewName?: string): [View, Option<TableCompositeSpecificaiton>] {
+  public getOrCreateDefaultView(viewName?: string): [ViewVO, Option<TableCompositeSpecificaiton>] {
     const defaultView = this.defaultView
     if (defaultView) return [defaultView, None]
 
@@ -95,12 +95,12 @@ export class Table {
     return [spec.view, Some(spec)]
   }
 
-  public get defaultView(): View {
+  public get defaultView(): ViewVO {
     return this.views.defaultView.unwrapOrElse(() => this.createDefaultView())
   }
 
-  private createDefaultView(viewName?: string): View {
-    return View.create({
+  private createDefaultView(viewName?: string): ViewVO {
+    return ViewVO.create({
       id: ViewId.createId(),
       name: viewName ?? this.name.value,
       displayType: defaultViewDiaplyType,
@@ -115,7 +115,7 @@ export class Table {
     return this.mustGetView(viewId).spec
   }
 
-  public getView(viewId?: string): Option<View> {
+  public getView(viewId?: string): Option<ViewVO> {
     if (!viewId) {
       return Some(this.defaultView)
     }
@@ -123,7 +123,7 @@ export class Table {
     return this.views.getById(viewId)
   }
 
-  public mustGetView(viewId?: string): View {
+  public mustGetView(viewId?: string): ViewVO {
     if (!viewId) {
       return this.defaultView
     }
@@ -229,11 +229,11 @@ export class Table {
     return and(...specs)
   }
 
-  private mustGetFielsOrder(view: View): ViewFieldsOrder {
+  private mustGetFielsOrder(view: ViewVO): ViewFieldsOrder {
     return view.fieldsOrder ?? this.schema.defaultFieldsOrder
   }
 
-  public getFieldsOrder(view: View): string[] {
+  public getFieldsOrder(view: ViewVO): string[] {
     let { order } = this.mustGetFielsOrder(view)
     const pinnedFields = view.pinnedFields
     const left = pinnedFields?.left ?? []
@@ -246,7 +246,7 @@ export class Table {
     return [...left, ...difference(order, left.concat(right)), ...right]
   }
 
-  public getOrderedFields(view: View = this.mustGetView(), withHidden = true): Field[] {
+  public getOrderedFields(view: ViewVO = this.mustGetView(), withHidden = true): Field[] {
     const order = this.getFieldsOrder(view)
     const schema = this.schema.toIdMap()
 

@@ -1191,7 +1191,8 @@
             "kanban",
             "calendar",
             "grid",
-            "tree"
+            "tree",
+            "dashboard"
           ],
           "mappedType": "enum"
         },
@@ -1221,6 +1222,15 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "dashboard_widges": {
+          "name": "dashboard_widges",
+          "type": "json",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
         },
         "tree_field_id": {
           "name": "tree_field_id",

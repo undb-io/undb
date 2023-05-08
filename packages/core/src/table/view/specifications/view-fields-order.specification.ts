@@ -3,11 +3,11 @@ import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
 import type { ViewFieldsOrder } from '../view-fields-order.vo.js'
-import type { View } from '../view.js'
+import type { ViewVO } from '../view.vo.js'
 import { BaseViewSpecification } from './base-view-specification.js'
 
 export class WithViewFieldsOrder extends BaseViewSpecification {
-  constructor(public readonly viewFieldsOrder: ViewFieldsOrder, public readonly view: View) {
+  constructor(public readonly viewFieldsOrder: ViewFieldsOrder, public readonly view: ViewVO) {
     super(view)
   }
 
