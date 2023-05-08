@@ -1,6 +1,17 @@
 <script lang="ts">
 	import { updateTableOpen } from '$lib/store/modal'
-	import { Button, Label, Modal, Input, Spinner, Toast, Dropdown, DropdownItem, Accordion } from 'flowbite-svelte'
+	import {
+		Button,
+		Label,
+		Modal,
+		Input,
+		Spinner,
+		Toast,
+		Dropdown,
+		DropdownItem,
+		Accordion,
+		Badge,
+	} from 'flowbite-svelte'
 	import type { Validation } from 'sveltekit-superforms'
 	import { FieldId, createUpdateTableSchema } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
@@ -16,8 +27,10 @@
 
 	const table = getTable()
 
+	$: newFields = {} as Record<string, boolean>
 	const addField = () => {
 		const id = FieldId.createId()
+		newFields[id] = true
 		$form.schema = [...($form.schema ?? []), { id, type: 'string', name: '', display: !displayFields.length }]
 		opened = { [id]: true }
 	}
@@ -97,7 +110,16 @@
 			{#if $form.schema?.length}
 				<Accordion class="my-4">
 					{#each $form.schema as field, i (field.id)}
-						<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} isNew={false} />
+						{@const isNew = !!newFields[field.id ?? '']}
+						<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} {isNew}>
+							<svelte:fragment slot="header">
+								{#if isNew}
+									<Badge color="green">
+										{$t('new field')}
+									</Badge>
+								{/if}
+							</svelte:fragment>
+						</CreateTableFieldAccordionItem>
 					{/each}
 				</Accordion>
 			{/if}

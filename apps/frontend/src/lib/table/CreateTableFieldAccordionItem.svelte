@@ -40,18 +40,23 @@
 	bind:open
 	defaultClass="flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl !py-2"
 >
-	<span slot="header" class="text-sm">
-		<div class="flex items-center text-sm gap-2">
-			<FieldIcon size={14} type={field.type} />
-			<span>
-				{field.name || `${$t('Field')} ${$form.schema?.findIndex((f) => f.id === field.id) ?? 0 + 1}`}
-			</span>
+	<div slot="header" class="w-full text-sm">
+		<div class="w-full flex items-center justify-between text-sm gap-2">
+			<div class="flex items-center gap-2">
+				<FieldIcon size={14} type={field.type} />
+				<span>
+					{field.name || `${$t('Field')} ${$form.schema?.findIndex((f) => f.id === field.id) ?? 0 + 1}`}
+				</span>
 
-			{#if field.display}
-				<Badge>{$t('Display Fields')}</Badge>
-			{/if}
+				{#if field.display}
+					<Badge>{$t('Display Fields')}</Badge>
+				{/if}
+			</div>
+			<div>
+				<slot name="header" />
+			</div>
 		</div>
-	</span>
+	</div>
 
 	<div slot="arrowup">
 		<i class="ti ti-circle-cheveron-up text-sm" />
