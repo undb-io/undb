@@ -306,14 +306,51 @@
 			<span class="sr-only">Open sidebar</span>
 		</button>
 		<div class="flex-1 text-sm font-semibold leading-6 text-gray-900">Dashboard</div>
-		<a href="#">
+		<button id="me-button" class="flex items-center gap-x-4 p-0 text-sm font-semibold leading-6 text-gray-900">
+			{#if me.avatar}
+				<Avatar src={me.avatar} />
+			{:else}
+				<Avatar>{me.username.slice(0, 2)}</Avatar>
+			{/if}
 			<span class="sr-only">Your profile</span>
-			<img
-				class="h-8 w-8 rounded-full bg-gray-50"
-				src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-				alt=""
-			/>
-		</a>
+			<span aria-hidden="true">{me.username}</span>
+		</button>
+
+		<Dropdown triggeredBy="#me-button" placement="bottom" class="w-48 shadow-sm border border-gray-100">
+			<DropdownItem href="/me">
+				<i class="ti ti-settings" />
+				{$t('Setting', { ns: 'auth' })}
+			</DropdownItem>
+			<DropdownItem class="flex items-center justify-between">
+				<Chevron placement="right">
+					<div>
+						<i class="ti ti-world" />
+						{$t('language', { ns: 'common' })}
+					</div>
+				</Chevron>
+			</DropdownItem>
+			<Dropdown placement="left-start">
+				<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('zh-CN')}>
+					<span>简体中文</span>
+					{#if $i18n.language === 'zh-CN'}
+						<i class="ti ti-check" />
+					{/if}
+				</DropdownItem>
+				<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('en')}>
+					<span>English</span>
+					{#if $i18n.language === 'en'}
+						<i class="ti ti-check" />
+					{/if}
+				</DropdownItem>
+			</Dropdown>
+
+			<DropdownItem>
+				<button on:click={() => $logout.mutate()} class="w-full h-full text-left text-red-400" type="submit">
+					<i class="ti ti-logout" />
+					{$t('logout', { ns: 'auth' })}
+				</button>
+			</DropdownItem>
+		</Dropdown>
 	</div>
 
 	<main class="lg:pl-72 h-[100vh]">
