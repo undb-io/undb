@@ -20,7 +20,7 @@
 	$: fields = $table.getOrderedFields($view)
 	$: items = fields.map((field) => ({ field, id: field.id.value }))
 	$: visibility = $view.getVisibility()
-	$: hiddenCount = filter(visibility, (f) => f === false).length
+	$: hiddenCount = filter(visibility, (f: boolean | undefined) => f === false).length
 
 	const setVisibility = trpc().table.view.field.setVisibility.mutation({
 		async onSuccess(data, variables, context) {
@@ -105,10 +105,12 @@
 		on:finalize={handleDndFinalize}
 	>
 		{#each items as item (item.id)}
+			{@const checked = visibility[item.id] === undefined || !!visibility[item.id]}
 			<li animate:flip={{ duration: flipDurationMs }} class="flex items-center gap-2" data-field-id={item.id}>
 				<Checkbox
+					disabled={checked && fields.length - hiddenCount === 1}
 					class="flex items-center gap-2"
-					checked={visibility[item.id] === undefined || !!visibility[item.id]}
+					{checked}
 					on:change={(e) => onChangeVisibility(e, item.field)}
 				>
 					<FieldIcon type={item.field.type} />
