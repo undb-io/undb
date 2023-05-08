@@ -27,6 +27,7 @@ import type { TableEmoji } from './value-objects/table-emoji.vo.js'
 import type { TableName } from './value-objects/table-name.vo.js'
 import type {
   ICreateViewSchema,
+  ICreateWidgeSchema,
   IMoveFieldSchema,
   IMoveViewSchema,
   IQueryView,
@@ -309,6 +310,15 @@ export class Table {
     const s2 = this.viewsOrder.addView(s1.view)
     const spec = s1.and(s2)
     spec.mutate(this).unwrap()
+
+    return spec
+  }
+
+  public createWidge(viewId: string, input: ICreateWidgeSchema): TableCompositeSpecificaiton {
+    const view = this.mustGetView(viewId)
+
+    const spec = view.createWidge(input)
+    spec.mutate(this)
 
     return spec
   }

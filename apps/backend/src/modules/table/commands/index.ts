@@ -5,6 +5,7 @@ import { CreateOptionCommandHandler } from './create-option.command.handler.js'
 import { CreateRecordCommandHandler } from './create-record.command.handler.js'
 import { CreateTableCommandHandler } from './create-table.command.handler.js'
 import { CreateViewCommandHandler } from './create-view.command.handler.js'
+import { CreateWidgeCommandHandler } from './create-widge.command.handler.js'
 import { DeleteFieldCommandHandler } from './delete-field.command.handler.js'
 import { DeleteOptionCommandHandler } from './delete-option.command.handler.js'
 import { DeleteRecordCommandHandler } from './delete-record.command.handler.js'
@@ -44,6 +45,7 @@ export const commandHandlers = [
   CreateOptionCommandHandler,
   SetFiltersCommandHandler,
   SetSortsCommandHandler,
+  CreateWidgeCommandHandler,
   SetKanbanFieldCommandHandler,
   SetCalendarFieldCommandHandler,
   SetPinnedFieldsCommandHandler,

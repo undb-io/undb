@@ -282,12 +282,6 @@ importers:
       '@event-calendar/time-grid':
         specifier: ^0.19.0
         version: 0.19.0
-      '@fullcalendar/core':
-        specifier: ^6.1.6
-        version: 6.1.6
-      '@fullcalendar/daygrid':
-        specifier: ^6.1.6
-        version: 6.1.6(@fullcalendar/core@6.1.6)
       '@playwright/test':
         specifier: ^1.33.0
         version: 1.33.0
@@ -420,9 +414,9 @@ importers:
       svelte-dnd-action:
         specifier: ^0.9.22
         version: 0.9.22(svelte@3.58.0)
-      svelte-fullcalendar:
-        specifier: 2.0.0-beta.0
-        version: 2.0.0-beta.0(@fullcalendar/common@5.11.4)(@fullcalendar/core@6.1.6)
+      svelte-grid:
+        specifier: ^5.1.1
+        version: 5.1.1
       svelte-i18next:
         specifier: ^1.2.2
         version: 1.2.2(i18next@22.4.15)(svelte@3.58.0)
@@ -1678,35 +1672,6 @@ packages:
     dependencies:
       '@floating-ui/core': 1.2.6
     dev: true
-
-  /@fullcalendar/common@5.11.4:
-    resolution: {integrity: sha512-wjy+EZgZIPWq1Z5qeB/pV2dmsXwzTJ2teNh5bjlVeHsvDYwERXSZEG2CdoF/NCTJaYeQY93xu1cj9Jw/0KXywA==}
-    dependencies:
-      tslib: 2.5.0
-    dev: true
-
-  /@fullcalendar/core@6.1.6:
-    resolution: {integrity: sha512-Q/3pWgOv7qr/eVpuDz+05jxJZSg7Fdwh4XgQP8DlJFLp5aLlOiiKdkTUIO1BX7clQtYTm8P0v7FqMKbsFiQInw==}
-    dependencies:
-      preact: 10.12.1
-    dev: true
-
-  /@fullcalendar/daygrid@6.1.6(@fullcalendar/core@6.1.6):
-    resolution: {integrity: sha512-HKxprePWXRyg1Shn7p0CWgggFZVwvs+Pg0Z9uSvx6a58wP1yTbOoJHhSVv5CDsfjnq1a0y6DsJbPP/V2LDl6bg==}
-    peerDependencies:
-      '@fullcalendar/core': ~6.1.6
-    dependencies:
-      '@fullcalendar/core': 6.1.6
-    dev: true
-
-  /@fullcalendar/interaction@5.11.4:
-    resolution: {integrity: sha512-AP04uFi3pRtPq83xvLCR1bjBKIf6r1PJDiT2Yz7yDK8Ax3fUUKbAi96V6QgMs8SPNTWkKmBIL8NL60QiI9oWQA==}
-    requiresBuild: true
-    dependencies:
-      '@fullcalendar/common': 5.11.4
-      tslib: 2.5.0
-    dev: true
-    optional: true
 
   /@gar/promisify@1.1.3:
     resolution: {integrity: sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==}
@@ -9358,10 +9323,6 @@ packages:
       source-map-js: 1.0.2
     dev: true
 
-  /preact@10.12.1:
-    resolution: {integrity: sha512-l8386ixSsBdbreOAkqtrwqHwdvR35ID8c3rKPa8lCWuO86dBi32QWHV4vfsZK1utLLFMvw+Z5Ad4XLkZzchscg==}
-    dev: true
-
   /prebuild-install@7.1.1:
     resolution: {integrity: sha512-jAXscXWMcCK8GgCoHOfIr0ODh5ai8mj63L2nWrjuAgXE6tDyYGnx4/8o/rCgU+B4JSyZBKbeZqzhtwtC3ovxjw==}
     engines: {node: '>=10'}
@@ -10596,16 +10557,8 @@ packages:
       '@floating-ui/dom': 1.2.7
     dev: true
 
-  /svelte-fullcalendar@2.0.0-beta.0(@fullcalendar/common@5.11.4)(@fullcalendar/core@6.1.6):
-    resolution: {integrity: sha512-fhRfLxNy85ExPqbwZlWMMgPiTqFpgp6kkekfuDVS8ml93QvnJdbJeMG5Ax12dsJOLFnfRiAY4nlyLpNTCZRuqA==}
-    peerDependencies:
-      '@fullcalendar/common': ^5.0.0
-      '@fullcalendar/core': ^5.0.0
-    dependencies:
-      '@fullcalendar/common': 5.11.4
-      '@fullcalendar/core': 6.1.6
-    optionalDependencies:
-      '@fullcalendar/interaction': 5.11.4
+  /svelte-grid@5.1.1:
+    resolution: {integrity: sha512-PJTC4PUejb8RzcUjymWnf1HALqseUBwxl+p+i5uJlDIC1+zXKok1J16IDoHQxXhNj+INcF9KHE7hIm++NurSAQ==}
     dev: true
 
   /svelte-hmr@0.15.1(svelte@3.58.0):

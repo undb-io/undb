@@ -9,6 +9,10 @@ import { RootFilter } from '../filter/index.js'
 import { WithFilter } from '../specifications/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import { Calendar } from './calendar/index.js'
+import { Dashboard } from './dashboard/dashboard.vo.js'
+import { WithWidgeSepecification } from './dashboard/specifications/widge.specification.js'
+import type { ICreateWidgeSchema } from './dashboard/widge.schema.js'
+import { Widge } from './dashboard/widge.vo.js'
 import { Kanban } from './kanban/index.js'
 import type { ISortDirection } from './sort/sort.schema.js'
 import { Sorts } from './sort/sorts.js'
@@ -295,6 +299,31 @@ export class ViewVO extends ValueObject<IView> {
     if (Array.isArray(filters)) return filters
     if (filters) return [filters]
     return []
+  }
+
+  public get dashboard(): Option<Dashboard> {
+    return Option(this.props.dashboard)
+  }
+
+  public set dashboard(dashboard: Option<Dashboard>) {
+    this.props.dashboard = dashboard.into()
+  }
+
+  public getOrCreateDashboard(): Dashboard {
+    const dashboard = this.dashboard
+    if (dashboard.isSome()) return dashboard.unwrap()
+
+    this.props.dashboard = new Dashboard({ widges: [] })
+    return this.props.dashboard
+  }
+
+  public createWidge(input: ICreateWidgeSchema): TableCompositeSpecificaiton {
+    const dashboard = this.getOrCreateDashboard()
+
+    const widge = Widge.create(input)
+    const spec = new WithWidgeSepecification(this, dashboard, widge)
+
+    return spec
   }
 
   setFilter(filter: IRootFilter | null) {
