@@ -13,7 +13,6 @@
 	import { z } from 'zod'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
 	const table = getTable()
 
@@ -107,8 +106,6 @@
 			<MutateFieldComponent type={$form.type} form={superFrm} />
 		</div>
 	</form>
-
-	<SuperDebug data={$form} />
 
 	<svelte:fragment slot="footer">
 		<div class="w-full flex items-center justify-between">

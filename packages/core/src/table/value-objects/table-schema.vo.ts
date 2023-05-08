@@ -48,6 +48,7 @@ export const createTableSchemaSchema = z
   .default([])
 
 export const updateTableSchemaSchema = createTableSchemaSchema
+export type IUpdateTableSchemaSchema = z.infer<typeof updateTableSchemaSchema>
 
 export type ICreateTableSchemaInput = z.infer<typeof createTableSchemaSchema>
 

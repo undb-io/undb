@@ -38,7 +38,7 @@
 
 <AccordionItem
 	bind:open
-	defaultClass="flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl !py-2"
+	defaultClass="flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl !py-4"
 >
 	<div slot="header" class="w-full text-sm">
 		<div class="w-full flex items-center justify-between text-sm gap-2">

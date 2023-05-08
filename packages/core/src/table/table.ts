@@ -1,5 +1,5 @@
 import { and, andOptions } from '@undb/domain'
-import { difference, isString } from 'lodash-es'
+import { difference, isEmpty, isEqual, isString } from 'lodash-es'
 import type { Option, Result } from 'oxide.ts'
 import { None, Ok, Some } from 'oxide.ts'
 import type {
@@ -21,7 +21,7 @@ import { WithRecordValues } from './record/specifications/record-values.specific
 import { WithTableEmoji, WithTableName } from './specifications/index.js'
 import type { TableCompositeSpecificaiton } from './specifications/interface.js'
 import type { IUpdateTableSchema } from './table.schema.js'
-import type { TableId } from './value-objects/index.js'
+import type { IUpdateTableSchemaSchema, TableId } from './value-objects/index.js'
 import { TableSchema } from './value-objects/index.js'
 import type { TableEmoji } from './value-objects/table-emoji.vo.js'
 import type { TableName } from './value-objects/table-name.vo.js'
@@ -177,6 +177,38 @@ export class Table {
     return spec
   }
 
+  public updateSchema(schema: IUpdateTableSchemaSchema): TableCompositeSpecificaiton {
+    const specs: TableCompositeSpecificaiton[] = []
+    for (const field of schema) {
+      const isNew = !field.id || !this.schema.fieldsIds.includes(field.id)
+      if (isNew) {
+        const spec = this.createField(undefined, field)
+        specs.push(spec)
+        continue
+      }
+
+      const existing = this.schema.getFieldById(field.id ?? '').into(undefined)
+      if (existing) {
+        const isUpdated = !isEqual(existing.json, field)
+        if (isUpdated) {
+          const spec = this.updateField(existing.id.value, field).unwrap()
+          specs.push(spec)
+          continue
+        }
+      }
+    }
+    const ids = schema.map((s) => s.id)
+
+    const deletedFields = this.schema.fields.filter((field) => !field.isSystem() && !ids.includes(field.id.value))
+
+    for (const field of deletedFields) {
+      const spec = this.removeField(field.id.value)
+      specs.push(spec)
+    }
+
+    return and(...specs).unwrap()
+  }
+
   public update(input: IUpdateTableSchema): Option<TableCompositeSpecificaiton> {
     const specs: TableCompositeSpecificaiton[] = []
 
@@ -186,6 +218,11 @@ export class Table {
     }
     if (isString(input.emoji)) {
       const spec = this.updateEmoji(input.emoji)
+      specs.push(spec)
+    }
+
+    if (Array.isArray(input.schema) && !isEmpty(input.schema)) {
+      const spec = this.updateSchema(input.schema)
       specs.push(spec)
     }
 

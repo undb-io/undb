@@ -19,7 +19,7 @@
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import { getTable } from '$lib/store/table'
-	import { goto, invalidateAll } from '$app/navigation'
+	import { goto, invalidate, invalidateAll } from '$app/navigation'
 	import CreateTableFieldAccordionItem from './CreateTableFieldAccordionItem.svelte'
 
 	export let data: Validation<ReturnType<typeof createUpdateTableSchema>>
@@ -38,6 +38,8 @@
 	const updateTable = trpc().table.update.mutation({
 		async onSuccess(data, variables, context) {
 			updateTableOpen.set(false)
+			await invalidate(`table:${$table.id.value}`)
+			reset()
 		},
 	})
 
@@ -51,7 +53,7 @@
 	const superFrm = superForm(data, {
 		id: 'updateTable',
 		SPA: true,
-		applyAction: false,
+		applyAction: true,
 		resetForm: true,
 		invalidateAll: true,
 		clearOnSubmit: 'errors-and-message',
@@ -59,7 +61,6 @@
 		taintedMessage: null,
 		validators: createUpdateTableSchema($table),
 		async onUpdate(event) {
-			reset()
 			$updateTable.mutate({ id: $table.id.value, ...event.form.data })
 		},
 	})
