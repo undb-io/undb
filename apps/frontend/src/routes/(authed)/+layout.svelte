@@ -62,7 +62,7 @@
 
 <div>
 	<TransitionRoot show={sidebarOpen}>
-		<Dialog as="div" class="relative z-30 lg:hidden" on:close={setSidebarOpen}>
+		<Dialog as="div" class="relative z-30 lg:hidden" bind:open={sidebarOpen} on:close={setSidebarOpen}>
 			<TransitionChild
 				enter="transition-opacity ease-linear duration-300"
 				enterFrom="opacity-0"
@@ -98,7 +98,7 @@
 								</button>
 							</div>
 						</TransitionChild>
-						<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2">
+						<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2 h-screen">
 							<div class="flex h-16 shrink-0 items-center px-6 gap-2">
 								<img class="h-6 w-auto" src={logo} alt="undb" />
 								<P size="lg" class="font-semibold select-none !text-blue-600">undb</P>
@@ -301,11 +301,13 @@
 		</div>
 	</div>
 
-	<div class="sticky top-0 z-40 flex items-center gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-6 lg:hidden">
+	<div class="sticky top-0 z-40 flex items-center gap-x-6 bg-white px-2 py-2 shadow-sm sm:px-6 lg:hidden">
 		<button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" on:click={setSidebarOpen}>
-			<span class="sr-only">Open sidebar</span>
+			<i class="ti ti-menu-2" />
 		</button>
-		<div class="flex-1 text-sm font-semibold leading-6 text-gray-900">Dashboard</div>
+		<div class="flex-1 text-sm font-semibold leading-6 text-gray-900">
+			<img class="h-6 w-auto" src={logo} alt="undb" />
+		</div>
 		<button id="me-button" class="flex items-center gap-x-4 p-0 text-sm font-semibold leading-6 text-gray-900">
 			{#if me.avatar}
 				<Avatar src={me.avatar} />
