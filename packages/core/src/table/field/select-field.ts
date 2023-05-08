@@ -85,8 +85,21 @@ export class SelectField extends BaseField<ISelectField> {
     }
 
     if (isArray(input.options)) {
-      const options = Options.create(input.options)
-      specs.push(new WithOptions(this, options))
+      const options = this.options.optionsMap
+      for (const option of input.options) {
+        const existing = !!option.key && !!options.get(option.key)
+        if (existing) {
+          specs.push(this.updateOption(option.key!, option))
+          continue
+        }
+
+        specs.push(this.createOption(option))
+      }
+      for (const [id] of options) {
+        if (!input.options.some((o) => o.key === id)) {
+          specs.push(this.removeOption(id))
+        }
+      }
     }
 
     return and(...specs)

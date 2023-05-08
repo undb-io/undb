@@ -12,6 +12,10 @@ export class Options extends ValueObject<Option[]> {
     return this.props
   }
 
+  public get optionsMap() {
+    return new Map(this.options.map((o) => [o.key.value, o]))
+  }
+
   public get lastOption(): O<Option> {
     return O(this.options[this.options.length - 1])
   }
