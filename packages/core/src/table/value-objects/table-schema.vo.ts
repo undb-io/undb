@@ -47,6 +47,8 @@ export const createTableSchemaSchema = z
   .refine((inputs) => hasDuplicates(inputs.map((i) => i.name)), { message: 'field name should not duplicated' })
   .default([])
 
+export const updateTableSchemaSchema = createTableSchemaSchema
+
 export type ICreateTableSchemaInput = z.infer<typeof createTableSchemaSchema>
 
 export type TableSchemaIdMap = Map<string, Field>

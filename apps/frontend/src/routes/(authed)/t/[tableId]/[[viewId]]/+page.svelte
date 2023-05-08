@@ -40,7 +40,9 @@
 
 <TableIndex />
 
-<UpdateTable data={data.updateTable} />
+{#key $table}
+	<UpdateTable data={data.updateTable} />
+{/key}
 <CreateView data={data.createView} />
 <ViewConfigModal />
 <CreateRecord data={data.createRecord} />

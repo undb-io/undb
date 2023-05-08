@@ -56,6 +56,17 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
     }
   }
 
+  public get json() {
+    return {
+      id: this.id.value,
+      type: this.type,
+      name: this.name.value,
+      required: this.required,
+      description: this.description,
+      display: this.display,
+    }
+  }
+
   public static unsafeCreateBase(input: IBaseCreateFieldSchema): IBaseField {
     return {
       id: FieldId.fromNullableString(input.id),

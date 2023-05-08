@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { updateTableOpen } from '$lib/store/modal'
-	import { Button, Label, Modal, Input, Spinner, Toast, Dropdown, DropdownItem } from 'flowbite-svelte'
+	import { Button, Label, Modal, Input, Spinner, Toast, Dropdown, DropdownItem, Accordion } from 'flowbite-svelte'
 	import type { Validation } from 'sveltekit-superforms'
-	import { FieldId, createUpdateTableSchema, updateTableSchema } from '@undb/core'
+	import { FieldId, createUpdateTableSchema } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { trpc } from '$lib/trpc/client'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import { getTable } from '$lib/store/table'
 	import { goto, invalidateAll } from '$app/navigation'
+	import CreateTableFieldAccordionItem from './CreateTableFieldAccordionItem.svelte'
 
 	export let data: Validation<ReturnType<typeof createUpdateTableSchema>>
 	let opened: Record<string, boolean> = {}
@@ -17,6 +18,7 @@
 
 	const addField = () => {
 		const id = FieldId.createId()
+		$form.schema = [...($form.schema ?? []), { id, type: 'string', name: '', display: !displayFields.length }]
 		opened = { [id]: true }
 	}
 
@@ -51,10 +53,11 @@
 
 	const { form, errors, reset, constraints, enhance, delayed, submitting } = superFrm
 
+	$: displayFields = $form.schema?.filter((f) => !!f.display) ?? []
 	let confirmDeleteTable = false
 </script>
 
-<Modal placement="top-center" class="static w-full rounded-sm" size="lg" bind:open={$updateTableOpen}>
+<Modal placement="top-center" class="static w-full" size="lg" bind:open={$updateTableOpen}>
 	<svelte:fragment slot="header">
 		<div class="flex justify-between w-full mr-6">
 			<p class="text-lg dark:text-white">{$t('Update Table')}</p>
@@ -89,20 +92,20 @@
 						{...$constraints.name}
 					/>
 				</Label>
-
-				<!-- {#if $form.schema?.length}
-					<Accordion class="my-4">
-						{#each $form.schema as field, i (field.id)}
-							<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} />
-						{/each}
-					</Accordion>
-				{/if} -->
 			</div>
 
-			<!-- <Button color="light" outline class="w-full my-3" on:click={addField}>
+			{#if $form.schema?.length}
+				<Accordion class="my-4">
+					{#each $form.schema as field, i (field.id)}
+						<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} isNew={false} />
+					{/each}
+				</Accordion>
+			{/if}
+
+			<Button color="light" outline class="w-full my-3" on:click={addField}>
 				<i class="ti ti-plus text-sm mr-4" />
 				{$t('Create New Field')}</Button
-			> -->
+			>
 		</div>
 	</form>
 

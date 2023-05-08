@@ -27,6 +27,14 @@ export class ReferenceField extends Mixin(
 ) {
   type: ReferenceFieldType = 'reference'
 
+  override get json() {
+    return {
+      ...super.json,
+      displayFieldIds: this.displayFieldIds.map((id) => id.value),
+      foreignTableId: this.foreignTableId.into(null),
+    }
+  }
+
   get multiple() {
     return true
   }

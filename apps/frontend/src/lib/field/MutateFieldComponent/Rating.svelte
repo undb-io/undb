@@ -14,7 +14,9 @@
 	const max = fieldProxy(form.form, [...path, 'max'] as any) as Writable<number>
 
 	onMount(() => {
-		$max = RATING_MAX_DEFAULT as never
+		if (!$max) {
+			$max = RATING_MAX_DEFAULT as never
+		}
 	})
 </script>
 
