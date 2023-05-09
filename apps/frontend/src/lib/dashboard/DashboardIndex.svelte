@@ -67,7 +67,7 @@
 
 <div class="w-full h-full">
 	<Button on:click={addItem}>add widge</Button>
-	<Grid bind:items rowHeight={100} let:item let:dataItem {cols}>
+	<Grid bind:items rowHeight={100} let:item let:dataItem {cols} fastStart>
 		<div class="flex items-center justify-center bg-white-200 border rounded-md w-full h-full p-2">
 			<Virsualization virsualization={dataItem.widge?.virsualization} />
 		</div>
