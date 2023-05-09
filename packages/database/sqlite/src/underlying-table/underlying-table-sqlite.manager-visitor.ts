@@ -113,6 +113,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   withShowSystemFields(): void {}
   withFieldRequirement(): void {}
   symmetricReferenceFieldEqual(): void {}
+  withWidge(): void {}
   not(): this {
     return this
   }

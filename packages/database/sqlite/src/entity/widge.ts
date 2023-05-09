@@ -1,8 +1,9 @@
 import type { Rel } from '@mikro-orm/core'
-import { Embeddable, Embedded, Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
-import type { Widge as CoreWidge, LayoutVO } from '@undb/core'
+import { Embeddable, Embedded, Entity, ManyToOne, OneToOne, PrimaryKey, Property } from '@mikro-orm/core'
+import type { Widge as CoreWidge, ILayoutSchema, IWidgeSchema, LayoutVO } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { View } from './view.js'
+import { Virsualization } from './virsualization.js'
 
 @Embeddable()
 export class Layout {
@@ -13,13 +14,22 @@ export class Layout {
     this.w = layout.w
   }
   @Property()
-  x!: number
+  x: number
   @Property()
-  y!: number
+  y: number
   @Property()
-  h!: number
+  h: number
   @Property()
-  w!: number
+  w: number
+
+  toQuery(): ILayoutSchema {
+    return {
+      x: this.x,
+      y: this.y,
+      h: this.h,
+      w: this.w,
+    }
+  }
 }
 
 @Entity({ tableName: 'undb_widge' })
@@ -28,7 +38,7 @@ export class Widge extends BaseEntity {
     super()
     this.view = dashboard
     this.id = widge.id.value
-    this.layout = widge.unpack().layout.unpack()
+    this.layout = new Layout(widge.unpack().layout)
   }
 
   @PrimaryKey()
@@ -39,6 +49,17 @@ export class Widge extends BaseEntity {
 
   @ManyToOne(() => View)
   view: Rel<View>
+
+  @OneToOne(() => Virsualization, { nullable: true })
+  virsualization?: Rel<Virsualization>
+
+  toQuery(): IWidgeSchema {
+    return {
+      id: this.id,
+      layout: this.layout.toQuery(),
+      virsualization: this.virsualization?.toQuery(),
+    }
+  }
 }
 
 export const widgeEntities = [Widge, Layout]

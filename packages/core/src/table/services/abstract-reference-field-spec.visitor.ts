@@ -48,6 +48,7 @@ import type {
   WithTableName,
   WithTableSchema,
 } from '../specifications/index.js'
+import type { WithWidgeSepecification } from '../view/dashboard/specifications/widge.specification.js'
 import type {
   WithCalendarField,
   WithDisplayType,
@@ -137,6 +138,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   withShowSystemFields(s: WithShowSystemFieldsSpec): void {}
   withFieldRequirement(s: WithFieldRequirement): void {}
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {}
+  withWidge(s: WithWidgeSepecification): void {}
   not(): this {
     return this
   }

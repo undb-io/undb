@@ -38,6 +38,7 @@ import type {
   WithViewName,
   WithViewPinnedFields,
   WithViewsOrder,
+  WithWidgeSepecification,
 } from '@undb/core'
 import type { Table } from '../../entity/index.js'
 
@@ -152,6 +153,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   ratingMaxEqual(s: WithRatingMax): void {
+    throw new Error('Method not implemented.')
+  }
+  withWidge(s: WithWidgeSepecification): void {
     throw new Error('Method not implemented.')
   }
 

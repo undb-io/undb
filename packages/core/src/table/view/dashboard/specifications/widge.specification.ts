@@ -1,5 +1,5 @@
 import { CompositeSpecification } from '@undb/domain'
-import type { Result } from 'oxide.ts/dist/result.js'
+import { Ok, type Result } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../../specifications/index.js'
 import type { Table } from '../../../table.js'
 import type { ViewVO } from '../../view.vo.js'
@@ -14,9 +14,11 @@ export class WithWidgeSepecification extends CompositeSpecification<Table, ITabl
     throw new Error('Method not implemented.')
   }
   mutate(t: Table): Result<Table, string> {
-    throw new Error('Method not implemented.')
+    this.dashboard.widges.push(this.widge)
+    return Ok(t)
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
-    throw new Error('Method not implemented.')
+    v.withWidge(this)
+    return Ok(undefined)
   }
 }

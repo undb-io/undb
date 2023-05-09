@@ -14,4 +14,13 @@ export class LayoutVO extends ValueObject<ILayoutSchema> {
   public get w() {
     return this.props.w
   }
+
+  public toJSON() {
+    return {
+      x: this.x,
+      y: this.y,
+      h: this.h,
+      w: this.w,
+    }
+  }
 }

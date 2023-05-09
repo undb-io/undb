@@ -27,6 +27,9 @@ export class TableSqliteMapper {
             sorts: view.sorts,
             pinnedFields: view.pinnedFields,
             rowHeight: view.rowHeight,
+            dashboard: {
+              widges: view.widges.isInitialized() ? view.widges.getItems().map((widge) => widge.toQuery()) : [],
+            },
           } as IQueryView),
       ),
     }

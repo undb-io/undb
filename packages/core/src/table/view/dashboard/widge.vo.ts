@@ -1,5 +1,5 @@
 import { ValueObject } from '@undb/domain'
-import { VirsualizationFactory } from '../virsualization/virsualization.factory.js'
+import { VirsualizationFactory } from '../../virsualization/virsualization.factory.js'
 import { LayoutVO } from './layout.vo.js'
 import { WidgeID } from './widge-id.vo.js'
 import type { ICreateWidgeSchema } from './widge.schema.js'
@@ -20,7 +20,7 @@ export class Widge extends ValueObject<IWidge> {
 
   static create(input: ICreateWidgeSchema) {
     const layout = new LayoutVO(input.layout)
-    const virsualization = VirsualizationFactory.create(input.virtualization)
+    const virsualization = input.virsualization ? VirsualizationFactory.create(input.virsualization) : undefined
 
     return new this({
       id: WidgeID.fromOrCreate(input.id),

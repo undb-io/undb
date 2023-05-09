@@ -1382,6 +1382,15 @@
             "number"
           ],
           "mappedType": "text"
+        },
+        "table_id": {
+          "name": "table_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         }
       },
       "name": "undb_virsualization",
@@ -1405,6 +1414,15 @@
           "unique": false
         },
         {
+          "columnNames": [
+            "table_id"
+          ],
+          "composite": false,
+          "keyName": "undb_virsualization_table_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "primary",
           "columnNames": [
             "id"
@@ -1415,7 +1433,21 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {}
+      "foreignKeys": {
+        "undb_virsualization_table_id_foreign": {
+          "constraintName": "undb_virsualization_table_id_foreign",
+          "columnNames": [
+            "table_id"
+          ],
+          "localTableName": "undb_virsualization",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_table",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
     },
     {
       "columns": {
@@ -1475,6 +1507,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "virsualization_id": {
+          "name": "virsualization_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         }
       },
       "name": "undb_widge",
@@ -1498,6 +1539,15 @@
           "unique": false
         },
         {
+          "columnNames": [
+            "virsualization_id"
+          ],
+          "composite": false,
+          "keyName": "undb_widge_virsualization_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
           "keyName": "primary",
           "columnNames": [
             "id"
@@ -1519,6 +1569,19 @@
             "id"
           ],
           "referencedTableName": "undb_view",
+          "updateRule": "cascade"
+        },
+        "undb_widge_virsualization_id_foreign": {
+          "constraintName": "undb_widge_virsualization_id_foreign",
+          "columnNames": [
+            "virsualization_id"
+          ],
+          "localTableName": "undb_widge",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_virsualization",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }

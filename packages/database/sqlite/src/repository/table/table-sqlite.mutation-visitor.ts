@@ -35,6 +35,7 @@ import type {
   WithViewName,
   WithViewPinnedFields,
   WithViewsOrder,
+  WithWidgeSepecification,
   WithoutField,
   WithoutOption,
   WithoutView,
@@ -68,8 +69,10 @@ import {
   UpdatedByField,
 } from '../../entity/index.js'
 import { View } from '../../entity/view.js'
+import { Widge } from '../../entity/widge.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
 import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
+import { TableSqliteVirsualizationVisitor } from './table-sqlite-virsualization.visitor.js'
 
 export class TableSqliteMutationVisitor extends BaseEntityManager implements ITableSpecVisitor {
   constructor(private readonly tableId: string, em: EntityManager) {
@@ -351,6 +354,16 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const field = this.em.getReference(RatingField, s.field.id.value)
     wrap(field).assign({ max: s.max })
     this.em.persist(field)
+  }
+  withWidge(s: WithWidgeSepecification): void {
+    const view = this.getView(s.view.id.value)
+    const widge = new Widge(view, s.widge)
+
+    const vv = new TableSqliteVirsualizationVisitor(this.tableId, this.em)
+    s.widge.virsualization?.accept(vv)
+
+    widge.virsualization = vv.virsualization
+    this.em.persist(widge)
   }
   not(): this {
     return this

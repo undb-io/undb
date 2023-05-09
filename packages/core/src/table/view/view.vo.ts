@@ -401,6 +401,7 @@ export class ViewVO extends ValueObject<IView> {
       fieldsOrder: input.fieldsOrder?.length ? ViewFieldsOrder.fromArray(input.fieldsOrder) : undefined,
       pinnedFields: input.pinnedFields ? new ViewPinnedFields(input.pinnedFields) : undefined,
       rowHeight: input.rowHeight ? ViewRowHeight.from(input.rowHeight) : undefined,
+      dashboard: input.dashboard ? Dashboard.from(input.dashboard) : undefined,
     })
   }
 }

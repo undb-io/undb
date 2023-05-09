@@ -1,5 +1,6 @@
 import type { ICreateVirsualizationSchema } from './virsualization.schema.js'
 import type { IVirsualizationTypeSchema } from './virsualization.type.js'
+import type { IVirsualizationVisitor } from './virsualization.visitor.js'
 import { VirsualizationVO } from './virsualization.vo.js'
 
 export class NumberVirsualization extends VirsualizationVO {
@@ -10,5 +11,9 @@ export class NumberVirsualization extends VirsualizationVO {
       ...super.create(input),
       type: 'number',
     })
+  }
+
+  accept(v: IVirsualizationVisitor): void {
+    v.number(this)
   }
 }

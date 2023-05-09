@@ -1,10 +1,10 @@
 import { NanoID } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Err, Ok } from 'oxide.ts'
-import { InvalidTableIdError } from '../../table.errors.js'
+import { InvalidTableIdError } from '../table.errors.js'
 
 export class VirsualizationID extends NanoID {
-  private static VIR_ID_PREFIX = 'tbl'
+  private static VIR_ID_PREFIX = 'vir'
   private static VIR_ID_SIZE = 8
 
   static create(): VirsualizationID {

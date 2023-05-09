@@ -11,9 +11,17 @@
 	const table = getTable()
 	const view = getView()
 
+	$: widges = $view.dashboard.into()?.widges
 	const COLS = 12
 
-	let items: any[] = []
+	$: items =
+		widges?.map((widge) => ({
+			[COLS]: gridHelp.item({
+				...widge.layout.toJSON(),
+			}),
+			id: widge.id.value,
+			widge: widge as Widge | null,
+		})) ?? []
 
 	const cols = [[1200, COLS]]
 
@@ -28,6 +36,7 @@
 				y: 0,
 			}),
 			id,
+			widge: null,
 		}
 
 		let findOutPosition = gridHelp.findSpace(newItem, items, COLS)
@@ -46,7 +55,7 @@
 		await $createWidge.mutateAsync({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
-			widge: { layout, virtualization: { type: 'number' } },
+			widge: { layout, virsualization: { type: 'number' } },
 		})
 
 		items = [...items, ...[newItem]]
@@ -57,7 +66,7 @@
 	<Button on:click={addItem}>add widge</Button>
 	<Grid bind:items rowHeight={100} let:item let:dataItem {cols}>
 		<div class="flex items-center justify-center bg-white-200 border rounded-md w-full h-full">
-			{dataItem.id}
+			{dataItem.widge.id.value}
 		</div>
 	</Grid>
 </div>

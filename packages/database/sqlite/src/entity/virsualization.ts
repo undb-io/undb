@@ -1,11 +1,15 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core'
-import type { IVirsualizationTypeSchema, VirsualizationVO } from '@undb/core'
+import type { Rel } from '@mikro-orm/core'
+import { Cascade, Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
+import type { IVirsualizationSchema } from '@undb/core'
+import { type IVirsualizationTypeSchema, type VirsualizationVO } from '@undb/core'
 import { BaseEntity } from './base.js'
+import { Table } from './table.js'
 
 @Entity({ tableName: 'undb_virsualization', abstract: true, discriminatorColumn: 'type' })
 export abstract class Virsualization extends BaseEntity {
-  constructor(v: VirsualizationVO) {
+  constructor(table: Rel<Table>, v: VirsualizationVO) {
     super()
+    this.table = table
     this.id = v.id.value
     this.type = v.type
   }
@@ -15,6 +19,16 @@ export abstract class Virsualization extends BaseEntity {
 
   @Property()
   type: IVirsualizationTypeSchema
+
+  @ManyToOne(() => Table, { cascade: [Cascade.ALL] })
+  table: Rel<Table>
+
+  toQuery(): IVirsualizationSchema {
+    return {
+      id: this.id,
+      type: this.type,
+    }
+  }
 }
 
 @Entity({ discriminatorValue: 'number' })
