@@ -7,6 +7,8 @@
 	import { trpc } from '$lib/trpc/client'
 	import { getTable, getView } from '$lib/store/table'
 	import { Widge, WidgeID } from '@undb/core'
+	import Virsualization from '$lib/virsualization/Virsualization.svelte'
+	import { invalidate } from '$app/navigation'
 
 	const table = getTable()
 	const view = getView()
@@ -57,6 +59,7 @@
 			viewId: $view.id.value,
 			widge: { layout, virsualization: { type: 'number' } },
 		})
+		await invalidate(`table:${$table.id.value}`)
 
 		items = [...items, ...[newItem]]
 	}
@@ -65,8 +68,8 @@
 <div class="w-full h-full">
 	<Button on:click={addItem}>add widge</Button>
 	<Grid bind:items rowHeight={100} let:item let:dataItem {cols}>
-		<div class="flex items-center justify-center bg-white-200 border rounded-md w-full h-full">
-			{dataItem.widge.id.value}
+		<div class="flex items-center justify-center bg-white-200 border rounded-md w-full h-full p-2">
+			<Virsualization virsualization={dataItem.widge?.virsualization} />
 		</div>
 	</Grid>
 </div>

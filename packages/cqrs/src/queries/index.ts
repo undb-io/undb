@@ -1,3 +1,4 @@
+export * from './aggregate-number/index.js'
 export * from './get-foreign-records/index.js'
 export * from './get-me/index.js'
 export * from './get-parent-available-records/index.js'
