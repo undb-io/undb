@@ -35,6 +35,7 @@ import type {
   WithViewName,
   WithViewPinnedFields,
   WithViewsOrder,
+  WithVirsualizationNameSpec,
   WithWidgeSepecification,
   WithWidgesLayout,
   WithoutField,
@@ -70,6 +71,7 @@ import {
   UpdatedByField,
 } from '../../entity/index.js'
 import { View } from '../../entity/view.js'
+import { Virsualization } from '../../entity/virsualization.js'
 import { Widge } from '../../entity/widge.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
 import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
@@ -372,6 +374,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
       wrap(widge).assign({ layout })
       this.em.persist(widge)
     }
+  }
+  withVirsualizationName(s: WithVirsualizationNameSpec): void {
+    const virsualization = this.em.getReference(Virsualization, s.virsualizationId)
+    wrap(virsualization).assign({ name: s.name.value })
+    this.em.persist(virsualization)
   }
   not(): this {
     return this

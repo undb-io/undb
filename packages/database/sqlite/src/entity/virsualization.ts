@@ -12,10 +12,14 @@ export abstract class Virsualization extends BaseEntity {
     this.table = table
     this.id = v.id.value
     this.type = v.type
+    this.name = v.name.value
   }
 
   @PrimaryKey()
   id: string
+
+  @Property()
+  name: string
 
   @Property()
   type: IVirsualizationTypeSchema
@@ -27,6 +31,7 @@ export abstract class Virsualization extends BaseEntity {
     return {
       id: this.id,
       type: this.type,
+      name: this.name,
     }
   }
 }

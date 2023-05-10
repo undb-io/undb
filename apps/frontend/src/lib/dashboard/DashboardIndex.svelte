@@ -10,6 +10,9 @@
 	import Virsualization from '$lib/virsualization/Virsualization.svelte'
 	import { invalidate } from '$app/navigation'
 	import { writable } from 'svelte/store'
+	import { t } from '$lib/i18n'
+	import type { WidgeDataItem } from './widge-item.type'
+	import WidgeItem from './WidgeItem.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -18,7 +21,7 @@
 	$: widges.set([...$dashboardWidges])
 	const COLS = 24
 
-	let items: any[]
+	let items: WidgeDataItem[]
 
 	const getItems = () => {
 		items =
@@ -42,7 +45,7 @@
 		const id = WidgeID.createId()
 		let newItem = {
 			[COLS]: gridHelp.item({
-				w: 2,
+				w: 6,
 				h: 2,
 				x: 0,
 				y: 0,
@@ -69,7 +72,13 @@
 		await $createWidge.mutateAsync({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
-			widge: { layout, virsualization: { type: 'number' } },
+			widge: {
+				layout,
+				virsualization: {
+					name: $t('virsualization count'),
+					type: 'number',
+				},
+			},
 		})
 		await invalidate(`table:${$table.id.value}`)
 
@@ -110,23 +119,7 @@
 		let:resizePointerDown
 		on:pointerup={onPointeup}
 	>
-		<div
-			class="group flex flex-col bg-white !opacity-100 border rounded-md w-full h-full hover:border-blue-400 transition"
-		>
-			<div class="flex items-center gap-2 border-b border-gray-300 p-3 grow-0">
-				<i on:pointerdown={movePointerDown} class="block ti ti-grip-vertical cursor-grab" />
-				<P class="font-semibold">name</P>
-			</div>
-			<div class="flex items-center justify-center p-2 flex-1">
-				<Virsualization virsualization={dataItem.widge?.virsualization} />
-			</div>
-			<i
-				class="absolute right-0 bottom-0 cursor-se-resize
-				hidden group-hover:block text-3xl text-blue-400
-				ti ti-chevron-down-right"
-				on:pointerdown={resizePointerDown}
-			/>
-		</div>
+		<WidgeItem {dataItem} {movePointerDown} {resizePointerDown} />
 	</Grid>
 </div>
 

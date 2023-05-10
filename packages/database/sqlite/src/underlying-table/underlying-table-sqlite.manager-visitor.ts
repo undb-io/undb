@@ -19,6 +19,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     const knex = em.getKnex()
     this.knex = knex
   }
+  withVirsualizationName(): void {}
   withWidgesLayout(): void {}
   get #sb() {
     return this.sb ?? this.knex.schema

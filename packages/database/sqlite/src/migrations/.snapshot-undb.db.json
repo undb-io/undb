@@ -1371,6 +1371,15 @@
           "length": 0,
           "mappedType": "datetime"
         },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "type": {
           "name": "type",
           "type": "text",

@@ -67,10 +67,12 @@ import type {
   WithViewName,
   WithViewPinnedFields,
   WithViewsOrder,
+  WithVirsualizationNameSpec,
   WithoutView,
 } from '../view/index.js'
 
 export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVisitor, IFieldVisitor {
+  withVirsualizationName(s: WithVirsualizationNameSpec): void {}
   withWidgesLayout(s: WithWidgesLayout): void {}
   rowHeightEqual(s: WithRowHeight): void {}
   ratingMaxEqual(s: WithRatingMax): void {}

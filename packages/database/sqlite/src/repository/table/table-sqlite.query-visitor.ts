@@ -38,6 +38,7 @@ import type {
   WithViewName,
   WithViewPinnedFields,
   WithViewsOrder,
+  WithVirsualizationNameSpec,
   WithWidgeSepecification,
   WithWidgesLayout,
 } from '@undb/core'
@@ -45,6 +46,9 @@ import type { Table } from '../../entity/index.js'
 
 export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   constructor(public qb: QueryBuilder<Table>) {}
+  withVirsualizationName(s: WithVirsualizationNameSpec): void {
+    throw new Error('Method not implemented.')
+  }
   withWidgesLayout(s: WithWidgesLayout): void {
     throw new Error('Method not implemented.')
   }

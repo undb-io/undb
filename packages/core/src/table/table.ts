@@ -43,16 +43,19 @@ import type {
   ISorts,
   ISwitchDisplayTypeSchema,
   IUpdateViewNameSchema,
+  IUpdateVirsualizationSchema,
   ViewFieldsOrder,
 } from './view/index.js'
 import {
   Sorts,
   ViewVO,
   ViewsOrder,
+  VirsualizationName,
   WithShowSystemFieldsSpec,
   WithTableView,
   WithViewFieldsOrder,
   WithViewsOrder,
+  WithVirsualizationNameSpec,
   defaultViewDiaplyType,
 } from './view/index.js'
 import { WithFilter } from './view/specifications/filters.specificaiton.js'
@@ -474,5 +477,15 @@ export class Table {
     spec.mutate(this)
 
     return spec
+  }
+
+  public updateVirsualization(input: IUpdateVirsualizationSchema): TableCompositeSpecificaiton {
+    const specs: TableCompositeSpecificaiton[] = []
+    if (isString(input.name)) {
+      const spec = new WithVirsualizationNameSpec(input.id, new VirsualizationName({ value: input.name }))
+      specs.push(spec)
+    }
+
+    return and(...specs).unwrap()
   }
 }
