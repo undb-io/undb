@@ -39,11 +39,15 @@ import type {
   WithViewPinnedFields,
   WithViewsOrder,
   WithWidgeSepecification,
+  WithWidgesLayout,
 } from '@undb/core'
 import type { Table } from '../../entity/index.js'
 
 export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   constructor(public qb: QueryBuilder<Table>) {}
+  withWidgesLayout(s: WithWidgesLayout): void {
+    throw new Error('Method not implemented.')
+  }
   idEqual(s: WithTableId): void {
     this.qb.where({ id: s.id.value })
   }

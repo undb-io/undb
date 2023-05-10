@@ -13,6 +13,10 @@
 	})
 </script>
 
-<Heading class="text-center">
-	{$aggregateNumber.data?.number}
-</Heading>
+{#if $aggregateNumber.isLoading}
+	<div class="w-full h-full animate-pulse bg-slate-100" />
+{:else}
+	<Heading class="text-center">
+		{$aggregateNumber.data?.number}
+	</Heading>
+{/if}

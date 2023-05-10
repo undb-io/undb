@@ -24,6 +24,8 @@ export const sorts = derived(currentView, (view) => view.sorts?.sorts ?? [])
 // TODO: nested should be IFilters
 export const filters = derived(currentView, (view) => (view.filter?.group.children ?? []) as IFilters)
 
+export const dashboardWidges = derived(currentView, ($view) => $view.dashboard.into()?.widges ?? [])
+
 export const currentRecordIndex = derived([currentRecordId, currentRecords], ([$id, $records]) =>
 	$id ? $records.findIndex((r) => r.id.value === $id) : undefined,
 )

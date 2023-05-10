@@ -10,8 +10,8 @@ import { WithFilter } from '../specifications/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import { Calendar } from './calendar/index.js'
 import { Dashboard } from './dashboard/dashboard.vo.js'
-import { WithWidgeSepecification } from './dashboard/specifications/widge.specification.js'
-import type { ICreateWidgeSchema } from './dashboard/widge.schema.js'
+import { WithWidgeSepecification, WithWidgesLayout } from './dashboard/specifications/widge.specification.js'
+import type { ICreateWidgeSchema, IRelayoutWidgeSchema } from './dashboard/widge.schema.js'
 import { Widge } from './dashboard/widge.vo.js'
 import { Kanban } from './kanban/index.js'
 import type { ISortDirection } from './sort/sort.schema.js'
@@ -323,6 +323,13 @@ export class ViewVO extends ValueObject<IView> {
     const widge = Widge.create(input)
     const spec = new WithWidgeSepecification(this, dashboard, widge)
 
+    return spec
+  }
+
+  public relayoutWidges(widges: IRelayoutWidgeSchema[]): TableCompositeSpecificaiton {
+    const dashboard = this.getOrCreateDashboard()
+
+    const spec = new WithWidgesLayout(this, dashboard, widges)
     return spec
   }
 

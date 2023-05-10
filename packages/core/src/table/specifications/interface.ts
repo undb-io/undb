@@ -15,7 +15,7 @@ import type {
 } from '../field/specifications/reference-field.specification.js'
 import type { WithNewOption, WithOptions, WithoutOption } from '../field/specifications/select-field.specification.js'
 import { type Table } from '../table.js'
-import type { WithWidgeSepecification } from '../view/dashboard/specifications/widge.specification.js'
+import type { WithWidgeSepecification, WithWidgesLayout } from '../view/dashboard/specifications/widge.specification.js'
 import type { WithKanbanField, WithViewsOrder } from '../view/index.js'
 import type { WithCalendarField } from '../view/specifications/calendar.specification.js'
 import type { WithDisplayType } from '../view/specifications/display-type.specification.js'
@@ -93,6 +93,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void
 
   withWidge(s: WithWidgeSepecification): void
+  withWidgesLayout(s: WithWidgesLayout): void
 }
 
 export type ITableSpec = ISpecification<Table, ITableSpecVisitor>

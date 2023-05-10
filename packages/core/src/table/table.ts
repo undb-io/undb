@@ -31,6 +31,7 @@ import type {
   IMoveFieldSchema,
   IMoveViewSchema,
   IQueryView,
+  IRelayoutWidgeSchema,
   ISetCalendarFieldSchema,
   ISetFieldVisibilitySchema,
   ISetFieldWidthSchema,
@@ -461,6 +462,15 @@ export class Table {
     const field = this.schema.getFieldByIdOfType(fieldId, SelectField).unwrap()
 
     const spec = field.removeOption(id)
+    spec.mutate(this)
+
+    return spec
+  }
+
+  public relayoutWidges(viewId: string, widges: IRelayoutWidgeSchema[]): TableCompositeSpecificaiton {
+    const view = this.mustGetView(viewId)
+
+    const spec = view.relayoutWidges(widges)
     spec.mutate(this)
 
     return spec

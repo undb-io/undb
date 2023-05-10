@@ -36,6 +36,7 @@ import type {
   WithViewPinnedFields,
   WithViewsOrder,
   WithWidgeSepecification,
+  WithWidgesLayout,
   WithoutField,
   WithoutOption,
   WithoutView,
@@ -364,6 +365,13 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
 
     widge.virsualization = vv.virsualization
     this.em.persist(widge)
+  }
+  withWidgesLayout(s: WithWidgesLayout): void {
+    for (const [id, layout] of s.widgesMap) {
+      const widge = this.em.getReference(Widge, id)
+      wrap(widge).assign({ layout })
+      this.em.persist(widge)
+    }
   }
   not(): this {
     return this

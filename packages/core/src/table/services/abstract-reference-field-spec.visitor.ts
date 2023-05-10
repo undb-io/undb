@@ -48,7 +48,7 @@ import type {
   WithTableName,
   WithTableSchema,
 } from '../specifications/index.js'
-import type { WithWidgeSepecification } from '../view/dashboard/specifications/widge.specification.js'
+import type { WithWidgeSepecification, WithWidgesLayout } from '../view/dashboard/specifications/widge.specification.js'
 import type {
   WithCalendarField,
   WithDisplayType,
@@ -71,6 +71,7 @@ import type {
 } from '../view/index.js'
 
 export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVisitor, IFieldVisitor {
+  withWidgesLayout(s: WithWidgesLayout): void {}
   rowHeightEqual(s: WithRowHeight): void {}
   ratingMaxEqual(s: WithRatingMax): void {}
   id(field: IdField): void {}

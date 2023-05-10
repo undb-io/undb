@@ -15,6 +15,7 @@ import { DuplicateRecordCommandHandler } from './duplicate-record.command.handle
 import { DuplicateViewCommandHandler } from './duplicate-view.command.handler.js'
 import { MoveFieldCommandHandler } from './move-field.command.handler.js'
 import { MoveViewCommandHandler } from './move-view.command.handler.js'
+import { RelayoutWidgesCommandHandler } from './relayout-widges.command.handler.js'
 import { ReorderOptionsCommandHandler } from './reorder-options.command.handler.js'
 import { ResetFieldSortCommandHandler } from './reset-field-sort.command.handler.js'
 import { SetCalendarFieldCommandHandler } from './set-calendar-field.command.handler.js'
@@ -72,4 +73,5 @@ export const commandHandlers = [
   DuplicateViewCommandHandler,
   UpdateViewNameCommandHandler,
   UpdateFieldCommandHandler,
+  RelayoutWidgesCommandHandler,
 ]
