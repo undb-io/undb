@@ -1,4 +1,5 @@
 <script lang="ts">
+	import cx from 'classnames'
 	import { Heading } from 'flowbite-svelte'
 	import type { NumberVirsualization } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
@@ -16,7 +17,7 @@
 {#if $aggregateNumber.isLoading}
 	<div class="w-full h-full animate-pulse bg-slate-100" />
 {:else}
-	<Heading class="text-center">
+	<Heading {...$$restProps} class={cx('text-center', $$restProps.class)}>
 		{$aggregateNumber.data?.number}
 	</Heading>
 {/if}

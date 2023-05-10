@@ -10,5 +10,5 @@
 </script>
 
 {#if virsualization}
-	<svelte:component this={map[virsualization.type]} {virsualization} />
+	<svelte:component this={map[virsualization.type]} {virsualization} {...$$restProps} />
 {/if}
