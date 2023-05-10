@@ -1,6 +1,7 @@
 import type { Rel } from '@mikro-orm/core'
 import { Embeddable, Embedded, Entity, ManyToOne, OneToOne, PrimaryKey, Property } from '@mikro-orm/core'
-import type { Widge as CoreWidge, ILayoutSchema, IWidgeSchema, LayoutVO } from '@undb/core'
+import type { ILayoutSchema, IWidgeSchema } from '@undb/core'
+import { Widge as CoreWidge, LayoutVO, WidgeID } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { View } from './view.js'
 import { Virsualization } from './virsualization.js'
@@ -21,6 +22,10 @@ export class Layout {
   h: number
   @Property()
   w: number
+
+  toDomain(): LayoutVO {
+    return new LayoutVO(this)
+  }
 
   toQuery(): ILayoutSchema {
     return {
@@ -52,6 +57,14 @@ export class Widge extends BaseEntity {
 
   @OneToOne(() => Virsualization, { nullable: true })
   virsualization?: Rel<Virsualization>
+
+  toDomain(): CoreWidge {
+    return new CoreWidge({
+      id: new WidgeID(this.id),
+      layout: this.layout.toDomain(),
+      virsualization: this.virsualization?.toDomain(),
+    })
+  }
 
   toQuery(): IWidgeSchema {
     return {

@@ -1400,6 +1400,24 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "field_id": {
+          "name": "field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "number_aggregate_function": {
+          "name": "number_aggregate_function",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         }
       },
       "name": "undb_virsualization",

@@ -8,6 +8,7 @@ import type { IFilterOrGroupList, IRootFilter } from '../filter/index.js'
 import { RootFilter } from '../filter/index.js'
 import { WithFilter } from '../specifications/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import type { VirsualizationVO } from '../virsualization/virsualization.vo.js'
 import { Calendar } from './calendar/index.js'
 import { Dashboard } from './dashboard/dashboard.vo.js'
 import { WithWidgeSepecification, WithWidgesLayout } from './dashboard/specifications/widge.specification.js'
@@ -331,6 +332,14 @@ export class ViewVO extends ValueObject<IView> {
 
     const spec = new WithWidgesLayout(this, dashboard, widges)
     return spec
+  }
+
+  public mustGetVirsualization(virsualizationId: string): VirsualizationVO {
+    const dashboard = this.dashboard.into()
+    if (!dashboard) throw new Error('not found virsualization')
+    const widge = dashboard.widges.find((w) => w.virsualization?.id.value === virsualizationId)
+    if (!widge?.virsualization) throw new Error('not found virsualization')
+    return widge.virsualization
   }
 
   setFilter(filter: IRootFilter | null) {

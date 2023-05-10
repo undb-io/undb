@@ -1,11 +1,11 @@
 import { ValueObject } from '@undb/domain'
 import { VirsualizationID } from './virsualization-id.vo.js'
 import { VirsualizationName } from './virsualization-name.vo.js'
-import type { ICreateVirsualizationSchema } from './virsualization.schema.js'
+import type { IBaseCreateVirsualizationSchema } from './virsualization.schema.js'
 import type { IVirsualization, IVirsualizationTypeSchema } from './virsualization.type.js'
 import type { IVirsualizationVisitor } from './virsualization.visitor.js'
 
-export abstract class VirsualizationVO extends ValueObject<IVirsualization> {
+export abstract class VirsualizationVO<V extends IVirsualization = IVirsualization> extends ValueObject<V> {
   public get id() {
     return this.props.id
   }
@@ -16,7 +16,7 @@ export abstract class VirsualizationVO extends ValueObject<IVirsualization> {
 
   abstract type: IVirsualizationTypeSchema
 
-  static create(input: ICreateVirsualizationSchema): Omit<IVirsualization, 'type'> {
+  static create(input: IBaseCreateVirsualizationSchema): Omit<IVirsualization, 'type'> {
     return {
       id: VirsualizationID.fromOrCreate(input.id),
       name: VirsualizationName.create(input.name),

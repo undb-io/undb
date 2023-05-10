@@ -70,8 +70,10 @@ import type {
   WithVirsualizationNameSpec,
   WithoutView,
 } from '../view/index.js'
+import type { WithNumberAggregateSpec } from '../virsualization/specifications/number-virsualization.specification.js'
 
 export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVisitor, IFieldVisitor {
+  withNumberAggregate(s: WithNumberAggregateSpec): void {}
   withVirsualizationName(s: WithVirsualizationNameSpec): void {}
   withWidgesLayout(s: WithWidgesLayout): void {}
   rowHeightEqual(s: WithRowHeight): void {}

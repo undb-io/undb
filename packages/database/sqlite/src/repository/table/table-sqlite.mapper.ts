@@ -41,7 +41,7 @@ export class TableSqliteMapper {
       name: entity.name,
       schema: [],
       emoji: entity.emoji,
-      views: entity.views.toArray().map((view) => ({
+      views: entity.views.getItems().map((view) => ({
         id: view.id,
         name: view.name,
         displayType: view.displayType,
@@ -55,6 +55,9 @@ export class TableSqliteMapper {
         sorts: view.sorts,
         pinnedFields: view.pinnedFields,
         rowHeight: view.rowHeight,
+        dashboard: {
+          widges: view.widges.isInitialized() ? view.widges.getItems().map((widge) => widge.toQuery()) : [],
+        },
       })) as ICreateViewsSchema,
       viewsOrder: entity.viewsOrder,
     }).map((table) => {

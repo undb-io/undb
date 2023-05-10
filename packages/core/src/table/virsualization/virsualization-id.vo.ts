@@ -1,7 +1,10 @@
 import { NanoID } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Err, Ok } from 'oxide.ts'
+import { z } from 'zod'
 import { InvalidTableIdError } from '../table.errors.js'
+
+export const virsualizationIdSchema = z.string().startsWith('vir')
 
 export class VirsualizationID extends NanoID {
   private static VIR_ID_PREFIX = 'vir'

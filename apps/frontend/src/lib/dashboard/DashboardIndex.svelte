@@ -46,6 +46,7 @@
 		let:movePointerDown
 		let:resizePointerDown
 		on:pointerup={onPointeup}
+		fillSpace
 	>
 		<WidgeItem {dataItem} {movePointerDown} {resizePointerDown} />
 	</Grid>

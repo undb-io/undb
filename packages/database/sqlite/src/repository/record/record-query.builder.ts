@@ -1,5 +1,5 @@
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import type { Table as CoreTable, IRecordSpec } from '@undb/core'
+import type { Table as CoreTable, INumberAggregateFunction, IRecordSpec } from '@undb/core'
 import {
   SelectField as CoreSelectField,
   INTERNAL_COLUMN_CREATED_AT_NAME,
@@ -122,6 +122,31 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
 
     this.qb.select(names)
 
+    return this
+  }
+
+  aggregate(aggregateFunction?: INumberAggregateFunction, fieldId?: string): this {
+    if (!fieldId || !aggregateFunction) {
+      this.qb.count('* as number')
+      return this
+    }
+    switch (aggregateFunction) {
+      case 'sum':
+        this.qb.sum(`${fieldId} as number`)
+        break
+      case 'average':
+        this.qb.avg(`${fieldId} as number`)
+        break
+      case 'min':
+        this.qb.min(`${fieldId} as number`)
+        break
+      case 'max':
+        this.qb.max(`${fieldId} as number`)
+        break
+
+      default:
+        break
+    }
     return this
   }
 

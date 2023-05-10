@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { currentVirsualization, virsualizationOpen } from '$lib/store/modal'
-	import { Heading, Modal } from 'flowbite-svelte'
+	import { Modal } from 'flowbite-svelte'
 	import Virsualization from './Virsualization.svelte'
+	import VirsualizationSetting from './setting/VirsualizationSetting.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import { getTable } from '$lib/store/table'
@@ -29,7 +30,8 @@
 			$updateVirsualization.mutate({
 				tableId: $table.id.value,
 				virsualization: {
-					id: $currentVirsualization?.id.value,
+					id: $currentVirsualization.id.value,
+					type: $currentVirsualization.type,
 					name: value,
 				},
 			})
@@ -38,7 +40,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<Modal size="xl" class="w-full h-[calc(100vh-64px)]" bind:open={$virsualizationOpen}>
+<Modal size="xl" class="w-full h-[calc(100vh-64px)] p-0" bind:open={$virsualizationOpen} defaultClass="!p-0">
 	<svelte:fragment slot="header">
 		{#if $currentVirsualization && updating}
 			<input
@@ -53,6 +55,9 @@
 		{/if}
 	</svelte:fragment>
 	<div class="flex items-center h-full">
-		<Virsualization virsualization={$currentVirsualization} class="text-9xl" />
+		<Virsualization virsualization={$currentVirsualization} class="text-[350px] h-full" />
+		<div class="flex flex-col h-full basis-[400px] pl-2">
+			<VirsualizationSetting virsualization={$currentVirsualization} />
+		</div>
 	</div>
 </Modal>

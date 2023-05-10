@@ -1,5 +1,5 @@
 import { NumberVirsualization } from './number.virsualization'
-import type { ICreateVirsualizationSchema } from './virsualization.schema'
+import type { ICreateVirsualizationSchema } from './virsualization.type.js'
 
 export class VirsualizationFactory {
   static create(input: ICreateVirsualizationSchema) {

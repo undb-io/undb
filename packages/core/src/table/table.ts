@@ -62,6 +62,7 @@ import { WithFilter } from './view/specifications/filters.specificaiton.js'
 import { WithSorts } from './view/specifications/sorts.specification.js'
 import { ViewId } from './view/view-id.vo.js'
 import { Views } from './view/views.js'
+import { WithNumberAggregateSpec } from './virsualization/specifications/number-virsualization.specification.js'
 
 /**
  * QueryTable
@@ -483,6 +484,11 @@ export class Table {
     const specs: TableCompositeSpecificaiton[] = []
     if (isString(input.name)) {
       const spec = new WithVirsualizationNameSpec(input.id, new VirsualizationName({ value: input.name }))
+      specs.push(spec)
+    }
+
+    if (isString(input.fieldId) && isString(input.numberAggregateFunction)) {
+      const spec = WithNumberAggregateSpec.from(input.id, input.fieldId, input.numberAggregateFunction)
       specs.push(spec)
     }
 

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { createVirsualizationSchema } from '../../virsualization/virsualization.schema.js'
+import { baseCreateVirsualizationSchema } from '../../virsualization/virsualization.schema.js'
 import { createLayoutSchema } from './layout.schema.js'
 import { layoutSchema } from './layout.type.js'
 import { widgeIdSchema } from './widge-id.vo.js'
@@ -7,7 +7,7 @@ import { widgeIdSchema } from './widge-id.vo.js'
 export const createWidgeSchema = z.object({
   id: widgeIdSchema.optional(),
   layout: createLayoutSchema,
-  virsualization: createVirsualizationSchema.optional(),
+  virsualization: baseCreateVirsualizationSchema.optional(),
 })
 
 export type ICreateWidgeSchema = z.infer<typeof createWidgeSchema>

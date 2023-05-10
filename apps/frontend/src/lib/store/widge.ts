@@ -34,7 +34,7 @@ export const createWidgeItems = () => {
 		const id = WidgeID.createId()
 		let newItem = {
 			[COLS]: gridHelp.item({
-				w: 6,
+				w: 4,
 				h: 2,
 				x: 0,
 				y: 0,

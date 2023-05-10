@@ -1,5 +1,6 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
+import { IRecordSpec, VirsualizationVO } from '@undb/core'
 import type { EntityManager } from '@undb/sqlite'
 import { RecordSqliteAggregateRepository } from '@undb/sqlite'
 
@@ -10,7 +11,7 @@ export class NestAggregateSqliteQueryModel extends RecordSqliteAggregateReposito
   }
 
   @UseRequestContext()
-  async number(tableId: string): Promise<number> {
-    return super.number(tableId)
+  async number(tableId: string, virsualization: VirsualizationVO, spec: IRecordSpec | null): Promise<number> {
+    return super.number(tableId, virsualization, spec)
   }
 }

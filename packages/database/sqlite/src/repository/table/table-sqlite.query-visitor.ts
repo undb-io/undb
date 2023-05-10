@@ -18,6 +18,7 @@ import type {
   WithNewField,
   WithNewOption,
   WithNewView,
+  WithNumberAggregateSpec,
   WithOptions,
   WithoutField,
   WithoutOption,
@@ -46,6 +47,9 @@ import type { Table } from '../../entity/index.js'
 
 export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   constructor(public qb: QueryBuilder<Table>) {}
+  withNumberAggregate(s: WithNumberAggregateSpec): void {
+    throw new Error('Method not implemented.')
+  }
   withVirsualizationName(s: WithVirsualizationNameSpec): void {
     throw new Error('Method not implemented.')
   }

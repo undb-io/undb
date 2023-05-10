@@ -1,0 +1,14 @@
+<script lang="ts">
+	import type { IVirsualizationTypeSchema, VirsualizationVO } from '@undb/core'
+	import type { ComponentType } from 'svelte'
+	import NumberVirsualizationSetting from './NumberVirsualizationSetting.svelte'
+
+	export let virsualization: VirsualizationVO | undefined
+	const map: Record<IVirsualizationTypeSchema, ComponentType> = {
+		number: NumberVirsualizationSetting,
+	}
+</script>
+
+{#if virsualization}
+	<svelte:component this={map[virsualization.type]} {virsualization} {...$$restProps} />
+{/if}

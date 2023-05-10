@@ -1,18 +1,25 @@
 import { z } from 'zod'
+import { virsualizationIdSchema } from './virsualization-id.vo.js'
 import { virsualizationNameSchema } from './virsualization-name.vo.js'
-import { virsualizationIdSchema, virsualizationTypeSchema } from './virsualization.type.js'
 
-export const createVirsualizationSchema = z.object({
+export const virsualizationTypeSchema = z.enum(['number'])
+
+export const virsualizationSchema = z.object({
+  id: virsualizationIdSchema,
+  name: virsualizationNameSchema,
+  type: virsualizationTypeSchema,
+})
+
+export const baseCreateVirsualizationSchema = z.object({
   id: virsualizationIdSchema.optional(),
   name: virsualizationNameSchema,
   type: virsualizationTypeSchema,
 })
 
-export type ICreateVirsualizationSchema = z.infer<typeof createVirsualizationSchema>
+export type IBaseCreateVirsualizationSchema = z.infer<typeof baseCreateVirsualizationSchema>
 
-export const updateVirsualizationSchema = z.object({
+export const baseUpdateVirsualizationSchema = z.object({
   id: virsualizationIdSchema,
+  type: virsualizationTypeSchema,
   name: virsualizationNameSchema.optional(),
 })
-
-export type IUpdateVirsualizationSchema = z.infer<typeof updateVirsualizationSchema>

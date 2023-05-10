@@ -34,6 +34,7 @@
 				tableId: $table.id.value,
 				virsualization: {
 					id: dataItem.widge?.virsualization?.id.value,
+					type: dataItem.widge.virsualization.type,
 					name: value,
 				},
 			})
@@ -65,7 +66,7 @@
 				{/if}
 			{/if}
 		</div>
-		<div class="items-center gap-1 hidden group-hover:flex">
+		<div class="items-center gap-2 hidden group-hover:flex">
 			<button
 				on:click={() => {
 					$virsualizationOpen = true
