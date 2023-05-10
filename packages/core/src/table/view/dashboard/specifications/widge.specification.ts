@@ -5,6 +5,7 @@ import type { Table } from '../../../table.js'
 import type { ViewVO } from '../../view.vo.js'
 import type { Dashboard } from '../dashboard.vo.js'
 import type { ILayoutSchema } from '../layout.type.js'
+import { LayoutVO } from '../layout.vo.js'
 import type { IRelayoutWidgeSchema } from '../widge.schema.js'
 import type { Widge } from '../widge.vo.js'
 
@@ -42,7 +43,7 @@ export class WithWidgesLayout extends CompositeSpecification<Table, ITableSpecVi
     for (const widge of this.dashboard.widges) {
       const layout = this.widgesMap.get(widge.id.value)
       if (layout) {
-        widge.layout = layout
+        widge.layout = new LayoutVO(layout)
       }
     }
 

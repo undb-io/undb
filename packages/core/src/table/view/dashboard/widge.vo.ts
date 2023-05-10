@@ -1,6 +1,5 @@
 import { ValueObject } from '@undb/domain'
 import { VirsualizationFactory } from '../../virsualization/virsualization.factory.js'
-import type { ILayoutSchema } from './layout.type.js'
 import { LayoutVO } from './layout.vo.js'
 import { WidgeID } from './widge-id.vo.js'
 import type { ICreateWidgeSchema } from './widge.schema.js'
@@ -15,8 +14,8 @@ export class Widge extends ValueObject<IWidge> {
     return this.props.layout
   }
 
-  public set layout(layout: ILayoutSchema) {
-    this.props.layout = new LayoutVO(layout)
+  public set layout(layout: LayoutVO) {
+    this.props.layout = layout
   }
 
   public get virsualization() {

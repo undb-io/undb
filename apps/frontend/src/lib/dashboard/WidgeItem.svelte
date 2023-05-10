@@ -41,8 +41,11 @@
 </script>
 
 <div class="group flex flex-col bg-white !opacity-100 border rounded-md w-full h-full hover:border-blue-400 transition">
-	<div class="flex items-center gap-2 border-b border-gray-300 p-3 grow-0 h-10">
-		<i on:pointerdown={movePointerDown} class="block ti ti-grip-vertical cursor-grab" />
+	<div class="flex items-center gap-1 border-b border-gray-300 p-3 grow-0 h-10">
+		<i
+			on:pointerdown={movePointerDown}
+			class=" opacity-0 group-hover:opacity-100 group-hover:block text-gray-500 ti ti-grip-vertical cursor-grab"
+		/>
 		{#if dataItem.widge?.virsualization}
 			{#if updating}
 				<input
@@ -60,7 +63,7 @@
 			{/if}
 		{/if}
 	</div>
-	<div class="flex items-center justify-center p-2 flex-1">
+	<div class="flex items-center justify-center p-1 flex-1">
 		<Virsualization virsualization={dataItem.widge?.virsualization} />
 	</div>
 	<i
