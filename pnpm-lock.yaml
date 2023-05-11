@@ -274,8 +274,8 @@ importers:
         specifier: ^0.19.0
         version: 0.19.0
       '@event-calendar/day-grid':
-        specifier: ^0.19.0
-        version: 0.19.0
+        specifier: ^1.0.0
+        version: 1.0.0
       '@event-calendar/interaction':
         specifier: ^0.19.0
         version: 0.19.0
@@ -1654,10 +1654,10 @@ packages:
       svelte: 3.58.0
     dev: true
 
-  /@event-calendar/day-grid@0.19.0:
-    resolution: {integrity: sha512-FMoca5AOPCN1YuDsM7eirbLZA8ByYcUVZsfl/naKiTFtrDKRMTDrKS90LO9BFwSCIjSyNVu9/bRZ1uj2U7PUSw==}
+  /@event-calendar/day-grid@1.0.0:
+    resolution: {integrity: sha512-M6o6FFlxVewZV5imPanSTi3+9jwGP+UYQUkhp9m451w8UBDwLXXUwqCxL8Jp0v409mlV1ByQHjjHZNy2pIICLw==}
     dependencies:
-      '@event-calendar/common': 0.19.0
+      '@event-calendar/common': 1.0.0
       svelte: 3.58.0
     dev: true
 
