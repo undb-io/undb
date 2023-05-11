@@ -16,7 +16,7 @@
 		"@event-calendar/core": "^0.19.0",
 		"@event-calendar/day-grid": "^0.19.0",
 		"@event-calendar/interaction": "^0.19.0",
-		"@event-calendar/time-grid": "^0.19.0",
+		"@event-calendar/time-grid": "^1.0.0",
 		"@fullcalendar/core": "^6.1.6",
 		"@fullcalendar/daygrid": "^6.1.6",
 		"@playwright/test": "^1.33.0",
