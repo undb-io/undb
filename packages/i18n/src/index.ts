@@ -103,6 +103,8 @@ export const config: InitOptions = {
         max: 'max',
         count: 'count',
         'update success': 'update success',
+        Numbers: 'Numbers',
+        Chart: 'Chart',
       },
       table: {
         'Auto Display Field': 'using <strong>{{table}}</strong> display field',
@@ -243,6 +245,7 @@ export const config: InitOptions = {
         tall: 'tall',
         'new field': 'new',
         'virsualization count': 'count',
+        'virsualization bar': 'bar',
         'add widge': 'Add Widge',
         'aggregate mode table': 'count',
         'aggregate mode field': 'fields',
@@ -348,6 +351,8 @@ export const config: InitOptions = {
         max: '最大值',
         count: '计数',
         'update success': '更新成功',
+        Numbers: '计数',
+        Chart: '图表',
       },
       table: {
         'Auto Display Field': '使用 <strong>{{table}}</strong> 表中设置的显示列',
@@ -490,6 +495,7 @@ export const config: InitOptions = {
         tall: '高',
         'new field': '新列',
         'virsualization count': '计数',
+        'virsualization bar': '柱状图',
         'add widge': '添加控件',
         'aggregate mode table': '行计数',
         'aggregate mode field': '按列统计',

@@ -3,7 +3,7 @@ import { FieldId, fieldIdSchema } from '../field/index.js'
 import {
   baseCreateVirsualizationSchema,
   baseUpdateVirsualizationSchema,
-  virsualizationSchema,
+  baseVirsualizationSchema,
 } from './virsualization.schema.js'
 import type { IVirsualization } from './virsualization.type.js'
 import { type IVirsualizationTypeSchema } from './virsualization.type.js'
@@ -36,8 +36,9 @@ export const numberVirsualization = z
   .object({
     fieldId: fieldIdSchema.optional(),
     numberAggregateFunction: numberAggregateFunction.optional(),
+    type: z.literal('number'),
   })
-  .merge(virsualizationSchema)
+  .merge(baseVirsualizationSchema)
 
 export type INumberVirsualizationSchema = z.infer<typeof numberVirsualization>
 

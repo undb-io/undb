@@ -3,14 +3,17 @@ import { FieldId, fieldIdSchema } from '../field/index.js'
 import {
   baseCreateVirsualizationSchema,
   baseUpdateVirsualizationSchema,
-  virsualizationSchema,
+  baseVirsualizationSchema,
 } from './virsualization.schema.js'
 import type { IVirsualization } from './virsualization.type.js'
 import { type IVirsualizationTypeSchema } from './virsualization.type.js'
 import type { IVirsualizationVisitor } from './virsualization.visitor.js'
 import { VirsualizationVO } from './virsualization.vo.js'
 
-const chartAggregateFunction = z.enum(['count'])
+export const chartTypeSchema = z.enum(['bar'])
+export type IChartType = z.infer<typeof chartTypeSchema>
+
+export const chartAggregateFunction = z.enum(['count'])
 
 export type IChartAggregateFunction = z.infer<typeof chartAggregateFunction>
 
@@ -19,8 +22,9 @@ export const chartAggregateFunctions: IChartAggregateFunction[] = ['count']
 export const createChartVirsualizationSchema = z
   .object({
     type: z.literal('chart'),
-    fieldId: fieldIdSchema,
-    chartAggregateFunction: chartAggregateFunction,
+    chartType: chartTypeSchema,
+    fieldId: fieldIdSchema.optional(),
+    chartAggregateFunction: chartAggregateFunction.optional(),
   })
   .merge(baseCreateVirsualizationSchema)
 
@@ -34,16 +38,19 @@ export const updateChartVirsualizationSchema = z
 
 export const chartVirsualization = z
   .object({
-    fieldId: fieldIdSchema,
-    chartAggregateFunction: chartAggregateFunction,
+    fieldId: fieldIdSchema.optional(),
+    chartType: chartTypeSchema,
+    chartAggregateFunction: chartAggregateFunction.optional(),
+    type: z.literal('chart'),
   })
-  .merge(virsualizationSchema)
+  .merge(baseVirsualizationSchema)
 
 export type IChartVirsualizationSchema = z.infer<typeof chartVirsualization>
 
 export type IChartVirsualization = IVirsualization & {
-  fieldId: FieldId
-  chartAggregateFunction: IChartAggregateFunction
+  charType: z.infer<typeof chartTypeSchema>
+  fieldId?: FieldId
+  chartAggregateFunction?: IChartAggregateFunction
 }
 
 export class ChartVirsualization extends VirsualizationVO<IChartVirsualization> {
@@ -51,6 +58,10 @@ export class ChartVirsualization extends VirsualizationVO<IChartVirsualization> 
 
   public get fieldId() {
     return this.props.fieldId
+  }
+
+  public get chartType() {
+    return this.props.charType
   }
 
   public get chartAggregateFunction() {
@@ -61,7 +72,8 @@ export class ChartVirsualization extends VirsualizationVO<IChartVirsualization> 
     return new ChartVirsualization({
       ...super.create(input),
       type: 'chart',
-      fieldId: FieldId.fromString(input.fieldId),
+      charType: input.chartType,
+      fieldId: input.fieldId ? FieldId.fromString(input.fieldId) : undefined,
       chartAggregateFunction: input.chartAggregateFunction,
     })
   }

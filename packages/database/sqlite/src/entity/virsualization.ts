@@ -2,6 +2,7 @@ import type { Rel } from '@mikro-orm/core'
 import { Cascade, Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
 import type {
   IChartAggregateFunction,
+  IChartType,
   IChartVirsualizationSchema,
   INumberAggregateFunction,
   INumberVirsualizationSchema,
@@ -38,14 +39,7 @@ export abstract class Virsualization extends BaseEntity {
   @ManyToOne(() => Table, { cascade: [Cascade.ALL] })
   table: Rel<Table>
 
-  toQuery(): IVirsualizationSchema {
-    return {
-      id: this.id,
-      type: this.type,
-      name: this.name,
-    }
-  }
-
+  abstract toQuery(): IVirsualizationSchema
   abstract toDomain(): VirsualizationVO
 }
 
@@ -65,7 +59,8 @@ export class NumberVirsualization extends Virsualization {
 
   toQuery(): INumberVirsualizationSchema {
     return {
-      ...super.toQuery(),
+      id: this.id,
+      name: this.name,
       type: 'number',
       fieldId: this.fieldId ?? undefined,
       numberAggregateFunction: this.numberAggregateFunction ?? undefined,
@@ -88,21 +83,27 @@ export class ChartVirsualization extends Virsualization {
   constructor(table: Rel<Table>, v: CoreChartVirsualization) {
     super(table, v)
     this.fieldId = v.fieldId?.value ?? null
+    this.chartType = v.chartType
     this.chartAggregateFunction = v.chartAggregateFunction ?? null
   }
 
-  @Property()
-  fieldId: string
+  @Property({ nullable: true })
+  fieldId: string | null
+
+  @Property({ type: 'string', nullable: true })
+  chartAggregateFunction: IChartAggregateFunction | null
 
   @Property({ type: 'string' })
-  chartAggregateFunction: IChartAggregateFunction
+  chartType: IChartType
 
   toQuery(): IChartVirsualizationSchema {
     return {
-      ...super.toQuery(),
+      id: this.id,
+      name: this.name,
       type: 'chart',
-      fieldId: this.fieldId,
-      chartAggregateFunction: this.chartAggregateFunction,
+      chartType: this.chartType,
+      fieldId: this.fieldId ?? undefined,
+      chartAggregateFunction: this.chartAggregateFunction ?? undefined,
     }
   }
 
@@ -110,11 +111,12 @@ export class ChartVirsualization extends Virsualization {
     return CoreChartVirsualization.create({
       id: this.id,
       type: 'chart',
+      chartType: this.chartType,
       name: this.name,
-      fieldId: this.fieldId,
-      chartAggregateFunction: this.chartAggregateFunction,
+      fieldId: this.fieldId ?? undefined,
+      chartAggregateFunction: this.chartAggregateFunction ?? undefined,
     })
   }
 }
 
-export const virsualizationEntities = [Virsualization, NumberVirsualization]
+export const virsualizationEntities = [Virsualization, NumberVirsualization, ChartVirsualization]

@@ -4,10 +4,9 @@ import { virsualizationNameSchema } from './virsualization-name.vo.js'
 
 export const virsualizationTypeSchema = z.enum(['number', 'chart'])
 
-export const virsualizationSchema = z.object({
+export const baseVirsualizationSchema = z.object({
   id: virsualizationIdSchema,
   name: virsualizationNameSchema,
-  type: virsualizationTypeSchema,
 })
 
 export const baseCreateVirsualizationSchema = z.object({

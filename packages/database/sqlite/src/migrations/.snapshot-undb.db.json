@@ -1388,12 +1388,22 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "number"
+            "number",
+            "chart"
           ],
           "mappedType": "text"
         },
         "table_id": {
           "name": "table_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "number_aggregate_function": {
+          "name": "number_aggregate_function",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -1410,8 +1420,17 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "number_aggregate_function": {
-          "name": "number_aggregate_function",
+        "chart_aggregate_function": {
+          "name": "chart_aggregate_function",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "chart_type": {
+          "name": "chart_type",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,

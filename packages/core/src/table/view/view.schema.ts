@@ -3,7 +3,7 @@ import { fieldIdSchema } from '../field/value-objects/field-id.schema.js'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema.js'
 import { rootFilter } from '../filter/filter.js'
 import { calendarSchema } from './calendar/index.js'
-import { dashboardSchema } from './dashboard/dashboard.type.js'
+import { createDashboardSchema, dashboardSchema } from './dashboard/dashboard.type.js'
 import { kanbanSchema } from './kanban/index.js'
 import { sortsSchema } from './sort/sort.schema.js'
 import { treeViewSchema } from './tree-view/index.js'
@@ -37,7 +37,7 @@ export const createViewInput_internal = z.object({
   sorts: sortsSchema.optional(),
   kanban: kanbanSchema.optional(),
   calendar: calendarSchema.optional(),
-  dashboard: dashboardSchema.optional(),
+  dashboard: createDashboardSchema.optional(),
   tree: treeViewSchema.optional(),
   displayType: viewDisplayType.optional(),
   filter: rootFilter.optional(),

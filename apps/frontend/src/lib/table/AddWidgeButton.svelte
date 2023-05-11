@@ -4,7 +4,7 @@
 	import { getTable, getView } from '$lib/store/table'
 	import { COLS, widgeItems } from '$lib/store/widge'
 	import { trpc } from '$lib/trpc/client'
-	import { Button } from 'flowbite-svelte'
+	import { Button, Dropdown, DropdownItem } from 'flowbite-svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -12,15 +12,22 @@
 	const createWidge = trpc().table.view.dashboard.createWidge.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
+			open = false
 		},
 	})
 
-	const add = async () => {
+	let open = true
+
+	const addWidge = () => {
 		const newItem = widgeItems.add()
 		const itemLayout = newItem[COLS]
 		const { x, y, h, w } = itemLayout
 		const layout = { x, y, h, w }
+		return layout
+	}
 
+	const addNumbers = async () => {
+		const layout = addWidge()
 		$createWidge.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
@@ -33,11 +40,42 @@
 			},
 		})
 	}
+
+	const addChart = async () => {
+		const layout = addWidge()
+		$createWidge.mutate({
+			tableId: $table.id.value,
+			viewId: $view.id.value,
+			widge: {
+				layout,
+				virsualization: {
+					name: $t('virsualization bar'),
+					type: 'chart',
+					chartType: 'bar',
+				},
+			},
+		})
+	}
 </script>
 
-<Button size="xs" on:click={add} outline class="h-full !rounded-md items-center whitespace-nowrap flex gap-2">
+<Button
+	on:click={() => (open = true)}
+	size="xs"
+	outline
+	class="h-full !rounded-md items-center whitespace-nowrap flex gap-2"
+>
 	<i class="ti ti-plus" />
 	<span>
 		{$t('add widge')}
 	</span>
 </Button>
+<Dropdown bind:open>
+	<DropdownItem class="flex items-center gap-3" on:click={addNumbers}>
+		<i class="ti ti-123" />
+		<span>{$t('Numbers', { ns: 'common' })}</span>
+	</DropdownItem>
+	<DropdownItem class="flex items-center gap-3" on:click={addChart}>
+		<i class="ti ti-chart-area-line-filled" />
+		<span>{$t('Chart', { ns: 'common' })}</span>
+	</DropdownItem>
+</Dropdown>
