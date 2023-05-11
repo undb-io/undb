@@ -1,7 +1,14 @@
 import type { Rel } from '@mikro-orm/core'
 import { Cascade, Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
-import type { INumberAggregateFunction, INumberVirsualizationSchema, IVirsualizationSchema } from '@undb/core'
+import type {
+  IChartAggregateFunction,
+  IChartVirsualizationSchema,
+  INumberAggregateFunction,
+  INumberVirsualizationSchema,
+  IVirsualizationSchema,
+} from '@undb/core'
 import {
+  ChartVirsualization as CoreChartVirsualization,
   NumberVirsualization as CoreNumberVirsualization,
   type IVirsualizationTypeSchema,
   type VirsualizationVO,
@@ -59,6 +66,7 @@ export class NumberVirsualization extends Virsualization {
   toQuery(): INumberVirsualizationSchema {
     return {
       ...super.toQuery(),
+      type: 'number',
       fieldId: this.fieldId ?? undefined,
       numberAggregateFunction: this.numberAggregateFunction ?? undefined,
     }
@@ -67,10 +75,44 @@ export class NumberVirsualization extends Virsualization {
   toDomain(): CoreNumberVirsualization {
     return CoreNumberVirsualization.create({
       id: this.id,
-      type: this.type,
+      type: 'number',
       name: this.name,
       fieldId: this.fieldId ?? undefined,
       numberAggregateFunction: this.numberAggregateFunction ?? undefined,
+    })
+  }
+}
+
+@Entity({ discriminatorValue: 'chart' })
+export class ChartVirsualization extends Virsualization {
+  constructor(table: Rel<Table>, v: CoreChartVirsualization) {
+    super(table, v)
+    this.fieldId = v.fieldId?.value ?? null
+    this.chartAggregateFunction = v.chartAggregateFunction ?? null
+  }
+
+  @Property()
+  fieldId: string
+
+  @Property({ type: 'string' })
+  chartAggregateFunction: IChartAggregateFunction
+
+  toQuery(): IChartVirsualizationSchema {
+    return {
+      ...super.toQuery(),
+      type: 'chart',
+      fieldId: this.fieldId,
+      chartAggregateFunction: this.chartAggregateFunction,
+    }
+  }
+
+  toDomain(): CoreChartVirsualization {
+    return CoreChartVirsualization.create({
+      id: this.id,
+      type: 'chart',
+      name: this.name,
+      fieldId: this.fieldId,
+      chartAggregateFunction: this.chartAggregateFunction,
     })
   }
 }

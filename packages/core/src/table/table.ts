@@ -62,7 +62,6 @@ import { WithFilter } from './view/specifications/filters.specificaiton.js'
 import { WithSorts } from './view/specifications/sorts.specification.js'
 import { ViewId } from './view/view-id.vo.js'
 import { Views } from './view/views.js'
-import { WithNumberAggregateSpec } from './virsualization/specifications/number-virsualization.specification.js'
 
 /**
  * QueryTable
@@ -487,8 +486,8 @@ export class Table {
       specs.push(spec)
     }
 
-    const spec = WithNumberAggregateSpec.from(input.id, input.fieldId, input.numberAggregateFunction)
-    specs.push(spec)
+    // const spec = WithNumberAggregateSpec.from(input.id, input.fieldId, input.numberAggregateFunction)
+    // specs.push(spec)
 
     return and(...specs).unwrap()
   }

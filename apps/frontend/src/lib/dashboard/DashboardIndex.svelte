@@ -7,6 +7,7 @@
 	import { invalidate } from '$app/navigation'
 	import WidgeItem from './WidgeItem.svelte'
 	import { COLS, widgeItems } from '$lib/store/widge'
+	import Bar from '$lib/virsualization/Bar.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -37,6 +38,7 @@
 </script>
 
 <div class="w-full h-full">
+	<Bar />
 	<Grid
 		bind:items={$widgeItems}
 		rowHeight={100}

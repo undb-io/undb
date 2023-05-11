@@ -1,3 +1,4 @@
+export * from './chart.virsualization.js'
 export * from './number.virsualization.js'
 export * from './specifications/index.js'
 export * from './virsualization-id.vo.js'

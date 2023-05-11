@@ -5,7 +5,7 @@ import {
   baseUpdateVirsualizationSchema,
   virsualizationSchema,
 } from './virsualization.schema.js'
-import type { ICreateVirsualizationSchema, IVirsualization } from './virsualization.type.js'
+import type { IVirsualization } from './virsualization.type.js'
 import { type IVirsualizationTypeSchema } from './virsualization.type.js'
 import type { IVirsualizationVisitor } from './virsualization.visitor.js'
 import { VirsualizationVO } from './virsualization.vo.js'
@@ -18,6 +18,7 @@ export const numberAggregateFunctions: INumberAggregateFunction[] = ['sum', 'ave
 
 export const createNumberVirsualizationSchema = z
   .object({
+    type: z.literal('number'),
     fieldId: fieldIdSchema.optional(),
     numberAggregateFunction: numberAggregateFunction.optional(),
   })
@@ -25,6 +26,7 @@ export const createNumberVirsualizationSchema = z
 
 export const updateNumberVirsualizationSchema = z
   .object({
+    type: z.literal('number'),
     fieldId: fieldIdSchema.optional(),
     numberAggregateFunction: numberAggregateFunction.optional(),
   })
@@ -55,7 +57,7 @@ export class NumberVirsualization extends VirsualizationVO<INumberVirsualization
     return this.props.numberAggregateFunction
   }
 
-  static create(input: ICreateVirsualizationSchema) {
+  static create(input: z.infer<typeof createNumberVirsualizationSchema>) {
     return new NumberVirsualization({
       ...super.create(input),
       type: 'number',
