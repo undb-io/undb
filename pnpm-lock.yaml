@@ -271,14 +271,14 @@ importers:
   apps/frontend:
     devDependencies:
       '@event-calendar/core':
-        specifier: ^0.19.0
-        version: 0.19.0
+        specifier: ^1.0.0
+        version: 1.0.0
       '@event-calendar/day-grid':
-        specifier: ^0.19.0
-        version: 0.19.0
+        specifier: ^1.0.0
+        version: 1.0.0
       '@event-calendar/interaction':
-        specifier: ^0.19.0
-        version: 0.19.0
+        specifier: ^1.0.0
+        version: 1.0.0
       '@event-calendar/time-grid':
         specifier: ^0.19.0
         version: 0.19.0
@@ -370,8 +370,8 @@ importers:
         specifier: ^1.6.5
         version: 1.6.5
       flowbite-svelte:
-        specifier: ^0.34.9
-        version: 0.34.9(@popperjs/core@2.11.7)(classnames@2.3.2)(flowbite@1.6.5)(svelte@3.58.0)
+        specifier: ^0.35.0
+        version: 0.35.1(@algolia/client-search@4.17.0)(@popperjs/core@2.11.7)(classnames@2.3.2)(flowbite@1.6.5)(svelte@3.58.0)
       htm:
         specifier: ^3.1.1
         version: 3.1.1
@@ -418,8 +418,8 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1
       svelte-i18next:
-        specifier: ^1.2.2
-        version: 1.2.2(i18next@22.4.15)(svelte@3.58.0)
+        specifier: ^2.0.0
+        version: 2.0.0(i18next@22.4.15)(svelte@3.58.0)
       svelte-popperjs:
         specifier: ^1.3.2
         version: 1.3.2(@popperjs/core@2.11.7)(svelte@3.58.0)
@@ -776,6 +776,117 @@ importers:
   packages/tsconfig: {}
 
 packages:
+
+  /@algolia/autocomplete-core@1.8.2:
+    resolution: {integrity: sha512-mTeshsyFhAqw/ebqNsQpMtbnjr+qVOSKXArEj4K0d7sqc8It1XD0gkASwecm9mF/jlOQ4Z9RNg1HbdA8JPdRwQ==}
+    dependencies:
+      '@algolia/autocomplete-shared': 1.8.2
+    dev: true
+
+  /@algolia/autocomplete-preset-algolia@1.8.2(@algolia/client-search@4.17.0)(algoliasearch@4.17.0):
+    resolution: {integrity: sha512-J0oTx4me6ZM9kIKPuL3lyU3aB8DEvpVvR6xWmHVROx5rOYJGQcZsdG4ozxwcOyiiu3qxMkIbzntnV1S1VWD8yA==}
+    peerDependencies:
+      '@algolia/client-search': '>= 4.9.1 < 6'
+      algoliasearch: '>= 4.9.1 < 6'
+    dependencies:
+      '@algolia/autocomplete-shared': 1.8.2
+      '@algolia/client-search': 4.17.0
+      algoliasearch: 4.17.0
+    dev: true
+
+  /@algolia/autocomplete-shared@1.8.2:
+    resolution: {integrity: sha512-b6Z/X4MczChMcfhk6kfRmBzPgjoPzuS9KGR4AFsiLulLNRAAqhP+xZTKtMnZGhLuc61I20d5WqlId02AZvcO6g==}
+    dev: true
+
+  /@algolia/cache-browser-local-storage@4.17.0:
+    resolution: {integrity: sha512-myRSRZDIMYB8uCkO+lb40YKiYHi0fjpWRtJpR/dgkaiBlSD0plRyB6lLOh1XIfmMcSeBOqDE7y9m8xZMrXYfyQ==}
+    dependencies:
+      '@algolia/cache-common': 4.17.0
+    dev: true
+
+  /@algolia/cache-common@4.17.0:
+    resolution: {integrity: sha512-g8mXzkrcUBIPZaulAuqE7xyHhLAYAcF2xSch7d9dABheybaU3U91LjBX6eJTEB7XVhEsgK4Smi27vWtAJRhIKQ==}
+    dev: true
+
+  /@algolia/cache-in-memory@4.17.0:
+    resolution: {integrity: sha512-PT32ciC/xI8z919d0oknWVu3kMfTlhQn3MKxDln3pkn+yA7F7xrxSALysxquv+MhFfNAcrtQ/oVvQVBAQSHtdw==}
+    dependencies:
+      '@algolia/cache-common': 4.17.0
+    dev: true
+
+  /@algolia/client-account@4.17.0:
+    resolution: {integrity: sha512-sSEHx9GA6m7wrlsSMNBGfyzlIfDT2fkz2u7jqfCCd6JEEwmxt8emGmxAU/0qBfbhRSuGvzojoLJlr83BSZAKjA==}
+    dependencies:
+      '@algolia/client-common': 4.17.0
+      '@algolia/client-search': 4.17.0
+      '@algolia/transporter': 4.17.0
+    dev: true
+
+  /@algolia/client-analytics@4.17.0:
+    resolution: {integrity: sha512-84ooP8QA3mQ958hQ9wozk7hFUbAO+81CX1CjAuerxBqjKIInh1fOhXKTaku05O/GHBvcfExpPLIQuSuLYziBXQ==}
+    dependencies:
+      '@algolia/client-common': 4.17.0
+      '@algolia/client-search': 4.17.0
+      '@algolia/requester-common': 4.17.0
+      '@algolia/transporter': 4.17.0
+    dev: true
+
+  /@algolia/client-common@4.17.0:
+    resolution: {integrity: sha512-jHMks0ZFicf8nRDn6ma8DNNsdwGgP/NKiAAL9z6rS7CymJ7L0+QqTJl3rYxRW7TmBhsUH40wqzmrG6aMIN/DrQ==}
+    dependencies:
+      '@algolia/requester-common': 4.17.0
+      '@algolia/transporter': 4.17.0
+    dev: true
+
+  /@algolia/client-personalization@4.17.0:
+    resolution: {integrity: sha512-RMzN4dZLIta1YuwT7QC9o+OeGz2cU6eTOlGNE/6RcUBLOU3l9tkCOdln5dPE2jp8GZXPl2yk54b2nSs1+pAjqw==}
+    dependencies:
+      '@algolia/client-common': 4.17.0
+      '@algolia/requester-common': 4.17.0
+      '@algolia/transporter': 4.17.0
+    dev: true
+
+  /@algolia/client-search@4.17.0:
+    resolution: {integrity: sha512-x4P2wKrrRIXszT8gb7eWsMHNNHAJs0wE7/uqbufm4tZenAp+hwU/hq5KVsY50v+PfwM0LcDwwn/1DroujsTFoA==}
+    dependencies:
+      '@algolia/client-common': 4.17.0
+      '@algolia/requester-common': 4.17.0
+      '@algolia/transporter': 4.17.0
+    dev: true
+
+  /@algolia/logger-common@4.17.0:
+    resolution: {integrity: sha512-DGuoZqpTmIKJFDeyAJ7M8E/LOenIjWiOsg1XJ1OqAU/eofp49JfqXxbfgctlVZVmDABIyOz8LqEoJ6ZP4DTyvw==}
+    dev: true
+
+  /@algolia/logger-console@4.17.0:
+    resolution: {integrity: sha512-zMPvugQV/gbXUvWBCzihw6m7oxIKp48w37QBIUu/XqQQfxhjoOE9xyfJr1KldUt5FrYOKZJVsJaEjTsu+bIgQg==}
+    dependencies:
+      '@algolia/logger-common': 4.17.0
+    dev: true
+
+  /@algolia/requester-browser-xhr@4.17.0:
+    resolution: {integrity: sha512-aSOX/smauyTkP21Pf52pJ1O2LmNFJ5iHRIzEeTh0mwBeADO4GdG94cAWDILFA9rNblq/nK3EDh3+UyHHjplZ1A==}
+    dependencies:
+      '@algolia/requester-common': 4.17.0
+    dev: true
+
+  /@algolia/requester-common@4.17.0:
+    resolution: {integrity: sha512-XJjmWFEUlHu0ijvcHBoixuXfEoiRUdyzQM6YwTuB8usJNIgShua8ouFlRWF8iCeag0vZZiUm4S2WCVBPkdxFgg==}
+    dev: true
+
+  /@algolia/requester-node-http@4.17.0:
+    resolution: {integrity: sha512-bpb/wDA1aC6WxxM8v7TsFspB7yBN3nqCGs2H1OADolQR/hiAIjAxusbuMxVbRFOdaUvAIqioIIkWvZdpYNIn8w==}
+    dependencies:
+      '@algolia/requester-common': 4.17.0
+    dev: true
+
+  /@algolia/transporter@4.17.0:
+    resolution: {integrity: sha512-6xL6H6fe+Fi0AEP3ziSgC+G04RK37iRb4uUUqVAH9WPYFI8g+LYFq6iv5HS8Cbuc5TTut+Bwj6G+dh/asdb9uA==}
+    dependencies:
+      '@algolia/cache-common': 4.17.0
+      '@algolia/logger-common': 4.17.0
+      '@algolia/requester-common': 4.17.0
+    dev: true
 
   /@alloc/quick-lru@5.2.0:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -1395,6 +1506,44 @@ packages:
       '@jridgewell/trace-mapping': 0.3.9
     dev: true
 
+  /@docsearch/css@3.3.4:
+    resolution: {integrity: sha512-vDwCDoVXDgopw/hvr0zEADew2wWaGP8Qq0Bxhgii1Ewz2t4fQeyJwIRN/mWADeLFYPVkpz8TpEbxya/i6Tm0WA==}
+    dev: true
+
+  /@docsearch/js@3.3.4(@algolia/client-search@4.17.0):
+    resolution: {integrity: sha512-Xd2saBziXJ1UuVpcDz94zAFEFAM6ap993agh0za2e3LDZLhaW993b1f9gyUL4e1CZLsR076tztG2un2gVncvpA==}
+    dependencies:
+      '@docsearch/react': 3.3.4(@algolia/client-search@4.17.0)
+      preact: 10.12.1
+    transitivePeerDependencies:
+      - '@algolia/client-search'
+      - '@types/react'
+      - react
+      - react-dom
+    dev: true
+
+  /@docsearch/react@3.3.4(@algolia/client-search@4.17.0):
+    resolution: {integrity: sha512-aeOf1WC5zMzBEi2SI6WWznOmIo9rnpN4p7a3zHXxowVciqlI4HsZGtOR9nFOufLeolv7HibwLlaM0oyUqJxasw==}
+    peerDependencies:
+      '@types/react': '>= 16.8.0 < 19.0.0'
+      react: '>= 16.8.0 < 19.0.0'
+      react-dom: '>= 16.8.0 < 19.0.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@algolia/autocomplete-core': 1.8.2
+      '@algolia/autocomplete-preset-algolia': 1.8.2(@algolia/client-search@4.17.0)(algoliasearch@4.17.0)
+      '@docsearch/css': 3.3.4
+      algoliasearch: 4.17.0
+    transitivePeerDependencies:
+      - '@algolia/client-search'
+    dev: true
+
   /@esbuild/android-arm64@0.17.18:
     resolution: {integrity: sha512-/iq0aK0eeHgSC3z55ucMAHO05OIqmQehiGay8eP5l/5l+iEr4EIbh4/MI8xD9qRFjqzgkc0JkX0LculNC9mXBw==}
     engines: {node: '>=12'}
@@ -1632,31 +1781,37 @@ packages:
       svelte: 3.58.0
     dev: true
 
-  /@event-calendar/core@0.19.0:
-    resolution: {integrity: sha512-F59xdeHpLG3oa3sBMkf2g0JmVWRFx0cokycqI9eq1xI70zisVbTg4Mnj1QcD0P7xEY+RFmYgMhVwtkMpRx7WqQ==}
+  /@event-calendar/common@1.0.0:
+    resolution: {integrity: sha512-6nCMJwBtHGIoj63iWZXE5MW6WwF5tZFsqxCIhF28rWxjRkJg0NKH4BUP9P+F/D76PzUots3GCdmpar7PJ8uRZA==}
     dependencies:
-      '@event-calendar/common': 0.19.0
       svelte: 3.58.0
     dev: true
 
-  /@event-calendar/day-grid@0.19.0:
-    resolution: {integrity: sha512-FMoca5AOPCN1YuDsM7eirbLZA8ByYcUVZsfl/naKiTFtrDKRMTDrKS90LO9BFwSCIjSyNVu9/bRZ1uj2U7PUSw==}
+  /@event-calendar/core@1.0.0:
+    resolution: {integrity: sha512-V0y0Roeu6iH7JhMm8yPgWd82zaZTEWiYbrtEnrXaxnV/afuZ/VjH741CHAHEL3N4xfyWmPi/1n12kmYVSUGABw==}
     dependencies:
-      '@event-calendar/common': 0.19.0
+      '@event-calendar/common': 1.0.0
       svelte: 3.58.0
     dev: true
 
-  /@event-calendar/interaction@0.19.0:
-    resolution: {integrity: sha512-cPi/xTdQh5CCEaMzSgE5rJ/EGMcN0EoD/qSDcKtVIrJE+caF2itS10agtoBjDeCkWQPKKD9W+bJutzGqjBp8vQ==}
+  /@event-calendar/day-grid@1.0.0:
+    resolution: {integrity: sha512-M6o6FFlxVewZV5imPanSTi3+9jwGP+UYQUkhp9m451w8UBDwLXXUwqCxL8Jp0v409mlV1ByQHjjHZNy2pIICLw==}
     dependencies:
-      '@event-calendar/common': 0.19.0
+      '@event-calendar/common': 1.0.0
       svelte: 3.58.0
     dev: true
 
-  /@event-calendar/time-grid@0.19.0:
-    resolution: {integrity: sha512-ARJxf4QpDCFizM82XNdsIgF2aIGtkXKVP3wzhVnsnYnHQ0XIRB2sOTqD000KyAVXh9PaW8irUhKkOT08dMY9CA==}
+  /@event-calendar/interaction@1.0.0:
+    resolution: {integrity: sha512-LpYW98/T1zfitoYAub3Gw4M6OthQ06ZVQx1jiNXbsScBnEU2NAgUQUvD4NLjMnn8aDibyNM+UYhb6Mx1tYdzyA==}
     dependencies:
-      '@event-calendar/common': 0.19.0
+      '@event-calendar/common': 1.0.0
+      svelte: 3.58.0
+    dev: true
+
+  /@event-calendar/time-grid@1.0.0:
+    resolution: {integrity: sha512-RUcmKchYGH5HB+w9ucxaxPIm8ji1/2MkguZKnZvUuy6nXn88dSB8awyoD3z2TyLpO3IfcaJonSGNoIs9Ddr8kA==}
+    dependencies:
+      '@event-calendar/common': 1.0.0
       svelte: 3.58.0
     dev: true
 
@@ -3828,6 +3983,25 @@ packages:
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
       uri-js: 4.4.1
+    dev: true
+
+  /algoliasearch@4.17.0:
+    resolution: {integrity: sha512-JMRh2Mw6sEnVMiz6+APsi7lx9a2jiDFF+WUtANaUVCv6uSU9UOLdo5h9K3pdP6frRRybaM2fX8b1u0nqICS9aA==}
+    dependencies:
+      '@algolia/cache-browser-local-storage': 4.17.0
+      '@algolia/cache-common': 4.17.0
+      '@algolia/cache-in-memory': 4.17.0
+      '@algolia/client-account': 4.17.0
+      '@algolia/client-analytics': 4.17.0
+      '@algolia/client-common': 4.17.0
+      '@algolia/client-personalization': 4.17.0
+      '@algolia/client-search': 4.17.0
+      '@algolia/logger-common': 4.17.0
+      '@algolia/logger-console': 4.17.0
+      '@algolia/requester-browser-xhr': 4.17.0
+      '@algolia/requester-common': 4.17.0
+      '@algolia/requester-node-http': 4.17.0
+      '@algolia/transporter': 4.17.0
     dev: true
 
   /ansi-align@3.0.1:
@@ -6043,8 +6217,8 @@ packages:
   /flatted@3.2.7:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
 
-  /flowbite-svelte@0.34.9(@popperjs/core@2.11.7)(classnames@2.3.2)(flowbite@1.6.5)(svelte@3.58.0):
-    resolution: {integrity: sha512-HtDpkYYWyQ6oLYn0ramv6euWiq6wtDizPxcbcM2ytvepHZ2aNMsekNstzBv2R3K4jOJv3lYwrndQzeqC1aP0PQ==}
+  /flowbite-svelte@0.35.1(@algolia/client-search@4.17.0)(@popperjs/core@2.11.7)(classnames@2.3.2)(flowbite@1.6.5)(svelte@3.58.0):
+    resolution: {integrity: sha512-163TSS0xa3Wa0+neLojkIxyvTG096MWq/1q9BiV1PzbT4UMIcrq14OkZqGxg3JtQExfUa1iIvUC0JculKKIOYQ==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     peerDependencies:
       '@popperjs/core': ^2.11.6
@@ -6052,10 +6226,16 @@ packages:
       flowbite: ^1.6.3
       svelte: ^3.55.1
     dependencies:
+      '@docsearch/js': 3.3.4(@algolia/client-search@4.17.0)
       '@popperjs/core': 2.11.7
       classnames: 2.3.2
       flowbite: 1.6.5
       svelte: 3.58.0
+    transitivePeerDependencies:
+      - '@algolia/client-search'
+      - '@types/react'
+      - react
+      - react-dom
     dev: true
 
   /flowbite@1.6.5:
@@ -10550,8 +10730,8 @@ packages:
       svelte: 3.58.0
     dev: true
 
-  /svelte-i18next@1.2.2(i18next@22.4.15)(svelte@3.58.0):
-    resolution: {integrity: sha512-a5eNuDpxAD6TO0s7jlWuFjOYvT4kggbkXpcZCHBeNnWMHj+sNELQdrVsvubD2hLr8WC7OoF0pDfU/IuuvZp7OQ==}
+  /svelte-i18next@2.0.0(i18next@22.4.15)(svelte@3.58.0):
+    resolution: {integrity: sha512-Y03grFPNI+9fkAx5fgrz9SJY5/tAEBJ512YVP2GN+6nAPNvkY4cgowpUG1KFZzBBthy3FygluBw3jBvhGs6kWQ==}
     peerDependencies:
       i18next: '*'
       svelte: '*'
