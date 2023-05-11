@@ -6,6 +6,18 @@ const config = {
 	theme: {
 		extend: {
 			colors: {
+				primary: {
+					50: '#eff6ff',
+					100: '#dbeafe',
+					200: '#bfdbfe',
+					300: '#93c5fd',
+					400: '#60a5fa',
+					500: '#3b82f6',
+					600: '#2563eb',
+					700: '#1d4ed8',
+					800: '#1e40af',
+					900: '#1e3a8a',
+				},
 				// Now we build the full color palette, using all colors available
 				// as shown at this link: https://tailwindcss.com/docs/customizing-colors#color-palette-reference
 				transparent: 'transparent',
