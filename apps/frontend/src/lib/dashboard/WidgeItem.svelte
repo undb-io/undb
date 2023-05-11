@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation'
-	import { currentVirsualization, virsualizationOpen } from '$lib/store/modal'
-	import { getTable } from '$lib/store/table'
+	import { virsualizationOpen } from '$lib/store/modal'
+	import { currentVirsualizationId, getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import Virsualization from '$lib/virsualization/Virsualization.svelte'
 	import type { WidgeDataItem } from './widge-item.type'
 
 	const table = getTable()
+
 	export let dataItem: WidgeDataItem
 	export let movePointerDown: (e: Event) => void
 	export let resizePointerDown: (e: Event) => void
@@ -43,7 +44,7 @@
 </script>
 
 <div class="group flex flex-col bg-white !opacity-100 border rounded-md w-full h-full hover:border-blue-400 transition">
-	<div class="flex justify-between items-center gap-1 border-b border-gray-300 p-3 grow-0 h-10">
+	<div class="flex justify-between items-center gap-1 border-b border-gray-200 p-3 grow-0 h-10">
 		<div class="flex items-center gap-1">
 			<i
 				on:pointerdown={movePointerDown}
@@ -70,7 +71,7 @@
 			<button
 				on:click={() => {
 					$virsualizationOpen = true
-					$currentVirsualization = dataItem.widge?.virsualization
+					$currentVirsualizationId = dataItem.widge?.virsualization?.id.value
 				}}
 			>
 				<i class="text-gray-400 ti ti-arrows-diagonal" />

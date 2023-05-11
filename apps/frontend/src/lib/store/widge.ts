@@ -21,6 +21,10 @@ export const createWidgeItems = () => {
 			widges.map((widge) => ({
 				[COLS]: gridHelp.item({
 					...widge.layout.toJSON(),
+					min: {
+						w: 3,
+						h: 2,
+					},
 					customDragger: true,
 					customResizer: true,
 				}),
@@ -38,6 +42,10 @@ export const createWidgeItems = () => {
 				h: 2,
 				x: 0,
 				y: 0,
+				min: {
+					w: 3,
+					h: 2,
+				},
 				customDragger: true,
 				customResizer: true,
 			}),

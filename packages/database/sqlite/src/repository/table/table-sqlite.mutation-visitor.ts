@@ -382,9 +382,14 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.persist(virsualization)
   }
   withNumberAggregate(s: WithNumberAggregateSpec): void {
-    const virsualization = this.em.getReference(NumberVirsualization, s.virsualizationId.value)
-    wrap(virsualization).assign({ fieldId: s.fieldId.value, numberAggregateFunction: s.aggregateFunction })
-    this.em.persist(virsualization)
+    this.addJobs(async () => {
+      const virsualization = await this.em.findOne(NumberVirsualization, s.virsualizationId.value)
+      if (virsualization) {
+        virsualization.fieldId = s.fieldId?.value ?? null
+        virsualization.numberAggregateFunction = s.aggregateFunction ?? null
+        await this.em.persistAndFlush(virsualization)
+      }
+    })
   }
   not(): this {
     return this

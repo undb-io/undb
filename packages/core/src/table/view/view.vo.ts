@@ -334,12 +334,16 @@ export class ViewVO extends ValueObject<IView> {
     return spec
   }
 
-  public mustGetVirsualization(virsualizationId: string): VirsualizationVO {
+  public getVirsualization(virsualizationId: string): VirsualizationVO | undefined {
     const dashboard = this.dashboard.into()
-    if (!dashboard) throw new Error('not found virsualization')
-    const widge = dashboard.widges.find((w) => w.virsualization?.id.value === virsualizationId)
-    if (!widge?.virsualization) throw new Error('not found virsualization')
-    return widge.virsualization
+    const widge = dashboard?.widges.find((w) => w.virsualization?.id.value === virsualizationId)
+    return widge?.virsualization
+  }
+
+  public mustGetVirsualization(virsualizationId: string): VirsualizationVO {
+    const virsualization = this.getVirsualization(virsualizationId)
+    if (!virsualization) throw new Error('not found virsualization')
+    return virsualization
   }
 
   setFilter(filter: IRootFilter | null) {

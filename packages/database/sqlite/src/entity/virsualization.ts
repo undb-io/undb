@@ -46,21 +46,21 @@ export abstract class Virsualization extends BaseEntity {
 export class NumberVirsualization extends Virsualization {
   constructor(table: Rel<Table>, v: CoreNumberVirsualization) {
     super(table, v)
-    this.fieldId = v.fieldId?.value
-    this.numberAggregateFunction = v.numberAggregateFunction
+    this.fieldId = v.fieldId?.value ?? null
+    this.numberAggregateFunction = v.numberAggregateFunction ?? null
   }
 
   @Property({ nullable: true })
-  fieldId?: string
+  fieldId: string | null
 
   @Property({ type: 'string', nullable: true })
-  numberAggregateFunction?: INumberAggregateFunction
+  numberAggregateFunction: INumberAggregateFunction | null
 
   toQuery(): INumberVirsualizationSchema {
     return {
       ...super.toQuery(),
-      fieldId: this.fieldId,
-      numberAggregateFunction: this.numberAggregateFunction,
+      fieldId: this.fieldId ?? undefined,
+      numberAggregateFunction: this.numberAggregateFunction ?? undefined,
     }
   }
 
@@ -69,8 +69,8 @@ export class NumberVirsualization extends Virsualization {
       id: this.id,
       type: this.type,
       name: this.name,
-      fieldId: this.fieldId,
-      numberAggregateFunction: this.numberAggregateFunction,
+      fieldId: this.fieldId ?? undefined,
+      numberAggregateFunction: this.numberAggregateFunction ?? undefined,
     })
   }
 }

@@ -10,11 +10,11 @@ import { type IVirsualizationTypeSchema } from './virsualization.type.js'
 import type { IVirsualizationVisitor } from './virsualization.visitor.js'
 import { VirsualizationVO } from './virsualization.vo.js'
 
-const numberAggregateFunction = z.enum(['sum', 'average', 'min', 'max'])
+const numberAggregateFunction = z.enum(['sum', 'average', 'min', 'max', 'count'])
 
 export type INumberAggregateFunction = z.infer<typeof numberAggregateFunction>
 
-export const numberAggregateFunctions: INumberAggregateFunction[] = ['sum', 'average', 'max', 'min']
+export const numberAggregateFunctions: INumberAggregateFunction[] = ['sum', 'average', 'max', 'min', 'count']
 
 export const createNumberVirsualizationSchema = z
   .object({

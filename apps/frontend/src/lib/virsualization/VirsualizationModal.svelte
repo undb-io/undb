@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { currentVirsualization, virsualizationOpen } from '$lib/store/modal'
+	import { virsualizationOpen } from '$lib/store/modal'
 	import { Modal } from 'flowbite-svelte'
 	import Virsualization from './Virsualization.svelte'
 	import VirsualizationSetting from './setting/VirsualizationSetting.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
-	import { getTable } from '$lib/store/table'
+	import { currentVirsualization, getTable } from '$lib/store/table'
 
 	const table = getTable()
 	export let updating = false
@@ -55,8 +55,8 @@
 		{/if}
 	</svelte:fragment>
 	<div class="flex items-center h-full">
-		<Virsualization virsualization={$currentVirsualization} class="text-[350px] h-full" />
-		<div class="flex flex-col h-full basis-[400px] pl-2">
+		<Virsualization virsualization={$currentVirsualization} class="text-[200px] h-full flex-1" />
+		<div class="flex flex-col h-full shrink-0 w-[400px] pl-2">
 			<VirsualizationSetting virsualization={$currentVirsualization} />
 		</div>
 	</div>

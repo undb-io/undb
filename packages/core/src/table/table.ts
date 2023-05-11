@@ -487,10 +487,8 @@ export class Table {
       specs.push(spec)
     }
 
-    if (isString(input.fieldId) && isString(input.numberAggregateFunction)) {
-      const spec = WithNumberAggregateSpec.from(input.id, input.fieldId, input.numberAggregateFunction)
-      specs.push(spec)
-    }
+    const spec = WithNumberAggregateSpec.from(input.id, input.fieldId, input.numberAggregateFunction)
+    specs.push(spec)
 
     return and(...specs).unwrap()
   }

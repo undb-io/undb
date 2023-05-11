@@ -9,14 +9,18 @@ import { VirsualizationID } from '../virsualization-id.vo.js'
 export class WithNumberAggregateSpec extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(
     public readonly virsualizationId: VirsualizationID,
-    public readonly fieldId: FieldId,
-    public readonly aggregateFunction: INumberAggregateFunction,
+    public readonly fieldId?: FieldId,
+    public readonly aggregateFunction?: INumberAggregateFunction,
   ) {
     super()
   }
 
-  static from(virsualizationId: string, fieldId: string, aggregateFunction: INumberAggregateFunction) {
-    return new this(VirsualizationID.from(virsualizationId).unwrap(), FieldId.fromString(fieldId), aggregateFunction)
+  static from(virsualizationId: string, fieldId?: string, aggregateFunction?: INumberAggregateFunction) {
+    return new this(
+      VirsualizationID.from(virsualizationId).unwrap(),
+      fieldId ? FieldId.fromString(fieldId) : undefined,
+      aggregateFunction,
+    )
   }
 
   isSatisfiedBy(t: Table): boolean {

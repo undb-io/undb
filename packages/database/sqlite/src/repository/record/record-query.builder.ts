@@ -143,9 +143,8 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
       case 'max':
         this.qb.max(`${fieldId} as number`)
         break
-
-      default:
-        break
+      case 'count':
+        this.qb.count(`${fieldId} as number`).whereNotNull(fieldId)
     }
     return this
   }

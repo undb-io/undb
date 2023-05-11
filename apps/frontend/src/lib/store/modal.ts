@@ -1,4 +1,4 @@
-import type { ICreateFieldSchema, RecordValueJSON, VirsualizationVO } from '@undb/core'
+import type { ICreateFieldSchema, RecordValueJSON } from '@undb/core'
 import { writable } from 'svelte/store'
 
 export const createTableOpen = writable<boolean>(false)
@@ -20,4 +20,3 @@ export const updateFieldOpen = writable<boolean>(false)
 export const confirmDeleteField = writable<boolean>(false)
 
 export const virsualizationOpen = writable<boolean>(false)
-export const currentVirsualization = writable<VirsualizationVO | undefined>()
