@@ -2,7 +2,7 @@ import { EntityManager } from '@mikro-orm/better-sqlite'
 import {
   ClsStore,
   Table as CoreTable,
-  View as CoreView,
+  ViewVO as CoreView,
   ReferenceField,
   Views,
   WithNewField,
