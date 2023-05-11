@@ -1,6 +1,6 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Button, Heading, Radio, Toast } from 'flowbite-svelte'
+	import { Button, Radio, Toast } from 'flowbite-svelte'
 	import type { NumberVirsualization as CoreNumberVirsualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
 	import { getTable, getView } from '$lib/store/table'
@@ -17,11 +17,6 @@
 	export let virsualization: CoreNumberVirsualization
 
 	let mode: 'table' | 'field' = virsualization.fieldId ? 'field' : 'table'
-
-	$: if (mode === 'table') {
-		fieldId = undefined
-		numberAggregateFunction = undefined
-	}
 
 	let fieldId = virsualization.fieldId?.value
 	let numberAggregateFunction = virsualization.numberAggregateFunction
@@ -53,7 +48,7 @@
 		numberAggregateFunction === virsualization.numberAggregateFunction
 
 	const onSubmit = () => {
-		if (mode !== 'field' || (fieldId && numberAggregateFunction)) {
+		if (mode === 'field' && fieldId && numberAggregateFunction) {
 			$updateVirsualization.mutate({
 				tableId: $table.id.value,
 				virsualization: {
@@ -61,6 +56,14 @@
 					type: virsualization.type,
 					fieldId,
 					numberAggregateFunction,
+				},
+			})
+		} else if (mode === 'table') {
+			$updateVirsualization.mutate({
+				tableId: $table.id.value,
+				virsualization: {
+					id: virsualization.id.value,
+					type: virsualization.type,
 				},
 			})
 		}
