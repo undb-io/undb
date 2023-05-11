@@ -280,8 +280,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       '@event-calendar/time-grid':
-        specifier: ^0.19.0
-        version: 0.19.0
+        specifier: ^1.0.0
+        version: 1.0.0
       '@playwright/test':
         specifier: ^1.33.0
         version: 1.33.0
@@ -1514,7 +1514,7 @@ packages:
     resolution: {integrity: sha512-Xd2saBziXJ1UuVpcDz94zAFEFAM6ap993agh0za2e3LDZLhaW993b1f9gyUL4e1CZLsR076tztG2un2gVncvpA==}
     dependencies:
       '@docsearch/react': 3.3.4(@algolia/client-search@4.17.0)
-      preact: 10.12.1
+      preact: 10.13.2
     transitivePeerDependencies:
       - '@algolia/client-search'
       - '@types/react'
@@ -1774,12 +1774,6 @@ packages:
   /@eslint/js@8.39.0:
     resolution: {integrity: sha512-kf9RB0Fg7NZfap83B3QOqOGg9QmD9yBudqQXzzOtn3i4y7ZUXe5ONeW34Gwi+TxhH4mvj72R1Zc300KUMa9Bng==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-
-  /@event-calendar/common@0.19.0:
-    resolution: {integrity: sha512-YSN9XuWy/u6jhAf+YrDBkbooJYaXQdHT07LAmNW7khrV5NvMVy8eSnNEt+f7ewrh7uNywKxJViMAh+koL5owZw==}
-    dependencies:
-      svelte: 3.58.0
-    dev: true
 
   /@event-calendar/common@1.0.0:
     resolution: {integrity: sha512-6nCMJwBtHGIoj63iWZXE5MW6WwF5tZFsqxCIhF28rWxjRkJg0NKH4BUP9P+F/D76PzUots3GCdmpar7PJ8uRZA==}
@@ -9488,6 +9482,10 @@ packages:
       nanoid: 3.3.6
       picocolors: 1.0.0
       source-map-js: 1.0.2
+    dev: true
+
+  /preact@10.13.2:
+    resolution: {integrity: sha512-q44QFLhOhty2Bd0Y46fnYW0gD/cbVM9dUVtNTDKPcdXSMA7jfY+Jpd6rk3GB0lcQss0z5s/6CmVP0Z/hV+g6pw==}
     dev: true
 
   /prebuild-install@7.1.1:
