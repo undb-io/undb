@@ -280,8 +280,8 @@ importers:
         specifier: ^0.19.0
         version: 0.19.0
       '@event-calendar/time-grid':
-        specifier: ^0.19.0
-        version: 0.19.0
+        specifier: ^1.0.0
+        version: 1.0.0
       '@fullcalendar/core':
         specifier: ^6.1.6
         version: 6.1.6
@@ -1641,6 +1641,12 @@ packages:
       svelte: 3.58.0
     dev: true
 
+  /@event-calendar/common@1.0.0:
+    resolution: {integrity: sha512-6nCMJwBtHGIoj63iWZXE5MW6WwF5tZFsqxCIhF28rWxjRkJg0NKH4BUP9P+F/D76PzUots3GCdmpar7PJ8uRZA==}
+    dependencies:
+      svelte: 3.58.0
+    dev: true
+
   /@event-calendar/core@0.19.0:
     resolution: {integrity: sha512-F59xdeHpLG3oa3sBMkf2g0JmVWRFx0cokycqI9eq1xI70zisVbTg4Mnj1QcD0P7xEY+RFmYgMhVwtkMpRx7WqQ==}
     dependencies:
@@ -1662,10 +1668,10 @@ packages:
       svelte: 3.58.0
     dev: true
 
-  /@event-calendar/time-grid@0.19.0:
-    resolution: {integrity: sha512-ARJxf4QpDCFizM82XNdsIgF2aIGtkXKVP3wzhVnsnYnHQ0XIRB2sOTqD000KyAVXh9PaW8irUhKkOT08dMY9CA==}
+  /@event-calendar/time-grid@1.0.0:
+    resolution: {integrity: sha512-RUcmKchYGH5HB+w9ucxaxPIm8ji1/2MkguZKnZvUuy6nXn88dSB8awyoD3z2TyLpO3IfcaJonSGNoIs9Ddr8kA==}
     dependencies:
-      '@event-calendar/common': 0.19.0
+      '@event-calendar/common': 1.0.0
       svelte: 3.58.0
     dev: true
 
