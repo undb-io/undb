@@ -274,11 +274,11 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       '@event-calendar/day-grid':
-        specifier: ^0.19.0
-        version: 0.19.0
+        specifier: ^1.0.0
+        version: 1.0.0
       '@event-calendar/interaction':
-        specifier: ^0.19.0
-        version: 0.19.0
+        specifier: ^1.0.0
+        version: 1.0.0
       '@event-calendar/time-grid':
         specifier: ^1.0.0
         version: 1.0.0
@@ -1654,17 +1654,17 @@ packages:
       svelte: 3.58.0
     dev: true
 
-  /@event-calendar/day-grid@0.19.0:
-    resolution: {integrity: sha512-FMoca5AOPCN1YuDsM7eirbLZA8ByYcUVZsfl/naKiTFtrDKRMTDrKS90LO9BFwSCIjSyNVu9/bRZ1uj2U7PUSw==}
+  /@event-calendar/day-grid@1.0.0:
+    resolution: {integrity: sha512-M6o6FFlxVewZV5imPanSTi3+9jwGP+UYQUkhp9m451w8UBDwLXXUwqCxL8Jp0v409mlV1ByQHjjHZNy2pIICLw==}
     dependencies:
-      '@event-calendar/common': 0.19.0
+      '@event-calendar/common': 1.0.0
       svelte: 3.58.0
     dev: true
 
-  /@event-calendar/interaction@0.19.0:
-    resolution: {integrity: sha512-cPi/xTdQh5CCEaMzSgE5rJ/EGMcN0EoD/qSDcKtVIrJE+caF2itS10agtoBjDeCkWQPKKD9W+bJutzGqjBp8vQ==}
+  /@event-calendar/interaction@1.0.0:
+    resolution: {integrity: sha512-LpYW98/T1zfitoYAub3Gw4M6OthQ06ZVQx1jiNXbsScBnEU2NAgUQUvD4NLjMnn8aDibyNM+UYhb6Mx1tYdzyA==}
     dependencies:
-      '@event-calendar/common': 0.19.0
+      '@event-calendar/common': 1.0.0
       svelte: 3.58.0
     dev: true
 
