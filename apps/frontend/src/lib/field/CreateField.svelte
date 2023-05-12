@@ -65,6 +65,7 @@
 		placement="top-center"
 		class="static w-full rounded-sm"
 		size="lg"
+		backdropClasses="fixed inset-0 z-[49] bg-gray-900 bg-opacity-50 dark:bg-opacity-80"
 		bind:open={$createFieldOpen}
 	>
 		<form method="POST" id="createField" use:enhance>

@@ -40,7 +40,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<Modal size="xl" class="w-full h-[calc(100vh-64px)] p-0" bind:open={$virsualizationOpen} defaultClass="!p-0">
+<Modal size="xl" class="w-full h-[calc(100vh-64px)] p-0" bind:open={$virsualizationOpen}>
 	<svelte:fragment slot="header">
 		{#if $currentVirsualization && updating}
 			<input
@@ -54,8 +54,8 @@
 			<h1 on:click={() => (updating = true)}>{$currentVirsualization?.name.value}</h1>
 		{/if}
 	</svelte:fragment>
-	<div class="flex items-center h-full">
-		<Virsualization virsualization={$currentVirsualization} class="text-[200px] h-full flex-1" />
+	<div class="flex items-center h-full w-full">
+		<Virsualization virsualization={$currentVirsualization} class="text-[200px] h-full flex-1 w-full" />
 		<div class="flex flex-col h-full shrink-0 w-[400px] pl-2">
 			<VirsualizationSetting virsualization={$currentVirsualization} />
 		</div>

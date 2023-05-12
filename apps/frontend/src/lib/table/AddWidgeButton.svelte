@@ -16,7 +16,7 @@
 		},
 	})
 
-	let open = true
+	let open = false
 
 	const addWidge = () => {
 		const newItem = widgeItems.add()
