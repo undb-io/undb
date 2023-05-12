@@ -1,6 +1,6 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
-import { IRecordSpec, VirsualizationVO } from '@undb/core'
+import { ChartVirsualization, IRecordSpec, VirsualizationVO } from '@undb/core'
 import type { EntityManager } from '@undb/sqlite'
 import { RecordSqliteAggregateRepository } from '@undb/sqlite'
 
@@ -13,5 +13,10 @@ export class NestAggregateSqliteQueryModel extends RecordSqliteAggregateReposito
   @UseRequestContext()
   async number(tableId: string, virsualization: VirsualizationVO, spec: IRecordSpec | null): Promise<number> {
     return super.number(tableId, virsualization, spec)
+  }
+
+  @UseRequestContext()
+  async chart(tableId: string, virsualization: ChartVirsualization, spec: IRecordSpec | null): Promise<any> {
+    return super.chart(tableId, virsualization, spec)
   }
 }

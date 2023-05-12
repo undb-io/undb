@@ -1,12 +1,14 @@
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import type { Table as CoreTable, INumberAggregateFunction, IRecordSpec } from '@undb/core'
+import type { Table as CoreTable, IRecordSpec, VirsualizationVO } from '@undb/core'
 import {
+  ChartVirsualization,
   SelectField as CoreSelectField,
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
   INTERNAL_COLUMN_UPDATED_BY_NAME,
+  NumberVirsualization,
 } from '@undb/core'
 import { union } from 'lodash-es'
 import type { Promisable } from 'type-fest'
@@ -125,27 +127,43 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     return this
   }
 
-  aggregate(aggregateFunction?: INumberAggregateFunction, fieldId?: string): this {
-    if (!fieldId || !aggregateFunction) {
-      this.qb.count('* as number')
-      return this
+  aggregate(virsualization: VirsualizationVO): this {
+    if (virsualization instanceof NumberVirsualization) {
+      const fieldId = virsualization.fieldId?.value
+      const numberAggregateFunction = virsualization.numberAggregateFunction
+      if (!fieldId || !numberAggregateFunction) {
+        this.qb.count('* as number')
+        return this
+      }
+
+      switch (numberAggregateFunction) {
+        case 'sum':
+          this.qb.sum(`${fieldId} as number`)
+          break
+        case 'average':
+          this.qb.avg(`${fieldId} as number`)
+          break
+        case 'min':
+          this.qb.min(`${fieldId} as number`)
+          break
+        case 'max':
+          this.qb.max(`${fieldId} as number`)
+          break
+        case 'count':
+          this.qb.count(`${fieldId} as number`).whereNotNull(fieldId)
+      }
+    } else if (virsualization instanceof ChartVirsualization) {
+      const fieldId = virsualization.fieldId?.value
+      if (!fieldId) return this
+      const chartAggregateFunction = virsualization.chartAggregateFunction
+
+      switch (chartAggregateFunction) {
+        case 'count':
+          this.qb.select(`${fieldId} as key`).groupBy(fieldId).count('* as value')
+          break
+      }
     }
-    switch (aggregateFunction) {
-      case 'sum':
-        this.qb.sum(`${fieldId} as number`)
-        break
-      case 'average':
-        this.qb.avg(`${fieldId} as number`)
-        break
-      case 'min':
-        this.qb.min(`${fieldId} as number`)
-        break
-      case 'max':
-        this.qb.max(`${fieldId} as number`)
-        break
-      case 'count':
-        this.qb.count(`${fieldId} as number`).whereNotNull(fieldId)
-    }
+
     return this
   }
 

@@ -1,6 +1,6 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
-import type { IRecordSpec, VirsualizationVO } from '@undb/core'
-import { NumberVirsualization, type IRecordAggregateRepository } from '@undb/core'
+import type { ChartVirsualization, IRecordSpec, VirsualizationVO } from '@undb/core'
+import { type IRecordAggregateRepository } from '@undb/core'
 import { Table } from '../../entity/table.js'
 import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
 import { RecordSqliteQueryBuilder } from './record-query.builder.js'
@@ -14,17 +14,35 @@ export class RecordSqliteAggregateRepository implements IRecordAggregateReposito
 
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
 
-    const aggregateFunction =
-      virsualization instanceof NumberVirsualization ? virsualization.numberAggregateFunction : undefined
-    const fieldId = virsualization instanceof NumberVirsualization ? virsualization.fieldId?.value : undefined
     const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec)
       .from()
       .where()
-      .aggregate(aggregateFunction, fieldId)
+      .aggregate(virsualization)
       .build()
 
     const data = await this.em.execute(builder.qb.first())
 
     return data[0]?.number ?? 0
+  }
+
+  async chart(
+    tableId: string,
+    virsualization: ChartVirsualization,
+    spec: IRecordSpec | null,
+  ): Promise<{ key: string; value: number }[]> {
+    const tableEntity = await this.em.findOneOrFail(Table, tableId, {
+      populate: ['fields', 'views', 'fields.options', 'views.widges.virsualization'],
+    })
+
+    const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
+    const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec)
+      .from()
+      .where()
+      .aggregate(virsualization)
+      .build()
+
+    const data = await this.em.execute(builder.qb)
+
+    return data as { key: string; value: number }[]
   }
 }

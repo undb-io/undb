@@ -1,4 +1,5 @@
 import { NestAggregateNumberQueryHandelr } from './aggregate-number.query.handler.js'
+import { NestGetChartDataQueryHandelr } from './get-chart-data.query.handler.js'
 import { NestGetForeignRecordsQueryHandelr } from './get-foreign-records.query.handler.js'
 import { NestGetParentAvailableRecordsQueryHandelr } from './get-parent-available-records.query.handler.js'
 import { NestGetRecordQueryHandelr } from './get-record.query.handler.js'
@@ -19,4 +20,5 @@ export const queryHandlers = [
   NestGetParentAvailableRecordsQueryHandelr,
 
   NestAggregateNumberQueryHandelr,
+  NestGetChartDataQueryHandelr,
 ]

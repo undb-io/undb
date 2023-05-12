@@ -105,6 +105,7 @@ export const config: InitOptions = {
         'update success': 'update success',
         Numbers: 'Numbers',
         Chart: 'Chart',
+        null: 'null',
       },
       table: {
         'Auto Display Field': 'using <strong>{{table}}</strong> display field',
@@ -353,6 +354,7 @@ export const config: InitOptions = {
         'update success': '更新成功',
         Numbers: '计数',
         Chart: '图表',
+        null: '空',
       },
       table: {
         'Auto Display Field': '使用 <strong>{{table}}</strong> 表中设置的显示列',
