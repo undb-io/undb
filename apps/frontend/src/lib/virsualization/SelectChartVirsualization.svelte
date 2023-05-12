@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Option, SelectField } from '@undb/core'
+	import type { SelectField } from '@undb/core'
 	import { Bar } from 'svelte-chartjs'
 	import { Chart, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 	import colors from 'tailwindcss/colors'
@@ -13,14 +13,11 @@
 	$: labels = options.map((option) => option?.name.value ?? $t('null', { ns: 'common' }))
 	$: values = data.map((v) => v.value)
 	$: backgroundColor = options.map((option) => (option ? colors[option.color.name][400] : colors.gray[400]))
-	$: borderColor = options.map((option) => (option ? colors[option.color.name][700] : colors.gray[600]))
 	$: datasets = [
 		{
 			label: field.name.value,
 			data: values,
 			backgroundColor,
-			borderColor,
-			borderWidth: 2,
 		},
 	]
 
