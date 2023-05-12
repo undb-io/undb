@@ -1,5 +1,6 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
+import type { WithChartAggregateSpec } from '@undb/core'
 import {
   type BaseField,
   type ITableSpecVisitor,
@@ -72,7 +73,7 @@ import {
   UpdatedByField,
 } from '../../entity/index.js'
 import { View } from '../../entity/view.js'
-import { NumberVirsualization, Virsualization } from '../../entity/virsualization.js'
+import { ChartVirsualization, NumberVirsualization, Virsualization } from '../../entity/virsualization.js'
 import { Widge } from '../../entity/widge.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
 import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
@@ -387,6 +388,16 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
       if (virsualization) {
         virsualization.fieldId = s.fieldId?.value ?? null
         virsualization.numberAggregateFunction = s.aggregateFunction ?? null
+        await this.em.persistAndFlush(virsualization)
+      }
+    })
+  }
+  withChartAggregate(s: WithChartAggregateSpec): void {
+    this.addJobs(async () => {
+      const virsualization = await this.em.findOne(ChartVirsualization, s.virsualizationId.value)
+      if (virsualization) {
+        virsualization.fieldId = s.fieldId?.value ?? null
+        virsualization.chartAggregateFunction = s.aggregateFunction ?? null
         await this.em.persistAndFlush(virsualization)
       }
     })

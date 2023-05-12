@@ -51,6 +51,7 @@ import type {
 import type { WithWidgeSepecification, WithWidgesLayout } from '../view/dashboard/specifications/widge.specification.js'
 import type {
   WithCalendarField,
+  WithChartAggregateSpec,
   WithDisplayType,
   WithFieldOption,
   WithFieldVisibility,
@@ -73,6 +74,7 @@ import type {
 import type { WithNumberAggregateSpec } from '../virsualization/specifications/number-virsualization.specification.js'
 
 export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVisitor, IFieldVisitor {
+  withChartAggregate(s: WithChartAggregateSpec): void {}
   withNumberAggregate(s: WithNumberAggregateSpec): void {}
   withVirsualizationName(s: WithVirsualizationNameSpec): void {}
   withWidgesLayout(s: WithWidgesLayout): void {}

@@ -38,6 +38,7 @@ import type {
   WithViewName,
   WithoutView,
 } from '../view/specifications/views.specification.js'
+import type { WithChartAggregateSpec } from '../virsualization/specifications/chart-virsualization.specification.js'
 import type { WithNumberAggregateSpec } from '../virsualization/specifications/number-virsualization.specification.js'
 import type { WithVirsualizationNameSpec } from '../virsualization/specifications/virsualization-name.specification.js'
 import type { WithTableEmoji } from './table-emoji.specification.js'
@@ -98,6 +99,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withWidgesLayout(s: WithWidgesLayout): void
   withVirsualizationName(s: WithVirsualizationNameSpec): void
   withNumberAggregate(s: WithNumberAggregateSpec): void
+  withChartAggregate(s: WithChartAggregateSpec): void
 }
 
 export type ITableSpec = ISpecification<Table, ITableSpecVisitor>

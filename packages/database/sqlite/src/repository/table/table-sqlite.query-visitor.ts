@@ -3,6 +3,7 @@ import type { QueryBuilder } from '@mikro-orm/better-sqlite'
 import type {
   ITableSpecVisitor,
   WithCalendarField,
+  WithChartAggregateSpec,
   WithDisplayFields,
   WithDisplayType,
   WithFieldDescription,
@@ -47,6 +48,9 @@ import type { Table } from '../../entity/index.js'
 
 export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   constructor(public qb: QueryBuilder<Table>) {}
+  withChartAggregate(s: WithChartAggregateSpec): void {
+    throw new Error('Method not implemented.')
+  }
   withNumberAggregate(s: WithNumberAggregateSpec): void {
     throw new Error('Method not implemented.')
   }

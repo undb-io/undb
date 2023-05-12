@@ -51,6 +51,8 @@ import {
   ViewVO,
   ViewsOrder,
   VirsualizationName,
+  WithChartAggregateSpec,
+  WithNumberAggregateSpec,
   WithShowSystemFieldsSpec,
   WithTableView,
   WithViewFieldsOrder,
@@ -486,8 +488,13 @@ export class Table {
       specs.push(spec)
     }
 
-    // const spec = WithNumberAggregateSpec.from(input.id, input.fieldId, input.numberAggregateFunction)
-    // specs.push(spec)
+    if (input.type === 'number') {
+      const spec = WithNumberAggregateSpec.from(input.id, input.fieldId, input.numberAggregateFunction)
+      specs.push(spec)
+    } else if (input.type === 'chart') {
+      const spec = WithChartAggregateSpec.from(input.id, input.fieldId, input.chartAggregateFunction)
+      specs.push(spec)
+    }
 
     return and(...specs).unwrap()
   }
