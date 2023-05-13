@@ -38,12 +38,12 @@ export const createWidgeItems = () => {
 		const id = WidgeID.createId()
 		let newItem = {
 			[COLS]: gridHelp.item({
-				w: 4,
+				w: 6,
 				h: 2,
 				x: 0,
 				y: 0,
 				min: {
-					w: 3,
+					w: 4,
 					h: 2,
 				},
 				customDragger: true,
@@ -68,12 +68,20 @@ export const createWidgeItems = () => {
 		return newItem
 	}
 
+	const remove = (id: string) => {
+		const widgeItems = $widgeItems.filter((w) => w.widge?.id.value !== id)
+		$widgeItems = widgeItems
+		$widgeItems = gridHelp.adjust(widgeItems, COLS)
+		return $widgeItems
+	}
+
 	return {
 		subscribe,
 		set,
 		update,
 		init,
 		add,
+		remove,
 	}
 }
 export const widgeItems = createWidgeItems()

@@ -11,6 +11,7 @@ import { DeleteOptionCommandHandler } from './delete-option.command.handler.js'
 import { DeleteRecordCommandHandler } from './delete-record.command.handler.js'
 import { DeleteTableCommandHandler } from './delete-table.command.handler.js'
 import { DeleteViewCommandHandler } from './delete-view.command.handler.js'
+import { DeleteWidgeCommandHandler } from './delete-widge.command.handler.js'
 import { DuplicateRecordCommandHandler } from './duplicate-record.command.handler.js'
 import { DuplicateViewCommandHandler } from './duplicate-view.command.handler.js'
 import { MoveFieldCommandHandler } from './move-field.command.handler.js'
@@ -76,4 +77,5 @@ export const commandHandlers = [
   UpdateFieldCommandHandler,
   RelayoutWidgesCommandHandler,
   UpdateVirsualizationCommandHandler,
+  DeleteWidgeCommandHandler,
 ]

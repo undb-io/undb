@@ -26,7 +26,6 @@
 		datasets,
 	}
 
-	$: console.log(barData)
 
 	Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 </script>
