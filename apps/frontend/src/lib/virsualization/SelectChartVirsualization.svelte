@@ -31,4 +31,4 @@
 	Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 </script>
 
-<Bar data={barData} options={{ responsive: true }} />
+<Bar data={barData} options={{ responsive: true, animation: false }} />
