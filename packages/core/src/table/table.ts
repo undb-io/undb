@@ -329,6 +329,15 @@ export class Table {
     return spec
   }
 
+  public deleteWidge(viewId: string, widgeId: string): TableCompositeSpecificaiton {
+    const view = this.mustGetView(viewId)
+
+    const spec = view.deleteWidge(widgeId)
+    spec.mutate(this)
+
+    return spec
+  }
+
   public duplicateView(id: string): TableCompositeSpecificaiton {
     const s1 = this.views.duplcateView(id)
     const s2 = this.viewsOrder.addView(s1.view)

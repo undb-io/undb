@@ -1,6 +1,6 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import type { WithChartAggregateSpec } from '@undb/core'
+import type { WithChartAggregateSpec, WithoutWidgeSpecification } from '@undb/core'
 import {
   type BaseField,
   type ITableSpecVisitor,
@@ -368,6 +368,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     s.widge.virsualization?.accept(vv)
 
     widge.virsualization = vv.virsualization
+    this.em.persist(widge)
+  }
+  withoutWidge(s: WithoutWidgeSpecification): void {
+    const widge = this.em.getReference(Widge, s.widgeId)
+    wrap(widge).assign({ deletedAt: new Date() })
     this.em.persist(widge)
   }
   withWidgesLayout(s: WithWidgesLayout): void {

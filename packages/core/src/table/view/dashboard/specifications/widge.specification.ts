@@ -26,6 +26,23 @@ export class WithWidgeSepecification extends CompositeSpecification<Table, ITabl
   }
 }
 
+export class WithoutWidgeSpecification extends CompositeSpecification<Table, ITableSpecVisitor> {
+  constructor(public readonly view: ViewVO, public readonly dashboard: Dashboard, public readonly widgeId: string) {
+    super()
+  }
+  isSatisfiedBy(t: Table): boolean {
+    throw new Error('Method not implemented.')
+  }
+  mutate(t: Table): Result<Table, string> {
+    this.dashboard.widges = this.dashboard.widges.filter((w) => w.id.value !== this.widgeId)
+    return Ok(t)
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withoutWidge(this)
+    return Ok(undefined)
+  }
+}
+
 export class WithWidgesLayout extends CompositeSpecification<Table, ITableSpecVisitor> {
   public readonly widgesMap: Map<string, ILayoutSchema>
   constructor(

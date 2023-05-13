@@ -48,7 +48,11 @@ import type {
   WithTableName,
   WithTableSchema,
 } from '../specifications/index.js'
-import type { WithWidgeSepecification, WithWidgesLayout } from '../view/dashboard/specifications/widge.specification.js'
+import type {
+  WithWidgeSepecification,
+  WithWidgesLayout,
+  WithoutWidgeSpecification,
+} from '../view/dashboard/specifications/widge.specification.js'
 import type {
   WithCalendarField,
   WithChartAggregateSpec,
@@ -74,6 +78,7 @@ import type {
 import type { WithNumberAggregateSpec } from '../virsualization/specifications/number-virsualization.specification.js'
 
 export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVisitor, IFieldVisitor {
+  withoutWidge(s: WithoutWidgeSpecification): void {}
   withChartAggregate(s: WithChartAggregateSpec): void {}
   withNumberAggregate(s: WithNumberAggregateSpec): void {}
   withVirsualizationName(s: WithVirsualizationNameSpec): void {}

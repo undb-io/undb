@@ -24,6 +24,7 @@ import type {
   WithoutField,
   WithoutOption,
   WithoutView,
+  WithoutWidgeSpecification,
   WithRatingMax,
   WithRowHeight,
   WithShowSystemFieldsSpec,
@@ -48,6 +49,9 @@ import type { Table } from '../../entity/index.js'
 
 export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   constructor(public qb: QueryBuilder<Table>) {}
+  withoutWidge(s: WithoutWidgeSpecification): void {
+    throw new Error('Method not implemented.')
+  }
   withChartAggregate(s: WithChartAggregateSpec): void {
     throw new Error('Method not implemented.')
   }

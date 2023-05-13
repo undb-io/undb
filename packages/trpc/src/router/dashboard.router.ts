@@ -1,7 +1,9 @@
 import {
   CreateWidgeCommand,
+  DeleteWidgeCommand,
   RelayoutWidgesCommand,
   createWidgeCommandInput,
+  deleteWidgeCommandInput,
   relayoutWidgesCommandInput,
 } from '@undb/cqrs'
 import type { ICommandBus } from '@undb/domain'
@@ -16,6 +18,13 @@ export const createDashboardRouter = (procedure: typeof publicProcedure) => (com
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new CreateWidgeCommand(input)
+        return commandBus.execute<void>(cmd)
+      }),
+    deleteWidge: procedure
+      .input(deleteWidgeCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new DeleteWidgeCommand(input)
         return commandBus.execute<void>(cmd)
       }),
     relayoutWidges: procedure

@@ -11,7 +11,11 @@ import type { TableCompositeSpecificaiton } from '../specifications/interface.js
 import type { VirsualizationVO } from '../virsualization/virsualization.vo.js'
 import { Calendar } from './calendar/index.js'
 import { Dashboard } from './dashboard/dashboard.vo.js'
-import { WithWidgeSepecification, WithWidgesLayout } from './dashboard/specifications/widge.specification.js'
+import {
+  WithoutWidgeSpecification,
+  WithWidgeSepecification,
+  WithWidgesLayout,
+} from './dashboard/specifications/widge.specification.js'
 import type { ICreateWidgeSchema, IRelayoutWidgeSchema } from './dashboard/widge.schema.js'
 import { Widge } from './dashboard/widge.vo.js'
 import { Kanban } from './kanban/index.js'
@@ -323,6 +327,14 @@ export class ViewVO extends ValueObject<IView> {
 
     const widge = Widge.create(input)
     const spec = new WithWidgeSepecification(this, dashboard, widge)
+
+    return spec
+  }
+
+  public deleteWidge(widgeId: string): TableCompositeSpecificaiton {
+    const dashboard = this.getOrCreateDashboard()
+
+    const spec = new WithoutWidgeSpecification(this, dashboard, widgeId)
 
     return spec
   }

@@ -7,6 +7,10 @@ export class Dashboard extends ValueObject<IDashboard> {
     return this.props.widges
   }
 
+  public set widges(widges: Widge[]) {
+    this.props.widges = widges
+  }
+
   static from(input: ICreateDashboardSchema): Dashboard {
     return new Dashboard({
       widges: input.widges.map((widge) => Widge.create(widge)),
