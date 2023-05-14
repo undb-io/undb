@@ -106,6 +106,7 @@ export const config: InitOptions = {
         Numbers: 'Numbers',
         Chart: 'Chart',
         null: 'null',
+        'full screen': 'full screen',
       },
       table: {
         'Auto Display Field': 'using <strong>{{table}}</strong> display field',
@@ -356,6 +357,7 @@ export const config: InitOptions = {
         Numbers: '计数',
         Chart: '图表',
         null: '空',
+        'full screen': '全屏',
       },
       table: {
         'Auto Display Field': '使用 <strong>{{table}}</strong> 表中设置的显示列',

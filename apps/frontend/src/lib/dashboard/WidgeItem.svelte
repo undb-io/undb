@@ -4,7 +4,7 @@
 	import { currentVirsualizationId, getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import Virsualization from '$lib/virsualization/Virsualization.svelte'
-	import { Dropdown, DropdownItem } from 'flowbite-svelte'
+	import { Dropdown, DropdownDivider, DropdownItem } from 'flowbite-svelte'
 	import type { WidgeDataItem } from './widge-item.type'
 	import { t } from '$lib/i18n'
 	import { COLS, widgeItems } from '$lib/store/widge'
@@ -112,7 +112,20 @@
 			</button>
 			<Dropdown>
 				<DropdownItem
-					class="text-xs text-red-400 gap-2"
+					class="text-gray-600 text-xs gap-2 flex items-center"
+					on:click={() => {
+						$virsualizationOpen = true
+						$currentVirsualizationId = dataItem.widge?.virsualization?.id.value
+					}}
+				>
+					<i class="text-gray-400 ti ti-arrows-diagonal" />
+					<span>
+						{$t('full screen', { ns: 'common' })}
+					</span>
+				</DropdownItem>
+				<DropdownDivider />
+				<DropdownItem
+					class="text-xs text-red-400 gap-2 flex items-center"
 					on:click={() => {
 						if (dataItem.widge) {
 							$deleteWidge.mutate({
