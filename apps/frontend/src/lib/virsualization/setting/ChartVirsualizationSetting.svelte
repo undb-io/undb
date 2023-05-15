@@ -1,18 +1,15 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Button, Radio, Toast } from 'flowbite-svelte'
+	import { Button, Toast } from 'flowbite-svelte'
 	import { SelectField, type NumberVirsualization as CoreChartVirsualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
-	import { getTable, getView } from '$lib/store/table'
-	import NumberAggregatePicker from '../input/NumberAggregatePicker.svelte'
+	import { getTable } from '$lib/store/table'
 	import { t } from '$lib/i18n'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
-	import { tick } from 'svelte'
 	import { slide } from 'svelte/transition'
 
 	const table = getTable()
-	const view = getView()
 
 	export let virsualization: CoreChartVirsualization
 
@@ -21,7 +18,6 @@
 	const updateVirsualization = trpc().table.virsualization.update.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
-			await tick()
 			fieldId = virsualization.fieldId?.value
 		},
 	})
@@ -36,7 +32,7 @@
 					id: virsualization.id.value,
 					type: 'chart',
 					fieldId,
-					// TODO: select
+					// TODO: select from user input
 					chartAggregateFunction: 'count',
 				},
 			})

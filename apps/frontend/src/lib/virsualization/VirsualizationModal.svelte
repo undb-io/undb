@@ -39,25 +39,33 @@
 	}
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<Modal size="xl" class="w-full h-[calc(100vh-64px)] p-0" bind:open={$virsualizationOpen}>
-	<svelte:fragment slot="header">
-		{#if $currentVirsualization && updating}
-			<input
-				class="p-0 rounded-sm active:outline-gray-200"
-				type="text"
-				bind:this={ref}
-				bind:value={$currentVirsualization.name.value}
-				on:blur={blur}
-			/>
-		{:else}
-			<h1 on:click={() => (updating = true)}>{$currentVirsualization?.name.value}</h1>
-		{/if}
-	</svelte:fragment>
-	<div class="flex items-center h-full w-full">
-		<Virsualization virsualization={$currentVirsualization} class="text-[200px] h-full flex-1 w-full" />
-		<div class="flex flex-col h-full shrink-0 w-[400px] pl-2">
-			<VirsualizationSetting virsualization={$currentVirsualization} />
+<div id="virsualization-modal">
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<Modal size="xl" class="w-full h-[calc(100vh-64px)] p-0" bind:open={$virsualizationOpen}>
+		<svelte:fragment slot="header">
+			{#if $currentVirsualization && updating}
+				<input
+					class="p-0 rounded-sm active:outline-gray-200"
+					type="text"
+					bind:this={ref}
+					bind:value={$currentVirsualization.name.value}
+					on:blur={blur}
+				/>
+			{:else}
+				<h1 on:click={() => (updating = true)}>{$currentVirsualization?.name.value}</h1>
+			{/if}
+		</svelte:fragment>
+		<div class="flex items-center h-full w-full">
+			<Virsualization virsualization={$currentVirsualization} class="text-[200px] h-full flex-1 w-full" />
+			<div class="flex flex-col h-full shrink-0 w-[400px] pl-2">
+				<VirsualizationSetting virsualization={$currentVirsualization} />
+			</div>
 		</div>
-	</div>
-</Modal>
+	</Modal>
+</div>
+
+<style>
+	:global(#virsualization-modal .max-w-7xl) {
+		max-width: 100%;
+	}
+</style>
