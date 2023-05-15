@@ -33,7 +33,7 @@ const defaultLayout: Record<
 	},
 }
 
-export const createWidgeItems = () => {
+const createWidgeItems = () => {
 	const { subscribe, set, update } = writable<WidgeDataItem[]>([])
 
 	let $widgeItems: WidgeDataItem[] = []
