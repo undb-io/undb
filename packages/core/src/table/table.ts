@@ -501,8 +501,10 @@ export class Table {
       const spec = WithNumberAggregateSpec.from(input.id, input.fieldId, input.numberAggregateFunction)
       specs.push(spec)
     } else if (input.type === 'chart') {
-      const spec = WithChartAggregateSpec.from(input.id, input.fieldId, input.chartAggregateFunction)
-      specs.push(spec)
+      if (isString(input.fieldId) && isString(input.chartAggregateFunction)) {
+        const spec = WithChartAggregateSpec.from(input.id, input.fieldId, input.chartAggregateFunction)
+        specs.push(spec)
+      }
     }
 
     return and(...specs).unwrap()

@@ -1,5 +1,5 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
-import type { ChartVirsualization, IRecordSpec, VirsualizationVO } from '@undb/core'
+import type { ChartVirsualization, IChartData, IRecordSpec, VirsualizationVO } from '@undb/core'
 import { type IRecordAggregateRepository } from '@undb/core'
 import { Table } from '../../entity/table.js'
 import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
@@ -25,11 +25,7 @@ export class RecordSqliteAggregateRepository implements IRecordAggregateReposito
     return data[0]?.number ?? 0
   }
 
-  async chart(
-    tableId: string,
-    virsualization: ChartVirsualization,
-    spec: IRecordSpec | null,
-  ): Promise<{ key: string; value: number }[]> {
+  async chart(tableId: string, virsualization: ChartVirsualization, spec: IRecordSpec | null): Promise<IChartData> {
     const tableEntity = await this.em.findOneOrFail(Table, tableId, {
       populate: ['fields', 'views', 'fields.options', 'views.widges.virsualization'],
     })
@@ -43,6 +39,6 @@ export class RecordSqliteAggregateRepository implements IRecordAggregateReposito
 
     const data = await this.em.execute(builder.qb)
 
-    return data as { key: string; value: number }[]
+    return data as IChartData
   }
 }
