@@ -1,11 +1,37 @@
 import type { WidgeDataItem } from '$lib/dashboard/widge-item.type'
-import { WidgeID, type Widge } from '@undb/core'
+import { WidgeID, type IVirsualizationTypeSchema, type Widge } from '@undb/core'
 import { writable } from 'svelte/store'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import gridHelp from 'svelte-grid/build/helper/index.mjs'
 
 export const COLS = 24
+
+const defaultLayout: Record<
+	IVirsualizationTypeSchema,
+	{ x: number; y: number; h: number; w: number; min: { w: number; h: number } }
+> = {
+	number: {
+		w: 6,
+		h: 2,
+		x: 0,
+		y: 0,
+		min: {
+			w: 4,
+			h: 2,
+		},
+	},
+	chart: {
+		w: 6,
+		h: 4,
+		x: 0,
+		y: 0,
+		min: {
+			w: 4,
+			h: 2,
+		},
+	},
+}
 
 export const createWidgeItems = () => {
 	const { subscribe, set, update } = writable<WidgeDataItem[]>([])
@@ -21,10 +47,7 @@ export const createWidgeItems = () => {
 			widges.map((widge) => ({
 				[COLS]: gridHelp.item({
 					...widge.layout.toJSON(),
-					min: {
-						w: 3,
-						h: 2,
-					},
+					min: widge.virsualization ? defaultLayout[widge.virsualization.type].min : { w: 3, h: 2 },
 					customDragger: true,
 					customResizer: true,
 				}),
@@ -34,18 +57,11 @@ export const createWidgeItems = () => {
 		)
 	}
 
-	const add = () => {
+	const add = (type: IVirsualizationTypeSchema) => {
 		const id = WidgeID.createId()
 		let newItem = {
 			[COLS]: gridHelp.item({
-				w: 6,
-				h: 2,
-				x: 0,
-				y: 0,
-				min: {
-					w: 4,
-					h: 2,
-				},
+				...defaultLayout[type],
 				customDragger: true,
 				customResizer: true,
 			}),

@@ -4,6 +4,7 @@
 	import { getTable, getView } from '$lib/store/table'
 	import { COLS, widgeItems } from '$lib/store/widge'
 	import { trpc } from '$lib/trpc/client'
+	import { SelectField, type IVirsualizationTypeSchema } from '@undb/core'
 	import { Button, Dropdown, DropdownItem } from 'flowbite-svelte'
 
 	const table = getTable()
@@ -18,8 +19,8 @@
 
 	let open = false
 
-	const addWidge = () => {
-		const newItem = widgeItems.add()
+	const addWidge = (type: IVirsualizationTypeSchema) => {
+		const newItem = widgeItems.add(type)
 		const itemLayout = newItem[COLS]
 		const { x, y, h, w } = itemLayout
 		const layout = { x, y, h, w }
@@ -27,7 +28,7 @@
 	}
 
 	const addNumbers = async () => {
-		const layout = addWidge()
+		const layout = addWidge('number')
 		$createWidge.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
@@ -42,7 +43,8 @@
 	}
 
 	const addChart = async () => {
-		const layout = addWidge()
+		const layout = addWidge('chart')
+		const selectField = $table.schema.fields.find((f) => f instanceof SelectField)
 		$createWidge.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
@@ -52,6 +54,8 @@
 					name: $t('virsualization bar'),
 					type: 'chart',
 					chartType: 'bar',
+					fieldId: selectField?.id.value,
+					chartAggregateFunction: selectField ? 'count' : undefined,
 				},
 			},
 		})
