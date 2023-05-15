@@ -418,15 +418,15 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
   }
   override sum(field: SumField): void {
     const reference = field.getReferenceField(this.table.schema.toIdMap())
-    reference.accept(this)
+    reference?.accept(this)
   }
 
   override count(field: CountField): void {
     const reference = field.getReferenceField(this.table.schema.toIdMap())
-    reference.accept(this)
+    reference?.accept(this)
   }
   override lookup(field: CoreLookupField): void {
     const reference = field.getReferenceField(this.table.schema.toIdMap())
-    reference.accept(this)
+    reference?.accept(this)
   }
 }

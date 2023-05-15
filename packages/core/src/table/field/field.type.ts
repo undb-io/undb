@@ -272,7 +272,14 @@ import {
   updatedByTypeSchema,
 } from './updated-by-field.type.js'
 import type { FieldDescription } from './value-objects/field-description.js'
-import type { DateFormat, DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
+import type {
+  DateFormat,
+  DisplayFields,
+  FieldId,
+  FieldIssue,
+  FieldName,
+  FieldValueConstraints,
+} from './value-objects/index.js'
 
 export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createIdFieldSchema,
@@ -631,10 +638,17 @@ export interface IAbstractDateField {
   updateFormat(format?: string): Option<TableCompositeSpecificaiton>
 }
 
+export const lookingFieldIssues = z.enum(['Missing Reference Field'])
+export type ILookingFieldIssues = z.infer<typeof lookingFieldIssues>
+
+export type LookingFieldIssue = FieldIssue<ILookingFieldIssues>
+
 export interface IAbstractLookupField {
   get referenceFieldId(): FieldId
   set referenceFieldId(fieldId: FieldId)
-  getReferenceField(schema: TableSchemaIdMap): ReferenceField | TreeField
+  getIssues(schema: TableSchemaIdMap): LookingFieldIssue[]
+  mustGetReferenceField(schema: TableSchemaIdMap): ReferenceField | TreeField
+  getReferenceField(schema: TableSchemaIdMap): ReferenceField | TreeField | undefined
   getForeignTableId(schema: TableSchemaIdMap): Option<string>
   updateReferenceId(referenceId?: string): Option<TableCompositeSpecificaiton>
 }

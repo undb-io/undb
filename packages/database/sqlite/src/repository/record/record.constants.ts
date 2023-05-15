@@ -11,7 +11,7 @@ export type ForeignTableAlias = `${typeof FOREIGN_TABLE_ALIAS_PREFIX}_${string}`
 export const getForeignTableAlias = (field: Field, schema: TableSchemaIdMap): ForeignTableAlias => {
   let ref = field
   if (field instanceof LookupField) {
-    ref = field.getReferenceField(schema)
+    ref = field.mustGetReferenceField(schema)
   }
   return `${FOREIGN_TABLE_ALIAS_PREFIX}_${ref.id.value}`
 }
