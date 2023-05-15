@@ -25,6 +25,9 @@
     "db:schema:fresh": {
       "cache": false
     },
+    "db:schema:update": {
+      "cache": false
+    },
     "db:migration:create": {
       "cache": false
     }

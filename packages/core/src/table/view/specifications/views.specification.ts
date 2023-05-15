@@ -5,7 +5,7 @@ import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
 import type { ICreateViewsSchema } from '../../table.schema.js'
 import type { ViewName } from '../view-name.vo.js'
-import type { View } from '../view.js'
+import type { ViewVO } from '../view.vo.js'
 import { Views } from '../views.js'
 import { BaseViewSpecification } from './base-view-specification.js'
 
@@ -35,7 +35,7 @@ export class WithTableViews extends CompositeSpecification<Table, ITableSpecVisi
 }
 
 export class WithTableView extends BaseViewSpecification {
-  constructor(public readonly view: View) {
+  constructor(public readonly view: ViewVO) {
     super(view)
   }
 
@@ -55,7 +55,7 @@ export class WithTableView extends BaseViewSpecification {
 }
 
 export class WithNewView extends BaseViewSpecification {
-  constructor(public readonly view: View) {
+  constructor(public readonly view: ViewVO) {
     super(view)
   }
 
@@ -75,7 +75,7 @@ export class WithNewView extends BaseViewSpecification {
 }
 
 export class WithViewName extends BaseViewSpecification {
-  constructor(public readonly view: View, public readonly name: ViewName) {
+  constructor(public readonly view: ViewVO, public readonly name: ViewName) {
     super(view)
   }
 

@@ -1,43 +1,48 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import type {
-  BaseField,
-  ITableSpecVisitor,
-  WithCalendarField,
-  WithDisplayFields,
-  WithDisplayType,
-  WithFieldDescription,
-  WithFieldDisplay,
-  WithFieldName,
-  WithFieldOption,
-  WithFieldRequirement,
-  WithFieldVisibility,
-  WithFieldWidth,
-  WithFilter,
-  WithFormat,
-  WithKanbanField,
-  WithNewField,
-  WithNewOption,
-  WithNewView,
-  WithOptions,
-  WithRatingMax,
-  WithRowHeight,
-  WithShowSystemFieldsSpec,
-  WithSorts,
-  WithSymmetricReferenceField,
-  WithTableEmoji,
-  WithTableName,
-  WithTableSchema,
-  WithTableView,
-  WithTableViews,
-  WithTreeViewField,
-  WithViewFieldsOrder,
-  WithViewName,
-  WithViewPinnedFields,
-  WithViewsOrder,
-  WithoutField,
-  WithoutOption,
-  WithoutView,
+import type { WithChartAggregateSpec, WithoutWidgeSpecification } from '@undb/core'
+import {
+  type BaseField,
+  type ITableSpecVisitor,
+  type WithCalendarField,
+  type WithDisplayFields,
+  type WithDisplayType,
+  type WithFieldDescription,
+  type WithFieldDisplay,
+  type WithFieldName,
+  type WithFieldOption,
+  type WithFieldRequirement,
+  type WithFieldVisibility,
+  type WithFieldWidth,
+  type WithFilter,
+  type WithFormat,
+  type WithKanbanField,
+  type WithNewField,
+  type WithNewOption,
+  type WithNewView,
+  type WithNumberAggregateSpec,
+  type WithOptions,
+  type WithRatingMax,
+  type WithRowHeight,
+  type WithShowSystemFieldsSpec,
+  type WithSorts,
+  type WithSymmetricReferenceField,
+  type WithTableEmoji,
+  type WithTableName,
+  type WithTableSchema,
+  type WithTableView,
+  type WithTableViews,
+  type WithTreeViewField,
+  type WithViewFieldsOrder,
+  type WithViewName,
+  type WithViewPinnedFields,
+  type WithViewsOrder,
+  type WithVirsualizationNameSpec,
+  type WithWidgeSepecification,
+  type WithWidgesLayout,
+  type WithoutField,
+  type WithoutOption,
+  type WithoutView,
 } from '@undb/core'
 import type { CreatedAtField, UpdatedAtField } from '../../entity/index.js'
 import {
@@ -68,8 +73,11 @@ import {
   UpdatedByField,
 } from '../../entity/index.js'
 import { View } from '../../entity/view.js'
+import { ChartVirsualization, NumberVirsualization, Virsualization } from '../../entity/virsualization.js'
+import { Widge } from '../../entity/widge.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
 import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
+import { TableSqliteVirsualizationVisitor } from './table-sqlite-virsualization.visitor.js'
 
 export class TableSqliteMutationVisitor extends BaseEntityManager implements ITableSpecVisitor {
   constructor(private readonly tableId: string, em: EntityManager) {
@@ -351,6 +359,53 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const field = this.em.getReference(RatingField, s.field.id.value)
     wrap(field).assign({ max: s.max })
     this.em.persist(field)
+  }
+  withWidge(s: WithWidgeSepecification): void {
+    const view = this.getView(s.view.id.value)
+    const widge = new Widge(view, s.widge)
+
+    const vv = new TableSqliteVirsualizationVisitor(this.tableId, this.em)
+    s.widge.virsualization?.accept(vv)
+
+    widge.virsualization = vv.virsualization
+    this.em.persist(widge)
+  }
+  withoutWidge(s: WithoutWidgeSpecification): void {
+    const widge = this.em.getReference(Widge, s.widgeId)
+    wrap(widge).assign({ deletedAt: new Date() })
+    this.em.persist(widge)
+  }
+  withWidgesLayout(s: WithWidgesLayout): void {
+    for (const [id, layout] of s.widgesMap) {
+      const widge = this.em.getReference(Widge, id)
+      wrap(widge).assign({ layout })
+      this.em.persist(widge)
+    }
+  }
+  withVirsualizationName(s: WithVirsualizationNameSpec): void {
+    const virsualization = this.em.getReference(Virsualization, s.virsualizationId)
+    wrap(virsualization).assign({ name: s.name.value })
+    this.em.persist(virsualization)
+  }
+  withNumberAggregate(s: WithNumberAggregateSpec): void {
+    this.addJobs(async () => {
+      const virsualization = await this.em.findOne(NumberVirsualization, s.virsualizationId.value)
+      if (virsualization) {
+        virsualization.fieldId = s.fieldId?.value ?? null
+        virsualization.numberAggregateFunction = s.aggregateFunction ?? null
+        await this.em.persistAndFlush(virsualization)
+      }
+    })
+  }
+  withChartAggregate(s: WithChartAggregateSpec): void {
+    this.addJobs(async () => {
+      const virsualization = await this.em.findOne(ChartVirsualization, s.virsualizationId.value)
+      if (virsualization) {
+        virsualization.fieldId = s.fieldId?.value ?? null
+        virsualization.chartAggregateFunction = s.aggregateFunction ?? null
+        await this.em.persistAndFlush(virsualization)
+      }
+    })
   }
   not(): this {
     return this

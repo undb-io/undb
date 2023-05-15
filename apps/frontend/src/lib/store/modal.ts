@@ -18,3 +18,5 @@ export const createFieldInitial = writable<Partial<ICreateFieldSchema> | undefin
 export const updateFieldOpen = writable<boolean>(false)
 
 export const confirmDeleteField = writable<boolean>(false)
+
+export const virsualizationOpen = writable<boolean>(false)

@@ -10,6 +10,7 @@
 		{ value: 'grid', label: 'Grid' },
 		{ value: 'kanban', label: 'Kanban' },
 		{ value: 'calendar', label: 'Calendar' },
+		{ value: 'dashboard', label: 'Dashboard' },
 	] as const
 
 	export let value: IViewDisplayType = 'grid'

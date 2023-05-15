@@ -4,7 +4,7 @@ import { WithNewField, WithTableEmoji, WithTableId, WithTableName } from '../spe
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import { TableFactory } from '../table.factory.js'
 import type { ICreateViewInput_internal } from '../view/index.js'
-import { View, Views } from '../view/index.js'
+import { ViewVO, Views } from '../view/index.js'
 import { WithTableViews } from '../view/specifications/views.specification.js'
 
 export const createTestTable = (...specs: TableCompositeSpecificaiton[]) => {
@@ -22,8 +22,8 @@ export const createTestTable = (...specs: TableCompositeSpecificaiton[]) => {
   return TableFactory.create(spec).unwrap()
 }
 
-export const createTestView = (input: Partial<ICreateViewInput_internal> = {}): View => {
-  return View.create({
+export const createTestView = (input: Partial<ICreateViewInput_internal> = {}): ViewVO => {
+  return ViewVO.create({
     id: 'viw1',
     name: 'view',
     ...input,

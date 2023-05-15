@@ -15,6 +15,11 @@ import type {
 } from '../field/specifications/reference-field.specification.js'
 import type { WithNewOption, WithOptions, WithoutOption } from '../field/specifications/select-field.specification.js'
 import { type Table } from '../table.js'
+import type {
+  WithWidgeSepecification,
+  WithWidgesLayout,
+  WithoutWidgeSpecification,
+} from '../view/dashboard/specifications/widge.specification.js'
 import type { WithKanbanField, WithViewsOrder } from '../view/index.js'
 import type { WithCalendarField } from '../view/specifications/calendar.specification.js'
 import type { WithDisplayType } from '../view/specifications/display-type.specification.js'
@@ -37,6 +42,9 @@ import type {
   WithViewName,
   WithoutView,
 } from '../view/specifications/views.specification.js'
+import type { WithChartAggregateSpec } from '../virsualization/specifications/chart-virsualization.specification.js'
+import type { WithNumberAggregateSpec } from '../virsualization/specifications/number-virsualization.specification.js'
+import type { WithVirsualizationNameSpec } from '../virsualization/specifications/virsualization-name.specification.js'
 import type { WithTableEmoji } from './table-emoji.specification.js'
 import type { WithNewField } from './table-field.specification.js'
 import type { WithTableId } from './table-id.specification.js'
@@ -90,6 +98,13 @@ export interface ITableSpecVisitor extends ISpecVisitor {
 
   withFieldRequirement(s: WithFieldRequirement): void
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void
+
+  withWidge(s: WithWidgeSepecification): void
+  withoutWidge(s: WithoutWidgeSpecification): void
+  withWidgesLayout(s: WithWidgesLayout): void
+  withVirsualizationName(s: WithVirsualizationNameSpec): void
+  withNumberAggregate(s: WithNumberAggregateSpec): void
+  withChartAggregate(s: WithChartAggregateSpec): void
 }
 
 export type ITableSpec = ISpecification<Table, ITableSpecVisitor>
