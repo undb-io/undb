@@ -171,7 +171,10 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
       .queryBuilder()
       .table(underlyingTable.name)
       .delete()
-      .where(AdjacencyListTable.FROM_ID, this.recordId)
+      .where(
+        !!field.symmetricReferenceFieldId && !field.isOwner ? AdjacencyListTable.TO_ID : AdjacencyListTable.FROM_ID,
+        this.recordId,
+      )
       .toQuery()
 
     this.addQueries(query)
