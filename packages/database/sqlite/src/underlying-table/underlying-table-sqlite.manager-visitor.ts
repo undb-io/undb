@@ -19,6 +19,11 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     const knex = em.getKnex()
     this.knex = knex
   }
+  withoutWidge(): void {}
+  withChartAggregate(): void {}
+  withNumberAggregate(): void {}
+  withVirsualizationName(): void {}
+  withWidgesLayout(): void {}
   get #sb() {
     return this.sb ?? this.knex.schema
   }
@@ -113,6 +118,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   withShowSystemFields(): void {}
   withFieldRequirement(): void {}
   symmetricReferenceFieldEqual(): void {}
+  withWidge(): void {}
   not(): this {
     return this
   }

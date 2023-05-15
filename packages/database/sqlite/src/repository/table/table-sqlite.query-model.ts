@@ -15,7 +15,14 @@ export class TableSqliteQueryModel implements ITableQueryModel {
   }
 
   async #populateTable(table: Table) {
-    await this.em.populate(table, ['fields', 'fields.options', 'views', 'fields.displayFields', 'fields.foreignTable'])
+    await this.em.populate(table, [
+      'fields',
+      'fields.options',
+      'views',
+      'fields.displayFields',
+      'fields.foreignTable',
+      'views.widges.virsualization',
+    ])
     for (const field of table.fields) {
       if (field instanceof ReferenceField) {
         await field.foreignTable?.fields.init()

@@ -10,7 +10,7 @@
 	const view = getView()
 
 	const type = $view.displayType
-	const displayTypes = ['grid', 'kanban', 'calendar'] as const
+	const displayTypes = ['grid', 'kanban', 'calendar', 'dashboard'] as const
 
 	const switchDisplayType = trpc().table.view.switchDisplayType.mutation({
 		async onSuccess(data, variables, context) {

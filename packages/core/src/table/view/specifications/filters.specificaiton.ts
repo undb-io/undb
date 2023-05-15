@@ -5,11 +5,11 @@ import type { IRootFilter } from '../../filter/index.js'
 import { RootFilter } from '../../filter/index.js'
 import type { ITableSpecVisitor } from '../../specifications/interface.js'
 import type { Table } from '../../table.js'
-import type { View } from '../view.js'
+import type { ViewVO } from '../view.vo.js'
 import { BaseViewSpecification } from './base-view-specification.js'
 
 export class WithFilter extends BaseViewSpecification {
-  constructor(public readonly filter: IRootFilter | null, public readonly view: View) {
+  constructor(public readonly filter: IRootFilter | null, public readonly view: ViewVO) {
     super(view)
   }
 

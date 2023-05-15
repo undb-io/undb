@@ -5,6 +5,7 @@
 	import TableView from './TableView.svelte'
 	import KanbanIndex from './KanbanIndex.svelte'
 	import CalendarIndex from '$lib/calendar/CalendarIndex.svelte'
+	import DashboardIndex from '$lib/dashboard/DashboardIndex.svelte'
 
 	const view = getView()
 
@@ -14,6 +15,7 @@
 		grid: TableView,
 		kanban: KanbanIndex,
 		calendar: CalendarIndex,
+		dashboard: DashboardIndex,
 	}
 </script>
 

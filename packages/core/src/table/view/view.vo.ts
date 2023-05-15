@@ -8,7 +8,16 @@ import type { IFilterOrGroupList, IRootFilter } from '../filter/index.js'
 import { RootFilter } from '../filter/index.js'
 import { WithFilter } from '../specifications/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import type { VirsualizationVO } from '../virsualization/virsualization.vo.js'
 import { Calendar } from './calendar/index.js'
+import { Dashboard } from './dashboard/dashboard.vo.js'
+import {
+  WithoutWidgeSpecification,
+  WithWidgeSepecification,
+  WithWidgesLayout,
+} from './dashboard/specifications/widge.specification.js'
+import type { ICreateWidgeSchema, IRelayoutWidgeSchema } from './dashboard/widge.schema.js'
+import { Widge } from './dashboard/widge.vo.js'
 import { Kanban } from './kanban/index.js'
 import type { ISortDirection } from './sort/sort.schema.js'
 import { Sorts } from './sort/sorts.js'
@@ -42,7 +51,7 @@ import type { ICreateViewInput_internal, IView, IViewDisplayType } from './view.
 
 export const defaultViewDiaplyType: IViewDisplayType = 'grid'
 
-export class View extends ValueObject<IView> {
+export class ViewVO extends ValueObject<IView> {
   public get id() {
     return this.props.id
   }
@@ -297,6 +306,58 @@ export class View extends ValueObject<IView> {
     return []
   }
 
+  public get dashboard(): Option<Dashboard> {
+    return Option(this.props.dashboard)
+  }
+
+  public set dashboard(dashboard: Option<Dashboard>) {
+    this.props.dashboard = dashboard.into()
+  }
+
+  public getOrCreateDashboard(): Dashboard {
+    const dashboard = this.dashboard
+    if (dashboard.isSome()) return dashboard.unwrap()
+
+    this.props.dashboard = new Dashboard({ widges: [] })
+    return this.props.dashboard
+  }
+
+  public createWidge(input: ICreateWidgeSchema): TableCompositeSpecificaiton {
+    const dashboard = this.getOrCreateDashboard()
+
+    const widge = Widge.create(input)
+    const spec = new WithWidgeSepecification(this, dashboard, widge)
+
+    return spec
+  }
+
+  public deleteWidge(widgeId: string): TableCompositeSpecificaiton {
+    const dashboard = this.getOrCreateDashboard()
+
+    const spec = new WithoutWidgeSpecification(this, dashboard, widgeId)
+
+    return spec
+  }
+
+  public relayoutWidges(widges: IRelayoutWidgeSchema[]): TableCompositeSpecificaiton {
+    const dashboard = this.getOrCreateDashboard()
+
+    const spec = new WithWidgesLayout(this, dashboard, widges)
+    return spec
+  }
+
+  public getVirsualization(virsualizationId: string): VirsualizationVO | undefined {
+    const dashboard = this.dashboard.into()
+    const widge = dashboard?.widges.find((w) => w.virsualization?.id.value === virsualizationId)
+    return widge?.virsualization
+  }
+
+  public mustGetVirsualization(virsualizationId: string): VirsualizationVO {
+    const virsualization = this.getVirsualization(virsualizationId)
+    if (!virsualization) throw new Error('not found virsualization')
+    return virsualization
+  }
+
   setFilter(filter: IRootFilter | null) {
     this.props.filter = filter ? new RootFilter(filter) : undefined
   }
@@ -335,8 +396,8 @@ export class View extends ValueObject<IView> {
     return and(...specs)
   }
 
-  duplicate(input: Partial<ICreateViewInput_internal>): View {
-    const newView = View.create({
+  duplicate(input: Partial<ICreateViewInput_internal>): ViewVO {
+    const newView = ViewVO.create({
       name: this.name.value,
       sorts: this.sorts?.toArray(),
       showSystemFields: this.showSystemFields,
@@ -355,10 +416,10 @@ export class View extends ValueObject<IView> {
     return newView
   }
 
-  static create(input: ICreateViewInput_internal): View {
+  static create(input: ICreateViewInput_internal): ViewVO {
     const parsed = createViewInput_internal.parse(input)
     const viewName = ViewName.create(parsed.name)
-    return new View({
+    return new ViewVO({
       id: input.id ? ViewId.fromString(input.id) : ViewId.create(),
       name: viewName,
       showSystemFields: input.showSystemFields,
@@ -372,6 +433,7 @@ export class View extends ValueObject<IView> {
       fieldsOrder: input.fieldsOrder?.length ? ViewFieldsOrder.fromArray(input.fieldsOrder) : undefined,
       pinnedFields: input.pinnedFields ? new ViewPinnedFields(input.pinnedFields) : undefined,
       rowHeight: input.rowHeight ? ViewRowHeight.from(input.rowHeight) : undefined,
+      dashboard: input.dashboard ? Dashboard.from(input.dashboard) : undefined,
     })
   }
 }

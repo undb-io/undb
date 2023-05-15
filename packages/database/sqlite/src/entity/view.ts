@@ -2,12 +2,14 @@ import type { Rel } from '@mikro-orm/core'
 import {
   ArrayType,
   Cascade,
+  Collection,
   Embeddable,
   Embedded,
   Entity,
   Enum,
   JsonType,
   ManyToOne,
+  OneToMany,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core'
@@ -17,7 +19,7 @@ import {
   type Calendar as CoreCalendar,
   type Kanban as CoreKanban,
   type TreeView as CoreTreeView,
-  type View as CoreView,
+  type ViewVO as CoreView,
   type IRootFilter,
   type ISorts,
   type IViewDisplayType,
@@ -26,6 +28,7 @@ import {
 } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Table } from './table.js'
+import { Widge } from './widge.js'
 
 @Embeddable()
 export class Kanban {
@@ -86,7 +89,7 @@ export class View extends BaseEntity {
   @Property({ type: 'boolean', default: false, nullable: false })
   showSystemFields = false
 
-  @Enum({ items: ['kanban', 'calendar', 'grid', 'tree'] })
+  @Enum({ items: ['kanban', 'calendar', 'grid', 'tree', 'dashboard'] })
   displayType: IViewDisplayType
 
   @Property({ type: JsonType, nullable: true })
@@ -115,6 +118,9 @@ export class View extends BaseEntity {
 
   @Enum({ items: viewRowHeights, nullable: true })
   rowHeight?: IViewRowHeight
+
+  @OneToMany(() => Widge, (widge) => widge.view)
+  widges = new Collection<Widge>(this)
 
   constructor(table: Rel<Table>, view: CoreView) {
     super()

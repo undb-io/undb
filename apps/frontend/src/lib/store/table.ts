@@ -1,10 +1,10 @@
-import type { IFilters, Option, Record, Records, Table, View } from '@undb/core'
+import type { IFilters, Option, Record, Records, Table, ViewVO } from '@undb/core'
 import { derived, writable } from 'svelte/store'
 
 export const currentTable = writable<Table>()
 export const getTable = () => currentTable
 
-export const currentView = writable<View>()
+export const currentView = writable<ViewVO>()
 export const getView = () => currentView
 
 export const currentRecords = writable<Records>([])
@@ -23,6 +23,8 @@ export const getField = () => currentField
 export const sorts = derived(currentView, (view) => view.sorts?.sorts ?? [])
 // TODO: nested should be IFilters
 export const filters = derived(currentView, (view) => (view.filter?.group.children ?? []) as IFilters)
+
+export const dashboardWidges = derived(currentView, ($view) => $view.dashboard.into()?.widges ?? [])
 
 export const currentRecordIndex = derived([currentRecordId, currentRecords], ([$id, $records]) =>
 	$id ? $records.findIndex((r) => r.id.value === $id) : undefined,
@@ -49,3 +51,10 @@ export const getGroupRecordsHash = (id: string) => derived(recordHash, ($recordH
 
 export const currentOption = writable<Option | null>()
 export const getOption = () => currentOption
+
+export const currentVirsualizationId = writable<string | undefined>()
+export const currentVirsualization = derived(
+	[currentView, currentVirsualizationId],
+	([$view, $currentVirsualizationId]) =>
+		$currentVirsualizationId ? $view.getVirsualization($currentVirsualizationId) : undefined,
+)

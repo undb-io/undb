@@ -3,6 +3,7 @@ import { fieldIdSchema } from '../field/value-objects/field-id.schema.js'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema.js'
 import { rootFilter } from '../filter/filter.js'
 import { calendarSchema } from './calendar/index.js'
+import { createDashboardSchema, dashboardSchema } from './dashboard/dashboard.type.js'
 import { kanbanSchema } from './kanban/index.js'
 import { sortsSchema } from './sort/sort.schema.js'
 import { treeViewSchema } from './tree-view/index.js'
@@ -12,7 +13,7 @@ import { viewNameSchema } from './view-name.vo.js'
 import { viewPinnedFields } from './view-pinned-fields.js'
 import { viewRowHeightSchema } from './view-row-height.vo.js'
 
-export const viewDisplayType = z.enum(['grid', 'kanban', 'calendar', 'tree'])
+export const viewDisplayType = z.enum(['grid', 'kanban', 'calendar', 'tree', 'dashboard'])
 
 export const createViewSchema = z.object({
   id: viewIdSchema.optional(),
@@ -36,6 +37,7 @@ export const createViewInput_internal = z.object({
   sorts: sortsSchema.optional(),
   kanban: kanbanSchema.optional(),
   calendar: calendarSchema.optional(),
+  dashboard: createDashboardSchema.optional(),
   tree: treeViewSchema.optional(),
   displayType: viewDisplayType.optional(),
   filter: rootFilter.optional(),
@@ -52,6 +54,7 @@ export const queryView = z.object({
   sorts: sortsSchema.optional(),
   kanban: kanbanSchema.optional(),
   calendar: calendarSchema.optional(),
+  dashboard: dashboardSchema.optional(),
   tree: treeViewSchema.optional(),
   displayType: viewDisplayType,
   filter: rootFilter.optional(),
