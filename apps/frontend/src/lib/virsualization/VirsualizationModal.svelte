@@ -5,9 +5,11 @@
 	import VirsualizationSetting from './setting/VirsualizationSetting.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
-	import { currentVirsualization, getTable } from '$lib/store/table'
+	import { currentVirsualization, getTable, getView } from '$lib/store/table'
 
 	const table = getTable()
+	const view = getView()
+
 	export let updating = false
 
 	let ref: HTMLInputElement

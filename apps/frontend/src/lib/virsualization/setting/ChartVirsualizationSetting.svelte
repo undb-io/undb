@@ -3,21 +3,36 @@
 	import { Button, Toast } from 'flowbite-svelte'
 	import { SelectField, type NumberVirsualization as CoreChartVirsualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
-	import { getTable } from '$lib/store/table'
+	import { currentVirsualizationId, getTable, getView } from '$lib/store/table'
 	import { t } from '$lib/i18n'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import { slide } from 'svelte/transition'
+	import { tick } from 'svelte'
 
 	const table = getTable()
+	const view = getView()
 
 	export let virsualization: CoreChartVirsualization
 
 	let fieldId = virsualization.fieldId?.value
 
+	const getChartData = trpc().table.aggregate.chart.query(
+		{
+			tableId: $table.id.value,
+			viewId: $view.id.value,
+			virsualizationId: virsualization.id.value,
+		},
+		{
+			queryHash: virsualization.id.value,
+		},
+	)
+
 	const updateVirsualization = trpc().table.virsualization.update.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
+			await $getChartData.refetch()
+
 			fieldId = virsualization.fieldId?.value
 		},
 	})

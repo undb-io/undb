@@ -1,13 +1,13 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import type { IFieldType, NumberVirsualization } from '@undb/core'
+	import type { ChartVirsualization, IFieldType } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
 	import { getTable, getView } from '$lib/store/table'
 	import EmptyChartVirsualization from './EmptyChartVirsualization.svelte'
 	import type { ComponentType } from 'svelte'
 	import SelectChartVirsualization from './SelectChartVirsualization.svelte'
 
-	export let virsualization: NumberVirsualization
+	export let virsualization: ChartVirsualization
 
 	const table = getTable()
 	const view = getView()
@@ -15,11 +15,16 @@
 	$: fieldId = virsualization.fieldId?.value
 	$: field = fieldId ? $table.schema.getFieldById(fieldId).into() : undefined
 
-	const getChartData = trpc().table.aggregate.chart.query({
-		tableId: $table.id.value,
-		viewId: $view.id.value,
-		virsualizationId: virsualization.id.value,
-	})
+	const getChartData = trpc().table.aggregate.chart.query(
+		{
+			tableId: $table.id.value,
+			viewId: $view.id.value,
+			virsualizationId: virsualization.id.value,
+		},
+		{
+			queryHash: virsualization.id.value,
+		},
+	)
 
 	const map: Partial<Record<IFieldType, ComponentType>> = {
 		select: SelectChartVirsualization,

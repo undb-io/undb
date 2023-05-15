@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const chartData = z
   .object({
-    key: z.string(),
+    key: z.string().nullable(),
     value: z.number(),
   })
   .array()
