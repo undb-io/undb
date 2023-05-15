@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getTable } from '$lib/store/table'
+	import { getTable, getView, recordHash } from '$lib/store/table'
 	import { createFieldInitial, createFieldOpen } from '$lib/store/modal'
 	import { Button, Input, Label, Modal, Spinner, Toggle, Popover, Badge, Textarea, Toast } from 'flowbite-svelte'
 	import FieldIcon from './FieldIcon.svelte'
@@ -15,12 +15,19 @@
 	import { t } from '$lib/i18n'
 
 	const table = getTable()
+	const view = getView()
 
 	export let data: Validation<any>
+
+	const records = trpc().record.list.query(
+		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ enabled: false, refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash },
+	)
 
 	const createField = trpc().table.field.create.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
+			await $records.refetch()
 			createFieldOpen.set(false)
 		},
 	})
