@@ -505,6 +505,7 @@ export const config: InitOptions = {
         'aggregate mode table': '行计数',
         'aggregate mode field': '按列统计',
         'delete widge': '删除控件',
+        'no numberic fields': '没有数字列',
       },
       zod: zodZh,
     },

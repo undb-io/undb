@@ -3,7 +3,7 @@
 	import { numberAggregateFunctions, type INumberAggregateFunction, type SelectField } from '@undb/core'
 	import { Radio } from 'flowbite-svelte'
 
-	export let value: INumberAggregateFunction | undefined
+	export let value: INumberAggregateFunction = 'sum'
 </script>
 
 <ul

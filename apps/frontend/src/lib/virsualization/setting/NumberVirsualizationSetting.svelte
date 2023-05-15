@@ -1,6 +1,6 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Button, Radio, Toast } from 'flowbite-svelte'
+	import { Alert, Button, Radio, Toast } from 'flowbite-svelte'
 	import type { NumberVirsualization as CoreNumberVirsualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
 	import { getTable, getView } from '$lib/store/table'
@@ -99,12 +99,11 @@
 	<form on:submit|preventDefault={onSubmit} class="flex flex-col h-full justify-between">
 		{#if mode === 'field'}
 			<div>
-				<FieldPicker
-					class="w-full !justify-start mb-4"
-					table={$table}
-					filter={(f) => f.isNumeric}
-					bind:value={fieldId}
-				/>
+				<FieldPicker class="w-full !justify-start mb-4" table={$table} filter={(f) => f.isNumeric} bind:value={fieldId}>
+					<Alert slot="empty" color="yellow">
+						{$t('no numberic fields')}
+					</Alert>
+				</FieldPicker>
 				<NumberAggregatePicker bind:value={numberAggregateFunction} />
 			</div>
 		{/if}
