@@ -20,3 +20,5 @@ export const updateFieldOpen = writable<boolean>(false)
 export const confirmDeleteField = writable<boolean>(false)
 
 export const virsualizationOpen = writable<boolean>(false)
+
+export const confirmBulkDeleteRecords = writable<boolean>(false)
