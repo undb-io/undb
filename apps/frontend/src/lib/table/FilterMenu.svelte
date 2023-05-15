@@ -4,9 +4,8 @@
 	import { slide } from 'svelte/transition'
 	import FilterItem from './FilterItem.svelte'
 	import { trpc } from '$lib/trpc/client'
-	import { filters, getTable, getView } from '$lib/store/table'
+	import { filters, getTable, getView, recordHash } from '$lib/store/table'
 	import { isOperatorWithoutValue, type IFilter } from '@undb/core'
-	import { invalidateAll } from '$app/navigation'
 	import { writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
 
@@ -26,15 +25,21 @@
 		$value = $value.filter((f, i) => i !== index)
 	}
 
+	const data = trpc().record.list.query(
+		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash },
+	)
+
 	const setFilter = trpc().table.view.filter.set.mutation({
 		async onSuccess() {
-			await invalidateAll()
 			open = false
+			await $data.refetch()
 		},
 	})
 	async function apply() {
 		const validFilters = $value.filter(
-			(v) => !!v.path && !!v.operator && !!v.type && (isOperatorWithoutValue(v.operator) ? true : !!v.value),
+			(v) =>
+				!!v.path && !!v.operator && !!v.type && (isOperatorWithoutValue(v.operator) ? true : v.value !== undefined),
 		) as IFilter[]
 
 		$setFilter.mutate({

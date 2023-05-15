@@ -101,4 +101,6 @@
 	}
 </script>
 
-<svelte:component this={component} bind:value {field} {...$$restProps} class={wrapperClass} disabled={!field} />
+{#if operator && !isOperatorWithoutValue(operator)}
+	<svelte:component this={component} bind:value {field} {...$$restProps} class={wrapperClass} disabled={!field} />
+{/if}
