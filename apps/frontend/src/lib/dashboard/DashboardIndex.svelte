@@ -7,6 +7,7 @@
 	import { invalidate } from '$app/navigation'
 	import WidgeItem from './WidgeItem.svelte'
 	import { COLS, widgeItems } from '$lib/store/widge'
+	import EmptyDashboard from './EmptyDashboard.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -37,19 +38,25 @@
 </script>
 
 <div class="w-full h-full">
-	<Grid
-		bind:items={$widgeItems}
-		rowHeight={100}
-		let:dataItem
-		{cols}
-		fastStart
-		let:movePointerDown
-		let:resizePointerDown
-		on:pointerup={onPointeup}
-		fillSpace
-	>
-		<WidgeItem {dataItem} {movePointerDown} {resizePointerDown} />
-	</Grid>
+	{#if !$widgeItems.length}
+		<div class="w-full h-full flex items-center justify-center">
+			<EmptyDashboard />
+		</div>
+	{:else}
+		<Grid
+			bind:items={$widgeItems}
+			rowHeight={100}
+			let:dataItem
+			{cols}
+			fastStart
+			let:movePointerDown
+			let:resizePointerDown
+			on:pointerup={onPointeup}
+			fillSpace
+		>
+			<WidgeItem {dataItem} {movePointerDown} {resizePointerDown} />
+		</Grid>
+	{/if}
 </div>
 
 <style>

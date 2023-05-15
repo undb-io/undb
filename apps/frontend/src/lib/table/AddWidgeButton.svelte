@@ -1,4 +1,5 @@
 <script lang="ts">
+	import cx from 'classnames'
 	import { invalidate } from '$app/navigation'
 	import { t } from '$lib/i18n'
 	import { getTable, getView } from '$lib/store/table'
@@ -66,7 +67,8 @@
 	on:click={() => (open = true)}
 	size="xs"
 	outline
-	class="h-full !rounded-md items-center whitespace-nowrap flex gap-2"
+	{...$$restProps}
+	class={cx('h-full !rounded-md items-center whitespace-nowrap flex gap-2', $$restProps.class)}
 >
 	<i class="ti ti-plus" />
 	<span>
