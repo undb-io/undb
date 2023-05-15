@@ -30,6 +30,7 @@
 	import LoadingTable from './LoadingTable.svelte'
 	import TableViewToast from './TableViewToast.svelte'
 	import { recordSelection, selectedCount, selectedRecords } from '$lib/store/record'
+	import { getColumnTemplate } from '$lib/field/field-template'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -179,40 +180,7 @@
 					pin: position ? pinnedPositionMap[position] : undefined,
 					autoSize: true,
 					cellTemplate: cellTemplateMap[field.type],
-					columnTemplate: (h, column) => {
-						const id = getFieldDomId(column.prop)
-						return h(
-							'div',
-							{
-								class: 'h-full inline-flex w-full justify-between items-center text-xs text-gray-700 font-medium',
-							},
-							[
-								h(
-									'span',
-									{
-										class: 'inline-flex items-center gap-1',
-									},
-									[
-										h('i', { class: cx(getIconClass(column.field.type), 'text-gray-600 text-lg') }),
-										h('span', {}, column.name),
-									],
-								),
-								h(
-									'button',
-									{
-										id,
-										onClick: () => {
-											currentFieldId.set(column.prop as string)
-										},
-										class: 'w-[24px] h-[24px] rounded-sm hover:bg-gray-200 inline-flex items-center justify-center',
-									},
-									h('i', {
-										class: 'ti ti-chevron-down text-gray-500',
-									}),
-								),
-							],
-						)
-					},
+					columnTemplate: getColumnTemplate,
 					columnProperties: (column: RevoGridType.ColumnRegular) => {
 						const sort = $view.getFieldSort(column.prop as string).into()
 						return {

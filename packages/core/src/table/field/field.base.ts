@@ -19,11 +19,13 @@ import type {
   IBaseField,
   IDateFieldTypes,
   IFieldType,
+  ILookingFieldIssues,
   ILookingFieldTypes,
   ILookupFieldTypes,
   INumberAggregateFieldType,
   IReferenceFieldTypes,
   IUpdateFieldSchema,
+  LookingFieldIssue,
   PrimitiveField,
   SystemField,
 } from './field.type.js'
@@ -38,8 +40,8 @@ import { WithReferenceFieldId } from './specifications/lookup-field.specificatio
 import { WithDisplayFields } from './specifications/reference-field.specification.js'
 import type { TreeField } from './tree-field.js'
 import { FieldDescription } from './value-objects/field-description.js'
-import type { DateFormat, FieldIssue } from './value-objects/index.js'
-import { DisplayFields, FieldId, FieldName, FieldValueConstraints } from './value-objects/index.js'
+import type { DateFormat } from './value-objects/index.js'
+import { DisplayFields, FieldId, FieldIssue, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 const { map, pipe } = fp
 
@@ -290,7 +292,22 @@ export abstract class AbstractLookupField<F extends ILookupFieldTypes>
     this.props.referenceFieldId = fieldId
   }
 
-  getReferenceField(schema: TableSchemaIdMap): ReferenceField | TreeField {
+  getIssues(schema: TableSchemaIdMap): LookingFieldIssue[] {
+    const issues: LookingFieldIssue[] = []
+
+    if (!this.getReferenceField(schema)) {
+      issues.push(new FieldIssue<ILookingFieldIssues>({ value: 'Missing Reference Field' }))
+    }
+
+    return issues
+  }
+
+  getReferenceField(schema: TableSchemaIdMap): ReferenceField | TreeField | undefined {
+    const referenceField = schema.get(this.referenceFieldId.value)
+    return referenceField as ReferenceField | TreeField | undefined
+  }
+
+  mustGetReferenceField(schema: TableSchemaIdMap): ReferenceField | TreeField {
     const referenceField = schema.get(this.referenceFieldId.value)
     if (!referenceField) {
       throw new Error('missing reference field for lookup field')
@@ -298,8 +315,9 @@ export abstract class AbstractLookupField<F extends ILookupFieldTypes>
 
     return referenceField as ReferenceField | TreeField
   }
+
   getForeignTableId(schema: TableSchemaIdMap): Option<string> {
-    return this.getReferenceField(schema).foreignTableId
+    return this.mustGetReferenceField(schema).foreignTableId
   }
 
   updateReferenceId(referenceId?: string): Option<TableCompositeSpecificaiton> {
