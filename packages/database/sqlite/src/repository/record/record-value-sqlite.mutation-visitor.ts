@@ -190,6 +190,8 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
               ? AdjacencyListTable.TO_ID
               : AdjacencyListTable.FROM_ID]: this.recordId,
           })
+          .onConflict([AdjacencyListTable.FROM_ID, AdjacencyListTable.TO_ID])
+          .merge()
           .toQuery()
 
         this.addQueries(query)
