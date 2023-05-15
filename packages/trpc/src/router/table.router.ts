@@ -16,8 +16,10 @@ import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'
+import { createAggregateRouter } from './aggregate.router.js'
 import { createFieldRouter } from './field.router.js'
 import { createViewRouter } from './view.router.js'
+import { createVirsualizationRouter } from './virsualization.router.js'
 
 export const createTableRouter =
   (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
@@ -59,4 +61,6 @@ export const createTableRouter =
         }),
       field: createFieldRouter(procedure)(commandBus),
       view: createViewRouter(procedure)(commandBus),
+      aggregate: createAggregateRouter(procedure)(queryBus),
+      virsualization: createVirsualizationRouter(procedure)(commandBus),
     })

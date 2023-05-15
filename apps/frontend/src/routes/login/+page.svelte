@@ -33,7 +33,7 @@
 		},
 
 		async onSuccess(data, variables, context) {
-			await goto($page.url.searchParams.get('redirectTo') || '/')
+			await goto($page.url.searchParams.get('redirectTo') || '/', { replaceState: true, invalidateAll: true })
 		},
 	})
 

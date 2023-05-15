@@ -49,7 +49,13 @@ import type {
   WithTableSchema,
 } from '../specifications/index.js'
 import type {
+  WithWidgeSepecification,
+  WithWidgesLayout,
+  WithoutWidgeSpecification,
+} from '../view/dashboard/specifications/widge.specification.js'
+import type {
   WithCalendarField,
+  WithChartAggregateSpec,
   WithDisplayType,
   WithFieldOption,
   WithFieldVisibility,
@@ -66,10 +72,17 @@ import type {
   WithViewName,
   WithViewPinnedFields,
   WithViewsOrder,
+  WithVirsualizationNameSpec,
   WithoutView,
 } from '../view/index.js'
+import type { WithNumberAggregateSpec } from '../virsualization/specifications/number-virsualization.specification.js'
 
 export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVisitor, IFieldVisitor {
+  withoutWidge(s: WithoutWidgeSpecification): void {}
+  withChartAggregate(s: WithChartAggregateSpec): void {}
+  withNumberAggregate(s: WithNumberAggregateSpec): void {}
+  withVirsualizationName(s: WithVirsualizationNameSpec): void {}
+  withWidgesLayout(s: WithWidgesLayout): void {}
   rowHeightEqual(s: WithRowHeight): void {}
   ratingMaxEqual(s: WithRatingMax): void {}
   id(field: IdField): void {}
@@ -137,6 +150,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   withShowSystemFields(s: WithShowSystemFieldsSpec): void {}
   withFieldRequirement(s: WithFieldRequirement): void {}
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {}
+  withWidge(s: WithWidgeSepecification): void {}
   not(): this {
     return this
   }

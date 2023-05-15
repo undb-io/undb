@@ -4,7 +4,7 @@
 	import { withPrevious } from 'svelte-previous'
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
-	import { TableFactory, type IQueryTable } from '@undb/core'
+	import { TableFactory, type IQueryTable, canDisplay } from '@undb/core'
 	import FieldsPicker from '../FieldInputs/FieldsPicker.svelte'
 	import TablePicker from '../FieldInputs/TablePicker.svelte'
 	import { getTable } from '$lib/store/table'
@@ -50,7 +50,7 @@
 					table={coreForeignTable}
 					bind:group={$displayFieldIds}
 					disabled={!foreignTable}
-					filter={(f) => f.isPrimitive()}
+					filter={(f) => canDisplay(f.type)}
 				/>
 				{#if $table?.id.value !== $foreignTableId && isNew}
 					<Toggle size="small" bind:checked={$bidirectional} class="whitespace-nowrap">{$t('Bidirectional')}</Toggle>

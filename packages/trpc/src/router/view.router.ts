@@ -21,6 +21,7 @@ import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'
 import { createCalendarRouter } from './calendar.router.js'
+import { createDashboardRouter } from './dashboard.router.js'
 import { createFilterRouter } from './filter.router.js'
 import { createKanbanRouter } from './kanban.router.js'
 import { createSortRouter } from './sort.router.js'
@@ -90,5 +91,6 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
     sort: createSortRouter(procedure)(commandBus),
     kanban: createKanbanRouter(procedure)(commandBus),
     calendar: createCalendarRouter(procedure)(commandBus),
+    dashboard: createDashboardRouter(procedure)(commandBus),
     tree: createTreeViewRouter(procedure)(commandBus),
   })

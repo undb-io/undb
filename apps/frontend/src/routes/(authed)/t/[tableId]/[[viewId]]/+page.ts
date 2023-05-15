@@ -28,11 +28,20 @@ export const load: PageLoad = async (event) => {
 
 	const record = recordId ? await trpc().record.get.utils.fetch({ tableId, id: recordId }) : undefined
 	const coreRecord = record ? RecordFactory.fromQuery(record, coreTable.schema.toIdMap()).unwrap() : undefined
+
 	return {
 		record,
-		updateTable: superValidate({ name: coreTable.name.value }, createUpdateTableSchema(coreTable), {
-			id: 'updateTable',
-		}),
+		updateTable: superValidate(
+			{
+				name: coreTable.name.value,
+				emoji: coreTable.emoji.unpack(),
+				schema: fields.map((field) => field.json as any),
+			},
+			createUpdateTableSchema(coreTable),
+			{
+				id: 'updateTable',
+			},
+		),
 		createRecord: superValidate(event, createMutateRecordValuesSchema(fields), { id: 'createRecord', errors: false }),
 		updateRecord: superValidate(event, createMutateRecordValuesSchema(fields, coreRecord?.valuesJSON), {
 			id: 'updateRecord',
@@ -45,9 +54,15 @@ export const load: PageLoad = async (event) => {
 			}),
 			{ id: 'createField' },
 		),
-		updateField: superValidate({ type: 'string' }, z.object<{ [key: string]: any }>({ type: z.string() }), {
-			id: 'updateField',
-		}),
+		updateField: superValidate(
+			{
+				type: 'string',
+			},
+			z.object<{ [key: string]: any }>({ type: z.string() }),
+			{
+				id: 'updateField',
+			},
+		),
 		createOption: superValidate({}, createOptionSchema, { id: 'createOption' }),
 		updateOption: superValidate({}, updateOptionSchema, { id: 'createOption' }),
 		createView: superValidate({}, createViewSchema, { id: 'createView', errors: false }),

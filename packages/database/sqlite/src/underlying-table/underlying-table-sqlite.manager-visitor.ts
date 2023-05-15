@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import type { ITableSpecVisitor, WithNewField, WithTableSchema, WithoutField, WithoutOption } from '@undb/core'
+import type {
+  ITableSpecVisitor,
+  WithNewField,
+  WithRatingMax,
+  WithTableSchema,
+  WithoutField,
+  WithoutOption,
+} from '@undb/core'
 import { UnderlyingColumnBuilder } from './underlying-column.builder.js'
 
 export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
@@ -12,6 +19,11 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     const knex = em.getKnex()
     this.knex = knex
   }
+  withoutWidge(): void {}
+  withChartAggregate(): void {}
+  withNumberAggregate(): void {}
+  withVirsualizationName(): void {}
+  withWidgesLayout(): void {}
   get #sb() {
     return this.sb ?? this.knex.schema
   }
@@ -49,7 +61,9 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   withoutView(): void {}
   viewsOrderEqual(): void {}
   filterEqual(): void {}
-  ratingMaxEqual(): void {}
+  ratingMaxEqual(s: WithRatingMax): void {
+    this.qb = this.#qb.update(s.field.id.value, s.max).where(s.field.id.value, '>', s.max).from(this.tableName)
+  }
   rowHeightEqual(): void {}
   newField(s: WithNewField): void {
     const field = s.field
@@ -104,6 +118,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   withShowSystemFields(): void {}
   withFieldRequirement(): void {}
   symmetricReferenceFieldEqual(): void {}
+  withWidge(): void {}
   not(): this {
     return this
   }

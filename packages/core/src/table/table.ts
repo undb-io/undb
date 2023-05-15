@@ -1,5 +1,5 @@
 import { and, andOptions } from '@undb/domain'
-import { difference, isString } from 'lodash-es'
+import { difference, isEmpty, isEqual, isString } from 'lodash-es'
 import type { Option, Result } from 'oxide.ts'
 import { None, Ok, Some } from 'oxide.ts'
 import type {
@@ -21,15 +21,17 @@ import { WithRecordValues } from './record/specifications/record-values.specific
 import { WithTableEmoji, WithTableName } from './specifications/index.js'
 import type { TableCompositeSpecificaiton } from './specifications/interface.js'
 import type { IUpdateTableSchema } from './table.schema.js'
-import type { TableId } from './value-objects/index.js'
+import type { IUpdateTableSchemaSchema, TableId } from './value-objects/index.js'
 import { TableSchema } from './value-objects/index.js'
 import type { TableEmoji } from './value-objects/table-emoji.vo.js'
 import type { TableName } from './value-objects/table-name.vo.js'
 import type {
   ICreateViewSchema,
+  ICreateWidgeSchema,
   IMoveFieldSchema,
   IMoveViewSchema,
   IQueryView,
+  IRelayoutWidgeSchema,
   ISetCalendarFieldSchema,
   ISetFieldVisibilitySchema,
   ISetFieldWidthSchema,
@@ -41,16 +43,21 @@ import type {
   ISorts,
   ISwitchDisplayTypeSchema,
   IUpdateViewNameSchema,
+  IUpdateVirsualizationSchema,
   ViewFieldsOrder,
 } from './view/index.js'
 import {
   Sorts,
-  View,
+  ViewVO,
   ViewsOrder,
+  VirsualizationName,
+  WithChartAggregateSpec,
+  WithNumberAggregateSpec,
   WithShowSystemFieldsSpec,
   WithTableView,
   WithViewFieldsOrder,
   WithViewsOrder,
+  WithVirsualizationNameSpec,
   defaultViewDiaplyType,
 } from './view/index.js'
 import { WithFilter } from './view/specifications/filters.specificaiton.js'
@@ -85,7 +92,7 @@ export class Table {
     return new Table()
   }
 
-  public getOrCreateDefaultView(viewName?: string): [View, Option<TableCompositeSpecificaiton>] {
+  public getOrCreateDefaultView(viewName?: string): [ViewVO, Option<TableCompositeSpecificaiton>] {
     const defaultView = this.defaultView
     if (defaultView) return [defaultView, None]
 
@@ -95,12 +102,12 @@ export class Table {
     return [spec.view, Some(spec)]
   }
 
-  public get defaultView(): View {
+  public get defaultView(): ViewVO {
     return this.views.defaultView.unwrapOrElse(() => this.createDefaultView())
   }
 
-  private createDefaultView(viewName?: string): View {
-    return View.create({
+  private createDefaultView(viewName?: string): ViewVO {
+    return ViewVO.create({
       id: ViewId.createId(),
       name: viewName ?? this.name.value,
       displayType: defaultViewDiaplyType,
@@ -115,7 +122,7 @@ export class Table {
     return this.mustGetView(viewId).spec
   }
 
-  public getView(viewId?: string): Option<View> {
+  public getView(viewId?: string): Option<ViewVO> {
     if (!viewId) {
       return Some(this.defaultView)
     }
@@ -123,7 +130,7 @@ export class Table {
     return this.views.getById(viewId)
   }
 
-  public mustGetView(viewId?: string): View {
+  public mustGetView(viewId?: string): ViewVO {
     if (!viewId) {
       return this.defaultView
     }
@@ -177,6 +184,38 @@ export class Table {
     return spec
   }
 
+  public updateSchema(schema: IUpdateTableSchemaSchema): TableCompositeSpecificaiton {
+    const specs: TableCompositeSpecificaiton[] = []
+    for (const field of schema) {
+      const isNew = !field.id || !this.schema.fieldsIds.includes(field.id)
+      if (isNew) {
+        const spec = this.createField(undefined, field)
+        specs.push(spec)
+        continue
+      }
+
+      const existing = this.schema.getFieldById(field.id ?? '').into(undefined)
+      if (existing) {
+        const isUpdated = !isEqual(existing.json, field)
+        if (isUpdated) {
+          const spec = this.updateField(existing.id.value, field).unwrap()
+          specs.push(spec)
+          continue
+        }
+      }
+    }
+    const ids = schema.map((s) => s.id)
+
+    const deletedFields = this.schema.fields.filter((field) => !field.isSystem() && !ids.includes(field.id.value))
+
+    for (const field of deletedFields) {
+      const spec = this.removeField(field.id.value)
+      specs.push(spec)
+    }
+
+    return and(...specs).unwrap()
+  }
+
   public update(input: IUpdateTableSchema): Option<TableCompositeSpecificaiton> {
     const specs: TableCompositeSpecificaiton[] = []
 
@@ -189,14 +228,19 @@ export class Table {
       specs.push(spec)
     }
 
+    if (Array.isArray(input.schema) && !isEmpty(input.schema)) {
+      const spec = this.updateSchema(input.schema)
+      specs.push(spec)
+    }
+
     return and(...specs)
   }
 
-  private mustGetFielsOrder(view: View): ViewFieldsOrder {
+  private mustGetFielsOrder(view: ViewVO): ViewFieldsOrder {
     return view.fieldsOrder ?? this.schema.defaultFieldsOrder
   }
 
-  public getFieldsOrder(view: View): string[] {
+  public getFieldsOrder(view: ViewVO): string[] {
     let { order } = this.mustGetFielsOrder(view)
     const pinnedFields = view.pinnedFields
     const left = pinnedFields?.left ?? []
@@ -209,7 +253,7 @@ export class Table {
     return [...left, ...difference(order, left.concat(right)), ...right]
   }
 
-  public getOrderedFields(view: View = this.mustGetView(), withHidden = true): Field[] {
+  public getOrderedFields(view: ViewVO = this.mustGetView(), withHidden = true): Field[] {
     const order = this.getFieldsOrder(view)
     const schema = this.schema.toIdMap()
 
@@ -272,6 +316,24 @@ export class Table {
     const s2 = this.viewsOrder.addView(s1.view)
     const spec = s1.and(s2)
     spec.mutate(this).unwrap()
+
+    return spec
+  }
+
+  public createWidge(viewId: string, input: ICreateWidgeSchema): TableCompositeSpecificaiton {
+    const view = this.mustGetView(viewId)
+
+    const spec = view.createWidge(input)
+    spec.mutate(this)
+
+    return spec
+  }
+
+  public deleteWidge(viewId: string, widgeId: string): TableCompositeSpecificaiton {
+    const view = this.mustGetView(viewId)
+
+    const spec = view.deleteWidge(widgeId)
+    spec.mutate(this)
 
     return spec
   }
@@ -417,5 +479,34 @@ export class Table {
     spec.mutate(this)
 
     return spec
+  }
+
+  public relayoutWidges(viewId: string, widges: IRelayoutWidgeSchema[]): TableCompositeSpecificaiton {
+    const view = this.mustGetView(viewId)
+
+    const spec = view.relayoutWidges(widges)
+    spec.mutate(this)
+
+    return spec
+  }
+
+  public updateVirsualization(input: IUpdateVirsualizationSchema): TableCompositeSpecificaiton {
+    const specs: TableCompositeSpecificaiton[] = []
+    if (isString(input.name)) {
+      const spec = new WithVirsualizationNameSpec(input.id, new VirsualizationName({ value: input.name }))
+      specs.push(spec)
+    }
+
+    if (input.type === 'number') {
+      const spec = WithNumberAggregateSpec.from(input.id, input.fieldId, input.numberAggregateFunction)
+      specs.push(spec)
+    } else if (input.type === 'chart') {
+      if (isString(input.fieldId) && isString(input.chartAggregateFunction)) {
+        const spec = WithChartAggregateSpec.from(input.id, input.fieldId, input.chartAggregateFunction)
+        specs.push(spec)
+      }
+    }
+
+    return and(...specs).unwrap()
   }
 }

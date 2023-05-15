@@ -19,6 +19,13 @@ import { WithRatingMax } from './specifications/rating-field.specification.js'
 export class RatingField extends BaseField<IRatingField> {
   type: RatingFieldType = 'rating'
 
+  override get json() {
+    return {
+      ...super.json,
+      max: this.max,
+    }
+  }
+
   override get primitive() {
     return true
   }

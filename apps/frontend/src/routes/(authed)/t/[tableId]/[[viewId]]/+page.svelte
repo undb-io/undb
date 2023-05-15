@@ -14,6 +14,7 @@
 	import { createTableOpen, createRecordOpen } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import UpdateOption from '$lib/option/UpdateOption.svelte'
+	import VirsualizationModal from '$lib/virsualization/VirsualizationModal.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -40,7 +41,9 @@
 
 <TableIndex />
 
-<UpdateTable data={data.updateTable} />
+{#key $table}
+	<UpdateTable data={data.updateTable} />
+{/key}
 <CreateView data={data.createView} />
 <ViewConfigModal />
 <CreateRecord data={data.createRecord} />
@@ -57,5 +60,7 @@
 		<UpdateField field={$field} data={data.updateField} />
 	{/key}
 {/if}
+
+<VirsualizationModal />
 
 <svelte:window on:keydown={onKeydown} />

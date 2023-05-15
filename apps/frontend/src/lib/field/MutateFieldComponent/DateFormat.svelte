@@ -13,7 +13,9 @@
 	const format = fieldProxy(form.form, [...path, 'format'] as any) as Writable<string>
 
 	onMount(() => {
-		$format = DEFAULT_DATE_FORMAT
+		if (!$format) {
+			$format = DEFAULT_DATE_FORMAT
+		}
 	})
 
 	const items = BUILT_IN_DATE_FORMATS.map((format) => ({ value: format, name: format }))

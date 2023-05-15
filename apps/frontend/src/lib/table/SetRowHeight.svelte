@@ -36,7 +36,7 @@
 			class="flex items-center justify-between"
 			on:click={() => {
 				if (rh !== rowHeight) {
-					$setRowHeight.mutate({ tableId: $table.id.value, $viewId: $view.id.value, rowHeight })
+					$setRowHeight.mutate({ tableId: $table.id.value, viewId: $view.id.value, rowHeight })
 				}
 			}}
 		>

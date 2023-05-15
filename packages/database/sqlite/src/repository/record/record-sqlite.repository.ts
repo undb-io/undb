@@ -96,6 +96,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       { id: tableId },
       {
         populate: [
+          'views',
           'fields.options',
           'fields.displayFields',
           'fields.countFields',

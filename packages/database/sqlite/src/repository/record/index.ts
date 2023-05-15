@@ -1,3 +1,4 @@
+export * from './record-sqlite.aggregate-repository.js'
 export * from './record-sqlite.query-model.js'
 export * from './record-sqlite.query-visitor.js'
 export * from './record-sqlite.repository.js'

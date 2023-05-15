@@ -20,6 +20,13 @@ import { FieldId } from './value-objects/field-id.vo.js'
 
 export class LookupField extends Mixin(AbstractLookingField<ILookupField>, AbstractLookupField<ILookupField>) {
   type: LookupType = 'lookup'
+  override get json() {
+    return {
+      ...super.json,
+      referenceFieldId: this.referenceFieldId.value,
+      displayFieldIds: this.displayFieldIds.map((id) => id.value),
+    }
+  }
 
   get multiple() {
     return true

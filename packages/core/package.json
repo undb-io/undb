@@ -13,7 +13,7 @@
     "oxide.ts": "^1.1.0",
     "ts-mixer": "^6.0.3",
     "zod": "^3.21.4",
-    "zod-i18n-map": "^2.11.0"
+    "zod-i18n-map": "^2.12.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.194",
@@ -24,7 +24,7 @@
     "t": "^0.5.1",
     "tsconfig": "^0.0.0",
     "tsup": "^6.7.0",
-    "type-fest": "^3.9.0",
+    "type-fest": "^3.10.0",
     "typescript": "^5.0.4",
     "vitest": "^0.31.0",
     "vitest-mock-extended": "^1.1.3"

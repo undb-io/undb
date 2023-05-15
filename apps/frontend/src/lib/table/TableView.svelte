@@ -2,14 +2,12 @@
 	import { RecordFactory, type IViewPinnedFields, type PinnedPosition, type IViewRowHeight } from '@undb/core'
 	import cx from 'classnames'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
-	import { Button, Dropdown, Modal, P, Spinner, Toast } from 'flowbite-svelte'
+	import { Button, Dropdown, Modal, Spinner } from 'flowbite-svelte'
 	import type { RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
 	import type { Components, RevoGridCustomEvent } from '@revolist/revogrid'
 	import { defineCustomElements } from '@revolist/revogrid/loader'
 	import { cellTemplateMap } from '$lib/cell/CellComponents/cell-template'
 	import { trpc } from '$lib/trpc/client'
-	import { slide } from 'svelte/transition'
-	import { quintOut } from 'svelte/easing'
 	import { writable } from 'svelte/store'
 	import EmptyTable from './EmptyTable.svelte'
 	import {
@@ -28,8 +26,11 @@
 	import { onMount, tick } from 'svelte'
 	import { editors } from '$lib/cell/CellEditors/editors'
 	import { t } from '$lib/i18n'
-	import { confirmDeleteField } from '$lib/store/modal'
+	import { confirmBulkDeleteRecords, confirmDeleteField } from '$lib/store/modal'
 	import LoadingTable from './LoadingTable.svelte'
+	import TableViewToast from './TableViewToast.svelte'
+	import { recordSelection, selectedCount, selectedRecords } from '$lib/store/record'
+	import { getColumnTemplate } from '$lib/field/field-template'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -63,20 +64,9 @@
 	let rowDefinitions: RevoGridType.RowDefinition[]
 	let columns = writable<RevoGridType.ColumnRegular[]>([])
 
-	const select = writable<Record<string, boolean>>({})
-	$: $table, select.set({})
-
-	const updateSelect = (recordId: string, selected: boolean) => ($select[recordId] = selected)
-	$: allSelected = records.length > 0 && Object.entries($select).filter(([, value]) => value).length === records.length
-	const updateAllSelect = (s: boolean) => {
-		const selected: Record<string, boolean> = {}
-		for (const record of records) {
-			selected[record.id.value] = s
-		}
-
-		select.set(selected)
-	}
-
+	$: $table, recordSelection.reset()
+	$: allSelected =
+		records.length > 0 && Object.entries($recordSelection).filter(([, value]) => value).length === records.length
 	$: fields = $table.getOrderedFields($view, false)
 
 	onMount(async () => {
@@ -132,7 +122,7 @@
 						checked: allSelected,
 						disabled: !records.length,
 						onChange: (event: any) => {
-							updateAllSelect(event.target.checked)
+							recordSelection.updateAll(records, event.target.checked)
 						},
 						class:
 							'w-4 h-4 text-blue-600 absolute top-1/2 left-1/4 translate-y-[-50%] translate-x-[-50%] bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center',
@@ -143,7 +133,7 @@
 					class: '!p-0 text-center border-r border-b border-gray-200 group',
 				}),
 				cellTemplate: (h, props) => {
-					const checked = !!$select[props.model.id]
+					const checked = !!$recordSelection[props.model.id]
 					return h('div', { class: 'flex items-center h-full' }, [
 						h(
 							'span',
@@ -169,7 +159,7 @@
 							type: 'checkbox',
 							checked,
 							onChange: (event: any) => {
-								updateSelect(props.model.id, event.target.checked)
+								recordSelection.updateSelect(props.model.id, event.target.checked)
 							},
 							class: cx(
 								'undb-select absolute top-1/2 left-1/4 translate-y-[-50%] translate-x-[-50%] w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center group-hover:opacity-100',
@@ -190,40 +180,7 @@
 					pin: position ? pinnedPositionMap[position] : undefined,
 					autoSize: true,
 					cellTemplate: cellTemplateMap[field.type],
-					columnTemplate: (h, column) => {
-						const id = getFieldDomId(column.prop)
-						return h(
-							'div',
-							{
-								class: 'h-full inline-flex w-full justify-between items-center text-xs text-gray-700 font-medium',
-							},
-							[
-								h(
-									'span',
-									{
-										class: 'inline-flex items-center gap-1',
-									},
-									[
-										h('i', { class: cx(getIconClass(column.field.type), 'text-gray-600 text-lg') }),
-										h('span', {}, column.name),
-									],
-								),
-								h(
-									'button',
-									{
-										id,
-										onClick: () => {
-											currentFieldId.set(column.prop as string)
-										},
-										class: 'w-[24px] h-[24px] rounded-sm hover:bg-gray-200 inline-flex items-center justify-center',
-									},
-									h('i', {
-										class: 'ti ti-chevron-down text-gray-500',
-									}),
-								),
-							],
-						)
-					},
+					columnTemplate: getColumnTemplate,
 					columnProperties: (column: RevoGridType.ColumnRegular) => {
 						const sort = $view.getFieldSort(column.prop as string).into()
 						return {
@@ -302,36 +259,26 @@
 		}
 	}
 
-	$: selectedRecords = Object.entries($select)
-		.filter(([, value]) => value)
-		.map(([key]) => key)
-	$: selectedCount = Object.values($select).filter(Boolean).length
 	$: hasRecord = !!records.length
-	$: toastOpen = !!selectedCount
 
 	const bulkDeleteRecordsMutation = trpc().record.bulkDelete.mutation({
 		async onSuccess(data, variables, context) {
 			await $data.refetch()
 
-			select.set({})
+			recordSelection.set({})
 		},
 	})
 
-	let confirmBulkDelete = false
-	const confirm = () => {
-		confirmBulkDelete = true
-	}
-
 	const bulkDeleteRecords = async () => {
-		if (!selectedRecords.length) {
+		if (!$selectedRecords.length) {
 			return
 		}
 
 		$bulkDeleteRecordsMutation.mutate({
 			tableId: $table.id.value,
-			ids: selectedRecords as [string, ...string[]],
+			ids: $selectedRecords as [string, ...string[]],
 		})
-		confirmBulkDelete = false
+		$confirmBulkDeleteRecords = false
 	}
 
 	const deleteField = trpc().table.field.delete.mutation({
@@ -362,25 +309,8 @@
 {:else if !hasRecord}
 	<EmptyTable />
 {/if}
-<Toast
-	open={toastOpen}
-	position="bottom-right"
-	class="z-30 shadow-md !w-[500px] !max-w-xl"
-	transition={slide}
-	params={{ delay: 100, duration: 200, easing: quintOut }}
->
-	<div class="flex items-center space-x-5 justify-between">
-		<P class="text-sm !text-gray-700">{@html $t('Selected N Records', { n: selectedCount })}</P>
-		<Button color="alternative" class="inline-flex gap-2 items-center text-red-400" size="xs" on:click={confirm}>
-			{#if $bulkDeleteRecordsMutation.isLoading}
-				<Spinner class="mr-3" size="4" />
-			{:else}
-				<i class="ti ti-copy text-lg" />
-			{/if}
-			{$t('Delete Selected Record')}</Button
-		>
-	</div>
-</Toast>
+
+<TableViewToast open={!!$selectedCount} />
 
 {#if fieldMenuDOMId}
 	{#key fieldMenuDOMId}
@@ -396,7 +326,7 @@
 	{/key}
 {/if}
 
-<Modal bind:open={confirmBulkDelete} size="xs">
+<Modal bind:open={$confirmBulkDeleteRecords} size="xs">
 	<div class="text-center">
 		<svg
 			aria-hidden="true"

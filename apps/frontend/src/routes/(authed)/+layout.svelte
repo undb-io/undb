@@ -62,7 +62,7 @@
 
 <div>
 	<TransitionRoot show={sidebarOpen}>
-		<Dialog as="div" class="relative z-30 lg:hidden" on:close={setSidebarOpen}>
+		<Dialog as="div" class="relative z-30 lg:hidden" bind:open={sidebarOpen} on:close={setSidebarOpen}>
 			<TransitionChild
 				enter="transition-opacity ease-linear duration-300"
 				enterFrom="opacity-0"
@@ -98,7 +98,7 @@
 								</button>
 							</div>
 						</TransitionChild>
-						<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2">
+						<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2 h-screen">
 							<div class="flex h-16 shrink-0 items-center px-6 gap-2">
 								<img class="h-6 w-auto" src={logo} alt="undb" />
 								<P size="lg" class="font-semibold select-none !text-blue-600">undb</P>
@@ -301,19 +301,58 @@
 		</div>
 	</div>
 
-	<div class="sticky top-0 z-40 flex items-center gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-6 lg:hidden">
+	<div class="sticky top-0 z-40 flex items-center gap-x-6 bg-white px-2 py-2 shadow-sm sm:px-6 lg:hidden">
 		<button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" on:click={setSidebarOpen}>
-			<span class="sr-only">Open sidebar</span>
+			<i class="ti ti-menu-2" />
 		</button>
-		<div class="flex-1 text-sm font-semibold leading-6 text-gray-900">Dashboard</div>
-		<a href="#">
+		<div class="flex-1 text-sm font-semibold leading-6 text-gray-900">
+			<img class="h-6 w-auto" src={logo} alt="undb" />
+		</div>
+		<button id="me-button" class="flex items-center gap-x-4 p-0 text-sm font-semibold leading-6 text-gray-900">
+			{#if me.avatar}
+				<Avatar src={me.avatar} />
+			{:else}
+				<Avatar>{me.username.slice(0, 2)}</Avatar>
+			{/if}
 			<span class="sr-only">Your profile</span>
-			<img
-				class="h-8 w-8 rounded-full bg-gray-50"
-				src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-				alt=""
-			/>
-		</a>
+			<span aria-hidden="true">{me.username}</span>
+		</button>
+
+		<Dropdown triggeredBy="#me-button" placement="bottom" class="w-48 shadow-sm border border-gray-100">
+			<DropdownItem href="/me">
+				<i class="ti ti-settings" />
+				{$t('Setting', { ns: 'auth' })}
+			</DropdownItem>
+			<DropdownItem class="flex items-center justify-between">
+				<Chevron placement="right">
+					<div>
+						<i class="ti ti-world" />
+						{$t('language', { ns: 'common' })}
+					</div>
+				</Chevron>
+			</DropdownItem>
+			<Dropdown placement="left-start">
+				<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('zh-CN')}>
+					<span>简体中文</span>
+					{#if $i18n.language === 'zh-CN'}
+						<i class="ti ti-check" />
+					{/if}
+				</DropdownItem>
+				<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('en')}>
+					<span>English</span>
+					{#if $i18n.language === 'en'}
+						<i class="ti ti-check" />
+					{/if}
+				</DropdownItem>
+			</Dropdown>
+
+			<DropdownItem>
+				<button on:click={() => $logout.mutate()} class="w-full h-full text-left text-red-400" type="submit">
+					<i class="ti ti-logout" />
+					{$t('logout', { ns: 'auth' })}
+				</button>
+			</DropdownItem>
+		</Dropdown>
 	</div>
 
 	<main class="lg:pl-72 h-[100vh]">

@@ -11,6 +11,13 @@ import { FieldId } from './value-objects/field-id.vo.js'
 
 export class SumField extends Mixin(AbstractAggregateField<ISumField>, AbstractLookupField<ISumField>) {
   type: SumType = 'sum'
+  override get json() {
+    return {
+      ...super.json,
+      referenceFieldId: this.referenceFieldId.value,
+      aggregateFieldId: this.aggregateFieldId.value,
+    }
+  }
 
   override get primitive() {
     return true

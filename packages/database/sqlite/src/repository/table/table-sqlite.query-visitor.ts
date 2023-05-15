@@ -3,6 +3,7 @@ import type { QueryBuilder } from '@mikro-orm/better-sqlite'
 import type {
   ITableSpecVisitor,
   WithCalendarField,
+  WithChartAggregateSpec,
   WithDisplayFields,
   WithDisplayType,
   WithFieldDescription,
@@ -18,10 +19,12 @@ import type {
   WithNewField,
   WithNewOption,
   WithNewView,
+  WithNumberAggregateSpec,
   WithOptions,
   WithoutField,
   WithoutOption,
   WithoutView,
+  WithoutWidgeSpecification,
   WithRatingMax,
   WithRowHeight,
   WithShowSystemFieldsSpec,
@@ -38,11 +41,29 @@ import type {
   WithViewName,
   WithViewPinnedFields,
   WithViewsOrder,
+  WithVirsualizationNameSpec,
+  WithWidgeSepecification,
+  WithWidgesLayout,
 } from '@undb/core'
 import type { Table } from '../../entity/index.js'
 
 export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   constructor(public qb: QueryBuilder<Table>) {}
+  withoutWidge(s: WithoutWidgeSpecification): void {
+    throw new Error('Method not implemented.')
+  }
+  withChartAggregate(s: WithChartAggregateSpec): void {
+    throw new Error('Method not implemented.')
+  }
+  withNumberAggregate(s: WithNumberAggregateSpec): void {
+    throw new Error('Method not implemented.')
+  }
+  withVirsualizationName(s: WithVirsualizationNameSpec): void {
+    throw new Error('Method not implemented.')
+  }
+  withWidgesLayout(s: WithWidgesLayout): void {
+    throw new Error('Method not implemented.')
+  }
   idEqual(s: WithTableId): void {
     this.qb.where({ id: s.id.value })
   }
@@ -152,6 +173,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   ratingMaxEqual(s: WithRatingMax): void {
+    throw new Error('Method not implemented.')
+  }
+  withWidge(s: WithWidgeSepecification): void {
     throw new Error('Method not implemented.')
   }
 

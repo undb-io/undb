@@ -2,14 +2,19 @@
 	import { getView } from '$lib/store/table'
 	import type { IViewDisplayType } from '@undb/core'
 	import type { ComponentType } from 'svelte'
-	import TableToolBarControls from '../table/TableToolBarControls.svelte'
+	import GridToolbar from './GridToolbar.svelte'
+	import KanbanToolbar from './KanbanToolbar.svelte'
+	import CalendarToolbar from './CalendarToolbar.svelte'
+	import DashboardToolbar from './DashboardToolbar.svelte'
 
 	const view = getView()
-
 	$: type = $view.displayType
 
 	const map: Partial<Record<IViewDisplayType, ComponentType>> = {
-		grid: TableToolBarControls,
+		grid: GridToolbar,
+		kanban: KanbanToolbar,
+		calendar: CalendarToolbar,
+		dashboard: DashboardToolbar,
 	}
 </script>
 

@@ -9,6 +9,7 @@
 		grid: 'table-filled',
 		kanban: 'layout-kanban',
 		calendar: 'calendar-event',
+		dashboard: 'layout-dashboard',
 	}
 
 	const colors: Record<IViewDisplayType, string> = {
@@ -16,6 +17,7 @@
 		grid: 'text-sky-500',
 		kanban: 'text-orange-500',
 		calendar: 'text-green-500',
+		dashboard: 'text-cyan-500',
 	}
 </script>
 
