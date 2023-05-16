@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { createTableOpen } from '$lib/store/modal'
 	import { Accordion, Button, Label, Modal, Input, Spinner, Toast, P, Badge } from 'flowbite-svelte'
 	import type { Validation } from 'sveltekit-superforms'
 	import { FieldId, type createTableInput } from '@undb/core'
@@ -9,6 +8,7 @@
 	import { goto, invalidate } from '$app/navigation'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
+	import { createTableModal } from '$lib/store/modal'
 
 	export let data: Validation<typeof createTableInput>
 	let opened: Record<string, boolean> = {}
@@ -21,7 +21,7 @@
 
 	const createTable = trpc().table.create.mutation({
 		async onSuccess(data, variables, context) {
-			createTableOpen.set(false)
+			createTableModal.close()
 			await invalidate('tables')
 			await goto(`/t/${data.id}`)
 		},
@@ -59,7 +59,7 @@
 	placement="top-center"
 	class="static w-full rounded-sm"
 	size="lg"
-	bind:open={$createTableOpen}
+	bind:open={$createTableModal.open}
 >
 	<form id="createTable" class="flex flex-col justify-between flex-1 gap-2" method="POST" use:enhance>
 		<div>
@@ -110,7 +110,7 @@
 
 	<svelte:fragment slot="footer">
 		<div class="w-full flex justify-end gap-2">
-			<Button color="alternative" on:click={() => createTableOpen.set(false)}>{$t('Cancel', { ns: 'common' })}</Button>
+			<Button color="alternative" on:click={createTableModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
 			<Button class="gap-4" type="submit" form="createTable" disabled={$submitting}>
 				{#if $delayed}
 					<Spinner size="5" />

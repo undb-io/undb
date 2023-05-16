@@ -3,10 +3,11 @@
 	import { TRIGGERS, dndzone } from 'svelte-dnd-action'
 	import KanbanCard from './KanbanCard.svelte'
 	import { trpc } from '$lib/trpc/client'
-	import { RecordFactory, type IFilters, type Field, type IKanbanField } from '@undb/core'
+	import { RecordFactory, type IFilters, type IKanbanField } from '@undb/core'
 	import { flip } from 'svelte/animate'
-	import { Toast } from 'flowbite-svelte'
+	import { Button, Toast } from 'flowbite-svelte'
 	import { slide } from 'svelte/transition'
+	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 
 	const flipDurationMs = 200
 
@@ -17,10 +18,12 @@
 	export let filter: IFilters | undefined = undefined
 	export let value: any
 	export let field: IKanbanField
+	export let allowCreate = false
+	export let initialValue: globalThis.Record<string, any> | undefined = undefined
 
 	$: hash = getGroupRecordsHash(kanbanId)
 
-	$: data = trpc().record.list.query(
+	const data = trpc().record.list.query(
 		{
 			tableId: $table.id.value,
 			viewId: $view.id.value,
@@ -53,6 +56,22 @@
 		}
 	}
 </script>
+
+{#if allowCreate}
+	<Button
+		color="alternative"
+		class="w-full rounded-md transition h-8 mb-4"
+		size="xs"
+		on:click={() => {
+			if (initialValue) {
+				$createRecordInitial = initialValue
+			}
+			createRecordModal.open($data.refetch)
+		}}
+	>
+		<i class="ti ti-row-insert-top text-sm" />
+	</Button>
+{/if}
 
 <div
 	class="flex flex-col gap-2 flex-1 overflow-y-auto"

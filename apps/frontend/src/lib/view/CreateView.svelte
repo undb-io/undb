@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { createViewOpen } from '$lib/store/modal'
 	import { ButtonGroup, Input, Modal, Toast } from 'flowbite-svelte'
 	import ViewTypeSelector from './ViewTypeSelector.svelte'
 	import type { Validation } from 'sveltekit-superforms/index'
@@ -11,6 +10,7 @@
 	import { tick } from 'svelte'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
+	import { createViewModal } from '$lib/store/modal'
 
 	const table = getTable()
 
@@ -21,7 +21,7 @@
 			await invalidate(`table:${$table.id.value}`)
 			await tick()
 			goto(`/t/${$table.id.value}/${$table.viewsOrder.last}`)
-			$createViewOpen = false
+			createViewModal.close()
 		},
 	})
 	const superFrm = superForm(data, {
@@ -44,7 +44,7 @@
 	size="md"
 	placement="top-center"
 	class="static w-full rounded-sm"
-	bind:open={$createViewOpen}
+	bind:open={$createViewModal.open}
 >
 	<form method="POST" use:enhance>
 		<ButtonGroup class="w-full">

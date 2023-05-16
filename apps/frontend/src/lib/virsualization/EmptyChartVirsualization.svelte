@@ -1,11 +1,8 @@
 <script lang="ts">
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { t } from '$lib/i18n'
-	import { createFieldInitial, createFieldOpen } from '$lib/store/modal'
-	import { getTable } from '$lib/store/table'
+	import { createFieldInitial, createFieldModal } from '$lib/store/modal'
 	import { Button } from 'flowbite-svelte'
-
-	const table = getTable()
 </script>
 
 <div {...$$restProps}>
@@ -18,7 +15,7 @@
 				$createFieldInitial = {
 					type: 'select',
 				}
-				$createFieldOpen = true
+				createFieldModal.open()
 			}}
 		>
 			<i class="ti ti-plus" />

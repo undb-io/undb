@@ -5,7 +5,6 @@
 	import type { LayoutData } from './$types'
 	import CreateTable from '$lib/table/CreateTable.svelte'
 	import { Avatar, Button, Chevron, Dropdown, DropdownItem, P } from 'flowbite-svelte'
-	import { createTableOpen } from '$lib/store/modal'
 	import { page } from '$app/stores'
 	import { currentRecordId } from '$lib/store/table'
 	import { goto } from '$app/navigation'
@@ -13,6 +12,7 @@
 	import logo from '$lib/assets/logo.svg'
 	import { i18n, t } from '$lib/i18n'
 	import { createMutation } from '@tanstack/svelte-query'
+	import { createTableModal } from '$lib/store/modal'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -239,7 +239,7 @@
 			</nav>
 			<ul class="flex flex-col border-t pt-4 space-y-2">
 				<li class="px-6">
-					<Button size="xs" class="w-full" outline on:click={() => createTableOpen.set(true)}
+					<Button size="xs" class="w-full" outline on:click={() => createTableModal.open()}
 						>{$t('Create New Table')}</Button
 					>
 				</li>
@@ -361,7 +361,7 @@
 		</div>
 	</main>
 
-	{#if $createTableOpen}
+	{#if $createTableModal.open}
 		<CreateTable data={$page.data.form} />
 	{/if}
 </div>

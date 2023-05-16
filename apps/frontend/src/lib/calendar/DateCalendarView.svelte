@@ -11,7 +11,7 @@
 	// @ts-ignore
 	import Interaction from '@event-calendar/interaction'
 	import { RecordFactory, type DateField } from '@undb/core'
-	import { createRecordInitial, createRecordOpen } from '$lib/store/modal'
+	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 	import { theme } from './calendar-theme'
 	import { t } from '$lib/i18n'
 
@@ -88,7 +88,7 @@
 		nowIndicator: true,
 		dateClick: (info: { date: Date }) => {
 			$createRecordInitial = { [field.id.value]: info.date.toISOString() }
-			$createRecordOpen = true
+			createRecordModal.open()
 		},
 		events,
 		eventClick: (info: { event: { id: string } }) => {

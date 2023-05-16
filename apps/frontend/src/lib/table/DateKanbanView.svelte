@@ -5,7 +5,7 @@
 	import { t } from '$lib/i18n'
 	import { NODATE_STACK_ID } from '$lib/kanban/kanban.constants'
 	import { KANBAN_DATE_STACKS, RElAVANT_DATES, getDateFilter, getDateValue } from '$lib/kanban/kanban-date.utils'
-	import { createRecordInitial, createRecordOpen } from '$lib/store/modal'
+	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 	import KanbanLane from '$lib/kanban/KanbanLane.svelte'
 
 	export let field: DateField
@@ -37,7 +37,7 @@
 										[field.id.value]: getDateValue(item.id),
 									}
 								}
-								$createRecordOpen = true
+								createRecordModal.open()
 							}}
 						>
 							<i class="ti ti-row-insert-top text-sm" />

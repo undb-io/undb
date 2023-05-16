@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { createOptionOpen } from '$lib/store/modal'
 	import { Button, Input, Modal, Toast } from 'flowbite-svelte'
 	import OptionColorPicker from './OptionColorPicker.svelte'
 	import { OptionColor, type createOptionSchema } from '@undb/core'
@@ -10,6 +9,7 @@
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import { invalidate } from '$app/navigation'
+	import { createOptionModal } from '$lib/store/modal'
 
 	export let data: Validation<typeof createOptionSchema>
 
@@ -20,7 +20,7 @@
 		async onSuccess(data, variables, context) {
 			reset()
 			await invalidate(`table:${$table.id.value}`)
-			$createOptionOpen = false
+			createOptionModal.close()
 		},
 	})
 
@@ -48,7 +48,7 @@
 {#if $field?.type === 'select'}
 	<Modal
 		title={$t('Create New Option') ?? undefined}
-		bind:open={$createOptionOpen}
+		bind:open={$createOptionModal.open}
 		placement="top-center"
 		class="w-full rounded-sm"
 		size="sm"
