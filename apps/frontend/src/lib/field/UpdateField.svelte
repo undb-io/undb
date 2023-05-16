@@ -12,7 +12,7 @@
 	import { z } from 'zod'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
-	import { updateOptionModal } from '$lib/store/modal'
+	import { updateFieldModal } from '$lib/store/modal'
 
 	const table = getTable()
 
@@ -22,7 +22,7 @@
 	const updateField = trpc().table.field.update.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
-			updateOptionModal.close()
+			updateFieldModal.close()
 		},
 	})
 
@@ -68,7 +68,7 @@
 	placement="top-center"
 	class="static w-full rounded-sm"
 	size="lg"
-	bind:open={$updateOptionModal.open}
+	bind:open={$updateFieldModal.open}
 >
 	<form method="POST" id="updateField" use:enhance>
 		<div class="space-y-2">
@@ -136,7 +136,7 @@
 					{/if}
 				</div>
 				<div class="space-x-2">
-					<Button color="alternative" on:click={updateOptionModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
+					<Button color="alternative" on:click={updateFieldModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
 					<Button class="gap-4" type="submit" form="updateField" disabled={$submitting}>
 						{#if $delayed}
 							<Spinner size="5" />
