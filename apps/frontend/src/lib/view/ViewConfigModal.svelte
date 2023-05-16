@@ -3,9 +3,9 @@
 	import type { IViewDisplayType } from '@undb/core'
 	import type { ComponentType } from 'svelte'
 	import { Modal } from 'flowbite-svelte'
-	import { configViewOpen } from '$lib/store/modal'
 	import KanbanConfig from './KanbanConfig.svelte'
 	import CalendarConfig from '$lib/calendar/CalendarConfig.svelte'
+	import { configViewModal } from '$lib/store/modal'
 
 	const view = getView()
 
@@ -17,7 +17,7 @@
 	}
 </script>
 
-<Modal bind:open={$configViewOpen} placement="top-center" class="w-full">
+<Modal bind:open={$configViewModal.open} placement="top-center" class="w-full">
 	<div class="space-y-1">
 		<svelte:component this={components[type]} slot="default" />
 	</div>

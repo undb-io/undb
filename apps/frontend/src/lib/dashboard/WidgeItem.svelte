@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation'
-	import { virsualizationOpen } from '$lib/store/modal'
 	import { currentVirsualizationId, getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import Virsualization from '$lib/virsualization/Virsualization.svelte'
@@ -9,7 +8,7 @@
 	import { t } from '$lib/i18n'
 	import { COLS, widgeItems } from '$lib/store/widge'
 	import type { IRelayoutWidgeSchema } from '@undb/core'
-	import { tick } from 'svelte'
+	import { virsualizationModal } from '$lib/store/modal'
 
 	const table = getTable()
 	const view = getView()
@@ -101,7 +100,7 @@
 			<button
 				class="hover:bg-slate-100 w-6 h-6"
 				on:click={() => {
-					$virsualizationOpen = true
+					virsualizationModal.open()
 					$currentVirsualizationId = dataItem.widge?.virsualization?.id.value
 				}}
 			>
@@ -114,7 +113,7 @@
 				<DropdownItem
 					class="text-gray-600 text-xs gap-2 flex items-center"
 					on:click={() => {
-						$virsualizationOpen = true
+						virsualizationModal.open()
 						$currentVirsualizationId = dataItem.widge?.virsualization?.id.value
 					}}
 				>

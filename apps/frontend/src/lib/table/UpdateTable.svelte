@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { updateTableOpen } from '$lib/store/modal'
 	import {
 		Button,
 		Label,
@@ -21,6 +20,7 @@
 	import { getTable } from '$lib/store/table'
 	import { goto, invalidate, invalidateAll } from '$app/navigation'
 	import CreateTableFieldAccordionItem from './CreateTableFieldAccordionItem.svelte'
+	import { updateTableModal } from '$lib/store/modal'
 
 	export let data: Validation<ReturnType<typeof createUpdateTableSchema>>
 	let opened: Record<string, boolean> = {}
@@ -37,7 +37,7 @@
 
 	const updateTable = trpc().table.update.mutation({
 		async onSuccess(data, variables, context) {
-			updateTableOpen.set(false)
+			updateTableModal.close()
 			await invalidate(`table:${$table.id.value}`)
 			reset()
 		},
@@ -71,7 +71,7 @@
 	let confirmDeleteTable = false
 </script>
 
-<Modal placement="top-center" class="static w-full" size="lg" bind:open={$updateTableOpen}>
+<Modal placement="top-center" class="static w-full" size="lg" bind:open={$updateTableModal.open}>
 	<svelte:fragment slot="header">
 		<div class="flex justify-between w-full mr-6">
 			<p class="text-lg dark:text-white">{$t('Update Table')}</p>
@@ -134,7 +134,7 @@
 
 	<svelte:fragment slot="footer">
 		<div class="w-full flex justify-end gap-2">
-			<Button color="alternative" on:click={() => updateTableOpen.set(false)}>{$t('Cancel', { ns: 'common' })}</Button>
+			<Button color="alternative" on:click={updateTableModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
 			<Button class="gap-4" type="submit" form="updateTable" disabled={$submitting}>
 				{#if $delayed}
 					<Spinner size="5" />

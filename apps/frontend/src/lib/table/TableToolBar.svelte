@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { Tooltip } from 'flowbite-svelte'
 	import ToggleDisplayType from './ToggleDisplayType.svelte'
-	import { updateTableOpen } from '$lib/store/modal'
 	import { t } from '$lib/i18n'
 	import ViewToolbar from './ViewToolbar.svelte'
 	import TableNavigator from './TableNavigator.svelte'
+	import { updateTableModal } from '$lib/store/modal'
 </script>
 
 <div
@@ -19,7 +19,7 @@
 		<Tooltip placement="bottom">
 			{$t('Force Refresh')}
 		</Tooltip>
-		<button on:click={() => ($updateTableOpen = true)}>
+		<button on:click={() => updateTableModal.open()}>
 			<i class="ti ti-settings text-gray-600" />
 		</button>
 		<Tooltip placement="bottom">

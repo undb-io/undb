@@ -2,8 +2,8 @@
 	import { getTable, getView } from '$lib/store/table'
 	import { Tooltip } from 'flowbite-svelte'
 	import TableViewTabItem from './TableViewTabItem.svelte'
-	import { createViewOpen } from '$lib/store/modal'
 	import { t } from '$lib/i18n'
+	import { createViewModal } from '$lib/store/modal'
 
 	const table = getTable()
 	const currentView = getView()
@@ -17,7 +17,7 @@
 			<TableViewTabItem view={view.id.value === $currentView.id.value ? $currentView : view} />
 		{/each}
 	</ul>
-	<button class="w-7 h-7 hover:bg-gray-100 transition" on:click={() => ($createViewOpen = true)}>
+	<button class="w-7 h-7 hover:bg-gray-100 transition" on:click={() => createViewModal.open()}>
 		<i class="ti ti-plus text-gray-500" />
 	</button>
 	<Tooltip placement="bottom">{$t('Create New View')}</Tooltip>

@@ -6,7 +6,7 @@
 	import type { SelectField } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
 	import { Badge, Button, Dropdown, DropdownItem, Toast } from 'flowbite-svelte'
-	import { createOptionOpen, createRecordInitial, createRecordOpen, updateOptionOpen } from '$lib/store/modal'
+	import { createOptionModal, updateOptionModal } from '$lib/store/modal'
 	import { invalidate } from '$app/navigation'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
@@ -89,7 +89,7 @@
 										on:click={() => {
 											$currentFieldId = field?.id.value
 											$currentOption = item.option
-											$updateOptionOpen = true
+											updateOptionModal.open()
 										}}
 									>
 										<i class="ti ti-pencil" />
@@ -120,22 +120,6 @@
 							<Badge color="dark">{item.name}</Badge>
 						{/if}
 					</div>
-
-					<Button
-						color="alternative"
-						class="w-full rounded-md transition h-8 mb-4"
-						size="xs"
-						on:click={() => {
-							if (field && item.id !== UNCATEGORIZED) {
-								$createRecordInitial = {
-									[field.id.value]: item.id,
-								}
-							}
-							$createRecordOpen = true
-						}}
-					>
-						<i class="ti ti-row-insert-top text-sm" />
-					</Button>
 				</div>
 
 				<KanbanLane
@@ -143,6 +127,8 @@
 					kanbanId={item.id}
 					{field}
 					value={item.id}
+					allowCreate
+					initialValue={field && item.id !== UNCATEGORIZED ? { [field.id.value]: item.id } : undefined}
 					filter={[
 						{
 							path: field.id.value,
@@ -160,7 +146,7 @@
 		<Button
 			on:click={() => {
 				currentFieldId.set(field?.id.value)
-				createOptionOpen.set(true)
+				createOptionModal.open()
 			}}
 			size="xs"
 			color="light"
