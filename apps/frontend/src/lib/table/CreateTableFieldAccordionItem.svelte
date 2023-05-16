@@ -45,7 +45,7 @@
 			<div class="flex items-center gap-2">
 				<FieldIcon size={14} type={field.type} />
 				<span>
-					{field.name || `${$t('Field')} ${$form.schema?.findIndex((f) => f.id === field.id) ?? 0 + 1}`}
+					{field.name || `${$t('Field')} ${($form.schema?.findIndex((f) => f.id === field.id) ?? 0) + 1}`}
 				</span>
 
 				{#if field.display}
@@ -122,7 +122,12 @@
 				<i class="ti ti-dots text-sm" />
 			</span>
 			<Dropdown>
-				<DropdownItem class="text-red-500 font-normal" on:click={remove}>remove</DropdownItem>
+				<DropdownItem class="text-red-500 font-normal text-xs gap-2 flex items-center" on:click={remove}>
+					<i class="ti ti-trash" />
+					<span>
+						{$t('Delete', { ns: 'common' })}
+					</span>
+				</DropdownItem>
 			</Dropdown>
 			<Button size="xs" color="light" on:click={() => (open = false)}>{$t('Done', { ns: 'common' })}</Button>
 		</div>

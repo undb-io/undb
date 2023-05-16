@@ -15,8 +15,12 @@
 
 	const addField = () => {
 		const id = FieldId.createId()
-		$form.schema = [...$form.schema, { id, type: 'string', name: '', display: !displayFields.length }]
+		$form.schema = [...($form.schema ?? []), { id, type: 'string', name: '', display: !displayFields?.length }]
 		opened = { [id]: true }
+	}
+
+	$: if (!$form.schema?.length) {
+		addField()
 	}
 
 	const createTable = trpc().table.create.mutation({
