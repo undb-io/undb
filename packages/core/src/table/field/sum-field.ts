@@ -23,10 +23,6 @@ export class SumField extends Mixin(AbstractAggregateField<ISumField>, AbstractL
     return true
   }
 
-  override get isNumeric() {
-    return true
-  }
-
   static create(input: Omit<ICreateSumFieldInput, 'type'>): SumField {
     return new SumField({
       ...BaseField.createBase(input),

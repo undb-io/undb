@@ -13,10 +13,6 @@ export class NumberField extends BaseField<INumberField> {
     return true
   }
 
-  override get isNumeric() {
-    return true
-  }
-
   static create(input: Omit<ICreateNumberFieldInput, 'type'>): NumberField {
     return new NumberField(super.createBase(input))
   }

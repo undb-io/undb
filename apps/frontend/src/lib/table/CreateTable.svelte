@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Accordion, Button, Label, Modal, Input, Spinner, Toast, P, Badge } from 'flowbite-svelte'
 	import type { Validation } from 'sveltekit-superforms'
-	import { FieldId, type createTableInput } from '@undb/core'
+	import { FieldId, TableId, type createTableInput } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
 	import CreateTableFieldAccordionItem from './CreateTableFieldAccordionItem.svelte'
 	import { trpc } from '$lib/trpc/client'
@@ -9,6 +9,8 @@
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import { createTableModal } from '$lib/store/modal'
+	import { newTableSchema } from '$lib/store/table'
+	import { onDestroy } from 'svelte'
 
 	export let data: Validation<typeof createTableInput>
 	let opened: Record<string, boolean> = {}
@@ -25,9 +27,10 @@
 
 	const createTable = trpc().table.create.mutation({
 		async onSuccess(data, variables, context) {
-			createTableModal.close()
 			await invalidate('tables')
 			await goto(`/t/${data.id}`)
+			createTableModal.close()
+			reset()
 		},
 	})
 
@@ -35,21 +38,31 @@
 		id: 'createTable',
 		SPA: true,
 		applyAction: false,
-		resetForm: true,
+		resetForm: false,
 		invalidateAll: true,
 		clearOnSubmit: 'errors-and-message',
 		dataType: 'json',
 		taintedMessage: null,
 		async onUpdate(event) {
-			reset()
 			$createTable.mutate(event.form.data)
 		},
 	})
 
 	const { form, errors, reset, constraints, enhance, delayed, submitting } = superFrm
 
+	$: $form.id = TableId.createId()
 	$: $form.schema = []
 	$: displayFields = $form.schema?.filter((f) => !!f.display) ?? []
+
+	$: newTableSchema.set({
+		tableId: $form.id,
+		tableName: $form.name,
+		schema: $form.schema,
+	})
+
+	onDestroy(() => {
+		newTableSchema.reset()
+	})
 
 	const onBlur = () => {
 		if (!$form.schema.length) {

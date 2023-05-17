@@ -17,6 +17,7 @@ import type {
   IAbstractLookupField,
   IAbstractReferenceField,
   IBaseField,
+  IBaseFieldQueryScheam,
   IDateFieldTypes,
   IFieldType,
   ILookingFieldIssues,
@@ -29,7 +30,7 @@ import type {
   PrimitiveField,
   SystemField,
 } from './field.type.js'
-import { canDisplay, isControlledFieldType } from './field.util.js'
+import { canDisplay, isAggregate, isControlledFieldType, isFilterable, isNumeric, isSortable } from './field.util.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import type { ReferenceField } from './reference-field.js'
 import { WithAggregateFieldId } from './specifications/aggregate-field.specification.js'
@@ -58,14 +59,14 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
     }
   }
 
-  public get json() {
+  public get json(): IBaseFieldQueryScheam {
     return {
       id: this.id.value,
       type: this.type,
       name: this.name.value,
-      required: this.required,
-      description: this.description,
-      display: this.display,
+      required: !!this.required,
+      description: this.description?.value,
+      display: !!this.display,
     }
   }
 
@@ -90,7 +91,7 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
     return false
   }
   get filterable(): boolean {
-    return true
+    return isFilterable(this.type)
   }
 
   get valueConstrains() {
@@ -98,11 +99,11 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
   }
 
   get isNumeric(): boolean {
-    return false
+    return isNumeric(this.type)
   }
 
   get sortable(): boolean {
-    return true
+    return isSortable(this.type)
   }
 
   get display(): boolean {
@@ -122,7 +123,7 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
   }
 
   get isAggregate(): boolean {
-    return false
+    return isAggregate(this.type)
   }
 
   public get id(): FieldId {
@@ -339,10 +340,6 @@ export abstract class AbstractAggregateField<F extends INumberAggregateFieldType
 
   set referenceFieldId(fieldId: FieldId) {
     this.props.aggregateFieldId = fieldId
-  }
-
-  override get isAggregate() {
-    return true
   }
 
   updateAggregateFieldId(aggregateFieldId?: string): Option<TableCompositeSpecificaiton> {

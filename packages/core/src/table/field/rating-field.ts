@@ -38,10 +38,6 @@ export class RatingField extends BaseField<IRatingField> {
     this.props.max = max
   }
 
-  override get isNumeric() {
-    return true
-  }
-
   static create(input: Omit<ICreateRatingFieldInput, 'type'>): RatingField {
     return new RatingField({ ...super.createBase(input), max: input.max })
   }
