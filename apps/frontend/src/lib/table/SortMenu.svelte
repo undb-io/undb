@@ -1,8 +1,8 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import { Badge, Button, Modal, Toast } from 'flowbite-svelte'
-	import { getTable, getView, sorts } from '$lib/store/table'
-	import type { ISortSchema } from '@undb/core'
+	import { allTableFields, getTable, getView, sorts } from '$lib/store/table'
+	import { isSortable, type ISortSchema } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
 	import { writable } from 'svelte/store'
 	import { slide } from 'svelte/transition'
@@ -88,7 +88,8 @@
 								table={$table}
 								size="xs"
 								class="w-48 rounded-r-none !justify-start border-r-0"
-								filter={(f) => f.sortable && !selected.includes(f.id.value)}
+								fields={$allTableFields}
+								filter={(f) => isSortable(f.type) && !selected.includes(f.id)}
 							/>
 							<div class="inline-flex w-1/2">
 								{#each directions as direction, i (direction)}

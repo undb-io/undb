@@ -26,3 +26,32 @@ const displayFieldTypes: Set<IFieldType> = new Set<IFieldType>([
 ])
 
 export const canDisplay = (type: IFieldType): boolean => displayFieldTypes.has(type)
+
+const notSortableFieldType: Set<IFieldType> = new Set<IFieldType>([
+  'attachment',
+  'collaborator',
+  'parent',
+  'reference',
+  'tree',
+])
+
+export const isSortable = (type: IFieldType): boolean => !notSortableFieldType.has(type)
+
+export const isNumericFieldType: Set<IFieldType> = new Set<IFieldType>([
+  'number',
+  'average',
+  'count',
+  'rating',
+  'auto-increment',
+  'sum',
+])
+
+export const isNumeric = (type: IFieldType): boolean => isNumericFieldType.has(type)
+
+export const isAggregateFieldType: Set<IFieldType> = new Set<IFieldType>(['average', 'count', 'sum'])
+
+export const isAggregate = (type: IFieldType): boolean => isAggregateFieldType.has(type)
+
+const notFilterableFieldType: Set<IFieldType> = new Set<IFieldType>(['lookup', 'reference'])
+
+export const isFilterable = (type: IFieldType): boolean => !notFilterableFieldType.has(type)

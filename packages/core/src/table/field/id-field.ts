@@ -9,6 +9,7 @@ import type { ICreateIdFieldInput, ICreateIdFieldValue, IdFieldType } from './id
 
 export class IdField extends BaseField<IIdField> {
   type: IdFieldType = 'id'
+
   override get system() {
     return true
   }

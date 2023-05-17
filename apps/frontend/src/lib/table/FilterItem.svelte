@@ -3,28 +3,31 @@
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
 	import { Button } from 'flowbite-svelte'
 	import FilterOperatorPicker from './FilterOperatorPicker.svelte'
-	import type { Field, IFilter } from '@undb/core'
-	import { getTable } from '$lib/store/table'
+	import { isFilterable, type Field, type IFilter } from '@undb/core'
+	import { allTableFields, getTable } from '$lib/store/table'
 	import FilterValue from './FilterValue.svelte'
 
 	export let filter: Partial<IFilter>
 	export let index: number
 	export let remove: (index: number) => void
+	export let field: Field | undefined = undefined
 
 	const table = getTable()
 
-	let field: Field | undefined
+	let selectedId: string | undefined
+	$: field = selectedId ? $table.schema.getFieldById(selectedId).into() : undefined
 </script>
 
 <li class="flex h-8 items-center">
 	<FieldPicker
-		bind:selected={field}
+		bind:selectedId
 		size="xs"
 		class="h-8 rounded-l-md rounded-r-none w-32 !justify-start"
 		table={$table}
 		bind:value={filter.path}
 		bind:type={filter.type}
-		filter={(f) => f.filterable}
+		fields={$allTableFields}
+		filter={(f) => isFilterable(f.type)}
 	/>
 	<FilterOperatorPicker
 		{field}

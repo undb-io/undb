@@ -36,15 +36,13 @@ export class LookupField extends Mixin(AbstractLookingField<ILookupField>, Abstr
     return false
   }
 
-  override get filterable() {
-    return false
-  }
-
   static create(input: Omit<ICreateLookupFieldInput, 'type'>): LookupField {
     return new LookupField({
       ...BaseField.createBase(input),
       referenceFieldId: FieldId.fromString(input.referenceFieldId),
-      displayFields: new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id))),
+      displayFields: input.displayFieldIds
+        ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
+        : undefined,
     })
   }
 
@@ -52,7 +50,9 @@ export class LookupField extends Mixin(AbstractLookingField<ILookupField>, Abstr
     return new LookupField({
       ...BaseField.unsafeCreateBase(input),
       referenceFieldId: FieldId.fromString(input.referenceFieldId),
-      displayFields: new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id))),
+      displayFields: input.displayFieldIds
+        ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
+        : undefined,
     })
   }
 

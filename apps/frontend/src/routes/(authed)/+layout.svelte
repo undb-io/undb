@@ -6,7 +6,7 @@
 	import CreateTable from '$lib/table/CreateTable.svelte'
 	import { Avatar, Button, Chevron, Dropdown, DropdownItem, P } from 'flowbite-svelte'
 	import { page } from '$app/stores'
-	import { currentRecordId } from '$lib/store/table'
+	import { allTables, currentRecordId, newTableSchema } from '$lib/store/table'
 	import { goto } from '$app/navigation'
 	import { browser } from '$app/environment'
 	import logo from '$lib/assets/logo.svg'
@@ -31,6 +31,7 @@
 	export let data: LayoutData
 
 	$: tables = data.tables
+	$: allTables.set(tables)
 	$: me = data.me.me
 
 	$: r = $page.url.searchParams.get('r')

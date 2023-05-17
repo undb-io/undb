@@ -86,7 +86,7 @@
 	}
 
 	function add(recordId: string) {
-		value = [...value, recordId]
+		value = [...(value ?? []), recordId]
 	}
 
 	$: if (open) getForeign()

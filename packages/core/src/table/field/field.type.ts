@@ -426,6 +426,15 @@ export type ICreateFieldValueSchema_internal = z.infer<typeof createFieldValueSc
 export const createFieldsSchema_internal = z.array(createFieldValueSchema_internal)
 export type ICreateFieldsSchema_internal = z.infer<typeof createFieldsSchema_internal>
 
+export interface IBaseFieldQueryScheam {
+  id: string
+  name: string
+  display: boolean
+  description?: string
+  type: IFieldType
+  required: boolean
+}
+
 export interface IBaseField {
   id: FieldId
   system?: boolean
@@ -473,7 +482,7 @@ export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: 
 export type ICountField = IBaseField & { referenceFieldId: FieldId }
 export type ISumField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }
 export type IAverageField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }
-export type ILookupField = IBaseField & { referenceFieldId: FieldId; displayFields: DisplayFields }
+export type ILookupField = IBaseField & { referenceFieldId: FieldId; displayFields?: DisplayFields }
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField | CreatedByField | UpdatedByField
 

@@ -1,14 +1,13 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import { Button, Toast } from 'flowbite-svelte'
-	import { SelectField, type NumberVirsualization as CoreChartVirsualization } from '@undb/core'
+	import type { NumberVirsualization as CoreChartVirsualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
-	import { currentVirsualizationId, getTable, getView } from '$lib/store/table'
+	import { allTableFields, getTable, getView } from '$lib/store/table'
 	import { t } from '$lib/i18n'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import { slide } from 'svelte/transition'
-	import { tick } from 'svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -29,7 +28,7 @@
 	)
 
 	const updateVirsualization = trpc().table.virsualization.update.mutation({
-		async onSuccess(data, variables, context) {
+		async onSuccess() {
 			await invalidate(`table:${$table.id.value}`)
 			await $getChartData.refetch()
 
@@ -61,7 +60,8 @@
 			<FieldPicker
 				class="w-full !justify-start mb-4"
 				table={$table}
-				filter={(f) => f instanceof SelectField}
+				fields={$allTableFields}
+				filter={(f) => f.type === 'select'}
 				bind:value={fieldId}
 			/>
 		</div>

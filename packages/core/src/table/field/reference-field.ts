@@ -39,15 +39,6 @@ export class ReferenceField extends Mixin(
     return true
   }
 
-  // https://github.com/undb-xyz/undb/issues/781
-  override get filterable(): boolean {
-    return false
-  }
-
-  override get sortable(): boolean {
-    return false
-  }
-
   override get foreignTableId(): Option<string> {
     return Option(this.props.foreignTableId?.value)
   }

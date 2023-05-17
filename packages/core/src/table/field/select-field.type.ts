@@ -23,14 +23,11 @@ export const updateSelectFieldSchema = updateBaseFieldSchema.merge(selectTypeObj
 )
 export type IUpdateSelectFieldInput = z.infer<typeof updateSelectFieldSchema>
 
-export const selectFieldQuerySchema = baseFieldQuerySchema
-  .merge(selectTypeObjectSchema)
-  .merge(
-    z.object({
-      options: optionsSchema,
-    }),
-  )
-  .strict()
+export const selectFieldQuerySchema = baseFieldQuerySchema.merge(selectTypeObjectSchema).merge(
+  z.object({
+    options: optionsSchema,
+  }),
+)
 
 export type ISelectFieldQuerySchema = z.infer<typeof selectFieldQuerySchema>
 

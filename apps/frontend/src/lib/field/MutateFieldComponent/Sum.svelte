@@ -3,8 +3,15 @@
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms/index'
 	import ReferenceFieldPicker from '../FieldInputs/ReferenceFieldPicker.svelte'
-	import { getTable } from '$lib/store/table'
-	import { TableFactory, type IQueryTable, type ReferenceField, type TreeField } from '@undb/core'
+	import { getForeignTableFieldsByReferenceId, getTable } from '$lib/store/table'
+	import {
+		TableFactory,
+		type IQueryTable,
+		type ReferenceField,
+		type TreeField,
+		isNumeric,
+		isAggregate,
+	} from '@undb/core'
 	import { page } from '$app/stores'
 	import { Label } from 'flowbite-svelte'
 	import FieldPicker from '../FieldInputs/FieldPicker.svelte'
@@ -47,7 +54,8 @@
 				bind:value={$aggregateFieldId}
 				{...$$restProps}
 				class={cx('w-full !justify-start', $$restProps.class)}
-				filter={(f) => f.isNumeric && !f.isAggregate}
+				fields={$getForeignTableFieldsByReferenceId($referenceFieldId)}
+				filter={(f) => isNumeric(f.type) && !isAggregate(f.type)}
 			/>
 		</div>
 	{/if}

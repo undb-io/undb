@@ -1,5 +1,21 @@
-import type { IFilters, Option, Record, Records, Table, ViewVO } from '@undb/core'
-import { derived, writable } from 'svelte/store'
+import {
+	TableFactory,
+	type ICreateTableSchemaInput,
+	type IFilters,
+	type IQueryFieldSchema,
+	type IQueryTable,
+	type IReferenceFieldQuerySchema,
+	type IUpdateTableSchemaSchema,
+	type Option,
+	type Record,
+	type Records,
+	type Table,
+	type ViewVO,
+} from '@undb/core'
+import { uniqBy } from 'lodash-es'
+import { derived, writable, type Readable } from 'svelte/store'
+
+export const allTables = writable<IQueryTable[]>()
 
 export const currentTable = writable<Table>()
 export const getTable = () => currentTable
@@ -57,4 +73,108 @@ export const currentVirsualization = derived(
 	[currentView, currentVirsualizationId],
 	([$view, $currentVirsualizationId]) =>
 		$currentVirsualizationId ? $view.getVirsualization($currentVirsualizationId) : undefined,
+)
+
+type INewTableScheam = {
+	tableId?: string
+	tableName?: string
+	schema?: ICreateTableSchemaInput | IUpdateTableSchemaSchema
+}
+
+const createNewTableSchema = () => {
+	const { update, set, subscribe } = writable<INewTableScheam>({})
+
+	const reset = () => set({})
+
+	return {
+		update,
+		set,
+		subscribe,
+
+		reset,
+	}
+}
+
+export const newTableSchema = createNewTableSchema()
+
+const getTableFields = ($table: Table | null, $newTableSchema: INewTableScheam) => {
+	const newTableFields = ($newTableSchema.schema ?? []) as IQueryFieldSchema[]
+	if (!$table) {
+		return newTableFields
+	}
+
+	const tableFields = $table.schema.fields.map((f) => f.json) as IQueryFieldSchema[]
+	if ($newTableSchema.tableId !== undefined && $table.id.value !== $newTableSchema.tableId) {
+		return newTableFields
+	}
+
+	return uniqBy([...tableFields, ...newTableFields], 'id')
+}
+
+const _getForeignTableFields = ($table: Table | null, $newTableSchema: INewTableScheam) => {
+	const newTableFields = ($newTableSchema.schema ?? []) as IQueryFieldSchema[]
+	if (!$table) {
+		return newTableFields
+	}
+
+	const tableFields = $table.schema.fields.map((f) => f.json) as IQueryFieldSchema[]
+	if ($newTableSchema.tableId !== undefined && $table.id.value !== $newTableSchema.tableId) {
+		return tableFields
+	}
+
+	return uniqBy([...tableFields, ...newTableFields], 'id')
+}
+
+export const allTableFields: Readable<IQueryFieldSchema[]> = derived(
+	[currentTable, newTableSchema],
+	([$currentTable, $newTableSchema]) => getTableFields($currentTable, $newTableSchema),
+)
+
+export const getForeignTable: Readable<(foreignTableId?: string) => Table | null> = derived(
+	[allTables, currentTable],
+	([$allTables, $currentTable]) => {
+		return (foreignTableId?: string) => {
+			if (!foreignTableId) return null
+			if (foreignTableId === $currentTable.id.value) return $currentTable
+			const found = $allTables.find((t) => t.id === foreignTableId)
+			if (found) return TableFactory.fromQuery(found)
+
+			return null
+		}
+	},
+)
+
+export const getForeignTableFields: Readable<(foreignTableId?: string) => IQueryFieldSchema[]> = derived(
+	[getForeignTable, newTableSchema],
+	([$getForeignTable, $newTableSchema]) => {
+		return (foreignTableId?: string) => {
+			const table = $getForeignTable(foreignTableId)
+			return _getForeignTableFields(table, $newTableSchema)
+		}
+	},
+)
+
+export const getForeignTableIdByReferenceId: Readable<(referenceId?: string) => string | undefined> = derived(
+	[allTableFields, newTableSchema],
+	([$allTableFields, $newTableSchema]) => {
+		return (referenceId?: string) => {
+			if (!referenceId) return undefined
+
+			const fields = [...$allTableFields, ...($newTableSchema.schema ?? [])]
+			return (
+				(fields.find((f) => f.id === referenceId) as IReferenceFieldQuerySchema | undefined)?.foreignTableId ??
+				undefined
+			)
+		}
+	},
+)
+
+export const getForeignTableFieldsByReferenceId: Readable<(referenceId?: string) => IQueryFieldSchema[]> = derived(
+	[getForeignTableIdByReferenceId, getForeignTableFields],
+	([$getForeignTableIdByReferenceId, $getForeignTableFields]) => {
+		return (referenceId?: string) => {
+			const foreignTableId = $getForeignTableIdByReferenceId(referenceId)
+			return $getForeignTableFields(foreignTableId)
+		}
+	},
 )

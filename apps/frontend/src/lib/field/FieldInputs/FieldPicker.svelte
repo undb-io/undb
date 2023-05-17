@@ -1,21 +1,24 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import type { Field, IFieldType, Table } from '@undb/core'
+	import type { IFieldType, IQueryFieldSchema } from '@undb/core'
 	import { Button, Dropdown, Radio } from 'flowbite-svelte'
 	import { identity } from 'lodash-es'
 	import FieldIcon from '../FieldIcon.svelte'
 	import { t } from '$lib/i18n'
 
 	export let value: string = ''
-	export let table: Table
-	export let filter: (field: Field) => boolean = identity
 
-	export let selected: Field | undefined = undefined
+	export let selected: IQueryFieldSchema | undefined = undefined
+	export let selectedId: string | undefined = undefined
 	export let type: IFieldType | undefined = undefined
 
-	const fields = table.schema.fields.filter(filter)
+	export let fields: IQueryFieldSchema[] = []
+	export let filter: (field: IQueryFieldSchema) => boolean = identity
 
-	$: selected = value ? table.schema.fields.find((f) => f.id.value === value) : undefined
+	$: filteredFields = fields.filter(filter)
+
+	$: selected = value ? filteredFields.find((f) => f.id === value) : undefined
+	$: selectedId = selected?.id
 	$: type = selected?.type
 
 	let open = false
@@ -30,29 +33,29 @@
 	{#if selected}
 		<FieldIcon type={selected.type} size={14} />
 		<span class="whitespace-nowrap">
-			{selected?.name.value}
+			{selected?.name}
 		</span>
 	{:else}
 		<span class="text-gray-500 font-normal">{$t('Select Field')}</span>
 	{/if}
 </Button>
 <Dropdown frameClass="z-[99999] fixed" bind:open>
-	{#if fields.length}
-		{#each fields as field (field.id)}
-			<Radio value={field.id.value} bind:group={value} custom on:change={() => (open = false)}>
+	{#if filteredFields.length}
+		{#each filteredFields as field (field.id)}
+			<Radio value={field.id} bind:group={value} custom on:change={() => (open = false)}>
 				<div
 					role="listitem"
 					class="w-full p-2 pr-4 flex justify-between hover:bg-gray-100 transition cursor-pointer"
-					class:bg-gray-100={selected?.id.value === field.id.value}
+					class:bg-gray-100={selected?.id === field.id}
 				>
 					<div class="inline-flex gap-2 items-center text-gray-600">
 						<FieldIcon size={14} type={field.type} />
 						<span class="text-xs">
-							{field.name.value}
+							{field.name}
 						</span>
 					</div>
 					<span>
-						{#if selected?.id.value === field.id.value}
+						{#if selected?.id === field.id}
 							<i class="ti ti-check text-sm" />
 						{/if}
 					</span>
