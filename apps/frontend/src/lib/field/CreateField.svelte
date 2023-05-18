@@ -46,8 +46,9 @@
 	})
 
 	$: if ($createFieldInitial) {
-		$form.type = $createFieldInitial.type
-		$form.name = $createFieldInitial.name
+		for (const [key, value] of Object.entries($createFieldInitial)) {
+			$form[key] = value
+		}
 	}
 
 	const { form, enhance, delayed, submitting } = superFrm
