@@ -109,7 +109,7 @@
 		</div>
 	</form>
 
-	<SuperDebug data={$form} />
+	<!-- <SuperDebug data={$form} /> -->
 
 	<svelte:fragment slot="footer">
 		<div class="w-full flex items-center justify-between">
