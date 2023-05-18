@@ -67,10 +67,10 @@ export class TableSchema extends ValueObject<Field[]> {
     return new TableSchema([
       IdField.default(),
       ...fields,
-      CreatedAtField.default(ctx.t('created-at')),
-      CreatedByField.default(ctx.t('created-by')),
-      UpdatedAtField.default(ctx.t('updated-at')),
-      UpdatedByField.default(ctx.t('updated-by')),
+      CreatedAtField.default(ctx.t('created-at', { lng: ctx.lang })),
+      CreatedByField.default(ctx.t('created-by', { lng: ctx.lang })),
+      UpdatedAtField.default(ctx.t('updated-at', { lng: ctx.lang })),
+      UpdatedByField.default(ctx.t('updated-by', { lng: ctx.lang })),
     ])
   }
 
