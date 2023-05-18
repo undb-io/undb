@@ -31,7 +31,7 @@ export class WithTimeFormat extends CompositeSpecification<Table, ITableSpecVisi
   constructor(public readonly field: AbstractDateField, public readonly format: TimeFormat) {
     super()
   }
-  static from(field: AbstractDateField, format?: string) {
+  static from(field: AbstractDateField, format?: string | null) {
     return new this(field, TimeFormat.from(format))
   }
   isSatisfiedBy(t: Table): boolean {

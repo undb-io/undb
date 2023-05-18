@@ -36,6 +36,7 @@
 		taintedMessage: null,
 		validators: z.object({}),
 		resetForm: true,
+		multipleSubmits: 'prevent',
 		async onUpdate(event) {
 			$updateField.mutate({
 				tableId: $table.id.value,

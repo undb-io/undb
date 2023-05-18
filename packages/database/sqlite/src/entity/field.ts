@@ -152,7 +152,7 @@ export class CreatedAtField extends Field {
   format: string
 
   @Property({ nullable: true })
-  timeFormat?: ITimeFormat
+  timeFormat?: ITimeFormat | null
 
   toDomain(): CoreCreatedAtField {
     return CoreCreatedAtField.unsafeCreate({
@@ -242,7 +242,7 @@ export class UpdatedAtField extends Field {
   format: string
 
   @Property({ nullable: true })
-  timeFormat?: ITimeFormat
+  timeFormat?: ITimeFormat | null
 
   toDomain(): CoreUpdatedAtField {
     return CoreUpdatedAtField.unsafeCreate({
@@ -492,7 +492,7 @@ export class DateField extends Field {
   format: string
 
   @Property({ nullable: true })
-  timeFormat?: ITimeFormat
+  timeFormat?: ITimeFormat | null
 
   toDomain(): CoreDateField {
     return CoreDateField.unsafeCreate({
@@ -532,7 +532,7 @@ export class DateRangeField extends Field {
   format: string
 
   @Property({ nullable: true })
-  timeFormat?: ITimeFormat
+  timeFormat?: ITimeFormat | null
 
   toDomain(): CoreDateRangeField {
     return CoreDateRangeField.unsafeCreate({

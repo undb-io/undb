@@ -341,9 +341,17 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.persist(field)
   }
   withTimeFormat(s: WithTimeFormat): void {
-    const field = this.#getField(s.field) as DateField | DateRangeField | CreatedAtField | UpdatedAtField
-    wrap(field).assign({ timeFormat: s.format.unpack() })
-    this.em.persist(field)
+    this.addJobs(async () => {
+      const field = (await this.em.findOne(Field, s.field.id.value)) as
+        | DateField
+        | DateRangeField
+        | CreatedAtField
+        | UpdatedAtField
+      if (field) {
+        field.timeFormat = s.format.unpack() ?? null
+        await this.em.persistAndFlush(field)
+      }
+    })
   }
   withShowSystemFields(s: WithShowSystemFieldsSpec): void {
     const view = this.getView(s.view.id.value)

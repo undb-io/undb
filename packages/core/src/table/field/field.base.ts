@@ -1,5 +1,5 @@
 import { and, ValueObject } from '@undb/domain'
-import { isArray, isBoolean, isEmpty, isString, unzip } from 'lodash-es'
+import { isArray, isBoolean, isEmpty, isNull, isString, unzip } from 'lodash-es'
 import fp from 'lodash/fp.js'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
@@ -238,7 +238,7 @@ export abstract class AbstractDateField<F extends IDateFieldTypes = IDateFieldTy
   }
 
   updateTimeFormat(format?: string | undefined | null): Option<TableCompositeSpecificaiton> {
-    if (isString(format)) {
+    if (isString(format) || isNull(format)) {
       return Some(WithTimeFormat.from(this, format))
     }
 

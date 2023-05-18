@@ -9,7 +9,7 @@
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 	export let path: any[] = []
 
-	const format = fieldProxy(form.form, [...path, 'timeFormat'] as any) as Writable<string | undefined>
+	const format = fieldProxy(form.form, [...path, 'timeFormat'] as any) as Writable<string | null>
 
 	let displayTime = !!$format
 
@@ -18,7 +18,7 @@
 	}
 
 	$: if (!displayTime) {
-		$format = undefined
+		$format = null
 	}
 
 	const formatMap = {
