@@ -4,7 +4,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
-    "@types/node": "^18.16.9",
+    "@types/node": "^20.2.0",
     "@undb/eslint-config": "^0.0.0",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
@@ -12,12 +12,12 @@
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8",
     "taze": "^0.10.1",
-    "turbo": "^1.9.4",
+    "turbo": "^1.9.8",
     "typescript": "^5.0.4",
     "zx": "^7.2.2"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "lint-staged": {
     "*.{ts,tsx,md}": "prettier --write"

@@ -1,5 +1,5 @@
 # builder
-FROM node:18-bullseye-slim as builder
+FROM node:20-bullseye-slim as builder
 
 WORKDIR /undb
 
@@ -11,7 +11,7 @@ ADD https://github.com/benbjohnson/litestream/releases/download/v0.3.9/litestrea
 RUN tar -C /usr/local/bin -xzf /tmp/litestream.tar.gz
 
 # installer
-FROM node:18-bullseye-slim AS installer
+FROM node:20-bullseye-slim AS installer
 
 RUN npm install -g pnpm
 
@@ -35,7 +35,7 @@ RUN rm -rf ./node_modules
 RUN HUSKY=0 pnpm install -r --prod
 
 # runner
-FROM node:18-bullseye-slim as runner
+FROM node:20-bullseye-slim as runner
 
 WORKDIR /undb
 
