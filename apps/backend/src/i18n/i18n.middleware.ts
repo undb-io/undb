@@ -3,7 +3,8 @@ import { type i18n } from 'i18next'
 import { ClsService } from 'nestjs-cls'
 
 export const i18nMiddleware = (cls: ClsService, i18next: i18n) => (req: Request, res: Response, next: NextFunction) => {
-  cls.set('lang', req.language as 'en' | 'zh-CN')
+  const lang = req.cookies.lng
+  cls.set('lang', lang as 'en' | 'zh-CN')
   cls.set('t', i18next.t)
   next()
 }

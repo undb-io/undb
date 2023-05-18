@@ -10,8 +10,8 @@ import { InjectI18Next, i18nextProvider } from './i18next.provider.js'
 export class I18nModule implements NestModule, OnModuleInit {
   constructor(@InjectI18Next() private i18next: i18n) {}
 
-  onModuleInit() {
-    this.i18next.use(middleware.LanguageDetector).init(config)
+  async onModuleInit() {
+    await this.i18next.use(middleware.LanguageDetector).init(config)
   }
 
   configure(consumer: MiddlewareConsumer) {

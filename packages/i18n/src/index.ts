@@ -527,7 +527,15 @@ export const config: InitOptions = {
   lng: undefined, // if you're using a language detector, do not define the lng option
   fallbackLng: 'zh-CN',
 
+  detection: {
+    order: ['cookie', 'querystring', 'localStorage', 'navigator'],
+    caches: ['localStorage', 'cookie'],
+    lookupQuerystring: 'lng',
+    lookupCookie: 'lng',
+    lookupLocalStorage: 'locale',
+  },
+
   interpolation: {
-    escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
+    escapeValue: false,
   },
 }

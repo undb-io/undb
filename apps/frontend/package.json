@@ -50,6 +50,8 @@
 		"flowbite-svelte": "^0.35.3",
 		"htm": "^3.1.1",
 		"i18next": "^22.4.15",
+		"i18next-browser-languagedetector": "^7.0.1",
+		"i18next-http-backend": "^2.2.0",
 		"js-cookie": "^3.0.5",
 		"keycode": "^2.2.1",
 		"lodash-es": "^4.17.21",
