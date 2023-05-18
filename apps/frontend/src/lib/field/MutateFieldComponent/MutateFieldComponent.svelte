@@ -22,6 +22,8 @@
 	import Date from './Date.svelte'
 	import DateRange from './DateRange.svelte'
 	import Rating from './Rating.svelte'
+	import CreatedAt from './CreatedAt.svelte'
+	import UpdatedAt from './UpdatedAt.svelte'
 
 	export let type: IFieldType
 	export let isNew = false
@@ -40,6 +42,8 @@
 		tree: Tree,
 		select: Select,
 		parent: Parent,
+		'created-at': CreatedAt,
+		'updated-at': UpdatedAt,
 	}
 </script>
 

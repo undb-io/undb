@@ -53,10 +53,16 @@ const id: TemplateFunc = (h, props) => {
 	)
 }
 
-const dateComponent = (h: HyperFunc, dateString: string | null, formatString: string) => {
+const dateComponent = (
+	h: HyperFunc,
+	dateString: string | null,
+	dateFormatString: string,
+	timeFormatString?: string | null,
+) => {
 	if (!dateString) return null
 	const date = new Date(dateString)
-
+	const formatString = timeFormatString ? dateFormatString + ' ' + timeFormatString : dateFormatString
+	console.log(formatString)
 	return h('span', {}, format(date, formatString))
 }
 
@@ -69,29 +75,29 @@ const dateRange: TemplateFunc = (h, props) => {
 	const [from, to] = value
 
 	return h('div', { class: 'flex items-center' }, [
-		dateComponent(h, from ?? null, field.formatString),
+		dateComponent(h, from ?? null, field.formatString, field.timeFormatString),
 		from && to ? h('span', { class: 'mx-1' }, '-') : null,
-		dateComponent(h, to ?? null, field.formatString),
+		dateComponent(h, to ?? null, field.formatString, field.timeFormatString),
 	])
 }
 
 const createdAt: TemplateFunc = (h, props) => {
 	const createdAt = props.model.created_at as string
 	const field = props.column.field as CreatedAtField
-	return dateComponent(h, createdAt, field.formatString)
+	return dateComponent(h, createdAt, field.formatString, field.timeFormatString)
 }
 
 const updatedAt: TemplateFunc = (h, props) => {
 	const updatedAt = props.model.updated_at as string
 	const field = props.column.field as UpdatedAtField
-	return dateComponent(h, updatedAt, field.formatString)
+	return dateComponent(h, updatedAt, field.formatString, field.timeFormatString)
 }
 
 const date: TemplateFunc = (h, props) => {
 	const value = props.model[props.prop] as string | undefined
 	if (!value) return null
 	const field = props.column.field as DateField
-	return dateComponent(h, value ?? '', field.formatString)
+	return dateComponent(h, value ?? '', field.formatString, field.timeFormatString)
 }
 
 const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile) => {

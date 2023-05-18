@@ -646,6 +646,7 @@ export interface IAbstractDateField {
   get format(): DateFormat | undefined
   set format(format: DateFormat | undefined)
   updateFormat(format?: string): Option<TableCompositeSpecificaiton>
+  get timeFormatString(): string | null
   get timeFormat(): TimeFormat | undefined
   set timeFormat(format: TimeFormat | undefined)
   updateTimeFormat(format?: string): Option<TableCompositeSpecificaiton>

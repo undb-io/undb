@@ -225,6 +225,10 @@ export abstract class AbstractDateField<F extends IDateFieldTypes = IDateFieldTy
     return None
   }
 
+  get timeFormatString(): string | null {
+    return this.props.timeFormat?.unpack() ?? null
+  }
+
   set timeFormat(format: TimeFormat | undefined) {
     this.props.timeFormat = format
   }

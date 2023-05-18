@@ -16,6 +16,7 @@ import { AbstractDateField } from './field.base.js'
 import type { IDateField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { DateFormat } from './value-objects/date-format.vo.js'
+import { TimeFormat } from './value-objects/time-format.vo.js'
 
 export class DateField extends AbstractDateField<IDateField> {
   type: DateType = 'date'
@@ -24,6 +25,7 @@ export class DateField extends AbstractDateField<IDateField> {
     return {
       ...super.json,
       format: this.formatString,
+      timeFormat: this.timeFormatString,
     }
   }
 
@@ -34,6 +36,7 @@ export class DateField extends AbstractDateField<IDateField> {
   static create(input: Omit<ICreateDateFieldSchema, 'type'>): DateField {
     return new DateField({
       ...super.createBase(input),
+      timeFormat: input.timeFormat ? TimeFormat.from(input.timeFormat) : undefined,
       format: input.format ? DateFormat.fromString(input.format) : undefined,
     })
   }
@@ -41,6 +44,7 @@ export class DateField extends AbstractDateField<IDateField> {
   static unsafeCreate(input: ICreateDateFieldSchema): DateField {
     return new DateField({
       ...super.unsafeCreateBase(input),
+      timeFormat: input.timeFormat ? TimeFormat.from(input.timeFormat) : undefined,
       format: input.format ? DateFormat.fromString(input.format) : undefined,
     })
   }

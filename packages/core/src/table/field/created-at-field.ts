@@ -16,6 +16,7 @@ import { AbstractDateField } from './field.base.js'
 import type { ICreatedAtField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { DateFormat } from './value-objects/date-format.vo.js'
+import { TimeFormat } from './value-objects/time-format.vo.js'
 
 export class CreatedAtField extends AbstractDateField<ICreatedAtField> {
   type: CreatedAtFieldType = 'created-at'
@@ -24,6 +25,7 @@ export class CreatedAtField extends AbstractDateField<ICreatedAtField> {
     return {
       ...super.json,
       format: this.formatString,
+      timeFormat: this.timeFormatString,
     }
   }
 
@@ -42,6 +44,7 @@ export class CreatedAtField extends AbstractDateField<ICreatedAtField> {
   static create(input: Omit<ICreateCreatedAtFieldInput, 'type'>): CreatedAtField {
     return new CreatedAtField({
       ...super.createBase(input),
+      timeFormat: input.timeFormat ? TimeFormat.from(input.timeFormat) : undefined,
       format: input.format ? DateFormat.fromString(input.format) : undefined,
     })
   }
@@ -49,6 +52,7 @@ export class CreatedAtField extends AbstractDateField<ICreatedAtField> {
   static unsafeCreate(input: ICreateCreatedAtFieldInput): CreatedAtField {
     return new CreatedAtField({
       ...super.unsafeCreateBase(input),
+      timeFormat: input.timeFormat ? TimeFormat.from(input.timeFormat) : undefined,
       format: input.format ? DateFormat.fromString(input.format) : undefined,
     })
   }
