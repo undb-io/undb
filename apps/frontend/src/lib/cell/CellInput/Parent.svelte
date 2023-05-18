@@ -27,7 +27,9 @@
 
 	let group: string[] = value ? [value] : []
 
-	$: value = group[0] ?? null
+	if (group?.length) {
+		value = group[0] ?? null
+	}
 </script>
 
 <ForeignRecordsPicker

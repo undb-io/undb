@@ -42,8 +42,8 @@ export const load: PageLoad = async (event) => {
 				id: 'updateTable',
 			},
 		),
-		createRecord: superValidate(event, createMutateRecordValuesSchema(fields), { id: 'createRecord', errors: false }),
-		updateRecord: superValidate(event, createMutateRecordValuesSchema(fields, coreRecord?.valuesJSON), {
+		createRecord: superValidate({}, createMutateRecordValuesSchema(fields), { id: 'createRecord', errors: false }),
+		updateRecord: superValidate({}, createMutateRecordValuesSchema(fields, coreRecord?.valuesJSON), {
 			id: 'updateRecord',
 			errors: false,
 		}),

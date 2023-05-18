@@ -31,9 +31,9 @@
 	const createRecord = trpc().record.create.mutation({
 		async onSuccess(data, variables, context) {
 			await $records.refetch()
-			reset()
 			await $createRecordModal.callback()
 			createRecordModal.close()
+			reset()
 		},
 	})
 
@@ -42,7 +42,7 @@
 		SPA: true,
 		dataType: 'json',
 		invalidateAll: false,
-		resetForm: true,
+		resetForm: false,
 		delayMs: 100,
 		clearOnSubmit: 'errors-and-message',
 		taintedMessage: null,
