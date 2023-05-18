@@ -237,7 +237,6 @@ const referenceComponent = (h: HyperFunc, value: (string | null)[] = []) => {
 
 const reference: TemplateFunc = (h, props) => {
 	const unpacked = props.model[props.prop] as string[] | undefined
-	console.log(unpacked)
 	if (!unpacked?.length) return null
 	const displayValues = props.model.display_values
 	const field = props.column.field as ReferenceField | TreeField
