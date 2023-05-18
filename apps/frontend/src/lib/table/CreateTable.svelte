@@ -11,6 +11,7 @@
 	import { createTableModal } from '$lib/store/modal'
 	import { newTableSchema } from '$lib/store/table'
 	import { onDestroy } from 'svelte'
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
 	export let data: Validation<typeof createTableInput>
 	let opened: Record<string, boolean> = {}
@@ -124,6 +125,8 @@
 			>
 		</div>
 	</form>
+
+	<!-- <SuperDebug data={$form} /> -->
 
 	<svelte:fragment slot="footer">
 		<div class="w-full flex justify-end gap-2">

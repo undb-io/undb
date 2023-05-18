@@ -279,6 +279,7 @@ import type {
   FieldIssue,
   FieldName,
   FieldValueConstraints,
+  TimeFormat,
 } from './value-objects/index.js'
 
 export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
@@ -444,7 +445,7 @@ export interface IBaseField {
   valueConstrains: FieldValueConstraints
 }
 
-export type BaseDateField = { format?: DateFormat }
+export type BaseDateField = { format?: DateFormat; timeFormat?: TimeFormat }
 
 export type IIdField = IBaseField
 export type ICreatedAtField = IBaseField & BaseDateField
@@ -645,6 +646,10 @@ export interface IAbstractDateField {
   get format(): DateFormat | undefined
   set format(format: DateFormat | undefined)
   updateFormat(format?: string): Option<TableCompositeSpecificaiton>
+  get timeFormatString(): string | null
+  get timeFormat(): TimeFormat | undefined
+  set timeFormat(format: TimeFormat | undefined)
+  updateTimeFormat(format?: string): Option<TableCompositeSpecificaiton>
 }
 
 export const lookingFieldIssues = z.enum(['Missing Reference Field'])

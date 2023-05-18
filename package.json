@@ -32,7 +32,7 @@
     "db:migration:create": "turbo run db:migration:create",
     "db:schema:fresh": "turbo run db:schema:fresh",
     "db:schema:update": "turbo run db:schema:update",
-    "dev": "FORCE_COLOR=1 dotenv -- turbo run dev --parallel --concurrency=12",
+    "dev": "FORCE_COLOR=1 TZ=UTC dotenv -- turbo run dev --parallel --concurrency=12",
     "dev:packages": "FORCE_COLOR=1 turbo run dev --parallel --filter=./packages/*",
     "docker:minio": "docker compose -f ./docker/docker-compose.minio.yaml up -d",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",

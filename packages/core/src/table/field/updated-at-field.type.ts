@@ -2,11 +2,12 @@ import * as z from 'zod'
 import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
 import { UpdatedAtField } from './updated-at-field.js'
+import { timeFormat } from './value-objects/time-format.vo.js'
 
 export const updatedAtTypeSchema = z.literal('updated-at')
 export type UpdatedAtFieldType = z.infer<typeof updatedAtTypeSchema>
 const updatedAtTypeObjectSchema = z.object({ [FIELD_TYPE_KEY]: updatedAtTypeSchema })
-const updatedAtObjectSchema = z.object({ format: z.string().optional() })
+const updatedAtObjectSchema = z.object({ format: z.string().optional(), timeFormat: timeFormat.optional() })
 
 export const createUpdatedAtFieldSchema = createBaseFieldSchema
   .merge(updatedAtTypeObjectSchema)

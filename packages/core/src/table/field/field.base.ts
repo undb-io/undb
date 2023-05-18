@@ -1,5 +1,5 @@
 import { and, ValueObject } from '@undb/domain'
-import { isArray, isBoolean, isEmpty, isString, unzip } from 'lodash-es'
+import { isArray, isBoolean, isEmpty, isNull, isString, unzip } from 'lodash-es'
 import fp from 'lodash/fp.js'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
@@ -35,13 +35,13 @@ import type { IFieldVisitor } from './field.visitor.js'
 import type { ReferenceField } from './reference-field.js'
 import { WithAggregateFieldId } from './specifications/aggregate-field.specification.js'
 import { WithFieldDescription, WithFieldDisplay, WithFieldName } from './specifications/base-field.specification.js'
-import { WithFormat } from './specifications/date-field.specification.js'
+import { WithFormat, WithTimeFormat } from './specifications/date-field.specification.js'
 import { WithFieldRequirement } from './specifications/field-constraints.specification.js'
 import { WithReferenceFieldId } from './specifications/lookup-field.specification.js'
 import { WithDisplayFields } from './specifications/reference-field.specification.js'
 import type { TreeField } from './tree-field.js'
 import { FieldDescription } from './value-objects/field-description.js'
-import type { DateFormat } from './value-objects/index.js'
+import type { DateFormat, TimeFormat } from './value-objects/index.js'
 import { DisplayFields, FieldId, FieldIssue, FieldName, FieldValueConstraints } from './value-objects/index.js'
 
 const { map, pipe } = fp
@@ -220,6 +220,26 @@ export abstract class AbstractDateField<F extends IDateFieldTypes = IDateFieldTy
   updateFormat(format?: string | undefined): Option<TableCompositeSpecificaiton> {
     if (isString(format)) {
       return Some(WithFormat.fromString(this, format))
+    }
+
+    return None
+  }
+
+  get timeFormatString(): string | null {
+    return this.props.timeFormat?.unpack() ?? null
+  }
+
+  set timeFormat(format: TimeFormat | undefined) {
+    this.props.timeFormat = format
+  }
+
+  get timeFormat(): TimeFormat | undefined {
+    return this.props.timeFormat
+  }
+
+  updateTimeFormat(format?: string | undefined | null): Option<TableCompositeSpecificaiton> {
+    if (isString(format) || isNull(format)) {
+      return Some(WithTimeFormat.from(this, format))
     }
 
     return None

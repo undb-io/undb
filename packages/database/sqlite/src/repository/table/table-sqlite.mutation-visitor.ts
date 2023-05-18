@@ -1,6 +1,6 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import type { WithChartAggregateSpec, WithoutWidgeSpecification } from '@undb/core'
+import type { WithChartAggregateSpec, WithTimeFormat, WithoutWidgeSpecification } from '@undb/core'
 import {
   type BaseField,
   type ITableSpecVisitor,
@@ -339,6 +339,19 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const field = this.#getField(s.field) as DateField | DateRangeField | CreatedAtField | UpdatedAtField
     wrap(field).assign({ format: s.format.unpack() })
     this.em.persist(field)
+  }
+  withTimeFormat(s: WithTimeFormat): void {
+    this.addJobs(async () => {
+      const field = (await this.em.findOne(Field, s.field.id.value)) as
+        | DateField
+        | DateRangeField
+        | CreatedAtField
+        | UpdatedAtField
+      if (field) {
+        field.timeFormat = s.format.unpack() ?? null
+        await this.em.persistAndFlush(field)
+      }
+    })
   }
   withShowSystemFields(s: WithShowSystemFieldsSpec): void {
     const view = this.getView(s.view.id.value)
