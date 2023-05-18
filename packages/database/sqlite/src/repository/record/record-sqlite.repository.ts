@@ -7,6 +7,7 @@ import {
   INTERNAL_COLUMN_UPDATED_BY_NAME,
   ParentField,
   TreeField,
+  TreeFieldValue,
   WithRecordId,
   WithRecordTableId,
   WithRecordValues,
@@ -40,6 +41,13 @@ export class RecordSqliteRepository implements IRecordRepository {
     }
     const queries: string[] = []
     const jobs: Job[] = []
+
+    for (const [fieldId, field] of schema) {
+      // Tree field value 需要在 closure table 设置初始记录
+      if (field instanceof TreeField && !record.values.value.get(fieldId)) {
+        record.values.value.set(fieldId, new TreeFieldValue([]))
+      }
+    }
 
     for (const [fieldId, value] of record.values) {
       const visitor = new RecordValueSqliteMutationVisitor(

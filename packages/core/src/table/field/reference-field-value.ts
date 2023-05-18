@@ -12,7 +12,7 @@ export class ReferenceFieldValue extends FieldValueBase<IReferenceFieldValue> {
   }
 
   unpack(): string[] | null {
-    return Array.isArray(this.props) ? this.props : null
+    return Array.isArray(this.props) ? this.props : []
   }
 
   accept(visitor: IFieldValueVisitor): void {

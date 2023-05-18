@@ -12,8 +12,7 @@
 	export let path: any[] = []
 
 	const parentFieldName = fieldProxy(form.form, [...path, 'parentFieldName'] as any) as Writable<string>
-
-	const { value: displayFieldIds } = formFieldProxy(form, 'displayFieldIds')
+	const displayFieldIds = fieldProxy(form.form, [...path, 'displayFieldIds'] as any) as Writable<string[]>
 
 	const table = getTable()
 </script>

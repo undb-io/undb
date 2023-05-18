@@ -730,7 +730,7 @@ export class TreeField extends Field {
       description: this.description,
       type: 'tree',
       parentFieldId: this.parentFieldId,
-      displayFieldIds: this.displayFields.getItems().map((f) => f.id),
+      displayFieldIds: this.foreignDisplayFields.map((f) => f.id),
       required: !!this.required,
       display: !!this.display,
     })
@@ -743,7 +743,7 @@ export class TreeField extends Field {
       description: this.description,
       type: 'tree',
       parentFieldId: this.parentFieldId,
-      displayFieldIds: this.displayFields.getItems().map((f) => f.id),
+      displayFieldIds: this.foreignDisplayFields.map((f) => f.id),
       required: !!this.required,
       display: !!this.display,
     }
@@ -782,7 +782,7 @@ export class ParentField extends Field {
       description: this.description,
       type: 'parent',
       treeFieldId: this.treeFieldId,
-      displayFieldIds: this.displayFields.getItems().map((f) => f.id),
+      displayFieldIds: this.foreignDisplayFields.map((f) => f.id),
       required: !!this.required,
       display: !!this.display,
     })
@@ -795,7 +795,7 @@ export class ParentField extends Field {
       description: this.description,
       type: 'parent',
       treeFieldId: this.treeFieldId,
-      displayFieldIds: this.displayFields.getItems().map((f) => f.id),
+      displayFieldIds: this.foreignDisplayFields.map((f) => f.id),
       required: !!this.required,
       display: !!this.display,
     }
@@ -943,7 +943,7 @@ export class LookupField extends Field {
       required: !!this.required,
       display: !!this.display,
       referenceFieldId: this.lookupReferenceField.id,
-      displayFieldIds: this.displayFields.getItems().map((f) => f.id) as [string, ...string[]],
+      displayFieldIds: this.foreignDisplayFields.map((f) => f.id) as [string, ...string[]],
     })
   }
 
@@ -956,7 +956,7 @@ export class LookupField extends Field {
       referenceFieldId: this.lookupReferenceField.id,
       required: !!this.required,
       display: !!this.display,
-      displayFieldIds: this.displayFields.getItems().map((f) => f.id) as [string, ...string[]],
+      displayFieldIds: this.foreignDisplayFields.map((f) => f.id) as [string, ...string[]],
     }
   }
 }

@@ -3,7 +3,6 @@ import {
   getRecordsTreeQueryInput,
   GetTreeAvailableRecordsQuery,
   getTreeAvailableRecordsQueryInput,
-  getTreeAvailableRecordsQueryOutput,
 } from '@undb/cqrs'
 import type { IQueryBus } from '@undb/domain'
 import { z } from 'zod'
@@ -21,7 +20,7 @@ export const createTreeFieldRouter = (procedure: typeof publicProcedure) => (que
       }),
     available: procedure
       .input(getTreeAvailableRecordsQueryInput)
-      .output(getTreeAvailableRecordsQueryOutput)
+      .output(z.any())
       .query(({ input }) => {
         const query = new GetTreeAvailableRecordsQuery(input)
         return queryBus.execute(query)
