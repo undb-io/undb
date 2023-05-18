@@ -29,10 +29,6 @@ export class AverageField extends Mixin(AbstractAggregateField<IAverageField>, A
     return true
   }
 
-  override get isNumeric() {
-    return true
-  }
-
   static create(input: Omit<ICreateAverageFieldInput, 'type'>): AverageField {
     return new AverageField({
       ...BaseField.createBase(input),

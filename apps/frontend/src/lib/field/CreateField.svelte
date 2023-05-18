@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getTable, getView, recordHash } from '$lib/store/table'
-	import { createFieldInitial, createFieldOpen } from '$lib/store/modal'
+	import { createFieldInitial, createFieldModal } from '$lib/store/modal'
 	import { Button, Input, Label, Modal, Spinner, Toggle, Popover, Badge, Textarea, Toast } from 'flowbite-svelte'
 	import FieldIcon from './FieldIcon.svelte'
 	import { superForm } from 'sveltekit-superforms/client'
@@ -28,7 +28,7 @@
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			await $records.refetch()
-			createFieldOpen.set(false)
+			createFieldModal.close()
 		},
 	})
 
@@ -46,8 +46,9 @@
 	})
 
 	$: if ($createFieldInitial) {
-		$form.type = $createFieldInitial.type
-		$form.name = $createFieldInitial.name
+		for (const [key, value] of Object.entries($createFieldInitial)) {
+			$form[key] = value
+		}
 	}
 
 	const { form, enhance, delayed, submitting } = superFrm
@@ -73,7 +74,7 @@
 		class="static w-full rounded-sm"
 		size="lg"
 		backdropClasses="fixed inset-0 z-[49] bg-gray-900 bg-opacity-50 dark:bg-opacity-80"
-		bind:open={$createFieldOpen}
+		bind:open={$createFieldModal.open}
 	>
 		<form method="POST" id="createField" use:enhance>
 			<div class="space-y-2">
@@ -147,9 +148,7 @@
 						{/if}
 					</div>
 					<div class="space-x-2">
-						<Button color="alternative" on:click={() => createFieldOpen.set(false)}
-							>{$t('Cancel', { ns: 'common' })}</Button
-						>
+						<Button color="alternative" on:click={createFieldModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
 						<Button class="gap-4" type="submit" form="createField" disabled={$submitting}>
 							{#if $delayed}
 								<Spinner size="5" />

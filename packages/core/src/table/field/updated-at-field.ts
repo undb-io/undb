@@ -15,6 +15,7 @@ import type {
   UpdatedAtFieldType,
 } from './updated-at-field.type.js'
 import { DateFormat } from './value-objects/date-format.vo.js'
+import { TimeFormat } from './value-objects/time-format.vo.js'
 
 export class UpdatedAtField extends AbstractDateField<IUpdatedAtField> {
   type: UpdatedAtFieldType = 'updated-at'
@@ -23,6 +24,7 @@ export class UpdatedAtField extends AbstractDateField<IUpdatedAtField> {
     return {
       ...super.json,
       format: this.formatString,
+      timeFormat: this.timeFormatString,
     }
   }
 
@@ -41,6 +43,7 @@ export class UpdatedAtField extends AbstractDateField<IUpdatedAtField> {
   static create(input: Omit<ICreateUpdatedAtFieldInput, 'type'>): UpdatedAtField {
     return new UpdatedAtField({
       ...super.createBase(input),
+      timeFormat: input.timeFormat ? TimeFormat.from(input.timeFormat) : undefined,
       format: input.format ? DateFormat.fromString(input.format) : undefined,
     })
   }
@@ -48,12 +51,13 @@ export class UpdatedAtField extends AbstractDateField<IUpdatedAtField> {
   static unsafeCreate(input: ICreateUpdatedAtFieldInput): UpdatedAtField {
     return new UpdatedAtField({
       ...super.unsafeCreateBase(input),
+      timeFormat: input.timeFormat ? TimeFormat.from(input.timeFormat) : undefined,
       format: input.format ? DateFormat.fromString(input.format) : undefined,
     })
   }
 
   public override update(input: IUpdateUpdatedAtFieldInput): Option<TableCompositeSpecificaiton> {
-    return andOptions(this.updateBase(input), this.updateFormat(input.format))
+    return andOptions(this.updateBase(input), this.updateFormat(input.format), this.updateTimeFormat(input.timeFormat))
   }
 
   createValue(value: IUpdatedAtFieldQueryValue): UpdatedAtFieldValue {

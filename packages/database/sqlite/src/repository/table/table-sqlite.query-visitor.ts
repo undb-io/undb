@@ -36,6 +36,7 @@ import type {
   WithTableSchema,
   WithTableView,
   WithTableViews,
+  WithTimeFormat,
   WithTreeViewField,
   WithViewFieldsOrder,
   WithViewName,
@@ -158,6 +159,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   withFormat(s: WithFormat): void {
+    throw new Error('Method not implemented.')
+  }
+  withTimeFormat(s: WithTimeFormat): void {
     throw new Error('Method not implemented.')
   }
   withShowSystemFields(s: WithShowSystemFieldsSpec): void {

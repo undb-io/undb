@@ -29,10 +29,6 @@ export class ParentField extends Mixin(AbstractReferenceField<IParentField>, Abs
     return this.props.treeFieldId
   }
 
-  override get sortable() {
-    return false
-  }
-
   static create(input: Omit<ICreateParentFieldInput, 'type'>): ParentField {
     return new ParentField({
       ...super.createBase(input),

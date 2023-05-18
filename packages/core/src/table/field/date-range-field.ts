@@ -15,6 +15,7 @@ import { AbstractDateField } from './field.base.js'
 import type { IDateRangeField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { DateFormat } from './value-objects/date-format.vo.js'
+import { TimeFormat } from './value-objects/time-format.vo.js'
 
 export class DateRangeField extends AbstractDateField<IDateRangeField> {
   type: DateRangeType = 'date-range'
@@ -23,6 +24,7 @@ export class DateRangeField extends AbstractDateField<IDateRangeField> {
     return {
       ...super.json,
       format: this.formatString,
+      timeFormat: this.timeFormatString,
     }
   }
 
@@ -33,6 +35,7 @@ export class DateRangeField extends AbstractDateField<IDateRangeField> {
   static create(input: Omit<ICreateDateRangeFieldSchema, 'type'>): DateRangeField {
     return new DateRangeField({
       ...super.createBase(input),
+      timeFormat: input.timeFormat ? TimeFormat.from(input.timeFormat) : undefined,
       format: input.format ? DateFormat.fromString(input.format) : undefined,
     })
   }
@@ -40,12 +43,13 @@ export class DateRangeField extends AbstractDateField<IDateRangeField> {
   static unsafeCreate(input: ICreateDateRangeFieldSchema): DateRangeField {
     return new DateRangeField({
       ...super.unsafeCreateBase(input),
+      timeFormat: input.timeFormat ? TimeFormat.from(input.timeFormat) : undefined,
       format: input.format ? DateFormat.fromString(input.format) : undefined,
     })
   }
 
   public override update(input: IUpdateDateRangeFieldInput): Option<TableCompositeSpecificaiton> {
-    return andOptions(this.updateBase(input), this.updateFormat(input.format))
+    return andOptions(this.updateBase(input), this.updateFormat(input.format), this.updateTimeFormat(input.timeFormat))
   }
 
   createValue(value: IDateRangeFieldQueryValue): DateRangeFieldValue {

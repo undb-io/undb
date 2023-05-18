@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { getTable } from '$lib/store/table'
-	import { updateFieldOpen } from '$lib/store/modal'
 	import { Button, Input, Label, Modal, Spinner, Toggle, Popover, Badge, Textarea, Toast } from 'flowbite-svelte'
 	import FieldIcon from './FieldIcon.svelte'
 	import { superForm } from 'sveltekit-superforms/client'
@@ -13,6 +12,8 @@
 	import { z } from 'zod'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
+	import { updateFieldModal } from '$lib/store/modal'
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
 	const table = getTable()
 
@@ -22,7 +23,7 @@
 	const updateField = trpc().table.field.update.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
-			updateFieldOpen.set(false)
+			updateFieldModal.close()
 		},
 	})
 
@@ -35,6 +36,7 @@
 		taintedMessage: null,
 		validators: z.object({}),
 		resetForm: true,
+		multipleSubmits: 'prevent',
 		async onUpdate(event) {
 			$updateField.mutate({
 				tableId: $table.id.value,
@@ -68,7 +70,7 @@
 	placement="top-center"
 	class="static w-full rounded-sm"
 	size="lg"
-	bind:open={$updateFieldOpen}
+	bind:open={$updateFieldModal.open}
 >
 	<form method="POST" id="updateField" use:enhance>
 		<div class="space-y-2">
@@ -107,6 +109,8 @@
 		</div>
 	</form>
 
+	<SuperDebug data={$form} />
+
 	<svelte:fragment slot="footer">
 		<div class="w-full flex items-center justify-between">
 			<div class="flex-1">
@@ -136,9 +140,7 @@
 					{/if}
 				</div>
 				<div class="space-x-2">
-					<Button color="alternative" on:click={() => updateFieldOpen.set(false)}
-						>{$t('Cancel', { ns: 'common' })}</Button
-					>
+					<Button color="alternative" on:click={updateFieldModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
 					<Button class="gap-4" type="submit" form="updateField" disabled={$submitting}>
 						{#if $delayed}
 							<Spinner size="5" />

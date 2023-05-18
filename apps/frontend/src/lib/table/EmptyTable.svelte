@@ -1,5 +1,5 @@
 <script>
-	import { createRecordOpen } from '$lib/store/modal'
+	import { createRecordModal } from '$lib/store/modal'
 	import { P, Button } from 'flowbite-svelte'
 	import { t } from '$lib/i18n'
 </script>
@@ -9,5 +9,5 @@
 
 	<p class="inline-flex items-center">{@html $t('shortcut R', { shortcut: 'R' })}</p>
 
-	<Button on:click={() => createRecordOpen.set(true)} class="w-[250px]">{$t('Create New Record')}</Button>
+	<Button on:click={() => createRecordModal.open()} class="w-[250px]">{$t('Create New Record')}</Button>
 </div>

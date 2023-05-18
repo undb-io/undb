@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { Label } from 'flowbite-svelte'
-	import { getTable } from '$lib/store/table'
 	import { t } from '$lib/i18n'
 	import FieldPicker from './FieldPicker.svelte'
-
-	const table = getTable()
+	import { allTableFields, getForeignTableFieldsByReferenceId } from '$lib/store/table'
 
 	export let value: string
 	export let required = false
+
+	$: fields = $allTableFields
 </script>
 
 <Label class="space-y-2">
@@ -19,8 +19,8 @@
 	</div>
 	<FieldPicker
 		{...$$restProps}
+		{fields}
 		bind:value
-		table={$table}
 		filter={(f) => f.type === 'reference' || f.type === 'tree' || f.type === 'parent'}
 	/>
 </Label>

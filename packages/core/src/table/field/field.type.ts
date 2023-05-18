@@ -279,6 +279,7 @@ import type {
   FieldIssue,
   FieldName,
   FieldValueConstraints,
+  TimeFormat,
 } from './value-objects/index.js'
 
 export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
@@ -426,6 +427,15 @@ export type ICreateFieldValueSchema_internal = z.infer<typeof createFieldValueSc
 export const createFieldsSchema_internal = z.array(createFieldValueSchema_internal)
 export type ICreateFieldsSchema_internal = z.infer<typeof createFieldsSchema_internal>
 
+export interface IBaseFieldQueryScheam {
+  id: string
+  name: string
+  display: boolean
+  description?: string
+  type: IFieldType
+  required: boolean
+}
+
 export interface IBaseField {
   id: FieldId
   system?: boolean
@@ -435,7 +445,7 @@ export interface IBaseField {
   valueConstrains: FieldValueConstraints
 }
 
-export type BaseDateField = { format?: DateFormat }
+export type BaseDateField = { format?: DateFormat; timeFormat?: TimeFormat }
 
 export type IIdField = IBaseField
 export type ICreatedAtField = IBaseField & BaseDateField
@@ -473,7 +483,7 @@ export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: 
 export type ICountField = IBaseField & { referenceFieldId: FieldId }
 export type ISumField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }
 export type IAverageField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }
-export type ILookupField = IBaseField & { referenceFieldId: FieldId; displayFields: DisplayFields }
+export type ILookupField = IBaseField & { referenceFieldId: FieldId; displayFields?: DisplayFields }
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField | CreatedByField | UpdatedByField
 
@@ -636,6 +646,10 @@ export interface IAbstractDateField {
   get format(): DateFormat | undefined
   set format(format: DateFormat | undefined)
   updateFormat(format?: string): Option<TableCompositeSpecificaiton>
+  get timeFormatString(): string | null
+  get timeFormat(): TimeFormat | undefined
+  set timeFormat(format: TimeFormat | undefined)
+  updateTimeFormat(format?: string): Option<TableCompositeSpecificaiton>
 }
 
 export const lookingFieldIssues = z.enum(['Missing Reference Field'])

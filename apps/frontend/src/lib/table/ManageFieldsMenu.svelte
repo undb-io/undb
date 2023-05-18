@@ -3,7 +3,6 @@
 	import { invalidate } from '$app/navigation'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { t } from '$lib/i18n'
-	import { createFieldOpen } from '$lib/store/modal'
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { Field } from '@undb/core'
@@ -11,6 +10,7 @@
 	import { filter } from 'lodash-es'
 	import { dndzone } from 'svelte-dnd-action'
 	import { flip } from 'svelte/animate'
+	import { createFieldModal } from '$lib/store/modal'
 
 	const table = getTable()
 	const view = getView()
@@ -128,7 +128,7 @@
 		>{$t('Show System Fields')}</Toggle
 	>
 
-	<Button size="xs" class="w-full gap-2" color="alternative" on:click={() => ($createFieldOpen = true)}>
+	<Button size="xs" class="w-full gap-2" color="alternative" on:click={() => createFieldModal.open()}>
 		<i class="ti ti-plus" />
 		<span>
 			{$t('Create New Field')}

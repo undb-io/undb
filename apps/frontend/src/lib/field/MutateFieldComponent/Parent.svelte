@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { Label } from 'flowbite-svelte'
-	import { fieldProxy, formFieldProxy, type SuperForm } from 'sveltekit-superforms/client'
+	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
-	import FieldsPicker from '../FieldInputs/FieldsPicker.svelte'
-	import { getTable } from '$lib/store/table'
+	import DisplayFieldsPicker from '../FieldInputs/DisplayFieldsPicker.svelte'
+	import { allTableFields, getTable, newTableSchema } from '$lib/store/table'
 	import type { Writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
 
@@ -23,12 +23,12 @@
 				<span>{$t('Display Fields') ?? undefined}</span>
 			</Label>
 			<div>
-				<FieldsPicker
+				<DisplayFieldsPicker
+					fields={$allTableFields}
+					tableName={$newTableSchema.tableName === undefined ? $table.name.value : $newTableSchema.tableName}
 					class="w-full !justify-start"
-					table={$table}
 					bind:group={$displayFieldIds}
 					disabled={!table}
-					filter={(f) => f.isPrimitive()}
 				/>
 			</div>
 		</div>

@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { invalidate } from '$app/navigation'
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import { getTable, getView, recordHash } from '$lib/store/table'
-	import { createRecordInitial, createRecordOpen } from '$lib/store/modal'
+	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import { Button, Label, Modal, Spinner, Toast } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
@@ -32,8 +31,9 @@
 	const createRecord = trpc().record.create.mutation({
 		async onSuccess(data, variables, context) {
 			await $records.refetch()
+			await $createRecordModal.callback()
+			createRecordModal.close()
 			reset()
-			createRecordOpen.set(false)
 		},
 	})
 
@@ -42,7 +42,7 @@
 		SPA: true,
 		dataType: 'json',
 		invalidateAll: false,
-		resetForm: true,
+		resetForm: false,
 		delayMs: 100,
 		clearOnSubmit: 'errors-and-message',
 		taintedMessage: null,
@@ -62,7 +62,7 @@
 	$: $table, reset()
 </script>
 
-<Modal title={$t('Create New Record') ?? undefined} class="w-full" size="lg" bind:open={$createRecordOpen}>
+<Modal title={$t('Create New Record') ?? undefined} class="w-full" size="lg" bind:open={$createRecordModal.open}>
 	<form id="createRecord" class="space-y-5" method="POST" use:enhance>
 		<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 			{#each fields as field}
@@ -88,7 +88,7 @@
 
 	<svelte:fragment slot="footer">
 		<div class="w-full flex justify-end gap-2">
-			<Button color="alternative" on:click={() => createRecordOpen.set(false)}>{$t('Cancel', { ns: 'common' })}</Button>
+			<Button color="alternative" on:click={() => createRecordModal.close()}>{$t('Cancel', { ns: 'common' })}</Button>
 			<Button class="gap-2" type="submit" form="createRecord" disabled={$submitting}>
 				{#if $delayed}
 					<Spinner size="5" />

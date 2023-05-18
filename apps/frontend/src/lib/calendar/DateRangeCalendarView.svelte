@@ -11,7 +11,7 @@
 	// @ts-ignore
 	import Interaction from '@event-calendar/interaction'
 	import { RecordFactory, type DateRangeField } from '@undb/core'
-	import { createRecordInitial, createRecordOpen } from '$lib/store/modal'
+	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 	import { addDays, format } from 'date-fns'
 	import { theme } from './calendar-theme'
 	import { t } from '$lib/i18n'
@@ -91,7 +91,7 @@
 		nowIndicator: true,
 		dateClick: (info: { date: Date }) => {
 			$createRecordInitial = { [field.id.value]: [format(info.date, 'yyyy-MM-dd'), format(info.date, 'yyyy-MM-dd')] }
-			$createRecordOpen = true
+			createRecordModal.open()
 		},
 		events,
 		selectable: true,
@@ -99,7 +99,7 @@
 			$createRecordInitial = {
 				[field.id.value]: [format(info.start, 'yyyy-MM-dd'), format(addDays(info.end, -1), 'yyyy-MM-dd')],
 			}
-			$createRecordOpen = true
+			createRecordModal.open()
 		},
 		eventClick: (info: { event: { id: string } }) => {
 			$currentRecordId = info.event.id

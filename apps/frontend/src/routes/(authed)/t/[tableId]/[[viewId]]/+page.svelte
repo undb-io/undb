@@ -11,8 +11,7 @@
 	import CreateView from '$lib/view/CreateView.svelte'
 	import ViewConfigModal from '$lib/view/ViewConfigModal.svelte'
 	import UpdateTable from '$lib/table/UpdateTable.svelte'
-	import { createTableOpen, createRecordOpen } from '$lib/store/modal'
-	import { trpc } from '$lib/trpc/client'
+	import { createRecordModal, createTableModal } from '$lib/store/modal'
 	import UpdateOption from '$lib/option/UpdateOption.svelte'
 	import VirsualizationModal from '$lib/virsualization/VirsualizationModal.svelte'
 
@@ -32,9 +31,9 @@
 
 	const onKeydown = (event: KeyboardEvent) => {
 		if (event.key === 't' && !(event.ctrlKey || event.altKey || event.metaKey)) {
-			$createTableOpen = true
+			createTableModal.open()
 		} else if (event.key === 'r' && !(event.ctrlKey || event.altKey || event.metaKey)) {
-			$createRecordOpen = true
+			createRecordModal.open()
 		}
 	}
 </script>

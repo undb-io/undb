@@ -2,13 +2,14 @@
 	import cx from 'classnames'
 	import { invalidate } from '$app/navigation'
 	import { currentFieldId, getField, getTable, getView } from '$lib/store/table'
-	import { confirmDeleteField, updateFieldOpen } from '$lib/store/modal'
+	import { confirmDeleteField, updateFieldModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import type { ISortDirection } from '@undb/core'
 	import { DropdownDivider, DropdownItem, Modal, Toast } from 'flowbite-svelte'
 	import { noop } from 'lodash-es'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
+	import FieldMenuFieldComponent from './FieldMenu/FieldMenuFieldComponent.svelte'
 
 	export let togglePin: (fieldId: string) => void = noop
 
@@ -61,13 +62,15 @@
 
 <DropdownItem
 	class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium"
-	on:click={() => updateFieldOpen.set(true)}
+	on:click={() => updateFieldModal.open()}
 >
 	<i class="ti ti-edit text-sm" />
 	<span>{$t('Update Field')}</span>
 </DropdownItem>
 
 <DropdownDivider />
+
+<FieldMenuFieldComponent field={$field} class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium" />
 
 <DropdownItem
 	class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium"

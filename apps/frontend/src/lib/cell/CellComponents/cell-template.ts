@@ -53,10 +53,15 @@ const id: TemplateFunc = (h, props) => {
 	)
 }
 
-const dateComponent = (h: HyperFunc, dateString: string | null, formatString: string) => {
+const dateComponent = (
+	h: HyperFunc,
+	dateString: string | null,
+	dateFormatString: string,
+	timeFormatString?: string | null,
+) => {
 	if (!dateString) return null
 	const date = new Date(dateString)
-
+	const formatString = timeFormatString ? dateFormatString + ' ' + timeFormatString : dateFormatString
 	return h('span', {}, format(date, formatString))
 }
 
@@ -69,29 +74,29 @@ const dateRange: TemplateFunc = (h, props) => {
 	const [from, to] = value
 
 	return h('div', { class: 'flex items-center' }, [
-		dateComponent(h, from ?? null, field.formatString),
+		dateComponent(h, from ?? null, field.formatString, field.timeFormatString),
 		from && to ? h('span', { class: 'mx-1' }, '-') : null,
-		dateComponent(h, to ?? null, field.formatString),
+		dateComponent(h, to ?? null, field.formatString, field.timeFormatString),
 	])
 }
 
 const createdAt: TemplateFunc = (h, props) => {
 	const createdAt = props.model.created_at as string
 	const field = props.column.field as CreatedAtField
-	return dateComponent(h, createdAt, field.formatString)
+	return dateComponent(h, createdAt, field.formatString, field.timeFormatString)
 }
 
 const updatedAt: TemplateFunc = (h, props) => {
 	const updatedAt = props.model.updated_at as string
 	const field = props.column.field as UpdatedAtField
-	return dateComponent(h, updatedAt, field.formatString)
+	return dateComponent(h, updatedAt, field.formatString, field.timeFormatString)
 }
 
 const date: TemplateFunc = (h, props) => {
 	const value = props.model[props.prop] as string | undefined
 	if (!value) return null
 	const field = props.column.field as DateField
-	return dateComponent(h, value ?? '', field.formatString)
+	return dateComponent(h, value ?? '', field.formatString, field.timeFormatString)
 }
 
 const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile) => {
@@ -237,7 +242,7 @@ const referenceComponent = (h: HyperFunc, value: (string | null)[] = []) => {
 
 const reference: TemplateFunc = (h, props) => {
 	const unpacked = props.model[props.prop] as string[] | undefined
-	if (!unpacked) return null
+	if (!unpacked?.length) return null
 	const displayValues = props.model.display_values
 	const field = props.column.field as ReferenceField | TreeField
 	const values = field.getDisplayValues(displayValues)
@@ -294,14 +299,13 @@ const parent: TemplateFunc = (h, props) => {
 }
 
 const lookup: TemplateFunc = (h, props) => {
+	const html = htm.bind(h)
 	const field = props.column.field as LookupField
 
 	const values = field.getDisplayValues(props.model.display_values)
-	return h(
-		'div',
-		{ class: 'flex items-center' },
-		values.map((value) => h('span', {}, value.toString())),
-	)
+	return html`
+		<div class="flex items-center gap-2">${values.map((value) => html` <span> ${value.toString()} </span> `)}</div>
+	`
 }
 
 const attachmentItem = (h: HyperFunc, attachment: IAttachmentItem) => {

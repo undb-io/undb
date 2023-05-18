@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { virsualizationOpen } from '$lib/store/modal'
+	import { virsualizationModal } from '$lib/store/modal'
 	import { Modal } from 'flowbite-svelte'
 	import Virsualization from './Virsualization.svelte'
 	import VirsualizationSetting from './setting/VirsualizationSetting.svelte'
@@ -43,7 +43,7 @@
 
 <div id="virsualization-modal">
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<Modal size="xl" class="w-full h-[calc(100vh-64px)] p-0" bind:open={$virsualizationOpen}>
+	<Modal size="xl" class="w-full h-[calc(100vh-64px)] p-0" bind:open={$virsualizationModal.open}>
 		<svelte:fragment slot="header">
 			{#if $currentVirsualization && updating}
 				<input

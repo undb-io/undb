@@ -2,11 +2,12 @@ import { z } from 'zod'
 import { DateField } from './date-field.js'
 import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
+import { timeFormat } from './value-objects/time-format.vo.js'
 
 export const dateTypeSchema = z.literal('date')
 export type DateType = z.infer<typeof dateTypeSchema>
 const dateTypeObjectSchema = z.object({ [FIELD_TYPE_KEY]: dateTypeSchema })
-const dateObjectSchema = z.object({ format: z.string().optional() })
+const dateObjectSchema = z.object({ format: z.string().optional(), timeFormat: timeFormat.optional() })
 
 export const createDateFieldSchema = createBaseFieldSchema.merge(dateTypeObjectSchema).merge(dateObjectSchema)
 export type ICreateDateFieldSchema = z.infer<typeof createDateFieldSchema>

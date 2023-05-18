@@ -159,6 +159,7 @@ export const config: InitOptions = {
         'Select Foreign Table': 'Select Foreign Table',
         'Select Display Fields': 'Select Display Fields',
         'Date Format': 'Date Foramt',
+        'Time Format': 'Time Foramt',
         'Select Date Format': 'Select Date Format',
         'Edit Table': 'Edit Table',
         string: 'String',
@@ -253,6 +254,10 @@ export const config: InitOptions = {
         'aggregate mode table': 'count',
         'aggregate mode field': 'fields',
         'delete widge': 'Delete Widge',
+        'jump to table': 'jump to {{name}}',
+        'display time': 'display time',
+        '12 hour': '12 hour',
+        '24 hour': '24 hour',
       },
       zod: zodEn,
     },
@@ -413,6 +418,7 @@ export const config: InitOptions = {
         'Select Foreign Table': '选择关联表',
         'Select Display Fields': '选择显示列',
         'Date Format': '日期格式',
+        'Time Format': '时间格式',
         'Select Date Format': '选择日期格式',
         'Edit Table': '配置表',
         string: '文本',
@@ -508,6 +514,10 @@ export const config: InitOptions = {
         'aggregate mode field': '按列统计',
         'delete widge': '删除控件',
         'no numberic fields': '没有数字列',
+        'jump to table': '跳转到 {{name}}',
+        'display time': '显示时间',
+        '12 hour': '12 小时制',
+        '24 hour': '24 小时制',
       },
       zod: zodZh,
     },
@@ -517,7 +527,15 @@ export const config: InitOptions = {
   lng: undefined, // if you're using a language detector, do not define the lng option
   fallbackLng: 'zh-CN',
 
+  detection: {
+    order: ['cookie', 'querystring', 'localStorage', 'navigator'],
+    caches: ['localStorage', 'cookie'],
+    lookupQuerystring: 'lng',
+    lookupCookie: 'lng',
+    lookupLocalStorage: 'locale',
+  },
+
   interpolation: {
-    escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
+    escapeValue: false,
   },
 }

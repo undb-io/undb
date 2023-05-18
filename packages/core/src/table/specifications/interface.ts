@@ -5,7 +5,7 @@ import type {
   WithFieldDisplay,
   WithFieldName,
 } from '../field/specifications/base-field.specification.js'
-import type { WithFormat } from '../field/specifications/date-field.specification.js'
+import type { WithFormat, WithTimeFormat } from '../field/specifications/date-field.specification.js'
 import type { WithFieldRequirement } from '../field/specifications/field-constraints.specification.js'
 import type { WithoutField } from '../field/specifications/field.specification.js'
 import type { WithRatingMax } from '../field/specifications/rating-field.specification.js'
@@ -93,6 +93,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withFieldDisplay(s: WithFieldDisplay): void
   displayFieldsEqual(s: WithDisplayFields): void
   withFormat(s: WithFormat): void
+  withTimeFormat(s: WithTimeFormat): void
 
   withShowSystemFields(s: WithShowSystemFieldsSpec): void
 

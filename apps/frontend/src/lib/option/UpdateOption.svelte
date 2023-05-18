@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { updateOptionOpen } from '$lib/store/modal'
 	import { Button, Input, Modal, Toast } from 'flowbite-svelte'
 	import OptionColorPicker from './OptionColorPicker.svelte'
 	import type { updateOptionSchema } from '@undb/core'
@@ -10,6 +9,7 @@
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import { invalidate } from '$app/navigation'
+	import { updateOptionModal } from '$lib/store/modal'
 
 	export let data: Validation<typeof updateOptionSchema>
 
@@ -21,7 +21,7 @@
 		async onSuccess(data, variables, context) {
 			reset()
 			await invalidate(`table:${$table.id.value}`)
-			$updateOptionOpen = false
+			updateOptionModal.close()
 		},
 	})
 
@@ -52,7 +52,7 @@
 {#if $field?.type === 'select'}
 	<Modal
 		title={$t('Update Option') ?? undefined}
-		bind:open={$updateOptionOpen}
+		bind:open={$updateOptionModal.open}
 		placement="top-center"
 		class="w-full rounded-sm"
 		size="sm"

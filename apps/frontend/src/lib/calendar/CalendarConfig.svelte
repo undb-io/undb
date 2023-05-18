@@ -4,7 +4,7 @@
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { writable } from 'svelte/store'
-	import { configViewOpen, createFieldInitial, createFieldOpen } from '$lib/store/modal'
+	import { configViewModal, createFieldInitial, createFieldModal } from '$lib/store/modal'
 	import { t } from '$lib/i18n'
 	import { invalidate } from '$app/navigation'
 
@@ -17,7 +17,7 @@
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			$view.calendarFieldIdString = $calendarFieldId
-			$configViewOpen = false
+			configViewModal.close()
 		},
 	})
 	const onChange = async () => {
@@ -61,7 +61,7 @@
 			$createFieldInitial = {
 				type: 'date',
 			}
-			$createFieldOpen = true
+			createFieldModal.open()
 		}}
 	>
 		<i class="ti ti-plus" />
@@ -77,7 +77,7 @@
 			$createFieldInitial = {
 				type: 'date-range',
 			}
-			$createFieldOpen = true
+			createFieldModal.open()
 		}}
 	>
 		<i class="ti ti-plus" />

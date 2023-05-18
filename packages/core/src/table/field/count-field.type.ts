@@ -10,14 +10,11 @@ const countTypeObjectSchema = z.object({
   [FIELD_TYPE_KEY]: countTypeSchema,
 })
 
-export const createCountFieldSchema = createBaseFieldSchema
-  .merge(countTypeObjectSchema)
-  .merge(
-    z.object({
-      referenceFieldId: fieldIdSchema,
-    }),
-  )
-  .strict()
+export const createCountFieldSchema = createBaseFieldSchema.merge(countTypeObjectSchema).merge(
+  z.object({
+    referenceFieldId: fieldIdSchema,
+  }),
+)
 export type ICreateCountFieldInput = z.infer<typeof createCountFieldSchema>
 
 export const updateCountFieldSchema = updateBaseFieldSchema.merge(countTypeObjectSchema).merge(

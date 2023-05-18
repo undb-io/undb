@@ -21,10 +21,6 @@ export class CollaboratorField extends BaseField<ICollaboratorField> {
     return true
   }
 
-  override get sortable(): boolean {
-    return false
-  }
-
   static create(input: Omit<ICreateCollaboratorFieldInput, 'type'>): CollaboratorField {
     return new CollaboratorField({
       ...super.createBase(input),

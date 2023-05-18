@@ -15,7 +15,6 @@
 	import { getTable } from '$lib/store/table'
 	import { writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
-	import { uniq } from 'lodash-es'
 
 	let loading = false
 	let initialLoading = false
@@ -30,15 +29,18 @@
 	export let getForeignRecords: () => Promise<Records>
 	export let getInitRecords: () => Promise<Records>
 
-	// checkbox select record ids
-	let group: string[] = []
-	$: if (open) {
-		value = uniq([...(value ?? []), ...group])
-	}
-
 	let records = writable<Records>([])
 	let initialRecords: Records = []
 	const recordsMap = writable(new Map<string, Record>())
+
+	const change = (e: Event, recordId: string) => {
+		const target = e.target as HTMLInputElement
+		if (target.checked) {
+			add(recordId)
+		} else {
+			remove(recordId)
+		}
+	}
 
 	let loaded = false
 	async function getInitial() {
@@ -81,6 +83,10 @@
 
 	function remove(recordId: string) {
 		value = value?.filter((r) => r !== recordId) ?? []
+	}
+
+	function add(recordId: string) {
+		value = [...(value ?? []), recordId]
 	}
 
 	$: if (open) getForeign()
@@ -133,9 +139,11 @@
 					<Checkbox
 						inline
 						value={$records[index].id.value}
-						bind:group
 						custom
-						on:change={() => (open = false)}
+						on:change={(e) => {
+							change(e, $records[index].id.value)
+							open = false
+						}}
 						class="w-full"
 					>
 						<RecordCard

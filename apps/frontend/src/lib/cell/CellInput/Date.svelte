@@ -1,10 +1,14 @@
 <script lang="ts">
-	import { format } from 'date-fns'
-	import { Input } from 'flowbite-svelte'
+	import type { DateField } from '@undb/core'
+	import DateInput from './DateInput.svelte'
+	import DateTimeInput from './DateTimeInput.svelte'
 
-	export let value: string | undefined = undefined
-
-	$: value = value ? format(new Date(value), 'yyyy-MM-dd') : ''
+	export let value: string | undefined
+	export let field: DateField
 </script>
 
-<Input type="date" bind:value {...$$restProps} />
+{#if !!field.timeFormatString}
+	<DateTimeInput bind:value />
+{:else}
+	<DateInput bind:value />
+{/if}

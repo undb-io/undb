@@ -1,29 +1,37 @@
 <script lang="ts">
-	import { createTableOpen } from '$lib/store/modal'
 	import { Accordion, Button, Label, Modal, Input, Spinner, Toast, P, Badge } from 'flowbite-svelte'
 	import type { Validation } from 'sveltekit-superforms'
-	import { FieldId, type createTableInput } from '@undb/core'
+	import { FieldId, TableId, type createTableInput } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
 	import CreateTableFieldAccordionItem from './CreateTableFieldAccordionItem.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { goto, invalidate } from '$app/navigation'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
+	import { createTableModal } from '$lib/store/modal'
+	import { newTableSchema } from '$lib/store/table'
+	import { onDestroy } from 'svelte'
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
 	export let data: Validation<typeof createTableInput>
 	let opened: Record<string, boolean> = {}
 
 	const addField = () => {
 		const id = FieldId.createId()
-		$form.schema = [...$form.schema, { id, type: 'string', name: '', display: !displayFields.length }]
+		$form.schema = [...($form.schema ?? []), { id, type: 'string', name: '', display: !displayFields?.length }]
 		opened = { [id]: true }
+	}
+
+	$: if (!$form.schema?.length) {
+		addField()
 	}
 
 	const createTable = trpc().table.create.mutation({
 		async onSuccess(data, variables, context) {
-			createTableOpen.set(false)
 			await invalidate('tables')
 			await goto(`/t/${data.id}`)
+			createTableModal.close()
+			reset()
 		},
 	})
 
@@ -31,21 +39,31 @@
 		id: 'createTable',
 		SPA: true,
 		applyAction: false,
-		resetForm: true,
+		resetForm: false,
 		invalidateAll: true,
 		clearOnSubmit: 'errors-and-message',
 		dataType: 'json',
 		taintedMessage: null,
 		async onUpdate(event) {
-			reset()
 			$createTable.mutate(event.form.data)
 		},
 	})
 
 	const { form, errors, reset, constraints, enhance, delayed, submitting } = superFrm
 
+	$: $form.id = TableId.createId()
 	$: $form.schema = []
 	$: displayFields = $form.schema?.filter((f) => !!f.display) ?? []
+
+	$: newTableSchema.set({
+		tableId: $form.id,
+		tableName: $form.name,
+		schema: $form.schema,
+	})
+
+	onDestroy(() => {
+		newTableSchema.reset()
+	})
 
 	const onBlur = () => {
 		if (!$form.schema.length) {
@@ -59,7 +77,7 @@
 	placement="top-center"
 	class="static w-full rounded-sm"
 	size="lg"
-	bind:open={$createTableOpen}
+	bind:open={$createTableModal.open}
 >
 	<form id="createTable" class="flex flex-col justify-between flex-1 gap-2" method="POST" use:enhance>
 		<div>
@@ -108,9 +126,11 @@
 		</div>
 	</form>
 
+	<!-- <SuperDebug data={$form} /> -->
+
 	<svelte:fragment slot="footer">
 		<div class="w-full flex justify-end gap-2">
-			<Button color="alternative" on:click={() => createTableOpen.set(false)}>{$t('Cancel', { ns: 'common' })}</Button>
+			<Button color="alternative" on:click={createTableModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
 			<Button class="gap-4" type="submit" form="createTable" disabled={$submitting}>
 				{#if $delayed}
 					<Spinner size="5" />

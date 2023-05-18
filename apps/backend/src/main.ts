@@ -5,6 +5,7 @@ import compression from 'compression'
 import cookieParser from 'cookie-parser'
 import { Request } from 'express'
 import helmet from 'helmet'
+import { i18n } from 'i18next'
 import { ClsMiddleware, ClsService } from 'nestjs-cls'
 import { Logger } from 'nestjs-pino'
 import passport from 'passport'
@@ -33,7 +34,7 @@ async function bootstrap() {
 
   const router = app.get<AppRouter>(AppRouterSymbol)
   const jwt = app.get(JwtStrategy)
-  const i18next = app.get(I18NEXT)
+  const i18next: i18n = app.get(I18NEXT)
   const cls = app.get(ClsService)
 
   app

@@ -15,6 +15,10 @@ export class TableId extends NanoID {
     return new TableId(id)
   }
 
+  static createId(): string {
+    return this.create().value
+  }
+
   static from(id: string): Result<TableId, InvalidTableIdError> {
     if (!id) {
       return Err(new InvalidTableIdError())
