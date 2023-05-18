@@ -60,4 +60,6 @@ RUN apt-get update \
 
 RUN update-ca-certificates
 
+ENV TZ=UTC
+
 CMD ["scripts/start.mjs"]

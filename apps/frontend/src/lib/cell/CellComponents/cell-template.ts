@@ -62,7 +62,6 @@ const dateComponent = (
 	if (!dateString) return null
 	const date = new Date(dateString)
 	const formatString = timeFormatString ? dateFormatString + ' ' + timeFormatString : dateFormatString
-	console.log(formatString)
 	return h('span', {}, format(date, formatString))
 }
 

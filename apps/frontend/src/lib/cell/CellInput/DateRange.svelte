@@ -1,6 +1,9 @@
 <script lang="ts">
-	import { Input } from 'flowbite-svelte'
+	import type { DateRangeField } from '@undb/core'
+	import DateInput from './DateInput.svelte'
+	import DateTimeInput from './DateTimeInput.svelte'
 
+	export let field: DateRangeField
 	export let value: [string | undefined, string | undefined] = [undefined, undefined]
 
 	$: if (!value) {
@@ -9,7 +12,15 @@
 </script>
 
 <div class="flex gap-2 items-center">
-	<Input type="date" bind:value={value[0]} max={value[1]} />
+	{#if !!field.timeFormatString}
+		<DateTimeInput bind:value={value[0]} />
+	{:else}
+		<DateInput bind:value={value[0]} />
+	{/if}
 	<span>-</span>
-	<Input type="date" bind:value={value[1]} min={value[0]} />
+	{#if !!field.timeFormatString}
+		<DateTimeInput bind:value={value[1]} />
+	{:else}
+		<DateInput bind:value={value[1]} />
+	{/if}
 </div>
