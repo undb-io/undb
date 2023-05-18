@@ -53,7 +53,7 @@ export class UpdatedAtField extends AbstractDateField<IUpdatedAtField> {
   }
 
   public override update(input: IUpdateUpdatedAtFieldInput): Option<TableCompositeSpecificaiton> {
-    return andOptions(this.updateBase(input), this.updateFormat(input.format))
+    return andOptions(this.updateBase(input), this.updateFormat(input.format), this.updateTimeFormat(input.timeFormat))
   }
 
   createValue(value: IUpdatedAtFieldQueryValue): UpdatedAtFieldValue {

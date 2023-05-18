@@ -54,7 +54,7 @@ export class CreatedAtField extends AbstractDateField<ICreatedAtField> {
   }
 
   public override update(input: IUpdateCreatedAtFieldInput): Option<TableCompositeSpecificaiton> {
-    return andOptions(this.updateBase(input), this.updateFormat(input.format))
+    return andOptions(this.updateBase(input), this.updateFormat(input.format), this.updateTimeFormat(input.timeFormat))
   }
 
   createValue(value: ICreatedAtFieldQueryValue): CreatedAtFieldValue {

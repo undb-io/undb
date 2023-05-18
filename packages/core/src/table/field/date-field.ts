@@ -46,7 +46,7 @@ export class DateField extends AbstractDateField<IDateField> {
   }
 
   public override update(input: IUpdateDateFieldInput): Option<TableCompositeSpecificaiton> {
-    return andOptions(this.updateBase(input), this.updateFormat(input.format))
+    return andOptions(this.updateBase(input), this.updateFormat(input.format), this.updateTimeFormat(input.timeFormat))
   }
 
   createValue(value: IDateFieldQueryValue): DateFieldValue {

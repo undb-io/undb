@@ -39,6 +39,7 @@ import type {
   ISelectFieldQuerySchema,
   IStringFieldQuerySchema,
   ISumFieldQuerySchema,
+  ITimeFormat,
   ITreeFieldQuerySchema,
   IUpdatedAtFieldQuerySchema,
   IUpdatedByFieldQueryScheam,
@@ -150,6 +151,9 @@ export class CreatedAtField extends Field {
   @Property()
   format: string
 
+  @Property({ nullable: true })
+  timeFormat?: ITimeFormat
+
   toDomain(): CoreCreatedAtField {
     return CoreCreatedAtField.unsafeCreate({
       id: this.id,
@@ -157,6 +161,7 @@ export class CreatedAtField extends Field {
       type: 'created-at',
       description: this.description,
       format: this.format,
+      timeFormat: this.timeFormat,
       required: !!this.required,
       display: !!this.display,
     })
@@ -169,6 +174,7 @@ export class CreatedAtField extends Field {
       type: 'created-at',
       description: this.description,
       format: this.format,
+      timeFormat: this.timeFormat,
       required: !!this.required,
       display: !!this.display,
     }
@@ -235,6 +241,9 @@ export class UpdatedAtField extends Field {
   @Property()
   format: string
 
+  @Property({ nullable: true })
+  timeFormat?: ITimeFormat
+
   toDomain(): CoreUpdatedAtField {
     return CoreUpdatedAtField.unsafeCreate({
       id: this.id,
@@ -242,6 +251,7 @@ export class UpdatedAtField extends Field {
       type: 'updated-at',
       description: this.description,
       format: this.format,
+      timeFormat: this.timeFormat,
       required: !!this.required,
       display: !!this.display,
     })
@@ -254,6 +264,7 @@ export class UpdatedAtField extends Field {
       type: 'updated-at',
       description: this.description,
       format: this.format,
+      timeFormat: this.timeFormat,
       required: !!this.required,
       display: !!this.display,
     }
@@ -480,12 +491,16 @@ export class DateField extends Field {
   @Property()
   format: string
 
+  @Property({ nullable: true })
+  timeFormat?: ITimeFormat
+
   toDomain(): CoreDateField {
     return CoreDateField.unsafeCreate({
       id: this.id,
       name: this.name,
       type: 'date',
       format: this.format,
+      timeFormat: this.timeFormat,
       description: this.description,
       required: !!this.required,
       display: !!this.display,
@@ -498,6 +513,7 @@ export class DateField extends Field {
       name: this.name,
       type: 'date',
       format: this.format,
+      timeFormat: this.timeFormat,
       description: this.description,
       required: !!this.required,
       display: !!this.display,
@@ -515,12 +531,16 @@ export class DateRangeField extends Field {
   @Property()
   format: string
 
+  @Property({ nullable: true })
+  timeFormat?: ITimeFormat
+
   toDomain(): CoreDateRangeField {
     return CoreDateRangeField.unsafeCreate({
       id: this.id,
       name: this.name,
       type: 'date-range',
       format: this.format,
+      timeFormat: this.timeFormat,
       description: this.description,
       required: !!this.required,
       display: !!this.display,
@@ -533,6 +553,7 @@ export class DateRangeField extends Field {
       name: this.name,
       type: 'date-range',
       format: this.format,
+      timeFormat: this.timeFormat,
       description: this.description,
       required: !!this.required,
       display: !!this.display,

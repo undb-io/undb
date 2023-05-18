@@ -3,6 +3,7 @@ import { defineConfig } from '@mikro-orm/core'
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
 import { Migration20230507094448 } from '../src/migrations/Migration20230507094448.js'
 import { Migration20230511142430 } from '../src/migrations/Migration20230511142430.js'
+import { Migration20230518040812 } from '../src/migrations/Migration20230518040812.js'
 
 beforeAll(async () => {
   const { entities } = await import('../src/entity/index.js')
@@ -21,6 +22,10 @@ beforeAll(async () => {
           {
             name: 'Migration20230511142430',
             class: Migration20230511142430,
+          },
+          {
+            name: 'Migration20230518040812',
+            class: Migration20230518040812,
           },
         ],
       },

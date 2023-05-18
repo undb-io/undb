@@ -36,6 +36,7 @@ import type {
   WithOptions,
   WithRatingMax,
   WithSymmetricReferenceField,
+  WithTimeFormat,
   WithoutField,
   WithoutOption,
 } from '../field/index.js'
@@ -147,6 +148,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   withFieldDisplay(s: WithFieldDisplay): void {}
   displayFieldsEqual(s: WithDisplayFields): void {}
   withFormat(s: WithFormat): void {}
+  withTimeFormat(s: WithTimeFormat): void {}
   withShowSystemFields(s: WithShowSystemFieldsSpec): void {}
   withFieldRequirement(s: WithFieldRequirement): void {}
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {}

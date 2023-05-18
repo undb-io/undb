@@ -3,11 +3,12 @@ import { z } from 'zod'
 import { DateRangeField } from './date-range-field.js'
 import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
+import { timeFormat } from './value-objects/time-format.vo.js'
 
 export const dateRangeTypeSchema = z.literal('date-range')
 export type DateRangeType = z.infer<typeof dateRangeTypeSchema>
 const dateRangeTypeObjectSchema = z.object({ [FIELD_TYPE_KEY]: dateRangeTypeSchema })
-const dateRangeObjectSchema = z.object({ format: z.string().optional() })
+const dateRangeObjectSchema = z.object({ format: z.string().optional(), timeFormat: timeFormat.optional() })
 
 export const createDateRangeFieldSchema = createBaseFieldSchema
   .merge(dateRangeTypeObjectSchema)
