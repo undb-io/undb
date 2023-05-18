@@ -294,14 +294,13 @@ const parent: TemplateFunc = (h, props) => {
 }
 
 const lookup: TemplateFunc = (h, props) => {
+	const html = htm.bind(h)
 	const field = props.column.field as LookupField
 
 	const values = field.getDisplayValues(props.model.display_values)
-	return h(
-		'div',
-		{ class: 'flex items-center' },
-		values.map((value) => h('span', {}, value.toString())),
-	)
+	return html`
+		<div class="flex items-center gap-2">${values.map((value) => html` <span> ${value.toString()} </span> `)}</div>
+	`
 }
 
 const attachmentItem = (h: HyperFunc, attachment: IAttachmentItem) => {

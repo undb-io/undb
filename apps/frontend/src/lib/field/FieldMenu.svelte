@@ -9,6 +9,7 @@
 	import { noop } from 'lodash-es'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
+	import FieldMenuFieldComponent from './FieldMenu/FieldMenuFieldComponent.svelte'
 
 	export let togglePin: (fieldId: string) => void = noop
 
@@ -68,6 +69,8 @@
 </DropdownItem>
 
 <DropdownDivider />
+
+<FieldMenuFieldComponent field={$field} class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium" />
 
 <DropdownItem
 	class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium"
