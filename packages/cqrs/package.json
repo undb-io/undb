@@ -10,11 +10,11 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "rimraf": "^5.0.0",
+    "rimraf": "^5.0.1",
     "tsconfig": "^0.0.0",
     "tsup": "^6.7.0",
     "typescript": "^5.0.4",
-    "vitest": "^0.31.0"
+    "vitest": "^0.31.1"
   },
   "exports": {
     "import": "./dist/index.js",
