@@ -373,8 +373,8 @@ importers:
         specifier: ^1.6.5
         version: 1.6.5
       flowbite-svelte:
-        specifier: ^0.35.4
-        version: 0.35.4(@algolia/client-search@4.17.0)(@popperjs/core@2.11.7)(classnames@2.3.2)(flowbite@1.6.5)(svelte@3.59.1)
+        specifier: ^0.36.0
+        version: 0.36.2(@algolia/client-search@4.17.0)(@popperjs/core@2.11.7)(classnames@2.3.2)(flowbite@1.6.5)(svelte@3.59.1)
       htm:
         specifier: ^3.1.1
         version: 3.1.1
@@ -6224,8 +6224,8 @@ packages:
   /flatted@3.2.7:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
 
-  /flowbite-svelte@0.35.4(@algolia/client-search@4.17.0)(@popperjs/core@2.11.7)(classnames@2.3.2)(flowbite@1.6.5)(svelte@3.59.1):
-    resolution: {integrity: sha512-HEkk4jAKcgY5Xco3OUQ913Xg0GxugDb8+8FytKxT0cJj5Ka1W0fPVFr9IAllzbpYALdmWNcNnGO/KWU6Mlw4IA==}
+  /flowbite-svelte@0.36.2(@algolia/client-search@4.17.0)(@popperjs/core@2.11.7)(classnames@2.3.2)(flowbite@1.6.5)(svelte@3.59.1):
+    resolution: {integrity: sha512-WnD+ukU5p2saxsjoS50gz/bNKD/QsHBmd9EGMycEKF0MsqAvDoEUaFXMsoxNYNQTwyTeCPTmsNdj0CVKKk0yfA==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     peerDependencies:
       '@popperjs/core': ^2.11.6
