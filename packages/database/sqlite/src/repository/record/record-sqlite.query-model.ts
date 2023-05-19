@@ -29,12 +29,15 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
           'fields.averageAggregateField',
           'fields.lookupFields',
           'fields.foreignTable',
+          'fields.foreignTable',
         ],
       },
     )
     for (const field of tableEntity.fields) {
       if (field instanceof ReferenceField) {
-        await field.foreignTable?.fields.init()
+        if (!field.foreignTable?.fields.isInitialized()) {
+          await field.foreignTable?.fields.init()
+        }
         const displayFields = field.displayFields.getItems() ?? []
         for (const f of displayFields) {
           if (f instanceof SelectField) {
