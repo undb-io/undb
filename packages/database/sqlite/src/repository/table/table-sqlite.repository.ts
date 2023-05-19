@@ -17,8 +17,8 @@ export class TableSqliteRepository implements ITableRepository {
         'fields.options',
         'views',
         'fields.displayFields',
-        'fields.foreignTable',
-        'fields',
+        // 'fields.foreignTable',
+        // 'fields',
         'views.widges.virsualization',
       ],
     })
