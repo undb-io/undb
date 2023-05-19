@@ -25,7 +25,9 @@ export class TableSqliteQueryModel implements ITableQueryModel {
     ])
     for (const field of table.fields) {
       if (field instanceof ReferenceField) {
-        await field.foreignTable?.fields.init()
+        if (!field.foreignTable?.fields.isInitialized()) {
+          await field.foreignTable?.fields.init()
+        }
       }
     }
   }
