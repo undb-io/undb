@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { FieldId, fieldIdSchema } from '../field/index.js'
+import { VirsualizationID } from './virsualization-id.vo.js'
 import {
   baseCreateVirsualizationSchema,
   baseUpdateVirsualizationSchema,
@@ -43,6 +44,7 @@ export const numberVirsualization = z
 export type INumberVirsualizationSchema = z.infer<typeof numberVirsualization>
 
 export type INumberVirsualization = IVirsualization & {
+  type: 'number'
   fieldId?: FieldId
   numberAggregateFunction?: INumberAggregateFunction
 }
@@ -67,7 +69,21 @@ export class NumberVirsualization extends VirsualizationVO<INumberVirsualization
     })
   }
 
+  duplicate(): NumberVirsualization {
+    return new NumberVirsualization({ ...this.props, id: VirsualizationID.create() })
+  }
+
   accept(v: IVirsualizationVisitor): void {
     v.number(this)
+  }
+
+  public toJSON() {
+    return {
+      id: this.id.value,
+      name: this.name.value,
+      type: 'number',
+      fieldId: this.fieldId?.value,
+      numberAggregateFunction: this.numberAggregateFunction,
+    } as const
   }
 }

@@ -16,4 +16,10 @@ export class Dashboard extends ValueObject<IDashboard> {
       widges: input.widges.map((widge) => Widge.create(widge)),
     })
   }
+
+  public toJSON() {
+    return {
+      widges: this.widges.map((widge) => widge.duplicate().toJSON()),
+    }
+  }
 }
