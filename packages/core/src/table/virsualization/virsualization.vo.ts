@@ -23,5 +23,6 @@ export abstract class VirsualizationVO<V extends IVirsualization = IVirsualizati
     }
   }
 
+  abstract duplicate(): VirsualizationVO<V>
   abstract accept(v: IVirsualizationVisitor): void
 }
