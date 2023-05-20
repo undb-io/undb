@@ -330,6 +330,9 @@ importers:
       '@types/nprogress':
         specifier: ^0.2.0
         version: 0.2.0
+      '@types/sortablejs':
+        specifier: ^1.15.1
+        version: 1.15.1
       '@typescript-eslint/eslint-plugin':
         specifier: ^5.59.6
         version: 5.59.6(@typescript-eslint/parser@5.59.6)(eslint@8.40.0)(typescript@5.0.4)
@@ -414,6 +417,9 @@ importers:
       prettier-plugin-svelte:
         specifier: ^2.10.0
         version: 2.10.0(prettier@2.8.8)(svelte@3.59.1)
+      sortablejs:
+        specifier: ^1.15.0
+        version: 1.15.0
       svelte:
         specifier: ^3.59.1
         version: 3.59.1
@@ -3523,6 +3529,10 @@ packages:
     dependencies:
       '@types/mime': 3.0.1
       '@types/node': 20.2.1
+    dev: true
+
+  /@types/sortablejs@1.15.1:
+    resolution: {integrity: sha512-g/JwBNToh6oCTAwNS8UGVmjO7NLDKsejVhvE4x1eWiPTC3uCuNsa/TD4ssvX3du+MLiM+SHPNDuijp8y76JzLQ==}
     dev: true
 
   /@types/stack-utils@2.0.1:
@@ -10357,6 +10367,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       is-plain-obj: 1.1.0
+    dev: true
+
+  /sortablejs@1.15.0:
+    resolution: {integrity: sha512-bv9qgVMjUMf89wAvM6AxVvS/4MX3sPeN0+agqShejLU5z5GX4C75ow1O2e5k4L6XItUyAK3gH6AxSbXrOM5e8w==}
     dev: true
 
   /source-map-js@1.0.2:
