@@ -15,7 +15,6 @@ export class RecordSqliteAggregateRepository implements IRecordAggregateReposito
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
 
     const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec)
-      .from()
       .where()
       .aggregate(virsualization)
       .build()
@@ -32,12 +31,16 @@ export class RecordSqliteAggregateRepository implements IRecordAggregateReposito
 
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec)
-      .from()
       .where()
       .aggregate(virsualization)
       .build()
 
     const data = await this.em.execute(builder.qb)
+    for (const d of data as IChartData) {
+      if (d.meta) {
+        d.meta = JSON.parse(d.meta)
+      }
+    }
 
     return data as IChartData
   }

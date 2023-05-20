@@ -45,8 +45,6 @@
 			onEnd,
 		})
 	})
-
-	$: console.log(el)
 </script>
 
 <section class="w-full mx-auto bg-gradient-to-r bg-white dark:bg-gray-900 border-b flex space-x-2 items-center">
