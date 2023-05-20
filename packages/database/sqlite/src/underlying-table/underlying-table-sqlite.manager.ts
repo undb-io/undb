@@ -36,7 +36,7 @@ export class UnderlyingTableSqliteManager extends BaseEntityManager implements I
   }
 
   async deleteRecord(table: TableEntity, id: string): Promise<void> {
-    const referenceFields = table.referencedBy.getItems().map((f) => f.toDomain())
+    const referenceFields = table.referencedBy.getItems(false).map((f) => f.toDomain())
     for (const referenceField of referenceFields) {
       const visitor = new RecordSqliteReferenceDeleteVisitor(this.em, table, id)
       referenceField.accept(visitor)

@@ -574,7 +574,7 @@ export class SelectField extends Field {
       description: this.description,
       required: !!this.required,
       display: !!this.display,
-      options: this.options.getItems().map((o) => ({
+      options: this.options.getItems(false).map((o) => ({
         key: o.key,
         name: o.name,
         color: {
@@ -593,7 +593,7 @@ export class SelectField extends Field {
       description: this.description,
       required: !!this.required,
       display: !!this.display,
-      options: this.options.getItems().map((o) => ({
+      options: this.options.getItems(false).map((o) => ({
         key: o.key,
         name: o.name,
         color: {
@@ -641,10 +641,10 @@ export class ReferenceField extends Field {
       return []
     }
 
-    let displayFields = this.displayFields.getItems()
+    let displayFields = this.displayFields.getItems(false)
     if (!displayFields.length) {
       if (!this.foreignTable?.fields?.isInitialized()) return []
-      displayFields = this.foreignTable?.fields?.getItems().filter((f) => f.display) ?? []
+      displayFields = this.foreignTable?.fields?.getItems(false).filter((f) => f.display) ?? []
     }
 
     return displayFields
@@ -736,9 +736,9 @@ export class TreeField extends Field {
   lookupFields = new Collection<LookupField>(this)
 
   get foreignDisplayFields() {
-    let displayFields = this.displayFields.getItems()
+    let displayFields = this.displayFields.getItems(false)
     if (!displayFields.length) {
-      displayFields = this.table.fields.getItems().filter((f) => f.display)
+      displayFields = this.table.fields.getItems(false).filter((f) => f.display)
     }
 
     return displayFields
@@ -788,9 +788,9 @@ export class ParentField extends Field {
   lookupFields = new Collection<LookupField>(this)
 
   get foreignDisplayFields() {
-    let displayFields = this.displayFields.getItems()
+    let displayFields = this.displayFields.getItems(false)
     if (!displayFields.length) {
-      displayFields = this.table.fields.getItems().filter((f) => f.display)
+      displayFields = this.table.fields.getItems(false).filter((f) => f.display)
     }
 
     return displayFields
@@ -948,7 +948,7 @@ export class LookupField extends Field {
   displayFields = new Collection<Field>(this)
 
   get foreignDisplayFields() {
-    const displayFieleds = this.displayFields.getItems()
+    const displayFieleds = this.displayFields.getItems(false)
     if (!displayFieleds.length) {
       return this.lookupReferenceField.foreignDisplayFields
     }

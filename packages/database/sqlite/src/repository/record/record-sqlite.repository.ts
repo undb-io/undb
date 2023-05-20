@@ -88,7 +88,7 @@ export class RecordSqliteRepository implements IRecordRepository {
   private async _populateTable(table: Table) {
     for (const field of table.fields) {
       if (field instanceof ReferenceField) {
-        const displayFields = field.displayFields.getItems()
+        const displayFields = field.displayFields.getItems(false)
         for (const f of displayFields) {
           if (f instanceof SelectField) {
             await f.options.init()

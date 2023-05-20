@@ -38,7 +38,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
         if (!field.foreignTable?.fields.isInitialized()) {
           await field.foreignTable?.fields.init()
         }
-        const displayFields = field.displayFields.getItems() ?? []
+        const displayFields = field.displayFields.getItems(false) ?? []
         for (const f of displayFields) {
           if (f instanceof SelectField) {
             await f.options.init()
