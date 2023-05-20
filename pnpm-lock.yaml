@@ -454,8 +454,8 @@ importers:
         specifier: ^3.3.2
         version: 3.3.2(ts-node@10.9.1)
       trpc-svelte-query:
-        specifier: ^0.0.2
-        version: 0.0.2(@tanstack/svelte-query@4.29.7)(@trpc/client@10.26.0)(@trpc/server@10.26.0)(svelte@3.59.1)
+        specifier: ^1.0.0
+        version: 1.0.0(@sveltejs/kit@1.18.0)(@tanstack/svelte-query@4.29.7)(@trpc/client@10.26.0)(@trpc/server@10.26.0)(svelte@3.59.1)
       tslib:
         specifier: ^2.5.2
         version: 2.5.2
@@ -11157,14 +11157,16 @@ packages:
       escape-string-regexp: 5.0.0
     dev: true
 
-  /trpc-svelte-query@0.0.2(@tanstack/svelte-query@4.29.7)(@trpc/client@10.26.0)(@trpc/server@10.26.0)(svelte@3.59.1):
-    resolution: {integrity: sha512-YMMZQJqG1O5AQVIBFS/eTkumpAjBineC3ao6P90GptySssc8FMMEJ1N5Z87HxSwMQsp3IWUY3UhEvnv4yUBOsA==}
+  /trpc-svelte-query@1.0.0(@sveltejs/kit@1.18.0)(@tanstack/svelte-query@4.29.7)(@trpc/client@10.26.0)(@trpc/server@10.26.0)(svelte@3.59.1):
+    resolution: {integrity: sha512-9+0n5jJp+a4XTqzPSErvEKBneAAdL45wheADjHCs5DdayICb378dWilqsdbcYKp03g3s1nQpFqTOeFDAqT2GJA==}
     peerDependencies:
-      '@tanstack/svelte-query': ^4.3.8
-      '@trpc/client': ^10.8.0
-      '@trpc/server': ^10.8.0
+      '@sveltejs/kit': ^1.16.3
+      '@tanstack/svelte-query': ^4.29.7
+      '@trpc/client': ^10.26.0
+      '@trpc/server': ^10.26.0
       svelte: ^3.55.1
     dependencies:
+      '@sveltejs/kit': 1.18.0(svelte@3.59.1)(vite@4.3.8)
       '@tanstack/svelte-query': 4.29.7(svelte@3.59.1)
       '@trpc/client': 10.26.0(@trpc/server@10.26.0)
       '@trpc/server': 10.26.0
