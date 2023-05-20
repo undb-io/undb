@@ -1,5 +1,5 @@
 import { and, andOptions } from '@undb/domain'
-import { difference, isEmpty, isEqual, isString } from 'lodash-es'
+import { difference, isEmpty, isEqual, isString, sortBy } from 'lodash-es'
 import type { Option, Result } from 'oxide.ts'
 import { None, Ok, Some } from 'oxide.ts'
 import type {
@@ -104,6 +104,11 @@ export class Table {
 
   public get defaultView(): ViewVO {
     return this.views.defaultView.unwrapOrElse(() => this.createDefaultView())
+  }
+
+  public get orderedViews(): ViewVO[] {
+    const viewsOrder = this.viewsOrder.unpack() ?? []
+    return sortBy(this.views.views, (view) => viewsOrder.indexOf(view.id.value)) ?? []
   }
 
   private createDefaultView(viewName?: string): ViewVO {

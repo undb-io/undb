@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getView } from '$lib/store/table'
-	import type { IViewDisplayType, Records } from '@undb/core'
+	import type { IViewDisplayType } from '@undb/core'
 	import type { ComponentType } from 'svelte'
 	import TableView from './TableView.svelte'
 	import KanbanIndex from './KanbanIndex.svelte'

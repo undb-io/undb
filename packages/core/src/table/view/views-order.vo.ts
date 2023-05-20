@@ -10,6 +10,11 @@ export class ViewsOrder extends OrderVO {
   static fromArray(ids: string[]): ViewsOrder {
     return new this(ids)
   }
+
+  public unpack(): string[] {
+    return this.props
+  }
+
   static empty(): ViewsOrder {
     return new this([])
   }
