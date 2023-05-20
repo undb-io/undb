@@ -46,7 +46,6 @@ export const createMutateRecordValuesSchema = (
   const shape: ZodRawShape = {}
 
   for (const field of fields) {
-    if (field.controlled) continue
     const fieldSchema = field.valueSchema as ZodDefault<ZodTypeAny>
     const nested = fieldSchema
     shape[field.id.value] = defaultValues ? nested.default(defaultValues[field.id.value]) : nested.optional()
