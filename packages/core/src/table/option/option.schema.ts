@@ -1,33 +1,11 @@
 import { z } from 'zod'
+import { colors } from '../../common/color.js'
 
 export const optionNameSchema = z.string().min(1)
 
 export const optionIdSchema = z.string().min(1)
 
-export const optionColorOrder = [
-  'slate',
-  'gray',
-  'zinc',
-  'neutral',
-  'stone',
-  'red',
-  'orange',
-  'amber',
-  'yellow',
-  'lime',
-  'green',
-  'emerald',
-  'teal',
-  'cyan',
-  'sky',
-  'blue',
-  'indigo',
-  'violet',
-  'purple',
-  'fuchsia',
-  'pink',
-  'rose',
-] as const
+export const optionColorOrder = colors
 
 export const optionColorName = z.enum(optionColorOrder)
 

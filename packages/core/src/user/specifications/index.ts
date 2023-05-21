@@ -1,5 +1,6 @@
 export * from './interface.js'
 export * from './user-avatar.specification.js'
+export * from './user-color.js'
 export * from './user-email.specification.js'
 export * from './user-id.specification.js'
 export * from './user-password.specification.js'

@@ -9,6 +9,7 @@ export class UserSqliteMapper {
       email: user.email,
       userId: user.id,
       avatar: user.avatar,
+      color: user.color,
     }
   }
 
@@ -19,6 +20,7 @@ export class UserSqliteMapper {
       username: user.username,
       password: user.password,
       avatar: user.avatar,
+      color: user.color,
     })
   }
 }

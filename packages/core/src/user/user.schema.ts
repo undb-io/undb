@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { colorsSchema } from '../common/color'
 
 export const queryUser = z
   .object({
@@ -6,6 +7,7 @@ export const queryUser = z
     username: z.string(),
     email: z.string().email(),
     avatar: z.string().optional().nullable(),
+    color: colorsSchema,
   })
   .strict()
 
@@ -15,4 +17,5 @@ export const unsafeCreateUserSchema = z.object({
   email: z.string().email(),
   password: z.string(),
   avatar: z.string().optional().nullable(),
+  color: colorsSchema,
 })

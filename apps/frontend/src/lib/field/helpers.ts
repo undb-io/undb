@@ -1,4 +1,4 @@
-import type { IFieldType, IOptionColorName } from '@undb/core'
+import type { IColor, IFieldType } from '@undb/core'
 import type { Select } from 'flowbite-svelte'
 
 export function getFilterOperators(type: IFieldType | undefined) {
@@ -136,7 +136,7 @@ export const icons: Record<IFieldType, string> = {
 
 export const getIconClass = (type: IFieldType) => `ti ti-${icons[type]}`
 
-export const colors: Record<IOptionColorName, string> = {
+export const colors: Record<IColor, string> = {
 	slate: 'bg-slate-500',
 	gray: 'bg-gray-500',
 	zinc: 'bg-zinc-500',

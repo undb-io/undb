@@ -1,5 +1,5 @@
 import { Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core'
-import type { User as CoreUser } from '@undb/core'
+import type { User as CoreUser, IColor } from '@undb/core'
 import { BaseEntity } from './base.js'
 
 export const USER_TABLE_NAME = 'undb_user'
@@ -13,6 +13,7 @@ export class User extends BaseEntity {
     this.username = user.username
     this.password = user.password
     this.avatar = user.avatar
+    this.color = user.color
   }
   @PrimaryKey()
   id: string
@@ -23,6 +24,9 @@ export class User extends BaseEntity {
   @Property()
   @Index()
   username: string
+
+  @Property({ default: 'blue' })
+  color: IColor
 
   @Property()
   @Index()

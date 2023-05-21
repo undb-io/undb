@@ -2,6 +2,7 @@
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import {
   INTERNAL_COLUMN_CREATED_BY_NAME,
+  INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_BY_NAME,
   type AttachmentField,
   type AutoIncrementField,
@@ -59,7 +60,7 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
   }
   createdBy(field: CreatedByField): void {
     const {
-      properties: { id, username, avatar },
+      properties: { id, username, avatar, color },
       tableName,
     } = this.em.getMetadata().get(User.name)
 
@@ -69,7 +70,8 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
         this.knex.raw(
           `json_object(
           '${username.fieldNames[0]}', ${tableName}.${username.fieldNames[0]},
-          '${avatar.fieldNames[0]}', ${tableName}.${avatar.fieldNames[0]}
+          '${avatar.fieldNames[0]}', ${tableName}.${avatar.fieldNames[0]},
+          '${color.fieldNames[0]}', ${tableName}.${color.fieldNames[0]}
         ) as meta`,
         ),
       )
@@ -83,7 +85,7 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
   }
   updatedBy(field: UpdatedByField): void {
     const {
-      properties: { id, username, avatar },
+      properties: { id, username, avatar, color },
       tableName,
     } = this.em.getMetadata().get(User.name)
 
@@ -93,7 +95,8 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
         this.knex.raw(
           `json_object(
           '${username.fieldNames[0]}', ${tableName}.${username.fieldNames[0]},
-          '${avatar.fieldNames[0]}', ${tableName}.${avatar.fieldNames[0]}
+          '${avatar.fieldNames[0]}', ${tableName}.${avatar.fieldNames[0]},
+          '${color.fieldNames[0]}', ${tableName}.${color.fieldNames[0]}
         ) as meta`,
         ),
       )
@@ -158,7 +161,7 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
   }
   collaborator(field: CollaboratorField): void {
     const {
-      properties: { id, username, avatar },
+      properties: { id, username, avatar, color },
       tableName,
     } = this.em.getMetadata().get(User.name)
 
@@ -169,7 +172,11 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
       .queryBuilder()
       .select(`${ft.name}.${CollaboratorForeignTable.USER_ID}`)
       .from(this.table.id.value)
-      .leftJoin(ft.name, 'tblpwt42a13.id', `${ft.name}.${CollaboratorForeignTable.RECORD_ID}`)
+      .leftJoin(
+        ft.name,
+        `${this.table.id.value}.${INTERNAL_COLUMN_ID_NAME}`,
+        `${ft.name}.${CollaboratorForeignTable.RECORD_ID}`,
+      )
       .groupBy(`${ft.name}.${CollaboratorForeignTable.RECORD_ID}`)
       .count('* as value')
       .as(fta)
@@ -182,7 +189,8 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
         this.knex.raw(
           `json_object(
             '${username.fieldNames[0]}', ${tableName}.${username.fieldNames[0]},
-            '${avatar.fieldNames[0]}', ${tableName}.${avatar.fieldNames[0]}
+            '${avatar.fieldNames[0]}', ${tableName}.${avatar.fieldNames[0]},
+            '${color.fieldNames[0]}', ${tableName}.${color.fieldNames[0]}
           ) as meta`,
         ),
       )

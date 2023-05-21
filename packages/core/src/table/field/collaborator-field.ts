@@ -50,7 +50,11 @@ export class CollaboratorField extends BaseField<ICollaboratorField> {
   }
 
   getDisplayValues(values?: IRecordDisplayValues): (string | null)[][] {
-    return unzip([values?.[this.id.value]?.username ?? [], values?.[this.id.value]?.avatar ?? []])
+    return unzip([
+      values?.[this.id.value]?.username ?? [],
+      values?.[this.id.value]?.avatar ?? [],
+      values?.[this.id.value]?.color ?? [],
+    ])
   }
 
   get valueSchema() {
