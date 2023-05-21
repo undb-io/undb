@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import {
+  INTERNAL_COLUMN_CREATED_BY_NAME,
+  INTERNAL_COLUMN_UPDATED_BY_NAME,
   type AttachmentField,
   type AutoIncrementField,
   type AverageField,
@@ -56,13 +58,49 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
     throw new Error('Method not implemented.')
   }
   createdBy(field: CreatedByField): void {
-    throw new Error('Method not implemented.')
+    const {
+      properties: { id, username, avatar },
+      tableName,
+    } = this.em.getMetadata().get(User.name)
+
+    this.qb
+      .select(
+        `${INTERNAL_COLUMN_CREATED_BY_NAME} as key`,
+        this.knex.raw(
+          `json_object(
+          '${username.fieldNames[0]}', ${tableName}.${username.fieldNames[0]},
+          '${avatar.fieldNames[0]}', ${tableName}.${avatar.fieldNames[0]}
+        ) as meta`,
+        ),
+      )
+      .from(this.table.id.value)
+      .groupBy(INTERNAL_COLUMN_CREATED_BY_NAME)
+      .count('* as value')
+      .leftJoin(tableName, `${tableName}.${id.fieldNames[0]}`, INTERNAL_COLUMN_UPDATED_BY_NAME)
   }
   updatedAt(field: UpdatedAtField): void {
     throw new Error('Method not implemented.')
   }
   updatedBy(field: UpdatedByField): void {
-    throw new Error('Method not implemented.')
+    const {
+      properties: { id, username, avatar },
+      tableName,
+    } = this.em.getMetadata().get(User.name)
+
+    this.qb
+      .select(
+        `${INTERNAL_COLUMN_CREATED_BY_NAME} as key`,
+        this.knex.raw(
+          `json_object(
+          '${username.fieldNames[0]}', ${tableName}.${username.fieldNames[0]},
+          '${avatar.fieldNames[0]}', ${tableName}.${avatar.fieldNames[0]}
+        ) as meta`,
+        ),
+      )
+      .from(this.table.id.value)
+      .groupBy(INTERNAL_COLUMN_UPDATED_BY_NAME)
+      .count('* as value')
+      .leftJoin(tableName, `${tableName}.${id.fieldNames[0]}`, INTERNAL_COLUMN_UPDATED_BY_NAME)
   }
   attachment(field: AttachmentField): void {
     throw new Error('Method not implemented.')
@@ -92,7 +130,7 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
     throw new Error('Method not implemented.')
   }
   select(field: SelectField): void {
-    this.qb.select(`${this.fieldId} as key`).groupBy(this.fieldId).count('* as value')
+    this.qb.from(this.table.id.value).select(`${this.fieldId} as key`).groupBy(this.fieldId).count('* as value')
   }
   reference(field: ReferenceField): void {
     throw new Error('Method not implemented.')

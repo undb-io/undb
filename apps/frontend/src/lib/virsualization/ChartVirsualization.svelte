@@ -30,6 +30,8 @@
 	const map: Partial<Record<IFieldType, ComponentType>> = {
 		select: SelectChartVirsualization,
 		collaborator: CollaboraotChartVirsualization,
+		'created-by': CollaboraotChartVirsualization,
+		'updated-by': CollaboraotChartVirsualization,
 	}
 </script>
 

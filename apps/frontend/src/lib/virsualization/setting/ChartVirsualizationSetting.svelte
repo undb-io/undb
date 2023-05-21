@@ -61,7 +61,8 @@
 				class="w-full !justify-start mb-4"
 				table={$table}
 				fields={$allTableFields}
-				filter={(f) => f.type === 'select' || f.type === 'collaborator'}
+				filter={(f) =>
+					f.type === 'select' || f.type === 'collaborator' || f.type === 'created-by' || f.type === 'updated-by'}
 				bind:value={fieldId}
 			/>
 		</div>
