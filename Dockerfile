@@ -27,6 +27,7 @@ RUN pnpm install -r --offline
 ARG PUBLIC_UNDB_ANALYTICS_DOMAIN
 ARG PUBLIC_UNDB_ADMIN_EMAIL
 ARG PUBLIC_UNDB_ADMIN_PASSWORD
+ARG UNDB_SEED
 
 ENV NODE_ENV production
 RUN pnpm run build --filter=backend --filter=frontend
@@ -52,6 +53,7 @@ COPY --from=installer /undb/apps/backend ./apps/backend
 COPY --from=installer /undb/apps/frontend/build ./out
 COPY --from=builder /usr/local/bin/litestream /usr/local/bin/litestream
 COPY scripts/start.mjs ./scripts/start.mjs
+COPY data/data.sql /data/data.sql
 
 COPY litestream/etc/litestream.yml /etc/litestream.yml
 

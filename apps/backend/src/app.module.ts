@@ -6,7 +6,6 @@ import type { ConfigType } from '@nestjs/config'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { EntityManager, createConfig } from '@undb/sqlite'
 import { Request } from 'express'
-import { existsSync } from 'fs'
 import { ClsModule } from 'nestjs-cls'
 import { LoggerModule } from 'nestjs-pino'
 import path from 'path'
@@ -65,8 +64,7 @@ export class AppModule implements OnModuleInit {
 
   async onModuleInit() {
     const em = this.orm.em as EntityManager
-    const data = path.join(this.config.data!, 'undb.db')
-    if (this.config.seed && !existsSync(data)) {
+    if (this.config.seed) {
       await em.getConnection().loadFile(path.resolve(process.cwd(), '../../data/data.sql')).catch(console.error)
     } else {
       await this.orm.getMigrator().up()
