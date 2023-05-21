@@ -76,7 +76,7 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
       .from(this.table.id.value)
       .groupBy(INTERNAL_COLUMN_CREATED_BY_NAME)
       .count('* as value')
-      .leftJoin(tableName, `${tableName}.${id.fieldNames[0]}`, INTERNAL_COLUMN_UPDATED_BY_NAME)
+      .leftJoin(tableName, `${tableName}.${id.fieldNames[0]}`, INTERNAL_COLUMN_CREATED_BY_NAME)
   }
   updatedAt(field: UpdatedAtField): void {
     throw new Error('Method not implemented.')
