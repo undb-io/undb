@@ -1,5 +1,5 @@
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import type { Table as CoreTable, IRecordSpec, VirsualizationVO } from '@undb/core'
+import type { Table as CoreTable, IRecordSpec, TableSchemaIdMap, VirsualizationVO } from '@undb/core'
 import {
   ChartVirsualization,
   SelectField as CoreSelectField,
@@ -16,6 +16,7 @@ import type { Table } from '../../entity/table.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import { UnderlyingSelectColumn } from '../../underlying-table/underlying-column.js'
+import { RecordChartGroupVisitor } from './record-chart-group.visititor.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
 import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
 import { TABLE_ALIAS } from './record.constants.js'
@@ -32,6 +33,7 @@ export interface IRecordQueryBuilder {
 export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   public readonly knex: Knex
   public readonly qb: Knex.QueryBuilder
+  private readonly schema: TableSchemaIdMap
 
   constructor(
     private readonly em: EntityManager,
@@ -42,6 +44,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   ) {
     this.knex = em.getKnex()
     this.qb = this.knex.queryBuilder()
+    this.schema = table.schema.toIdMap()
   }
 
   clone(): RecordSqliteQueryBuilder {
@@ -56,8 +59,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
 
   where(): this {
     if (this.spec) {
-      const schema = this.table.schema.toIdMap()
-      const visitor = new RecordSqliteQueryVisitor(this.table.id.value, schema, this.em, this.qb, this.knex)
+      const visitor = new RecordSqliteQueryVisitor(this.table.id.value, this.schema, this.em, this.qb, this.knex)
 
       this.spec.accept(visitor).unwrap()
     }
@@ -131,6 +133,9 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     if (virsualization instanceof NumberVirsualization) {
       const fieldId = virsualization.fieldId?.value
       const numberAggregateFunction = virsualization.numberAggregateFunction
+
+      this.from()
+
       if (!fieldId || !numberAggregateFunction) {
         this.qb.count('* as number')
         return this
@@ -155,13 +160,11 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     } else if (virsualization instanceof ChartVirsualization) {
       const fieldId = virsualization.fieldId?.value
       if (!fieldId) return this
-      const chartAggregateFunction = virsualization.chartAggregateFunction
+      const field = this.schema.get(fieldId)
+      if (!field) return this
 
-      switch (chartAggregateFunction) {
-        case 'count':
-          this.qb.select(`${fieldId} as key`).groupBy(fieldId).count('* as value')
-          break
-      }
+      const visitor = new RecordChartGroupVisitor(this.table, fieldId, virsualization, this.em, this.qb)
+      field.accept(visitor)
     }
 
     return this

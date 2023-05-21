@@ -6,6 +6,7 @@
 	import EmptyChartVirsualization from './EmptyChartVirsualization.svelte'
 	import type { ComponentType } from 'svelte'
 	import SelectChartVirsualization from './SelectChartVirsualization.svelte'
+	import CollaboraotChartVirsualization from './CollaboraotChartVirsualization.svelte'
 
 	export let virsualization: ChartVirsualization
 
@@ -28,6 +29,9 @@
 
 	const map: Partial<Record<IFieldType, ComponentType>> = {
 		select: SelectChartVirsualization,
+		collaborator: CollaboraotChartVirsualization,
+		'created-by': CollaboraotChartVirsualization,
+		'updated-by': CollaboraotChartVirsualization,
 	}
 </script>
 

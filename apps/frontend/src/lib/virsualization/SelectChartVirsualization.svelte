@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { SelectField } from '@undb/core'
+	import type { IChartData, SelectField } from '@undb/core'
 	import { Bar } from 'svelte-chartjs'
 	import { Chart, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 	import colors from 'tailwindcss/colors'
 	import { t } from '$lib/i18n'
 
 	export let field: SelectField
-	export let data: { key: string | null; value: number }[] = []
+	export let data: IChartData = []
 
 	$: optionIds = data.map((v) => v.key)
 	$: options = optionIds.map((id) => (id ? field.options.getById(id).into(null) : null))
@@ -25,7 +25,6 @@
 		labels,
 		datasets,
 	}
-
 
 	Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 </script>
