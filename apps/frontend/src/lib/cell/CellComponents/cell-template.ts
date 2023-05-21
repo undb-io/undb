@@ -10,6 +10,7 @@ import {
 	type DateRangeField,
 	type IAttachmentItem,
 	type ICollaboratorProfile,
+	type IColor,
 	type IDateRangeFieldQueryValue,
 	type IFieldType,
 	type IOptionSchema,
@@ -109,9 +110,12 @@ const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile)
 			${!collaborator.avatar
 				? html`
 						<div
-							class="relative inline-flex items-center text-blue-900 justify-center w-5 h-5 overflow-hidden bg-indigo-100 rounded-full dark:bg-indigo-600 border border-gray-300"
+							class=${cx(
+								'relative inline-flex items-center !text-white justify-center w-5 h-5 overflow-hidden rounded-full border border-gray-300',
+								colors[collaborator.color],
+							)}
 						>
-							<span class="font-medium text-gray-600 dark:text-gray-300"> ${collaborator.username.slice(0, 2)} </span>
+							<span class="font-medium"> ${collaborator.username.slice(0, 2)} </span>
 						</div>
 				  `
 				: html` <img class="w-5 h-5 rounded-full" src="${collaborator.avatar}" alt="${collaborator.username}" /> `}
@@ -204,9 +208,9 @@ const collaborator: TemplateFunc = (h, props) => {
 
 	return html`
 		<div class="flex items-center space-x-2">
-			${value.map(([username, avatar]) => {
+			${value.map(([username, avatar, color]) => {
 				if (!username) return null
-				return collaboratorComponent(h, { username, avatar })
+				return collaboratorComponent(h, { username, avatar, color: color as IColor })
 			})}
 		</div>
 	`

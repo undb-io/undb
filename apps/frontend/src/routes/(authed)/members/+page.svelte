@@ -1,6 +1,8 @@
 <script lang="ts">
+	import cx from 'classnames'
 	import { Avatar, Card } from 'flowbite-svelte'
 	import type { PageData } from './$types'
+	import { colors } from '$lib/field/helpers'
 
 	export let data: PageData
 
@@ -16,7 +18,7 @@
 						{#if member.avatar}
 							<Avatar src={member.avatar} />
 						{:else}
-							<Avatar>{member.username.slice(0, 2)}</Avatar>
+							<Avatar class={cx('text-white', colors[member.color])}>{member.username.slice(0, 2)}</Avatar>
 						{/if}
 					</div>
 					<div class="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">

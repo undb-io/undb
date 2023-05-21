@@ -1,4 +1,5 @@
 import * as z from 'zod'
+import { colorsSchema } from '../../common/color.js'
 import { userIdSchema } from '../../user/value-objects/user-id.vo.js'
 import { tableIdSchema } from '../value-objects/table-id.vo.js'
 import { CollaboratorField } from './collaborator-field.js'
@@ -60,6 +61,7 @@ export type CollaboratorFieldIssue = FieldIssue<ICollaboratorFieldIssues>
 export const collaboratorProfile = z.object({
   avatar: z.string().nullable(),
   username: z.string(),
+  color: colorsSchema,
 })
 
 export type ICollaboratorProfile = z.infer<typeof collaboratorProfile>

@@ -112,7 +112,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
     }
 
     const {
-      properties: { id, avatar, username },
+      properties: { id, avatar, username, color },
       tableName,
     } = this.em.getMetadata().get(User.name)
 
@@ -122,7 +122,8 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         this.knex.raw(
           `json_object(
             '${username.fieldNames[0]}', ${alias}.${username.fieldNames[0]},
-            '${avatar.fieldNames[0]}', ${alias}.${avatar.fieldNames[0]}
+            '${avatar.fieldNames[0]}', ${alias}.${avatar.fieldNames[0]},
+            '${color.fieldNames[0]}', ${alias}.${color.fieldNames[0]}
           ) as created_by_profile`,
         ),
       )
@@ -141,7 +142,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
     }
 
     const {
-      properties: { id, avatar, username },
+      properties: { id, avatar, username, color },
       tableName,
     } = this.em.getMetadata().get(User.name)
 
@@ -152,7 +153,8 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         this.knex.raw(
           `json_object(
             '${username.fieldNames[0]}', ${alias}.${username.fieldNames[0]},
-            '${avatar.fieldNames[0]}', ${alias}.${avatar.fieldNames[0]}
+            '${avatar.fieldNames[0]}', ${alias}.${avatar.fieldNames[0]},
+            '${color.fieldNames[0]}', ${alias}.${color.fieldNames[0]}
           ) as updated_by_profile`,
         ),
       )
@@ -175,7 +177,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
     const fta = getForeignTableAlias(field, this.table.schema.toIdMap())
 
     const {
-      properties: { id, avatar, username },
+      properties: { id, avatar, username, color },
       tableName,
     } = this.em.getMetadata().get(User.name)
 
@@ -187,6 +189,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         this.knex.raw(`json_group_array(${CollaboratorForeignTable.USER_ID}) as ${field.id.value}`),
         this.knex.raw(`json_group_array(${fta}.${username.fieldNames[0]}) as ${username.fieldNames[0]}`),
         this.knex.raw(`json_group_array(${fta}.${avatar.fieldNames[0]}) as ${avatar.fieldNames[0]}`),
+        this.knex.raw(`json_group_array(${fta}.${color.fieldNames[0]}) as ${color.fieldNames[0]}`),
       )
       .from(ft.name)
       .groupBy(CollaboratorForeignTable.RECORD_ID)
@@ -194,7 +197,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
 
     const nestSubQuery = this.knex
       .queryBuilder()
-      .select(id.fieldNames[0], avatar.fieldNames[0], username.fieldNames[0])
+      .select(id.fieldNames[0], avatar.fieldNames[0], username.fieldNames[0], color.fieldNames[0])
       .from(tableName)
       .groupBy(id.fieldNames[0])
       .as(fta)
@@ -208,7 +211,8 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         this.knex.raw(
           `json_object('${column.id}', json_object(
             '${username.fieldNames[0]}', ${uta}.${username.fieldNames[0]},
-            '${avatar.fieldNames[0]}', ${uta}.${avatar.fieldNames[0]}
+            '${avatar.fieldNames[0]}', ${uta}.${avatar.fieldNames[0]},
+            '${color.fieldNames[0]}', ${uta}.${color.fieldNames[0]}
             )
           ) as ${getExpandColumnName(column.id)}`,
         ),

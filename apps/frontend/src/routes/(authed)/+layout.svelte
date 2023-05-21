@@ -13,6 +13,7 @@
 	import { i18n, t } from '$lib/i18n'
 	import { createMutation } from '@tanstack/svelte-query'
 	import { createTableModal } from '$lib/store/modal'
+	import { colors } from '$lib/field/helpers'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -252,7 +253,7 @@
 					{#if me.avatar}
 						<Avatar src={me.avatar} />
 					{:else}
-						<Avatar>{me.username.slice(0, 2)}</Avatar>
+						<Avatar class={cx('text-white', colors[me.color])}>{me.username.slice(0, 2)}</Avatar>
 					{/if}
 					<span class="sr-only">Your profile</span>
 					<span aria-hidden="true">{me.username}</span>
@@ -313,7 +314,7 @@
 			{#if me.avatar}
 				<Avatar src={me.avatar} />
 			{:else}
-				<Avatar>{me.username.slice(0, 2)}</Avatar>
+				<Avatar class={cx('text-white', colors[me.color])}>{me.username.slice(0, 2)}</Avatar>
 			{/if}
 			<span class="sr-only">Your profile</span>
 			<span aria-hidden="true">{me.username}</span>

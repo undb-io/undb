@@ -1,6 +1,13 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import type { IUserSpecVisitor, WithUserAvatar, WithUserEmail, WithUserId, WithUsername } from '@undb/core'
+import type {
+  IUserSpecVisitor,
+  WithUserAvatar,
+  WithUserColor,
+  WithUserEmail,
+  WithUserId,
+  WithUsername,
+} from '@undb/core'
 import { User } from '../../entity/user.js'
 
 export class UserSqliteMutationVisitor implements IUserSpecVisitor {
@@ -18,6 +25,12 @@ export class UserSqliteMutationVisitor implements IUserSpecVisitor {
   avatarEqual(s: WithUserAvatar): void {
     const user = this.em.getReference(User, this.userId)
     wrap(user).assign({ avatar: s.avatar })
+    this.em.persist(user)
+  }
+
+  colorEqual(s: WithUserColor): void {
+    const user = this.em.getReference(User, this.userId)
+    wrap(user).assign({ color: s.color })
     this.em.persist(user)
   }
 
