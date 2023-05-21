@@ -84,7 +84,11 @@
 	}
 </script>
 
-<div class={cx('group', active && 'min-w-[100px]')} data-view-id={view.id.value}>
+<div
+	class={cx('group', active && 'min-w-[100px]')}
+	data-view-id={view.id.value}
+	on:dblclick={() => (updating = !updating)}
+>
 	<a
 		href={active ? $page.url.pathname : `/t/${$table.id.value}/${view.id.value}`}
 		type="button"

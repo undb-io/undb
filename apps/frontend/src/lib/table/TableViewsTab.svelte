@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { getTable, getView } from '$lib/store/table'
-	import { Tooltip } from 'flowbite-svelte'
+	import { Dropdown, DropdownItem, Radio } from 'flowbite-svelte'
 	import TableViewTabItem from './TableViewTabItem.svelte'
 	import { t } from '$lib/i18n'
-	import { createViewModal } from '$lib/store/modal'
 	import Sortable from 'sortablejs'
-	import { onMount } from 'svelte'
+	import { onMount, tick } from 'svelte'
 	import type { SortableEvent } from 'sortablejs'
 	import { trpc } from '$lib/trpc/client'
-	import { invalidate } from '$app/navigation'
+	import { goto, invalidate } from '$app/navigation'
+	import ViewIcon from '$lib/view/ViewIcon.svelte'
+	import type { IViewDisplayType } from '@undb/core'
 
 	const table = getTable()
 	const currentView = getView()
@@ -45,6 +46,25 @@
 			onEnd,
 		})
 	})
+
+	let open = false
+	const items = [
+		{ value: 'grid', label: 'Grid' },
+		{ value: 'kanban', label: 'Kanban' },
+		{ value: 'calendar', label: 'Calendar' },
+		{ value: 'dashboard', label: 'Dashboard' },
+	] as const
+
+	export let value: IViewDisplayType = 'grid'
+
+	const createView = trpc().table.view.create.mutation({
+		async onSuccess() {
+			open = false
+			await invalidate(`table:${$table.id.value}`)
+			await tick()
+			goto(`/t/${$table.id.value}/${$table.viewsOrder.last}`)
+		},
+	})
 </script>
 
 <section class="w-full mx-auto bg-gradient-to-r bg-white dark:bg-gray-900 border-b flex space-x-2 items-center">
@@ -55,8 +75,31 @@
 			</li>
 		{/each}
 	</ul>
-	<button class="w-7 h-7 hover:bg-gray-100 transition" on:click={() => createViewModal.open()}>
+	<button class="w-7 h-7 hover:bg-gray-100 transition">
 		<i class="ti ti-plus text-gray-500" />
 	</button>
-	<Tooltip placement="bottom">{$t('Create New View')}</Tooltip>
+	<Dropdown bind:open>
+		{#each items as item}
+			<DropdownItem>
+				<Radio
+					custom
+					value={item.value}
+					bind:group={value}
+					on:click={() =>
+						$createView.mutate({
+							tableId: $table.id.value,
+							view: {
+								name: $t('view n', { n: views.length + 1 }),
+								displayType: item.value,
+							},
+						})}
+				>
+					<div role="button" class="flex items-center w-full h-full gap-2">
+						<ViewIcon type={item.value} />
+						{$t(item.value)}
+					</div>
+				</Radio>
+			</DropdownItem>
+		{/each}
+	</Dropdown>
 </section>
