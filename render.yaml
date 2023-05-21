@@ -19,5 +19,7 @@ services:
         value: 'true'
       - key: PUBLIC_UNDB_ANALYTICS_DOMAIN
         value: demo.undb.xyz
+      - key: UNDB_SEED
+        value: 'true'
     domains:
       - demo.undb.xyz

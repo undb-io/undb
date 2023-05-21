@@ -7,6 +7,7 @@ export const configSchema = Joi.object({
   PORT: Joi.number().default(4000),
   // databse
   UNDB_DATABASE_SQLITE_DATA: Joi.string().default(path.resolve(process.cwd(), '../../.undb/data')),
+  UNDB_SEED: Joi.string().equal('true').optional(),
   // storage object
   UNDB_OBJECT_STORAGE_PROVIDER: Joi.string().valid('local').default('local'),
   UNDB_OBJECT_STORAGE_LOCAL_PATH: Joi.when('UNDB_OBJECT_STORAGE_PROVIDER', {
