@@ -2,9 +2,9 @@ import { MikroORM } from '@mikro-orm/core'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import type { OnModuleInit } from '@nestjs/common'
 import { Module } from '@nestjs/common'
-import { ConfigType } from '@nestjs/config'
+import type { ConfigType } from '@nestjs/config'
 import { ServeStaticModule } from '@nestjs/serve-static'
-import { createConfig } from '@undb/sqlite'
+import { EntityManager, createConfig } from '@undb/sqlite'
 import { Request } from 'express'
 import { ClsModule } from 'nestjs-cls'
 import { LoggerModule } from 'nestjs-pino'
@@ -14,7 +14,7 @@ import { AttachmentModule } from './attachment/attachment.module.js'
 import { AuthModule } from './auth/auth.module.js'
 import { BaseConfigService } from './configs/base-config.service.js'
 import { ConfigModule } from './configs/config.module.js'
-import { sqliteConfig } from './configs/sqlite.config.js'
+import { InjectSqliteConfig, sqliteConfig } from './configs/sqlite.config.js'
 import { HealthModule } from './health/health.module.js'
 import { I18nModule } from './i18n/i18n.module.js'
 import { modules } from './modules/index.js'
@@ -56,10 +56,19 @@ import { TrpcModule } from './trpc/trpc.module.js'
   ],
 })
 export class AppModule implements OnModuleInit {
-  constructor(private readonly orm: MikroORM, private readonly userService: UserService) {}
+  constructor(
+    private readonly orm: MikroORM,
+    private readonly userService: UserService,
+    @InjectSqliteConfig() private readonly config: ConfigType<typeof sqliteConfig>,
+  ) {}
 
   async onModuleInit() {
-    await this.orm.getMigrator().up()
+    const em = this.orm.em as EntityManager
+    if (this.config.seed) {
+      await em.getConnection().loadFile(path.resolve(process.cwd(), '../../data/data.sql')).catch(console.error)
+    } else {
+      await this.orm.getMigrator().up()
+    }
     await this.userService.createAdmin()
   }
 }

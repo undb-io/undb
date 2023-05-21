@@ -60,9 +60,6 @@ export const updateFieldModal = createModal(UPDATE_FIELD)
 const VIRSUALIZATION_DETAIL = Symbol('VIRSUALIZATION_DETAIL')
 export const virsualizationModal = createModal(VIRSUALIZATION_DETAIL)
 
-const CREATE_VIEW = Symbol('CREATE_VIEW')
-export const createViewModal = createModal(CREATE_VIEW)
-
 const CONFIG_VIEW = Symbol('CONFIG_VIEW')
 export const configViewModal = createModal(CONFIG_VIEW)
 

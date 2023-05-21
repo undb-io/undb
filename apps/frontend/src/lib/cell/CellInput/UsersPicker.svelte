@@ -26,7 +26,12 @@
 
 	$: {
 		for (const member of members) {
-			membersMap.set(member.userId, { userId: member.userId, avatar: member.avatar ?? null, username: member.username })
+			membersMap.set(member.userId, {
+				userId: member.userId,
+				avatar: member.avatar ?? null,
+				username: member.username,
+				color: member.color,
+			})
 		}
 	}
 
@@ -36,7 +41,7 @@
 <Button color="alternative" class="inline-flex gap-3 max-h-10 max-w-max">
 	{#if selected.length}
 		{#each selected as member}
-			<CollaboratorComponent username={member.username} avatar={member.avatar} />
+			<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />
 		{/each}
 	{:else}
 		{$t('Select Collaborator')}
@@ -47,7 +52,7 @@
 		{@const isSelected = selected.some((s) => s.userId === member.userId)}
 		<Checkbox bind:group={value} value={member.userId} custom>
 			<span class="inline-flex items-center justify-between px-4 py-2 cursor-pointer w-full hover:bg-gray-100">
-				<CollaboratorComponent username={member.username} avatar={member.avatar} />
+				<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />
 				{#if isSelected}
 					<i class="ti ti-check" />
 				{/if}

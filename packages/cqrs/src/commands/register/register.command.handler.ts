@@ -1,4 +1,12 @@
-import { IUserRepository, UserFactory, WithUserEmail, WithUserId, WithUserPassword, WithUsername } from '@undb/core'
+import {
+  IUserRepository,
+  UserFactory,
+  WithUserColor,
+  WithUserEmail,
+  WithUserId,
+  WithUserPassword,
+  WithUsername,
+} from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
 import { IRegisterCommandOutput } from './register.command.interface.js'
 import type { RegisterCommand } from './register.command.js'
@@ -17,6 +25,7 @@ export class RegisterCommandHandler implements IRegisterCommandHandler {
       WithUserPassword.fromString(password),
       WithUserId.create(),
       WithUsername.fromEmail(email),
+      WithUserColor.random(),
     )
 
     await this.repo.insert(user)

@@ -5,6 +5,7 @@ import {
   User,
   UserFactory,
   UserSpecification,
+  WithUserColor,
   WithUserEmail,
   WithUserId,
   WithUserPassword,
@@ -38,6 +39,7 @@ export class UserService {
         WithUserPassword.fromString(hashedPassword),
         admin.username ? WithUsername.fromString(admin.username) : WithUsername.fromEmail(admin.email),
         WithUserId.create(),
+        WithUserColor.random(),
       )
       await this.repo.insert(user)
     }

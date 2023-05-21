@@ -9,9 +9,9 @@ export class TableSqliteMapper {
       id: entity.id,
       name: entity.name,
       emoji: entity.emoji,
-      schema: entity.fields.getItems().map((field) => field.toQuery()),
+      schema: entity.fields.getItems(false).map((field) => field.toQuery()),
       viewsOrder: entity.viewsOrder,
-      views: entity.views.getItems().map(
+      views: entity.views.getItems(false).map(
         (view) =>
           ({
             id: view.id,
@@ -28,7 +28,7 @@ export class TableSqliteMapper {
             pinnedFields: view.pinnedFields,
             rowHeight: view.rowHeight,
             dashboard: {
-              widges: view.widges.isInitialized() ? view.widges.getItems().map((widge) => widge.toQuery()) : [],
+              widges: view.widges.isInitialized() ? view.widges.getItems(false).map((widge) => widge.toQuery()) : [],
             },
           } as IQueryView),
       ),
@@ -42,7 +42,7 @@ export class TableSqliteMapper {
       schema: [],
       emoji: entity.emoji,
       views: entity.views.isInitialized()
-        ? (entity.views.getItems().map((view) => ({
+        ? (entity.views.getItems(false).map((view) => ({
             id: view.id,
             name: view.name,
             displayType: view.displayType,
@@ -57,13 +57,13 @@ export class TableSqliteMapper {
             pinnedFields: view.pinnedFields,
             rowHeight: view.rowHeight,
             dashboard: {
-              widges: view.widges.isInitialized() ? view.widges.getItems().map((widge) => widge.toQuery()) : [],
+              widges: view.widges.isInitialized() ? view.widges.getItems(false).map((widge) => widge.toQuery()) : [],
             },
           })) as ICreateViewsSchema)
         : [],
       viewsOrder: entity.viewsOrder,
     }).map((table) => {
-      table.schema = new TableSchema(entity.fields.getItems().map((field) => field.toDomain()))
+      table.schema = new TableSchema(entity.fields.getItems(false).map((field) => field.toDomain()))
       return table
     })
   }

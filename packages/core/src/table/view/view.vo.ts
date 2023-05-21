@@ -404,6 +404,7 @@ export class ViewVO extends ValueObject<IView> {
       kanban: this.kanban?.into()?.toJSON(),
       calendar: this.calendar?.into()?.toJSON(),
       tree: this.treeView?.into()?.toJSON(),
+      dashboard: this.dashboard?.into()?.toJSON(),
       displayType: this.displayType,
       filter: this.filter?.toJSON(),
       fieldOptions: this.fieldOptions.toJSON(),

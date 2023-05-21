@@ -8,7 +8,6 @@
 	import UpdateField from '$lib/field/UpdateField.svelte'
 	import UpdateRecord from '$lib/record/UpdateRecord.svelte'
 	import CreateOption from '$lib/option/CreateOption.svelte'
-	import CreateView from '$lib/view/CreateView.svelte'
 	import ViewConfigModal from '$lib/view/ViewConfigModal.svelte'
 	import UpdateTable from '$lib/table/UpdateTable.svelte'
 	import { createRecordModal, createTableModal } from '$lib/store/modal'
@@ -43,7 +42,6 @@
 {#key $table}
 	<UpdateTable data={data.updateTable} />
 {/key}
-<CreateView data={data.createView} />
 <ViewConfigModal />
 <CreateRecord data={data.createRecord} />
 <CreateField data={data.createField} />

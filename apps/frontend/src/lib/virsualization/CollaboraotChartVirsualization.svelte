@@ -1,18 +1,16 @@
 <script lang="ts">
-	import type { IChartData, SelectField } from '@undb/core'
+	import type { CollaboratorField, IChartData, ICollaboratorProfile, IColor } from '@undb/core'
 	import { Bar } from 'svelte-chartjs'
 	import { Chart, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
-	import colors from 'tailwindcss/colors'
 	import { t } from '$lib/i18n'
+	import colors from 'tailwindcss/colors'
 
-	export let field: SelectField
-	export let data: IChartData = []
+	export let field: CollaboratorField
+	export let data: IChartData<ICollaboratorProfile> = []
 
-	$: optionIds = data.map((v) => v.key)
-	$: options = optionIds.map((id) => (id ? field.options.getById(id).into(null) : null))
-	$: labels = options.map((option) => option?.name.value ?? $t('null', { ns: 'common' }))
+	$: labels = data.map(({ meta }) => meta.username ?? $t('null', { ns: 'common' }))
 	$: values = data.map((v) => v.value)
-	$: backgroundColor = options.map((option) => (option ? colors[option.color.name][400] : colors.gray[400]))
+	$: backgroundColor = data.map(({ meta }) => colors[meta.color as IColor][500])
 	$: datasets = [
 		{
 			label: field.name.value,

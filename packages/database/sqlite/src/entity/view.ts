@@ -28,6 +28,7 @@ import {
 } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Table } from './table.js'
+import { VirsualizationFactory } from './virsualization.factory.js'
 import { Widge } from './widge.js'
 
 @Embeddable()
@@ -137,6 +138,17 @@ export class View extends BaseEntity {
     }
     if (view.calendar.isSome()) {
       this.calendar = new Calendar(view.calendar.unwrap())
+    }
+    if (view.dashboard.isSome()) {
+      const dashboard = view.dashboard.unwrap()
+      for (const widge of dashboard.widges) {
+        const widgeEntity = new Widge(this, widge)
+
+        widgeEntity.virsualization = widge.virsualization
+          ? VirsualizationFactory.create(table, widge.virsualization)
+          : undefined
+        this.widges.add(widgeEntity)
+      }
     }
     this.filter = view.filter?.value
     this.fieldOptions = view.fieldOptions.toObject().into()

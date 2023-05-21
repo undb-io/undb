@@ -4,7 +4,11 @@ export const chartData = z
   .object({
     key: z.string().nullable(),
     value: z.number(),
+    meta: z.any().optional(),
   })
   .array()
 
-export type IChartData = z.infer<typeof chartData>
+type ChartData = z.infer<typeof chartData>
+export type IChartData<T = any> = ChartData & {
+  meta?: T
+}

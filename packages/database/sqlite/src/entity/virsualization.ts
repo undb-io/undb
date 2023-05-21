@@ -40,7 +40,7 @@ export abstract class Virsualization extends BaseEntity {
   table: Rel<Table>
 
   abstract toQuery(): IVirsualizationSchema
-  abstract toDomain(): VirsualizationVO
+  abstract toDomain(): CoreNumberVirsualization | CoreChartVirsualization
 }
 
 @Entity({ discriminatorValue: 'number' })

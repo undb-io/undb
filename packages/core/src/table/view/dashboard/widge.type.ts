@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import type { VirsualizationVO } from '../../virsualization/index.js'
+import type { ChartVirsualization, NumberVirsualization } from '../../virsualization/index.js'
 import { virsualizationSchema } from '../../virsualization/index.js'
 import { layoutSchema } from './layout.type.js'
 import type { LayoutVO } from './layout.vo.js'
@@ -17,5 +17,5 @@ export type IWidgeSchema = z.infer<typeof widgeSchema>
 export type IWidge = {
   id: WidgeID
   layout: LayoutVO
-  virsualization?: VirsualizationVO
+  virsualization?: NumberVirsualization | ChartVirsualization
 }
