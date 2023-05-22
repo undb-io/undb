@@ -332,7 +332,8 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         ...averageFields.map((f) => this.knex.raw(`avg(${fta}.${f.averageAggregateField.id}) as ${f.id}`)),
       )
       .from(closure.name)
-      .groupBy(ClosureTable.PARENT_ID, ClosureTable.CHILD_ID)
+      .where(ClosureTable.DEPTH, 1)
+      .groupBy(ClosureTable.PARENT_ID)
       .as(uta)
 
     const nestSubQuery = knex
@@ -359,12 +360,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
           (c) => `${uta}.${c.id.value} as ${c.id.value}`,
         ),
       )
-      .leftJoin(subQuery, function () {
-        this.on(`${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`, `${uta}.${ClosureTable.PARENT_ID}`).andOn(
-          `${uta}.${ClosureTable.DEPTH}`,
-          knex.raw('?', [1]),
-        )
-      })
+      .leftJoin(subQuery, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`, `${uta}.${ClosureTable.PARENT_ID}`)
   }
   parent(field: CoreParentField): void {
     if (this.#visited.has(field.id.value)) {
@@ -389,7 +385,8 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         ...displayColumns.map((f) => knex.raw(`json_array(${fta}.${f.id.value}) as ${f.id.value}`)),
       )
       .from(closure.name)
-      .groupBy(ClosureTable.CHILD_ID, ClosureTable.PARENT_ID)
+      .where(ClosureTable.DEPTH, 1)
+      .groupBy(ClosureTable.CHILD_ID)
       .as(uta)
 
     const nestSubQuery = knex
@@ -411,12 +408,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         this.#getFieldExpand(uta, column),
         ...lookupFields.map((c) => this.#getFieldExpand(uta, c)),
       )
-      .leftJoin(subQuery, function () {
-        this.on(`${uta}.${ClosureTable.CHILD_ID}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`).andOn(
-          `${uta}.${ClosureTable.DEPTH}`,
-          knex.raw('?', [1]),
-        )
-      })
+      .leftJoin(subQuery, `${uta}.${ClosureTable.CHILD_ID}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
 
     this.#visited.add(field.id.value)
   }
