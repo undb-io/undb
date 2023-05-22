@@ -9,7 +9,7 @@
 	export let displayValues: IRecordDisplayValues
 
 	$: unpacked = value.unpack() ?? []
-	$: values = field.getDisplayValues($table.schema, displayValues)
+	$: values = field.getDisplayValues(displayValues)
 </script>
 
 {#if unpacked.length && !values.length}
