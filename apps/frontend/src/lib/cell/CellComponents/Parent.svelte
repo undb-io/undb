@@ -1,16 +1,18 @@
 <script lang="ts">
-	import type { IRecordDisplayValues, ReferenceField, ReferenceFieldValue } from '@undb/core'
+	import type { IRecordDisplayValues, ParentField, ParentFieldValue } from '@undb/core'
 	import ReferenceComponent from './ReferenceComponent.svelte'
 
-	export let value: ReferenceFieldValue
-	export let field: ReferenceField
+	export let value: ParentFieldValue
+	export let field: ParentField
 	export let displayValues: IRecordDisplayValues
 
 	$: unpacked = value.unpack() ?? []
 	$: values = field.getDisplayValues(displayValues)
+
+	$: console.log(values)
 </script>
 
-{#if unpacked.length && !values.length}
+<!-- {#if unpacked.length && !values.length}
 	<div class="flex items-center space-x-2 text-gray-400 font-light">
 		{#each unpacked as value}
 			<ReferenceComponent value={[null]} />
@@ -22,4 +24,6 @@
 			<ReferenceComponent {value} />
 		{/each}
 	</div>
-{/if}
+{/if} -->
+
+<ReferenceComponent value={values} />
