@@ -6,6 +6,7 @@
 	import KanbanConfig from './KanbanConfig.svelte'
 	import CalendarConfig from '$lib/calendar/CalendarConfig.svelte'
 	import { configViewModal } from '$lib/store/modal'
+	import TreeConfig from '$lib/tree/TreeConfig.svelte'
 
 	const view = getView()
 
@@ -14,6 +15,7 @@
 	const components: Partial<Record<IViewDisplayType, ComponentType>> = {
 		kanban: KanbanConfig,
 		calendar: CalendarConfig,
+		tree: TreeConfig,
 	}
 </script>
 
