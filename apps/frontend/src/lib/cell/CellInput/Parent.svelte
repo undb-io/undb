@@ -27,7 +27,8 @@
 
 	let group: string[] = value ? [value] : []
 
-	if (group?.length) {
+	$: if (group?.length) {
+		group = [group[group.length - 1]]
 		value = group[0] ?? null
 	}
 </script>

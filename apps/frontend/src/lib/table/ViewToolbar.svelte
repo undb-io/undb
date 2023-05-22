@@ -6,6 +6,7 @@
 	import KanbanToolbar from './KanbanToolbar.svelte'
 	import CalendarToolbar from './CalendarToolbar.svelte'
 	import DashboardToolbar from './DashboardToolbar.svelte'
+	import TreeToolbar from './TreeToolbar.svelte'
 
 	const view = getView()
 	$: type = $view.displayType
@@ -15,6 +16,7 @@
 		kanban: KanbanToolbar,
 		calendar: CalendarToolbar,
 		dashboard: DashboardToolbar,
+		tree: TreeToolbar,
 	}
 </script>
 

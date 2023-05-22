@@ -52,6 +52,7 @@
 		{ value: 'grid', label: 'Grid' },
 		{ value: 'kanban', label: 'Kanban' },
 		{ value: 'calendar', label: 'Calendar' },
+		{ value: 'tree', label: 'Tree' },
 		{ value: 'dashboard', label: 'Dashboard' },
 	] as const
 

@@ -1,7 +1,8 @@
+import type { IGetRecordsTreeOutput, IGetTreeAvailableRecordsOutput } from '@undb/cqrs'
 import {
   GetRecordsTreeQuery,
-  getRecordsTreeQueryInput,
   GetTreeAvailableRecordsQuery,
+  getRecordsTreeQueryInput,
   getTreeAvailableRecordsQueryInput,
 } from '@undb/cqrs'
 import type { IQueryBus } from '@undb/domain'
@@ -14,14 +15,14 @@ export const createTreeFieldRouter = (procedure: typeof publicProcedure) => (que
     list: procedure
       .input(getRecordsTreeQueryInput)
       .output(z.any())
-      .query(({ input }) => {
+      .query<IGetRecordsTreeOutput>(({ input }) => {
         const query = new GetRecordsTreeQuery(input)
         return queryBus.execute(query)
       }),
     available: procedure
       .input(getTreeAvailableRecordsQueryInput)
       .output(z.any())
-      .query(({ input }) => {
+      .query<IGetTreeAvailableRecordsOutput>(({ input }) => {
         const query = new GetTreeAvailableRecordsQuery(input)
         return queryBus.execute(query)
       }),
