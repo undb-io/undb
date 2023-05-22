@@ -15,6 +15,7 @@
 	import DateRange from './DateRange.svelte'
 	import Reference from './Reference.svelte'
 	import Collaborator from './Collaborator.svelte'
+	import Parent from './Parent.svelte'
 
 	export let field: Field
 	export let value: RecordAllValueType | Option
@@ -34,7 +35,7 @@
 		'date-range': DateRange,
 		reference: Reference,
 		tree: Reference,
-		parent: String,
+		parent: Parent,
 		rating: Rating,
 		count: Number,
 		lookup: String,
