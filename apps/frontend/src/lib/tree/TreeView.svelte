@@ -25,8 +25,8 @@
 	}
 
 	$: records = $data.data?.records.map(mapper) ?? []
-
-	const elements: HTMLElement[] = []
 </script>
 
-<TreeItem {records} />
+<div class="-ml-6">
+	<TreeItem {records} />
+</div>
