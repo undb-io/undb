@@ -1,14 +1,18 @@
 <script lang="ts">
-	import { getTable, recordHash } from '$lib/store/table'
+	import { currentRecordId, getTable, recordHash } from '$lib/store/table'
 	import { flip } from 'svelte/animate'
 	import type { TreeRecord } from './tree-view.type'
 	import { dndzone, SHADOW_PLACEHOLDER_ITEM_ID, TRIGGERS } from 'svelte-dnd-action'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import type { TreeField } from '@undb/core'
+	import { Tooltip } from 'flowbite-svelte'
+	import { t } from '$lib/i18n'
+	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 
 	export let field: TreeField
 	export let record: TreeRecord
+	export let level = 0
 
 	const table = getTable()
 	const flipDurationMs = 150
@@ -60,7 +64,7 @@
 <div
 	use:dndzone={{
 		items: record.children,
-		dropTargetClasses: ['bg-yellow-50/50', 'outline-1', 'outline-dashed', 'min-h-[20px]'],
+		dropTargetClasses: ['bg-yellow-50/50', 'outline-1', 'outline-dashed', 'min-h-[25px]'],
 		dropTargetStyle: {},
 	}}
 	on:consider={handleConsider}
@@ -68,15 +72,45 @@
 >
 	{#each record.children.filter((item) => item.id !== SHADOW_PLACEHOLDER_ITEM_ID) as r (r.id)}
 		{@const title = r.record?.getDisplayFieldsValue($table)}
-		<div class="relative ml-8 -mt-[1px]" data-record-id={r.id} animate:flip={{ duration: flipDurationMs }}>
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<div
+			class="relative ml-8 -mt-[1px]"
+			data-record-id={r.id}
+			animate:flip={{ duration: flipDurationMs }}
+			on:click={() => {
+				$currentRecordId = r.id
+			}}
+		>
 			{#if title}
-				<div class="py-2 px-3 bg-white border border-slate-200 border-collapse h-[40px]">
-					{title}
+				<div
+					class="p-3 bg-white border border-slate-200 border-collapse h-[40px] flex items-center justify-between group"
+					class:border-l-0={!level}
+				>
+					<span class="text-gray-600">
+						{title}
+					</span>
+					<!-- <div class="pr-5 opacity-0 group-hover:opacity-100 transition">
+						<button
+							on:click={() => {
+								const parentFieldId = field.parentFieldId?.value
+								if (!parentFieldId) return
+								$createRecordInitial = {
+									[parentFieldId]: record.id || null,
+								}
+								createRecordModal.open(async () => {
+									await $data.refetch()
+								})
+							}}
+						>
+							<i class="block h-full ti ti-plus text-gray-600" />
+						</button>
+						<Tooltip>{$t('Create New Record')}</Tooltip>
+					</div> -->
 				</div>
 			{/if}
 
 			{#if record.children.length}
-				<svelte:self record={r} {field} />
+				<svelte:self record={r} {field} level={level + 1} />
 			{/if}
 		</div>
 	{/each}

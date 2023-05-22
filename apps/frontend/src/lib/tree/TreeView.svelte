@@ -25,7 +25,7 @@
 		return {
 			id: r.id.value,
 			record: r,
-			children: record.children.map((r) => mapper(r)),
+			children: record.children?.map((r) => mapper(r)) ?? [],
 		}
 	}
 
@@ -33,6 +33,6 @@
 	$: record = { id: '', record: null, children: records }
 </script>
 
-<div class="-ml-6">
+<div class="-ml-8">
 	<TreeItem {record} {field} />
 </div>
