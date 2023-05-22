@@ -6,6 +6,7 @@
 	import KanbanIndex from './KanbanIndex.svelte'
 	import CalendarIndex from '$lib/calendar/CalendarIndex.svelte'
 	import DashboardIndex from '$lib/dashboard/DashboardIndex.svelte'
+	import TreeIndex from '$lib/tree/TreeIndex.svelte'
 
 	const view = getView()
 
@@ -14,6 +15,7 @@
 	const map: Partial<Record<IViewDisplayType, ComponentType>> = {
 		grid: TableView,
 		kanban: KanbanIndex,
+		tree: TreeIndex,
 		calendar: CalendarIndex,
 		dashboard: DashboardIndex,
 	}

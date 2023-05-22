@@ -167,6 +167,19 @@ export class ViewVO extends ValueObject<IView> {
     return this.treeView.mapOr(None, (treeView) => Option(treeView.fieldId))
   }
 
+  public get treeFieldIdString() {
+    return this.treeView.into()?.fieldId?.value
+  }
+
+  public set treeFieldIdString(fieldId: string | undefined) {
+    const treeView = this.treeView.into()
+    if (treeView) {
+      treeView.fieldId = fieldId ? FieldId.fromString(fieldId) : undefined
+    } else if (fieldId) {
+      this.kanban = Some(new TreeView({ fieldId: FieldId.fromString(fieldId) }))
+    }
+  }
+
   public get spec(): Option<CompositeSpecification> {
     if (!this.filter) return None
     return this.filter.spec
