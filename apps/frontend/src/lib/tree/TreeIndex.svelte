@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getTable, getView } from '$lib/store/table'
 	import { Card } from 'flowbite-svelte'
-	import type { DateField, SelectField, TreeField } from '@undb/core'
+	import type { TreeField } from '@undb/core'
 	import TreeConfig from './TreeConfig.svelte'
 	import TreeView from './TreeView.svelte'
 
