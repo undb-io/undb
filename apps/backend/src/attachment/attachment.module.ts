@@ -8,7 +8,7 @@ import { AttachmentService } from './attachment.service.js'
 
 @Module({
   imports: [
-    StorageModule.register(),
+    StorageModule,
     ServeStaticModule.forRootAsync({
       useFactory: (config: ConfigType<typeof objectStorageConfig>) => [
         {

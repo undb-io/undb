@@ -19,4 +19,4 @@ export const objectStorage: Provider = {
   inject: [objectStorageConfig.KEY, LocalObjectStorage, S3ObjectStorage],
 }
 
-export const providers = [LocalObjectStorage, S3ObjectStorage, objectStorage]
+export const adapters = [LocalObjectStorage, S3ObjectStorage, objectStorage]

@@ -1,9 +1,9 @@
 import {
   CreateBucketCommand,
   GetObjectCommand,
+  HeadBucketCommand,
   PutObjectCommand,
   S3Client,
-  waitUntilBucketExists,
 } from '@aws-sdk/client-s3'
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import type { ConfigType } from '@nestjs/config'
@@ -28,7 +28,7 @@ export class S3ObjectStorage implements IObjectStorage, OnModuleInit {
 
     if (this.config.provider === 's3') {
       try {
-        await waitUntilBucketExists({ client: this.s3, maxWaitTime: 6 }, { Bucket: bucket })
+        await this.s3.send(new HeadBucketCommand({ Bucket: bucket }))
         this.logger.log('bucket %s exists, skipping creation...', bucket)
       } catch (error) {
         this.logger.log('bucket %s not exists, creating...', bucket)
