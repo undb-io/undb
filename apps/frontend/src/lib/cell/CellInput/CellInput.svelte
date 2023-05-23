@@ -16,6 +16,7 @@
 	import Tree from './Tree.svelte'
 	import Parent from './Parent.svelte'
 	import Select from './Select.svelte'
+	import Currency from './Currency.svelte'
 
 	export let field: Field
 	export let record: Record | undefined = undefined
@@ -38,6 +39,7 @@
 		tree: Tree,
 		parent: Parent,
 		rating: Rating,
+		currency: Currency,
 		count: Readonly,
 		lookup: Readonly,
 		sum: Readonly,

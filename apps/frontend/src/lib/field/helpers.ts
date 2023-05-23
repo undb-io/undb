@@ -34,6 +34,7 @@ export function getFilterOperators(type: IFieldType | undefined) {
 	} else if (
 		type === 'number' ||
 		type === 'rating' ||
+		type === 'currency' ||
 		type === 'count' ||
 		type === 'sum' ||
 		type === 'average' ||
@@ -126,6 +127,7 @@ export const icons: Record<IFieldType, string> = {
 	tree: 'hierarchy',
 	parent: 'binary-tree',
 	rating: 'stars',
+	currency: 'currency-yuan',
 	count: 'calculator',
 	lookup: 'search',
 	sum: 'sum',

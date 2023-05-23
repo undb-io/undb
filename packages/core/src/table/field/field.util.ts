@@ -22,6 +22,7 @@ const displayFieldTypes: Set<IFieldType> = new Set<IFieldType>([
   // 'attachment',
   'number',
   'rating',
+  'currency',
   'string',
 ])
 
@@ -43,6 +44,7 @@ export const isNumericFieldType: Set<IFieldType> = new Set<IFieldType>([
   'count',
   'rating',
   'auto-increment',
+  'currency',
   'sum',
 ])
 

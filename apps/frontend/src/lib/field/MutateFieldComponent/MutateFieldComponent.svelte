@@ -24,6 +24,7 @@
 	import Rating from './Rating.svelte'
 	import CreatedAt from './CreatedAt.svelte'
 	import UpdatedAt from './UpdatedAt.svelte'
+	import Currency from './Currency.svelte'
 
 	export let type: IFieldType
 	export let isNew = false
@@ -33,6 +34,7 @@
 	const map: Partial<Record<IFieldType, ComponentType>> = {
 		reference: Reference,
 		rating: Rating,
+		currency: Currency,
 		date: Date,
 		'date-range': DateRange,
 		lookup: Lookup,

@@ -6,6 +6,7 @@ export const FIELD_SELECT_ITEMS = [
 	{ value: 'bool', name: 'Bool', group: 'Base' },
 	{ value: 'number', name: 'Number', group: 'Base' },
 	{ value: 'rating', name: 'Rating', group: 'Base' },
+	{ value: 'currency', name: 'Currency', group: 'Base' },
 	{ value: 'date', name: 'Date', group: 'Base' },
 	{ value: 'date-range', name: 'DateRange', group: 'Base' },
 	{ value: 'auto-increment', name: 'AutoIncrement', group: 'System' },

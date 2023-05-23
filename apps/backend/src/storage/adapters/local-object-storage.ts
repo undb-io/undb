@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common'
 import type { ConfigType } from '@nestjs/config'
 import fs from 'node:fs'
 import path from 'node:path'
+import { Readable } from 'node:stream'
 import { v4 } from 'uuid'
 import { InjectObjectStorageConfig, objectStorageConfig } from '../../configs/object-storage.config.js'
-import { IObjectStorage } from './object-storage.js'
+import type { IObjectStorage, Stat } from './object-storage.js'
 
 @Injectable()
 export class LocalObjectStorage implements IObjectStorage {
@@ -25,7 +26,11 @@ export class LocalObjectStorage implements IObjectStorage {
     return path.join(p, token + '_' + name)
   }
 
-  async put(buffer: Buffer, originalname: string): Promise<{ url: string; token: string; id: string }> {
+  async put(
+    buffer: Buffer,
+    originalname: string,
+    mimetype: string,
+  ): Promise<{ url: string; token: string; id: string }> {
     const nestedPath = this.#nestedPath
     const p = await this.#getPath(nestedPath)
     const id = v4()
@@ -35,5 +40,14 @@ export class LocalObjectStorage implements IObjectStorage {
 
     const url = `/public/${token}_${originalname}`
     return { token, id, url }
+  }
+
+  // TODO: file stream
+  get(name: string): Promise<Readable> {
+    throw new Error('Method not implemented.')
+  }
+
+  stat(name: string): Promise<Stat> {
+    throw new Error('Method not implemented.')
   }
 }

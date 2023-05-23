@@ -13,6 +13,7 @@ import type {
   CountField as CoreCountField,
   CreatedAtField as CoreCreatedAtField,
   CreatedByField as CoreCreatedByField,
+  CurrencyField as CoreCurrencyField,
   DateField as CoreDateField,
   DateRangeField as CoreDateRangeField,
   EmailField as CoreEmailField,
@@ -40,6 +41,7 @@ import {
   CountField,
   CreatedAtField,
   CreatedByField,
+  CurrencyField,
   DateField,
   DateRangeField,
   EmailField,
@@ -132,6 +134,12 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   rating(value: CoreRatingField): void {
     const field = new RatingField(this.table, value)
+
+    this.em.persist(field)
+  }
+
+  currency(value: CoreCurrencyField): void {
+    const field = new CurrencyField(this.table, value)
 
     this.em.persist(field)
   }

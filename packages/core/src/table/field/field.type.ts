@@ -105,6 +105,18 @@ import {
   createdByTypeSchema,
   updateCreatedByFieldSchema,
 } from './created-by-field.type.js'
+import type { CurrencyFieldValue } from './currency-field-value.js'
+import type { CurrencyField } from './currency-field.js'
+import type { ICurrencyFieldValue } from './currency-field.type.js'
+import {
+  createCurrencyFieldSchema,
+  createCurrencyFieldValue_internal,
+  currencyFieldQuerySchema,
+  currencyFieldQueryValue,
+  currencyTypeSchema,
+  updateCurrencyFieldSchema,
+} from './currency-field.type.js'
+import type { CurrencySymbol } from './currency-symbol.vo.js'
 import type { DateFieldValue } from './date-field-value.js'
 import type { DateField } from './date-field.js'
 import type { IDateFieldValue } from './date-field.type.js'
@@ -299,6 +311,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createTreeFieldSchema,
   createParentFieldSchema,
   createRatingFieldSchema,
+  createCurrencyFieldSchema,
   createCountFieldSchema,
   createLookupFieldSchema,
   createSumFieldSchema,
@@ -327,6 +340,7 @@ export const updateFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   updateTreeFieldSchema,
   updateParentFieldSchema,
   updateRatingFieldSchema,
+  updateCurrencyFieldSchema,
   updateCountFieldSchema,
   updateLookupFieldSchema,
   updateSumFieldSchema,
@@ -355,6 +369,7 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   treeFieldQuerySchema,
   parentFieldQuerySchema,
   ratingFieldQuerySchema,
+  currencyFieldQuerySchema,
   countFieldQuerySchema,
   lookupFieldQuerySchema,
   sumFieldQuerySchema,
@@ -385,6 +400,7 @@ export const fieldTypes = z.union([
   treeTypeSchema,
   parentTypeSchema,
   ratingTypeSchema,
+  currencyTypeSchema,
   countTypeSchema,
   lookupTypeSchema,
   sumTypeSchema,
@@ -413,6 +429,7 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createTreeFieldValue_internal,
   createParentFieldValue_internal,
   createRatingFieldValue_internal,
+  createCurrencyFieldValue_internal,
   createCountFieldValue_internal,
   createLookupFieldValue_internal,
   createSumFieldValue_internal,
@@ -460,6 +477,7 @@ export type IColorField = IBaseField
 
 export type INumberField = IBaseField
 export type IRatingField = IBaseField & { max?: number }
+export type ICurrencyField = IBaseField & { symbol: CurrencySymbol }
 
 export type IDateField = IBaseField & BaseDateField
 export type IDateRangeField = IBaseField & BaseDateField
@@ -511,6 +529,7 @@ export type NoneSystemField =
   | TreeField
   | ParentField
   | RatingField
+  | CurrencyField
   | AutoIncrementField
   | CountField
   | LookupField
@@ -529,6 +548,7 @@ export type PrimitiveField =
   | BoolField
   | DateRangeField
   | RatingField
+  | CurrencyField
   | CreatedAtFieldValue
   | UpdatedAtFieldValue
   | AutoIncrementFieldValue
@@ -555,6 +575,7 @@ export type FieldValue =
   | TreeFieldValue
   | ParentFieldValue
   | RatingFieldValue
+  | CurrencyFieldValue
   | CountFieldValue
   | LookupFieldValue
   | SumFieldValue
@@ -583,6 +604,7 @@ export type UnpackedFieldValue =
   | ITreeFieldValue
   | IParentFieldValue
   | IRatingFieldValue
+  | ICurrencyFieldValue
   | ICountFieldValue
   | ILookupFieldValue
   | ISumFieldValue
@@ -609,6 +631,7 @@ export const fieldQueryValue = z.union([
   stringFieldQueryValue,
   updatedAtFieldQueryValue,
   ratingFieldQueryValue,
+  currencyFieldQueryValue,
   countFieldQueryValue,
   lookupFieldQueryValue,
   sumFieldQueryValue,

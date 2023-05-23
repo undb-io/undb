@@ -5,6 +5,7 @@ import { Migration20230507094448 } from '../src/migrations/Migration202305070944
 import { Migration20230511142430 } from '../src/migrations/Migration20230511142430.js'
 import { Migration20230518040812 } from '../src/migrations/Migration20230518040812.js'
 import { Migration20230521024441 } from '../src/migrations/Migration20230521024441.js'
+import { Migration20230523112618 } from '../src/migrations/Migration20230523112618.js'
 
 beforeAll(async () => {
   const { entities } = await import('../src/entity/index.js')
@@ -31,6 +32,10 @@ beforeAll(async () => {
           {
             name: 'Migration20230521024441',
             class: Migration20230521024441,
+          },
+          {
+            name: 'Migration20230523112618',
+            class: Migration20230523112618,
           },
         ],
       },

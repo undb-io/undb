@@ -4,6 +4,7 @@ import type {
   ITableSpecVisitor,
   WithCalendarField,
   WithChartAggregateSpec,
+  WithCurrencySymbol,
   WithDisplayFields,
   WithDisplayType,
   WithFieldDescription,
@@ -177,6 +178,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   ratingMaxEqual(s: WithRatingMax): void {
+    throw new Error('Method not implemented.')
+  }
+  currencySymbolEqual(s: WithCurrencySymbol): void {
     throw new Error('Method not implemented.')
   }
   withWidge(s: WithWidgeSepecification): void {

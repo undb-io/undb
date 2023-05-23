@@ -11,6 +11,7 @@ import type {
   CountFieldValue,
   CreatedAtFieldValue,
   CreatedByFieldValue,
+  CurrencyFieldValue,
   DateFieldValue,
   DateRangeFieldValue,
   EmailFieldValue,
@@ -99,6 +100,9 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
     this.setData(this.fieldId, value.unpack())
   }
   rating(value: RatingFieldValue): void {
+    this.setData(this.fieldId, value.unpack())
+  }
+  currency(value: CurrencyFieldValue): void {
     this.setData(this.fieldId, value.unpack())
   }
   bool(value: BoolFieldValue): void {
