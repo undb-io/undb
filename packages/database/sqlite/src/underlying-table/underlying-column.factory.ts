@@ -10,6 +10,7 @@ import {
   UnderlyingCountColumn,
   UnderlyingCreatedAtColumn,
   UnderlyingCreatedByColumn,
+  UnderlyingCurrencyColumn,
   UnderlyingDateColumn,
   UnderlyingDateRangeFromColumn,
   UnderlyingDateRangeToColumn,
@@ -47,6 +48,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingAttachmentColumn(field, tableName)
       case 'rating':
         return new UnderlyingRatingColumn(field, tableName)
+      case 'currency':
+        return new UnderlyingCurrencyColumn(field, tableName)
       case 'color':
         return new UnderlyingColorColumn(field, tableName)
       case 'number':

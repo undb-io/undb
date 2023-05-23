@@ -16,6 +16,7 @@
 	import Reference from './Reference.svelte'
 	import Collaborator from './Collaborator.svelte'
 	import Parent from './Parent.svelte'
+	import Currency from './Currency.svelte'
 
 	export let field: Field
 	export let value: RecordAllValueType | Option
@@ -35,6 +36,7 @@
 		'date-range': DateRange,
 		reference: Reference,
 		tree: Reference,
+		currency: Currency,
 		parent: Parent,
 		rating: Rating,
 		count: Number,

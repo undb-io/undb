@@ -103,7 +103,8 @@
 					class="w-full !justify-start mb-4"
 					table={$table}
 					fields={$allTableFields}
-					filter={(f) => f.type === 'rating' || f.type === 'auto-increment' || f.type === 'number'}
+					filter={(f) =>
+						f.type === 'rating' || f.type === 'auto-increment' || f.type === 'number' || f.type === 'currency'}
 					bind:value={fieldId}
 				>
 					<Alert slot="empty" color="yellow">

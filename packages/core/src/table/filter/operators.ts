@@ -57,6 +57,9 @@ export type INumberFilterOperator = z.infer<typeof numberFilterOperators>
 export const ratingFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
 export type IRatingFilterOperator = z.infer<typeof ratingFilterOperators>
 
+export const currencyFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
+export type ICurrencyFilterOperator = z.infer<typeof currencyFilterOperators>
+
 export const countFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
 export type ICountFilterOperator = z.infer<typeof countFilterOperators>
 

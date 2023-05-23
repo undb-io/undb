@@ -7,6 +7,7 @@ import { ColorField } from './color-field.js'
 import { CountField } from './count-field.js'
 import { CreatedAtField } from './created-at-field.js'
 import { CreatedByField } from './created-by-field.js'
+import { CurrencyField } from './currency-field.js'
 import { DateField } from './date-field.js'
 import { DateRangeField } from './date-range-field.js'
 import { EmailField } from './email-field.js'
@@ -53,6 +54,9 @@ export class FieldFactory {
       }
       case 'rating': {
         return RatingField.create(input)
+      }
+      case 'currency': {
+        return CurrencyField.create(input)
       }
       case 'date': {
         return DateField.create(input)
@@ -131,6 +135,9 @@ export class FieldFactory {
       }
       case 'rating': {
         return RatingField.unsafeCreate(input)
+      }
+      case 'currency': {
+        return CurrencyField.unsafeCreate(input)
       }
       case 'date': {
         return DateField.unsafeCreate(input)

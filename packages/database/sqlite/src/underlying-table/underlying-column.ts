@@ -7,6 +7,7 @@ import type {
   CollaboratorField,
   ColorField,
   CountField,
+  CurrencyField,
   DateField,
   DateRangeField,
   EmailField,
@@ -187,6 +188,12 @@ export class UnderlyingNumberColumn extends UnderlyingFieldColumn<NumberField> {
 export class UnderlyingRatingColumn extends UnderlyingFieldColumn<RatingField> {
   build(tb: Knex.TableBuilder): void {
     tb.float(this.name)
+  }
+}
+
+export class UnderlyingCurrencyColumn extends UnderlyingFieldColumn<CurrencyField> {
+  build(tb: Knex.TableBuilder): void {
+    tb.double(this.name)
   }
 }
 

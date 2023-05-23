@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import type { CurrencyField } from '@undb/core'
 import {
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
@@ -145,6 +146,9 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
     throw new Error('Method not implemented.')
   }
   rating(field: RatingField): void {
+    throw new Error('Method not implemented.')
+  }
+  currency(field: CurrencyField): void {
     throw new Error('Method not implemented.')
   }
   count(field: CountField): void {

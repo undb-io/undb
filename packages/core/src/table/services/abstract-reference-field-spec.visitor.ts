@@ -10,6 +10,7 @@ import type {
   CountField,
   CreatedAtField,
   CreatedByField,
+  CurrencyField,
   DateField,
   DateRangeField,
   EmailField,
@@ -26,6 +27,7 @@ import type {
   TreeField,
   UpdatedAtField,
   UpdatedByField,
+  WithCurrencySymbol,
   WithDisplayFields,
   WithFieldDescription,
   WithFieldDisplay,
@@ -86,6 +88,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   withWidgesLayout(s: WithWidgesLayout): void {}
   rowHeightEqual(s: WithRowHeight): void {}
   ratingMaxEqual(s: WithRatingMax): void {}
+  currencySymbolEqual(s: WithCurrencySymbol): void {}
   id(field: IdField): void {}
   createdAt(field: CreatedAtField): void {}
   createdBy(field: CreatedByField): void {}
@@ -106,6 +109,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   abstract parent(field: ParentField): void
   collaborator(field: CollaboratorField): void {}
   rating(field: RatingField): void {}
+  currency(field: CurrencyField): void {}
   count(field: CountField): void {}
   sum(field: SumField): void {}
   average(field: AverageField): void {}

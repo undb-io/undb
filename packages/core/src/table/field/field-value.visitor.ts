@@ -7,6 +7,7 @@ import type { ColorFieldValue } from './color-field-value.js'
 import type { CountFieldValue } from './count-field-value.js'
 import type { CreatedAtFieldValue } from './created-at-field-value.js'
 import type { CreatedByFieldValue } from './created-by-field-value.js'
+import type { CurrencyFieldValue } from './currency-field-value.js'
 import type { DateFieldValue } from './date-field-value.js'
 import type { DateRangeFieldValue } from './date-range-field-value.js'
 import type { EmailFieldValue } from './email-field-value.js'
@@ -43,6 +44,7 @@ export interface IFieldValueVisitor {
   tree(value: TreeFieldValue): void
   parent(value: ParentFieldValue): void
   rating(value: RatingFieldValue): void
+  currency(value: CurrencyFieldValue): void
   count(value: CountFieldValue): void
   sum(value: SumFieldValue): void
   average(value: AverageFieldValue): void

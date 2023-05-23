@@ -5,6 +5,7 @@ import type {
   WithFieldDisplay,
   WithFieldName,
 } from '../field/specifications/base-field.specification.js'
+import type { WithCurrencySymbol } from '../field/specifications/currency-field.specification.js'
 import type { WithFormat, WithTimeFormat } from '../field/specifications/date-field.specification.js'
 import type { WithFieldRequirement } from '../field/specifications/field-constraints.specification.js'
 import type { WithoutField } from '../field/specifications/field.specification.js'
@@ -73,6 +74,8 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   pinnedFields(s: WithViewPinnedFields): void
 
   ratingMaxEqual(s: WithRatingMax): void
+
+  currencySymbolEqual(s: WithCurrencySymbol): void
 
   rowHeightEqual(s: WithRowHeight): void
   displayTypeEqual(s: WithDisplayType): void

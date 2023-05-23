@@ -3,6 +3,7 @@ import { tt } from '$lib/i18n'
 import type { RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
 import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime'
 import {
+	CurrencyField,
 	isImage,
 	type CollaboratorField,
 	type CreatedAtField,
@@ -25,6 +26,7 @@ import {
 import cx from 'classnames'
 import { format } from 'date-fns'
 import htm from 'htm'
+import { isNumber } from 'lodash-es'
 
 type TemplateFunc = RevoGrid.CellTemplateFunc<VNode>
 type HyperFunc = RevoGrid.HyperFunc<VNode>
@@ -145,6 +147,19 @@ const n = (h: HyperFunc, n?: number | null) => {
 const number: TemplateFunc = (h, props) => {
 	const number = props.model[props.prop] as number | undefined
 	return n(h, number)
+}
+
+const currency: TemplateFunc = (h, props) => {
+	const html = htm.bind(h)
+	const number = props.model[props.prop] as number | undefined
+	if (!isNumber(number)) return null
+	const field = props.column.field as CurrencyField
+	return html`
+		<div class="flex items-center gap-1">
+			<span>${field.symbol.symbol}</span>
+			<span>${number}</span>
+		</div>
+	`
 }
 
 const average: TemplateFunc = (h, props) => {
@@ -357,6 +372,7 @@ export const cellTemplateMap: Record<IFieldType, TemplateFunc> = {
 	select,
 	string,
 	sum,
+	currency,
 	tree: reference,
 	'updated-at': updatedAt,
 	'updated-by': updatedBy,
