@@ -53,7 +53,9 @@ export const getColumnTemplate = (h: HyperFunc, column: RevoGrid.ColumnRegular) 
 	return html`
 		<div class="h-full inline-flex w-full justify-between items-center text-xs text-gray-700 font-medium">
 			<span class="inline-flex items-center gap-1">
-				<i class="${cx(getIconClass(column.field.type), 'text-gray-600 text-lg')}"></i>
+				${column.field.type === 'currency'
+					? html`<span class="text-gray-600 text-lg">${column.field.symbol.symbol}</span>`
+					: html`<i class="${cx(getIconClass(column.field.type), 'text-gray-600 text-lg')}"></i>`}
 				<span>${column.name}</span>
 			</span>
 			<span class="inline-flex gap-2 items-center">
