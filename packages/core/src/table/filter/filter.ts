@@ -57,6 +57,8 @@ import type { ICreatedAtFilter } from './created-at.filter.js'
 import { createdAtFilter, createdAtFilterValue } from './created-at.filter.js'
 import type { ICreatedByFilter } from './created-by.filter.js'
 import { createdByFilter, createdByFilterValue } from './created-by.filter.js'
+import type { ICurrencyFilter } from './currency.filter.js'
+import { currencyFilter, currencyFilterValue } from './currency.filter.js'
 import type { IDateRangeFilter } from './date-range.filter.js'
 import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter.js'
 import type { IDateFilter } from './date.filter.js'
@@ -85,6 +87,7 @@ import {
   countFilterOperators,
   createdAtFilterOperators,
   createdByFilterOperators,
+  currencyFilterOperators,
   dateFilterOperators,
   dateRangeFilterOperators,
   emailFilterOperators,
@@ -135,6 +138,7 @@ export const filterValue = z.union([
   treeFilterValue,
   parentFilterValue,
   ratingFilterValue,
+  currencyFilterValue,
   countFilterValue,
   lookupFilterValue,
   sumFilterValue,
@@ -163,6 +167,7 @@ export const operaotrs = z.union([
   treeFilterOperators,
   parentFilterOperators,
   ratingFilterOperators,
+  currencyFilterOperators,
   countFilterOperators,
   lookupFilterOperators,
   sumFilterOperators,
@@ -191,6 +196,7 @@ const filter = z.discriminatedUnion('type', [
   treeFilter,
   parentFilter,
   ratingFilter,
+  currencyFilter,
   countFilter,
   lookupFilter,
   sumFilter,
@@ -293,7 +299,14 @@ const convertStringFilter = (filter: IStringFilter | IEmailFilter | IColorFilter
 }
 
 const convertNumberFilter = (
-  filter: INumberFilter | IAutoIncrementFilter | IRatingFilter | ICountFilter | ISumFilter | IAverageFilter,
+  filter:
+    | INumberFilter
+    | IAutoIncrementFilter
+    | IRatingFilter
+    | ICountFilter
+    | ISumFilter
+    | IAverageFilter
+    | ICurrencyFilter,
 ): Option<CompositeSpecification> => {
   if (filter.value === undefined) {
     return None
@@ -486,6 +499,7 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
       return convertStringFilter(filter)
     case 'number':
     case 'rating':
+    case 'currency':
     case 'auto-increment':
     case 'count':
     case 'sum':

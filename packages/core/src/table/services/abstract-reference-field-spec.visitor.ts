@@ -10,6 +10,7 @@ import type {
   CountField,
   CreatedAtField,
   CreatedByField,
+  CurrencyField,
   DateField,
   DateRangeField,
   EmailField,
@@ -106,6 +107,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   abstract parent(field: ParentField): void
   collaborator(field: CollaboratorField): void {}
   rating(field: RatingField): void {}
+  currency(field: CurrencyField): void {}
   count(field: CountField): void {}
   sum(field: SumField): void {}
   average(field: AverageField): void {}

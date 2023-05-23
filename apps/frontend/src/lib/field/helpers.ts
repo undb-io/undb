@@ -34,6 +34,7 @@ export function getFilterOperators(type: IFieldType | undefined) {
 	} else if (
 		type === 'number' ||
 		type === 'rating' ||
+		type === 'currency' ||
 		type === 'count' ||
 		type === 'sum' ||
 		type === 'average' ||

@@ -49,6 +49,7 @@
 			type === 'number' ||
 			type === 'auto-increment' ||
 			type === 'sum' ||
+			type === 'currency' ||
 			type === 'count' ||
 			type === 'average'
 		) {

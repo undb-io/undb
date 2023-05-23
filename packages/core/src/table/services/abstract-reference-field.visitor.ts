@@ -8,6 +8,7 @@ import type {
   CountField,
   CreatedAtField,
   CreatedByField,
+  CurrencyField,
   DateField,
   DateRangeField,
   EmailField,
@@ -48,6 +49,7 @@ export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   abstract tree(field: TreeField): void
   abstract parent(field: ParentField): void
   rating(field: RatingField): void {}
+  currency(field: CurrencyField): void {}
   count(field: CountField): void {}
   sum(field: SumField): void {}
   average(field: AverageField): void {}

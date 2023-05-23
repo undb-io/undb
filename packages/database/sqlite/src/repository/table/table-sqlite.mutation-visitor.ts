@@ -54,6 +54,7 @@ import {
   ColorField,
   CountField,
   CreatedByField,
+  CurrencyField,
   DateField,
   DateRangeField,
   EmailField,
@@ -129,6 +130,8 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
         return this.em.getReference(ParentField, id)
       case 'rating':
         return this.em.getReference(RatingField, id)
+      case 'currency':
+        return this.em.getReference(CurrencyField, id)
       case 'count':
         return this.em.getReference(CountField, id)
       case 'lookup':

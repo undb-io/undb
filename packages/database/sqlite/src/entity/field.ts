@@ -24,6 +24,7 @@ import type {
   ICountFieldQuerySchema,
   ICreatedAtFieldQueryScheam,
   ICreatedByFieldQueryScheam,
+  ICurrencyFieldQuerySchema,
   IDateFieldQuerySchema,
   IDateRangeFieldQuerySchema,
   IEmailFieldQuerySchema,
@@ -54,6 +55,7 @@ import {
   CountField as CoreCountField,
   CreatedAtField as CoreCreatedAtField,
   CreatedByField as CoreCreatedByField,
+  CurrencyField as CoreCurrencyField,
   DateField as CoreDateField,
   DateRangeField as CoreDateRangeField,
   EmailField as CoreEmailField,
@@ -456,6 +458,34 @@ export class RatingField extends Field {
   }
 }
 
+@Entity({ discriminatorValue: 'currency' })
+export class CurrencyField extends Field {
+  constructor(table: Rel<Table>, field: CoreCurrencyField) {
+    super(table, field)
+  }
+
+  toDomain(): CoreCurrencyField {
+    return CoreCurrencyField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      type: 'currency',
+      description: this.description,
+      required: !!this.required,
+      display: !!this.display,
+    })
+  }
+
+  toQuery(): ICurrencyFieldQuerySchema {
+    return {
+      id: this.id,
+      name: this.name,
+      type: 'currency',
+      description: this.description,
+      required: !!this.required,
+      display: !!this.display,
+    }
+  }
+}
 @Entity({ discriminatorValue: 'bool' })
 export class BoolField extends Field {
   toDomain(): CoreBoolField {
@@ -999,6 +1029,7 @@ export type IField =
   | TreeField
   | ParentField
   | RatingField
+  | CurrencyField
   | CountField
   | LookupField
   | SumField
@@ -1025,6 +1056,7 @@ export const fieldEntities = [
   TreeField,
   ParentField,
   RatingField,
+  CurrencyField,
   CountField,
   LookupField,
   SumField,
