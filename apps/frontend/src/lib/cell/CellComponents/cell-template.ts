@@ -26,6 +26,7 @@ import {
 import cx from 'classnames'
 import { format } from 'date-fns'
 import htm from 'htm'
+import { isNumber } from 'lodash-es'
 
 type TemplateFunc = RevoGrid.CellTemplateFunc<VNode>
 type HyperFunc = RevoGrid.HyperFunc<VNode>
@@ -151,6 +152,7 @@ const number: TemplateFunc = (h, props) => {
 const currency: TemplateFunc = (h, props) => {
 	const html = htm.bind(h)
 	const number = props.model[props.prop] as number | undefined
+	if (!isNumber(number)) return null
 	const field = props.column.field as CurrencyField
 	return html`
 		<div class="flex items-center gap-1">
