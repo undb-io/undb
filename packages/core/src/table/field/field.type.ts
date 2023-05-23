@@ -116,6 +116,7 @@ import {
   currencyTypeSchema,
   updateCurrencyFieldSchema,
 } from './currency-field.type.js'
+import type { CurrencySymbol } from './currency-symbol.vo.js'
 import type { DateFieldValue } from './date-field-value.js'
 import type { DateField } from './date-field.js'
 import type { IDateFieldValue } from './date-field.type.js'
@@ -476,7 +477,7 @@ export type IColorField = IBaseField
 
 export type INumberField = IBaseField
 export type IRatingField = IBaseField & { max?: number }
-export type ICurrencyField = IBaseField
+export type ICurrencyField = IBaseField & { symbol: CurrencySymbol }
 
 export type IDateField = IBaseField & BaseDateField
 export type IDateRangeField = IBaseField & BaseDateField

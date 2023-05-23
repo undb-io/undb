@@ -38,6 +38,7 @@
 		tree: Tree,
 		parent: Parent,
 		rating: Rating,
+		currency: Number,
 		count: Readonly,
 		lookup: Readonly,
 		sum: Readonly,

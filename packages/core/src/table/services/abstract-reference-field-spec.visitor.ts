@@ -27,6 +27,7 @@ import type {
   TreeField,
   UpdatedAtField,
   UpdatedByField,
+  WithCurrencySymbol,
   WithDisplayFields,
   WithFieldDescription,
   WithFieldDisplay,
@@ -87,6 +88,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   withWidgesLayout(s: WithWidgesLayout): void {}
   rowHeightEqual(s: WithRowHeight): void {}
   ratingMaxEqual(s: WithRatingMax): void {}
+  currencySymbolEqual(s: WithCurrencySymbol): void {}
   id(field: IdField): void {}
   createdAt(field: CreatedAtField): void {}
   createdBy(field: CreatedByField): void {}

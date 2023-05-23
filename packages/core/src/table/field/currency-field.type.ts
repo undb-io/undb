@@ -1,5 +1,6 @@
 import * as z from 'zod'
 import { CurrencyField } from './currency-field.js'
+import { currencySymbol } from './currency-symbol.vo.js'
 import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
 
@@ -7,18 +8,24 @@ export const currencyTypeSchema = z.literal('currency')
 export type CurrencyFieldType = z.infer<typeof currencyTypeSchema>
 const currencyTypeObjectSchema = z.object({ [FIELD_TYPE_KEY]: currencyTypeSchema })
 
-export const createCurrencyFieldSchema = createBaseFieldSchema.merge(currencyTypeObjectSchema)
+const currencySymbolObject = z.object({ symbol: currencySymbol })
+
+export const createCurrencyFieldSchema = createBaseFieldSchema
+  .merge(currencyTypeObjectSchema)
+  .merge(currencySymbolObject)
 
 export type ICreateCurrencyFieldInput = z.infer<typeof createCurrencyFieldSchema>
 
-export const updateCurrencyFieldSchema = updateBaseFieldSchema.merge(currencyTypeObjectSchema)
+export const updateCurrencyFieldSchema = updateBaseFieldSchema
+  .merge(currencyTypeObjectSchema)
+  .merge(currencySymbolObject.partial())
 
 export type IUpdateCurrencyFieldInput = z.infer<typeof updateCurrencyFieldSchema>
 
-export const currencyFieldQuerySchema = baseFieldQuerySchema.merge(currencyTypeObjectSchema)
+export const currencyFieldQuerySchema = baseFieldQuerySchema.merge(currencyTypeObjectSchema).merge(currencySymbolObject)
 export type ICurrencyFieldQuerySchema = z.infer<typeof currencyFieldQuerySchema>
 
-export const currencyFieldValue = z.number().nonnegative().nullable()
+export const currencyFieldValue = z.number().nullable()
 export type ICurrencyFieldValue = z.infer<typeof currencyFieldValue>
 
 export const createCurrencyFieldValue = currencyFieldValue

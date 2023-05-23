@@ -25,6 +25,7 @@ import type {
   ICreatedAtFieldQueryScheam,
   ICreatedByFieldQueryScheam,
   ICurrencyFieldQuerySchema,
+  ICurrencySymbol,
   IDateFieldQuerySchema,
   IDateRangeFieldQuerySchema,
   IEmailFieldQuerySchema,
@@ -462,13 +463,18 @@ export class RatingField extends Field {
 export class CurrencyField extends Field {
   constructor(table: Rel<Table>, field: CoreCurrencyField) {
     super(table, field)
+    this.symbol = field.symbol.symbol
   }
+
+  @Property({ type: 'string' })
+  symbol: ICurrencySymbol
 
   toDomain(): CoreCurrencyField {
     return CoreCurrencyField.unsafeCreate({
       id: this.id,
       name: this.name,
       type: 'currency',
+      symbol: this.symbol,
       description: this.description,
       required: !!this.required,
       display: !!this.display,
@@ -480,6 +486,7 @@ export class CurrencyField extends Field {
       id: this.id,
       name: this.name,
       type: 'currency',
+      symbol: this.symbol,
       description: this.description,
       required: !!this.required,
       display: !!this.display,

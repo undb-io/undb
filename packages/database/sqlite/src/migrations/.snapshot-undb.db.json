@@ -216,6 +216,7 @@
             "tree",
             "parent",
             "rating",
+            "currency",
             "count",
             "lookup",
             "sum",
@@ -299,6 +300,15 @@
           "primary": false,
           "nullable": true,
           "mappedType": "integer"
+        },
+        "symbol": {
+          "name": "symbol",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         },
         "count_reference_field_id": {
           "name": "count_reference_field_id",

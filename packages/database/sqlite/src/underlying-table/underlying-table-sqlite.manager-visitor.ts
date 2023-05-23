@@ -64,6 +64,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   ratingMaxEqual(s: WithRatingMax): void {
     this.qb = this.#qb.update(s.field.id.value, s.max).where(s.field.id.value, '>', s.max).from(this.tableName)
   }
+  currencySymbolEqual(): void {}
   rowHeightEqual(): void {}
   newField(s: WithNewField): void {
     const field = s.field

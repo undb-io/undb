@@ -127,6 +127,7 @@ export const icons: Record<IFieldType, string> = {
 	tree: 'hierarchy',
 	parent: 'binary-tree',
 	rating: 'stars',
+	currency: 'currency-yuan',
 	count: 'calculator',
 	lookup: 'search',
 	sum: 'sum',

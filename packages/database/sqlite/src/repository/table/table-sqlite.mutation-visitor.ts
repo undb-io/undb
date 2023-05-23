@@ -1,6 +1,6 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import type { WithChartAggregateSpec, WithTimeFormat, WithoutWidgeSpecification } from '@undb/core'
+import type { WithChartAggregateSpec, WithCurrencySymbol, WithTimeFormat, WithoutWidgeSpecification } from '@undb/core'
 import {
   type BaseField,
   type ITableSpecVisitor,
@@ -374,6 +374,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   ratingMaxEqual(s: WithRatingMax): void {
     const field = this.em.getReference(RatingField, s.field.id.value)
     wrap(field).assign({ max: s.max })
+    this.em.persist(field)
+  }
+  currencySymbolEqual(s: WithCurrencySymbol): void {
+    const field = this.em.getReference(CurrencyField, s.field.id.value)
+    wrap(field).assign({ symbol: s.symbol.symbol })
     this.em.persist(field)
   }
   withWidge(s: WithWidgeSepecification): void {
