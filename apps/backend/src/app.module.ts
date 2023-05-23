@@ -1,7 +1,7 @@
 import { MikroORM } from '@mikro-orm/core'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import type { OnModuleInit } from '@nestjs/common'
-import { Module } from '@nestjs/common'
+import { Logger, Module } from '@nestjs/common'
 import type { ConfigType } from '@nestjs/config'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { EntityManager, createConfig } from '@undb/sqlite'
@@ -56,6 +56,8 @@ import { TrpcModule } from './trpc/trpc.module.js'
   ],
 })
 export class AppModule implements OnModuleInit {
+  private readonly logger = new Logger(AppModule.name)
+
   constructor(
     private readonly orm: MikroORM,
     private readonly userService: UserService,
@@ -65,7 +67,9 @@ export class AppModule implements OnModuleInit {
   async onModuleInit() {
     const em = this.orm.em as EntityManager
     if (this.config.seed) {
+      this.logger.log('seeding data...')
       await em.getConnection().loadFile(path.resolve(process.cwd(), '../../data/data.sql')).catch(console.error)
+      this.logger.log('seeding data successfully!')
     } else {
       await this.orm.getMigrator().up()
     }
