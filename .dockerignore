@@ -9,3 +9,5 @@ node_modules
 docker
 out
 .undb
+**/.svelte-kit
+.turbo
