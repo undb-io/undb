@@ -1,7 +1,7 @@
 import { CompositeSpecification } from '@undb/domain'
 import { Ok, type Result } from 'oxide.ts'
 import { type Table } from '../table.js'
-import { DEFAULT_TABLE_EMOJI, TableEmoji } from '../value-objects/table-emoji.vo.js'
+import { TableEmoji } from '../value-objects/table-emoji.vo.js'
 import type { ITableSpecVisitor } from './interface.js'
 
 export class WithTableEmoji extends CompositeSpecification {
@@ -9,7 +9,7 @@ export class WithTableEmoji extends CompositeSpecification {
     super()
   }
 
-  static fromString(emoji: string = DEFAULT_TABLE_EMOJI): WithTableEmoji {
+  static fromString(emoji: string | null): WithTableEmoji {
     return new WithTableEmoji(new TableEmoji(emoji))
   }
 

@@ -1,12 +1,12 @@
 import { ValueObject } from '@undb/domain'
 import { z } from 'zod'
 
-export const tableEmojiSchema = z.string()
+export const tableEmojiSchema = z.string().nullable().optional()
 
-export const DEFAULT_TABLE_EMOJI = '1f44d'
+export type ITableEmojiSchema = z.infer<typeof tableEmojiSchema>
 
-export class TableEmoji extends ValueObject<string> {
-  constructor(emoji: string) {
-    super({ value: tableEmojiSchema.parse(emoji) })
+export class TableEmoji extends ValueObject<ITableEmojiSchema> {
+  constructor(emoji?: string | null) {
+    super({ value: tableEmojiSchema.parse(emoji) ?? null })
   }
 }

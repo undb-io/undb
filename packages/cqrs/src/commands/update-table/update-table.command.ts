@@ -6,7 +6,7 @@ import type { IUpdateTableCommandInput } from './update-table.command.interface.
 export class UpdateTableCommand extends Command implements IUpdateTableCommandInput {
   public readonly id: string
   public readonly name?: string
-  public readonly emoji?: string
+  public readonly emoji?: string | null
   public readonly schema?: IUpdateTableSchemaSchema
 
   constructor(props: CommandProps<IUpdateTableCommandInput>) {

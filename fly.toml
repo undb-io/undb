@@ -7,9 +7,6 @@ mounts = []
 primary_region = "lax"
 processes = []
 
-[build]
-  image = "ghcr.io/undb-xyz/undb:latest"
-
 [[services]]
   internal_port = 4000
   processes = ["app"]
@@ -31,4 +28,4 @@ processes = []
 [env]
   PUBLIC_UNDB_ADMIN_EMAIL = "test@example.com"
   PUBLIC_UNDB_ADMIN_PASSWORD = "123456"
-  UNDB_LITESTREAM_REPLICA_URL = "s3://undb/undb.db"
+  UNDB_SEED = "true"

@@ -97,7 +97,7 @@
 		selectable: true,
 		select: (info: { start: Date; end: Date }) => {
 			$createRecordInitial = {
-				[field.id.value]: [format(info.start, 'yyyy-MM-dd'), format(addDays(info.end, -1), 'yyyy-MM-dd')],
+				[field.id.value]: [format(info.start, 'yyyy-MM-dd'), format(info.end, 'yyyy-MM-dd')],
 			}
 			createRecordModal.open()
 		},

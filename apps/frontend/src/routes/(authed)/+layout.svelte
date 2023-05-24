@@ -173,7 +173,7 @@
 	</TransitionRoot>
 
 	<div class="hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-72 lg:flex-col h-screen">
-		<div class="flex flex-1 grow flex-col gap-y-0 overflow-y-hidden border-r border-gray-200 bg-white h-full">
+		<div class="flex flex-1 grow flex-col gap-y-0 overflow-hidden border-r border-gray-200 bg-white h-full">
 			<div class="flex h-16 shrink-0 items-center px-6 gap-2">
 				<img class="h-6 w-auto" src={logo} alt="undb" />
 				<P size="lg" class="font-semibold select-none !text-blue-600">undb</P>
