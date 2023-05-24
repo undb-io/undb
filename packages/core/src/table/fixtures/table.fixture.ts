@@ -12,7 +12,7 @@ export const createTestTable = (...specs: TableCompositeSpecificaiton[]) => {
     .unwrap()
     .and(WithTableName.fromString('name'))
     .and(new WithTableViews(new Views([])))
-    .and(WithTableEmoji.fromString())
+    .and(WithTableEmoji.fromString(null))
     .and(new WithNewField(FieldFactory.create({ type: 'string', name: 'field1' }) as StringField))
 
   for (const s of specs) {
