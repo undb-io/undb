@@ -11,7 +11,7 @@ export class Table extends BaseEntity {
     super()
     this.id = table.id.value
     this.name = table.name.value
-    this.emoji = table.emoji.unpack()
+    this.emoji = table.emoji.unpack() ?? ''
     this.viewsOrder = table.viewsOrder.toJSON()
   }
 

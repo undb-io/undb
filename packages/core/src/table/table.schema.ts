@@ -34,7 +34,7 @@ export type ICreateTableInput_internal = z.infer<typeof createTableInput_interna
 export const queryTable = z.object({
   id: z.string(),
   name: z.string(),
-  emoji: tableEmojiSchema,
+  emoji: tableEmojiSchema.optional(),
   schema: querySchemaSchema,
   views: queryViews,
   viewsOrder: viewsOrderSchema.optional(),
@@ -43,7 +43,7 @@ export const queryTable = z.object({
 export const updateTableSchema = z
   .object({
     name: tableNameSchema,
-    emoji: tableEmojiSchema,
+    emoji: tableEmojiSchema.optional(),
     schema: updateTableSchemaSchema,
   })
   .partial()
@@ -52,7 +52,7 @@ export const createUpdateTableSchema = (table: Table) => {
   return z
     .object({
       name: tableNameSchema.default(table.name.value),
-      emoji: tableEmojiSchema.default(table.emoji.unpack()),
+      emoji: tableEmojiSchema.default(table.emoji.unpack() ?? null),
       schema: updateTableSchemaSchema.default(table.schema.fields.map((field) => field.json as any)),
     })
     .partial()

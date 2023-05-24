@@ -41,7 +41,7 @@ export class TableFactory {
       .and(WithTableSchema.unsafeFrom(input.schema))
       .and(WithTableViews.from(input.views))
       .and(WithViewsOrder.fromArray(input.viewsOrder ?? []))
-      .and(WithTableEmoji.fromString(input.emoji))
+      .and(WithTableEmoji.fromString(input.emoji ?? null))
 
     return this.create(spec)
   }
