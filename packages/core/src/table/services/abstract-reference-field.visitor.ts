@@ -15,6 +15,7 @@ import type {
   IFieldVisitor,
   IdField,
   LookupField,
+  MultiSelectField,
   NumberField,
   ParentField,
   RatingField,
@@ -45,6 +46,7 @@ export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   date(field: DateField): void {}
   dateRange(field: DateRangeField): void {}
   select(field: SelectField): void {}
+  multiSelect(field: MultiSelectField): void {}
   abstract reference(field: ReferenceField): void
   abstract tree(field: TreeField): void
   abstract parent(field: ParentField): void

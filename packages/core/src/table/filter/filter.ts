@@ -68,6 +68,7 @@ import { emailFilter, emailFilterValue } from './email.filter.js'
 import type { IIdFilter } from './id.filter.js'
 import { idFilter, idFilterValue } from './id.filter.js'
 import { lookupFilter, lookupFilterValue } from './lookup.filter.js'
+import { multiSelectFilter, multiSelectFilterValue } from './multi-select.filter.js'
 import type { INumberFilter } from './number.filter.js'
 import { numberFilter, numberFilterValue } from './number.filter.js'
 import {
@@ -93,6 +94,7 @@ import {
   emailFilterOperators,
   idFilterOperators,
   lookupFilterOperators,
+  multiSelectFilterOperators,
   numberFilterOperators,
   parentFilterOperators,
   ratingFilterOperators,
@@ -133,6 +135,7 @@ export const filterValue = z.union([
   dateFilterValue,
   dateRangeFilterValue,
   selectFilterValue,
+  multiSelectFilterValue,
   boolFilterValue,
   referenceFilterValue,
   treeFilterValue,
@@ -162,6 +165,7 @@ export const operaotrs = z.union([
   dateFilterOperators,
   dateRangeFilterOperators,
   selectFilterOperators,
+  multiSelectFilterOperators,
   boolFilterOperators,
   referenceFilterOperators,
   treeFilterOperators,
@@ -191,6 +195,7 @@ const filter = z.discriminatedUnion('type', [
   dateFilter,
   dateRangeFilter,
   selectFilter,
+  multiSelectFilter,
   boolFilter,
   referenceFilter,
   treeFilter,
@@ -517,6 +522,8 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
       return convertDateRangeFilter(filter)
     case 'select':
       return convertSelectFilter(filter)
+    case 'multi-select':
+      throw new Error('convert filter')
     case 'bool':
       return convertBoolFilter(filter)
     case 'reference':

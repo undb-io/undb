@@ -1,15 +1,15 @@
+import { CompositeSpecification } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { Option, OptionKey } from '../../option/index.js'
 import { Options } from '../../option/index.js'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
-import type { SelectField } from '../select-field.js'
-import { BaseFieldSpecification } from './base-field.specification.js'
+import type { IAbstractSelectField } from '../field.type.js'
 
-export class WithOptions extends BaseFieldSpecification<SelectField> {
-  constructor(field: SelectField, public readonly options: Options) {
-    super(field)
+export class WithOptions extends CompositeSpecification<Table, ITableSpecVisitor> {
+  constructor(public readonly field: IAbstractSelectField, public readonly options: Options) {
+    super()
   }
 
   isSatisfiedBy(): boolean {
@@ -27,9 +27,9 @@ export class WithOptions extends BaseFieldSpecification<SelectField> {
   }
 }
 
-export class WithOption extends BaseFieldSpecification<SelectField> {
-  constructor(field: SelectField, public readonly option: Option) {
-    super(field)
+export class WithOption extends CompositeSpecification<Table, ITableSpecVisitor> {
+  constructor(public readonly field: IAbstractSelectField, public readonly option: Option) {
+    super()
   }
 
   isSatisfiedBy(): boolean {
@@ -48,9 +48,9 @@ export class WithOption extends BaseFieldSpecification<SelectField> {
     return Ok(undefined)
   }
 }
-export class WithNewOption extends BaseFieldSpecification<SelectField> {
-  constructor(field: SelectField, public readonly option: Option) {
-    super(field)
+export class WithNewOption extends CompositeSpecification<Table, ITableSpecVisitor> {
+  constructor(public readonly field: IAbstractSelectField, public readonly option: Option) {
+    super()
   }
 
   isSatisfiedBy(): boolean {
@@ -68,9 +68,9 @@ export class WithNewOption extends BaseFieldSpecification<SelectField> {
   }
 }
 
-export class WithoutOption extends BaseFieldSpecification<SelectField> {
-  constructor(field: SelectField, public readonly optionKey: OptionKey) {
-    super(field)
+export class WithoutOption extends CompositeSpecification<Table, ITableSpecVisitor> {
+  constructor(public readonly field: IAbstractSelectField, public readonly optionKey: OptionKey) {
+    super()
   }
 
   isSatisfiedBy(): boolean {

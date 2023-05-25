@@ -17,6 +17,7 @@ import {
   UnderlyingEmailColumn,
   UnderlyingIdColumn,
   UnderlyingLookupColumn,
+  UnderlyingMultiSelectColumn,
   UnderlyingNumberColumn,
   UnderlyingParentColumn,
   UnderlyingRatingColumn,
@@ -62,6 +63,8 @@ export class UnderlyingColumnFactory {
         return [new UnderlyingDateRangeFromColumn(field, tableName), new UnderlyingDateRangeToColumn(field, tableName)]
       case 'select':
         return new UnderlyingSelectColumn(field, tableName)
+      case 'multi-select':
+        return new UnderlyingMultiSelectColumn(field, tableName)
       case 'collaborator':
         return new UnderlyingCollaboratorColumn(field, tableName)
       case 'reference':

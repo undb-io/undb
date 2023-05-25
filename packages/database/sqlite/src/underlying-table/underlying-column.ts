@@ -13,6 +13,7 @@ import type {
   EmailField,
   Field,
   LookupField,
+  MultiSelectField,
   NumberField,
   ParentField,
   RatingField,
@@ -252,6 +253,12 @@ export class UnderlyingDateRangeToColumn extends UnderlyingFieldColumn<DateRange
 export class UnderlyingSelectColumn extends UnderlyingFieldColumn<SelectField> {
   build(tb: Knex.TableBuilder): void {
     tb.string(this.name)
+  }
+}
+
+export class UnderlyingMultiSelectColumn extends UnderlyingFieldColumn<MultiSelectField> {
+  build(tb: Knex.TableBuilder): void {
+    tb.json(this.name)
   }
 }
 

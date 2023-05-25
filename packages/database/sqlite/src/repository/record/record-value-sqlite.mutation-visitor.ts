@@ -19,6 +19,7 @@ import type {
   IFieldValueVisitor,
   IdFieldValue,
   LookupFieldValue,
+  MultiSelectFieldValue,
   NumberFieldValue,
   ParentFieldValue,
   RatingFieldValue,
@@ -116,6 +117,9 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
     this.setData(this.fieldId + '_to', value.to.into(null)?.toISOString() ?? null)
   }
   select(value: SelectFieldValue): void {
+    this.setData(this.fieldId, value.unpack())
+  }
+  multiSelect(value: MultiSelectFieldValue): void {
     this.setData(this.fieldId, value.unpack())
   }
   attachment(value: AttachmentFieldValue): void {
