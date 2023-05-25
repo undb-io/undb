@@ -8,6 +8,7 @@
 	import { Button, Toast } from 'flowbite-svelte'
 	import { slide } from 'svelte/transition'
 	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
+	import { UNCATEGORIZED } from './kanban.constants'
 
 	const flipDurationMs = 200
 
@@ -51,7 +52,7 @@
 			$updateRecord.mutate({
 				tableId: $table.id.value,
 				id: e.detail.info.id,
-				values: { [field.id.value]: value },
+				values: { [field.id.value]: value === UNCATEGORIZED ? null : value },
 			})
 		}
 	}
