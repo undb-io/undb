@@ -313,8 +313,16 @@ export class Table {
     if (!field) throw new FieldNotFoundException()
 
     const duplicated = field.duplicate(this.schema.getNextFieldName(field.name.value))
+    const spec = new WithDuplicatedField(duplicated, field, includesValues)
+    const specs: Option<TableCompositeSpecificaiton>[] = [Some(spec)]
+    for (const view of this.views.views) {
+      const viewFieldsOrder = this.mustGetFielsOrder(view).addAt(duplicated.id.value, undefined)
+      const vo = new WithViewFieldsOrder(viewFieldsOrder, view)
+      vo.mutate(this).unwrap()
+      specs.push(Some(vo))
+    }
 
-    return new WithDuplicatedField(duplicated, field, includesValues)
+    return andOptions(...specs).unwrap()
   }
 
   public removeField(id: string): TableCompositeSpecificaiton {
