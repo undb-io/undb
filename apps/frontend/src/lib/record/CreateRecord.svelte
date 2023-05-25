@@ -11,6 +11,7 @@
 	import { t } from '$lib/i18n'
 	import { keys } from 'lodash-es'
 	import { pick } from 'lodash-es'
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -85,6 +86,7 @@
 			{/each}
 		</div>
 	</form>
+	<SuperDebug data={$form} />
 
 	<svelte:fragment slot="footer">
 		<div class="w-full flex justify-end gap-2">

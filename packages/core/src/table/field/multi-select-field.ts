@@ -8,7 +8,7 @@ import type { TableCompositeSpecificaiton } from '../specifications/interface.js
 import { AbstractSelectField } from './field.base.js'
 import type { IMultiSelectField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
-import type { MultiSelectFieldValue } from './multi-select-field-value.js'
+import { MultiSelectFieldValue } from './multi-select-field-value.js'
 import type {
   ICreateMultiSelectFieldSchema,
   ICreateMultiSelectFieldValue,
@@ -49,14 +49,13 @@ export class MultiSelectField extends AbstractSelectField<IMultiSelectField> {
   }
 
   createValue(value: ICreateMultiSelectFieldValue): MultiSelectFieldValue {
-    throw new Error('wtf')
-    // if (value === null) {
-    //   return new MultiSelectFieldValue(null)
-    // }
+    if (value === null) {
+      return new MultiSelectFieldValue(null)
+    }
 
-    // const option = this.options.getById(value).unwrap()
+    const options = value.map((optionId) => this.options.getById(optionId).unwrap())
 
-    // return MultiSelectFieldValue.fromOption(option)
+    return MultiSelectFieldValue.fromOptions(options)
   }
 
   accept(visitor: IFieldVisitor): void {
@@ -64,6 +63,6 @@ export class MultiSelectField extends AbstractSelectField<IMultiSelectField> {
   }
 
   get valueSchema() {
-    return this.required ? z.string() : z.string().nullable()
+    return this.required ? z.string().array().min(1) : z.string().array().nullable()
   }
 }

@@ -4,6 +4,8 @@ import type { RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
 import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime'
 import {
 	CurrencyField,
+	MultiSelectField,
+	Option,
 	isImage,
 	type CollaboratorField,
 	type CreatedAtField,
@@ -301,6 +303,18 @@ const select: TemplateFunc = (h, props) => {
 	return optionComponent(h, option.toJSON())
 }
 
+const multiSelect: TemplateFunc = (h, props) => {
+	const html = htm.bind(h)
+	const field = props.column.field as MultiSelectField
+	const value = props.model[props.prop] as string[] | undefined
+	const options = value
+		? (value.map((optionId) => field.options.getById(optionId).into()).filter(Boolean) as Option[])
+		: undefined
+	if (!options) return null
+
+	return html` <div class="flex item-centers">${options.map((option) => optionComponent(h, option.toJSON()))}</div> `
+}
+
 const parent: TemplateFunc = (h, props) => {
 	const unpacked = props.model[props.prop] as string | undefined
 	if (!unpacked) return null
@@ -370,6 +384,7 @@ export const cellTemplateMap: Record<IFieldType, TemplateFunc> = {
 	rating,
 	reference,
 	select,
+	'multi-select': multiSelect,
 	string,
 	sum,
 	currency,

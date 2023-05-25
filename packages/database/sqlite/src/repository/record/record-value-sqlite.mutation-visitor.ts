@@ -120,7 +120,7 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
     this.setData(this.fieldId, value.unpack())
   }
   multiSelect(value: MultiSelectFieldValue): void {
-    this.setData(this.fieldId, value.unpack())
+    this.setData(this.fieldId, JSON.stringify(value.unpack()))
   }
   attachment(value: AttachmentFieldValue): void {
     this.addJobs(async () => {

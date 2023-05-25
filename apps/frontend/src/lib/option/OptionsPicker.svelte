@@ -1,11 +1,11 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import type { SelectField } from '@undb/core'
+	import type { MultiSelectField, SelectField } from '@undb/core'
 	import { Button, Dropdown, Checkbox } from 'flowbite-svelte'
 	import Option from './Option.svelte'
 	import { t } from '$lib/i18n'
 
-	export let field: SelectField
+	export let field: SelectField | MultiSelectField
 
 	export let value: string[] | undefined = []
 
@@ -29,7 +29,7 @@
 		</span>
 	{/if}
 </Button>
-<Dropdown bind:open placement="bottom-start" class="w-full">
+<Dropdown bind:open placement="bottom-start" class="w-full min-w-[200px]">
 	<div class="w-full">
 		{#each options as option}
 			{@const select = selected.some((s) => s.key.value === option.key.value)}
