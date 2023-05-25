@@ -15,9 +15,18 @@ import type {
   IUpdateSelectFieldInput,
   SelectFieldType,
 } from './select-field.type.js'
+import { FieldId } from './value-objects/field-id.vo.js'
 
 export class SelectField extends AbstractSelectField<ISelectField> {
   type: SelectFieldType = 'select'
+  duplicate(name: string): SelectField {
+    return SelectField.create({
+      ...this.json,
+      options: this.options.options.map((option) => option.duplicate().toJSON()),
+      id: FieldId.createId(),
+      name,
+    })
+  }
 
   override get json() {
     return {

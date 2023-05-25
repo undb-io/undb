@@ -7,6 +7,7 @@ import type {
   WithCurrencySymbol,
   WithDisplayFields,
   WithDisplayType,
+  WithDuplicatedField,
   WithFieldDescription,
   WithFieldDisplay,
   WithFieldName,
@@ -51,6 +52,9 @@ import type { Table } from '../../entity/index.js'
 
 export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   constructor(public qb: QueryBuilder<Table>) {}
+  withDuplicatedField(s: WithDuplicatedField): void {
+    throw new Error('Method not implemented.')
+  }
   withoutWidge(s: WithoutWidgeSpecification): void {
     throw new Error('Method not implemented.')
   }

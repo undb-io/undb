@@ -4,6 +4,7 @@ import { z } from 'zod'
 import type { IParentFilterOperator } from '../filter/operators.js'
 import type { IParentFilter } from '../filter/parent.filter.js'
 import { AbstractLookingField, AbstractReferenceField } from './field.base.js'
+import { FieldCannotBeDuplicated } from './field.errors.js'
 import type { IParentField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { ParentFieldValue } from './parent-field-value.js'
@@ -12,6 +13,9 @@ import type { IUpdateReferenceFieldInput } from './reference-field.type.js'
 import { DisplayFields, FieldId } from './value-objects/index.js'
 
 export class ParentField extends Mixin(AbstractReferenceField<IParentField>, AbstractLookingField<IParentField>) {
+  duplicate(name: string): ParentField {
+    throw new FieldCannotBeDuplicated()
+  }
   type: ParentFieldType = 'parent'
 
   override get json() {

@@ -9,8 +9,17 @@ import type {
 import { BaseField } from './field.base.js'
 import type { IAttachmentField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
+import { FieldId } from './value-objects/field-id.vo.js'
 
 export class AttachmentField extends BaseField<IAttachmentField> {
+  duplicate(name: string): AttachmentField {
+    return AttachmentField.create({
+      ...super.json,
+      id: FieldId.createId(),
+      name,
+    })
+  }
+
   type: AttachmentFieldType = 'attachment'
 
   override get primitive() {

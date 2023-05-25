@@ -13,6 +13,7 @@
 	import { createRecordModal, createTableModal } from '$lib/store/modal'
 	import UpdateOption from '$lib/option/UpdateOption.svelte'
 	import VirsualizationModal from '$lib/virsualization/VirsualizationModal.svelte'
+	import DuplicateField from '$lib/field/DuplicateField.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -55,6 +56,11 @@
 {#if $field}
 	{#key $field}
 		<UpdateField field={$field} data={data.updateField} />
+	{/key}
+{/if}
+{#if $field}
+	{#key $field}
+		<DuplicateField field={$field} />
 	{/key}
 {/if}
 

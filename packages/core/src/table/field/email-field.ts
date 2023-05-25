@@ -5,8 +5,16 @@ import type { EmailFieldType, ICreateEmailFieldInput, ICreateEmailFieldValue } f
 import { BaseField } from './field.base.js'
 import type { IEmailField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
+import { FieldId } from './value-objects/field-id.vo.js'
 
 export class EmailField extends BaseField<IEmailField> {
+  duplicate(name: string): EmailField {
+    return EmailField.create({
+      ...this.json,
+      id: FieldId.createId(),
+      name,
+    })
+  }
   type: EmailFieldType = 'email'
 
   override get primitive() {

@@ -25,13 +25,20 @@ export class ReferenceField extends Mixin(
   AbstractReferenceField<IReferenceField>,
   AbstractLookingField<IReferenceField>,
 ) {
+  duplicate(name: string): ReferenceField {
+    return ReferenceField.create({
+      ...this.json,
+      id: FieldId.createId(),
+      name,
+    })
+  }
   type: ReferenceFieldType = 'reference'
 
   override get json() {
     return {
       ...super.json,
       displayFieldIds: this.displayFieldIds.map((id) => id.value),
-      foreignTableId: this.foreignTableId.into(null),
+      foreignTableId: this.foreignTableId.into(undefined),
     }
   }
 

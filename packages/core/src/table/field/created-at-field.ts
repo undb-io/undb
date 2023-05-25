@@ -13,12 +13,16 @@ import type {
   IUpdateCreatedAtFieldInput,
 } from './created-at-field.type.js'
 import { AbstractDateField } from './field.base.js'
+import { FieldCannotBeDuplicated } from './field.errors.js'
 import type { ICreatedAtField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { DateFormat } from './value-objects/date-format.vo.js'
 import { TimeFormat } from './value-objects/time-format.vo.js'
 
 export class CreatedAtField extends AbstractDateField<ICreatedAtField> {
+  duplicate(name: string): CreatedAtField {
+    throw new FieldCannotBeDuplicated()
+  }
   type: CreatedAtFieldType = 'created-at'
 
   override get json() {

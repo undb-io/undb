@@ -17,6 +17,14 @@ import type {
 import { DisplayFields, FieldId } from './value-objects/index.js'
 
 export class TreeField extends Mixin(AbstractReferenceField<ITreeField>, AbstractLookingField<ITreeField>) {
+  duplicate(name: string): TreeField {
+    return TreeField.create({
+      ...this.json,
+      id: FieldId.createId(),
+      name,
+    })
+  }
+
   type: TreeFieldType = 'tree'
   override get json() {
     return {

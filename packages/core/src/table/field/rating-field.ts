@@ -15,8 +15,17 @@ import type {
   RatingFieldType,
 } from './rating-field.type.js'
 import { WithRatingMax } from './specifications/rating-field.specification.js'
+import { FieldId } from './value-objects/field-id.vo.js'
 
 export class RatingField extends BaseField<IRatingField> {
+  duplicate(name: string): RatingField {
+    return RatingField.create({
+      ...this.json,
+      id: FieldId.createId(),
+      name,
+    })
+  }
+
   type: RatingFieldType = 'rating'
 
   override get json() {

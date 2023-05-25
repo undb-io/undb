@@ -13,16 +13,25 @@ import type {
 } from './currency-field.type.js'
 import { CurrencySymbol } from './currency-symbol.vo.js'
 import { BaseField } from './field.base.js'
-import type { ICurrencyField } from './field.type.js'
+import type { Field, ICurrencyField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { WithCurrencySymbol } from './specifications/currency-field.specification.js'
+import { FieldId } from './value-objects/field-id.vo.js'
 
 export class CurrencyField extends BaseField<ICurrencyField> {
+  duplicate(name: string): Field {
+    return CurrencyField.create({
+      ...this.json,
+      id: FieldId.createId(),
+      name,
+    })
+  }
   type: CurrencyFieldType = 'currency'
 
   override get json() {
     return {
       ...super.json,
+      symbol: this.symbol.symbol,
     }
   }
 

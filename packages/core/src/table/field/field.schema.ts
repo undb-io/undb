@@ -1,5 +1,7 @@
+import { z } from 'zod'
 import type { Table } from '../table.js'
 import { createFieldSchema, updateFieldSchema } from './field.type.js'
+import { fieldIdSchema } from './value-objects/field-id.schema.js'
 
 export const createCreateFieldSchema = (table: Table) => {
   return createFieldSchema.refine(
@@ -30,3 +32,10 @@ export const createUpdateFieldSchema = (table: Table) => {
     { message: 'A field with this name already exists.', path: ['name'] },
   )
 }
+
+export const duplicateFieldSchema = z.object({
+  id: fieldIdSchema,
+  includesValues: z.boolean().optional(),
+})
+
+export type IDuplicatedFieldSchema = z.infer<typeof duplicateFieldSchema>

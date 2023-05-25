@@ -15,9 +15,18 @@ import { AbstractDateField } from './field.base.js'
 import type { IDateRangeField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { DateFormat } from './value-objects/date-format.vo.js'
+import { FieldId } from './value-objects/field-id.vo.js'
 import { TimeFormat } from './value-objects/time-format.vo.js'
 
 export class DateRangeField extends AbstractDateField<IDateRangeField> {
+  duplicate(name: string): DateRangeField {
+    return DateRangeField.create({
+      ...this.json,
+      id: FieldId.createId(),
+      name,
+    })
+  }
+
   type: DateRangeType = 'date-range'
 
   override get json() {

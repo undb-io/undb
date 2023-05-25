@@ -1,9 +1,11 @@
 import {
   CreateFieldCommand,
-  createFieldCommandInput,
   DeleteFieldCommand,
-  deleteFieldCommandInput,
+  DuplicateFieldCommand,
   UpdateFieldCommand,
+  createFieldCommandInput,
+  deleteFieldCommandInput,
+  duplicateFieldCommandInput,
   updateFieldCommandInput,
 } from '@undb/cqrs'
 import type { ICommandBus } from '@undb/domain'
@@ -26,6 +28,13 @@ export const createFieldRouter = (procedure: typeof publicProcedure) => (command
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new UpdateFieldCommand(input)
+        return commandBus.execute(cmd)
+      }),
+    duplicate: procedure
+      .input(duplicateFieldCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new DuplicateFieldCommand(input)
         return commandBus.execute(cmd)
       }),
     delete: procedure

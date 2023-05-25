@@ -11,10 +11,18 @@ import type {
   IUpdateCollaboratorFieldInput,
 } from './collaborator-field.type.js'
 import { BaseField } from './field.base.js'
-import type { ICollaboratorField } from './field.type.js'
+import type { Field, ICollaboratorField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
+import { FieldId } from './value-objects/field-id.vo.js'
 
 export class CollaboratorField extends BaseField<ICollaboratorField> {
+  duplicate(name: string): Field {
+    return CollaboratorField.create({
+      ...this.json,
+      id: FieldId.createId(),
+      name,
+    })
+  }
   type: CollaboratorFieldType = 'collaborator'
 
   get multiple() {

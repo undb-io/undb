@@ -57,6 +57,9 @@ export const createFieldModal = createModal(CREATE_FIELD)
 const UPDATE_FIELD = Symbol('UPDATE_FIELD')
 export const updateFieldModal = createModal(UPDATE_FIELD)
 
+const DUPLICATE_FIELD = Symbol('DUPLICATE_FIELD')
+export const duplicateFieldModal = createModal(DUPLICATE_FIELD)
+
 const VIRSUALIZATION_DETAIL = Symbol('VIRSUALIZATION_DETAIL')
 export const virsualizationModal = createModal(VIRSUALIZATION_DETAIL)
 

@@ -2,7 +2,7 @@
 	import cx from 'classnames'
 	import { invalidate } from '$app/navigation'
 	import { currentFieldId, getField, getTable, getView } from '$lib/store/table'
-	import { confirmDeleteField, updateFieldModal } from '$lib/store/modal'
+	import { confirmDeleteField, duplicateFieldModal, updateFieldModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import type { ISortDirection } from '@undb/core'
 	import { DropdownDivider, DropdownItem, Modal, Toast } from 'flowbite-svelte'
@@ -67,6 +67,15 @@
 	<i class="ti ti-edit text-sm" />
 	<span>{$t('Update Field')}</span>
 </DropdownItem>
+{#if !$field?.system}
+	<DropdownItem
+		class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium"
+		on:click={() => duplicateFieldModal.open()}
+	>
+		<i class="ti ti-copy text-sm" />
+		<span>{$t('Duplicate Field')}</span>
+	</DropdownItem>
+{/if}
 
 <DropdownDivider />
 

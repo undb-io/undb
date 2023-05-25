@@ -2,12 +2,13 @@
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type {
   ITableSpecVisitor,
-  WithNewField,
+  WithDuplicatedField,
   WithRatingMax,
   WithTableSchema,
   WithoutField,
   WithoutOption,
 } from '@undb/core'
+import { WithNewField } from '@undb/core'
 import { UnderlyingColumnBuilder } from './underlying-column.builder.js'
 
 export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
@@ -83,6 +84,10 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     const queries = query.split(';\n')
 
     this.#queries.push(...queries)
+  }
+  withDuplicatedField(s: WithDuplicatedField): void {
+    const spec = new WithNewField(s.field)
+    this.newField(spec)
   }
   fieldsOrder(): void {}
   fieldWidthEqual(): void {}

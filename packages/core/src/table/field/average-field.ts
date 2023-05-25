@@ -53,6 +53,14 @@ export class AverageField extends Mixin(AbstractAggregateField<IAverageField>, A
     )
   }
 
+  public override duplicate(name: string): AverageField {
+    return AverageField.create({
+      ...this.json,
+      id: FieldId.createId(),
+      name,
+    })
+  }
+
   createValue(value: ICreateAverageFieldValue): AverageFieldValue {
     return new AverageFieldValue(value)
   }

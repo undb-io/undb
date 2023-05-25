@@ -8,10 +8,14 @@ import type {
   ICreateAutoIncrementFieldValue,
 } from './auto-increment-field.type.js'
 import { BaseField } from './field.base.js'
+import { FieldCannotBeDuplicated } from './field.errors.js'
 import type { IAutoIncrementField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 
 export class AutoIncrementField extends BaseField<IAutoIncrementField> {
+  duplicate(name: string): AutoIncrementField {
+    throw new FieldCannotBeDuplicated()
+  }
   type: AutoIncrementFieldType = 'auto-increment'
 
   override get system() {
