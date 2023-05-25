@@ -82,6 +82,15 @@ export function getFilterOperators(type: IFieldType | undefined) {
 			{ value: '$in', name: 'IN' },
 			{ value: '$nin', name: 'NOT IN' },
 		]
+	} else if (type === 'multi-select') {
+		data = [
+			{ value: '$eq', name: 'EQUAL' },
+			{ value: '$neq', name: 'NOT EQUAL' },
+			{ value: '$in', name: 'IN' },
+			{ value: '$nin', name: 'NOT IN' },
+			{ value: '$is_empty', name: 'IS EMPTY' },
+			{ value: '$is_not_empty', name: 'IS NOT EMPTY' },
+		]
 	} else if (type === 'tree') {
 		data = [{ value: '$is_root', name: 'IS ROOT' }]
 	} else if (type === 'id') {

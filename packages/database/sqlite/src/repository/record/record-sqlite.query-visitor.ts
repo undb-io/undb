@@ -18,6 +18,9 @@ import type {
   IRecordVisitor,
   IsAttachmentEmpty,
   IsTreeRoot,
+  MultiSelectEqual,
+  MultiSelectIn,
+  MultiSelectIsEmpty,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -54,6 +57,7 @@ import {
   INTERNAL_COLUMN_UPDATED_AT_NAME,
   INTERNAL_COLUMN_UPDATED_BY_NAME,
   INTERNAL_INCREAMENT_ID_NAME,
+  MultiSelectField,
   ParentField,
   TreeField,
   UpdatedByField,
@@ -279,6 +283,22 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
         .select(`${alias}.xxxx_${s.fieldId} as xxxx_${s.fieldId}`)
         .whereNull(`${alias}.xxxx_${s.fieldId}`)
     }
+  }
+  multiSelectEqual(s: MultiSelectEqual): void {
+    const field = this.getField(s.fieldId)
+    if (field instanceof MultiSelectField) {
+      const value = s.value.unpack()
+      this.qb.where(this.getFieldId(s.fieldId), value ? JSON.stringify(value) : null)
+    }
+  }
+  multiSelectIn(s: MultiSelectIn): void {
+    const fieldId = this.getFieldId(s.fieldId)
+    const value = s.value.unpack()
+    if (value === null) return
+    this.qb.fromRaw(`${this.tableId} as ${TABLE_ALIAS}, json_each(${fieldId})`).whereIn('json_each.value', value)
+  }
+  multiSelectIsEmpty(s: MultiSelectIsEmpty): void {
+    this.qb.whereNull(this.getFieldId(s.fieldId))
   }
   selectEqual(s: SelectEqual): void {
     this.qb.where(this.getFieldId(s.fieldId), s.value.unpack())
