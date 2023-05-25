@@ -21,6 +21,7 @@ const displayFieldTypes: Set<IFieldType> = new Set<IFieldType>([
   // FIXME: https://github.com/undb-xyz/undb/issues/780
   // 'attachment',
   'number',
+  'multi-select',
   'rating',
   'currency',
   'string',

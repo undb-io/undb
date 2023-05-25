@@ -124,7 +124,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
       ],
     ).map((name) => `${TABLE_ALIAS}.${name}`)
 
-    this.qb.select(names)
+    this.qb.select(names).distinct()
 
     return this
   }

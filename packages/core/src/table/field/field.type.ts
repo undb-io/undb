@@ -1,6 +1,7 @@
 import type { Option } from 'oxide.ts'
 import * as z from 'zod'
 import type { IReferenceFilterValue } from '../filter/reference.filter.js'
+import type { ICreateOptionSchema, IMutateOptionSchema, IUpdateOptionSchema } from '../option/option.schema.js'
 import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
@@ -174,6 +175,17 @@ import {
   lookupTypeSchema,
   updateLookupFieldSchema,
 } from './lookup-field.type.js'
+import type { MultiSelectFieldValue } from './multi-select-field-value.js'
+import type { MultiSelectField } from './multi-select-field.js'
+import type { IMultiSelectFieldValue } from './multi-select-field.type.js'
+import {
+  createMultiSelectFieldSchema,
+  createMultiSelectFieldValue_internal,
+  multiSelectFieldQuerySchema,
+  multiSelectFieldQueryValue,
+  multiSelectTypeSchema,
+  updateMultiSelectFieldSchema,
+} from './multi-select-field.type.js'
 import type { NumberFieldValue } from './number-field-value.js'
 import type { NumberField } from './number-field.js'
 import type { INumberFieldValue } from './number-field.type.js'
@@ -228,6 +240,12 @@ import {
   selectTypeSchema,
   updateSelectFieldSchema,
 } from './select-field.type.js'
+import type {
+  WithNewOption,
+  WithOption,
+  WithOptions,
+  WithoutOption,
+} from './specifications/select-field.specification.js'
 import type { StringFieldValue } from './string-field-value.js'
 import type { StringField } from './string-field.js'
 import type { IStringFieldValue } from './string-field.type.js'
@@ -305,6 +323,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createNumberFieldSchema,
   createDateFieldSchema,
   createSelectFieldSchema,
+  createMultiSelectFieldSchema,
   createBoolFieldSchema,
   createDateRangeFieldSchema,
   createReferenceFieldSchema,
@@ -334,6 +353,7 @@ export const updateFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   updateNumberFieldSchema,
   updateDateFieldSchema,
   updateSelectFieldSchema,
+  updateMultiSelectFieldSchema,
   updateBoolFieldSchema,
   updateDateRangeFieldSchema,
   updateReferenceFieldSchema,
@@ -363,6 +383,7 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   numberFieldQuerySchema,
   dateFieldQuerySchema,
   selectFieldQuerySchema,
+  multiSelectFieldQuerySchema,
   boolFieldQuerySchema,
   dateRangeFieldQuerySchema,
   referenceFieldQuerySchema,
@@ -394,6 +415,7 @@ export const fieldTypes = z.union([
   numberTypeSchema,
   dateTypeSchema,
   selectTypeSchema,
+  multiSelectTypeSchema,
   boolTypeSchema,
   dateRangeTypeSchema,
   referenceTypeSchema,
@@ -423,6 +445,7 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createNumberFieldValue_internal,
   createDateFieldValue_internal,
   createSelectFieldValue_internal,
+  createMultiSelectFieldValue_internal,
   createBoolFieldValue_internal,
   createDateRangeFieldValue_internal,
   createReferenceFieldValue_internal,
@@ -484,6 +507,7 @@ export type IDateRangeField = IBaseField & BaseDateField
 export type ISelectField = IBaseField & {
   options: Options
 }
+export type IMultiSelectField = IBaseField & { options: Options }
 
 export type IBoolField = IBaseField
 
@@ -511,6 +535,7 @@ export type ILookingFieldTypes = IReferenceFieldTypes | ILookupField
 export type LookingFieldTypes = ReferenceFieldTypes | LookupField
 export type AggregateFieldType = CountField | SumField
 export type INumberAggregateFieldType = ISumField | IAverageField
+export type ISelectFieldType = ISelectField | IMultiSelectField
 export type IDateFieldTypes = IDateField | IDateRangeField | ICreatedAtField | IUpdatedAtField
 export type DateFieldTypes = DateField | DateRangeField | CreatedAtField | UpdatedAtField
 export type ILookupFieldTypes = ICountField | ILookupField
@@ -523,6 +548,7 @@ export type NoneSystemField =
   | ColorField
   | DateField
   | SelectField
+  | MultiSelectField
   | BoolField
   | DateRangeField
   | ReferenceField
@@ -545,6 +571,7 @@ export type PrimitiveField =
   | ColorField
   | DateField
   | SelectField
+  | MultiSelectField
   | BoolField
   | DateRangeField
   | RatingField
@@ -569,6 +596,7 @@ export type FieldValue =
   | NumberFieldValue
   | DateFieldValue
   | SelectFieldValue
+  | MultiSelectFieldValue
   | BoolFieldValue
   | DateRangeFieldValue
   | ReferenceFieldValue
@@ -598,6 +626,7 @@ export type UnpackedFieldValue =
   | INumberFieldValue
   | IDateFieldValue
   | ISelectFieldValue
+  | IMultiSelectFieldValue
   | IBoolFieldValue
   | IDateRangeFieldValue
   | IReferenceFilterValue
@@ -628,6 +657,7 @@ export const fieldQueryValue = z.union([
   parentFieldQueryValue,
   referenceFieldQueryValue,
   selectFieldQueryValue,
+  multiSelectFieldQueryValue,
   stringFieldQueryValue,
   updatedAtFieldQueryValue,
   ratingFieldQueryValue,
@@ -694,4 +724,14 @@ export interface IAbstractAggregateField {
   get aggregateFieldId(): FieldId
   set aggregateFieldId(fieldId: FieldId)
   updateAggregateFieldId(aggregateFieldId?: string): Option<TableCompositeSpecificaiton>
+}
+
+export interface IAbstractSelectField extends BaseField {
+  get options(): Options
+  set options(options: Options)
+  reorder(from: string, to: string): WithOptions
+  createOption(input: ICreateOptionSchema): WithNewOption
+  updateOption(id: string, input: IUpdateOptionSchema): WithOption
+  removeOption(id: string): WithoutOption
+  updateOptions(input: IMutateOptionSchema[]): Option<TableCompositeSpecificaiton>
 }

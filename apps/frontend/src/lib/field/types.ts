@@ -12,6 +12,7 @@ export const FIELD_SELECT_ITEMS = [
 	{ value: 'auto-increment', name: 'AutoIncrement', group: 'System' },
 	{ value: 'collaborator', name: 'Collaborator', group: 'System' },
 	{ value: 'select', name: 'Select', group: 'Base' },
+	{ value: 'multi-select', name: 'MultiSelect', group: 'Base' },
 	{ value: 'reference', name: 'Reference', group: 'Reference' },
 	{ value: 'tree', name: 'Tree', group: 'Reference' },
 	{ value: 'lookup', name: 'Lookup', group: 'Lookup' },

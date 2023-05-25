@@ -14,6 +14,7 @@ import { EmailField } from './email-field.js'
 import type { Field, ICreateFieldSchema } from './field.type.js'
 import { IdField } from './id-field.js'
 import { LookupField } from './lookup-field.js'
+import { MultiSelectField } from './multi-select-field.js'
 import { NumberField } from './number-field.js'
 import { ParentField } from './parent-field.js'
 import { RatingField } from './rating-field.js'
@@ -66,6 +67,9 @@ export class FieldFactory {
       }
       case 'select': {
         return SelectField.create(input)
+      }
+      case 'multi-select': {
+        return MultiSelectField.create(input)
       }
       case 'bool': {
         return BoolField.create(input)
@@ -147,6 +151,9 @@ export class FieldFactory {
       }
       case 'select': {
         return SelectField.unsafeCreate(input)
+      }
+      case 'multi-select': {
+        return MultiSelectField.unsafeCreate(input)
       }
       case 'bool': {
         return BoolField.unsafeCreate(input)

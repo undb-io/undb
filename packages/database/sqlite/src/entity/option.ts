@@ -7,7 +7,7 @@ import type {
   IOptionColorShade,
 } from '@undb/core'
 import { BaseEntity } from './base.js'
-import { SelectField } from './field.js'
+import { MultiSelectField, SelectField } from './field.js'
 
 @Embeddable()
 export class OptionColor {
@@ -25,7 +25,7 @@ export class OptionColor {
 
 @Entity({ tableName: 'undb_option' })
 export class Option extends BaseEntity {
-  constructor(field: Rel<SelectField>, option: CoreOption) {
+  constructor(field: Rel<SelectField | MultiSelectField>, option: CoreOption) {
     super()
     this.key = option.key.value
     this.field = field
@@ -36,8 +36,8 @@ export class Option extends BaseEntity {
   @PrimaryKey()
   key: string
 
-  @ManyToOne(() => SelectField, { cascade: [Cascade.ALL] })
-  field: Rel<SelectField>
+  @ManyToOne(() => SelectField || MultiSelectField, { cascade: [Cascade.ALL] })
+  field: Rel<SelectField | MultiSelectField>
 
   @Property()
   name: string

@@ -49,7 +49,7 @@
 	}
 </script>
 
-{#if $field?.type === 'select'}
+{#if $field?.type === 'select' || $field?.type === 'multi-select'}
 	<Modal
 		title={$t('Update Option') ?? undefined}
 		bind:open={$updateOptionModal.open}

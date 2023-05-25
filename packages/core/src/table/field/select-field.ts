@@ -1,14 +1,11 @@
-import { and } from '@undb/domain'
-import { isArray } from 'lodash-es'
+import { andOptions } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { z } from 'zod'
 import type { ISelectFilterOperator } from '../filter/operators.js'
 import type { ISelectFilter, ISelectFilterValue } from '../filter/select.filter.js'
-import type { ICreateOptionSchema, IUpdateOptionSchema } from '../option/index.js'
-import { OptionKey } from '../option/index.js'
 import { Options } from '../option/options.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
-import { BaseField } from './field.base.js'
+import { AbstractSelectField } from './field.base.js'
 import type { ISelectField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { SelectFieldValue } from './select-field-value.js'
@@ -18,9 +15,8 @@ import type {
   IUpdateSelectFieldInput,
   SelectFieldType,
 } from './select-field.type.js'
-import { WithNewOption, WithOption, WithOptions, WithoutOption } from './specifications/select-field.specification.js'
 
-export class SelectField extends BaseField<ISelectField> {
+export class SelectField extends AbstractSelectField<ISelectField> {
   type: SelectFieldType = 'select'
 
   override get json() {
@@ -30,37 +26,8 @@ export class SelectField extends BaseField<ISelectField> {
     }
   }
 
-  get options() {
-    return this.props.options
-  }
-
-  set options(options: Options) {
-    this.props.options = options
-  }
-
   override get primitive() {
     return true
-  }
-
-  reorder(from: string, to: string): WithOptions {
-    const options = this.options.reorder(from, to)
-    return new WithOptions(this, options)
-  }
-
-  createOption(input: ICreateOptionSchema): WithNewOption {
-    const option = this.options.createOption(input)
-    return new WithNewOption(this, option)
-  }
-
-  updateOption(id: string, input: IUpdateOptionSchema): WithOption {
-    const option = this.options.getById(id).unwrap()
-
-    return new WithOption(this, option.updateOption(input))
-  }
-
-  removeOption(id: string): WithoutOption {
-    const optionKey = OptionKey.fromString(id)
-    return new WithoutOption(this, optionKey)
   }
 
   static create(input: Omit<ICreateSelectFieldSchema, 'type'>): SelectField {
@@ -78,31 +45,7 @@ export class SelectField extends BaseField<ISelectField> {
   }
 
   public override update(input: IUpdateSelectFieldInput): Option<TableCompositeSpecificaiton> {
-    const specs: TableCompositeSpecificaiton[] = []
-    const spec = super.updateBase(input)
-    if (spec.isSome()) {
-      specs.push(spec.unwrap())
-    }
-
-    if (isArray(input.options)) {
-      const options = this.options.optionsMap
-      for (const option of input.options) {
-        const existing = !!option.key && !!options.get(option.key)
-        if (existing) {
-          specs.push(this.updateOption(option.key!, option))
-          continue
-        }
-
-        specs.push(this.createOption(option))
-      }
-      for (const [id] of options) {
-        if (!input.options.some((o) => o.key === id)) {
-          specs.push(this.removeOption(id))
-        }
-      }
-    }
-
-    return and(...specs)
+    return andOptions(this.updateBase(input), super.updateOptions(input.options ?? []))
   }
 
   createFilter(operator: ISelectFilterOperator, value: ISelectFilterValue): ISelectFilter {

@@ -32,6 +32,7 @@ import type {
   IFieldType,
   IIdFieldQuerySchema,
   ILookupFieldQuerySchema,
+  IMultiSelectFieldQuerySchema,
   INumberFieldQuerySchema,
   IOptionColorName,
   IParentFieldQuerySchema,
@@ -62,6 +63,7 @@ import {
   EmailField as CoreEmailField,
   IdField as CoreIdField,
   LookupField as CoreLookupField,
+  MultiSelectField as CoreMultiSelectField,
   NumberField as CoreNumberField,
   ParentField as CoreParentField,
   RatingField as CoreRatingField,
@@ -642,6 +644,50 @@ export class SelectField extends Field {
   }
 }
 
+@Entity({ discriminatorValue: 'multi-select' })
+export class MultiSelectField extends Field {
+  @OneToMany(() => Option, (option) => option.field, { orphanRemoval: true, cascade: [Cascade.ALL] })
+  options = new Collection<Option>(this)
+
+  toDomain(): CoreMultiSelectField {
+    return CoreMultiSelectField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      type: 'multi-select',
+      description: this.description,
+      required: !!this.required,
+      display: !!this.display,
+      options: this.options.getItems(false).map((o) => ({
+        key: o.key,
+        name: o.name,
+        color: {
+          name: o.color.name as IOptionColorName,
+          shade: o.color.shade,
+        },
+      })),
+    })
+  }
+
+  toQuery(): IMultiSelectFieldQuerySchema {
+    return {
+      id: this.id,
+      name: this.name,
+      type: 'multi-select',
+      description: this.description,
+      required: !!this.required,
+      display: !!this.display,
+      options: this.options.getItems(false).map((o) => ({
+        key: o.key,
+        name: o.name,
+        color: {
+          name: o.color.name as IOptionColorName,
+          shade: o.color.shade,
+        },
+      })),
+    }
+  }
+}
+
 @Entity({ discriminatorValue: 'reference' })
 export class ReferenceField extends Field {
   constructor(table: Rel<Table>, field: CoreReferenceField) {
@@ -1032,6 +1078,7 @@ export type IField =
   | DateField
   | DateRangeField
   | SelectField
+  | MultiSelectField
   | ReferenceField
   | TreeField
   | ParentField
@@ -1059,6 +1106,7 @@ export const fieldEntities = [
   DateField,
   DateRangeField,
   SelectField,
+  MultiSelectField,
   ReferenceField,
   TreeField,
   ParentField,
