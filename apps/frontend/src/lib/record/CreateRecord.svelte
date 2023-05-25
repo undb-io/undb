@@ -86,7 +86,7 @@
 			{/each}
 		</div>
 	</form>
-	<SuperDebug data={$form} />
+	<!-- <SuperDebug data={$form} /> -->
 
 	<svelte:fragment slot="footer">
 		<div class="w-full flex justify-end gap-2">
