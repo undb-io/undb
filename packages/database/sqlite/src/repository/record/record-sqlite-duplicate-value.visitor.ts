@@ -23,14 +23,14 @@ import type {
   NumberField,
   ParentField,
   RatingField,
-  ReferenceField,
   SelectField,
   StringField,
   SumField,
-  TreeField,
   UpdatedAtField,
   UpdatedByField,
 } from '@undb/core'
+import { ReferenceField, TreeField } from '@undb/core'
+import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
 
 export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager implements IFieldVisitor {
@@ -93,10 +93,30 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
     throw new Error('Method not implemented.')
   }
   reference(field: ReferenceField): void {
-    throw new Error('Method not implemented.')
+    if (!(this.from instanceof ReferenceField)) return
+
+    const oldTable = new AdjacencyListTable(this.tableId, this.from)
+    const adjacencyListTable = new AdjacencyListTable(this.tableId, field)
+
+    const query = this.knex
+      .queryBuilder()
+      .insert(this.knex.queryBuilder().select('*').from(oldTable.name))
+      .into(adjacencyListTable.name)
+      .toQuery()
+
+    this.addQueries(query)
   }
   tree(field: TreeField): void {
-    throw new Error('Method not implemented.')
+    if (!(this.from instanceof TreeField)) return
+    const oldTable = new ClosureTable(this.tableId, this.from)
+    const closureTable = new ClosureTable(this.tableId, field)
+
+    const query = this.knex
+      .queryBuilder()
+      .insert(this.knex.queryBuilder().select('*').from(oldTable.name))
+      .into(closureTable.name)
+      .toQuery()
+    this.addQueries(query)
   }
   parent(field: ParentField): void {
     throw new Error('Method not implemented.')
