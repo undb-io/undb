@@ -39,7 +39,7 @@
 	$: if (r) {
 		currentRecordId.set(r)
 	}
-	$: if (browser) {
+	$: if (browser && !$page.error) {
 		if ($currentRecordId) {
 			const search = $page.url.searchParams
 			search.set('r', $currentRecordId)

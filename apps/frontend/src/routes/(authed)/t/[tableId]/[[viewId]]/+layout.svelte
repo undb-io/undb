@@ -9,7 +9,7 @@
 
 	export let data: LayoutData
 
-	$: if (!data.table) {
+	$: if (!data.table && !$page.error) {
 		goto('/', { replaceState: true })
 	}
 
