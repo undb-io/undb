@@ -232,9 +232,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
 
     f.accept(visitor)
 
-    this.addJobs(async () => {
-      await visitor.commit()
-    })
+    this.unshiftQueries(...visitor.queries)
   }
   withDuplicatedField(s: WithDuplicatedField): void {
     const spec = new WithNewField(s.field)

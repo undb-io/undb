@@ -9,6 +9,7 @@ import type {
   WithoutOption,
 } from '@undb/core'
 import { WithNewField } from '@undb/core'
+import { RecordSqliteDuplicateValueVisitor } from '../repository/record/record-sqlite-duplicate-value.visitor.js'
 import { UnderlyingColumnBuilder } from './underlying-column.builder.js'
 
 export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
@@ -88,6 +89,14 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   withDuplicatedField(s: WithDuplicatedField): void {
     const spec = new WithNewField(s.field)
     this.newField(spec)
+
+    if (s.includesValues) {
+      const knex = this.em.getKnex()
+      const visitor = new RecordSqliteDuplicateValueVisitor(this.tableName, s.from, this.em, knex.queryBuilder(), knex)
+
+      s.field.accept(visitor)
+      this.#queries.push(...visitor.queries)
+    }
   }
   fieldsOrder(): void {}
   fieldWidthEqual(): void {}
