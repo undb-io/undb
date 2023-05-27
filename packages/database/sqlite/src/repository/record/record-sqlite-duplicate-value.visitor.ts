@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type {
@@ -65,24 +66,22 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
     throw new Error('Method not implemented.')
   }
   string(field: StringField): void {
-    // const query = this.qb.table(this.tableId).update(`'${field.id.value}' = '${this.from.id.value}'`).toQuery()
-
     this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
   }
   email(field: EmailField): void {
-    throw new Error('Method not implemented.')
+    this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
   }
   color(field: ColorField): void {
-    throw new Error('Method not implemented.')
+    this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
   }
   number(field: NumberField): void {
-    throw new Error('Method not implemented.')
+    this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
   }
   bool(field: BoolField): void {
-    throw new Error('Method not implemented.')
+    this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
   }
   date(field: DateField): void {
-    throw new Error('Method not implemented.')
+    this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
   }
   dateRange(field: DateRangeField): void {
     throw new Error('Method not implemented.')
@@ -103,23 +102,15 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
     throw new Error('Method not implemented.')
   }
   rating(field: RatingField): void {
-    throw new Error('Method not implemented.')
+    this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
   }
   currency(field: CurrencyField): void {
-    throw new Error('Method not implemented.')
+    this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
   }
-  count(field: CountField): void {
-    throw new Error('Method not implemented.')
-  }
-  sum(field: SumField): void {
-    throw new Error('Method not implemented.')
-  }
-  average(field: AverageField): void {
-    throw new Error('Method not implemented.')
-  }
-  lookup(field: LookupField): void {
-    throw new Error('Method not implemented.')
-  }
+  count(field: CountField): void {}
+  sum(field: SumField): void {}
+  average(field: AverageField): void {}
+  lookup(field: LookupField): void {}
   collaborator(field: CollaboratorField): void {
     throw new Error('Method not implemented.')
   }
