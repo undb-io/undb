@@ -531,14 +531,14 @@ export const config: InitOptions = {
   ns: ['common', 'table', 'zod'],
   defaultNS: 'table',
   lng: undefined, // if you're using a language detector, do not define the lng option
-  fallbackLng: 'zh-CN',
+  fallbackLng: 'en',
 
   detection: {
-    order: ['cookie', 'querystring', 'localStorage', 'navigator'],
-    caches: ['localStorage', 'cookie'],
+    order: ['querystring', 'cookie', 'localStorage', 'navigator'],
+    caches: ['cookie', 'localStorage'],
     lookupQuerystring: 'lng',
     lookupCookie: 'lng',
-    lookupLocalStorage: 'locale',
+    lookupLocalStorage: 'lng',
   },
 
   interpolation: {
