@@ -29,8 +29,10 @@ import type {
   UpdatedAtField,
   UpdatedByField,
 } from '@undb/core'
-import { ReferenceField, TreeField } from '@undb/core'
+import { ReferenceField, TreeField, isSelectFieldType } from '@undb/core'
+import { UnderlyingSelectColumn } from '../../underlying-table/underlying-column.js'
 import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
+import { UnderlyingTempDuplicateOptionTable } from '../../underlying-table/underlying-temp-duplicate-option-table.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
 
 export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager implements IFieldVisitor {
@@ -87,7 +89,20 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
     throw new Error('Method not implemented.')
   }
   select(field: SelectField): void {
-    throw new Error('Method not implemented.')
+    if (!isSelectFieldType(this.from)) return
+
+    const temp = new UnderlyingTempDuplicateOptionTable(this.tableId, this.from, field, this.knex)
+
+    const underlyingColumn = new UnderlyingSelectColumn(field, this.tableId)
+
+    const query = `
+      UPDATE \`${this.tableId}\`
+      SET ${underlyingColumn.name} = tt.\`${UnderlyingTempDuplicateOptionTable.TO_FIELD}\`
+      FROM ${temp.name} as tt
+      WHERE ${this.from.id.value} = tt.\`${UnderlyingTempDuplicateOptionTable.FROM_FIELD}\`
+    `
+
+    this.addQueries(query)
   }
   multiSelect(field: MultiSelectField): void {
     throw new Error('Method not implemented.')

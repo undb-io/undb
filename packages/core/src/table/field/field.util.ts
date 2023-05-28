@@ -1,4 +1,4 @@
-import type { IFieldType } from './field.type'
+import type { Field, IFieldType, SelectFieldTypes } from './field.type'
 
 const controlledFieldTypes: Set<IFieldType> = new Set([
   'id',
@@ -58,3 +58,6 @@ export const isAggregate = (type: IFieldType): boolean => isAggregateFieldType.h
 const notFilterableFieldType: Set<IFieldType> = new Set<IFieldType>(['lookup', 'reference'])
 
 export const isFilterable = (type: IFieldType): boolean => !notFilterableFieldType.has(type)
+
+export const isSelectFieldType = (field: Field): field is SelectFieldTypes =>
+  field.type === 'select' || field.type === 'multi-select'
