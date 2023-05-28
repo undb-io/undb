@@ -6,7 +6,6 @@ import type {
   AutoIncrementField,
   AverageField,
   BoolField,
-  CollaboratorField,
   ColorField,
   CountField,
   CreatedAtField,
@@ -28,14 +27,25 @@ import type {
   UpdatedAtField,
   UpdatedByField,
 } from '@undb/core'
-import { DateRangeField, INTERNAL_COLUMN_ID_NAME, ReferenceField, TreeField, isSelectFieldType } from '@undb/core'
+import {
+  CollaboratorField,
+  DateRangeField,
+  INTERNAL_COLUMN_ID_NAME,
+  ReferenceField,
+  TreeField,
+  isSelectFieldType,
+} from '@undb/core'
 import {
   UnderlyingDateRangeFromColumn,
   UnderlyingDateRangeToColumn,
   UnderlyingMultiSelectColumn,
   UnderlyingSelectColumn,
 } from '../../underlying-table/underlying-column.js'
-import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
+import {
+  AdjacencyListTable,
+  ClosureTable,
+  CollaboratorForeignTable,
+} from '../../underlying-table/underlying-foreign-table.js'
 import { UnderlyingTempDuplicateOptionTable } from '../../underlying-table/underlying-temp-duplicate-option-table.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
 
@@ -182,6 +192,17 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
   average(field: AverageField): void {}
   lookup(field: LookupField): void {}
   collaborator(field: CollaboratorField): void {
-    throw new Error('Method not implemented.')
+    if (!(this.from instanceof CollaboratorField)) return
+
+    const oldTable = new CollaboratorForeignTable(this.tableId, this.from)
+    const collaboratorTable = new CollaboratorForeignTable(this.tableId, field)
+
+    const query = this.knex
+      .queryBuilder()
+      .insert(this.knex.queryBuilder().select('*').from(oldTable.name))
+      .into(collaboratorTable.name)
+      .toQuery()
+
+    this.addQueries(query)
   }
 }
