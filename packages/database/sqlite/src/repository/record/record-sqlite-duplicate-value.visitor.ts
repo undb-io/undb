@@ -13,7 +13,6 @@ import type {
   CreatedByField,
   CurrencyField,
   DateField,
-  DateRangeField,
   EmailField,
   Field,
   IFieldVisitor,
@@ -29,8 +28,13 @@ import type {
   UpdatedAtField,
   UpdatedByField,
 } from '@undb/core'
-import { INTERNAL_COLUMN_ID_NAME, ReferenceField, TreeField, isSelectFieldType } from '@undb/core'
-import { UnderlyingMultiSelectColumn, UnderlyingSelectColumn } from '../../underlying-table/underlying-column.js'
+import { DateRangeField, INTERNAL_COLUMN_ID_NAME, ReferenceField, TreeField, isSelectFieldType } from '@undb/core'
+import {
+  UnderlyingDateRangeFromColumn,
+  UnderlyingDateRangeToColumn,
+  UnderlyingMultiSelectColumn,
+  UnderlyingSelectColumn,
+} from '../../underlying-table/underlying-column.js'
 import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
 import { UnderlyingTempDuplicateOptionTable } from '../../underlying-table/underlying-temp-duplicate-option-table.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
@@ -86,7 +90,15 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
     this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
   }
   dateRange(field: DateRangeField): void {
-    throw new Error('Method not implemented.')
+    if (!(this.from instanceof DateRangeField)) return
+
+    const fromColumn = new UnderlyingDateRangeFromColumn(this.from, this.tableId)
+    const newFromColumn = new UnderlyingDateRangeFromColumn(field, this.tableId)
+    this.addQueries(`UPDATE ${this.tableId} SET ${newFromColumn.name} = ${fromColumn.name}`)
+
+    const toColumn = new UnderlyingDateRangeToColumn(this.from, this.tableId)
+    const newToColumn = new UnderlyingDateRangeToColumn(field, this.tableId)
+    this.addQueries(`UPDATE ${this.tableId} SET ${newToColumn.name} = ${toColumn.name}`)
   }
   select(field: SelectField): void {
     if (!isSelectFieldType(this.from)) return
