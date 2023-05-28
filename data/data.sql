@@ -1,11 +1,7 @@
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
 CREATE TABLE `mikro_orm_migrations` (`id` integer not null primary key autoincrement, `name` varchar(255), `executed_at` datetime default CURRENT_TIMESTAMP);
-INSERT INTO mikro_orm_migrations VALUES(1,'Migration20230507094448','2023-05-20 09:46:34');
-INSERT INTO mikro_orm_migrations VALUES(2,'Migration20230511142430','2023-05-20 09:46:34');
-INSERT INTO mikro_orm_migrations VALUES(3,'Migration20230518040812','2023-05-21 12:43:16');
-INSERT INTO mikro_orm_migrations VALUES(4,'Migration20230521024441','2023-05-21 12:43:16');
-INSERT INTO mikro_orm_migrations VALUES(5,'Migration20230523112618','2023-05-24 13:16:46');
+INSERT INTO mikro_orm_migrations VALUES(1,'initial','2023-05-20 09:46:34');
 CREATE TABLE `undb_table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `emoji` text not null, `views_order` text null, primary key (`id`));
 INSERT INTO undb_table VALUES('tbl4undb0lh',1684577267430,1685212920300,NULL,'Deal Tracker','1f44d','viwnxi5l3qi,viw64ia4fxz,viwmc5m5646');
 INSERT INTO undb_table VALUES('tblramxgp7z',1684577324093,1684577324093,NULL,'Contacts','1f44d','viw1f88x075');
@@ -342,7 +338,7 @@ INSERT INTO undb_option VALUES('opt44e5z',1685208283980,1685208283980,NULL,'fld5
 INSERT INTO undb_option VALUES('opt8eiob',1685208283980,1685208283980,NULL,'fld5dfxirz4',' ','slate',5);
 INSERT INTO undb_option VALUES('optednbl',1685210615474,1685210615474,NULL,'fldmv3t03kj','Structural subcontractors','sky',5);
 INSERT INTO undb_option VALUES('optqe1bf',1685210615474,1685210615474,NULL,'fldmv3t03kj','Service subcontractors','violet',5);
-CREATE TABLE `undb_attachment` (`id` text not null, `record_id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text not null, `mime_type` text not null, `name` text not null, `size` integer not null, `token` text not null, `url` text not null, `extension` text not null, constraint `undb_attachment_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on update cascade, primary key (`id`, `record_id`));
+CREATE TABLE `undb_attachment` (`id` text not null, `record_id` text not null, `field_id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text not null, `mime_type` text not null, `name` text not null, `size` integer not null, `token` text not null, `url` text not null, `extension` text not null, constraint `undb_attachment_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on update cascade, primary key (`id`, `record_id`, `field_id`));
 CREATE TABLE `undb_field_display_fields` (`field_1_id` text not null, `field_2_id` text not null, constraint `undb_field_display_fields_field_1_id_foreign` foreign key(`field_1_id`) references `undb_field`(`id`) on delete cascade on update cascade, constraint `undb_field_display_fields_field_2_id_foreign` foreign key(`field_2_id`) references `undb_field`(`id`) on delete cascade on update cascade, primary key (`field_1_id`, `field_2_id`));
 INSERT INTO undb_field_display_fields VALUES('fld5vld4clt','fldel2i4v7v');
 INSERT INTO undb_field_display_fields VALUES('fldn8qkrzwi','fldrlmpebtz');

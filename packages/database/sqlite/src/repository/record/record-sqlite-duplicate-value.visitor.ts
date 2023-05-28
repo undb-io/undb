@@ -35,6 +35,7 @@ import {
   TreeField,
   isSelectFieldType,
 } from '@undb/core'
+import { Attachment } from '../../entity/attachment.js'
 import {
   UnderlyingDateRangeFromColumn,
   UnderlyingDateRangeToColumn,
@@ -76,7 +77,53 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
     throw new Error('Method not implemented.')
   }
   attachment(field: AttachmentField): void {
-    throw new Error('Method not implemented.')
+    const attachmentTable = this.em.getMetadata().get(Attachment.name)
+    const {
+      tableName,
+      properties: { recordId, fieldId, name, mimeType, id, size, token, url, table, extension, createdAt, updatedAt },
+    } = attachmentTable
+    const query = this.knex
+      .queryBuilder()
+      .insert(
+        this.knex
+          .queryBuilder()
+          .select(
+            id.fieldNames[0],
+            recordId.fieldNames[0],
+            name.fieldNames[0],
+            mimeType.fieldNames[0],
+            size.fieldNames[0],
+            token.fieldNames[0],
+            url.fieldNames[0],
+            table.fieldNames[0],
+            extension.fieldNames[0],
+            this.knex.raw(`'${field.id.value}' as ${fieldId.fieldNames[0]}`),
+            this.knex.raw(`'${new Date().toISOString()}' as ${createdAt.fieldNames[0]}`),
+            this.knex.raw(`'${new Date().toISOString()}' as ${updatedAt.fieldNames[0]}`),
+          )
+          .from(tableName)
+          .where({ [fieldId.fieldNames[0]]: this.from.id.value }),
+      )
+      .into(
+        this.knex.raw('?? (??, ??, ??, ??, ??, ??, ??, ??, ??, ??, ??, ??)', [
+          tableName,
+          id.fieldNames[0],
+          recordId.fieldNames[0],
+          name.fieldNames[0],
+          mimeType.fieldNames[0],
+          size.fieldNames[0],
+          token.fieldNames[0],
+          url.fieldNames[0],
+          table.fieldNames[0],
+          extension.fieldNames[0],
+          fieldId.fieldNames[0],
+          createdAt.fieldNames[0],
+          updatedAt.fieldNames[0],
+        ]),
+      )
+      .toQuery()
+
+    this.addQueries(query)
   }
   autoIncrement(field: AutoIncrementField): void {
     throw new Error('Method not implemented.')
