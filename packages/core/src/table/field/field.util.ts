@@ -61,3 +61,15 @@ export const isFilterable = (type: IFieldType): boolean => !notFilterableFieldTy
 
 export const isSelectFieldType = (field: Field): field is SelectFieldTypes =>
   field.type === 'select' || field.type === 'multi-select'
+
+export const cannotDuplicate: Set<IFieldType> = new Set<IFieldType>([
+  'id',
+  'created-at',
+  'created-by',
+  'updated-at',
+  'updated-by',
+  'auto-increment',
+  'parent',
+])
+
+export const canDuplicate = (type: IFieldType) => !cannotDuplicate.has(type)

@@ -4,7 +4,7 @@
 	import { currentFieldId, getField, getTable, getView } from '$lib/store/table'
 	import { confirmDeleteField, duplicateFieldModal, updateFieldModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
-	import type { ISortDirection } from '@undb/core'
+	import { canDuplicate, type ISortDirection } from '@undb/core'
 	import { DropdownDivider, DropdownItem, Modal, Toast } from 'flowbite-svelte'
 	import { noop } from 'lodash-es'
 	import { slide } from 'svelte/transition'
@@ -67,7 +67,7 @@
 	<i class="ti ti-edit text-sm" />
 	<span>{$t('Update Field')}</span>
 </DropdownItem>
-{#if !$field?.system}
+{#if $field && canDuplicate($field.type)}
 	<DropdownItem
 		class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium"
 		on:click={() => duplicateFieldModal.open()}
