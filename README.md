@@ -26,15 +26,19 @@ Private first, unified, self-hosted no code database.
 ## Easy creation
 
 - Create table
+
   ![Create table](./docs/create-new-table.png)
 
 - Create new field
+
   ![Create table](./docs/create-new-field.png)
 
 - Create new record
+
   ![Create new record](./docs/create-new-record.gif)
 
 - Create new view
+
   ![Create table](./docs/create-new-view.gif)
 
 > Please refer to the user manual for more detailed instructions on how to use. :memo: [Documentation](https://docs.undb.xyz/)
