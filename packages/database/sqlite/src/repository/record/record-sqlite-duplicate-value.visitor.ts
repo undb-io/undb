@@ -98,8 +98,8 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
             table.fieldNames[0],
             extension.fieldNames[0],
             this.knex.raw(`'${field.id.value}' as ${fieldId.fieldNames[0]}`),
-            this.knex.raw(`'${new Date().toISOString()}' as ${createdAt.fieldNames[0]}`),
-            this.knex.raw(`'${new Date().toISOString()}' as ${updatedAt.fieldNames[0]}`),
+            this.knex.raw(`'${new Date().getTime()}' as ${createdAt.fieldNames[0]}`),
+            this.knex.raw(`'${new Date().getTime()}' as ${updatedAt.fieldNames[0]}`),
           )
           .from(tableName)
           .where({ [fieldId.fieldNames[0]]: this.from.id.value }),
