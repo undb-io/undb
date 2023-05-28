@@ -8,6 +8,7 @@ import { Migration20230511142430 } from './migrations/Migration20230511142430.js
 import { Migration20230518040812 } from './migrations/Migration20230518040812.js'
 import { Migration20230521024441 } from './migrations/Migration20230521024441.js'
 import { Migration20230523112618 } from './migrations/Migration20230523112618.js'
+import { Migration20230528091402 } from './migrations/Migration20230528091402.js'
 
 export const createConfig = (data: string, env = 'development') =>
   defineConfig({
@@ -43,6 +44,10 @@ export const createConfig = (data: string, env = 'development') =>
         {
           name: 'Migration20230523112618',
           class: Migration20230523112618,
+        },
+        {
+          name: 'Migration20230528091402',
+          class: Migration20230528091402,
         },
       ],
     },

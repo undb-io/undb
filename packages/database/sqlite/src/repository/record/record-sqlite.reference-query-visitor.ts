@@ -77,14 +77,16 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
     const attachmentTable = this.em.getMetadata().get(Attachment.name)
     const {
       tableName,
-      properties: { recordId, name, mimeType, id, size, token, url },
+      properties: { recordId, fieldId, name, mimeType, id, size, token, url },
     } = attachmentTable
+    const knex = this.knex
 
     const alias = `r__${field.id.value}__${tableName}`
     this.qb
       .select(
         this.knex.raw(`
       json_group_array(
+        DISTINCT
         json_object(
           '${name.name}', ${alias}.${name.fieldNames[0]},
           '${mimeType.name}', ${alias}.${mimeType.fieldNames[0]},
@@ -98,11 +100,12 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
       as ${field.id.value}
         `),
       )
-      .leftJoin(
-        `${tableName} as ${alias}`,
-        `${alias}.${recordId.fieldNames[0]}`,
-        `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`,
-      )
+      .leftJoin(`${tableName} as ${alias}`, function () {
+        this.on(`${alias}.${recordId.fieldNames[0]}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`).andOn(
+          `${alias}.${fieldId.fieldNames[0]}`,
+          knex.raw('?', [field.id.value]),
+        )
+      })
       .groupBy(`${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
   }
 
