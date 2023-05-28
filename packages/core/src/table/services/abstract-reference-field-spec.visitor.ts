@@ -30,6 +30,7 @@ import type {
   UpdatedByField,
   WithCurrencySymbol,
   WithDisplayFields,
+  WithDuplicatedField,
   WithFieldDescription,
   WithFieldDisplay,
   WithFieldName,
@@ -145,6 +146,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
     s.field.accept(this)
   }
   withoutField(s: WithoutField): void {}
+  withDuplicatedField(s: WithDuplicatedField): void {}
   optionsEqual(s: WithOptions): void {}
   optionEqual(s: WithNewOption): void {}
   newOption(s: WithNewOption): void {}

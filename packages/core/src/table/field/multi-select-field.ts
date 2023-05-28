@@ -15,8 +15,19 @@ import type {
   IUpdateMultiSelectFieldInput,
   MultiSelectFieldType,
 } from './multi-select-field.type.js'
+import { FieldId } from './value-objects/field-id.vo.js'
 
 export class MultiSelectField extends AbstractSelectField<IMultiSelectField> {
+  duplicate(name: string): MultiSelectField {
+    return MultiSelectField.create({
+      ...this.json,
+      options: this.options.options.map((option) => option.duplicate().toJSON()),
+      id: FieldId.createId(),
+      name,
+      display: false,
+    })
+  }
+
   type: MultiSelectFieldType = 'multi-select'
 
   override get json() {

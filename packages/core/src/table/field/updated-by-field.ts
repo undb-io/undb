@@ -5,6 +5,7 @@ import type { IUpdatedByFilterOperator } from '../filter/operators.js'
 import type { IUpdatedByFilter } from '../filter/updated-by.filter.js'
 import type { TableCompositeSpecificaiton } from '../specifications/index.js'
 import { BaseField } from './field.base.js'
+import { FieldCannotBeDuplicated } from './field.errors.js'
 import type { IUpdatedByField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { UpdatedByFieldValue } from './updated-by-field-value.js'
@@ -16,6 +17,9 @@ import type {
 } from './updated-by-field.type.js'
 
 export class UpdatedByField extends BaseField<IUpdatedByField> {
+  duplicate(name: string): UpdatedByField {
+    throw new FieldCannotBeDuplicated()
+  }
   type: UpdatedByFieldType = 'updated-by'
 
   override get system() {

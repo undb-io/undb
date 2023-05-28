@@ -1,7 +1,14 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import type { WithChartAggregateSpec, WithCurrencySymbol, WithTimeFormat, WithoutWidgeSpecification } from '@undb/core'
+import type {
+  WithChartAggregateSpec,
+  WithCurrencySymbol,
+  WithDuplicatedField,
+  WithTimeFormat,
+  WithoutWidgeSpecification,
+} from '@undb/core'
 import {
+  WithNewField,
   type BaseField,
   type ITableSpecVisitor,
   type WithCalendarField,
@@ -17,7 +24,6 @@ import {
   type WithFilter,
   type WithFormat,
   type WithKanbanField,
-  type WithNewField,
   type WithNewOption,
   type WithNewView,
   type WithNumberAggregateSpec,
@@ -61,6 +67,7 @@ import {
   Field,
   IdField,
   LookupField,
+  MultiSelectField,
   NumberField,
   Option,
   ParentField,
@@ -118,6 +125,8 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
         return this.em.getReference(EmailField, id)
       case 'select':
         return this.em.getReference(SelectField, id)
+      case 'multi-select':
+        return this.em.getReference(MultiSelectField, id)
       case 'bool':
         return this.em.getReference(BoolField, id)
       case 'date-range':
@@ -223,9 +232,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
 
     f.accept(visitor)
 
-    this.addJobs(async () => {
-      await visitor.commit()
-    })
+    this.unshiftQueries(...visitor.queries)
+  }
+  withDuplicatedField(s: WithDuplicatedField): void {
+    const spec = new WithNewField(s.field)
+    this.newField(spec)
   }
   fieldsOrder(s: WithViewFieldsOrder): void {
     const view = this.getView(s.view.id.value)

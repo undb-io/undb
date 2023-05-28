@@ -2,13 +2,16 @@
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type {
   ITableSpecVisitor,
-  WithNewField,
+  WithDuplicatedField,
   WithRatingMax,
   WithTableSchema,
   WithoutField,
   WithoutOption,
 } from '@undb/core'
+import { WithNewField, isSelectFieldType } from '@undb/core'
+import { RecordSqliteDuplicateValueVisitor } from '../repository/record/record-sqlite-duplicate-value.visitor.js'
 import { UnderlyingColumnBuilder } from './underlying-column.builder.js'
+import { UnderlyingTempDuplicateOptionTable } from './underlying-temp-duplicate-option-table.js'
 
 export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   private readonly knex: Knex
@@ -83,6 +86,28 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     const queries = query.split(';\n')
 
     this.#queries.push(...queries)
+  }
+  withDuplicatedField(s: WithDuplicatedField): void {
+    const spec = new WithNewField(s.field)
+    this.newField(spec)
+
+    if (s.includesValues) {
+      if (isSelectFieldType(s.field) && isSelectFieldType(s.from)) {
+        const table = new UnderlyingTempDuplicateOptionTable(this.tableName, s.from, s.field, this.knex)
+        this.#queries.push(...table.create())
+      }
+
+      const knex = this.em.getKnex()
+      const visitor = new RecordSqliteDuplicateValueVisitor(this.tableName, s.from, this.em, knex.queryBuilder(), knex)
+
+      s.field.accept(visitor)
+      this.#queries.push(...visitor.queries)
+
+      if (isSelectFieldType(s.field) && isSelectFieldType(s.from)) {
+        const table = new UnderlyingTempDuplicateOptionTable(this.tableName, s.from, s.field, this.knex)
+        this.#queries.push(table.drop())
+      }
+    }
   }
   fieldsOrder(): void {}
   fieldWidthEqual(): void {}

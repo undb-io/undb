@@ -2,12 +2,16 @@ import { z } from 'zod'
 import type { IIdFilter } from '../filter/id.filter.js'
 import type { IIdFilterOperator } from '../filter/operators.js'
 import { BaseField } from './field.base.js'
+import { FieldCannotBeDuplicated } from './field.errors.js'
 import type { IIdField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { IdFieldValue } from './id-field-value.js'
 import type { ICreateIdFieldInput, ICreateIdFieldValue, IdFieldType } from './id-field.type.js'
 
 export class IdField extends BaseField<IIdField> {
+  duplicate(name: string): IdField {
+    throw new FieldCannotBeDuplicated()
+  }
   type: IdFieldType = 'id'
 
   override get system() {

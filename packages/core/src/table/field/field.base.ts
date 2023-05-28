@@ -14,6 +14,7 @@ import type { TableSchema, TableSchemaIdMap } from '../value-objects/table-schem
 import type { IBaseCreateFieldSchema, IBaseUpdateFieldSchema } from './field-base.schema.js'
 import { DEFAULT_DATE_FORMAT } from './field.constants.js'
 import type {
+  Field,
   IAbstractAggregateField,
   IAbstractDateField,
   IAbstractLookingField,
@@ -111,6 +112,8 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
   get sortable(): boolean {
     return isSortable(this.type)
   }
+
+  abstract duplicate(name: string): Field
 
   get display(): boolean {
     return this.props.display ?? false

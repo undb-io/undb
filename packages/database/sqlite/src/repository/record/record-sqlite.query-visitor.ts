@@ -380,17 +380,20 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     const value = s.value
     if (!value) return
 
+    const knex = this.knex
+
     const meta = this.em.getMetadata().get(Attachment.name)
     const {
       tableName,
-      properties: { recordId, mimeType, extension },
+      properties: { recordId, fieldId, mimeType, extension },
     } = meta
     const alias = `has_file_type__${s.fieldId}__${tableName}`
-    this.qb.leftJoin(
-      `${tableName} as ${alias}`,
-      `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`,
-      `${alias}.${recordId.fieldNames[0]}`,
-    )
+    this.qb.leftJoin(`${tableName} as ${alias}`, function () {
+      this.on(`${alias}.${recordId.fieldNames[0]}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`).andOn(
+        `${alias}.${fieldId.fieldNames[0]}`,
+        knex.raw('?', [s.fieldId]),
+      )
+    })
 
     const getFieldName = (property: EntityProperty<unknown>) => `${alias}.${property.fieldNames[0]}`
     if (value === 'image' || value === 'text' || value === 'video') {
@@ -409,18 +412,21 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     const value = s.value
     if (!value) return
 
+    const knex = this.knex
+
     const meta = this.em.getMetadata().get(Attachment.name)
     const {
       tableName,
-      properties: { recordId, extension },
+      properties: { recordId, fieldId, extension },
     } = meta
     const alias = `has_extension__${s.fieldId}__${tableName}`
     this.qb
-      .leftJoin(
-        `${tableName} as ${alias}`,
-        `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`,
-        `${alias}.${recordId.fieldNames[0]}`,
-      )
+      .leftJoin(`${tableName} as ${alias}`, function () {
+        this.on(`${alias}.${recordId.fieldNames[0]}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`).andOn(
+          `${alias}.${fieldId.fieldNames[0]}`,
+          knex.raw('?', [s.fieldId]),
+        )
+      })
       .whereIn(`${alias}.${extension.fieldNames[0]}`, castArray(value))
   }
   isAttachmentEmpty(s: IsAttachmentEmpty): void {

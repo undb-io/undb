@@ -10,6 +10,15 @@ import type { ICreateSumFieldInput, ICreateSumFieldValue, IUpdateSumFieldInput, 
 import { FieldId } from './value-objects/field-id.vo.js'
 
 export class SumField extends Mixin(AbstractAggregateField<ISumField>, AbstractLookupField<ISumField>) {
+  duplicate(name: string): SumField {
+    return SumField.create({
+      ...this.json,
+      id: FieldId.createId(),
+      name,
+      display: false,
+    })
+  }
+
   type: SumType = 'sum'
   override get json() {
     return {

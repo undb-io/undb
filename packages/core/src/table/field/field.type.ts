@@ -536,6 +536,7 @@ export type LookingFieldTypes = ReferenceFieldTypes | LookupField
 export type AggregateFieldType = CountField | SumField
 export type INumberAggregateFieldType = ISumField | IAverageField
 export type ISelectFieldType = ISelectField | IMultiSelectField
+export type SelectFieldTypes = SelectField | MultiSelectField
 export type IDateFieldTypes = IDateField | IDateRangeField | ICreatedAtField | IUpdatedAtField
 export type DateFieldTypes = DateField | DateRangeField | CreatedAtField | UpdatedAtField
 export type ILookupFieldTypes = ICountField | ILookupField
