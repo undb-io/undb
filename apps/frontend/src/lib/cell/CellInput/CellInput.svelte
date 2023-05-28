@@ -16,6 +16,7 @@
 	import Tree from './Tree.svelte'
 	import Parent from './Parent.svelte'
 	import Select from './Select.svelte'
+	import MultiSelect from './MultiSelect.svelte'
 	import Currency from './Currency.svelte'
 
 	export let field: Field
@@ -33,6 +34,7 @@
 		email: Email,
 		date: Date,
 		select: Select,
+		'multi-select': MultiSelect,
 		bool: Checkbox,
 		'date-range': DateRange,
 		reference: Reference,

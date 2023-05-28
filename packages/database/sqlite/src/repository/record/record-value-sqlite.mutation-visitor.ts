@@ -19,6 +19,7 @@ import type {
   IFieldValueVisitor,
   IdFieldValue,
   LookupFieldValue,
+  MultiSelectFieldValue,
   NumberFieldValue,
   ParentFieldValue,
   RatingFieldValue,
@@ -118,12 +119,15 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
   select(value: SelectFieldValue): void {
     this.setData(this.fieldId, value.unpack())
   }
+  multiSelect(value: MultiSelectFieldValue): void {
+    this.setData(this.fieldId, JSON.stringify(value.unpack()))
+  }
   attachment(value: AttachmentFieldValue): void {
     this.addJobs(async () => {
-      await this.em.nativeDelete(Attachment, { recordId: this.recordId })
+      await this.em.nativeDelete(Attachment, { recordId: this.recordId, fieldId: this.fieldId })
       const attachments = value
         .unpack()
-        .map((item) => new Attachment(this.em.getReference(Table, this.tableId), this.recordId, item))
+        .map((item) => new Attachment(this.em.getReference(Table, this.tableId), this.fieldId, this.recordId, item))
       this.em.persist(attachments)
     })
   }

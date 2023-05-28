@@ -8,7 +8,7 @@ import type {
 import type { WithCurrencySymbol } from '../field/specifications/currency-field.specification.js'
 import type { WithFormat, WithTimeFormat } from '../field/specifications/date-field.specification.js'
 import type { WithFieldRequirement } from '../field/specifications/field-constraints.specification.js'
-import type { WithoutField } from '../field/specifications/field.specification.js'
+import type { WithDuplicatedField, WithoutField } from '../field/specifications/field.specification.js'
 import type { WithRatingMax } from '../field/specifications/rating-field.specification.js'
 import type {
   WithDisplayFields,
@@ -85,6 +85,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
 
   newField(s: WithNewField): void
   withoutField(s: WithoutField): void
+  withDuplicatedField(s: WithDuplicatedField): void
 
   optionsEqual(s: WithOptions): void
   optionEqual(s: WithNewOption): void

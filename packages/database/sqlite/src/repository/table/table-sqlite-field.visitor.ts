@@ -19,6 +19,7 @@ import type {
   EmailField as CoreEmailField,
   IdField as CoreIdField,
   LookupField as CoreLookupField,
+  MultiSelectField as CoreMultiSelectField,
   NumberField as CoreNumberField,
   ParentField as CoreParentField,
   RatingField as CoreRatingField,
@@ -48,6 +49,7 @@ import {
   Field,
   IdField,
   LookupField,
+  MultiSelectField,
   NumberField,
   Option,
   ParentField,
@@ -164,6 +166,12 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   select(value: CoreSelectField): void {
     const field = new SelectField(this.table, value)
+    wrap(field).assign({ options: value.options.options.map((option) => new Option(field, option)) })
+    this.em.persist(field)
+  }
+
+  multiSelect(value: CoreMultiSelectField): void {
+    const field = new MultiSelectField(this.table, value)
     wrap(field).assign({ options: value.options.options.map((option) => new Option(field, option)) })
     this.em.persist(field)
   }

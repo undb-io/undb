@@ -5,8 +5,17 @@ import type { INumberField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { NumberFieldValue } from './number-field-value.js'
 import type { ICreateNumberFieldInput, ICreateNumberFieldValue, NumberType } from './number-field.type.js'
+import { FieldId } from './value-objects/field-id.vo.js'
 
 export class NumberField extends BaseField<INumberField> {
+  duplicate(name: string): NumberField {
+    return NumberField.create({
+      ...this.json,
+      id: FieldId.createId(),
+      name,
+      display: false,
+    })
+  }
   type: NumberType = 'number'
 
   override get primitive() {

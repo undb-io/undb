@@ -1,4 +1,4 @@
-import type { IFieldType } from './field.type'
+import type { Field, IFieldType, SelectFieldTypes } from './field.type'
 
 const controlledFieldTypes: Set<IFieldType> = new Set([
   'id',
@@ -21,6 +21,7 @@ const displayFieldTypes: Set<IFieldType> = new Set<IFieldType>([
   // FIXME: https://github.com/undb-xyz/undb/issues/780
   // 'attachment',
   'number',
+  'multi-select',
   'rating',
   'currency',
   'string',
@@ -57,3 +58,18 @@ export const isAggregate = (type: IFieldType): boolean => isAggregateFieldType.h
 const notFilterableFieldType: Set<IFieldType> = new Set<IFieldType>(['lookup', 'reference'])
 
 export const isFilterable = (type: IFieldType): boolean => !notFilterableFieldType.has(type)
+
+export const isSelectFieldType = (field: Field): field is SelectFieldTypes =>
+  field.type === 'select' || field.type === 'multi-select'
+
+export const cannotDuplicate: Set<IFieldType> = new Set<IFieldType>([
+  'id',
+  'created-at',
+  'created-by',
+  'updated-at',
+  'updated-by',
+  'auto-increment',
+  'parent',
+])
+
+export const canDuplicate = (type: IFieldType) => !cannotDuplicate.has(type)

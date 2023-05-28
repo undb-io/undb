@@ -19,6 +19,15 @@ import { DisplayFields } from './value-objects/display-fields.vo.js'
 import { FieldId } from './value-objects/field-id.vo.js'
 
 export class LookupField extends Mixin(AbstractLookingField<ILookupField>, AbstractLookupField<ILookupField>) {
+  duplicate(name: string): LookupField {
+    return LookupField.create({
+      ...this.json,
+      id: FieldId.createId(),
+      name,
+      display: false,
+    })
+  }
+
   type: LookupType = 'lookup'
   override get json() {
     return {

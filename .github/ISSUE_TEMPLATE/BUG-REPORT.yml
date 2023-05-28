@@ -18,7 +18,7 @@ body:
       description: Please enter your GitHub URL to provide a reproduction of the issue
       placeholder: ex. https://github.com/undb-xyz/undb
     validations:
-      required: true
+      required: false
   - type: textarea
     id: reprod
     attributes:

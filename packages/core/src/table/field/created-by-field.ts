@@ -12,10 +12,14 @@ import type {
   IUpdateCreatedByFieldInput,
 } from './created-by-field.type.js'
 import { BaseField } from './field.base.js'
-import type { ICreatedByField } from './field.type.js'
+import { FieldCannotBeDuplicated } from './field.errors.js'
+import type { Field, ICreatedByField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 
 export class CreatedByField extends BaseField<ICreatedByField> {
+  duplicate(name: string): Field {
+    throw new FieldCannotBeDuplicated()
+  }
   type: CreatedByFieldType = 'created-by'
 
   override get system() {

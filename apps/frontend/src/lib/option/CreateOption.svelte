@@ -40,12 +40,12 @@
 		},
 	})
 
-	$: if ($field?.type === 'select') {
+	$: if ($field?.type === 'select' || $field?.type === 'multi-select') {
 		$form.color = $field.options.lastOption.into()?.color.next().toJSON() || OptionColor.defaultColor.toJSON()
 	}
 </script>
 
-{#if $field?.type === 'select'}
+{#if $field?.type === 'select' || $field?.type === 'multi-select'}
 	<Modal
 		title={$t('Create New Option') ?? undefined}
 		bind:open={$createOptionModal.open}

@@ -13,6 +13,10 @@ export class OptionKey extends NanoID {
     return new this(optionIdSchema.parse(id))
   }
 
+  static createId(): string {
+    return this.create().value
+  }
+
   static fromString(key: string): OptionKey {
     return new this(key)
   }

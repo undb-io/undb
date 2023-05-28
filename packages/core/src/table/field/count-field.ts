@@ -9,12 +9,22 @@ import type {
   IUpdateCountFieldInput,
 } from './count-field.type.js'
 import { AbstractLookupField, BaseField } from './field.base.js'
-import type { ICountField } from './field.type.js'
+import type { Field, ICountField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { FieldId } from './value-objects/field-id.vo.js'
 
 export class CountField extends AbstractLookupField<ICountField> {
+  duplicate(name: string): Field {
+    return CountField.create({
+      ...this.json,
+      id: FieldId.createId(),
+      name,
+      display: false,
+    })
+  }
+
   type: CountType = 'count'
+
   override get json() {
     return {
       ...super.json,

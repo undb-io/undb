@@ -176,6 +176,7 @@ export class TableSchema extends ValueObject<Field[]> {
       return fieldName
     }
 
-    return fieldName + ' (1)'
+    const newName = fieldName + ' (1)'
+    return this.getNextFieldName(newName)
   }
 }

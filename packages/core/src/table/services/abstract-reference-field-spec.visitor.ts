@@ -17,6 +17,7 @@ import type {
   IFieldVisitor,
   IdField,
   LookupField,
+  MultiSelectField,
   NumberField,
   ParentField,
   RatingField,
@@ -29,6 +30,7 @@ import type {
   UpdatedByField,
   WithCurrencySymbol,
   WithDisplayFields,
+  WithDuplicatedField,
   WithFieldDescription,
   WithFieldDisplay,
   WithFieldName,
@@ -104,6 +106,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   date(field: DateField): void {}
   dateRange(field: DateRangeField): void {}
   select(field: SelectField): void {}
+  multiSelect(field: MultiSelectField): void {}
   abstract reference(field: ReferenceField): void
   abstract tree(field: TreeField): void
   abstract parent(field: ParentField): void
@@ -143,6 +146,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
     s.field.accept(this)
   }
   withoutField(s: WithoutField): void {}
+  withDuplicatedField(s: WithDuplicatedField): void {}
   optionsEqual(s: WithOptions): void {}
   optionEqual(s: WithNewOption): void {}
   newOption(s: WithNewOption): void {}

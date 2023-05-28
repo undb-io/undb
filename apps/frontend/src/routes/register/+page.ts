@@ -3,7 +3,7 @@ import { z } from 'zod'
 import type { PageLoad } from './$types'
 
 export const ssr = false
-export const prerender = true
+export const prerender = false
 const schema = z.object({
 	email: z.string().email(),
 	password: z.string(),

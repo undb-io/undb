@@ -11,9 +11,12 @@ export class Attachment extends BaseEntity {
   id: string
 
   @PrimaryKey()
-  recordId: string;
+  recordId: string
 
-  [PrimaryKeyType]?: [string, string]
+  @PrimaryKey()
+  fieldId: string;
+
+  [PrimaryKeyType]?: [string, string, string]
 
   @ManyToOne(() => Table)
   table: Rel<Table>
@@ -42,9 +45,10 @@ export class Attachment extends BaseEntity {
     return path.extname(this.name)
   }
 
-  constructor(table: Rel<Table>, recordId: string, attachment: IAttachmentItem) {
+  constructor(table: Rel<Table>, fieldId: string, recordId: string, attachment: IAttachmentItem) {
     super()
     this.table = table
+    this.fieldId = fieldId
     this.recordId = recordId
     this.id = attachment.id
     this.mimeType = attachment.mimeType

@@ -19,6 +19,9 @@ import type {
   IRecordVisitor,
   IsAttachmentEmpty,
   IsTreeRoot,
+  MultiSelectEqual,
+  MultiSelectIn,
+  MultiSelectIsEmpty,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -59,6 +62,15 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     private readonly qb: Knex.QueryBuilder,
   ) {
     super(em)
+  }
+  multiSelectEqual(s: MultiSelectEqual): void {
+    throw new Error('Method not implemented.')
+  }
+  multiSelectIn(s: MultiSelectIn): void {
+    throw new Error('Method not implemented.')
+  }
+  multiSelectIsEmpty(s: MultiSelectIsEmpty): void {
+    throw new Error('Method not implemented.')
   }
   collaboratorEqual(s: CollaboratorEqual): void {
     throw new Error('Method not implemented.')

@@ -22,6 +22,9 @@ import {
   HasFileType,
   IsAttachmentEmpty,
   IsTreeRoot,
+  MultiSelectEqual,
+  MultiSelectIn,
+  MultiSelectIsEmpty,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -68,6 +71,8 @@ import { emailFilter, emailFilterValue } from './email.filter.js'
 import type { IIdFilter } from './id.filter.js'
 import { idFilter, idFilterValue } from './id.filter.js'
 import { lookupFilter, lookupFilterValue } from './lookup.filter.js'
+import type { IMultiSelectFilter } from './multi-select.filter.js'
+import { multiSelectFilter, multiSelectFilterValue } from './multi-select.filter.js'
 import type { INumberFilter } from './number.filter.js'
 import { numberFilter, numberFilterValue } from './number.filter.js'
 import {
@@ -93,6 +98,7 @@ import {
   emailFilterOperators,
   idFilterOperators,
   lookupFilterOperators,
+  multiSelectFilterOperators,
   numberFilterOperators,
   parentFilterOperators,
   ratingFilterOperators,
@@ -133,6 +139,7 @@ export const filterValue = z.union([
   dateFilterValue,
   dateRangeFilterValue,
   selectFilterValue,
+  multiSelectFilterValue,
   boolFilterValue,
   referenceFilterValue,
   treeFilterValue,
@@ -162,6 +169,7 @@ export const operaotrs = z.union([
   dateFilterOperators,
   dateRangeFilterOperators,
   selectFilterOperators,
+  multiSelectFilterOperators,
   boolFilterOperators,
   referenceFilterOperators,
   treeFilterOperators,
@@ -191,6 +199,7 @@ const filter = z.discriminatedUnion('type', [
   dateFilter,
   dateRangeFilter,
   selectFilter,
+  multiSelectFilter,
   boolFilter,
   referenceFilter,
   treeFilter,
@@ -489,6 +498,27 @@ const convertCollaboratorFilter = (
       return None
   }
 }
+
+const convertMultiSelectFilter = (filter: IMultiSelectFilter): Option<CompositeSpecification> => {
+  switch (filter.operator) {
+    case '$eq':
+      return Some(MultiSelectEqual.fromStrings(filter.path, filter.value as string[]))
+    case '$neq':
+      return Some(MultiSelectEqual.fromStrings(filter.path, filter.value as string[]).not())
+    case '$is_empty':
+      return Some(new MultiSelectIsEmpty(filter.path))
+    case '$is_not_empty':
+      return Some(new MultiSelectIsEmpty(filter.path).not())
+    case '$in':
+      return Some(MultiSelectIn.fromStrings(filter.path, filter.value as string[]))
+    case '$nin':
+      return Some(MultiSelectIn.fromStrings(filter.path, filter.value as string[]).not())
+
+    default:
+      return None
+  }
+}
+
 const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
   switch (filter.type) {
     case 'id':
@@ -517,6 +547,8 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
       return convertDateRangeFilter(filter)
     case 'select':
       return convertSelectFilter(filter)
+    case 'multi-select':
+      return convertMultiSelectFilter(filter)
     case 'bool':
       return convertBoolFilter(filter)
     case 'reference':

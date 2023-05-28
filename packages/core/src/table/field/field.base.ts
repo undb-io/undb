@@ -5,17 +5,22 @@ import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import type { ZodType } from 'zod'
 import type { IFilter, IOperator } from '../filter/index.js'
+import { OptionKey } from '../option/option-key.vo.js'
+import type { ICreateOptionSchema, IMutateOptionSchema, IUpdateOptionSchema } from '../option/option.schema.js'
+import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues, Record } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import type { TableSchema, TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
 import type { IBaseCreateFieldSchema, IBaseUpdateFieldSchema } from './field-base.schema.js'
 import { DEFAULT_DATE_FORMAT } from './field.constants.js'
 import type {
+  Field,
   IAbstractAggregateField,
   IAbstractDateField,
   IAbstractLookingField,
   IAbstractLookupField,
   IAbstractReferenceField,
+  IAbstractSelectField,
   IBaseField,
   IBaseFieldQueryScheam,
   IDateFieldTypes,
@@ -25,6 +30,7 @@ import type {
   ILookupFieldTypes,
   INumberAggregateFieldType,
   IReferenceFieldTypes,
+  ISelectFieldType,
   IUpdateFieldSchema,
   LookingFieldIssue,
   PrimitiveField,
@@ -39,6 +45,7 @@ import { WithFormat, WithTimeFormat } from './specifications/date-field.specific
 import { WithFieldRequirement } from './specifications/field-constraints.specification.js'
 import { WithReferenceFieldId } from './specifications/lookup-field.specification.js'
 import { WithDisplayFields } from './specifications/reference-field.specification.js'
+import { WithNewOption, WithOption, WithOptions, WithoutOption } from './specifications/select-field.specification.js'
 import type { TreeField } from './tree-field.js'
 import { FieldDescription } from './value-objects/field-description.js'
 import type { DateFormat, TimeFormat } from './value-objects/index.js'
@@ -105,6 +112,8 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
   get sortable(): boolean {
     return isSortable(this.type)
   }
+
+  abstract duplicate(name: string): Field
 
   get display(): boolean {
     return this.props.display ?? false
@@ -368,5 +377,60 @@ export abstract class AbstractAggregateField<F extends INumberAggregateFieldType
     }
 
     return None
+  }
+}
+
+export abstract class AbstractSelectField<F extends ISelectFieldType>
+  extends BaseField<F>
+  implements IAbstractSelectField
+{
+  get options(): Options {
+    return this.props.options
+  }
+
+  set options(options: Options) {
+    this.props.options = options
+  }
+
+  reorder(from: string, to: string): WithOptions {
+    const options = this.options.reorder(from, to)
+    return new WithOptions(this, options)
+  }
+  createOption(input: ICreateOptionSchema): WithNewOption {
+    const option = this.options.createOption(input)
+    return new WithNewOption(this, option)
+  }
+  updateOption(id: string, input: IUpdateOptionSchema): WithOption {
+    const option = this.options.getById(id).unwrap()
+
+    return new WithOption(this, option.updateOption(input))
+  }
+  removeOption(id: string): WithoutOption {
+    const optionKey = OptionKey.fromString(id)
+    return new WithoutOption(this, optionKey)
+  }
+  updateOptions(input: IMutateOptionSchema[]): Option<TableCompositeSpecificaiton> {
+    if (!input.length) {
+      return None
+    }
+
+    const specs: TableCompositeSpecificaiton[] = []
+    const options = this.options.optionsMap
+    for (const option of input) {
+      const existing = !!option.key && !!options.get(option.key)
+      if (existing) {
+        specs.push(this.updateOption(option.key!, option))
+        continue
+      }
+
+      specs.push(this.createOption(option))
+    }
+    for (const [id] of options) {
+      if (!input.some((o) => o.key === id)) {
+        specs.push(this.removeOption(id))
+      }
+    }
+
+    return and(...specs)
   }
 }

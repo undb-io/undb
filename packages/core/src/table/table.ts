@@ -2,14 +2,16 @@ import { and, andOptions } from '@undb/domain'
 import { difference, isEmpty, isEqual, isString, sortBy } from 'lodash-es'
 import type { Option, Result } from 'oxide.ts'
 import { None, Ok, Some } from 'oxide.ts'
+import { FieldNotFoundException } from './field/field.errors.js'
 import type {
   Field,
   ICreateFieldSchema,
+  IDuplicatedFieldSchema,
   IQuerySchemaSchema,
   IReorderOptionsSchema,
   IUpdateFieldSchema,
 } from './field/index.js'
-import { SelectField } from './field/index.js'
+import { SelectField, WithDuplicatedField } from './field/index.js'
 import type { IRootFilter } from './filter/index.js'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from './option/index.js'
 import type { Record } from './record/index.js'
@@ -304,6 +306,23 @@ export class Table {
     const field = this.schema.getFieldById(id).unwrap()
 
     return field.update(input as any)
+  }
+
+  public duplicateField({ id, includesValues }: IDuplicatedFieldSchema): TableCompositeSpecificaiton {
+    const field = this.schema.getFieldById(id).into()
+    if (!field) throw new FieldNotFoundException()
+
+    const duplicated = field.duplicate(this.schema.getNextFieldName(field.name.value))
+    const spec = new WithDuplicatedField(duplicated, field, includesValues)
+    const specs: Option<TableCompositeSpecificaiton>[] = [Some(spec)]
+    for (const view of this.views.views) {
+      const viewFieldsOrder = this.mustGetFielsOrder(view).addAt(duplicated.id.value, undefined)
+      const vo = new WithViewFieldsOrder(viewFieldsOrder, view)
+      vo.mutate(this).unwrap()
+      specs.push(Some(vo))
+    }
+
+    return andOptions(...specs).unwrap()
   }
 
   public removeField(id: string): TableCompositeSpecificaiton {

@@ -212,6 +212,7 @@
             "date",
             "date-range",
             "select",
+            "multi-select",
             "reference",
             "tree",
             "parent",
@@ -742,6 +743,15 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "field_id": {
+          "name": "field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "created_at": {
           "name": "created_at",
           "type": "datetime",
@@ -896,7 +906,8 @@
           "keyName": "primary",
           "columnNames": [
             "id",
-            "record_id"
+            "record_id",
+            "field_id"
           ],
           "composite": true,
           "primary": true,

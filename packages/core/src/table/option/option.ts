@@ -8,6 +8,13 @@ import type { ICreateOptionSchema, IMutateOptionSchema, IOptionSchema } from './
 export const isOption = (o?: unknown): o is Option => o instanceof Option
 
 export class Option extends ValueObject<IOption> {
+  public duplicate(): Option {
+    return Option.create({
+      ...this.toJSON(),
+      key: OptionKey.createId(),
+    })
+  }
+
   public get key() {
     return this.props.key
   }

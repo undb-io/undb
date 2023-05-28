@@ -62,6 +62,8 @@
 			} else if (operator === '$in' || operator === '$nin') {
 				component = OptionsPicker
 			}
+		} else if (type === 'multi-select') {
+			component = OptionsPicker
 		} else if (type === 'bool') {
 			component = undefined
 		} else if (type === 'attachment') {

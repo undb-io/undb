@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import type { CurrencyField } from '@undb/core'
+import type { CurrencyField, MultiSelectField } from '@undb/core'
 import {
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
@@ -135,6 +135,9 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
   }
   select(field: SelectField): void {
     this.qb.from(this.table.id.value).select(`${this.fieldId} as key`).groupBy(this.fieldId).count('* as value')
+  }
+  multiSelect(field: MultiSelectField): void {
+    throw new Error('Method not implemented.')
   }
   reference(field: ReferenceField): void {
     throw new Error('Method not implemented.')

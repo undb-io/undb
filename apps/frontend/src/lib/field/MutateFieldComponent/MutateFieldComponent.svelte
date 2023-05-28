@@ -43,6 +43,7 @@
 		average: Average,
 		tree: Tree,
 		select: Select,
+		'multi-select': Select,
 		parent: Parent,
 		'created-at': CreatedAt,
 		'updated-at': UpdatedAt,

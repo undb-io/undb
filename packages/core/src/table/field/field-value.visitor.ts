@@ -13,6 +13,7 @@ import type { DateRangeFieldValue } from './date-range-field-value.js'
 import type { EmailFieldValue } from './email-field-value.js'
 import type { IdFieldValue } from './id-field-value.js'
 import type { LookupFieldValue } from './lookup-field-value.js'
+import type { MultiSelectFieldValue } from './multi-select-field-value.js'
 import type { NumberFieldValue } from './number-field-value.js'
 import type { ParentFieldValue } from './parent-field-value.js'
 import type { RatingFieldValue } from './rating-field-value.js'
@@ -40,6 +41,7 @@ export interface IFieldValueVisitor {
   date(value: DateFieldValue): void
   dateRange(value: DateRangeFieldValue): void
   select(value: SelectFieldValue): void
+  multiSelect(value: MultiSelectFieldValue): void
   reference(value: ReferenceFieldValue): void
   tree(value: TreeFieldValue): void
   parent(value: ParentFieldValue): void

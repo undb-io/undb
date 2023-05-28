@@ -11,6 +11,7 @@
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import KanbanLane from '$lib/kanban/KanbanLane.svelte'
+	import { UNCATEGORIZED } from '$lib/kanban/kanban.constants'
 
 	export let field: SelectField
 	const flipDurationMs = 200
@@ -18,8 +19,6 @@
 	const table = getTable()
 
 	$: options = field?.options?.options ?? []
-
-	const UNCATEGORIZED = 'Uncategorized'
 
 	$: items = [
 		{
@@ -68,79 +67,81 @@
 	}
 </script>
 
-<div
-	class="flex gap-5 h-full w-full px-10 py-5 overflow-scroll"
-	use:dndzone={{ items, flipDurationMs, type: 'columns', dropTargetStyle: {} }}
-	on:consider={handleDndConsiderColumns}
-	on:finalize={handleDndFinalizeColumns}
->
-	{#each items as item (item.id)}
-		<div animate:flip={{ duration: flipDurationMs }}>
-			<div class="w-[350px] flex flex-col h-full">
-				<div class="flex-0">
-					<div class="min-h-[40px]">
-						{#if item.option}
-							<div class="flex items-center justify-between pr-2">
-								<Option option={item.option} />
-								<i class="ti ti-dots text-gray-400" />
-								<Dropdown>
-									<DropdownItem
-										class="text-gray-600 text-xs space-y-2"
-										on:click={() => {
-											$currentFieldId = field?.id.value
-											$currentOption = item.option
-											updateOptionModal.open()
-										}}
-									>
-										<i class="ti ti-pencil" />
-										<span>
-											{$t('Update Option')}
-										</span>
-									</DropdownItem>
-									<DropdownItem
-										class="text-red-400 text-xs space-y-2"
-										on:click={() => {
-											if (item.option && field) {
-												$deleteOption.mutate({
-													tableId: $table.id.value,
-													fieldId: field.id.value,
-													id: item.option.key.value,
-												})
-											}
-										}}
-									>
-										<i class="ti ti-trash" />
-										<span>
-											{$t('Delete Option')}
-										</span>
-									</DropdownItem>
-								</Dropdown>
-							</div>
-						{:else}
-							<Badge color="dark">{item.name}</Badge>
-						{/if}
+<div class="flex gap-5 h-full px-10 py-5 overflow-auto">
+	<div
+		class="flex gap-5 h-full"
+		use:dndzone={{ items, flipDurationMs, type: 'columns', dropTargetStyle: {} }}
+		on:consider={handleDndConsiderColumns}
+		on:finalize={handleDndFinalizeColumns}
+	>
+		{#each items as item (item.id)}
+			<div animate:flip={{ duration: flipDurationMs }}>
+				<div class="w-[350px] flex flex-col h-full">
+					<div class="flex-0">
+						<div class="min-h-[40px]">
+							{#if item.option}
+								<div class="flex items-center justify-between pr-2">
+									<Option option={item.option} />
+									<i class="ti ti-dots text-gray-400" />
+									<Dropdown>
+										<DropdownItem
+											class="text-gray-600 text-xs space-y-2"
+											on:click={() => {
+												$currentFieldId = field?.id.value
+												$currentOption = item.option
+												updateOptionModal.open()
+											}}
+										>
+											<i class="ti ti-pencil" />
+											<span>
+												{$t('Update Option')}
+											</span>
+										</DropdownItem>
+										<DropdownItem
+											class="text-red-400 text-xs space-y-2"
+											on:click={() => {
+												if (item.option && field) {
+													$deleteOption.mutate({
+														tableId: $table.id.value,
+														fieldId: field.id.value,
+														id: item.option.key.value,
+													})
+												}
+											}}
+										>
+											<i class="ti ti-trash" />
+											<span>
+												{$t('Delete Option')}
+											</span>
+										</DropdownItem>
+									</Dropdown>
+								</div>
+							{:else}
+								<Badge color="dark">{item.name}</Badge>
+							{/if}
+						</div>
 					</div>
-				</div>
 
-				<KanbanLane
-					data-container-id={item.id}
-					kanbanId={item.id}
-					{field}
-					value={item.id}
-					allowCreate
-					initialValue={field && item.id !== UNCATEGORIZED ? { [field.id.value]: item.id } : undefined}
-					filter={[
-						{
-							path: field.id.value,
-							type: field.type,
-							value: item.id === UNCATEGORIZED ? null : item.id,
-							operator: '$eq',
-						},
-					]}
-				/>
+					<KanbanLane
+						data-container-id={item.id}
+						kanbanId={item.id}
+						{field}
+						value={item.id}
+						allowCreate
+						initialValue={field && item.id !== UNCATEGORIZED ? { [field.id.value]: item.id } : undefined}
+						filter={[
+							{
+								path: field.id.value,
+								type: field.type,
+								value: item.id === UNCATEGORIZED ? null : item.id,
+								operator: '$eq',
+							},
+						]}
+					/>
+				</div>
 			</div>
-		</div>
-	{/each}
+		{/each}
+	</div>
 
 	<div class="w-[350px] shrink-0">
 		<Button

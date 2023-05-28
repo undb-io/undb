@@ -4,7 +4,7 @@ import Cookies from 'js-cookie'
 import type { LayoutLoad } from './$types'
 
 export const ssr = false
-export const prerender = true
+export const prerender = false
 export const load: LayoutLoad = async (event) => {
 	if (!Cookies.get('undb_auth')) {
 		throw redirect(303, `/login?redirectTo=${event.url.pathname}`)

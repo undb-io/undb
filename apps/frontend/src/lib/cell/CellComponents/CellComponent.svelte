@@ -4,6 +4,7 @@
 	import String from './String.svelte'
 	import Number from './Number.svelte'
 	import Select from './Select.svelte'
+	import MultiSelect from './MultiSelect.svelte'
 	import Id from './Id.svelte'
 	import Rating from './Rating.svelte'
 	import Attachment from './Attachment.svelte'
@@ -32,6 +33,7 @@
 		email: String,
 		date: Date,
 		select: Select,
+		'multi-select': MultiSelect,
 		bool: Bool,
 		'date-range': DateRange,
 		reference: Reference,

@@ -14,6 +14,7 @@ import type {
   DateLessThan,
   DateLessThanOrEqual,
 } from './date.specification.js'
+import type { MultiSelectEqual, MultiSelectIn, MultiSelectIsEmpty } from './multi-select.specification.js'
 import type {
   NumberEqual,
   NumberGreaterThan,
@@ -82,6 +83,10 @@ interface IRecordValueVisitor {
 
   collaboratorEqual(s: CollaboratorEqual): void
   collaboratorIsEmpqy(s: CollaboratorIsEmpty): void
+
+  multiSelectEqual(s: MultiSelectEqual): void
+  multiSelectIn(s: MultiSelectIn): void
+  multiSelectIsEmpty(s: MultiSelectIsEmpty): void
 
   selectEqual(s: SelectEqual): void
   selectIn(s: SelectIn): void

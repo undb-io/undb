@@ -8,7 +8,7 @@ const schema = z.object({
 })
 
 export const ssr = false
-export const prerender = true
+export const prerender = false
 export const load: PageLoad = async () => {
 	const form = await superValidate({}, schema)
 

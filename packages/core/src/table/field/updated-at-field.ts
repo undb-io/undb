@@ -5,19 +5,23 @@ import type { IUpdatedAtFilterOperator } from '../filter/operators.js'
 import type { IUpdatedAtFilter } from '../filter/updated-at.filter.js'
 import type { TableCompositeSpecificaiton } from '../specifications/index.js'
 import { AbstractDateField } from './field.base.js'
+import { FieldCannotBeDuplicated } from './field.errors.js'
 import type { IUpdatedAtField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { UpdatedAtFieldValue } from './updated-at-field-value.js'
 import type {
   ICreateUpdatedAtFieldInput,
-  IUpdatedAtFieldQueryValue,
   IUpdateUpdatedAtFieldInput,
+  IUpdatedAtFieldQueryValue,
   UpdatedAtFieldType,
 } from './updated-at-field.type.js'
 import { DateFormat } from './value-objects/date-format.vo.js'
 import { TimeFormat } from './value-objects/time-format.vo.js'
 
 export class UpdatedAtField extends AbstractDateField<IUpdatedAtField> {
+  duplicate(name: string): UpdatedAtField {
+    throw new FieldCannotBeDuplicated()
+  }
   type: UpdatedAtFieldType = 'updated-at'
 
   override get json() {

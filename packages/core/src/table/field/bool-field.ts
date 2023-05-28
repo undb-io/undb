@@ -6,8 +6,18 @@ import type { BoolFieldType, ICreateBoolFieldInput, ICreateBoolFieldValue } from
 import { BaseField } from './field.base.js'
 import type { IBoolField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
+import { FieldId } from './value-objects/field-id.vo.js'
 
 export class BoolField extends BaseField<IBoolField> {
+  duplicate(name: string): BoolField {
+    return BoolField.create({
+      ...super.json,
+      id: FieldId.createId(),
+      name,
+      display: false,
+    })
+  }
+
   type: BoolFieldType = 'bool'
 
   override get primitive() {
