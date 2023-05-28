@@ -29,8 +29,8 @@ import type {
   UpdatedAtField,
   UpdatedByField,
 } from '@undb/core'
-import { ReferenceField, TreeField, isSelectFieldType } from '@undb/core'
-import { UnderlyingSelectColumn } from '../../underlying-table/underlying-column.js'
+import { INTERNAL_COLUMN_ID_NAME, ReferenceField, TreeField, isSelectFieldType } from '@undb/core'
+import { UnderlyingMultiSelectColumn, UnderlyingSelectColumn } from '../../underlying-table/underlying-column.js'
 import { AdjacencyListTable, ClosureTable } from '../../underlying-table/underlying-foreign-table.js'
 import { UnderlyingTempDuplicateOptionTable } from '../../underlying-table/underlying-temp-duplicate-option-table.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
@@ -105,7 +105,30 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
     this.addQueries(query)
   }
   multiSelect(field: MultiSelectField): void {
-    throw new Error('Method not implemented.')
+    if (!isSelectFieldType(this.from)) return
+    const temp = new UnderlyingTempDuplicateOptionTable(this.tableId, this.from, field, this.knex)
+    const underlyingColumn = new UnderlyingMultiSelectColumn(field, this.tableId)
+
+    const subQuery = this.knex
+      .queryBuilder()
+      .select(
+        `${this.tableId}.${INTERNAL_COLUMN_ID_NAME}`,
+        this.knex.raw(
+          `json_group_array(${temp.name}.\`${UnderlyingTempDuplicateOptionTable.TO_FIELD}\`) as ${UnderlyingTempDuplicateOptionTable.TO_FIELD}`,
+        ),
+      )
+      .fromRaw(`${this.tableId}, json_each(${this.from.id.value})`)
+      .leftJoin(temp.name, `${temp.name}.${UnderlyingTempDuplicateOptionTable.FROM_FIELD}`, `json_each.value`)
+      .groupBy(`${this.tableId}.${INTERNAL_COLUMN_ID_NAME}`)
+      .toQuery()
+
+    const query = `
+      UPDATE \`${this.tableId}\`
+      SET ${underlyingColumn.name} = tt.\`${UnderlyingTempDuplicateOptionTable.TO_FIELD}\`
+      FROM (${subQuery}) as tt
+      WHERE tt.id = ${this.tableId}.id
+    `
+    this.addQueries(query)
   }
   reference(field: ReferenceField): void {
     if (!(this.from instanceof ReferenceField)) return

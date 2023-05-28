@@ -13,15 +13,15 @@ export class UnderlyingTempDuplicateOptionTable {
     return `__temp_duplicate_option_${this.tableName}_${this.from.id.value}_${this.to.id.value}`
   }
 
-  static FROM_FIELD = 'from'
-  static TO_FIELD = 'to'
+  static FROM_FIELD = 'from_id'
+  static TO_FIELD = 'to_id'
 
   public create(): string[] {
     const queries = []
     const createQuery = this.knex.schema
       .createTable(this.name, (tb) => {
-        tb.string('from')
-        tb.string('to')
+        tb.string(UnderlyingTempDuplicateOptionTable.FROM_FIELD)
+        tb.string(UnderlyingTempDuplicateOptionTable.TO_FIELD)
       })
       .toQuery()
 
