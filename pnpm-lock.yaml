@@ -382,8 +382,8 @@ importers:
         specifier: ^1.6.5
         version: 1.6.5
       flowbite-svelte:
-        specifier: ^0.36.5
-        version: 0.36.5(@popperjs/core@2.11.7)(classnames@2.3.2)(flowbite@1.6.5)(svelte@3.59.1)
+        specifier: ^0.37.0
+        version: 0.37.1(@popperjs/core@2.11.7)(classnames@2.3.2)(flowbite@1.6.5)(svelte@3.59.1)
       htm:
         specifier: ^3.1.1
         version: 3.1.1
@@ -7052,8 +7052,8 @@ packages:
   /flatted@3.2.7:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
 
-  /flowbite-svelte@0.36.5(@popperjs/core@2.11.7)(classnames@2.3.2)(flowbite@1.6.5)(svelte@3.59.1):
-    resolution: {integrity: sha512-J1n/yqzTWlhKp1+HD7qSWObTtiyjklE1lc6tPk1k1NgwawWm/qo8DaCZ3B6EaAWXvNVt4GkWjl40MgKdV/1OdQ==}
+  /flowbite-svelte@0.37.1(@popperjs/core@2.11.7)(classnames@2.3.2)(flowbite@1.6.5)(svelte@3.59.1):
+    resolution: {integrity: sha512-GLeoohbquXL6HOeSLG6zMmWmOJPX/rNBqXJOlXdUiUPQR8nnUIr9eVXpTxEk4LwA3eJe+rlvCKEgC59xhx/W1g==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     peerDependencies:
       '@popperjs/core': ^2.11.6
