@@ -25,6 +25,7 @@ export class DateField extends AbstractDateField<IDateField> {
       ...this.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
   type: DateType = 'date'

@@ -24,6 +24,7 @@ export class DateRangeField extends AbstractDateField<IDateRangeField> {
       ...this.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
 

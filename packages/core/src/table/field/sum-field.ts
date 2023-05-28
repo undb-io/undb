@@ -15,6 +15,7 @@ export class SumField extends Mixin(AbstractAggregateField<ISumField>, AbstractL
       ...this.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
 

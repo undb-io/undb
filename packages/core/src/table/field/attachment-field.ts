@@ -17,6 +17,7 @@ export class AttachmentField extends BaseField<IAttachmentField> {
       ...super.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
 

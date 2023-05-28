@@ -24,6 +24,7 @@ export class LookupField extends Mixin(AbstractLookingField<ILookupField>, Abstr
       ...this.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
 

@@ -13,6 +13,7 @@ export class ColorField extends BaseField<IColorField> {
       ...this.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
   type: ColorFieldType = 'color'

@@ -13,6 +13,7 @@ export class NumberField extends BaseField<INumberField> {
       ...this.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
   type: NumberType = 'number'

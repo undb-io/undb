@@ -23,6 +23,7 @@ export class RatingField extends BaseField<IRatingField> {
       ...this.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
 

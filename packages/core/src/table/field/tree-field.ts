@@ -22,6 +22,7 @@ export class TreeField extends Mixin(AbstractReferenceField<ITreeField>, Abstrac
       ...this.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
 

@@ -24,6 +24,7 @@ export class CurrencyField extends BaseField<ICurrencyField> {
       ...this.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
   type: CurrencyFieldType = 'currency'

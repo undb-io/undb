@@ -13,6 +13,7 @@ export class StringField extends BaseField<IStringField> {
       ...this.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
   type: StringFieldType = 'string'

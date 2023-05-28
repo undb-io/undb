@@ -58,6 +58,7 @@ export class AverageField extends Mixin(AbstractAggregateField<IAverageField>, A
       ...this.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
 

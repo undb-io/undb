@@ -14,6 +14,7 @@ export class BoolField extends BaseField<IBoolField> {
       ...super.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
 

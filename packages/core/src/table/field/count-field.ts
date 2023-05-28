@@ -19,6 +19,7 @@ export class CountField extends AbstractLookupField<ICountField> {
       ...this.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
 

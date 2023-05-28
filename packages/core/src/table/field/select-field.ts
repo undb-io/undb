@@ -25,6 +25,7 @@ export class SelectField extends AbstractSelectField<ISelectField> {
       options: this.options.options.map((option) => option.duplicate().toJSON()),
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
 

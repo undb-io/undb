@@ -13,6 +13,7 @@ export class EmailField extends BaseField<IEmailField> {
       ...this.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
   type: EmailFieldType = 'email'

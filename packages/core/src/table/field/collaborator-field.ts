@@ -21,6 +21,7 @@ export class CollaboratorField extends BaseField<ICollaboratorField> {
       ...this.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
   type: CollaboratorFieldType = 'collaborator'

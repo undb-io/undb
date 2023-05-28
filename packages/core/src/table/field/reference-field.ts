@@ -30,6 +30,7 @@ export class ReferenceField extends Mixin(
       ...this.json,
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
   type: ReferenceFieldType = 'reference'

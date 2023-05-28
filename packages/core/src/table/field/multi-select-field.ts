@@ -24,6 +24,7 @@ export class MultiSelectField extends AbstractSelectField<IMultiSelectField> {
       options: this.options.options.map((option) => option.duplicate().toJSON()),
       id: FieldId.createId(),
       name,
+      display: false,
     })
   }
 
