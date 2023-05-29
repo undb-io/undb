@@ -13,7 +13,7 @@ RUN tar -C /usr/local/bin -xzf /tmp/litestream.tar.gz
 # installer
 FROM node:20 AS installer
 
-RUN npm install -g pnpm
+RUN npm install -g pnpm@8.5.0
 
 WORKDIR /undb
 
@@ -22,7 +22,7 @@ RUN pnpm fetch
 
 COPY --from=builder /undb/out/ .
 
-RUN pnpm install -r --offline
+RUN pnpm install -r --prefer-offline
 
 ARG PUBLIC_UNDB_ANALYTICS_DOMAIN
 ARG PUBLIC_UNDB_ADMIN_EMAIL
