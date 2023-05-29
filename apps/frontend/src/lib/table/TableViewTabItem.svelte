@@ -82,6 +82,16 @@
 		open = false
 		await tick()
 	}
+
+	const exportGrid = async () => {
+		const res = await fetch(`/api/record/export/grid/${$table.id.value}/${view.id.value}`)
+		const blob = await res.blob()
+		const a = document.createElement('a')
+		a.href = window.URL.createObjectURL(blob)
+		a.download = $table.name.value
+		a.click()
+		a.remove()
+	}
 </script>
 
 <div
@@ -133,6 +143,10 @@
 				<DropdownItem on:click={duplicateView} class="text-sm font-normal inline-flex items-center gap-2">
 					<i class="ti ti-copy text-gray-400" />
 					<span>{$t('Duplicate View')}</span>
+				</DropdownItem>
+				<DropdownItem on:click={exportGrid} class="text-sm font-normal inline-flex items-center gap-2">
+					<i class="ti ti-file-export text-gray-400" />
+					<span>{$t('Export Grid')}</span>
 				</DropdownItem>
 				{#if $table.views.count > 1}
 					<DropdownDivider />
