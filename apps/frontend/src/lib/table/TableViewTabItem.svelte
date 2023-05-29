@@ -89,7 +89,7 @@
 		const blob = await res.blob()
 		const a = document.createElement('a')
 		a.href = window.URL.createObjectURL(blob)
-		a.download = $table.name.value
+		a.download = $table.name.value + ' - ' + view.name.value
 		a.click()
 		a.remove()
 	}
