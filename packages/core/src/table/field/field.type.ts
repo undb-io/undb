@@ -680,6 +680,7 @@ export interface IAbstractReferenceField {
 }
 
 export interface IAbstractLookingField extends BaseField {
+  type: ILookingFieldType
   get multiple(): boolean
   get displayFieldIds(): FieldId[]
   set displayFieldIds(fieldIds: FieldId[])
@@ -687,7 +688,11 @@ export interface IAbstractLookingField extends BaseField {
   updateDisplayFieldIds(displayFieldIds?: string[]): Option<TableCompositeSpecificaiton>
 }
 
+export const lookingFieldTypes = z.union([lookupTypeSchema, parentTypeSchema, treeTypeSchema, referenceTypeSchema])
+export type ILookingFieldType = z.infer<typeof lookingFieldTypes>
+
 export interface IAbstractDateField {
+  type: IDateFieldType
   get formatString(): string
   get format(): DateFormat | undefined
   set format(format: DateFormat | undefined)
@@ -697,6 +702,9 @@ export interface IAbstractDateField {
   set timeFormat(format: TimeFormat | undefined)
   updateTimeFormat(format?: string): Option<TableCompositeSpecificaiton>
 }
+
+export const dateFieldType = z.union([dateTypeSchema, dateRangeTypeSchema, createdAtTypeSchema, updatedAtTypeSchema])
+export type IDateFieldType = z.infer<typeof dateFieldType>
 
 export const lookingFieldIssues = z.enum(['Missing Reference Field'])
 export type ILookingFieldIssues = z.infer<typeof lookingFieldIssues>

@@ -23,9 +23,11 @@ import type {
   IAbstractSelectField,
   IBaseField,
   IBaseFieldQueryScheam,
+  IDateFieldType,
   IDateFieldTypes,
   IFieldType,
   ILookingFieldIssues,
+  ILookingFieldType,
   ILookingFieldTypes,
   ILookupFieldTypes,
   INumberAggregateFieldType,
@@ -187,18 +189,18 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
   protected updateBase<T extends IBaseUpdateFieldSchema>(input: T): Option<TableCompositeSpecificaiton> {
     const specs: TableCompositeSpecificaiton[] = []
     if (isString(input.name)) {
-      const spec = WithFieldName.fromString(this, input.name)
+      const spec = WithFieldName.fromString(this.type, this.id.value, input.name)
       specs.push(spec)
     }
     if (isString(input.description)) {
-      const spec = WithFieldDescription.fromString(this, input.description)
+      const spec = WithFieldDescription.fromString(this.type, this.id.value, input.description)
       specs.push(spec)
     }
     if (isBoolean(input.required) && !this.controlled) {
-      specs.push(new WithFieldRequirement(this, input.required))
+      specs.push(new WithFieldRequirement(this.type, this.id.value, input.required))
     }
     if (isBoolean(input.display) && canDisplay(this.type)) {
-      specs.push(new WithFieldDisplay(this, input.display))
+      specs.push(new WithFieldDisplay(this.type, this.id.value, input.display))
     }
     return and(...specs)
   }
@@ -217,6 +219,7 @@ export abstract class AbstractDateField<F extends IDateFieldTypes = IDateFieldTy
   extends BaseField<F>
   implements IAbstractDateField
 {
+  abstract type: IDateFieldType
   get formatString(): string {
     return this.props.format?.unpack() ?? DEFAULT_DATE_FORMAT
   }
@@ -231,7 +234,7 @@ export abstract class AbstractDateField<F extends IDateFieldTypes = IDateFieldTy
 
   updateFormat(format?: string | undefined): Option<TableCompositeSpecificaiton> {
     if (isString(format)) {
-      return Some(WithFormat.fromString(this, format))
+      return Some(WithFormat.fromString(this.type, this.id.value, format))
     }
 
     return None
@@ -251,7 +254,7 @@ export abstract class AbstractDateField<F extends IDateFieldTypes = IDateFieldTy
 
   updateTimeFormat(format?: string | undefined | null): Option<TableCompositeSpecificaiton> {
     if (isString(format) || isNull(format)) {
-      return Some(WithTimeFormat.from(this, format))
+      return Some(WithTimeFormat.from(this.type, this.id.value, format))
     }
 
     return None
@@ -262,6 +265,7 @@ export abstract class AbstractLookingField<F extends ILookingFieldTypes>
   extends BaseField<F>
   implements IAbstractLookingField
 {
+  abstract type: ILookingFieldType
   abstract get multiple(): boolean
 
   get displayFieldIds(): FieldId[] {
@@ -307,7 +311,7 @@ export abstract class AbstractLookingField<F extends ILookingFieldTypes>
 
   updateDisplayFieldIds(displayFieldIds?: string[]): Option<TableCompositeSpecificaiton> {
     if (isArray(displayFieldIds)) {
-      return Some(WithDisplayFields.fromIds(this, displayFieldIds))
+      return Some(WithDisplayFields.fromIds(this.type, this.id.value, displayFieldIds))
     }
     return None
   }

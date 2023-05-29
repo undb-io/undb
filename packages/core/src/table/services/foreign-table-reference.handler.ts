@@ -30,7 +30,7 @@ export class ForeignTableReferenceHandler extends AbstractReferenceFieldSpecVisi
       symmetricReferenceFieldId: field.id.value,
     })
 
-    this.#specs.push(Some(spec), Some(WithSymmetricReferenceField.fromString(field, id)))
+    this.#specs.push(Some(spec), Some(WithSymmetricReferenceField.fromString(field.type, field.id.value, id)))
   }
   tree(field: TreeField): void {}
   parent(field: ParentField): void {}

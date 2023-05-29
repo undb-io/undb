@@ -1,6 +1,7 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
 import type {
+  IFieldType,
   WithChartAggregateSpec,
   WithCurrencySymbol,
   WithDuplicatedField,
@@ -9,7 +10,6 @@ import type {
 } from '@undb/core'
 import {
   WithNewField,
-  type BaseField,
   type ITableSpecVisitor,
   type WithCalendarField,
   type WithDisplayFields,
@@ -99,11 +99,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     return this.em.getReference(View, id)
   }
 
-  #getField(field: BaseField): Field {
-    const {
-      type,
-      id: { value: id },
-    } = field
+  #getField(type: IFieldType, id: string): Field {
     switch (type) {
       case 'date':
         return this.em.getReference(DateField, id)
@@ -316,7 +312,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.remove(option)
   }
   withoutField(s: WithoutField): void {
-    const field = this.#getField(s.field)
+    const field = this.#getField(s.field.type, s.field.id.value)
     wrap(field).assign({ deletedAt: new Date() })
     this.em.persist(field)
   }
@@ -326,23 +322,23 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.persist(view)
   }
   withFieldName(s: WithFieldName): void {
-    const field = this.#getField(s.field)
+    const field = this.#getField(s.type, s.fieldId)
     wrap(field).assign({ name: s.name.value })
     this.em.persist(field)
   }
   withFieldDescription(s: WithFieldDescription): void {
-    const field = this.#getField(s.field)
+    const field = this.#getField(s.type, s.fieldId)
     wrap(field).assign({ description: s.description.value })
     this.em.persist(field)
   }
   withFieldDisplay(s: WithFieldDisplay): void {
-    const field = this.#getField(s.field)
+    const field = this.#getField(s.type, s.fieldId)
     wrap(field).assign({ display: s.display })
     this.em.persist(field)
   }
   displayFieldsEqual(s: WithDisplayFields): void {
     this.addJobs(async () => {
-      const field = (await this.em.findOne(Field, { id: s.field.id.value })) as TreeField | ParentField | ReferenceField
+      const field = (await this.em.findOne(Field, { id: s.fieldId })) as TreeField | ParentField | ReferenceField
       if (field) {
         field.displayFields.set(s.displayFields.map((id) => this.em.getReference(Field, id.value)))
         this.em.persist(field)
@@ -350,13 +346,13 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     })
   }
   withFormat(s: WithFormat): void {
-    const field = this.#getField(s.field) as DateField | DateRangeField | CreatedAtField | UpdatedAtField
+    const field = this.#getField(s.type, s.fieldId) as DateField | DateRangeField | CreatedAtField | UpdatedAtField
     wrap(field).assign({ format: s.format.unpack() })
     this.em.persist(field)
   }
   withTimeFormat(s: WithTimeFormat): void {
     this.addJobs(async () => {
-      const field = (await this.em.findOne(Field, s.field.id.value)) as
+      const field = (await this.em.findOne(Field, s.fieldId)) as
         | DateField
         | DateRangeField
         | CreatedAtField
@@ -373,12 +369,12 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.persist(view)
   }
   withFieldRequirement(s: WithFieldRequirement): void {
-    const field = this.#getField(s.field)
+    const field = this.#getField(s.type, s.fieldId)
     wrap(field).assign({ required: s.required })
     this.em.persist(field)
   }
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {
-    const field = this.em.getReference(ReferenceField, s.field.id.value)
+    const field = this.em.getReference(ReferenceField, s.fieldId)
     wrap(field).assign({ symmetricReferenceField: s.symmetricReferenceFieldId.value })
     this.em.persist(field)
   }
