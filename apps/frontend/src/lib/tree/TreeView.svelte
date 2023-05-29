@@ -1,22 +1,24 @@
 <script lang="ts">
-	import { getTable, recordHash } from '$lib/store/table'
+	import { getTable, getView, recordHash } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import { RecordFactory, type IQueryTreeRecord, type TreeField, Record } from '@undb/core'
 	import type { TreeRecord } from './tree-view.type'
 	import TreeItem from './TreeItem.svelte'
 
 	export let field: TreeField
-	const table = getTable()
+	const table= getTable()
+	const view = getView()
 
 	$: schema = $table.schema.toIdMap()
 
 	const data = trpc().record.tree.list.query(
 		{
 			tableId: $table.id.value,
+			viewId: $view.id.value,
 			fieldId: field.id.value,
 		},
 		{
-			queryHash: $recordHash,
+			queryHash: $recordHash+ 'tree',
 		},
 	)
 
@@ -33,6 +35,11 @@
 	$: record = { id: '', record: null, children: records }
 </script>
 
+{#if $data.isLoading}
+	 <!-- content here -->
+{:else}
 <div class="-ml-8">
 	<TreeItem {record} {field} />
 </div>
+
+{/if}
