@@ -1,6 +1,9 @@
+import { isBoolean } from 'lodash-es'
 import { z } from 'zod'
 import type { IBoolFilter } from '../filter/bool.filter.js'
 import type { IBoolFilterOperator } from '../filter/operators.js'
+import type { RecordValueJSON } from '../record/record.schema.js'
+import type { IRecordDisplayValues } from '../record/record.type.js'
 import { BoolFieldValue } from './bool-field-value.js'
 import type { BoolFieldType, ICreateBoolFieldInput, ICreateBoolFieldValue } from './bool-field.type.js'
 import { BaseField } from './field.base.js'
@@ -32,6 +35,11 @@ export class BoolField extends BaseField<IBoolField> {
     return new BoolField(super.unsafeCreateBase(input))
   }
 
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    const value = valueJson[this.id.value]
+    if (isBoolean(value)) return String(value)
+    return null
+  }
   createValue(value: ICreateBoolFieldValue): BoolFieldValue {
     return new BoolFieldValue(value)
   }

@@ -1,15 +1,15 @@
-import { IRecordExportor, IRecordQueryModel, ViewId, WithRecordTableId, type ITableRepository } from '@undb/core'
+import { IRecordExportor, IRecordRepository, WithRecordTableId, type ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
 import type { ExportGridCommand } from './export-grid.comand.js'
 
-export class ExportGridCommandHandler implements ICommandHandler<ExportGridCommand, void> {
+export class ExportGridCommandHandler implements ICommandHandler<ExportGridCommand, string> {
   constructor(
     protected readonly tableRepo: ITableRepository,
-    protected readonly rm: IRecordQueryModel,
+    protected readonly recordRepo: IRecordRepository,
     protected readonly exportor: IRecordExportor,
   ) {}
 
-  async execute(command: ExportGridCommand): Promise<void> {
+  async execute(command: ExportGridCommand): Promise<string> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
     const filter = table.getSpec(command.viewId)
 
@@ -17,9 +17,8 @@ export class ExportGridCommandHandler implements ICommandHandler<ExportGridComma
       .map((s) => (filter.isNone() ? s : s.and(filter.unwrap())))
       .unwrap()
 
-    const viewId = ViewId.fromString(command.viewId)
-    const records = await this.rm.find(table.id.value, viewId, spec)
+    const records = await this.recordRepo.find(table.id.value, spec, table.schema.toIdMap())
 
-    return this.exportor.export({})
+    return this.exportor.export(table, command.viewId, records)
   }
 }

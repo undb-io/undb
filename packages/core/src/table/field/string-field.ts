@@ -1,5 +1,7 @@
 import { z } from 'zod'
 import type { IStringFilter, IStringFilterOperator } from '../filter/string.filter.js'
+import type { RecordValueJSON } from '../record/record.schema.js'
+import type { IRecordDisplayValues } from '../record/record.type.js'
 import { BaseField } from './field.base.js'
 import type { IStringField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
@@ -28,6 +30,10 @@ export class StringField extends BaseField<IStringField> {
 
   static unsafeCreate(input: ICreateStringFieldInput): StringField {
     return new StringField(super.unsafeCreateBase(input))
+  }
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    return valueJson[this.id.value] ?? null
   }
 
   createValue(value: ICreateStringFieldValue): StringFieldValue {

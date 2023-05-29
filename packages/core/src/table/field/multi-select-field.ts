@@ -4,6 +4,7 @@ import { z } from 'zod'
 import type { IMultiSelectFilter, IMultiSelectFilterValue } from '../filter/multi-select.filter.js'
 import type { IMultiSelectFilterOperator } from '../filter/operators.js'
 import { Options } from '../option/options.js'
+import { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import { AbstractSelectField } from './field.base.js'
 import type { IMultiSelectField } from './field.type.js'
@@ -49,6 +50,14 @@ export class MultiSelectField extends AbstractSelectField<IMultiSelectField> {
       ...super.unsafeCreateBase(input),
       options: Options.unsafeCreate(input.options),
     })
+  }
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | number | null {
+    const optionIds: string[] = valueJson[this.id.value] ?? []
+    return optionIds
+      .map((optionId) => this.options.getById(optionId).into()?.name.value)
+      .filter(Boolean)
+      .toString()
   }
 
   public override update(input: IUpdateMultiSelectFieldInput): Option<TableCompositeSpecificaiton> {

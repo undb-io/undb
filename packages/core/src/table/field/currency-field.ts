@@ -3,6 +3,7 @@ import { isString } from 'lodash-es'
 import { None, Some, type Option } from 'oxide.ts'
 import { z } from 'zod'
 import type { ICurrencyFilter, ICurrencyFilterOperator } from '../filter/currency.filter.js'
+import { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import { CurrencyFieldValue } from './currency-field-value.js'
 import type {
@@ -54,6 +55,13 @@ export class CurrencyField extends BaseField<ICurrencyField> {
 
   static unsafeCreate(input: ICreateCurrencyFieldInput): CurrencyField {
     return new CurrencyField({ ...super.unsafeCreateBase(input), symbol: new CurrencySymbol({ value: input.symbol }) })
+  }
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    const value = valueJson[this.id.value] ?? null
+    if (!value) return null
+
+    return this.symbol.symbol + ' ' + value
   }
 
   createValue(value: ICreateCurrencyFieldValue): CurrencyFieldValue {

@@ -3,6 +3,8 @@ import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
 import type { IParentFilterOperator } from '../filter/operators.js'
 import type { IParentFilter } from '../filter/parent.filter.js'
+import { RecordValueJSON } from '../record/record.schema.js'
+import { IRecordDisplayValues } from '../record/record.type.js'
 import { AbstractLookingField, AbstractReferenceField } from './field.base.js'
 import { FieldCannotBeDuplicated } from './field.errors.js'
 import type { IParentField } from './field.type.js'
@@ -41,6 +43,10 @@ export class ParentField extends Mixin(AbstractReferenceField<IParentField>, Abs
         ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
         : undefined,
     })
+  }
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    return this.getDisplayValues(displayValues)?.toString() ?? null
   }
 
   static unsafeCreate(input: ICreateParentFieldInput): ParentField {

@@ -3,6 +3,8 @@ import { isNumber } from 'lodash-es'
 import { None, Some, type Option } from 'oxide.ts'
 import { z } from 'zod'
 import type { IRatingFilter, IRatingFilterOperator } from '../filter/rating.filter.js'
+import { RecordValueJSON } from '../record/record.schema.js'
+import { IRecordDisplayValues } from '../record/record.type.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import { BaseField } from './field.base.js'
 import type { IRatingField } from './field.type.js'
@@ -54,6 +56,10 @@ export class RatingField extends BaseField<IRatingField> {
 
   static unsafeCreate(input: ICreateRatingFieldInput): RatingField {
     return new RatingField({ ...super.unsafeCreateBase(input), max: input.max })
+  }
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): number | null {
+    return valueJson[this.id.value]
   }
 
   createValue(value: ICreateRatingFieldValue): RatingFieldValue {

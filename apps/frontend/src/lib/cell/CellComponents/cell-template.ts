@@ -4,6 +4,7 @@ import type { RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
 import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime'
 import {
 	CurrencyField,
+	INTERNAL_COLUMN_CREATED_BY_PROFILE_NAME,
 	MultiSelectField,
 	Option,
 	isImage,
@@ -131,7 +132,7 @@ const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile)
 }
 
 const createdBy: TemplateFunc = (h, props) => {
-	const createdBy = props.model.created_by_profile as ICollaboratorProfile
+	const createdBy = props.model[INTERNAL_COLUMN_CREATED_BY_PROFILE_NAME] as ICollaboratorProfile
 
 	return collaboratorComponent(h, createdBy)
 }

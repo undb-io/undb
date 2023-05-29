@@ -1,6 +1,7 @@
 import { andOptions } from '@undb/domain'
 import { z } from 'zod'
 import type { ICountFilter, ICountFilterOperator } from '../filter/count.filter.js'
+import { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
 import { CountFieldValue } from './count-field-value.js'
 import type {
   CountType,
@@ -48,6 +49,10 @@ export class CountField extends AbstractLookupField<ICountField> {
       ...BaseField.unsafeCreateBase(input),
       referenceFieldId: FieldId.fromString(input.referenceFieldId),
     })
+  }
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): number | null {
+    return valueJson[this.id.value] ?? null
   }
 
   public override update(input: IUpdateCountFieldInput) {

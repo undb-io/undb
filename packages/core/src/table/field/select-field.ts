@@ -4,6 +4,8 @@ import { z } from 'zod'
 import type { ISelectFilterOperator } from '../filter/operators.js'
 import type { ISelectFilter, ISelectFilterValue } from '../filter/select.filter.js'
 import { Options } from '../option/options.js'
+import { RecordValueJSON } from '../record/record.schema.js'
+import { IRecordDisplayValues } from '../record/record.type.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import { AbstractSelectField } from './field.base.js'
 import type { ISelectField } from './field.type.js'
@@ -52,6 +54,16 @@ export class SelectField extends AbstractSelectField<ISelectField> {
       ...super.unsafeCreateBase(input),
       options: Options.unsafeCreate(input.options),
     })
+  }
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    const optionId = valueJson[this.id.value]
+    if (!optionId) return null
+
+    const option = this.options.getById(optionId).into()
+    if (!option) return null
+
+    return option.name.value
   }
 
   public override update(input: IUpdateSelectFieldInput): Option<TableCompositeSpecificaiton> {

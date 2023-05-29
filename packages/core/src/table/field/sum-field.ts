@@ -2,6 +2,8 @@ import { andOptions } from '@undb/domain'
 import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
 import type { ISumFilter, ISumFilterOperator } from '../filter/sum.filter.js'
+import { RecordValueJSON } from '../record/record.schema.js'
+import { IRecordDisplayValues } from '../record/record.type.js'
 import { AbstractAggregateField, AbstractLookupField, BaseField } from './field.base.js'
 import type { ISumField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
@@ -46,6 +48,10 @@ export class SumField extends Mixin(AbstractAggregateField<ISumField>, AbstractL
       referenceFieldId: FieldId.fromString(input.referenceFieldId),
       aggregateFieldId: FieldId.fromString(input.aggregateFieldId),
     })
+  }
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): number | null {
+    return valueJson[this.id.value] ?? null
   }
 
   public override update(input: IUpdateSumFieldInput) {
