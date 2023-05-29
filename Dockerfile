@@ -22,7 +22,7 @@ RUN pnpm fetch
 
 COPY --from=builder /undb/out/ .
 
-RUN pnpm install -r --offline
+RUN pnpm install -r
 
 ARG PUBLIC_UNDB_ANALYTICS_DOMAIN
 ARG PUBLIC_UNDB_ADMIN_EMAIL

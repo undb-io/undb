@@ -51,7 +51,7 @@ const config = {
 		},
 	},
 
-	plugins: [require('flowbite/plugin'), require('@tailwindcss/forms')],
+	plugins: [require('flowbite/plugin')],
 	darkMode: 'class',
 }
 
