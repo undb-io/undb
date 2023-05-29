@@ -53,6 +53,9 @@ importers:
       '@aws-sdk/client-s3':
         specifier: ^3.338.0
         version: 3.338.0
+      '@json2csv/plainjs':
+        specifier: ^6.1.3
+        version: 6.1.3
       '@mikro-orm/better-sqlite':
         specifier: ^5.7.10
         version: 5.7.10(@mikro-orm/core@5.7.10)(@mikro-orm/migrations@5.7.10)
@@ -210,6 +213,9 @@ importers:
       '@types/jest':
         specifier: ^29.5.1
         version: 29.5.1
+      '@types/json2csv__plainjs':
+        specifier: ^6.1.0
+        version: 6.1.0
       '@types/multer':
         specifier: ^1.4.7
         version: 1.4.7
@@ -270,6 +276,9 @@ importers:
       tsconfig-paths:
         specifier: ^4.2.0
         version: 4.2.0
+      type-fest:
+        specifier: ^3.11.0
+        version: 3.11.0
       typescript:
         specifier: ^5.0.4
         version: 5.0.4
@@ -2921,6 +2930,18 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
+  /@json2csv/formatters@6.1.3:
+    resolution: {integrity: sha512-Yhs6eXTMhSrNFLTuVnhwjgJem2x+z0YZc0YxdCavoDf/tfz6LBVPVVoJPl9tXaCIfPZY9ybRB6sqPQqZTzkNuw==}
+    dev: false
+
+  /@json2csv/plainjs@6.1.3:
+    resolution: {integrity: sha512-8cH/yVAPt1edDq/2Krr4elS2uJFWAdMQDH+ocuepjyh7lmBHEHv5kU0bqbYpd5ZpKTizshotsKk7KYA3nx4CCw==}
+    dependencies:
+      '@json2csv/formatters': 6.1.3
+      '@streamparser/json': 0.0.12
+      lodash.get: 4.4.2
+    dev: false
+
   /@kurkle/color@0.3.2:
     resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
     dev: true
@@ -3730,6 +3751,9 @@ packages:
     hasBin: true
     dev: true
 
+  /@streamparser/json@0.0.12:
+    resolution: {integrity: sha512-+kmRpd+EeTFd3qNt1AoKphJqbAN26ZDsbiwqjBFeoAmdCyiUO19xMXPtYi9vovAj9a7OAJnvWtiHkwwjU2Fx4Q==}
+
   /@sveltejs/adapter-auto@2.1.0(@sveltejs/kit@1.18.0):
     resolution: {integrity: sha512-o2pZCfATFtA/Gw/BB0Xm7k4EYaekXxaPGER3xGSY3FvzFJGTlJlZjBseaXwYSM94lZ0HniOjTokN3cWaLX6fow==}
     peerDependencies:
@@ -4195,6 +4219,12 @@ packages:
 
   /@types/json-schema@7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
+    dev: true
+
+  /@types/json2csv__plainjs@6.1.0:
+    resolution: {integrity: sha512-NX8hNIf1Cr8GV41KlvTvriuwSL44H8HkRRUSyIcTmCI6NPJuADi67+hvCE+ncMKOYXxnEyfgi/h10Eguud2mNA==}
+    dependencies:
+      '@streamparser/json': 0.0.12
     dev: true
 
   /@types/json5@0.0.29:
@@ -8858,6 +8888,10 @@ packages:
   /lodash.camelcase@4.3.0:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
     dev: true
+
+  /lodash.get@4.4.2:
+    resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
+    dev: false
 
   /lodash.isfunction@3.0.9:
     resolution: {integrity: sha512-AirXNj15uRIMMPihnkInB4i3NHeb4iBtNg9WRWuK2o31S+ePwwNmDPaTL3o7dTJ+VXNZim7rFs4rxN4YU1oUJw==}

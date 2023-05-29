@@ -1,8 +1,11 @@
 import { z } from 'zod'
 import type { IAttachmentFilter, IAttachmentFilterOperator } from '../filter/attachment.filter.js'
+import { RecordValueJSON } from '../record/record.schema.js'
+import { IRecordDisplayValues } from '../record/record.type.js'
 import { AttachmentFieldValue } from './attachment-field-value.js'
 import type {
   AttachmentFieldType,
+  IAttachmentItem,
   ICreateAttachmentFieldInput,
   ICreateAttachmentFieldValue,
 } from './attachment-field.type.js'
@@ -33,6 +36,10 @@ export class AttachmentField extends BaseField<IAttachmentField> {
 
   static unsafeCreate(input: ICreateAttachmentFieldInput): AttachmentField {
     return new AttachmentField(super.unsafeCreateBase(input))
+  }
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | number | null {
+    return valueJson[this.id.value]?.map((value: IAttachmentItem) => value.name)?.toString() ?? null
   }
 
   createValue(value: ICreateAttachmentFieldValue): AttachmentFieldValue {

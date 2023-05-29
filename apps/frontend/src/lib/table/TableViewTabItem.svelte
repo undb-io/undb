@@ -82,6 +82,17 @@
 		open = false
 		await tick()
 	}
+
+	const exportGrid = async () => {
+		const res = await fetch(`/api/record/export/grid/${$table.id.value}/${view.id.value}`)
+		open = false
+		const blob = await res.blob()
+		const a = document.createElement('a')
+		a.href = window.URL.createObjectURL(blob)
+		a.download = $table.name.value + ' - ' + view.name.value
+		a.click()
+		a.remove()
+	}
 </script>
 
 <div
@@ -125,18 +136,22 @@
 	</a>
 	{#if active}
 		<Portal target="body">
-			<Dropdown triggeredBy={`#${view.id.value}`} bind:open frameClass="z-[100]">
-				<DropdownItem on:click={() => (updating = true)} class="text-sm font-normal inline-flex items-center gap-2">
-					<i class="ti ti-pencil text-gray-400" />
+			<Dropdown triggeredBy={`#${view.id.value}`} bind:open frameClass="z-[100] w-[200px]">
+				<DropdownItem on:click={() => (updating = true)} class="text-xs font-normal inline-flex items-center gap-2">
+					<i class="ti ti-pencil text-gray-600" />
 					<span>{$t('Update View Name')}</span>
 				</DropdownItem>
-				<DropdownItem on:click={duplicateView} class="text-sm font-normal inline-flex items-center gap-2">
-					<i class="ti ti-copy text-gray-400" />
+				<DropdownItem on:click={duplicateView} class="text-xs font-normal inline-flex items-center gap-2">
+					<i class="ti ti-copy text-gray-600" />
 					<span>{$t('Duplicate View')}</span>
+				</DropdownItem>
+				<DropdownItem on:click={exportGrid} class="text-xs font-normal inline-flex items-center gap-2">
+					<i class="ti ti-file-export text-gray-600" />
+					<span>{$t('Export CSV')}</span>
 				</DropdownItem>
 				{#if $table.views.count > 1}
 					<DropdownDivider />
-					<DropdownItem class="text-red-400 text-sm font-normal inline-flex items-center gap-2" on:click={deleteView}>
+					<DropdownItem class="text-red-600 text-xs font-normal inline-flex items-center gap-2" on:click={deleteView}>
 						<i class="ti ti-trash" />
 						<span>{$t('Delete View')}</span>
 					</DropdownItem>

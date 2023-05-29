@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import type { IEmailFilter, IEmailFilterOperator } from '../filter/email.filter.js'
+import { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
 import { EmailFieldValue } from './email-field-value.js'
 import type { EmailFieldType, ICreateEmailFieldInput, ICreateEmailFieldValue } from './email-field.type.js'
 import { BaseField } from './field.base.js'
@@ -28,6 +29,10 @@ export class EmailField extends BaseField<IEmailField> {
 
   static unsafeCreate(input: ICreateEmailFieldInput): EmailField {
     return new EmailField(super.unsafeCreateBase(input))
+  }
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    return valueJson[this.id.value] ?? null
   }
 
   createValue(value: ICreateEmailFieldValue): EmailFieldValue {

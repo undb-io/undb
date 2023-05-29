@@ -1,12 +1,16 @@
 import { andOptions } from '@undb/domain'
+import { format } from 'date-fns'
 import type { Option } from 'oxide.ts'
 import { z } from 'zod'
 import type { IUpdatedAtFilterOperator } from '../filter/operators.js'
 import type { IUpdatedAtFilter } from '../filter/updated-at.filter.js'
+import { IRecordDisplayValues } from '../record/index.js'
+import { RecordValueJSON } from '../record/record.schema.js'
 import type { TableCompositeSpecificaiton } from '../specifications/index.js'
 import { AbstractDateField } from './field.base.js'
+import { INTERNAL_COLUMN_UPDATED_AT_NAME } from './field.constants.js'
 import { FieldCannotBeDuplicated } from './field.errors.js'
-import type { IUpdatedAtField } from './field.type.js'
+import { type IUpdatedAtField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { UpdatedAtFieldValue } from './updated-at-field-value.js'
 import type {
@@ -42,6 +46,11 @@ export class UpdatedAtField extends AbstractDateField<IUpdatedAtField> {
 
   static default(name: string): UpdatedAtField {
     return this.create({ name })
+  }
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    const value = valueJson[INTERNAL_COLUMN_UPDATED_AT_NAME]
+    return value ? format(new Date(value), this.formatString) : null
   }
 
   static create(input: Omit<ICreateUpdatedAtFieldInput, 'type'>): UpdatedAtField {

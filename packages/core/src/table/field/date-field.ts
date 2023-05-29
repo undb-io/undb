@@ -1,9 +1,12 @@
 import { andOptions } from '@undb/domain'
+import { format } from 'date-fns'
 import type { Option } from 'oxide.ts'
 import { z } from 'zod'
 import type { IDateFilter } from '../filter/date.filter.js'
 import type { IDateFilterOperator } from '../filter/index.js'
 import { dateBuiltInOperators } from '../filter/operators.js'
+import { IRecordDisplayValues } from '../record/index.js'
+import { RecordValueJSON } from '../record/record.schema.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import { DateFieldValue } from './date-field-value.js'
 import type {
@@ -29,6 +32,11 @@ export class DateField extends AbstractDateField<IDateField> {
     })
   }
   type: DateType = 'date'
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    const value = valueJson[this.id.value]
+    return value ? format(new Date(value), this.formatString) : null
+  }
 
   override get json() {
     return {

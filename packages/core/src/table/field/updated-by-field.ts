@@ -3,8 +3,11 @@ import type { ZodTypeAny } from 'zod'
 import { z } from 'zod'
 import type { IUpdatedByFilterOperator } from '../filter/operators.js'
 import type { IUpdatedByFilter } from '../filter/updated-by.filter.js'
+import { IRecordDisplayValues } from '../record/index.js'
+import { RecordValueJSON } from '../record/record.schema.js'
 import type { TableCompositeSpecificaiton } from '../specifications/index.js'
 import { BaseField } from './field.base.js'
+import { INTERNAL_COLUMN_UPDATED_BY_PROFILE_NAME } from './field.constants.js'
 import { FieldCannotBeDuplicated } from './field.errors.js'
 import type { IUpdatedByField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
@@ -44,6 +47,11 @@ export class UpdatedByField extends BaseField<IUpdatedByField> {
     return new UpdatedByField({
       ...super.unsafeCreateBase(input),
     })
+  }
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    const profile = valueJson[INTERNAL_COLUMN_UPDATED_BY_PROFILE_NAME]
+    return profile?.username ?? null
   }
 
   public override update(input: IUpdateUpdatedByFieldInput): Option<TableCompositeSpecificaiton> {

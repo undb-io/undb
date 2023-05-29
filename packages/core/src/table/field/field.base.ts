@@ -8,7 +8,7 @@ import type { IFilter, IOperator } from '../filter/index.js'
 import { OptionKey } from '../option/option-key.vo.js'
 import type { ICreateOptionSchema, IMutateOptionSchema, IUpdateOptionSchema } from '../option/option.schema.js'
 import type { Options } from '../option/options.js'
-import type { IRecordDisplayValues, Record } from '../record/index.js'
+import type { IRecordDisplayValues, Record, RecordValueJSON } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import type { TableSchema, TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
 import type { IBaseCreateFieldSchema, IBaseUpdateFieldSchema } from './field-base.schema.js'
@@ -88,6 +88,9 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
   }
 
   abstract type: IFieldType
+
+  abstract getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | number | null
+
   get controlled(): boolean {
     return isControlledFieldType(this.type)
   }

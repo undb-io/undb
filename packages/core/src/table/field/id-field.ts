@@ -1,7 +1,10 @@
 import { z } from 'zod'
 import type { IIdFilter } from '../filter/id.filter.js'
 import type { IIdFilterOperator } from '../filter/operators.js'
+import { IRecordDisplayValues } from '../record/index.js'
+import { RecordValueJSON } from '../record/record.schema.js'
 import { BaseField } from './field.base.js'
+import { INTERNAL_COLUMN_ID_NAME } from './field.constants.js'
 import { FieldCannotBeDuplicated } from './field.errors.js'
 import type { IIdField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
@@ -28,6 +31,10 @@ export class IdField extends BaseField<IIdField> {
 
   static unsafeCreate(input: ICreateIdFieldInput): IdField {
     return new IdField(super.unsafeCreateBase(input))
+  }
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    return valueJson[INTERNAL_COLUMN_ID_NAME] ?? null
   }
 
   createValue(value: ICreateIdFieldValue): IdFieldValue {

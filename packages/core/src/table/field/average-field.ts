@@ -2,6 +2,8 @@ import { andOptions } from '@undb/domain'
 import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
 import type { IAverageFilter, IAverageFilterOperator } from '../filter/average.filter.js'
+import { RecordValueJSON } from '../record/record.schema.js'
+import { IRecordDisplayValues } from '../record/record.type.js'
 import { AverageFieldValue } from './average-field-value.js'
 import type {
   AverageType,
@@ -43,6 +45,10 @@ export class AverageField extends Mixin(AbstractAggregateField<IAverageField>, A
       referenceFieldId: FieldId.fromString(input.referenceFieldId),
       aggregateFieldId: FieldId.fromString(input.aggregateFieldId),
     })
+  }
+
+  public getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): number | null {
+    return valueJson[this.id.value] ?? null
   }
 
   public override update(input: IUpdateAverageFieldInput) {

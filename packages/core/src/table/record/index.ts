@@ -1,6 +1,7 @@
 export * from './fixtures/index.js'
 export * from './record-aggregate.repository.js'
 export * from './record-tree-query-model.js'
+export * from './record.exportor.js'
 export * from './record.factory.js'
 export * from './record.js'
 export * from './record.query-model.js'

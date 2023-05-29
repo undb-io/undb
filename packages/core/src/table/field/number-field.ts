@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import type { INumberFilter, INumberFilterOperator } from '../filter/number.filter.js'
+import { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
 import { BaseField } from './field.base.js'
 import type { INumberField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
@@ -28,6 +29,10 @@ export class NumberField extends BaseField<INumberField> {
 
   static unsafeCreate(input: ICreateNumberFieldInput): NumberField {
     return new NumberField(super.unsafeCreateBase(input))
+  }
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): number | null {
+    return valueJson[this.id.value] ?? null
   }
 
   createValue(value: ICreateNumberFieldValue): NumberFieldValue {

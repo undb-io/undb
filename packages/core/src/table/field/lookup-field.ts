@@ -4,6 +4,7 @@ import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
 import type { ILookupFilter } from '../filter/lookup.filter.js'
 import type { ILookupFilterOperator } from '../filter/operators.js'
+import { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/index.js'
 import { AbstractLookingField, AbstractLookupField, BaseField } from './field.base.js'
 import type { ILookupField } from './field.type.js'
@@ -63,6 +64,11 @@ export class LookupField extends Mixin(AbstractLookingField<ILookupField>, Abstr
         ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
         : undefined,
     })
+  }
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | number | null {
+    const value = this.getDisplayValues(displayValues)
+    return value.toString()
   }
 
   public override update(input: IUpdateLookupFieldInput): Option<TableCompositeSpecificaiton> {
