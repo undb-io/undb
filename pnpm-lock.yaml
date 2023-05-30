@@ -213,9 +213,6 @@ importers:
       '@types/jest':
         specifier: ^29.5.1
         version: 29.5.1
-      '@types/json2csv__plainjs':
-        specifier: ^6.1.0
-        version: 6.1.0
       '@types/multer':
         specifier: ^1.4.7
         version: 1.4.7
@@ -3751,10 +3748,6 @@ packages:
     hasBin: true
     dev: true
 
-  /@streamparser/json@0.0.12:
-    resolution: {integrity: sha512-+kmRpd+EeTFd3qNt1AoKphJqbAN26ZDsbiwqjBFeoAmdCyiUO19xMXPtYi9vovAj9a7OAJnvWtiHkwwjU2Fx4Q==}
-    dev: true
-
   /@streamparser/json@0.0.14:
     resolution: {integrity: sha512-OcRhmrwe/w7oEZ0atphoa7q1ZFZ7xDC6guReIpvbOfTAlD4XnJFyPgBncyWPBeMlPhVVvLqb+m2XPAcKObBgKA==}
     dev: false
@@ -4224,12 +4217,6 @@ packages:
 
   /@types/json-schema@7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
-    dev: true
-
-  /@types/json2csv__plainjs@6.1.0:
-    resolution: {integrity: sha512-NX8hNIf1Cr8GV41KlvTvriuwSL44H8HkRRUSyIcTmCI6NPJuADi67+hvCE+ncMKOYXxnEyfgi/h10Eguud2mNA==}
-    dependencies:
-      '@streamparser/json': 0.0.12
     dev: true
 
   /@types/json5@0.0.29:
