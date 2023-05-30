@@ -233,8 +233,8 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     const end = s.date2
     const field = this.getField(s.fieldId)
     if (field instanceof DateRangeField) {
-      const from = new UnderlyingDateRangeFromColumn(field, this.tableId)
-      const to = new UnderlyingDateRangeToColumn(field, this.tableId)
+      const from = new UnderlyingDateRangeFromColumn(field.id.value, this.tableId)
+      const to = new UnderlyingDateRangeToColumn(field.id.value, this.tableId)
       const fromId = TABLE_ALIAS + '.' + from.name
       const toId = TABLE_ALIAS + '.' + to.name
 

@@ -11,6 +11,7 @@ import type {
 } from '@undb/core'
 import { WithNewField, isSelectFieldType } from '@undb/core'
 import { RecordSqliteDuplicateValueVisitor } from '../repository/record/record-sqlite-duplicate-value.visitor.js'
+import { UnderlyingColumnConvertTypeVisitor } from './underlying-column-convert-type.visitor.js'
 import { UnderlyingColumnBuilder } from './underlying-column.builder.js'
 import { UnderlyingTempDuplicateOptionTable } from './underlying-temp-duplicate-option-table.js'
 
@@ -71,7 +72,10 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   currencySymbolEqual(): void {}
   rowHeightEqual(): void {}
   withNewFieldType(s: WithNewFieldType): void {
-    throw new Error('ijhiijijisdijsfi')
+    const visitor = new UnderlyingColumnConvertTypeVisitor(this.tableName, s.newType, this.em, this.knex)
+    s.field.accept(visitor)
+
+    this.#queries.push(...visitor.queries)
   }
   newField(s: WithNewField): void {
     const field = s.field

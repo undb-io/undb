@@ -29,7 +29,6 @@ import type {
   IDateFieldQuerySchema,
   IDateRangeFieldQuerySchema,
   IEmailFieldQuerySchema,
-  IFieldType,
   IIdFieldQuerySchema,
   ILookupFieldQuerySchema,
   IMultiSelectFieldQuerySchema,
@@ -114,8 +113,8 @@ export abstract class Field extends BaseEntity {
   @Property({ type: BooleanType, default: false })
   display = false
 
-  @Property({ type: 'string' })
-  type: IFieldType
+  @Property()
+  type: string
 
   abstract toDomain(): CoreField
   abstract toQuery(): IQueryFieldSchema

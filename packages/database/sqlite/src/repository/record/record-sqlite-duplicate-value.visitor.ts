@@ -149,12 +149,12 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
   dateRange(field: DateRangeField): void {
     if (!(this.from instanceof DateRangeField)) return
 
-    const fromColumn = new UnderlyingDateRangeFromColumn(this.from, this.tableId)
-    const newFromColumn = new UnderlyingDateRangeFromColumn(field, this.tableId)
+    const fromColumn = new UnderlyingDateRangeFromColumn(this.from.id.value, this.tableId)
+    const newFromColumn = new UnderlyingDateRangeFromColumn(field.id.value, this.tableId)
     this.addQueries(`UPDATE ${this.tableId} SET ${newFromColumn.name} = ${fromColumn.name}`)
 
-    const toColumn = new UnderlyingDateRangeToColumn(this.from, this.tableId)
-    const newToColumn = new UnderlyingDateRangeToColumn(field, this.tableId)
+    const toColumn = new UnderlyingDateRangeToColumn(this.from.id.value, this.tableId)
+    const newToColumn = new UnderlyingDateRangeToColumn(field.id.value, this.tableId)
     this.addQueries(`UPDATE ${this.tableId} SET ${newToColumn.name} = ${toColumn.name}`)
   }
   select(field: SelectField): void {
@@ -162,7 +162,7 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
 
     const temp = new UnderlyingTempDuplicateOptionTable(this.tableId, this.from, field, this.knex)
 
-    const underlyingColumn = new UnderlyingSelectColumn(field, this.tableId)
+    const underlyingColumn = new UnderlyingSelectColumn(field.id.value, this.tableId)
 
     const query = `
       UPDATE \`${this.tableId}\`
@@ -176,7 +176,7 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
   multiSelect(field: MultiSelectField): void {
     if (!isSelectFieldType(this.from)) return
     const temp = new UnderlyingTempDuplicateOptionTable(this.tableId, this.from, field, this.knex)
-    const underlyingColumn = new UnderlyingMultiSelectColumn(field, this.tableId)
+    const underlyingColumn = new UnderlyingMultiSelectColumn(field.id.value, this.tableId)
 
     const subQuery = this.knex
       .queryBuilder()

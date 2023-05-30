@@ -316,9 +316,9 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.remove(option)
   }
   withNewFieldType(s: WithNewFieldType): void {
-    const field = this.#getField(s.newType, s.field.id.value)
-    wrap(field).assign({ type: s.newType })
-    this.em.persist(field)
+    const { tableName } = this.em.getMetadata().get(Field.name)
+    const query = `UPDATE ${tableName} SET type = '${s.newType}' WHERE id = '${s.field.id.value}'`
+    this.addQueries(query)
   }
   withoutField(s: WithoutField): void {
     const field = this.#getField(s.type, s.fieldId)

@@ -278,7 +278,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         INTERNAL_COLUMN_ID_NAME,
         ...displayColumns
           .flatMap((f) => UnderlyingColumnFactory.create(f, foreignTableId))
-          .map((c) => (c.system ? c.name + ` as ${c.field!.id.value}` : c.field!.id.value)),
+          .map((c) => (c.system ? c.name + ` as ${c.fieldId}` : c.fieldId!)),
       )
       .from(foreignTableId)
       .groupBy(INTERNAL_COLUMN_ID_NAME)
@@ -345,7 +345,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         INTERNAL_COLUMN_ID_NAME,
         ...displayColumns
           .flatMap((f) => UnderlyingColumnFactory.create(f, foreignTableId))
-          .map((c) => (c.system ? c.name + ` as ${c.field!.id.value}` : c.field!.id.value)),
+          .map((c) => (c.system ? c.name + ` as ${c.fieldId}` : c.fieldId!)),
       )
       .from(foreignTableId)
       .groupBy(INTERNAL_COLUMN_ID_NAME)
@@ -398,7 +398,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         INTERNAL_COLUMN_ID_NAME,
         ...displayColumns
           .flatMap((f) => UnderlyingColumnFactory.create(f, foreignTableId))
-          .map((c) => (c.system ? c.name + ` as ${c.field!.id.value}` : c.field!.id.value)),
+          .map((c) => (c.system ? c.name + ` as ${c.fieldId}` : c.fieldId!)),
       )
       .from(foreignTableId)
       .groupBy(INTERNAL_COLUMN_ID_NAME)

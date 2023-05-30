@@ -28,7 +28,7 @@
 		triggeredBy="#field_type_picker"
 		bind:open
 		inline
-		class="w-[400px] overflow-y-auto py-1 shadow-md max-h-[200px]"
+		class="w-[400px] overflow-y-auto py-1 shadow-md max-h-[400px]"
 		frameClass="z-[100]"
 	>
 		{#each types.filter((type) => filter(type.value)) as type}
