@@ -1,5 +1,6 @@
 import type { CompositeSpecification, ISpecVisitor } from '@undb/domain'
 import { type ISpecification } from '@undb/domain'
+import type { WithAggregateFieldId } from '../field/index.js'
 import type {
   WithFieldDescription,
   WithFieldDisplay,
@@ -9,12 +10,18 @@ import type { WithCurrencySymbol } from '../field/specifications/currency-field.
 import type { WithFormat, WithTimeFormat } from '../field/specifications/date-field.specification.js'
 import type { WithFieldRequirement } from '../field/specifications/field-constraints.specification.js'
 import type { WithDuplicatedField, WithoutField } from '../field/specifications/field.specification.js'
+import type { WithReferenceFieldId } from '../field/specifications/lookup-field.specification.js'
 import type { WithRatingMax } from '../field/specifications/rating-field.specification.js'
 import type {
   WithDisplayFields,
   WithSymmetricReferenceField,
 } from '../field/specifications/reference-field.specification.js'
-import type { WithNewOption, WithOptions, WithoutOption } from '../field/specifications/select-field.specification.js'
+import type {
+  WithNewOption,
+  WithOption,
+  WithOptions,
+  WithoutOption,
+} from '../field/specifications/select-field.specification.js'
 import { type Table } from '../table.js'
 import type {
   WithWidgeSepecification,
@@ -88,7 +95,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withDuplicatedField(s: WithDuplicatedField): void
 
   optionsEqual(s: WithOptions): void
-  optionEqual(s: WithNewOption): void
+  optionEqual(s: WithOption): void
   newOption(s: WithNewOption): void
   witoutOption(s: WithoutOption): void
 
@@ -110,6 +117,9 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withVirsualizationName(s: WithVirsualizationNameSpec): void
   withNumberAggregate(s: WithNumberAggregateSpec): void
   withChartAggregate(s: WithChartAggregateSpec): void
+
+  withReferenceFieldId(s: WithReferenceFieldId): void
+  withAggregateFieldId(s: WithAggregateFieldId): void
 }
 
 export type ITableSpec = ISpecification<Table, ITableSpecVisitor>

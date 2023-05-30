@@ -3,8 +3,8 @@ import { isNumber } from 'lodash-es'
 import { None, Some, type Option } from 'oxide.ts'
 import { z } from 'zod'
 import type { IRatingFilter, IRatingFilterOperator } from '../filter/rating.filter.js'
-import { RecordValueJSON } from '../record/record.schema.js'
-import { IRecordDisplayValues } from '../record/record.type.js'
+import type { RecordValueJSON } from '../record/record.schema.js'
+import type { IRecordDisplayValues } from '../record/record.type.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import { BaseField } from './field.base.js'
 import type { IRatingField } from './field.type.js'
@@ -72,7 +72,7 @@ export class RatingField extends BaseField<IRatingField> {
 
   private updateMax(input: IUpdateRatingFieldInput): Option<TableCompositeSpecificaiton> {
     if (isNumber(input.max)) {
-      return Some(new WithRatingMax(this, input.max))
+      return Some(new WithRatingMax(this.type, this.id.value, input.max))
     }
 
     return None

@@ -28,6 +28,7 @@ import type {
   TreeField,
   UpdatedAtField,
   UpdatedByField,
+  WithAggregateFieldId,
   WithCurrencySymbol,
   WithDisplayFields,
   WithDuplicatedField,
@@ -37,6 +38,7 @@ import type {
   WithFieldRequirement,
   WithFormat,
   WithNewOption,
+  WithOption,
   WithOptions,
   WithRatingMax,
   WithSymmetricReferenceField,
@@ -44,6 +46,7 @@ import type {
   WithoutField,
   WithoutOption,
 } from '../field/index.js'
+import type { WithReferenceFieldId } from '../field/specifications/lookup-field.specification.js'
 import type {
   ITableSpecVisitor,
   WithFilter,
@@ -148,7 +151,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   withoutField(s: WithoutField): void {}
   withDuplicatedField(s: WithDuplicatedField): void {}
   optionsEqual(s: WithOptions): void {}
-  optionEqual(s: WithNewOption): void {}
+  optionEqual(s: WithOption): void {}
   newOption(s: WithNewOption): void {}
   witoutOption(s: WithoutOption): void {}
   withFieldName(s: WithFieldName): void {}
@@ -159,7 +162,9 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   withTimeFormat(s: WithTimeFormat): void {}
   withShowSystemFields(s: WithShowSystemFieldsSpec): void {}
   withFieldRequirement(s: WithFieldRequirement): void {}
+  withAggregateFieldId(s: WithAggregateFieldId): void {}
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {}
+  withReferenceFieldId(s: WithReferenceFieldId): void {}
   withWidge(s: WithWidgeSepecification): void {}
   not(): this {
     return this

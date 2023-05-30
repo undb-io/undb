@@ -2,9 +2,12 @@ import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
 import type {
   IFieldType,
+  WithAggregateFieldId,
   WithChartAggregateSpec,
   WithCurrencySymbol,
   WithDuplicatedField,
+  WithOption,
+  WithReferenceFieldId,
   WithTimeFormat,
   WithoutWidgeSpecification,
 } from '@undb/core'
@@ -287,14 +290,14 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   }
   optionsEqual(s: WithOptions): void {
     this.addJobs(async () => {
-      const field = await this.em.findOne(SelectField, s.field.id.value, { populate: ['options'] })
+      const field = await this.em.findOne(SelectField, s.fieldId, { populate: ['options'] })
       if (field) {
         wrap(field).assign({ options: s.options.options.map((option) => new Option(field, option)) })
         this.em.persist(field)
       }
     })
   }
-  optionEqual(s: WithNewOption): void {
+  optionEqual(s: WithOption): void {
     const option = this.em.getReference(Option, s.option.key.value as never)
     wrap(option).assign({
       name: s.option.name.value,
@@ -303,7 +306,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.persist(option)
   }
   newOption(s: WithNewOption): void {
-    const field = this.em.getReference(SelectField, s.field.id.value)
+    const field = this.em.getReference(SelectField, s.fieldId)
     const option = new Option(field, s.option)
     this.em.persist(option)
   }
@@ -312,7 +315,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.remove(option)
   }
   withoutField(s: WithoutField): void {
-    const field = this.#getField(s.field.type, s.field.id.value)
+    const field = this.#getField(s.type, s.fieldId)
     wrap(field).assign({ deletedAt: new Date() })
     this.em.persist(field)
   }
@@ -379,12 +382,12 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.persist(field)
   }
   ratingMaxEqual(s: WithRatingMax): void {
-    const field = this.em.getReference(RatingField, s.field.id.value)
+    const field = this.em.getReference(RatingField, s.fieldId)
     wrap(field).assign({ max: s.max })
     this.em.persist(field)
   }
   currencySymbolEqual(s: WithCurrencySymbol): void {
-    const field = this.em.getReference(CurrencyField, s.field.id.value)
+    const field = this.em.getReference(CurrencyField, s.fieldId)
     wrap(field).assign({ symbol: s.symbol.symbol })
     this.em.persist(field)
   }
@@ -434,6 +437,28 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
         await this.em.persistAndFlush(virsualization)
       }
     })
+  }
+  withAggregateFieldId(s: WithAggregateFieldId): void {
+    const field = this.#getField(s.type, s.fieldId)
+    if (field instanceof SumField) {
+      wrap(field).assign({ sumAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
+    } else if (field instanceof AverageField) {
+      wrap(field).assign({ averageAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
+    }
+    this.em.persist(field)
+  }
+  withReferenceFieldId(s: WithReferenceFieldId): void {
+    const field = this.#getField(s.type, s.fieldId) as SumField | AverageField | LookupField | CountField
+    if (field instanceof SumField) {
+      wrap(field).assign({ sumReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
+    } else if (field instanceof AverageField) {
+      wrap(field).assign({ averageReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
+    } else if (field instanceof CountField) {
+      wrap(field).assign({ countReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
+    } else if (field instanceof LookupField) {
+      wrap(field).assign({ lookupReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
+    }
+    this.em.persist(field)
   }
   not(): this {
     return this

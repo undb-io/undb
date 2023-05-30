@@ -21,6 +21,7 @@ import type {
   IAbstractLookupField,
   IAbstractReferenceField,
   IAbstractSelectField,
+  IAggregateFieldType,
   IBaseField,
   IBaseFieldQueryScheam,
   IDateFieldType,
@@ -29,10 +30,12 @@ import type {
   ILookingFieldIssues,
   ILookingFieldType,
   ILookingFieldTypes,
+  ILookupFieldType,
   ILookupFieldTypes,
   INumberAggregateFieldType,
   IReferenceFieldTypes,
   ISelectFieldType,
+  ISelectFieldTypes,
   IUpdateFieldSchema,
   LookingFieldIssue,
   PrimitiveField,
@@ -321,6 +324,7 @@ export abstract class AbstractLookupField<F extends ILookupFieldTypes>
   extends BaseField<F>
   implements IAbstractLookupField
 {
+  abstract type: ILookupFieldType
   get referenceFieldId(): FieldId {
     return this.props.referenceFieldId
   }
@@ -359,7 +363,7 @@ export abstract class AbstractLookupField<F extends ILookupFieldTypes>
 
   updateReferenceId(referenceId?: string): Option<TableCompositeSpecificaiton> {
     if (isString(referenceId)) {
-      return Some(WithReferenceFieldId.fromString(this, referenceId))
+      return Some(WithReferenceFieldId.fromString(this.type, this.id.value, referenceId))
     }
 
     return None
@@ -370,6 +374,7 @@ export abstract class AbstractAggregateField<F extends INumberAggregateFieldType
   extends BaseField<F>
   implements IAbstractAggregateField
 {
+  abstract type: IAggregateFieldType
   get aggregateFieldId(): FieldId {
     return this.props.aggregateFieldId
   }
@@ -380,17 +385,18 @@ export abstract class AbstractAggregateField<F extends INumberAggregateFieldType
 
   updateAggregateFieldId(aggregateFieldId?: string): Option<TableCompositeSpecificaiton> {
     if (isString(aggregateFieldId)) {
-      return Some(WithAggregateFieldId.fromString(this, aggregateFieldId))
+      return Some(WithAggregateFieldId.fromString(this.type, this.id.value, aggregateFieldId))
     }
 
     return None
   }
 }
 
-export abstract class AbstractSelectField<F extends ISelectFieldType>
+export abstract class AbstractSelectField<F extends ISelectFieldTypes>
   extends BaseField<F>
   implements IAbstractSelectField
 {
+  abstract type: ISelectFieldType
   get options(): Options {
     return this.props.options
   }
@@ -401,20 +407,20 @@ export abstract class AbstractSelectField<F extends ISelectFieldType>
 
   reorder(from: string, to: string): WithOptions {
     const options = this.options.reorder(from, to)
-    return new WithOptions(this, options)
+    return new WithOptions(this.type, this.id.value, options)
   }
   createOption(input: ICreateOptionSchema): WithNewOption {
     const option = this.options.createOption(input)
-    return new WithNewOption(this, option)
+    return new WithNewOption(this.type, this.id.value, option)
   }
   updateOption(id: string, input: IUpdateOptionSchema): WithOption {
     const option = this.options.getById(id).unwrap()
 
-    return new WithOption(this, option.updateOption(input))
+    return new WithOption(this.type, this.id.value, option.updateOption(input))
   }
   removeOption(id: string): WithoutOption {
     const optionKey = OptionKey.fromString(id)
-    return new WithoutOption(this, optionKey)
+    return new WithoutOption(this.type, this.id.value, optionKey)
   }
   updateOptions(input: IMutateOptionSchema[]): Option<TableCompositeSpecificaiton> {
     if (!input.length) {

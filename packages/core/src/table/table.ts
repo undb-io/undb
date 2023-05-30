@@ -330,7 +330,8 @@ export class Table {
     spec.mutate(this).unwrap()
 
     // remove field from view order
-    const viewsSpec = this.views.removeField(spec.field)
+    const field = this.schema.getFieldById(spec.fieldId).unwrap()
+    const viewsSpec = this.views.removeField(field)
 
     return andOptions(Some(spec), viewsSpec).unwrap()
   }
