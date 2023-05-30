@@ -65,7 +65,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   viewsOrderEqual(): void {}
   filterEqual(): void {}
   ratingMaxEqual(s: WithRatingMax): void {
-    this.qb = this.#qb.update(s.field.id.value, s.max).where(s.field.id.value, '>', s.max).from(this.tableName)
+    this.qb = this.#qb.update(s.fieldId, s.max).where(s.fieldId, '>', s.max).from(this.tableName)
   }
   currencySymbolEqual(): void {}
   rowHeightEqual(): void {}
@@ -123,7 +123,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   pinnedFields(): void {}
 
   witoutOption(s: WithoutOption): void {
-    this.qb = this.#qb.from(this.tableName).where(s.field.id.value, s.optionKey.value).update(s.field.id.value, null)
+    this.qb = this.#qb.from(this.tableName).where(s.fieldId, s.optionKey.value).update(s.fieldId, null)
   }
   withoutField(s: WithoutField): void {
     // const fields = UnderlyingColumnFactory.createMany([s.field], this.tableName)
@@ -146,6 +146,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   withFieldRequirement(): void {}
   symmetricReferenceFieldEqual(): void {}
   withWidge(): void {}
+  withAggregateFieldId(): void {}
   not(): this {
     return this
   }

@@ -157,7 +157,7 @@ export class TableSchema extends ValueObject<Field[]> {
       throw new Error('not allowed to delete system field')
     }
 
-    return new WithoutField(field)
+    return new WithoutField(field.type, field.id.value)
   }
 
   public get lookingFields(): LookingFieldTypes[] {

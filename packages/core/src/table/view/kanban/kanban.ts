@@ -1,7 +1,6 @@
 import { ValueObject } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
-import type { Field } from '../../field/index.js'
 import { FieldId } from '../../field/index.js'
 import type { IKanbanSchema } from './kanban.schema.js'
 import type { IKanban } from './kanban.type.js'
@@ -21,8 +20,8 @@ export class Kanban extends ValueObject<IKanban> {
     this.props.fieldId = fieldId
   }
 
-  public removeField(field: Field): Option<Kanban> {
-    if (this.fieldId?.equals(field.id)) {
+  public removeField(fieldId: FieldId): Option<Kanban> {
+    if (this.fieldId?.equals(fieldId)) {
       const kanban = new Kanban({ ...this, fieldId: undefined })
       return Some(kanban)
     }

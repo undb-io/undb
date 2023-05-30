@@ -2,8 +2,8 @@ import { andOptions } from '@undb/domain'
 import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
 import type { IAverageFilter, IAverageFilterOperator } from '../filter/average.filter.js'
-import { RecordValueJSON } from '../record/record.schema.js'
-import { IRecordDisplayValues } from '../record/record.type.js'
+import type { RecordValueJSON } from '../record/record.schema.js'
+import type { IRecordDisplayValues } from '../record/record.type.js'
 import { AverageFieldValue } from './average-field-value.js'
 import type {
   AverageType,

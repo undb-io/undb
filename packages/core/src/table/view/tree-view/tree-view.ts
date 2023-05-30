@@ -1,7 +1,6 @@
 import { ValueObject } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
-import type { Field } from '../../field/index.js'
 import { FieldId } from '../../field/index.js'
 import type { ITreeViewSchema } from './tree-view.schema.js'
 import type { ITreeView } from './tree-view.type.js'
@@ -21,8 +20,8 @@ export class TreeView extends ValueObject<ITreeView> {
     this.props.fieldId = fieldId
   }
 
-  public removeField(field: Field): Option<TreeView> {
-    if (this.fieldId?.equals(field.id)) {
+  public removeField(fieldId: FieldId): Option<TreeView> {
+    if (this.fieldId?.equals(fieldId)) {
       const treeView = new TreeView({ ...this, fieldId: undefined })
       return Some(treeView)
     }

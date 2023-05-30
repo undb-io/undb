@@ -3,8 +3,7 @@ import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
-import type { BaseField } from '../field.base.js'
-import type { Field } from '../field.type.js'
+import type { Field, IFieldType } from '../field.type.js'
 import { FieldDescription } from '../value-objects/field-description.js'
 import { FieldName } from '../value-objects/field-name.vo.js'
 
@@ -15,20 +14,22 @@ export abstract class BaseFieldSpecification<F extends Field> extends CompositeS
 }
 
 export class WithFieldName extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly field: BaseField, public readonly name: FieldName) {
+  constructor(public readonly type: IFieldType, public readonly fieldId: string, public readonly name: FieldName) {
     super()
   }
 
-  static fromString(field: BaseField, name: string) {
-    return new this(field, FieldName.create(name))
+  static fromString(type: IFieldType, fieldId: string, name: string) {
+    return new this(type, fieldId, FieldName.create(name))
   }
 
   isSatisfiedBy(t: Table): boolean {
-    return this.field.name.equals(this.name)
+    const field = t.schema.getFieldById(this.fieldId).unwrap()
+    return field.name.equals(this.name)
   }
 
   mutate(t: Table): Result<Table, string> {
-    this.field.name = this.name
+    const field = t.schema.getFieldById(this.fieldId).unwrap()
+    field.name = this.name
     return Ok(t)
   }
 
@@ -39,20 +40,26 @@ export class WithFieldName extends CompositeSpecification<Table, ITableSpecVisit
 }
 
 export class WithFieldDescription extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly field: BaseField, public readonly description: FieldDescription) {
+  constructor(
+    public readonly type: IFieldType,
+    public readonly fieldId: string,
+    public readonly description: FieldDescription,
+  ) {
     super()
   }
 
-  static fromString(field: BaseField, description: string) {
-    return new this(field, new FieldDescription({ value: description }))
+  static fromString(type: IFieldType, fieldId: string, description: string) {
+    return new this(type, fieldId, new FieldDescription({ value: description }))
   }
 
   isSatisfiedBy(t: Table): boolean {
-    return !!this.field.description?.equals(this.description)
+    const field = t.schema.getFieldById(this.fieldId).unwrap()
+    return !!field.description?.equals(this.description)
   }
 
   mutate(t: Table): Result<Table, string> {
-    this.field.description = this.description
+    const field = t.schema.getFieldById(this.fieldId).unwrap()
+    field.description = this.description
     return Ok(t)
   }
 
@@ -62,16 +69,18 @@ export class WithFieldDescription extends CompositeSpecification<Table, ITableSp
   }
 }
 export class WithFieldDisplay extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly field: BaseField, public readonly display: boolean) {
+  constructor(public readonly type: IFieldType, public readonly fieldId: string, public readonly display: boolean) {
     super()
   }
 
   isSatisfiedBy(t: Table): boolean {
-    return !!this.field.display === this.display
+    const field = t.schema.getFieldById(this.fieldId).unwrap()
+    return !!field.display === this.display
   }
 
   mutate(t: Table): Result<Table, string> {
-    this.field.display = this.display
+    const field = t.schema.getFieldById(this.fieldId).unwrap()
+    field.display = this.display
     return Ok(t)
   }
 

@@ -2,6 +2,7 @@
 import type { QueryBuilder } from '@mikro-orm/better-sqlite'
 import type {
   ITableSpecVisitor,
+  WithAggregateFieldId,
   WithCalendarField,
   WithChartAggregateSpec,
   WithCurrencySymbol,
@@ -22,12 +23,14 @@ import type {
   WithNewOption,
   WithNewView,
   WithNumberAggregateSpec,
+  WithOption,
   WithOptions,
   WithoutField,
   WithoutOption,
   WithoutView,
   WithoutWidgeSpecification,
   WithRatingMax,
+  WithReferenceFieldId,
   WithRowHeight,
   WithShowSystemFieldsSpec,
   WithSorts,
@@ -145,7 +148,7 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   fieldOptionsEqual(s: WithFieldOption): void {
     throw new Error('Method not implemented.')
   }
-  optionEqual(s: WithNewOption): void {
+  optionEqual(s: WithOption): void {
     throw new Error('Method not implemented.')
   }
   sortsEqual(s: WithSorts): void {
@@ -190,7 +193,12 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   withWidge(s: WithWidgeSepecification): void {
     throw new Error('Method not implemented.')
   }
-
+  withAggregateFieldId(s: WithAggregateFieldId): void {
+    throw new Error('Method not implemented.')
+  }
+  withReferenceFieldId(s: WithReferenceFieldId): void {
+    throw new Error('Method not implemented.')
+  }
   not(): this {
     throw new Error('Method not implemented.')
   }

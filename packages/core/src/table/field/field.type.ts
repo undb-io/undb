@@ -535,7 +535,7 @@ export type ILookingFieldTypes = IReferenceFieldTypes | ILookupField
 export type LookingFieldTypes = ReferenceFieldTypes | LookupField
 export type AggregateFieldType = CountField | SumField
 export type INumberAggregateFieldType = ISumField | IAverageField
-export type ISelectFieldType = ISelectField | IMultiSelectField
+export type ISelectFieldTypes = ISelectField | IMultiSelectField
 export type SelectFieldTypes = SelectField | MultiSelectField
 export type IDateFieldTypes = IDateField | IDateRangeField | ICreatedAtField | IUpdatedAtField
 export type DateFieldTypes = DateField | DateRangeField | CreatedAtField | UpdatedAtField
@@ -680,6 +680,7 @@ export interface IAbstractReferenceField {
 }
 
 export interface IAbstractLookingField extends BaseField {
+  type: ILookingFieldType
   get multiple(): boolean
   get displayFieldIds(): FieldId[]
   set displayFieldIds(fieldIds: FieldId[])
@@ -687,7 +688,11 @@ export interface IAbstractLookingField extends BaseField {
   updateDisplayFieldIds(displayFieldIds?: string[]): Option<TableCompositeSpecificaiton>
 }
 
+export const lookingFieldTypes = z.union([lookupTypeSchema, parentTypeSchema, treeTypeSchema, referenceTypeSchema])
+export type ILookingFieldType = z.infer<typeof lookingFieldTypes>
+
 export interface IAbstractDateField {
+  type: IDateFieldType
   get formatString(): string
   get format(): DateFormat | undefined
   set format(format: DateFormat | undefined)
@@ -698,12 +703,16 @@ export interface IAbstractDateField {
   updateTimeFormat(format?: string): Option<TableCompositeSpecificaiton>
 }
 
+export const dateFieldType = z.union([dateTypeSchema, dateRangeTypeSchema, createdAtTypeSchema, updatedAtTypeSchema])
+export type IDateFieldType = z.infer<typeof dateFieldType>
+
 export const lookingFieldIssues = z.enum(['Missing Reference Field'])
 export type ILookingFieldIssues = z.infer<typeof lookingFieldIssues>
 
 export type LookingFieldIssue = FieldIssue<ILookingFieldIssues>
 
 export interface IAbstractLookupField {
+  type: ILookupFieldType
   get referenceFieldId(): FieldId
   set referenceFieldId(fieldId: FieldId)
   getIssues(schema: TableSchemaIdMap): LookingFieldIssue[]
@@ -713,13 +722,21 @@ export interface IAbstractLookupField {
   updateReferenceId(referenceId?: string): Option<TableCompositeSpecificaiton>
 }
 
+export const lookupFieldType = z.union([sumTypeSchema, averageTypeSchema, countTypeSchema, lookupTypeSchema])
+export type ILookupFieldType = z.infer<typeof lookupFieldType>
+
 export interface IAbstractAggregateField {
+  type: IAggregateFieldType
   get aggregateFieldId(): FieldId
   set aggregateFieldId(fieldId: FieldId)
   updateAggregateFieldId(aggregateFieldId?: string): Option<TableCompositeSpecificaiton>
 }
 
+export const aggregateFieldType = z.union([sumTypeSchema, averageTypeSchema])
+export type IAggregateFieldType = z.infer<typeof aggregateFieldType>
+
 export interface IAbstractSelectField extends BaseField {
+  type: ISelectFieldType
   get options(): Options
   set options(options: Options)
   reorder(from: string, to: string): WithOptions
@@ -728,3 +745,6 @@ export interface IAbstractSelectField extends BaseField {
   removeOption(id: string): WithoutOption
   updateOptions(input: IMutateOptionSchema[]): Option<TableCompositeSpecificaiton>
 }
+
+export const selectFieldType = z.union([selectTypeSchema, multiSelectTypeSchema])
+export type ISelectFieldType = z.infer<typeof selectFieldType>
