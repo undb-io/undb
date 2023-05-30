@@ -1,12 +1,9 @@
-import { andOptions } from '@undb/domain'
 import { format } from 'date-fns'
-import type { Option } from 'oxide.ts'
 import { z } from 'zod'
 import type { IUpdatedAtFilterOperator } from '../filter/operators.js'
 import type { IUpdatedAtFilter } from '../filter/updated-at.filter.js'
-import { IRecordDisplayValues } from '../record/index.js'
-import { RecordValueJSON } from '../record/record.schema.js'
-import type { TableCompositeSpecificaiton } from '../specifications/index.js'
+import type { IRecordDisplayValues } from '../record/index.js'
+import type { RecordValueJSON } from '../record/record.schema.js'
 import { AbstractDateField } from './field.base.js'
 import { INTERNAL_COLUMN_UPDATED_AT_NAME } from './field.constants.js'
 import { FieldCannotBeDuplicated } from './field.errors.js'
@@ -15,7 +12,6 @@ import type { IFieldVisitor } from './field.visitor.js'
 import { UpdatedAtFieldValue } from './updated-at-field-value.js'
 import type {
   ICreateUpdatedAtFieldInput,
-  IUpdateUpdatedAtFieldInput,
   IUpdatedAtFieldQueryValue,
   UpdatedAtFieldType,
 } from './updated-at-field.type.js'
@@ -68,11 +64,6 @@ export class UpdatedAtField extends AbstractDateField<IUpdatedAtField> {
       format: input.format ? DateFormat.fromString(input.format) : undefined,
     })
   }
-
-  public override update(input: IUpdateUpdatedAtFieldInput): Option<TableCompositeSpecificaiton> {
-    return andOptions(this.updateBase(input), this.updateFormat(input.format), this.updateTimeFormat(input.timeFormat))
-  }
-
   createValue(value: IUpdatedAtFieldQueryValue): UpdatedAtFieldValue {
     return UpdatedAtFieldValue.fromQuery(value)
   }

@@ -1,11 +1,10 @@
-import { andOptions } from '@undb/domain'
 import { Option } from 'oxide.ts'
 import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
 import type { IReferenceFilterOperator } from '../filter/operators.js'
 import type { IReferenceFilter } from '../filter/reference.filter.js'
-import { RecordValueJSON } from '../record/record.schema.js'
-import { IRecordDisplayValues } from '../record/record.type.js'
+import type { RecordValueJSON } from '../record/record.schema.js'
+import type { IRecordDisplayValues } from '../record/record.type.js'
 import { TableId } from '../value-objects/table-id.vo.js'
 import { AbstractLookingField, AbstractReferenceField } from './field.base.js'
 import type { IReferenceField } from './field.type.js'
@@ -15,7 +14,6 @@ import type {
   ICreateReferenceFieldInput,
   ICreateReferenceFieldValue,
   IReferenceFieldIssues,
-  IUpdateReferenceFieldInput,
   ReferenceFieldIssue,
   ReferenceFieldType,
 } from './reference-field.type.js'
@@ -105,10 +103,6 @@ export class ReferenceField extends Mixin(
         ? FieldId.fromString(input.symmetricReferenceFieldId)
         : undefined,
     })
-  }
-
-  public override update(input: IUpdateReferenceFieldInput) {
-    return andOptions(this.updateBase(input), this.updateDisplayFieldIds(input.displayFieldIds))
   }
 
   createValue(value: ICreateReferenceFieldValue): ReferenceFieldValue {

@@ -1,11 +1,8 @@
-import { andOptions } from '@undb/domain'
-import type { Option } from 'oxide.ts'
 import { z } from 'zod'
 import type { IMultiSelectFilter, IMultiSelectFilterValue } from '../filter/multi-select.filter.js'
 import type { IMultiSelectFilterOperator } from '../filter/operators.js'
 import { Options } from '../option/options.js'
-import { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import type { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
 import { AbstractSelectField } from './field.base.js'
 import type { IMultiSelectField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
@@ -13,7 +10,6 @@ import { MultiSelectFieldValue } from './multi-select-field-value.js'
 import type {
   ICreateMultiSelectFieldSchema,
   ICreateMultiSelectFieldValue,
-  IUpdateMultiSelectFieldInput,
   MultiSelectFieldType,
 } from './multi-select-field.type.js'
 import { FieldId } from './value-objects/field-id.vo.js'
@@ -58,10 +54,6 @@ export class MultiSelectField extends AbstractSelectField<IMultiSelectField> {
       .map((optionId) => this.options.getById(optionId).into()?.name.value)
       .filter(Boolean)
       .toString()
-  }
-
-  public override update(input: IUpdateMultiSelectFieldInput): Option<TableCompositeSpecificaiton> {
-    return andOptions(this.updateBase(input), super.updateOptions(input.options ?? []))
   }
 
   createFilter(operator: IMultiSelectFilterOperator, value: IMultiSelectFilterValue): IMultiSelectFilter {

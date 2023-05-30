@@ -1,10 +1,9 @@
 import type { Option } from 'oxide.ts'
 import * as z from 'zod'
 import type { IReferenceFilterValue } from '../filter/reference.filter.js'
-import type { ICreateOptionSchema, IMutateOptionSchema, IUpdateOptionSchema } from '../option/option.schema.js'
+import type { ICreateOptionSchema, IUpdateOptionSchema } from '../option/option.schema.js'
 import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues } from '../record/index.js'
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import type { TableId } from '../value-objects/table-id.vo.js'
 import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
 import type { AttachmentFieldValue } from './attachment-field-value.js'
@@ -685,7 +684,6 @@ export interface IAbstractLookingField extends BaseField {
   get displayFieldIds(): FieldId[]
   set displayFieldIds(fieldIds: FieldId[])
   getDisplayValues(values: IRecordDisplayValues): ((string | null)[] | undefined)[]
-  updateDisplayFieldIds(displayFieldIds?: string[]): Option<TableCompositeSpecificaiton>
 }
 
 export const lookingFieldTypes = z.union([lookupTypeSchema, parentTypeSchema, treeTypeSchema, referenceTypeSchema])
@@ -696,11 +694,9 @@ export interface IAbstractDateField {
   get formatString(): string
   get format(): DateFormat | undefined
   set format(format: DateFormat | undefined)
-  updateFormat(format?: string): Option<TableCompositeSpecificaiton>
   get timeFormatString(): string | null
   get timeFormat(): TimeFormat | undefined
   set timeFormat(format: TimeFormat | undefined)
-  updateTimeFormat(format?: string): Option<TableCompositeSpecificaiton>
 }
 
 export const dateFieldType = z.union([dateTypeSchema, dateRangeTypeSchema, createdAtTypeSchema, updatedAtTypeSchema])
@@ -719,7 +715,6 @@ export interface IAbstractLookupField {
   mustGetReferenceField(schema: TableSchemaIdMap): ReferenceField | TreeField
   getReferenceField(schema: TableSchemaIdMap): ReferenceField | TreeField | undefined
   getForeignTableId(schema: TableSchemaIdMap): Option<string>
-  updateReferenceId(referenceId?: string): Option<TableCompositeSpecificaiton>
 }
 
 export const lookupFieldType = z.union([sumTypeSchema, averageTypeSchema, countTypeSchema, lookupTypeSchema])
@@ -729,7 +724,6 @@ export interface IAbstractAggregateField {
   type: IAggregateFieldType
   get aggregateFieldId(): FieldId
   set aggregateFieldId(fieldId: FieldId)
-  updateAggregateFieldId(aggregateFieldId?: string): Option<TableCompositeSpecificaiton>
 }
 
 export const aggregateFieldType = z.union([sumTypeSchema, averageTypeSchema])
@@ -743,7 +737,6 @@ export interface IAbstractSelectField extends BaseField {
   createOption(input: ICreateOptionSchema): WithNewOption
   updateOption(id: string, input: IUpdateOptionSchema): WithOption
   removeOption(id: string): WithoutOption
-  updateOptions(input: IMutateOptionSchema[]): Option<TableCompositeSpecificaiton>
 }
 
 export const selectFieldType = z.union([selectTypeSchema, multiSelectTypeSchema])

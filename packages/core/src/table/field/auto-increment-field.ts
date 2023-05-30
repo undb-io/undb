@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import type { IAutoIncrementFilter } from '../filter/auto-increment.filter.js'
 import type { IAutoIncrementFilterOperator } from '../filter/operators.js'
-import { IRecordDisplayValues } from '../record/index.js'
-import { RecordValueJSON } from '../record/record.schema.js'
+import type { IRecordDisplayValues } from '../record/index.js'
+import type { RecordValueJSON } from '../record/record.schema.js'
 import { AutoIncrementFieldValue } from './auto-increment-field-value.js'
 import type {
   AutoIncrementFieldType,

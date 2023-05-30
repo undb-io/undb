@@ -1,4 +1,3 @@
-import { andOptions } from '@undb/domain'
 import { isString } from 'lodash-es'
 import { None, Some, type Option } from 'oxide.ts'
 import { z } from 'zod'
@@ -77,10 +76,6 @@ export class CurrencyField extends BaseField<ICurrencyField> {
       return Some(new WithCurrencySymbol(this.type, this.id.value, new CurrencySymbol({ value: input.symbol })))
     }
     return None
-  }
-
-  public update(input: IUpdateCurrencyFieldInput): Option<TableCompositeSpecificaiton> {
-    return andOptions(super.updateBase(input), this.updateCurrencySymbol(input))
   }
 
   accept(visitor: IFieldVisitor): void {
