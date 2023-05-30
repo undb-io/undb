@@ -14,6 +14,7 @@ import { WithFieldDescription, WithFieldDisplay, WithFieldName } from './specifi
 import { WithCurrencySymbol } from './specifications/currency-field.specification.js'
 import { WithFormat, WithTimeFormat } from './specifications/date-field.specification.js'
 import { WithFieldRequirement } from './specifications/field-constraints.specification.js'
+import { WithNewFieldType } from './specifications/field.specification.js'
 import { WithReferenceFieldId } from './specifications/lookup-field.specification.js'
 import { WithRatingMax } from './specifications/rating-field.specification.js'
 import { WithDisplayFields } from './specifications/reference-field.specification.js'
@@ -24,6 +25,9 @@ export class UpdateFieldHelper {
     const specs: TableCompositeSpecificaiton[] = []
 
     const typeChanged = input.type !== field.type
+    if (typeChanged) {
+      specs.push(new WithNewFieldType(field, input.type))
+    }
 
     const id = field.id.value
     input.type ||= field.type

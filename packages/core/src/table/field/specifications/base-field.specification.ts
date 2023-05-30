@@ -3,15 +3,9 @@ import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
-import type { Field, IFieldType } from '../field.type.js'
+import type { IFieldType } from '../field.type.js'
 import { FieldDescription } from '../value-objects/field-description.js'
 import { FieldName } from '../value-objects/field-name.vo.js'
-
-export abstract class BaseFieldSpecification<F extends Field> extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly field: F) {
-    super()
-  }
-}
 
 export class WithFieldName extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(public readonly type: IFieldType, public readonly fieldId: string, public readonly name: FieldName) {

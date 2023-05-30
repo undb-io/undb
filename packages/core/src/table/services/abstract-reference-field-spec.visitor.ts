@@ -37,6 +37,7 @@ import type {
   WithFieldName,
   WithFieldRequirement,
   WithFormat,
+  WithNewFieldType,
   WithNewOption,
   WithOption,
   WithOptions,
@@ -166,6 +167,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {}
   withReferenceFieldId(s: WithReferenceFieldId): void {}
   withWidge(s: WithWidgeSepecification): void {}
+  withNewFieldType(s: WithNewFieldType): void {}
   not(): this {
     return this
   }

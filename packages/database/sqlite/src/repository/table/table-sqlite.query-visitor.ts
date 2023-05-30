@@ -20,6 +20,7 @@ import type {
   WithFormat,
   WithKanbanField,
   WithNewField,
+  WithNewFieldType,
   WithNewOption,
   WithNewView,
   WithNumberAggregateSpec,
@@ -140,6 +141,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   witoutOption(s: WithoutOption): void {
+    throw new Error('Method not implemented.')
+  }
+  withNewFieldType(s: WithNewFieldType): void {
     throw new Error('Method not implemented.')
   }
   withoutField(s: WithoutField): void {

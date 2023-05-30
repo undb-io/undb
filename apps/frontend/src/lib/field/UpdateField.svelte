@@ -6,7 +6,7 @@
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import MutateFieldComponent from './MutateFieldComponent/MutateFieldComponent.svelte'
-	import { canDisplay, type Field } from '@undb/core'
+	import { canChangeType, canDisplay, type Field } from '@undb/core'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
 	import { z } from 'zod'
@@ -82,7 +82,12 @@
 						<span class="text-red-500">*</span>
 					</div>
 
-					<FieldTypePicker disabled bind:value={$form.type} class="w-full !justify-start" />
+					<FieldTypePicker
+						disabled={!canChangeType($form.type)}
+						bind:value={$form.type}
+						class="w-full !justify-start"
+						filter={canChangeType}
+					/>
 				</Label>
 
 				<Label class="flex flex-col gap-2">

@@ -73,3 +73,14 @@ export const cannotDuplicate: Set<IFieldType> = new Set<IFieldType>([
 ])
 
 export const canDuplicate = (type: IFieldType) => !cannotDuplicate.has(type)
+
+export const cannotChangeTypeFieldType: Set<IFieldType> = new Set<IFieldType>([
+  'id',
+  'created-at',
+  'updated-at',
+  'created-by',
+  'updated-by',
+  'auto-increment',
+])
+
+export const canChangeType = (type: IFieldType) => !cannotChangeTypeFieldType.has(type)

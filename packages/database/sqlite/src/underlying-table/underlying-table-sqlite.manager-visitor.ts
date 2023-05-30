@@ -3,6 +3,7 @@ import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type {
   ITableSpecVisitor,
   WithDuplicatedField,
+  WithNewFieldType,
   WithRatingMax,
   WithTableSchema,
   WithoutField,
@@ -69,6 +70,9 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   }
   currencySymbolEqual(): void {}
   rowHeightEqual(): void {}
+  withNewFieldType(s: WithNewFieldType): void {
+    throw new Error('ijhiijijisdijsfi')
+  }
   newField(s: WithNewField): void {
     const field = s.field
     if (field.isSystem()) {
@@ -147,6 +151,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   symmetricReferenceFieldEqual(): void {}
   withWidge(): void {}
   withAggregateFieldId(): void {}
+  withReferenceFieldId(): void {}
   not(): this {
     return this
   }

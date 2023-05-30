@@ -6,6 +6,7 @@ import type {
   WithChartAggregateSpec,
   WithCurrencySymbol,
   WithDuplicatedField,
+  WithNewFieldType,
   WithOption,
   WithReferenceFieldId,
   WithTimeFormat,
@@ -313,6 +314,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   witoutOption(s: WithoutOption): void {
     const option = this.em.getReference(Option, s.optionKey.value as never)
     this.em.remove(option)
+  }
+  withNewFieldType(s: WithNewFieldType): void {
+    const field = this.#getField(s.newType, s.field.id.value)
+    wrap(field).assign({ type: s.newType })
+    this.em.persist(field)
   }
   withoutField(s: WithoutField): void {
     const field = this.#getField(s.type, s.fieldId)
