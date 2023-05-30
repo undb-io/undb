@@ -67,7 +67,10 @@ export class SelectField extends AbstractSelectField<ISelectField> {
       return new SelectFieldValue(null)
     }
 
-    const option = this.options.getById(value).unwrap()
+    const option = this.options.getById(value).into(null)
+    if (!option) {
+      return new SelectFieldValue(null)
+    }
 
     return SelectFieldValue.fromOption(option)
   }

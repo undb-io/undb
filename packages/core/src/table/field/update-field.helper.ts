@@ -91,7 +91,7 @@ export class UpdateFieldHelper {
       case 'select':
       case 'multi-select': {
         const optionsInput = input.options
-        if (!typeChanged) {
+        if (typeChanged) {
           if (isArray(optionsInput) && optionsInput.length > 0) {
             const options = optionsInput.map((option) => Option.create(option))
             specs.push(new WithOptions(type, field.id.value, new Options(options)))
@@ -109,9 +109,9 @@ export class UpdateFieldHelper {
               specs.push(new WithNewOption(type, id, Option.create(option)))
             }
 
-            for (const [id] of options) {
-              if (!optionsInput.some((o) => o.key === id)) {
-                const optionKey = OptionKey.fromString(id)
+            for (const [optionId] of options) {
+              if (!optionsInput.some((o) => o.key === optionId)) {
+                const optionKey = OptionKey.fromString(optionId)
                 specs.push(new WithoutOption(type, id, optionKey))
               }
             }

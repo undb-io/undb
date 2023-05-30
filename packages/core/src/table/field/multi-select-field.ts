@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import type { IMultiSelectFilter, IMultiSelectFilterValue } from '../filter/multi-select.filter.js'
 import type { IMultiSelectFilterOperator } from '../filter/operators.js'
+import type { Option } from '../option/option.js'
 import { Options } from '../option/options.js'
 import type { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
 import { AbstractSelectField } from './field.base.js'
@@ -65,7 +66,7 @@ export class MultiSelectField extends AbstractSelectField<IMultiSelectField> {
       return new MultiSelectFieldValue(null)
     }
 
-    const options = value.map((optionId) => this.options.getById(optionId).unwrap())
+    const options = value.map((optionId) => this.options.getById(optionId).into(null)).filter(Boolean) as Option[]
 
     return MultiSelectFieldValue.fromOptions(options)
   }
