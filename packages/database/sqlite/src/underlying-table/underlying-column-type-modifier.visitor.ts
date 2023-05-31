@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type {
   AttachmentField,
@@ -30,6 +31,8 @@ import type {
   UpdatedByField,
 } from '@undb/core'
 import { BaseEntityManager } from '../repository/base-entity-manager.js'
+import { ColorColumnTypeModifier } from './column-type-modifier/color.column-type-modifier.js'
+import { EmailColumnTypeModifier } from './column-type-modifier/email.column-type-modifier.js'
 import { NumberColumnTypeModifier } from './column-type-modifier/number.column-type-modifier.js'
 import { StringColumnTypeModifier } from './column-type-modifier/string.column-type-modifier.js'
 
@@ -70,10 +73,16 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
     this.unshiftJobs(...modifier.jobs)
   }
   email(field: EmailField): void {
-    throw new Error('Method not implemented.')
+    const modifier = new EmailColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   color(field: ColorField): void {
-    throw new Error('Method not implemented.')
+    const modifier = new ColorColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   number(field: NumberField): void {
     const modifier = new NumberColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)

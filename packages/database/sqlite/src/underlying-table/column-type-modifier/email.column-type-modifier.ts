@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { NumberField } from '@undb/core'
+import type { EmailField } from '@undb/core'
 import {
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
-  UnderlyingCurrencyColumn,
-  UnderlyingEmailColumn,
+  UnderlyingDateColumn,
+  UnderlyingMultiSelectColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
@@ -13,30 +13,28 @@ import {
 } from '../underlying-column.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
-export class NumberColumnTypeModifier extends BaseColumnTypeModifier<NumberField> {
-  private readonly column = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
-
+export class EmailColumnTypeModifier extends BaseColumnTypeModifier<EmailField> {
+  private readonly column = new UnderlyingStringColumn(this.field.id.value, this.tableId)
   string(): void {
-    const newColumn = new UnderlyingStringColumn(this.field.id.value, this.tableId)
+    const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
     this.castTo('text', newColumn, this.column)
   }
   number(): void {
-    throw new Error('Method not implemented.')
+    const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
   }
   color(): void {
     const newColumn = new UnderlyingColorColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
   email(): void {
-    const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
-    this.alterColumn(newColumn, this.column)
-  }
-  date(): void {
     throw new Error('Method not implemented.')
   }
+  date(): void {
+    this.alterColumn(new UnderlyingDateColumn(this.field.id.value, this.tableId), this.column)
+  }
   select(): void {
-    const newColumn = new UnderlyingSelectColumn(this.field.id.value, this.tableId)
-    this.alterColumn(newColumn, this.column)
+    this.alterColumn(new UnderlyingSelectColumn(this.field.id.value, this.tableId), this.column)
   }
   bool(): void {
     const newColumn = new UnderlyingBoolColumn(this.field.id.value, this.tableId)
@@ -50,21 +48,20 @@ export class NumberColumnTypeModifier extends BaseColumnTypeModifier<NumberField
   }
   rating(): void {
     const newColumn = new UnderlyingRatingColumn(this.field.id.value, this.tableId)
-    this.castTo('real', newColumn, this.column)
+    this.alterColumn(newColumn, this.column)
   }
   currency(): void {
-    const newColumn = new UnderlyingCurrencyColumn(this.field.id.value, this.tableId)
-    this.castTo('real', newColumn, this.column)
+    const newColumn = new UnderlyingRatingColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
   }
   attachment(): void {
     throw new Error('Method not implemented.')
   }
   collaborator(): void {
-    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
-    this.addQueries(dropColumn)
+    this.castToCollaborator(this.column, 'email')
   }
   ['multi-select'](): void {
-    const newColumn = new UnderlyingSelectColumn(this.field.id.value, this.tableId)
+    const newColumn = new UnderlyingMultiSelectColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
   ['date-range'](): void {

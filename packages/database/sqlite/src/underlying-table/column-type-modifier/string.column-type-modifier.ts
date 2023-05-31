@@ -4,7 +4,6 @@ import { INTERNAL_COLUMN_ID_NAME, Options, WithOptions, type StringField } from 
 import { isValid } from 'date-fns'
 import { chain, isString } from 'lodash-es'
 import { Option } from '../../entity/option.js'
-import { User } from '../../entity/user.js'
 import { TableSqliteMutationVisitor } from '../../repository/table/table-sqlite.mutation-visitor.js'
 import {
   UnderlyingBoolColumn,
@@ -15,7 +14,6 @@ import {
   UnderlyingSelectColumn,
   UnderlyingStringColumn,
 } from '../underlying-column.js'
-import { CollaboratorForeignTable } from '../underlying-foreign-table.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
 export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField> {
@@ -25,9 +23,7 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
   }
   number(): void {
     const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
-    const queries = this.castTo('real', newColumn, this.column)
-
-    this.addQueries(...queries)
+    this.castTo('real', newColumn, this.column)
   }
   color(): void {}
   email(): void {}
@@ -123,9 +119,7 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
   }
   bool(): void {
     const newColumn = new UnderlyingBoolColumn(this.field.id.value, this.tableId)
-    const queries = this.castTo('bool', newColumn, this.column)
-
-    this.addQueries(...queries)
+    this.castTo('bool', newColumn, this.column)
   }
   reference(): void {
     throw new Error('Method not implemented.')
@@ -135,52 +129,17 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
   }
   rating(): void {
     const newColumn = new UnderlyingRatingColumn(this.field.id.value, this.tableId)
-    const queries = this.castTo('int', newColumn, this.column)
-
-    this.addQueries(...queries)
+    this.castTo('int', newColumn, this.column)
   }
   currency(): void {
     const newColumn = new UnderlyingRatingColumn(this.field.id.value, this.tableId)
-    const queries = this.castTo('real', newColumn, this.column)
-
-    this.addQueries(...queries)
+    this.castTo('real', newColumn, this.column)
   }
   attachment(): void {
     throw new Error('Method not implemented.')
   }
   collaborator(): void {
-    const {
-      tableName: userTableName,
-      properties: { username, id },
-    } = this.em.getMetadata().get(User.name)
-    const collaboratorTable = new CollaboratorForeignTable(this.tableId, this.field.id.value)
-    this.addQueries(...collaboratorTable.getCreateTableSqls(this.knex))
-
-    const subQuery = this.knex
-      .queryBuilder()
-      .select([
-        { [CollaboratorForeignTable.RECORD_ID]: `${this.tableId}.${INTERNAL_COLUMN_ID_NAME}` },
-        { [CollaboratorForeignTable.USER_ID]: `${userTableName}.${id.fieldNames[0]}` },
-      ])
-      .from(this.tableId)
-      .whereNotNull(this.column.name)
-      .innerJoin(userTableName, `${this.tableId}.${this.column.name}`, `${userTableName}.${username.fieldNames[0]}`)
-
-    const query = this.knex
-      .queryBuilder()
-      .insert(subQuery)
-      .into(
-        this.knex.raw('?? (??, ??)', [
-          collaboratorTable.name,
-          CollaboratorForeignTable.RECORD_ID,
-          CollaboratorForeignTable.USER_ID,
-        ]),
-      )
-      .toQuery()
-    this.addQueries(query)
-
-    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
-    this.addQueries(dropColumn)
+    this.castToCollaborator(this.column, 'username')
   }
   ['multi-select'](): void {
     this.addJobs(async () => {

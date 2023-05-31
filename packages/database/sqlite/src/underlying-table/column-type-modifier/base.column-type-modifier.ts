@@ -1,10 +1,18 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import { AbstractFieldTypeHandler, type Field, type IFieldType, type IFieldTypeHandler } from '@undb/core'
+import {
+  AbstractFieldTypeHandler,
+  INTERNAL_COLUMN_ID_NAME,
+  type Field,
+  type IFieldType,
+  type IFieldTypeHandler,
+} from '@undb/core'
 import { Mixin } from 'ts-mixer'
+import { User } from '../../entity/user.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { BaseEntityManager } from '../../repository/base-entity-manager.js'
+import { CollaboratorForeignTable } from '../underlying-foreign-table.js'
 
 export type SqliteCastType = 'text' | 'int' | 'real' | 'bool'
 
@@ -26,7 +34,7 @@ export abstract class BaseColumnTypeModifier<F extends Field>
     newColumn: IUnderlyingColumn,
     column: IUnderlyingColumn,
     cast?: (newColumn: IUnderlyingColumn, column: IUnderlyingColumn) => string | null,
-  ): string[] {
+  ): void {
     const addColumn = this.knex.schema
       .alterTable(this.tableId, (tb) => {
         newColumn.buildTemp(tb)
@@ -43,7 +51,8 @@ export abstract class BaseColumnTypeModifier<F extends Field>
       })
       .toQuery()
 
-    return [addColumn, query ?? '', dropColumn, alterName].filter(Boolean)
+    const queries = [addColumn, query ?? '', dropColumn, alterName].filter(Boolean)
+    this.addQueries(...queries)
   }
 
   protected castTo(type: SqliteCastType, newColumn: IUnderlyingColumn, column: IUnderlyingColumn) {
@@ -84,4 +93,42 @@ export abstract class BaseColumnTypeModifier<F extends Field>
   average(): void {}
   sum(): void {}
   lookup(): void {}
+
+  protected castToCollaborator(column: IUnderlyingColumn, collaboratorField: 'username' | 'email' = 'username') {
+    const { tableName: userTableName, properties } = this.em.getMetadata().get(User.name)
+    const collaboratorTable = new CollaboratorForeignTable(this.tableId, this.field.id.value)
+    this.addQueries(...collaboratorTable.getCreateTableSqls(this.knex))
+
+    const { id } = properties
+
+    const subQuery = this.knex
+      .queryBuilder()
+      .select([
+        { [CollaboratorForeignTable.RECORD_ID]: `${this.tableId}.${INTERNAL_COLUMN_ID_NAME}` },
+        { [CollaboratorForeignTable.USER_ID]: `${userTableName}.${id.fieldNames[0]}` },
+      ])
+      .from(this.tableId)
+      .whereNotNull(column.name)
+      .innerJoin(
+        userTableName,
+        `${this.tableId}.${column.name}`,
+        `${userTableName}.${properties[collaboratorField].fieldNames[0]}`,
+      )
+
+    const query = this.knex
+      .queryBuilder()
+      .insert(subQuery)
+      .into(
+        this.knex.raw('?? (??, ??)', [
+          collaboratorTable.name,
+          CollaboratorForeignTable.RECORD_ID,
+          CollaboratorForeignTable.USER_ID,
+        ]),
+      )
+      .toQuery()
+    this.addQueries(query)
+
+    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${column.name}`
+    this.addQueries(dropColumn)
+  }
 }
