@@ -89,6 +89,17 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     currency: 'cast',
     collaborator: 'match',
   },
+  number: {
+    string: 'cast',
+    color: 'clear',
+    email: 'clear',
+    select: 'clear',
+    'multi-select': 'clear',
+    bool: 'cast',
+    rating: 'cast',
+    currency: 'cast',
+    collaborator: 'clear',
+  },
 }
 
 export const canChangeType = (type: IFieldType) => !!fieldTypeConvertMap[type]

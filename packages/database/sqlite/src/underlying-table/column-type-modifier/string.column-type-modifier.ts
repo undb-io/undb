@@ -25,28 +25,9 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
   }
   number(): void {
     const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
+    const queries = this.castTo('real', newColumn, this.column)
 
-    const addColumn = this.knex.schema
-      .alterTable(this.tableId, (tb) => {
-        newColumn.buildTemp(tb)
-      })
-      .toQuery()
-
-    const query = this.knex
-      .queryBuilder()
-      .table(this.tableId)
-      .update(newColumn.tempName, this.knex.raw(`cast(${this.column.name} as real)`))
-      .toQuery()
-
-    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
-
-    const alterName = this.knex.schema
-      .alterTable(this.tableId, (tb) => {
-        tb.renameColumn(newColumn.tempName, newColumn.name)
-      })
-      .toQuery()
-
-    this.addQueries(addColumn, query, dropColumn, alterName)
+    this.addQueries(...queries)
   }
   color(): void {}
   email(): void {}
@@ -142,28 +123,9 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
   }
   bool(): void {
     const newColumn = new UnderlyingBoolColumn(this.field.id.value, this.tableId)
+    const queries = this.castTo('bool', newColumn, this.column)
 
-    const addColumn = this.knex.schema
-      .alterTable(this.tableId, (tb) => {
-        newColumn.buildTemp(tb)
-      })
-      .toQuery()
-
-    const query = this.knex
-      .queryBuilder()
-      .table(this.tableId)
-      .update(newColumn.tempName, this.knex.raw(this.column.name))
-      .toQuery()
-
-    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
-
-    const alterName = this.knex.schema
-      .alterTable(this.tableId, (tb) => {
-        tb.renameColumn(newColumn.tempName, newColumn.name)
-      })
-      .toQuery()
-
-    this.addQueries(addColumn, query, dropColumn, alterName)
+    this.addQueries(...queries)
   }
   reference(): void {
     throw new Error('Method not implemented.')
@@ -173,53 +135,15 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
   }
   rating(): void {
     const newColumn = new UnderlyingRatingColumn(this.field.id.value, this.tableId)
+    const queries = this.castTo('int', newColumn, this.column)
 
-    const addColumn = this.knex.schema
-      .alterTable(this.tableId, (tb) => {
-        newColumn.buildTemp(tb)
-      })
-      .toQuery()
-
-    const query = this.knex
-      .queryBuilder()
-      .table(this.tableId)
-      .update(newColumn.tempName, this.knex.raw(`cast(${this.column.name} as int)`))
-      .toQuery()
-
-    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
-
-    const alterName = this.knex.schema
-      .alterTable(this.tableId, (tb) => {
-        tb.renameColumn(newColumn.tempName, newColumn.name)
-      })
-      .toQuery()
-
-    this.addQueries(addColumn, query, dropColumn, alterName)
+    this.addQueries(...queries)
   }
   currency(): void {
     const newColumn = new UnderlyingRatingColumn(this.field.id.value, this.tableId)
+    const queries = this.castTo('real', newColumn, this.column)
 
-    const addColumn = this.knex.schema
-      .alterTable(this.tableId, (tb) => {
-        newColumn.buildTemp(tb)
-      })
-      .toQuery()
-
-    const query = this.knex
-      .queryBuilder()
-      .table(this.tableId)
-      .update(newColumn.tempName, this.knex.raw(`cast(${this.column.name} as real)`))
-      .toQuery()
-
-    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
-
-    const alterName = this.knex.schema
-      .alterTable(this.tableId, (tb) => {
-        tb.renameColumn(newColumn.tempName, newColumn.name)
-      })
-      .toQuery()
-
-    this.addQueries(addColumn, query, dropColumn, alterName)
+    this.addQueries(...queries)
   }
   attachment(): void {
     throw new Error('Method not implemented.')

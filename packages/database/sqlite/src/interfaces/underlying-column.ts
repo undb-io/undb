@@ -6,6 +6,7 @@ export interface IUnderlyingColumn {
   get queries(): string[]
   get system(): boolean
   get name(): string
+  get tempName(): string
   build(tb: Knex.TableBuilder, knex: Knex, isNewTable?: boolean): void
   buildTemp(tb: Knex.TableBuilder): void
 }
