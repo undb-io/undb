@@ -65,7 +65,8 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
   string(field: StringField): void {
     const modifier = new StringColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
     modifier[this.newType]()
-    this.addQueries(...modifier.queries)
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   email(field: EmailField): void {
     throw new Error('Method not implemented.')

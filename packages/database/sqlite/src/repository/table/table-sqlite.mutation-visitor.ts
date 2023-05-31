@@ -291,7 +291,10 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   }
   optionsEqual(s: WithOptions): void {
     this.addJobs(async () => {
-      const field = await this.em.findOne(SelectField, s.fieldId, { populate: ['options'] })
+      const field =
+        s.type === 'select'
+          ? await this.em.findOne(SelectField, s.fieldId, { populate: ['options'] })
+          : await this.em.findOne(MultiSelectField, s.fieldId, { populate: ['options'] })
       if (field) {
         wrap(field).assign({ options: s.options.options.map((option) => new Option(field, option)) })
         this.em.persist(field)
@@ -307,7 +310,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.persist(option)
   }
   newOption(s: WithNewOption): void {
-    const field = this.em.getReference(SelectField, s.fieldId)
+    const field = this.#getField(s.type, s.fieldId) as SelectField | MultiSelectField
     const option = new Option(field, s.option)
     this.em.persist(option)
   }

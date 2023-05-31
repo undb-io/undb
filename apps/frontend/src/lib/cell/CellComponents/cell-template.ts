@@ -29,7 +29,7 @@ import {
 import cx from 'classnames'
 import { format } from 'date-fns'
 import htm from 'htm'
-import { isNumber } from 'lodash-es'
+import { isArray, isNumber } from 'lodash-es'
 
 type TemplateFunc = RevoGrid.CellTemplateFunc<VNode>
 type HyperFunc = RevoGrid.HyperFunc<VNode>
@@ -308,6 +308,8 @@ const multiSelect: TemplateFunc = (h, props) => {
 	const html = htm.bind(h)
 	const field = props.column.field as MultiSelectField
 	const value = props.model[props.prop] as string[] | undefined
+	if (!isArray(value)) return null
+
 	const options = value
 		? (value.map((optionId) => field.options.getById(optionId).into()).filter(Boolean) as Option[])
 		: undefined

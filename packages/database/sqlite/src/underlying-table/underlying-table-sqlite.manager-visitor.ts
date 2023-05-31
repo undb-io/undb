@@ -10,8 +10,9 @@ import type {
   WithoutOption,
 } from '@undb/core'
 import { WithNewField, isSelectFieldType } from '@undb/core'
+import type { Job } from '../repository/base-entity-manager.js'
 import { RecordSqliteDuplicateValueVisitor } from '../repository/record/record-sqlite-duplicate-value.visitor.js'
-import { UnderlyingColumnConvertTypeVisitor } from './underlying-column-convert-type.visitor.js'
+import { UnderlyingColumnConvertTypeVisitor } from './underlying-column-type-modifier.visitor.js'
 import { UnderlyingColumnBuilder } from './underlying-column.builder.js'
 import { UnderlyingTempDuplicateOptionTable } from './underlying-temp-duplicate-option-table.js'
 
@@ -20,6 +21,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   private sb?: Knex.SchemaBuilder
   private qb?: Knex.QueryBuilder
   #queries: string[] = []
+  #jobs: Job[] = []
   constructor(private readonly tableName: string, private readonly em: EntityManager) {
     const knex = em.getKnex()
     this.knex = knex
@@ -45,6 +47,9 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     for (const query of this.queries) {
       await this.em.execute(query)
     }
+    for (const job of this.#jobs) {
+      await job()
+    }
   }
 
   idEqual(): void {
@@ -67,7 +72,8 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   viewsOrderEqual(): void {}
   filterEqual(): void {}
   ratingMaxEqual(s: WithRatingMax): void {
-    this.qb = this.#qb.update(s.fieldId, s.max).where(s.fieldId, '>', s.max).from(this.tableName)
+    const query = this.#qb.update(s.fieldId, s.max).where(s.fieldId, '>', s.max).from(this.tableName).toQuery()
+    this.#queries.push(query)
   }
   currencySymbolEqual(): void {}
   rowHeightEqual(): void {}
@@ -75,7 +81,8 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     const visitor = new UnderlyingColumnConvertTypeVisitor(this.tableName, s.newType, this.em, this.knex)
     s.field.accept(visitor)
 
-    this.#queries.push(...visitor.queries)
+    this.#queries.unshift(...visitor.queries)
+    this.#jobs.unshift(...visitor.jobs)
   }
   newField(s: WithNewField): void {
     const field = s.field
@@ -110,6 +117,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
 
       s.field.accept(visitor)
       this.#queries.push(...visitor.queries)
+      this.#jobs.push(...visitor.jobs)
 
       if (isSelectFieldType(s.field) && isSelectFieldType(s.from)) {
         const table = new UnderlyingTempDuplicateOptionTable(this.tableName, s.from, s.field, this.knex)

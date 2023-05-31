@@ -1,5 +1,5 @@
 import type { Rel } from '@mikro-orm/core'
-import { Cascade, Embeddable, Embedded, Entity, Enum, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
+import { Cascade, Embeddable, Embedded, Entity, Enum, Index, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
 import type {
   Option as CoreOption,
   OptionColor as CoreOptionColor,
@@ -40,6 +40,7 @@ export class Option extends BaseEntity {
   field: Rel<SelectField | MultiSelectField>
 
   @Property()
+  @Index()
   name: string
 
   @Embedded(() => OptionColor)

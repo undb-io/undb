@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { AbstractFieldTypeHandler, type Field, type IFieldType, type IFieldTypeHandler } from '@undb/core'
@@ -36,4 +37,11 @@ export abstract class BaseColumnTypeModifier<F extends Field>
   ['auto-increment'](): void {
     throw new Error('Method not implemented.')
   }
+  parent(): void {
+    throw new Error('Method not implemented.')
+  }
+  count(): void {}
+  average(): void {}
+  sum(): void {}
+  lookup(): void {}
 }

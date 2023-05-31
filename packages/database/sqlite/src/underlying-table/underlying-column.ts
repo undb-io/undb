@@ -282,7 +282,7 @@ export class UnderlyingSelectColumn extends UnderlyingFieldColumn {
     tb.string(this.name)
   }
   buildTemp(tb: Knex.TableBuilder): void {
-    tb.string(this.name)
+    tb.string(this.tempName)
   }
 }
 
@@ -291,7 +291,7 @@ export class UnderlyingMultiSelectColumn extends UnderlyingFieldColumn {
     tb.json(this.name)
   }
   buildTemp(tb: Knex.TableBuilder): void {
-    tb.json(this.name)
+    tb.json(this.tempName)
   }
 }
 

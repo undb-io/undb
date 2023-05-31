@@ -1,3 +1,4 @@
+import { isArray } from 'lodash-es'
 import { z } from 'zod'
 import type { IMultiSelectFilter, IMultiSelectFilterValue } from '../filter/multi-select.filter.js'
 import type { IMultiSelectFilterOperator } from '../filter/operators.js'
@@ -65,6 +66,7 @@ export class MultiSelectField extends AbstractSelectField<IMultiSelectField> {
     if (value === null) {
       return new MultiSelectFieldValue(null)
     }
+    if (!isArray(value)) return new MultiSelectFieldValue(null)
 
     const options = value.map((optionId) => this.options.getById(optionId).into(null)).filter(Boolean) as Option[]
 

@@ -12,6 +12,9 @@ export abstract class BaseEntityManager {
   protected addJobs(...jobs: Job[]) {
     this._jobs.push(...jobs)
   }
+  protected unshiftJobs(...jobs: Job[]) {
+    this._jobs.unshift(...jobs.reverse())
+  }
 
   protected _queries: string[] = []
   public get queries(): ReadonlyArray<string> {
@@ -21,7 +24,7 @@ export abstract class BaseEntityManager {
     this._queries.push(...queries)
   }
   public unshiftQueries(...queries: string[]) {
-    for (const query of queries) {
+    for (const query of queries.reverse()) {
       this._queries.unshift(query)
     }
   }
@@ -32,5 +35,7 @@ export abstract class BaseEntityManager {
     for (const query of this._queries) {
       await this.em.execute(query)
     }
+
+    await this.em.flush()
   }
 }
