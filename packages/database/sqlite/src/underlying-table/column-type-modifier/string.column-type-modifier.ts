@@ -4,6 +4,7 @@ import { INTERNAL_COLUMN_ID_NAME, Options, WithOptions, type StringField } from 
 import { isValid } from 'date-fns'
 import { chain, isString } from 'lodash-es'
 import { Option } from '../../entity/option.js'
+import { User } from '../../entity/user.js'
 import { TableSqliteMutationVisitor } from '../../repository/table/table-sqlite.mutation-visitor.js'
 import {
   UnderlyingBoolColumn,
@@ -14,6 +15,7 @@ import {
   UnderlyingSelectColumn,
   UnderlyingStringColumn,
 } from '../underlying-column.js'
+import { CollaboratorForeignTable } from '../underlying-foreign-table.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
 export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField> {
@@ -36,7 +38,7 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
       .update(newColumn.tempName, this.knex.raw(`cast(${this.column.name} as real)`))
       .toQuery()
 
-    const dropColum = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
+    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
 
     const alterName = this.knex.schema
       .alterTable(this.tableId, (tb) => {
@@ -44,7 +46,7 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
       })
       .toQuery()
 
-    this.addQueries(addColumn, query, dropColum, alterName)
+    this.addQueries(addColumn, query, dropColumn, alterName)
   }
   color(): void {}
   email(): void {}
@@ -78,8 +80,8 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
         await this.em.execute(qb)
       }
 
-      const dropColum = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
-      await this.em.execute(dropColum)
+      const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
+      await this.em.execute(dropColumn)
 
       const alterName = this.knex.schema
         .alterTable(this.tableId, (tb) => {
@@ -126,7 +128,7 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
         await this.em.execute(query)
       }
 
-      const dropColum = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
+      const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
 
       const alterName = this.knex.schema
         .alterTable(this.tableId, (tb) => {
@@ -134,7 +136,7 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
         })
         .toQuery()
 
-      await this.em.execute(dropColum)
+      await this.em.execute(dropColumn)
       await this.em.execute(alterName)
     })
   }
@@ -153,7 +155,7 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
       .update(newColumn.tempName, this.knex.raw(this.column.name))
       .toQuery()
 
-    const dropColum = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
+    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
 
     const alterName = this.knex.schema
       .alterTable(this.tableId, (tb) => {
@@ -161,7 +163,7 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
       })
       .toQuery()
 
-    this.addQueries(addColumn, query, dropColum, alterName)
+    this.addQueries(addColumn, query, dropColumn, alterName)
   }
   reference(): void {
     throw new Error('Method not implemented.')
@@ -184,7 +186,7 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
       .update(newColumn.tempName, this.knex.raw(`cast(${this.column.name} as int)`))
       .toQuery()
 
-    const dropColum = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
+    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
 
     const alterName = this.knex.schema
       .alterTable(this.tableId, (tb) => {
@@ -192,7 +194,7 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
       })
       .toQuery()
 
-    this.addQueries(addColumn, query, dropColum, alterName)
+    this.addQueries(addColumn, query, dropColumn, alterName)
   }
   currency(): void {
     const newColumn = new UnderlyingRatingColumn(this.field.id.value, this.tableId)
@@ -209,7 +211,7 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
       .update(newColumn.tempName, this.knex.raw(`cast(${this.column.name} as real)`))
       .toQuery()
 
-    const dropColum = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
+    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
 
     const alterName = this.knex.schema
       .alterTable(this.tableId, (tb) => {
@@ -217,13 +219,44 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
       })
       .toQuery()
 
-    this.addQueries(addColumn, query, dropColum, alterName)
+    this.addQueries(addColumn, query, dropColumn, alterName)
   }
   attachment(): void {
     throw new Error('Method not implemented.')
   }
   collaborator(): void {
-    throw new Error('Method not implemented.')
+    const {
+      tableName: userTableName,
+      properties: { username, id },
+    } = this.em.getMetadata().get(User.name)
+    const collaboratorTable = new CollaboratorForeignTable(this.tableId, this.field.id.value)
+    this.addQueries(...collaboratorTable.getCreateTableSqls(this.knex))
+
+    const subQuery = this.knex
+      .queryBuilder()
+      .select([
+        { [CollaboratorForeignTable.RECORD_ID]: `${this.tableId}.${INTERNAL_COLUMN_ID_NAME}` },
+        { [CollaboratorForeignTable.USER_ID]: `${userTableName}.${id.fieldNames[0]}` },
+      ])
+      .from(this.tableId)
+      .whereNotNull(this.column.name)
+      .innerJoin(userTableName, `${this.tableId}.${this.column.name}`, `${userTableName}.${username.fieldNames[0]}`)
+
+    const query = this.knex
+      .queryBuilder()
+      .insert(subQuery)
+      .into(
+        this.knex.raw('?? (??, ??)', [
+          collaboratorTable.name,
+          CollaboratorForeignTable.RECORD_ID,
+          CollaboratorForeignTable.USER_ID,
+        ]),
+      )
+      .toQuery()
+    this.addQueries(query)
+
+    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
+    this.addQueries(dropColumn)
   }
   ['multi-select'](): void {
     this.addJobs(async () => {
@@ -282,7 +315,7 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
         }
       }
 
-      const dropColum = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
+      const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
 
       const alterName = this.knex.schema
         .alterTable(this.tableId, (tb) => {
@@ -290,7 +323,7 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
         })
         .toQuery()
 
-      await this.em.execute(dropColum)
+      await this.em.execute(dropColumn)
       await this.em.execute(alterName)
     })
   }

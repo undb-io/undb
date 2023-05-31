@@ -241,8 +241,8 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
   collaborator(field: CollaboratorField): void {
     if (!(this.from instanceof CollaboratorField)) return
 
-    const oldTable = new CollaboratorForeignTable(this.tableId, this.from)
-    const collaboratorTable = new CollaboratorForeignTable(this.tableId, field)
+    const oldTable = new CollaboratorForeignTable(this.tableId, this.from.id.value)
+    const collaboratorTable = new CollaboratorForeignTable(this.tableId, field.id.value)
 
     const query = this.knex
       .queryBuilder()

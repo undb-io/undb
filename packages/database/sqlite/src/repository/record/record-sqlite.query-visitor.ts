@@ -251,7 +251,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     if (field instanceof UpdatedByField || field instanceof CreatedByField) {
       this.qb.where(this.getFieldId(s.fieldId), value.at(0))
     } else if (field instanceof CollaboratorField) {
-      const ft = new CollaboratorForeignTable(this.tableId, field)
+      const ft = new CollaboratorForeignTable(this.tableId, field.id.value)
       const alias = getForeignTableAlias(field, this.schema)
       this.qb
         .leftJoin(
@@ -265,7 +265,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   collaboratorIsEmpqy(s: CollaboratorIsEmpty): void {
     const field = this.getField(s.fieldId)
     if (field instanceof CollaboratorField) {
-      const ft = new CollaboratorForeignTable(this.tableId, field)
+      const ft = new CollaboratorForeignTable(this.tableId, field.id.value)
       const alias = 'collaborator_is_empty_' + getForeignTableAlias(field, this.schema)
       const subQuery = this.knex
         .queryBuilder()

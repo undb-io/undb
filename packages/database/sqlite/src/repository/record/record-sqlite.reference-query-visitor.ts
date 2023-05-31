@@ -175,7 +175,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
       return
     }
 
-    const ft = new CollaboratorForeignTable(this.table.id.value, field)
+    const ft = new CollaboratorForeignTable(this.table.id.value, field.id.value)
     const uta = getUnderlyingTableAlias(field)
     const fta = getForeignTableAlias(field, this.table.schema.toIdMap())
 

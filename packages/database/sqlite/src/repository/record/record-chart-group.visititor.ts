@@ -172,7 +172,7 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
       tableName,
     } = this.em.getMetadata().get(User.name)
 
-    const ft = new CollaboratorForeignTable(this.table.id.value, field)
+    const ft = new CollaboratorForeignTable(this.table.id.value, field.id.value)
     const fta = getForeignTableAlias(field, this.schema)
 
     const subQuery = this.knex
