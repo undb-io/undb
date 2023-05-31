@@ -74,13 +74,24 @@ export const cannotDuplicate: Set<IFieldType> = new Set<IFieldType>([
 
 export const canDuplicate = (type: IFieldType) => !cannotDuplicate.has(type)
 
-export const cannotChangeTypeFieldType: Set<IFieldType> = new Set<IFieldType>([
-  'id',
-  'created-at',
-  'updated-at',
-  'created-by',
-  'updated-by',
-  'auto-increment',
-])
+export type FieldTypeConvertStrategy = 'clear' | 'match' | 'cast' | 'ignore'
 
-export const canChangeType = (type: IFieldType) => !cannotChangeTypeFieldType.has(type)
+export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFieldType, FieldTypeConvertStrategy>>>> = {
+  string: {
+    color: 'ignore',
+    email: 'ignore',
+    number: 'cast',
+    date: 'cast',
+    select: 'match',
+    'multi-select': 'match',
+    bool: 'cast',
+    rating: 'cast',
+    currency: 'cast',
+    collaborator: 'match',
+  },
+}
+
+export const canChangeType = (type: IFieldType) => !!fieldTypeConvertMap[type]
+
+export const changeFieldTypeStrategy = (fromType: IFieldType) => (type: IFieldType) =>
+  fieldTypeConvertMap[fromType]?.[type]
