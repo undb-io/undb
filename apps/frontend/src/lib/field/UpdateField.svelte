@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { getTable } from '$lib/store/table'
+	import { getTable, getView, recordHash } from '$lib/store/table'
 	import { Button, Input, Label, Modal, Spinner, Toggle, Popover, Badge, Textarea, Toast } from 'flowbite-svelte'
 	import FieldIcon from './FieldIcon.svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import MutateFieldComponent from './MutateFieldComponent/MutateFieldComponent.svelte'
-	import { canDisplay, type Field } from '@undb/core'
+	import { canChangeType, canDisplay, changeFieldTypeStrategy, type Field } from '@undb/core'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
 	import { z } from 'zod'
@@ -16,14 +16,21 @@
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
 	const table = getTable()
+	const view = getView()
 
 	export let field: Field
 	export let data: Validation<any>
 
+	$: records = trpc().record.list.query(
+		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ refetchOnMount: false, refetchOnWindowFocus: false, enabled: false, queryHash: $recordHash },
+	)
+
 	const updateField = trpc().table.field.update.mutation({
 		async onSuccess(data, variables, context) {
-			await invalidate(`table:${$table.id.value}`)
 			updateFieldModal.close()
+			await invalidate(`table:${$table.id.value}`)
+			await $records.refetch()
 		},
 	})
 
@@ -82,7 +89,12 @@
 						<span class="text-red-500">*</span>
 					</div>
 
-					<FieldTypePicker disabled bind:value={$form.type} class="w-full !justify-start" />
+					<FieldTypePicker
+						disabled={!canChangeType($form.type)}
+						bind:value={$form.type}
+						class="w-full !justify-start"
+						filter={(type) => !!changeFieldTypeStrategy($form.type)(type)}
+					/>
 				</Label>
 
 				<Label class="flex flex-col gap-2">

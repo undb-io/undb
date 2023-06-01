@@ -4,13 +4,13 @@ exports[`UnderlyingTableBuilder > should build table 1`] = `
 [
   "create table if not exists \`tableId\` (\`auto_increment\` integer not null primary key autoincrement, \`id\` varchar(255) not null, \`created_at\` datetime not null default CURRENT_TIMESTAMP, \`created_by\` varchar(255) not null, \`updated_at\` datetime not null default CURRENT_TIMESTAMP, \`updated_by\` varchar(255) not null, \`deleted_at\` datetime null, \`deleted_by\` varchar(255), \`fldid\` varchar(255))",
   "
+      create unique index IF NOT EXISTS \`tableId_id_unique\` on \`tableId\` (\`id\`)
+      ",
+  "
 		CREATE TRIGGER IF NOT EXISTS update_at_update_tableId AFTER UPDATE ON \`tableId\`
 		BEGIN
 			update \`tableId\` SET updated_at = datetime('now') WHERE id = NEW.id;
 		END;
 	 ",
-  "
-      create unique index IF NOT EXISTS \`tableId_id_unique\` on \`tableId\` (\`id\`)
-      ",
 ]
 `;

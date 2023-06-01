@@ -12,6 +12,7 @@ import type {
   IUpdateFieldSchema,
 } from './field/index.js'
 import { FieldId, SelectField, WithDuplicatedField } from './field/index.js'
+import { UpdateFieldHelper } from './field/update-field.helper.js'
 import type { IRootFilter } from './filter/index.js'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from './option/index.js'
 import type { Record } from './record/index.js'
@@ -304,6 +305,10 @@ export class Table {
 
   public updateField(id: string, input: IUpdateFieldSchema): Option<TableCompositeSpecificaiton> {
     const field = this.schema.getFieldById(id).unwrap()
+
+    if (field.type !== input.type) {
+      return UpdateFieldHelper.updateField(field, input)
+    }
 
     return field.update(input as any)
   }

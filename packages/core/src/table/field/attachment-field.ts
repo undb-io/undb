@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import type { IAttachmentFilter, IAttachmentFilterOperator } from '../filter/attachment.filter.js'
-import { RecordValueJSON } from '../record/record.schema.js'
-import { IRecordDisplayValues } from '../record/record.type.js'
+import type { RecordValueJSON } from '../record/record.schema.js'
+import type { IRecordDisplayValues } from '../record/record.type.js'
 import { AttachmentFieldValue } from './attachment-field-value.js'
 import type {
   AttachmentFieldType,

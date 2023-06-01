@@ -78,7 +78,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
       if (!field.sortable) continue
 
       if (field instanceof CoreSelectField) {
-        const column = new UnderlyingSelectColumn(field, this.table.id.value)
+        const column = new UnderlyingSelectColumn(field.id.value, this.table.id.value)
         const order = sort.direction === 'asc' ? field.options.options : [...field.options.options].reverse()
         this.qb.orderByRaw(`
             CASE ${TABLE_ALIAS}.${column.name}

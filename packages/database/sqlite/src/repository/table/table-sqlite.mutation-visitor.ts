@@ -6,6 +6,7 @@ import type {
   WithChartAggregateSpec,
   WithCurrencySymbol,
   WithDuplicatedField,
+  WithNewFieldType,
   WithOption,
   WithReferenceFieldId,
   WithTimeFormat,
@@ -290,7 +291,10 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   }
   optionsEqual(s: WithOptions): void {
     this.addJobs(async () => {
-      const field = await this.em.findOne(SelectField, s.fieldId, { populate: ['options'] })
+      const field =
+        s.type === 'select'
+          ? await this.em.findOne(SelectField, s.fieldId, { populate: ['options'] })
+          : await this.em.findOne(MultiSelectField, s.fieldId, { populate: ['options'] })
       if (field) {
         wrap(field).assign({ options: s.options.options.map((option) => new Option(field, option)) })
         this.em.persist(field)
@@ -306,13 +310,18 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.persist(option)
   }
   newOption(s: WithNewOption): void {
-    const field = this.em.getReference(SelectField, s.fieldId)
+    const field = this.#getField(s.type, s.fieldId) as SelectField | MultiSelectField
     const option = new Option(field, s.option)
     this.em.persist(option)
   }
   witoutOption(s: WithoutOption): void {
     const option = this.em.getReference(Option, s.optionKey.value as never)
     this.em.remove(option)
+  }
+  withNewFieldType(s: WithNewFieldType): void {
+    const { tableName } = this.em.getMetadata().get(Field.name)
+    const query = `UPDATE ${tableName} SET type = '${s.newType}' WHERE id = '${s.field.id.value}'`
+    this.addQueries(query)
   }
   withoutField(s: WithoutField): void {
     const field = this.#getField(s.type, s.fieldId)

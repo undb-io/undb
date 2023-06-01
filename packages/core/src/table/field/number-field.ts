@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import type { INumberFilter, INumberFilterOperator } from '../filter/number.filter.js'
-import { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
+import type { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
 import { BaseField } from './field.base.js'
 import type { INumberField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'

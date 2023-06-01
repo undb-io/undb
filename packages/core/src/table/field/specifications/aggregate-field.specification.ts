@@ -4,7 +4,7 @@ import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
 import type { IAbstractAggregateField, IAggregateFieldType } from '../field.type.js'
-import { FieldId } from '../value-objects/index.js'
+import { FieldId } from '../value-objects/field-id.vo.js'
 
 export class WithAggregateFieldId extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(

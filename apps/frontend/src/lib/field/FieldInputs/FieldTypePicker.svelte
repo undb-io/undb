@@ -9,6 +9,7 @@
 
 	export let value: IFieldType | undefined
 	export let types = FIELD_SELECT_ITEMS
+	export let filter: (type: IFieldType) => boolean = () => true
 	let open = false
 </script>
 
@@ -27,10 +28,10 @@
 		triggeredBy="#field_type_picker"
 		bind:open
 		inline
-		class="w-[400px] overflow-y-auto py-1 shadow-md max-h-[200px]"
+		class="w-[400px] overflow-y-auto py-1 shadow-md max-h-[400px]"
 		frameClass="z-[100]"
 	>
-		{#each types as type}
+		{#each types.filter((type) => filter(type.value)) as type}
 			{@const selected = type.value === value}
 			<Radio
 				value={type.value}

@@ -1,17 +1,17 @@
-import { and, ValueObject } from '@undb/domain'
-import { isArray, isBoolean, isEmpty, isNull, isString, unzip } from 'lodash-es'
+import { ValueObject } from '@undb/domain'
+import { isEmpty, unzip } from 'lodash-es'
 import fp from 'lodash/fp.js'
 import type { Option } from 'oxide.ts'
-import { None, Some } from 'oxide.ts'
+import { None } from 'oxide.ts'
 import type { ZodType } from 'zod'
 import type { IFilter, IOperator } from '../filter/index.js'
 import { OptionKey } from '../option/option-key.vo.js'
-import type { ICreateOptionSchema, IMutateOptionSchema, IUpdateOptionSchema } from '../option/option.schema.js'
+import type { ICreateOptionSchema, IUpdateOptionSchema } from '../option/option.schema.js'
 import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues, Record, RecordValueJSON } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import type { TableSchema, TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
-import type { IBaseCreateFieldSchema, IBaseUpdateFieldSchema } from './field-base.schema.js'
+import type { IBaseCreateFieldSchema } from './field-base.schema.js'
 import { DEFAULT_DATE_FORMAT } from './field.constants.js'
 import type {
   Field,
@@ -41,17 +41,12 @@ import type {
   PrimitiveField,
   SystemField,
 } from './field.type.js'
-import { canDisplay, isAggregate, isControlledFieldType, isFilterable, isNumeric, isSortable } from './field.util.js'
+import { isAggregate, isControlledFieldType, isFilterable, isNumeric, isSortable } from './field.util.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import type { ReferenceField } from './reference-field.js'
-import { WithAggregateFieldId } from './specifications/aggregate-field.specification.js'
-import { WithFieldDescription, WithFieldDisplay, WithFieldName } from './specifications/base-field.specification.js'
-import { WithFormat, WithTimeFormat } from './specifications/date-field.specification.js'
-import { WithFieldRequirement } from './specifications/field-constraints.specification.js'
-import { WithReferenceFieldId } from './specifications/lookup-field.specification.js'
-import { WithDisplayFields } from './specifications/reference-field.specification.js'
 import { WithNewOption, WithOption, WithOptions, WithoutOption } from './specifications/select-field.specification.js'
 import type { TreeField } from './tree-field.js'
+import { UpdateFieldHelper } from './update-field.helper.js'
 import { FieldDescription } from './value-objects/field-description.js'
 import type { DateFormat, TimeFormat } from './value-objects/index.js'
 import { DisplayFields, FieldId, FieldIssue, FieldName, FieldValueConstraints } from './value-objects/index.js'
@@ -186,26 +181,7 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
   }
 
   public update(input: IUpdateFieldSchema): Option<TableCompositeSpecificaiton> {
-    return this.updateBase(input)
-  }
-
-  protected updateBase<T extends IBaseUpdateFieldSchema>(input: T): Option<TableCompositeSpecificaiton> {
-    const specs: TableCompositeSpecificaiton[] = []
-    if (isString(input.name)) {
-      const spec = WithFieldName.fromString(this.type, this.id.value, input.name)
-      specs.push(spec)
-    }
-    if (isString(input.description)) {
-      const spec = WithFieldDescription.fromString(this.type, this.id.value, input.description)
-      specs.push(spec)
-    }
-    if (isBoolean(input.required) && !this.controlled) {
-      specs.push(new WithFieldRequirement(this.type, this.id.value, input.required))
-    }
-    if (isBoolean(input.display) && canDisplay(this.type)) {
-      specs.push(new WithFieldDisplay(this.type, this.id.value, input.display))
-    }
-    return and(...specs)
+    return UpdateFieldHelper.updateField(this, input)
   }
 }
 
@@ -235,14 +211,6 @@ export abstract class AbstractDateField<F extends IDateFieldTypes = IDateFieldTy
     return this.props.format
   }
 
-  updateFormat(format?: string | undefined): Option<TableCompositeSpecificaiton> {
-    if (isString(format)) {
-      return Some(WithFormat.fromString(this.type, this.id.value, format))
-    }
-
-    return None
-  }
-
   get timeFormatString(): string | null {
     return this.props.timeFormat?.unpack() ?? null
   }
@@ -253,14 +221,6 @@ export abstract class AbstractDateField<F extends IDateFieldTypes = IDateFieldTy
 
   get timeFormat(): TimeFormat | undefined {
     return this.props.timeFormat
-  }
-
-  updateTimeFormat(format?: string | undefined | null): Option<TableCompositeSpecificaiton> {
-    if (isString(format) || isNull(format)) {
-      return Some(WithTimeFormat.from(this.type, this.id.value, format))
-    }
-
-    return None
   }
 }
 
@@ -311,13 +271,6 @@ export abstract class AbstractLookingField<F extends ILookingFieldTypes>
       unzip,
     )(this.displayFieldIds)
   }
-
-  updateDisplayFieldIds(displayFieldIds?: string[]): Option<TableCompositeSpecificaiton> {
-    if (isArray(displayFieldIds)) {
-      return Some(WithDisplayFields.fromIds(this.type, this.id.value, displayFieldIds))
-    }
-    return None
-  }
 }
 
 export abstract class AbstractLookupField<F extends ILookupFieldTypes>
@@ -360,14 +313,6 @@ export abstract class AbstractLookupField<F extends ILookupFieldTypes>
   getForeignTableId(schema: TableSchemaIdMap): Option<string> {
     return this.mustGetReferenceField(schema).foreignTableId
   }
-
-  updateReferenceId(referenceId?: string): Option<TableCompositeSpecificaiton> {
-    if (isString(referenceId)) {
-      return Some(WithReferenceFieldId.fromString(this.type, this.id.value, referenceId))
-    }
-
-    return None
-  }
 }
 
 export abstract class AbstractAggregateField<F extends INumberAggregateFieldType>
@@ -381,14 +326,6 @@ export abstract class AbstractAggregateField<F extends INumberAggregateFieldType
 
   set referenceFieldId(fieldId: FieldId) {
     this.props.aggregateFieldId = fieldId
-  }
-
-  updateAggregateFieldId(aggregateFieldId?: string): Option<TableCompositeSpecificaiton> {
-    if (isString(aggregateFieldId)) {
-      return Some(WithAggregateFieldId.fromString(this.type, this.id.value, aggregateFieldId))
-    }
-
-    return None
   }
 }
 
@@ -421,29 +358,5 @@ export abstract class AbstractSelectField<F extends ISelectFieldTypes>
   removeOption(id: string): WithoutOption {
     const optionKey = OptionKey.fromString(id)
     return new WithoutOption(this.type, this.id.value, optionKey)
-  }
-  updateOptions(input: IMutateOptionSchema[]): Option<TableCompositeSpecificaiton> {
-    if (!input.length) {
-      return None
-    }
-
-    const specs: TableCompositeSpecificaiton[] = []
-    const options = this.options.optionsMap
-    for (const option of input) {
-      const existing = !!option.key && !!options.get(option.key)
-      if (existing) {
-        specs.push(this.updateOption(option.key!, option))
-        continue
-      }
-
-      specs.push(this.createOption(option))
-    }
-    for (const [id] of options) {
-      if (!input.some((o) => o.key === id)) {
-        specs.push(this.removeOption(id))
-      }
-    }
-
-    return and(...specs)
   }
 }

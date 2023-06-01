@@ -34,57 +34,60 @@ export class UnderlyingColumnFactory {
   static create(field: Field, tableName: string): IUnderlyingColumn | IUnderlyingColumn[] {
     switch (field.type) {
       case 'id':
-        return new UnderlyingIdColumn(field, tableName)
+        return new UnderlyingIdColumn(field.id.value, tableName)
       case 'created-at':
-        return new UnderlyingCreatedAtColumn(field, tableName)
+        return new UnderlyingCreatedAtColumn(field.id.value, tableName)
       case 'updated-at':
-        return new UnderlyingUpdatedAtColumn(field, tableName)
+        return new UnderlyingUpdatedAtColumn(field.id.value, tableName)
       case 'auto-increment':
-        return new UnderlyingAutoIncreamentColumn(field, tableName)
+        return new UnderlyingAutoIncreamentColumn(field.id.value, tableName)
       case 'string':
-        return new UnderlyingStringColumn(field, tableName)
+        return new UnderlyingStringColumn(field.id.value, tableName)
       case 'email':
-        return new UnderlyingEmailColumn(field, tableName)
+        return new UnderlyingEmailColumn(field.id.value, tableName)
       case 'attachment':
-        return new UnderlyingAttachmentColumn(field, tableName)
+        return new UnderlyingAttachmentColumn(field.id.value, tableName)
       case 'rating':
-        return new UnderlyingRatingColumn(field, tableName)
+        return new UnderlyingRatingColumn(field.id.value, tableName)
       case 'currency':
-        return new UnderlyingCurrencyColumn(field, tableName)
+        return new UnderlyingCurrencyColumn(field.id.value, tableName)
       case 'color':
-        return new UnderlyingColorColumn(field, tableName)
+        return new UnderlyingColorColumn(field.id.value, tableName)
       case 'number':
-        return new UnderlyingNumberColumn(field, tableName)
+        return new UnderlyingNumberColumn(field.id.value, tableName)
       case 'bool':
-        return new UnderlyingBoolColumn(field, tableName)
+        return new UnderlyingBoolColumn(field.id.value, tableName)
       case 'date':
-        return new UnderlyingDateColumn(field, tableName)
+        return new UnderlyingDateColumn(field.id.value, tableName)
       case 'date-range':
-        return [new UnderlyingDateRangeFromColumn(field, tableName), new UnderlyingDateRangeToColumn(field, tableName)]
+        return [
+          new UnderlyingDateRangeFromColumn(field.id.value, tableName),
+          new UnderlyingDateRangeToColumn(field.id.value, tableName),
+        ]
       case 'select':
-        return new UnderlyingSelectColumn(field, tableName)
+        return new UnderlyingSelectColumn(field.id.value, tableName)
       case 'multi-select':
-        return new UnderlyingMultiSelectColumn(field, tableName)
+        return new UnderlyingMultiSelectColumn(field.id.value, tableName)
       case 'collaborator':
-        return new UnderlyingCollaboratorColumn(field, tableName)
+        return new UnderlyingCollaboratorColumn(field.id.value, tableName)
       case 'reference':
-        return new UnderlyingReferenceColumn(field, tableName)
+        return new UnderlyingReferenceColumn(field.id.value, tableName)
       case 'tree':
-        return new UnderlyingTreeColumn(field, tableName)
+        return new UnderlyingTreeColumn(field.id.value, tableName)
       case 'parent':
-        return new UnderlyingParentColumn(field, tableName)
+        return new UnderlyingParentColumn(field.id.value, tableName)
       case 'count':
-        return new UnderlyingCountColumn(field, tableName)
+        return new UnderlyingCountColumn(field.id.value, tableName)
       case 'sum':
-        return new UnderlyingSumColumn(field, tableName)
+        return new UnderlyingSumColumn(field.id.value, tableName)
       case 'average':
-        return new UnderlyingAverageColumn(field, tableName)
+        return new UnderlyingAverageColumn(field.id.value, tableName)
       case 'lookup':
-        return new UnderlyingLookupColumn(field, tableName)
+        return new UnderlyingLookupColumn(field.id.value, tableName)
       case 'created-by':
-        return new UnderlyingCreatedByColumn(field, tableName)
+        return new UnderlyingCreatedByColumn(field.id.value, tableName)
       case 'updated-by':
-        return new UnderlyingUpdatedByColumn(field, tableName)
+        return new UnderlyingUpdatedByColumn(field.id.value, tableName)
     }
   }
 

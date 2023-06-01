@@ -1,19 +1,15 @@
-import { andOptions } from '@undb/domain'
 import { format } from 'date-fns'
-import type { Option } from 'oxide.ts'
 import type { ZodTypeAny } from 'zod'
 import { z } from 'zod'
 import type { ICreatedAtFilter } from '../filter/created-at.filter.js'
 import type { ICreatedAtFilterOperator } from '../filter/operators.js'
-import { IRecordDisplayValues } from '../record/index.js'
-import { RecordValueJSON } from '../record/record.schema.js'
-import type { TableCompositeSpecificaiton } from '../specifications/index.js'
+import type { IRecordDisplayValues } from '../record/index.js'
+import type { RecordValueJSON } from '../record/record.schema.js'
 import { CreatedAtFieldValue } from './created-at-field-value.js'
 import type {
   CreatedAtFieldType,
   ICreateCreatedAtFieldInput,
   ICreatedAtFieldQueryValue,
-  IUpdateCreatedAtFieldInput,
 } from './created-at-field.type.js'
 import { AbstractDateField } from './field.base.js'
 import { INTERNAL_COLUMN_CREATED_AT_NAME } from './field.constants.js'
@@ -68,10 +64,6 @@ export class CreatedAtField extends AbstractDateField<ICreatedAtField> {
   getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
     const value = valueJson[INTERNAL_COLUMN_CREATED_AT_NAME]
     return value ? format(new Date(value), this.formatString) : null
-  }
-
-  public override update(input: IUpdateCreatedAtFieldInput): Option<TableCompositeSpecificaiton> {
-    return andOptions(this.updateBase(input), this.updateFormat(input.format), this.updateTimeFormat(input.timeFormat))
   }
 
   createValue(value: ICreatedAtFieldQueryValue): CreatedAtFieldValue {

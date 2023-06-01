@@ -1,5 +1,5 @@
 import type { Knex } from '@mikro-orm/better-sqlite'
-import type { CollaboratorField, Field, ParentField, ReferenceField } from '@undb/core'
+import type { Field, ParentField, ReferenceField } from '@undb/core'
 import { INTERNAL_COLUMN_ID_NAME, TreeField } from '@undb/core'
 import { USER_TABLE_NAME } from '../entity/user.js'
 import type { IUderlyingForeignTableName, IUnderlyingForeignTable } from '../interfaces/underlying-foreign-table.js'
@@ -15,12 +15,13 @@ abstract class BaseUnderlyingForeignTable<F extends Field> implements IUnderlyin
   abstract getCreateTableSqls(knex: Knex): string[]
 }
 
-export class CollaboratorForeignTable extends BaseUnderlyingForeignTable<CollaboratorField> {
+export class CollaboratorForeignTable implements IUnderlyingForeignTable {
+  constructor(protected readonly tableId: string, protected readonly fieldId: string) {}
   static RECORD_ID = 'record_id'
   static USER_ID = 'user_id'
 
   get name(): IUderlyingForeignTableName {
-    return `${this.field.id.value}_collaborator`
+    return `${this.fieldId}_collaborator`
   }
 
   getCreateTableSqls(knex: Knex<any, any[]>): string[] {
