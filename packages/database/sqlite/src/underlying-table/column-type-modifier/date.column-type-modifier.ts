@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { NumberField } from '@undb/core'
+import type { DateField } from '@undb/core'
 import {
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
   UnderlyingCurrencyColumn,
+  UnderlyingDateColumn,
   UnderlyingEmailColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
@@ -13,15 +14,16 @@ import {
 } from '../underlying-column.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
-export class NumberColumnTypeModifier extends BaseColumnTypeModifier<NumberField> {
-  private readonly column = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
+export class DateColumnTypeModifier extends BaseColumnTypeModifier<DateField> {
+  private readonly column = new UnderlyingDateColumn(this.field.id.value, this.tableId)
 
   string(): void {
     const newColumn = new UnderlyingStringColumn(this.field.id.value, this.tableId)
     this.castTo('text', newColumn, this.column)
   }
   number(): void {
-    throw new Error('Method not implemented.')
+    const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
   }
   color(): void {
     const newColumn = new UnderlyingColorColumn(this.field.id.value, this.tableId)
@@ -32,7 +34,7 @@ export class NumberColumnTypeModifier extends BaseColumnTypeModifier<NumberField
     this.alterColumn(newColumn, this.column)
   }
   date(): void {
-    this.castToDate(this.column)
+    throw new Error('Method not implemented.')
   }
   select(): void {
     const newColumn = new UnderlyingSelectColumn(this.field.id.value, this.tableId)
@@ -50,11 +52,11 @@ export class NumberColumnTypeModifier extends BaseColumnTypeModifier<NumberField
   }
   rating(): void {
     const newColumn = new UnderlyingRatingColumn(this.field.id.value, this.tableId)
-    this.castTo('real', newColumn, this.column)
+    this.alterColumn(newColumn, this.column)
   }
   currency(): void {
     const newColumn = new UnderlyingCurrencyColumn(this.field.id.value, this.tableId)
-    this.castTo('real', newColumn, this.column)
+    this.alterColumn(newColumn, this.column)
   }
   attachment(): void {
     throw new Error('Method not implemented.')

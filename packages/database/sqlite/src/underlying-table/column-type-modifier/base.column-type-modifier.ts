@@ -8,10 +8,12 @@ import {
   type IFieldType,
   type IFieldTypeHandler,
 } from '@undb/core'
+import { isValid } from 'date-fns'
 import { Mixin } from 'ts-mixer'
 import { User } from '../../entity/user.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { BaseEntityManager } from '../../repository/base-entity-manager.js'
+import { UnderlyingDateColumn } from '../underlying-column.js'
 import { CollaboratorForeignTable } from '../underlying-foreign-table.js'
 
 export type SqliteCastType = 'text' | 'int' | 'real' | 'bool'
@@ -97,6 +99,48 @@ export abstract class BaseColumnTypeModifier<F extends Field>
   average(): void {}
   sum(): void {}
   lookup(): void {}
+
+  protected castToDate(column: IUnderlyingColumn) {
+    this.addJobs(async () => {
+      const newColumn = new UnderlyingDateColumn(this.field.id.value, this.tableId)
+
+      const addColumn = this.knex.schema
+        .alterTable(this.tableId, (tb) => {
+          newColumn.buildTemp(tb)
+        })
+        .toQuery()
+
+      await this.em.execute(addColumn)
+
+      const qb = this.knex.queryBuilder().select(INTERNAL_COLUMN_ID_NAME, column.name).from(this.tableId)
+      const value = (await this.em.execute(qb)) as { id: string; [key: string]: string }[]
+
+      for (const row of value) {
+        const dateString = row[column.name]
+        if (!dateString) continue
+
+        const date = new Date(dateString)
+        if (!isValid(date)) continue
+
+        const qb = this.knex
+          .queryBuilder()
+          .table(this.tableId)
+          .update(newColumn.tempName, date.toISOString())
+          .where(INTERNAL_COLUMN_ID_NAME, row.id)
+        await this.em.execute(qb)
+      }
+
+      const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${column.name}`
+      await this.em.execute(dropColumn)
+
+      const alterName = this.knex.schema
+        .alterTable(this.tableId, (tb) => {
+          tb.renameColumn(newColumn.tempName, newColumn.name)
+        })
+        .toQuery()
+      await this.em.execute(alterName)
+    })
+  }
 
   protected castToCollaborator(column: IUnderlyingColumn, collaboratorField: 'username' | 'email' = 'username') {
     const { tableName: userTableName, properties } = this.em.getMetadata().get(User.name)

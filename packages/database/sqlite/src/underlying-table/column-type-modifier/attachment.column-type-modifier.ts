@@ -32,7 +32,7 @@ export class AttachmentColumnTypeModifier extends BaseColumnTypeModifier<Attachm
       .queryBuilder()
       .select(
         `${attachmentTableName}.${recordId.fieldNames[0]}`,
-        this.knex.raw(`json_group_array(distinct ${attachmentTableName}.${name.fieldNames[0]}) as value`),
+        this.knex.raw(`group_concat(distinct ${attachmentTableName}.${name.fieldNames[0]}) as value`),
       )
       .from(this.tableId)
       .innerJoin(attachmentTableName, function () {

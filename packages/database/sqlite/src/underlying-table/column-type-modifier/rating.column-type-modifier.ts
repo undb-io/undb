@@ -5,6 +5,7 @@ import {
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
   UnderlyingCurrencyColumn,
+  UnderlyingDateColumn,
   UnderlyingEmailColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
@@ -33,7 +34,7 @@ export class RatingColumnTypeModifier extends BaseColumnTypeModifier<RatingField
     this.alterColumn(newColumn, this.column)
   }
   date(): void {
-    throw new Error('Method not implemented.')
+    this.alterColumn(new UnderlyingDateColumn(this.field.id.value, this.tableId), this.column)
   }
   select(): void {
     const newColumn = new UnderlyingSelectColumn(this.field.id.value, this.tableId)

@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { INTERNAL_COLUMN_ID_NAME, Options, WithOptions, type StringField } from '@undb/core'
-import { isValid } from 'date-fns'
 import { chain, isString } from 'lodash-es'
 import { Option } from '../../entity/option.js'
 import { TableSqliteMutationVisitor } from '../../repository/table/table-sqlite.mutation-visitor.js'
 import {
   UnderlyingBoolColumn,
-  UnderlyingDateColumn,
   UnderlyingMultiSelectColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
@@ -28,45 +26,7 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
   color(): void {}
   email(): void {}
   date(): void {
-    this.addJobs(async () => {
-      const newColumn = new UnderlyingDateColumn(this.field.id.value, this.tableId)
-
-      const addColumn = this.knex.schema
-        .alterTable(this.tableId, (tb) => {
-          newColumn.buildTemp(tb)
-        })
-        .toQuery()
-
-      await this.em.execute(addColumn)
-
-      const qb = this.knex.queryBuilder().select(INTERNAL_COLUMN_ID_NAME, this.column.name).from(this.tableId)
-      const value = (await this.em.execute(qb)) as { id: string; [key: string]: string }[]
-
-      for (const row of value) {
-        const dateString = row[this.column.name]
-        if (!dateString) continue
-
-        const date = new Date(dateString)
-        if (!isValid(date)) continue
-
-        const qb = this.knex
-          .queryBuilder()
-          .table(this.tableId)
-          .update(newColumn.tempName, date.toISOString())
-          .where(INTERNAL_COLUMN_ID_NAME, row.id)
-        await this.em.execute(qb)
-      }
-
-      const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
-      await this.em.execute(dropColumn)
-
-      const alterName = this.knex.schema
-        .alterTable(this.tableId, (tb) => {
-          tb.renameColumn(newColumn.tempName, newColumn.name)
-        })
-        .toQuery()
-      await this.em.execute(alterName)
-    })
+    this.castToDate(this.column)
   }
   select(): void {
     this.addJobs(async () => {
