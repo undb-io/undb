@@ -31,6 +31,7 @@ import type {
   UpdatedByField,
 } from '@undb/core'
 import { BaseEntityManager } from '../repository/base-entity-manager.js'
+import { AttachmentColumnTypeModifier } from './column-type-modifier/attachment.column-type-modifier.js'
 import { BoolColumnTypeModifier } from './column-type-modifier/bool.column-type-modifier.js'
 import { ColorColumnTypeModifier } from './column-type-modifier/color.column-type-modifier.js'
 import { EmailColumnTypeModifier } from './column-type-modifier/email.column-type-modifier.js'
@@ -62,7 +63,10 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
     throw new Error('Method not implemented.')
   }
   attachment(field: AttachmentField): void {
-    throw new Error('Method not implemented.')
+    const modifier = new AttachmentColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   autoIncrement(field: AutoIncrementField): void {
     throw new Error('Method not implemented.')

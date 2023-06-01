@@ -37,25 +37,29 @@ export abstract class BaseColumnTypeModifier<F extends Field>
   ): void {
     const addColumn = this.knex.schema
       .alterTable(this.tableId, (tb) => {
-        newColumn.buildTemp(tb)
+        column.virtual ? newColumn.build(tb, this.knex, false) : newColumn.buildTemp(tb)
       })
       .toQuery()
+    this.addQueries(addColumn)
 
     const query = cast?.(newColumn, column)
+    if (query) this.addQueries(query)
 
-    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${column.name}`
+    if (!column.virtual) {
+      const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${column.name}`
+      this.addQueries(dropColumn)
 
-    const alterName = this.knex.schema
-      .alterTable(this.tableId, (tb) => {
-        tb.renameColumn(newColumn.tempName, newColumn.name)
-      })
-      .toQuery()
-
-    const queries = [addColumn, query ?? '', dropColumn, alterName].filter(Boolean)
-    this.addQueries(...queries)
+      const alterName = this.knex.schema
+        .alterTable(this.tableId, (tb) => {
+          tb.renameColumn(newColumn.tempName, newColumn.name)
+        })
+        .toQuery()
+      this.addQueries(alterName)
+    }
   }
 
   protected castTo(type: SqliteCastType, newColumn: IUnderlyingColumn, column: IUnderlyingColumn) {
+    if (column.virtual) throw new Error('cannot cast virtual underlying column')
     return this.alterColumn(newColumn, column, () =>
       this.knex
         .queryBuilder()
