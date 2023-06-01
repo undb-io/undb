@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { EmailField } from '@undb/core'
+import type { BoolField } from '@undb/core'
 import {
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
@@ -13,22 +13,23 @@ import {
 } from '../underlying-column.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
-export class EmailColumnTypeModifier extends BaseColumnTypeModifier<EmailField> {
-  private readonly column = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
+export class BoolColumnTypeModifier extends BaseColumnTypeModifier<BoolField> {
+  private readonly column = new UnderlyingBoolColumn(this.field.id.value, this.tableId)
   string(): void {
     const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
-    this.castTo('text', newColumn, this.column)
+    this.alterColumn(newColumn, this.column)
   }
   number(): void {
     const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
-    this.alterColumn(newColumn, this.column)
+    this.castTo('int', newColumn, this.column)
   }
   color(): void {
     const newColumn = new UnderlyingColorColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
   email(): void {
-    throw new Error('Method not implemented.')
+    const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
   }
   date(): void {
     this.alterColumn(new UnderlyingDateColumn(this.field.id.value, this.tableId), this.column)
@@ -37,8 +38,7 @@ export class EmailColumnTypeModifier extends BaseColumnTypeModifier<EmailField> 
     this.alterColumn(new UnderlyingSelectColumn(this.field.id.value, this.tableId), this.column)
   }
   bool(): void {
-    const newColumn = new UnderlyingBoolColumn(this.field.id.value, this.tableId)
-    this.castTo('bool', newColumn, this.column)
+    throw new Error('Method not implemented.')
   }
   reference(): void {
     throw new Error('Method not implemented.')

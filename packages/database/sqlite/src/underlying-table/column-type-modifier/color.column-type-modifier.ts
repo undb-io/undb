@@ -4,18 +4,18 @@ import type { ColorField } from '@undb/core'
 import {
   UnderlyingBoolColumn,
   UnderlyingCollaboratorColumn,
+  UnderlyingColorColumn,
   UnderlyingDateColumn,
   UnderlyingEmailColumn,
   UnderlyingMultiSelectColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
-  UnderlyingStringColumn,
 } from '../underlying-column.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
 export class ColorColumnTypeModifier extends BaseColumnTypeModifier<ColorField> {
-  private readonly column = new UnderlyingStringColumn(this.field.id.value, this.tableId)
+  private readonly column = new UnderlyingColorColumn(this.field.id.value, this.tableId)
   string(): void {
     const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
     this.castTo('text', newColumn, this.column)

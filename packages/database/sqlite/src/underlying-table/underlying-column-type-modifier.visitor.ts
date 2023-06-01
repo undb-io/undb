@@ -31,6 +31,7 @@ import type {
   UpdatedByField,
 } from '@undb/core'
 import { BaseEntityManager } from '../repository/base-entity-manager.js'
+import { BoolColumnTypeModifier } from './column-type-modifier/bool.column-type-modifier.js'
 import { ColorColumnTypeModifier } from './column-type-modifier/color.column-type-modifier.js'
 import { EmailColumnTypeModifier } from './column-type-modifier/email.column-type-modifier.js'
 import { NumberColumnTypeModifier } from './column-type-modifier/number.column-type-modifier.js'
@@ -91,7 +92,10 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
     this.unshiftJobs(...modifier.jobs)
   }
   bool(field: BoolField): void {
-    throw new Error('Method not implemented.')
+    const modifier = new BoolColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   date(field: DateField): void {
     throw new Error('Method not implemented.')
