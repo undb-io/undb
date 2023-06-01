@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getTable } from '$lib/store/table'
+	import { getTable, getView, recordHash } from '$lib/store/table'
 	import { Button, Input, Label, Modal, Spinner, Toggle, Popover, Badge, Textarea, Toast } from 'flowbite-svelte'
 	import FieldIcon from './FieldIcon.svelte'
 	import { superForm } from 'sveltekit-superforms/client'
@@ -16,14 +16,21 @@
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
 	const table = getTable()
+	const view = getView()
 
 	export let field: Field
 	export let data: Validation<any>
 
+	$: records = trpc().record.list.query(
+		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ refetchOnMount: false, refetchOnWindowFocus: false, enabled: false, queryHash: $recordHash },
+	)
+
 	const updateField = trpc().table.field.update.mutation({
 		async onSuccess(data, variables, context) {
-			await invalidate(`table:${$table.id.value}`)
 			updateFieldModal.close()
+			await invalidate(`table:${$table.id.value}`)
+			await $records.refetch()
 		},
 	})
 
