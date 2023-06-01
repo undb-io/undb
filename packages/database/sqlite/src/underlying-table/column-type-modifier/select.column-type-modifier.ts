@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { BoolField } from '@undb/core'
+import type { SelectField } from '@undb/core'
+import { Option } from '../../entity/option.js'
 import {
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
   UnderlyingDateColumn,
-  UnderlyingEmailColumn,
   UnderlyingMultiSelectColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
@@ -13,23 +13,34 @@ import {
 } from '../underlying-column.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
-export class BoolColumnTypeModifier extends BaseColumnTypeModifier<BoolField> {
-  private readonly column = new UnderlyingBoolColumn(this.field.id.value, this.tableId)
+export class SelectColumnTypeModifier extends BaseColumnTypeModifier<SelectField> {
+  private readonly column = new UnderlyingSelectColumn(this.field.id.value, this.tableId)
   string(): void {
     const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
-    this.alterColumn(newColumn, this.column)
+    const {
+      properties: { key, name },
+    } = this.em.getMetadata().get(Option.name)
+
+    this.alterColumn(newColumn, this.column, (newColumn, column) => {
+      const subQuery = this.em.createQueryBuilder(Option).select(['name', 'key']).from(Option).getQuery()
+      return `
+      UPDATE \`${this.tableId}\`
+      SET ${newColumn.tempName} = \`tt\`.\`${name.fieldNames[0]}\`
+      FROM (${subQuery}) as tt
+      WHERE tt.\`${key.fieldNames[0]}\` = \`${this.tableId}\`.\`${column.name}\`
+      `
+    })
   }
   number(): void {
     const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
-    this.castTo('int', newColumn, this.column)
+    this.alterColumn(newColumn, this.column)
   }
   color(): void {
     const newColumn = new UnderlyingColorColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
   email(): void {
-    const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
-    this.alterColumn(newColumn, this.column)
+    throw new Error('Method not implemented.')
   }
   date(): void {
     this.alterColumn(new UnderlyingDateColumn(this.field.id.value, this.tableId), this.column)
@@ -38,7 +49,8 @@ export class BoolColumnTypeModifier extends BaseColumnTypeModifier<BoolField> {
     this.alterColumn(new UnderlyingSelectColumn(this.field.id.value, this.tableId), this.column)
   }
   bool(): void {
-    throw new Error('Method not implemented.')
+    const newColumn = new UnderlyingBoolColumn(this.field.id.value, this.tableId)
+    this.castTo('bool', newColumn, this.column)
   }
   reference(): void {
     throw new Error('Method not implemented.')

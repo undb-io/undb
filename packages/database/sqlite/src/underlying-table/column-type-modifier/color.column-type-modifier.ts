@@ -3,7 +3,6 @@
 import type { ColorField } from '@undb/core'
 import {
   UnderlyingBoolColumn,
-  UnderlyingCollaboratorColumn,
   UnderlyingColorColumn,
   UnderlyingDateColumn,
   UnderlyingEmailColumn,
@@ -59,8 +58,8 @@ export class ColorColumnTypeModifier extends BaseColumnTypeModifier<ColorField> 
     throw new Error('Method not implemented.')
   }
   collaborator(): void {
-    const newColumn = new UnderlyingCollaboratorColumn(this.field.id.value, this.tableId)
-    this.alterColumn(newColumn, this.column)
+    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
+    this.addQueries(dropColumn)
   }
   ['multi-select'](): void {
     const newColumn = new UnderlyingMultiSelectColumn(this.field.id.value, this.tableId)

@@ -219,6 +219,22 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     lookup: 'ignore',
   },
+  select: {
+    string: 'cast',
+    email: 'clear',
+    color: 'clear',
+    date: 'clear',
+    number: 'clear',
+    'multi-select': 'cast',
+    bool: 'cast',
+    rating: 'clear',
+    currency: 'clear',
+    collaborator: 'clear',
+    count: 'ignore',
+    average: 'ignore',
+    sum: 'ignore',
+    lookup: 'ignore',
+  },
 }
 
 export const canChangeType = (type: IFieldType) => !!fieldTypeConvertMap[type]
