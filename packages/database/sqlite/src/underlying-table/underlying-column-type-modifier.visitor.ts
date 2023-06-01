@@ -34,8 +34,10 @@ import { BaseEntityManager } from '../repository/base-entity-manager.js'
 import { AttachmentColumnTypeModifier } from './column-type-modifier/attachment.column-type-modifier.js'
 import { BoolColumnTypeModifier } from './column-type-modifier/bool.column-type-modifier.js'
 import { ColorColumnTypeModifier } from './column-type-modifier/color.column-type-modifier.js'
+import { CurrencyColumnTypeModifier } from './column-type-modifier/currency.column-type-modifier.js'
 import { EmailColumnTypeModifier } from './column-type-modifier/email.column-type-modifier.js'
 import { NumberColumnTypeModifier } from './column-type-modifier/number.column-type-modifier.js'
+import { RatingColumnTypeModifier } from './column-type-modifier/rating.column-type-modifier.js'
 import { StringColumnTypeModifier } from './column-type-modifier/string.column-type-modifier.js'
 
 export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implements IFieldVisitor {
@@ -123,10 +125,16 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
     throw new Error('Method not implemented.')
   }
   rating(field: RatingField): void {
-    throw new Error('Method not implemented.')
+    const modifier = new RatingColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   currency(field: CurrencyField): void {
-    throw new Error('Method not implemented.')
+    const modifier = new CurrencyColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   count(field: CountField): void {
     throw new Error('Method not implemented.')
