@@ -94,8 +94,8 @@ export class AttachmentColumnTypeModifier extends BaseColumnTypeModifier<Attachm
     throw new Error('Method not implemented.')
   }
   collaborator(): void {
-    const newColumn = new UnderlyingColorColumn(this.field.id.value, this.tableId)
-    this.alterColumn(newColumn, this.column)
+    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
+    this.addQueries(dropColumn)
   }
   ['multi-select'](): void {
     const newColumn = new UnderlyingMultiSelectColumn(this.field.id.value, this.tableId)
