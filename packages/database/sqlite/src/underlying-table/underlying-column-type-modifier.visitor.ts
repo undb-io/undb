@@ -33,6 +33,7 @@ import type {
 import { BaseEntityManager } from '../repository/base-entity-manager.js'
 import { AttachmentColumnTypeModifier } from './column-type-modifier/attachment.column-type-modifier.js'
 import { BoolColumnTypeModifier } from './column-type-modifier/bool.column-type-modifier.js'
+import { CollaboratorColumnTypeModifier } from './column-type-modifier/collaborator.column-type-modifier.js'
 import { ColorColumnTypeModifier } from './column-type-modifier/color.column-type-modifier.js'
 import { CurrencyColumnTypeModifier } from './column-type-modifier/currency.column-type-modifier.js'
 import { DateColumnTypeModifier } from './column-type-modifier/date.column-type-modifier.js'
@@ -161,6 +162,9 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
     throw new Error('Method not implemented.')
   }
   collaborator(field: CollaboratorField): void {
-    throw new Error('Method not implemented.')
+    const modifier = new CollaboratorColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
 }

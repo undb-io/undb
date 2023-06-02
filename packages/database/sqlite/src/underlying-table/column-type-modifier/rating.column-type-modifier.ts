@@ -61,8 +61,7 @@ export class RatingColumnTypeModifier extends BaseColumnTypeModifier<RatingField
     throw new Error('Method not implemented.')
   }
   collaborator(): void {
-    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
-    this.addQueries(dropColumn)
+    this.dropColumn(this.column)
   }
   ['multi-select'](): void {
     const newColumn = new UnderlyingSelectColumn(this.field.id.value, this.tableId)
