@@ -98,8 +98,7 @@ export class MultiSelectColumnTypeModifier extends BaseColumnTypeModifier<MultiS
     throw new Error('Method not implemented.')
   }
   collaborator(): void {
-    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${this.column.name}`
-    this.addQueries(dropColumn)
+    this.dropColumn(this.column)
   }
   ['multi-select'](): void {
     throw new Error('Method not implemented.')

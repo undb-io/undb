@@ -32,6 +32,13 @@ export abstract class BaseColumnTypeModifier<F extends Field>
     super(em)
   }
 
+  protected dropColumn(column: IUnderlyingColumn) {
+    if (!column.virtual) {
+      const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${column.name}`
+      this.addQueries(dropColumn)
+    }
+  }
+
   protected alterColumn(
     newColumn: IUnderlyingColumn,
     column: IUnderlyingColumn,
@@ -48,8 +55,7 @@ export abstract class BaseColumnTypeModifier<F extends Field>
     if (query) this.addQueries(query)
 
     if (!column.virtual) {
-      const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${column.name}`
-      this.addQueries(dropColumn)
+      this.dropColumn(column)
 
       const alterName = this.knex.schema
         .alterTable(this.tableId, (tb) => {
