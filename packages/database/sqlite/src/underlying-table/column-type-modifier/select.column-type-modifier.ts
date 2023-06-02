@@ -83,6 +83,9 @@ export class SelectColumnTypeModifier extends BaseColumnTypeModifier<SelectField
         .toQuery(),
     )
   }
+  count(): void {
+    this.dropColumn(this.column)
+  }
   ['date-range'](): void {
     throw new Error('Method not implemented.')
   }

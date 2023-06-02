@@ -63,6 +63,9 @@ export class RatingColumnTypeModifier extends BaseColumnTypeModifier<RatingField
   collaborator(): void {
     this.dropColumn(this.column)
   }
+  count(): void {
+    this.dropColumn(this.column)
+  }
   ['multi-select'](): void {
     const newColumn = new UnderlyingSelectColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)

@@ -61,6 +61,9 @@ export class DateColumnTypeModifier extends BaseColumnTypeModifier<DateField> {
   attachment(): void {
     throw new Error('Method not implemented.')
   }
+  count(): void {
+    this.dropColumn(this.column)
+  }
   collaborator(): void {
     this.dropColumn(this.column)
   }

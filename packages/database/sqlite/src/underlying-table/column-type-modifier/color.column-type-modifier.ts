@@ -60,6 +60,9 @@ export class ColorColumnTypeModifier extends BaseColumnTypeModifier<ColorField> 
   collaborator(): void {
     this.dropColumn(this.column)
   }
+  count(): void {
+    this.dropColumn(this.column)
+  }
   ['multi-select'](): void {
     const newColumn = new UnderlyingMultiSelectColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)

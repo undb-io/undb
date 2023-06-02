@@ -101,7 +101,6 @@ export abstract class BaseColumnTypeModifier<F extends Field>
   parent(): void {
     throw new Error('Method not implemented.')
   }
-  count(): void {}
   average(): void {}
   sum(): void {}
   lookup(): void {}

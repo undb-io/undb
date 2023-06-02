@@ -101,6 +101,9 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
   collaborator(): void {
     this.castToCollaborator(this.column, 'username')
   }
+  count(): void {
+    this.dropColumn(this.column)
+  }
   ['multi-select'](): void {
     this.addJobs(async () => {
       const newColumn = new UnderlyingMultiSelectColumn(this.field.id.value, this.tableId)

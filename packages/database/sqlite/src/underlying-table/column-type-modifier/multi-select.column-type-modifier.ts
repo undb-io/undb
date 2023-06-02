@@ -100,6 +100,9 @@ export class MultiSelectColumnTypeModifier extends BaseColumnTypeModifier<MultiS
   collaborator(): void {
     this.dropColumn(this.column)
   }
+  count(): void {
+    this.dropColumn(this.column)
+  }
   ['multi-select'](): void {
     throw new Error('Method not implemented.')
   }

@@ -35,6 +35,7 @@ import { AttachmentColumnTypeModifier } from './column-type-modifier/attachment.
 import { BoolColumnTypeModifier } from './column-type-modifier/bool.column-type-modifier.js'
 import { CollaboratorColumnTypeModifier } from './column-type-modifier/collaborator.column-type-modifier.js'
 import { ColorColumnTypeModifier } from './column-type-modifier/color.column-type-modifier.js'
+import { CountColumnTypeModifier } from './column-type-modifier/count.column-type-modifier.js'
 import { CurrencyColumnTypeModifier } from './column-type-modifier/currency.column-type-modifier.js'
 import { DateColumnTypeModifier } from './column-type-modifier/date.column-type-modifier.js'
 import { EmailColumnTypeModifier } from './column-type-modifier/email.column-type-modifier.js'
@@ -150,7 +151,10 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
     this.unshiftJobs(...modifier.jobs)
   }
   count(field: CountField): void {
-    throw new Error('Method not implemented.')
+    const modifier = new CountColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   sum(field: SumField): void {
     throw new Error('Method not implemented.')
