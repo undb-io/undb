@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { SelectField } from '@undb/core'
+import { INTERNAL_COLUMN_ID_NAME, type MultiSelectField } from '@undb/core'
 import { Option } from '../../entity/option.js'
 import {
   UnderlyingBoolColumn,
@@ -14,21 +14,31 @@ import {
 } from '../underlying-column.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
-export class SelectColumnTypeModifier extends BaseColumnTypeModifier<SelectField> {
-  private readonly column = new UnderlyingSelectColumn(this.field.id.value, this.tableId)
+export class MultiSelectColumnTypeModifier extends BaseColumnTypeModifier<MultiSelectField> {
+  private readonly column = new UnderlyingMultiSelectColumn(this.field.id.value, this.tableId)
   string(): void {
     const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
     const {
+      tableName: optionTableName,
       properties: { key, name },
     } = this.em.getMetadata().get(Option.name)
 
     this.alterColumn(newColumn, this.column, (newColumn, column) => {
-      const subQuery = this.em.createQueryBuilder(Option).select(['name', 'key']).from(Option).getQuery()
+      const subQuery = this.knex
+        .queryBuilder()
+        .select(
+          `${this.tableId}.${INTERNAL_COLUMN_ID_NAME}`,
+          this.knex.raw(`group_concat(${optionTableName}.\`${name.fieldNames[0]}\`) as value`),
+        )
+        .fromRaw(`${this.tableId}, json_each(${column.name})`)
+        .leftJoin(optionTableName, `${optionTableName}.${key.fieldNames[0]}`, `json_each.value`)
+        .groupBy(`${this.tableId}.${INTERNAL_COLUMN_ID_NAME}`)
+        .toQuery()
+
       return `
       UPDATE \`${this.tableId}\`
-      SET ${newColumn.tempName} = \`tt\`.\`${name.fieldNames[0]}\`
+      SET ${newColumn.tempName} = \`tt\`.\`value\`
       FROM (${subQuery}) as tt
-      WHERE tt.\`${key.fieldNames[0]}\` = \`${this.tableId}\`.\`${column.name}\`
       `
     })
   }
@@ -47,7 +57,24 @@ export class SelectColumnTypeModifier extends BaseColumnTypeModifier<SelectField
     this.alterColumn(new UnderlyingDateColumn(this.field.id.value, this.tableId), this.column)
   }
   select(): void {
-    this.alterColumn(new UnderlyingSelectColumn(this.field.id.value, this.tableId), this.column)
+    this.alterColumn(
+      new UnderlyingSelectColumn(this.field.id.value, this.tableId),
+      this.column,
+      (newColumn, column) => {
+        const subQuery = this.knex
+          .queryBuilder()
+          .select(`${this.tableId}.${INTERNAL_COLUMN_ID_NAME}`, `json_each.value as value`)
+          .fromRaw(`${this.tableId}, json_each(${column.name})`)
+          .groupBy(`${this.tableId}.${INTERNAL_COLUMN_ID_NAME}`)
+          .toQuery()
+
+        return `
+          UPDATE \`${this.tableId}\`
+          SET ${newColumn.tempName} = \`tt\`.\`value\`
+          FROM (${subQuery}) as tt
+          `
+      },
+    )
   }
   bool(): void {
     const newColumn = new UnderlyingBoolColumn(this.field.id.value, this.tableId)
@@ -75,14 +102,7 @@ export class SelectColumnTypeModifier extends BaseColumnTypeModifier<SelectField
     this.addQueries(dropColumn)
   }
   ['multi-select'](): void {
-    const newColumn = new UnderlyingMultiSelectColumn(this.field.id.value, this.tableId)
-    this.alterColumn(newColumn, this.column, (newColumn, column) =>
-      this.knex
-        .queryBuilder()
-        .table(this.tableId)
-        .update(newColumn.tempName, this.knex.raw(`json_array(${column.name})`))
-        .toQuery(),
-    )
+    throw new Error('Method not implemented.')
   }
   ['date-range'](): void {
     throw new Error('Method not implemented.')
