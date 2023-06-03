@@ -144,41 +144,42 @@ export abstract class BaseColumnTypeModifier<F extends Field>
     })
   }
 
-  protected castToCollaborator(column: IUnderlyingColumn, collaboratorField: 'username' | 'email' = 'username') {
+  protected castToCollaborator(column: IUnderlyingColumn, collaboratorField?: 'username' | 'email') {
     const { tableName: userTableName, properties } = this.em.getMetadata().get(User.name)
     const collaboratorTable = new CollaboratorForeignTable(this.tableId, this.field.id.value)
     this.addQueries(...collaboratorTable.getCreateTableSqls(this.knex))
 
-    const { id } = properties
+    if (collaboratorField) {
+      const { id } = properties
 
-    const subQuery = this.knex
-      .queryBuilder()
-      .select([
-        { [CollaboratorForeignTable.RECORD_ID]: `${this.tableId}.${INTERNAL_COLUMN_ID_NAME}` },
-        { [CollaboratorForeignTable.USER_ID]: `${userTableName}.${id.fieldNames[0]}` },
-      ])
-      .from(this.tableId)
-      .whereNotNull(column.name)
-      .innerJoin(
-        userTableName,
-        `${this.tableId}.${column.name}`,
-        `${userTableName}.${properties[collaboratorField].fieldNames[0]}`,
-      )
+      const subQuery = this.knex
+        .queryBuilder()
+        .select([
+          { [CollaboratorForeignTable.RECORD_ID]: `${this.tableId}.${INTERNAL_COLUMN_ID_NAME}` },
+          { [CollaboratorForeignTable.USER_ID]: `${userTableName}.${id.fieldNames[0]}` },
+        ])
+        .from(this.tableId)
+        .whereNotNull(column.name)
+        .innerJoin(
+          userTableName,
+          `${this.tableId}.${column.name}`,
+          `${userTableName}.${properties[collaboratorField].fieldNames[0]}`,
+        )
 
-    const query = this.knex
-      .queryBuilder()
-      .insert(subQuery)
-      .into(
-        this.knex.raw('?? (??, ??)', [
-          collaboratorTable.name,
-          CollaboratorForeignTable.RECORD_ID,
-          CollaboratorForeignTable.USER_ID,
-        ]),
-      )
-      .toQuery()
-    this.addQueries(query)
+      const query = this.knex
+        .queryBuilder()
+        .insert(subQuery)
+        .into(
+          this.knex.raw('?? (??, ??)', [
+            collaboratorTable.name,
+            CollaboratorForeignTable.RECORD_ID,
+            CollaboratorForeignTable.USER_ID,
+          ]),
+        )
+        .toQuery()
+      this.addQueries(query)
+    }
 
-    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${column.name}`
-    this.addQueries(dropColumn)
+    this.dropColumn(column)
   }
 }

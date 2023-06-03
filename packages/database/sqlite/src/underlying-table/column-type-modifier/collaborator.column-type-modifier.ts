@@ -89,9 +89,8 @@ export class CollaboratorColumnTypeModifier extends BaseColumnTypeModifier<Colla
     throw new Error('Method not implemented.')
   }
   collaborator(): void {
-    throw new Error('Method not implemented.')
+    this.castToCollaborator(this.column)
   }
-
   count(): void {
     this.dropColumn(this.column)
   }

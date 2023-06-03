@@ -60,7 +60,7 @@ export class NumberColumnTypeModifier extends BaseColumnTypeModifier<NumberField
     throw new Error('Method not implemented.')
   }
   collaborator(): void {
-    this.dropColumn(this.column)
+    this.castToCollaborator(this.column)
   }
   count(): void {
     this.dropColumn(this.column)

@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { INTERNAL_COLUMN_ID_NAME, type CountField } from '@undb/core'
+import type { LookupField } from '@undb/core'
+import { INTERNAL_COLUMN_ID_NAME } from '@undb/core'
 import { ReferenceField } from '../../entity/field.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { UnderlyingForeignTableFactory } from '../undelying-foreign-table.factory.js'
 import {
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
-  UnderlyingCountColumn,
   UnderlyingCurrencyColumn,
   UnderlyingDateColumn,
   UnderlyingEmailColumn,
+  UnderlyingLookupColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
@@ -18,24 +19,36 @@ import {
 } from '../underlying-column.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
-export class CountColumnTypeModifier extends BaseColumnTypeModifier<CountField> {
-  private readonly column = new UnderlyingCountColumn(this.field.id.value, this.tableId)
+export class LookupColumnTypeModifier extends BaseColumnTypeModifier<LookupField> {
+  private readonly column = new UnderlyingLookupColumn(this.field.id.value, this.tableId)
 
-  private castCountColumn(column: IUnderlyingColumn) {
+  private castLookupColumn(column: IUnderlyingColumn) {
     this.addQueries(this.knex.schema.alterTable(this.tableId, (tb) => column.build(tb, this.knex, false)).toQuery())
+
     this.addJobs(async () => {
       const referenceFieldId = this.field.referenceFieldId
       const referenceField = await this.em.findOne(ReferenceField, referenceFieldId.value)
       if (!referenceField) return
 
       const field = referenceField.toDomain()
+      const foreignTableId = referenceField.foreignTable?.id ?? this.tableId
 
       const ft = UnderlyingForeignTableFactory.create(this.tableId, field)
 
+      const displayFieldIds = this.field.displayFieldIds.map((f) => f.value)
+
+      const nestQuery = this.knex
+        .queryBuilder()
+        .select(INTERNAL_COLUMN_ID_NAME, ...displayFieldIds)
+        .from(foreignTableId)
+        .as('ft')
+        .groupBy(INTERNAL_COLUMN_ID_NAME)
+
       const subQuery = this.knex
         .queryBuilder()
-        .select(`${ft.fromId} as id`, this.knex.raw(`count(*) as value`))
+        .select(`${ft.fromId} as id`, this.knex.raw(`${displayFieldIds.join(` || ',' ||`)} as value`))
         .from(ft.name)
+        .leftJoin(nestQuery, ft.toId, 'ft.id')
         .groupBy(ft.fromId)
         .toQuery()
 
@@ -52,11 +65,11 @@ export class CountColumnTypeModifier extends BaseColumnTypeModifier<CountField> 
 
   string(): void {
     const newColumn = new UnderlyingStringColumn(this.field.id.value, this.tableId)
-    this.castCountColumn(newColumn)
+    this.castLookupColumn(newColumn)
   }
   number(): void {
     const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
-    this.castCountColumn(newColumn)
+    this.alterColumn(newColumn, this.column)
   }
   color(): void {
     const newColumn = new UnderlyingColorColumn(this.field.id.value, this.tableId)
@@ -76,7 +89,7 @@ export class CountColumnTypeModifier extends BaseColumnTypeModifier<CountField> 
   }
   bool(): void {
     const newColumn = new UnderlyingBoolColumn(this.field.id.value, this.tableId)
-    this.castCountColumn(newColumn)
+    this.castLookupColumn(newColumn)
   }
   reference(): void {
     throw new Error('Method not implemented.')
@@ -86,11 +99,11 @@ export class CountColumnTypeModifier extends BaseColumnTypeModifier<CountField> 
   }
   rating(): void {
     const newColumn = new UnderlyingRatingColumn(this.field.id.value, this.tableId)
-    this.castCountColumn(newColumn)
+    this.alterColumn(newColumn, this.column)
   }
   currency(): void {
     const newColumn = new UnderlyingCurrencyColumn(this.field.id.value, this.tableId)
-    this.castCountColumn(newColumn)
+    this.alterColumn(newColumn, this.column)
   }
   attachment(): void {
     throw new Error('Method not implemented.')
@@ -99,10 +112,10 @@ export class CountColumnTypeModifier extends BaseColumnTypeModifier<CountField> 
     this.castToCollaborator(this.column)
   }
   count(): void {
-    throw new Error('Method not implemented.')
+    this.dropColumn(this.column)
   }
   sum(): void {
-    this.dropColumn(this.column)
+    throw new Error('Method not implemented.')
   }
   average(): void {
     this.dropColumn(this.column)

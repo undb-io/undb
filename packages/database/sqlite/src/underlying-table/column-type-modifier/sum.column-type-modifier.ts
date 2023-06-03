@@ -104,7 +104,9 @@ export class SumColumnTypeModifier extends BaseColumnTypeModifier<SumField> {
   attachment(): void {
     throw new Error('Method not implemented.')
   }
-  collaborator(): void {}
+  collaborator(): void {
+    this.castToCollaborator(this.column)
+  }
   count(): void {
     this.dropColumn(this.column)
   }

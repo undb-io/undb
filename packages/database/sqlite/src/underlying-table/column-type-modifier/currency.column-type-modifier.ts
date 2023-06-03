@@ -73,7 +73,7 @@ export class CurrencyColumnTypeModifier extends BaseColumnTypeModifier<CurrencyF
   }
 
   collaborator(): void {
-    this.dropColumn(this.column)
+    this.castToCollaborator(this.column)
   }
   ['multi-select'](): void {
     const newColumn = new UnderlyingSelectColumn(this.field.id.value, this.tableId)

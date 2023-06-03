@@ -106,7 +106,9 @@ export class AverageColumnTypeModifier extends BaseColumnTypeModifier<AverageFie
   attachment(): void {
     throw new Error('Method not implemented.')
   }
-  collaborator(): void {}
+  collaborator(): void {
+    this.castToCollaborator(this.column)
+  }
   count(): void {
     this.dropColumn(this.column)
   }

@@ -74,7 +74,7 @@ export class DateColumnTypeModifier extends BaseColumnTypeModifier<DateField> {
     this.dropColumn(this.column)
   }
   collaborator(): void {
-    this.dropColumn(this.column)
+    this.castToCollaborator(this.column)
   }
   ['multi-select'](): void {
     const newColumn = new UnderlyingSelectColumn(this.field.id.value, this.tableId)
