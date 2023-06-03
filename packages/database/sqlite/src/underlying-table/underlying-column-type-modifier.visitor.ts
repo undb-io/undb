@@ -40,6 +40,7 @@ import { CountColumnTypeModifier } from './column-type-modifier/count.column-typ
 import { CurrencyColumnTypeModifier } from './column-type-modifier/currency.column-type-modifier.js'
 import { DateColumnTypeModifier } from './column-type-modifier/date.column-type-modifier.js'
 import { EmailColumnTypeModifier } from './column-type-modifier/email.column-type-modifier.js'
+import { LookupColumnTypeModifier } from './column-type-modifier/lookup.column-type-modifier.js'
 import { MultiSelectColumnTypeModifier } from './column-type-modifier/multi-select.column-type-modifier.js'
 import { NumberColumnTypeModifier } from './column-type-modifier/number.column-type-modifier.js'
 import { RatingColumnTypeModifier } from './column-type-modifier/rating.column-type-modifier.js'
@@ -171,7 +172,10 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
     this.unshiftJobs(...modifier.jobs)
   }
   lookup(field: LookupField): void {
-    throw new Error('Method not implemented.')
+    const modifier = new LookupColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   collaborator(field: CollaboratorField): void {
     const modifier = new CollaboratorColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
