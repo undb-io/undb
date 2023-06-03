@@ -95,15 +95,27 @@ export class MultiSelectColumnTypeModifier extends BaseColumnTypeModifier<MultiS
     this.alterColumn(newColumn, this.column)
   }
   attachment(): void {
-    throw new Error('Method not implemented.')
+    this.dropColumn(this.column)
   }
   collaborator(): void {
+    this.castToCollaborator(this.column)
+  }
+  count(): void {
+    this.dropColumn(this.column)
+  }
+  sum(): void {
+    this.dropColumn(this.column)
+  }
+  average(): void {
+    this.dropColumn(this.column)
+  }
+  lookup(): void {
     this.dropColumn(this.column)
   }
   ['multi-select'](): void {
     throw new Error('Method not implemented.')
   }
   ['date-range'](): void {
-    throw new Error('Method not implemented.')
+    this.castToDateRange(this.column)
   }
 }

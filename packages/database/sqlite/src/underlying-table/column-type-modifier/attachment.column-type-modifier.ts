@@ -91,16 +91,28 @@ export class AttachmentColumnTypeModifier extends BaseColumnTypeModifier<Attachm
     this.alterColumn(newColumn, this.column)
   }
   attachment(): void {
-    throw new Error('Method not implemented.')
+    this.dropColumn(this.column)
   }
   collaborator(): void {
-    this.dropColumn(this.column)
+    this.castToCollaborator(this.column)
   }
   ['multi-select'](): void {
     const newColumn = new UnderlyingMultiSelectColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
+  count(): void {
+    this.dropColumn(this.column)
+  }
+  sum(): void {
+    this.dropColumn(this.column)
+  }
+  average(): void {
+    this.dropColumn(this.column)
+  }
+  lookup(): void {
+    this.dropColumn(this.column)
+  }
   ['date-range'](): void {
-    throw new Error('Method not implemented.')
+    this.castToDateRange(this.column)
   }
 }

@@ -6,7 +6,14 @@
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import MutateFieldComponent from './MutateFieldComponent/MutateFieldComponent.svelte'
-	import { canChangeType, canDisplay, changeFieldTypeStrategy, type Field } from '@undb/core'
+	import {
+		canChangeType,
+		canDisplay,
+		changeFieldTypeStrategy,
+		fieldTypeConvertMap,
+		type Field,
+		type IFieldType,
+	} from '@undb/core'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
 	import { z } from 'zod'
@@ -70,6 +77,9 @@
 		.map((f) => f.name.value)
 		.concat($form.display ? $form.name : undefined)
 		.filter(Boolean)
+
+	$: isUpdatingType = field.type !== $form.type
+	$: fieldConvertStrategy = isUpdatingType ? fieldTypeConvertMap?.[field.type]?.[$form.type as IFieldType] : undefined
 </script>
 
 <Modal
@@ -84,16 +94,19 @@
 			<div class="grid grid-cols-2 gap-x-3 gap-y-4">
 				<Label class="flex flex-col gap-2">
 					<div class="flex gap-2 items-center">
-						<FieldIcon size={14} type={$form.type} />
+						<FieldIcon size={14} type={field.type} />
 						<span>{$t('Type', { ns: 'common' })}</span>
 						<span class="text-red-500">*</span>
+						{#if isUpdatingType}
+							<Badge color="yellow">{$t('updatingTypeTip', { type: $t(field.type), newType: $t($form.type) })}</Badge>
+						{/if}
 					</div>
 
 					<FieldTypePicker
-						disabled={!canChangeType($form.type)}
+						disabled={!canChangeType(field.type)}
 						bind:value={$form.type}
 						class="w-full !justify-start"
-						filter={(type) => !!changeFieldTypeStrategy($form.type)(type)}
+						filter={(type) => !!changeFieldTypeStrategy(field.type)(type)}
 					/>
 				</Label>
 
@@ -117,7 +130,7 @@
 				</Label>
 			{/if}
 
-			<MutateFieldComponent type={$form.type} form={superFrm} />
+			<MutateFieldComponent type={$form.type} form={superFrm} {isUpdatingType} {fieldConvertStrategy} />
 		</div>
 	</form>
 

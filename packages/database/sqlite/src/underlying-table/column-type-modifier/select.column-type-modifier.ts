@@ -68,9 +68,18 @@ export class SelectColumnTypeModifier extends BaseColumnTypeModifier<SelectField
     this.alterColumn(newColumn, this.column)
   }
   attachment(): void {
-    throw new Error('Method not implemented.')
+    this.dropColumn(this.column)
   }
   collaborator(): void {
+    this.castToCollaborator(this.column)
+  }
+  sum(): void {
+    this.dropColumn(this.column)
+  }
+  average(): void {
+    this.dropColumn(this.column)
+  }
+  lookup(): void {
     this.dropColumn(this.column)
   }
   ['multi-select'](): void {
@@ -83,7 +92,10 @@ export class SelectColumnTypeModifier extends BaseColumnTypeModifier<SelectField
         .toQuery(),
     )
   }
+  count(): void {
+    this.dropColumn(this.column)
+  }
   ['date-range'](): void {
-    throw new Error('Method not implemented.')
+    this.castToDateRange(this.column)
   }
 }

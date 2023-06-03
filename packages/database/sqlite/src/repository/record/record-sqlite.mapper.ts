@@ -90,7 +90,7 @@ export class RecordSqliteMapper {
   }
 
   static toQueries(tableId: string, schema: TableSchemaIdMap, data: RecordSqlite[]): IQueryRecords {
-    return data.map((d) => RecordSqliteMapper.toQuery(tableId, schema, d))
+    return data.filter(Boolean).map((d) => RecordSqliteMapper.toQuery(tableId, schema, d))
   }
 
   static toDomain(tableId: string, schema: TableSchemaIdMap, data: RecordSqlite): Result<Record, string> {

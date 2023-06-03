@@ -2,7 +2,11 @@ import type { Knex } from '@mikro-orm/better-sqlite'
 import type { Field, ParentField, ReferenceField } from '@undb/core'
 import { INTERNAL_COLUMN_ID_NAME, TreeField } from '@undb/core'
 import { USER_TABLE_NAME } from '../entity/user.js'
-import type { IUderlyingForeignTableName, IUnderlyingForeignTable } from '../interfaces/underlying-foreign-table.js'
+import type {
+  IUderlyingForeignTableName,
+  IUderlyingForeignTableReferenceFieldId,
+  IUnderlyingForeignTable,
+} from '../interfaces/underlying-foreign-table.js'
 
 export type UnderlyingTableForeignTableAlias = `uta_${string}`
 
@@ -12,6 +16,8 @@ abstract class BaseUnderlyingForeignTable<F extends Field> implements IUnderlyin
   constructor(protected readonly tableId: string, protected readonly field: F) {}
 
   abstract get name(): IUderlyingForeignTableName
+  abstract get fromId(): IUderlyingForeignTableReferenceFieldId
+  abstract get toId(): IUderlyingForeignTableReferenceFieldId
   abstract getCreateTableSqls(knex: Knex): string[]
 }
 
@@ -22,6 +28,14 @@ export class CollaboratorForeignTable implements IUnderlyingForeignTable {
 
   get name(): IUderlyingForeignTableName {
     return `${this.fieldId}_collaborator`
+  }
+
+  get fromId(): IUderlyingForeignTableReferenceFieldId {
+    return `${this.name}.${CollaboratorForeignTable.RECORD_ID}`
+  }
+
+  get toId(): IUderlyingForeignTableReferenceFieldId {
+    return `${this.name}.${CollaboratorForeignTable.USER_ID}`
   }
 
   getCreateTableSqls(knex: Knex<any, any[]>): string[] {
@@ -65,6 +79,23 @@ export class AdjacencyListTable extends BaseUnderlyingForeignTable<ReferenceFiel
     return `${symmetricReferenceId}_${this.tableId}_adjacency_list`
   }
 
+  get fromId(): IUderlyingForeignTableReferenceFieldId {
+    const field =
+      !!this.field.symmetricReferenceFieldId && !this.field.isOwner
+        ? AdjacencyListTable.TO_ID
+        : AdjacencyListTable.FROM_ID
+    return `${this.name}.${field}`
+  }
+
+  get toId(): IUderlyingForeignTableReferenceFieldId {
+    const field =
+      !!this.field.symmetricReferenceFieldId && !this.field.isOwner
+        ? AdjacencyListTable.FROM_ID
+        : AdjacencyListTable.TO_ID
+
+    return `${this.name}.${field}`
+  }
+
   getCreateTableSqls(knex: Knex): string[] {
     return [
       knex.schema
@@ -91,6 +122,14 @@ export class ClosureTable extends BaseUnderlyingForeignTable<TreeField | ParentF
   get name(): IUderlyingForeignTableName {
     const fieldId = this.field instanceof TreeField ? this.field.id.value : this.field.treeFieldId.value
     return `${fieldId}_${this.tableId}_closure_table`
+  }
+
+  get fromId(): IUderlyingForeignTableReferenceFieldId {
+    return `${this.name}.${ClosureTable.PARENT_ID}`
+  }
+
+  get toId(): IUderlyingForeignTableReferenceFieldId {
+    return `${this.name}.${ClosureTable.CHILD_ID}`
   }
 
   getCreateTableSqls(knex: Knex): string[] {

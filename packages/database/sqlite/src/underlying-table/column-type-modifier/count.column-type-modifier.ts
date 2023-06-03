@@ -1,9 +1,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { DateField } from '@undb/core'
+import { INTERNAL_COLUMN_ID_NAME, type CountField } from '@undb/core'
+import { ReferenceField } from '../../entity/field.js'
+import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
+import { UnderlyingForeignTableFactory } from '../undelying-foreign-table.factory.js'
 import {
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
+  UnderlyingCountColumn,
   UnderlyingCurrencyColumn,
   UnderlyingDateColumn,
   UnderlyingEmailColumn,
@@ -14,16 +18,45 @@ import {
 } from '../underlying-column.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
-export class DateColumnTypeModifier extends BaseColumnTypeModifier<DateField> {
-  private readonly column = new UnderlyingDateColumn(this.field.id.value, this.tableId)
+export class CountColumnTypeModifier extends BaseColumnTypeModifier<CountField> {
+  private readonly column = new UnderlyingCountColumn(this.field.id.value, this.tableId)
+
+  private castCountColumn(column: IUnderlyingColumn) {
+    this.addQueries(this.knex.schema.alterTable(this.tableId, (tb) => column.build(tb, this.knex, false)).toQuery())
+    this.addJobs(async () => {
+      const referenceFieldId = this.field.referenceFieldId
+      const referenceField = await this.em.findOne(ReferenceField, referenceFieldId.value)
+      if (!referenceField) return
+
+      const field = referenceField.toDomain()
+
+      const ft = UnderlyingForeignTableFactory.create(this.tableId, field)
+
+      const subQuery = this.knex
+        .queryBuilder()
+        .select(`${ft.fromId} as id`, this.knex.raw(`count(*) as value`))
+        .from(ft.name)
+        .groupBy(ft.fromId)
+        .toQuery()
+
+      const query = `
+      UPDATE ${this.tableId}
+      SET ${column.name} = tt.value
+      FROM (${subQuery}) as tt
+      WHERE tt.id = ${this.tableId}.${INTERNAL_COLUMN_ID_NAME}
+      `
+
+      await this.em.execute(query)
+    })
+  }
 
   string(): void {
     const newColumn = new UnderlyingStringColumn(this.field.id.value, this.tableId)
-    this.castTo('text', newColumn, this.column)
+    this.castCountColumn(newColumn)
   }
   number(): void {
     const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
-    this.castTo('int', newColumn, this.column)
+    this.castCountColumn(newColumn)
   }
   color(): void {
     const newColumn = new UnderlyingColorColumn(this.field.id.value, this.tableId)
@@ -34,7 +67,8 @@ export class DateColumnTypeModifier extends BaseColumnTypeModifier<DateField> {
     this.alterColumn(newColumn, this.column)
   }
   date(): void {
-    throw new Error('Method not implemented.')
+    const newColumn = new UnderlyingDateColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
   }
   select(): void {
     const newColumn = new UnderlyingSelectColumn(this.field.id.value, this.tableId)
@@ -42,7 +76,7 @@ export class DateColumnTypeModifier extends BaseColumnTypeModifier<DateField> {
   }
   bool(): void {
     const newColumn = new UnderlyingBoolColumn(this.field.id.value, this.tableId)
-    this.castTo('bool', newColumn, this.column)
+    this.castCountColumn(newColumn)
   }
   reference(): void {
     throw new Error('Method not implemented.')
@@ -52,17 +86,20 @@ export class DateColumnTypeModifier extends BaseColumnTypeModifier<DateField> {
   }
   rating(): void {
     const newColumn = new UnderlyingRatingColumn(this.field.id.value, this.tableId)
-    this.alterColumn(newColumn, this.column)
+    this.castCountColumn(newColumn)
   }
   currency(): void {
     const newColumn = new UnderlyingCurrencyColumn(this.field.id.value, this.tableId)
-    this.alterColumn(newColumn, this.column)
+    this.castCountColumn(newColumn)
   }
   attachment(): void {
     this.dropColumn(this.column)
   }
+  collaborator(): void {
+    this.castToCollaborator(this.column)
+  }
   count(): void {
-    this.dropColumn(this.column)
+    throw new Error('Method not implemented.')
   }
   sum(): void {
     this.dropColumn(this.column)
@@ -73,14 +110,11 @@ export class DateColumnTypeModifier extends BaseColumnTypeModifier<DateField> {
   lookup(): void {
     this.dropColumn(this.column)
   }
-  collaborator(): void {
-    this.castToCollaborator(this.column)
-  }
   ['multi-select'](): void {
     const newColumn = new UnderlyingSelectColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
   ['date-range'](): void {
-    this.castToDateRange(this.column, true)
+    this.castToDateRange(this.column)
   }
 }

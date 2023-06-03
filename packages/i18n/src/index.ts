@@ -264,6 +264,10 @@ export const config: InitOptions = {
         '12 hour': '12 hour',
         '24 hour': '24 hour',
         'duplicate field include values': 'include values',
+        updatingTypeTip: 'updating from {{type}} to {{newType}}',
+        updatingType: {
+          select: 'new options will be generated according to existing values',
+        },
       },
       zod: zodEn,
     },
@@ -530,6 +534,10 @@ export const config: InitOptions = {
         '12 hour': '12 小时制',
         '24 hour': '24 小时制',
         'duplicate field include values': '复制包含值',
+        updatingTypeTip: '从 {{type}} 更新类型到 {{newType}}',
+        updatingType: {
+          select: '根据已有列的值创建新的选项值',
+        },
       },
       zod: zodZh,
     },

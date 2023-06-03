@@ -32,17 +32,22 @@ import type {
 } from '@undb/core'
 import { BaseEntityManager } from '../repository/base-entity-manager.js'
 import { AttachmentColumnTypeModifier } from './column-type-modifier/attachment.column-type-modifier.js'
+import { AverageColumnTypeModifier } from './column-type-modifier/average.column-type-modifier.js'
 import { BoolColumnTypeModifier } from './column-type-modifier/bool.column-type-modifier.js'
 import { CollaboratorColumnTypeModifier } from './column-type-modifier/collaborator.column-type-modifier.js'
 import { ColorColumnTypeModifier } from './column-type-modifier/color.column-type-modifier.js'
+import { CountColumnTypeModifier } from './column-type-modifier/count.column-type-modifier.js'
 import { CurrencyColumnTypeModifier } from './column-type-modifier/currency.column-type-modifier.js'
+import { DateRangeColumnTypeModifier } from './column-type-modifier/date-range.column-type-modifier.js'
 import { DateColumnTypeModifier } from './column-type-modifier/date.column-type-modifier.js'
 import { EmailColumnTypeModifier } from './column-type-modifier/email.column-type-modifier.js'
+import { LookupColumnTypeModifier } from './column-type-modifier/lookup.column-type-modifier.js'
 import { MultiSelectColumnTypeModifier } from './column-type-modifier/multi-select.column-type-modifier.js'
 import { NumberColumnTypeModifier } from './column-type-modifier/number.column-type-modifier.js'
 import { RatingColumnTypeModifier } from './column-type-modifier/rating.column-type-modifier.js'
 import { SelectColumnTypeModifier } from './column-type-modifier/select.column-type-modifier.js'
 import { StringColumnTypeModifier } from './column-type-modifier/string.column-type-modifier.js'
+import { SumColumnTypeModifier } from './column-type-modifier/sum.column-type-modifier.js'
 
 export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implements IFieldVisitor {
   constructor(
@@ -114,7 +119,10 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
     this.unshiftJobs(...modifier.jobs)
   }
   dateRange(field: DateRangeField): void {
-    throw new Error('Method not implemented.')
+    const modifier = new DateRangeColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   select(field: SelectField): void {
     const modifier = new SelectColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
@@ -150,16 +158,28 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
     this.unshiftJobs(...modifier.jobs)
   }
   count(field: CountField): void {
-    throw new Error('Method not implemented.')
+    const modifier = new CountColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   sum(field: SumField): void {
-    throw new Error('Method not implemented.')
+    const modifier = new SumColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   average(field: AverageField): void {
-    throw new Error('Method not implemented.')
+    const modifier = new AverageColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   lookup(field: LookupField): void {
-    throw new Error('Method not implemented.')
+    const modifier = new LookupColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   collaborator(field: CollaboratorField): void {
     const modifier = new CollaboratorColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)

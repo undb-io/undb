@@ -13,7 +13,11 @@ import { Mixin } from 'ts-mixer'
 import { User } from '../../entity/user.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { BaseEntityManager } from '../../repository/base-entity-manager.js'
-import { UnderlyingDateColumn } from '../underlying-column.js'
+import {
+  UnderlyingDateColumn,
+  UnderlyingDateRangeFromColumn,
+  UnderlyingDateRangeToColumn,
+} from '../underlying-column.js'
 import { CollaboratorForeignTable } from '../underlying-foreign-table.js'
 
 export type SqliteCastType = 'text' | 'int' | 'real' | 'bool'
@@ -101,10 +105,6 @@ export abstract class BaseColumnTypeModifier<F extends Field>
   parent(): void {
     throw new Error('Method not implemented.')
   }
-  count(): void {}
-  average(): void {}
-  sum(): void {}
-  lookup(): void {}
 
   protected castToDate(column: IUnderlyingColumn) {
     this.addJobs(async () => {
@@ -148,41 +148,72 @@ export abstract class BaseColumnTypeModifier<F extends Field>
     })
   }
 
-  protected castToCollaborator(column: IUnderlyingColumn, collaboratorField: 'username' | 'email' = 'username') {
+  protected castToCollaborator(column: IUnderlyingColumn, collaboratorField?: 'username' | 'email') {
     const { tableName: userTableName, properties } = this.em.getMetadata().get(User.name)
     const collaboratorTable = new CollaboratorForeignTable(this.tableId, this.field.id.value)
     this.addQueries(...collaboratorTable.getCreateTableSqls(this.knex))
 
-    const { id } = properties
+    if (collaboratorField) {
+      const { id } = properties
 
-    const subQuery = this.knex
-      .queryBuilder()
-      .select([
-        { [CollaboratorForeignTable.RECORD_ID]: `${this.tableId}.${INTERNAL_COLUMN_ID_NAME}` },
-        { [CollaboratorForeignTable.USER_ID]: `${userTableName}.${id.fieldNames[0]}` },
-      ])
-      .from(this.tableId)
-      .whereNotNull(column.name)
-      .innerJoin(
-        userTableName,
-        `${this.tableId}.${column.name}`,
-        `${userTableName}.${properties[collaboratorField].fieldNames[0]}`,
-      )
+      const subQuery = this.knex
+        .queryBuilder()
+        .select([
+          { [CollaboratorForeignTable.RECORD_ID]: `${this.tableId}.${INTERNAL_COLUMN_ID_NAME}` },
+          { [CollaboratorForeignTable.USER_ID]: `${userTableName}.${id.fieldNames[0]}` },
+        ])
+        .from(this.tableId)
+        .whereNotNull(column.name)
+        .innerJoin(
+          userTableName,
+          `${this.tableId}.${column.name}`,
+          `${userTableName}.${properties[collaboratorField].fieldNames[0]}`,
+        )
 
-    const query = this.knex
-      .queryBuilder()
-      .insert(subQuery)
-      .into(
-        this.knex.raw('?? (??, ??)', [
-          collaboratorTable.name,
-          CollaboratorForeignTable.RECORD_ID,
-          CollaboratorForeignTable.USER_ID,
-        ]),
-      )
+      const query = this.knex
+        .queryBuilder()
+        .insert(subQuery)
+        .into(
+          this.knex.raw('?? (??, ??)', [
+            collaboratorTable.name,
+            CollaboratorForeignTable.RECORD_ID,
+            CollaboratorForeignTable.USER_ID,
+          ]),
+        )
+        .toQuery()
+      this.addQueries(query)
+    }
+
+    this.dropColumn(column)
+  }
+
+  protected castToDateRange(column: IUnderlyingColumn, cast = false) {
+    const newFrom = new UnderlyingDateRangeFromColumn(this.field.id.value, this.tableId)
+    const newTo = new UnderlyingDateRangeToColumn(this.field.id.value, this.tableId)
+
+    const newFromQuery = this.knex.schema
+      .alterTable(this.tableId, (tb) => {
+        newFrom.build(tb)
+      })
       .toQuery()
-    this.addQueries(query)
+    this.addQueries(newFromQuery)
 
-    const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${column.name}`
-    this.addQueries(dropColumn)
+    const newToQuery = this.knex.schema
+      .alterTable(this.tableId, (tb) => {
+        newTo.build(tb)
+      })
+      .toQuery()
+    this.addQueries(newToQuery)
+
+    if (cast) {
+      const update = this.knex
+        .queryBuilder()
+        .table(this.tableId)
+        .update(newFrom.name, this.knex.raw(column.name))
+        .toQuery()
+      this.addQueries(update)
+    }
+
+    this.dropColumn(column)
   }
 }

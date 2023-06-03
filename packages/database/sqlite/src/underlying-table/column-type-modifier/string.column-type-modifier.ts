@@ -96,10 +96,13 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
     this.castTo('real', newColumn, this.column)
   }
   attachment(): void {
-    throw new Error('Method not implemented.')
+    this.dropColumn(this.column)
   }
   collaborator(): void {
     this.castToCollaborator(this.column, 'username')
+  }
+  count(): void {
+    this.dropColumn(this.column)
   }
   ['multi-select'](): void {
     this.addJobs(async () => {
@@ -170,7 +173,16 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
       await this.em.execute(alterName)
     })
   }
+  sum(): void {
+    this.dropColumn(this.column)
+  }
+  average(): void {
+    this.dropColumn(this.column)
+  }
+  lookup(): void {
+    this.dropColumn(this.column)
+  }
   ['date-range'](): void {
-    throw new Error('Method not implemented.')
+    this.castToDateRange(this.column)
   }
 }

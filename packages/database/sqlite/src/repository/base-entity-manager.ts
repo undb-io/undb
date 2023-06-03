@@ -30,11 +30,10 @@ export abstract class BaseEntityManager {
   }
 
   public async commit() {
-    await Promise.all(this._jobs.map((job) => job()))
-
     for (const query of this._queries) {
       await this.em.execute(query)
     }
+    await Promise.all(this._jobs.map((job) => job()))
 
     await this.em.flush()
   }
