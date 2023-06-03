@@ -22,6 +22,7 @@ export class SumColumnTypeModifier extends BaseColumnTypeModifier<SumField> {
   private readonly column = new UnderlyingSumColumn(this.field.id.value, this.tableId)
 
   private castSumColumn(column: IUnderlyingColumn) {
+    this.addQueries(this.knex.schema.alterTable(this.tableId, (tb) => column.build(tb, this.knex, false)).toQuery())
     this.addJobs(async () => {
       const referenceFieldId = this.field.referenceFieldId
       const referenceField = await this.em.findOne(ReferenceField, referenceFieldId.value)
@@ -31,9 +32,6 @@ export class SumColumnTypeModifier extends BaseColumnTypeModifier<SumField> {
       const foreignTableId = referenceField.foreignTable?.id ?? this.tableId
 
       const ft = UnderlyingForeignTableFactory.create(this.tableId, field)
-
-      const addColumn = this.knex.schema.alterTable(this.tableId, (tb) => column.build(tb, this.knex, false)).toQuery()
-      await this.em.execute(addColumn)
 
       const nestQuery = this.knex
         .queryBuilder()
