@@ -116,6 +116,6 @@ export class MultiSelectColumnTypeModifier extends BaseColumnTypeModifier<MultiS
     throw new Error('Method not implemented.')
   }
   ['date-range'](): void {
-    throw new Error('Method not implemented.')
+    this.castToDateRange(this.column)
   }
 }

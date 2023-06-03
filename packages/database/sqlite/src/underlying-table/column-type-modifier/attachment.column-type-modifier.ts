@@ -113,6 +113,6 @@ export class AttachmentColumnTypeModifier extends BaseColumnTypeModifier<Attachm
     this.dropColumn(this.column)
   }
   ['date-range'](): void {
-    throw new Error('Method not implemented.')
+    this.castToDateRange(this.column)
   }
 }

@@ -96,6 +96,6 @@ export class SelectColumnTypeModifier extends BaseColumnTypeModifier<SelectField
     this.dropColumn(this.column)
   }
   ['date-range'](): void {
-    throw new Error('Method not implemented.')
+    this.castToDateRange(this.column)
   }
 }

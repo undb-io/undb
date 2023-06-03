@@ -183,6 +183,6 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
     this.dropColumn(this.column)
   }
   ['date-range'](): void {
-    throw new Error('Method not implemented.')
+    this.castToDateRange(this.column)
   }
 }

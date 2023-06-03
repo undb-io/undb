@@ -78,6 +78,6 @@ export class ColorColumnTypeModifier extends BaseColumnTypeModifier<ColorField> 
     this.alterColumn(newColumn, this.column)
   }
   ['date-range'](): void {
-    throw new Error('Method not implemented.')
+    this.castToDateRange(this.column)
   }
 }

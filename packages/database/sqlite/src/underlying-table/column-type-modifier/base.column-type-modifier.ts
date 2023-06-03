@@ -13,7 +13,11 @@ import { Mixin } from 'ts-mixer'
 import { User } from '../../entity/user.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import { BaseEntityManager } from '../../repository/base-entity-manager.js'
-import { UnderlyingDateColumn } from '../underlying-column.js'
+import {
+  UnderlyingDateColumn,
+  UnderlyingDateRangeFromColumn,
+  UnderlyingDateRangeToColumn,
+} from '../underlying-column.js'
 import { CollaboratorForeignTable } from '../underlying-foreign-table.js'
 
 export type SqliteCastType = 'text' | 'int' | 'real' | 'bool'
@@ -178,6 +182,36 @@ export abstract class BaseColumnTypeModifier<F extends Field>
         )
         .toQuery()
       this.addQueries(query)
+    }
+
+    this.dropColumn(column)
+  }
+
+  protected castToDateRange(column: IUnderlyingColumn, cast = false) {
+    const newFrom = new UnderlyingDateRangeFromColumn(this.field.id.value, this.tableId)
+    const newTo = new UnderlyingDateRangeToColumn(this.field.id.value, this.tableId)
+
+    const newFromQuery = this.knex.schema
+      .alterTable(this.tableId, (tb) => {
+        newFrom.build(tb)
+      })
+      .toQuery()
+    this.addQueries(newFromQuery)
+
+    const newToQuery = this.knex.schema
+      .alterTable(this.tableId, (tb) => {
+        newTo.build(tb)
+      })
+      .toQuery()
+    this.addQueries(newToQuery)
+
+    if (cast) {
+      const update = this.knex
+        .queryBuilder()
+        .table(this.tableId)
+        .update(newFrom.name, this.knex.raw(column.name))
+        .toQuery()
+      this.addQueries(update)
     }
 
     this.dropColumn(column)
