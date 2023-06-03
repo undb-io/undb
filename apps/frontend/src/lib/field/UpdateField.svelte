@@ -90,10 +90,10 @@
 					</div>
 
 					<FieldTypePicker
-						disabled={!canChangeType($form.type)}
+						disabled={!canChangeType(field.type)}
 						bind:value={$form.type}
 						class="w-full !justify-start"
-						filter={(type) => !!changeFieldTypeStrategy($form.type)(type)}
+						filter={(type) => !!changeFieldTypeStrategy(field.type)(type)}
 					/>
 				</Label>
 
