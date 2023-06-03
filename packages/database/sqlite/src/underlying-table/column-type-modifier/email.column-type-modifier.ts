@@ -55,7 +55,7 @@ export class EmailColumnTypeModifier extends BaseColumnTypeModifier<EmailField> 
     this.alterColumn(newColumn, this.column)
   }
   attachment(): void {
-    throw new Error('Method not implemented.')
+    this.dropColumn(this.column)
   }
   collaborator(): void {
     this.castToCollaborator(this.column, 'email')

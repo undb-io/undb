@@ -57,7 +57,7 @@ export class CurrencyColumnTypeModifier extends BaseColumnTypeModifier<CurrencyF
     throw new Error('Method not implemented.')
   }
   attachment(): void {
-    throw new Error('Method not implemented.')
+    this.dropColumn(this.column)
   }
   count(): void {
     this.dropColumn(this.column)

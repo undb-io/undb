@@ -35,6 +35,9 @@ type TemplateFunc = RevoGrid.CellTemplateFunc<VNode>
 type HyperFunc = RevoGrid.HyperFunc<VNode>
 
 const string: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'string') return
+
 	const html = htm.bind(h)
 	const value = props.model[props.prop] as string | undefined
 	if (!value) return null
@@ -42,12 +45,18 @@ const string: TemplateFunc = (h, props) => {
 }
 
 const email: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'email') return
+
 	const value = props.model[props.prop] as string | undefined
 	if (!value) return null
 	return h('span', { class: 'text-sm' }, value.toString() ?? '')
 }
 
 const id: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'id') return
+
 	const id = props.model.id as string
 	return h(
 		'span',
@@ -99,6 +108,9 @@ const updatedAt: TemplateFunc = (h, props) => {
 }
 
 const date: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'date') return
+
 	const value = props.model[props.prop] as string | undefined
 	if (!value) return null
 	const field = props.column.field as DateField
@@ -148,11 +160,17 @@ const n = (h: HyperFunc, n?: number | null) => {
 }
 
 const number: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'number') return
+
 	const number = props.model[props.prop] as number | undefined
 	return n(h, number)
 }
 
 const currency: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'currency') return
+
 	const html = htm.bind(h)
 	const number = props.model[props.prop] as number | undefined
 	if (!isNumber(number)) return null
@@ -166,16 +184,25 @@ const currency: TemplateFunc = (h, props) => {
 }
 
 const average: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'average') return
+
 	const average = props.model[props.prop] as number | undefined
 	return n(h, average)
 }
 
 const sum: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'sum') return
+
 	const sum = props.model[props.prop] as number | undefined
 	return n(h, sum)
 }
 
 const rating: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'rating') return
+
 	const rating = props.model[props.prop] as number | undefined
 
 	const field = props.column.field as RatingField
@@ -197,6 +224,8 @@ const rating: TemplateFunc = (h, props) => {
 }
 
 const autoIncreament: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'auto-increment') return
 	const value = props.model.auto_increment as number | undefined
 
 	if (!value) return
@@ -205,6 +234,9 @@ const autoIncreament: TemplateFunc = (h, props) => {
 }
 
 const bool: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'bool') return
+
 	const value = props.model[props.prop] as boolean | undefined
 
 	return h('input', {
@@ -217,6 +249,9 @@ const bool: TemplateFunc = (h, props) => {
 }
 
 const collaborator: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'collaborator') return
+
 	const html = htm.bind(h)
 	const collaborator = props.model[props.prop] as string[] | undefined
 	if (!collaborator) return null
@@ -235,6 +270,9 @@ const collaborator: TemplateFunc = (h, props) => {
 }
 
 const color: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'color') return
+
 	const color = props.model[props.prop] as string | undefined
 	if (!color) return null
 
@@ -245,6 +283,9 @@ const color: TemplateFunc = (h, props) => {
 }
 
 const count: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'count') return
+
 	const count = props.model[props.prop] as number | undefined
 	if (!count) return null
 
@@ -263,6 +304,9 @@ const referenceComponent = (h: HyperFunc, value: (string | null)[] = []) => {
 }
 
 const reference: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'reference' && type !== 'tree') return
+
 	const unpacked = props.model[props.prop] as string[] | undefined
 	if (!unpacked?.length) return null
 	const displayValues = props.model.display_values
@@ -296,6 +340,9 @@ const optionComponent = (h: HyperFunc, { color, name }: IOptionSchema) => {
 }
 
 const select: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'select') return
+
 	const field = props.column.field as SelectField
 	const value = props.model[props.prop] as string | undefined
 	const option = value ? field.options.getById(value).into() : undefined
@@ -305,6 +352,9 @@ const select: TemplateFunc = (h, props) => {
 }
 
 const multiSelect: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'multi-select') return
+
 	const html = htm.bind(h)
 	const field = props.column.field as MultiSelectField
 	const value = props.model[props.prop] as string[] | undefined
@@ -319,6 +369,9 @@ const multiSelect: TemplateFunc = (h, props) => {
 }
 
 const parent: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'parent') return
+
 	const unpacked = props.model[props.prop] as string | undefined
 	if (!unpacked) return null
 	const field = props.column.field as ParentField
@@ -335,6 +388,9 @@ const parent: TemplateFunc = (h, props) => {
 }
 
 const lookup: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'lookup') return
+
 	const html = htm.bind(h)
 	const field = props.column.field as LookupField
 
@@ -355,10 +411,14 @@ const attachmentItem = (h: HyperFunc, attachment: IAttachmentItem) => {
 }
 
 const attachment: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'attachment') return null
+
 	const value = props.model[props.prop] as IAttachmentItem[] | undefined
 	if (!value) return null
 
 	const attachments = value
+	if (!isArray(attachments)) return null
 
 	return h(
 		'div',

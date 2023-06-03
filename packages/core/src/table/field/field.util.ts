@@ -88,6 +88,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     rating: 'cast',
     currency: 'cast',
     collaborator: 'match',
+    attachment: 'clear',
     count: 'ignore',
     average: 'ignore',
     sum: 'ignore',
@@ -95,6 +96,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   },
   number: {
     string: 'cast',
+    attachment: 'clear',
     color: 'clear',
     email: 'clear',
     select: 'clear',
@@ -110,6 +112,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   },
   currency: {
     string: 'cast',
+    attachment: 'clear',
     color: 'clear',
     email: 'clear',
     select: 'clear',
@@ -125,6 +128,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   },
   rating: {
     string: 'cast',
+    attachment: 'clear',
     color: 'clear',
     email: 'clear',
     select: 'clear',
@@ -140,6 +144,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   },
   color: {
     string: 'cast',
+    attachment: 'clear',
     email: 'clear',
     date: 'clear',
     number: 'clear',
@@ -156,6 +161,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   },
   email: {
     string: 'cast',
+    attachment: 'clear',
     color: 'clear',
     date: 'clear',
     number: 'clear',
@@ -172,6 +178,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   },
   bool: {
     string: 'clear',
+    attachment: 'clear',
     color: 'clear',
     date: 'clear',
     number: 'cast',
@@ -188,6 +195,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   },
   attachment: {
     string: 'cast',
+    attachment: 'clear',
     color: 'clear',
     date: 'clear',
     number: 'clear',
@@ -205,6 +213,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   },
   date: {
     string: 'clear',
+    attachment: 'clear',
     email: 'clear',
     date: 'clear',
     number: 'clear',
@@ -221,6 +230,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   },
   'multi-select': {
     string: 'cast',
+    attachment: 'clear',
     email: 'clear',
     color: 'clear',
     date: 'clear',
@@ -237,6 +247,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   },
   select: {
     string: 'cast',
+    attachment: 'clear',
     email: 'clear',
     color: 'clear',
     date: 'clear',
@@ -253,6 +264,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   },
   collaborator: {
     string: 'cast',
+    attachment: 'clear',
     email: 'clear',
     color: 'clear',
     date: 'clear',
@@ -269,6 +281,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   },
   count: {
     string: 'cast',
+    attachment: 'clear',
     email: 'clear',
     color: 'clear',
     date: 'clear',
@@ -285,6 +298,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   },
   sum: {
     string: 'cast',
+    attachment: 'clear',
     email: 'clear',
     color: 'clear',
     date: 'clear',
@@ -301,6 +315,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   },
   average: {
     string: 'cast',
+    attachment: 'clear',
     email: 'clear',
     color: 'clear',
     date: 'clear',
@@ -317,6 +332,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   },
   lookup: {
     string: 'cast',
+    attachment: 'clear',
     email: 'clear',
     color: 'clear',
     date: 'clear',
