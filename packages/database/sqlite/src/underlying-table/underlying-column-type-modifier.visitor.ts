@@ -38,6 +38,7 @@ import { CollaboratorColumnTypeModifier } from './column-type-modifier/collabora
 import { ColorColumnTypeModifier } from './column-type-modifier/color.column-type-modifier.js'
 import { CountColumnTypeModifier } from './column-type-modifier/count.column-type-modifier.js'
 import { CurrencyColumnTypeModifier } from './column-type-modifier/currency.column-type-modifier.js'
+import { DateRangeColumnTypeModifier } from './column-type-modifier/date-range.column-type-modifier.js'
 import { DateColumnTypeModifier } from './column-type-modifier/date.column-type-modifier.js'
 import { EmailColumnTypeModifier } from './column-type-modifier/email.column-type-modifier.js'
 import { LookupColumnTypeModifier } from './column-type-modifier/lookup.column-type-modifier.js'
@@ -118,7 +119,10 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
     this.unshiftJobs(...modifier.jobs)
   }
   dateRange(field: DateRangeField): void {
-    throw new Error('Method not implemented.')
+    const modifier = new DateRangeColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   select(field: SelectField): void {
     const modifier = new SelectColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)

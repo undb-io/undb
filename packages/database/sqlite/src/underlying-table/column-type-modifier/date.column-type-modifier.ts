@@ -23,7 +23,7 @@ export class DateColumnTypeModifier extends BaseColumnTypeModifier<DateField> {
   }
   number(): void {
     const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
-    this.alterColumn(newColumn, this.column)
+    this.castTo('int', newColumn, this.column)
   }
   color(): void {
     const newColumn = new UnderlyingColorColumn(this.field.id.value, this.tableId)
