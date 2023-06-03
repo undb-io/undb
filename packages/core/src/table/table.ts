@@ -15,7 +15,7 @@ import { FieldId, SelectField, WithDuplicatedField } from './field/index.js'
 import { UpdateFieldHelper } from './field/update-field.helper.js'
 import type { IRootFilter } from './filter/index.js'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from './option/index.js'
-import type { Record } from './record/index.js'
+import type { Record, Records } from './record/index.js'
 import { WithRecordTableId } from './record/index.js'
 import { RecordFactory } from './record/record.factory.js'
 import type { IMutateRecordValueSchema } from './record/record.schema.js'
@@ -277,6 +277,10 @@ export class Table {
     const inputs = createRecordInputs(this.schema, value)
     const spec = new WithRecordTableId(this.id).and(WithRecordValues.fromArray(inputs))
     return RecordFactory.create(spec).unwrap()
+  }
+
+  public createRecords(values: IMutateRecordValueSchema[]): Records {
+    return values.map((value) => this.createRecord(value))
   }
 
   public createField(viewId: string | undefined, input: ICreateFieldSchema, at?: number): TableCompositeSpecificaiton {
