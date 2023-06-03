@@ -14,6 +14,10 @@ Private first, unified, self-hosted no code database.
 
 ![undb](./docs/undb.png)
 
+<p>
+  <a href="https://discord.gg/3rcNdU3y3U"><img alt="Discord" src="https://img.shields.io/badge/discord-chat-5865f2?logo=discord&logoColor=f5f5f5" /></a>
+</p>
+
 ## Features
 
 - :closed_lock_with_key: Private first
