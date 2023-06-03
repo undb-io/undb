@@ -1,4 +1,4 @@
-import { IMutateRecordValueSchema } from '@undb/core'
+import type { IMutateRecordValueSchema } from '@undb/core'
 import type { CommandProps } from '@undb/domain'
 import { Command } from '@undb/domain'
 import type { ICreateRecordInput } from './create-record.command.input.js'
