@@ -1,17 +1,12 @@
-import { andOptions } from '@undb/domain'
-import type { Option } from 'oxide.ts'
+import { format } from 'date-fns'
 import { z } from 'zod'
 import type { IDateFilter } from '../filter/date.filter.js'
 import type { IDateFilterOperator } from '../filter/index.js'
 import { dateBuiltInOperators } from '../filter/operators.js'
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import type { IRecordDisplayValues } from '../record/index.js'
+import type { RecordValueJSON } from '../record/record.schema.js'
 import { DateFieldValue } from './date-field-value.js'
-import type {
-  DateType,
-  ICreateDateFieldSchema,
-  IDateFieldQueryValue,
-  IUpdateDateFieldInput,
-} from './date-field.type.js'
+import type { DateType, ICreateDateFieldSchema, IDateFieldQueryValue } from './date-field.type.js'
 import { AbstractDateField } from './field.base.js'
 import type { IDateField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
@@ -29,6 +24,11 @@ export class DateField extends AbstractDateField<IDateField> {
     })
   }
   type: DateType = 'date'
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    const value = valueJson[this.id.value]
+    return value ? format(new Date(value), this.formatString) : null
+  }
 
   override get json() {
     return {
@@ -56,10 +56,6 @@ export class DateField extends AbstractDateField<IDateField> {
       timeFormat: input.timeFormat ? TimeFormat.from(input.timeFormat) : undefined,
       format: input.format ? DateFormat.fromString(input.format) : undefined,
     })
-  }
-
-  public override update(input: IUpdateDateFieldInput): Option<TableCompositeSpecificaiton> {
-    return andOptions(this.updateBase(input), this.updateFormat(input.format), this.updateTimeFormat(input.timeFormat))
   }
 
   createValue(value: IDateFieldQueryValue): DateFieldValue {

@@ -53,6 +53,9 @@ importers:
       '@aws-sdk/client-s3':
         specifier: ^3.338.0
         version: 3.338.0
+      '@json2csv/plainjs':
+        specifier: ^7.0.0
+        version: 7.0.0
       '@mikro-orm/better-sqlite':
         specifier: ^5.7.10
         version: 5.7.10(@mikro-orm/core@5.7.10)(@mikro-orm/migrations@5.7.10)
@@ -270,6 +273,9 @@ importers:
       tsconfig-paths:
         specifier: ^4.2.0
         version: 4.2.0
+      type-fest:
+        specifier: ^3.11.0
+        version: 3.11.0
       typescript:
         specifier: ^5.0.4
         version: 5.0.4
@@ -2921,6 +2927,18 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
+  /@json2csv/formatters@7.0.0:
+    resolution: {integrity: sha512-N+SL3f3LsxvMoJ9TT7VpgXHNEPNxTvbfg4GC82pli+e5ED3eSDLVCALiln8KG/Kd6uoTrZ+KQtKIN8RE3jDT6g==}
+    dev: false
+
+  /@json2csv/plainjs@7.0.0:
+    resolution: {integrity: sha512-sdEu/wOJYJEghMYvJd9Upk6SpHmm8HvTQCUdx6rAX/HPOnwk0YIO4jIFrvcg5/OXKUa1k52xjVIGtKYa2q3yTg==}
+    dependencies:
+      '@json2csv/formatters': 7.0.0
+      '@streamparser/json': 0.0.14
+      lodash.get: 4.4.2
+    dev: false
+
   /@kurkle/color@0.3.2:
     resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
     dev: true
@@ -3729,6 +3747,10 @@ packages:
     engines: {node: '>=12.10.0', npm: '>=6.0.0'}
     hasBin: true
     dev: true
+
+  /@streamparser/json@0.0.14:
+    resolution: {integrity: sha512-OcRhmrwe/w7oEZ0atphoa7q1ZFZ7xDC6guReIpvbOfTAlD4XnJFyPgBncyWPBeMlPhVVvLqb+m2XPAcKObBgKA==}
+    dev: false
 
   /@sveltejs/adapter-auto@2.1.0(@sveltejs/kit@1.18.0):
     resolution: {integrity: sha512-o2pZCfATFtA/Gw/BB0Xm7k4EYaekXxaPGER3xGSY3FvzFJGTlJlZjBseaXwYSM94lZ0HniOjTokN3cWaLX6fow==}
@@ -8858,6 +8880,10 @@ packages:
   /lodash.camelcase@4.3.0:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
     dev: true
+
+  /lodash.get@4.4.2:
+    resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
+    dev: false
 
   /lodash.isfunction@3.0.9:
     resolution: {integrity: sha512-AirXNj15uRIMMPihnkInB4i3NHeb4iBtNg9WRWuK2o31S+ePwwNmDPaTL3o7dTJ+VXNZim7rFs4rxN4YU1oUJw==}

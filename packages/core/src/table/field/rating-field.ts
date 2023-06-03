@@ -1,20 +1,12 @@
-import { andOptions } from '@undb/domain'
-import { isNumber } from 'lodash-es'
-import { None, Some, type Option } from 'oxide.ts'
 import { z } from 'zod'
 import type { IRatingFilter, IRatingFilterOperator } from '../filter/rating.filter.js'
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import type { RecordValueJSON } from '../record/record.schema.js'
+import type { IRecordDisplayValues } from '../record/record.type.js'
 import { BaseField } from './field.base.js'
 import type { IRatingField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { RatingFieldValue } from './rating-field-value.js'
-import type {
-  ICreateRatingFieldInput,
-  ICreateRatingFieldValue,
-  IUpdateRatingFieldInput,
-  RatingFieldType,
-} from './rating-field.type.js'
-import { WithRatingMax } from './specifications/rating-field.specification.js'
+import type { ICreateRatingFieldInput, ICreateRatingFieldValue, RatingFieldType } from './rating-field.type.js'
 import { FieldId } from './value-objects/field-id.vo.js'
 
 export class RatingField extends BaseField<IRatingField> {
@@ -56,24 +48,16 @@ export class RatingField extends BaseField<IRatingField> {
     return new RatingField({ ...super.unsafeCreateBase(input), max: input.max })
   }
 
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): number | null {
+    return valueJson[this.id.value]
+  }
+
   createValue(value: ICreateRatingFieldValue): RatingFieldValue {
     return new RatingFieldValue(value)
   }
 
   createFilter(operator: IRatingFilterOperator, value: number | null): IRatingFilter {
     return { operator, value, path: this.id.value, type: 'rating' }
-  }
-
-  private updateMax(input: IUpdateRatingFieldInput): Option<TableCompositeSpecificaiton> {
-    if (isNumber(input.max)) {
-      return Some(new WithRatingMax(this, input.max))
-    }
-
-    return None
-  }
-
-  public update(input: IUpdateRatingFieldInput): Option<TableCompositeSpecificaiton> {
-    return andOptions(super.updateBase(input), this.updateMax(input))
   }
 
   accept(visitor: IFieldVisitor): void {

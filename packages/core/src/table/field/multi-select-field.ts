@@ -1,10 +1,10 @@
-import { andOptions } from '@undb/domain'
-import type { Option } from 'oxide.ts'
+import { isArray } from 'lodash-es'
 import { z } from 'zod'
 import type { IMultiSelectFilter, IMultiSelectFilterValue } from '../filter/multi-select.filter.js'
 import type { IMultiSelectFilterOperator } from '../filter/operators.js'
+import type { Option } from '../option/option.js'
 import { Options } from '../option/options.js'
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import type { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
 import { AbstractSelectField } from './field.base.js'
 import type { IMultiSelectField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
@@ -12,7 +12,6 @@ import { MultiSelectFieldValue } from './multi-select-field-value.js'
 import type {
   ICreateMultiSelectFieldSchema,
   ICreateMultiSelectFieldValue,
-  IUpdateMultiSelectFieldInput,
   MultiSelectFieldType,
 } from './multi-select-field.type.js'
 import { FieldId } from './value-objects/field-id.vo.js'
@@ -51,8 +50,12 @@ export class MultiSelectField extends AbstractSelectField<IMultiSelectField> {
     })
   }
 
-  public override update(input: IUpdateMultiSelectFieldInput): Option<TableCompositeSpecificaiton> {
-    return andOptions(this.updateBase(input), super.updateOptions(input.options ?? []))
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | number | null {
+    const optionIds: string[] = valueJson[this.id.value] ?? []
+    return optionIds
+      .map((optionId) => this.options.getById(optionId).into()?.name.value)
+      .filter(Boolean)
+      .toString()
   }
 
   createFilter(operator: IMultiSelectFilterOperator, value: IMultiSelectFilterValue): IMultiSelectFilter {
@@ -63,8 +66,9 @@ export class MultiSelectField extends AbstractSelectField<IMultiSelectField> {
     if (value === null) {
       return new MultiSelectFieldValue(null)
     }
+    if (!isArray(value)) return new MultiSelectFieldValue(null)
 
-    const options = value.map((optionId) => this.options.getById(optionId).unwrap())
+    const options = value.map((optionId) => this.options.getById(optionId).into(null)).filter(Boolean) as Option[]
 
     return MultiSelectFieldValue.fromOptions(options)
   }

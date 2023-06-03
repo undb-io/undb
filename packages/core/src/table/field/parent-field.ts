@@ -1,15 +1,15 @@
-import { andOptions } from '@undb/domain'
 import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
 import type { IParentFilterOperator } from '../filter/operators.js'
 import type { IParentFilter } from '../filter/parent.filter.js'
+import type { RecordValueJSON } from '../record/record.schema.js'
+import type { IRecordDisplayValues } from '../record/record.type.js'
 import { AbstractLookingField, AbstractReferenceField } from './field.base.js'
 import { FieldCannotBeDuplicated } from './field.errors.js'
 import type { IParentField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { ParentFieldValue } from './parent-field-value.js'
 import type { ICreateParentFieldInput, ICreateParentFieldValue, ParentFieldType } from './parent-field.type.js'
-import type { IUpdateReferenceFieldInput } from './reference-field.type.js'
 import { DisplayFields, FieldId } from './value-objects/index.js'
 
 export class ParentField extends Mixin(AbstractReferenceField<IParentField>, AbstractLookingField<IParentField>) {
@@ -43,6 +43,10 @@ export class ParentField extends Mixin(AbstractReferenceField<IParentField>, Abs
     })
   }
 
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    return this.getDisplayValues(displayValues)?.toString() ?? null
+  }
+
   static unsafeCreate(input: ICreateParentFieldInput): ParentField {
     return new ParentField({
       ...super.unsafeCreateBase(input),
@@ -51,10 +55,6 @@ export class ParentField extends Mixin(AbstractReferenceField<IParentField>, Abs
         ? new DisplayFields(input.displayFieldIds.map((id) => FieldId.fromString(id)))
         : undefined,
     })
-  }
-
-  public override update(input: IUpdateReferenceFieldInput) {
-    return andOptions(this.updateBase(input), this.updateDisplayFieldIds(input.displayFieldIds))
   }
 
   createValue(value: ICreateParentFieldValue): ParentFieldValue {

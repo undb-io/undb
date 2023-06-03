@@ -282,7 +282,7 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
     this.em.persist(field)
 
-    const ft = new CollaboratorForeignTable(this.table.id, value)
+    const ft = new CollaboratorForeignTable(this.table.id, value.id.value)
     const queries = ft.getCreateTableSqls(this.em.getKnex())
 
     this.addQueries(...queries)

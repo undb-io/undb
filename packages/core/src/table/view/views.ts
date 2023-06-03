@@ -1,6 +1,6 @@
 import { andOptions, ValueObject } from '@undb/domain'
 import { Option } from 'oxide.ts'
-import type { Field } from '../field/index.js'
+import type { FieldId } from '../field/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import type { WithTableView } from './specifications/views.specification.js'
 import { WithNewView, WithoutView } from './specifications/views.specification.js'
@@ -49,8 +49,8 @@ export class Views extends ValueObject<ViewVO[]> {
     return new WithoutView(view)
   }
 
-  removeField(field: Field): Option<TableCompositeSpecificaiton> {
-    const specs = this.views.map((view) => view.removeField(field))
+  removeField(id: FieldId): Option<TableCompositeSpecificaiton> {
+    const specs = this.views.map((view) => view.removeField(id))
     return andOptions(...specs)
   }
 

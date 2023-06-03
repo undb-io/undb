@@ -1,5 +1,7 @@
 import { z } from 'zod'
 import type { IColorFilter, IColorFilterOperator } from '../filter/color.filter.js'
+import type { RecordValueJSON } from '../record/record.schema.js'
+import type { IRecordDisplayValues } from '../record/record.type.js'
 import { ColorFieldValue } from './color-field-value.js'
 import type { ColorFieldType, ICreateColorFieldInput, ICreateColorFieldValue } from './color-field.type.js'
 import { BaseField } from './field.base.js'
@@ -28,6 +30,10 @@ export class ColorField extends BaseField<IColorField> {
 
   static unsafeCreate(input: ICreateColorFieldInput): ColorField {
     return new ColorField(super.unsafeCreateBase(input))
+  }
+
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    return valueJson[this.id.value] ?? null
   }
 
   createValue(value: ICreateColorFieldValue): ColorFieldValue {

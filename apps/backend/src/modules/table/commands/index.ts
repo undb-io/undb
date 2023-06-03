@@ -15,6 +15,7 @@ import { DeleteWidgeCommandHandler } from './delete-widge.command.handler.js'
 import { DuplicateFieldCommandHandler } from './duplicate-field.command.handler.js'
 import { DuplicateRecordCommandHandler } from './duplicate-record.command.handler.js'
 import { DuplicateViewCommandHandler } from './duplicate-view.command.handler.js'
+import { ExportGridCommandHandler } from './export-grid.command.handler.js'
 import { MoveFieldCommandHandler } from './move-field.command.handler.js'
 import { MoveViewCommandHandler } from './move-view.command.handler.js'
 import { RelayoutWidgesCommandHandler } from './relayout-widges.command.handler.js'
@@ -80,4 +81,5 @@ export const commandHandlers = [
   UpdateVirsualizationCommandHandler,
   DeleteWidgeCommandHandler,
   DuplicateFieldCommandHandler,
+  ExportGridCommandHandler,
 ]

@@ -1,7 +1,9 @@
 import { DateVO } from '@undb/domain'
+import type { JsonObject } from 'type-fest'
 import type { ICollaboratorProfile } from '../field/collaborator-field.type.js'
 import type { Table } from '../table.js'
 import type { TableId, TableSchema, TableSchemaIdMap } from '../value-objects/index.js'
+import { IRecordDisplayValues } from './index.js'
 import { RecordFactory } from './record.factory.js'
 import type {
   IInternalRecordValues,
@@ -57,6 +59,19 @@ export class Record {
 
   get valuesJSON(): RecordAllJSON {
     return Object.assign({}, this.internalValuesJSON, this.values.valuesJSON)
+  }
+
+  public toHuman(table: Table, viewId: string, displayValues?: IRecordDisplayValues): JsonObject {
+    const data: JsonObject = {}
+
+    const valueJSON = this.valuesJSON
+
+    const view = table.mustGetView(viewId)
+    for (const field of table.getOrderedFields(view, false)) {
+      data[field.name.value] = field.getDisplayValue(valueJSON, displayValues)
+    }
+
+    return data
   }
 
   updateRecord(schema: TableSchema, value: IMutateRecordValueSchema): RecordCompositeSpecification {

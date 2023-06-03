@@ -5,10 +5,14 @@ import type { Option, OptionKey } from '../../option/index.js'
 import { Options } from '../../option/index.js'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
-import type { IAbstractSelectField } from '../field.type.js'
+import type { IAbstractSelectField, ISelectFieldType } from '../field.type.js'
 
 export class WithOptions extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly field: IAbstractSelectField, public readonly options: Options) {
+  constructor(
+    public readonly type: ISelectFieldType,
+    public readonly fieldId: string,
+    public readonly options: Options,
+  ) {
     super()
   }
 
@@ -17,7 +21,8 @@ export class WithOptions extends CompositeSpecification<Table, ITableSpecVisitor
   }
 
   mutate(t: Table): Result<Table, string> {
-    this.field.options = this.options
+    const field = t.schema.getFieldById(this.fieldId).unwrap() as IAbstractSelectField
+    field.options = this.options
     return Ok(t)
   }
 
@@ -28,7 +33,7 @@ export class WithOptions extends CompositeSpecification<Table, ITableSpecVisitor
 }
 
 export class WithOption extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly field: IAbstractSelectField, public readonly option: Option) {
+  constructor(public readonly type: ISelectFieldType, public readonly fieldId: string, public readonly option: Option) {
     super()
   }
 
@@ -37,9 +42,8 @@ export class WithOption extends CompositeSpecification<Table, ITableSpecVisitor>
   }
 
   mutate(t: Table): Result<Table, string> {
-    this.field.options = new Options(
-      this.field.options.options.map((o) => (o.key.equals(this.option.key) ? this.option : o)),
-    )
+    const field = t.schema.getFieldById(this.fieldId).unwrap() as IAbstractSelectField
+    field.options = new Options(field.options.options.map((o) => (o.key.equals(this.option.key) ? this.option : o)))
     return Ok(t)
   }
 
@@ -49,7 +53,7 @@ export class WithOption extends CompositeSpecification<Table, ITableSpecVisitor>
   }
 }
 export class WithNewOption extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly field: IAbstractSelectField, public readonly option: Option) {
+  constructor(public readonly type: ISelectFieldType, public readonly fieldId: string, public readonly option: Option) {
     super()
   }
 
@@ -58,7 +62,8 @@ export class WithNewOption extends CompositeSpecification<Table, ITableSpecVisit
   }
 
   mutate(t: Table): Result<Table, string> {
-    this.field.options = new Options([...this.field.options.options, this.option])
+    const field = t.schema.getFieldById(this.fieldId).unwrap() as IAbstractSelectField
+    field.options = new Options([...field.options.options, this.option])
     return Ok(t)
   }
 
@@ -69,7 +74,11 @@ export class WithNewOption extends CompositeSpecification<Table, ITableSpecVisit
 }
 
 export class WithoutOption extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly field: IAbstractSelectField, public readonly optionKey: OptionKey) {
+  constructor(
+    public readonly type: ISelectFieldType,
+    public readonly fieldId: string,
+    public readonly optionKey: OptionKey,
+  ) {
     super()
   }
 
@@ -78,7 +87,8 @@ export class WithoutOption extends CompositeSpecification<Table, ITableSpecVisit
   }
 
   mutate(t: Table): Result<Table, string> {
-    this.field.options = this.field.options.remove(this.optionKey)
+    const field = t.schema.getFieldById(this.fieldId).unwrap() as IAbstractSelectField
+    field.options = field.options.remove(this.optionKey)
     return Ok(t)
   }
 

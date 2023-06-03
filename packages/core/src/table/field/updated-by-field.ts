@@ -1,17 +1,17 @@
-import type { Option } from 'oxide.ts'
 import type { ZodTypeAny } from 'zod'
 import { z } from 'zod'
 import type { IUpdatedByFilterOperator } from '../filter/operators.js'
 import type { IUpdatedByFilter } from '../filter/updated-by.filter.js'
-import type { TableCompositeSpecificaiton } from '../specifications/index.js'
+import type { IRecordDisplayValues } from '../record/index.js'
+import type { RecordValueJSON } from '../record/record.schema.js'
 import { BaseField } from './field.base.js'
+import { INTERNAL_COLUMN_UPDATED_BY_PROFILE_NAME } from './field.constants.js'
 import { FieldCannotBeDuplicated } from './field.errors.js'
 import type { IUpdatedByField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { UpdatedByFieldValue } from './updated-by-field-value.js'
 import type {
   ICreateUpdatedByFieldInput,
-  IUpdateUpdatedByFieldInput,
   IUpdatedByFieldQueryValue,
   UpdatedByFieldType,
 } from './updated-by-field.type.js'
@@ -46,8 +46,9 @@ export class UpdatedByField extends BaseField<IUpdatedByField> {
     })
   }
 
-  public override update(input: IUpdateUpdatedByFieldInput): Option<TableCompositeSpecificaiton> {
-    return this.updateBase(input)
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    const profile = valueJson[INTERNAL_COLUMN_UPDATED_BY_PROFILE_NAME]
+    return profile?.username ?? null
   }
 
   createValue(value: IUpdatedByFieldQueryValue): UpdatedByFieldValue {

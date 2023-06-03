@@ -16,7 +16,7 @@
 			fieldId: field.id.value,
 		},
 		{
-			queryHash: $recordHash,
+			queryHash: $recordHash + 'tree',
 		},
 	)
 

@@ -1,8 +1,8 @@
-import { andOptions } from '@undb/domain'
 import { isString } from 'lodash-es'
 import { None, Some, type Option } from 'oxide.ts'
 import { z } from 'zod'
 import type { ICurrencyFilter, ICurrencyFilterOperator } from '../filter/currency.filter.js'
+import type { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import { CurrencyFieldValue } from './currency-field-value.js'
 import type {
@@ -56,6 +56,13 @@ export class CurrencyField extends BaseField<ICurrencyField> {
     return new CurrencyField({ ...super.unsafeCreateBase(input), symbol: new CurrencySymbol({ value: input.symbol }) })
   }
 
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    const value = valueJson[this.id.value] ?? null
+    if (!value) return null
+
+    return this.symbol.symbol + ' ' + value
+  }
+
   createValue(value: ICreateCurrencyFieldValue): CurrencyFieldValue {
     return new CurrencyFieldValue(value)
   }
@@ -66,13 +73,9 @@ export class CurrencyField extends BaseField<ICurrencyField> {
 
   private updateCurrencySymbol(input: IUpdateCurrencyFieldInput): Option<TableCompositeSpecificaiton> {
     if (isString(input.symbol)) {
-      return Some(new WithCurrencySymbol(this, new CurrencySymbol({ value: input.symbol })))
+      return Some(new WithCurrencySymbol(this.type, this.id.value, new CurrencySymbol({ value: input.symbol })))
     }
     return None
-  }
-
-  public update(input: IUpdateCurrencyFieldInput): Option<TableCompositeSpecificaiton> {
-    return andOptions(super.updateBase(input), this.updateCurrencySymbol(input))
   }
 
   accept(visitor: IFieldVisitor): void {

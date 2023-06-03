@@ -1,16 +1,11 @@
-import { andOptions } from '@undb/domain'
-import type { Option } from 'oxide.ts'
+import { format } from 'date-fns'
+import { isArray } from 'lodash-es'
 import { z } from 'zod'
 import type { IDateRangeFilter } from '../filter/date-range.filter.js'
 import type { IDateRangeFilterOperator } from '../filter/index.js'
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import type { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
 import { DateRangeFieldValue } from './date-range-field-value.js'
-import type {
-  DateRangeType,
-  ICreateDateRangeFieldSchema,
-  IDateRangeFieldQueryValue,
-  IUpdateDateRangeFieldInput,
-} from './date-range-field.type.js'
+import type { DateRangeType, ICreateDateRangeFieldSchema, IDateRangeFieldQueryValue } from './date-range-field.type.js'
 import { AbstractDateField } from './field.base.js'
 import type { IDateRangeField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
@@ -58,8 +53,14 @@ export class DateRangeField extends AbstractDateField<IDateRangeField> {
     })
   }
 
-  public override update(input: IUpdateDateRangeFieldInput): Option<TableCompositeSpecificaiton> {
-    return andOptions(this.updateBase(input), this.updateFormat(input.format), this.updateTimeFormat(input.timeFormat))
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    const value = valueJson[this.id.value]
+    if (!isArray(value)) return null
+    const [from, to] = value
+    if (!from || !to) return null
+    const fromString = format(new Date(from), this.formatString)
+    const toString = format(new Date(to), this.formatString)
+    return fromString + ' - ' + toString
   }
 
   createValue(value: IDateRangeFieldQueryValue): DateRangeFieldValue {

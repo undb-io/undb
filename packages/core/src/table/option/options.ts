@@ -43,6 +43,10 @@ export class Options extends ValueObject<Option[]> {
     return O(this.options.find((o) => o.key.value === key))
   }
 
+  public getByName(name: string): O<Option> {
+    return O(this.options.find((o) => o.name.value === name))
+  }
+
   static create(inputs: ICreateOptionsSchema) {
     inputs = createOptionsSchema.parse(inputs)
 
@@ -50,6 +54,10 @@ export class Options extends ValueObject<Option[]> {
     const options = inputs.map((input, index) => Option.create({ ...input, color: colors[index] }))
 
     return new this(options)
+  }
+
+  static fromStrings(inputs: string[]) {
+    return this.create(inputs.map((name) => ({ name })))
   }
 
   static unsafeCreate(inputs: ICreateOptionsSchema) {

@@ -6,9 +6,6 @@
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import type { TreeField } from '@undb/core'
-	import { Tooltip } from 'flowbite-svelte'
-	import { t } from '$lib/i18n'
-	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 
 	export let field: TreeField
 	export let record: TreeRecord
@@ -36,7 +33,7 @@
 		},
 		{
 			enabled: false,
-			queryHash: $recordHash,
+			queryHash: $recordHash + 'tree',
 		},
 	)
 

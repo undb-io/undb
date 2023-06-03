@@ -3,26 +3,33 @@ import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
-import type { IAbstractAggregateField } from '../field.type.js'
-import { FieldId } from '../value-objects/index.js'
+import type { IAbstractAggregateField, IAggregateFieldType } from '../field.type.js'
+import { FieldId } from '../value-objects/field-id.vo.js'
 
 export class WithAggregateFieldId extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(private readonly field: IAbstractAggregateField, private readonly aggregateFieldId: FieldId) {
+  constructor(
+    public readonly type: IAggregateFieldType,
+    public readonly fieldId: string,
+    public readonly aggregateFieldId: FieldId,
+  ) {
     super()
   }
 
-  static fromString(field: IAbstractAggregateField, fieldId: string) {
-    return new this(field, FieldId.fromString(fieldId))
+  static fromString(type: IAggregateFieldType, fieldId: string, aggregateFieldId: string) {
+    return new this(type, fieldId, FieldId.fromString(aggregateFieldId))
   }
 
   isSatisfiedBy(t: Table): boolean {
-    return this.aggregateFieldId.equals(this.field.aggregateFieldId)
+    const field = t.schema.getFieldById(this.fieldId).unwrap() as IAbstractAggregateField
+    return this.aggregateFieldId.equals(field.aggregateFieldId)
   }
   mutate(t: Table): Result<Table, string> {
-    this.field.aggregateFieldId = this.aggregateFieldId
+    const field = t.schema.getFieldById(this.fieldId).unwrap() as IAbstractAggregateField
+    field.aggregateFieldId = this.aggregateFieldId
     return Ok(t)
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withAggregateFieldId(this)
     return Ok(undefined)
   }
 }

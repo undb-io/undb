@@ -1,5 +1,4 @@
 import { Knex } from '@mikro-orm/better-sqlite'
-import { StringField } from '@undb/core'
 import {
   UnderlyingCreatedAtColumn,
   UnderlyingDeletedAtColumn,
@@ -23,7 +22,7 @@ describe('UnderlyingColumn', () => {
   })
 
   test('UnderlyingIdColumn', async () => {
-    const id = new UnderlyingIdColumn('tabletest')
+    const id = new UnderlyingIdColumn(undefined, 'tabletest')
 
     await knex.schema.createTable(tableName, (tb) => {
       id.build(tb)
@@ -44,7 +43,7 @@ describe('UnderlyingColumn', () => {
   })
 
   test('UnderlyingCreatedAtColumn', async () => {
-    const id = new UnderlyingCreatedAtColumn('tabletest')
+    const id = new UnderlyingCreatedAtColumn(undefined, 'tabletest')
 
     await knex.schema.createTable(tableName, (tb) => {
       id.build(tb, knex)
@@ -65,7 +64,7 @@ describe('UnderlyingColumn', () => {
   })
 
   test('UnderlyingUpdatedAtColumn', async () => {
-    const id = new UnderlyingUpdatedAtColumn('tabletest')
+    const id = new UnderlyingUpdatedAtColumn(undefined, 'tabletest')
 
     await knex.schema.createTable(tableName, (tb) => {
       id.build(tb, knex)
@@ -86,7 +85,7 @@ describe('UnderlyingColumn', () => {
   })
 
   test('UnderlyingDeletedAtColumn', async () => {
-    const id = new UnderlyingDeletedAtColumn('tabletest')
+    const id = new UnderlyingDeletedAtColumn(undefined, 'tabletest')
 
     await knex.schema.createTable(tableName, (tb) => {
       id.build(tb)
@@ -108,7 +107,7 @@ describe('UnderlyingColumn', () => {
 
   describe('UnderlyingFieldColumn', () => {
     test('UnderlyingStringColumn', async () => {
-      const field = new UnderlyingStringColumn(StringField.create({ id: 'fld1', name: 'name' }), 'tabletest')
+      const field = new UnderlyingStringColumn('fld1', 'tabletest')
 
       await knex.schema.createTable(tableName, (tb) => {
         field.build(tb)

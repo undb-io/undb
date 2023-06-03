@@ -2,13 +2,13 @@ import { unzip } from 'lodash-es'
 import { z } from 'zod'
 import type { ICollaboratorFilter } from '../filter/collaborator.filter.js'
 import type { ICollaboratorFilterOperator } from '../filter/operators.js'
+import type { RecordValueJSON } from '../record/record.schema.js'
 import type { IRecordDisplayValues } from '../record/record.type.js'
 import { CollaboratorFieldValue } from './collaborator-field-value.js'
 import type {
   CollaboratorFieldType,
   ICreateCollaboratorFieldInput,
   ICreateCollaboratorFieldValue,
-  IUpdateCollaboratorFieldInput,
 } from './collaborator-field.type.js'
 import { BaseField } from './field.base.js'
 import type { Field, ICollaboratorField } from './field.type.js'
@@ -42,8 +42,11 @@ export class CollaboratorField extends BaseField<ICollaboratorField> {
     })
   }
 
-  public override update(input: IUpdateCollaboratorFieldInput) {
-    return this.updateBase(input)
+  getDisplayValue(
+    valueJson: RecordValueJSON,
+    displayValues?: Record<string, Record<string, (string | null)[] | null>> | undefined,
+  ): string | null {
+    return displayValues?.[this.id.value]?.username?.toString() ?? null
   }
 
   createValue(value: ICreateCollaboratorFieldValue): CollaboratorFieldValue {

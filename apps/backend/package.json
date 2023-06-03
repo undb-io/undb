@@ -7,6 +7,7 @@
     "@mikro-orm/core": "^5.7.10",
     "@mikro-orm/migrations": "^5.7.10",
     "@mikro-orm/nestjs": "^5.1.8",
+    "@json2csv/plainjs": "^7.0.0",
     "@nestjs/common": "^9.4.2",
     "@nestjs/config": "^2.3.2",
     "@nestjs/core": "^9.4.2",
@@ -77,6 +78,7 @@
     "ts-node": "^10.9.1",
     "tsconfig": "^0.0.0",
     "tsconfig-paths": "^4.2.0",
+    "type-fest": "^3.11.0",
     "typescript": "^5.0.4"
   },
   "jest": {

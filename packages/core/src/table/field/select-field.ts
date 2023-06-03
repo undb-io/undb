@@ -1,20 +1,14 @@
-import { andOptions } from '@undb/domain'
-import type { Option } from 'oxide.ts'
 import { z } from 'zod'
 import type { ISelectFilterOperator } from '../filter/operators.js'
 import type { ISelectFilter, ISelectFilterValue } from '../filter/select.filter.js'
 import { Options } from '../option/options.js'
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import type { RecordValueJSON } from '../record/record.schema.js'
+import type { IRecordDisplayValues } from '../record/record.type.js'
 import { AbstractSelectField } from './field.base.js'
 import type { ISelectField } from './field.type.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import { SelectFieldValue } from './select-field-value.js'
-import type {
-  ICreateSelectFieldSchema,
-  ICreateSelectFieldValue,
-  IUpdateSelectFieldInput,
-  SelectFieldType,
-} from './select-field.type.js'
+import type { ICreateSelectFieldSchema, ICreateSelectFieldValue, SelectFieldType } from './select-field.type.js'
 import { FieldId } from './value-objects/field-id.vo.js'
 
 export class SelectField extends AbstractSelectField<ISelectField> {
@@ -54,8 +48,14 @@ export class SelectField extends AbstractSelectField<ISelectField> {
     })
   }
 
-  public override update(input: IUpdateSelectFieldInput): Option<TableCompositeSpecificaiton> {
-    return andOptions(this.updateBase(input), super.updateOptions(input.options ?? []))
+  getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
+    const optionId = valueJson[this.id.value]
+    if (!optionId) return null
+
+    const option = this.options.getById(optionId).into()
+    if (!option) return null
+
+    return option.name.value
   }
 
   createFilter(operator: ISelectFilterOperator, value: ISelectFilterValue): ISelectFilter {
@@ -67,7 +67,10 @@ export class SelectField extends AbstractSelectField<ISelectField> {
       return new SelectFieldValue(null)
     }
 
-    const option = this.options.getById(value).unwrap()
+    const option = this.options.getById(value).into(null)
+    if (!option) {
+      return new SelectFieldValue(null)
+    }
 
     return SelectFieldValue.fromOption(option)
   }

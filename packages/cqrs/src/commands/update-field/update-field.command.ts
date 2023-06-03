@@ -1,4 +1,4 @@
-import { IUpdateFieldSchema } from '@undb/core'
+import type { IUpdateFieldSchema } from '@undb/core'
 import type { CommandProps } from '@undb/domain'
 import { Command } from '@undb/domain'
 import type { IUpdateFieldCommandInput } from './update-field.command.interface.js'

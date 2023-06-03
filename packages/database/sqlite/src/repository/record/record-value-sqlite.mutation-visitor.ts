@@ -138,7 +138,7 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
     }
 
     const knex = this.em.getKnex()
-    const ft = new CollaboratorForeignTable(this.tableId, field)
+    const ft = new CollaboratorForeignTable(this.tableId, field.id.value)
 
     const query = knex
       .queryBuilder()

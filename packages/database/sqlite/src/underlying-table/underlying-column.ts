@@ -1,28 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import type { Knex } from '@mikro-orm/better-sqlite'
-import type {
-  AttachmentField,
-  AverageField,
-  BoolField,
-  CollaboratorField,
-  ColorField,
-  CountField,
-  CurrencyField,
-  DateField,
-  DateRangeField,
-  EmailField,
-  Field,
-  LookupField,
-  MultiSelectField,
-  NumberField,
-  ParentField,
-  RatingField,
-  ReferenceField,
-  SelectField,
-  StringField,
-  SumField,
-  TreeField,
-} from '@undb/core'
 import {
   INTERNAL_INCREAMENT_ID_NAME as INTERNAL_AUTO_INCREAMENT_ID_NAME,
   INTERNAL_COLUMN_CREATED_AT_NAME,
@@ -36,7 +14,7 @@ import type { IUnderlyingColumn } from '../interfaces/underlying-column.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME, INTERNAL_COLUMN_DELETED_BY_NAME } from './constants.js'
 
 export abstract class UnderlyingColumn implements IUnderlyingColumn {
-  constructor(public readonly field: Field | undefined, protected readonly tableName: string) {}
+  constructor(public readonly fieldId: string | undefined, protected readonly tableName: string) {}
 
   public readonly queries: string[] = []
   get system(): boolean {
@@ -46,8 +24,12 @@ export abstract class UnderlyingColumn implements IUnderlyingColumn {
   get virtual(): boolean {
     return false
   }
+  get tempName(): string {
+    return getTempColumnName(this.name)
+  }
   abstract get name(): string
   abstract build(tb: Knex.TableBuilder, knex: Knex, isNewTable?: boolean): Promisable<void>
+  abstract buildTemp(tb: Knex.TableBuilder): void
 }
 
 export class UnderlyingIdColumn extends UnderlyingColumn {
@@ -58,6 +40,7 @@ export class UnderlyingIdColumn extends UnderlyingColumn {
   build(tb: Knex.TableBuilder): void {
     tb.string(this.name).notNullable()
   }
+  buildTemp(tb: Knex.TableBuilder): void {}
 }
 
 export class UnderlyingAutoIncreamentColumn extends UnderlyingColumn {
@@ -68,6 +51,7 @@ export class UnderlyingAutoIncreamentColumn extends UnderlyingColumn {
   build(tb: Knex.TableBuilder): void {
     tb.increments(this.name).notNullable()
   }
+  buildTemp(tb: Knex.TableBuilder): void {}
 }
 
 export class UnderlyingCreatedAtColumn extends UnderlyingColumn {
@@ -78,6 +62,7 @@ export class UnderlyingCreatedAtColumn extends UnderlyingColumn {
   build(tb: Knex.TableBuilder, knex: Knex): void {
     tb.datetime(this.name).notNullable().defaultTo(knex.fn.now())
   }
+  buildTemp(tb: Knex.TableBuilder): void {}
 }
 
 export class UnderlyingCreatedByColumn extends UnderlyingColumn {
@@ -88,6 +73,7 @@ export class UnderlyingCreatedByColumn extends UnderlyingColumn {
   build(tb: Knex.TableBuilder): void {
     tb.string(this.name).notNullable()
   }
+  buildTemp(tb: Knex.TableBuilder): void {}
 }
 
 export class UnderlyingUpdatedByColumn extends UnderlyingColumn {
@@ -98,6 +84,7 @@ export class UnderlyingUpdatedByColumn extends UnderlyingColumn {
   build(tb: Knex.TableBuilder): void {
     tb.string(this.name).notNullable()
   }
+  buildTemp(tb: Knex.TableBuilder): void {}
 }
 
 export class UnderlyingUpdatedAtColumn extends UnderlyingColumn {
@@ -108,6 +95,8 @@ export class UnderlyingUpdatedAtColumn extends UnderlyingColumn {
   build(tb: Knex.TableBuilder, knex: Knex): void {
     tb.datetime(this.name).notNullable().defaultTo(knex.fn.now())
   }
+
+  buildTemp(tb: Knex.TableBuilder): void {}
 }
 
 export class UnderlyingDeletedAtColumn extends UnderlyingColumn {
@@ -118,6 +107,7 @@ export class UnderlyingDeletedAtColumn extends UnderlyingColumn {
   build(tb: Knex.TableBuilder): void {
     tb.datetime(this.name).nullable()
   }
+  buildTemp(tb: Knex.TableBuilder): void {}
 }
 
 export class UnderlyingDeletedByColumn extends UnderlyingColumn {
@@ -128,85 +118,115 @@ export class UnderlyingDeletedByColumn extends UnderlyingColumn {
   build(tb: Knex.TableBuilder): void {
     tb.string(this.name)
   }
+  buildTemp(tb: Knex.TableBuilder): void {}
 }
 
-abstract class UnderlyingFieldColumn<F extends Field> implements IUnderlyingColumn {
-  constructor(public readonly field: F, protected readonly tableName: string) {}
+abstract class UnderlyingFieldColumn implements IUnderlyingColumn {
+  constructor(public readonly fieldId: string, protected readonly tableName: string) {}
   public readonly queries: string[] = []
   get system(): boolean {
     return false
   }
   get name(): string {
-    return this.field.id.value
+    return this.fieldId
+  }
+  get tempName(): string {
+    return getTempColumnName(this.name)
   }
   get virtual(): boolean {
     return false
   }
   abstract build(tb: Knex.TableBuilder, knex: Knex, isNewTable?: boolean): Promisable<void>
+  abstract buildTemp(tb: Knex.TableBuilder): void
 }
 
-abstract class UnderlyingVirtualColumn<F extends Field> extends UnderlyingFieldColumn<F> {
+abstract class UnderlyingVirtualColumn extends UnderlyingFieldColumn {
   override get virtual() {
     return true
   }
 
   build(): Promisable<void> {}
+  buildTemp(tb: Knex.TableBuilder): void {}
 }
 
-export class UnderlyingStringColumn extends UnderlyingFieldColumn<StringField> {
+export class UnderlyingStringColumn extends UnderlyingFieldColumn {
   build(tb: Knex.TableBuilder): void {
     tb.string(this.name)
   }
-}
-
-export class UnderlyingEmailColumn extends UnderlyingFieldColumn<EmailField> {
-  build(tb: Knex.TableBuilder): void {
-    tb.string(this.name)
+  buildTemp(tb: Knex.TableBuilder): void {
+    tb.string(this.tempName)
   }
 }
 
-export class UnderlyingAttachmentColumn extends UnderlyingFieldColumn<AttachmentField> {
+export class UnderlyingEmailColumn extends UnderlyingFieldColumn {
+  build(tb: Knex.TableBuilder): void {
+    tb.string(this.name)
+  }
+  buildTemp(tb: Knex.TableBuilder): void {
+    tb.string(this.tempName)
+  }
+}
+
+export class UnderlyingAttachmentColumn extends UnderlyingFieldColumn {
   override get virtual() {
     return true
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
   build(tb: Knex.TableBuilder): void {}
+  buildTemp(tb: Knex.TableBuilder): void {}
 }
 
-export class UnderlyingColorColumn extends UnderlyingFieldColumn<ColorField> {
+export class UnderlyingColorColumn extends UnderlyingFieldColumn {
   build(tb: Knex.TableBuilder): void {
     tb.string(this.name, 10)
   }
-}
-
-export class UnderlyingNumberColumn extends UnderlyingFieldColumn<NumberField> {
-  build(tb: Knex.TableBuilder): void {
-    tb.float(this.name)
+  buildTemp(tb: Knex.TableBuilder): void {
+    tb.string(this.tempName, 10)
   }
 }
 
-export class UnderlyingRatingColumn extends UnderlyingFieldColumn<RatingField> {
+export class UnderlyingNumberColumn extends UnderlyingFieldColumn {
   build(tb: Knex.TableBuilder): void {
     tb.float(this.name)
   }
+  buildTemp(tb: Knex.TableBuilder): void {
+    tb.float(this.tempName)
+  }
 }
 
-export class UnderlyingCurrencyColumn extends UnderlyingFieldColumn<CurrencyField> {
+export class UnderlyingRatingColumn extends UnderlyingFieldColumn {
+  build(tb: Knex.TableBuilder): void {
+    tb.float(this.name)
+  }
+  buildTemp(tb: Knex.TableBuilder): void {
+    tb.float(this.tempName)
+  }
+}
+
+export class UnderlyingCurrencyColumn extends UnderlyingFieldColumn {
   build(tb: Knex.TableBuilder): void {
     tb.double(this.name)
   }
-}
-
-export class UnderlyingBoolColumn extends UnderlyingFieldColumn<BoolField> {
-  build(tb: Knex.TableBuilder): void {
-    tb.boolean(this.name).defaultTo(false)
+  buildTemp(tb: Knex.TableBuilder): void {
+    tb.double(this.tempName)
   }
 }
 
-export class UnderlyingDateColumn extends UnderlyingFieldColumn<DateField> {
+export class UnderlyingBoolColumn extends UnderlyingFieldColumn {
+  build(tb: Knex.TableBuilder): void {
+    tb.boolean(this.name).defaultTo(false)
+  }
+  buildTemp(tb: Knex.TableBuilder): void {
+    tb.boolean(this.tempName).defaultTo(false)
+  }
+}
+
+export class UnderlyingDateColumn extends UnderlyingFieldColumn {
   build(tb: Knex.TableBuilder): void {
     tb.dateTime(this.name)
+  }
+  buildTemp(tb: Knex.TableBuilder): void {
+    tb.dateTime(this.tempName)
   }
 }
 
@@ -220,13 +240,17 @@ export const isUnlderlyingDateTangeFromColumn = (str: string): str is Underlying
 export const getFieldIdFromDateRangeFromColumnName = (name: UnderlyingDateRangeFromColumnName): string =>
   name.replace(UNDERLYING_DATE_RANGE_FROM, '')
 
-export class UnderlyingDateRangeFromColumn extends UnderlyingFieldColumn<DateRangeField> {
+export class UnderlyingDateRangeFromColumn extends UnderlyingFieldColumn {
   get name(): UnderlyingDateRangeFromColumnName {
     return `${super.name}${UNDERLYING_DATE_RANGE_FROM}`
   }
 
   build(tb: Knex.TableBuilder): void {
     tb.dateTime(this.name)
+  }
+
+  buildTemp(tb: Knex.TableBuilder): void {
+    tb.dateTime(this.tempName)
   }
 }
 
@@ -240,7 +264,7 @@ export const isUnlderlyingDateTangeToColumn = (str: string): str is UnderlyingDa
 export const getFieldIdFromDateRangeToColumnName = (name: UnderlyingDateRangeToColumnName): string =>
   name.replace(UNDERLYING_DATE_RANGE_TO, '')
 
-export class UnderlyingDateRangeToColumn extends UnderlyingFieldColumn<DateRangeField> {
+export class UnderlyingDateRangeToColumn extends UnderlyingFieldColumn {
   get name(): UnderlyingDateRangeToColumnName {
     return `${super.name}${UNDERLYING_DATE_RANGE_TO}`
   }
@@ -248,32 +272,43 @@ export class UnderlyingDateRangeToColumn extends UnderlyingFieldColumn<DateRange
   build(tb: Knex.TableBuilder): void {
     tb.dateTime(this.name)
   }
+  buildTemp(tb: Knex.TableBuilder): void {
+    tb.dateTime(this.tempName)
+  }
 }
 
-export class UnderlyingSelectColumn extends UnderlyingFieldColumn<SelectField> {
+export class UnderlyingSelectColumn extends UnderlyingFieldColumn {
   build(tb: Knex.TableBuilder): void {
     tb.string(this.name)
   }
-}
-
-export class UnderlyingMultiSelectColumn extends UnderlyingFieldColumn<MultiSelectField> {
-  build(tb: Knex.TableBuilder): void {
-    tb.json(this.name)
+  buildTemp(tb: Knex.TableBuilder): void {
+    tb.string(this.tempName)
   }
 }
 
-export class UnderlyingCollaboratorColumn extends UnderlyingVirtualColumn<CollaboratorField> {}
+export class UnderlyingMultiSelectColumn extends UnderlyingFieldColumn {
+  build(tb: Knex.TableBuilder): void {
+    tb.json(this.name)
+  }
+  buildTemp(tb: Knex.TableBuilder): void {
+    tb.json(this.tempName)
+  }
+}
 
-export class UnderlyingReferenceColumn extends UnderlyingVirtualColumn<ReferenceField> {}
+export class UnderlyingCollaboratorColumn extends UnderlyingVirtualColumn {}
 
-export class UnderlyingTreeColumn extends UnderlyingVirtualColumn<TreeField> {}
+export class UnderlyingReferenceColumn extends UnderlyingVirtualColumn {}
 
-export class UnderlyingParentColumn extends UnderlyingVirtualColumn<ParentField> {}
+export class UnderlyingTreeColumn extends UnderlyingVirtualColumn {}
 
-export class UnderlyingCountColumn extends UnderlyingVirtualColumn<CountField> {}
+export class UnderlyingParentColumn extends UnderlyingVirtualColumn {}
 
-export class UnderlyingSumColumn extends UnderlyingVirtualColumn<SumField> {}
+export class UnderlyingCountColumn extends UnderlyingVirtualColumn {}
 
-export class UnderlyingAverageColumn extends UnderlyingVirtualColumn<AverageField> {}
+export class UnderlyingSumColumn extends UnderlyingVirtualColumn {}
 
-export class UnderlyingLookupColumn extends UnderlyingVirtualColumn<LookupField> {}
+export class UnderlyingAverageColumn extends UnderlyingVirtualColumn {}
+
+export class UnderlyingLookupColumn extends UnderlyingVirtualColumn {}
+
+export const getTempColumnName = (name: string) => '__temp_' + name

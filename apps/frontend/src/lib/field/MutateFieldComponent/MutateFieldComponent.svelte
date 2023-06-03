@@ -15,7 +15,7 @@
 	import Lookup from './Lookup.svelte'
 
 	import type { SuperForm } from 'sveltekit-superforms/client'
-	import type { IFieldType } from '@undb/core'
+	import type { FieldTypeConvertStrategy, IFieldType } from '@undb/core'
 	import type { ComponentType } from 'svelte'
 
 	import Reference from './Reference.svelte'
@@ -28,6 +28,8 @@
 
 	export let type: IFieldType
 	export let isNew = false
+	export let isUpdatingType = false
+	export let fieldConvertStrategy: FieldTypeConvertStrategy | undefined = undefined
 
 	export let form: SuperForm<any, any>
 
@@ -50,4 +52,4 @@
 	}
 </script>
 
-<svelte:component this={map[type]} {form} {isNew} {path} />
+<svelte:component this={map[type]} {form} {isNew} {path} {isUpdatingType} {fieldConvertStrategy} />

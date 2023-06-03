@@ -4,25 +4,33 @@ import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
-import type { IAbstractLookingField } from '../field.type.js'
+import { type IAbstractLookingField, type ILookingFieldType } from '../field.type.js'
 import type { ReferenceField } from '../reference-field.js'
+import type { ReferenceFieldType } from '../reference-field.type.js'
 import { FieldId } from '../value-objects/field-id.vo.js'
 
 export class WithDisplayFields extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly field: IAbstractLookingField, public readonly displayFields: FieldId[]) {
+  constructor(
+    public readonly type: ILookingFieldType,
+    public readonly fieldId: string,
+    public readonly displayFields: FieldId[],
+  ) {
     super()
   }
-  static fromIds(field: IAbstractLookingField, ids: string[]) {
+  static fromIds(type: ILookingFieldType, fieldId: string, ids: string[]) {
     return new this(
-      field,
+      type,
+      fieldId,
       ids.map((id) => FieldId.fromString(id)),
     )
   }
   isSatisfiedBy(t: Table): boolean {
-    return isEqual(this.field.displayFieldIds, this)
+    const field = t.schema.getFieldById(this.fieldId).unwrap() as IAbstractLookingField
+    return isEqual(field.displayFieldIds, this)
   }
   mutate(t: Table): Result<Table, string> {
-    this.field.displayFieldIds = this.displayFields
+    const field = t.schema.getFieldById(this.fieldId).unwrap() as IAbstractLookingField
+    field.displayFieldIds = this.displayFields
     return Ok(t)
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
@@ -32,17 +40,23 @@ export class WithDisplayFields extends CompositeSpecification<Table, ITableSpecV
 }
 
 export class WithSymmetricReferenceField extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly field: ReferenceField, public readonly symmetricReferenceFieldId: FieldId) {
+  constructor(
+    public readonly type: ReferenceFieldType,
+    public readonly fieldId: string,
+    public readonly symmetricReferenceFieldId: FieldId,
+  ) {
     super()
   }
-  static fromString(field: ReferenceField, fieldId: string) {
-    return new this(field, FieldId.fromString(fieldId))
+  static fromString(type: ReferenceFieldType, fieldId: string, symmetricReferenceFieldId: string) {
+    return new this(type, fieldId, FieldId.fromString(symmetricReferenceFieldId))
   }
   isSatisfiedBy(t: Table): boolean {
-    return this.symmetricReferenceFieldId.equals(this.field.symmetricReferenceFieldId)
+    const field = t.schema.getFieldById(this.fieldId).unwrap() as ReferenceField
+    return this.symmetricReferenceFieldId.equals(field.symmetricReferenceFieldId)
   }
   mutate(t: Table): Result<Table, string> {
-    this.field.symmetricReferenceFieldId = this.symmetricReferenceFieldId
+    const field = t.schema.getFieldById(this.fieldId).unwrap() as ReferenceField
+    field.symmetricReferenceFieldId = this.symmetricReferenceFieldId
     return Ok(t)
   }
   accept(v: ITableSpecVisitor): Result<void, string> {

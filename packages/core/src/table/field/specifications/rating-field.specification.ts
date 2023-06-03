@@ -4,17 +4,20 @@ import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
 import type { RatingField } from '../rating-field.js'
+import type { RatingFieldType } from '../rating-field.type.js'
 
 export class WithRatingMax extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly field: RatingField, public readonly max: number) {
+  constructor(public readonly type: RatingFieldType, public readonly fieldId: string, public readonly max: number) {
     super()
   }
 
   isSatisfiedBy(t: Table): boolean {
-    return this.max === this.field.max
+    const field = t.schema.getFieldById(this.fieldId).unwrap() as RatingField
+    return this.max === field.max
   }
   mutate(t: Table): Result<Table, string> {
-    this.field.max = this.max
+    const field = t.schema.getFieldById(this.fieldId).unwrap() as RatingField
+    field.max = this.max
     return Ok(t)
   }
   accept(v: ITableSpecVisitor): Result<void, string> {

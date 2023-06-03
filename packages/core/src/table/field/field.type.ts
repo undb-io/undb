@@ -1,10 +1,9 @@
 import type { Option } from 'oxide.ts'
 import * as z from 'zod'
 import type { IReferenceFilterValue } from '../filter/reference.filter.js'
-import type { ICreateOptionSchema, IMutateOptionSchema, IUpdateOptionSchema } from '../option/option.schema.js'
+import type { ICreateOptionSchema, IUpdateOptionSchema } from '../option/option.schema.js'
 import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues } from '../record/index.js'
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
 import type { TableId } from '../value-objects/table-id.vo.js'
 import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
 import type { AttachmentFieldValue } from './attachment-field-value.js'
@@ -535,7 +534,7 @@ export type ILookingFieldTypes = IReferenceFieldTypes | ILookupField
 export type LookingFieldTypes = ReferenceFieldTypes | LookupField
 export type AggregateFieldType = CountField | SumField
 export type INumberAggregateFieldType = ISumField | IAverageField
-export type ISelectFieldType = ISelectField | IMultiSelectField
+export type ISelectFieldTypes = ISelectField | IMultiSelectField
 export type SelectFieldTypes = SelectField | MultiSelectField
 export type IDateFieldTypes = IDateField | IDateRangeField | ICreatedAtField | IUpdatedAtField
 export type DateFieldTypes = DateField | DateRangeField | CreatedAtField | UpdatedAtField
@@ -675,36 +674,33 @@ export const fieldQueryValue = z.union([
 
 export type IFieldQueryValue = z.infer<typeof fieldQueryValue>
 
-export const INTERNAL_COLUMN_ID_NAME = 'id'
-export const INTERNAL_INCREAMENT_ID_NAME = 'auto_increment'
-export const INTERNAL_COLUMN_CREATED_AT_NAME = 'created_at'
-export const INTERNAL_COLUMN_CREATED_BY_NAME = 'created_by'
-export const INTERNAL_COLUMN_UPDATED_AT_NAME = 'updated_at'
-export const INTERNAL_COLUMN_UPDATED_BY_NAME = 'updated_by'
-export const INTERNAL_DISPLAY_VALUES_NAME = 'display_values'
-
 export interface IAbstractReferenceField {
   get foreignTableId(): Option<string>
 }
 
 export interface IAbstractLookingField extends BaseField {
+  type: ILookingFieldType
   get multiple(): boolean
   get displayFieldIds(): FieldId[]
   set displayFieldIds(fieldIds: FieldId[])
   getDisplayValues(values: IRecordDisplayValues): ((string | null)[] | undefined)[]
-  updateDisplayFieldIds(displayFieldIds?: string[]): Option<TableCompositeSpecificaiton>
 }
 
+export const lookingFieldTypes = z.union([lookupTypeSchema, parentTypeSchema, treeTypeSchema, referenceTypeSchema])
+export type ILookingFieldType = z.infer<typeof lookingFieldTypes>
+
 export interface IAbstractDateField {
+  type: IDateFieldType
   get formatString(): string
   get format(): DateFormat | undefined
   set format(format: DateFormat | undefined)
-  updateFormat(format?: string): Option<TableCompositeSpecificaiton>
   get timeFormatString(): string | null
   get timeFormat(): TimeFormat | undefined
   set timeFormat(format: TimeFormat | undefined)
-  updateTimeFormat(format?: string): Option<TableCompositeSpecificaiton>
 }
+
+export const dateFieldType = z.union([dateTypeSchema, dateRangeTypeSchema, createdAtTypeSchema, updatedAtTypeSchema])
+export type IDateFieldType = z.infer<typeof dateFieldType>
 
 export const lookingFieldIssues = z.enum(['Missing Reference Field'])
 export type ILookingFieldIssues = z.infer<typeof lookingFieldIssues>
@@ -712,27 +708,36 @@ export type ILookingFieldIssues = z.infer<typeof lookingFieldIssues>
 export type LookingFieldIssue = FieldIssue<ILookingFieldIssues>
 
 export interface IAbstractLookupField {
+  type: ILookupFieldType
   get referenceFieldId(): FieldId
   set referenceFieldId(fieldId: FieldId)
   getIssues(schema: TableSchemaIdMap): LookingFieldIssue[]
   mustGetReferenceField(schema: TableSchemaIdMap): ReferenceField | TreeField
   getReferenceField(schema: TableSchemaIdMap): ReferenceField | TreeField | undefined
   getForeignTableId(schema: TableSchemaIdMap): Option<string>
-  updateReferenceId(referenceId?: string): Option<TableCompositeSpecificaiton>
 }
+
+export const lookupFieldType = z.union([sumTypeSchema, averageTypeSchema, countTypeSchema, lookupTypeSchema])
+export type ILookupFieldType = z.infer<typeof lookupFieldType>
 
 export interface IAbstractAggregateField {
+  type: IAggregateFieldType
   get aggregateFieldId(): FieldId
   set aggregateFieldId(fieldId: FieldId)
-  updateAggregateFieldId(aggregateFieldId?: string): Option<TableCompositeSpecificaiton>
 }
 
+export const aggregateFieldType = z.union([sumTypeSchema, averageTypeSchema])
+export type IAggregateFieldType = z.infer<typeof aggregateFieldType>
+
 export interface IAbstractSelectField extends BaseField {
+  type: ISelectFieldType
   get options(): Options
   set options(options: Options)
   reorder(from: string, to: string): WithOptions
   createOption(input: ICreateOptionSchema): WithNewOption
   updateOption(id: string, input: IUpdateOptionSchema): WithOption
   removeOption(id: string): WithoutOption
-  updateOptions(input: IMutateOptionSchema[]): Option<TableCompositeSpecificaiton>
 }
+
+export const selectFieldType = z.union([selectTypeSchema, multiSelectTypeSchema])
+export type ISelectFieldType = z.infer<typeof selectFieldType>

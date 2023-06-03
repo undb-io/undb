@@ -101,12 +101,16 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
     return this
   }
 
-  createUnderlying(fields: NoneSystemField[]): this {
+  createUnderlying(fields: NoneSystemField[], temp = false): this {
     const underlyingColumns = UnderlyingColumnFactory.createMany(fields, this.tableName)
 
     for (const column of underlyingColumns) {
       if (!column.system) {
-        column.build(this.tb, this.knex, this.isNewTable)
+        if (temp) {
+          column.buildTemp(this.tb)
+        } else {
+          column.build(this.tb, this.knex, this.isNewTable)
+        }
         this.addQueries(...column.queries)
       }
     }

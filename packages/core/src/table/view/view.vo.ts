@@ -176,7 +176,7 @@ export class ViewVO extends ValueObject<IView> {
     if (treeView) {
       treeView.fieldId = fieldId ? FieldId.fromString(fieldId) : undefined
     } else if (fieldId) {
-      this.kanban = Some(new TreeView({ fieldId: FieldId.fromString(fieldId) }))
+      this.treeView = Some(new TreeView({ fieldId: FieldId.fromString(fieldId) }))
     }
   }
 
@@ -375,32 +375,37 @@ export class ViewVO extends ValueObject<IView> {
     this.props.filter = filter ? new RootFilter(filter) : undefined
   }
 
-  public removeField(field: Field): Option<TableCompositeSpecificaiton> {
+  public removeField(id: FieldId): Option<TableCompositeSpecificaiton> {
     const specs: TableCompositeSpecificaiton[] = []
-    const kanban = this.kanban.map((kanban) => kanban.removeField(field)).flatten()
+    const kanban = this.kanban.map((kanban) => kanban.removeField(id)).flatten()
     if (kanban.isSome()) {
       this.kanban = kanban
       specs.push(new WithKanbanField(this, null))
     }
-    const calendar = this.calendar.map((calendar) => calendar.removeField(field)).flatten()
+    const calendar = this.calendar.map((calendar) => calendar.removeField(id)).flatten()
     if (calendar.isSome()) {
       this.calendar = calendar
       specs.push(new WithKanbanField(this, null))
     }
+    const treeView = this.treeView.map((view) => view.removeField(id)).flatten()
+    if (treeView.isSome()) {
+      this.treeView = treeView
+      specs.push(new WithTreeViewField(this, null))
+    }
 
-    const order = this.fieldsOrder?.remove(field.id.value)
+    const order = this.fieldsOrder?.remove(id.value)
     if (order?.isSome()) {
       this.fieldsOrder = order.unwrap()
       specs.push(new WithViewFieldsOrder(order.unwrap(), this))
     }
 
-    const filter = this.filter?.removeField(field)
+    const filter = this.filter?.removeField(id)
     if (filter?.isSome()) {
       this.filter = filter.unwrap()
       specs.push(new WithFilter(filter.into()?.value ?? null, this))
     }
 
-    const options = this.fieldOptions.removeField(field)
+    const options = this.fieldOptions.removeField(id)
     if (options.isSome()) {
       this.fieldOptions = options.unwrap()
       specs.push(new WithFieldOption(this, options.unwrap()))

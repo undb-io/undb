@@ -2,7 +2,7 @@ import type { CompositeSpecification } from '@undb/domain'
 import { ValueObject } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None } from 'oxide.ts'
-import type { Field } from '../field'
+import type { FieldId } from '../field'
 import type { IGroup, IRootFilter } from './filter.js'
 import { convertFilterSpec, isGroup } from './filter.js'
 
@@ -26,7 +26,7 @@ export class RootFilter extends ValueObject<IRootFilter> {
   }
 
   // FIXME: remove field
-  public removeField(field: Field): Option<RootFilter> {
+  public removeField(fieldId: FieldId): Option<RootFilter> {
     return None
   }
 
