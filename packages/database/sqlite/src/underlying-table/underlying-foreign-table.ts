@@ -82,16 +82,16 @@ export class AdjacencyListTable extends BaseUnderlyingForeignTable<ReferenceFiel
   get fromId(): IUderlyingForeignTableReferenceFieldId {
     const field =
       !!this.field.symmetricReferenceFieldId && !this.field.isOwner
-        ? AdjacencyListTable.FROM_ID
-        : AdjacencyListTable.TO_ID
+        ? AdjacencyListTable.TO_ID
+        : AdjacencyListTable.FROM_ID
     return `${this.name}.${field}`
   }
 
   get toId(): IUderlyingForeignTableReferenceFieldId {
     const field =
       !!this.field.symmetricReferenceFieldId && !this.field.isOwner
-        ? AdjacencyListTable.TO_ID
-        : AdjacencyListTable.FROM_ID
+        ? AdjacencyListTable.FROM_ID
+        : AdjacencyListTable.TO_ID
 
     return `${this.name}.${field}`
   }

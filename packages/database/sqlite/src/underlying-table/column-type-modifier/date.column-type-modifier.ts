@@ -64,6 +64,15 @@ export class DateColumnTypeModifier extends BaseColumnTypeModifier<DateField> {
   count(): void {
     this.dropColumn(this.column)
   }
+  sum(): void {
+    this.dropColumn(this.column)
+  }
+  average(): void {
+    this.dropColumn(this.column)
+  }
+  lookup(): void {
+    this.dropColumn(this.column)
+  }
   collaborator(): void {
     this.dropColumn(this.column)
   }

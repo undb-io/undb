@@ -44,6 +44,7 @@ import { NumberColumnTypeModifier } from './column-type-modifier/number.column-t
 import { RatingColumnTypeModifier } from './column-type-modifier/rating.column-type-modifier.js'
 import { SelectColumnTypeModifier } from './column-type-modifier/select.column-type-modifier.js'
 import { StringColumnTypeModifier } from './column-type-modifier/string.column-type-modifier.js'
+import { SumColumnTypeModifier } from './column-type-modifier/sum.column-type-modifier.js'
 
 export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implements IFieldVisitor {
   constructor(
@@ -157,7 +158,10 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
     this.unshiftJobs(...modifier.jobs)
   }
   sum(field: SumField): void {
-    throw new Error('Method not implemented.')
+    const modifier = new SumColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   average(field: AverageField): void {
     throw new Error('Method not implemented.')

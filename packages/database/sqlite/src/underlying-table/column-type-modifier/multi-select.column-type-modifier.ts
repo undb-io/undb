@@ -103,6 +103,15 @@ export class MultiSelectColumnTypeModifier extends BaseColumnTypeModifier<MultiS
   count(): void {
     this.dropColumn(this.column)
   }
+  sum(): void {
+    this.dropColumn(this.column)
+  }
+  average(): void {
+    this.dropColumn(this.column)
+  }
+  lookup(): void {
+    this.dropColumn(this.column)
+  }
   ['multi-select'](): void {
     throw new Error('Method not implemented.')
   }

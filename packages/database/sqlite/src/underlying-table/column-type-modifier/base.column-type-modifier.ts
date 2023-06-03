@@ -101,9 +101,6 @@ export abstract class BaseColumnTypeModifier<F extends Field>
   parent(): void {
     throw new Error('Method not implemented.')
   }
-  average(): void {}
-  sum(): void {}
-  lookup(): void {}
 
   protected castToDate(column: IUnderlyingColumn) {
     this.addJobs(async () => {

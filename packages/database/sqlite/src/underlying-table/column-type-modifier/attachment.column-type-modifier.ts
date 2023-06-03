@@ -103,6 +103,15 @@ export class AttachmentColumnTypeModifier extends BaseColumnTypeModifier<Attachm
   count(): void {
     this.dropColumn(this.column)
   }
+  sum(): void {
+    this.dropColumn(this.column)
+  }
+  average(): void {
+    this.dropColumn(this.column)
+  }
+  lookup(): void {
+    this.dropColumn(this.column)
+  }
   ['date-range'](): void {
     throw new Error('Method not implemented.')
   }

@@ -91,6 +91,20 @@ export class CollaboratorColumnTypeModifier extends BaseColumnTypeModifier<Colla
   collaborator(): void {
     throw new Error('Method not implemented.')
   }
+
+  count(): void {
+    this.dropColumn(this.column)
+  }
+  sum(): void {
+    this.dropColumn(this.column)
+  }
+  average(): void {
+    this.dropColumn(this.column)
+  }
+  lookup(): void {
+    this.dropColumn(this.column)
+  }
+
   ['multi-select'](): void {
     const newColumn = new UnderlyingMultiSelectColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
