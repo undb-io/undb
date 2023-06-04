@@ -52,9 +52,9 @@
 
 <Toast
 	{open}
-	color="none"
+	color="light"
 	position="bottom-right"
-	class="z-30 shadow-md !w-[500px] !max-w-xl"
+	class="z-30 shadow-xl bg-white border border-slate-200 !w-[500px] !max-w-xl"
 	transition={slide}
 	params={{ delay: 100, duration: 200, easing: quintOut }}
 >
