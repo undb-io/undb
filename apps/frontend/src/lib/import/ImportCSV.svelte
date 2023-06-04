@@ -4,14 +4,20 @@
 	import { importCSVModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import { FieldId, getFieldNames, type ICreateTableSchemaInput, type IMutateRecordValueSchema } from '@undb/core'
-	import { Button, Modal } from 'flowbite-svelte'
+	import { Button, Checkbox, Modal } from 'flowbite-svelte'
 	import { Dropzone } from 'flowbite-svelte'
 	import Papa from 'papaparse'
 
 	let data: string[][] | undefined
 	let fileName: string | undefined
+	let firstRowAsHeader = true
+	let importData = true
 
-	$: header = data?.[0]
+	$: firstRow = data?.[0]
+
+	$: header = firstRowAsHeader
+		? firstRow
+		: new Array(data?.[0].length).fill(undefined).map((_, index) => $t('Field') + ' ' + String(index + 1))
 
 	let schema: ICreateTableSchemaInput | undefined
 
@@ -69,7 +75,7 @@
 			$createTable.mutate({
 				name: fileName.substring(0, fileName.lastIndexOf('.')) || fileName,
 				schema,
-				records,
+				records: importData ? records : undefined,
 			})
 		}
 	}
@@ -101,9 +107,8 @@
 			/>
 		</svg>
 		<p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-			<span class="font-semibold">Click to upload</span> or drag and drop
+			{@html $t('click to upload or dnd', { ns: 'common' })}
 		</p>
-		<p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
 	</Dropzone>
 	{#if fileName}
 		<div class="flex items-center gap-2">
@@ -113,6 +118,10 @@
 			</span>
 		</div>
 	{/if}
+
+	<Checkbox bind:checked={firstRowAsHeader}>{$t('first row as header')}</Checkbox>
+	<Checkbox bind:checked={importData}>{$t('import data')}</Checkbox>
+
 	<div class="flex justify-end">
 		<div class="space-y-2">
 			<Button size="xs" outline color="alternative" on:click={() => importCSVModal.close()}>

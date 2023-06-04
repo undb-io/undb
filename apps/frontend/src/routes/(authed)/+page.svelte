@@ -1,10 +1,10 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Button, Card } from 'flowbite-svelte'
+	import { Button, ButtonGroup, Card, Dropdown, DropdownItem } from 'flowbite-svelte'
 	import type { LayoutData } from './$types'
 	import Empty from '$lib/table/Empty.svelte'
 	import { t } from '$lib/i18n'
-	import { createTableModal } from '$lib/store/modal'
+	import { createTableModal, importCSVModal } from '$lib/store/modal'
 
 	export let data: LayoutData
 
@@ -17,10 +17,23 @@
 
 <nav class="bg-white border-b border-gray-200 dark:bg-gray-900">
 	<div class="w-full px-5 py-4 flex justify-end" id="navbar-default">
-		<Button size="sm" on:click={() => createTableModal.open()}>
-			<i class="ti ti-plus text-sm mr-3" />
-			{$t('Create New Table')}</Button
-		>
+		<ButtonGroup>
+			<Button size="sm" on:click={() => createTableModal.open()}>
+				<i class="ti ti-plus text-sm mr-3" />
+				{$t('Create New Table')}
+			</Button>
+			<Button size="sm">
+				<i class="ti ti-chevron-down" />
+			</Button>
+			<Dropdown placement="bottom" class="w-[200px]">
+				<DropdownItem on:click={() => importCSVModal.open()} class="flex items-center gap-2">
+					<i class="ti ti-csv" />
+					<span>
+						{$t('import csv')}
+					</span>
+				</DropdownItem>
+			</Dropdown>
+		</ButtonGroup>
 	</div>
 </nav>
 
