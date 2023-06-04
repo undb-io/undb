@@ -342,6 +342,9 @@ importers:
       '@types/nprogress':
         specifier: ^0.2.0
         version: 0.2.0
+      '@types/papaparse':
+        specifier: ^5.3.7
+        version: 5.3.7
       '@types/sortablejs':
         specifier: ^1.15.1
         version: 1.15.1
@@ -414,6 +417,9 @@ importers:
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
+      papaparse:
+        specifier: ^5.4.1
+        version: 5.4.1
       plausible-tracker:
         specifier: ^0.3.8
         version: 0.3.8
@@ -4292,6 +4298,12 @@ packages:
 
   /@types/nprogress@0.2.0:
     resolution: {integrity: sha512-1cYJrqq9GezNFPsWTZpFut/d4CjpZqA0vhqDUPFWYKF1oIyBz5qnoYMzR+0C/T96t3ebLAC1SSnwrVOm5/j74A==}
+    dev: true
+
+  /@types/papaparse@5.3.7:
+    resolution: {integrity: sha512-f2HKmlnPdCvS0WI33WtCs5GD7X1cxzzS/aduaxSu3I7TbhWlENjSPs6z5TaB9K0J+BH1jbmqTaM+ja5puis4wg==}
+    dependencies:
+      '@types/node': 20.2.4
     dev: true
 
   /@types/parse-json@4.0.0:
@@ -10011,6 +10023,10 @@ packages:
     transitivePeerDependencies:
       - bluebird
       - supports-color
+    dev: true
+
+  /papaparse@5.4.1:
+    resolution: {integrity: sha512-HipMsgJkZu8br23pW15uvo6sib6wne/4woLZPlFf3rpDyMe9ywEXUsuD7+6K9PRkJlVT51j/sCOYDKGGS3ZJrw==}
     dev: true
 
   /parent-module@1.0.1:

@@ -11,5 +11,5 @@ export const newTableSpec = (input: ICreateTableInput_internal, ctx: ClsStore) =
     .and(WithTableId.fromString(input.id))
     .and(WithTableSchema.from(input.schema, ctx))
     .and(WithTableViews.from(input.views))
-    .and(WithTableEmoji.fromString(input.emoji))
+    .and(WithTableEmoji.fromString(input.emoji ?? null))
 }

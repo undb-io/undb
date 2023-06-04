@@ -4,7 +4,7 @@
 	import { Dialog, DialogOverlay, TransitionChild, TransitionRoot } from '@rgossiaux/svelte-headlessui'
 	import type { LayoutData } from './$types'
 	import CreateTable from '$lib/table/CreateTable.svelte'
-	import { Avatar, Button, Chevron, Dropdown, DropdownItem, P } from 'flowbite-svelte'
+	import { Avatar, Button, ButtonGroup, Chevron, Dropdown, DropdownItem, P } from 'flowbite-svelte'
 	import { page } from '$app/stores'
 	import { allTables, currentRecordId, newTableSchema } from '$lib/store/table'
 	import { goto } from '$app/navigation'
@@ -12,8 +12,9 @@
 	import logo from '$lib/assets/logo.svg'
 	import { i18n, t } from '$lib/i18n'
 	import { createMutation } from '@tanstack/svelte-query'
-	import { createTableModal } from '$lib/store/modal'
+	import { createTableModal, importCSVModal } from '$lib/store/modal'
 	import { colors } from '$lib/field/helpers'
+	import ImportCsv from '$lib/import/ImportCSV.svelte'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -241,9 +242,22 @@
 			</nav>
 			<ul class="flex flex-col border-t pt-4 space-y-2">
 				<li class="px-6">
-					<Button size="xs" class="w-full" outline on:click={() => createTableModal.open()}
-						>{$t('Create New Table')}</Button
-					>
+					<ButtonGroup class="w-full">
+						<Button size="xs" class="w-full" outline on:click={() => createTableModal.open()}>
+							{$t('Create New Table')}
+						</Button>
+						<Button size="xs" outline>
+							<i class="ti ti-chevron-down" />
+						</Button>
+						<Dropdown placement="top" class="w-[200px]">
+							<DropdownItem on:click={() => importCSVModal.open()} class="flex items-center gap-2">
+								<i class="ti ti-csv" />
+								<span>
+									{$t('import csv')}
+								</span>
+							</DropdownItem>
+						</Dropdown>
+					</ButtonGroup>
 				</li>
 
 				<button
@@ -365,5 +379,9 @@
 
 	{#if $createTableModal.open}
 		<CreateTable data={$page.data.form} />
+	{/if}
+
+	{#if $importCSVModal.open}
+		<ImportCsv />
 	{/if}
 </div>
