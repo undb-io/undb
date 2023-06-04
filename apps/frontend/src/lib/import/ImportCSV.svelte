@@ -3,7 +3,7 @@
 	import { t } from '$lib/i18n'
 	import { importCSVModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
-	import { getFieldNames, type ICreateTableSchemaInput } from '@undb/core'
+	import { FieldId, getFieldNames, type ICreateTableSchemaInput, type IMutateRecordValueSchema } from '@undb/core'
 	import { Button, Modal } from 'flowbite-svelte'
 	import { Dropzone } from 'flowbite-svelte'
 	import Papa from 'papaparse'
@@ -16,7 +16,17 @@
 	let schema: ICreateTableSchemaInput | undefined
 
 	$: if (header) {
-		schema = getFieldNames(header, $t).map((name) => ({ name, type: 'string' }))
+		schema = getFieldNames(header, $t).map((name) => ({ id: FieldId.createId(), name, type: 'string' }))
+	}
+
+	let records: IMutateRecordValueSchema[]
+	$: if (schema) {
+		records = (data?.slice(1) ?? []).map((values) =>
+			values.reduce((prev, value, index) => {
+				prev[schema![index].id!] = value
+				return prev
+			}, {} as IMutateRecordValueSchema),
+		)
 	}
 
 	const parse = (file: File) => {
@@ -59,6 +69,7 @@
 			$createTable.mutate({
 				name: fileName.substring(0, fileName.lastIndexOf('.')) || fileName,
 				schema,
+				records,
 			})
 		}
 	}
