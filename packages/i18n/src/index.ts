@@ -112,6 +112,7 @@ export const config: InitOptions = {
       table: {
         'import csv': 'import csv',
         'first row as header': 'Use First Row as Headers',
+        'import data': 'Import Data',
         'Auto Display Field': 'using <strong>{{table}}</strong> display field',
         'shortcut T': 'Use shortcut {{ shortcut }} to create table from anywhere.',
         'shortcut R': 'Use shortcut {{ shortcut }} to create record in table.',
@@ -382,6 +383,7 @@ export const config: InitOptions = {
       table: {
         'import csv': '导入 csv',
         'first row as header': '使用第一行作为列标题',
+        'import data': '导入行数据',
         'Auto Display Field': '使用 <strong>{{table}}</strong> 表中设置的显示列',
         'shortcut T':
           '使用快捷键 <span class="bg-gray-100 text-gray-800 text-xs font-medium mx-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">{{shortcut}}</span> 在任何页面创建表。',

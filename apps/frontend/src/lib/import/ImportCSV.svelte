@@ -11,6 +11,7 @@
 	let data: string[][] | undefined
 	let fileName: string | undefined
 	let firstRowAsHeader = true
+	let importData = true
 
 	$: firstRow = data?.[0]
 
@@ -74,7 +75,7 @@
 			$createTable.mutate({
 				name: fileName.substring(0, fileName.lastIndexOf('.')) || fileName,
 				schema,
-				records,
+				records: importData ? records : undefined,
 			})
 		}
 	}
@@ -119,6 +120,7 @@
 	{/if}
 
 	<Checkbox bind:checked={firstRowAsHeader}>{$t('first row as header')}</Checkbox>
+	<Checkbox bind:checked={importData}>{$t('import data')}</Checkbox>
 
 	<div class="flex justify-end">
 		<div class="space-y-2">
