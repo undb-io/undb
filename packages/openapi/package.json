@@ -6,6 +6,7 @@
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^5.1.0",
     "@undb/core": "^0.0.0",
+    "date-fns": "^2.30.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {

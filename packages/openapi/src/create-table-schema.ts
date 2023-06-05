@@ -1,9 +1,15 @@
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi'
+import type { Table } from '@undb/core'
+import { format } from 'date-fns'
 import type { OpenAPIObject } from 'openapi3-ts/oas30'
-import { z } from 'zod'
+import { getRecordById } from './routes/get-record-by-id'
+import { listRecords } from './routes/list-records'
 
-export const createTableSchema = (): OpenAPIObject => {
+export const createTableSchema = (table: Table): OpenAPIObject => {
   const registry = new OpenAPIRegistry()
+
+  registry.registerPath(listRecords(table))
+  registry.registerPath(getRecordById(table))
 
   function getOpenApiDocumentation() {
     const generator = new OpenApiGeneratorV3(registry.definitions)
@@ -11,51 +17,13 @@ export const createTableSchema = (): OpenAPIObject => {
     return generator.generateDocument({
       openapi: '3.0.0',
       info: {
-        version: '1.0.0',
-        title: 'My API',
-        description: 'This is the API',
+        version: format(new Date(), 'yyyy-MM-dd'),
+        title: `undb ${table.name.value} open api`,
+        description: `This is the open API of undb table ${table.name.value}`,
       },
-      servers: [{ url: 'v1' }],
+      servers: [{ url: '/openapi/v1' }],
     })
   }
-
-  const bearerAuth = registry.registerComponent('securitySchemes', 'bearerAuth', {
-    type: 'http',
-    scheme: 'bearer',
-    bearerFormat: 'JWT',
-  })
-
-  const userSchema = z
-    .object({
-      id: z.string().openapi({ example: '1212121' }),
-      name: z.string().openapi({ example: 'John Doe' }),
-      age: z.number().openapi({ example: 42 }),
-    })
-    .openapi('User')
-
-  registry.registerPath({
-    method: 'get',
-    path: '/users/{id}',
-    description: 'Get user data by its id',
-    summary: 'Get a single user',
-    security: [{ [bearerAuth.name]: [] }],
-    request: {
-      params: z.object({ id: z.string() }),
-    },
-    responses: {
-      200: {
-        description: 'Object with user data.',
-        content: {
-          'application/json': {
-            schema: userSchema,
-          },
-        },
-      },
-      204: {
-        description: 'No content - successful operation',
-      },
-    },
-  })
 
   const docs = getOpenApiDocumentation()
   return docs

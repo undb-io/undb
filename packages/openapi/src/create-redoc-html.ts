@@ -1,14 +1,15 @@
-import { createTableSchema } from './create-table-schema'
+import type { Table } from '@undb/core'
+import type { OpenAPIObject } from 'openapi3-ts/oas30'
 
-export const createRedocHTML = () => {
-  const docs = createTableSchema()
+export const createRedocHTML = (table: Table, spec: OpenAPIObject) => {
   return `
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Redoc</title>
+    <title>${table.name.value} open api</title>
     <!-- needed for adaptive design -->
     <meta charset="utf-8" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700"
@@ -30,7 +31,7 @@ export const createRedocHTML = () => {
 
     <div id="redoc-container"></div>
     <script>
-    Redoc.init(${JSON.stringify(docs)}, {
+    Redoc.init(${JSON.stringify(spec)}, {
       scrollYOffset: 50
     }, document.getElementById('redoc-container'))
     </script>
