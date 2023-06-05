@@ -1,10 +1,13 @@
 <script lang="ts">
-	import { Tooltip } from 'flowbite-svelte'
+	import { Button, Tooltip } from 'flowbite-svelte'
 	import ToggleDisplayType from './ToggleDisplayType.svelte'
 	import { t } from '$lib/i18n'
 	import ViewToolbar from './ViewToolbar.svelte'
 	import TableNavigator from './TableNavigator.svelte'
 	import { updateTableModal } from '$lib/store/modal'
+	import { getTable } from '$lib/store/table'
+
+	const table = getTable()
 </script>
 
 <div
@@ -16,9 +19,10 @@
 	</div>
 
 	<div class="flex items-center ml-2 gap-3">
-		<Tooltip placement="bottom">
-			{$t('Force Refresh')}
-		</Tooltip>
+		<Button size="xs" outline class="rounded-sm flex items-center gap-2" href={`/t/${$table.id.value}/api`}>
+			<i class="ti ti-code" />
+			API Preview
+		</Button>
 		<button on:click={() => updateTableModal.open()}>
 			<i class="ti ti-settings text-gray-600" />
 		</button>
