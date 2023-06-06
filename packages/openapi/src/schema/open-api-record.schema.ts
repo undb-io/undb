@@ -1,4 +1,5 @@
 import type { Table } from '@undb/core'
+import { COMPONENT_RECORD } from 'src/constants'
 import type { ZodRawShape } from 'zod'
 import { z } from 'zod'
 import { createOpenAPIRecordValueSchema } from './record-value.schema'
@@ -13,5 +14,7 @@ export const createOpenAPIRecordSchema = (table: Table) => {
     shape[field.name.value] = openAPIRecordValueSchema[field.type]
   }
 
-  return z.object(shape)
+  return z.object(shape).openapi(COMPONENT_RECORD)
 }
+
+export type RecordSchema = ReturnType<typeof createOpenAPIRecordSchema>

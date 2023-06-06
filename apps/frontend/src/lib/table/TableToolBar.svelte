@@ -19,7 +19,7 @@
 	</div>
 
 	<div class="flex items-center ml-2 gap-3">
-		<Button size="xs" outline class="rounded-sm flex items-center gap-2" href={`/t/${$table.id.value}/api`}>
+		<Button size="xs" outline class="rounded-sm flex items-center gap-2" href={`/t/${$table.id.value}/openapi`}>
 			<i class="ti ti-code" />
 			API Preview
 		</Button>

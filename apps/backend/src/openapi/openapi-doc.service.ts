@@ -4,7 +4,7 @@ import { createRedocHTML, createTableSchema } from '@undb/openapi'
 import { InjectTableReposiory } from '../modules/table/adapters/index.js'
 
 @Injectable()
-export class OpenAPIService {
+export class OpenAPIDocService {
   constructor(
     @InjectTableReposiory()
     private readonly repo: ITableRepository,

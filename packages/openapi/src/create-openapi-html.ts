@@ -15,9 +15,6 @@ export const createRedocHTML = (table: Table, spec: OpenAPIObject) => {
       rel="stylesheet"
     />
 
-    <!--
-    Redoc doesn't change outer page styles
-    -->
     <style>
       body {
         margin: 0;

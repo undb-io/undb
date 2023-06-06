@@ -1,10 +1,9 @@
 import type { RouteConfig } from '@asteasolutions/zod-to-openapi'
 import { viewIdSchema, type Table } from '@undb/core'
-import { createOpenAPIRecordSchema } from 'src/schema/open-api-record.schema'
 import { z } from 'zod'
+import type { RecordSchema } from '../schema/open-api-record.schema'
 
-export const listRecords = (table: Table): RouteConfig => {
-  const recordSchema = createOpenAPIRecordSchema(table)
+export const listRecords = (table: Table, schema: RecordSchema): RouteConfig => {
   return {
     method: 'get',
     path: `/tables/${table.id.value}/records`,
@@ -20,7 +19,7 @@ export const listRecords = (table: Table): RouteConfig => {
         description: `${table.name.value} records`,
         content: {
           'application/json': {
-            schema: z.object({ data: recordSchema.array() }),
+            schema: z.object({ data: schema.array() }),
           },
         },
       },
