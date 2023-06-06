@@ -453,6 +453,9 @@ importers:
       svelte-check:
         specifier: ^3.3.2
         version: 3.3.2(postcss-load-config@4.0.1)(postcss@8.4.23)(svelte@3.59.1)
+      svelte-copy:
+        specifier: ^1.3.2
+        version: 1.3.2
       svelte-dnd-action:
         specifier: ^0.9.22
         version: 0.9.22(svelte@3.59.1)
@@ -11820,6 +11823,10 @@ packages:
       - sass
       - stylus
       - sugarss
+    dev: true
+
+  /svelte-copy@1.3.2:
+    resolution: {integrity: sha512-hGJoZ5aheuMV6exG2UbOj+kfUZGBeQzCy0vWDMIOpqQkizEuF5Xj/cTZ1LT3ivYNtRlX6dRLa9NQ97UTMdnYnQ==}
     dev: true
 
   /svelte-dnd-action@0.9.22(svelte@3.59.1):
