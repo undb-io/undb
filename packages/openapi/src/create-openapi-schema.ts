@@ -1,4 +1,5 @@
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi'
+import type { Record } from '@undb/core'
 import { RecordId, recordIdSchema, viewIdSchema, type Table } from '@undb/core'
 import { format } from 'date-fns'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -11,12 +12,12 @@ import { getRecords } from './routes/get-records'
 import { create401ResponseSchema } from './schema/401.respoonse'
 import { createOpenAPIRecordSchema } from './schema/open-api-record.schema'
 
-export const createTableSchema = (table: Table): OpenAPIObject => {
+export const createTableSchema = (table: Table, record?: Record): OpenAPIObject => {
   const registry = new OpenAPIRegistry()
 
-  const recordSchema = createOpenAPIRecordSchema(table)
+  const recordSchema = createOpenAPIRecordSchema(table, record)
   registry.register(COMPONENT_RECORD, recordSchema)
-  registry.register(COMPONENT_RECORD_ID, recordIdSchema.openapi({ example: RecordId.createId() }))
+  registry.register(COMPONENT_RECORD_ID, recordIdSchema.openapi({ example: record?.id.value ?? RecordId.createId() }))
   registry.register(COMPONENT_VIEW_ID, viewIdSchema.openapi({ example: table.mustGetView().id.value }))
 
   const bearerAuth = registry.registerComponent('securitySchemes', 'bearerAuth', {
