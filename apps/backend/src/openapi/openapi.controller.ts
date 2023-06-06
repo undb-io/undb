@@ -1,6 +1,6 @@
-import { Controller, Get, Param, Query, UseGuards, Version } from '@nestjs/common'
-import { QueryBus } from '@nestjs/cqrs'
-import { GetRecordQuery, GetRecordsQuery } from '@undb/cqrs'
+import { Controller, Delete, Get, Param, Query, UseGuards, Version } from '@nestjs/common'
+import { CommandBus, QueryBus } from '@nestjs/cqrs'
+import { DeleteRecordCommand, GetRecordQuery, GetRecordsQuery } from '@undb/cqrs'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'
 import { OpenAPIService } from './openapi.service.js'
 
@@ -10,7 +10,11 @@ import { OpenAPIService } from './openapi.service.js'
 })
 @UseGuards(JwtAuthGuard)
 export class OpenAPIController {
-  constructor(private queryBus: QueryBus, private readonly service: OpenAPIService) {}
+  constructor(
+    private queryBus: QueryBus,
+    private readonly commandBus: CommandBus,
+    private readonly service: OpenAPIService,
+  ) {}
 
   @Version('1')
   @Get('tables/:tableId/records')
@@ -26,5 +30,11 @@ export class OpenAPIController {
     const result = await this.queryBus.execute(new GetRecordQuery({ tableId, id }))
     const record = result ? await this.service.mapMany(tableId, result) : null
     return { record }
+  }
+
+  @Version('1')
+  @Delete('tables/:tableId/records/:id')
+  public async deleteRecord(@Param('tableId') tableId: string, @Param('id') id: string) {
+    await this.commandBus.execute(new DeleteRecordCommand({ tableId, id }))
   }
 }

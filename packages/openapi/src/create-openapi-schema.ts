@@ -7,6 +7,7 @@ import { format } from 'date-fns'
 import OpenAPISnippet from 'openapi-snippet'
 import type { OpenAPIObject } from 'openapi3-ts/oas30'
 import { COMPONENT_OPTION, COMPONENT_RECORD, COMPONENT_RECORD_ID, COMPONENT_USER, COMPONENT_VIEW_ID } from './constants'
+import { deleteRecordById } from './routes/delete-record-by-id'
 import { getRecordById } from './routes/get-record-by-id'
 import { getRecords } from './routes/get-records'
 import { create401ResponseSchema } from './schema/401.respoonse'
@@ -29,7 +30,7 @@ export const createTableSchema = (table: Table, record?: IQueryRecordSchema): Op
     bearerFormat: 'JWT',
   })
 
-  const routes = [getRecords(table, recordSchema), getRecordById(table, recordSchema)]
+  const routes = [getRecords(table, recordSchema), getRecordById(table, recordSchema), deleteRecordById(table)]
 
   for (const route of routes) {
     registry.registerPath(route)
