@@ -23,7 +23,7 @@ export const createRedocHTML = (table: Table, spec: OpenAPIObject) => {
     </style>
   </head>
   <body>
-    <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/redoc@2.0.0/bundles/redoc.standalone.js"></script>
 
     <div id="redoc-container"></div>
     <script>

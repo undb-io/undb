@@ -11,7 +11,7 @@ import { getRecordById } from './routes/get-record-by-id'
 import { getRecords } from './routes/get-records'
 import { create401ResponseSchema } from './schema/401.respoonse'
 import { createOpenAPIRecordSchema } from './schema/open-api-record.schema'
-import { openAPIOptionSchema, openApiUserScheam } from './schema/record-value.schema'
+import { openAPIOptionSchema, openApiUserSchema } from './schema/record-value.schema'
 
 export const createTableSchema = (table: Table, record?: IQueryRecordSchema): OpenAPIObject => {
   const registry = new OpenAPIRegistry()
@@ -21,7 +21,7 @@ export const createTableSchema = (table: Table, record?: IQueryRecordSchema): Op
   registry.register(COMPONENT_RECORD_ID, recordIdSchema.openapi({ example: record?.id ?? RecordId.createId() }))
   registry.register(COMPONENT_VIEW_ID, viewIdSchema.openapi({ example: table.mustGetView().id.value }))
   registry.register(COMPONENT_OPTION, openAPIOptionSchema)
-  registry.register(COMPONENT_USER, openApiUserScheam)
+  registry.register(COMPONENT_USER, openApiUserSchema)
 
   const bearerAuth = registry.registerComponent('securitySchemes', 'bearerAuth', {
     type: 'http',

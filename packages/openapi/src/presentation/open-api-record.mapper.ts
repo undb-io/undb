@@ -1,10 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type {
   CollaboratorField,
   Field,
   IFieldType,
   IQueryRecordSchema,
+  LookupField,
   MultiSelectField,
+  ParentField,
+  ReferenceField,
   SelectField,
+  TreeField,
 } from '@undb/core'
 import { zipObject } from 'lodash-es'
 
@@ -42,19 +47,43 @@ export const openApiRecordValueMapper = (
     },
     bool: getValue,
     'date-range': getValue,
-    reference: getValue,
-    tree: getValue,
-    parent: getValue,
+    reference: (field) => {
+      const ids = getValue(field) as string[]
+      if (!ids) return []
+      const values = (field as ReferenceField).getDisplayValues(displayValues)
+      return values.map((value, index) => ({ id: ids[index], value }))
+    },
+    tree: (field) => {
+      const ids = getValue(field) as string[]
+      if (!ids) return []
+      const values = (field as TreeField).getDisplayValues(displayValues)
+      return values.map((value, index) => ({ id: ids[index], value }))
+    },
+    parent: (field) => {
+      const id = getValue(field) as string
+      const value = (field as ParentField).getDisplayValues(displayValues)
+      if (!value) return null
+
+      return {
+        id,
+        value: value[0],
+      }
+    },
     rating: getValue,
     currency: getValue,
     count: getValue,
-    lookup: getValue,
+    lookup: (field) => {
+      const values = (field as LookupField).getDisplayValues(displayValues)
+      return values ?? []
+    },
     sum: getValue,
     average: getValue,
     attachment: getValue,
     collaborator: (field) => {
-      const values = (field as CollaboratorField).getDisplayValues(displayValues)
       const userIds = getValue(field) as string[]
+      if (!userIds) return []
+
+      const values = (field as CollaboratorField).getDisplayValues(displayValues)
       return values.map((value, index) => ({
         id: userIds[index],
         ...zipObject(['username', 'avatar', 'color'], value),

@@ -18,7 +18,7 @@ export const getRecordById = (table: Table, schema: RecordSchema): RouteConfig =
     },
     responses: {
       200: {
-        description: `${table.name.value} id`,
+        description: `${table.name.value} record`,
         content: {
           'application/json': {
             schema: z.object({ record: schema.nullable() }),
