@@ -1,6 +1,6 @@
-import { Controller, Delete, Get, Param, Query, UseGuards, Version } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Query, UseGuards, Version } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
-import { DeleteRecordCommand, GetRecordQuery, GetRecordsQuery } from '@undb/cqrs'
+import { BulkDeleteRecordsCommand, DeleteRecordCommand, GetRecordQuery, GetRecordsQuery } from '@undb/cqrs'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'
 import { OpenAPIService } from './openapi.service.js'
 
@@ -36,5 +36,11 @@ export class OpenAPIController {
   @Delete('tables/:tableId/records/:id')
   public async deleteRecord(@Param('tableId') tableId: string, @Param('id') id: string) {
     await this.commandBus.execute(new DeleteRecordCommand({ tableId, id }))
+  }
+
+  @Version('1')
+  @Delete('tables/:tableId/records')
+  public async deleteRecordsByIds(@Param('tableId') tableId: string, @Body('ids') ids: [string, ...string[]]) {
+    await this.commandBus.execute(new BulkDeleteRecordsCommand({ tableId, ids }))
   }
 }
