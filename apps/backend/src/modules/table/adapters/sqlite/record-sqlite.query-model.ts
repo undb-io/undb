@@ -26,7 +26,7 @@ export class NestRecordSqliteQueryModel extends RecordSqliteQueryModel implement
   }
 
   @UseRequestContext()
-  async findOne(tableId: string, spec: IRecordSpec): Promise<Option<IQueryRecordSchema>> {
+  async findOne(tableId: string, spec: IRecordSpec | null): Promise<Option<IQueryRecordSchema>> {
     return super.findOne(tableId, spec)
   }
 

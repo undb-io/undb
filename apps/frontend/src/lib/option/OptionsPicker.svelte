@@ -8,6 +8,9 @@
 	export let field: SelectField | MultiSelectField
 
 	export let value: string[] | undefined = []
+	$: if (!value) {
+		value = []
+	}
 
 	$: selected = value ? value.map((id) => field.options.getById(id).into()!).filter(Boolean) : []
 	$: options = field.options?.options

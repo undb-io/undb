@@ -4,10 +4,12 @@ import { TableModule } from '../modules/table/table.module.js'
 import { OpenAPIDocController } from './openapi-doc.controller.js'
 import { OpenAPIDocService } from './openapi-doc.service.js'
 import { OpenAPIController } from './openapi.controller.js'
+import { provider as mapper } from './openapi.mapper.js'
+import { OpenAPIService } from './openapi.service.js'
 
 @Module({
   imports: [TableModule, CqrsModule],
   controllers: [OpenAPIDocController, OpenAPIController],
-  providers: [OpenAPIDocService],
+  providers: [OpenAPIDocService, OpenAPIService, mapper],
 })
 export class OpenAPIModule {}

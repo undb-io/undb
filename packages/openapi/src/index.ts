@@ -5,3 +5,4 @@ extendZodWithOpenApi(z)
 
 export * from './create-openapi-html.js'
 export * from './create-openapi-schema.js'
+export * from './presentation/index.js'

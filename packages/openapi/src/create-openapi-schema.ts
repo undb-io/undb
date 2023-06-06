@@ -1,24 +1,27 @@
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi'
-import type { Record } from '@undb/core'
+import type { IQueryRecordSchema } from '@undb/core'
 import { RecordId, recordIdSchema, viewIdSchema, type Table } from '@undb/core'
 import { format } from 'date-fns'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import OpenAPISnippet from 'openapi-snippet'
 import type { OpenAPIObject } from 'openapi3-ts/oas30'
-import { COMPONENT_RECORD, COMPONENT_RECORD_ID, COMPONENT_VIEW_ID } from './constants'
+import { COMPONENT_OPTION, COMPONENT_RECORD, COMPONENT_RECORD_ID, COMPONENT_USER, COMPONENT_VIEW_ID } from './constants'
 import { getRecordById } from './routes/get-record-by-id'
 import { getRecords } from './routes/get-records'
 import { create401ResponseSchema } from './schema/401.respoonse'
 import { createOpenAPIRecordSchema } from './schema/open-api-record.schema'
+import { openAPIOptionSchema, openApiUserScheam } from './schema/record-value.schema'
 
-export const createTableSchema = (table: Table, record?: Record): OpenAPIObject => {
+export const createTableSchema = (table: Table, record?: IQueryRecordSchema): OpenAPIObject => {
   const registry = new OpenAPIRegistry()
 
   const recordSchema = createOpenAPIRecordSchema(table, record)
   registry.register(COMPONENT_RECORD, recordSchema)
-  registry.register(COMPONENT_RECORD_ID, recordIdSchema.openapi({ example: record?.id.value ?? RecordId.createId() }))
+  registry.register(COMPONENT_RECORD_ID, recordIdSchema.openapi({ example: record?.id ?? RecordId.createId() }))
   registry.register(COMPONENT_VIEW_ID, viewIdSchema.openapi({ example: table.mustGetView().id.value }))
+  registry.register(COMPONENT_OPTION, openAPIOptionSchema)
+  registry.register(COMPONENT_USER, openApiUserScheam)
 
   const bearerAuth = registry.registerComponent('securitySchemes', 'bearerAuth', {
     type: 'http',
