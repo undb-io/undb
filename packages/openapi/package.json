@@ -1,0 +1,41 @@
+{
+  "name": "@undb/openapi",
+  "description": "",
+  "version": "0.0.0",
+  "author": "",
+  "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^5.1.0",
+    "@undb/core": "^0.0.0",
+    "date-fns": "^2.30.0",
+    "lodash-es": "^4.17.21",
+    "openapi-snippet": "^0.14.0",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.7",
+    "openapi3-ts": "^4.1.2",
+    "rimraf": "^5.0.1",
+    "tsconfig": "^0.0.0",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.4",
+    "vitest": "^0.31.1"
+  },
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/index.js"
+  },
+  "keywords": [],
+  "main": "./dist/index",
+  "private": true,
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf dist",
+    "coverage": "vitest run --coverage",
+    "dev": "tsup --watch",
+    "prebuild": "pnpm run clean",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "type": "module",
+  "types": "dist/index.d"
+}

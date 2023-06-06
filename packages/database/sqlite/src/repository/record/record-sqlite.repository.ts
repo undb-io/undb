@@ -98,6 +98,40 @@ export class RecordSqliteRepository implements IRecordRepository {
     }
   }
 
+  async findOne(tableId: string, spec: IRecordSpec | null, schema: TableSchemaIdMap): Promise<Option<CoreRecord>> {
+    const tableEntity = await this.em.findOneOrFail(
+      Table,
+      { id: tableId },
+      {
+        populate: [
+          'views',
+          'fields.options',
+          'fields.displayFields',
+          'fields.countFields',
+          'fields.sumAggregateField',
+          'fields.sumFields',
+          'fields.averageFields',
+          'fields.averageAggregateField',
+          'fields.lookupFields',
+          'fields.foreignTable',
+        ],
+      },
+    )
+    await this._populateTable(tableEntity)
+    const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
+    spec = spec
+      ? WithRecordTableId.fromString(tableId).unwrap().and(spec)
+      : WithRecordTableId.fromString(tableId).unwrap()
+
+    const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec).select().from().where().build()
+    new RecordSqliteReferenceQueryVisitor(this.em, builder.knex, builder.qb, table, tableEntity).visit(table)
+
+    const data = await this.em.execute<RecordSqlite[]>(builder.qb.first())
+
+    const record = RecordSqliteMapper.toDomain(tableId, schema, data[0]).unwrap()
+    return Some(record)
+  }
+
   async findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<CoreRecord>> {
     const tableEntity = await this.em.findOneOrFail(
       Table,

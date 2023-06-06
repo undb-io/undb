@@ -8,6 +8,7 @@ export interface IRecordRepository {
   insertMany(records: Record[], schema: TableSchemaIdMap): Promise<void>
 
   findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<Record>>
+  findOne(tableId: string, spec: IRecordSpec | null, schema: TableSchemaIdMap): Promise<Option<Record>>
   find(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap): Promise<Record[]>
 
   updateOneById(tableId: string, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void>
