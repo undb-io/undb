@@ -1,6 +1,6 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { IQueryRecords, IQueryRecordSchema, IRecordQueryModel, IRecordSpec, ViewId } from '@undb/core'
-import { WithRecordId } from '@undb/core'
+import { WithRecordId, WithRecordTableId } from '@undb/core'
 import { Option } from 'oxide.ts'
 import { ReferenceField, SelectField } from '../../entity/field.js'
 import { Table as TableEntity } from '../../entity/table.js'
@@ -85,10 +85,14 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     return { records, total: total }
   }
 
-  async findOne(tableId: string, spec: IRecordSpec): Promise<Option<IQueryRecordSchema>> {
+  async findOne(tableId: string, spec: IRecordSpec | null): Promise<Option<IQueryRecordSchema>> {
     const tableEntity = await this.#getTable(tableId)
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
+
+    spec = spec
+      ? WithRecordTableId.fromString(tableId).unwrap().and(spec)
+      : WithRecordTableId.fromString(tableId).unwrap()
 
     let builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec)
     builder = builder.select().from().where().reference().build()

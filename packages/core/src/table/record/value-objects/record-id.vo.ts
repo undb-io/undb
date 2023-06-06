@@ -9,6 +9,10 @@ export class RecordId extends NanoID {
     return new RecordId(id)
   }
 
+  static createId(): string {
+    return this.create().value
+  }
+
   static from(id: string): RecordId {
     return new RecordId(id)
   }

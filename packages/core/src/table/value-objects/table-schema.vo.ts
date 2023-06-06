@@ -25,6 +25,8 @@ import {
   UpdatedByField,
   WithoutField,
   createFieldSchema,
+  getNamesWithInternals,
+  getNextFieldName,
 } from '../field/index.js'
 import { UpdatedAtField } from '../field/updated-at-field.js'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema.js'
@@ -63,6 +65,13 @@ const aggregateFieldTypes: IFieldType[] = ['count', 'sum', 'average']
 export class TableSchema extends ValueObject<Field[]> {
   static create(inputs: ICreateTableSchemaInput, ctx: ClsStore): TableSchema {
     const fields = createTableSchemaSchema.parse(inputs).flatMap(FieldFactory.create)
+
+    const names = getNamesWithInternals(
+      inputs.map((n) => n.name),
+      ctx.t,
+      ctx.lang,
+    )
+    namesSchema.parse(names)
 
     return new TableSchema([
       IdField.default(),
@@ -169,14 +178,6 @@ export class TableSchema extends ValueObject<Field[]> {
   }
 
   public getNextFieldName(fieldName?: string): string {
-    if (!fieldName) return `Field (${this.fields.length + 1})`
-
-    const found = this.fieldsNames.find((n) => n === fieldName)
-    if (!found) {
-      return fieldName
-    }
-
-    const newName = fieldName + ' (1)'
-    return this.getNextFieldName(newName)
+    return getNextFieldName(this.fieldsNames, fieldName)
   }
 }

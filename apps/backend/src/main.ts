@@ -27,6 +27,7 @@ async function bootstrap() {
 
   app.enableCors()
   app.enableShutdownHooks()
+  app.enableVersioning()
   app.setGlobalPrefix('/api', { exclude: ['health'] })
 
   const httpAdapterHost = app.get(HttpAdapterHost)

@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next'
 import type { Field, IFieldType, SelectFieldTypes } from './field.type'
 
 const controlledFieldTypes: Set<IFieldType> = new Set([
@@ -388,3 +389,30 @@ export const canChangeType = (type: IFieldType) => !!fieldTypeConvertMap[type]
 
 export const changeFieldTypeStrategy = (fromType: IFieldType) => (type: IFieldType) =>
   fieldTypeConvertMap[fromType]?.[type]
+
+export const getNextFieldName = (fieldNames: string[] = [], fieldName?: string): string => {
+  if (!fieldName) return `Field (${fieldNames.length + 1})`
+  const found = fieldNames.find((n) => n === fieldName)
+  if (!found) {
+    return fieldName
+  }
+  const newName = fieldName + ' (1)'
+  return getNextFieldName(fieldNames, newName)
+}
+
+export const getNamesWithInternals = (fieldNames: string[], t: TFunction, lng?: string): string[] => [
+  'id',
+  t('created-at', { lng }),
+  t('created-by', { lng }),
+  t('updated-at', { lng }),
+  t('updated-by', { lng }),
+  ...fieldNames,
+]
+
+export const getFieldNames = (fieldNames: string[], t: TFunction, lng?: string): string[] => {
+  const names = getNamesWithInternals(fieldNames, t, lng)
+
+  return fieldNames.map((name, index) =>
+    getNextFieldName(names.slice(0, index + names.length - fieldNames.length), name),
+  )
+}

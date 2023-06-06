@@ -1,4 +1,5 @@
-import { ITableSpecHandler, type ITableRepository } from '@undb/core'
+import type { ITableSpecHandler } from '@undb/core'
+import { type ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
 import type { CreateFieldCommand } from './create-field.command.js'
 

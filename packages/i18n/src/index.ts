@@ -26,8 +26,10 @@ export const config: InitOptions = {
         username: 'username',
         avatar: 'avatar',
         'Profile Helper': 'Edit your personal profile.',
+        'Copy Auth Token': 'Copy Auth Token',
       },
       common: {
+        'click to upload or dnd': '<strong>Click to upload</strong> or drag and drop',
         demo: 'this is a demo site for undb, you can use email: <strong>{{email}}</strong> and password: <strong>{{password}}</strong> to login',
         unamed: 'unamed',
         error: 'some error happened',
@@ -107,8 +109,12 @@ export const config: InitOptions = {
         Chart: 'Chart',
         null: 'null',
         'full screen': 'full screen',
+        Copied: 'Copied',
       },
       table: {
+        'import csv': 'import csv',
+        'first row as header': 'Use First Row as Headers',
+        'import data': 'Import Data',
         'Auto Display Field': 'using <strong>{{table}}</strong> display field',
         'shortcut T': 'Use shortcut {{ shortcut }} to create table from anywhere.',
         'shortcut R': 'Use shortcut {{ shortcut }} to create record in table.',
@@ -293,8 +299,10 @@ export const config: InitOptions = {
         username: '用户名',
         avatar: '头像',
         'Profile Helper': '编辑你的个人简介',
+        'Copy Auth Token': '复制 Auth 令牌',
       },
       common: {
+        'click to upload or dnd': '<strong>点击上传</strong>或拖拽文件',
         demo: '这是 undb 的 demo 网站，你可以使用邮箱: <strong>{{email}}</strong> 和密码：<strong>{{password}}</strong> 登录',
         unamed: '未命名记录',
         error: '发生错误',
@@ -374,8 +382,12 @@ export const config: InitOptions = {
         Chart: '图表',
         null: '空',
         'full screen': '全屏',
+        Copied: '已复制',
       },
       table: {
+        'import csv': '导入 csv',
+        'first row as header': '使用第一行作为列标题',
+        'import data': '导入行数据',
         'Auto Display Field': '使用 <strong>{{table}}</strong> 表中设置的显示列',
         'shortcut T':
           '使用快捷键 <span class="bg-gray-100 text-gray-800 text-xs font-medium mx-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">{{shortcut}}</span> 在任何页面创建表。',

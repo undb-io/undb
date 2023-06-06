@@ -4,16 +4,20 @@
 	import { Dialog, DialogOverlay, TransitionChild, TransitionRoot } from '@rgossiaux/svelte-headlessui'
 	import type { LayoutData } from './$types'
 	import CreateTable from '$lib/table/CreateTable.svelte'
-	import { Avatar, Button, Chevron, Dropdown, DropdownItem, P } from 'flowbite-svelte'
+	import { Avatar, Button, ButtonGroup, Chevron, Dropdown, DropdownItem, P, Toast } from 'flowbite-svelte'
 	import { page } from '$app/stores'
-	import { allTables, currentRecordId, newTableSchema } from '$lib/store/table'
+	import { allTables, currentRecordId } from '$lib/store/table'
 	import { goto } from '$app/navigation'
 	import { browser } from '$app/environment'
 	import logo from '$lib/assets/logo.svg'
 	import { i18n, t } from '$lib/i18n'
 	import { createMutation } from '@tanstack/svelte-query'
-	import { createTableModal } from '$lib/store/modal'
+	import { createTableModal, importCSVModal } from '$lib/store/modal'
 	import { colors } from '$lib/field/helpers'
+	import ImportCsv from '$lib/import/ImportCSV.svelte'
+	import { copyText } from 'svelte-copy'
+	import Cookies from 'js-cookie'
+	import { slide } from 'svelte/transition'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -30,6 +34,17 @@
 	const setSidebarClose = () => (sidebarOpen = false)
 
 	export let data: LayoutData
+
+	let copied = false
+	const token = Cookies.get('undb_auth')!
+
+	const copyToken = () => {
+		copyText(token)
+		copied = true
+		setTimeout(() => {
+			copied = false
+		}, 2000)
+	}
 
 	$: tables = data.tables
 	$: allTables.set(tables)
@@ -241,9 +256,22 @@
 			</nav>
 			<ul class="flex flex-col border-t pt-4 space-y-2">
 				<li class="px-6">
-					<Button size="xs" class="w-full" outline on:click={() => createTableModal.open()}
-						>{$t('Create New Table')}</Button
-					>
+					<ButtonGroup class="w-full">
+						<Button size="xs" class="w-full" outline on:click={() => createTableModal.open()}>
+							{$t('Create New Table')}
+						</Button>
+						<Button size="xs" outline>
+							<i class="ti ti-chevron-down" />
+						</Button>
+						<Dropdown placement="top" class="w-[200px]">
+							<DropdownItem on:click={() => importCSVModal.open()} class="flex items-center gap-2">
+								<i class="ti ti-csv" />
+								<span>
+									{$t('import csv')}
+								</span>
+							</DropdownItem>
+						</Dropdown>
+					</ButtonGroup>
 				</li>
 
 				<button
@@ -292,6 +320,10 @@
 						</DropdownItem>
 					</Dropdown>
 
+					<DropdownItem on:click={copyToken}>
+						<i class="ti ti-copy" />
+						{$t('Copy Auth Token', { ns: 'auth' })}
+					</DropdownItem>
 					<DropdownItem>
 						<button on:click={() => $logout.mutate()} class="w-full h-full text-left text-red-400" type="submit">
 							<i class="ti ti-logout" />
@@ -348,6 +380,10 @@
 				</DropdownItem>
 			</Dropdown>
 
+			<DropdownItem on:click={copyToken}>
+				<i class="ti ti-copy" />
+				{$t('Copy Auth Token', { ns: 'auth' })}
+			</DropdownItem>
 			<DropdownItem>
 				<button on:click={() => $logout.mutate()} class="w-full h-full text-left text-red-400" type="submit">
 					<i class="ti ti-logout" />
@@ -366,4 +402,22 @@
 	{#if $createTableModal.open}
 		<CreateTable data={$page.data.form} />
 	{/if}
+
+	{#if $importCSVModal.open}
+		<ImportCsv />
+	{/if}
 </div>
+
+<Toast color="green" transition={slide} position="top-right" class="z-[99999]" bind:open={copied}>
+	<svelte:fragment slot="icon">
+		<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+			><path
+				fill-rule="evenodd"
+				d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+				clip-rule="evenodd"
+			/></svg
+		>
+		<span class="sr-only">Check icon</span>
+	</svelte:fragment>
+	{$t('Copied', { ns: 'common' })}
+</Toast>

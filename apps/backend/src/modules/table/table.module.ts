@@ -11,5 +11,6 @@ import { tableSpecHandler } from './services/table-spec.handler.js'
   controllers: [RecordController],
   imports: [CqrsModule],
   providers: [...commandHandlers, ...queryHandlers, ...dbAdapters, tableSpecHandler, ...exportors],
+  exports: [...dbAdapters],
 })
 export class TableModule {}

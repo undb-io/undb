@@ -4,15 +4,21 @@
 
 Private first, unified, self-hosted no code database.
 
-<a href="https://demo.undb.xyz/">Live Demo</a>
+<a href="https://demo.undb.xyz?lng=en">Live Demo</a>
 ·
 <a href="https://docs.undb.xyz/">Documentation</a>
 ·
 <a href="https://www.undb.xyz/">Website</a>
+·
+<a href="https://github.com/orgs/undb-xyz/projects/1/views/2?query=is%3Aopen+sort%3Aupdated-desc">Roadmap</a>
 
 > use email `test@example.com` and password `123456` to login
 
 ![undb](./docs/undb.png)
+
+<p>
+  <a href="https://discord.gg/3rcNdU3y3U"><img alt="Discord" src="https://img.shields.io/badge/discord-chat-5865f2?logo=discord&logoColor=f5f5f5" /></a>
+</p>
 
 ## Features
 
