@@ -1,9 +1,10 @@
 import type { RouteConfig } from '@asteasolutions/zod-to-openapi'
 import { viewIdSchema, type Table } from '@undb/core'
+import { COMPONENT_VIEW_ID } from 'src/constants'
 import { z } from 'zod'
 import type { RecordSchema } from '../schema/open-api-record.schema'
 
-export const listRecords = (table: Table, schema: RecordSchema): RouteConfig => {
+export const getRecords = (table: Table, schema: RecordSchema): RouteConfig => {
   return {
     method: 'get',
     path: `/tables/${table.id.value}/records`,
@@ -11,7 +12,7 @@ export const listRecords = (table: Table, schema: RecordSchema): RouteConfig => 
     summary: `List ${table.name.value} records`,
     request: {
       query: z.object({
-        viewId: viewIdSchema.optional(),
+        viewId: viewIdSchema.optional().openapi(COMPONENT_VIEW_ID),
       }),
     },
     responses: {

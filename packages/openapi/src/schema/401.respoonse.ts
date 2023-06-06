@@ -9,7 +9,7 @@ export const create401ResponseSchema = (): ResponseConfig => {
       'application/json': {
         schema: z
           .object({
-            message: z.string(),
+            message: z.string().openapi({ example: 'Unauthorized' }),
             statusCode: z.literal('401'),
           })
           .openapi(UNAUTHORIZED),

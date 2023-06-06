@@ -1,12 +1,13 @@
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi'
-import { type Table } from '@undb/core'
+import { RecordId, recordIdSchema, viewIdSchema, type Table } from '@undb/core'
 import { format } from 'date-fns'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import OpenAPISnippet from 'openapi-snippet'
 import type { OpenAPIObject } from 'openapi3-ts/oas30'
-import { COMPONENT_RECORD } from './constants'
-import { listRecords } from './routes/list-records'
+import { COMPONENT_RECORD, COMPONENT_RECORD_ID, COMPONENT_VIEW_ID } from './constants'
+import { getRecordById } from './routes/get-record-by-id'
+import { getRecords } from './routes/get-records'
 import { create401ResponseSchema } from './schema/401.respoonse'
 import { createOpenAPIRecordSchema } from './schema/open-api-record.schema'
 
@@ -15,6 +16,8 @@ export const createTableSchema = (table: Table): OpenAPIObject => {
 
   const recordSchema = createOpenAPIRecordSchema(table)
   registry.register(COMPONENT_RECORD, recordSchema)
+  registry.register(COMPONENT_RECORD_ID, recordIdSchema.openapi({ example: RecordId.createId() }))
+  registry.register(COMPONENT_VIEW_ID, viewIdSchema.openapi({ example: table.mustGetView().id.value }))
 
   const bearerAuth = registry.registerComponent('securitySchemes', 'bearerAuth', {
     type: 'http',
@@ -22,7 +25,7 @@ export const createTableSchema = (table: Table): OpenAPIObject => {
     bearerFormat: 'JWT',
   })
 
-  const routes = [listRecords(table, recordSchema)]
+  const routes = [getRecords(table, recordSchema), getRecordById(table, recordSchema)]
 
   for (const route of routes) {
     registry.registerPath(route)
