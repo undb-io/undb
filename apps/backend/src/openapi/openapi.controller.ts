@@ -1,11 +1,13 @@
-import { Controller, Get, Param, Version } from '@nestjs/common'
+import { Controller, Get, Param, UseGuards, Version } from '@nestjs/common'
 import { QueryBus } from '@nestjs/cqrs'
 import { GetRecordsQuery } from '@undb/cqrs'
+import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'
 
 @Controller({
   path: 'openapi',
   version: '1',
 })
+@UseGuards(JwtAuthGuard)
 export class OpenAPIController {
   constructor(private queryBus: QueryBus) {}
 

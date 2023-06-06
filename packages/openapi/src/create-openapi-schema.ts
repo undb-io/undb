@@ -7,6 +7,7 @@ import OpenAPISnippet from 'openapi-snippet'
 import type { OpenAPIObject } from 'openapi3-ts/oas30'
 import { COMPONENT_RECORD } from './constants'
 import { listRecords } from './routes/list-records'
+import { create401ResponseSchema } from './schema/401.respoonse'
 import { createOpenAPIRecordSchema } from './schema/open-api-record.schema'
 
 export const createTableSchema = (table: Table): OpenAPIObject => {
@@ -15,10 +16,21 @@ export const createTableSchema = (table: Table): OpenAPIObject => {
   const recordSchema = createOpenAPIRecordSchema(table)
   registry.register(COMPONENT_RECORD, recordSchema)
 
+  const bearerAuth = registry.registerComponent('securitySchemes', 'bearerAuth', {
+    type: 'http',
+    scheme: 'bearer',
+    bearerFormat: 'JWT',
+  })
+
   const routes = [listRecords(table, recordSchema)]
 
   for (const route of routes) {
     registry.registerPath(route)
+
+    const unauthorized = create401ResponseSchema()
+    route.responses[401] = unauthorized
+
+    route.security = [{ [bearerAuth.name]: [] }]
   }
 
   function getOpenApiDocumentation() {
