@@ -21,7 +21,7 @@ export const getRecords = (table: Table, schema: RecordSchema): RouteConfig => {
         description: `${table.name.value} records`,
         content: {
           'application/json': {
-            schema: z.object({ data: schema.array() }),
+            schema: z.object({ records: schema.array() }),
           },
         },
       },

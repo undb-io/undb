@@ -16,15 +16,15 @@ export class OpenAPIController {
   @Get('tables/:tableId/records')
   public async getRecords(@Param('tableId') tableId: string, @Query('viewId') viewId?: string) {
     const result = await this.queryBus.execute(new GetRecordsQuery({ tableId, viewId }))
-    const data = await this.service.mapMany(tableId, result.records ?? [])
-    return { data }
+    const records = await this.service.mapMany(tableId, result.records ?? [])
+    return { records }
   }
 
   @Version('1')
   @Get('tables/:tableId/records/:id')
   public async getRecordById(@Param('tableId') tableId: string, @Param('id') id: string) {
     const result = await this.queryBus.execute(new GetRecordQuery({ tableId, id }))
-    const data = result ? await this.service.mapMany(tableId, result) : null
-    return { data }
+    const record = result ? await this.service.mapMany(tableId, result) : null
+    return { record }
   }
 }
