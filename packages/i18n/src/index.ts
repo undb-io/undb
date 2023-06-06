@@ -26,6 +26,7 @@ export const config: InitOptions = {
         username: 'username',
         avatar: 'avatar',
         'Profile Helper': 'Edit your personal profile.',
+        'Copy Auth Token': 'Copy Auth Token',
       },
       common: {
         'click to upload or dnd': '<strong>Click to upload</strong> or drag and drop',
@@ -108,6 +109,7 @@ export const config: InitOptions = {
         Chart: 'Chart',
         null: 'null',
         'full screen': 'full screen',
+        Copied: 'Copied',
       },
       table: {
         'import csv': 'import csv',
@@ -297,6 +299,7 @@ export const config: InitOptions = {
         username: '用户名',
         avatar: '头像',
         'Profile Helper': '编辑你的个人简介',
+        'Copy Auth Token': '复制 Auth 令牌',
       },
       common: {
         'click to upload or dnd': '<strong>点击上传</strong>或拖拽文件',
@@ -379,6 +382,7 @@ export const config: InitOptions = {
         Chart: '图表',
         null: '空',
         'full screen': '全屏',
+        Copied: '已复制',
       },
       table: {
         'import csv': '导入 csv',
