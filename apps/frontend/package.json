@@ -25,7 +25,6 @@
 		"@sveltejs/adapter-auto": "^2.1.0",
 		"@sveltejs/adapter-static": "^2.0.2",
 		"@sveltejs/kit": "^1.18.0",
-		"@tabler/icons-webfont": "^2.20.0",
 		"@tailwindcss/forms": "^0.5.3",
 		"@tanstack/svelte-query": "^4.29.7",
 		"@trpc/client": "^10.28.0",
