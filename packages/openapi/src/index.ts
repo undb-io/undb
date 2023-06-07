@@ -3,6 +3,7 @@ import { z } from 'zod'
 
 extendZodWithOpenApi(z)
 
+export * from './convertor/index.js'
 export * from './create-openapi-html.js'
 export * from './create-openapi-schema.js'
 export * from './presentation/index.js'

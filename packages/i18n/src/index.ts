@@ -278,6 +278,9 @@ export const config: InitOptions = {
         updatingType: {
           select: 'new options will be generated according to existing values',
         },
+        'download openapi': 'Download Open API',
+        'openapi spec': 'Open API Spec',
+        'postman collections': 'Postman Collections',
       },
       zod: zodEn,
     },
@@ -558,6 +561,9 @@ export const config: InitOptions = {
         updatingType: {
           select: '根据已有列的值创建新的选项值',
         },
+        'download openapi': '下载 Open API',
+        'openapi spec': 'Open API 规范',
+        'postman collections': 'Postman 集合',
       },
       zod: zodZh,
     },
