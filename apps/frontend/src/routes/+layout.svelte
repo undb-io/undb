@@ -1,6 +1,5 @@
 <script>
 	import '../app.postcss'
-	import '@tabler/icons-webfont/tabler-icons.min.css'
 	import NProgress from 'nprogress'
 	import { navigating, page } from '$app/stores'
 	import { QueryClientProvider } from '@tanstack/svelte-query'
