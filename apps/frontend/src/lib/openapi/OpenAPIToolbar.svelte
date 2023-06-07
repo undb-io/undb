@@ -4,6 +4,7 @@
 	import TableNavigator from '$lib/table/TableNavigator.svelte'
 	import { Button, Chevron, Dropdown, DropdownItem } from 'flowbite-svelte'
 	import { getTable } from '$lib/store/table'
+	import { t } from '$lib/i18n'
 
 	const table = getTable()
 
@@ -38,10 +39,10 @@
 		<div class="flex items-center justify-between w-full">
 			<TableNavigator />
 			<div>
-				<Button size="xs"><Chevron>Download</Chevron></Button>
+				<Button size="xs"><Chevron>{$t('download openapi')}</Chevron></Button>
 				<Dropdown>
-					<DropdownItem on:click={() => download()}>OpenAPI Spec</DropdownItem>
-					<DropdownItem on:click={() => download('postman')}>Postman collection</DropdownItem>
+					<DropdownItem on:click={() => download()}>{$t('openapi spec')}</DropdownItem>
+					<DropdownItem on:click={() => download('postman')}>{$t('postman collections')}</DropdownItem>
 				</Dropdown>
 			</div>
 		</div>
