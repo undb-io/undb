@@ -7,3 +7,13 @@ export class InvalidTableIdError extends ExceptionBase {
     super('invalid table id')
   }
 }
+
+export const ERR_TABLE_NODE_FOUND = 'TABLE.NOT_FOUND'
+
+export class TableNotFoundError extends ExceptionBase {
+  code = ERR_TABLE_NODE_FOUND
+
+  constructor() {
+    super('table not found')
+  }
+}

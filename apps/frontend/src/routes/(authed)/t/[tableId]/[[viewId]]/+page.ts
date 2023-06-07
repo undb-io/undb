@@ -2,6 +2,7 @@ import { trpc } from '$lib/trpc/client'
 import {
 	RecordFactory,
 	TableFactory,
+	TableNotFoundError,
 	createMutateRecordValuesSchema,
 	createOptionSchema,
 	createUpdateTableSchema,
@@ -18,7 +19,7 @@ export const load: PageLoad = async (event) => {
 	const { tableId, viewId } = event.params
 	const { table } = await event.parent()
 	if (!table) {
-		throw new Error('not found table')
+		throw new TableNotFoundError()
 	}
 	const coreTable = TableFactory.fromQuery(table)
 	const view = coreTable.mustGetView(viewId)

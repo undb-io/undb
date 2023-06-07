@@ -28,7 +28,11 @@ export const config: InitOptions = {
         'Profile Helper': 'Edit your personal profile.',
         'Copy Auth Token': 'Copy Auth Token',
       },
+      errors: {
+        'TABLE.NOT_FOUND': 'table not found',
+      },
       common: {
+        'return to home': 'Return to Home',
         'click to upload or dnd': '<strong>Click to upload</strong> or drag and drop',
         demo: 'this is a demo site for undb, you can use email: <strong>{{email}}</strong> and password: <strong>{{password}}</strong> to login',
         unamed: 'unamed',
@@ -301,7 +305,11 @@ export const config: InitOptions = {
         'Profile Helper': '编辑你的个人简介',
         'Copy Auth Token': '复制 Auth 令牌',
       },
+      errors: {
+        'TABLE.NOT_FOUND': '没有找到表格',
+      },
       common: {
+        'return to home': '返回首页',
         'click to upload or dnd': '<strong>点击上传</strong>或拖拽文件',
         demo: '这是 undb 的 demo 网站，你可以使用邮箱: <strong>{{email}}</strong> 和密码：<strong>{{password}}</strong> 登录',
         unamed: '未命名记录',
