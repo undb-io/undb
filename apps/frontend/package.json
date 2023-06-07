@@ -84,7 +84,7 @@
 		"type-fest": "^3.11.0",
 		"typescript": "^5.0.4",
 		"vite": "^4.3.8",
-		"vitest": "^0.31.1",
+		"vitest": "^0.32.0",
 		"zod": "^3.21.4"
 	},
 	"type": "module"
