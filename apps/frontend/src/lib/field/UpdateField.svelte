@@ -16,11 +16,13 @@
 	} from '@undb/core'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
-	import { z } from 'zod'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import { updateFieldModal } from '$lib/store/modal'
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
+	import { onMount } from 'svelte'
+	import { isEmpty, keys } from 'lodash-es'
+	import { pick } from 'lodash-es'
 
 	const table = getTable()
 	const view = getView()
@@ -48,28 +50,34 @@
 		clearOnSubmit: 'errors-and-message',
 		invalidateAll: false,
 		taintedMessage: null,
-		validators: z.object({}),
 		resetForm: true,
 		multipleSubmits: 'prevent',
 		async onUpdate(event) {
+			const taintedKeys = keys($tainted)
+			if (isEmpty(taintedKeys)) return
+			const values = pick(event.form.data, taintedKeys.concat('type'))
+
 			$updateField.mutate({
 				tableId: $table.id.value,
 				fieldId: field.id.value,
-				field: event.form.data as any,
+				field: values as any,
 			})
 		},
 	})
 
-	const { form, enhance, delayed, submitting } = superFrm
+	const { form, enhance, delayed, submitting, tainted } = superFrm
 
 	// set initial values
-	$: $form = field.json
+	onMount(() => {
+		$form = field.json
+		$tainted = undefined
+	})
 
 	$: showDescription = false
-	$: if (!showDescription) {
+	$: if (!showDescription && $form.description) {
 		$form.description = ''
 	}
-	$: if (!canDisplay($form.type)) {
+	$: if (!canDisplay($form.type) && $form.display) {
 		$form.display = false
 	}
 
