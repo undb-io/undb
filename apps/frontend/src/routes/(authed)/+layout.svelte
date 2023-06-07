@@ -18,6 +18,7 @@
 	import { copyText } from 'svelte-copy'
 	import Cookies from 'js-cookie'
 	import { slide } from 'svelte/transition'
+	import { sidebarCollapsed } from '$lib/store/ui'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -116,7 +117,7 @@
 							</div>
 						</TransitionChild>
 						<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2 h-screen">
-							<div class="flex h-16 shrink-0 items-center px-6 gap-2">
+							<div class="flex h-12 shrink-0 items-center px-6 gap-2">
 								<img class="h-6 w-auto" src={logo} alt="undb" />
 								<P size="lg" class="font-semibold select-none !text-blue-600">undb</P>
 							</div>
@@ -187,11 +188,23 @@
 		</Dialog>
 	</TransitionRoot>
 
-	<div class="hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-72 lg:flex-col h-screen">
-		<div class="flex flex-1 grow flex-col gap-y-0 overflow-hidden border-r border-gray-200 bg-white h-full">
-			<div class="flex h-16 shrink-0 items-center px-6 gap-2">
-				<img class="h-6 w-auto" src={logo} alt="undb" />
-				<P size="lg" class="font-semibold select-none !text-blue-600">undb</P>
+	<div
+		class={cx(
+			'hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-72 lg:flex-col h-screen transition',
+			$sidebarCollapsed && 'translate-x-[-100%]',
+		)}
+	>
+		<div class="flex flex-1 grow flex-col gap-y-0 overflow-hidden border-r border-gray-200 bg-white h-full group/main">
+			<div class="flex h-12 shrink-0 items-center px-6 justify-between">
+				<div class="flex gap-2">
+					<img class="h-6 w-auto" src={logo} alt="undb" />
+					<P size="lg" class="font-semibold select-none !text-blue-600">undb</P>
+				</div>
+				<button on:click={() => ($sidebarCollapsed = true)}>
+					<i
+						class="ti ti-layout-sidebar-left-collapse text-xl text-gray-500 opacity-0 group-hover/main:opacity-100 transition"
+					/>
+				</button>
 			</div>
 			<div class="border-b">
 				<ul class="px-6 -mx-2 space-y-1 py-2">
@@ -393,7 +406,7 @@
 		</Dropdown>
 	</div>
 
-	<main class="lg:pl-72 h-[100vh]">
+	<main class={cx('h-[100vh] transition-all', $sidebarCollapsed ? 'lg:pl-0' : 'lg:pl-72')}>
 		<div class="h-full flex flex-col">
 			<slot />
 		</div>

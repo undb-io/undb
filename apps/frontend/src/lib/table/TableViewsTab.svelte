@@ -10,6 +10,7 @@
 	import { goto, invalidate } from '$app/navigation'
 	import ViewIcon from '$lib/view/ViewIcon.svelte'
 	import type { IViewDisplayType } from '@undb/core'
+	import { sidebarCollapsed } from '$lib/store/ui'
 
 	const table = getTable()
 	const currentView = getView()
@@ -69,6 +70,13 @@
 </script>
 
 <section class="w-full mx-auto bg-gradient-to-r bg-white dark:bg-gray-900 border-b flex space-x-2 items-center">
+	{#if $sidebarCollapsed}
+		<div class="ml-2">
+			<button on:click={() => ($sidebarCollapsed = false)}>
+				<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
+			</button>
+		</div>
+	{/if}
 	<ul bind:this={el} class="flex flex-wrap space-x-2">
 		{#each views as view}
 			<li>
