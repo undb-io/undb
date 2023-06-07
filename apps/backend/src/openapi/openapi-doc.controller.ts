@@ -1,6 +1,5 @@
-import { Controller, Get, Header, Param, Res, UseGuards } from '@nestjs/common'
+import { Controller, Get, Param, Query, Res, StreamableFile, UseGuards } from '@nestjs/common'
 import { type Response } from 'express'
-import { Readable } from 'stream'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'
 import { OpenAPIDocService } from './openapi-doc.service.js'
 
@@ -18,17 +17,17 @@ export class OpenAPIDocController {
   }
 
   @Get('docs/tables/:tableId/export')
-  @Header('Content-Type', 'application/json')
-  @Header('Content-Disposition', 'attachment; filename="package.json"')
-  public async export(@Res() res: Response, @Param('tableId') tableId: string) {
-    const spec = await this.openAPIService.getSpec(tableId)
+  public async export(
+    @Res({ passthrough: true }) res: Response,
+    @Param('tableId') tableId: string,
+    @Query('type') type?: string,
+  ) {
+    const { name, buffer } = await this.openAPIService.export(tableId, type)
 
-    const buffer = Buffer.from(JSON.stringify(spec))
+    res.set({
+      'Content-Disposition': `attachment; filename=${name}`,
+    })
 
-    const stream = new Readable()
-    stream.push(buffer)
-    stream.push(null)
-
-    stream.pipe(res)
+    return new StreamableFile(buffer)
   }
 }

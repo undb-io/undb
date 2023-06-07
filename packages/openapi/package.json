@@ -9,10 +9,13 @@
     "date-fns": "^2.30.0",
     "lodash-es": "^4.17.21",
     "openapi-snippet": "^0.14.0",
+    "openapi-to-postmanv2": "^4.14.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.7",
+    "@types/openapi-to-postmanv2": "^3.2.0",
+    "@types/postman-collection": "^3.5.7",
     "openapi3-ts": "^4.1.2",
     "rimraf": "^5.0.1",
     "tsconfig": "^0.0.0",
