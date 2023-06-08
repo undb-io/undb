@@ -8,6 +8,7 @@ import {
   GetRecordQuery,
   GetRecordsQuery,
 } from '@undb/cqrs'
+import type { IOpenAPIMutateRecordSchema } from '@undb/openapi'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'
 import { OpenAPIService } from './openapi.service.js'
 
@@ -37,6 +38,16 @@ export class OpenAPIController {
     const result = await this.queryBus.execute(new GetRecordQuery({ tableId, id }))
     const record = result ? await this.service.mapMany(tableId, result) : null
     return { record }
+  }
+
+  @Version('1')
+  @Post('tables/:tableId/records')
+  public async createRecord(
+    @Param('tableId') tableId: string,
+    @Body('id') id: string,
+    @Body('values') values: IOpenAPIMutateRecordSchema,
+  ) {
+    await this.service.createRecord(tableId, id, values)
   }
 
   @Version('1')

@@ -3,16 +3,16 @@ import type { IOpenAPIMutateRecordSchema } from 'src/schema/mutate-record.schema
 
 export const openAPIMutateRecordMapper = (
   table: Table,
-  values: IMutateRecordValueSchema,
-): IOpenAPIMutateRecordSchema => {
+  values: IOpenAPIMutateRecordSchema,
+): IMutateRecordValueSchema => {
   const result: IOpenAPIMutateRecordSchema = {}
 
-  const schema = table.schema.toIdMap()
+  const schema = table.schema.toNameMap()
 
-  for (const [fieldId, value] of Object.entries(values)) {
-    const field = schema.get(fieldId)
+  for (const [fieldName, value] of Object.entries(values)) {
+    const field = schema.get(fieldName)
     if (field) {
-      result[field.name.value] = value
+      result[field.id.value] = value
     }
   }
 
