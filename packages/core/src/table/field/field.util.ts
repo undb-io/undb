@@ -6,6 +6,8 @@ const controlledFieldTypes: Set<IFieldType> = new Set([
   'auto-increment',
   'created-at',
   'updated-at',
+  'created-by',
+  'updated-by',
   'count',
   'sum',
   'average',

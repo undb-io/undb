@@ -6,16 +6,26 @@ import { format } from 'date-fns'
 // @ts-ignore
 import OpenAPISnippet from 'openapi-snippet'
 import type { OpenAPIObject } from 'openapi3-ts/oas30'
-import { COMPONENT_OPTION, COMPONENT_RECORD, COMPONENT_RECORD_ID, COMPONENT_USER, COMPONENT_VIEW_ID } from './constants'
-import { deleteRecordById } from './routes/delete-record-by-id'
-import { deleteRecordsByIds } from './routes/delete-records-by-ids'
-import { duplicateRecordById } from './routes/duplicate-record-by-id'
-import { duplicateRecordsByIds } from './routes/duplicate-records-by-ids'
-import { getRecordById } from './routes/get-record-by-id'
-import { getRecords } from './routes/get-records'
-import { create401ResponseSchema } from './schema/401.respoonse'
-import { createOpenAPIRecordSchema } from './schema/open-api-record.schema'
-import { openAPIOptionSchema, openApiUserSchema } from './schema/record-value.schema'
+import {
+  COMPONENT_MUTATE_RECORD_VALUES,
+  COMPONENT_OPTION,
+  COMPONENT_RECORD,
+  COMPONENT_RECORD_ID,
+  COMPONENT_USER,
+  COMPONENT_VIEW_ID,
+} from './constants.js'
+import { createRecord } from './routes/create-record.js'
+import { deleteRecordById } from './routes/delete-record-by-id.js'
+import { deleteRecordsByIds } from './routes/delete-records-by-ids.js'
+import { duplicateRecordById } from './routes/duplicate-record-by-id.js'
+import { duplicateRecordsByIds } from './routes/duplicate-records-by-ids.js'
+import { getRecordById } from './routes/get-record-by-id.js'
+import { getRecords } from './routes/get-records.js'
+import { updateRecord } from './routes/update-record.js'
+import { create401ResponseSchema } from './schema/401.respoonse.js'
+import { createOpenAPIMutateRecordSchema } from './schema/mutate-record.schema.js'
+import { createOpenAPIRecordSchema } from './schema/open-api-record.schema.js'
+import { openAPIOptionSchema, openApiUserSchema } from './schema/record-value.schema.js'
 
 export const createTableSchema = (table: Table, record?: IQueryRecordSchema): OpenAPIObject => {
   const registry = new OpenAPIRegistry()
@@ -26,6 +36,8 @@ export const createTableSchema = (table: Table, record?: IQueryRecordSchema): Op
   registry.register(COMPONENT_VIEW_ID, viewIdSchema.openapi({ example: table.mustGetView().id.value }))
   registry.register(COMPONENT_OPTION, openAPIOptionSchema)
   registry.register(COMPONENT_USER, openApiUserSchema)
+  const valuesSchema = createOpenAPIMutateRecordSchema(table, record)
+  registry.register(COMPONENT_MUTATE_RECORD_VALUES, valuesSchema)
 
   const bearerAuth = registry.registerComponent('securitySchemes', 'bearerAuth', {
     type: 'http',
@@ -40,6 +52,8 @@ export const createTableSchema = (table: Table, record?: IQueryRecordSchema): Op
     duplicateRecordsByIds(table),
     deleteRecordById(table),
     deleteRecordsByIds(table),
+    createRecord(table, valuesSchema),
+    updateRecord(table, valuesSchema, record),
   ]
 
   for (const route of routes) {
