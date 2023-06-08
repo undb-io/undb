@@ -1,6 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Query, UseGuards, Version } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards, Version } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
-import { BulkDeleteRecordsCommand, DeleteRecordCommand, GetRecordQuery, GetRecordsQuery } from '@undb/cqrs'
+import {
+  BulkDeleteRecordsCommand,
+  BulkDuplicateRecordsCommand,
+  DeleteRecordCommand,
+  DuplicateRecordCommand,
+  GetRecordQuery,
+  GetRecordsQuery,
+} from '@undb/cqrs'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'
 import { OpenAPIService } from './openapi.service.js'
 
@@ -42,5 +49,17 @@ export class OpenAPIController {
   @Delete('tables/:tableId/records')
   public async deleteRecordsByIds(@Param('tableId') tableId: string, @Body('ids') ids: [string, ...string[]]) {
     await this.commandBus.execute(new BulkDeleteRecordsCommand({ tableId, ids }))
+  }
+
+  @Version('1')
+  @Post('tables/:tableId/records/:id')
+  public async duplicateRecordById(@Param('tableId') tableId: string, @Param('id') id: string) {
+    await this.commandBus.execute(new DuplicateRecordCommand({ tableId, id }))
+  }
+
+  @Version('1')
+  @Post('tables/:tableId/records')
+  public async duplicateRecordsByIds(@Param('tableId') tableId: string, @Body('ids') ids: [string, ...string[]]) {
+    await this.commandBus.execute(new BulkDuplicateRecordsCommand({ tableId, ids }))
   }
 }
