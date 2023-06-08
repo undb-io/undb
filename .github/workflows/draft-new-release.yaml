@@ -25,7 +25,7 @@ jobs:
 
       - name: changelogen
         run: |
-          npx changelogen@latest --bump --${{ github.event.input.semver }}
+          npx changelogen@latest --bump --${{ inputs.semver }}
 
       - name: Get version from package.json
         id: package-version
@@ -38,11 +38,6 @@ jobs:
         run: |
           git config user.name "GitHub actions"
           git config user.email noreply@github.com
-
-      # This step will differ depending on your project setup
-      # Fortunately, yarn has a built-in command for doing this!
-      - name: Bump version in package.json
-        run: pnpm version v${{ steps.package-version.outputs.current-version }} --no-git-tag-version
 
       - name: Commit manifest files
         id: make-commit
