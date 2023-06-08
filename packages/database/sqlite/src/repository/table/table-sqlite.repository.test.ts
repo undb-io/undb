@@ -1,5 +1,6 @@
 import { EntityManager } from '@mikro-orm/better-sqlite'
-import { Table as CoreTable, WithTableName, createTestTable } from '@undb/core'
+import { Table as CoreTable, ITableCache, WithTableName, createTestTable } from '@undb/core'
+import { mock } from 'vitest-mock-extended'
 import { FILTER_SOFT_DELETE } from '../../decorators/soft-delete.decorator.js'
 import { Table } from '../../entity/index.js'
 import { TableSqliteRepository } from './table-sqlite.repository.js'
@@ -19,7 +20,8 @@ describe('TableSqliteRepository', () => {
     table = createTestTable()
 
     em = em.fork()
-    repo = new TableSqliteRepository(em)
+    const cache = mock<ITableCache>()
+    repo = new TableSqliteRepository(em, cache)
   })
 
   afterEach(async () => {
