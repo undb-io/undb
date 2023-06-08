@@ -3,6 +3,7 @@ import { defineConfig, FlushMode, ReflectMetadataProvider } from '@mikro-orm/cor
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import path from 'path'
 import { entities } from './entity/index.js'
+import { SqliteLogger } from './logger.js'
 import { Migration20230528115246 } from './migrations/Migration20230528115246.js'
 
 export const createConfig = (data: string, env = 'development') =>
@@ -16,6 +17,7 @@ export const createConfig = (data: string, env = 'development') =>
     debug: env !== 'production' ? ['query'] : false,
     forceUndefined: true,
     flushMode: FlushMode.ALWAYS,
+    loggerFactory: (options) => new SqliteLogger(options),
     migrations: {
       disableForeignKeys: true,
       snapshot: true,

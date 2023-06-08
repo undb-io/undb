@@ -658,6 +658,9 @@ importers:
       '@types/lodash-es':
         specifier: ^4.17.7
         version: 4.17.7
+      '@undb/logger':
+        specifier: workspace:^
+        version: link:../../logger
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1
@@ -769,6 +772,31 @@ importers:
       i18next:
         specifier: ^22.5.1
         version: 22.5.1
+      rimraf:
+        specifier: ^5.0.1
+        version: 5.0.1
+      tsconfig:
+        specifier: ^0.0.0
+        version: link:../tsconfig
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(@swc/core@1.3.62)(ts-node@10.9.1)(typescript@5.1.3)
+      typescript:
+        specifier: ^5.1.3
+        version: 5.1.3
+      vitest:
+        specifier: ^0.32.0
+        version: 0.32.0
+
+  packages/logger:
+    dependencies:
+      pino:
+        specifier: ^8.14.1
+        version: 8.14.1
+      pino-pretty:
+        specifier: ^10.0.0
+        version: 10.0.0
+    devDependencies:
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1
@@ -10652,7 +10680,7 @@ packages:
     resolution: {integrity: sha512-p4umsNIXXVu95HD2C8wie/vXH7db5iGRpc+yj1/ZQ3sRtTQLXNjoS6Be5+eI+rQbqCRxen/7k/KSN+qiZubGDw==}
     dependencies:
       get-caller-file: 2.0.5
-      pino: 8.11.0
+      pino: 8.14.1
       pino-std-serializers: 6.2.0
       process-warning: 2.2.0
     dev: false
@@ -10681,8 +10709,8 @@ packages:
     resolution: {integrity: sha512-IWgSzUL8X1w4BIWTwErRgtV8PyOGOOi60uqv0oKuS/fOA8Nco/OeI6lBuc4dyP8MMfdFwyHqTMcBIA7nDiqEqA==}
     dev: false
 
-  /pino@8.11.0:
-    resolution: {integrity: sha512-Z2eKSvlrl2rH8p5eveNUnTdd4AjJk8tAsLkHYZQKGHP4WTh2Gi1cOSOs3eWPqaj+niS3gj4UkoreoaWgF3ZWYg==}
+  /pino@8.14.1:
+    resolution: {integrity: sha512-8LYNv7BKWXSfS+k6oEc6occy5La+q2sPwU3q2ljTX5AZk7v+5kND2o5W794FyRaqha6DJajmkNRsWtPpFyMUdw==}
     hasBin: true
     dependencies:
       atomic-sleep: 1.0.0
