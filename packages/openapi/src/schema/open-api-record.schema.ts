@@ -7,12 +7,11 @@ import { createOpenAPIRecordValueSchema } from './record-value.schema.js'
 
 export const createOpenAPIRecordSchema = (table: Table, record?: IQueryRecordSchema) => {
   const fields = table.schema.fields
+  const mapper = openApiRecordValueMapper(record)
 
   const shape: ZodRawShape = {}
 
   for (const field of fields) {
-    const mapper = openApiRecordValueMapper(record)
-
     shape[field.name.value] = createOpenAPIRecordValueSchema()[field.type].openapi({
       example: mapper[field.type](field),
     })
