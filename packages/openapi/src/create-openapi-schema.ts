@@ -9,6 +9,8 @@ import type { OpenAPIObject } from 'openapi3-ts/oas30'
 import { COMPONENT_OPTION, COMPONENT_RECORD, COMPONENT_RECORD_ID, COMPONENT_USER, COMPONENT_VIEW_ID } from './constants'
 import { deleteRecordById } from './routes/delete-record-by-id'
 import { deleteRecordsByIds } from './routes/delete-records-by-ids'
+import { duplicateRecordById } from './routes/duplicate-record-by-id'
+import { duplicateRecordsByIds } from './routes/duplicate-records-by-ids'
 import { getRecordById } from './routes/get-record-by-id'
 import { getRecords } from './routes/get-records'
 import { create401ResponseSchema } from './schema/401.respoonse'
@@ -34,6 +36,8 @@ export const createTableSchema = (table: Table, record?: IQueryRecordSchema): Op
   const routes = [
     getRecords(table, recordSchema),
     getRecordById(table, recordSchema),
+    duplicateRecordById(table),
+    duplicateRecordsByIds(table),
     deleteRecordById(table),
     deleteRecordsByIds(table),
   ]
