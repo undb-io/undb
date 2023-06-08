@@ -42,14 +42,14 @@
 			>
 				<ViewIcon type={displayType} />
 			</div>
-			<Tooltip placement="bottom">{$t(displayType)}</Tooltip>
+			<Tooltip class="z-50" placement="bottom">{$t(displayType)}</Tooltip>
 		</Radio>
 	{/each}
 </div>
 
 <button class="lg:hidden">
 	<ViewIcon {type} />
-	<Tooltip placement="bottom">{$t(type)}</Tooltip>
+	<Tooltip class="z-50" placement="bottom">{$t(type)}</Tooltip>
 </button>
 <Dropdown>
 	{#each displayTypes as displayType}
