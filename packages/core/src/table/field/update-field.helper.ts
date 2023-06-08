@@ -1,5 +1,5 @@
 import { and } from '@undb/domain'
-import { isArray, isBoolean, isNumber, isString } from 'lodash-es'
+import { isArray, isBoolean, isNull, isNumber, isString } from 'lodash-es'
 import type { Option as O } from 'oxide.ts'
 import { OptionKey } from '../option/option-key.vo.js'
 import { Option } from '../option/option.js'
@@ -54,7 +54,7 @@ export class UpdateFieldHelper {
         if (isString(input.format)) {
           specs.push(WithFormat.fromString(type, id, input.format))
         }
-        if (isString(input.timeFormat)) {
+        if (isString(input.timeFormat) || isNull(input.timeFormat)) {
           specs.push(WithTimeFormat.from(type, id, input.timeFormat))
         }
         break

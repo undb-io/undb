@@ -5,6 +5,7 @@
 	import Empty from '$lib/table/Empty.svelte'
 	import { t } from '$lib/i18n'
 	import { createTableModal, importCSVModal } from '$lib/store/modal'
+	import { sidebarCollapsed } from '$lib/store/ui'
 
 	export let data: LayoutData
 
@@ -16,6 +17,14 @@
 </script>
 
 <nav class="bg-white border-b border-gray-200 dark:bg-gray-900">
+	{#if $sidebarCollapsed}
+		<div class="fixed top-3 left-3">
+			<button on:click={() => ($sidebarCollapsed = false)}>
+				<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
+			</button>
+		</div>
+	{/if}
+
 	<div class="w-full px-5 py-4 flex justify-end" id="navbar-default">
 		<ButtonGroup>
 			<Button size="sm" on:click={() => createTableModal.open()}>

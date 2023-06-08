@@ -3,6 +3,7 @@
 	import { Avatar, Card } from 'flowbite-svelte'
 	import type { PageData } from './$types'
 	import { colors } from '$lib/field/helpers'
+	import { sidebarCollapsed } from '$lib/store/ui'
 
 	export let data: PageData
 
@@ -75,3 +76,11 @@
 		</Card>
 	{/each}
 </ul>
+
+{#if $sidebarCollapsed}
+	<div class="fixed top-3 left-3">
+		<button on:click={() => ($sidebarCollapsed = false)}>
+			<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
+		</button>
+	</div>
+{/if}

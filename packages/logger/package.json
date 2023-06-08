@@ -1,14 +1,8 @@
 {
-  "name": "@undb/trpc",
+  "name": "@undb/logger",
   "description": "",
   "version": "0.0.0",
-  "dependencies": {
-    "@trpc/server": "^10.29.1",
-    "@undb/core": "^0.0.0",
-    "@undb/cqrs": "^0.0.0",
-    "@undb/domain": "^0.0.0",
-    "zod": "^3.21.4"
-  },
+  "author": "",
   "devDependencies": {
     "rimraf": "^5.0.1",
     "tsconfig": "^0.0.0",
@@ -21,16 +15,19 @@
     "require": "./dist/index.js"
   },
   "keywords": [],
+  "main": "./dist/index",
   "private": true,
   "scripts": {
     "build": "tsup",
     "clean": "rimraf dist",
     "coverage": "vitest run --coverage",
     "dev": "tsup --watch",
-    "prebuild": "pnpm run clean",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "prebuild": "pnpm run clean"
   },
   "type": "module",
-  "types": "dist/index.d"
+  "types": "dist/index.d",
+  "dependencies": {
+    "pino": "^8.14.1",
+    "pino-pretty": "^10.0.0"
+  }
 }

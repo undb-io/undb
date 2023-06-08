@@ -310,7 +310,7 @@ export class Table {
   public updateField(id: string, input: IUpdateFieldSchema): Option<TableCompositeSpecificaiton> {
     const field = this.schema.getFieldById(id).unwrap()
 
-    if (field.type !== input.type) {
+    if (input.type && field.type !== input.type) {
       return UpdateFieldHelper.updateField(field, input)
     }
 

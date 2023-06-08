@@ -93,7 +93,7 @@
 	$: selected = value?.map((r) => $recordsMap.get(r)!) ?? []
 </script>
 
-<div class="space-y-2 max-h-96">
+<div class="space-y-2 max-h-96 overflow-y-auto mb-2">
 	<div class="space-y-2 h-full overflow-auto">
 		{#each selected as record}
 			{#if !!record}
@@ -113,49 +113,44 @@
 			{/if}
 		{/each}
 	</div>
-	<Button
-		color="alternative"
-		on:click={() => (open = true)}
-		{...$$restProps}
-		class={cx('space-x-2', $$restProps.class)}
-	>
-		{#if initialLoading}
-			<Spinner size="4" />
-		{:else}
-			<i class="ti ti-plus" />
-			<span>{$t('Select Record')}</span>
-		{/if}
-	</Button>
-	<Modal title={$t('Select Record') ?? undefined} bind:open size="md" class="w-[700px] h-[600px]">
-		{#if loading}
-			<div class="flex w-full h-full items-center justify-center">
-				<Spinner />
-			</div>
-		{:else if !$records.length}
-			<Alert>{$t('no record available')}</Alert>
-		{:else}
-			<VirtualList height={600} width="100%" itemCount={$records.length} itemSize={62}>
-				<div slot="item" let:index let:style {style} class="flex items-stretch mb-2">
-					<Checkbox
-						inline
-						value={$records[index].id.value}
-						custom
-						on:change={(e) => {
-							change(e, $records[index].id.value)
-							open = false
-						}}
-						class="w-full"
-					>
-						<RecordCard
-							{field}
-							{schema}
-							record={$records[index]}
-							class="!py-4 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 !max-w-none"
-							role="button"
-						/>
-					</Checkbox>
-				</div>
-			</VirtualList>
-		{/if}
-	</Modal>
 </div>
+<Button color="alternative" on:click={() => (open = true)} {...$$restProps} class={cx('space-x-2', $$restProps.class)}>
+	{#if initialLoading}
+		<Spinner size="4" />
+	{:else}
+		<i class="ti ti-plus" />
+		<span>{$t('Select Record')}</span>
+	{/if}
+</Button>
+<Modal title={$t('Select Record') ?? undefined} bind:open size="md" class="w-[700px] h-[600px]">
+	{#if loading}
+		<div class="flex w-full h-full items-center justify-center">
+			<Spinner />
+		</div>
+	{:else if !$records.length}
+		<Alert>{$t('no record available')}</Alert>
+	{:else}
+		<VirtualList height={600} width="100%" itemCount={$records.length} itemSize={62}>
+			<div slot="item" let:index let:style {style} class="flex items-stretch mb-2">
+				<Checkbox
+					inline
+					value={$records[index].id.value}
+					custom
+					on:change={(e) => {
+						change(e, $records[index].id.value)
+						open = false
+					}}
+					class="w-full"
+				>
+					<RecordCard
+						{field}
+						{schema}
+						record={$records[index]}
+						class="!py-4 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 !max-w-none"
+						role="button"
+					/>
+				</Checkbox>
+			</div>
+		</VirtualList>
+	{/if}
+</Modal>
