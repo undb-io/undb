@@ -1,3 +1,14 @@
+## v0.5.1
+
+
+### 🩹 Fixes
+
+  - Fix ci ([87abff4](https://github.com/undb-xyz/undb/commit/87abff4))
+
+### ❤️  Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## [0.1.7](https://github.com/undb-xyz/undb/compare/v0.1.6...v0.1.7) (2023-04-04)
 
 ## [0.1.6](https://github.com/undb-xyz/undb/compare/v0.1.5...v0.1.6) (2023-04-04)
