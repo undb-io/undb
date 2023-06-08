@@ -26,11 +26,11 @@
 	color="light"
 	outline
 	class="h-full w-8 px-0 !rounded-md inline-flex items-center whitespace-nowrap transition !text-blue-500 border-blue-500/50"
-	on:click={() => (open = true)}
+	on:click={() => (open = !open)}
 >
 	<i class="ti ti-line-height text-sm" />
 </Button>
-<Dropdown bind:open>
+<Dropdown bind:open frameClass="z-50">
 	{#each viewRowHeights as rowHeight}
 		<DropdownItem
 			class="flex items-center justify-between"

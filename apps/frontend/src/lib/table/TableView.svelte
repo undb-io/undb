@@ -316,6 +316,7 @@
 	{#key fieldMenuDOMId}
 		<Portal target="body">
 			<Dropdown
+				frameClass="z-50"
 				open
 				triggeredBy={`#${fieldMenuDOMId}`}
 				class="w-[250px] shadow-lg border border-gray-200 rounded-md py-1"
