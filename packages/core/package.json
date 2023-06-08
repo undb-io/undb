@@ -13,19 +13,19 @@
     "oxide.ts": "^1.1.0",
     "ts-mixer": "^6.0.3",
     "zod": "^3.21.4",
-    "zod-i18n-map": "^2.12.0"
+    "zod-i18n-map": "^2.13.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.195",
     "@types/lodash-es": "^4.17.7",
     "@types/mime-types": "^2.1.1",
-    "i18next": "^22.5.0",
+    "i18next": "^22.5.1",
     "rimraf": "^5.0.1",
     "t": "^0.5.1",
     "tsconfig": "^0.0.0",
     "tsup": "^6.7.0",
-    "type-fest": "^3.11.0",
-    "typescript": "^5.0.4",
+    "type-fest": "^3.11.1",
+    "typescript": "^5.1.3",
     "vitest": "^0.32.0",
     "vitest-mock-extended": "^1.1.3"
   },

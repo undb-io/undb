@@ -5,11 +5,11 @@
   "author": "",
   "devDependencies": {
     "@types/uuid": "^9.0.1",
-    "i18next": "^22.5.0",
+    "i18next": "^22.5.1",
     "rimraf": "^5.0.1",
     "tsconfig": "^0.0.0",
     "tsup": "^6.7.0",
-    "typescript": "^5.0.4",
+    "typescript": "^5.1.3",
     "vitest": "^0.32.0"
   },
   "exports": {
@@ -28,6 +28,6 @@
   "type": "module",
   "types": "dist/index.d",
   "dependencies": {
-    "zod-i18n-map": "^2.12.0"
+    "zod-i18n-map": "^2.13.0"
   }
 }
