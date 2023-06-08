@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards, Version } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards, Version } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import {
   BulkDeleteRecordsCommand,
@@ -44,10 +44,21 @@ export class OpenAPIController {
   @Post('tables/:tableId/records')
   public async createRecord(
     @Param('tableId') tableId: string,
-    @Body('id') id: string,
+    @Body('id') id: string | undefined,
     @Body('values') values: IOpenAPIMutateRecordSchema,
   ) {
     await this.service.createRecord(tableId, id, values)
+  }
+
+  @Version('1')
+  @Patch('tables/:tableId/records')
+  public async updateRecord(
+    @Param('tableId') tableId: string,
+    @Body('id') id: string,
+    @Body('values') values: IOpenAPIMutateRecordSchema,
+  ) {
+    console.log(values)
+    await this.service.updateRecord(tableId, id, values)
   }
 
   @Version('1')

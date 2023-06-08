@@ -13,18 +13,19 @@ import {
   COMPONENT_RECORD_ID,
   COMPONENT_USER,
   COMPONENT_VIEW_ID,
-} from './constants'
-import { createRecord } from './routes/create-record'
-import { deleteRecordById } from './routes/delete-record-by-id'
-import { deleteRecordsByIds } from './routes/delete-records-by-ids'
-import { duplicateRecordById } from './routes/duplicate-record-by-id'
-import { duplicateRecordsByIds } from './routes/duplicate-records-by-ids'
-import { getRecordById } from './routes/get-record-by-id'
-import { getRecords } from './routes/get-records'
-import { create401ResponseSchema } from './schema/401.respoonse'
-import { createOpenAPIMutateRecordSchema } from './schema/mutate-record.schema'
-import { createOpenAPIRecordSchema } from './schema/open-api-record.schema'
-import { openAPIOptionSchema, openApiUserSchema } from './schema/record-value.schema'
+} from './constants.js'
+import { createRecord } from './routes/create-record.js'
+import { deleteRecordById } from './routes/delete-record-by-id.js'
+import { deleteRecordsByIds } from './routes/delete-records-by-ids.js'
+import { duplicateRecordById } from './routes/duplicate-record-by-id.js'
+import { duplicateRecordsByIds } from './routes/duplicate-records-by-ids.js'
+import { getRecordById } from './routes/get-record-by-id.js'
+import { getRecords } from './routes/get-records.js'
+import { updateRecord } from './routes/update-record.js'
+import { create401ResponseSchema } from './schema/401.respoonse.js'
+import { createOpenAPIMutateRecordSchema } from './schema/mutate-record.schema.js'
+import { createOpenAPIRecordSchema } from './schema/open-api-record.schema.js'
+import { openAPIOptionSchema, openApiUserSchema } from './schema/record-value.schema.js'
 
 export const createTableSchema = (table: Table, record?: IQueryRecordSchema): OpenAPIObject => {
   const registry = new OpenAPIRegistry()
@@ -52,6 +53,7 @@ export const createTableSchema = (table: Table, record?: IQueryRecordSchema): Op
     deleteRecordById(table),
     deleteRecordsByIds(table),
     createRecord(table, valuesSchema),
+    updateRecord(table, valuesSchema, record),
   ]
 
   for (const route of routes) {
