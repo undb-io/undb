@@ -11,3 +11,4 @@ out
 .undb
 **/.svelte-kit
 .turbo
+apps/backend/attachments
