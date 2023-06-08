@@ -1,0 +1,32 @@
+{
+  "name": "@undb/cache",
+  "description": "",
+  "version": "0.0.0",
+  "author": "",
+  "devDependencies": {
+    "@types/uuid": "^9.0.1",
+    "@undb/core": "workspace:^0.0.0",
+    "@undb/logger": "workspace:^",
+    "rimraf": "^5.0.1",
+    "tsconfig": "^0.0.0",
+    "tsup": "^6.7.0",
+    "typescript": "^5.1.3",
+    "unstorage": "^1.6.1",
+    "vitest": "^0.32.0"
+  },
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/index.js"
+  },
+  "keywords": [],
+  "private": true,
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf dist",
+    "coverage": "vitest run --coverage",
+    "dev": "tsup --watch",
+    "prebuild": "pnpm run clean"
+  },
+  "type": "module",
+  "types": "dist/index.d"
+}
