@@ -13,7 +13,7 @@ export const createConfig = (data: string, env = 'development') =>
     metadataProvider: ReflectMetadataProvider,
     driver: BetterSqliteDriver,
     dbName: path.join(data, `undb.db`),
-    debug: env !== 'production',
+    debug: env !== 'production' ? ['query'] : false,
     forceUndefined: true,
     flushMode: FlushMode.ALWAYS,
     migrations: {
