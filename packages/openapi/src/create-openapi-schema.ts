@@ -27,7 +27,11 @@ import { createOpenAPIMutateRecordSchema } from './schema/mutate-record.schema.j
 import { createOpenAPIRecordSchema } from './schema/open-api-record.schema.js'
 import { openAPIOptionSchema, openApiUserSchema } from './schema/record-value.schema.js'
 
-export const createTableSchema = (table: Table, record?: IQueryRecordSchema): OpenAPIObject => {
+export const createTableSchema = (
+  table: Table,
+  record?: IQueryRecordSchema,
+  host = 'http://localhost:4000',
+): OpenAPIObject => {
   const registry = new OpenAPIRegistry()
 
   const recordSchema = createOpenAPIRecordSchema(table, record)
@@ -75,7 +79,7 @@ export const createTableSchema = (table: Table, record?: IQueryRecordSchema): Op
         title: `undb ${table.name.value} open api`,
         description: `This is the open API of undb table ${table.name.value}`,
       },
-      servers: [{ url: 'http://localhost:4000/api/v1/openapi' }],
+      servers: [{ url: host + '/api/v1/openapi' }],
     })
 
     return generated
