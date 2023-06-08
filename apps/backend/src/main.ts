@@ -54,7 +54,15 @@ async function bootstrap() {
         middleware: passport.authenticate(jwt, { session: false }),
       }),
     )
-    .use(helmet({ contentSecurityPolicy: false, crossOriginResourcePolicy: false }))
+    .use(
+      helmet({
+        contentSecurityPolicy: false,
+        crossOriginResourcePolicy: false,
+        referrerPolicy: {
+          policy: ['origin', 'same-origin'],
+        },
+      }),
+    )
     .use(compression())
 
   await app.listen(4000, '0.0.0.0')

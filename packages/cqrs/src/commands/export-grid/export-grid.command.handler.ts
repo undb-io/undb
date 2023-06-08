@@ -1,4 +1,5 @@
-import { IRecordExportor, IRecordRepository, WithRecordTableId, type ITableRepository } from '@undb/core'
+import type { IRecordExportor, IRecordRepository } from '@undb/core'
+import { WithRecordTableId, type ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
 import type { ExportGridCommand } from './export-grid.comand.js'
 
@@ -13,7 +14,7 @@ export class ExportGridCommandHandler implements ICommandHandler<ExportGridComma
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
     const filter = table.getSpec(command.viewId)
 
-    let spec = WithRecordTableId.fromString(command.tableId)
+    const spec = WithRecordTableId.fromString(command.tableId)
       .map((s) => (filter.isNone() ? s : s.and(filter.unwrap())))
       .unwrap()
 
