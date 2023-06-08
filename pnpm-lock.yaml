@@ -624,6 +624,9 @@ importers:
       '@undb/core':
         specifier: workspace:^0.0.0
         version: link:../../core
+      '@undb/logger':
+        specifier: workspace:^
+        version: link:../../logger
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1

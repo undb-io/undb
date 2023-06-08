@@ -58,6 +58,10 @@ export class TableSqliteQueryModel implements ITableQueryModel {
     if (!table) return None
 
     await this.#populateTable(table)
-    return Some(TableSqliteMapper.entityToQuery(table))
+    const qt = TableSqliteMapper.entityToQuery(table)
+
+    await this.cache.set(id, qt)
+
+    return Some(qt)
   }
 }

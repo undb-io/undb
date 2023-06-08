@@ -6,6 +6,7 @@
   "devDependencies": {
     "@types/uuid": "^9.0.1",
     "@undb/core": "workspace:^0.0.0",
+    "@undb/logger": "workspace:^",
     "rimraf": "^5.0.1",
     "tsconfig": "^0.0.0",
     "tsup": "^6.7.0",
