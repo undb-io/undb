@@ -2,7 +2,7 @@
 
 <img height="50px" src="./docs/logo.png" alt="undb" align="right" />
 
-Private first, unified, self-hosted no code database.
+🚀 Private first, unified, self-hosted no code database.
 
 <a href="https://demo.undb.xyz?lng=en">Live Demo</a>
 ·
