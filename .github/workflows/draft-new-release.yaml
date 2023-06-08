@@ -25,7 +25,7 @@ jobs:
 
       - name: changelogen
         run: |
-          npx changelogen@latest --bump --{{ github.event.input.semver }}
+          npx changelogen@latest --bump --${{ github.event.input.semver }}
 
       - name: Get version from package.json
         id: package-version
