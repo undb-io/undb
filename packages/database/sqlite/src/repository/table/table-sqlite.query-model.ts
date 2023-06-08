@@ -1,4 +1,5 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
+import type { ITableCache } from '@undb/core'
 import { type IQueryTable, type ITableQueryModel, type ITableSpec } from '@undb/core'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
@@ -7,7 +8,7 @@ import { TableSqliteMapper } from './table-sqlite.mapper.js'
 import { TableSqliteQueryVisitor } from './table-sqlite.query-visitor.js'
 
 export class TableSqliteQueryModel implements ITableQueryModel {
-  constructor(protected readonly em: EntityManager) {}
+  constructor(protected readonly em: EntityManager, protected readonly cache: ITableCache) {}
 
   async find(): Promise<IQueryTable[]> {
     const tables = await this.em.find(Table, {}, { populate: ['fields.options', 'views', 'fields.displayFields'] })
@@ -48,6 +49,11 @@ export class TableSqliteQueryModel implements ITableQueryModel {
   }
 
   async findOneById(id: string): Promise<Option<IQueryTable>> {
+    const cached = await this.cache.get(id)
+    if (cached) {
+      return Some(cached)
+    }
+
     const table = await this.em.findOne(Table, id)
     if (!table) return None
 

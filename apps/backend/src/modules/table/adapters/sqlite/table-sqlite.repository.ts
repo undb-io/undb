@@ -1,13 +1,21 @@
 import { EntityManager } from '@mikro-orm/better-sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
-import { Injectable } from '@nestjs/common'
-import type { ITableSpec, Table } from '@undb/core'
+import { Inject, Injectable } from '@nestjs/common'
+import type { ITableCache, ITableSpec, Table } from '@undb/core'
 import { TableSqliteRepository } from '@undb/sqlite'
 import { Option } from 'oxide.ts'
+
+export const TABLE_KV_CACHE = Symbol('TABLE_KV_CACHE')
+export const InjectTableKVCache = () => Inject(TABLE_KV_CACHE)
+
 @Injectable()
 export class NestTableSqliteRepository extends TableSqliteRepository {
-  constructor(public readonly orm: MikroORM) {
-    super(orm.em as EntityManager)
+  constructor(
+    public readonly orm: MikroORM,
+    @InjectTableKVCache()
+    protected readonly cache: ITableCache,
+  ) {
+    super(orm.em as EntityManager, cache)
   }
 
   @UseRequestContext()
