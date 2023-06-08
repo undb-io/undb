@@ -43,6 +43,7 @@ WORKDIR /undb
 EXPOSE 4000
 
 ENV NODE_ENV production
+ENV NO_COLOR 1
 ENV UNDB_DATABASE_SQLITE_DATA /var/opt/.undb
 
 RUN npm install -g zx
