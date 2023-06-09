@@ -23,6 +23,7 @@ import { duplicateRecordById } from './routes/duplicate-record-by-id.js'
 import { duplicateRecordsByIds } from './routes/duplicate-records-by-ids.js'
 import { getRecordById } from './routes/get-record-by-id.js'
 import { getRecords } from './routes/get-records.js'
+import { updateRecords } from './routes/udpate-records.js'
 import { updateRecord } from './routes/update-record.js'
 import { create401ResponseSchema } from './schema/401.respoonse.js'
 import { createOpenAPIMutateRecordSchema } from './schema/mutate-record.schema.js'
@@ -61,6 +62,7 @@ export const createTableSchema = (
     createRecord(table, valuesSchema),
     createRecords(table, valuesSchema),
     updateRecord(table, valuesSchema, record),
+    updateRecords(table, valuesSchema, record),
   ]
 
   for (const route of routes) {
