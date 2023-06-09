@@ -12,7 +12,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.1",
+    "@types/uuid": "^9.0.2",
     "rimraf": "^5.0.1",
     "tsconfig": "^0.0.0",
     "tsup": "^6.7.0",

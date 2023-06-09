@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "author": "",
   "devDependencies": {
-    "@types/uuid": "^9.0.1",
+    "@types/uuid": "^9.0.2",
     "@undb/core": "workspace:^0.0.0",
     "@undb/logger": "workspace:^",
     "rimraf": "^5.0.1",
