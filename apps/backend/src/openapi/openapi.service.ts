@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { CommandBus } from '@nestjs/cqrs'
 import type { IQueryRecordSchema, ITableRepository } from '@undb/core'
-import { CreateRecordCommand, UpdateRecordCommand } from '@undb/cqrs'
+import { CreateRecordCommand, CreateRecordsCommand, UpdateRecordCommand } from '@undb/cqrs'
 import { openAPIMutateRecordMapper, type IOpenAPIMutateRecordSchema, type IOpenApiRecordMapper } from '@undb/openapi'
 import { InjectTableReposiory } from '../modules/table/adapters/index.js'
 import { InjectOpenAPIMapper } from './openapi.mapper.js'
@@ -34,6 +34,15 @@ export class OpenAPIService {
     const table = (await this.repo.findOneById(tableId)).unwrap()
     const internalValues = openAPIMutateRecordMapper(table, values)
     await this.commandBus.execute(new CreateRecordCommand({ tableId, id, values: internalValues }))
+  }
+
+  public async createRecords(tableId: string, records: { id?: string; values: IOpenAPIMutateRecordSchema }[]) {
+    const table = (await this.repo.findOneById(tableId)).unwrap()
+    const internalRecords = records.map((r) => ({ id: r.id, values: openAPIMutateRecordMapper(table, r.values) })) as [
+      { id?: string; values: IOpenAPIMutateRecordSchema },
+      ...{ id?: string; values: IOpenAPIMutateRecordSchema }[],
+    ]
+    await this.commandBus.execute(new CreateRecordsCommand({ tableId, records: internalRecords }))
   }
 
   public async updateRecord(tableId: string, id: string, values: IOpenAPIMutateRecordSchema) {

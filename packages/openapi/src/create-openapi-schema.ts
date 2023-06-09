@@ -1,6 +1,7 @@
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi'
 import type { IQueryRecordSchema } from '@undb/core'
 import { RecordId, recordIdSchema, viewIdSchema, type Table } from '@undb/core'
+import { logger } from '@undb/logger'
 import { format } from 'date-fns'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -15,6 +16,7 @@ import {
   COMPONENT_VIEW_ID,
 } from './constants.js'
 import { createRecord } from './routes/create-record.js'
+import { createRecords } from './routes/create-records.js'
 import { deleteRecordById } from './routes/delete-record-by-id.js'
 import { deleteRecordsByIds } from './routes/delete-records-by-ids.js'
 import { duplicateRecordById } from './routes/duplicate-record-by-id.js'
@@ -57,6 +59,7 @@ export const createTableSchema = (
     deleteRecordById(table),
     deleteRecordsByIds(table),
     createRecord(table, valuesSchema),
+    createRecords(table, valuesSchema),
     updateRecord(table, valuesSchema, record),
   ]
 
@@ -105,7 +108,7 @@ export const createTableSchema = (
       }
     }
   } catch (error) {
-    console.log(error)
+    logger.error(error, 'generate endpoint snippets error')
   }
 
   return docs

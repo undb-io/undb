@@ -51,6 +51,15 @@ export class OpenAPIController {
   }
 
   @Version('1')
+  @Post('tables/:tableId/records/bulk')
+  public async createRecords(
+    @Param('tableId') tableId: string,
+    @Body('records') records: { id?: string; values: IOpenAPIMutateRecordSchema }[],
+  ) {
+    await this.service.createRecords(tableId, records)
+  }
+
+  @Version('1')
   @Patch('tables/:tableId/records')
   public async updateRecord(
     @Param('tableId') tableId: string,

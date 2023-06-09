@@ -860,6 +860,9 @@ importers:
       '@undb/core':
         specifier: ^0.0.0
         version: link:../core
+      '@undb/logger':
+        specifier: workspace:^
+        version: link:../logger
       date-fns:
         specifier: ^2.30.0
         version: 2.30.0
