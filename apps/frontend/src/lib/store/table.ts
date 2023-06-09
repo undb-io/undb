@@ -26,7 +26,24 @@ export const getView = () => currentView
 export const currentRecords = writable<Records>([])
 export const getRecords = () => currentRecords
 
-export const q = writable<string | undefined>(undefined)
+export const createTableQ = () => {
+	const { subscribe, update, set } = writable<globalThis.Record<string, string | undefined>>({})
+
+	const setTableQ = (tableId: string, q: string | undefined) => update((value) => ({ ...value, [tableId]: q }))
+	const resetTableQ = (tableId: string) => update((value) => ({ ...value, [tableId]: undefined }))
+
+	return {
+		subscribe,
+		update,
+		set,
+
+		setTableQ,
+		resetTableQ,
+	}
+}
+
+export const tableQ = createTableQ()
+export const q = derived([currentTable, tableQ], ([$table, $tableQ]) => $tableQ[$table.id.value])
 
 export const currentRecordId = writable<string | undefined>()
 export const currentRecord = writable<Record | undefined>()

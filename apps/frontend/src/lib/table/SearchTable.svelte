@@ -1,18 +1,24 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
-	import { q } from '$lib/store/table'
+	import { getTable, q, tableQ } from '$lib/store/table'
 	import { Search, Button } from 'flowbite-svelte'
 
-	let value: string
+	let value: string | undefined = $q
 
-	$: if (!value) $q = undefined
+	$: if (!$q) {
+		value = ''
+	}
+
+	const table = getTable()
+
+	$: if (!value) tableQ.resetTableQ($table.id.value)
 
 	const placeholder = $t('Search')
 </script>
 
 <form
 	on:submit={() => {
-		$q = value || undefined
+		tableQ.setTableQ($table.id.value, value || undefined)
 	}}
 >
 	<div class="flex items-center gap-2">
