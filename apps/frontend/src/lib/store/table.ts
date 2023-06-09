@@ -26,6 +26,25 @@ export const getView = () => currentView
 export const currentRecords = writable<Records>([])
 export const getRecords = () => currentRecords
 
+export const createTableQ = () => {
+	const { subscribe, update, set } = writable<globalThis.Record<string, string | undefined>>({})
+
+	const setTableQ = (tableId: string, q: string | undefined) => update((value) => ({ ...value, [tableId]: q }))
+	const resetTableQ = (tableId: string) => update((value) => ({ ...value, [tableId]: undefined }))
+
+	return {
+		subscribe,
+		update,
+		set,
+
+		setTableQ,
+		resetTableQ,
+	}
+}
+
+export const tableQ = createTableQ()
+export const q = derived([currentTable, tableQ], ([$table, $tableQ]) => $tableQ[$table.id.value])
+
 export const currentRecordId = writable<string | undefined>()
 export const currentRecord = writable<Record | undefined>()
 export const getRecord = () => currentRecord
@@ -59,8 +78,8 @@ export const previousRecord = derived([currentRecordIndex, currentRecords], ([$i
 })
 
 export const recordHash = derived(
-	[currentTable, currentView],
-	([$table, $view]) => `records:${$table.id.value}:${$view.id.value}:${$view.displayType}`,
+	[currentTable, currentView, q],
+	([$table, $view, $q]) => `records:${$table.id.value}:${$view.id.value}:${$view.displayType}:${$q}`,
 )
 
 export const getGroupRecordsHash = (id: string) => derived(recordHash, ($recordHash) => $recordHash + id)

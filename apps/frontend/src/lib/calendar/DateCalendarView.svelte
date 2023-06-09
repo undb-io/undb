@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentRecordId, getTable, getView, recordHash } from '$lib/store/table'
+	import { currentRecordId, getTable, getView, q, recordHash } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 
 	// @ts-ignore
@@ -35,6 +35,7 @@
 		{
 			tableId: $table.id.value,
 			viewId: $view.id.value,
+			q: $q,
 			filter: [
 				{
 					path: field.id.value,

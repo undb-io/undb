@@ -1,5 +1,5 @@
 import type { IRecordQueryModel, ITableRepository } from '@undb/core'
-import { ViewId, WithRecordTableId, convertFilterSpec } from '@undb/core'
+import { ViewId, WithRecordTableId, convertFilterSpec, withQ } from '@undb/core'
 import type { IQueryHandler } from '@undb/domain'
 import type { IGetRecordsOutput } from './get-records.query.interface.js'
 import type { GetRecordsQuery } from './get-records.query.js'
@@ -19,6 +19,9 @@ export class GetRecordsQueryHandler implements IQueryHandler<GetRecordsQuery, IG
       const querySpec = convertFilterSpec(query.filter)
       spec = spec.and(querySpec.unwrap())
     }
+
+    const search = withQ(table, query.q)
+    if (search.isSome()) spec = spec.and(search.unwrap())
 
     const viewId = query.viewId ? ViewId.fromString(query.viewId) : undefined
     const { records, total } = await this.rm.findAndCount(table.id.value, viewId, spec)

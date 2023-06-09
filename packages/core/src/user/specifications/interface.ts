@@ -12,6 +12,7 @@ export interface IUserSpecVisitor {
   emailEqual(s: WithUserEmail): void
   usernameEqual(s: WithUsername): void
   colorEqual(s: WithUserColor): void
+  or(left: UserSpecification, right: UserSpecification): IUserSpecVisitor
   not(): IUserSpecVisitor
 }
 

@@ -469,6 +469,9 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     }
     this.em.persist(field)
   }
+  or(): this {
+    return this
+  }
   not(): this {
     return this
   }
