@@ -1,10 +1,13 @@
 <script lang="ts">
+	import { t } from '$lib/i18n'
 	import { q } from '$lib/store/table'
 	import { Search, Button } from 'flowbite-svelte'
 
 	let value: string
 
 	$: if (!value) $q = undefined
+
+	const placeholder = $t('Search')
 </script>
 
 <form
@@ -13,7 +16,7 @@
 	}}
 >
 	<div class="flex items-center gap-2">
-		<Search size="sm" bind:value />
+		<Search size="sm" bind:value {placeholder} />
 		<Button type="submit" size="xs" class="!p-2.5">
 			<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 				<path

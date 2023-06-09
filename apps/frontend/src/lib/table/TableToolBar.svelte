@@ -23,7 +23,7 @@
 		<SearchTable />
 		<Button size="xs" outline class="flex items-center gap-2" href={`/t/${$table.id.value}/openapi`}>
 			<i class="ti ti-code" />
-			<span class="whitespace-nowrap"> API Preview </span>
+			<span class="whitespace-nowrap">{$t('API Preview')}</span>
 		</Button>
 		<button on:click={() => updateTableModal.open()}>
 			<i class="ti ti-settings text-gray-600" />
