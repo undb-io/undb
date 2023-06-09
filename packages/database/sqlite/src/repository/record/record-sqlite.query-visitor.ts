@@ -134,7 +134,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   }
   like(s: WithRecordLike): void {
     if (s.type === 'string') {
-      this.qb.whereLike(s.fieldId, `%${s.q}%`)
+      this.qb.whereLike(this.getFieldId(s.fieldId), `%${s.q}%`)
     }
   }
   stringEqual(s: StringEqual): void {
