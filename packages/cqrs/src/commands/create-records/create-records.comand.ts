@@ -5,7 +5,7 @@ import type { ICreateRecordsInput } from './create-records.command.input.js'
 
 export class CreateRecordsCommand extends Command {
   readonly tableId: string
-  readonly records: IMutateRecordValueSchema[]
+  readonly records: { id?: string; values: IMutateRecordValueSchema }[]
 
   constructor(props: CommandProps<ICreateRecordsInput>) {
     super(props)

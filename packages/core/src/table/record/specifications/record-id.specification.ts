@@ -14,6 +14,10 @@ export class WithRecordId extends CompositeSpecification {
     return new WithRecordId(RecordId.from(id))
   }
 
+  static fromNullableString(id?: string): WithRecordId {
+    return new WithRecordId(RecordId.fromOrCreate(id))
+  }
+
   isSatisfiedBy(t: Record): boolean {
     return this.id.equals(t.id)
   }

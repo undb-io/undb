@@ -1,6 +1,6 @@
 import { Inject, Provider } from '@nestjs/common'
+import { PinoLogger } from 'nestjs-pino'
 import { createStorage } from 'unstorage'
-import lruCacheDriver from 'unstorage/drivers/lru-cache'
 import { NestAggregateSqliteQueryModel } from './sqlite/record-sqlite.aggregate-repository.js'
 import { NestRecordSqliteQueryModel } from './sqlite/record-sqlite.query-model.js'
 import { NestRecordSqliteRepository } from './sqlite/record-sqlite.repository.js'
@@ -55,12 +55,13 @@ export const dbAdapters: Provider[] = [
   },
   {
     provide: STORAGE,
-    useFactory: async () => {
-      const storage = createStorage({
-        driver: lruCacheDriver(),
-      })
+    useFactory: async (logger: PinoLogger) => {
+      const storage = createStorage()
+
+      logger.info('initialized cache storage')
 
       return storage
     },
+    inject: [PinoLogger],
   },
 ]
