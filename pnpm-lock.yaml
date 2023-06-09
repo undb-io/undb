@@ -248,8 +248,8 @@ importers:
         specifier: ^2.0.12
         version: 2.0.12
       '@types/uuid':
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^9.0.2
+        version: 9.0.2
       '@undb/eslint-config':
         specifier: ^0.0.0
         version: link:../../packages/eslint-config
@@ -314,8 +314,8 @@ importers:
         specifier: ^1.3.1
         version: 1.3.1
       '@playwright/test':
-        specifier: ^1.34.3
-        version: 1.34.3
+        specifier: ^1.35.0
+        version: 1.35.0
       '@popperjs/core':
         specifier: ^2.11.8
         version: 2.11.8
@@ -548,8 +548,8 @@ importers:
         specifier: ^3.21.4
         version: 3.21.4
       zod-i18n-map:
-        specifier: ^2.13.0
-        version: 2.13.0(i18next@22.5.1)(zod@3.21.4)
+        specifier: ^2.13.1
+        version: 2.13.1(i18next@22.5.1)(zod@3.21.4)
     devDependencies:
       '@types/lodash':
         specifier: ^4.14.195
@@ -622,8 +622,8 @@ importers:
   packages/database/cache:
     devDependencies:
       '@types/uuid':
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^9.0.2
+        version: 9.0.2
       '@undb/core':
         specifier: workspace:^0.0.0
         version: link:../../core
@@ -750,8 +750,8 @@ importers:
         version: 9.0.0
     devDependencies:
       '@types/uuid':
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^9.0.2
+        version: 9.0.2
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1
@@ -802,12 +802,12 @@ importers:
   packages/i18n:
     dependencies:
       zod-i18n-map:
-        specifier: ^2.13.0
-        version: 2.13.0(i18next@22.5.1)(zod@3.21.4)
+        specifier: ^2.13.1
+        version: 2.13.1(i18next@22.5.1)(zod@3.21.4)
     devDependencies:
       '@types/uuid':
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^9.0.2
+        version: 9.0.2
       i18next:
         specifier: ^22.5.1
         version: 22.5.1
@@ -3809,13 +3809,13 @@ packages:
       tslib: 2.5.3
     dev: true
 
-  /@playwright/test@1.34.3:
-    resolution: {integrity: sha512-zPLef6w9P6T/iT6XDYG3mvGOqOyb6eHaV9XtkunYs0+OzxBtrPAAaHotc0X+PJ00WPPnLfFBTl7mf45Mn8DBmw==}
-    engines: {node: '>=14'}
+  /@playwright/test@1.35.0:
+    resolution: {integrity: sha512-6qXdd5edCBynOwsz1YcNfgX8tNWeuS9fxy5o59D0rvHXxRtjXRebB4gE4vFVfEMXl/z8zTnAzfOs7aQDEs8G4Q==}
+    engines: {node: '>=16'}
     hasBin: true
     dependencies:
       '@types/node': 20.2.5
-      playwright-core: 1.34.3
+      playwright-core: 1.35.0
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
@@ -4586,8 +4586,8 @@ packages:
       '@types/superagent': 4.1.17
     dev: true
 
-  /@types/uuid@9.0.1:
-    resolution: {integrity: sha512-rFT3ak0/2trgvp4yYZo5iKFEPsET7vKydKF+VRCxlQ9bpheehyAJH89dAkaLEq/j/RZXJIqcgsmPJKUP1Z28HA==}
+  /@types/uuid@9.0.2:
+    resolution: {integrity: sha512-kNnC1GFBLuhImSnV7w4njQkUiJi0ZXUycu1rUaouPqiKlXkh77JKgdRnTAp1x5eBwcIwbtI+3otwzuIDEuDoxQ==}
     dev: true
 
   /@types/validator@13.7.15:
@@ -10869,9 +10869,9 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /playwright-core@1.34.3:
-    resolution: {integrity: sha512-2pWd6G7OHKemc5x1r1rp8aQcpvDh7goMBZlJv6Co5vCNLVcQJdhxRL09SGaY6HcyHH9aT4tiynZabMofVasBYw==}
-    engines: {node: '>=14'}
+  /playwright-core@1.35.0:
+    resolution: {integrity: sha512-muMXyPmIx/2DPrCHOD1H1ePT01o7OdKxKj2ebmCAYvqhUy+Y1bpal7B0rdoxros7YrXI294JT/DWw2LqyiqTPA==}
+    engines: {node: '>=16'}
     hasBin: true
     dev: true
 
@@ -13739,8 +13739,8 @@ packages:
     engines: {node: '>=12.20'}
     dev: true
 
-  /zod-i18n-map@2.13.0(i18next@22.5.1)(zod@3.21.4):
-    resolution: {integrity: sha512-G3jEyg0S8BwXnsLoZJvmKcw9qHlQSNLhrzpY36ShOCPSWK+ACpsPcs62VEwXYfthcTB8ehJqPIBdWBfJ7q7nSQ==}
+  /zod-i18n-map@2.13.1(i18next@22.5.1)(zod@3.21.4):
+    resolution: {integrity: sha512-8C6MnDasv4J6U8KN4l4IZ8CWU9PupMUh0wUfJ+UbtY+DBdAnpFxKnzhOEqcNllK9QiWk2a4e/SsuB6evEcJdYw==}
     peerDependencies:
       i18next: '>=21.3.0'
       zod: '>=3.17.0'
