@@ -26,6 +26,7 @@
 	import { onMount, tick } from 'svelte'
 	import { editors } from '$lib/cell/CellEditors/editors'
 	import { t } from '$lib/i18n'
+	import { q } from '$lib/store/table'
 	import { confirmBulkDeleteRecords, confirmDeleteField } from '$lib/store/modal'
 	import LoadingTable from './LoadingTable.svelte'
 	import TableViewToast from './TableViewToast.svelte'
@@ -50,7 +51,7 @@
 	$: rowSize = heights[rowHeight]
 
 	$: data = trpc().record.list.query(
-		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
 		{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash },
 	)
 	$: records = RecordFactory.fromQueryRecords($data.data?.records ?? [], $table.schema.toIdMap())

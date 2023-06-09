@@ -4,7 +4,7 @@
 	import { slide } from 'svelte/transition'
 	import FilterItem from './FilterItem.svelte'
 	import { trpc } from '$lib/trpc/client'
-	import { filters, getTable, getView, recordHash } from '$lib/store/table'
+	import { filters, getTable, getView, q, recordHash } from '$lib/store/table'
 	import { isOperatorWithoutValue, type IFilter } from '@undb/core'
 	import { writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
@@ -26,7 +26,7 @@
 	}
 
 	const data = trpc().record.list.query(
-		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
 		{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash },
 	)
 

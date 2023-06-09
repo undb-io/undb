@@ -43,6 +43,7 @@ import type {
   WithRecordCreatedBy,
   WithRecordId,
   WithRecordIds,
+  WithRecordLike,
   WithRecordTableId,
   WithRecordUpdatedAt,
   WithRecordUpdatedBy,
@@ -62,6 +63,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     private readonly qb: Knex.QueryBuilder,
   ) {
     super(em)
+  }
+  like(s: WithRecordLike): void {
+    throw new Error('Method not implemented.')
   }
   multiSelectEqual(s: MultiSelectEqual): void {
     throw new Error('Method not implemented.')
@@ -220,6 +224,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     throw new Error('Method not implemented.')
   }
 
+  or(): this {
+    throw new Error('Method not implemented.')
+  }
   not(): this {
     throw new Error('Method not implemented.')
   }

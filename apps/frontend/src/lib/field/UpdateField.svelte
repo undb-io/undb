@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getTable, getView, recordHash } from '$lib/store/table'
+	import { getTable, getView, q, recordHash } from '$lib/store/table'
 	import { Button, Input, Label, Modal, Spinner, Toggle, Popover, Badge, Textarea, Toast } from 'flowbite-svelte'
 	import FieldIcon from './FieldIcon.svelte'
 	import { superForm } from 'sveltekit-superforms/client'
@@ -31,7 +31,7 @@
 	export let data: Validation<any>
 
 	$: records = trpc().record.list.query(
-		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
 		{ refetchOnMount: false, refetchOnWindowFocus: false, enabled: false, queryHash: $recordHash },
 	)
 

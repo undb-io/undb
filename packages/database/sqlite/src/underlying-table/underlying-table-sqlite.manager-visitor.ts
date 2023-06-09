@@ -164,6 +164,9 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   withWidge(): void {}
   withAggregateFieldId(): void {}
   withReferenceFieldId(): void {}
+  or(): this {
+    return this
+  }
   not(): this {
     return this
   }

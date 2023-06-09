@@ -30,6 +30,7 @@
 	const field = getField()
 
 	const onKeydown = (event: KeyboardEvent) => {
+		if ((event.target as any)?.type === 'search') return
 		if (event.key === 't' && !(event.ctrlKey || event.altKey || event.metaKey)) {
 			createTableModal.open()
 		} else if (event.key === 'r' && !(event.ctrlKey || event.altKey || event.metaKey)) {

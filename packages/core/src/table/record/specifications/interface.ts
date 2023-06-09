@@ -27,6 +27,7 @@ import type { WithRecordAutoIncrement } from './record-auto-increment.specificat
 import type { WithRecordCreatedAt } from './record-created-at.specification.js'
 import type { WithRecordCreatedBy } from './record-created-by.specification.js'
 import type { WithRecordId, WithRecordIds } from './record-id.specification.js'
+import type { WithRecordLike } from './record-search.specification.js'
 import type { WithRecordTableId } from './record-table-id.specification.js'
 import type { WithRecordUpdatedAt } from './record-updated-at.specification.js'
 import type { WithRecordUpdatedBy } from './record-updated-by.specification.js'
@@ -64,6 +65,8 @@ interface IRecordValueVisitor {
   stringEndsWith(s: StringEndsWith): void
   stringRegex(s: StringRegex): void
   stringEmpty(s: StringEqual): void
+
+  like(s: WithRecordLike): void
 
   numberEqual(s: NumberEqual): void
   numberGreaterThan(s: NumberGreaterThan): void

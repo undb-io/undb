@@ -6,6 +6,7 @@
 	import TableNavigator from './TableNavigator.svelte'
 	import { updateTableModal } from '$lib/store/modal'
 	import { getTable } from '$lib/store/table'
+	import SearchTable from './SearchTable.svelte'
 
 	const table = getTable()
 </script>
@@ -19,9 +20,10 @@
 	</div>
 
 	<div class="flex items-center ml-2 gap-3">
-		<Button size="xs" outline class="rounded-sm flex items-center gap-2" href={`/t/${$table.id.value}/openapi`}>
+		<SearchTable />
+		<Button size="xs" outline class="flex items-center gap-2" href={`/t/${$table.id.value}/openapi`}>
 			<i class="ti ti-code" />
-			API Preview
+			<span class="whitespace-nowrap">{$t('API Preview')}</span>
 		</Button>
 		<button on:click={() => updateTableModal.open()}>
 			<i class="ti ti-settings text-gray-600" />

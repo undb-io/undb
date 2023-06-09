@@ -14,8 +14,8 @@ import type {
   DateField,
   DateRangeField,
   EmailField,
-  IFieldVisitor,
   IdField,
+  IFieldVisitor,
   LookupField,
   MultiSelectField,
   NumberField,
@@ -41,11 +41,11 @@ import type {
   WithNewOption,
   WithOption,
   WithOptions,
+  WithoutField,
+  WithoutOption,
   WithRatingMax,
   WithSymmetricReferenceField,
   WithTimeFormat,
-  WithoutField,
-  WithoutOption,
 } from '../field/index.js'
 import type { WithReferenceFieldId } from '../field/specifications/lookup-field.specification.js'
 import type {
@@ -58,9 +58,9 @@ import type {
   WithTableSchema,
 } from '../specifications/index.js'
 import type {
+  WithoutWidgeSpecification,
   WithWidgeSepecification,
   WithWidgesLayout,
-  WithoutWidgeSpecification,
 } from '../view/dashboard/specifications/widge.specification.js'
 import type {
   WithCalendarField,
@@ -71,6 +71,7 @@ import type {
   WithFieldWidth,
   WithKanbanField,
   WithNewView,
+  WithoutView,
   WithRowHeight,
   WithShowSystemFieldsSpec,
   WithSorts,
@@ -82,7 +83,6 @@ import type {
   WithViewPinnedFields,
   WithViewsOrder,
   WithVirsualizationNameSpec,
-  WithoutView,
 } from '../view/index.js'
 import type { WithNumberAggregateSpec } from '../virsualization/specifications/number-virsualization.specification.js'
 
@@ -168,6 +168,9 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   withReferenceFieldId(s: WithReferenceFieldId): void {}
   withWidge(s: WithWidgeSepecification): void {}
   withNewFieldType(s: WithNewFieldType): void {}
+  or(): this {
+    return this
+  }
   not(): this {
     return this
   }

@@ -38,6 +38,10 @@ export class UserSqliteMutationVisitor implements IUserSpecVisitor {
     throw new Error('not implemented')
   }
 
+  or(): IUserSpecVisitor {
+    throw new Error('not implemented')
+  }
+
   not(): IUserSpecVisitor {
     throw new Error('not implemented')
   }
