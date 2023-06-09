@@ -224,6 +224,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     throw new Error('Method not implemented.')
   }
 
+  or(): this {
+    throw new Error('Method not implemented.')
+  }
   not(): this {
     throw new Error('Method not implemented.')
   }

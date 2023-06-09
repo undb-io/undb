@@ -15,6 +15,7 @@ import type {
   DateRangeEqual,
   HasExtension,
   HasFileType,
+  IRecordSpec,
   IRecordVisitor,
   IsAttachmentEmpty,
   IsTreeRoot,
@@ -452,6 +453,18 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       .leftJoin(subQuery, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`, `${alias}.${recordId.fieldNames[0]}`)
       .select(`${alias}.${s.fieldId} as ${s.fieldId}`)
       .whereNull(s.fieldId)
+  }
+
+  or(left: IRecordSpec, right: IRecordSpec): this {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const visitor = this
+    this.qb.where(function () {
+      visitor.qb = this
+      left.accept(visitor)
+      visitor.qb = visitor.qb.or
+      right.accept(visitor)
+    })
+    return this
   }
 
   not(): this {

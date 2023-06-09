@@ -33,6 +33,10 @@ export class UserSqliteQueryVisitor implements IUserSpecVisitor {
     this.qb.where({ [emailFieldName]: s.email })
   }
 
+  or(): IUserSpecVisitor {
+    throw new Error('not implemented')
+  }
+
   not(): IUserSpecVisitor {
     throw new Error('not implemented')
   }

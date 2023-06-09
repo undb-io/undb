@@ -203,6 +203,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   withReferenceFieldId(s: WithReferenceFieldId): void {
     throw new Error('Method not implemented.')
   }
+  or(): this {
+    throw new Error('Method not implemented.')
+  }
   not(): this {
     throw new Error('Method not implemented.')
   }
