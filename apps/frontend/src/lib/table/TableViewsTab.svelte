@@ -87,7 +87,7 @@
 	<button class="w-7 h-7 hover:bg-gray-100 transition">
 		<i class="ti ti-plus text-gray-500" />
 	</button>
-	<Dropdown bind:open>
+	<Dropdown bind:open frameClass="z-50">
 		{#each items as item}
 			<DropdownItem>
 				<Radio
