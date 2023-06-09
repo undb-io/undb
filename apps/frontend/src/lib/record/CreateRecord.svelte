@@ -1,6 +1,6 @@
 <script lang="ts">
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
-	import { getTable, getView, recordHash } from '$lib/store/table'
+	import { getTable, getView, q, recordHash } from '$lib/store/table'
 	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import { Button, Label, Modal, Spinner, Toast } from 'flowbite-svelte'
@@ -20,7 +20,7 @@
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
 	$: records = trpc().record.list.query(
-		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
 		{
 			queryHash: $recordHash,
 			refetchOnMount: false,

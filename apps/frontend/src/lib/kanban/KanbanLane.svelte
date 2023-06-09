@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentRecordId, getGroupRecordsHash, getTable, getView } from '$lib/store/table'
+	import { currentRecordId, getGroupRecordsHash, getTable, getView, q } from '$lib/store/table'
 	import { TRIGGERS, dndzone } from 'svelte-dnd-action'
 	import KanbanCard from './KanbanCard.svelte'
 	import { trpc } from '$lib/trpc/client'
@@ -29,6 +29,7 @@
 			tableId: $table.id.value,
 			viewId: $view.id.value,
 			filter,
+			q: $q,
 		},
 		{ queryHash: $hash, refetchOnMount: false, refetchOnWindowFocus: false },
 	)

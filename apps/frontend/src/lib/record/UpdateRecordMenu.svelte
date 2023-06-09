@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { t } from '$lib/i18n'
-	import { currentRecordId, getTable, getView, recordHash } from '$lib/store/table'
+	import { currentRecordId, getTable, getView, q, recordHash } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { Record } from '@undb/core'
 	import { Button, Dropdown, DropdownDivider, DropdownItem, Modal, Spinner } from 'flowbite-svelte'
@@ -21,7 +21,7 @@
 	})
 
 	$: records = trpc().record.list.query(
-		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
 		{ queryHash: $recordHash, enabled: false },
 	)
 

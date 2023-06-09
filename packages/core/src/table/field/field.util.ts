@@ -75,6 +75,10 @@ export const cannotDuplicate: Set<IFieldType> = new Set<IFieldType>([
   'parent',
 ])
 
+export const searchableFieldTypes = new Set<IFieldType>(['string'])
+
+export const isSearchable = (type: IFieldType) => searchableFieldTypes.has(type)
+
 export const canDuplicate = (type: IFieldType) => !cannotDuplicate.has(type)
 
 export type FieldTypeConvertStrategy = 'clear' | 'match' | 'cast' | 'ignore'

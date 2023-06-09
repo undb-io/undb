@@ -26,6 +26,8 @@ export const getView = () => currentView
 export const currentRecords = writable<Records>([])
 export const getRecords = () => currentRecords
 
+export const q = writable<string | undefined>(undefined)
+
 export const currentRecordId = writable<string | undefined>()
 export const currentRecord = writable<Record | undefined>()
 export const getRecord = () => currentRecord
@@ -59,8 +61,8 @@ export const previousRecord = derived([currentRecordIndex, currentRecords], ([$i
 })
 
 export const recordHash = derived(
-	[currentTable, currentView],
-	([$table, $view]) => `records:${$table.id.value}:${$view.id.value}:${$view.displayType}`,
+	[currentTable, currentView, q],
+	([$table, $view, $q]) => `records:${$table.id.value}:${$view.id.value}:${$view.displayType}:${$q}`,
 )
 
 export const getGroupRecordsHash = (id: string) => derived(recordHash, ($recordHash) => $recordHash + id)

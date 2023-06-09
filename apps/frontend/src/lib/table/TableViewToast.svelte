@@ -2,27 +2,17 @@
 	import { t } from '$lib/i18n'
 	import { confirmBulkDeleteRecords } from '$lib/store/modal'
 	import { recordSelection, selectedCount, selectedRecords } from '$lib/store/record'
-	import { getTable, getView, recordHash } from '$lib/store/table'
+	import { getTable, getView, q, recordHash } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import {
-		Toast,
-		P,
-		Button,
-		Spinner,
-		Chevron,
-		Dropdown,
-		DropdownDivider,
-		DropdownItem,
-		ButtonGroup,
-	} from 'flowbite-svelte'
+	import { Toast, P, Button, Spinner, Chevron, Dropdown, DropdownItem, ButtonGroup } from 'flowbite-svelte'
 	import { quintOut } from 'svelte/easing'
 	import { slide } from 'svelte/transition'
 
 	const table = getTable()
 	const view = getView()
 
-	const data = trpc().record.list.query(
-		{ tableId: $table.id.value, viewId: $view.id.value },
+	$: data = trpc().record.list.query(
+		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
 		{ enabled: false, refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash },
 	)
 
@@ -52,7 +42,7 @@
 
 <Toast
 	{open}
-	color="light"
+	color="none"
 	position="bottom-right"
 	class="z-30 shadow-xl bg-white border border-slate-200 !w-[500px] !max-w-xl"
 	transition={slide}

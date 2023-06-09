@@ -27,6 +27,7 @@ import {
   createFieldSchema,
   getNamesWithInternals,
   getNextFieldName,
+  isSearchable,
 } from '../field/index.js'
 import { UpdatedAtField } from '../field/updated-at-field.js'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema.js'
@@ -111,6 +112,10 @@ export class TableSchema extends ValueObject<Field[]> {
 
   public get kanbanFields(): IKanbanField[] {
     return this.fields.filter((f) => f instanceof SelectField || f instanceof DateField) as IKanbanField[]
+  }
+
+  public get searchableFields(): Field[] {
+    return this.fields.filter((f) => isSearchable(f.type))
   }
 
   public get calendarFields(): ICalendarField[] {

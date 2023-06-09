@@ -42,6 +42,7 @@ import type {
   WithRecordCreatedBy,
   WithRecordId,
   WithRecordIds,
+  WithRecordLike,
   WithRecordTableId,
   WithRecordUpdatedAt,
   WithRecordUpdatedBy,
@@ -129,6 +130,11 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   }
   values(s: WithRecordValues): void {
     throw new Error('Method not implemented.')
+  }
+  like(s: WithRecordLike): void {
+    if (s.type === 'string') {
+      this.qb.whereLike(s.fieldId, `%${s.q}%`)
+    }
   }
   stringEqual(s: StringEqual): void {
     this.qb.where({ [this.getFieldId(s.fieldId)]: s.value.unpack() })

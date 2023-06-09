@@ -6,6 +6,7 @@
 		getView,
 		nextRecord,
 		previousRecord,
+		q,
 		recordHash,
 	} from '$lib/store/table'
 	import { createMutateRecordValuesSchema } from '@undb/core'
@@ -30,7 +31,7 @@
 	$: validators = createMutateRecordValuesSchema(fields ?? [], $record?.valuesJSON)
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 	$: records = trpc().record.list.query(
-		{ tableId: $table.id.value, viewId: $view.id.value },
+		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
 		{ queryHash: $recordHash, enabled: false, refetchOnMount: false, refetchOnWindowFocus: false },
 	)
 

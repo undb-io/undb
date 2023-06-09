@@ -103,3 +103,16 @@ export const andOptions = <T, V extends ISpecVisitor>(
 ): Option<CompositeSpecification<T, V>> => {
   return and(...specs.filter((spec) => spec.isSome()).map((spec) => spec.unwrap()))
 }
+
+export const or = <T, V extends ISpecVisitor>(
+  ...specs: CompositeSpecification<T, V>[]
+): Option<CompositeSpecification<T, V>> => {
+  if (!specs.length) return None
+
+  let s = specs[0]
+  for (const spec of specs.slice(1)) {
+    s = s.or(spec)
+  }
+
+  return Some(s)
+}
