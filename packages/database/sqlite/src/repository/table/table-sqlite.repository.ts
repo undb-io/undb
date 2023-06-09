@@ -69,9 +69,6 @@ export class TableSqliteRepository implements ITableRepository {
       }
 
       em.persist(tableEntity)
-
-      const cache = TableSqliteMapper.entityToQuery(tableEntity)
-      await this.cache.set(table.id.value, cache)
     })
   }
 
