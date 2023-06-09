@@ -3,6 +3,7 @@ import {
   ClsStore,
   Table as CoreTable,
   ViewVO as CoreView,
+  ITableCache,
   ReferenceField,
   Views,
   WithNewField,
@@ -12,7 +13,7 @@ import {
   createTestTable,
 } from '@undb/core'
 import { identity } from 'lodash-es'
-import { mockDeep } from 'vitest-mock-extended'
+import { mock, mockDeep } from 'vitest-mock-extended'
 import { Field, Table } from '../../entity/index.js'
 import { View } from '../../entity/view.js'
 import { AdjacencyListTable } from '../../underlying-table/underlying-foreign-table.js'
@@ -37,7 +38,8 @@ describe('TableSqliteMutationVisitor', () => {
     em = em.fork()
     mv = new TableSqliteMutationVisitor(table.id.value, em)
 
-    repo = new TableSqliteRepository(em)
+    const cache = mock<ITableCache>()
+    repo = new TableSqliteRepository(em, cache)
 
     await em.nativeDelete(Table, {})
     await repo.insert(table)

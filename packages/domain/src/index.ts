@@ -1,3 +1,4 @@
+export * from './cache.js'
 export * from './command-bus.js'
 export * from './command-handler.js'
 export * from './command.js'

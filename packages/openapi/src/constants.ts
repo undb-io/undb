@@ -6,4 +6,6 @@ export const COMPONENT_REFERENCE_ITEM = 'ReferenceItem'
 export const COMPONENT_VIEW_ID = 'ViewId'
 export const UNAUTHORIZED = '401'
 
+export const COMPONENT_MUTATE_RECORD_VALUES = 'MutateRecordValues'
+
 export const TAG_RECORD = 'Record'

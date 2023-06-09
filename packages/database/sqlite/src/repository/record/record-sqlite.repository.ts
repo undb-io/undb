@@ -193,18 +193,32 @@ export class RecordSqliteRepository implements IRecordRepository {
     return record
   }
 
+  private async _update(em: EntityManager, tableId: string, schema: TableSchemaIdMap, id: string, spec: IRecordSpec) {
+    const knex = em.getKnex()
+    const qb = knex.queryBuilder()
+
+    const qv = new RecordSqliteQueryVisitor(tableId, schema, em, qb, knex)
+    WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id)).accept(qv)
+
+    const mv = new RecordSqliteMutationVisitor(this.cls, tableId, id, schema, em, qb)
+    spec.accept(mv)
+
+    await mv.commit()
+  }
+
   async updateOneById(tableId: string, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void> {
     await this.em.transactional(async (em) => {
-      const knex = em.getKnex()
-      const qb = knex.queryBuilder()
+      await this._update(em, tableId, schema, id, spec)
+    })
+  }
 
-      const qv = new RecordSqliteQueryVisitor(tableId, schema, em, qb, knex)
-      WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id)).accept(qv)
-
-      const mv = new RecordSqliteMutationVisitor(this.cls, tableId, id, schema, em, qb)
-      spec.accept(mv)
-
-      await mv.commit()
+  async updateManyByIds(
+    tableId: string,
+    schema: TableSchemaIdMap,
+    updates: { id: string; spec: IRecordSpec }[],
+  ): Promise<void> {
+    await this.em.transactional(async (em) => {
+      await Promise.all(updates.map((update) => this._update(em, tableId, schema, update.id, update.spec)))
     })
   }
 

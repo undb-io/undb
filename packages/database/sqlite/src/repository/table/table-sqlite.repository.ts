@@ -1,5 +1,11 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
-import type { Table as CoreTable, ITableRepository, ITableSpec } from '@undb/core'
+import {
+  TableFactory,
+  type Table as CoreTable,
+  type ITableCache,
+  type ITableRepository,
+  type ITableSpec,
+} from '@undb/core'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { Table, Table as TableEntity } from '../../entity/index.js'
@@ -10,8 +16,14 @@ import { TableSqliteMapper } from './table-sqlite.mapper.js'
 import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor.js'
 
 export class TableSqliteRepository implements ITableRepository {
-  constructor(protected em: EntityManager) {}
+  constructor(protected em: EntityManager, protected readonly cache: ITableCache) {}
   async findOneById(id: string): Promise<Option<CoreTable>> {
+    const cached = await this.cache.get(id)
+    if (cached) {
+      const table = TableFactory.fromQuery(cached)
+      return Some(table)
+    }
+
     const table = await this.em.findOne(TableEntity, id, {
       populate: [
         'fields.options',
@@ -24,6 +36,8 @@ export class TableSqliteRepository implements ITableRepository {
     })
 
     if (!table) return None
+
+    await this.cache.set(table.id, TableSqliteMapper.entityToQuery(table))
 
     return Some(TableSqliteMapper.entityToDomain(table).unwrap())
   }
@@ -59,6 +73,8 @@ export class TableSqliteRepository implements ITableRepository {
   }
 
   async updateOneById(id: string, spec: ITableSpec): Promise<void> {
+    await this.cache.remove(id)
+
     await this.em.transactional(async (em) => {
       const visitor = new TableSqliteMutationVisitor(id, em)
 
@@ -71,6 +87,8 @@ export class TableSqliteRepository implements ITableRepository {
   }
 
   async deleteOneById(id: string): Promise<void> {
+    await this.cache.remove(id)
+
     await this.em.transactional(async (em) => {
       await em.qb(Table).update({ deletedAt: new Date() }).where({ id })
       const tm = new UnderlyingTableSqliteManager(em)

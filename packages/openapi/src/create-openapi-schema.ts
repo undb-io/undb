@@ -1,23 +1,40 @@
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi'
 import type { IQueryRecordSchema } from '@undb/core'
 import { RecordId, recordIdSchema, viewIdSchema, type Table } from '@undb/core'
+import { logger } from '@undb/logger'
 import { format } from 'date-fns'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import OpenAPISnippet from 'openapi-snippet'
 import type { OpenAPIObject } from 'openapi3-ts/oas30'
-import { COMPONENT_OPTION, COMPONENT_RECORD, COMPONENT_RECORD_ID, COMPONENT_USER, COMPONENT_VIEW_ID } from './constants'
-import { deleteRecordById } from './routes/delete-record-by-id'
-import { deleteRecordsByIds } from './routes/delete-records-by-ids'
-import { duplicateRecordById } from './routes/duplicate-record-by-id'
-import { duplicateRecordsByIds } from './routes/duplicate-records-by-ids'
-import { getRecordById } from './routes/get-record-by-id'
-import { getRecords } from './routes/get-records'
-import { create401ResponseSchema } from './schema/401.respoonse'
-import { createOpenAPIRecordSchema } from './schema/open-api-record.schema'
-import { openAPIOptionSchema, openApiUserSchema } from './schema/record-value.schema'
+import {
+  COMPONENT_MUTATE_RECORD_VALUES,
+  COMPONENT_OPTION,
+  COMPONENT_RECORD,
+  COMPONENT_RECORD_ID,
+  COMPONENT_USER,
+  COMPONENT_VIEW_ID,
+} from './constants.js'
+import { createRecord } from './routes/create-record.js'
+import { createRecords } from './routes/create-records.js'
+import { deleteRecordById } from './routes/delete-record-by-id.js'
+import { deleteRecordsByIds } from './routes/delete-records-by-ids.js'
+import { duplicateRecordById } from './routes/duplicate-record-by-id.js'
+import { duplicateRecordsByIds } from './routes/duplicate-records-by-ids.js'
+import { getRecordById } from './routes/get-record-by-id.js'
+import { getRecords } from './routes/get-records.js'
+import { updateRecords } from './routes/udpate-records.js'
+import { updateRecord } from './routes/update-record.js'
+import { create401ResponseSchema } from './schema/401.respoonse.js'
+import { createOpenAPIMutateRecordSchema } from './schema/mutate-record.schema.js'
+import { createOpenAPIRecordSchema } from './schema/open-api-record.schema.js'
+import { openAPIOptionSchema, openApiUserSchema } from './schema/record-value.schema.js'
 
-export const createTableSchema = (table: Table, record?: IQueryRecordSchema): OpenAPIObject => {
+export const createTableSchema = (
+  table: Table,
+  record?: IQueryRecordSchema,
+  host = 'http://localhost:4000',
+): OpenAPIObject => {
   const registry = new OpenAPIRegistry()
 
   const recordSchema = createOpenAPIRecordSchema(table, record)
@@ -26,6 +43,8 @@ export const createTableSchema = (table: Table, record?: IQueryRecordSchema): Op
   registry.register(COMPONENT_VIEW_ID, viewIdSchema.openapi({ example: table.mustGetView().id.value }))
   registry.register(COMPONENT_OPTION, openAPIOptionSchema)
   registry.register(COMPONENT_USER, openApiUserSchema)
+  const valuesSchema = createOpenAPIMutateRecordSchema(table, record)
+  registry.register(COMPONENT_MUTATE_RECORD_VALUES, valuesSchema)
 
   const bearerAuth = registry.registerComponent('securitySchemes', 'bearerAuth', {
     type: 'http',
@@ -40,6 +59,10 @@ export const createTableSchema = (table: Table, record?: IQueryRecordSchema): Op
     duplicateRecordsByIds(table),
     deleteRecordById(table),
     deleteRecordsByIds(table),
+    createRecord(table, valuesSchema),
+    createRecords(table, valuesSchema),
+    updateRecord(table, valuesSchema, record),
+    updateRecords(table, valuesSchema, record),
   ]
 
   for (const route of routes) {
@@ -61,7 +84,7 @@ export const createTableSchema = (table: Table, record?: IQueryRecordSchema): Op
         title: `undb ${table.name.value} open api`,
         description: `This is the open API of undb table ${table.name.value}`,
       },
-      servers: [{ url: 'http://localhost:4000/api/v1/openapi' }],
+      servers: [{ url: host + '/api/v1/openapi' }],
     })
 
     return generated
@@ -87,7 +110,7 @@ export const createTableSchema = (table: Table, record?: IQueryRecordSchema): Op
       }
     }
   } catch (error) {
-    console.log(error)
+    logger.error(error, 'generate endpoint snippets error')
   }
 
   return docs

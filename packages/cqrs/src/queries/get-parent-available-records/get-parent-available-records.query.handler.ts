@@ -1,4 +1,5 @@
-import { IRecordQueryModel, ITableRepository, ParentAvailableSpec, ViewId, WithRecordTableId } from '@undb/core'
+import type { IRecordQueryModel, ITableRepository } from '@undb/core'
+import { ParentAvailableSpec, ViewId, WithRecordTableId } from '@undb/core'
 import type { IQueryHandler } from '@undb/domain'
 import { andOptions } from '@undb/domain'
 import { Option } from 'oxide.ts'

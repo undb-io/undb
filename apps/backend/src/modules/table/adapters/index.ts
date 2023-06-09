@@ -1,10 +1,13 @@
 import { Inject, Provider } from '@nestjs/common'
+import { PinoLogger } from 'nestjs-pino'
+import { createStorage } from 'unstorage'
 import { NestAggregateSqliteQueryModel } from './sqlite/record-sqlite.aggregate-repository.js'
 import { NestRecordSqliteQueryModel } from './sqlite/record-sqlite.query-model.js'
 import { NestRecordSqliteRepository } from './sqlite/record-sqlite.repository.js'
 import { NestRecordSqliteTreeQueryModel, RECORD_TREE_QUERY_MODEL } from './sqlite/record-sqlite.tree-query-model.js'
+import { NestTableKVCache, STORAGE } from './sqlite/table-kv.cache.js'
 import { NestTableSqliteQueryModel } from './sqlite/table-sqlite.query-model.js'
-import { NestTableSqliteRepository } from './sqlite/table-sqlite.repository.js'
+import { NestTableSqliteRepository, TABLE_KV_CACHE } from './sqlite/table-sqlite.repository.js'
 
 export const TABLE_REPOSITORY = Symbol('TABLE_REPOSITORY')
 export const InjectTableReposiory = () => Inject(TABLE_REPOSITORY)
@@ -45,5 +48,20 @@ export const dbAdapters: Provider[] = [
   {
     provide: RECORD_AGGREGATE_REPOSITORY,
     useClass: NestAggregateSqliteQueryModel,
+  },
+  {
+    provide: TABLE_KV_CACHE,
+    useClass: NestTableKVCache,
+  },
+  {
+    provide: STORAGE,
+    useFactory: async (logger: PinoLogger) => {
+      const storage = createStorage()
+
+      logger.info('initialized cache storage')
+
+      return storage
+    },
+    inject: [PinoLogger],
   },
 ]

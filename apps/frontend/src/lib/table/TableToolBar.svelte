@@ -26,7 +26,7 @@
 		<button on:click={() => updateTableModal.open()}>
 			<i class="ti ti-settings text-gray-600" />
 		</button>
-		<Tooltip placement="bottom">
+		<Tooltip class="z-50" placement="bottom">
 			{$t('Edit Table')}
 		</Tooltip>
 		<ToggleDisplayType />

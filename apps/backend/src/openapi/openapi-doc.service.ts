@@ -16,17 +16,21 @@ export class OpenAPIDocService {
     private readonly postmanConvertor: IPostmanCollectionConvertor,
   ) {}
 
-  public async getSpec(table: Table): Promise<OpenAPIObject> {
+  public async getSpec(table: Table, host: string): Promise<OpenAPIObject> {
     const record = await this.recordRepo.findOne(table.id.value, null)
 
-    const spec = createTableSchema(table, record.into())
+    const spec = createTableSchema(table, record.into(), host)
 
     return spec
   }
 
-  public async export(tableId: string, type?: string): Promise<{ name: string; buffer: Buffer }> {
+  public async export(
+    tableId: string,
+    type: string | undefined,
+    host: string,
+  ): Promise<{ name: string; buffer: Buffer }> {
     const table = (await this.repo.findOneById(tableId)).unwrap()
-    const spec = await this.getSpec(table)
+    const spec = await this.getSpec(table, host)
 
     let buffer: Buffer
     if (type === 'postman') {
@@ -39,9 +43,9 @@ export class OpenAPIDocService {
     return { name: `${table.name.value}_openapi.json`, buffer }
   }
 
-  public async generateDoc(tableId: string): Promise<string> {
+  public async generateDoc(tableId: string, host: string): Promise<string> {
     const table = (await this.repo.findOneById(tableId)).unwrap()
-    const spec = await this.getSpec(table)
+    const spec = await this.getSpec(table, host)
     return createRedocHTML(table, spec)
   }
 }

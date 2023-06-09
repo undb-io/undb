@@ -1,5 +1,7 @@
-import { Controller, Get, Param, Query, Res, StreamableFile, UseGuards } from '@nestjs/common'
+import { Controller, Get, Headers, Param, Query, Res, StreamableFile, UseGuards } from '@nestjs/common'
 import { type Response } from 'express'
+import { type IncomingHttpHeaders } from 'http'
+import { parseURL } from 'ufo'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'
 import { OpenAPIDocService } from './openapi-doc.service.js'
 
@@ -9,8 +11,12 @@ export class OpenAPIDocController {
 
   @Get('docs/tables/:tableId')
   @UseGuards(JwtAuthGuard)
-  public async doc(@Res() res: Response, @Param('tableId') tableId: string) {
-    const html = await this.openAPIService.generateDoc(tableId)
+  public async doc(@Res() res: Response, @Param('tableId') tableId: string, @Headers() headers: IncomingHttpHeaders) {
+    const referer = headers.referer
+    const parsed = parseURL(referer)
+    const host = parsed.host && parsed.protocol ? `${parsed.protocol}//${parsed.host}` : ''
+
+    const html = await this.openAPIService.generateDoc(tableId, host)
 
     res.type('html')
     res.send(html)
@@ -20,9 +26,14 @@ export class OpenAPIDocController {
   public async export(
     @Res({ passthrough: true }) res: Response,
     @Param('tableId') tableId: string,
+    @Headers() headers: IncomingHttpHeaders,
     @Query('type') type?: string,
   ) {
-    const { name, buffer } = await this.openAPIService.export(tableId, type)
+    const referer = headers.referer
+    const parsed = parseURL(referer)
+    const host = parsed.host && parsed.protocol ? `${parsed.protocol}//${parsed.host}` : ''
+
+    const { name, buffer } = await this.openAPIService.export(tableId, type, host)
 
     res.set({
       'Content-Disposition': `attachment; filename=${name}`,

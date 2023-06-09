@@ -1,4 +1,5 @@
-import { convertFilterSpec, IRecordQueryModel, ITableRepository, ViewId, WithRecordTableId } from '@undb/core'
+import type { IRecordQueryModel, ITableRepository } from '@undb/core'
+import { ViewId, WithRecordTableId, convertFilterSpec } from '@undb/core'
 import type { IQueryHandler } from '@undb/domain'
 import type { IGetForeignRecordsOutput } from './get-foreign-records.query.interface.js'
 import type { GetForeignRecordsQuery } from './get-foreign-records.query.js'

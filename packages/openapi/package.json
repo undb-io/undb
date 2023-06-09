@@ -6,6 +6,7 @@
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^5.1.0",
     "@undb/core": "^0.0.0",
+    "@undb/logger": "workspace:^",
     "date-fns": "^2.30.0",
     "lodash-es": "^4.17.21",
     "openapi-snippet": "^0.14.0",

@@ -55,6 +55,7 @@ export type IUpdateTableSchemaSchema = z.infer<typeof updateTableSchemaSchema>
 export type ICreateTableSchemaInput = z.infer<typeof createTableSchemaSchema>
 
 export type TableSchemaIdMap = Map<string, Field>
+export type TableSchemaNameMap = Map<string, Field>
 
 const lookingFieldTypes: IFieldType[] = ['tree', 'parent', 'reference', 'lookup']
 const aggregateFieldTypes: IFieldType[] = ['count', 'sum', 'average']
@@ -90,6 +91,10 @@ export class TableSchema extends ValueObject<Field[]> {
 
   public toIdMap(): TableSchemaIdMap {
     return new Map(this.fields.map((f) => [f.id.value, f]))
+  }
+
+  public toNameMap(): TableSchemaNameMap {
+    return new Map(this.fields.map((f) => [f.name.value, f]))
   }
 
   public get fields(): Field[] {

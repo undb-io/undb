@@ -3,6 +3,7 @@ import { BulkDuplicateRecordsCommandHandler } from './bulk-duplicate-record.comm
 import { CreateFieldCommandHandler } from './create-field.command.handler.js'
 import { CreateOptionCommandHandler } from './create-option.command.handler.js'
 import { CreateRecordCommandHandler } from './create-record.command.handler.js'
+import { CreateRecordsCommandHandler } from './create-records.command.handler.js'
 import { CreateTableCommandHandler } from './create-table.command.handler.js'
 import { CreateViewCommandHandler } from './create-view.command.handler.js'
 import { CreateWidgeCommandHandler } from './create-widge.command.handler.js'
@@ -36,6 +37,7 @@ import { SwitchDisplayTypeCommandHandler } from './switch-display-type.command.h
 import { UpdateFieldCommandHandler } from './update-field.command.handler.js'
 import { UpdateOptionCommandHandler } from './update-option.command.handler.js'
 import { UpdateRecordCommandHandler } from './update-record.command.handler.js'
+import { UpdateRecordsCommandHandler } from './update-records.command.handler.js'
 import { UpdateTableCommandHandler } from './update-table.command.handler.js'
 import { UpdateViewNameCommandHandler } from './update-view-name.command.handler.js'
 import { UpdateVirsualizationCommandHandler } from './update-virsualization.command.handler.js'
@@ -43,6 +45,9 @@ import { UpdateVirsualizationCommandHandler } from './update-virsualization.comm
 export const commandHandlers = [
   CreateTableCommandHandler,
   CreateRecordCommandHandler,
+  CreateRecordsCommandHandler,
+  UpdateRecordCommandHandler,
+  UpdateRecordsCommandHandler,
   DuplicateRecordCommandHandler,
   BulkDuplicateRecordsCommandHandler,
   CreateFieldCommandHandler,
@@ -66,7 +71,6 @@ export const commandHandlers = [
   ReorderOptionsCommandHandler,
   SwitchDisplayTypeCommandHandler,
   SetRowHeightCommandHandler,
-  UpdateRecordCommandHandler,
   UpdateOptionCommandHandler,
   DeleteRecordCommandHandler,
   BulkDeleteRecordsCommandHandler,
