@@ -1,4 +1,5 @@
-import { createMutateRecordValuesSchema, IRecordRepository, ITableRepository } from '@undb/core'
+import type { IRecordRepository, ITableRepository } from '@undb/core'
+import { createMutateRecordValuesSchema } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
 import type * as updateRecordCommandJs from './update-record.command.js'
 

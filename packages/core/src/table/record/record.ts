@@ -3,7 +3,7 @@ import type { JsonObject } from 'type-fest'
 import type { ICollaboratorProfile } from '../field/collaborator-field.type.js'
 import type { Table } from '../table.js'
 import type { TableId, TableSchema, TableSchemaIdMap } from '../value-objects/index.js'
-import { IRecordDisplayValues } from './index.js'
+import type { IRecordDisplayValues } from './index.js'
 import { RecordFactory } from './record.factory.js'
 import type {
   IInternalRecordValues,

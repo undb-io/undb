@@ -12,6 +12,11 @@ export interface IRecordRepository {
   find(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap): Promise<Record[]>
 
   updateOneById(tableId: string, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void>
+  updateManyByIds(
+    tableId: string,
+    schema: TableSchemaIdMap,
+    updates: { id: string; spec: IRecordSpec }[],
+  ): Promise<void>
 
   deleteOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<void>
   deleteManyByIds(tableId: string, ids: string[], schema: TableSchemaIdMap): Promise<void>
