@@ -66,8 +66,16 @@ export class OpenAPIController {
     @Body('id') id: string,
     @Body('values') values: IOpenAPIMutateRecordSchema,
   ) {
-    console.log(values)
     await this.service.updateRecord(tableId, id, values)
+  }
+
+  @Version('1')
+  @Patch('tables/:tableId/records/bulk')
+  public async updateRecords(
+    @Param('tableId') tableId: string,
+    @Body('records') records: { id: string; values: IOpenAPIMutateRecordSchema }[],
+  ) {
+    await this.service.updateRecords(tableId, records)
   }
 
   @Version('1')
