@@ -86,8 +86,9 @@
 			</Dropdown>
 		</div>
 	</svelte:fragment>
+
 	<form id="updateTable" class="flex flex-col justify-between flex-1 gap-2" method="POST" use:enhance>
-		<div>
+		<div class="space-y-2">
 			<div>
 				<Label class="space-y-2">
 					<span>
@@ -108,6 +109,16 @@
 				</Label>
 			</div>
 
+			<div class="flex">
+				<span class="inline-block mr-2 text-sm">
+					{$t('Display Fields')}:
+				</span>
+				{#each displayFields as field}
+					<Badge>
+						{field.name}
+					</Badge>
+				{/each}
+			</div>
 			{#if $form.schema?.length}
 				<Accordion class="my-4">
 					{#each $form.schema as field, i (field.id)}
