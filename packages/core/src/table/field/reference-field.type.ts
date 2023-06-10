@@ -34,6 +34,7 @@ export const referenceFieldQuerySchema = baseFieldQuerySchema.merge(referenceTyp
     foreignTableId: tableIdSchema.optional(),
     displayFieldIds: fieldIdSchema.array().optional(),
     symmetricReferenceFieldId: fieldIdSchema.optional(),
+    bidirectional: z.boolean(),
   }),
 )
 export type IReferenceFieldQuerySchema = z.infer<typeof referenceFieldQuerySchema>

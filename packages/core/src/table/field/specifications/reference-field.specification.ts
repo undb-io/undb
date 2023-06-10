@@ -26,11 +26,14 @@ export class WithDisplayFields extends CompositeSpecification<Table, ITableSpecV
     )
   }
   isSatisfiedBy(t: Table): boolean {
-    const field = t.schema.getFieldById(this.fieldId).unwrap() as IAbstractLookingField
+    const field = t.schema.getFieldById(this.fieldId).into(null) as IAbstractLookingField | null
+    if (!field) return false
     return isEqual(field.displayFieldIds, this)
   }
   mutate(t: Table): Result<Table, string> {
-    const field = t.schema.getFieldById(this.fieldId).unwrap() as IAbstractLookingField
+    const field = t.schema.getFieldById(this.fieldId).into(null) as IAbstractLookingField | null
+    if (!field) return Ok(t)
+
     field.displayFieldIds = this.displayFields
     return Ok(t)
   }
@@ -52,11 +55,14 @@ export class WithSymmetricReferenceField extends CompositeSpecification<Table, I
     return new this(type, fieldId, FieldId.fromString(symmetricReferenceFieldId))
   }
   isSatisfiedBy(t: Table): boolean {
-    const field = t.schema.getFieldById(this.fieldId).unwrap() as ReferenceField
+    const field = t.schema.getFieldById(this.fieldId).into(null) as ReferenceField | null
+    if (!field) return false
     return this.symmetricReferenceFieldId.equals(field.symmetricReferenceFieldId)
   }
   mutate(t: Table): Result<Table, string> {
-    const field = t.schema.getFieldById(this.fieldId).unwrap() as ReferenceField
+    const field = t.schema.getFieldById(this.fieldId).into(null) as ReferenceField | null
+    if (!field) return Ok(t)
+
     field.symmetricReferenceFieldId = this.symmetricReferenceFieldId
     return Ok(t)
   }
@@ -85,11 +91,13 @@ export class WithForeignTableId extends CompositeSpecification<Table, ITableSpec
   }
 
   isSatisfiedBy(t: Table): boolean {
-    const field = t.schema.getFieldById(this.fieldId).unwrap() as ReferenceField
+    const field = t.schema.getFieldById(this.fieldId).into() as ReferenceField | null
+    if (!field) return false
     return this.foreignTableId.value === field.foreignTableId.into()
   }
   mutate(t: Table): Result<Table, string> {
-    const field = t.schema.getFieldById(this.fieldId).unwrap() as ReferenceField
+    const field = t.schema.getFieldById(this.fieldId).into(null) as ReferenceField | null
+    if (!field) return Ok(t)
     field.foreignTableId = Some(this.foreignTableId.value)
     return Ok(t)
   }
