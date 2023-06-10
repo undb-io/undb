@@ -18,6 +18,7 @@ import {
 	type IDateRangeFieldQueryValue,
 	type IFieldType,
 	type IOptionSchema,
+	type Json,
 	type LookupField,
 	type ParentField,
 	type RatingField,
@@ -42,6 +43,16 @@ const string: TemplateFunc = (h, props) => {
 	const value = props.model[props.prop] as string | undefined
 	if (!value) return null
 	return html`<span class="text-sm">${value ?? ''}</span>`
+}
+
+const json: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'json') return
+
+	const html = htm.bind(h)
+	const value = props.model[props.prop] as Json | undefined
+	if (!value) return null
+	return html`<span class="text-sm">${JSON.stringify(value) ?? ''}</span>`
 }
 
 const email: TemplateFunc = (h, props) => {
@@ -441,6 +452,7 @@ export const cellTemplateMap: Record<IFieldType, TemplateFunc> = {
 	'created-by': createdBy,
 	'date-range': dateRange,
 	email,
+	json,
 	lookup,
 	number,
 	parent,

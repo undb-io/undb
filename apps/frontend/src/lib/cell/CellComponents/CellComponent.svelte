@@ -31,6 +31,7 @@
 		'auto-increment': Number,
 		color: Color,
 		email: String,
+		json: String,
 		date: Date,
 		select: Select,
 		'multi-select': MultiSelect,

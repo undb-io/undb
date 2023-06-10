@@ -11,6 +11,7 @@ import {
   UnderlyingCurrencyColumn,
   UnderlyingDateColumn,
   UnderlyingEmailColumn,
+  UnderlyingJsonColumn,
   UnderlyingLookupColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
@@ -77,6 +78,10 @@ export class LookupColumnTypeModifier extends BaseColumnTypeModifier<LookupField
   }
   email(): void {
     const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
+  }
+  json(): void {
+    const newColumn = new UnderlyingJsonColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
   date(): void {

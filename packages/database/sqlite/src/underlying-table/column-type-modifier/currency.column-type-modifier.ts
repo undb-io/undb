@@ -7,6 +7,7 @@ import {
   UnderlyingCurrencyColumn,
   UnderlyingDateColumn,
   UnderlyingEmailColumn,
+  UnderlyingJsonColumn,
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
   UnderlyingStringColumn,
@@ -30,6 +31,10 @@ export class CurrencyColumnTypeModifier extends BaseColumnTypeModifier<CurrencyF
   }
   email(): void {
     const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
+  }
+  json(): void {
+    const newColumn = new UnderlyingJsonColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
   date(): void {

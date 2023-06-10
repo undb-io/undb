@@ -31,6 +31,11 @@ export function getFilterOperators(type: IFieldType | undefined) {
 			{ value: '$eq', name: 'EQUAL' },
 			{ value: '$neq', name: 'NOT EQUAL' },
 		]
+	} else if (type === 'json') {
+		data = [
+			{ value: '$is_empty', name: 'IS EMPTY' },
+			{ value: '$is_not_empty', name: 'IS NOT EMPTY' },
+		]
 	} else if (
 		type === 'number' ||
 		type === 'rating' ||
@@ -132,6 +137,7 @@ export const icons: Record<IFieldType, string> = {
 	'created-at': 'calendar-plus',
 	'updated-at': 'calendar-stats',
 	email: 'mail',
+	json: 'json',
 	color: 'palette',
 	reference: 'relation-many-to-many',
 	tree: 'hierarchy',

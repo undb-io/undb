@@ -27,6 +27,7 @@ export const openApiRecordValueMapper = (
     'auto-increment': (field) => record?.autoIncrement,
     color: getValue,
     email: getValue,
+    json: getValue,
     date: getValue,
     select: (field) => {
       const value = getValue(field) as string

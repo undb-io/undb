@@ -16,6 +16,7 @@ import type {
   EmailField,
   IdField,
   IFieldVisitor,
+  JsonField,
   LookupField,
   MultiSelectField,
   NumberField,
@@ -105,6 +106,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   autoIncrement(field: AutoIncrementField): void {}
   string(field: StringField): void {}
   email(field: EmailField): void {}
+  json(field: JsonField): void {}
   color(field: ColorField): void {}
   number(field: NumberField): void {}
   bool(field: BoolField): void {}

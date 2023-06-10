@@ -17,6 +17,7 @@ import type {
   IFieldType,
   IFieldVisitor,
   IdField,
+  JsonField,
   LookupField,
   MultiSelectField,
   NumberField,
@@ -41,6 +42,7 @@ import { CurrencyColumnTypeModifier } from './column-type-modifier/currency.colu
 import { DateRangeColumnTypeModifier } from './column-type-modifier/date-range.column-type-modifier.js'
 import { DateColumnTypeModifier } from './column-type-modifier/date.column-type-modifier.js'
 import { EmailColumnTypeModifier } from './column-type-modifier/email.column-type-modifier.js'
+import { JsonColumnTypeModifier } from './column-type-modifier/json.column-type-modifier.js'
 import { LookupColumnTypeModifier } from './column-type-modifier/lookup.column-type-modifier.js'
 import { MultiSelectColumnTypeModifier } from './column-type-modifier/multi-select.column-type-modifier.js'
 import { NumberColumnTypeModifier } from './column-type-modifier/number.column-type-modifier.js'
@@ -90,6 +92,12 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
   }
   email(field: EmailField): void {
     const modifier = new EmailColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
+  }
+  json(field: JsonField): void {
+    const modifier = new JsonColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
     modifier[this.newType]()
     this.unshiftQueries(...modifier.queries)
     this.unshiftJobs(...modifier.jobs)

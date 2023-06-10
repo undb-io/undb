@@ -18,6 +18,7 @@
 	import Select from './Select.svelte'
 	import MultiSelect from './MultiSelect.svelte'
 	import Currency from './Currency.svelte'
+	import Json from './Json.svelte'
 
 	export let field: Field
 	export let record: Record | undefined = undefined
@@ -32,6 +33,7 @@
 		'auto-increment': Readonly,
 		color: Color,
 		email: Email,
+		json: Json,
 		date: Date,
 		select: Select,
 		'multi-select': MultiSelect,
