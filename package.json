@@ -25,6 +25,7 @@
   "packageManager": "pnpm@8.6.1",
   "private": true,
   "scripts": {
+    "bootstrap": "pnpm install && pnpm run build",
     "build": "turbo run build",
     "build:image": "zx scripts/build-image.mjs",
     "clean": "turbo run clean --parallel",
