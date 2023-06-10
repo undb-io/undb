@@ -54,6 +54,7 @@
 		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
 		{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash },
 	)
+
 	$: records = RecordFactory.fromQueryRecords($data.data?.records ?? [], $table.schema.toIdMap())
 	$: $currentRecords = records
 	const field = getField()
@@ -288,9 +289,16 @@
 			$confirmDeleteField = false
 		},
 	})
+
+	let isLoading = false
+	if ($data?.isLoading) {
+		setTimeout(() => {
+			isLoading = true
+		}, 300)
+	}
 </script>
 
-<div class:h-[50px]={!hasRecord || $data.isLoading} class:h-full={hasRecord}>
+<div class="h-full relative">
 	<RevoGrid
 		bind:this={grid}
 		source={rows}
@@ -304,12 +312,16 @@
 		{editors}
 		on:aftercolumnresize={onAfterColumnResize}
 	/>
+	{#if isLoading}
+		<div class="absolute top-0 left-0">
+			<LoadingTable />
+		</div>
+	{:else if !hasRecord && $data.isSuccess}
+		<div class="absolute top-[50%] right-[50%] translate-x-[50%] translate-y-[-70%] z-[50]">
+			<EmptyTable />
+		</div>
+	{/if}
 </div>
-{#if $data.isLoading}
-	<LoadingTable />
-{:else if !hasRecord}
-	<EmptyTable />
-{/if}
 
 <TableViewToast open={!!$selectedCount} />
 
