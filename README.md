@@ -73,6 +73,10 @@ docker run -d --name undb -p 4000:4000 --platform linux/x86_64 -v ~/.undb/:/var/
 
 ![Alt](https://repobeats.axiom.co/api/embed/4e19a26c5f110e58bbcce4bb6a79c144a481c3dd.svg 'Repobeats analytics image')
 
+## Contribution
+
+Checkout [development documentation](https://docs.undb.xyz/contribution/development/)
+
 ## License
 
 undb is open-source under the GNU Affero General Public License Version 3 (AGPLv3). You can find it [here](./LICENSE).
