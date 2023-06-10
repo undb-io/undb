@@ -2,7 +2,7 @@
   "name": "@undb/backend",
   "version": "0.0.0",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.348.0",
+    "@aws-sdk/client-s3": "^3.350.0",
     "@json2csv/plainjs": "^7.0.1",
     "@mikro-orm/better-sqlite": "^5.7.11",
     "@mikro-orm/core": "^5.7.11",
@@ -63,7 +63,7 @@
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.2",
     "@types/multer": "^1.4.7",
-    "@types/node": "^20.2.5",
+    "@types/node": "^20.2.6",
     "@types/passport": "^1.0.12",
     "@types/passport-jwt": "^3.0.8",
     "@types/passport-local": "^1.0.35",
