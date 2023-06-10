@@ -14,7 +14,7 @@ import {
 } from '@undb/core'
 import { and } from '@undb/domain'
 import type { Option } from 'oxide.ts'
-import { Some } from 'oxide.ts'
+import { None, Some } from 'oxide.ts'
 import { ReferenceField, SelectField } from '../../entity/field.js'
 import { Table } from '../../entity/table.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME, INTERNAL_COLUMN_DELETED_BY_NAME } from '../../underlying-table/constants.js'
@@ -127,6 +127,9 @@ export class RecordSqliteRepository implements IRecordRepository {
     new RecordSqliteReferenceQueryVisitor(this.em, builder.knex, builder.qb, table, tableEntity).visit(table)
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb.first())
+    if (!data.length) {
+      return None
+    }
 
     const record = RecordSqliteMapper.toDomain(tableId, schema, data[0]).unwrap()
     return Some(record)
@@ -159,6 +162,9 @@ export class RecordSqliteRepository implements IRecordRepository {
     new RecordSqliteReferenceQueryVisitor(this.em, builder.knex, builder.qb, table, tableEntity).visit(table)
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb.first())
+    if (!data.length) {
+      return None
+    }
 
     const record = RecordSqliteMapper.toDomain(tableId, schema, data[0]).unwrap()
     return Some(record)
