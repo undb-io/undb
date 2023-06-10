@@ -171,6 +171,9 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
       return
     }
 
+    console.log(JSON.stringify(field, null, 2))
+    console.log(field.isOwner)
+
     const knex = this.em.getKnex()
 
     const underlyingTable = AdjacencyListTable.fromField(this.tableId, field)

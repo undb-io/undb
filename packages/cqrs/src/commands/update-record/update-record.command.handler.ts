@@ -8,12 +8,16 @@ export class UpdateRecordCommandHandler implements ICommandHandler<updateRecordC
 
   async execute(command: updateRecordCommandJs.UpdateRecordCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
-    const record = (await this.recordRepo.findOneById(table.id.value, command.id, table.schema.toIdMap())).unwrap()
+    const tableSchema = table.schema.toIdMap()
+
+    const record = (await this.recordRepo.findOneById(table.id.value, command.id, tableSchema)).unwrap()
     const schema = createMutateRecordValuesSchema(
       table.schema.fields.filter((field) => Object.keys(command.values).includes(field.id.value)),
     )
 
-    const spec = record.updateRecord(table.schema, schema.parse(command.values))
-    await this.recordRepo.updateOneById(table.id.value, command.id, table.schema.toIdMap(), spec)
+    const values = await schema.parseAsync(command.values)
+    const spec = record.updateRecord(table.schema, values)
+
+    await this.recordRepo.updateOneById(table.id.value, command.id, tableSchema, spec)
   }
 }
