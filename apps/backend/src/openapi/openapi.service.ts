@@ -23,13 +23,6 @@ export class OpenAPIService {
     return records.map((record) => this.mapper(fields, record))
   }
 
-  public async map(tableId: string, record: IQueryRecordSchema) {
-    const table = (await this.repo.findOneById(tableId)).unwrap()
-    const fields = table.schema.fields
-
-    return this.mapper(fields, record)
-  }
-
   public async createRecord(tableId: string, id: string | undefined, values: IOpenAPIMutateRecordSchema) {
     const table = (await this.repo.findOneById(tableId)).unwrap()
     const internalValues = openAPIMutateRecordMapper(table, values)
