@@ -194,7 +194,7 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
       field.symmetricReferenceField = this.em.getReference(ReferenceField, value.symmetricReferenceFieldId.value)
     }
 
-    const adjacencyListTable = new AdjacencyListTable(this.table.id, value)
+    const adjacencyListTable = AdjacencyListTable.fromField(this.table.id, value)
 
     const queries = adjacencyListTable.getCreateTableSqls(this.em.getKnex())
 

@@ -51,6 +51,11 @@ export class ReferenceField extends Mixin(
     return Option(this.props.foreignTableId?.value)
   }
 
+  override set foreignTableId(id: Option<string>) {
+    if (id.isNone()) return
+    this.props.foreignTableId = TableId.from(id.unwrap()).unwrap()
+  }
+
   override get issues(): ReferenceFieldIssue[] {
     const issues: ReferenceFieldIssue[] = []
 

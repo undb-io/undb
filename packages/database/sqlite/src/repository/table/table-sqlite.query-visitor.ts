@@ -17,6 +17,7 @@ import type {
   WithFieldVisibility,
   WithFieldWidth,
   WithFilter,
+  WithForeignTableId,
   WithFormat,
   WithKanbanField,
   WithNewField,
@@ -186,6 +187,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {
+    throw new Error('Method not implemented.')
+  }
+  foreignTableIdEqual(s: WithForeignTableId): void {
     throw new Error('Method not implemented.')
   }
   ratingMaxEqual(s: WithRatingMax): void {

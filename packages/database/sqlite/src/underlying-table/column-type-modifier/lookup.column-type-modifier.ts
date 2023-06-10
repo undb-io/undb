@@ -92,7 +92,7 @@ export class LookupColumnTypeModifier extends BaseColumnTypeModifier<LookupField
     this.castLookupColumn(newColumn)
   }
   reference(): void {
-    throw new Error('Method not implemented.')
+    this.dropColumn(this.column)
   }
   tree(): void {
     throw new Error('Method not implemented.')

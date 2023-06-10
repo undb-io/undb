@@ -36,6 +36,7 @@ import type {
   WithFieldDisplay,
   WithFieldName,
   WithFieldRequirement,
+  WithForeignTableId,
   WithFormat,
   WithNewFieldType,
   WithNewOption,
@@ -149,6 +150,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   newField(s: WithNewField): void {
     s.field.accept(this)
   }
+  abstract foreignTableIdEqual(s: WithForeignTableId): void
   withoutField(s: WithoutField): void {}
   withDuplicatedField(s: WithDuplicatedField): void {}
   optionsEqual(s: WithOptions): void {}

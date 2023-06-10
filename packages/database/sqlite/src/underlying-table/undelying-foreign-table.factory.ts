@@ -9,7 +9,7 @@ export class UnderlyingForeignTableFactory {
       case 'tree':
         return new ClosureTable(foreignTableId, field)
       case 'reference':
-        return new AdjacencyListTable(foreignTableId, field)
+        return AdjacencyListTable.fromField(foreignTableId, field)
     }
   }
 }

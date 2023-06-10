@@ -38,7 +38,7 @@ export class CollaboratorForeignTable implements IUnderlyingForeignTable {
     return `${this.name}.${CollaboratorForeignTable.USER_ID}`
   }
 
-  getCreateTableSqls(knex: Knex<any, any[]>): string[] {
+  getCreateTableSqls(knex: Knex): string[] {
     return [
       knex.schema
         .createTableIfNotExists(this.name, (tb) => {
@@ -59,21 +59,39 @@ export class CollaboratorForeignTable implements IUnderlyingForeignTable {
   }
 }
 
-export class AdjacencyListTable extends BaseUnderlyingForeignTable<ReferenceField> {
+export class AdjacencyListTable implements IUnderlyingForeignTable {
   static TO_ID = 'to_id'
   static FROM_ID = 'from_id'
 
+  constructor(
+    public readonly tableId: string,
+    public readonly fieldId: string,
+    private readonly _foreignTableId?: string,
+    private readonly isOwner = false,
+    private readonly symmetricReferenceFieldId?: string,
+  ) {}
+
+  static fromField(tableId: string, field: ReferenceField) {
+    return new this(
+      tableId,
+      field.id.value,
+      field.foreignTableId.into(),
+      field.isOwner,
+      field.symmetricReferenceFieldId?.value,
+    )
+  }
+
   private get foreignTableId() {
-    return this.field.foreignTableId.into() ?? this.tableId
+    return this._foreignTableId ?? this.tableId
   }
 
   get name(): IUderlyingForeignTableName {
-    if (this.field.isOwner) {
-      return `${this.field.id.value}_${this.foreignTableId}_adjacency_list`
+    if (this.isOwner) {
+      return `${this.fieldId}_${this.foreignTableId}_adjacency_list`
     }
-    const symmetricReferenceId = this.field.symmetricReferenceFieldId?.value
+    const symmetricReferenceId = this.symmetricReferenceFieldId
     if (!symmetricReferenceId) {
-      return `${this.field.id.value}_${this.foreignTableId}_adjacency_list`
+      return `${this.fieldId}_${this.foreignTableId}_adjacency_list`
     }
 
     return `${symmetricReferenceId}_${this.tableId}_adjacency_list`
@@ -81,17 +99,13 @@ export class AdjacencyListTable extends BaseUnderlyingForeignTable<ReferenceFiel
 
   get fromId(): IUderlyingForeignTableReferenceFieldId {
     const field =
-      !!this.field.symmetricReferenceFieldId && !this.field.isOwner
-        ? AdjacencyListTable.TO_ID
-        : AdjacencyListTable.FROM_ID
+      !!this.symmetricReferenceFieldId && !this.isOwner ? AdjacencyListTable.TO_ID : AdjacencyListTable.FROM_ID
     return `${this.name}.${field}`
   }
 
   get toId(): IUderlyingForeignTableReferenceFieldId {
     const field =
-      !!this.field.symmetricReferenceFieldId && !this.field.isOwner
-        ? AdjacencyListTable.FROM_ID
-        : AdjacencyListTable.TO_ID
+      !!this.symmetricReferenceFieldId && !this.isOwner ? AdjacencyListTable.FROM_ID : AdjacencyListTable.TO_ID
 
     return `${this.name}.${field}`
   }

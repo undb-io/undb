@@ -1,9 +1,10 @@
 import { CompositeSpecification } from '@undb/domain'
 import { isEqual } from 'lodash-es'
 import type { Result } from 'oxide.ts'
-import { Ok } from 'oxide.ts'
+import { Ok, Some } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
+import { TableId } from '../../value-objects/table-id.vo.js'
 import { type IAbstractLookingField, type ILookingFieldType } from '../field.type.js'
 import type { ReferenceField } from '../reference-field.js'
 import type { ReferenceFieldType } from '../reference-field.type.js'
@@ -61,6 +62,39 @@ export class WithSymmetricReferenceField extends CompositeSpecification<Table, I
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
     v.symmetricReferenceFieldEqual(this)
+    return Ok(undefined)
+  }
+}
+
+export class WithForeignTableId extends CompositeSpecification<Table, ITableSpecVisitor> {
+  constructor(
+    public readonly type: ReferenceFieldType,
+    public readonly fieldId: string,
+    public readonly foreignTableId: TableId,
+    public readonly oldForeignTableId?: string,
+  ) {
+    super()
+  }
+
+  public get changed(): boolean {
+    return !!this.oldForeignTableId && this.oldForeignTableId !== this.foreignTableId.value
+  }
+
+  static fromString(type: ReferenceFieldType, fieldId: string, foreignTableId: string, oldForeignTableId?: string) {
+    return new this(type, fieldId, TableId.from(foreignTableId).unwrap(), oldForeignTableId)
+  }
+
+  isSatisfiedBy(t: Table): boolean {
+    const field = t.schema.getFieldById(this.fieldId).unwrap() as ReferenceField
+    return this.foreignTableId.value === field.foreignTableId.into()
+  }
+  mutate(t: Table): Result<Table, string> {
+    const field = t.schema.getFieldById(this.fieldId).unwrap() as ReferenceField
+    field.foreignTableId = Some(this.foreignTableId.value)
+    return Ok(t)
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.foreignTableIdEqual(this)
     return Ok(undefined)
   }
 }

@@ -72,7 +72,7 @@ export class CollaboratorColumnTypeModifier extends BaseColumnTypeModifier<Colla
     this.alterColumn(new UnderlyingBoolColumn(this.field.id.value, this.tableId), this.column)
   }
   reference(): void {
-    throw new Error('Method not implemented.')
+    this.dropColumn(this.column)
   }
   tree(): void {
     throw new Error('Method not implemented.')

@@ -173,7 +173,7 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
 
     const knex = this.em.getKnex()
 
-    const underlyingTable = new AdjacencyListTable(this.tableId, field)
+    const underlyingTable = AdjacencyListTable.fromField(this.tableId, field)
 
     const query = knex
       .queryBuilder()

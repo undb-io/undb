@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { ParentField, ReferenceField, TreeField } from '../field/index.js'
+import type { ParentField, ReferenceField, TreeField, WithForeignTableId } from '../field/index.js'
 import type { Table } from '../table.js'
 import { AbstractReferenceFieldSpecVisitor } from './abstract-reference-field-spec.visitor.js'
 
@@ -20,6 +20,9 @@ export class ForeignTableCollector extends AbstractReferenceFieldSpecVisitor {
     if (field.isOwner && foreignTableId !== this.table.id.value) {
       this.#foreignTableIds.add(foreignTableId)
     }
+  }
+  foreignTableIdEqual(s: WithForeignTableId): void {
+    this.#foreignTableIds.add(s.foreignTableId.value)
   }
   tree(field: TreeField): void {}
   parent(field: ParentField): void {}
