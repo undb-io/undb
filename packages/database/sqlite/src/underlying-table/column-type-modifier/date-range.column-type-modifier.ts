@@ -91,7 +91,7 @@ export class DateRangeColumnTypeModifier extends BaseColumnTypeModifier<DateRang
     this.castFromDateRange(newColumn)
   }
   reference(): void {
-    throw new Error('Method not implemented.')
+    this.dropDateRange()
   }
   tree(): void {
     throw new Error('Method not implemented.')

@@ -3,10 +3,10 @@ import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type {
   ITableSpecVisitor,
   WithDuplicatedField,
+  WithForeignTableId,
   WithNewFieldType,
   WithRatingMax,
   WithTableSchema,
-  WithoutField,
   WithoutOption,
 } from '@undb/core'
 import { WithNewField, isSelectFieldType } from '@undb/core'
@@ -14,6 +14,7 @@ import type { Job } from '../repository/base-entity-manager.js'
 import { RecordSqliteDuplicateValueVisitor } from '../repository/record/record-sqlite-duplicate-value.visitor.js'
 import { UnderlyingColumnConvertTypeVisitor } from './underlying-column-type-modifier.visitor.js'
 import { UnderlyingColumnBuilder } from './underlying-column.builder.js'
+import { AdjacencyListTable } from './underlying-foreign-table.js'
 import { UnderlyingTempDuplicateOptionTable } from './underlying-temp-duplicate-option-table.js'
 
 export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
@@ -137,20 +138,10 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   optionEqual(): void {}
   sortsEqual(): void {}
   pinnedFields(): void {}
-
   witoutOption(s: WithoutOption): void {
     this.qb = this.#qb.from(this.tableName).where(s.fieldId, s.optionKey.value).update(s.fieldId, null)
   }
-  withoutField(s: WithoutField): void {
-    // const fields = UnderlyingColumnFactory.createMany([s.field], this.tableName)
-    // const sqls = fields.map(
-    //   (f) =>
-    //     `
-    // alter table \`${this.tableName}\` drop column \`${f.name}\`;
-    // `,
-    // )
-    // this.#queries.push(...sqls)
-  }
+  withoutField(): void {}
   fieldOptionsEqual(): void {}
   withFieldName(): void {}
   withFieldDescription(): void {}
@@ -159,6 +150,11 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   withFormat(): void {}
   withTimeFormat(): void {}
   withShowSystemFields(): void {}
+  foreignTableIdEqual(s: WithForeignTableId): void {
+    const adjacencyListTable = new AdjacencyListTable(this.tableName, s.fieldId, s.foreignTableId.value, true)
+    const queries = adjacencyListTable.getCreateTableSqls(this.knex)
+    this.#queries.push(...queries)
+  }
   withFieldRequirement(): void {}
   symmetricReferenceFieldEqual(): void {}
   withWidge(): void {}

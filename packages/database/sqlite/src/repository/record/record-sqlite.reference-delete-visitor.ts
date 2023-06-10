@@ -18,7 +18,7 @@ export class RecordSqliteReferenceDeleteVisitor
   }
 
   reference(field: ReferenceField): void {
-    const foreignTable = new AdjacencyListTable(this.tableEntity.id, field)
+    const foreignTable = AdjacencyListTable.fromField(this.tableEntity.id, field)
     const query = this.knex.delete().from(foreignTable.name).where(AdjacencyListTable.TO_ID, this.recordId).toQuery()
     this.addQueries(query)
   }

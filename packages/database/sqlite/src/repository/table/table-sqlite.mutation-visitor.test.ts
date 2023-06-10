@@ -99,7 +99,7 @@ describe('TableSqliteMutationVisitor', () => {
       await mv.commit()
       await em.flush()
 
-      const m2m = new AdjacencyListTable(table.id.value, field)
+      const m2m = AdjacencyListTable.fromField(table.id.value, field)
 
       const hasTable = await em.getKnex().schema.hasTable(m2m.name)
       expect(hasTable).to.be.true

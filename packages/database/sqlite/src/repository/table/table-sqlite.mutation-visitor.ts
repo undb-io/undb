@@ -6,6 +6,7 @@ import type {
   WithChartAggregateSpec,
   WithCurrencySymbol,
   WithDuplicatedField,
+  WithForeignTableId,
   WithNewFieldType,
   WithOption,
   WithReferenceFieldId,
@@ -388,6 +389,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {
     const field = this.em.getReference(ReferenceField, s.fieldId)
     wrap(field).assign({ symmetricReferenceField: s.symmetricReferenceFieldId.value })
+    this.em.persist(field)
+  }
+  foreignTableIdEqual(s: WithForeignTableId): void {
+    const field = this.em.getReference(ReferenceField, s.fieldId)
+    wrap(field).assign({ foreignTable: s.foreignTableId.value })
     this.em.persist(field)
   }
   ratingMaxEqual(s: WithRatingMax): void {

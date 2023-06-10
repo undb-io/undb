@@ -23,7 +23,7 @@ export class CreateTableCommandHandler implements ICreateTableCommandHandler {
 
     if (command.records?.length) {
       const schema = createMutateRecordValuesSchema(table.schema.fields).array()
-      const values = schema.parse(command.records)
+      const values = await schema.parseAsync(command.records)
       const records = table.createRecords(values.map((v) => ({ values: v })))
       await this.recordRepo.insertMany(records, table.schema.toIdMap())
     }

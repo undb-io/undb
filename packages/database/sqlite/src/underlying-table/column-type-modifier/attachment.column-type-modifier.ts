@@ -77,7 +77,7 @@ export class AttachmentColumnTypeModifier extends BaseColumnTypeModifier<Attachm
     this.alterColumn(newColumn, this.column)
   }
   reference(): void {
-    throw new Error('Method not implemented.')
+    this.dropColumn(this.column)
   }
   tree(): void {
     throw new Error('Method not implemented.')
