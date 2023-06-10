@@ -11,7 +11,7 @@ describe('UnderlyingAdjacencyListTable', () => {
   })
 
   test('should create UnderlyingAdjacencyListTable', () => {
-    const table = new AdjacencyListTable('tablename', ReferenceField.create({ id: 'fldid', name: 'reference' }))
+    const table = AdjacencyListTable.fromField('tablename', ReferenceField.create({ id: 'fldid', name: 'reference' }))
 
     expect(table.name).toMatchInlineSnapshot('"fldid_tablename_adjacency_list"')
     const query = table.getCreateTableSqls(knex)

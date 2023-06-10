@@ -9,6 +9,7 @@ import { CurrencySymbol } from './currency-symbol.vo.js'
 import type { BaseField } from './field.base.js'
 import type { IUpdateFieldSchema, SelectFieldTypes } from './field.type.js'
 import { canDisplay, isControlledFieldType } from './field.util.js'
+import type { ReferenceField } from './reference-field.js'
 import { WithAggregateFieldId } from './specifications/aggregate-field.specification.js'
 import { WithFieldDescription, WithFieldDisplay, WithFieldName } from './specifications/base-field.specification.js'
 import { WithCurrencySymbol } from './specifications/currency-field.specification.js'
@@ -17,20 +18,20 @@ import { WithFieldRequirement } from './specifications/field-constraints.specifi
 import { WithNewFieldType } from './specifications/field.specification.js'
 import { WithReferenceFieldId } from './specifications/lookup-field.specification.js'
 import { WithRatingMax } from './specifications/rating-field.specification.js'
-import { WithDisplayFields } from './specifications/reference-field.specification.js'
+import { WithDisplayFields, WithForeignTableId } from './specifications/reference-field.specification.js'
 import { WithNewOption, WithOption, WithOptions, WithoutOption } from './specifications/select-field.specification.js'
 
 export class UpdateFieldHelper {
-  static updateField(field: BaseField, input: IUpdateFieldSchema): O<TableCompositeSpecificaiton> {
+  static updateField(fromField: BaseField, input: IUpdateFieldSchema): O<TableCompositeSpecificaiton> {
     const specs: TableCompositeSpecificaiton[] = []
 
-    const typeChanged = input.type !== field.type
+    const typeChanged = input.type !== fromField.type
     if (typeChanged) {
-      specs.push(new WithNewFieldType(field, input.type))
+      specs.push(new WithNewFieldType(fromField, input.type))
     }
 
-    const id = field.id.value
-    input.type ||= field.type
+    const id = fromField.id.value
+    input.type ||= fromField.type
     const type = input.type
 
     if (isString(input.name)) {
@@ -98,14 +99,15 @@ export class UpdateFieldHelper {
         if (typeChanged) {
           if (isArray(optionsInput) && optionsInput.length > 0) {
             const options = optionsInput.map((option) => Option.create(option))
-            specs.push(new WithOptions(type, field.id.value, new Options(options)))
+            specs.push(new WithOptions(type, fromField.id.value, new Options(options)))
           }
         } else {
           if (isArray(optionsInput) && optionsInput.length > 0) {
-            const options = (field as SelectFieldTypes).options.optionsMap
+            const options = (fromField as SelectFieldTypes).options.optionsMap
             for (const option of optionsInput) {
               const existing = !!option.key && !!options.get(option.key)
               if (existing) {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 specs.push(new WithOption(type, id, options.get(option.key!)!.updateOption(option)))
                 continue
               }
@@ -126,6 +128,13 @@ export class UpdateFieldHelper {
       case 'reference':
       case 'tree':
       case 'parent': {
+        if (type === 'reference') {
+          if (isString(input.foreignTableId)) {
+            const oldForeignTableId =
+              fromField.type === 'reference' ? (fromField as ReferenceField).foreignTableId.into() : undefined
+            specs.push(WithForeignTableId.fromString(type, id, input.foreignTableId, oldForeignTableId))
+          }
+        }
         if (isArray(input.displayFieldIds)) {
           specs.push(WithDisplayFields.fromIds(type, id, input.displayFieldIds))
         }

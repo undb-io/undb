@@ -13,17 +13,18 @@
 	const view = getView()
 	export let record: Record | undefined
 
-	const deleteRecord = trpc().record.delete.mutation({
-		async onSuccess(data, variables, context) {
-			$currentRecordId = undefined
-			await goto($page.url.pathname)
-		},
-	})
-
 	$: records = trpc().record.list.query(
 		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
 		{ queryHash: $recordHash, enabled: false },
 	)
+
+	const deleteRecord = trpc().record.delete.mutation({
+		async onSuccess(data, variables, context) {
+			$currentRecordId = undefined
+			await goto($page.url.pathname)
+			await $records.refetch()
+		},
+	})
 
 	const duplicateRecord = trpc().record.duplicate.mutation({
 		async onSuccess(data, variables, context) {

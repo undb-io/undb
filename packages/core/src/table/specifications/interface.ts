@@ -18,6 +18,7 @@ import type { WithReferenceFieldId } from '../field/specifications/lookup-field.
 import type { WithRatingMax } from '../field/specifications/rating-field.specification.js'
 import type {
   WithDisplayFields,
+  WithForeignTableId,
   WithSymmetricReferenceField,
 } from '../field/specifications/reference-field.specification.js'
 import type {
@@ -116,6 +117,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
 
   withFieldRequirement(s: WithFieldRequirement): void
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void
+  foreignTableIdEqual(s: WithForeignTableId): void
 
   withWidge(s: WithWidgeSepecification): void
   withoutWidge(s: WithoutWidgeSpecification): void

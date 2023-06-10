@@ -202,8 +202,8 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
   reference(field: ReferenceField): void {
     if (!(this.from instanceof ReferenceField)) return
 
-    const oldTable = new AdjacencyListTable(this.tableId, this.from)
-    const adjacencyListTable = new AdjacencyListTable(this.tableId, field)
+    const oldTable = AdjacencyListTable.fromField(this.tableId, this.from)
+    const adjacencyListTable = AdjacencyListTable.fromField(this.tableId, field)
 
     const query = this.knex
       .queryBuilder()

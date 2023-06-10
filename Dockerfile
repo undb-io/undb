@@ -1,17 +1,16 @@
 # builder
-FROM node:20 as builder
+FROM node:20.2.0 as builder
 
 WORKDIR /undb
 
-RUN npm install -g turbo
 COPY . .
-RUN turbo prune --scope=@undb/backend --scope=@undb/frontend
+RUN npx turbo prune --scope=@undb/backend --scope=@undb/frontend
 
 ADD https://github.com/benbjohnson/litestream/releases/download/v0.3.9/litestream-v0.3.9-linux-amd64-static.tar.gz /tmp/litestream.tar.gz
 RUN tar -C /usr/local/bin -xzf /tmp/litestream.tar.gz
 
 # installer
-FROM node:20 AS installer
+FROM node:20.2.0 AS installer
 
 RUN npm install -g pnpm@8.6.1
 

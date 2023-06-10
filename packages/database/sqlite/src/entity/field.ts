@@ -763,6 +763,7 @@ export class ReferenceField extends Field {
         : this.symmetricReferenceField?.id,
       required: !!this.required,
       display: !!this.display,
+      bidirectional: !!this.isOwner,
     }
   }
 }

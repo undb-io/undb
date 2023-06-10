@@ -44,7 +44,7 @@
 			{/if}
 		</Label>
 
-		<TablePicker disabled={!isNew} bind:value={$foreignTableId} name="foreignTableId" class="w-full !justify-start" />
+		<TablePicker bind:value={$foreignTableId} name="foreignTableId" class="w-full !justify-start" />
 	</div>
 	{#if $foreignTableId}
 		<div class="space-y-2">

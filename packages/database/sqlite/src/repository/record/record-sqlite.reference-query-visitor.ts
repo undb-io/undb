@@ -248,7 +248,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
 
     const foreignTableId = field.foreignTableId.unwrapOr(this.table.id.value)
 
-    const adjacency = new AdjacencyListTable(this.table.id.value, field)
+    const adjacency = AdjacencyListTable.fromField(this.table.id.value, field)
 
     const foreignIdField =
       !!field.symmetricReferenceFieldId && !field.isOwner ? AdjacencyListTable.FROM_ID : AdjacencyListTable.TO_ID

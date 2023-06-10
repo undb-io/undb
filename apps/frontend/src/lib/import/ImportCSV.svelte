@@ -22,7 +22,12 @@
 	let schema: ICreateTableSchemaInput | undefined
 
 	$: if (header) {
-		schema = getFieldNames(header, $t).map((name) => ({ id: FieldId.createId(), name, type: 'string' }))
+		schema = getFieldNames(header, $t).map((name, index) => ({
+			id: FieldId.createId(),
+			name,
+			type: 'string',
+			display: index === 0,
+		}))
 	}
 
 	let records: IMutateRecordValueSchema[]

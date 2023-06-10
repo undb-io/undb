@@ -1,7 +1,7 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { IQueryRecords, IQueryRecordSchema, IRecordQueryModel, IRecordSpec, ViewId } from '@undb/core'
 import { WithRecordId, WithRecordTableId } from '@undb/core'
-import { Option } from 'oxide.ts'
+import { None, Option } from 'oxide.ts'
 import { ReferenceField, SelectField } from '../../entity/field.js'
 import { Table as TableEntity } from '../../entity/table.js'
 import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
@@ -98,6 +98,9 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     builder = builder.select().from().where().reference().build()
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb.first())
+    if (!data.length) {
+      return None
+    }
 
     const record = RecordSqliteMapper.toQuery(tableId, schema, data[0])
     return Option(record)

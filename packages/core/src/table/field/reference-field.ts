@@ -28,6 +28,7 @@ export class ReferenceField extends Mixin(
   duplicate(name: string): ReferenceField {
     return ReferenceField.create({
       ...this.json,
+      symmetricReferenceFieldId: undefined,
       id: FieldId.createId(),
       name,
       display: false,
@@ -40,6 +41,8 @@ export class ReferenceField extends Mixin(
       ...super.json,
       displayFieldIds: this.displayFieldIds.map((id) => id.value),
       foreignTableId: this.foreignTableId.into(undefined),
+      symmetricReferenceFieldId: this.symmetricReferenceFieldId?.value,
+      isOwner: this.isOwner,
     }
   }
 
@@ -49,6 +52,11 @@ export class ReferenceField extends Mixin(
 
   override get foreignTableId(): Option<string> {
     return Option(this.props.foreignTableId?.value)
+  }
+
+  override set foreignTableId(id: Option<string>) {
+    if (id.isNone()) return
+    this.props.foreignTableId = TableId.from(id.unwrap()).unwrap()
   }
 
   override get issues(): ReferenceFieldIssue[] {
