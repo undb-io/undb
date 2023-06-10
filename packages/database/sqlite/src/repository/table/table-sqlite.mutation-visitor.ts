@@ -393,7 +393,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   }
   foreignTableIdEqual(s: WithForeignTableId): void {
     const field = this.em.getReference(ReferenceField, s.fieldId)
-    wrap(field).assign({ foreignTable: s.foreignTableId.value })
+    field.foreignTable = this.em.getReference(Table, s.foreignTableId.value)
     this.em.persist(field)
   }
   ratingMaxEqual(s: WithRatingMax): void {

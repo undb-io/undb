@@ -76,6 +76,10 @@ export class WithForeignTableId extends CompositeSpecification<Table, ITableSpec
     super()
   }
 
+  public get changed(): boolean {
+    return !!this.oldForeignTableId && this.oldForeignTableId !== this.foreignTableId.value
+  }
+
   static fromString(type: ReferenceFieldType, fieldId: string, foreignTableId: string, oldForeignTableId?: string) {
     return new this(type, fieldId, TableId.from(foreignTableId).unwrap(), oldForeignTableId)
   }
