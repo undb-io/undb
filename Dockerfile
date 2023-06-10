@@ -1,5 +1,5 @@
 # builder
-FROM node:20.2.0 as builder
+FROM node:20.3.0 as builder
 
 WORKDIR /undb
 
@@ -10,7 +10,7 @@ ADD https://github.com/benbjohnson/litestream/releases/download/v0.3.9/litestrea
 RUN tar -C /usr/local/bin -xzf /tmp/litestream.tar.gz
 
 # installer
-FROM node:20.2.0 AS installer
+FROM node:20.3.0 AS installer
 
 RUN npm install -g pnpm@8.6.1
 
