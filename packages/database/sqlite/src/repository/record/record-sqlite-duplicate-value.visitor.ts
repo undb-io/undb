@@ -16,6 +16,7 @@ import type {
   Field,
   IFieldVisitor,
   IdField,
+  JsonField,
   LookupField,
   MultiSelectField,
   NumberField,
@@ -132,6 +133,9 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
     this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
   }
   email(field: EmailField): void {
+    this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
+  }
+  json(field: JsonField): void {
     this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
   }
   color(field: ColorField): void {

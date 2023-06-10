@@ -6,6 +6,7 @@ import {
   UnderlyingColorColumn,
   UnderlyingDateColumn,
   UnderlyingEmailColumn,
+  UnderlyingJsonColumn,
   UnderlyingMultiSelectColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
@@ -29,6 +30,10 @@ export class BoolColumnTypeModifier extends BaseColumnTypeModifier<BoolField> {
   }
   email(): void {
     const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
+  }
+  json(): void {
+    const newColumn = new UnderlyingJsonColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
   date(): void {

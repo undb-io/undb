@@ -13,6 +13,7 @@ import { DateRangeField } from './date-range-field.js'
 import { EmailField } from './email-field.js'
 import type { Field, ICreateFieldSchema } from './field.type.js'
 import { IdField } from './id-field.js'
+import { JsonField } from './json-field.js'
 import { LookupField } from './lookup-field.js'
 import { MultiSelectField } from './multi-select-field.js'
 import { NumberField } from './number-field.js'
@@ -46,6 +47,9 @@ export class FieldFactory {
       }
       case 'email': {
         return EmailField.create(input)
+      }
+      case 'json': {
+        return JsonField.create(input)
       }
       case 'color': {
         return ColorField.create(input)
@@ -130,6 +134,9 @@ export class FieldFactory {
       }
       case 'email': {
         return EmailField.unsafeCreate(input)
+      }
+      case 'json': {
+        return JsonField.unsafeCreate(input)
       }
       case 'color': {
         return ColorField.unsafeCreate(input)

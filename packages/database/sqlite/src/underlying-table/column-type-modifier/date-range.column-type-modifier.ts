@@ -9,6 +9,7 @@ import {
   UnderlyingDateRangeFromColumn,
   UnderlyingDateRangeToColumn,
   UnderlyingEmailColumn,
+  UnderlyingJsonColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
@@ -69,6 +70,10 @@ export class DateRangeColumnTypeModifier extends BaseColumnTypeModifier<DateRang
   }
   email(): void {
     const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
+    this.castFromDateRange(newColumn)
+  }
+  json(): void {
+    const newColumn = new UnderlyingJsonColumn(this.field.id.value, this.tableId)
     this.castFromDateRange(newColumn)
   }
   date(): void {

@@ -12,6 +12,7 @@ import type { DateField } from './date-field.js'
 import type { DateRangeField } from './date-range-field.js'
 import type { EmailField } from './email-field.js'
 import type { IdField } from './id-field.js'
+import type { JsonField } from './json-field.js'
 import type { LookupField } from './lookup-field.js'
 import type { MultiSelectField } from './multi-select-field.js'
 import type { NumberField } from './number-field.js'
@@ -35,6 +36,7 @@ export interface IFieldVisitor {
   autoIncrement(field: AutoIncrementField): void
   string(field: StringField): void
   email(field: EmailField): void
+  json(field: JsonField): void
   color(field: ColorField): void
   number(field: NumberField): void
   bool(field: BoolField): void

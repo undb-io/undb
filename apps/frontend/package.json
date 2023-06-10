@@ -71,6 +71,7 @@
 		"svelte-dnd-action": "^0.9.22",
 		"svelte-grid": "^5.1.1",
 		"svelte-i18next": "^2.0.0",
+		"svelte-jsoneditor": "^0.17.5",
 		"svelte-popperjs": "^1.3.2",
 		"svelte-portal": "^2.2.0",
 		"svelte-preprocess": "^5.0.4",

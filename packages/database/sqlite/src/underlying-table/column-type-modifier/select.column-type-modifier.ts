@@ -7,6 +7,7 @@ import {
   UnderlyingColorColumn,
   UnderlyingDateColumn,
   UnderlyingEmailColumn,
+  UnderlyingJsonColumn,
   UnderlyingMultiSelectColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
@@ -42,6 +43,10 @@ export class SelectColumnTypeModifier extends BaseColumnTypeModifier<SelectField
   }
   email(): void {
     this.alterColumn(new UnderlyingEmailColumn(this.field.id.value, this.tableId), this.column)
+  }
+  json(): void {
+    const newColumn = new UnderlyingJsonColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
   }
   date(): void {
     this.alterColumn(new UnderlyingDateColumn(this.field.id.value, this.tableId), this.column)

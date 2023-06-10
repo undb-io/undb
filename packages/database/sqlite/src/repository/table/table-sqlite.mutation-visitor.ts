@@ -71,6 +71,7 @@ import {
   EmailField,
   Field,
   IdField,
+  JsonField,
   LookupField,
   MultiSelectField,
   NumberField,
@@ -124,6 +125,8 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
         return this.em.getReference(ColorField, id)
       case 'email':
         return this.em.getReference(EmailField, id)
+      case 'json':
+        return this.em.getReference(JsonField, id)
       case 'select':
         return this.em.getReference(SelectField, id)
       case 'multi-select':

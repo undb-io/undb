@@ -68,6 +68,14 @@ export class RecordSqliteMapper {
           values[fieldId] = typeof value === 'string' && !!value ? JSON.parse(value) : value
         } else if (field.type === 'bool') {
           values[fieldId] = !!value
+        } else if (field.type === 'json') {
+          if (value) {
+            try {
+              values[fieldId] = JSON.parse(value)
+            } catch (error) {
+              //
+            }
+          }
         } else {
           values[fieldId] = value
         }
