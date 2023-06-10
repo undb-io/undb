@@ -70,6 +70,8 @@ import type { IEmailFilter } from './email.filter.js'
 import { emailFilter, emailFilterValue } from './email.filter.js'
 import type { IIdFilter } from './id.filter.js'
 import { idFilter, idFilterValue } from './id.filter.js'
+import type { IJsonFilter } from './json.filter.js'
+import { jsonFilter, jsonFilterValue } from './json.filter.js'
 import { lookupFilter, lookupFilterValue } from './lookup.filter.js'
 import type { IMultiSelectFilter } from './multi-select.filter.js'
 import { multiSelectFilter, multiSelectFilterValue } from './multi-select.filter.js'
@@ -78,7 +80,9 @@ import { numberFilter, numberFilterValue } from './number.filter.js'
 import {
   $between,
   $eq,
+  $is_empty,
   $is_false,
+  $is_not_empty,
   $is_root,
   $is_today,
   $is_true,
@@ -97,6 +101,7 @@ import {
   dateRangeFilterOperators,
   emailFilterOperators,
   idFilterOperators,
+  jsonFilterOperators,
   lookupFilterOperators,
   multiSelectFilterOperators,
   numberFilterOperators,
@@ -134,6 +139,7 @@ export const filterValue = z.union([
   autoIncrementFilterValue,
   stringFilterValue,
   emailFilterValue,
+  jsonFilterValue,
   colorFieldValue,
   numberFilterValue,
   dateFilterValue,
@@ -164,6 +170,7 @@ export const operaotrs = z.union([
   autoIncrementFilterOperators,
   stringFilterOperators,
   emailFilterOperators,
+  jsonFilterOperators,
   colorFilterOperators,
   numberFilterOperators,
   dateFilterOperators,
@@ -194,6 +201,7 @@ const filter = z.discriminatedUnion('type', [
   autoIncrementFilter,
   stringFilter,
   emailFilter,
+  jsonFilter,
   colorFilter,
   numberFilter,
   dateFilter,
@@ -395,6 +403,22 @@ const convertBoolFilter = (filter: IBoolFilter): Option<CompositeSpecification> 
   }
 }
 
+const convertJsonFilter = (filter: IJsonFilter): Option<CompositeSpecification> => {
+  switch (filter.operator) {
+    case $is_empty.value: {
+      throw new Error('TODO')
+      return None
+    }
+    case $is_not_empty.value: {
+      throw new Error('TODO')
+      return None
+    }
+
+    default: {
+      return None
+    }
+  }
+}
 const convertDateRangeFilter = (filter: IDateRangeFilter): Option<CompositeSpecification> => {
   switch (filter.operator) {
     case $eq.value:
@@ -527,6 +551,8 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
     case 'email':
     case 'color':
       return convertStringFilter(filter)
+    case 'json':
+      return convertJsonFilter(filter)
     case 'number':
     case 'rating':
     case 'currency':

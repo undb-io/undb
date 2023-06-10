@@ -16,6 +16,7 @@ import {
   UnderlyingDateRangeToColumn,
   UnderlyingEmailColumn,
   UnderlyingIdColumn,
+  UnderlyingJsonColumn,
   UnderlyingLookupColumn,
   UnderlyingMultiSelectColumn,
   UnderlyingNumberColumn,
@@ -45,6 +46,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingStringColumn(field.id.value, tableName)
       case 'email':
         return new UnderlyingEmailColumn(field.id.value, tableName)
+      case 'json':
+        return new UnderlyingJsonColumn(field.id.value, tableName)
       case 'attachment':
         return new UnderlyingAttachmentColumn(field.id.value, tableName)
       case 'rating':

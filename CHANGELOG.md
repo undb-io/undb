@@ -1,3 +1,14 @@
+## v0.5.6
+
+
+### 📖 Documentation
+
+  - Add contribution docs ([70322a2](https://github.com/undb-xyz/undb/commit/70322a2))
+
+### ❤️  Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v0.5.5
 
 ## v0.5.4

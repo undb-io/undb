@@ -45,6 +45,9 @@ export type IStringFilterOperator = z.infer<typeof stringFilterOperators>
 export const emailFilterOperators = z.union([$eq, $neq, $starts_with, $ends_with, $contains, $is_empty, $is_not_empty])
 export type IEmailFilterOperator = z.infer<typeof emailFilterOperators>
 
+export const jsonFilterOperators = z.union([$is_empty, $is_not_empty])
+export type IJsonFilterOperator = z.infer<typeof jsonFilterOperators>
+
 export const attachmentFilterOperators = z.union([$has_file_type, $is_empty, $is_not_empty, $has_file_extension])
 export type IAttachmentFilterOperator = z.infer<typeof attachmentFilterOperators>
 

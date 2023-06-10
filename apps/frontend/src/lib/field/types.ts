@@ -9,6 +9,7 @@ export const FIELD_SELECT_ITEMS = [
 	{ value: 'currency', name: 'Currency', group: 'Base' },
 	{ value: 'date', name: 'Date', group: 'Base' },
 	{ value: 'date-range', name: 'DateRange', group: 'Base' },
+	{ value: 'json', name: 'Json', group: 'Base' },
 	{ value: 'auto-increment', name: 'AutoIncrement', group: 'System' },
 	{ value: 'collaborator', name: 'Collaborator', group: 'System' },
 	{ value: 'select', name: 'Select', group: 'Base' },

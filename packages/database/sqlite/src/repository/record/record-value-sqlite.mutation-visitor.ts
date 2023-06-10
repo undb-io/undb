@@ -18,6 +18,7 @@ import type {
   IClsService,
   IFieldValueVisitor,
   IdFieldValue,
+  JsonFieldValue,
   LookupFieldValue,
   MultiSelectFieldValue,
   NumberFieldValue,
@@ -93,6 +94,9 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
   }
   email(value: EmailFieldValue): void {
     this.setData(this.fieldId, value.unpack())
+  }
+  json(value: JsonFieldValue): void {
+    this.setData(this.fieldId, JSON.stringify(value.value))
   }
   color(value: ColorFieldValue): void {
     this.setData(this.fieldId, value.unpack())

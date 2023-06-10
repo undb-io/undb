@@ -167,6 +167,15 @@ export class UnderlyingEmailColumn extends UnderlyingFieldColumn {
   }
 }
 
+export class UnderlyingJsonColumn extends UnderlyingFieldColumn {
+  build(tb: Knex.TableBuilder): void {
+    tb.json(this.name)
+  }
+  buildTemp(tb: Knex.TableBuilder): void {
+    tb.json(this.tempName)
+  }
+}
+
 export class UnderlyingAttachmentColumn extends UnderlyingFieldColumn {
   override get virtual() {
     return true

@@ -6,6 +6,9 @@ import { Option } from '../../entity/option.js'
 import { TableSqliteMutationVisitor } from '../../repository/table/table-sqlite.mutation-visitor.js'
 import {
   UnderlyingBoolColumn,
+  UnderlyingColorColumn,
+  UnderlyingEmailColumn,
+  UnderlyingJsonColumn,
   UnderlyingMultiSelectColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
@@ -23,8 +26,18 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
     const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
     this.castTo('real', newColumn, this.column)
   }
-  color(): void {}
-  email(): void {}
+  color(): void {
+    const newColumn = new UnderlyingColorColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
+  }
+  email(): void {
+    const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
+  }
+  json(): void {
+    const newColumn = new UnderlyingJsonColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
+  }
   date(): void {
     this.castToDate(this.column)
   }
