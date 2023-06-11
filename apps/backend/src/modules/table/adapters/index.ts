@@ -78,6 +78,13 @@ export const dbAdapters: Provider[] = [
         const fsDriver = await import('unstorage/drivers/fs').then((m) => m.default)
         const base = path.resolve(process.cwd(), '../../.undb/cache')
         driver = fsDriver({ base })
+      } else if (config.provider === 'mongo') {
+        const mongodbDriver = await import('unstorage/drivers/mongodb').then((m) => m.default)
+        driver = mongodbDriver({
+          connectionString: config.mongo.connectionString,
+          databaseName: config.mongo.databaseName,
+          collectionName: config.mongo.collectionName,
+        })
       }
 
       const storage = createStorage({
