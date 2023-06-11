@@ -60,6 +60,9 @@ importers:
       '@json2csv/plainjs':
         specifier: ^7.0.1
         version: 7.0.1
+      '@liaoliaots/nestjs-redis-health':
+        specifier: ^9.0.4
+        version: 9.0.4(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@nestjs/terminus@9.2.2)(ioredis@5.3.2)
       '@mikro-orm/better-sqlite':
         specifier: ^5.7.11
         version: 5.7.11(@mikro-orm/core@5.7.11)(@mikro-orm/migrations@5.7.11)
@@ -153,6 +156,9 @@ importers:
       i18next-http-middleware:
         specifier: ^3.3.1
         version: 3.3.1
+      ioredis:
+        specifier: ^5.3.2
+        version: 5.3.2
       joi:
         specifier: ^17.9.2
         version: 17.9.2
@@ -3232,6 +3238,22 @@ packages:
     dependencies:
       '@lezer/common': 1.0.3
     dev: true
+
+  /@liaoliaots/nestjs-redis-health@9.0.4(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@nestjs/terminus@9.2.2)(ioredis@5.3.2):
+    resolution: {integrity: sha512-bVHQl4ZmkdJ6SpGi9vxBjl9RjaCA7enhOV9nFRviyfkMXV6Za0NaCGPwLmNeJJhXW2/ZYbSZFM/i/B3D8vX+wA==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      '@nestjs/common': ^9.0.0
+      '@nestjs/core': ^9.0.0
+      '@nestjs/terminus': ^9.0.0
+      ioredis: ^5.0.0
+    dependencies:
+      '@nestjs/common': 9.4.2(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/core': 9.4.2(@nestjs/common@9.4.2)(@nestjs/platform-express@9.4.2)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/terminus': 9.2.2(@mikro-orm/core@5.7.11)(@mikro-orm/nestjs@5.1.8)(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      ioredis: 5.3.2
+      tslib: 2.4.1
+    dev: false
 
   /@lukeed/csprng@1.1.0:
     resolution: {integrity: sha512-Z7C/xXCiGWsg0KuKsHTKJxbWhpI3Vs5GwLfOean7MGyVFGqdRgBbAjOCh6u4bbjPc/8MJ2pZmK/0DLdCbivLDA==}
@@ -13165,6 +13187,10 @@ packages:
 
   /tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
+
+  /tslib@2.4.1:
+    resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
+    dev: false
 
   /tslib@2.5.0:
     resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}
