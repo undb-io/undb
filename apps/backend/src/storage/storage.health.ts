@@ -5,11 +5,6 @@ import { HealthCheckError, HealthIndicator, HealthIndicatorResult } from '@nestj
 import { InjectAws } from 'aws-sdk-v3-nest'
 import { InjectObjectStorageConfig, objectStorageConfig } from '../configs/object-storage.config.js'
 
-export interface Dog {
-  name: string
-  type: string
-}
-
 @Injectable()
 export class StorageHealthIndicator extends HealthIndicator {
   constructor(
