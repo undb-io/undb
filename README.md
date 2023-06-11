@@ -77,6 +77,16 @@ docker run -d --name undb -p 4000:4000 --platform linux/x86_64 -v ~/.undb/:/var/
 
 Checkout [development documentation](https://docs.undb.xyz/contribution/development/)
 
+## Contact
+
+### email
+
+`nichenqin@hotmail.com`
+
+### wechat
+
+<img width="369" alt="image" src="https://github.com/undb-xyz/undb/assets/22788984/7ccc0e6f-b183-4d67-b241-961c27407189">
+
 ## License
 
 undb is open-source under the GNU Affero General Public License Version 3 (AGPLv3). You can find it [here](./LICENSE).
