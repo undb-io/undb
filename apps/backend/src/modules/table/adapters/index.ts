@@ -1,6 +1,7 @@
 import { Inject, Provider } from '@nestjs/common'
 import { ConfigType } from '@nestjs/config'
 import { PinoLogger } from 'nestjs-pino'
+import path from 'path'
 import { Driver, createStorage } from 'unstorage'
 import { cacheStorageConfig } from '../../../configs/cache-storage.config.js'
 import { NestAggregateSqliteQueryModel } from './sqlite/record-sqlite.aggregate-repository.js'
@@ -73,6 +74,10 @@ export const dbAdapters: Provider[] = [
           ttl: config.redis.ttl,
           connectTimeout: 10000,
         })
+      } else if (config.provider === 'fs') {
+        const fsDriver = await import('unstorage/drivers/fs').then((m) => m.default)
+        const base = path.resolve(process.cwd(), '../../.undb/cache')
+        driver = fsDriver({ base })
       }
 
       const storage = createStorage({

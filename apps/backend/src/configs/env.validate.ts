@@ -36,7 +36,7 @@ export const configSchema = Joi.object({
   UNDB_ADMIN_EMAIL: Joi.string().email().optional(),
   UNDB_ADMIN_PASSWORD: Joi.string().optional(),
 
-  UNDB_CACHE_STORAGE_PROVIDER: Joi.string().valid('memory', 'redis').default('memory'),
+  UNDB_CACHE_STORAGE_PROVIDER: Joi.string().valid('memory', 'fs', 'redis').default('memory'),
   UNDB_CACHE_STORAGE_REDIS_HOST: Joi.when('UNDB_CACHE_STORAGE_PROVIDER', {
     is: 'redis',
     then: Joi.string(),
