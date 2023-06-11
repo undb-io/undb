@@ -4,7 +4,7 @@ import { registerAs } from '@nestjs/config'
 export const InjectCacheStorageConfig = () => Inject(cacheStorageConfig.KEY)
 
 export const cacheStorageConfig = registerAs('cache-storage', () => ({
-  provider: (process.env.UNDB_CACHE_STORAGE_PROVIDER ?? 'redis') as 'memory' | 'redis',
+  provider: (process.env.UNDB_CACHE_STORAGE_PROVIDER ?? 'memory') as 'memory' | 'fs' | 'redis',
   redis: {
     host: process.env.UNDB_CACHE_STORAGE_REDIS_HOST,
     port: parseInt(process.env.UNDB_CACHE_STORAGE_REDIS_PORT ?? '6379', 10),
