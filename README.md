@@ -71,6 +71,10 @@ docker run -d --name undb -p 4000:4000 --platform linux/x86_64 -v ~/.undb/:/var/
 
 > You'll need a render account to deploy your own undb instance
 
+### Deploy with Railway
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/tqKa_d?referralCode=pcgp5j)
+
 ![Alt](https://repobeats.axiom.co/api/embed/4e19a26c5f110e58bbcce4bb6a79c144a481c3dd.svg 'Repobeats analytics image')
 
 ## Contribution
