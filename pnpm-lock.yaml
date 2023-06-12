@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -518,8 +518,8 @@ importers:
         specifier: ^2.0.5
         version: 2.0.5
       sveltekit-superforms:
-        specifier: ^0.8.7
-        version: 0.8.7(@sveltejs/kit@1.20.2)(svelte@3.59.1)(zod@3.21.4)
+        specifier: ^1.0.0
+        version: 1.0.0(@sveltejs/kit@1.20.2)(svelte@3.59.1)(zod@3.21.4)
       tailwindcss:
         specifier: ^3.3.2
         version: 3.3.2(ts-node@10.9.1)
@@ -12939,8 +12939,8 @@ packages:
     engines: {node: '>= 8'}
     dev: true
 
-  /sveltekit-superforms@0.8.7(@sveltejs/kit@1.20.2)(svelte@3.59.1)(zod@3.21.4):
-    resolution: {integrity: sha512-0aFK31TNz4AM3N7dzL99QUXlVF2O+W/TNVU+M41VVaAKtJKFNasbv8GNLd5wrhN7UWN6kNJnt4MlZBPISkIQ6w==}
+  /sveltekit-superforms@1.0.0(@sveltejs/kit@1.20.2)(svelte@3.59.1)(zod@3.21.4):
+    resolution: {integrity: sha512-FihTu/szUCF1fpmqBQUo3tYdAMaNNt7HWaRcLWCIbubG29bpPAEoucWJ8IQpjloE4sGpof1MtgvZpK7k78Bkxg==}
     peerDependencies:
       '@sveltejs/kit': 1.x
       svelte: 3.x
