@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common'
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter'
 import { Cron, CronExpression } from '@nestjs/schedule'
-import { EVT_RECORD_CREATED, EventFactory, RecordCreatedEvent } from '@undb/core'
+import {
+  EVT_RECORD_CREATED,
+  EVT_RECORD_DELETED,
+  EventFactory,
+  RecordCreatedEvent,
+  RecordDeletedEvent,
+} from '@undb/core'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { NestOutboxService } from '../outbox/outbox.service.js'
 
@@ -17,6 +23,11 @@ export class RelayService {
   @OnEvent(EVT_RECORD_CREATED)
   public __TO_BE_REMOVED_ON_RECORD_CREATED(payload: RecordCreatedEvent) {
     this.logger.info('handing event %s %j', EVT_RECORD_CREATED, payload)
+  }
+
+  @OnEvent(EVT_RECORD_DELETED)
+  public __TO_BE_REMOVED_ON_RECORD_DELETED(payload: RecordDeletedEvent) {
+    this.logger.info('handing event %s %j', EVT_RECORD_DELETED, payload)
   }
 
   @Cron(CronExpression.EVERY_10_SECONDS)

@@ -14,6 +14,7 @@ import {
   INTERNAL_COLUMN_UPDATED_BY_NAME,
   ParentField,
   RecordCreatedEvent,
+  RecordDeletedEvent,
   TreeField,
   TreeFieldValue,
   WithRecordId,
@@ -301,6 +302,9 @@ export class RecordSqliteRepository implements IRecordRepository {
 
       const tm = new UnderlyingTableSqliteManager(em)
       await tm.deleteRecord(table, id)
+
+      const event = RecordDeletedEvent.from(id)
+      this.outboxService.create(event)
     })
   }
 
