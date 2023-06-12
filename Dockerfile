@@ -1,18 +1,18 @@
 # builder
-FROM node:20.2.0 as builder
+FROM node:20.3.0 as builder
 
 WORKDIR /undb
 
 COPY . .
-RUN npx turbo prune --scope=@undb/backend --scope=@undb/frontend
+RUN npx turbo@1.10.3 prune --scope=@undb/backend --scope=@undb/frontend
 
 ADD https://github.com/benbjohnson/litestream/releases/download/v0.3.9/litestream-v0.3.9-linux-amd64-static.tar.gz /tmp/litestream.tar.gz
 RUN tar -C /usr/local/bin -xzf /tmp/litestream.tar.gz
 
 # installer
-FROM node:20.2.0 AS installer
+FROM node:20.3.0 AS installer
 
-RUN npm install -g pnpm@8.6.1
+RUN npm install -g pnpm@8.6.2
 
 WORKDIR /undb
 
@@ -35,7 +35,7 @@ RUN rm -rf ./node_modules
 RUN HUSKY=0 pnpm install -r --prod
 
 # runner
-FROM node:20-bullseye-slim as runner
+FROM node:20.3.0-bullseye-slim as runner
 
 WORKDIR /undb
 
