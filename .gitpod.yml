@@ -1,0 +1,15 @@
+image: gitpod/workspace-full
+
+# Commands that will run on workspace start
+tasks:
+  - name: Setup, Install & Build
+    init: pnpm run bootstrap
+  - name: dev
+    init: pnpm run dev
+
+# Ports to expose on workspace startup
+ports:
+  - port: 3000
+    onOpen: open-preview
+    name: undb
+    description: undb Preview
