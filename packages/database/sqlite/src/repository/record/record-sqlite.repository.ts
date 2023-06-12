@@ -284,6 +284,7 @@ export class RecordSqliteRepository implements IRecordRepository {
         })
         .where({ id })
 
+      const coreTable = TableSqliteMapper.entityToDomain(table).unwrap()
       const mv = new RecordSqliteMutationVisitor(this.cls, tableId, id, schema, em, qb)
       const specs: WithRecordValues[] = []
 
@@ -303,7 +304,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       const tm = new UnderlyingTableSqliteManager(em)
       await tm.deleteRecord(table, id)
 
-      const event = RecordDeletedEvent.from(id)
+      const event = RecordDeletedEvent.from(coreTable, id)
       this.outboxService.create(event)
     })
   }

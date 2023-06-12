@@ -1,14 +1,14 @@
 import { BaseEvent } from '@undb/domain'
 import type { Table } from '../../table'
-import type { IBaseRecordEventPayload } from './base-record.event'
+import type { BaseRecordEventName, IBaseRecordEventPayload } from './base-record.event'
 
-export const EVT_RECORD_DELETED = 'record.deleted'
+export const EVT_RECORD_DELETED: BaseRecordEventName = 'record.deleted'
 
 interface IRecordDeletedEventPayload extends IBaseRecordEventPayload {
   id: string
 }
 
-export class RecordDeletedEvent extends BaseEvent<IRecordDeletedEventPayload> {
+export class RecordDeletedEvent extends BaseEvent<IRecordDeletedEventPayload, BaseRecordEventName> {
   public readonly name = EVT_RECORD_DELETED
 
   static from(table: Table, id: string): RecordDeletedEvent {

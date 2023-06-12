@@ -4,8 +4,8 @@ export interface IEvent<P extends object = object> {
   timestamp: Date
 }
 
-export abstract class BaseEvent<P extends object = object> implements IEvent<P> {
+export abstract class BaseEvent<P extends object = object, E extends string = string> implements IEvent<P> {
   timestamp = new Date()
-  abstract name: string
+  abstract name: E
   constructor(public readonly payload: P) {}
 }
