@@ -1,5 +1,6 @@
 import { BaseEvent } from '@undb/domain'
 import type { Table } from '../../table.js'
+import type { IRecordReadable } from '../record.readable.js'
 import { recordReadableMapper } from '../record.readable.js'
 import type { IQueryRecordSchema } from '../record.type.js'
 import type { BaseRecordEventName, IBaseRecordEventPayload } from './base-record.event.js'
@@ -7,8 +8,7 @@ import type { BaseRecordEventName, IBaseRecordEventPayload } from './base-record
 export const EVT_RECORD_CREATED: BaseRecordEventName = 'record.created'
 
 interface IRecordCreatedEventPayload extends IBaseRecordEventPayload {
-  // TODO: values type
-  record: any
+  record: IRecordReadable
 }
 
 export class RecordCreatedEvent extends BaseEvent<IRecordCreatedEventPayload, BaseRecordEventName> {

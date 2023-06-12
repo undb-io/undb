@@ -12,7 +12,7 @@ export interface IRecordRepository {
   findOne(tableId: string, spec: IRecordSpec | null, schema: TableSchemaIdMap): Promise<Option<Record>>
   find(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap): Promise<Record[]>
 
-  updateOneById(tableId: string, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void>
+  updateOneById(table: Table, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void>
   updateManyByIds(
     tableId: string,
     schema: TableSchemaIdMap,

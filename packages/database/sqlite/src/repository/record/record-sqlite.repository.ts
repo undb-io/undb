@@ -15,6 +15,7 @@ import {
   ParentField,
   RecordCreatedEvent,
   RecordDeletedEvent,
+  RecordUpdatedEvent,
   TreeField,
   TreeFieldValue,
   WithRecordId,
@@ -229,9 +230,27 @@ export class RecordSqliteRepository implements IRecordRepository {
     await mv.commit()
   }
 
-  async updateOneById(tableId: string, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void> {
+  async updateOneById(table: CoreTable, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void> {
+    const tableId = table.id.value
+
     await this.em.transactional(async (em) => {
+      const idSpec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
+      const previousRecord = await this.findOneRecordEntity(tableId, idSpec)
+      if (!previousRecord) throw new Error('record not found')
+
       await this._update(em, tableId, schema, id, spec)
+
+      const record = await this.findOneRecordEntity(tableId, idSpec)
+
+      if (record) {
+        const event = RecordUpdatedEvent.from(
+          table,
+          RecordSqliteMapper.toQuery(tableId, schema, previousRecord),
+          RecordSqliteMapper.toQuery(tableId, schema, record),
+        )
+
+        this.outboxService.create(event)
+      }
     })
   }
 

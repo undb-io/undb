@@ -4,9 +4,11 @@ import { Cron, CronExpression } from '@nestjs/schedule'
 import {
   EVT_RECORD_CREATED,
   EVT_RECORD_DELETED,
+  EVT_RECORD_UPDATED,
   EventFactory,
   RecordCreatedEvent,
   RecordDeletedEvent,
+  RecordUpdatedEvent,
 } from '@undb/core'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { NestOutboxService } from '../outbox/outbox.service.js'
@@ -17,7 +19,7 @@ export class RelayService {
     @InjectPinoLogger(RelayService.name)
     private readonly logger: PinoLogger,
     private readonly outboxService: NestOutboxService,
-    private eventEmitter: EventEmitter2,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   @OnEvent(EVT_RECORD_CREATED)
@@ -30,15 +32,24 @@ export class RelayService {
     this.logger.info('handling event %s %j', EVT_RECORD_DELETED, payload)
   }
 
+  @OnEvent(EVT_RECORD_UPDATED)
+  public __TO_BE_REMOVED_ON_RECORD_UPDATED(payload: RecordUpdatedEvent) {
+    this.logger.info('handling event %s %j', EVT_RECORD_UPDATED, payload)
+  }
+
   @Cron(CronExpression.EVERY_10_SECONDS)
   async handleCron() {
     await this.outboxService.handle((outboxList) => {
       for (const outbox of outboxList) {
         const event = EventFactory.create(outbox.uuid, outbox.name, outbox.payload)
-        if (!event) continue
+        if (!event) {
+          this.logger.warn('unknown event name %s', outbox.name)
+          continue
+        }
 
-        this.eventEmitter.emit(event.name, event.toJSON())
-        this.logger.debug('event %s emitted', event.name)
+        const json = event.toJSON()
+        this.eventEmitter.emit(event.name, json)
+        this.logger.info('event %s emitted %j', event.name, json)
       }
     })
   }

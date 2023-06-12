@@ -38,8 +38,8 @@ export class NestRecordSqliteRepository extends RecordSqliteRepository {
   }
 
   @UseRequestContext()
-  async updateOneById(tableId: string, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void> {
-    return super.updateOneById(tableId, id, schema, spec)
+  async updateOneById(table: Table, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void> {
+    return super.updateOneById(table, id, schema, spec)
   }
 
   @UseRequestContext()
