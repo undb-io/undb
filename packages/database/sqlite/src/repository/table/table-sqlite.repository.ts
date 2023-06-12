@@ -17,6 +17,16 @@ import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor.js'
 
 export class TableSqliteRepository implements ITableRepository {
   constructor(protected em: EntityManager, protected readonly cache: ITableCache) {}
+  async begin(): Promise<void> {
+    this.em = this.em.fork()
+    await this.em.begin()
+  }
+  async commit(): Promise<void> {
+    await this.em.commit()
+  }
+  async rollback(): Promise<void> {
+    await this.em.rollback()
+  }
   async findOneById(id: string): Promise<Option<CoreTable>> {
     const cached = await this.cache.get(id)
     if (cached) {

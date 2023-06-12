@@ -12,8 +12,15 @@ export class CreateFieldCommandHandler implements ICreateFieldCommandHandler {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
     const spec = table.createField(command.viewId, command.field, command.at)
 
-    await this.tableRepo.updateOneById(table.id.value, spec)
+    try {
+      await this.tableRepo.begin()
 
-    await this.handler.handle(table, spec)
+      await this.tableRepo.updateOneById(table.id.value, spec)
+      await this.handler.handle(table, spec)
+
+      await this.tableRepo.commit()
+    } catch (error) {
+      await this.tableRepo.rollback()
+    }
   }
 }
