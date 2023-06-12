@@ -10,7 +10,6 @@ import type { IObjectStorage, Stat } from './object-storage.js'
 @Injectable()
 export class LocalObjectStorage implements IObjectStorage {
   constructor(@InjectObjectStorageConfig() private readonly config: ConfigType<typeof objectStorageConfig>) {}
-
   get #nestedPath() {
     const now = new Date()
     return path.join(now.getFullYear().toString(), (now.getMonth() + 1).toString(), now.getDate().toString())
@@ -42,11 +41,11 @@ export class LocalObjectStorage implements IObjectStorage {
     return { token, id, url }
   }
 
-  // TODO: file stream
-  get(name: string): Promise<Readable> {
+  get(name: string): Promise<{ data: Readable; metaData: any }> {
     throw new Error('Method not implemented.')
   }
 
+  // TODO: file stream
   stat(name: string): Promise<Stat> {
     throw new Error('Method not implemented.')
   }

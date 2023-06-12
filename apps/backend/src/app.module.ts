@@ -15,11 +15,13 @@ import { AuthModule } from './auth/auth.module.js'
 import { BaseConfigService } from './configs/base-config.service.js'
 import { ConfigModule } from './configs/config.module.js'
 import { InjectSqliteConfig, sqliteConfig } from './configs/sqlite.config.js'
+import { coreModules } from './core/index.js'
+import { UserService } from './core/user/user.service.js'
 import { HealthModule } from './health/health.module.js'
 import { I18nModule } from './i18n/i18n.module.js'
-import { modules } from './modules/index.js'
-import { UserService } from './modules/user/user.service.js'
 import { OpenAPIModule } from './openapi/openapi.module.js'
+import { OutboxModule } from './outbox/outbox.module.js'
+import { RealyModule } from './relay/relay.module.js'
 import { TrpcModule } from './trpc/trpc.module.js'
 
 @Module({
@@ -47,14 +49,16 @@ import { TrpcModule } from './trpc/trpc.module.js'
       useFactory: (config: ConfigType<typeof sqliteConfig>) => createConfig(config.data!, process.env.NODE_ENV),
       inject: [sqliteConfig.KEY],
     }),
-    ...modules,
-    AttachmentModule,
     ServeStaticModule.forRoot({
       rootPath: path.resolve(process.cwd(), './out'),
     }),
+    ...coreModules,
+    AttachmentModule,
     AuthModule,
     I18nModule,
     OpenAPIModule,
+    OutboxModule,
+    RealyModule,
   ],
 })
 export class AppModule implements OnModuleInit {

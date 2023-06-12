@@ -11,6 +11,6 @@ export class DuplicateRecordCommandHandler implements ICommandHandler<DuplicateR
 
     const duplicated = record.duplicate(table.schema.toIdMap())
 
-    await this.recordRepo.insert(duplicated, table.schema.toIdMap())
+    await this.recordRepo.insert(table, duplicated, table.schema.toIdMap())
   }
 }

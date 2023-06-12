@@ -18,6 +18,6 @@ export class UpdateRecordCommandHandler implements ICommandHandler<updateRecordC
     const values = await schema.parseAsync(command.values)
     const spec = record.updateRecord(table.schema, values)
 
-    await this.recordRepo.updateOneById(table.id.value, command.id, tableSchema, spec)
+    await this.recordRepo.updateOneById(table, command.id, tableSchema, spec)
   }
 }

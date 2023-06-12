@@ -3,6 +3,99 @@
   "tables": [
     {
       "columns": {
+        "uuid": {
+          "name": "uuid",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "operator_id": {
+          "name": "operator_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "payload": {
+          "name": "payload",
+          "type": "json",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        }
+      },
+      "name": "undb_outbox",
+      "indexes": [
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "undb_outbox_deleted_at_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "primary",
+          "columnNames": [
+            "uuid"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
         "id": {
           "name": "id",
           "type": "text",
@@ -206,6 +299,7 @@
             "auto-increment",
             "string",
             "email",
+            "json",
             "color",
             "number",
             "bool",
@@ -693,6 +787,15 @@
           ],
           "composite": false,
           "keyName": "undb_option_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "name"
+          ],
+          "composite": false,
+          "keyName": "undb_option_name_index",
           "primary": false,
           "unique": false
         },
