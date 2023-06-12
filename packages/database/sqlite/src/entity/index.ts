@@ -9,6 +9,7 @@ import { virsualizationEntities } from './virsualization.js'
 
 export * from './field.js'
 export * from './option.js'
+export * from './outbox.js'
 export * from './table.js'
 
 export const entities = [
