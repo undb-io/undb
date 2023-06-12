@@ -1,6 +1,5 @@
 import { Entity, JsonType, PrimaryKey, Property } from '@mikro-orm/core'
 import type { IEvent } from '@undb/domain'
-import { v4 } from 'uuid'
 import { BaseEntity } from './base.js'
 
 export const OPTBOX_TABLE_NAME = 'undb_outbox'
@@ -9,12 +8,13 @@ export const OPTBOX_TABLE_NAME = 'undb_outbox'
 export class Outbox extends BaseEntity {
   constructor(event: IEvent) {
     super()
+    this.uuid = event.id
     this.name = event.name
     this.payload = event.payload
   }
 
   @PrimaryKey()
-  uuid: string = v4()
+  uuid: string
 
   @Property({ nullable: true })
   name: string

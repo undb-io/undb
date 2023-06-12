@@ -34,10 +34,10 @@ export class RelayService {
   async handleCron() {
     await this.outboxService.handle((outboxList) => {
       for (const outbox of outboxList) {
-        const event = EventFactory.create(outbox.name, outbox.payload)
+        const event = EventFactory.create(outbox.uuid, outbox.name, outbox.payload)
         if (!event) continue
 
-        this.eventEmitter.emit(event.name, event.payload)
+        this.eventEmitter.emit(event.name, event.toJSON())
         this.logger.debug('event %s emitted', event.name)
       }
     })
