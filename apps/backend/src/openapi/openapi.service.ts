@@ -1,16 +1,13 @@
 import { Injectable } from '@nestjs/common'
 import { CommandBus } from '@nestjs/cqrs'
-import type { IQueryRecordSchema, ITableRepository } from '@undb/core'
+import { recordReadableMapper, type IQueryRecordSchema, type ITableRepository } from '@undb/core'
 import { CreateRecordCommand, CreateRecordsCommand, UpdateRecordCommand, UpdateRecordsCommand } from '@undb/cqrs'
-import { openAPIMutateRecordMapper, type IOpenAPIMutateRecordSchema, type IOpenApiRecordMapper } from '@undb/openapi'
+import { openAPIMutateRecordMapper, type IOpenAPIMutateRecordSchema } from '@undb/openapi'
 import { InjectTableReposiory } from '../core/table/adapters/index.js'
-import { InjectOpenAPIMapper } from './openapi.mapper.js'
 
 @Injectable()
 export class OpenAPIService {
   constructor(
-    @InjectOpenAPIMapper()
-    private readonly mapper: IOpenApiRecordMapper,
     @InjectTableReposiory()
     private readonly repo: ITableRepository,
     private readonly commandBus: CommandBus,
@@ -20,7 +17,7 @@ export class OpenAPIService {
     const table = (await this.repo.findOneById(tableId)).unwrap()
     const fields = table.schema.fields
 
-    return records.map((record) => this.mapper(fields, record))
+    return records.map((record) => recordReadableMapper(fields, record))
   }
 
   public async createRecord(tableId: string, id: string | undefined, values: IOpenAPIMutateRecordSchema) {

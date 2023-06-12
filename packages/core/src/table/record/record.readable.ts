@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type {
-  CollaboratorField,
-  Field,
-  IFieldType,
-  IQueryRecordSchema,
-  LookupField,
-  MultiSelectField,
-  ParentField,
-  ReferenceField,
-  SelectField,
-  TreeField,
-} from '@undb/core'
 import { zipObject } from 'lodash-es'
+import type { CollaboratorField } from '../field/collaborator-field.js'
+import type { Field, IFieldType } from '../field/field.type.js'
+import type { ReferenceField } from '../field/index.js'
+import type { LookupField } from '../field/lookup-field.js'
+import type { MultiSelectField } from '../field/multi-select-field.js'
+import type { ParentField } from '../field/parent-field.js'
+import type { SelectField } from '../field/select-field.js'
+import type { TreeField } from '../field/tree-field.js'
+import type { IQueryRecordSchema } from './record.type.js'
 
-export const openApiRecordValueMapper = (
+// TODO: get value type
+export type IRecordReadable = Record<string, any>
+
+export const recordReadableValueMapper = (
   record?: IQueryRecordSchema,
 ): globalThis.Record<IFieldType, (field: Field) => any> => {
   const getValue = (field: Field) => record?.values?.[field.id.value]
@@ -95,13 +95,11 @@ export const openApiRecordValueMapper = (
   }
 }
 
-export type IOpenApiRecordValueMapper = typeof openApiRecordValueMapper
-
-export const openApiRecordMapper = (fields: Field[], record: IQueryRecordSchema) => {
-  const result: Record<string, any> = {}
+export const recordReadableMapper = (fields: Field[], record: IQueryRecordSchema): IRecordReadable => {
+  const result: IRecordReadable = {}
   for (const field of fields) {
-    const mapper = openApiRecordValueMapper(record)
-    const value = mapper[field.type](field)
+    const valueMapper = recordReadableValueMapper(record)
+    const value = valueMapper[field.type](field)
 
     result[field.name.value] = value
   }
@@ -109,4 +107,4 @@ export const openApiRecordMapper = (fields: Field[], record: IQueryRecordSchema)
   return result
 }
 
-export type IOpenApiRecordMapper = typeof openApiRecordMapper
+export type IRecordReadableMapper = typeof recordReadableMapper
