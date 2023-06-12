@@ -5,11 +5,16 @@ import type { EntityManager } from '@undb/sqlite'
 import { RecordSqliteRepository } from '@undb/sqlite'
 import { ClsService } from 'nestjs-cls'
 import { Option } from 'oxide.ts'
+import { NestOutboxService } from '../../../../outbox/outbox.service.js'
 
 @Injectable()
 export class NestRecordSqliteRepository extends RecordSqliteRepository {
-  constructor(protected readonly orm: MikroORM, protected readonly cls: ClsService<ClsStore>) {
-    super(orm.em as EntityManager, cls)
+  constructor(
+    protected readonly orm: MikroORM,
+    protected readonly cls: ClsService<ClsStore>,
+    protected readonly outboxService: NestOutboxService,
+  ) {
+    super(orm.em as EntityManager, cls, outboxService)
   }
 
   @UseRequestContext()

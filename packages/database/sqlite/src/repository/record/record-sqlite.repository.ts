@@ -24,8 +24,8 @@ import { and } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { ReferenceField, SelectField } from '../../entity/field.js'
-import { Outbox } from '../../entity/outbox.js'
 import { Table } from '../../entity/table.js'
+import type { IOutboxService } from '../../services/outbox.service.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME, INTERNAL_COLUMN_DELETED_BY_NAME } from '../../underlying-table/constants.js'
 import { UnderlyingTableSqliteManager } from '../../underlying-table/underlying-table-sqlite.manager.js'
 import type { Job } from '../base-entity-manager.js'
@@ -39,7 +39,11 @@ import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation
 import type { RecordSqlite } from './record.type.js'
 
 export class RecordSqliteRepository implements IRecordRepository {
-  constructor(protected readonly em: EntityManager, protected readonly cls: IClsService) {}
+  constructor(
+    protected readonly em: EntityManager,
+    protected readonly cls: IClsService,
+    protected readonly outboxService: IOutboxService,
+  ) {}
 
   private async _insert(em: EntityManager, record: CoreRecord, schema: TableSchemaIdMap) {
     const userId = this.cls.get('user.userId')
@@ -90,8 +94,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       const found = (await this.findOneById(table.id.value, record.id.value, schema)).into(null)
       if (found) {
         const event = RecordCreatedEvent.from(table, found)
-        const outbox = new Outbox(event)
-        this.em.persist(outbox)
+        this.outboxService.create(event)
       }
     })
   }

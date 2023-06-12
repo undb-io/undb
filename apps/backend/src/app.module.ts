@@ -15,11 +15,12 @@ import { AuthModule } from './auth/auth.module.js'
 import { BaseConfigService } from './configs/base-config.service.js'
 import { ConfigModule } from './configs/config.module.js'
 import { InjectSqliteConfig, sqliteConfig } from './configs/sqlite.config.js'
+import { modules } from './core/index.js'
+import { UserService } from './core/user/user.service.js'
 import { HealthModule } from './health/health.module.js'
 import { I18nModule } from './i18n/i18n.module.js'
-import { modules } from './modules/index.js'
-import { UserService } from './modules/user/user.service.js'
 import { OpenAPIModule } from './openapi/openapi.module.js'
+import { OutboxModule } from './outbox/outbox.module.js'
 import { TrpcModule } from './trpc/trpc.module.js'
 
 @Module({
@@ -55,6 +56,7 @@ import { TrpcModule } from './trpc/trpc.module.js'
     AuthModule,
     I18nModule,
     OpenAPIModule,
+    OutboxModule,
   ],
 })
 export class AppModule implements OnModuleInit {
