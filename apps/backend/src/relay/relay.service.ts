@@ -22,12 +22,12 @@ export class RelayService {
 
   @OnEvent(EVT_RECORD_CREATED)
   public __TO_BE_REMOVED_ON_RECORD_CREATED(payload: RecordCreatedEvent) {
-    this.logger.info('handing event %s %j', EVT_RECORD_CREATED, payload)
+    this.logger.info('handling event %s %j', EVT_RECORD_CREATED, payload)
   }
 
   @OnEvent(EVT_RECORD_DELETED)
   public __TO_BE_REMOVED_ON_RECORD_DELETED(payload: RecordDeletedEvent) {
-    this.logger.info('handing event %s %j', EVT_RECORD_DELETED, payload)
+    this.logger.info('handling event %s %j', EVT_RECORD_DELETED, payload)
   }
 
   @Cron(CronExpression.EVERY_10_SECONDS)

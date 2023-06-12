@@ -1,6 +1,5 @@
 import { Entity, JsonType, PrimaryKey, Property } from '@mikro-orm/core'
 import type { IEvent } from '@undb/domain'
-import type { JsonObject } from 'type-fest'
 import { v4 } from 'uuid'
 import { BaseEntity } from './base.js'
 
@@ -21,5 +20,5 @@ export class Outbox extends BaseEntity {
   name: string
 
   @Property({ type: JsonType })
-  payload: JsonObject
+  payload: object
 }

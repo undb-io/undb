@@ -1,6 +1,11 @@
-import { JsonObject } from 'type-fest'
-
-export interface IEvent {
+export interface IEvent<P extends object = object> {
   name: string
-  payload: JsonObject
+  payload: P
+  timestamp: Date
+}
+
+export abstract class BaseEvent<P extends object = object> implements IEvent<P> {
+  timestamp = new Date()
+  abstract name: string
+  constructor(public readonly payload: P) {}
 }

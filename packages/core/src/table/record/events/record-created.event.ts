@@ -1,16 +1,19 @@
-import type { IEvent } from '@undb/domain'
-import type { JsonObject } from 'type-fest'
+import { BaseEvent } from '@undb/domain'
 import type { Table } from '../../table.js'
 import type { Record } from '../record.js'
+import type { IBaseRecordEventPayload } from './base-record.event.js'
 
 export const EVT_RECORD_CREATED = 'record.created'
 
-export class RecordCreatedEvent implements IEvent {
+interface IRecordCreatedEventPayload extends IBaseRecordEventPayload {
+  // TODO: values type
+  record: any
+}
+
+export class RecordCreatedEvent extends BaseEvent<IRecordCreatedEventPayload> {
   public readonly name = EVT_RECORD_CREATED
 
-  constructor(public readonly payload: JsonObject) {}
-
   static from(table: Table, record: Record): RecordCreatedEvent {
-    return new this(record.valuesJSON)
+    return new this({ tableId: table.id.value, tableName: table.name.value, record: record.valuesJSON })
   }
 }
