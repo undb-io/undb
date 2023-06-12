@@ -14,6 +14,7 @@ import {
   INTERNAL_COLUMN_UPDATED_BY_NAME,
   ParentField,
   RecordBulkCreatedEvent,
+  RecordBulkDeletedEvent,
   RecordCreatedEvent,
   RecordDeletedEvent,
   RecordUpdatedEvent,
@@ -326,7 +327,10 @@ export class RecordSqliteRepository implements IRecordRepository {
     })
   }
 
-  async deleteManyByIds(tableId: string, ids: string[], schema: TableSchemaIdMap): Promise<void> {
+  async deleteManyByIds(coreTable: CoreTable, ids: string[], schema: TableSchemaIdMap): Promise<void> {
+    if (!ids.length) return
+    const tableId = coreTable.id.value
+
     const userId = this.cls.get('user.userId')
 
     await this.em.transactional(async (em) => {
@@ -363,6 +367,8 @@ export class RecordSqliteRepository implements IRecordRepository {
       }
 
       await em.execute(qb)
+      const event = RecordBulkDeletedEvent.from(coreTable, ids)
+      this.outboxService.persist(event)
     })
   }
 }

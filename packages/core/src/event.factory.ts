@@ -1,9 +1,11 @@
 import {
   EVT_RECORD_BULK_CREATED,
+  EVT_RECORD_BULK_DELETED,
   EVT_RECORD_CREATED,
   EVT_RECORD_DELETED,
   EVT_RECORD_UPDATED,
   RecordBulkCreatedEvent,
+  RecordBulkDeletedEvent,
   RecordCreatedEvent,
   RecordDeletedEvent,
   RecordUpdatedEvent,
@@ -20,6 +22,8 @@ export class EventFactory {
         return new RecordUpdatedEvent(payload, id)
       case EVT_RECORD_BULK_CREATED:
         return new RecordBulkCreatedEvent(payload, id)
+      case EVT_RECORD_BULK_DELETED:
+        return new RecordBulkDeletedEvent(payload, id)
 
       default:
         return null

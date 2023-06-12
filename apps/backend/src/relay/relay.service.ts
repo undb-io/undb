@@ -3,11 +3,13 @@ import { EventEmitter2, OnEvent } from '@nestjs/event-emitter'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import {
   EVT_RECORD_BULK_CREATED,
+  EVT_RECORD_BULK_DELETED,
   EVT_RECORD_CREATED,
   EVT_RECORD_DELETED,
   EVT_RECORD_UPDATED,
   EventFactory,
   RecordBulkCreatedEvent,
+  RecordBulkDeletedEvent,
   RecordCreatedEvent,
   RecordDeletedEvent,
   RecordUpdatedEvent,
@@ -42,6 +44,11 @@ export class RelayService {
   @OnEvent(EVT_RECORD_BULK_CREATED)
   public __TO_BE_REMOVED_ON_RECORD_BULK_CREATED(payload: RecordBulkCreatedEvent) {
     this.logger.info('handling event %s %j', EVT_RECORD_BULK_CREATED, payload)
+  }
+
+  @OnEvent(EVT_RECORD_BULK_DELETED)
+  public __TO_BE_REMOVED_ON_RECORD_BULK_DELETED(payload: RecordBulkDeletedEvent) {
+    this.logger.info('handling event %s %j', EVT_RECORD_BULK_DELETED, payload)
   }
 
   @Cron(CronExpression.EVERY_10_SECONDS)
