@@ -1,4 +1,5 @@
-image: gitpod/workspace-full
+image:
+  file: .gitpod.Dockerfile
 
 # Commands that will run on workspace start
 tasks:
