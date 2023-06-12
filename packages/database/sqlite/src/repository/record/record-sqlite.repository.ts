@@ -1,14 +1,28 @@
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { LockMode } from '@mikro-orm/core'
-import type { Record as CoreRecord, IClsService, IRecordRepository, IRecordSpec, TableSchemaIdMap } from '@undb/core'
+import type {
+  Record as CoreRecord,
+  Table as CoreTable,
+  IClsService,
+  IRecordRepository,
+  IRecordSpec,
+  TableSchemaIdMap,
+} from '@undb/core'
 import {
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_BY_NAME,
   ParentField,
+  RecordBulkCreatedEvent,
+  RecordBulkDeletedEvent,
+  RecordBulkUpdatedEvent,
+  RecordCreatedEvent,
+  RecordDeletedEvent,
+  RecordUpdatedEvent,
   TreeField,
   TreeFieldValue,
   WithRecordId,
+  WithRecordIds,
   WithRecordTableId,
   WithRecordValues,
 } from '@undb/core'
@@ -17,6 +31,7 @@ import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { ReferenceField, SelectField } from '../../entity/field.js'
 import { Table } from '../../entity/table.js'
+import type { IOutboxService } from '../../services/outbox.service.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME, INTERNAL_COLUMN_DELETED_BY_NAME } from '../../underlying-table/constants.js'
 import { UnderlyingTableSqliteManager } from '../../underlying-table/underlying-table-sqlite.manager.js'
 import type { Job } from '../base-entity-manager.js'
@@ -25,12 +40,15 @@ import { RecordSqliteQueryBuilder } from './record-query.builder.js'
 import { RecordSqliteMapper } from './record-sqlite.mapper.js'
 import { RecordSqliteMutationVisitor } from './record-sqlite.mutation-visitor.js'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
-import { RecordSqliteReferenceQueryVisitor } from './record-sqlite.reference-query-visitor.js'
 import { RecordValueSqliteMutationVisitor } from './record-value-sqlite.mutation-visitor.js'
 import type { RecordSqlite } from './record.type.js'
 
 export class RecordSqliteRepository implements IRecordRepository {
-  constructor(protected readonly em: EntityManager, protected readonly cls: IClsService) {}
+  constructor(
+    protected readonly em: EntityManager,
+    protected readonly cls: IClsService,
+    protected readonly outboxService: IOutboxService,
+  ) {}
 
   private async _insert(em: EntityManager, record: CoreRecord, schema: TableSchemaIdMap) {
     const userId = this.cls.get('user.userId')
@@ -75,20 +93,48 @@ export class RecordSqliteRepository implements IRecordRepository {
     await Promise.all(jobs.map((job) => job()))
   }
 
-  async insert(record: CoreRecord, schema: TableSchemaIdMap): Promise<void> {
-    await this.em.transactional((em) => this._insert(em, record, schema))
+  async insert(table: CoreTable, record: CoreRecord, schema: TableSchemaIdMap): Promise<void> {
+    const userId = this.cls.get('user.userId')
+
+    await this.em.transactional(async (em) => {
+      await this._insert(em, record, schema)
+      const spec = WithRecordTableId.fromString(table.id.value).unwrap().and(WithRecordId.fromString(record.id.value))
+      const found = await this.findOneRecordEntity(table.id.value, spec)
+      if (found) {
+        const event = RecordCreatedEvent.from(table, userId, RecordSqliteMapper.toQuery(table.id.value, schema, found))
+        this.outboxService.persist(event)
+      }
+    })
   }
 
-  async insertMany(records: CoreRecord[], schema: TableSchemaIdMap): Promise<void> {
+  async insertMany(table: CoreTable, records: CoreRecord[], schema: TableSchemaIdMap): Promise<void> {
+    const userId = this.cls.get('user.userId')
+
     await this.em.transactional(async (em) => {
       await Promise.all(records.map((record) => this._insert(em, record, schema)))
+      const spec = WithRecordIds.fromIds(records.map((r) => r.id.value))
+      const found = await this.findRecordsEntity(table.id.value, spec)
+      if (found.length) {
+        const event = RecordBulkCreatedEvent.from(
+          table,
+          userId,
+          found.map((r) => RecordSqliteMapper.toQuery(table.id.value, schema, r)),
+        )
+        this.outboxService.persist(event)
+      }
     })
   }
 
   private async _populateTable(table: Table) {
     for (const field of table.fields) {
       if (field instanceof ReferenceField) {
-        const displayFields = field.displayFields.getItems(false)
+        if (!field.foreignTable?.fields.isInitialized()) {
+          await field.foreignTable?.fields.init()
+        }
+        if (!field.displayFields.isInitialized()) {
+          await field.displayFields.init()
+        }
+        const displayFields = field.foreignDisplayFields
         for (const f of displayFields) {
           if (f instanceof SelectField) {
             await f.options.init()
@@ -98,7 +144,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     }
   }
 
-  async findOne(tableId: string, spec: IRecordSpec | null, schema: TableSchemaIdMap): Promise<Option<CoreRecord>> {
+  private async findOneRecordEntity(tableId: string, spec: IRecordSpec | null): Promise<RecordSqlite | null> {
     const tableEntity = await this.em.findOneOrFail(
       Table,
       { id: tableId },
@@ -123,25 +169,47 @@ export class RecordSqliteRepository implements IRecordRepository {
       ? WithRecordTableId.fromString(tableId).unwrap().and(spec)
       : WithRecordTableId.fromString(tableId).unwrap()
 
-    const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec).select().from().where().build()
-    new RecordSqliteReferenceQueryVisitor(this.em, builder.knex, builder.qb, table, tableEntity).visit(table)
+    const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec)
+      .select()
+      .from()
+      .where()
+      .reference()
+      .build()
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb.first())
-    if (!data.length) {
+
+    return data[0] ?? null
+  }
+
+  async findOne(tableId: string, spec: IRecordSpec | null, schema: TableSchemaIdMap): Promise<Option<CoreRecord>> {
+    const data = await this.findOneRecordEntity(tableId, spec)
+    if (!data) {
       return None
     }
 
-    const record = RecordSqliteMapper.toDomain(tableId, schema, data[0]).unwrap()
+    const record = RecordSqliteMapper.toDomain(tableId, schema, data).unwrap()
     return Some(record)
   }
 
   async findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<CoreRecord>> {
+    const spec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
+    const data = await this.findOneRecordEntity(tableId, spec)
+
+    if (!data) {
+      return None
+    }
+
+    const record = RecordSqliteMapper.toDomain(tableId, schema, data).unwrap()
+    return Some(record)
+  }
+
+  private async findRecordsEntity(tableId: string, spec: IRecordSpec): Promise<RecordSqlite[]> {
     const tableEntity = await this.em.findOneOrFail(
       Table,
       { id: tableId },
       {
         populate: [
-          'views',
+          'fields',
           'fields.options',
           'fields.displayFields',
           'fields.countFields',
@@ -156,44 +224,20 @@ export class RecordSqliteRepository implements IRecordRepository {
     )
     await this._populateTable(tableEntity)
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
-    const spec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
 
-    const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec).select().from().where().build()
-    new RecordSqliteReferenceQueryVisitor(this.em, builder.knex, builder.qb, table, tableEntity).visit(table)
+    const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec)
+      .select()
+      .from()
+      .where()
+      .reference()
+      .build()
 
-    const data = await this.em.execute<RecordSqlite[]>(builder.qb.first())
-    if (!data.length) {
-      return None
-    }
-
-    const record = RecordSqliteMapper.toDomain(tableId, schema, data[0]).unwrap()
-    return Some(record)
+    const data = await this.em.execute<RecordSqlite[]>(builder.qb)
+    return data
   }
 
   async find(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap): Promise<CoreRecord[]> {
-    const tableEntity = await this.em.findOneOrFail(
-      Table,
-      { id: tableId },
-      {
-        populate: [
-          'fields.options',
-          'fields.displayFields',
-          'fields.countFields',
-          'fields.sumAggregateField',
-          'fields.sumFields',
-          'fields.averageFields',
-          'fields.averageAggregateField',
-          'fields.lookupFields',
-          'fields.foreignTable',
-        ],
-      },
-    )
-    const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
-
-    const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec).select().from().where().build()
-    new RecordSqliteReferenceQueryVisitor(this.em, builder.knex, builder.qb, table, tableEntity).visit(table)
-
-    const data = await this.em.execute<RecordSqlite[]>(builder.qb)
+    const data = await this.findRecordsEntity(tableId, spec)
 
     const record = data.map((r) => RecordSqliteMapper.toDomain(tableId, schema, r).unwrap())
     return record
@@ -212,20 +256,56 @@ export class RecordSqliteRepository implements IRecordRepository {
     await mv.commit()
   }
 
-  async updateOneById(tableId: string, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void> {
+  async updateOneById(table: CoreTable, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void> {
+    const tableId = table.id.value
+    const userId = this.cls.get('user.userId')
+
     await this.em.transactional(async (em) => {
+      const idSpec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
+      const previousRecord = await this.findOneRecordEntity(tableId, idSpec)
+      if (!previousRecord) throw new Error('record not found')
+
       await this._update(em, tableId, schema, id, spec)
+
+      const record = await this.findOneRecordEntity(tableId, idSpec)
+
+      if (record) {
+        const event = RecordUpdatedEvent.from(
+          table,
+          userId,
+          RecordSqliteMapper.toQuery(tableId, schema, previousRecord),
+          RecordSqliteMapper.toQuery(tableId, schema, record),
+        )
+
+        this.outboxService.persist(event)
+      }
     })
   }
 
   async updateManyByIds(
-    tableId: string,
+    table: CoreTable,
     schema: TableSchemaIdMap,
     updates: { id: string; spec: IRecordSpec }[],
   ): Promise<void> {
+    if (!updates.length) return
+    const tableId = table.id.value
+    const userId = this.cls.get('user.userId')
+
+    const idsSpec = WithRecordIds.fromIds(updates.map((u) => u.id))
+    const previousRecords = await this.findRecordsEntity(tableId, idsSpec)
+
     await this.em.transactional(async (em) => {
       await Promise.all(updates.map((update) => this._update(em, tableId, schema, update.id, update.spec)))
     })
+
+    const records = await this.findRecordsEntity(tableId, idsSpec)
+    const event = RecordBulkUpdatedEvent.from(
+      table,
+      userId,
+      RecordSqliteMapper.toQueries(tableId, schema, previousRecords),
+      RecordSqliteMapper.toQueries(tableId, schema, records),
+    )
+    this.outboxService.persist(event)
   }
 
   async deleteOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<void> {
@@ -246,6 +326,7 @@ export class RecordSqliteRepository implements IRecordRepository {
         })
         .where({ id })
 
+      const coreTable = TableSqliteMapper.entityToDomain(table).unwrap()
       const mv = new RecordSqliteMutationVisitor(this.cls, tableId, id, schema, em, qb)
       const specs: WithRecordValues[] = []
 
@@ -264,10 +345,16 @@ export class RecordSqliteRepository implements IRecordRepository {
 
       const tm = new UnderlyingTableSqliteManager(em)
       await tm.deleteRecord(table, id)
+
+      const event = RecordDeletedEvent.from(coreTable, userId, id)
+      this.outboxService.persist(event)
     })
   }
 
-  async deleteManyByIds(tableId: string, ids: string[], schema: TableSchemaIdMap): Promise<void> {
+  async deleteManyByIds(coreTable: CoreTable, ids: string[], schema: TableSchemaIdMap): Promise<void> {
+    if (!ids.length) return
+    const tableId = coreTable.id.value
+
     const userId = this.cls.get('user.userId')
 
     await this.em.transactional(async (em) => {
@@ -304,6 +391,8 @@ export class RecordSqliteRepository implements IRecordRepository {
       }
 
       await em.execute(qb)
+      const event = RecordBulkDeletedEvent.from(coreTable, userId, ids)
+      this.outboxService.persist(event)
     })
   }
 }

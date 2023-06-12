@@ -1,8 +1,9 @@
+import type { IBaseRepository } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import type { ITableSpec } from './specifications/interface.js'
 import { type Table } from './table.js'
 
-export interface ITableRepository {
+export interface ITableRepository extends IBaseRepository {
   findOneById(id: string): Promise<Option<Table>>
   findOne(spec: ITableSpec): Promise<Option<Table>>
   find(spec: ITableSpec): Promise<Table[]>

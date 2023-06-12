@@ -1187,3 +1187,6 @@ CREATE INDEX `fldft7edqw6_tblq36e537c_closure_table_depth_index` on `fldft7edqw6
 CREATE INDEX `fldq5ohh7hx_tblruubokdc_closure_table_depth_index` on `fldq5ohh7hx_tblruubokdc_closure_table` (`depth`)
        ;
 COMMIT;
+create table `undb_outbox` (`uuid` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text null, `operator_id` text null, `payload` json not null, primary key (`uuid`));
+create index `undb_outbox_deleted_at_index` on `undb_outbox` (`deleted_at`);
+create index `undb_option_name_index` on `undb_option` (`name`);

@@ -1,7 +1,9 @@
 import { Inject, Provider } from '@nestjs/common'
+import { ConfigType } from '@nestjs/config'
 import { PinoLogger } from 'nestjs-pino'
-import { createStorage } from 'unstorage'
-import lruCacheDriver from 'unstorage/drivers/lru-cache'
+import path from 'path'
+import { Driver, createStorage } from 'unstorage'
+import { cacheStorageConfig } from '../../../configs/cache-storage.config.js'
 import { NestAggregateSqliteQueryModel } from './sqlite/record-sqlite.aggregate-repository.js'
 import { NestRecordSqliteQueryModel } from './sqlite/record-sqlite.query-model.js'
 import { NestRecordSqliteRepository } from './sqlite/record-sqlite.repository.js'
@@ -56,15 +58,43 @@ export const dbAdapters: Provider[] = [
   },
   {
     provide: STORAGE,
-    useFactory: async (logger: PinoLogger) => {
+    useFactory: async (logger: PinoLogger, config: ConfigType<typeof cacheStorageConfig>) => {
+      let driver: Driver | undefined
+      if (config.provider === 'memory') {
+        const lruCacheDriver = await import('unstorage/drivers/lru-cache').then((m) => m.default)
+        driver = lruCacheDriver()
+      } else if (config.provider === 'redis') {
+        const redisDriver = await import('unstorage/drivers/redis').then((m) => m.default)
+        driver = redisDriver({
+          host: config.redis.host,
+          password: config.redis.password,
+          tls: false as any,
+          port: config.redis.port,
+          base: config.redis.base,
+          ttl: config.redis.ttl,
+          connectTimeout: 10000,
+        })
+      } else if (config.provider === 'fs') {
+        const fsDriver = await import('unstorage/drivers/fs').then((m) => m.default)
+        const base = path.resolve(process.cwd(), '../../.undb/cache')
+        driver = fsDriver({ base })
+      } else if (config.provider === 'mongo') {
+        const mongodbDriver = await import('unstorage/drivers/mongodb').then((m) => m.default)
+        driver = mongodbDriver({
+          connectionString: config.mongo.connectionString,
+          databaseName: config.mongo.databaseName,
+          collectionName: config.mongo.collectionName,
+        })
+      }
+
       const storage = createStorage({
-        driver: lruCacheDriver(),
+        driver,
       })
 
-      logger.info('initialized cache storage')
+      logger.info('initialized cache storage %s', driver?.name)
 
       return storage
     },
-    inject: [PinoLogger],
+    inject: [PinoLogger, cacheStorageConfig.KEY],
   },
 ]

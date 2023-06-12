@@ -11,7 +11,7 @@ export class CreateRecordCommandHandler implements ICommandHandler<CreateRecordC
     const schema = createMutateRecordValuesSchema(table.schema.fields)
 
     const record = table.createRecord(command.id, schema.parse(command.values))
-    await this.recordRepo.insert(record, table.schema.toIdMap())
+    await this.recordRepo.insert(table, record, table.schema.toIdMap())
 
     return { id: record.id.value }
   }

@@ -5,6 +5,7 @@ import path from 'path'
 import { entities } from './entity/index.js'
 import { SqliteLogger } from './logger.js'
 import { Migration20230528115246 } from './migrations/Migration20230528115246.js'
+import { Migration20230612140223 } from './migrations/Migration20230612140223.js'
 
 export const createConfig = (data: string, env = 'development') =>
   defineConfig({
@@ -25,6 +26,10 @@ export const createConfig = (data: string, env = 'development') =>
         {
           name: 'initial',
           class: Migration20230528115246,
+        },
+        {
+          name: 'create outbox',
+          class: Migration20230612140223,
         },
       ],
     },

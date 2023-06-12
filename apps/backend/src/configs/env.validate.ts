@@ -35,4 +35,39 @@ export const configSchema = Joi.object({
   UNDB_JWT_SECRET: Joi.string().default('jwt_secret'),
   UNDB_ADMIN_EMAIL: Joi.string().email().optional(),
   UNDB_ADMIN_PASSWORD: Joi.string().optional(),
+
+  UNDB_CACHE_STORAGE_PROVIDER: Joi.string().valid('memory', 'fs', 'redis', 'mongo').default('memory'),
+  UNDB_CACHE_STORAGE_REDIS_HOST: Joi.when('UNDB_CACHE_STORAGE_PROVIDER', {
+    is: 'redis',
+    then: Joi.string(),
+  }),
+  UNDB_CACHE_STORAGE_REDIS_PORT: Joi.when('UNDB_CACHE_STORAGE_PROVIDER', {
+    is: 'redis',
+    then: Joi.string(),
+  }),
+  UNDB_CACHE_STORAGE_REDIS_PASSWORD: Joi.when('UNDB_CACHE_STORAGE_PROVIDER', {
+    is: 'redis',
+    then: Joi.string().optional().allow(''),
+  }),
+  UNDB_CACHE_STORAGE_REDIS_BASE: Joi.when('UNDB_CACHE_STORAGE_PROVIDER', {
+    is: 'redis',
+    then: Joi.string().optional().allow('').default('undb_cache'),
+  }),
+  UNDB_CACHE_STORAGE_REDIS_TTL: Joi.when('UNDB_CACHE_STORAGE_PROVIDER', {
+    is: 'redis',
+    then: Joi.number().positive().optional(),
+  }),
+
+  UNDB_CACHE_STORAGE_MONGO_CONNECTION_STRING: Joi.when('UNDB_CACHE_STORAGE_PROVIDER', {
+    is: 'mongo',
+    then: Joi.string(),
+  }),
+  UNDB_CACHE_STORAGE_MONGO_DATABASE_NAME: Joi.when('UNDB_CACHE_STORAGE_PROVIDER', {
+    is: 'mongo',
+    then: Joi.string().optional().default('undb_cache'),
+  }),
+  UNDB_CACHE_STORAGE_MONGO_COLLECTION_NAME: Joi.when('UNDB_CACHE_STORAGE_PROVIDER', {
+    is: 'mongo',
+    then: Joi.string().optional().default('undb_cache'),
+  }),
 })

@@ -3,7 +3,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { IQueryUser, WithUserEmail } from '@undb/core'
 import { GetMeQuery, LoginCommand, RegisterCommand, UpdateProfileCommand } from '@undb/cqrs'
 import * as bcrypt from 'bcrypt'
-import { UserService } from '../modules/user/user.service.js'
+import { UserService } from '../core/user/user.service.js'
 import { InvalidPassword } from './errors/invalid-password.error.js'
 import { UserNotFound } from './errors/user-not-found.error.js'
 

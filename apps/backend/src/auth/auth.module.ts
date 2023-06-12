@@ -4,7 +4,7 @@ import { CqrsModule } from '@nestjs/cqrs'
 import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 import { authConfig } from '../configs/auth.config.js'
-import { UserModule } from '../modules/user/user.module.js'
+import { UserModule } from '../core/user/user.module.js'
 import { AuthController } from './auth.controller.js'
 import { AuthService } from './auth.service.js'
 import {

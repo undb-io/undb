@@ -13,7 +13,6 @@ import {
   dateRangeFieldQueryValue,
   emailFieldQueryValue,
   idFieldQueryValue,
-  jsonFieldQueryValue,
   lookupFieldQueryValue,
   numberFieldQueryValue,
   optionIdSchema,
@@ -52,7 +51,14 @@ export const createOpenAPIRecordValueSchema = (): globalThis.Record<IFieldType, 
   'auto-increment': autoIncrementQueryValue.openapi({ description: 'auto-increment' }),
   color: colorFieldQueryValue.openapi({ description: 'color' }),
   email: emailFieldQueryValue.openapi({ description: 'email' }),
-  json: jsonFieldQueryValue.openapi({ description: 'json' }),
+  // jsonFieldQueryValue not valid for openapi
+  json: z
+    .record(z.any())
+    .or(z.array(z.any()))
+    .or(z.string())
+    .or(z.null())
+    .or(z.number())
+    .openapi({ description: 'json' }),
   date: dateFieldQueryValue.openapi({ description: 'date' }),
   select: openAPIOptionSchema.openapi(COMPONENT_OPTION, { description: 'select' }),
   'multi-select': openAPIOptionSchema.openapi(COMPONENT_OPTION, { description: 'multi-select' }).array(),

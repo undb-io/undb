@@ -23,7 +23,8 @@ async function bootstrap() {
     bufferLogs: true,
   })
 
-  app.useLogger(app.get(Logger))
+  const logger = app.get(Logger)
+  app.useLogger(logger)
 
   app.enableCors()
   app.enableShutdownHooks()
@@ -31,7 +32,7 @@ async function bootstrap() {
   app.setGlobalPrefix('/api', { exclude: ['health'] })
 
   const httpAdapterHost = app.get(HttpAdapterHost)
-  app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost))
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost, logger))
 
   const router = app.get<AppRouter>(AppRouterSymbol)
   const jwt = app.get(JwtStrategy)

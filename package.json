@@ -1,10 +1,10 @@
 {
   "name": "undb",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "devDependencies": {
     "@commitlint/cli": "^17.6.5",
     "@commitlint/config-conventional": "^17.6.5",
-    "@types/node": "^20.2.6",
+    "@types/node": "^20.3.0",
     "@undb/eslint-config": "^0.0.0",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
@@ -22,7 +22,7 @@
   "lint-staged": {
     "*.{ts,tsx,md}": "prettier --write"
   },
-  "packageManager": "pnpm@8.6.1",
+  "packageManager": "pnpm@8.6.2",
   "private": true,
   "scripts": {
     "bootstrap": "pnpm install && pnpm run build",

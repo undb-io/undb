@@ -18,14 +18,22 @@ export class CreateTableCommandHandler implements ICreateTableCommandHandler {
     const ctx = this.cls.get()
     const table = TableFactory.from(command, ctx).unwrap()
 
-    await this.tableRepo.insert(table)
-    await this.handler.handle(table, new WithTableSchema(table.schema))
+    try {
+      await this.tableRepo.begin()
+
+      await this.tableRepo.insert(table)
+      await this.handler.handle(table, new WithTableSchema(table.schema))
+
+      await this.tableRepo.commit()
+    } catch (error) {
+      await this.tableRepo.rollback()
+    }
 
     if (command.records?.length) {
       const schema = createMutateRecordValuesSchema(table.schema.fields).array()
       const values = await schema.parseAsync(command.records)
       const records = table.createRecords(values.map((v) => ({ values: v })))
-      await this.recordRepo.insertMany(records, table.schema.toIdMap())
+      await this.recordRepo.insertMany(table, records, table.schema.toIdMap())
     }
 
     return { id: table.id.value }

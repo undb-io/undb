@@ -12,6 +12,6 @@ export class CreateRecordsCommandHandler implements ICommandHandler<CreateRecord
     await createCreateRecordsCommandInput(table.schema.fields).parseAsync(command)
 
     const records = table.createRecords(command.records)
-    await this.recordRepo.insertMany(records, table.schema.toIdMap())
+    await this.recordRepo.insertMany(table, records, table.schema.toIdMap())
   }
 }
