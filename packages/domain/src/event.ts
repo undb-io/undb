@@ -14,9 +14,9 @@ export abstract class BaseEvent<P extends object = object, E extends string = st
 
   toJSON() {
     return {
-      ...this.payload,
       eventId: this.id,
       timestamp: this.timestamp.toISOString(),
+      payload: this.payload,
     }
   }
 }

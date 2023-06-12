@@ -15,6 +15,7 @@ import {
   ParentField,
   RecordBulkCreatedEvent,
   RecordBulkDeletedEvent,
+  RecordBulkUpdatedEvent,
   RecordCreatedEvent,
   RecordDeletedEvent,
   RecordUpdatedEvent,
@@ -275,13 +276,27 @@ export class RecordSqliteRepository implements IRecordRepository {
   }
 
   async updateManyByIds(
-    tableId: string,
+    table: CoreTable,
     schema: TableSchemaIdMap,
     updates: { id: string; spec: IRecordSpec }[],
   ): Promise<void> {
+    if (!updates.length) return
+    const tableId = table.id.value
+
+    const idsSpec = WithRecordIds.fromIds(updates.map((u) => u.id))
+    const previousRecords = await this.findRecordsEntity(tableId, idsSpec)
+
     await this.em.transactional(async (em) => {
       await Promise.all(updates.map((update) => this._update(em, tableId, schema, update.id, update.spec)))
     })
+
+    const records = await this.findRecordsEntity(tableId, idsSpec)
+    const event = RecordBulkUpdatedEvent.from(
+      table,
+      RecordSqliteMapper.toQueries(tableId, schema, previousRecords),
+      RecordSqliteMapper.toQueries(tableId, schema, records),
+    )
+    this.outboxService.persist(event)
   }
 
   async deleteOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<void> {

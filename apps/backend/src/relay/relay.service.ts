@@ -4,12 +4,14 @@ import { Cron, CronExpression } from '@nestjs/schedule'
 import {
   EVT_RECORD_BULK_CREATED,
   EVT_RECORD_BULK_DELETED,
+  EVT_RECORD_BULK_UPDATED,
   EVT_RECORD_CREATED,
   EVT_RECORD_DELETED,
   EVT_RECORD_UPDATED,
   EventFactory,
   RecordBulkCreatedEvent,
   RecordBulkDeletedEvent,
+  RecordBulkUpdatedEvent,
   RecordCreatedEvent,
   RecordDeletedEvent,
   RecordUpdatedEvent,
@@ -51,6 +53,11 @@ export class RelayService {
     this.logger.info('handling event %s %j', EVT_RECORD_BULK_DELETED, payload)
   }
 
+  @OnEvent(EVT_RECORD_BULK_UPDATED)
+  public __TO_BE_REMOVED_ON_RECORD_BULK_UPDATED(payload: RecordBulkUpdatedEvent) {
+    this.logger.info('handling event %s %j', EVT_RECORD_BULK_UPDATED, payload)
+  }
+
   @Cron(CronExpression.EVERY_10_SECONDS)
   async handleCron() {
     await this.outboxService.handle((outboxList) => {
@@ -62,6 +69,7 @@ export class RelayService {
         }
 
         const json = event.toJSON()
+
         this.eventEmitter.emit(event.name, json)
         this.logger.info('event %s emitted %j', event.name, json)
       }

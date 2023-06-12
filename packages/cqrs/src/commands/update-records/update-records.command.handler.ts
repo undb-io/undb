@@ -21,6 +21,6 @@ export class UpdateRecordsCommandHandler implements ICommandHandler<UpdateRecord
       spec: record.updateRecord(table.schema, map.get(record.id.value) ?? {}),
     }))
 
-    await this.recordRepo.updateManyByIds(table.id.value, schema, updates)
+    await this.recordRepo.updateManyByIds(table, schema, updates)
   }
 }

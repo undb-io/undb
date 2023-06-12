@@ -1,4 +1,5 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
+import { LockMode } from '@mikro-orm/core'
 import type { IEvent } from '@undb/domain'
 import { Outbox } from '../entity/outbox.js'
 
@@ -18,7 +19,11 @@ export class OutboxService implements IOutboxService {
 
   async handle(cb: (outboxList: Outbox[]) => void | Promise<void>): Promise<void> {
     await this.em.transactional(async (em) => {
-      const outboxList = await em.find(Outbox, {}, { limit: 10, orderBy: { createdAt: 'desc' } })
+      const outboxList = await em.find(
+        Outbox,
+        {},
+        { limit: 10, orderBy: { createdAt: 'desc' }, lockMode: LockMode.PESSIMISTIC_WRITE },
+      )
 
       if (!outboxList.length) return
 
