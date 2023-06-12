@@ -10,6 +10,7 @@ export class Outbox extends BaseEntity {
     super()
     this.uuid = event.id
     this.name = event.name
+    this.operatorId = event.operatorId
     this.payload = event.payload
   }
 
@@ -18,6 +19,9 @@ export class Outbox extends BaseEntity {
 
   @Property({ nullable: true })
   name: string
+
+  @Property({ nullable: true })
+  operatorId: string
 
   @Property({ type: JsonType })
   payload: object

@@ -14,20 +14,20 @@ import {
 } from './table/index.js'
 
 export class EventFactory {
-  static create(id: string, name: string, payload: any) {
+  static create(id: string, operatorId: string, name: string, payload: any) {
     switch (name) {
       case EVT_RECORD_CREATED:
-        return new RecordCreatedEvent(payload, id)
+        return new RecordCreatedEvent(payload, operatorId, id)
       case EVT_RECORD_DELETED:
-        return new RecordDeletedEvent(payload, id)
+        return new RecordDeletedEvent(payload, operatorId, id)
       case EVT_RECORD_UPDATED:
-        return new RecordUpdatedEvent(payload, id)
+        return new RecordUpdatedEvent(payload, operatorId, id)
       case EVT_RECORD_BULK_CREATED:
-        return new RecordBulkCreatedEvent(payload, id)
+        return new RecordBulkCreatedEvent(payload, operatorId, id)
       case EVT_RECORD_BULK_DELETED:
-        return new RecordBulkDeletedEvent(payload, id)
+        return new RecordBulkDeletedEvent(payload, operatorId, id)
       case EVT_RECORD_BULK_UPDATED:
-        return new RecordBulkUpdatedEvent(payload, id)
+        return new RecordBulkUpdatedEvent(payload, operatorId, id)
 
       default:
         return null

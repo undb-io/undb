@@ -13,12 +13,15 @@ interface IRecordBulkCreatedEventPayload extends IBaseRecordEventPayload {
 export class RecordBulkCreatedEvent extends BaseEvent<IRecordBulkCreatedEventPayload, BaseRecordEventName> {
   public readonly name = EVT_RECORD_BULK_CREATED
 
-  static from(table: Table, records: IQueryRecordSchema[]): RecordBulkCreatedEvent {
+  static from(table: Table, operatorId: string, records: IQueryRecordSchema[]): RecordBulkCreatedEvent {
     const fields = table.schema.fields
-    return new this({
-      tableId: table.id.value,
-      tableName: table.name.value,
-      records: records.map((r) => recordReadableMapper(fields, r)),
-    })
+    return new this(
+      {
+        tableId: table.id.value,
+        tableName: table.name.value,
+        records: records.map((r) => recordReadableMapper(fields, r)),
+      },
+      operatorId,
+    )
   }
 }

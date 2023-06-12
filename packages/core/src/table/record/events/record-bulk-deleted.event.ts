@@ -11,11 +11,14 @@ interface IRecordBulkDeletedEventPayload extends IBaseRecordEventPayload {
 export class RecordBulkDeletedEvent extends BaseEvent<IRecordBulkDeletedEventPayload, BaseRecordEventName> {
   public readonly name = EVT_RECORD_BULK_DELETED
 
-  static from(table: Table, ids: string[]): RecordBulkDeletedEvent {
-    return new this({
-      tableId: table.id.value,
-      tableName: table.name.value,
-      ids,
-    })
+  static from(table: Table, operatorId: string, ids: string[]): RecordBulkDeletedEvent {
+    return new this(
+      {
+        tableId: table.id.value,
+        tableName: table.name.value,
+        ids,
+      },
+      operatorId,
+    )
   }
 }

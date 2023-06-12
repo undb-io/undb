@@ -15,12 +15,20 @@ interface IRecordUpdatedEventPayload extends IBaseRecordEventPayload {
 export class RecordUpdatedEvent extends BaseEvent<IRecordUpdatedEventPayload, BaseRecordEventName> {
   public readonly name = EVT_RECORD_UPDATED
 
-  static from(table: Table, previousRecord: IQueryRecordSchema, record: IQueryRecordSchema): RecordUpdatedEvent {
-    return new this({
-      tableId: table.id.value,
-      tableName: table.name.value,
-      previousRecord: recordReadableMapper(table.schema.fields, previousRecord),
-      record: recordReadableMapper(table.schema.fields, record),
-    })
+  static from(
+    table: Table,
+    operatorId: string,
+    previousRecord: IQueryRecordSchema,
+    record: IQueryRecordSchema,
+  ): RecordUpdatedEvent {
+    return new this(
+      {
+        tableId: table.id.value,
+        tableName: table.name.value,
+        previousRecord: recordReadableMapper(table.schema.fields, previousRecord),
+        record: recordReadableMapper(table.schema.fields, record),
+      },
+      operatorId,
+    )
   }
 }

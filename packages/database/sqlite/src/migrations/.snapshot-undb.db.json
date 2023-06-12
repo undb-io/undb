@@ -51,6 +51,15 @@
           "nullable": true,
           "mappedType": "text"
         },
+        "operator_id": {
+          "name": "operator_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
         "payload": {
           "name": "payload",
           "type": "json",

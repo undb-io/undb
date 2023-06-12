@@ -14,8 +14,8 @@ interface IRecordCreatedEventPayload extends IBaseRecordEventPayload {
 export class RecordCreatedEvent extends BaseEvent<IRecordCreatedEventPayload, BaseRecordEventName> {
   public readonly name = EVT_RECORD_CREATED
 
-  static from(table: Table, record: IQueryRecordSchema): RecordCreatedEvent {
+  static from(table: Table, operatorId: string, record: IQueryRecordSchema): RecordCreatedEvent {
     const recordValues = recordReadableMapper(table.schema.fields, record)
-    return new this({ tableId: table.id.value, tableName: table.name.value, record: recordValues })
+    return new this({ tableId: table.id.value, tableName: table.name.value, record: recordValues }, operatorId)
   }
 }

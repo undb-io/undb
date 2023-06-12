@@ -15,18 +15,22 @@ export class RecordBulkUpdatedEvent extends BaseEvent<IRecordBulkUpdatedEventPay
 
   static from(
     table: Table,
+    operatorId: string,
     previousRecords: IQueryRecordSchema[],
     records: IQueryRecordSchema[],
   ): RecordBulkUpdatedEvent {
     const fields = table.schema.fields
     const recordsMap = new Map(records.map((r) => [r.id, r]))
-    return new this({
-      tableId: table.id.value,
-      tableName: table.name.value,
-      updates: previousRecords.map((r) => ({
-        previousRecord: recordReadableMapper(fields, r),
-        record: recordReadableMapper(fields, recordsMap.get(r.id)!),
-      })),
-    })
+    return new this(
+      {
+        tableId: table.id.value,
+        tableName: table.name.value,
+        updates: previousRecords.map((r) => ({
+          previousRecord: recordReadableMapper(fields, r),
+          record: recordReadableMapper(fields, recordsMap.get(r.id)!),
+        })),
+      },
+      operatorId,
+    )
   }
 }

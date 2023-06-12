@@ -94,18 +94,22 @@ export class RecordSqliteRepository implements IRecordRepository {
   }
 
   async insert(table: CoreTable, record: CoreRecord, schema: TableSchemaIdMap): Promise<void> {
+    const userId = this.cls.get('user.userId')
+
     await this.em.transactional(async (em) => {
       await this._insert(em, record, schema)
       const spec = WithRecordTableId.fromString(table.id.value).unwrap().and(WithRecordId.fromString(record.id.value))
       const found = await this.findOneRecordEntity(table.id.value, spec)
       if (found) {
-        const event = RecordCreatedEvent.from(table, RecordSqliteMapper.toQuery(table.id.value, schema, found))
+        const event = RecordCreatedEvent.from(table, userId, RecordSqliteMapper.toQuery(table.id.value, schema, found))
         this.outboxService.persist(event)
       }
     })
   }
 
   async insertMany(table: CoreTable, records: CoreRecord[], schema: TableSchemaIdMap): Promise<void> {
+    const userId = this.cls.get('user.userId')
+
     await this.em.transactional(async (em) => {
       await Promise.all(records.map((record) => this._insert(em, record, schema)))
       const spec = WithRecordIds.fromIds(records.map((r) => r.id.value))
@@ -113,6 +117,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       if (found.length) {
         const event = RecordBulkCreatedEvent.from(
           table,
+          userId,
           found.map((r) => RecordSqliteMapper.toQuery(table.id.value, schema, r)),
         )
         this.outboxService.persist(event)
@@ -253,6 +258,7 @@ export class RecordSqliteRepository implements IRecordRepository {
 
   async updateOneById(table: CoreTable, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void> {
     const tableId = table.id.value
+    const userId = this.cls.get('user.userId')
 
     await this.em.transactional(async (em) => {
       const idSpec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
@@ -266,6 +272,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       if (record) {
         const event = RecordUpdatedEvent.from(
           table,
+          userId,
           RecordSqliteMapper.toQuery(tableId, schema, previousRecord),
           RecordSqliteMapper.toQuery(tableId, schema, record),
         )
@@ -282,6 +289,7 @@ export class RecordSqliteRepository implements IRecordRepository {
   ): Promise<void> {
     if (!updates.length) return
     const tableId = table.id.value
+    const userId = this.cls.get('user.userId')
 
     const idsSpec = WithRecordIds.fromIds(updates.map((u) => u.id))
     const previousRecords = await this.findRecordsEntity(tableId, idsSpec)
@@ -293,6 +301,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     const records = await this.findRecordsEntity(tableId, idsSpec)
     const event = RecordBulkUpdatedEvent.from(
       table,
+      userId,
       RecordSqliteMapper.toQueries(tableId, schema, previousRecords),
       RecordSqliteMapper.toQueries(tableId, schema, records),
     )
@@ -337,7 +346,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       const tm = new UnderlyingTableSqliteManager(em)
       await tm.deleteRecord(table, id)
 
-      const event = RecordDeletedEvent.from(coreTable, id)
+      const event = RecordDeletedEvent.from(coreTable, userId, id)
       this.outboxService.persist(event)
     })
   }
@@ -382,7 +391,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       }
 
       await em.execute(qb)
-      const event = RecordBulkDeletedEvent.from(coreTable, ids)
+      const event = RecordBulkDeletedEvent.from(coreTable, userId, ids)
       this.outboxService.persist(event)
     })
   }
