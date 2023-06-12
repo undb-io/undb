@@ -4,8 +4,7 @@ image: gitpod/workspace-full
 tasks:
   - name: Setup, Install & Build
     init: pnpm run bootstrap
-  - name: dev
-    init: pnpm run dev
+    command: pnpm run dev
 
 # Ports to expose on workspace startup
 ports:
