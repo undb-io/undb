@@ -1,11 +1,12 @@
 import type { Option } from 'oxide.ts'
+import type { Table } from '../table.js'
 import type { TableSchemaIdMap } from '../value-objects/index.js'
 import type { Record } from './record.js'
 import type { IRecordSpec } from './specifications/interface.js'
 
 export interface IRecordRepository {
-  insert(record: Record, schema: TableSchemaIdMap): Promise<void>
-  insertMany(records: Record[], schema: TableSchemaIdMap): Promise<void>
+  insert(table: Table, record: Record, schema: TableSchemaIdMap): Promise<void>
+  insertMany(table: Table, records: Record[], schema: TableSchemaIdMap): Promise<void>
 
   findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<Record>>
   findOne(tableId: string, spec: IRecordSpec | null, schema: TableSchemaIdMap): Promise<Option<Record>>

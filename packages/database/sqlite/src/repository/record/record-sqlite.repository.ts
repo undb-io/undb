@@ -1,11 +1,19 @@
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { LockMode } from '@mikro-orm/core'
-import type { Record as CoreRecord, IClsService, IRecordRepository, IRecordSpec, TableSchemaIdMap } from '@undb/core'
+import type {
+  Record as CoreRecord,
+  Table as CoreTable,
+  IClsService,
+  IRecordRepository,
+  IRecordSpec,
+  TableSchemaIdMap,
+} from '@undb/core'
 import {
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_BY_NAME,
   ParentField,
+  RecordCreatedEvent,
   TreeField,
   TreeFieldValue,
   WithRecordId,
@@ -16,6 +24,7 @@ import { and } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { ReferenceField, SelectField } from '../../entity/field.js'
+import { Outbox } from '../../entity/outbox.js'
 import { Table } from '../../entity/table.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME, INTERNAL_COLUMN_DELETED_BY_NAME } from '../../underlying-table/constants.js'
 import { UnderlyingTableSqliteManager } from '../../underlying-table/underlying-table-sqlite.manager.js'
@@ -75,11 +84,19 @@ export class RecordSqliteRepository implements IRecordRepository {
     await Promise.all(jobs.map((job) => job()))
   }
 
-  async insert(record: CoreRecord, schema: TableSchemaIdMap): Promise<void> {
-    await this.em.transactional((em) => this._insert(em, record, schema))
+  async insert(table: CoreTable, record: CoreRecord, schema: TableSchemaIdMap): Promise<void> {
+    await this.em.transactional(async (em) => {
+      await this._insert(em, record, schema)
+      const found = (await this.findOneById(table.id.value, record.id.value, schema)).into(null)
+      if (found) {
+        const event = RecordCreatedEvent.from(table, found)
+        const outbox = new Outbox(event)
+        this.em.persist(outbox)
+      }
+    })
   }
 
-  async insertMany(records: CoreRecord[], schema: TableSchemaIdMap): Promise<void> {
+  async insertMany(table: CoreTable, records: CoreRecord[], schema: TableSchemaIdMap): Promise<void> {
     await this.em.transactional(async (em) => {
       await Promise.all(records.map((record) => this._insert(em, record, schema)))
     })
@@ -87,6 +104,18 @@ export class RecordSqliteRepository implements IRecordRepository {
 
   private async _populateTable(table: Table) {
     for (const field of table.fields) {
+      if (field instanceof ReferenceField) {
+        if (!field.foreignTable?.fields.isInitialized()) {
+          await field.foreignTable?.fields.init()
+        }
+        const displayFields = field.displayFields.getItems(false) ?? []
+        for (const f of displayFields) {
+          if (f instanceof SelectField) {
+            await f.options.init()
+          }
+        }
+      }
+
       if (field instanceof ReferenceField) {
         const displayFields = field.displayFields.getItems(false)
         for (const f of displayFields) {
@@ -141,6 +170,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       { id: tableId },
       {
         populate: [
+          'fields',
           'views',
           'fields.options',
           'fields.displayFields',
@@ -158,8 +188,12 @@ export class RecordSqliteRepository implements IRecordRepository {
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const spec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
 
-    const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec).select().from().where().build()
-    new RecordSqliteReferenceQueryVisitor(this.em, builder.knex, builder.qb, table, tableEntity).visit(table)
+    const builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec)
+      .select()
+      .from()
+      .where()
+      .reference()
+      .build()
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb.first())
     if (!data.length) {

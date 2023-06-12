@@ -2,6 +2,7 @@ import { BetterSqliteDriver, MikroORM } from '@mikro-orm/better-sqlite'
 import { defineConfig } from '@mikro-orm/core'
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
 import { Migration20230528115246 } from '../src/migrations/Migration20230528115246.js'
+import { Migration20230612042317 } from '../src/migrations/Migration20230612042317.js'
 
 beforeAll(async () => {
   const { entities } = await import('../src/entity/index.js')
@@ -16,6 +17,10 @@ beforeAll(async () => {
           {
             name: 'initial',
             class: Migration20230528115246,
+          },
+          {
+            name: 'create outbox',
+            class: Migration20230612042317,
           },
         ],
       },

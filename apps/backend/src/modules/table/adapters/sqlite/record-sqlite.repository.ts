@@ -1,6 +1,6 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
-import type { ClsStore, IRecordSpec, Record, TableSchemaIdMap } from '@undb/core'
+import type { ClsStore, IRecordSpec, Record, Table, TableSchemaIdMap } from '@undb/core'
 import type { EntityManager } from '@undb/sqlite'
 import { RecordSqliteRepository } from '@undb/sqlite'
 import { ClsService } from 'nestjs-cls'
@@ -13,13 +13,13 @@ export class NestRecordSqliteRepository extends RecordSqliteRepository {
   }
 
   @UseRequestContext()
-  async insert(record: Record, schema: TableSchemaIdMap): Promise<void> {
-    return super.insert(record, schema)
+  async insert(table: Table, record: Record, schema: TableSchemaIdMap): Promise<void> {
+    return super.insert(table, record, schema)
   }
 
   @UseRequestContext()
-  async insertMany(records: Record[], schema: TableSchemaIdMap): Promise<void> {
-    return super.insertMany(records, schema)
+  async insertMany(table: Table, records: Record[], schema: TableSchemaIdMap): Promise<void> {
+    return super.insertMany(table, records, schema)
   }
 
   @UseRequestContext()

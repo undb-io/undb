@@ -1,3 +1,4 @@
+export * from './events/index.js'
 export * from './fixtures/index.js'
 export * from './record-aggregate.repository.js'
 export * from './record-tree-query-model.js'

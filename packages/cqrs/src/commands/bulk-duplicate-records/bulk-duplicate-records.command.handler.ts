@@ -1,4 +1,5 @@
-import { IRecordRepository, ITableRepository, WithRecordIds } from '@undb/core'
+import type { IRecordRepository, ITableRepository } from '@undb/core'
+import { WithRecordIds } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
 import type { BulkDuplicateRecordsCommand } from './bulk-duplicate-records.comand.js'
 
@@ -13,6 +14,6 @@ export class BulkDuplicateRecordsCommandHandler implements ICommandHandler<BulkD
 
     const duplicated = records.map((record) => record.duplicate(schema))
 
-    await this.recordRepo.insertMany(duplicated, schema)
+    await this.recordRepo.insertMany(table, duplicated, schema)
   }
 }
