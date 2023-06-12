@@ -9,12 +9,7 @@ export class NestOutboxService extends OutboxService {
   }
 
   @UseRequestContext()
-  find(): Promise<Outbox[]> {
-    return super.find()
-  }
-
-  @UseRequestContext()
-  delete(ids: string[]): Promise<void> {
-    return super.delete(ids)
+  handle(cb: (outboxList: Outbox[]) => void | Promise<void>): Promise<void> {
+    return super.handle(cb)
   }
 }
