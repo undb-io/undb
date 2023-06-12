@@ -16,7 +16,8 @@ export type IRecordReadable = Record<string, any>
 export const recordReadableValueMapper = (
   record?: IQueryRecordSchema,
 ): globalThis.Record<IFieldType, (field: Field) => any> => {
-  const getValue = (field: Field) => record?.values?.[field.id.value]
+  const values = record?.values
+  const getValue = (field: Field) => values?.[field.id.value]
   const displayValues = record?.displayValues
   return {
     string: getValue,
