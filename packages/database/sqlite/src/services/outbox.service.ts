@@ -3,16 +3,17 @@ import type { IEvent } from '@undb/domain'
 import { Outbox } from '../entity/outbox.js'
 
 export interface IOutboxService {
-  create(event: IEvent): void
+  persist(event: IEvent): Outbox
   handle(cb: (outboxList: Outbox[]) => Promise<void> | void): Promise<void>
 }
 
 export class OutboxService implements IOutboxService {
   constructor(protected readonly em: EntityManager) {}
 
-  create(event: IEvent): void {
+  persist(event: IEvent): Outbox {
     const outbox = new Outbox(event)
     this.em.persist(outbox)
+    return outbox
   }
 
   async handle(cb: (outboxList: Outbox[]) => void | Promise<void>): Promise<void> {
