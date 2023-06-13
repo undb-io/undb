@@ -13,7 +13,6 @@
     "@nestjs/config": "^2.3.2",
     "@nestjs/core": "^9.4.2",
     "@nestjs/cqrs": "^9.0.4",
-    "@nestjs/event-emitter": "^1.4.1",
     "@nestjs/jwt": "^10.0.3",
     "@nestjs/mongoose": "^9.2.2",
     "@nestjs/passport": "^9.0.3",

@@ -1,21 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { EventEmitter2, OnEvent } from '@nestjs/event-emitter'
+import { EventBus } from '@nestjs/cqrs'
 import { Cron, CronExpression } from '@nestjs/schedule'
-import {
-  EVT_RECORD_BULK_CREATED,
-  EVT_RECORD_BULK_DELETED,
-  EVT_RECORD_BULK_UPDATED,
-  EVT_RECORD_CREATED,
-  EVT_RECORD_DELETED,
-  EVT_RECORD_UPDATED,
-  EventFactory,
-  RecordBulkCreatedEvent,
-  RecordBulkDeletedEvent,
-  RecordBulkUpdatedEvent,
-  RecordCreatedEvent,
-  RecordDeletedEvent,
-  RecordUpdatedEvent,
-} from '@undb/core'
+import { EventFactory } from '@undb/core'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { NestOutboxService } from '../outbox/outbox.service.js'
 
@@ -25,38 +11,8 @@ export class RelayService {
     @InjectPinoLogger(RelayService.name)
     private readonly logger: PinoLogger,
     private readonly outboxService: NestOutboxService,
-    private readonly eventEmitter: EventEmitter2,
+    private readonly eventBus: EventBus,
   ) {}
-
-  @OnEvent(EVT_RECORD_CREATED)
-  public __TO_BE_REMOVED_ON_RECORD_CREATED(payload: RecordCreatedEvent) {
-    this.logger.info('handling event %s %j', EVT_RECORD_CREATED, payload)
-  }
-
-  @OnEvent(EVT_RECORD_DELETED)
-  public __TO_BE_REMOVED_ON_RECORD_DELETED(payload: RecordDeletedEvent) {
-    this.logger.info('handling event %s %j', EVT_RECORD_DELETED, payload)
-  }
-
-  @OnEvent(EVT_RECORD_UPDATED)
-  public __TO_BE_REMOVED_ON_RECORD_UPDATED(payload: RecordUpdatedEvent) {
-    this.logger.info('handling event %s %j', EVT_RECORD_UPDATED, payload)
-  }
-
-  @OnEvent(EVT_RECORD_BULK_CREATED)
-  public __TO_BE_REMOVED_ON_RECORD_BULK_CREATED(payload: RecordBulkCreatedEvent) {
-    this.logger.info('handling event %s %j', EVT_RECORD_BULK_CREATED, payload)
-  }
-
-  @OnEvent(EVT_RECORD_BULK_DELETED)
-  public __TO_BE_REMOVED_ON_RECORD_BULK_DELETED(payload: RecordBulkDeletedEvent) {
-    this.logger.info('handling event %s %j', EVT_RECORD_BULK_DELETED, payload)
-  }
-
-  @OnEvent(EVT_RECORD_BULK_UPDATED)
-  public __TO_BE_REMOVED_ON_RECORD_BULK_UPDATED(payload: RecordBulkUpdatedEvent) {
-    this.logger.info('handling event %s %j', EVT_RECORD_BULK_UPDATED, payload)
-  }
 
   @Cron(CronExpression.EVERY_10_SECONDS)
   async handleCron() {
@@ -70,7 +26,7 @@ export class RelayService {
 
         const json = event.toJSON()
 
-        this.eventEmitter.emit(event.name, json)
+        this.eventBus.publish(event)
         this.logger.info('event %s emitted %j', event.name, json)
       }
     })
