@@ -6,6 +6,9 @@ tasks:
   - name: Setup, Install & Build
     init: pnpm run bootstrap
     command: pnpm run dev
+    env:
+      PUBLIC_UNDB_ADMIN_EMAIL: test@example.com
+      PUBLIC_UNDB_ADMIN_PASSWORD: 123456
 
 # Ports to expose on workspace startup
 ports:
