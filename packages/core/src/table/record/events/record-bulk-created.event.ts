@@ -4,7 +4,7 @@ import { recordReadableMapper, type IRecordReadable } from '../record.readable.j
 import type { IQueryRecordSchema } from '../record.type.js'
 import type { BaseRecordEventName, IBaseRecordEventPayload } from './base-record.event.js'
 
-export const EVT_RECORD_BULK_CREATED: BaseRecordEventName = 'record.bulk_created'
+export const EVT_RECORD_BULK_CREATED = 'record.bulk_created' as const
 
 interface IRecordBulkCreatedEventPayload extends IBaseRecordEventPayload {
   records: IRecordReadable[]
