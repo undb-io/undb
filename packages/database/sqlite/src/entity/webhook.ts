@@ -1,4 +1,4 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core'
+import { ArrayType, Entity, PrimaryKey, Property } from '@mikro-orm/core'
 import type { Webhook as CoreWebhook } from '@undb/integrations'
 import { BaseEntity } from './base.js'
 
@@ -10,6 +10,9 @@ export class Webhook extends BaseEntity {
     super()
     this.id = webhook.id.value
     this.url = webhook.url.unpack()
+    this.targetId = webhook.target?.id
+    this.targetType = webhook.target?.type
+    this.events = webhook.target?.events ?? null
   }
 
   @PrimaryKey()
@@ -17,4 +20,13 @@ export class Webhook extends BaseEntity {
 
   @Property()
   url: string
+
+  @Property({ nullable: true })
+  targetId?: string | null
+
+  @Property({ nullable: true })
+  targetType?: string | null
+
+  @Property({ type: ArrayType })
+  events?: string[] | null
 }

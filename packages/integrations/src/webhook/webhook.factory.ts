@@ -1,7 +1,7 @@
 import { and } from '@undb/domain'
 import type { WebhookSpecification } from './specifications/index.js'
 import { WithWebhookId, WithWebhookURL } from './specifications/index.js'
-import { Webhook } from './webhook'
+import { Webhook } from './webhook.js'
 import type { IUnsafeCreateWebhook } from './webhook.type.js'
 
 export class WebhookFactory {

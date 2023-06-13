@@ -7,6 +7,10 @@ export class WebhookSqliteMapper {
     return {
       id: webhook.id,
       url: webhook.url,
+      target:
+        webhook.targetId && webhook.targetType && webhook.events
+          ? { id: webhook.targetId, type: webhook.targetType as any, events: webhook.events as any }
+          : null,
     }
   }
 
@@ -14,6 +18,10 @@ export class WebhookSqliteMapper {
     return WebhookFactory.unsafeCreate({
       id: webhook.id,
       url: webhook.url,
+      target:
+        webhook.targetId && webhook.targetType && webhook.events
+          ? { id: webhook.targetId, type: webhook.targetType as any, events: webhook.events as any }
+          : null,
     })
   }
 }

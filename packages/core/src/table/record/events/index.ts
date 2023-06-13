@@ -12,7 +12,10 @@ export * from './record-created.event.js'
 export * from './record-deleted.event.js'
 export * from './record-updated.event.js'
 
+export const EVT_RECORD_ALL = 'record.*' as const
+
 export const recordEvents = [
+  EVT_RECORD_ALL,
   EVT_RECORD_BULK_CREATED,
   EVT_RECORD_BULK_DELETED,
   EVT_RECORD_BULK_UPDATED,
