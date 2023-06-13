@@ -1,4 +1,4 @@
-import { ValueObject } from '@undb/domain/dist'
+import { ValueObject } from '@undb/domain'
 import { z } from 'zod'
 
 export const webhookURLSchema = z.string().url()

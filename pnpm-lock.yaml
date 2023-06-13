@@ -699,6 +699,9 @@ importers:
       '@undb/domain':
         specifier: ^0.0.0
         version: link:../../domain
+      '@undb/integrations':
+        specifier: workspace:^
+        version: link:../../integrations
       date-fns:
         specifier: ^2.30.0
         version: 2.30.0
