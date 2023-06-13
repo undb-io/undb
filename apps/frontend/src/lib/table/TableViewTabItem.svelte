@@ -149,6 +149,10 @@
 					<i class="ti ti-file-export text-gray-600" />
 					<span>{$t('Export CSV')}</span>
 				</DropdownItem>
+				<DropdownItem on:click={exportGrid} class="text-xs font-normal inline-flex items-center gap-2">
+					<i class="ti ti-file-export text-gray-600" />
+					<span>{$t('Export Excel')}</span>
+				</DropdownItem>
 				{#if $table.views.count > 1}
 					<DropdownDivider />
 					<DropdownItem class="text-red-600 text-xs font-normal inline-flex items-center gap-2" on:click={deleteView}>
