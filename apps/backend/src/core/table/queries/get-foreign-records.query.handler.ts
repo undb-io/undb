@@ -3,7 +3,7 @@ import { QueryHandler } from '@nestjs/cqrs'
 import { type IRecordQueryModel, type ITableRepository } from '@undb/core'
 import type { IGetForeignRecordsOutput } from '@undb/cqrs'
 import { GetForeignRecordsQuery, GetForeignRecordsQueryHandler } from '@undb/cqrs'
-import { InjectRecordQueryModel, InjectTableReposiory } from '../adapters/index.js'
+import { InjectRecordQueryModel, InjectTableRepository } from '../adapters/index.js'
 
 @QueryHandler(GetForeignRecordsQuery)
 export class NestGetForeignRecordsQueryHandelr
@@ -11,7 +11,7 @@ export class NestGetForeignRecordsQueryHandelr
   implements IQueryHandler<GetForeignRecordsQuery, IGetForeignRecordsOutput>
 {
   constructor(
-    @InjectTableReposiory()
+    @InjectTableRepository()
     protected readonly tableRepo: ITableRepository,
     @InjectRecordQueryModel()
     protected readonly rm: IRecordQueryModel,

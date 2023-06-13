@@ -2,7 +2,7 @@ import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
 import { type ITableRepository } from '@undb/core'
 import { UpdateViewNameCommandHandler as DomainHandler, UpdateViewNameCommand } from '@undb/cqrs'
-import { InjectTableReposiory } from '../adapters/index.js'
+import { InjectTableRepository } from '../adapters/index.js'
 
 @CommandHandler(UpdateViewNameCommand)
 export class UpdateViewNameCommandHandler
@@ -10,7 +10,7 @@ export class UpdateViewNameCommandHandler
   implements ICommandHandler<UpdateViewNameCommand, void>
 {
   constructor(
-    @InjectTableReposiory()
+    @InjectTableRepository()
     protected readonly tableRepo: ITableRepository,
   ) {
     super(tableRepo)
