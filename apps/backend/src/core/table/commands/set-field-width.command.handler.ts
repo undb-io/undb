@@ -1,11 +1,11 @@
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
 import { type ITableRepository } from '@undb/core'
-import { SetFieldWidthCommandHandler as DomainHandelr, SetFieldWidthCommand } from '@undb/cqrs'
+import { SetFieldWidthCommandHandler as DomainHandler, SetFieldWidthCommand } from '@undb/cqrs'
 import { InjectTableRepository } from '../adapters/index.js'
 
 @CommandHandler(SetFieldWidthCommand)
-export class SetFieldWidthCommandHandler extends DomainHandelr implements ICommandHandler<SetFieldWidthCommand, void> {
+export class SetFieldWidthCommandHandler extends DomainHandler implements ICommandHandler<SetFieldWidthCommand, void> {
   constructor(
     @InjectTableRepository()
     protected readonly tableRepo: ITableRepository,

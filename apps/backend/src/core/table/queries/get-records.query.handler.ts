@@ -6,7 +6,7 @@ import { GetRecordsQuery, GetRecordsQueryHandler } from '@undb/cqrs'
 import { InjectRecordQueryModel, InjectTableRepository } from '../adapters/index.js'
 
 @QueryHandler(GetRecordsQuery)
-export class NestGetRecordsQueryHandelr
+export class NestGetRecordsQueryHandler
   extends GetRecordsQueryHandler
   implements IQueryHandler<GetRecordsQuery, IGetRecordsOutput>
 {

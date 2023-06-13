@@ -6,7 +6,7 @@ import { GetTreeAvailableRecordsQuery, GetTreeAvailableRecordsQueryHandler } fro
 import { InjectRecordQueryModel, InjectTableRepository } from '../adapters/index.js'
 
 @QueryHandler(GetTreeAvailableRecordsQuery)
-export class NestGetTreeAvailableRecordsQueryHandelr
+export class NestGetTreeAvailableRecordsQueryHandler
   extends GetTreeAvailableRecordsQueryHandler
   implements IQueryHandler<GetTreeAvailableRecordsQuery, IGetTreeAvailableRecordsOutput>
 {

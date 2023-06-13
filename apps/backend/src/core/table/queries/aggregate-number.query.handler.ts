@@ -6,7 +6,7 @@ import { AggregateNumberQuery, AggregateNumberQueryHandler as DomainHandler } fr
 import { InjectRecordAggregateRepositoy, InjectTableRepository } from '../adapters/index.js'
 
 @QueryHandler(AggregateNumberQuery)
-export class NestAggregateNumberQueryHandelr
+export class NestAggregateNumberQueryHandler
   extends DomainHandler
   implements IQueryHandler<AggregateNumberQuery, IAggregateNumberOutput>
 {

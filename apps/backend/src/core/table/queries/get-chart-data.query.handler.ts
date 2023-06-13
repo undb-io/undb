@@ -6,7 +6,7 @@ import { GetChartDataQueryHandler as DomainHandler, GetChartDataQuery } from '@u
 import { InjectRecordAggregateRepositoy, InjectTableRepository } from '../adapters/index.js'
 
 @QueryHandler(GetChartDataQuery)
-export class NestGetChartDataQueryHandelr
+export class NestGetChartDataQueryHandler
   extends DomainHandler
   implements IQueryHandler<GetChartDataQuery, IGetChartDataOutput>
 {

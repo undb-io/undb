@@ -7,7 +7,7 @@ import { InjectTableRepository } from '../adapters/index.js'
 import { InjectRecordTreeQueryModel } from '../adapters/sqlite/record-sqlite.tree-query-model.js'
 
 @QueryHandler(GetRecordsTreeQuery)
-export class NestGetRecordsTreeQueryHandelr
+export class NestGetRecordsTreeQueryHandler
   extends GetRecordsTreeQueryHandler
   implements IQueryHandler<GetRecordsTreeQuery, IGetRecordsTreeOutput>
 {
