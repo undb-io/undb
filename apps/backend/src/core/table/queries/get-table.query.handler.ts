@@ -6,7 +6,7 @@ import { GetTableQueryHandler as DomainHandler, GetTableQuery } from '@undb/cqrs
 import { InjectTableQueryModel } from '../adapters/index.js'
 
 @QueryHandler(GetTableQuery)
-export class NestGetTableQueryHandelr extends DomainHandler implements IQueryHandler<GetTableQuery, IGetTableOutput> {
+export class NestGetTableQueryHandler extends DomainHandler implements IQueryHandler<GetTableQuery, IGetTableOutput> {
   constructor(
     @InjectTableQueryModel()
     protected readonly rm: ITableQueryModel,

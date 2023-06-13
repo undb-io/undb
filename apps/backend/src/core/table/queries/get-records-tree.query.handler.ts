@@ -3,16 +3,16 @@ import { QueryHandler } from '@nestjs/cqrs'
 import { type IRecordTreeQueryModel, type ITableRepository } from '@undb/core'
 import type { IGetRecordsTreeOutput } from '@undb/cqrs'
 import { GetRecordsTreeQuery, GetRecordsTreeQueryHandler } from '@undb/cqrs'
-import { InjectTableReposiory } from '../adapters/index.js'
+import { InjectTableRepository } from '../adapters/index.js'
 import { InjectRecordTreeQueryModel } from '../adapters/sqlite/record-sqlite.tree-query-model.js'
 
 @QueryHandler(GetRecordsTreeQuery)
-export class NestGetRecordsTreeQueryHandelr
+export class NestGetRecordsTreeQueryHandler
   extends GetRecordsTreeQueryHandler
   implements IQueryHandler<GetRecordsTreeQuery, IGetRecordsTreeOutput>
 {
   constructor(
-    @InjectTableReposiory()
+    @InjectTableRepository()
     protected readonly tableRepo: ITableRepository,
     @InjectRecordTreeQueryModel()
     protected readonly rm: IRecordTreeQueryModel,
