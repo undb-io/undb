@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -431,8 +431,8 @@ importers:
         specifier: ^1.6.5
         version: 1.6.5
       flowbite-svelte:
-        specifier: ^0.37.5
-        version: 0.37.5(svelte@3.59.1)
+        specifier: ^0.38.0
+        version: 0.38.1(svelte@3.59.1)
       htm:
         specifier: ^3.1.1
         version: 3.1.1
@@ -7664,16 +7664,16 @@ packages:
   /flatted@3.2.7:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
 
-  /flowbite-svelte@0.37.5(svelte@3.59.1):
-    resolution: {integrity: sha512-aAPJygrfqY1+wkcl4rG/ikTxAdnB1p4Xe2sKG3Jm+BJsMZvArgl6/weH+DimoSjHLAMLhtd4spAbzfT8eHBgnQ==}
+  /flowbite-svelte@0.38.1(svelte@3.59.1):
+    resolution: {integrity: sha512-JUzG0FQpkCKo442xmWAMLiuhVzPvr9cPRgP2iVa3voX6cH3BRXtQ73gUWDioaMKKIfQSqifkLng/5Or+SYPmMg==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     peerDependencies:
       svelte: ^3.55.1 || ^4.0.0
     dependencies:
       '@popperjs/core': 2.11.8
-      classnames: 2.3.2
       flowbite: 1.6.5
       svelte: 3.59.1
+      tailwind-merge: 1.13.1
     dev: true
 
   /flowbite@1.6.5:
@@ -12985,6 +12985,10 @@ packages:
 
   /t@0.5.1:
     resolution: {integrity: sha512-VPWkKwJPOldeqDKesRwOLhKNbVRUbzh8yoFWqwMTXqQ2BpdY7SHJqPbIRb6qfidlFhh2LBNBDJQGjPnqQcwSgg==}
+    dev: true
+
+  /tailwind-merge@1.13.1:
+    resolution: {integrity: sha512-tRtRN22TDokGi2TuYSvuHQuuW6BJ/zlUEG+iYpAQ9i66msc/0eU/+HPccbPnNNH0mCPp0Ob8thaC8Uy9CxHitQ==}
     dev: true
 
   /tailwindcss@3.3.2(ts-node@10.9.1):
