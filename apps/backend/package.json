@@ -56,7 +56,8 @@
     "rxjs": "^7.8.1",
     "ufo": "^1.1.2",
     "unstorage": "^1.6.1",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.5.0",

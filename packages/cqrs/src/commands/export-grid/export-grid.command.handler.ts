@@ -3,14 +3,15 @@ import { WithRecordTableId, type ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
 import type { ExportGridCommand } from './export-grid.comand.js'
 
-export class ExportGridCommandHandler implements ICommandHandler<ExportGridCommand, string> {
+export class ExportGridCommandHandler implements ICommandHandler<ExportGridCommand, string | Buffer> {
   constructor(
     protected readonly tableRepo: ITableRepository,
     protected readonly recordRepo: IRecordRepository,
-    protected readonly exportor: IRecordExportor,
+    protected readonly csvExportor: IRecordExportor,
+    protected readonly excelExportor: IRecordExportor,
   ) {}
 
-  async execute(command: ExportGridCommand): Promise<string> {
+  async execute(command: ExportGridCommand): Promise<string | Buffer> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
     const filter = table.getSpec(command.viewId)
 
@@ -20,6 +21,8 @@ export class ExportGridCommandHandler implements ICommandHandler<ExportGridComma
 
     const records = await this.recordRepo.find(table.id.value, spec, table.schema.toIdMap())
 
-    return this.exportor.export(table, command.viewId, records)
+    const exportor = command.type === 'csv' ? this.csvExportor : this.excelExportor
+
+    return exportor.export(table, command.viewId, records)
   }
 }

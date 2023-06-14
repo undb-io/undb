@@ -11,6 +11,8 @@ import { NestRecordSqliteTreeQueryModel, RECORD_TREE_QUERY_MODEL } from './sqlit
 import { NestTableKVCache, STORAGE } from './sqlite/table-kv.cache.js'
 import { NestTableSqliteQueryModel } from './sqlite/table-sqlite.query-model.js'
 import { NestTableSqliteRepository, TABLE_KV_CACHE } from './sqlite/table-sqlite.repository.js'
+import { CSVExportor } from '../exportor/csv.exportor.js'
+import { ExcelExportor } from '../exportor/excel.exportor.js'
 
 export const TABLE_REPOSITORY = Symbol('TABLE_REPOSITORY')
 export const InjectTableRepository = () => Inject(TABLE_REPOSITORY)
@@ -26,6 +28,12 @@ export const InjectRecordRepository = () => Inject(RECORD_REPOSITORY)
 
 const RECORD_QUERY_MODEL = Symbol('RECORD_QUERY_MODEL')
 export const InjectRecordQueryModel = () => Inject(RECORD_QUERY_MODEL)
+
+const RECORD_CSV_EXPORTOR = Symbol('RECORD_CSV_EXPORTOR')
+export const InjectRecordCSVExportor = () => Inject(RECORD_CSV_EXPORTOR)
+
+const RECORD_EXCEL_EXPORTOR = Symbol('RECORD_EXCEL_EXPORTOR')
+export const InjectRecordExcelExportor = () => Inject(RECORD_EXCEL_EXPORTOR)
 
 export const dbAdapters: Provider[] = [
   {
@@ -51,6 +59,14 @@ export const dbAdapters: Provider[] = [
   {
     provide: RECORD_AGGREGATE_REPOSITORY,
     useClass: NestAggregateSqliteQueryModel,
+  },
+  {
+    provide: RECORD_CSV_EXPORTOR,
+    useClass: CSVExportor,
+  },
+  {
+    provide: RECORD_EXCEL_EXPORTOR,
+    useClass: ExcelExportor,
   },
   {
     provide: TABLE_KV_CACHE,
