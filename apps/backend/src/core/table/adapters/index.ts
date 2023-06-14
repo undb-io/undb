@@ -29,8 +29,11 @@ export const InjectRecordReposiory = () => Inject(RECORD_REPOSITORY)
 const RECORD_QUERY_MODEL = Symbol('RECORD_QUERY_MODEL')
 export const InjectRecordQueryModel = () => Inject(RECORD_QUERY_MODEL)
 
-const RECORD_EXPORTOR = Symbol('RECORD_EXPORTOR')
-export const InjectRecordExportor = () => Inject(RECORD_EXPORTOR)
+const RECORD_CSV_EXPORTOR = Symbol('RECORD_CSV_EXPORTOR')
+export const InjectRecordCSVExportor = () => Inject(RECORD_CSV_EXPORTOR)
+
+const RECORD_EXCEL_EXPORTOR = Symbol('RECORD_EXCEL_EXPORTOR')
+export const InjectRecordExcelExportor = () => Inject(RECORD_EXCEL_EXPORTOR)
 
 export const dbAdapters: Provider[] = [
   {
@@ -58,11 +61,11 @@ export const dbAdapters: Provider[] = [
     useClass: NestAggregateSqliteQueryModel,
   },
   {
-    provide: RECORD_EXPORTOR,
+    provide: RECORD_CSV_EXPORTOR,
     useClass: CSVExportor,
   },
   {
-    provide: RECORD_EXPORTOR,
+    provide: RECORD_EXCEL_EXPORTOR,
     useClass: ExcelExportor,
   },
   {
