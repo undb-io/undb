@@ -5,10 +5,12 @@ import type { IExportGridInput } from './export-grid.command.input.js'
 export class ExportGridCommand extends Command {
   readonly tableId: string
   readonly viewId: string
+  readonly type: 'csv' | 'excel'
 
   constructor(props: CommandProps<IExportGridInput>) {
     super(props)
     this.tableId = props.tableId
     this.viewId = props.viewId
+    this.type = props.type
   }
 }
