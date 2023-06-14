@@ -6,7 +6,7 @@ export const webhookTargetSchema = z
   .object({
     type: z.literal('table'),
     id: tableIdSchema,
-    events: z.enum(recordEvents).array(),
+    events: z.enum(recordEvents),
   })
   .nullable()
 

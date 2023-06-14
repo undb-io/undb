@@ -1,9 +1,11 @@
 import type { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
 import type {
   IWebhookSpecVisitor,
+  WebhookEventsIn,
   WithWebhookEnabled,
   WithWebhookId,
   WithWebhookMethod,
+  WithWebhookTable,
   WithWebhookTarget,
   WithWebhookURL,
 } from '@undb/integrations'
@@ -34,6 +36,18 @@ export class WebhookSqliteQueryVisitor implements IWebhookSpecVisitor {
       [targetType.fieldNames[0]]: target?.type ?? null,
       [events.fieldNames[0]]: target?.events ? [target.events] : [],
     })
+  }
+  targetTable(s: WithWebhookTable): void {
+    const {
+      properties: { targetId, targetType },
+    } = this.em.getMetadata().get(Webhook.name)
+    this.qb.where({
+      [targetId.fieldNames[0]]: s.tableId,
+      [targetType.fieldNames[0]]: 'table',
+    })
+  }
+  eventsIn(s: WebhookEventsIn): void {
+    this.qb.where({ events: { $in: s.events } })
   }
   enabled(s: WithWebhookEnabled): void {
     const enabledFieldName = this.em.getMetadata().get(Webhook.name).properties.enabled.fieldNames[0]

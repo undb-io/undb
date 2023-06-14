@@ -7,4 +7,5 @@ export interface IWebhookRepository {
   updateOneById(id: string, spec: WebhookSpecification): Promise<void>
   findOneById(id: string): Promise<Option<Webhook>>
   findOne(spec: WebhookSpecification): Promise<Option<Webhook>>
+  find(spec: WebhookSpecification): Promise<Webhook[]>
 }

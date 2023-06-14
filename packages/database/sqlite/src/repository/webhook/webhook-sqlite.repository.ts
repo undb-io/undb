@@ -21,6 +21,15 @@ export class WebhookSqliteRepository implements IWebhookRepository {
     await this.em.flush()
   }
 
+  async find(spec: WebhookSpecification): Promise<CoreWebhook[]> {
+    const qb = this.em.qb(Webhook)
+    const visitor = new WebhookSqliteQueryVisitor(this.em, qb)
+    spec.accept(visitor)
+
+    const webhooks = await qb.getResult()
+    return webhooks.map((webhook) => WebhookSqliteMapper.toDomain(webhook))
+  }
+
   async findOneById(id: string): Promise<Option<CoreWebhook>> {
     const webhook = await this.em.findOne(Webhook, id)
     if (!webhook) {

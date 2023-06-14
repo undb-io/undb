@@ -31,3 +31,48 @@ export class WithWebhookTarget extends CompositeSpecification<Webhook, IWebhookS
     return Ok(undefined)
   }
 }
+
+export class WithWebhookTable extends CompositeSpecification<Webhook, IWebhookSpecVisitor> {
+  constructor(public readonly tableId: string) {
+    super()
+  }
+
+  static from(target: IWebhookTarget): WithWebhookTarget {
+    return new WithWebhookTarget(new WebhookTarget(target ? target : { value: null }))
+  }
+
+  isSatisfiedBy(w: Webhook): boolean {
+    throw new Error('Method not implemented.')
+  }
+
+  mutate(w: Webhook): Result<Webhook, string> {
+    throw new Error('Method not implemented.')
+  }
+
+  accept(v: IWebhookSpecVisitor): Result<void, string> {
+    v.targetTable(this)
+    return Ok(undefined)
+  }
+}
+
+export class WebhookEventsIn extends CompositeSpecification<Webhook, IWebhookSpecVisitor> {
+  // TODO: typing events
+  constructor(public readonly events: string[]) {
+    super()
+  }
+
+  isSatisfiedBy(t: Webhook): boolean {
+    throw new Error('Method not implemented.')
+  }
+  mutate(t: Webhook): Result<Webhook, string> {
+    throw new Error('Method not implemented.')
+  }
+  accept(v: IWebhookSpecVisitor): Result<void, string> {
+    v.eventsIn(this)
+    return Ok(undefined)
+  }
+}
+
+export const withTableEvents = (tableId: string, events: string[]) => {
+  return new WithWebhookTable(tableId).and(new WebhookEventsIn(events))
+}

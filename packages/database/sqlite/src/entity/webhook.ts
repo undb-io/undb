@@ -1,4 +1,4 @@
-import { ArrayType, BooleanType, Entity, PrimaryKey, Property } from '@mikro-orm/core'
+import { BooleanType, Entity, PrimaryKey, Property } from '@mikro-orm/core'
 import type { Webhook as CoreWebhook } from '@undb/integrations'
 import { BaseEntity } from './base.js'
 
@@ -32,8 +32,8 @@ export class Webhook extends BaseEntity {
   @Property({ nullable: true })
   targetType?: string | null
 
-  @Property({ type: ArrayType })
-  events?: string[] | null
+  @Property({ nullable: true })
+  events?: string | null
 
   @Property({ type: BooleanType, default: false, nullable: false })
   enabled: boolean

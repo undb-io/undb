@@ -2,9 +2,11 @@ import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
 import type {
   IWebhookSpecVisitor,
+  WebhookEventsIn,
   WithWebhookEnabled,
   WithWebhookId,
   WithWebhookMethod,
+  WithWebhookTable,
   WithWebhookTarget,
   WithWebhookURL,
 } from '@undb/integrations'
@@ -27,6 +29,13 @@ export class WebhookSqliteMutationVisitor implements IWebhookSpecVisitor {
       [targetType.fieldNames[0]]: target?.type ?? null,
       [events.fieldNames[0]]: target?.events ? [target.events] : [],
     })
+  }
+
+  targetTable(s: WithWebhookTable): void {
+    throw new Error('Method not implemented.')
+  }
+  eventsIn(s: WebhookEventsIn): void {
+    throw new Error('Method not implemented.')
   }
 
   urlEqual(s: WithWebhookURL): void {
