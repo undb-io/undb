@@ -3,8 +3,8 @@ import { CommandHandler } from '@nestjs/cqrs'
 import { type IRecordRepository, type ITableRepository, type IRecordExportor } from '@undb/core'
 import { ExportGridCommandHandler as DomainHandler, ExportGridCommand } from '@undb/cqrs'
 import {
-  InjectRecordReposiory,
-  InjectTableReposiory,
+  InjectRecordRepository,
+  InjectTableRepository,
   InjectRecordCSVExportor,
   InjectRecordExcelExportor,
 } from '../adapters/index.js'
@@ -12,9 +12,9 @@ import {
 @CommandHandler(ExportGridCommand)
 export class ExportGridCommandHandler extends DomainHandler implements ICommandHandler<ExportGridCommand> {
   constructor(
-    @InjectTableReposiory()
+    @InjectTableRepository()
     protected readonly tableRepo: ITableRepository,
-    @InjectRecordReposiory()
+    @InjectRecordRepository()
     protected readonly recordRepo: IRecordRepository,
     @InjectRecordCSVExportor()
     protected readonly csvExportor: IRecordExportor,

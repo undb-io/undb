@@ -1,16 +1,16 @@
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
 import { type ITableRepository } from '@undb/core'
-import { SwitchDisplayTypeCommandHandler as DomainHandelr, SwitchDisplayTypeCommand } from '@undb/cqrs'
-import { InjectTableReposiory } from '../adapters/index.js'
+import { SwitchDisplayTypeCommandHandler as DomainHandler, SwitchDisplayTypeCommand } from '@undb/cqrs'
+import { InjectTableRepository } from '../adapters/index.js'
 
 @CommandHandler(SwitchDisplayTypeCommand)
 export class SwitchDisplayTypeCommandHandler
-  extends DomainHandelr
+  extends DomainHandler
   implements ICommandHandler<SwitchDisplayTypeCommand, void>
 {
   constructor(
-    @InjectTableReposiory()
+    @InjectTableRepository()
     protected readonly tableRepo: ITableRepository,
   ) {
     super(tableRepo)

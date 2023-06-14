@@ -15,7 +15,7 @@ import { CSVExportor } from '../exportor/csv.exportor.js'
 import { ExcelExportor } from '../exportor/excel.exportor.js'
 
 export const TABLE_REPOSITORY = Symbol('TABLE_REPOSITORY')
-export const InjectTableReposiory = () => Inject(TABLE_REPOSITORY)
+export const InjectTableRepository = () => Inject(TABLE_REPOSITORY)
 
 const TABLE_QUERY_MODEL = Symbol('TABLE_QUERY_MODEL')
 export const InjectTableQueryModel = () => Inject(TABLE_QUERY_MODEL)
@@ -24,7 +24,7 @@ const RECORD_AGGREGATE_REPOSITORY = Symbol('RECORD_AGGREGATE_REPOSITORY')
 export const InjectRecordAggregateRepositoy = () => Inject(RECORD_AGGREGATE_REPOSITORY)
 
 const RECORD_REPOSITORY = Symbol('RECORD_REPOSITORY')
-export const InjectRecordReposiory = () => Inject(RECORD_REPOSITORY)
+export const InjectRecordRepository = () => Inject(RECORD_REPOSITORY)
 
 const RECORD_QUERY_MODEL = Symbol('RECORD_QUERY_MODEL')
 export const InjectRecordQueryModel = () => Inject(RECORD_QUERY_MODEL)

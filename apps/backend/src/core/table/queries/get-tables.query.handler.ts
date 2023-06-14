@@ -6,7 +6,7 @@ import { GetTablesQuery, GetTablesQueryHandler } from '@undb/cqrs'
 import { InjectTableQueryModel } from '../adapters/index.js'
 
 @QueryHandler(GetTablesQuery)
-export class NestGetTablesQueryHandelr
+export class NestGetTablesQueryHandler
   extends GetTablesQueryHandler
   implements IQueryHandler<GetTablesQuery, IGetTablesOutput>
 {
