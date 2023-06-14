@@ -8,6 +8,7 @@ export const queryWebhook = z
     id: webhookIdSchema,
     url: webhookURLSchema,
     target: webhookTargetSchema,
+    enabled: z.boolean(),
   })
   .strict()
 
@@ -15,4 +16,5 @@ export const unsafeCreateWebhookSchema = z.object({
   id: webhookIdSchema,
   url: webhookURLSchema,
   target: webhookTargetSchema,
+  enabled: z.boolean(),
 })

@@ -6,6 +6,7 @@ export class Webhook {
   public id!: WebhookId
   public url!: WebhookURL
   public target!: WebhookTarget | null
+  public enabled!: boolean
 
   static empty(): Webhook {
     return new Webhook()

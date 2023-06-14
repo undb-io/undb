@@ -1,6 +1,6 @@
 import { and } from '@undb/domain'
 import type { WebhookSpecification } from './specifications/index.js'
-import { WithWebhookId, WithWebhookURL } from './specifications/index.js'
+import { WithWebhookEnabled, WithWebhookId, WithWebhookTarget, WithWebhookURL } from './specifications/index.js'
 import { Webhook } from './webhook.js'
 import type { IUnsafeCreateWebhook } from './webhook.type.js'
 
@@ -13,6 +13,11 @@ export class WebhookFactory {
   }
 
   static unsafeCreate(input: IUnsafeCreateWebhook): Webhook {
-    return this.create(WithWebhookId.fromString(input.id), WithWebhookURL.fromString(input.url))
+    return this.create(
+      WithWebhookId.fromString(input.id),
+      WithWebhookURL.fromString(input.url),
+      WithWebhookTarget.from(input.target),
+      new WithWebhookEnabled(input.enabled),
+    )
   }
 }
