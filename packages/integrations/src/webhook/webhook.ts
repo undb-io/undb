@@ -15,7 +15,7 @@ export class Webhook {
     return new Webhook()
   }
 
-  public getEvent(event: IEvent) {
+  public constructEvent(event: IEvent) {
     return {
       id: event.id,
       operatorId: event.operatorId,

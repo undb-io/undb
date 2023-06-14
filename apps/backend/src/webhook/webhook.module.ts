@@ -4,10 +4,11 @@ import { TableModule } from '../core/table/table.module.js'
 import { adapters } from './adapters/index.js'
 import { commands } from './commands/index.js'
 import { providers } from './providers.js'
+import { WebhookSignatureService } from './webhook-signature.service.js'
 import { NestWebhookEventHandler } from './webhook.event-handler.js'
 
 @Module({
   imports: [CqrsModule, TableModule],
-  providers: [NestWebhookEventHandler, ...providers, ...adapters, ...commands],
+  providers: [NestWebhookEventHandler, WebhookSignatureService, ...providers, ...adapters, ...commands],
 })
 export class WebhookModule {}

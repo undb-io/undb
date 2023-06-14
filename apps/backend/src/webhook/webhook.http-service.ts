@@ -1,15 +1,17 @@
 import { Injectable } from '@nestjs/common'
 import type { IWebhookHttpService } from '@undb/cqrs'
 import type { IEvent } from '@undb/domain'
-import type { Webhook } from '@undb/integrations'
+import { UNDB_SIGNATURE_HEADER_NAME, type Webhook } from '@undb/integrations'
 import got from 'got'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
+import { WebhookSignatureService } from './webhook-signature.service.js'
 
 @Injectable()
 export class WebhookHttpService implements IWebhookHttpService {
   constructor(
     @InjectPinoLogger(WebhookHttpService.name)
     private readonly logger: PinoLogger,
+    private readonly signatureService: WebhookSignatureService,
   ) {}
 
   async handle(webhook: Webhook, event: IEvent<object>) {
@@ -21,9 +23,15 @@ export class WebhookHttpService implements IWebhookHttpService {
         event.name,
       )
 
+      const signature = this.signatureService.sign(webhook, event)
+
       await got(webhook.url.unpack(), {
         method: webhook.method.unpack(),
-        json: webhook.getEvent(event),
+        json: webhook.constructEvent(event),
+        headers: {
+          'user-agent': 'undb - webhook',
+          [UNDB_SIGNATURE_HEADER_NAME]: signature.toString(),
+        },
       })
     } catch (error) {
       this.logger.error('webhook request error %j', error)
