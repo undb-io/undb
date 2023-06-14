@@ -1,5 +1,5 @@
 import type { WidgeDataItem } from '$lib/dashboard/widge-item.type'
-import { WidgeID, type IVirsualizationTypeSchema, type Widge } from '@undb/core'
+import { WidgeID, type IVisualizationTypeSchema, type Widge } from '@undb/core'
 import { writable } from 'svelte/store'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -8,7 +8,7 @@ import gridHelp from 'svelte-grid/build/helper/index.mjs'
 export const COLS = 24
 
 const defaultLayout: Record<
-	IVirsualizationTypeSchema,
+	IVisualizationTypeSchema,
 	{ x: number; y: number; h: number; w: number; min: { w: number; h: number } }
 > = {
 	number: {
@@ -47,7 +47,7 @@ const createWidgeItems = () => {
 			widges.map((widge) => ({
 				[COLS]: gridHelp.item({
 					...widge.layout.toJSON(),
-					min: widge.virsualization ? defaultLayout[widge.virsualization.type].min : { w: 3, h: 2 },
+					min: widge.visualization ? defaultLayout[widge.visualization.type].min : { w: 3, h: 2 },
 					customDragger: true,
 					customResizer: true,
 				}),
@@ -57,7 +57,7 @@ const createWidgeItems = () => {
 		)
 	}
 
-	const add = (type: IVirsualizationTypeSchema) => {
+	const add = (type: IVisualizationTypeSchema) => {
 		const id = WidgeID.createId()
 		let newItem = {
 			[COLS]: gridHelp.item({

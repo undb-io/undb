@@ -1,7 +1,7 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import { Alert, Button, Radio, Toast } from 'flowbite-svelte'
-	import type { NumberVirsualization as CoreNumberVirsualization } from '@undb/core'
+	import type { NumberVisualization as CoreNumberVisualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
 	import { allTableFields, getTable, getView } from '$lib/store/table'
 	import NumberAggregatePicker from '../input/NumberAggregatePicker.svelte'
@@ -14,56 +14,56 @@
 	const table = getTable()
 	const view = getView()
 
-	export let virsualization: CoreNumberVirsualization
+	export let visualization: CoreNumberVisualization
 
-	let mode: 'table' | 'field' = virsualization.fieldId ? 'field' : 'table'
+	let mode: 'table' | 'field' = visualization.fieldId ? 'field' : 'table'
 
-	let fieldId = virsualization.fieldId?.value
-	let numberAggregateFunction = virsualization.numberAggregateFunction
+	let fieldId = visualization.fieldId?.value
+	let numberAggregateFunction = visualization.numberAggregateFunction
 
 	const aggregateNumber = trpc().table.aggregate.aggregateNumber.query(
 		{
 			tableId: $table.id.value,
 			viewId: $view.id.value,
-			virsualizationId: virsualization.id.value,
+			visualizationId: visualization.id.value,
 		},
 		{
 			enabled: false,
 		},
 	)
 
-	const updateVirsualization = trpc().table.virsualization.update.mutation({
+	const updateVisualization = trpc().table.visualization.update.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			await $aggregateNumber.refetch()
 			await tick()
-			fieldId = virsualization.fieldId?.value
-			numberAggregateFunction = virsualization.numberAggregateFunction
+			fieldId = visualization.fieldId?.value
+			numberAggregateFunction = visualization.numberAggregateFunction
 		},
 	})
 
 	$: disabled =
 		mode === 'field' &&
-		fieldId === virsualization.fieldId?.value &&
-		numberAggregateFunction === virsualization.numberAggregateFunction
+		fieldId === visualization.fieldId?.value &&
+		numberAggregateFunction === visualization.numberAggregateFunction
 
 	const onSubmit = () => {
 		if (mode === 'field' && fieldId && numberAggregateFunction) {
-			$updateVirsualization.mutate({
+			$updateVisualization.mutate({
 				tableId: $table.id.value,
-				virsualization: {
-					id: virsualization.id.value,
-					type: virsualization.type,
+				visualization: {
+					id: visualization.id.value,
+					type: visualization.type,
 					fieldId,
 					numberAggregateFunction,
 				},
 			})
 		} else if (mode === 'table') {
-			$updateVirsualization.mutate({
+			$updateVisualization.mutate({
 				tableId: $table.id.value,
-				virsualization: {
-					id: virsualization.id.value,
-					type: virsualization.type,
+				visualization: {
+					id: visualization.id.value,
+					type: visualization.type,
 				},
 			})
 		}
@@ -121,7 +121,7 @@
 	</form>
 </div>
 
-{#if $updateVirsualization.isSuccess}
+{#if $updateVisualization.isSuccess}
 	<Toast
 		transition={slide}
 		position="bottom-right"

@@ -1,11 +1,11 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import { Heading } from 'flowbite-svelte'
-	import type { NumberVirsualization } from '@undb/core'
+	import type { NumberVisualization } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
 	import { getTable, getView } from '$lib/store/table'
 
-	export let virsualization: NumberVirsualization
+	export let visualization: NumberVisualization
 
 	const table = getTable()
 	const view = getView()
@@ -13,7 +13,7 @@
 	const aggregateNumber = trpc().table.aggregate.aggregateNumber.query({
 		tableId: $table.id.value,
 		viewId: $view.id.value,
-		virsualizationId: virsualization.id.value,
+		visualizationId: visualization.id.value,
 	})
 </script>
 

@@ -87,11 +87,9 @@ export const getGroupRecordsHash = (id: string) => derived(recordHash, ($recordH
 export const currentOption = writable<Option | null>()
 export const getOption = () => currentOption
 
-export const currentVirsualizationId = writable<string | undefined>()
-export const currentVirsualization = derived(
-	[currentView, currentVirsualizationId],
-	([$view, $currentVirsualizationId]) =>
-		$currentVirsualizationId ? $view.getVirsualization($currentVirsualizationId) : undefined,
+export const currentVisualizationId = writable<string | undefined>()
+export const currentVisualization = derived([currentView, currentVisualizationId], ([$view, $currentVisualizationId]) =>
+	$currentVisualizationId ? $view.getVisualization($currentVisualizationId) : undefined,
 )
 
 type INewTableScheam = {

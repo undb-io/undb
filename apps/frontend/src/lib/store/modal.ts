@@ -61,7 +61,7 @@ const DUPLICATE_FIELD = Symbol('DUPLICATE_FIELD')
 export const duplicateFieldModal = createModal(DUPLICATE_FIELD)
 
 const VIRSUALIZATION_DETAIL = Symbol('VIRSUALIZATION_DETAIL')
-export const virsualizationModal = createModal(VIRSUALIZATION_DETAIL)
+export const visualizationModal = createModal(VIRSUALIZATION_DETAIL)
 
 const CONFIG_VIEW = Symbol('CONFIG_VIEW')
 export const configViewModal = createModal(CONFIG_VIEW)

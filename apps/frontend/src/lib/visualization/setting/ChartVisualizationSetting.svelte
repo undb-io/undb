@@ -1,7 +1,7 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import { Button, Toast } from 'flowbite-svelte'
-	import type { NumberVirsualization as CoreChartVirsualization } from '@undb/core'
+	import type { NumberVisualization as CoreChartVisualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
 	import { allTableFields, getTable, getView } from '$lib/store/table'
 	import { t } from '$lib/i18n'
@@ -12,38 +12,38 @@
 	const table = getTable()
 	const view = getView()
 
-	export let virsualization: CoreChartVirsualization
+	export let visualization: CoreChartVisualization
 
-	let fieldId = virsualization.fieldId?.value
+	let fieldId = visualization.fieldId?.value
 
 	const getChartData = trpc().table.aggregate.chart.query(
 		{
 			tableId: $table.id.value,
 			viewId: $view.id.value,
-			virsualizationId: virsualization.id.value,
+			visualizationId: visualization.id.value,
 		},
 		{
-			queryHash: virsualization.id.value,
+			queryHash: visualization.id.value,
 		},
 	)
 
-	const updateVirsualization = trpc().table.virsualization.update.mutation({
+	const updateVisualization = trpc().table.visualization.update.mutation({
 		async onSuccess() {
 			await invalidate(`table:${$table.id.value}`)
 			await $getChartData.refetch()
 
-			fieldId = virsualization.fieldId?.value
+			fieldId = visualization.fieldId?.value
 		},
 	})
 
-	$: disabled = fieldId === virsualization.fieldId?.value
+	$: disabled = fieldId === visualization.fieldId?.value
 
 	const onSubmit = () => {
 		if (fieldId) {
-			$updateVirsualization.mutate({
+			$updateVisualization.mutate({
 				tableId: $table.id.value,
-				virsualization: {
-					id: virsualization.id.value,
+				visualization: {
+					id: visualization.id.value,
 					type: 'chart',
 					fieldId,
 					// TODO: select from user input
@@ -73,7 +73,7 @@
 	</form>
 </div>
 
-{#if $updateVirsualization.isSuccess}
+{#if $updateVisualization.isSuccess}
 	<Toast
 		transition={slide}
 		position="bottom-right"
