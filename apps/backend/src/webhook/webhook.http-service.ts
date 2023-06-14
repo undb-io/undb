@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import type { IWebhookHttpService } from '@undb/cqrs'
 import type { IEvent } from '@undb/domain'
 import type { Webhook } from '@undb/integrations'
-import type { Observable } from 'rxjs'
+import { type Observable } from 'rxjs'
 
 @Injectable()
 export class WebhookHttpService implements IWebhookHttpService {

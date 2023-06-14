@@ -3,6 +3,7 @@ import type {
   IWebhookSpecVisitor,
   WithWebhookEnabled,
   WithWebhookId,
+  WithWebhookMethod,
   WithWebhookTarget,
   WithWebhookURL,
 } from '@undb/integrations'
@@ -10,7 +11,6 @@ import { Webhook } from '../../entity/webhook.js'
 
 export class WebhookSqliteQueryVisitor implements IWebhookSpecVisitor {
   constructor(private readonly em: EntityManager, private qb: QueryBuilder<Webhook>) {}
-
   idEqual(s: WithWebhookId): void {
     const idFieldName = this.em.getMetadata().get(Webhook.name).properties.id.fieldNames[0]
     this.qb.where({ [idFieldName]: s.webhookId.value })
@@ -19,6 +19,11 @@ export class WebhookSqliteQueryVisitor implements IWebhookSpecVisitor {
     const urlFieldName = this.em.getMetadata().get(Webhook.name).properties.url.fieldNames[0]
     this.qb.where({ [urlFieldName]: s.webhookURL.unpack() })
   }
+  methodEqual(s: WithWebhookMethod): void {
+    const methodFieldName = this.em.getMetadata().get(Webhook.name).properties.method.fieldNames[0]
+    this.qb.where({ [methodFieldName]: s.webhookMethod.unpack() })
+  }
+
   targetEqual(s: WithWebhookTarget): void {
     const {
       properties: { targetId, targetType, events },

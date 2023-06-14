@@ -4,6 +4,7 @@ import type {
   IWebhookSpecVisitor,
   WithWebhookEnabled,
   WithWebhookId,
+  WithWebhookMethod,
   WithWebhookTarget,
   WithWebhookURL,
 } from '@undb/integrations'
@@ -31,6 +32,11 @@ export class WebhookSqliteMutationVisitor implements IWebhookSpecVisitor {
   urlEqual(s: WithWebhookURL): void {
     const webhook = this.em.getReference(Webhook, this.webhookId)
     wrap(webhook).assign({ url: s.webhookURL.unpack() })
+    this.em.persist(webhook)
+  }
+  methodEqual(s: WithWebhookMethod): void {
+    const webhook = this.em.getReference(Webhook, this.webhookId)
+    wrap(webhook).assign({ method: s.webhookMethod.unpack() })
     this.em.persist(webhook)
   }
 
