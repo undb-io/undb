@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
-import { WebhookEventHandler } from './webhook.event-handler.js'
+import { NestWebhookEventHandler } from './webhook.event-handler.js'
 
 @Module({
   imports: [CqrsModule],
-  providers: [WebhookEventHandler],
+  providers: [NestWebhookEventHandler],
 })
 export class WebhookModule {}

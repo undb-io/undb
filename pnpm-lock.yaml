@@ -207,6 +207,9 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
+      ts-pattern:
+        specifier: ^5.0.1
+        version: 5.0.1
       ufo:
         specifier: ^1.1.2
         version: 1.1.2
@@ -571,6 +574,9 @@ importers:
       ts-mixer:
         specifier: ^6.0.3
         version: 6.0.3
+      ts-pattern:
+        specifier: ^5.0.1
+        version: 5.0.1
       zod:
         specifier: ^3.21.4
         version: 3.21.4
@@ -630,6 +636,9 @@ importers:
         specifier: ^3.21.4
         version: 3.21.4
     devDependencies:
+      '@undb/logger':
+        specifier: workspace:^
+        version: link:../logger
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1
@@ -13440,6 +13449,10 @@ packages:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
+
+  /ts-pattern@5.0.1:
+    resolution: {integrity: sha512-ZyNm28Lsg34Co5DS3e9DVyjlX2Y+2exkI4jqTKyU+9/OL6Y2fKOOuL8i+7no71o74C6mVS+UFoP3ekM3iCT1HQ==}
+    dev: false
 
   /tsconfig-paths-webpack-plugin@4.0.1:
     resolution: {integrity: sha512-m5//KzLoKmqu2MVix+dgLKq70MnFi8YL8sdzQZ6DblmCdfuq/y3OqvJd5vMndg2KEVCOeNz8Es4WVZhYInteLw==}

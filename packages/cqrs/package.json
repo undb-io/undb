@@ -10,6 +10,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@undb/logger": "workspace:^",
     "rimraf": "^5.0.1",
     "tsconfig": "^0.0.0",
     "tsup": "^6.7.0",
