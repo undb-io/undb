@@ -5,6 +5,7 @@ import type {
   WithWebhookEnabled,
   WithWebhookId,
   WithWebhookMethod,
+  WithWebhookName,
   WithWebhookTable,
   WithWebhookTarget,
   WithWebhookURL,
@@ -20,6 +21,10 @@ export class WebhookSqliteQueryVisitor implements IWebhookSpecVisitor {
   urlEqual(s: WithWebhookURL): void {
     const urlFieldName = this.em.getMetadata().get(Webhook.name).properties.url.fieldNames[0]
     this.qb.where({ [urlFieldName]: s.webhookURL.unpack() })
+  }
+  nameEqual(s: WithWebhookName): void {
+    const nameFieldName = this.em.getMetadata().get(Webhook.name).properties.name.fieldNames[0]
+    this.qb.where({ [nameFieldName]: s.name })
   }
   methodEqual(s: WithWebhookMethod): void {
     const methodFieldName = this.em.getMetadata().get(Webhook.name).properties.method.fieldNames[0]

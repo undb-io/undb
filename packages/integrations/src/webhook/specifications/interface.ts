@@ -3,11 +3,13 @@ import type { Webhook } from '../webhook.js'
 import type { WithWebhookEnabled } from './webhook-enabled.specification.js'
 import type { WithWebhookId } from './webhook-id.specification.js'
 import type { WithWebhookMethod } from './webhook-method.specification.js'
+import { WithWebhookName } from './webhook-name.specification.js'
 import type { WebhookEventsIn, WithWebhookTable, WithWebhookTarget } from './webhook-target.specification.js'
 import type { WithWebhookURL } from './webhook-url.specification.js'
 
 export interface IWebhookSpecVisitor {
   idEqual(s: WithWebhookId): void
+  nameEqual(s: WithWebhookName): void
   urlEqual(s: WithWebhookURL): void
   targetEqual(s: WithWebhookTarget): void
   enabled(s: WithWebhookEnabled): void

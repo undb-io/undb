@@ -38,10 +38,6 @@ export class WithWebhookTable extends CompositeSpecification<Webhook, IWebhookSp
     super()
   }
 
-  static from(target: IWebhookTarget): WithWebhookTarget {
-    return new WithWebhookTarget(new WebhookTarget(target ? target : { value: null }))
-  }
-
   isSatisfiedBy(w: Webhook): boolean {
     throw new Error('Method not implemented.')
   }

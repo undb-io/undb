@@ -6,6 +6,7 @@ import type {
   WithWebhookEnabled,
   WithWebhookId,
   WithWebhookMethod,
+  WithWebhookName,
   WithWebhookTable,
   WithWebhookTarget,
   WithWebhookURL,
@@ -18,6 +19,11 @@ export class WebhookSqliteMutationVisitor implements IWebhookSpecVisitor {
     throw new Error('not implemented')
   }
 
+  nameEqual(s: WithWebhookName): void {
+    const webhook = this.em.getReference(Webhook, this.webhookId)
+    wrap(webhook).assign({ name: s.name })
+    this.em.persist(webhook)
+  }
   targetEqual(s: WithWebhookTarget): void {
     const webhook = this.em.getReference(Webhook, this.webhookId)
     const {

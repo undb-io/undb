@@ -8,8 +8,14 @@ import { WebhookSqliteQueryVisitor } from './webhook-sqlite.query-visitor.js'
 
 export class WebhookSqliteQueryModel implements IWebhookQueryModel {
   constructor(protected readonly em: EntityManager) {}
-  async find(): Promise<IQueryWebhook[]> {
-    const webhooks = await this.em.find(Webhook, {})
+
+  async find(spec: WebhookSpecification | null): Promise<IQueryWebhook[]> {
+    const qb = this.em.qb(Webhook)
+
+    const visitor = new WebhookSqliteQueryVisitor(this.em, qb)
+    if (spec) spec.accept(visitor)
+
+    const webhooks = await qb.getResult()
 
     return webhooks.map((webhook) => WebhookSqliteMapper.toQuery(webhook))
   }

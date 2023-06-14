@@ -7,6 +7,7 @@ import { webhookURLSchema } from './webhook-url.vo.js'
 export const queryWebhook = z
   .object({
     id: webhookIdSchema,
+    name: z.string().nonempty(),
     url: webhookURLSchema,
     method: webhookMethodSchema,
     enabled: z.boolean(),
@@ -16,6 +17,7 @@ export const queryWebhook = z
 
 export const unsafeCreateWebhookSchema = z.object({
   id: webhookIdSchema,
+  name: z.string().nonempty(),
   url: webhookURLSchema,
   method: webhookMethodSchema,
   enabled: z.boolean(),
@@ -24,6 +26,7 @@ export const unsafeCreateWebhookSchema = z.object({
 
 export const createWebhookSchema = z.object({
   id: webhookIdSchema.optional(),
+  name: z.string().nonempty(),
   url: webhookURLSchema,
   method: webhookMethodSchema.default('POST'),
   enabled: z.boolean().default(true),

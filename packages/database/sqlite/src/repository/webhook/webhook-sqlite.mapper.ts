@@ -7,6 +7,7 @@ export class WebhookSqliteMapper {
     return {
       id: webhook.id,
       url: webhook.url,
+      name: webhook.name,
       enabled: webhook.enabled,
       method: webhook.method as IWebhookMethod,
       target:
@@ -20,6 +21,7 @@ export class WebhookSqliteMapper {
     return WebhookFactory.unsafeCreate({
       id: webhook.id,
       url: webhook.url,
+      name: webhook.name,
       enabled: webhook.enabled,
       method: webhook.method as IWebhookMethod,
       target:

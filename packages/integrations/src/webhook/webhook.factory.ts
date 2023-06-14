@@ -4,6 +4,7 @@ import {
   WithWebhookEnabled,
   WithWebhookId,
   WithWebhookMethod,
+  WithWebhookName,
   WithWebhookTarget,
   WithWebhookURL,
   newWebhookSpec,
@@ -33,6 +34,7 @@ export class WebhookFactory {
       WithWebhookTarget.from(input.target),
       new WithWebhookEnabled(input.enabled),
       WithWebhookMethod.fromString(input.method),
+      new WithWebhookName(input.name),
     )
   }
 }

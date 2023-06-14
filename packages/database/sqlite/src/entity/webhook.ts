@@ -10,6 +10,7 @@ export class Webhook extends BaseEntity {
     super()
     this.id = webhook.id.value
     this.url = webhook.url.unpack()
+    this.name = webhook.name
     this.method = webhook.method.unpack()
     this.targetId = webhook.target?.id
     this.targetType = webhook.target?.type
@@ -22,6 +23,9 @@ export class Webhook extends BaseEntity {
 
   @Property()
   url: string
+
+  @Property()
+  name: string
 
   @Property()
   method: string

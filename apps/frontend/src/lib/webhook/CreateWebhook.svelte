@@ -28,6 +28,7 @@
 					enabled: true,
 					method: 'POST',
 					url: event.form.data.url,
+					name: event.form.data.name,
 					target: {
 						id: $table.id.value,
 						type: 'table',
@@ -41,6 +42,15 @@
 
 <Modal class="w-full" bind:open={$createWebhookModal.open}>
 	<form id="createWebhook" class="flex gap-2 items-center" method="POST" use:enhance>
+		<Label class="flex flex-col gap-2 w-full">
+			<div class="flex gap-2 items-center">
+				<span>{$t('name', { ns: 'common' })}</span>
+				<span class="text-red-500">*</span>
+			</div>
+
+			<Input name="url" size="sm" type="text" bind:value={$form.name} />
+		</Label>
+
 		<Label class="flex flex-col gap-2 w-full">
 			<div class="flex gap-2 items-center">
 				<span>{$t('URL', { ns: 'common' })}</span>

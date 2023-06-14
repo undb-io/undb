@@ -6,6 +6,7 @@ import type { WebhookURL } from './webhook-url.vo.js'
 
 export class Webhook {
   public id!: WebhookId
+  public name!: string
   public url!: WebhookURL
   public method!: WebhookMethod
   public enabled!: boolean
