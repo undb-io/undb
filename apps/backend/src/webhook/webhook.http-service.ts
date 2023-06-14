@@ -23,7 +23,7 @@ export class WebhookHttpService implements IWebhookHttpService {
 
       await got(webhook.url.unpack(), {
         method: webhook.method.unpack(),
-        json: event.payload,
+        json: webhook.getEvent(event),
       })
     } catch (error) {
       this.logger.error('webhook request error %j', error)
