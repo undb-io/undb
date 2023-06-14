@@ -1,15 +1,15 @@
 import { z } from 'zod'
 import { FieldId, fieldIdSchema } from '../field/index.js'
-import { VirsualizationID } from './virsualization-id.vo.js'
+import { VisualizationID } from './visualization-id.vo.js'
 import {
-  baseCreateVirsualizationSchema,
-  baseUpdateVirsualizationSchema,
-  baseVirsualizationSchema,
-} from './virsualization.schema.js'
-import type { IVirsualization } from './virsualization.type.js'
-import { type IVirsualizationTypeSchema } from './virsualization.type.js'
-import type { IVirsualizationVisitor } from './virsualization.visitor.js'
-import { VirsualizationVO } from './virsualization.vo.js'
+  baseCreateVisualizationSchema,
+  baseUpdateVisualizationSchema,
+  baseVisualizationSchema,
+} from './visualization.schema.js'
+import type { IVisualization } from './visualization.type.js'
+import { type IVisualizationTypeSchema } from './visualization.type.js'
+import type { IVisualizationVisitor } from './visualization.visitor.js'
+import { VisualizationVO } from './visualization.vo.js'
 
 export const chartTypeSchema = z.enum(['bar'])
 export type IChartType = z.infer<typeof chartTypeSchema>
@@ -20,43 +20,43 @@ export type IChartAggregateFunction = z.infer<typeof chartAggregateFunction>
 
 export const chartAggregateFunctions: IChartAggregateFunction[] = ['count']
 
-export const createChartVirsualizationSchema = z
+export const createChartVisualizationSchema = z
   .object({
     type: z.literal('chart'),
     chartType: chartTypeSchema,
     fieldId: fieldIdSchema.optional(),
     chartAggregateFunction: chartAggregateFunction.optional(),
   })
-  .merge(baseCreateVirsualizationSchema)
+  .merge(baseCreateVisualizationSchema)
 
-export const updateChartVirsualizationSchema = z
+export const updateChartVisualizationSchema = z
   .object({
     type: z.literal('chart'),
     fieldId: fieldIdSchema.optional(),
     chartAggregateFunction: chartAggregateFunction.optional(),
   })
-  .merge(baseUpdateVirsualizationSchema)
+  .merge(baseUpdateVisualizationSchema)
 
-export const chartVirsualization = z
+export const chartVisualization = z
   .object({
     fieldId: fieldIdSchema.optional(),
     chartType: chartTypeSchema,
     chartAggregateFunction: chartAggregateFunction.optional(),
     type: z.literal('chart'),
   })
-  .merge(baseVirsualizationSchema)
+  .merge(baseVisualizationSchema)
 
-export type IChartVirsualizationSchema = z.infer<typeof chartVirsualization>
+export type IChartVisualizationSchema = z.infer<typeof chartVisualization>
 
-export type IChartVirsualization = IVirsualization & {
+export type IChartVisualization = IVisualization & {
   type: 'chart'
   chartType: z.infer<typeof chartTypeSchema>
   fieldId?: FieldId
   chartAggregateFunction?: IChartAggregateFunction
 }
 
-export class ChartVirsualization extends VirsualizationVO<IChartVirsualization> {
-  type: IVirsualizationTypeSchema = 'chart'
+export class ChartVisualization extends VisualizationVO<IChartVisualization> {
+  type: IVisualizationTypeSchema = 'chart'
 
   public get fieldId() {
     return this.props.fieldId
@@ -70,8 +70,8 @@ export class ChartVirsualization extends VirsualizationVO<IChartVirsualization> 
     return this.props.chartAggregateFunction
   }
 
-  static create(input: z.infer<typeof createChartVirsualizationSchema>) {
-    return new ChartVirsualization({
+  static create(input: z.infer<typeof createChartVisualizationSchema>) {
+    return new ChartVisualization({
       ...super.create(input),
       type: 'chart',
       chartType: input.chartType,
@@ -80,11 +80,11 @@ export class ChartVirsualization extends VirsualizationVO<IChartVirsualization> 
     })
   }
 
-  duplicate(): ChartVirsualization {
-    return new ChartVirsualization({ ...this.props, id: VirsualizationID.create() })
+  duplicate(): ChartVisualization {
+    return new ChartVisualization({ ...this.props, id: VisualizationID.create() })
   }
 
-  accept(v: IVirsualizationVisitor): void {
+  accept(v: IVisualizationVisitor): void {
     v.chart(this)
   }
 

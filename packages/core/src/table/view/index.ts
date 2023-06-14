@@ -1,4 +1,4 @@
-export * from '../virsualization/index.js'
+export * from '../visualization/index.js'
 export * from './calendar/index.js'
 export * from './dashboard/index.js'
 export * from './kanban/index.js'

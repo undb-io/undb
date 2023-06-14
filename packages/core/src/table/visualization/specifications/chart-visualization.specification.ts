@@ -3,21 +3,21 @@ import { Ok, type Result } from 'oxide.ts'
 import { FieldId } from '../../field/index.js'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
-import type { IChartAggregateFunction } from '../chart.virsualization.js'
-import { VirsualizationID } from '../virsualization-id.vo.js'
+import type { IChartAggregateFunction } from '../chart.visualization.js'
+import { VisualizationID } from '../visualization-id.vo.js'
 
 export class WithChartAggregateSpec extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(
-    public readonly virsualizationId: VirsualizationID,
+    public readonly visualizationId: VisualizationID,
     public readonly fieldId?: FieldId,
     public readonly aggregateFunction?: IChartAggregateFunction,
   ) {
     super()
   }
 
-  static from(virsualizationId: string, fieldId?: string, aggregateFunction?: IChartAggregateFunction) {
+  static from(visualizationId: string, fieldId?: string, aggregateFunction?: IChartAggregateFunction) {
     return new this(
-      VirsualizationID.from(virsualizationId).unwrap(),
+      VisualizationID.from(visualizationId).unwrap(),
       fieldId ? FieldId.fromString(fieldId) : undefined,
       aggregateFunction,
     )

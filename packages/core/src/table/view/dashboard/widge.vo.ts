@@ -1,6 +1,6 @@
 import { ValueObject } from '@undb/domain'
-import { VirsualizationFactory } from '../../virsualization/virsualization.factory.js'
-import type { ICreateVirsualizationSchema } from '../../virsualization/virsualization.type.js'
+import { VisualizationFactory } from '../../visualization/visualization.factory.js'
+import type { ICreateVisualizationSchema } from '../../visualization/visualization.type.js'
 import { LayoutVO } from './layout.vo.js'
 import { WidgeID } from './widge-id.vo.js'
 import type { ICreateWidgeSchema } from './widge.schema.js'
@@ -19,18 +19,18 @@ export class Widge extends ValueObject<IWidge> {
     this.props.layout = layout
   }
 
-  public get virsualization() {
-    return this.props.virsualization
+  public get visualization() {
+    return this.props.visualization
   }
 
   static create(input: ICreateWidgeSchema) {
     const layout = new LayoutVO(input.layout)
-    const virsualization = input.virsualization ? VirsualizationFactory.create(input.virsualization) : undefined
+    const visualization = input.visualization ? VisualizationFactory.create(input.visualization) : undefined
 
     return new this({
       id: WidgeID.fromOrCreate(input.id),
       layout,
-      virsualization,
+      visualization,
     })
   }
 
@@ -38,14 +38,14 @@ export class Widge extends ValueObject<IWidge> {
     return {
       id: this.props.id.value,
       layout: this.props.layout.toJSON(),
-      virsualization: this.virsualization?.toJSON(),
+      visualization: this.visualization?.toJSON(),
     }
   }
 
   public duplicate() {
     return Widge.create({
       layout: this.layout.toJSON(),
-      virsualization: this.virsualization?.duplicate().toJSON() as ICreateVirsualizationSchema,
+      visualization: this.visualization?.duplicate().toJSON() as ICreateVisualizationSchema,
     })
   }
 }

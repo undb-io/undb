@@ -2,10 +2,10 @@ import { CompositeSpecification } from '@undb/domain'
 import { Ok, type Result } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
-import type { VirsualizationName } from '../virsualization-name.vo.js'
+import type { VisualizationName } from '../visualization-name.vo.js'
 
-export class WithVirsualizationNameSpec extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly virsualizationId: string, public readonly name: VirsualizationName) {
+export class WithVisualizationNameSpec extends CompositeSpecification<Table, ITableSpecVisitor> {
+  constructor(public readonly visualizationId: string, public readonly name: VisualizationName) {
     super()
   }
 
@@ -16,7 +16,7 @@ export class WithVirsualizationNameSpec extends CompositeSpecification<Table, IT
     throw new Error('Method not implemented.')
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
-    v.withVirsualizationName(this)
+    v.withVisualizationName(this)
     return Ok(undefined)
   }
 }

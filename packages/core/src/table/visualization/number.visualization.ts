@@ -1,15 +1,15 @@
 import { z } from 'zod'
 import { FieldId, fieldIdSchema } from '../field/index.js'
-import { VirsualizationID } from './virsualization-id.vo.js'
+import { VisualizationID } from './visualization-id.vo.js'
 import {
-  baseCreateVirsualizationSchema,
-  baseUpdateVirsualizationSchema,
-  baseVirsualizationSchema,
-} from './virsualization.schema.js'
-import type { IVirsualization } from './virsualization.type.js'
-import { type IVirsualizationTypeSchema } from './virsualization.type.js'
-import type { IVirsualizationVisitor } from './virsualization.visitor.js'
-import { VirsualizationVO } from './virsualization.vo.js'
+  baseCreateVisualizationSchema,
+  baseUpdateVisualizationSchema,
+  baseVisualizationSchema,
+} from './visualization.schema.js'
+import type { IVisualization } from './visualization.type.js'
+import { type IVisualizationTypeSchema } from './visualization.type.js'
+import type { IVisualizationVisitor } from './visualization.visitor.js'
+import { VisualizationVO } from './visualization.vo.js'
 
 const numberAggregateFunction = z.enum(['sum', 'average', 'min', 'max', 'count'])
 
@@ -17,40 +17,40 @@ export type INumberAggregateFunction = z.infer<typeof numberAggregateFunction>
 
 export const numberAggregateFunctions: INumberAggregateFunction[] = ['sum', 'average', 'max', 'min', 'count']
 
-export const createNumberVirsualizationSchema = z
+export const createNumberVisualizationSchema = z
   .object({
     type: z.literal('number'),
     fieldId: fieldIdSchema.optional(),
     numberAggregateFunction: numberAggregateFunction.optional(),
   })
-  .merge(baseCreateVirsualizationSchema)
+  .merge(baseCreateVisualizationSchema)
 
-export const updateNumberVirsualizationSchema = z
+export const updateNumberVisualizationSchema = z
   .object({
     type: z.literal('number'),
     fieldId: fieldIdSchema.optional(),
     numberAggregateFunction: numberAggregateFunction.optional(),
   })
-  .merge(baseUpdateVirsualizationSchema)
+  .merge(baseUpdateVisualizationSchema)
 
-export const numberVirsualization = z
+export const numberVisualization = z
   .object({
     fieldId: fieldIdSchema.optional(),
     numberAggregateFunction: numberAggregateFunction.optional(),
     type: z.literal('number'),
   })
-  .merge(baseVirsualizationSchema)
+  .merge(baseVisualizationSchema)
 
-export type INumberVirsualizationSchema = z.infer<typeof numberVirsualization>
+export type INumberVisualizationSchema = z.infer<typeof numberVisualization>
 
-export type INumberVirsualization = IVirsualization & {
+export type INumberVisualization = IVisualization & {
   type: 'number'
   fieldId?: FieldId
   numberAggregateFunction?: INumberAggregateFunction
 }
 
-export class NumberVirsualization extends VirsualizationVO<INumberVirsualization> {
-  type: IVirsualizationTypeSchema = 'number'
+export class NumberVisualization extends VisualizationVO<INumberVisualization> {
+  type: IVisualizationTypeSchema = 'number'
 
   public get fieldId() {
     return this.props.fieldId
@@ -60,8 +60,8 @@ export class NumberVirsualization extends VirsualizationVO<INumberVirsualization
     return this.props.numberAggregateFunction
   }
 
-  static create(input: z.infer<typeof createNumberVirsualizationSchema>) {
-    return new NumberVirsualization({
+  static create(input: z.infer<typeof createNumberVisualizationSchema>) {
+    return new NumberVisualization({
       ...super.create(input),
       type: 'number',
       fieldId: input.fieldId ? FieldId.fromString(input.fieldId) : undefined,
@@ -69,11 +69,11 @@ export class NumberVirsualization extends VirsualizationVO<INumberVirsualization
     })
   }
 
-  duplicate(): NumberVirsualization {
-    return new NumberVirsualization({ ...this.props, id: VirsualizationID.create() })
+  duplicate(): NumberVisualization {
+    return new NumberVisualization({ ...this.props, id: VisualizationID.create() })
   }
 
-  accept(v: IVirsualizationVisitor): void {
+  accept(v: IVisualizationVisitor): void {
     v.number(this)
   }
 
