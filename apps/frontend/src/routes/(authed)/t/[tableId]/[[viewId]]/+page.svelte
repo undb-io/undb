@@ -14,6 +14,7 @@
 	import UpdateOption from '$lib/option/UpdateOption.svelte'
 	import VirsualizationModal from '$lib/virsualization/VirsualizationModal.svelte'
 	import DuplicateField from '$lib/field/DuplicateField.svelte'
+	import CreateWebhook from '$lib/webhook/CreateWebhook.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -47,6 +48,7 @@
 <ViewConfigModal />
 <CreateRecord data={data.createRecord} />
 <CreateField data={data.createField} />
+<CreateWebhook data={data.createWebook} />
 {#if $currentRecordId}
 	<UpdateRecord data={data.updateRecord} />
 {/if}

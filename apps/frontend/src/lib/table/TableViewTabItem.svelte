@@ -10,6 +10,7 @@
 	import { goto, invalidate } from '$app/navigation'
 	import Portal from 'svelte-portal'
 	import { t } from '$lib/i18n'
+	import { createWebhookModal } from '$lib/store/modal'
 
 	const table = getTable()
 	const currentView = getView()
@@ -152,6 +153,13 @@
 				<DropdownItem on:click={() => exportGrid('excel')} class="text-xs font-normal inline-flex items-center gap-2">
 					<i class="ti ti-file-export text-gray-600" />
 					<span>{$t('Export Excel')}</span>
+				</DropdownItem>
+				<DropdownItem
+					on:click={() => createWebhookModal.open()}
+					class="text-xs font-normal inline-flex items-center gap-2"
+				>
+					<i class="ti ti-webhook text-gray-600" />
+					<span>{$t('Webhook')}</span>
 				</DropdownItem>
 				{#if $table.views.count > 1}
 					<DropdownDivider />

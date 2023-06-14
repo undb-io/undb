@@ -74,3 +74,6 @@ export const updateOptionModal = createModal(UPDATE_OPTION)
 
 const IMPORT_CSV_MODAL = Symbol('IMPORT_CSV_MODAL')
 export const importCSVModal = createModal(IMPORT_CSV_MODAL)
+
+const CREATE_WEBHOOK_MODAL = Symbol('CREATE_WEBHOOK_MODAL')
+export const createWebhookModal = createModal(CREATE_WEBHOOK_MODAL)

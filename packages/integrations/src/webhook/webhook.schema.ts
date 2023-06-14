@@ -21,3 +21,13 @@ export const unsafeCreateWebhookSchema = z.object({
   enabled: z.boolean(),
   target: webhookTargetSchema,
 })
+
+export const createWebhookSchema = z.object({
+  id: webhookIdSchema.optional(),
+  url: webhookURLSchema,
+  method: webhookMethodSchema.default('POST'),
+  enabled: z.boolean().default(true),
+  target: webhookTargetSchema,
+})
+
+export type ICreateWebhookSchema = z.infer<typeof createWebhookSchema>

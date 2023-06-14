@@ -336,6 +336,10 @@ importers:
         version: 5.1.3
 
   apps/frontend:
+    dependencies:
+      '@undb/integrations':
+        specifier: workspace:^
+        version: link:../../packages/integrations
     devDependencies:
       '@event-calendar/core':
         specifier: ^1.3.1
@@ -1021,6 +1025,9 @@ importers:
       '@undb/domain':
         specifier: ^0.0.0
         version: link:../domain
+      '@undb/integrations':
+        specifier: workspace:^
+        version: link:../integrations
       zod:
         specifier: ^3.21.4
         version: 3.21.4
