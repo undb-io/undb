@@ -30,7 +30,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   withoutWidge(): void {}
   withChartAggregate(): void {}
   withNumberAggregate(): void {}
-  withVirsualizationName(): void {}
+  withVisualizationName(): void {}
   withWidgesLayout(): void {}
   get #sb() {
     return this.sb ?? this.knex.schema

@@ -49,7 +49,7 @@ import type {
   WithViewName,
   WithViewPinnedFields,
   WithViewsOrder,
-  WithVirsualizationNameSpec,
+  WithVisualizationNameSpec,
   WithWidgeSepecification,
   WithWidgesLayout,
 } from '@undb/core'
@@ -69,7 +69,7 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   withNumberAggregate(s: WithNumberAggregateSpec): void {
     throw new Error('Method not implemented.')
   }
-  withVirsualizationName(s: WithVirsualizationNameSpec): void {
+  withVisualizationName(s: WithVisualizationNameSpec): void {
     throw new Error('Method not implemented.')
   }
   withWidgesLayout(s: WithWidgesLayout): void {
