@@ -5,6 +5,7 @@ import type { IWebhookTarget } from '../webhook-target.vo.js'
 import { WebhookTarget } from '../webhook-target.vo.js'
 import type { Webhook } from '../webhook.js'
 import type { IWebhookSpecVisitor } from './interface.js'
+import { WithWebhookEnabled } from './webhook-enabled.specification.js'
 
 export class WithWebhookTarget extends CompositeSpecification<Webhook, IWebhookSpecVisitor> {
   constructor(public readonly webhookTarget: WebhookTarget | null) {
@@ -74,5 +75,5 @@ export class WebhookEventsIn extends CompositeSpecification<Webhook, IWebhookSpe
 }
 
 export const withTableEvents = (tableId: string, events: string[]) => {
-  return new WithWebhookTable(tableId).and(new WebhookEventsIn(events))
+  return new WithWebhookTable(tableId).and(new WebhookEventsIn(events)).and(WithWebhookEnabled.enabled())
 }

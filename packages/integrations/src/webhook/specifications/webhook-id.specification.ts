@@ -14,6 +14,10 @@ export class WithWebhookId extends CompositeSpecification<Webhook, IWebhookSpecV
     return new WithWebhookId(WebhookId.from(id).unwrap())
   }
 
+  static fromNullableString(id?: string): WithWebhookId {
+    return new WithWebhookId(WebhookId.fromOrCreate(id))
+  }
+
   static create(): WithWebhookId {
     return new WithWebhookId(WebhookId.create())
   }

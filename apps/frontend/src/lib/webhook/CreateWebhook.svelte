@@ -53,7 +53,7 @@
 	<svelte:fragment slot="footer">
 		<div class="w-full flex justify-end gap-4">
 			<Button size="xs" color="alternative">{$t('Cancel', { ns: 'common' })}</Button>
-			<Button size="xs" form="createOption" type="submit">{$t('Confirm', { ns: 'common' })}</Button>
+			<Button size="xs" form="createWebhook" type="submit">{$t('Confirm', { ns: 'common' })}</Button>
 		</div>
 	</svelte:fragment>
 </Modal>

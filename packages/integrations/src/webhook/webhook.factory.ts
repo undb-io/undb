@@ -6,8 +6,10 @@ import {
   WithWebhookMethod,
   WithWebhookTarget,
   WithWebhookURL,
+  newWebhookSpec,
 } from './specifications/index.js'
 import { Webhook } from './webhook.js'
+import { ICreateWebhookSchema } from './webhook.schema.js'
 import type { IUnsafeCreateWebhook } from './webhook.type.js'
 
 export class WebhookFactory {
@@ -16,6 +18,12 @@ export class WebhookFactory {
       .unwrap()
       .mutate(Webhook.empty())
       .unwrap()
+  }
+
+  static from(input: ICreateWebhookSchema): Webhook {
+    const spec = newWebhookSpec(input)
+
+    return this.create(spec)
   }
 
   static unsafeCreate(input: IUnsafeCreateWebhook): Webhook {

@@ -1,7 +1,7 @@
 import { CompositeSpecification } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import { WebhookURL } from '../webhook-url.vo.js'
+import { WebhookURL, webhookURLSchema } from '../webhook-url.vo.js'
 import type { Webhook } from '../webhook.js'
 import type { IWebhookSpecVisitor } from './interface.js'
 
@@ -11,7 +11,7 @@ export class WithWebhookURL extends CompositeSpecification<Webhook, IWebhookSpec
   }
 
   static fromString(url: string): WithWebhookURL {
-    return new WithWebhookURL(new WebhookURL({ value: url }))
+    return new WithWebhookURL(new WebhookURL({ value: webhookURLSchema.parse(url) }))
   }
 
   isSatisfiedBy(w: Webhook): boolean {

@@ -8,6 +8,10 @@ export class WithWebhookEnabled extends CompositeSpecification<Webhook, IWebhook
     super()
   }
 
+  static enabled(): WithWebhookEnabled {
+    return new WithWebhookEnabled(true)
+  }
+
   isSatisfiedBy(t: Webhook): boolean {
     return this.enabled === t.enabled
   }
