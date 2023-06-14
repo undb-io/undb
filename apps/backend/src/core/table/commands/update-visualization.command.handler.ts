@@ -1,13 +1,13 @@
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
 import { type ITableRepository } from '@undb/core'
-import { UpdateVirsualizationCommandHandler as DomainHandler, UpdateVirsualizationCommand } from '@undb/cqrs'
+import { UpdateVisualizationCommandHandler as DomainHandler, UpdateVisualizationCommand } from '@undb/cqrs'
 import { InjectTableRepository } from '../adapters/index.js'
 
-@CommandHandler(UpdateVirsualizationCommand)
-export class UpdateVirsualizationCommandHandler
+@CommandHandler(UpdateVisualizationCommand)
+export class UpdateVisualizationCommandHandler
   extends DomainHandler
-  implements ICommandHandler<UpdateVirsualizationCommand, void>
+  implements ICommandHandler<UpdateVisualizationCommand, void>
 {
   constructor(
     @InjectTableRepository()
