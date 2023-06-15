@@ -1,11 +1,12 @@
 <script lang="ts">
+	import Checkbox from '$lib/cell/CellInput/Checkbox.svelte'
 	import { t } from '$lib/i18n'
 	import { webhookDrawerMode } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { EVT_RECORD_CREATED } from '@undb/core'
+	import { recordEvents } from '@undb/core'
 	import type { createWebhookSchema } from '@undb/integrations'
-	import { Button, Input, Label, Toast } from 'flowbite-svelte'
+	import { Button, Input, Label, Select, Toast } from 'flowbite-svelte'
 	import { slide } from 'svelte/transition'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
@@ -37,12 +38,14 @@
 					target: {
 						id: $table.id.value,
 						type: 'table',
-						event: EVT_RECORD_CREATED,
+						event: event.form.data.target.event,
 					},
 				},
 			})
 		},
 	})
+
+	const events = recordEvents.map((e) => ({ name: e, value: e }))
 </script>
 
 <form id="createWebhook" method="POST" class="flex-1" use:enhance>
@@ -54,7 +57,7 @@
 					<span class="text-red-500">*</span>
 				</div>
 
-				<Input name="url" size="sm" type="text" bind:value={$form.name} />
+				<Input name="name" size="sm" type="text" bind:value={$form.name} />
 			</Label>
 
 			<Label class="flex flex-col gap-2 w-full">
@@ -64,6 +67,21 @@
 				</div>
 
 				<Input name="url" size="sm" type="text" bind:value={$form.url} />
+			</Label>
+			<Label class="flex flex-col gap-2 w-full">
+				<div class="flex gap-2 items-center">
+					<span>{$t('Enabled', { ns: 'common' })}</span>
+				</div>
+
+				<Checkbox bind:value={$form.enabled} />
+			</Label>
+			<Label class="flex flex-col gap-2 w-full">
+				<div class="flex gap-2 items-center">
+					<span>{$t('Event', { ns: 'common' })}</span>
+					<span class="text-red-500">*</span>
+				</div>
+
+				<Select items={events} bind:value={$form.target.event} />
 			</Label>
 		</div>
 		<div class="w-full flex justify-end gap-4">

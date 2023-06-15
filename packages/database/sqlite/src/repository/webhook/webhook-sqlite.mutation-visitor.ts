@@ -27,13 +27,13 @@ export class WebhookSqliteMutationVisitor implements IWebhookSpecVisitor {
   targetEqual(s: WithWebhookTarget): void {
     const webhook = this.em.getReference(Webhook, this.webhookId)
     const {
-      properties: { targetId, targetType, events },
+      properties: { targetId, targetType, event },
     } = this.em.getMetadata().get(Webhook.name)
     const target = s.webhookTarget
     wrap(webhook).assign({
       [targetId.fieldNames[0]]: target?.id ?? null,
       [targetType.fieldNames[0]]: target?.type ?? null,
-      [events.fieldNames[0]]: target?.events ? [target.events] : [],
+      [event.fieldNames[0]]: target?.event ?? null,
     })
   }
 

@@ -30,7 +30,7 @@ export const createWebhookSchema = z.object({
   url: webhookURLSchema,
   method: webhookMethodSchema.default('POST'),
   enabled: z.boolean().default(true),
-  target: webhookTargetSchema,
+  target: webhookTargetSchema.unwrap().default({ id: '', type: 'table', event: 'record.created' }),
 })
 
 export type ICreateWebhookSchema = z.infer<typeof createWebhookSchema>

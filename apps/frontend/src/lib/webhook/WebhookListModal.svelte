@@ -19,7 +19,7 @@
 
 <Drawer
 	title="Webhooks"
-	class="h-full !w-1/3"
+	class="h-full !w-1/3 flex flex-col"
 	transitionType="fly"
 	{transitionParams}
 	placement="right"
@@ -37,7 +37,7 @@
 		</div>
 		<WebhookList />
 	{:else if $webhookDrawerMode === 'create'}
-		<div class="flex h-full flex-col">
+		<div class="flex flex-col flex-1">
 			<div class="flex items-center justify-between mb-4">
 				<Heading tag="h5" class="whitespace-nowrap truncate">
 					<button on:click={() => ($webhookDrawerMode = 'list')}>

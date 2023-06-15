@@ -16,47 +16,47 @@ export class WebhookSqliteQueryVisitor implements IWebhookSpecVisitor {
   constructor(private readonly em: EntityManager, private qb: QueryBuilder<Webhook>) {}
   idEqual(s: WithWebhookId): void {
     const idFieldName = this.em.getMetadata().get(Webhook.name).properties.id.fieldNames[0]
-    this.qb.where({ [idFieldName]: s.webhookId.value })
+    this.qb.andWhere({ [idFieldName]: s.webhookId.value })
   }
   urlEqual(s: WithWebhookURL): void {
     const urlFieldName = this.em.getMetadata().get(Webhook.name).properties.url.fieldNames[0]
-    this.qb.where({ [urlFieldName]: s.webhookURL.unpack() })
+    this.qb.andWhere({ [urlFieldName]: s.webhookURL.unpack() })
   }
   nameEqual(s: WithWebhookName): void {
     const nameFieldName = this.em.getMetadata().get(Webhook.name).properties.name.fieldNames[0]
-    this.qb.where({ [nameFieldName]: s.name })
+    this.qb.andWhere({ [nameFieldName]: s.name })
   }
   methodEqual(s: WithWebhookMethod): void {
     const methodFieldName = this.em.getMetadata().get(Webhook.name).properties.method.fieldNames[0]
-    this.qb.where({ [methodFieldName]: s.webhookMethod.unpack() })
+    this.qb.andWhere({ [methodFieldName]: s.webhookMethod.unpack() })
   }
 
   targetEqual(s: WithWebhookTarget): void {
     const {
-      properties: { targetId, targetType, events },
+      properties: { targetId, targetType, event },
     } = this.em.getMetadata().get(Webhook.name)
     const target = s.webhookTarget
-    this.qb.where({
+    this.qb.andWhere({
       [targetId.fieldNames[0]]: target?.id ?? null,
       [targetType.fieldNames[0]]: target?.type ?? null,
-      [events.fieldNames[0]]: target?.events ? [target.events] : [],
+      [event.fieldNames[0]]: target?.event ?? null,
     })
   }
   targetTable(s: WithWebhookTable): void {
     const {
       properties: { targetId, targetType },
     } = this.em.getMetadata().get(Webhook.name)
-    this.qb.where({
+    this.qb.andWhere({
       [targetId.fieldNames[0]]: s.tableId,
       [targetType.fieldNames[0]]: 'table',
     })
   }
   eventsIn(s: WebhookEventsIn): void {
-    this.qb.where({ events: { $in: s.events } })
+    this.qb.andWhere({ event: { $in: s.events } })
   }
   enabled(s: WithWebhookEnabled): void {
     const enabledFieldName = this.em.getMetadata().get(Webhook.name).properties.enabled.fieldNames[0]
-    this.qb.where({ [enabledFieldName]: s.enabled })
+    this.qb.andWhere({ [enabledFieldName]: s.enabled })
   }
 
   or(): IWebhookSpecVisitor {
