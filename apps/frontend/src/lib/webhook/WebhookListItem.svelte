@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from '$lib/i18n'
 	import { selectedWebhook, webhookDrawerMode } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
@@ -37,12 +38,12 @@
 			</div>
 			<div class="flex items-center gap-2">
 				{#if webhook.enabled}
-					<Badge color="green">Enabled</Badge>
+					<Badge color="green">{$t('Enabled', { ns: 'webhook' })}</Badge>
 				{:else}
-					<Badge color="dark">Disabled</Badge>
+					<Badge color="dark">{$t('Disabled', { ns: 'webhook' })}</Badge>
 				{/if}
 				{#if webhook.target?.event}
-					{webhook.target?.event}
+					{$t(webhook.target?.event, { ns: 'event' })}
 				{/if}
 			</div>
 		</div>

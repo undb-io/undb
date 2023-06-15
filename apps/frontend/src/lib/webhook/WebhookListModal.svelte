@@ -39,7 +39,7 @@
 			</Heading>
 
 			<Button size="xs" class="whitespace-nowrap" on:click={() => ($webhookDrawerMode = 'create')}>
-				{$t('Create New Webhook')}
+				{$t('Create New Webhook', { ns: 'webhook' })}
 			</Button>
 		</div>
 		<WebhookList />

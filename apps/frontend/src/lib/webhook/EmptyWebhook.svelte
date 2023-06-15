@@ -5,7 +5,9 @@
 </script>
 
 <div class="flex flex-col items-center justify-center gap-4">
-	<P weight="bold">{$t('Create New Webhook')}</P>
+	<P weight="bold">{$t('Create New Webhook', { ns: 'webhook' })}</P>
 
-	<Button on:click={() => ($webhookDrawerMode = 'create')} class="w-[250px]">{$t('Create New Webhook')}</Button>
+	<Button on:click={() => ($webhookDrawerMode = 'create')} class="w-[250px]"
+		>{$t('Create New Webhook', { ns: 'webhook' })}</Button
+	>
 </div>

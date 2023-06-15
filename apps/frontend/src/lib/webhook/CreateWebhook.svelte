@@ -47,7 +47,7 @@
 		},
 	})
 
-	const events = recordEvents.map((e) => ({ name: e, value: e }))
+	const events = recordEvents.map((e) => ({ name: $t(e, { ns: 'event' }), value: e }))
 	const methods = ['POST', 'GET', 'PATCH'].map((method) => ({ name: method, value: method }))
 </script>
 
@@ -56,7 +56,7 @@
 		<div class="space-y-2">
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
-					<span>{$t('Name', { ns: 'common' })}</span>
+					<span>{$t('Name', { ns: 'webhook' })}</span>
 					<span class="text-red-500">*</span>
 				</div>
 
@@ -65,7 +65,7 @@
 
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
-					<span>{$t('URL', { ns: 'common' })}</span>
+					<span>{$t('URL', { ns: 'webhook' })}</span>
 					<span class="text-red-500">*</span>
 				</div>
 
@@ -73,14 +73,14 @@
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
-					<span>{$t('Enabled', { ns: 'common' })}</span>
+					<span>{$t('Enabled', { ns: 'webhook' })}</span>
 				</div>
 
 				<Checkbox bind:value={$form.enabled} />
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
-					<span>{$t('Method', { ns: 'common' })}</span>
+					<span>{$t('Method', { ns: 'webhook' })}</span>
 					<span class="text-red-500">*</span>
 				</div>
 
@@ -88,7 +88,7 @@
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
-					<span>{$t('Event', { ns: 'common' })}</span>
+					<span>{$t('Event', { ns: 'webhook' })}</span>
 					<span class="text-red-500">*</span>
 				</div>
 
@@ -96,7 +96,7 @@
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
-					<span>{$t('Headers', { ns: 'common' })}</span>
+					<span>{$t('Headers', { ns: 'webhook' })}</span>
 					<span class="text-red-500">*</span>
 				</div>
 
