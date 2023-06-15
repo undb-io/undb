@@ -6,6 +6,7 @@ import { entities } from './entity/index.js'
 import { SqliteLogger } from './logger.js'
 import { Migration20230528115246 } from './migrations/Migration20230528115246.js'
 import { Migration20230612140223 } from './migrations/Migration20230612140223.js'
+import { Migration20230614113545 } from '../src/migrations/Migration20230614113545.js'
 
 export const createConfig = (data: string, env = 'development') =>
   defineConfig({
@@ -30,6 +31,10 @@ export const createConfig = (data: string, env = 'development') =>
         {
           name: 'create outbox',
           class: Migration20230612140223,
+        },
+        {
+          name: 'fix virsualization typo',
+          class: Migration20230614113545,
         },
       ],
     },
