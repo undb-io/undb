@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
-	import { createWebhookModal } from '$lib/store/modal'
+	import { webhookDrawerMode } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import { EVT_RECORD_CREATED } from '@undb/core'
 	import type { createWebhookSchema } from '@undb/integrations'
-	import { Button, Input, Label, Modal } from 'flowbite-svelte'
+	import { Button, Input, Label, Toast } from 'flowbite-svelte'
+	import { slide } from 'svelte/transition'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
 
@@ -13,7 +14,11 @@
 
 	const table = getTable()
 
-	const createWebhook = trpc().webhook.create.mutation()
+	const createWebhook = trpc().webhook.create.mutation({
+		onSuccess(data, variables, context) {
+			$webhookDrawerMode = 'list'
+		},
+	})
 
 	const { form, enhance } = superForm(data, {
 		id: 'createWebhook',
@@ -32,7 +37,7 @@
 					target: {
 						id: $table.id.value,
 						type: 'table',
-						events: EVT_RECORD_CREATED,
+						event: EVT_RECORD_CREATED,
 					},
 				},
 			})
@@ -40,30 +45,39 @@
 	})
 </script>
 
-<Modal class="w-full" bind:open={$createWebhookModal.open}>
-	<form id="createWebhook" class="flex gap-2 items-center" method="POST" use:enhance>
-		<Label class="flex flex-col gap-2 w-full">
-			<div class="flex gap-2 items-center">
-				<span>{$t('name', { ns: 'common' })}</span>
-				<span class="text-red-500">*</span>
-			</div>
+<form id="createWebhook" method="POST" class="flex-1" use:enhance>
+	<div class="h-full flex flex-col justify-between">
+		<div class="space-y-2">
+			<Label class="flex flex-col gap-2 w-full">
+				<div class="flex gap-2 items-center">
+					<span>{$t('Name', { ns: 'common' })}</span>
+					<span class="text-red-500">*</span>
+				</div>
 
-			<Input name="url" size="sm" type="text" bind:value={$form.name} />
-		</Label>
+				<Input name="url" size="sm" type="text" bind:value={$form.name} />
+			</Label>
 
-		<Label class="flex flex-col gap-2 w-full">
-			<div class="flex gap-2 items-center">
-				<span>{$t('URL', { ns: 'common' })}</span>
-				<span class="text-red-500">*</span>
-			</div>
+			<Label class="flex flex-col gap-2 w-full">
+				<div class="flex gap-2 items-center">
+					<span>{$t('URL', { ns: 'common' })}</span>
+					<span class="text-red-500">*</span>
+				</div>
 
-			<Input name="url" size="sm" type="text" bind:value={$form.url} />
-		</Label>
-	</form>
-	<svelte:fragment slot="footer">
+				<Input name="url" size="sm" type="text" bind:value={$form.url} />
+			</Label>
+		</div>
 		<div class="w-full flex justify-end gap-4">
 			<Button size="xs" color="alternative">{$t('Cancel', { ns: 'common' })}</Button>
 			<Button size="xs" form="createWebhook" type="submit">{$t('Confirm', { ns: 'common' })}</Button>
 		</div>
-	</svelte:fragment>
-</Modal>
+	</div>
+</form>
+
+{#if $createWebhook.error}
+	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{$createWebhook.error.message}
+		</span>
+	</Toast>
+{/if}

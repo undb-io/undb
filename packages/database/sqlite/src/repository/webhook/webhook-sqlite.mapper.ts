@@ -8,11 +8,11 @@ export class WebhookSqliteMapper {
       id: webhook.id,
       url: webhook.url,
       name: webhook.name,
-      enabled: webhook.enabled,
+      enabled: !!webhook.enabled,
       method: webhook.method as IWebhookMethod,
       target:
-        webhook.targetId && webhook.targetType && webhook.events
-          ? { id: webhook.targetId, type: webhook.targetType as any, events: webhook.events as any }
+        webhook.targetId && webhook.targetType && webhook.event
+          ? { id: webhook.targetId, type: webhook.targetType as any, event: webhook.event as any }
           : null,
     }
   }
@@ -22,11 +22,11 @@ export class WebhookSqliteMapper {
       id: webhook.id,
       url: webhook.url,
       name: webhook.name,
-      enabled: webhook.enabled,
+      enabled: !!webhook.enabled,
       method: webhook.method as IWebhookMethod,
       target:
-        webhook.targetId && webhook.targetType && webhook.events
-          ? { id: webhook.targetId, type: webhook.targetType as any, events: webhook.events as any }
+        webhook.targetId && webhook.targetType && webhook.event
+          ? { id: webhook.targetId, type: webhook.targetType as any, event: webhook.event as any }
           : null,
     })
   }

@@ -6,7 +6,7 @@ export const webhookTargetSchema = z
   .object({
     type: z.literal('table'),
     id: tableIdSchema,
-    events: z.enum(recordEvents),
+    event: z.enum(recordEvents),
   })
   .nullable()
 
@@ -21,7 +21,7 @@ export class WebhookTarget extends ValueObject<IWebhookTarget> {
     return this.unpack()?.type
   }
 
-  public get events() {
-    return this.unpack()?.events
+  public get event() {
+    return this.unpack()?.event
   }
 }

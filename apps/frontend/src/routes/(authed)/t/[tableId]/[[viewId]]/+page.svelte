@@ -15,6 +15,7 @@
 	import VirsualizationModal from '$lib/virsualization/VirsualizationModal.svelte'
 	import DuplicateField from '$lib/field/DuplicateField.svelte'
 	import CreateWebhook from '$lib/webhook/CreateWebhook.svelte'
+	import WebhookListModal from '$lib/webhook/WebhookListModal.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -31,7 +32,8 @@
 	const field = getField()
 
 	const onKeydown = (event: KeyboardEvent) => {
-		if ((event.target as any)?.type === 'search') return
+		const type = (event.target as any)?.type
+		if (type === 'search' || type === 'text') return
 		if (event.key === 't' && !(event.ctrlKey || event.altKey || event.metaKey)) {
 			createTableModal.open()
 		} else if (event.key === 'r' && !(event.ctrlKey || event.altKey || event.metaKey)) {
@@ -48,7 +50,7 @@
 <ViewConfigModal />
 <CreateRecord data={data.createRecord} />
 <CreateField data={data.createField} />
-<CreateWebhook data={data.createWebook} />
+<WebhookListModal />
 {#if $currentRecordId}
 	<UpdateRecord data={data.updateRecord} />
 {/if}

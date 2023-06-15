@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
+	import EmptyWebhook from './EmptyWebhook.svelte'
+	import WebhookListItem from './WebhookListItem.svelte'
 
 	const table = getTable()
 
@@ -11,8 +13,18 @@
 	$: webhooks = $getWebhooks.data?.webhooks ?? []
 </script>
 
-<div>
-	{#each webhooks as webhook}
-		{webhook.id}
-	{/each}
+<div class="h-full">
+	{#if $getWebhooks.isLoading}
+		<span />
+	{:else if !webhooks.length}
+		<div class="h-full flex justify-center">
+			<EmptyWebhook />
+		</div>
+	{:else}
+		<div class="pt-5">
+			{#each webhooks as webhook}
+				<WebhookListItem {webhook} />
+			{/each}
+		</div>
+	{/if}
 </div>

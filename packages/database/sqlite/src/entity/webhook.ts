@@ -14,7 +14,7 @@ export class Webhook extends BaseEntity {
     this.method = webhook.method.unpack()
     this.targetId = webhook.target?.id
     this.targetType = webhook.target?.type
-    this.events = webhook.target?.events ?? null
+    this.event = webhook.target?.event ?? null
     this.enabled = webhook.enabled
   }
 
@@ -37,7 +37,7 @@ export class Webhook extends BaseEntity {
   targetType?: string | null
 
   @Property({ nullable: true })
-  events?: string | null
+  event?: string | null
 
   @Property({ type: BooleanType, default: false, nullable: false })
   enabled: boolean

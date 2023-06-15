@@ -10,7 +10,7 @@
 	import { goto, invalidate } from '$app/navigation'
 	import Portal from 'svelte-portal'
 	import { t } from '$lib/i18n'
-	import { createWebhookModal } from '$lib/store/modal'
+	import { webhookListDrawer } from '$lib/store/drawer'
 
 	const table = getTable()
 	const currentView = getView()
@@ -137,7 +137,7 @@
 	</a>
 	{#if active}
 		<Portal target="body">
-			<Dropdown triggeredBy={`#${view.id.value}`} bind:open frameClass="z-[100] w-[200px]">
+			<Dropdown triggeredBy={`#${view.id.value}`} bind:open frameClass="z-[100]">
 				<DropdownItem on:click={() => (updating = true)} class="text-xs font-normal inline-flex items-center gap-2">
 					<i class="ti ti-pencil text-gray-600" />
 					<span>{$t('Update View Name')}</span>
@@ -155,7 +155,10 @@
 					<span>{$t('Export Excel')}</span>
 				</DropdownItem>
 				<DropdownItem
-					on:click={() => createWebhookModal.open()}
+					on:click={() => {
+						webhookListDrawer.open()
+						open = false
+					}}
 					class="text-xs font-normal inline-flex items-center gap-2"
 				>
 					<i class="ti ti-webhook text-gray-600" />
