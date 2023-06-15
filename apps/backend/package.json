@@ -14,7 +14,7 @@
     "@nestjs/core": "^9.4.2",
     "@nestjs/cqrs": "^9.0.4",
     "@nestjs/jwt": "^10.0.3",
-    "@nestjs/mongoose": "^9.2.2",
+    "@nestjs/mongoose": "^10.0.0",
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.4.2",
     "@nestjs/schedule": "^2.2.3",

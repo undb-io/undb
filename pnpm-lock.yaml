@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -91,8 +91,8 @@ importers:
         specifier: ^10.0.3
         version: 10.0.3(@nestjs/common@9.4.2)
       '@nestjs/mongoose':
-        specifier: ^9.2.2
-        version: 9.2.2(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(mongoose@7.2.3)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+        specifier: ^10.0.0
+        version: 10.0.0(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(mongoose@7.2.3)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/passport':
         specifier: ^9.0.3
         version: 9.0.3(@nestjs/common@9.4.2)(passport@0.6.0)
@@ -107,7 +107,7 @@ importers:
         version: 3.0.1(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(express@4.18.2)
       '@nestjs/terminus':
         specifier: ^9.2.2
-        version: 9.2.2(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/axios@2.0.0)(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@nestjs/mongoose@9.2.2)(mongoose@7.2.3)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+        version: 9.2.2(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/axios@2.0.0)(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@nestjs/mongoose@10.0.0)(mongoose@7.2.3)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@trpc/server':
         specifier: ^10.30.0
         version: 10.30.0
@@ -3354,7 +3354,7 @@ packages:
     dependencies:
       '@nestjs/common': 9.4.2(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/core': 9.4.2(@nestjs/common@9.4.2)(@nestjs/platform-express@9.4.2)(reflect-metadata@0.1.13)(rxjs@7.8.1)
-      '@nestjs/terminus': 9.2.2(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/axios@2.0.0)(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@nestjs/mongoose@9.2.2)(mongoose@7.2.3)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/terminus': 9.2.2(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/axios@2.0.0)(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@nestjs/mongoose@10.0.0)(mongoose@7.2.3)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       ioredis: 5.3.2
       tslib: 2.4.1
     dev: false
@@ -3782,11 +3782,11 @@ packages:
       jsonwebtoken: 9.0.0
     dev: false
 
-  /@nestjs/mongoose@9.2.2(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(mongoose@7.2.3)(reflect-metadata@0.1.13)(rxjs@7.8.1):
-    resolution: {integrity: sha512-szNuSUCwwbQSSeiTh8+tZ9fHV4nuzHwBDROb0hX0s7crwY15TunCfwyKbB2XjqkEQWUAasDeCBuKOJSL9N6tTg==}
+  /@nestjs/mongoose@10.0.0(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(mongoose@7.2.3)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+    resolution: {integrity: sha512-Wqinhuess5AKGUTs5gtJxs+naXv1BBxADTBw8h6hPAdCkPL/knoIpo0cSxBNJ4COwRqpy4QWGilzPiPR0sJgJA==}
     peerDependencies:
-      '@nestjs/common': ^8.0.0 || ^9.0.0
-      '@nestjs/core': ^8.0.0 || ^9.0.0
+      '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
+      '@nestjs/core': ^8.0.0 || ^9.0.0 || ^10.0.0
       mongoose: ^6.0.2 || ^7.0.0
       reflect-metadata: ^0.1.12
       rxjs: ^7.0.0
@@ -3888,7 +3888,7 @@ packages:
       path-to-regexp: 0.2.5
     dev: false
 
-  /@nestjs/terminus@9.2.2(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/axios@2.0.0)(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@nestjs/mongoose@9.2.2)(mongoose@7.2.3)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+  /@nestjs/terminus@9.2.2(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/axios@2.0.0)(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@nestjs/mongoose@10.0.0)(mongoose@7.2.3)(reflect-metadata@0.1.13)(rxjs@7.8.1):
     resolution: {integrity: sha512-AWUA8XLcgxWUjUFYHDqi42M7CZn2e+DEWxP+MqNAbMzz4ybB5jGcFK5Fy8qwaNBoWg6KMF1JiXOOygGXgk9ydg==}
     peerDependencies:
       '@grpc/grpc-js': '*'
@@ -3938,7 +3938,7 @@ packages:
       '@nestjs/axios': 2.0.0(@nestjs/common@9.4.2)(axios@1.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/common': 9.4.2(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/core': 9.4.2(@nestjs/common@9.4.2)(@nestjs/platform-express@9.4.2)(reflect-metadata@0.1.13)(rxjs@7.8.1)
-      '@nestjs/mongoose': 9.2.2(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(mongoose@7.2.3)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/mongoose': 10.0.0(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(mongoose@7.2.3)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       boxen: 5.1.2
       check-disk-space: 3.3.1
       mongoose: 7.2.3
