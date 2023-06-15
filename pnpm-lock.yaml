@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -100,8 +100,8 @@ importers:
         specifier: ^9.4.2
         version: 9.4.2(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)
       '@nestjs/schedule':
-        specifier: ^2.2.3
-        version: 2.2.3(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(reflect-metadata@0.1.13)
+        specifier: ^3.0.0
+        version: 3.0.0(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(reflect-metadata@0.1.13)
       '@nestjs/serve-static':
         specifier: ^3.0.1
         version: 3.0.1(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(express@4.18.2)
@@ -3824,11 +3824,11 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@nestjs/schedule@2.2.3(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(reflect-metadata@0.1.13):
-    resolution: {integrity: sha512-PxoGdoBwZQ6SzGfFcERTk7mDxrmesNt2cfqKgtLsFpjYNpV6ZYlKw9Ku8C0ZIjdhy0tBbysj+Fsi3sYua6o6Eg==}
+  /@nestjs/schedule@3.0.0(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(reflect-metadata@0.1.13):
+    resolution: {integrity: sha512-x34wi/Jqmm16CmR4KnN9yj1jCUP8tOoxoIrzBIc7hkgP16vw614mnaQXC3NVLT/e74v937tV/4ezHs652Ju60Q==}
     peerDependencies:
-      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0
-      '@nestjs/core': ^7.0.0 || ^8.0.0 || ^9.0.0
+      '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
+      '@nestjs/core': ^8.0.0 || ^9.0.0 || ^10.0.0
       reflect-metadata: ^0.1.12
     dependencies:
       '@nestjs/common': 9.4.2(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
