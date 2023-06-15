@@ -967,6 +967,9 @@ importers:
       '@undb/core':
         specifier: ^0.0.0
         version: link:../core
+      '@undb/integrations':
+        specifier: workspace:^
+        version: link:../integrations
       '@undb/logger':
         specifier: workspace:^
         version: link:../logger

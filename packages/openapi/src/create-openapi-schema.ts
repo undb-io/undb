@@ -1,4 +1,4 @@
-import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi'
+import { OpenAPIRegistry, OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi'
 import type { IQueryRecordSchema } from '@undb/core'
 import { RecordId, recordIdSchema, viewIdSchema, type Table } from '@undb/core'
 import { logger } from '@undb/logger'
@@ -6,7 +6,7 @@ import { format } from 'date-fns'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import OpenAPISnippet from 'openapi-snippet'
-import type { OpenAPIObject } from 'openapi3-ts/oas30'
+import type { OpenAPIObject } from 'openapi3-ts/oas31'
 import {
   COMPONENT_MUTATE_RECORD_VALUES,
   COMPONENT_OPTION,
@@ -75,10 +75,10 @@ export const createTableSchema = (
   }
 
   function getOpenApiDocumentation() {
-    const generator = new OpenApiGeneratorV3(registry.definitions)
+    const generator = new OpenApiGeneratorV31(registry.definitions)
 
     const generated = generator.generateDocument({
-      openapi: '3.0.0',
+      openapi: '3.1.0',
       info: {
         version: format(new Date(), 'yyyy-MM-dd'),
         title: `undb ${table.name.value} open api`,
@@ -101,7 +101,7 @@ export const createTableSchema = (
         'node',
         'go',
       ])
-      const path = docs.paths[route.path][route.method]
+      const path = docs.paths?.[route.path][route.method]
       if (path) {
         path['x-codeSamples'] = []
         for (const [index, snippet] of generated.snippets.entries()) {
