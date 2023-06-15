@@ -6,7 +6,7 @@ import { entities } from './entity/index.js'
 import { SqliteLogger } from './logger.js'
 import { Migration20230528115246 } from './migrations/Migration20230528115246.js'
 import { Migration20230612140223 } from './migrations/Migration20230612140223.js'
-import { Migration20230615083616 } from './migrations/Migration20230615083616.js'
+import { Migration20230615120025 } from './migrations/Migration20230615120025.js'
 
 export const createConfig = (data: string, env = 'development') =>
   defineConfig({
@@ -34,7 +34,7 @@ export const createConfig = (data: string, env = 'development') =>
         },
         {
           name: 'webhook',
-          class: Migration20230615083616,
+          class: Migration20230615120025,
         },
       ],
     },

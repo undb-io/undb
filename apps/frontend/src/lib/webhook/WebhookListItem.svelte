@@ -25,7 +25,10 @@
 	})
 </script>
 
-<Card class="w-full !max-w-none shadow-sm cursor-pointer" on:click={() => ($selectedWebhook = webhook)}>
+<Card
+	class="w-full !max-w-none shadow-sm cursor-pointer hover:shadow-md transition-all"
+	on:click={() => ($selectedWebhook = webhook)}
+>
 	<div class="flex items-center justify-between group">
 		<div class="flex flex-col gap-2">
 			<div class="flex items-center gap-3">

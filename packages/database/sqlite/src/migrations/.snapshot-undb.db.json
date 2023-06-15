@@ -1765,16 +1765,49 @@
           "unique": false
         },
         {
-          "keyName": "undb_webhook_url_event_target_id_method_unique",
           "columnNames": [
-            "url",
-            "event",
-            "target_id",
+            "url"
+          ],
+          "composite": false,
+          "keyName": "undb_webhook_url_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "name"
+          ],
+          "composite": false,
+          "keyName": "undb_webhook_name_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
             "method"
           ],
-          "composite": true,
+          "composite": false,
+          "keyName": "undb_webhook_method_index",
           "primary": false,
-          "unique": true
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "target_id"
+          ],
+          "composite": false,
+          "keyName": "undb_webhook_target_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "event"
+          ],
+          "composite": false,
+          "keyName": "undb_webhook_event_index",
+          "primary": false,
+          "unique": false
         },
         {
           "keyName": "primary",
