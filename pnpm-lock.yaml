@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -103,8 +103,8 @@ importers:
         specifier: ^2.2.3
         version: 2.2.3(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(reflect-metadata@0.1.13)
       '@nestjs/serve-static':
-        specifier: ^3.0.1
-        version: 3.0.1(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(express@4.18.2)
+        specifier: ^4.0.0
+        version: 4.0.0(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(express@4.18.2)
       '@nestjs/terminus':
         specifier: ^9.2.2
         version: 9.2.2(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/axios@2.0.0)(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@nestjs/mongoose@9.2.2)(mongoose@7.2.3)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -3866,12 +3866,12 @@ packages:
       - chokidar
     dev: true
 
-  /@nestjs/serve-static@3.0.1(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(express@4.18.2):
-    resolution: {integrity: sha512-i766UJPYOqvQ2BbRKh0/+Mmq5NkJnmKcShjWV1i5qpXyeM0KDZTn0n7g7ykWq/3LbQgjpMzrhYtGv35GX7GVQw==}
+  /@nestjs/serve-static@4.0.0(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(express@4.18.2):
+    resolution: {integrity: sha512-8cTrNV2ngdHIjiLNsXePnw0+KY1ThrZGz/WeyAG5gIvmZNDbnZBOrPoYlKL+MOzlXlQStxR5jKLYmn+nJeoncQ==}
     peerDependencies:
       '@fastify/static': ^6.5.0
-      '@nestjs/common': ^9.0.0
-      '@nestjs/core': ^9.0.0
+      '@nestjs/common': ^9.0.0 || ^10.0.0
+      '@nestjs/core': ^9.0.0 || ^10.0.0
       express: ^4.18.1
       fastify: ^4.7.0
     peerDependenciesMeta:

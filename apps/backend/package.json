@@ -18,7 +18,7 @@
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.4.2",
     "@nestjs/schedule": "^2.2.3",
-    "@nestjs/serve-static": "^3.0.1",
+    "@nestjs/serve-static": "^4.0.0",
     "@nestjs/terminus": "^9.2.2",
     "@trpc/server": "^10.30.0",
     "@undb/cache": "workspace:^",
