@@ -12,6 +12,7 @@
     "mime-types": "^2.1.35",
     "oxide.ts": "^1.1.0",
     "ts-mixer": "^6.0.3",
+    "ts-pattern": "^5.0.1",
     "zod": "^3.21.4",
     "zod-i18n-map": "^2.13.1"
   },

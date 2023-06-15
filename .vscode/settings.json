@@ -8,5 +8,6 @@
       "database": "${workspaceFolder:undb}/.undb/data/undb.db"
     }
   ],
-  "sqltools.useNodeRuntime": true
+  "sqltools.useNodeRuntime": true,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

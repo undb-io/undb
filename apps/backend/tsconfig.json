@@ -4,6 +4,7 @@
   "exclude": ["node_modules"],
   "compilerOptions": {
     "resolveJsonModule": true,
+    "moduleResolution": "node16",
     "outDir": "./dist"
   }
 }

@@ -6,11 +6,14 @@ import { Table } from './table.js'
 import { User } from './user.js'
 import { viewEntities } from './view.js'
 import { virsualizationEntities } from './virsualization.js'
+import { Webhook } from './webhook.js'
 
 export * from './field.js'
 export * from './option.js'
 export * from './outbox.js'
 export * from './table.js'
+export * from './user.js'
+export * from './webhook.js'
 
 export const entities = [
   Table,
@@ -22,4 +25,5 @@ export const entities = [
   User,
   ...virsualizationEntities,
   Outbox,
+  Webhook,
 ]

@@ -22,7 +22,7 @@ export default defineConfig({
 		},
 	},
 	ssr: {
-		external: ['@undb/core', '@undb/i18n', '@undb/trpc', '@revolist/revogrid'],
+		external: ['@undb/core', '@undb/integrations', '@undb/i18n', '@undb/trpc', '@revolist/revogrid'],
 	},
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}'],

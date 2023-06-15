@@ -7,6 +7,7 @@
     "@undb/core": "^0.0.0",
     "@undb/cqrs": "^0.0.0",
     "@undb/domain": "^0.0.0",
+    "@undb/integrations": "workspace:^",
     "zod": "^3.21.4"
   },
   "devDependencies": {

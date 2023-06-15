@@ -6,7 +6,7 @@ import { openAPIMutateRecordMapper, type IOpenAPIMutateRecordSchema } from '@und
 import { InjectTableRepository } from '../core/table/adapters/index.js'
 
 @Injectable()
-export class OpenAPIService {
+export class OpenAPIRecordService {
   constructor(
     @InjectTableRepository()
     private readonly repo: ITableRepository,
