@@ -1,19 +1,26 @@
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
-import { type IRecordRepository, type ITableRepository } from '@undb/core'
+import { type IRecordRepository, type ITableRepository, type IRecordExportor } from '@undb/core'
 import { ExportGridCommandHandler as DomainHandler, ExportGridCommand } from '@undb/cqrs'
-import { InjectRecordReposiory, InjectTableReposiory } from '../adapters/index.js'
-import { CSVExportor } from '../exportor/csv.exportor.js'
+import {
+  InjectRecordRepository,
+  InjectTableRepository,
+  InjectRecordCSVExportor,
+  InjectRecordExcelExportor,
+} from '../adapters/index.js'
 
 @CommandHandler(ExportGridCommand)
 export class ExportGridCommandHandler extends DomainHandler implements ICommandHandler<ExportGridCommand> {
   constructor(
-    @InjectTableReposiory()
+    @InjectTableRepository()
     protected readonly tableRepo: ITableRepository,
-    @InjectRecordReposiory()
+    @InjectRecordRepository()
     protected readonly recordRepo: IRecordRepository,
-    protected readonly exportor: CSVExportor,
+    @InjectRecordCSVExportor()
+    protected readonly csvExportor: IRecordExportor,
+    @InjectRecordExcelExportor()
+    protected readonly excelExportor: IRecordExportor,
   ) {
-    super(tableRepo, recordRepo, exportor)
+    super(tableRepo, recordRepo, csvExportor, excelExportor)
   }
 }

@@ -2,7 +2,7 @@ import { BaseEvent } from '@undb/domain'
 import type { Table } from '../../table.js'
 import type { BaseRecordEventName, IBaseRecordEventPayload } from './base-record.event.js'
 
-export const EVT_RECORD_BULK_DELETED: BaseRecordEventName = 'record.bulk_deleted'
+export const EVT_RECORD_BULK_DELETED = 'record.bulk_deleted' as const
 
 interface IRecordBulkDeletedEventPayload extends IBaseRecordEventPayload {
   ids: string[]

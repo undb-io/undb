@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common'
 import { Table, type IRecordQueryModel, type ITableRepository } from '@undb/core'
 import { createRedocHTML, createTableSchema, type IPostmanCollectionConvertor } from '@undb/openapi'
-import { OpenAPIObject } from 'openapi3-ts/oas30'
-import { InjectRecordQueryModel, InjectTableReposiory } from '../core/table/adapters/index.js'
+import { OpenAPIObject } from 'openapi3-ts/oas31'
+import { InjectRecordQueryModel, InjectTableRepository } from '../core/table/adapters/index.js'
 import { InjectPostmanConvertor } from './convertor/index.js'
 
 @Injectable()
 export class OpenAPIDocService {
   constructor(
-    @InjectTableReposiory()
+    @InjectTableRepository()
     private readonly repo: ITableRepository,
     @InjectRecordQueryModel()
     private readonly recordRepo: IRecordQueryModel,

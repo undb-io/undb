@@ -10,18 +10,18 @@ import {
 } from '@undb/cqrs'
 import type { IOpenAPIMutateRecordSchema } from '@undb/openapi'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'
-import { OpenAPIService } from './openapi.service.js'
+import { OpenAPIRecordService } from './openapi-record.service.js'
 
 @Controller({
   path: 'openapi',
   version: '1',
 })
 @UseGuards(JwtAuthGuard)
-export class OpenAPIController {
+export class OpenAPIRecordController {
   constructor(
     private queryBus: QueryBus,
     private readonly commandBus: CommandBus,
-    private readonly service: OpenAPIService,
+    private readonly service: OpenAPIRecordService,
   ) {}
 
   @Version('1')

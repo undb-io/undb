@@ -7,13 +7,20 @@ import type { Response } from 'express'
 export class RecordController {
   constructor(private commandBus: CommandBus) {}
 
-  @Get('export/grid/:tableId/:viewId')
-  async exportGrid(@Param('tableId') tableId: string, @Param('viewId') viewId: string, @Res() res: Response) {
-    const cmd = new ExportGridCommand({ tableId, viewId })
+  @Get('export/grid/:tableId/:viewId/:type')
+  async exportGrid(
+    @Param('tableId') tableId: string,
+    @Param('viewId') viewId: string,
+    @Param('type') type: 'csv' | 'excel',
+    @Res() res: Response,
+  ) {
+    const cmd = new ExportGridCommand({ tableId, viewId, type })
     const data = await this.commandBus.execute(cmd)
-
-    res.header('Content-Type', 'text/csv')
-
+    if (type === 'csv') {
+      res.header('Content-Type', 'text/csv')
+    } else {
+      res.header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    }
     return res.send(data)
   }
 }

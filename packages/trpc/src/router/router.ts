@@ -4,6 +4,7 @@ import type { ILogger } from '../type.js'
 import { createRecordRouter } from './record.router.js'
 import { createTableRouter } from './table.router.js'
 import { createUserRouter } from './user.router.js'
+import { createWebhookRouter } from './webhook.router.js'
 
 export const createRouter = (commandBus: ICommandBus, queryBus: IQueryBus, logger: ILogger) => {
   const procedure = publicProcedure.use(
@@ -29,6 +30,7 @@ export const createRouter = (commandBus: ICommandBus, queryBus: IQueryBus, logge
     table: createTableRouter(procedure)(commandBus, queryBus),
     record: createRecordRouter(procedure)(commandBus, queryBus),
     user: createUserRouter(procedure)(commandBus, queryBus),
+    webhook: createWebhookRouter(procedure)(commandBus, queryBus),
   })
   return appRouter
 }

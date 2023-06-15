@@ -1,3 +1,4 @@
+import { match } from 'ts-pattern'
 import {
   EVT_RECORD_BULK_CREATED,
   EVT_RECORD_BULK_DELETED,
@@ -14,23 +15,15 @@ import {
 } from './table/index.js'
 
 export class EventFactory {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static create(id: string, operatorId: string, name: string, payload: any) {
-    switch (name) {
-      case EVT_RECORD_CREATED:
-        return new RecordCreatedEvent(payload, operatorId, id)
-      case EVT_RECORD_DELETED:
-        return new RecordDeletedEvent(payload, operatorId, id)
-      case EVT_RECORD_UPDATED:
-        return new RecordUpdatedEvent(payload, operatorId, id)
-      case EVT_RECORD_BULK_CREATED:
-        return new RecordBulkCreatedEvent(payload, operatorId, id)
-      case EVT_RECORD_BULK_DELETED:
-        return new RecordBulkDeletedEvent(payload, operatorId, id)
-      case EVT_RECORD_BULK_UPDATED:
-        return new RecordBulkUpdatedEvent(payload, operatorId, id)
-
-      default:
-        return null
-    }
+    return match(name)
+      .with(EVT_RECORD_CREATED, () => new RecordCreatedEvent(payload, operatorId, id))
+      .with(EVT_RECORD_UPDATED, () => new RecordUpdatedEvent(payload, operatorId, id))
+      .with(EVT_RECORD_DELETED, () => new RecordDeletedEvent(payload, operatorId, id))
+      .with(EVT_RECORD_BULK_CREATED, () => new RecordBulkCreatedEvent(payload, operatorId, id))
+      .with(EVT_RECORD_BULK_UPDATED, () => new RecordBulkUpdatedEvent(payload, operatorId, id))
+      .with(EVT_RECORD_BULK_DELETED, () => new RecordBulkDeletedEvent(payload, operatorId, id))
+      .otherwise(() => null)
   }
 }

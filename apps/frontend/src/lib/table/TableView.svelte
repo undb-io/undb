@@ -328,12 +328,7 @@
 {#if fieldMenuDOMId}
 	{#key fieldMenuDOMId}
 		<Portal target="body">
-			<Dropdown
-				frameClass="z-50"
-				open
-				triggeredBy={`#${fieldMenuDOMId}`}
-				class="w-[250px] shadow-lg border border-gray-200 rounded-md py-1"
-			>
+			<Dropdown open triggeredBy={`#${fieldMenuDOMId}`} class="w-[250px] border border-gray-200 rounded-md z-[99999]">
 				<FieldMenu {togglePin} />
 			</Dropdown>
 		</Portal>

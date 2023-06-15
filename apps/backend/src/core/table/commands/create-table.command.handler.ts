@@ -3,14 +3,14 @@ import { CommandHandler } from '@nestjs/cqrs'
 import { ClsStore, TableSpecHandler, type IRecordRepository, type ITableRepository } from '@undb/core'
 import { CreateTableCommand, CreateTableCommandHandler as DomainHandler } from '@undb/cqrs'
 import { ClsService } from 'nestjs-cls'
-import { InjectRecordReposiory, InjectTableReposiory } from '../adapters/index.js'
+import { InjectRecordRepository, InjectTableRepository } from '../adapters/index.js'
 
 @CommandHandler(CreateTableCommand)
 export class CreateTableCommandHandler extends DomainHandler implements ICommandHandler<CreateTableCommand> {
   constructor(
-    @InjectTableReposiory()
+    @InjectTableRepository()
     protected readonly repo: ITableRepository,
-    @InjectRecordReposiory()
+    @InjectRecordRepository()
     protected readonly recordRepo: IRecordRepository,
     protected readonly handler: TableSpecHandler,
     protected readonly cls: ClsService<ClsStore>,

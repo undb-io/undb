@@ -3,12 +3,12 @@ import { CommandBus } from '@nestjs/cqrs'
 import { recordReadableMapper, type IQueryRecordSchema, type ITableRepository } from '@undb/core'
 import { CreateRecordCommand, CreateRecordsCommand, UpdateRecordCommand, UpdateRecordsCommand } from '@undb/cqrs'
 import { openAPIMutateRecordMapper, type IOpenAPIMutateRecordSchema } from '@undb/openapi'
-import { InjectTableReposiory } from '../core/table/adapters/index.js'
+import { InjectTableRepository } from '../core/table/adapters/index.js'
 
 @Injectable()
-export class OpenAPIService {
+export class OpenAPIRecordService {
   constructor(
-    @InjectTableReposiory()
+    @InjectTableRepository()
     private readonly repo: ITableRepository,
     private readonly commandBus: CommandBus,
   ) {}

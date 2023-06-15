@@ -1,5 +1,5 @@
 import { convert, type ConvertResult } from 'openapi-to-postmanv2'
-import type { OpenAPIObject } from 'openapi3-ts/oas30'
+import type { OpenAPIObject } from 'openapi3-ts/oas31'
 import type { CollectionDefinition } from 'postman-collection'
 import type { IOpenAPIConvertor } from './openapi.convertor.js'
 

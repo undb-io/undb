@@ -10,6 +10,7 @@
 	import { goto, invalidate } from '$app/navigation'
 	import Portal from 'svelte-portal'
 	import { t } from '$lib/i18n'
+	import { webhookListDrawer } from '$lib/store/drawer'
 
 	const table = getTable()
 	const currentView = getView()
@@ -83,8 +84,8 @@
 		await tick()
 	}
 
-	const exportGrid = async () => {
-		const res = await fetch(`/api/record/export/grid/${$table.id.value}/${view.id.value}`)
+	const exportGrid = async (type: 'csv' | 'excel') => {
+		const res = await fetch(`/api/record/export/grid/${$table.id.value}/${view.id.value}/${type}`)
 		open = false
 		const blob = await res.blob()
 		const a = document.createElement('a')
@@ -136,7 +137,7 @@
 	</a>
 	{#if active}
 		<Portal target="body">
-			<Dropdown triggeredBy={`#${view.id.value}`} bind:open frameClass="z-[100] w-[200px]">
+			<Dropdown triggeredBy={`#${view.id.value}`} bind:open class="!z-[9999999] w-48">
 				<DropdownItem on:click={() => (updating = true)} class="text-xs font-normal inline-flex items-center gap-2">
 					<i class="ti ti-pencil text-gray-600" />
 					<span>{$t('Update View Name')}</span>
@@ -145,9 +146,23 @@
 					<i class="ti ti-copy text-gray-600" />
 					<span>{$t('Duplicate View')}</span>
 				</DropdownItem>
-				<DropdownItem on:click={exportGrid} class="text-xs font-normal inline-flex items-center gap-2">
+				<DropdownItem on:click={() => exportGrid('csv')} class="text-xs font-normal inline-flex items-center gap-2">
 					<i class="ti ti-file-export text-gray-600" />
 					<span>{$t('Export CSV')}</span>
+				</DropdownItem>
+				<DropdownItem on:click={() => exportGrid('excel')} class="text-xs font-normal inline-flex items-center gap-2">
+					<i class="ti ti-file-export text-gray-600" />
+					<span>{$t('Export Excel')}</span>
+				</DropdownItem>
+				<DropdownItem
+					on:click={() => {
+						webhookListDrawer.open()
+						open = false
+					}}
+					class="text-xs font-normal inline-flex items-center gap-2"
+				>
+					<i class="ti ti-webhook text-gray-600" />
+					<span>{$t('Webhook')}</span>
 				</DropdownItem>
 				{#if $table.views.count > 1}
 					<DropdownDivider />

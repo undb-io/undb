@@ -1,10 +1,10 @@
 {
   "name": "undb",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "devDependencies": {
     "@commitlint/cli": "^17.6.5",
     "@commitlint/config-conventional": "^17.6.5",
-    "@types/node": "^20.3.0",
+    "@types/node": "^20.3.1",
     "@undb/eslint-config": "^0.0.0",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",

@@ -4,12 +4,14 @@ import { TableModule } from '../core/table/table.module.js'
 import { convertors } from './convertor/index.js'
 import { OpenAPIDocController } from './openapi-doc.controller.js'
 import { OpenAPIDocService } from './openapi-doc.service.js'
-import { OpenAPIController } from './openapi.controller.js'
-import { OpenAPIService } from './openapi.service.js'
+import { OpenAPIRecordController } from './openapi-record.controller.js'
+import { OpenAPIRecordService } from './openapi-record.service.js'
+import { OpenAPIWebhookController } from './openapi-webhook.controller.js'
+import { OpenAPIWebhookService } from './openapi-webhook.service.js'
 
 @Module({
   imports: [TableModule, CqrsModule],
-  controllers: [OpenAPIDocController, OpenAPIController],
-  providers: [OpenAPIDocService, OpenAPIService, ...convertors],
+  controllers: [OpenAPIDocController, OpenAPIRecordController, OpenAPIWebhookController],
+  providers: [OpenAPIDocService, OpenAPIRecordService, OpenAPIWebhookService, ...convertors],
 })
 export class OpenAPIModule {}

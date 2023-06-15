@@ -5,7 +5,7 @@ import { recordReadableMapper } from '../record.readable.js'
 import type { IQueryRecordSchema } from '../record.type.js'
 import type { BaseRecordEventName, IBaseRecordEventPayload } from './base-record.event.js'
 
-export const EVT_RECORD_CREATED: BaseRecordEventName = 'record.created'
+export const EVT_RECORD_CREATED = 'record.created' as const
 
 interface IRecordCreatedEventPayload extends IBaseRecordEventPayload {
   record: IRecordReadable
