@@ -3,7 +3,7 @@ import { defineConfig } from '@mikro-orm/core'
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
 import { Migration20230528115246 } from '../src/migrations/Migration20230528115246.js'
 import { Migration20230612140223 } from '../src/migrations/Migration20230612140223.js'
-import { Migration20230614092829 } from '../src/migrations/Migration20230614092829.js'
+import { Migration20230615120025 } from '../src/migrations/Migration20230615120025.js'
 
 beforeAll(async () => {
   const { entities } = await import('../src/entity/index.js')
@@ -24,8 +24,8 @@ beforeAll(async () => {
             class: Migration20230612140223,
           },
           {
-            name: 'create webhook',
-            class: Migration20230614092829,
+            name: 'webhook',
+            class: Migration20230615120025,
           },
         ],
       },
