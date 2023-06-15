@@ -10,7 +10,7 @@
     "@mikro-orm/migrations": "^5.7.12",
     "@mikro-orm/nestjs": "^5.1.8",
     "@nestjs/common": "^9.4.2",
-    "@nestjs/config": "^2.3.2",
+    "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^9.4.2",
     "@nestjs/cqrs": "^9.0.4",
     "@nestjs/event-emitter": "^1.4.1",
