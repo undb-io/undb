@@ -8,4 +8,5 @@ export interface IWebhookRepository {
   findOneById(id: string): Promise<Option<Webhook>>
   findOne(spec: WebhookSpecification): Promise<Option<Webhook>>
   find(spec: WebhookSpecification): Promise<Webhook[]>
+  deleteOneById(id: string): Promise<void>
 }

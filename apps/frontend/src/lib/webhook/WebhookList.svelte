@@ -6,9 +6,14 @@
 
 	const table = getTable()
 
-	const getWebhooks = trpc().webhook.list.query({
-		tableId: $table.id.value,
-	})
+	const getWebhooks = trpc().webhook.list.query(
+		{
+			tableId: $table.id.value,
+		},
+		{
+			queryHash: $table.id.value,
+		},
+	)
 
 	$: webhooks = $getWebhooks.data?.webhooks ?? []
 </script>

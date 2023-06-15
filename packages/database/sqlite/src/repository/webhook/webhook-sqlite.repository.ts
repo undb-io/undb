@@ -58,4 +58,8 @@ export class WebhookSqliteRepository implements IWebhookRepository {
     const webhook = await qb.getSingleResult()
     return !!webhook
   }
+
+  async deleteOneById(id: string): Promise<void> {
+    await this.em.nativeDelete(Webhook, { id })
+  }
 }

@@ -33,4 +33,9 @@ export class NestWebhookSqliteRepository extends WebhookSqliteRepository {
   async updateOneById(id: string, spec: WebhookSpecification): Promise<void> {
     return super.updateOneById(id, spec)
   }
+
+  @UseRequestContext()
+  async deleteOneById(id: string): Promise<void> {
+    return super.deleteOneById(id)
+  }
 }
