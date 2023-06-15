@@ -3,10 +3,11 @@
 	import WebhookList from './WebhookList.svelte'
 	import { t } from '$lib/i18n'
 	import { sineIn } from 'svelte/easing'
-	import { webhookDrawerMode, webhookListDrawer } from '$lib/store/drawer'
+	import { selectedWebhook, webhookDrawerMode, webhookListDrawer } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
 	import CreateWebhook from './CreateWebhook.svelte'
 	import { page } from '$app/stores'
+	import UpdateWebhook from './UpdateWebhook.svelte'
 
 	const table = getTable()
 
@@ -14,6 +15,12 @@
 		x: 320,
 		duration: 100,
 		easing: sineIn,
+	}
+
+	$: if ($selectedWebhook) {
+		$webhookDrawerMode = 'update'
+	} else {
+		$webhookDrawerMode = 'list'
 	}
 </script>
 
@@ -47,6 +54,18 @@
 				</Heading>
 			</div>
 			<CreateWebhook data={$page.data.createWebhook} />
+		</div>
+	{:else if $webhookDrawerMode === 'update' && $selectedWebhook}
+		<div class="flex flex-col flex-1">
+			<div class="flex items-center justify-between mb-4">
+				<Heading tag="h5" class="whitespace-nowrap truncate">
+					<button on:click={() => ($selectedWebhook = undefined)}>
+						<i class="ti ti-corner-up-left" />
+					</button>
+					{$table.name.value} - Webhooks
+				</Heading>
+			</div>
+			<UpdateWebhook data={$page.data.updateWebhook} webhook={$selectedWebhook} />
 		</div>
 	{/if}
 </Drawer>

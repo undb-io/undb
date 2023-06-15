@@ -1,3 +1,4 @@
+import { events } from '@undb/core'
 import { z } from 'zod'
 import { webhookIdSchema } from './webhook-id.vo.js'
 import { webhookMethodSchema } from './webhook-method.vo.js'
@@ -34,3 +35,15 @@ export const createWebhookSchema = z.object({
 })
 
 export type ICreateWebhookSchema = z.infer<typeof createWebhookSchema>
+
+export const updateWebhookSchema = z
+  .object({
+    name: z.string().nonempty(),
+    url: webhookURLSchema,
+    method: webhookMethodSchema,
+    enabled: z.boolean(),
+    event: z.enum(events),
+  })
+  .partial()
+
+export type IUpdateWebhookSchema = z.infer<typeof updateWebhookSchema>

@@ -1,10 +1,11 @@
-import { BooleanType, Entity, PrimaryKey, Property } from '@mikro-orm/core'
+import { BooleanType, Entity, PrimaryKey, Property, Unique } from '@mikro-orm/core'
 import type { Webhook as CoreWebhook } from '@undb/integrations'
 import { BaseEntity } from './base.js'
 
 export const WEBHOOK_TABLE_NAME = 'undb_webhook'
 
 @Entity({ tableName: WEBHOOK_TABLE_NAME })
+@Unique({ properties: ['url', 'event', 'targetId'] })
 export class Webhook extends BaseEntity {
   constructor(webhook: CoreWebhook) {
     super()

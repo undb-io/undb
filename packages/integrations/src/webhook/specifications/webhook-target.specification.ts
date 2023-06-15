@@ -70,6 +70,24 @@ export class WebhookEventsIn extends CompositeSpecification<Webhook, IWebhookSpe
   }
 }
 
+export class WithWebhookEvent extends CompositeSpecification<Webhook, IWebhookSpecVisitor> {
+  // TODO: typing events
+  constructor(public readonly event: string) {
+    super()
+  }
+
+  isSatisfiedBy(t: Webhook): boolean {
+    throw new Error('Method not implemented.')
+  }
+  mutate(t: Webhook): Result<Webhook, string> {
+    throw new Error('Method not implemented.')
+  }
+  accept(v: IWebhookSpecVisitor): Result<void, string> {
+    v.eventEqual(this)
+    return Ok(undefined)
+  }
+}
+
 export const withTableEvents = (tableId: string, events: string[]) => {
   return new WithWebhookTable(tableId).and(new WebhookEventsIn(events)).and(WithWebhookEnabled.enabled())
 }

@@ -1,3 +1,4 @@
+import type { IQueryWebhook } from '@undb/integrations/dist'
 import { writable } from 'svelte/store'
 
 const createDrawer = (id: symbol) => {
@@ -37,3 +38,5 @@ const WEBHOOK_LIST_DRAWER = Symbol('WEBHOOK_LIST_DRAWER')
 export const webhookListDrawer = createDrawer(WEBHOOK_LIST_DRAWER)
 
 export const webhookDrawerMode = writable<'list' | 'create' | 'update'>('list')
+
+export const selectedWebhook = writable<IQueryWebhook | undefined>(undefined)

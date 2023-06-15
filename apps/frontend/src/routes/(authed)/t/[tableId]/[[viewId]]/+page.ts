@@ -9,7 +9,7 @@ import {
 	createViewSchema,
 	updateOptionSchema,
 } from '@undb/core'
-import { createWebhookSchema } from '@undb/integrations'
+import { createWebhookSchema, updateWebhookSchema } from '@undb/integrations'
 import { superValidate } from 'sveltekit-superforms/server'
 import { z } from 'zod'
 import type { PageLoad } from './$types'
@@ -68,6 +68,7 @@ export const load: PageLoad = async (event) => {
 		createOption: superValidate({}, createOptionSchema, { id: 'createOption' }),
 		updateOption: superValidate({}, updateOptionSchema, { id: 'createOption' }),
 		createView: superValidate({}, createViewSchema, { id: 'createView', errors: false }),
-		createWebook: superValidate({}, createWebhookSchema, { id: 'createWebhook' }),
+		createWebhook: superValidate({}, createWebhookSchema, { id: 'createWebhook' }),
+		updateWebhook: superValidate({}, updateWebhookSchema, { id: 'updateWebhook' }),
 	}
 }

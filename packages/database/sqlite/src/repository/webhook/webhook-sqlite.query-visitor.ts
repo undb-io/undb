@@ -1,6 +1,7 @@
 import type { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
 import type {
   IWebhookSpecVisitor,
+  WebhookEvent,
   WebhookEventsIn,
   WithWebhookEnabled,
   WithWebhookId,
@@ -14,6 +15,10 @@ import { Webhook } from '../../entity/webhook.js'
 
 export class WebhookSqliteQueryVisitor implements IWebhookSpecVisitor {
   constructor(private readonly em: EntityManager, private qb: QueryBuilder<Webhook>) {}
+  eventEqual(s: WebhookEvent): void {
+    const eventFieldName = this.em.getMetadata().get(Webhook.name).properties.event.fieldNames[0]
+    this.qb.andWhere({ [eventFieldName]: s.event })
+  }
   idEqual(s: WithWebhookId): void {
     const idFieldName = this.em.getMetadata().get(Webhook.name).properties.id.fieldNames[0]
     this.qb.andWhere({ [idFieldName]: s.webhookId.value })

@@ -2,10 +2,12 @@ import {
   CreateWebhookCommand,
   DeleteWebhookCommand,
   GetWebhooksQuery,
+  UpdateWebhookCommand,
   createWebhookCommandInput,
   deleteWebhookCommandInput,
   getWebhooksQueryInput,
   getWebhooksQueryOutput,
+  updateWebhookCommandInput,
 } from '@undb/cqrs'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
@@ -27,6 +29,13 @@ export const createWebhookRouter =
         .output(z.any())
         .mutation(({ input }) => {
           const cmd = new CreateWebhookCommand(input)
+          return commandBus.execute(cmd)
+        }),
+      update: procedure
+        .input(updateWebhookCommandInput)
+        .output(z.any())
+        .mutation(({ input }) => {
+          const cmd = new UpdateWebhookCommand(input)
           return commandBus.execute(cmd)
         }),
       delete: procedure
