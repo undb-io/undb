@@ -2,9 +2,10 @@ import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
 import type {
   IWebhookSpecVisitor,
-  WebhookEvent,
   WebhookEventsIn,
   WithWebhookEnabled,
+  WithWebhookEvent,
+  WithWebhookHeaders,
   WithWebhookId,
   WithWebhookMethod,
   WithWebhookName,
@@ -16,7 +17,12 @@ import { Webhook } from '../../entity/webhook.js'
 
 export class WebhookSqliteMutationVisitor implements IWebhookSpecVisitor {
   constructor(private readonly webhookId: string, private readonly em: EntityManager) {}
-  eventEqual(s: WebhookEvent): void {
+  headersEqual(s: WithWebhookHeaders): void {
+    const webhook = this.em.getReference(Webhook, this.webhookId)
+    wrap(webhook).assign({ headers: s.webhookHeaders.unpack() })
+    this.em.persist(webhook)
+  }
+  eventEqual(s: WithWebhookEvent): void {
     const webhook = this.em.getReference(Webhook, this.webhookId)
     wrap(webhook).assign({ event: s.event })
     this.em.persist(webhook)

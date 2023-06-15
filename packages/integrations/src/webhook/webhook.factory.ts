@@ -2,6 +2,7 @@ import { and } from '@undb/domain'
 import type { WebhookSpecification } from './specifications/index.js'
 import {
   WithWebhookEnabled,
+  WithWebhookHeaders,
   WithWebhookId,
   WithWebhookMethod,
   WithWebhookName,
@@ -35,6 +36,7 @@ export class WebhookFactory {
       new WithWebhookEnabled(input.enabled),
       WithWebhookMethod.fromString(input.method),
       new WithWebhookName(input.name),
+      WithWebhookHeaders.from(input.headers),
     )
   }
 }

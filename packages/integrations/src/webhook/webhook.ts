@@ -1,12 +1,14 @@
 import { IEvent, and } from '@undb/domain'
-import { isBoolean, isString } from 'lodash-es'
+import { isBoolean, isObject, isString } from 'lodash-es'
 import { Option } from 'oxide.ts'
 import { WebhookSpecification } from './specifications/interface.js'
 import { WithWebhookEnabled } from './specifications/webhook-enabled.specification.js'
+import { WithWebhookHeaders } from './specifications/webhook-headers.specification.js'
 import { WithWebhookMethod } from './specifications/webhook-method.specification.js'
 import { WithWebhookName } from './specifications/webhook-name.specification.js'
 import { WithWebhookEvent } from './specifications/webhook-target.specification.js'
 import { WithWebhookURL } from './specifications/webhook-url.specification.js'
+import { WebhookHeaders } from './webhook-headers.vo.js'
 import type { WebhookId } from './webhook-id.vo.js'
 import { WebhookMethod } from './webhook-method.vo.js'
 import type { WebhookTarget } from './webhook-target.vo.js'
@@ -20,6 +22,7 @@ export class Webhook {
   public method!: WebhookMethod
   public enabled!: boolean
   public target!: WebhookTarget | null
+  public headers!: WebhookHeaders
 
   static empty(): Webhook {
     return new Webhook()
@@ -52,6 +55,9 @@ export class Webhook {
     }
     if (isString(input.url)) {
       specs.push(WithWebhookURL.fromString(input.url))
+    }
+    if (isObject(input.headers)) {
+      specs.push(WithWebhookHeaders.from(input.headers))
     }
 
     return and(...specs)

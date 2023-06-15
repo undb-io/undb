@@ -1,5 +1,6 @@
 import { events } from '@undb/core'
 import { z } from 'zod'
+import { webhookHeadersSchema } from './webhook-headers.vo.js'
 import { webhookIdSchema } from './webhook-id.vo.js'
 import { webhookMethodSchema } from './webhook-method.vo.js'
 import { webhookTargetSchema } from './webhook-target.vo.js'
@@ -13,6 +14,7 @@ export const queryWebhook = z
     method: webhookMethodSchema,
     enabled: z.boolean(),
     target: webhookTargetSchema,
+    headers: webhookHeadersSchema,
   })
   .strict()
 
@@ -23,6 +25,7 @@ export const unsafeCreateWebhookSchema = z.object({
   method: webhookMethodSchema,
   enabled: z.boolean(),
   target: webhookTargetSchema,
+  headers: webhookHeadersSchema,
 })
 
 export const createWebhookSchema = z.object({
@@ -32,6 +35,7 @@ export const createWebhookSchema = z.object({
   method: webhookMethodSchema.default('POST'),
   enabled: z.boolean().default(true),
   target: webhookTargetSchema.unwrap().default({ id: '', type: 'table', event: 'record.created' }),
+  headers: webhookHeadersSchema.default({}),
 })
 
 export type ICreateWebhookSchema = z.infer<typeof createWebhookSchema>
@@ -43,6 +47,7 @@ export const updateWebhookSchema = z
     method: webhookMethodSchema,
     enabled: z.boolean(),
     event: z.enum(events),
+    headers: webhookHeadersSchema,
   })
   .partial()
 

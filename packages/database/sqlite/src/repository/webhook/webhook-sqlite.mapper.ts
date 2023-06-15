@@ -10,6 +10,7 @@ export class WebhookSqliteMapper {
       name: webhook.name,
       enabled: !!webhook.enabled,
       method: webhook.method as IWebhookMethod,
+      headers: webhook.headers,
       target:
         webhook.targetId && webhook.targetType && webhook.event
           ? { id: webhook.targetId, type: webhook.targetType as any, event: webhook.event as any }
@@ -24,6 +25,7 @@ export class WebhookSqliteMapper {
       name: webhook.name,
       enabled: !!webhook.enabled,
       method: webhook.method as IWebhookMethod,
+      headers: webhook.headers,
       target:
         webhook.targetId && webhook.targetType && webhook.event
           ? { id: webhook.targetId, type: webhook.targetType as any, event: webhook.event as any }

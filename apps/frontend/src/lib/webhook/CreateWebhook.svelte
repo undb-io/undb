@@ -10,6 +10,7 @@
 	import { slide } from 'svelte/transition'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
+	import WebhookHeaderInput from './WebhookHeaderInput.svelte'
 
 	export let data: Validation<typeof createWebhookSchema>
 
@@ -35,6 +36,7 @@
 					method: event.form.data.method,
 					url: event.form.data.url,
 					name: event.form.data.name,
+					headers: event.form.data.headers,
 					target: {
 						id: $table.id.value,
 						type: 'table',
@@ -91,6 +93,14 @@
 				</div>
 
 				<Select items={events} bind:value={$form.target.event} />
+			</Label>
+			<Label class="flex flex-col gap-2 w-full">
+				<div class="flex gap-2 items-center">
+					<span>{$t('Headers', { ns: 'common' })}</span>
+					<span class="text-red-500">*</span>
+				</div>
+
+				<WebhookHeaderInput bind:value={$form.headers} />
 			</Label>
 		</div>
 		<div class="w-full flex justify-end gap-4">

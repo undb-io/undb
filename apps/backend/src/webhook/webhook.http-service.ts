@@ -29,6 +29,7 @@ export class WebhookHttpService implements IWebhookHttpService {
         method: webhook.method.unpack(),
         json: webhook.constructEvent(event),
         headers: {
+          ...(webhook.headers.unpack() ?? {}),
           'user-agent': 'undb - webhook',
           [UNDB_SIGNATURE_HEADER_NAME]: signature,
         },

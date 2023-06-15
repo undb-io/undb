@@ -1,11 +1,11 @@
-import { BooleanType, Entity, PrimaryKey, Property, Unique } from '@mikro-orm/core'
+import { BooleanType, Entity, JsonType, PrimaryKey, Property, Unique } from '@mikro-orm/core'
 import type { Webhook as CoreWebhook } from '@undb/integrations'
 import { BaseEntity } from './base.js'
 
 export const WEBHOOK_TABLE_NAME = 'undb_webhook'
 
 @Entity({ tableName: WEBHOOK_TABLE_NAME })
-@Unique({ properties: ['url', 'event', 'targetId'] })
+@Unique({ properties: ['url', 'event', 'targetId', 'method'] })
 export class Webhook extends BaseEntity {
   constructor(webhook: CoreWebhook) {
     super()
@@ -17,6 +17,7 @@ export class Webhook extends BaseEntity {
     this.targetType = webhook.target?.type
     this.event = webhook.target?.event ?? null
     this.enabled = webhook.enabled
+    this.headers = webhook.headers.unpack()
   }
 
   @PrimaryKey()
@@ -30,6 +31,9 @@ export class Webhook extends BaseEntity {
 
   @Property()
   method: string
+
+  @Property({ type: JsonType })
+  headers: Record<string, string>
 
   @Property({ nullable: true })
   targetId?: string | null
