@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { CommandBus } from '@nestjs/cqrs'
-import { CreateWebhookCommand } from '@undb/cqrs'
-import { IOpenAPICreateWebhook } from '@undb/openapi'
+import { CreateWebhookCommand, UpdateWebhookCommand } from '@undb/cqrs'
+import { IOpenAPICreateWebhook, IOpenAPIUpdateWebhook } from '@undb/openapi'
 
 @Injectable()
 export class OpenAPIWebhookService {
@@ -18,6 +18,18 @@ export class OpenAPIWebhookService {
             type: 'table',
             event: values.event,
           },
+        },
+      }),
+    )
+  }
+
+  public async updateWebhook(tableId: string, id: string, values: IOpenAPIUpdateWebhook) {
+    await this.commandBus.execute(
+      new UpdateWebhookCommand({
+        tableId,
+        webhookId: id,
+        webhook: {
+          ...values,
         },
       }),
     )

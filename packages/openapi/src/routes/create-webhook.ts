@@ -1,8 +1,7 @@
 import type { RouteConfig } from '@asteasolutions/zod-to-openapi'
 import { type Table } from '@undb/core'
-import { WebhookId, webhookIdSchema } from '@undb/integrations'
 import { z } from 'zod'
-import { COMPONENT_WEBHOOK_ID, TAG_WEBHOOK } from '../constants.js'
+import { TAG_WEBHOOK } from '../constants.js'
 import { IOpenAPICreateWebhookSchema } from '../schema/webhook.schema.js'
 
 export const createWebhook = (table: Table, schema: IOpenAPICreateWebhookSchema): RouteConfig => {
@@ -18,7 +17,6 @@ export const createWebhook = (table: Table, schema: IOpenAPICreateWebhookSchema)
         content: {
           'application/json': {
             schema: z.object({
-              id: webhookIdSchema.openapi(COMPONENT_WEBHOOK_ID, { example: WebhookId.createId() }).optional(),
               values: schema,
             }),
           },

@@ -1,14 +1,9 @@
-import { Body, Controller, Delete, Param, Patch, Post, UseGuards, Version } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, Version } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
-import {
-  BulkDeleteRecordsCommand,
-  BulkDuplicateRecordsCommand,
-  DeleteRecordCommand,
-  DuplicateRecordCommand,
-} from '@undb/cqrs'
-import type { IOpenAPIMutateRecordSchema } from '@undb/openapi'
+import { DeleteWebhookCommand, GetWebhooksQuery } from '@undb/cqrs'
+import type { IOpenAPICreateWebhook, IOpenAPIUpdateWebhook } from '@undb/openapi'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'
-import { OpenAPIRecordService } from './openapi-record.service.js'
+import { OpenAPIWebhookService } from './openapi-webhook.service.js'
 
 @Controller({
   path: 'openapi',
@@ -17,70 +12,38 @@ import { OpenAPIRecordService } from './openapi-record.service.js'
 @UseGuards(JwtAuthGuard)
 export class OpenAPIWebhookController {
   constructor(
-    private queryBus: QueryBus,
+    private readonly service: OpenAPIWebhookService,
     private readonly commandBus: CommandBus,
-    private readonly service: OpenAPIRecordService,
+    private readonly queryBus: QueryBus,
   ) {}
 
   @Version('1')
   @Post('tables/:tableId/webhooks')
-  public async createWebhook(
+  public async createWebhook(@Param('tableId') tableId: string, @Body('values') values: IOpenAPICreateWebhook) {
+    await this.service.createWebhook(tableId, values)
+  }
+
+  @Version('1')
+  @Patch('tables/:tableId/webhooks')
+  public async updateWebhook(
     @Param('tableId') tableId: string,
-    @Body('id') id: string | undefined,
-    @Body('values') values: IOpenAPIMutateRecordSchema,
+    @Param('id') id: string,
+    @Body('values') values: IOpenAPIUpdateWebhook,
   ) {
-    await this.service.createRecord(tableId, id, values)
+    await this.service.updateWebhook(tableId, id, values)
   }
 
   @Version('1')
-  @Post('tables/:tableId/records/bulk')
-  public async createRecords(
-    @Param('tableId') tableId: string,
-    @Body('records') records: { id?: string; values: IOpenAPIMutateRecordSchema }[],
-  ) {
-    await this.service.createRecords(tableId, records)
+  @Delete('tables/:tableId/webhooks/:id')
+  public async deleteWebhook(@Param('tableId') tableId: string, @Param('id') id: string) {
+    const cmd = new DeleteWebhookCommand({ webhookId: id })
+    await this.commandBus.execute(cmd)
   }
 
   @Version('1')
-  @Patch('tables/:tableId/records')
-  public async updateRecord(
-    @Param('tableId') tableId: string,
-    @Body('id') id: string,
-    @Body('values') values: IOpenAPIMutateRecordSchema,
-  ) {
-    await this.service.updateRecord(tableId, id, values)
-  }
-
-  @Version('1')
-  @Patch('tables/:tableId/records/bulk')
-  public async updateRecords(
-    @Param('tableId') tableId: string,
-    @Body('records') records: { id: string; values: IOpenAPIMutateRecordSchema }[],
-  ) {
-    await this.service.updateRecords(tableId, records)
-  }
-
-  @Version('1')
-  @Delete('tables/:tableId/records/:id')
-  public async deleteRecord(@Param('tableId') tableId: string, @Param('id') id: string) {
-    await this.commandBus.execute(new DeleteRecordCommand({ tableId, id }))
-  }
-
-  @Version('1')
-  @Delete('tables/:tableId/records')
-  public async deleteRecordsByIds(@Param('tableId') tableId: string, @Body('ids') ids: [string, ...string[]]) {
-    await this.commandBus.execute(new BulkDeleteRecordsCommand({ tableId, ids }))
-  }
-
-  @Version('1')
-  @Post('tables/:tableId/records/:id')
-  public async duplicateRecordById(@Param('tableId') tableId: string, @Param('id') id: string) {
-    await this.commandBus.execute(new DuplicateRecordCommand({ tableId, id }))
-  }
-
-  @Version('1')
-  @Post('tables/:tableId/records')
-  public async duplicateRecordsByIds(@Param('tableId') tableId: string, @Body('ids') ids: [string, ...string[]]) {
-    await this.commandBus.execute(new BulkDuplicateRecordsCommand({ tableId, ids }))
+  @Get('tables/:tableId/webhooks')
+  public async getWebhooks(@Param('tableId') tableId: string) {
+    const query = new GetWebhooksQuery({ tableId })
+    await this.queryBus.execute(query)
   }
 }
