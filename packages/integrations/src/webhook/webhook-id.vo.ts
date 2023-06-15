@@ -12,6 +12,10 @@ export class WebhookId extends NanoID {
     return new WebhookId(id)
   }
 
+  static createId(): string {
+    return this.create().value
+  }
+
   static from(id: string): Result<WebhookId, string> {
     return Ok(new WebhookId(id))
   }

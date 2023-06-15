@@ -17,6 +17,7 @@ import {
 } from './constants.js'
 import { createRecord } from './routes/create-record.js'
 import { createRecords } from './routes/create-records.js'
+import { createWebhook } from './routes/create-webhook.js'
 import { deleteRecordById } from './routes/delete-record-by-id.js'
 import { deleteRecordsByIds } from './routes/delete-records-by-ids.js'
 import { duplicateRecordById } from './routes/duplicate-record-by-id.js'
@@ -29,6 +30,7 @@ import { create401ResponseSchema } from './schema/401.respoonse.js'
 import { createOpenAPIMutateRecordSchema } from './schema/mutate-record.schema.js'
 import { createOpenAPIRecordSchema } from './schema/open-api-record.schema.js'
 import { openAPIOptionSchema, openApiUserSchema } from './schema/record-value.schema.js'
+import { createCreateWebhookSchema } from './schema/webhook.schema.js'
 
 export const createTableSchema = (
   table: Table,
@@ -52,6 +54,8 @@ export const createTableSchema = (
     bearerFormat: 'JWT',
   })
 
+  const createWebhookSchema = createCreateWebhookSchema(table)
+
   const routes = [
     getRecords(table, recordSchema),
     getRecordById(table, recordSchema),
@@ -63,6 +67,8 @@ export const createTableSchema = (
     createRecords(table, valuesSchema),
     updateRecord(table, valuesSchema, record),
     updateRecords(table, valuesSchema, record),
+
+    createWebhook(table, createWebhookSchema),
   ]
 
   for (const route of routes) {
