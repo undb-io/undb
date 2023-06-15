@@ -137,7 +137,7 @@
 	</a>
 	{#if active}
 		<Portal target="body">
-			<Dropdown triggeredBy={`#${view.id.value}`} bind:open frameClass="z-[100]">
+			<Dropdown triggeredBy={`#${view.id.value}`} bind:open class="!z-[9999999] w-48">
 				<DropdownItem on:click={() => (updating = true)} class="text-xs font-normal inline-flex items-center gap-2">
 					<i class="ti ti-pencil text-gray-600" />
 					<span>{$t('Update View Name')}</span>
