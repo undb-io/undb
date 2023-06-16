@@ -14,6 +14,10 @@ export const configSchema = Joi.object({
     is: 'local',
     then: Joi.string().default(path.resolve(process.cwd(), './attachments')),
   }),
+
+  // webhook
+  UNDB_WEBHOOK_SECRET: Joi.string().optional(),
+
   // s3
   UNDB_S3_ENDPOINT: Joi.when('UNDB_OBJECT_STORAGE_PROVIDER', {
     is: 's3',
@@ -32,10 +36,12 @@ export const configSchema = Joi.object({
     then: Joi.string(),
   }),
 
+  // auth
   UNDB_JWT_SECRET: Joi.string().default('jwt_secret'),
   UNDB_ADMIN_EMAIL: Joi.string().email().optional(),
   UNDB_ADMIN_PASSWORD: Joi.string().optional(),
 
+  // cache
   UNDB_CACHE_STORAGE_PROVIDER: Joi.string().valid('memory', 'fs', 'redis', 'mongo').default('memory'),
   UNDB_CACHE_STORAGE_REDIS_HOST: Joi.when('UNDB_CACHE_STORAGE_PROVIDER', {
     is: 'redis',

@@ -1,4 +1,4 @@
-import { ICreateViewSchema } from '@undb/core'
+import type { ICreateViewSchema } from '@undb/core'
 import type { CommandProps } from '@undb/domain'
 import { Command } from '@undb/domain'
 import type { ICreateViewCommandInput } from './create-view.command.interface.js'

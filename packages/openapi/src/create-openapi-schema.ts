@@ -1,12 +1,13 @@
-import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi'
+import { OpenAPIRegistry, OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi'
 import type { IQueryRecordSchema } from '@undb/core'
 import { RecordId, recordIdSchema, viewIdSchema, type Table } from '@undb/core'
+import { queryWebhook, webhookIdSchema } from '@undb/integrations'
 import { logger } from '@undb/logger'
 import { format } from 'date-fns'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import OpenAPISnippet from 'openapi-snippet'
-import type { OpenAPIObject } from 'openapi3-ts/oas30'
+import type { OpenAPIObject } from 'openapi3-ts/oas31'
 import {
   COMPONENT_MUTATE_RECORD_VALUES,
   COMPONENT_OPTION,
@@ -14,21 +15,28 @@ import {
   COMPONENT_RECORD_ID,
   COMPONENT_USER,
   COMPONENT_VIEW_ID,
+  COMPONENT_WEBHOOK,
+  COMPONENT_WEBHOOK_ID,
 } from './constants.js'
 import { createRecord } from './routes/create-record.js'
 import { createRecords } from './routes/create-records.js'
+import { createWebhook } from './routes/create-webhook.js'
 import { deleteRecordById } from './routes/delete-record-by-id.js'
 import { deleteRecordsByIds } from './routes/delete-records-by-ids.js'
+import { deleteWebhook } from './routes/delete-webhook.js'
 import { duplicateRecordById } from './routes/duplicate-record-by-id.js'
 import { duplicateRecordsByIds } from './routes/duplicate-records-by-ids.js'
 import { getRecordById } from './routes/get-record-by-id.js'
 import { getRecords } from './routes/get-records.js'
+import { getWebhooks } from './routes/get-webhooks.js'
 import { updateRecords } from './routes/udpate-records.js'
 import { updateRecord } from './routes/update-record.js'
+import { updateWebhook } from './routes/update-webhook.js'
 import { create401ResponseSchema } from './schema/401.respoonse.js'
 import { createOpenAPIMutateRecordSchema } from './schema/mutate-record.schema.js'
 import { createOpenAPIRecordSchema } from './schema/open-api-record.schema.js'
 import { openAPIOptionSchema, openApiUserSchema } from './schema/record-value.schema.js'
+import { createCreateWebhookSchema, createUpdateWebhookSchema } from './schema/webhook.schema.js'
 
 export const createTableSchema = (
   table: Table,
@@ -46,11 +54,17 @@ export const createTableSchema = (
   const valuesSchema = createOpenAPIMutateRecordSchema(table, record)
   registry.register(COMPONENT_MUTATE_RECORD_VALUES, valuesSchema)
 
+  registry.register(COMPONENT_WEBHOOK, queryWebhook)
+  registry.register(COMPONENT_WEBHOOK_ID, webhookIdSchema)
+
   const bearerAuth = registry.registerComponent('securitySchemes', 'bearerAuth', {
     type: 'http',
     scheme: 'bearer',
     bearerFormat: 'JWT',
   })
+
+  const createWebhookSchema = createCreateWebhookSchema(table)
+  const updateWebhookSchema = createUpdateWebhookSchema(table)
 
   const routes = [
     getRecords(table, recordSchema),
@@ -63,6 +77,11 @@ export const createTableSchema = (
     createRecords(table, valuesSchema),
     updateRecord(table, valuesSchema, record),
     updateRecords(table, valuesSchema, record),
+
+    createWebhook(table, createWebhookSchema),
+    updateWebhook(table, updateWebhookSchema),
+    deleteWebhook(table),
+    getWebhooks(table),
   ]
 
   for (const route of routes) {
@@ -75,10 +94,10 @@ export const createTableSchema = (
   }
 
   function getOpenApiDocumentation() {
-    const generator = new OpenApiGeneratorV3(registry.definitions)
+    const generator = new OpenApiGeneratorV31(registry.definitions)
 
     const generated = generator.generateDocument({
-      openapi: '3.0.0',
+      openapi: '3.1.0',
       info: {
         version: format(new Date(), 'yyyy-MM-dd'),
         title: `undb ${table.name.value} open api`,
@@ -101,7 +120,7 @@ export const createTableSchema = (
         'node',
         'go',
       ])
-      const path = docs.paths[route.path][route.method]
+      const path = docs.paths?.[route.path][route.method]
       if (path) {
         path['x-codeSamples'] = []
         for (const [index, snippet] of generated.snippets.entries()) {

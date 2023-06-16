@@ -9,3 +9,7 @@ export const UNAUTHORIZED = '401'
 export const COMPONENT_MUTATE_RECORD_VALUES = 'MutateRecordValues'
 
 export const TAG_RECORD = 'Record'
+
+export const TAG_WEBHOOK = 'Webhook'
+export const COMPONENT_WEBHOOK = 'Webhook'
+export const COMPONENT_WEBHOOK_ID = 'WebhookId'

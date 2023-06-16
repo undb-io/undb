@@ -1,3 +1,14 @@
+## v0.5.8
+
+
+### 🩹 Fixes
+
+  - Fix field menu dropdown ([e44f098](https://github.com/undb-xyz/undb/commit/e44f098))
+
+### ❤️  Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v0.5.7
 
 ## v0.5.6

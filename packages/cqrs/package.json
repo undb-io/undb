@@ -6,10 +6,12 @@
   "dependencies": {
     "@undb/core": "^0.0.0",
     "@undb/domain": "^0.0.0",
+    "@undb/integrations": "workspace:^",
     "oxide.ts": "^1.1.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@undb/logger": "workspace:^",
     "rimraf": "^5.0.1",
     "tsconfig": "^0.0.0",
     "tsup": "^6.7.0",

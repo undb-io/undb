@@ -23,6 +23,7 @@ import { OpenAPIModule } from './openapi/openapi.module.js'
 import { OutboxModule } from './outbox/outbox.module.js'
 import { RealyModule } from './relay/relay.module.js'
 import { TrpcModule } from './trpc/trpc.module.js'
+import { WebhookModule } from './webhook/webhook.module.js'
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { TrpcModule } from './trpc/trpc.module.js'
     OpenAPIModule,
     OutboxModule,
     RealyModule,
+    WebhookModule,
   ],
 })
 export class AppModule implements OnModuleInit {
