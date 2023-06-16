@@ -1,7 +1,12 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230528115246 extends Migration {
+export class Migration20230616004434 extends Migration {
   async up(): Promise<void> {
+    this.addSql(
+      'create table `undb_outbox` (`uuid` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text null, `operator_id` text null, `payload` json not null, primary key (`uuid`));',
+    )
+    this.addSql('create index `undb_outbox_deleted_at_index` on `undb_outbox` (`deleted_at`);')
+
     this.addSql(
       'create table `undb_table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `emoji` text not null, `views_order` text null, primary key (`id`));',
     )
@@ -37,6 +42,7 @@ export class Migration20230528115246 extends Migration {
     )
     this.addSql('create index `undb_option_deleted_at_index` on `undb_option` (`deleted_at`);')
     this.addSql('create index `undb_option_field_id_index` on `undb_option` (`field_id`);')
+    this.addSql('create index `undb_option_name_index` on `undb_option` (`name`);')
 
     this.addSql(
       'create table `undb_attachment` (`id` text not null, `record_id` text not null, `field_id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text not null, `mime_type` text not null, `name` text not null, `size` integer not null, `token` text not null, `url` text not null, `extension` text not null, constraint `undb_attachment_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on update cascade, primary key (`id`, `record_id`, `field_id`));',
@@ -73,17 +79,17 @@ export class Migration20230528115246 extends Migration {
     this.addSql('create index `undb_view_table_id_index` on `undb_view` (`table_id`);')
 
     this.addSql(
-      'create table `undb_virsualization` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `type` text not null, `table_id` text null, `number_aggregate_function` text null, `field_id` text null, `chart_aggregate_function` text null, `chart_type` text null, constraint `undb_virsualization_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));',
+      'create table `undb_visualization` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `type` text not null, `table_id` text null, `number_aggregate_function` text null, `field_id` text null, `chart_aggregate_function` text null, `chart_type` text null, constraint `undb_visualization_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));',
     )
-    this.addSql('create index `undb_virsualization_deleted_at_index` on `undb_virsualization` (`deleted_at`);')
-    this.addSql('create index `undb_virsualization_type_index` on `undb_virsualization` (`type`);')
-    this.addSql('create index `undb_virsualization_table_id_index` on `undb_virsualization` (`table_id`);')
+    this.addSql('create index `undb_visualization_deleted_at_index` on `undb_visualization` (`deleted_at`);')
+    this.addSql('create index `undb_visualization_type_index` on `undb_visualization` (`type`);')
+    this.addSql('create index `undb_visualization_table_id_index` on `undb_visualization` (`table_id`);')
 
     this.addSql(
-      'create table `undb_widge` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `layout` json not null, `view_id` text not null, `virsualization_id` text null, constraint `undb_widge_view_id_foreign` foreign key(`view_id`) references `undb_view`(`id`) on update cascade, constraint `undb_widge_virsualization_id_foreign` foreign key(`virsualization_id`) references `undb_virsualization`(`id`) on delete set null on update cascade, primary key (`id`));',
+      'create table `undb_widge` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `layout` json not null, `view_id` text not null, `visualization_id` text null, constraint `undb_widge_view_id_foreign` foreign key(`view_id`) references `undb_view`(`id`) on update cascade, constraint `undb_widge_visualization_id_foreign` foreign key(`visualization_id`) references `undb_visualization`(`id`) on delete set null on update cascade, primary key (`id`));',
     )
     this.addSql('create index `undb_widge_deleted_at_index` on `undb_widge` (`deleted_at`);')
     this.addSql('create index `undb_widge_view_id_index` on `undb_widge` (`view_id`);')
-    this.addSql('create unique index `undb_widge_virsualization_id_unique` on `undb_widge` (`virsualization_id`);')
+    this.addSql('create unique index `undb_widge_visualization_id_unique` on `undb_widge` (`visualization_id`);')
   }
 }
