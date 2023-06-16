@@ -39,3 +39,5 @@ export const createCreatedAtFieldValue_internal = z
   .merge(createdAtTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(CreatedAtField) }))
 export type ICreateCreatedAtFieldValue_internal = z.infer<typeof createCreatedAtFieldValue_internal>
+
+export const createdAtReadableValueSchema = createdAtFieldQueryValue

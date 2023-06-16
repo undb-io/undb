@@ -1,6 +1,14 @@
 import { OpenAPIRegistry, OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi'
 import type { IQueryRecordSchema } from '@undb/core'
-import { RecordId, recorEventSchema, recordIdSchema, viewIdSchema, type Table } from '@undb/core'
+import {
+  RecordId,
+  readableOptionSchema,
+  recorEventSchema,
+  recordIdSchema,
+  recordReadableValueSchemaMap,
+  viewIdSchema,
+  type Table,
+} from '@undb/core'
 import { queryWebhook, webhookIdSchema } from '@undb/integrations'
 import { logger } from '@undb/logger'
 import { format } from 'date-fns'
@@ -37,7 +45,6 @@ import { updateWebhook } from './routes/update-webhook.js'
 import { create401ResponseSchema } from './schema/401.respoonse.js'
 import { createOpenAPIMutateRecordSchema } from './schema/mutate-record.schema.js'
 import { createOpenAPIRecordSchema } from './schema/open-api-record.schema.js'
-import { openAPIOptionSchema, openApiUserSchema } from './schema/record-value.schema.js'
 import { createCreateWebhookSchema, createUpdateWebhookSchema } from './schema/webhook.schema.js'
 
 export const createTableSchema = (
@@ -51,8 +58,9 @@ export const createTableSchema = (
   registry.register(COMPONENT_RECORD, recordSchema)
   registry.register(COMPONENT_RECORD_ID, recordIdSchema.openapi({ example: record?.id ?? RecordId.createId() }))
   registry.register(COMPONENT_VIEW_ID, viewIdSchema.openapi({ example: table.mustGetView().id.value }))
-  registry.register(COMPONENT_OPTION, openAPIOptionSchema)
-  registry.register(COMPONENT_USER, openApiUserSchema)
+  registry.register(COMPONENT_OPTION, readableOptionSchema)
+  registry.register(COMPONENT_USER, recordReadableValueSchemaMap['created-by'])
+  registry.register(COMPONENT_USER, recordReadableValueSchemaMap['updated-by'])
   const valuesSchema = createOpenAPIMutateRecordSchema(table, record)
   registry.register(COMPONENT_MUTATE_RECORD_VALUES, valuesSchema)
 

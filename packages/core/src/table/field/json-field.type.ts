@@ -37,3 +37,5 @@ export const createJsonFieldValue_internal = z
   .merge(jsonTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(JsonField) }))
 export type ICreateJsonFieldValue_internal = z.infer<typeof createJsonFieldValue_internal>
+
+export const jsonReadableValueSchema = z.record(z.any()).or(z.array(z.any())).or(z.string()).or(z.null()).or(z.number())

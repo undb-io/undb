@@ -52,3 +52,5 @@ export const createAverageFieldValue_internal = z
   .merge(averageTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(AverageField) }))
 export type ICreateAverageFieldValue_internal = z.infer<typeof createAverageFieldValue_internal>
+
+export const averageReadableValueSchema = averageFieldQueryValue

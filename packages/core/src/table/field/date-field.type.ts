@@ -35,3 +35,5 @@ export const createDateFieldValue_internal = z
 export type ICreateDateFieldValue_internal = z.infer<typeof createDateFieldValue_internal>
 
 export const isDateField = z.instanceof(DateField)
+
+export const dateReadableValueSchema = dateFieldQueryValue

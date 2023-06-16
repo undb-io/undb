@@ -58,3 +58,10 @@ export const referenceFieldIssues = z.enum(['Missing Foreign Table'])
 export type IReferenceFieldIssues = z.infer<typeof referenceFieldIssues>
 
 export type ReferenceFieldIssue = FieldIssue<IReferenceFieldIssues>
+
+export const referenceReadableValueSchema = z
+  .object({
+    id: recordIdSchema,
+    value: z.any().array(),
+  })
+  .array()

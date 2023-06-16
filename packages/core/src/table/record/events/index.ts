@@ -1,4 +1,6 @@
 import { z } from 'zod'
+import { Table } from '../../table.js'
+import { createRecordReadableValueSchema } from '../record.readable.js'
 import {
   EVT_RECORD_BULK_CREATED,
   RecordBulkCreatedEvent,
@@ -14,9 +16,19 @@ import {
   RecordBulkUpdatedEvent,
   recordsBulkUpdatedEvent,
 } from './record-bulk-updated.event.js'
-import { EVT_RECORD_CREATED, RecordCreatedEvent, recordCreatedEvent } from './record-created.event.js'
+import {
+  EVT_RECORD_CREATED,
+  RecordCreatedEvent,
+  recordCreatedEvent,
+  recordCreatedEventPayload,
+} from './record-created.event.js'
 import { EVT_RECORD_DELETED, RecordDeletedEvent, recordDeletedEvent } from './record-deleted.event.js'
-import { EVT_RECORD_UPDATED, RecordUpdatedEvent, recordUpdatedEvent } from './record-updated.event.js'
+import {
+  EVT_RECORD_UPDATED,
+  RecordUpdatedEvent,
+  recordUpdatedEvent,
+  recordUpdatedEventPayload,
+} from './record-updated.event.js'
 
 export * from './record-bulk-created.event.js'
 export * from './record-bulk-deleted.event.js'
@@ -64,3 +76,33 @@ export const recorEventSchema = z.discriminatedUnion('name', [
 ])
 
 export type IRecordEvents = z.infer<typeof recorEventSchema>
+
+export const createRecordEventReadableValueSchema = (table: Table) => {
+  const record = createRecordReadableValueSchema(table)
+  return z.discriminatedUnion('name', [
+    recordCreatedEvent.merge(
+      z.object({
+        payload: recordCreatedEventPayload.merge(z.object({ record })),
+      }),
+    ),
+    recordUpdatedEvent.merge(
+      z.object({
+        payload: recordUpdatedEventPayload.merge(z.object({ previousRecord: record, record })),
+      }),
+    ),
+    recordDeletedEvent,
+    recordsBulkCreatedEvent.merge(
+      z.object({
+        payload: recordCreatedEventPayload.merge(z.object({ records: record.array() })),
+      }),
+    ),
+    recordsBulkUpdatedEvent.merge(
+      z.object({
+        payload: recordCreatedEventPayload.merge(
+          z.object({ updates: z.object({ previousRecord: record, record }).array() }),
+        ),
+      }),
+    ),
+    recordsBulkDeletedEvent,
+  ])
+}

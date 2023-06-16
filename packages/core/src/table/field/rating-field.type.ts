@@ -43,3 +43,5 @@ export const createRatingFieldValue_internal = z
   .merge(ratingTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(RatingField) }))
 export type ICreateRatingFieldValue_internal = z.infer<typeof createRatingFieldValue_internal>
+
+export const ratingReadableValueSchema = ratingFieldQueryValue

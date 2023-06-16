@@ -1,5 +1,11 @@
 import * as z from 'zod'
-import { createOptionsSchema, mutateOptionSchema, optionIdSchema, optionsSchema } from '../option/option.schema.js'
+import {
+  createOptionsSchema,
+  mutateOptionSchema,
+  optionIdSchema,
+  optionsSchema,
+  readableOptionSchema,
+} from '../option/option.schema.js'
 import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
 import { SelectField } from './select-field.js'
@@ -55,3 +61,5 @@ export const reorderOptionsSchema = z.object({
 export type IReorderOptionsSchema = z.infer<typeof reorderOptionsSchema>
 
 export const isSelectField = z.instanceof(SelectField)
+
+export const selectReadableValueSchema = readableOptionSchema

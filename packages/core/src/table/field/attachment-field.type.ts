@@ -42,3 +42,5 @@ export const createAttachmentFieldValue_internal = z
   .merge(attachmentTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(AttachmentField) }))
 export type ICreateAttachmentFieldValue_internal = z.infer<typeof createAttachmentFieldValue_internal>
+
+export const attachmentReadableValueSchema = attachmentFieldQueryValue

@@ -58,3 +58,5 @@ export const createDateRangeFieldValue_internal = z
 export type ICreateDateRangeFieldValue_internal = z.infer<typeof createDateRangeFieldValue_internal>
 
 export const isDateRangeField = z.instanceof(DateRangeField)
+
+export const dateRangeReadableValueSchema = dateRangeFieldQueryValue

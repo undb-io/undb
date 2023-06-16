@@ -71,3 +71,8 @@ export type ICreateOptionsSchema = z.infer<typeof createOptionsSchema>
 export const updateOptionSchema = mutateOptionSchema
 
 export type IUpdateOptionSchema = z.infer<typeof updateOptionSchema>
+
+export const readableOptionSchema = z.object({
+  id: optionIdSchema,
+  name: optionNameSchema,
+})

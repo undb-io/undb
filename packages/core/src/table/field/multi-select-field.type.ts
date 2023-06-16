@@ -1,5 +1,11 @@
 import * as z from 'zod'
-import { createOptionsSchema, mutateOptionSchema, optionIdSchema, optionsSchema } from '../option/option.schema.js'
+import {
+  createOptionsSchema,
+  mutateOptionSchema,
+  optionIdSchema,
+  optionsSchema,
+  readableOptionSchema,
+} from '../option/option.schema.js'
 import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
 import { MultiSelectField } from './multi-select-field.js'
@@ -46,3 +52,5 @@ export const createMultiSelectFieldValue_internal = z
 export type ICreateMultiSelectFieldValue_internal = z.infer<typeof createMultiSelectFieldValue_internal>
 
 export const isMultiSelectField = z.instanceof(MultiSelectField)
+
+export const multiSelectReadableValueSchema = readableOptionSchema.array()

@@ -31,3 +31,5 @@ export const createIdFieldValue_internal = z
   .merge(idTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(IdField) }))
 export type ICreateIdFieldValue_internal = z.infer<typeof createIdFieldValue_internal>
+
+export const idReadableValueSchema = idFieldQueryValue

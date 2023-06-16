@@ -1,5 +1,6 @@
 import * as z from 'zod'
 import { userIdSchema } from '../../user/value-objects/user-id.vo.js'
+import { collaboratorProfile } from './collaborator-field.type.js'
 import { CreatedByField } from './created-by-field.js'
 import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
@@ -39,3 +40,5 @@ export const createCreatedByFieldValue_internal = z
   .merge(createdByTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(CreatedByField) }))
 export type ICreateCreatedByFieldValue_internal = z.infer<typeof createCreatedByFieldValue_internal>
+
+export const createdByReadableValueSchema = z.object({ id: userIdSchema }).merge(collaboratorProfile)
