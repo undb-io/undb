@@ -5,6 +5,7 @@ import {
   EVT_RECORD_BULK_CREATED,
   RecordBulkCreatedEvent,
   recordsBulkCreatedEvent,
+  recordsBulkCreatedEventPayload,
 } from './record-bulk-created.event.js'
 import {
   EVT_RECORD_BULK_DELETED,
@@ -15,6 +16,7 @@ import {
   EVT_RECORD_BULK_UPDATED,
   RecordBulkUpdatedEvent,
   recordsBulkUpdatedEvent,
+  recordsBulkUpdatedEventPayload,
 } from './record-bulk-updated.event.js'
 import {
   EVT_RECORD_CREATED,
@@ -93,12 +95,12 @@ export const createRecordEventReadableValueSchema = (table: Table) => {
     recordDeletedEvent,
     recordsBulkCreatedEvent.merge(
       z.object({
-        payload: recordCreatedEventPayload.merge(z.object({ records: record.array() })),
+        payload: recordsBulkCreatedEventPayload.merge(z.object({ records: record.array() })),
       }),
     ),
     recordsBulkUpdatedEvent.merge(
       z.object({
-        payload: recordCreatedEventPayload.merge(
+        payload: recordsBulkUpdatedEventPayload.merge(
           z.object({ updates: z.object({ previousRecord: record, record }).array() }),
         ),
       }),
