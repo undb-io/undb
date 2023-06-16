@@ -4,9 +4,7 @@ import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import path from 'path'
 import { entities } from './entity/index.js'
 import { SqliteLogger } from './logger.js'
-import { Migration20230528115246 } from './migrations/Migration20230528115246.js'
-import { Migration20230612140223 } from './migrations/Migration20230612140223.js'
-import { Migration20230615120025 } from './migrations/Migration20230615120025.js'
+import { Migration20230616011519 } from './migrations/Migration20230616011519.js'
 
 export const createConfig = (data: string, env = 'development') =>
   defineConfig({
@@ -26,15 +24,7 @@ export const createConfig = (data: string, env = 'development') =>
       migrationsList: [
         {
           name: 'initial',
-          class: Migration20230528115246,
-        },
-        {
-          name: 'create outbox',
-          class: Migration20230612140223,
-        },
-        {
-          name: 'webhook',
-          class: Migration20230615120025,
+          class: Migration20230616011519,
         },
       ],
     },

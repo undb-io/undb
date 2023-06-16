@@ -24,6 +24,12 @@ importers:
       '@undb/eslint-config':
         specifier: ^0.0.0
         version: link:packages/eslint-config
+      better-sqlite3:
+        specifier: ^8.4.0
+        version: 8.4.0
+      chalk:
+        specifier: ^5.2.0
+        version: 5.2.0
       commitizen:
         specifier: ^4.3.0
         version: 4.3.0
@@ -33,6 +39,9 @@ importers:
       dotenv-cli:
         specifier: ^7.2.1
         version: 7.2.1
+      esno:
+        specifier: ^0.16.3
+        version: 0.16.3
       lint-staged:
         specifier: ^13.2.2
         version: 13.2.2
@@ -71,7 +80,7 @@ importers:
         version: 5.7.12(@mikro-orm/better-sqlite@5.7.12)(@mikro-orm/migrations@5.7.12)
       '@mikro-orm/migrations':
         specifier: ^5.7.12
-        version: 5.7.12(@mikro-orm/core@5.7.12)
+        version: 5.7.12(@mikro-orm/core@5.7.12)(better-sqlite3@8.4.0)
       '@mikro-orm/nestjs':
         specifier: ^5.1.8
         version: 5.1.8(@mikro-orm/core@5.7.12)(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)
@@ -708,7 +717,7 @@ importers:
         version: 5.7.12(@mikro-orm/better-sqlite@5.7.12)(@mikro-orm/migrations@5.7.12)
       '@mikro-orm/migrations':
         specifier: ^5.7.12
-        version: 5.7.12(@mikro-orm/core@5.7.12)
+        version: 5.7.12(@mikro-orm/core@5.7.12)(better-sqlite3@8.4.0)
       '@mikro-orm/sql-highlighter':
         specifier: ^1.0.1
         version: 1.0.1
@@ -742,7 +751,7 @@ importers:
     devDependencies:
       '@mikro-orm/cli':
         specifier: ^5.7.12
-        version: 5.7.12(@mikro-orm/better-sqlite@5.7.12)(@mikro-orm/migrations@5.7.12)
+        version: 5.7.12(@mikro-orm/better-sqlite@5.7.12)(@mikro-orm/migrations@5.7.12)(better-sqlite3@8.4.0)
       '@mikro-orm/reflection':
         specifier: ^5.7.12
         version: 5.7.12(@mikro-orm/core@5.7.12)
@@ -2672,6 +2681,27 @@ packages:
       '@jridgewell/trace-mapping': 0.3.9
     dev: true
 
+  /@esbuild-kit/cjs-loader@2.4.2:
+    resolution: {integrity: sha512-BDXFbYOJzT/NBEtp71cvsrGPwGAMGRB/349rwKuoxNSiKjPraNNnlK6MIIabViCjqZugu6j+xeMDlEkWdHHJSg==}
+    dependencies:
+      '@esbuild-kit/core-utils': 3.1.0
+      get-tsconfig: 4.5.0
+    dev: true
+
+  /@esbuild-kit/core-utils@3.1.0:
+    resolution: {integrity: sha512-Uuk8RpCg/7fdHSceR1M6XbSZFSuMrxcePFuGgyvsBn+u339dk5OeL4jv2EojwTN2st/unJGsVm4qHWjWNmJ/tw==}
+    dependencies:
+      esbuild: 0.17.18
+      source-map-support: 0.5.21
+    dev: true
+
+  /@esbuild-kit/esm-loader@2.5.5:
+    resolution: {integrity: sha512-Qwfvj/qoPbClxCRNuac1Du01r9gvNOT+pMYtJDapfB1eoGN1YlJ1BixLyL9WVENRx5RXgNLdfYdx/CuswlGhMw==}
+    dependencies:
+      '@esbuild-kit/core-utils': 3.1.0
+      get-tsconfig: 4.5.0
+    dev: true
+
   /@esbuild/android-arm64@0.17.18:
     resolution: {integrity: sha512-/iq0aK0eeHgSC3z55ucMAHO05OIqmQehiGay8eP5l/5l+iEr4EIbh4/MI8xD9qRFjqzgkc0JkX0LculNC9mXBw==}
     engines: {node: '>=12'}
@@ -3402,7 +3432,7 @@ packages:
     dependencies:
       '@mikro-orm/core': 5.7.12(@mikro-orm/better-sqlite@5.7.12)(@mikro-orm/migrations@5.7.12)
       '@mikro-orm/knex': 5.7.12(@mikro-orm/core@5.7.12)(@mikro-orm/migrations@5.7.12)(better-sqlite3@8.4.0)
-      '@mikro-orm/migrations': 5.7.12(@mikro-orm/core@5.7.12)
+      '@mikro-orm/migrations': 5.7.12(@mikro-orm/core@5.7.12)(better-sqlite3@8.4.0)
       better-sqlite3: 8.4.0
       fs-extra: 11.1.1
       sqlstring-sqlite: 0.1.1
@@ -3416,7 +3446,7 @@ packages:
       - supports-color
       - tedious
 
-  /@mikro-orm/cli@5.7.12(@mikro-orm/better-sqlite@5.7.12)(@mikro-orm/migrations@5.7.12):
+  /@mikro-orm/cli@5.7.12(@mikro-orm/better-sqlite@5.7.12)(@mikro-orm/migrations@5.7.12)(better-sqlite3@8.4.0):
     resolution: {integrity: sha512-q2OXQMIJE69T1mZjajXQ09I/pJxi9nD48TH8Hkdjt/xFLiIrcu/RtHjENw2LFCoK6GNtqtLWYknkHfH7lxfOow==}
     engines: {node: '>= 14.0.0'}
     hasBin: true
@@ -3457,7 +3487,7 @@ packages:
       '@mikro-orm/better-sqlite': 5.7.12(@mikro-orm/core@5.7.12)(@mikro-orm/migrations@5.7.12)
       '@mikro-orm/core': 5.7.12(@mikro-orm/better-sqlite@5.7.12)(@mikro-orm/migrations@5.7.12)
       '@mikro-orm/knex': 5.7.12(@mikro-orm/core@5.7.12)(@mikro-orm/migrations@5.7.12)(better-sqlite3@8.4.0)
-      '@mikro-orm/migrations': 5.7.12(@mikro-orm/core@5.7.12)
+      '@mikro-orm/migrations': 5.7.12(@mikro-orm/core@5.7.12)(better-sqlite3@8.4.0)
       fs-extra: 11.1.1
       tsconfig-paths: 4.2.0
       yargs: 17.7.2
@@ -3510,7 +3540,7 @@ packages:
         optional: true
     dependencies:
       '@mikro-orm/better-sqlite': 5.7.12(@mikro-orm/core@5.7.12)(@mikro-orm/migrations@5.7.12)
-      '@mikro-orm/migrations': 5.7.12(@mikro-orm/core@5.7.12)
+      '@mikro-orm/migrations': 5.7.12(@mikro-orm/core@5.7.12)(better-sqlite3@8.4.0)
       acorn-loose: 8.3.0
       acorn-walk: 8.2.0
       dotenv: 16.1.4
@@ -3551,7 +3581,7 @@ packages:
         optional: true
     dependencies:
       '@mikro-orm/core': 5.7.12(@mikro-orm/better-sqlite@5.7.12)(@mikro-orm/migrations@5.7.12)
-      '@mikro-orm/migrations': 5.7.12(@mikro-orm/core@5.7.12)
+      '@mikro-orm/migrations': 5.7.12(@mikro-orm/core@5.7.12)(better-sqlite3@8.4.0)
       better-sqlite3: 8.4.0
       fs-extra: 11.1.1
       knex: 2.4.2(better-sqlite3@8.4.0)
@@ -3561,7 +3591,7 @@ packages:
       - supports-color
       - tedious
 
-  /@mikro-orm/migrations@5.7.12(@mikro-orm/core@5.7.12):
+  /@mikro-orm/migrations@5.7.12(@mikro-orm/core@5.7.12)(better-sqlite3@8.4.0):
     resolution: {integrity: sha512-hUKUMKw01KpCKEoLMSbqLpztymE8Gk95+/nO7ThO5PTkNzH5eqLt00Zy9KlFgDEi85mOkyGnKbthzZMHPSLxSg==}
     engines: {node: '>= 14.0.0'}
     peerDependencies:
@@ -7374,6 +7404,13 @@ packages:
   /esm@3.2.25:
     resolution: {integrity: sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==}
     engines: {node: '>=6'}
+
+  /esno@0.16.3:
+    resolution: {integrity: sha512-6slSBEV1lMKcX13DBifvnDFpNno5WXhw4j/ff7RI0y51BZiDqEe5dNhhjhIQ3iCOQuzsm2MbVzmwqbN78BBhPg==}
+    hasBin: true
+    dependencies:
+      tsx: 3.12.7
+    dev: true
 
   /espree@9.5.2:
     resolution: {integrity: sha512-7OASN1Wma5fum5SrNhFMAMJxOUAbhyfQ8dQ//PJaJbNw0URTPWqIghHWt1MmAANKhHZIYOHruW4Kw4ruUWOdGw==}
@@ -13652,6 +13689,17 @@ packages:
     dependencies:
       tslib: 1.14.1
       typescript: 5.1.3
+    dev: true
+
+  /tsx@3.12.7:
+    resolution: {integrity: sha512-C2Ip+jPmqKd1GWVQDvz/Eyc6QJbGfE7NrR3fx5BpEHMZsEHoIxHL1j+lKdGobr8ovEyqeNkPLSKp6SCSOt7gmw==}
+    hasBin: true
+    dependencies:
+      '@esbuild-kit/cjs-loader': 2.4.2
+      '@esbuild-kit/core-utils': 3.1.0
+      '@esbuild-kit/esm-loader': 2.5.5
+    optionalDependencies:
+      fsevents: 2.3.2
     dev: true
 
   /tuf-js@1.1.4:
