@@ -378,7 +378,7 @@ INSERT INTO undb_visualization VALUES('virgvhmfl7y',1685213070188,1685213070188,
 INSERT INTO undb_visualization VALUES('virsfzcdnjb',1685213092660,1685213092660,NULL,'bar','chart','tblfx77neny',NULL,'fldx46wrlru','count','bar');
 INSERT INTO undb_visualization VALUES('virg85utg7b',1685213148218,1685213148218,NULL,'bar','chart','tblpgqt9f8e',NULL,'fld5dfxirz4','count','bar');
 INSERT INTO undb_visualization VALUES('vir8md89zv2',1685213181402,1685213181402,NULL,'bar','chart','tblk4h9pgm7',NULL,'fldnktdp6ej','count','bar');
-CREATE TABLE `undb_widge` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `layout` json not null, `view_id` text not null, `virsualization_id` text null, constraint `undb_widge_view_id_foreign` foreign key(`view_id`) references `undb_view`(`id`) on update cascade, constraint `undb_widge_virsualization_id_foreign` foreign key(`virsualization_id`) references `undb_visualization`(`id`) on delete set null on update cascade, primary key (`id`));
+CREATE TABLE `undb_widge` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `layout` json not null, `view_id` text not null, `visualization_id` text null, constraint `undb_widge_view_id_foreign` foreign key(`view_id`) references `undb_view`(`id`) on update cascade, constraint `undb_widge_visualization_id_foreign` foreign key(`visualization_id`) references `undb_visualization`(`id`) on delete set null on update cascade, primary key (`id`));
 INSERT INTO undb_widge VALUES('wid2c1qxm9o',1684661009070,1684661085400,NULL,'{"x":0,"y":0,"h":4,"w":6}','viw3qge14qx','vir5353gfgf');
 INSERT INTO undb_widge VALUES('wide8odhgnl',1684661041511,1684661045009,1684661045009,'{"x":6,"y":0,"h":2,"w":6}','viw3qge14qx','virc6ae7eok');
 INSERT INTO undb_widge VALUES('widue819e88',1684661047519,1684661085400,NULL,'{"x":6,"y":0,"h":4,"w":6}','viw3qge14qx','vir4qvwxtmp');
@@ -1111,7 +1111,7 @@ CREATE INDEX `undb_visualization_type_index` on `undb_visualization` (`type`);
 CREATE INDEX `undb_visualization_table_id_index` on `undb_visualization` (`table_id`);
 CREATE INDEX `undb_widge_deleted_at_index` on `undb_widge` (`deleted_at`);
 CREATE INDEX `undb_widge_view_id_index` on `undb_widge` (`view_id`);
-CREATE UNIQUE INDEX `undb_widge_virsualization_id_unique` on `undb_widge` (`virsualization_id`);
+CREATE UNIQUE INDEX `undb_widge_visualization_id_unique` on `undb_widge` (`visualization_id`);
 CREATE INDEX `undb_view_deleted_at_index` on `undb_view` (`deleted_at`);
 CREATE INDEX `undb_view_table_id_index` on `undb_view` (`table_id`);
 CREATE TRIGGER update_at_update_tbl4undb0lh AFTER UPDATE ON `tbl4undb0lh`
