@@ -9,6 +9,7 @@ tasks:
     env:
       PUBLIC_UNDB_ADMIN_EMAIL: test@example.com
       PUBLIC_UNDB_ADMIN_PASSWORD: 123456
+      UNDB_SEED: true
 
 # Ports to expose on workspace startup
 ports:
