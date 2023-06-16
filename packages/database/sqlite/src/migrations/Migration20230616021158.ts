@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230616011519 extends Migration {
+export class Migration20230616021158 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `undb_outbox` (`uuid` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text null, `operator_id` text null, `payload` json not null, primary key (`uuid`));',
@@ -79,11 +79,11 @@ export class Migration20230616011519 extends Migration {
     this.addSql('create index `undb_view_table_id_index` on `undb_view` (`table_id`);')
 
     this.addSql(
-      'create table `undb_virsualization` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `type` text not null, `table_id` text null, `number_aggregate_function` text null, `field_id` text null, `chart_aggregate_function` text null, `chart_type` text null, constraint `undb_virsualization_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));',
+      'create table `undb_visualization` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `type` text not null, `table_id` text null, `number_aggregate_function` text null, `field_id` text null, `chart_aggregate_function` text null, `chart_type` text null, constraint `undb_visualization_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));',
     )
-    this.addSql('create index `undb_virsualization_deleted_at_index` on `undb_virsualization` (`deleted_at`);')
-    this.addSql('create index `undb_virsualization_type_index` on `undb_virsualization` (`type`);')
-    this.addSql('create index `undb_virsualization_table_id_index` on `undb_virsualization` (`table_id`);')
+    this.addSql('create index `undb_visualization_deleted_at_index` on `undb_visualization` (`deleted_at`);')
+    this.addSql('create index `undb_visualization_type_index` on `undb_visualization` (`type`);')
+    this.addSql('create index `undb_visualization_table_id_index` on `undb_visualization` (`table_id`);')
 
     this.addSql(
       'create table `undb_webhook` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `url` text not null, `name` text not null, `method` text not null, `headers` json not null, `target_id` text null, `target_type` text null, `event` text null, `enabled` integer not null default false, primary key (`id`));',
@@ -96,10 +96,10 @@ export class Migration20230616011519 extends Migration {
     this.addSql('create index `undb_webhook_event_index` on `undb_webhook` (`event`);')
 
     this.addSql(
-      'create table `undb_widge` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `layout` json not null, `view_id` text not null, `virsualization_id` text null, constraint `undb_widge_view_id_foreign` foreign key(`view_id`) references `undb_view`(`id`) on update cascade, constraint `undb_widge_virsualization_id_foreign` foreign key(`virsualization_id`) references `undb_virsualization`(`id`) on delete set null on update cascade, primary key (`id`));',
+      'create table `undb_widge` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `layout` json not null, `view_id` text not null, `visualization_id` text null, constraint `undb_widge_view_id_foreign` foreign key(`view_id`) references `undb_view`(`id`) on update cascade, constraint `undb_widge_visualization_id_foreign` foreign key(`visualization_id`) references `undb_visualization`(`id`) on delete set null on update cascade, primary key (`id`));',
     )
     this.addSql('create index `undb_widge_deleted_at_index` on `undb_widge` (`deleted_at`);')
     this.addSql('create index `undb_widge_view_id_index` on `undb_widge` (`view_id`);')
-    this.addSql('create unique index `undb_widge_virsualization_id_unique` on `undb_widge` (`virsualization_id`);')
+    this.addSql('create unique index `undb_widge_visualization_id_unique` on `undb_widge` (`visualization_id`);')
   }
 }
