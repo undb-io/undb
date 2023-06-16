@@ -12,7 +12,7 @@
 	import UpdateTable from '$lib/table/UpdateTable.svelte'
 	import { createRecordModal, createTableModal } from '$lib/store/modal'
 	import UpdateOption from '$lib/option/UpdateOption.svelte'
-	import VirsualizationModal from '$lib/virsualization/VirsualizationModal.svelte'
+	import VisualizationModal from '$lib/visualization/VisualizationModal.svelte'
 	import DuplicateField from '$lib/field/DuplicateField.svelte'
 	import CreateWebhook from '$lib/webhook/CreateWebhook.svelte'
 	import WebhookListModal from '$lib/webhook/WebhookListModal.svelte'
@@ -69,6 +69,6 @@
 	{/key}
 {/if}
 
-<VirsualizationModal />
+<VisualizationModal />
 
 <svelte:window on:keydown={onKeydown} />

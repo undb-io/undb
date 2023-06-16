@@ -8,7 +8,7 @@ import type { IFilterOrGroupList, IRootFilter } from '../filter/index.js'
 import { RootFilter } from '../filter/index.js'
 import { WithFilter } from '../specifications/index.js'
 import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
-import type { VirsualizationVO } from '../virsualization/virsualization.vo.js'
+import type { VisualizationVO } from '../visualization/visualization.vo.js'
 import { Calendar } from './calendar/index.js'
 import { Dashboard } from './dashboard/dashboard.vo.js'
 import {
@@ -359,16 +359,16 @@ export class ViewVO extends ValueObject<IView> {
     return spec
   }
 
-  public getVirsualization(virsualizationId: string): VirsualizationVO | undefined {
+  public getVisualization(visualizationId: string): VisualizationVO | undefined {
     const dashboard = this.dashboard.into()
-    const widge = dashboard?.widges.find((w) => w.virsualization?.id.value === virsualizationId)
-    return widge?.virsualization
+    const widge = dashboard?.widges.find((w) => w.visualization?.id.value === visualizationId)
+    return widge?.visualization
   }
 
-  public mustGetVirsualization(virsualizationId: string): VirsualizationVO {
-    const virsualization = this.getVirsualization(virsualizationId)
-    if (!virsualization) throw new Error('not found virsualization')
-    return virsualization
+  public mustGetVisualization(visualizationId: string): VisualizationVO {
+    const visualization = this.getVisualization(visualizationId)
+    if (!visualization) throw new Error('not found visualization')
+    return visualization
   }
 
   setFilter(filter: IRootFilter | null) {

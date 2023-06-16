@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation'
-	import { currentVirsualizationId, getTable, getView } from '$lib/store/table'
+	import { currentVisualizationId, getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import Virsualization from '$lib/virsualization/Virsualization.svelte'
+	import Visualization from '$lib/visualization/Visualization.svelte'
 	import { Dropdown, DropdownDivider, DropdownItem } from 'flowbite-svelte'
 	import type { WidgeDataItem } from './widge-item.type'
 	import { t } from '$lib/i18n'
 	import { COLS, widgeItems } from '$lib/store/widge'
 	import type { IRelayoutWidgeSchema } from '@undb/core'
-	import { virsualizationModal } from '$lib/store/modal'
+	import { visualizationModal } from '$lib/store/modal'
 
 	const table = getTable()
 	const view = getView()
@@ -25,7 +25,7 @@
 		ref?.focus()
 	}
 
-	const updateVirsualization = trpc().table.virsualization.update.mutation({
+	const updateVisualization = trpc().table.visualization.update.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 		},
@@ -59,12 +59,12 @@
 		updating = false
 		const target = event.target as HTMLInputElement
 		const value = target.value
-		if (dataItem.widge?.virsualization && value !== dataItem.widge?.virsualization?.name.value) {
-			$updateVirsualization.mutate({
+		if (dataItem.widge?.visualization && value !== dataItem.widge?.visualization?.name.value) {
+			$updateVisualization.mutate({
 				tableId: $table.id.value,
-				virsualization: {
-					id: dataItem.widge?.virsualization?.id.value,
-					type: dataItem.widge.virsualization.type,
+				visualization: {
+					id: dataItem.widge?.visualization?.id.value,
+					type: dataItem.widge.visualization.type,
 					name: value,
 				},
 			})
@@ -79,19 +79,19 @@
 				on:pointerdown={movePointerDown}
 				class=" opacity-0 group-hover:opacity-100 group-hover:block text-gray-500 ti ti-grip-vertical cursor-grab"
 			/>
-			{#if dataItem.widge?.virsualization}
+			{#if dataItem.widge?.visualization}
 				{#if updating}
 					<input
 						class="p-0 rounded-sm active:outline-gray-200"
 						type="text"
 						bind:this={ref}
-						value={dataItem.widge.virsualization.name.value}
+						value={dataItem.widge.visualization.name.value}
 						on:blur={blur}
 					/>
 				{:else}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<span on:click={() => (updating = true)} class="font-semibold text-sm">
-						{dataItem.widge?.virsualization.name.value}
+						{dataItem.widge?.visualization.name.value}
 					</span>
 				{/if}
 			{/if}
@@ -100,8 +100,8 @@
 			<button
 				class="hover:bg-slate-100 w-6 h-6"
 				on:click={() => {
-					virsualizationModal.open()
-					$currentVirsualizationId = dataItem.widge?.virsualization?.id.value
+					visualizationModal.open()
+					$currentVisualizationId = dataItem.widge?.visualization?.id.value
 				}}
 			>
 				<i class="text-gray-400 ti ti-arrows-diagonal" />
@@ -113,8 +113,8 @@
 				<DropdownItem
 					class="text-gray-600 text-xs gap-2 flex items-center"
 					on:click={() => {
-						virsualizationModal.open()
-						$currentVirsualizationId = dataItem.widge?.virsualization?.id.value
+						visualizationModal.open()
+						$currentVisualizationId = dataItem.widge?.visualization?.id.value
 					}}
 				>
 					<i class="text-gray-400 ti ti-arrows-diagonal" />
@@ -144,7 +144,7 @@
 		</div>
 	</div>
 	<div class="flex items-center justify-center p-2 flex-1">
-		<Virsualization virsualization={dataItem.widge?.virsualization} />
+		<Visualization visualization={dataItem.widge?.visualization} />
 	</div>
 	<i
 		class="absolute right-0 bottom-0 cursor-se-resize

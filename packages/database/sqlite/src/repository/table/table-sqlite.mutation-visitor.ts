@@ -48,7 +48,7 @@ import {
   type WithViewName,
   type WithViewPinnedFields,
   type WithViewsOrder,
-  type WithVirsualizationNameSpec,
+  type WithVisualizationNameSpec,
   type WithWidgeSepecification,
   type WithWidgesLayout,
   type WithoutField,
@@ -87,11 +87,11 @@ import {
   UpdatedByField,
 } from '../../entity/index.js'
 import { View } from '../../entity/view.js'
-import { ChartVirsualization, NumberVirsualization, Virsualization } from '../../entity/virsualization.js'
+import { ChartVisualization, NumberVisualization, Visualization } from '../../entity/visualization.js'
 import { Widge } from '../../entity/widge.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
 import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
-import { TableSqliteVirsualizationVisitor } from './table-sqlite-virsualization.visitor.js'
+import { TableSqliteVisualizationVisitor } from './table-sqlite-visualization.visitor.js'
 
 export class TableSqliteMutationVisitor extends BaseEntityManager implements ITableSpecVisitor {
   constructor(private readonly tableId: string, em: EntityManager) {
@@ -413,10 +413,10 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const view = this.getView(s.view.id.value)
     const widge = new Widge(view, s.widge)
 
-    const vv = new TableSqliteVirsualizationVisitor(this.tableId, this.em)
-    s.widge.virsualization?.accept(vv)
+    const vv = new TableSqliteVisualizationVisitor(this.tableId, this.em)
+    s.widge.visualization?.accept(vv)
 
-    widge.virsualization = vv.virsualization
+    widge.visualization = vv.visualization
     this.em.persist(widge)
   }
   withoutWidge(s: WithoutWidgeSpecification): void {
@@ -431,28 +431,28 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
       this.em.persist(widge)
     }
   }
-  withVirsualizationName(s: WithVirsualizationNameSpec): void {
-    const virsualization = this.em.getReference(Virsualization, s.virsualizationId)
-    wrap(virsualization).assign({ name: s.name.value })
-    this.em.persist(virsualization)
+  withVisualizationName(s: WithVisualizationNameSpec): void {
+    const visualization = this.em.getReference(Visualization, s.visualizationId)
+    wrap(visualization).assign({ name: s.name.value })
+    this.em.persist(visualization)
   }
   withNumberAggregate(s: WithNumberAggregateSpec): void {
     this.addJobs(async () => {
-      const virsualization = await this.em.findOne(NumberVirsualization, s.virsualizationId.value)
-      if (virsualization) {
-        virsualization.fieldId = s.fieldId?.value ?? null
-        virsualization.numberAggregateFunction = s.aggregateFunction ?? null
-        await this.em.persistAndFlush(virsualization)
+      const visualization = await this.em.findOne(NumberVisualization, s.visualizationId.value)
+      if (visualization) {
+        visualization.fieldId = s.fieldId?.value ?? null
+        visualization.numberAggregateFunction = s.aggregateFunction ?? null
+        await this.em.persistAndFlush(visualization)
       }
     })
   }
   withChartAggregate(s: WithChartAggregateSpec): void {
     this.addJobs(async () => {
-      const virsualization = await this.em.findOne(ChartVirsualization, s.virsualizationId.value)
-      if (virsualization) {
-        virsualization.fieldId = s.fieldId?.value ?? null
-        virsualization.chartAggregateFunction = s.aggregateFunction ?? null
-        await this.em.persistAndFlush(virsualization)
+      const visualization = await this.em.findOne(ChartVisualization, s.visualizationId.value)
+      if (visualization) {
+        visualization.fieldId = s.fieldId?.value ?? null
+        visualization.chartAggregateFunction = s.aggregateFunction ?? null
+        await this.em.persistAndFlush(visualization)
       }
     })
   }

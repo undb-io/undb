@@ -1,7 +1,7 @@
-import type { ChartVirsualization, IChartData, VirsualizationVO } from '../virsualization/index.js'
+import type { ChartVisualization, IChartData, VisualizationVO } from '../visualization/index.js'
 import type { IRecordSpec } from './specifications/index.js'
 
 export interface IRecordAggregateRepository {
-  number(tableId: string, virsualization: VirsualizationVO, spec: IRecordSpec | null): Promise<number>
-  chart(tableId: string, virsualization: ChartVirsualization, spec: IRecordSpec | null): Promise<IChartData>
+  number(tableId: string, visualization: VisualizationVO, spec: IRecordSpec | null): Promise<number>
+  chart(tableId: string, visualization: ChartVisualization, spec: IRecordSpec | null): Promise<IChartData>
 }

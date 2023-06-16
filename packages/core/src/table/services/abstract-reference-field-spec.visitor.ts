@@ -84,15 +84,15 @@ import type {
   WithViewName,
   WithViewPinnedFields,
   WithViewsOrder,
-  WithVirsualizationNameSpec,
+  WithVisualizationNameSpec,
 } from '../view/index.js'
-import type { WithNumberAggregateSpec } from '../virsualization/specifications/number-virsualization.specification.js'
+import type { WithNumberAggregateSpec } from '../visualization/specifications/number-visualization.specification.js'
 
 export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVisitor, IFieldVisitor {
   withoutWidge(s: WithoutWidgeSpecification): void {}
   withChartAggregate(s: WithChartAggregateSpec): void {}
   withNumberAggregate(s: WithNumberAggregateSpec): void {}
-  withVirsualizationName(s: WithVirsualizationNameSpec): void {}
+  withVisualizationName(s: WithVisualizationNameSpec): void {}
   withWidgesLayout(s: WithWidgesLayout): void {}
   rowHeightEqual(s: WithRowHeight): void {}
   ratingMaxEqual(s: WithRatingMax): void {}

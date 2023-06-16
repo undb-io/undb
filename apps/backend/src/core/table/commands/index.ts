@@ -40,7 +40,7 @@ import { UpdateRecordCommandHandler } from './update-record.command.handler.js'
 import { UpdateRecordsCommandHandler } from './update-records.command.handler.js'
 import { UpdateTableCommandHandler } from './update-table.command.handler.js'
 import { UpdateViewNameCommandHandler } from './update-view-name.command.handler.js'
-import { UpdateVirsualizationCommandHandler } from './update-virsualization.command.handler.js'
+import { UpdateVisualizationCommandHandler } from './update-visualization.command.handler.js'
 
 export const commandHandlers = [
   CreateTableCommandHandler,
@@ -82,7 +82,7 @@ export const commandHandlers = [
   UpdateViewNameCommandHandler,
   UpdateFieldCommandHandler,
   RelayoutWidgesCommandHandler,
-  UpdateVirsualizationCommandHandler,
+  UpdateVisualizationCommandHandler,
   DeleteWidgeCommandHandler,
   DuplicateFieldCommandHandler,
   ExportGridCommandHandler,

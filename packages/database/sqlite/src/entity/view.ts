@@ -28,7 +28,7 @@ import {
 } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Table } from './table.js'
-import { VirsualizationFactory } from './virsualization.factory.js'
+import { VisualizationFactory } from './visualization.factory.js'
 import { Widge } from './widge.js'
 
 @Embeddable()
@@ -144,8 +144,8 @@ export class View extends BaseEntity {
       for (const widge of dashboard.widges) {
         const widgeEntity = new Widge(this, widge)
 
-        widgeEntity.virsualization = widge.virsualization
-          ? VirsualizationFactory.create(table, widge.virsualization)
+        widgeEntity.visualization = widge.visualization
+          ? VisualizationFactory.create(table, widge.visualization)
           : undefined
         this.widges.add(widgeEntity)
       }

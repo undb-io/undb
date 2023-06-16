@@ -9,7 +9,7 @@ import {
   type AutoIncrementField,
   type AverageField,
   type BoolField,
-  type ChartVirsualization,
+  type ChartVisualization,
   type CollaboratorField,
   type ColorField,
   type CountField,
@@ -42,7 +42,7 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
   constructor(
     private readonly table: Table,
     private readonly fieldId: string,
-    private readonly virsualization: ChartVirsualization,
+    private readonly visualization: ChartVisualization,
     private readonly em: EntityManager,
     public readonly qb: Knex.QueryBuilder,
   ) {
