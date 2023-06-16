@@ -48,3 +48,10 @@ export const createTreeFieldValue_internal = z
   .merge(treeTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(TreeField) }))
 export type ICreateTreeFieldValue_internal = z.infer<typeof createTreeFieldValue_internal>
+
+export const treeReadableValueSchema = z
+  .object({
+    id: recordIdSchema,
+    value: z.any().array(),
+  })
+  .array()

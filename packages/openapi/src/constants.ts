@@ -13,3 +13,7 @@ export const TAG_RECORD = 'Record'
 export const TAG_WEBHOOK = 'Webhook'
 export const COMPONENT_WEBHOOK = 'Webhook'
 export const COMPONENT_WEBHOOK_ID = 'WebhookId'
+
+export const TAG_SUBSCRIPTION = 'Subscription'
+
+export const COMPONENT_RECORD_EVENT = 'RecordEvent'

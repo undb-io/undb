@@ -5,7 +5,7 @@ import { Outbox } from './outbox.js'
 import { Table } from './table.js'
 import { User } from './user.js'
 import { viewEntities } from './view.js'
-import { virsualizationEntities } from './virsualization.js'
+import { visualizationEntities } from './visualization.js'
 import { Webhook } from './webhook.js'
 
 export * from './field.js'
@@ -23,7 +23,7 @@ export const entities = [
   Option,
   Attachment,
   User,
-  ...virsualizationEntities,
+  ...visualizationEntities,
   Outbox,
   Webhook,
 ]

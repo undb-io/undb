@@ -30,3 +30,5 @@ export const createBoolFieldValue_internal = z
   .merge(boolTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(BoolField) }))
 export type ICreateBoolFieldValue_internal = z.infer<typeof createBoolFieldValue_internal>
+
+export const boolReadableValueSchema = boolFieldQueryValue

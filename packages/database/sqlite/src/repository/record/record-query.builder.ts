@@ -1,14 +1,14 @@
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import type { Table as CoreTable, IRecordSpec, TableSchemaIdMap, VirsualizationVO } from '@undb/core'
+import type { Table as CoreTable, IRecordSpec, TableSchemaIdMap, VisualizationVO } from '@undb/core'
 import {
-  ChartVirsualization,
+  ChartVisualization,
   SelectField as CoreSelectField,
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
   INTERNAL_COLUMN_UPDATED_BY_NAME,
-  NumberVirsualization,
+  NumberVisualization,
 } from '@undb/core'
 import { union } from 'lodash-es'
 import type { Promisable } from 'type-fest'
@@ -129,10 +129,10 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     return this
   }
 
-  aggregate(virsualization: VirsualizationVO): this {
-    if (virsualization instanceof NumberVirsualization) {
-      const fieldId = virsualization.fieldId?.value
-      const numberAggregateFunction = virsualization.numberAggregateFunction
+  aggregate(visualization: VisualizationVO): this {
+    if (visualization instanceof NumberVisualization) {
+      const fieldId = visualization.fieldId?.value
+      const numberAggregateFunction = visualization.numberAggregateFunction
 
       this.from()
 
@@ -157,13 +157,13 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
         case 'count':
           this.qb.count(`${fieldId} as number`).whereNotNull(fieldId)
       }
-    } else if (virsualization instanceof ChartVirsualization) {
-      const fieldId = virsualization.fieldId?.value
+    } else if (visualization instanceof ChartVisualization) {
+      const fieldId = visualization.fieldId?.value
       if (!fieldId) return this
       const field = this.schema.get(fieldId)
       if (!field) return this
 
-      const visitor = new RecordChartGroupVisitor(this.table, fieldId, virsualization, this.em, this.qb)
+      const visitor = new RecordChartGroupVisitor(this.table, fieldId, visualization, this.em, this.qb)
       field.accept(visitor)
     }
 

@@ -1,9 +1,34 @@
-import { EVT_RECORD_BULK_CREATED, RecordBulkCreatedEvent } from './record-bulk-created.event.js'
-import { EVT_RECORD_BULK_DELETED, RecordBulkDeletedEvent } from './record-bulk-deleted.event.js'
-import { EVT_RECORD_BULK_UPDATED, RecordBulkUpdatedEvent } from './record-bulk-updated.event.js'
-import { EVT_RECORD_CREATED, RecordCreatedEvent } from './record-created.event.js'
-import { EVT_RECORD_DELETED, RecordDeletedEvent } from './record-deleted.event.js'
-import { EVT_RECORD_UPDATED, RecordUpdatedEvent } from './record-updated.event.js'
+import { z } from 'zod'
+import { Table } from '../../table.js'
+import { createRecordReadableValueSchema } from '../record.readable.js'
+import {
+  EVT_RECORD_BULK_CREATED,
+  RecordBulkCreatedEvent,
+  recordsBulkCreatedEvent,
+} from './record-bulk-created.event.js'
+import {
+  EVT_RECORD_BULK_DELETED,
+  RecordBulkDeletedEvent,
+  recordsBulkDeletedEvent,
+} from './record-bulk-deleted.event.js'
+import {
+  EVT_RECORD_BULK_UPDATED,
+  RecordBulkUpdatedEvent,
+  recordsBulkUpdatedEvent,
+} from './record-bulk-updated.event.js'
+import {
+  EVT_RECORD_CREATED,
+  RecordCreatedEvent,
+  recordCreatedEvent,
+  recordCreatedEventPayload,
+} from './record-created.event.js'
+import { EVT_RECORD_DELETED, RecordDeletedEvent, recordDeletedEvent } from './record-deleted.event.js'
+import {
+  EVT_RECORD_UPDATED,
+  RecordUpdatedEvent,
+  recordUpdatedEvent,
+  recordUpdatedEventPayload,
+} from './record-updated.event.js'
 
 export * from './record-bulk-created.event.js'
 export * from './record-bulk-deleted.event.js'
@@ -14,7 +39,7 @@ export * from './record-updated.event.js'
 
 export const EVT_RECORD_ALL = 'record.*' as const
 
-export type IRecordEvents =
+export type RecordEvents =
   | RecordCreatedEvent
   | RecordUpdatedEvent
   | RecordDeletedEvent
@@ -22,7 +47,7 @@ export type IRecordEvents =
   | RecordBulkUpdatedEvent
   | RecordBulkDeletedEvent
 
-export const RecordEvents = [
+export const RecordEventsClasses = [
   RecordCreatedEvent,
   RecordUpdatedEvent,
   RecordDeletedEvent,
@@ -40,3 +65,44 @@ export const recordEvents = [
   EVT_RECORD_DELETED,
   EVT_RECORD_UPDATED,
 ] as const
+
+export const recorEventSchema = z.discriminatedUnion('name', [
+  recordCreatedEvent,
+  recordUpdatedEvent,
+  recordDeletedEvent,
+  recordsBulkCreatedEvent,
+  recordsBulkUpdatedEvent,
+  recordsBulkDeletedEvent,
+])
+
+export type IRecordEvents = z.infer<typeof recorEventSchema>
+
+export const createRecordEventReadableValueSchema = (table: Table) => {
+  const record = createRecordReadableValueSchema(table)
+  return z.discriminatedUnion('name', [
+    recordCreatedEvent.merge(
+      z.object({
+        payload: recordCreatedEventPayload.merge(z.object({ record })),
+      }),
+    ),
+    recordUpdatedEvent.merge(
+      z.object({
+        payload: recordUpdatedEventPayload.merge(z.object({ previousRecord: record, record })),
+      }),
+    ),
+    recordDeletedEvent,
+    recordsBulkCreatedEvent.merge(
+      z.object({
+        payload: recordCreatedEventPayload.merge(z.object({ records: record.array() })),
+      }),
+    ),
+    recordsBulkUpdatedEvent.merge(
+      z.object({
+        payload: recordCreatedEventPayload.merge(
+          z.object({ updates: z.object({ previousRecord: record, record }).array() }),
+        ),
+      }),
+    ),
+    recordsBulkDeletedEvent,
+  ])
+}

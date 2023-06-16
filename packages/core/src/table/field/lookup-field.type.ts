@@ -51,3 +51,5 @@ export const createLookupFieldValue_internal = z
   .merge(lookupTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(LookupField) }))
 export type ICreateLookupFieldValue_internal = z.infer<typeof createLookupFieldValue_internal>
+
+export const lookupReadableValueSchema = lookupFieldQueryValue

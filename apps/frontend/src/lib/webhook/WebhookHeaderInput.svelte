@@ -17,7 +17,6 @@
 
 	const removeHeader = (i: number) => {
 		headers = headers.filter((_, index) => i !== index)
-		console.log(headers)
 	}
 </script>
 

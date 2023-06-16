@@ -1,15 +1,23 @@
 import { BaseEvent } from '@undb/domain'
+import { z } from 'zod'
 import type { Table } from '../../table.js'
-import type { IRecordReadable } from '../record.readable.js'
-import { recordReadableMapper } from '../record.readable.js'
+import { recordReadableMapper, recordReadableSchema } from '../record.readable.js'
 import type { IQueryRecordSchema } from '../record.type.js'
-import type { BaseRecordEventName, IBaseRecordEventPayload } from './base-record.event.js'
+import { baseEventSchema, baseRecordEventSchema, type BaseRecordEventName } from './base-record.event.js'
 
 export const EVT_RECORD_CREATED = 'record.created' as const
 
-interface IRecordCreatedEventPayload extends IBaseRecordEventPayload {
-  record: IRecordReadable
-}
+export const recordCreatedEventPayload = z
+  .object({
+    record: recordReadableSchema,
+  })
+  .merge(baseRecordEventSchema)
+
+type IRecordCreatedEventPayload = z.infer<typeof recordCreatedEventPayload>
+
+export const recordCreatedEvent = z
+  .object({ name: z.literal(EVT_RECORD_CREATED), payload: recordCreatedEventPayload })
+  .merge(baseEventSchema)
 
 export class RecordCreatedEvent extends BaseEvent<IRecordCreatedEventPayload, BaseRecordEventName> {
   public readonly name = EVT_RECORD_CREATED

@@ -30,3 +30,5 @@ export const createStringFieldValue_internal = z
   .merge(stringTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(StringField) }))
 export type ICreateStringFieldValue_internal = z.infer<typeof createStringFieldValue_internal>
+
+export const stringReadableValueSchema = stringFieldQueryValue

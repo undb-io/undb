@@ -46,21 +46,21 @@ import type {
   ISorts,
   ISwitchDisplayTypeSchema,
   IUpdateViewNameSchema,
-  IUpdateVirsualizationSchema,
+  IUpdateVisualizationSchema,
   ViewFieldsOrder,
 } from './view/index.js'
 import {
   Sorts,
   ViewVO,
   ViewsOrder,
-  VirsualizationName,
+  VisualizationName,
   WithChartAggregateSpec,
   WithNumberAggregateSpec,
   WithShowSystemFieldsSpec,
   WithTableView,
   WithViewFieldsOrder,
   WithViewsOrder,
-  WithVirsualizationNameSpec,
+  WithVisualizationNameSpec,
   defaultViewDiaplyType,
 } from './view/index.js'
 import { WithFilter } from './view/specifications/filters.specificaiton.js'
@@ -524,10 +524,10 @@ export class Table {
     return spec
   }
 
-  public updateVirsualization(input: IUpdateVirsualizationSchema): TableCompositeSpecificaiton {
+  public updateVisualization(input: IUpdateVisualizationSchema): TableCompositeSpecificaiton {
     const specs: TableCompositeSpecificaiton[] = []
     if (isString(input.name)) {
-      const spec = new WithVirsualizationNameSpec(input.id, new VirsualizationName({ value: input.name }))
+      const spec = new WithVisualizationNameSpec(input.id, new VisualizationName({ value: input.name }))
       specs.push(spec)
     }
 

@@ -30,3 +30,5 @@ export const createEmailFieldValue_internal = z
   .merge(emailTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(EmailField) }))
 export type ICreateEmailFieldValue_internal = z.infer<typeof createEmailFieldValue_internal>
+
+export const emailReadableValueSchema = emailFieldQueryValue

@@ -1,9 +1,7 @@
 import { BetterSqliteDriver, MikroORM } from '@mikro-orm/better-sqlite'
 import { defineConfig } from '@mikro-orm/core'
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
-import { Migration20230528115246 } from '../src/migrations/Migration20230528115246.js'
-import { Migration20230612140223 } from '../src/migrations/Migration20230612140223.js'
-import { Migration20230615120025 } from '../src/migrations/Migration20230615120025.js'
+import { Migration20230616021158 } from '../src/migrations/Migration20230616021158.js'
 
 beforeAll(async () => {
   const { entities } = await import('../src/entity/index.js')
@@ -17,15 +15,7 @@ beforeAll(async () => {
         migrationsList: [
           {
             name: 'initial',
-            class: Migration20230528115246,
-          },
-          {
-            name: 'create outbox',
-            class: Migration20230612140223,
-          },
-          {
-            name: 'webhook',
-            class: Migration20230615120025,
+            class: Migration20230616021158,
           },
         ],
       },

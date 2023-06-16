@@ -21,6 +21,7 @@ import { HealthModule } from './health/health.module.js'
 import { I18nModule } from './i18n/i18n.module.js'
 import { OpenAPIModule } from './openapi/openapi.module.js'
 import { OutboxModule } from './outbox/outbox.module.js'
+import { RealtimeModule } from './realtime/realtime.module.js'
 import { RealyModule } from './relay/relay.module.js'
 import { TrpcModule } from './trpc/trpc.module.js'
 import { WebhookModule } from './webhook/webhook.module.js'
@@ -61,6 +62,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
     OutboxModule,
     RealyModule,
     WebhookModule,
+    RealtimeModule,
   ],
 })
 export class AppModule implements OnModuleInit {

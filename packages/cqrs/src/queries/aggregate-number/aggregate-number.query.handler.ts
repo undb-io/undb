@@ -9,9 +9,9 @@ export class AggregateNumberQueryHandler implements IQueryHandler<AggregateNumbe
   async execute(query: AggregateNumberQuery): Promise<IAggregateNumberOutput> {
     const table = (await this.tableRepo.findOneById(query.tableId)).unwrap()
     const view = table.mustGetView(query.viewId)
-    const virsualization = view.mustGetVirsualization(query.virsualizationId)
+    const visualization = view.mustGetVisualization(query.visualizationId)
 
-    const number = await this.repo.number(query.tableId, virsualization, null)
+    const number = await this.repo.number(query.tableId, visualization, null)
 
     return {
       number,

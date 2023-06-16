@@ -4,7 +4,7 @@ import type { ILayoutSchema, IWidgeSchema } from '@undb/core'
 import { Widge as CoreWidge, LayoutVO, WidgeID } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { View } from './view.js'
-import { Virsualization } from './virsualization.js'
+import { Visualization } from './visualization.js'
 
 @Embeddable()
 export class Layout {
@@ -55,14 +55,14 @@ export class Widge extends BaseEntity {
   @ManyToOne(() => View)
   view: Rel<View>
 
-  @OneToOne(() => Virsualization, { nullable: true })
-  virsualization?: Rel<Virsualization>
+  @OneToOne(() => Visualization, { nullable: true })
+  visualization?: Rel<Visualization>
 
   toDomain(): CoreWidge {
     return new CoreWidge({
       id: new WidgeID(this.id),
       layout: this.layout.toDomain(),
-      virsualization: this.virsualization?.toDomain(),
+      visualization: this.visualization?.toDomain(),
     })
   }
 
@@ -70,7 +70,7 @@ export class Widge extends BaseEntity {
     return {
       id: this.id,
       layout: this.layout.toQuery(),
-      virsualization: this.virsualization?.toQuery(),
+      visualization: this.visualization?.toQuery(),
     }
   }
 }
