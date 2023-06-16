@@ -1,6 +1,6 @@
 import { OpenAPIRegistry, OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi'
 import type { IQueryRecordSchema } from '@undb/core'
-import { RecordId, recordIdSchema, viewIdSchema, type Table } from '@undb/core'
+import { RecordId, recorEventSchema, recordIdSchema, viewIdSchema, type Table } from '@undb/core'
 import { queryWebhook, webhookIdSchema } from '@undb/integrations'
 import { logger } from '@undb/logger'
 import { format } from 'date-fns'
@@ -12,6 +12,7 @@ import {
   COMPONENT_MUTATE_RECORD_VALUES,
   COMPONENT_OPTION,
   COMPONENT_RECORD,
+  COMPONENT_RECORD_EVENT,
   COMPONENT_RECORD_ID,
   COMPONENT_USER,
   COMPONENT_VIEW_ID,
@@ -29,6 +30,7 @@ import { duplicateRecordsByIds } from './routes/duplicate-records-by-ids.js'
 import { getRecordById } from './routes/get-record-by-id.js'
 import { getRecords } from './routes/get-records.js'
 import { getWebhooks } from './routes/get-webhooks.js'
+import { subscription } from './routes/subscription.js'
 import { updateRecords } from './routes/udpate-records.js'
 import { updateRecord } from './routes/update-record.js'
 import { updateWebhook } from './routes/update-webhook.js'
@@ -57,6 +59,8 @@ export const createTableSchema = (
   registry.register(COMPONENT_WEBHOOK, queryWebhook)
   registry.register(COMPONENT_WEBHOOK_ID, webhookIdSchema)
 
+  registry.register(COMPONENT_RECORD_EVENT, recorEventSchema)
+
   const bearerAuth = registry.registerComponent('securitySchemes', 'bearerAuth', {
     type: 'http',
     scheme: 'bearer',
@@ -82,6 +86,8 @@ export const createTableSchema = (
     updateWebhook(table, updateWebhookSchema),
     deleteWebhook(table),
     getWebhooks(table),
+
+    subscription(table),
   ]
 
   for (const route of routes) {

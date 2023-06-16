@@ -48,7 +48,7 @@
 	})
 
 	const events = recordEvents.map((e) => ({ name: $t(e, { ns: 'event' }), value: e }))
-	const methods = ['POST', 'GET', 'PATCH'].map((method) => ({ name: method, value: method }))
+	const methods = ['POST', 'PATCH'].map((method) => ({ name: method, value: method }))
 </script>
 
 <form id="createWebhook" method="POST" class="flex-1" use:enhance>

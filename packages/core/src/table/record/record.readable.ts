@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { zipObject } from 'lodash-es'
+import { z } from 'zod'
 import type { CollaboratorField } from '../field/collaborator-field.js'
 import type { Field, IFieldType } from '../field/field.type.js'
 import type { ReferenceField } from '../field/index.js'
@@ -10,8 +11,10 @@ import type { SelectField } from '../field/select-field.js'
 import type { TreeField } from '../field/tree-field.js'
 import type { IQueryRecordSchema } from './record.type.js'
 
+export const recordReadableSchema = z.record(z.any())
+
 // TODO: get value type
-export type IRecordReadable = Record<string, any>
+export type IRecordReadable = z.infer<typeof recordReadableSchema>
 
 export const recordReadableValueMapper = (
   record?: IQueryRecordSchema,
