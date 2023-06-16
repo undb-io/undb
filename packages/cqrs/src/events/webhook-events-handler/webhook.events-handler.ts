@@ -1,8 +1,7 @@
 import { EVT_RECORD_ALL, RecordEvents } from '@undb/core'
 import type { IEventHandler } from '@undb/domain'
-import { withTableEvents, type IWebhookRepository } from '@undb/integrations'
+import { IWebhookHttpService, withTableEvents, type IWebhookRepository } from '@undb/integrations'
 import type { ILogger } from '@undb/logger'
-import type { IWebhookHttpService } from './webhook.http-service.js'
 
 export class WebhookEventsHandler implements IEventHandler<RecordEvents> {
   constructor(
@@ -16,8 +15,6 @@ export class WebhookEventsHandler implements IEventHandler<RecordEvents> {
     const spec = withTableEvents(tableId, [EVT_RECORD_ALL, event.name])
     const webhooks = await this.repo.find(spec)
 
-    for (const webhook of webhooks) {
-      this.httpService.handle(webhook, event)
-    }
+    await this.httpService.send(webhooks, event)
   }
 }

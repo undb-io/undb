@@ -8,11 +8,12 @@ import { WithWebhookMethod } from './specifications/webhook-method.specification
 import { WithWebhookName } from './specifications/webhook-name.specification.js'
 import { WithWebhookEvent } from './specifications/webhook-target.specification.js'
 import { WithWebhookURL } from './specifications/webhook-url.specification.js'
-import { WebhookHeaders } from './webhook-headers.vo.js'
+import { IWebhookHeaders, WebhookHeaders } from './webhook-headers.vo.js'
 import type { WebhookId } from './webhook-id.vo.js'
 import { WebhookMethod } from './webhook-method.vo.js'
 import type { WebhookTarget } from './webhook-target.vo.js'
 import type { WebhookURL } from './webhook-url.vo.js'
+import { UNDB_SIGNATURE_HEADER_NAME } from './webhook.constants.js'
 import { IUpdateWebhookSchema } from './webhook.schema.js'
 
 export class Webhook {
@@ -61,5 +62,13 @@ export class Webhook {
     }
 
     return and(...specs)
+  }
+
+  public mergedHeaders(sign: string): IWebhookHeaders {
+    return {
+      'user-agent': 'undb - webhook',
+      ...(this.headers.unpack() ?? {}),
+      [UNDB_SIGNATURE_HEADER_NAME]: sign,
+    }
   }
 }

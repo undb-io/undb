@@ -47,6 +47,7 @@
     "nestjs-cls": "^3.4.0",
     "nestjs-pino": "^3.2.0",
     "oxide.ts": "^1.1.0",
+    "p-limit": "^4.0.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
