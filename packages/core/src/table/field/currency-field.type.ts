@@ -39,3 +39,5 @@ export const createCurrencyFieldValue_internal = z
   .merge(currencyTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(CurrencyField) }))
 export type ICreateCurrencyFieldValue_internal = z.infer<typeof createCurrencyFieldValue_internal>
+
+export const currencyReadableValueSchema = currencyFieldQueryValue

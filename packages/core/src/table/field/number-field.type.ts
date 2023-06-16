@@ -32,3 +32,5 @@ export const createNumberFieldValue_internal = z
   .merge(numberTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(NumberField) }))
 export type ICreateNumberFieldValue_internal = z.infer<typeof createNumberFieldValue_internal>
+
+export const numberReadableValueSchema = numberFieldQueryValue

@@ -1,16 +1,30 @@
 import { BaseEvent } from '@undb/domain'
+import { z } from 'zod'
 import type { Table } from '../../table.js'
-import { recordReadableMapper, type IRecordReadable } from '../record.readable.js'
+import { recordReadableMapper, recordReadableSchema } from '../record.readable.js'
 import type { IQueryRecordSchema } from '../record.type.js'
-import type { BaseRecordEventName, IBaseRecordEventPayload } from './base-record.event.js'
+import { baseEventSchema, baseRecordEventSchema, type BaseRecordEventName } from './base-record.event.js'
 
 export const EVT_RECORD_BULK_UPDATED = 'record.bulk_updated' as const
 
-interface IRecordBulkUpdatedEventPayload extends IBaseRecordEventPayload {
-  updates: { previousRecord: IRecordReadable; record: IRecordReadable }[]
-}
+export const recordsBulkUpdatedEventPayload = z
+  .object({
+    updates: z
+      .object({
+        previousRecord: recordReadableSchema,
+        record: recordReadableSchema,
+      })
+      .array(),
+  })
+  .merge(baseRecordEventSchema)
 
-export class RecordBulkUpdatedEvent extends BaseEvent<IRecordBulkUpdatedEventPayload, BaseRecordEventName> {
+type IRecordsBulkUpdatedEventPayload = z.infer<typeof recordsBulkUpdatedEventPayload>
+
+export const recordsBulkUpdatedEvent = z
+  .object({ name: z.literal(EVT_RECORD_BULK_UPDATED), payload: recordsBulkUpdatedEventPayload })
+  .merge(baseEventSchema)
+
+export class RecordBulkUpdatedEvent extends BaseEvent<IRecordsBulkUpdatedEventPayload, BaseRecordEventName> {
   public readonly name = EVT_RECORD_BULK_UPDATED
 
   static from(

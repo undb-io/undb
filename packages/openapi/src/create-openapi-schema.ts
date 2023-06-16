@@ -1,6 +1,14 @@
 import { OpenAPIRegistry, OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi'
 import type { IQueryRecordSchema } from '@undb/core'
-import { RecordId, recordIdSchema, viewIdSchema, type Table } from '@undb/core'
+import {
+  RecordId,
+  readableOptionSchema,
+  recorEventSchema,
+  recordIdSchema,
+  recordReadableValueSchemaMap,
+  viewIdSchema,
+  type Table,
+} from '@undb/core'
 import { queryWebhook, webhookIdSchema } from '@undb/integrations'
 import { logger } from '@undb/logger'
 import { format } from 'date-fns'
@@ -12,6 +20,7 @@ import {
   COMPONENT_MUTATE_RECORD_VALUES,
   COMPONENT_OPTION,
   COMPONENT_RECORD,
+  COMPONENT_RECORD_EVENT,
   COMPONENT_RECORD_ID,
   COMPONENT_USER,
   COMPONENT_VIEW_ID,
@@ -29,13 +38,13 @@ import { duplicateRecordsByIds } from './routes/duplicate-records-by-ids.js'
 import { getRecordById } from './routes/get-record-by-id.js'
 import { getRecords } from './routes/get-records.js'
 import { getWebhooks } from './routes/get-webhooks.js'
+import { subscription } from './routes/subscription.js'
 import { updateRecords } from './routes/udpate-records.js'
 import { updateRecord } from './routes/update-record.js'
 import { updateWebhook } from './routes/update-webhook.js'
 import { create401ResponseSchema } from './schema/401.respoonse.js'
 import { createOpenAPIMutateRecordSchema } from './schema/mutate-record.schema.js'
 import { createOpenAPIRecordSchema } from './schema/open-api-record.schema.js'
-import { openAPIOptionSchema, openApiUserSchema } from './schema/record-value.schema.js'
 import { createCreateWebhookSchema, createUpdateWebhookSchema } from './schema/webhook.schema.js'
 
 export const createTableSchema = (
@@ -49,13 +58,16 @@ export const createTableSchema = (
   registry.register(COMPONENT_RECORD, recordSchema)
   registry.register(COMPONENT_RECORD_ID, recordIdSchema.openapi({ example: record?.id ?? RecordId.createId() }))
   registry.register(COMPONENT_VIEW_ID, viewIdSchema.openapi({ example: table.mustGetView().id.value }))
-  registry.register(COMPONENT_OPTION, openAPIOptionSchema)
-  registry.register(COMPONENT_USER, openApiUserSchema)
+  registry.register(COMPONENT_OPTION, readableOptionSchema)
+  registry.register(COMPONENT_USER, recordReadableValueSchemaMap['created-by'])
+  registry.register(COMPONENT_USER, recordReadableValueSchemaMap['updated-by'])
   const valuesSchema = createOpenAPIMutateRecordSchema(table, record)
   registry.register(COMPONENT_MUTATE_RECORD_VALUES, valuesSchema)
 
   registry.register(COMPONENT_WEBHOOK, queryWebhook)
   registry.register(COMPONENT_WEBHOOK_ID, webhookIdSchema)
+
+  registry.register(COMPONENT_RECORD_EVENT, recorEventSchema)
 
   const bearerAuth = registry.registerComponent('securitySchemes', 'bearerAuth', {
     type: 'http',
@@ -82,6 +94,8 @@ export const createTableSchema = (
     updateWebhook(table, updateWebhookSchema),
     deleteWebhook(table),
     getWebhooks(table),
+
+    subscription(table),
   ]
 
   for (const route of routes) {

@@ -47,3 +47,5 @@ export const createCountFieldValue_internal = z
   .merge(countTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(CountField) }))
 export type ICreateCountFieldValue_internal = z.infer<typeof createCountFieldValue_internal>
+
+export const countReadableValueSchema = countFieldQueryValue

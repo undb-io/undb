@@ -30,3 +30,5 @@ export const createColorFieldValue_internal = z
   .merge(colorTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(ColorField) }))
 export type ICreateColorFieldValue_internal = z.infer<typeof createColorFieldValue_internal>
+
+export const colorReadableValueSchema = colorFieldQueryValue

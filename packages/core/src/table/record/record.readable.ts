@@ -1,17 +1,50 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { zipObject } from 'lodash-es'
+import { ZodRawShape, ZodType, z } from 'zod'
 import type { CollaboratorField } from '../field/collaborator-field.js'
 import type { Field, IFieldType } from '../field/field.type.js'
-import type { ReferenceField } from '../field/index.js'
+import {
+  attachmentReadableValueSchema,
+  autoIncrementReadableValueSchema,
+  averageReadableValueSchema,
+  boolReadableValueSchema,
+  collaboratorReadableValueSchema,
+  colorReadableValueSchema,
+  countReadableValueSchema,
+  createdAtReadableValueSchema,
+  createdByReadableValueSchema,
+  currencyReadableValueSchema,
+  dateRangeReadableValueSchema,
+  dateReadableValueSchema,
+  emailReadableValueSchema,
+  idReadableValueSchema,
+  jsonReadableValueSchema,
+  lookupReadableValueSchema,
+  multiSelectReadableValueSchema,
+  numberReadableValueSchema,
+  parentReadableValueSchema,
+  ratingReadableValueSchema,
+  referenceReadableValueSchema,
+  selectReadableValueSchema,
+  stringReadableValueSchema,
+  sumReadableValueSchema,
+  treeReadableValueSchema,
+  updatedAtReadableValueSchema,
+  updatedByReadableValueSchema,
+  type ReferenceField,
+} from '../field/index.js'
 import type { LookupField } from '../field/lookup-field.js'
 import type { MultiSelectField } from '../field/multi-select-field.js'
 import type { ParentField } from '../field/parent-field.js'
 import type { SelectField } from '../field/select-field.js'
 import type { TreeField } from '../field/tree-field.js'
+import { Table } from '../table.js'
 import type { IQueryRecordSchema } from './record.type.js'
 
+export const recordReadableSchema = z.record(z.any())
+
 // TODO: get value type
-export type IRecordReadable = Record<string, any>
+export type IRecordReadable = z.infer<typeof recordReadableSchema>
 
 export const recordReadableValueMapper = (
   record?: IQueryRecordSchema,
@@ -109,3 +142,47 @@ export const recordReadableMapper = (fields: Field[], record: IQueryRecordSchema
 }
 
 export type IRecordReadableMapper = typeof recordReadableMapper
+
+export const recordReadableValueSchemaMap: globalThis.Record<IFieldType, ZodType> = {
+  string: stringReadableValueSchema,
+  number: numberReadableValueSchema,
+  id: idReadableValueSchema,
+  'created-at': createdAtReadableValueSchema,
+  'updated-at': updatedAtReadableValueSchema,
+  'auto-increment': autoIncrementReadableValueSchema,
+  color: colorReadableValueSchema,
+  email: emailReadableValueSchema,
+  // jsonFieldQueryValue is not valid for openapi
+  json: jsonReadableValueSchema,
+  date: dateReadableValueSchema,
+  select: selectReadableValueSchema,
+  'multi-select': multiSelectReadableValueSchema,
+  bool: boolReadableValueSchema,
+  'date-range': dateRangeReadableValueSchema,
+  reference: referenceReadableValueSchema,
+  tree: treeReadableValueSchema,
+  parent: parentReadableValueSchema,
+  rating: ratingReadableValueSchema,
+  currency: currencyReadableValueSchema,
+  count: countReadableValueSchema,
+  lookup: lookupReadableValueSchema,
+  sum: sumReadableValueSchema,
+  average: averageReadableValueSchema,
+  attachment: attachmentReadableValueSchema,
+  collaborator: collaboratorReadableValueSchema,
+  'created-by': createdByReadableValueSchema,
+  'updated-by': updatedByReadableValueSchema,
+}
+
+export const createRecordReadableValueSchema = (table: Table) => {
+  const fields = table.schema.fields
+
+  const shape: ZodRawShape = {}
+
+  for (const field of fields) {
+    const valueSchema = recordReadableValueSchemaMap[field.type]
+    shape[field.name.value] = valueSchema
+  }
+
+  return z.object(shape)
+}

@@ -1,4 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards, Version } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  MessageEvent,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Sse,
+  UseGuards,
+  Version,
+} from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import {
   BulkDeleteRecordsCommand,
@@ -9,7 +22,10 @@ import {
   GetRecordsQuery,
 } from '@undb/cqrs'
 import type { IOpenAPIMutateRecordSchema } from '@undb/openapi'
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
+import { Observable, map, tap } from 'rxjs'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'
+import { NestRealtimeEventsHandler } from '../realtime/events/realtime.events-handler.js'
 import { OpenAPIRecordService } from './openapi-record.service.js'
 
 @Controller({
@@ -22,6 +38,9 @@ export class OpenAPIRecordController {
     private queryBus: QueryBus,
     private readonly commandBus: CommandBus,
     private readonly service: OpenAPIRecordService,
+    private readonly handler: NestRealtimeEventsHandler,
+    @InjectPinoLogger(OpenAPIRecordController.name)
+    private readonly logger: PinoLogger,
   ) {}
 
   @Version('1')
@@ -100,5 +119,13 @@ export class OpenAPIRecordController {
   @Post('tables/:tableId/records')
   public async duplicateRecordsByIds(@Param('tableId') tableId: string, @Body('ids') ids: [string, ...string[]]) {
     await this.commandBus.execute(new BulkDuplicateRecordsCommand({ tableId, ids }))
+  }
+
+  @Sse('tables/:tableId/subscription')
+  subscription(@Param('tableId') tableId: string): Observable<MessageEvent> {
+    return this.handler.observe(tableId).pipe(
+      map((event) => ({ data: { event }, id: event.id })),
+      tap((message) => this.logger.info('handling subscription event %s', message.data.event.name)),
+    )
   }
 }

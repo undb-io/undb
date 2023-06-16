@@ -46,3 +46,8 @@ export const createParentFieldValue_internal = z
   .merge(parentTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(ParentField) }))
 export type ICreateParentFieldValue_internal = z.infer<typeof createParentFieldValue_internal>
+
+export const parentReadableValueSchema = z.object({
+  id: recordIdSchema,
+  value: z.any().array(),
+})

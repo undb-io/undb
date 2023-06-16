@@ -30,3 +30,5 @@ export const createAutoIncrementFieldValue_internal = z
   .merge(autoIncrementTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(AutoIncrementField) }))
 export type ICreateAutoIncrementFieldValue_internal = z.infer<typeof createAutoIncrementFieldValue_internal>
+
+export const autoIncrementReadableValueSchema = autoIncrementQueryValue

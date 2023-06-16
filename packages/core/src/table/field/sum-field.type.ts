@@ -52,3 +52,5 @@ export const createSumFieldValue_internal = z
   .merge(sumTypeObjectSchema)
   .merge(z.object({ field: z.instanceof(SumField) }))
 export type ICreateSumFieldValue_internal = z.infer<typeof createSumFieldValue_internal>
+
+export const sumReadableValueSchema = sumFieldQueryValue
