@@ -6,10 +6,11 @@ import { commands } from './commands/index.js'
 import { events } from './events/index.js'
 import { providers } from './providers.js'
 import { queries } from './queries/index.js'
+import { TemporalModule } from './temporal/temporal.module.js'
 import { WebhookSignatureService } from './webhook-signature.service.js'
 
 @Module({
-  imports: [CqrsModule, TableModule],
+  imports: [CqrsModule, TemporalModule, TableModule],
   providers: [WebhookSignatureService, ...events, ...providers, ...adapters, ...commands, ...queries],
 })
 export class WebhookModule {}
