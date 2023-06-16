@@ -14,7 +14,6 @@ export class WebhookEventsHandler implements IEventHandler<IRecordEvents> {
   async handle(event: IRecordEvents): Promise<void> {
     const tableId = event.payload.tableId
     const spec = withTableEvents(tableId, [EVT_RECORD_ALL, event.name])
-    console.log(JSON.stringify(spec, null, 2))
     const webhooks = await this.repo.find(spec)
 
     for (const webhook of webhooks) {
