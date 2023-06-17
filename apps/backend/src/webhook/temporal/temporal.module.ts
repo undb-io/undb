@@ -17,11 +17,15 @@ export class TemporalModule implements OnModuleInit, OnModuleDestroy {
   ) {}
 
   async onModuleInit() {
+    await this.client.connection.ensureConnected()
     this.worker.run()
   }
 
   async onModuleDestroy() {
-    this.worker.shutdown()
+    const state = this.worker.getState()
+    if (state === 'RUNNING') {
+      this.worker.shutdown()
+    }
     await this.client.connection.close()
   }
 }
