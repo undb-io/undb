@@ -15,5 +15,9 @@ export async function executeWebhook({ headers, url, method, body }: ExecuteWebh
     headers,
   })
 
-  return response.statusCode
+  return {
+    statusCode: response.statusCode,
+    statusMessage: response.statusMessage,
+    body: response.body,
+  }
 }
