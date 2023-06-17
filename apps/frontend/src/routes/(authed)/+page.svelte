@@ -1,6 +1,6 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Button, ButtonGroup, Card, Dropdown, DropdownItem } from 'flowbite-svelte'
+	import { Button, ButtonGroup, Card, Dropdown, DropdownItem, Tooltip } from 'flowbite-svelte'
 	import type { LayoutData } from './$types'
 	import Empty from '$lib/table/Empty.svelte'
 	import { t } from '$lib/i18n'
@@ -13,6 +13,9 @@
 		if (event.key === 't' && !(event.ctrlKey || event.altKey || event.metaKey)) {
 			createTableModal.open()
 		}
+		if (event.key === 'b' && event.metaKey) {
+			$sidebarCollapsed = !$sidebarCollapsed
+		}
 	}
 </script>
 
@@ -22,6 +25,7 @@
 			<button on:click={() => ($sidebarCollapsed = false)}>
 				<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
 			</button>
+			<Tooltip placement="right" class="w-24">meta + b</Tooltip>
 		</div>
 	{/if}
 

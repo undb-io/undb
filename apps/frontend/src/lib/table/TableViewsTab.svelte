@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getTable, getView } from '$lib/store/table'
-	import { Dropdown, DropdownItem, Radio } from 'flowbite-svelte'
+	import { Dropdown, DropdownItem, Radio, Tooltip } from 'flowbite-svelte'
 	import TableViewTabItem from './TableViewTabItem.svelte'
 	import { t } from '$lib/i18n'
 	import Sortable from 'sortablejs'
@@ -75,6 +75,7 @@
 			<button on:click={() => ($sidebarCollapsed = false)}>
 				<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
 			</button>
+			<Tooltip placement="bottom">meta + b</Tooltip>
 		</div>
 	{/if}
 	<ul bind:this={el} class="flex flex-wrap space-x-2">
