@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import type { Client } from '@temporalio/client'
 import { IEvent } from '@undb/domain'
-import { IWebhookHttpService, Webhook } from '@undb/integrations'
+import { Webhook, type IWebhookHttpService } from '@undb/integrations'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { WebhookSignatureService } from '../webhook-signature.service.js'
 import { InjectTemporalClient } from './temporal.client.js'

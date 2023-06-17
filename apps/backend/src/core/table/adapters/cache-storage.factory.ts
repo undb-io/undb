@@ -2,22 +2,28 @@ import { type ConfigType } from '@nestjs/config'
 import { type PinoLogger } from 'nestjs-pino'
 import path from 'path'
 import { match } from 'ts-pattern'
-import { createStorage } from 'unstorage'
+import { Driver, Storage, createStorage } from 'unstorage'
 import { type cacheStorageConfig } from '../../../configs/cache-storage.config.js'
 
-export const cacheStorageFactory = async (logger: PinoLogger, config: ConfigType<typeof cacheStorageConfig>) => {
-  const driver = await match(config)
+export const cacheStorageFactory = async (
+  logger: PinoLogger,
+  config: ConfigType<typeof cacheStorageConfig>,
+): Promise<Storage> => {
+  const driver: Driver = await match(config)
     .with({ provider: 'memory' }, async () => {
       const lruCacheDriver = await import('unstorage/drivers/lru-cache').then((m) => m.default)
+      // @ts-ignore
       return lruCacheDriver()
     })
     .with({ provider: 'fs' }, async () => {
       const fsDriver = await import('unstorage/drivers/fs').then((m) => m.default)
       const base = path.resolve(process.cwd(), '../../.undb/cache')
+      // @ts-ignore
       return fsDriver({ base })
     })
     .with({ provider: 'redis' }, async () => {
       const redisDriver = await import('unstorage/drivers/redis').then((m) => m.default)
+      // @ts-ignore
       return redisDriver({
         host: config.redis.host,
         password: config.redis.password,
@@ -30,6 +36,7 @@ export const cacheStorageFactory = async (logger: PinoLogger, config: ConfigType
     })
     .with({ provider: 'mongo' }, async () => {
       const mongodbDriver = await import('unstorage/drivers/mongodb').then((m) => m.default)
+      // @ts-ignore
       return mongodbDriver({
         connectionString: config.mongo.connectionString,
         databaseName: config.mongo.databaseName,

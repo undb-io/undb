@@ -1,6 +1,6 @@
 import { EVT_RECORD_ALL, RecordEvents } from '@undb/core'
 import type { IEventHandler } from '@undb/domain'
-import { IWebhookHttpService, withTableEvents, type IWebhookRepository } from '@undb/integrations'
+import { withTableEvents, type IWebhookHttpService, type IWebhookRepository } from '@undb/integrations'
 import type { ILogger } from '@undb/logger'
 
 export class WebhookEventsHandler implements IEventHandler<RecordEvents> {

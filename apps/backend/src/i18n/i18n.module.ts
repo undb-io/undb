@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule, OnModuleInit, RequestMethod } from '@nestjs/common'
 import { config } from '@undb/i18n'
 import { type i18n } from 'i18next'
-import middleware from 'i18next-http-middleware'
+import * as middleware from 'i18next-http-middleware'
 import { InjectI18Next, i18nextProvider } from './i18next.provider.js'
 
 @Module({
