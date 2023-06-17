@@ -1,3 +1,14 @@
+## v0.5.11
+
+
+### 🩹 Fixes
+
+  - Fix ui ([bcc8bdf](https://github.com/undb-xyz/undb/commit/bcc8bdf))
+
+### ❤️  Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v0.5.10
 
 ## v0.5.9
