@@ -39,7 +39,7 @@
 		<span class="text-gray-500 font-normal">{$t('Select Field')}</span>
 	{/if}
 </Button>
-<Dropdown frameClass="z-[99999] fixed" bind:open>
+<Dropdown class="z-[99999] fixed" bind:open>
 	{#if filteredFields.length}
 		{#each filteredFields as field (field.id)}
 			<Radio value={field.id} bind:group={value} custom on:change={() => (open = false)}>
