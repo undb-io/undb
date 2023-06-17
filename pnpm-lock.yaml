@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -71,7 +71,7 @@ importers:
         version: 7.0.1
       '@liaoliaots/nestjs-redis-health':
         specifier: ^9.0.4
-        version: 9.0.4(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(@nestjs/terminus@9.2.2)(ioredis@5.3.2)
+        version: 9.0.4(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(@nestjs/terminus@10.0.0)(ioredis@5.3.2)
       '@mikro-orm/better-sqlite':
         specifier: ^5.7.12
         version: 5.7.12(@mikro-orm/core@5.7.12)(@mikro-orm/migrations@5.7.12)
@@ -132,6 +132,8 @@ importers:
       '@temporalio/workflow':
         specifier: ^1.7.4
         version: 1.7.4
+        specifier: ^10.0.0
+        version: 10.0.0(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(@nestjs/mongoose@10.0.0)(mongoose@7.3.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@trpc/server':
         specifier: ^10.30.0
         version: 10.30.0
@@ -3599,7 +3601,7 @@ packages:
       '@lezer/common': 1.0.3
     dev: true
 
-  /@liaoliaots/nestjs-redis-health@9.0.4(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(@nestjs/terminus@9.2.2)(ioredis@5.3.2):
+  /@liaoliaots/nestjs-redis-health@9.0.4(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(@nestjs/terminus@10.0.0)(ioredis@5.3.2):
     resolution: {integrity: sha512-bVHQl4ZmkdJ6SpGi9vxBjl9RjaCA7enhOV9nFRviyfkMXV6Za0NaCGPwLmNeJJhXW2/ZYbSZFM/i/B3D8vX+wA==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
@@ -3610,7 +3612,7 @@ packages:
     dependencies:
       '@nestjs/common': 10.0.0(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/core': 10.0.0(@nestjs/common@10.0.0)(@nestjs/platform-express@10.0.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
-      '@nestjs/terminus': 9.2.2(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(@nestjs/mongoose@10.0.0)(mongoose@7.3.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/terminus': 10.0.0(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(@nestjs/mongoose@10.0.0)(mongoose@7.3.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       ioredis: 5.3.2
       tslib: 2.4.1
     dev: false
@@ -4122,20 +4124,21 @@ packages:
       path-to-regexp: 0.2.5
     dev: false
 
-  /@nestjs/terminus@9.2.2(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(@nestjs/mongoose@10.0.0)(mongoose@7.3.0)(reflect-metadata@0.1.13)(rxjs@7.8.1):
-    resolution: {integrity: sha512-AWUA8XLcgxWUjUFYHDqi42M7CZn2e+DEWxP+MqNAbMzz4ybB5jGcFK5Fy8qwaNBoWg6KMF1JiXOOygGXgk9ydg==}
+  /@nestjs/terminus@10.0.0(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(@nestjs/mongoose@10.0.0)(mongoose@7.3.0)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+    resolution: {integrity: sha512-MCMXMZkBqCF3xXWFDGb1VoCQo0lroL3ys3ho8Rlwqe0PVEMMKMFNnYCV17YWU6X4ofErX6VqFR+yPFAeBG3oGw==}
     peerDependencies:
       '@grpc/grpc-js': '*'
       '@grpc/proto-loader': '*'
       '@mikro-orm/core': '*'
       '@mikro-orm/nestjs': '*'
-      '@nestjs/axios': '*'
-      '@nestjs/common': 9.x
-      '@nestjs/core': 9.x
-      '@nestjs/microservices': '*'
-      '@nestjs/mongoose': '*'
-      '@nestjs/sequelize': '*'
-      '@nestjs/typeorm': '*'
+      '@nestjs/axios': ^1.0.0 || ^2.0.0 || ^3.0.0
+      '@nestjs/common': ^9.0.0 || ^10.0.0
+      '@nestjs/core': ^9.0.0 || ^10.0.0
+      '@nestjs/microservices': ^9.0.0 || ^10.0.0
+      '@nestjs/mongoose': ^9.0.0 || ^10.0.0
+      '@nestjs/sequelize': ^9.0.0 || ^10.0.0
+      '@nestjs/typeorm': ^9.0.0 || ^10.0.0
+      '@prisma/client': '*'
       mongoose: '*'
       reflect-metadata: 0.1.x
       rxjs: 7.x
@@ -4160,6 +4163,8 @@ packages:
         optional: true
       '@nestjs/typeorm':
         optional: true
+      '@prisma/client':
+        optional: true
       mongoose:
         optional: true
       sequelize:
@@ -4173,7 +4178,7 @@ packages:
       '@nestjs/core': 10.0.0(@nestjs/common@10.0.0)(@nestjs/platform-express@10.0.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/mongoose': 10.0.0(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(mongoose@7.3.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       boxen: 5.1.2
-      check-disk-space: 3.3.1
+      check-disk-space: 3.4.0
       mongoose: 7.3.0
       reflect-metadata: 0.1.13
       rxjs: 7.8.1
@@ -6709,9 +6714,9 @@ packages:
       '@kurkle/color': 0.3.2
     dev: true
 
-  /check-disk-space@3.3.1:
-    resolution: {integrity: sha512-iOrT8yCZjSnyNZ43476FE2rnssvgw5hnuwOM0hm8Nj1qa0v4ieUUEbCyxxsEliaoDUb/75yCOL71zkDiDBLbMQ==}
-    engines: {node: '>=12'}
+  /check-disk-space@3.4.0:
+    resolution: {integrity: sha512-drVkSqfwA+TvuEhFipiR1OC9boEGZL5RrWvVsOthdcvQNXyCCuKkEiTOTXZ7qxSf/GLwq4GvzfrQD/Wz325hgw==}
+    engines: {node: '>=16'}
     dev: false
 
   /check-error@1.0.2:
