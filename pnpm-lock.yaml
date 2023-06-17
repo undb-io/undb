@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
@@ -115,8 +115,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(express@4.18.2)
       '@nestjs/terminus':
-        specifier: ^9.2.2
-        version: 9.2.2(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(@nestjs/mongoose@10.0.0)(mongoose@7.3.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+        specifier: ^10.0.0
+        version: 10.0.0(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(@nestjs/mongoose@10.0.0)(mongoose@7.3.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@temporalio/activity':
         specifier: ^1.7.4
         version: 1.7.4
@@ -132,8 +132,6 @@ importers:
       '@temporalio/workflow':
         specifier: ^1.7.4
         version: 1.7.4
-        specifier: ^10.0.0
-        version: 10.0.0(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(@nestjs/mongoose@10.0.0)(mongoose@7.3.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@trpc/server':
         specifier: ^10.30.0
         version: 10.30.0
