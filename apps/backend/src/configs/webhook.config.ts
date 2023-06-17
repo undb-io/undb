@@ -7,6 +7,10 @@ export const webhookConfig = registerAs('webhook', () => ({
   secret: process.env.UNDB_WEBHOOK_SECRET,
   publisher: {
     provider: (process.env.UNDB_WEBHOOK_PUBLISH_PROVIDER || 'memory') as 'memory' | 'temporal',
+    temporal: {
+      addr: process.env.UNDB_WEBHOOK_TEMPORAL_ADDR,
+      namespace: process.env.UNDB_WEBHOOK_TEMPORAL_NAMESPACE,
+    },
   },
 }))
 

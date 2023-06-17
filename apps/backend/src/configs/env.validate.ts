@@ -18,6 +18,14 @@ export const configSchema = Joi.object({
   // webhook
   UNDB_WEBHOOK_SECRET: Joi.string().optional(),
   UNDB_WEBHOOK_PUBLISH_PROVIDER: Joi.valid('memory', 'temporal').default('memory'),
+  UNDB_WEBHOOK_TEMPORAL_ADDR: Joi.when('UNDB_WEBHOOK_PUBLISH_PROVIDER', {
+    is: 'temporal',
+    then: Joi.string(),
+  }),
+  UNDB_WEBHOOK_TEMPORAL_NAMESPACE: Joi.when('UNDB_WEBHOOK_PUBLISH_PROVIDER', {
+    is: 'temporal',
+    then: Joi.string().optional(),
+  }),
 
   // s3
   UNDB_S3_ENDPOINT: Joi.when('UNDB_OBJECT_STORAGE_PROVIDER', {
