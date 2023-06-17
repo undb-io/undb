@@ -2,7 +2,7 @@
 	import cx from 'classnames'
 	import { sidebarCollapsed } from '$lib/store/ui'
 	import TableNavigator from '$lib/table/TableNavigator.svelte'
-	import { Button, Chevron, Dropdown, DropdownItem } from 'flowbite-svelte'
+	import { Button, Chevron, Dropdown, DropdownItem, Tooltip } from 'flowbite-svelte'
 	import { getTable } from '$lib/store/table'
 	import { t } from '$lib/i18n'
 
@@ -33,6 +33,7 @@
 				<button on:click={() => ($sidebarCollapsed = false)}>
 					<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
 				</button>
+				<Tooltip placement="bottom">meta + b</Tooltip>
 			</div>
 		{/if}
 

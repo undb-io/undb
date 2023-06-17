@@ -4,7 +4,7 @@
 	import { Dialog, DialogOverlay, TransitionChild, TransitionRoot } from '@rgossiaux/svelte-headlessui'
 	import type { LayoutData } from './$types'
 	import CreateTable from '$lib/table/CreateTable.svelte'
-	import { Avatar, Button, ButtonGroup, Chevron, Dropdown, DropdownItem, P, Toast } from 'flowbite-svelte'
+	import { Avatar, Button, ButtonGroup, Chevron, Dropdown, DropdownItem, P, Toast, Tooltip } from 'flowbite-svelte'
 	import { page } from '$app/stores'
 	import { allTables, currentRecordId } from '$lib/store/table'
 	import { goto } from '$app/navigation'
@@ -205,6 +205,7 @@
 						class="ti ti-layout-sidebar-left-collapse text-xl text-gray-500 opacity-0 group-hover/main:opacity-100 transition"
 					/>
 				</button>
+				<Tooltip placement="bottom">meta + b</Tooltip>
 			</div>
 			<div class="border-b">
 				<ul class="px-6 -mx-2 space-y-1 py-2">
