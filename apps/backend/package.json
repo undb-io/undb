@@ -19,7 +19,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/schedule": "^3.0.0",
     "@nestjs/serve-static": "^4.0.0",
-    "@nestjs/terminus": "^9.2.2",
+    "@nestjs/terminus": "^10.0.0",
     "@trpc/server": "^10.30.0",
     "@undb/cache": "workspace:^",
     "@undb/core": "^0.0.0",
