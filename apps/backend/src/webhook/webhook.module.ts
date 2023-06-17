@@ -1,16 +1,43 @@
-import { Module } from '@nestjs/common'
+import { ConfigurableModuleBuilder, DynamicModule, Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
 import { TableModule } from '../core/table/table.module.js'
 import { adapters } from './adapters/index.js'
 import { commands } from './commands/index.js'
 import { events } from './events/index.js'
-import { providers } from './providers.js'
+import { WEBHOOK_HTTP_SERVICE } from './providers.js'
 import { queries } from './queries/index.js'
 import { TemporalModule } from './temporal/temporal.module.js'
+import { ExecuteWebhookWorkflow } from './temporal/workflows/execute-webhook.workflow.js'
 import { WebhookSignatureService } from './webhook-signature.service.js'
+import { WebhooHttpMemoryService } from './webhook.http-memory-service.js'
 
-@Module({
-  imports: [CqrsModule, TemporalModule, TableModule],
-  providers: [WebhookSignatureService, ...events, ...providers, ...adapters, ...commands, ...queries],
-})
-export class WebhookModule {}
+export const { ConfigurableModuleClass: WebhookConfigurableModuleClass, OPTIONS_TYPE } =
+  new ConfigurableModuleBuilder().build()
+
+@Module({})
+export class WebhookModule extends WebhookConfigurableModuleClass {
+  static register(options: typeof OPTIONS_TYPE): DynamicModule {
+    const imports: DynamicModule['imports'] = [CqrsModule, TableModule]
+    const providers: DynamicModule['providers'] = [
+      WebhookSignatureService,
+      ...events,
+      ...adapters,
+      ...commands,
+      ...queries,
+    ]
+
+    const provider = process.env.UNDB_WEBHOOK_PUBLISH_PROVIDER
+    if (provider === 'temporal') {
+      imports.push(TemporalModule)
+      providers.push({ provide: WEBHOOK_HTTP_SERVICE, useClass: ExecuteWebhookWorkflow })
+    } else {
+      providers.push({ provide: WEBHOOK_HTTP_SERVICE, useClass: WebhooHttpMemoryService })
+    }
+
+    return {
+      ...super.register(options),
+      imports,
+      providers,
+    }
+  }
+}

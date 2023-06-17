@@ -17,6 +17,7 @@ export const configSchema = Joi.object({
 
   // webhook
   UNDB_WEBHOOK_SECRET: Joi.string().optional(),
+  UNDB_WEBHOOK_PUBLISH_PROVIDER: Joi.valid('memory', 'temporal').default('memory'),
 
   // s3
   UNDB_S3_ENDPOINT: Joi.when('UNDB_OBJECT_STORAGE_PROVIDER', {

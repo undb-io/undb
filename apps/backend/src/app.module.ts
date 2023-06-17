@@ -61,7 +61,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
     OpenAPIModule,
     OutboxModule,
     RealyModule,
-    WebhookModule,
+    WebhookModule.register({}),
     RealtimeModule,
   ],
 })
