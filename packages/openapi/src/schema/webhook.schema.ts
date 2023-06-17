@@ -1,5 +1,11 @@
 import { Table, recordEvents } from '@undb/core'
-import { WebhookId, webhookIdSchema, webhookMethodSchema, webhookURLSchema } from '@undb/integrations'
+import {
+  WebhookId,
+  webhookHeadersSchema,
+  webhookIdSchema,
+  webhookMethodSchema,
+  webhookURLSchema,
+} from '@undb/integrations'
 import { z } from 'zod'
 
 export const createCreateWebhookSchema = (table: Table) => {
@@ -10,6 +16,7 @@ export const createCreateWebhookSchema = (table: Table) => {
     name: z.string().openapi({ example: 'your awesome webhook' }),
     url: webhookURLSchema.openapi({ example: 'https://yourdomain.com/webhook' }),
     event: z.enum(recordEvents).openapi({ example: 'record.created' }),
+    headers: webhookHeadersSchema.openapi({ example: {} }),
   })
 
   return schema

@@ -122,8 +122,8 @@
   },
   "private": true,
   "scripts": {
-    "build": "swc --delete-dir-on-start --out-dir dist src",
-    "build:watch": "swc --out-dir dist -w src",
+    "build": "nest build -b swc --type-check",
+    "build:watch": "nest build -b swc -w",
     "dev": "run-p build:watch start:watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "prebuild": "rimraf dist",
