@@ -1,5 +1,5 @@
-import { ExecuteWebhookWorkflow } from './execute-webhook.workflow.js'
+import { TemporalWebhookHttpService } from '../temporal-webhook-http.service.js'
 
-export * from './execute-webhook.workflow.js'
+export * from '../temporal-webhook-http.service.js'
 
-export const workflows = [ExecuteWebhookWorkflow]
+export const workflows = [TemporalWebhookHttpService]

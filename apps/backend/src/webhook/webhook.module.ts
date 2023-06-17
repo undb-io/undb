@@ -6,8 +6,8 @@ import { commands } from './commands/index.js'
 import { events } from './events/index.js'
 import { WEBHOOK_HTTP_SERVICE } from './providers.js'
 import { queries } from './queries/index.js'
+import { TemporalWebhookHttpService } from './temporal/temporal-webhook-http.service.js'
 import { TemporalModule } from './temporal/temporal.module.js'
-import { ExecuteWebhookWorkflow } from './temporal/workflows/execute-webhook.workflow.js'
 import { WebhookSignatureService } from './webhook-signature.service.js'
 import { WebhooHttpMemoryService } from './webhook.http-memory-service.js'
 
@@ -29,7 +29,7 @@ export class WebhookModule extends WebhookConfigurableModuleClass {
     const provider = process.env.UNDB_WEBHOOK_PUBLISH_PROVIDER
     if (provider === 'temporal') {
       imports.push(TemporalModule)
-      providers.push({ provide: WEBHOOK_HTTP_SERVICE, useClass: ExecuteWebhookWorkflow })
+      providers.push({ provide: WEBHOOK_HTTP_SERVICE, useClass: TemporalWebhookHttpService })
     } else {
       providers.push({ provide: WEBHOOK_HTTP_SERVICE, useClass: WebhooHttpMemoryService })
     }

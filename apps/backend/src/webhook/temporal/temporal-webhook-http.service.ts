@@ -3,12 +3,12 @@ import type { Client } from '@temporalio/client'
 import { IEvent } from '@undb/domain'
 import { IWebhookHttpService, Webhook } from '@undb/integrations'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
-import { WebhookSignatureService } from '../../webhook-signature.service.js'
-import { InjectTemporalClient } from '../temporal.client.js'
-import { executeWebhookWorkflow } from './workflows.js'
+import { WebhookSignatureService } from '../webhook-signature.service.js'
+import { InjectTemporalClient } from './temporal.client.js'
+import { executeWebhookWorkflow } from './workflows/workflows.js'
 
 @Injectable()
-export class ExecuteWebhookWorkflow implements IWebhookHttpService {
+export class TemporalWebhookHttpService implements IWebhookHttpService {
   constructor(
     @InjectPinoLogger() private readonly logger: PinoLogger,
     @InjectTemporalClient() private readonly client: Client,
@@ -25,11 +25,14 @@ export class ExecuteWebhookWorkflow implements IWebhookHttpService {
         const body = webhook.constructEvent(event)
         const method = webhook.method.unpack()
 
+        const workflowId = webhook.id.value + '_' + event.id
         await this.client.workflow.start(executeWebhookWorkflow, {
           args: [{ headers, url, body, method }],
           taskQueue: 'undb_webhook',
-          workflowId: webhook.id.value + '_' + event.id,
+          workflowId,
         })
+
+        this.logger.info('temporal webhook http workflow executed %s', workflowId)
       }
     } catch (error) {
       this.logger.error(error)
