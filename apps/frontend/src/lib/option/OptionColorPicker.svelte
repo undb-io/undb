@@ -21,22 +21,19 @@
 >
 	<i class="ti ti-circle-chevron-down text-sm" />
 </div>
-<Dropdown
-	bind:open
-	inline
-	class="min-w-[200px] px-3 grid grid-cols-2 gap-2 overflow-y-auto py-3 shadow-md"
-	frameClass="z-[100] fixed"
->
-	{#each optionColorOrder as color}
-		<Radio class="h-[24px]" value={color} bind:group={value} custom on:change={() => (open = false)}>
-			<Option
-				option={CoreOption.create({
-					name: name || 'a',
-					color: OptionColor.create({ name: color, shade: OptionColor.defaultShade }),
-				})}
-				class="w-full h-full !text-sm"
-				role="button"
-			/>
-		</Radio>
-	{/each}
+<Dropdown bind:open inline class="w-[200px] z-[999999]">
+	<div class="grid grid-cols-2 gap-2 overflow-y-auto shadow-md w-full h-full p-3">
+		{#each optionColorOrder as color}
+			<Radio class="h-[24px]" value={color} bind:group={value} custom on:change={() => (open = false)}>
+				<Option
+					option={CoreOption.create({
+						name: name || 'a',
+						color: OptionColor.create({ name: color, shade: OptionColor.defaultShade }),
+					})}
+					class="w-full h-full !text-sm"
+					role="button"
+				/>
+			</Radio>
+		{/each}
+	</div>
 </Dropdown>

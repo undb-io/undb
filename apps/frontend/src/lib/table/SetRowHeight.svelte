@@ -30,7 +30,7 @@
 >
 	<i class="ti ti-line-height text-sm" />
 </Button>
-<Dropdown bind:open frameClass="z-50">
+<Dropdown bind:open class="z-[999999]">
 	{#each viewRowHeights as rowHeight}
 		<DropdownItem
 			class="flex items-center justify-between"

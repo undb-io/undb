@@ -28,6 +28,8 @@
 - :balloon: Light weight, requires just one file storage by default
 - :computer: Self hosted in seconds
 - :pencil: Customizable
+- 🔧 Deploy with variant adapters
+- 🎮 Developer friendly. Provide openapi / webhooks / realtime subscriptions / sdk(soon) and more
 - :sparkles: Multiple built-in field types and variants
 - :city_sunset: Different types of views, including grid, kanban, tree, calendar and more
 
