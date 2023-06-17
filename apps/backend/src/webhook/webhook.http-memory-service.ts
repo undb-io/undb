@@ -1,20 +1,22 @@
 import { Injectable } from '@nestjs/common'
-import type { IWebhookHttpService } from '@undb/cqrs'
 import type { IEvent } from '@undb/domain'
-import { UNDB_SIGNATURE_HEADER_NAME, type Webhook } from '@undb/integrations'
+import { type IWebhookHttpService, type Webhook } from '@undb/integrations'
 import got from 'got'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
+import pLimit from 'p-limit'
 import { WebhookSignatureService } from './webhook-signature.service.js'
 
 @Injectable()
-export class WebhookHttpService implements IWebhookHttpService {
+export class WebhooHttpMemoryService implements IWebhookHttpService {
   constructor(
-    @InjectPinoLogger(WebhookHttpService.name)
+    @InjectPinoLogger(WebhooHttpMemoryService.name)
     private readonly logger: PinoLogger,
     private readonly signatureService: WebhookSignatureService,
   ) {}
 
-  async handle(webhook: Webhook, event: IEvent<object>) {
+  private limit = pLimit(100)
+
+  private async sendOne(webhook: Webhook, event: IEvent<object>) {
     try {
       this.logger.info(
         'handling webhook %s of url %s with event %s',
@@ -25,17 +27,19 @@ export class WebhookHttpService implements IWebhookHttpService {
 
       const signature = this.signatureService.sign(webhook, event)
 
+      const headers = webhook.mergedHeaders(signature)
+
       await got(webhook.url.unpack(), {
         method: webhook.method.unpack(),
         json: webhook.constructEvent(event),
-        headers: {
-          ...(webhook.headers.unpack() ?? {}),
-          'user-agent': 'undb - webhook',
-          [UNDB_SIGNATURE_HEADER_NAME]: signature,
-        },
+        headers,
       })
     } catch (error) {
       this.logger.error('webhook request error %j', error)
     }
+  }
+
+  async send(webhooks: Webhook[], event: IEvent<object>) {
+    await Promise.all(webhooks.map((webhook) => this.limit(() => this.sendOne(webhook, event))))
   }
 }
