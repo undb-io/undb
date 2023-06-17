@@ -5,7 +5,7 @@
   "author": "",
   "devDependencies": {
     "@types/uuid": "^9.0.2",
-    "i18next": "^22.5.1",
+    "i18next": "^23.0.0",
     "rimraf": "^5.0.1",
     "tsconfig": "^0.0.0",
     "tsup": "^7.0.0",
