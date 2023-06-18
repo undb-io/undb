@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from 'electron'
 import isDev from 'electron-is-dev'
+import { spawn } from 'node:child_process'
 import path from 'node:path'
 
 // The built directory structure
@@ -15,6 +16,13 @@ process.env.DIST = path.join(__dirname, '../dist')
 process.env.PUBLIC = app.isPackaged ? process.env.DIST : path.join(process.env.DIST, '../public')
 
 let win: BrowserWindow | null
+
+async function launchBackend() {
+  // if (isDev) return
+  const backend = path.join(__dirname, '../../backend/dist/main.js')
+
+  spawn('node', [backend])
+}
 
 function createWindow() {
   let x: number | undefined
@@ -46,7 +54,7 @@ function createWindow() {
     win?.webContents.send('main-process-message', new Date().toLocaleString())
   })
 
-  isDev ? win.loadURL('http://localhost:3000') : win.loadURL('http://localhost:3000')
+  isDev ? win.loadURL('http://localhost:4000') : win.loadURL('http://localhost:4000')
   // if (VITE_DEV_SERVER_URL) {
   //   win.loadURL(VITE_DEV_SERVER_URL)
   // } else {
@@ -59,4 +67,4 @@ app.on('window-all-closed', () => {
   win = null
 })
 
-app.whenReady().then(createWindow)
+app.whenReady().then(launchBackend).then(createWindow)

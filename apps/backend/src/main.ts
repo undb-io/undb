@@ -18,7 +18,7 @@ import { I18NEXT } from './i18n/i18next.provider.js'
 import { AppRouterSymbol } from './trpc/providers/app-router.js'
 import { TRPC_ENDPOINT } from './trpc/trpc.constants.js'
 
-async function bootstrap() {
+export async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
   })
@@ -68,4 +68,7 @@ async function bootstrap() {
 
   await app.listen(4000, '0.0.0.0')
 }
-bootstrap()
+
+if (process.env.APP_ENV !== 'desktop') {
+  bootstrap()
+}
