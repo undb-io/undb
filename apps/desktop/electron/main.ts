@@ -15,14 +15,29 @@ process.env.DIST = path.join(__dirname, '../dist')
 process.env.PUBLIC = app.isPackaged ? process.env.DIST : path.join(process.env.DIST, '../public')
 
 let win: BrowserWindow | null
-// 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
-const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
 
 function createWindow() {
+  let x: number | undefined
+  let y: number | undefined
+  const currentWindow = BrowserWindow.getFocusedWindow()
+
+  if (currentWindow) {
+    const [currentWindowX, currentWindowY] = currentWindow.getPosition()
+    x = currentWindowX + 24
+    y = currentWindowY + 24
+  }
+
   win = new BrowserWindow({
+    x,
+    y,
+    width: 1800,
+    height: 1000,
     icon: path.join(process.env.PUBLIC!, 'electron-vite.svg'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true,
+      scrollBounce: true,
     },
   })
 

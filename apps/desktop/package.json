@@ -1,10 +1,11 @@
 {
   "name": "@undb/desktop",
+  "productName": "undb",
   "private": true,
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && electron-builder",
+    "package": "tsc && vite build && electron-builder",
     "preview": "vite preview"
   },
   "devDependencies": {
