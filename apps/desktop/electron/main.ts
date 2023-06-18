@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from 'electron'
+import isDev from 'electron-is-dev'
 import path from 'node:path'
 
 // The built directory structure
@@ -19,7 +20,7 @@ const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
 
 function createWindow() {
   win = new BrowserWindow({
-    icon: path.join(process.env.PUBLIC, 'electron-vite.svg'),
+    icon: path.join(process.env.PUBLIC!, 'electron-vite.svg'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
@@ -30,12 +31,13 @@ function createWindow() {
     win?.webContents.send('main-process-message', new Date().toLocaleString())
   })
 
-  if (VITE_DEV_SERVER_URL) {
-    win.loadURL(VITE_DEV_SERVER_URL)
-  } else {
-    // win.loadFile('dist/index.html')
-    win.loadFile(path.join(process.env.DIST, 'index.html'))
-  }
+  isDev ? win.loadURL('http://localhost:3000') : win.loadURL('http://localhost:3000')
+  // if (VITE_DEV_SERVER_URL) {
+  //   win.loadURL(VITE_DEV_SERVER_URL)
+  // } else {
+  //   // win.loadFile('dist/index.html')
+  //   win.loadFile(path.join(process.env.DIST!, 'index.html'))
+  // }
 }
 
 app.on('window-all-closed', () => {
