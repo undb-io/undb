@@ -15,6 +15,9 @@ export const configSchema = Joi.object({
     then: Joi.string().default(path.resolve(process.cwd(), './attachments')),
   }),
 
+  // outbox
+  UNDB_OUTBOX_POLLING_INTERVAL_SECONDS: Joi.number().integer().positive().max(30).default(10),
+
   // webhook
   UNDB_WEBHOOK_SECRET: Joi.string().optional(),
   UNDB_WEBHOOK_PUBLISH_PROVIDER: Joi.valid('memory', 'temporal').default('memory'),
