@@ -3,7 +3,7 @@ import 'zx/globals'
 
 process.env.HUSKY = '0'
 
-const out = 'apps/desktop/dist-electron/out'
+const out = 'apps/desktop/out'
 
 // await $`rm -rf ${out}`
 

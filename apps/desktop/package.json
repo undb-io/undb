@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "postinstall": "electron-builder install-app-deps",
-    "rebuild": "electron-rebuild -f -w better-sqlite3 --module-dir dist-electron/out/apps/backend",
+    "rebuild": "electron-rebuild -f -w better-sqlite3 --module-dir out/apps/backend",
     "package": "vite build && electron-builder"
   },
   "devDependencies": {
