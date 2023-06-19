@@ -31,6 +31,7 @@
     "bootstrap": "pnpm install && pnpm run build",
     "build": "turbo run build",
     "build:image": "zx scripts/build-image.mjs",
+    "build:desktop": "zx scripts/desktop/build.mjs",
     "clean": "turbo run clean --parallel",
     "commit": "cz",
     "db:migration:create": "turbo run db:migration:create",

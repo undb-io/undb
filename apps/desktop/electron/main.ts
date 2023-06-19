@@ -1,27 +1,16 @@
 import { app, BrowserWindow } from 'electron'
 import isDev from 'electron-is-dev'
-import { spawn } from 'node:child_process'
 import path from 'node:path'
-
-// The built directory structure
-//
-// ├─┬─┬ dist
-// │ │ └── index.html
-// │ │
-// │ ├─┬ dist-electron
-// │ │ ├── main.js
-// │ │ └── preload.js
-// │
-process.env.DIST = path.join(__dirname, '../dist')
-process.env.PUBLIC = app.isPackaged ? process.env.DIST : path.join(process.env.DIST, '../public')
+import { prepareEnv } from './env'
 
 let win: BrowserWindow | null
 
 async function launchBackend() {
   // if (isDev) return
-  const backend = path.join(__dirname, '../../backend/dist/main.js')
 
-  spawn('node', [backend])
+  const backendUrl = path.join(__dirname, '../out/apps/backend/dist/main.js')
+  const backend = await import(backendUrl)
+  await backend.bootstrap()
 }
 
 function createWindow() {
@@ -67,4 +56,4 @@ app.on('window-all-closed', () => {
   win = null
 })
 
-app.whenReady().then(launchBackend).then(createWindow)
+app.whenReady().then(prepareEnv).then(launchBackend).then(createWindow)

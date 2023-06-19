@@ -364,6 +364,9 @@ importers:
 
   apps/desktop:
     devDependencies:
+      '@electron/rebuild':
+        specifier: ^3.2.13
+        version: 3.2.13
       '@undb/eslint-config':
         specifier: workspace:^0.0.0
         version: link:../../packages/eslint-config
@@ -6338,7 +6341,7 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       bin-version: 6.0.0
-      semver: 7.5.0
+      semver: 7.5.1
       semver-truncate: 2.0.0
     dev: true
 

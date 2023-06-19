@@ -5,10 +5,13 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
+    "rebuild": "electron-rebuild -f -w better-sqlite3 --module-dir out/apps/backend",
+    "start": "pnpm run rebuild && vite",
     "package": "tsc && vite build && electron-builder",
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@electron/rebuild": "^3.2.13",
     "@undb/eslint-config": "workspace:^0.0.0",
     "electron": "^25.1.1",
     "electron-builder": "^24.4.0",

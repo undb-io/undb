@@ -67,6 +67,8 @@ export async function bootstrap() {
     .use(compression())
 
   await app.listen(4000, '0.0.0.0')
+
+  return app
 }
 
 if (process.env.APP_ENV !== 'desktop') {
