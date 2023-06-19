@@ -5,10 +5,9 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "rebuild": "electron-rebuild -f -w better-sqlite3 --module-dir out/apps/backend",
-    "start": "pnpm run rebuild && vite",
-    "package": "tsc && vite build && electron-builder",
-    "preview": "vite preview"
+    "postinstall": "electron-builder install-app-deps",
+    "rebuild": "electron-rebuild -f -w better-sqlite3 --module-dir dist-electron/out/apps/backend",
+    "package": "vite build && electron-builder"
   },
   "devDependencies": {
     "@electron/rebuild": "^3.2.13",

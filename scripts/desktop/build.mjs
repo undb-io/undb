@@ -3,12 +3,19 @@ import 'zx/globals'
 
 process.env.HUSKY = '0'
 
-await $`rm -rf apps/desktop/out`
+const out = 'apps/desktop/dist-electron/out'
 
-await $`pnpx turbo prune --scope=@undb/backend --scope=@undb/frontend --out-dir apps/desktop/out`
+// await $`rm -rf ${out}`
+
+await $`pnpx turbo prune --scope=@undb/backend --scope=@undb/frontend --out-dir ${out}`
 
 await within(async () => {
-  await cd('apps/desktop/out')
+  await cd(out)
   await $`pnpm install`
   await $`pnpm run build`
+})
+
+await within(async () => {
+  await cd('apps/desktop')
+  await $`pnpm run rebuild`
 })

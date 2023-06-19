@@ -16,6 +16,7 @@ declare namespace NodeJS {
      * ```
      */
     DIST: string
+    DIST_ELECTRON: string
     /** /dist/ or /public/ */
     PUBLIC: string
   }
