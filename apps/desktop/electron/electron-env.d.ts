@@ -19,5 +19,9 @@ declare namespace NodeJS {
     DIST_ELECTRON: string
     /** /dist/ or /public/ */
     PUBLIC: string
+    APP_ENV: 'desktop'
+
+    UNDB_FRONTEND_OUT_DIR: string
+    UNDB_DATABASE_SQLITE_DATA: string
   }
 }

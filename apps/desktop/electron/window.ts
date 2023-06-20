@@ -34,7 +34,7 @@ export function createWindow() {
     win?.webContents.send('main-process-message', new Date().toLocaleString())
   })
 
-  isDev ? win.loadURL('http://localhost:4000') : win.loadURL('http://localhost:4000')
+  isDev ? win.loadURL('http://localhost:3000') : win.loadURL('http://localhost:4000')
   // if (VITE_DEV_SERVER_URL) {
   //   win.loadURL(VITE_DEV_SERVER_URL)
   // } else {
