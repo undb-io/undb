@@ -7,7 +7,8 @@
     "dev": "vite",
     "postinstall": "electron-builder install-app-deps",
     "rebuild": "electron-rebuild -f types=dev,prod -o=better-sqlite3 --module-dir=./out",
-    "package": "vite build && electron-builder"
+    "package:mac": "vite build && electron-builder --mac",
+    "package:win": "vite build && electron-builder --win"
   },
   "devDependencies": {
     "@electron/rebuild": "^3.2.13",

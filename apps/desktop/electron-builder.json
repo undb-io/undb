@@ -4,11 +4,13 @@
   "asar": true,
   "extraResources": ["out"],
   "directories": {
+    "buildResources": "resources",
     "output": "release/app"
   },
-  "files": ["dist-electron", "dist", "package.json"],
+  "files": ["dist-electron", "dist", "package.json", "resources/**/*"],
   "mac": {
-    "artifactName": "${productName}_${version}.${ext}",
+    "artifactName": "${productName}.${ext}",
+    "icon": "resources/icon.png",
     "target": ["dmg"]
   },
   "win": {
@@ -18,7 +20,7 @@
         "arch": ["x64"]
       }
     ],
-    "artifactName": "${productName}_${version}.${ext}"
+    "artifactName": "${productName}.${ext}"
   },
   "nsis": {
     "oneClick": false,

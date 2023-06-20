@@ -6,12 +6,17 @@ import { createWindow } from './window'
 let win: BrowserWindow | null
 let backend: any
 
-app.on('window-all-closed', async () => {
-  if (process.platform !== 'darwin') {
-    await backend.close()
-    win = null
-  }
-})
+app
+  .on('window-all-closed', async () => {
+    if (process.platform !== 'darwin') {
+      await backend.close()
+      win = null
+      app.quit()
+    }
+  })
+  .on('activate', () => {
+    if (win) win.show()
+  })
 
 app
   .whenReady()
@@ -21,4 +26,8 @@ app
   })
   .then(() => {
     win = createWindow()
+    win.on('close', (e) => {
+      e.preventDefault()
+      win?.hide()
+    })
   })

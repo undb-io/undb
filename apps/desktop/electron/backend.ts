@@ -8,6 +8,7 @@ export async function launchBackend() {
     await waitPort({ port: 3000 })
     // backend
     await waitPort({ port: 4000 })
+    return
   }
 
   const p = path.join(process.resourcesPath, '/out/apps/backend/dist/main.js')
