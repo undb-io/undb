@@ -6,13 +6,13 @@
   "scripts": {
     "dev": "vite",
     "postinstall": "electron-builder install-app-deps",
-    "rebuild": "electron-rebuild -f -w better-sqlite3 --module-dir out/apps/backend",
+    "rebuild": "electron-rebuild -f types=dev,prod -o=better-sqlite3 --module-dir=./out",
     "package": "vite build && electron-builder"
   },
   "devDependencies": {
     "@electron/rebuild": "^3.2.13",
     "@types/detect-port": "^1.3.3",
-    "@undb/eslint-config": "workspace:^0.0.0",
+    "@undb/eslint-config": "^0.0.0",
     "detect-port": "^1.5.1",
     "electron": "^25.1.1",
     "electron-builder": "^24.4.0",

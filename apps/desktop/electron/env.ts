@@ -9,6 +9,10 @@ const prepareBackendPort = async () => {
 }
 
 export const prepareEnv = async () => {
+  if (!isDev) {
+    process.env.NODE_ENV = 'production'
+  }
+
   process.env.DIST = path.join(__dirname, '../dist')
   process.env.DIST_ELECTRON = path.join(__dirname, '../dist-electron')
 

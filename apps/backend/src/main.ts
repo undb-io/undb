@@ -72,6 +72,10 @@ export async function bootstrap() {
 
   logger.log(`Undb started at port ${port}`)
 
+  process.on('uncaughtException', (error) => {
+    logger.error(error)
+  })
+
   return app
 }
 
