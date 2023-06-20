@@ -52,7 +52,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
       inject: [sqliteConfig.KEY],
     }),
     ServeStaticModule.forRoot({
-      rootPath: path.resolve(process.cwd(), './out'),
+      rootPath: process.env.UNDB_FRONTEND_OUT_DIR || path.resolve(process.cwd(), './out'),
     }),
     ...coreModules,
     AttachmentModule,

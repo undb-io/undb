@@ -5,8 +5,8 @@
   "author": "",
   "devDependencies": {
     "@types/uuid": "^9.0.2",
-    "@undb/core": "workspace:^0.0.0",
-    "@undb/logger": "workspace:^",
+    "@undb/core": "^0.0.0",
+    "@undb/logger": "^0.0.0",
     "rimraf": "^5.0.1",
     "tsconfig": "^0.0.0",
     "tsup": "^7.0.0",

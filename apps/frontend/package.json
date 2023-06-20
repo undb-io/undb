@@ -89,6 +89,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@undb/integrations": "workspace:^"
+		"@undb/integrations": "^0.0.0"
 	}
 }
