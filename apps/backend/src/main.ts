@@ -23,6 +23,8 @@ export async function bootstrap() {
     bufferLogs: true,
   })
 
+  const port = parseInt(process.env.UNDB_BACKEND_PORT ?? '4000', 10)
+
   const logger = app.get(Logger)
   app.useLogger(logger)
 
@@ -66,7 +68,9 @@ export async function bootstrap() {
     )
     .use(compression())
 
-  await app.listen(4000, '0.0.0.0')
+  await app.listen(port, '0.0.0.0')
+
+  logger.log(`Undb started at port ${port}`)
 
   return app
 }

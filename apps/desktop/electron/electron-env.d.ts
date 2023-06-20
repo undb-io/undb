@@ -23,5 +23,6 @@ declare namespace NodeJS {
 
     UNDB_FRONTEND_OUT_DIR: string
     UNDB_DATABASE_SQLITE_DATA: string
+    UNDB_BACKEND_PORT: number
   }
 }
