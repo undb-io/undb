@@ -38,3 +38,5 @@ yarn-error.log*
 .pnpm-store/
 
 .undb/
+
+dist-*
