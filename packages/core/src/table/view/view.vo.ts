@@ -12,12 +12,12 @@ import type { VisualizationVO } from '../visualization/visualization.vo.js'
 import { Calendar } from './calendar/index.js'
 import { Dashboard } from './dashboard/dashboard.vo.js'
 import {
-  WithoutWidgeSpecification,
-  WithWidgeSepecification,
-  WithWidgesLayout,
-} from './dashboard/specifications/widge.specification.js'
-import type { ICreateWidgeSchema, IRelayoutWidgeSchema } from './dashboard/widge.schema.js'
-import { Widge } from './dashboard/widge.vo.js'
+  WithoutWidgetSpecification,
+  WithWidgetSepecification,
+  WithWidgetsLayout,
+} from './dashboard/specifications/widget.specification.js'
+import type { ICreateWidgetSchema, IRelayoutWidgetSchema } from './dashboard/widget.schema.js'
+import { Widget } from './dashboard/widget.vo.js'
 import { Kanban } from './kanban/index.js'
 import type { ISortDirection } from './sort/sort.schema.js'
 import { Sorts } from './sort/sorts.js'
@@ -331,38 +331,38 @@ export class ViewVO extends ValueObject<IView> {
     const dashboard = this.dashboard
     if (dashboard.isSome()) return dashboard.unwrap()
 
-    this.props.dashboard = new Dashboard({ widges: [] })
+    this.props.dashboard = new Dashboard({ widgets: [] })
     return this.props.dashboard
   }
 
-  public createWidge(input: ICreateWidgeSchema): TableCompositeSpecificaiton {
+  public createWidget(input: ICreateWidgetSchema): TableCompositeSpecificaiton {
     const dashboard = this.getOrCreateDashboard()
 
-    const widge = Widge.create(input)
-    const spec = new WithWidgeSepecification(this, dashboard, widge)
+    const widget = Widget.create(input)
+    const spec = new WithWidgetSepecification(this, dashboard, widget)
 
     return spec
   }
 
-  public deleteWidge(widgeId: string): TableCompositeSpecificaiton {
+  public deleteWidget(widgetId: string): TableCompositeSpecificaiton {
     const dashboard = this.getOrCreateDashboard()
 
-    const spec = new WithoutWidgeSpecification(this, dashboard, widgeId)
+    const spec = new WithoutWidgetSpecification(this, dashboard, widgetId)
 
     return spec
   }
 
-  public relayoutWidges(widges: IRelayoutWidgeSchema[]): TableCompositeSpecificaiton {
+  public relayoutWidgets(widgets: IRelayoutWidgetSchema[]): TableCompositeSpecificaiton {
     const dashboard = this.getOrCreateDashboard()
 
-    const spec = new WithWidgesLayout(this, dashboard, widges)
+    const spec = new WithWidgetsLayout(this, dashboard, widgets)
     return spec
   }
 
   public getVisualization(visualizationId: string): VisualizationVO | undefined {
     const dashboard = this.dashboard.into()
-    const widge = dashboard?.widges.find((w) => w.visualization?.id.value === visualizationId)
-    return widge?.visualization
+    const widget = dashboard?.widgets.find((w) => w.visualization?.id.value === visualizationId)
+    return widget?.visualization
   }
 
   public mustGetVisualization(visualizationId: string): VisualizationVO {

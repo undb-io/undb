@@ -6,20 +6,20 @@ import { CreateRecordCommandHandler } from './create-record.command.handler.js'
 import { CreateRecordsCommandHandler } from './create-records.command.handler.js'
 import { CreateTableCommandHandler } from './create-table.command.handler.js'
 import { CreateViewCommandHandler } from './create-view.command.handler.js'
-import { CreateWidgeCommandHandler } from './create-widge.command.handler.js'
+import { CreateWidgetCommandHandler } from './create-widget.command.handler.js'
 import { DeleteFieldCommandHandler } from './delete-field.command.handler.js'
 import { DeleteOptionCommandHandler } from './delete-option.command.handler.js'
 import { DeleteRecordCommandHandler } from './delete-record.command.handler.js'
 import { DeleteTableCommandHandler } from './delete-table.command.handler.js'
 import { DeleteViewCommandHandler } from './delete-view.command.handler.js'
-import { DeleteWidgeCommandHandler } from './delete-widge.command.handler.js'
+import { DeleteWidgetCommandHandler } from './delete-widget.command.handler.js'
 import { DuplicateFieldCommandHandler } from './duplicate-field.command.handler.js'
 import { DuplicateRecordCommandHandler } from './duplicate-record.command.handler.js'
 import { DuplicateViewCommandHandler } from './duplicate-view.command.handler.js'
 import { ExportGridCommandHandler } from './export-grid.command.handler.js'
 import { MoveFieldCommandHandler } from './move-field.command.handler.js'
 import { MoveViewCommandHandler } from './move-view.command.handler.js'
-import { RelayoutWidgesCommandHandler } from './relayout-widges.command.handler.js'
+import { RelayoutWidgetsCommandHandler } from './relayout-widgets.command.handler.js'
 import { ReorderOptionsCommandHandler } from './reorder-options.command.handler.js'
 import { ResetFieldSortCommandHandler } from './reset-field-sort.command.handler.js'
 import { SetCalendarFieldCommandHandler } from './set-calendar-field.command.handler.js'
@@ -55,7 +55,7 @@ export const commandHandlers = [
   CreateOptionCommandHandler,
   SetFiltersCommandHandler,
   SetSortsCommandHandler,
-  CreateWidgeCommandHandler,
+  CreateWidgetCommandHandler,
   SetKanbanFieldCommandHandler,
   SetCalendarFieldCommandHandler,
   SetPinnedFieldsCommandHandler,
@@ -81,9 +81,9 @@ export const commandHandlers = [
   DuplicateViewCommandHandler,
   UpdateViewNameCommandHandler,
   UpdateFieldCommandHandler,
-  RelayoutWidgesCommandHandler,
+  RelayoutWidgetsCommandHandler,
   UpdateVisualizationCommandHandler,
-  DeleteWidgeCommandHandler,
+  DeleteWidgetCommandHandler,
   DuplicateFieldCommandHandler,
   ExportGridCommandHandler,
 ]

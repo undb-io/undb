@@ -60,10 +60,10 @@ import type {
   WithTableSchema,
 } from '../specifications/index.js'
 import type {
-  WithoutWidgeSpecification,
-  WithWidgeSepecification,
-  WithWidgesLayout,
-} from '../view/dashboard/specifications/widge.specification.js'
+  WithoutWidgetSpecification,
+  WithWidgetSepecification,
+  WithWidgetsLayout,
+} from '../view/dashboard/specifications/widget.specification.js'
 import type {
   WithCalendarField,
   WithChartAggregateSpec,
@@ -89,11 +89,11 @@ import type {
 import type { WithNumberAggregateSpec } from '../visualization/specifications/number-visualization.specification.js'
 
 export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVisitor, IFieldVisitor {
-  withoutWidge(s: WithoutWidgeSpecification): void {}
+  withoutWidget(s: WithoutWidgetSpecification): void {}
   withChartAggregate(s: WithChartAggregateSpec): void {}
   withNumberAggregate(s: WithNumberAggregateSpec): void {}
   withVisualizationName(s: WithVisualizationNameSpec): void {}
-  withWidgesLayout(s: WithWidgesLayout): void {}
+  withWidgetsLayout(s: WithWidgetsLayout): void {}
   rowHeightEqual(s: WithRowHeight): void {}
   ratingMaxEqual(s: WithRatingMax): void {}
   currencySymbolEqual(s: WithCurrencySymbol): void {}
@@ -170,7 +170,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   withAggregateFieldId(s: WithAggregateFieldId): void {}
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {}
   withReferenceFieldId(s: WithReferenceFieldId): void {}
-  withWidge(s: WithWidgeSepecification): void {}
+  withWidget(s: WithWidgetSepecification): void {}
   withNewFieldType(s: WithNewFieldType): void {}
   or(): this {
     return this

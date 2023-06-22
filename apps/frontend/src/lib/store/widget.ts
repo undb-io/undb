@@ -1,5 +1,5 @@
-import type { WidgeDataItem } from '$lib/dashboard/widge-item.type'
-import { WidgeID, type IVisualizationTypeSchema, type Widge } from '@undb/core'
+import type { WidgetDataItem } from '$lib/dashboard/widget-item.type'
+import { WidgetID, type IVisualizationTypeSchema, type Widget } from '@undb/core'
 import { writable } from 'svelte/store'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -33,32 +33,32 @@ const defaultLayout: Record<
 	},
 }
 
-const createWidgeItems = () => {
-	const { subscribe, set, update } = writable<WidgeDataItem[]>([])
+const createWidgetItems = () => {
+	const { subscribe, set, update } = writable<WidgetDataItem[]>([])
 
-	let $widgeItems: WidgeDataItem[] = []
+	let $widgetItems: WidgetDataItem[] = []
 
 	subscribe((items) => {
-		$widgeItems = items
+		$widgetItems = items
 	})
 
-	const init = (widges: Widge[]) => {
+	const init = (widgets: Widget[]) => {
 		set(
-			widges.map((widge) => ({
+			widgets.map((widget) => ({
 				[COLS]: gridHelp.item({
-					...widge.layout.toJSON(),
-					min: widge.visualization ? defaultLayout[widge.visualization.type].min : { w: 3, h: 2 },
+					...widget.layout.toJSON(),
+					min: widget.visualization ? defaultLayout[widget.visualization.type].min : { w: 3, h: 2 },
 					customDragger: true,
 					customResizer: true,
 				}),
-				id: widge.id.value,
-				widge: widge as Widge | null,
+				id: widget.id.value,
+				widget: widget as Widget | null,
 			})) ?? [],
 		)
 	}
 
 	const add = (type: IVisualizationTypeSchema) => {
-		const id = WidgeID.createId()
+		const id = WidgetID.createId()
 		let newItem = {
 			[COLS]: gridHelp.item({
 				...defaultLayout[type],
@@ -66,10 +66,10 @@ const createWidgeItems = () => {
 				customResizer: true,
 			}),
 			id,
-			widge: null,
+			widget: null,
 		}
 
-		const findOutPosition = gridHelp.findSpace(newItem, $widgeItems, COLS)
+		const findOutPosition = gridHelp.findSpace(newItem, $widgetItems, COLS)
 
 		newItem = {
 			...newItem,
@@ -79,16 +79,16 @@ const createWidgeItems = () => {
 			},
 		}
 
-		update(($widgeItems) => [...$widgeItems, ...[newItem]])
+		update(($widgetItems) => [...$widgetItems, ...[newItem]])
 
 		return newItem
 	}
 
 	const remove = (id: string) => {
-		const widgeItems = $widgeItems.filter((w) => w.widge?.id.value !== id)
-		$widgeItems = widgeItems
-		$widgeItems = gridHelp.adjust(widgeItems, COLS)
-		return $widgeItems
+		const widgetItems = $widgetItems.filter((w) => w.widget?.id.value !== id)
+		$widgetItems = widgetItems
+		$widgetItems = gridHelp.adjust(widgetItems, COLS)
+		return $widgetItems
 	}
 
 	return {
@@ -100,4 +100,4 @@ const createWidgeItems = () => {
 		remove,
 	}
 }
-export const widgeItems = createWidgeItems()
+export const widgetItems = createWidgetItems()

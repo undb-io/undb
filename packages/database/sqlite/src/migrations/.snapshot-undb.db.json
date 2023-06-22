@@ -73,9 +73,7 @@
       "name": "undb_outbox",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "undb_outbox_deleted_at_index",
           "primary": false,
@@ -83,9 +81,7 @@
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "uuid"
-          ],
+          "columnNames": ["uuid"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -166,9 +162,7 @@
       "name": "undb_table",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "undb_table_deleted_at_index",
           "primary": false,
@@ -176,9 +170,7 @@
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -463,99 +455,77 @@
       "name": "undb_field",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "undb_field_deleted_at_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "table_id"
-          ],
+          "columnNames": ["table_id"],
           "composite": false,
           "keyName": "undb_field_table_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "type"
-          ],
+          "columnNames": ["type"],
           "composite": false,
           "keyName": "undb_field_type_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "foreign_table_id"
-          ],
+          "columnNames": ["foreign_table_id"],
           "composite": false,
           "keyName": "undb_field_foreign_table_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "symmetric_reference_field_id"
-          ],
+          "columnNames": ["symmetric_reference_field_id"],
           "composite": false,
           "keyName": "undb_field_symmetric_reference_field_id_unique",
           "primary": false,
           "unique": true
         },
         {
-          "columnNames": [
-            "count_reference_field_id"
-          ],
+          "columnNames": ["count_reference_field_id"],
           "composite": false,
           "keyName": "undb_field_count_reference_field_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "lookup_reference_field_id"
-          ],
+          "columnNames": ["lookup_reference_field_id"],
           "composite": false,
           "keyName": "undb_field_lookup_reference_field_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "sum_reference_field_id"
-          ],
+          "columnNames": ["sum_reference_field_id"],
           "composite": false,
           "keyName": "undb_field_sum_reference_field_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "sum_aggregate_field_id"
-          ],
+          "columnNames": ["sum_aggregate_field_id"],
           "composite": false,
           "keyName": "undb_field_sum_aggregate_field_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "average_reference_field_id"
-          ],
+          "columnNames": ["average_reference_field_id"],
           "composite": false,
           "keyName": "undb_field_average_reference_field_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "average_aggregate_field_id"
-          ],
+          "columnNames": ["average_aggregate_field_id"],
           "composite": false,
           "keyName": "undb_field_average_aggregate_field_id_index",
           "primary": false,
@@ -563,9 +533,7 @@
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -575,117 +543,81 @@
       "foreignKeys": {
         "undb_field_table_id_foreign": {
           "constraintName": "undb_field_table_id_foreign",
-          "columnNames": [
-            "table_id"
-          ],
+          "columnNames": ["table_id"],
           "localTableName": "undb_field",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_table",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "undb_field_foreign_table_id_foreign": {
           "constraintName": "undb_field_foreign_table_id_foreign",
-          "columnNames": [
-            "foreign_table_id"
-          ],
+          "columnNames": ["foreign_table_id"],
           "localTableName": "undb_field",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_table",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "undb_field_symmetric_reference_field_id_foreign": {
           "constraintName": "undb_field_symmetric_reference_field_id_foreign",
-          "columnNames": [
-            "symmetric_reference_field_id"
-          ],
+          "columnNames": ["symmetric_reference_field_id"],
           "localTableName": "undb_field",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_field",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "undb_field_count_reference_field_id_foreign": {
           "constraintName": "undb_field_count_reference_field_id_foreign",
-          "columnNames": [
-            "count_reference_field_id"
-          ],
+          "columnNames": ["count_reference_field_id"],
           "localTableName": "undb_field",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_field",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "undb_field_lookup_reference_field_id_foreign": {
           "constraintName": "undb_field_lookup_reference_field_id_foreign",
-          "columnNames": [
-            "lookup_reference_field_id"
-          ],
+          "columnNames": ["lookup_reference_field_id"],
           "localTableName": "undb_field",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_field",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "undb_field_sum_reference_field_id_foreign": {
           "constraintName": "undb_field_sum_reference_field_id_foreign",
-          "columnNames": [
-            "sum_reference_field_id"
-          ],
+          "columnNames": ["sum_reference_field_id"],
           "localTableName": "undb_field",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_field",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "undb_field_sum_aggregate_field_id_foreign": {
           "constraintName": "undb_field_sum_aggregate_field_id_foreign",
-          "columnNames": [
-            "sum_aggregate_field_id"
-          ],
+          "columnNames": ["sum_aggregate_field_id"],
           "localTableName": "undb_field",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_field",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "undb_field_average_reference_field_id_foreign": {
           "constraintName": "undb_field_average_reference_field_id_foreign",
-          "columnNames": [
-            "average_reference_field_id"
-          ],
+          "columnNames": ["average_reference_field_id"],
           "localTableName": "undb_field",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_field",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "undb_field_average_aggregate_field_id_foreign": {
           "constraintName": "undb_field_average_aggregate_field_id_foreign",
-          "columnNames": [
-            "average_aggregate_field_id"
-          ],
+          "columnNames": ["average_aggregate_field_id"],
           "localTableName": "undb_field",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_field",
           "deleteRule": "set null",
           "updateRule": "cascade"
@@ -773,27 +705,21 @@
       "name": "undb_option",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "undb_option_deleted_at_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "field_id"
-          ],
+          "columnNames": ["field_id"],
           "composite": false,
           "keyName": "undb_option_field_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "name"
-          ],
+          "columnNames": ["name"],
           "composite": false,
           "keyName": "undb_option_name_index",
           "primary": false,
@@ -801,9 +727,7 @@
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "key"
-          ],
+          "columnNames": ["key"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -813,13 +737,9 @@
       "foreignKeys": {
         "undb_option_field_id_foreign": {
           "constraintName": "undb_option_field_id_foreign",
-          "columnNames": [
-            "field_id"
-          ],
+          "columnNames": ["field_id"],
           "localTableName": "undb_option",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_field",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -952,54 +872,42 @@
       "name": "undb_attachment",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "undb_attachment_deleted_at_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "table_id"
-          ],
+          "columnNames": ["table_id"],
           "composite": false,
           "keyName": "undb_attachment_table_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "mime_type"
-          ],
+          "columnNames": ["mime_type"],
           "composite": false,
           "keyName": "undb_attachment_mime_type_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "name"
-          ],
+          "columnNames": ["name"],
           "composite": false,
           "keyName": "undb_attachment_name_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "size"
-          ],
+          "columnNames": ["size"],
           "composite": false,
           "keyName": "undb_attachment_size_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "extension"
-          ],
+          "columnNames": ["extension"],
           "composite": false,
           "keyName": "undb_attachment_extension_index",
           "primary": false,
@@ -1007,11 +915,7 @@
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "id",
-            "record_id",
-            "field_id"
-          ],
+          "columnNames": ["id", "record_id", "field_id"],
           "composite": true,
           "primary": true,
           "unique": true
@@ -1021,13 +925,9 @@
       "foreignKeys": {
         "undb_attachment_table_id_foreign": {
           "constraintName": "undb_attachment_table_id_foreign",
-          "columnNames": [
-            "table_id"
-          ],
+          "columnNames": ["table_id"],
           "localTableName": "undb_attachment",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_table",
           "updateRule": "cascade"
         }
@@ -1057,18 +957,14 @@
       "name": "undb_field_display_fields",
       "indexes": [
         {
-          "columnNames": [
-            "field_1_id"
-          ],
+          "columnNames": ["field_1_id"],
           "composite": false,
           "keyName": "undb_field_display_fields_field_1_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "field_2_id"
-          ],
+          "columnNames": ["field_2_id"],
           "composite": false,
           "keyName": "undb_field_display_fields_field_2_id_index",
           "primary": false,
@@ -1076,10 +972,7 @@
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "field_1_id",
-            "field_2_id"
-          ],
+          "columnNames": ["field_1_id", "field_2_id"],
           "composite": true,
           "primary": true,
           "unique": true
@@ -1089,26 +982,18 @@
       "foreignKeys": {
         "undb_field_display_fields_field_1_id_foreign": {
           "constraintName": "undb_field_display_fields_field_1_id_foreign",
-          "columnNames": [
-            "field_1_id"
-          ],
+          "columnNames": ["field_1_id"],
           "localTableName": "undb_field_display_fields",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_field",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "undb_field_display_fields_field_2_id_foreign": {
           "constraintName": "undb_field_display_fields_field_2_id_foreign",
-          "columnNames": [
-            "field_2_id"
-          ],
+          "columnNames": ["field_2_id"],
           "localTableName": "undb_field_display_fields",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_field",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1206,36 +1091,28 @@
       "name": "undb_user",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "undb_user_deleted_at_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "username"
-          ],
+          "columnNames": ["username"],
           "composite": false,
           "keyName": "undb_user_username_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "email"
-          ],
+          "columnNames": ["email"],
           "composite": false,
           "keyName": "undb_user_email_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "email"
-          ],
+          "columnNames": ["email"],
           "composite": false,
           "keyName": "undb_user_email_unique",
           "primary": false,
@@ -1243,9 +1120,7 @@
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1330,13 +1205,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "kanban",
-            "calendar",
-            "grid",
-            "tree",
-            "dashboard"
-          ],
+          "enumItems": ["kanban", "calendar", "grid", "tree", "dashboard"],
           "mappedType": "enum"
         },
         "sorts": {
@@ -1418,29 +1287,21 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "enumItems": [
-            "short",
-            "medium",
-            "tall"
-          ],
+          "enumItems": ["short", "medium", "tall"],
           "mappedType": "enum"
         }
       },
       "name": "undb_view",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "undb_view_deleted_at_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "table_id"
-          ],
+          "columnNames": ["table_id"],
           "composite": false,
           "keyName": "undb_view_table_id_index",
           "primary": false,
@@ -1448,9 +1309,7 @@
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1460,13 +1319,9 @@
       "foreignKeys": {
         "undb_view_table_id_foreign": {
           "constraintName": "undb_view_table_id_foreign",
-          "columnNames": [
-            "table_id"
-          ],
+          "columnNames": ["table_id"],
           "localTableName": "undb_view",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_table",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1530,10 +1385,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "number",
-            "chart"
-          ],
+          "enumItems": ["number", "chart"],
           "mappedType": "text"
         },
         "table_id": {
@@ -1585,27 +1437,21 @@
       "name": "undb_visualization",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "undb_visualization_deleted_at_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "type"
-          ],
+          "columnNames": ["type"],
           "composite": false,
           "keyName": "undb_visualization_type_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "table_id"
-          ],
+          "columnNames": ["table_id"],
           "composite": false,
           "keyName": "undb_visualization_table_id_index",
           "primary": false,
@@ -1613,9 +1459,7 @@
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1625,13 +1469,9 @@
       "foreignKeys": {
         "undb_visualization_table_id_foreign": {
           "constraintName": "undb_visualization_table_id_foreign",
-          "columnNames": [
-            "table_id"
-          ],
+          "columnNames": ["table_id"],
           "localTableName": "undb_visualization",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_table",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1756,54 +1596,42 @@
       "name": "undb_webhook",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "undb_webhook_deleted_at_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "url"
-          ],
+          "columnNames": ["url"],
           "composite": false,
           "keyName": "undb_webhook_url_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "name"
-          ],
+          "columnNames": ["name"],
           "composite": false,
           "keyName": "undb_webhook_name_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "method"
-          ],
+          "columnNames": ["method"],
           "composite": false,
           "keyName": "undb_webhook_method_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "target_id"
-          ],
+          "columnNames": ["target_id"],
           "composite": false,
           "keyName": "undb_webhook_target_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "event"
-          ],
+          "columnNames": ["event"],
           "composite": false,
           "keyName": "undb_webhook_event_index",
           "primary": false,
@@ -1811,9 +1639,7 @@
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1891,40 +1717,32 @@
           "mappedType": "text"
         }
       },
-      "name": "undb_widge",
+      "name": "undb_widget",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
-          "keyName": "undb_widge_deleted_at_index",
+          "keyName": "undb_widget_deleted_at_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "view_id"
-          ],
+          "columnNames": ["view_id"],
           "composite": false,
-          "keyName": "undb_widge_view_id_index",
+          "keyName": "undb_widget_view_id_index",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "visualization_id"
-          ],
+          "columnNames": ["visualization_id"],
           "composite": false,
-          "keyName": "undb_widge_visualization_id_unique",
+          "keyName": "undb_widget_visualization_id_unique",
           "primary": false,
           "unique": true
         },
         {
           "keyName": "primary",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1932,27 +1750,19 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "undb_widge_view_id_foreign": {
-          "constraintName": "undb_widge_view_id_foreign",
-          "columnNames": [
-            "view_id"
-          ],
-          "localTableName": "undb_widge",
-          "referencedColumnNames": [
-            "id"
-          ],
+        "undb_widget_view_id_foreign": {
+          "constraintName": "undb_widget_view_id_foreign",
+          "columnNames": ["view_id"],
+          "localTableName": "undb_widget",
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_view",
           "updateRule": "cascade"
         },
-        "undb_widge_visualization_id_foreign": {
-          "constraintName": "undb_widge_visualization_id_foreign",
-          "columnNames": [
-            "visualization_id"
-          ],
-          "localTableName": "undb_widge",
-          "referencedColumnNames": [
-            "id"
-          ],
+        "undb_widget_visualization_id_foreign": {
+          "constraintName": "undb_widget_visualization_id_foreign",
+          "columnNames": ["visualization_id"],
+          "localTableName": "undb_widget",
+          "referencedColumnNames": ["id"],
           "referencedTableName": "undb_visualization",
           "deleteRule": "set null",
           "updateRule": "cascade"

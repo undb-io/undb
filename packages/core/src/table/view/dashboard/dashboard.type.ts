@@ -1,19 +1,19 @@
 import { z } from 'zod'
-import { createWidgeSchema } from './widge.schema.js'
-import { widgeSchema } from './widge.type.js'
-import type { Widge } from './widge.vo.js'
+import { createWidgetSchema } from './widget.schema.js'
+import { widgetSchema } from './widget.type.js'
+import type { Widget } from './widget.vo.js'
 
 export const dashboardSchema = z.object({
-  widges: widgeSchema.array(),
+  widgets: widgetSchema.array(),
 })
 
 export type IDashboardSchema = z.infer<typeof dashboardSchema>
 
 export const createDashboardSchema = z.object({
-  widges: createWidgeSchema.array(),
+  widgets: createWidgetSchema.array(),
 })
 export type ICreateDashboardSchema = z.infer<typeof createDashboardSchema>
 
 export type IDashboard = {
-  widges: Widge[]
+  widgets: Widget[]
 }

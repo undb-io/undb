@@ -4,16 +4,16 @@
 	import { trpc } from '$lib/trpc/client'
 	import Visualization from '$lib/visualization/Visualization.svelte'
 	import { Dropdown, DropdownDivider, DropdownItem } from 'flowbite-svelte'
-	import type { WidgeDataItem } from './widge-item.type'
+	import type { WidgetDataItem } from './widget-item.type'
 	import { t } from '$lib/i18n'
-	import { COLS, widgeItems } from '$lib/store/widge'
-	import type { IRelayoutWidgeSchema } from '@undb/core'
+	import { COLS, widgetItems } from '$lib/store/widget'
+	import type { IRelayoutWidgetSchema } from '@undb/core'
 	import { visualizationModal } from '$lib/store/modal'
 
 	const table = getTable()
 	const view = getView()
 
-	export let dataItem: WidgeDataItem
+	export let dataItem: WidgetDataItem
 	export let movePointerDown: (e: Event) => void
 	export let resizePointerDown: (e: Event) => void
 
@@ -31,25 +31,25 @@
 		},
 	})
 
-	const relayoutWidges = trpc().table.view.dashboard.relayoutWidges.mutation({
+	const relayoutWidgets = trpc().table.view.dashboard.relayoutWidgets.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 		},
 	})
 
-	const deleteWidge = trpc().table.view.dashboard.deleteWidge.mutation({
+	const deleteWidget = trpc().table.view.dashboard.deleteWidget.mutation({
 		async onSuccess(data, variables, context) {
-			if (!dataItem.widge) return
-			const items = widgeItems.remove(dataItem.widge.id.value)
-			const widges: IRelayoutWidgeSchema[] = items.map((item) => {
+			if (!dataItem.widget) return
+			const items = widgetItems.remove(dataItem.widget.id.value)
+			const widgets: IRelayoutWidgetSchema[] = items.map((item) => {
 				const { x, y, h, w } = item[COLS]
 				const layout = { x, y, h, w }
 				return { id: item.id, layout }
 			})
-			$relayoutWidges.mutate({
+			$relayoutWidgets.mutate({
 				tableId: $table.id.value,
 				viewId: $view.id.value,
-				widges,
+				widgets,
 			})
 			await invalidate(`table:${$table.id.value}`)
 		},
@@ -59,12 +59,12 @@
 		updating = false
 		const target = event.target as HTMLInputElement
 		const value = target.value
-		if (dataItem.widge?.visualization && value !== dataItem.widge?.visualization?.name.value) {
+		if (dataItem.widget?.visualization && value !== dataItem.widget?.visualization?.name.value) {
 			$updateVisualization.mutate({
 				tableId: $table.id.value,
 				visualization: {
-					id: dataItem.widge?.visualization?.id.value,
-					type: dataItem.widge.visualization.type,
+					id: dataItem.widget?.visualization?.id.value,
+					type: dataItem.widget.visualization.type,
 					name: value,
 				},
 			})
@@ -79,19 +79,19 @@
 				on:pointerdown={movePointerDown}
 				class=" opacity-0 group-hover:opacity-100 group-hover:block text-gray-500 ti ti-grip-vertical cursor-grab"
 			/>
-			{#if dataItem.widge?.visualization}
+			{#if dataItem.widget?.visualization}
 				{#if updating}
 					<input
 						class="p-0 rounded-sm active:outline-gray-200"
 						type="text"
 						bind:this={ref}
-						value={dataItem.widge.visualization.name.value}
+						value={dataItem.widget.visualization.name.value}
 						on:blur={blur}
 					/>
 				{:else}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<span on:click={() => (updating = true)} class="font-semibold text-sm">
-						{dataItem.widge?.visualization.name.value}
+						{dataItem.widget?.visualization.name.value}
 					</span>
 				{/if}
 			{/if}
@@ -101,7 +101,7 @@
 				class="hover:bg-slate-100 w-6 h-6"
 				on:click={() => {
 					visualizationModal.open()
-					$currentVisualizationId = dataItem.widge?.visualization?.id.value
+					$currentVisualizationId = dataItem.widget?.visualization?.id.value
 				}}
 			>
 				<i class="text-gray-400 ti ti-arrows-diagonal" />
@@ -114,7 +114,7 @@
 					class="text-gray-600 text-xs gap-2 flex items-center"
 					on:click={() => {
 						visualizationModal.open()
-						$currentVisualizationId = dataItem.widge?.visualization?.id.value
+						$currentVisualizationId = dataItem.widget?.visualization?.id.value
 					}}
 				>
 					<i class="text-gray-400 ti ti-arrows-diagonal" />
@@ -126,25 +126,25 @@
 				<DropdownItem
 					class="text-xs text-red-400 gap-2 flex items-center"
 					on:click={() => {
-						if (dataItem.widge) {
-							$deleteWidge.mutate({
+						if (dataItem.widget) {
+							$deleteWidget.mutate({
 								tableId: $table.id.value,
 								viewId: $view.id.value,
-								widgeId: dataItem.widge.id.value,
+								widgetId: dataItem.widget.id.value,
 							})
 						}
 					}}
 				>
 					<i class="ti ti-trash" />
 					<span>
-						{$t('delete widge')}
+						{$t('delete widget')}
 					</span>
 				</DropdownItem>
 			</Dropdown>
 		</div>
 	</div>
 	<div class="flex items-center justify-center p-2 flex-1">
-		<Visualization visualization={dataItem.widge?.visualization} />
+		<Visualization visualization={dataItem.widget?.visualization} />
 	</div>
 	<i
 		class="absolute right-0 bottom-0 cursor-se-resize
