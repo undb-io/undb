@@ -37,7 +37,7 @@
 </script>
 
 {#if !fieldId}
-	<EmptyChartVisualization {...$$restProps} />
+	<EmptyChartVisualization {visualization} {...$$restProps} />
 {:else if $getChartData.isLoading}
 	<div class="w-full h-full animate-pulse bg-slate-100" />
 {:else if field}

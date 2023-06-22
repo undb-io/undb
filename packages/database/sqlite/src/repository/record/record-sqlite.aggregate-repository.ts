@@ -25,10 +25,6 @@ export class RecordSqliteAggregateRepository implements IRecordAggregateReposito
   }
 
   async chart(tableId: string, visualization: ChartVisualization, spec: IRecordSpec | null): Promise<IChartData> {
-    if (!spec) {
-      return []
-    }
-
     const tableEntity = await this.em.findOneOrFail(Table, tableId, {
       populate: ['fields', 'views', 'fields.options', 'views.widges.visualization'],
     })
