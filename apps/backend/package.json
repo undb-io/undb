@@ -35,7 +35,7 @@
     "@undb/openapi": "^0.0.0",
     "@undb/sqlite": "^0.0.0",
     "@undb/trpc": "^0.0.0",
-    "aws-sdk-v3-nest": "^0.2.0",
+    "aws-sdk-v3-nest": "^0.3.0",
     "bcrypt": "^5.1.0",
     "better-sqlite3": "^8.4.0",
     "class-transformer": "^0.5.1",
