@@ -338,6 +338,14 @@
 						<i class="ti ti-copy" />
 						{$t('Copy Auth Token', { ns: 'auth' })}
 					</DropdownItem>
+					<DropdownItem
+						on:click={() => {
+							document.documentElement.classList.toggle('dark')
+						}}
+					>
+						<i class="ti ti-sun-moon" />
+						{$t('light/dark', { ns: 'auth' })}
+					</DropdownItem>
 					<DropdownItem>
 						<button on:click={() => $logout.mutate()} class="w-full h-full text-left text-red-400" type="submit">
 							<i class="ti ti-logout" />

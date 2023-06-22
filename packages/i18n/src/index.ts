@@ -12,6 +12,7 @@ export const config: InitOptions = {
       auth: {
         login: 'login',
         logout: 'logout',
+        'light/dark': 'Light/Dark',
         'login to undb': 'login to undb',
         'register to undb': 'register to undb',
         register: 'register',
@@ -317,6 +318,7 @@ export const config: InitOptions = {
       auth: {
         login: '登录',
         logout: '退出登录',
+        'light/dark': '白昼模式/黑暗模式',
         register: '注册',
         email: '邮箱',
         'email placeholder': '邮箱地址',
