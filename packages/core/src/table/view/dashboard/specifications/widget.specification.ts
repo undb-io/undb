@@ -6,68 +6,68 @@ import type { ViewVO } from '../../view.vo.js'
 import type { Dashboard } from '../dashboard.vo.js'
 import type { ILayoutSchema } from '../layout.type.js'
 import { LayoutVO } from '../layout.vo.js'
-import type { IRelayoutWidgeSchema } from '../widge.schema.js'
-import type { Widge } from '../widge.vo.js'
+import type { IRelayoutWidgetSchema } from '../widget.schema.js'
+import type { Widget } from '../widget.vo.js'
 
-export class WithWidgeSepecification extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly view: ViewVO, public readonly dashboard: Dashboard, public readonly widge: Widge) {
+export class WithWidgetSepecification extends CompositeSpecification<Table, ITableSpecVisitor> {
+  constructor(public readonly view: ViewVO, public readonly dashboard: Dashboard, public readonly widget: Widget) {
     super()
   }
   isSatisfiedBy(t: Table): boolean {
     throw new Error('Method not implemented.')
   }
   mutate(t: Table): Result<Table, string> {
-    this.dashboard.widges.push(this.widge)
+    this.dashboard.widgets.push(this.widget)
     return Ok(t)
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
-    v.withWidge(this)
+    v.withWidget(this)
     return Ok(undefined)
   }
 }
 
-export class WithoutWidgeSpecification extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly view: ViewVO, public readonly dashboard: Dashboard, public readonly widgeId: string) {
+export class WithoutWidgetSpecification extends CompositeSpecification<Table, ITableSpecVisitor> {
+  constructor(public readonly view: ViewVO, public readonly dashboard: Dashboard, public readonly widgetId: string) {
     super()
   }
   isSatisfiedBy(t: Table): boolean {
     throw new Error('Method not implemented.')
   }
   mutate(t: Table): Result<Table, string> {
-    this.dashboard.widges = this.dashboard.widges.filter((w) => w.id.value !== this.widgeId)
+    this.dashboard.widgets = this.dashboard.widgets.filter((w) => w.id.value !== this.widgetId)
     return Ok(t)
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
-    v.withoutWidge(this)
+    v.withoutWidget(this)
     return Ok(undefined)
   }
 }
 
-export class WithWidgesLayout extends CompositeSpecification<Table, ITableSpecVisitor> {
-  public readonly widgesMap: Map<string, ILayoutSchema>
+export class WithWidgetsLayout extends CompositeSpecification<Table, ITableSpecVisitor> {
+  public readonly widgetsMap: Map<string, ILayoutSchema>
   constructor(
     public readonly view: ViewVO,
     public readonly dashboard: Dashboard,
-    public readonly widges: IRelayoutWidgeSchema[],
+    public readonly widgets: IRelayoutWidgetSchema[],
   ) {
     super()
-    this.widgesMap = new Map(widges.map((w) => [w.id, w.layout]))
+    this.widgetsMap = new Map(widgets.map((w) => [w.id, w.layout]))
   }
   isSatisfiedBy(t: Table): boolean {
     throw new Error('Method not implemented.')
   }
   mutate(t: Table): Result<Table, string> {
-    for (const widge of this.dashboard.widges) {
-      const layout = this.widgesMap.get(widge.id.value)
+    for (const widget of this.dashboard.widgets) {
+      const layout = this.widgetsMap.get(widget.id.value)
       if (layout) {
-        widge.layout = new LayoutVO(layout)
+        widget.layout = new LayoutVO(layout)
       }
     }
 
     return Ok(t)
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
-    v.withWidgesLayout(this)
+    v.withWidgetsLayout(this)
     return Ok(undefined)
   }
 }

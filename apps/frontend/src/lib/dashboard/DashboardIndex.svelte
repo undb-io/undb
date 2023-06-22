@@ -2,49 +2,49 @@
 	// @ts-ignore
 	import Grid from 'svelte-grid'
 	import { trpc } from '$lib/trpc/client'
-	import { dashboardWidges, getTable, getView } from '$lib/store/table'
-	import type { IRelayoutWidgeSchema } from '@undb/core'
+	import { dashboardWidgets, getTable, getView } from '$lib/store/table'
+	import type { IRelayoutWidgetSchema } from '@undb/core'
 	import { invalidate } from '$app/navigation'
-	import WidgeItem from './WidgeItem.svelte'
-	import { COLS, widgeItems } from '$lib/store/widge'
+	import WidgetItem from './WidgetItem.svelte'
+	import { COLS, widgetItems } from '$lib/store/widget'
 	import EmptyDashboard from './EmptyDashboard.svelte'
 
 	const table = getTable()
 	const view = getView()
 
-	$: $view, widgeItems.init($dashboardWidges)
+	$: $view, widgetItems.init($dashboardWidgets)
 
 	const cols = [[1200, COLS]]
 
-	const relayoutWidges = trpc().table.view.dashboard.relayoutWidges.mutation({
+	const relayoutWidgets = trpc().table.view.dashboard.relayoutWidgets.mutation({
 		async onSuccess() {
 			await invalidate(`table:${$table.id.value}`)
 		},
 	})
 
 	const onPointeup = () => {
-		const widges: IRelayoutWidgeSchema[] = $widgeItems.map((item) => {
+		const widgets: IRelayoutWidgetSchema[] = $widgetItems.map((item) => {
 			const { x, y, h, w } = item[COLS]
 			const layout = { x, y, h, w }
 			return { id: item.id, layout }
 		})
 
-		$relayoutWidges.mutate({
+		$relayoutWidgets.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
-			widges,
+			widgets,
 		})
 	}
 </script>
 
 <div class="w-full h-full">
-	{#if !$widgeItems.length}
+	{#if !$widgetItems.length}
 		<div class="w-full h-full flex items-center justify-center">
 			<EmptyDashboard />
 		</div>
 	{:else}
 		<Grid
-			bind:items={$widgeItems}
+			bind:items={$widgetItems}
 			rowHeight={100}
 			let:dataItem
 			{cols}
@@ -54,7 +54,7 @@
 			on:pointerup={onPointeup}
 			fillSpace
 		>
-			<WidgeItem {dataItem} {movePointerDown} {resizePointerDown} />
+			<WidgetItem {dataItem} {movePointerDown} {resizePointerDown} />
 		</Grid>
 	{/if}
 </div>

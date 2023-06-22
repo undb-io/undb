@@ -1,1 +1,1 @@
-export * from './widge.specification.js'
+export * from './widget.specification.js'

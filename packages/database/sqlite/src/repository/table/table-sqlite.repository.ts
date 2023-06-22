@@ -41,7 +41,7 @@ export class TableSqliteRepository implements ITableRepository {
         'fields.displayFields',
         // 'fields.foreignTable',
         // 'fields',
-        'views.widges.visualization',
+        'views.widgets.visualization',
       ],
     })
 

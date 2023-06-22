@@ -96,10 +96,10 @@ export class Migration20230616021158 extends Migration {
     this.addSql('create index `undb_webhook_event_index` on `undb_webhook` (`event`);')
 
     this.addSql(
-      'create table `undb_widge` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `layout` json not null, `view_id` text not null, `visualization_id` text null, constraint `undb_widge_view_id_foreign` foreign key(`view_id`) references `undb_view`(`id`) on update cascade, constraint `undb_widge_visualization_id_foreign` foreign key(`visualization_id`) references `undb_visualization`(`id`) on delete set null on update cascade, primary key (`id`));',
+      'create table `undb_widget` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `layout` json not null, `view_id` text not null, `visualization_id` text null, constraint `undb_widget_view_id_foreign` foreign key(`view_id`) references `undb_view`(`id`) on update cascade, constraint `undb_widget_visualization_id_foreign` foreign key(`visualization_id`) references `undb_visualization`(`id`) on delete set null on update cascade, primary key (`id`));',
     )
-    this.addSql('create index `undb_widge_deleted_at_index` on `undb_widge` (`deleted_at`);')
-    this.addSql('create index `undb_widge_view_id_index` on `undb_widge` (`view_id`);')
-    this.addSql('create unique index `undb_widge_visualization_id_unique` on `undb_widge` (`visualization_id`);')
+    this.addSql('create index `undb_widget_deleted_at_index` on `undb_widget` (`deleted_at`);')
+    this.addSql('create index `undb_widget_view_id_index` on `undb_widget` (`view_id`);')
+    this.addSql('create unique index `undb_widget_visualization_id_unique` on `undb_widget` (`visualization_id`);')
   }
 }

@@ -1,25 +1,25 @@
 import { ValueObject } from '@undb/domain'
 import type { ICreateDashboardSchema, IDashboard } from './dashboard.type.js'
-import { Widge } from './widge.vo.js'
+import { Widget } from './widget.vo.js'
 
 export class Dashboard extends ValueObject<IDashboard> {
-  public get widges() {
-    return this.props.widges
+  public get widgets() {
+    return this.props.widgets
   }
 
-  public set widges(widges: Widge[]) {
-    this.props.widges = widges
+  public set widgets(widgets: Widget[]) {
+    this.props.widgets = widgets
   }
 
   static from(input: ICreateDashboardSchema): Dashboard {
     return new Dashboard({
-      widges: input.widges.map((widge) => Widge.create(widge)),
+      widgets: input.widgets.map((widget) => Widget.create(widget)),
     })
   }
 
   public toJSON() {
     return {
-      widges: this.widges.map((widge) => widge.duplicate().toJSON()),
+      widgets: this.widgets.map((widget) => widget.duplicate().toJSON()),
     }
   }
 }
