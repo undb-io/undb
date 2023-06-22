@@ -3,7 +3,7 @@
 	import { invalidate } from '$app/navigation'
 	import { t } from '$lib/i18n'
 	import { getTable, getView } from '$lib/store/table'
-	import { COLS, widgeItems } from '$lib/store/widge'
+	import { COLS, widgetItems } from '$lib/store/widget'
 	import { trpc } from '$lib/trpc/client'
 	import { SelectField, type IVisualizationTypeSchema } from '@undb/core'
 	import { Button, Dropdown, DropdownItem } from 'flowbite-svelte'
@@ -11,7 +11,7 @@
 	const table = getTable()
 	const view = getView()
 
-	const createWidge = trpc().table.view.dashboard.createWidge.mutation({
+	const createWidget = trpc().table.view.dashboard.createWidget.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			open = false
@@ -20,8 +20,8 @@
 
 	let open = false
 
-	const addWidge = (type: IVisualizationTypeSchema) => {
-		const newItem = widgeItems.add(type)
+	const addWidget = (type: IVisualizationTypeSchema) => {
+		const newItem = widgetItems.add(type)
 		const itemLayout = newItem[COLS]
 		const { x, y, h, w } = itemLayout
 		const layout = { x, y, h, w }
@@ -29,11 +29,11 @@
 	}
 
 	const addNumbers = async () => {
-		const layout = addWidge('number')
-		$createWidge.mutate({
+		const layout = addWidget('number')
+		$createWidget.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
-			widge: {
+			widget: {
 				layout,
 				visualization: {
 					name: $t('visualization count'),
@@ -44,12 +44,12 @@
 	}
 
 	const addChart = async () => {
-		const layout = addWidge('chart')
+		const layout = addWidget('chart')
 		const selectField = $table.schema.fields.find((f) => f instanceof SelectField)
-		$createWidge.mutate({
+		$createWidget.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
-			widge: {
+			widget: {
 				layout,
 				visualization: {
 					name: $t('visualization bar'),
@@ -72,7 +72,7 @@
 >
 	<i class="ti ti-plus" />
 	<span>
-		{$t('add widge')}
+		{$t('add widget')}
 	</span>
 </Button>
 <Dropdown bind:open class="z-[99999] w-48">

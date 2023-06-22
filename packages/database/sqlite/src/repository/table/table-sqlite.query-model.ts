@@ -22,7 +22,7 @@ export class TableSqliteQueryModel implements ITableQueryModel {
       'views',
       'fields.displayFields',
       'fields.foreignTable',
-      'views.widges.visualization',
+      'views.widgets.visualization',
     ])
     for (const field of table.fields) {
       if (field instanceof ReferenceField) {

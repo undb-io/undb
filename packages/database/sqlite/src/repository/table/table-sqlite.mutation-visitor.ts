@@ -11,7 +11,7 @@ import type {
   WithOption,
   WithReferenceFieldId,
   WithTimeFormat,
-  WithoutWidgeSpecification,
+  WithoutWidgetSpecification,
 } from '@undb/core'
 import {
   WithNewField,
@@ -49,8 +49,8 @@ import {
   type WithViewPinnedFields,
   type WithViewsOrder,
   type WithVisualizationNameSpec,
-  type WithWidgeSepecification,
-  type WithWidgesLayout,
+  type WithWidgetSepecification,
+  type WithWidgetsLayout,
   type WithoutField,
   type WithoutOption,
   type WithoutView,
@@ -88,7 +88,7 @@ import {
 } from '../../entity/index.js'
 import { View } from '../../entity/view.js'
 import { ChartVisualization, NumberVisualization, Visualization } from '../../entity/visualization.js'
-import { Widge } from '../../entity/widge.js'
+import { Widget } from '../../entity/widget.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
 import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
 import { TableSqliteVisualizationVisitor } from './table-sqlite-visualization.visitor.js'
@@ -409,26 +409,26 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     wrap(field).assign({ symbol: s.symbol.symbol })
     this.em.persist(field)
   }
-  withWidge(s: WithWidgeSepecification): void {
+  withWidget(s: WithWidgetSepecification): void {
     const view = this.getView(s.view.id.value)
-    const widge = new Widge(view, s.widge)
+    const widget = new Widget(view, s.widget)
 
     const vv = new TableSqliteVisualizationVisitor(this.tableId, this.em)
-    s.widge.visualization?.accept(vv)
+    s.widget.visualization?.accept(vv)
 
-    widge.visualization = vv.visualization
-    this.em.persist(widge)
+    widget.visualization = vv.visualization
+    this.em.persist(widget)
   }
-  withoutWidge(s: WithoutWidgeSpecification): void {
-    const widge = this.em.getReference(Widge, s.widgeId)
-    wrap(widge).assign({ deletedAt: new Date() })
-    this.em.persist(widge)
+  withoutWidget(s: WithoutWidgetSpecification): void {
+    const widget = this.em.getReference(Widget, s.widgetId)
+    wrap(widget).assign({ deletedAt: new Date() })
+    this.em.persist(widget)
   }
-  withWidgesLayout(s: WithWidgesLayout): void {
-    for (const [id, layout] of s.widgesMap) {
-      const widge = this.em.getReference(Widge, id)
-      wrap(widge).assign({ layout })
-      this.em.persist(widge)
+  withWidgetsLayout(s: WithWidgetsLayout): void {
+    for (const [id, layout] of s.widgetsMap) {
+      const widget = this.em.getReference(Widget, id)
+      wrap(widget).assign({ layout })
+      this.em.persist(widget)
     }
   }
   withVisualizationName(s: WithVisualizationNameSpec): void {

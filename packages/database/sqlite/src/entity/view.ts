@@ -29,7 +29,7 @@ import {
 import { BaseEntity } from './base.js'
 import { Table } from './table.js'
 import { VisualizationFactory } from './visualization.factory.js'
-import { Widge } from './widge.js'
+import { Widget } from './widget.js'
 
 @Embeddable()
 export class Kanban {
@@ -120,8 +120,8 @@ export class View extends BaseEntity {
   @Enum({ items: viewRowHeights, nullable: true })
   rowHeight?: IViewRowHeight
 
-  @OneToMany(() => Widge, (widge) => widge.view)
-  widges = new Collection<Widge>(this)
+  @OneToMany(() => Widget, (widget) => widget.view)
+  widgets = new Collection<Widget>(this)
 
   constructor(table: Rel<Table>, view: CoreView) {
     super()
@@ -141,13 +141,13 @@ export class View extends BaseEntity {
     }
     if (view.dashboard.isSome()) {
       const dashboard = view.dashboard.unwrap()
-      for (const widge of dashboard.widges) {
-        const widgeEntity = new Widge(this, widge)
+      for (const widget of dashboard.widgets) {
+        const widgetEntity = new Widget(this, widget)
 
-        widgeEntity.visualization = widge.visualization
-          ? VisualizationFactory.create(table, widge.visualization)
+        widgetEntity.visualization = widget.visualization
+          ? VisualizationFactory.create(table, widget.visualization)
           : undefined
-        this.widges.add(widgeEntity)
+        this.widgets.add(widgetEntity)
       }
     }
     this.filter = view.filter?.value

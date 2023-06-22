@@ -1,7 +1,7 @@
 import type { Rel } from '@mikro-orm/core'
 import { Embeddable, Embedded, Entity, ManyToOne, OneToOne, PrimaryKey, Property } from '@mikro-orm/core'
-import type { ILayoutSchema, IWidgeSchema } from '@undb/core'
-import { Widge as CoreWidge, LayoutVO, WidgeID } from '@undb/core'
+import type { ILayoutSchema, IWidgetSchema } from '@undb/core'
+import { Widget as CoreWidget, LayoutVO, WidgetID } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { View } from './view.js'
 import { Visualization } from './visualization.js'
@@ -37,13 +37,13 @@ export class Layout {
   }
 }
 
-@Entity({ tableName: 'undb_widge' })
-export class Widge extends BaseEntity {
-  constructor(dashboard: Rel<View>, widge: CoreWidge) {
+@Entity({ tableName: 'undb_widget' })
+export class Widget extends BaseEntity {
+  constructor(dashboard: Rel<View>, widget: CoreWidget) {
     super()
     this.view = dashboard
-    this.id = widge.id.value
-    this.layout = new Layout(widge.unpack().layout)
+    this.id = widget.id.value
+    this.layout = new Layout(widget.unpack().layout)
   }
 
   @PrimaryKey()
@@ -58,15 +58,15 @@ export class Widge extends BaseEntity {
   @OneToOne(() => Visualization, { nullable: true })
   visualization?: Rel<Visualization>
 
-  toDomain(): CoreWidge {
-    return new CoreWidge({
-      id: new WidgeID(this.id),
+  toDomain(): CoreWidget {
+    return new CoreWidget({
+      id: new WidgetID(this.id),
       layout: this.layout.toDomain(),
       visualization: this.visualization?.toDomain(),
     })
   }
 
-  toQuery(): IWidgeSchema {
+  toQuery(): IWidgetSchema {
     return {
       id: this.id,
       layout: this.layout.toQuery(),
@@ -75,4 +75,4 @@ export class Widge extends BaseEntity {
   }
 }
 
-export const widgeEntities = [Widge, Layout]
+export const widgetEntities = [Widget, Layout]
