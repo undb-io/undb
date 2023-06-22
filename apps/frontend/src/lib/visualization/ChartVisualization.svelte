@@ -16,7 +16,7 @@
 	$: fieldId = visualization.fieldId?.value
 	$: field = fieldId ? $table.schema.getFieldById(fieldId).into() : undefined
 
-	const getChartData = trpc().table.aggregate.chart.query(
+	$: getChartData = trpc().table.aggregate.chart.query(
 		{
 			tableId: $table.id.value,
 			viewId: $view.id.value,
@@ -24,6 +24,7 @@
 		},
 		{
 			queryHash: visualization.id.value,
+			enabled: !!field,
 		},
 	)
 
