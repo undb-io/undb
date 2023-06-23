@@ -3,9 +3,16 @@
 	import { t } from '$lib/i18n'
 	import { importCSVModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
-	import { FieldId, getFieldNames, type ICreateTableSchemaInput, type IMutateRecordValueSchema } from '@undb/core'
+	import {
+		FieldId,
+		getFieldNames,
+		inferFieldType,
+		type ICreateTableSchemaInput,
+		type IMutateRecordValueSchema,
+	} from '@undb/core'
 	import { Button, Checkbox, Modal } from 'flowbite-svelte'
 	import { Dropzone } from 'flowbite-svelte'
+	import { unzip } from 'lodash-es'
 	import Papa from 'papaparse'
 
 	let data: string[][] | undefined
@@ -13,7 +20,13 @@
 	let firstRowAsHeader = true
 	let importData = true
 
+	const inferFieldTypeCount = 200
+
 	$: firstRow = data?.[0]
+
+	$: transposed = firstRowAsHeader
+		? unzip(data).slice(0, inferFieldTypeCount)
+		: unzip(data?.slice(1)).slice(0, inferFieldTypeCount)
 
 	$: header = firstRowAsHeader
 		? firstRow
@@ -23,11 +36,11 @@
 
 	$: if (header) {
 		schema = getFieldNames(header, $t).map((name, index) => ({
+			...inferFieldType(transposed[index]),
 			id: FieldId.createId(),
 			name,
-			type: 'string',
 			display: index === 0,
-		}))
+		})) as ICreateTableSchemaInput
 	}
 
 	let records: IMutateRecordValueSchema[]

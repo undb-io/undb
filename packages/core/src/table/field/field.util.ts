@@ -490,12 +490,6 @@ function isDateString(value: string): boolean {
 }
 
 export const inferFieldType = (values: string[]): Omit<ICreateFieldSchema, 'name'> => {
-  if (values.length < 10) {
-    return {
-      type: 'string',
-    }
-  }
-
   const distinctValues = uniq(values)
 
   if (distinctValues.every(isNumericString)) {
@@ -512,7 +506,7 @@ export const inferFieldType = (values: string[]): Omit<ICreateFieldSchema, 'name
 
   const distinctValuesCount = distinctValues.length
   const valuesCount = values.length
-  if (distinctValuesCount / valuesCount < 0.5) {
+  if (distinctValuesCount / valuesCount > 0.5) {
     return {
       type: 'select',
       options: distinctValues.map((value) => ({ key: OptionKey.createId(), name: value })),
