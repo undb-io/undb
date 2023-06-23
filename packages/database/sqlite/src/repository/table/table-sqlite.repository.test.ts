@@ -3,6 +3,7 @@ import { Table as CoreTable, ITableCache, WithTableName, createTestTable } from 
 import { mock } from 'vitest-mock-extended'
 import { FILTER_SOFT_DELETE } from '../../decorators/soft-delete.decorator.js'
 import { Table } from '../../entity/index.js'
+import { SqliteUnitOfWork } from '../../sqlite.uow.js'
 import { TableSqliteRepository } from './table-sqlite.repository.js'
 
 describe('TableSqliteRepository', () => {
@@ -21,7 +22,8 @@ describe('TableSqliteRepository', () => {
 
     em = em.fork()
     const cache = mock<ITableCache>()
-    repo = new TableSqliteRepository(em, cache)
+    const uow = new SqliteUnitOfWork(em)
+    repo = new TableSqliteRepository(uow, cache)
   })
 
   afterEach(async () => {

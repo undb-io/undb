@@ -6,6 +6,7 @@ import {
   type ITableRepository,
   type ITableSpec,
 } from '@undb/core'
+import { type IUnitOfWork } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { Table, Table as TableEntity } from '../../entity/index.js'
@@ -16,17 +17,12 @@ import { TableSqliteMapper } from './table-sqlite.mapper.js'
 import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor.js'
 
 export class TableSqliteRepository implements ITableRepository {
-  constructor(protected em: EntityManager, protected readonly cache: ITableCache) {}
-  async begin(): Promise<void> {
-    this.em = this.em.fork()
-    await this.em.begin()
+  constructor(protected readonly uow: IUnitOfWork<EntityManager>, protected readonly cache: ITableCache) {}
+
+  private get em() {
+    return this.uow.conn()
   }
-  async commit(): Promise<void> {
-    await this.em.commit()
-  }
-  async rollback(): Promise<void> {
-    await this.em.rollback()
-  }
+
   async findOneById(id: string): Promise<Option<CoreTable>> {
     const cached = await this.cache.get(id)
     if (cached) {
