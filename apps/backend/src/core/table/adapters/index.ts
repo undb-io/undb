@@ -1,16 +1,17 @@
 import { Inject, Provider } from '@nestjs/common'
 import { PinoLogger } from 'nestjs-pino'
 import { cacheStorageConfig } from '../../../configs/cache-storage.config.js'
+import { CSVExportor } from '../exportor/csv.exportor.js'
+import { ExcelExportor } from '../exportor/excel.exportor.js'
 import { cacheStorageFactory } from './cache-storage.factory.js'
 import { NestAggregateSqliteQueryModel } from './sqlite/record-sqlite.aggregate-repository.js'
 import { NestRecordSqliteQueryModel } from './sqlite/record-sqlite.query-model.js'
 import { NestRecordSqliteRepository } from './sqlite/record-sqlite.repository.js'
 import { NestRecordSqliteTreeQueryModel, RECORD_TREE_QUERY_MODEL } from './sqlite/record-sqlite.tree-query-model.js'
+import { NestSqliteUnitOfWork, UNIT_OF_WORK } from './sqlite/sqlite.uow.js'
 import { NestTableKVCache, STORAGE } from './sqlite/table-kv.cache.js'
 import { NestTableSqliteQueryModel } from './sqlite/table-sqlite.query-model.js'
 import { NestTableSqliteRepository, TABLE_KV_CACHE } from './sqlite/table-sqlite.repository.js'
-import { CSVExportor } from '../exportor/csv.exportor.js'
-import { ExcelExportor } from '../exportor/excel.exportor.js'
 
 export const TABLE_REPOSITORY = Symbol('TABLE_REPOSITORY')
 export const InjectTableRepository = () => Inject(TABLE_REPOSITORY)
@@ -74,5 +75,9 @@ export const dbAdapters: Provider[] = [
     provide: STORAGE,
     useFactory: cacheStorageFactory,
     inject: [PinoLogger, cacheStorageConfig.KEY],
+  },
+  {
+    provide: UNIT_OF_WORK,
+    useClass: NestSqliteUnitOfWork,
   },
 ]

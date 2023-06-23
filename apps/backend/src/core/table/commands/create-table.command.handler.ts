@@ -2,12 +2,16 @@ import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
 import { ClsStore, TableSpecHandler, type IRecordRepository, type ITableRepository } from '@undb/core'
 import { CreateTableCommand, CreateTableCommandHandler as DomainHandler } from '@undb/cqrs'
+import { type IUnitOfWork } from '@undb/domain'
 import { ClsService } from 'nestjs-cls'
 import { InjectRecordRepository, InjectTableRepository } from '../adapters/index.js'
+import { InjectUnitOrWork } from '../adapters/sqlite/sqlite.uow.js'
 
 @CommandHandler(CreateTableCommand)
 export class CreateTableCommandHandler extends DomainHandler implements ICommandHandler<CreateTableCommand> {
   constructor(
+    @InjectUnitOrWork()
+    protected readonly uow: IUnitOfWork,
     @InjectTableRepository()
     protected readonly repo: ITableRepository,
     @InjectRecordRepository()
@@ -15,6 +19,6 @@ export class CreateTableCommandHandler extends DomainHandler implements ICommand
     protected readonly handler: TableSpecHandler,
     protected readonly cls: ClsService<ClsStore>,
   ) {
-    super(repo, recordRepo, handler, cls)
+    super(uow, repo, recordRepo, handler, cls)
   }
 }
