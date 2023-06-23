@@ -1,5 +1,8 @@
 import type { TFunction } from 'i18next'
-import type { Field, IFieldType, SelectFieldTypes } from './field.type'
+import { uniq } from 'lodash-es'
+import { OptionKey } from '../option'
+import type { Field, ICreateFieldSchema, IFieldType, SelectFieldTypes } from './field.type'
+import { ICreateSelectFieldSchema } from './select-field.type'
 
 const controlledFieldTypes: Set<IFieldType> = new Set([
   'id',
@@ -475,4 +478,48 @@ export const getFieldNames = (fieldNames: string[], t: TFunction, lng?: string):
   return fieldNames.map((name, index) =>
     getNextFieldName(names.slice(0, index + names.length - fieldNames.length), name),
   )
+}
+
+function isNumericString(value: string): boolean {
+  return /^-?\d+$/.test(value)
+}
+
+function isDateString(value: string): boolean {
+  const timestamp = Date.parse(value)
+  return !isNaN(timestamp)
+}
+
+export const inferFieldType = (values: string[]): Omit<ICreateFieldSchema, 'name'> => {
+  if (values.length < 10) {
+    return {
+      type: 'string',
+    }
+  }
+
+  const distinctValues = uniq(values)
+
+  if (distinctValues.every(isNumericString)) {
+    return {
+      type: 'number',
+    }
+  }
+
+  if (distinctValues.every(isDateString)) {
+    return {
+      type: 'date',
+    }
+  }
+
+  const distinctValuesCount = distinctValues.length
+  const valuesCount = values.length
+  if (distinctValuesCount / valuesCount < 0.5) {
+    return {
+      type: 'select',
+      options: distinctValues.map((value) => ({ key: OptionKey.createId(), name: value })),
+    } as Omit<ICreateSelectFieldSchema, 'name'>
+  }
+
+  return {
+    type: 'string',
+  }
 }
