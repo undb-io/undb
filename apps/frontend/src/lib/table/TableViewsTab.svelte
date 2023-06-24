@@ -69,7 +69,9 @@
 	})
 </script>
 
-<section class="w-full mx-auto bg-gradient-to-r bg-white dark:bg-gray-900 border-b flex space-x-2 items-center">
+<section
+	class="w-full mx-auto bg-gradient-to-r bg-white dark:bg-gray-800 border-b dark:border-gray-700 flex space-x-2 items-center"
+>
 	{#if $sidebarCollapsed}
 		<div class="ml-2">
 			<button on:click={() => ($sidebarCollapsed = false)}>
@@ -80,13 +82,13 @@
 	{/if}
 	<ul bind:this={el} class="flex flex-wrap space-x-2">
 		{#each views as view}
-			<li>
+			<li class="dark:text-gray-100">
 				<TableViewTabItem view={view.id.value === $currentView.id.value ? $currentView : view} />
 			</li>
 		{/each}
 	</ul>
-	<button class="w-7 h-7 hover:bg-gray-100 transition">
-		<i class="ti ti-plus text-gray-500" />
+	<button class="w-7 h-7 hover:bg-gray-100 transition dark:hover:bg-[unset]">
+		<i class="ti ti-plus text-gray-500 dark:hover:text-gray-100 dark:text-gray-400" />
 	</button>
 	<Dropdown bind:open class="z-[99999] w-48">
 		{#each items as item}

@@ -12,7 +12,7 @@
 </script>
 
 <div
-	class="flex w-full flex-row items-center justify-between gap-y-4 border-b bg-white px-5 py-2 overflow-x-auto overflow-y-hidden shrink-0"
+	class="flex w-full flex-row items-center justify-between gap-y-4 border-b bg-white dark:bg-gray-700 px-5 py-2 overflow-x-auto overflow-y-hidden shrink-0"
 >
 	<div class="flex items-center justify-center content-center gap-4">
 		<TableNavigator />

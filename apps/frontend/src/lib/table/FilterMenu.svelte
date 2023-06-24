@@ -57,7 +57,10 @@
 	size="xs"
 	color="alternative"
 	on:click={() => (open = true)}
-	class={cx('h-full !rounded-md whitespace-nowrap border-0 hover:!bg-blue-50', !!$filters.length && '!bg-blue-50')}
+	class={cx(
+		'h-full !rounded-md whitespace-nowrap border-0 hover:!bg-blue-50 dark:hover:!bg-gray-800',
+		!!$filters.length && '!bg-blue-50 dark:!bg-blue-100',
+	)}
 >
 	<span class="inline-flex items-center gap-2 !text-blue-600">
 		<i class="ti ti-filter text-sm" />
@@ -71,7 +74,7 @@
 <Modal placement="top-center" bind:open class="w-full" size="sm">
 	<form on:submit|preventDefault={apply} id="filter_menu" class="space-y-4">
 		{#if $value.length}
-			<span class="text-xs font-medium text-gray-500">{$t('set filters in this view')}</span>
+			<span class="text-xs font-medium text-gray-500 dark:text-gray-300">{$t('set filters in this view')}</span>
 			<ul class="space-y-2">
 				{#each $value as filter, index}
 					<FilterItem {filter} {index} {remove} />

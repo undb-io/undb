@@ -18,7 +18,7 @@
 	import { copyText } from 'svelte-copy'
 	import Cookies from 'js-cookie'
 	import { slide } from 'svelte/transition'
-	import { sidebarCollapsed } from '$lib/store/ui'
+	import { changeDarkMode, sidebarCollapsed } from '$lib/store/ui'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -79,7 +79,7 @@
 </script>
 
 <div>
-	<TransitionRoot show={sidebarOpen}>
+	<TransitionRoot show={sidebarOpen} class=" dark:bg-gray-900">
 		<Dialog as="div" class="relative z-30 lg:hidden" bind:open={sidebarOpen} on:close={setSidebarOpen}>
 			<TransitionChild
 				enter="transition-opacity ease-linear duration-300"
@@ -194,11 +194,13 @@
 			$sidebarCollapsed && 'translate-x-[-100%]',
 		)}
 	>
-		<div class="flex flex-1 grow flex-col gap-y-0 overflow-hidden border-r border-gray-200 bg-white h-full group/main">
+		<div
+			class="flex flex-1 grow flex-col gap-y-0 overflow-hidden border-r border-gray-200 dark:border-gray-700 bg-white h-full group/main dark:bg-gray-800"
+		>
 			<div class="flex h-12 shrink-0 items-center px-6 justify-between">
 				<div class="flex gap-2">
 					<img class="h-6 w-auto" src={logo} alt="undb" />
-					<P size="lg" class="font-semibold select-none !text-blue-600">undb</P>
+					<P size="lg" class="font-semibold select-none !text-blue-600 ">undb</P>
 				</div>
 				<button on:click={() => ($sidebarCollapsed = true)}>
 					<i
@@ -207,21 +209,25 @@
 				</button>
 				<Tooltip placement="bottom">meta + b</Tooltip>
 			</div>
-			<div class="border-b">
+			<div class="border-b dark:border-gray-700">
 				<ul class="px-6 -mx-2 space-y-1 py-2">
 					{#each navigation as item}
 						<li>
 							<a
 								href={item.href}
 								class={cx(
-									item.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
+									item.current
+										? 'bg-gray-50 text-indigo-600 dark:text-blue-600 dark:bg-gray-700'
+										: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700',
 									'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
 								)}
 							>
 								<div class="h-6 w-6 flex justify-center items-center">
 									<i
 										class={cx(
-											item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
+											item.current
+												? 'text-indigo-600 dark:text-blue-600'
+												: 'text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-blue-600',
 											'shrink-0 text-lg',
 											`ti ti-${item.icon}`,
 										)}
@@ -245,19 +251,19 @@
 								href={`/t/${table.id}`}
 								class={cx(
 									table.id === $page.params.tableId
-										? 'bg-blue-50 text-indigo-600'
-										: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
+										? 'bg-blue-50 text-indigo-600 dark:text-blue-600 dark:bg-gray-700'
+										: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50  dark:text-white dark:hover:bg-gray-700',
 									'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
 								)}
 							>
 								<span
 									class={cx(
 										table.id === $page.params.tableId
-											? 'bg-blue-50 text-indigo-600'
-											: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
+											? 'bg-blue-50 text-indigo-600 dark:text-blue-600 dark:bg-gray-700 '
+											: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50 dark:text-white dark:hover:text-blue-600 dark:bg-gray-700',
 
-										' border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
-										'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white',
+										' border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600 dark:border-white dark:group-hover:border-blue-500 dark:group-hover:text-blue-600',
+										'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white ',
 									)}
 								>
 									{table.name.slice(0, 1)}
@@ -268,13 +274,22 @@
 					{/each}
 				</ul>
 			</nav>
-			<ul class="flex flex-col border-t pt-4 space-y-2">
+			<ul class="flex flex-col border-t pt-4 space-y-2 dark:border-gray-700">
 				<li class="px-6">
-					<ButtonGroup class="w-full">
-						<Button size="xs" class="w-full" outline on:click={() => createTableModal.open()}>
+					<ButtonGroup class="w-full dark:bg-gray-700">
+						<Button
+							size="xs"
+							class="w-full dark:border-0 dark:hover:border-primary-700  dark:hover:bg-primary-700 dark:focus:ring-primary-800 "
+							outline
+							on:click={() => createTableModal.open()}
+						>
 							{$t('Create New Table')}
 						</Button>
-						<Button size="xs" outline>
+						<Button
+							size="xs"
+							class="dark:border-0 dark:hover:border-primary-700 dark:hover:bg-primary-700  dark:focus:ring-primary-800"
+							outline
+						>
 							<i class="ti ti-chevron-down" />
 						</Button>
 						<Dropdown placement="top" class="w-[200px]">
@@ -290,12 +305,12 @@
 
 				<button
 					id="me-button"
-					class="w-full flex items-center gap-x-4 px-6 py-2 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50"
+					class="w-full flex items-center gap-x-4 px-6 py-2 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700"
 				>
 					{#if me.avatar}
 						<Avatar src={me.avatar} />
 					{:else}
-						<Avatar class={cx('text-white', colors[me.color])}>{me.username.slice(0, 2)}</Avatar>
+						<Avatar class={cx('text-white', 'dark:bg-primary-500', colors[me.color])}>{me.username.slice(0, 2)}</Avatar>
 					{/if}
 					<span class="sr-only">Your profile</span>
 					<span aria-hidden="true">{me.username}</span>
@@ -340,7 +355,7 @@
 					</DropdownItem>
 					<DropdownItem
 						on:click={() => {
-							document.documentElement.classList.toggle('dark')
+							changeDarkMode('dark')
 						}}
 					>
 						<i class="ti ti-sun-moon" />
@@ -415,7 +430,7 @@
 		</Dropdown>
 	</div>
 
-	<main class={cx('h-[100vh] transition-all', $sidebarCollapsed ? 'lg:pl-0' : 'lg:pl-72')}>
+	<main class={cx('h-[100vh] transition-all', 'dark:bg-slate-400', $sidebarCollapsed ? 'lg:pl-0' : 'lg:pl-72')}>
 		<div class="h-full flex flex-col">
 			<slot />
 		</div>

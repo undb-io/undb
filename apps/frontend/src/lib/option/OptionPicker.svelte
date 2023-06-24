@@ -36,7 +36,7 @@
 				custom
 				on:change={() => (open = false)}
 			>
-				<span role="button" class="inline-flex w-full px-3 py-2 hover:bg-gray-100 transition">
+				<span role="button" class="inline-flex w-full px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-400 transition">
 					<Option {option} />
 				</span>
 			</Radio>

@@ -58,7 +58,10 @@
 <Button
 	size="xs"
 	color="light"
-	class={cx('h-full !rounded-md whitespace-nowrap border-0 hover:!bg-blue-50', !!$sorts.length && '!bg-blue-50')}
+	class={cx(
+		'h-full !rounded-md whitespace-nowrap border-0 hover:!bg-blue-50  dark:hover:!bg-gray-800 dark:bg-gray-700',
+		!!$sorts.length && '!bg-blue-50',
+	)}
 	on:click={() => (open = true)}
 >
 	<span class="inline-flex items-center gap-2 !text-blue-600">
