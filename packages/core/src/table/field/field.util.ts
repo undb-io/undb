@@ -1,5 +1,9 @@
 import type { TFunction } from 'i18next'
-import type { Field, IFieldType, SelectFieldTypes } from './field.type'
+import { uniq } from 'lodash-es'
+import { z } from 'zod'
+import { Options } from '../option'
+import type { Field, ICreateFieldSchema, IFieldType, SelectFieldTypes } from './field.type'
+import { ICreateSelectFieldSchema } from './select-field.type'
 
 const controlledFieldTypes: Set<IFieldType> = new Set([
   'id',
@@ -475,4 +479,52 @@ export const getFieldNames = (fieldNames: string[], t: TFunction, lng?: string):
   return fieldNames.map((name, index) =>
     getNextFieldName(names.slice(0, index + names.length - fieldNames.length), name),
   )
+}
+
+function isNumericString(value: string): boolean {
+  return /^-?\d+$/.test(value)
+}
+
+function isDateString(value: string): boolean {
+  const timestamp = Date.parse(value)
+  return !isNaN(timestamp)
+}
+
+function isEmailString(value: string): boolean {
+  return z.string().email().safeParse(value).success
+}
+
+export const inferFieldType = (values: string[]): Omit<ICreateFieldSchema, 'name'> => {
+  const distinctValues = uniq(values).filter(Boolean)
+
+  if (distinctValues.every(isNumericString)) {
+    return {
+      type: 'number',
+    }
+  }
+
+  if (distinctValues.every(isDateString)) {
+    return {
+      type: 'date',
+    }
+  }
+
+  if (distinctValues.every(isEmailString)) {
+    return {
+      type: 'email',
+    }
+  }
+
+  const distinctValuesCount = distinctValues.length
+  const valuesCount = values.length
+  if (distinctValuesCount / valuesCount > 0.5) {
+    return {
+      type: 'select',
+      options: Options.create(distinctValues.map((value) => ({ name: value }))).options.map((o) => o.toJSON()),
+    } as Omit<ICreateSelectFieldSchema, 'name'>
+  }
+
+  return {
+    type: 'string',
+  }
 }

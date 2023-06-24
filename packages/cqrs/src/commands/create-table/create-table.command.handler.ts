@@ -35,6 +35,7 @@ export class CreateTableCommandHandler implements ICreateTableCommandHandler {
       await this.uow.commit()
     } catch (error) {
       await this.uow.rollback()
+      throw error
     }
 
     return { id: table.id.value }

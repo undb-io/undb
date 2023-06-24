@@ -1,40 +1,90 @@
 <script lang="ts">
 	import { goto, invalidate } from '$app/navigation'
+	import Number from '$lib/cell/CellComponents/Number.svelte'
 	import { t } from '$lib/i18n'
 	import { importCSVModal } from '$lib/store/modal'
+	import CreateTableFieldAccordionItem from '$lib/table/CreateTableFieldAccordionItem.svelte'
 	import { trpc } from '$lib/trpc/client'
-	import { FieldId, getFieldNames, type ICreateTableSchemaInput, type IMutateRecordValueSchema } from '@undb/core'
-	import { Button, Checkbox, Modal } from 'flowbite-svelte'
+	import {
+		FieldId,
+		getFieldNames,
+		inferFieldType,
+		type ICreateTableSchemaInput,
+		type IMutateRecordValueSchema,
+		createTableInput,
+	} from '@undb/core'
+	import { Accordion, Button, Checkbox, Modal } from 'flowbite-svelte'
 	import { Dropzone } from 'flowbite-svelte'
+	import { unzip } from 'lodash-es'
 	import Papa from 'papaparse'
+	import { superForm } from 'sveltekit-superforms/client'
+	import type { Validation } from 'sveltekit-superforms/index'
+
+	export let formData: Validation<typeof createTableInput>
 
 	let data: string[][] | undefined
 	let fileName: string | undefined
 	let firstRowAsHeader = true
 	let importData = true
 
+	const inferFieldTypeCount = 200
+	let opened: Record<string, boolean> = {}
+
+	const createTable = trpc().table.create.mutation({
+		async onSuccess(data, variables, context) {
+			importCSVModal.close()
+			await goto(`/t/${data.id}`)
+			await invalidate('tables')
+		},
+	})
+
+	const superFrm = superForm(formData, {
+		id: 'createTable',
+		SPA: true,
+		applyAction: false,
+		resetForm: false,
+		invalidateAll: true,
+		clearOnSubmit: 'errors-and-message',
+		dataType: 'json',
+		taintedMessage: null,
+		async onUpdate(event) {
+			$createTable.mutate({
+				name: event.form.data.name,
+				schema: $form.schema,
+				records: importData ? records : undefined,
+			})
+		},
+	})
+
+	const { form, enhance } = superFrm
+
 	$: firstRow = data?.[0]
+
+	$: transposed = firstRowAsHeader
+		? unzip(data?.slice(1)).slice(0, inferFieldTypeCount)
+		: unzip(data).slice(0, inferFieldTypeCount)
 
 	$: header = firstRowAsHeader
 		? firstRow
 		: new Array(data?.[0].length).fill(undefined).map((_, index) => $t('Field') + ' ' + String(index + 1))
 
-	let schema: ICreateTableSchemaInput | undefined
-
 	$: if (header) {
-		schema = getFieldNames(header, $t).map((name, index) => ({
+		$form.schema = getFieldNames(header, $t).map((name, index) => ({
+			...inferFieldType(transposed[index]),
 			id: FieldId.createId(),
 			name,
-			type: 'string',
 			display: index === 0,
-		}))
+		})) as ICreateTableSchemaInput
 	}
 
 	let records: IMutateRecordValueSchema[]
-	$: if (schema) {
+	$: if ($form.schema) {
 		records = (data?.slice(1) ?? []).map((values) =>
 			values.reduce((prev, value, index) => {
-				prev[schema![index].id!] = value
+				const type = $form.schema.at(index)?.type
+				const v = type === 'number' ? globalThis.Number(value) : value
+
+				prev[$form.schema![index].id!] = v
 				return prev
 			}, {} as IMutateRecordValueSchema),
 		)
@@ -42,6 +92,7 @@
 
 	const parse = (file: File) => {
 		fileName = file.name
+		$form.name = fileName.substring(0, fileName.lastIndexOf('.')) || fileName
 		Papa.parse<string[]>(file, {
 			complete(results, file) {
 				if (results.data.length > 1) {
@@ -64,24 +115,6 @@
 		const files = target.files
 		if (!!files?.length) {
 			parse(files[0])
-		}
-	}
-
-	const createTable = trpc().table.create.mutation({
-		async onSuccess(data, variables, context) {
-			importCSVModal.close()
-			await goto(`/t/${data.id}`)
-			await invalidate('tables')
-		},
-	})
-
-	const create = () => {
-		if (fileName && schema?.length) {
-			$createTable.mutate({
-				name: fileName.substring(0, fileName.lastIndexOf('.')) || fileName,
-				schema,
-				records: importData ? records : undefined,
-			})
 		}
 	}
 </script>
@@ -124,17 +157,25 @@
 		</div>
 	{/if}
 
+	{#if $form.schema?.length}
+		<Accordion class="my-4">
+			{#each $form.schema as field, i (field.id)}
+				<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} isNew />
+			{/each}
+		</Accordion>
+	{/if}
+
 	<Checkbox bind:checked={firstRowAsHeader}>{$t('first row as header')}</Checkbox>
 	<Checkbox bind:checked={importData}>{$t('import data')}</Checkbox>
 
 	<div class="flex justify-end">
-		<div class="space-y-2">
+		<form class="space-y-2" id="importCSV" method="POST" use:enhance>
 			<Button size="xs" outline color="alternative" on:click={() => importCSVModal.close()}>
 				{$t('Cancel', { ns: 'common' })}
 			</Button>
-			<Button size="xs" disabled={!data} on:click={create}>
+			<Button size="xs" disabled={!data} type="submit">
 				{$t('Confirm', { ns: 'common' })}
 			</Button>
-		</div>
+		</form>
 	</div>
 </Modal>
