@@ -51,7 +51,7 @@
 	{/if}
 </Button>
 <Portal target="body">
-	<Dropdown triggeredBy="#displayFieldIds" inline class="max-h-64 w-64 overflow-y-auto py-1 shadow-md z-[999999]">
+	<Dropdown triggeredBy="#displayFieldIds" inline class="max-h-64 w-[400px] overflow-y-auto py-1 shadow-md z-[999999]">
 		{#if !filteredFields.length}
 			<div class="px-3 py-2">
 				<slot name="empty" />
@@ -61,7 +61,7 @@
 		{#each filteredFields as field}
 			{@const selected = !!group?.includes(field.id)}
 			<Checkbox value={field.id} bind:group class="px-3 py-2 hover:bg-gray-100 cursor-pointer" custom>
-				<li class="w-full flex justify-between items-center text-gray-500">
+				<li class="w-full p-2 flex justify-between items-center text-gray-500 hover:bg-gray-100 cursor-pointer">
 					<div class="flex flex-1 items-center gap-2">
 						<FieldIcon type={field.type} size={16} />
 						<span>
