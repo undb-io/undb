@@ -1,5 +1,6 @@
 import type { TFunction } from 'i18next'
-import { uniq } from 'lodash-es'
+import { isNumber, isString, uniq } from 'lodash-es'
+import { match } from 'ts-pattern'
 import { z } from 'zod'
 import { Options } from '../option'
 import type { Field, ICreateFieldSchema, IFieldType, SelectFieldTypes } from './field.type'
@@ -481,23 +482,33 @@ export const getFieldNames = (fieldNames: string[], t: TFunction, lng?: string):
   )
 }
 
-function isNumericString(value: string): boolean {
-  return /^-?\d+$/.test(value)
+function isNumberValue(value: string | number | null): boolean {
+  return match(value)
+    .returnType<boolean>()
+    .when(isNumber, () => true)
+    .when(isString, (v) => /^-?\d+$/.test(v))
+    .otherwise(() => false)
 }
 
-function isDateString(value: string): boolean {
-  const timestamp = Date.parse(value)
-  return !isNaN(timestamp)
+function isDateString(value: string | number | null): boolean {
+  if (typeof value === 'string') {
+    const timestamp = Date.parse(value)
+    return !isNaN(timestamp)
+  }
+  return false
 }
 
-function isEmailString(value: string): boolean {
-  return z.string().email().safeParse(value).success
+function isEmailString(value: string | number | null): boolean {
+  if (typeof value === 'string') {
+    return z.string().email().safeParse(value).success
+  }
+  return false
 }
 
-export const inferFieldType = (values: string[]): Omit<ICreateFieldSchema, 'name'> => {
-  const distinctValues = uniq(values).filter(Boolean)
+export const inferFieldType = (values: (string | number | null)[]): Omit<ICreateFieldSchema, 'name'> => {
+  const distinctValues = uniq(values).filter(Boolean) as (string | number)[]
 
-  if (distinctValues.every(isNumericString)) {
+  if (distinctValues.every(isNumberValue)) {
     return {
       type: 'number',
     }
@@ -520,7 +531,9 @@ export const inferFieldType = (values: string[]): Omit<ICreateFieldSchema, 'name
   if (distinctValuesCount / valuesCount > 0.5) {
     return {
       type: 'select',
-      options: Options.create(distinctValues.map((value) => ({ name: value }))).options.map((o) => o.toJSON()),
+      options: Options.create(distinctValues.map((value) => ({ name: value?.toString() ?? '' }))).options.map((o) =>
+        o.toJSON(),
+      ),
     } as Omit<ICreateSelectFieldSchema, 'name'>
   }
 

@@ -12,9 +12,9 @@
 	import logo from '$lib/assets/logo.svg'
 	import { i18n, t } from '$lib/i18n'
 	import { createMutation } from '@tanstack/svelte-query'
-	import { createTableModal, importCSVModal } from '$lib/store/modal'
+	import { createTableModal, importDataModal } from '$lib/store/modal'
 	import { colors } from '$lib/field/helpers'
-	import ImportCsv from '$lib/import/ImportCSV.svelte'
+	import ImportData from '$lib/import/ImportData.svelte'
 	import { copyText } from 'svelte-copy'
 	import Cookies from 'js-cookie'
 	import { slide } from 'svelte/transition'
@@ -278,10 +278,10 @@
 							<i class="ti ti-chevron-down" />
 						</Button>
 						<Dropdown placement="top" class="w-[200px]">
-							<DropdownItem on:click={() => importCSVModal.open()} class="flex items-center gap-2">
+							<DropdownItem on:click={() => importDataModal.open()} class="flex items-center gap-2">
 								<i class="ti ti-csv" />
 								<span>
-									{$t('import csv')}
+									{$t('import csv or excel')}
 								</span>
 							</DropdownItem>
 						</Dropdown>
@@ -417,8 +417,8 @@
 		<CreateTable data={$page.data.form} />
 	{/if}
 
-	{#if $importCSVModal.open}
-		<ImportCsv />
+	{#if $importDataModal.open}
+		<ImportData />
 	{/if}
 </div>
 
