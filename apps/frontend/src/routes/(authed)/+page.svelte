@@ -42,7 +42,7 @@
 				<DropdownItem on:click={() => importDataaModal.open()} class="flex items-center gap-2">
 					<i class="ti ti-csv" />
 					<span>
-						{$t('import csv or excel')}
+						{$t('import data content')}
 					</span>
 				</DropdownItem>
 			</Dropdown>

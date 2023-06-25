@@ -1,5 +1,5 @@
 import type { TFunction } from 'i18next'
-import { isNumber, isString, uniq } from 'lodash-es'
+import { isBoolean, isNumber, isPlainObject, isString, uniq } from 'lodash-es'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
 import { Options } from '../option'
@@ -490,7 +490,7 @@ function isNumberValue(value: string | number | null): boolean {
     .otherwise(() => false)
 }
 
-function isDateString(value: string | number | null): boolean {
+function isDateValue(value: string | number | null): boolean {
   if (typeof value === 'string') {
     const timestamp = Date.parse(value)
     return !isNaN(timestamp)
@@ -498,46 +498,57 @@ function isDateString(value: string | number | null): boolean {
   return false
 }
 
-function isEmailString(value: string | number | null): boolean {
+function isEmailValue(value: string | number | null): boolean {
   if (typeof value === 'string') {
     return z.string().email().safeParse(value).success
   }
   return false
 }
 
-export const inferFieldType = (values: (string | number | null)[]): Omit<ICreateFieldSchema, 'name'> => {
+function isJsonValue(value: string | number | null | object): boolean {
+  return isPlainObject(value)
+}
+
+export const inferFieldType = (
+  values: (string | number | null | object | boolean)[],
+): Omit<ICreateFieldSchema, 'name'> => {
   const distinctValues = uniq(values).filter(Boolean) as (string | number)[]
 
-  if (distinctValues.every(isNumberValue)) {
-    return {
-      type: 'number',
-    }
-  }
-
-  if (distinctValues.every(isDateString)) {
-    return {
-      type: 'date',
-    }
-  }
-
-  if (distinctValues.every(isEmailString)) {
-    return {
-      type: 'email',
-    }
-  }
-
-  const distinctValuesCount = distinctValues.length
-  const valuesCount = values.length
-  if (distinctValuesCount / valuesCount > 0.5) {
-    return {
-      type: 'select',
-      options: Options.create(distinctValues.map((value) => ({ name: value?.toString() ?? '' }))).options.map((o) =>
-        o.toJSON(),
-      ),
-    } as Omit<ICreateSelectFieldSchema, 'name'>
-  }
-
-  return {
-    type: 'string',
-  }
+  return match(distinctValues)
+    .returnType<Omit<ICreateFieldSchema, 'name'>>()
+    .when(
+      (distinctValues) => distinctValues.every(isBoolean),
+      () => ({ type: 'bool' }),
+    )
+    .when(
+      (distinctValues) => distinctValues.every(isNumberValue),
+      () => ({ type: 'number' }),
+    )
+    .when(
+      (distinctValues) => distinctValues.every(isDateValue),
+      () => ({ type: 'date' }),
+    )
+    .when(
+      (distinctValues) => distinctValues.every(isEmailValue),
+      () => ({ type: 'email' }),
+    )
+    .when(
+      (distinctValues) => distinctValues.some(isJsonValue),
+      () => ({ type: 'json' }),
+    )
+    .when(
+      (distinctValues) => {
+        const distinctValuesCount = distinctValues.length
+        const valuesCount = values.length
+        return distinctValuesCount / valuesCount > 0.5 && distinctValuesCount > 10
+      },
+      () =>
+        ({
+          type: 'select',
+          options: Options.create(distinctValues.map((value) => ({ name: value?.toString() ?? '' }))).options.map((o) =>
+            o.toJSON(),
+          ),
+        } as Omit<ICreateSelectFieldSchema, 'name'>),
+    )
+    .otherwise(() => ({ type: 'string' }))
 }
