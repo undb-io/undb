@@ -2,7 +2,7 @@
 	import { goto, invalidate } from '$app/navigation'
 	import Number from '$lib/cell/CellComponents/Number.svelte'
 	import { t } from '$lib/i18n'
-	import { importCSVModal } from '$lib/store/modal'
+	import { importDataModal } from '$lib/store/modal'
 	import CreateTableFieldAccordionItem from '$lib/table/CreateTableFieldAccordionItem.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import {
@@ -13,16 +13,16 @@
 		type IMutateRecordValueSchema,
 		createTableInput,
 	} from '@undb/core'
-	import { Accordion, Button, Checkbox, Modal } from 'flowbite-svelte'
+	import { Accordion, Button, Checkbox, Modal, Spinner } from 'flowbite-svelte'
 	import { Dropzone } from 'flowbite-svelte'
 	import { unzip } from 'lodash-es'
-	import Papa from 'papaparse'
+	import { parse, type SheetData } from './import.helper'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
 
 	export let formData: Validation<typeof createTableInput>
 
-	let data: string[][] | undefined
+	let data: SheetData | undefined
 	let fileName: string | undefined
 	let firstRowAsHeader = true
 	let importData = true
@@ -32,7 +32,7 @@
 
 	const createTable = trpc().table.create.mutation({
 		async onSuccess(data, variables, context) {
-			importCSVModal.close()
+			importDataModal.close()
 			await goto(`/t/${data.id}`)
 			await invalidate('tables')
 		},
@@ -69,7 +69,7 @@
 		: new Array(data?.[0].length).fill(undefined).map((_, index) => $t('Field') + ' ' + String(index + 1))
 
 	$: if (header) {
-		$form.schema = getFieldNames(header, $t).map((name, index) => ({
+		$form.schema = getFieldNames(header as string[], $t).map((name, index) => ({
 			...inferFieldType(transposed[index]),
 			id: FieldId.createId(),
 			name,
@@ -90,38 +90,28 @@
 		)
 	}
 
-	const parse = (file: File) => {
-		fileName = file.name
-		$form.name = fileName.substring(0, fileName.lastIndexOf('.')) || fileName
-		Papa.parse<string[]>(file, {
-			complete(results, file) {
-				if (results.data.length > 1) {
-					data = results.data
-				}
-			},
-		})
-	}
-
-	const dropHandle = (event: DragEvent) => {
+	const dropHandle = async (event: DragEvent) => {
 		event.preventDefault()
 		const files = event.dataTransfer?.files
 		if (!!files?.length) {
-			parse(files[0])
+			$form.name = files[0].name
+			data = await parse(files[0])
 		}
 	}
 
-	const handleChange = (event: Event) => {
+	const handleChange = async (event: Event) => {
 		const target = event.target as HTMLInputElement
 		const files = target.files
 		if (!!files?.length) {
-			parse(files[0])
+			$form.name = files[0].name
+			data = await parse(files[0])
 		}
 	}
 </script>
 
-<Modal class="w-full" bind:open={$importCSVModal.open}>
+<Modal class="w-full" bind:open={$importDataModal.open}>
 	<Dropzone
-		accept=".csv"
+		accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
 		id="dropzone"
 		on:drop={dropHandle}
 		on:dragover={(event) => {
@@ -169,13 +159,20 @@
 	<Checkbox bind:checked={importData}>{$t('import data')}</Checkbox>
 
 	<div class="flex justify-end">
-		<form class="space-y-2" id="importCSV" method="POST" use:enhance>
-			<Button size="xs" outline color="alternative" on:click={() => importCSVModal.close()}>
-				{$t('Cancel', { ns: 'common' })}
-			</Button>
-			<Button size="xs" disabled={!data} type="submit">
-				{$t('Confirm', { ns: 'common' })}
-			</Button>
+		<form id="importData" method="POST" use:enhance>
+			<div class="flex items-center gap-2">
+				<Button size="xs" outline color="alternative" on:click={() => importDataModal.close()}>
+					{$t('Cancel', { ns: 'common' })}
+				</Button>
+				<Button size="xs" disabled={!data || $createTable.isLoading} type="submit">
+					<div class="flex items-center">
+						{#if $createTable.isLoading}
+							<Spinner size="4" class="mr-2" />
+						{/if}
+						{$t('Confirm', { ns: 'common' })}
+					</div>
+				</Button>
+			</div>
 		</form>
 	</div>
 </Modal>

@@ -73,4 +73,4 @@ const UPDATE_OPTION = Symbol('UPDATE_OPTION')
 export const updateOptionModal = createModal(UPDATE_OPTION)
 
 const IMPORT_CSV_MODAL = Symbol('IMPORT_CSV_MODAL')
-export const importCSVModal = createModal(IMPORT_CSV_MODAL)
+export const importDataModal = createModal(IMPORT_CSV_MODAL)

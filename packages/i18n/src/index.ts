@@ -116,7 +116,7 @@ export const config: InitOptions = {
         Copied: 'Copied',
       },
       table: {
-        'import csv': 'import csv',
+        'import csv or excel': 'import csv or excel',
         'first row as header': 'Use First Row as Headers',
         'import data': 'Import Data',
         'Auto Display Field': 'using <strong>{{table}}</strong> display field',
@@ -421,7 +421,7 @@ export const config: InitOptions = {
         Copied: '已复制',
       },
       table: {
-        'import csv': '导入 csv',
+        'import csv or excel': '导入 csv 或 excel',
         'first row as header': '使用第一行作为列标题',
         'import data': '导入行数据',
         'Auto Display Field': '使用 <strong>{{table}}</strong> 表中设置的显示列',
