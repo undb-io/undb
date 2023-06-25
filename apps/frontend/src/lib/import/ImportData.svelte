@@ -27,6 +27,7 @@
 	let ext: string | undefined
 	let flatten = false
 	let importData = true
+	let file: File | undefined
 
 	const inferFieldTypeCount = 200
 	let opened: Record<string, boolean> = {}
@@ -95,10 +96,7 @@
 		event.preventDefault()
 		const files = event.dataTransfer?.files
 		if (!!files?.length) {
-			const parsed = await parse(files[0])
-			data = parsed.data
-			$form.name = parsed.name
-			ext = parsed.extension
+			file = files[0]
 		}
 	}
 
@@ -106,14 +104,21 @@
 		const target = event.target as HTMLInputElement
 		const files = target.files
 		if (!!files?.length) {
-			const parsed = await parse(files[0])
-			data = parsed.data
-			$form.name = parsed.name
-			ext = parsed.extension
+			file = files[0]
 		}
 	}
 
-	$: console.log(data)
+	const handleFile = async (file: File | undefined) => {
+		if (!file) return
+
+		const parsed = await parse(file, { flatten })
+		console.log(parsed)
+		data = parsed.data
+		$form.name = parsed.name
+		ext = parsed.extension
+	}
+
+	$: flatten, handleFile(file)
 </script>
 
 <Modal class="w-full" bind:open={$importDataModal.open}>

@@ -540,7 +540,7 @@ export const inferFieldType = (
       (distinctValues) => {
         const distinctValuesCount = distinctValues.length
         const valuesCount = values.length
-        return distinctValuesCount / valuesCount > 0.5
+        return distinctValuesCount / valuesCount > 0.5 && distinctValuesCount > 10
       },
       () =>
         ({

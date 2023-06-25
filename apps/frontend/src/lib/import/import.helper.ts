@@ -51,8 +51,6 @@ const parseJSON = async (file: File, options?: ParseDataOption): Promise<SheetDa
 	}
 
 	return []
-
-	return []
 }
 
 export const parse = async (
