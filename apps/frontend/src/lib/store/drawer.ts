@@ -1,4 +1,4 @@
-import type { IQueryWebhook } from '@undb/integrations/dist'
+import type { IQueryWebhook } from '@undb/integrations'
 import { writable } from 'svelte/store'
 
 const createDrawer = (id: symbol) => {

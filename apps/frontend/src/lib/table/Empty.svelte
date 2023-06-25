@@ -1,7 +1,7 @@
 <script>
 	import { P, Button, ButtonGroup, Dropdown, DropdownItem } from 'flowbite-svelte'
 	import { t } from '$lib/i18n'
-	import { createTableModal, importCSVModal } from '$lib/store/modal'
+	import { createTableModal, importDataModal } from '$lib/store/modal'
 </script>
 
 <div class="h-full w-full flex flex-col gap-4 items-center justify-center content-center">
@@ -15,10 +15,10 @@
 			<i class="ti ti-chevron-down" />
 		</Button>
 		<Dropdown placement="top" class="w-[200px]">
-			<DropdownItem on:click={() => importCSVModal.open()} class="flex items-center gap-2">
+			<DropdownItem on:click={() => importDataaModal.open()} class="flex items-center gap-2">
 				<i class="ti ti-csv" />
 				<span>
-					{$t('import csv')}
+					{$t('import data content')}
 				</span>
 			</DropdownItem>
 		</Dropdown>

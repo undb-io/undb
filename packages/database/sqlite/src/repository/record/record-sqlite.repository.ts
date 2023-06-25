@@ -26,7 +26,7 @@ import {
   WithRecordTableId,
   WithRecordValues,
 } from '@undb/core'
-import { and } from '@undb/domain'
+import { IUnitOfWork, and } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { ReferenceField, SelectField } from '../../entity/field.js'
@@ -45,10 +45,14 @@ import type { RecordSqlite } from './record.type.js'
 
 export class RecordSqliteRepository implements IRecordRepository {
   constructor(
-    protected readonly em: EntityManager,
+    protected readonly uow: IUnitOfWork<EntityManager>,
     protected readonly cls: IClsService,
     protected readonly outboxService: IOutboxService,
   ) {}
+
+  private get em() {
+    return this.uow.conn()
+  }
 
   private async _insert(em: EntityManager, record: CoreRecord, schema: TableSchemaIdMap) {
     const userId = this.cls.get('user.userId')
@@ -160,6 +164,7 @@ export class RecordSqliteRepository implements IRecordRepository {
           'fields.averageAggregateField',
           'fields.lookupFields',
           'fields.foreignTable',
+          'views.widgets.visualization',
         ],
       },
     )
@@ -219,6 +224,7 @@ export class RecordSqliteRepository implements IRecordRepository {
           'fields.averageAggregateField',
           'fields.lookupFields',
           'fields.foreignTable',
+          'views.widgets.visualization',
         ],
       },
     )

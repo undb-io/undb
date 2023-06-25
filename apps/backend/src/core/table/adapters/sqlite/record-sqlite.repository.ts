@@ -1,20 +1,24 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import type { ClsStore, IRecordSpec, Record, Table, TableSchemaIdMap } from '@undb/core'
+import { type IUnitOfWork } from '@undb/domain'
 import type { EntityManager } from '@undb/sqlite'
 import { RecordSqliteRepository } from '@undb/sqlite'
 import { ClsService } from 'nestjs-cls'
 import { Option } from 'oxide.ts'
 import { NestOutboxService } from '../../../../outbox/outbox.service.js'
+import { InjectUnitOfWork } from '../../../../uow/uow.service.js'
 
 @Injectable()
 export class NestRecordSqliteRepository extends RecordSqliteRepository {
   constructor(
+    @InjectUnitOfWork()
+    protected readonly uow: IUnitOfWork<EntityManager>,
     protected readonly orm: MikroORM,
     protected readonly cls: ClsService<ClsStore>,
     protected readonly outboxService: NestOutboxService,
   ) {
-    super(orm.em as EntityManager, cls, outboxService)
+    super(uow, cls, outboxService)
   }
 
   @UseRequestContext()

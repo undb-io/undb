@@ -4,7 +4,7 @@
 	import type { LayoutData } from './$types'
 	import Empty from '$lib/table/Empty.svelte'
 	import { t } from '$lib/i18n'
-	import { createTableModal, importCSVModal } from '$lib/store/modal'
+	import { createTableModal, importDataModal } from '$lib/store/modal'
 	import { sidebarCollapsed } from '$lib/store/ui'
 
 	export let data: LayoutData
@@ -39,10 +39,10 @@
 				<i class="ti ti-chevron-down" />
 			</Button>
 			<Dropdown placement="bottom" class="w-[200px]">
-				<DropdownItem on:click={() => importCSVModal.open()} class="flex items-center gap-2">
+				<DropdownItem on:click={() => importDataaModal.open()} class="flex items-center gap-2">
 					<i class="ti ti-csv" />
 					<span>
-						{$t('import csv')}
+						{$t('import data content')}
 					</span>
 				</DropdownItem>
 			</Dropdown>

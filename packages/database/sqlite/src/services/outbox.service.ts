@@ -1,6 +1,6 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { LockMode } from '@mikro-orm/core'
-import type { IEvent } from '@undb/domain'
+import type { IEvent, IUnitOfWork } from '@undb/domain'
 import { Outbox } from '../entity/outbox.js'
 
 export interface IOutboxService {
@@ -9,7 +9,11 @@ export interface IOutboxService {
 }
 
 export class OutboxService implements IOutboxService {
-  constructor(protected readonly em: EntityManager) {}
+  constructor(protected readonly uow: IUnitOfWork<EntityManager>) {}
+
+  private get em() {
+    return this.uow.conn()
+  }
 
   persist(event: IEvent): Outbox {
     const outbox = new Outbox(event)

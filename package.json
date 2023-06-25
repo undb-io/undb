@@ -1,6 +1,6 @@
 {
   "name": "undb",
-  "version": "0.5.13",
+  "version": "0.5.14",
   "devDependencies": {
     "@commitlint/cli": "^17.6.5",
     "@commitlint/config-conventional": "^17.6.5",
@@ -19,6 +19,7 @@
     "zx": "^7.2.2"
   },
   "engines": {
+    "pnpm": ">=8.6.3",
     "node": ">=20.0.0"
   },
   "lint-staged": {
