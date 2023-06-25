@@ -8,7 +8,6 @@ import { NestAggregateSqliteQueryModel } from './sqlite/record-sqlite.aggregate-
 import { NestRecordSqliteQueryModel } from './sqlite/record-sqlite.query-model.js'
 import { NestRecordSqliteRepository } from './sqlite/record-sqlite.repository.js'
 import { NestRecordSqliteTreeQueryModel, RECORD_TREE_QUERY_MODEL } from './sqlite/record-sqlite.tree-query-model.js'
-import { NestSqliteUnitOfWork, UNIT_OF_WORK } from './sqlite/sqlite.uow.js'
 import { NestTableKVCache, STORAGE } from './sqlite/table-kv.cache.js'
 import { NestTableSqliteQueryModel } from './sqlite/table-sqlite.query-model.js'
 import { NestTableSqliteRepository, TABLE_KV_CACHE } from './sqlite/table-sqlite.repository.js'
@@ -75,9 +74,5 @@ export const dbAdapters: Provider[] = [
     provide: STORAGE,
     useFactory: cacheStorageFactory,
     inject: [PinoLogger, cacheStorageConfig.KEY],
-  },
-  {
-    provide: UNIT_OF_WORK,
-    useClass: NestSqliteUnitOfWork,
   },
 ]

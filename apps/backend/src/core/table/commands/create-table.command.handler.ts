@@ -4,13 +4,13 @@ import { ClsStore, TableSpecHandler, type IRecordRepository, type ITableReposito
 import { CreateTableCommand, CreateTableCommandHandler as DomainHandler } from '@undb/cqrs'
 import { type IUnitOfWork } from '@undb/domain'
 import { ClsService } from 'nestjs-cls'
+import { InjectUnitOfWork } from '../../../uow/uow.service.js'
 import { InjectRecordRepository, InjectTableRepository } from '../adapters/index.js'
-import { InjectUnitOrWork } from '../adapters/sqlite/sqlite.uow.js'
 
 @CommandHandler(CreateTableCommand)
 export class CreateTableCommandHandler extends DomainHandler implements ICommandHandler<CreateTableCommand> {
   constructor(
-    @InjectUnitOrWork()
+    @InjectUnitOfWork()
     protected readonly uow: IUnitOfWork,
     @InjectTableRepository()
     protected readonly repo: ITableRepository,
