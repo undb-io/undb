@@ -38,7 +38,6 @@
 				class={cx('px-3 py-2 hover:bg-gray-100 cursor-pointer w-full block', selected && 'bg-gray-100')}
 				custom
 				on:change={() => {
-					console.log('wtf')
 					open = false
 				}}
 			>

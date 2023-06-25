@@ -112,7 +112,6 @@
 		if (!file) return
 
 		const parsed = await parse(file, { flatten })
-		console.log(parsed)
 		data = parsed.data
 		$form.name = parsed.name
 		ext = parsed.extension

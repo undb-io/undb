@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { isPlainObject } from 'lodash-es'
+import { every, isArray, isPlainObject } from 'lodash-es'
 import Papa from 'papaparse'
 import { flatten } from 'safe-flat'
 import { match } from 'ts-pattern'
 import { read, utils } from 'xlsx'
 import { z } from 'zod'
 
-export type SheetData = (string | number | boolean | null)[][]
+type CellDataType = string | number | boolean | null
+export type SheetData = CellDataType[][]
 
 export type ParseDataOption = {
 	flatten?: boolean
@@ -36,13 +37,13 @@ const parseExcel = async (file: File, options?: ParseDataOption): Promise<SheetD
 
 const parseJSON = async (file: File, options?: ParseDataOption): Promise<SheetData> => {
 	const text = await file.text()
-	let json = JSON.parse(text)
-	if (isPlainObject(json)) {
+	const json = JSON.parse(text)
+
+	const parsePlainObject = (obj: Record<string, unknown>): SheetData => {
 		const data: unknown[][] = [[], []]
+		const jsonObject = options?.flatten ? flatten(obj) : obj
 
-		json = options?.flatten ? flatten(json) : json
-
-		for (const [key, value] of Object.entries(json)) {
+		for (const [key, value] of Object.entries(jsonObject)) {
 			data[0].push(key)
 			data[1].push(value)
 		}
@@ -50,7 +51,27 @@ const parseJSON = async (file: File, options?: ParseDataOption): Promise<SheetDa
 		return data as SheetData
 	}
 
-	return []
+	return match(json)
+		.returnType<SheetData>()
+		.when(isPlainObject, parsePlainObject)
+		.when(
+			(json) => isArray(json) && json.length >= 1 && every(json, isPlainObject),
+			(jsonArray) => {
+				const [firstRow, ...restRows] = jsonArray as Record<string, unknown>[]
+				const data = parsePlainObject(firstRow)
+
+				for (const [index, obj] of restRows.entries()) {
+					data[index + 2] ??= []
+					// loop header
+					for (const [j, key] of data[0].entries()) {
+						data[index + 2][j] = obj[key as string] as CellDataType
+					}
+				}
+
+				return data
+			},
+		)
+		.otherwise(() => [] as SheetData)
 }
 
 export const parse = async (
