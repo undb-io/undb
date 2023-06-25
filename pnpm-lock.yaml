@@ -466,6 +466,9 @@ importers:
       '@types/papaparse':
         specifier: ^5.3.7
         version: 5.3.7
+      '@types/safe-flat':
+        specifier: ^2.0.0
+        version: 2.0.0
       '@types/sortablejs':
         specifier: ^1.15.1
         version: 1.15.1
@@ -559,6 +562,9 @@ importers:
       prettier-plugin-svelte:
         specifier: ^2.10.1
         version: 2.10.1(prettier@2.8.8)(svelte@4.0.0)
+      safe-flat:
+        specifier: ^2.0.2
+        version: 2.0.2
       sortablejs:
         specifier: ^1.15.0
         version: 1.15.0
@@ -5443,6 +5449,10 @@ packages:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
     dependencies:
       '@types/node': 20.3.1
+    dev: true
+
+  /@types/safe-flat@2.0.0:
+    resolution: {integrity: sha512-h3eFKU6dOSItOvoY2R4OKASBf9yDjbUK6lAY41k9/6bnA0+Fgeyyl8q1kEDxphj/OxKCTikETRaZV80j95mYqw==}
     dev: true
 
   /@types/semver@7.3.13:
@@ -13257,6 +13267,10 @@ packages:
 
   /safe-buffer@5.2.1:
     resolution: {integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==}
+
+  /safe-flat@2.0.2:
+    resolution: {integrity: sha512-4plwd0jT25AB/gnVhEsjM9dt4wOZhp3Lk8xOmJ8tW8niJ2gB/QSKSvhqVY8zFQukAnPJhvn8BNc8mCSZxoVQ+A==}
+    dev: true
 
   /safe-regex-test@1.0.0:
     resolution: {integrity: sha512-JBUUzyOgEwXQY1NuPtvcj/qcBDbDmEvWufhlnXZIm75DEHp+afM1r1ujJpJsV/gSM4t59tpDyPi1sd6ZaPFfsA==}

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { goto, invalidate } from '$app/navigation'
-	import Number from '$lib/cell/CellComponents/Number.svelte'
 	import { t } from '$lib/i18n'
 	import { importDataModal } from '$lib/store/modal'
 	import CreateTableFieldAccordionItem from '$lib/table/CreateTableFieldAccordionItem.svelte'
@@ -25,6 +24,8 @@
 	let data: SheetData | undefined
 	let fileName: string | undefined
 	let firstRowAsHeader = true
+	let ext: string | undefined
+	let flatten = false
 	let importData = true
 
 	const inferFieldTypeCount = 200
@@ -94,8 +95,10 @@
 		event.preventDefault()
 		const files = event.dataTransfer?.files
 		if (!!files?.length) {
-			$form.name = files[0].name
-			data = await parse(files[0])
+			const parsed = await parse(files[0])
+			data = parsed.data
+			$form.name = parsed.name
+			ext = parsed.extension
 		}
 	}
 
@@ -103,15 +106,19 @@
 		const target = event.target as HTMLInputElement
 		const files = target.files
 		if (!!files?.length) {
-			$form.name = files[0].name
-			data = await parse(files[0])
+			const parsed = await parse(files[0])
+			data = parsed.data
+			$form.name = parsed.name
+			ext = parsed.extension
 		}
 	}
+
+	$: console.log(data)
 </script>
 
 <Modal class="w-full" bind:open={$importDataModal.open}>
 	<Dropzone
-		accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+		accept=".csv, .json, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
 		id="dropzone"
 		on:drop={dropHandle}
 		on:dragover={(event) => {
@@ -157,6 +164,9 @@
 
 	<Checkbox bind:checked={firstRowAsHeader}>{$t('first row as header')}</Checkbox>
 	<Checkbox bind:checked={importData}>{$t('import data')}</Checkbox>
+	{#if ext === 'json'}
+		<Checkbox bind:checked={flatten}>{$t('flatten import data')}</Checkbox>
+	{/if}
 
 	<div class="flex justify-end">
 		<form id="importData" method="POST" use:enhance>
