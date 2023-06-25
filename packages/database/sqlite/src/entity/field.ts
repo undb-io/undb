@@ -752,7 +752,6 @@ export class ReferenceField extends Field {
 
     let displayFields = this.displayFields.getItems(false)
     if (!displayFields.length) {
-      if (!this.foreignTable?.fields?.isInitialized()) return []
       displayFields = this.foreignTable?.fields?.getItems(false).filter((f) => f.display) ?? []
     }
 
