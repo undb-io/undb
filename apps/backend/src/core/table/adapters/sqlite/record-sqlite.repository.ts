@@ -7,12 +7,12 @@ import { RecordSqliteRepository } from '@undb/sqlite'
 import { ClsService } from 'nestjs-cls'
 import { Option } from 'oxide.ts'
 import { NestOutboxService } from '../../../../outbox/outbox.service.js'
-import { InjectUnitOrWork } from './sqlite.uow.js'
+import { InjectUnitOfWork } from '../../../../uow/uow.service.js'
 
 @Injectable()
 export class NestRecordSqliteRepository extends RecordSqliteRepository {
   constructor(
-    @InjectUnitOrWork()
+    @InjectUnitOfWork()
     protected readonly uow: IUnitOfWork<EntityManager>,
     protected readonly orm: MikroORM,
     protected readonly cls: ClsService<ClsStore>,
