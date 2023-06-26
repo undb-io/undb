@@ -1,3 +1,4 @@
+import { type IExportType } from '@undb/core'
 import type { CommandProps } from '@undb/domain'
 import { Command } from '@undb/domain'
 import type { IExportGridInput } from './export-grid.command.input.js'
@@ -5,7 +6,7 @@ import type { IExportGridInput } from './export-grid.command.input.js'
 export class ExportGridCommand extends Command {
   readonly tableId: string
   readonly viewId: string
-  readonly type: 'csv' | 'excel'
+  readonly type: IExportType
 
   constructor(props: CommandProps<IExportGridInput>) {
     super(props)

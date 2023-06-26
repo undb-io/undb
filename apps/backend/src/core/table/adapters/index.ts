@@ -4,6 +4,7 @@ import { cacheStorageConfig } from '../../../configs/cache-storage.config.js'
 import { CSVExportor, RECORD_CSV_EXPORTOR } from '../exportor/csv.exportor.js'
 import { ExcelExportor, RECORD_EXCEL_EXPORTOR } from '../exportor/excel.exportor.js'
 import { NestRecordExportorService } from '../exportor/exportor.service.js'
+import { JsonExportor, RECORD_JSON_EXPORTOR } from '../exportor/json.exportor.js'
 import { cacheStorageFactory } from './cache-storage.factory.js'
 import { NestAggregateSqliteQueryModel } from './sqlite/record-sqlite.aggregate-repository.js'
 import { NestRecordSqliteQueryModel } from './sqlite/record-sqlite.query-model.js'
@@ -60,6 +61,10 @@ export const dbAdapters: Provider[] = [
   {
     provide: RECORD_EXCEL_EXPORTOR,
     useClass: ExcelExportor,
+  },
+  {
+    provide: RECORD_JSON_EXPORTOR,
+    useClass: JsonExportor,
   },
   {
     provide: TABLE_KV_CACHE,
