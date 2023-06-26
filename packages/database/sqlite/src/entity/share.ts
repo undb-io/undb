@@ -1,4 +1,4 @@
-import { Entity, Index, PrimaryKey, Property } from '@mikro-orm/core'
+import { Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core'
 import type { Share as CoreShare } from '@undb/integrations'
 import { BaseEntity } from './base.js'
 
@@ -18,6 +18,7 @@ export class Share extends BaseEntity {
 
   @Property({ nullable: true })
   @Index()
+  @Unique()
   targetId?: string | null
 
   @Property({ nullable: true })
