@@ -9,7 +9,7 @@ export class CreateShareCommandHandler implements ICreateShareCommandHandler {
   constructor(protected readonly tableRepo: ITableRepository, protected readonly shareRepo: IShareRepository) {}
 
   async execute(command: CreateShareCommand): Promise<void> {
-    const table = (await this.tableRepo.findOneById(command.targetId)).unwrap()
+    const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
 
     const view = table.mustGetView(command.targetId)
 
