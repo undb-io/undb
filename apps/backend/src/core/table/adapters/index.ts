@@ -1,8 +1,9 @@
 import { Inject, Provider } from '@nestjs/common'
 import { PinoLogger } from 'nestjs-pino'
 import { cacheStorageConfig } from '../../../configs/cache-storage.config.js'
-import { CSVExportor } from '../exportor/csv.exportor.js'
-import { ExcelExportor } from '../exportor/excel.exportor.js'
+import { CSVExportor, RECORD_CSV_EXPORTOR } from '../exportor/csv.exportor.js'
+import { ExcelExportor, RECORD_EXCEL_EXPORTOR } from '../exportor/excel.exportor.js'
+import { NestRecordExportorService } from '../exportor/exportor.service.js'
 import { cacheStorageFactory } from './cache-storage.factory.js'
 import { NestAggregateSqliteQueryModel } from './sqlite/record-sqlite.aggregate-repository.js'
 import { NestRecordSqliteQueryModel } from './sqlite/record-sqlite.query-model.js'
@@ -26,12 +27,6 @@ export const InjectRecordRepository = () => Inject(RECORD_REPOSITORY)
 
 const RECORD_QUERY_MODEL = Symbol('RECORD_QUERY_MODEL')
 export const InjectRecordQueryModel = () => Inject(RECORD_QUERY_MODEL)
-
-const RECORD_CSV_EXPORTOR = Symbol('RECORD_CSV_EXPORTOR')
-export const InjectRecordCSVExportor = () => Inject(RECORD_CSV_EXPORTOR)
-
-const RECORD_EXCEL_EXPORTOR = Symbol('RECORD_EXCEL_EXPORTOR')
-export const InjectRecordExcelExportor = () => Inject(RECORD_EXCEL_EXPORTOR)
 
 export const dbAdapters: Provider[] = [
   {
@@ -75,4 +70,5 @@ export const dbAdapters: Provider[] = [
     useFactory: cacheStorageFactory,
     inject: [PinoLogger, cacheStorageConfig.KEY],
   },
+  NestRecordExportorService,
 ]
