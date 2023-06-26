@@ -1,35 +1,35 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
-import type { IQueryWebhook, IWebhookQueryModel, WebhookSpecification } from '@undb/integrations'
+import type { IQueryShare, IShareQueryModel, ShareSpecification } from '@undb/integrations'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
-import { Webhook } from '../../entity/webhook.js'
-import { WebhookSqliteMapper } from './share-sqlite.mapper.js'
+import { Share } from '../../entity/share.js'
+import { ShareSqliteMapper } from './share-sqlite.mapper.js'
 import { ShareSqliteQueryVisitor } from './share-sqlite.query-visitor.js'
 
-export class WebhookSqliteQueryModel implements IWebhookQueryModel {
+export class ShareSqliteQueryModel implements IShareQueryModel {
   constructor(protected readonly em: EntityManager) {}
 
-  async find(spec: WebhookSpecification | null): Promise<IQueryWebhook[]> {
-    const qb = this.em.qb(Webhook)
+  async find(spec: ShareSpecification | null): Promise<IQueryShare[]> {
+    const qb = this.em.qb(Share)
 
     const visitor = new ShareSqliteQueryVisitor(this.em, qb)
     if (spec) spec.accept(visitor)
 
     const webhooks = await qb.getResult()
 
-    return webhooks.map((webhook) => WebhookSqliteMapper.toQuery(webhook))
+    return webhooks.map((webhook) => ShareSqliteMapper.toQuery(webhook))
   }
 
-  async findOneById(id: string): Promise<Option<IQueryWebhook>> {
-    const webhook = await this.em.findOne(Webhook, id)
+  async findOneById(id: string): Promise<Option<IQueryShare>> {
+    const webhook = await this.em.findOne(Share, id)
     if (!webhook) {
       return None
     }
-    return Some(WebhookSqliteMapper.toQuery(webhook))
+    return Some(ShareSqliteMapper.toQuery(webhook))
   }
 
-  async findOne(spec: WebhookSpecification): Promise<Option<IQueryWebhook>> {
-    const qb = this.em.qb(Webhook)
+  async findOne(spec: ShareSpecification): Promise<Option<IQueryShare>> {
+    const qb = this.em.qb(Share)
     const visitor = new ShareSqliteQueryVisitor(this.em, qb)
 
     spec.accept(visitor)
@@ -37,6 +37,6 @@ export class WebhookSqliteQueryModel implements IWebhookQueryModel {
     const webhook = await qb.getSingleResult()
     if (!webhook) return None
 
-    return Some(WebhookSqliteMapper.toQuery(webhook))
+    return Some(ShareSqliteMapper.toQuery(webhook))
   }
 }

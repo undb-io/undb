@@ -2,6 +2,7 @@ import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { middleware, publicProcedure, router } from '../trpc.js'
 import type { ILogger } from '../type.js'
 import { createRecordRouter } from './record.router.js'
+import { createShareRouter } from './share.router.js'
 import { createTableRouter } from './table.router.js'
 import { createUserRouter } from './user.router.js'
 import { createWebhookRouter } from './webhook.router.js'
@@ -31,6 +32,7 @@ export const createRouter = (commandBus: ICommandBus, queryBus: IQueryBus, logge
     record: createRecordRouter(procedure)(commandBus, queryBus),
     user: createUserRouter(procedure)(commandBus, queryBus),
     webhook: createWebhookRouter(procedure)(commandBus, queryBus),
+    share: createShareRouter(procedure)(commandBus, queryBus),
   })
   return appRouter
 }
