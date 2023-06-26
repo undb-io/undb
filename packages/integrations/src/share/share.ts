@@ -4,4 +4,8 @@ import { ShareTarget } from './share-target.vo.js'
 export class Share {
   id!: ShareId
   target!: ShareTarget
+
+  static empty() {
+    return new Share()
+  }
 }
