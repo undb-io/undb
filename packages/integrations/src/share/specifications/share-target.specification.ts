@@ -1,6 +1,7 @@
 import { CompositeSpecification } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
+import { ShareTarget } from '../share-target.vo.js'
 import { Share } from '../share.js'
 import { IShareSpecVisitor } from './interface'
 
@@ -14,7 +15,8 @@ export class WithShareView extends CompositeSpecification<Share, IShareSpecVisit
   }
 
   mutate(w: Share): Result<Share, string> {
-    throw new Error('Method not implemented.')
+    w.target = new ShareTarget({ type: 'view', id: this.viewId })
+    return Ok(w)
   }
 
   accept(v: IShareSpecVisitor): Result<void, string> {

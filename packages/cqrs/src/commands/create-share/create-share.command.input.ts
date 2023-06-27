@@ -5,4 +5,5 @@ export const createShareCommandInput = z.object({
   tableId: tableIdSchema,
   targetId: tableIdSchema,
   targetType: z.string(),
+  enabled: z.boolean(),
 })

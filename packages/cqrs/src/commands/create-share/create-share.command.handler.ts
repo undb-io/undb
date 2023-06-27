@@ -13,7 +13,10 @@ export class CreateShareCommandHandler implements ICreateShareCommandHandler {
 
     const view = table.mustGetView(command.targetId)
 
-    const share = ShareFactory.from({ target: { id: view.id.value, type: command.targetType as 'view' } })
+    const share = ShareFactory.from({
+      enabled: command.enabled,
+      target: { id: view.id.value, type: command.targetType as 'view' },
+    })
     await this.shareRepo.insert(share)
   }
 }

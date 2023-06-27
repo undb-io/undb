@@ -29,7 +29,7 @@ export class GetShareQueryHandler implements IQueryHandler<GetShareQuery, IGetSh
     const spec = this.getSpec(query)
     if (spec.isNone()) throw new Error('invalid query spec')
 
-    const share = (await this.rm.findOne(spec.unwrap())).unwrap()
+    const share = (await this.rm.findOne(spec.unwrap())).into(null)
 
     return {
       share,
