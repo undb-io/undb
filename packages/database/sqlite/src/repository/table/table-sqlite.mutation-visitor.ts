@@ -10,6 +10,7 @@ import type {
   WithNewFieldType,
   WithOption,
   WithReferenceFieldId,
+  WithTableViewId,
   WithTimeFormat,
   WithoutWidgetSpecification,
 } from '@undb/core'
@@ -96,6 +97,9 @@ import { TableSqliteVisualizationVisitor } from './table-sqlite-visualization.vi
 export class TableSqliteMutationVisitor extends BaseEntityManager implements ITableSpecVisitor {
   constructor(private readonly tableId: string, em: EntityManager) {
     super(em)
+  }
+  viewIdEqual(s: WithTableViewId): void {
+    throw new Error('Method not implemented.')
   }
   private get table(): Table {
     return this.em.getReference(Table, this.tableId)
