@@ -10,7 +10,6 @@ export const InjectAppRouter = () => Inject(AppRouterSymbol)
 
 export const AppRouterProvider: Provider = {
   provide: AppRouterSymbol,
-  useFactory: (commandBus: CommandBus, queryBus: QueryBus, logger: Logger) =>
-    createRouter(commandBus, queryBus, logger),
+  useFactory: createRouter,
   inject: [CommandBus, QueryBus, Logger],
 }
