@@ -7,6 +7,7 @@ export class ShareSqliteMapper {
     return {
       id: share.id,
       target: share.targetId && share.targetType ? { id: share.targetId, type: share.targetType as any } : null,
+      enabled: share.enabled,
     }
   }
 
@@ -14,6 +15,7 @@ export class ShareSqliteMapper {
     return ShareFactory.unsafeCreate({
       id: share.id,
       target: share.targetId && share.targetType ? { id: share.targetId, type: share.targetType as any } : null,
+      enabled: share.enabled,
     })
   }
 }

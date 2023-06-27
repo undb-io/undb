@@ -11,6 +11,7 @@ export class Share extends BaseEntity {
     this.id = share.id.value
     this.targetId = share.target?.id
     this.targetType = share.target?.type
+    this.enabled = share.enabled
   }
 
   @PrimaryKey()
@@ -23,4 +24,7 @@ export class Share extends BaseEntity {
 
   @Property({ nullable: true })
   targetType?: string | null
+
+  @Property({ default: false })
+  enabled: boolean
 }
