@@ -1,9 +1,11 @@
 import {
   CreateShareCommand,
   GetShareQuery,
+  GetSharedViewQuery,
   createShareCommandInput,
   getShareQueryInput,
   getShareQueryOutput,
+  getSharedViewQueryInput,
 } from '@undb/cqrs'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
@@ -13,6 +15,13 @@ import { router } from '../trpc.js'
 export const createShareRouter =
   (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
     router({
+      view: procedure
+        .input(getSharedViewQueryInput)
+        .output(z.any())
+        .query(({ input }) => {
+          const query = new GetSharedViewQuery(input)
+          return queryBus.execute(query)
+        }),
       get: procedure
         .input(getShareQueryInput)
         .output(getShareQueryOutput)
