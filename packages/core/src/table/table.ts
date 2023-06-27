@@ -74,7 +74,7 @@ import { Views } from './view/views.js'
 export interface IQueryTable {
   id: string
   name: string
-  emoji: string
+  emoji?: string | null
   schema: IQuerySchemaSchema
   views?: IQueryView[]
   viewsOrder?: string[]

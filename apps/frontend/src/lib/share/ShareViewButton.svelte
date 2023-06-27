@@ -2,7 +2,7 @@
 	import { page } from '$app/stores'
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { Button, Dropdown, Input, Popover } from 'flowbite-svelte'
+	import { Button, Input, Popover } from 'flowbite-svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -37,5 +37,5 @@
 
 <Button>share view</Button>
 <Popover bind:open class="w-64 text-sm font-light z-50" title="share" trigger="click" placement="bottom">
-	<Input value={$page.url.origin} readonly />
+	<Input value={$page.url.origin + '/s/v/' + $view.id.value} readonly />
 </Popover>

@@ -2,6 +2,7 @@ import {
   CreateShareCommand,
   GetShareQuery,
   GetSharedViewQuery,
+  IGetSharedViewOutput,
   createShareCommandInput,
   getShareQueryInput,
   getShareQueryOutput,
@@ -18,7 +19,7 @@ export const createShareRouter =
       view: procedure
         .input(getSharedViewQueryInput)
         .output(z.any())
-        .query(({ input }) => {
+        .query<IGetSharedViewOutput>(({ input }) => {
           const query = new GetSharedViewQuery(input)
           return queryBus.execute(query)
         }),
