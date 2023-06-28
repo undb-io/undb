@@ -1,9 +1,9 @@
-import { EntityManager } from '@mikro-orm/better-sqlite'
+import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import { type Webhook, type WebhookSpecification } from '@undb/integrations'
 import { WebhookSqliteRepository } from '@undb/sqlite'
-import { Option } from 'oxide.ts'
+import type { Option } from 'oxide.ts'
 
 export const WEBHOOK_REPOSITORY = Symbol('WEBHOOK_REPOSITORY')
 export const InjectWebhookRepository = () => Inject(WEBHOOK_REPOSITORY)

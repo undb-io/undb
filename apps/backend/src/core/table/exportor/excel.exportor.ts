@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common'
-import { IRecordExportor, type Records, type Table } from '@undb/core'
+import type { IRecordExportor } from '@undb/core'
+import { type Records, type Table } from '@undb/core'
 import * as XLSX from 'xlsx'
 
 export const RECORD_EXCEL_EXPORTOR = Symbol('RECORD_EXCEL_EXPORTOR')

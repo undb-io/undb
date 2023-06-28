@@ -1,6 +1,7 @@
 import { Parser } from '@json2csv/plainjs'
 import { Inject, Injectable } from '@nestjs/common'
-import { IRecordExportor, type Records, type Table } from '@undb/core'
+import type { IRecordExportor } from '@undb/core'
+import { type Records, type Table } from '@undb/core'
 
 export const RECORD_CSV_EXPORTOR = Symbol('RECORD_CSV_EXPORTOR')
 export const InjectRecordCSVExportor = () => Inject(RECORD_CSV_EXPORTOR)

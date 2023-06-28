@@ -2,7 +2,7 @@ import { Controller, Get, Param, Res } from '@nestjs/common'
 import { CommandBus } from '@nestjs/cqrs'
 import { type IExportType } from '@undb/core'
 import { ExportGridCommand } from '@undb/cqrs'
-import type { Response } from 'express'
+import { type Response } from 'express'
 import { NestRecordExportorService } from './exportor/exportor.service.js'
 
 @Controller('record')

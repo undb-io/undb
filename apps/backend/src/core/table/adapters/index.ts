@@ -1,4 +1,5 @@
-import { Inject, Provider } from '@nestjs/common'
+import type { Provider } from '@nestjs/common'
+import { Inject } from '@nestjs/common'
 import { PinoLogger } from 'nestjs-pino'
 import { cacheStorageConfig } from '../../../configs/cache-storage.config.js'
 import { CSVExportor, RECORD_CSV_EXPORTOR } from '../exportor/csv.exportor.js'

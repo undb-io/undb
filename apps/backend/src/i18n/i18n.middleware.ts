@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from 'express'
+import type { NextFunction, Request, Response } from 'express'
 import { type i18n } from 'i18next'
-import { ClsService } from 'nestjs-cls'
+import type { ClsService } from 'nestjs-cls'
 
 export const i18nMiddleware = (cls: ClsService, i18next: i18n) => (req: Request, res: Response, next: NextFunction) => {
   const lang = req.cookies.lng

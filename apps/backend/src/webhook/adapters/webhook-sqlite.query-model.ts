@@ -1,9 +1,10 @@
-import { EntityManager } from '@mikro-orm/better-sqlite'
+import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
-import { IQueryWebhook, type WebhookSpecification } from '@undb/integrations'
+import type { IQueryWebhook } from '@undb/integrations'
+import { type WebhookSpecification } from '@undb/integrations'
 import { WebhookSqliteQueryModel } from '@undb/sqlite'
-import { Option } from 'oxide.ts'
+import type { Option } from 'oxide.ts'
 
 export const WEBHOOK_QUERY_MODEL = Symbol('WEBHOOK_QUERY_MODEL')
 export const InjectWebhookQueryModel = () => Inject(WEBHOOK_QUERY_MODEL)

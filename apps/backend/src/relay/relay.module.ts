@@ -1,4 +1,5 @@
-import { Module, OnModuleInit } from '@nestjs/common'
+import type { OnModuleInit } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
 import { ScheduleModule, SchedulerRegistry } from '@nestjs/schedule'
 import { CronJob } from 'cron'

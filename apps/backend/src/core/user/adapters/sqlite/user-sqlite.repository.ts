@@ -1,8 +1,9 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import { User, type UserSpecification } from '@undb/core'
-import { EntityManager, UserSqliteRepository } from '@undb/sqlite'
-import { Option } from 'oxide.ts'
+import type { EntityManager } from '@undb/sqlite'
+import { UserSqliteRepository } from '@undb/sqlite'
+import type { Option } from 'oxide.ts'
 
 @Injectable()
 export class NestUserSqliteRepository extends UserSqliteRepository {

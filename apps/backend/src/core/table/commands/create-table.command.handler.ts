@@ -1,6 +1,7 @@
 import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
-import { ClsStore, TableSpecHandler, type IRecordRepository, type ITableRepository } from '@undb/core'
+import type { ClsStore } from '@undb/core'
+import { TableSpecHandler, type IRecordRepository, type ITableRepository } from '@undb/core'
 import { CreateTableCommand, CreateTableCommandHandler as DomainHandler } from '@undb/cqrs'
 import { type IUnitOfWork } from '@undb/domain'
 import { ClsService } from 'nestjs-cls'

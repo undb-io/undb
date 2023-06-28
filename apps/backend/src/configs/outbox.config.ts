@@ -1,5 +1,6 @@
 import { Inject } from '@nestjs/common'
-import { ConfigType, registerAs } from '@nestjs/config'
+import type { ConfigType } from '@nestjs/config'
+import { registerAs } from '@nestjs/config'
 
 export const InjectOutboxConfig = () => Inject(outboxConfig.KEY)
 

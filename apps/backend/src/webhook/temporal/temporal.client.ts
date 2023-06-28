@@ -1,6 +1,8 @@
-import { Inject, Provider } from '@nestjs/common'
+import type { Provider } from '@nestjs/common'
+import { Inject } from '@nestjs/common'
 import { Client, Connection } from '@temporalio/client'
-import { WebhookConfigType, webhookConfig } from '../../configs/webhook.config.js'
+import type { WebhookConfigType } from '../../configs/webhook.config.js'
+import { webhookConfig } from '../../configs/webhook.config.js'
 
 export const TEMPORAL_CLIENT = Symbol('TEMPORAL_CLIENT')
 
