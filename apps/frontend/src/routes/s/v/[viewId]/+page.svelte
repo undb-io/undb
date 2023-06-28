@@ -7,12 +7,16 @@
 	const table = getTable()
 </script>
 
-<nav class="py-3 px-4 border-b">
-	<div class="flex items-center gap-2">
-		<img class="h-6 w-auto" src={logo} alt="undb" />
-		<P size="lg" class="font-semibold select-none !text-blue-600">undb</P>
+<div class="flex flex-col h-screen">
+	<nav class="py-3 px-4 border-b">
+		<div class="flex items-center gap-2">
+			<img class="h-6 w-auto" src={logo} alt="undb" />
+			<P size="lg" class="font-semibold select-none !text-blue-600">undb</P>
 
-		<Heading tag="h6" class="ml-2">{$table.name.value}</Heading>
-	</div>
-</nav>
-<TableIndex />
+			<Heading tag="h6" class="ml-2">{$table.name.value}</Heading>
+		</div>
+	</nav>
+	<main class="flex-1">
+		<TableIndex />
+	</main>
+</div>

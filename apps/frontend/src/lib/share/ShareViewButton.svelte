@@ -55,7 +55,12 @@
 			{#if copied}
 				<i class="ti ti-check text-green-500" />
 			{:else}
-				<i class="ti ti-copy cursor-pointer" on:click={copyURL} />
+				<div class="flex items-center gap-2">
+					<a href={url} target="_blank">
+						<i class="ti ti-external-link cursor-pointer" />
+					</a>
+					<i class="ti ti-copy cursor-pointer" on:click={copyURL} />
+				</div>
 			{/if}
 		</svelte:fragment>
 	</Input>
