@@ -1,4 +1,4 @@
-import type { EntityManager } from '@mikro-orm/better-sqlite'
+import { EntityManager } from '@mikro-orm/better-sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import type { IQueryWebhook } from '@undb/integrations'
@@ -11,8 +11,8 @@ export const InjectWebhookQueryModel = () => Inject(WEBHOOK_QUERY_MODEL)
 
 @Injectable()
 export class NestWebhookSqliteQueryModel extends WebhookSqliteQueryModel {
-  constructor(public readonly orm: MikroORM) {
-    super(orm.em as EntityManager)
+  constructor(public readonly orm: MikroORM, public readonly em: EntityManager) {
+    super(em)
   }
 
   @UseRequestContext()

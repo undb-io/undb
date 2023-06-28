@@ -2,15 +2,18 @@ import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import type { IQueryTable } from '@undb/core'
 import { type ITableCache, type ITableSpec } from '@undb/core'
-import type { EntityManager } from '@undb/sqlite'
-import { TableSqliteQueryModel } from '@undb/sqlite'
+import { EntityManager, TableSqliteQueryModel } from '@undb/sqlite'
 import type { Option } from 'oxide.ts'
 import { InjectTableKVCache } from './table-sqlite.repository.js'
 
 @Injectable()
 export class NestTableSqliteQueryModel extends TableSqliteQueryModel {
-  constructor(public readonly orm: MikroORM, @InjectTableKVCache() protected readonly cache: ITableCache) {
-    super(orm.em as EntityManager, cache)
+  constructor(
+    public readonly orm: MikroORM,
+    em: EntityManager,
+    @InjectTableKVCache() protected readonly cache: ITableCache,
+  ) {
+    super(em, cache)
   }
 
   @UseRequestContext()

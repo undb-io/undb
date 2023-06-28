@@ -20,7 +20,7 @@ export class TableSqliteRepository implements ITableRepository {
   constructor(protected readonly uow: IUnitOfWork<EntityManager>, protected readonly cache: ITableCache) {}
 
   private get em() {
-    return this.uow.conn()
+    return this.uow.conn().fork()
   }
 
   async findOneById(id: string): Promise<Option<CoreTable>> {

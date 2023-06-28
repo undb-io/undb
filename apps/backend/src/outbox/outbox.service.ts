@@ -1,8 +1,8 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
-import { type IUnitOfWork } from '@undb/domain'
-import type { EntityManager, Outbox } from '@undb/sqlite'
-import { OutboxService } from '@undb/sqlite'
+import { type IEvent, type IUnitOfWork } from '@undb/domain'
+import type { EntityManager } from '@undb/sqlite'
+import { Outbox, OutboxService } from '@undb/sqlite'
 import { InjectUnitOfWork } from '../uow/uow.service.js'
 
 @Injectable()
@@ -18,5 +18,10 @@ export class NestOutboxService extends OutboxService {
   @UseRequestContext()
   handle(cb: (outboxList: Outbox[]) => void | Promise<void>): Promise<void> {
     return super.handle(cb)
+  }
+
+  @UseRequestContext()
+  persist(event: IEvent<object>): Outbox {
+    return super.persist(event)
   }
 }

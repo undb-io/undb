@@ -20,7 +20,7 @@ export class CreateTableCommandHandler implements ICreateTableCommandHandler {
     const table = TableFactory.from(command, ctx).unwrap()
 
     try {
-      await this.uow.begin()
+      // await this.uow.begin()
 
       await this.tableRepo.insert(table)
       await this.handler.handle(table, new WithTableSchema(table.schema))
@@ -32,9 +32,9 @@ export class CreateTableCommandHandler implements ICreateTableCommandHandler {
         await this.recordRepo.insertMany(table, records, table.schema.toIdMap())
       }
 
-      await this.uow.commit()
+      // await this.uow.commit()
     } catch (error) {
-      await this.uow.rollback()
+      // await this.uow.rollback()
       throw error
     }
 
