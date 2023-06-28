@@ -13,3 +13,7 @@
 </script>
 
 <slot />
+
+<svelte:head>
+	<title>{$currentTable.name.value} - undb</title>
+</svelte:head>

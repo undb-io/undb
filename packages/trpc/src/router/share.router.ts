@@ -1,8 +1,8 @@
+import type { IGetSharedViewOutput } from '@undb/cqrs'
 import {
   CreateShareCommand,
   GetShareQuery,
   GetSharedViewQuery,
-  IGetSharedViewOutput,
   createShareCommandInput,
   getShareQueryInput,
   getShareQueryOutput,
