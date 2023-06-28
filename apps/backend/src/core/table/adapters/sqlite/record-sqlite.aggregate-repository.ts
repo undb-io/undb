@@ -1,6 +1,7 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
-import { ChartVisualization, IRecordSpec, VisualizationVO } from '@undb/core'
+import type { IRecordSpec } from '@undb/core'
+import { ChartVisualization, VisualizationVO } from '@undb/core'
 import type { EntityManager } from '@undb/sqlite'
 import { RecordSqliteAggregateRepository } from '@undb/sqlite'
 

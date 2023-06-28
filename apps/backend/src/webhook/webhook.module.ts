@@ -1,4 +1,5 @@
-import { ConfigurableModuleBuilder, DynamicModule, Module } from '@nestjs/common'
+import type { DynamicModule } from '@nestjs/common'
+import { ConfigurableModuleBuilder, Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
 import { TableModule } from '../core/table/table.module.js'
 import { adapters } from './adapters/index.js'

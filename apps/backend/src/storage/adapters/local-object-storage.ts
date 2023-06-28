@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common'
-import type { ConfigType } from '@nestjs/config'
+import { type ConfigType } from '@nestjs/config'
 import fs from 'node:fs'
 import path from 'node:path'
-import { Readable } from 'node:stream'
+import type { Readable } from 'node:stream'
 import { v4 } from 'uuid'
-import { InjectObjectStorageConfig, objectStorageConfig } from '../../configs/object-storage.config.js'
+import type { objectStorageConfig } from '../../configs/object-storage.config.js'
+import { InjectObjectStorageConfig } from '../../configs/object-storage.config.js'
 import type { IObjectStorage, Stat } from './object-storage.js'
 
 @Injectable()

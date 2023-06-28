@@ -1,7 +1,8 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import { type IUnitOfWork } from '@undb/domain'
-import { EntityManager, Outbox, OutboxService } from '@undb/sqlite'
+import type { EntityManager, Outbox } from '@undb/sqlite'
+import { OutboxService } from '@undb/sqlite'
 import { InjectUnitOfWork } from '../uow/uow.service.js'
 
 @Injectable()

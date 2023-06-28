@@ -1,4 +1,5 @@
-import { Inject, Provider } from '@nestjs/common'
+import type { Provider } from '@nestjs/common'
+import { Inject } from '@nestjs/common'
 import { NestUserSqliteQueryModel } from './sqlite/user-sqlite.query-model.js'
 import { NestUserSqliteRepository } from './sqlite/user-sqlite.repository.js'
 

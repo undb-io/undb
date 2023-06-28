@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
-import { IQueryUser, WithUserEmail } from '@undb/core'
+import type { IQueryUser } from '@undb/core'
+import { WithUserEmail } from '@undb/core'
 import { GetMeQuery, LoginCommand, RegisterCommand, UpdateProfileCommand } from '@undb/cqrs'
 import * as bcrypt from 'bcrypt'
 import { UserService } from '../core/user/user.service.js'

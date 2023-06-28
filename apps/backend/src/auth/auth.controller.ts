@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put, Request, Res, UseGuards } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import type { Response } from 'express'
+import { type Response } from 'express'
 import { AuthService } from './auth.service.js'
 import { JwtAuthGuard } from './jwt-auth.guard.js'
 import { LocalAuthGuard } from './local-auth.guard.js'

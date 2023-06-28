@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { CommandBus } from '@nestjs/cqrs'
 import { CreateWebhookCommand, UpdateWebhookCommand } from '@undb/cqrs'
-import { IOpenAPICreateWebhook, IOpenAPIUpdateWebhook } from '@undb/openapi'
+import type { IOpenAPICreateWebhook, IOpenAPIUpdateWebhook } from '@undb/openapi'
 
 @Injectable()
 export class OpenAPIWebhookService {

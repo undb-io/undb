@@ -1,6 +1,7 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
-import type { IQueryTreeRecords, IRecordSpec, IRecordTreeQueryModel, TreeField } from '@undb/core'
+import type { IQueryTreeRecords, IRecordTreeQueryModel } from '@undb/core'
+import { TreeField, type IRecordSpec } from '@undb/core'
 import type { EntityManager } from '@undb/sqlite'
 import { RecordSqliteTreeQueryModel } from '@undb/sqlite'
 
