@@ -518,8 +518,8 @@ importers:
         specifier: ^1.6.6
         version: 1.6.6
       flowbite-svelte:
-        specifier: ^0.38.5
-        version: 0.38.5(svelte@4.0.0)
+        specifier: ^0.39.0
+        version: 0.39.1(svelte@4.0.0)
       htm:
         specifier: ^3.1.1
         version: 3.1.1
@@ -8731,8 +8731,8 @@ packages:
   /flatted@3.2.7:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
 
-  /flowbite-svelte@0.38.5(svelte@4.0.0):
-    resolution: {integrity: sha512-U+aEpoLb7Vl35SwqJoCNxxDzmT4pGFNIgX63zp6aaXUxO0XYAyxZh1OlBLaOzZuKFd/KxTVWJW8EZwYNtoDu2g==}
+  /flowbite-svelte@0.39.1(svelte@4.0.0):
+    resolution: {integrity: sha512-HhqP0+RITqisIDOJf5+UprkIf2Vi8Lioq52MMEUKqS8xET33luAiqtQU/1RRLJABCijm1pcbPIO/QDZFJ/TtTA==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     peerDependencies:
       svelte: ^3.55.1 || ^4.0.0
@@ -8740,7 +8740,7 @@ packages:
       '@popperjs/core': 2.11.8
       flowbite: 1.6.6
       svelte: 4.0.0
-      tailwind-merge: 1.13.1
+      tailwind-merge: 1.13.2
     dev: true
 
   /flowbite@1.6.6:
@@ -14370,8 +14370,8 @@ packages:
     resolution: {integrity: sha512-VPWkKwJPOldeqDKesRwOLhKNbVRUbzh8yoFWqwMTXqQ2BpdY7SHJqPbIRb6qfidlFhh2LBNBDJQGjPnqQcwSgg==}
     dev: true
 
-  /tailwind-merge@1.13.1:
-    resolution: {integrity: sha512-tRtRN22TDokGi2TuYSvuHQuuW6BJ/zlUEG+iYpAQ9i66msc/0eU/+HPccbPnNNH0mCPp0Ob8thaC8Uy9CxHitQ==}
+  /tailwind-merge@1.13.2:
+    resolution: {integrity: sha512-R2/nULkdg1VR/EL4RXg4dEohdoxNUJGLMnWIQnPKL+O9Twu7Cn3Rxi4dlXkDzZrEGtR+G+psSXFouWlpTyLhCQ==}
     dev: true
 
   /tailwindcss@3.3.2(ts-node@10.9.1):
