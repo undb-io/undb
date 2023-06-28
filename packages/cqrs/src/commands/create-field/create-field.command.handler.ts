@@ -25,6 +25,7 @@ export class CreateFieldCommandHandler implements ICreateFieldCommandHandler {
       await this.uow.commit()
     } catch (error) {
       await this.uow.rollback()
+      throw error
     }
   }
 }

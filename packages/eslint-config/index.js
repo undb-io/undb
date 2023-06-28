@@ -10,6 +10,8 @@ module.exports = {
   plugins: ['@typescript-eslint', 'eslint-plugin-tsdoc'],
   rules: {
     'no-console': 'warn',
+    // TODO: remove me
+    'no-useless-catch': 'off',
     'react/jsx-key': 'off',
     'tsdoc/syntax': 'warn',
     '@typescript-eslint/consistent-type-imports': 'warn',

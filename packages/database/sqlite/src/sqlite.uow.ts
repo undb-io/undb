@@ -1,4 +1,4 @@
-import { EntityManager } from '@mikro-orm/better-sqlite'
+import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { type IUnitOfWork } from '@undb/domain'
 
 export class SqliteUnitOfWork implements IUnitOfWork<EntityManager> {
@@ -8,8 +8,8 @@ export class SqliteUnitOfWork implements IUnitOfWork<EntityManager> {
     this.em = this.em.fork()
     return this.em.begin()
   }
-  commit(): Promise<void> {
-    return this.em.commit()
+  async commit(): Promise<void> {
+    await this.em.commit()
   }
   rollback(): Promise<void> {
     return this.em.rollback()

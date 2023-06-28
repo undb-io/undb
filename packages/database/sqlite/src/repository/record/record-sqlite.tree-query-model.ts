@@ -18,7 +18,7 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
   constructor(private readonly em: EntityManager) {}
 
   async findTrees(tableId: string, field: TreeField, spec: IRecordSpec): Promise<IQueryTreeRecords> {
-    const em = this.em.fork()
+    const em = this.em
     const knex = em.getKnex()
     const tableEntity = await this.em.findOneOrFail(
       TableEntity,
