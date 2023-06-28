@@ -5,6 +5,7 @@ export class SqliteUnitOfWork implements IUnitOfWork<EntityManager> {
   constructor(private em: EntityManager) {}
 
   begin(): Promise<void> {
+    this.em = this.em.fork()
     return this.em.begin()
   }
   async commit(): Promise<void> {

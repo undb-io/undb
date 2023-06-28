@@ -17,14 +17,14 @@ export class CreateFieldCommandHandler implements ICreateFieldCommandHandler {
     const spec = table.createField(command.viewId, command.field, command.at)
 
     try {
-      // await this.uow.begin()
+      await this.uow.begin()
 
       await this.tableRepo.updateOneById(table.id.value, spec)
       await this.handler.handle(table, spec)
 
-      // await this.uow.commit()
+      await this.uow.commit()
     } catch (error) {
-      // await this.uow.rollback()
+      await this.uow.rollback()
       throw error
     }
   }

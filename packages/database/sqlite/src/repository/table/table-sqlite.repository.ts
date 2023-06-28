@@ -20,7 +20,7 @@ export class TableSqliteRepository implements ITableRepository {
   constructor(protected readonly uow: IUnitOfWork<EntityManager>, protected readonly cache: ITableCache) {}
 
   private get em() {
-    return this.uow.conn().fork()
+    return this.uow.conn()
   }
 
   async findOneById(id: string): Promise<Option<CoreTable>> {
@@ -64,25 +64,24 @@ export class TableSqliteRepository implements ITableRepository {
   }
 
   async insert(table: CoreTable): Promise<void> {
-    await this.em.transactional(async (em) => {
-      const tm = new UnderlyingTableSqliteManager(em)
-      await tm.create(table)
+    const em = this.em
+    const tm = new UnderlyingTableSqliteManager(em)
+    await tm.create(table)
 
-      const tableEntity = new TableEntity(table)
+    const tableEntity = new TableEntity(table)
 
-      for (const field of table.schema.fields) {
-        const visitor = new TableSqliteFieldVisitor(tableEntity, em)
-        field.accept(visitor)
-        await visitor.commit()
-      }
+    for (const field of table.schema.fields) {
+      const visitor = new TableSqliteFieldVisitor(tableEntity, em)
+      field.accept(visitor)
+      await visitor.commit()
+    }
 
-      for (const view of table.views.views ?? []) {
-        const viewEntity = new ViewEntity(tableEntity, view)
-        em.persist(viewEntity)
-      }
+    for (const view of table.views.views ?? []) {
+      const viewEntity = new ViewEntity(tableEntity, view)
+      em.persist(viewEntity)
+    }
 
-      em.persist(tableEntity)
-    })
+    em.persist(tableEntity)
   }
 
   async updateOneById(id: string, spec: ITableSpec): Promise<void> {

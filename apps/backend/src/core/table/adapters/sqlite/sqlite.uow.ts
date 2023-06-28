@@ -1,15 +1,15 @@
 import { EntityManager, MikroORM } from '@mikro-orm/better-sqlite'
 import { UseRequestContext } from '@mikro-orm/core'
-import { Inject, Injectable } from '@nestjs/common'
+import { Inject, Injectable, Scope } from '@nestjs/common'
 import { SqliteUnitOfWork } from '@undb/sqlite'
 
 export const UNIT_OF_WORK = Symbol('UNIT_OF_WORK')
 export const InjectUnitOrWork = () => Inject(UNIT_OF_WORK)
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class NestSqliteUnitOfWork extends SqliteUnitOfWork {
   constructor(orm: MikroORM, em: EntityManager) {
-    super(em)
+    super(em.fork())
   }
 
   @UseRequestContext()
