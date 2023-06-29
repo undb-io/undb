@@ -949,7 +949,7 @@ export class CountField extends Field {
       type: 'count',
       required: !!this.required,
       display: !!this.display,
-      referenceFieldId: this.countReferenceField.id,
+      referenceFieldId: this.countReferenceField?.id,
     })
   }
 
@@ -959,7 +959,7 @@ export class CountField extends Field {
       name: this.name,
       description: this.description,
       type: 'count',
-      referenceFieldId: this.countReferenceField.id,
+      referenceFieldId: this.countReferenceField?.id,
       required: !!this.required,
       display: !!this.display,
     }
@@ -986,8 +986,8 @@ export class SumField extends Field {
       type: 'sum',
       required: !!this.required,
       display: !!this.display,
-      referenceFieldId: this.sumReferenceField.id,
-      aggregateFieldId: this.sumAggregateField.id,
+      referenceFieldId: this.sumReferenceField?.id,
+      aggregateFieldId: this.sumAggregateField?.id,
     })
   }
 
@@ -997,8 +997,8 @@ export class SumField extends Field {
       name: this.name,
       description: this.description,
       type: 'sum',
-      referenceFieldId: this.sumReferenceField.id,
-      aggregateFieldId: this.sumAggregateField.id,
+      referenceFieldId: this.sumReferenceField?.id,
+      aggregateFieldId: this.sumAggregateField?.id,
       required: !!this.required,
       display: !!this.display,
     }
@@ -1025,8 +1025,8 @@ export class AverageField extends Field {
       type: 'average',
       required: !!this.required,
       display: !!this.display,
-      referenceFieldId: this.averageReferenceField.id,
-      aggregateFieldId: this.averageAggregateField.id,
+      referenceFieldId: this.averageReferenceField?.id,
+      aggregateFieldId: this.averageAggregateField?.id,
     })
   }
 
@@ -1036,8 +1036,8 @@ export class AverageField extends Field {
       name: this.name,
       description: this.description,
       type: 'average',
-      referenceFieldId: this.averageReferenceField.id,
-      aggregateFieldId: this.averageAggregateField.id,
+      referenceFieldId: this.averageReferenceField?.id,
+      aggregateFieldId: this.averageAggregateField?.id,
       required: !!this.required,
       display: !!this.display,
     }
@@ -1072,7 +1072,7 @@ export class LookupField extends Field {
       type: 'lookup',
       required: !!this.required,
       display: !!this.display,
-      referenceFieldId: this.lookupReferenceField.id,
+      referenceFieldId: this.lookupReferenceField?.id,
       displayFieldIds: this.foreignDisplayFields.map((f) => f.id) as [string, ...string[]],
     })
   }
@@ -1083,7 +1083,7 @@ export class LookupField extends Field {
       name: this.name,
       description: this.description,
       type: 'lookup',
-      referenceFieldId: this.lookupReferenceField.id,
+      referenceFieldId: this.lookupReferenceField?.id,
       required: !!this.required,
       display: !!this.display,
       displayFieldIds: this.foreignDisplayFields.map((f) => f.id) as [string, ...string[]],
