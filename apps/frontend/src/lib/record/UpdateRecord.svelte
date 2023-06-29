@@ -7,6 +7,7 @@
 		nextRecord,
 		previousRecord,
 		q,
+		readonly,
 		recordHash,
 	} from '$lib/store/table'
 	import { createMutateRecordValuesSchema } from '@undb/core'
@@ -54,6 +55,7 @@
 		taintedMessage: null,
 		delayMs: 100,
 		async onUpdate(event) {
+			if ($readonly) return
 			if (!$record) return
 			const taintedKeys = keys($tainted)
 			const values = pick(event.form.data, taintedKeys)
@@ -121,7 +123,7 @@
 						</Label>
 					</div>
 					<div class="col-span-4">
-						<CellInput record={$record} {field} bind:value={$form[field.id.value]} />
+						<CellInput record={$record} {field} bind:value={$form[field.id.value]} readonly={$readonly} />
 					</div>
 				{/each}
 			</div>

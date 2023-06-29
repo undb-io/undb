@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { currentTable, currentView } from '$lib/store/table'
+	import { currentRecordId, currentTable, currentView } from '$lib/store/table'
 	import { TableFactory } from '@undb/core'
 	import type { LayoutData } from './$types'
 	import { page } from '$app/stores'
+	import ReadonlyRecord from '$lib/record/ReadonlyRecord.svelte'
 
 	export let data: LayoutData
 
@@ -12,8 +13,12 @@
 	}
 </script>
 
-<slot />
-
 <svelte:head>
 	<title>{$currentTable.name.value} - undb</title>
 </svelte:head>
+
+<slot />
+
+{#if $currentRecordId}
+	<ReadonlyRecord />
+{/if}

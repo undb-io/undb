@@ -9,7 +9,10 @@ export const load: LayoutLoad = async (event) => {
 
 	event.depends(`share:view:${viewId}`)
 
+	const recordId = event.url.searchParams.get('r')
+
 	return {
 		share: trpc().share.view.utils.fetch({ viewId }),
+		record: recordId ? trpc().share.viewRecord.utils.fetch({ viewId, id: recordId }) : undefined,
 	}
 }

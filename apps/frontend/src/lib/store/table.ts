@@ -1,3 +1,4 @@
+import { page } from '$app/stores'
 import {
 	TableFactory,
 	type ICreateTableSchemaInput,
@@ -195,3 +196,5 @@ export const getForeignTableFieldsByReferenceId: Readable<(referenceId?: string)
 		}
 	},
 )
+
+export const readonly = derived(page, ($page) => $page.route.id?.startsWith('/(share)'))

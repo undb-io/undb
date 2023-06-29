@@ -3,7 +3,7 @@ import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { Table } from '../table.js'
 import { TableId } from '../value-objects/index.js'
-import { ViewId } from '../view/view-id.vo.js'
+import type { ViewId } from '../view/view-id.vo.js'
 import type { ITableSpecVisitor } from './interface.js'
 
 export class WithTableViewId extends CompositeSpecification {
