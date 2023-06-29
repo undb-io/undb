@@ -1,11 +1,15 @@
 import { page } from '$app/stores'
+import { trpc } from '$lib/trpc/client'
+import type { CreateQueryResult } from '@tanstack/svelte-query'
 import {
 	TableFactory,
 	type ICreateTableSchemaInput,
 	type IFilters,
 	type IQueryFieldSchema,
+	type IQueryRecordSchema,
 	type IQueryTable,
 	type IReferenceFieldQuerySchema,
+	type IRootFilter,
 	type IUpdateTableSchemaSchema,
 	type Option,
 	type Record,
@@ -15,6 +19,7 @@ import {
 } from '@undb/core'
 import { uniqBy } from 'lodash-es'
 import { derived, writable, type Readable } from 'svelte/store'
+import { match } from 'ts-pattern'
 
 export const allTables = writable<IQueryTable[]>()
 
@@ -197,4 +202,34 @@ export const getForeignTableFieldsByReferenceId: Readable<(referenceId?: string)
 	},
 )
 
-export const readonly = derived(page, ($page) => $page.route.id?.startsWith('/(share)'))
+export const isShare = derived(page, ($page) => $page.route.id?.startsWith('/(share)'))
+export const isShareView = derived(page, ($page) => $page.route.id === '/(share)/s/v/[viewId]')
+
+export const readonly = derived(isShare, ($isShare) => $isShare)
+
+export const listRecordsType = derived(isShareView, ($isShareView) => {
+	if ($isShareView) return 'share.view' as const
+	return 'internal' as const
+})
+
+export const listRecordFn: Readable<(filter?: IRootFilter) => CreateQueryResult<{ records: IQueryRecordSchema[] }>> =
+	derived([listRecordsType, currentTable, currentView, q, recordHash], ([$type, $table, $view, $q, $recordHash]) => {
+		return match($type)
+			.with(
+				'internal',
+				() => (filter?: IRootFilter) =>
+					trpc().record.list.query(
+						{ tableId: $table.id.value, viewId: $view.id.value, q: $q, filter },
+						{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash },
+					),
+			)
+			.with(
+				'share.view',
+				() => () =>
+					trpc().share.viewRecords.query(
+						{ viewId: $view.id.value },
+						{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash },
+					),
+			)
+			.exhaustive()
+	})
