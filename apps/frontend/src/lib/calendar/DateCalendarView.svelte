@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentRecordId, getTable, getView, q, recordHash } from '$lib/store/table'
+	import { currentRecordId, getTable, getView, q, readonly, recordHash } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 
 	// @ts-ignore
@@ -88,6 +88,7 @@
 		dayMaxEvents: true,
 		nowIndicator: true,
 		dateClick: (info: { date: Date }) => {
+			if ($readonly) return
 			$createRecordInitial = { [field.id.value]: info.date.toISOString() }
 			createRecordModal.open()
 		},
@@ -95,17 +96,21 @@
 		eventClick: (info: { event: { id: string } }) => {
 			$currentRecordId = info.event.id
 		},
+		selectable: false,
 		eventDurationEditable: false,
 		eventTimeFormat: () => null,
-		eventDrop: (info: { event: { id: string; start: Date; end: Date } }) => {
-			$updateRecord.mutate({
-				tableId: $table.id.value,
-				id: info.event.id,
-				values: {
-					[field.id.value]: info.event.start,
-				},
-			})
-		},
+		editable: !$readonly,
+		eventDrop: $readonly
+			? undefined
+			: (info: { event: { id: string; start: Date; end: Date } }) => {
+					$updateRecord.mutate({
+						tableId: $table.id.value,
+						id: info.event.id,
+						values: {
+							[field.id.value]: info.event.start,
+						},
+					})
+			  },
 		theme,
 	}
 </script>
