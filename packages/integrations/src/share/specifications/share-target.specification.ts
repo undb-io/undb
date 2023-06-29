@@ -2,8 +2,8 @@ import { CompositeSpecification } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import { ShareTarget } from '../share-target.vo.js'
-import { Share } from '../share.js'
-import { IShareSpecVisitor } from './interface'
+import type { Share } from '../share.js'
+import type { IShareSpecVisitor } from './interface'
 
 export class WithShareView extends CompositeSpecification<Share, IShareSpecVisitor> {
   constructor(public readonly viewId: string) {

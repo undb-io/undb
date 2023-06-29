@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { middleware, publicProcedure, router } from '../trpc.js'
 import type { ILogger } from '../type.js'
@@ -7,31 +8,39 @@ import { createTableRouter } from './table.router.js'
 import { createUserRouter } from './user.router.js'
 import { createWebhookRouter } from './webhook.router.js'
 
+const loggerMiddleware = (logger: ILogger) =>
+  middleware(async ({ path, type, next, rawInput }) => {
+    const start = Date.now()
+    const result = await next()
+    const durationMs = Date.now() - start
+    result.ok
+      ? logger.log('OK request', { path, type, durationMs, rawInput })
+      : logger.error('Non-OK request', {
+          path,
+          type,
+          durationMs,
+          rawInput,
+          error: result.error,
+          msg: result.error.message,
+          stack: result.error.stack,
+        })
+    return result
+  })
+
+const authMiddleware = middleware(({ ctx, next }) => {
+  if (!ctx.get('user.userId')) throw new TRPCError({ code: 'UNAUTHORIZED' })
+
+  return next()
+})
 export const createRouter = (commandBus: ICommandBus, queryBus: IQueryBus, logger: ILogger) => {
-  const procedure = publicProcedure.use(
-    middleware(async ({ path, type, next, rawInput }) => {
-      const start = Date.now()
-      const result = await next()
-      const durationMs = Date.now() - start
-      result.ok
-        ? logger.log('OK request', { path, type, durationMs, rawInput })
-        : logger.error('Non-OK request', {
-            path,
-            type,
-            durationMs,
-            rawInput,
-            error: result.error,
-            msg: result.error.message,
-            stack: result.error.stack,
-          })
-      return result
-    }),
-  )
+  const procedure = publicProcedure.use(loggerMiddleware(logger))
+  const authedProceducr = procedure.use(authMiddleware)
+
   const appRouter = router({
-    table: createTableRouter(procedure)(commandBus, queryBus),
-    record: createRecordRouter(procedure)(commandBus, queryBus),
-    user: createUserRouter(procedure)(commandBus, queryBus),
-    webhook: createWebhookRouter(procedure)(commandBus, queryBus),
+    table: createTableRouter(authedProceducr)(commandBus, queryBus),
+    record: createRecordRouter(authedProceducr)(commandBus, queryBus),
+    user: createUserRouter(authedProceducr)(commandBus, queryBus),
+    webhook: createWebhookRouter(authedProceducr)(commandBus, queryBus),
     share: createShareRouter(procedure)(commandBus, queryBus),
   })
   return appRouter

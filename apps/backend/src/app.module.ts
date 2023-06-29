@@ -3,6 +3,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs'
 import type { OnModuleInit } from '@nestjs/common'
 import { Logger, Module } from '@nestjs/common'
 import { type ConfigType } from '@nestjs/config'
+import { JwtModule } from '@nestjs/jwt'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import type { EntityManager } from '@undb/sqlite'
 import { createConfig } from '@undb/sqlite'
@@ -13,6 +14,7 @@ import path from 'path'
 import { v4 as uuid } from 'uuid'
 import { AttachmentModule } from './attachment/attachment.module.js'
 import { AuthModule } from './auth/auth.module.js'
+import { authConfig } from './configs/auth.config.js'
 import { BaseConfigService } from './configs/base-config.service.js'
 import { ConfigModule } from './configs/config.module.js'
 import { InjectSqliteConfig, sqliteConfig } from './configs/sqlite.config.js'
@@ -40,6 +42,16 @@ import { WebhookModule } from './webhook/webhook.module.js'
       },
     }),
     HealthModule,
+    JwtModule.registerAsync({
+      global: true,
+      useFactory: (config: ConfigType<typeof authConfig>) => ({
+        secret: config.jwt.secret,
+        signOptions: {
+          expiresIn: '20d',
+        },
+      }),
+      inject: [authConfig.KEY],
+    }),
     TrpcModule,
     LoggerModule.forRootAsync({
       useFactory: (config: BaseConfigService) => ({

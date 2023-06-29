@@ -8,14 +8,13 @@ import helmet from 'helmet'
 import type { i18n } from 'i18next'
 import { ClsMiddleware, ClsService } from 'nestjs-cls'
 import { Logger } from 'nestjs-pino'
-import passport from 'passport'
 import { v4 } from 'uuid'
 import { AppModule } from './app.module.js'
-import { JwtStrategy } from './auth/jwt.strategy.js'
 import { AllExceptionsFilter } from './filters/http-exception.filter.js'
 import { i18nMiddleware } from './i18n/i18n.middleware.js'
 import { I18NEXT } from './i18n/i18next.provider.js'
 import { AppRouterSymbol } from './trpc/providers/app-router.js'
+import { TRPC_CONTEXT } from './trpc/providers/context.js'
 import { TRPC_ENDPOINT } from './trpc/trpc.constants.js'
 
 export async function bootstrap() {
@@ -37,7 +36,7 @@ export async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost, logger))
 
   const router = app.get<AppRouter>(AppRouterSymbol)
-  const jwt = app.get(JwtStrategy)
+  const createContext = app.get(TRPC_CONTEXT)
   const i18next: i18n = app.get(I18NEXT)
   const cls = app.get(ClsService)
 
@@ -54,7 +53,7 @@ export async function bootstrap() {
       TRPC_ENDPOINT,
       trpcExpress.createExpressMiddleware({
         router,
-        middleware: passport.authenticate(jwt, { session: false }),
+        createContext,
       }),
     )
     .use(
