@@ -4,8 +4,6 @@
 	import { writable } from 'svelte/store'
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
-	import { t } from '$lib/i18n'
-	import UpdateRecordMenu from './UpdateRecordMenu.svelte'
 
 	const table = getTable()
 	const view = getView()

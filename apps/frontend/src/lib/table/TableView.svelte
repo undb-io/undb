@@ -17,12 +17,12 @@
 		getField,
 		getTable,
 		getView,
+		readonly,
 		recordHash,
 	} from '$lib/store/table'
 	import { invalidate } from '$app/navigation'
 	import FieldMenu from '$lib/field/FieldMenu.svelte'
 	import Portal from 'svelte-portal'
-	import { getIconClass } from '$lib/field/helpers'
 	import { onMount, tick } from 'svelte'
 	import { editors } from '$lib/cell/CellEditors/editors'
 	import { t } from '$lib/i18n'
@@ -182,7 +182,7 @@
 					pin: position ? pinnedPositionMap[position] : undefined,
 					autoSize: true,
 					cellTemplate: cellTemplateMap[field.type],
-					columnTemplate: getColumnTemplate,
+					columnTemplate: (h, c) => getColumnTemplate(h, c, $readonly),
 					columnProperties: (column: RevoGridType.ColumnRegular) => {
 						const sort = $view.getFieldSort(column.prop as string).into()
 						return {
@@ -323,7 +323,9 @@
 	{/if}
 </div>
 
-<TableViewToast open={!!$selectedCount} />
+{#if !$readonly}
+	<TableViewToast open={!!$selectedCount} />
+{/if}
 
 {#if fieldMenuDOMId}
 	{#key fieldMenuDOMId}
