@@ -42,7 +42,7 @@ const string: TemplateFunc = (h, props) => {
 	const html = htm.bind(h)
 	const value = props.model[props.prop] as string | undefined
 	if (!value) return null
-	return html`<span class="text-sm">${value ?? ''}</span>`
+	return html`<span class="text-sm ">${value ?? ''}</span>`
 }
 
 const json: TemplateFunc = (h, props) => {
@@ -52,7 +52,7 @@ const json: TemplateFunc = (h, props) => {
 	const html = htm.bind(h)
 	const value = props.model[props.prop] as Json | undefined
 	if (!value) return null
-	return html`<span class="text-sm">${JSON.stringify(value) ?? ''}</span>`
+	return html`<span class="text-sm ">${JSON.stringify(value) ?? ''}</span>`
 }
 
 const email: TemplateFunc = (h, props) => {
@@ -61,7 +61,7 @@ const email: TemplateFunc = (h, props) => {
 
 	const value = props.model[props.prop] as string | undefined
 	if (!value) return null
-	return h('span', { class: 'text-sm' }, value.toString() ?? '')
+	return h('span', { class: 'text-sm ' }, value.toString() ?? '')
 }
 
 const id: TemplateFunc = (h, props) => {
@@ -73,7 +73,7 @@ const id: TemplateFunc = (h, props) => {
 		'span',
 		{
 			class:
-				'bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300',
+				'bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-600 dark:text-gray-200',
 		},
 		id,
 	)
@@ -99,9 +99,9 @@ const dateRange: TemplateFunc = (h, props) => {
 
 	const [from, to] = value
 
-	return h('div', { class: 'flex items-center' }, [
+	return h('div', { class: 'flex items-center dark:text-gray-200' }, [
 		dateComponent(h, from ?? null, field.formatString, field.timeFormatString),
-		from && to ? h('span', { class: 'mx-1' }, '-') : null,
+		from && to ? h('span', { class: 'mx-1 dark:text-gray-200' }, '-') : null,
 		dateComponent(h, to ?? null, field.formatString, field.timeFormatString),
 	])
 }
@@ -187,7 +187,7 @@ const currency: TemplateFunc = (h, props) => {
 	if (!isNumber(number)) return null
 	const field = props.column.field as CurrencyField
 	return html`
-		<div class="flex items-center gap-1">
+		<div class="flex items-center gap-1 dark:text-gray-200">
 			<span>${field.symbol.symbol}</span>
 			<span>${number}</span>
 		</div>
@@ -222,11 +222,11 @@ const rating: TemplateFunc = (h, props) => {
 
 	return h(
 		'div',
-		{ class: 'flex items-center' },
+		{ class: 'flex items-center ' },
 		new Array(max).fill(0).map((_, index) =>
 			h('i', {
 				class: cx(
-					'ti ti-star-filled w-4 h-4 inline-flex items-center justify-center',
+					'ti ti-star-filled w-4 h-4 inline-flex items-center justify-center ',
 					index < value ? ' text-yellow-400' : ' text-gray-300 dark:text-gray-500',
 				),
 			}),
@@ -308,7 +308,10 @@ const referenceComponent = (h: HyperFunc, value: (string | null)[] = []) => {
 	return h(
 		'span',
 		{
-			class: cx('bg-gray-100 text-xs mr-2 px-2.5 py-0.5 rounded', !content && 'text-gray-400 font-normal'),
+			class: cx(
+				'bg-gray-100 text-xs mr-2 px-2.5 py-0.5 rounded dark:!text-gray-200 dark:bg-primary-600',
+				!content && 'text-gray-400 font-normal',
+			),
 		},
 		content || tt('unamed', { ns: 'common' }) || '',
 	)
@@ -407,7 +410,9 @@ const lookup: TemplateFunc = (h, props) => {
 
 	const values = field.getDisplayValues(props.model.display_values)
 	return html`
-		<div class="flex items-center gap-2">${values.map((value) => html` <span> ${value.toString()} </span> `)}</div>
+		<div class="flex items-center gap-2 dark:text-gray-200">
+			${values.map((value) => html` <span> ${value.toString()} </span> `)}
+		</div>
 	`
 }
 

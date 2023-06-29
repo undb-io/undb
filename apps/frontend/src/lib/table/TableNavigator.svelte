@@ -8,5 +8,5 @@
 
 <Breadcrumb aria-label="undb navigator" class="hidden xl:block" olClass="md:space-x-0 flex items-center">
 	<BreadcrumbItem href="/" home />
-	<BreadcrumbItem class="whitespace-nowrap flex items-center">{$table.name.value}</BreadcrumbItem>
+	<BreadcrumbItem class="whitespace-nowrap flex items-center ">{$table.name.value}</BreadcrumbItem>
 </Breadcrumb>

@@ -20,7 +20,7 @@
 >
 	{#each Object.entries(values) as [key, value]}
 		{@const field = $table.schema.getFieldById(key).unwrap()}
-		<div class="flex items-center gap-2">
+		<div class="flex items-center gap-2 dark:text-gray-200">
 			<FieldIcon size={20} type={field.type} />
 			<Tooltip class="z-[999]" transition={fade} params={{ delay: 100, duration: 200 }} placement="left" arrow={false}>
 				{field.name.value}

@@ -75,7 +75,7 @@
 		{$t('add widge')}
 	</span>
 </Button>
-<Dropdown bind:open>
+<Dropdown bind:open class="z-[99999]">
 	<DropdownItem class="flex items-center gap-3" on:click={addNumbers}>
 		<i class="ti ti-123" />
 		<span>{$t('Numbers', { ns: 'common' })}</span>

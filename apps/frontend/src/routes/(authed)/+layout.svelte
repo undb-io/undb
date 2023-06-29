@@ -18,7 +18,7 @@
 	import { copyText } from 'svelte-copy'
 	import Cookies from 'js-cookie'
 	import { slide } from 'svelte/transition'
-	import { changeDarkMode, sidebarCollapsed } from '$lib/store/ui'
+	import { changeDarkMode, sidebarCollapsed, theme } from '$lib/store/ui'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -310,7 +310,7 @@
 					{#if me.avatar}
 						<Avatar src={me.avatar} />
 					{:else}
-						<Avatar class={cx('text-white', 'dark:bg-primary-500', colors[me.color])}>{me.username.slice(0, 2)}</Avatar>
+						<Avatar class={cx('text-white', colors[me.color])}>{me.username.slice(0, 2)}</Avatar>
 					{/if}
 					<span class="sr-only">Your profile</span>
 					<span aria-hidden="true">{me.username}</span>
@@ -430,7 +430,7 @@
 		</Dropdown>
 	</div>
 
-	<main class={cx('h-[100vh] transition-all', 'dark:bg-slate-400', $sidebarCollapsed ? 'lg:pl-0' : 'lg:pl-72')}>
+	<main class={cx('h-[100vh] transition-all', 'dark:bg-slate-800', $sidebarCollapsed ? 'lg:pl-0' : 'lg:pl-72')}>
 		<div class="h-full flex flex-col">
 			<slot />
 		</div>

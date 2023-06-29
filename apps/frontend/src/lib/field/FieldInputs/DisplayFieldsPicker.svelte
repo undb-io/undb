@@ -60,8 +60,8 @@
 
 		{#each filteredFields as field}
 			{@const selected = !!group?.includes(field.id)}
-			<Checkbox value={field.id} bind:group class="px-3 py-2 hover:bg-gray-100 cursor-pointer" custom>
-				<li class="w-full flex justify-between items-center text-gray-500">
+			<Checkbox value={field.id} bind:group class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-500 cursor-pointer" custom>
+				<li class="w-full flex justify-between items-center text-gray-500 dark:text-gray-200">
 					<div class="flex flex-1 items-center gap-2">
 						<FieldIcon type={field.type} size={16} />
 						<span>
