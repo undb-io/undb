@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentRecordId, getGroupRecordsHash, getTable, getView, q } from '$lib/store/table'
+	import { currentRecordId, getGroupRecordsHash, getTable, getView, q, readonly } from '$lib/store/table'
 	import { TRIGGERS, dndzone } from 'svelte-dnd-action'
 	import KanbanCard from './KanbanCard.svelte'
 	import { trpc } from '$lib/trpc/client'
@@ -59,7 +59,7 @@
 	}
 </script>
 
-{#if allowCreate}
+{#if allowCreate && !$readonly}
 	<Button
 		color="alternative"
 		class="w-full rounded-md transition h-8 mb-4"
@@ -77,7 +77,7 @@
 
 <div
 	class="flex flex-col gap-2 flex-1 overflow-y-auto"
-	use:dndzone={{ items, flipDurationMs, dropTargetStyle: {} }}
+	use:dndzone={{ items, flipDurationMs, dropTargetStyle: {}, dragDisabled: $readonly }}
 	on:consider={(e) => handleDndConsiderCards(kanbanId, e)}
 	on:finalize={(e) => handleDndFinalizeCards(kanbanId, e)}
 	{...$$restProps}

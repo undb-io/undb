@@ -7,6 +7,7 @@
 	import { KANBAN_DATE_STACKS, RElAVANT_DATES, getDateFilter, getDateValue } from '$lib/kanban/kanban-date.utils'
 	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 	import KanbanLane from '$lib/kanban/KanbanLane.svelte'
+	import { readonly } from '$lib/store/table'
 
 	export let field: DateField
 	const flipDurationMs = 200
@@ -26,7 +27,7 @@
 						<Badge color="dark">{item.name}</Badge>
 					</div>
 
-					{#if !RElAVANT_DATES.includes(item.id)}
+					{#if !RElAVANT_DATES.includes(item.id) && !$readonly}
 						<Button
 							color="alternative"
 							class="w-full rounded-md transition h-8 mb-4"
