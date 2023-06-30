@@ -7,3 +7,11 @@ export class NotFoundShare extends ExceptionBase {
     super('Share not found')
   }
 }
+
+export class ShareNotEnabled extends ExceptionBase {
+  code = 'SHARE.NOT_ENABLED'
+
+  constructor() {
+    super('Share not enabled')
+  }
+}

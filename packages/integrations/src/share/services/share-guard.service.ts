@@ -1,4 +1,4 @@
-import { NotFoundShare } from '../share.errors.js'
+import { NotFoundShare, ShareNotEnabled } from '../share.errors.js'
 import type { Share } from '../share.js'
 import type { IShareRepository } from '../share.repository.js'
 import type { ShareSpecification } from '../specifications/index.js'
@@ -14,6 +14,9 @@ export class ShareGuardService implements IShareGuardService {
     const share = await this.repo.findOne(spec)
     if (share.isNone()) throw new NotFoundShare()
 
-    return share.unwrap()
+    const s = share.unwrap()
+    if (!s.enabled) throw new ShareNotEnabled()
+
+    return s
   }
 }

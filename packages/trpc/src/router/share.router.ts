@@ -15,6 +15,7 @@ import {
   GetShareViewRecordsQuery,
   GetShareViewTreeRecordsQuery,
   GetSharedViewQuery,
+  UpdateShareCommand,
   createShareCommandInput,
   getShareAggregateChartQuerySchema,
   getShareAggregateNumberQuerySchema,
@@ -24,6 +25,7 @@ import {
   getShareViewRecordsQueryInput,
   getShareViewTreeRecordsQueryInput,
   getSharedViewQueryInput,
+  updateShareCommandInput,
 } from '@undb/cqrs'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
@@ -84,9 +86,16 @@ export const createShareRouter =
         }),
       create: procedure
         .input(createShareCommandInput)
-        .output(z.any())
+        .output(z.void())
         .mutation(({ input }) => {
           const cmd = new CreateShareCommand(input)
+          return commandBus.execute(cmd)
+        }),
+      update: procedure
+        .input(updateShareCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new UpdateShareCommand(input)
           return commandBus.execute(cmd)
         }),
     })

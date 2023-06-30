@@ -3,7 +3,7 @@
 	import { t } from '$lib/i18n'
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { Button, Input, Popover, Toggle } from 'flowbite-svelte'
+	import { Button, Dropdown, Input, Toggle } from 'flowbite-svelte'
 	import { copyText } from 'svelte-copy'
 
 	const table = getTable()
@@ -25,6 +25,12 @@
 		},
 	})
 
+	const updateViewShare = trpc().share.update.mutation({
+		async onSuccess(data, variables, context) {
+			await $getViewShare.refetch()
+		},
+	})
+
 	$: share = $getViewShare.data?.share ?? null
 
 	$: url = $page.url.origin + '/s/v/' + $view.id.value
@@ -39,7 +45,10 @@
 		}, 2000)
 	}
 
-	$: enabled = !!share?.enabled
+	let enabled = false
+	$: if (share) {
+		enabled = share.enabled
+	}
 
 	const onChange = (e: Event) => {
 		const target = e.target as HTMLInputElement
@@ -51,12 +60,20 @@
 				enabled: true,
 			})
 		}
+		if (share) {
+			$updateViewShare.mutate({
+				shareId: share.id,
+				update: {
+					enabled: target.checked,
+				},
+			})
+		}
 	}
 </script>
 
-<Button color="alternative" size="xs" on:click={() => (open = true)}>{$t('share')}</Button>
-<Popover bind:open class="w-96 text-sm font-light z-50" title={$t('share')} trigger="click" placement="bottom">
-	<div class="space-y-2">
+<Button color="alternative" size="xs">{$t('share')}</Button>
+<Dropdown bind:open class="w-96 text-sm font-light z-50 border" title={$t('share')} trigger="click" placement="bottom">
+	<div class="space-y-2 p-3">
 		<Toggle bind:checked={enabled} on:change={onChange}>{enabled ? $t('disable share') : $t('enable share')}</Toggle>
 		{#if share}
 			<Input value={url} readonly>
@@ -75,4 +92,4 @@
 			</Input>
 		{/if}
 	</div>
-</Popover>
+</Dropdown>

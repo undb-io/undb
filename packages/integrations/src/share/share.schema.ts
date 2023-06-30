@@ -24,6 +24,10 @@ export const createShareSchema = z.object({
 
 export type ICreateShareSchema = z.infer<typeof createShareSchema>
 
-export const updateShareSchema = z.object({}).partial()
+export const updateShareSchema = z
+  .object({
+    enabled: z.boolean(),
+  })
+  .partial()
 
 export type IUpdateShareSchema = z.infer<typeof updateShareSchema>
