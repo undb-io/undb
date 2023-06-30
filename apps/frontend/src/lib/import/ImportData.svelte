@@ -12,7 +12,7 @@
 		type IMutateRecordValueSchema,
 		createTableInput,
 	} from '@undb/core'
-	import { Accordion, Button, Checkbox, Modal, Spinner } from 'flowbite-svelte'
+	import { Accordion, Button, Checkbox, Input, Label, Modal, Spinner } from 'flowbite-svelte'
 	import { Dropzone } from 'flowbite-svelte'
 	import { unzip } from 'lodash-es'
 	import { parse, type SheetData } from './import.helper'
@@ -166,6 +166,8 @@
 		</Accordion>
 	{/if}
 
+	<Label for="import_data_name">{$t('name', { ns: 'common' })}</Label>
+	<Input disabled={!data} bind:value={$form.name} id="import_data_name" />
 	<Checkbox bind:checked={firstRowAsHeader}>{$t('first row as header')}</Checkbox>
 	<Checkbox bind:checked={importData}>{$t('import data')}</Checkbox>
 	{#if ext === 'json'}
