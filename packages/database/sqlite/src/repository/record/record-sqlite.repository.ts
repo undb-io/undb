@@ -121,7 +121,7 @@ export class RecordSqliteRepository implements IRecordRepository {
   async insertMany(table: CoreTable, records: CoreRecord[], schema: TableSchemaIdMap): Promise<void> {
     const userId = this.cls.get('user.userId')
 
-    await this.uow.begin()
+    // await this.uow.begin()
     const em = this.em
     try {
       await Promise.all(records.map((record) => this._insert(em, record, schema)))
@@ -135,9 +135,9 @@ export class RecordSqliteRepository implements IRecordRepository {
         )
         this.outboxService.persist(event)
       }
-      await this.uow.commit()
+      // await this.uow.commit()
     } catch (error) {
-      await this.uow.rollback()
+      // await this.uow.rollback()
       throw error
     }
   }
