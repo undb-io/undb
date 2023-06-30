@@ -51,7 +51,7 @@
 	{/if}
 </Button>
 <Portal target="body">
-	<Dropdown triggeredBy="#displayFieldIds" inline class="max-h-64 w-64 overflow-y-auto py-1 shadow-md z-[999999]">
+	<Dropdown triggeredBy="#displayFieldIds" inline class="max-h-64 w-[400px] overflow-y-auto py-1 shadow-md z-[999999]">
 		{#if !filteredFields.length}
 			<div class="px-3 py-2">
 				<slot name="empty" />

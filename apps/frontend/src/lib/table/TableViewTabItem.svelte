@@ -5,7 +5,7 @@
 	import ViewIcon from '$lib/view/ViewIcon.svelte'
 	import { Dropdown, DropdownDivider, DropdownItem } from 'flowbite-svelte'
 	import { trpc } from '$lib/trpc/client'
-	import { ViewVO, ViewName } from '@undb/core'
+	import { ViewVO, ViewName, type IExportType } from '@undb/core'
 	import { tick } from 'svelte'
 	import { goto, invalidate } from '$app/navigation'
 	import Portal from 'svelte-portal'
@@ -84,7 +84,7 @@
 		await tick()
 	}
 
-	const exportGrid = async (type: 'csv' | 'excel') => {
+	const exportGrid = async (type: IExportType) => {
 		const res = await fetch(`/api/record/export/grid/${$table.id.value}/${view.id.value}/${type}`)
 		open = false
 		const blob = await res.blob()
@@ -153,6 +153,10 @@
 				<DropdownItem on:click={() => exportGrid('excel')} class="text-xs font-normal inline-flex items-center gap-2">
 					<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
 					<span>{$t('Export Excel')}</span>
+				</DropdownItem>
+				<DropdownItem on:click={() => exportGrid('json')} class="text-xs font-normal inline-flex items-center gap-2">
+					<i class="ti ti-file-export text-gray-600" />
+					<span>{$t('Export Json')}</span>
 				</DropdownItem>
 				<DropdownItem
 					on:click={() => {

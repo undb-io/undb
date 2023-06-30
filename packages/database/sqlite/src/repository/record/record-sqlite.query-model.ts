@@ -29,6 +29,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
           'fields.averageAggregateField',
           'fields.lookupFields',
           'fields.foreignTable',
+          'views.widgets.visualization',
         ],
       },
     )

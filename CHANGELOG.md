@@ -1,11 +1,16 @@
-## v0.5.11
+## v0.5.14
 
+## v0.5.13
+
+## v0.5.12
+
+## v0.5.11
 
 ### 🩹 Fixes
 
-  - Fix ui ([bcc8bdf](https://github.com/undb-xyz/undb/commit/bcc8bdf))
+- Fix ui ([bcc8bdf](https://github.com/undb-xyz/undb/commit/bcc8bdf))
 
-### ❤️  Contributors
+### ❤️ Contributors
 
 - Nichenqin ([@nichenqin](http://github.com/nichenqin))
 
@@ -15,12 +20,11 @@
 
 ## v0.5.8
 
-
 ### 🩹 Fixes
 
-  - Fix field menu dropdown ([e44f098](https://github.com/undb-xyz/undb/commit/e44f098))
+- Fix field menu dropdown ([e44f098](https://github.com/undb-xyz/undb/commit/e44f098))
 
-### ❤️  Contributors
+### ❤️ Contributors
 
 - Nichenqin ([@nichenqin](http://github.com/nichenqin))
 
@@ -28,12 +32,11 @@
 
 ## v0.5.6
 
-
 ### 📖 Documentation
 
-  - Add contribution docs ([70322a2](https://github.com/undb-xyz/undb/commit/70322a2))
+- Add contribution docs ([70322a2](https://github.com/undb-xyz/undb/commit/70322a2))
 
-### ❤️  Contributors
+### ❤️ Contributors
 
 - Nichenqin ([@nichenqin](http://github.com/nichenqin))
 
@@ -47,12 +50,11 @@
 
 ## v0.5.1
 
-
 ### 🩹 Fixes
 
-  - Fix ci ([87abff4](https://github.com/undb-xyz/undb/commit/87abff4))
+- Fix ci ([87abff4](https://github.com/undb-xyz/undb/commit/87abff4))
 
-### ❤️  Contributors
+### ❤️ Contributors
 
 - Nichenqin ([@nichenqin](http://github.com/nichenqin))
 

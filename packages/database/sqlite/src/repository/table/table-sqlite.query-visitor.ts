@@ -30,7 +30,7 @@ import type {
   WithoutField,
   WithoutOption,
   WithoutView,
-  WithoutWidgeSpecification,
+  WithoutWidgetSpecification,
   WithRatingMax,
   WithReferenceFieldId,
   WithRowHeight,
@@ -50,8 +50,8 @@ import type {
   WithViewPinnedFields,
   WithViewsOrder,
   WithVisualizationNameSpec,
-  WithWidgeSepecification,
-  WithWidgesLayout,
+  WithWidgetSepecification,
+  WithWidgetsLayout,
 } from '@undb/core'
 import type { Table } from '../../entity/index.js'
 
@@ -60,7 +60,7 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   withDuplicatedField(s: WithDuplicatedField): void {
     throw new Error('Method not implemented.')
   }
-  withoutWidge(s: WithoutWidgeSpecification): void {
+  withoutWidget(s: WithoutWidgetSpecification): void {
     throw new Error('Method not implemented.')
   }
   withChartAggregate(s: WithChartAggregateSpec): void {
@@ -72,7 +72,7 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   withVisualizationName(s: WithVisualizationNameSpec): void {
     throw new Error('Method not implemented.')
   }
-  withWidgesLayout(s: WithWidgesLayout): void {
+  withWidgetsLayout(s: WithWidgetsLayout): void {
     throw new Error('Method not implemented.')
   }
   idEqual(s: WithTableId): void {
@@ -198,7 +198,7 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   currencySymbolEqual(s: WithCurrencySymbol): void {
     throw new Error('Method not implemented.')
   }
-  withWidge(s: WithWidgeSepecification): void {
+  withWidget(s: WithWidgetSepecification): void {
     throw new Error('Method not implemented.')
   }
   withAggregateFieldId(s: WithAggregateFieldId): void {

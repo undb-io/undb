@@ -1,10 +1,10 @@
 import {
-  CreateWidgeCommand,
-  DeleteWidgeCommand,
-  RelayoutWidgesCommand,
-  createWidgeCommandInput,
-  deleteWidgeCommandInput,
-  relayoutWidgesCommandInput,
+  CreateWidgetCommand,
+  DeleteWidgetCommand,
+  RelayoutWidgetsCommand,
+  createWidgetCommandInput,
+  deleteWidgetCommandInput,
+  relayoutWidgetsCommandInput,
 } from '@undb/cqrs'
 import type { ICommandBus } from '@undb/domain'
 import { z } from 'zod'
@@ -13,25 +13,25 @@ import { router } from '../trpc.js'
 
 export const createDashboardRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus) =>
   router({
-    createWidge: procedure
-      .input(createWidgeCommandInput)
+    createWidget: procedure
+      .input(createWidgetCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
-        const cmd = new CreateWidgeCommand(input)
+        const cmd = new CreateWidgetCommand(input)
         return commandBus.execute<void>(cmd)
       }),
-    deleteWidge: procedure
-      .input(deleteWidgeCommandInput)
+    deleteWidget: procedure
+      .input(deleteWidgetCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
-        const cmd = new DeleteWidgeCommand(input)
+        const cmd = new DeleteWidgetCommand(input)
         return commandBus.execute<void>(cmd)
       }),
-    relayoutWidges: procedure
-      .input(relayoutWidgesCommandInput)
+    relayoutWidgets: procedure
+      .input(relayoutWidgetsCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
-        const cmd = new RelayoutWidgesCommand(input)
+        const cmd = new RelayoutWidgetsCommand(input)
         return commandBus.execute<void>(cmd)
       }),
   })

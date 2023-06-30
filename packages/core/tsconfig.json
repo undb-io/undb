@@ -1,6 +1,6 @@
 {
   "extends": "tsconfig/lib.json",
-  "include": ["."],
+  "include": [".", ".eslintrc.cjs"],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
     "outDir": "./dist"

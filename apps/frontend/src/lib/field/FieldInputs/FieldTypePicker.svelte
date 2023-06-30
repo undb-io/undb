@@ -1,6 +1,6 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Button, Dropdown, Radio } from 'flowbite-svelte'
+	import { Button, Dropdown, DropdownItem, Radio } from 'flowbite-svelte'
 	import Portal from 'svelte-portal'
 	import FieldIcon from '../FieldIcon.svelte'
 	import { FIELD_SELECT_ITEMS } from '../types'
@@ -35,17 +35,19 @@
 			<Radio
 				value={type.value}
 				bind:group={value}
-				class={cx('px-3 py-2 hover:bg-gray-100 cursor-pointer', selected && 'bg-gray-100 dark:bg-gray-400 dark:hover:!text-gray-700')}
+				class={cx('px-3 py-2 hover:bg-gray-100 cursor-pointer w-full block', selected && 'bg-gray-100 dark:bg-gray-400 dark:hover:!text-gray-700')}
 				custom
-				on:change={() => (open = false)}
+				on:change={() => {
+					open = false
+				}}
 			>
 				<li
 					class={cx(
-						'w-full flex justify-between items-center text-gray-700 dark:text-gray-50 dark:hover:!text-gray-700',
+						'w-full p-2 flex justify-between items-center text-gray-700 hover:bg-gray-100 cursor-pointer dark:text-gray-50 dark:hover:!text-gray-700',
 						selected ? 'dark:text-gray-700' : '',
 					)}
 				>
-					<div class="flex flex-1 items-center gap-2">
+					<div class="flex flex-1 items-center gap-2 w-full">
 						<FieldIcon type={type.value} size={16} />
 						<span>
 							{$t(type.value)}

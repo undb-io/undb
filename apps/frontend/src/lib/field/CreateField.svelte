@@ -28,6 +28,7 @@
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			await $records.refetch()
+			await $createFieldModal.callback?.()
 			createFieldModal.close()
 		},
 	})

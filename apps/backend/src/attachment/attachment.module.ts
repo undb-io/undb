@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common'
-import { ConfigType } from '@nestjs/config'
+import type { ConfigType } from '@nestjs/config'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { objectStorageConfig } from '../configs/object-storage.config.js'
 import { StorageModule } from '../storage/storage.module.js'

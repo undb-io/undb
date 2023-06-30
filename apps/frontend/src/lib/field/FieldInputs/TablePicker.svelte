@@ -21,7 +21,7 @@
 		<span class="text-gray-400">{$t('Select Table')}</span>
 	{/if}
 </Button>
-<Dropdown bind:open>
+<Dropdown bind:open class="z-[99999] w-96">
 	{#each tables as table (table.id)}
 		<Radio
 			value={table.id}
@@ -30,7 +30,7 @@
 			custom
 			on:change={() => (open = false)}
 		>
-			<div class="inline-flex gap-2">
+			<li class="w-full p-2 inline-flex gap-2 hover:bg-gray-100 cursor-pointer">
 				<span
 					class={cx(
 						'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
@@ -41,7 +41,7 @@
 				</span>
 
 				{table.name}
-			</div>
+			</li>
 			{#if selected?.id === table.id}
 				<i class="ti ti-check text-sm" />
 			{/if}

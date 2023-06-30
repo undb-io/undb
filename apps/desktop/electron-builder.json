@@ -1,0 +1,31 @@
+{
+  "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
+  "appId": "YourAppID",
+  "asar": true,
+  "extraResources": ["out"],
+  "directories": {
+    "buildResources": "resources",
+    "output": "release/app"
+  },
+  "files": ["dist-electron", "dist", "package.json", "resources/**/*"],
+  "mac": {
+    "artifactName": "${productName}.${ext}",
+    "icon": "resources/icon.png",
+    "target": ["dmg"]
+  },
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      }
+    ],
+    "artifactName": "${productName}.${ext}"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "deleteAppDataOnUninstall": false
+  }
+}

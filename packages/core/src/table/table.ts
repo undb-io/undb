@@ -30,11 +30,11 @@ import type { TableEmoji } from './value-objects/table-emoji.vo.js'
 import type { TableName } from './value-objects/table-name.vo.js'
 import type {
   ICreateViewSchema,
-  ICreateWidgeSchema,
+  ICreateWidgetSchema,
   IMoveFieldSchema,
   IMoveViewSchema,
   IQueryView,
-  IRelayoutWidgeSchema,
+  IRelayoutWidgetSchema,
   ISetCalendarFieldSchema,
   ISetFieldVisibilitySchema,
   ISetFieldWidthSchema,
@@ -354,19 +354,19 @@ export class Table {
     return spec
   }
 
-  public createWidge(viewId: string, input: ICreateWidgeSchema): TableCompositeSpecificaiton {
+  public createWidget(viewId: string, input: ICreateWidgetSchema): TableCompositeSpecificaiton {
     const view = this.mustGetView(viewId)
 
-    const spec = view.createWidge(input)
+    const spec = view.createWidget(input)
     spec.mutate(this)
 
     return spec
   }
 
-  public deleteWidge(viewId: string, widgeId: string): TableCompositeSpecificaiton {
+  public deleteWidget(viewId: string, widgetId: string): TableCompositeSpecificaiton {
     const view = this.mustGetView(viewId)
 
-    const spec = view.deleteWidge(widgeId)
+    const spec = view.deleteWidget(widgetId)
     spec.mutate(this)
 
     return spec
@@ -515,10 +515,10 @@ export class Table {
     return spec
   }
 
-  public relayoutWidges(viewId: string, widges: IRelayoutWidgeSchema[]): TableCompositeSpecificaiton {
+  public relayoutWidgets(viewId: string, widgets: IRelayoutWidgetSchema[]): TableCompositeSpecificaiton {
     const view = this.mustGetView(viewId)
 
-    const spec = view.relayoutWidges(widges)
+    const spec = view.relayoutWidgets(widgets)
     spec.mutate(this)
 
     return spec

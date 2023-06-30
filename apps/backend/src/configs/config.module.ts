@@ -1,4 +1,5 @@
-import { DynamicModule, Module } from '@nestjs/common'
+import type { DynamicModule } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { ConfigService, ConfigModule as NestConfigModule } from '@nestjs/config'
 import { BaseConfigService } from './base-config.service.js'
 import { configSchema } from './env.validate.js'

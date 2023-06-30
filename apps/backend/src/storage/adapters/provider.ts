@@ -1,5 +1,6 @@
-import { Inject, Provider } from '@nestjs/common'
-import { ConfigType } from '@nestjs/config'
+import type { Provider } from '@nestjs/common'
+import { Inject } from '@nestjs/common'
+import type { ConfigType } from '@nestjs/config'
 import { objectStorageConfig } from '../../configs/object-storage.config.js'
 import { LocalObjectStorage } from './local-object-storage.js'
 import { S3ObjectStorage } from './s3-object-storage.js'

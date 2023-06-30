@@ -12,7 +12,7 @@ RUN tar -C /usr/local/bin -xzf /tmp/litestream.tar.gz
 # installer
 FROM node:20.2.0 AS installer
 
-RUN npm install -g pnpm@8.6.2
+RUN npm install -g pnpm@8.6.4
 
 WORKDIR /undb
 

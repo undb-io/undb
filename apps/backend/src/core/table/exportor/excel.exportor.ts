@@ -1,6 +1,12 @@
+import { Inject, Injectable } from '@nestjs/common'
+import type { IRecordExportor } from '@undb/core'
+import { type Records, type Table } from '@undb/core'
 import * as XLSX from 'xlsx'
-import { IRecordExportor, type Records, type Table } from '@undb/core'
 
+export const RECORD_EXCEL_EXPORTOR = Symbol('RECORD_EXCEL_EXPORTOR')
+export const InjectRecordExcelExportor = () => Inject(RECORD_EXCEL_EXPORTOR)
+
+@Injectable()
 export class ExcelExportor implements IRecordExportor {
   export(table: Table, viewId: string, data: Records): Buffer {
     const values = data.map((record) => record.toHuman(table, viewId, record.displayValues?.values))

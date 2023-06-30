@@ -1,5 +1,5 @@
 import { proxyActivities } from '@temporalio/workflow'
-import { IWebhookMethod } from '@undb/integrations'
+import type { IWebhookMethod } from '@undb/integrations'
 import type * as activities from '../activities/index.js'
 
 const { executeWebhook } = proxyActivities<typeof activities>({

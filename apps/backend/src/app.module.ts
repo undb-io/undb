@@ -2,10 +2,11 @@ import { MikroORM } from '@mikro-orm/core'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import type { OnModuleInit } from '@nestjs/common'
 import { Logger, Module } from '@nestjs/common'
-import type { ConfigType } from '@nestjs/config'
+import { type ConfigType } from '@nestjs/config'
 import { ServeStaticModule } from '@nestjs/serve-static'
-import { EntityManager, createConfig } from '@undb/sqlite'
-import { Request } from 'express'
+import type { EntityManager } from '@undb/sqlite'
+import { createConfig } from '@undb/sqlite'
+import type { Request } from 'express'
 import { ClsModule } from 'nestjs-cls'
 import { LoggerModule } from 'nestjs-pino'
 import path from 'path'
@@ -52,7 +53,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
       inject: [sqliteConfig.KEY],
     }),
     ServeStaticModule.forRoot({
-      rootPath: path.resolve(process.cwd(), './out'),
+      rootPath: process.env.UNDB_FRONTEND_OUT_DIR || path.resolve(process.cwd(), './out'),
     }),
     ...coreModules,
     AttachmentModule,

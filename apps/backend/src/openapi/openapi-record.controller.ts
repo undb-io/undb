@@ -1,17 +1,5 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  MessageEvent,
-  Param,
-  Patch,
-  Post,
-  Query,
-  Sse,
-  UseGuards,
-  Version,
-} from '@nestjs/common'
+import type { MessageEvent } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Sse, UseGuards, Version } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import {
   BulkDeleteRecordsCommand,
@@ -21,7 +9,7 @@ import {
   GetRecordQuery,
   GetRecordsQuery,
 } from '@undb/cqrs'
-import type { IOpenAPIMutateRecordSchema } from '@undb/openapi'
+import { type IOpenAPIMutateRecordSchema } from '@undb/openapi'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { Observable, map, tap } from 'rxjs'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'

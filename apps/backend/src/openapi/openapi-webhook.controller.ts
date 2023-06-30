@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, Version } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { DeleteWebhookCommand, GetWebhooksQuery } from '@undb/cqrs'
-import type { IOpenAPICreateWebhook, IOpenAPIUpdateWebhook } from '@undb/openapi'
+import { type IOpenAPICreateWebhook, type IOpenAPIUpdateWebhook } from '@undb/openapi'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'
 import { OpenAPIWebhookService } from './openapi-webhook.service.js'
 

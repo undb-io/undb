@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import { Readable } from 'stream'
-import type { IObjectStorage } from '../storage/adapters/object-storage.js'
+import type { Readable } from 'stream'
+import { type IObjectStorage } from '../storage/adapters/object-storage.js'
 import { InjectObjectStorage } from '../storage/adapters/provider.js'
 
 @Injectable()

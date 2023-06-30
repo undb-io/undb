@@ -5,13 +5,15 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3'
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
-import type { ConfigType } from '@nestjs/config'
+import type { OnModuleInit } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
+import { type ConfigType } from '@nestjs/config'
 import { InjectAws } from 'aws-sdk-v3-nest'
-import { Readable } from 'stream'
+import type { Readable } from 'stream'
 import { v4 } from 'uuid'
-import { InjectObjectStorageConfig, objectStorageConfig } from '../../configs/object-storage.config.js'
-import { IObjectStorage } from './object-storage.js'
+import type { objectStorageConfig } from '../../configs/object-storage.config.js'
+import { InjectObjectStorageConfig } from '../../configs/object-storage.config.js'
+import type { IObjectStorage } from './object-storage.js'
 
 @Injectable()
 export class S3ObjectStorage implements IObjectStorage, OnModuleInit {
@@ -19,6 +21,7 @@ export class S3ObjectStorage implements IObjectStorage, OnModuleInit {
 
   constructor(
     @InjectObjectStorageConfig() private readonly config: ConfigType<typeof objectStorageConfig>,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     @InjectAws(S3Client) readonly s3: S3Client,
   ) {}

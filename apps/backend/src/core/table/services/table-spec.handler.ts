@@ -1,5 +1,6 @@
-import { Provider } from '@nestjs/common'
-import { ITableRepository, TableSpecHandler } from '@undb/core'
+import type { Provider } from '@nestjs/common'
+import type { ITableRepository } from '@undb/core'
+import { TableSpecHandler } from '@undb/core'
 import { TABLE_REPOSITORY } from '../adapters/index.js'
 
 export const tableSpecHandler: Provider = {

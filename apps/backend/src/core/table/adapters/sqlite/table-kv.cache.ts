@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { TableCache } from '@undb/cache'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
-import type { Storage } from 'unstorage'
+import { type Storage } from 'unstorage'
 
 export const STORAGE = Symbol('STORAGE')
 export const InjectStorage = () => Inject(STORAGE)

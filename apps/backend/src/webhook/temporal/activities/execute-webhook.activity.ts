@@ -1,4 +1,4 @@
-import { IWebhookMethod } from '@undb/integrations'
+import type { IWebhookMethod } from '@undb/integrations'
 import got from 'got'
 
 type ExecuteWebhookArgs = {

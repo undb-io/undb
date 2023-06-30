@@ -28,7 +28,9 @@ export class TableSqliteMapper {
             pinnedFields: view.pinnedFields,
             rowHeight: view.rowHeight,
             dashboard: {
-              widges: view.widges.isInitialized() ? view.widges.getItems(false).map((widge) => widge.toQuery()) : [],
+              widgets: view.widgets.isInitialized()
+                ? view.widgets.getItems(false).map((widget) => widget.toQuery())
+                : [],
             },
           } as IQueryView),
       ),
@@ -57,7 +59,9 @@ export class TableSqliteMapper {
             pinnedFields: view.pinnedFields,
             rowHeight: view.rowHeight,
             dashboard: {
-              widges: view.widges.isInitialized() ? view.widges.getItems(false).map((widge) => widge.toQuery()) : [],
+              widgets: view.widgets.isInitialized()
+                ? view.widgets.getItems(false).map((widget) => widget.toQuery())
+                : [],
             },
           })) as ICreateViewsSchema)
         : [],

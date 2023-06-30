@@ -1,11 +1,11 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import * as trpcExpress from '@trpc/server/adapters/express'
-import { AppRouter } from '@undb/trpc'
+import type { AppRouter } from '@undb/trpc'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
-import { Request } from 'express'
+import type { Request } from 'express'
 import helmet from 'helmet'
-import { i18n } from 'i18next'
+import type { i18n } from 'i18next'
 import { ClsMiddleware, ClsService } from 'nestjs-cls'
 import { Logger } from 'nestjs-pino'
 import passport from 'passport'
@@ -18,10 +18,12 @@ import { I18NEXT } from './i18n/i18next.provider.js'
 import { AppRouterSymbol } from './trpc/providers/app-router.js'
 import { TRPC_ENDPOINT } from './trpc/trpc.constants.js'
 
-async function bootstrap() {
+export async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
   })
+
+  const port = parseInt(process.env.UNDB_BACKEND_PORT ?? '4000', 10)
 
   const logger = app.get(Logger)
   app.useLogger(logger)
@@ -66,6 +68,17 @@ async function bootstrap() {
     )
     .use(compression())
 
-  await app.listen(4000, '0.0.0.0')
+  await app.listen(port, '0.0.0.0')
+
+  logger.log(`Undb started at port ${port}`)
+
+  process.on('uncaughtException', (error) => {
+    logger.error(error)
+  })
+
+  return app
 }
-bootstrap()
+
+if (process.env.APP_ENV !== 'desktop') {
+  bootstrap()
+}

@@ -16,6 +16,7 @@ import { identity } from 'lodash-es'
 import { mock, mockDeep } from 'vitest-mock-extended'
 import { Field, Table } from '../../entity/index.js'
 import { View } from '../../entity/view.js'
+import { SqliteUnitOfWork } from '../../sqlite.uow.js'
 import { AdjacencyListTable } from '../../underlying-table/underlying-foreign-table.js'
 import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor.js'
 import { TableSqliteRepository } from './table-sqlite.repository.js'
@@ -36,10 +37,11 @@ describe('TableSqliteMutationVisitor', () => {
   beforeEach(async () => {
     table = createTestTable()
     em = em.fork()
+    const uow = new SqliteUnitOfWork(em)
     mv = new TableSqliteMutationVisitor(table.id.value, em)
 
     const cache = mock<ITableCache>()
-    repo = new TableSqliteRepository(em, cache)
+    repo = new TableSqliteRepository(uow, cache)
 
     await em.nativeDelete(Table, {})
     await repo.insert(table)

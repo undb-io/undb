@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { type ConfigType } from '@nestjs/config'
+import type { IQueryUser, User, UserSpecification } from '@undb/core'
 import {
-  IQueryUser,
-  User,
   UserFactory,
-  UserSpecification,
   WithUserColor,
   WithUserEmail,
   WithUserId,
@@ -14,7 +12,8 @@ import {
   type IUserRepository,
 } from '@undb/core'
 import bcrypt from 'bcrypt'
-import { InjectAuthConfig, authConfig } from '../../configs/auth.config.js'
+import type { authConfig } from '../../configs/auth.config.js'
+import { InjectAuthConfig } from '../../configs/auth.config.js'
 import { InjectUserQueryModel, InjectUserRepository } from './adapters/index.js'
 
 @Injectable()

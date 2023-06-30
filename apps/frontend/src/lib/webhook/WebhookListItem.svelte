@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
-	import { selectedWebhook, webhookDrawerMode } from '$lib/store/drawer'
+	import { selectedWebhook } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import type { IQueryWebhook } from '@undb/integrations/dist'
+	import type { IQueryWebhook } from '@undb/integrations'
 	import { Badge, Card, P } from 'flowbite-svelte'
 
 	export let webhook: IQueryWebhook

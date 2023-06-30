@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { IEvent } from '@undb/domain'
-import { Webhook, type IWebhookSignService } from '@undb/integrations'
+import type { IEvent } from '@undb/domain'
+import type { Webhook } from '@undb/integrations'
+import { type IWebhookSignService } from '@undb/integrations'
 import crypto from 'crypto'
 import { InjectWebhookConfig, type WebhookConfigType } from '../configs/webhook.config.js'
 

@@ -1,51 +1,53 @@
 {
   "name": "undb",
-  "version": "0.5.11",
+  "version": "0.5.14",
   "devDependencies": {
-    "@commitlint/cli": "^17.6.5",
-    "@commitlint/config-conventional": "^17.6.5",
+    "@commitlint/cli": "^17.6.6",
+    "@commitlint/config-conventional": "^17.6.6",
     "@types/node": "^20.3.1",
     "@undb/eslint-config": "^0.0.0",
-    "better-sqlite3": "^8.4.0",
     "chalk": "^5.2.0",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "dotenv-cli": "^7.2.1",
-    "esno": "^0.16.3",
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8",
-    "taze": "^0.10.2",
-    "turbo": "^1.10.3",
+    "rimraf": "^5.0.1",
+    "taze": "^0.11.0",
+    "turbo": "^1.10.6",
     "typescript": "^5.1.3",
     "zx": "^7.2.2"
   },
   "engines": {
+    "pnpm": ">=8.6.4",
     "node": ">=20.0.0"
   },
   "lint-staged": {
     "*.{ts,tsx,md}": "prettier --write"
   },
-  "packageManager": "pnpm@8.6.2",
+  "packageManager": "pnpm@8.6.4",
   "private": true,
   "scripts": {
     "bootstrap": "pnpm install && pnpm run build",
     "build": "turbo run build",
     "build:image": "zx scripts/build-image.mjs",
+    "build:desktop": "zx scripts/desktop/build.mjs",
     "clean": "turbo run clean --parallel",
     "commit": "cz",
     "db:migration:create": "turbo run db:migration:create",
     "db:schema:fresh": "turbo run db:schema:fresh",
     "db:schema:update": "turbo run db:schema:update",
-    "dev": "FORCE_COLOR=1 TZ=UTC dotenv -- turbo run dev --parallel --concurrency=12",
+    "dev": "FORCE_COLOR=1 TZ=UTC dotenv -- turbo run dev --parallel --concurrency=12 --filter=!@undb/desktop",
+    "dev:desktop": "FORCE_COLOR=1 TZ=UTC dotenv -- turbo run dev --parallel --concurrency=12",
     "dev:packages": "FORCE_COLOR=1 turbo run dev --parallel --filter=./packages/*",
     "docker:minio": "docker compose -f ./docker/docker-compose.minio.yaml up -d",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "preinstall": "npx only-allow pnpm",
-    "prepare": "husky install",
+    "prepare": "husky install || echo 1",
     "test": "FORCE_COLOR=1 TZ=UTC turbo run test",
     "test:watch": "FORCE_COLOR=1 TZ=UTC turbo run test:watch",
-    "seed": "esno scripts/seed.mjs",
+    "db:seed": "zx scripts/seed.mjs",
     "up": "taze major -r -w -i"
   },
   "workspaces": [
@@ -54,6 +56,7 @@
     "packages/database/*"
   ],
   "dependencies": {
+    "better-sqlite3": "^8.4.0",
     "husky": "^8.0.3"
   }
 }
