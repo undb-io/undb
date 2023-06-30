@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getTable, recordHash } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { RecordFactory, type IQueryTreeRecord, type TreeField, Record } from '@undb/core'
+	import { RecordFactory, type IQueryTreeRecord, type TreeField } from '@undb/core'
 	import type { TreeRecord } from './tree-view.type'
 	import TreeItem from './TreeItem.svelte'
 

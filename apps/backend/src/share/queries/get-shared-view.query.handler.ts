@@ -3,9 +3,8 @@ import { QueryHandler } from '@nestjs/cqrs'
 import { type ITableQueryModel } from '@undb/core'
 import type { IGetSharedViewOutput } from '@undb/cqrs'
 import { GetSharedViewQuery, GetSharedViewQueryHandler } from '@undb/cqrs'
-import { type IShareRepository } from '@undb/integrations'
 import { InjectTableQueryModel } from '../../core/table/adapters/index.js'
-import { InjectShareRepository } from '../adapters/share-sqlite.repository.js'
+import { NestShareGuardService } from '../services/share-guard.service.js'
 
 @QueryHandler(GetSharedViewQuery)
 export class NestGetSharedViewQueryHandler
@@ -13,11 +12,10 @@ export class NestGetSharedViewQueryHandler
   implements IQueryHandler<GetSharedViewQuery, IGetSharedViewOutput>
 {
   constructor(
-    @InjectShareRepository()
-    protected readonly shareRepo: IShareRepository,
+    guard: NestShareGuardService,
     @InjectTableQueryModel()
     protected readonly tableQueryModel: ITableQueryModel,
   ) {
-    super(shareRepo, tableQueryModel)
+    super(guard, tableQueryModel)
   }
 }

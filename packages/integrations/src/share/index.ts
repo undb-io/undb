@@ -1,3 +1,4 @@
+export * from './services/index.js'
 export * from './share-id.vo.js'
 export * from './share-target.vo.js'
 export * from './share.factory.js'

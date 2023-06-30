@@ -1,5 +1,5 @@
-import { ShareId } from './share-id.vo.js'
-import { ShareTarget } from './share-target.vo.js'
+import type { ShareId } from './share-id.vo.js'
+import type { ShareTarget } from './share-target.vo.js'
 
 export class Share {
   id!: ShareId
