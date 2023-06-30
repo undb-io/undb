@@ -3,7 +3,7 @@
 	import { t } from '$lib/i18n'
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { Button, Dropdown, Input, Toggle } from 'flowbite-svelte'
+	import { Button, Dropdown, Heading, Input, Toggle } from 'flowbite-svelte'
 	import { copyText } from 'svelte-copy'
 
 	const table = getTable()
@@ -34,6 +34,13 @@
 	$: share = $getViewShare.data?.share ?? null
 
 	$: url = $page.url.origin + '/s/v/' + $view.id.value
+	$: iframe = `<iframe
+  src="${url}"
+  frameborder="0"
+  width="100%"
+  height="700"
+  style="background: transparent; border: 1px solid #ddd"></iframe>
+	`
 
 	let copied = false
 
@@ -42,6 +49,15 @@
 		copied = true
 		setTimeout(() => {
 			copied = false
+		}, 2000)
+	}
+
+	let iframeCopied = false
+	const copyIFrame = () => {
+		copyText(iframe)
+		iframeCopied = true
+		setTimeout(() => {
+			iframeCopied = false
 		}, 2000)
 	}
 
@@ -91,5 +107,17 @@
 				</svelte:fragment>
 			</Input>
 		{/if}
+		<Heading tag="h6">Embed</Heading>
+		<Input value={iframe} readonly>
+			<svelte:fragment slot="right">
+				{#if iframeCopied}
+					<i class="ti ti-check text-green-500" />
+				{:else}
+					<div class="flex items-center gap-2">
+						<i class="ti ti-copy cursor-pointer" on:click={copyIFrame} />
+					</div>
+				{/if}
+			</svelte:fragment>
+		</Input>
 	</div>
 </Dropdown>
