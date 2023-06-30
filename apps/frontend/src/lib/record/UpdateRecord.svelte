@@ -123,7 +123,12 @@
 						</Label>
 					</div>
 					<div class="col-span-4">
-						<CellInput record={$record} {field} bind:value={$form[field.id.value]} readonly={$readonly} />
+						<CellInput
+							record={$record}
+							{field}
+							bind:value={$form[field.id.value]}
+							readonly={$readonly ? true : undefined}
+						/>
 					</div>
 				{/each}
 			</div>
