@@ -2,6 +2,7 @@ import { page } from '$app/stores'
 import { trpc } from '$lib/trpc/client'
 import type { CreateQueryResult } from '@tanstack/svelte-query'
 import {
+	NumberVisualization,
 	TableFactory,
 	TreeField,
 	type ICreateTableSchemaInput,
@@ -265,6 +266,33 @@ export const listTreeRecordsFn: Readable<
 			() => (field: TreeField, options?: ListRecordQueryOptions) =>
 				trpc().share.viewTreeRecords.query(
 					{ viewId: $view.id.value, fieldId: field.id.value },
+					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash, ...options },
+				),
+		)
+		.exhaustive()
+})
+
+export const aggregateNumberFn: Readable<
+	(visualization: NumberVisualization, options?: ListRecordQueryOptions) => CreateQueryResult<{ number: number }>
+> = derived([listRecordsType, currentTable, currentView, recordHash], ([$type, $table, $view, $recordHash]) => {
+	return match($type)
+		.with(
+			'internal',
+			() => (visualization: NumberVisualization, options?: ListRecordQueryOptions) =>
+				trpc().table.aggregate.aggregateNumber.query(
+					{
+						tableId: $table.id.value,
+						viewId: $view.id.value,
+						visualizationId: visualization.id.value,
+					},
+					options,
+				),
+		)
+		.with(
+			'share.view',
+			() => (visualization: NumberVisualization, options?: ListRecordQueryOptions) =>
+				trpc().share.viewAggregateNumber.query(
+					{ viewId: $view.id.value, visualizationId: visualization.id.value },
 					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash, ...options },
 				),
 		)
