@@ -3,11 +3,13 @@ import { trpc } from '$lib/trpc/client'
 import type { CreateQueryResult } from '@tanstack/svelte-query'
 import {
 	TableFactory,
+	TreeField,
 	type ICreateTableSchemaInput,
 	type IFilters,
 	type IQueryFieldSchema,
 	type IQueryRecordSchema,
 	type IQueryTable,
+	type IQueryTreeRecords,
 	type IReferenceFieldQuerySchema,
 	type IRootFilter,
 	type IUpdateTableSchemaSchema,
@@ -234,6 +236,35 @@ export const listRecordFn: Readable<
 			() => (filter?: IRootFilter, options?: ListRecordQueryOptions) =>
 				trpc().share.viewRecords.query(
 					{ viewId: $view.id.value },
+					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash, ...options },
+				),
+		)
+		.exhaustive()
+})
+
+export const listTreeRecordsFn: Readable<
+	(field: TreeField, options?: ListRecordQueryOptions) => CreateQueryResult<{ records: IQueryTreeRecords }>
+> = derived([listRecordsType, currentTable, currentView, recordHash], ([$type, $table, $view, $recordHash]) => {
+	return match($type)
+		.with(
+			'internal',
+			() => (field: TreeField, options?: ListRecordQueryOptions) =>
+				trpc().record.tree.list.query(
+					{
+						tableId: $table.id.value,
+						fieldId: field.id.value,
+					},
+					{
+						queryHash: $recordHash + 'tree',
+						...options,
+					},
+				),
+		)
+		.with(
+			'share.view',
+			() => (field: TreeField, options?: ListRecordQueryOptions) =>
+				trpc().share.viewTreeRecords.query(
+					{ viewId: $view.id.value, fieldId: field.id.value },
 					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash, ...options },
 				),
 		)

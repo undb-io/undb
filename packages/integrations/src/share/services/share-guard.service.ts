@@ -12,7 +12,7 @@ export class ShareGuardService implements IShareGuardService {
 
   async verify(spec: ShareSpecification): Promise<Share> {
     const share = await this.repo.findOne(spec)
-    if (!share.isNone()) throw new NotFoundShare()
+    if (share.isNone()) throw new NotFoundShare()
 
     return share.unwrap()
   }

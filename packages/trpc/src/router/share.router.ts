@@ -1,15 +1,22 @@
-import type { IGetShareViewRecordOutput, IGetShareViewRecordsOutput, IGetSharedViewOutput } from '@undb/cqrs'
+import type {
+  IGetShareViewRecordOutput,
+  IGetShareViewRecordsOutput,
+  IGetShareViewTreeRecordsOutput,
+  IGetSharedViewOutput,
+} from '@undb/cqrs'
 import {
   CreateShareCommand,
   GetShareQuery,
   GetShareViewRecordQuery,
   GetShareViewRecordsQuery,
+  GetShareViewTreeRecordsQuery,
   GetSharedViewQuery,
   createShareCommandInput,
   getShareQueryInput,
   getShareQueryOutput,
   getShareViewRecordQueryInput,
   getShareViewRecordsQueryInput,
+  getShareViewTreeRecordsQueryInput,
   getSharedViewQueryInput,
 } from '@undb/cqrs'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
@@ -39,6 +46,13 @@ export const createShareRouter =
         .output(z.any())
         .query<IGetShareViewRecordsOutput>(({ input }) => {
           const query = new GetShareViewRecordsQuery(input)
+          return queryBus.execute(query)
+        }),
+      viewTreeRecords: procedure
+        .input(getShareViewTreeRecordsQueryInput)
+        .output(z.any())
+        .query<IGetShareViewTreeRecordsOutput>(({ input }) => {
+          const query = new GetShareViewTreeRecordsQuery(input)
           return queryBus.execute(query)
         }),
       get: procedure
