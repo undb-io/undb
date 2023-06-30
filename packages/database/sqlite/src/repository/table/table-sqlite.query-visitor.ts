@@ -42,6 +42,7 @@ import type {
   WithTableName,
   WithTableSchema,
   WithTableView,
+  WithTableViewId,
   WithTableViews,
   WithTimeFormat,
   WithTreeViewField,
@@ -76,10 +77,13 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   idEqual(s: WithTableId): void {
-    this.qb.where({ id: s.id.value })
+    this.qb.andWhere({ id: s.id.value })
   }
   nameEqual(s: WithTableName): void {
-    this.qb.where({ name: s.name.value })
+    this.qb.andWhere({ name: s.name.value })
+  }
+  viewIdEqual(s: WithTableViewId): void {
+    this.qb.andWhere({ views: s.viewId.value })
   }
   emojiEqual(s: WithTableEmoji): void {
     throw new Error('Method not implemented.')

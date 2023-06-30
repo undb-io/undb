@@ -58,6 +58,7 @@ import type {
   WithTableId,
   WithTableName,
   WithTableSchema,
+  WithTableViewId,
 } from '../specifications/index.js'
 import type {
   WithoutWidgetSpecification,
@@ -89,6 +90,7 @@ import type {
 import type { WithNumberAggregateSpec } from '../visualization/specifications/number-visualization.specification.js'
 
 export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVisitor, IFieldVisitor {
+  viewIdEqual(s: WithTableViewId): void {}
   withoutWidget(s: WithoutWidgetSpecification): void {}
   withChartAggregate(s: WithChartAggregateSpec): void {}
   withNumberAggregate(s: WithNumberAggregateSpec): void {}

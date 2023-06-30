@@ -20,7 +20,9 @@
 </script>
 
 {#if field}
-	<svelte:component this={map[field.type]} {field} />
+	<div class="h-full">
+		<svelte:component this={map[field.type]} {field} />
+	</div>
 {:else}
 	<div class="flex items-center justify-center h-screen w-full bg-gray-100">
 		<Card class="flex-1">

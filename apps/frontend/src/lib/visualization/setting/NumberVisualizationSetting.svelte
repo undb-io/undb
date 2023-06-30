@@ -3,16 +3,16 @@
 	import { Alert, Button, Radio, Toast } from 'flowbite-svelte'
 	import type { NumberVisualization as CoreNumberVisualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
-	import { allTableFields, getTable, getView } from '$lib/store/table'
+	import { allTableFields, getTable } from '$lib/store/table'
 	import NumberAggregatePicker from '../input/NumberAggregatePicker.svelte'
 	import { t } from '$lib/i18n'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import { tick } from 'svelte'
 	import { slide } from 'svelte/transition'
+	import { aggregateNumberFn } from '$lib/store/table'
 
 	const table = getTable()
-	const view = getView()
 
 	export let visualization: CoreNumberVisualization
 
@@ -21,16 +21,7 @@
 	let fieldId = visualization.fieldId?.value
 	let numberAggregateFunction = visualization.numberAggregateFunction
 
-	const aggregateNumber = trpc().table.aggregate.aggregateNumber.query(
-		{
-			tableId: $table.id.value,
-			viewId: $view.id.value,
-			visualizationId: visualization.id.value,
-		},
-		{
-			enabled: false,
-		},
-	)
+	const aggregateNumber = $aggregateNumberFn(visualization, { enabled: false })
 
 	const updateVisualization = trpc().table.visualization.update.mutation({
 		async onSuccess(data, variables, context) {

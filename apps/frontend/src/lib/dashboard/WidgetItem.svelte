@@ -1,6 +1,7 @@
 <script lang="ts">
+	import cx from 'classnames'
 	import { invalidate } from '$app/navigation'
-	import { currentVisualizationId, getTable, getView } from '$lib/store/table'
+	import { currentVisualizationId, getTable, getView, readonly } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import Visualization from '$lib/visualization/Visualization.svelte'
 	import { Dropdown, DropdownDivider, DropdownItem } from 'flowbite-svelte'
@@ -14,8 +15,8 @@
 	const view = getView()
 
 	export let dataItem: WidgetDataItem
-	export let movePointerDown: (e: Event) => void
-	export let resizePointerDown: (e: Event) => void
+	export let movePointerDown: ((e: Event) => void) | undefined = undefined
+	export let resizePointerDown: ((e: Event) => void) | undefined = undefined
 
 	export let updating = false
 
@@ -72,15 +73,22 @@
 	}
 </script>
 
-<div class="group flex flex-col bg-white !opacity-100 border rounded-md w-full h-full hover:border-blue-600 transition">
+<div
+	class={cx(
+		'group flex flex-col bg-white !opacity-100 border rounded-md w-full h-full',
+		!$readonly && 'hover:border-blue-600 transition',
+	)}
+>
 	<div class="flex justify-between items-center gap-1 border-b border-gray-200 p-3 grow-0 h-10">
 		<div class="flex items-center gap-1">
-			<i
-				on:pointerdown={movePointerDown}
-				class=" opacity-0 group-hover:opacity-100 group-hover:block text-gray-500 ti ti-grip-vertical cursor-grab"
-			/>
+			{#if movePointerDown}
+				<i
+					on:pointerdown={movePointerDown}
+					class=" opacity-0 group-hover:opacity-100 group-hover:block text-gray-500 ti ti-grip-vertical cursor-grab"
+				/>
+			{/if}
 			{#if dataItem.widget?.visualization}
-				{#if updating}
+				{#if updating && !$readonly}
 					<input
 						class="p-0 rounded-sm active:outline-gray-200"
 						type="text"
@@ -96,60 +104,64 @@
 				{/if}
 			{/if}
 		</div>
-		<div class="items-center gap-2 hidden group-hover:flex">
-			<button
-				class="hover:bg-slate-100 w-6 h-6"
-				on:click={() => {
-					visualizationModal.open()
-					$currentVisualizationId = dataItem.widget?.visualization?.id.value
-				}}
-			>
-				<i class="text-gray-400 ti ti-arrows-diagonal" />
-			</button>
-			<button class="hover:bg-slate-100 w-6 h-6">
-				<i class="text-gray-400 ti ti-dots" />
-			</button>
-			<Dropdown>
-				<DropdownItem
-					class="text-gray-600 text-xs gap-2 flex items-center"
+		{#if !$readonly}
+			<div class="items-center gap-2 hidden group-hover:flex">
+				<button
+					class="hover:bg-slate-100 w-6 h-6"
 					on:click={() => {
 						visualizationModal.open()
 						$currentVisualizationId = dataItem.widget?.visualization?.id.value
 					}}
 				>
 					<i class="text-gray-400 ti ti-arrows-diagonal" />
-					<span>
-						{$t('full screen', { ns: 'common' })}
-					</span>
-				</DropdownItem>
-				<DropdownDivider />
-				<DropdownItem
-					class="text-xs text-red-400 gap-2 flex items-center"
-					on:click={() => {
-						if (dataItem.widget) {
-							$deleteWidget.mutate({
-								tableId: $table.id.value,
-								viewId: $view.id.value,
-								widgetId: dataItem.widget.id.value,
-							})
-						}
-					}}
-				>
-					<i class="ti ti-trash" />
-					<span>
-						{$t('delete widget')}
-					</span>
-				</DropdownItem>
-			</Dropdown>
-		</div>
+				</button>
+				<button class="hover:bg-slate-100 w-6 h-6">
+					<i class="text-gray-400 ti ti-dots" />
+				</button>
+				<Dropdown>
+					<DropdownItem
+						class="text-gray-600 text-xs gap-2 flex items-center"
+						on:click={() => {
+							visualizationModal.open()
+							$currentVisualizationId = dataItem.widget?.visualization?.id.value
+						}}
+					>
+						<i class="text-gray-400 ti ti-arrows-diagonal" />
+						<span>
+							{$t('full screen', { ns: 'common' })}
+						</span>
+					</DropdownItem>
+					<DropdownDivider />
+					<DropdownItem
+						class="text-xs text-red-400 gap-2 flex items-center"
+						on:click={() => {
+							if (dataItem.widget) {
+								$deleteWidget.mutate({
+									tableId: $table.id.value,
+									viewId: $view.id.value,
+									widgetId: dataItem.widget.id.value,
+								})
+							}
+						}}
+					>
+						<i class="ti ti-trash" />
+						<span>
+							{$t('delete widget')}
+						</span>
+					</DropdownItem>
+				</Dropdown>
+			</div>
+		{/if}
 	</div>
 	<div class="flex items-center justify-center p-2 flex-1">
 		<Visualization visualization={dataItem.widget?.visualization} />
 	</div>
-	<i
-		class="absolute right-0 bottom-0 cursor-se-resize
+	{#if resizePointerDown}
+		<i
+			class="absolute right-0 bottom-0 cursor-se-resize
 				hidden group-hover:block text-3xl text-blue-400
 				ti ti-chevron-down-right"
-		on:pointerdown={resizePointerDown}
-	/>
+			on:pointerdown={resizePointerDown}
+		/>
+	{/if}
 </div>

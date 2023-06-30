@@ -1,4 +1,5 @@
-import { Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common'
+import type { OnModuleDestroy, OnModuleInit } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { Client } from '@temporalio/client'
 import { Worker } from '@temporalio/worker'
 import { WebhookSignatureService } from '../webhook-signature.service.js'

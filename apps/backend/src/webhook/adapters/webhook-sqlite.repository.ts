@@ -3,15 +3,15 @@ import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import { type Webhook, type WebhookSpecification } from '@undb/integrations'
 import { WebhookSqliteRepository } from '@undb/sqlite'
-import { Option } from 'oxide.ts'
+import type { Option } from 'oxide.ts'
 
 export const WEBHOOK_REPOSITORY = Symbol('WEBHOOK_REPOSITORY')
 export const InjectWebhookRepository = () => Inject(WEBHOOK_REPOSITORY)
 
 @Injectable()
 export class NestWebhookSqliteRepository extends WebhookSqliteRepository {
-  constructor(public readonly orm: MikroORM) {
-    super(orm.em as EntityManager)
+  constructor(public readonly orm: MikroORM, em: EntityManager) {
+    super(em)
   }
 
   @UseRequestContext()

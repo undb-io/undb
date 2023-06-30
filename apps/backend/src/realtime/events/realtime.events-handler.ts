@@ -1,8 +1,9 @@
 import { EventsHandler } from '@nestjs/cqrs'
 import { RecordEventsClasses, type RecordEvents } from '@undb/core'
 import { RealtimeEventsHandler } from '@undb/cqrs'
-import { IEventHandler } from '@undb/domain'
-import { Observable, Subject } from 'rxjs'
+import type { IEventHandler } from '@undb/domain'
+import type { Observable } from 'rxjs'
+import { Subject } from 'rxjs'
 
 @EventsHandler(...RecordEventsClasses)
 export class NestRealtimeEventsHandler extends RealtimeEventsHandler implements IEventHandler<RecordEvents> {

@@ -1,4 +1,5 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common'
+import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common'
+import { Catch, HttpException, HttpStatus } from '@nestjs/common'
 import { HttpAdapterHost } from '@nestjs/core'
 import { ExceptionBase } from '@undb/domain'
 import { Logger } from 'nestjs-pino'

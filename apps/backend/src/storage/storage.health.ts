@@ -1,13 +1,16 @@
 import { HeadBucketCommand, S3Client } from '@aws-sdk/client-s3'
 import { Injectable } from '@nestjs/common'
-import type { ConfigType } from '@nestjs/config'
-import { HealthCheckError, HealthIndicator, HealthIndicatorResult } from '@nestjs/terminus'
+import { type ConfigType } from '@nestjs/config'
+import type { HealthIndicatorResult } from '@nestjs/terminus'
+import { HealthCheckError, HealthIndicator } from '@nestjs/terminus'
 import { InjectAws } from 'aws-sdk-v3-nest'
-import { InjectObjectStorageConfig, objectStorageConfig } from '../configs/object-storage.config.js'
+import type { objectStorageConfig } from '../configs/object-storage.config.js'
+import { InjectObjectStorageConfig } from '../configs/object-storage.config.js'
 
 @Injectable()
 export class StorageHealthIndicator extends HealthIndicator {
   constructor(
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     @InjectAws(S3Client) private readonly s3: S3Client,
     @InjectObjectStorageConfig() private readonly config: ConfigType<typeof objectStorageConfig>,

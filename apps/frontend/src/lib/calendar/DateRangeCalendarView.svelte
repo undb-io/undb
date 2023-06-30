@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentRecordId, getTable, getView, q, recordHash } from '$lib/store/table'
+	import { currentRecordId, getTable, getView, listRecordFn, readonly } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 
 	// @ts-ignore
@@ -12,7 +12,7 @@
 	import Interaction from '@event-calendar/interaction'
 	import { RecordFactory, type DateRangeField } from '@undb/core'
 	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
-	import { addDays, format } from 'date-fns'
+	import { format } from 'date-fns'
 	import { theme } from './calendar-theme'
 	import { t } from '$lib/i18n'
 
@@ -32,25 +32,17 @@
 		},
 	})
 
-	$: data = trpc().record.list.query(
-		{
-			tableId: $table.id.value,
-			viewId: $view.id.value,
-			q: $q,
-			filter: [
-				{
-					path: field.id.value,
-					type: field.type,
-					value: [start?.toISOString()!, end?.toISOString()!],
-					operator: '$between',
-				},
-			],
-		},
+	$: data = $listRecordFn(
+		[
+			{
+				path: field.id.value,
+				type: field.type,
+				value: [start?.toISOString()!, end?.toISOString()!],
+				operator: '$between',
+			},
+		],
 		{
 			enabled: !!start && !!end,
-			queryHash: $recordHash,
-			refetchOnMount: false,
-			refetchOnWindowFocus: false,
 		},
 	)
 
@@ -95,8 +87,9 @@
 			createRecordModal.open()
 		},
 		events,
-		selectable: true,
+		selectable: !$readonly,
 		select: (info: { start: Date; end: Date }) => {
+			if ($readonly) return
 			$createRecordInitial = {
 				[field.id.value]: [format(info.start, 'yyyy-MM-dd'), format(info.end, 'yyyy-MM-dd')],
 			}
@@ -115,20 +108,23 @@
 				},
 			})
 		},
-		eventDrop: (info: { event: { id: string; start: Date; end: Date } }) => {
-			$updateRecord.mutate({
-				tableId: $table.id.value,
-				id: info.event.id,
-				values: {
-					[field.id.value]: [info.event.start, info.event.end],
-				},
-			})
-		},
+		editable: !$readonly,
+		eventDrop: $readonly
+			? undefined
+			: (info: { event: { id: string; start: Date; end: Date } }) => {
+					$updateRecord.mutate({
+						tableId: $table.id.value,
+						id: info.event.id,
+						values: {
+							[field.id.value]: [info.event.start, info.event.end],
+						},
+					})
+			  },
 		theme,
 	}
 </script>
 
-<div class="flex-1 overflow-y-auto p-4">
+<div class="flex-1 overflow-y-auto p-4 h-full">
 	<Calendar {plugins} {options} />
 </div>
 

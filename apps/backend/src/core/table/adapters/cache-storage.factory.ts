@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { type ConfigType } from '@nestjs/config'
 import { type PinoLogger } from 'nestjs-pino'
 import path from 'path'
 import { match } from 'ts-pattern'
-import { Driver, Storage, createStorage } from 'unstorage'
+import type { Driver, Storage } from 'unstorage'
+import { createStorage } from 'unstorage'
 import { type cacheStorageConfig } from '../../../configs/cache-storage.config.js'
 
 export const cacheStorageFactory = async (

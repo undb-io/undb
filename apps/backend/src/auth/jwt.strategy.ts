@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common'
 import { type ConfigType } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
-import { ClsStore } from '@undb/core'
+import type { ClsStore } from '@undb/core'
 import type { Request } from 'express'
 import { ClsService } from 'nestjs-cls'
+import type { JwtFromRequestFunction } from 'passport-jwt'
 import { ExtractJwt, Strategy } from 'passport-jwt'
-import { InjectAuthConfig, authConfig } from '../configs/auth.config.js'
+import type { authConfig } from '../configs/auth.config.js'
+import { InjectAuthConfig } from '../configs/auth.config.js'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -17,12 +19,21 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     })
   }
 
-  private static extractJWT(req: Request): string | null {
+  public static extractJWT(req: Request): string | null {
     return req.cookies?.['undb_auth'] ?? null
   }
 
+  public static setCls(cls: ClsService<ClsStore>, payload: any) {
+    cls.set('user.userId', payload.sub)
+  }
+
   async validate(payload: any) {
-    this.cls.set('user.userId', payload.sub)
+    JwtStrategy.setCls(this.cls, payload)
     return { userId: payload.sub, email: payload.email }
   }
 }
+
+export const jwtFromRequest: JwtFromRequestFunction = ExtractJwt.fromExtractors([
+  JwtStrategy.extractJWT,
+  ExtractJwt.fromAuthHeaderAsBearerToken(),
+])

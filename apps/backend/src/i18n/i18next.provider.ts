@@ -1,4 +1,5 @@
-import { Inject, Provider } from '@nestjs/common'
+import type { Provider } from '@nestjs/common'
+import { Inject } from '@nestjs/common'
 import i18next from 'i18next'
 
 export const I18NEXT = Symbol('I18NEXT')

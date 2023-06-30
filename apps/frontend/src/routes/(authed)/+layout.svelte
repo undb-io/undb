@@ -418,7 +418,7 @@
 	{/if}
 
 	{#if $importDataModal.open}
-		<ImportData />
+		<ImportData formData={$page.data.createTable} />
 	{/if}
 </div>
 

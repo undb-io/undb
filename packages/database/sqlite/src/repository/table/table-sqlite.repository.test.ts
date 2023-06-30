@@ -1,5 +1,5 @@
 import { EntityManager } from '@mikro-orm/better-sqlite'
-import { Table as CoreTable, ITableCache, WithTableName, createTestTable } from '@undb/core'
+import { Table as CoreTable, WithTableName, createTestTable, type ITableCache } from '@undb/core'
 import { mock } from 'vitest-mock-extended'
 import { FILTER_SOFT_DELETE } from '../../decorators/soft-delete.decorator.js'
 import { Table } from '../../entity/index.js'

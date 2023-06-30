@@ -2,6 +2,7 @@ import { Attachment } from './attachment.js'
 import { Field, fieldEntities } from './field.js'
 import { Option } from './option.js'
 import { Outbox } from './outbox.js'
+import { Share } from './share.js'
 import { Table } from './table.js'
 import { User } from './user.js'
 import { viewEntities } from './view.js'
@@ -26,4 +27,5 @@ export const entities = [
   ...visualizationEntities,
   Outbox,
   Webhook,
+  Share,
 ]

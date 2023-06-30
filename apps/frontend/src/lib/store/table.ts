@@ -1,10 +1,20 @@
+import { page } from '$app/stores'
+import { trpc } from '$lib/trpc/client'
+import type { CreateQueryResult } from '@tanstack/svelte-query'
 import {
+	ChartVisualization,
+	NumberVisualization,
 	TableFactory,
+	TreeField,
+	type IChartData,
 	type ICreateTableSchemaInput,
 	type IFilters,
 	type IQueryFieldSchema,
+	type IQueryRecordSchema,
 	type IQueryTable,
+	type IQueryTreeRecords,
 	type IReferenceFieldQuerySchema,
+	type IRootFilter,
 	type IUpdateTableSchemaSchema,
 	type Option,
 	type Record,
@@ -14,6 +24,7 @@ import {
 } from '@undb/core'
 import { uniqBy } from 'lodash-es'
 import { derived, writable, type Readable } from 'svelte/store'
+import { match } from 'ts-pattern'
 
 export const allTables = writable<IQueryTable[]>()
 
@@ -195,3 +206,124 @@ export const getForeignTableFieldsByReferenceId: Readable<(referenceId?: string)
 		}
 	},
 )
+
+export const isShare = derived(page, ($page) => $page.route.id?.startsWith('/(share)'))
+export const isShareView = derived(page, ($page) => $page.route.id === '/(share)/s/v/[viewId]')
+
+export const readonly = derived(isShare, ($isShare) => $isShare)
+
+export const listRecordsType = derived(isShareView, ($isShareView) => {
+	if ($isShareView) return 'share.view' as const
+	return 'internal' as const
+})
+
+type ListRecordQueryOptions = {
+	queryHash?: string
+	enabled?: boolean
+}
+
+export const listRecordFn: Readable<
+	(filter?: IRootFilter, options?: ListRecordQueryOptions) => CreateQueryResult<{ records: IQueryRecordSchema[] }>
+> = derived([listRecordsType, currentTable, currentView, q, recordHash], ([$type, $table, $view, $q, $recordHash]) => {
+	return match($type)
+		.with(
+			'internal',
+			() => (filter?: IRootFilter, options?: ListRecordQueryOptions) =>
+				trpc().record.list.query(
+					{ tableId: $table.id.value, viewId: $view.id.value, q: $q, filter },
+					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash, ...options },
+				),
+		)
+		.with(
+			'share.view',
+			() => (filter?: IRootFilter, options?: ListRecordQueryOptions) =>
+				trpc().share.viewRecords.query(
+					{ viewId: $view.id.value },
+					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash, ...options },
+				),
+		)
+		.exhaustive()
+})
+
+export const listTreeRecordsFn: Readable<
+	(field: TreeField, options?: ListRecordQueryOptions) => CreateQueryResult<{ records: IQueryTreeRecords }>
+> = derived([listRecordsType, currentTable, currentView, recordHash], ([$type, $table, $view, $recordHash]) => {
+	return match($type)
+		.with(
+			'internal',
+			() => (field: TreeField, options?: ListRecordQueryOptions) =>
+				trpc().record.tree.list.query(
+					{
+						tableId: $table.id.value,
+						fieldId: field.id.value,
+					},
+					{
+						queryHash: $recordHash + 'tree',
+						...options,
+					},
+				),
+		)
+		.with(
+			'share.view',
+			() => (field: TreeField, options?: ListRecordQueryOptions) =>
+				trpc().share.viewTreeRecords.query(
+					{ viewId: $view.id.value, fieldId: field.id.value },
+					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash + 'tree', ...options },
+				),
+		)
+		.exhaustive()
+})
+
+export const aggregateNumberFn: Readable<
+	(visualization: NumberVisualization, options?: ListRecordQueryOptions) => CreateQueryResult<{ number: number }>
+> = derived([listRecordsType, currentTable, currentView], ([$type, $table, $view]) => {
+	return match($type)
+		.with(
+			'internal',
+			() => (visualization: NumberVisualization, options?: ListRecordQueryOptions) =>
+				trpc().table.aggregate.aggregateNumber.query(
+					{
+						tableId: $table.id.value,
+						viewId: $view.id.value,
+						visualizationId: visualization.id.value,
+					},
+					options,
+				),
+		)
+		.with(
+			'share.view',
+			() => (visualization: NumberVisualization, options?: ListRecordQueryOptions) =>
+				trpc().share.viewAggregateNumber.query(
+					{ viewId: $view.id.value, visualizationId: visualization.id.value },
+					{ refetchOnMount: false, refetchOnWindowFocus: true, ...options },
+				),
+		)
+		.exhaustive()
+})
+
+export const aggregateChartFn: Readable<
+	(visualization: ChartVisualization, options?: ListRecordQueryOptions) => CreateQueryResult<{ data: IChartData }>
+> = derived([listRecordsType, currentTable, currentView], ([$type, $table, $view]) => {
+	return match($type)
+		.with(
+			'internal',
+			() => (visualization: ChartVisualization, options?: ListRecordQueryOptions) =>
+				trpc().table.aggregate.chart.query(
+					{
+						tableId: $table.id.value,
+						viewId: $view.id.value,
+						visualizationId: visualization.id.value,
+					},
+					{ queryHash: visualization.id.value, ...options },
+				),
+		)
+		.with(
+			'share.view',
+			() => (visualization: ChartVisualization, options?: ListRecordQueryOptions) =>
+				trpc().share.viewAggregateChart.query(
+					{ viewId: $view.id.value, visualizationId: visualization.id.value },
+					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: visualization.id.value, ...options },
+				),
+		)
+		.exhaustive()
+})

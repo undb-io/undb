@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { plainToClass } from 'class-transformer'
-import type { Response } from 'express'
+import { type Response } from 'express'
 import { AttachmentService } from './attachment.service.js'
 import { AttachmentResponseDto } from './dtos/attachment.response.dto.js'
 

@@ -3,7 +3,7 @@
 	import { TableFactory } from '@undb/core'
 	import type { LayoutData } from './$types'
 	import { goto } from '$app/navigation'
-	import { currentTable, currentView } from '$lib/store/table'
+	import { currentTable, currentView, readonly } from '$lib/store/table'
 
 	export let data: LayoutData
 

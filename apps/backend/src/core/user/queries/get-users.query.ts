@@ -1,7 +1,8 @@
 import { QueryHandler } from '@nestjs/cqrs'
 import { type IUserQueryModel } from '@undb/core'
-import { GetUsersQuery, GetUsersQueryHandler, IGetUsersOutput } from '@undb/cqrs'
-import { IQueryHandler } from '@undb/domain'
+import type { IGetUsersOutput } from '@undb/cqrs'
+import { GetUsersQuery, GetUsersQueryHandler } from '@undb/cqrs'
+import type { IQueryHandler } from '@undb/domain'
 import { InjectUserQueryModel } from '../adapters/index.js'
 
 @QueryHandler(GetUsersQuery)

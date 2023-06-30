@@ -1,5 +1,6 @@
 <script lang="ts">
 	import CalendarConfigMenu from '$lib/calendar/CalendarConfigMenu.svelte'
+	import ShareViewButton from '$lib/share/ShareViewButton.svelte'
 	import CreateRecordButton from './CreateRecordButton.svelte'
 	import FilterMenu from './FilterMenu.svelte'
 	import InsertFieldButton from './InsertFieldButton.svelte'
@@ -13,3 +14,4 @@
 <SortMenu />
 <ManageFieldsMenu />
 <InsertFieldButton />
+<ShareViewButton />

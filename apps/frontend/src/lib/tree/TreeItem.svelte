@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentRecordId, getTable, recordHash } from '$lib/store/table'
+	import { currentRecordId, getTable, readonly, recordHash } from '$lib/store/table'
 	import { flip } from 'svelte/animate'
 	import type { TreeRecord } from './tree-view.type'
 	import { dndzone, SHADOW_PLACEHOLDER_ITEM_ID, TRIGGERS } from 'svelte-dnd-action'
@@ -63,6 +63,7 @@
 		items: record.children,
 		dropTargetClasses: ['bg-yellow-50/50', 'outline-1', 'outline-dashed', 'min-h-[25px]'],
 		dropTargetStyle: {},
+		dragDisabled: $readonly,
 	}}
 	on:consider={handleConsider}
 	on:finalize={handleFinalize}

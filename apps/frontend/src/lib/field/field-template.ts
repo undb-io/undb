@@ -45,7 +45,7 @@ const getIssue = (h: HyperFunc, column: RevoGrid.ColumnRegular) => {
 	return null
 }
 
-export const getColumnTemplate = (h: HyperFunc, column: RevoGrid.ColumnRegular) => {
+export const getColumnTemplate = (h: HyperFunc, column: RevoGrid.ColumnRegular, readonly = false) => {
 	const html = htm.bind(h)
 
 	const getFieldDomId = (fieldId: string | undefined) => (fieldId ? `field_menu_${fieldId}` : undefined)
@@ -58,16 +58,18 @@ export const getColumnTemplate = (h: HyperFunc, column: RevoGrid.ColumnRegular) 
 					: html`<i class="${cx(getIconClass(column.field.type), 'text-gray-600 text-lg')}"></i>`}
 				<span>${column.name}</span>
 			</span>
-			<span class="inline-flex gap-2 items-center">
-				<span> ${getIssue(h, column)} </span>
-				<button
-					id="${getFieldDomId(column.prop as string | undefined)}"
-					onClick=${() => currentFieldId.set(column.prop as string)}
-					class="w-[24px] h-[24px] rounded-sm hover:bg-gray-200 inline-flex items-center justify-center"
-				>
-					<i class="ti ti-chevron-down text-gray-500"></i>
-				</button>
-			</span>
+			${readonly
+				? ''
+				: html`<span class="inline-flex gap-2 items-center">
+						<span> ${getIssue(h, column)} </span>
+						<button
+							id="${getFieldDomId(column.prop as string | undefined)}"
+							onClick=${() => currentFieldId.set(column.prop as string)}
+							class="w-[24px] h-[24px] rounded-sm hover:bg-gray-200 inline-flex items-center justify-center"
+						>
+							<i class="ti ti-chevron-down text-gray-500"></i>
+						</button>
+				  </span>`}
 		</div>
 	`
 }

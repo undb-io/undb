@@ -1,13 +1,13 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
-import { ChartVisualization, IRecordSpec, VisualizationVO } from '@undb/core'
-import type { EntityManager } from '@undb/sqlite'
-import { RecordSqliteAggregateRepository } from '@undb/sqlite'
+import type { IRecordSpec } from '@undb/core'
+import { ChartVisualization, VisualizationVO } from '@undb/core'
+import { EntityManager, RecordSqliteAggregateRepository } from '@undb/sqlite'
 
 @Injectable()
 export class NestAggregateSqliteQueryModel extends RecordSqliteAggregateRepository {
-  constructor(public readonly orm: MikroORM) {
-    super(orm.em as EntityManager)
+  constructor(public readonly orm: MikroORM, public readonly em: EntityManager) {
+    super(em)
   }
 
   @UseRequestContext()

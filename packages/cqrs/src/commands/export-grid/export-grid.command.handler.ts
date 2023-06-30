@@ -1,4 +1,4 @@
-import type { IRecordExportor, IRecordRepository } from '@undb/core'
+import type { IRecordRepository, RecordExportorService } from '@undb/core'
 import { WithRecordTableId, type ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
 import type { ExportGridCommand } from './export-grid.comand.js'
@@ -7,8 +7,7 @@ export class ExportGridCommandHandler implements ICommandHandler<ExportGridComma
   constructor(
     protected readonly tableRepo: ITableRepository,
     protected readonly recordRepo: IRecordRepository,
-    protected readonly csvExportor: IRecordExportor,
-    protected readonly excelExportor: IRecordExportor,
+    protected readonly service: RecordExportorService,
   ) {}
 
   async execute(command: ExportGridCommand): Promise<string | Buffer> {
@@ -21,7 +20,7 @@ export class ExportGridCommandHandler implements ICommandHandler<ExportGridComma
 
     const records = await this.recordRepo.find(table.id.value, spec, table.schema.toIdMap())
 
-    const exportor = command.type === 'csv' ? this.csvExportor : this.excelExportor
+    const exportor = this.service.getExportor(command.type)
 
     return exportor.export(table, command.viewId, records)
   }

@@ -8,7 +8,7 @@
 </script>
 
 {#if !!field.timeFormatString}
-	<DateTimeInput bind:value />
+	<DateTimeInput bind:value {...$$restProps} />
 {:else}
-	<DateInput bind:value />
+	<DateInput bind:value {...$$restProps} />
 {/if}

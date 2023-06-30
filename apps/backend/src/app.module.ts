@@ -2,16 +2,19 @@ import { MikroORM } from '@mikro-orm/core'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import type { OnModuleInit } from '@nestjs/common'
 import { Logger, Module } from '@nestjs/common'
-import type { ConfigType } from '@nestjs/config'
+import { type ConfigType } from '@nestjs/config'
+import { JwtModule } from '@nestjs/jwt'
 import { ServeStaticModule } from '@nestjs/serve-static'
-import { EntityManager, createConfig } from '@undb/sqlite'
-import { Request } from 'express'
+import type { EntityManager } from '@undb/sqlite'
+import { createConfig } from '@undb/sqlite'
+import type { Request } from 'express'
 import { ClsModule } from 'nestjs-cls'
 import { LoggerModule } from 'nestjs-pino'
 import path from 'path'
 import { v4 as uuid } from 'uuid'
 import { AttachmentModule } from './attachment/attachment.module.js'
 import { AuthModule } from './auth/auth.module.js'
+import { authConfig } from './configs/auth.config.js'
 import { BaseConfigService } from './configs/base-config.service.js'
 import { ConfigModule } from './configs/config.module.js'
 import { InjectSqliteConfig, sqliteConfig } from './configs/sqlite.config.js'
@@ -23,6 +26,7 @@ import { OpenAPIModule } from './openapi/openapi.module.js'
 import { OutboxModule } from './outbox/outbox.module.js'
 import { RealtimeModule } from './realtime/realtime.module.js'
 import { RealyModule } from './relay/relay.module.js'
+import { ShareModule } from './share/share.module.js'
 import { TrpcModule } from './trpc/trpc.module.js'
 import { WebhookModule } from './webhook/webhook.module.js'
 
@@ -38,6 +42,16 @@ import { WebhookModule } from './webhook/webhook.module.js'
       },
     }),
     HealthModule,
+    JwtModule.registerAsync({
+      global: true,
+      useFactory: (config: ConfigType<typeof authConfig>) => ({
+        secret: config.jwt.secret,
+        signOptions: {
+          expiresIn: '20d',
+        },
+      }),
+      inject: [authConfig.KEY],
+    }),
     TrpcModule,
     LoggerModule.forRootAsync({
       useFactory: (config: BaseConfigService) => ({
@@ -63,6 +77,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
     RealyModule,
     WebhookModule.register({}),
     RealtimeModule,
+    ShareModule,
   ],
 })
 export class AppModule implements OnModuleInit {

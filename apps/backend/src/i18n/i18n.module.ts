@@ -1,4 +1,5 @@
-import { MiddlewareConsumer, Module, NestModule, OnModuleInit, RequestMethod } from '@nestjs/common'
+import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/common'
+import { Module, RequestMethod } from '@nestjs/common'
 import { config } from '@undb/i18n'
 import { type i18n } from 'i18next'
 import * as middleware from 'i18next-http-middleware'
