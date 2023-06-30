@@ -212,24 +212,30 @@ export const listRecordsType = derived(isShareView, ($isShareView) => {
 	return 'internal' as const
 })
 
-export const listRecordFn: Readable<(filter?: IRootFilter) => CreateQueryResult<{ records: IQueryRecordSchema[] }>> =
-	derived([listRecordsType, currentTable, currentView, q, recordHash], ([$type, $table, $view, $q, $recordHash]) => {
-		return match($type)
-			.with(
-				'internal',
-				() => (filter?: IRootFilter) =>
-					trpc().record.list.query(
-						{ tableId: $table.id.value, viewId: $view.id.value, q: $q, filter },
-						{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash },
-					),
-			)
-			.with(
-				'share.view',
-				() => () =>
-					trpc().share.viewRecords.query(
-						{ viewId: $view.id.value },
-						{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash },
-					),
-			)
-			.exhaustive()
-	})
+type ListRecordQueryOptions = {
+	queryHash?: string
+	enabled?: boolean
+}
+
+export const listRecordFn: Readable<
+	(filter?: IRootFilter, options?: ListRecordQueryOptions) => CreateQueryResult<{ records: IQueryRecordSchema[] }>
+> = derived([listRecordsType, currentTable, currentView, q, recordHash], ([$type, $table, $view, $q, $recordHash]) => {
+	return match($type)
+		.with(
+			'internal',
+			() => (filter?: IRootFilter, options?: ListRecordQueryOptions) =>
+				trpc().record.list.query(
+					{ tableId: $table.id.value, viewId: $view.id.value, q: $q, filter },
+					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash, ...options },
+				),
+		)
+		.with(
+			'share.view',
+			() => (filter?: IRootFilter, options?: ListRecordQueryOptions) =>
+				trpc().share.viewRecords.query(
+					{ viewId: $view.id.value },
+					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash, ...options },
+				),
+		)
+		.exhaustive()
+})

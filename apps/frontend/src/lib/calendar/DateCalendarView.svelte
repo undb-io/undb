@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentRecordId, getTable, getView, q, readonly, recordHash } from '$lib/store/table'
+	import { currentRecordId, getTable, listRecordFn, readonly } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 
 	// @ts-ignore
@@ -18,7 +18,6 @@
 	export let field: DateField
 
 	const table = getTable()
-	const view = getView()
 
 	let date = new Date()
 
@@ -31,25 +30,17 @@
 		},
 	})
 
-	$: data = trpc().record.list.query(
+	$: data = $listRecordFn(
+		[
+			{
+				path: field.id.value,
+				type: field.type,
+				value: [start?.toISOString()!, end?.toISOString()!],
+				operator: '$between',
+			},
+		],
 		{
-			tableId: $table.id.value,
-			viewId: $view.id.value,
-			q: $q,
-			filter: [
-				{
-					path: field.id.value,
-					type: field.type,
-					value: [start?.toISOString()!, end?.toISOString()!],
-					operator: '$between',
-				},
-			],
-		},
-		{
-			queryHash: $recordHash,
 			enabled: !!start && !!end,
-			refetchOnMount: false,
-			refetchOnWindowFocus: false,
 		},
 	)
 
