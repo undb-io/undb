@@ -3,26 +3,15 @@
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { t } from '$lib/i18n'
 	import { createFieldInitial, createFieldModal } from '$lib/store/modal'
-	import { getTable, getView } from '$lib/store/table'
+	import { aggregateChartFn, getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import { FieldId, type ChartVisualization } from '@undb/core'
 	import { Button } from 'flowbite-svelte'
 
 	const table = getTable()
-	const view = getView()
 	export let visualization: ChartVisualization
 
-	const getChartData = trpc().table.aggregate.chart.query(
-		{
-			tableId: $table.id.value,
-			viewId: $view.id.value,
-			visualizationId: visualization.id.value,
-		},
-		{
-			queryHash: visualization.id.value,
-			enabled: false,
-		},
-	)
+	const getChartData = $aggregateChartFn(visualization, { enabled: false })
 
 	const updateVisualization = trpc().table.visualization.update.mutation({
 		async onSuccess() {

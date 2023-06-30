@@ -1,3 +1,4 @@
+import { NestGetShareAggregateChartQueryHandler } from './get-share-aggregate-chart.query.handler.js'
 import { NestGetShareAggregateNumberQueryHandler } from './get-share-aggregate-number.query.handler.js'
 import { NestGetShareViewRecordQueryHandler } from './get-share-view-record.query.handler.js'
 import { NestGetShareViewRecordsQueryHandler } from './get-share-view-records.query.handler.js'
@@ -12,4 +13,5 @@ export const queries = [
   NestGetShareViewRecordsQueryHandler,
   NestGetShareViewTreeRecordsQueryHandler,
   NestGetShareAggregateNumberQueryHandler,
+  NestGetShareAggregateChartQueryHandler,
 ]

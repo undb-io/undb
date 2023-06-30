@@ -2,9 +2,11 @@ import { page } from '$app/stores'
 import { trpc } from '$lib/trpc/client'
 import type { CreateQueryResult } from '@tanstack/svelte-query'
 import {
+	ChartVisualization,
 	NumberVisualization,
 	TableFactory,
 	TreeField,
+	type IChartData,
 	type ICreateTableSchemaInput,
 	type IFilters,
 	type IQueryFieldSchema,
@@ -266,7 +268,7 @@ export const listTreeRecordsFn: Readable<
 			() => (field: TreeField, options?: ListRecordQueryOptions) =>
 				trpc().share.viewTreeRecords.query(
 					{ viewId: $view.id.value, fieldId: field.id.value },
-					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash, ...options },
+					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash + 'tree', ...options },
 				),
 		)
 		.exhaustive()
@@ -274,7 +276,7 @@ export const listTreeRecordsFn: Readable<
 
 export const aggregateNumberFn: Readable<
 	(visualization: NumberVisualization, options?: ListRecordQueryOptions) => CreateQueryResult<{ number: number }>
-> = derived([listRecordsType, currentTable, currentView, recordHash], ([$type, $table, $view, $recordHash]) => {
+> = derived([listRecordsType, currentTable, currentView], ([$type, $table, $view]) => {
 	return match($type)
 		.with(
 			'internal',
@@ -293,7 +295,34 @@ export const aggregateNumberFn: Readable<
 			() => (visualization: NumberVisualization, options?: ListRecordQueryOptions) =>
 				trpc().share.viewAggregateNumber.query(
 					{ viewId: $view.id.value, visualizationId: visualization.id.value },
-					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash, ...options },
+					{ refetchOnMount: false, refetchOnWindowFocus: true, ...options },
+				),
+		)
+		.exhaustive()
+})
+
+export const aggregateChartFn: Readable<
+	(visualization: ChartVisualization, options?: ListRecordQueryOptions) => CreateQueryResult<{ data: IChartData }>
+> = derived([listRecordsType, currentTable, currentView], ([$type, $table, $view]) => {
+	return match($type)
+		.with(
+			'internal',
+			() => (visualization: ChartVisualization, options?: ListRecordQueryOptions) =>
+				trpc().table.aggregate.chart.query(
+					{
+						tableId: $table.id.value,
+						viewId: $view.id.value,
+						visualizationId: visualization.id.value,
+					},
+					{ queryHash: visualization.id.value, ...options },
+				),
+		)
+		.with(
+			'share.view',
+			() => (visualization: ChartVisualization, options?: ListRecordQueryOptions) =>
+				trpc().share.viewAggregateChart.query(
+					{ viewId: $view.id.value, visualizationId: visualization.id.value },
+					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: visualization.id.value, ...options },
 				),
 		)
 		.exhaustive()
