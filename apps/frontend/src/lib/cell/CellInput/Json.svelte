@@ -18,6 +18,7 @@
 
 <JSONEditor
 	{content}
+	readOnly={$$restProps.readonly}
 	onChange={handleChange}
 	mode={Mode.text}
 	mainMenuBar={false}

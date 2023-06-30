@@ -1,8 +1,7 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import type { ChartVisualization, IFieldType } from '@undb/core'
-	import { trpc } from '$lib/trpc/client'
-	import { getTable, getView } from '$lib/store/table'
+	import { aggregateChartFn, getTable } from '$lib/store/table'
 	import EmptyChartVisualization from './EmptyChartVisualization.svelte'
 	import type { ComponentType } from 'svelte'
 	import SelectChartVisualization from './SelectChartVisualization.svelte'
@@ -11,22 +10,10 @@
 	export let visualization: ChartVisualization
 
 	const table = getTable()
-	const view = getView()
 
 	$: fieldId = visualization.fieldId?.value
 	$: field = fieldId ? $table.schema.getFieldById(fieldId).into() : undefined
-
-	$: getChartData = trpc().table.aggregate.chart.query(
-		{
-			tableId: $table.id.value,
-			viewId: $view.id.value,
-			visualizationId: visualization.id.value,
-		},
-		{
-			queryHash: visualization.id.value,
-			enabled: !!field,
-		},
-	)
+	$: getChartData = $aggregateChartFn(visualization, { enabled: !!field })
 
 	const map: Partial<Record<IFieldType, ComponentType>> = {
 		select: SelectChartVisualization,

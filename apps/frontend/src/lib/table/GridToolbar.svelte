@@ -5,6 +5,7 @@
 	import ManageFieldsMenu from './ManageFieldsMenu.svelte'
 	import SortMenu from './SortMenu.svelte'
 	import SetRowHeight from './SetRowHeight.svelte'
+	import ShareViewButton from '$lib/share/ShareViewButton.svelte'
 </script>
 
 <CreateRecordButton />
@@ -13,3 +14,4 @@
 <ManageFieldsMenu />
 <SetRowHeight />
 <InsertFieldButton />
+<ShareViewButton />

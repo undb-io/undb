@@ -14,7 +14,6 @@
 	import UpdateOption from '$lib/option/UpdateOption.svelte'
 	import VisualizationModal from '$lib/visualization/VisualizationModal.svelte'
 	import DuplicateField from '$lib/field/DuplicateField.svelte'
-	import CreateWebhook from '$lib/webhook/CreateWebhook.svelte'
 	import WebhookListModal from '$lib/webhook/WebhookListModal.svelte'
 
 	const table = getTable()

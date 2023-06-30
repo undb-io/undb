@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ShareViewButton from '$lib/share/ShareViewButton.svelte'
 	import KanbanConfigMenu from '$lib/view/KanbanConfigMenu.svelte'
 	import CreateRecordButton from './CreateRecordButton.svelte'
 	import FilterMenu from './FilterMenu.svelte'
@@ -13,3 +14,4 @@
 <SortMenu />
 <ManageFieldsMenu />
 <InsertFieldButton />
+<ShareViewButton />

@@ -13337,3 +13337,7 @@ create index `undb_webhook_name_index` on `undb_webhook` (`name`);
 create index `undb_webhook_method_index` on `undb_webhook` (`method`);
 create index `undb_webhook_target_id_index` on `undb_webhook` (`target_id`);
 create index `undb_webhook_event_index` on `undb_webhook` (`event`);
+create table `undb_share` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `target_id` text null, `target_type` text null, `enabled` integer not null default false, primary key (`id`));
+create index `undb_share_deleted_at_index` on `undb_share` (`deleted_at`);
+create index `undb_share_target_id_index` on `undb_share` (`target_id`);
+create unique index `undb_share_target_id_unique` on `undb_share` (`target_id`);

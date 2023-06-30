@@ -1,7 +1,8 @@
 <script lang="ts">
+	import cx from 'classnames'
 	import CellComponent from '$lib/cell/CellComponents/CellComponent.svelte'
 	import { getCellValue } from '$lib/cell/get-cell-value'
-	import { getTable } from '$lib/store/table'
+	import { getTable, readonly } from '$lib/store/table'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import type { Record } from '@undb/core'
 	import { Card, Tooltip } from 'flowbite-svelte'
@@ -15,7 +16,10 @@
 
 <Card
 	rounded={false}
-	class="!py-4 !px-4 shadow-sm rounded-md hover:shadow-md duration-200 cursor-grab select-none space-y-2 text-gray-700 text-sm"
+	class={cx(
+		'!py-4 !px-4 shadow-sm rounded-md hover:shadow-md duration-200 select-none space-y-2 text-gray-700 text-sm',
+		$readonly ? 'cursor-pointer' : 'cursor-grab',
+	)}
 	{...$$restProps}
 >
 	{#each Object.entries(values) as [key, value]}
