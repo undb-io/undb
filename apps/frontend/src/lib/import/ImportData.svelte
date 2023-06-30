@@ -166,8 +166,10 @@
 		</Accordion>
 	{/if}
 
-	<Label for="import_data_name">{$t('name', { ns: 'common' })}</Label>
-	<Input disabled={!data} bind:value={$form.name} id="import_data_name" />
+	<div>
+		<Label for="import_data_name" class="mb-2">{$t('Name', { ns: 'common' })}</Label>
+		<Input disabled={!data} bind:value={$form.name} id="import_data_name" />
+	</div>
 	<Checkbox bind:checked={firstRowAsHeader}>{$t('first row as header')}</Checkbox>
 	<Checkbox bind:checked={importData}>{$t('import data')}</Checkbox>
 	{#if ext === 'json'}
