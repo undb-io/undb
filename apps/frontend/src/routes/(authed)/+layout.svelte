@@ -320,7 +320,7 @@
 					triggeredBy="#me-button"
 					placement="top"
 					frameClass="w-full"
-					class="w-full shadow-sm border border-gray-100"
+					class="w-full shadow-sm border border-gray-100 dark:border-gray-800/75 dark:shadow-lg"
 				>
 					<DropdownItem href="/me">
 						<i class="ti ti-settings" />
@@ -334,7 +334,7 @@
 							</div>
 						</Chevron>
 					</DropdownItem>
-					<Dropdown placement="right-start">
+					<Dropdown placement="right-start" class="dark:border dark:border-gray-800/75">
 						<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('zh-CN')}>
 							<span>简体中文</span>
 							{#if $i18n.language === 'zh-CN'}
@@ -389,7 +389,7 @@
 			<span aria-hidden="true">{me.username}</span>
 		</button>
 
-		<Dropdown triggeredBy="#me-button" placement="bottom" class="w-48 shadow-sm border border-gray-100">
+		<Dropdown triggeredBy="#me-button" placement="bottom" class="w-48 shadow-sm border border-gray-100 ">
 			<DropdownItem href="/me">
 				<i class="ti ti-settings" />
 				{$t('Setting', { ns: 'auth' })}
@@ -430,7 +430,7 @@
 		</Dropdown>
 	</div>
 
-	<main class={cx('h-[100vh] transition-all', 'dark:bg-slate-800', $sidebarCollapsed ? 'lg:pl-0' : 'lg:pl-72')}>
+	<main class={cx('h-[100vh] transition-all', 'dark:!bg-slate-800', $sidebarCollapsed ? 'lg:pl-0' : 'lg:pl-72')}>
 		<div class="h-full flex flex-col">
 			<slot />
 		</div>

@@ -52,7 +52,7 @@ export const getColumnTemplate = (h: HyperFunc, column: RevoGrid.ColumnRegular) 
 
 	return html`
 		<div
-			class="h-full inline-flex w-full justify-between items-center text-xs text-gray-700 dark:text-gray-50 font-medium"
+			class="h-full inline-flex w-full justify-between items-center text-xs text-gray-700 dark:text-gray-50 font-medium dark:hover:bg-gray-700"
 		>
 			<span class="inline-flex items-center gap-1">
 				${column.field.type === 'currency'
@@ -60,12 +60,12 @@ export const getColumnTemplate = (h: HyperFunc, column: RevoGrid.ColumnRegular) 
 					: html`<i class="${cx(getIconClass(column.field.type), 'text-gray-600 text-lg dark:text-gray-200')}"></i>`}
 				<span>${column.name}</span>
 			</span>
-			<span class="inline-flex gap-2 items-center">
+			<span class="inline-flex gap-2 items-center ">
 				<span> ${getIssue(h, column)} </span>
 				<button
 					id="${getFieldDomId(column.prop as string | undefined)}"
 					onClick=${() => currentFieldId.set(column.prop as string)}
-					class="w-[24px] h-[24px] rounded-sm hover:bg-gray-200 inline-flex items-center justify-center"
+					class="w-[24px] h-[24px] rounded-sm hover:bg-gray-200 dark:hover:bg-gray-600 inline-flex items-center justify-center"
 				>
 					<i class="ti ti-chevron-down text-gray-500"></i>
 				</button>

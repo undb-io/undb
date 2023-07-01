@@ -152,7 +152,7 @@
 							{
 								onClick: () => expand(props.model.id),
 								class: cx(
-									'undb-row-expand absolute w-6 h-6 rounded-full hover:bg-blue-100 top-1/2 left-3/4 translate-y-[-50%] translate-x-[-50%] text-xs opacity-0 text-gray-400 dark:text-gray-100 ',
+									'undb-row-expand absolute w-6 h-6 rounded-full hover:bg-blue-100 dark:hover:bg-blue-500 top-1/2 left-3/4 translate-y-[-50%] translate-x-[-50%] text-xs opacity-0 text-gray-400 dark:text-gray-100 ',
 								),
 							},
 							h('i', { class: 'ti ti-arrows-diagonal' }),
@@ -188,7 +188,7 @@
 						return {
 							'data-field-id': column.field.id.value,
 							class: cx(
-								'border-r border-b border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-300 dark:bg-gray-600 dark:border-gray-500  transition-[background] group flex justify-between bg-gray-100 !px-2',
+								'border-r border-b border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-600 dark:border-gray-500  transition-[background] group flex justify-between bg-gray-100 !px-2',
 								{
 									'bg-blue-50': !!sort,
 								},
@@ -442,7 +442,7 @@
 		background-color: #f7f7f7;
 	}
 	:global(.dark revogr-header .header-rgRow) {
-		background-color: gray;
+		background-color: #374151;
 	}
 
 	:global(revogr-header .rgHeaderCell > .resizable-r) {
@@ -451,5 +451,17 @@
 
 	:global(revogr-focus) {
 		border: 1px solid transparent;
+	}
+
+	:global(.dark .hovered) {
+		background-color: #374151;
+	}
+
+	:global(.dark revogr-data .rgRow.focused-rgRow) {
+		background-color: #374151 !important;
+	}
+
+	:global(.dark revo-grid[theme=compact] revogr-header .rgHeaderCell.focused-cell){
+		background-color: #374151 !important
 	}
 </style>

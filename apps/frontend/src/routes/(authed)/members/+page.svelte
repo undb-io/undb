@@ -12,7 +12,7 @@
 
 <ul class="gap-4 flex flex-col w-full">
 	{#each members as member}
-		<Card class="w-full !max-w-none shadow-sm">
+		<Card class="w-full !max-w-none shadow-md">
 			<div class="flex items-center">
 				<div class="flex min-w-0 flex-1 items-center">
 					<div class="flex-shrink-0">
@@ -24,10 +24,10 @@
 					</div>
 					<div class="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
 						<div>
-							<p class="truncate text-sm font-medium text-indigo-600">{member.username}</p>
-							<p class="mt-2 flex items-center text-sm text-gray-500">
+							<p class="truncate text-sm font-medium text-indigo-600 dark:text-primary-600">{member.username}</p>
+							<p class="mt-2 flex items-center text-sm text-gray-500 dark:text-gray-200">
 								<svg
-									class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+									class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 dark:text-gray-200"
 									viewBox="0 0 20 20"
 									fill="currentColor"
 									aria-hidden="true"
