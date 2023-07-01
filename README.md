@@ -29,7 +29,7 @@
 - :computer: Self hosted in seconds
 - :pencil: Customizable
 - 🔧 Deploy with variant adapters
-- 🎮 Developer friendly. Provide openapi / webhooks / realtime subscriptions / sdk(soon) and more
+- 🎮 Developer friendly. Provide openapi / webhooks / realtime subscriptions / sdk(soon) / erd preview and more
 - :sparkles: Multiple built-in field types and variants
 - :city_sunset: Different types of views, including grid, kanban, tree, calendar and more
 
@@ -51,7 +51,12 @@
 
 ![Create table](./docs/create-new-view.gif)
 
+#### generated open api
 <img width="2488" alt="image" src="https://github.com/undb-xyz/undb/assets/22788984/b80099d9-afe6-4b54-b248-c13a64057c57">
+
+#### erd
+<img width="2560" alt="image" src="https://github.com/undb-xyz/undb/assets/22788984/23a88f58-1a68-4ac9-a82d-7e3c9d712461">
+
 
 ## Deploy
 
