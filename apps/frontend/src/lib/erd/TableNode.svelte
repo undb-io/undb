@@ -3,6 +3,7 @@
 	import type { Table as CoreTable } from '@undb/core'
 	import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from 'flowbite-svelte'
 	import { t } from '$lib/i18n'
+	import FieldIcon from '$lib/field/FieldIcon.svelte'
 
 	export let table: CoreTable
 	export let position: { x: number; y: number } | undefined = undefined
@@ -17,7 +18,7 @@
 		<TableHead>
 			<TableHeadCell>id</TableHeadCell>
 			<TableHeadCell>{$t('Name', { ns: 'common' })}</TableHeadCell>
-			<TableHeadCell>type</TableHeadCell>
+			<TableHeadCell>{$t('Type', { ns: 'common' })}</TableHeadCell>
 		</TableHead>
 
 		<TableBody tableBodyClass="divide-y">
@@ -46,7 +47,14 @@
 						</div>
 					</TableBodyCell>
 					<TableBodyCell>{field.name.value}</TableBodyCell>
-					<TableBodyCell>{$t(field.type)}</TableBodyCell>
+					<TableBodyCell>
+						<div class="flex items-center gap-2">
+							<FieldIcon type={field.type} />
+							<span class="inline-block">
+								{$t(field.type)}
+							</span>
+						</div>
+					</TableBodyCell>
 				</TableBodyRow>
 			{/each}
 		</TableBody>
