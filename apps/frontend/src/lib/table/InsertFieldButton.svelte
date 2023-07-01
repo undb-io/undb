@@ -7,8 +7,8 @@
 <Button
 	on:click={() => createFieldModal.open()}
 	size="xs"
-	color="light"
-	class="h-full w-8 px-0 !rounded-md inline-flex items-center whitespace-nowrap transition !text-blue-500 border-blue-500/50"
+	color="alternative"
+	class="h-full w-8 px-0 !rounded-md inline-flex items-center whitespace-nowrap transition "
 >
 	<i class="ti ti-column-insert-right text-sm" />
 </Button>

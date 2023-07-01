@@ -25,7 +25,7 @@
 	size="xs"
 	color="light"
 	outline
-	class="h-full w-8 px-0 !rounded-md inline-flex items-center whitespace-nowrap transition !text-blue-500 border-blue-500/50"
+	class="h-full w-8 px-0 !rounded-md inline-flex items-center whitespace-nowrap transition"
 	on:click={() => (open = !open)}
 >
 	<i class="ti ti-line-height text-sm" />

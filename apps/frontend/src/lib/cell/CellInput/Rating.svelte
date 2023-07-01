@@ -21,7 +21,7 @@
 <div class={cx('h-full flex items-center', $$restProps.class)} on:mouseleave={onMouseLeave}>
 	<!-- svelte-ignore a11y-interactive-supports-focus -->
 	{#each Array(max) as _, i}
-		<Radio value={i + 1} bind:group={value} custom class="group">
+		<Radio value={i + 1} bind:group={value} custom class="group" readonly={$$restProps.readonly}>
 			<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 			<!-- svelte-ignore a11y-interactive-supports-focus -->
 			<!-- svelte-ignore a11y-click-events-have-key-events -->

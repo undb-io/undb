@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { getTable, recordHash } from '$lib/store/table'
-	import { trpc } from '$lib/trpc/client'
-	import { RecordFactory, type IQueryTreeRecord, type TreeField, Record } from '@undb/core'
+	import { getTable, listTreeRecordsFn } from '$lib/store/table'
+	import { RecordFactory, type IQueryTreeRecord, type TreeField } from '@undb/core'
 	import type { TreeRecord } from './tree-view.type'
 	import TreeItem from './TreeItem.svelte'
 
@@ -10,15 +9,7 @@
 
 	$: schema = $table.schema.toIdMap()
 
-	const data = trpc().record.tree.list.query(
-		{
-			tableId: $table.id.value,
-			fieldId: field.id.value,
-		},
-		{
-			queryHash: $recordHash + 'tree',
-		},
-	)
+	const data = $listTreeRecordsFn(field)
 
 	const mapper = (record: IQueryTreeRecord): TreeRecord => {
 		const r = RecordFactory.fromQuery(record, schema).unwrap()

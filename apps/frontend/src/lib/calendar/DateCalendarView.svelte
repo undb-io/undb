@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentRecordId, getTable, getView, q, recordHash } from '$lib/store/table'
+	import { currentRecordId, getTable, listRecordFn, readonly } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 
 	// @ts-ignore
@@ -18,7 +18,6 @@
 	export let field: DateField
 
 	const table = getTable()
-	const view = getView()
 
 	let date = new Date()
 
@@ -31,25 +30,17 @@
 		},
 	})
 
-	$: data = trpc().record.list.query(
+	$: data = $listRecordFn(
+		[
+			{
+				path: field.id.value,
+				type: field.type,
+				value: [start?.toISOString()!, end?.toISOString()!],
+				operator: '$between',
+			},
+		],
 		{
-			tableId: $table.id.value,
-			viewId: $view.id.value,
-			q: $q,
-			filter: [
-				{
-					path: field.id.value,
-					type: field.type,
-					value: [start?.toISOString()!, end?.toISOString()!],
-					operator: '$between',
-				},
-			],
-		},
-		{
-			queryHash: $recordHash,
 			enabled: !!start && !!end,
-			refetchOnMount: false,
-			refetchOnWindowFocus: false,
 		},
 	)
 
@@ -88,6 +79,7 @@
 		dayMaxEvents: true,
 		nowIndicator: true,
 		dateClick: (info: { date: Date }) => {
+			if ($readonly) return
 			$createRecordInitial = { [field.id.value]: info.date.toISOString() }
 			createRecordModal.open()
 		},
@@ -95,21 +87,25 @@
 		eventClick: (info: { event: { id: string } }) => {
 			$currentRecordId = info.event.id
 		},
+		selectable: false,
 		eventDurationEditable: false,
 		eventTimeFormat: () => null,
-		eventDrop: (info: { event: { id: string; start: Date; end: Date } }) => {
-			$updateRecord.mutate({
-				tableId: $table.id.value,
-				id: info.event.id,
-				values: {
-					[field.id.value]: info.event.start,
-				},
-			})
-		},
+		editable: !$readonly,
+		eventDrop: $readonly
+			? undefined
+			: (info: { event: { id: string; start: Date; end: Date } }) => {
+					$updateRecord.mutate({
+						tableId: $table.id.value,
+						id: info.event.id,
+						values: {
+							[field.id.value]: info.event.start,
+						},
+					})
+			  },
 		theme,
 	}
 </script>
 
-<div class="flex-1 overflow-y-auto p-4 dark:!text-gray-200">
+<div class="flex-1 overflow-y-auto p-4 dark:!text-gray-200 h-full">
 	<Calendar {plugins} {options} />
 </div>

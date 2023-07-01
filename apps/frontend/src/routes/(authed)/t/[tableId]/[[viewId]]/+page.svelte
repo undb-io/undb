@@ -10,12 +10,12 @@
 	import CreateOption from '$lib/option/CreateOption.svelte'
 	import ViewConfigModal from '$lib/view/ViewConfigModal.svelte'
 	import UpdateTable from '$lib/table/UpdateTable.svelte'
-	import { createRecordModal, createTableModal } from '$lib/store/modal'
+	import { createRecordModal, createTableModal, erdModal } from '$lib/store/modal'
 	import UpdateOption from '$lib/option/UpdateOption.svelte'
 	import VisualizationModal from '$lib/visualization/VisualizationModal.svelte'
 	import DuplicateField from '$lib/field/DuplicateField.svelte'
-	import CreateWebhook from '$lib/webhook/CreateWebhook.svelte'
 	import WebhookListModal from '$lib/webhook/WebhookListModal.svelte'
+	import ErdModal from '$lib/erd/ErdModal.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -51,6 +51,9 @@
 <CreateRecord data={data.createRecord} />
 <CreateField data={data.createField} />
 <WebhookListModal />
+{#if $erdModal.open}
+	<ErdModal />
+{/if}
 {#if $currentRecordId}
 	<UpdateRecord data={data.updateRecord} />
 {/if}

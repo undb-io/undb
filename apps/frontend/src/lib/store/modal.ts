@@ -72,5 +72,8 @@ export const createOptionModal = createModal(CREATE_OPTION)
 const UPDATE_OPTION = Symbol('UPDATE_OPTION')
 export const updateOptionModal = createModal(UPDATE_OPTION)
 
-const IMPORT_CSV_MODAL = Symbol('IMPORT_CSV_MODAL')
-export const importDataModal = createModal(IMPORT_CSV_MODAL)
+const IMPORT_DATA_MODAL = Symbol('IMPORT_DATA_MODAL')
+export const importDataModal = createModal(IMPORT_DATA_MODAL)
+
+const ERD_MODAL = Symbol('ERD_MODAL')
+export const erdModal = createModal(ERD_MODAL)

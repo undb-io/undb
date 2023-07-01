@@ -1,31 +1,21 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import { Button, Toast } from 'flowbite-svelte'
-	import type { NumberVisualization as CoreChartVisualization } from '@undb/core'
+	import type { ChartVisualization as CoreChartVisualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
-	import { allTableFields, getTable, getView } from '$lib/store/table'
+	import { aggregateChartFn, allTableFields, getTable } from '$lib/store/table'
 	import { t } from '$lib/i18n'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import { slide } from 'svelte/transition'
 
 	const table = getTable()
-	const view = getView()
 
 	export let visualization: CoreChartVisualization
 
 	let fieldId = visualization.fieldId?.value
 
-	const getChartData = trpc().table.aggregate.chart.query(
-		{
-			tableId: $table.id.value,
-			viewId: $view.id.value,
-			visualizationId: visualization.id.value,
-		},
-		{
-			queryHash: visualization.id.value,
-		},
-	)
+	const getChartData = $aggregateChartFn(visualization)
 
 	const updateVisualization = trpc().table.visualization.update.mutation({
 		async onSuccess() {

@@ -288,6 +288,9 @@ export const config: InitOptions = {
         'postman collections': 'Postman Collections',
         Search: 'Search String Fields',
         'API Preview': 'API Preview',
+        share: 'share',
+        'enable share': 'enable share',
+        'disable share': 'disable share',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -599,6 +602,9 @@ export const config: InitOptions = {
         'postman collections': 'Postman 集合',
         Search: '搜索文本类型字段',
         'API Preview': 'API 预览',
+        share: '分享',
+        'enable share': '开启分享',
+        'disable share': '关闭分享',
       },
       webhook: {
         Webhook: 'Webhook',

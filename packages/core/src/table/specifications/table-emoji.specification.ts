@@ -9,7 +9,7 @@ export class WithTableEmoji extends CompositeSpecification {
     super()
   }
 
-  static fromString(emoji: string | null): WithTableEmoji {
+  static fromString(emoji?: string | null): WithTableEmoji {
     return new WithTableEmoji(new TableEmoji(emoji))
   }
 

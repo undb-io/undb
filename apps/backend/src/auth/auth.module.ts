@@ -1,9 +1,6 @@
 import { Module } from '@nestjs/common'
-import type { ConfigType } from '@nestjs/config'
 import { CqrsModule } from '@nestjs/cqrs'
-import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
-import { authConfig } from '../configs/auth.config.js'
 import { UserModule } from '../core/user/user.module.js'
 import { AuthController } from './auth.controller.js'
 import { AuthService } from './auth.service.js'
@@ -20,20 +17,7 @@ const CommandHandlers = [NestLgoinCommandHandler, NestRegisterCommandHandler, Ne
 const QueryHandlers = [NestGetMeQueryHandler]
 
 @Module({
-  imports: [
-    CqrsModule,
-    UserModule,
-    PassportModule,
-    JwtModule.registerAsync({
-      useFactory: (config: ConfigType<typeof authConfig>) => ({
-        secret: config.jwt.secret,
-        signOptions: {
-          expiresIn: '20d',
-        },
-      }),
-      inject: [authConfig.KEY],
-    }),
-  ],
+  imports: [CqrsModule, UserModule, PassportModule],
   providers: [AuthService, LocalStrategy, JwtStrategy, ...CommandHandlers, ...QueryHandlers],
   controllers: [AuthController],
 })

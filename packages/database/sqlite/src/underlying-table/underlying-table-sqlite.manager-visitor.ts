@@ -7,6 +7,7 @@ import type {
   WithNewFieldType,
   WithRatingMax,
   WithTableSchema,
+  WithTableViewId,
   WithoutOption,
 } from '@undb/core'
 import { WithNewField, isSelectFieldType } from '@undb/core'
@@ -27,6 +28,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     const knex = em.getKnex()
     this.knex = knex
   }
+  viewIdEqual(s: WithTableViewId): void {}
   withoutWidget(): void {}
   withChartAggregate(): void {}
   withNumberAggregate(): void {}

@@ -5,6 +5,7 @@ import path from 'path'
 import { entities } from './entity/index.js'
 import { SqliteLogger } from './logger.js'
 import { Migration20230616021158 } from './migrations/Migration20230616021158.js'
+import { Migration20230627044903 } from './migrations/Migration20230627044903.js'
 
 export const createConfig = (data: string, env = 'development') =>
   defineConfig({
@@ -16,7 +17,7 @@ export const createConfig = (data: string, env = 'development') =>
     dbName: path.join(data, `undb.db`),
     debug: env !== 'production' ? ['query'] : false,
     forceUndefined: true,
-    flushMode: FlushMode.AUTO,
+    flushMode: FlushMode.ALWAYS,
     loggerFactory: (options) => new SqliteLogger(options),
     migrations: {
       disableForeignKeys: true,
@@ -25,6 +26,10 @@ export const createConfig = (data: string, env = 'development') =>
         {
           name: 'initial',
           class: Migration20230616021158,
+        },
+        {
+          name: 'share',
+          class: Migration20230627044903,
         },
       ],
     },

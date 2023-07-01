@@ -63,12 +63,14 @@ import type { WithNewField } from './table-field.specification.js'
 import type { WithTableId } from './table-id.specification.js'
 import type { WithTableName } from './table-name.specification.js'
 import type { WithTableSchema } from './table-schema.specification.js'
+import { WithTableViewId } from './table-view-id.specification.js'
 
 export interface ITableSpecVisitor extends ISpecVisitor {
   idEqual(s: WithTableId): void
   nameEqual(s: WithTableName): void
   emojiEqual(s: WithTableEmoji): void
   schemaEqual(s: WithTableSchema): void
+  viewIdEqual(s: WithTableViewId): void
   viewsEqual(s: WithTableViews): void
   viewEqual(s: WithTableView): void
   viewNameEqual(s: WithViewName): void

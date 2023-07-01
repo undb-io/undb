@@ -27,7 +27,7 @@
 
 	const data = trpc().record.list.query(
 		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
-		{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash },
+		{ enabled: false, refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash },
 	)
 
 	const setFilter = trpc().table.view.filter.set.mutation({
