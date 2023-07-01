@@ -29,8 +29,17 @@
 							{field.id.value}
 							<div class="absolute left-[-25px] translate-y-[50%] top-0">
 								{#if field.type === 'reference'}
-									{#if field.isOneway}
-										<Anchor id={field.id.value} connections={[field.foreignTableId.into('')]} direction="west" />
+									{@const foreignTableId = field.foreignTableId.into()}
+									{#if foreignTableId}
+										{#if field.isOneway}
+											<Anchor id={field.id.value} output connections={[foreignTableId]} direction="west" />
+										{:else if field.isTwoway}
+											<Anchor
+												id={field.id.value}
+												connections={[[foreignTableId, field.symmetricReferenceFieldId?.value ?? '']]}
+												direction="west"
+											/>
+										{/if}
 									{/if}
 								{/if}
 							</div>
