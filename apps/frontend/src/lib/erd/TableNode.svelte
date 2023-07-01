@@ -8,12 +8,10 @@
 </script>
 
 <Node useDefaults id={table.id.value} label={table.name.value}>
-	{#each table.schema.referenceFields as referenceField}
-		<!-- <Anchor id={referenceField.id.value} output /> -->
-	{/each}
+	<Anchor bgColor="transparent" id={table.id.value} input direction="west" />
 	<div class="flex items-center justify-center p-2">{table.name.value}</div>
 
-	<Table>
+	<Table striped>
 		<TableHead>
 			<TableHeadCell>id</TableHeadCell>
 			<TableHeadCell>{$t('Name', { ns: 'common' })}</TableHeadCell>
@@ -24,7 +22,18 @@
 			<TableBodyRow />
 			{#each table.schema.fields as field}
 				<TableBodyRow>
-					<TableBodyCell>{field.id.value}</TableBodyCell>
+					<TableBodyCell>
+						<div class="relative">
+							{field.id.value}
+							<div class="absolute">
+								{#if field.type === 'reference'}
+									{#if field.isOneway}
+										<Anchor id={field.id.value} connections={[field.foreignTableId.into('')]} direction="west" />
+									{/if}
+								{/if}
+							</div>
+						</div>
+					</TableBodyCell>
 					<TableBodyCell>{field.name.value}</TableBodyCell>
 					<TableBodyCell>{$t(field.type)}</TableBodyCell>
 				</TableBodyRow>

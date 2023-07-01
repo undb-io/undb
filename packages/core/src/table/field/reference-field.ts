@@ -73,6 +73,14 @@ export class ReferenceField extends Mixin(
     return this.getDisplayValues(displayValues)?.toString() ?? null
   }
 
+  get isOneway(): boolean {
+    return !this.isTwoway
+  }
+
+  get isTwoway(): boolean {
+    return !!this.symmetricReferenceFieldId
+  }
+
   get symmetricReferenceFieldId() {
     return this.props.symmetricReferenceFieldId
   }
