@@ -5,11 +5,13 @@
 	import { t } from '$lib/i18n'
 
 	export let table: CoreTable
+	export let position: { x: number; y: number } | undefined = undefined
+	export let zIndex: number | undefined = undefined
 </script>
 
-<Node useDefaults id={table.id.value} label={table.name.value}>
+<Node useDefaults id={table.id.value} label={table.name.value} {position} {zIndex}>
 	<Anchor bgColor="transparent" id={table.id.value} input direction="west" />
-	<div class="flex items-center justify-center p-2">{table.name.value}</div>
+	<div class="flex items-center justify-center p-1">{table.name.value}</div>
 
 	<Table striped>
 		<TableHead>
@@ -25,7 +27,7 @@
 					<TableBodyCell>
 						<div class="relative">
 							{field.id.value}
-							<div class="absolute">
+							<div class="absolute left-[-25px] translate-y-[50%] top-0">
 								{#if field.type === 'reference'}
 									{#if field.isOneway}
 										<Anchor id={field.id.value} connections={[field.foreignTableId.into('')]} direction="west" />

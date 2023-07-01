@@ -7,8 +7,9 @@
 </script>
 
 <Svelvet minimap controls>
-	<TableNode table={$table} />
-	{#each $allTablesExcludeCurren as t}
-		<TableNode table={t} />
+	<TableNode table={$table} position={{ x: 0, y: 0 }} zIndex={100} />
+	{#each $allTablesExcludeCurren as t, index}
+		{@const position = { x: ((index + 1) % 5) * 400, y: ((index + 1) / 5) * 400 }}
+		<TableNode table={t} zIndex={1} {position} />
 	{/each}
 </Svelvet>
