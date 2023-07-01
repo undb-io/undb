@@ -11,6 +11,7 @@
 	import Portal from 'svelte-portal'
 	import { t } from '$lib/i18n'
 	import { webhookListDrawer } from '$lib/store/drawer'
+	import { erdModal } from '$lib/store/modal'
 
 	const table = getTable()
 	const currentView = getView()
@@ -96,6 +97,7 @@
 	}
 </script>
 
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
 	class={cx('group', active && 'min-w-[100px]')}
 	data-view-id={view.id.value}
@@ -167,6 +169,16 @@
 				>
 					<i class="ti ti-webhook text-gray-600" />
 					<span>{$t('Webhook')}</span>
+				</DropdownItem>
+				<DropdownItem
+					on:click={() => {
+						erdModal.open()
+						open = false
+					}}
+					class="text-xs font-normal inline-flex items-center gap-2"
+				>
+					<i class="ti ti-hierarchy-3 text-gray-600" />
+					<span>{$t('ERD')}</span>
 				</DropdownItem>
 				{#if $table.views.count > 1}
 					<DropdownDivider />
