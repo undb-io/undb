@@ -55,8 +55,7 @@
 <img width="2488" alt="image" src="https://github.com/undb-xyz/undb/assets/22788984/b80099d9-afe6-4b54-b248-c13a64057c57">
 
 #### erd
-<img width="2541" alt="image" src="https://github.com/undb-xyz/undb/assets/22788984/9507f67e-0ff2-481e-848d-cf35a8f6e143">
-
+<img width="2532" alt="image" src="https://github.com/undb-xyz/undb/assets/22788984/c3f0fce6-ea78-4c3c-9180-285e7f17c345">
 
 ## Deploy
 
