@@ -15,6 +15,8 @@ import {
   autoIncrementFilterOperators,
   autoIncrementFilterValue,
 } from '../field/fields/auto-increment/auto-increment.filter.js'
+import type { IAverageFilter } from '../field/fields/average/average.filter.js'
+import { averageFilter, averageFilterOperators, averageFilterValue } from '../field/fields/average/average.filter.js'
 import type { IEmailFilter } from '../field/fields/email/email.filter.js'
 import { emailFilter, emailFilterOperators, emailFilterValue } from '../field/fields/email/email.filter.js'
 import type { IStringFilter } from '../field/fields/string/string.filter.js'
@@ -58,8 +60,6 @@ import {
   StringStartsWith,
   WithRecordIds,
 } from '../record/index.js'
-import type { IAverageFilter } from './average.filter.js'
-import { averageFilter, averageFilterValue } from './average.filter.js'
 import type { IBoolFilter } from './bool.filter.js'
 import { boolFilter, boolFilterValue } from './bool.filter.js'
 import type { ICollaboratorFilter } from './collaborator.filter.js'
@@ -99,7 +99,6 @@ import {
   $is_today,
   $is_true,
   $neq,
-  averageFilterOperators,
   boolFilterOperators,
   collaboratorFilterOperators,
   colorFilterOperators,

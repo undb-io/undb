@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type {
   AttachmentField,
   AutoIncrementField,
+  AverageField,
   BoolField,
+  CollaboratorField,
   ColorField,
   CountField,
   CreatedAtField,
@@ -27,10 +28,8 @@ import type {
   TreeField,
   UpdatedAtField,
   UpdatedByField,
-} from '../field'
-import type { AverageField } from '../field/average-field'
-import type { CollaboratorField } from '../field/collaborator-field'
-import type { UrlField } from '../field/fields/url'
+  UrlField,
+} from '../field/index.js'
 
 export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   id(field: IdField): void {}

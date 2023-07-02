@@ -6,17 +6,6 @@ import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableId } from '../value-objects/table-id.vo.js'
 import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
-import type { AverageFieldValue } from './average-field-value.js'
-import type { AverageField } from './average-field.js'
-import type { IAverageFieldValue } from './average-field.type.js'
-import {
-  averageFieldQuerySchema,
-  averageFieldQueryValue,
-  averageTypeSchema,
-  createAverageFieldSchema,
-  createAverageFieldValue_internal,
-  updateAverageFieldSchema,
-} from './average-field.type.js'
 import type { BoolFieldValue } from './bool-field-value.js'
 import type { BoolField } from './bool-field.js'
 import type { IBoolFieldValue } from './bool-field.type.js'
@@ -121,6 +110,7 @@ import type { BaseField } from './field.base.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
 import type { AttachmentFieldValue } from './fields/attachment/attachment-field-value.js'
 import type { AutoIncrementFieldValue } from './fields/auto-increment/auto-increment-field-value.js'
+import type { AverageFieldValue } from './fields/average/average-field-value.js'
 import type { EmailFieldValue } from './fields/email/email-field-value.js'
 import type { EmailField } from './fields/email/email-field.js'
 import type { IEmailFieldValue } from './fields/email/email-field.type.js'
@@ -135,8 +125,10 @@ import {
 import type {
   AttachmentField,
   AutoIncrementField,
+  AverageField,
   IAttachmentFieldValue,
   IAutoIncrementFieldValue,
+  IAverageFieldValue,
   IStringFieldValue,
   StringField,
 } from './fields/index.js'
@@ -147,16 +139,22 @@ import {
   autoIncrementFieldQuerySchema,
   autoIncrementQueryValue,
   autoIncrementTypeSchema,
+  averageFieldQuerySchema,
+  averageFieldQueryValue,
+  averageTypeSchema,
   createAttachmentFieldSchema,
   createAttachmentFieldValue_internal,
   createAutoIncrementFieldSchema,
   createAutoIncrementFieldValue_internal,
+  createAverageFieldSchema,
+  createAverageFieldValue_internal,
   createStringFieldValue_internal,
   stringFieldQuerySchema,
   stringFieldQueryValue,
   stringTypeSchema,
   updateAttachmentFieldSchema,
   updateAutoIncrementFieldSchema,
+  updateAverageFieldSchema,
   updateStringFieldSchema,
 } from './fields/index.js'
 import type { StringFieldValue } from './fields/string/string-field-value.js'

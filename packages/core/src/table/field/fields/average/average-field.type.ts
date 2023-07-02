@@ -1,8 +1,8 @@
 import * as z from 'zod'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import { fieldIdSchema } from '../../value-objects/field-id.schema.js'
 import { AverageField } from './average-field.js'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
-import { fieldIdSchema } from './value-objects/field-id.schema.js'
 
 export const averageTypeSchema = z.literal('average')
 export type AverageType = z.infer<typeof averageTypeSchema>
