@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { zipObject } from 'lodash-es'
-import { ZodRawShape, ZodType, z } from 'zod'
+import type { ZodRawShape, ZodType } from 'zod'
+import { z } from 'zod'
 import type { CollaboratorField } from '../field/collaborator-field.js'
 import type { Field, IFieldType } from '../field/field.type.js'
+import { urlReadableValueSchema } from '../field/fields/url/url-field.type.js'
 import {
   attachmentReadableValueSchema,
   autoIncrementReadableValueSchema,
@@ -38,7 +40,7 @@ import type { MultiSelectField } from '../field/multi-select-field.js'
 import type { ParentField } from '../field/parent-field.js'
 import type { SelectField } from '../field/select-field.js'
 import type { TreeField } from '../field/tree-field.js'
-import { Table } from '../table.js'
+import type { Table } from '../table.js'
 import type { IQueryRecordSchema } from './record.type.js'
 
 export const recordReadableSchema = z.record(z.any())
@@ -61,6 +63,7 @@ export const recordReadableValueMapper = (
     'auto-increment': (field) => record?.autoIncrement,
     color: getValue,
     email: getValue,
+    url: getValue,
     json: getValue,
     date: getValue,
     select: (field) => {
@@ -152,6 +155,7 @@ export const recordReadableValueSchemaMap: globalThis.Record<IFieldType, ZodType
   'auto-increment': autoIncrementReadableValueSchema,
   color: colorReadableValueSchema,
   email: emailReadableValueSchema,
+  url: urlReadableValueSchema,
   // jsonFieldQueryValue is not valid for openapi
   json: jsonReadableValueSchema,
   date: dateReadableValueSchema,

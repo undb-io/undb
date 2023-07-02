@@ -26,6 +26,7 @@ const displayFieldTypes: Set<IFieldType> = new Set<IFieldType>([
   'color',
   'date',
   'email',
+  'url',
   // FIXME: https://github.com/undb-xyz/undb/issues/780
   // 'attachment',
   'number',
@@ -92,6 +93,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   string: {
     color: 'ignore',
     email: 'ignore',
+    url: 'cast',
     json: 'cast',
     number: 'cast',
     date: 'cast',
@@ -114,6 +116,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     attachment: 'clear',
     color: 'clear',
     email: 'clear',
+    url: 'clear',
     json: 'cast',
     select: 'clear',
     'multi-select': 'clear',
@@ -134,6 +137,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     attachment: 'clear',
     color: 'clear',
     email: 'clear',
+    url: 'clear',
     json: 'cast',
     select: 'clear',
     'multi-select': 'clear',
@@ -154,6 +158,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     attachment: 'clear',
     color: 'clear',
     email: 'clear',
+    url: 'clear',
     json: 'cast',
     select: 'clear',
     'multi-select': 'clear',
@@ -174,6 +179,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     attachment: 'clear',
     email: 'clear',
     json: 'cast',
+    url: 'clear',
     date: 'clear',
     number: 'clear',
     select: 'cast',
@@ -195,6 +201,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     color: 'clear',
     date: 'clear',
     json: 'cast',
+    url: 'clear',
     number: 'clear',
     select: 'clear',
     'multi-select': 'clear',
@@ -209,10 +216,32 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     lookup: 'ignore',
     reference: 'clear',
   },
+  url: {
+    string: 'cast',
+    attachment: 'clear',
+    color: 'clear',
+    date: 'clear',
+    json: 'cast',
+    number: 'clear',
+    email: 'clear',
+    select: 'clear',
+    'multi-select': 'clear',
+    bool: 'cast',
+    rating: 'clear',
+    'date-range': 'clear',
+    currency: 'clear',
+    collaborator: 'clear',
+    count: 'ignore',
+    average: 'ignore',
+    sum: 'ignore',
+    lookup: 'ignore',
+    reference: 'clear',
+  },
   json: {
     string: 'cast',
     attachment: 'clear',
     color: 'clear',
+    url: 'clear',
     date: 'clear',
     email: 'clear',
     number: 'clear',
@@ -234,6 +263,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     attachment: 'clear',
     color: 'clear',
     date: 'clear',
+    url: 'clear',
     number: 'cast',
     select: 'clear',
     email: 'clear',
@@ -254,6 +284,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     attachment: 'clear',
     color: 'clear',
     date: 'clear',
+    url: 'clear',
     number: 'clear',
     select: 'clear',
     email: 'clear',
@@ -275,6 +306,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     attachment: 'clear',
     email: 'clear',
     json: 'cast',
+    url: 'clear',
     number: 'clear',
     select: 'clear',
     'date-range': 'clear',
@@ -294,6 +326,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     attachment: 'clear',
     email: 'clear',
     json: 'cast',
+    url: 'clear',
     number: 'clear',
     select: 'clear',
     date: 'cast',
@@ -313,6 +346,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     attachment: 'clear',
     email: 'clear',
     json: 'clear',
+    url: 'clear',
     color: 'clear',
     date: 'clear',
     number: 'clear',
@@ -332,6 +366,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     string: 'cast',
     attachment: 'clear',
     email: 'clear',
+    url: 'clear',
     json: 'clear',
     color: 'clear',
     date: 'clear',
@@ -353,6 +388,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     attachment: 'clear',
     email: 'clear',
     json: 'cast',
+    url: 'clear',
     color: 'clear',
     date: 'clear',
     number: 'clear',
@@ -372,6 +408,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     string: 'cast',
     attachment: 'clear',
     email: 'clear',
+    url: 'clear',
     json: 'cast',
     color: 'clear',
     date: 'clear',
@@ -391,6 +428,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   sum: {
     string: 'cast',
     attachment: 'clear',
+    url: 'clear',
     email: 'clear',
     json: 'cast',
     color: 'clear',
@@ -411,6 +449,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   average: {
     string: 'cast',
     attachment: 'clear',
+    url: 'clear',
     email: 'clear',
     json: 'cast',
     color: 'clear',
@@ -431,6 +470,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
   lookup: {
     string: 'cast',
     attachment: 'clear',
+    url: 'clear',
     email: 'clear',
     json: 'clear',
     color: 'clear',
@@ -505,6 +545,13 @@ function isEmailValue(value: string | number | null): boolean {
   return false
 }
 
+function isUrlValue(value: string | number | null): boolean {
+  if (typeof value === 'string') {
+    return z.string().url().safeParse(value).success
+  }
+  return false
+}
+
 function isJsonValue(value: string | number | null | object): boolean {
   return isPlainObject(value)
 }
@@ -531,6 +578,10 @@ export const inferFieldType = (
     .when(
       (distinctValues) => distinctValues.every(isEmailValue),
       () => ({ type: 'email' }),
+    )
+    .when(
+      (distinctValues) => distinctValues.every(isUrlValue),
+      () => ({ type: 'url' }),
     )
     .when(
       (distinctValues) => distinctValues.some(isJsonValue),

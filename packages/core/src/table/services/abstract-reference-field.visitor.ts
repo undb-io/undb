@@ -30,6 +30,7 @@ import type {
 } from '../field'
 import type { AverageField } from '../field/average-field'
 import type { CollaboratorField } from '../field/collaborator-field'
+import type { UrlField } from '../field/fields/url'
 
 export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   id(field: IdField): void {}
@@ -41,6 +42,7 @@ export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   autoIncrement(field: AutoIncrementField): void {}
   string(field: StringField): void {}
   email(field: EmailField): void {}
+  url(field: UrlField): void {}
   json(field: JsonField): void {}
   color(field: ColorField): void {}
   number(field: NumberField): void {}

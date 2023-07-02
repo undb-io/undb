@@ -166,6 +166,14 @@ export class UnderlyingEmailColumn extends UnderlyingFieldColumn {
     tb.string(this.tempName)
   }
 }
+export class UnderlyingUrlColumn extends UnderlyingFieldColumn {
+  build(tb: Knex.TableBuilder): void {
+    tb.string(this.name)
+  }
+  buildTemp(tb: Knex.TableBuilder): void {
+    tb.string(this.tempName)
+  }
+}
 
 export class UnderlyingJsonColumn extends UnderlyingFieldColumn {
   build(tb: Knex.TableBuilder): void {

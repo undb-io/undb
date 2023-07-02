@@ -11,12 +11,12 @@ import {
   UnderlyingColorColumn,
   UnderlyingCurrencyColumn,
   UnderlyingDateColumn,
-  UnderlyingEmailColumn,
   UnderlyingJsonColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
   UnderlyingStringColumn,
+  UnderlyingUrlColumn,
 } from '../underlying-column.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
@@ -75,7 +75,11 @@ export class AverageColumnTypeModifier extends BaseColumnTypeModifier<AverageFie
     this.alterColumn(newColumn, this.column)
   }
   email(): void {
-    const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
+    const newColumn = new UnderlyingUrlColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
+  }
+  url(): void {
+    const newColumn = new UnderlyingColorColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
   json(): void {

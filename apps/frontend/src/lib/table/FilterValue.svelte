@@ -2,6 +2,7 @@
 	import Color from '$lib/cell/CellInput/Color.svelte'
 	import Date from '$lib/cell/CellInput/Date.svelte'
 	import Email from '$lib/cell/CellInput/Email.svelte'
+	import Url from '$lib/cell/CellInput/Url.svelte'
 	import FilterExtensionPicker from '$lib/cell/CellInput/FilterExtensionPicker.svelte'
 	import FilterTypePicker from '$lib/cell/CellInput/FilterTypePicker.svelte'
 	import Number from '$lib/cell/CellInput/Number.svelte'
@@ -38,6 +39,8 @@
 			component = String
 		} else if (type === 'email') {
 			component = Email
+		} else if (type === 'url') {
+			component = Url
 		} else if (type === 'date' || type === 'updated-at' || type === 'created-at') {
 			if (isBuiltInDateOperator(operator as IDateFilterOperator)) {
 				component = undefined

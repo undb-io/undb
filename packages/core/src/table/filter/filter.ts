@@ -3,6 +3,8 @@ import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
 import { colorFieldValue } from '../field/color-field.type.js'
+import type { IUrlFilter } from '../field/fields/url/url.filter.js'
+import { urlFilter, urlFilterOperators, urlFilterValue } from '../field/fields/url/url.filter.js'
 import { DateFieldValue, NumberFieldValue, SelectFieldValue, StringFieldValue } from '../field/index.js'
 import type { ISelectFieldValue } from '../field/select-field.type.js'
 import {
@@ -139,6 +141,7 @@ export const filterValue = z.union([
   autoIncrementFilterValue,
   stringFilterValue,
   emailFilterValue,
+  urlFilterValue,
   jsonFilterValue,
   colorFieldValue,
   numberFilterValue,
@@ -170,6 +173,7 @@ export const operaotrs = z.union([
   autoIncrementFilterOperators,
   stringFilterOperators,
   emailFilterOperators,
+  urlFilterOperators,
   jsonFilterOperators,
   colorFilterOperators,
   numberFilterOperators,
@@ -201,6 +205,7 @@ const filter = z.discriminatedUnion('type', [
   autoIncrementFilter,
   stringFilter,
   emailFilter,
+  urlFilter,
   jsonFilter,
   colorFilter,
   numberFilter,
@@ -279,7 +284,9 @@ const convertIdFilter = (filter: IIdFilter): Option<CompositeSpecification> => {
   }
 }
 
-const convertStringFilter = (filter: IStringFilter | IEmailFilter | IColorFilter): Option<CompositeSpecification> => {
+const convertStringFilter = (
+  filter: IStringFilter | IEmailFilter | IColorFilter | IUrlFilter,
+): Option<CompositeSpecification> => {
   if (filter.value === undefined) {
     return None
   }
@@ -549,6 +556,7 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
       return convertIdFilter(filter)
     case 'string':
     case 'email':
+    case 'url':
     case 'color':
       return convertStringFilter(filter)
     case 'json':
