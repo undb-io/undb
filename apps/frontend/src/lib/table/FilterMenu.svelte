@@ -59,10 +59,10 @@
 	on:click={() => (open = true)}
 	class={cx(
 		'h-full !rounded-md whitespace-nowrap border-0 hover:!bg-blue-50 dark:hover:!bg-gray-800',
-		!!$filters.length && '!bg-blue-50 dark:!bg-blue-100',
+		!!$filters.length && '!bg-blue-50 dark:!bg-primary-600',
 	)}
 >
-	<span class="inline-flex items-center gap-2 !text-blue-600">
+	<span class="inline-flex items-center gap-2 text-blue-600 dark:text-gray-100">
 		<i class="ti ti-filter text-sm" />
 		{$t('Filter')}
 

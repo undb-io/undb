@@ -445,7 +445,13 @@
 	{/if}
 </div>
 
-<Toast color="green" transition={slide} position="top-right" class="z-[99999]" bind:open={copied}>
+<Toast
+	color="green"
+	transition={slide}
+	position="top-right"
+	class="z-[99999] dark:bg-blue-50/95 dark:text-gray-700"
+	bind:open={copied}
+>
 	<svelte:fragment slot="icon">
 		<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
 			><path

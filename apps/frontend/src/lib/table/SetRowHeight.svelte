@@ -23,14 +23,13 @@
 
 <Button
 	size="xs"
-	color="light"
-	outline
-	class="h-full w-8 px-0 !rounded-md inline-flex items-center whitespace-nowrap transition"
+	color="alternative"
+	class="h-full w-8 px-0 !rounded-md inline-flex items-center whitespace-nowrap transition dark:hover:bg-gray-800 dark:border-gray-400"
 	on:click={() => (open = !open)}
 >
-	<i class="ti ti-line-height text-sm" />
+	<i class="ti ti-line-height text-sm dark:text-gray-200" />
 </Button>
-<Dropdown bind:open class="z-[999999]">
+<Dropdown bind:open class="z-[999999] shadow-md dark:border  dark:rounded-lg">
 	{#each viewRowHeights as rowHeight}
 		<DropdownItem
 			class="flex items-center justify-between"

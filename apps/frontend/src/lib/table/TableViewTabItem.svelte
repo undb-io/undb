@@ -157,7 +157,7 @@
 					<span>{$t('Export Excel')}</span>
 				</DropdownItem>
 				<DropdownItem on:click={() => exportGrid('json')} class="text-xs font-normal inline-flex items-center gap-2">
-					<i class="ti ti-file-export text-gray-600" />
+					<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
 					<span>{$t('Export Json')}</span>
 				</DropdownItem>
 				<DropdownItem
@@ -177,7 +177,7 @@
 					}}
 					class="text-xs font-normal inline-flex items-center gap-2"
 				>
-					<i class="ti ti-hierarchy-3 text-gray-600" />
+					<i class="ti ti-hierarchy-3 text-gray-600 dark:text-gray-50" />
 					<span>{$t('ERD')}</span>
 				</DropdownItem>
 				{#if $table.views.count > 1}

@@ -87,8 +87,16 @@
 	}
 </script>
 
-<Button color="alternative" size="xs">{$t('share')}</Button>
-<Dropdown bind:open class="w-96 text-sm font-light z-50 border" title={$t('share')} trigger="click" placement="bottom">
+<Button color="alternative" size="xs" class="dark:hover:bg-gray-800  dark:border-gray-400 dark:text-gray-200"
+	>{$t('share')}</Button
+>
+<Dropdown
+	bind:open
+	class="w-96 text-sm font-light z-50 border rounded-lg "
+	title={$t('share')}
+	trigger="click"
+	placement="bottom"
+>
 	<div class="space-y-2 p-3">
 		<Toggle bind:checked={enabled} on:change={onChange}>{enabled ? $t('disable share') : $t('enable share')}</Toggle>
 		{#if share}

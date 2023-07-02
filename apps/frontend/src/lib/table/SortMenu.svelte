@@ -60,11 +60,11 @@
 	color="light"
 	class={cx(
 		'h-full !rounded-md whitespace-nowrap border-0 hover:!bg-blue-50  dark:hover:!bg-gray-800 dark:bg-gray-700',
-		!!$sorts.length && '!bg-blue-50',
+		!!$sorts.length && '!bg-blue-50 dark:!bg-primary-600',
 	)}
 	on:click={() => (open = true)}
 >
-	<span class="inline-flex items-center gap-2 !text-blue-600">
+	<span class="inline-flex items-center gap-2 text-blue-600 dark:text-gray-100">
 		<i class="ti ti-arrows-sort text-sm" />
 		<span class="whitespace-nowrap">{$t('Sort')}</span>
 		{#if !!$sorts.length}
