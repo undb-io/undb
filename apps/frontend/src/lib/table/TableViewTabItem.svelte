@@ -11,6 +11,7 @@
 	import Portal from 'svelte-portal'
 	import { t } from '$lib/i18n'
 	import { webhookListDrawer } from '$lib/store/drawer'
+	import { erdModal } from '$lib/store/modal'
 
 	const table = getTable()
 	const currentView = getView()
@@ -96,6 +97,7 @@
 	}
 </script>
 
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
 	class={cx('group', active && 'min-w-[100px]')}
 	data-view-id={view.id.value}
@@ -108,12 +110,12 @@
 		class={cx(
 			'inline-flex w-full justify-between items-center gap-2 text-sm font-medium text-center disabled:cursor-not-allowed px-4 py-2 border-b-2',
 			active
-				? 'text-blue-600  border-blue-600 dark:text-blue-500 dark:border-blue-500 active'
-				: 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 text-gray-500 dark:text-gray-400',
+				? 'text-blue-600  border-blue-600 dark:text-gray-50 dark:border-blue-500 active'
+				: 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 text-gray-500 dark:text-gray-300',
 		)}
 	>
 		<span class="inline-flex items-center gap-2">
-			<ViewIcon type={view.displayType} class={cx(!active ? '!text-gray-500' : '!font-semibold')} />
+			<ViewIcon type={view.displayType} class={cx(!active ? '!text-gray-500 dark:!text-gray-300' : '!font-semibold')} />
 			{#if updating}
 				<form on:submit|preventDefault|stopPropagation={update}>
 					<input
@@ -139,23 +141,23 @@
 		<Portal target="body">
 			<Dropdown triggeredBy={`#${view.id.value}`} bind:open class="!z-[9999999] w-48">
 				<DropdownItem on:click={() => (updating = true)} class="text-xs font-normal inline-flex items-center gap-2">
-					<i class="ti ti-pencil text-gray-600" />
+					<i class="ti ti-pencil text-gray-600 dark:text-gray-50" />
 					<span>{$t('Update View Name')}</span>
 				</DropdownItem>
 				<DropdownItem on:click={duplicateView} class="text-xs font-normal inline-flex items-center gap-2">
-					<i class="ti ti-copy text-gray-600" />
+					<i class="ti ti-copy text-gray-600 dark:text-gray-50" />
 					<span>{$t('Duplicate View')}</span>
 				</DropdownItem>
 				<DropdownItem on:click={() => exportGrid('csv')} class="text-xs font-normal inline-flex items-center gap-2">
-					<i class="ti ti-file-export text-gray-600" />
+					<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
 					<span>{$t('Export CSV')}</span>
 				</DropdownItem>
 				<DropdownItem on:click={() => exportGrid('excel')} class="text-xs font-normal inline-flex items-center gap-2">
-					<i class="ti ti-file-export text-gray-600" />
+					<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
 					<span>{$t('Export Excel')}</span>
 				</DropdownItem>
 				<DropdownItem on:click={() => exportGrid('json')} class="text-xs font-normal inline-flex items-center gap-2">
-					<i class="ti ti-file-export text-gray-600" />
+					<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
 					<span>{$t('Export Json')}</span>
 				</DropdownItem>
 				<DropdownItem
@@ -165,8 +167,18 @@
 					}}
 					class="text-xs font-normal inline-flex items-center gap-2"
 				>
-					<i class="ti ti-webhook text-gray-600" />
+					<i class="ti ti-webhook text-gray-600 dark:text-gray-50" />
 					<span>{$t('Webhook')}</span>
+				</DropdownItem>
+				<DropdownItem
+					on:click={() => {
+						erdModal.open()
+						open = false
+					}}
+					class="text-xs font-normal inline-flex items-center gap-2"
+				>
+					<i class="ti ti-hierarchy-3 text-gray-600 dark:text-gray-50" />
+					<span>{$t('ERD')}</span>
 				</DropdownItem>
 				{#if $table.views.count > 1}
 					<DropdownDivider />

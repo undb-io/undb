@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import type { CurrencyField, JsonField, MultiSelectField } from '@undb/core'
+import type { CurrencyField, JsonField, MultiSelectField, UrlField } from '@undb/core'
 import {
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
@@ -116,6 +116,9 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
     throw new Error('Method not implemented.')
   }
   email(field: EmailField): void {
+    throw new Error('Method not implemented.')
+  }
+  url(field: UrlField): void {
     throw new Error('Method not implemented.')
   }
   json(field: JsonField): void {

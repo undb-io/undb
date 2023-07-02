@@ -11,6 +11,7 @@ import type { CurrencyFieldValue } from './currency-field-value.js'
 import type { DateFieldValue } from './date-field-value.js'
 import type { DateRangeFieldValue } from './date-range-field-value.js'
 import type { EmailFieldValue } from './email-field-value.js'
+import type { UrlFieldValue } from './fields/url/url-field-value.js'
 import type { IdFieldValue } from './id-field-value.js'
 import type { JsonFieldValue } from './json-field-value.js'
 import type { LookupFieldValue } from './lookup-field-value.js'
@@ -36,6 +37,7 @@ export interface IFieldValueVisitor {
   autoIncrement(value: AutoIncrementFieldValue): void
   string(value: StringFieldValue): void
   email(value: EmailFieldValue): void
+  url(value: UrlFieldValue): void
   json(value: JsonFieldValue): void
   color(value: ColorFieldValue): void
   number(value: NumberFieldValue): void

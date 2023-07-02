@@ -22,7 +22,12 @@
 	}}
 >
 	<div class="flex items-center gap-2">
-		<Search size="sm" bind:value {placeholder} />
+		<Search
+			size="sm"
+			bind:value
+			{placeholder}
+			class="dark:hover:bg-gray-800 dark:border-gray-400 dark:hover:border-gray-800 dark:text-gray-200 "
+		/>
 		<Button type="submit" size="xs" class="!p-2.5">
 			<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 				<path

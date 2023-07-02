@@ -106,7 +106,7 @@
 							<span>{$t('Description', { ns: 'common' })}</span>
 						</div>
 
-						<Textarea name="description" bind:value={$form.description} />
+						<Textarea class="dark:!text-gray-200" name="description" bind:value={$form.description} />
 					</Label>
 				{/if}
 

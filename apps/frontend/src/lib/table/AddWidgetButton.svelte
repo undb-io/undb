@@ -68,14 +68,17 @@
 	size="xs"
 	outline
 	{...$$restProps}
-	class={cx('h-full !rounded-md items-center whitespace-nowrap flex gap-2', $$restProps.class)}
+	class={cx(
+		'h-full !rounded-md items-center whitespace-nowrap flex gap-2 dark:text-gray-50 dark:bg-primary-600 dark:border-primary-600 dark:hover-bg-primary-600 dark:hover:bg-primary-700 dark:hover:border-primary-700',
+		$$restProps.class,
+	)}
 >
 	<i class="ti ti-plus" />
 	<span>
 		{$t('add widget')}
 	</span>
 </Button>
-<Dropdown bind:open class="z-[99999] w-48">
+<Dropdown bind:open class="z-[99999] w-48 shadow-lg border rounded-md">
 	<DropdownItem class="flex items-center gap-3" on:click={addNumbers}>
 		<i class="ti ti-123" />
 		<span>{$t('Numbers', { ns: 'common' })}</span>

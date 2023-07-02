@@ -46,6 +46,7 @@ import type {
   ITreeFieldQuerySchema,
   IUpdatedAtFieldQuerySchema,
   IUpdatedByFieldQueryScheam,
+  IUrlFieldQuerySchema,
 } from '@undb/core'
 import {
   AttachmentField as CoreAttachmentField,
@@ -75,6 +76,7 @@ import {
   TreeField as CoreTreeField,
   UpdatedAtField as CoreUpdatedAtField,
   UpdatedByField as CoreUpdatedByField,
+  UrlField as CoreUrlField,
 } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Option } from './option.js'
@@ -345,6 +347,31 @@ export class EmailField extends Field {
       id: this.id,
       name: this.name,
       type: 'email',
+      description: this.description,
+      required: !!this.required,
+      display: !!this.display,
+    }
+  }
+}
+
+@Entity({ discriminatorValue: 'url' })
+export class UrlField extends Field {
+  toDomain(): CoreUrlField {
+    return CoreUrlField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      type: 'url',
+      description: this.description,
+      required: !!this.required,
+      display: !!this.display,
+    })
+  }
+
+  toQuery(): IUrlFieldQuerySchema {
+    return {
+      id: this.id,
+      name: this.name,
+      type: 'url',
       description: this.description,
       required: !!this.required,
       display: !!this.display,
@@ -1098,6 +1125,7 @@ export type IField =
   | AutoIncrementField
   | StringField
   | EmailField
+  | UrlField
   | JsonField
   | ColorField
   | NumberField
@@ -1148,4 +1176,5 @@ export const fieldEntities = [
   CollaboratorField,
   CreatedByField,
   UpdatedByField,
+  UrlField,
 ]

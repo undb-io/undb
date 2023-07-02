@@ -32,6 +32,7 @@ import type {
   TreeFieldValue,
   UpdatedAtFieldValue,
   UpdatedByFieldValue,
+  UrlFieldValue,
 } from '@undb/core'
 import {
   CollaboratorField,
@@ -93,6 +94,9 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
     this.setData(this.fieldId, value.unpack())
   }
   email(value: EmailFieldValue): void {
+    this.setData(this.fieldId, value.unpack())
+  }
+  url(value: UrlFieldValue): void {
     this.setData(this.fieldId, value.unpack())
   }
   json(value: JsonFieldValue): void {

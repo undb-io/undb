@@ -20,6 +20,10 @@ export const createRedocHTML = (table: Table, spec: OpenAPIObject) => {
         margin: 0;
         padding: 0;
       }
+
+      #redoc-container{
+        background-color:white
+      }
     </style>
   </head>
   <body>

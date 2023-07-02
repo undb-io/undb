@@ -12,6 +12,7 @@ import {
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
+  UnderlyingUrlColumn,
 } from '../underlying-column.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
@@ -53,6 +54,10 @@ export class MultiSelectColumnTypeModifier extends BaseColumnTypeModifier<MultiS
   }
   email(): void {
     this.alterColumn(new UnderlyingEmailColumn(this.field.id.value, this.tableId), this.column)
+  }
+  url(): void {
+    const newColumn = new UnderlyingUrlColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
   }
   json(): void {
     const newColumn = new UnderlyingJsonColumn(this.field.id.value, this.tableId)

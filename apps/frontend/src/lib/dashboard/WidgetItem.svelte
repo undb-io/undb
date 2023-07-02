@@ -75,16 +75,16 @@
 
 <div
 	class={cx(
-		'group flex flex-col bg-white !opacity-100 border rounded-md w-full h-full',
+		'group flex flex-col bg-white !opacity-100 border rounded-md w-full h-full dark:bg-gray-700/50 dark:border-gray-500',
 		!$readonly && 'hover:border-blue-600 transition',
 	)}
 >
-	<div class="flex justify-between items-center gap-1 border-b border-gray-200 p-3 grow-0 h-10">
+	<div class="flex justify-between items-center gap-1 border-b border-gray-200 dark:border-gray-500 p-3 grow-0 h-10">
 		<div class="flex items-center gap-1">
 			{#if movePointerDown}
 				<i
 					on:pointerdown={movePointerDown}
-					class=" opacity-0 group-hover:opacity-100 group-hover:block text-gray-500 ti ti-grip-vertical cursor-grab"
+					class=" opacity-0 group-hover:opacity-100 group-hover:block text-gray-500 ti ti-grip-vertical cursor-grab dark:text-gray-200"
 				/>
 			{/if}
 			{#if dataItem.widget?.visualization}
@@ -107,26 +107,26 @@
 		{#if !$readonly}
 			<div class="items-center gap-2 hidden group-hover:flex">
 				<button
-					class="hover:bg-slate-100 w-6 h-6"
+					class="hover:bg-slate-100 w-6 h-6 dark:hover:bg-gray-300"
 					on:click={() => {
 						visualizationModal.open()
 						$currentVisualizationId = dataItem.widget?.visualization?.id.value
 					}}
 				>
-					<i class="text-gray-400 ti ti-arrows-diagonal" />
+					<i class="text-gray-400 ti ti-arrows-diagonal dark:text-gray-200" />
 				</button>
-				<button class="hover:bg-slate-100 w-6 h-6">
-					<i class="text-gray-400 ti ti-dots" />
+				<button class="hover:bg-slate-100 w-6 h-6 dark:hover:bg-gray-300">
+					<i class="text-gray-400 ti ti-dots dark:text-gray-200" />
 				</button>
 				<Dropdown>
 					<DropdownItem
-						class="text-gray-600 text-xs gap-2 flex items-center"
+						class="text-gray-600 text-xs gap-2 flex items-center dark:text-gray-200"
 						on:click={() => {
 							visualizationModal.open()
 							$currentVisualizationId = dataItem.widget?.visualization?.id.value
 						}}
 					>
-						<i class="text-gray-400 ti ti-arrows-diagonal" />
+						<i class="text-gray-400 ti ti-arrows-diagonal dark:text-gray-200" />
 						<span>
 							{$t('full screen', { ns: 'common' })}
 						</span>

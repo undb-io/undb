@@ -35,13 +35,18 @@
 			<Radio
 				value={type.value}
 				bind:group={value}
-				class={cx('px-3 py-2 hover:bg-gray-100 cursor-pointer w-full block', selected && 'bg-gray-100')}
+				class={cx('px-3 py-2 hover:bg-gray-100 cursor-pointer w-full block', selected && 'bg-gray-100 dark:bg-gray-400 dark:hover:!text-gray-700')}
 				custom
 				on:change={() => {
 					open = false
 				}}
 			>
-				<li class="w-full p-2 flex justify-between items-center text-gray-700 hover:bg-gray-100 cursor-pointer">
+				<li
+					class={cx(
+						'w-full p-2 flex justify-between items-center text-gray-700 hover:bg-gray-100 cursor-pointer dark:text-gray-50 dark:hover:!text-gray-700',
+						selected ? 'dark:text-gray-700' : '',
+					)}
+				>
 					<div class="flex flex-1 items-center gap-2 w-full">
 						<FieldIcon type={type.value} size={16} />
 						<span>

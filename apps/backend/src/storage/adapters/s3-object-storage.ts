@@ -66,7 +66,7 @@ export class S3ObjectStorage implements IObjectStorage, OnModuleInit {
 
   async get(name: string): Promise<{ data: Readable; metaData: any }> {
     const bucket = this.config.s3.bucket
-    const output = await this.s3.send(new GetObjectCommand({ Bucket: bucket, Key: name }))
+    const output = (await this.s3.send(new GetObjectCommand({ Bucket: bucket, Key: name }))) as any
     const data = output.Body as Readable
     return { data, metaData: output.Metadata }
   }

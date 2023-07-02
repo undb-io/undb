@@ -7,6 +7,8 @@ CREATE TABLE `mikro_orm_migrations` (
 );
 INSERT INTO mikro_orm_migrations
 VALUES(1, 'initial', '2023-05-20 09:46:34');
+INSERT INTO mikro_orm_migrations
+VALUES(2, 'share', '2023-05-20 09:46:34');
 CREATE TABLE `undb_table` (
 	`id` text not null,
 	`created_at` datetime not null,

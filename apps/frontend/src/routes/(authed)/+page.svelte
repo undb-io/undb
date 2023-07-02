@@ -19,7 +19,7 @@
 	}
 </script>
 
-<nav class="bg-white border-b border-gray-200 dark:bg-gray-900">
+<nav class="bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-600">
 	{#if $sidebarCollapsed}
 		<div class="fixed top-3 left-3">
 			<button on:click={() => ($sidebarCollapsed = false)}>
@@ -39,7 +39,7 @@
 				<i class="ti ti-chevron-down" />
 			</Button>
 			<Dropdown placement="bottom" class="w-[200px]">
-				<DropdownItem on:click={() => importDataaModal.open()} class="flex items-center gap-2">
+				<DropdownItem on:click={() => importDataModal.open()} class="flex items-center gap-2">
 					<i class="ti ti-csv" />
 					<span>
 						{$t('import data content')}

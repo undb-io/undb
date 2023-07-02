@@ -46,7 +46,7 @@ const namesSchema = fieldNameSchema
 
 export const createTableSchemaSchema = z
   .array(createFieldSchema)
-  .min(1, { message: 'create table required at least one schema field' })
+  // .min(1, { message: 'create table required at least one schema field' })
   .refine((inputs) => hasDuplicates(inputs.map((i) => i.name)), { message: 'field name should not duplicated' })
   .default([])
 

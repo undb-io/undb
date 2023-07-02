@@ -37,6 +37,10 @@ export const getView = () => currentView
 export const currentRecords = writable<Records>([])
 export const getRecords = () => currentRecords
 
+export const allTablesExcludeCurren = derived([allTables, currentTable], ([$allTables, $table]) =>
+	$allTables.filter((t) => t.id !== $table.id.value).map((t) => TableFactory.fromQuery(t)),
+)
+
 export const createTableQ = () => {
 	const { subscribe, update, set } = writable<globalThis.Record<string, string | undefined>>({})
 

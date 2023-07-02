@@ -11,6 +11,7 @@ import {
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
+  UnderlyingUrlColumn,
 } from '../underlying-column.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
@@ -26,6 +27,10 @@ export class ColorColumnTypeModifier extends BaseColumnTypeModifier<ColorField> 
   }
   color(): void {
     throw new Error('Method not implemented.')
+  }
+  url(): void {
+    const newColumn = new UnderlyingUrlColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
   }
   email(): void {
     const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)

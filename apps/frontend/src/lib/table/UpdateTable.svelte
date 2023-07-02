@@ -73,7 +73,7 @@
 
 <Modal placement="top-center" class="static w-full" size="lg" bind:open={$updateTableModal.open}>
 	<svelte:fragment slot="header">
-		<div class="flex justify-between w-full mr-6">
+		<div class="flex justify-between w-full mr-6 dark:text-gray-200">
 			<p class="text-lg dark:text-white">{$t('Update Table')}</p>
 			<button>
 				<i class="ti ti-dots" />
@@ -102,7 +102,7 @@
 						type="text"
 						label="name"
 						bind:value={$form.name}
-						data-invalid={$errors.name}
+						aria-invalid={$errors.name ? 'true' : undefined}
 						required
 						{...$constraints.name}
 					/>

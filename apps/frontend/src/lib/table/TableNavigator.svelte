@@ -7,6 +7,6 @@
 </script>
 
 <Breadcrumb aria-label="undb navigator" class="hidden xl:block" olClass="md:space-x-0 flex items-center">
-	<BreadcrumbItem href="/" home />
-	<BreadcrumbItem class="whitespace-nowrap flex items-center">{$table.name.value}</BreadcrumbItem>
+	<BreadcrumbItem homeClass="dark:text-gray-200 dark:hover:text-gray-50" href="/" home />
+	<BreadcrumbItem class="whitespace-nowrap flex items-center dark:!text-gray-200">{$table.name.value}</BreadcrumbItem>
 </Breadcrumb>

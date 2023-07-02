@@ -106,6 +106,6 @@
 	}
 </script>
 
-<div class="flex-1 overflow-y-auto p-4 h-full">
+<div class="flex-1 overflow-y-auto p-4 dark:!text-gray-200 h-full">
 	<Calendar {plugins} {options} />
 </div>

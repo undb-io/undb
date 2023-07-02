@@ -14,6 +14,7 @@ import {
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
   UnderlyingStringColumn,
+  UnderlyingUrlColumn,
 } from '../underlying-column.js'
 import { CollaboratorForeignTable } from '../underlying-foreign-table.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
@@ -70,6 +71,10 @@ export class DateRangeColumnTypeModifier extends BaseColumnTypeModifier<DateRang
   }
   email(): void {
     const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
+    this.castFromDateRange(newColumn)
+  }
+  url(): void {
+    const newColumn = new UnderlyingUrlColumn(this.field.id.value, this.tableId)
     this.castFromDateRange(newColumn)
   }
   json(): void {

@@ -83,8 +83,8 @@
 	size="xs"
 	color="alternative"
 	class={cx(
-		'h-full !rounded-md gap-2 whitespace-nowrap border-0 hover:!bg-blue-50 !text-blue-600',
-		!!hiddenCount && '!bg-blue-50',
+		'h-full !rounded-md gap-2 whitespace-nowrap border-0 hover:!bg-blue-50 text-blue-600 dark:text-gray-100',
+		!!hiddenCount && '!bg-blue-50 dark:!bg-primary-600',
 	)}
 	on:click={() => (open = true)}
 >
@@ -93,7 +93,9 @@
 		{$t('Manage Fields')}
 	</span>
 	{#if hiddenCount}
-		<Badge color="dark">{$t('N Fields Hidden', { n: hiddenCount })}</Badge>
+		<Badge color="dark" class="dark:bg-primary-900 dark:text-gray-100"
+			>{$t('N Fields Hidden', { n: hiddenCount })}</Badge
+		>
 	{/if}
 </Button>
 

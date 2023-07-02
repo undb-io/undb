@@ -31,6 +31,10 @@ export class EmailColumnTypeModifier extends BaseColumnTypeModifier<EmailField> 
   email(): void {
     throw new Error('Method not implemented.')
   }
+  url(): void {
+    const newColumn = new UnderlyingColorColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
+  }
   json(): void {
     const newColumn = new UnderlyingJsonColumn(this.field.id.value, this.tableId)
     this.castTo('text', newColumn, this.column)
