@@ -152,6 +152,15 @@ import {
   emailTypeSchema,
   updateEmailFieldSchema,
 } from './fields/email/email-field.type.js'
+import type { IStringFieldValue, StringField } from './fields/index.js'
+import {
+  createStringFieldValue_internal,
+  stringFieldQuerySchema,
+  stringFieldQueryValue,
+  stringTypeSchema,
+  updateStringFieldSchema,
+} from './fields/index.js'
+import type { StringFieldValue } from './fields/string/string-field-value.js'
 import type { UrlFieldValue } from './fields/url/url-field-value.js'
 import type { UrlField } from './fields/url/url-field.js'
 import type { IUrlFieldValue } from './fields/url/url-field.type.js'
@@ -174,6 +183,7 @@ import {
   idTypeSchema,
   updateIdFieldSchema,
 } from './id-field.type.js'
+import { createStringFieldSchema } from './index.js'
 import type { JsonFieldValue } from './json-field-value.js'
 import type { JsonField } from './json-field.js'
 import type { IJsonFieldValue } from './json-field.type.js'
@@ -267,17 +277,6 @@ import type {
   WithOptions,
   WithoutOption,
 } from './specifications/select-field.specification.js'
-import type { StringFieldValue } from './string-field-value.js'
-import type { StringField } from './string-field.js'
-import type { IStringFieldValue } from './string-field.type.js'
-import {
-  createStringFieldSchema,
-  createStringFieldValue_internal,
-  stringFieldQuerySchema,
-  stringFieldQueryValue,
-  stringTypeSchema,
-  updateStringFieldSchema,
-} from './string-field.type.js'
 import type { SumFieldValue } from './sum-field-value.js'
 import type { SumField } from './sum-field.js'
 import type { ISumFieldValue } from './sum-field.type.js'
@@ -524,7 +523,6 @@ export type ICreatedByField = IBaseField
 export type IUpdatedAtField = IBaseField & BaseDateField
 export type IUpdatedByField = IBaseField
 export type IAutoIncrementField = IBaseField
-export type IStringField = IBaseField
 export type IJsonField = IBaseField
 export type IAttachmentField = IBaseField
 export type IColorField = IBaseField

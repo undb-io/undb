@@ -1,6 +1,26 @@
 import { z } from 'zod'
-import { baseFilter } from './filter.base.js'
-import { stringFilterOperators } from './operators.js'
+import { baseFilter } from '../../../filter/filter.base.js'
+import {
+  $contains,
+  $ends_with,
+  $eq,
+  $is_empty,
+  $is_not_empty,
+  $neq,
+  $regex,
+  $starts_with,
+} from '../../../filter/operators.js'
+
+export const stringFilterOperators = z.union([
+  $eq,
+  $neq,
+  $contains,
+  $starts_with,
+  $ends_with,
+  $regex,
+  $is_empty,
+  $is_not_empty,
+])
 
 export const stringFilterValue = z.string().nullable()
 export const stringFilter = z

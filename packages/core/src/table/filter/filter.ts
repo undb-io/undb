@@ -5,6 +5,8 @@ import { z } from 'zod'
 import { colorFieldValue } from '../field/color-field.type.js'
 import type { IEmailFilter } from '../field/fields/email/email.filter.js'
 import { emailFilter, emailFilterOperators, emailFilterValue } from '../field/fields/email/email.filter.js'
+import type { IStringFilter } from '../field/fields/string/string.filter.js'
+import { stringFilter, stringFilterOperators, stringFilterValue } from '../field/fields/string/string.filter.js'
 import type { IUrlFilter } from '../field/fields/url/url.filter.js'
 import { urlFilter, urlFilterOperators, urlFilterValue } from '../field/fields/url/url.filter.js'
 import { DateFieldValue, NumberFieldValue, SelectFieldValue, StringFieldValue } from '../field/index.js'
@@ -110,7 +112,6 @@ import {
   ratingFilterOperators,
   referenceFilterOperators,
   selectFilterOperators,
-  stringFilterOperators,
   sumFilterOperators,
   treeFilterOperators,
   updatedAtFilterOperators,
@@ -122,8 +123,6 @@ import { ratingFilter, ratingFilterValue } from './rating.filter.js'
 import { referenceFilter, referenceFilterValue } from './reference.filter.js'
 import type { ISelectFilter } from './select.filter.js'
 import { selectFilter, selectFilterValue } from './select.filter.js'
-import type { IStringFilter } from './string.filter.js'
-import { stringFilter, stringFilterValue } from './string.filter.js'
 import type { ISumFilter } from './sum.filter.js'
 import { sumFilter, sumFilterValue } from './sum.filter.js'
 import type { ITreeFilter } from './tree.filter.js'

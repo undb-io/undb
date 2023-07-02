@@ -11,7 +11,7 @@ import { CurrencyField } from './currency-field.js'
 import { DateField } from './date-field.js'
 import { DateRangeField } from './date-range-field.js'
 import type { Field, ICreateFieldSchema } from './field.type.js'
-import { EmailField, UrlField } from './fields/index.js'
+import { EmailField, StringField, UrlField } from './fields/index.js'
 import { IdField } from './id-field.js'
 import { JsonField } from './json-field.js'
 import { LookupField } from './lookup-field.js'
@@ -21,7 +21,6 @@ import { ParentField } from './parent-field.js'
 import { RatingField } from './rating-field.js'
 import { ReferenceField } from './reference-field.js'
 import { SelectField } from './select-field.js'
-import { StringField } from './string-field.js'
 import { SumField } from './sum-field.js'
 import { TreeField } from './tree-field.js'
 import { UpdatedAtField } from './updated-at-field.js'
@@ -115,6 +114,9 @@ export class FieldFactory {
       case 'updated-by': {
         return UpdatedByField.create(input)
       }
+      default: {
+        throw new Error()
+      }
     }
   }
 
@@ -203,6 +205,9 @@ export class FieldFactory {
       }
       case 'updated-by': {
         return UpdatedByField.unsafeCreate(input)
+      }
+      default: {
+        throw new Error()
       }
     }
   }

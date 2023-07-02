@@ -1,6 +1,6 @@
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import { StringFieldValue } from '../../field/string-field-value.js'
+import { StringFieldValue } from '../../field/fields/string/string-field-value.js'
 import type { Record } from '../record.js'
 import type { IRecordVisitor } from './interface.js'
 import { BaseRecordSpecification } from './record-specification.base.js'

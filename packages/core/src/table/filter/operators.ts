@@ -30,18 +30,6 @@ export const $has_file_extension = z.literal('$has_file_extension')
 export const idFilterOperators = z.union([$eq, $neq, $in, $nin])
 export type IIdFilterOperator = z.infer<typeof idFilterOperators>
 
-export const stringFilterOperators = z.union([
-  $eq,
-  $neq,
-  $contains,
-  $starts_with,
-  $ends_with,
-  $regex,
-  $is_empty,
-  $is_not_empty,
-])
-export type IStringFilterOperator = z.infer<typeof stringFilterOperators>
-
 export const jsonFilterOperators = z.union([$is_empty, $is_not_empty])
 export type IJsonFilterOperator = z.infer<typeof jsonFilterOperators>
 
