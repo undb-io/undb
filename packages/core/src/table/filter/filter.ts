@@ -18,7 +18,7 @@ import {
 import type { IAverageFilter } from '../field/fields/average/average.filter.js'
 import { averageFilter, averageFilterOperators, averageFilterValue } from '../field/fields/average/average.filter.js'
 import type { IBoolFilter } from '../field/fields/bool/bool.filter.js'
-import { boolFilter, boolFilterValue } from '../field/fields/bool/bool.filter.js'
+import { boolFilter, boolFilterOperators, boolFilterValue } from '../field/fields/bool/bool.filter.js'
 import type { ICollaboratorFilter } from '../field/fields/collaborator/collaborator.filter.js'
 import { collaboratorFilter, collaboratorFilterValue } from '../field/fields/collaborator/collaborator.filter.js'
 import type { IEmailFilter } from '../field/fields/email/email.filter.js'
@@ -99,7 +99,6 @@ import {
   $is_today,
   $is_true,
   $neq,
-  boolFilterOperators,
   collaboratorFilterOperators,
   colorFilterOperators,
   countFilterOperators,

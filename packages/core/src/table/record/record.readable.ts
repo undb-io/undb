@@ -2,9 +2,9 @@
 import { zipObject } from 'lodash-es'
 import type { ZodRawShape, ZodType } from 'zod'
 import { z } from 'zod'
-import type { CollaboratorField } from '../field/collaborator-field.js'
 import type { Field, IFieldType } from '../field/field.type.js'
 import { urlReadableValueSchema } from '../field/fields/url/url-field.type.js'
+import type { CollaboratorField } from '../field/index.js'
 import {
   attachmentReadableValueSchema,
   autoIncrementReadableValueSchema,

@@ -1,7 +1,7 @@
 import { CompositeSpecification } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { ICollaboratorProfile } from '../../field/collaborator-field.type.js'
+import type { ICollaboratorProfile } from '../../field/fields/collaborator/collaborator-field.type.js'
 import type { Record } from '../record.js'
 import type { IRecordVisitor } from './interface.js'
 

@@ -1,8 +1,8 @@
 import * as z from 'zod'
 import { userIdSchema } from '../../user/value-objects/user-id.vo.js'
-import { collaboratorProfile } from './collaborator-field.type.js'
 import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
+import { collaboratorProfile } from './fields/collaborator/collaborator-field.type.js'
 import { UpdatedByField } from './updated-by-field.js'
 
 export const updatedByTypeSchema = z.literal('updated-by')

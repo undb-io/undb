@@ -14,4 +14,3 @@ export const collaboratorFilter = z
   .merge(baseFilter)
 
 export type ICollaboratorFilter = z.infer<typeof collaboratorFilter>
-export type ICollaboratorFilterOperator = z.infer<typeof collaboratorFilterOperators>
