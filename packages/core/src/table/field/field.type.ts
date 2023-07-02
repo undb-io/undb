@@ -6,28 +6,6 @@ import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableId } from '../value-objects/table-id.vo.js'
 import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
-import type { BoolFieldValue } from './bool-field-value.js'
-import type { BoolField } from './bool-field.js'
-import type { IBoolFieldValue } from './bool-field.type.js'
-import {
-  boolFieldQuerySchema,
-  boolFieldQueryValue,
-  boolTypeSchema,
-  createBoolFieldSchema,
-  createBoolFieldValue_internal,
-  updateBoolFieldSchema,
-} from './bool-field.type.js'
-import type { CollaboratorFieldValue } from './collaborator-field-value.js'
-import type { CollaboratorField } from './collaborator-field.js'
-import type { ICollaboratorFieldValue } from './collaborator-field.type.js'
-import {
-  collaboratorFieldQuerySchema,
-  collaboratorFieldQueryValue,
-  collaboratorTypeSchema,
-  createCollaboratorFieldSchema,
-  createCollaboratorFieldValue_internal,
-  updateCollaboratorFieldSchema,
-} from './collaborator-field.type.js'
 import type { ColorFieldValue } from './color-field-value.js'
 import type { ColorField } from './color-field.js'
 import type { IColorFieldValue } from './color-field.type.js'
@@ -111,6 +89,7 @@ import { FIELD_TYPE_KEY } from './field.constants.js'
 import type { AttachmentFieldValue } from './fields/attachment/attachment-field-value.js'
 import type { AutoIncrementFieldValue } from './fields/auto-increment/auto-increment-field-value.js'
 import type { AverageFieldValue } from './fields/average/average-field-value.js'
+import type { CollaboratorFieldValue } from './fields/collaborator/collaborator-field-value.js'
 import type { EmailFieldValue } from './fields/email/email-field-value.js'
 import type { EmailField } from './fields/email/email-field.js'
 import type { IEmailFieldValue } from './fields/email/email-field.type.js'
@@ -126,9 +105,15 @@ import type {
   AttachmentField,
   AutoIncrementField,
   AverageField,
+  BoolField,
+  BoolFieldValue,
+  CollaboratorField,
   IAttachmentFieldValue,
   IAutoIncrementFieldValue,
+  IAverageField,
   IAverageFieldValue,
+  IBoolFieldValue,
+  ICollaboratorFieldValue,
   IStringFieldValue,
   StringField,
 } from './fields/index.js'
@@ -142,12 +127,22 @@ import {
   averageFieldQuerySchema,
   averageFieldQueryValue,
   averageTypeSchema,
+  boolFieldQuerySchema,
+  boolFieldQueryValue,
+  boolTypeSchema,
+  collaboratorFieldQuerySchema,
+  collaboratorFieldQueryValue,
+  collaboratorTypeSchema,
   createAttachmentFieldSchema,
   createAttachmentFieldValue_internal,
   createAutoIncrementFieldSchema,
   createAutoIncrementFieldValue_internal,
   createAverageFieldSchema,
   createAverageFieldValue_internal,
+  createBoolFieldSchema,
+  createBoolFieldValue_internal,
+  createCollaboratorFieldSchema,
+  createCollaboratorFieldValue_internal,
   createStringFieldValue_internal,
   stringFieldQuerySchema,
   stringFieldQueryValue,
@@ -155,6 +150,8 @@ import {
   updateAttachmentFieldSchema,
   updateAutoIncrementFieldSchema,
   updateAverageFieldSchema,
+  updateBoolFieldSchema,
+  updateCollaboratorFieldSchema,
   updateStringFieldSchema,
 } from './fields/index.js'
 import type { StringFieldValue } from './fields/string/string-field-value.js'
@@ -533,10 +530,6 @@ export type ISelectField = IBaseField & {
 }
 export type IMultiSelectField = IBaseField & { options: Options }
 
-export type IBoolField = IBaseField
-
-export type ICollaboratorField = IBaseField
-
 export type IReferenceField = IBaseField & {
   displayFields?: DisplayFields
   foreignTableId?: TableId
@@ -548,7 +541,6 @@ export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: 
 
 export type ICountField = IBaseField & { referenceFieldId: FieldId }
 export type ISumField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }
-export type IAverageField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }
 export type ILookupField = IBaseField & { referenceFieldId: FieldId; displayFields?: DisplayFields }
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField | CreatedByField | UpdatedByField

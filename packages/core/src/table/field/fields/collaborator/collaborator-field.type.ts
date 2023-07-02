@@ -1,12 +1,13 @@
 import * as z from 'zod'
-import { colorsSchema } from '../../common/color.js'
-import { userIdSchema } from '../../user/value-objects/user-id.vo.js'
-import { tableIdSchema } from '../value-objects/table-id.vo.js'
+import { colorsSchema } from '../../../../common/color.js'
+import { userIdSchema } from '../../../../user/value-objects/user-id.vo.js'
+import { tableIdSchema } from '../../../value-objects/table-id.vo.js'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { IBaseField } from '../../field.type.js'
+import { fieldIdSchema } from '../../value-objects/field-id.schema.js'
+import type { FieldIssue } from '../../value-objects/field-issue.vo.js'
 import { CollaboratorField } from './collaborator-field.js'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
-import { fieldIdSchema } from './value-objects/field-id.schema.js'
-import type { FieldIssue } from './value-objects/field-issue.vo.js'
 
 export const collaboratorTypeSchema = z.literal('collaborator')
 export type CollaboratorFieldType = z.infer<typeof collaboratorTypeSchema>
@@ -67,3 +68,5 @@ export const collaboratorProfile = z.object({
 export type ICollaboratorProfile = z.infer<typeof collaboratorProfile>
 
 export const collaboratorReadableValueSchema = z.object({ id: userIdSchema }).merge(collaboratorProfile).array()
+
+export type ICollaboratorField = IBaseField

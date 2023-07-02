@@ -1,15 +1,13 @@
 import { isBoolean } from 'lodash-es'
 import { z } from 'zod'
-import type { IBoolFilter } from '../filter/bool.filter.js'
-import type { IBoolFilterOperator } from '../filter/operators.js'
-import type { RecordValueJSON } from '../record/record.schema.js'
-import type { IRecordDisplayValues } from '../record/record.type.js'
+import type { RecordValueJSON } from '../../../record/record.schema.js'
+import type { IRecordDisplayValues } from '../../../record/record.type.js'
+import { BaseField } from '../../field.base.js'
+import type { IFieldVisitor } from '../../field.visitor.js'
+import { FieldId } from '../../value-objects/field-id.vo.js'
 import { BoolFieldValue } from './bool-field-value.js'
-import type { BoolFieldType, ICreateBoolFieldInput, ICreateBoolFieldValue } from './bool-field.type.js'
-import { BaseField } from './field.base.js'
-import type { IBoolField } from './field.type.js'
-import type { IFieldVisitor } from './field.visitor.js'
-import { FieldId } from './value-objects/field-id.vo.js'
+import type { BoolFieldType, IBoolField, ICreateBoolFieldInput, ICreateBoolFieldValue } from './bool-field.type.js'
+import type { IBoolFilter, IBoolFilterOperator } from './bool.filter.js'
 
 export class BoolField extends BaseField<IBoolField> {
   duplicate(name: string): BoolField {

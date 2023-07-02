@@ -1,22 +1,22 @@
 import { unzip } from 'lodash-es'
 import { z } from 'zod'
-import type { ICollaboratorFilter } from '../filter/collaborator.filter.js'
-import type { ICollaboratorFilterOperator } from '../filter/operators.js'
-import type { RecordValueJSON } from '../record/record.schema.js'
-import type { IRecordDisplayValues } from '../record/record.type.js'
+import type { ICollaboratorFilterOperator } from '../../../filter/operators.js'
+import type { RecordValueJSON } from '../../../record/record.schema.js'
+import type { IRecordDisplayValues } from '../../../record/record.type.js'
+import { BaseField } from '../../field.base.js'
+import type { IFieldVisitor } from '../../field.visitor.js'
+import { FieldId } from '../../value-objects/field-id.vo.js'
 import { CollaboratorFieldValue } from './collaborator-field-value.js'
 import type {
   CollaboratorFieldType,
+  ICollaboratorField,
   ICreateCollaboratorFieldInput,
   ICreateCollaboratorFieldValue,
 } from './collaborator-field.type.js'
-import { BaseField } from './field.base.js'
-import type { Field, ICollaboratorField } from './field.type.js'
-import type { IFieldVisitor } from './field.visitor.js'
-import { FieldId } from './value-objects/field-id.vo.js'
+import type { ICollaboratorFilter } from './collaborator.filter.js'
 
 export class CollaboratorField extends BaseField<ICollaboratorField> {
-  duplicate(name: string): Field {
+  duplicate(name: string): CollaboratorField {
     return CollaboratorField.create({
       ...this.json,
       id: FieldId.createId(),

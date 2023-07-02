@@ -3,11 +3,15 @@ import { z } from 'zod'
 import type { RecordValueJSON } from '../../../record/record.schema.js'
 import type { IRecordDisplayValues } from '../../../record/record.type.js'
 import { AbstractAggregateField, AbstractLookupField, BaseField } from '../../field.base.js'
-import type { IAverageField } from '../../field.type.js'
 import type { IFieldVisitor } from '../../field.visitor.js'
 import { FieldId } from '../../value-objects/field-id.vo.js'
 import { AverageFieldValue } from './average-field-value.js'
-import type { AverageType, ICreateAverageFieldInput, ICreateAverageFieldValue } from './average-field.type.js'
+import type {
+  AverageType,
+  IAverageField,
+  ICreateAverageFieldInput,
+  ICreateAverageFieldValue,
+} from './average-field.type.js'
 import type { IAverageFilter, IAverageFilterOperator } from './average.filter.js'
 
 export class AverageField extends Mixin(AbstractAggregateField<IAverageField>, AbstractLookupField<IAverageField>) {

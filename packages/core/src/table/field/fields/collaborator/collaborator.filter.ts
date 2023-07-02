@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import { userIdSchema } from '../../user/value-objects/user-id.vo.js'
-import { collaboratorFieldValue } from '../field/collaborator-field.type.js'
-import { baseFilter } from './filter.base.js'
-import { collaboratorFilterOperators } from './operators.js'
+import { userIdSchema } from '../../../../user/value-objects/user-id.vo.js'
+import { baseFilter } from '../../../filter/filter.base.js'
+import { collaboratorFilterOperators } from '../../../filter/operators.js'
+import { collaboratorFieldValue } from './collaborator-field.type.js'
 
 export const collaboratorFilterValue = collaboratorFieldValue.or(userIdSchema)
 export const collaboratorFilter = z

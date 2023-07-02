@@ -1,5 +1,3 @@
-import { BoolField } from './bool-field.js'
-import { CollaboratorField } from './collaborator-field.js'
 import { ColorField } from './color-field.js'
 import { CountField } from './count-field.js'
 import { CreatedAtField } from './created-at-field.js'
@@ -8,7 +6,16 @@ import { CurrencyField } from './currency-field.js'
 import { DateField } from './date-field.js'
 import { DateRangeField } from './date-range-field.js'
 import type { Field, ICreateFieldSchema } from './field.type.js'
-import { AttachmentField, AutoIncrementField, AverageField, EmailField, StringField, UrlField } from './fields/index.js'
+import {
+  AttachmentField,
+  AutoIncrementField,
+  AverageField,
+  BoolField,
+  CollaboratorField,
+  EmailField,
+  StringField,
+  UrlField,
+} from './fields/index.js'
 import { IdField } from './id-field.js'
 import { JsonField } from './json-field.js'
 import { LookupField } from './lookup-field.js'

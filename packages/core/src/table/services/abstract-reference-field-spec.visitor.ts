@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import type { AverageField } from '../field/average-field.js'
-import type { CollaboratorField } from '../field/collaborator-field.js'
-import type { UrlField } from '../field/fields/url/url-field.js'
 import type {
   AttachmentField,
   AutoIncrementField,
+  AverageField,
   BoolField,
+  CollaboratorField,
   ColorField,
   CountField,
   CreatedAtField,
@@ -30,6 +28,7 @@ import type {
   TreeField,
   UpdatedAtField,
   UpdatedByField,
+  UrlField,
   WithAggregateFieldId,
   WithCurrencySymbol,
   WithDisplayFields,

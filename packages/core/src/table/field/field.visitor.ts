@@ -1,5 +1,3 @@
-import type { BoolField } from './bool-field.js'
-import type { CollaboratorField } from './collaborator-field.js'
 import type { ColorField } from './color-field.js'
 import type { CountField } from './count-field.js'
 import type { CreatedAtField } from './created-at-field.js'
@@ -7,7 +5,15 @@ import type { CreatedByField } from './created-by-field.js'
 import type { CurrencyField } from './currency-field.js'
 import type { DateField } from './date-field.js'
 import type { DateRangeField } from './date-range-field.js'
-import type { AttachmentField, AutoIncrementField, AverageField, EmailField, StringField } from './fields/index.js'
+import type {
+  AttachmentField,
+  AutoIncrementField,
+  AverageField,
+  BoolField,
+  CollaboratorField,
+  EmailField,
+  StringField,
+} from './fields/index.js'
 import type { UrlField } from './fields/url/url-field.js'
 import type { IdField } from './id-field.js'
 import type { JsonField } from './json-field.js'

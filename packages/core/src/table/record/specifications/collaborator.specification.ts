@@ -1,6 +1,6 @@
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import { CollaboratorFieldValue } from '../../field/collaborator-field-value.js'
+import { CollaboratorFieldValue } from '../../field/fields/collaborator/collaborator-field-value.js'
 import type { ICollaboratorFieldValue } from '../../field/index.js'
 import type { Record } from '../record.js'
 import type { IRecordVisitor } from './interface.js'
