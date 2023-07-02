@@ -33,9 +33,6 @@ export type IIdFilterOperator = z.infer<typeof idFilterOperators>
 export const jsonFilterOperators = z.union([$is_empty, $is_not_empty])
 export type IJsonFilterOperator = z.infer<typeof jsonFilterOperators>
 
-export const attachmentFilterOperators = z.union([$has_file_type, $is_empty, $is_not_empty, $has_file_extension])
-export type IAttachmentFilterOperator = z.infer<typeof attachmentFilterOperators>
-
 export const colorFilterOperators = z.union([$is_empty, $is_not_empty, $eq, $neq])
 export type IColorFilterOperator = z.infer<typeof colorFilterOperators>
 

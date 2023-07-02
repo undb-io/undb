@@ -1,7 +1,8 @@
 import * as z from 'zod'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { IBaseField } from '../../field.type.js'
 import { AttachmentField } from './attachment-field.js'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
 
 export const attachmentTypeSchema = z.literal('attachment')
 export type AttachmentFieldType = z.infer<typeof attachmentTypeSchema>
@@ -44,3 +45,5 @@ export const createAttachmentFieldValue_internal = z
 export type ICreateAttachmentFieldValue_internal = z.infer<typeof createAttachmentFieldValue_internal>
 
 export const attachmentReadableValueSchema = attachmentFieldQueryValue
+
+export type IAttachmentField = IBaseField

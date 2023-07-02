@@ -3,6 +3,12 @@ import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
 import { colorFieldValue } from '../field/color-field.type.js'
+import type { IAttachmentFilter, IAttachmentFilterTypeValue } from '../field/fields/attachment/attachment.filter.js'
+import {
+  attachmentFilter,
+  attachmentFilterOperators,
+  attachmentFilterValue,
+} from '../field/fields/attachment/attachment.filter.js'
 import type { IEmailFilter } from '../field/fields/email/email.filter.js'
 import { emailFilter, emailFilterOperators, emailFilterValue } from '../field/fields/email/email.filter.js'
 import type { IStringFilter } from '../field/fields/string/string.filter.js'
@@ -46,8 +52,6 @@ import {
   StringStartsWith,
   WithRecordIds,
 } from '../record/index.js'
-import type { IAttachmentFilter, IAttachmentFilterTypeValue } from './attachment.filter.js'
-import { attachmentFilter, attachmentFilterValue } from './attachment.filter.js'
 import type { IAutoIncrementFilter } from './auto-increment.filter.js'
 import { autoIncrementFilter, autoIncrementFilterValue } from './auto-increment.filter.js'
 import type { IAverageFilter } from './average.filter.js'
@@ -91,7 +95,6 @@ import {
   $is_today,
   $is_true,
   $neq,
-  attachmentFilterOperators,
   autoIncrementFilterOperators,
   averageFilterOperators,
   boolFilterOperators,

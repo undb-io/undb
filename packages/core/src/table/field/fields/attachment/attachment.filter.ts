@@ -1,6 +1,8 @@
 import { z } from 'zod'
-import { baseFilter } from './filter.base.js'
-import { attachmentFilterOperators } from './operators.js'
+import { baseFilter } from '../../../filter/filter.base.js'
+import { $has_file_extension, $has_file_type, $is_empty, $is_not_empty } from '../../../filter/operators.js'
+
+export const attachmentFilterOperators = z.union([$has_file_type, $is_empty, $is_not_empty, $has_file_extension])
 
 const attachmentFilterTypeValue = z.enum(['image', 'video', 'text', 'document', 'excel', 'ppt', 'pdf'])
 export type IAttachmentFilterTypeValue = z.infer<typeof attachmentFilterTypeValue>

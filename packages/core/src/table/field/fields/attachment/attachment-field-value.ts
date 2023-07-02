@@ -1,8 +1,8 @@
 import type { JsonValue } from 'type-fest'
+import { FieldValueBase } from '../../field-value.base.js'
+import type { IFieldValueVisitor } from '../../field-value.visitor.js'
 import { getExtension, getMimeType } from './attachment-field-value.util.js'
 import type { IAttachmentFieldValue } from './attachment-field.type.js'
-import { FieldValueBase } from './field-value.base.js'
-import type { IFieldValueVisitor } from './field-value.visitor.js'
 
 export class AttachmentFieldValue extends FieldValueBase<IAttachmentFieldValue> {
   get json(): JsonValue {

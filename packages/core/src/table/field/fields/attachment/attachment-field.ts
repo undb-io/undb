@@ -1,18 +1,17 @@
 import { z } from 'zod'
-import type { IAttachmentFilter, IAttachmentFilterOperator } from '../filter/attachment.filter.js'
-import type { RecordValueJSON } from '../record/record.schema.js'
-import type { IRecordDisplayValues } from '../record/record.type.js'
+import type { IRecordDisplayValues, RecordValueJSON } from '../../../record/index.js'
+import { BaseField } from '../../field.base.js'
+import type { IFieldVisitor } from '../../field.visitor.js'
+import { FieldId } from '../../value-objects/index.js'
 import { AttachmentFieldValue } from './attachment-field-value.js'
 import type {
   AttachmentFieldType,
+  IAttachmentField,
   IAttachmentItem,
   ICreateAttachmentFieldInput,
   ICreateAttachmentFieldValue,
 } from './attachment-field.type.js'
-import { BaseField } from './field.base.js'
-import type { IAttachmentField } from './field.type.js'
-import type { IFieldVisitor } from './field.visitor.js'
-import { FieldId } from './value-objects/field-id.vo.js'
+import type { IAttachmentFilter, IAttachmentFilterOperator } from './attachment.filter.js'
 
 export class AttachmentField extends BaseField<IAttachmentField> {
   duplicate(name: string): AttachmentField {

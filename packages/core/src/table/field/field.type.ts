@@ -6,17 +6,6 @@ import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableId } from '../value-objects/table-id.vo.js'
 import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
-import type { AttachmentFieldValue } from './attachment-field-value.js'
-import type { AttachmentField } from './attachment-field.js'
-import type { IAttachmentFieldValue } from './attachment-field.type.js'
-import {
-  attachmentFieldQuerySchema,
-  attachmentFieldQueryValue,
-  attachmentTypeSchema,
-  createAttachmentFieldSchema,
-  createAttachmentFieldValue_internal,
-  updateAttachmentFieldSchema,
-} from './attachment-field.type.js'
 import type { AutoIncrementFieldValue } from './auto-increment-field-value.js'
 import type { AutoIncrementField } from './auto-increment-field.js'
 import type { IAutoIncrementFieldValue } from './auto-increment-field.type.js'
@@ -141,6 +130,7 @@ import {
 } from './date-range-field.type.js'
 import type { BaseField } from './field.base.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
+import type { AttachmentFieldValue } from './fields/attachment/attachment-field-value.js'
 import type { EmailFieldValue } from './fields/email/email-field-value.js'
 import type { EmailField } from './fields/email/email-field.js'
 import type { IEmailFieldValue } from './fields/email/email-field.type.js'
@@ -152,12 +142,18 @@ import {
   emailTypeSchema,
   updateEmailFieldSchema,
 } from './fields/email/email-field.type.js'
-import type { IStringFieldValue, StringField } from './fields/index.js'
+import type { AttachmentField, IAttachmentFieldValue, IStringFieldValue, StringField } from './fields/index.js'
 import {
+  attachmentFieldQuerySchema,
+  attachmentFieldQueryValue,
+  attachmentTypeSchema,
+  createAttachmentFieldSchema,
+  createAttachmentFieldValue_internal,
   createStringFieldValue_internal,
   stringFieldQuerySchema,
   stringFieldQueryValue,
   stringTypeSchema,
+  updateAttachmentFieldSchema,
   updateStringFieldSchema,
 } from './fields/index.js'
 import type { StringFieldValue } from './fields/string/string-field-value.js'
@@ -524,7 +520,6 @@ export type IUpdatedAtField = IBaseField & BaseDateField
 export type IUpdatedByField = IBaseField
 export type IAutoIncrementField = IBaseField
 export type IJsonField = IBaseField
-export type IAttachmentField = IBaseField
 export type IColorField = IBaseField
 
 export type INumberField = IBaseField
