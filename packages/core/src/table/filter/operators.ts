@@ -108,8 +108,5 @@ export type ICreatedByFilterOperator = z.infer<typeof createdByFilterOperators>
 export const updatedByFilterOperators = collaboratorFilterOperators
 export type IUpdatedByFilterOperator = z.infer<typeof updatedByFilterOperators>
 
-export const autoIncrementFilterOperators = numberFilterOperators
-export type IAutoIncrementFilterOperator = z.infer<typeof autoIncrementFilterOperators>
-
 export const operatorsWihtoutValue = z.union([$is_empty, $is_not_empty, $is_today, $is_root])
 export const isOperatorWithoutValue = (value: string): boolean => operatorsWihtoutValue.safeParse(value).success

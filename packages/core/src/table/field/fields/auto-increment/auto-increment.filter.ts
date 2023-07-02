@@ -1,6 +1,8 @@
 import { z } from 'zod'
-import { baseFilter } from './filter.base.js'
-import { autoIncrementFilterOperators } from './operators.js'
+import { baseFilter } from '../../../filter/filter.base.js'
+import { $eq, $gt, $gte, $lt, $lte, $neq } from '../../../filter/operators.js'
+
+export const autoIncrementFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
 
 export const autoIncrementFilterValue = z.number().nullable()
 export const autoIncrementFilter = z
@@ -12,3 +14,4 @@ export const autoIncrementFilter = z
   .merge(baseFilter)
 
 export type IAutoIncrementFilter = z.infer<typeof autoIncrementFilter>
+export type IAutoIncrementFilterOperator = z.infer<typeof autoIncrementFilterOperators>
