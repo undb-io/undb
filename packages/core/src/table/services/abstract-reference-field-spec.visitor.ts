@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { AverageField } from '../field/average-field.js'
 import type { CollaboratorField } from '../field/collaborator-field.js'
+import type { UrlField } from '../field/fields/url/url-field.js'
 import type {
   AttachmentField,
   AutoIncrementField,
@@ -108,6 +109,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   autoIncrement(field: AutoIncrementField): void {}
   string(field: StringField): void {}
   email(field: EmailField): void {}
+  url(field: UrlField): void {}
   json(field: JsonField): void {}
   color(field: ColorField): void {}
   number(field: NumberField): void {}

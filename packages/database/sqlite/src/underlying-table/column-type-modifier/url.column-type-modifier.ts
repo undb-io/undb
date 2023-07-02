@@ -1,31 +1,27 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import type { RatingField } from '@undb/core'
+import type { UrlField } from '@undb/core'
 import {
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
-  UnderlyingCurrencyColumn,
   UnderlyingDateColumn,
   UnderlyingEmailColumn,
   UnderlyingJsonColumn,
+  UnderlyingMultiSelectColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
-  UnderlyingStringColumn,
-  UnderlyingUrlColumn,
 } from '../underlying-column.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
-export class RatingColumnTypeModifier extends BaseColumnTypeModifier<RatingField> {
-  private readonly column = new UnderlyingRatingColumn(this.field.id.value, this.tableId)
-
+export class UrlColumnTypeModifier extends BaseColumnTypeModifier<UrlField> {
+  private readonly column = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
   string(): void {
-    const newColumn = new UnderlyingStringColumn(this.field.id.value, this.tableId)
+    const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
     this.castTo('text', newColumn, this.column)
   }
   number(): void {
     const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
-    this.castTo('real', newColumn, this.column)
+    this.alterColumn(newColumn, this.column)
   }
   color(): void {
     const newColumn = new UnderlyingColorColumn(this.field.id.value, this.tableId)
@@ -36,19 +32,17 @@ export class RatingColumnTypeModifier extends BaseColumnTypeModifier<RatingField
     this.alterColumn(newColumn, this.column)
   }
   url(): void {
-    const newColumn = new UnderlyingUrlColumn(this.field.id.value, this.tableId)
-    this.alterColumn(newColumn, this.column)
+    throw new Error('method not implemented.')
   }
   json(): void {
     const newColumn = new UnderlyingJsonColumn(this.field.id.value, this.tableId)
-    this.alterColumn(newColumn, this.column)
+    this.castTo('text', newColumn, this.column)
   }
   date(): void {
     this.alterColumn(new UnderlyingDateColumn(this.field.id.value, this.tableId), this.column)
   }
   select(): void {
-    const newColumn = new UnderlyingSelectColumn(this.field.id.value, this.tableId)
-    this.alterColumn(newColumn, this.column)
+    this.alterColumn(new UnderlyingSelectColumn(this.field.id.value, this.tableId), this.column)
   }
   bool(): void {
     const newColumn = new UnderlyingBoolColumn(this.field.id.value, this.tableId)
@@ -61,17 +55,18 @@ export class RatingColumnTypeModifier extends BaseColumnTypeModifier<RatingField
     throw new Error('Method not implemented.')
   }
   rating(): void {
-    throw new Error('Method not implemented.')
+    const newColumn = new UnderlyingRatingColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
   }
   currency(): void {
-    const newColumn = new UnderlyingCurrencyColumn(this.field.id.value, this.tableId)
-    this.castTo('real', newColumn, this.column)
+    const newColumn = new UnderlyingRatingColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
   }
   attachment(): void {
     this.dropColumn(this.column)
   }
   collaborator(): void {
-    this.castToCollaborator(this.column)
+    this.castToCollaborator(this.column, 'email')
   }
   count(): void {
     this.dropColumn(this.column)
@@ -85,8 +80,9 @@ export class RatingColumnTypeModifier extends BaseColumnTypeModifier<RatingField
   lookup(): void {
     this.dropColumn(this.column)
   }
+
   ['multi-select'](): void {
-    const newColumn = new UnderlyingSelectColumn(this.field.id.value, this.tableId)
+    const newColumn = new UnderlyingMultiSelectColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
   ['date-range'](): void {

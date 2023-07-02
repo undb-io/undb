@@ -152,6 +152,17 @@ import {
 } from './email-field.type.js'
 import type { BaseField } from './field.base.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
+import type { UrlFieldValue } from './fields/url/url-field-value.js'
+import type { UrlField } from './fields/url/url-field.js'
+import type { IUrlFieldValue } from './fields/url/url-field.type.js'
+import {
+  createUrlFieldSchema,
+  createUrlFieldValue_internal,
+  updateUrlFieldSchema,
+  urlFieldQuerySchema,
+  urlFieldQueryValue,
+  urlTypeSchema,
+} from './fields/url/url-field.type.js'
 import type { IdFieldValue } from './id-field-value.js'
 import type { IdField } from './id-field.js'
 import type { IIdFieldValue } from './id-field.type.js'
@@ -329,6 +340,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createAutoIncrementFieldSchema,
   createStringFieldSchema,
   createEmailFieldSchema,
+  createUrlFieldSchema,
   createJsonFieldSchema,
   createColorFieldSchema,
   createNumberFieldSchema,
@@ -360,6 +372,7 @@ export const updateFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   updateAutoIncrementFieldSchema,
   updateStringFieldSchema,
   updateEmailFieldSchema,
+  updateUrlFieldSchema,
   updateJsonFieldSchema,
   updateColorFieldSchema,
   updateNumberFieldSchema,
@@ -391,6 +404,7 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   autoIncrementFieldQuerySchema,
   stringFieldQuerySchema,
   emailFieldQuerySchema,
+  urlFieldQuerySchema,
   jsonFieldQuerySchema,
   colorFieldQuerySchema,
   numberFieldQuerySchema,
@@ -425,6 +439,7 @@ export const fieldTypes = z.union([
   stringTypeSchema,
   colorTypeSchema,
   emailTypeSchema,
+  urlTypeSchema,
   jsonTypeSchema,
   numberTypeSchema,
   dateTypeSchema,
@@ -455,6 +470,7 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createAutoIncrementFieldValue_internal,
   createStringFieldValue_internal,
   createEmailFieldValue_internal,
+  createUrlFieldValue_internal,
   createJsonFieldValue_internal,
   createColorFieldValue_internal,
   createNumberFieldValue_internal,
@@ -562,6 +578,7 @@ export type NoneSystemField =
   | StringField
   | NumberField
   | EmailField
+  | UrlField
   | JsonField
   | ColorField
   | DateField
@@ -586,6 +603,7 @@ export type PrimitiveField =
   | StringField
   | NumberField
   | EmailField
+  | UrlField
   | JsonField
   | ColorField
   | DateField
@@ -611,6 +629,7 @@ export type FieldValue =
   | AutoIncrementFieldValue
   | StringFieldValue
   | EmailFieldValue
+  | UrlFieldValue
   | JsonFieldValue
   | ColorFieldValue
   | NumberFieldValue
@@ -642,6 +661,7 @@ export type UnpackedFieldValue =
   | IAutoIncrementFieldValue
   | IStringFieldValue
   | IEmailFieldValue
+  | IUrlFieldValue
   | IJsonFieldValue
   | IColorFieldValue
   | INumberFieldValue
@@ -673,6 +693,7 @@ export const fieldQueryValue = z.union([
   dateFieldQueryValue,
   dateRangeFieldQueryValue,
   emailFieldQueryValue,
+  urlFieldQueryValue,
   jsonFieldQueryValue,
   idFieldQueryValue,
   numberFieldQueryValue,

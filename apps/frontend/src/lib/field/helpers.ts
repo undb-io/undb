@@ -14,7 +14,7 @@ export function getFilterOperators(type: IFieldType | undefined) {
 			{ value: '$ends_with', name: 'ENDS WITH' },
 			// { value: '$regex', name: 'REGEX',},
 		]
-	} else if (type === 'email') {
+	} else if (type === 'email' || type === 'url') {
 		data = [
 			{ value: '$is_empty', name: 'IS EMPTY' },
 			{ value: '$is_not_empty', name: 'IS NOT EMPTY' },
@@ -137,6 +137,7 @@ export const icons: Record<IFieldType, string> = {
 	'created-at': 'calendar-plus',
 	'updated-at': 'calendar-stats',
 	email: 'mail',
+	url: 'link',
 	json: 'json',
 	color: 'palette',
 	reference: 'relation-many-to-many',

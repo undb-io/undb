@@ -30,6 +30,7 @@ import type {
   SumField as CoreSumField,
   TreeField as CoreTreeField,
   UpdatedByField as CoreUpdatedByField,
+  UrlField as CoreUrlField,
   IFieldVisitor,
 } from '@undb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@undb/core'
@@ -64,6 +65,7 @@ import {
   TreeField,
   UpdatedAtField,
   UpdatedByField,
+  UrlField,
 } from '../../entity/index.js'
 import {
   AdjacencyListTable,
@@ -120,6 +122,12 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   email(value: CoreEmailField): void {
     const field = new EmailField(this.table, value)
+
+    this.em.persist(field)
+  }
+
+  url(value: CoreUrlField): void {
+    const field = new UrlField(this.table, value)
 
     this.em.persist(field)
   }

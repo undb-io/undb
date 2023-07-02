@@ -29,6 +29,7 @@ import {
   UnderlyingTreeColumn,
   UnderlyingUpdatedAtColumn,
   UnderlyingUpdatedByColumn,
+  UnderlyingUrlColumn,
 } from './underlying-column.js'
 
 export class UnderlyingColumnFactory {
@@ -46,6 +47,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingStringColumn(field.id.value, tableName)
       case 'email':
         return new UnderlyingEmailColumn(field.id.value, tableName)
+      case 'url':
+        return new UnderlyingUrlColumn(field.id.value, tableName)
       case 'json':
         return new UnderlyingJsonColumn(field.id.value, tableName)
       case 'attachment':

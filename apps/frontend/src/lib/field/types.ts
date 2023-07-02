@@ -1,6 +1,7 @@
 export const FIELD_SELECT_ITEMS = [
 	{ value: 'string', name: 'String', group: 'Base' },
 	{ value: 'email', name: 'Email', group: 'Base' },
+	{ value: 'url', name: 'Url', group: 'Base' },
 	{ value: 'attachment', name: 'Attachment', group: 'Base' },
 	{ value: 'color', name: 'Color', group: 'Base' },
 	{ value: 'bool', name: 'Bool', group: 'Base' },

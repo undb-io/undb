@@ -27,6 +27,7 @@ import type {
   SumField,
   UpdatedAtField,
   UpdatedByField,
+  UrlField,
 } from '@undb/core'
 import {
   CollaboratorField,
@@ -133,6 +134,9 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
     this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
   }
   email(field: EmailField): void {
+    this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
+  }
+  url(field: UrlField): void {
     this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
   }
   json(field: JsonField): void {

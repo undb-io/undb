@@ -16,5 +16,6 @@ module.exports = {
     'tsdoc/syntax': 'warn',
     '@typescript-eslint/consistent-type-imports': 'warn',
     '@typescript-eslint/prefer-optional-chain': 'warn',
+    '@typescript-eslint/no-unused-vars': 'off',
   },
 }
