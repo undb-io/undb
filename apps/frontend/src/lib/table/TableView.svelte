@@ -111,7 +111,7 @@
 				columnProperties: () => {
 					return {
 						class:
-							'!p-0 relative text-center border-r border-b border-gray-300 flex items-center justify-center bg-gray-100 hover:bg-gray-50',
+							'!p-0 relative text-center border-r border-b border-gray-300 flex items-center justify-center bg-gray-100 hover:bg-gray-50 dark:bg-gray-600 dark:border-gray-500',
 					}
 				},
 				columnTemplate: (h) => {
@@ -123,12 +123,12 @@
 							recordSelection.updateAll(records, event.target.checked)
 						},
 						class:
-							'w-4 h-4 text-blue-600 absolute top-1/2 left-1/4 translate-y-[-50%] translate-x-[-50%] bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center',
+							'w-4 h-4 text-blue-600 absolute top-1/2 left-1/4 translate-y-[-50%] translate-x-[-50%] bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center dark:!bg-gray-200 dark:border-gray-300',
 					})
 				},
 				cellProperties: (cell) => ({
 					'data-record-id': cell.model.id,
-					class: '!p-0 text-center border-r border-b border-gray-200 group',
+					class: '!p-0 text-center border-r border-b border-gray-200 group dark:border-gray-500',
 				}),
 				cellTemplate: (h, props) => {
 					const checked = !!$recordSelection[props.model.id]
@@ -137,7 +137,7 @@
 							'span',
 							{
 								class: cx(
-									'undb-row-index relative basis-[50%] text-gray-400 text-xs opacity-100 text-ellipsis whitespace-nowrap group-hover:hidden',
+									'undb-row-index relative basis-[50%] text-gray-400 text-xs opacity-100 text-ellipsis whitespace-nowrap group-hover:hidden dark:text-gray-100 ',
 									checked && 'hidden',
 								),
 							},
@@ -148,7 +148,7 @@
 							{
 								onClick: () => expand(props.model.id),
 								class: cx(
-									'undb-row-expand absolute w-6 h-6 rounded-full hover:bg-blue-100 top-1/2 left-3/4 translate-y-[-50%] translate-x-[-50%] text-xs opacity-0 text-gray-400',
+									'undb-row-expand absolute w-6 h-6 rounded-full hover:bg-blue-100 dark:hover:bg-blue-500 top-1/2 left-3/4 translate-y-[-50%] translate-x-[-50%] text-xs opacity-0 text-gray-400 dark:text-gray-100 ',
 								),
 							},
 							h('i', { class: 'ti ti-arrows-diagonal' }),
@@ -184,7 +184,7 @@
 						return {
 							'data-field-id': column.field.id.value,
 							class: cx(
-								'border-r border-b border-gray-300 hover:bg-gray-50 transition-[background] group flex justify-between bg-gray-100 !px-2',
+								'border-r border-b border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-600 dark:border-gray-500  transition-[background] group flex justify-between bg-gray-100 !px-2',
 								{
 									'bg-blue-50': !!sort,
 								},
@@ -194,7 +194,7 @@
 					cellProperties: (cell) => {
 						return {
 							'data-record-id': cell.model.id,
-							class: 'flex items-center border-r border-b border-gray-100',
+							class: 'flex items-center border-r border-b border-gray-100 dark:border-gray-500 dark:!text-gray-200',
 						}
 					},
 					field,
@@ -326,7 +326,11 @@
 {#if fieldMenuDOMId}
 	{#key fieldMenuDOMId}
 		<Portal target="body">
-			<Dropdown open triggeredBy={`#${fieldMenuDOMId}`} class="w-[250px] border border-gray-200 rounded-md z-[99999]">
+			<Dropdown
+				open
+				triggeredBy={`#${fieldMenuDOMId}`}
+				class="w-[250px] border border-gray-200 dark:border-0 dark:shadow-md rounded-md z-[99999]"
+			>
 				<FieldMenu {togglePin} />
 			</Dropdown>
 		</Portal>
@@ -349,7 +353,7 @@
 				d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 			/></svg
 		>
-		<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+		<h3 class="mb-5 text-lg font-normal text-gray-500 dark:!text-gray-200">
 			{$t('Confirm Delete Record')}
 		</h3>
 		<Button
@@ -386,7 +390,7 @@
 					d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 				/></svg
 			>
-			<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+			<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-200">
 				{$t('Confirm Delete Field')}
 			</h3>
 			<Button
@@ -435,6 +439,9 @@
 	:global(revogr-header .header-rgRow) {
 		background-color: #f7f7f7;
 	}
+	:global(.dark revogr-header .header-rgRow) {
+		background-color: #374151;
+	}
 
 	:global(revogr-header .rgHeaderCell > .resizable-r) {
 		width: 2px;
@@ -442,5 +449,17 @@
 
 	:global(revogr-focus) {
 		border: 1px solid transparent;
+	}
+
+	:global(.dark .hovered) {
+		background-color: #374151;
+	}
+
+	:global(.dark revogr-data .rgRow.focused-rgRow) {
+		background-color: #374151 !important;
+	}
+
+	:global(.dark revo-grid[theme=compact] revogr-header .rgHeaderCell.focused-cell){
+		background-color: #374151 !important
 	}
 </style>

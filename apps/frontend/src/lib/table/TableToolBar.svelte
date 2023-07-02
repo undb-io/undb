@@ -12,7 +12,7 @@
 </script>
 
 <div
-	class="flex w-full flex-row items-center justify-between gap-y-4 border-b bg-white px-5 py-2 overflow-x-auto overflow-y-hidden shrink-0"
+	class="flex w-full flex-row items-center justify-between gap-y-4 border-b bg-white dark:border-b-gray-400 dark:bg-gray-700 px-5 py-2 overflow-x-auto overflow-y-hidden shrink-0"
 >
 	<div class="flex items-center justify-center content-center gap-4">
 		<TableNavigator />
@@ -21,12 +21,17 @@
 
 	<div class="flex items-center ml-2 gap-3">
 		<SearchTable />
-		<Button size="xs" outline class="flex items-center gap-2" href={`/t/${$table.id.value}/openapi`}>
+		<Button
+			size="xs"
+			outline
+			class="flex items-center gap-2 dark:text-gray-200 dark:bg-primary-600 dark:border-primary-600 dark:hover:bg-primary-700 dark:hover:border-primary-700"
+			href={`/t/${$table.id.value}/openapi`}
+		>
 			<i class="ti ti-code" />
 			<span class="whitespace-nowrap">{$t('API Preview')}</span>
 		</Button>
 		<button on:click={() => updateTableModal.open()}>
-			<i class="ti ti-settings text-gray-600" />
+			<i class="ti ti-settings text-gray-600 dark:text-gray-200" />
 		</button>
 		<Tooltip class="z-50" placement="bottom">
 			{$t('Edit Table')}

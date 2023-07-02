@@ -29,9 +29,14 @@
 			{/if}
 		</Button>
 	</ListboxButton>
-	<ListboxOptions class="fixed bg-white py-1 border border-gray-100 shadow-md overflow-y-auto w-48 z-50">
+	<ListboxOptions
+		class="fixed bg-white dark:bg-gray-700 py-1 dark:shadow-gray-500 shadow-sm rounded-md overflow-y-auto w-48 z-50"
+	>
 		{#each data as item}
-			<ListboxOption value={item.value} class="p-2 cursor-pointer hover:bg-gray-100 text-xs text-gray-700">
+			<ListboxOption
+				value={item.value}
+				class="p-2 cursor-pointer hover:bg-gray-100 text-xs text-gray-700 dark:text-white dark:hover:text-gray-700"
+			>
 				{$t(item.value, { ns: 'common' })}
 			</ListboxOption>
 		{/each}

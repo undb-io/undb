@@ -31,10 +31,12 @@
 <Dropdown bind:open>
 	{#each members as member}
 		<Radio bind:group={value} value={member.userId} custom on:change={() => (open = false)}>
-			<span class="inline-flex items-center justify-between px-4 py-2 cursor-pointer w-full hover:bg-gray-100">
+			<span
+				class="inline-flex items-center justify-between px-4 py-2 cursor-pointer w-full hover:bg-gray-100 dark:hover:bg-gray-400"
+			>
 				<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />
 				{#if selected?.userId === member.userId}
-					<i class="ti ti-check" />
+					<i class="ti ti-check dark:text-gray-300" />
 				{/if}
 			</span>
 		</Radio>

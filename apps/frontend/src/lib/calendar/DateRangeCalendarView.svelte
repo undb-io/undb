@@ -136,4 +136,19 @@
 	:global(.ec-popup) {
 		z-index: 10;
 	}
+	
+	:global(.dark .ec-toolbar) {
+		color: #e5e7eb;
+		/* background-color: gray; */
+	}
+
+	:global(.dark .ec-today) {
+		color: #e5e7eb;
+		background-color: #2663eb;
+		border-color: #2663eb;
+	}
+
+	:global(.dark .ec-month) {
+		color: #e5e7eb;
+	}
 </style>

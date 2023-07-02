@@ -10,7 +10,7 @@
 	export let zIndex: number | undefined = undefined
 </script>
 
-<Node useDefaults id={table.id.value} label={table.name.value} {position} {zIndex}>
+<Node useDefaults id={table.id.value} label={table.name.value} {position} {zIndex} selectionColor="#2563eb">
 	<Anchor bgColor="transparent" id={table.id.value} input direction="west" />
 	<div class="flex items-center justify-center p-1">{table.name.value}</div>
 

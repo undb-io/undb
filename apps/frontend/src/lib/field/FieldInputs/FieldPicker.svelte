@@ -39,16 +39,21 @@
 		<span class="text-gray-500 font-normal">{$t('Select Field')}</span>
 	{/if}
 </Button>
-<Dropdown class="w-[400px] z-[99999] border rounded-sm bg-white" bind:open>
+<Dropdown class="w-[400px] z-[99999] border rounded-sm bg-white shadow-sm dark:shadow-gray-500 dark:bg-gray-700" bind:open>
 	{#if filteredFields.length}
 		{#each filteredFields as field (field.id)}
 			<Radio value={field.id} bind:group={value} custom on:change={() => (open = false)}>
 				<div
 					role="listitem"
-					class="w-full p-2 pr-4 flex justify-between hover:bg-gray-100 transition cursor-pointer"
+					class="w-full p-2 pr-4 flex justify-between hover:bg-gray-100 transition cursor-pointer dark:text-white dark:hover:!text-gray-600"
 					class:bg-gray-100={selected?.id === field.id}
 				>
-					<div class="inline-flex gap-2 items-center text-gray-600">
+					<div
+						class={cx(
+							'inline-flex gap-2 items-center text-gray-600 dark:text-white dark:hover:text-gray-600',
+							selected?.id === field.id ? 'dark:!text-gray-600' : '',
+						)}
+					>
 						<FieldIcon size={14} type={field.type} />
 						<span class="text-xs">
 							{field.name}
@@ -56,7 +61,7 @@
 					</div>
 					<span>
 						{#if selected?.id === field.id}
-							<i class="ti ti-check text-sm" />
+							<i class="ti ti-check text-sm dark:text-gray-600" />
 						{/if}
 					</span>
 				</div>

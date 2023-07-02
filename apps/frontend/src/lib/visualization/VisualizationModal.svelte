@@ -57,8 +57,8 @@
 				<h1 on:click={() => (updating = true)}>{$currentVisualization?.name.value}</h1>
 			{/if}
 		</svelte:fragment>
-		<div class="flex items-center h-full w-full">
-			<Visualization visualization={$currentVisualization} class="text-[200px] h-full flex-1 w-full" />
+		<div class="flex items-center h-full w-full ">
+			<Visualization visualization={$currentVisualization} class="text-[200px] h-full flex-1 w-full dark:text-gray-200" />
 			<div class="flex flex-col h-full shrink-0 w-[400px] pl-2">
 				<VisualizationSetting visualization={$currentVisualization} />
 			</div>

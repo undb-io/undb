@@ -83,10 +83,10 @@
 								<div class="flex items-center justify-between pr-2">
 									<Option option={item.option} />
 									{#if !$readonly}
-										<i class="ti ti-dots text-gray-400" />
+										<i class="ti ti-dots text-gray-400 dark:text-gray-200 cursor-pointer" />
 										<Dropdown>
 											<DropdownItem
-												class="text-gray-600 text-xs space-y-2"
+												class="text-gray-600 text-xs space-y-2 dark:text-gray-200"
 												on:click={() => {
 													$currentFieldId = field?.id.value
 													$currentOption = item.option
@@ -155,7 +155,7 @@
 				size="xs"
 				color="light"
 				outline
-				class="w-full rounded-sm whitespace-nowrap inline-flex gap-2"
+				class="w-full rounded-sm whitespace-nowrap inline-flex gap-2 dark:text-gray-200"
 			>
 				<i class="ti ti-plus" />
 				{$t('Create New Option')}</Button

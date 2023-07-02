@@ -61,7 +61,7 @@
 </script>
 
 <DropdownItem
-	class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium"
+	class="inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
 	on:click={() => updateFieldModal.open()}
 >
 	<i class="ti ti-edit text-sm" />
@@ -69,7 +69,7 @@
 </DropdownItem>
 {#if $field && canDuplicate($field.type)}
 	<DropdownItem
-		class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium"
+		class="inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
 		on:click={() => duplicateFieldModal.open()}
 	>
 		<i class="ti ti-copy text-sm" />
@@ -79,10 +79,13 @@
 
 <DropdownDivider />
 
-<FieldMenuFieldComponent field={$field} class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium" />
+<FieldMenuFieldComponent
+	field={$field}
+	class="inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
+/>
 
 <DropdownItem
-	class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium"
+	class="inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
 	on:click={() => {
 		if ($field) {
 			togglePin($field.id.value)
@@ -98,7 +101,7 @@
 	{/if}
 </DropdownItem>
 <DropdownItem
-	class="inline-flex items-center gap-2 text-xs text-gray-500 font-medium"
+	class="inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
 	on:click={() => {
 		if ($field) {
 			$hideField.mutate({ tableId: $table.id.value, fieldId: $field.id.value, viewId: $view.id.value, hidden: true })
@@ -113,7 +116,7 @@
 
 <DropdownItem
 	class={cx(
-		'inline-flex items-center gap-2 text-xs text-gray-500 font-medium',
+		'inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium',
 		fieldDirection === 'asc' && 'bg-gray-100',
 	)}
 	on:click={() => sort('asc')}
@@ -129,7 +132,7 @@
 </DropdownItem>
 <DropdownItem
 	class={cx(
-		'inline-flex items-center gap-2 text-xs text-gray-500 font-medium',
+		'inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium',
 		fieldDirection === 'desc' && 'bg-gray-100',
 	)}
 	on:click={() => sort('desc')}

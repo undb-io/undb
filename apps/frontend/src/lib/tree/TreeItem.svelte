@@ -81,10 +81,10 @@
 		>
 			{#if title}
 				<div
-					class="p-3 bg-white border border-slate-200 border-collapse h-[40px] flex items-center justify-between group"
+					class="p-3 bg-white border border-slate-200 border-collapse h-[40px] flex items-center justify-between group dark:bg-gray-700 dark:border-gray-500"
 					class:border-l-0={!level}
 				>
-					<span class="text-gray-600">
+					<span class="text-gray-600 dark:text-gray-200">
 						{title}
 					</span>
 					<!-- <div class="pr-5 opacity-0 group-hover:opacity-100 transition">

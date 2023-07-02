@@ -18,7 +18,7 @@
 	$: field = selectedId ? $table.schema.getFieldById(selectedId).into() : undefined
 </script>
 
-<li class="flex h-8 items-center">
+<li class="flex h-8 items-center dark:border-gray-200">
 	<FieldPicker
 		bind:selectedId
 		size="xs"

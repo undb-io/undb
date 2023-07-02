@@ -43,17 +43,19 @@
 	})
 </script>
 
-<div class="space-y-10 divide-y divide-gray-900/10">
+<div class="space-y-10 divide-y divide-gray-900/10 px-4 sm:px-7">
 	<div class="grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-3">
-		<div class="px-4 sm:px-0">
-			<h2 class="text-base font-semibold leading-7 text-gray-900">{$t('Profile', { ns: 'auth' })}</h2>
-			<p class="mt-1 text-sm leading-6 text-gray-600">
+		<div class="">
+			<h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-gray-100">
+				{$t('Profile', { ns: 'auth' })}
+			</h2>
+			<p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-200/70">
 				{$t('Profile Helper', { ns: 'auth' })}
 			</p>
 		</div>
 
 		<form
-			class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2"
+			class="bg-white shadow-md ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2 dark:bg-slate-800/75"
 			on:submit={() => {
 				$updateProfile.mutate({
 					username: me?.username,
@@ -64,7 +66,7 @@
 			<div class="px-4 py-6 sm:p-8">
 				<div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 					<div class="sm:col-span-4">
-						<label for="username" class="block text-sm font-medium leading-6 text-gray-900"
+						<label for="username" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200"
 							>{$t('username', { ns: 'auth' })}</label
 						>
 						<div class="mt-2">
@@ -76,7 +78,7 @@
 									name="username"
 									id="username"
 									bind:value={me.username}
-									class="block flex-1 border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+									class="block flex-1 border-0 bg-transparent py-1.5 text-gray-900 dark:text-gray-200 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
 									placeholder={$t('username', { ns: 'auth' })}
 								/>
 							</div>

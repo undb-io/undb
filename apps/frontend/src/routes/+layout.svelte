@@ -8,6 +8,7 @@
 
 	import 'nprogress/nprogress.css'
 	import { onMount } from 'svelte'
+	import { theme } from '$lib/store/ui'
 
 	NProgress.configure({
 		minimum: 0.16,
@@ -45,3 +46,5 @@
 </svelte:head>
 
 <svelte:window on:beforeunload={null} />
+
+<svelte:document class={$theme === 'dark' ? 'dark' : undefined} />

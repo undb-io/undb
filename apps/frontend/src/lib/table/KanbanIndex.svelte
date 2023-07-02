@@ -22,7 +22,7 @@
 {#if field}
 	<svelte:component this={map[field.type]} {field} />
 {:else}
-	<div class="flex items-center justify-center h-screen w-full bg-gray-100">
+	<div class="flex items-center justify-center h-screen w-full bg-gray-100 dark:bg-slate-800/80">
 		<Card class="flex-1">
 			<KanbanConfig />
 		</Card>
