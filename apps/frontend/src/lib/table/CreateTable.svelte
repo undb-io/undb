@@ -106,8 +106,8 @@
 					<Badge color="dark">id</Badge>,
 					<Badge color="dark">{$t('created-at')}</Badge>,
 					<Badge color="dark">{$t('created-by')}</Badge>,
-					<Badge color="dark">{$t('created-by')}</Badge>,
-					<Badge color="dark">{$t('created-by')}</Badge>
+					<Badge color="dark">{$t('updated-at')}</Badge>,
+					<Badge color="dark">{$t('updated-by')}</Badge>
 				</P>
 
 				{#if $form.schema?.length}
