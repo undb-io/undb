@@ -42,9 +42,6 @@ export const stringFilterOperators = z.union([
 ])
 export type IStringFilterOperator = z.infer<typeof stringFilterOperators>
 
-export const emailFilterOperators = z.union([$eq, $neq, $starts_with, $ends_with, $contains, $is_empty, $is_not_empty])
-export type IEmailFilterOperator = z.infer<typeof emailFilterOperators>
-
 export const jsonFilterOperators = z.union([$is_empty, $is_not_empty])
 export type IJsonFilterOperator = z.infer<typeof jsonFilterOperators>
 

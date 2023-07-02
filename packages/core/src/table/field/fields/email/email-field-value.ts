@@ -1,7 +1,7 @@
 import type { JsonValue } from 'type-fest'
+import { FieldValueBase } from '../../field-value.base.js'
+import type { IFieldValueVisitor } from '../../field-value.visitor.js'
 import type { IEmailFieldValue } from './email-field.type.js'
-import { FieldValueBase } from './field-value.base.js'
-import type { IFieldValueVisitor } from './field-value.visitor.js'
 
 export class EmailFieldValue extends FieldValueBase<IEmailFieldValue> {
   get json(): JsonValue {

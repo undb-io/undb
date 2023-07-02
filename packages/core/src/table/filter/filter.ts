@@ -3,6 +3,8 @@ import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
 import { colorFieldValue } from '../field/color-field.type.js'
+import type { IEmailFilter } from '../field/fields/email/email.filter.js'
+import { emailFilter, emailFilterOperators, emailFilterValue } from '../field/fields/email/email.filter.js'
 import type { IUrlFilter } from '../field/fields/url/url.filter.js'
 import { urlFilter, urlFilterOperators, urlFilterValue } from '../field/fields/url/url.filter.js'
 import { DateFieldValue, NumberFieldValue, SelectFieldValue, StringFieldValue } from '../field/index.js'
@@ -68,8 +70,6 @@ import type { IDateRangeFilter } from './date-range.filter.js'
 import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter.js'
 import type { IDateFilter } from './date.filter.js'
 import { dateFilter, dateFilterValue } from './date.filter.js'
-import type { IEmailFilter } from './email.filter.js'
-import { emailFilter, emailFilterValue } from './email.filter.js'
 import type { IIdFilter } from './id.filter.js'
 import { idFilter, idFilterValue } from './id.filter.js'
 import type { IJsonFilter } from './json.filter.js'
@@ -101,7 +101,6 @@ import {
   currencyFilterOperators,
   dateFilterOperators,
   dateRangeFilterOperators,
-  emailFilterOperators,
   idFilterOperators,
   jsonFilterOperators,
   lookupFilterOperators,

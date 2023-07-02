@@ -1,7 +1,8 @@
 import * as z from 'zod'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { IBaseField } from '../../field.type.js'
 import { EmailField } from './email-field.js'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
 
 export const emailTypeSchema = z.literal('email')
 export type EmailFieldType = z.infer<typeof emailTypeSchema>
@@ -32,3 +33,5 @@ export const createEmailFieldValue_internal = z
 export type ICreateEmailFieldValue_internal = z.infer<typeof createEmailFieldValue_internal>
 
 export const emailReadableValueSchema = emailFieldQueryValue
+
+export type IEmailField = IBaseField

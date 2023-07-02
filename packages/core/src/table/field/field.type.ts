@@ -139,9 +139,11 @@ import {
   dateRangeTypeSchema,
   updateDateRangeFieldSchema,
 } from './date-range-field.type.js'
-import type { EmailFieldValue } from './email-field-value.js'
-import type { EmailField } from './email-field.js'
-import type { IEmailFieldValue } from './email-field.type.js'
+import type { BaseField } from './field.base.js'
+import { FIELD_TYPE_KEY } from './field.constants.js'
+import type { EmailFieldValue } from './fields/email/email-field-value.js'
+import type { EmailField } from './fields/email/email-field.js'
+import type { IEmailFieldValue } from './fields/email/email-field.type.js'
 import {
   createEmailFieldSchema,
   createEmailFieldValue_internal,
@@ -149,9 +151,7 @@ import {
   emailFieldQueryValue,
   emailTypeSchema,
   updateEmailFieldSchema,
-} from './email-field.type.js'
-import type { BaseField } from './field.base.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
+} from './fields/email/email-field.type.js'
 import type { UrlFieldValue } from './fields/url/url-field-value.js'
 import type { UrlField } from './fields/url/url-field.js'
 import type { IUrlFieldValue } from './fields/url/url-field.type.js'
@@ -525,7 +525,6 @@ export type IUpdatedAtField = IBaseField & BaseDateField
 export type IUpdatedByField = IBaseField
 export type IAutoIncrementField = IBaseField
 export type IStringField = IBaseField
-export type IEmailField = IBaseField
 export type IJsonField = IBaseField
 export type IAttachmentField = IBaseField
 export type IColorField = IBaseField
