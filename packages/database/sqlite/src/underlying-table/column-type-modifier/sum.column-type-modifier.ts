@@ -16,6 +16,7 @@ import {
   UnderlyingSelectColumn,
   UnderlyingStringColumn,
   UnderlyingSumColumn,
+  UnderlyingUrlColumn,
 } from '../underlying-column.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
@@ -74,6 +75,10 @@ export class SumColumnTypeModifier extends BaseColumnTypeModifier<SumField> {
   }
   email(): void {
     const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
+  }
+  url(): void {
+    const newColumn = new UnderlyingUrlColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
   json(): void {

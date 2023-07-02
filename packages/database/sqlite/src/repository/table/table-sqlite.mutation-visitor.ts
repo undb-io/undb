@@ -86,6 +86,7 @@ import {
   Table,
   TreeField,
   UpdatedByField,
+  UrlField,
 } from '../../entity/index.js'
 import { View } from '../../entity/view.js'
 import { ChartVisualization, NumberVisualization, Visualization } from '../../entity/visualization.js'
@@ -129,6 +130,8 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
         return this.em.getReference(ColorField, id)
       case 'email':
         return this.em.getReference(EmailField, id)
+      case 'url':
+        return this.em.getReference(UrlField, id)
       case 'json':
         return this.em.getReference(JsonField, id)
       case 'select':

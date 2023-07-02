@@ -10,6 +10,7 @@ export abstract class AbstractFieldTypeHandler implements IFieldTypeHandler {
   abstract number(): void
   abstract color(): void
   abstract email(): void
+  abstract url(): void
   abstract json(): void
   abstract date(): void
   abstract select(): void

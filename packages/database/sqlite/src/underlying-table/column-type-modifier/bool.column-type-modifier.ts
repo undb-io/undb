@@ -11,6 +11,7 @@ import {
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
+  UnderlyingUrlColumn,
 } from '../underlying-column.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
@@ -30,6 +31,10 @@ export class BoolColumnTypeModifier extends BaseColumnTypeModifier<BoolField> {
   }
   email(): void {
     const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
+  }
+  url(): void {
+    const newColumn = new UnderlyingUrlColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
   json(): void {

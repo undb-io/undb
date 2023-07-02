@@ -140,9 +140,9 @@
 	<i class="ti ti-sort-descending-2 text-sm" />
 	<span>
 		{#if fieldDirection === 'desc'}
-			{$t('Delete Sort Desending')}
+			{$t('Delete Sort Descending')}
 		{:else}
-			{$t('Sort Desending')}
+			{$t('Sort Descending')}
 		{/if}
 	</span>
 </DropdownItem>

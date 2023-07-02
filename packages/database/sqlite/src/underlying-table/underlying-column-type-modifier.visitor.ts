@@ -30,6 +30,7 @@ import type {
   TreeField,
   UpdatedAtField,
   UpdatedByField,
+  UrlField,
 } from '@undb/core'
 import { BaseEntityManager } from '../repository/base-entity-manager.js'
 import { AttachmentColumnTypeModifier } from './column-type-modifier/attachment.column-type-modifier.js'
@@ -50,6 +51,7 @@ import { RatingColumnTypeModifier } from './column-type-modifier/rating.column-t
 import { SelectColumnTypeModifier } from './column-type-modifier/select.column-type-modifier.js'
 import { StringColumnTypeModifier } from './column-type-modifier/string.column-type-modifier.js'
 import { SumColumnTypeModifier } from './column-type-modifier/sum.column-type-modifier.js'
+import { UrlColumnTypeModifier } from './column-type-modifier/url.column-type-modifier.js'
 
 export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implements IFieldVisitor {
   constructor(
@@ -92,6 +94,12 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
   }
   email(field: EmailField): void {
     const modifier = new EmailColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
+  }
+  url(field: UrlField): void {
+    const modifier = new UrlColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
     modifier[this.newType]()
     this.unshiftQueries(...modifier.queries)
     this.unshiftJobs(...modifier.jobs)

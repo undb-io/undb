@@ -64,6 +64,20 @@ const email: TemplateFunc = (h, props) => {
 	return h('span', { class: 'text-sm ' }, value.toString() ?? '')
 }
 
+const url: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'url') return
+
+	const html = htm.bind(h)
+
+	const value = props.model[props.prop] as string | undefined
+	if (!value) return null
+
+	const url = value.toString()
+
+	return html`<a class="text-sm underline text-blue-400" href="${url}">${url}</a>`
+}
+
 const id: TemplateFunc = (h, props) => {
 	const type = props.column.field.type as IFieldType
 	if (type !== 'id') return
@@ -457,6 +471,7 @@ export const cellTemplateMap: Record<IFieldType, TemplateFunc> = {
 	'created-by': createdBy,
 	'date-range': dateRange,
 	email,
+	url,
 	json,
 	lookup,
 	number,

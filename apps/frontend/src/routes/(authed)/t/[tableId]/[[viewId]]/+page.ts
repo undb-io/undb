@@ -40,13 +40,9 @@ export const load: PageLoad = async (event) => {
 				schema: fields.map((field) => field.json as any),
 			},
 			createUpdateTableSchema(coreTable),
-			{
-				id: 'updateTable',
-			},
 		),
-		createRecord: superValidate({}, createMutateRecordValuesSchema(fields), { id: 'createRecord', errors: false }),
+		createRecord: superValidate({}, createMutateRecordValuesSchema(fields), { errors: false }),
 		updateRecord: superValidate({}, createMutateRecordValuesSchema(fields, coreRecord?.valuesJSON), {
-			id: 'updateRecord',
 			errors: false,
 		}),
 		createField: superValidate(
@@ -54,21 +50,17 @@ export const load: PageLoad = async (event) => {
 			z.object<{ [key: string]: any }>({
 				type: z.string(),
 			}),
-			{ id: 'createField' },
 		),
 		updateField: superValidate(
 			{
 				type: 'string',
 			},
 			z.object<{ [key: string]: any }>({ type: z.string() }),
-			{
-				id: 'updateField',
-			},
 		),
-		createOption: superValidate({}, createOptionSchema, { id: 'createOption' }),
-		updateOption: superValidate({}, updateOptionSchema, { id: 'createOption' }),
-		createView: superValidate({}, createViewSchema, { id: 'createView', errors: false }),
-		createWebhook: superValidate({}, createWebhookSchema, { id: 'createWebhook' }),
-		updateWebhook: superValidate({}, updateWebhookSchema, { id: 'updateWebhook' }),
+		createOption: superValidate({}, createOptionSchema),
+		updateOption: superValidate({}, updateOptionSchema),
+		createView: superValidate({}, createViewSchema, { errors: false }),
+		createWebhook: superValidate({}, createWebhookSchema),
+		updateWebhook: superValidate({}, updateWebhookSchema),
 	}
 }
