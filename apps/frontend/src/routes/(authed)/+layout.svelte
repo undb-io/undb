@@ -200,7 +200,7 @@
 			<div class="flex h-12 shrink-0 items-center px-6 justify-between">
 				<div class="flex gap-2">
 					<img class="h-6 w-auto" src={logo} alt="undb" />
-					<P size="lg" class="font-semibold select-none !text-blue-600 ">undb</P>
+					<P size="lg" class="font-semibold select-none !text-blue-600 dark:!text-white ">undb</P>
 				</div>
 				<button on:click={() => ($sidebarCollapsed = true)}>
 					<i

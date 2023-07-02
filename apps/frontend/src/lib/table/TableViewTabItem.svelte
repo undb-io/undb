@@ -110,12 +110,12 @@
 		class={cx(
 			'inline-flex w-full justify-between items-center gap-2 text-sm font-medium text-center disabled:cursor-not-allowed px-4 py-2 border-b-2',
 			active
-				? 'text-blue-600  border-blue-600 dark:text-blue-500 dark:border-blue-500 active'
-				: 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 text-gray-500 dark:text-gray-50',
+				? 'text-blue-600  border-blue-600 dark:text-gray-50 dark:border-blue-500 active'
+				: 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 text-gray-500 dark:text-gray-300',
 		)}
 	>
 		<span class="inline-flex items-center gap-2">
-			<ViewIcon type={view.displayType} class={cx(!active ? '!text-gray-500 dark:!text-gray-50' : '!font-semibold')} />
+			<ViewIcon type={view.displayType} class={cx(!active ? '!text-gray-500 dark:!text-gray-300' : '!font-semibold')} />
 			{#if updating}
 				<form on:submit|preventDefault|stopPropagation={update}>
 					<input
