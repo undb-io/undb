@@ -87,9 +87,60 @@ import {
 import type { BaseField } from './field.base.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
 import type { AttachmentFieldValue } from './fields/attachment/attachment-field-value.js'
+import type { AttachmentField } from './fields/attachment/attachment-field.js'
+import type { IAttachmentFieldValue } from './fields/attachment/attachment-field.type.js'
+import {
+  attachmentFieldQuerySchema,
+  attachmentFieldQueryValue,
+  attachmentTypeSchema,
+  createAttachmentFieldSchema,
+  createAttachmentFieldValue_internal,
+  updateAttachmentFieldSchema,
+} from './fields/attachment/attachment-field.type.js'
 import type { AutoIncrementFieldValue } from './fields/auto-increment/auto-increment-field-value.js'
+import type { AutoIncrementField } from './fields/auto-increment/auto-increment-field.js'
+import type { IAutoIncrementFieldValue } from './fields/auto-increment/auto-increment-field.type.js'
+import {
+  autoIncrementFieldQuerySchema,
+  autoIncrementQueryValue,
+  autoIncrementTypeSchema,
+  createAutoIncrementFieldSchema,
+  createAutoIncrementFieldValue_internal,
+  updateAutoIncrementFieldSchema,
+} from './fields/auto-increment/auto-increment-field.type.js'
 import type { AverageFieldValue } from './fields/average/average-field-value.js'
+import type { AverageField } from './fields/average/average-field.js'
+import type { IAverageField, IAverageFieldValue } from './fields/average/average-field.type.js'
+import {
+  averageFieldQuerySchema,
+  averageFieldQueryValue,
+  averageTypeSchema,
+  createAverageFieldSchema,
+  createAverageFieldValue_internal,
+  updateAverageFieldSchema,
+} from './fields/average/average-field.type.js'
+import type { BoolFieldValue } from './fields/bool/bool-field-value.js'
+import type { BoolField } from './fields/bool/bool-field.js'
+import type { IBoolFieldValue } from './fields/bool/bool-field.type.js'
+import {
+  boolFieldQuerySchema,
+  boolFieldQueryValue,
+  boolTypeSchema,
+  createBoolFieldSchema,
+  createBoolFieldValue_internal,
+  updateBoolFieldSchema,
+} from './fields/bool/bool-field.type.js'
 import type { CollaboratorFieldValue } from './fields/collaborator/collaborator-field-value.js'
+import type { CollaboratorField } from './fields/collaborator/collaborator-field.js'
+import type { ICollaboratorFieldValue } from './fields/collaborator/collaborator-field.type.js'
+import {
+  collaboratorFieldQuerySchema,
+  collaboratorFieldQueryValue,
+  collaboratorTypeSchema,
+  createCollaboratorFieldSchema,
+  createCollaboratorFieldValue_internal,
+  updateCollaboratorFieldSchema,
+} from './fields/collaborator/collaborator-field.type.js'
 import type { EmailFieldValue } from './fields/email/email-field-value.js'
 import type { EmailField } from './fields/email/email-field.js'
 import type { IEmailFieldValue } from './fields/email/email-field.type.js'
@@ -101,60 +152,17 @@ import {
   emailTypeSchema,
   updateEmailFieldSchema,
 } from './fields/email/email-field.type.js'
-import type {
-  AttachmentField,
-  AutoIncrementField,
-  AverageField,
-  BoolField,
-  BoolFieldValue,
-  CollaboratorField,
-  IAttachmentFieldValue,
-  IAutoIncrementFieldValue,
-  IAverageField,
-  IAverageFieldValue,
-  IBoolFieldValue,
-  ICollaboratorFieldValue,
-  IStringFieldValue,
-  StringField,
-} from './fields/index.js'
+import type { StringFieldValue } from './fields/string/string-field-value.js'
+import type { StringField } from './fields/string/string-field.js'
+import type { IStringFieldValue } from './fields/string/string-field.type.js'
 import {
-  attachmentFieldQuerySchema,
-  attachmentFieldQueryValue,
-  attachmentTypeSchema,
-  autoIncrementFieldQuerySchema,
-  autoIncrementQueryValue,
-  autoIncrementTypeSchema,
-  averageFieldQuerySchema,
-  averageFieldQueryValue,
-  averageTypeSchema,
-  boolFieldQuerySchema,
-  boolFieldQueryValue,
-  boolTypeSchema,
-  collaboratorFieldQuerySchema,
-  collaboratorFieldQueryValue,
-  collaboratorTypeSchema,
-  createAttachmentFieldSchema,
-  createAttachmentFieldValue_internal,
-  createAutoIncrementFieldSchema,
-  createAutoIncrementFieldValue_internal,
-  createAverageFieldSchema,
-  createAverageFieldValue_internal,
-  createBoolFieldSchema,
-  createBoolFieldValue_internal,
-  createCollaboratorFieldSchema,
-  createCollaboratorFieldValue_internal,
+  createStringFieldSchema,
   createStringFieldValue_internal,
   stringFieldQuerySchema,
   stringFieldQueryValue,
   stringTypeSchema,
-  updateAttachmentFieldSchema,
-  updateAutoIncrementFieldSchema,
-  updateAverageFieldSchema,
-  updateBoolFieldSchema,
-  updateCollaboratorFieldSchema,
   updateStringFieldSchema,
-} from './fields/index.js'
-import type { StringFieldValue } from './fields/string/string-field-value.js'
+} from './fields/string/string-field.type.js'
 import type { UrlFieldValue } from './fields/url/url-field-value.js'
 import type { UrlField } from './fields/url/url-field.js'
 import type { IUrlFieldValue } from './fields/url/url-field.type.js'
@@ -177,7 +185,6 @@ import {
   idTypeSchema,
   updateIdFieldSchema,
 } from './id-field.type.js'
-import { createStringFieldSchema } from './index.js'
 import type { JsonFieldValue } from './json-field-value.js'
 import type { JsonField } from './json-field.js'
 import type { IJsonFieldValue } from './json-field.type.js'
