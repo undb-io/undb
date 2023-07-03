@@ -1,7 +1,7 @@
 import type { JsonValue } from 'type-fest'
+import { FieldValueBase } from '../../field-value.base.js'
+import type { IFieldValueVisitor } from '../../field-value.visitor.js'
 import type { ICurrencyFieldValue } from './currency-field.type.js'
-import { FieldValueBase } from './field-value.base.js'
-import type { IFieldValueVisitor } from './field-value.visitor.js'
 
 export class CurrencyFieldValue extends FieldValueBase<ICurrencyFieldValue> {
   get json(): JsonValue {

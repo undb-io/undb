@@ -22,6 +22,12 @@ import type { ICollaboratorFilter } from '../field/fields/collaborator/collabora
 import { collaboratorFilter, collaboratorFilterValue } from '../field/fields/collaborator/collaborator.filter.js'
 import type { IColorFilter } from '../field/fields/color/color.filter.js'
 import { colorFilter, colorFilterOperators } from '../field/fields/color/color.filter.js'
+import type { ICurrencyFilter } from '../field/fields/currency/currency.filter.js'
+import {
+  currencyFilter,
+  currencyFilterOperators,
+  currencyFilterValue,
+} from '../field/fields/currency/currency.filter.js'
 import type { IEmailFilter } from '../field/fields/email/email.filter.js'
 import { emailFilter, emailFilterOperators, emailFilterValue } from '../field/fields/email/email.filter.js'
 import type { IStringFilter } from '../field/fields/string/string.filter.js'
@@ -79,8 +85,6 @@ import type { ICreatedAtFilter } from './created-at.filter.js'
 import { createdAtFilter, createdAtFilterValue } from './created-at.filter.js'
 import type { ICreatedByFilter } from './created-by.filter.js'
 import { createdByFilter, createdByFilterValue } from './created-by.filter.js'
-import type { ICurrencyFilter } from './currency.filter.js'
-import { currencyFilter, currencyFilterValue } from './currency.filter.js'
 import type { IDateRangeFilter } from './date-range.filter.js'
 import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter.js'
 import type { IDateFilter } from './date.filter.js'
@@ -108,7 +112,6 @@ import {
   countFilterOperators,
   createdAtFilterOperators,
   createdByFilterOperators,
-  currencyFilterOperators,
   dateFilterOperators,
   dateRangeFilterOperators,
   idFilterOperators,

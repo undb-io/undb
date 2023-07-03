@@ -1,7 +1,9 @@
 import { z } from 'zod'
-import { currencyFieldValue } from '../field/currency-field.type.js'
-import { baseFilter } from './filter.base.js'
-import { currencyFilterOperators } from './operators.js'
+import { baseFilter } from '../../../filter/filter.base.js'
+import { $eq, $gt, $gte, $lt, $lte, $neq } from '../../../filter/operators.js'
+import { currencyFieldValue } from './currency-field.type.js'
+
+export const currencyFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
 
 export const currencyFilterValue = currencyFieldValue
 export const currencyFilter = z

@@ -1,22 +1,24 @@
 import { isString } from 'lodash-es'
 import { None, Some, type Option } from 'oxide.ts'
 import { z } from 'zod'
-import type { ICurrencyFilter, ICurrencyFilterOperator } from '../filter/currency.filter.js'
-import type { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import type { RecordValueJSON } from '../../../record/record.schema.js'
+import type { IRecordDisplayValues } from '../../../record/record.type.js'
+import type { TableCompositeSpecificaiton } from '../../../specifications/index.js'
+import { BaseField } from '../../field.base.js'
+import type { Field } from '../../field.type.js'
+import type { IFieldVisitor } from '../../field.visitor.js'
+import { WithCurrencySymbol } from '../../specifications/currency-field.specification.js'
+import { FieldId } from '../../value-objects/field-id.vo.js'
 import { CurrencyFieldValue } from './currency-field-value.js'
 import type {
   CurrencyFieldType,
   ICreateCurrencyFieldInput,
   ICreateCurrencyFieldValue,
+  ICurrencyField,
   IUpdateCurrencyFieldInput,
 } from './currency-field.type.js'
 import { CurrencySymbol } from './currency-symbol.vo.js'
-import { BaseField } from './field.base.js'
-import type { Field, ICurrencyField } from './field.type.js'
-import type { IFieldVisitor } from './field.visitor.js'
-import { WithCurrencySymbol } from './specifications/currency-field.specification.js'
-import { FieldId } from './value-objects/field-id.vo.js'
+import type { ICurrencyFilter, ICurrencyFilterOperator } from './currency.filter.js'
 
 export class CurrencyField extends BaseField<ICurrencyField> {
   duplicate(name: string): Field {

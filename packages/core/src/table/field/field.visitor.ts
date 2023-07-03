@@ -1,7 +1,6 @@
 import type { CountField } from './count-field.js'
 import type { CreatedAtField } from './created-at-field.js'
 import type { CreatedByField } from './created-by-field.js'
-import type { CurrencyField } from './currency-field.js'
 import type { DateField } from './date-field.js'
 import type { DateRangeField } from './date-range-field.js'
 import type {
@@ -11,6 +10,7 @@ import type {
   BoolField,
   CollaboratorField,
   ColorField,
+  CurrencyField,
   EmailField,
   StringField,
 } from './fields/index.js'

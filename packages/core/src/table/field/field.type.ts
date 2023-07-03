@@ -39,18 +39,6 @@ import {
   createdByTypeSchema,
   updateCreatedByFieldSchema,
 } from './created-by-field.type.js'
-import type { CurrencyFieldValue } from './currency-field-value.js'
-import type { CurrencyField } from './currency-field.js'
-import type { ICurrencyFieldValue } from './currency-field.type.js'
-import {
-  createCurrencyFieldSchema,
-  createCurrencyFieldValue_internal,
-  currencyFieldQuerySchema,
-  currencyFieldQueryValue,
-  currencyTypeSchema,
-  updateCurrencyFieldSchema,
-} from './currency-field.type.js'
-import type { CurrencySymbol } from './currency-symbol.vo.js'
 import type { DateFieldValue } from './date-field-value.js'
 import type { DateField } from './date-field.js'
 import type { IDateFieldValue } from './date-field.type.js'
@@ -131,6 +119,7 @@ import {
   updateCollaboratorFieldSchema,
 } from './fields/collaborator/collaborator-field.type.js'
 import type { ColorFieldValue } from './fields/color/color-field-value.js'
+import type { ColorField } from './fields/color/color-field.js'
 import type { IColorFieldValue } from './fields/color/color-field.type.js'
 import {
   colorFieldQuerySchema,
@@ -140,6 +129,17 @@ import {
   createColorFieldValue_internal,
   updateColorFieldSchema,
 } from './fields/color/color-field.type.js'
+import type { CurrencyFieldValue } from './fields/currency/currency-field-value.js'
+import type { CurrencyField } from './fields/currency/currency-field.js'
+import type { ICurrencyFieldValue } from './fields/currency/currency-field.type.js'
+import {
+  createCurrencyFieldSchema,
+  createCurrencyFieldValue_internal,
+  currencyFieldQuerySchema,
+  currencyFieldQueryValue,
+  currencyTypeSchema,
+  updateCurrencyFieldSchema,
+} from './fields/currency/currency-field.type.js'
 import type { EmailFieldValue } from './fields/email/email-field-value.js'
 import type { EmailField } from './fields/email/email-field.js'
 import type { IEmailFieldValue } from './fields/email/email-field.type.js'
@@ -151,7 +151,6 @@ import {
   emailTypeSchema,
   updateEmailFieldSchema,
 } from './fields/email/email-field.type.js'
-import type { ColorField } from './fields/index.js'
 import type { StringFieldValue } from './fields/string/string-field-value.js'
 import type { StringField } from './fields/string/string-field.js'
 import type { IStringFieldValue } from './fields/string/string-field.type.js'
@@ -527,7 +526,6 @@ export type IJsonField = IBaseField
 
 export type INumberField = IBaseField
 export type IRatingField = IBaseField & { max?: number }
-export type ICurrencyField = IBaseField & { symbol: CurrencySymbol }
 
 export type IDateField = IBaseField & BaseDateField
 export type IDateRangeField = IBaseField & BaseDateField

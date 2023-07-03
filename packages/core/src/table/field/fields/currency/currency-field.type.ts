@@ -1,8 +1,10 @@
 import * as z from 'zod'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { IBaseField } from '../../field.type.js'
 import { CurrencyField } from './currency-field.js'
+import type { CurrencySymbol } from './currency-symbol.vo.js'
 import { currencySymbol } from './currency-symbol.vo.js'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
 
 export const currencyTypeSchema = z.literal('currency')
 export type CurrencyFieldType = z.infer<typeof currencyTypeSchema>
@@ -41,3 +43,5 @@ export const createCurrencyFieldValue_internal = z
 export type ICreateCurrencyFieldValue_internal = z.infer<typeof createCurrencyFieldValue_internal>
 
 export const currencyReadableValueSchema = currencyFieldQueryValue
+
+export type ICurrencyField = IBaseField & { symbol: CurrencySymbol }
