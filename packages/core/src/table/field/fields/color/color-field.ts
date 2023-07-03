@@ -1,13 +1,13 @@
 import { z } from 'zod'
-import type { IColorFilter, IColorFilterOperator } from '../filter/color.filter.js'
-import type { RecordValueJSON } from '../record/record.schema.js'
-import type { IRecordDisplayValues } from '../record/record.type.js'
+import type { RecordValueJSON } from '../../../record/record.schema.js'
+import type { IRecordDisplayValues } from '../../../record/record.type.js'
+import { BaseField } from '../../field.base.js'
+import type { Field } from '../../field.type.js'
+import type { IFieldVisitor } from '../../field.visitor.js'
+import { FieldId } from '../../value-objects/field-id.vo.js'
 import { ColorFieldValue } from './color-field-value.js'
-import type { ColorFieldType, ICreateColorFieldInput, ICreateColorFieldValue } from './color-field.type.js'
-import { BaseField } from './field.base.js'
-import type { Field, IColorField } from './field.type.js'
-import type { IFieldVisitor } from './field.visitor.js'
-import { FieldId } from './value-objects/field-id.vo.js'
+import type { ColorFieldType, IColorField, ICreateColorFieldInput, ICreateColorFieldValue } from './color-field.type.js'
+import type { IColorFilter, IColorFilterOperator } from './color.filter.js'
 
 export class ColorField extends BaseField<IColorField> {
   duplicate(name: string): Field {

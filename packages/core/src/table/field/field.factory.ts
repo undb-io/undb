@@ -1,4 +1,3 @@
-import { ColorField } from './color-field.js'
 import { CountField } from './count-field.js'
 import { CreatedAtField } from './created-at-field.js'
 import { CreatedByField } from './created-by-field.js'
@@ -12,6 +11,7 @@ import {
   AverageField,
   BoolField,
   CollaboratorField,
+  ColorField,
   EmailField,
   StringField,
   UrlField,

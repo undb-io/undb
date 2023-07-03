@@ -2,7 +2,6 @@ import type { CompositeSpecification } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
-import { colorFieldValue } from '../field/color-field.type.js'
 import type { IAttachmentFilter, IAttachmentFilterTypeValue } from '../field/fields/attachment/attachment.filter.js'
 import {
   attachmentFilter,
@@ -21,13 +20,21 @@ import type { IBoolFilter } from '../field/fields/bool/bool.filter.js'
 import { boolFilter, boolFilterOperators, boolFilterValue } from '../field/fields/bool/bool.filter.js'
 import type { ICollaboratorFilter } from '../field/fields/collaborator/collaborator.filter.js'
 import { collaboratorFilter, collaboratorFilterValue } from '../field/fields/collaborator/collaborator.filter.js'
+import type { IColorFilter } from '../field/fields/color/color.filter.js'
+import { colorFilter, colorFilterOperators } from '../field/fields/color/color.filter.js'
 import type { IEmailFilter } from '../field/fields/email/email.filter.js'
 import { emailFilter, emailFilterOperators, emailFilterValue } from '../field/fields/email/email.filter.js'
 import type { IStringFilter } from '../field/fields/string/string.filter.js'
 import { stringFilter, stringFilterOperators, stringFilterValue } from '../field/fields/string/string.filter.js'
 import type { IUrlFilter } from '../field/fields/url/url.filter.js'
 import { urlFilter, urlFilterOperators, urlFilterValue } from '../field/fields/url/url.filter.js'
-import { DateFieldValue, NumberFieldValue, SelectFieldValue, StringFieldValue } from '../field/index.js'
+import {
+  DateFieldValue,
+  NumberFieldValue,
+  SelectFieldValue,
+  StringFieldValue,
+  colorFieldValue,
+} from '../field/index.js'
 import type { ISelectFieldValue } from '../field/select-field.type.js'
 import {
   BoolIsFalse,
@@ -64,8 +71,6 @@ import {
   StringStartsWith,
   WithRecordIds,
 } from '../record/index.js'
-import type { IColorFilter } from './color.filter.js'
-import { colorFilter } from './color.filter.js'
 import type { IConjunction } from './conjunction.js'
 import { conjunctions } from './conjunction.js'
 import type { ICountFilter } from './count.filter.js'
@@ -100,7 +105,6 @@ import {
   $is_true,
   $neq,
   collaboratorFilterOperators,
-  colorFilterOperators,
   countFilterOperators,
   createdAtFilterOperators,
   createdByFilterOperators,

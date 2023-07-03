@@ -33,9 +33,6 @@ export type IIdFilterOperator = z.infer<typeof idFilterOperators>
 export const jsonFilterOperators = z.union([$is_empty, $is_not_empty])
 export type IJsonFilterOperator = z.infer<typeof jsonFilterOperators>
 
-export const colorFilterOperators = z.union([$is_empty, $is_not_empty, $eq, $neq])
-export type IColorFilterOperator = z.infer<typeof colorFilterOperators>
-
 export const numberFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
 export type INumberFilterOperator = z.infer<typeof numberFilterOperators>
 

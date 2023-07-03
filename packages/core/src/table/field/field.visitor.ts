@@ -1,4 +1,3 @@
-import type { ColorField } from './color-field.js'
 import type { CountField } from './count-field.js'
 import type { CreatedAtField } from './created-at-field.js'
 import type { CreatedByField } from './created-by-field.js'
@@ -11,6 +10,7 @@ import type {
   AverageField,
   BoolField,
   CollaboratorField,
+  ColorField,
   EmailField,
   StringField,
 } from './fields/index.js'

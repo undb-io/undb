@@ -1,4 +1,3 @@
-import type { ColorFieldValue } from './color-field-value.js'
 import type { CountFieldValue } from './count-field-value.js'
 import type { CreatedAtFieldValue } from './created-at-field-value.js'
 import type { CreatedByFieldValue } from './created-by-field-value.js'
@@ -10,6 +9,7 @@ import type { AutoIncrementFieldValue } from './fields/auto-increment/auto-incre
 import type { AverageFieldValue } from './fields/average/average-field-value.js'
 import type { BoolFieldValue } from './fields/bool/bool-field-value.js'
 import type { CollaboratorFieldValue } from './fields/collaborator/collaborator-field-value.js'
+import type { ColorFieldValue } from './fields/color/color-field-value.js'
 import type { EmailFieldValue } from './fields/email/email-field-value.js'
 import type { StringFieldValue } from './fields/string/string-field-value.js'
 import type { UrlFieldValue } from './fields/url/url-field-value.js'

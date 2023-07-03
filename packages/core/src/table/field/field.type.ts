@@ -6,17 +6,6 @@ import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableId } from '../value-objects/table-id.vo.js'
 import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
-import type { ColorFieldValue } from './color-field-value.js'
-import type { ColorField } from './color-field.js'
-import type { IColorFieldValue } from './color-field.type.js'
-import {
-  colorFieldQuerySchema,
-  colorFieldQueryValue,
-  colorTypeSchema,
-  createColorFieldSchema,
-  createColorFieldValue_internal,
-  updateColorFieldSchema,
-} from './color-field.type.js'
 import type { CountFieldValue } from './count-field-value.js'
 import type { CountField } from './count-field.js'
 import type { ICountFieldValue } from './count-field.type.js'
@@ -141,6 +130,16 @@ import {
   createCollaboratorFieldValue_internal,
   updateCollaboratorFieldSchema,
 } from './fields/collaborator/collaborator-field.type.js'
+import type { ColorFieldValue } from './fields/color/color-field-value.js'
+import type { IColorFieldValue } from './fields/color/color-field.type.js'
+import {
+  colorFieldQuerySchema,
+  colorFieldQueryValue,
+  colorTypeSchema,
+  createColorFieldSchema,
+  createColorFieldValue_internal,
+  updateColorFieldSchema,
+} from './fields/color/color-field.type.js'
 import type { EmailFieldValue } from './fields/email/email-field-value.js'
 import type { EmailField } from './fields/email/email-field.js'
 import type { IEmailFieldValue } from './fields/email/email-field.type.js'
@@ -152,6 +151,7 @@ import {
   emailTypeSchema,
   updateEmailFieldSchema,
 } from './fields/email/email-field.type.js'
+import type { ColorField } from './fields/index.js'
 import type { StringFieldValue } from './fields/string/string-field-value.js'
 import type { StringField } from './fields/string/string-field.js'
 import type { IStringFieldValue } from './fields/string/string-field.type.js'
@@ -524,7 +524,6 @@ export type ICreatedByField = IBaseField
 export type IUpdatedAtField = IBaseField & BaseDateField
 export type IUpdatedByField = IBaseField
 export type IJsonField = IBaseField
-export type IColorField = IBaseField
 
 export type INumberField = IBaseField
 export type IRatingField = IBaseField & { max?: number }

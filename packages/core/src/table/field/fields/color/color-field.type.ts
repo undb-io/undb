@@ -1,7 +1,8 @@
 import * as z from 'zod'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { IBaseField } from '../../field.type.js'
 import { ColorField } from './color-field.js'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
 
 export const colorTypeSchema = z.literal('color')
 export type ColorFieldType = z.infer<typeof colorTypeSchema>
@@ -32,3 +33,5 @@ export const createColorFieldValue_internal = z
 export type ICreateColorFieldValue_internal = z.infer<typeof createColorFieldValue_internal>
 
 export const colorReadableValueSchema = colorFieldQueryValue
+
+export type IColorField = IBaseField
