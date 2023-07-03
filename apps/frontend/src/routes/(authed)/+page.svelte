@@ -23,7 +23,7 @@
 	{#if $sidebarCollapsed}
 		<div class="fixed top-3 left-3">
 			<button on:click={() => ($sidebarCollapsed = false)}>
-				<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
+				<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500 " />
 			</button>
 			<Tooltip placement="right" class="w-24">meta + b</Tooltip>
 		</div>

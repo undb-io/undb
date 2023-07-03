@@ -204,7 +204,7 @@
 				</div>
 				<button on:click={() => ($sidebarCollapsed = true)}>
 					<i
-						class="ti ti-layout-sidebar-left-collapse text-xl text-gray-500 opacity-0 group-hover/main:opacity-100 transition"
+						class="ti ti-layout-sidebar-left-collapse text-xl text-gray-500 dark:hover:text-gray-100 opacity-0 group-hover/main:opacity-100 transition"
 					/>
 				</button>
 				<Tooltip placement="bottom">meta + b</Tooltip>

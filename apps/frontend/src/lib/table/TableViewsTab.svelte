@@ -75,7 +75,7 @@
 	{#if $sidebarCollapsed}
 		<div class="ml-2">
 			<button on:click={() => ($sidebarCollapsed = false)}>
-				<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
+				<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500 dark:hover:text-gray-100" />
 			</button>
 			<Tooltip placement="bottom">meta + b</Tooltip>
 		</div>
