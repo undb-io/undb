@@ -217,8 +217,8 @@
 								href={item.href}
 								class={cx(
 									item.current
-										? 'bg-gray-50 text-indigo-600 dark:text-blue-600 dark:bg-gray-700'
-										: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700',
+										? 'bg-gray-50 text-indigo-600 dark:text-gray-50 dark:bg-gray-700'
+										: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700',
 									'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
 								)}
 							>
@@ -226,8 +226,8 @@
 									<i
 										class={cx(
 											item.current
-												? 'text-indigo-600 dark:text-blue-600'
-												: 'text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-blue-600',
+												? 'text-indigo-600 dark:text-gray-50'
+												: 'text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-gray-100',
 											'shrink-0 text-lg',
 											`ti ti-${item.icon}`,
 										)}
