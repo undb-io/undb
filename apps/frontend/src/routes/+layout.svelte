@@ -47,4 +47,4 @@
 
 <svelte:window on:beforeunload={null} />
 
-<svelte:document class={$theme === 'dark' ? 'dark' : undefined} />
+<svelte:document class={$theme} />
