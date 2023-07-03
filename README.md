@@ -64,7 +64,7 @@
 ### Deploy with docker
 
 ```
-docker run -d --name undb -p 4000:4000 --platform linux/x86_64 -v ~/.undb/:/var/opts/.undb ghcr.io/undb-xyz/undb:latest
+docker run -d --name undb -p 4000:4000 --platform linux/x86_64 -v ~/.undb/:/var/opt/.undb ghcr.io/undb-xyz/undb:latest
 ```
 
 > And then you can visit http://localhost:4000 and get started
