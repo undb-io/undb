@@ -18,7 +18,8 @@
 	import { copyText } from 'svelte-copy'
 	import Cookies from 'js-cookie'
 	import { slide } from 'svelte/transition'
-	import { changeDarkMode, sidebarCollapsed, theme } from '$lib/store/ui'
+	import { changeThemeMode, sidebarCollapsed, theme } from '$lib/store/ui'
+	import { DARK_THEME, LIGHT_THEME } from '$lib/store/ui.type'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -324,7 +325,7 @@
 				>
 					<DropdownItem href="/me">
 						<i class="ti ti-settings" />
-						{$t('Setting', { ns: 'auth' })}
+						{$t('Settings', { ns: 'auth' })}
 					</DropdownItem>
 					<DropdownItem class="flex items-center justify-between">
 						<Chevron placement="right">
@@ -355,11 +356,16 @@
 					</DropdownItem>
 					<DropdownItem
 						on:click={() => {
-							changeDarkMode('dark')
+							$theme = $theme === DARK_THEME ? LIGHT_THEME : DARK_THEME
+							changeThemeMode($theme)
 						}}
 					>
 						<i class="ti ti-sun-moon" />
-						{$t('light/dark', { ns: 'auth' })}
+						{#if $theme === DARK_THEME}
+							{$t('Light Mode', { ns: 'auth' })}
+						{:else}
+							{$t('Dark Mode', { ns: 'auth' })}
+						{/if}
 					</DropdownItem>
 					<DropdownItem>
 						<button on:click={() => $logout.mutate()} class="w-full h-full text-left text-red-400" type="submit">
@@ -392,7 +398,7 @@
 		<Dropdown triggeredBy="#me-button" placement="bottom" class="w-48 shadow-sm border border-gray-100 ">
 			<DropdownItem href="/me">
 				<i class="ti ti-settings" />
-				{$t('Setting', { ns: 'auth' })}
+				{$t('Settings', { ns: 'auth' })}
 			</DropdownItem>
 			<DropdownItem class="flex items-center justify-between">
 				<Chevron placement="right">
