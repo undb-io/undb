@@ -18,7 +18,7 @@
 	import { copyText } from 'svelte-copy'
 	import Cookies from 'js-cookie'
 	import { slide } from 'svelte/transition'
-	import { changeDarkMode, sidebarCollapsed, theme } from '$lib/store/ui'
+	import { changeThemeMode, sidebarCollapsed, theme } from '$lib/store/ui'
 	import { DARK_THEME, LIGHT_THEME } from '$lib/store/ui.type'
 
 	$: navigation = [
@@ -357,7 +357,7 @@
 					<DropdownItem
 						on:click={() => {
 							$theme = $theme === DARK_THEME ? LIGHT_THEME : DARK_THEME
-							changeDarkMode($theme)
+							changeThemeMode($theme)
 						}}
 					>
 						<i class="ti ti-sun-moon" />

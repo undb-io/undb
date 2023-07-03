@@ -5,7 +5,7 @@ export const sidebarCollapsed = writable(false)
 
 export const theme: Writable<Theme> = writable(LIGHT_THEME)
 
-export const changeDarkMode = (mode: Theme) => {
+export const changeThemeMode = (mode: Theme) => {
 	if (mode === LIGHT_THEME) {
 		document.documentElement.classList.remove(DARK_THEME)
 	} else {
