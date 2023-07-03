@@ -83,7 +83,7 @@
 	size="xs"
 	color="alternative"
 	class={cx(
-		'h-full !rounded-md gap-2 whitespace-nowrap border-0 hover:!bg-blue-50 text-blue-600 dark:text-gray-100',
+		'h-full !rounded-md gap-2 whitespace-nowrap border-0 hover:!bg-blue-50 dark:hover:!bg-gray-800 text-blue-600 dark:text-gray-100',
 		!!hiddenCount && '!bg-blue-50 dark:!bg-primary-600',
 	)}
 	on:click={() => (open = true)}
