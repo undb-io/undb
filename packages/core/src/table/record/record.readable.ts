@@ -5,6 +5,7 @@ import { z } from 'zod'
 import type { Field, IFieldType } from '../field/field.type.js'
 import type { LookupField } from '../field/fields/lookup/lookup-field.js'
 import type { MultiSelectField } from '../field/fields/multi-select/multi-select-field.js'
+import { multiSelectReadableValueSchema } from '../field/fields/multi-select/multi-select-field.type.js'
 import { urlReadableValueSchema } from '../field/fields/url/url-field.type.js'
 import type { CollaboratorField } from '../field/index.js'
 import {
@@ -24,7 +25,6 @@ import {
   idReadableValueSchema,
   jsonReadableValueSchema,
   lookupReadableValueSchema,
-  multiSelectReadableValueSchema,
   numberReadableValueSchema,
   parentReadableValueSchema,
   ratingReadableValueSchema,

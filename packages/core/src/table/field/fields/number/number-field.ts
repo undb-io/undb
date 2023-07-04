@@ -1,12 +1,11 @@
 import { z } from 'zod'
-import type { INumberFilter, INumberFilterOperator } from '../filter/number.filter.js'
-import type { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
-import { BaseField } from './field.base.js'
-import type { INumberField } from './field.type.js'
-import type { IFieldVisitor } from './field.visitor.js'
+import type { IRecordDisplayValues, RecordValueJSON } from '../../../record/index.js'
+import { BaseField } from '../../field.base.js'
+import type { IFieldVisitor } from '../../field.visitor.js'
+import { FieldId } from '../../value-objects/field-id.vo.js'
 import { NumberFieldValue } from './number-field-value.js'
-import type { ICreateNumberFieldInput, ICreateNumberFieldValue, NumberType } from './number-field.type.js'
-import { FieldId } from './value-objects/field-id.vo.js'
+import type { ICreateNumberFieldInput, ICreateNumberFieldValue, INumberField, NumberType } from './number-field.type.js'
+import type { INumberFilter, INumberFilterOperator } from './number.filter.js'
 
 export class NumberField extends BaseField<INumberField> {
   duplicate(name: string): NumberField {

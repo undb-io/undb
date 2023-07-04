@@ -67,6 +67,8 @@ import {
   multiSelectFilterOperators,
   multiSelectFilterValue,
 } from '../field/fields/multi-select/multi-select.filter.js'
+import type { INumberFilter } from '../field/fields/number/number.filter.js'
+import { numberFilter, numberFilterOperators, numberFilterValue } from '../field/fields/number/number.filter.js'
 import type { IStringFilter } from '../field/fields/string/string.filter.js'
 import { stringFilter, stringFilterOperators, stringFilterValue } from '../field/fields/string/string.filter.js'
 import type { IUrlFilter } from '../field/fields/url/url.filter.js'
@@ -116,8 +118,6 @@ import {
 } from '../record/index.js'
 import type { IConjunction } from './conjunction.js'
 import { conjunctions } from './conjunction.js'
-import type { INumberFilter } from './number.filter.js'
-import { numberFilter, numberFilterValue } from './number.filter.js'
 import {
   $between,
   $eq,
@@ -128,7 +128,6 @@ import {
   $is_today,
   $is_true,
   $neq,
-  numberFilterOperators,
   parentFilterOperators,
   ratingFilterOperators,
   referenceFilterOperators,

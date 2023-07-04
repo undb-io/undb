@@ -28,9 +28,6 @@ export const $between = z.literal('$between')
 export const $has_file_type = z.literal('$has_file_type')
 export const $has_file_extension = z.literal('$has_file_extension')
 
-export const numberFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
-export type INumberFilterOperator = z.infer<typeof numberFilterOperators>
-
 export const ratingFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
 export type IRatingFilterOperator = z.infer<typeof ratingFilterOperators>
 

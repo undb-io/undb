@@ -1,6 +1,8 @@
 import { z } from 'zod'
-import { baseFilter } from './filter.base.js'
-import { numberFilterOperators } from './operators.js'
+import { baseFilter } from '../../../filter/filter.base.js'
+import { $eq, $gt, $gte, $lt, $lte, $neq } from '../../../filter/operators.js'
+
+export const numberFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
 
 export const numberFilterValue = z.number().nullable()
 export const numberFilter = z

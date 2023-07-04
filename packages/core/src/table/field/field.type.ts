@@ -195,6 +195,17 @@ import {
   multiSelectTypeSchema,
   updateMultiSelectFieldSchema,
 } from './fields/multi-select/multi-select-field.type.js'
+import type { NumberFieldValue } from './fields/number/number-field-value.js'
+import type { NumberField } from './fields/number/number-field.js'
+import type { INumberFieldValue } from './fields/number/number-field.type.js'
+import {
+  createNumberFieldSchema,
+  createNumberFieldValue_internal,
+  numberFieldQuerySchema,
+  numberFieldQueryValue,
+  numberTypeSchema,
+  updateNumberFieldSchema,
+} from './fields/number/number-field.type.js'
 import type { StringFieldValue } from './fields/string/string-field-value.js'
 import type { StringField } from './fields/string/string-field.js'
 import type { IStringFieldValue } from './fields/string/string-field.type.js'
@@ -217,17 +228,6 @@ import {
   urlFieldQueryValue,
   urlTypeSchema,
 } from './fields/url/url-field.type.js'
-import type { NumberFieldValue } from './number-field-value.js'
-import type { NumberField } from './number-field.js'
-import type { INumberFieldValue } from './number-field.type.js'
-import {
-  createNumberFieldSchema,
-  createNumberFieldValue_internal,
-  numberFieldQuerySchema,
-  numberFieldQueryValue,
-  numberTypeSchema,
-  updateNumberFieldSchema,
-} from './number-field.type.js'
 import type { ParentFieldValue } from './parent-field-value.js'
 import type { ParentField } from './parent-field.js'
 import type { IParentFieldValue } from './parent-field.type.js'
@@ -520,7 +520,6 @@ export type BaseDateField = { format?: DateFormat; timeFormat?: TimeFormat }
 export type IUpdatedAtField = IBaseField & BaseDateField
 export type IUpdatedByField = IBaseField
 
-export type INumberField = IBaseField
 export type IRatingField = IBaseField & { max?: number }
 
 export type ISelectField = IBaseField & {
