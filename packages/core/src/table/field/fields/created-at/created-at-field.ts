@@ -6,7 +6,6 @@ import type { RecordValueJSON } from '../../../record/record.schema.js'
 import { AbstractDateField } from '../../field.base.js'
 import { INTERNAL_COLUMN_CREATED_AT_NAME } from '../../field.constants.js'
 import { FieldCannotBeDuplicated } from '../../field.errors.js'
-import { type ICreatedAtField } from '../../field.type.js'
 import type { IFieldVisitor } from '../../field.visitor.js'
 import { DateFormat } from '../../value-objects/date-format.vo.js'
 import { TimeFormat } from '../../value-objects/time-format.vo.js'
@@ -14,6 +13,7 @@ import { CreatedAtFieldValue } from './created-at-field-value.js'
 import type {
   CreatedAtFieldType,
   ICreateCreatedAtFieldInput,
+  ICreatedAtField,
   ICreatedAtFieldQueryValue,
 } from './created-at-field.type.js'
 import type { ICreatedAtFilter, ICreatedAtFilterOperator } from './created-at.filter.js'

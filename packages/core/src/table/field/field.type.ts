@@ -6,17 +6,6 @@ import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableId } from '../value-objects/table-id.vo.js'
 import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
-import type { CreatedByFieldValue } from './created-by-field-value.js'
-import type { CreatedByField } from './created-by-field.js'
-import type { ICreatedByFieldValue } from './created-by-field.type.js'
-import {
-  createCreatedByFieldSchema,
-  createCreatedByFieldValue_internal,
-  createdByFieldQuerySchema,
-  createdByFieldQueryValue,
-  createdByTypeSchema,
-  updateCreatedByFieldSchema,
-} from './created-by-field.type.js'
 import type { DateFieldValue } from './date-field-value.js'
 import type { DateField } from './date-field.js'
 import type { IDateFieldValue } from './date-field.type.js'
@@ -120,7 +109,7 @@ import {
 } from './fields/count/count-field.type.js'
 import type { CreatedAtFieldValue } from './fields/created-at/created-at-field-value.js'
 import type { CreatedAtField } from './fields/created-at/created-at-field.js'
-import type { ICreatedAtFieldValue } from './fields/created-at/created-at-field.type.js'
+import type { ICreatedAtField, ICreatedAtFieldValue } from './fields/created-at/created-at-field.type.js'
 import {
   createCreatedAtFieldSchema,
   createCreatedAtFieldValue_internal,
@@ -129,6 +118,17 @@ import {
   createdAtTypeSchema,
   updateCreatedAtFieldSchema,
 } from './fields/created-at/created-at-field.type.js'
+import type { CreatedByFieldValue } from './fields/created-by/created-by-field-value.js'
+import type { CreatedByField } from './fields/created-by/created-by-field.js'
+import type { ICreatedByFieldValue } from './fields/created-by/created-by-field.type.js'
+import {
+  createCreatedByFieldSchema,
+  createCreatedByFieldValue_internal,
+  createdByFieldQuerySchema,
+  createdByFieldQueryValue,
+  createdByTypeSchema,
+  updateCreatedByFieldSchema,
+} from './fields/created-by/created-by-field.type.js'
 import type { CurrencyFieldValue } from './fields/currency/currency-field-value.js'
 import type { CurrencyField } from './fields/currency/currency-field.js'
 import type { ICurrencyFieldValue } from './fields/currency/currency-field.type.js'
@@ -518,8 +518,6 @@ export interface IBaseField {
 export type BaseDateField = { format?: DateFormat; timeFormat?: TimeFormat }
 
 export type IIdField = IBaseField
-export type ICreatedAtField = IBaseField & BaseDateField
-export type ICreatedByField = IBaseField
 export type IUpdatedAtField = IBaseField & BaseDateField
 export type IUpdatedByField = IBaseField
 export type IJsonField = IBaseField

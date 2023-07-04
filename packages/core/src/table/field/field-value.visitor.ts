@@ -1,4 +1,3 @@
-import type { CreatedByFieldValue } from './created-by-field-value.js'
 import type { DateFieldValue } from './date-field-value.js'
 import type { DateRangeFieldValue } from './date-range-field-value.js'
 import type { AttachmentFieldValue } from './fields/attachment/attachment-field-value.js'
@@ -9,6 +8,7 @@ import type { CollaboratorFieldValue } from './fields/collaborator/collaborator-
 import type { ColorFieldValue } from './fields/color/color-field-value.js'
 import type { CountFieldValue } from './fields/count/count-field-value.js'
 import type { CreatedAtFieldValue } from './fields/created-at/created-at-field-value.js'
+import type { CreatedByFieldValue } from './fields/created-by/created-by-field-value.js'
 import type { CurrencyFieldValue } from './fields/currency/currency-field-value.js'
 import type { EmailFieldValue } from './fields/email/email-field-value.js'
 import type { StringFieldValue } from './fields/string/string-field-value.js'
