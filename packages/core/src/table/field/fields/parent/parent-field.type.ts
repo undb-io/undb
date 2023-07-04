@@ -1,9 +1,12 @@
 import * as z from 'zod'
-import { recordIdSchema } from '../record/value-objects/record-id.schema.js'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
+import { recordIdSchema } from '../../../record/value-objects/record-id.schema.js'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { IBaseField } from '../../field.type.js'
+import type { DisplayFields } from '../../value-objects/display-fields.vo.js'
+import { fieldIdSchema } from '../../value-objects/field-id.schema.js'
+import type { FieldId } from '../../value-objects/field-id.vo.js'
 import { ParentField } from './parent-field.js'
-import { fieldIdSchema } from './value-objects/field-id.schema.js'
 
 export const parentTypeSchema = z.literal('parent')
 export type ParentFieldType = z.infer<typeof parentTypeSchema>
@@ -51,3 +54,5 @@ export const parentReadableValueSchema = z.object({
   id: recordIdSchema,
   value: z.any().array(),
 })
+
+export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: DisplayFields }

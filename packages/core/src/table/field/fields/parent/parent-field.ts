@@ -1,16 +1,19 @@
 import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
-import type { IParentFilterOperator } from '../filter/operators.js'
-import type { IParentFilter } from '../filter/parent.filter.js'
-import type { RecordValueJSON } from '../record/record.schema.js'
-import type { IRecordDisplayValues } from '../record/record.type.js'
-import { AbstractLookingField, AbstractReferenceField } from './field.base.js'
-import { FieldCannotBeDuplicated } from './field.errors.js'
-import type { IParentField } from './field.type.js'
-import type { IFieldVisitor } from './field.visitor.js'
+import type { RecordValueJSON } from '../../../record/record.schema.js'
+import type { IRecordDisplayValues } from '../../../record/record.type.js'
+import { AbstractLookingField, AbstractReferenceField } from '../../field.base.js'
+import { FieldCannotBeDuplicated } from '../../field.errors.js'
+import type { IFieldVisitor } from '../../field.visitor.js'
+import { DisplayFields, FieldId } from '../../value-objects/index.js'
 import { ParentFieldValue } from './parent-field-value.js'
-import type { ICreateParentFieldInput, ICreateParentFieldValue, ParentFieldType } from './parent-field.type.js'
-import { DisplayFields, FieldId } from './value-objects/index.js'
+import type {
+  ICreateParentFieldInput,
+  ICreateParentFieldValue,
+  IParentField,
+  ParentFieldType,
+} from './parent-field.type.js'
+import type { IParentFilter, IParentFilterOperator } from './parent.filter.js'
 
 export class ParentField extends Mixin(AbstractReferenceField<IParentField>, AbstractLookingField<IParentField>) {
   duplicate(name: string): ParentField {

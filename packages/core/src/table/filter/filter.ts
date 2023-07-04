@@ -69,6 +69,7 @@ import {
 } from '../field/fields/multi-select/multi-select.filter.js'
 import type { INumberFilter } from '../field/fields/number/number.filter.js'
 import { numberFilter, numberFilterOperators, numberFilterValue } from '../field/fields/number/number.filter.js'
+import { parentFilter, parentFilterOperators, parentFilterValue } from '../field/fields/parent/parent.filter.js'
 import type { IStringFilter } from '../field/fields/string/string.filter.js'
 import { stringFilter, stringFilterOperators, stringFilterValue } from '../field/fields/string/string.filter.js'
 import type { IUrlFilter } from '../field/fields/url/url.filter.js'
@@ -128,7 +129,6 @@ import {
   $is_today,
   $is_true,
   $neq,
-  parentFilterOperators,
   ratingFilterOperators,
   referenceFilterOperators,
   selectFilterOperators,
@@ -137,7 +137,6 @@ import {
   updatedAtFilterOperators,
   updatedByFilterOperators,
 } from './operators.js'
-import { parentFilter, parentFilterValue } from './parent.filter.js'
 import type { IRatingFilter } from './rating.filter.js'
 import { ratingFilter, ratingFilterValue } from './rating.filter.js'
 import { referenceFilter, referenceFilterValue } from './reference.filter.js'

@@ -206,6 +206,17 @@ import {
   numberTypeSchema,
   updateNumberFieldSchema,
 } from './fields/number/number-field.type.js'
+import type { ParentFieldValue } from './fields/parent/parent-field-value.js'
+import type { ParentField } from './fields/parent/parent-field.js'
+import type { IParentField, IParentFieldValue } from './fields/parent/parent-field.type.js'
+import {
+  createParentFieldSchema,
+  createParentFieldValue_internal,
+  parentFieldQuerySchema,
+  parentFieldQueryValue,
+  parentTypeSchema,
+  updateParentFieldSchema,
+} from './fields/parent/parent-field.type.js'
 import type { StringFieldValue } from './fields/string/string-field-value.js'
 import type { StringField } from './fields/string/string-field.js'
 import type { IStringFieldValue } from './fields/string/string-field.type.js'
@@ -228,17 +239,6 @@ import {
   urlFieldQueryValue,
   urlTypeSchema,
 } from './fields/url/url-field.type.js'
-import type { ParentFieldValue } from './parent-field-value.js'
-import type { ParentField } from './parent-field.js'
-import type { IParentFieldValue } from './parent-field.type.js'
-import {
-  createParentFieldSchema,
-  createParentFieldValue_internal,
-  parentFieldQuerySchema,
-  parentFieldQueryValue,
-  parentTypeSchema,
-  updateParentFieldSchema,
-} from './parent-field.type.js'
 import type { RatingFieldValue } from './rating-field-value.js'
 import type { RatingField } from './rating-field.js'
 import type { IRatingFieldValue } from './rating-field.type.js'
@@ -533,7 +533,6 @@ export type IReferenceField = IBaseField & {
   symmetricReferenceFieldId?: FieldId
 }
 export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?: DisplayFields }
-export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: DisplayFields }
 
 export type ISumField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }
 
