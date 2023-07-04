@@ -30,10 +30,6 @@ export const $has_file_extension = z.literal('$has_file_extension')
 
 export const $is_root = z.literal('$is_root')
 
-export const treeFilterOperators = z.union([$eq, $neq, $is_root])
-export type ITreeFilterOperator = z.infer<typeof treeFilterOperators>
-export const treeBuiltInOperators = new Set<ITreeFilterOperator>([$is_root.value])
-
 export const createdAtBuiltInOperators = new Set<ICreatedAtFilterOperator>([$is_today.value])
 
 export const updatedAtFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte, $between, $is_today])

@@ -22,8 +22,8 @@ import type { ReferenceFieldValue } from './fields/reference/reference-field-val
 import type { SelectFieldValue } from './fields/select/select-field-value.js'
 import type { StringFieldValue } from './fields/string/string-field-value.js'
 import type { SumFieldValue } from './fields/sum/sum-field-value.js'
+import type { TreeFieldValue } from './fields/tree/tree-field-value.js'
 import type { UrlFieldValue } from './fields/url/url-field-value.js'
-import type { TreeFieldValue } from './tree-field-value.js'
 import type { UpdatedAtFieldValue } from './updated-at-field-value.js'
 import type { UpdatedByFieldValue } from './updated-by-field-value.js'
 

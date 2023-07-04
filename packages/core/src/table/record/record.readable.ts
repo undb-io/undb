@@ -8,6 +8,7 @@ import type { MultiSelectField } from '../field/fields/multi-select/multi-select
 import { multiSelectReadableValueSchema } from '../field/fields/multi-select/multi-select-field.type.js'
 import type { ParentField } from '../field/fields/parent/parent-field.js'
 import type { SelectField } from '../field/fields/select/select-field.js'
+import type { TreeField } from '../field/fields/tree/tree-field.js'
 import { urlReadableValueSchema } from '../field/fields/url/url-field.type.js'
 import type { CollaboratorField } from '../field/index.js'
 import {
@@ -39,7 +40,6 @@ import {
   updatedByReadableValueSchema,
   type ReferenceField,
 } from '../field/index.js'
-import type { TreeField } from '../field/tree-field.js'
 import type { Table } from '../table.js'
 import type { IQueryRecordSchema } from './record.type.js'
 

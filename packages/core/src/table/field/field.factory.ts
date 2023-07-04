@@ -26,7 +26,7 @@ import { RatingField } from './fields/rating/rating-field.js'
 import { ReferenceField } from './fields/reference/reference-field.js'
 import { SelectField } from './fields/select/select-field.js'
 import { SumField } from './fields/sum/sum-field.js'
-import { TreeField } from './tree-field.js'
+import { TreeField } from './fields/tree/tree-field.js'
 import { UpdatedAtField } from './updated-at-field.js'
 import { UpdatedByField } from './updated-by-field.js'
 

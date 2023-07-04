@@ -7,7 +7,7 @@ import { NumberField } from './fields/number/number-field.js'
 import { ParentField } from './fields/parent/parent-field.js'
 import { SelectField } from './fields/select/select-field.js'
 import { StringField } from './fields/string/string-field.js'
-import { TreeField } from './tree-field.js'
+import { TreeField } from './fields/tree/tree-field.js'
 
 it('should create string field', () => {
   const field = FieldFactory.create({

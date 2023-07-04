@@ -1,10 +1,13 @@
 import * as z from 'zod'
-import { recordIdSchema } from '../record/value-objects/record-id.schema.js'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
+import { recordIdSchema } from '../../../record/value-objects/record-id.schema.js'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { IBaseField } from '../../field.type.js'
+import type { DisplayFields } from '../../value-objects/display-fields.vo.js'
+import { fieldIdSchema } from '../../value-objects/field-id.schema.js'
+import type { FieldId } from '../../value-objects/field-id.vo.js'
+import { fieldNameSchema } from '../../value-objects/field-name.schema.js'
 import { TreeField } from './tree-field.js'
-import { fieldIdSchema } from './value-objects/field-id.schema.js'
-import { fieldNameSchema } from './value-objects/field-name.schema.js'
 
 export const treeTypeSchema = z.literal('tree')
 export type TreeFieldType = z.infer<typeof treeTypeSchema>
@@ -55,3 +58,5 @@ export const treeReadableValueSchema = z
     value: z.any().array(),
   })
   .array()
+
+export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?: DisplayFields }

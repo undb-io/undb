@@ -271,6 +271,17 @@ import {
   sumTypeSchema,
   updateSumFieldSchema,
 } from './fields/sum/sum-field.type.js'
+import type { TreeFieldValue } from './fields/tree/tree-field-value.js'
+import type { TreeField } from './fields/tree/tree-field.js'
+import type { ITreeField, ITreeFieldValue } from './fields/tree/tree-field.type.js'
+import {
+  createTreeFieldSchema,
+  createTreeFieldValue_internal,
+  treeFieldQuerySchema,
+  treeFieldQueryValue,
+  treeTypeSchema,
+  updateTreeFieldSchema,
+} from './fields/tree/tree-field.type.js'
 import type { UrlFieldValue } from './fields/url/url-field-value.js'
 import type { UrlField } from './fields/url/url-field.js'
 import type { IUrlFieldValue } from './fields/url/url-field.type.js'
@@ -288,17 +299,6 @@ import type {
   WithOptions,
   WithoutOption,
 } from './specifications/select-field.specification.js'
-import type { TreeFieldValue } from './tree-field-value.js'
-import type { TreeField } from './tree-field.js'
-import type { ITreeFieldValue } from './tree-field.type.js'
-import {
-  createTreeFieldSchema,
-  createTreeFieldValue_internal,
-  treeFieldQuerySchema,
-  treeFieldQueryValue,
-  treeTypeSchema,
-  updateTreeFieldSchema,
-} from './tree-field.type.js'
 import type { UpdatedAtFieldValue } from './updated-at-field-value.js'
 import type { UpdatedAtField } from './updated-at-field.js'
 import type { IUpdatedAtFieldValue } from './updated-at-field.type.js'
@@ -324,7 +324,6 @@ import {
 import type { FieldDescription } from './value-objects/field-description.js'
 import type {
   DateFormat,
-  DisplayFields,
   FieldId,
   FieldIssue,
   FieldName,
@@ -519,8 +518,6 @@ export type BaseDateField = { format?: DateFormat; timeFormat?: TimeFormat }
 
 export type IUpdatedAtField = IBaseField & BaseDateField
 export type IUpdatedByField = IBaseField
-
-export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?: DisplayFields }
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField | CreatedByField | UpdatedByField
 
