@@ -25,8 +25,8 @@ import type { ReferenceField } from './fields/reference/reference-field.js'
 import type { SelectField } from './fields/select/select-field.js'
 import type { SumField } from './fields/sum/sum-field.js'
 import type { TreeField } from './fields/tree/tree-field.js'
+import type { UpdatedAtField } from './fields/updated-at/updated-at-field.js'
 import type { UrlField } from './fields/url/url-field.js'
-import type { UpdatedAtField } from './updated-at-field.js'
 import type { UpdatedByField } from './updated-by-field.js'
 
 export interface IFieldVisitor {

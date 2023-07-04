@@ -1,8 +1,9 @@
 import * as z from 'zod'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { BaseDateField, IBaseField } from '../../field.type.js'
+import { timeFormat } from '../../value-objects/time-format.vo.js'
 import { UpdatedAtField } from './updated-at-field.js'
-import { timeFormat } from './value-objects/time-format.vo.js'
 
 export const updatedAtTypeSchema = z.literal('updated-at')
 export type UpdatedAtFieldType = z.infer<typeof updatedAtTypeSchema>
@@ -40,3 +41,5 @@ export const createUpdatedAtFieldValue_internal = z
 export type ICreateUpdatedAtFieldValue_internal = z.infer<typeof createUpdatedAtFieldValue_internal>
 
 export const updatedAtReadableValueSchema = updatedAtFieldQueryValue
+
+export type IUpdatedAtField = IBaseField & BaseDateField

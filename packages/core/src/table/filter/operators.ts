@@ -32,10 +32,6 @@ export const $is_root = z.literal('$is_root')
 
 export const createdAtBuiltInOperators = new Set<ICreatedAtFilterOperator>([$is_today.value])
 
-export const updatedAtFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte, $between, $is_today])
-export type IUpdatedAtFilterOperator = z.infer<typeof updatedAtFilterOperators>
-export const updatedAtBuiltInOperators = new Set<IUpdatedAtFilterOperator>([$is_today.value])
-
 export const updatedByFilterOperators = z.union([$eq, $neq, $in, $nin, $is_empty, $is_not_empty])
 export type IUpdatedByFilterOperator = z.infer<typeof updatedByFilterOperators>
 

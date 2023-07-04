@@ -7,6 +7,7 @@ import type { ClsStore } from '../../cls/cls.js'
 import { FieldFactory } from '../field/field.factory.js'
 import { CreatedAtField } from '../field/fields/created-at/created-at-field.js'
 import { IdField } from '../field/fields/id/id-field.js'
+import { UpdatedAtField } from '../field/fields/updated-at/updated-at-field.js'
 import type {
   AggregateFieldType,
   Field,
@@ -29,7 +30,6 @@ import {
   getNextFieldName,
   isSearchable,
 } from '../field/index.js'
-import { UpdatedAtField } from '../field/updated-at-field.js'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema.js'
 import { WithNewField } from '../specifications/table-field.specification.js'
 import type { ICalendarField } from '../view/calendar/index.js'

@@ -1,6 +1,6 @@
 import type { JsonValue } from 'type-fest'
-import { FieldValueBase } from './field-value.base.js'
-import type { IFieldValueVisitor } from './field-value.visitor.js'
+import { FieldValueBase } from '../../field-value.base.js'
+import type { IFieldValueVisitor } from '../../field-value.visitor.js'
 import type { IUpdatedAtFieldQueryValue, IUpdatedAtFieldValue } from './updated-at-field.type.js'
 
 export class UpdatedAtFieldValue extends FieldValueBase<IUpdatedAtFieldValue> {

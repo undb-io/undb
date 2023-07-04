@@ -1,22 +1,21 @@
 import { format } from 'date-fns'
 import { z } from 'zod'
-import type { IUpdatedAtFilterOperator } from '../filter/operators.js'
-import type { IUpdatedAtFilter } from '../filter/updated-at.filter.js'
-import type { IRecordDisplayValues } from '../record/index.js'
-import type { RecordValueJSON } from '../record/record.schema.js'
-import { AbstractDateField } from './field.base.js'
-import { INTERNAL_COLUMN_UPDATED_AT_NAME } from './field.constants.js'
-import { FieldCannotBeDuplicated } from './field.errors.js'
-import { type IUpdatedAtField } from './field.type.js'
-import type { IFieldVisitor } from './field.visitor.js'
+import type { IRecordDisplayValues } from '../../../record/index.js'
+import type { RecordValueJSON } from '../../../record/record.schema.js'
+import { AbstractDateField } from '../../field.base.js'
+import { INTERNAL_COLUMN_UPDATED_AT_NAME } from '../../field.constants.js'
+import { FieldCannotBeDuplicated } from '../../field.errors.js'
+import type { IFieldVisitor } from '../../field.visitor.js'
+import { DateFormat } from '../../value-objects/date-format.vo.js'
+import { TimeFormat } from '../../value-objects/time-format.vo.js'
 import { UpdatedAtFieldValue } from './updated-at-field-value.js'
 import type {
   ICreateUpdatedAtFieldInput,
+  IUpdatedAtField,
   IUpdatedAtFieldQueryValue,
   UpdatedAtFieldType,
 } from './updated-at-field.type.js'
-import { DateFormat } from './value-objects/date-format.vo.js'
-import { TimeFormat } from './value-objects/time-format.vo.js'
+import type { IUpdatedAtFilter, IUpdatedAtFilterOperator } from './updated-at.filter.js'
 
 export class UpdatedAtField extends AbstractDateField<IUpdatedAtField> {
   duplicate(name: string): UpdatedAtField {
