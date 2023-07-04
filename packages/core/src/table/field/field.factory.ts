@@ -4,6 +4,7 @@ import { CreatedAtField } from './fields/created-at/created-at-field.js'
 import { CreatedByField } from './fields/created-by/created-by-field.js'
 import { DateRangeField } from './fields/date-range/date-range-field.js'
 import { DateField } from './fields/date/date-field.js'
+import { IdField } from './fields/id/id-field.js'
 import {
   AttachmentField,
   AutoIncrementField,
@@ -16,7 +17,6 @@ import {
   StringField,
   UrlField,
 } from './fields/index.js'
-import { IdField } from './id-field.js'
 import { JsonField } from './json-field.js'
 import { LookupField } from './lookup-field.js'
 import { MultiSelectField } from './multi-select-field.js'

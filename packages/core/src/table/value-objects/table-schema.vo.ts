@@ -6,7 +6,7 @@ import * as z from 'zod'
 import type { ClsStore } from '../../cls/cls.js'
 import { FieldFactory } from '../field/field.factory.js'
 import { CreatedAtField } from '../field/fields/created-at/created-at-field.js'
-import { IdField } from '../field/id-field.js'
+import { IdField } from '../field/fields/id/id-field.js'
 import type {
   AggregateFieldType,
   Field,

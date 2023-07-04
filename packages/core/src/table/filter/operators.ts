@@ -28,9 +28,6 @@ export const $between = z.literal('$between')
 export const $has_file_type = z.literal('$has_file_type')
 export const $has_file_extension = z.literal('$has_file_extension')
 
-export const idFilterOperators = z.union([$eq, $neq, $in, $nin])
-export type IIdFilterOperator = z.infer<typeof idFilterOperators>
-
 export const jsonFilterOperators = z.union([$is_empty, $is_not_empty])
 export type IJsonFilterOperator = z.infer<typeof jsonFilterOperators>
 

@@ -46,6 +46,8 @@ import type { IDateFilter } from '../field/fields/date/date.filter.js'
 import { dateFilter, dateFilterOperators, dateFilterValue } from '../field/fields/date/date.filter.js'
 import type { IEmailFilter } from '../field/fields/email/email.filter.js'
 import { emailFilter, emailFilterOperators, emailFilterValue } from '../field/fields/email/email.filter.js'
+import type { IIdFilter } from '../field/fields/id/id.filter.js'
+import { idFilter, idFilterOperators, idFilterValue } from '../field/fields/id/id.filter.js'
 import type { IStringFilter } from '../field/fields/string/string.filter.js'
 import { stringFilter, stringFilterOperators, stringFilterValue } from '../field/fields/string/string.filter.js'
 import type { IUrlFilter } from '../field/fields/url/url.filter.js'
@@ -97,8 +99,6 @@ import type { IConjunction } from './conjunction.js'
 import { conjunctions } from './conjunction.js'
 import type { ICreatedByFilter } from './created-by.filter.js'
 import { createdByFilter, createdByFilterValue } from './created-by.filter.js'
-import type { IIdFilter } from './id.filter.js'
-import { idFilter, idFilterValue } from './id.filter.js'
 import type { IJsonFilter } from './json.filter.js'
 import { jsonFilter, jsonFilterValue } from './json.filter.js'
 import { lookupFilter, lookupFilterValue } from './lookup.filter.js'
@@ -118,7 +118,6 @@ import {
   $neq,
   collaboratorFilterOperators,
   createdByFilterOperators,
-  idFilterOperators,
   jsonFilterOperators,
   lookupFilterOperators,
   multiSelectFilterOperators,

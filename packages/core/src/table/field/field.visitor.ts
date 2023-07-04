@@ -3,6 +3,7 @@ import type { CreatedAtField } from './fields/created-at/created-at-field.js'
 import type { CreatedByField } from './fields/created-by/created-by-field.js'
 import type { DateRangeField } from './fields/date-range/date-range-field.js'
 import type { DateField } from './fields/date/date-field.js'
+import type { IdField } from './fields/id/id-field.js'
 import type {
   AttachmentField,
   AutoIncrementField,
@@ -15,7 +16,6 @@ import type {
   StringField,
 } from './fields/index.js'
 import type { UrlField } from './fields/url/url-field.js'
-import type { IdField } from './id-field.js'
 import type { JsonField } from './json-field.js'
 import type { LookupField } from './lookup-field.js'
 import type { MultiSelectField } from './multi-select-field.js'

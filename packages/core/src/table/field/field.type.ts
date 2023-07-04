@@ -151,6 +151,17 @@ import {
   emailTypeSchema,
   updateEmailFieldSchema,
 } from './fields/email/email-field.type.js'
+import type { IdFieldValue } from './fields/id/id-field-value.js'
+import type { IdField } from './fields/id/id-field.js'
+import type { IIdFieldValue } from './fields/id/id-field.type.js'
+import {
+  createIdFieldSchema,
+  createIdFieldValue_internal,
+  idFieldQuerySchema,
+  idFieldQueryValue,
+  idTypeSchema,
+  updateIdFieldSchema,
+} from './fields/id/id-field.type.js'
 import type { StringFieldValue } from './fields/string/string-field-value.js'
 import type { StringField } from './fields/string/string-field.js'
 import type { IStringFieldValue } from './fields/string/string-field.type.js'
@@ -173,17 +184,6 @@ import {
   urlFieldQueryValue,
   urlTypeSchema,
 } from './fields/url/url-field.type.js'
-import type { IdFieldValue } from './id-field-value.js'
-import type { IdField } from './id-field.js'
-import type { IIdFieldValue } from './id-field.type.js'
-import {
-  createIdFieldSchema,
-  createIdFieldValue_internal,
-  idFieldQuerySchema,
-  idFieldQueryValue,
-  idTypeSchema,
-  updateIdFieldSchema,
-} from './id-field.type.js'
 import type { JsonFieldValue } from './json-field-value.js'
 import type { JsonField } from './json-field.js'
 import type { IJsonFieldValue } from './json-field.type.js'
@@ -517,7 +517,6 @@ export interface IBaseField {
 
 export type BaseDateField = { format?: DateFormat; timeFormat?: TimeFormat }
 
-export type IIdField = IBaseField
 export type IUpdatedAtField = IBaseField & BaseDateField
 export type IUpdatedByField = IBaseField
 export type IJsonField = IBaseField

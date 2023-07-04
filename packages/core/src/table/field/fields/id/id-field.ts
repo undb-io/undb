@@ -1,15 +1,13 @@
 import { z } from 'zod'
-import type { IIdFilter } from '../filter/id.filter.js'
-import type { IIdFilterOperator } from '../filter/operators.js'
-import type { IRecordDisplayValues } from '../record/index.js'
-import type { RecordValueJSON } from '../record/record.schema.js'
-import { BaseField } from './field.base.js'
-import { INTERNAL_COLUMN_ID_NAME } from './field.constants.js'
-import { FieldCannotBeDuplicated } from './field.errors.js'
-import type { IIdField } from './field.type.js'
-import type { IFieldVisitor } from './field.visitor.js'
+import type { IRecordDisplayValues } from '../../../record/index.js'
+import type { RecordValueJSON } from '../../../record/record.schema.js'
+import { BaseField } from '../../field.base.js'
+import { INTERNAL_COLUMN_ID_NAME } from '../../field.constants.js'
+import { FieldCannotBeDuplicated } from '../../field.errors.js'
+import type { IFieldVisitor } from '../../field.visitor.js'
 import { IdFieldValue } from './id-field-value.js'
-import type { ICreateIdFieldInput, ICreateIdFieldValue, IdFieldType } from './id-field.type.js'
+import type { ICreateIdFieldInput, ICreateIdFieldValue, IIdField, IdFieldType } from './id-field.type.js'
+import type { IIdFilter, IIdFilterOperator } from './id.filter.js'
 
 export class IdField extends BaseField<IIdField> {
   duplicate(name: string): IdField {
