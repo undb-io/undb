@@ -608,8 +608,8 @@ importers:
         specifier: ^2.0.5
         version: 2.0.5
       sveltekit-superforms:
-        specifier: ^1.1.2
-        version: 1.1.2(@sveltejs/kit@1.21.0)(svelte@4.0.1)(zod@3.21.4)
+        specifier: ^0.8.7
+        version: 0.8.7(@sveltejs/kit@1.21.0)(svelte@4.0.1)(zod@3.21.4)
       svelvet:
         specifier: ^8.0.8
         version: 8.0.8(svelte@4.0.1)
@@ -14490,11 +14490,11 @@ packages:
       periscopic: 3.1.0
     dev: true
 
-  /sveltekit-superforms@1.1.2(@sveltejs/kit@1.21.0)(svelte@4.0.1)(zod@3.21.4):
-    resolution: {integrity: sha512-oWW3+Phcs/CkUKGEx0IsCr6Dw3a22/MVs4Tvi8k/jh66pqwP/jOZu3/dT367pkbIh5T7NK20yrnbHu8nm2E7pQ==}
+  /sveltekit-superforms@0.8.7(@sveltejs/kit@1.21.0)(svelte@4.0.1)(zod@3.21.4):
+    resolution: {integrity: sha512-0aFK31TNz4AM3N7dzL99QUXlVF2O+W/TNVU+M41VVaAKtJKFNasbv8GNLd5wrhN7UWN6kNJnt4MlZBPISkIQ6w==}
     peerDependencies:
       '@sveltejs/kit': 1.x
-      svelte: 3.x || 4.x
+      svelte: 3.x
       zod: 3.x
     dependencies:
       '@sveltejs/kit': 1.21.0(svelte@4.0.1)(vite@4.3.9)
