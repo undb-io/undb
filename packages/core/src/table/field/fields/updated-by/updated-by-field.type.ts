@@ -1,8 +1,9 @@
 import * as z from 'zod'
-import { userIdSchema } from '../../user/value-objects/user-id.vo.js'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
-import { collaboratorProfile } from './fields/collaborator/collaborator-field.type.js'
+import { userIdSchema } from '../../../../user/value-objects/index.js'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { IBaseField } from '../../field.type.js'
+import { collaboratorProfile } from '../collaborator/index.js'
 import { UpdatedByField } from './updated-by-field.js'
 
 export const updatedByTypeSchema = z.literal('updated-by')
@@ -42,3 +43,5 @@ export const createUpdatedByFieldValue_internal = z
 export type ICreateUpdatedByFieldValue_internal = z.infer<typeof createUpdatedByFieldValue_internal>
 
 export const updatedByReadableValueSchema = z.object({ id: userIdSchema }).merge(collaboratorProfile)
+
+export type IUpdatedByField = IBaseField

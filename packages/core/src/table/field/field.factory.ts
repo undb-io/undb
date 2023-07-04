@@ -28,7 +28,7 @@ import { SelectField } from './fields/select/select-field.js'
 import { SumField } from './fields/sum/sum-field.js'
 import { TreeField } from './fields/tree/tree-field.js'
 import { UpdatedAtField } from './fields/updated-at/updated-at-field.js'
-import { UpdatedByField } from './updated-by-field.js'
+import { UpdatedByField } from './fields/updated-by/updated-by-field.js'
 
 export class FieldFactory {
   static create(input: ICreateFieldSchema): Field | Field[] {

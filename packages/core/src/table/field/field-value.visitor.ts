@@ -24,8 +24,8 @@ import type { StringFieldValue } from './fields/string/string-field-value.js'
 import type { SumFieldValue } from './fields/sum/sum-field-value.js'
 import type { TreeFieldValue } from './fields/tree/tree-field-value.js'
 import type { UpdatedAtFieldValue } from './fields/updated-at/updated-at-field-value.js'
+import type { UpdatedByFieldValue } from './fields/updated-by/updated-by-field-value.js'
 import type { UrlFieldValue } from './fields/url/url-field-value.js'
-import type { UpdatedByFieldValue } from './updated-by-field-value.js'
 
 export interface IFieldValueVisitor {
   id(value: IdFieldValue): void

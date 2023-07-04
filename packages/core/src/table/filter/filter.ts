@@ -92,6 +92,12 @@ import {
   updatedAtFilterOperators,
   updatedAtFilterValue,
 } from '../field/fields/updated-at/updated-at.filter.js'
+import type { IUpdatedByFilter } from '../field/fields/updated-by/updated-by.filter.js'
+import {
+  updatedByFilter,
+  updatedByFilterOperators,
+  updatedByFilterValue,
+} from '../field/fields/updated-by/updated-by.filter.js'
 import type { IUrlFilter } from '../field/fields/url/url.filter.js'
 import { urlFilter, urlFilterOperators, urlFilterValue } from '../field/fields/url/url.filter.js'
 import {
@@ -138,20 +144,7 @@ import {
 } from '../record/index.js'
 import type { IConjunction } from './conjunction.js'
 import { conjunctions } from './conjunction.js'
-import {
-  $between,
-  $eq,
-  $is_empty,
-  $is_false,
-  $is_not_empty,
-  $is_root,
-  $is_today,
-  $is_true,
-  $neq,
-  updatedByFilterOperators,
-} from './operators.js'
-import type { IUpdatedByFilter } from './updated-by.filter.js'
-import { updatedByFilter, updatedByFilterValue } from './updated-by.filter.js'
+import { $between, $eq, $is_empty, $is_false, $is_not_empty, $is_root, $is_today, $is_true, $neq } from './operators.js'
 
 export const filterValue = z.union([
   idFilterValue,

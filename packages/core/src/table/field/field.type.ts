@@ -293,6 +293,17 @@ import {
   updatedAtFieldQueryValue,
   updatedAtTypeSchema,
 } from './fields/updated-at/updated-at-field.type.js'
+import type { UpdatedByFieldValue } from './fields/updated-by/updated-by-field-value.js'
+import type { UpdatedByField } from './fields/updated-by/updated-by-field.js'
+import type { IUpdatedByFieldValue } from './fields/updated-by/updated-by-field.type.js'
+import {
+  createUpdatedByFieldSchema,
+  createUpdatedByFieldValue_internal,
+  updateUpdatedByFieldSchema,
+  updatedByFieldQuerySchema,
+  updatedByFieldQueryValue,
+  updatedByTypeSchema,
+} from './fields/updated-by/updated-by-field.type.js'
 import type { UrlFieldValue } from './fields/url/url-field-value.js'
 import type { UrlField } from './fields/url/url-field.js'
 import type { IUrlFieldValue } from './fields/url/url-field.type.js'
@@ -310,17 +321,6 @@ import type {
   WithOptions,
   WithoutOption,
 } from './specifications/select-field.specification.js'
-import type { UpdatedByFieldValue } from './updated-by-field-value.js'
-import type { UpdatedByField } from './updated-by-field.js'
-import type { IUpdatedByFieldValue } from './updated-by-field.type.js'
-import {
-  createUpdatedByFieldSchema,
-  createUpdatedByFieldValue_internal,
-  updateUpdatedByFieldSchema,
-  updatedByFieldQuerySchema,
-  updatedByFieldQueryValue,
-  updatedByTypeSchema,
-} from './updated-by-field.type.js'
 import type { FieldDescription } from './value-objects/field-description.js'
 import type {
   DateFormat,
@@ -515,8 +515,6 @@ export interface IBaseField {
 }
 
 export type BaseDateField = { format?: DateFormat; timeFormat?: TimeFormat }
-
-export type IUpdatedByField = IBaseField
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField | CreatedByField | UpdatedByField
 

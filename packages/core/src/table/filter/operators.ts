@@ -32,8 +32,5 @@ export const $is_root = z.literal('$is_root')
 
 export const createdAtBuiltInOperators = new Set<ICreatedAtFilterOperator>([$is_today.value])
 
-export const updatedByFilterOperators = z.union([$eq, $neq, $in, $nin, $is_empty, $is_not_empty])
-export type IUpdatedByFilterOperator = z.infer<typeof updatedByFilterOperators>
-
 export const operatorsWihtoutValue = z.union([$is_empty, $is_not_empty, $is_today, $is_root])
 export const isOperatorWithoutValue = (value: string): boolean => operatorsWihtoutValue.safeParse(value).success
