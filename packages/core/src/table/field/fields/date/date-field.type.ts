@@ -1,8 +1,9 @@
 import { z } from 'zod'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { BaseDateField, IBaseField } from '../../field.type.js'
+import { timeFormat } from '../../value-objects/time-format.vo.js'
 import { DateField } from './date-field.js'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
-import { timeFormat } from './value-objects/time-format.vo.js'
 
 export const dateTypeSchema = z.literal('date')
 export type DateType = z.infer<typeof dateTypeSchema>
@@ -37,3 +38,5 @@ export type ICreateDateFieldValue_internal = z.infer<typeof createDateFieldValue
 export const isDateField = z.instanceof(DateField)
 
 export const dateReadableValueSchema = dateFieldQueryValue
+
+export type IDateField = IBaseField & BaseDateField

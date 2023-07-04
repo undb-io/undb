@@ -1,8 +1,8 @@
-import type { DateField } from './date-field.js'
 import type { DateRangeField } from './date-range-field.js'
 import type { CountField } from './fields/count/count-field.js'
 import type { CreatedAtField } from './fields/created-at/created-at-field.js'
 import type { CreatedByField } from './fields/created-by/created-by-field.js'
+import type { DateField } from './fields/date/date-field.js'
 import type {
   AttachmentField,
   AutoIncrementField,

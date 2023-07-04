@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import type { ICreatedAtFilterOperator } from '../field'
 
 export const $eq = z.literal('$eq')
 export const $neq = z.literal('$neq')
@@ -45,16 +46,6 @@ export type ISumFilterOperator = z.infer<typeof sumFilterOperators>
 export const selectFilterOperators = z.union([$eq, $neq, $in, $nin])
 export type ISelectFilterOperator = z.infer<typeof selectFilterOperators>
 
-export const dateFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte, $between, $is_today])
-export type IDateFilterOperator = z.infer<typeof dateFilterOperators>
-
-/**
- * built in date operators
- */
-export const dateBuiltInOperators = new Set<IDateFilterOperator>([$is_today.value])
-
-export const isBuiltInDateOperator = (operator: IDateFilterOperator) => dateBuiltInOperators.has(operator)
-
 export const referenceFilterOperators = z.union([$eq, $neq])
 export type IReferenceFilterOperator = z.infer<typeof referenceFilterOperators>
 
@@ -79,11 +70,11 @@ export type IParentFilterOperator = z.infer<typeof parentFilterOperators>
 export const dateRangeFilterOperators = z.union([$eq, $neq, $between])
 export type IDateRangeFilterOperator = z.infer<typeof dateRangeFilterOperators>
 
-export const createdAtBuiltInOperators = dateBuiltInOperators
+export const createdAtBuiltInOperators = new Set<ICreatedAtFilterOperator>([$is_today.value])
 
-export const updatedAtFilterOperators = dateFilterOperators
-export type IUpdatedAtFilterOperator = z.infer<typeof dateFilterOperators>
-export const updatedAtBuiltInOperators = dateBuiltInOperators
+export const updatedAtFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte, $between, $is_today])
+export type IUpdatedAtFilterOperator = z.infer<typeof updatedAtFilterOperators>
+export const updatedAtBuiltInOperators = new Set<IUpdatedAtFilterOperator>([$is_today.value])
 
 export const createdByFilterOperators = collaboratorFilterOperators
 export type ICreatedByFilterOperator = z.infer<typeof createdByFilterOperators>
