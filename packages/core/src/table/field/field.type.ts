@@ -238,6 +238,17 @@ import {
   updateReferenceFieldSchema,
 } from './fields/reference/reference-field.type.js'
 import type { IReferenceFilterValue } from './fields/reference/reference.filter.js'
+import type { SelectFieldValue } from './fields/select/select-field-value.js'
+import type { SelectField } from './fields/select/select-field.js'
+import type { ISelectField, ISelectFieldValue } from './fields/select/select-field.type.js'
+import {
+  createSelectFieldSchema,
+  createSelectFieldValue_internal,
+  selectFieldQuerySchema,
+  selectFieldQueryValue,
+  selectTypeSchema,
+  updateSelectFieldSchema,
+} from './fields/select/select-field.type.js'
 import type { StringFieldValue } from './fields/string/string-field-value.js'
 import type { StringField } from './fields/string/string-field.js'
 import type { IStringFieldValue } from './fields/string/string-field.type.js'
@@ -260,17 +271,6 @@ import {
   urlFieldQueryValue,
   urlTypeSchema,
 } from './fields/url/url-field.type.js'
-import type { SelectFieldValue } from './select-field-value.js'
-import type { SelectField } from './select-field.js'
-import type { ISelectFieldValue } from './select-field.type.js'
-import {
-  createSelectFieldSchema,
-  createSelectFieldValue_internal,
-  selectFieldQuerySchema,
-  selectFieldQueryValue,
-  selectTypeSchema,
-  updateSelectFieldSchema,
-} from './select-field.type.js'
 import type {
   WithNewOption,
   WithOption,
@@ -519,10 +519,6 @@ export type BaseDateField = { format?: DateFormat; timeFormat?: TimeFormat }
 
 export type IUpdatedAtField = IBaseField & BaseDateField
 export type IUpdatedByField = IBaseField
-
-export type ISelectField = IBaseField & {
-  options: Options
-}
 
 export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?: DisplayFields }
 

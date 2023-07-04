@@ -5,8 +5,8 @@ import { DateRangeField } from './fields/date-range/date-range-field.js'
 import { DateField } from './fields/date/date-field.js'
 import { NumberField } from './fields/number/number-field.js'
 import { ParentField } from './fields/parent/parent-field.js'
+import { SelectField } from './fields/select/select-field.js'
 import { StringField } from './fields/string/string-field.js'
-import { SelectField } from './select-field.js'
 import { TreeField } from './tree-field.js'
 
 it('should create string field', () => {

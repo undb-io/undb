@@ -1,6 +1,6 @@
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import { SelectFieldValue } from '../../field/select-field-value.js'
+import { SelectFieldValue } from '../../field/fields/select/select-field-value.js'
 import type { Record } from '../record.js'
 import type { IRecordVisitor } from './interface.js'
 import { BaseRecordQuerySpecification, BaseRecordSpecification } from './record-specification.base.js'

@@ -1,7 +1,10 @@
 import { z } from 'zod'
-import { selectFieldValue } from '../field/select-field.type.js'
-import { baseFilter } from './filter.base.js'
-import { selectFilterOperators } from './operators.js'
+import { baseFilter } from '../../../filter/filter.base.js'
+import { $eq, $in, $neq, $nin } from '../../../filter/operators.js'
+import { selectFieldValue } from './select-field.type.js'
+
+export const selectFilterOperators = z.union([$eq, $neq, $in, $nin])
+export type ISelectFilterOperator = z.infer<typeof selectFilterOperators>
 
 export const selectFilterValue = selectFieldValue.or(selectFieldValue.array()).nullable()
 export type ISelectFilterValue = z.infer<typeof selectFieldValue>

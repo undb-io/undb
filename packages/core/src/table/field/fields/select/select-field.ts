@@ -1,15 +1,18 @@
 import { z } from 'zod'
-import type { ISelectFilterOperator } from '../filter/operators.js'
-import type { ISelectFilter, ISelectFilterValue } from '../filter/select.filter.js'
-import { Options } from '../option/options.js'
-import type { RecordValueJSON } from '../record/record.schema.js'
-import type { IRecordDisplayValues } from '../record/record.type.js'
-import { AbstractSelectField } from './field.base.js'
-import type { ISelectField } from './field.type.js'
-import type { IFieldVisitor } from './field.visitor.js'
+import { Options } from '../../../option/options.js'
+import type { RecordValueJSON } from '../../../record/record.schema.js'
+import type { IRecordDisplayValues } from '../../../record/record.type.js'
+import { AbstractSelectField } from '../../field.base.js'
+import type { IFieldVisitor } from '../../field.visitor.js'
+import { FieldId } from '../../value-objects/field-id.vo.js'
 import { SelectFieldValue } from './select-field-value.js'
-import type { ICreateSelectFieldSchema, ICreateSelectFieldValue, SelectFieldType } from './select-field.type.js'
-import { FieldId } from './value-objects/field-id.vo.js'
+import type {
+  ICreateSelectFieldSchema,
+  ICreateSelectFieldValue,
+  ISelectField,
+  SelectFieldType,
+} from './select-field.type.js'
+import type { ISelectFilter, ISelectFilterOperator, ISelectFilterValue } from './select.filter.js'
 
 export class SelectField extends AbstractSelectField<ISelectField> {
   type: SelectFieldType = 'select'

@@ -77,6 +77,9 @@ import {
   referenceFilterOperators,
   referenceFilterValue,
 } from '../field/fields/reference/reference.filter.js'
+import type { ISelectFieldValue } from '../field/fields/select/select-field.type.js'
+import type { ISelectFilter } from '../field/fields/select/select.filter.js'
+import { selectFilter, selectFilterOperators, selectFilterValue } from '../field/fields/select/select.filter.js'
 import type { IStringFilter } from '../field/fields/string/string.filter.js'
 import { stringFilter, stringFilterOperators, stringFilterValue } from '../field/fields/string/string.filter.js'
 import type { IUrlFilter } from '../field/fields/url/url.filter.js'
@@ -88,7 +91,6 @@ import {
   StringFieldValue,
   colorFieldValue,
 } from '../field/index.js'
-import type { ISelectFieldValue } from '../field/select-field.type.js'
 import {
   BoolIsFalse,
   BoolIsTrue,
@@ -136,14 +138,11 @@ import {
   $is_today,
   $is_true,
   $neq,
-  selectFilterOperators,
   sumFilterOperators,
   treeFilterOperators,
   updatedAtFilterOperators,
   updatedByFilterOperators,
 } from './operators.js'
-import type { ISelectFilter } from './select.filter.js'
-import { selectFilter, selectFilterValue } from './select.filter.js'
 import type { ISumFilter } from './sum.filter.js'
 import { sumFilter, sumFilterValue } from './sum.filter.js'
 import type { ITreeFilter } from './tree.filter.js'

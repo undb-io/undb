@@ -5,11 +5,13 @@ import {
   optionIdSchema,
   optionsSchema,
   readableOptionSchema,
-} from '../option/option.schema.js'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
+} from '../../../option/option.schema.js'
+import type { Options } from '../../../option/options.js'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { IBaseField } from '../../field.type.js'
+import { fieldIdSchema } from '../../value-objects/field-id.schema.js'
 import { SelectField } from './select-field.js'
-import { fieldIdSchema } from './value-objects/field-id.schema.js'
 
 export const selectTypeSchema = z.literal('select')
 export type SelectFieldType = z.infer<typeof selectTypeSchema>
@@ -63,3 +65,7 @@ export type IReorderOptionsSchema = z.infer<typeof reorderOptionsSchema>
 export const isSelectField = z.instanceof(SelectField)
 
 export const selectReadableValueSchema = readableOptionSchema
+
+export type ISelectField = IBaseField & {
+  options: Options
+}

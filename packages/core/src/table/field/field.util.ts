@@ -4,7 +4,7 @@ import { match } from 'ts-pattern'
 import { z } from 'zod'
 import { Options } from '../option'
 import type { Field, ICreateFieldSchema, IFieldType, SelectFieldTypes } from './field.type'
-import type { ICreateSelectFieldSchema } from './select-field.type'
+import type { ICreateSelectFieldSchema } from './fields/select/select-field.type'
 
 const controlledFieldTypes: Set<IFieldType> = new Set([
   'id',
