@@ -1,10 +1,8 @@
 import type { Option } from 'oxide.ts'
 import * as z from 'zod'
-import type { IReferenceFilterValue } from '../filter/reference.filter.js'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from '../option/option.schema.js'
 import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues } from '../record/index.js'
-import type { TableId } from '../value-objects/table-id.vo.js'
 import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
 import type { BaseField } from './field.base.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
@@ -228,6 +226,18 @@ import {
   ratingTypeSchema,
   updateRatingFieldSchema,
 } from './fields/rating/rating-field.type.js'
+import type { ReferenceFieldValue } from './fields/reference/reference-field-value.js'
+import type { ReferenceField } from './fields/reference/reference-field.js'
+import type { IReferenceField } from './fields/reference/reference-field.type.js'
+import {
+  createReferenceFieldSchema,
+  createReferenceFieldValue_internal,
+  referenceFieldQuerySchema,
+  referenceFieldQueryValue,
+  referenceTypeSchema,
+  updateReferenceFieldSchema,
+} from './fields/reference/reference-field.type.js'
+import type { IReferenceFilterValue } from './fields/reference/reference.filter.js'
 import type { StringFieldValue } from './fields/string/string-field-value.js'
 import type { StringField } from './fields/string/string-field.js'
 import type { IStringFieldValue } from './fields/string/string-field.type.js'
@@ -250,16 +260,6 @@ import {
   urlFieldQueryValue,
   urlTypeSchema,
 } from './fields/url/url-field.type.js'
-import type { ReferenceFieldValue } from './reference-field-value.js'
-import type { ReferenceField } from './reference-field.js'
-import {
-  createReferenceFieldSchema,
-  createReferenceFieldValue_internal,
-  referenceFieldQuerySchema,
-  referenceFieldQueryValue,
-  referenceTypeSchema,
-  updateReferenceFieldSchema,
-} from './reference-field.type.js'
 import type { SelectFieldValue } from './select-field-value.js'
 import type { SelectField } from './select-field.js'
 import type { ISelectFieldValue } from './select-field.type.js'
@@ -524,12 +524,6 @@ export type ISelectField = IBaseField & {
   options: Options
 }
 
-export type IReferenceField = IBaseField & {
-  displayFields?: DisplayFields
-  foreignTableId?: TableId
-  isOwner?: boolean
-  symmetricReferenceFieldId?: FieldId
-}
 export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?: DisplayFields }
 
 export type ISumField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }

@@ -34,9 +34,6 @@ export type ISumFilterOperator = z.infer<typeof sumFilterOperators>
 export const selectFilterOperators = z.union([$eq, $neq, $in, $nin])
 export type ISelectFilterOperator = z.infer<typeof selectFilterOperators>
 
-export const referenceFilterOperators = z.union([$eq, $neq])
-export type IReferenceFilterOperator = z.infer<typeof referenceFilterOperators>
-
 export const $is_root = z.literal('$is_root')
 
 export const treeFilterOperators = z.union([$eq, $neq, $is_root])

@@ -1,25 +1,24 @@
 import { Option } from 'oxide.ts'
 import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
-import type { IReferenceFilterOperator } from '../filter/operators.js'
-import type { IReferenceFilter } from '../filter/reference.filter.js'
-import type { RecordValueJSON } from '../record/record.schema.js'
-import type { IRecordDisplayValues } from '../record/record.type.js'
-import { TableId } from '../value-objects/table-id.vo.js'
-import { AbstractLookingField, AbstractReferenceField } from './field.base.js'
-import type { IReferenceField } from './field.type.js'
-import type { IFieldVisitor } from './field.visitor.js'
+import type { RecordValueJSON } from '../../../record/record.schema.js'
+import type { IRecordDisplayValues } from '../../../record/record.type.js'
+import { TableId } from '../../../value-objects/table-id.vo.js'
+import { AbstractLookingField, AbstractReferenceField } from '../../field.base.js'
+import type { IFieldVisitor } from '../../field.visitor.js'
+import { DisplayFields } from '../../value-objects/display-fields.vo.js'
+import { FieldId } from '../../value-objects/field-id.vo.js'
+import { FieldIssue } from '../../value-objects/field-issue.vo.js'
 import { ReferenceFieldValue } from './reference-field-value.js'
 import type {
   ICreateReferenceFieldInput,
   ICreateReferenceFieldValue,
+  IReferenceField,
   IReferenceFieldIssues,
   ReferenceFieldIssue,
   ReferenceFieldType,
 } from './reference-field.type.js'
-import { DisplayFields } from './value-objects/display-fields.vo.js'
-import { FieldId } from './value-objects/field-id.vo.js'
-import { FieldIssue } from './value-objects/field-issue.vo.js'
+import type { IReferenceFilter, IReferenceFilterOperator } from './reference.filter.js'
 
 export class ReferenceField extends Mixin(
   AbstractReferenceField<IReferenceField>,

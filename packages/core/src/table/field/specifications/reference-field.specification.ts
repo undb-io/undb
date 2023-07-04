@@ -6,8 +6,8 @@ import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
 import { TableId } from '../../value-objects/table-id.vo.js'
 import { type IAbstractLookingField, type ILookingFieldType } from '../field.type.js'
-import type { ReferenceField } from '../reference-field.js'
-import type { ReferenceFieldType } from '../reference-field.type.js'
+import type { ReferenceField } from '../fields/reference/reference-field.js'
+import type { ReferenceFieldType } from '../fields/reference/reference-field.type.js'
 import { FieldId } from '../value-objects/field-id.vo.js'
 
 export class WithDisplayFields extends CompositeSpecification<Table, ITableSpecVisitor> {

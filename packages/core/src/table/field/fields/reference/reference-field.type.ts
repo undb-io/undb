@@ -1,11 +1,15 @@
 import * as z from 'zod'
-import { recordIdSchema } from '../record/value-objects/record-id.schema.js'
-import { tableIdSchema } from '../value-objects/table-id.vo.js'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
+import { recordIdSchema } from '../../../record/value-objects/record-id.schema.js'
+import type { TableId } from '../../../value-objects/table-id.vo.js'
+import { tableIdSchema } from '../../../value-objects/table-id.vo.js'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { IBaseField } from '../../field.type.js'
+import type { DisplayFields } from '../../value-objects/display-fields.vo.js'
+import { fieldIdSchema } from '../../value-objects/field-id.schema.js'
+import type { FieldId } from '../../value-objects/field-id.vo.js'
+import type { FieldIssue } from '../../value-objects/field-issue.vo.js'
 import { ReferenceField } from './reference-field.js'
-import { fieldIdSchema } from './value-objects/field-id.schema.js'
-import type { FieldIssue } from './value-objects/field-issue.vo.js'
 
 export const referenceTypeSchema = z.literal('reference')
 export type ReferenceFieldType = z.infer<typeof referenceTypeSchema>
@@ -65,3 +69,10 @@ export const referenceReadableValueSchema = z
     value: z.any().array(),
   })
   .array()
+
+export type IReferenceField = IBaseField & {
+  displayFields?: DisplayFields
+  foreignTableId?: TableId
+  isOwner?: boolean
+  symmetricReferenceFieldId?: FieldId
+}

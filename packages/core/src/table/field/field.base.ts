@@ -43,7 +43,7 @@ import type {
 } from './field.type.js'
 import { isAggregate, isControlledFieldType, isFilterable, isNumeric, isSortable } from './field.util.js'
 import type { IFieldVisitor } from './field.visitor.js'
-import type { ReferenceField } from './reference-field.js'
+import type { ReferenceField } from './fields/reference/reference-field.js'
 import { WithNewOption, WithOption, WithOptions, WithoutOption } from './specifications/select-field.specification.js'
 import type { TreeField } from './tree-field.js'
 import { UpdateFieldHelper } from './update-field.helper.js'
