@@ -6,17 +6,6 @@ import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableId } from '../value-objects/table-id.vo.js'
 import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
-import type { CreatedAtFieldValue } from './created-at-field-value.js'
-import type { CreatedAtField } from './created-at-field.js'
-import type { ICreatedAtFieldValue } from './created-at-field.type.js'
-import {
-  createCreatedAtFieldSchema,
-  createCreatedAtFieldValue_internal,
-  createdAtFieldQuerySchema,
-  createdAtFieldQueryValue,
-  createdAtTypeSchema,
-  updateCreatedAtFieldSchema,
-} from './created-at-field.type.js'
 import type { CreatedByFieldValue } from './created-by-field-value.js'
 import type { CreatedByField } from './created-by-field.js'
 import type { ICreatedByFieldValue } from './created-by-field.type.js'
@@ -129,6 +118,17 @@ import {
   createCountFieldValue_internal,
   updateCountFieldSchema,
 } from './fields/count/count-field.type.js'
+import type { CreatedAtFieldValue } from './fields/created-at/created-at-field-value.js'
+import type { CreatedAtField } from './fields/created-at/created-at-field.js'
+import type { ICreatedAtFieldValue } from './fields/created-at/created-at-field.type.js'
+import {
+  createCreatedAtFieldSchema,
+  createCreatedAtFieldValue_internal,
+  createdAtFieldQuerySchema,
+  createdAtFieldQueryValue,
+  createdAtTypeSchema,
+  updateCreatedAtFieldSchema,
+} from './fields/created-at/created-at-field.type.js'
 import type { CurrencyFieldValue } from './fields/currency/currency-field-value.js'
 import type { CurrencyField } from './fields/currency/currency-field.js'
 import type { ICurrencyFieldValue } from './fields/currency/currency-field.type.js'

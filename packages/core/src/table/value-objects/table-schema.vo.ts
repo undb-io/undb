@@ -4,8 +4,8 @@ import { Option } from 'oxide.ts'
 import type { Class } from 'type-fest'
 import * as z from 'zod'
 import type { ClsStore } from '../../cls/cls.js'
-import { CreatedAtField } from '../field/created-at-field.js'
 import { FieldFactory } from '../field/field.factory.js'
+import { CreatedAtField } from '../field/fields/created-at/created-at-field.js'
 import { IdField } from '../field/id-field.js'
 import type {
   AggregateFieldType,

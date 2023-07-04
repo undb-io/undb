@@ -24,6 +24,12 @@ import type { IColorFilter } from '../field/fields/color/color.filter.js'
 import { colorFilter, colorFilterOperators } from '../field/fields/color/color.filter.js'
 import type { ICountFilter } from '../field/fields/count/count.filter.js'
 import { countFilter, countFilterOperators, countFilterValue } from '../field/fields/count/count.filter.js'
+import type { ICreatedAtFilter } from '../field/fields/created-at/created-at.filter.js'
+import {
+  createdAtFilter,
+  createdAtFilterOperators,
+  createdAtFilterValue,
+} from '../field/fields/created-at/created-at.filter.js'
 import type { ICurrencyFilter } from '../field/fields/currency/currency.filter.js'
 import {
   currencyFilter,
@@ -81,8 +87,6 @@ import {
 } from '../record/index.js'
 import type { IConjunction } from './conjunction.js'
 import { conjunctions } from './conjunction.js'
-import type { ICreatedAtFilter } from './created-at.filter.js'
-import { createdAtFilter, createdAtFilterValue } from './created-at.filter.js'
 import type { ICreatedByFilter } from './created-by.filter.js'
 import { createdByFilter, createdByFilterValue } from './created-by.filter.js'
 import type { IDateRangeFilter } from './date-range.filter.js'
@@ -109,7 +113,6 @@ import {
   $is_true,
   $neq,
   collaboratorFilterOperators,
-  createdAtFilterOperators,
   createdByFilterOperators,
   dateFilterOperators,
   dateRangeFilterOperators,

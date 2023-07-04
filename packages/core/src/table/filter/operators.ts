@@ -79,8 +79,6 @@ export type IParentFilterOperator = z.infer<typeof parentFilterOperators>
 export const dateRangeFilterOperators = z.union([$eq, $neq, $between])
 export type IDateRangeFilterOperator = z.infer<typeof dateRangeFilterOperators>
 
-export const createdAtFilterOperators = dateFilterOperators
-export type ICreatedAtFilterOperator = z.infer<typeof dateFilterOperators>
 export const createdAtBuiltInOperators = dateBuiltInOperators
 
 export const updatedAtFilterOperators = dateFilterOperators
