@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Input, Label } from 'flowbite-svelte'
-	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
+	import { fieldProxy, formFieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
 	import DisplayFieldsPicker from '../FieldInputs/DisplayFieldsPicker.svelte'
 	import type { Writable } from 'svelte/store'

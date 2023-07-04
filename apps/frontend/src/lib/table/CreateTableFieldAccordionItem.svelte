@@ -80,7 +80,7 @@
 						type="text"
 						placeholder={field.description ?? 'name'}
 						required
-						aria-invalid={$errors.schema?.[i] ? 'true' : undefined}
+						data-invalid={$errors.schema?.[i]}
 						bind:value={field.name}
 					/>
 				</Label>

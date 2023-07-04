@@ -79,7 +79,7 @@
 		"svelte-preprocess": "^5.0.4",
 		"svelte-previous": "^2.1.3",
 		"svelte-tiny-virtual-list": "^2.0.5",
-		"sveltekit-superforms": "^1.1.2",
+		"sveltekit-superforms": "^0.8.7",
 		"svelvet": "^8.0.8",
 		"tailwindcss": "^3.3.2",
 		"trpc-svelte-query": "^1.0.1",
