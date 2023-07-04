@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { isDateField } from '../../field/date-field.type.js'
-import { isDateRangeField } from '../../field/date-range-field.type.js'
+import { isDateRangeField } from '../../field/fields/date-range/date-range-field.type.js'
+import { isDateField } from '../../field/fields/date/date-field.type.js'
 import { fieldIdSchema } from '../../field/value-objects/field-id.schema.js'
 
 export const calendarSchema = z.object({

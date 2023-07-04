@@ -1,6 +1,6 @@
 import { DateVO } from '@undb/domain'
 import type { JsonObject } from 'type-fest'
-import type { ICollaboratorProfile } from '../field/collaborator-field.type.js'
+import type { ICollaboratorProfile } from '../field/index.js'
 import type { Table } from '../table.js'
 import type { TableId, TableSchema, TableSchemaIdMap } from '../value-objects/index.js'
 import type { IRecordDisplayValues } from './index.js'

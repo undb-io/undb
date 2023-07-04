@@ -2,9 +2,15 @@
 import { zipObject } from 'lodash-es'
 import type { ZodRawShape, ZodType } from 'zod'
 import { z } from 'zod'
-import type { CollaboratorField } from '../field/collaborator-field.js'
 import type { Field, IFieldType } from '../field/field.type.js'
+import type { LookupField } from '../field/fields/lookup/lookup-field.js'
+import type { MultiSelectField } from '../field/fields/multi-select/multi-select-field.js'
+import { multiSelectReadableValueSchema } from '../field/fields/multi-select/multi-select-field.type.js'
+import type { ParentField } from '../field/fields/parent/parent-field.js'
+import type { SelectField } from '../field/fields/select/select-field.js'
+import type { TreeField } from '../field/fields/tree/tree-field.js'
 import { urlReadableValueSchema } from '../field/fields/url/url-field.type.js'
+import type { CollaboratorField } from '../field/index.js'
 import {
   attachmentReadableValueSchema,
   autoIncrementReadableValueSchema,
@@ -22,7 +28,6 @@ import {
   idReadableValueSchema,
   jsonReadableValueSchema,
   lookupReadableValueSchema,
-  multiSelectReadableValueSchema,
   numberReadableValueSchema,
   parentReadableValueSchema,
   ratingReadableValueSchema,
@@ -35,11 +40,6 @@ import {
   updatedByReadableValueSchema,
   type ReferenceField,
 } from '../field/index.js'
-import type { LookupField } from '../field/lookup-field.js'
-import type { MultiSelectField } from '../field/multi-select-field.js'
-import type { ParentField } from '../field/parent-field.js'
-import type { SelectField } from '../field/select-field.js'
-import type { TreeField } from '../field/tree-field.js'
 import type { Table } from '../table.js'
 import type { IQueryRecordSchema } from './record.type.js'
 

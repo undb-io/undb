@@ -1,7 +1,7 @@
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
+import { MultiSelectFieldValue } from '../../field/fields/multi-select/multi-select-field-value.js'
 import type { IMultiSelectFieldValue } from '../../field/index.js'
-import { MultiSelectFieldValue } from '../../field/multi-select-field-value.js'
 import type { Record } from '../record.js'
 import type { IRecordVisitor } from './interface.js'
 import { BaseRecordSpecification } from './record-specification.base.js'
