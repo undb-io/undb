@@ -1,8 +1,11 @@
 import * as z from 'zod'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { IBaseField } from '../../field.type.js'
+import type { DisplayFields } from '../../value-objects/display-fields.vo.js'
+import { fieldIdSchema } from '../../value-objects/field-id.schema.js'
+import type { FieldId } from '../../value-objects/field-id.vo.js'
 import { LookupField } from './lookup-field.js'
-import { fieldIdSchema } from './value-objects/field-id.schema.js'
 
 export const lookupTypeSchema = z.literal('lookup')
 export type LookupType = z.infer<typeof lookupTypeSchema>
@@ -53,3 +56,5 @@ export const createLookupFieldValue_internal = z
 export type ICreateLookupFieldValue_internal = z.infer<typeof createLookupFieldValue_internal>
 
 export const lookupReadableValueSchema = lookupFieldQueryValue
+
+export type ILookupField = IBaseField & { referenceFieldId: FieldId; displayFields?: DisplayFields }

@@ -1,7 +1,10 @@
 import { z } from 'zod'
-import { lookupFieldValue } from '../field/lookup-field.type.js'
-import { baseFilter } from './filter.base.js'
-import { lookupFilterOperators } from './operators.js'
+import { baseFilter } from '../../../filter/filter.base.js'
+import { $eq, $neq } from '../../../filter/operators.js'
+import { lookupFieldValue } from './lookup-field.type.js'
+
+export const lookupFilterOperators = z.union([$eq, $neq])
+export type ILookupFilterOperator = z.infer<typeof lookupFilterOperators>
 
 export const lookupFilterValue = lookupFieldValue.or(lookupFieldValue.unwrap()).nullable()
 export type ILookupFilterValue = z.infer<typeof lookupFieldValue>

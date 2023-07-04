@@ -18,7 +18,7 @@ import {
   UrlField,
 } from './fields/index.js'
 import { JsonField } from './fields/json/json-field.js'
-import { LookupField } from './lookup-field.js'
+import { LookupField } from './fields/lookup/lookup-field.js'
 import { MultiSelectField } from './multi-select-field.js'
 import { NumberField } from './number-field.js'
 import { ParentField } from './parent-field.js'

@@ -1,7 +1,5 @@
 import type { ZodTypeAny } from 'zod'
 import { z } from 'zod'
-import type { ICreatedByFilter } from '../../../filter/created-by.filter.js'
-import type { ICreatedByFilterOperator } from '../../../filter/operators.js'
 import type { IRecordDisplayValues } from '../../../record/index.js'
 import type { RecordValueJSON } from '../../../record/record.schema.js'
 import { BaseField } from '../../field.base.js'
@@ -16,6 +14,7 @@ import type {
   ICreatedByField,
   ICreatedByFieldQueryValue,
 } from './created-by-field.type.js'
+import type { ICreatedByFilter, ICreatedByFilterOperator } from './created-by.filter.js'
 
 export class CreatedByField extends BaseField<ICreatedByField> {
   duplicate(name: string): Field {

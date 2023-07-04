@@ -173,6 +173,17 @@ import {
   jsonTypeSchema,
   updateJsonFieldSchema,
 } from './fields/json/json-field.type.js'
+import type { LookupFieldValue } from './fields/lookup/lookup-field-value.js'
+import type { LookupField } from './fields/lookup/lookup-field.js'
+import type { ILookupField, ILookupFieldValue } from './fields/lookup/lookup-field.type.js'
+import {
+  createLookupFieldSchema,
+  createLookupFieldValue_internal,
+  lookupFieldQuerySchema,
+  lookupFieldQueryValue,
+  lookupTypeSchema,
+  updateLookupFieldSchema,
+} from './fields/lookup/lookup-field.type.js'
 import type { StringFieldValue } from './fields/string/string-field-value.js'
 import type { StringField } from './fields/string/string-field.js'
 import type { IStringFieldValue } from './fields/string/string-field.type.js'
@@ -195,17 +206,6 @@ import {
   urlFieldQueryValue,
   urlTypeSchema,
 } from './fields/url/url-field.type.js'
-import type { LookupFieldValue } from './lookup-field-value.js'
-import type { LookupField } from './lookup-field.js'
-import type { ILookupFieldValue } from './lookup-field.type.js'
-import {
-  createLookupFieldSchema,
-  createLookupFieldValue_internal,
-  lookupFieldQuerySchema,
-  lookupFieldQueryValue,
-  lookupTypeSchema,
-  updateLookupFieldSchema,
-} from './lookup-field.type.js'
 import type { MultiSelectFieldValue } from './multi-select-field-value.js'
 import type { MultiSelectField } from './multi-select-field.js'
 import type { IMultiSelectFieldValue } from './multi-select-field.type.js'
@@ -538,7 +538,6 @@ export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?:
 export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: DisplayFields }
 
 export type ISumField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }
-export type ILookupField = IBaseField & { referenceFieldId: FieldId; displayFields?: DisplayFields }
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField | CreatedByField | UpdatedByField
 

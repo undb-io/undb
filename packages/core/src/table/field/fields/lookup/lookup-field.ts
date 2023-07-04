@@ -1,15 +1,13 @@
 import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
-import type { ILookupFilter } from '../filter/lookup.filter.js'
-import type { ILookupFilterOperator } from '../filter/operators.js'
-import type { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
-import { AbstractLookingField, AbstractLookupField, BaseField } from './field.base.js'
-import type { ILookupField } from './field.type.js'
-import type { IFieldVisitor } from './field.visitor.js'
+import type { IRecordDisplayValues, RecordValueJSON } from '../../../record/index.js'
+import { AbstractLookingField, AbstractLookupField, BaseField } from '../../field.base.js'
+import type { IFieldVisitor } from '../../field.visitor.js'
+import { DisplayFields } from '../../value-objects/display-fields.vo.js'
+import { FieldId } from '../../value-objects/field-id.vo.js'
 import { LookupFieldValue } from './lookup-field-value.js'
-import type { ICreateLookupFieldInput, ICreateLookupFieldValue, LookupType } from './lookup-field.type.js'
-import { DisplayFields } from './value-objects/display-fields.vo.js'
-import { FieldId } from './value-objects/field-id.vo.js'
+import type { ICreateLookupFieldInput, ICreateLookupFieldValue, ILookupField, LookupType } from './lookup-field.type.js'
+import type { ILookupFilter, ILookupFilterOperator } from './lookup.filter.js'
 
 export class LookupField extends Mixin(AbstractLookingField<ILookupField>, AbstractLookupField<ILookupField>) {
   duplicate(name: string): LookupField {

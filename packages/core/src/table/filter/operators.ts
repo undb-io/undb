@@ -43,14 +43,8 @@ export type ISelectFilterOperator = z.infer<typeof selectFilterOperators>
 export const referenceFilterOperators = z.union([$eq, $neq])
 export type IReferenceFilterOperator = z.infer<typeof referenceFilterOperators>
 
-export const collaboratorFilterOperators = z.union([$eq, $neq, $in, $nin, $is_empty, $is_not_empty])
-export type ICollaboratorFilterOperator = z.infer<typeof collaboratorFilterOperators>
-
 export const multiSelectFilterOperators = z.union([$eq, $neq, $in, $nin, $is_empty, $is_not_empty])
 export type IMultiSelectFilterOperator = z.infer<typeof multiSelectFilterOperators>
-
-export const lookupFilterOperators = z.union([$eq, $neq])
-export type ILookupFilterOperator = z.infer<typeof lookupFilterOperators>
 
 export const $is_root = z.literal('$is_root')
 
@@ -67,10 +61,7 @@ export const updatedAtFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte
 export type IUpdatedAtFilterOperator = z.infer<typeof updatedAtFilterOperators>
 export const updatedAtBuiltInOperators = new Set<IUpdatedAtFilterOperator>([$is_today.value])
 
-export const createdByFilterOperators = collaboratorFilterOperators
-export type ICreatedByFilterOperator = z.infer<typeof createdByFilterOperators>
-
-export const updatedByFilterOperators = collaboratorFilterOperators
+export const updatedByFilterOperators = z.union([$eq, $neq, $in, $nin, $is_empty, $is_not_empty])
 export type IUpdatedByFilterOperator = z.infer<typeof updatedByFilterOperators>
 
 export const operatorsWihtoutValue = z.union([$is_empty, $is_not_empty, $is_today, $is_root])

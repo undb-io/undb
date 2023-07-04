@@ -19,7 +19,11 @@ import { averageFilter, averageFilterOperators, averageFilterValue } from '../fi
 import type { IBoolFilter } from '../field/fields/bool/bool.filter.js'
 import { boolFilter, boolFilterOperators, boolFilterValue } from '../field/fields/bool/bool.filter.js'
 import type { ICollaboratorFilter } from '../field/fields/collaborator/collaborator.filter.js'
-import { collaboratorFilter, collaboratorFilterValue } from '../field/fields/collaborator/collaborator.filter.js'
+import {
+  collaboratorFilter,
+  collaboratorFilterOperators,
+  collaboratorFilterValue,
+} from '../field/fields/collaborator/collaborator.filter.js'
 import type { IColorFilter } from '../field/fields/color/color.filter.js'
 import { colorFilter, colorFilterOperators } from '../field/fields/color/color.filter.js'
 import type { ICountFilter } from '../field/fields/count/count.filter.js'
@@ -30,6 +34,12 @@ import {
   createdAtFilterOperators,
   createdAtFilterValue,
 } from '../field/fields/created-at/created-at.filter.js'
+import type { ICreatedByFilter } from '../field/fields/created-by/created-by.filter.js'
+import {
+  createdByFilter,
+  createdByFilterOperators,
+  createdByFilterValue,
+} from '../field/fields/created-by/created-by.filter.js'
 import type { ICurrencyFilter } from '../field/fields/currency/currency.filter.js'
 import {
   currencyFilter,
@@ -50,6 +60,7 @@ import type { IIdFilter } from '../field/fields/id/id.filter.js'
 import { idFilter, idFilterOperators, idFilterValue } from '../field/fields/id/id.filter.js'
 import type { IJsonFilter } from '../field/fields/json/json.filter.js'
 import { jsonFilter, jsonFilterOperators, jsonFilterValue } from '../field/fields/json/json.filter.js'
+import { lookupFilter, lookupFilterOperators, lookupFilterValue } from '../field/fields/lookup/lookup.filter.js'
 import type { IStringFilter } from '../field/fields/string/string.filter.js'
 import { stringFilter, stringFilterOperators, stringFilterValue } from '../field/fields/string/string.filter.js'
 import type { IUrlFilter } from '../field/fields/url/url.filter.js'
@@ -99,9 +110,6 @@ import {
 } from '../record/index.js'
 import type { IConjunction } from './conjunction.js'
 import { conjunctions } from './conjunction.js'
-import type { ICreatedByFilter } from './created-by.filter.js'
-import { createdByFilter, createdByFilterValue } from './created-by.filter.js'
-import { lookupFilter, lookupFilterValue } from './lookup.filter.js'
 import type { IMultiSelectFilter } from './multi-select.filter.js'
 import { multiSelectFilter, multiSelectFilterValue } from './multi-select.filter.js'
 import type { INumberFilter } from './number.filter.js'
@@ -116,9 +124,6 @@ import {
   $is_today,
   $is_true,
   $neq,
-  collaboratorFilterOperators,
-  createdByFilterOperators,
-  lookupFilterOperators,
   multiSelectFilterOperators,
   numberFilterOperators,
   parentFilterOperators,

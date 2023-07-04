@@ -1,6 +1,5 @@
 import { unzip } from 'lodash-es'
 import { z } from 'zod'
-import type { ICollaboratorFilterOperator } from '../../../filter/operators.js'
 import type { RecordValueJSON } from '../../../record/record.schema.js'
 import type { IRecordDisplayValues } from '../../../record/record.type.js'
 import { BaseField } from '../../field.base.js'
@@ -13,7 +12,7 @@ import type {
   ICreateCollaboratorFieldInput,
   ICreateCollaboratorFieldValue,
 } from './collaborator-field.type.js'
-import type { ICollaboratorFilter } from './collaborator.filter.js'
+import type { ICollaboratorFilter, ICollaboratorFilterOperator } from './collaborator.filter.js'
 
 export class CollaboratorField extends BaseField<ICollaboratorField> {
   duplicate(name: string): CollaboratorField {
