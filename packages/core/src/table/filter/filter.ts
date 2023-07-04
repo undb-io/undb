@@ -36,6 +36,12 @@ import {
   currencyFilterOperators,
   currencyFilterValue,
 } from '../field/fields/currency/currency.filter.js'
+import type { IDateRangeFilter } from '../field/fields/date-range/date-range.filter.js'
+import {
+  dateRangeFilter,
+  dateRangeFilterOperators,
+  dateRangeFilterValue,
+} from '../field/fields/date-range/date-range.filter.js'
 import type { IDateFilter } from '../field/fields/date/date.filter.js'
 import { dateFilter, dateFilterOperators, dateFilterValue } from '../field/fields/date/date.filter.js'
 import type { IEmailFilter } from '../field/fields/email/email.filter.js'
@@ -91,8 +97,6 @@ import type { IConjunction } from './conjunction.js'
 import { conjunctions } from './conjunction.js'
 import type { ICreatedByFilter } from './created-by.filter.js'
 import { createdByFilter, createdByFilterValue } from './created-by.filter.js'
-import type { IDateRangeFilter } from './date-range.filter.js'
-import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter.js'
 import type { IIdFilter } from './id.filter.js'
 import { idFilter, idFilterValue } from './id.filter.js'
 import type { IJsonFilter } from './json.filter.js'
@@ -114,7 +118,6 @@ import {
   $neq,
   collaboratorFilterOperators,
   createdByFilterOperators,
-  dateRangeFilterOperators,
   idFilterOperators,
   jsonFilterOperators,
   lookupFilterOperators,

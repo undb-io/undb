@@ -1,9 +1,10 @@
 import { isAfter } from 'date-fns'
 import { z } from 'zod'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { BaseDateField, IBaseField } from '../../field.type.js'
+import { timeFormat } from '../../value-objects/time-format.vo.js'
 import { DateRangeField } from './date-range-field.js'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
-import { timeFormat } from './value-objects/time-format.vo.js'
 
 export const dateRangeTypeSchema = z.literal('date-range')
 export type DateRangeType = z.infer<typeof dateRangeTypeSchema>
@@ -60,3 +61,5 @@ export type ICreateDateRangeFieldValue_internal = z.infer<typeof createDateRange
 export const isDateRangeField = z.instanceof(DateRangeField)
 
 export const dateRangeReadableValueSchema = dateRangeFieldQueryValue
+
+export type IDateRangeField = IBaseField & BaseDateField

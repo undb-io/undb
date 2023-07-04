@@ -1,7 +1,7 @@
-import { DateRangeField } from './date-range-field.js'
 import { FieldFactory } from './field.factory.js'
 import { Field } from './field.type.js'
 import { BoolField } from './fields/bool/bool-field.js'
+import { DateRangeField } from './fields/date-range/date-range-field.js'
 import { DateField } from './fields/date/date-field.js'
 import { StringField } from './fields/string/string-field.js'
 import { NumberField } from './number-field.js'

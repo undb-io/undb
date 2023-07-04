@@ -1,8 +1,8 @@
-import { DateRangeField } from './date-range-field.js'
 import type { Field, ICreateFieldSchema } from './field.type.js'
 import { CountField } from './fields/count/count-field.js'
 import { CreatedAtField } from './fields/created-at/created-at-field.js'
 import { CreatedByField } from './fields/created-by/created-by-field.js'
+import { DateRangeField } from './fields/date-range/date-range-field.js'
 import { DateField } from './fields/date/date-field.js'
 import {
   AttachmentField,

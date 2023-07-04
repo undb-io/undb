@@ -6,17 +6,6 @@ import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableId } from '../value-objects/table-id.vo.js'
 import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
-import type { DateRangeFieldValue } from './date-range-field-value.js'
-import type { DateRangeField } from './date-range-field.js'
-import type { IDateRangeFieldValue } from './date-range-field.type.js'
-import {
-  createDateRangeFieldSchema,
-  createDateRangeFieldValue_internal,
-  dateRangeFieldQuerySchema,
-  dateRangeFieldQueryValue,
-  dateRangeTypeSchema,
-  updateDateRangeFieldSchema,
-} from './date-range-field.type.js'
 import type { BaseField } from './field.base.js'
 import { FIELD_TYPE_KEY } from './field.constants.js'
 import type { AttachmentFieldValue } from './fields/attachment/attachment-field-value.js'
@@ -129,6 +118,17 @@ import {
   currencyTypeSchema,
   updateCurrencyFieldSchema,
 } from './fields/currency/currency-field.type.js'
+import type { DateRangeFieldValue } from './fields/date-range/date-range-field-value.js'
+import type { DateRangeField } from './fields/date-range/date-range-field.js'
+import type { IDateRangeField, IDateRangeFieldValue } from './fields/date-range/date-range-field.type.js'
+import {
+  createDateRangeFieldSchema,
+  createDateRangeFieldValue_internal,
+  dateRangeFieldQuerySchema,
+  dateRangeFieldQueryValue,
+  dateRangeTypeSchema,
+  updateDateRangeFieldSchema,
+} from './fields/date-range/date-range-field.type.js'
 import type { DateFieldValue } from './fields/date/date-field-value.js'
 import type { DateField } from './fields/date/date-field.js'
 import type { IDateField, IDateFieldValue } from './fields/date/date-field.type.js'
@@ -525,7 +525,6 @@ export type IJsonField = IBaseField
 export type INumberField = IBaseField
 export type IRatingField = IBaseField & { max?: number }
 
-export type IDateRangeField = IBaseField & BaseDateField
 export type ISelectField = IBaseField & {
   options: Options
 }
