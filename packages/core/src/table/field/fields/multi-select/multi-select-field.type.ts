@@ -5,9 +5,11 @@ import {
   optionIdSchema,
   optionsSchema,
   readableOptionSchema,
-} from '../option/option.schema.js'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
+} from '../../../option/option.schema.js'
+import type { Options } from '../../../option/options.js'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { IBaseField } from '../../field.type.js'
 import { MultiSelectField } from './multi-select-field.js'
 
 export const multiSelectTypeSchema = z.literal('multi-select')
@@ -54,3 +56,5 @@ export type ICreateMultiSelectFieldValue_internal = z.infer<typeof createMultiSe
 export const isMultiSelectField = z.instanceof(MultiSelectField)
 
 export const multiSelectReadableValueSchema = readableOptionSchema.array()
+
+export type IMultiSelectField = IBaseField & { options: Options }

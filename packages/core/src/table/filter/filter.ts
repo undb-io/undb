@@ -61,6 +61,12 @@ import { idFilter, idFilterOperators, idFilterValue } from '../field/fields/id/i
 import type { IJsonFilter } from '../field/fields/json/json.filter.js'
 import { jsonFilter, jsonFilterOperators, jsonFilterValue } from '../field/fields/json/json.filter.js'
 import { lookupFilter, lookupFilterOperators, lookupFilterValue } from '../field/fields/lookup/lookup.filter.js'
+import type { IMultiSelectFilter } from '../field/fields/multi-select/multi-select.filter.js'
+import {
+  multiSelectFilter,
+  multiSelectFilterOperators,
+  multiSelectFilterValue,
+} from '../field/fields/multi-select/multi-select.filter.js'
 import type { IStringFilter } from '../field/fields/string/string.filter.js'
 import { stringFilter, stringFilterOperators, stringFilterValue } from '../field/fields/string/string.filter.js'
 import type { IUrlFilter } from '../field/fields/url/url.filter.js'
@@ -110,8 +116,6 @@ import {
 } from '../record/index.js'
 import type { IConjunction } from './conjunction.js'
 import { conjunctions } from './conjunction.js'
-import type { IMultiSelectFilter } from './multi-select.filter.js'
-import { multiSelectFilter, multiSelectFilterValue } from './multi-select.filter.js'
 import type { INumberFilter } from './number.filter.js'
 import { numberFilter, numberFilterValue } from './number.filter.js'
 import {
@@ -124,7 +128,6 @@ import {
   $is_today,
   $is_true,
   $neq,
-  multiSelectFilterOperators,
   numberFilterOperators,
   parentFilterOperators,
   ratingFilterOperators,

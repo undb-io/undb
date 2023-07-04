@@ -1,20 +1,19 @@
 import { isArray } from 'lodash-es'
 import { z } from 'zod'
-import type { IMultiSelectFilter, IMultiSelectFilterValue } from '../filter/multi-select.filter.js'
-import type { IMultiSelectFilterOperator } from '../filter/operators.js'
-import type { Option } from '../option/option.js'
-import { Options } from '../option/options.js'
-import type { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
-import { AbstractSelectField } from './field.base.js'
-import type { IMultiSelectField } from './field.type.js'
-import type { IFieldVisitor } from './field.visitor.js'
+import type { Option } from '../../../option/option.js'
+import { Options } from '../../../option/options.js'
+import type { IRecordDisplayValues, RecordValueJSON } from '../../../record/index.js'
+import { AbstractSelectField } from '../../field.base.js'
+import type { IFieldVisitor } from '../../field.visitor.js'
+import { FieldId } from '../../value-objects/field-id.vo.js'
 import { MultiSelectFieldValue } from './multi-select-field-value.js'
 import type {
   ICreateMultiSelectFieldSchema,
   ICreateMultiSelectFieldValue,
+  IMultiSelectField,
   MultiSelectFieldType,
 } from './multi-select-field.type.js'
-import { FieldId } from './value-objects/field-id.vo.js'
+import type { IMultiSelectFilter, IMultiSelectFilterOperator, IMultiSelectFilterValue } from './multi-select.filter.js'
 
 export class MultiSelectField extends AbstractSelectField<IMultiSelectField> {
   duplicate(name: string): MultiSelectField {

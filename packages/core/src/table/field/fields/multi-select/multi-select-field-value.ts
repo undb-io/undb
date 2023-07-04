@@ -1,8 +1,8 @@
 import type { JsonValue } from 'type-fest'
-import type { Option } from '../option/index.js'
-import { FieldValueBase } from './field-value.base.js'
-import type { IFieldValueVisitor } from './field-value.visitor.js'
-import type { FieldValue } from './field.type.js'
+import type { Option } from '../../../option/index.js'
+import { FieldValueBase } from '../../field-value.base.js'
+import type { IFieldValueVisitor } from '../../field-value.visitor.js'
+import type { FieldValue } from '../../field.type.js'
 import type { IMultiSelectFieldValue } from './multi-select-field.type.js'
 
 export class MultiSelectFieldValue extends FieldValueBase<IMultiSelectFieldValue> {

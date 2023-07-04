@@ -43,9 +43,6 @@ export type ISelectFilterOperator = z.infer<typeof selectFilterOperators>
 export const referenceFilterOperators = z.union([$eq, $neq])
 export type IReferenceFilterOperator = z.infer<typeof referenceFilterOperators>
 
-export const multiSelectFilterOperators = z.union([$eq, $neq, $in, $nin, $is_empty, $is_not_empty])
-export type IMultiSelectFilterOperator = z.infer<typeof multiSelectFilterOperators>
-
 export const $is_root = z.literal('$is_root')
 
 export const treeFilterOperators = z.union([$eq, $neq, $is_root])

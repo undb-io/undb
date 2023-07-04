@@ -4,6 +4,7 @@ import type { ZodRawShape, ZodType } from 'zod'
 import { z } from 'zod'
 import type { Field, IFieldType } from '../field/field.type.js'
 import type { LookupField } from '../field/fields/lookup/lookup-field.js'
+import type { MultiSelectField } from '../field/fields/multi-select/multi-select-field.js'
 import { urlReadableValueSchema } from '../field/fields/url/url-field.type.js'
 import type { CollaboratorField } from '../field/index.js'
 import {
@@ -36,7 +37,6 @@ import {
   updatedByReadableValueSchema,
   type ReferenceField,
 } from '../field/index.js'
-import type { MultiSelectField } from '../field/multi-select-field.js'
 import type { ParentField } from '../field/parent-field.js'
 import type { SelectField } from '../field/select-field.js'
 import type { TreeField } from '../field/tree-field.js'

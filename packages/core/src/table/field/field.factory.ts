@@ -19,7 +19,7 @@ import {
 } from './fields/index.js'
 import { JsonField } from './fields/json/json-field.js'
 import { LookupField } from './fields/lookup/lookup-field.js'
-import { MultiSelectField } from './multi-select-field.js'
+import { MultiSelectField } from './fields/multi-select/multi-select-field.js'
 import { NumberField } from './number-field.js'
 import { ParentField } from './parent-field.js'
 import { RatingField } from './rating-field.js'
