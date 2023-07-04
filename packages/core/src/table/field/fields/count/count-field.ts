@@ -1,12 +1,12 @@
 import { z } from 'zod'
-import type { ICountFilter, ICountFilterOperator } from '../filter/count.filter.js'
-import type { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
+import type { IRecordDisplayValues, RecordValueJSON } from '../../../record/index.js'
+import { AbstractLookupField, BaseField } from '../../field.base.js'
+import type { Field } from '../../field.type.js'
+import type { IFieldVisitor } from '../../field.visitor.js'
+import { FieldId } from '../../value-objects/field-id.vo.js'
 import { CountFieldValue } from './count-field-value.js'
-import type { CountType, ICreateCountFieldInput, ICreateCountFieldValue } from './count-field.type.js'
-import { AbstractLookupField, BaseField } from './field.base.js'
-import type { Field, ICountField } from './field.type.js'
-import type { IFieldVisitor } from './field.visitor.js'
-import { FieldId } from './value-objects/field-id.vo.js'
+import type { CountType, ICountField, ICreateCountFieldInput, ICreateCountFieldValue } from './count-field.type.js'
+import type { ICountFilter, ICountFilterOperator } from './count.filter.js'
 
 export class CountField extends AbstractLookupField<ICountField> {
   duplicate(name: string): Field {

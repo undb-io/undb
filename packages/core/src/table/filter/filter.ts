@@ -22,6 +22,8 @@ import type { ICollaboratorFilter } from '../field/fields/collaborator/collabora
 import { collaboratorFilter, collaboratorFilterValue } from '../field/fields/collaborator/collaborator.filter.js'
 import type { IColorFilter } from '../field/fields/color/color.filter.js'
 import { colorFilter, colorFilterOperators } from '../field/fields/color/color.filter.js'
+import type { ICountFilter } from '../field/fields/count/count.filter.js'
+import { countFilter, countFilterOperators, countFilterValue } from '../field/fields/count/count.filter.js'
 import type { ICurrencyFilter } from '../field/fields/currency/currency.filter.js'
 import {
   currencyFilter,
@@ -79,8 +81,6 @@ import {
 } from '../record/index.js'
 import type { IConjunction } from './conjunction.js'
 import { conjunctions } from './conjunction.js'
-import type { ICountFilter } from './count.filter.js'
-import { countFilter, countFilterValue } from './count.filter.js'
 import type { ICreatedAtFilter } from './created-at.filter.js'
 import { createdAtFilter, createdAtFilterValue } from './created-at.filter.js'
 import type { ICreatedByFilter } from './created-by.filter.js'
@@ -109,7 +109,6 @@ import {
   $is_true,
   $neq,
   collaboratorFilterOperators,
-  countFilterOperators,
   createdAtFilterOperators,
   createdByFilterOperators,
   dateFilterOperators,

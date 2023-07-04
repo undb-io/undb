@@ -6,17 +6,6 @@ import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues } from '../record/index.js'
 import type { TableId } from '../value-objects/table-id.vo.js'
 import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
-import type { CountFieldValue } from './count-field-value.js'
-import type { CountField } from './count-field.js'
-import type { ICountFieldValue } from './count-field.type.js'
-import {
-  countFieldQuerySchema,
-  countFieldQueryValue,
-  countTypeSchema,
-  createCountFieldSchema,
-  createCountFieldValue_internal,
-  updateCountFieldSchema,
-} from './count-field.type.js'
 import type { CreatedAtFieldValue } from './created-at-field-value.js'
 import type { CreatedAtField } from './created-at-field.js'
 import type { ICreatedAtFieldValue } from './created-at-field.type.js'
@@ -129,6 +118,17 @@ import {
   createColorFieldValue_internal,
   updateColorFieldSchema,
 } from './fields/color/color-field.type.js'
+import type { CountFieldValue } from './fields/count/count-field-value.js'
+import type { CountField } from './fields/count/count-field.js'
+import type { ICountField, ICountFieldValue } from './fields/count/count-field.type.js'
+import {
+  countFieldQuerySchema,
+  countFieldQueryValue,
+  countTypeSchema,
+  createCountFieldSchema,
+  createCountFieldValue_internal,
+  updateCountFieldSchema,
+} from './fields/count/count-field.type.js'
 import type { CurrencyFieldValue } from './fields/currency/currency-field-value.js'
 import type { CurrencyField } from './fields/currency/currency-field.js'
 import type { ICurrencyFieldValue } from './fields/currency/currency-field.type.js'
@@ -543,7 +543,6 @@ export type IReferenceField = IBaseField & {
 export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?: DisplayFields }
 export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: DisplayFields }
 
-export type ICountField = IBaseField & { referenceFieldId: FieldId }
 export type ISumField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }
 export type ILookupField = IBaseField & { referenceFieldId: FieldId; displayFields?: DisplayFields }
 

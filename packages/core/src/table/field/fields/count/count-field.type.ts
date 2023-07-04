@@ -1,8 +1,10 @@
 import * as z from 'zod'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { IBaseField } from '../../field.type.js'
+import { fieldIdSchema } from '../../value-objects/field-id.schema.js'
+import type { FieldId } from '../../value-objects/field-id.vo.js'
 import { CountField } from './count-field.js'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
-import { fieldIdSchema } from './value-objects/field-id.schema.js'
 
 export const countTypeSchema = z.literal('count')
 export type CountType = z.infer<typeof countTypeSchema>
@@ -49,3 +51,5 @@ export const createCountFieldValue_internal = z
 export type ICreateCountFieldValue_internal = z.infer<typeof createCountFieldValue_internal>
 
 export const countReadableValueSchema = countFieldQueryValue
+
+export type ICountField = IBaseField & { referenceFieldId: FieldId }
