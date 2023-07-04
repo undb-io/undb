@@ -1,8 +1,10 @@
 import * as z from 'zod'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { IBaseField } from '../../field.type.js'
+import { fieldIdSchema } from '../../value-objects/field-id.schema.js'
+import type { FieldId } from '../../value-objects/field-id.vo.js'
 import { SumField } from './sum-field.js'
-import { fieldIdSchema } from './value-objects/field-id.schema.js'
 
 export const sumTypeSchema = z.literal('sum')
 export type SumType = z.infer<typeof sumTypeSchema>
@@ -54,3 +56,5 @@ export const createSumFieldValue_internal = z
 export type ICreateSumFieldValue_internal = z.infer<typeof createSumFieldValue_internal>
 
 export const sumReadableValueSchema = sumFieldQueryValue
+
+export type ISumField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }

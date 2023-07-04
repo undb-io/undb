@@ -82,6 +82,8 @@ import type { ISelectFilter } from '../field/fields/select/select.filter.js'
 import { selectFilter, selectFilterOperators, selectFilterValue } from '../field/fields/select/select.filter.js'
 import type { IStringFilter } from '../field/fields/string/string.filter.js'
 import { stringFilter, stringFilterOperators, stringFilterValue } from '../field/fields/string/string.filter.js'
+import type { ISumFilter } from '../field/fields/sum/sum.filter.js'
+import { sumFilter, sumFilterOperators, sumFilterValue } from '../field/fields/sum/sum.filter.js'
 import type { IUrlFilter } from '../field/fields/url/url.filter.js'
 import { urlFilter, urlFilterOperators, urlFilterValue } from '../field/fields/url/url.filter.js'
 import {
@@ -138,13 +140,10 @@ import {
   $is_today,
   $is_true,
   $neq,
-  sumFilterOperators,
   treeFilterOperators,
   updatedAtFilterOperators,
   updatedByFilterOperators,
 } from './operators.js'
-import type { ISumFilter } from './sum.filter.js'
-import { sumFilter, sumFilterValue } from './sum.filter.js'
 import type { ITreeFilter } from './tree.filter.js'
 import { treeFilter, treeFilterValue } from './tree.filter.js'
 import type { IUpdatedAtFilter } from './updated-at.filter.js'

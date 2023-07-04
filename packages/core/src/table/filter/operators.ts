@@ -28,9 +28,6 @@ export const $between = z.literal('$between')
 export const $has_file_type = z.literal('$has_file_type')
 export const $has_file_extension = z.literal('$has_file_extension')
 
-export const sumFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte])
-export type ISumFilterOperator = z.infer<typeof sumFilterOperators>
-
 export const $is_root = z.literal('$is_root')
 
 export const treeFilterOperators = z.union([$eq, $neq, $is_root])

@@ -260,6 +260,17 @@ import {
   stringTypeSchema,
   updateStringFieldSchema,
 } from './fields/string/string-field.type.js'
+import type { SumFieldValue } from './fields/sum/sum-field-value.js'
+import type { SumField } from './fields/sum/sum-field.js'
+import type { ISumField, ISumFieldValue } from './fields/sum/sum-field.type.js'
+import {
+  createSumFieldSchema,
+  createSumFieldValue_internal,
+  sumFieldQuerySchema,
+  sumFieldQueryValue,
+  sumTypeSchema,
+  updateSumFieldSchema,
+} from './fields/sum/sum-field.type.js'
 import type { UrlFieldValue } from './fields/url/url-field-value.js'
 import type { UrlField } from './fields/url/url-field.js'
 import type { IUrlFieldValue } from './fields/url/url-field.type.js'
@@ -277,17 +288,6 @@ import type {
   WithOptions,
   WithoutOption,
 } from './specifications/select-field.specification.js'
-import type { SumFieldValue } from './sum-field-value.js'
-import type { SumField } from './sum-field.js'
-import type { ISumFieldValue } from './sum-field.type.js'
-import {
-  createSumFieldSchema,
-  createSumFieldValue_internal,
-  sumFieldQuerySchema,
-  sumFieldQueryValue,
-  sumTypeSchema,
-  updateSumFieldSchema,
-} from './sum-field.type.js'
 import type { TreeFieldValue } from './tree-field-value.js'
 import type { TreeField } from './tree-field.js'
 import type { ITreeFieldValue } from './tree-field.type.js'
@@ -521,8 +521,6 @@ export type IUpdatedAtField = IBaseField & BaseDateField
 export type IUpdatedByField = IBaseField
 
 export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?: DisplayFields }
-
-export type ISumField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }
 
 export type SystemField = IdField | CreatedAtField | UpdatedAtField | CreatedByField | UpdatedByField
 

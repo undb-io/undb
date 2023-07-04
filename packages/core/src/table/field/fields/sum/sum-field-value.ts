@@ -1,6 +1,6 @@
 import type { JsonValue } from 'type-fest'
-import { FieldValueBase } from './field-value.base.js'
-import type { IFieldValueVisitor } from './field-value.visitor.js'
+import { FieldValueBase } from '../../field-value.base.js'
+import type { IFieldValueVisitor } from '../../field-value.visitor.js'
 import type { ISumFieldValue } from './sum-field.type.js'
 
 export class SumFieldValue extends FieldValueBase<ISumFieldValue> {

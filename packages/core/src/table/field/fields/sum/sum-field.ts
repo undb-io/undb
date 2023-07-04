@@ -1,14 +1,13 @@
 import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
-import type { ISumFilter, ISumFilterOperator } from '../filter/sum.filter.js'
-import type { RecordValueJSON } from '../record/record.schema.js'
-import type { IRecordDisplayValues } from '../record/record.type.js'
-import { AbstractAggregateField, AbstractLookupField, BaseField } from './field.base.js'
-import type { ISumField } from './field.type.js'
-import type { IFieldVisitor } from './field.visitor.js'
+import type { RecordValueJSON } from '../../../record/record.schema.js'
+import type { IRecordDisplayValues } from '../../../record/record.type.js'
+import { AbstractAggregateField, AbstractLookupField, BaseField } from '../../field.base.js'
+import type { IFieldVisitor } from '../../field.visitor.js'
+import { FieldId } from '../../value-objects/field-id.vo.js'
 import { SumFieldValue } from './sum-field-value.js'
-import type { ICreateSumFieldInput, ICreateSumFieldValue, SumType } from './sum-field.type.js'
-import { FieldId } from './value-objects/field-id.vo.js'
+import type { ICreateSumFieldInput, ICreateSumFieldValue, ISumField, SumType } from './sum-field.type.js'
+import type { ISumFilter, ISumFilterOperator } from './sum.filter.js'
 
 export class SumField extends Mixin(AbstractAggregateField<ISumField>, AbstractLookupField<ISumField>) {
   duplicate(name: string): SumField {
