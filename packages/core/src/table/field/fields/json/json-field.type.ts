@@ -1,6 +1,7 @@
 import * as z from 'zod'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { IBaseField } from '../../field.type.js'
 import { JsonField } from './json-field.js'
 
 export const jsonTypeSchema = z.literal('json')
@@ -39,3 +40,5 @@ export const createJsonFieldValue_internal = z
 export type ICreateJsonFieldValue_internal = z.infer<typeof createJsonFieldValue_internal>
 
 export const jsonReadableValueSchema = z.record(z.any()).or(z.array(z.any())).or(z.string()).or(z.null()).or(z.number())
+
+export type IJsonField = IBaseField

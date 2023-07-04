@@ -1,7 +1,8 @@
 import { z } from 'zod'
-import { baseFilter } from './filter.base.js'
-import { jsonFilterOperators } from './operators.js'
+import { baseFilter } from '../../../filter/filter.base.js'
+import { $is_empty, $is_not_empty } from '../../../filter/operators.js'
 
+export const jsonFilterOperators = z.union([$is_empty, $is_not_empty])
 export const jsonFilterValue = z.null()
 export const jsonFilter = z
   .object({

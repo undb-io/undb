@@ -162,6 +162,17 @@ import {
   idTypeSchema,
   updateIdFieldSchema,
 } from './fields/id/id-field.type.js'
+import type { JsonFieldValue } from './fields/json/json-field-value.js'
+import type { JsonField } from './fields/json/json-field.js'
+import type { IJsonFieldValue } from './fields/json/json-field.type.js'
+import {
+  createJsonFieldSchema,
+  createJsonFieldValue_internal,
+  jsonFieldQuerySchema,
+  jsonFieldQueryValue,
+  jsonTypeSchema,
+  updateJsonFieldSchema,
+} from './fields/json/json-field.type.js'
 import type { StringFieldValue } from './fields/string/string-field-value.js'
 import type { StringField } from './fields/string/string-field.js'
 import type { IStringFieldValue } from './fields/string/string-field.type.js'
@@ -184,17 +195,6 @@ import {
   urlFieldQueryValue,
   urlTypeSchema,
 } from './fields/url/url-field.type.js'
-import type { JsonFieldValue } from './json-field-value.js'
-import type { JsonField } from './json-field.js'
-import type { IJsonFieldValue } from './json-field.type.js'
-import {
-  createJsonFieldSchema,
-  createJsonFieldValue_internal,
-  jsonFieldQuerySchema,
-  jsonFieldQueryValue,
-  jsonTypeSchema,
-  updateJsonFieldSchema,
-} from './json-field.type.js'
 import type { LookupFieldValue } from './lookup-field-value.js'
 import type { LookupField } from './lookup-field.js'
 import type { ILookupFieldValue } from './lookup-field.type.js'
@@ -519,7 +519,6 @@ export type BaseDateField = { format?: DateFormat; timeFormat?: TimeFormat }
 
 export type IUpdatedAtField = IBaseField & BaseDateField
 export type IUpdatedByField = IBaseField
-export type IJsonField = IBaseField
 
 export type INumberField = IBaseField
 export type IRatingField = IBaseField & { max?: number }

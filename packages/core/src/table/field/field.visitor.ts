@@ -15,8 +15,8 @@ import type {
   EmailField,
   StringField,
 } from './fields/index.js'
+import type { JsonField } from './fields/json/json-field.js'
 import type { UrlField } from './fields/url/url-field.js'
-import type { JsonField } from './json-field.js'
 import type { LookupField } from './lookup-field.js'
 import type { MultiSelectField } from './multi-select-field.js'
 import type { NumberField } from './number-field.js'

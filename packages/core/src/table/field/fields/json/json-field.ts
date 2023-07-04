@@ -1,12 +1,11 @@
 import { z } from 'zod'
-import type { IJsonFilter, IJsonFilterOperator } from '../filter/json.filter.js'
-import type { IRecordDisplayValues, RecordValueJSON } from '../record/index.js'
-import { BaseField } from './field.base.js'
-import type { IJsonField } from './field.type.js'
-import type { IFieldVisitor } from './field.visitor.js'
+import type { IRecordDisplayValues, RecordValueJSON } from '../../../record/index.js'
+import { BaseField } from '../../field.base.js'
+import type { IFieldVisitor } from '../../field.visitor.js'
+import { FieldId } from '../../value-objects/field-id.vo.js'
 import { JsonFieldValue } from './json-field-value.js'
-import type { ICreateJsonFieldInput, ICreateJsonFieldValue, JsonFieldType } from './json-field.type.js'
-import { FieldId } from './value-objects/field-id.vo.js'
+import type { ICreateJsonFieldInput, ICreateJsonFieldValue, IJsonField, JsonFieldType } from './json-field.type.js'
+import type { IJsonFilter, IJsonFilterOperator } from './json.filter.js'
 
 export class JsonField extends BaseField<IJsonField> {
   duplicate(name: string): JsonField {
