@@ -217,6 +217,17 @@ import {
   parentTypeSchema,
   updateParentFieldSchema,
 } from './fields/parent/parent-field.type.js'
+import type { RatingFieldValue } from './fields/rating/rating-field-value.js'
+import type { RatingField } from './fields/rating/rating-field.js'
+import type { IRatingFieldValue } from './fields/rating/rating-field.type.js'
+import {
+  createRatingFieldSchema,
+  createRatingFieldValue_internal,
+  ratingFieldQuerySchema,
+  ratingFieldQueryValue,
+  ratingTypeSchema,
+  updateRatingFieldSchema,
+} from './fields/rating/rating-field.type.js'
 import type { StringFieldValue } from './fields/string/string-field-value.js'
 import type { StringField } from './fields/string/string-field.js'
 import type { IStringFieldValue } from './fields/string/string-field.type.js'
@@ -239,17 +250,6 @@ import {
   urlFieldQueryValue,
   urlTypeSchema,
 } from './fields/url/url-field.type.js'
-import type { RatingFieldValue } from './rating-field-value.js'
-import type { RatingField } from './rating-field.js'
-import type { IRatingFieldValue } from './rating-field.type.js'
-import {
-  createRatingFieldSchema,
-  createRatingFieldValue_internal,
-  ratingFieldQuerySchema,
-  ratingFieldQueryValue,
-  ratingTypeSchema,
-  updateRatingFieldSchema,
-} from './rating-field.type.js'
 import type { ReferenceFieldValue } from './reference-field-value.js'
 import type { ReferenceField } from './reference-field.js'
 import {
@@ -519,8 +519,6 @@ export type BaseDateField = { format?: DateFormat; timeFormat?: TimeFormat }
 
 export type IUpdatedAtField = IBaseField & BaseDateField
 export type IUpdatedByField = IBaseField
-
-export type IRatingField = IBaseField & { max?: number }
 
 export type ISelectField = IBaseField & {
   options: Options

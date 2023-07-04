@@ -1,6 +1,7 @@
 import * as z from 'zod'
-import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from './field-base.schema.js'
-import { FIELD_TYPE_KEY } from './field.constants.js'
+import { baseFieldQuerySchema, createBaseFieldSchema, updateBaseFieldSchema } from '../../field-base.schema.js'
+import { FIELD_TYPE_KEY } from '../../field.constants.js'
+import type { IBaseField } from '../../field.type.js'
 import { RatingField } from './rating-field.js'
 
 export const RATING_MAX = 10
@@ -45,3 +46,5 @@ export const createRatingFieldValue_internal = z
 export type ICreateRatingFieldValue_internal = z.infer<typeof createRatingFieldValue_internal>
 
 export const ratingReadableValueSchema = ratingFieldQueryValue
+
+export type IRatingField = IBaseField & { max?: number }
