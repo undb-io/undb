@@ -1,6 +1,7 @@
 export * from './calendar.specification.js'
 export * from './display-type.specification.js'
 export * from './filters.specificaiton.js'
+export * from './gantt.specification.js'
 export * from './kanban.specification.js'
 export * from './row-height.specification.js'
 export * from './show-system-fields.specification.js'

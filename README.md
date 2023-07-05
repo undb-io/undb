@@ -31,7 +31,7 @@
 - 🔧 Deploy with variant adapters
 - 🎮 Developer friendly. Provide openapi / webhooks / realtime subscriptions / sdk(soon) / erd preview and more
 - :sparkles: Multiple built-in field types and variants
-- :city_sunset: Different types of views, including grid, kanban, tree, calendar and more
+- :city_sunset: Different types of views, including grid, kanban, gantt, tree, calendar and more
 
 ## 📚 Tech Stack
 
