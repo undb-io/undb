@@ -25,6 +25,7 @@ import { Sorts } from './sort/sorts.js'
 import { WithDisplayType } from './specifications/display-type.specification.js'
 import {
   WithCalendarField,
+  WithGanttField,
   WithKanbanField,
   WithRowHeight,
   WithTreeViewField,
@@ -323,6 +324,10 @@ export class ViewVO extends ValueObject<IView> {
     return new WithKanbanField(this, fieldId)
   }
 
+  public setGanttFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
+    return new WithGanttField(this, fieldId)
+  }
+
   public setCalendarFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
     return new WithCalendarField(this, fieldId)
   }
@@ -454,6 +459,7 @@ export class ViewVO extends ValueObject<IView> {
       sorts: this.sorts?.toArray(),
       showSystemFields: this.showSystemFields,
       kanban: this.kanban?.into()?.toJSON(),
+      gantt: this.gantt?.into()?.toJSON(),
       calendar: this.calendar?.into()?.toJSON(),
       tree: this.treeView?.into()?.toJSON(),
       dashboard: this.dashboard?.into()?.toJSON(),
@@ -478,6 +484,7 @@ export class ViewVO extends ValueObject<IView> {
       showSystemFields: input.showSystemFields,
       sorts: input.sorts ? new Sorts(input.sorts) : undefined,
       kanban: input.kanban ? Kanban.from(input.kanban) : undefined,
+      gantt: input.gantt ? Gantt.from(input.gantt) : undefined,
       calendar: input.calendar ? Calendar.from(input.calendar) : undefined,
       tree: input.tree ? TreeView.from(input.tree) : undefined,
       displayType: parsed.displayType || defaultViewDiaplyType,

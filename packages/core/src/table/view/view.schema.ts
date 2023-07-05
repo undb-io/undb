@@ -4,6 +4,7 @@ import { fieldNameSchema } from '../field/value-objects/field-name.schema.js'
 import { rootFilter } from '../filter/filter.js'
 import { calendarSchema } from './calendar/index.js'
 import { createDashboardSchema, dashboardSchema } from './dashboard/dashboard.type.js'
+import { ganttSchema } from './gantt/gantt.schema.js'
 import { kanbanSchema } from './kanban/index.js'
 import { sortsSchema } from './sort/sort.schema.js'
 import { treeViewSchema } from './tree-view/index.js'
@@ -36,6 +37,7 @@ export const createViewInput_internal = z.object({
   showSystemFields: z.boolean().optional(),
   sorts: sortsSchema.optional(),
   kanban: kanbanSchema.optional(),
+  gantt: ganttSchema.optional(),
   calendar: calendarSchema.optional(),
   dashboard: createDashboardSchema.optional(),
   tree: treeViewSchema.optional(),
@@ -53,6 +55,7 @@ export const queryView = z.object({
   showSystemFields: z.boolean().optional(),
   sorts: sortsSchema.optional(),
   kanban: kanbanSchema.optional(),
+  gantt: ganttSchema.optional(),
   calendar: calendarSchema.optional(),
   dashboard: dashboardSchema.optional(),
   tree: treeViewSchema.optional(),
@@ -118,6 +121,12 @@ export const setCalendarFieldSchema = z.object({
   field: fieldIdSchema,
 })
 export type ISetCalendarFieldSchema = z.infer<typeof setCalendarFieldSchema>
+
+export const setGanttFieldSchema = z.object({
+  viewId: viewIdSchema.optional(),
+  field: fieldIdSchema,
+})
+export type ISetGanttFieldSchema = z.infer<typeof setGanttFieldSchema>
 
 export const setTreeViewFieldSchema = z.object({
   viewId: viewIdSchema.optional(),
