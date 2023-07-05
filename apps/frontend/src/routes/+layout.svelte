@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import '../app.postcss'
 	import NProgress from 'nprogress'
 	import { navigating, page } from '$app/stores'
@@ -8,7 +8,8 @@
 
 	import 'nprogress/nprogress.css'
 	import { onMount } from 'svelte'
-	import { theme } from '$lib/store/ui'
+	import { changeThemeMode } from '$lib/store/ui'
+	import { LIGHT_THEME, type Theme } from '$lib/store/ui.type'
 
 	NProgress.configure({
 		minimum: 0.16,
@@ -34,6 +35,9 @@
 				domain: env.PUBLIC_UNDB_ANALYTICS_DOMAIN,
 			})
 		}
+		const theme = window.localStorage.getItem('theme') ?? LIGHT_THEME
+
+		changeThemeMode(theme as Theme)
 	})
 </script>
 
@@ -46,5 +50,3 @@
 </svelte:head>
 
 <svelte:window on:beforeunload={null} />
-
-<svelte:document class={$theme} />
