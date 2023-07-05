@@ -13,7 +13,7 @@ import { viewNameSchema } from './view-name.vo.js'
 import { viewPinnedFields } from './view-pinned-fields.js'
 import { viewRowHeightSchema } from './view-row-height.vo.js'
 
-export const viewDisplayType = z.enum(['grid', 'kanban', 'calendar', 'tree', 'dashboard'])
+export const viewDisplayType = z.enum(['grid', 'kanban', 'gantt', 'calendar', 'tree', 'dashboard'])
 
 export const createViewSchema = z.object({
   id: viewIdSchema.optional(),

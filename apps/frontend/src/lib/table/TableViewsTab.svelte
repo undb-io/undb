@@ -52,6 +52,7 @@
 	const items = [
 		{ value: 'grid', label: 'Grid' },
 		{ value: 'kanban', label: 'Kanban' },
+		{ value: 'gantt', label: 'Gantt' },
 		{ value: 'calendar', label: 'Calendar' },
 		{ value: 'tree', label: 'Tree' },
 		{ value: 'dashboard', label: 'Dashboard' },

@@ -1,11 +1,18 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230616021158 extends Migration {
+export class Migration20230705012944 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `undb_outbox` (`uuid` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text null, `operator_id` text null, `payload` json not null, primary key (`uuid`));',
     )
     this.addSql('create index `undb_outbox_deleted_at_index` on `undb_outbox` (`deleted_at`);')
+
+    this.addSql(
+      'create table `undb_share` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `target_id` text null, `target_type` text null, `enabled` integer not null default false, primary key (`id`));',
+    )
+    this.addSql('create index `undb_share_deleted_at_index` on `undb_share` (`deleted_at`);')
+    this.addSql('create index `undb_share_target_id_index` on `undb_share` (`target_id`);')
+    this.addSql('create unique index `undb_share_target_id_unique` on `undb_share` (`target_id`);')
 
     this.addSql(
       'create table `undb_table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `emoji` text not null, `views_order` text null, primary key (`id`));',
@@ -73,7 +80,7 @@ export class Migration20230616021158 extends Migration {
     this.addSql('create unique index `undb_user_email_unique` on `undb_user` (`email`);')
 
     this.addSql(
-      "create table `undb_view` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `name` text not null, `show_system_fields` integer not null default false, `display_type` text check (`display_type` in ('kanban', 'calendar', 'grid', 'tree', 'dashboard')) not null, `sorts` json null, `kanban_field_id` text null, `calendar_field_id` text null, `tree_field_id` text null, `filter` json null, `field_options` json null, `fields_order` text null, `pinned_fields` json null, `row_height` text check (`row_height` in ('short', 'medium', 'tall')) null, constraint `undb_view_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));",
+      "create table `undb_view` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `name` text not null, `show_system_fields` integer not null default false, `display_type` text not null, `sorts` json null, `kanban_field_id` text null, `gantt_field_id` text null, `calendar_field_id` text null, `tree_field_id` text null, `filter` json null, `field_options` json null, `fields_order` text null, `pinned_fields` json null, `row_height` text check (`row_height` in ('short', 'medium', 'tall')) null, constraint `undb_view_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));",
     )
     this.addSql('create index `undb_view_deleted_at_index` on `undb_view` (`deleted_at`);')
     this.addSql('create index `undb_view_table_id_index` on `undb_view` (`table_id`);')

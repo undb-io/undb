@@ -7,8 +7,6 @@ CREATE TABLE `mikro_orm_migrations` (
 );
 INSERT INTO mikro_orm_migrations
 VALUES(1, 'initial', '2023-05-20 09:46:34');
-INSERT INTO mikro_orm_migrations
-VALUES(2, 'share', '2023-05-20 09:46:34');
 CREATE TABLE `undb_table` (
 	`id` text not null,
 	`created_at` datetime not null,
@@ -7012,23 +7010,7 @@ CREATE TABLE IF NOT EXISTS "undb_view" (
 	`table_id` text NULL,
 	`name` text NOT NULL,
 	`show_system_fields` integer NOT NULL DEFAULT false,
-	`display_type` text check (
-		`display_type` in (
-			'kanban',
-			'calendar',
-			'grid',
-			'tree',
-			'dashboard'
-		)
-	) NOT NULL CHECK (
-		`display_type` in(
-			'kanban',
-			'calendar',
-			'grid',
-			'tree',
-			'dashboard'
-		)
-	),
+	`display_type` text NOT NULL,
 	`sorts` json NULL,
 	`kanban_field_id` text NULL,
 	`calendar_field_id` text NULL,

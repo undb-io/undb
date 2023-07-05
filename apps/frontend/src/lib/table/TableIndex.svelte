@@ -7,6 +7,7 @@
 	import CalendarIndex from '$lib/calendar/CalendarIndex.svelte'
 	import DashboardIndex from '$lib/dashboard/DashboardIndex.svelte'
 	import TreeIndex from '$lib/tree/TreeIndex.svelte'
+	import GanttIndex from '$lib/gantt/GanttIndex.svelte'
 
 	const view = getView()
 
@@ -15,6 +16,7 @@
 	const map: Partial<Record<IViewDisplayType, ComponentType>> = {
 		grid: TableView,
 		kanban: KanbanIndex,
+		gantt: GanttIndex,
 		tree: TreeIndex,
 		calendar: CalendarIndex,
 		dashboard: DashboardIndex,

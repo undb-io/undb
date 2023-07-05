@@ -12,6 +12,7 @@ import {
   OneToMany,
   PrimaryKey,
   Property,
+  StringType,
 } from '@mikro-orm/core'
 import type { IViewRowHeight } from '@undb/core'
 import {
@@ -105,7 +106,7 @@ export class View extends BaseEntity {
   @Property({ type: 'boolean', default: false, nullable: false })
   showSystemFields = false
 
-  @Enum({ items: ['kanban', 'calendar', 'grid', 'tree', 'dashboard'] })
+  @Property({ type: StringType })
   displayType: IViewDisplayType
 
   @Property({ type: JsonType, nullable: true })
