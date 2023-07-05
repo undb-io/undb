@@ -3,6 +3,7 @@
 	import { Card } from 'flowbite-svelte'
 	import type { DateRangeField } from '@undb/core'
 	import GanttConfig from './GanttConfig.svelte'
+	import GanttView from './GanttView.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -12,8 +13,7 @@
 </script>
 
 {#if field}
-	gantt!!!
-	<!-- <svelte:component this={map[field.type]} {field} /> -->
+	<GanttView {field} />
 {:else}
 	<div class="flex items-center justify-center h-screen w-full bg-gray-100 dark:bg-slate-800/80">
 		<Card class="flex-1">
