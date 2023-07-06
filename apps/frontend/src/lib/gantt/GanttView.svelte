@@ -2,7 +2,7 @@
 	import { SvelteGantt, SvelteGanttDependencies, SvelteGanttTable } from 'svelte-gantt'
 	import type { SvelteGanttComponent, SvelteGanttOptions } from 'svelte-gantt/types/gantt'
 	import { endOfWeek, startOfWeek } from 'date-fns'
-	import { currentRecordId, getTable, listRecordFn } from '$lib/store/table'
+	import { currentRecordId, getTable, listRecordFn, recordHash } from '$lib/store/table'
 	import { RecordFactory, type DateRangeField } from '@undb/core'
 	import type { RowModel } from 'svelte-gantt/types/core/row'
 	import type { TaskModel } from 'svelte-gantt/types/core/task'
@@ -16,14 +16,19 @@
 	let currentStart = startOfWeek(new Date())
 	let currentEnd = endOfWeek(new Date())
 
-	$: listRecords = $listRecordFn([
+	$: listRecords = $listRecordFn(
+		[
+			{
+				path: field.id.value,
+				type: field.type,
+				operator: '$between',
+				value: [currentStart.toISOString(), currentEnd.toISOString()],
+			},
+		],
 		{
-			path: field.id.value,
-			type: field.type,
-			operator: '$between',
-			value: [currentStart.toISOString(), currentEnd.toISOString()],
+			queryHash: $recordHash + '_gantt',
 		},
-	])
+	)
 
 	const updateRecord = trpc().record.update.mutation({
 		async onSuccess(data, variables, context) {
