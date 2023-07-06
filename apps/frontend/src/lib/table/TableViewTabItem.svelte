@@ -148,18 +148,27 @@
 					<i class="ti ti-copy text-gray-600 dark:text-gray-50" />
 					<span>{$t('Duplicate View')}</span>
 				</DropdownItem>
-				<DropdownItem on:click={() => exportGrid('csv')} class="text-xs font-normal inline-flex items-center gap-2">
-					<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
-					<span>{$t('Export CSV')}</span>
+				<DropdownItem class="flex items-center justify-between">
+					<span class="flex text-xs font-normal inline-flex items-center gap-2">
+						<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
+						{$t('Export')}
+					</span>
+					<i class="ti ti-chevron-right" />
 				</DropdownItem>
-				<DropdownItem on:click={() => exportGrid('excel')} class="text-xs font-normal inline-flex items-center gap-2">
-					<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
-					<span>{$t('Export Excel')}</span>
-				</DropdownItem>
-				<DropdownItem on:click={() => exportGrid('json')} class="text-xs font-normal inline-flex items-center gap-2">
-					<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
-					<span>{$t('Export Json')}</span>
-				</DropdownItem>
+				<Dropdown placement="right-start">
+					<DropdownItem on:click={() => exportGrid('csv')} class="text-xs font-normal inline-flex items-center gap-2">
+						<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
+						<span>{$t('Export CSV')}</span>
+					</DropdownItem>
+					<DropdownItem on:click={() => exportGrid('excel')} class="text-xs font-normal inline-flex items-center gap-2">
+						<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
+						<span>{$t('Export Excel')}</span>
+					</DropdownItem>
+					<DropdownItem on:click={() => exportGrid('json')} class="text-xs font-normal inline-flex items-center gap-2">
+						<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
+						<span>{$t('Export Json')}</span>
+					</DropdownItem>
+				</Dropdown>
 				<DropdownItem
 					on:click={() => {
 						webhookListDrawer.open()

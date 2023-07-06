@@ -33,7 +33,7 @@ import type {
   WithWidgetsLayout,
   WithoutWidgetSpecification,
 } from '../view/dashboard/specifications/widget.specification.js'
-import type { WithKanbanField, WithViewsOrder } from '../view/index.js'
+import type { WithGanttField, WithKanbanField, WithViewsOrder } from '../view/index.js'
 import type { WithCalendarField } from '../view/specifications/calendar.specification.js'
 import type { WithDisplayType } from '../view/specifications/display-type.specification.js'
 import type { WithFilter } from '../view/specifications/filters.specificaiton.js'
@@ -63,7 +63,7 @@ import type { WithNewField } from './table-field.specification.js'
 import type { WithTableId } from './table-id.specification.js'
 import type { WithTableName } from './table-name.specification.js'
 import type { WithTableSchema } from './table-schema.specification.js'
-import { WithTableViewId } from './table-view-id.specification.js'
+import type { WithTableViewId } from './table-view-id.specification.js'
 
 export interface ITableSpecVisitor extends ISpecVisitor {
   idEqual(s: WithTableId): void
@@ -94,6 +94,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   rowHeightEqual(s: WithRowHeight): void
   displayTypeEqual(s: WithDisplayType): void
   kanbanFieldEqual(s: WithKanbanField): void
+  ganttFieldEqual(s: WithGanttField): void
   calendarFieldEqual(s: WithCalendarField): void
   treeViewFieldEqual(s: WithTreeViewField): void
 

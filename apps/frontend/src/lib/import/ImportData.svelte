@@ -11,6 +11,7 @@
 		type ICreateTableSchemaInput,
 		type IMutateRecordValueSchema,
 		createTableInput,
+		castFieldValue,
 	} from '@undb/core'
 	import { Accordion, Button, Checkbox, Input, Label, Modal, Spinner } from 'flowbite-svelte'
 	import { Dropzone } from 'flowbite-svelte'
@@ -84,13 +85,14 @@
 		records = (data?.slice(1) ?? []).map((values) =>
 			values.reduce((prev, value, index) => {
 				const type = $form.schema.at(index)?.type
-				const v = type === 'number' ? globalThis.Number(value) : value
 
-				prev[$form.schema![index].id!] = v
+				prev[$form.schema![index].id!] = type ? castFieldValue(type, value) : value
 				return prev
 			}, {} as IMutateRecordValueSchema),
 		)
 	}
+
+	$: console.log(records)
 
 	const dropHandle = async (event: DragEvent) => {
 		event.preventDefault()

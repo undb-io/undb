@@ -3,9 +3,9 @@ import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
-import type { CurrencyField } from '../currency-field.js'
-import type { CurrencyFieldType } from '../currency-field.type.js'
-import type { CurrencySymbol } from '../currency-symbol.vo.js'
+import type { CurrencyField } from '../fields/currency/currency-field.js'
+import type { CurrencyFieldType } from '../fields/currency/currency-field.type.js'
+import type { CurrencySymbol } from '../fields/currency/currency-symbol.vo.js'
 
 export class WithCurrencySymbol extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(

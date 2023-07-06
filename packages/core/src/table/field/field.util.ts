@@ -4,7 +4,7 @@ import { match } from 'ts-pattern'
 import { z } from 'zod'
 import { Options } from '../option'
 import type { Field, ICreateFieldSchema, IFieldType, SelectFieldTypes } from './field.type'
-import type { ICreateSelectFieldSchema } from './select-field.type'
+import type { ICreateSelectFieldSchema } from './fields/select/select-field.type'
 
 const controlledFieldTypes: Set<IFieldType> = new Set([
   'id',
@@ -602,4 +602,17 @@ export const inferFieldType = (
         } as Omit<ICreateSelectFieldSchema, 'name'>),
     )
     .otherwise(() => ({ type: 'string' }))
+}
+
+export const castFieldValue = (type: IFieldType, value: string | number | null | object | boolean) => {
+  return match(type)
+    .with('number', () => Number(value))
+    .with('bool', () =>
+      match(value)
+        .returnType<boolean>()
+        .with(['true', 'TRUE'], () => true)
+        .with(['false', 'FALSE'], () => false)
+        .otherwise(Boolean),
+    )
+    .otherwise(() => value)
 }

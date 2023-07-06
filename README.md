@@ -31,7 +31,7 @@
 - 🔧 Deploy with variant adapters
 - 🎮 Developer friendly. Provide openapi / webhooks / realtime subscriptions / sdk(soon) / erd preview and more
 - :sparkles: Multiple built-in field types and variants
-- :city_sunset: Different types of views, including grid, kanban, tree, calendar and more
+- :city_sunset: Different types of views, including grid, kanban, gantt, tree, calendar and more
 
 ## 📚 Tech Stack
 
@@ -64,7 +64,7 @@
 ### Deploy with docker
 
 ```
-docker run -d --name undb -p 4000:4000 --platform linux/x86_64 -v ~/.undb/:/var/opts/.undb ghcr.io/undb-xyz/undb:latest
+docker run -d --name undb -p 4000:4000 --platform linux/x86_64 -v ~/.undb/:/var/opt/.undb ghcr.io/undb-xyz/undb:latest
 ```
 
 > And then you can visit http://localhost:4000 and get started

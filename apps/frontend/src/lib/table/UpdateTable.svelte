@@ -102,7 +102,7 @@
 						type="text"
 						label="name"
 						bind:value={$form.name}
-						aria-invalid={$errors.name ? 'true' : undefined}
+						data-invalid={$errors.name}
 						required
 						{...$constraints.name}
 					/>

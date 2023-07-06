@@ -3,8 +3,8 @@ import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
-import type { RatingField } from '../rating-field.js'
-import type { RatingFieldType } from '../rating-field.type.js'
+import type { RatingField } from '../fields/rating/rating-field.js'
+import type { RatingFieldType } from '../fields/rating/rating-field.type.js'
 
 export class WithRatingMax extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(public readonly type: RatingFieldType, public readonly fieldId: string, public readonly max: number) {

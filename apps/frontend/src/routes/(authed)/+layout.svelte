@@ -18,7 +18,8 @@
 	import { copyText } from 'svelte-copy'
 	import Cookies from 'js-cookie'
 	import { slide } from 'svelte/transition'
-	import { changeDarkMode, sidebarCollapsed, theme } from '$lib/store/ui'
+	import { changeThemeMode, sidebarCollapsed, theme } from '$lib/store/ui'
+	import { DARK_THEME, LIGHT_THEME } from '$lib/store/ui.type'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -204,7 +205,7 @@
 				</div>
 				<button on:click={() => ($sidebarCollapsed = true)}>
 					<i
-						class="ti ti-layout-sidebar-left-collapse text-xl text-gray-500 opacity-0 group-hover/main:opacity-100 transition"
+						class="ti ti-layout-sidebar-left-collapse text-xl text-gray-500 dark:hover:text-gray-100 opacity-0 group-hover/main:opacity-100 transition"
 					/>
 				</button>
 				<Tooltip placement="bottom">meta + b</Tooltip>
@@ -217,8 +218,8 @@
 								href={item.href}
 								class={cx(
 									item.current
-										? 'bg-gray-50 text-indigo-600 dark:text-blue-600 dark:bg-gray-700'
-										: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700',
+										? 'bg-gray-50 text-indigo-600 dark:text-gray-50 dark:bg-gray-700'
+										: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700',
 									'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
 								)}
 							>
@@ -226,8 +227,8 @@
 									<i
 										class={cx(
 											item.current
-												? 'text-indigo-600 dark:text-blue-600'
-												: 'text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-blue-600',
+												? 'text-indigo-600 dark:text-gray-50'
+												: 'text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-gray-100',
 											'shrink-0 text-lg',
 											`ti ti-${item.icon}`,
 										)}
@@ -324,7 +325,7 @@
 				>
 					<DropdownItem href="/me">
 						<i class="ti ti-settings" />
-						{$t('Setting', { ns: 'auth' })}
+						{$t('Settings', { ns: 'auth' })}
 					</DropdownItem>
 					<DropdownItem class="flex items-center justify-between">
 						<Chevron placement="right">
@@ -355,11 +356,16 @@
 					</DropdownItem>
 					<DropdownItem
 						on:click={() => {
-							changeDarkMode('dark')
+							$theme = $theme === DARK_THEME ? LIGHT_THEME : DARK_THEME
+							changeThemeMode($theme)
 						}}
 					>
 						<i class="ti ti-sun-moon" />
-						{$t('light/dark', { ns: 'auth' })}
+						{#if $theme === DARK_THEME}
+							{$t('Light Mode', { ns: 'auth' })}
+						{:else}
+							{$t('Dark Mode', { ns: 'auth' })}
+						{/if}
 					</DropdownItem>
 					<DropdownItem>
 						<button on:click={() => $logout.mutate()} class="w-full h-full text-left text-red-400" type="submit">
@@ -392,7 +398,7 @@
 		<Dropdown triggeredBy="#me-button" placement="bottom" class="w-48 shadow-sm border border-gray-100 ">
 			<DropdownItem href="/me">
 				<i class="ti ti-settings" />
-				{$t('Setting', { ns: 'auth' })}
+				{$t('Settings', { ns: 'auth' })}
 			</DropdownItem>
 			<DropdownItem class="flex items-center justify-between">
 				<Chevron placement="right">

@@ -19,6 +19,7 @@ import type {
   WithFilter,
   WithForeignTableId,
   WithFormat,
+  WithGanttField,
   WithKanbanField,
   WithNewField,
   WithNewFieldType,
@@ -128,6 +129,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   kanbanFieldEqual(s: WithKanbanField): void {
+    throw new Error('Method not implemented.')
+  }
+  ganttFieldEqual(s: WithGanttField): void {
     throw new Error('Method not implemented.')
   }
   treeViewFieldEqual(s: WithTreeViewField): void {

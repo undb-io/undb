@@ -2,11 +2,111 @@ import type { CompositeSpecification } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
-import { colorFieldValue } from '../field/color-field.type.js'
+import type { IAttachmentFilter, IAttachmentFilterTypeValue } from '../field/fields/attachment/attachment.filter.js'
+import {
+  attachmentFilter,
+  attachmentFilterOperators,
+  attachmentFilterValue,
+} from '../field/fields/attachment/attachment.filter.js'
+import type { IAutoIncrementFilter } from '../field/fields/auto-increment/auto-increment.filter.js'
+import {
+  autoIncrementFilter,
+  autoIncrementFilterOperators,
+  autoIncrementFilterValue,
+} from '../field/fields/auto-increment/auto-increment.filter.js'
+import type { IAverageFilter } from '../field/fields/average/average.filter.js'
+import { averageFilter, averageFilterOperators, averageFilterValue } from '../field/fields/average/average.filter.js'
+import type { IBoolFilter } from '../field/fields/bool/bool.filter.js'
+import { boolFilter, boolFilterOperators, boolFilterValue } from '../field/fields/bool/bool.filter.js'
+import type { ICollaboratorFilter } from '../field/fields/collaborator/collaborator.filter.js'
+import {
+  collaboratorFilter,
+  collaboratorFilterOperators,
+  collaboratorFilterValue,
+} from '../field/fields/collaborator/collaborator.filter.js'
+import type { IColorFilter } from '../field/fields/color/color.filter.js'
+import { colorFilter, colorFilterOperators } from '../field/fields/color/color.filter.js'
+import type { ICountFilter } from '../field/fields/count/count.filter.js'
+import { countFilter, countFilterOperators, countFilterValue } from '../field/fields/count/count.filter.js'
+import type { ICreatedAtFilter } from '../field/fields/created-at/created-at.filter.js'
+import {
+  createdAtFilter,
+  createdAtFilterOperators,
+  createdAtFilterValue,
+} from '../field/fields/created-at/created-at.filter.js'
+import type { ICreatedByFilter } from '../field/fields/created-by/created-by.filter.js'
+import {
+  createdByFilter,
+  createdByFilterOperators,
+  createdByFilterValue,
+} from '../field/fields/created-by/created-by.filter.js'
+import type { ICurrencyFilter } from '../field/fields/currency/currency.filter.js'
+import {
+  currencyFilter,
+  currencyFilterOperators,
+  currencyFilterValue,
+} from '../field/fields/currency/currency.filter.js'
+import type { IDateRangeFilter } from '../field/fields/date-range/date-range.filter.js'
+import {
+  dateRangeFilter,
+  dateRangeFilterOperators,
+  dateRangeFilterValue,
+} from '../field/fields/date-range/date-range.filter.js'
+import type { IDateFilter } from '../field/fields/date/date.filter.js'
+import { dateFilter, dateFilterOperators, dateFilterValue } from '../field/fields/date/date.filter.js'
+import type { IEmailFilter } from '../field/fields/email/email.filter.js'
+import { emailFilter, emailFilterOperators, emailFilterValue } from '../field/fields/email/email.filter.js'
+import type { IIdFilter } from '../field/fields/id/id.filter.js'
+import { idFilter, idFilterOperators, idFilterValue } from '../field/fields/id/id.filter.js'
+import type { IJsonFilter } from '../field/fields/json/json.filter.js'
+import { jsonFilter, jsonFilterOperators, jsonFilterValue } from '../field/fields/json/json.filter.js'
+import { lookupFilter, lookupFilterOperators, lookupFilterValue } from '../field/fields/lookup/lookup.filter.js'
+import type { IMultiSelectFilter } from '../field/fields/multi-select/multi-select.filter.js'
+import {
+  multiSelectFilter,
+  multiSelectFilterOperators,
+  multiSelectFilterValue,
+} from '../field/fields/multi-select/multi-select.filter.js'
+import type { INumberFilter } from '../field/fields/number/number.filter.js'
+import { numberFilter, numberFilterOperators, numberFilterValue } from '../field/fields/number/number.filter.js'
+import { parentFilter, parentFilterOperators, parentFilterValue } from '../field/fields/parent/parent.filter.js'
+import type { IRatingFilter } from '../field/fields/rating/rating.filter.js'
+import { ratingFilter, ratingFilterOperators, ratingFilterValue } from '../field/fields/rating/rating.filter.js'
+import {
+  referenceFilter,
+  referenceFilterOperators,
+  referenceFilterValue,
+} from '../field/fields/reference/reference.filter.js'
+import type { ISelectFieldValue } from '../field/fields/select/select-field.type.js'
+import type { ISelectFilter } from '../field/fields/select/select.filter.js'
+import { selectFilter, selectFilterOperators, selectFilterValue } from '../field/fields/select/select.filter.js'
+import type { IStringFilter } from '../field/fields/string/string.filter.js'
+import { stringFilter, stringFilterOperators, stringFilterValue } from '../field/fields/string/string.filter.js'
+import type { ISumFilter } from '../field/fields/sum/sum.filter.js'
+import { sumFilter, sumFilterOperators, sumFilterValue } from '../field/fields/sum/sum.filter.js'
+import type { ITreeFilter } from '../field/fields/tree/tree.filter.js'
+import { treeFilter, treeFilterOperators, treeFilterValue } from '../field/fields/tree/tree.filter.js'
+import type { IUpdatedAtFilter } from '../field/fields/updated-at/updated-at.filter.js'
+import {
+  updatedAtFilter,
+  updatedAtFilterOperators,
+  updatedAtFilterValue,
+} from '../field/fields/updated-at/updated-at.filter.js'
+import type { IUpdatedByFilter } from '../field/fields/updated-by/updated-by.filter.js'
+import {
+  updatedByFilter,
+  updatedByFilterOperators,
+  updatedByFilterValue,
+} from '../field/fields/updated-by/updated-by.filter.js'
 import type { IUrlFilter } from '../field/fields/url/url.filter.js'
 import { urlFilter, urlFilterOperators, urlFilterValue } from '../field/fields/url/url.filter.js'
-import { DateFieldValue, NumberFieldValue, SelectFieldValue, StringFieldValue } from '../field/index.js'
-import type { ISelectFieldValue } from '../field/select-field.type.js'
+import {
+  DateFieldValue,
+  NumberFieldValue,
+  SelectFieldValue,
+  StringFieldValue,
+  colorFieldValue,
+} from '../field/index.js'
 import {
   BoolIsFalse,
   BoolIsTrue,
@@ -42,97 +142,9 @@ import {
   StringStartsWith,
   WithRecordIds,
 } from '../record/index.js'
-import type { IAttachmentFilter, IAttachmentFilterTypeValue } from './attachment.filter.js'
-import { attachmentFilter, attachmentFilterValue } from './attachment.filter.js'
-import type { IAutoIncrementFilter } from './auto-increment.filter.js'
-import { autoIncrementFilter, autoIncrementFilterValue } from './auto-increment.filter.js'
-import type { IAverageFilter } from './average.filter.js'
-import { averageFilter, averageFilterValue } from './average.filter.js'
-import type { IBoolFilter } from './bool.filter.js'
-import { boolFilter, boolFilterValue } from './bool.filter.js'
-import type { ICollaboratorFilter } from './collaborator.filter.js'
-import { collaboratorFilter, collaboratorFilterValue } from './collaborator.filter.js'
-import type { IColorFilter } from './color.filter.js'
-import { colorFilter } from './color.filter.js'
 import type { IConjunction } from './conjunction.js'
 import { conjunctions } from './conjunction.js'
-import type { ICountFilter } from './count.filter.js'
-import { countFilter, countFilterValue } from './count.filter.js'
-import type { ICreatedAtFilter } from './created-at.filter.js'
-import { createdAtFilter, createdAtFilterValue } from './created-at.filter.js'
-import type { ICreatedByFilter } from './created-by.filter.js'
-import { createdByFilter, createdByFilterValue } from './created-by.filter.js'
-import type { ICurrencyFilter } from './currency.filter.js'
-import { currencyFilter, currencyFilterValue } from './currency.filter.js'
-import type { IDateRangeFilter } from './date-range.filter.js'
-import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter.js'
-import type { IDateFilter } from './date.filter.js'
-import { dateFilter, dateFilterValue } from './date.filter.js'
-import type { IEmailFilter } from './email.filter.js'
-import { emailFilter, emailFilterValue } from './email.filter.js'
-import type { IIdFilter } from './id.filter.js'
-import { idFilter, idFilterValue } from './id.filter.js'
-import type { IJsonFilter } from './json.filter.js'
-import { jsonFilter, jsonFilterValue } from './json.filter.js'
-import { lookupFilter, lookupFilterValue } from './lookup.filter.js'
-import type { IMultiSelectFilter } from './multi-select.filter.js'
-import { multiSelectFilter, multiSelectFilterValue } from './multi-select.filter.js'
-import type { INumberFilter } from './number.filter.js'
-import { numberFilter, numberFilterValue } from './number.filter.js'
-import {
-  $between,
-  $eq,
-  $is_empty,
-  $is_false,
-  $is_not_empty,
-  $is_root,
-  $is_today,
-  $is_true,
-  $neq,
-  attachmentFilterOperators,
-  autoIncrementFilterOperators,
-  averageFilterOperators,
-  boolFilterOperators,
-  collaboratorFilterOperators,
-  colorFilterOperators,
-  countFilterOperators,
-  createdAtFilterOperators,
-  createdByFilterOperators,
-  currencyFilterOperators,
-  dateFilterOperators,
-  dateRangeFilterOperators,
-  emailFilterOperators,
-  idFilterOperators,
-  jsonFilterOperators,
-  lookupFilterOperators,
-  multiSelectFilterOperators,
-  numberFilterOperators,
-  parentFilterOperators,
-  ratingFilterOperators,
-  referenceFilterOperators,
-  selectFilterOperators,
-  stringFilterOperators,
-  sumFilterOperators,
-  treeFilterOperators,
-  updatedAtFilterOperators,
-  updatedByFilterOperators,
-} from './operators.js'
-import { parentFilter, parentFilterValue } from './parent.filter.js'
-import type { IRatingFilter } from './rating.filter.js'
-import { ratingFilter, ratingFilterValue } from './rating.filter.js'
-import { referenceFilter, referenceFilterValue } from './reference.filter.js'
-import type { ISelectFilter } from './select.filter.js'
-import { selectFilter, selectFilterValue } from './select.filter.js'
-import type { IStringFilter } from './string.filter.js'
-import { stringFilter, stringFilterValue } from './string.filter.js'
-import type { ISumFilter } from './sum.filter.js'
-import { sumFilter, sumFilterValue } from './sum.filter.js'
-import type { ITreeFilter } from './tree.filter.js'
-import { treeFilter, treeFilterValue } from './tree.filter.js'
-import type { IUpdatedAtFilter } from './updated-at.filter.js'
-import { updatedAtFilter, updatedAtFilterValue } from './updated-at.filter.js'
-import type { IUpdatedByFilter } from './updated-by.filter.js'
-import { updatedByFilter, updatedByFilterValue } from './updated-by.filter.js'
+import { $between, $eq, $is_empty, $is_false, $is_not_empty, $is_root, $is_today, $is_true, $neq } from './operators.js'
 
 export const filterValue = z.union([
   idFilterValue,

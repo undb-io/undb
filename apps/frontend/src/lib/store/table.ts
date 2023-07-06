@@ -242,7 +242,7 @@ export const listRecordFn: Readable<
 			'share.view',
 			() => (filter?: IRootFilter, options?: ListRecordQueryOptions) =>
 				trpc().share.viewRecords.query(
-					{ viewId: $view.id.value },
+					{ viewId: $view.id.value, q: $q, filter },
 					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash, ...options },
 				),
 		)

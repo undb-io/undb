@@ -4,9 +4,10 @@ import { Option } from 'oxide.ts'
 import type { Class } from 'type-fest'
 import * as z from 'zod'
 import type { ClsStore } from '../../cls/cls.js'
-import { CreatedAtField } from '../field/created-at-field.js'
 import { FieldFactory } from '../field/field.factory.js'
-import { IdField } from '../field/id-field.js'
+import { CreatedAtField } from '../field/fields/created-at/created-at-field.js'
+import { IdField } from '../field/fields/id/id-field.js'
+import { UpdatedAtField } from '../field/fields/updated-at/updated-at-field.js'
 import type {
   AggregateFieldType,
   Field,
@@ -29,11 +30,10 @@ import {
   getNextFieldName,
   isSearchable,
 } from '../field/index.js'
-import { UpdatedAtField } from '../field/updated-at-field.js'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema.js'
 import { WithNewField } from '../specifications/table-field.specification.js'
 import type { ICalendarField } from '../view/calendar/index.js'
-import type { IKanbanField, ITreeViewField } from '../view/index.js'
+import type { IGanttField, IKanbanField, ITreeViewField } from '../view/index.js'
 import { ViewFieldsOrder } from '../view/view-fields-order.vo.js'
 
 function hasDuplicates(names: string[]): boolean {
@@ -112,6 +112,10 @@ export class TableSchema extends ValueObject<Field[]> {
 
   public get kanbanFields(): IKanbanField[] {
     return this.fields.filter((f) => f instanceof SelectField || f instanceof DateField) as IKanbanField[]
+  }
+
+  public get ganttFields(): IGanttField[] {
+    return this.fields.filter((f) => f instanceof DateRangeField) as IGanttField[]
   }
 
   public get searchableFields(): Field[] {

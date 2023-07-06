@@ -1,6 +1,6 @@
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import { BoolFieldValue } from '../../field/bool-field-value.js'
+import { BoolFieldValue } from '../../field/index.js'
 import type { Record } from '../record.js'
 import type { IRecordVisitor } from './interface.js'
 import { BaseRecordSpecification } from './record-specification.base.js'

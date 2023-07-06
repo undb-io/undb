@@ -1,6 +1,6 @@
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import { DateRangeFieldValue } from '../../field/date-range-field-value.js'
+import { DateRangeFieldValue } from '../../field/fields/date-range/date-range-field-value.js'
 import type { IDateRangeFieldValue } from '../../field/index.js'
 import type { Record } from '../record.js'
 import type { IRecordVisitor } from './interface.js'

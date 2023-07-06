@@ -23,6 +23,7 @@ import { router } from '../trpc.js'
 import { createCalendarRouter } from './calendar.router.js'
 import { createDashboardRouter } from './dashboard.router.js'
 import { createFilterRouter } from './filter.router.js'
+import { createGanttRouter } from './gantt.router.js'
 import { createKanbanRouter } from './kanban.router.js'
 import { createSortRouter } from './sort.router.js'
 import { createTreeViewRouter } from './tree-view.router.js'
@@ -90,6 +91,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
     filter: createFilterRouter(procedure)(commandBus),
     sort: createSortRouter(procedure)(commandBus),
     kanban: createKanbanRouter(procedure)(commandBus),
+    gantt: createGanttRouter(procedure)(commandBus),
     calendar: createCalendarRouter(procedure)(commandBus),
     dashboard: createDashboardRouter(procedure)(commandBus),
     tree: createTreeViewRouter(procedure)(commandBus),

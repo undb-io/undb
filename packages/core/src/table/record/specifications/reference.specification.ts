@@ -1,6 +1,6 @@
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import { ReferenceFieldValue } from '../../field/index.js'
+import { ReferenceFieldValue } from '../../field/fields/reference/reference-field-value.js'
 import type { Record } from '../record.js'
 import type { IRecordVisitor } from './interface.js'
 import { BaseRecordSpecification } from './record-specification.base.js'

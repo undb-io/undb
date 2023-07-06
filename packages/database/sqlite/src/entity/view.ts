@@ -12,11 +12,13 @@ import {
   OneToMany,
   PrimaryKey,
   Property,
+  StringType,
 } from '@mikro-orm/core'
 import type { IViewRowHeight } from '@undb/core'
 import {
   viewRowHeights,
   type Calendar as CoreCalendar,
+  type Gantt as CoreGantt,
   type Kanban as CoreKanban,
   type TreeView as CoreTreeView,
   type ViewVO as CoreView,
@@ -43,6 +45,20 @@ export class Kanban {
 
   constructor(kanban: CoreKanban) {
     this.fieldId = kanban.fieldId?.value
+  }
+}
+@Embeddable()
+export class Gantt {
+  @Property({
+    nullable: true,
+    serializer(value) {
+      return value || undefined
+    },
+  })
+  fieldId?: string
+
+  constructor(gantt: CoreGantt) {
+    this.fieldId = gantt.fieldId?.value
   }
 }
 
@@ -90,7 +106,7 @@ export class View extends BaseEntity {
   @Property({ type: 'boolean', default: false, nullable: false })
   showSystemFields = false
 
-  @Enum({ items: ['kanban', 'calendar', 'grid', 'tree', 'dashboard'] })
+  @Property({ type: StringType })
   displayType: IViewDisplayType
 
   @Property({ type: JsonType, nullable: true })
@@ -98,6 +114,9 @@ export class View extends BaseEntity {
 
   @Embedded({ nullable: true })
   kanban?: Kanban
+
+  @Embedded({ nullable: true })
+  gantt?: Gantt
 
   @Embedded({ nullable: true })
   calendar?: Calendar
@@ -163,4 +182,4 @@ export class View extends BaseEntity {
   }
 }
 
-export const viewEntities = [View, Kanban, Calendar, Tree]
+export const viewEntities = [View, Kanban, Calendar, Tree, Gantt]

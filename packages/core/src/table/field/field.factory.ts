@@ -1,32 +1,34 @@
-import { AttachmentField } from './attachment-field.js'
-import { AutoIncrementField } from './auto-increment-field.js'
-import { AverageField } from './average-field.js'
-import { BoolField } from './bool-field.js'
-import { CollaboratorField } from './collaborator-field.js'
-import { ColorField } from './color-field.js'
-import { CountField } from './count-field.js'
-import { CreatedAtField } from './created-at-field.js'
-import { CreatedByField } from './created-by-field.js'
-import { CurrencyField } from './currency-field.js'
-import { DateField } from './date-field.js'
-import { DateRangeField } from './date-range-field.js'
-import { EmailField } from './email-field.js'
 import type { Field, ICreateFieldSchema } from './field.type.js'
-import { UrlField } from './fields/index.js'
-import { IdField } from './id-field.js'
-import { JsonField } from './json-field.js'
-import { LookupField } from './lookup-field.js'
-import { MultiSelectField } from './multi-select-field.js'
-import { NumberField } from './number-field.js'
-import { ParentField } from './parent-field.js'
-import { RatingField } from './rating-field.js'
-import { ReferenceField } from './reference-field.js'
-import { SelectField } from './select-field.js'
-import { StringField } from './string-field.js'
-import { SumField } from './sum-field.js'
-import { TreeField } from './tree-field.js'
-import { UpdatedAtField } from './updated-at-field.js'
-import { UpdatedByField } from './updated-by-field.js'
+import { CountField } from './fields/count/count-field.js'
+import { CreatedAtField } from './fields/created-at/created-at-field.js'
+import { CreatedByField } from './fields/created-by/created-by-field.js'
+import { DateRangeField } from './fields/date-range/date-range-field.js'
+import { DateField } from './fields/date/date-field.js'
+import { IdField } from './fields/id/id-field.js'
+import {
+  AttachmentField,
+  AutoIncrementField,
+  AverageField,
+  BoolField,
+  CollaboratorField,
+  ColorField,
+  CurrencyField,
+  EmailField,
+  StringField,
+  UrlField,
+} from './fields/index.js'
+import { JsonField } from './fields/json/json-field.js'
+import { LookupField } from './fields/lookup/lookup-field.js'
+import { MultiSelectField } from './fields/multi-select/multi-select-field.js'
+import { NumberField } from './fields/number/number-field.js'
+import { ParentField } from './fields/parent/parent-field.js'
+import { RatingField } from './fields/rating/rating-field.js'
+import { ReferenceField } from './fields/reference/reference-field.js'
+import { SelectField } from './fields/select/select-field.js'
+import { SumField } from './fields/sum/sum-field.js'
+import { TreeField } from './fields/tree/tree-field.js'
+import { UpdatedAtField } from './fields/updated-at/updated-at-field.js'
+import { UpdatedByField } from './fields/updated-by/updated-by-field.js'
 
 export class FieldFactory {
   static create(input: ICreateFieldSchema): Field | Field[] {
@@ -116,6 +118,9 @@ export class FieldFactory {
       case 'updated-by': {
         return UpdatedByField.create(input)
       }
+      default: {
+        throw new Error()
+      }
     }
   }
 
@@ -204,6 +209,9 @@ export class FieldFactory {
       }
       case 'updated-by': {
         return UpdatedByField.unsafeCreate(input)
+      }
+      default: {
+        throw new Error()
       }
     }
   }

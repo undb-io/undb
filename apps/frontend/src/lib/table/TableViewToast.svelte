@@ -49,7 +49,7 @@
 	params={{ delay: 100, duration: 200, easing: quintOut }}
 >
 	<div class="flex items-center space-x-5 justify-between">
-		<P class="text-sm !text-gray-700">{@html $t('Selected N Records', { n: $selectedCount })}</P>
+		<P class="text-sm !text-gray-700 dark:!text-gray-100">{@html $t('Selected N Records', { n: $selectedCount })}</P>
 
 		<ButtonGroup>
 			<Button

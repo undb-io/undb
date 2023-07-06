@@ -1,31 +1,33 @@
-import type { AttachmentField } from './attachment-field.js'
-import type { AutoIncrementField } from './auto-increment-field.js'
-import type { AverageField } from './average-field.js'
-import type { BoolField } from './bool-field.js'
-import type { CollaboratorField } from './collaborator-field.js'
-import type { ColorField } from './color-field.js'
-import type { CountField } from './count-field.js'
-import type { CreatedAtField } from './created-at-field.js'
-import type { CreatedByField } from './created-by-field.js'
-import type { CurrencyField } from './currency-field.js'
-import type { DateField } from './date-field.js'
-import type { DateRangeField } from './date-range-field.js'
-import type { EmailField } from './email-field.js'
+import type { CountField } from './fields/count/count-field.js'
+import type { CreatedAtField } from './fields/created-at/created-at-field.js'
+import type { CreatedByField } from './fields/created-by/created-by-field.js'
+import type { DateRangeField } from './fields/date-range/date-range-field.js'
+import type { DateField } from './fields/date/date-field.js'
+import type { IdField } from './fields/id/id-field.js'
+import type {
+  AttachmentField,
+  AutoIncrementField,
+  AverageField,
+  BoolField,
+  CollaboratorField,
+  ColorField,
+  CurrencyField,
+  EmailField,
+  StringField,
+} from './fields/index.js'
+import type { JsonField } from './fields/json/json-field.js'
+import type { LookupField } from './fields/lookup/lookup-field.js'
+import type { MultiSelectField } from './fields/multi-select/multi-select-field.js'
+import type { NumberField } from './fields/number/number-field.js'
+import type { ParentField } from './fields/parent/parent-field.js'
+import type { RatingField } from './fields/rating/rating-field.js'
+import type { ReferenceField } from './fields/reference/reference-field.js'
+import type { SelectField } from './fields/select/select-field.js'
+import type { SumField } from './fields/sum/sum-field.js'
+import type { TreeField } from './fields/tree/tree-field.js'
+import type { UpdatedAtField } from './fields/updated-at/updated-at-field.js'
+import type { UpdatedByField } from './fields/updated-by/updated-by-field.js'
 import type { UrlField } from './fields/url/url-field.js'
-import type { IdField } from './id-field.js'
-import type { JsonField } from './json-field.js'
-import type { LookupField } from './lookup-field.js'
-import type { MultiSelectField } from './multi-select-field.js'
-import type { NumberField } from './number-field.js'
-import type { ParentField } from './parent-field.js'
-import type { RatingField } from './rating-field.js'
-import type { ReferenceField } from './reference-field.js'
-import type { SelectField } from './select-field.js'
-import type { StringField } from './string-field.js'
-import type { SumField } from './sum-field.js'
-import type { TreeField } from './tree-field.js'
-import type { UpdatedAtField } from './updated-at-field.js'
-import type { UpdatedByField } from './updated-by-field.js'
 
 export interface IFieldVisitor {
   id(field: IdField): void
