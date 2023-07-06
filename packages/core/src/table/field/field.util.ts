@@ -603,3 +603,16 @@ export const inferFieldType = (
     )
     .otherwise(() => ({ type: 'string' }))
 }
+
+export const castFieldValue = (type: IFieldType, value: string | number | null | object | boolean) => {
+  return match(type)
+    .with('number', () => Number(value))
+    .with('bool', () =>
+      match(value)
+        .returnType<boolean>()
+        .with(['true', 'TRUE'], () => true)
+        .with(['false', 'FALSE'], () => false)
+        .otherwise(Boolean),
+    )
+    .otherwise(() => value)
+}
