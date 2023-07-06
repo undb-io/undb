@@ -62,7 +62,7 @@
 		"plausible-tracker": "^0.3.8",
 		"postcss": "^8.4.24",
 		"postcss-load-config": "^4.0.1",
-		"prettier": "^3.0.0",
+		"prettier": "^2.8.8",
 		"prettier-plugin-svelte": "^2.10.1",
 		"safe-flat": "^2.0.2",
 		"sortablejs": "^1.15.0",
