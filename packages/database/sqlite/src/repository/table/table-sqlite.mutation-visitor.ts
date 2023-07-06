@@ -7,6 +7,7 @@ import type {
   WithCurrencySymbol,
   WithDuplicatedField,
   WithForeignTableId,
+  WithGanttField,
   WithNewFieldType,
   WithOption,
   WithReferenceFieldId,
@@ -288,6 +289,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   kanbanFieldEqual(s: WithKanbanField): void {
     const view = this.getView(s.view.id.value)
     wrap(view).assign({ kanban: { fieldId: s.fieldId?.value ?? '' } })
+    this.em.persist(view)
+  }
+  ganttFieldEqual(s: WithGanttField): void {
+    const view = this.getView(s.view.id.value)
+    wrap(view).assign({ gantt: { fieldId: s.fieldId?.value ?? '' } })
     this.em.persist(view)
   }
   treeViewFieldEqual(s: WithTreeViewField): void {

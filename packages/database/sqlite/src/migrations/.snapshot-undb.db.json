@@ -431,7 +431,8 @@
             "attachment",
             "collaborator",
             "created-by",
-            "updated-by"
+            "updated-by",
+            "url"
           ],
           "mappedType": "text"
         },
@@ -1442,14 +1443,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "kanban",
-            "calendar",
-            "grid",
-            "tree",
-            "dashboard"
-          ],
-          "mappedType": "enum"
+          "mappedType": "text"
         },
         "sorts": {
           "name": "sorts",
@@ -1462,6 +1456,15 @@
         },
         "kanban_field_id": {
           "name": "kanban_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "gantt_field_id": {
+          "name": "gantt_field_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,

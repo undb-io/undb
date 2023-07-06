@@ -18,12 +18,14 @@ import {
 } from './dashboard/specifications/widget.specification.js'
 import type { ICreateWidgetSchema, IRelayoutWidgetSchema } from './dashboard/widget.schema.js'
 import { Widget } from './dashboard/widget.vo.js'
+import { Gantt } from './gantt/gantt.js'
 import { Kanban } from './kanban/index.js'
 import type { ISortDirection } from './sort/sort.schema.js'
 import { Sorts } from './sort/sorts.js'
 import { WithDisplayType } from './specifications/display-type.specification.js'
 import {
   WithCalendarField,
+  WithGanttField,
   WithKanbanField,
   WithRowHeight,
   WithTreeViewField,
@@ -155,6 +157,31 @@ export class ViewVO extends ValueObject<IView> {
     }
   }
 
+  public get gantt(): Option<Gantt> {
+    return Option(this.props.gantt)
+  }
+
+  public set gantt(gantt: Option<Gantt>) {
+    this.props.gantt = gantt.into()
+  }
+
+  public get ganttFieldId(): Option<FieldId> {
+    return this.gantt.mapOr(None, (gantt) => Option(gantt.fieldId))
+  }
+
+  public get ganttFieldIdString() {
+    return this.gantt.into()?.fieldId?.value
+  }
+
+  public set ganttFieldIdString(fieldId: string | undefined) {
+    const gantt = this.gantt.into()
+    if (gantt) {
+      gantt.fieldId = fieldId ? FieldId.fromString(fieldId) : undefined
+    } else if (fieldId) {
+      this.gantt = Some(new Gantt({ fieldId: FieldId.fromString(fieldId) }))
+    }
+  }
+
   public get treeView(): Option<TreeView> {
     return Option(this.props.tree)
   }
@@ -245,6 +272,14 @@ export class ViewVO extends ValueObject<IView> {
     return this.props.calendar
   }
 
+  public getOrCreateGantt(): Gantt {
+    const gantt = this.gantt
+    if (gantt.isSome()) return gantt.unwrap()
+
+    this.props.gantt = new Kanban({})
+    return this.props.gantt
+  }
+
   public getOrCreateTreeView(): Kanban {
     const treeView = this.treeView
     if (treeView.isSome()) return treeView.unwrap()
@@ -287,6 +322,10 @@ export class ViewVO extends ValueObject<IView> {
 
   public setKanbanFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
     return new WithKanbanField(this, fieldId)
+  }
+
+  public setGanttFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
+    return new WithGanttField(this, fieldId)
   }
 
   public setCalendarFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
@@ -420,6 +459,7 @@ export class ViewVO extends ValueObject<IView> {
       sorts: this.sorts?.toArray(),
       showSystemFields: this.showSystemFields,
       kanban: this.kanban?.into()?.toJSON(),
+      gantt: this.gantt?.into()?.toJSON(),
       calendar: this.calendar?.into()?.toJSON(),
       tree: this.treeView?.into()?.toJSON(),
       dashboard: this.dashboard?.into()?.toJSON(),
@@ -444,6 +484,7 @@ export class ViewVO extends ValueObject<IView> {
       showSystemFields: input.showSystemFields,
       sorts: input.sorts ? new Sorts(input.sorts) : undefined,
       kanban: input.kanban ? Kanban.from(input.kanban) : undefined,
+      gantt: input.gantt ? Gantt.from(input.gantt) : undefined,
       calendar: input.calendar ? Calendar.from(input.calendar) : undefined,
       tree: input.tree ? TreeView.from(input.tree) : undefined,
       displayType: parsed.displayType || defaultViewDiaplyType,

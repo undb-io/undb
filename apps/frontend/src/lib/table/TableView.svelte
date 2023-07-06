@@ -452,14 +452,14 @@
 	}
 
 	:global(.dark .hovered) {
-		background-color: #374151;
+		background-color: var(--primary-color) !important;
 	}
 
 	:global(.dark revogr-data .rgRow.focused-rgRow) {
 		background-color: #374151 !important;
 	}
 
-	:global(.dark revo-grid[theme=compact] revogr-header .rgHeaderCell.focused-cell){
-		background-color: #374151 !important
+	:global(.dark revo-grid[theme='compact'] revogr-header .rgHeaderCell.focused-cell) {
+		background-color: #374151 !important;
 	}
 </style>

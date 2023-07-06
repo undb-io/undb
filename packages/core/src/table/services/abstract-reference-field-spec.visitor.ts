@@ -72,6 +72,7 @@ import type {
   WithFieldOption,
   WithFieldVisibility,
   WithFieldWidth,
+  WithGanttField,
   WithKanbanField,
   WithNewView,
   WithoutView,
@@ -150,6 +151,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   pinnedFields(s: WithViewPinnedFields): void {}
   displayTypeEqual(s: WithDisplayType): void {}
   kanbanFieldEqual(s: WithKanbanField): void {}
+  ganttFieldEqual(s: WithGanttField): void {}
   calendarFieldEqual(s: WithCalendarField): void {}
   treeViewFieldEqual(s: WithTreeViewField): void {}
   newField(s: WithNewField): void {

@@ -4,6 +4,7 @@ import type {
   ITableSpecVisitor,
   WithDuplicatedField,
   WithForeignTableId,
+  WithGanttField,
   WithNewFieldType,
   WithRatingMax,
   WithTableSchema,
@@ -133,6 +134,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   fieldVisibility(): void {}
   displayTypeEqual(): void {}
   kanbanFieldEqual(): void {}
+  ganttFieldEqual(s: WithGanttField): void {}
   treeViewFieldEqual(): void {}
   calendarFieldEqual(): void {}
   optionsEqual(): void {}

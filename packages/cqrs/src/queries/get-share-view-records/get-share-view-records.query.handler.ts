@@ -21,7 +21,7 @@ export class GetShareViewRecordsQueryHandler
     const table = (await this.tableQueryModel.findOne(WithTableViewId.fromString(query.viewId))).unwrap()
     const tb = TableFactory.fromQuery(table)
 
-    const spec = withTableRecordsSpec(tb, query.viewId)
+    const spec = withTableRecordsSpec(tb, query.viewId, query.filter, query.q)
     const records = await this.rm.find(table.id, ViewId.fromString(query.viewId), spec)
 
     return {
