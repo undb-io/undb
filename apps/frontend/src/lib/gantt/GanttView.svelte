@@ -2,7 +2,7 @@
 	import { SvelteGantt, SvelteGanttDependencies, SvelteGanttTable } from 'svelte-gantt'
 	import type { SvelteGanttComponent, SvelteGanttOptions } from 'svelte-gantt/types/gantt'
 	import { endOfWeek, startOfWeek } from 'date-fns'
-	import { getTable, listRecordFn } from '$lib/store/table'
+	import { currentRecordId, getTable, listRecordFn } from '$lib/store/table'
 	import { RecordFactory, type DateRangeField } from '@undb/core'
 	import type { RowModel } from 'svelte-gantt/types/core/row'
 	import type { TaskModel } from 'svelte-gantt/types/core/task'
@@ -80,9 +80,15 @@
 		if (ele) {
 			gantt = new SvelteGantt({ target: ele, props: options })
 			// @ts-expect-error
+			gantt.api.tasks.on.dblclicked((event, b) => {
+				const [model] = event
+				if (!model) return
+				const recordId = model.id
+				$currentRecordId = recordId
+			})
+			// @ts-expect-error
 			gantt.api.tasks.on.changed((event) => {
 				const [model] = event
-				console.log(model)
 				if (!model) return
 				if (model.sourceRow.model.id !== model.targetRow.model.id) return
 
