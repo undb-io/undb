@@ -2,7 +2,7 @@
 	import { SvelteGantt, SvelteGanttDependencies, SvelteGanttTable } from 'svelte-gantt'
 	import type { SvelteGanttComponent, SvelteGanttOptions } from 'svelte-gantt/types/gantt'
 	import { endOfWeek, startOfWeek } from 'date-fns'
-	import { currentRecordId, getTable, listRecordFn, recordHash } from '$lib/store/table'
+	import { currentRecordId, getTable, listRecordFn, readonly, recordHash } from '$lib/store/table'
 	import { RecordFactory, type DateRangeField } from '@undb/core'
 	import type { RowModel } from 'svelte-gantt/types/core/row'
 	import type { TaskModel } from 'svelte-gantt/types/core/task'
@@ -55,7 +55,8 @@
 			label: r.getDisplayFieldsValue($table),
 			from: fromTimeStamp,
 			to: toTimeStampe,
-			classes: '!bg-blue-500',
+			classes: '!bg-blue-500 ',
+			enableDragging: !$readonly,
 		}
 	})
 
