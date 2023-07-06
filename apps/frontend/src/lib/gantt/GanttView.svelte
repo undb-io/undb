@@ -1,57 +1,63 @@
 <script lang="ts">
 	import { SvelteGantt, SvelteGanttDependencies, SvelteGanttTable } from 'svelte-gantt'
-	import { onMount } from 'svelte'
 	import type { SvelteGanttComponent, SvelteGanttOptions } from 'svelte-gantt/types/gantt'
-	import { endOfDay, endOfMonth, endOfWeek, startOfDay, startOfMonth, startOfWeek } from 'date-fns'
+	import { endOfWeek, startOfWeek } from 'date-fns'
+	import { getTable, listRecordFn } from '$lib/store/table'
+	import { RecordFactory, type DateRangeField } from '@undb/core'
+	import type { RowModel } from 'svelte-gantt/types/core/row'
+	import type { TaskModel } from 'svelte-gantt/types/core/task'
+	import { onMount } from 'svelte'
+	import { t } from '$lib/i18n'
+	import { trpc } from '$lib/trpc/client'
+
+	const table = getTable()
+	export let field: DateRangeField
 
 	let currentStart = startOfWeek(new Date())
 	let currentEnd = endOfWeek(new Date())
 
-	export const data = {
-		rows: [
-			{
-				id: 1,
-				label: 'Accounting',
-				height: 52,
-			},
-			{
-				id: 2,
-				label: 'Business Development',
-				height: 52,
-			},
-			{
-				id: 3,
-				label: 'Ida Flewan',
-				height: 52,
-			},
-			{
-				id: 4,
-				label: 'Lauréna Shrigley',
-				height: 52,
-			},
-			{
-				id: 5,
-				label: 'Ange Kembry',
-				height: 52,
-			},
-		],
-		tasks: [
-			{
-				id: 3,
-				resourceId: 1,
-				label: 'PET-CT',
-				from: startOfDay(new Date()).getTime(),
-				to: endOfDay(new Date()).getTime(),
-				classes: 'orange',
-			},
-		],
-		dependencies: [],
-	}
+	$: listRecords = $listRecordFn([
+		{
+			path: field.id.value,
+			type: field.type,
+			operator: '$between',
+			value: [currentStart.toISOString(), currentEnd.toISOString()],
+		},
+	])
 
-	let options: SvelteGanttOptions = {
-		rows: data.rows,
-		tasks: data.tasks,
-		dependencies: data.dependencies,
+	const updateRecord = trpc().record.update.mutation({
+		async onSuccess(data, variables, context) {
+			await $listRecords.refetch()
+		},
+	})
+
+	$: records = RecordFactory.fromQueryRecords($listRecords?.data?.records ?? [], $table.schema.toIdMap()) ?? []
+	$: rows = records.map<RowModel>((r) => ({
+		id: r.id.value,
+		label: r.getDisplayFieldsValue($table),
+		height: 52,
+		classes: 'bg-gray-100 dark:!bg-gray-400 dark:text-white',
+	}))
+	$: tasks = records.map<TaskModel>((r) => {
+		const value = r.valuesJSON?.[field.id.value]
+		const [from, to] = value
+		const fromTimeStamp = new Date(from).getTime()
+		const toTimeStampe = new Date(to).getTime()
+
+		return {
+			id: r.id.value as any as number,
+			resourceId: r.id.value as any as number,
+			label: r.getDisplayFieldsValue($table),
+			from: fromTimeStamp,
+			to: toTimeStampe,
+			classes: '!bg-blue-500',
+		}
+	})
+
+	$: options = {
+		rows,
+		tasks,
+		dependencies: [],
 		timeRanges: [],
 		columnOffset: 15,
 		magnetOffset: 15,
@@ -62,19 +68,41 @@
 		minWidth: 800,
 		from: currentStart.getTime(),
 		to: currentEnd.getTime(),
-		tableHeaders: [{ title: 'Label', property: 'label', width: 140, type: 'tree' }],
+		tableHeaders: [{ title: $t('Label', { ns: 'common' }), property: 'label', width: 140 }],
 		tableWidth: 240,
 		ganttTableModules: [SvelteGanttTable],
 		ganttBodyModules: [SvelteGanttDependencies],
-	}
+	} satisfies SvelteGanttOptions
 
 	let ele: HTMLElement | undefined
 	let gantt: SvelteGanttComponent
 	onMount(() => {
 		if (ele) {
 			gantt = new SvelteGantt({ target: ele, props: options })
+			// @ts-expect-error
+			gantt.api.tasks.on.changed((event) => {
+				const [model] = event
+				console.log(model)
+				if (!model) return
+				if (model.sourceRow.model.id !== model.targetRow.model.id) return
+
+				const task = model.task
+				const recordId = task.model.resourceId
+				const newFrom = new Date(task.model.from)
+				const newTo = new Date(task.model.to)
+
+				$updateRecord.mutate({
+					tableId: $table.id.value,
+					id: recordId,
+					values: {
+						[field.id.value]: [newFrom.toISOString(), newTo.toISOString()],
+					},
+				})
+			})
 		}
 	})
+
+	$: if (gantt) gantt.$set(options)
 </script>
 
 <div class="w-full">
