@@ -55,7 +55,7 @@
 			label: r.getDisplayFieldsValue($table),
 			from: fromTimeStamp,
 			to: toTimeStampe,
-			classes: '!bg-blue-500 ',
+			classes: '!bg-blue-400 hover:!bg-blue-500',
 			enableDragging: !$readonly,
 		}
 	})
