@@ -129,11 +129,14 @@
 
 <div class="w-full">
 	<div class="p-2 text-gray-500">
-		<div class="flex justify-end">
-			<button on:click={previous}>
+		<div class="flex justify-end gap-2">
+			<button
+				on:click={previous}
+				class="p-1 hover:bg-gray-100 w-6 h-6 inline-flex items-center justify-center transition"
+			>
 				<i class="ti ti-chevron-left" />
 			</button>
-			<button on:click={next}>
+			<button on:click={next} class="p-1 hover:bg-gray-100 w-6 h-6 inline-flex items-center justify-center transition">
 				<i class="ti ti-chevron-right" />
 			</button>
 		</div>
