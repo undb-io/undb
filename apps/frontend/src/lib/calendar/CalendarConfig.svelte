@@ -7,6 +7,7 @@
 	import { configViewModal, createFieldInitial, createFieldModal } from '$lib/store/modal'
 	import { t } from '$lib/i18n'
 	import { invalidate } from '$app/navigation'
+	import { FieldId } from '@undb/core'
 
 	const table = getTable()
 	const view = getView()
@@ -47,9 +48,11 @@
 </div>
 
 {#if calendarFields.length}
-	<Hr class="my-6">
-		<span class="text-gray-400 text-sm font-normal">{$t('or', { ns: 'common' })}</span></Hr
-	>
+	<div class="my-4">
+		<Hr>
+			<span class="text-gray-400 text-sm font-normal">{$t('or', { ns: 'common' })}</span>
+		</Hr>
+	</div>
 {/if}
 
 <div class="flex flex-col justify-center gap-2">
@@ -58,10 +61,18 @@
 		color="light"
 		class="flex gap-2"
 		on:click={() => {
+			const id = FieldId.createId()
 			$createFieldInitial = {
+				id,
 				type: 'date',
 			}
-			createFieldModal.open()
+			createFieldModal.open(async () => {
+				$setField.mutate({
+					tableId: $table.id.value,
+					viewId: $view.id.value,
+					field: id,
+				})
+			})
 		}}
 	>
 		<i class="ti ti-plus" />
@@ -74,10 +85,19 @@
 		color="light"
 		class="flex gap-2"
 		on:click={() => {
+			const id = FieldId.createId()
 			$createFieldInitial = {
+				id,
 				type: 'date-range',
 			}
-			createFieldModal.open()
+
+			createFieldModal.open(async () => {
+				$setField.mutate({
+					tableId: $table.id.value,
+					viewId: $view.id.value,
+					field: id,
+				})
+			})
 		}}
 	>
 		<i class="ti ti-plus" />
