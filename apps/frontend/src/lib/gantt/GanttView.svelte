@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { SvelteGantt, SvelteGanttDependencies, SvelteGanttTable } from 'svelte-gantt'
 	import type { SvelteGanttComponent, SvelteGanttOptions } from 'svelte-gantt/types/gantt'
-	import { endOfWeek, startOfWeek } from 'date-fns'
+	import { addDays, endOfWeek, startOfWeek, subDays } from 'date-fns'
 	import { currentRecordId, getTable, listRecordFn, readonly, recordHash } from '$lib/store/table'
 	import { RecordFactory, type DateRangeField } from '@undb/core'
 	import type { RowModel } from 'svelte-gantt/types/core/row'
@@ -15,6 +15,16 @@
 
 	let currentStart = startOfWeek(new Date())
 	let currentEnd = endOfWeek(new Date())
+
+	const previous = () => {
+		currentStart = subDays(currentStart, 7)
+		currentEnd = subDays(currentEnd, 7)
+	}
+
+	const next = () => {
+		currentStart = addDays(currentStart, 7)
+		currentEnd = addDays(currentEnd, 7)
+	}
 
 	$: listRecords = $listRecordFn(
 		[
@@ -118,7 +128,17 @@
 </script>
 
 <div class="w-full">
-	<div bind:this={ele} id="undb-gantt" />
+	<div class="p-2 text-gray-500">
+		<div class="flex justify-end">
+			<button on:click={previous}>
+				<i class="ti ti-chevron-left" />
+			</button>
+			<button on:click={next}>
+				<i class="ti ti-chevron-right" />
+			</button>
+		</div>
+	</div>
+	<div class="border-t" bind:this={ele} id="undb-gantt" />
 </div>
 
 <style>
