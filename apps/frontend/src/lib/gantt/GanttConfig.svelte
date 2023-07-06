@@ -7,6 +7,7 @@
 	import { configViewModal, createFieldInitial, createFieldModal } from '$lib/store/modal'
 	import { t } from '$lib/i18n'
 	import { invalidate } from '$app/navigation'
+	import { FieldId } from '@undb/core'
 
 	const table = getTable()
 	const view = getView()
@@ -54,10 +55,19 @@
 		color="light"
 		class="flex gap-2"
 		on:click={() => {
+			const id = FieldId.createId()
 			$createFieldInitial = {
+				id,
 				type: 'date-range',
 			}
-			createFieldModal.open()
+
+			createFieldModal.open(async () => {
+				$setField.mutate({
+					tableId: $table.id.value,
+					viewId: $view.id.value,
+					field: id,
+				})
+			})
 		}}
 	>
 		<i class="ti ti-plus" />

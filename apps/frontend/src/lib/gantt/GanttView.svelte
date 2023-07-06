@@ -7,7 +7,7 @@
 	const table = getTable()
 
 	export let field: DateRangeField
-	export let ele: HTMLElement | undefined
+	export let ele: SVGSVGElement | undefined
 
 	let start = startOfMonth(new Date())
 	let end = endOfMonth(new Date())
@@ -33,7 +33,7 @@
 	}))
 
 	let gantt: Gantt | undefined
-	$: if (ele && tasks.length) {
+	$: if (ele) {
 		gantt = new Gantt(ele, tasks, {
 			view_mode: 'Day',
 		})
@@ -43,5 +43,5 @@
 {#if $listRecords.isLoading}
 	<span>loading</span>
 {:else}
-	<div class="h-full" bind:this={ele} />
+	<svg class="h-full" bind:this={ele} />
 {/if}
