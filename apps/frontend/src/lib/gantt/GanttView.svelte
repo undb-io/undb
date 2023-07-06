@@ -51,7 +51,7 @@
 		id: r.id.value,
 		label: r.getDisplayFieldsValue($table),
 		height: 52,
-		classes: 'bg-gray-100 dark:!bg-gray-400 dark:text-white',
+		classes: 'bg-gray-100 dark:!bg-gray-300 dark:text-white',
 	}))
 	$: tasks = records.map<TaskModel>((r) => {
 		const value = r.valuesJSON?.[field.id.value]
@@ -156,5 +156,25 @@
 
 	#undb-gantt :global(.sg-hover .sg-table-body-cell) {
 		background-color: #00000008;
+	}
+
+	:global(.dark .sg-gantt .column-header-cell) {
+		color: white;
+	}
+
+	:global(.dark .sg-gantt .column-header-cell:hover) {
+		color: #374151;
+		background-color: #f7f7f7;
+	}
+
+	:global(.dark .sg-gantt .sg-table-body-cell) {
+		color: white;
+		background-color: #374151;
+		border: none;
+	}
+
+	:global(.dark .sg-gantt .sg-table-header-cell) {
+		color: white;
+		background-color: #374151;
 	}
 </style>
