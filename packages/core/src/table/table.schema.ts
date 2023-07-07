@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { querySchemaSchema } from './field/index.js'
-import { createFormsSchema, queryForms } from './form/forms.schema.js'
+import { createFormsSchema, queryForms } from './form/form.schema.js'
 import type { Table } from './table.js'
 import {
   createTableSchemaSchema,

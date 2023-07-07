@@ -1,6 +1,6 @@
 import { ValueObject } from '@undb/domain'
+import type { ICreateFormsSchema } from './form.schema.js'
 import { Form } from './form.vo.js'
-import type { ICreateFormsSchema } from './forms.schema.js'
 
 export class Forms extends ValueObject<Form[]> {
   public forms() {
