@@ -14,6 +14,8 @@ import type {
 import { FieldId, SelectField, WithDuplicatedField } from './field/index.js'
 import { UpdateFieldHelper } from './field/update-field.helper.js'
 import type { IRootFilter } from './filter/index.js'
+import type { IQueryForm } from './form/form.type.js'
+import { Forms } from './form/forms.js'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from './option/index.js'
 import type { Record, Records } from './record/index.js'
 import { WithRecordId, WithRecordTableId } from './record/index.js'
@@ -78,16 +80,21 @@ export interface IQueryTable {
   emoji?: string | null
   schema: IQuerySchemaSchema
   views?: IQueryView[]
+  forms?: IQueryForm[]
   viewsOrder?: string[]
 }
 
 export class Table {
   public id!: TableId
   public name!: TableName
-  public schema: TableSchema = new TableSchema([])
   public emoji!: TableEmoji
+
+  public schema: TableSchema = new TableSchema([])
+
   public views: Views = new Views([])
   public viewsOrder: ViewsOrder = ViewsOrder.empty()
+
+  public forms: Forms = new Forms([])
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
