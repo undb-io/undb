@@ -47,6 +47,7 @@ import type {
   IUpdatedAtFieldQuerySchema,
   IUpdatedByFieldQueryScheam,
   IUrlFieldQuerySchema,
+  IMinFieldQuerySchema,
 } from '@undb/core'
 import {
   AttachmentField as CoreAttachmentField,
@@ -77,6 +78,7 @@ import {
   UpdatedAtField as CoreUpdatedAtField,
   UpdatedByField as CoreUpdatedByField,
   UrlField as CoreUrlField,
+  MinField as CoreMinField,
 } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Option } from './option.js'
@@ -766,6 +768,9 @@ export class ReferenceField extends Field {
   @OneToMany(() => LookupField, (f) => f.lookupReferenceField)
   lookupFields = new Collection<LookupField>(this)
 
+  @OneToMany(() => MinField, (f) => f.minReferenceField)
+  minFields = new Collection<MinField>(this)
+
   @OneToOne(() => ReferenceField, { nullable: true })
   symmetricReferenceField?: ReferenceField
 
@@ -1118,6 +1123,40 @@ export class LookupField extends Field {
   }
 }
 
+@Entity({ discriminatorValue: 'min' })
+export class MinField extends Field {
+  constructor(table: Rel<Table>, field: CoreMinField) {
+    super(table, field)
+  }
+
+  @ManyToOne({ entity: () => ReferenceField || TreeField, inversedBy: (f) => f.minFields })
+  minReferenceField!: ReferenceField | TreeField
+
+  toDomain(): CoreMinField {
+    return CoreMinField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'min',
+      required: !!this.required,
+      display: !!this.display,
+      referenceFieldId: this.minReferenceField?.id,
+    })
+  }
+
+  toQuery(): IMinFieldQuerySchema {
+    return {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'min',
+      referenceFieldId: this.minReferenceField?.id,
+      required: !!this.required,
+      display: !!this.display,
+    }
+  }
+}
+
 export type IField =
   | IdField
   | CreatedAtField
@@ -1147,6 +1186,7 @@ export type IField =
   | CollaboratorField
   | CreatedByField
   | UpdatedByField
+  | MinField
 
 export const fieldEntities = [
   IdField,
@@ -1177,4 +1217,5 @@ export const fieldEntities = [
   CreatedByField,
   UpdatedByField,
   UrlField,
+  MinField,
 ]
