@@ -27,4 +27,8 @@ export class FormFields extends ValueObject<Map<string, IFormField>> {
   public get value() {
     return this.props
   }
+
+  public toJSON() {
+    return Object.fromEntries(this.value)
+  }
 }

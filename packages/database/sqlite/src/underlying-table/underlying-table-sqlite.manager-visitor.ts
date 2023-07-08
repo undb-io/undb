@@ -74,6 +74,8 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   newView(): void {}
   withoutView(): void {}
   viewsOrderEqual(): void {}
+  formsEqual(): void {}
+  formFieldsEqual(): void {}
   filterEqual(): void {}
   ratingMaxEqual(s: WithRatingMax): void {
     const query = this.#qb.update(s.fieldId, s.max).where(s.fieldId, '>', s.max).from(this.tableName).toQuery()

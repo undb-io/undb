@@ -7,10 +7,12 @@ import type {
   WithCurrencySymbol,
   WithDuplicatedField,
   WithForeignTableId,
+  WithFormFieldsSpecification,
   WithGanttField,
   WithNewFieldType,
   WithOption,
   WithReferenceFieldId,
+  WithTableForms,
   WithTableViewId,
   WithTimeFormat,
   WithoutWidgetSpecification,
@@ -57,6 +59,7 @@ import {
   type WithoutOption,
   type WithoutView,
 } from '@undb/core'
+import { Form } from '../../entity/form.js'
 import type { CreatedAtField, UpdatedAtField } from '../../entity/index.js'
 import {
   AttachmentField,
@@ -222,6 +225,16 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const view = this.getView(s.view.id.value)
     wrap(view).assign({ deletedAt: new Date() })
     this.em.persist(view)
+  }
+  formsEqual(s: WithTableForms): void {
+    const table = this.table
+    wrap(table).assign({ forms: s.forms.forms.map((form) => new Form(table, form)) })
+    this.em.persist(table)
+  }
+  formFieldsEqual(s: WithFormFieldsSpecification): void {
+    const form = this.em.getReference(Form, s.formId)
+    wrap(form).assign({ fields: s.fields })
+    this.em.persist(form)
   }
   viewsOrderEqual(s: WithViewsOrder): void {
     const table = this.table

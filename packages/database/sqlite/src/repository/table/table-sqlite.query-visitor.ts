@@ -19,6 +19,7 @@ import type {
   WithFilter,
   WithForeignTableId,
   WithFormat,
+  WithFormFieldsSpecification,
   WithGanttField,
   WithKanbanField,
   WithNewField,
@@ -39,6 +40,7 @@ import type {
   WithSorts,
   WithSymmetricReferenceField,
   WithTableEmoji,
+  WithTableForms,
   WithTableId,
   WithTableName,
   WithTableSchema,
@@ -108,6 +110,12 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   viewsOrderEqual(s: WithViewsOrder): void {
+    throw new Error('Method not implemented.')
+  }
+  formsEqual(s: WithTableForms): void {
+    throw new Error('Method not implemented.')
+  }
+  formFieldsEqual(s: WithFormFieldsSpecification): void {
     throw new Error('Method not implemented.')
   }
   filterEqual(s: WithFilter): void {
