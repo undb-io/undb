@@ -122,6 +122,9 @@ export class CountColumnTypeModifier extends BaseColumnTypeModifier<CountField> 
   lookup(): void {
     this.dropColumn(this.column)
   }
+  min(): void {
+    this.dropColumn(this.column)
+  }
   ['multi-select'](): void {
     const newColumn = new UnderlyingSelectColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)

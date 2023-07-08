@@ -200,6 +200,9 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
   lookup(): void {
     this.dropColumn(this.column)
   }
+  min(): void {
+    this.dropColumn(this.column)
+  }
   ['date-range'](): void {
     this.castToDateRange(this.column)
   }
