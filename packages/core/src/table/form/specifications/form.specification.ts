@@ -17,7 +17,7 @@ export class WithTableForms extends CompositeSpecification<Table, ITableSpecVisi
   }
 
   isSatisfiedBy(t: Table): boolean {
-    return this.forms.equals(t.views)
+    return this.forms.equals(t.forms)
   }
 
   mutate(t: Table): Result<Table, string> {

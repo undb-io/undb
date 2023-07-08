@@ -27,6 +27,7 @@ import type {
   WithOptions,
   WithoutOption,
 } from '../field/specifications/select-field.specification.js'
+import type { WithFormFieldsSpecification } from '../form/index.js'
 import type { WithTableForms } from '../form/specifications/form.specification.js'
 import { type Table } from '../table.js'
 import type {
@@ -80,6 +81,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   viewsOrderEqual(s: WithViewsOrder): void
 
   formsEqual(s: WithTableForms): void
+  formFieldsEqual(s: WithFormFieldsSpecification): void
 
   sortsEqual(s: WithSorts): void
 

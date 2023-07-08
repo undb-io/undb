@@ -228,7 +228,6 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     wrap(table).assign({ viewsOrder: s.order.order })
     this.em.persist(table)
   }
-
   filterEqual(s: WithFilter): void {
     const view = this.getView(s.view.id.value)
     wrap(view).assign({ filter: s.filter })
