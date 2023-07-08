@@ -29,6 +29,7 @@ import type {
   UpdatedAtField,
   UpdatedByField,
   UrlField,
+  MinField,
   WithAggregateFieldId,
   WithCurrencySymbol,
   WithDisplayFields,
@@ -128,6 +129,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   sum(field: SumField): void {}
   average(field: AverageField): void {}
   lookup(field: LookupField): void {}
+  min(field: MinField): void {}
   idEqual(s: WithTableId): void {}
   nameEqual(s: WithTableName): void {}
   schemaEqual(s: WithTableSchema): void {
