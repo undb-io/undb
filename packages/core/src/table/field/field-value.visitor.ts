@@ -26,6 +26,7 @@ import type { TreeFieldValue } from './fields/tree/tree-field-value.js'
 import type { UpdatedAtFieldValue } from './fields/updated-at/updated-at-field-value.js'
 import type { UpdatedByFieldValue } from './fields/updated-by/updated-by-field-value.js'
 import type { UrlFieldValue } from './fields/url/url-field-value.js'
+import type { MinFieldValue } from './fields/min/min-field-value.js'
 
 export interface IFieldValueVisitor {
   id(value: IdFieldValue): void
@@ -56,4 +57,5 @@ export interface IFieldValueVisitor {
   average(value: AverageFieldValue): void
   lookup(value: LookupFieldValue): void
   collaborator(value: CollaboratorFieldValue): void
+  min(value: MinFieldValue): void
 }
