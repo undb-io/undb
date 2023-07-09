@@ -457,6 +457,16 @@ const attachment: TemplateFunc = (h, props) => {
 	)
 }
 
+const min: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'min') return
+
+	const min = props.model[props.prop] as number | undefined
+	if (!min) return null
+
+	return n(h, min)
+}
+
 export const cellTemplateMap: Record<IFieldType, TemplateFunc> = {
 	attachment,
 	'auto-increment': autoIncreament,
@@ -486,4 +496,5 @@ export const cellTemplateMap: Record<IFieldType, TemplateFunc> = {
 	tree: reference,
 	'updated-at': updatedAt,
 	'updated-by': updatedBy,
+	min,
 }
