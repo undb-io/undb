@@ -30,6 +30,7 @@ import {
   UnderlyingUpdatedAtColumn,
   UnderlyingUpdatedByColumn,
   UnderlyingUrlColumn,
+  UnderlyingMinColumn,
 } from './underlying-column.js'
 
 export class UnderlyingColumnFactory {
@@ -94,6 +95,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingCreatedByColumn(field.id.value, tableName)
       case 'updated-by':
         return new UnderlyingUpdatedByColumn(field.id.value, tableName)
+      case 'min':
+        return new UnderlyingMinColumn(field.id.value, tableName)
     }
   }
 
