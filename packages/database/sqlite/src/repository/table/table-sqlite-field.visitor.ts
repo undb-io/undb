@@ -31,7 +31,7 @@ import type {
   TreeField as CoreTreeField,
   UpdatedByField as CoreUpdatedByField,
   UrlField as CoreUrlField,
-  MinField as CoreMinMield,
+  MinField as CoreMinField,
   IFieldVisitor,
 } from '@undb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@undb/core'
@@ -306,7 +306,7 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
     this.addQueries(...queries)
   }
 
-  min(value: CoreMinMield): void {
+  min(value: CoreMinField): void {
     const field = new MinField(this.table, value)
     field.minReferenceField = this.em.getReference(Field, value.referenceFieldId.value) as ReferenceField | TreeField
 
