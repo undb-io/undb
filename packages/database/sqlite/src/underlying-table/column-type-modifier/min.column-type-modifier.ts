@@ -36,7 +36,7 @@ export class MinColumnTypeModifier extends BaseColumnTypeModifier<MinField> {
 
       const subQuery = this.knex
         .queryBuilder()
-        .select(`${ft.fromId} as id`, this.knex.raw(`count(*) as value`))
+        .select(`${ft.fromId} as id`, this.knex.raw(`min(*) as value`))
         .from(ft.name)
         .groupBy(ft.fromId)
         .toQuery()
