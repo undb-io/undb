@@ -876,6 +876,9 @@ export class TreeField extends Field {
   @OneToMany(() => LookupField, (f) => f.lookupReferenceField)
   lookupFields = new Collection<LookupField>(this)
 
+  @OneToMany(() => MinField, (f) => f.minReferenceField)
+  minFields = new Collection<MinField>(this)
+
   get foreignDisplayFields() {
     let displayFields = this.displayFields.getItems(false)
     if (!displayFields.length) {
