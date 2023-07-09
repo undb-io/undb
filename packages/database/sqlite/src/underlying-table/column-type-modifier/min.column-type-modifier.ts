@@ -23,7 +23,7 @@ import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 export class MinColumnTypeModifier extends BaseColumnTypeModifier<MinField> {
   private readonly column = new UnderlyingMinColumn(this.field.id.value, this.tableId)
 
-  private castCountColumn(column: IUnderlyingColumn) {
+  private castMinColumn(column: IUnderlyingColumn) {
     this.addQueries(this.knex.schema.alterTable(this.tableId, (tb) => column.build(tb, this.knex, false)).toQuery())
     this.addJobs(async () => {
       const referenceFieldId = this.field.referenceFieldId
@@ -54,11 +54,11 @@ export class MinColumnTypeModifier extends BaseColumnTypeModifier<MinField> {
 
   string(): void {
     const newColumn = new UnderlyingStringColumn(this.field.id.value, this.tableId)
-    this.castCountColumn(newColumn)
+    this.castMinColumn(newColumn)
   }
   number(): void {
     const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
-    this.castCountColumn(newColumn)
+    this.castMinColumn(newColumn)
   }
   color(): void {
     const newColumn = new UnderlyingColorColumn(this.field.id.value, this.tableId)
@@ -86,7 +86,7 @@ export class MinColumnTypeModifier extends BaseColumnTypeModifier<MinField> {
   }
   bool(): void {
     const newColumn = new UnderlyingBoolColumn(this.field.id.value, this.tableId)
-    this.castCountColumn(newColumn)
+    this.castMinColumn(newColumn)
   }
   reference(): void {
     this.dropColumn(this.column)
@@ -96,11 +96,11 @@ export class MinColumnTypeModifier extends BaseColumnTypeModifier<MinField> {
   }
   rating(): void {
     const newColumn = new UnderlyingRatingColumn(this.field.id.value, this.tableId)
-    this.castCountColumn(newColumn)
+    this.castMinColumn(newColumn)
   }
   currency(): void {
     const newColumn = new UnderlyingCurrencyColumn(this.field.id.value, this.tableId)
-    this.castCountColumn(newColumn)
+    this.castMinColumn(newColumn)
   }
   attachment(): void {
     this.dropColumn(this.column)
