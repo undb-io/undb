@@ -1,7 +1,7 @@
 import { currentFieldId } from '$lib/store/table'
 import type { RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
 import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime'
-import { AverageField, CountField, ReferenceField, SumField, Table } from '@undb/core'
+import { AverageField, CountField, ReferenceField, SumField, MinField, Table } from '@undb/core'
 import cx from 'classnames'
 import htm from 'htm'
 import { getIconClass } from './helpers'
@@ -30,7 +30,12 @@ const getIssue = (h: HyperFunc, column: RevoGrid.ColumnRegular) => {
 				issues.map((issue) => issue.unpack()),
 			)
 		}
-	} else if (field instanceof CountField || field instanceof SumField || field instanceof AverageField) {
+	} else if (
+		field instanceof CountField ||
+		field instanceof SumField ||
+		field instanceof AverageField ||
+		field instanceof MinField
+	) {
 		const table = column.table as Table
 		const issues = field.getIssues(table.schema.toIdMap())
 		if (issues.length) {
