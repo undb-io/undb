@@ -52,6 +52,7 @@
 		average: Readonly,
 		attachment: Attachment,
 		collaborator: Collaborator,
+		min: Readonly,
 		'created-by': Readonly,
 		'updated-by': Readonly,
 	}
