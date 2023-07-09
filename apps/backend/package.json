@@ -129,7 +129,7 @@
     "dev": "run-p build:watch start:watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "prebuild": "rimraf dist",
-    "start:watch": "nodemon dist/main",
+    "start:watch": "nodemon dist/main.js",
     "test": "jest",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
