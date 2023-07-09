@@ -33,6 +33,7 @@ import {
   type TreeField,
   type UpdatedAtField,
   type UpdatedByField,
+  type MinField,
 } from '@undb/core'
 import { User } from '../../entity/user.js'
 import { CollaboratorForeignTable } from '../../underlying-table/underlying-foreign-table.js'
@@ -208,5 +209,8 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
         ),
       )
       .leftJoin(tableName, `${tableName}.${id.fieldNames[0]}`, `${fta}.${CollaboratorForeignTable.USER_ID}`)
+  }
+  min(field: MinField): void {
+    throw new Error('Method not implemented.')
   }
 }

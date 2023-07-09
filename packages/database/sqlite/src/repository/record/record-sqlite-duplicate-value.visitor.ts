@@ -28,6 +28,7 @@ import type {
   UpdatedAtField,
   UpdatedByField,
   UrlField,
+  MinField,
 } from '@undb/core'
 import {
   CollaboratorField,
@@ -260,4 +261,5 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
 
     this.addQueries(query)
   }
+  min(field: MinField): void {}
 }
