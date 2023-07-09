@@ -48,6 +48,7 @@
 		average: Number,
 		attachment: Attachment,
 		collaborator: Collaborator,
+		min: Number,
 		'created-by': String,
 		'updated-by': String,
 	}
