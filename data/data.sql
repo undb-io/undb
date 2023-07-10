@@ -47,6 +47,7 @@ CREATE TABLE `undb_field` (
 	`max` integer null,
 	`count_reference_field_id` text null,
 	`min_reference_field_id` text null,
+	`min_aggregate_field_id` text null,
 	`lookup_reference_field_id` text null,
 	`sum_reference_field_id` text null,
 	`sum_aggregate_field_id` text null,
@@ -60,8 +61,10 @@ CREATE TABLE `undb_field` (
 		constraint `undb_field_symmetric_reference_field_id_foreign` foreign key(`symmetric_reference_field_id`) references `undb_field`(`id`) on delete
 	set null on update cascade,
 		constraint `undb_field_count_reference_field_id_foreign` foreign key(`count_reference_field_id`) references `undb_field`(`id`) on delete
-		set null on update cascade,
+	set null on update cascade,
 		constraint `undb_field_min_reference_field_id_foreign` foreign key(`min_reference_field_id`) references `undb_field`(`id`) on delete
+	set null on update cascade,
+		constraint `undb_field_min_aggregate_field_id_foreign` foreign key(`min_aggregate_field_id`) references `undb_field`(`id`) on delete
 	set null on update cascade,
 		constraint `undb_field_lookup_reference_field_id_foreign` foreign key(`lookup_reference_field_id`) references `undb_field`(`id`) on delete
 	set null on update cascade,
@@ -1560,6 +1563,7 @@ CREATE INDEX `undb_field_foreign_table_id_index` on `undb_field` (`foreign_table
 CREATE UNIQUE INDEX `undb_field_symmetric_reference_field_id_unique` on `undb_field` (`symmetric_reference_field_id`);
 CREATE INDEX `undb_field_count_reference_field_id_index` on `undb_field` (`count_reference_field_id`);
 CREATE INDEX `undb_field_min_reference_field_id_index` on `undb_field` (`min_reference_field_id`);
+CREATE INDEX `undb_field_min_aggregate_field_id_index` on `undb_field` (`min_aggregate_field_id`);
 CREATE INDEX `undb_field_lookup_reference_field_id_index` on `undb_field` (`lookup_reference_field_id`);
 CREATE INDEX `undb_field_sum_reference_field_id_index` on `undb_field` (`sum_reference_field_id`);
 CREATE INDEX `undb_field_sum_aggregate_field_id_index` on `undb_field` (`sum_aggregate_field_id`);
