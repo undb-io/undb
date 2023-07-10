@@ -24,6 +24,7 @@ import type {
   WithKanbanField,
   WithNewField,
   WithNewFieldType,
+  WithNewForm,
   WithNewOption,
   WithNewView,
   WithNumberAggregateSpec,
@@ -116,6 +117,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   formFieldsEqual(s: WithFormFieldsSpecification): void {
+    throw new Error('Method not implemented.')
+  }
+  newForm(s: WithNewForm): void {
     throw new Error('Method not implemented.')
   }
   filterEqual(s: WithFilter): void {

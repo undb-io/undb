@@ -51,7 +51,7 @@ import type {
   WithTimeFormat,
 } from '../field/index.js'
 import type { WithReferenceFieldId } from '../field/specifications/lookup-field.specification.js'
-import type { WithFormFieldsSpecification, WithTableForms } from '../form/index.js'
+import type { WithFormFieldsSpecification, WithNewForm, WithTableForms } from '../form/index.js'
 import type {
   ITableSpecVisitor,
   WithFilter,
@@ -143,6 +143,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   viewNameEqual(s: WithViewName): void {}
   formsEqual(s: WithTableForms): void {}
   formFieldsEqual(s: WithFormFieldsSpecification): void {}
+  newForm(s: WithNewForm): void {}
   newView(s: WithNewView): void {}
   emojiEqual(s: WithTableEmoji): void {}
   withoutView(s: WithoutView): void {}

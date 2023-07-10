@@ -40,7 +40,7 @@ export const queryTable = z.object({
   schema: querySchemaSchema,
   views: queryViews,
   viewsOrder: viewsOrderSchema.optional(),
-  forms: queryForms,
+  forms: queryForms.optional(),
 })
 
 export const updateTableSchema = z

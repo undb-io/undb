@@ -6,6 +6,7 @@ import type {
   WithForeignTableId,
   WithGanttField,
   WithNewFieldType,
+  WithNewForm,
   WithRatingMax,
   WithTableSchema,
   WithTableViewId,
@@ -76,6 +77,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   viewsOrderEqual(): void {}
   formsEqual(): void {}
   formFieldsEqual(): void {}
+  newForm(s: WithNewForm): void {}
   filterEqual(): void {}
   ratingMaxEqual(s: WithRatingMax): void {
     const query = this.#qb.update(s.fieldId, s.max).where(s.fieldId, '>', s.max).from(this.tableName).toQuery()

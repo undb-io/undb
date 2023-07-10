@@ -17,4 +17,8 @@ export class Forms extends ValueObject<Form[]> {
     const formId = FormId.fromString(id)
     return Option(this.forms.find((f) => f.id.equals(formId)))
   }
+
+  addForm(form: Form) {
+    this.forms.push(form)
+  }
 }
