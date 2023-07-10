@@ -539,13 +539,13 @@ export type ReferenceFieldTypes = ReferenceField | TreeField | ParentField
 export type ILookingFieldTypes = IReferenceFieldTypes | ILookupField
 export type LookingFieldTypes = ReferenceFieldTypes | LookupField
 export type AggregateFieldType = CountField | SumField | MinField
-export type INumberAggregateFieldType = ISumField | IAverageField
+export type INumberAggregateFieldType = ISumField | IAverageField | IMinField
 export type ISelectFieldTypes = ISelectField | IMultiSelectField
 export type SelectFieldTypes = SelectField | MultiSelectField
 export type IDateFieldTypes = IDateField | IDateRangeField | ICreatedAtField | IUpdatedAtField
 export type DateFieldTypes = DateField | DateRangeField | CreatedAtField | UpdatedAtField
-export type ILookupFieldTypes = ICountField | ILookupField | IMinField
-export type LookupFieldTypes = CountField | LookupField | MinField
+export type ILookupFieldTypes = ICountField | ILookupField
+export type LookupFieldTypes = CountField | LookupField
 
 export type NoneSystemField =
   | StringField
@@ -753,7 +753,7 @@ export interface IAbstractAggregateField {
   set aggregateFieldId(fieldId: FieldId)
 }
 
-export const aggregateFieldType = z.union([sumTypeSchema, averageTypeSchema])
+export const aggregateFieldType = z.union([sumTypeSchema, averageTypeSchema, minTypeSchema])
 export type IAggregateFieldType = z.infer<typeof aggregateFieldType>
 
 export interface IAbstractSelectField extends BaseField {
