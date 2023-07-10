@@ -1,8 +1,9 @@
 import { ValueObject } from '@undb/domain'
 import { Option } from 'oxide.ts'
 import { FormId } from './form-id.vo.js'
-import type { ICreateFormsSchema } from './form.schema.js'
+import type { ICreateFormSchema, ICreateFormsSchema } from './form.schema.js'
 import { Form } from './form.vo.js'
+import { WithNewForm } from './specifications/form.specification.js'
 
 export class Forms extends ValueObject<Form[]> {
   public get forms() {
@@ -20,5 +21,10 @@ export class Forms extends ValueObject<Form[]> {
 
   addForm(form: Form) {
     this.forms.push(form)
+  }
+
+  createForm(input: ICreateFormSchema): WithNewForm {
+    const form = Form.create(input)
+    return new WithNewForm(form)
   }
 }

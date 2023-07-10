@@ -14,6 +14,7 @@ import type {
 import { FieldId, SelectField, WithDuplicatedField } from './field/index.js'
 import { UpdateFieldHelper } from './field/update-field.helper.js'
 import type { IRootFilter } from './filter/index.js'
+import type { ICreateFormSchema } from './form/form.schema.js'
 import type { IQueryForm } from './form/form.type.js'
 import { Forms } from './form/forms.js'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from './option/index.js'
@@ -357,6 +358,13 @@ export class Table {
     const s1 = this.views.createView(input)
     const s2 = this.viewsOrder.addView(s1.view)
     const spec = s1.and(s2)
+    spec.mutate(this).unwrap()
+
+    return spec
+  }
+
+  public createForm(input: ICreateFormSchema): TableCompositeSpecificaiton {
+    const spec = this.forms.createForm(input)
     spec.mutate(this).unwrap()
 
     return spec

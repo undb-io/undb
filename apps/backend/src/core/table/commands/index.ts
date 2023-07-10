@@ -1,6 +1,7 @@
 import { BulkDeleteRecordsCommandHandler } from './bulk-delete-record.command.handler.js'
 import { BulkDuplicateRecordsCommandHandler } from './bulk-duplicate-record.command.handler.js'
 import { CreateFieldCommandHandler } from './create-field.command.handler.js'
+import { CreateFormCommandHandler } from './create-form.command.handler.js'
 import { CreateOptionCommandHandler } from './create-option.command.handler.js'
 import { CreateRecordCommandHandler } from './create-record.command.handler.js'
 import { CreateRecordsCommandHandler } from './create-records.command.handler.js'
@@ -88,4 +89,5 @@ export const commandHandlers = [
   DuplicateFieldCommandHandler,
   ExportGridCommandHandler,
   SetGanttFieldCommandHandler,
+  CreateFormCommandHandler,
 ]
