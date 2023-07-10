@@ -1,15 +1,16 @@
+import { Mixin } from 'ts-mixer'
 import { z } from 'zod'
-import type { IRecordDisplayValues, RecordValueJSON } from '../../../record/index.js'
-import { AbstractLookupField, BaseField } from '../../field.base.js'
-import type { Field } from '../../field.type.js'
+import type { RecordValueJSON } from '../../../record/record.schema.js'
+import type { IRecordDisplayValues } from '../../../record/record.type.js'
+import { AbstractAggregateField, AbstractLookupField, BaseField } from '../../field.base.js'
 import type { IFieldVisitor } from '../../field.visitor.js'
 import { FieldId } from '../../value-objects/field-id.vo.js'
 import { MinFieldValue } from './min-field-value.js'
-import type { MinType, IMinField, ICreateMinFieldInput, ICreateMinFieldValue } from './min-field.type.js'
+import type { ICreateMinFieldInput, ICreateMinFieldValue, IMinField, MinType } from './min-field.type.js'
 import type { IMinFilter, IMinFilterOperator } from './min.filter.js'
 
-export class MinField extends AbstractLookupField<IMinField> {
-  duplicate(name: string): Field {
+export class MinField extends Mixin(AbstractAggregateField<IMinField>, AbstractLookupField<IMinField>) {
+  duplicate(name: string): MinField {
     return MinField.create({
       ...this.json,
       id: FieldId.createId(),
@@ -19,11 +20,11 @@ export class MinField extends AbstractLookupField<IMinField> {
   }
 
   type: MinType = 'min'
-
   override get json() {
     return {
       ...super.json,
       referenceFieldId: this.referenceFieldId.value,
+      aggregateFieldId: this.aggregateFieldId.value,
     }
   }
 
@@ -35,6 +36,7 @@ export class MinField extends AbstractLookupField<IMinField> {
     return new MinField({
       ...BaseField.createBase(input),
       referenceFieldId: FieldId.fromString(input.referenceFieldId),
+      aggregateFieldId: FieldId.fromString(input.aggregateFieldId),
     })
   }
 
@@ -42,6 +44,7 @@ export class MinField extends AbstractLookupField<IMinField> {
     return new MinField({
       ...BaseField.unsafeCreateBase(input),
       referenceFieldId: FieldId.fromString(input.referenceFieldId),
+      aggregateFieldId: FieldId.fromString(input.aggregateFieldId),
     })
   }
 

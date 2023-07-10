@@ -15,6 +15,7 @@ const minTypeObjectSchema = z.object({
 export const createMinFieldSchema = createBaseFieldSchema.merge(minTypeObjectSchema).merge(
   z.object({
     referenceFieldId: fieldIdSchema,
+    aggregateFieldId: fieldIdSchema,
   }),
 )
 export type ICreateMinFieldInput = z.infer<typeof createMinFieldSchema>
@@ -23,15 +24,19 @@ export const updateMinFieldSchema = updateBaseFieldSchema.merge(minTypeObjectSch
   z
     .object({
       referenceFieldId: fieldIdSchema,
+      aggregateFieldId: fieldIdSchema,
     })
     .partial(),
 )
 export type IUpdateMinFieldInput = z.infer<typeof updateMinFieldSchema>
 
 export const minFieldQuerySchema = baseFieldQuerySchema.merge(minTypeObjectSchema).merge(
-  z.object({
-    referenceFieldId: fieldIdSchema,
-  }),
+  z
+    .object({
+      referenceFieldId: fieldIdSchema,
+      aggregateFieldId: fieldIdSchema,
+    })
+    .partial(),
 )
 export type IMinFieldQuerySchema = z.infer<typeof minFieldQuerySchema>
 
@@ -52,4 +57,4 @@ export type ICreateMinFieldValue_internal = z.infer<typeof createMinFieldValue_i
 
 export const minReadableValueSchema = minFieldQueryValue
 
-export type IMinField = IBaseField & { referenceFieldId: FieldId }
+export type IMinField = IBaseField & { referenceFieldId: FieldId; aggregateFieldId: FieldId }
