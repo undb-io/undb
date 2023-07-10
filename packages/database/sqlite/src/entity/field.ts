@@ -1125,7 +1125,6 @@ export class LookupField extends Field {
     }
   }
 }
-
 @Entity({ discriminatorValue: 'min' })
 export class MinField extends Field {
   constructor(table: Rel<Table>, field: CoreMinField) {
@@ -1134,6 +1133,9 @@ export class MinField extends Field {
 
   @ManyToOne({ entity: () => ReferenceField || TreeField, inversedBy: (f) => f.minFields })
   minReferenceField!: ReferenceField | TreeField
+
+  @ManyToOne({ entity: () => Field })
+  minAggregateField!: Field
 
   toDomain(): CoreMinField {
     return CoreMinField.unsafeCreate({
@@ -1144,6 +1146,7 @@ export class MinField extends Field {
       required: !!this.required,
       display: !!this.display,
       referenceFieldId: this.minReferenceField?.id,
+      aggregateFieldId: this.minAggregateField?.id,
     })
   }
 
@@ -1154,6 +1157,7 @@ export class MinField extends Field {
       description: this.description,
       type: 'min',
       referenceFieldId: this.minReferenceField?.id,
+      aggregateFieldId: this.minAggregateField?.id,
       required: !!this.required,
       display: !!this.display,
     }

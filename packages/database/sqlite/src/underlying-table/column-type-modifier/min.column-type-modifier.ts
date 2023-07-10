@@ -7,7 +7,6 @@ import { UnderlyingForeignTableFactory } from '../undelying-foreign-table.factor
 import {
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
-  UnderlyingMinColumn,
   UnderlyingCurrencyColumn,
   UnderlyingDateColumn,
   UnderlyingEmailColumn,
@@ -16,6 +15,7 @@ import {
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
   UnderlyingStringColumn,
+  UnderlyingMinColumn,
   UnderlyingUrlColumn,
 } from '../underlying-column.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
@@ -31,13 +31,22 @@ export class MinColumnTypeModifier extends BaseColumnTypeModifier<MinField> {
       if (!referenceField) return
 
       const field = referenceField.toDomain()
+      const foreignTableId = referenceField.foreignTable?.id ?? this.tableId
 
       const ft = UnderlyingForeignTableFactory.create(this.tableId, field)
 
+      const nestQuery = this.knex
+        .queryBuilder()
+        .select(INTERNAL_COLUMN_ID_NAME, this.field.aggregateFieldId.value)
+        .from(foreignTableId)
+        .as('ft')
+        .groupBy(INTERNAL_COLUMN_ID_NAME)
+
       const subQuery = this.knex
         .queryBuilder()
-        .select(`${ft.fromId} as id`, this.knex.raw(`min(*) as value`))
+        .select(`${ft.fromId} as id`, this.knex.raw(`min(${this.field.aggregateFieldId.value}) as value`))
         .from(ft.name)
+        .leftJoin(nestQuery, ft.toId, 'ft.id')
         .groupBy(ft.fromId)
         .toQuery()
 
@@ -111,8 +120,8 @@ export class MinColumnTypeModifier extends BaseColumnTypeModifier<MinField> {
   count(): void {
     this.dropColumn(this.column)
   }
-  sum(): void {
-    this.dropColumn(this.column)
+  min(): void {
+    throw new Error('Method not implemented.')
   }
   average(): void {
     this.dropColumn(this.column)
@@ -120,9 +129,10 @@ export class MinColumnTypeModifier extends BaseColumnTypeModifier<MinField> {
   lookup(): void {
     this.dropColumn(this.column)
   }
-  min(): void {
-    throw new Error('Method not implemented.')
+  sum(): void {
+    this.dropColumn(this.column)
   }
+
   ['multi-select'](): void {
     const newColumn = new UnderlyingSelectColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)

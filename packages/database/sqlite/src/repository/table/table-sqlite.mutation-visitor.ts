@@ -478,6 +478,8 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
       wrap(field).assign({ sumAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
     } else if (field instanceof AverageField) {
       wrap(field).assign({ averageAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
+    } else if (field instanceof MinField) {
+      wrap(field).assign({ minAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
     }
     this.em.persist(field)
   }

@@ -308,7 +308,9 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   min(value: CoreMinField): void {
     const field = new MinField(this.table, value)
+
     field.minReferenceField = this.em.getReference(Field, value.referenceFieldId.value) as ReferenceField | TreeField
+    field.minAggregateField = this.em.getReference(Field, value.aggregateFieldId.value)
 
     this.em.persist(field)
   }
