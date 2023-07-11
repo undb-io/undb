@@ -113,7 +113,7 @@ INSERT INTO undb_field VALUES('fldrlmpebtz',1684597104042,1684599262104,16845992
 INSERT INTO undb_field VALUES('fldtgvzjaoj',1684597172260,1684597172278,NULL,'tblramxgp7z','Company',NULL,0,0,0,'reference',NULL,'tblwqjcq0x8','fldrjp6v8xl',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO undb_field VALUES('fldrjp6v8xl',1684597172276,1684597172276,NULL,'tblwqjcq0x8','Contacts',NULL,0,0,0,'reference',NULL,'tblramxgp7z','fldtgvzjaoj',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO undb_field VALUES('fldn8qkrzwi',1684597224553,1684599359046,1684599359046,'tblramxgp7z','Title',NULL,0,0,0,'lookup',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'fldtgvzjaoj',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-INSERT INTO undb_field VALUES('fldgbowxfbc',1684597247673,1684597247694,NULL,'tblramxgp7z','Comments',NULL,0,0,0,'string',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO undb_field VALUES('fldgbowxfbc',1684597247673,1689083838252,NULL,'tblramxgp7z','Comments',NULL,0,0,0,'min',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'fldmz9qd18u','fldvi5kqyg9',NULL,NULL);
 INSERT INTO undb_field VALUES('fld6pd0v553',1684599118649,1684599200681,1684599200680,'tblwqjcq0x8','Title Name',NULL,0,0,0,'tree',NULL,NULL,NULL,NULL,'fld5kzdse27',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO undb_field VALUES('fld5kzdse27',1684599118651,1684599204842,1684599204842,'tblwqjcq0x8','Company Name','',0,0,0,'parent',NULL,NULL,NULL,NULL,NULL,'fld6pd0v553',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO undb_field VALUES('fldnpyc4w0l',1684599288325,1684599288343,NULL,'tbl4ezqb49a','id',NULL,1,0,0,'id',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
@@ -661,13 +661,11 @@ CREATE TABLE `tblramxgp7z` (
 	`fldcamelfi7` varchar(255),
 	`fldqojjbrau` varchar(255),
 	`fldovc5s8pe` varchar(255),
-	`fldpq4mvj6c` varchar(255),
-	`fldgbowxfbc` varchar(255)
-);
-INSERT INTO tblramxgp7z VALUES(1,'recqymnue1f','2023-05-20 16:09:42','usrzvhv8srb','2023-05-20 16:27:29','usrzvhv8srb',NULL,NULL,'Ambrose','opt88amk','Ambrose@email.com',NULL,'18765679998','');
-INSERT INTO tblramxgp7z VALUES(2,'recth047g3f','2023-05-20 16:09:53','usrzvhv8srb','2023-05-20 16:28:16','usrzvhv8srb',NULL,NULL,'Vincent','opt0ucwc','Vincent@email.com',NULL,'13987467822','');
-INSERT INTO tblramxgp7z VALUES(3,'rechywfw24h','2023-05-20 16:10:05','usrzvhv8srb','2023-05-20 17:16:34','usrzvhv8srb',NULL,NULL,'James','optqutxq','James@email.com',NULL,'17866547899','');
-INSERT INTO tblramxgp7z VALUES(4,'recqjdtn4wj','2023-05-20 16:10:31','usrzvhv8srb','2023-05-20 17:17:35','usrzvhv8srb',NULL,NULL,'Bertran','opt88amk','Bertran@email.com',NULL,'13336457899','');
+	`fldpq4mvj6c` varchar(255));
+INSERT INTO tblramxgp7z VALUES(1,'recqymnue1f','2023-05-20 16:09:42','usrzvhv8srb','2023-05-20 16:27:29','usrzvhv8srb',NULL,NULL,'Ambrose','opt88amk','Ambrose@email.com',NULL,'18765679998');
+INSERT INTO tblramxgp7z VALUES(2,'recth047g3f','2023-05-20 16:09:53','usrzvhv8srb','2023-05-20 16:28:16','usrzvhv8srb',NULL,NULL,'Vincent','opt0ucwc','Vincent@email.com',NULL,'13987467822');
+INSERT INTO tblramxgp7z VALUES(3,'rechywfw24h','2023-05-20 16:10:05','usrzvhv8srb','2023-05-20 17:16:34','usrzvhv8srb',NULL,NULL,'James','optqutxq','James@email.com',NULL,'17866547899');
+INSERT INTO tblramxgp7z VALUES(4,'recqjdtn4wj','2023-05-20 16:10:31','usrzvhv8srb','2023-05-20 17:17:35','usrzvhv8srb',NULL,NULL,'Bertran','opt88amk','Bertran@email.com',NULL,'13336457899');
 CREATE TABLE `fld5vld4clt_tblramxgp7z_adjacency_list` (
 	`to_id` varchar(255) not null,
 	`from_id` varchar(255) not null,
