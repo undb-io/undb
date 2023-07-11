@@ -81,7 +81,9 @@ export class CurrencyColumnTypeModifier extends BaseColumnTypeModifier<CurrencyF
   lookup(): void {
     this.dropColumn(this.column)
   }
-
+  min(): void {
+    this.dropColumn(this.column)
+  }
   collaborator(): void {
     this.castToCollaborator(this.column)
   }

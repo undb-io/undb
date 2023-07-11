@@ -23,6 +23,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
           'fields.options',
           'fields.displayFields',
           'fields.countFields',
+          'fields.minFields',
           'fields.sumFields',
           'fields.sumAggregateField',
           'fields.averageFields',

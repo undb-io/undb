@@ -31,6 +31,7 @@ import type {
   UpdatedAtField,
   UpdatedByField,
   UrlField,
+  MinField,
 } from '@undb/core'
 import { BaseEntityManager } from '../repository/base-entity-manager.js'
 import { AttachmentColumnTypeModifier } from './column-type-modifier/attachment.column-type-modifier.js'
@@ -52,6 +53,7 @@ import { SelectColumnTypeModifier } from './column-type-modifier/select.column-t
 import { StringColumnTypeModifier } from './column-type-modifier/string.column-type-modifier.js'
 import { SumColumnTypeModifier } from './column-type-modifier/sum.column-type-modifier.js'
 import { UrlColumnTypeModifier } from './column-type-modifier/url.column-type-modifier.js'
+import { MinColumnTypeModifier } from './column-type-modifier/min.column-type-modifier.js'
 
 export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implements IFieldVisitor {
   constructor(
@@ -199,6 +201,12 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
   }
   collaborator(field: CollaboratorField): void {
     const modifier = new CollaboratorColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
+  }
+  min(field: MinField): void {
+    const modifier = new MinColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
     modifier[this.newType]()
     this.unshiftQueries(...modifier.queries)
     this.unshiftJobs(...modifier.jobs)

@@ -29,6 +29,7 @@ import type {
   UpdatedAtField,
   UpdatedByField,
   UrlField,
+  MinField,
 } from '../field/index.js'
 
 export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
@@ -60,4 +61,5 @@ export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   average(field: AverageField): void {}
   lookup(field: LookupField): void {}
   collaborator(field: CollaboratorField): void {}
+  min(field: MinField): void {}
 }

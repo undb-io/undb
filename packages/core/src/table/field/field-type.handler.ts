@@ -26,6 +26,7 @@ export abstract class AbstractFieldTypeHandler implements IFieldTypeHandler {
   abstract average(): void
   abstract attachment(): void
   abstract collaborator(): void
+  abstract min(): void
   abstract ['multi-select'](): void
   abstract ['date-range'](): void
   abstract ['auto-increment'](): void

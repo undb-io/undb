@@ -76,6 +76,7 @@ import {
   JsonField,
   LookupField,
   MultiSelectField,
+  MinField,
   NumberField,
   Option,
   ParentField,
@@ -169,6 +170,8 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
         return this.em.getReference(CreatedByField, id)
       case 'updated-by':
         return this.em.getReference(UpdatedByField, id)
+      case 'min':
+        return this.em.getReference(MinField, id)
     }
   }
 
@@ -475,11 +478,13 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
       wrap(field).assign({ sumAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
     } else if (field instanceof AverageField) {
       wrap(field).assign({ averageAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
+    } else if (field instanceof MinField) {
+      wrap(field).assign({ minAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
     }
     this.em.persist(field)
   }
   withReferenceFieldId(s: WithReferenceFieldId): void {
-    const field = this.#getField(s.type, s.fieldId) as SumField | AverageField | LookupField | CountField
+    const field = this.#getField(s.type, s.fieldId) as SumField | AverageField | LookupField | CountField | MinField
     if (field instanceof SumField) {
       wrap(field).assign({ sumReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
     } else if (field instanceof AverageField) {
@@ -488,6 +493,8 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
       wrap(field).assign({ countReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
     } else if (field instanceof LookupField) {
       wrap(field).assign({ lookupReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
+    } else if (field instanceof MinField) {
+      wrap(field).assign({ minReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
     }
     this.em.persist(field)
   }

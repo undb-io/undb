@@ -31,6 +31,7 @@ import type {
   TreeField as CoreTreeField,
   UpdatedByField as CoreUpdatedByField,
   UrlField as CoreUrlField,
+  MinField as CoreMinField,
   IFieldVisitor,
 } from '@undb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@undb/core'
@@ -66,6 +67,7 @@ import {
   UpdatedAtField,
   UpdatedByField,
   UrlField,
+  MinField,
 } from '../../entity/index.js'
 import {
   AdjacencyListTable,
@@ -302,5 +304,14 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
     const queries = ft.getCreateTableSqls(this.em.getKnex())
 
     this.addQueries(...queries)
+  }
+
+  min(value: CoreMinField): void {
+    const field = new MinField(this.table, value)
+
+    field.minReferenceField = this.em.getReference(Field, value.referenceFieldId.value) as ReferenceField | TreeField
+    field.minAggregateField = this.em.getReference(Field, value.aggregateFieldId.value)
+
+    this.em.persist(field)
   }
 }

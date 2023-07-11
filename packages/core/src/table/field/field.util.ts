@@ -17,6 +17,7 @@ const controlledFieldTypes: Set<IFieldType> = new Set([
   'sum',
   'average',
   'lookup',
+  'min',
 ])
 
 export const isControlledFieldType = (type: IFieldType): boolean => controlledFieldTypes.has(type)
@@ -56,11 +57,12 @@ export const isNumericFieldType: Set<IFieldType> = new Set<IFieldType>([
   'auto-increment',
   'currency',
   'sum',
+  'min',
 ])
 
 export const isNumeric = (type: IFieldType): boolean => isNumericFieldType.has(type)
 
-export const isAggregateFieldType: Set<IFieldType> = new Set<IFieldType>(['average', 'count', 'sum'])
+export const isAggregateFieldType: Set<IFieldType> = new Set<IFieldType>(['average', 'count', 'sum', 'min'])
 
 export const isAggregate = (type: IFieldType): boolean => isAggregateFieldType.has(type)
 
@@ -110,6 +112,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   number: {
     string: 'cast',
@@ -131,6 +134,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   currency: {
     string: 'cast',
@@ -152,6 +156,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   rating: {
     string: 'cast',
@@ -173,6 +178,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   color: {
     string: 'cast',
@@ -194,6 +200,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   email: {
     string: 'cast',
@@ -215,6 +222,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   url: {
     string: 'cast',
@@ -236,6 +244,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   json: {
     string: 'cast',
@@ -257,6 +266,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   bool: {
     string: 'clear',
@@ -278,6 +288,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   attachment: {
     string: 'cast',
@@ -300,6 +311,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     reference: 'clear',
     lookup: 'ignore',
+    min: 'ignore',
   },
   date: {
     string: 'clear',
@@ -320,6 +332,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   'date-range': {
     string: 'clear',
@@ -340,6 +353,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   'multi-select': {
     string: 'cast',
@@ -361,6 +375,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   select: {
     string: 'cast',
@@ -382,6 +397,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   collaborator: {
     string: 'cast',
@@ -403,6 +419,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   count: {
     string: 'cast',
@@ -424,6 +441,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     sum: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   sum: {
     string: 'cast',
@@ -445,6 +463,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     count: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   average: {
     string: 'cast',
@@ -466,6 +485,7 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     count: 'ignore',
     lookup: 'ignore',
     reference: 'clear',
+    min: 'ignore',
   },
   lookup: {
     string: 'cast',
@@ -487,6 +507,29 @@ export const fieldTypeConvertMap: Partial<Record<IFieldType, Partial<Record<IFie
     count: 'ignore',
     average: 'ignore',
     reference: 'clear',
+    min: 'ignore',
+  },
+  min: {
+    string: 'cast',
+    attachment: 'clear',
+    email: 'clear',
+    url: 'clear',
+    json: 'cast',
+    color: 'clear',
+    date: 'clear',
+    number: 'cast',
+    'date-range': 'clear',
+    select: 'clear',
+    bool: 'cast',
+    rating: 'cast',
+    'multi-select': 'clear',
+    currency: 'cast',
+    collaborator: 'clear',
+    average: 'ignore',
+    sum: 'ignore',
+    lookup: 'ignore',
+    reference: 'clear',
+    count: 'ignore',
   },
 }
 

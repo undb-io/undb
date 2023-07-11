@@ -328,4 +328,6 @@ export class UnderlyingAverageColumn extends UnderlyingVirtualColumn {}
 
 export class UnderlyingLookupColumn extends UnderlyingVirtualColumn {}
 
+export class UnderlyingMinColumn extends UnderlyingVirtualColumn {}
+
 export const getTempColumnName = (name: string) => '__temp_' + name
