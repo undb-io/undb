@@ -9,6 +9,7 @@
 	import {
 		canChangeType,
 		canDisplay,
+		isControlledFieldType,
 		changeFieldTypeStrategy,
 		fieldTypeConvertMap,
 		type Field,
@@ -158,7 +159,9 @@
 			</div>
 			<div class="flex justify-end items-center gap-4">
 				<div class="flex gap-2 items-center">
-					<Toggle bind:checked={$form.required}>{$t('Required', { ns: 'common' })}</Toggle>
+					{#if !isControlledFieldType($form.type)}
+						<Toggle bind:checked={$form.required}>{$t('Required', { ns: 'common' })}</Toggle>
+					{/if}
 					{#if canDisplay($form.type)}
 						<Toggle bind:checked={$form.display}>{$t('Display', { ns: 'common' })}</Toggle>
 						{#if displayFields.length}
