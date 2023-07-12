@@ -1,3 +1,4 @@
+import type { Form } from '@undb/core'
 import type { IQueryWebhook } from '@undb/integrations'
 import { writable } from 'svelte/store'
 
@@ -6,7 +7,7 @@ const createDrawer = (id: symbol) => {
 	const drawer = writable({ id, hidden: true, callback: async () => {} })
 	const { set, update, subscribe } = drawer
 
-	const open = (cb?: () => Promise<any>) => {
+	const open = (cb?: () => Promise<never>) => {
 		return update(($modal) => {
 			$modal.hidden = false
 			if (cb) {
@@ -40,3 +41,10 @@ export const webhookListDrawer = createDrawer(WEBHOOK_LIST_DRAWER)
 export const webhookDrawerMode = writable<'list' | 'create' | 'update'>('list')
 
 export const selectedWebhook = writable<IQueryWebhook | undefined>(undefined)
+
+const FORM_LIST_DRAWER = Symbol('FORM_LIST_DRAWER')
+export const formListDrawer = createDrawer(FORM_LIST_DRAWER)
+
+export const formDrawerMode = writable<'list' | 'create' | 'update'>('list')
+
+export const selectedForm = writable<Form | undefined>(undefined)
