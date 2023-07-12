@@ -55,7 +55,8 @@
 			type === 'currency' ||
 			type === 'count' ||
 			type === 'average' || 
-			type === 'min'
+			type === 'min' ||
+			type === 'max'
 		) {
 			component = Number
 		} else if (type === 'rating') {
