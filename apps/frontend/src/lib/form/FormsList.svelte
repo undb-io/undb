@@ -10,10 +10,14 @@
 
 <div class="h-full">
 	{#if !forms.length}
-		<EmptyForm />
+		<div class="h-full flex justify-center">
+			<EmptyForm />
+		</div>
 	{:else}
-		{#each forms as form}
-			<FormListItem {form} />
-		{/each}
+		<div class="pt-5 space-y-3">
+			{#each forms as form}
+				<FormListItem {form} />
+			{/each}
+		</div>
 	{/if}
 </div>

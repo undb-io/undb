@@ -27,6 +27,7 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
         populate: [
           'fields',
           'views',
+          'forms',
           'fields.displayFields',
           'fields.countFields',
           'fields.minFields',

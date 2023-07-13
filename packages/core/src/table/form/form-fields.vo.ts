@@ -4,6 +4,7 @@ import type { TableSchema } from '../value-objects'
 
 export const formField = z.object({
   hidden: z.boolean().optional(),
+  required: z.boolean(),
 })
 
 export type IFormField = z.infer<typeof formField>
@@ -15,13 +16,14 @@ export type IFormFields = z.infer<typeof formFields>
 export class FormFields extends ValueObject<Map<string, IFormField>> {
   public static readonly DEFAULT: IFormField = {
     hidden: false,
+    required: false,
   }
 
   static default(schema: TableSchema) {
     const fields: IFormFields = {}
 
     for (const field of schema.fields) {
-      fields[field.id.value] = { hidden: false }
+      fields[field.id.value] = FormFields.DEFAULT
     }
 
     return new this(new Map(Object.entries(fields)))

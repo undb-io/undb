@@ -34,6 +34,7 @@ export class TableSqliteRepository implements ITableRepository {
       populate: [
         'fields.options',
         'views',
+        'forms',
         'fields.displayFields',
         'fields.foreignTable',
         'fields',

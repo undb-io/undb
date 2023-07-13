@@ -8,10 +8,11 @@ import { Table } from './table.js'
 export class Form extends BaseEntity {
   constructor(table: Rel<Table>, form: CoreForm) {
     super()
+    this.table = table
+
     this.id = form.id.value
     this.name = form.name.value
     this.fields = form.fields.toJSON()
-    this.table = table
   }
 
   @PrimaryKey()

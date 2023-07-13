@@ -9,7 +9,7 @@ export class RecordSqliteAggregateRepository implements IRecordAggregateReposito
   constructor(protected readonly em: EntityManager) {}
   async number(tableId: string, visualization: VisualizationVO, spec: IRecordSpec | null): Promise<number> {
     const tableEntity = await this.em.findOneOrFail(Table, tableId, {
-      populate: ['fields', 'views', 'fields.options', 'views.widgets.visualization'],
+      populate: ['fields', 'views', 'forms', 'fields.options', 'views.widgets.visualization'],
     })
 
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
@@ -26,7 +26,7 @@ export class RecordSqliteAggregateRepository implements IRecordAggregateReposito
 
   async chart(tableId: string, visualization: ChartVisualization, spec: IRecordSpec | null): Promise<IChartData> {
     const tableEntity = await this.em.findOneOrFail(Table, tableId, {
-      populate: ['fields', 'views', 'fields.options', 'views.widgets.visualization'],
+      populate: ['fields', 'views', 'forms', 'fields.options', 'views.widgets.visualization'],
     })
 
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
