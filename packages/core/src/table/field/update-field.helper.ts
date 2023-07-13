@@ -84,7 +84,8 @@ export class UpdateFieldHelper {
       }
       case 'sum':
       case 'average':
-      case 'min': {
+      case 'min':
+      case 'max': {
         if (isString(input.referenceFieldId)) {
           specs.push(WithReferenceFieldId.fromString(type, id, input.referenceFieldId))
         }
