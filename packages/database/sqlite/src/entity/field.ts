@@ -773,6 +773,9 @@ export class ReferenceField extends Field {
   @OneToMany(() => MinField, (f) => f.minReferenceField)
   minFields = new Collection<MinField>(this)
 
+  @OneToMany(() => MaxField, (f) => f.maxReferenceField)
+  maxFields = new Collection<MaxField>(this)
+
   @OneToOne(() => ReferenceField, { nullable: true })
   symmetricReferenceField?: ReferenceField
 
@@ -880,6 +883,9 @@ export class TreeField extends Field {
 
   @OneToMany(() => MinField, (f) => f.minReferenceField)
   minFields = new Collection<MinField>(this)
+
+  @OneToMany(() => MaxField, (f) => f.maxReferenceField)
+  maxFields = new Collection<MaxField>(this)
 
   get foreignDisplayFields() {
     let displayFields = this.displayFields.getItems(false)
