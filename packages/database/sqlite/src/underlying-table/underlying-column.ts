@@ -330,4 +330,6 @@ export class UnderlyingLookupColumn extends UnderlyingVirtualColumn {}
 
 export class UnderlyingMinColumn extends UnderlyingVirtualColumn {}
 
+export class UnderlyingMaxColumn extends UnderlyingVirtualColumn {}
+
 export const getTempColumnName = (name: string) => '__temp_' + name
