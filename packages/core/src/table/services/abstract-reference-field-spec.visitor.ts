@@ -130,6 +130,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   average(field: AverageField): void {}
   lookup(field: LookupField): void {}
   min(field: MinField): void {}
+  max(field: MinField): void {}
   idEqual(s: WithTableId): void {}
   nameEqual(s: WithTableName): void {}
   schemaEqual(s: WithTableSchema): void {

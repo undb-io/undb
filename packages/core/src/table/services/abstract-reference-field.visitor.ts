@@ -30,6 +30,7 @@ import type {
   UpdatedByField,
   UrlField,
   MinField,
+  MaxField,
 } from '../field/index.js'
 
 export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
@@ -62,4 +63,5 @@ export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   lookup(field: LookupField): void {}
   collaborator(field: CollaboratorField): void {}
   min(field: MinField): void {}
+  max(field: MaxField): void {}
 }
