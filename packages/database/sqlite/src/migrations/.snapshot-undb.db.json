@@ -589,6 +589,24 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "max_reference_field_id": {
+          "name": "max_reference_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "max_aggregate_field_id": {
+          "name": "max_aggregate_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         }
       },
       "name": "undb_field",
@@ -707,6 +725,24 @@
           ],
           "composite": false,
           "keyName": "undb_field_min_aggregate_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "max_reference_field_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_max_reference_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "max_aggregate_field_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_max_aggregate_field_id_index",
           "primary": false,
           "unique": false
         },
@@ -856,6 +892,32 @@
           "constraintName": "undb_field_min_aggregate_field_id_foreign",
           "columnNames": [
             "min_aggregate_field_id"
+          ],
+          "localTableName": "undb_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "undb_field_max_reference_field_id_foreign": {
+          "constraintName": "undb_field_max_reference_field_id_foreign",
+          "columnNames": [
+            "max_reference_field_id"
+          ],
+          "localTableName": "undb_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "undb_field_max_aggregate_field_id_foreign": {
+          "constraintName": "undb_field_max_aggregate_field_id_foreign",
+          "columnNames": [
+            "max_aggregate_field_id"
           ],
           "localTableName": "undb_field",
           "referencedColumnNames": [
