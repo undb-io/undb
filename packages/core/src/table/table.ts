@@ -364,7 +364,7 @@ export class Table {
   }
 
   public createForm(input: ICreateFormSchema): TableCompositeSpecificaiton {
-    const spec = this.forms.createForm(input)
+    const spec = this.forms.createForm(input, this.schema)
     spec.mutate(this).unwrap()
 
     return spec

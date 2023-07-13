@@ -6,7 +6,7 @@ import { formNameSchema } from './form-name.vo.js'
 export const createFormSchema = z.object({
   id: formIdSchema.optional(),
   name: formNameSchema,
-  fields: formFields,
+  fields: formFields.optional(),
 })
 export type ICreateFormSchema = z.infer<typeof createFormSchema>
 

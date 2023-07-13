@@ -42,19 +42,20 @@ export class TableFactory {
       .and(WithTableSchema.unsafeFrom(input.schema))
       .and(WithTableViews.from(input.views))
       .and(WithViewsOrder.fromArray(input.viewsOrder ?? []))
-      .and(WithTableForms.from(input.forms ?? []))
+      .and(WithTableForms.unsafeFrom(input.forms ?? []))
       .and(WithTableEmoji.fromString(input.emoji ?? null))
 
     return this.create(spec)
   }
 
   static fromQuery(q: IQueryTable): Table {
+    const ts = WithTableSchema.unsafeFrom(q.schema as ICreateTableSchemaInput)
     const spec = WithTableName.fromString(q.name)
       .and(WithTableId.fromExistingString(q.id).unwrap())
-      .and(WithTableSchema.unsafeFrom(q.schema as ICreateTableSchemaInput))
+      .and(ts)
       .and(WithTableViews.from(q.views))
       .and(WithViewsOrder.fromArray(q.viewsOrder ?? []))
-      .and(WithTableForms.from(q.forms ?? []))
+      .and(WithTableForms.from(q.forms ?? [], ts.schema))
       .and(WithTableEmoji.fromString(q.emoji))
 
     return this.create(spec).unwrap()

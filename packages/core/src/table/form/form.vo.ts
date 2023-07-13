@@ -1,4 +1,5 @@
 import { ValueObject } from '@undb/domain'
+import type { TableSchema } from '../value-objects/index.js'
 import { FormFields } from './form-fields.vo.js'
 import { FormId } from './form-id.vo.js'
 import { FormName } from './form-name.vo.js'
@@ -22,11 +23,19 @@ export class Form extends ValueObject<IForm> {
     this.props.fields = fields
   }
 
-  public static create(input: ICreateFormSchema): Form {
+  public static create(input: ICreateFormSchema, schema: TableSchema): Form {
     return new this({
       id: FormId.fromNullableString(input.id),
       name: FormName.create(input.name),
-      fields: FormFields.from(input.fields),
+      fields: FormFields.from(schema, input.fields),
+    })
+  }
+
+  public static unsafeCreate(input: ICreateFormSchema): Form {
+    return new this({
+      id: FormId.fromNullableString(input.id),
+      name: FormName.create(input.name),
+      fields: FormFields.unsafeFrom(input.fields ?? {}),
     })
   }
 }

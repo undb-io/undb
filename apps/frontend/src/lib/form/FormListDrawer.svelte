@@ -5,6 +5,8 @@
 	import { formDrawerMode, formListDrawer } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
 	import { t } from '$lib/i18n'
+	import CreateForm from './CreateForm.svelte'
+	import { page } from '$app/stores'
 
 	const table = getTable()
 
@@ -35,6 +37,6 @@
 		</div>
 		<FormsList />
 	{:else if $formDrawerMode === 'create'}
-		create
+		<CreateForm data={$page.data.createForm} />
 	{/if}
 </Drawer>

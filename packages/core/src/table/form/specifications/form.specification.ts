@@ -3,6 +3,7 @@ import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { ITableSpecVisitor } from '../../specifications/index.js'
 import type { Table } from '../../table.js'
+import type { TableSchema } from '../../value-objects/index.js'
 import type { ICreateFormsSchema } from '../form.schema.js'
 import type { Form } from '../form.vo.js'
 import { Forms } from '../forms.js'
@@ -12,9 +13,14 @@ export class WithTableForms extends CompositeSpecification<Table, ITableSpecVisi
     super()
   }
 
-  static from(input: ICreateFormsSchema): WithTableForms {
-    const views = Forms.create(input)
-    return new this(views)
+  static from(input: ICreateFormsSchema, schema: TableSchema): WithTableForms {
+    const forms = Forms.create(input, schema)
+    return new this(forms)
+  }
+
+  static unsafeFrom(input: ICreateFormsSchema): WithTableForms {
+    const forms = Forms.unsafeCreate(input)
+    return new this(forms)
   }
 
   isSatisfiedBy(t: Table): boolean {
