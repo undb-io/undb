@@ -32,6 +32,7 @@ import type {
   UpdatedByField,
   UrlField,
   MinField,
+  MaxField,
 } from '@undb/core'
 import { BaseEntityManager } from '../repository/base-entity-manager.js'
 import { AttachmentColumnTypeModifier } from './column-type-modifier/attachment.column-type-modifier.js'

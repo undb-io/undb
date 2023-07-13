@@ -77,6 +77,7 @@ import {
   LookupField,
   MultiSelectField,
   MinField,
+  MaxField,
   NumberField,
   Option,
   ParentField,
@@ -482,11 +483,19 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
       wrap(field).assign({ averageAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
     } else if (field instanceof MinField) {
       wrap(field).assign({ minAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
+    } else if (field instanceof MaxField) {
+      wrap(field).assign({ maxAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
     }
     this.em.persist(field)
   }
   withReferenceFieldId(s: WithReferenceFieldId): void {
-    const field = this.#getField(s.type, s.fieldId) as SumField | AverageField | LookupField | CountField | MinField
+    const field = this.#getField(s.type, s.fieldId) as
+      | SumField
+      | AverageField
+      | LookupField
+      | CountField
+      | MinField
+      | MaxField
     if (field instanceof SumField) {
       wrap(field).assign({ sumReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
     } else if (field instanceof AverageField) {
@@ -497,6 +506,8 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
       wrap(field).assign({ lookupReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
     } else if (field instanceof MinField) {
       wrap(field).assign({ minReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
+    } else if (field instanceof MaxField) {
+      wrap(field).assign({ maxReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
     }
     this.em.persist(field)
   }
