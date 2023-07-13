@@ -172,6 +172,8 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
         return this.em.getReference(UpdatedByField, id)
       case 'min':
         return this.em.getReference(MinField, id)
+      case 'max':
+        return this.em.getReference(MaxField, id)
     }
   }
 
