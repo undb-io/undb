@@ -507,4 +507,5 @@ export const cellTemplateMap: Record<IFieldType, TemplateFunc> = {
 	'updated-at': updatedAt,
 	'updated-by': updatedBy,
 	min,
+	max,
 }
