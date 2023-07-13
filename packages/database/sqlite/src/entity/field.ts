@@ -48,6 +48,7 @@ import type {
   IUpdatedByFieldQueryScheam,
   IUrlFieldQuerySchema,
   IMinFieldQuerySchema,
+  IMaxFieldQuerySchema,
 } from '@undb/core'
 import {
   AttachmentField as CoreAttachmentField,
@@ -79,6 +80,7 @@ import {
   UpdatedByField as CoreUpdatedByField,
   UrlField as CoreUrlField,
   MinField as CoreMinField,
+  MaxField as CoreMaxField,
 } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Option } from './option.js'
@@ -1164,6 +1166,45 @@ export class MinField extends Field {
   }
 }
 
+@Entity({ discriminatorValue: 'max' })
+export class MaxField extends Field {
+  constructor(table: Rel<Table>, field: CoreMaxField) {
+    super(table, field)
+  }
+
+  @ManyToOne({ entity: () => ReferenceField || TreeField, inversedBy: (f) => f.maxFields })
+  maxReferenceField!: ReferenceField | TreeField
+
+  @ManyToOne({ entity: () => Field })
+  maxAggregateField!: Field
+
+  toDomain(): CoreMaxField {
+    return CoreMaxField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'max',
+      required: !!this.required,
+      display: !!this.display,
+      referenceFieldId: this.maxReferenceField?.id,
+      aggregateFieldId: this.maxAggregateField?.id,
+    })
+  }
+
+  toQuery(): IMaxFieldQuerySchema {
+    return {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'max',
+      referenceFieldId: this.maxReferenceField?.id,
+      aggregateFieldId: this.maxAggregateField?.id,
+      required: !!this.required,
+      display: !!this.display,
+    }
+  }
+}
+
 export type IField =
   | IdField
   | CreatedAtField
@@ -1194,6 +1235,7 @@ export type IField =
   | CreatedByField
   | UpdatedByField
   | MinField
+  | MaxField
 
 export const fieldEntities = [
   IdField,
@@ -1225,4 +1267,5 @@ export const fieldEntities = [
   UpdatedByField,
   UrlField,
   MinField,
+  MaxField,
 ]
