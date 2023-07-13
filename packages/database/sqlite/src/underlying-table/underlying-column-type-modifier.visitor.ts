@@ -54,6 +54,7 @@ import { StringColumnTypeModifier } from './column-type-modifier/string.column-t
 import { SumColumnTypeModifier } from './column-type-modifier/sum.column-type-modifier.js'
 import { UrlColumnTypeModifier } from './column-type-modifier/url.column-type-modifier.js'
 import { MinColumnTypeModifier } from './column-type-modifier/min.column-type-modifier.js'
+import { MaxColumnTypeModifier } from './column-type-modifier/max.column-type-modifier.js'
 
 export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implements IFieldVisitor {
   constructor(
@@ -207,6 +208,12 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
   }
   min(field: MinField): void {
     const modifier = new MinColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
+  }
+  max(field: MaxField): void {
+    const modifier = new MaxColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
     modifier[this.newType]()
     this.unshiftQueries(...modifier.queries)
     this.unshiftJobs(...modifier.jobs)
