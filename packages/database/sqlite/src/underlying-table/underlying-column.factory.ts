@@ -31,6 +31,7 @@ import {
   UnderlyingUpdatedByColumn,
   UnderlyingUrlColumn,
   UnderlyingMinColumn,
+  UnderlyingMaxColumn,
 } from './underlying-column.js'
 
 export class UnderlyingColumnFactory {
@@ -97,6 +98,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingUpdatedByColumn(field.id.value, tableName)
       case 'min':
         return new UnderlyingMinColumn(field.id.value, tableName)
+      case 'max':
+        return new UnderlyingMaxColumn(field.id.value, tableName)
     }
   }
 
