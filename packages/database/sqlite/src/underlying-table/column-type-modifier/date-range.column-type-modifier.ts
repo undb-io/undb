@@ -138,6 +138,9 @@ export class DateRangeColumnTypeModifier extends BaseColumnTypeModifier<DateRang
   min(): void {
     this.dropDateRange()
   }
+  max(): void {
+    this.dropDateRange()
+  }
   ['multi-select'](): void {
     const newColumn = new UnderlyingSelectColumn(this.field.id.value, this.tableId)
     this.castFromDateRange(newColumn)

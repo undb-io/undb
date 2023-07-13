@@ -84,6 +84,9 @@ export class CurrencyColumnTypeModifier extends BaseColumnTypeModifier<CurrencyF
   min(): void {
     this.dropColumn(this.column)
   }
+  max(): void {
+    this.dropColumn(this.column)
+  }
   collaborator(): void {
     this.castToCollaborator(this.column)
   }

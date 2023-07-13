@@ -85,6 +85,9 @@ export class BoolColumnTypeModifier extends BaseColumnTypeModifier<BoolField> {
   min(): void {
     this.dropColumn(this.column)
   }
+  max(): void {
+    this.dropColumn(this.column)
+  }
   ['multi-select'](): void {
     const newColumn = new UnderlyingMultiSelectColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)

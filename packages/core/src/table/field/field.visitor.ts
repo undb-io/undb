@@ -18,6 +18,7 @@ import type {
 import type { JsonField } from './fields/json/json-field.js'
 import type { LookupField } from './fields/lookup/lookup-field.js'
 import type { MinField } from './fields/min/min-field.js'
+import type { MaxField } from './fields/max/max-field.js'
 import type { MultiSelectField } from './fields/multi-select/multi-select-field.js'
 import type { NumberField } from './fields/number/number-field.js'
 import type { ParentField } from './fields/parent/parent-field.js'
@@ -60,4 +61,5 @@ export interface IFieldVisitor {
   lookup(field: LookupField): void
   collaborator(field: CollaboratorField): void
   min(field: MinField): void
+  max(field: MaxField): void
 }

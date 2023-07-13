@@ -84,6 +84,9 @@ export class JsonColumnTypeModifier extends BaseColumnTypeModifier<JsonField> {
   min(): void {
     this.dropColumn(this.column)
   }
+  max(): void {
+    this.dropColumn(this.column)
+  }
 
   ['multi-select'](): void {
     const newColumn = new UnderlyingMultiSelectColumn(this.field.id.value, this.tableId)

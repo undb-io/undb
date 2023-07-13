@@ -125,6 +125,9 @@ export class MultiSelectColumnTypeModifier extends BaseColumnTypeModifier<MultiS
   min(): void {
     this.dropColumn(this.column)
   }
+  max(): void {
+    this.dropColumn(this.column)
+  }
   ['multi-select'](): void {
     throw new Error('Method not implemented.')
   }

@@ -341,6 +341,17 @@ import {
   createMinFieldValue_internal,
   updateMinFieldSchema,
 } from './fields/min/min-field.type.js'
+import type { MaxFieldValue } from './fields/max/max-field-value.js'
+import type { MaxField } from './fields/max/max-field.js'
+import type { IMaxField, IMaxFieldValue } from './fields/max/max-field.type.js'
+import {
+  maxFieldQuerySchema,
+  maxFieldQueryValue,
+  maxTypeSchema,
+  createMaxFieldSchema,
+  createMaxFieldValue_internal,
+  updateMaxFieldSchema,
+} from './fields/max/max-field.type.js'
 
 export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createIdFieldSchema,
@@ -372,6 +383,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createCreatedByFieldSchema,
   createUpdatedByFieldSchema,
   createMinFieldSchema,
+  createMaxFieldSchema,
 ])
 export type ICreateFieldSchema = z.infer<typeof createFieldSchema>
 
@@ -405,6 +417,7 @@ export const updateFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   updateCreatedByFieldSchema,
   updateUpdatedByFieldSchema,
   updateMinFieldSchema,
+  updateMaxFieldSchema,
 ])
 export type IUpdateFieldSchema = z.infer<typeof updateFieldSchema>
 
@@ -438,6 +451,7 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createdByFieldQuerySchema,
   updatedByFieldQuerySchema,
   minFieldQuerySchema,
+  maxFieldQuerySchema,
 ])
 export type IQueryFieldSchema = z.infer<typeof queryFieldSchema>
 export const querySchemaSchema = z.array(queryFieldSchema)
@@ -473,6 +487,7 @@ export const fieldTypes = z.union([
   createdByTypeSchema,
   updatedByTypeSchema,
   minTypeSchema,
+  maxTypeSchema,
 ])
 export type IFieldType = z.infer<typeof fieldTypes>
 
@@ -506,6 +521,7 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createCreatedByFieldValue_internal,
   createUpdatedByFieldValue_internal,
   createMinFieldValue_internal,
+  createMaxFieldValue_internal,
 ])
 export type ICreateFieldValueSchema_internal = z.infer<typeof createFieldValueSchema_internal>
 
@@ -538,8 +554,8 @@ export type IReferenceFieldTypes = IReferenceField | ITreeField | IParentField
 export type ReferenceFieldTypes = ReferenceField | TreeField | ParentField
 export type ILookingFieldTypes = IReferenceFieldTypes | ILookupField
 export type LookingFieldTypes = ReferenceFieldTypes | LookupField
-export type AggregateFieldType = CountField | SumField | MinField
-export type INumberAggregateFieldType = ISumField | IAverageField | IMinField
+export type AggregateFieldType = CountField | SumField | MinField | MaxField
+export type INumberAggregateFieldType = ISumField | IAverageField | IMinField | IMaxField
 export type ISelectFieldTypes = ISelectField | IMultiSelectField
 export type SelectFieldTypes = SelectField | MultiSelectField
 export type IDateFieldTypes = IDateField | IDateRangeField | ICreatedAtField | IUpdatedAtField
@@ -572,6 +588,7 @@ export type NoneSystemField =
   | AttachmentField
   | CollaboratorField
   | MinField
+  | MaxField
 
 export type PrimitiveField =
   | StringField
@@ -594,6 +611,7 @@ export type PrimitiveField =
   | SumField
   | AverageField
   | MinField
+  | MaxField
 
 export type Field = SystemField | NoneSystemField
 
@@ -627,6 +645,7 @@ export type FieldValue =
   | CreatedByFieldValue
   | UpdatedByFieldValue
   | MinFieldValue
+  | MaxFieldValue
 
 export type FieldValues = FieldValue[]
 
@@ -660,6 +679,7 @@ export type UnpackedFieldValue =
   | ICreatedByFieldValue
   | IUpdatedByFieldValue
   | IMinFieldValue
+  | IMaxFieldValue
 
 export const fieldQueryValue = z.union([
   treeFieldQueryValue,
@@ -691,6 +711,7 @@ export const fieldQueryValue = z.union([
   createdByFieldQueryValue,
   updatedByFieldQueryValue,
   minFieldQueryValue,
+  maxFieldQueryValue,
 ])
 
 export type IFieldQueryValue = z.infer<typeof fieldQueryValue>
@@ -744,6 +765,7 @@ export const lookupFieldType = z.union([
   countTypeSchema,
   lookupTypeSchema,
   minTypeSchema,
+  maxTypeSchema,
 ])
 export type ILookupFieldType = z.infer<typeof lookupFieldType>
 
@@ -753,7 +775,7 @@ export interface IAbstractAggregateField {
   set aggregateFieldId(fieldId: FieldId)
 }
 
-export const aggregateFieldType = z.union([sumTypeSchema, averageTypeSchema, minTypeSchema])
+export const aggregateFieldType = z.union([sumTypeSchema, averageTypeSchema, minTypeSchema, maxTypeSchema])
 export type IAggregateFieldType = z.infer<typeof aggregateFieldType>
 
 export interface IAbstractSelectField extends BaseField {

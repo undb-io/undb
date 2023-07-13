@@ -123,6 +123,9 @@ export class MinColumnTypeModifier extends BaseColumnTypeModifier<MinField> {
   min(): void {
     throw new Error('Method not implemented.')
   }
+  max(): void {
+    this.dropColumn(this.column)
+  }
   average(): void {
     this.dropColumn(this.column)
   }
