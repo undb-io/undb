@@ -51,7 +51,7 @@ import {
   type WithViewPinnedFields,
   type WithViewsOrder,
   type WithVisualizationNameSpec,
-  type WithWidgetSepecification,
+  type WithWidgetSpecification,
   type WithWidgetsLayout,
   type WithoutField,
   type WithoutOption,
@@ -428,7 +428,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     wrap(field).assign({ symbol: s.symbol.symbol })
     this.em.persist(field)
   }
-  withWidget(s: WithWidgetSepecification): void {
+  withWidget(s: WithWidgetSpecification): void {
     const view = this.getView(s.view.id.value)
     const widget = new Widget(view, s.widget)
 
