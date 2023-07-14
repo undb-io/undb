@@ -10,4 +10,4 @@ import { NestSqliteUnitOfWork, UNIT_OF_WORK } from './uow.service.js'
   ],
   exports: [UNIT_OF_WORK],
 })
-export class UnitOrWorkModule {}
+export class UnitOfWorkModule {}

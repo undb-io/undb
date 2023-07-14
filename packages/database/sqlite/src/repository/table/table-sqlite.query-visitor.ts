@@ -18,8 +18,9 @@ import type {
   WithFieldWidth,
   WithFilter,
   WithForeignTableId,
-  WithFormat,
   WithFormFieldsSpecification,
+  WithFormFieldsVisibility,
+  WithFormat,
   WithGanttField,
   WithKanbanField,
   WithNewField,
@@ -30,10 +31,6 @@ import type {
   WithNumberAggregateSpec,
   WithOption,
   WithOptions,
-  WithoutField,
-  WithoutOption,
-  WithoutView,
-  WithoutWidgetSpecification,
   WithRatingMax,
   WithReferenceFieldId,
   WithRowHeight,
@@ -57,6 +54,10 @@ import type {
   WithVisualizationNameSpec,
   WithWidgetSpecification,
   WithWidgetsLayout,
+  WithoutField,
+  WithoutOption,
+  WithoutView,
+  WithoutWidgetSpecification,
 } from '@undb/core'
 import type { Table } from '../../entity/index.js'
 
@@ -117,6 +118,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   formFieldsEqual(s: WithFormFieldsSpecification): void {
+    throw new Error('Method not implemented.')
+  }
+  withFormFieldsVisibility(s: WithFormFieldsVisibility): void {
     throw new Error('Method not implemented.')
   }
   newForm(s: WithNewForm): void {

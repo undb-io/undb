@@ -8,6 +8,7 @@ import type {
   WithDuplicatedField,
   WithForeignTableId,
   WithFormFieldsSpecification,
+  WithFormFieldsVisibility,
   WithGanttField,
   WithNewFieldType,
   WithNewForm,
@@ -79,9 +80,9 @@ import {
   IdField,
   JsonField,
   LookupField,
-  MultiSelectField,
-  MinField,
   MaxField,
+  MinField,
+  MultiSelectField,
   NumberField,
   Option,
   ParentField,
@@ -238,6 +239,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   formFieldsEqual(s: WithFormFieldsSpecification): void {
     const form = this.em.getReference(Form, s.formId)
     wrap(form).assign({ fields: s.fields })
+    this.em.persist(form)
+  }
+  withFormFieldsVisibility(s: WithFormFieldsVisibility): void {
+    const form = this.em.getReference(Form, s.formId)
+    wrap(form).assign({ fields: s.visibility }, { mergeObjects: true })
     this.em.persist(form)
   }
   newForm(s: WithNewForm): void {

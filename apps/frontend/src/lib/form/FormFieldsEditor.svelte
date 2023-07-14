@@ -3,10 +3,13 @@
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { selectedForm } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
+	import { trpc } from '$lib/trpc/client'
 	import { Label } from 'flowbite-svelte'
 
 	const table = getTable()
 	$: notHiddenFields = $selectedForm?.getNotHiddenFields($table.schema.toIdMap()) ?? []
+
+	const setFormFieldsVisibility = trpc().table.form.field.setVisibility.mutation()
 </script>
 
 {#if $selectedForm}

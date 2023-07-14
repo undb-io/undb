@@ -14,7 +14,7 @@ import type {
 import { FieldId, SelectField, WithDuplicatedField } from './field/index.js'
 import { UpdateFieldHelper } from './field/update-field.helper.js'
 import type { IRootFilter } from './filter/index.js'
-import type { ICreateFormSchema } from './form/form.schema.js'
+import type { ICreateFormSchema, ISetFormFieldVisibilitySchema } from './form/form.schema.js'
 import type { IQueryForm } from './form/form.type.js'
 import { Forms } from './form/forms.js'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from './option/index.js'
@@ -438,6 +438,13 @@ export class Table {
   public setFieldVisibility(input: ISetFieldVisibilitySchema): TableCompositeSpecification {
     const view = this.mustGetView(input.viewId)
     const spec = view.setFieldVisibility(input.fieldId, input.hidden)
+    spec.mutate(this)
+    return spec
+  }
+
+  public setFormFieldVisibility(input: ISetFormFieldVisibilitySchema): TableCompositeSpecification {
+    const form = this.forms.getById(input.formId).expect('not found form')
+    const spec = form.setFieldVisibility(input.visibility)
     spec.mutate(this)
     return spec
   }

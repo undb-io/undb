@@ -1,11 +1,13 @@
 import { ValueObject } from '@undb/domain'
 import type { Field } from '../field/field.type.js'
+import type { TableCompositeSpecification } from '../specifications/interface.js'
 import type { TableSchema, TableSchemaIdMap } from '../value-objects/index.js'
 import { FormFields } from './form-fields.vo.js'
 import { FormId } from './form-id.vo.js'
 import { FormName } from './form-name.vo.js'
 import type { ICreateFormSchema } from './form.schema.js'
 import type { IForm } from './form.type.js'
+import { WithFormFieldsVisibility } from './specifications/form-fields.specification.js'
 
 export class Form extends ValueObject<IForm> {
   public get id() {
@@ -65,5 +67,9 @@ export class Form extends ValueObject<IForm> {
       name: FormName.create(input.name),
       fields: FormFields.unsafeFrom(input.fields ?? {}),
     })
+  }
+
+  public setFieldVisibility(visiblity: Record<string, boolean>): TableCompositeSpecification {
+    return new WithFormFieldsVisibility(this.id.value, visiblity)
   }
 }

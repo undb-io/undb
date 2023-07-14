@@ -77,6 +77,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   viewsOrderEqual(): void {}
   formsEqual(): void {}
   formFieldsEqual(): void {}
+  withFormFieldsVisibility(): void {}
   newForm(s: WithNewForm): void {}
   filterEqual(): void {}
   ratingMaxEqual(s: WithRatingMax): void {

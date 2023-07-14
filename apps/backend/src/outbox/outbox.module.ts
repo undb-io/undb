@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common'
-import { UnitOrWorkModule } from '../uow/uow.module.js'
+import { UnitOfWorkModule } from '../uow/uow.module.js'
 import { NestOutboxService } from './outbox.service.js'
 
 @Module({
-  imports: [UnitOrWorkModule],
+  imports: [UnitOfWorkModule],
   providers: [NestOutboxService],
   exports: [NestOutboxService],
 })

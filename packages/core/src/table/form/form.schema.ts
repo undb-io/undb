@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { fieldIdSchema } from '../field/index.js'
 import { formFields } from './form-fields.vo.js'
 import { formIdSchema } from './form-id.vo.js'
 import { formNameSchema } from './form-name.vo.js'
@@ -19,3 +20,15 @@ export const queryForm = z.object({
   fields: formFields,
 })
 export const queryForms = z.array(queryForm)
+
+const formFieldOptionBaseSchema = z.object({
+  formId: formIdSchema,
+})
+
+export const setFormFieldVisibilitySchema = z
+  .object({
+    visibility: z.record(fieldIdSchema, z.boolean()),
+  })
+  .merge(formFieldOptionBaseSchema)
+
+export type ISetFormFieldVisibilitySchema = z.infer<typeof setFormFieldVisibilitySchema>

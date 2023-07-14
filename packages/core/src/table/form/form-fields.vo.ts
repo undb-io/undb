@@ -1,4 +1,5 @@
 import { ValueObject } from '@undb/domain'
+import { merge } from 'lodash-es'
 import { z } from 'zod'
 import type { TableSchema } from '../value-objects'
 
@@ -51,5 +52,9 @@ export class FormFields extends ValueObject<Map<string, IFormField>> {
 
   public isRequired(fieldId: string) {
     return !!this.value.get(fieldId)?.required
+  }
+
+  public merge(visibility: Record<string, boolean>) {
+    return new FormFields(merge(this.value, visibility))
   }
 }

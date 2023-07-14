@@ -13,10 +13,12 @@ import type {
   DateField,
   DateRangeField,
   EmailField,
-  IdField,
   IFieldVisitor,
+  IdField,
   JsonField,
   LookupField,
+  MaxField,
+  MinField,
   MultiSelectField,
   NumberField,
   ParentField,
@@ -29,8 +31,6 @@ import type {
   UpdatedAtField,
   UpdatedByField,
   UrlField,
-  MinField,
-  MaxField,
   WithAggregateFieldId,
   WithCurrencySymbol,
   WithDisplayFields,
@@ -45,14 +45,19 @@ import type {
   WithNewOption,
   WithOption,
   WithOptions,
-  WithoutField,
-  WithoutOption,
   WithRatingMax,
   WithSymmetricReferenceField,
   WithTimeFormat,
+  WithoutField,
+  WithoutOption,
 } from '../field/index.js'
 import type { WithReferenceFieldId } from '../field/specifications/lookup-field.specification.js'
-import type { WithFormFieldsSpecification, WithNewForm, WithTableForms } from '../form/index.js'
+import type {
+  WithFormFieldsSpecification,
+  WithFormFieldsVisibility,
+  WithNewForm,
+  WithTableForms,
+} from '../form/index.js'
 import type {
   ITableSpecVisitor,
   WithFilter,
@@ -64,9 +69,9 @@ import type {
   WithTableViewId,
 } from '../specifications/index.js'
 import type {
-  WithoutWidgetSpecification,
   WithWidgetSpecification,
   WithWidgetsLayout,
+  WithoutWidgetSpecification,
 } from '../view/dashboard/specifications/widget.specification.js'
 import type {
   WithCalendarField,
@@ -78,7 +83,6 @@ import type {
   WithGanttField,
   WithKanbanField,
   WithNewView,
-  WithoutView,
   WithRowHeight,
   WithShowSystemFieldsSpec,
   WithSorts,
@@ -90,6 +94,7 @@ import type {
   WithViewPinnedFields,
   WithViewsOrder,
   WithVisualizationNameSpec,
+  WithoutView,
 } from '../view/index.js'
 import type { WithNumberAggregateSpec } from '../visualization/specifications/number-visualization.specification.js'
 
@@ -145,6 +150,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   viewNameEqual(s: WithViewName): void {}
   formsEqual(s: WithTableForms): void {}
   formFieldsEqual(s: WithFormFieldsSpecification): void {}
+  withFormFieldsVisibility(s: WithFormFieldsVisibility): void {}
   newForm(s: WithNewForm): void {}
   newView(s: WithNewView): void {}
   emojiEqual(s: WithTableEmoji): void {}
