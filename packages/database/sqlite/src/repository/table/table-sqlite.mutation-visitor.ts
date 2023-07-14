@@ -337,7 +337,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const option = new Option(field, s.option)
     this.em.persist(option)
   }
-  witoutOption(s: WithoutOption): void {
+  withoutOption(s: WithoutOption): void {
     const option = this.em.getReference(Option, s.optionKey.value as never)
     this.em.remove(option)
   }

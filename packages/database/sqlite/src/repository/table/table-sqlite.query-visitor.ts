@@ -149,7 +149,7 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   newOption(s: WithNewOption): void {
     throw new Error('Method not implemented.')
   }
-  witoutOption(s: WithoutOption): void {
+  withoutOption(s: WithoutOption): void {
     throw new Error('Method not implemented.')
   }
   withNewFieldType(s: WithNewFieldType): void {
