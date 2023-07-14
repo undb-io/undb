@@ -1,7 +1,7 @@
 import { andOptions, ValueObject } from '@undb/domain'
 import { Option } from 'oxide.ts'
 import type { FieldId } from '../field/index.js'
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import type { TableCompositeSpecification } from '../specifications/interface.js'
 import type { WithTableView } from './specifications/views.specification.js'
 import { WithNewView, WithoutView } from './specifications/views.specification.js'
 import type { ICreateViewSchema } from './view.schema.js'
@@ -34,7 +34,7 @@ export class Views extends ValueObject<ViewVO[]> {
     return new WithNewView(view)
   }
 
-  duplcateView(id: string): WithTableView {
+  duplicateView(id: string): WithTableView {
     const view = this.getById(id)?.unwrap()
     const newView = view.duplicate({ name: view.name.value })
     return new WithNewView(newView)
@@ -49,7 +49,7 @@ export class Views extends ValueObject<ViewVO[]> {
     return new WithoutView(view)
   }
 
-  removeField(id: FieldId): Option<TableCompositeSpecificaiton> {
+  removeField(id: FieldId): Option<TableCompositeSpecification> {
     const specs = this.views.map((view) => view.removeField(id))
     return andOptions(...specs)
   }

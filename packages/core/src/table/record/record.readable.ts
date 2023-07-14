@@ -39,6 +39,7 @@ import {
   updatedAtReadableValueSchema,
   updatedByReadableValueSchema,
   minReadableValueSchema,
+  maxReadableValueSchema,
   type ReferenceField,
 } from '../field/index.js'
 import type { Table } from '../table.js'
@@ -119,6 +120,7 @@ export const recordReadableValueMapper = (
     average: getValue,
     attachment: getValue,
     min: getValue,
+    max: getValue,
     collaborator: (field) => {
       const userIds = getValue(field) as string[]
       if (!userIds) return []
@@ -179,6 +181,7 @@ export const recordReadableValueSchemaMap: globalThis.Record<IFieldType, ZodType
   'created-by': createdByReadableValueSchema,
   'updated-by': updatedByReadableValueSchema,
   min: minReadableValueSchema,
+  max: maxReadableValueSchema,
 }
 
 export const createRecordReadableValueSchema = (table: Table) => {

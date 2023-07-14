@@ -55,7 +55,7 @@ import type {
   WithViewPinnedFields,
   WithViewsOrder,
   WithVisualizationNameSpec,
-  WithWidgetSepecification,
+  WithWidgetSpecification,
   WithWidgetsLayout,
 } from '@undb/core'
 import type { Table } from '../../entity/index.js'
@@ -161,7 +161,7 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   newOption(s: WithNewOption): void {
     throw new Error('Method not implemented.')
   }
-  witoutOption(s: WithoutOption): void {
+  withoutOption(s: WithoutOption): void {
     throw new Error('Method not implemented.')
   }
   withNewFieldType(s: WithNewFieldType): void {
@@ -218,7 +218,7 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   currencySymbolEqual(s: WithCurrencySymbol): void {
     throw new Error('Method not implemented.')
   }
-  withWidget(s: WithWidgetSepecification): void {
+  withWidget(s: WithWidgetSpecification): void {
     throw new Error('Method not implemented.')
   }
   withAggregateFieldId(s: WithAggregateFieldId): void {

@@ -41,6 +41,10 @@ export class Migration20230713070448 extends Migration {
     this.addSql(
       'create index `undb_field_lookup_reference_field_id_index` on `undb_field` (`lookup_reference_field_id`);',
     )
+    this.addSql('create index `undb_field_min_reference_field_id_index` on `undb_field` (`min_reference_field_id`);')
+    this.addSql('create index `undb_field_min_aggregate_field_id_index` on `undb_field` (`min_aggregate_field_id`);')
+    this.addSql('create index `undb_field_max_reference_field_id_index` on `undb_field` (`max_reference_field_id`);')
+    this.addSql('create index `undb_field_max_aggregate_field_id_index` on `undb_field` (`max_aggregate_field_id`);')
     this.addSql('create index `undb_field_sum_reference_field_id_index` on `undb_field` (`sum_reference_field_id`);')
     this.addSql('create index `undb_field_sum_aggregate_field_id_index` on `undb_field` (`sum_aggregate_field_id`);')
     this.addSql(

@@ -42,6 +42,7 @@ export function getFilterOperators(type: IFieldType | undefined) {
 		type === 'currency' ||
 		type === 'count' ||
 		type === 'min' ||
+		type === 'max' ||
 		type === 'sum' ||
 		type === 'average' ||
 		type === 'auto-increment'
@@ -151,6 +152,7 @@ export const icons: Record<IFieldType, string> = {
 	sum: 'sum',
 	attachment: 'paperclip',
 	min: 'arrow-down',
+	max: 'arrow-up',
 	'created-by': 'calendar-plus',
 	'updated-by': 'calendar-stats',
 }

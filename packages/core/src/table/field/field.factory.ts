@@ -30,6 +30,7 @@ import { TreeField } from './fields/tree/tree-field.js'
 import { UpdatedAtField } from './fields/updated-at/updated-at-field.js'
 import { UpdatedByField } from './fields/updated-by/updated-by-field.js'
 import { MinField } from './fields/min/min-field.js'
+import { MaxField } from './fields/max/max-field.js'
 
 export class FieldFactory {
   static create(input: ICreateFieldSchema): Field | Field[] {
@@ -121,6 +122,9 @@ export class FieldFactory {
       }
       case 'min': {
         return MinField.create(input)
+      }
+      case 'max': {
+        return MaxField.create(input)
       }
       default: {
         throw new Error()
@@ -216,6 +220,9 @@ export class FieldFactory {
       }
       case 'min': {
         return MinField.unsafeCreate(input)
+      }
+      case 'max': {
+        return MaxField.unsafeCreate(input)
       }
       default: {
         throw new Error()

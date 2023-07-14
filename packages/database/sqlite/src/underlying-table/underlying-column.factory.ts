@@ -2,7 +2,7 @@ import type { Field } from '@undb/core'
 import type { IUnderlyingColumn } from '../interfaces/underlying-column.js'
 import {
   UnderlyingAttachmentColumn,
-  UnderlyingAutoIncreamentColumn,
+  UnderlyingAutoIncrementColumn,
   UnderlyingAverageColumn,
   UnderlyingBoolColumn,
   UnderlyingCollaboratorColumn,
@@ -31,6 +31,7 @@ import {
   UnderlyingUpdatedByColumn,
   UnderlyingUrlColumn,
   UnderlyingMinColumn,
+  UnderlyingMaxColumn,
 } from './underlying-column.js'
 
 export class UnderlyingColumnFactory {
@@ -43,7 +44,7 @@ export class UnderlyingColumnFactory {
       case 'updated-at':
         return new UnderlyingUpdatedAtColumn(field.id.value, tableName)
       case 'auto-increment':
-        return new UnderlyingAutoIncreamentColumn(field.id.value, tableName)
+        return new UnderlyingAutoIncrementColumn(field.id.value, tableName)
       case 'string':
         return new UnderlyingStringColumn(field.id.value, tableName)
       case 'email':
@@ -97,6 +98,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingUpdatedByColumn(field.id.value, tableName)
       case 'min':
         return new UnderlyingMinColumn(field.id.value, tableName)
+      case 'max':
+        return new UnderlyingMaxColumn(field.id.value, tableName)
     }
   }
 

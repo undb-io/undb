@@ -49,6 +49,7 @@
 		attachment: Attachment,
 		collaborator: Collaborator,
 		min: Number,
+		max: Number,
 		'created-by': String,
 		'updated-by': String,
 	}

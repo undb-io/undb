@@ -32,6 +32,7 @@ import type {
   UpdatedByField as CoreUpdatedByField,
   UrlField as CoreUrlField,
   MinField as CoreMinField,
+  MaxField as CoreMaxField,
   IFieldVisitor,
 } from '@undb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@undb/core'
@@ -68,6 +69,7 @@ import {
   UpdatedByField,
   UrlField,
   MinField,
+  MaxField,
 } from '../../entity/index.js'
 import {
   AdjacencyListTable,
@@ -311,6 +313,15 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
     field.minReferenceField = this.em.getReference(Field, value.referenceFieldId.value) as ReferenceField | TreeField
     field.minAggregateField = this.em.getReference(Field, value.aggregateFieldId.value)
+
+    this.em.persist(field)
+  }
+
+  max(value: CoreMaxField): void {
+    const field = new MaxField(this.table, value)
+
+    field.maxReferenceField = this.em.getReference(Field, value.referenceFieldId.value) as ReferenceField | TreeField
+    field.maxAggregateField = this.em.getReference(Field, value.aggregateFieldId.value)
 
     this.em.persist(field)
   }

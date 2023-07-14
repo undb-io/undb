@@ -54,7 +54,7 @@ import {
   type WithViewPinnedFields,
   type WithViewsOrder,
   type WithVisualizationNameSpec,
-  type WithWidgetSepecification,
+  type WithWidgetSpecification,
   type WithWidgetsLayout,
   type WithoutField,
   type WithoutOption,
@@ -81,6 +81,7 @@ import {
   LookupField,
   MultiSelectField,
   MinField,
+  MaxField,
   NumberField,
   Option,
   ParentField,
@@ -176,6 +177,8 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
         return this.em.getReference(UpdatedByField, id)
       case 'min':
         return this.em.getReference(MinField, id)
+      case 'max':
+        return this.em.getReference(MaxField, id)
     }
   }
 
@@ -352,7 +355,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const option = new Option(field, s.option)
     this.em.persist(option)
   }
-  witoutOption(s: WithoutOption): void {
+  withoutOption(s: WithoutOption): void {
     const option = this.em.getReference(Option, s.optionKey.value as never)
     this.em.remove(option)
   }
@@ -443,7 +446,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     wrap(field).assign({ symbol: s.symbol.symbol })
     this.em.persist(field)
   }
-  withWidget(s: WithWidgetSepecification): void {
+  withWidget(s: WithWidgetSpecification): void {
     const view = this.getView(s.view.id.value)
     const widget = new Widget(view, s.widget)
 
@@ -498,11 +501,19 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
       wrap(field).assign({ averageAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
     } else if (field instanceof MinField) {
       wrap(field).assign({ minAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
+    } else if (field instanceof MaxField) {
+      wrap(field).assign({ maxAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
     }
     this.em.persist(field)
   }
   withReferenceFieldId(s: WithReferenceFieldId): void {
-    const field = this.#getField(s.type, s.fieldId) as SumField | AverageField | LookupField | CountField | MinField
+    const field = this.#getField(s.type, s.fieldId) as
+      | SumField
+      | AverageField
+      | LookupField
+      | CountField
+      | MinField
+      | MaxField
     if (field instanceof SumField) {
       wrap(field).assign({ sumReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
     } else if (field instanceof AverageField) {
@@ -513,6 +524,8 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
       wrap(field).assign({ lookupReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
     } else if (field instanceof MinField) {
       wrap(field).assign({ minReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
+    } else if (field instanceof MaxField) {
+      wrap(field).assign({ maxReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
     }
     this.em.persist(field)
   }

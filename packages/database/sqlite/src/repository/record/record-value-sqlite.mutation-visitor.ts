@@ -22,6 +22,7 @@ import type {
   LookupFieldValue,
   MultiSelectFieldValue,
   MinFieldValue,
+  MaxFieldValue,
   NumberFieldValue,
   ParentFieldValue,
   RatingFieldValue,
@@ -248,4 +249,5 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
   average(value: AverageFieldValue): void {}
   lookup(value: LookupFieldValue): void {}
   min(value: MinFieldValue): void {}
+  max(value: MaxFieldValue): void {}
 }

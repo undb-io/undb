@@ -22,4 +22,5 @@ export const FIELD_SELECT_ITEMS = [
 	{ value: 'sum', name: 'Sum', group: 'Lookup' },
 	{ value: 'average', name: 'Average', group: 'Lookup' },
 	{ value: 'min', name: 'Min', group: 'Lookup' },
+	{ value: 'max', name: 'Max', group: 'Lookup' },
 ] as const

@@ -18,6 +18,7 @@
 	import UpdatedAt from './UpdatedAt.svelte'
 	import Currency from './Currency.svelte'
 	import Min from './Min.svelte'
+	import Max from './Max.svelte'
 
 	export let type: IFieldType
 	export let isNew = false
@@ -42,6 +43,7 @@
 		'created-at': CreatedAt,
 		'updated-at': UpdatedAt,
 		min: Min,
+		max: Max,
 	}
 </script>
 

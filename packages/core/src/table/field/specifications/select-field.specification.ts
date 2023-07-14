@@ -93,7 +93,7 @@ export class WithoutOption extends CompositeSpecification<Table, ITableSpecVisit
   }
 
   accept(v: ITableSpecVisitor): Result<void, string> {
-    v.witoutOption(this)
+    v.withoutOption(this)
     return Ok(undefined)
   }
 }

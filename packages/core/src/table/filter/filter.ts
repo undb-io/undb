@@ -102,6 +102,8 @@ import type { IUrlFilter } from '../field/fields/url/url.filter.js'
 import { urlFilter, urlFilterOperators, urlFilterValue } from '../field/fields/url/url.filter.js'
 import type { IMinFilter } from '../field/fields/min/min.filter.js'
 import { minFilter, minFilterOperators, minFilterValue } from '../field/fields/min/min.filter.js'
+import type { IMaxFilter } from '../field/fields/max/max.filter.js'
+import { maxFilter, maxFilterOperators, maxFilterValue } from '../field/fields/max/max.filter.js'
 import {
   DateFieldValue,
   NumberFieldValue,
@@ -178,6 +180,7 @@ export const filterValue = z.union([
   createdByFilterValue,
   updatedByFilterValue,
   minFilterValue,
+  maxFilterValue,
 ])
 export type IFilterValue = z.infer<typeof filterValue>
 
@@ -211,6 +214,7 @@ export const operaotrs = z.union([
   createdByFilterOperators,
   updatedByFilterOperators,
   minFilterOperators,
+  maxFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
 
@@ -244,6 +248,7 @@ const filter = z.discriminatedUnion('type', [
   createdByFilter,
   updatedByFilter,
   minFilter,
+  maxFilter,
 ])
 
 export type IFilter = z.infer<typeof filter>
@@ -348,7 +353,8 @@ const convertNumberFilter = (
     | ISumFilter
     | IAverageFilter
     | ICurrencyFilter
-    | IMinFilter,
+    | IMinFilter
+    | IMaxFilter,
 ): Option<CompositeSpecification> => {
   if (filter.value === undefined) {
     return None
@@ -587,6 +593,7 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
     case 'sum':
     case 'average':
     case 'min':
+    case 'max':
       return convertNumberFilter(filter)
     case 'collaborator':
     case 'created-by':
