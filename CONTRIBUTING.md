@@ -3,7 +3,7 @@ it's very easy to start with development.
 
 ## Prerequisite
 
-- [Node.js](https://nodejs.org/en), required verion >= 20.2.0
+- [Node.js](https://nodejs.org/en), required version >= 20.2.0
 - [pnpm](https://pnpm.io/), package management for undb, required version >= 8.0.0
 
 ## Setup steps
@@ -32,7 +32,7 @@ If you are first time to run undb, you should run bootstrap script.
 pnpm run bootstrap
 ```
 
-> note that if you are using some other node package manager like npm or yarn, it will throw an exeption
+> note that if you are using some other node package manager like npm or yarn, it will throw an exception
 
 ### Run dev script
 
