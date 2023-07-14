@@ -17,6 +17,7 @@
 	import WebhookListModal from '$lib/webhook/WebhookListModal.svelte'
 	import ErdModal from '$lib/erd/ErdModal.svelte'
 	import FormListDrawer from '$lib/form/FormListDrawer.svelte'
+	import FormEditorModal from '$lib/form/FormEditorModal.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -53,6 +54,7 @@
 <CreateField data={data.createField} />
 <WebhookListModal />
 <FormListDrawer />
+<FormEditorModal />
 {#if $erdModal.open}
 	<ErdModal />
 {/if}

@@ -44,4 +44,12 @@ export class FormFields extends ValueObject<Map<string, IFormField>> {
   public toJSON() {
     return Object.fromEntries(this.value)
   }
+
+  *[Symbol.iterator]() {
+    yield* Object.entries(this.toJSON)
+  }
+
+  public isRequired(fieldId: string) {
+    return !!this.value.get(fieldId)?.required
+  }
 }

@@ -1,5 +1,6 @@
 import { ValueObject } from '@undb/domain'
-import type { TableSchema } from '../value-objects/index.js'
+import type { Field } from '../field/field.type.js'
+import type { TableSchema, TableSchemaIdMap } from '../value-objects/index.js'
 import { FormFields } from './form-fields.vo.js'
 import { FormId } from './form-id.vo.js'
 import { FormName } from './form-name.vo.js'
@@ -21,6 +22,33 @@ export class Form extends ValueObject<IForm> {
 
   public set fields(fields: FormFields) {
     this.props.fields = fields
+  }
+
+  public getHiddenFields(schema: TableSchemaIdMap): Field[] {
+    const fields: Field[] = []
+
+    for (const [fieldId, formField] of this.fields) {
+      const field = schema.get(fieldId)
+      if (!!field && !field.controlled && formField.hidden) {
+        fields.push(field)
+      }
+    }
+
+    return fields
+  }
+  public getNotHiddenFields(schema: TableSchemaIdMap): Field[] {
+    const fields: Field[] = []
+
+    for (const [fieldId, field] of schema) {
+      if (field.controlled) continue
+
+      const hidden = this.fields.value.get(fieldId)?.hidden
+      if (!hidden) {
+        fields.push(field)
+      }
+    }
+
+    return fields
   }
 
   public static create(input: ICreateFormSchema, schema: TableSchema): Form {

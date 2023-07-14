@@ -77,3 +77,6 @@ export const importDataModal = createModal(IMPORT_DATA_MODAL)
 
 const ERD_MODAL = Symbol('ERD_MODAL')
 export const erdModal = createModal(ERD_MODAL)
+
+const FORM_EDITOR_MODAL = Symbol('FORM_EDITOR_MODAL')
+export const formEditorModal = createModal(FORM_EDITOR_MODAL)

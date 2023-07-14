@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { selectedForm } from '$lib/store/drawer'
+	import { formListDrawer, selectedForm } from '$lib/store/drawer'
+	import { formEditorModal } from '$lib/store/modal'
 	import type { Form } from '@undb/core'
 	import { Card, P } from 'flowbite-svelte'
 
@@ -8,7 +9,11 @@
 
 <Card
 	class="w-full !max-w-none shadow-sm cursor-pointer hover:shadow-md transition-all"
-	on:click={() => ($selectedForm = form)}
+	on:click={() => {
+		$selectedForm = form
+		formListDrawer.close()
+		formEditorModal.open()
+	}}
 >
 	<div class="flex items-center justify-between group">
 		<div class="flex flex-col gap-2">
