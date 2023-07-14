@@ -22,8 +22,8 @@ import type {
   ICollaboratorFieldQuerySchema,
   IColorFieldQuerySchema,
   ICountFieldQuerySchema,
-  ICreatedAtFieldQueryScheam,
-  ICreatedByFieldQueryScheam,
+  ICreatedAtFieldQuerySchema,
+  ICreatedByFieldQuerySchema,
   ICurrencyFieldQuerySchema,
   ICurrencySymbol,
   IDateFieldQuerySchema,
@@ -179,7 +179,7 @@ export class CreatedAtField extends Field {
     })
   }
 
-  toQuery(): ICreatedAtFieldQueryScheam {
+  toQuery(): ICreatedAtFieldQuerySchema {
     return {
       id: this.id,
       name: this.name,
@@ -206,7 +206,7 @@ export class CreatedByField extends Field {
     })
   }
 
-  toQuery(): ICreatedByFieldQueryScheam {
+  toQuery(): ICreatedByFieldQuerySchema {
     return {
       id: this.id,
       name: this.name,
