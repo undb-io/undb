@@ -61,13 +61,18 @@ export interface ClsStore {
   t: TFunction
   user: {
     userId: string
+    isAnonymous?: boolean
   }
 }
 
-export interface IClsService {
+export interface IClsService<S extends ClsStore = ClsStore> {
   getId(): string
-  get(): ClsStore
-  get<R = undefined, T extends RecursiveKeyOf<ClsStore> = any, P = DeepPropertyType<ClsStore, T>>(
-    key?: StringIfNever<T> | keyof ClsStore,
-  ): TypeIfUndefined<R, TypeIfUndefined<typeof key, ClsStore, AnyIfNever<P>>, R>
+  get(): S
+  get<R = undefined, T extends RecursiveKeyOf<S> = any, P = DeepPropertyType<S, T>>(
+    key?: StringIfNever<T> | keyof S,
+  ): TypeIfUndefined<R, TypeIfUndefined<typeof key, S, AnyIfNever<P>>, R>
+  set<T extends RecursiveKeyOf<S> = any, P extends DeepPropertyType<S, T> = any>(
+    key: StringIfNever<T> | keyof S,
+    value: AnyIfNever<P>,
+  ): void
 }
