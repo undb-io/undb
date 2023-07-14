@@ -62,7 +62,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
     const fieldId = field.id.value
     const columns = this.tableEntity.fields.getItems(false)
     const column = columns.find((c) => c.id === fieldId)
-    if (!column) throw new Error('missing undelying column')
+    if (!column) throw new Error('missing underlying column')
 
     return column
   }
