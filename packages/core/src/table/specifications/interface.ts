@@ -29,7 +29,7 @@ import type {
 } from '../field/specifications/select-field.specification.js'
 import { type Table } from '../table.js'
 import type {
-  WithWidgetSepecification,
+  WithWidgetSpecification,
   WithWidgetsLayout,
   WithoutWidgetSpecification,
 } from '../view/dashboard/specifications/widget.specification.js'
@@ -122,7 +122,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void
   foreignTableIdEqual(s: WithForeignTableId): void
 
-  withWidget(s: WithWidgetSepecification): void
+  withWidget(s: WithWidgetSpecification): void
   withoutWidget(s: WithoutWidgetSpecification): void
   withWidgetsLayout(s: WithWidgetsLayout): void
   withVisualizationName(s: WithVisualizationNameSpec): void

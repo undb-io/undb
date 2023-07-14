@@ -64,7 +64,7 @@ import type {
 } from '../specifications/index.js'
 import type {
   WithoutWidgetSpecification,
-  WithWidgetSepecification,
+  WithWidgetSpecification,
   WithWidgetsLayout,
 } from '../view/dashboard/specifications/widget.specification.js'
 import type {
@@ -179,7 +179,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   withAggregateFieldId(s: WithAggregateFieldId): void {}
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {}
   withReferenceFieldId(s: WithReferenceFieldId): void {}
-  withWidget(s: WithWidgetSepecification): void {}
+  withWidget(s: WithWidgetSpecification): void {}
   withNewFieldType(s: WithNewFieldType): void {}
   or(): this {
     return this

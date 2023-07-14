@@ -13,7 +13,7 @@ import { Calendar } from './calendar/index.js'
 import { Dashboard } from './dashboard/dashboard.vo.js'
 import {
   WithoutWidgetSpecification,
-  WithWidgetSepecification,
+  WithWidgetSpecification,
   WithWidgetsLayout,
 } from './dashboard/specifications/widget.specification.js'
 import type { ICreateWidgetSchema, IRelayoutWidgetSchema } from './dashboard/widget.schema.js'
@@ -378,7 +378,7 @@ export class ViewVO extends ValueObject<IView> {
     const dashboard = this.getOrCreateDashboard()
 
     const widget = Widget.create(input)
-    const spec = new WithWidgetSepecification(this, dashboard, widget)
+    const spec = new WithWidgetSpecification(this, dashboard, widget)
 
     return spec
   }
