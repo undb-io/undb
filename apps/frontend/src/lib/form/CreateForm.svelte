@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation'
 	import { t } from '$lib/i18n'
 	import { formDrawerMode } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
@@ -14,8 +15,9 @@
 	const table = getTable()
 
 	const createForm = trpc().table.form.create.mutation({
-		onSuccess(data, variables, context) {
+		async onSuccess(data, variables, context) {
 			$formDrawerMode = 'list'
+			await invalidate(`tables:${$table.id.value}`)
 		},
 	})
 

@@ -5,7 +5,7 @@
 
 	const table = getTable()
 
-	const forms = $table.forms.forms
+	$: forms = $table.forms.forms
 </script>
 
 <div class="h-full">

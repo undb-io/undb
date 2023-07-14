@@ -45,6 +45,6 @@ export const selectedWebhook = writable<IQueryWebhook | undefined>(undefined)
 const FORM_LIST_DRAWER = Symbol('FORM_LIST_DRAWER')
 export const formListDrawer = createDrawer(FORM_LIST_DRAWER)
 
-export const formDrawerMode = writable<'list' | 'create' | 'update'>('list')
+export const formDrawerMode = writable<'list' | 'create'>('list')
 
 export const selectedForm = writable<Form | undefined>(undefined)
