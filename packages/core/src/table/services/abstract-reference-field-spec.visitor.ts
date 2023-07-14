@@ -167,7 +167,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   optionsEqual(s: WithOptions): void {}
   optionEqual(s: WithOption): void {}
   newOption(s: WithNewOption): void {}
-  witoutOption(s: WithoutOption): void {}
+  withoutOption(s: WithoutOption): void {}
   withFieldName(s: WithFieldName): void {}
   withFieldDescription(s: WithFieldDescription): void {}
   withFieldDisplay(s: WithFieldDisplay): void {}
