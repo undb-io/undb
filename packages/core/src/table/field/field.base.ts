@@ -23,7 +23,7 @@ import type {
   IAbstractSelectField,
   IAggregateFieldType,
   IBaseField,
-  IBaseFieldQueryScheam,
+  IBaseFieldQuerySchema,
   IDateFieldType,
   IDateFieldTypes,
   IFieldType,
@@ -66,7 +66,7 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
     }
   }
 
-  public get json(): IBaseFieldQueryScheam {
+  public get json(): IBaseFieldQuerySchema {
     return {
       id: this.id.value,
       type: this.type,
