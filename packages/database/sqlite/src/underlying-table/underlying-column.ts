@@ -43,7 +43,7 @@ export class UnderlyingIdColumn extends UnderlyingColumn {
   buildTemp(tb: Knex.TableBuilder): void {}
 }
 
-export class UnderlyingAutoIncreamentColumn extends UnderlyingColumn {
+export class UnderlyingAutoIncrementColumn extends UnderlyingColumn {
   get name(): string {
     return INTERNAL_AUTO_INCREAMENT_ID_NAME
   }
