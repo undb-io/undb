@@ -528,7 +528,7 @@ export type ICreateFieldValueSchema_internal = z.infer<typeof createFieldValueSc
 export const createFieldsSchema_internal = z.array(createFieldValueSchema_internal)
 export type ICreateFieldsSchema_internal = z.infer<typeof createFieldsSchema_internal>
 
-export interface IBaseFieldQueryScheam {
+export interface IBaseFieldQuerySchema {
   id: string
   name: string
   display: boolean

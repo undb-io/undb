@@ -248,7 +248,7 @@ const rating: TemplateFunc = (h, props) => {
 	)
 }
 
-const autoIncreament: TemplateFunc = (h, props) => {
+const autoIncrement: TemplateFunc = (h, props) => {
 	const type = props.column.field.type as IFieldType
 	if (type !== 'auto-increment') return
 	const value = props.model.auto_increment as number | undefined
@@ -479,7 +479,7 @@ const max: TemplateFunc = (h, props) => {
 
 export const cellTemplateMap: Record<IFieldType, TemplateFunc> = {
 	attachment,
-	'auto-increment': autoIncreament,
+	'auto-increment': autoIncrement,
 	id,
 	date,
 	average,

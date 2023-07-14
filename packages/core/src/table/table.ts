@@ -22,7 +22,7 @@ import type { IMutateRecordValueSchema } from './record/record.schema.js'
 import { createRecordInputs } from './record/record.utils.js'
 import { WithRecordValues } from './record/specifications/record-values.specification.js'
 import { WithTableEmoji, WithTableName } from './specifications/index.js'
-import type { TableCompositeSpecificaiton } from './specifications/interface.js'
+import type { TableCompositeSpecification } from './specifications/interface.js'
 import type { IUpdateTableSchema } from './table.schema.js'
 import type { IUpdateTableSchemaSchema, TableId } from './value-objects/index.js'
 import { TableSchema } from './value-objects/index.js'
@@ -96,7 +96,7 @@ export class Table {
     return new Table()
   }
 
-  public getOrCreateDefaultView(viewName?: string): [ViewVO, Option<TableCompositeSpecificaiton>] {
+  public getOrCreateDefaultView(viewName?: string): [ViewVO, Option<TableCompositeSpecification>] {
     const defaultView = this.defaultView
     if (defaultView) return [defaultView, None]
 
@@ -147,14 +147,14 @@ export class Table {
     return this.views.getById(viewId).unwrapOrElse(() => this.defaultView)
   }
 
-  public setFilter(filters: IRootFilter | null, viewId?: string): Result<TableCompositeSpecificaiton, string> {
+  public setFilter(filters: IRootFilter | null, viewId?: string): Result<TableCompositeSpecification, string> {
     const view = this.mustGetView(viewId)
     const spec = new WithFilter(filters, view)
     spec.mutate(this).unwrap()
     return Ok(spec)
   }
 
-  public setSorts(sorts: ISorts | null, viewId?: string): Result<TableCompositeSpecificaiton, string> {
+  public setSorts(sorts: ISorts | null, viewId?: string): Result<TableCompositeSpecification, string> {
     const view = this.mustGetView(viewId)
     const spec = new WithSorts(new Sorts(sorts ?? []), view)
     spec.mutate(this).unwrap()
@@ -165,7 +165,7 @@ export class Table {
     fieldId: string,
     direction: ISortDirection,
     viewId?: string,
-  ): Result<TableCompositeSpecificaiton, string> {
+  ): Result<TableCompositeSpecification, string> {
     const view = this.mustGetView(viewId)
     const sorts = view.sorts?.setFieldSort(fieldId, direction) ?? new Sorts([{ fieldId, direction }])
     const spec = new WithSorts(sorts, view)
@@ -173,7 +173,7 @@ export class Table {
     return Ok(spec)
   }
 
-  public resetFieldSort(fieldId: string, viewId?: string): Result<TableCompositeSpecificaiton, string> {
+  public resetFieldSort(fieldId: string, viewId?: string): Result<TableCompositeSpecification, string> {
     const view = this.mustGetView(viewId)
     const sorts = view.sorts?.resetFieldSort(fieldId) ?? new Sorts([])
     const spec = new WithSorts(sorts, view)
@@ -181,20 +181,20 @@ export class Table {
     return Ok(spec)
   }
 
-  public updateName(name: string): TableCompositeSpecificaiton {
+  public updateName(name: string): TableCompositeSpecification {
     const spec = WithTableName.fromString(name)
     spec.mutate(this).unwrap()
     return spec
   }
 
-  public updateEmoji(emoji: string): TableCompositeSpecificaiton {
+  public updateEmoji(emoji: string): TableCompositeSpecification {
     const spec = WithTableEmoji.fromString(emoji)
     spec.mutate(this).unwrap()
     return spec
   }
 
-  public updateSchema(schema: IUpdateTableSchemaSchema): TableCompositeSpecificaiton {
-    const specs: TableCompositeSpecificaiton[] = []
+  public updateSchema(schema: IUpdateTableSchemaSchema): TableCompositeSpecification {
+    const specs: TableCompositeSpecification[] = []
     for (const field of schema) {
       const isNew = !field.id || !this.schema.fieldsIds.includes(field.id)
       if (isNew) {
@@ -225,8 +225,8 @@ export class Table {
     return and(...specs).unwrap()
   }
 
-  public update(input: IUpdateTableSchema): Option<TableCompositeSpecificaiton> {
-    const specs: TableCompositeSpecificaiton[] = []
+  public update(input: IUpdateTableSchema): Option<TableCompositeSpecification> {
+    const specs: TableCompositeSpecification[] = []
 
     if (isString(input.name)) {
       const spec = this.updateName(input.name)
@@ -245,12 +245,12 @@ export class Table {
     return and(...specs)
   }
 
-  private mustGetFielsOrder(view: ViewVO): ViewFieldsOrder {
+  private mustGetFieldsOrder(view: ViewVO): ViewFieldsOrder {
     return view.fieldsOrder ?? this.schema.defaultFieldsOrder
   }
 
   public getFieldsOrder(view: ViewVO): string[] {
-    let { order } = this.mustGetFielsOrder(view)
+    let { order } = this.mustGetFieldsOrder(view)
     const pinnedFields = view.pinnedFields
     const left = pinnedFields?.left ?? []
     const right = pinnedFields?.right ?? []
@@ -286,15 +286,15 @@ export class Table {
     return values.map((value) => this.createRecord(value.id, value.values))
   }
 
-  public createField(viewId: string | undefined, input: ICreateFieldSchema, at?: number): TableCompositeSpecificaiton {
-    const specs: Option<TableCompositeSpecificaiton>[] = []
+  public createField(viewId: string | undefined, input: ICreateFieldSchema, at?: number): TableCompositeSpecification {
+    const specs: Option<TableCompositeSpecification>[] = []
     const newFieldSpecs = this.schema.createField(input)
 
     const selectedView = this.mustGetView(viewId)
 
     for (const spec of newFieldSpecs) {
       for (const view of this.views.views) {
-        const viewFieldsOrder = this.mustGetFielsOrder(view).addAt(
+        const viewFieldsOrder = this.mustGetFieldsOrder(view).addAt(
           spec.field.id.value,
           view.id.equals(selectedView.id) ? at : undefined,
         )
@@ -310,7 +310,7 @@ export class Table {
     return andOptions(...specs).unwrap()
   }
 
-  public updateField(id: string, input: IUpdateFieldSchema): Option<TableCompositeSpecificaiton> {
+  public updateField(id: string, input: IUpdateFieldSchema): Option<TableCompositeSpecification> {
     const field = this.schema.getFieldById(id).unwrap()
 
     if (input.type && field.type !== input.type) {
@@ -320,15 +320,15 @@ export class Table {
     return field.update(input as any)
   }
 
-  public duplicateField({ id, includesValues }: IDuplicatedFieldSchema): TableCompositeSpecificaiton {
+  public duplicateField({ id, includesValues }: IDuplicatedFieldSchema): TableCompositeSpecification {
     const field = this.schema.getFieldById(id).into()
     if (!field) throw new FieldNotFoundException()
 
     const duplicated = field.duplicate(this.schema.getNextFieldName(field.name.value))
     const spec = new WithDuplicatedField(duplicated, field, includesValues)
-    const specs: Option<TableCompositeSpecificaiton>[] = [Some(spec)]
+    const specs: Option<TableCompositeSpecification>[] = [Some(spec)]
     for (const view of this.views.views) {
-      const viewFieldsOrder = this.mustGetFielsOrder(view).addAt(duplicated.id.value, undefined)
+      const viewFieldsOrder = this.mustGetFieldsOrder(view).addAt(duplicated.id.value, undefined)
       const vo = new WithViewFieldsOrder(viewFieldsOrder, view)
       vo.mutate(this).unwrap()
       specs.push(Some(vo))
@@ -337,7 +337,7 @@ export class Table {
     return andOptions(...specs).unwrap()
   }
 
-  public removeField(id: string): TableCompositeSpecificaiton {
+  public removeField(id: string): TableCompositeSpecification {
     const spec = this.schema.removeField(id)
     spec.mutate(this).unwrap()
 
@@ -346,7 +346,7 @@ export class Table {
     return andOptions(Some(spec), viewsSpec).unwrap()
   }
 
-  public createView(input: ICreateViewSchema): TableCompositeSpecificaiton {
+  public createView(input: ICreateViewSchema): TableCompositeSpecification {
     const s1 = this.views.createView(input)
     const s2 = this.viewsOrder.addView(s1.view)
     const spec = s1.and(s2)
@@ -355,7 +355,7 @@ export class Table {
     return spec
   }
 
-  public createWidget(viewId: string, input: ICreateWidgetSchema): TableCompositeSpecificaiton {
+  public createWidget(viewId: string, input: ICreateWidgetSchema): TableCompositeSpecification {
     const view = this.mustGetView(viewId)
 
     const spec = view.createWidget(input)
@@ -364,7 +364,7 @@ export class Table {
     return spec
   }
 
-  public deleteWidget(viewId: string, widgetId: string): TableCompositeSpecificaiton {
+  public deleteWidget(viewId: string, widgetId: string): TableCompositeSpecification {
     const view = this.mustGetView(viewId)
 
     const spec = view.deleteWidget(widgetId)
@@ -373,8 +373,8 @@ export class Table {
     return spec
   }
 
-  public duplicateView(id: string): TableCompositeSpecificaiton {
-    const s1 = this.views.duplcateView(id)
+  public duplicateView(id: string): TableCompositeSpecification {
+    const s1 = this.views.duplicateView(id)
     const s2 = this.viewsOrder.addView(s1.view)
     const spec = s1.and(s2)
     spec.mutate(this).unwrap()
@@ -382,7 +382,7 @@ export class Table {
     return spec
   }
 
-  public updateViewName(input: IUpdateViewNameSchema): TableCompositeSpecificaiton {
+  public updateViewName(input: IUpdateViewNameSchema): TableCompositeSpecification {
     const view = this.mustGetView(input.id)
     const spec = view.updateName(input.name)
     spec.mutate(this).unwrap()
@@ -390,7 +390,7 @@ export class Table {
     return spec
   }
 
-  public removeView(id: string): TableCompositeSpecificaiton {
+  public removeView(id: string): TableCompositeSpecification {
     const s1 = this.views.removeView(id)
     const s2 = this.viewsOrder.removeView(s1.view)
     const spec = andOptions(Some(s1), s2)
@@ -399,42 +399,42 @@ export class Table {
     return spec.unwrap()
   }
 
-  public setFieldWidth(input: ISetFieldWidthSchema): TableCompositeSpecificaiton {
+  public setFieldWidth(input: ISetFieldWidthSchema): TableCompositeSpecification {
     const view = this.mustGetView(input.viewId)
     const spec = view.setFieldWidth(input.fieldId, input.width)
     spec.mutate(this)
     return spec
   }
 
-  public switchDisplayType(input: ISwitchDisplayTypeSchema): TableCompositeSpecificaiton {
+  public switchDisplayType(input: ISwitchDisplayTypeSchema): TableCompositeSpecification {
     const view = this.mustGetView(input.viewId)
     const spec = view.switchDisplayType(input.displayType)
     spec.mutate(this)
     return spec
   }
 
-  public setRowHeight(input: ISetRowHeight): TableCompositeSpecificaiton {
+  public setRowHeight(input: ISetRowHeight): TableCompositeSpecification {
     const view = this.mustGetView(input.viewId)
     const spec = view.setRowHeight(input.rowHeight)
     spec.mutate(this)
     return spec
   }
 
-  public setFieldVisibility(input: ISetFieldVisibilitySchema): TableCompositeSpecificaiton {
+  public setFieldVisibility(input: ISetFieldVisibilitySchema): TableCompositeSpecification {
     const view = this.mustGetView(input.viewId)
     const spec = view.setFieldVisibility(input.fieldId, input.hidden)
     spec.mutate(this)
     return spec
   }
 
-  public setPinnedFields(input: ISetPinnedFieldsSchema): TableCompositeSpecificaiton {
+  public setPinnedFields(input: ISetPinnedFieldsSchema): TableCompositeSpecification {
     const view = this.mustGetView(input.viewId)
     const spec = view.setPinnedFields(input.pinnedFields)
     spec.mutate(this)
     return spec
   }
 
-  public setKanbanField(input: ISetKanbanFieldSchema): TableCompositeSpecificaiton {
+  public setKanbanField(input: ISetKanbanFieldSchema): TableCompositeSpecification {
     const view = this.mustGetView(input.viewId)
     const field = this.schema.getFieldById(input.field).unwrap()
     const spec = view.setKanbanFieldSpec(field.id)
@@ -442,7 +442,7 @@ export class Table {
     return spec
   }
 
-  public setGanttField(input: ISetGanttFieldSchema): TableCompositeSpecificaiton {
+  public setGanttField(input: ISetGanttFieldSchema): TableCompositeSpecification {
     const view = this.mustGetView(input.viewId)
     const field = this.schema.getFieldById(input.field).unwrap()
     const spec = view.setGanttFieldSpec(field.id)
@@ -450,7 +450,7 @@ export class Table {
     return spec
   }
 
-  public setCalendarField(input: ISetCalendarFieldSchema): TableCompositeSpecificaiton {
+  public setCalendarField(input: ISetCalendarFieldSchema): TableCompositeSpecification {
     const view = this.mustGetView(input.viewId)
     const field = this.schema.getFieldById(input.field).unwrap()
     const spec = view.setCalendarFieldSpec(field.id)
@@ -458,7 +458,7 @@ export class Table {
     return spec
   }
 
-  public setTreeViewField(input: ISetTreeViewFieldSchema): TableCompositeSpecificaiton {
+  public setTreeViewField(input: ISetTreeViewFieldSchema): TableCompositeSpecification {
     const view = this.mustGetView(input.viewId)
     const field = this.schema.getFieldById(input.field).unwrap()
     const spec = view.setTreeViewFieldSpec(field.id)
@@ -466,21 +466,21 @@ export class Table {
     return spec
   }
 
-  public setShowSystemFields(viewId: string | undefined, showSystemFields: boolean): TableCompositeSpecificaiton {
+  public setShowSystemFields(viewId: string | undefined, showSystemFields: boolean): TableCompositeSpecification {
     const view = this.mustGetView(viewId)
     const spec = new WithShowSystemFieldsSpec(view, showSystemFields)
     spec.mutate(this)
     return spec
   }
 
-  public moveView(input: IMoveViewSchema): TableCompositeSpecificaiton {
+  public moveView(input: IMoveViewSchema): TableCompositeSpecification {
     const moved = this.viewsOrder.move(input.from, input.to)
     return WithViewsOrder.fromArray(moved.order)
   }
 
-  public moveField(input: IMoveFieldSchema): TableCompositeSpecificaiton {
+  public moveField(input: IMoveFieldSchema): TableCompositeSpecification {
     const [view, viewSpec] = this.getOrCreateDefaultView(input.viewId)
-    const viewFieldsOrder = this.mustGetFielsOrder(view).move(input.from, input.to)
+    const viewFieldsOrder = this.mustGetFieldsOrder(view).move(input.from, input.to)
 
     const spec = new WithViewFieldsOrder(viewFieldsOrder, view)
     spec.mutate(this)
@@ -488,7 +488,7 @@ export class Table {
     return andOptions(viewSpec, Some(spec)).unwrap()
   }
 
-  public reorderOption(input: IReorderOptionsSchema): TableCompositeSpecificaiton {
+  public reorderOption(input: IReorderOptionsSchema): TableCompositeSpecification {
     const field = this.schema.getFieldByIdOfType(input.fieldId, SelectField).unwrap()
 
     const spec = field.reorder(input.from, input.to)
@@ -497,7 +497,7 @@ export class Table {
     return spec
   }
 
-  public createOption(fieldId: string, input: ICreateOptionSchema): TableCompositeSpecificaiton {
+  public createOption(fieldId: string, input: ICreateOptionSchema): TableCompositeSpecification {
     const field = this.schema.getFieldByIdOfType(fieldId, SelectField).unwrap()
 
     const spec = field.createOption(input)
@@ -506,7 +506,7 @@ export class Table {
     return spec
   }
 
-  public updateOption(fieldId: string, optionKey: string, input: IUpdateOptionSchema): TableCompositeSpecificaiton {
+  public updateOption(fieldId: string, optionKey: string, input: IUpdateOptionSchema): TableCompositeSpecification {
     const field = this.schema.getFieldByIdOfType(fieldId, SelectField).unwrap()
 
     const spec = field.updateOption(optionKey, input)
@@ -515,7 +515,7 @@ export class Table {
     return spec
   }
 
-  public removeOption(fieldId: string, id: string): TableCompositeSpecificaiton {
+  public removeOption(fieldId: string, id: string): TableCompositeSpecification {
     const field = this.schema.getFieldByIdOfType(fieldId, SelectField).unwrap()
 
     const spec = field.removeOption(id)
@@ -524,7 +524,7 @@ export class Table {
     return spec
   }
 
-  public relayoutWidgets(viewId: string, widgets: IRelayoutWidgetSchema[]): TableCompositeSpecificaiton {
+  public relayoutWidgets(viewId: string, widgets: IRelayoutWidgetSchema[]): TableCompositeSpecification {
     const view = this.mustGetView(viewId)
 
     const spec = view.relayoutWidgets(widgets)
@@ -533,8 +533,8 @@ export class Table {
     return spec
   }
 
-  public updateVisualization(input: IUpdateVisualizationSchema): TableCompositeSpecificaiton {
-    const specs: TableCompositeSpecificaiton[] = []
+  public updateVisualization(input: IUpdateVisualizationSchema): TableCompositeSpecification {
+    const specs: TableCompositeSpecification[] = []
     if (isString(input.name)) {
       const spec = new WithVisualizationNameSpec(input.id, new VisualizationName({ value: input.name }))
       specs.push(spec)

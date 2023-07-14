@@ -5,7 +5,7 @@ import type { Option } from 'oxide.ts'
 import { Some } from 'oxide.ts'
 import type { ParentField, ReferenceField, TreeField, WithForeignTableId } from '../field/index.js'
 import { FieldId, WithSymmetricReferenceField } from '../field/index.js'
-import type { TableCompositeSpecificaiton } from '../specifications/index.js'
+import type { TableCompositeSpecification } from '../specifications/index.js'
 import type { Table } from '../table.js'
 import { AbstractReferenceFieldSpecVisitor } from './abstract-reference-field-spec.visitor.js'
 
@@ -14,7 +14,7 @@ export class ForeignTableReferenceHandler extends AbstractReferenceFieldSpecVisi
     super()
   }
 
-  #specs: Option<TableCompositeSpecificaiton>[] = []
+  #specs: Option<TableCompositeSpecification>[] = []
 
   get spec() {
     return andOptions(...this.#specs)

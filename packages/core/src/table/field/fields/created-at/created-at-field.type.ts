@@ -24,7 +24,7 @@ export type IUpdateCreatedAtFieldInput = z.infer<typeof updateCreatedAtFieldSche
 export const createdAtFieldQuerySchema = baseFieldQuerySchema
   .merge(createdAtTypeObjectSchema)
   .merge(createdAtObjectSchema)
-export type ICreatedAtFieldQueryScheam = z.infer<typeof createdAtFieldQuerySchema>
+export type ICreatedAtFieldQuerySchema = z.infer<typeof createdAtFieldQuerySchema>
 
 export const createdAtFieldValue = z.date()
 export type ICreatedAtFieldValue = z.infer<typeof createdAtFieldValue>

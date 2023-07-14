@@ -7,13 +7,13 @@ import { FieldId } from '../field/index.js'
 import type { IFilterOrGroupList, IRootFilter } from '../filter/index.js'
 import { RootFilter } from '../filter/index.js'
 import { WithFilter } from '../specifications/index.js'
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import type { TableCompositeSpecification } from '../specifications/interface.js'
 import type { VisualizationVO } from '../visualization/visualization.vo.js'
 import { Calendar } from './calendar/index.js'
 import { Dashboard } from './dashboard/dashboard.vo.js'
 import {
   WithoutWidgetSpecification,
-  WithWidgetSepecification,
+  WithWidgetSpecification,
   WithWidgetsLayout,
 } from './dashboard/specifications/widget.specification.js'
 import type { ICreateWidgetSchema, IRelayoutWidgetSchema } from './dashboard/widget.schema.js'
@@ -296,43 +296,43 @@ export class ViewVO extends ValueObject<IView> {
     return this.fieldOptions.getWidth(fieldId)
   }
 
-  public setFieldWidth(fieldId: string, width: number): TableCompositeSpecificaiton {
+  public setFieldWidth(fieldId: string, width: number): TableCompositeSpecification {
     return new WithFieldWidth(fieldId, this, width)
   }
 
-  public updateName(name: string): TableCompositeSpecificaiton {
+  public updateName(name: string): TableCompositeSpecification {
     return new WithViewName(this, ViewName.create(name))
   }
 
-  public switchDisplayType(type: IViewDisplayType): TableCompositeSpecificaiton {
+  public switchDisplayType(type: IViewDisplayType): TableCompositeSpecification {
     return new WithDisplayType(this, type)
   }
 
-  public setRowHeight(rowHeight: IViewRowHeight): TableCompositeSpecificaiton {
+  public setRowHeight(rowHeight: IViewRowHeight): TableCompositeSpecification {
     return new WithRowHeight(this, ViewRowHeight.from(rowHeight))
   }
 
-  public setFieldVisibility(fieldId: string, hidden: boolean): TableCompositeSpecificaiton {
+  public setFieldVisibility(fieldId: string, hidden: boolean): TableCompositeSpecification {
     return new WithFieldVisibility(fieldId, this, hidden)
   }
 
-  public setPinnedFields(pf: IViewPinnedFields): TableCompositeSpecificaiton {
+  public setPinnedFields(pf: IViewPinnedFields): TableCompositeSpecification {
     return new WithViewPinnedFields(new ViewPinnedFields(pf), this)
   }
 
-  public setKanbanFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
+  public setKanbanFieldSpec(fieldId: FieldId): TableCompositeSpecification {
     return new WithKanbanField(this, fieldId)
   }
 
-  public setGanttFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
+  public setGanttFieldSpec(fieldId: FieldId): TableCompositeSpecification {
     return new WithGanttField(this, fieldId)
   }
 
-  public setCalendarFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
+  public setCalendarFieldSpec(fieldId: FieldId): TableCompositeSpecification {
     return new WithCalendarField(this, fieldId)
   }
 
-  public setTreeViewFieldSpec(fieldId: FieldId): TableCompositeSpecificaiton {
+  public setTreeViewFieldSpec(fieldId: FieldId): TableCompositeSpecification {
     return new WithTreeViewField(this, fieldId)
   }
 
@@ -374,16 +374,16 @@ export class ViewVO extends ValueObject<IView> {
     return this.props.dashboard
   }
 
-  public createWidget(input: ICreateWidgetSchema): TableCompositeSpecificaiton {
+  public createWidget(input: ICreateWidgetSchema): TableCompositeSpecification {
     const dashboard = this.getOrCreateDashboard()
 
     const widget = Widget.create(input)
-    const spec = new WithWidgetSepecification(this, dashboard, widget)
+    const spec = new WithWidgetSpecification(this, dashboard, widget)
 
     return spec
   }
 
-  public deleteWidget(widgetId: string): TableCompositeSpecificaiton {
+  public deleteWidget(widgetId: string): TableCompositeSpecification {
     const dashboard = this.getOrCreateDashboard()
 
     const spec = new WithoutWidgetSpecification(this, dashboard, widgetId)
@@ -391,7 +391,7 @@ export class ViewVO extends ValueObject<IView> {
     return spec
   }
 
-  public relayoutWidgets(widgets: IRelayoutWidgetSchema[]): TableCompositeSpecificaiton {
+  public relayoutWidgets(widgets: IRelayoutWidgetSchema[]): TableCompositeSpecification {
     const dashboard = this.getOrCreateDashboard()
 
     const spec = new WithWidgetsLayout(this, dashboard, widgets)
@@ -414,8 +414,8 @@ export class ViewVO extends ValueObject<IView> {
     this.props.filter = filter ? new RootFilter(filter) : undefined
   }
 
-  public removeField(id: FieldId): Option<TableCompositeSpecificaiton> {
-    const specs: TableCompositeSpecificaiton[] = []
+  public removeField(id: FieldId): Option<TableCompositeSpecification> {
+    const specs: TableCompositeSpecification[] = []
     const kanban = this.kanban.map((kanban) => kanban.removeField(id)).flatten()
     if (kanban.isSome()) {
       this.kanban = kanban

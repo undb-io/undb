@@ -9,7 +9,7 @@ import { LayoutVO } from '../layout.vo.js'
 import type { IRelayoutWidgetSchema } from '../widget.schema.js'
 import type { Widget } from '../widget.vo.js'
 
-export class WithWidgetSepecification extends CompositeSpecification<Table, ITableSpecVisitor> {
+export class WithWidgetSpecification extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(public readonly view: ViewVO, public readonly dashboard: Dashboard, public readonly widget: Widget) {
     super()
   }

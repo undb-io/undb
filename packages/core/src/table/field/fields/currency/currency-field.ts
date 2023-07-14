@@ -3,7 +3,7 @@ import { None, Some, type Option } from 'oxide.ts'
 import { z } from 'zod'
 import type { RecordValueJSON } from '../../../record/record.schema.js'
 import type { IRecordDisplayValues } from '../../../record/record.type.js'
-import type { TableCompositeSpecificaiton } from '../../../specifications/index.js'
+import type { TableCompositeSpecification } from '../../../specifications/index.js'
 import { BaseField } from '../../field.base.js'
 import type { Field } from '../../field.type.js'
 import type { IFieldVisitor } from '../../field.visitor.js'
@@ -73,7 +73,7 @@ export class CurrencyField extends BaseField<ICurrencyField> {
     return { operator, value, path: this.id.value, type: 'currency' }
   }
 
-  private updateCurrencySymbol(input: IUpdateCurrencyFieldInput): Option<TableCompositeSpecificaiton> {
+  private updateCurrencySymbol(input: IUpdateCurrencyFieldInput): Option<TableCompositeSpecification> {
     if (isString(input.symbol)) {
       return Some(new WithCurrencySymbol(this.type, this.id.value, new CurrencySymbol({ value: input.symbol })))
     }

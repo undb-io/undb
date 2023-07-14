@@ -2,7 +2,7 @@ import type { Field } from '@undb/core'
 import type { IUnderlyingColumn } from '../interfaces/underlying-column.js'
 import {
   UnderlyingAttachmentColumn,
-  UnderlyingAutoIncreamentColumn,
+  UnderlyingAutoIncrementColumn,
   UnderlyingAverageColumn,
   UnderlyingBoolColumn,
   UnderlyingCollaboratorColumn,
@@ -44,7 +44,7 @@ export class UnderlyingColumnFactory {
       case 'updated-at':
         return new UnderlyingUpdatedAtColumn(field.id.value, tableName)
       case 'auto-increment':
-        return new UnderlyingAutoIncreamentColumn(field.id.value, tableName)
+        return new UnderlyingAutoIncrementColumn(field.id.value, tableName)
       case 'string':
         return new UnderlyingStringColumn(field.id.value, tableName)
       case 'email':

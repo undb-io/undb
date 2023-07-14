@@ -4,7 +4,7 @@ import { INTERNAL_COLUMN_ID_NAME, INTERNAL_COLUMN_UPDATED_AT_NAME } from '@undb/
 import type { IUnderlyingColumnBuilder } from '../interfaces/underlying-table.builder.js'
 import { UnderlyingColumnFactory } from './underlying-column.factory.js'
 import {
-  UnderlyingAutoIncreamentColumn,
+  UnderlyingAutoIncrementColumn,
   UnderlyingCreatedAtColumn,
   UnderlyingCreatedByColumn,
   UnderlyingDeletedAtColumn,
@@ -35,7 +35,7 @@ export class UnderlyingColumnBuilder implements IUnderlyingColumnBuilder {
   }
 
   createAutoIncrement(): this {
-    new UnderlyingAutoIncreamentColumn(undefined, this.tableName).build(this.tb)
+    new UnderlyingAutoIncrementColumn(undefined, this.tableName).build(this.tb)
 
     return this
   }

@@ -64,7 +64,7 @@ import type {
 } from '../specifications/index.js'
 import type {
   WithoutWidgetSpecification,
-  WithWidgetSepecification,
+  WithWidgetSpecification,
   WithWidgetsLayout,
 } from '../view/dashboard/specifications/widget.specification.js'
 import type {
@@ -167,7 +167,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   optionsEqual(s: WithOptions): void {}
   optionEqual(s: WithOption): void {}
   newOption(s: WithNewOption): void {}
-  witoutOption(s: WithoutOption): void {}
+  withoutOption(s: WithoutOption): void {}
   withFieldName(s: WithFieldName): void {}
   withFieldDescription(s: WithFieldDescription): void {}
   withFieldDisplay(s: WithFieldDisplay): void {}
@@ -179,7 +179,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   withAggregateFieldId(s: WithAggregateFieldId): void {}
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {}
   withReferenceFieldId(s: WithReferenceFieldId): void {}
-  withWidget(s: WithWidgetSepecification): void {}
+  withWidget(s: WithWidgetSpecification): void {}
   withNewFieldType(s: WithNewFieldType): void {}
   or(): this {
     return this

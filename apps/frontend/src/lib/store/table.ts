@@ -107,14 +107,14 @@ export const currentVisualization = derived([currentView, currentVisualizationId
 	$currentVisualizationId ? $view.getVisualization($currentVisualizationId) : undefined,
 )
 
-type INewTableScheam = {
+type INewTableSchema = {
 	tableId?: string
 	tableName?: string
 	schema?: ICreateTableSchemaInput | IUpdateTableSchemaSchema
 }
 
 const createNewTableSchema = () => {
-	const { update, set, subscribe } = writable<INewTableScheam>({})
+	const { update, set, subscribe } = writable<INewTableSchema>({})
 
 	const reset = () => set({})
 
@@ -129,7 +129,7 @@ const createNewTableSchema = () => {
 
 export const newTableSchema = createNewTableSchema()
 
-const getTableFields = ($table: Table | null, $newTableSchema: INewTableScheam) => {
+const getTableFields = ($table: Table | null, $newTableSchema: INewTableSchema) => {
 	const newTableFields = ($newTableSchema.schema ?? []) as IQueryFieldSchema[]
 	if (!$table) {
 		return newTableFields
@@ -143,7 +143,7 @@ const getTableFields = ($table: Table | null, $newTableSchema: INewTableScheam) 
 	return uniqBy([...tableFields, ...newTableFields], 'id')
 }
 
-const _getForeignTableFields = ($table: Table | null, $newTableSchema: INewTableScheam) => {
+const _getForeignTableFields = ($table: Table | null, $newTableSchema: INewTableSchema) => {
 	const newTableFields = ($newTableSchema.schema ?? []) as IQueryFieldSchema[]
 	if (!$table) {
 		return newTableFields

@@ -4,7 +4,7 @@ import type { Option as O } from 'oxide.ts'
 import { OptionKey } from '../option/option-key.vo.js'
 import { Option } from '../option/option.js'
 import { Options } from '../option/options.js'
-import type { TableCompositeSpecificaiton } from '../specifications/index.js'
+import type { TableCompositeSpecification } from '../specifications/index.js'
 import type { BaseField } from './field.base.js'
 import type { IUpdateFieldSchema, SelectFieldTypes } from './field.type.js'
 import { canDisplay, isControlledFieldType } from './field.util.js'
@@ -22,8 +22,8 @@ import { WithDisplayFields, WithForeignTableId } from './specifications/referenc
 import { WithNewOption, WithOption, WithOptions, WithoutOption } from './specifications/select-field.specification.js'
 
 export class UpdateFieldHelper {
-  static updateField(fromField: BaseField, input: IUpdateFieldSchema): O<TableCompositeSpecificaiton> {
-    const specs: TableCompositeSpecificaiton[] = []
+  static updateField(fromField: BaseField, input: IUpdateFieldSchema): O<TableCompositeSpecification> {
+    const specs: TableCompositeSpecification[] = []
 
     const typeChanged = input.type !== fromField.type
     if (typeChanged) {

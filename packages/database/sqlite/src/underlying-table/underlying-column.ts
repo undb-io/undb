@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import type { Knex } from '@mikro-orm/better-sqlite'
 import {
-  INTERNAL_INCREAMENT_ID_NAME as INTERNAL_AUTO_INCREAMENT_ID_NAME,
+  INTERNAL_INCREMENT_ID_NAME as INTERNAL_AUTO_INCREAMENT_ID_NAME,
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
@@ -43,7 +43,7 @@ export class UnderlyingIdColumn extends UnderlyingColumn {
   buildTemp(tb: Knex.TableBuilder): void {}
 }
 
-export class UnderlyingAutoIncreamentColumn extends UnderlyingColumn {
+export class UnderlyingAutoIncrementColumn extends UnderlyingColumn {
   get name(): string {
     return INTERNAL_AUTO_INCREAMENT_ID_NAME
   }
