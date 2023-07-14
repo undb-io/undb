@@ -135,4 +135,4 @@ export interface ITableSpecVisitor extends ISpecVisitor {
 
 export type ITableSpec = ISpecification<Table, ITableSpecVisitor>
 
-export type TableCompositeSpecificaiton = CompositeSpecification<Table, ITableSpecVisitor>
+export type TableCompositeSpecification = CompositeSpecification<Table, ITableSpecVisitor>

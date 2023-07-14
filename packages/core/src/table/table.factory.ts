@@ -3,7 +3,7 @@ import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { ClsStore } from '../cls/cls.js'
 import { WithTableEmoji, WithTableId, WithTableName, WithTableSchema } from './specifications/index.js'
-import type { TableCompositeSpecificaiton } from './specifications/interface.js'
+import type { TableCompositeSpecification } from './specifications/interface.js'
 import { newTableSpec } from './specifications/specifications.js'
 import type { IQueryTable } from './table.js'
 import { Table } from './table.js'
@@ -12,9 +12,9 @@ import type { ICreateTableSchemaInput } from './value-objects/index.js'
 import { WithTableViews, WithViewsOrder } from './view/index.js'
 
 export class TableFactory {
-  static create(...specs: TableCompositeSpecificaiton[]): Result<Table, string>
-  static create(spec: TableCompositeSpecificaiton): Result<Table, string>
-  static create(spec: TableCompositeSpecificaiton | TableCompositeSpecificaiton[]): Result<Table, string> {
+  static create(...specs: TableCompositeSpecification[]): Result<Table, string>
+  static create(spec: TableCompositeSpecification): Result<Table, string>
+  static create(spec: TableCompositeSpecification | TableCompositeSpecification[]): Result<Table, string> {
     if (Array.isArray(spec)) {
       return and(...spec)
         .unwrap()

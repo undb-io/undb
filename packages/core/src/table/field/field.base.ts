@@ -9,7 +9,7 @@ import { OptionKey } from '../option/option-key.vo.js'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from '../option/option.schema.js'
 import type { Options } from '../option/options.js'
 import type { IRecordDisplayValues, Record, RecordValueJSON } from '../record/index.js'
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js'
+import type { TableCompositeSpecification } from '../specifications/interface.js'
 import type { TableSchema, TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
 import type { IBaseCreateFieldSchema } from './field-base.schema.js'
 import { DEFAULT_DATE_FORMAT } from './field.constants.js'
@@ -180,7 +180,7 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
     return !!this.issues.length
   }
 
-  public update(input: IUpdateFieldSchema): Option<TableCompositeSpecificaiton> {
+  public update(input: IUpdateFieldSchema): Option<TableCompositeSpecification> {
     return UpdateFieldHelper.updateField(this, input)
   }
 }
