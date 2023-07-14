@@ -245,12 +245,12 @@ export class Table {
     return and(...specs)
   }
 
-  private mustGetFielsOrder(view: ViewVO): ViewFieldsOrder {
+  private mustGetFieldsOrder(view: ViewVO): ViewFieldsOrder {
     return view.fieldsOrder ?? this.schema.defaultFieldsOrder
   }
 
   public getFieldsOrder(view: ViewVO): string[] {
-    let { order } = this.mustGetFielsOrder(view)
+    let { order } = this.mustGetFieldsOrder(view)
     const pinnedFields = view.pinnedFields
     const left = pinnedFields?.left ?? []
     const right = pinnedFields?.right ?? []
@@ -294,7 +294,7 @@ export class Table {
 
     for (const spec of newFieldSpecs) {
       for (const view of this.views.views) {
-        const viewFieldsOrder = this.mustGetFielsOrder(view).addAt(
+        const viewFieldsOrder = this.mustGetFieldsOrder(view).addAt(
           spec.field.id.value,
           view.id.equals(selectedView.id) ? at : undefined,
         )
@@ -328,7 +328,7 @@ export class Table {
     const spec = new WithDuplicatedField(duplicated, field, includesValues)
     const specs: Option<TableCompositeSpecification>[] = [Some(spec)]
     for (const view of this.views.views) {
-      const viewFieldsOrder = this.mustGetFielsOrder(view).addAt(duplicated.id.value, undefined)
+      const viewFieldsOrder = this.mustGetFieldsOrder(view).addAt(duplicated.id.value, undefined)
       const vo = new WithViewFieldsOrder(viewFieldsOrder, view)
       vo.mutate(this).unwrap()
       specs.push(Some(vo))
@@ -480,7 +480,7 @@ export class Table {
 
   public moveField(input: IMoveFieldSchema): TableCompositeSpecification {
     const [view, viewSpec] = this.getOrCreateDefaultView(input.viewId)
-    const viewFieldsOrder = this.mustGetFielsOrder(view).move(input.from, input.to)
+    const viewFieldsOrder = this.mustGetFieldsOrder(view).move(input.from, input.to)
 
     const spec = new WithViewFieldsOrder(viewFieldsOrder, view)
     spec.mutate(this)
