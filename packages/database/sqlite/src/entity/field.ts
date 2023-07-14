@@ -45,7 +45,7 @@ import type {
   ITimeFormat,
   ITreeFieldQuerySchema,
   IUpdatedAtFieldQuerySchema,
-  IUpdatedByFieldQueryScheam,
+  IUpdatedByFieldQuerySchema,
   IUrlFieldQuerySchema,
   IMinFieldQuerySchema,
   IMaxFieldQuerySchema,
@@ -231,7 +231,7 @@ export class UpdatedByField extends Field {
     })
   }
 
-  toQuery(): IUpdatedByFieldQueryScheam {
+  toQuery(): IUpdatedByFieldQuerySchema {
     return {
       id: this.id,
       name: this.name,
