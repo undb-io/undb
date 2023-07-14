@@ -12,7 +12,7 @@ import {
   INTERNAL_COLUMN_UPDATED_BY_NAME,
   INTERNAL_COLUMN_UPDATED_BY_PROFILE_NAME,
   INTERNAL_DISPLAY_VALUES_NAME,
-  INTERNAL_INCREAMENT_ID_NAME,
+  INTERNAL_INCREMENT_ID_NAME,
   collaboratorProfile,
 } from '../field/index.js'
 import { recordDisplayValues } from './record.type.js'
@@ -26,7 +26,7 @@ export const internalRecordValues = z.object({
   [INTERNAL_COLUMN_UPDATED_AT_NAME]: z.string(),
   [INTERNAL_COLUMN_UPDATED_BY_NAME]: userIdSchema,
   [INTERNAL_COLUMN_UPDATED_BY_PROFILE_NAME]: collaboratorProfile.nullable(),
-  [INTERNAL_INCREAMENT_ID_NAME]: z.number().optional(),
+  [INTERNAL_INCREMENT_ID_NAME]: z.number().optional(),
   [INTERNAL_DISPLAY_VALUES_NAME]: recordDisplayValues.optional(),
 })
 
