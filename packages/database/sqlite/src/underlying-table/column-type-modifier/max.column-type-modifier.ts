@@ -3,7 +3,7 @@
 import { INTERNAL_COLUMN_ID_NAME, type MaxField } from '@undb/core'
 import { ReferenceField } from '../../entity/field.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
-import { UnderlyingForeignTableFactory } from '../undelying-foreign-table.factory.js'
+import { UnderlyingForeignTableFactory } from '../underlying-foreign-table.factory.js'
 import {
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
