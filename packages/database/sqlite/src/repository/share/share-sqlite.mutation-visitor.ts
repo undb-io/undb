@@ -1,6 +1,6 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import type { IShareSpecVisitor, WithShareEnabled, WithShareId, WithShareView } from '@undb/integrations'
+import type { IShareSpecVisitor, WithShareEnabled, WithShareForm, WithShareId, WithShareView } from '@undb/integrations'
 import { Share } from '../../entity/share.js'
 
 export class ShareSqliteMutationVisitor implements IShareSpecVisitor {
@@ -16,6 +16,16 @@ export class ShareSqliteMutationVisitor implements IShareSpecVisitor {
     wrap(share).assign({
       [targetId.fieldNames[0]]: s.viewId,
       [targetType.fieldNames[0]]: 'view',
+    })
+  }
+  targetForm(s: WithShareForm): void {
+    const share = this.em.getReference(Share, this.shareId)
+    const {
+      properties: { targetId, targetType },
+    } = this.em.getMetadata().get(Share.name)
+    wrap(share).assign({
+      [targetId.fieldNames[0]]: s.formId,
+      [targetType.fieldNames[0]]: 'form',
     })
   }
   enabled(s: WithShareEnabled): void {

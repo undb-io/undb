@@ -15,6 +15,7 @@
 		{
 			tableId: $table.id.value,
 			targetId: $view.id.value,
+			targetType: 'view',
 		},
 		{ enabled: open },
 	)

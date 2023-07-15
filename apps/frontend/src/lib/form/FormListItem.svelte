@@ -1,8 +1,9 @@
 <script lang="ts">
+	import { t } from '$lib/i18n'
 	import { formListDrawer, selectedForm, selectedFormId } from '$lib/store/drawer'
 	import { formEditorModal } from '$lib/store/modal'
 	import type { Form } from '@undb/core'
-	import { Card, P } from 'flowbite-svelte'
+	import { Card, P, Toggle, Tooltip } from 'flowbite-svelte'
 
 	export let form: Form
 </script>
@@ -22,17 +23,5 @@
 				<P class="font-semibold text-lg">{form.name.value}</P>
 			</div>
 		</div>
-
-		<!-- <div>
-			<button
-				class="group-hover:opacity-100 opacity-0"
-				on:click={() =>
-					$deleteWebhook.mutate({
-						webhookId: webhook.id,
-					})}
-			>
-				<i class="ti ti-trash" />
-			</button>
-		</div> -->
 	</div>
 </Card>

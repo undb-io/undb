@@ -1,5 +1,5 @@
 import type { IQueryHandler } from '@undb/domain'
-import { IShareQueryModel, ShareSpecification, WithShareId, WithShareView } from '@undb/integrations'
+import { IShareQueryModel, ShareSpecification, WithShareId, withShare } from '@undb/integrations'
 import { None, Option, Some } from 'oxide.ts'
 import type { IGetShareOutput } from './get-share.query.interface.js'
 import type { GetShareQuery } from './get-share.query.js'
@@ -15,7 +15,7 @@ export class GetShareQueryHandler implements IQueryHandler<GetShareQuery, IGetSh
     }
 
     if (query.targetId) {
-      spec = Some(new WithShareView(query.targetId))
+      spec = Some(withShare(query.targetType, query.targetId))
     }
 
     if (!spec) {
