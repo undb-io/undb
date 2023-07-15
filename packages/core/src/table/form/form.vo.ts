@@ -29,15 +29,18 @@ export class Form extends ValueObject<IForm> {
   public getHiddenFields(schema: TableSchemaIdMap): Field[] {
     const fields: Field[] = []
 
-    for (const [fieldId, formField] of this.fields) {
-      const field = schema.get(fieldId)
-      if (!!field && !field.controlled && formField.hidden) {
+    for (const [fieldId, field] of schema) {
+      if (field.controlled) continue
+
+      const hidden = this.fields.value.get(fieldId)?.hidden
+      if (hidden) {
         fields.push(field)
       }
     }
 
     return fields
   }
+
   public getNotHiddenFields(schema: TableSchemaIdMap): Field[] {
     const fields: Field[] = []
 

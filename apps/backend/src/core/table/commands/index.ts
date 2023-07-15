@@ -28,6 +28,7 @@ import { SetFieldSortCommandHandler } from './set-field-sort.command.handler.js'
 import { SetFieldVisibilityCommandHandler } from './set-field-visibility.command.handler.js'
 import { SetFieldWidthCommandHandler } from './set-field-width.command.handler.js'
 import { SetFiltersCommandHandler } from './set-filters.command.handler.js'
+import { SetFormFieldVisibilityCommandHandler } from './set-form-field-visibility.command.handler.js'
 import { SetGanttFieldCommandHandler } from './set-gantt-field.command.handler.js'
 import { SetKanbanFieldCommandHandler } from './set-kanban-field.command.handler.js'
 import { SetPinnedFieldsCommandHandler } from './set-pinned-fields.command.handler.js'
@@ -90,4 +91,5 @@ export const commandHandlers = [
   ExportGridCommandHandler,
   SetGanttFieldCommandHandler,
   CreateFormCommandHandler,
+  SetFormFieldVisibilityCommandHandler,
 ]

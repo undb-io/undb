@@ -1,6 +1,6 @@
-import type { Form } from '@undb/core'
 import type { IQueryWebhook } from '@undb/integrations'
-import { writable } from 'svelte/store'
+import { derived, writable } from 'svelte/store'
+import { currentTable } from './table'
 
 const createDrawer = (id: symbol) => {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -47,4 +47,8 @@ export const formListDrawer = createDrawer(FORM_LIST_DRAWER)
 
 export const formDrawerMode = writable<'list' | 'create'>('list')
 
-export const selectedForm = writable<Form | undefined>(undefined)
+export const selectedFormId = writable<string | undefined>(undefined)
+
+export const selectedForm = derived([currentTable, selectedFormId], ([$table, $formId]) =>
+	$formId ? $table.forms.getById($formId).into() : undefined,
+)

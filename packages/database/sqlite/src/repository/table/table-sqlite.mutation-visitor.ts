@@ -61,6 +61,7 @@ import {
   type WithoutOption,
   type WithoutView,
 } from '@undb/core'
+import { mapValues } from 'lodash-es'
 import { Form } from '../../entity/form.js'
 import type { CreatedAtField, UpdatedAtField } from '../../entity/index.js'
 import {
@@ -242,9 +243,13 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.persist(form)
   }
   withFormFieldsVisibility(s: WithFormFieldsVisibility): void {
-    const form = this.em.getReference(Form, s.formId)
-    wrap(form).assign({ fields: s.visibility }, { mergeObjects: true })
-    this.em.persist(form)
+    this.addJobs(async () => {
+      const form = this.em.getReference(Form, s.formId)
+      await wrap(form).init()
+      const fields = mapValues(s.visibility, (hidden) => ({ hidden }))
+      wrap(form).assign({ fields }, { mergeObjects: true, merge: true })
+      await this.em.persistAndFlush(form)
+    })
   }
   newForm(s: WithNewForm): void {
     const table = this.table

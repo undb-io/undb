@@ -3,7 +3,7 @@
 	import FormHiddenFields from './FormHiddenFields.svelte'
 </script>
 
-<main class="grid grid-cols-6">
+<main class="grid grid-cols-6 gap-4">
 	<div class="col-span-2">
 		<FormHiddenFields />
 	</div>

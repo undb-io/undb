@@ -17,7 +17,7 @@
 	const createForm = trpc().table.form.create.mutation({
 		async onSuccess(data, variables, context) {
 			$formDrawerMode = 'list'
-			await invalidate(`tables:${$table.id.value}`)
+			await invalidate(`table:${$table.id.value}`)
 		},
 	})
 

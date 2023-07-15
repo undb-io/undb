@@ -90,7 +90,7 @@
 	}
 
 	$: if (open) getForeign()
-	$: selected = value?.map((r) => $recordsMap.get(r)!) ?? []
+	$: selected = Array.isArray(value) ? value?.map((r) => $recordsMap.get(r)!) ?? [] : []
 </script>
 
 <div class="space-y-2 max-h-96 overflow-y-auto mb-2">

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formListDrawer, selectedForm } from '$lib/store/drawer'
+	import { formListDrawer, selectedForm, selectedFormId } from '$lib/store/drawer'
 	import { formEditorModal } from '$lib/store/modal'
 	import type { Form } from '@undb/core'
 	import { Card, P } from 'flowbite-svelte'
@@ -10,7 +10,7 @@
 <Card
 	class="w-full !max-w-none shadow-sm cursor-pointer hover:shadow-md transition-all"
 	on:click={() => {
-		$selectedForm = form
+		$selectedFormId = form.id.value
 		formListDrawer.close()
 		formEditorModal.open()
 	}}
