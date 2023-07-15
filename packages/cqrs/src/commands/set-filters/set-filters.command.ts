@@ -3,7 +3,7 @@ import type { CommandProps } from '@undb/domain'
 import { Command } from '@undb/domain'
 import type { ISetFilterCommandInput } from './set-filters.command.interface.js'
 
-export class SetFitlersCommand extends Command implements ISetFilterCommandInput {
+export class SetFiltersCommand extends Command implements ISetFilterCommandInput {
   readonly tableId: string
   readonly viewId?: string
   readonly filter: IFilterOrGroupList | null

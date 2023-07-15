@@ -1,6 +1,6 @@
 import { type IRecordRepository, type ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
-import type { CreateRecordsCommand } from './create-records.comand.js'
+import type { CreateRecordsCommand } from './create-records.command.js'
 import { createCreateRecordsCommandInput } from './create-records.command.input.js'
 
 export class CreateRecordsCommandHandler implements ICommandHandler<CreateRecordsCommand, void> {

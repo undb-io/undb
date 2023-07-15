@@ -49,7 +49,7 @@
 		records?.map((record) => {
 			const values = record.valuesJSON
 			const title = record.getDisplayFieldsValue($table)
-			const titleHTML = !title ? `<span class="opacity-80">${$t('unamed', { ns: 'common' })}</span>` : ''
+			const titleHTML = !title ? `<span class="opacity-80">${$t('unnamed', { ns: 'common' })}</span>` : ''
 			return {
 				id: record.id.value,
 				title,

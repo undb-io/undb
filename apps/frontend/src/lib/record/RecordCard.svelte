@@ -7,7 +7,7 @@
 	export let field: ReferenceFieldTypes
 	export let record: Record | undefined
 
-	$: value = record ? field.getForeignDisplayValues(record, schema) ?? [$t('unamed')] : []
+	$: value = record ? field.getForeignDisplayValues(record, schema) ?? [$t('unnamed')] : []
 </script>
 
 {#if record}

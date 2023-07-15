@@ -1,6 +1,6 @@
 import { WithRecordIds, type IRecordRepository, type ITableRepository } from '@undb/core'
 import { type ICommandHandler } from '@undb/domain'
-import type { UpdateRecordsCommand } from './update-records.comand.js'
+import type { UpdateRecordsCommand } from './update-records.command.js'
 import { createUpdateRecordsCommandInput } from './update-records.command.input.js'
 
 export class UpdateRecordsCommandHandler implements ICommandHandler<UpdateRecordsCommand, void> {

@@ -1,6 +1,6 @@
 import { type IRecordRepository, type ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
-import type { DeleteRecordCommand } from './delete-record.comand.js'
+import type { DeleteRecordCommand } from './delete-record.command.js'
 
 export class DeleteRecordCommandHandler implements ICommandHandler<DeleteRecordCommand, void> {
   constructor(protected readonly tableRepo: ITableRepository, protected readonly recordRepo: IRecordRepository) {}

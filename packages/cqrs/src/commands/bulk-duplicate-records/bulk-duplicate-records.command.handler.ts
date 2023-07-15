@@ -1,7 +1,7 @@
 import type { IRecordRepository, ITableRepository } from '@undb/core'
 import { WithRecordIds } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
-import type { BulkDuplicateRecordsCommand } from './bulk-duplicate-records.comand.js'
+import type { BulkDuplicateRecordsCommand } from './bulk-duplicate-records.command.js'
 
 export class BulkDuplicateRecordsCommandHandler implements ICommandHandler<BulkDuplicateRecordsCommand, void> {
   constructor(protected readonly tableRepo: ITableRepository, protected readonly recordRepo: IRecordRepository) {}

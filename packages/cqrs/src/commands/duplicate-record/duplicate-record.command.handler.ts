@@ -1,6 +1,6 @@
 import { type IRecordRepository, type ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
-import type { DuplicateRecordCommand } from './duplicate-record.comand.js'
+import type { DuplicateRecordCommand } from './duplicate-record.command.js'
 
 export class DuplicateRecordCommandHandler implements ICommandHandler<DuplicateRecordCommand, void> {
   constructor(protected readonly tableRepo: ITableRepository, protected readonly recordRepo: IRecordRepository) {}
