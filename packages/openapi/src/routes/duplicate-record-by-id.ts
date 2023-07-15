@@ -17,7 +17,7 @@ export const duplicateRecordById = (table: Table): RouteConfig => {
     },
     responses: {
       200: {
-        description: `duplciate record success`,
+        description: `duplicate record success`,
       },
     },
   }
