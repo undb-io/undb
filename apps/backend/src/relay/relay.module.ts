@@ -12,9 +12,9 @@ import { RelayService } from './relay.service.js'
   imports: [ScheduleModule.forRoot(), CqrsModule, OutboxModule],
   providers: [RelayService],
 })
-export class RealyModule implements OnModuleInit {
+export class RelayModule implements OnModuleInit {
   constructor(
-    @InjectPinoLogger(RealyModule.name)
+    @InjectPinoLogger(RelayModule.name)
     private readonly logger: PinoLogger,
     @InjectOutboxConfig()
     private readonly config: OutboxConfigType,
