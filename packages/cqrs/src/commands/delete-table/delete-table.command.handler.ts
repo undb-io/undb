@@ -1,6 +1,6 @@
 import { type ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
-import type { DeleteTableCommand } from './delete-table.comand.js'
+import type { DeleteTableCommand } from './delete-table.command.js'
 
 export class DeleteTableCommandHandler implements ICommandHandler<DeleteTableCommand, void> {
   constructor(protected readonly tableRepo: ITableRepository) {}
