@@ -1,12 +1,15 @@
 import { ValueObject } from '@undb/domain'
+import { sortBy } from 'lodash-es'
 import type { Field } from '../field/field.type.js'
 import type { TableCompositeSpecification } from '../specifications/interface.js'
-import type { TableSchema, TableSchemaIdMap } from '../value-objects/index.js'
+import type { TableSchema } from '../value-objects/index.js'
+import { FormFieldsOrder } from './form-fields-order.vo.js'
 import { FormFields } from './form-fields.vo.js'
 import { FormId } from './form-id.vo.js'
 import { FormName } from './form-name.vo.js'
 import type { ICreateFormSchema } from './form.schema.js'
 import type { IForm } from './form.type.js'
+import { WithFormFieldsOrder } from './specifications/form-fields-order.specification.js'
 import { WithFormFieldsVisibility } from './specifications/form-fields.specification.js'
 
 export class Form extends ValueObject<IForm> {
@@ -26,13 +29,25 @@ export class Form extends ValueObject<IForm> {
     this.props.fields = fields
   }
 
-  public getHiddenFields(schema: TableSchemaIdMap): Field[] {
+  public get fieldsOrder() {
+    return this.props.fieldsOrder
+  }
+
+  public set fieldsOrder(fields: FormFieldsOrder | undefined) {
+    this.props.fieldsOrder = fields
+  }
+
+  private getOrderedFieldIds(schema: TableSchema): string[] {
+    return this.fieldsOrder?.order ?? schema.fields.map((f) => f.id.value)
+  }
+
+  public getHiddenFields(schema: TableSchema): Field[] {
     const fields: Field[] = []
 
-    for (const [fieldId, field] of schema) {
+    for (const field of schema.fields) {
       if (field.controlled) continue
 
-      const hidden = this.fields.value.get(fieldId)?.hidden
+      const hidden = this.fields.value.get(field.id.value)?.hidden
       if (hidden) {
         fields.push(field)
       }
@@ -41,19 +56,28 @@ export class Form extends ValueObject<IForm> {
     return fields
   }
 
-  public getNotHiddenFields(schema: TableSchemaIdMap): Field[] {
+  public getNotHiddenFields(schema: TableSchema): Field[] {
     const fields: Field[] = []
 
-    for (const [fieldId, field] of schema) {
+    for (const field of schema.fields) {
       if (field.controlled) continue
 
-      const hidden = this.fields.value.get(fieldId)?.hidden
+      const hidden = this.fields.value.get(field.id.value)?.hidden
       if (!hidden) {
         fields.push(field)
       }
     }
 
-    return fields
+    const order = this.getOrderedFieldIds(schema)
+    return sortBy(fields, (f) => order.indexOf(f.id.value))
+  }
+
+  public setFormFieldsOrder(schema: TableSchema, fieldsOrder: string[]): TableCompositeSpecification {
+    const notHiddenFields = this.getNotHiddenFields(schema)
+    const notHiddenFieldIds = new Set(notHiddenFields.map((f) => f.id.value))
+    const order = fieldsOrder.filter((id) => notHiddenFieldIds.has(id))
+
+    return new WithFormFieldsOrder(this.id.value, new FormFieldsOrder(order))
   }
 
   public static create(input: ICreateFormSchema, schema: TableSchema): Form {
@@ -61,6 +85,7 @@ export class Form extends ValueObject<IForm> {
       id: FormId.fromNullableString(input.id),
       name: FormName.create(input.name),
       fields: FormFields.from(schema, input.fields),
+      fieldsOrder: input.fieldsOrder ? new FormFieldsOrder(input.fieldsOrder) : undefined,
     })
   }
 
@@ -69,6 +94,7 @@ export class Form extends ValueObject<IForm> {
       id: FormId.fromNullableString(input.id),
       name: FormName.create(input.name),
       fields: FormFields.unsafeFrom(input.fields ?? {}),
+      fieldsOrder: input.fieldsOrder ? new FormFieldsOrder(input.fieldsOrder) : undefined,
     })
   }
 

@@ -1,5 +1,5 @@
 import type { Rel } from '@mikro-orm/core'
-import { Cascade, Entity, JsonType, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
+import { ArrayType, Cascade, Entity, JsonType, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
 import { type Form as CoreForm, type IFormFields } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Table } from './table.js'
@@ -13,6 +13,7 @@ export class Form extends BaseEntity {
     this.id = form.id.value
     this.name = form.name.value
     this.fields = form.fields.toJSON()
+    this.fieldsOrder = form.fieldsOrder?.toJSON()
   }
 
   @PrimaryKey()
@@ -23,6 +24,9 @@ export class Form extends BaseEntity {
 
   @Property({ type: JsonType })
   fields: IFormFields
+
+  @Property({ type: ArrayType, nullable: true })
+  fieldsOrder?: string[]
 
   @ManyToOne(() => Table, { cascade: [Cascade.ALL] })
   table: Rel<Table>

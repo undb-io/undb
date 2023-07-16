@@ -15,6 +15,7 @@ export class TableSqliteMapper {
         id: form.id,
         name: form.name,
         fields: form.fields,
+        fieldsOrder: form.fieldsOrder,
       })),
       views: entity.views.getItems(false).map(
         (view) =>
@@ -53,6 +54,7 @@ export class TableSqliteMapper {
         id: form.id,
         name: form.name,
         fields: form.fields,
+        fieldsOrder: form.fieldsOrder,
       })),
       views: entity.views.isInitialized()
         ? (entity.views.getItems(false).map((view) => ({

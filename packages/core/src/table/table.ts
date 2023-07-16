@@ -14,7 +14,7 @@ import type {
 import { FieldId, SelectField, WithDuplicatedField } from './field/index.js'
 import { UpdateFieldHelper } from './field/update-field.helper.js'
 import type { IRootFilter } from './filter/index.js'
-import type { ICreateFormSchema, ISetFormFieldVisibilitySchema } from './form/form.schema.js'
+import type { ICreateFormSchema, ISetFormFieldVisibilitySchema, ISetFormFieldsOrderSchema } from './form/form.schema.js'
 import type { IQueryForm } from './form/form.type.js'
 import { Forms } from './form/forms.js'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from './option/index.js'
@@ -573,5 +573,11 @@ export class Table {
     }
 
     return and(...specs).unwrap()
+  }
+
+  public setFormFieldsOrder(input: ISetFormFieldsOrderSchema): TableCompositeSpecification {
+    const form = this.forms.getById(input.formId).unwrap()
+
+    return form.setFormFieldsOrder(this.schema, input.fieldsOrder)
   }
 }

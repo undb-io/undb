@@ -18,6 +18,7 @@ import type {
   WithFieldWidth,
   WithFilter,
   WithForeignTableId,
+  WithFormFieldsOrder,
   WithFormFieldsSpecification,
   WithFormFieldsVisibility,
   WithFormat,
@@ -137,6 +138,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   fieldsOrder(s: WithViewFieldsOrder): void {
+    throw new Error('Method not implemented.')
+  }
+  formFieldsOrder(s: WithFormFieldsOrder): void {
     throw new Error('Method not implemented.')
   }
   fieldWidthEqual(s: WithFieldWidth): void {

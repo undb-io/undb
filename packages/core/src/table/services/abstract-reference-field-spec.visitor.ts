@@ -58,6 +58,7 @@ import type {
   WithNewForm,
   WithTableForms,
 } from '../form/index.js'
+import type { WithFormFieldsOrder } from '../form/specifications/form-fields-order.specification.js'
 import type {
   ITableSpecVisitor,
   WithFilter,
@@ -161,6 +162,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   sortsEqual(s: WithSorts): void {}
   filterEqual(s: WithFilter): void {}
   fieldsOrder(s: WithViewFieldsOrder): void {}
+  formFieldsOrder(s: WithFormFieldsOrder): void {}
   fieldOptionsEqual(s: WithFieldOption): void {}
   fieldWidthEqual(s: WithFieldWidth): void {}
   fieldVisibility(s: WithFieldVisibility): void {}

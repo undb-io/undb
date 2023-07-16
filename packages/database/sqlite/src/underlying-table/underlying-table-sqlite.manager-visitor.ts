@@ -137,6 +137,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     }
   }
   fieldsOrder(): void {}
+  formFieldsOrder(): void {}
   fieldWidthEqual(): void {}
   fieldVisibility(): void {}
   displayTypeEqual(): void {}

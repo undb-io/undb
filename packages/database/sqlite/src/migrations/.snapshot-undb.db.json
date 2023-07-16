@@ -358,6 +358,15 @@
           "nullable": false,
           "mappedType": "json"
         },
+        "fields_order": {
+          "name": "fields_order",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
         "table_id": {
           "name": "table_id",
           "type": "text",
@@ -549,7 +558,8 @@
             "created-by",
             "updated-by",
             "url",
-            "min"
+            "min",
+            "max"
           ],
           "mappedType": "text"
         },

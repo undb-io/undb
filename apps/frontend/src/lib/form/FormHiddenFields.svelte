@@ -9,8 +9,8 @@
 
 	const table = getTable()
 
-	$: hiddenFields = $selectedForm?.getHiddenFields($table.schema.toIdMap()) ?? []
-	$: notHiddenFields = $selectedForm?.getNotHiddenFields($table.schema.toIdMap()) ?? []
+	$: hiddenFields = $selectedForm?.getHiddenFields($table.schema) ?? []
+	$: notHiddenFields = $selectedForm?.getNotHiddenFields($table.schema) ?? []
 
 	const setFormFieldsVisibilityMutation = trpc().table.form.field.setVisibility.mutation({
 		async onSuccess(data, variables, context) {

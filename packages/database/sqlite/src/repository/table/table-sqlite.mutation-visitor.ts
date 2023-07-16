@@ -7,6 +7,7 @@ import type {
   WithCurrencySymbol,
   WithDuplicatedField,
   WithForeignTableId,
+  WithFormFieldsOrder,
   WithFormFieldsSpecification,
   WithFormFieldsVisibility,
   WithGanttField,
@@ -293,6 +294,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const view = this.getView(s.view.id.value)
     wrap(view).assign({ fieldsOrder: s.viewFieldsOrder.order })
     this.em.persist(view)
+  }
+  formFieldsOrder(s: WithFormFieldsOrder): void {
+    const form = this.em.getReference(Form, s.formId)
+    wrap(form).assign({ fieldsOrder: s.formFieldsOrder.order })
+    this.em.persist(form)
   }
   fieldWidthEqual(s: WithFieldWidth): void {
     this.addJobs(async () => {

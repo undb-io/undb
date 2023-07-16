@@ -46,7 +46,7 @@
 
 	$: f = $table.forms.getById($page.params.formId).unwrap()
 
-	$: fields = f.getNotHiddenFields($table.schema.toIdMap())
+	$: fields = f.getNotHiddenFields($table.schema)
 </script>
 
 <main class="bg-blue-50 h-screen w-screen flex flex-col">

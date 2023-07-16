@@ -1,4 +1,9 @@
-import { SetFormFieldVisibilityCommand, setFormFieldVisibilityCommandInput } from '@undb/cqrs'
+import {
+  SetFormFieldVisibilityCommand,
+  SetFormFieldsOrderCommand,
+  setFormFieldVisibilityCommandInput,
+  setFormFieldsOrderCommandInput,
+} from '@undb/cqrs'
 import type { ICommandBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
@@ -12,5 +17,12 @@ export const createFormFieldRouter = (procedure: typeof publicProcedure) => (com
       .mutation(({ input }) => {
         const cmd = new SetFormFieldVisibilityCommand(input)
         return commandBus.execute<void>(cmd)
+      }),
+    setOrder: procedure
+      .input(setFormFieldsOrderCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new SetFormFieldsOrderCommand(input)
+        return commandBus.execute(cmd)
       }),
   })

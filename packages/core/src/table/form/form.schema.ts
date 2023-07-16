@@ -8,6 +8,7 @@ export const createFormSchema = z.object({
   id: formIdSchema.optional(),
   name: formNameSchema,
   fields: formFields.optional(),
+  fieldsOrder: fieldIdSchema.array().optional(),
 })
 export type ICreateFormSchema = z.infer<typeof createFormSchema>
 
@@ -18,6 +19,7 @@ export const queryForm = z.object({
   id: formIdSchema,
   name: formNameSchema,
   fields: formFields,
+  fieldsOrder: fieldIdSchema.array().optional(),
 })
 export const queryForms = z.array(queryForm)
 
@@ -32,3 +34,10 @@ export const setFormFieldVisibilitySchema = z
   .merge(formFieldOptionBaseSchema)
 
 export type ISetFormFieldVisibilitySchema = z.infer<typeof setFormFieldVisibilitySchema>
+
+export const setFormFieldsOrderSchema = z.object({
+  formId: formIdSchema,
+  fieldsOrder: fieldIdSchema.array(),
+})
+
+export type ISetFormFieldsOrderSchema = z.infer<typeof setFormFieldsOrderSchema>
