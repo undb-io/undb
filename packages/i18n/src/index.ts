@@ -298,6 +298,7 @@ export const config: InitOptions = {
         share: 'Share',
         'enable share': 'Enable share',
         'disable share': 'Disable share',
+        'form submitted': 'Successfully submitted form data',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -619,6 +620,7 @@ export const config: InitOptions = {
         share: '分享',
         'enable share': '开启分享',
         'disable share': '关闭分享',
+        'form submitted': '成功提交表单',
       },
       webhook: {
         Webhook: 'Webhook',
