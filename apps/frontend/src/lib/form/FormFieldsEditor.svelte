@@ -29,12 +29,15 @@
 {#if $selectedForm}
 	<div class="space-y-2">
 		{#each notHiddenFields as field}
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			<div
-				class="space-y-2 px-5 py-3 hover:bg-sky-50 hover:border-blue-200 border box-border rounded-md"
-				on:click={() => setFormFieldsVisibility(field.id.value)}
+				class="space-y-2 px-5 py-3 hover:bg-sky-50 hover:border-blue-200 border box-border rounded-md relative group"
 			>
+				<button
+					class="absolute right-4 top-2 hidden group-hover:block"
+					on:click={() => setFormFieldsVisibility(field.id.value)}
+				>
+					<i class="ti ti-eye-closed" />
+				</button>
 				<Label class="leading-5" for={field.id.value} data-field-id={field.id.value}>
 					<div class="inline-flex items-center gap-2">
 						<FieldIcon type={field.type} size={16} />
@@ -46,7 +49,7 @@
 						<span class="text-red-500">*</span>
 					{/if}
 				</Label>
-				<CellInput class="w-full" {field} readonly />
+				<CellInput class="w-full" {field} />
 			</div>
 		{/each}
 	</div>

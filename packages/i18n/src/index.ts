@@ -300,6 +300,8 @@ export const config: InitOptions = {
         'enable share': 'Enable share',
         'disable share': 'Disable share',
         'form submitted': 'Successfully submitted form data',
+        'hide form all': 'hide all fields',
+        'show form all': 'show all fields',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -623,6 +625,8 @@ export const config: InitOptions = {
         'enable share': '开启分享',
         'disable share': '关闭分享',
         'form submitted': '成功提交表单',
+        'hide form all': '隐藏所有字段',
+        'show form all': '显示所有字段',
       },
       webhook: {
         Webhook: 'Webhook',

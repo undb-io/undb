@@ -58,32 +58,40 @@
 </script>
 
 {#if $selectedForm}
-	<Modal
-		class="w-full"
-		title={$selectedForm.name.value}
-		size="lg"
-		placement="top-center"
-		bind:open={$formEditorModal.open}
-	>
-		<svelte:fragment slot="header">
-			<div class="flex justify-between w-full">
-				<Heading tag="h6">{$selectedForm.name.value}</Heading>
-				<Toggle class="inline-flex" checked={share?.enabled ?? false} on:change={onChange}>
-					<div class="whitespace-nowrap">
-						{$t('share')}
-					</div>
-				</Toggle>
-				<ShareDropdown
-					{url}
-					{share}
-					shareTarget={{ id: $selectedForm.id.value, type: 'form' }}
-					trigger="hover"
-					onSuccess={async () => {
-						await $getShare.refetch()
-					}}
-				/>
-			</div>
-		</svelte:fragment>
-		<FormEditor />
-	</Modal>
+	<div id="form-modal">
+		<Modal
+			class="w-full"
+			title={$selectedForm.name.value}
+			size="xl"
+			placement="top-center"
+			bind:open={$formEditorModal.open}
+		>
+			<svelte:fragment slot="header">
+				<div class="flex justify-between w-full">
+					<Heading tag="h6">{$selectedForm.name.value}</Heading>
+					<Toggle class="inline-flex" checked={share?.enabled ?? false} on:change={onChange}>
+						<div class="whitespace-nowrap">
+							{$t('share')}
+						</div>
+					</Toggle>
+					<ShareDropdown
+						{url}
+						{share}
+						shareTarget={{ id: $selectedForm.id.value, type: 'form' }}
+						trigger="hover"
+						onSuccess={async () => {
+							await $getShare.refetch()
+						}}
+					/>
+				</div>
+			</svelte:fragment>
+			<FormEditor />
+		</Modal>
+	</div>
 {/if}
+
+<style>
+	:global(#form-modal .max-w-7xl) {
+		max-width: 80%;
+	}
+</style>
