@@ -6,6 +6,9 @@
 	import { t } from '$lib/i18n'
 	import { trpc } from '$lib/trpc/client'
 	import { getTable } from '$lib/store/table'
+	import { getShareFormUrl } from '@undb/integrations'
+	import { page } from '$app/stores'
+	import ShareDropdown from '$lib/share/ShareDropdown.svelte'
 
 	const table = getTable()
 
@@ -31,16 +34,11 @@
 	})
 	$: share = $getShare.data?.share ?? null
 
-	let enabled = false
-	$: if (share) {
-		enabled = share.enabled
-	}
+	$: url = $selectedForm ? getShareFormUrl($page.url.origin, $selectedForm?.id.value) : ''
 
 	const onChange = (e: Event) => {
-		if (!$selectedForm) return
 		const target = e.target as HTMLInputElement
-
-		if (!share && target.checked) {
+		if (!share && target.checked && $selectedForm) {
 			$createFormShare.mutate({
 				tableId: $table.id.value,
 				targetId: $selectedForm.id.value,
@@ -70,11 +68,20 @@
 		<svelte:fragment slot="header">
 			<div class="flex justify-between w-full">
 				<Heading tag="h6">{$selectedForm.name.value}</Heading>
-				<Toggle class="inline-flex" checked={enabled} on:change={onChange}>
+				<Toggle class="inline-flex" checked={share?.enabled ?? false} on:change={onChange}>
 					<div class="whitespace-nowrap">
 						{$t('share')}
 					</div>
 				</Toggle>
+				<ShareDropdown
+					{url}
+					{share}
+					shareTarget={{ id: $selectedForm.id.value, type: 'form' }}
+					trigger="hover"
+					onSuccess={async () => {
+						await $getShare.refetch()
+					}}
+				/>
 			</div>
 		</svelte:fragment>
 		<FormEditor />

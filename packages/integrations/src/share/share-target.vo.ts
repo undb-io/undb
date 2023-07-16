@@ -15,7 +15,7 @@ const shareTargetForm = z.object({
 export const shareType = z.enum(['view', 'form'])
 export type IShareType = z.infer<typeof shareType>
 
-export const shareTargetSchema = z.discriminatedUnion('type', [shareTargetView, shareTargetForm]).nullable()
+export const shareTargetSchema = z.discriminatedUnion('type', [shareTargetView, shareTargetForm])
 
 export type IShareTarget = z.infer<typeof shareTargetSchema>
 
