@@ -157,7 +157,7 @@ const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile)
 								colors[collaborator.color],
 							)}
 						>
-							<span class="font-medium"> ${collaborator.username.slice(0, 2)} </span>
+							<span class="font-medium"> ${collaborator.username?.slice(0, 2)} </span>
 						</div>
 				  `
 				: html` <img class="w-5 h-5 rounded-full" src="${collaborator.avatar}" alt="${collaborator.username}" /> `}
