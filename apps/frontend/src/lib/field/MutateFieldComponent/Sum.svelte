@@ -3,16 +3,8 @@
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms/index'
 	import ReferenceFieldPicker from '../FieldInputs/ReferenceFieldPicker.svelte'
-	import { getForeignTableFieldsByReferenceId, getTable } from '$lib/store/table'
-	import {
-		TableFactory,
-		type IQueryTable,
-		type ReferenceField,
-		type TreeField,
-		isNumeric,
-		isAggregate,
-	} from '@undb/core'
-	import { page } from '$app/stores'
+	import { getForeignTableFieldsByReferenceId, getTable, tableById } from '$lib/store/table'
+	import { type ReferenceField, type TreeField, isNumeric, isAggregate } from '@undb/core'
 	import { Label } from 'flowbite-svelte'
 	import FieldPicker from '../FieldInputs/FieldPicker.svelte'
 	import type { Writable } from 'svelte/store'
@@ -31,10 +23,8 @@
 		? (schema.get($referenceFieldId) as ReferenceField | TreeField | undefined)?.foreignTableId.into() ??
 		  $table.id.value
 		: undefined
-	$: tables = ($page.data.tables ?? []) as IQueryTable[]
-	$: foreignTable = tables.find((t) => t.id === foreignTableId)
 
-	$: coreTable = foreignTable ? TableFactory.fromQuery(foreignTable) : undefined
+	$: coreTable = foreignTableId ? $tableById(foreignTableId) : undefined
 </script>
 
 <div class="grid grid-cols-2 gap-2">

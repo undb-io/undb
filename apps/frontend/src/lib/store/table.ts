@@ -22,11 +22,12 @@ import {
 	type Table,
 	type ViewVO,
 } from '@undb/core'
+import type { IShareTarget } from '@undb/integrations/dist'
 import { uniqBy } from 'lodash-es'
 import { derived, writable, type Readable } from 'svelte/store'
 import { match } from 'ts-pattern'
 
-export const allTables = writable<IQueryTable[]>()
+export const allTables = writable<IQueryTable[] | undefined>()
 
 export const currentTable = writable<Table>()
 export const getTable = () => currentTable
@@ -38,7 +39,7 @@ export const currentRecords = writable<Records>([])
 export const getRecords = () => currentRecords
 
 export const allTablesExcludeCurren = derived([allTables, currentTable], ([$allTables, $table]) =>
-	$allTables.filter((t) => t.id !== $table.id.value).map((t) => TableFactory.fromQuery(t)),
+	($allTables ?? []).filter((t) => t.id !== $table.id.value).map((t) => TableFactory.fromQuery(t)),
 )
 
 export const createTableQ = () => {
@@ -168,7 +169,7 @@ export const getForeignTable: Readable<(foreignTableId?: string) => Table | null
 		return (foreignTableId?: string) => {
 			if (!foreignTableId) return null
 			if (foreignTableId === $currentTable.id.value) return $currentTable
-			const found = $allTables.find((t) => t.id === foreignTableId)
+			const found = $allTables?.find((t) => t.id === foreignTableId)
 			if (found) return TableFactory.fromQuery(found)
 
 			return null
@@ -213,6 +214,19 @@ export const getForeignTableFieldsByReferenceId: Readable<(referenceId?: string)
 
 export const isShare = derived(page, ($page) => $page.route.id?.startsWith('/(share)'))
 export const isShareView = derived(page, ($page) => $page.route.id === '/(share)/s/v/[viewId]')
+export const isShareForm = derived(page, ($page) => $page.route.id === '/(share)/s/f/[formId]')
+
+export const shareTarget = derived([isShareView, isShareForm, page], ([$isShareView, $isShareForm, $page]) => {
+	let target: IShareTarget | undefined
+
+	if ($isShareView) {
+		target = { id: $page.params.viewId, type: 'view' }
+	} else if ($isShareForm) {
+		target = { id: $page.params.formId, type: 'form' }
+	}
+
+	return target
+})
 
 export const readonly = derived(isShare, ($isShare) => $isShare)
 
@@ -331,3 +345,25 @@ export const aggregateChartFn: Readable<
 		)
 		.exhaustive()
 })
+
+export const tableById = derived(
+	[currentTable, allTables, shareTarget],
+	([$table, $tables, $shareTarget]) =>
+		(tableId: string) => {
+			let t: Table | undefined
+
+			if (tableId === $table.id.value) t = $table
+			else if ($tables) {
+				const found = $tables.find((t) => t.id === tableId)
+				if (found) t = TableFactory.fromQuery(found)
+			} else if ($shareTarget) {
+				trpc()
+					.share.table.utils.fetch({ id: tableId, target: $shareTarget })
+					.then(({ table }) => {
+						t = TableFactory.fromQuery(table)
+					})
+			}
+
+			return t
+		},
+)
