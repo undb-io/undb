@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { CollaboratorField, CollaboratorFieldValue, IRecordDisplayValues } from '@undb/core'
 	import CollaboratorComponent from './CollaboratorComponent.svelte'
-	import { getTable } from '$lib/store/table'
 
 	export let value: CollaboratorFieldValue
 	export let field: CollaboratorField
@@ -12,7 +11,7 @@
 </script>
 
 {#if collaborators.length}
-	{#each values as [username, avatar]}
-		<CollaboratorComponent username={username ?? ''} {avatar} />
+	{#each values as [username, avatar, color]}
+		<CollaboratorComponent username={username ?? ''} {avatar} {color} />
 	{/each}
 {/if}
