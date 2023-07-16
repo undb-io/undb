@@ -8,6 +8,7 @@ import type {
 } from '@undb/cqrs'
 import {
   CreateShareCommand,
+  CreateShareRecordCommand,
   GetShareAggregateChartQuery,
   GetShareAggregateNumberQuery,
   GetShareQuery,
@@ -17,6 +18,7 @@ import {
   GetSharedTableQuery,
   UpdateShareCommand,
   createShareCommandInput,
+  createShareRecordCommandOutput,
   getShareAggregateChartQuerySchema,
   getShareAggregateNumberQuerySchema,
   getShareQueryInput,
@@ -41,6 +43,13 @@ export const createShareRouter =
         .query<IGetSharedTableOutput>(({ input }) => {
           const query = new GetSharedTableQuery(input)
           return queryBus.execute(query)
+        }),
+      createRecord: procedure
+        .input(z.any())
+        .output(createShareRecordCommandOutput)
+        .mutation(({ input }) => {
+          const cmd = new CreateShareRecordCommand(input)
+          return commandBus.execute(cmd)
         }),
       viewRecord: procedure
         .input(getShareViewRecordQueryInput)

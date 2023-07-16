@@ -3,7 +3,8 @@
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { t } from '$lib/i18n'
-	import { getTable } from '$lib/store/table'
+	import { getTable, shareTarget } from '$lib/store/table'
+	import { trpc } from '$lib/trpc/client'
 	import { Button, Label, Spinner } from 'flowbite-svelte'
 	import { keys, pick } from 'lodash-es'
 	import { superForm } from 'sveltekit-superforms/client'
@@ -12,6 +13,8 @@
 	export let data: Validation<any>
 
 	const table = getTable()
+
+	const createShareRecord = trpc().share.createRecord.mutation({})
 
 	const { form, enhance, constraints, delayed, submitting, tainted } = superForm(data, {
 		id: 'createRecord',
@@ -23,9 +26,15 @@
 		clearOnSubmit: 'errors-and-message',
 		taintedMessage: null,
 		async onUpdate(event) {
+			if (!$shareTarget) return
+
 			const taintedKeys = keys($tainted)
 			const values = pick(event.form.data, taintedKeys)
-			// $createRecord.mutate({ tableId: $table.id.value, values })
+			$createShareRecord.mutate({
+				tableId: $table.id.value,
+				target: $shareTarget,
+				values,
+			})
 		},
 	})
 
@@ -47,7 +56,7 @@
 									{field.name.value}
 								</span>
 							</div>
-							{#if field.required}
+							{#if f.fields.isRequired(field.id.value)}
 								<span class="text-red-500">*</span>
 							{/if}
 						</Label>
