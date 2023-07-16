@@ -117,6 +117,7 @@ export const config: InitOptions = {
         null: 'null',
         'full screen': 'Full screen',
         Copied: 'Copied',
+        anonymous: 'anonymous',
       },
       table: {
         'import data content': 'Import data (csv / excel / json)',
@@ -436,6 +437,7 @@ export const config: InitOptions = {
         null: '空',
         'full screen': '全屏',
         Copied: '已复制',
+        anonymous: '匿名用户',
       },
       table: {
         'import data content': '导入数据 (csv / excel /json)',
