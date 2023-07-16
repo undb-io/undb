@@ -65,7 +65,7 @@ import type { WithNewField } from './table-field.specification.js'
 import type { WithTableId } from './table-id.specification.js'
 import type { WithTableName } from './table-name.specification.js'
 import type { WithTableSchema } from './table-schema.specification.js'
-import type { WithTableViewId } from './table-view-id.specification.js'
+import type { WithTableFormId, WithTableViewId } from './table-view-id.specification.js'
 
 export interface ITableSpecVisitor extends ISpecVisitor {
   idEqual(s: WithTableId): void
@@ -83,6 +83,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   formsEqual(s: WithTableForms): void
   formFieldsEqual(s: WithFormFieldsSpecification): void
   withFormFieldsVisibility(s: WithFormFieldsVisibility): void
+  formIdEqual(s: WithTableFormId): void
   newForm(s: WithNewForm): void
 
   sortsEqual(s: WithSorts): void

@@ -38,6 +38,7 @@ import type {
   WithSorts,
   WithSymmetricReferenceField,
   WithTableEmoji,
+  WithTableFormId,
   WithTableForms,
   WithTableId,
   WithTableName,
@@ -89,6 +90,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   }
   viewIdEqual(s: WithTableViewId): void {
     this.qb.andWhere({ views: s.viewId.value })
+  }
+  formIdEqual(s: WithTableFormId): void {
+    this.qb.andWhere({ forms: s.formId.value })
   }
   emojiEqual(s: WithTableEmoji): void {
     throw new Error('Method not implemented.')

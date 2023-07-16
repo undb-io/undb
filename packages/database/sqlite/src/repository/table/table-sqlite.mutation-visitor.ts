@@ -14,6 +14,7 @@ import type {
   WithNewForm,
   WithOption,
   WithReferenceFieldId,
+  WithTableFormId,
   WithTableForms,
   WithTableViewId,
   WithTimeFormat,
@@ -109,6 +110,9 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     super(em)
   }
   viewIdEqual(s: WithTableViewId): void {
+    throw new Error('Method not implemented.')
+  }
+  formIdEqual(s: WithTableFormId): void {
     throw new Error('Method not implemented.')
   }
   private get table(): Table {

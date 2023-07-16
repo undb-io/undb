@@ -1,15 +1,15 @@
 import type { IQueryHandler } from '@nestjs/cqrs'
 import { QueryHandler } from '@nestjs/cqrs'
 import { type ITableQueryModel } from '@undb/core'
-import type { IGetSharedViewOutput } from '@undb/cqrs'
-import { GetSharedViewQuery, GetSharedViewQueryHandler } from '@undb/cqrs'
+import type { IGetSharedTableOutput } from '@undb/cqrs'
+import { GetSharedTableQuery, GetSharedTableQueryHandler } from '@undb/cqrs'
 import { InjectTableQueryModel } from '../../core/table/adapters/index.js'
 import { NestShareGuardService } from '../services/share-guard.service.js'
 
-@QueryHandler(GetSharedViewQuery)
-export class NestGetSharedViewQueryHandler
-  extends GetSharedViewQueryHandler
-  implements IQueryHandler<GetSharedViewQuery, IGetSharedViewOutput>
+@QueryHandler(GetSharedTableQuery)
+export class NestGetSharedTableQueryHandler
+  extends GetSharedTableQueryHandler
+  implements IQueryHandler<GetSharedTableQuery, IGetSharedTableOutput>
 {
   constructor(
     guard: NestShareGuardService,

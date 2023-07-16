@@ -4,7 +4,7 @@ import type {
   IGetShareViewRecordOutput,
   IGetShareViewRecordsOutput,
   IGetShareViewTreeRecordsOutput,
-  IGetSharedViewOutput,
+  IGetSharedTableOutput,
 } from '@undb/cqrs'
 import {
   CreateShareCommand,
@@ -14,7 +14,7 @@ import {
   GetShareViewRecordQuery,
   GetShareViewRecordsQuery,
   GetShareViewTreeRecordsQuery,
-  GetSharedViewQuery,
+  GetSharedTableQuery,
   UpdateShareCommand,
   createShareCommandInput,
   getShareAggregateChartQuerySchema,
@@ -24,7 +24,7 @@ import {
   getShareViewRecordQueryInput,
   getShareViewRecordsQueryInput,
   getShareViewTreeRecordsQueryInput,
-  getSharedViewQueryInput,
+  getSharedTableQueryInput,
   updateShareCommandInput,
 } from '@undb/cqrs'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
@@ -35,11 +35,11 @@ import { router } from '../trpc.js'
 export const createShareRouter =
   (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
     router({
-      view: procedure
-        .input(getSharedViewQueryInput)
+      table: procedure
+        .input(getSharedTableQueryInput)
         .output(z.any())
-        .query<IGetSharedViewOutput>(({ input }) => {
-          const query = new GetSharedViewQuery(input)
+        .query<IGetSharedTableOutput>(({ input }) => {
+          const query = new GetSharedTableQuery(input)
           return queryBus.execute(query)
         }),
       viewRecord: procedure

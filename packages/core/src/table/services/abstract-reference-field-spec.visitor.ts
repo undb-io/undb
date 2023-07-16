@@ -63,6 +63,7 @@ import type {
   WithFilter,
   WithNewField,
   WithTableEmoji,
+  WithTableFormId,
   WithTableId,
   WithTableName,
   WithTableSchema,
@@ -150,6 +151,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   viewNameEqual(s: WithViewName): void {}
   formsEqual(s: WithTableForms): void {}
   formFieldsEqual(s: WithFormFieldsSpecification): void {}
+  formIdEqual(s: WithTableFormId): void {}
   withFormFieldsVisibility(s: WithFormFieldsVisibility): void {}
   newForm(s: WithNewForm): void {}
   newView(s: WithNewView): void {}

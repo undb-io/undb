@@ -8,6 +8,7 @@ import type {
   WithNewFieldType,
   WithNewForm,
   WithRatingMax,
+  WithTableFormId,
   WithTableSchema,
   WithTableViewId,
   WithoutOption,
@@ -31,6 +32,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     this.knex = knex
   }
   viewIdEqual(s: WithTableViewId): void {}
+  formIdEqual(s: WithTableFormId): void {}
   withoutWidget(): void {}
   withChartAggregate(): void {}
   withNumberAggregate(): void {}
