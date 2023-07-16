@@ -92,8 +92,6 @@
 		)
 	}
 
-	$: console.log(records)
-
 	const dropHandle = async (event: DragEvent) => {
 		event.preventDefault()
 		const files = event.dataTransfer?.files
