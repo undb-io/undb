@@ -29,7 +29,7 @@
     "tsconfig": "^0.0.0",
     "tslib": "^2.6.0",
     "tsup": "^7.1.0",
-    "type-fest": "^3.12.0",
+    "type-fest": "^4.0.0",
     "typescript": "^5.1.6",
     "vitest": "^0.33.0",
     "vitest-mock-extended": "^1.1.3"
