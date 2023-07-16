@@ -93,9 +93,11 @@
 					</div>
 				</form>
 			{:else}
-				<Alert color="green" class="text-center">
-					{$t('form submitted')}
-				</Alert>
+				<div class="w-full container">
+					<Alert color="green" class="m-auto text-center w-3/4">
+						{$t('form submitted')}
+					</Alert>
+				</div>
 			{/if}
 		</section>
 	</div>
