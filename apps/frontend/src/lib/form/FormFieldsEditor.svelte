@@ -2,10 +2,11 @@
 	import { invalidate } from '$app/navigation'
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
+	import { t } from '$lib/i18n'
 	import { selectedForm } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { Label } from 'flowbite-svelte'
+	import { Label, Toggle } from 'flowbite-svelte'
 	import type { SortableEvent } from 'sortablejs'
 	import Sortable from 'sortablejs'
 	import { onMount } from 'svelte'
@@ -19,6 +20,12 @@
 		},
 	})
 
+	const setFormFieldsRequirementsMutation = trpc().table.form.field.setRequirements.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+		},
+	})
+
 	const setFormFieldsVisibility = (fieldId: string) => {
 		if (!$selectedForm) return
 		$setFormFieldsVisibilityMutation.mutate({
@@ -26,6 +33,21 @@
 			formId: $selectedForm.id.value,
 			visibility: { [fieldId]: true },
 		})
+	}
+
+	const setFormFieldsRequirements = (fieldId: string, required: boolean) => {
+		if (!$selectedForm) return
+		$setFormFieldsRequirementsMutation.mutate({
+			tableId: $table.id.value,
+			formId: $selectedForm.id.value,
+			requirements: { [fieldId]: required },
+		})
+	}
+
+	const onRquiredChange = (e: Event, fieldId: string) => {
+		const target = e.target as HTMLInputElement
+
+		setFormFieldsRequirements(fieldId, target.checked)
 	}
 
 	const setFormFieldsOrder = trpc().table.form.field.setOrder.mutation({})
@@ -79,6 +101,15 @@
 					{/if}
 				</Label>
 				<CellInput class="w-full" {field} />
+				<div class="flex items-center justify-end">
+					<Toggle
+						size="small"
+						checked={$selectedForm.fields.isRequired(field.id.value)}
+						on:change={(e) => onRquiredChange(e, field.id.value)}
+					>
+						{$t('Required', { ns: 'common' })}
+					</Toggle>
+				</div>
 			</div>
 		{/each}
 	</div>

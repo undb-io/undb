@@ -53,6 +53,7 @@ import type {
 } from '../field/index.js'
 import type { WithReferenceFieldId } from '../field/specifications/lookup-field.specification.js'
 import type {
+  WithFormFieldsRequirements,
   WithFormFieldsSpecification,
   WithFormFieldsVisibility,
   WithFormName,
@@ -156,6 +157,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   withFormName(s: WithFormName): void {}
   formIdEqual(s: WithTableFormId): void {}
   withFormFieldsVisibility(s: WithFormFieldsVisibility): void {}
+  withFormFieldsRequirements(s: WithFormFieldsRequirements): void {}
   newForm(s: WithNewForm): void {}
   newView(s: WithNewView): void {}
   emojiEqual(s: WithTableEmoji): void {}

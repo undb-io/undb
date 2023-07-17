@@ -1,6 +1,8 @@
 import {
+  SetFormFieldRequirementsCommand,
   SetFormFieldVisibilityCommand,
   SetFormFieldsOrderCommand,
+  setFormFieldRequirementsCommandInput,
   setFormFieldVisibilityCommandInput,
   setFormFieldsOrderCommandInput,
 } from '@undb/cqrs'
@@ -16,6 +18,13 @@ export const createFormFieldRouter = (procedure: typeof publicProcedure) => (com
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new SetFormFieldVisibilityCommand(input)
+        return commandBus.execute<void>(cmd)
+      }),
+    setRequirements: procedure
+      .input(setFormFieldRequirementsCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new SetFormFieldRequirementsCommand(input)
         return commandBus.execute<void>(cmd)
       }),
     setOrder: procedure

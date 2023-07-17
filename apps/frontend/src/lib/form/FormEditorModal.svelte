@@ -10,7 +10,6 @@
 	import { page } from '$app/stores'
 	import ShareDropdown from '$lib/share/ShareDropdown.svelte'
 	import { invalidate } from '$app/navigation'
-	import type { ChangeEventHandler } from 'svelte/elements'
 
 	const table = getTable()
 

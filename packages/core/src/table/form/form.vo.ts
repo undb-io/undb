@@ -11,7 +11,7 @@ import { FormName } from './form-name.vo.js'
 import type { ICreateFormSchema, IUpdateFormSchema } from './form.schema.js'
 import type { IForm } from './form.type.js'
 import { WithFormFieldsOrder } from './specifications/form-fields-order.specification.js'
-import { WithFormFieldsVisibility } from './specifications/form-fields.specification.js'
+import { WithFormFieldsRequirements, WithFormFieldsVisibility } from './specifications/form-fields.specification.js'
 import { WithFormName } from './specifications/form-name.specification.js'
 
 export class Form extends ValueObject<IForm> {
@@ -106,6 +106,10 @@ export class Form extends ValueObject<IForm> {
 
   public setFieldVisibility(visiblity: Record<string, boolean>): TableCompositeSpecification {
     return new WithFormFieldsVisibility(this.id.value, visiblity)
+  }
+
+  public setFieldRequirements(requirements: Record<string, boolean>): TableCompositeSpecification {
+    return new WithFormFieldsRequirements(this.id.value, requirements)
   }
 
   public update(input: IUpdateFormSchema): Option<TableCompositeSpecification> {

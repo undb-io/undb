@@ -8,6 +8,7 @@ import type {
   WithDuplicatedField,
   WithForeignTableId,
   WithFormFieldsOrder,
+  WithFormFieldsRequirements,
   WithFormFieldsSpecification,
   WithFormFieldsVisibility,
   WithFormName,
@@ -258,6 +259,15 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
       const form = this.em.getReference(Form, s.formId)
       await wrap(form).init()
       const fields = mapValues(s.visibility, (hidden) => ({ hidden }))
+      wrap(form).assign({ fields }, { mergeObjects: true, merge: true })
+      await this.em.persistAndFlush(form)
+    })
+  }
+  withFormFieldsRequirements(s: WithFormFieldsRequirements): void {
+    this.addJobs(async () => {
+      const form = this.em.getReference(Form, s.formId)
+      await wrap(form).init()
+      const fields = mapValues(s.requirements, (required) => ({ required }))
       wrap(form).assign({ fields }, { mergeObjects: true, merge: true })
       await this.em.persistAndFlush(form)
     })

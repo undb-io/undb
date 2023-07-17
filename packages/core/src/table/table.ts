@@ -16,6 +16,7 @@ import { UpdateFieldHelper } from './field/update-field.helper.js'
 import type { IRootFilter } from './filter/index.js'
 import type {
   ICreateFormSchema,
+  ISetFormFieldRequirementsSchema,
   ISetFormFieldVisibilitySchema,
   ISetFormFieldsOrderSchema,
   IUpdateFormSchema,
@@ -460,6 +461,13 @@ export class Table {
   public setFormFieldVisibility(input: ISetFormFieldVisibilitySchema): TableCompositeSpecification {
     const form = this.forms.getById(input.formId).expect('not found form')
     const spec = form.setFieldVisibility(input.visibility)
+    spec.mutate(this)
+    return spec
+  }
+
+  public setFormFieldRequirements(input: ISetFormFieldRequirementsSchema): TableCompositeSpecification {
+    const form = this.forms.getById(input.formId).expect('not found form')
+    const spec = form.setFieldRequirements(input.requirements)
     spec.mutate(this)
     return spec
   }

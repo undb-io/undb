@@ -42,6 +42,14 @@ export const setFormFieldVisibilitySchema = z
 
 export type ISetFormFieldVisibilitySchema = z.infer<typeof setFormFieldVisibilitySchema>
 
+export const setFormFieldRequirementsSchema = z
+  .object({
+    requirements: z.record(fieldIdSchema, z.boolean()),
+  })
+  .merge(formFieldOptionBaseSchema)
+
+export type ISetFormFieldRequirementsSchema = z.infer<typeof setFormFieldRequirementsSchema>
+
 export const setFormFieldsOrderSchema = z.object({
   formId: formIdSchema,
   fieldsOrder: fieldIdSchema.array(),

@@ -47,3 +47,25 @@ export class WithFormFieldsVisibility extends CompositeSpecification<Table, ITab
     return Ok(undefined)
   }
 }
+
+export class WithFormFieldsRequirements extends CompositeSpecification<Table, ITableSpecVisitor> {
+  constructor(public readonly formId: string, public readonly requirements: Record<string, boolean>) {
+    super()
+  }
+
+  isSatisfiedBy(t: Table): boolean {
+    throw new Error('Method not implemented.')
+  }
+  mutate(t: Table): Result<Table, string> {
+    const form = t.forms.getById(this.formId)
+    if (form.isSome()) {
+      form.unwrap().fields = form.unwrap().fields.merge(this.requirements)
+    }
+
+    return Ok(t)
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withFormFieldsRequirements(this)
+    return Ok(undefined)
+  }
+}

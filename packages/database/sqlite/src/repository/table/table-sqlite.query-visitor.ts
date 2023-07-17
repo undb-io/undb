@@ -19,6 +19,7 @@ import type {
   WithFilter,
   WithForeignTableId,
   WithFormFieldsOrder,
+  WithFormFieldsRequirements,
   WithFormFieldsSpecification,
   WithFormFieldsVisibility,
   WithFormName,
@@ -130,6 +131,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   withFormFieldsVisibility(s: WithFormFieldsVisibility): void {
+    throw new Error('Method not implemented.')
+  }
+  withFormFieldsRequirements(s: WithFormFieldsRequirements): void {
     throw new Error('Method not implemented.')
   }
   newForm(s: WithNewForm): void {
