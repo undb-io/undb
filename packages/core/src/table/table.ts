@@ -14,6 +14,16 @@ import type {
 import { FieldId, SelectField, WithDuplicatedField } from './field/index.js'
 import { UpdateFieldHelper } from './field/update-field.helper.js'
 import type { IRootFilter } from './filter/index.js'
+import type {
+  ICreateFormBaseSchema,
+  ICreateFormSchema,
+  ISetFormFieldRequirementsSchema,
+  ISetFormFieldVisibilitySchema,
+  ISetFormFieldsOrderSchema,
+  IUpdateFormSchema,
+} from './form/form.schema.js'
+import type { IQueryForm } from './form/form.type.js'
+import { Forms } from './form/forms.js'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from './option/index.js'
 import type { Record, Records } from './record/index.js'
 import { WithRecordId, WithRecordTableId } from './record/index.js'
@@ -78,16 +88,21 @@ export interface IQueryTable {
   emoji?: string | null
   schema: IQuerySchemaSchema
   views?: IQueryView[]
+  forms?: IQueryForm[]
   viewsOrder?: string[]
 }
 
 export class Table {
   public id!: TableId
   public name!: TableName
-  public schema: TableSchema = new TableSchema([])
   public emoji!: TableEmoji
+
+  public schema: TableSchema = new TableSchema([])
+
   public views: Views = new Views([])
   public viewsOrder: ViewsOrder = ViewsOrder.empty()
+
+  public forms: Forms = new Forms([])
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
@@ -314,10 +329,10 @@ export class Table {
     const field = this.schema.getFieldById(id).unwrap()
 
     if (input.type && field.type !== input.type) {
-      return UpdateFieldHelper.updateField(field, input)
+      return UpdateFieldHelper.updateField(this, field, input)
     }
 
-    return field.update(input as any)
+    return field.update(this, input as any)
   }
 
   public duplicateField({ id, includesValues }: IDuplicatedFieldSchema): TableCompositeSpecification {
@@ -350,6 +365,21 @@ export class Table {
     const s1 = this.views.createView(input)
     const s2 = this.viewsOrder.addView(s1.view)
     const spec = s1.and(s2)
+    spec.mutate(this).unwrap()
+
+    return spec
+  }
+
+  public createForm(input: ICreateFormSchema): TableCompositeSpecification {
+    const spec = this.forms.createForm(input, this.schema)
+    spec.mutate(this).unwrap()
+
+    return spec
+  }
+
+  public createFormFromView(viewId: string, input: Partial<ICreateFormBaseSchema>): TableCompositeSpecification {
+    const view = this.mustGetView(viewId)
+    const spec = this.forms.createFormFromView(view, input, this.schema)
     spec.mutate(this).unwrap()
 
     return spec
@@ -390,6 +420,16 @@ export class Table {
     return spec
   }
 
+  public updateForm(formId: string, input: IUpdateFormSchema): Option<TableCompositeSpecification> {
+    const form = this.forms.getById(formId).expect('not found form')
+    const spec = form.update(input)
+
+    if (spec.isSome()) {
+      spec.unwrap().mutate(this).unwrap()
+    }
+    return spec
+  }
+
   public removeView(id: string): TableCompositeSpecification {
     const s1 = this.views.removeView(id)
     const s2 = this.viewsOrder.removeView(s1.view)
@@ -423,6 +463,20 @@ export class Table {
   public setFieldVisibility(input: ISetFieldVisibilitySchema): TableCompositeSpecification {
     const view = this.mustGetView(input.viewId)
     const spec = view.setFieldVisibility(input.fieldId, input.hidden)
+    spec.mutate(this)
+    return spec
+  }
+
+  public setFormFieldVisibility(input: ISetFormFieldVisibilitySchema): TableCompositeSpecification {
+    const form = this.forms.getById(input.formId).expect('not found form')
+    const spec = form.setFieldVisibility(input.visibility)
+    spec.mutate(this)
+    return spec
+  }
+
+  public setFormFieldRequirements(input: ISetFormFieldRequirementsSchema): TableCompositeSpecification {
+    const form = this.forms.getById(input.formId).expect('not found form')
+    const spec = form.setFieldRequirements(input.requirements)
     spec.mutate(this)
     return spec
   }
@@ -551,5 +605,11 @@ export class Table {
     }
 
     return and(...specs).unwrap()
+  }
+
+  public setFormFieldsOrder(input: ISetFormFieldsOrderSchema): TableCompositeSpecification {
+    const form = this.forms.getById(input.formId).unwrap()
+
+    return form.setFormFieldsOrder(this.schema, input.fieldsOrder)
   }
 }

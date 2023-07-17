@@ -1,7 +1,8 @@
+import type { TFunction } from 'i18next'
 import type { JsonValue } from 'type-fest'
 import { FieldValueBase } from '../../field-value.base.js'
 import type { IFieldValueVisitor } from '../../field-value.visitor.js'
-import type { ICollaboratorFieldValue } from './collaborator-field.type.js'
+import type { ICollaboratorFieldValue, ICollaboratorProfile } from './collaborator-field.type.js'
 
 export class CollaboratorFieldValue extends FieldValueBase<ICollaboratorFieldValue> {
   get json(): JsonValue {
@@ -19,3 +20,9 @@ export class CollaboratorFieldValue extends FieldValueBase<ICollaboratorFieldVal
     visitor.collaborator(this)
   }
 }
+
+export const getAnonymousCollaboratorProfile = (t: TFunction): ICollaboratorProfile => ({
+  username: t('anonymous', { ns: 'common' }),
+  avatar: null,
+  color: 'blue',
+})

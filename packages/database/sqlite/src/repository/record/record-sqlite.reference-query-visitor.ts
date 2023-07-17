@@ -12,9 +12,9 @@ import type {
   TreeField as CoreTreeField,
   UpdatedByField as CoreUpdatedByField,
   CountField,
-  MinField,
-  MaxField,
   IFieldVisitor,
+  MaxField,
+  MinField,
   SumField,
   Table,
 } from '@undb/core'

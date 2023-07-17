@@ -1,6 +1,8 @@
 import { BulkDeleteRecordsCommandHandler } from './bulk-delete-record.command.handler.js'
 import { BulkDuplicateRecordsCommandHandler } from './bulk-duplicate-record.command.handler.js'
 import { CreateFieldCommandHandler } from './create-field.command.handler.js'
+import { CreateFormFromViewCommandHandler } from './create-form-from-view.command.handler.js'
+import { CreateFormCommandHandler } from './create-form.command.handler.js'
 import { CreateOptionCommandHandler } from './create-option.command.handler.js'
 import { CreateRecordCommandHandler } from './create-record.command.handler.js'
 import { CreateRecordsCommandHandler } from './create-records.command.handler.js'
@@ -27,6 +29,9 @@ import { SetFieldSortCommandHandler } from './set-field-sort.command.handler.js'
 import { SetFieldVisibilityCommandHandler } from './set-field-visibility.command.handler.js'
 import { SetFieldWidthCommandHandler } from './set-field-width.command.handler.js'
 import { SetFiltersCommandHandler } from './set-filters.command.handler.js'
+import { SetFormFieldRequirementsCommandHandler } from './set-form-field-requirements.command.handler.js'
+import { SetFormFieldVisibilityCommandHandler } from './set-form-field-visibility.command.handler.js'
+import { SetFormFieldsOrderCommandHandler } from './set-form-fields-order.command.handler.js'
 import { SetGanttFieldCommandHandler } from './set-gantt-field.command.handler.js'
 import { SetKanbanFieldCommandHandler } from './set-kanban-field.command.handler.js'
 import { SetPinnedFieldsCommandHandler } from './set-pinned-fields.command.handler.js'
@@ -36,6 +41,7 @@ import { SetSortsCommandHandler } from './set-sorts.command.handler.js'
 import { SetTreeViewFieldCommandHandler } from './set-tree-view-field.command.handler.js'
 import { SwitchDisplayTypeCommandHandler } from './switch-display-type.command.handler.js'
 import { UpdateFieldCommandHandler } from './update-field.command.handler.js'
+import { UpdateFormCommandHandler } from './update-form.command.handler.js'
 import { UpdateOptionCommandHandler } from './update-option.command.handler.js'
 import { UpdateRecordCommandHandler } from './update-record.command.handler.js'
 import { UpdateRecordsCommandHandler } from './update-records.command.handler.js'
@@ -88,4 +94,10 @@ export const commandHandlers = [
   DuplicateFieldCommandHandler,
   ExportGridCommandHandler,
   SetGanttFieldCommandHandler,
+  CreateFormCommandHandler,
+  CreateFormFromViewCommandHandler,
+  SetFormFieldVisibilityCommandHandler,
+  SetFormFieldRequirementsCommandHandler,
+  SetFormFieldsOrderCommandHandler,
+  UpdateFormCommandHandler,
 ]

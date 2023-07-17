@@ -7,6 +7,7 @@
 	import { updateTableModal } from '$lib/store/modal'
 	import { getTable } from '$lib/store/table'
 	import SearchTable from './SearchTable.svelte'
+	import FormsButton from './FormsButton.svelte'
 
 	const table = getTable()
 </script>
@@ -37,5 +38,6 @@
 			{$t('Edit Table')}
 		</Tooltip>
 		<ToggleDisplayType />
+		<FormsButton />
 	</div>
 </div>

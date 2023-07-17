@@ -1,6 +1,7 @@
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import { LockMode } from '@mikro-orm/core'
 import type {
+  ClsStore,
   Record as CoreRecord,
   Table as CoreTable,
   IClsService,
@@ -47,7 +48,7 @@ import type { RecordSqlite } from './record.type.js'
 export class RecordSqliteRepository implements IRecordRepository {
   constructor(
     protected readonly uow: IUnitOfWork<EntityManager>,
-    protected readonly cls: IClsService,
+    protected readonly cls: IClsService<ClsStore>,
     protected readonly outboxService: IOutboxService,
   ) {}
 
@@ -172,6 +173,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       {
         populate: [
           'views',
+          'forms',
           'fields.options',
           'fields.displayFields',
           'fields.countFields',

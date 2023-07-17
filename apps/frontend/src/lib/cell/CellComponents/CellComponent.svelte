@@ -18,6 +18,7 @@
 	import Collaborator from './Collaborator.svelte'
 	import Parent from './Parent.svelte'
 	import Currency from './Currency.svelte'
+	import Url from '../CellInput/Url.svelte'
 
 	export let field: Field
 	export let value: RecordAllValueType | Option
@@ -52,6 +53,7 @@
 		max: Number,
 		'created-by': String,
 		'updated-by': String,
+		url: Url,
 	}
 </script>
 

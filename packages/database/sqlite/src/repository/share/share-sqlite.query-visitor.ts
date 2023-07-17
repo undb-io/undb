@@ -1,5 +1,5 @@
 import type { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
-import type { IShareSpecVisitor, WithShareEnabled, WithShareId, WithShareView } from '@undb/integrations'
+import type { IShareSpecVisitor, WithShareEnabled, WithShareForm, WithShareId, WithShareView } from '@undb/integrations'
 import { Share } from '../../entity/share.js'
 
 export class ShareSqliteQueryVisitor implements IShareSpecVisitor {
@@ -15,6 +15,16 @@ export class ShareSqliteQueryVisitor implements IShareSpecVisitor {
     this.qb.andWhere({
       [targetId.fieldNames[0]]: s.viewId,
       [targetType.fieldNames[0]]: 'view',
+    })
+  }
+
+  targetForm(s: WithShareForm): void {
+    const {
+      properties: { targetId, targetType },
+    } = this.em.getMetadata().get(Share.name)
+    this.qb.andWhere({
+      [targetId.fieldNames[0]]: s.formId,
+      [targetType.fieldNames[0]]: 'form',
     })
   }
 

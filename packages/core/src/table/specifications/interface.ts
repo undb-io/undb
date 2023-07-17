@@ -27,6 +27,14 @@ import type {
   WithOptions,
   WithoutOption,
 } from '../field/specifications/select-field.specification.js'
+import type {
+  WithFormFieldsRequirements,
+  WithFormFieldsSpecification,
+  WithFormFieldsVisibility,
+} from '../form/index.js'
+import type { WithFormFieldsOrder } from '../form/specifications/form-fields-order.specification.js'
+import type { WithFormName } from '../form/specifications/form-name.specification.js'
+import type { WithNewForm, WithTableForms } from '../form/specifications/form.specification.js'
 import { type Table } from '../table.js'
 import type {
   WithWidgetSpecification,
@@ -63,7 +71,7 @@ import type { WithNewField } from './table-field.specification.js'
 import type { WithTableId } from './table-id.specification.js'
 import type { WithTableName } from './table-name.specification.js'
 import type { WithTableSchema } from './table-schema.specification.js'
-import type { WithTableViewId } from './table-view-id.specification.js'
+import type { WithTableFormId, WithTableViewId } from './table-view-id.specification.js'
 
 export interface ITableSpecVisitor extends ISpecVisitor {
   idEqual(s: WithTableId): void
@@ -77,6 +85,15 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   newView(s: WithNewView): void
   withoutView(s: WithoutView): void
   viewsOrderEqual(s: WithViewsOrder): void
+
+  formsEqual(s: WithTableForms): void
+  withFormName(s: WithFormName): void
+  formFieldsEqual(s: WithFormFieldsSpecification): void
+  formFieldsOrder(s: WithFormFieldsOrder): void
+  withFormFieldsVisibility(s: WithFormFieldsVisibility): void
+  withFormFieldsRequirements(s: WithFormFieldsRequirements): void
+  formIdEqual(s: WithTableFormId): void
+  newForm(s: WithNewForm): void
 
   sortsEqual(s: WithSorts): void
 

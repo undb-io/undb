@@ -3,7 +3,8 @@ import { QueryHandler } from '@nestjs/cqrs'
 import { type IRecordQueryModel, type ITableRepository } from '@undb/core'
 import type { IGetRecordsOutput } from '@undb/cqrs'
 import { GetRecordsQuery, GetRecordsQueryHandler } from '@undb/cqrs'
-import { InjectRecordQueryModel, InjectTableRepository } from '../adapters/index.js'
+import { InjectRecordQueryModel } from '../adapters/sqlite/record-sqlite.query-model.js'
+import { InjectTableRepository } from '../adapters/sqlite/table-sqlite.repository.js'
 
 @QueryHandler(GetRecordsQuery)
 export class NestGetRecordsQueryHandler

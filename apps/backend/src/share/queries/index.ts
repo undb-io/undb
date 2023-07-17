@@ -4,11 +4,11 @@ import { NestGetShareViewRecordQueryHandler } from './get-share-view-record.quer
 import { NestGetShareViewRecordsQueryHandler } from './get-share-view-records.query.handler.js'
 import { NestGetShareViewTreeRecordsQueryHandler } from './get-share-view-tree-records.query.handler.js'
 import { NestGetShareQueryHandler } from './get-share.query-handler.js'
-import { NestGetSharedViewQueryHandler } from './get-shared-view.query.handler.js'
+import { NestGetSharedTableQueryHandler } from './get-shared-table.query.handler.js'
 
 export const queries = [
   NestGetShareQueryHandler,
-  NestGetSharedViewQueryHandler,
+  NestGetSharedTableQueryHandler,
   NestGetShareViewRecordQueryHandler,
   NestGetShareViewRecordsQueryHandler,
   NestGetShareViewTreeRecordsQueryHandler,

@@ -11,7 +11,11 @@ export class TableSqliteQueryModel implements ITableQueryModel {
   constructor(protected readonly em: EntityManager, protected readonly cache: ITableCache) {}
 
   async find(): Promise<IQueryTable[]> {
-    const tables = await this.em.find(Table, {}, { populate: ['fields.options', 'views', 'fields.displayFields'] })
+    const tables = await this.em.find(
+      Table,
+      {},
+      { populate: ['fields.options', 'views', 'forms', 'forms', 'fields.displayFields'] },
+    )
     return tables.map((table) => TableSqliteMapper.entityToQuery(table))
   }
 
@@ -20,6 +24,7 @@ export class TableSqliteQueryModel implements ITableQueryModel {
       'fields',
       'fields.options',
       'views',
+      'forms',
       'fields.displayFields',
       'fields.foreignTable',
       'views.widgets.visualization',

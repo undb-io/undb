@@ -28,7 +28,8 @@ const loggerMiddleware = (logger: ILogger) =>
   })
 
 const authMiddleware = middleware(({ ctx, next }) => {
-  if (!ctx.get('user.userId')) throw new TRPCError({ code: 'UNAUTHORIZED' })
+  const user = ctx.get('user')
+  if (!user.userId || user.isAnonymous) throw new TRPCError({ code: 'UNAUTHORIZED' })
 
   return next()
 })

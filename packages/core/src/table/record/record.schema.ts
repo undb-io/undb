@@ -15,6 +15,7 @@ import {
   INTERNAL_INCREMENT_ID_NAME,
   collaboratorProfile,
 } from '../field/index.js'
+import type { FormFields } from '../form/form-fields.vo.js'
 import { recordDisplayValues } from './record.type.js'
 import { recordIdSchema } from './value-objects/record-id.schema.js'
 
@@ -44,11 +45,15 @@ export type RecordAllValueType = ValueOf<RecordAllValues> | ValueOf<IInternalRec
 export const createMutateRecordValuesSchema = (
   fields: Field[],
   defaultValues: Record<string, any> | undefined = undefined,
+  formFields?: FormFields,
 ): ZodObject<any> => {
   const shape: ZodRawShape = {}
 
   for (const field of fields) {
-    const fieldSchema = field.valueSchema as ZodDefault<ZodTypeAny>
+    let fieldSchema = field.valueSchema as ZodDefault<ZodTypeAny>
+    if (formFields?.isRequired(field.id.value)) {
+      fieldSchema = fieldSchema.isOptional() ? fieldSchema.optional().unwrap() : fieldSchema
+    }
     const nested = fieldSchema
     shape[field.id.value] = defaultValues ? nested.default(defaultValues[field.id.value]) : nested.optional()
   }

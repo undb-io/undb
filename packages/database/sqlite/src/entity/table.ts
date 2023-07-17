@@ -3,6 +3,7 @@ import type { Table as CoreTable } from '@undb/core'
 import { BaseEntity } from './base.js'
 import type { IField } from './field.js'
 import { Field, ReferenceField } from './field.js'
+import { Form } from './form.js'
 import { View } from './view.js'
 
 @Entity({ tableName: 'undb_table' })
@@ -29,6 +30,9 @@ export class Table extends BaseEntity {
 
   @OneToMany(() => View, (view) => view.table, { orphanRemoval: true, cascade: [Cascade.ALL] })
   views = new Collection<View>(this)
+
+  @OneToMany(() => Form, (form) => form.table, { orphanRemoval: true, cascade: [Cascade.ALL] })
+  forms = new Collection<Form>(this)
 
   @OneToMany(() => ReferenceField, (field) => field.foreignTable)
   referencedBy = new Collection<ReferenceField>(this)

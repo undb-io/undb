@@ -4,9 +4,13 @@ import type { RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
 import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime'
 import {
 	CurrencyField,
+	INTERNAL_COLUMN_CREATED_BY_NAME,
 	INTERNAL_COLUMN_CREATED_BY_PROFILE_NAME,
+	INTERNAL_COLUMN_UPDATED_BY_NAME,
 	MultiSelectField,
 	Option,
+	getAnonymousCollaboratorProfile,
+	isAnonymous,
 	isImage,
 	type CollaboratorField,
 	type CreatedAtField,
@@ -157,7 +161,7 @@ const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile)
 								colors[collaborator.color],
 							)}
 						>
-							<span class="font-medium"> ${collaborator.username.slice(0, 2)} </span>
+							<span class="font-medium"> ${collaborator.username?.slice(0, 2)} </span>
 						</div>
 				  `
 				: html` <img class="w-5 h-5 rounded-full" src="${collaborator.avatar}" alt="${collaborator.username}" /> `}
@@ -169,13 +173,19 @@ const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile)
 }
 
 const createdBy: TemplateFunc = (h, props) => {
-	const createdBy = props.model[INTERNAL_COLUMN_CREATED_BY_PROFILE_NAME] as ICollaboratorProfile
+	const createdById = props.model[INTERNAL_COLUMN_CREATED_BY_NAME]
+	const createdBy = isAnonymous(createdById)
+		? getAnonymousCollaboratorProfile(tt)
+		: (props.model[INTERNAL_COLUMN_CREATED_BY_PROFILE_NAME] as ICollaboratorProfile)
 
 	return collaboratorComponent(h, createdBy)
 }
 
 const updatedBy: TemplateFunc = (h, props) => {
-	const updatedBy = props.model.updated_by_profile as ICollaboratorProfile
+	const updatedById = props.model[INTERNAL_COLUMN_UPDATED_BY_NAME]
+	const updatedBy = isAnonymous(updatedById)
+		? getAnonymousCollaboratorProfile(tt)
+		: (props.model.updated_by_profile as ICollaboratorProfile)
 
 	return collaboratorComponent(h, updatedBy)
 }

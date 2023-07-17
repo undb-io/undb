@@ -5,13 +5,13 @@
 	import ViewIcon from '$lib/view/ViewIcon.svelte'
 	import { Dropdown, DropdownDivider, DropdownItem } from 'flowbite-svelte'
 	import { trpc } from '$lib/trpc/client'
-	import { ViewVO, ViewName, type IExportType } from '@undb/core'
+	import { ViewVO, ViewName, type IExportType, FormId } from '@undb/core'
 	import { tick } from 'svelte'
 	import { goto, invalidate } from '$app/navigation'
 	import Portal from 'svelte-portal'
 	import { t } from '$lib/i18n'
-	import { webhookListDrawer } from '$lib/store/drawer'
-	import { erdModal } from '$lib/store/modal'
+	import { selectedFormId, webhookListDrawer } from '$lib/store/drawer'
+	import { erdModal, formEditorModal } from '$lib/store/modal'
 
 	const table = getTable()
 	const currentView = getView()
@@ -95,6 +95,24 @@
 		a.click()
 		a.remove()
 	}
+
+	const createFormFromViewMutation = trpc().table.form.createFromView.mutation({
+		async onSuccess(data, variables, context) {
+			const id = variables.form.id
+			await invalidate(`table:${$table.id.value}`)
+			selectedFormId.set(id)
+			formEditorModal.open()
+		},
+	})
+
+	const createFormFromView = () => {
+		const id = FormId.createId()
+		$createFormFromViewMutation.mutate({
+			tableId: $table.id.value,
+			viewId: view.id.value,
+			form: { id },
+		})
+	}
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -149,7 +167,7 @@
 					<span>{$t('Duplicate View')}</span>
 				</DropdownItem>
 				<DropdownItem class="flex items-center justify-between">
-					<span class="flex text-xs font-normal inline-flex items-center gap-2">
+					<span class="text-xs font-normal inline-flex items-center gap-2">
 						<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
 						{$t('Export')}
 					</span>
@@ -188,6 +206,15 @@
 				>
 					<i class="ti ti-hierarchy-3 text-gray-600 dark:text-gray-50" />
 					<span>{$t('ERD')}</span>
+				</DropdownItem>
+				<DropdownItem
+					on:click={() => {
+						createFormFromView()
+					}}
+					class="text-xs font-normal inline-flex items-center gap-2"
+				>
+					<i class="ti ti-clipboard-text text-gray-600 dark:text-gray-50" />
+					<span>{$t('create form from view')}</span>
 				</DropdownItem>
 				{#if $table.views.count > 1}
 					<DropdownDivider />

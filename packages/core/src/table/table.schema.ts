@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { querySchemaSchema } from './field/index.js'
+import { createFormsSchema, queryForms } from './form/form.schema.js'
 import type { Table } from './table.js'
 import {
   createTableSchemaSchema,
@@ -24,8 +25,9 @@ export type ICreateTableInput = z.infer<typeof createTableInput>
 
 export const createTableInput_internal = createTableInput.merge(
   z.object({
-    views: createViewsSchema,
+    views: createViewsSchema.optional(),
     viewsOrder: viewsOrderSchema.optional(),
+    forms: createFormsSchema.optional(),
   }),
 )
 
@@ -38,6 +40,7 @@ export const queryTable = z.object({
   schema: querySchemaSchema,
   views: queryViews,
   viewsOrder: viewsOrderSchema.optional(),
+  forms: queryForms.optional(),
 })
 
 export const updateTableSchema = z

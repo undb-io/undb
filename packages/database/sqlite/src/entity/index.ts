@@ -1,5 +1,6 @@
 import { Attachment } from './attachment.js'
 import { Field, fieldEntities } from './field.js'
+import { Form } from './form.js'
 import { Option } from './option.js'
 import { Outbox } from './outbox.js'
 import { Share } from './share.js'
@@ -19,6 +20,7 @@ export * from './webhook.js'
 export const entities = [
   Table,
   ...viewEntities,
+  Form,
   Field,
   ...fieldEntities,
   Option,

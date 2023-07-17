@@ -117,6 +117,7 @@ export const config: InitOptions = {
         null: 'null',
         'full screen': 'Full screen',
         Copied: 'Copied',
+        anonymous: 'anonymous',
       },
       table: {
         'import data content': 'Import data (csv / excel / json)',
@@ -298,6 +299,12 @@ export const config: InitOptions = {
         share: 'Share',
         'enable share': 'Enable share',
         'disable share': 'Disable share',
+        'form submitted': 'Successfully submitted form data',
+        'hide form all': 'hide all fields',
+        'show form all': 'show all fields',
+        'create form from view': 'create form from view',
+        forms: 'forms',
+        'Create New Form': 'Create New Form',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -435,6 +442,7 @@ export const config: InitOptions = {
         null: '空',
         'full screen': '全屏',
         Copied: '已复制',
+        anonymous: '匿名用户',
       },
       table: {
         'import data content': '导入数据 (csv / excel /json)',
@@ -619,6 +627,12 @@ export const config: InitOptions = {
         share: '分享',
         'enable share': '开启分享',
         'disable share': '关闭分享',
+        'form submitted': '成功提交表单',
+        'hide form all': '隐藏所有字段',
+        'show form all': '显示所有字段',
+        'create form from view': '生成表单',
+        forms: '表单',
+        'Create New Form': '创建表单',
       },
       webhook: {
         Webhook: 'Webhook',

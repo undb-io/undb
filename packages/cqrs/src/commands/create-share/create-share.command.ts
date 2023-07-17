@@ -11,7 +11,7 @@ export class CreateShareCommand extends Command implements ICreateShareCommandIn
   constructor(props: CommandProps<ICreateShareCommandInput>) {
     super(props)
     this.tableId = props.tableId
-    this.targetType = props.targetId
+    this.targetType = props.targetType
     this.targetId = props.targetId
     this.enabled = props.enabled
   }

@@ -7,10 +7,18 @@ import type {
   WithCurrencySymbol,
   WithDuplicatedField,
   WithForeignTableId,
+  WithFormFieldsOrder,
+  WithFormFieldsRequirements,
+  WithFormFieldsSpecification,
+  WithFormFieldsVisibility,
+  WithFormName,
   WithGanttField,
   WithNewFieldType,
+  WithNewForm,
   WithOption,
   WithReferenceFieldId,
+  WithTableFormId,
+  WithTableForms,
   WithTableViewId,
   WithTimeFormat,
   WithoutWidgetSpecification,
@@ -57,6 +65,8 @@ import {
   type WithoutOption,
   type WithoutView,
 } from '@undb/core'
+import { mapValues } from 'lodash-es'
+import { Form } from '../../entity/form.js'
 import type { CreatedAtField, UpdatedAtField } from '../../entity/index.js'
 import {
   AttachmentField,
@@ -75,9 +85,9 @@ import {
   IdField,
   JsonField,
   LookupField,
-  MultiSelectField,
-  MinField,
   MaxField,
+  MinField,
+  MultiSelectField,
   NumberField,
   Option,
   ParentField,
@@ -103,6 +113,9 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     super(em)
   }
   viewIdEqual(s: WithTableViewId): void {
+    throw new Error('Method not implemented.')
+  }
+  formIdEqual(s: WithTableFormId): void {
     throw new Error('Method not implemented.')
   }
   private get table(): Table {
@@ -226,12 +239,49 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     wrap(view).assign({ deletedAt: new Date() })
     this.em.persist(view)
   }
+  formsEqual(s: WithTableForms): void {
+    const table = this.table
+    wrap(table).assign({ forms: s.forms.forms.map((form) => new Form(table, form)) })
+    this.em.persist(table)
+  }
+  formFieldsEqual(s: WithFormFieldsSpecification): void {
+    const form = this.em.getReference(Form, s.formId)
+    wrap(form).assign({ fields: s.fields })
+    this.em.persist(form)
+  }
+  withFormName(s: WithFormName): void {
+    const form = this.em.getReference(Form, s.formId)
+    wrap(form).assign({ name: s.name.value })
+    this.em.persist(form)
+  }
+  withFormFieldsVisibility(s: WithFormFieldsVisibility): void {
+    this.addJobs(async () => {
+      const form = this.em.getReference(Form, s.formId)
+      await wrap(form).init()
+      const fields = mapValues(s.visibility, (hidden) => ({ hidden }))
+      wrap(form).assign({ fields }, { mergeObjects: true, merge: true })
+      await this.em.persistAndFlush(form)
+    })
+  }
+  withFormFieldsRequirements(s: WithFormFieldsRequirements): void {
+    this.addJobs(async () => {
+      const form = this.em.getReference(Form, s.formId)
+      await wrap(form).init()
+      const fields = mapValues(s.requirements, (required) => ({ required }))
+      wrap(form).assign({ fields }, { mergeObjects: true, merge: true })
+      await this.em.persistAndFlush(form)
+    })
+  }
+  newForm(s: WithNewForm): void {
+    const table = this.table
+    const form = new Form(table, s.form)
+    this.em.persist(form)
+  }
   viewsOrderEqual(s: WithViewsOrder): void {
     const table = this.table
     wrap(table).assign({ viewsOrder: s.order.order })
     this.em.persist(table)
   }
-
   filterEqual(s: WithFilter): void {
     const view = this.getView(s.view.id.value)
     wrap(view).assign({ filter: s.filter })
@@ -260,6 +310,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const view = this.getView(s.view.id.value)
     wrap(view).assign({ fieldsOrder: s.viewFieldsOrder.order })
     this.em.persist(view)
+  }
+  formFieldsOrder(s: WithFormFieldsOrder): void {
+    const form = this.em.getReference(Form, s.formId)
+    wrap(form).assign({ fieldsOrder: s.formFieldsOrder.order })
+    this.em.persist(form)
   }
   fieldWidthEqual(s: WithFieldWidth): void {
     this.addJobs(async () => {

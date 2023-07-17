@@ -1,8 +1,11 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import type { IQueryRecordSchema, IQueryRecords, IRecordQueryModel, IRecordSpec, ViewId } from '@undb/core'
 import { EntityManager, RecordSqliteQueryModel } from '@undb/sqlite'
 import type { Option } from 'oxide.ts'
+
+export const RECORD_QUERY_MODEL = Symbol('RECORD_QUERY_MODEL')
+export const InjectRecordQueryModel = () => Inject(RECORD_QUERY_MODEL)
 
 @Injectable()
 export class NestRecordSqliteQueryModel extends RecordSqliteQueryModel implements IRecordQueryModel {

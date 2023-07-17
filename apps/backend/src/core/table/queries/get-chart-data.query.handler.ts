@@ -3,7 +3,8 @@ import { QueryHandler } from '@nestjs/cqrs'
 import { type IRecordAggregateRepository, type ITableRepository } from '@undb/core'
 import type { IGetChartDataOutput } from '@undb/cqrs'
 import { GetChartDataQueryHandler as DomainHandler, GetChartDataQuery } from '@undb/cqrs'
-import { InjectRecordAggregateRepositoy, InjectTableRepository } from '../adapters/index.js'
+import { InjectRecordAggregateRepositoy } from '../adapters/sqlite/record-sqlite.aggregate-repository.js'
+import { InjectTableRepository } from '../adapters/sqlite/table-sqlite.repository.js'
 
 @QueryHandler(GetChartDataQuery)
 export class NestGetChartDataQueryHandler
