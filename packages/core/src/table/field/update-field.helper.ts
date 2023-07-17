@@ -1,10 +1,12 @@
 import { and } from '@undb/domain'
 import { isArray, isBoolean, isNull, isNumber, isString } from 'lodash-es'
 import type { Option as O } from 'oxide.ts'
+import { WithFormFieldsRequirements } from '../form/specifications/form-fields.specification.js'
 import { OptionKey } from '../option/option-key.vo.js'
 import { Option } from '../option/option.js'
 import { Options } from '../option/options.js'
 import type { TableCompositeSpecification } from '../specifications/index.js'
+import type { Table } from '../table.js'
 import type { BaseField } from './field.base.js'
 import type { IUpdateFieldSchema, SelectFieldTypes } from './field.type.js'
 import { canDisplay, isControlledFieldType } from './field.util.js'
@@ -22,7 +24,7 @@ import { WithDisplayFields, WithForeignTableId } from './specifications/referenc
 import { WithNewOption, WithOption, WithOptions, WithoutOption } from './specifications/select-field.specification.js'
 
 export class UpdateFieldHelper {
-  static updateField(fromField: BaseField, input: IUpdateFieldSchema): O<TableCompositeSpecification> {
+  static updateField(table: Table, fromField: BaseField, input: IUpdateFieldSchema): O<TableCompositeSpecification> {
     const specs: TableCompositeSpecification[] = []
 
     const typeChanged = input.type !== fromField.type
@@ -40,8 +42,13 @@ export class UpdateFieldHelper {
     if (isString(input.description)) {
       specs.push(WithFieldDescription.fromString(type, id, input.description))
     }
-    if (isBoolean(input.required) && isControlledFieldType(type)) {
+    if (isBoolean(input.required) && !isControlledFieldType(type)) {
       specs.push(new WithFieldRequirement(type, id, input.required))
+      if (input.required) {
+        for (const form of table.forms.forms) {
+          specs.push(new WithFormFieldsRequirements(form.id.value, { [id]: true }))
+        }
+      }
     }
     if (isBoolean(input.display) && canDisplay(type)) {
       specs.push(new WithFieldDisplay(type, id, input.display))

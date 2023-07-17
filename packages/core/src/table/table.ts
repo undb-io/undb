@@ -328,10 +328,10 @@ export class Table {
     const field = this.schema.getFieldById(id).unwrap()
 
     if (input.type && field.type !== input.type) {
-      return UpdateFieldHelper.updateField(field, input)
+      return UpdateFieldHelper.updateField(this, field, input)
     }
 
-    return field.update(input as any)
+    return field.update(this, input as any)
   }
 
   public duplicateField({ id, includesValues }: IDuplicatedFieldSchema): TableCompositeSpecification {

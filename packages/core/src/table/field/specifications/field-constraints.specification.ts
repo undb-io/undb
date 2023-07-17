@@ -1,9 +1,9 @@
 import { CompositeSpecification } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { ITableSpecVisitor } from '../../specifications'
-import type { Table } from '../../table'
-import type { IFieldType } from '../field.type'
+import type { ITableSpecVisitor } from '../../specifications/index.js'
+import type { Table } from '../../table.js'
+import type { IFieldType } from '../field.type.js'
 
 export class WithFieldRequirement extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(public readonly type: IFieldType, public readonly fieldId: string, public readonly required: boolean) {
