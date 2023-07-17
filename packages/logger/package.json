@@ -28,6 +28,6 @@
   "types": "dist/index.d",
   "dependencies": {
     "pino": "^8.14.1",
-    "pino-pretty": "^10.0.0"
+    "pino-pretty": "^10.0.1"
   }
 }
