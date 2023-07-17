@@ -1,4 +1,4 @@
-import { IUpdateViewNameSchema } from '@undb/core'
+import type { IUpdateViewNameSchema } from '@undb/core'
 import type { CommandProps } from '@undb/domain'
 import { Command } from '@undb/domain'
 import type { IUpdateViewNameCommandInput } from './update-view-name.command.interface.js'

@@ -21,6 +21,7 @@ import type {
   WithFormFieldsOrder,
   WithFormFieldsSpecification,
   WithFormFieldsVisibility,
+  WithFormName,
   WithFormat,
   WithGanttField,
   WithKanbanField,
@@ -123,6 +124,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   formFieldsEqual(s: WithFormFieldsSpecification): void {
+    throw new Error('Method not implemented.')
+  }
+  withFormName(s: WithFormName): void {
     throw new Error('Method not implemented.')
   }
   withFormFieldsVisibility(s: WithFormFieldsVisibility): void {

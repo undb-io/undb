@@ -39,6 +39,7 @@ import { SetSortsCommandHandler } from './set-sorts.command.handler.js'
 import { SetTreeViewFieldCommandHandler } from './set-tree-view-field.command.handler.js'
 import { SwitchDisplayTypeCommandHandler } from './switch-display-type.command.handler.js'
 import { UpdateFieldCommandHandler } from './update-field.command.handler.js'
+import { UpdateFormCommandHandler } from './update-form.command.handler.js'
 import { UpdateOptionCommandHandler } from './update-option.command.handler.js'
 import { UpdateRecordCommandHandler } from './update-record.command.handler.js'
 import { UpdateRecordsCommandHandler } from './update-records.command.handler.js'
@@ -94,4 +95,5 @@ export const commandHandlers = [
   CreateFormCommandHandler,
   SetFormFieldVisibilityCommandHandler,
   SetFormFieldsOrderCommandHandler,
+  UpdateFormCommandHandler,
 ]

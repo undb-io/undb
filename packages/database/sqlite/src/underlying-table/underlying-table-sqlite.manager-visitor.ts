@@ -4,6 +4,7 @@ import type {
   ITableSpecVisitor,
   WithDuplicatedField,
   WithForeignTableId,
+  WithFormName,
   WithGanttField,
   WithNewFieldType,
   WithNewForm,
@@ -79,6 +80,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   viewsOrderEqual(): void {}
   formsEqual(): void {}
   formFieldsEqual(): void {}
+  withFormName(s: WithFormName): void {}
   withFormFieldsVisibility(): void {}
   newForm(s: WithNewForm): void {}
   filterEqual(): void {}

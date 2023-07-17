@@ -1,5 +1,6 @@
-import { ValueObject } from '@undb/domain'
-import { sortBy } from 'lodash-es'
+import { ValueObject, and } from '@undb/domain'
+import { isString, sortBy } from 'lodash-es'
+import type { Option } from 'oxide.ts'
 import type { Field } from '../field/field.type.js'
 import type { TableCompositeSpecification } from '../specifications/interface.js'
 import type { TableSchema } from '../value-objects/index.js'
@@ -7,10 +8,11 @@ import { FormFieldsOrder } from './form-fields-order.vo.js'
 import { FormFields } from './form-fields.vo.js'
 import { FormId } from './form-id.vo.js'
 import { FormName } from './form-name.vo.js'
-import type { ICreateFormSchema } from './form.schema.js'
+import type { ICreateFormSchema, IUpdateFormSchema } from './form.schema.js'
 import type { IForm } from './form.type.js'
 import { WithFormFieldsOrder } from './specifications/form-fields-order.specification.js'
 import { WithFormFieldsVisibility } from './specifications/form-fields.specification.js'
+import { WithFormName } from './specifications/form-name.specification.js'
 
 export class Form extends ValueObject<IForm> {
   public get id() {
@@ -19,6 +21,10 @@ export class Form extends ValueObject<IForm> {
 
   public get name() {
     return this.props.name
+  }
+
+  public set name(name: FormName) {
+    this.props.name = name
   }
 
   public get fields() {
@@ -100,5 +106,15 @@ export class Form extends ValueObject<IForm> {
 
   public setFieldVisibility(visiblity: Record<string, boolean>): TableCompositeSpecification {
     return new WithFormFieldsVisibility(this.id.value, visiblity)
+  }
+
+  public update(input: IUpdateFormSchema): Option<TableCompositeSpecification> {
+    const specs: TableCompositeSpecification[] = []
+
+    if (isString(input.name)) {
+      specs.push(new WithFormName(this.id.value, new FormName({ value: input.name })))
+    }
+
+    return and(...specs)
   }
 }

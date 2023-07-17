@@ -14,7 +14,12 @@ import type {
 import { FieldId, SelectField, WithDuplicatedField } from './field/index.js'
 import { UpdateFieldHelper } from './field/update-field.helper.js'
 import type { IRootFilter } from './filter/index.js'
-import type { ICreateFormSchema, ISetFormFieldVisibilitySchema, ISetFormFieldsOrderSchema } from './form/form.schema.js'
+import type {
+  ICreateFormSchema,
+  ISetFormFieldVisibilitySchema,
+  ISetFormFieldsOrderSchema,
+  IUpdateFormSchema,
+} from './form/form.schema.js'
 import type { IQueryForm } from './form/form.type.js'
 import { Forms } from './form/forms.js'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from './option/index.js'
@@ -402,6 +407,16 @@ export class Table {
     const spec = view.updateName(input.name)
     spec.mutate(this).unwrap()
 
+    return spec
+  }
+
+  public updateForm(formId: string, input: IUpdateFormSchema): Option<TableCompositeSpecification> {
+    const form = this.forms.getById(formId).expect('not found form')
+    const spec = form.update(input)
+
+    if (spec.isSome()) {
+      spec.unwrap().mutate(this).unwrap()
+    }
     return spec
   }
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { formEditorModal } from '$lib/store/modal'
-	import { Heading, Modal, Toggle } from 'flowbite-svelte'
+	import { Heading, Input, Modal, Toggle } from 'flowbite-svelte'
 	import FormEditor from './FormEditor.svelte'
 	import { selectedForm } from '$lib/store/drawer'
 	import { t } from '$lib/i18n'
@@ -9,6 +9,8 @@
 	import { getShareFormUrl } from '@undb/integrations'
 	import { page } from '$app/stores'
 	import ShareDropdown from '$lib/share/ShareDropdown.svelte'
+	import { invalidate } from '$app/navigation'
+	import type { ChangeEventHandler } from 'svelte/elements'
 
 	const table = getTable()
 
@@ -20,6 +22,26 @@
 		},
 		{ enabled: !!$selectedForm },
 	)
+
+	const updateForm = trpc().table.form.update.mutation({
+		async onSuccess(data, variables, context) {
+			updating = false
+			await invalidate(`table:${$table.id.value}`)
+		},
+	})
+
+	let updating = false
+
+	const onNameChange = (e: Event) => {
+		const target = e.target as HTMLInputElement
+		if (!$selectedForm) return
+
+		$updateForm.mutate({
+			tableId: $table.id.value,
+			formId: $selectedForm.id.value,
+			name: target.value,
+		})
+	}
 
 	const createFormShare = trpc().share.create.mutation({
 		async onSuccess(data, variables, context) {
@@ -67,8 +89,16 @@
 			bind:open={$formEditorModal.open}
 		>
 			<svelte:fragment slot="header">
-				<div class="flex justify-between w-full">
-					<Heading tag="h6">{$selectedForm.name.value}</Heading>
+				<div class="flex justify-between w-full gap-2">
+					<Heading tag="h6">
+						{#if !updating}
+							<span on:dblclick={() => (updating = true)}>
+								{$selectedForm.name.value}
+							</span>
+						{:else}
+							<Input bind:value={$selectedForm.name.value} on:change={onNameChange} />
+						{/if}
+					</Heading>
 					<Toggle class="inline-flex" checked={share?.enabled ?? false} on:change={onChange}>
 						<div class="whitespace-nowrap">
 							{$t('share')}

@@ -12,6 +12,13 @@ export const createFormSchema = z.object({
 })
 export type ICreateFormSchema = z.infer<typeof createFormSchema>
 
+export const updateFormSchema = z
+  .object({
+    name: formNameSchema,
+  })
+  .partial()
+export type IUpdateFormSchema = z.infer<typeof updateFormSchema>
+
 export const createFormsSchema = z.array(createFormSchema)
 export type ICreateFormsSchema = z.infer<typeof createFormsSchema>
 

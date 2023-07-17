@@ -10,6 +10,7 @@ import type {
   WithFormFieldsOrder,
   WithFormFieldsSpecification,
   WithFormFieldsVisibility,
+  WithFormName,
   WithGanttField,
   WithNewFieldType,
   WithNewForm,
@@ -245,6 +246,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   formFieldsEqual(s: WithFormFieldsSpecification): void {
     const form = this.em.getReference(Form, s.formId)
     wrap(form).assign({ fields: s.fields })
+    this.em.persist(form)
+  }
+  withFormName(s: WithFormName): void {
+    const form = this.em.getReference(Form, s.formId)
+    wrap(form).assign({ name: s.name.value })
     this.em.persist(form)
   }
   withFormFieldsVisibility(s: WithFormFieldsVisibility): void {
