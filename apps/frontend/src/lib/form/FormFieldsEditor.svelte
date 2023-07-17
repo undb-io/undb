@@ -83,12 +83,14 @@
 				data-field-id={field.id.value}
 				class="fields space-y-2 px-5 py-3 hover:bg-sky-50 hover:border-blue-200 border box-border rounded-md relative group"
 			>
-				<button
-					class="absolute right-4 top-2 hidden group-hover:block"
-					on:click={() => setFormFieldsVisibility(field.id.value)}
-				>
-					<i class="ti ti-eye-closed" />
-				</button>
+				{#if !field.required}
+					<button
+						class="absolute right-4 top-2 hidden group-hover:block"
+						on:click={() => setFormFieldsVisibility(field.id.value)}
+					>
+						<i class="ti ti-eye-closed" />
+					</button>
+				{/if}
 				<Label class="leading-5" for={field.id.value} data-field-id={field.id.value}>
 					<div class="inline-flex items-center gap-2">
 						<FieldIcon type={field.type} size={16} />
@@ -104,6 +106,7 @@
 				<div class="flex items-center justify-end">
 					<Toggle
 						size="small"
+						disabled={field.required}
 						checked={$selectedForm.fields.isRequired(field.id.value)}
 						on:change={(e) => onRquiredChange(e, field.id.value)}
 					>

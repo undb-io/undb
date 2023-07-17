@@ -37,7 +37,7 @@ export class WithFormFieldsVisibility extends CompositeSpecification<Table, ITab
   mutate(t: Table): Result<Table, string> {
     const form = t.forms.getById(this.formId)
     if (form.isSome()) {
-      form.unwrap().fields = form.unwrap().fields.merge(this.visibility)
+      form.unwrap().fields = form.unwrap().fields.merge(t.schema, this.visibility)
     }
 
     return Ok(t)
@@ -59,7 +59,7 @@ export class WithFormFieldsRequirements extends CompositeSpecification<Table, IT
   mutate(t: Table): Result<Table, string> {
     const form = t.forms.getById(this.formId)
     if (form.isSome()) {
-      form.unwrap().fields = form.unwrap().fields.merge(this.requirements)
+      form.unwrap().fields = form.unwrap().fields.merge(t.schema, this.requirements)
     }
 
     return Ok(t)
