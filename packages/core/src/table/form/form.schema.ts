@@ -4,12 +4,20 @@ import { formFields } from './form-fields.vo.js'
 import { formIdSchema } from './form-id.vo.js'
 import { formNameSchema } from './form-name.vo.js'
 
-export const createFormSchema = z.object({
+export const createFormBaseSchema = z.object({
   id: formIdSchema.optional(),
   name: formNameSchema,
-  fields: formFields.optional(),
-  fieldsOrder: fieldIdSchema.array().optional(),
 })
+
+export type ICreateFormBaseSchema = z.infer<typeof createFormBaseSchema>
+
+export const createFormSchema = z
+  .object({
+    fields: formFields.optional(),
+    fieldsOrder: fieldIdSchema.array().optional(),
+  })
+  .merge(createFormBaseSchema)
+
 export type ICreateFormSchema = z.infer<typeof createFormSchema>
 
 export const updateFormSchema = z

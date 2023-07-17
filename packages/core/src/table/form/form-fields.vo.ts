@@ -3,6 +3,7 @@ import { merge } from 'lodash-es'
 import { z } from 'zod'
 import type { Field } from '../field'
 import type { TableSchema } from '../value-objects'
+import type { ViewFieldOptions } from '../view'
 
 export const formField = z.object({
   hidden: z.boolean().optional(),
@@ -31,6 +32,16 @@ export class FormFields extends ValueObject<Map<string, IFormField>> {
     }
 
     return new this(new Map(Object.entries(fields)))
+  }
+
+  static fromViewFields(schema: TableSchema, viewFields: ViewFieldOptions): FormFields {
+    const fields: IFormFields = {}
+
+    for (const [fieldId, option] of viewFields) {
+      fields[fieldId] = { required: false, hidden: option.hidden }
+    }
+
+    return this.from(schema)
   }
 
   static from(schema: TableSchema, input?: IFormFields) {

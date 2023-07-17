@@ -302,6 +302,9 @@ export const config: InitOptions = {
         'form submitted': 'Successfully submitted form data',
         'hide form all': 'hide all fields',
         'show form all': 'show all fields',
+        'create form from view': 'create form from view',
+        forms: 'forms',
+        'Create New Form': 'Create New Form',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -627,6 +630,9 @@ export const config: InitOptions = {
         'form submitted': '成功提交表单',
         'hide form all': '隐藏所有字段',
         'show form all': '显示所有字段',
+        'create form from view': '生成表单',
+        forms: '表单',
+        'Create New Form': '创建表单',
       },
       webhook: {
         Webhook: 'Webhook',

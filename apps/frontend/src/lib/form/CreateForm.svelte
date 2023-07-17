@@ -51,7 +51,9 @@
 			</Label>
 		</div>
 		<div class="w-full flex justify-end gap-4">
-			<Button size="xs" color="alternative">{$t('Cancel', { ns: 'common' })}</Button>
+			<Button size="xs" color="alternative" on:click={() => ($formDrawerMode = 'list')}
+				>{$t('Cancel', { ns: 'common' })}</Button
+			>
 			<Button size="xs" form="createForm" type="submit">{$t('Confirm', { ns: 'common' })}</Button>
 		</div>
 	</div>

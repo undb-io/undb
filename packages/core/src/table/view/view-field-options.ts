@@ -64,6 +64,10 @@ export class ViewFieldOptions extends ValueObject<Map<string, IViewFieldOption>>
     return Some(obj)
   }
 
+  *[Symbol.iterator]() {
+    yield* this.value
+  }
+
   public toJSON() {
     return Object.fromEntries(this.value)
   }

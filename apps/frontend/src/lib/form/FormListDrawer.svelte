@@ -28,7 +28,7 @@
 	{#if $formDrawerMode === 'list'}
 		<div class="flex items-center justify-between">
 			<Heading tag="h5" class="whitespace-nowrap truncate">
-				{$table.name.value} - Forms
+				{$table.name.value} - {$t('forms')}
 			</Heading>
 
 			<Button size="xs" class="whitespace-nowrap" on:click={() => ($formDrawerMode = 'create')}>

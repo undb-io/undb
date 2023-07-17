@@ -1,4 +1,11 @@
-import { CreateFormCommand, UpdateFormCommand, createFormCommandInput, updateFormCommandInput } from '@undb/cqrs'
+import {
+  CreateFormCommand,
+  CreateFormFromViewCommand,
+  UpdateFormCommand,
+  createFormCommandInput,
+  createFormFromViewCommandInput,
+  updateFormCommandInput,
+} from '@undb/cqrs'
 import type { ICommandBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
@@ -12,6 +19,13 @@ export const createFormRouter = (procedure: typeof publicProcedure) => (commandB
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new CreateFormCommand(input)
+        return commandBus.execute(cmd)
+      }),
+    createFromView: procedure
+      .input(createFormFromViewCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new CreateFormFromViewCommand(input)
         return commandBus.execute(cmd)
       }),
     update: procedure

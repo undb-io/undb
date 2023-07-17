@@ -4,11 +4,12 @@ import type { Option } from 'oxide.ts'
 import type { Field } from '../field/field.type.js'
 import type { TableCompositeSpecification } from '../specifications/interface.js'
 import type { TableSchema } from '../value-objects/index.js'
+import type { ViewVO } from '../view/index.js'
 import { FormFieldsOrder } from './form-fields-order.vo.js'
 import { FormFields } from './form-fields.vo.js'
 import { FormId } from './form-id.vo.js'
 import { FormName } from './form-name.vo.js'
-import type { ICreateFormSchema, IUpdateFormSchema } from './form.schema.js'
+import type { ICreateFormBaseSchema, ICreateFormSchema, IUpdateFormSchema } from './form.schema.js'
 import type { IForm } from './form.type.js'
 import { WithFormFieldsOrder } from './specifications/form-fields-order.specification.js'
 import { WithFormFieldsRequirements, WithFormFieldsVisibility } from './specifications/form-fields.specification.js'
@@ -84,6 +85,18 @@ export class Form extends ValueObject<IForm> {
     const order = fieldsOrder.filter((id) => notHiddenFieldIds.has(id))
 
     return new WithFormFieldsOrder(this.id.value, new FormFieldsOrder(order))
+  }
+
+  public static fromView(input: Partial<ICreateFormBaseSchema>, view: ViewVO, schema: TableSchema): Form {
+    return this.create(
+      {
+        ...input,
+        name: input.name ?? view.name.value,
+        fields: FormFields.fromViewFields(schema, view.fieldOptions).toJSON(),
+        fieldsOrder: view.fieldsOrder?.order,
+      },
+      schema,
+    )
   }
 
   public static create(input: ICreateFormSchema, schema: TableSchema): Form {

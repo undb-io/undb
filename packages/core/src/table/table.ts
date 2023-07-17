@@ -15,6 +15,7 @@ import { FieldId, SelectField, WithDuplicatedField } from './field/index.js'
 import { UpdateFieldHelper } from './field/update-field.helper.js'
 import type { IRootFilter } from './filter/index.js'
 import type {
+  ICreateFormBaseSchema,
   ICreateFormSchema,
   ISetFormFieldRequirementsSchema,
   ISetFormFieldVisibilitySchema,
@@ -371,6 +372,14 @@ export class Table {
 
   public createForm(input: ICreateFormSchema): TableCompositeSpecification {
     const spec = this.forms.createForm(input, this.schema)
+    spec.mutate(this).unwrap()
+
+    return spec
+  }
+
+  public createFormFromView(viewId: string, input: Partial<ICreateFormBaseSchema>): TableCompositeSpecification {
+    const view = this.mustGetView(viewId)
+    const spec = this.forms.createFormFromView(view, input, this.schema)
     spec.mutate(this).unwrap()
 
     return spec
