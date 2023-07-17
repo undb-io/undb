@@ -1,6 +1,7 @@
 import { type ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
-import { IShareType, ShareFactory, type IShareRepository } from '@undb/integrations'
+import type { IShareType } from '@undb/integrations'
+import { ShareFactory, type IShareRepository } from '@undb/integrations'
 import type { CreateShareCommand } from './create-share.command.js'
 
 type ICreateShareCommandHandler = ICommandHandler<CreateShareCommand, void>

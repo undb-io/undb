@@ -5,11 +5,12 @@
 	import { t } from '$lib/i18n'
 	import { getTable, shareTarget } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { Alert, Button, Heading, Label, P, Spinner } from 'flowbite-svelte'
+	import { Alert, Button, Heading, Label, P, Spinner, Toast } from 'flowbite-svelte'
 	import { keys, pick } from 'lodash-es'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import logo from '$lib/assets/logo.svg'
+	import { slide } from 'svelte/transition'
 
 	export let data: Validation<any>
 
@@ -114,3 +115,12 @@
 		</a>
 	</section>
 </main>
+
+{#if $createShareRecord.error}
+	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{$createShareRecord.error.message}
+		</span>
+	</Toast>
+{/if}

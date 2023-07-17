@@ -15,7 +15,8 @@ export class CreateShareRecordCommandHandler implements ICommandHandler<CreateSh
     await this.guard.verify(withShare(command.target.type, command.target.id))
 
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
-    const schema = createMutateRecordValuesSchema(table.schema.fields)
+    const form = command.target.type === 'form' ? table.forms.getById(command.target.id).unwrap() : undefined
+    const schema = createMutateRecordValuesSchema(table.schema.fields, undefined, form?.fields)
 
     const record = table.createRecord(command.id, schema.parse(command.values))
     await this.recordRepo.insert(table, record, table.schema.toIdMap())
