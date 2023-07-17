@@ -2,13 +2,16 @@
 	import { page } from '$app/stores'
 	import cx from 'classnames'
 	import { Button, Dropdown, Radio } from 'flowbite-svelte'
-	import type { IQueryTable } from '@undb/core'
+	import type { IQueryTable, Table } from '@undb/core'
 	import { t } from '$lib/i18n'
 	import { allTables, tableById } from '$lib/store/table'
 
 	export let value: string
 
-	$: selected = value ? $tableById(value) : undefined
+	let selected: Table | undefined
+	$: if (value) {
+		$tableById(value).then((t) => (selected = t))
+	}
 
 	let open = false
 </script>

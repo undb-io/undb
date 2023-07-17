@@ -1,11 +1,10 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { page } from '$app/stores'
 	import RecordCard from '$lib/record/RecordCard.svelte'
-	import type { IQueryTable, Records, Record, ReferenceFieldTypes } from '@undb/core'
+	import type { Records, Record, ReferenceFieldTypes, Table } from '@undb/core'
 	import { Alert, Button, Checkbox, CloseButton, Modal, Spinner } from 'flowbite-svelte'
 	import VirtualList from 'svelte-tiny-virtual-list'
-	import { getTable, tableById } from '$lib/store/table'
+	import { tableById } from '$lib/store/table'
 	import { writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
 
@@ -44,7 +43,10 @@
 
 	$: value, getInitial()
 
-	let foreignTable = $tableById(foreignTableId)
+	let foreignTable: Table | undefined
+	$: if (foreignTableId) {
+		$tableById(foreignTableId).then((t) => (foreignTable = t))
+	}
 	$: schema = foreignTable?.schema
 
 	$: {

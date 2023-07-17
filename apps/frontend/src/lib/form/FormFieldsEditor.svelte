@@ -6,6 +6,7 @@
 	import { selectedForm } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
+	import { isControlledFieldType } from '@undb/core'
 	import { Label, Toggle } from 'flowbite-svelte'
 	import type { SortableEvent } from 'sortablejs'
 	import Sortable from 'sortablejs'
@@ -104,14 +105,16 @@
 				</Label>
 				<CellInput class="w-full" {field} />
 				<div class="flex items-center justify-end">
-					<Toggle
-						size="small"
-						disabled={field.required}
-						checked={$selectedForm.fields.isRequired(field.id.value)}
-						on:change={(e) => onRquiredChange(e, field.id.value)}
-					>
-						{$t('Required', { ns: 'common' })}
-					</Toggle>
+					{#if !field.controlled}
+						<Toggle
+							size="small"
+							disabled={field.required}
+							checked={$selectedForm.fields.isRequired(field.id.value)}
+							on:change={(e) => onRquiredChange(e, field.id.value)}
+						>
+							{$t('Required', { ns: 'common' })}
+						</Toggle>
+					{/if}
 				</div>
 			</div>
 		{/each}

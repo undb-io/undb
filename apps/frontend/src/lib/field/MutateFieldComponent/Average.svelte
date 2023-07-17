@@ -4,7 +4,7 @@
 	import type { UnwrapEffects } from 'sveltekit-superforms/index'
 	import ReferenceFieldPicker from '../FieldInputs/ReferenceFieldPicker.svelte'
 	import { getForeignTableFieldsByReferenceId, getTable, tableById } from '$lib/store/table'
-	import { type ReferenceField, type TreeField, isNumeric, isAggregate } from '@undb/core'
+	import { type ReferenceField, type TreeField, isNumeric, isAggregate, Table } from '@undb/core'
 	import { Label } from 'flowbite-svelte'
 	import FieldPicker from '../FieldInputs/FieldPicker.svelte'
 	import type { Writable } from 'svelte/store'
@@ -23,7 +23,11 @@
 		? (schema.get($referenceFieldId) as ReferenceField | TreeField | undefined)?.foreignTableId.into() ??
 		  $table.id.value
 		: undefined
-	$: coreTable = foreignTableId ? $tableById(foreignTableId) : undefined
+
+	let coreTable: Table | undefined
+	$: if (foreignTableId) {
+		$tableById(foreignTableId).then((t) => (coreTable = t))
+	}
 </script>
 
 <div class="grid grid-cols-2 gap-2">

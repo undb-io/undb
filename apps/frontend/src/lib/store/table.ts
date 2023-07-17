@@ -346,24 +346,22 @@ export const aggregateChartFn: Readable<
 		.exhaustive()
 })
 
-export const tableById = derived(
-	[currentTable, allTables, shareTarget],
-	([$table, $tables, $shareTarget]) =>
-		(tableId: string) => {
-			let t: Table | undefined
+export const tableById = derived([currentTable, allTables, shareTarget], ([$table, $tables, $shareTarget]) => {
+	let t: Table | undefined
+	return async (tableId: string) => {
+		if (tableId === $table.id.value) {
+			t = $table
+		} else if ($tables) {
+			const found = $tables.find((t) => t.id === tableId)
+			if (found) t = TableFactory.fromQuery(found)
+		} else if ($shareTarget) {
+			await trpc()
+				.share.table.utils.fetch({ id: tableId, target: $shareTarget })
+				.then(({ table }) => {
+					t = TableFactory.fromQuery(table)
+				})
+		}
 
-			if (tableId === $table.id.value) t = $table
-			else if ($tables) {
-				const found = $tables.find((t) => t.id === tableId)
-				if (found) t = TableFactory.fromQuery(found)
-			} else if ($shareTarget) {
-				trpc()
-					.share.table.utils.fetch({ id: tableId, target: $shareTarget })
-					.then(({ table }) => {
-						t = TableFactory.fromQuery(table)
-					})
-			}
-
-			return t
-		},
-)
+		return t
+	}
+})
