@@ -10,7 +10,7 @@
 	import { goto, invalidate } from '$app/navigation'
 	import Portal from 'svelte-portal'
 	import { t } from '$lib/i18n'
-	import { selectedForm, selectedFormId, webhookListDrawer } from '$lib/store/drawer'
+	import { selectedFormId, webhookListDrawer } from '$lib/store/drawer'
 	import { erdModal, formEditorModal } from '$lib/store/modal'
 
 	const table = getTable()

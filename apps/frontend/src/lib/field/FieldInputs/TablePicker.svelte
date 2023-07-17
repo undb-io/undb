@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { page } from '$app/stores'
 	import cx from 'classnames'
 	import { Button, Dropdown, Radio } from 'flowbite-svelte'
-	import type { IQueryTable, Table } from '@undb/core'
+	import type { Table } from '@undb/core'
 	import { t } from '$lib/i18n'
 	import { allTables, tableById } from '$lib/store/table'
 

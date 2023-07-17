@@ -3,7 +3,8 @@ import { QueryHandler } from '@nestjs/cqrs'
 import { type IRecordAggregateRepository, type ITableRepository } from '@undb/core'
 import type { IAggregateNumberOutput } from '@undb/cqrs'
 import { AggregateNumberQuery, AggregateNumberQueryHandler as DomainHandler } from '@undb/cqrs'
-import { InjectRecordAggregateRepositoy, InjectTableRepository } from '../adapters/index.js'
+import { InjectRecordAggregateRepositoy } from '../adapters/sqlite/record-sqlite.aggregate-repository.js'
+import { InjectTableRepository } from '../adapters/sqlite/table-sqlite.repository.js'
 
 @QueryHandler(AggregateNumberQuery)
 export class NestAggregateNumberQueryHandler

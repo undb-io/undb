@@ -3,7 +3,7 @@ import { CommandBus } from '@nestjs/cqrs'
 import { recordReadableMapper, type IQueryRecordSchema, type ITableRepository } from '@undb/core'
 import { CreateRecordCommand, CreateRecordsCommand, UpdateRecordCommand, UpdateRecordsCommand } from '@undb/cqrs'
 import { openAPIMutateRecordMapper, type IOpenAPIMutateRecordSchema } from '@undb/openapi'
-import { InjectTableRepository } from '../core/table/adapters/index.js'
+import { InjectTableRepository } from '../core/table/adapters/sqlite/table-sqlite.repository.js'
 
 @Injectable()
 export class OpenAPIRecordService {

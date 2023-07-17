@@ -4,7 +4,7 @@ import { TableSpecHandler, type ITableRepository } from '@undb/core'
 import { CreateFieldCommand, CreateFieldCommandHandler as DomainHandler } from '@undb/cqrs'
 import { type IUnitOfWork } from '@undb/domain'
 import { InjectUnitOfWork } from '../../../uow/uow.service.js'
-import { InjectTableRepository } from '../adapters/index.js'
+import { InjectTableRepository } from '../adapters/sqlite/table-sqlite.repository.js'
 
 @CommandHandler(CreateFieldCommand)
 export class CreateFieldCommandHandler extends DomainHandler implements ICommandHandler<CreateFieldCommand, void> {

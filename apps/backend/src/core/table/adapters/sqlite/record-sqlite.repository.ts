@@ -1,5 +1,5 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import type { ClsStore, IClsService } from '@undb/core'
 import { Record, Table, type IRecordSpec, type TableSchemaIdMap } from '@undb/core'
 import { type IUnitOfWork } from '@undb/domain'
@@ -9,6 +9,9 @@ import { ClsService } from 'nestjs-cls'
 import type { Option } from 'oxide.ts'
 import { NestOutboxService } from '../../../../outbox/outbox.service.js'
 import { InjectUnitOfWork } from '../../../../uow/uow.service.js'
+
+export const RECORD_REPOSITORY = Symbol('RECORD_REPOSITORY')
+export const InjectRecordRepository = () => Inject(RECORD_REPOSITORY)
 
 @Injectable()
 // @ts-ignore

@@ -3,7 +3,7 @@ import { QueryHandler } from '@nestjs/cqrs'
 import { type ITableQueryModel } from '@undb/core'
 import type { IGetSharedTableOutput } from '@undb/cqrs'
 import { GetSharedTableQuery, GetSharedTableQueryHandler } from '@undb/cqrs'
-import { InjectTableQueryModel } from '../../core/table/adapters/index.js'
+import { InjectTableQueryModel } from '../../core/table/adapters/sqlite/table-sqlite.query-model.js'
 import { NestShareGuardService } from '../services/share-guard.service.js'
 
 @QueryHandler(GetSharedTableQuery)

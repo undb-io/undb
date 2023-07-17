@@ -2,7 +2,8 @@ import type { ICommandHandler } from '@nestjs/cqrs'
 import { CommandHandler } from '@nestjs/cqrs'
 import { type IRecordRepository, type ITableRepository } from '@undb/core'
 import { ExportGridCommandHandler as DomainHandler, ExportGridCommand } from '@undb/cqrs'
-import { InjectRecordRepository, InjectTableRepository } from '../adapters/index.js'
+import { InjectRecordRepository } from '../adapters/sqlite/record-sqlite.repository.js'
+import { InjectTableRepository } from '../adapters/sqlite/table-sqlite.repository.js'
 import { NestRecordExportorService } from '../exportor/exportor.service.js'
 
 @CommandHandler(ExportGridCommand)

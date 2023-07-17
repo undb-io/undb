@@ -249,7 +249,7 @@ export const listRecordFn: Readable<
 			() => (filter?: IRootFilter, options?: ListRecordQueryOptions) =>
 				trpc().record.list.query(
 					{ tableId: $table.id.value, viewId: $view.id.value, q: $q, filter },
-					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash, ...options },
+					{ queryHash: $recordHash, ...options, refetchOnMount: false, refetchOnWindowFocus: false },
 				),
 		)
 		.with(
@@ -257,7 +257,7 @@ export const listRecordFn: Readable<
 			() => (filter?: IRootFilter, options?: ListRecordQueryOptions) =>
 				trpc().share.viewRecords.query(
 					{ viewId: $view.id.value, q: $q, filter },
-					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash, ...options },
+					{ queryHash: $recordHash, ...options, refetchOnMount: false, refetchOnWindowFocus: false },
 				),
 		)
 		.exhaustive()

@@ -87,8 +87,8 @@ export class TableSqliteRepository implements ITableRepository {
 
   async updateOneById(id: string, spec: ITableSpec): Promise<void> {
     await this.cache.remove(id)
-
-    await this.em.transactional(async (em) => {
+    const em = this.em
+    await em.transactional(async (em) => {
       const visitor = new TableSqliteMutationVisitor(id, em)
 
       spec.accept(visitor)

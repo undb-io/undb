@@ -10,6 +10,9 @@ import { InjectUnitOfWork } from '../../../../uow/uow.service.js'
 export const TABLE_KV_CACHE = Symbol('TABLE_KV_CACHE')
 export const InjectTableKVCache = () => Inject(TABLE_KV_CACHE)
 
+export const TABLE_REPOSITORY = Symbol('TABLE_REPOSITORY')
+export const InjectTableRepository = () => Inject(TABLE_REPOSITORY)
+
 @Injectable()
 export class NestTableSqliteRepository extends TableSqliteRepository {
   constructor(

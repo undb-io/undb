@@ -6,7 +6,8 @@ import { CreateTableCommand, CreateTableCommandHandler as DomainHandler } from '
 import { type IUnitOfWork } from '@undb/domain'
 import { ClsService } from 'nestjs-cls'
 import { InjectUnitOfWork } from '../../../uow/uow.service.js'
-import { InjectRecordRepository, InjectTableRepository } from '../adapters/index.js'
+import { InjectRecordRepository } from '../adapters/sqlite/record-sqlite.repository.js'
+import { InjectTableRepository } from '../adapters/sqlite/table-sqlite.repository.js'
 
 @CommandHandler(CreateTableCommand)
 // @ts-ignore

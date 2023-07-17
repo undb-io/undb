@@ -3,7 +3,8 @@ import { QueryHandler } from '@nestjs/cqrs'
 import { type IRecordAggregateRepository, type ITableQueryModel } from '@undb/core'
 import type { IGetShareAggregateChartOutput } from '@undb/cqrs'
 import { GetShareAggregateChartQueryHandler as DomainHandler, GetShareAggregateChartQuery } from '@undb/cqrs'
-import { InjectRecordAggregateRepositoy, InjectTableQueryModel } from '../../core/table/adapters/index.js'
+import { InjectRecordAggregateRepositoy } from '../../core/table/adapters/sqlite/record-sqlite.aggregate-repository.js'
+import { InjectTableQueryModel } from '../../core/table/adapters/sqlite/table-sqlite.query-model.js'
 import { NestShareGuardService } from '../services/share-guard.service.js'
 
 @QueryHandler(GetShareAggregateChartQuery)

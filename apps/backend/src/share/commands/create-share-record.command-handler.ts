@@ -6,7 +6,8 @@ import {
   CreateShareRecordCommandHandler as DomainHandler,
   ICreateShareRecordOutput,
 } from '@undb/cqrs'
-import { InjectRecordRepository, InjectTableRepository } from '../../core/table/adapters/index.js'
+import { InjectRecordRepository } from '../../core/table/adapters/sqlite/record-sqlite.repository.js'
+import { InjectTableRepository } from '../../core/table/adapters/sqlite/table-sqlite.repository.js'
 import { NestShareGuardService } from '../services/share-guard.service.js'
 
 @CommandHandler(CreateShareRecordCommand)

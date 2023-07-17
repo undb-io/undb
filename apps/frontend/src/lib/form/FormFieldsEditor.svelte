@@ -6,7 +6,6 @@
 	import { selectedForm } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { isControlledFieldType } from '@undb/core'
 	import { Label, Toggle } from 'flowbite-svelte'
 	import type { SortableEvent } from 'sortablejs'
 	import Sortable from 'sortablejs'
