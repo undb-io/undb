@@ -49,7 +49,7 @@
 		"eslint-config-prettier": "^8.8.0",
 		"eslint-plugin-svelte": "^2.32.2",
 		"flowbite": "^1.6.6",
-		"flowbite-svelte": "^0.39.1",
+		"flowbite-svelte": "^0.40.0",
 		"htm": "^3.1.1",
 		"i18next": "^23.0.0",
 		"i18next-browser-languagedetector": "^7.1.0",
