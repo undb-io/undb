@@ -64,7 +64,7 @@
 
 	$: displayFields = $table.schema.displayFields
 		.map((f) => f.name.value)
-		.concat($form.display ? $form.name || $t('unamed') : undefined)
+		.concat($form.display ? $form.name || $t('unnamed') : undefined)
 		.filter(Boolean)
 </script>
 

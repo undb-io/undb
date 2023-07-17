@@ -11,5 +11,5 @@
 		!content && '!text-gray-400  font-normal',
 	)}
 >
-	{content || $t('unamed', { ns: 'common' })}
+	{content || $t('unnamed', { ns: 'common' })}
 </span>

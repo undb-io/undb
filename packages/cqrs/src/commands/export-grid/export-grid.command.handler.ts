@@ -1,7 +1,7 @@
 import type { IRecordRepository, RecordExportorService } from '@undb/core'
 import { WithRecordTableId, type ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
-import type { ExportGridCommand } from './export-grid.comand.js'
+import type { ExportGridCommand } from './export-grid.command.js'
 
 export class ExportGridCommandHandler implements ICommandHandler<ExportGridCommand, string | Buffer> {
   constructor(

@@ -337,7 +337,7 @@ const referenceComponent = (h: HyperFunc, value: (string | null)[] = []) => {
 				!content && 'text-gray-400 font-normal',
 			),
 		},
-		content || tt('unamed', { ns: 'common' }) || '',
+		content || tt('unnamed', { ns: 'common' }) || '',
 	)
 }
 

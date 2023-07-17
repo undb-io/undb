@@ -1,7 +1,7 @@
 import { createMutateRecordValuesSchema, type IRecordRepository, type ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
 import type { ICreateTableOutput } from '../create-table/index.js'
-import type { CreateRecordCommand } from './create-record.comand.js'
+import type { CreateRecordCommand } from './create-record.command.js'
 
 export class CreateRecordCommandHandler implements ICommandHandler<CreateRecordCommand, ICreateTableOutput> {
   constructor(protected readonly tableRepo: ITableRepository, protected readonly recordRepo: IRecordRepository) {}
