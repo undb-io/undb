@@ -49,9 +49,11 @@
 	$: fields = f.getNotHiddenFields($table.schema)
 </script>
 
-<main class="bg-blue-50 h-screen w-screen flex flex-col">
+<main class="bg-blue-50 h-screen w-screen flex flex-col dark:bg-gray-500">
 	<div class="container mx-auto w-full flex items-center justify-center flex-1">
-		<section class="border rounded-md bg-white py-8 px-6 shadow-lg w-full max-w-5xl">
+		<section
+			class="border dark:border-gray-700 rounded-md bg-white py-8 px-6 shadow-lg w-full max-w-5xl dark:bg-gray-600 dark:text-gray-200"
+		>
 			<Heading tag="h3" class="text-center mb-5">{f.name.value}</Heading>
 			{#if !submitted}
 				<form id="createShareRecord" class="space-y-5" method="POST" use:enhance>
@@ -104,7 +106,7 @@
 	<section class="flex items-center justify-center py-6 gap-2">
 		<a
 			href="https://github.com/undb-xyz/undb"
-			class="inline-flex gap-2 items-center text-sm text-gray-500"
+			class="inline-flex gap-2 items-center text-sm text-gray-500 dark:text-white"
 			target="_blank"
 		>
 			<img class="h-6 w-auto" src={logo} alt="undb" />

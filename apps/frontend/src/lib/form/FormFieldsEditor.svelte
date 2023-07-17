@@ -81,7 +81,7 @@
 		{#each notHiddenFields as field}
 			<div
 				data-field-id={field.id.value}
-				class="fields space-y-2 px-5 py-3 hover:bg-sky-50 hover:border-blue-200 border box-border rounded-md relative group"
+				class="fields space-y-2 px-5 py-3 hover:bg-sky-50 dark:hover:bg-gray-900 hover:border-blue-200 border box-border rounded-md relative group dark:border-gray-400"
 			>
 				{#if !field.required}
 					<button
