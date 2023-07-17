@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { type ConfigType } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
-import type { ClsStore } from '@undb/core'
+import type { ClsStore, IClsService } from '@undb/core'
 import type { Request } from 'express'
 import { ClsService } from 'nestjs-cls'
 import type { JwtFromRequestFunction } from 'passport-jwt'
@@ -23,12 +23,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     return req.cookies?.['undb_auth'] ?? null
   }
 
-  public static setCls(cls: ClsService<ClsStore>, payload: any) {
+  public static setCls(cls: IClsService<ClsStore>, payload: any) {
     cls.set('user.userId', payload.sub)
+    cls.set('user.isAnonymous', false)
   }
 
   async validate(payload: any) {
-    JwtStrategy.setCls(this.cls, payload)
+    JwtStrategy.setCls(this.cls as IClsService<ClsStore>, payload)
     return { userId: payload.sub, email: payload.email }
   }
 }

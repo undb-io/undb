@@ -8,12 +8,14 @@
 
 	$: displayValues = record?.displayValues?.values
 	$: values = field.getDisplayValues(displayValues) ?? []
-	$: initialMembers = new Map(
-		value?.map((userId, index) => {
-			const [username, avatar, color] = (values ?? [])[index] ?? []
-			return [userId, { userId, avatar, username: username ?? '', color }]
-		}),
-	)
+	$: initialMembers = Array.isArray(value)
+		? new Map(
+				value?.map((userId, index) => {
+					const [username, avatar, color] = (values ?? [])[index] ?? []
+					return [userId, { userId, avatar, username: username ?? '', color }]
+				}),
+		  )
+		: new Map()
 </script>
 
 <UsersPicker {initialMembers} bind:value {...$$restProps} />

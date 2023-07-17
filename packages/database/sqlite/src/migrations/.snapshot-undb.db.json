@@ -340,6 +340,131 @@
           "length": 0,
           "mappedType": "datetime"
         },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "fields": {
+          "name": "fields",
+          "type": "json",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "fields_order": {
+          "name": "fields_order",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "table_id": {
+          "name": "table_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        }
+      },
+      "name": "undb_form",
+      "indexes": [
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "undb_form_deleted_at_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "table_id"
+          ],
+          "composite": false,
+          "keyName": "undb_form_table_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "primary",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "undb_form_table_id_foreign": {
+          "constraintName": "undb_form_table_id_foreign",
+          "columnNames": [
+            "table_id"
+          ],
+          "localTableName": "undb_form",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_table",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
         "table_id": {
           "name": "table_id",
           "type": "text",
@@ -432,7 +557,9 @@
             "collaborator",
             "created-by",
             "updated-by",
-            "url"
+            "url",
+            "min",
+            "max"
           ],
           "mappedType": "text"
         },
@@ -571,6 +698,42 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "min_reference_field_id": {
+          "name": "min_reference_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "min_aggregate_field_id": {
+          "name": "min_aggregate_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "max_reference_field_id": {
+          "name": "max_reference_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "max_aggregate_field_id": {
+          "name": "max_aggregate_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         }
       },
       "name": "undb_field",
@@ -671,6 +834,42 @@
           ],
           "composite": false,
           "keyName": "undb_field_average_aggregate_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "min_reference_field_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_min_reference_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "min_aggregate_field_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_min_aggregate_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "max_reference_field_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_max_reference_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "max_aggregate_field_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_max_aggregate_field_id_index",
           "primary": false,
           "unique": false
         },
@@ -794,6 +993,58 @@
           "constraintName": "undb_field_average_aggregate_field_id_foreign",
           "columnNames": [
             "average_aggregate_field_id"
+          ],
+          "localTableName": "undb_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "undb_field_min_reference_field_id_foreign": {
+          "constraintName": "undb_field_min_reference_field_id_foreign",
+          "columnNames": [
+            "min_reference_field_id"
+          ],
+          "localTableName": "undb_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "undb_field_min_aggregate_field_id_foreign": {
+          "constraintName": "undb_field_min_aggregate_field_id_foreign",
+          "columnNames": [
+            "min_aggregate_field_id"
+          ],
+          "localTableName": "undb_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "undb_field_max_reference_field_id_foreign": {
+          "constraintName": "undb_field_max_reference_field_id_foreign",
+          "columnNames": [
+            "max_reference_field_id"
+          ],
+          "localTableName": "undb_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "undb_field_max_aggregate_field_id_foreign": {
+          "constraintName": "undb_field_max_aggregate_field_id_foreign",
+          "columnNames": [
+            "max_aggregate_field_id"
           ],
           "localTableName": "undb_field",
           "referencedColumnNames": [

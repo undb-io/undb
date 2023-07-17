@@ -22,11 +22,12 @@ import {
 	type Table,
 	type ViewVO,
 } from '@undb/core'
+import type { IShareTarget } from '@undb/integrations/dist'
 import { uniqBy } from 'lodash-es'
 import { derived, writable, type Readable } from 'svelte/store'
 import { match } from 'ts-pattern'
 
-export const allTables = writable<IQueryTable[]>()
+export const allTables = writable<IQueryTable[] | undefined>()
 
 export const currentTable = writable<Table>()
 export const getTable = () => currentTable
@@ -38,7 +39,7 @@ export const currentRecords = writable<Records>([])
 export const getRecords = () => currentRecords
 
 export const allTablesExcludeCurren = derived([allTables, currentTable], ([$allTables, $table]) =>
-	$allTables.filter((t) => t.id !== $table.id.value).map((t) => TableFactory.fromQuery(t)),
+	($allTables ?? []).filter((t) => t.id !== $table.id.value).map((t) => TableFactory.fromQuery(t)),
 )
 
 export const createTableQ = () => {
@@ -107,14 +108,14 @@ export const currentVisualization = derived([currentView, currentVisualizationId
 	$currentVisualizationId ? $view.getVisualization($currentVisualizationId) : undefined,
 )
 
-type INewTableScheam = {
+type INewTableSchema = {
 	tableId?: string
 	tableName?: string
 	schema?: ICreateTableSchemaInput | IUpdateTableSchemaSchema
 }
 
 const createNewTableSchema = () => {
-	const { update, set, subscribe } = writable<INewTableScheam>({})
+	const { update, set, subscribe } = writable<INewTableSchema>({})
 
 	const reset = () => set({})
 
@@ -129,7 +130,7 @@ const createNewTableSchema = () => {
 
 export const newTableSchema = createNewTableSchema()
 
-const getTableFields = ($table: Table | null, $newTableSchema: INewTableScheam) => {
+const getTableFields = ($table: Table | null, $newTableSchema: INewTableSchema) => {
 	const newTableFields = ($newTableSchema.schema ?? []) as IQueryFieldSchema[]
 	if (!$table) {
 		return newTableFields
@@ -143,7 +144,7 @@ const getTableFields = ($table: Table | null, $newTableSchema: INewTableScheam) 
 	return uniqBy([...tableFields, ...newTableFields], 'id')
 }
 
-const _getForeignTableFields = ($table: Table | null, $newTableSchema: INewTableScheam) => {
+const _getForeignTableFields = ($table: Table | null, $newTableSchema: INewTableSchema) => {
 	const newTableFields = ($newTableSchema.schema ?? []) as IQueryFieldSchema[]
 	if (!$table) {
 		return newTableFields
@@ -168,7 +169,7 @@ export const getForeignTable: Readable<(foreignTableId?: string) => Table | null
 		return (foreignTableId?: string) => {
 			if (!foreignTableId) return null
 			if (foreignTableId === $currentTable.id.value) return $currentTable
-			const found = $allTables.find((t) => t.id === foreignTableId)
+			const found = $allTables?.find((t) => t.id === foreignTableId)
 			if (found) return TableFactory.fromQuery(found)
 
 			return null
@@ -213,6 +214,19 @@ export const getForeignTableFieldsByReferenceId: Readable<(referenceId?: string)
 
 export const isShare = derived(page, ($page) => $page.route.id?.startsWith('/(share)'))
 export const isShareView = derived(page, ($page) => $page.route.id === '/(share)/s/v/[viewId]')
+export const isShareForm = derived(page, ($page) => $page.route.id === '/(share)/s/f/[formId]')
+
+export const shareTarget = derived([isShareView, isShareForm, page], ([$isShareView, $isShareForm, $page]) => {
+	let target: IShareTarget | undefined
+
+	if ($isShareView) {
+		target = { id: $page.params.viewId, type: 'view' }
+	} else if ($isShareForm) {
+		target = { id: $page.params.formId, type: 'form' }
+	}
+
+	return target
+})
 
 export const readonly = derived(isShare, ($isShare) => $isShare)
 
@@ -235,7 +249,7 @@ export const listRecordFn: Readable<
 			() => (filter?: IRootFilter, options?: ListRecordQueryOptions) =>
 				trpc().record.list.query(
 					{ tableId: $table.id.value, viewId: $view.id.value, q: $q, filter },
-					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash, ...options },
+					{ queryHash: $recordHash, ...options, refetchOnMount: false, refetchOnWindowFocus: false },
 				),
 		)
 		.with(
@@ -243,7 +257,7 @@ export const listRecordFn: Readable<
 			() => (filter?: IRootFilter, options?: ListRecordQueryOptions) =>
 				trpc().share.viewRecords.query(
 					{ viewId: $view.id.value, q: $q, filter },
-					{ refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash, ...options },
+					{ queryHash: $recordHash, ...options, refetchOnMount: false, refetchOnWindowFocus: false },
 				),
 		)
 		.exhaustive()
@@ -330,4 +344,24 @@ export const aggregateChartFn: Readable<
 				),
 		)
 		.exhaustive()
+})
+
+export const tableById = derived([currentTable, allTables, shareTarget], ([$table, $tables, $shareTarget]) => {
+	let t: Table | undefined
+	return async (tableId: string) => {
+		if (tableId === $table.id.value) {
+			t = $table
+		} else if ($tables) {
+			const found = $tables.find((t) => t.id === tableId)
+			if (found) t = TableFactory.fromQuery(found)
+		} else if ($shareTarget) {
+			await trpc()
+				.share.table.utils.fetch({ id: tableId, target: $shareTarget })
+				.then(({ table }) => {
+					t = TableFactory.fromQuery(table)
+				})
+		}
+
+		return t
+	}
 })

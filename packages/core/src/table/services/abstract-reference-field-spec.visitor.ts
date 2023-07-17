@@ -13,10 +13,12 @@ import type {
   DateField,
   DateRangeField,
   EmailField,
-  IdField,
   IFieldVisitor,
+  IdField,
   JsonField,
   LookupField,
+  MaxField,
+  MinField,
   MultiSelectField,
   NumberField,
   ParentField,
@@ -43,27 +45,37 @@ import type {
   WithNewOption,
   WithOption,
   WithOptions,
-  WithoutField,
-  WithoutOption,
   WithRatingMax,
   WithSymmetricReferenceField,
   WithTimeFormat,
+  WithoutField,
+  WithoutOption,
 } from '../field/index.js'
 import type { WithReferenceFieldId } from '../field/specifications/lookup-field.specification.js'
+import type {
+  WithFormFieldsRequirements,
+  WithFormFieldsSpecification,
+  WithFormFieldsVisibility,
+  WithFormName,
+  WithNewForm,
+  WithTableForms,
+} from '../form/index.js'
+import type { WithFormFieldsOrder } from '../form/specifications/form-fields-order.specification.js'
 import type {
   ITableSpecVisitor,
   WithFilter,
   WithNewField,
   WithTableEmoji,
+  WithTableFormId,
   WithTableId,
   WithTableName,
   WithTableSchema,
   WithTableViewId,
 } from '../specifications/index.js'
 import type {
-  WithoutWidgetSpecification,
-  WithWidgetSepecification,
+  WithWidgetSpecification,
   WithWidgetsLayout,
+  WithoutWidgetSpecification,
 } from '../view/dashboard/specifications/widget.specification.js'
 import type {
   WithCalendarField,
@@ -75,7 +87,6 @@ import type {
   WithGanttField,
   WithKanbanField,
   WithNewView,
-  WithoutView,
   WithRowHeight,
   WithShowSystemFieldsSpec,
   WithSorts,
@@ -87,6 +98,7 @@ import type {
   WithViewPinnedFields,
   WithViewsOrder,
   WithVisualizationNameSpec,
+  WithoutView,
 } from '../view/index.js'
 import type { WithNumberAggregateSpec } from '../visualization/specifications/number-visualization.specification.js'
 
@@ -128,6 +140,8 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   sum(field: SumField): void {}
   average(field: AverageField): void {}
   lookup(field: LookupField): void {}
+  min(field: MinField): void {}
+  max(field: MaxField): void {}
   idEqual(s: WithTableId): void {}
   nameEqual(s: WithTableName): void {}
   schemaEqual(s: WithTableSchema): void {
@@ -138,6 +152,13 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   viewsEqual(s: WithTableViews): void {}
   viewEqual(s: WithTableView): void {}
   viewNameEqual(s: WithViewName): void {}
+  formsEqual(s: WithTableForms): void {}
+  formFieldsEqual(s: WithFormFieldsSpecification): void {}
+  withFormName(s: WithFormName): void {}
+  formIdEqual(s: WithTableFormId): void {}
+  withFormFieldsVisibility(s: WithFormFieldsVisibility): void {}
+  withFormFieldsRequirements(s: WithFormFieldsRequirements): void {}
+  newForm(s: WithNewForm): void {}
   newView(s: WithNewView): void {}
   emojiEqual(s: WithTableEmoji): void {}
   withoutView(s: WithoutView): void {}
@@ -145,6 +166,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   sortsEqual(s: WithSorts): void {}
   filterEqual(s: WithFilter): void {}
   fieldsOrder(s: WithViewFieldsOrder): void {}
+  formFieldsOrder(s: WithFormFieldsOrder): void {}
   fieldOptionsEqual(s: WithFieldOption): void {}
   fieldWidthEqual(s: WithFieldWidth): void {}
   fieldVisibility(s: WithFieldVisibility): void {}
@@ -163,7 +185,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   optionsEqual(s: WithOptions): void {}
   optionEqual(s: WithOption): void {}
   newOption(s: WithNewOption): void {}
-  witoutOption(s: WithoutOption): void {}
+  withoutOption(s: WithoutOption): void {}
   withFieldName(s: WithFieldName): void {}
   withFieldDescription(s: WithFieldDescription): void {}
   withFieldDisplay(s: WithFieldDisplay): void {}
@@ -175,7 +197,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   withAggregateFieldId(s: WithAggregateFieldId): void {}
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {}
   withReferenceFieldId(s: WithReferenceFieldId): void {}
-  withWidget(s: WithWidgetSepecification): void {}
+  withWidget(s: WithWidgetSpecification): void {}
   withNewFieldType(s: WithNewFieldType): void {}
   or(): this {
     return this

@@ -1,27 +1,16 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { page } from '$app/stores'
 	import RecordCard from '$lib/record/RecordCard.svelte'
-	import {
-		TableFactory,
-		type IQueryTable,
-		type Records,
-		type Table,
-		Record,
-		type ReferenceFieldTypes,
-	} from '@undb/core'
+	import type { Records, Record, ReferenceFieldTypes, Table } from '@undb/core'
 	import { Alert, Button, Checkbox, CloseButton, Modal, Spinner } from 'flowbite-svelte'
 	import VirtualList from 'svelte-tiny-virtual-list'
-	import { getTable } from '$lib/store/table'
+	import { tableById } from '$lib/store/table'
 	import { writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
 
 	let loading = false
 	let initialLoading = false
 	let open = false
-
-	const table = getTable()
-	const tables = $page.data.tables as IQueryTable[]
 
 	export let foreignTableId: string
 	export let value: string[] = []
@@ -54,17 +43,11 @@
 
 	$: value, getInitial()
 
-	let foreignTable: Table
-	$: {
-		if (foreignTableId === $table.id.value) {
-			foreignTable = $table
-		} else {
-			const ft = tables.find((t) => t.id === foreignTableId)
-			if (ft) foreignTable = TableFactory.fromQuery(ft)
-		}
+	let foreignTable: Table | undefined
+	$: if (foreignTableId) {
+		$tableById(foreignTableId).then((t) => (foreignTable = t))
 	}
-
-	$: schema = foreignTable.schema
+	$: schema = foreignTable?.schema
 
 	$: {
 		for (const record of initialRecords) {
@@ -90,67 +73,74 @@
 	}
 
 	$: if (open) getForeign()
-	$: selected = value?.map((r) => $recordsMap.get(r)!) ?? []
+	$: selected = Array.isArray(value) ? value?.map((r) => $recordsMap.get(r)!) ?? [] : []
 </script>
 
-<div class="space-y-2 max-h-96 overflow-y-auto mb-2">
-	<div class="space-y-2 h-full overflow-auto">
-		{#each selected as record}
-			{#if !!record}
-				<div class="group relative">
-					<RecordCard
-						{field}
-						{record}
-						{schema}
-						class="!py-3 !sm:py-4 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 !max-w-none"
-						role="button"
-					/>
-					<CloseButton
-						on:click={() => remove(record.id.value)}
-						class="absolute z-50 right-0 top-[50%] text-sm translate-y-[-55%] translate-x-[-50%] hidden group-hover:block text-gray-500"
-					/>
-				</div>
-			{/if}
-		{/each}
-	</div>
-</div>
-<Button color="alternative" on:click={() => (open = true)} {...$$restProps} class={cx('space-x-2', $$restProps.class)}>
-	{#if initialLoading}
-		<Spinner size="4" />
-	{:else}
-		<i class="ti ti-plus" />
-		<span>{$t('Select Record')}</span>
-	{/if}
-</Button>
-<Modal title={$t('Select Record') ?? undefined} bind:open size="md" class="w-[700px] h-[600px]">
-	{#if loading}
-		<div class="flex w-full h-full items-center justify-center">
-			<Spinner />
+{#if schema}
+	<div class="space-y-2 max-h-96 overflow-y-auto mb-2">
+		<div class="space-y-2 h-full overflow-auto">
+			{#each selected as record}
+				{#if !!record}
+					<div class="group relative">
+						<RecordCard
+							{field}
+							{record}
+							{schema}
+							class="!py-3 !sm:py-4 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 !max-w-none"
+							role="button"
+						/>
+						<CloseButton
+							on:click={() => remove(record.id.value)}
+							class="absolute z-50 right-0 top-[50%] text-sm translate-y-[-55%] translate-x-[-50%] hidden group-hover:block text-gray-500"
+						/>
+					</div>
+				{/if}
+			{/each}
 		</div>
-	{:else if !$records.length}
-		<Alert>{$t('no record available')}</Alert>
-	{:else}
-		<VirtualList height={600} width="100%" itemCount={$records.length} itemSize={62}>
-			<div slot="item" let:index let:style {style} class="flex items-stretch mb-2">
-				<Checkbox
-					inline
-					value={$records[index].id.value}
-					custom
-					on:change={(e) => {
-						change(e, $records[index].id.value)
-						open = false
-					}}
-					class="w-full"
-				>
-					<RecordCard
-						{field}
-						{schema}
-						record={$records[index]}
-						class="!py-4 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 !max-w-none"
-						role="button"
-					/>
-				</Checkbox>
+	</div>
+	<Button
+		color="alternative"
+		on:click={() => (open = true)}
+		{...$$restProps}
+		class={cx('space-x-2', $$restProps.class)}
+	>
+		{#if initialLoading}
+			<Spinner size="4" />
+		{:else}
+			<i class="ti ti-plus" />
+			<span>{$t('Select Record')}</span>
+		{/if}
+	</Button>
+	<Modal title={$t('Select Record') ?? undefined} bind:open size="md" class="w-[700px] h-[600px]">
+		{#if loading}
+			<div class="flex w-full h-full items-center justify-center">
+				<Spinner />
 			</div>
-		</VirtualList>
-	{/if}
-</Modal>
+		{:else if !$records.length}
+			<Alert>{$t('no record available')}</Alert>
+		{:else}
+			<VirtualList height={600} width="100%" itemCount={$records.length} itemSize={62}>
+				<div slot="item" let:index let:style {style} class="flex items-stretch mb-2">
+					<Checkbox
+						inline
+						value={$records[index].id.value}
+						custom
+						on:change={(e) => {
+							change(e, $records[index].id.value)
+							open = false
+						}}
+						class="w-full"
+					>
+						<RecordCard
+							{field}
+							{schema}
+							record={$records[index]}
+							class="!py-4 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 !max-w-none"
+							role="button"
+						/>
+					</Checkbox>
+				</div>
+			</VirtualList>
+		{/if}
+	</Modal>
+{/if}

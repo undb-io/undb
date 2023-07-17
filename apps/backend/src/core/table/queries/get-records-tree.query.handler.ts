@@ -3,8 +3,8 @@ import { QueryHandler } from '@nestjs/cqrs'
 import { type IRecordTreeQueryModel, type ITableRepository } from '@undb/core'
 import type { IGetRecordsTreeOutput } from '@undb/cqrs'
 import { GetRecordsTreeQuery, GetRecordsTreeQueryHandler } from '@undb/cqrs'
-import { InjectTableRepository } from '../adapters/index.js'
 import { InjectRecordTreeQueryModel } from '../adapters/sqlite/record-sqlite.tree-query-model.js'
+import { InjectTableRepository } from '../adapters/sqlite/table-sqlite.repository.js'
 
 @QueryHandler(GetRecordsTreeQuery)
 export class NestGetRecordsTreeQueryHandler

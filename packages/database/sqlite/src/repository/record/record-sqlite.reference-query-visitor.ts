@@ -13,6 +13,8 @@ import type {
   UpdatedByField as CoreUpdatedByField,
   CountField,
   IFieldVisitor,
+  MaxField,
+  MinField,
   SumField,
   Table,
 } from '@undb/core'
@@ -60,7 +62,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
     const fieldId = field.id.value
     const columns = this.tableEntity.fields.getItems(false)
     const column = columns.find((c) => c.id === fieldId)
-    if (!column) throw new Error('missing undelying column')
+    if (!column) throw new Error('missing underlying column')
 
     return column
   }
@@ -240,9 +242,13 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
     const sumFields = column.sumFields.getItems(false)
     const lookupFields = column.lookupFields.getItems(false)
     const averageFields = column.averageFields.getItems(false)
+    const minFields = column.minFields.getItems(false)
+    const maxFields = column.maxFields.getItems(false)
     const displayFields = column.foreignDisplayFields
       .concat(lookupFields.flatMap((c) => c.foreignDisplayFields))
       .concat(sumFields.map((c) => c.sumAggregateField))
+      .concat(minFields.map((c) => c.minAggregateField))
+      .concat(maxFields.map((c) => c.maxAggregateField))
       .concat(averageFields.map((c) => c.averageAggregateField))
     const displayColumns = uniqBy(displayFields, (f) => f.id).map((field) => field.toDomain())
 
@@ -266,6 +272,8 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         ...displayColumns.map((f) => this.knex.raw(`json_group_array(${fta}.${f.id.value}) as ${f.id.value}`)),
         ...countFields.map((f) => this.knex.raw(`count(*) as ${f.id.value}`)),
         ...sumFields.map((f) => this.knex.raw(`sum(${fta}.${f.sumAggregateField.id}) as ${f.id}`)),
+        ...minFields.map((f) => this.knex.raw(`min(${fta}.${f.minAggregateField.id}) as ${f.id}`)),
+        ...maxFields.map((f) => this.knex.raw(`max(${fta}.${f.maxAggregateField.id}) as ${f.id}`)),
         ...averageFields.map((f) => this.knex.raw(`avg(${fta}.${f.averageAggregateField.id}) as ${f.id}`)),
       )
       .from(adjacency.name)
@@ -292,9 +300,10 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         `${uta}.${field.id.value} as ${field.id.value}`,
         this.#getFieldExpand(uta, column),
         ...lookupFields.map((c) => this.#getFieldExpand(uta, c)),
-        ...[...countFields, ...[...sumFields, ...averageFields].map((f) => f.toDomain())].map(
-          (c) => `${uta}.${c.id.value} as ${c.id.value}`,
-        ),
+        ...[
+          ...countFields,
+          ...[...minFields, ...maxFields, ...sumFields, ...averageFields].map((f) => f.toDomain()),
+        ].map((c) => `${uta}.${c.id.value} as ${c.id.value}`),
       )
       .leftJoin(subQuery, `${uta}.${currentIdField}`, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`)
   }
@@ -308,11 +317,15 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
     const column = this.#mustGetColumn(field) as TreeField
     const countFields = column.countFields.getItems(false).map((f) => f.toDomain())
     const sumFields = column.sumFields.getItems(false)
+    const minFields = column.minFields.getItems(false)
+    const maxFields = column.maxFields.getItems(false)
     const averageFields = column.averageFields.getItems(false)
     const lookupFields = column.lookupFields.getItems(false)
     const displayFields = column.foreignDisplayFields
       .concat(lookupFields.flatMap((c) => c.displayFields.getItems(false)))
       .concat(sumFields.map((c) => c.sumAggregateField))
+      .concat(minFields.map((c) => c.minAggregateField))
+      .concat(maxFields.map((c) => c.maxAggregateField))
       .concat(averageFields.map((c) => c.averageAggregateField))
     const displayColumns = uniqBy(displayFields, (f) => f.id).map((field) => field.toDomain())
 
@@ -331,6 +344,8 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         knex.raw(`json_group_array(${ClosureTable.CHILD_ID}) as ${field.id.value}`),
         ...displayColumns.map((f) => knex.raw(`json_group_array(${fta}.${f.id.value}) as ${f.id.value}`)),
         ...countFields.map((f) => knex.raw(`count(*) as ${f.id.value}`)),
+        ...minFields.map((f) => this.knex.raw(`min(${fta}.${f.minAggregateField.id}) as ${f.id}`)),
+        ...maxFields.map((f) => this.knex.raw(`max(${fta}.${f.maxAggregateField.id}) as ${f.id}`)),
         ...sumFields.map((f) => this.knex.raw(`sum(${fta}.${f.sumAggregateField.id}) as ${f.id}`)),
         ...averageFields.map((f) => this.knex.raw(`avg(${fta}.${f.averageAggregateField.id}) as ${f.id}`)),
       )
@@ -359,9 +374,10 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
         `${uta}.${field.id.value} as ${field.id.value}`,
         this.#getFieldExpand(uta, column),
         ...lookupFields.map((c) => this.#getFieldExpand(uta, c)),
-        ...[...countFields, ...[...sumFields, ...averageFields].map((f) => f.toDomain())].map(
-          (c) => `${uta}.${c.id.value} as ${c.id.value}`,
-        ),
+        ...[
+          ...countFields,
+          ...[...minFields, ...maxFields, ...sumFields, ...averageFields].map((f) => f.toDomain()),
+        ].map((c) => `${uta}.${c.id.value} as ${c.id.value}`),
       )
       .leftJoin(subQuery, `${TABLE_ALIAS}.${INTERNAL_COLUMN_ID_NAME}`, `${uta}.${ClosureTable.PARENT_ID}`)
   }
@@ -424,7 +440,18 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
     const reference = field.getReferenceField(this.table.schema.toIdMap())
     reference?.accept(this)
   }
+
   override lookup(field: CoreLookupField): void {
+    const reference = field.getReferenceField(this.table.schema.toIdMap())
+    reference?.accept(this)
+  }
+
+  override min(field: MinField): void {
+    const reference = field.getReferenceField(this.table.schema.toIdMap())
+    reference?.accept(this)
+  }
+
+  override max(field: MaxField): void {
     const reference = field.getReferenceField(this.table.schema.toIdMap())
     reference?.accept(this)
   }

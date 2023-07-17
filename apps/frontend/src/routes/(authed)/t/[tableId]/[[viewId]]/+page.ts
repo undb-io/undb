@@ -3,6 +3,7 @@ import {
 	RecordFactory,
 	TableFactory,
 	TableNotFoundError,
+	createFormSchema,
 	createMutateRecordValuesSchema,
 	createOptionSchema,
 	createUpdateTableSchema,
@@ -68,6 +69,7 @@ export const load: PageLoad = async (event) => {
 		createOption: superValidate({}, createOptionSchema, { id: 'createOption' }),
 		updateOption: superValidate({}, updateOptionSchema, { id: 'createOption' }),
 		createView: superValidate({}, createViewSchema, { id: 'createView', errors: false }),
+		createForm: superValidate({}, createFormSchema, { id: 'createForm', errors: false }),
 		createWebhook: superValidate({}, createWebhookSchema, { id: 'createWebhook' }),
 		updateWebhook: superValidate({}, updateWebhookSchema, { id: 'updateWebhook' }),
 	}

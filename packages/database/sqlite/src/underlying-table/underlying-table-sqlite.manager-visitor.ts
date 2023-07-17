@@ -4,9 +4,13 @@ import type {
   ITableSpecVisitor,
   WithDuplicatedField,
   WithForeignTableId,
+  WithFormFieldsRequirements,
+  WithFormName,
   WithGanttField,
   WithNewFieldType,
+  WithNewForm,
   WithRatingMax,
+  WithTableFormId,
   WithTableSchema,
   WithTableViewId,
   WithoutOption,
@@ -30,6 +34,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     this.knex = knex
   }
   viewIdEqual(s: WithTableViewId): void {}
+  formIdEqual(s: WithTableFormId): void {}
   withoutWidget(): void {}
   withChartAggregate(): void {}
   withNumberAggregate(): void {}
@@ -74,6 +79,12 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   newView(): void {}
   withoutView(): void {}
   viewsOrderEqual(): void {}
+  formsEqual(): void {}
+  formFieldsEqual(): void {}
+  withFormName(s: WithFormName): void {}
+  withFormFieldsVisibility(): void {}
+  withFormFieldsRequirements(s: WithFormFieldsRequirements): void {}
+  newForm(s: WithNewForm): void {}
   filterEqual(): void {}
   ratingMaxEqual(s: WithRatingMax): void {
     const query = this.#qb.update(s.fieldId, s.max).where(s.fieldId, '>', s.max).from(this.tableName).toQuery()
@@ -130,6 +141,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     }
   }
   fieldsOrder(): void {}
+  formFieldsOrder(): void {}
   fieldWidthEqual(): void {}
   fieldVisibility(): void {}
   displayTypeEqual(): void {}
@@ -142,7 +154,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   optionEqual(): void {}
   sortsEqual(): void {}
   pinnedFields(): void {}
-  witoutOption(s: WithoutOption): void {
+  withoutOption(s: WithoutOption): void {
     this.qb = this.#qb.from(this.tableName).where(s.fieldId, s.optionKey.value).update(s.fieldId, null)
   }
   withoutField(): void {}

@@ -4,9 +4,13 @@ import type { RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
 import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime'
 import {
 	CurrencyField,
+	INTERNAL_COLUMN_CREATED_BY_NAME,
 	INTERNAL_COLUMN_CREATED_BY_PROFILE_NAME,
+	INTERNAL_COLUMN_UPDATED_BY_NAME,
 	MultiSelectField,
 	Option,
+	getAnonymousCollaboratorProfile,
+	isAnonymous,
 	isImage,
 	type CollaboratorField,
 	type CreatedAtField,
@@ -157,7 +161,7 @@ const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile)
 								colors[collaborator.color],
 							)}
 						>
-							<span class="font-medium"> ${collaborator.username.slice(0, 2)} </span>
+							<span class="font-medium"> ${collaborator.username?.slice(0, 2)} </span>
 						</div>
 				  `
 				: html` <img class="w-5 h-5 rounded-full" src="${collaborator.avatar}" alt="${collaborator.username}" /> `}
@@ -169,13 +173,19 @@ const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile)
 }
 
 const createdBy: TemplateFunc = (h, props) => {
-	const createdBy = props.model[INTERNAL_COLUMN_CREATED_BY_PROFILE_NAME] as ICollaboratorProfile
+	const createdById = props.model[INTERNAL_COLUMN_CREATED_BY_NAME]
+	const createdBy = isAnonymous(createdById)
+		? getAnonymousCollaboratorProfile(tt)
+		: (props.model[INTERNAL_COLUMN_CREATED_BY_PROFILE_NAME] as ICollaboratorProfile)
 
 	return collaboratorComponent(h, createdBy)
 }
 
 const updatedBy: TemplateFunc = (h, props) => {
-	const updatedBy = props.model.updated_by_profile as ICollaboratorProfile
+	const updatedById = props.model[INTERNAL_COLUMN_UPDATED_BY_NAME]
+	const updatedBy = isAnonymous(updatedById)
+		? getAnonymousCollaboratorProfile(tt)
+		: (props.model.updated_by_profile as ICollaboratorProfile)
 
 	return collaboratorComponent(h, updatedBy)
 }
@@ -248,7 +258,7 @@ const rating: TemplateFunc = (h, props) => {
 	)
 }
 
-const autoIncreament: TemplateFunc = (h, props) => {
+const autoIncrement: TemplateFunc = (h, props) => {
 	const type = props.column.field.type as IFieldType
 	if (type !== 'auto-increment') return
 	const value = props.model.auto_increment as number | undefined
@@ -327,7 +337,7 @@ const referenceComponent = (h: HyperFunc, value: (string | null)[] = []) => {
 				!content && 'text-gray-400 font-normal',
 			),
 		},
-		content || tt('unamed', { ns: 'common' }) || '',
+		content || tt('unnamed', { ns: 'common' }) || '',
 	)
 }
 
@@ -457,9 +467,29 @@ const attachment: TemplateFunc = (h, props) => {
 	)
 }
 
+const min: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'min') return
+
+	const min = props.model[props.prop] as number | undefined
+	if (!min) return null
+
+	return n(h, min)
+}
+
+const max: TemplateFunc = (h, props) => {
+	const type = props.column.field.type as IFieldType
+	if (type !== 'max') return
+
+	const max = props.model[props.prop] as number | undefined
+	if (!max) return null
+
+	return n(h, max)
+}
+
 export const cellTemplateMap: Record<IFieldType, TemplateFunc> = {
 	attachment,
-	'auto-increment': autoIncreament,
+	'auto-increment': autoIncrement,
 	id,
 	date,
 	average,
@@ -486,4 +516,6 @@ export const cellTemplateMap: Record<IFieldType, TemplateFunc> = {
 	tree: reference,
 	'updated-at': updatedAt,
 	'updated-by': updatedBy,
+	min,
+	max,
 }

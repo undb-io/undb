@@ -2,8 +2,9 @@ import { and } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { ClsStore } from '../cls/cls.js'
+import { WithTableForms } from './form/specifications/form.specification.js'
 import { WithTableEmoji, WithTableId, WithTableName, WithTableSchema } from './specifications/index.js'
-import type { TableCompositeSpecificaiton } from './specifications/interface.js'
+import type { TableCompositeSpecification } from './specifications/interface.js'
 import { newTableSpec } from './specifications/specifications.js'
 import type { IQueryTable } from './table.js'
 import { Table } from './table.js'
@@ -12,9 +13,9 @@ import type { ICreateTableSchemaInput } from './value-objects/index.js'
 import { WithTableViews, WithViewsOrder } from './view/index.js'
 
 export class TableFactory {
-  static create(...specs: TableCompositeSpecificaiton[]): Result<Table, string>
-  static create(spec: TableCompositeSpecificaiton): Result<Table, string>
-  static create(spec: TableCompositeSpecificaiton | TableCompositeSpecificaiton[]): Result<Table, string> {
+  static create(...specs: TableCompositeSpecification[]): Result<Table, string>
+  static create(spec: TableCompositeSpecification): Result<Table, string>
+  static create(spec: TableCompositeSpecification | TableCompositeSpecification[]): Result<Table, string> {
     if (Array.isArray(spec)) {
       return and(...spec)
         .unwrap()
@@ -41,17 +42,20 @@ export class TableFactory {
       .and(WithTableSchema.unsafeFrom(input.schema))
       .and(WithTableViews.from(input.views))
       .and(WithViewsOrder.fromArray(input.viewsOrder ?? []))
+      .and(WithTableForms.unsafeFrom(input.forms ?? []))
       .and(WithTableEmoji.fromString(input.emoji ?? null))
 
     return this.create(spec)
   }
 
   static fromQuery(q: IQueryTable): Table {
+    const ts = WithTableSchema.unsafeFrom(q.schema as ICreateTableSchemaInput)
     const spec = WithTableName.fromString(q.name)
       .and(WithTableId.fromExistingString(q.id).unwrap())
-      .and(WithTableSchema.unsafeFrom(q.schema as ICreateTableSchemaInput))
+      .and(ts)
       .and(WithTableViews.from(q.views))
       .and(WithViewsOrder.fromArray(q.viewsOrder ?? []))
+      .and(WithTableForms.from(q.forms ?? [], ts.schema))
       .and(WithTableEmoji.fromString(q.emoji))
 
     return this.create(spec).unwrap()

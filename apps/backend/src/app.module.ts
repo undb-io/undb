@@ -25,7 +25,7 @@ import { I18nModule } from './i18n/i18n.module.js'
 import { OpenAPIModule } from './openapi/openapi.module.js'
 import { OutboxModule } from './outbox/outbox.module.js'
 import { RealtimeModule } from './realtime/realtime.module.js'
-import { RealyModule } from './relay/relay.module.js'
+import { RelayModule } from './relay/relay.module.js'
 import { ShareModule } from './share/share.module.js'
 import { TrpcModule } from './trpc/trpc.module.js'
 import { WebhookModule } from './webhook/webhook.module.js'
@@ -74,7 +74,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
     I18nModule,
     OpenAPIModule,
     OutboxModule,
-    RealyModule,
+    RelayModule,
     WebhookModule.register({}),
     RealtimeModule,
     ShareModule,

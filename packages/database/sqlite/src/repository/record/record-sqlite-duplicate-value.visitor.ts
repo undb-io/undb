@@ -28,6 +28,8 @@ import type {
   UpdatedAtField,
   UpdatedByField,
   UrlField,
+  MinField,
+  MaxField,
 } from '@undb/core'
 import {
   CollaboratorField,
@@ -260,4 +262,6 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
 
     this.addQueries(query)
   }
+  min(field: MinField): void {}
+  max(field: MaxField): void {}
 }

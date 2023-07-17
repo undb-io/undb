@@ -22,8 +22,8 @@ import type {
   ICollaboratorFieldQuerySchema,
   IColorFieldQuerySchema,
   ICountFieldQuerySchema,
-  ICreatedAtFieldQueryScheam,
-  ICreatedByFieldQueryScheam,
+  ICreatedAtFieldQuerySchema,
+  ICreatedByFieldQuerySchema,
   ICurrencyFieldQuerySchema,
   ICurrencySymbol,
   IDateFieldQuerySchema,
@@ -45,8 +45,10 @@ import type {
   ITimeFormat,
   ITreeFieldQuerySchema,
   IUpdatedAtFieldQuerySchema,
-  IUpdatedByFieldQueryScheam,
+  IUpdatedByFieldQuerySchema,
   IUrlFieldQuerySchema,
+  IMinFieldQuerySchema,
+  IMaxFieldQuerySchema,
 } from '@undb/core'
 import {
   AttachmentField as CoreAttachmentField,
@@ -77,6 +79,8 @@ import {
   UpdatedAtField as CoreUpdatedAtField,
   UpdatedByField as CoreUpdatedByField,
   UrlField as CoreUrlField,
+  MinField as CoreMinField,
+  MaxField as CoreMaxField,
 } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Option } from './option.js'
@@ -175,7 +179,7 @@ export class CreatedAtField extends Field {
     })
   }
 
-  toQuery(): ICreatedAtFieldQueryScheam {
+  toQuery(): ICreatedAtFieldQuerySchema {
     return {
       id: this.id,
       name: this.name,
@@ -202,7 +206,7 @@ export class CreatedByField extends Field {
     })
   }
 
-  toQuery(): ICreatedByFieldQueryScheam {
+  toQuery(): ICreatedByFieldQuerySchema {
     return {
       id: this.id,
       name: this.name,
@@ -227,7 +231,7 @@ export class UpdatedByField extends Field {
     })
   }
 
-  toQuery(): IUpdatedByFieldQueryScheam {
+  toQuery(): IUpdatedByFieldQuerySchema {
     return {
       id: this.id,
       name: this.name,
@@ -766,6 +770,12 @@ export class ReferenceField extends Field {
   @OneToMany(() => LookupField, (f) => f.lookupReferenceField)
   lookupFields = new Collection<LookupField>(this)
 
+  @OneToMany(() => MinField, (f) => f.minReferenceField)
+  minFields = new Collection<MinField>(this)
+
+  @OneToMany(() => MaxField, (f) => f.maxReferenceField)
+  maxFields = new Collection<MaxField>(this)
+
   @OneToOne(() => ReferenceField, { nullable: true })
   symmetricReferenceField?: ReferenceField
 
@@ -870,6 +880,12 @@ export class TreeField extends Field {
 
   @OneToMany(() => LookupField, (f) => f.lookupReferenceField)
   lookupFields = new Collection<LookupField>(this)
+
+  @OneToMany(() => MinField, (f) => f.minReferenceField)
+  minFields = new Collection<MinField>(this)
+
+  @OneToMany(() => MaxField, (f) => f.maxReferenceField)
+  maxFields = new Collection<MaxField>(this)
 
   get foreignDisplayFields() {
     let displayFields = this.displayFields.getItems(false)
@@ -1117,6 +1133,83 @@ export class LookupField extends Field {
     }
   }
 }
+@Entity({ discriminatorValue: 'min' })
+export class MinField extends Field {
+  constructor(table: Rel<Table>, field: CoreMinField) {
+    super(table, field)
+  }
+
+  @ManyToOne({ entity: () => ReferenceField || TreeField, inversedBy: (f) => f.minFields })
+  minReferenceField!: ReferenceField | TreeField
+
+  @ManyToOne({ entity: () => Field })
+  minAggregateField!: Field
+
+  toDomain(): CoreMinField {
+    return CoreMinField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'min',
+      required: !!this.required,
+      display: !!this.display,
+      referenceFieldId: this.minReferenceField?.id,
+      aggregateFieldId: this.minAggregateField?.id,
+    })
+  }
+
+  toQuery(): IMinFieldQuerySchema {
+    return {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'min',
+      referenceFieldId: this.minReferenceField?.id,
+      aggregateFieldId: this.minAggregateField?.id,
+      required: !!this.required,
+      display: !!this.display,
+    }
+  }
+}
+
+@Entity({ discriminatorValue: 'max' })
+export class MaxField extends Field {
+  constructor(table: Rel<Table>, field: CoreMaxField) {
+    super(table, field)
+  }
+
+  @ManyToOne({ entity: () => ReferenceField || TreeField, inversedBy: (f) => f.maxFields })
+  maxReferenceField!: ReferenceField | TreeField
+
+  @ManyToOne({ entity: () => Field })
+  maxAggregateField!: Field
+
+  toDomain(): CoreMaxField {
+    return CoreMaxField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'max',
+      required: !!this.required,
+      display: !!this.display,
+      referenceFieldId: this.maxReferenceField?.id,
+      aggregateFieldId: this.maxAggregateField?.id,
+    })
+  }
+
+  toQuery(): IMaxFieldQuerySchema {
+    return {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'max',
+      referenceFieldId: this.maxReferenceField?.id,
+      aggregateFieldId: this.maxAggregateField?.id,
+      required: !!this.required,
+      display: !!this.display,
+    }
+  }
+}
 
 export type IField =
   | IdField
@@ -1147,6 +1240,8 @@ export type IField =
   | CollaboratorField
   | CreatedByField
   | UpdatedByField
+  | MinField
+  | MaxField
 
 export const fieldEntities = [
   IdField,
@@ -1177,4 +1272,6 @@ export const fieldEntities = [
   CreatedByField,
   UpdatedByField,
   UrlField,
+  MinField,
+  MaxField,
 ]

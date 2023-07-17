@@ -105,6 +105,12 @@ export class SelectColumnTypeModifier extends BaseColumnTypeModifier<SelectField
   count(): void {
     this.dropColumn(this.column)
   }
+  min(): void {
+    this.dropColumn(this.column)
+  }
+  max(): void {
+    this.dropColumn(this.column)
+  }
   ['date-range'](): void {
     this.castToDateRange(this.column)
   }

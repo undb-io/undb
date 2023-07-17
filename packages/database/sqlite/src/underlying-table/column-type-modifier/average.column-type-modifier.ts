@@ -4,7 +4,7 @@ import type { AverageField } from '@undb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@undb/core'
 import { ReferenceField } from '../../entity/field.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
-import { UnderlyingForeignTableFactory } from '../undelying-foreign-table.factory.js'
+import { UnderlyingForeignTableFactory } from '../underlying-foreign-table.factory.js'
 import {
   UnderlyingAverageColumn,
   UnderlyingBoolColumn,
@@ -128,6 +128,12 @@ export class AverageColumnTypeModifier extends BaseColumnTypeModifier<AverageFie
     this.dropColumn(this.column)
   }
   lookup(): void {
+    this.dropColumn(this.column)
+  }
+  min(): void {
+    this.dropColumn(this.column)
+  }
+  max(): void {
     this.dropColumn(this.column)
   }
 

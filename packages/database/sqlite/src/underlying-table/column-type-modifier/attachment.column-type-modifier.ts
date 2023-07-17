@@ -123,6 +123,9 @@ export class AttachmentColumnTypeModifier extends BaseColumnTypeModifier<Attachm
   lookup(): void {
     this.dropColumn(this.column)
   }
+  min(): void {
+    this.dropColumn(this.column)
+  }
   ['date-range'](): void {
     this.castToDateRange(this.column)
   }

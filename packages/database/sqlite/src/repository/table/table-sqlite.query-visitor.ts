@@ -18,20 +18,22 @@ import type {
   WithFieldWidth,
   WithFilter,
   WithForeignTableId,
+  WithFormFieldsOrder,
+  WithFormFieldsRequirements,
+  WithFormFieldsSpecification,
+  WithFormFieldsVisibility,
+  WithFormName,
   WithFormat,
   WithGanttField,
   WithKanbanField,
   WithNewField,
   WithNewFieldType,
+  WithNewForm,
   WithNewOption,
   WithNewView,
   WithNumberAggregateSpec,
   WithOption,
   WithOptions,
-  WithoutField,
-  WithoutOption,
-  WithoutView,
-  WithoutWidgetSpecification,
   WithRatingMax,
   WithReferenceFieldId,
   WithRowHeight,
@@ -39,6 +41,8 @@ import type {
   WithSorts,
   WithSymmetricReferenceField,
   WithTableEmoji,
+  WithTableFormId,
+  WithTableForms,
   WithTableId,
   WithTableName,
   WithTableSchema,
@@ -52,8 +56,12 @@ import type {
   WithViewPinnedFields,
   WithViewsOrder,
   WithVisualizationNameSpec,
-  WithWidgetSepecification,
+  WithWidgetSpecification,
   WithWidgetsLayout,
+  WithoutField,
+  WithoutOption,
+  WithoutView,
+  WithoutWidgetSpecification,
 } from '@undb/core'
 import type { Table } from '../../entity/index.js'
 
@@ -86,6 +94,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   viewIdEqual(s: WithTableViewId): void {
     this.qb.andWhere({ views: s.viewId.value })
   }
+  formIdEqual(s: WithTableFormId): void {
+    this.qb.andWhere({ forms: s.formId.value })
+  }
   emojiEqual(s: WithTableEmoji): void {
     throw new Error('Method not implemented.')
   }
@@ -110,6 +121,24 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   viewsOrderEqual(s: WithViewsOrder): void {
     throw new Error('Method not implemented.')
   }
+  formsEqual(s: WithTableForms): void {
+    throw new Error('Method not implemented.')
+  }
+  formFieldsEqual(s: WithFormFieldsSpecification): void {
+    throw new Error('Method not implemented.')
+  }
+  withFormName(s: WithFormName): void {
+    throw new Error('Method not implemented.')
+  }
+  withFormFieldsVisibility(s: WithFormFieldsVisibility): void {
+    throw new Error('Method not implemented.')
+  }
+  withFormFieldsRequirements(s: WithFormFieldsRequirements): void {
+    throw new Error('Method not implemented.')
+  }
+  newForm(s: WithNewForm): void {
+    throw new Error('Method not implemented.')
+  }
   filterEqual(s: WithFilter): void {
     throw new Error('Method not implemented.')
   }
@@ -117,6 +146,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   fieldsOrder(s: WithViewFieldsOrder): void {
+    throw new Error('Method not implemented.')
+  }
+  formFieldsOrder(s: WithFormFieldsOrder): void {
     throw new Error('Method not implemented.')
   }
   fieldWidthEqual(s: WithFieldWidth): void {
@@ -149,7 +181,7 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   newOption(s: WithNewOption): void {
     throw new Error('Method not implemented.')
   }
-  witoutOption(s: WithoutOption): void {
+  withoutOption(s: WithoutOption): void {
     throw new Error('Method not implemented.')
   }
   withNewFieldType(s: WithNewFieldType): void {
@@ -206,7 +238,7 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   currencySymbolEqual(s: WithCurrencySymbol): void {
     throw new Error('Method not implemented.')
   }
-  withWidget(s: WithWidgetSepecification): void {
+  withWidget(s: WithWidgetSpecification): void {
     throw new Error('Method not implemented.')
   }
   withAggregateFieldId(s: WithAggregateFieldId): void {

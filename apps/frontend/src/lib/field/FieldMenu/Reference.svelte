@@ -88,4 +88,36 @@
 			{$t('Insert Average Field')}
 		</span>
 	</DropdownItem>
+
+	<DropdownItem
+		{...$$restProps}
+		on:click={() => {
+			$createFieldInitial = {
+				type: 'min',
+				referenceFieldId: field.id.value,
+			}
+			createFieldModal.open()
+		}}
+	>
+		<FieldIcon type={field.type} />
+		<span>
+			{$t('Insert Min Field')}
+		</span>
+	</DropdownItem>
+	
+	<DropdownItem
+		{...$$restProps}
+		on:click={() => {
+			$createFieldInitial = {
+				type: 'max',
+				referenceFieldId: field.id.value,
+			}
+			createFieldModal.open()
+		}}
+	>
+		<FieldIcon type={field.type} />
+		<span>
+			{$t('Insert Max Field')}
+		</span>
+	</DropdownItem>
 {/if}

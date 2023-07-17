@@ -7,10 +7,18 @@ import type {
   WithCurrencySymbol,
   WithDuplicatedField,
   WithForeignTableId,
+  WithFormFieldsOrder,
+  WithFormFieldsRequirements,
+  WithFormFieldsSpecification,
+  WithFormFieldsVisibility,
+  WithFormName,
   WithGanttField,
   WithNewFieldType,
+  WithNewForm,
   WithOption,
   WithReferenceFieldId,
+  WithTableFormId,
+  WithTableForms,
   WithTableViewId,
   WithTimeFormat,
   WithoutWidgetSpecification,
@@ -51,12 +59,14 @@ import {
   type WithViewPinnedFields,
   type WithViewsOrder,
   type WithVisualizationNameSpec,
-  type WithWidgetSepecification,
+  type WithWidgetSpecification,
   type WithWidgetsLayout,
   type WithoutField,
   type WithoutOption,
   type WithoutView,
 } from '@undb/core'
+import { mapValues } from 'lodash-es'
+import { Form } from '../../entity/form.js'
 import type { CreatedAtField, UpdatedAtField } from '../../entity/index.js'
 import {
   AttachmentField,
@@ -75,6 +85,8 @@ import {
   IdField,
   JsonField,
   LookupField,
+  MaxField,
+  MinField,
   MultiSelectField,
   NumberField,
   Option,
@@ -101,6 +113,9 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     super(em)
   }
   viewIdEqual(s: WithTableViewId): void {
+    throw new Error('Method not implemented.')
+  }
+  formIdEqual(s: WithTableFormId): void {
     throw new Error('Method not implemented.')
   }
   private get table(): Table {
@@ -169,6 +184,10 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
         return this.em.getReference(CreatedByField, id)
       case 'updated-by':
         return this.em.getReference(UpdatedByField, id)
+      case 'min':
+        return this.em.getReference(MinField, id)
+      case 'max':
+        return this.em.getReference(MaxField, id)
     }
   }
 
@@ -220,12 +239,49 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     wrap(view).assign({ deletedAt: new Date() })
     this.em.persist(view)
   }
+  formsEqual(s: WithTableForms): void {
+    const table = this.table
+    wrap(table).assign({ forms: s.forms.forms.map((form) => new Form(table, form)) })
+    this.em.persist(table)
+  }
+  formFieldsEqual(s: WithFormFieldsSpecification): void {
+    const form = this.em.getReference(Form, s.formId)
+    wrap(form).assign({ fields: s.fields })
+    this.em.persist(form)
+  }
+  withFormName(s: WithFormName): void {
+    const form = this.em.getReference(Form, s.formId)
+    wrap(form).assign({ name: s.name.value })
+    this.em.persist(form)
+  }
+  withFormFieldsVisibility(s: WithFormFieldsVisibility): void {
+    this.addJobs(async () => {
+      const form = this.em.getReference(Form, s.formId)
+      await wrap(form).init()
+      const fields = mapValues(s.visibility, (hidden) => ({ hidden }))
+      wrap(form).assign({ fields }, { mergeObjects: true, merge: true })
+      await this.em.persistAndFlush(form)
+    })
+  }
+  withFormFieldsRequirements(s: WithFormFieldsRequirements): void {
+    this.addJobs(async () => {
+      const form = this.em.getReference(Form, s.formId)
+      await wrap(form).init()
+      const fields = mapValues(s.requirements, (required) => ({ required }))
+      wrap(form).assign({ fields }, { mergeObjects: true, merge: true })
+      await this.em.persistAndFlush(form)
+    })
+  }
+  newForm(s: WithNewForm): void {
+    const table = this.table
+    const form = new Form(table, s.form)
+    this.em.persist(form)
+  }
   viewsOrderEqual(s: WithViewsOrder): void {
     const table = this.table
     wrap(table).assign({ viewsOrder: s.order.order })
     this.em.persist(table)
   }
-
   filterEqual(s: WithFilter): void {
     const view = this.getView(s.view.id.value)
     wrap(view).assign({ filter: s.filter })
@@ -254,6 +310,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const view = this.getView(s.view.id.value)
     wrap(view).assign({ fieldsOrder: s.viewFieldsOrder.order })
     this.em.persist(view)
+  }
+  formFieldsOrder(s: WithFormFieldsOrder): void {
+    const form = this.em.getReference(Form, s.formId)
+    wrap(form).assign({ fieldsOrder: s.formFieldsOrder.order })
+    this.em.persist(form)
   }
   fieldWidthEqual(s: WithFieldWidth): void {
     this.addJobs(async () => {
@@ -331,7 +392,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const option = new Option(field, s.option)
     this.em.persist(option)
   }
-  witoutOption(s: WithoutOption): void {
+  withoutOption(s: WithoutOption): void {
     const option = this.em.getReference(Option, s.optionKey.value as never)
     this.em.remove(option)
   }
@@ -422,7 +483,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     wrap(field).assign({ symbol: s.symbol.symbol })
     this.em.persist(field)
   }
-  withWidget(s: WithWidgetSepecification): void {
+  withWidget(s: WithWidgetSpecification): void {
     const view = this.getView(s.view.id.value)
     const widget = new Widget(view, s.widget)
 
@@ -475,11 +536,21 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
       wrap(field).assign({ sumAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
     } else if (field instanceof AverageField) {
       wrap(field).assign({ averageAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
+    } else if (field instanceof MinField) {
+      wrap(field).assign({ minAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
+    } else if (field instanceof MaxField) {
+      wrap(field).assign({ maxAggregateField: this.em.getReference(Field, s.aggregateFieldId.value) })
     }
     this.em.persist(field)
   }
   withReferenceFieldId(s: WithReferenceFieldId): void {
-    const field = this.#getField(s.type, s.fieldId) as SumField | AverageField | LookupField | CountField
+    const field = this.#getField(s.type, s.fieldId) as
+      | SumField
+      | AverageField
+      | LookupField
+      | CountField
+      | MinField
+      | MaxField
     if (field instanceof SumField) {
       wrap(field).assign({ sumReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
     } else if (field instanceof AverageField) {
@@ -488,6 +559,10 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
       wrap(field).assign({ countReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
     } else if (field instanceof LookupField) {
       wrap(field).assign({ lookupReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
+    } else if (field instanceof MinField) {
+      wrap(field).assign({ minReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
+    } else if (field instanceof MaxField) {
+      wrap(field).assign({ maxReferenceField: this.em.getReference(Field, s.referenceFieldId.value) })
     }
     this.em.persist(field)
   }

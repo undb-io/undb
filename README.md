@@ -32,6 +32,7 @@
 - 🎮 Developer friendly. Provide openapi / webhooks / realtime subscriptions / sdk(soon) / erd preview and more
 - :sparkles: Multiple built-in field types and variants
 - :city_sunset: Different types of views, including grid, kanban, gantt, tree, calendar and more
+- 💡 Light / Dark theme
 
 ## 📚 Tech Stack
 
@@ -42,6 +43,10 @@
 - ⚖️ **Domain Driven Design** Make code easy to maintain.
 
 ## Screen Shot
+
+### Light / Dark theme
+
+![image](https://github.com/undb-xyz/undb/assets/22788984/174a7fa3-f2ae-4daa-8901-950251c9e136)
 
 ![Create table](./docs/create-new-table.png)
 

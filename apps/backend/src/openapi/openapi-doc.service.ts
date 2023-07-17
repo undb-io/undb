@@ -3,7 +3,8 @@ import type { Table } from '@undb/core'
 import { type IRecordQueryModel, type ITableRepository } from '@undb/core'
 import { createRedocHTML, createTableSchema, type IPostmanCollectionConvertor } from '@undb/openapi'
 import type { OpenAPIObject } from 'openapi3-ts/oas31'
-import { InjectRecordQueryModel, InjectTableRepository } from '../core/table/adapters/index.js'
+import { InjectRecordQueryModel } from '../core/table/adapters/sqlite/record-sqlite.query-model.js'
+import { InjectTableRepository } from '../core/table/adapters/sqlite/table-sqlite.repository.js'
 import { InjectPostmanConvertor } from './convertor/index.js'
 
 @Injectable()

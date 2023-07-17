@@ -58,7 +58,7 @@ import {
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
   INTERNAL_COLUMN_UPDATED_BY_NAME,
-  INTERNAL_INCREAMENT_ID_NAME,
+  INTERNAL_INCREMENT_ID_NAME,
   MultiSelectField,
   ParentField,
   TreeField,
@@ -127,7 +127,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     this.qb.where({ [this.getFieldId(INTERNAL_COLUMN_UPDATED_BY_NAME)]: s.user })
   }
   autoIncrement(s: WithRecordAutoIncrement): void {
-    this.qb.where(this.getFieldId(INTERNAL_INCREAMENT_ID_NAME), s.n)
+    this.qb.where(this.getFieldId(INTERNAL_INCREMENT_ID_NAME), s.n)
   }
   values(s: WithRecordValues): void {
     throw new Error('Method not implemented.')

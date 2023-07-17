@@ -2,7 +2,7 @@ import { z } from 'zod'
 import type { RecordValueJSON } from '../../../record/record.schema.js'
 import type { IRecordDisplayValues } from '../../../record/record.type.js'
 import { BaseField } from '../../field.base.js'
-import { INTERNAL_INCREAMENT_ID_NAME } from '../../field.constants.js'
+import { INTERNAL_INCREMENT_ID_NAME } from '../../field.constants.js'
 import { FieldCannotBeDuplicated } from '../../field.errors.js'
 import type { IFieldVisitor } from '../../field.visitor.js'
 import { AutoIncrementFieldValue } from './auto-increment-field-value.js'
@@ -37,7 +37,7 @@ export class AutoIncrementField extends BaseField<IAutoIncrementField> {
   }
 
   getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
-    return valueJson[INTERNAL_INCREAMENT_ID_NAME] ?? null
+    return valueJson[INTERNAL_INCREMENT_ID_NAME] ?? null
   }
 
   createValue(value: ICreateAutoIncrementFieldValue): AutoIncrementFieldValue {

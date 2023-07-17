@@ -3,7 +3,7 @@
 import { INTERNAL_COLUMN_ID_NAME, type SumField } from '@undb/core'
 import { ReferenceField } from '../../entity/field.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
-import { UnderlyingForeignTableFactory } from '../undelying-foreign-table.factory.js'
+import { UnderlyingForeignTableFactory } from '../underlying-foreign-table.factory.js'
 import {
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
@@ -127,6 +127,12 @@ export class SumColumnTypeModifier extends BaseColumnTypeModifier<SumField> {
     this.dropColumn(this.column)
   }
   lookup(): void {
+    this.dropColumn(this.column)
+  }
+  min(): void {
+    this.dropColumn(this.column)
+  }
+  max(): void {
     this.dropColumn(this.column)
   }
 
