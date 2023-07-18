@@ -1,8 +1,13 @@
 import type { IColor, IFieldType } from '@undb/core'
-import type { Select } from 'flowbite-svelte'
 
-export function getFilterOperators(type: IFieldType | undefined) {
-	let data: Select['$$prop_def']['items'] = []
+export function getFilterOperators(type: IFieldType | undefined): {
+	name: string
+	value: string
+}[] {
+	let data: {
+		name: string
+		value: string
+	}[] = []
 	if (type === 'string') {
 		data = [
 			{ value: '$is_empty', name: 'IS EMPTY' },

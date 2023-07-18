@@ -359,7 +359,7 @@ export class RecordSqliteRepository implements IRecordRepository {
   async deleteOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<void> {
     const userId = this.cls.get('user.userId')
 
-    await this.uow.commit()
+    await this.uow.begin()
     const em = this.em
 
     try {

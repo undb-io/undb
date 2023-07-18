@@ -8,9 +8,16 @@
 	import { isOperatorWithoutValue, type IFilter } from '@undb/core'
 	import { writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
+	import { invalidate } from '$app/navigation'
+	import Sortable, { type SortableEvent } from 'sortablejs'
+	import { isNumber } from 'lodash-es'
 
 	const value = writable<Partial<IFilter>[]>([...$filters])
 	$: value.set([...$filters])
+
+	$: if (!$value.length) {
+		add()
+	}
 
 	const table = getTable()
 	const view = getView()
@@ -33,6 +40,7 @@
 	const setFilter = trpc().table.view.filter.set.mutation({
 		async onSuccess() {
 			open = false
+			await invalidate(`table:${$table.id.value}`)
 			await $data.refetch()
 		},
 	})
@@ -50,6 +58,23 @@
 	}
 
 	let open = false
+
+	const onEnd = (event: SortableEvent) => {
+		const { oldIndex, newIndex } = event
+		if (isNumber(oldIndex) && isNumber(newIndex)) {
+			;[$value[oldIndex], $value[newIndex]] = [$value[newIndex], $value[oldIndex]]
+		}
+	}
+
+	let el: HTMLUListElement
+	$: if (el) {
+		Sortable.create(el, {
+			animation: 200,
+			direction: 'vertical',
+			onEnd,
+			handle: '.handle',
+		})
+	}
 </script>
 
 <Button
@@ -71,12 +96,12 @@
 		{/if}
 	</span>
 </Button>
-<Modal placement="top-center" bind:open class="w-full" size="sm">
+<Modal placement="top-center" bind:open class="w-full rounded-sm" size="lg">
 	<form on:submit|preventDefault={apply} id="filter_menu" class="space-y-4">
 		{#if $value.length}
 			<span class="text-xs font-medium text-gray-500 dark:text-gray-300">{$t('set filters in this view')}</span>
-			<ul class="space-y-2">
-				{#each $value as filter, index}
+			<ul class="space-y-2" bind:this={el}>
+				{#each $value as filter, index (filter.path)}
 					<FilterItem {filter} {index} {remove} />
 				{/each}
 			</ul>
@@ -84,14 +109,10 @@
 			<span class="text-xs font-medium text-gray-400">{$t('no filters applied')}</span>
 		{/if}
 	</form>
-	<svelte:fragment slot="footer">
-		<div class="flex w-full justify-between">
-			<Button color="alternative" size="xs" on:click={add} disabled={$value.some((v) => v.path === TEMP_ID)}
-				>{$t('Create New Filter')}</Button
-			>
-			<Button size="xs" type="submit" form="filter_menu">{$t('Apply', { ns: 'common' })}</Button>
-		</div>
-	</svelte:fragment>
+	<div class="flex w-full justify-between">
+		<Button color="alternative" size="xs" on:click={add}>{$t('Create New Filter')}</Button>
+		<Button size="xs" type="submit" form="filter_menu">{$t('Apply', { ns: 'common' })}</Button>
+	</div>
 </Modal>
 
 {#if $setFilter.error}

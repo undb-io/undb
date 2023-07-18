@@ -97,6 +97,7 @@ import type {
   WithViewName,
   WithViewPinnedFields,
   WithViewsOrder,
+  WithVisualizationFieldSpec,
   WithVisualizationNameSpec,
   WithoutView,
 } from '../view/index.js'
@@ -108,6 +109,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   withChartAggregate(s: WithChartAggregateSpec): void {}
   withNumberAggregate(s: WithNumberAggregateSpec): void {}
   withVisualizationName(s: WithVisualizationNameSpec): void {}
+  withVisualizationField(s: WithVisualizationFieldSpec): void {}
   withWidgetsLayout(s: WithWidgetsLayout): void {}
   rowHeightEqual(s: WithRowHeight): void {}
   ratingMaxEqual(s: WithRatingMax): void {}

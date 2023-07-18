@@ -7,10 +7,9 @@
 	import { trpc } from '$lib/trpc/client'
 	import type { Field } from '@undb/core'
 	import { Badge, Button, Checkbox, Hr, Modal, Toggle } from 'flowbite-svelte'
-	import { filter } from 'lodash-es'
-	import { dndzone } from 'svelte-dnd-action'
-	import { flip } from 'svelte/animate'
+	import { filter, isNumber } from 'lodash-es'
 	import { createFieldModal } from '$lib/store/modal'
+	import Sortable, { type SortableEvent } from 'sortablejs'
 
 	const table = getTable()
 	const view = getView()
@@ -61,21 +60,27 @@
 		},
 	})
 
-	const flipDurationMs = 200
-	function handleDndConsider(e: CustomEvent) {
-		items = e.detail.items
-	}
-	function handleDndFinalize(e: CustomEvent) {
-		items = e.detail.items
-		const from = e.detail.info.id
-		const toIndex = items.findIndex((i) => i.id === from)
-		const to = fields[toIndex]?.id.value
-		$moveFields.mutate({
-			tableId: $table.id.value,
-			viewId: $view.id.value,
-			from,
-			to,
+	let el: HTMLUListElement
+	$: if (el) {
+		Sortable.create(el, {
+			animation: 200,
+			direction: 'vertical',
+			onEnd,
 		})
+	}
+
+	function onEnd(e: SortableEvent) {
+		const { oldIndex, newIndex } = e
+		if (isNumber(oldIndex) && isNumber(newIndex)) {
+			const from = fields[oldIndex]?.id.value
+			const to = fields[newIndex]?.id.value
+			$moveFields.mutate({
+				tableId: $table.id.value,
+				viewId: $view.id.value,
+				from,
+				to,
+			})
+		}
 	}
 </script>
 
@@ -93,22 +98,17 @@
 		{$t('Manage Fields')}
 	</span>
 	{#if hiddenCount}
-		<Badge color="dark" class="dark:bg-primary-900 dark:text-gray-100"
-			>{$t('N Fields Hidden', { n: hiddenCount })}</Badge
-		>
+		<Badge color="dark" class="dark:bg-primary-900 dark:text-gray-100 hidden lg:block">
+			{$t('N Fields Hidden', { n: hiddenCount })}
+		</Badge>
 	{/if}
 </Button>
 
 <Modal bind:open size="xs" class="w-full" placement="top-center">
-	<ul
-		class="space-y-2"
-		use:dndzone={{ items, flipDurationMs, dropTargetStyle: {} }}
-		on:consider={handleDndConsider}
-		on:finalize={handleDndFinalize}
-	>
+	<ul class="space-y-2" bind:this={el}>
 		{#each items as item (item.id)}
 			{@const checked = visibility[item.id] === undefined || !!visibility[item.id]}
-			<li animate:flip={{ duration: flipDurationMs }} class="flex items-center gap-2" data-field-id={item.id}>
+			<li class="flex items-center gap-2 w-full" data-field-id={item.id}>
 				<Checkbox
 					disabled={checked && fields.length - hiddenCount === 1}
 					class="flex items-center gap-2"

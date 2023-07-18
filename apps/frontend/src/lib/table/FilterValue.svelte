@@ -28,7 +28,6 @@
 	let component: ComponentType | undefined
 
 	const [currentField, previousField] = withPrevious(field?.id.value)
-	$: $currentField = field?.id.value
 	$: if (!!$currentField && !!$previousField && $currentField !== $previousField) {
 		value = null
 	}
@@ -36,6 +35,8 @@
 	$: type = field?.type
 	$: {
 		if (type === 'string') {
+			component = String
+		} else if (type === 'id') {
 			component = String
 		} else if (type === 'email') {
 			component = Email
@@ -54,7 +55,7 @@
 			type === 'sum' ||
 			type === 'currency' ||
 			type === 'count' ||
-			type === 'average' || 
+			type === 'average' ||
 			type === 'min' ||
 			type === 'max'
 		) {
@@ -99,7 +100,7 @@
 		}
 	}
 
-	$: wrapperClass = 'h-8 w-full rounded-none border-l-0 !justify-start'
+	$: wrapperClass = 'h-10 w-full bg-white border-gray-200 !justify-start'
 	$: {
 		if (type === 'rating') {
 			wrapperClass += ' box-border border px-2'

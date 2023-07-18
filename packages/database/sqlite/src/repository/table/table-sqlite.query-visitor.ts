@@ -55,6 +55,7 @@ import type {
   WithViewName,
   WithViewPinnedFields,
   WithViewsOrder,
+  WithVisualizationFieldSpec,
   WithVisualizationNameSpec,
   WithWidgetSpecification,
   WithWidgetsLayout,
@@ -80,6 +81,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   withVisualizationName(s: WithVisualizationNameSpec): void {
+    throw new Error('Method not implemented.')
+  }
+  withVisualizationField(s: WithVisualizationFieldSpec): void {
     throw new Error('Method not implemented.')
   }
   withWidgetsLayout(s: WithWidgetsLayout): void {

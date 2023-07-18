@@ -13,6 +13,7 @@ import type {
   WithTableFormId,
   WithTableSchema,
   WithTableViewId,
+  WithVisualizationFieldSpec,
   WithoutOption,
 } from '@undb/core'
 import { WithNewField, isSelectFieldType } from '@undb/core'
@@ -39,6 +40,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   withChartAggregate(): void {}
   withNumberAggregate(): void {}
   withVisualizationName(): void {}
+  withVisualizationField(s: WithVisualizationFieldSpec): void {}
   withWidgetsLayout(): void {}
   get #sb() {
     return this.sb ?? this.knex.schema

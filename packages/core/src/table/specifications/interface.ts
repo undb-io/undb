@@ -65,6 +65,7 @@ import type {
 } from '../view/specifications/views.specification.js'
 import type { WithChartAggregateSpec } from '../visualization/specifications/chart-visualization.specification.js'
 import type { WithNumberAggregateSpec } from '../visualization/specifications/number-visualization.specification.js'
+import type { WithVisualizationFieldSpec } from '../visualization/specifications/visualization-field.specification.js'
 import type { WithVisualizationNameSpec } from '../visualization/specifications/visualization-name.specification.js'
 import type { WithTableEmoji } from './table-emoji.specification.js'
 import type { WithNewField } from './table-field.specification.js'
@@ -143,6 +144,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withoutWidget(s: WithoutWidgetSpecification): void
   withWidgetsLayout(s: WithWidgetsLayout): void
   withVisualizationName(s: WithVisualizationNameSpec): void
+  withVisualizationField(s: WithVisualizationFieldSpec): void
   withNumberAggregate(s: WithNumberAggregateSpec): void
   withChartAggregate(s: WithChartAggregateSpec): void
 
