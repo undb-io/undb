@@ -4,4 +4,4 @@
 	import { Button } from 'flowbite-svelte'
 </script>
 
-<Button size="xs" on:click={() => formListDrawer.open()}>{$t('forms')}</Button>
+<Button size="xs" on:click={() => formListDrawer.open()} class="whitespace-nowrap">{$t('forms')}</Button>
