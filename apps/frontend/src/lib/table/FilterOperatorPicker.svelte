@@ -18,7 +18,7 @@
 <Button
 	color="alternative"
 	{...$$restProps}
-	class={cx($$restProps.class, 'gap-2 field_picker font-normal text-xs')}
+	class={cx($$restProps.class, 'gap-2 field_picker text-xs')}
 	on:click={() => (open = true)}
 >
 	{$t(value, { ns: 'common' })}
@@ -38,7 +38,7 @@
 			>
 				<div
 					class={cx(
-						'inline-flex gap-2 items-center font-normal text-xs text-gray-600 dark:text-white dark:hover:text-gray-600',
+						'inline-flex gap-2 items-center text-xs text-gray-600 dark:text-white dark:hover:text-gray-600',
 						selected ? 'dark:!text-gray-600' : '',
 					)}
 				>
