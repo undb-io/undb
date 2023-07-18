@@ -349,22 +349,22 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   }
   kanbanFieldEqual(s: WithKanbanField): void {
     const view = this.getView(s.view.id.value)
-    wrap(view).assign({ kanban: { fieldId: s.fieldId?.value ?? '' } })
+    wrap(view).assign({ kanban: { fieldId: s.fieldId?.value || null } })
     this.em.persist(view)
   }
   ganttFieldEqual(s: WithGanttField): void {
     const view = this.getView(s.view.id.value)
-    wrap(view).assign({ gantt: { fieldId: s.fieldId?.value ?? '' } })
+    wrap(view).assign({ gantt: { fieldId: s.fieldId?.value || null } })
     this.em.persist(view)
   }
   treeViewFieldEqual(s: WithTreeViewField): void {
     const view = this.getView(s.view.id.value)
-    wrap(view).assign({ tree: { fieldId: s.fieldId?.value ?? '' } })
+    wrap(view).assign({ tree: { fieldId: s.fieldId?.value || null } })
     this.em.persist(view)
   }
   calendarFieldEqual(s: WithCalendarField): void {
     const view = this.getView(s.view.id.value)
-    wrap(view).assign({ calendar: { fieldId: s.fieldId?.value ?? '' } })
+    wrap(view).assign({ calendar: { fieldId: s.fieldId?.value || null } })
     this.em.persist(view)
   }
   optionsEqual(s: WithOptions): void {
