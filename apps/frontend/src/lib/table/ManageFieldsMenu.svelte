@@ -98,9 +98,9 @@
 		{$t('Manage Fields')}
 	</span>
 	{#if hiddenCount}
-		<Badge color="dark" class="dark:bg-primary-900 dark:text-gray-100"
-			>{$t('N Fields Hidden', { n: hiddenCount })}</Badge
-		>
+		<Badge color="dark" class="dark:bg-primary-900 dark:text-gray-100 hidden lg:block">
+			{$t('N Fields Hidden', { n: hiddenCount })}
+		</Badge>
 	{/if}
 </Button>
 
