@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { FieldId, fieldIdSchema } from '../field/index.js'
+import { WithVisualizationFieldSpec } from './specifications/visualization-field.specification.js'
 import { VisualizationID } from './visualization-id.vo.js'
 import {
   baseCreateVisualizationSchema,
@@ -86,6 +87,10 @@ export class ChartVisualization extends VisualizationVO<IChartVisualization> {
 
   accept(v: IVisualizationVisitor): void {
     v.chart(this)
+  }
+
+  public removeField() {
+    return new WithVisualizationFieldSpec(this.id.value, null)
   }
 
   public toJSON() {

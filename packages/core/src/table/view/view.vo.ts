@@ -13,8 +13,8 @@ import { Calendar } from './calendar/index.js'
 import { Dashboard } from './dashboard/dashboard.vo.js'
 import {
   WithoutWidgetSpecification,
-  WithWidgetSpecification,
   WithWidgetsLayout,
+  WithWidgetSpecification,
 } from './dashboard/specifications/widget.specification.js'
 import type { ICreateWidgetSchema, IRelayoutWidgetSchema } from './dashboard/widget.schema.js'
 import { Widget } from './dashboard/widget.vo.js'
@@ -430,6 +430,13 @@ export class ViewVO extends ValueObject<IView> {
     if (treeView.isSome()) {
       this.treeView = treeView
       specs.push(new WithTreeViewField(this, null))
+    }
+    const dashboard = this.dashboard.map((dashboard) => dashboard)
+    if (dashboard.isSome()) {
+      const spec = dashboard.unwrap().removeField(id)
+      if (spec.isSome()) {
+        specs.push(spec.unwrap())
+      }
     }
 
     const order = this.fieldsOrder?.remove(id.value)

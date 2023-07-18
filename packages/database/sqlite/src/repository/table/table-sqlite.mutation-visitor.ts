@@ -58,6 +58,7 @@ import {
   type WithViewName,
   type WithViewPinnedFields,
   type WithViewsOrder,
+  type WithVisualizationFieldSpec,
   type WithVisualizationNameSpec,
   type WithWidgetSpecification,
   type WithWidgetsLayout,
@@ -509,6 +510,14 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const visualization = this.em.getReference(Visualization, s.visualizationId)
     wrap(visualization).assign({ name: s.name.value })
     this.em.persist(visualization)
+  }
+  withVisualizationField(s: WithVisualizationFieldSpec): void {
+    this.addJobs(async () => {
+      const visualization = this.em.getReference(Visualization, s.visualizationId)
+      await wrap(visualization).init()
+      wrap(visualization as ChartVisualization | NumberVisualization).assign({ fieldId: s.fieldId?.value || null })
+      await this.em.persistAndFlush(visualization)
+    })
   }
   withNumberAggregate(s: WithNumberAggregateSpec): void {
     this.addJobs(async () => {
