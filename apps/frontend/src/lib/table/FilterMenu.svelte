@@ -9,7 +9,6 @@
 	import { writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
 	import { invalidate } from '$app/navigation'
-	import { onMount } from 'svelte'
 	import Sortable, { type SortableEvent } from 'sortablejs'
 	import { isNumber } from 'lodash-es'
 
