@@ -12,7 +12,7 @@
 		value = []
 	}
 
-	$: selected = value ? value.map((id) => field.options.getById(id).into()!).filter(Boolean) : []
+	$: selected = Array.isArray(value) ? value.map((id) => field.options.getById(id).into()!).filter(Boolean) : []
 	$: options = field.options?.options
 
 	$: open = false

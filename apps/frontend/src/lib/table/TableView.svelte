@@ -313,7 +313,7 @@
 			<LoadingTable />
 		</div>
 	{:else if !hasRecord && $data.isSuccess}
-		<div class="absolute top-[50%] right-[50%] translate-x-[50%] translate-y-[-70%] z-[50]">
+		<div class="absolute top-[50%] right-[50%] translate-x-[50%] translate-y-[-70%] z-[9]">
 			<EmptyTable />
 		</div>
 	{/if}

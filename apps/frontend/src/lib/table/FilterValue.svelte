@@ -28,7 +28,6 @@
 	let component: ComponentType | undefined
 
 	const [currentField, previousField] = withPrevious(field?.id.value)
-	$: $currentField = field?.id.value
 	$: if (!!$currentField && !!$previousField && $currentField !== $previousField) {
 		value = null
 	}
