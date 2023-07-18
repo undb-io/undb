@@ -293,7 +293,7 @@
 						>
 							<i class="ti ti-chevron-down" />
 						</Button>
-						<Dropdown placement="top" class="w-[200px]">
+						<Dropdown style="z-index: 50;" placement="top" class="w-[200px]">
 							<DropdownItem on:click={() => importDataModal.open()} class="flex items-center gap-2">
 								<i class="ti ti-csv" />
 								<span>
@@ -318,6 +318,7 @@
 				</button>
 
 				<Dropdown
+					style="z-index: 50;"
 					triggeredBy="#me-button"
 					placement="top"
 					frameClass="w-full"
@@ -335,7 +336,7 @@
 							</div>
 						</Chevron>
 					</DropdownItem>
-					<Dropdown placement="right-start" class="dark:border dark:border-gray-800/75">
+					<Dropdown style="z-index: 50;" placement="right-start" class="dark:border dark:border-gray-800/75">
 						<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('zh-CN')}>
 							<span>简体中文</span>
 							{#if $i18n.language === 'zh-CN'}
@@ -395,7 +396,12 @@
 			<span aria-hidden="true">{me.username}</span>
 		</button>
 
-		<Dropdown triggeredBy="#me-button" placement="bottom" class="w-48 shadow-sm border border-gray-100 ">
+		<Dropdown
+			style="z-index: 50;"
+			triggeredBy="#me-button"
+			placement="bottom"
+			class="w-48 shadow-sm border border-gray-100 "
+		>
 			<DropdownItem href="/me">
 				<i class="ti ti-settings" />
 				{$t('Settings', { ns: 'auth' })}
@@ -408,7 +414,7 @@
 					</div>
 				</Chevron>
 			</DropdownItem>
-			<Dropdown placement="left-start">
+			<Dropdown style="z-index: 50;" placement="left-start">
 				<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('zh-CN')}>
 					<span>简体中文</span>
 					{#if $i18n.language === 'zh-CN'}

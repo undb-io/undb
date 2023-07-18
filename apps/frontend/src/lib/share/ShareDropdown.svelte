@@ -77,7 +77,8 @@
 
 <Dropdown
 	bind:open
-	class="w-96 text-sm font-light z-50 border rounded-lg "
+	style="z-index: 50;"
+	class="w-96 text-sm font-light border rounded-lg "
 	title={$t('share')}
 	{trigger}
 	placement="bottom"

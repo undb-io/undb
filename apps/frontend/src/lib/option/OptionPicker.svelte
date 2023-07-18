@@ -25,7 +25,7 @@
 		</span>
 	{/if}
 </Button>
-<Dropdown bind:open placement="bottom-start" class="w-[400px] border z-[99999]">
+<Dropdown style="z-index: 50;" bind:open placement="bottom-start" class="w-[400px] border z-[99999]">
 	<div class="w-full">
 		{#each options as option}
 			<Radio

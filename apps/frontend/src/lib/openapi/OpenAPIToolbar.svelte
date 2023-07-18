@@ -41,7 +41,7 @@
 			<TableNavigator />
 			<div>
 				<Button size="xs"><Chevron>{$t('download openapi')}</Chevron></Button>
-				<Dropdown>
+				<Dropdown style="z-index: 50;">
 					<DropdownItem on:click={() => download()}>{$t('openapi spec')}</DropdownItem>
 					<DropdownItem on:click={() => download('postman')}>{$t('postman collections')}</DropdownItem>
 				</Dropdown>

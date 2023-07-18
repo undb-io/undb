@@ -25,6 +25,7 @@
 </Button>
 <Portal target="body">
 	<Dropdown
+		style="z-index: 50;"
 		triggeredBy="#field_type_picker"
 		bind:open
 		inline
@@ -35,7 +36,10 @@
 			<Radio
 				value={type.value}
 				bind:group={value}
-				class={cx('px-3 py-2 hover:bg-gray-100 cursor-pointer w-full block', selected && 'bg-gray-100 dark:bg-gray-400 dark:hover:!text-gray-700')}
+				class={cx(
+					'px-3 py-2 hover:bg-gray-100 cursor-pointer w-full block',
+					selected && 'bg-gray-100 dark:bg-gray-400 dark:hover:!text-gray-700',
+				)}
 				custom
 				on:change={() => {
 					open = false

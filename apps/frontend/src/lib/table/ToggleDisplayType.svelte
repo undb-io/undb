@@ -51,7 +51,7 @@
 	<ViewIcon {type} />
 	<Tooltip class="z-50" placement="bottom">{$t(type)}</Tooltip>
 </button>
-<Dropdown>
+<Dropdown style="z-index: 50;">
 	{#each displayTypes as displayType}
 		<Radio
 			class="display-type cursor-pointer"

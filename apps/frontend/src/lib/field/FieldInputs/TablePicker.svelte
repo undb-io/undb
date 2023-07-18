@@ -23,7 +23,7 @@
 	{/if}
 </Button>
 {#if $allTables}
-	<Dropdown bind:open class="z-[99999] w-96">
+	<Dropdown style="z-index: 50;" bind:open class="z-[99999] w-96">
 		{#each $allTables as table (table.id)}
 			<Radio
 				value={table.id}

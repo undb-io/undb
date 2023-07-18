@@ -47,7 +47,7 @@
 		{$t('Select Collaborator')}
 	{/if}
 </Button>
-<Dropdown bind:open>
+<Dropdown style="z-index: 50;" bind:open>
 	{#each members as member}
 		{@const isSelected = selected.some((s) => s.userId === member.userId)}
 		<Checkbox bind:group={value} value={member.userId} custom>

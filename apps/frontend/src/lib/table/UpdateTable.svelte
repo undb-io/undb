@@ -78,7 +78,7 @@
 			<button>
 				<i class="ti ti-dots" />
 			</button>
-			<Dropdown>
+			<Dropdown style="z-index: 50;">
 				<DropdownItem class="inline-flex items-center gap-2 text-red-400" on:click={() => (confirmDeleteTable = true)}>
 					<i class="ti ti-trash" />
 					<span class="text-xs">{$t('Delete Table')}</span>
