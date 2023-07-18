@@ -12,6 +12,10 @@
 	const value = writable<Partial<IFilter>[]>([...$filters])
 	$: value.set([...$filters])
 
+	$: if (!$value.length) {
+		add()
+	}
+
 	const table = getTable()
 	const view = getView()
 
@@ -71,7 +75,7 @@
 		{/if}
 	</span>
 </Button>
-<Modal placement="top-center" bind:open class="w-full" size="sm">
+<Modal placement="top-center" bind:open class="w-full rounded-sm" size="lg">
 	<form on:submit|preventDefault={apply} id="filter_menu" class="space-y-4">
 		{#if $value.length}
 			<span class="text-xs font-medium text-gray-500 dark:text-gray-300">{$t('set filters in this view')}</span>
@@ -84,14 +88,12 @@
 			<span class="text-xs font-medium text-gray-400">{$t('no filters applied')}</span>
 		{/if}
 	</form>
-	<svelte:fragment slot="footer">
-		<div class="flex w-full justify-between">
-			<Button color="alternative" size="xs" on:click={add} disabled={$value.some((v) => v.path === TEMP_ID)}
-				>{$t('Create New Filter')}</Button
-			>
-			<Button size="xs" type="submit" form="filter_menu">{$t('Apply', { ns: 'common' })}</Button>
-		</div>
-	</svelte:fragment>
+	<div class="flex w-full justify-between">
+		<Button color="alternative" size="xs" on:click={add} disabled={$value.some((v) => v.path === TEMP_ID)}
+			>{$t('Create New Filter')}</Button
+		>
+		<Button size="xs" type="submit" form="filter_menu">{$t('Apply', { ns: 'common' })}</Button>
+	</div>
 </Modal>
 
 {#if $setFilter.error}

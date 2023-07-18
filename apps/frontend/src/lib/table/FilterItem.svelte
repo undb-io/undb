@@ -18,30 +18,22 @@
 	$: field = selectedId ? $table.schema.getFieldById(selectedId).into() : undefined
 </script>
 
-<li class="flex h-8 items-center dark:border-gray-200">
-	<FieldPicker
-		bind:selectedId
-		size="xs"
-		class="h-8 rounded-l-md rounded-r-none w-32 !justify-start"
-		table={$table}
-		bind:value={filter.path}
-		bind:type={filter.type}
-		fields={$allTableFields}
-		filter={(f) => isFilterable(f.type)}
-	/>
-	<FilterOperatorPicker
-		{field}
-		size="sm"
-		class={cx('h-8 !rounded-none w-full border-l-0 py-1')}
-		bind:value={filter.operator}
-	/>
-	<FilterValue {field} operator={filter.operator} bind:value={filter.value} class="h-8 !rounded-none rounded-r-sm" />
-	<Button
-		color="light"
-		class="h-8 aspect-square !rounded-l-none !rounded-r-md !p-0 border-l-0 border-gray-100"
-		size="xs"
-		on:click={() => remove(index)}
-	>
+<li class="flex h-10 items-center justify-between gap-2 dark:border-gray-200">
+	<div class="grid grid-cols-3 gap-2 flex-1">
+		<FieldPicker
+			bind:selectedId
+			size="xs"
+			class="h-10 w-full !justify-start"
+			table={$table}
+			bind:value={filter.path}
+			bind:type={filter.type}
+			fields={$allTableFields}
+			filter={(f) => isFilterable(f.type)}
+		/>
+		<FilterOperatorPicker {field} size="sm" class={cx('h-10 py-1', 'w-full')} bind:value={filter.operator} />
+		<FilterValue {field} operator={filter.operator} bind:value={filter.value} class="h-10 !rounded-none rounded-r-sm" />
+	</div>
+	<Button color="light" class="h-10 aspect-square !p-0 border-gray-100" size="xs" on:click={() => remove(index)}>
 		<i class="ti ti-trash text-sm" />
 	</Button>
 </li>
