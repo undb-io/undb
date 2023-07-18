@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { SvelteGantt, SvelteGanttDependencies, SvelteGanttTable } from 'svelte-gantt'
 	import type { SvelteGanttComponent, SvelteGanttOptions } from 'svelte-gantt/types/gantt'
-	import { addDays, endOfWeek, startOfWeek, subDays } from 'date-fns'
+	import { addDays, endOfWeek, format, startOfWeek, subDays } from 'date-fns'
 	import { currentRecordId, getTable, listRecordFn, readonly, recordHash } from '$lib/store/table'
 	import { RecordFactory, type DateRangeField } from '@undb/core'
 	import type { RowModel } from 'svelte-gantt/types/core/row'
@@ -129,13 +129,16 @@
 
 <div class="w-full">
 	<div class="p-2 text-gray-500">
-		<div class="flex justify-end gap-2">
+		<div class="flex justify-center items-center gap-2">
 			<button
 				on:click={previous}
 				class="p-1 hover:bg-gray-100 w-6 h-6 inline-flex items-center justify-center transition"
 			>
 				<i class="ti ti-chevron-left" />
 			</button>
+			{format(currentStart, 'yyyy-MM-dd')}
+			<span>-</span>
+			{format(currentEnd, 'yyyy-MM-dd')}
 			<button on:click={next} class="p-1 hover:bg-gray-100 w-6 h-6 inline-flex items-center justify-center transition">
 				<i class="ti ti-chevron-right" />
 			</button>
