@@ -28,7 +28,7 @@
 		{$t('Select Collaborator')}
 	{/if}
 </Button>
-<Dropdown style="z-index: 50;" bind:open>
+<Dropdown style="z-index: 50;" bind:open class="w-[400px] border-2">
 	{#each members as member}
 		<Radio bind:group={value} value={member.userId} custom on:change={() => (open = false)}>
 			<span
