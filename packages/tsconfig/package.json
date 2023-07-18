@@ -5,8 +5,7 @@
     "base.json",
     "nestjs.json",
     "nextjs.json",
-    "lib.json",
-    "react-library.json"
+    "lib.json"
   ],
   "private": true
 }

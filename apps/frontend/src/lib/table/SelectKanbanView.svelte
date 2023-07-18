@@ -84,7 +84,7 @@
 									<Option option={item.option} />
 									{#if !$readonly}
 										<i class="ti ti-dots text-gray-400 dark:text-gray-200 cursor-pointer" />
-										<Dropdown>
+										<Dropdown style="z-index: 50;">
 											<DropdownItem
 												class="text-gray-600 text-xs space-y-2 dark:text-gray-200"
 												on:click={() => {

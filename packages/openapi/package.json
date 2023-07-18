@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "author": "",
   "dependencies": {
-    "@asteasolutions/zod-to-openapi": "^5.2.0",
+    "@asteasolutions/zod-to-openapi": "^5.3.1",
     "@undb/core": "^0.0.0",
     "@undb/integrations": "^0.0.0",
     "@undb/logger": "^0.0.0",
@@ -15,7 +15,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@types/lodash-es": "^4.17.7",
+    "@types/lodash-es": "^4.17.8",
     "@types/openapi-to-postmanv2": "^3.2.0",
     "@types/postman-collection": "^3.5.7",
     "openapi3-ts": "^4.1.2",

@@ -4,7 +4,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.6.6",
     "@commitlint/config-conventional": "^17.6.6",
-    "@types/node": "^20.3.3",
+    "@types/node": "^20.4.2",
     "@undb/eslint-config": "^0.0.0",
     "chalk": "^5.3.0",
     "commitizen": "^4.3.0",
@@ -16,7 +16,7 @@
     "taze": "^0.11.2",
     "turbo": "^1.10.7",
     "typescript": "^5.1.6",
-    "zx": "^7.2.2"
+    "zx": "^7.2.3"
   },
   "engines": {
     "pnpm": ">=8.6.5",
@@ -25,7 +25,7 @@
   "lint-staged": {
     "*.{ts,tsx,md}": "prettier --write"
   },
-  "packageManager": "pnpm@8.6.5",
+  "packageManager": "pnpm@8.6.8",
   "private": true,
   "scripts": {
     "bootstrap": "pnpm install && pnpm run build",

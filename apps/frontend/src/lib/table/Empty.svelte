@@ -14,7 +14,7 @@
 		<Button>
 			<i class="ti ti-chevron-down" />
 		</Button>
-		<Dropdown placement="top" class="w-[200px]">
+		<Dropdown style="z-index: 50;" placement="top" class="w-[200px]">
 			<DropdownItem on:click={() => importDataModal.open()} class="flex items-center gap-2">
 				<i class="ti ti-csv" />
 				<span>

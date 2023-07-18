@@ -23,7 +23,7 @@
 	{#if $sidebarCollapsed}
 		<div class="fixed top-3 left-3">
 			<button on:click={() => ($sidebarCollapsed = false)}>
-				<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500 " />
+				<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
 			</button>
 			<Tooltip placement="right" class="w-24">meta + b</Tooltip>
 		</div>
@@ -38,7 +38,7 @@
 			<Button size="sm">
 				<i class="ti ti-chevron-down" />
 			</Button>
-			<Dropdown placement="bottom" class="w-[200px]">
+			<Dropdown style="z-index: 50;" placement="bottom" class="w-[200px]">
 				<DropdownItem on:click={() => importDataModal.open()} class="flex items-center gap-2">
 					<i class="ti ti-csv" />
 					<span>

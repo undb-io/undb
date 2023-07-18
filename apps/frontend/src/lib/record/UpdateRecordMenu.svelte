@@ -37,7 +37,7 @@
 <button>
 	<i class="ti ti-dots" />
 </button>
-<Dropdown>
+<Dropdown style="z-index: 50;">
 	<DropdownItem
 		on:click={() => {
 			if (record) {

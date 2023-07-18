@@ -12,7 +12,6 @@ module.exports = {
     'no-console': 'warn',
     // TODO: remove me
     'no-useless-catch': 'off',
-    'react/jsx-key': 'off',
     'tsdoc/syntax': 'warn',
     '@typescript-eslint/consistent-type-imports': 'warn',
     '@typescript-eslint/prefer-optional-chain': 'warn',

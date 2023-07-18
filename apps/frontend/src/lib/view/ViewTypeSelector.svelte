@@ -24,7 +24,7 @@
 		{$t(value)}
 	</span>
 </Button>
-<Dropdown bind:open>
+<Dropdown style="z-index: 50;" bind:open>
 	{#each items as item}
 		<DropdownItem>
 			<Radio custom value={item.value} bind:group={value} on:change={() => (open = false)}>

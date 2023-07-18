@@ -33,7 +33,7 @@
 	</span>
 </Button>
 <Portal target="body">
-	<Dropdown triggeredBy=".attachment_type_picker" class="z-[99999]" bind:open>
+	<Dropdown style="z-index: 50;" triggeredBy=".attachment_type_picker" class="z-[99999]" bind:open>
 		{#each types as type (type.value)}
 			<Radio value={type.value} bind:group={value} custom on:change={() => (open = false)}>
 				<div

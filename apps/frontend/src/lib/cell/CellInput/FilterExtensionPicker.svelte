@@ -36,7 +36,7 @@
 	{/each}
 </Button>
 <Portal target="body">
-	<Dropdown triggeredBy=".extension_picker" class="z-[99999] w-48" bind:open>
+	<Dropdown style="z-index: 50;" triggeredBy=".extension_picker" class="z-[99999] w-48" bind:open>
 		{#each types as type (type.value)}
 			{@const selected = value.includes(type.value)}
 			<Checkbox value={type.value} bind:group={value} custom on:change={() => (open = false)}>

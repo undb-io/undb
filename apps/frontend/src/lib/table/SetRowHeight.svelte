@@ -29,7 +29,7 @@
 >
 	<i class="ti ti-line-height text-sm dark:text-gray-200" />
 </Button>
-<Dropdown bind:open class="z-[999999] shadow-md dark:border  dark:rounded-lg">
+<Dropdown style="z-index: 50;" bind:open class="z-[999999] shadow-md dark:border  dark:rounded-lg">
 	{#each viewRowHeights as rowHeight}
 		<DropdownItem
 			class="flex items-center justify-between"

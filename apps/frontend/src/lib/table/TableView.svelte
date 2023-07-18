@@ -327,6 +327,7 @@
 	{#key fieldMenuDOMId}
 		<Portal target="body">
 			<Dropdown
+				style="z-index: 50;"
 				open
 				triggeredBy={`#${fieldMenuDOMId}`}
 				class="w-[250px] border border-gray-200 dark:border-0 dark:shadow-md rounded-md z-[99999]"
