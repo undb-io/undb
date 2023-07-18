@@ -24,7 +24,7 @@
 	{$t(value, { ns: 'common' })}
 </Button>
 <Dropdown
-	style="z-index: 50;"
+	style="z-index: 999999999;"
 	class="w-[400px] z-[99999] border rounded-sm bg-white shadow-sm dark:shadow-gray-500 dark:bg-gray-700"
 	bind:open
 >

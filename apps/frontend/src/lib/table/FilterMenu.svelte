@@ -8,6 +8,7 @@
 	import { isOperatorWithoutValue, type IFilter } from '@undb/core'
 	import { writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
+	import { invalidate } from '$app/navigation'
 
 	const value = writable<Partial<IFilter>[]>([...$filters])
 	$: value.set([...$filters])
@@ -37,6 +38,7 @@
 	const setFilter = trpc().table.view.filter.set.mutation({
 		async onSuccess() {
 			open = false
+			await invalidate(`table:${$table.id.value}`)
 			await $data.refetch()
 		},
 	})
@@ -89,9 +91,7 @@
 		{/if}
 	</form>
 	<div class="flex w-full justify-between">
-		<Button color="alternative" size="xs" on:click={add} disabled={$value.some((v) => v.path === TEMP_ID)}
-			>{$t('Create New Filter')}</Button
-		>
+		<Button color="alternative" size="xs" on:click={add}>{$t('Create New Filter')}</Button>
 		<Button size="xs" type="submit" form="filter_menu">{$t('Apply', { ns: 'common' })}</Button>
 	</div>
 </Modal>
