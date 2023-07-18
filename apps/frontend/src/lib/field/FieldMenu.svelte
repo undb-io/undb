@@ -5,7 +5,7 @@
 	import { confirmDeleteField, duplicateFieldModal, updateFieldModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import { canDuplicate, type ISortDirection } from '@undb/core'
-	import { DropdownDivider, DropdownItem, Modal, Toast } from 'flowbite-svelte'
+	import { DropdownDivider, DropdownItem, Toast } from 'flowbite-svelte'
 	import { noop } from 'lodash-es'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
