@@ -45,6 +45,7 @@
 	async function sort() {
 		const validSorts = $value
 			.filter((v) => !!v.id && v.direction)
+			.filter((v) => v.id !== TEMP_ID)
 			.map((v) => ({ fieldId: v.id, direction: v.direction })) as ISortSchema[]
 
 		$setSort.mutate({
