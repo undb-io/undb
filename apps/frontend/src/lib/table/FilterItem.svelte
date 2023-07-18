@@ -19,6 +19,7 @@
 </script>
 
 <li class="flex h-10 items-center justify-between gap-2 dark:border-gray-200">
+	<i role="button" class="handle ti ti-grip-vertical" />
 	<div class="grid grid-cols-3 gap-2 flex-1">
 		<FieldPicker
 			bind:selectedId

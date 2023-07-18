@@ -9,6 +9,9 @@
 	import { writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
 	import { invalidate } from '$app/navigation'
+	import { onMount } from 'svelte'
+	import Sortable, { type SortableEvent } from 'sortablejs'
+	import { isNumber } from 'lodash-es'
 
 	const value = writable<Partial<IFilter>[]>([...$filters])
 	$: value.set([...$filters])
@@ -56,6 +59,23 @@
 	}
 
 	let open = false
+
+	const onEnd = (event: SortableEvent) => {
+		const { oldIndex, newIndex } = event
+		if (isNumber(oldIndex) && isNumber(newIndex)) {
+			;[$value[oldIndex], $value[newIndex]] = [$value[newIndex], $value[oldIndex]]
+		}
+	}
+
+	let el: HTMLUListElement
+	$: if (el) {
+		Sortable.create(el, {
+			animation: 200,
+			direction: 'vertical',
+			onEnd,
+			handle: '.handle',
+		})
+	}
 </script>
 
 <Button
@@ -81,8 +101,8 @@
 	<form on:submit|preventDefault={apply} id="filter_menu" class="space-y-4">
 		{#if $value.length}
 			<span class="text-xs font-medium text-gray-500 dark:text-gray-300">{$t('set filters in this view')}</span>
-			<ul class="space-y-2">
-				{#each $value as filter, index}
+			<ul class="space-y-2" bind:this={el}>
+				{#each $value as filter, index (filter.path)}
 					<FilterItem {filter} {index} {remove} />
 				{/each}
 			</ul>
