@@ -305,6 +305,8 @@ export const config: InitOptions = {
         'create form from view': 'create form from view',
         forms: 'forms',
         'Create New Form': 'Create New Form',
+        'drag to set date': 'drag to set date',
+        'set date': 'set date',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -633,6 +635,8 @@ export const config: InitOptions = {
         'create form from view': '生成表单',
         forms: '表单',
         'Create New Form': '创建表单',
+        'drag to set date': '拖拽设置日期',
+        'set date': '设置日期',
       },
       webhook: {
         Webhook: 'Webhook',

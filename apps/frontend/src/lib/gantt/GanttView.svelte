@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SvelteGantt, SvelteGanttDependencies, SvelteGanttTable } from 'svelte-gantt'
+	import { SvelteGantt, SvelteGanttDependencies, SvelteGanttExternal, SvelteGanttTable } from 'svelte-gantt'
 	import type { SvelteGanttComponent, SvelteGanttOptions } from 'svelte-gantt/types/gantt'
 	import { addDays, endOfWeek, format, startOfWeek, subDays } from 'date-fns'
 	import { currentRecordId, getTable, listRecordFn, readonly, recordHash } from '$lib/store/table'
@@ -154,23 +154,69 @@
 	})
 
 	$: if (gantt) gantt.$set(options)
+
+	let externalEle: HTMLElement | undefined
+	$: if (externalEle && gantt) {
+		// @ts-ignore
+		new SvelteGanttExternal(externalEle, {
+			gantt,
+			enabled: !$readonly,
+			dragging: true,
+			onsuccess: (row, date, gantt) => {
+				const id = row.model.id as any
+				const from = new Date(date)
+				const to = addDays(from, 1)
+				$updateRecord.mutate({
+					tableId: $table.id.value,
+					id,
+					values: {
+						[field.id.value]: [from.toISOString(), to.toISOString()],
+					},
+				})
+				gantt.updateTask({
+					id,
+					label: row.model.label,
+					from: date,
+					to,
+					resourceId: row.model.id as any as number,
+				})
+			},
+			elementContent: () => {
+				const element = document.createElement('div')
+				element.className = 'absolute bg-gray-300 rounded-sm p-2 text-sm'
+				element.innerHTML = $t('set date')
+				return element
+			},
+		})
+	}
 </script>
 
 <div class="w-full flex-1 h-full overflow-y-auto">
-	<div class="p-2 text-gray-500">
-		<div class="flex justify-center items-center gap-2">
-			<button
-				on:click={previous}
-				class="p-1 hover:bg-gray-100 w-6 h-6 inline-flex items-center justify-center transition"
+	<div class="flex justify-between p-2 text-gray-500">
+		<div class="flex justify-center items-center gap-2 flex-1">
+			<div class="flex items-center justify-center">
+				<button
+					on:click={previous}
+					class="p-1 hover:bg-gray-100 w-6 h-6 inline-flex items-center justify-center transition"
+				>
+					<i class="ti ti-chevron-left" />
+				</button>
+				{format(currentStart, 'yyyy-MM-dd')}
+				<span>-</span>
+				{format(currentEnd, 'yyyy-MM-dd')}
+				<button
+					on:click={next}
+					class="p-1 hover:bg-gray-100 w-6 h-6 inline-flex items-center justify-center transition"
+				>
+					<i class="ti ti-chevron-right" />
+				</button>
+			</div>
+		</div>
+
+		<div>
+			<button bind:this={externalEle} class="rounded-sm bg-blue-500 py-1 px-2 text-white text-xs"
+				>{$t('drag to set date')}</button
 			>
-				<i class="ti ti-chevron-left" />
-			</button>
-			{format(currentStart, 'yyyy-MM-dd')}
-			<span>-</span>
-			{format(currentEnd, 'yyyy-MM-dd')}
-			<button on:click={next} class="p-1 hover:bg-gray-100 w-6 h-6 inline-flex items-center justify-center transition">
-				<i class="ti ti-chevron-right" />
-			</button>
 		</div>
 	</div>
 	<div class="flex flex-1 overflow-y-auto">
