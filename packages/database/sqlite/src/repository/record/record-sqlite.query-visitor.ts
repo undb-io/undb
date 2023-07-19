@@ -1,6 +1,7 @@
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type { EntityProperty } from '@mikro-orm/core'
 import type {
+  AbstractDateRangeDateSpec,
   BoolIsFalse,
   BoolIsTrue,
   CollaboratorEqual,
@@ -12,6 +13,11 @@ import type {
   DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
+  DateRangeDateEqual,
+  DateRangeDateGreaterThan,
+  DateRangeDateGreaterThanOrEqual,
+  DateRangeDateLessThan,
+  DateRangeDateLessThanOrEqual,
   DateRangeEmpty,
   DateRangeEqual,
   HasExtension,
@@ -104,6 +110,21 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       return column.name
     }
     return TABLE_ALIAS + '.' + column.name
+  }
+
+  getDateRangeDateFieldId(spec: AbstractDateRangeDateSpec) {
+    const field = this.getField(spec.fieldId)
+    if (!field) return TABLE_ALIAS + '.' + spec.fieldId
+
+    if (spec.field === 'start') {
+      const column = new UnderlyingDateRangeFromColumn(spec.fieldId, this.tableId)
+      const fromId = TABLE_ALIAS + '.' + column.name
+      return fromId
+    }
+
+    const column = new UnderlyingDateRangeToColumn(spec.fieldId, this.tableId)
+    const toId = TABLE_ALIAS + '.' + column.name
+    return toId
   }
 
   idEqual(s: WithRecordId): void {
@@ -238,6 +259,26 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     } else {
       this.qb.whereNull(this.getFieldId(s.fieldId))
     }
+  }
+  dateRangeDateEqual(s: DateRangeDateEqual): void {
+    const fieldId = this.getDateRangeDateFieldId(s)
+    this.qb.where({ [fieldId]: s.value.toISOString() })
+  }
+  dateRangeDateGreaterThan(s: DateRangeDateGreaterThan): void {
+    const fieldId = this.getDateRangeDateFieldId(s)
+    this.qb.where(fieldId, '>', s.value.toISOString())
+  }
+  dateRangeDateLessThan(s: DateRangeDateLessThan): void {
+    const fieldId = this.getDateRangeDateFieldId(s)
+    this.qb.where(fieldId, '<', s.value.toISOString())
+  }
+  dateRangeDateGreaterThanOrEqual(s: DateRangeDateGreaterThanOrEqual): void {
+    const fieldId = this.getDateRangeDateFieldId(s)
+    this.qb.where(fieldId, '>=', s.value.toISOString())
+  }
+  dateRangeDateLessThanOrEqual(s: DateRangeDateLessThanOrEqual): void {
+    const fieldId = this.getDateRangeDateFieldId(s)
+    this.qb.where(fieldId, '<=', s.value.toISOString())
   }
   dateBetween(s: DateBetween): void {
     const start = s.date1
