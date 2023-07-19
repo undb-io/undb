@@ -12,6 +12,7 @@ import type {
   DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
+  DateRangeEmpty,
   DateRangeEqual,
   HasExtension,
   HasFileType,
@@ -97,7 +98,6 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     const field = this.getField(fieldId)
     if (!field) return TABLE_ALIAS + '.' + fieldId
 
-    // TODO: handle date range
     const column = UnderlyingColumnFactory.create(field, this.tableId) as IUnderlyingColumn
     if (column.virtual) {
       return column.name
@@ -248,6 +248,17 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       this.qb.where(toId, '>=', start.toISOString()).andWhere(fromId, '<=', end.toISOString())
     } else {
       this.qb.whereBetween(this.getFieldId(s.fieldId), [start.toISOString(), end.toISOString()])
+    }
+  }
+  dateRangeEmpty(s: DateRangeEmpty): void {
+    const field = this.getField(s.fieldId)
+    if (field instanceof DateRangeField) {
+      const from = new UnderlyingDateRangeFromColumn(field.id.value, this.tableId)
+      const to = new UnderlyingDateRangeToColumn(field.id.value, this.tableId)
+      const fromId = TABLE_ALIAS + '.' + from.name
+      const toId = TABLE_ALIAS + '.' + to.name
+
+      this.qb.whereNull(fromId).and.whereNull(toId)
     }
   }
   collaboratorEqual(s: CollaboratorEqual): void {

@@ -29,10 +29,21 @@
 	$: listRecords = $listRecordFn(
 		[
 			{
-				path: field.id.value,
-				type: field.type,
-				operator: '$between',
-				value: [currentStart.toISOString(), currentEnd.toISOString()],
+				conjunction: '$or',
+				children: [
+					{
+						path: field.id.value,
+						type: field.type,
+						operator: '$between',
+						value: [currentStart.toISOString(), currentEnd.toISOString()],
+					},
+					{
+						path: field.id.value,
+						type: field.type,
+						operator: '$is_empty',
+						value: null,
+					},
+				],
 			},
 		],
 		{
