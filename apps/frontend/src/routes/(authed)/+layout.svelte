@@ -321,8 +321,7 @@
 					style="z-index: 50;"
 					triggeredBy="#me-button"
 					placement="top"
-					frameClass="w-full"
-					class="w-full shadow-sm border border-gray-100 dark:border-gray-800/75 dark:shadow-lg"
+					class="w-64 shadow-sm border border-gray-100 dark:border-gray-800/75 dark:shadow-lg"
 				>
 					<DropdownItem href="/me">
 						<i class="ti ti-settings" />
@@ -336,7 +335,7 @@
 							</div>
 						</Chevron>
 					</DropdownItem>
-					<Dropdown style="z-index: 50;" placement="right-start" class="dark:border dark:border-gray-800/75">
+					<Dropdown style="z-index: 50;" placement="right-start" class="dark:border dark:border-gray-800/75 w-48">
 						<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('zh-CN')}>
 							<span>简体中文</span>
 							{#if $i18n.language === 'zh-CN'}
@@ -400,7 +399,7 @@
 			style="z-index: 50;"
 			triggeredBy="#me-button"
 			placement="bottom"
-			class="w-48 shadow-sm border border-gray-100 "
+			class="w-64 shadow-sm border border-gray-100 "
 		>
 			<DropdownItem href="/me">
 				<i class="ti ti-settings" />
@@ -414,7 +413,7 @@
 					</div>
 				</Chevron>
 			</DropdownItem>
-			<Dropdown style="z-index: 50;" placement="left-start">
+			<Dropdown style="z-index: 50;" placement="left-start" class="w-48">
 				<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('zh-CN')}>
 					<span>简体中文</span>
 					{#if $i18n.language === 'zh-CN'}
