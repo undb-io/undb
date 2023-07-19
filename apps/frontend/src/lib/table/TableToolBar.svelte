@@ -3,7 +3,6 @@
 	import ToggleDisplayType from './ToggleDisplayType.svelte'
 	import { t } from '$lib/i18n'
 	import ViewToolbar from './ViewToolbar.svelte'
-	import TableNavigator from './TableNavigator.svelte'
 	import { updateTableModal } from '$lib/store/modal'
 	import { getTable } from '$lib/store/table'
 	import SearchTable from './SearchTable.svelte'

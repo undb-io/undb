@@ -61,6 +61,10 @@ import { idFilter, idFilterOperators, idFilterValue } from '../field/fields/id/i
 import type { IJsonFilter } from '../field/fields/json/json.filter.js'
 import { jsonFilter, jsonFilterOperators, jsonFilterValue } from '../field/fields/json/json.filter.js'
 import { lookupFilter, lookupFilterOperators, lookupFilterValue } from '../field/fields/lookup/lookup.filter.js'
+import type { IMaxFilter } from '../field/fields/max/max.filter.js'
+import { maxFilter, maxFilterOperators, maxFilterValue } from '../field/fields/max/max.filter.js'
+import type { IMinFilter } from '../field/fields/min/min.filter.js'
+import { minFilter, minFilterOperators, minFilterValue } from '../field/fields/min/min.filter.js'
 import type { IMultiSelectFilter } from '../field/fields/multi-select/multi-select.filter.js'
 import {
   multiSelectFilter,
@@ -100,12 +104,9 @@ import {
 } from '../field/fields/updated-by/updated-by.filter.js'
 import type { IUrlFilter } from '../field/fields/url/url.filter.js'
 import { urlFilter, urlFilterOperators, urlFilterValue } from '../field/fields/url/url.filter.js'
-import type { IMinFilter } from '../field/fields/min/min.filter.js'
-import { minFilter, minFilterOperators, minFilterValue } from '../field/fields/min/min.filter.js'
-import type { IMaxFilter } from '../field/fields/max/max.filter.js'
-import { maxFilter, maxFilterOperators, maxFilterValue } from '../field/fields/max/max.filter.js'
 import {
   DateFieldValue,
+  DateRangeFieldValue,
   NumberFieldValue,
   SelectFieldValue,
   StringFieldValue,
@@ -123,6 +124,7 @@ import {
   DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
+  DateRangeEmpty,
   DateRangeEqual,
   HasExtension,
   HasFileType,
@@ -451,20 +453,30 @@ const convertJsonFilter = (filter: IJsonFilter): Option<CompositeSpecification> 
   }
 }
 const convertDateRangeFilter = (filter: IDateRangeFilter): Option<CompositeSpecification> => {
-  switch (filter.operator) {
-    case $eq.value:
-      return Some(DateRangeEqual.fromString(filter.path, filter.value))
-    case $neq.value:
-      return Some(DateRangeEqual.fromString(filter.path, filter.value).not())
-    case $between.value: {
-      const [from, to] = filter.value
-      if (!from || !to) return None
-      return Some(new DateBetween(filter.path, new Date(from), new Date(to)))
-    }
+  if (filter.value !== null) {
+    switch (filter.operator) {
+      case $eq.value:
+        return Some(DateRangeEqual.fromString(filter.path, filter.value))
+      case $neq.value:
+        return Some(DateRangeEqual.fromString(filter.path, filter.value).not())
+      case $between.value: {
+        const [from, to] = filter.value
+        if (!from || !to) return None
+        return Some(new DateBetween(filter.path, new Date(from), new Date(to)))
+      }
 
-    default:
-      return None
+      default:
+        return None
+    }
   }
+
+  if (filter.operator === '$is_empty') {
+    return Some(new DateRangeEmpty(filter.path, new DateRangeFieldValue(null)))
+  } else if (filter.operator === '$is_not_empty') {
+    return Some(new DateRangeEmpty(filter.path, new DateRangeFieldValue(null)).not())
+  }
+
+  return None
 }
 
 const convertDateFilter = (

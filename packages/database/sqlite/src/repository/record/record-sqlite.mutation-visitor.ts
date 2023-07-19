@@ -12,6 +12,7 @@ import type {
   DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
+  DateRangeEmpty,
   DateRangeEqual,
   HasExtension,
   HasFileType,
@@ -185,6 +186,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     throw new Error('Method not implemented.')
   }
   dateRangeEqual(s: DateRangeEqual): void {
+    throw new Error('Method not implemented.')
+  }
+  dateRangeEmpty(s: DateRangeEmpty): void {
     throw new Error('Method not implemented.')
   }
   dateBetween(s: DateBetween): void {

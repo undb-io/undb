@@ -29,3 +29,16 @@ export class DateRangeEqual extends BaseRecordSpecification<DateRangeFieldValue>
     return Ok(undefined)
   }
 }
+
+export class DateRangeEmpty extends BaseRecordSpecification<DateRangeFieldValue> {
+  isSatisfiedBy(r: Record): boolean {
+    const value = r.values.value.get(this.fieldId)
+
+    return value instanceof DateRangeFieldValue && value.equals(this.value)
+  }
+
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.dateRangeEmpty(this)
+    return Ok(undefined)
+  }
+}
