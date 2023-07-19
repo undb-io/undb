@@ -20,6 +20,7 @@
 	} from '@undb/core'
 	import type { ComponentType } from 'svelte'
 	import { withPrevious } from 'svelte-previous'
+	import DateRange from '$lib/cell/CellInput/DateRange.svelte'
 
 	export let field: Field | undefined
 	export let operator: string | undefined
@@ -90,6 +91,9 @@
 			if (operator === '$eq' || operator === '$neq') {
 				component = UserPicker
 			}
+		} else if (type === 'date-range') {
+			if (operator === '$is_empty' || operator === '$is_not_empty') component = undefined
+			else component = DateRange
 		} else {
 			component = undefined
 		}

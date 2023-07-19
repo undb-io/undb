@@ -81,6 +81,9 @@ export function getFilterOperators(type: IFieldType | undefined): {
 		data = [
 			{ value: '$eq', name: 'EQUAL' },
 			{ value: '$neq', name: 'NOT EQUAL' },
+			{ value: '$between', name: 'BETWEEN' },
+			{ value: '$is_empty', name: 'IS EMPTY' },
+			{ value: '$is_not_empty', name: 'IS NOT EMPTY' },
 		]
 	} else if (type === 'bool') {
 		data = [
