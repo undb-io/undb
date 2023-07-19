@@ -113,11 +113,13 @@
 				<span class="inline-block mr-2 text-sm">
 					{$t('Display Fields')}:
 				</span>
-				{#each displayFields as field}
-					<Badge>
-						{field.name}
-					</Badge>
-				{/each}
+				<div class="flex gap-2">
+					{#each displayFields as field}
+						<Badge>
+							{field.name}
+						</Badge>
+					{/each}
+				</div>
 			</div>
 			{#if $form.schema?.length}
 				<Accordion class="my-4">
