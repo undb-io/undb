@@ -17,7 +17,7 @@
 
 <Button color="alternative" {...$$restProps} class={cx($$restProps.class, 'gap-2')} on:click={() => (open = true)}>
 	{#if selected}
-		{selected.name}
+		{selected.name.value}
 	{:else}
 		<span class="text-gray-400">{$t('Select Table')}</span>
 	{/if}
