@@ -1,3 +1,1 @@
-import * as z from 'zod'
-
-export const getUsersQuerySchema = z.object({})
+export { getUsersQuerySchema } from '@undb/core'

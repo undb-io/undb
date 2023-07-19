@@ -8,8 +8,13 @@ import { UserSqliteQueryVisitor } from './user-sqlite.query-visitor.js'
 
 export class UserSqliteQueryModel implements IUserQueryModel {
   constructor(protected readonly em: EntityManager) {}
-  async find(): Promise<IQueryUser[]> {
-    const users = await this.em.find(User, {})
+  async find(spec: Option<UserSpecification>): Promise<IQueryUser[]> {
+    const qb = this.em.qb(User)
+    const visitor = new UserSqliteQueryVisitor(this.em, qb)
+    if (spec.isSome()) {
+      spec.unwrap().accept(visitor)
+    }
+    const users = await qb.getResult()
 
     return users.map((user) => UserSqliteMapper.toQuery(user))
   }
