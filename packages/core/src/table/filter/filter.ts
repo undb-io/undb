@@ -130,6 +130,7 @@ import {
   HasFileType,
   IsAttachmentEmpty,
   IsTreeRoot,
+  JsonEmpty,
   MultiSelectEqual,
   MultiSelectIn,
   MultiSelectIsEmpty,
@@ -439,12 +440,10 @@ const convertBoolFilter = (filter: IBoolFilter): Option<CompositeSpecification> 
 const convertJsonFilter = (filter: IJsonFilter): Option<CompositeSpecification> => {
   switch (filter.operator) {
     case $is_empty.value: {
-      throw new Error('TODO')
-      return None
+      return Some(new JsonEmpty(filter.path))
     }
     case $is_not_empty.value: {
-      throw new Error('TODO')
-      return None
+      return Some(new JsonEmpty(filter.path).not())
     }
 
     default: {

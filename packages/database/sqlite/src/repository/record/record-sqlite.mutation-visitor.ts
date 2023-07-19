@@ -20,6 +20,7 @@ import type {
   IRecordVisitor,
   IsAttachmentEmpty,
   IsTreeRoot,
+  JsonEmpty,
   MultiSelectEqual,
   MultiSelectIn,
   MultiSelectIsEmpty,
@@ -150,6 +151,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     throw new Error('Method not implemented.')
   }
   stringEmpty(s: StringEqual): void {
+    throw new Error('Method not implemented.')
+  }
+  jsonEmpty(s: JsonEmpty): void {
     throw new Error('Method not implemented.')
   }
   numberEqual(s: NumberEqual): void {
