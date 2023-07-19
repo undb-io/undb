@@ -7,6 +7,7 @@
 	import CalendarConfig from '$lib/calendar/CalendarConfig.svelte'
 	import { configViewModal } from '$lib/store/modal'
 	import TreeConfig from '$lib/tree/TreeConfig.svelte'
+	import GanttConfig from '$lib/gantt/GanttConfig.svelte'
 
 	const view = getView()
 
@@ -16,6 +17,7 @@
 		kanban: KanbanConfig,
 		calendar: CalendarConfig,
 		tree: TreeConfig,
+		gantt: GanttConfig,
 	}
 </script>
 
