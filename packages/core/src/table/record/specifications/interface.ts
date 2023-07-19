@@ -4,7 +4,15 @@ import { type Record } from '../record.js'
 import type { HasExtension, HasFileType, IsAttachmentEmpty } from './attachment.specification.js'
 import type { BoolIsFalse, BoolIsTrue } from './bool.specification.js'
 import type { CollaboratorEqual, CollaboratorIsEmpty } from './collaborator.specification.js'
-import type { DateRangeEmpty, DateRangeEqual } from './date-range.specification.js'
+import type {
+  DateRangeDateEqual,
+  DateRangeDateGreaterThan,
+  DateRangeDateGreaterThanOrEqual,
+  DateRangeDateLessThan,
+  DateRangeDateLessThanOrEqual,
+  DateRangeEmpty,
+  DateRangeEqual,
+} from './date-range.specification.js'
 import type {
   DateBetween,
   DateEqual,
@@ -85,6 +93,11 @@ interface IRecordValueVisitor {
 
   dateRangeEqual(s: DateRangeEqual): void
   dateRangeEmpty(s: DateRangeEmpty): void
+  dateRangeDateEqual(s: DateRangeDateEqual): void
+  dateRangeDateGreaterThan(s: DateRangeDateGreaterThan): void
+  dateRangeDateLessThan(s: DateRangeDateLessThan): void
+  dateRangeDateGreaterThanOrEqual(s: DateRangeDateGreaterThanOrEqual): void
+  dateRangeDateLessThanOrEqual(s: DateRangeDateLessThanOrEqual): void
 
   collaboratorEqual(s: CollaboratorEqual): void
   collaboratorIsEmpqy(s: CollaboratorIsEmpty): void

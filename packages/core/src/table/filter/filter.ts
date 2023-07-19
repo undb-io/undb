@@ -124,6 +124,11 @@ import {
   DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
+  DateRangeDateEqual,
+  DateRangeDateGreaterThan,
+  DateRangeDateGreaterThanOrEqual,
+  DateRangeDateLessThan,
+  DateRangeDateLessThanOrEqual,
   DateRangeEmpty,
   DateRangeEqual,
   HasExtension,
@@ -453,16 +458,48 @@ const convertJsonFilter = (filter: IJsonFilter): Option<CompositeSpecification> 
 }
 const convertDateRangeFilter = (filter: IDateRangeFilter): Option<CompositeSpecification> => {
   if (filter.value !== null) {
-    switch (filter.operator) {
-      case $eq.value:
-        return Some(DateRangeEqual.fromString(filter.path, filter.value))
-      case $neq.value:
-        return Some(DateRangeEqual.fromString(filter.path, filter.value).not())
-      case $between.value: {
-        const [from, to] = filter.value
-        if (!from || !to) return None
-        return Some(new DateBetween(filter.path, new Date(from), new Date(to)))
+    if (Array.isArray(filter.value)) {
+      switch (filter.operator) {
+        case $eq.value:
+          return Some(DateRangeEqual.fromString(filter.path, filter.value))
+        case $neq.value:
+          return Some(DateRangeEqual.fromString(filter.path, filter.value).not())
+        case $between.value: {
+          const [from, to] = filter.value
+          if (!from || !to) return None
+          return Some(new DateBetween(filter.path, new Date(from), new Date(to)))
+        }
+
+        default:
+          return None
       }
+    }
+
+    switch (filter.operator) {
+      case '$start_eq':
+        return Some(new DateRangeDateEqual('start', filter.path, new Date(filter.value)))
+      case '$start_neq':
+        return Some(new DateRangeDateEqual('start', filter.path, new Date(filter.value)).not())
+      case '$start_gt':
+        return Some(new DateRangeDateGreaterThan('start', filter.path, new Date(filter.value)))
+      case '$start_lt':
+        return Some(new DateRangeDateLessThan('start', filter.path, new Date(filter.value)))
+      case '$start_gte':
+        return Some(new DateRangeDateGreaterThanOrEqual('start', filter.path, new Date(filter.value)))
+      case '$start_lte':
+        return Some(new DateRangeDateLessThanOrEqual('start', filter.path, new Date(filter.value)))
+      case '$end_eq':
+        return Some(new DateRangeDateEqual('end', filter.path, new Date(filter.value)))
+      case '$end_neq':
+        return Some(new DateRangeDateEqual('end', filter.path, new Date(filter.value)).not())
+      case '$end_gt':
+        return Some(new DateRangeDateGreaterThan('end', filter.path, new Date(filter.value)))
+      case '$end_lt':
+        return Some(new DateRangeDateLessThan('end', filter.path, new Date(filter.value)))
+      case '$end_gte':
+        return Some(new DateRangeDateGreaterThanOrEqual('end', filter.path, new Date(filter.value)))
+      case '$end_lte':
+        return Some(new DateRangeDateLessThanOrEqual('end', filter.path, new Date(filter.value)))
 
       default:
         return None

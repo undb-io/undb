@@ -12,6 +12,11 @@ import type {
   DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
+  DateRangeDateEqual,
+  DateRangeDateGreaterThan,
+  DateRangeDateGreaterThanOrEqual,
+  DateRangeDateLessThan,
+  DateRangeDateLessThanOrEqual,
   DateRangeEmpty,
   DateRangeEqual,
   HasExtension,
@@ -65,6 +70,21 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     private readonly qb: Knex.QueryBuilder,
   ) {
     super(em)
+  }
+  dateRangeDateEqual(s: DateRangeDateEqual): void {
+    throw new Error('Method not implemented.')
+  }
+  dateRangeDateGreaterThan(s: DateRangeDateGreaterThan): void {
+    throw new Error('Method not implemented.')
+  }
+  dateRangeDateLessThan(s: DateRangeDateLessThan): void {
+    throw new Error('Method not implemented.')
+  }
+  dateRangeDateGreaterThanOrEqual(s: DateRangeDateGreaterThanOrEqual): void {
+    throw new Error('Method not implemented.')
+  }
+  dateRangeDateLessThanOrEqual(s: DateRangeDateLessThanOrEqual): void {
+    throw new Error('Method not implemented.')
   }
   like(s: WithRecordLike): void {
     throw new Error('Method not implemented.')
