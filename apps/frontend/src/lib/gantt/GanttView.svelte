@@ -58,12 +58,15 @@
 	})
 
 	$: records = RecordFactory.fromQueryRecords($listRecords?.data?.records ?? [], $table.schema.toIdMap()) ?? []
-	$: rows = records.map<RowModel>((r) => ({
-		id: r.id.value,
-		label: r.getDisplayFieldsValue($table),
-		height: 52,
-		classes: 'bg-gray-100 dark:!bg-gray-300 dark:text-white',
-	}))
+	$: rows = records.map<RowModel>((r) => {
+		const label = r.getDisplayFieldsValue($table)
+		return {
+			id: r.id.value,
+			label,
+			height: 52,
+			classes: 'bg-gray-100 dark:!bg-gray-300 dark:text-white',
+		}
+	})
 
 	$: tasks = records
 		.filter((r) => {
@@ -76,11 +79,12 @@
 			const [from, to] = value
 			const fromTimeStamp = new Date(from).getTime()
 			const toTimeStampe = new Date(to).getTime()
+			const label = r.getDisplayFieldsValue($table)
 
 			return {
 				id: r.id.value as any as number,
 				resourceId: r.id.value as any as number,
-				label: r.getDisplayFieldsValue($table),
+				label,
 				from: fromTimeStamp,
 				to: toTimeStampe,
 				classes: '!bg-blue-400 hover:!bg-blue-500',
@@ -139,6 +143,13 @@
 					},
 				})
 			})
+
+			ele.querySelectorAll('.sg-table-row').forEach((el) => {
+				el.addEventListener('click', (e) => {
+					const target = e.currentTarget as HTMLElement
+					$currentRecordId = target.dataset.rowId
+				})
+			})
 		}
 	})
 
@@ -162,15 +173,12 @@
 			</button>
 		</div>
 	</div>
-	<div class="border-t" bind:this={ele} id="undb-gantt" />
+	<div class="flex flex-1 overflow-y-auto">
+		<div class="border-t flex-grow overflow-auto" bind:this={ele} id="undb-gantt" />
+	</div>
 </div>
 
 <style>
-	#undb-gantt {
-		flex-grow: 1;
-		overflow: auto;
-	}
-
 	#undb-gantt :global(.sg-hover) {
 		background-color: #00000008;
 	}
