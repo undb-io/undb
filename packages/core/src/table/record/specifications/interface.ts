@@ -14,6 +14,7 @@ import type {
   DateLessThan,
   DateLessThanOrEqual,
 } from './date.specification.js'
+import type { JsonEmpty } from './json.specification.js'
 import type { MultiSelectEqual, MultiSelectIn, MultiSelectIsEmpty } from './multi-select.specification.js'
 import type {
   NumberEqual,
@@ -104,6 +105,8 @@ interface IRecordValueVisitor {
   isTreeRoot(s: IsTreeRoot): void
 
   parentAvailable(s: ParentAvailableSpec): void
+
+  jsonEmpty(s: JsonEmpty): void
 
   hasFileType(s: HasFileType): void
   hasExtension(s: HasExtension): void

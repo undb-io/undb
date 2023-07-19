@@ -20,6 +20,7 @@ import type {
   IRecordVisitor,
   IsAttachmentEmpty,
   IsTreeRoot,
+  JsonEmpty,
   MultiSelectEqual,
   MultiSelectIn,
   MultiSelectIsEmpty,
@@ -199,6 +200,9 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     } else {
       this.qb.where(this.getFieldId(s.fieldId), '>', s.value.toString()!)
     }
+  }
+  jsonEmpty(s: JsonEmpty): void {
+    this.qb.whereNull(this.getFieldId(s.fieldId))
   }
   dateLessThan(s: DateLessThan): void {
     if (s.value.unpack() === null) {
