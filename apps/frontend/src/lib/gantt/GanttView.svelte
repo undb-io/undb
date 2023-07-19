@@ -64,22 +64,29 @@
 		height: 52,
 		classes: 'bg-gray-100 dark:!bg-gray-300 dark:text-white',
 	}))
-	$: tasks = records.map<TaskModel>((r) => {
-		const value = r.valuesJSON?.[field.id.value]
-		const [from, to] = value
-		const fromTimeStamp = new Date(from).getTime()
-		const toTimeStampe = new Date(to).getTime()
 
-		return {
-			id: r.id.value as any as number,
-			resourceId: r.id.value as any as number,
-			label: r.getDisplayFieldsValue($table),
-			from: fromTimeStamp,
-			to: toTimeStampe,
-			classes: '!bg-blue-400 hover:!bg-blue-500',
-			enableDragging: !$readonly,
-		}
-	})
+	$: tasks = records
+		.filter((r) => {
+			const value = r.valuesJSON?.[field.id.value]
+			const [from, to] = value
+			return !!from && !!to
+		})
+		.map<TaskModel>((r) => {
+			const value = r.valuesJSON?.[field.id.value]
+			const [from, to] = value
+			const fromTimeStamp = new Date(from).getTime()
+			const toTimeStampe = new Date(to).getTime()
+
+			return {
+				id: r.id.value as any as number,
+				resourceId: r.id.value as any as number,
+				label: r.getDisplayFieldsValue($table),
+				from: fromTimeStamp,
+				to: toTimeStampe,
+				classes: '!bg-blue-400 hover:!bg-blue-500',
+				enableDragging: !$readonly,
+			}
+		})
 
 	$: options = {
 		rows,
@@ -138,7 +145,7 @@
 	$: if (gantt) gantt.$set(options)
 </script>
 
-<div class="w-full">
+<div class="w-full flex-1 h-full overflow-y-auto">
 	<div class="p-2 text-gray-500">
 		<div class="flex justify-center items-center gap-2">
 			<button
