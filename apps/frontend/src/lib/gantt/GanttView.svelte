@@ -8,6 +8,7 @@
 	import type { TaskModel } from 'svelte-gantt/types/core/task'
 	import { onMount } from 'svelte'
 	import { t } from '$lib/i18n'
+	import EmptyTable from '../table/EmptyTable.svelte'
 	import { trpc } from '$lib/trpc/client'
 
 	const table = getTable()
@@ -222,6 +223,11 @@
 	<div class="flex flex-1 overflow-y-auto">
 		<div class="border-t flex-grow overflow-auto" bind:this={ele} id="undb-gantt" />
 	</div>
+	{#if !records.length}
+		<div class="flex items-center justify-center h-full translate-y-[-10%]">
+			<EmptyTable />
+		</div>
+	{/if}
 </div>
 
 <style>
