@@ -1,4 +1,4 @@
-import { IRootFilter } from '@undb/core'
+import type { IRootFilter } from '@undb/core'
 import { Query } from '@undb/domain'
 import type { IGetForeignRecordsQuery } from './get-foreign-records.query.interface.js'
 

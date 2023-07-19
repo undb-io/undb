@@ -6,12 +6,16 @@ import type {
   WithUserColor,
   WithUserEmail,
   WithUserId,
+  WithUserIds,
   WithUsername,
 } from '@undb/core'
 import { User } from '../../entity/user.js'
 
 export class UserSqliteMutationVisitor implements IUserSpecVisitor {
   constructor(private readonly userId: string, private readonly em: EntityManager) {}
+  idsIn(s: WithUserIds): void {
+    throw new Error('Method not implemented.')
+  }
   idEqual(s: WithUserId): void {
     throw new Error('not implemented')
   }
