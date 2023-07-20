@@ -6,7 +6,7 @@
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { Field } from '@undb/core'
-	import { Badge, Button, Checkbox, Hr, Modal, Toggle } from 'flowbite-svelte'
+	import { Badge, Button, Checkbox, Hr, Indicator, Modal, Toggle, Tooltip } from 'flowbite-svelte'
 	import { filter, isNumber } from 'lodash-es'
 	import { createFieldModal } from '$lib/store/modal'
 	import Sortable, { type SortableEvent } from 'sortablejs'
@@ -88,7 +88,7 @@
 	size="xs"
 	color="alternative"
 	class={cx(
-		'h-full !rounded-md gap-2 whitespace-nowrap border-0 hover:!bg-blue-50 dark:hover:!bg-gray-800 text-blue-600 dark:text-gray-100',
+		'relative h-full !rounded-md gap-2 whitespace-nowrap border-0 hover:!bg-blue-50 dark:hover:!bg-gray-800 text-blue-600 dark:text-gray-100',
 		!!hiddenCount && '!bg-blue-50 dark:!bg-primary-600',
 	)}
 	on:click={() => (open = true)}
@@ -98,9 +98,12 @@
 		{$t('Manage Fields')}
 	</span>
 	{#if hiddenCount}
-		<Badge color="dark" class="dark:bg-primary-900 dark:text-gray-100 hidden lg:block">
+		<Indicator color="blue" border size="xl" placement="top-right">
+			<span class="text-white text-xs font-bold">{hiddenCount}</span>
+		</Indicator>
+		<Tooltip placement="bottom" class="z-50 dark:bg-primary-900 dark:text-gray-100 hidden lg:block">
 			{$t('N Fields Hidden', { n: hiddenCount })}
-		</Badge>
+		</Tooltip>
 	{/if}
 </Button>
 
