@@ -24,6 +24,7 @@ import type {
   WithFormFieldsVisibility,
   WithFormName,
   WithFormat,
+  WithGalleryField,
   WithGanttField,
   WithKanbanField,
   WithNewField,
@@ -55,6 +56,7 @@ import type {
   WithViewName,
   WithViewPinnedFields,
   WithViewsOrder,
+  WithVisualizationFieldSpec,
   WithVisualizationNameSpec,
   WithWidgetSpecification,
   WithWidgetsLayout,
@@ -80,6 +82,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   withVisualizationName(s: WithVisualizationNameSpec): void {
+    throw new Error('Method not implemented.')
+  }
+  withVisualizationField(s: WithVisualizationFieldSpec): void {
     throw new Error('Method not implemented.')
   }
   withWidgetsLayout(s: WithWidgetsLayout): void {
@@ -161,6 +166,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   kanbanFieldEqual(s: WithKanbanField): void {
+    throw new Error('Method not implemented.')
+  }
+  galleryFieldEqual(s: WithGalleryField): void {
     throw new Error('Method not implemented.')
   }
   ganttFieldEqual(s: WithGanttField): void {

@@ -5,6 +5,7 @@ import type {
   WithUserColor,
   WithUserEmail,
   WithUserId,
+  WithUserIds,
   WithUsername,
 } from '@undb/core'
 import { User } from '../../entity/user.js'
@@ -17,6 +18,9 @@ export class UserSqliteQueryVisitor implements IUserSpecVisitor {
   idEqual(s: WithUserId): void {
     const idFieldName = this.em.getMetadata().get(User.name).properties.id.fieldNames[0]
     this.qb.where({ [idFieldName]: s.userId.value })
+  }
+  idsIn(s: WithUserIds): void {
+    this.qb.where({ id: { $in: s.userIds.map((u) => u.value) } })
   }
 
   usernameEqual(s: WithUsername): void {

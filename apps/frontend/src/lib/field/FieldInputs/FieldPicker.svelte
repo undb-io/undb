@@ -39,13 +39,17 @@
 		<span class="text-gray-500 font-normal">{$t('Select Field')}</span>
 	{/if}
 </Button>
-<Dropdown class="w-[400px] z-[99999] border rounded-sm bg-white shadow-sm dark:shadow-gray-500 dark:bg-gray-700" bind:open>
+<Dropdown
+	style="z-index: 50;"
+	class="w-[400px] z-[99999] border rounded-sm bg-white shadow-sm dark:shadow-gray-500 dark:bg-gray-700"
+	bind:open
+>
 	{#if filteredFields.length}
 		{#each filteredFields as field (field.id)}
 			<Radio value={field.id} bind:group={value} custom on:change={() => (open = false)}>
 				<div
 					role="listitem"
-					class="w-full p-2 pr-4 flex justify-between hover:bg-gray-100 transition cursor-pointer dark:text-white dark:hover:!text-gray-600"
+					class="w-full pr-4 flex justify-between hover:bg-gray-100 transition cursor-pointer dark:text-white dark:hover:!text-gray-600"
 					class:bg-gray-100={selected?.id === field.id}
 				>
 					<div

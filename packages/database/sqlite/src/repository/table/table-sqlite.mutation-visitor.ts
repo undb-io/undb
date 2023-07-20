@@ -12,6 +12,7 @@ import type {
   WithFormFieldsSpecification,
   WithFormFieldsVisibility,
   WithFormName,
+  WithGalleryField,
   WithGanttField,
   WithNewFieldType,
   WithNewForm,
@@ -58,6 +59,7 @@ import {
   type WithViewName,
   type WithViewPinnedFields,
   type WithViewsOrder,
+  type WithVisualizationFieldSpec,
   type WithVisualizationNameSpec,
   type WithWidgetSpecification,
   type WithWidgetsLayout,
@@ -349,22 +351,27 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   }
   kanbanFieldEqual(s: WithKanbanField): void {
     const view = this.getView(s.view.id.value)
-    wrap(view).assign({ kanban: { fieldId: s.fieldId?.value ?? '' } })
+    wrap(view).assign({ kanban: { fieldId: s.fieldId?.value || null } })
+    this.em.persist(view)
+  }
+  galleryFieldEqual(s: WithGalleryField): void {
+    const view = this.getView(s.view.id.value)
+    wrap(view).assign({ gallery: { fieldId: s.fieldId?.value || null } })
     this.em.persist(view)
   }
   ganttFieldEqual(s: WithGanttField): void {
     const view = this.getView(s.view.id.value)
-    wrap(view).assign({ gantt: { fieldId: s.fieldId?.value ?? '' } })
+    wrap(view).assign({ gantt: { fieldId: s.fieldId?.value || null } })
     this.em.persist(view)
   }
   treeViewFieldEqual(s: WithTreeViewField): void {
     const view = this.getView(s.view.id.value)
-    wrap(view).assign({ tree: { fieldId: s.fieldId?.value ?? '' } })
+    wrap(view).assign({ tree: { fieldId: s.fieldId?.value || null } })
     this.em.persist(view)
   }
   calendarFieldEqual(s: WithCalendarField): void {
     const view = this.getView(s.view.id.value)
-    wrap(view).assign({ calendar: { fieldId: s.fieldId?.value ?? '' } })
+    wrap(view).assign({ calendar: { fieldId: s.fieldId?.value || null } })
     this.em.persist(view)
   }
   optionsEqual(s: WithOptions): void {
@@ -509,6 +516,14 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const visualization = this.em.getReference(Visualization, s.visualizationId)
     wrap(visualization).assign({ name: s.name.value })
     this.em.persist(visualization)
+  }
+  withVisualizationField(s: WithVisualizationFieldSpec): void {
+    this.addJobs(async () => {
+      const visualization = this.em.getReference(Visualization, s.visualizationId)
+      await wrap(visualization).init()
+      wrap(visualization as ChartVisualization | NumberVisualization).assign({ fieldId: s.fieldId?.value || null })
+      await this.em.persistAndFlush(visualization)
+    })
   }
   withNumberAggregate(s: WithNumberAggregateSpec): void {
     this.addJobs(async () => {

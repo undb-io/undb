@@ -8,8 +8,8 @@ export const createUserRouter = (procedure: typeof publicProcedure) => (commandB
     users: procedure
       .input(getUsersQuerySchema)
       .output(getUsersQueryOutput)
-      .query(() => {
-        const query = new GetUsersQuery()
+      .query(({ input }) => {
+        const query = new GetUsersQuery(input)
         return queryBus.execute(query)
       }),
   })

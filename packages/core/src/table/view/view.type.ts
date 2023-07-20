@@ -4,6 +4,8 @@ import type { RootFilter } from '../filter/root-filter.js'
 import type { Calendar, ICalendarSchema } from './calendar/index.js'
 import type { IDashboardSchema } from './dashboard/dashboard.type.js'
 import type { Dashboard } from './dashboard/dashboard.vo.js'
+import type { Gallery } from './gallery/gallery.js'
+import type { IGallerySchema } from './gallery/gallery.schema.js'
 import type { Gantt } from './gantt/gantt.js'
 import type { IGanttSchema } from './gantt/gantt.schema.js'
 import type { IKanbanSchema, Kanban } from './kanban/index.js'
@@ -25,6 +27,7 @@ export interface IView {
   showSystemFields?: boolean
   sorts?: Sorts
   kanban?: Kanban
+  gallery?: Gallery
   gantt?: Gantt
   calendar?: Calendar
   dashboard?: Dashboard
@@ -42,6 +45,7 @@ export interface IQueryView {
   showSystemFields?: boolean
   sorts?: ISorts
   kanban?: IKanbanSchema
+  gallery?: IGallerySchema
   gantt?: IGanttSchema
   tree?: ITreeViewSchema
   calendar?: ICalendarSchema

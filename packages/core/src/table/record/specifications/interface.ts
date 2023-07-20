@@ -4,7 +4,15 @@ import { type Record } from '../record.js'
 import type { HasExtension, HasFileType, IsAttachmentEmpty } from './attachment.specification.js'
 import type { BoolIsFalse, BoolIsTrue } from './bool.specification.js'
 import type { CollaboratorEqual, CollaboratorIsEmpty } from './collaborator.specification.js'
-import type { DateRangeEqual } from './date-range.specification.js'
+import type {
+  DateRangeDateEqual,
+  DateRangeDateGreaterThan,
+  DateRangeDateGreaterThanOrEqual,
+  DateRangeDateLessThan,
+  DateRangeDateLessThanOrEqual,
+  DateRangeEmpty,
+  DateRangeEqual,
+} from './date-range.specification.js'
 import type {
   DateBetween,
   DateEqual,
@@ -14,6 +22,7 @@ import type {
   DateLessThan,
   DateLessThanOrEqual,
 } from './date.specification.js'
+import type { JsonEmpty } from './json.specification.js'
 import type { MultiSelectEqual, MultiSelectIn, MultiSelectIsEmpty } from './multi-select.specification.js'
 import type {
   NumberEqual,
@@ -83,6 +92,12 @@ interface IRecordValueVisitor {
   dateBetween(s: DateBetween): void
 
   dateRangeEqual(s: DateRangeEqual): void
+  dateRangeEmpty(s: DateRangeEmpty): void
+  dateRangeDateEqual(s: DateRangeDateEqual): void
+  dateRangeDateGreaterThan(s: DateRangeDateGreaterThan): void
+  dateRangeDateLessThan(s: DateRangeDateLessThan): void
+  dateRangeDateGreaterThanOrEqual(s: DateRangeDateGreaterThanOrEqual): void
+  dateRangeDateLessThanOrEqual(s: DateRangeDateLessThanOrEqual): void
 
   collaboratorEqual(s: CollaboratorEqual): void
   collaboratorIsEmpqy(s: CollaboratorIsEmpty): void
@@ -103,6 +118,8 @@ interface IRecordValueVisitor {
   isTreeRoot(s: IsTreeRoot): void
 
   parentAvailable(s: ParentAvailableSpec): void
+
+  jsonEmpty(s: JsonEmpty): void
 
   hasFileType(s: HasFileType): void
   hasExtension(s: HasExtension): void

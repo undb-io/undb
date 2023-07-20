@@ -12,7 +12,7 @@
 		value = []
 	}
 
-	$: selected = value ? value.map((id) => field.options.getById(id).into()!).filter(Boolean) : []
+	$: selected = Array.isArray(value) ? value.map((id) => field.options.getById(id).into()!).filter(Boolean) : []
 	$: options = field.options?.options
 
 	$: open = false
@@ -32,7 +32,7 @@
 		</span>
 	{/if}
 </Button>
-<Dropdown bind:open placement="bottom-start" class="w-full min-w-[200px]">
+<Dropdown style="z-index: 50;" bind:open placement="bottom-start" class="w-full min-w-[200px]">
 	<div class="w-full">
 		{#each options as option}
 			{@const select = selected.some((s) => s.key.value === option.key.value)}

@@ -4,6 +4,7 @@
 	import CollaboratorComponent from '../CellComponents/CollaboratorComponent.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { t } from '$lib/i18n'
+	import type { IQueryUser } from '@undb/core'
 
 	export let value: string | undefined
 
@@ -18,7 +19,12 @@
 	$: members = $query.data?.users ?? []
 
 	$: membersMap = new Map(members.map((m) => [m.userId, m]))
-	$: selected = value ? membersMap.get(value) : undefined
+
+	$: selectedQuery = trpc().user.users.query({ id: value }, { enabled: !!value && !opened && !selected })
+	$: selectedMembers = $selectedQuery?.data?.users ?? []
+
+	let selected: IQueryUser | undefined
+	$: if (value) selected = membersMap.get(value) || selectedMembers.find((u) => u.userId === value)
 </script>
 
 <Button color="alternative" class={cx('inline-flex gap-3 max-h-10 max-w-max', $$restProps.class)} {...$$restProps}>
@@ -28,7 +34,7 @@
 		{$t('Select Collaborator')}
 	{/if}
 </Button>
-<Dropdown bind:open>
+<Dropdown style="z-index: 50;" bind:open class="w-[400px] border-2">
 	{#each members as member}
 		<Radio bind:group={value} value={member.userId} custom on:change={() => (open = false)}>
 			<span

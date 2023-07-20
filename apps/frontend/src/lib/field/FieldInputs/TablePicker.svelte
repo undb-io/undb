@@ -17,13 +17,13 @@
 
 <Button color="alternative" {...$$restProps} class={cx($$restProps.class, 'gap-2')} on:click={() => (open = true)}>
 	{#if selected}
-		{selected.name}
+		{selected.name.value}
 	{:else}
 		<span class="text-gray-400">{$t('Select Table')}</span>
 	{/if}
 </Button>
 {#if $allTables}
-	<Dropdown bind:open class="z-[99999] w-96">
+	<Dropdown style="z-index: 50;" bind:open class="z-[99999] w-96">
 		{#each $allTables as table (table.id)}
 			<Radio
 				value={table.id}
@@ -32,7 +32,7 @@
 				custom
 				on:change={() => (open = false)}
 			>
-				<li class="w-full p-2 inline-flex gap-2 hover:bg-gray-100 cursor-pointer">
+				<li class="w-full inline-flex gap-2 hover:bg-gray-100 cursor-pointer">
 					<span
 						class={cx(
 							'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',

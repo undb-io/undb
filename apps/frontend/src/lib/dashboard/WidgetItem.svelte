@@ -118,7 +118,7 @@
 				<button class="hover:bg-slate-100 w-6 h-6 dark:hover:bg-gray-300">
 					<i class="text-gray-400 ti ti-dots dark:text-gray-200" />
 				</button>
-				<Dropdown>
+				<Dropdown style="z-index: 50;">
 					<DropdownItem
 						class="text-gray-600 text-xs gap-2 flex items-center dark:text-gray-200"
 						on:click={() => {

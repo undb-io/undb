@@ -32,6 +32,7 @@ import { SetFiltersCommandHandler } from './set-filters.command.handler.js'
 import { SetFormFieldRequirementsCommandHandler } from './set-form-field-requirements.command.handler.js'
 import { SetFormFieldVisibilityCommandHandler } from './set-form-field-visibility.command.handler.js'
 import { SetFormFieldsOrderCommandHandler } from './set-form-fields-order.command.handler.js'
+import { SetGalleryFieldCommandHandler } from './set-gallery-field.command.handler.js'
 import { SetGanttFieldCommandHandler } from './set-gantt-field.command.handler.js'
 import { SetKanbanFieldCommandHandler } from './set-kanban-field.command.handler.js'
 import { SetPinnedFieldsCommandHandler } from './set-pinned-fields.command.handler.js'
@@ -99,5 +100,6 @@ export const commandHandlers = [
   SetFormFieldVisibilityCommandHandler,
   SetFormFieldRequirementsCommandHandler,
   SetFormFieldsOrderCommandHandler,
+  SetGalleryFieldCommandHandler,
   UpdateFormCommandHandler,
 ]

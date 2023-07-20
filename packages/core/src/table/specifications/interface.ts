@@ -41,7 +41,7 @@ import type {
   WithWidgetsLayout,
   WithoutWidgetSpecification,
 } from '../view/dashboard/specifications/widget.specification.js'
-import type { WithGanttField, WithKanbanField, WithViewsOrder } from '../view/index.js'
+import type { WithGalleryField, WithGanttField, WithKanbanField, WithViewsOrder } from '../view/index.js'
 import type { WithCalendarField } from '../view/specifications/calendar.specification.js'
 import type { WithDisplayType } from '../view/specifications/display-type.specification.js'
 import type { WithFilter } from '../view/specifications/filters.specificaiton.js'
@@ -65,6 +65,7 @@ import type {
 } from '../view/specifications/views.specification.js'
 import type { WithChartAggregateSpec } from '../visualization/specifications/chart-visualization.specification.js'
 import type { WithNumberAggregateSpec } from '../visualization/specifications/number-visualization.specification.js'
+import type { WithVisualizationFieldSpec } from '../visualization/specifications/visualization-field.specification.js'
 import type { WithVisualizationNameSpec } from '../visualization/specifications/visualization-name.specification.js'
 import type { WithTableEmoji } from './table-emoji.specification.js'
 import type { WithNewField } from './table-field.specification.js'
@@ -111,6 +112,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   rowHeightEqual(s: WithRowHeight): void
   displayTypeEqual(s: WithDisplayType): void
   kanbanFieldEqual(s: WithKanbanField): void
+  galleryFieldEqual(s: WithGalleryField): void
   ganttFieldEqual(s: WithGanttField): void
   calendarFieldEqual(s: WithCalendarField): void
   treeViewFieldEqual(s: WithTreeViewField): void
@@ -143,6 +145,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withoutWidget(s: WithoutWidgetSpecification): void
   withWidgetsLayout(s: WithWidgetsLayout): void
   withVisualizationName(s: WithVisualizationNameSpec): void
+  withVisualizationField(s: WithVisualizationFieldSpec): void
   withNumberAggregate(s: WithNumberAggregateSpec): void
   withChartAggregate(s: WithChartAggregateSpec): void
 

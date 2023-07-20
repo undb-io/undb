@@ -12,8 +12,8 @@ export class NestUserSqliteQueryModel extends UserSqliteQueryModel {
   }
 
   @UseRequestContext()
-  override find() {
-    return super.find()
+  override find(spec: Option<UserSpecification>) {
+    return super.find(spec)
   }
 
   @UseRequestContext()

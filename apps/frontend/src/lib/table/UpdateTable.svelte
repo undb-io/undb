@@ -78,7 +78,7 @@
 			<button>
 				<i class="ti ti-dots" />
 			</button>
-			<Dropdown>
+			<Dropdown style="z-index: 50;" class="w-48">
 				<DropdownItem class="inline-flex items-center gap-2 text-red-400" on:click={() => (confirmDeleteTable = true)}>
 					<i class="ti ti-trash" />
 					<span class="text-xs">{$t('Delete Table')}</span>
@@ -113,11 +113,13 @@
 				<span class="inline-block mr-2 text-sm">
 					{$t('Display Fields')}:
 				</span>
-				{#each displayFields as field}
-					<Badge>
-						{field.name}
-					</Badge>
-				{/each}
+				<div class="flex gap-2">
+					{#each displayFields as field}
+						<Badge>
+							{field.name}
+						</Badge>
+					{/each}
+				</div>
 			</div>
 			{#if $form.schema?.length}
 				<Accordion class="my-4">

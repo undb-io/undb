@@ -9,11 +9,11 @@
     "@undb/logger": "^0.0.0",
     "lodash-es": "^4.17.21",
     "oxide.ts": "^1.1.0",
-    "ts-pattern": "^5.0.1",
+    "ts-pattern": "^5.0.3",
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@types/lodash-es": "^4.17.7",
+    "@types/lodash-es": "^4.17.8",
     "rimraf": "^5.0.1",
     "tsconfig": "^0.0.0",
     "tsup": "^7.1.0",

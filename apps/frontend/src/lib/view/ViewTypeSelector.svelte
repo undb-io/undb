@@ -9,6 +9,7 @@
 	const items = [
 		{ value: 'grid', label: 'Grid' },
 		{ value: 'kanban', label: 'Kanban' },
+		{ value: 'gallery', label: 'Gallery' },
 		{ value: 'gantt', label: 'Gantt' },
 		{ value: 'calendar', label: 'Calendar' },
 		{ value: 'tree', label: 'Tree' },
@@ -24,7 +25,7 @@
 		{$t(value)}
 	</span>
 </Button>
-<Dropdown bind:open>
+<Dropdown style="z-index: 50;" bind:open>
 	{#each items as item}
 		<DropdownItem>
 			<Radio custom value={item.value} bind:group={value} on:change={() => (open = false)}>

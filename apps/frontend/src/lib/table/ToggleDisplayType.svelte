@@ -10,7 +10,7 @@
 	const view = getView()
 
 	const type = $view.displayType
-	const displayTypes = ['grid', 'kanban', 'calendar', 'tree', 'dashboard', 'gantt'] as const
+	const displayTypes = ['grid', 'kanban', 'gallery', 'calendar', 'tree', 'dashboard', 'gantt'] as const
 
 	const switchDisplayType = trpc().table.view.switchDisplayType.mutation({
 		async onSuccess(data, variables, context) {
@@ -51,7 +51,7 @@
 	<ViewIcon {type} />
 	<Tooltip class="z-50" placement="bottom">{$t(type)}</Tooltip>
 </button>
-<Dropdown>
+<Dropdown style="z-index: 50;">
 	{#each displayTypes as displayType}
 		<Radio
 			class="display-type cursor-pointer"

@@ -121,7 +121,7 @@
 			<span role="button" class="hover:bg-gray-100 px-3 rounded-sm flex items-center justify-center w-7 h-7">
 				<i class="ti ti-dots text-sm" />
 			</span>
-			<Dropdown>
+			<Dropdown style="z-index: 50;">
 				<DropdownItem class="text-red-500 font-normal text-xs gap-2 flex items-center" on:click={remove}>
 					<i class="ti ti-trash" />
 					<span>

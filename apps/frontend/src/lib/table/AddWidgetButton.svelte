@@ -78,7 +78,7 @@
 		{$t('add widget')}
 	</span>
 </Button>
-<Dropdown bind:open class="z-[99999] w-48 shadow-lg border rounded-md">
+<Dropdown style="z-index: 50;" bind:open class="z-[99999] w-48 shadow-lg border rounded-md">
 	<DropdownItem class="flex items-center gap-3" on:click={addNumbers}>
 		<i class="ti ti-123" />
 		<span>{$t('Numbers', { ns: 'common' })}</span>

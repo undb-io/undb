@@ -1714,6 +1714,15 @@
           "nullable": true,
           "mappedType": "text"
         },
+        "gallery_field_id": {
+          "name": "gallery_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
         "gantt_field_id": {
           "name": "gantt_field_id",
           "type": "text",

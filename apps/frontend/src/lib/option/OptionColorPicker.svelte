@@ -21,7 +21,7 @@
 >
 	<i class="ti ti-circle-chevron-down text-sm" />
 </div>
-<Dropdown bind:open inline class="w-[200px] z-[999999]">
+<Dropdown style="z-index: 50;" bind:open inline class="w-[200px] z-[999999]">
 	<div class="grid grid-cols-2 gap-2 overflow-y-auto shadow-md w-full h-full p-3">
 		{#each optionColorOrder as color}
 			<Radio class="h-[24px]" value={color} bind:group={value} custom on:change={() => (open = false)}>

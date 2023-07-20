@@ -157,7 +157,7 @@
 	</a>
 	{#if active}
 		<Portal target="body">
-			<Dropdown triggeredBy={`#${view.id.value}`} bind:open class="!z-[9999999] w-48">
+			<Dropdown style="z-index: 50;" triggeredBy={`#${view.id.value}`} bind:open class="!z-[9999999] w-48">
 				<DropdownItem on:click={() => (updating = true)} class="text-xs font-normal inline-flex items-center gap-2">
 					<i class="ti ti-pencil text-gray-600 dark:text-gray-50" />
 					<span>{$t('Update View Name')}</span>
@@ -173,17 +173,17 @@
 					</span>
 					<i class="ti ti-chevron-right" />
 				</DropdownItem>
-				<Dropdown placement="right-start">
+				<Dropdown style="z-index: 50;" placement="right-start" class="w-48">
 					<DropdownItem on:click={() => exportGrid('csv')} class="text-xs font-normal inline-flex items-center gap-2">
-						<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
+						<i class="ti ti-csv text-gray-600 dark:text-gray-50" />
 						<span>{$t('Export CSV')}</span>
 					</DropdownItem>
 					<DropdownItem on:click={() => exportGrid('excel')} class="text-xs font-normal inline-flex items-center gap-2">
-						<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
+						<i class="ti ti-file-spreadsheet text-gray-600 dark:text-gray-50" />
 						<span>{$t('Export Excel')}</span>
 					</DropdownItem>
 					<DropdownItem on:click={() => exportGrid('json')} class="text-xs font-normal inline-flex items-center gap-2">
-						<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
+						<i class="ti ti-json text-gray-600 dark:text-gray-50" />
 						<span>{$t('Export Json')}</span>
 					</DropdownItem>
 				</Dropdown>

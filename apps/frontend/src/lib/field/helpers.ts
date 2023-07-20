@@ -1,8 +1,13 @@
 import type { IColor, IFieldType } from '@undb/core'
-import type { Select } from 'flowbite-svelte'
 
-export function getFilterOperators(type: IFieldType | undefined) {
-	let data: Select['$$prop_def']['items'] = []
+export function getFilterOperators(type: IFieldType | undefined): {
+	name: string
+	value: string
+}[] {
+	let data: {
+		name: string
+		value: string
+	}[] = []
 	if (type === 'string') {
 		data = [
 			{ value: '$is_empty', name: 'IS EMPTY' },
@@ -76,6 +81,20 @@ export function getFilterOperators(type: IFieldType | undefined) {
 		data = [
 			{ value: '$eq', name: 'EQUAL' },
 			{ value: '$neq', name: 'NOT EQUAL' },
+			{ value: '$between', name: 'BETWEEN' },
+			{ value: '$is_empty', name: 'IS EMPTY' },
+			{ value: '$start_eq', name: 'START EQ' },
+			{ value: '$start_neq', name: 'START NEQ' },
+			{ value: '$start_gt', name: 'START GT' },
+			{ value: '$start_lt', name: 'START LT' },
+			{ value: '$start_gte', name: 'START GTE' },
+			{ value: '$start_lte', name: 'START LTE' },
+			{ value: '$end_eq', name: 'END EQ' },
+			{ value: '$end_neq', name: 'END NEQ' },
+			{ value: '$end_gt', name: 'END GT' },
+			{ value: '$end_lt', name: 'END LT' },
+			{ value: '$end_gte', name: 'END GTE' },
+			{ value: '$end_lte', name: 'END LTE' },
 		]
 	} else if (type === 'bool') {
 		data = [

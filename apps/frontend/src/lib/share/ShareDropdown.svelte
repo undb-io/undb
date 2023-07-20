@@ -77,14 +77,15 @@
 
 <Dropdown
 	bind:open
-	class="w-96 text-sm font-light z-50 border rounded-lg "
+	style="z-index: 50;"
+	class="w-96 text-sm font-light border rounded-lg "
 	title={$t('share')}
 	{trigger}
 	placement="bottom"
 >
 	<div class="space-y-2 p-3">
 		<Toggle bind:checked={enabled} on:change={onChange}>{enabled ? $t('disable share') : $t('enable share')}</Toggle>
-		{#if share}
+		{#if share && enabled}
 			<Input value={url} readonly>
 				<svelte:fragment slot="right">
 					{#if copied}
@@ -99,18 +100,18 @@
 					{/if}
 				</svelte:fragment>
 			</Input>
+			<Heading tag="h6">Embed</Heading>
+			<Input value={iframe} readonly>
+				<svelte:fragment slot="right">
+					{#if iframeCopied}
+						<i class="ti ti-check text-green-500" />
+					{:else}
+						<div class="flex items-center gap-2">
+							<i class="ti ti-copy cursor-pointer" on:click={copyIFrame} />
+						</div>
+					{/if}
+				</svelte:fragment>
+			</Input>
 		{/if}
-		<Heading tag="h6">Embed</Heading>
-		<Input value={iframe} readonly>
-			<svelte:fragment slot="right">
-				{#if iframeCopied}
-					<i class="ti ti-check text-green-500" />
-				{:else}
-					<div class="flex items-center gap-2">
-						<i class="ti ti-copy cursor-pointer" on:click={copyIFrame} />
-					</div>
-				{/if}
-			</svelte:fragment>
-		</Input>
 	</div>
 </Dropdown>

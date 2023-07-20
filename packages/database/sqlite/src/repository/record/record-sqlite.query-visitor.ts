@@ -1,6 +1,7 @@
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type { EntityProperty } from '@mikro-orm/core'
 import type {
+  AbstractDateRangeDateSpec,
   BoolIsFalse,
   BoolIsTrue,
   CollaboratorEqual,
@@ -12,6 +13,12 @@ import type {
   DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
+  DateRangeDateEqual,
+  DateRangeDateGreaterThan,
+  DateRangeDateGreaterThanOrEqual,
+  DateRangeDateLessThan,
+  DateRangeDateLessThanOrEqual,
+  DateRangeEmpty,
   DateRangeEqual,
   HasExtension,
   HasFileType,
@@ -19,6 +26,7 @@ import type {
   IRecordVisitor,
   IsAttachmentEmpty,
   IsTreeRoot,
+  JsonEmpty,
   MultiSelectEqual,
   MultiSelectIn,
   MultiSelectIsEmpty,
@@ -97,12 +105,26 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     const field = this.getField(fieldId)
     if (!field) return TABLE_ALIAS + '.' + fieldId
 
-    // TODO: handle date range
     const column = UnderlyingColumnFactory.create(field, this.tableId) as IUnderlyingColumn
     if (column.virtual) {
       return column.name
     }
     return TABLE_ALIAS + '.' + column.name
+  }
+
+  getDateRangeDateFieldId(spec: AbstractDateRangeDateSpec) {
+    const field = this.getField(spec.fieldId)
+    if (!field) return TABLE_ALIAS + '.' + spec.fieldId
+
+    if (spec.field === 'start') {
+      const column = new UnderlyingDateRangeFromColumn(spec.fieldId, this.tableId)
+      const fromId = TABLE_ALIAS + '.' + column.name
+      return fromId
+    }
+
+    const column = new UnderlyingDateRangeToColumn(spec.fieldId, this.tableId)
+    const toId = TABLE_ALIAS + '.' + column.name
+    return toId
   }
 
   idEqual(s: WithRecordId): void {
@@ -200,6 +222,9 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       this.qb.where(this.getFieldId(s.fieldId), '>', s.value.toString()!)
     }
   }
+  jsonEmpty(s: JsonEmpty): void {
+    this.qb.whereNull(this.getFieldId(s.fieldId))
+  }
   dateLessThan(s: DateLessThan): void {
     if (s.value.unpack() === null) {
       this.qb.whereNull(this.getFieldId(s.fieldId))
@@ -235,6 +260,26 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       this.qb.whereNull(this.getFieldId(s.fieldId))
     }
   }
+  dateRangeDateEqual(s: DateRangeDateEqual): void {
+    const fieldId = this.getDateRangeDateFieldId(s)
+    this.qb.where({ [fieldId]: s.value.toISOString() })
+  }
+  dateRangeDateGreaterThan(s: DateRangeDateGreaterThan): void {
+    const fieldId = this.getDateRangeDateFieldId(s)
+    this.qb.where(fieldId, '>', s.value.toISOString())
+  }
+  dateRangeDateLessThan(s: DateRangeDateLessThan): void {
+    const fieldId = this.getDateRangeDateFieldId(s)
+    this.qb.where(fieldId, '<', s.value.toISOString())
+  }
+  dateRangeDateGreaterThanOrEqual(s: DateRangeDateGreaterThanOrEqual): void {
+    const fieldId = this.getDateRangeDateFieldId(s)
+    this.qb.where(fieldId, '>=', s.value.toISOString())
+  }
+  dateRangeDateLessThanOrEqual(s: DateRangeDateLessThanOrEqual): void {
+    const fieldId = this.getDateRangeDateFieldId(s)
+    this.qb.where(fieldId, '<=', s.value.toISOString())
+  }
   dateBetween(s: DateBetween): void {
     const start = s.date1
     const end = s.date2
@@ -248,6 +293,17 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       this.qb.where(toId, '>=', start.toISOString()).andWhere(fromId, '<=', end.toISOString())
     } else {
       this.qb.whereBetween(this.getFieldId(s.fieldId), [start.toISOString(), end.toISOString()])
+    }
+  }
+  dateRangeEmpty(s: DateRangeEmpty): void {
+    const field = this.getField(s.fieldId)
+    if (field instanceof DateRangeField) {
+      const from = new UnderlyingDateRangeFromColumn(field.id.value, this.tableId)
+      const to = new UnderlyingDateRangeToColumn(field.id.value, this.tableId)
+      const fromId = TABLE_ALIAS + '.' + from.name
+      const toId = TABLE_ALIAS + '.' + to.name
+
+      this.qb.whereNull(fromId).and.whereNull(toId)
     }
   }
   collaboratorEqual(s: CollaboratorEqual): void {

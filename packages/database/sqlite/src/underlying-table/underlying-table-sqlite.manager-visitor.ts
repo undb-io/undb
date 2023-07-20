@@ -6,6 +6,7 @@ import type {
   WithForeignTableId,
   WithFormFieldsRequirements,
   WithFormName,
+  WithGalleryField,
   WithGanttField,
   WithNewFieldType,
   WithNewForm,
@@ -13,6 +14,7 @@ import type {
   WithTableFormId,
   WithTableSchema,
   WithTableViewId,
+  WithVisualizationFieldSpec,
   WithoutOption,
 } from '@undb/core'
 import { WithNewField, isSelectFieldType } from '@undb/core'
@@ -39,6 +41,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   withChartAggregate(): void {}
   withNumberAggregate(): void {}
   withVisualizationName(): void {}
+  withVisualizationField(s: WithVisualizationFieldSpec): void {}
   withWidgetsLayout(): void {}
   get #sb() {
     return this.sb ?? this.knex.schema
@@ -146,6 +149,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   fieldVisibility(): void {}
   displayTypeEqual(): void {}
   kanbanFieldEqual(): void {}
+  galleryFieldEqual(s: WithGalleryField): void {}
   ganttFieldEqual(s: WithGanttField): void {}
   treeViewFieldEqual(): void {}
   calendarFieldEqual(): void {}

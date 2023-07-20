@@ -9,22 +9,30 @@
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import { t } from '$lib/i18n'
-	import { dndzone } from 'svelte-dnd-action'
-	import { flip } from 'svelte/animate'
+	import Sortable, { type SortableEvent } from 'sortablejs'
+	import { isNumber, uniqBy } from 'lodash-es'
+	import { onMount, tick } from 'svelte'
 
 	const table = getTable()
 	const view = getView()
 
 	const TEMP_ID = '__TEMP_ID'
-	const value = writable<(Omit<ISortSchema, 'fieldId'> & { id: string })[]>([])
-	$: value.set(
-		$sorts.length
-			? [...$sorts.map((s) => ({ id: s.fieldId, direction: s.direction }))]
-			: [{ id: TEMP_ID, direction: 'asc' }],
-	)
+	const value = writable<(Omit<ISortSchema, 'fieldId'> & { id: string })[]>([
+		...$sorts.map((s) => ({ id: s.fieldId, direction: s.direction })),
+	])
+	onMount(() => {
+		value.set([...$sorts.map((s) => ({ id: s.fieldId, direction: s.direction }))])
+	})
 
-	$: selected = $value.filter((v) => !!v.id).map((v) => v.id)
+	const add = () => {
+		$value = [...$value, { id: TEMP_ID, direction: 'asc' }]
+	}
 
+	$: if (!$value.length) {
+		add()
+	}
+
+	// TODO: move to core
 	const directions = ['asc', 'desc'] as const
 
 	const setSort = trpc().table.view.sort.set.mutation({
@@ -37,22 +45,33 @@
 	async function sort() {
 		const validSorts = $value
 			.filter((v) => !!v.id && v.direction)
+			.filter((v) => v.id !== TEMP_ID)
 			.map((v) => ({ fieldId: v.id, direction: v.direction })) as ISortSchema[]
 
 		$setSort.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
-			sorts: validSorts,
+			sorts: uniqBy(validSorts, (s) => s.fieldId),
 		})
-	}
-	function handleDndConsider(e: CustomEvent) {
-		$value = e.detail.items
-	}
-	function handleDndFinalize(e: CustomEvent) {
-		$value = e.detail.items
 	}
 
 	let open = false
+	const onEnd = (event: SortableEvent) => {
+		const { oldIndex, newIndex } = event
+		if (isNumber(oldIndex) && isNumber(newIndex)) {
+			;[$value[oldIndex], $value[newIndex]] = [$value[newIndex], $value[oldIndex]]
+		}
+	}
+
+	let el: HTMLUListElement
+	$: if (el) {
+		Sortable.create(el, {
+			animation: 200,
+			direction: 'vertical',
+			onEnd,
+			handle: '.handle',
+		})
+	}
 </script>
 
 <Button
@@ -73,26 +92,22 @@
 	</span>
 </Button>
 
-<Modal bind:open class="w-full" size="sm" placement="top-center">
+<Modal bind:open class="w-full" size="lg" placement="top-center">
 	<form id="sort_menu" class="space-y-4" on:submit={sort}>
 		{#if $value.length}
 			<span class="text-xs font-medium text-gray-500">{$t('set sorts in this view')}</span>
-			<ul
-				use:dndzone={{ items: $value, type: 'sorts', dropTargetStyle: {} }}
-				class="w-full items-center space-y-2"
-				on:consider={handleDndConsider}
-				on:finalize={handleDndFinalize}
-			>
-				{#each $value as sort, idx (idx)}
-					<li animate:flip={{ duration: 200 }} class="flex justify-between">
-						<div class="flex">
+			<ul class="w-full items-center space-y-2" bind:this={el}>
+				{#each $value as sort, idx (sort.id)}
+					<li class="flex gap-2 items-center">
+						<i role="button" class="handle ti ti-grip-vertical flex items-center" />
+						<div class="flex flex-1">
 							<FieldPicker
-								bind:value={$value[idx].id}
+								bind:value={sort.id}
 								table={$table}
 								size="xs"
 								class="w-48 rounded-r-none !justify-start border-r-0"
 								fields={$allTableFields}
-								filter={(f) => isSortable(f.type) && !selected.includes(f.id)}
+								filter={(f) => isSortable(f.type)}
 							/>
 							<div class="inline-flex w-1/2">
 								{#each directions as direction, i (direction)}
@@ -122,17 +137,17 @@
 			<span class="text-xs font-medium text-gray-400">{$t('no sorts applied')}</span>
 		{/if}
 	</form>
-	<svelte:fragment slot="footer">
-		<div class="flex w-full justify-between">
-			<Button
-				color="alternative"
-				size="xs"
-				on:click={() => value.update((sorts) => [...sorts, { id: TEMP_ID, direction: 'asc' }])}
-				disabled={$value.some((v) => v.id === TEMP_ID)}>{$t('Create New Sort')}</Button
-			>
-			<Button size="xs" type="submit" form="sort_menu">{$t('Apply', { ns: 'common' })}</Button>
-		</div>
-	</svelte:fragment>
+	<div class="flex w-full justify-between">
+		<Button
+			color="alternative"
+			size="xs"
+			on:click={add}
+			disabled={$value.some((v) => v.id === TEMP_ID) || $setSort.isLoading}
+		>
+			{$t('Create New Sort')}
+		</Button>
+		<Button size="xs" type="submit" form="sort_menu">{$t('Apply', { ns: 'common' })}</Button>
+	</div>
 </Modal>
 
 {#if $setSort.error}

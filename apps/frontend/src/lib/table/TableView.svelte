@@ -313,7 +313,7 @@
 			<LoadingTable />
 		</div>
 	{:else if !hasRecord && $data.isSuccess}
-		<div class="absolute top-[50%] right-[50%] translate-x-[50%] translate-y-[-70%] z-[50]">
+		<div class="absolute top-[50%] right-[50%] translate-x-[50%] translate-y-[-70%] z-[9]">
 			<EmptyTable />
 		</div>
 	{/if}
@@ -327,6 +327,7 @@
 	{#key fieldMenuDOMId}
 		<Portal target="body">
 			<Dropdown
+				style="z-index: 50;"
 				open
 				triggeredBy={`#${fieldMenuDOMId}`}
 				class="w-[250px] border border-gray-200 dark:border-0 dark:shadow-md rounded-md z-[99999]"

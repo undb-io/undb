@@ -12,6 +12,12 @@ import type {
   DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
+  DateRangeDateEqual,
+  DateRangeDateGreaterThan,
+  DateRangeDateGreaterThanOrEqual,
+  DateRangeDateLessThan,
+  DateRangeDateLessThanOrEqual,
+  DateRangeEmpty,
   DateRangeEqual,
   HasExtension,
   HasFileType,
@@ -19,6 +25,7 @@ import type {
   IRecordVisitor,
   IsAttachmentEmpty,
   IsTreeRoot,
+  JsonEmpty,
   MultiSelectEqual,
   MultiSelectIn,
   MultiSelectIsEmpty,
@@ -63,6 +70,21 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     private readonly qb: Knex.QueryBuilder,
   ) {
     super(em)
+  }
+  dateRangeDateEqual(s: DateRangeDateEqual): void {
+    throw new Error('Method not implemented.')
+  }
+  dateRangeDateGreaterThan(s: DateRangeDateGreaterThan): void {
+    throw new Error('Method not implemented.')
+  }
+  dateRangeDateLessThan(s: DateRangeDateLessThan): void {
+    throw new Error('Method not implemented.')
+  }
+  dateRangeDateGreaterThanOrEqual(s: DateRangeDateGreaterThanOrEqual): void {
+    throw new Error('Method not implemented.')
+  }
+  dateRangeDateLessThanOrEqual(s: DateRangeDateLessThanOrEqual): void {
+    throw new Error('Method not implemented.')
   }
   like(s: WithRecordLike): void {
     throw new Error('Method not implemented.')
@@ -151,6 +173,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
   stringEmpty(s: StringEqual): void {
     throw new Error('Method not implemented.')
   }
+  jsonEmpty(s: JsonEmpty): void {
+    throw new Error('Method not implemented.')
+  }
   numberEqual(s: NumberEqual): void {
     throw new Error('Method not implemented.')
   }
@@ -185,6 +210,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     throw new Error('Method not implemented.')
   }
   dateRangeEqual(s: DateRangeEqual): void {
+    throw new Error('Method not implemented.')
+  }
+  dateRangeEmpty(s: DateRangeEmpty): void {
     throw new Error('Method not implemented.')
   }
   dateBetween(s: DateBetween): void {

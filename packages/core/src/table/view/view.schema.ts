@@ -4,6 +4,7 @@ import { fieldNameSchema } from '../field/value-objects/field-name.schema.js'
 import { rootFilter } from '../filter/filter.js'
 import { calendarSchema } from './calendar/index.js'
 import { createDashboardSchema, dashboardSchema } from './dashboard/dashboard.type.js'
+import { gallerySchema } from './gallery/gallery.schema.js'
 import { ganttSchema } from './gantt/gantt.schema.js'
 import { kanbanSchema } from './kanban/index.js'
 import { sortsSchema } from './sort/sort.schema.js'
@@ -14,7 +15,7 @@ import { viewNameSchema } from './view-name.vo.js'
 import { viewPinnedFields } from './view-pinned-fields.js'
 import { viewRowHeightSchema } from './view-row-height.vo.js'
 
-export const viewDisplayType = z.enum(['grid', 'kanban', 'gantt', 'calendar', 'tree', 'dashboard'])
+export const viewDisplayType = z.enum(['grid', 'kanban', 'gallery', 'gantt', 'calendar', 'tree', 'dashboard'])
 
 export const createViewSchema = z.object({
   id: viewIdSchema.optional(),
@@ -37,6 +38,7 @@ export const createViewInput_internal = z.object({
   showSystemFields: z.boolean().optional(),
   sorts: sortsSchema.optional(),
   kanban: kanbanSchema.optional(),
+  gallery: gallerySchema.optional(),
   gantt: ganttSchema.optional(),
   calendar: calendarSchema.optional(),
   dashboard: createDashboardSchema.optional(),
@@ -55,6 +57,7 @@ export const queryView = z.object({
   showSystemFields: z.boolean().optional(),
   sorts: sortsSchema.optional(),
   kanban: kanbanSchema.optional(),
+  gallery: gallerySchema.optional(),
   gantt: ganttSchema.optional(),
   calendar: calendarSchema.optional(),
   dashboard: dashboardSchema.optional(),
@@ -147,3 +150,9 @@ export const setPinnedFieldsSchema = z.object({
 })
 
 export type ISetPinnedFieldsSchema = z.infer<typeof setPinnedFieldsSchema>
+
+export const setGalleryFieldSchema = z.object({
+  viewId: viewIdSchema.optional(),
+  field: fieldIdSchema,
+})
+export type ISetGalleryFieldSchema = z.infer<typeof setGalleryFieldSchema>

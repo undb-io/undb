@@ -61,6 +61,10 @@ import { idFilter, idFilterOperators, idFilterValue } from '../field/fields/id/i
 import type { IJsonFilter } from '../field/fields/json/json.filter.js'
 import { jsonFilter, jsonFilterOperators, jsonFilterValue } from '../field/fields/json/json.filter.js'
 import { lookupFilter, lookupFilterOperators, lookupFilterValue } from '../field/fields/lookup/lookup.filter.js'
+import type { IMaxFilter } from '../field/fields/max/max.filter.js'
+import { maxFilter, maxFilterOperators, maxFilterValue } from '../field/fields/max/max.filter.js'
+import type { IMinFilter } from '../field/fields/min/min.filter.js'
+import { minFilter, minFilterOperators, minFilterValue } from '../field/fields/min/min.filter.js'
 import type { IMultiSelectFilter } from '../field/fields/multi-select/multi-select.filter.js'
 import {
   multiSelectFilter,
@@ -100,12 +104,9 @@ import {
 } from '../field/fields/updated-by/updated-by.filter.js'
 import type { IUrlFilter } from '../field/fields/url/url.filter.js'
 import { urlFilter, urlFilterOperators, urlFilterValue } from '../field/fields/url/url.filter.js'
-import type { IMinFilter } from '../field/fields/min/min.filter.js'
-import { minFilter, minFilterOperators, minFilterValue } from '../field/fields/min/min.filter.js'
-import type { IMaxFilter } from '../field/fields/max/max.filter.js'
-import { maxFilter, maxFilterOperators, maxFilterValue } from '../field/fields/max/max.filter.js'
 import {
   DateFieldValue,
+  DateRangeFieldValue,
   NumberFieldValue,
   SelectFieldValue,
   StringFieldValue,
@@ -123,11 +124,18 @@ import {
   DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
+  DateRangeDateEqual,
+  DateRangeDateGreaterThan,
+  DateRangeDateGreaterThanOrEqual,
+  DateRangeDateLessThan,
+  DateRangeDateLessThanOrEqual,
+  DateRangeEmpty,
   DateRangeEqual,
   HasExtension,
   HasFileType,
   IsAttachmentEmpty,
   IsTreeRoot,
+  JsonEmpty,
   MultiSelectEqual,
   MultiSelectIn,
   MultiSelectIsEmpty,
@@ -437,12 +445,10 @@ const convertBoolFilter = (filter: IBoolFilter): Option<CompositeSpecification> 
 const convertJsonFilter = (filter: IJsonFilter): Option<CompositeSpecification> => {
   switch (filter.operator) {
     case $is_empty.value: {
-      throw new Error('TODO')
-      return None
+      return Some(new JsonEmpty(filter.path))
     }
     case $is_not_empty.value: {
-      throw new Error('TODO')
-      return None
+      return Some(new JsonEmpty(filter.path).not())
     }
 
     default: {
@@ -451,20 +457,62 @@ const convertJsonFilter = (filter: IJsonFilter): Option<CompositeSpecification> 
   }
 }
 const convertDateRangeFilter = (filter: IDateRangeFilter): Option<CompositeSpecification> => {
-  switch (filter.operator) {
-    case $eq.value:
-      return Some(DateRangeEqual.fromString(filter.path, filter.value))
-    case $neq.value:
-      return Some(DateRangeEqual.fromString(filter.path, filter.value).not())
-    case $between.value: {
-      const [from, to] = filter.value
-      if (!from || !to) return None
-      return Some(new DateBetween(filter.path, new Date(from), new Date(to)))
+  if (filter.value !== null) {
+    if (Array.isArray(filter.value)) {
+      switch (filter.operator) {
+        case $eq.value:
+          return Some(DateRangeEqual.fromString(filter.path, filter.value))
+        case $neq.value:
+          return Some(DateRangeEqual.fromString(filter.path, filter.value).not())
+        case $between.value: {
+          const [from, to] = filter.value
+          if (!from || !to) return None
+          return Some(new DateBetween(filter.path, new Date(from), new Date(to)))
+        }
+
+        default:
+          return None
+      }
     }
 
-    default:
-      return None
+    switch (filter.operator) {
+      case '$start_eq':
+        return Some(new DateRangeDateEqual('start', filter.path, new Date(filter.value)))
+      case '$start_neq':
+        return Some(new DateRangeDateEqual('start', filter.path, new Date(filter.value)).not())
+      case '$start_gt':
+        return Some(new DateRangeDateGreaterThan('start', filter.path, new Date(filter.value)))
+      case '$start_lt':
+        return Some(new DateRangeDateLessThan('start', filter.path, new Date(filter.value)))
+      case '$start_gte':
+        return Some(new DateRangeDateGreaterThanOrEqual('start', filter.path, new Date(filter.value)))
+      case '$start_lte':
+        return Some(new DateRangeDateLessThanOrEqual('start', filter.path, new Date(filter.value)))
+      case '$end_eq':
+        return Some(new DateRangeDateEqual('end', filter.path, new Date(filter.value)))
+      case '$end_neq':
+        return Some(new DateRangeDateEqual('end', filter.path, new Date(filter.value)).not())
+      case '$end_gt':
+        return Some(new DateRangeDateGreaterThan('end', filter.path, new Date(filter.value)))
+      case '$end_lt':
+        return Some(new DateRangeDateLessThan('end', filter.path, new Date(filter.value)))
+      case '$end_gte':
+        return Some(new DateRangeDateGreaterThanOrEqual('end', filter.path, new Date(filter.value)))
+      case '$end_lte':
+        return Some(new DateRangeDateLessThanOrEqual('end', filter.path, new Date(filter.value)))
+
+      default:
+        return None
+    }
   }
+
+  if (filter.operator === '$is_empty') {
+    return Some(new DateRangeEmpty(filter.path, new DateRangeFieldValue(null)))
+  } else if (filter.operator === '$is_not_empty') {
+    return Some(new DateRangeEmpty(filter.path, new DateRangeFieldValue(null)).not())
+  }
+
+  return None
 }
 
 const convertDateFilter = (

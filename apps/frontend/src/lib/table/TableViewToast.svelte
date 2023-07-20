@@ -69,7 +69,7 @@
 			<Button size="xs" color="blue" class="!pl-1">
 				<Chevron />
 			</Button>
-			<Dropdown placement="top">
+			<Dropdown style="z-index: 50;" placement="top">
 				<DropdownItem class="text-red-400" on:click={() => ($confirmBulkDeleteRecords = true)}>
 					{#if $bulkDeleteRecordsMutation.isLoading}
 						<Spinner class="mr-3" size="4" />

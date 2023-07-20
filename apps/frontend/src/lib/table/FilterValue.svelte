@@ -17,9 +17,12 @@
 		type IDateFilterOperator,
 		isOperatorWithoutValue,
 		type IOperator,
+		isDateRangeDateOperator,
+		type IDateRangeFilterOperator,
 	} from '@undb/core'
 	import type { ComponentType } from 'svelte'
 	import { withPrevious } from 'svelte-previous'
+	import DateRange from '$lib/cell/CellInput/DateRange.svelte'
 
 	export let field: Field | undefined
 	export let operator: string | undefined
@@ -28,7 +31,6 @@
 	let component: ComponentType | undefined
 
 	const [currentField, previousField] = withPrevious(field?.id.value)
-	$: $currentField = field?.id.value
 	$: if (!!$currentField && !!$previousField && $currentField !== $previousField) {
 		value = null
 	}
@@ -36,6 +38,8 @@
 	$: type = field?.type
 	$: {
 		if (type === 'string') {
+			component = String
+		} else if (type === 'id') {
 			component = String
 		} else if (type === 'email') {
 			component = Email
@@ -54,7 +58,7 @@
 			type === 'sum' ||
 			type === 'currency' ||
 			type === 'count' ||
-			type === 'average' || 
+			type === 'average' ||
 			type === 'min' ||
 			type === 'max'
 		) {
@@ -89,6 +93,10 @@
 			if (operator === '$eq' || operator === '$neq') {
 				component = UserPicker
 			}
+		} else if (type === 'date-range') {
+			if (operator === '$is_empty' || operator === '$is_not_empty') component = undefined
+			else if (!!operator && isDateRangeDateOperator(operator as IDateRangeFilterOperator)) component = Date
+			else component = DateRange
 		} else {
 			component = undefined
 		}
@@ -99,7 +107,7 @@
 		}
 	}
 
-	$: wrapperClass = 'h-8 w-full rounded-none border-l-0 !justify-start'
+	$: wrapperClass = 'h-10 w-full bg-white border-gray-200 !justify-start'
 	$: {
 		if (type === 'rating') {
 			wrapperClass += ' box-border border px-2'
