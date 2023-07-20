@@ -32,7 +32,7 @@
 				custom
 				on:change={() => (open = false)}
 			>
-				<li class="w-full p-2 inline-flex gap-2 hover:bg-gray-100 cursor-pointer">
+				<li class="w-full inline-flex gap-2 hover:bg-gray-100 cursor-pointer">
 					<span
 						class={cx(
 							'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',

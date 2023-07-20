@@ -28,7 +28,6 @@
 		style="z-index: 50;"
 		triggeredBy="#field_type_picker"
 		bind:open
-		inline
 		class="w-[400px] overflow-y-auto overflow-x-hidden py-1 shadow-md max-h-[400px] z-[999999]"
 	>
 		{#each types.filter((type) => filter(type.value)) as type}
@@ -47,7 +46,7 @@
 			>
 				<li
 					class={cx(
-						'w-full p-2 flex justify-between items-center text-gray-700 hover:bg-gray-100 cursor-pointer dark:text-gray-50 dark:hover:!text-gray-700',
+						'w-full flex justify-between items-center text-gray-700 hover:bg-gray-100 cursor-pointer dark:text-gray-50 dark:hover:!text-gray-700',
 						selected ? 'dark:text-gray-700' : '',
 					)}
 				>

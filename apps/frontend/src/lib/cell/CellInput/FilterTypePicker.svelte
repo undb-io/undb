@@ -38,7 +38,7 @@
 			<Radio value={type.value} bind:group={value} custom on:change={() => (open = false)}>
 				<div
 					role="listitem"
-					class="w-full p-2 pr-4 flex justify-between hover:bg-gray-100 transition cursor-pointer"
+					class="w-full pr-4 flex justify-between hover:bg-gray-100 transition cursor-pointer"
 					class:bg-gray-100={value === type.value}
 				>
 					<div class="inline-flex gap-2 items-center text-gray-600">
