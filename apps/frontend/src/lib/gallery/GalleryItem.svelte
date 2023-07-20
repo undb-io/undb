@@ -2,7 +2,7 @@
 	import CellComponent from '$lib/cell/CellComponents/CellComponent.svelte'
 	import { getCellValue } from '$lib/cell/get-cell-value'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
-	import { getTable, getView } from '$lib/store/table'
+	import { currentRecordId, getTable, getView } from '$lib/store/table'
 	import type { AttachmentFieldValue, Field, Record } from '@undb/core'
 	import { Card, Dropzone, Tooltip, Carousel } from 'flowbite-svelte'
 	import { fade } from 'svelte/transition'
@@ -32,33 +32,19 @@
 	}
 </script>
 
-<Card class="shadow-sm hover:shadow-md transition !max-w-none !p-2">
+<Card
+	class="shadow-sm hover:shadow-md transition !max-w-none !p-2"
+	on:click={() => {
+		$currentRecordId = record.id.value
+	}}
+>
 	<div class="mb-2">
 		{#if images.length}
 			<Carousel divClass="h-auto" {images} loop showCaptions={false} showThumbs={false} />
 		{:else}
-			<Dropzone
-				on:drop={dropHandle}
-				on:dragover={(event) => {
-					event.preventDefault()
-				}}
-				on:change={handleChange}
-			>
-				<svg
-					aria-hidden="true"
-					class="mb-3 w-10 h-10 text-gray-400"
-					fill="none"
-					stroke="currentColor"
-					viewBox="0 0 24 24"
-					xmlns="http://www.w3.org/2000/svg"
-					><path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-					></path></svg
-				>
-			</Dropzone>
+			<div class="w-full aspect-square flex items-center justify-center bg-gray-100">
+				<i class="ti ti-photo text-[120px]"></i>
+			</div>
 		{/if}
 	</div>
 	<div class="flex flex-col gap-2">
