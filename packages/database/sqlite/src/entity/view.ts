@@ -18,6 +18,7 @@ import type { IViewRowHeight } from '@undb/core'
 import {
   viewRowHeights,
   type Calendar as CoreCalendar,
+  type Gallery as CoreGallery,
   type Gantt as CoreGantt,
   type Kanban as CoreKanban,
   type TreeView as CoreTreeView,
@@ -62,6 +63,20 @@ export class Gantt {
   }
 }
 
+@Embeddable()
+export class Gallery {
+  @Property({
+    nullable: true,
+    serializer(value) {
+      return value || undefined
+    },
+  })
+  fieldId?: string
+
+  constructor(gallery: CoreGallery) {
+    this.fieldId = gallery.fieldId?.value
+  }
+}
 @Embeddable()
 export class Calendar {
   @Property({
@@ -114,6 +129,9 @@ export class View extends BaseEntity {
 
   @Embedded({ nullable: true })
   kanban?: Kanban
+
+  @Embedded({ nullable: true })
+  gallery?: Gallery
 
   @Embedded({ nullable: true })
   gantt?: Gantt
@@ -182,4 +200,4 @@ export class View extends BaseEntity {
   }
 }
 
-export const viewEntities = [View, Kanban, Calendar, Tree, Gantt]
+export const viewEntities = [View, Kanban, Gallery, Calendar, Tree, Gantt]

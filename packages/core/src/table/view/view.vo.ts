@@ -18,6 +18,7 @@ import {
 } from './dashboard/specifications/widget.specification.js'
 import type { ICreateWidgetSchema, IRelayoutWidgetSchema } from './dashboard/widget.schema.js'
 import { Widget } from './dashboard/widget.vo.js'
+import { Gallery } from './gallery/gallery.js'
 import { Gantt } from './gantt/gantt.js'
 import { Kanban } from './kanban/index.js'
 import type { ISortDirection } from './sort/sort.schema.js'
@@ -182,6 +183,30 @@ export class ViewVO extends ValueObject<IView> {
     }
   }
 
+  public get gallery(): Option<Gallery> {
+    return Option(this.props.gallery)
+  }
+
+  public set gallery(gallery: Option<Gallery>) {
+    this.props.gallery = gallery.into()
+  }
+
+  public get galleryFieldId(): Option<FieldId> {
+    return this.gallery.mapOr(None, (gallery) => Option(gallery.fieldId))
+  }
+
+  public get galleryFieldIdString() {
+    return this.gallery.into()?.fieldId?.value
+  }
+
+  public set galleryFieldIdString(fieldId: string | undefined) {
+    const gallery = this.gallery.into()
+    if (gallery) {
+      gallery.fieldId = fieldId ? FieldId.fromString(fieldId) : undefined
+    } else if (fieldId) {
+      this.gallery = Some(new Gallery({ fieldId: FieldId.fromString(fieldId) }))
+    }
+  }
   public get treeView(): Option<TreeView> {
     return Option(this.props.tree)
   }
@@ -262,6 +287,14 @@ export class ViewVO extends ValueObject<IView> {
 
     this.props.kanban = new Kanban({})
     return this.props.kanban
+  }
+
+  public getOrCreateGallery(): Gallery {
+    const gallery = this.gallery
+    if (gallery.isSome()) return gallery.unwrap()
+
+    this.props.gallery = new Gallery({})
+    return this.props.gallery
   }
 
   public getOrCreateCalendar(): Calendar {

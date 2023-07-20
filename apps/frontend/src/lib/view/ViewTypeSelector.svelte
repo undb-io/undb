@@ -9,6 +9,7 @@
 	const items = [
 		{ value: 'grid', label: 'Grid' },
 		{ value: 'kanban', label: 'Kanban' },
+		{ value: 'gallery', label: 'Gallery' },
 		{ value: 'gantt', label: 'Gantt' },
 		{ value: 'calendar', label: 'Calendar' },
 		{ value: 'tree', label: 'Tree' },

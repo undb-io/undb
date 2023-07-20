@@ -529,9 +529,7 @@ INSERT INTO undb_widget VALUES('widdejx6woo',1685213070188,1685213070188,NULL,'{
 INSERT INTO undb_widget VALUES('widbzd1xggl',1685213092659,1685213092659,NULL,'{"x":6,"y":0,"h":4,"w":6}','viwoxmuxqte','virsfzcdnjb');
 INSERT INTO undb_widget VALUES('widobnuj5w9',1685213148218,1685213148218,NULL,'{"x":0,"y":0,"h":4,"w":6}','viwab1ycczl','virg85utg7b');
 INSERT INTO undb_widget VALUES('widbbypud7z',1685213181402,1685213181402,NULL,'{"x":0,"y":0,"h":4,"w":6}','viwufxtr4ao','vir8md89zv2');
-create table `undb_form` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `fields` json not null, `fields_order` text null, `table_id` text null, constraint `undb_form_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));
-create index `undb_form_deleted_at_index` on `undb_form` (`deleted_at`);
-create index `undb_form_table_id_index` on `undb_form` (`table_id`);
+CREATE TABLE `undb_form` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `fields` json not null, `fields_order` text null, `table_id` text null, constraint `undb_form_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));
 CREATE TABLE IF NOT EXISTS "undb_view" (
 	`id` text NOT NULL,
 	`created_at` datetime NOT NULL,
@@ -1562,6 +1560,8 @@ INSERT INTO sqlite_sequence VALUES('tblk4h9pgm7',21);
 INSERT INTO sqlite_sequence VALUES('tblfx77neny',23);
 INSERT INTO sqlite_sequence VALUES('tblq36e537c',1);
 INSERT INTO sqlite_sequence VALUES('tblpgqt9f8e',32);
+CREATE INDEX `undb_form_deleted_at_index` on `undb_form` (`deleted_at`);
+CREATE INDEX `undb_form_table_id_index` on `undb_form` (`table_id`);
 CREATE INDEX `undb_table_deleted_at_index` on `undb_table` (`deleted_at`);
 CREATE INDEX `undb_field_deleted_at_index` on `undb_field` (`deleted_at`);
 CREATE INDEX `undb_field_table_id_index` on `undb_field` (`table_id`);

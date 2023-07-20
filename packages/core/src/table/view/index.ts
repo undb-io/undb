@@ -1,6 +1,7 @@
 export * from '../visualization/index.js'
 export * from './calendar/index.js'
 export * from './dashboard/index.js'
+export * from './gallery/index.js'
 export * from './gantt/index.js'
 export * from './kanban/index.js'
 export * from './sort/index.js'

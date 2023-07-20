@@ -12,6 +12,7 @@ import type {
   WithFormFieldsSpecification,
   WithFormFieldsVisibility,
   WithFormName,
+  WithGalleryField,
   WithGanttField,
   WithNewFieldType,
   WithNewForm,
@@ -351,6 +352,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   kanbanFieldEqual(s: WithKanbanField): void {
     const view = this.getView(s.view.id.value)
     wrap(view).assign({ kanban: { fieldId: s.fieldId?.value || null } })
+    this.em.persist(view)
+  }
+  galleryFieldEqual(s: WithGalleryField): void {
+    const view = this.getView(s.view.id.value)
+    wrap(view).assign({ gallery: { fieldId: s.fieldId?.value || null } })
     this.em.persist(view)
   }
   ganttFieldEqual(s: WithGanttField): void {
