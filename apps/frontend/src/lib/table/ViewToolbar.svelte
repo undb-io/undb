@@ -8,6 +8,7 @@
 	import DashboardToolbar from './DashboardToolbar.svelte'
 	import TreeToolbar from './TreeToolbar.svelte'
 	import GanttToolbar from '$lib/gantt/GanttToolbar.svelte'
+	import GalleryToolbar from '$lib/gallery/GalleryToolbar.svelte'
 
 	const view = getView()
 	$: type = $view.displayType
@@ -15,6 +16,7 @@
 	const map: Partial<Record<IViewDisplayType, ComponentType>> = {
 		grid: GridToolbar,
 		kanban: KanbanToolbar,
+		gallery: GalleryToolbar,
 		gantt: GanttToolbar,
 		calendar: CalendarToolbar,
 		dashboard: DashboardToolbar,

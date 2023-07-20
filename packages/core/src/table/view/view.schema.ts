@@ -150,3 +150,9 @@ export const setPinnedFieldsSchema = z.object({
 })
 
 export type ISetPinnedFieldsSchema = z.infer<typeof setPinnedFieldsSchema>
+
+export const setGalleryFieldSchema = z.object({
+  viewId: viewIdSchema.optional(),
+  field: fieldIdSchema,
+})
+export type ISetGalleryFieldSchema = z.infer<typeof setGalleryFieldSchema>

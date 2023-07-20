@@ -48,6 +48,7 @@ import type {
   ISetCalendarFieldSchema,
   ISetFieldVisibilitySchema,
   ISetFieldWidthSchema,
+  ISetGalleryFieldSchema,
   ISetGanttFieldSchema,
   ISetKanbanFieldSchema,
   ISetPinnedFieldsSchema,
@@ -492,6 +493,14 @@ export class Table {
     const view = this.mustGetView(input.viewId)
     const field = this.schema.getFieldById(input.field).unwrap()
     const spec = view.setKanbanFieldSpec(field.id)
+    spec.mutate(this)
+    return spec
+  }
+
+  public setGalleryField(input: ISetGalleryFieldSchema): TableCompositeSpecification {
+    const view = this.mustGetView(input.viewId)
+    const field = this.schema.getFieldById(input.field).unwrap()
+    const spec = view.setGalleryFieldSpec(field.id)
     spec.mutate(this)
     return spec
   }

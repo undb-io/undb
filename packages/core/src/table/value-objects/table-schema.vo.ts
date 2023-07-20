@@ -17,6 +17,7 @@ import type {
   NoneSystemField,
 } from '../field/index.js'
 import {
+  AttachmentField,
   CreatedByField,
   DateField,
   DateRangeField,
@@ -33,7 +34,7 @@ import {
 import { fieldNameSchema } from '../field/value-objects/field-name.schema.js'
 import { WithNewField } from '../specifications/table-field.specification.js'
 import type { ICalendarField } from '../view/calendar/index.js'
-import type { IGanttField, IKanbanField, ITreeViewField } from '../view/index.js'
+import type { IGalleryField, IGanttField, IKanbanField, ITreeViewField } from '../view/index.js'
 import { ViewFieldsOrder } from '../view/view-fields-order.vo.js'
 
 function hasDuplicates(names: string[]): boolean {
@@ -112,6 +113,10 @@ export class TableSchema extends ValueObject<Field[]> {
 
   public get kanbanFields(): IKanbanField[] {
     return this.fields.filter((f) => f instanceof SelectField || f instanceof DateField) as IKanbanField[]
+  }
+
+  public get galleryFields(): IGalleryField[] {
+    return this.fields.filter((f) => f instanceof AttachmentField) as IGalleryField[]
   }
 
   public get ganttFields(): IGanttField[] {
