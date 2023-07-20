@@ -41,7 +41,7 @@ import type {
   WithWidgetsLayout,
   WithoutWidgetSpecification,
 } from '../view/dashboard/specifications/widget.specification.js'
-import type { WithGanttField, WithKanbanField, WithViewsOrder } from '../view/index.js'
+import type { WithGalleryField, WithGanttField, WithKanbanField, WithViewsOrder } from '../view/index.js'
 import type { WithCalendarField } from '../view/specifications/calendar.specification.js'
 import type { WithDisplayType } from '../view/specifications/display-type.specification.js'
 import type { WithFilter } from '../view/specifications/filters.specificaiton.js'
@@ -112,6 +112,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   rowHeightEqual(s: WithRowHeight): void
   displayTypeEqual(s: WithDisplayType): void
   kanbanFieldEqual(s: WithKanbanField): void
+  galleryFieldEqual(s: WithGalleryField): void
   ganttFieldEqual(s: WithGanttField): void
   calendarFieldEqual(s: WithCalendarField): void
   treeViewFieldEqual(s: WithTreeViewField): void

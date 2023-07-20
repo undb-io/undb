@@ -6,6 +6,7 @@ import type {
   WithForeignTableId,
   WithFormFieldsRequirements,
   WithFormName,
+  WithGalleryField,
   WithGanttField,
   WithNewFieldType,
   WithNewForm,
@@ -148,6 +149,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   fieldVisibility(): void {}
   displayTypeEqual(): void {}
   kanbanFieldEqual(): void {}
+  galleryFieldEqual(s: WithGalleryField): void {}
   ganttFieldEqual(s: WithGanttField): void {}
   treeViewFieldEqual(): void {}
   calendarFieldEqual(): void {}

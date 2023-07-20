@@ -18,6 +18,7 @@ import {
 } from './dashboard/specifications/widget.specification.js'
 import type { ICreateWidgetSchema, IRelayoutWidgetSchema } from './dashboard/widget.schema.js'
 import { Widget } from './dashboard/widget.vo.js'
+import { Gallery } from './gallery/gallery.js'
 import { Gantt } from './gantt/gantt.js'
 import { Kanban } from './kanban/index.js'
 import type { ISortDirection } from './sort/sort.schema.js'
@@ -25,6 +26,7 @@ import { Sorts } from './sort/sorts.js'
 import { WithDisplayType } from './specifications/display-type.specification.js'
 import {
   WithCalendarField,
+  WithGalleryField,
   WithGanttField,
   WithKanbanField,
   WithRowHeight,
@@ -182,6 +184,30 @@ export class ViewVO extends ValueObject<IView> {
     }
   }
 
+  public get gallery(): Option<Gallery> {
+    return Option(this.props.gallery)
+  }
+
+  public set gallery(gallery: Option<Gallery>) {
+    this.props.gallery = gallery.into()
+  }
+
+  public get galleryFieldId(): Option<FieldId> {
+    return this.gallery.mapOr(None, (gallery) => Option(gallery.fieldId))
+  }
+
+  public get galleryFieldIdString() {
+    return this.gallery.into()?.fieldId?.value
+  }
+
+  public set galleryFieldIdString(fieldId: string | undefined) {
+    const gallery = this.gallery.into()
+    if (gallery) {
+      gallery.fieldId = fieldId ? FieldId.fromString(fieldId) : undefined
+    } else if (fieldId) {
+      this.gallery = Some(new Gallery({ fieldId: FieldId.fromString(fieldId) }))
+    }
+  }
   public get treeView(): Option<TreeView> {
     return Option(this.props.tree)
   }
@@ -264,6 +290,14 @@ export class ViewVO extends ValueObject<IView> {
     return this.props.kanban
   }
 
+  public getOrCreateGallery(): Gallery {
+    const gallery = this.gallery
+    if (gallery.isSome()) return gallery.unwrap()
+
+    this.props.gallery = new Gallery({})
+    return this.props.gallery
+  }
+
   public getOrCreateCalendar(): Calendar {
     const calendar = this.calendar
     if (calendar.isSome()) return calendar.unwrap()
@@ -322,6 +356,10 @@ export class ViewVO extends ValueObject<IView> {
 
   public setKanbanFieldSpec(fieldId: FieldId): TableCompositeSpecification {
     return new WithKanbanField(this, fieldId)
+  }
+
+  public setGalleryFieldSpec(fieldId: FieldId): TableCompositeSpecification {
+    return new WithGalleryField(this, fieldId)
   }
 
   public setGanttFieldSpec(fieldId: FieldId): TableCompositeSpecification {
@@ -421,6 +459,11 @@ export class ViewVO extends ValueObject<IView> {
       this.kanban = kanban
       specs.push(new WithKanbanField(this, null))
     }
+    const gallery = this.gallery.map((gallery) => gallery.removeField(id)).flatten()
+    if (gallery.isSome()) {
+      this.gallery = gallery
+      specs.push(new WithGalleryField(this, null))
+    }
     const calendar = this.calendar.map((calendar) => calendar.removeField(id)).flatten()
     if (calendar.isSome()) {
       this.calendar = calendar
@@ -466,6 +509,7 @@ export class ViewVO extends ValueObject<IView> {
       sorts: this.sorts?.toArray(),
       showSystemFields: this.showSystemFields,
       kanban: this.kanban?.into()?.toJSON(),
+      gallery: this.gallery?.into()?.toJSON(),
       gantt: this.gantt?.into()?.toJSON(),
       calendar: this.calendar?.into()?.toJSON(),
       tree: this.treeView?.into()?.toJSON(),
@@ -491,6 +535,7 @@ export class ViewVO extends ValueObject<IView> {
       showSystemFields: input.showSystemFields,
       sorts: input.sorts ? new Sorts(input.sorts) : undefined,
       kanban: input.kanban ? Kanban.from(input.kanban) : undefined,
+      gallery: input.gallery ? Gallery.from(input.gallery) : undefined,
       gantt: input.gantt ? Gantt.from(input.gantt) : undefined,
       calendar: input.calendar ? Calendar.from(input.calendar) : undefined,
       tree: input.tree ? TreeView.from(input.tree) : undefined,

@@ -24,6 +24,7 @@ import type {
   WithFormFieldsVisibility,
   WithFormName,
   WithFormat,
+  WithGalleryField,
   WithGanttField,
   WithKanbanField,
   WithNewField,
@@ -165,6 +166,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   kanbanFieldEqual(s: WithKanbanField): void {
+    throw new Error('Method not implemented.')
+  }
+  galleryFieldEqual(s: WithGalleryField): void {
     throw new Error('Method not implemented.')
   }
   ganttFieldEqual(s: WithGanttField): void {

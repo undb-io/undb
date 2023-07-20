@@ -55,6 +55,7 @@
 		{ value: 'gantt', label: 'Gantt' },
 		{ value: 'calendar', label: 'Calendar' },
 		{ value: 'tree', label: 'Tree' },
+		{ value: 'gallery', label: 'Gallery' },
 		{ value: 'dashboard', label: 'Dashboard' },
 	] as const
 
