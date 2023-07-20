@@ -99,11 +99,14 @@ export class RecordSqliteRepository implements IRecordRepository {
     await Promise.all(jobs.map((job) => job()))
   }
 
-  async insert(table: CoreTable, record: CoreRecord, schema: TableSchemaIdMap): Promise<void> {
+  async insert(table: CoreTable, record: CoreRecord): Promise<void> {
     const userId = this.cls.get('user.userId')
 
     await this.uow.begin()
     const em = this.em
+
+    const schema = table.schema.toIdMap()
+
     try {
       await this._insert(em, record, schema)
       const spec = WithRecordTableId.fromString(table.id.value).unwrap().and(WithRecordId.fromString(record.id.value))
@@ -119,8 +122,10 @@ export class RecordSqliteRepository implements IRecordRepository {
     }
   }
 
-  async insertMany(table: CoreTable, records: CoreRecord[], schema: TableSchemaIdMap): Promise<void> {
+  async insertMany(table: CoreTable, records: CoreRecord[]): Promise<void> {
     const userId = this.cls.get('user.userId')
+
+    const schema = table.schema.toIdMap()
 
     // await this.uow.begin()
     const em = this.em
@@ -209,23 +214,30 @@ export class RecordSqliteRepository implements IRecordRepository {
     return data[0] ?? null
   }
 
-  async findOne(tableId: string, spec: IRecordSpec | null, schema: TableSchemaIdMap): Promise<Option<CoreRecord>> {
+  async findOne(table: CoreTable, spec: IRecordSpec | null): Promise<Option<CoreRecord>> {
+    const tableId = table.id.value
     const data = await this.findOneRecordEntity(tableId, spec)
     if (!data) {
       return None
     }
 
+    const schema = table.schema.toIdMap()
+
     const record = RecordSqliteMapper.toDomain(tableId, schema, data).unwrap()
     return Some(record)
   }
 
-  async findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<CoreRecord>> {
+  async findOneById(table: CoreTable, id: string): Promise<Option<CoreRecord>> {
+    const tableId = table.id.value
+
     const spec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
     const data = await this.findOneRecordEntity(tableId, spec)
 
     if (!data) {
       return None
     }
+
+    const schema = table.schema.toIdMap()
 
     const record = RecordSqliteMapper.toDomain(tableId, schema, data).unwrap()
     return Some(record)
@@ -270,8 +282,11 @@ export class RecordSqliteRepository implements IRecordRepository {
     return data
   }
 
-  async find(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap): Promise<CoreRecord[]> {
+  async find(table: CoreTable, spec: IRecordSpec): Promise<CoreRecord[]> {
+    const tableId = table.id.value
     const data = await this.findRecordsEntity(tableId, spec)
+
+    const schema = table.schema.toIdMap()
 
     const record = data.map((r) => RecordSqliteMapper.toDomain(tableId, schema, r).unwrap())
     return record
@@ -290,9 +305,11 @@ export class RecordSqliteRepository implements IRecordRepository {
     await mv.commit()
   }
 
-  async updateOneById(table: CoreTable, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void> {
+  async updateOneById(table: CoreTable, id: string, spec: IRecordSpec): Promise<void> {
     const tableId = table.id.value
     const userId = this.cls.get('user.userId')
+
+    const schema = table.schema.toIdMap()
 
     await this.uow.begin()
     const em = this.em
@@ -323,14 +340,12 @@ export class RecordSqliteRepository implements IRecordRepository {
     }
   }
 
-  async updateManyByIds(
-    table: CoreTable,
-    schema: TableSchemaIdMap,
-    updates: { id: string; spec: IRecordSpec }[],
-  ): Promise<void> {
+  async updateManyByIds(table: CoreTable, updates: { id: string; spec: IRecordSpec }[]): Promise<void> {
     if (!updates.length) return
     const tableId = table.id.value
     const userId = this.cls.get('user.userId')
+
+    const schema = table.schema.toIdMap()
 
     const idsSpec = WithRecordIds.fromIds(updates.map((u) => u.id))
     const previousRecords = await this.findRecordsEntity(tableId, idsSpec)
@@ -356,11 +371,14 @@ export class RecordSqliteRepository implements IRecordRepository {
     }
   }
 
-  async deleteOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<void> {
+  async deleteOneById(table: CoreTable, id: string): Promise<void> {
     const userId = this.cls.get('user.userId')
 
     await this.uow.begin()
     const em = this.em
+
+    const tableId = table.id.value
+    const schema = table.schema.toIdMap()
 
     try {
       const table = await em.findOneOrFail(Table, tableId, {
@@ -406,9 +424,11 @@ export class RecordSqliteRepository implements IRecordRepository {
     }
   }
 
-  async deleteManyByIds(coreTable: CoreTable, ids: string[], schema: TableSchemaIdMap): Promise<void> {
+  async deleteManyByIds(coreTable: CoreTable, ids: string[]): Promise<void> {
     if (!ids.length) return
     const tableId = coreTable.id.value
+
+    const schema = coreTable.schema.toIdMap()
 
     const userId = this.cls.get('user.userId')
 

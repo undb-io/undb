@@ -1,7 +1,7 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import type { ClsStore, IClsService } from '@undb/core'
-import { Record, Table, type IRecordSpec, type TableSchemaIdMap } from '@undb/core'
+import { Record, Table, type IRecordSpec } from '@undb/core'
 import { type IUnitOfWork } from '@undb/domain'
 import type { EntityManager } from '@undb/sqlite'
 import { RecordSqliteRepository } from '@undb/sqlite'
@@ -27,37 +27,37 @@ export class NestRecordSqliteRepository extends RecordSqliteRepository {
   }
 
   @UseRequestContext()
-  async insert(table: Table, record: Record, schema: TableSchemaIdMap): Promise<void> {
-    return super.insert(table, record, schema)
+  async insert(table: Table, record: Record): Promise<void> {
+    return super.insert(table, record)
   }
 
   @UseRequestContext()
-  async insertMany(table: Table, records: Record[], schema: TableSchemaIdMap): Promise<void> {
-    return super.insertMany(table, records, schema)
+  async insertMany(table: Table, records: Record[]): Promise<void> {
+    return super.insertMany(table, records)
   }
 
   @UseRequestContext()
-  async findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<Record>> {
-    return super.findOneById(tableId, id, schema)
+  async findOneById(table: Table, id: string): Promise<Option<Record>> {
+    return super.findOneById(table, id)
   }
 
   @UseRequestContext()
-  async find(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap): Promise<Record[]> {
-    return super.find(tableId, spec, schema)
+  async find(table: Table, spec: IRecordSpec): Promise<Record[]> {
+    return super.find(table, spec)
   }
 
   @UseRequestContext()
-  async updateOneById(table: Table, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void> {
-    return super.updateOneById(table, id, schema, spec)
+  async updateOneById(table: Table, id: string, spec: IRecordSpec): Promise<void> {
+    return super.updateOneById(table, id, spec)
   }
 
   @UseRequestContext()
-  async deleteOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<void> {
-    return super.deleteOneById(tableId, id, schema)
+  async deleteOneById(table: Table, id: string): Promise<void> {
+    return super.deleteOneById(table, id)
   }
 
   @UseRequestContext()
-  async deleteManyByIds(table: Table, ids: string[], schema: TableSchemaIdMap): Promise<void> {
-    return super.deleteManyByIds(table, ids, schema)
+  async deleteManyByIds(table: Table, ids: string[]): Promise<void> {
+    return super.deleteManyByIds(table, ids)
   }
 }

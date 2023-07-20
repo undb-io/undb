@@ -8,6 +8,6 @@ export class BulkDeleteRecordsCommandHandler implements ICommandHandler<BulkDele
   async execute(command: BulkDeleteRecordsCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
 
-    await this.recordRepo.deleteManyByIds(table, command.ids, table.schema.toIdMap())
+    await this.recordRepo.deleteManyByIds(table, command.ids)
   }
 }
