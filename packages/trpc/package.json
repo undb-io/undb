@@ -3,7 +3,7 @@
   "description": "",
   "version": "0.0.0",
   "dependencies": {
-    "@trpc/server": "^10.34.0",
+    "@trpc/server": "^10.35.0",
     "@undb/core": "^0.0.0",
     "@undb/cqrs": "^0.0.0",
     "@undb/domain": "^0.0.0",
