@@ -7,10 +7,10 @@ export class DuplicateRecordCommandHandler implements ICommandHandler<DuplicateR
 
   async execute(command: DuplicateRecordCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
-    const record = (await this.recordRepo.findOneById(table.id.value, command.id, table.schema.toIdMap())).unwrap()
+    const record = (await this.recordRepo.findOneById(table, command.id)).unwrap()
 
     const duplicated = record.duplicate(table.schema.toIdMap())
 
-    await this.recordRepo.insert(table, duplicated, table.schema.toIdMap())
+    await this.recordRepo.insert(table, duplicated)
   }
 }

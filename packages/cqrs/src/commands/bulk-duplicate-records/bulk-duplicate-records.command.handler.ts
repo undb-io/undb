@@ -10,10 +10,10 @@ export class BulkDuplicateRecordsCommandHandler implements ICommandHandler<BulkD
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
     const schema = table.schema.toIdMap()
 
-    const records = await this.recordRepo.find(table.id.value, WithRecordIds.fromIds(command.ids), schema)
+    const records = await this.recordRepo.find(table, WithRecordIds.fromIds(command.ids))
 
     const duplicated = records.map((record) => record.duplicate(schema))
 
-    await this.recordRepo.insertMany(table, duplicated, schema)
+    await this.recordRepo.insertMany(table, duplicated)
   }
 }

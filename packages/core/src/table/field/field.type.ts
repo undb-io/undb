@@ -182,6 +182,28 @@ import {
   lookupTypeSchema,
   updateLookupFieldSchema,
 } from './fields/lookup/lookup-field.type.js'
+import type { MaxFieldValue } from './fields/max/max-field-value.js'
+import type { MaxField } from './fields/max/max-field.js'
+import type { IMaxField, IMaxFieldValue } from './fields/max/max-field.type.js'
+import {
+  createMaxFieldSchema,
+  createMaxFieldValue_internal,
+  maxFieldQuerySchema,
+  maxFieldQueryValue,
+  maxTypeSchema,
+  updateMaxFieldSchema,
+} from './fields/max/max-field.type.js'
+import type { MinFieldValue } from './fields/min/min-field-value.js'
+import type { MinField } from './fields/min/min-field.js'
+import type { IMinField, IMinFieldValue } from './fields/min/min-field.type.js'
+import {
+  createMinFieldSchema,
+  createMinFieldValue_internal,
+  minFieldQuerySchema,
+  minFieldQueryValue,
+  minTypeSchema,
+  updateMinFieldSchema,
+} from './fields/min/min-field.type.js'
 import type { MultiSelectFieldValue } from './fields/multi-select/multi-select-field-value.js'
 import type { MultiSelectField } from './fields/multi-select/multi-select-field.js'
 import type { IMultiSelectField, IMultiSelectFieldValue } from './fields/multi-select/multi-select-field.type.js'
@@ -322,36 +344,16 @@ import type {
   WithoutOption,
 } from './specifications/select-field.specification.js'
 import type { FieldDescription } from './value-objects/field-description.js'
-import type {
-  DateFormat,
-  FieldId,
-  FieldIssue,
-  FieldName,
-  FieldValueConstraints,
-  TimeFormat,
+import { fieldNameSchema } from './value-objects/field-name.schema.js'
+import {
+  fieldIdSchema,
+  type DateFormat,
+  type FieldId,
+  type FieldIssue,
+  type FieldName,
+  type FieldValueConstraints,
+  type TimeFormat,
 } from './value-objects/index.js'
-import type { MinFieldValue } from './fields/min/min-field-value.js'
-import type { MinField } from './fields/min/min-field.js'
-import type { IMinField, IMinFieldValue } from './fields/min/min-field.type.js'
-import {
-  minFieldQuerySchema,
-  minFieldQueryValue,
-  minTypeSchema,
-  createMinFieldSchema,
-  createMinFieldValue_internal,
-  updateMinFieldSchema,
-} from './fields/min/min-field.type.js'
-import type { MaxFieldValue } from './fields/max/max-field-value.js'
-import type { MaxField } from './fields/max/max-field.js'
-import type { IMaxField, IMaxFieldValue } from './fields/max/max-field.type.js'
-import {
-  maxFieldQuerySchema,
-  maxFieldQueryValue,
-  maxTypeSchema,
-  createMaxFieldSchema,
-  createMaxFieldValue_internal,
-  updateMaxFieldSchema,
-} from './fields/max/max-field.type.js'
 
 export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createIdFieldSchema,
@@ -536,6 +538,17 @@ export interface IBaseFieldQuerySchema {
   type: IFieldType
   required: boolean
 }
+
+export const baseFieldEventSchema = z.object({
+  id: fieldIdSchema,
+  name: fieldNameSchema,
+  type: fieldTypes,
+})
+
+export type IBaseFieldEventSchema = z.infer<typeof baseFieldEventSchema>
+
+export const baseSchemaEventSchema = baseFieldEventSchema.array()
+export type IBaseSchemaEventSchema = z.infer<typeof baseSchemaEventSchema>
 
 export interface IBaseField {
   id: FieldId

@@ -1,5 +1,6 @@
 import { BaseEvent } from '@undb/domain'
 import { z } from 'zod'
+import { baseSchemaEventSchema } from '../../field/field.type.js'
 import type { Table } from '../../table.js'
 import { recordReadableMapper, recordReadableSchema } from '../record.readable.js'
 import type { IQueryRecordSchema } from '../record.type.js'
@@ -10,6 +11,7 @@ export const EVT_RECORD_CREATED = 'record.created' as const
 export const recordCreatedEventPayload = z
   .object({
     record: recordReadableSchema,
+    schema: baseSchemaEventSchema,
   })
   .merge(baseRecordEventSchema)
 
@@ -24,6 +26,14 @@ export class RecordCreatedEvent extends BaseEvent<IRecordCreatedEventPayload, Ba
 
   static from(table: Table, operatorId: string, record: IQueryRecordSchema): RecordCreatedEvent {
     const recordValues = recordReadableMapper(table.schema.fields, record)
-    return new this({ tableId: table.id.value, tableName: table.name.value, record: recordValues }, operatorId)
+    return new this(
+      {
+        tableId: table.id.value,
+        tableName: table.name.value,
+        record: recordValues,
+        schema: table.schema.toEvent([record]),
+      },
+      operatorId,
+    )
   }
 }
