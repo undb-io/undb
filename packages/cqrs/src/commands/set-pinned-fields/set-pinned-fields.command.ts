@@ -1,4 +1,4 @@
-import { IViewPinnedFields } from '@undb/core'
+import type { IViewPinnedFields } from '@undb/core'
 import type { CommandProps } from '@undb/domain'
 import { Command } from '@undb/domain'
 import type { ISetPinnedFieldsCommandInput } from './set-pinned-fields.command.interface.js'

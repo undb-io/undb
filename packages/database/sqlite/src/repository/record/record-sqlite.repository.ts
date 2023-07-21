@@ -326,6 +326,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       if (record) {
         const event = RecordUpdatedEvent.from(
           table,
+          None,
           userId,
           RecordSqliteMapper.toQuery(tableId, schema, previousRecord),
           RecordSqliteMapper.toQuery(tableId, schema, record),
@@ -359,6 +360,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       const records = await this.findRecordsEntity(tableId, idsSpec)
       const event = RecordBulkUpdatedEvent.from(
         table,
+        None,
         userId,
         RecordSqliteMapper.toQueries(tableId, schema, previousRecords),
         RecordSqliteMapper.toQueries(tableId, schema, records),
@@ -385,6 +387,11 @@ export class RecordSqliteRepository implements IRecordRepository {
         populate: ['referencedBy'],
         lockMode: LockMode.PESSIMISTIC_WRITE,
       })
+
+      const idSpec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
+      const record = await this.findOneRecordEntity(tableId, idSpec, em)
+      if (!record) throw new Error('not found record')
+
       const knex = em.getKnex()
       const qb = knex.queryBuilder()
 
@@ -415,7 +422,11 @@ export class RecordSqliteRepository implements IRecordRepository {
       const tm = new UnderlyingTableSqliteManager(em)
       await tm.deleteRecord(table, id)
 
-      const event = RecordDeletedEvent.from(coreTable, userId, id)
+      const event = RecordDeletedEvent.from(
+        coreTable,
+        userId,
+        RecordSqliteMapper.toQuery(table.id, coreTable.schema.toIdMap(), record),
+      )
       this.outboxService.persist(event)
       await this.uow.commit()
     } catch (error) {
@@ -467,8 +478,14 @@ export class RecordSqliteRepository implements IRecordRepository {
         await tm.deleteRecord(table, id)
       }
 
+      const idsSpec = WithRecordIds.fromIds(ids)
+      const records = await this.findRecordsEntity(tableId, idsSpec)
       await em.execute(qb)
-      const event = RecordBulkDeletedEvent.from(coreTable, userId, ids)
+      const event = RecordBulkDeletedEvent.from(
+        coreTable,
+        userId,
+        RecordSqliteMapper.toQueries(coreTable.id.value, coreTable.schema.toIdMap(), records),
+      )
       this.outboxService.persist(event)
       await this.uow.commit()
     } catch (error) {
