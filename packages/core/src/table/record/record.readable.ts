@@ -28,6 +28,8 @@ import {
   idReadableValueSchema,
   jsonReadableValueSchema,
   lookupReadableValueSchema,
+  maxReadableValueSchema,
+  minReadableValueSchema,
   numberReadableValueSchema,
   parentReadableValueSchema,
   ratingReadableValueSchema,
@@ -38,8 +40,6 @@ import {
   treeReadableValueSchema,
   updatedAtReadableValueSchema,
   updatedByReadableValueSchema,
-  minReadableValueSchema,
-  maxReadableValueSchema,
   type ReferenceField,
 } from '../field/index.js'
 import type { Table } from '../table.js'

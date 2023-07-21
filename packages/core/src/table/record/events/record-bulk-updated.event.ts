@@ -37,21 +37,30 @@ export class RecordBulkUpdatedEvent extends BaseEvent<IRecordsBulkUpdatedEventPa
     operatorId: string,
     previousRecords: IQueryRecordSchema[],
     records: IQueryRecordSchema[],
+    updatedFieldIds: Map<string, Set<string>>,
   ): RecordBulkUpdatedEvent {
-    const schema = table.schema.toEvent(records)
-    const previousSchema = previousTable.isSome() ? previousTable.unwrap().schema.toEvent(records) : null
-    const fields = table.schema.fields
     const recordsMap = new Map(records.map((r) => [r.id, r]))
+    const fieldIds = new Set([...updatedFieldIds.values()].flatMap((f) => [...f.values()]))
+    const schema = table.schema.fields.filter((f) => fieldIds.has(f.id.value)).map((f) => f.toEvent(records))
+    const previousSchema = previousTable.isSome()
+      ? previousTable
+          .unwrap()
+          .schema.fields.filter((f) => fieldIds.has(f.id.value))
+          .map((f) => f.toEvent(previousRecords))
+      : null
     return new this(
       {
         schema,
         previousSchema,
         tableId: table.id.value,
         tableName: table.name.value,
-        updates: previousRecords.map((r) => ({
-          previousRecord: recordReadableMapper(fields, r),
-          record: recordReadableMapper(fields, recordsMap.get(r.id)!),
-        })),
+        updates: previousRecords.map((r) => {
+          const fields = table.schema.fields.filter((f) => !!updatedFieldIds.get(r.id)?.has(f.id.value))
+          return {
+            previousRecord: recordReadableMapper(fields, r),
+            record: recordReadableMapper(fields, recordsMap.get(r.id)!),
+          }
+        }),
       },
       operatorId,
     )

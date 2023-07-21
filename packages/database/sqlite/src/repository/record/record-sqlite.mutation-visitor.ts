@@ -71,6 +71,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
   ) {
     super(em)
   }
+
+  public readonly updatedFieldIds = new Set<string>()
+
   dateRangeDateEqual(s: DateRangeDateEqual): void {
     throw new Error('Method not implemented.')
   }
@@ -143,6 +146,13 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
   }
   values(s: WithRecordValues): void {
     for (const [fieldId, value] of s.values) {
+      const field = this.schema.get(fieldId)
+      if (!field) continue
+
+      if (!field.controlled && !field.system) {
+        this.updatedFieldIds.add(fieldId)
+      }
+
       const valueVisitor = this.createRecordValueVisitor(fieldId)
 
       value.accept(valueVisitor)
