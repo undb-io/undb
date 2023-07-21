@@ -303,6 +303,8 @@ export class RecordSqliteRepository implements IRecordRepository {
     spec.accept(mv)
 
     await mv.commit()
+
+    return mv
   }
 
   async updateOneById(table: CoreTable, id: string, spec: IRecordSpec): Promise<void> {
@@ -319,7 +321,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       const previousRecord = await this.findOneRecordEntity(tableId, idSpec, em)
       if (!previousRecord) throw new Error('record not found')
 
-      await this._update(this.em, tableId, schema, id, spec)
+      const visitor = await this._update(this.em, tableId, schema, id, spec)
 
       const record = await this.findOneRecordEntity(tableId, idSpec, em)
 
@@ -330,6 +332,7 @@ export class RecordSqliteRepository implements IRecordRepository {
           userId,
           RecordSqliteMapper.toQuery(tableId, schema, previousRecord),
           RecordSqliteMapper.toQuery(tableId, schema, record),
+          visitor.updatedFieldIds,
         )
 
         this.outboxService.persist(event)
@@ -355,7 +358,17 @@ export class RecordSqliteRepository implements IRecordRepository {
     const em = this.em
 
     try {
-      await Promise.all(updates.map((update) => this._update(em, tableId, schema, update.id, update.spec)))
+      const updated = await Promise.all(
+        updates.map(async (update) => {
+          const visitor = await this._update(em, tableId, schema, update.id, update.spec)
+          return { id: update.id, visitor }
+        }),
+      )
+
+      const updatedFields = new Map()
+      for (const update of updated) {
+        updatedFields.set(update.id, update.visitor.updatedFieldIds)
+      }
 
       const records = await this.findRecordsEntity(tableId, idsSpec)
       const event = RecordBulkUpdatedEvent.from(
@@ -364,6 +377,7 @@ export class RecordSqliteRepository implements IRecordRepository {
         userId,
         RecordSqliteMapper.toQueries(tableId, schema, previousRecords),
         RecordSqliteMapper.toQueries(tableId, schema, records),
+        updatedFields,
       )
       this.outboxService.persist(event)
       await this.uow.commit()

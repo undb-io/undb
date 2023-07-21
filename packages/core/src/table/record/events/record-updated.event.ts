@@ -33,15 +33,23 @@ export class RecordUpdatedEvent extends BaseEvent<IRecordUpdatedEventPayload, Ba
     operatorId: string,
     previousRecord: IQueryRecordSchema,
     record: IQueryRecordSchema,
+    updatedFieldIds: Set<string>,
   ): RecordUpdatedEvent {
+    const fields = table.schema.fields.filter((f) => updatedFieldIds.has(f.id.value))
+    const fieldIds = new Set(fields.map((f) => f.id.value))
     return new this(
       {
         tableId: table.id.value,
         tableName: table.name.value,
-        previousSchema: previousTable.isSome() ? previousTable.unwrap().schema.toEvent([previousRecord]) : null,
-        previousRecord: recordReadableMapper(table.schema.fields, previousRecord),
-        schema: table.schema.toEvent([record]),
-        record: recordReadableMapper(table.schema.fields, record),
+        previousSchema: previousTable.isSome()
+          ? previousTable
+              .unwrap()
+              .schema.fields.filter((f) => fieldIds.has(f.id.value))
+              .map((f) => f.toEvent([previousRecord]))
+          : null,
+        previousRecord: recordReadableMapper(fields, previousRecord),
+        schema: table.schema.fields.filter((f) => fieldIds.has(f.id.value)).map((f) => f.toEvent([previousRecord])),
+        record: recordReadableMapper(fields, record),
       },
       operatorId,
     )
