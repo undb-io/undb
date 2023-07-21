@@ -22,7 +22,7 @@ export class StorageHealthIndicator extends HealthIndicator {
     if (this.config.provider === 's3') {
       try {
         const bucket = this.config.s3.bucket
-        await this.s3.send(new HeadBucketCommand({ Bucket: bucket }))
+        await this.s3.send(new HeadBucketCommand({ Bucket: bucket }) as any)
         return this.getStatus(this.config.provider, true)
       } catch (error) {
         throw new HealthCheckError('storgae health failed', (error as Error).message)

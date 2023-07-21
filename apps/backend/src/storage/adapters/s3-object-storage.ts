@@ -31,11 +31,11 @@ export class S3ObjectStorage implements IObjectStorage, OnModuleInit {
 
     if (this.config.provider === 's3') {
       try {
-        await this.s3.send(new HeadBucketCommand({ Bucket: bucket }))
+        await this.s3.send(new HeadBucketCommand({ Bucket: bucket }) as any)
         this.logger.log('bucket %s exists, skipping creation...', bucket)
       } catch (error) {
         this.logger.log('bucket %s not exists, creating...', bucket)
-        await this.s3.send(new CreateBucketCommand({ Bucket: bucket }))
+        await this.s3.send(new CreateBucketCommand({ Bucket: bucket }) as any)
         this.logger.log('bucket %s created', bucket)
       }
     }
@@ -54,11 +54,12 @@ export class S3ObjectStorage implements IObjectStorage, OnModuleInit {
     }
 
     const reply = await this.s3.send(
-      new PutObjectCommand({ Bucket: bucket, Body: buffer, Key: name, Metadata: metadata }),
+      new PutObjectCommand({ Bucket: bucket, Body: buffer, Key: name, Metadata: metadata }) as any,
     )
 
     return {
       url: `/api/attachment/${name}`,
+      // @ts-ignore
       token: reply.ETag ?? '',
       id,
     }
@@ -66,7 +67,7 @@ export class S3ObjectStorage implements IObjectStorage, OnModuleInit {
 
   async get(name: string): Promise<{ data: Readable; metaData: any }> {
     const bucket = this.config.s3.bucket
-    const output = (await this.s3.send(new GetObjectCommand({ Bucket: bucket, Key: name }))) as any
+    const output = (await this.s3.send(new GetObjectCommand({ Bucket: bucket, Key: name }) as any)) as any
     const data = output.Body as Readable
     return { data, metaData: output.Metadata }
   }

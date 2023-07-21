@@ -4,7 +4,7 @@
   "dependencies": {
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.8.0",
-    "eslint-config-turbo": "^1.10.8"
+    "eslint-config-turbo": "^1.10.9"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.1.0",
