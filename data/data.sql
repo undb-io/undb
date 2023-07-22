@@ -1550,6 +1550,7 @@ CREATE TABLE `undb_webhook` (
 	primary key (`id`)
 );
 CREATE TABLE `undb_share` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `target_id` text null, `target_type` text null, `enabled` integer not null default false, primary key (`id`));
+CREATE TABLE `undb_audit` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `timestamp` datetime not null, `op` text not null, `target_id` text null, `target_type` text null, `detail` json null, `operator_id` text not null, primary key (`id`));
 DELETE FROM sqlite_sequence;
 INSERT INTO sqlite_sequence VALUES('mikro_orm_migrations',5);
 INSERT INTO sqlite_sequence VALUES('tbl4undb0lh',24);
@@ -1697,4 +1698,7 @@ CREATE INDEX `undb_webhook_event_index` on `undb_webhook` (`event`);
 CREATE INDEX `undb_share_deleted_at_index` on `undb_share` (`deleted_at`);
 CREATE INDEX `undb_share_target_id_index` on `undb_share` (`target_id`);
 CREATE UNIQUE INDEX `undb_share_target_id_unique` on `undb_share` (`target_id`);
+CREATE INDEX `undb_audit_deleted_at_index` on `undb_audit` (`deleted_at`);
+CREATE INDEX `undb_audit_timestamp_index` on `undb_audit` (`timestamp`);
+CREATE INDEX `undb_audit_target_id_index` on `undb_audit` (`target_id`);
 COMMIT;
