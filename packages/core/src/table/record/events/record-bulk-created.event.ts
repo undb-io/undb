@@ -4,13 +4,14 @@ import { baseSchemaEventSchema } from '../../field/field.type.js'
 import type { Table } from '../../table.js'
 import { recordReadableMapper, recordReadableSchema } from '../record.readable.js'
 import type { IQueryRecordSchema } from '../record.type.js'
+import { recordIdSchema } from '../value-objects/record-id.schema.js'
 import { baseEventSchema, baseRecordEventSchema, type BaseRecordEventName } from './base-record.event.js'
 
 export const EVT_RECORD_BULK_CREATED = 'record.bulk_created' as const
 
 export const recordsBulkCreatedEventPayload = z
   .object({
-    records: recordReadableSchema.array(),
+    records: z.object({ id: recordIdSchema, record: recordReadableSchema }).array(),
     schema: baseSchemaEventSchema,
   })
   .merge(baseRecordEventSchema)
@@ -30,7 +31,10 @@ export class RecordBulkCreatedEvent extends BaseEvent<IRecordsBulkCreatedEventPa
       {
         tableId: table.id.value,
         tableName: table.name.value,
-        records: records.map((r) => recordReadableMapper(fields, r)),
+        records: records.map((r) => ({
+          id: r.id,
+          record: recordReadableMapper(fields, r),
+        })),
         schema: table.schema.toEvent(records),
       },
       operatorId,

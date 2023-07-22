@@ -4,12 +4,14 @@ import { baseSchemaEventSchema } from '../../field/field.type.js'
 import type { Table } from '../../table.js'
 import { recordReadableMapper, recordReadableSchema } from '../record.readable.js'
 import type { IQueryRecordSchema } from '../record.type.js'
+import { recordIdSchema } from '../value-objects/record-id.schema.js'
 import { baseEventSchema, baseRecordEventSchema, type BaseRecordEventName } from './base-record.event.js'
 
 export const EVT_RECORD_CREATED = 'record.created' as const
 
 export const recordCreatedEventPayload = z
   .object({
+    id: recordIdSchema,
     record: recordReadableSchema,
     schema: baseSchemaEventSchema,
   })
@@ -30,6 +32,7 @@ export class RecordCreatedEvent extends BaseEvent<IRecordCreatedEventPayload, Ba
       {
         tableId: table.id.value,
         tableName: table.name.value,
+        id: record.id,
         record: recordValues,
         schema: table.schema.toEvent([record]),
       },

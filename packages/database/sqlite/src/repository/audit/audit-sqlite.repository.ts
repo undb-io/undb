@@ -9,4 +9,9 @@ export class AuditSqliteRepository implements IAuditRepository {
     const entity = new Audit(audit)
     await this.em.persistAndFlush(entity)
   }
+
+  async insertMany(audits: CoreAudit[]): Promise<void> {
+    const entities = audits.map((audit) => new Audit(audit))
+    await this.em.insertMany(entities)
+  }
 }

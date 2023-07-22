@@ -1,8 +1,8 @@
 import type { RecordEvents } from '@undb/core'
 import { and } from '@undb/domain'
 import { Audit } from './audit.js'
-import { WithAuditOp } from './specifications/audit-op.specification.js'
-import { WithAuditId, WithAuditTimestamp, type AuditSpecification } from './specifications/index.js'
+import { getAuditSpecsFromEvent } from './specifications/audit-from-event.specification.js'
+import { type AuditSpecification } from './specifications/index.js'
 
 export class AuditFactory {
   static create(...specs: AuditSpecification[]): Audit {
@@ -12,15 +12,12 @@ export class AuditFactory {
       .unwrap()
   }
 
-  static fromEvent(event: RecordEvents): Audit {
-    const spec = and(
-      WithAuditId.create(),
-      WithAuditTimestamp.fromDate(event.timestamp),
-      new WithAuditOp(event.name),
-    ).unwrap()
-
-    const audit = this.create(spec)
-    spec.mutate(audit)
-    return audit
+  static fromRecordEvent(event: RecordEvents): Audit[] {
+    const specs = getAuditSpecsFromEvent(event)
+    return specs.map((spec) => {
+      const audit = this.create(spec)
+      spec.mutate(audit)
+      return audit
+    })
   }
 }

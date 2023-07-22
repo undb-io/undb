@@ -5,6 +5,7 @@ import { baseSchemaEventSchema } from '../../field/field.type.js'
 import type { Table } from '../../table.js'
 import { recordReadableMapper, recordReadableSchema } from '../record.readable.js'
 import type { IQueryRecordSchema } from '../record.type.js'
+import { recordIdSchema } from '../value-objects/record-id.schema.js'
 import { baseEventSchema, baseRecordEventSchema, type BaseRecordEventName } from './base-record.event.js'
 
 export const EVT_RECORD_BULK_UPDATED = 'record.bulk_updated' as const
@@ -15,6 +16,7 @@ export const recordsBulkUpdatedEventPayload = z
     schema: baseSchemaEventSchema,
     updates: z
       .object({
+        id: recordIdSchema,
         previousRecord: recordReadableSchema,
         record: recordReadableSchema,
       })
@@ -57,6 +59,7 @@ export class RecordBulkUpdatedEvent extends BaseEvent<IRecordsBulkUpdatedEventPa
         updates: previousRecords.map((r) => {
           const fields = table.schema.fields.filter((f) => !!updatedFieldIds.get(r.id)?.has(f.id.value))
           return {
+            id: r.id,
             previousRecord: recordReadableMapper(fields, r),
             record: recordReadableMapper(fields, recordsMap.get(r.id)!),
           }

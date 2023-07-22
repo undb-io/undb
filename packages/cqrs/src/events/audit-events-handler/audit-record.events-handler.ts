@@ -6,7 +6,7 @@ export class AuditRecordEventsHandler implements IEventHandler<RecordEvents> {
   constructor(protected readonly repo: IAuditRepository) {}
 
   async handle(event: RecordEvents): Promise<void> {
-    const audit = AuditFactory.fromEvent(event)
-    await this.repo.insert(audit)
+    const audits = AuditFactory.fromRecordEvent(event)
+    await this.repo.insertMany(audits)
   }
 }

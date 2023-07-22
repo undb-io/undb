@@ -5,12 +5,14 @@ import { baseSchemaEventSchema } from '../../field/field.type.js'
 import type { Table } from '../../table.js'
 import { recordReadableMapper, recordReadableSchema } from '../record.readable.js'
 import type { IQueryRecordSchema } from '../record.type.js'
+import { recordIdSchema } from '../value-objects/record-id.schema.js'
 import { baseEventSchema, baseRecordEventSchema, type BaseRecordEventName } from './base-record.event.js'
 
 export const EVT_RECORD_UPDATED = 'record.updated' as const
 
 export const recordUpdatedEventPayload = z
   .object({
+    id: recordIdSchema,
     previousSchema: baseSchemaEventSchema.nullable(),
     previousRecord: recordReadableSchema,
     schema: baseSchemaEventSchema,
@@ -39,6 +41,7 @@ export class RecordUpdatedEvent extends BaseEvent<IRecordUpdatedEventPayload, Ba
     const fieldIds = new Set(fields.map((f) => f.id.value))
     return new this(
       {
+        id: record.id,
         tableId: table.id.value,
         tableName: table.name.value,
         previousSchema: previousTable.isSome()

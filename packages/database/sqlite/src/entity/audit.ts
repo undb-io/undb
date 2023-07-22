@@ -8,6 +8,8 @@ export class Audit extends BaseEntity {
     this.id = audit.id.value
     this.timestamp = audit.timestamp.value
     this.op = audit.op
+    this.targetId = audit.target.id
+    this.targetType = audit.target.type
   }
 
   @PrimaryKey()
@@ -18,4 +20,10 @@ export class Audit extends BaseEntity {
 
   @Property()
   op: string
+
+  @Property({ nullable: true })
+  targetId?: string
+
+  @Property({ nullable: true })
+  targetType?: string
 }

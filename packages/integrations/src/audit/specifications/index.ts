@@ -1,3 +1,5 @@
 export * from './audit-id.specification.js'
+export * from './audit-op.specification.js'
+export * from './audit-target.specification.js'
 export * from './audit-timestamp.specification.js'
 export * from './interface.js'
