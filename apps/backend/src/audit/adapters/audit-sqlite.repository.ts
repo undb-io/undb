@@ -21,4 +21,9 @@ export class NestAuditSqliteRepository extends AuditSqliteRepository {
   insert(audit: Audit): Promise<void> {
     return super.insert(audit)
   }
+
+  @UseRequestContext()
+  insertMany(audits: Audit[]): Promise<void> {
+    return super.insertMany(audits)
+  }
 }
