@@ -1,15 +1,7 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230722061722 extends Migration {
+export class Migration20230722113616 extends Migration {
   async up(): Promise<void> {
-    this.addSql(
-      'create table `undb_audit` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `timestamp` datetime not null, `op` text not null, `target_id` text null, `target_type` text null, `detail` json null, `operator_id` text not null, primary key (`id`));',
-    )
-    this.addSql('create index `undb_audit_deleted_at_index` on `undb_audit` (`deleted_at`);')
-    this.addSql('create index `undb_audit_timestamp_index` on `undb_audit` (`timestamp`);')
-    this.addSql('create index `undb_audit_target_id_index` on `undb_audit` (`target_id`);')
-    this.addSql('create index `undb_audit_op_index` on `undb_audit` (`op`);')
-
     this.addSql(
       'create table `undb_outbox` (`uuid` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text null, `operator_id` text null, `payload` json not null, primary key (`uuid`));',
     )
@@ -96,6 +88,15 @@ export class Migration20230722061722 extends Migration {
     this.addSql('create index `undb_user_username_index` on `undb_user` (`username`);')
     this.addSql('create index `undb_user_email_index` on `undb_user` (`email`);')
     this.addSql('create unique index `undb_user_email_unique` on `undb_user` (`email`);')
+
+    this.addSql(
+      'create table `undb_audit` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `timestamp` datetime not null, `op` text not null, `target_id` text null, `target_type` text null, `detail` json null, `operator_id` text not null, constraint `undb_audit_operator_id_foreign` foreign key(`operator_id`) references `undb_user`(`id`) on update cascade, primary key (`id`));',
+    )
+    this.addSql('create index `undb_audit_deleted_at_index` on `undb_audit` (`deleted_at`);')
+    this.addSql('create index `undb_audit_timestamp_index` on `undb_audit` (`timestamp`);')
+    this.addSql('create index `undb_audit_op_index` on `undb_audit` (`op`);')
+    this.addSql('create index `undb_audit_target_id_index` on `undb_audit` (`target_id`);')
+    this.addSql('create index `undb_audit_operator_id_index` on `undb_audit` (`operator_id`);')
 
     this.addSql(
       "create table `undb_view` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `name` text not null, `show_system_fields` integer not null default false, `display_type` text not null, `sorts` json null, `kanban_field_id` text null, `gallery_field_id` text null, `gantt_field_id` text null, `calendar_field_id` text null, `tree_field_id` text null, `filter` json null, `field_options` json null, `fields_order` text null, `pinned_fields` json null, `row_height` text check (`row_height` in ('short', 'medium', 'tall')) null, constraint `undb_view_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));",

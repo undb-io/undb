@@ -8,11 +8,12 @@ export class AuditSqliteQueryModel implements IAuditQueryModel {
   constructor(private readonly em: EntityManager) {}
 
   async find(spec: AuditSpecification): Promise<IQueryAudit[]> {
-    const qb = this.em.qb(Audit)
+    const qb = this.em.qb(Audit).orderBy({ timestamp: 'desc' })
     const visitor = new AuditSqliteQueryVisitor(this.em, qb)
     spec.accept(visitor)
 
     const audits = await qb.getResultList()
+    await this.em.populate(audits, ['operator.avatar', 'operator.username', 'operator.color'])
     return audits.map((audit) => AuditSqliteMapper.toQuery(audit))
   }
 }

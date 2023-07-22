@@ -6,7 +6,12 @@ export class AuditSqliteMapper {
     return {
       id: audit.id,
       op: audit.op,
-      operator: {} as any,
+      operator: {
+        userId: audit.operator.id,
+        username: audit.operator.username,
+        avatar: audit.operator.avatar ?? null,
+        color: audit.operator.color,
+      },
       target: {
         id: audit.targetId ?? '',
         type: audit.targetType ?? ('' as any),

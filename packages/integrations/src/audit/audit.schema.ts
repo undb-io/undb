@@ -1,4 +1,4 @@
-import { collaboratorProfile } from '@undb/core'
+import { collaboratorProfile, userIdSchema } from '@undb/core'
 import { z } from 'zod'
 import { auditIdSchema } from './audit-id.vo.js'
 import { auditTarget } from './audit-target.vo.js'
@@ -6,7 +6,7 @@ import { auditTarget } from './audit-target.vo.js'
 export const queryAudit = z.object({
   id: auditIdSchema,
   op: z.string(),
-  operator: collaboratorProfile,
+  operator: collaboratorProfile.merge(z.object({ userId: userIdSchema })),
   target: auditTarget,
   timestamp: z.date(),
 })

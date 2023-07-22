@@ -1,10 +1,11 @@
-import { Entity, Index, JsonType, PrimaryKey, Property } from '@mikro-orm/core'
+import { Entity, Index, JsonType, ManyToOne, PrimaryKey, Property, type Rel } from '@mikro-orm/core'
 import { Audit as CoreAudit } from '@undb/integrations'
 import { BaseEntity } from './base.js'
+import { User } from './user.js'
 
 @Entity({ tableName: 'undb_audit' })
 export class Audit extends BaseEntity {
-  constructor(audit: CoreAudit) {
+  constructor(audit: CoreAudit, user: Rel<User>) {
     super()
     this.id = audit.id.value
     this.timestamp = audit.timestamp.value
@@ -12,7 +13,7 @@ export class Audit extends BaseEntity {
     this.targetId = audit.target.id
     this.targetType = audit.target.type
     this.detail = audit.detail.into()?.unpack() ?? undefined
-    this.operatorId = audit.operatorId
+    this.operator = user
   }
 
   @PrimaryKey()
@@ -36,6 +37,6 @@ export class Audit extends BaseEntity {
   @Property({ type: JsonType, nullable: true })
   detail?: object
 
-  @Property()
-  operatorId: string
+  @ManyToOne(() => User)
+  operator: Rel<User>
 }

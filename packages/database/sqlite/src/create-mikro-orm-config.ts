@@ -4,7 +4,6 @@ import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import path from 'path'
 import { entities } from './entity/index.js'
 import { SqliteLogger } from './logger.js'
-import { Migration20230722061722 } from './migrations/Migration20230722061722.js'
 
 export const createConfig = (data: string, env = 'development') =>
   defineConfig({
@@ -21,12 +20,6 @@ export const createConfig = (data: string, env = 'development') =>
     migrations: {
       disableForeignKeys: true,
       snapshot: true,
-      migrationsList: [
-        {
-          name: 'initial',
-          class: Migration20230722061722,
-        },
-      ],
     },
     schemaGenerator: {
       disableForeignKeys: true,
