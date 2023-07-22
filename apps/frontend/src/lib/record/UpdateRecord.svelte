@@ -22,6 +22,7 @@
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import UpdateRecordMenu from './UpdateRecordMenu.svelte'
+	import RecordAudits from './RecordAudits.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -79,12 +80,7 @@
 </script>
 
 {#key $record}
-	<Modal class="w-full " size="lg" bind:open={$open}>
-		{#if !$record}
-			<div class="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
-				<Spinner />
-			</div>
-		{/if}
+	<Modal class="w-full " size="xl" bind:open={$open}>
 		<svelte:fragment slot="header">
 			<div class="flex items-center w-full justify-between mr-6">
 				<div class="flex items-center space-x-4">
@@ -106,33 +102,47 @@
 				<UpdateRecordMenu record={$record} />
 			</div>
 		</svelte:fragment>
-		<form id="updateRecord" class="space-y-5" method="POST" use:enhance>
-			<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
-				{#each fields as field}
-					<div class="h-full items-start gap-1 pt-2">
-						<Label class="leading-5" for={field.id.value}>
-							<div class="inline-flex items-center gap-2">
-								<FieldIcon type={field.type} size={16} />
-								<span>
-									{field.name.value}
-								</span>
-							</div>
-							{#if field.required}
-								<span class="text-red-500">*</span>
-							{/if}
-						</Label>
-					</div>
-					<div class="col-span-4">
-						<CellInput
-							record={$record}
-							{field}
-							bind:value={$form[field.id.value]}
-							readonly={$readonly ? true : undefined}
-						/>
-					</div>
-				{/each}
+
+		{#if !$record}
+			<div class="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
+				<Spinner />
 			</div>
-		</form>
+		{/if}
+
+		<div class="grid grid-cols-6 gap-4">
+			<div class="col-span-4">
+				<form id="updateRecord" class="space-y-5" method="POST" use:enhance>
+					<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
+						{#each fields as field}
+							<div class="h-full items-start gap-1 pt-2">
+								<Label class="leading-5" for={field.id.value}>
+									<div class="inline-flex items-center gap-2">
+										<FieldIcon type={field.type} size={16} />
+										<span>
+											{field.name.value}
+										</span>
+									</div>
+									{#if field.required}
+										<span class="text-red-500">*</span>
+									{/if}
+								</Label>
+							</div>
+							<div class="col-span-4">
+								<CellInput
+									record={$record}
+									{field}
+									bind:value={$form[field.id.value]}
+									readonly={$readonly ? true : undefined}
+								/>
+							</div>
+						{/each}
+					</div>
+				</form>
+			</div>
+			<div>
+				<RecordAudits />
+			</div>
+		</div>
 
 		<svelte:fragment slot="footer">
 			<div class="w-full flex justify-end gap-2">
