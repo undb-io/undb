@@ -22,7 +22,7 @@ import {
 	type Table,
 	type ViewVO,
 } from '@undb/core'
-import type { IShareTarget } from '@undb/integrations/dist'
+import type { IShareTarget } from '@undb/integrations'
 import { uniqBy } from 'lodash-es'
 import { derived, writable, type Readable } from 'svelte/store'
 import { match } from 'ts-pattern'
@@ -104,8 +104,10 @@ export const currentOption = writable<Option | null>()
 export const getOption = () => currentOption
 
 export const currentVisualizationId = writable<string | undefined>()
-export const currentVisualization = derived([currentView, currentVisualizationId], ([$view, $currentVisualizationId]) =>
-	$currentVisualizationId ? $view.getVisualization($currentVisualizationId) : undefined,
+export const currentVisualization = derived(
+	[currentView, currentVisualizationId],
+	([$view, $currentVisualizationId]) =>
+		$currentVisualizationId ? $view.getVisualization($currentVisualizationId) : undefined,
 )
 
 type INewTableSchema = {

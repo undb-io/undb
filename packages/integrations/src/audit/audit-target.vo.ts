@@ -7,7 +7,7 @@ const auditTargetRecord = z.object({
   type: z.literal('record'),
 })
 
-const auditTarget = auditTargetRecord
+export const auditTarget = auditTargetRecord
 
 export type IAuditTarget = z.infer<typeof auditTarget>
 

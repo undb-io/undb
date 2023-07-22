@@ -1,0 +1,44 @@
+import { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
+import {
+  AuditSpecification,
+  IAuditSpecVisitor,
+  WithAuditDetail,
+  WithAuditId,
+  WithAuditOp,
+  WithAuditOperator,
+  WithAuditTarget,
+  WithAuditTimestamp,
+} from '@undb/integrations'
+import { Audit } from '../../entity/audit.js'
+
+export class AuditSqliteQueryVisitor implements IAuditSpecVisitor {
+  constructor(
+    private readonly em: EntityManager,
+    private qb: QueryBuilder<Audit>,
+  ) {}
+
+  idEqual(s: WithAuditId): void {
+    this.qb.andWhere({ id: s.auditId.value })
+  }
+  timestampEqual(s: WithAuditTimestamp): void {
+    this.qb.andWhere({ timestamp: s.timestamp.value })
+  }
+  op(s: WithAuditOp): void {
+    this.qb.andWhere({ op: s.op })
+  }
+  operatorEqual(s: WithAuditOperator): void {
+    this.qb.andWhere({ operatorId: s.operatorId })
+  }
+  targetEqual(s: WithAuditTarget): void {
+    this.qb.andWhere({ targetId: s.target.id, targetType: s.target.type })
+  }
+  detailEqual(s: WithAuditDetail): void {
+    throw new Error('Method not implemented.')
+  }
+  or(left: AuditSpecification, right: AuditSpecification): IAuditSpecVisitor {
+    throw new Error('Method not implemented.')
+  }
+  not(): IAuditSpecVisitor {
+    throw new Error('Method not implemented.')
+  }
+}
