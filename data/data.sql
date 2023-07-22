@@ -1701,4 +1701,5 @@ CREATE UNIQUE INDEX `undb_share_target_id_unique` on `undb_share` (`target_id`);
 CREATE INDEX `undb_audit_deleted_at_index` on `undb_audit` (`deleted_at`);
 CREATE INDEX `undb_audit_timestamp_index` on `undb_audit` (`timestamp`);
 CREATE INDEX `undb_audit_target_id_index` on `undb_audit` (`target_id`);
+CREATE INDEX `undb_audit_op_index` on `undb_audit` (`op`);
 COMMIT;

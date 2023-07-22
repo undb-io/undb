@@ -22,6 +22,7 @@ export class Audit extends BaseEntity {
   @Property()
   timestamp: Date
 
+  @Index()
   @Property()
   op: string
 
