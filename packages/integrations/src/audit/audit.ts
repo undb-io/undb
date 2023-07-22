@@ -10,6 +10,7 @@ export class Audit {
   public detail!: Option<AuditDetail>
   public op!: string
   public target!: AuditTarget
+  public operatorId!: string
 
   static empty() {
     return new this()

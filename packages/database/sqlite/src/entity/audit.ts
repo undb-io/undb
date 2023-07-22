@@ -11,6 +11,7 @@ export class Audit extends BaseEntity {
     this.targetId = audit.target.id
     this.targetType = audit.target.type
     this.detail = audit.detail.into()
+    this.operatorId = audit.operatorId
   }
 
   @PrimaryKey()
@@ -30,4 +31,7 @@ export class Audit extends BaseEntity {
 
   @Property({ type: JsonType })
   detail?: object
+
+  @Property()
+  operatorId: string
 }
