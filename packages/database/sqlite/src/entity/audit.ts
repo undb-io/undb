@@ -1,4 +1,4 @@
-import { PrimaryKey, Property } from '@mikro-orm/core'
+import { JsonType, PrimaryKey, Property } from '@mikro-orm/core'
 import { Audit as CoreAudit } from '@undb/integrations'
 import { BaseEntity } from './base.js'
 
@@ -10,6 +10,7 @@ export class Audit extends BaseEntity {
     this.op = audit.op
     this.targetId = audit.target.id
     this.targetType = audit.target.type
+    this.detail = audit.detail.into()
   }
 
   @PrimaryKey()
@@ -26,4 +27,7 @@ export class Audit extends BaseEntity {
 
   @Property({ nullable: true })
   targetType?: string
+
+  @Property({ type: JsonType })
+  detail?: object
 }

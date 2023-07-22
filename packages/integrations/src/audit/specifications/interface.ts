@@ -1,5 +1,6 @@
 import type { CompositeSpecification } from '@undb/domain'
 import type { Audit } from '../audit.js'
+import type { WithAuditDetail } from './audit-detail.specification.js'
 import type { WithAuditId } from './audit-id.specification.js'
 import type { WithAuditOp } from './audit-op.specification.js'
 import type { WithAuditTarget } from './audit-target.specification.js'
@@ -10,6 +11,7 @@ export interface IAuditSpecVisitor {
   timestampEqual(s: WithAuditTimestamp): void
   op(s: WithAuditOp): void
   targetEqual(s: WithAuditTarget): void
+  detailEqual(s: WithAuditDetail): void
 
   or(left: AuditSpecification, right: AuditSpecification): IAuditSpecVisitor
   not(): IAuditSpecVisitor
