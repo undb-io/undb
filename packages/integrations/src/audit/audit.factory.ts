@@ -1,6 +1,7 @@
 import type { RecordEvents } from '@undb/core'
 import { and } from '@undb/domain'
 import { Audit } from './audit.js'
+import { WithAuditOp } from './specifications/audit-op.specification.js'
 import { WithAuditId, WithAuditTimestamp, type AuditSpecification } from './specifications/index.js'
 
 export class AuditFactory {
@@ -12,8 +13,14 @@ export class AuditFactory {
   }
 
   static fromEvent(event: RecordEvents): Audit {
-    const spec = and(WithAuditId.create(), WithAuditTimestamp.fromDate(event.timestamp)).unwrap()
+    const spec = and(
+      WithAuditId.create(),
+      WithAuditTimestamp.fromDate(event.timestamp),
+      new WithAuditOp(event.name),
+    ).unwrap()
 
-    return this.create(spec)
+    const audit = this.create(spec)
+    spec.mutate(audit)
+    return audit
   }
 }

@@ -7,6 +7,7 @@ export class Audit extends BaseEntity {
     super()
     this.id = audit.id.value
     this.timestamp = audit.timestamp.value
+    this.op = audit.op
   }
 
   @PrimaryKey()
@@ -14,4 +15,7 @@ export class Audit extends BaseEntity {
 
   @Property()
   timestamp: Date
+
+  @Property()
+  op: string
 }

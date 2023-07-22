@@ -4,6 +4,7 @@ import type { AuditId } from './audit-id.vo.js'
 export class Audit {
   public id!: AuditId
   public timestamp!: DateVO
+  public op!: string
 
   static empty() {
     return new this()
