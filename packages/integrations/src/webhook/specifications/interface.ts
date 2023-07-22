@@ -1,10 +1,10 @@
 import type { CompositeSpecification } from '@undb/domain'
 import type { Webhook } from '../webhook.js'
 import type { WithWebhookEnabled } from './webhook-enabled.specification.js'
-import { WithWebhookHeaders } from './webhook-headers.specification.js'
+import type { WithWebhookHeaders } from './webhook-headers.specification.js'
 import type { WithWebhookId } from './webhook-id.specification.js'
 import type { WithWebhookMethod } from './webhook-method.specification.js'
-import { WithWebhookName } from './webhook-name.specification.js'
+import type { WithWebhookName } from './webhook-name.specification.js'
 import type {
   WebhookEventsIn,
   WithWebhookEvent,

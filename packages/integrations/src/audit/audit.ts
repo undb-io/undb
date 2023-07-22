@@ -1,4 +1,4 @@
-import type { DateVO } from '@undb/domain/dist/index.js'
+import type { DateVO } from '@undb/domain'
 import type { AuditId } from './audit-id.vo.js'
 
 export class Audit {
