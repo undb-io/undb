@@ -12,7 +12,7 @@ export class GetRecordAuditsQueryHandler implements IQueryHandler<GetRecordAudit
     const audits = await this.rm.find(spec)
 
     return {
-      audits,
+      audits: audits.map(({ target, ...audit }) => audit),
     }
   }
 }

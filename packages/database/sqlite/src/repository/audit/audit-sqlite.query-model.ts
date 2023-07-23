@@ -8,7 +8,7 @@ export class AuditSqliteQueryModel implements IAuditQueryModel {
   constructor(private readonly em: EntityManager) {}
 
   async find(spec: AuditSpecification): Promise<IQueryAudit[]> {
-    const qb = this.em.qb(Audit).orderBy({ timestamp: 'desc' })
+    const qb = this.em.qb(Audit).orderBy({ timestamp: 'asc' })
     const visitor = new AuditSqliteQueryVisitor(this.em, qb)
     spec.accept(visitor)
 
