@@ -7,6 +7,7 @@
 	import { parseISO } from 'date-fns'
 	import { format } from 'date-fns/fp'
 	import { match } from 'ts-pattern'
+	import RecordAuditDetail from './audit/RecordAuditDetail.svelte'
 
 	const record = getRecord()
 
@@ -54,6 +55,10 @@
 					{message}
 				</span>
 			</div>
+
+			{#if audit.op === 'record.updated' && audit.detail}
+				<RecordAuditDetail detail={audit.detail} />
+			{/if}
 		{/if}
 	{/each}
 </section>
