@@ -1,6 +1,7 @@
 import type { RecordEvents } from '@undb/core'
 import { omit } from 'lodash-es'
 import { match } from 'ts-pattern'
+import type { IAuditDetail, IRecordDeletedAuditDetail, IRecordUpdatedAuditDetail } from '../audit-detail.vo'
 import { WithAuditDetail } from './audit-detail.specification'
 import { WithAuditId } from './audit-id.specification'
 import { WithAuditOp } from './audit-op.specification'
@@ -16,7 +17,7 @@ const createRecordAuditSpec = (
   id: string,
   tableId: string,
   operatorId: string,
-  detail: object | null = null,
+  detail: IAuditDetail = null,
 ) =>
   WithAuditId.create()
     .and(new WithAuditOp(name))
@@ -47,7 +48,7 @@ export const getAuditSpecsFromEvent = (event: RecordEvents): AuditSpecification[
           event.payload.id,
           event.payload.tableId,
           event.operatorId,
-          omit(event.payload, ['tableId', 'tableName', 'id']),
+          omit(event.payload, ['tableId', 'tableName', 'id']) satisfies IRecordUpdatedAuditDetail,
         ),
       ],
     )
@@ -58,7 +59,7 @@ export const getAuditSpecsFromEvent = (event: RecordEvents): AuditSpecification[
       (event) => [
         createRecordAuditSpec(event.name, event.timestamp, event.payload.id, event.payload.tableId, event.operatorId, {
           name: event.payload.name,
-        }),
+        } satisfies IRecordDeletedAuditDetail),
       ],
     )
     .with(
@@ -81,7 +82,7 @@ export const getAuditSpecsFromEvent = (event: RecordEvents): AuditSpecification[
             previousSchema: event.payload.previousSchema,
             record: update.record,
             previousRecord: update.previousRecord,
-          }),
+          } satisfies IRecordUpdatedAuditDetail),
         ),
     )
     .with(
@@ -92,7 +93,7 @@ export const getAuditSpecsFromEvent = (event: RecordEvents): AuditSpecification[
         event.payload.records.map((record) =>
           createRecordAuditSpec('record.deleted', event.timestamp, record.id, event.payload.tableId, event.operatorId, {
             name: record.name,
-          }),
+          } satisfies IRecordDeletedAuditDetail),
         ),
     )
     .exhaustive()

@@ -6,7 +6,6 @@
 	import type { IQueryAudit } from '@undb/integrations/dist'
 	import { parseISO } from 'date-fns'
 	import { format } from 'date-fns/fp'
-	import { Avatar } from 'flowbite-svelte'
 	import { match } from 'ts-pattern'
 
 	const record = getRecord()
