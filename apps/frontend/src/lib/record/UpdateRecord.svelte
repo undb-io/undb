@@ -139,7 +139,7 @@
 					</div>
 				</form>
 			</div>
-			<div>
+			<div class="col-span-2">
 				<RecordAudits />
 			</div>
 		</div>

@@ -8,5 +8,5 @@ export const queryAudit = z.object({
   op: z.string(),
   operator: collaboratorProfile.merge(z.object({ userId: userIdSchema })),
   target: auditTarget,
-  timestamp: z.date(),
+  timestamp: z.string(),
 })

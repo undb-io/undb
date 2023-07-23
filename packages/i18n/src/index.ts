@@ -343,6 +343,9 @@ export const config: InitOptions = {
         'record.bulk_updated': 'Record Bulk Updated',
         'record.bulk_deleted': 'Record Bulk Deleted',
       },
+      audit: {
+        'record.created': '{{username}} has created record at {{timestamp}}',
+      },
       zod: zodEn,
     },
     'zh-CN': {
@@ -686,6 +689,9 @@ export const config: InitOptions = {
         'record.bulk_created': '批量行创建',
         'record.bulk_updated': '批量行更新',
         'record.bulk_deleted': '批量行删除',
+      },
+      audit: {
+        'record.created': '{{username}} 创建于 {{timestamp}}',
       },
       zod: zodZh,
     },
