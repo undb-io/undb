@@ -20,11 +20,11 @@
 
 	$: audits = $getAudits.data?.audits ?? []
 
-	const dateFormat = format('yyyy-MM-dd')
+	const dateFormat = format('yyyy-MM-dd hh:mm:ss')
 
-	const getAuditMessage = (audit: IQueryAudit) =>
+	const getAuditMessage = (audit: Omit<IQueryAudit, 'target'>) =>
 		match(audit)
-			.with({ op: 'record.created' }, (audit) =>
+			.with({ op: 'record.created' }, { op: 'record.updated' }, (audit) =>
 				$t(audit.op, {
 					username: audit.operator.username,
 					timestamp: dateFormat(parseISO(audit.timestamp)),
@@ -33,13 +33,14 @@
 			)
 			.otherwise(() => null)
 
-	const getIcon = (audit: IQueryAudit) =>
+	const getIcon = (audit: Omit<IQueryAudit, 'target'>) =>
 		match(audit)
-			.with({ op: 'record.created' }, () => 'ti ti-pencil-plus')
+			.with({ op: 'record.created' }, () => 'ti ti-plus')
+			.with({ op: 'record.updated' }, () => 'ti ti-pencil')
 			.otherwise(() => '')
 </script>
 
-<section class="px-2">
+<section class="px-2 space-y-4">
 	{#each audits as audit}
 		{@const message = getAuditMessage(audit)}
 		{#if message}

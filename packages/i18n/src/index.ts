@@ -345,6 +345,7 @@ export const config: InitOptions = {
       },
       audit: {
         'record.created': '{{username}} has created record at {{timestamp}}',
+        'record.updated': '{{username}} has updated record at {{timestamp}}',
       },
       zod: zodEn,
     },
@@ -692,6 +693,7 @@ export const config: InitOptions = {
       },
       audit: {
         'record.created': '{{username}} 创建于 {{timestamp}}',
+        'record.updated': '{{username}} 更新于 {{timestamp}}',
       },
       zod: zodZh,
     },

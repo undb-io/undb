@@ -1550,7 +1550,7 @@ CREATE TABLE `undb_webhook` (
 	primary key (`id`)
 );
 CREATE TABLE `undb_share` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `target_id` text null, `target_type` text null, `enabled` integer not null default false, primary key (`id`));
-create table `undb_audit` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `timestamp` datetime not null, `op` text not null, `target_id` text null, `target_type` text null, `detail` json null, `operator_id` text not null, constraint `undb_audit_operator_id_foreign` foreign key(`operator_id`) references `undb_user`(`id`) on update cascade, primary key (`id`));
+create table `undb_audit` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `timestamp` datetime not null, `op` text not null, `target_id` text null, `target_type` text null, `detail` json null, `operator_id` text not null, `table_id` text null, constraint `undb_audit_operator_id_foreign` foreign key(`operator_id`) references `undb_user`(`id`) on update cascade, constraint `undb_audit_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));
 DELETE FROM sqlite_sequence;
 INSERT INTO sqlite_sequence VALUES('mikro_orm_migrations',5);
 INSERT INTO sqlite_sequence VALUES('tbl4undb0lh',24);
@@ -1703,4 +1703,5 @@ CREATE INDEX `undb_audit_timestamp_index` on `undb_audit` (`timestamp`);
 CREATE INDEX `undb_audit_target_id_index` on `undb_audit` (`target_id`);
 CREATE INDEX `undb_audit_op_index` on `undb_audit` (`op`);
 create index `undb_audit_operator_id_index` on `undb_audit` (`operator_id`);
+create index `undb_audit_table_id_index` on `undb_audit` (`table_id`);
 COMMIT;

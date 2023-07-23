@@ -1713,6 +1713,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "table_id": {
+          "name": "table_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         }
       },
       "name": "undb_audit",
@@ -1763,6 +1772,15 @@
           "unique": false
         },
         {
+          "columnNames": [
+            "table_id"
+          ],
+          "composite": false,
+          "keyName": "undb_audit_table_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "primary",
           "columnNames": [
             "id"
@@ -1784,6 +1802,19 @@
             "id"
           ],
           "referencedTableName": "undb_user",
+          "updateRule": "cascade"
+        },
+        "undb_audit_table_id_foreign": {
+          "constraintName": "undb_audit_table_id_foreign",
+          "columnNames": [
+            "table_id"
+          ],
+          "localTableName": "undb_audit",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_table",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }

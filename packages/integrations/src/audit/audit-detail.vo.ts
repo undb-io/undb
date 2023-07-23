@@ -1,3 +1,6 @@
 import { ValueObject } from '@undb/domain'
+import { z } from 'zod'
 
-export class AuditDetail extends ValueObject<object | null> {}
+export const auditDetail = z.record(z.any()).nullable()
+
+export class AuditDetail extends ValueObject<z.infer<typeof auditDetail>> {}

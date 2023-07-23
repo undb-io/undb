@@ -16,7 +16,8 @@ export class AuditSqliteMapper {
         id: audit.targetId ?? '',
         type: audit.targetType ?? ('' as any),
       },
-      timestamp: audit.timestamp,
+      timestamp: audit.timestamp.toISOString(),
+      detail: audit.detail ?? null,
     }
   }
 }

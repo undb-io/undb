@@ -6,6 +6,7 @@ import {
   WithAuditId,
   WithAuditOp,
   WithAuditOperator,
+  WithAuditTableId,
   WithAuditTarget,
   WithAuditTimestamp,
 } from '@undb/integrations'
@@ -16,6 +17,9 @@ export class AuditSqliteQueryVisitor implements IAuditSpecVisitor {
     private readonly em: EntityManager,
     private qb: QueryBuilder<Audit>,
   ) {}
+  tableIdEqual(s: WithAuditTableId): void {
+    throw new Error('Method not implemented.')
+  }
 
   idEqual(s: WithAuditId): void {
     this.qb.andWhere({ id: s.auditId.value })
