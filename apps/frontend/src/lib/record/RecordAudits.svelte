@@ -10,7 +10,7 @@
 
 	const record = getRecord()
 
-	$: getAudits = trpc().audit.getRecordAudits.query(
+	$: getAudits = trpc().record.audit.list.query(
 		{
 			recordId: $record?.id.value ?? '',
 		},

@@ -4,10 +4,10 @@ import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'
 
-export const createAuditRouter =
+export const createRecordAuditRouter =
   (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
     router({
-      getRecordAudits: procedure
+      list: procedure
         .input(getRecordAuditsQueryInput)
         .output(z.any())
         .query<IGetRecordAuditsOutput>(({ input }) => {
