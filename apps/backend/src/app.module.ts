@@ -92,7 +92,8 @@ export class AppModule implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    const em = this.orm.em as EntityManager
+    const em = this.orm.em.fork() as EntityManager
+
     if (this.config.seed) {
       this.logger.log('seeding data...')
       await em.getConnection().loadFile(path.resolve(process.cwd(), '../../data/data.sql')).catch(console.error)

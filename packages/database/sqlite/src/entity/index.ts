@@ -11,6 +11,7 @@ import { viewEntities } from './view.js'
 import { visualizationEntities } from './visualization.js'
 import { Webhook } from './webhook.js'
 
+export * from './audit.js'
 export * from './field.js'
 export * from './option.js'
 export * from './outbox.js'
