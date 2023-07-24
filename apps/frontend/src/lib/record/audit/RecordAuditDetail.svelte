@@ -15,6 +15,7 @@
 	import SelectAudit from './SelectAudit.svelte'
 	import BoolAudit from './BoolAudit.svelte'
 	import DateRangeAudit from './DateRangeAudit.svelte'
+	import ReferenceAudit from './ReferenceAudit.svelte'
 
 	export let detail: IRecordUpdatedAuditDetail
 
@@ -38,7 +39,7 @@
 		'multi-select': MultiSelectAudit,
 		bool: BoolAudit,
 		'date-range': DateRangeAudit,
-		reference: undefined,
+		reference: ReferenceAudit,
 		tree: undefined,
 		parent: undefined,
 		rating: RatingAudit,
