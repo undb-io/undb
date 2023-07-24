@@ -1,24 +1,13 @@
-import { isString } from 'lodash-es'
 import { None, Some, type Option } from 'oxide.ts'
 import { z } from 'zod'
-import type { RecordValueJSON } from '../../../record/record.schema.js'
-import type { IRecordDisplayValues } from '../../../record/record.type.js'
-import type { TableCompositeSpecification } from '../../../specifications/index.js'
+import type { Records } from '../../../record/record.type.js'
 import { BaseField } from '../../field.base.js'
 import type { Field } from '../../field.type.js'
-import type { IFieldVisitor } from '../../field.visitor.js'
 import { WithCurrencySymbol } from '../../specifications/currency-field.specification.js'
 import { FieldId } from '../../value-objects/field-id.vo.js'
 import { CurrencyFieldValue } from './currency-field-value.js'
-import type {
-  CurrencyFieldType,
-  ICreateCurrencyFieldInput,
-  ICreateCurrencyFieldValue,
-  ICurrencyField,
-  IUpdateCurrencyFieldInput,
-} from './currency-field.type.js'
+import type { CurrencyFieldType, ICreateCurrencyFieldInput, ICurrencyField } from './currency-field.type.js'
 import { CurrencySymbol } from './currency-symbol.vo.js'
-import type { ICurrencyFilter, ICurrencyFilterOperator } from './currency.filter.js'
 
 export class CurrencyField extends BaseField<ICurrencyField> {
   duplicate(name: string): Field {
@@ -34,6 +23,13 @@ export class CurrencyField extends BaseField<ICurrencyField> {
   override get json() {
     return {
       ...super.json,
+      symbol: this.symbol.symbol,
+    }
+  }
+
+  override toEvent(rs: Records) {
+    return {
+      ...super.toEvent(rs),
       symbol: this.symbol.symbol,
     }
   }

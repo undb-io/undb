@@ -18,6 +18,7 @@
 	import ReferenceAudit from './ReferenceAudit.svelte'
 	import TreeAudit from './TreeAudit.svelte'
 	import ParentAudit from './ParentAudit.svelte'
+	import CurrencyAudit from './CurrencyAudit.svelte'
 
 	export let detail: IRecordUpdatedAuditDetail
 
@@ -45,7 +46,7 @@
 		tree: TreeAudit,
 		parent: ParentAudit,
 		rating: RatingAudit,
-		currency: undefined,
+		currency: CurrencyAudit,
 		count: undefined,
 		lookup: undefined,
 		sum: undefined,
