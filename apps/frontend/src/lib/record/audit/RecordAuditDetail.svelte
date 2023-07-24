@@ -60,7 +60,7 @@
 	}
 </script>
 
-<div class="bg-slate-50 p-2 rounded-sm space-y-2">
+<div class="bg-gray-100 p-2 rounded-sm space-y-2">
 	{#each detail.schema as field}
 		{@const previousValue = detail.previousRecord[field.name]}
 		{@const value = detail.record[field.name]}
