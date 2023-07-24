@@ -16,6 +16,8 @@
 	import BoolAudit from './BoolAudit.svelte'
 	import DateRangeAudit from './DateRangeAudit.svelte'
 	import ReferenceAudit from './ReferenceAudit.svelte'
+	import TreeAudit from './TreeAudit.svelte'
+	import ParentAudit from './ParentAudit.svelte'
 
 	export let detail: IRecordUpdatedAuditDetail
 
@@ -40,8 +42,8 @@
 		bool: BoolAudit,
 		'date-range': DateRangeAudit,
 		reference: ReferenceAudit,
-		tree: undefined,
-		parent: undefined,
+		tree: TreeAudit,
+		parent: ParentAudit,
 		rating: RatingAudit,
 		currency: undefined,
 		count: undefined,
@@ -57,13 +59,13 @@
 	}
 </script>
 
-<div class="bg-slate-50 p-2 rounded-sm">
+<div class="bg-slate-50 p-2 rounded-sm space-y-2">
 	{#each detail.schema as field}
 		{@const previousValue = detail.previousRecord[field.name]}
 		{@const value = detail.record[field.name]}
 
 		{#if !isEqual(previousValue, value)}
-			<div class="space-y-2">
+			<div class="space-y-1">
 				<div class="text-sm flex items-center text-gray-600 gap-2">
 					<FieldIcon type={field.type} />
 					<span>{field.name}</span>

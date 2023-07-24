@@ -1,11 +1,11 @@
 <script lang="ts">
 	import ReferenceComponent from '$lib/cell/CellComponents/ReferenceComponent.svelte'
-	import type { IBaseFieldEventSchema, IReferenceReadableValueSchema } from '@undb/core'
+	import type { IBaseFieldEventSchema, ITreeReadableValueSchema } from '@undb/core'
 	import { differenceBy } from 'lodash-es'
 
 	export let field: IBaseFieldEventSchema
-	export let previousValue: IReferenceReadableValueSchema | undefined
-	export let value: IReferenceReadableValueSchema | undefined
+	export let previousValue: ITreeReadableValueSchema | undefined
+	export let value: ITreeReadableValueSchema | undefined
 
 	$: removed = differenceBy(previousValue, value ?? [], 'id')
 	$: added = differenceBy(value, previousValue ?? [], 'id')
