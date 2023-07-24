@@ -60,14 +60,16 @@
 	}
 </script>
 
-<div class="bg-gray-100 border border-gray-200 shadow-sm p-2 rounded-md space-y-2">
+<div
+	class="bg-gray-100 border border-gray-200 dark:border-slate-950 dark:bg-slate-800 dark:text-white shadow-sm p-2 rounded-md space-y-2"
+>
 	{#each detail.schema as field}
 		{@const previousValue = detail.previousRecord[field.name]}
 		{@const value = detail.record[field.name]}
 
 		{#if !isEqual(previousValue, value)}
 			<div class="space-y-1">
-				<div class="text-sm flex items-center text-gray-600 gap-2">
+				<div class="text-sm flex items-center text-gray-600 dark:text-white gap-2">
 					<FieldIcon type={field.type} />
 					<span>{field.name}</span>
 				</div>

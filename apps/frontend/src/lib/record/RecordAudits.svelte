@@ -44,7 +44,7 @@
 	{#each audits as audit}
 		{@const message = getAuditMessage(audit)}
 		{#if message}
-			<div class="flex items-center gap-2 text-gray-500 text-xs w-full">
+			<div class="flex items-center gap-2 text-gray-500 dark:text-white text-xs w-full">
 				<CollaboratorAvatar
 					username={audit.operator.username}
 					color={audit.operator.color}

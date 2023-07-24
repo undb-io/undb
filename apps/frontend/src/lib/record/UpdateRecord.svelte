@@ -126,7 +126,12 @@
 				{/if}
 
 				<div class="grid grid-cols-6 h-full">
-					<div class={cx('p-6 border-r h-full overflow-y-auto', shouldDisplayAudits ? 'col-span-4' : 'col-span-6')}>
+					<div
+						class={cx(
+							'p-6 border-r dark:border-r-slate-900 h-full overflow-y-auto',
+							shouldDisplayAudits ? 'col-span-4' : 'col-span-6',
+						)}
+					>
 						<form id="updateRecord" class="space-y-5" method="POST" use:enhance>
 							<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 								{#each fields as field}
@@ -156,7 +161,7 @@
 						</form>
 					</div>
 					{#if shouldDisplayAudits}
-						<div class="col-span-2 px-2 py-6 h-full overflow-y-auto bg-slate-50">
+						<div class="col-span-2 px-2 py-6 h-full overflow-y-auto bg-slate-50 dark:bg-slate-700">
 							<RecordAudits />
 						</div>
 					{/if}
