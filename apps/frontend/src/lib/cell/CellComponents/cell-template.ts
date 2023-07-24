@@ -151,7 +151,7 @@ const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile)
 
 	return html`
 		<div
-			class="flex items-center space-x-2 bg-gray-100 text-gray-800 text-xs font-medium pr-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300 h-5"
+			class="flex items-center space-x-2 bg-gray-200 text-gray-800 text-xs font-medium pr-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300 h-5"
 		>
 			${!collaborator.avatar
 				? html`
@@ -333,7 +333,7 @@ const referenceComponent = (h: HyperFunc, value: (string | null)[] = []) => {
 		'span',
 		{
 			class: cx(
-				'bg-gray-100 text-xs mr-2 px-2.5 py-0.5 rounded dark:!text-gray-200 dark:bg-primary-600',
+				'bg-gray-200 text-xs mr-2 px-2.5 py-0.5 rounded dark:!text-gray-200 dark:bg-primary-600',
 				!content && 'text-gray-400 font-normal',
 			),
 		},

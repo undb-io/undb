@@ -1,9 +1,11 @@
 <script lang="ts">
+	import cx from 'classnames'
 	import {
 		currentRecordId,
 		getRecord,
 		getTable,
 		getView,
+		isShare,
 		nextRecord,
 		previousRecord,
 		q,
@@ -29,6 +31,9 @@
 	const record = getRecord()
 
 	export let data: Validation<any>
+
+	let displayAudits = true
+	$: shouldDisplayAudits = displayAudits && !$isShare
 
 	$: validators = createMutateRecordValuesSchema(fields ?? [], $record?.valuesJSON)
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
@@ -99,7 +104,14 @@
 					</ButtonGroup>
 				</div>
 
-				<UpdateRecordMenu record={$record} />
+				<div class="flex items-center gap-2">
+					{#if !$isShare}
+						<button on:click={() => (displayAudits = !displayAudits)}>
+							<i class="ti ti-history"></i>
+						</button>
+					{/if}
+					<UpdateRecordMenu record={$record} />
+				</div>
 			</div>
 		</svelte:fragment>
 
@@ -114,7 +126,7 @@
 				{/if}
 
 				<div class="grid grid-cols-6 h-full">
-					<div class="col-span-4 p-6 border-r h-full overflow-y-auto">
+					<div class={cx('p-6 border-r h-full overflow-y-auto', shouldDisplayAudits ? 'col-span-4' : 'col-span-6')}>
 						<form id="updateRecord" class="space-y-5" method="POST" use:enhance>
 							<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 								{#each fields as field}
@@ -143,9 +155,11 @@
 							</div>
 						</form>
 					</div>
-					<div class="col-span-2 p-6 h-full overflow-y-auto bg-slate-50">
-						<RecordAudits />
-					</div>
+					{#if shouldDisplayAudits}
+						<div class="col-span-2 px-2 py-6 h-full overflow-y-auto bg-slate-50">
+							<RecordAudits />
+						</div>
+					{/if}
 				</div>
 			</div>
 		</svelte:fragment>
