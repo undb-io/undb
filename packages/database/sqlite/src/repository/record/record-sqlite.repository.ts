@@ -112,7 +112,11 @@ export class RecordSqliteRepository implements IRecordRepository {
       const spec = WithRecordTableId.fromString(table.id.value).unwrap().and(WithRecordId.fromString(record.id.value))
       const found = await this.findOneRecordEntity(table.id.value, spec)
       if (found) {
-        const event = RecordCreatedEvent.from(table, userId, RecordSqliteMapper.toQuery(table.id.value, schema, found))
+        const event = RecordCreatedEvent.from(
+          table,
+          userId,
+          RecordSqliteMapper.toDomain(table.id.value, schema, found).unwrap(),
+        )
         this.outboxService.persist(event)
       }
       await this.uow.commit()
@@ -137,7 +141,7 @@ export class RecordSqliteRepository implements IRecordRepository {
         const event = RecordBulkCreatedEvent.from(
           table,
           userId,
-          found.map((r) => RecordSqliteMapper.toQuery(table.id.value, schema, r)),
+          found.map((r) => RecordSqliteMapper.toDomain(table.id.value, schema, r).unwrap()),
         )
         this.outboxService.persist(event)
       }
@@ -330,8 +334,8 @@ export class RecordSqliteRepository implements IRecordRepository {
           table,
           None,
           userId,
-          RecordSqliteMapper.toQuery(tableId, schema, previousRecord),
-          RecordSqliteMapper.toQuery(tableId, schema, record),
+          RecordSqliteMapper.toDomain(tableId, schema, previousRecord).unwrap(),
+          RecordSqliteMapper.toDomain(tableId, schema, record).unwrap(),
           visitor.updatedFieldIds,
         )
 
@@ -375,8 +379,8 @@ export class RecordSqliteRepository implements IRecordRepository {
         table,
         None,
         userId,
-        RecordSqliteMapper.toQueries(tableId, schema, previousRecords),
-        RecordSqliteMapper.toQueries(tableId, schema, records),
+        previousRecords.map((record) => RecordSqliteMapper.toDomain(tableId, schema, record).unwrap()),
+        records.map((record) => RecordSqliteMapper.toDomain(tableId, schema, record).unwrap()),
         updatedFields,
       )
       this.outboxService.persist(event)
@@ -498,7 +502,9 @@ export class RecordSqliteRepository implements IRecordRepository {
       const event = RecordBulkDeletedEvent.from(
         coreTable,
         userId,
-        RecordSqliteMapper.toQueries(coreTable.id.value, coreTable.schema.toIdMap(), records),
+        records.map((record) =>
+          RecordSqliteMapper.toDomain(coreTable.id.value, coreTable.schema.toIdMap(), record).unwrap(),
+        ),
       )
       this.outboxService.persist(event)
       await this.uow.commit()

@@ -3,8 +3,8 @@ import type { Option } from 'oxide.ts'
 import { z } from 'zod'
 import { baseSchemaEventSchema } from '../../field/field.type.js'
 import type { Table } from '../../table.js'
+import type { Record } from '../record.js'
 import { recordReadableMapper, recordReadableSchema } from '../record.readable.js'
-import type { IQueryRecordSchema } from '../record.type.js'
 import { recordIdSchema } from '../value-objects/record-id.schema.js'
 import { baseEventSchema, baseRecordEventSchema, type BaseRecordEventName } from './base-record.event.js'
 
@@ -33,15 +33,15 @@ export class RecordUpdatedEvent extends BaseEvent<IRecordUpdatedEventPayload, Ba
     table: Table,
     previousTable: Option<Table>,
     operatorId: string,
-    previousRecord: IQueryRecordSchema,
-    record: IQueryRecordSchema,
+    previousRecord: Record,
+    record: Record,
     updatedFieldIds: Set<string>,
   ): RecordUpdatedEvent {
     const fields = table.schema.fields.filter((f) => updatedFieldIds.has(f.id.value))
     const fieldIds = new Set(fields.map((f) => f.id.value))
     return new this(
       {
-        id: record.id,
+        id: record.id.value,
         tableId: table.id.value,
         tableName: table.name.value,
         previousSchema: previousTable.isSome()
