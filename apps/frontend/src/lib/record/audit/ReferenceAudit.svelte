@@ -1,25 +1,29 @@
 <script lang="ts">
 	import ReferenceComponent from '$lib/cell/CellComponents/ReferenceComponent.svelte'
 	import type { IBaseFieldEventSchema, IReferenceReadableValueSchema } from '@undb/core'
+	import { differenceBy } from 'lodash-es'
 
 	export let field: IBaseFieldEventSchema
 	export let previousValue: IReferenceReadableValueSchema | undefined
 	export let value: IReferenceReadableValueSchema | undefined
+
+	$: removed = differenceBy(previousValue, value ?? [], 'id')
+	$: added = differenceBy(value, previousValue ?? [], 'id')
 </script>
 
-<div class="flex items-center gap-2 text-sm">
-	{#if previousValue}
-		<span class="line-through rounded-sm p-0.5 bg-red-200/50 border-red-200">
-			{#each previousValue as value}
+<div class="text-sm space-y-2">
+	{#if removed.length}
+		<div class="line-through rounded-sm p-0.5 bg-red-200/50 border-red-200">
+			{#each removed as value}
 				<ReferenceComponent value={value.value} />
 			{/each}
-		</span>
+		</div>
 	{/if}
-	{#if value}
-		<span class="rounded-sm p-0.5 bg-green-200/50 border-green-200">
-			{#each value as v}
+	{#if added.length}
+		<div class="rounded-sm p-0.5 bg-green-200/50 border-green-200 flex flex-wrap">
+			{#each added as v}
 				<ReferenceComponent value={v.value} />
 			{/each}
-		</span>
+		</div>
 	{/if}
 </div>
