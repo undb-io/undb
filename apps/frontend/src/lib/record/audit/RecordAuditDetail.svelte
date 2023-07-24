@@ -6,6 +6,11 @@
 	import type { ComponentType } from 'svelte'
 	import StringAudit from './StringAudit.svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
+	import NumberAudit from './NumberAudit.svelte'
+	import JsonAudit from './JsonAudit.svelte'
+	import DateAudit from './DateAudit.svelte'
+	import RatingAudit from './RatingAudit.svelte'
+	import ColorAudit from './ColorAudit.svelte'
 
 	export let detail: IRecordUpdatedAuditDetail
 
@@ -13,18 +18,18 @@
 
 	$: schema = $table.schema.toIdMap()
 
-	const map: Record<IFieldType, ComponentType> = {
+	const map: Record<IFieldType, ComponentType | undefined> = {
 		string: StringAudit,
-		number: undefined,
+		number: NumberAudit,
 		id: undefined,
 		'created-at': undefined,
 		'updated-at': undefined,
 		'auto-increment': undefined,
-		color: undefined,
-		email: undefined,
-		url: undefined,
-		json: undefined,
-		date: undefined,
+		color: ColorAudit,
+		email: StringAudit,
+		url: StringAudit,
+		json: JsonAudit,
+		date: DateAudit,
 		select: undefined,
 		'multi-select': undefined,
 		bool: undefined,
@@ -32,7 +37,7 @@
 		reference: undefined,
 		tree: undefined,
 		parent: undefined,
-		rating: undefined,
+		rating: RatingAudit,
 		currency: undefined,
 		count: undefined,
 		lookup: undefined,
@@ -58,7 +63,7 @@
 					<FieldIcon type={field.type} />
 					<span>{field.name}</span>
 				</div>
-				<svelte:component this={map[field.type]} {previousValue} {value} />
+				<svelte:component this={map[field.type]} {previousValue} {value} {field} />
 			</div>
 		{/if}
 	{/each}
