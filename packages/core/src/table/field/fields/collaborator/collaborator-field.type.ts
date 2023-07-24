@@ -69,4 +69,6 @@ export type ICollaboratorProfile = z.infer<typeof collaboratorProfile>
 
 export const collaboratorReadableValueSchema = z.object({ id: userIdSchema }).merge(collaboratorProfile).array()
 
+export type ICollaboratorReadableValueSchema = z.infer<typeof collaboratorReadableValueSchema>
+
 export type ICollaboratorField = IBaseField

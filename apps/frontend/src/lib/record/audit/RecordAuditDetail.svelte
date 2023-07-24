@@ -19,6 +19,8 @@
 	import TreeAudit from './TreeAudit.svelte'
 	import ParentAudit from './ParentAudit.svelte'
 	import CurrencyAudit from './CurrencyAudit.svelte'
+	import CollaboratorAudit from './CollaboratorAudit.svelte'
+	import AttachmentAudit from './AttachmentAudit.svelte'
 
 	export let detail: IRecordUpdatedAuditDetail
 
@@ -51,8 +53,8 @@
 		lookup: undefined,
 		sum: undefined,
 		average: undefined,
-		attachment: undefined,
-		collaborator: undefined,
+		attachment: AttachmentAudit,
+		collaborator: CollaboratorAudit,
 		'created-by': undefined,
 		'updated-by': undefined,
 		min: undefined,

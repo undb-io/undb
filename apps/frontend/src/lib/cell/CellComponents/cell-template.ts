@@ -333,7 +333,7 @@ const referenceComponent = (h: HyperFunc, value: (string | null)[] = []) => {
 		'span',
 		{
 			class: cx(
-				'bg-gray-200 text-xs mr-2 px-2.5 py-0.5 rounded dark:!text-gray-200 dark:bg-primary-600',
+				'bg-gray-200 text-xs px-2.5 py-0.5 rounded dark:bg-gray-600 dark:text-gray-200',
 				!content && 'text-gray-400 font-normal',
 			),
 		},
@@ -360,7 +360,7 @@ const reference: TemplateFunc = (h, props) => {
 	}
 	return h(
 		'div',
-		{ class: 'flex items-center space-x-2 text-gray-800  dark:bg-gray-700 dark:text-gray-300 font-medium ' },
+		{ class: 'flex items-center space-x-2 text-gray-800 font-medium ' },
 		values.map((value) => referenceComponent(h, value)),
 	)
 }
