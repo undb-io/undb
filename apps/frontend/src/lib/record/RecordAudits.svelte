@@ -40,11 +40,11 @@
 			.otherwise(() => '')
 </script>
 
-<section class="px-2">
+<section class="px-2 space-y-2">
 	{#each audits as audit}
 		{@const message = getAuditMessage(audit)}
 		{#if message}
-			<div class="flex items-center gap-2 text-gray-500 text-xs w-full mt-4 mb-2">
+			<div class="flex items-center gap-2 text-gray-500 text-xs w-full">
 				<CollaboratorAvatar
 					username={audit.operator.username}
 					color={audit.operator.color}
