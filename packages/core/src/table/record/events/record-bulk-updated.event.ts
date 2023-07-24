@@ -43,7 +43,9 @@ export class RecordBulkUpdatedEvent extends BaseEvent<IRecordsBulkUpdatedEventPa
   ): RecordBulkUpdatedEvent {
     const recordsMap = new Map(records.map((r) => [r.id, r]))
     const fieldIds = new Set([...updatedFieldIds.values()].flatMap((f) => [...f.values()]))
-    const schema = table.schema.fields.filter((f) => fieldIds.has(f.id.value)).map((f) => f.toEvent(records))
+    const schema = table.schema.fields
+      .filter((f) => fieldIds.has(f.id.value))
+      .map((f) => f.toEvent(records.concat(previousRecords)))
     const previousSchema = previousTable.isSome()
       ? previousTable
           .unwrap()

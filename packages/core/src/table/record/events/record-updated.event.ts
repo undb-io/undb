@@ -51,7 +51,9 @@ export class RecordUpdatedEvent extends BaseEvent<IRecordUpdatedEventPayload, Ba
               .map((f) => f.toEvent([previousRecord]))
           : null,
         previousRecord: recordReadableMapper(fields, previousRecord),
-        schema: table.schema.fields.filter((f) => fieldIds.has(f.id.value)).map((f) => f.toEvent([previousRecord])),
+        schema: table.schema.fields
+          .filter((f) => fieldIds.has(f.id.value))
+          .map((f) => f.toEvent([record, previousRecord])),
         record: recordReadableMapper(fields, record),
       },
       operatorId,

@@ -11,6 +11,8 @@
 	import DateAudit from './DateAudit.svelte'
 	import RatingAudit from './RatingAudit.svelte'
 	import ColorAudit from './ColorAudit.svelte'
+	import MultiSelectAudit from './MultiSelectAudit.svelte'
+	import SelectAudit from './SelectAudit.svelte'
 
 	export let detail: IRecordUpdatedAuditDetail
 
@@ -30,8 +32,8 @@
 		url: StringAudit,
 		json: JsonAudit,
 		date: DateAudit,
-		select: undefined,
-		'multi-select': undefined,
+		select: SelectAudit,
+		'multi-select': MultiSelectAudit,
 		bool: undefined,
 		'date-range': undefined,
 		reference: undefined,
