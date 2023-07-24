@@ -1,13 +1,12 @@
-import { RecordFactory, type IQueryRecordSchema, type Table } from '@undb/core'
+import { Record, type Table } from '@undb/core'
 import type { ZodDefault, ZodRawShape, ZodTypeAny } from 'zod'
 import { z } from 'zod'
 import { COMPONENT_MUTATE_RECORD_VALUES } from '../constants.js'
 
-export const createOpenAPIMutateRecordSchema = (table: Table, record?: IQueryRecordSchema) => {
+export const createOpenAPIMutateRecordSchema = (table: Table, record?: Record) => {
   const fields = table.schema.fields
   const shape: ZodRawShape = {}
-  const r = record ? RecordFactory.fromQuery(record, table.schema.toIdMap()).into() : undefined
-  const valueJSON = r?.valuesJSON
+  const valueJSON = record?.valuesJSON
 
   for (const field of fields) {
     if (field.controlled) continue

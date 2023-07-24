@@ -1,4 +1,4 @@
-import { isString } from 'lodash'
+import { isString } from 'lodash-es'
 import { None, Some, type Option } from 'oxide.ts'
 import { z } from 'zod'
 import type { RecordValueJSON } from '../../../record/record.schema.js'
