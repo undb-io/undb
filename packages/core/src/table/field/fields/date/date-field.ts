@@ -1,6 +1,6 @@
 import { format } from 'date-fns'
 import { z } from 'zod'
-import type { IQueryRecordSchema, IRecordDisplayValues } from '../../../record/index.js'
+import type { IRecordDisplayValues } from '../../../record/index.js'
 import type { RecordValueJSON } from '../../../record/record.schema.js'
 import { AbstractDateField } from '../../field.base.js'
 import type { IFieldVisitor } from '../../field.visitor.js'
@@ -25,14 +25,6 @@ export class DateField extends AbstractDateField<IDateField> {
   getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {
     const value = valueJson[this.id.value]
     return value ? format(new Date(value), this.formatString) : null
-  }
-
-  override toEvent(records: IQueryRecordSchema[]) {
-    return {
-      ...super.toEvent(records),
-      format: this.formatString,
-      timeFormat: this.timeFormatString,
-    }
   }
 
   override get json() {

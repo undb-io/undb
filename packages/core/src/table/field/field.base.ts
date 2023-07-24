@@ -213,6 +213,14 @@ export abstract class AbstractDateField<F extends IDateFieldTypes = IDateFieldTy
     return this.props.format?.unpack() ?? DEFAULT_DATE_FORMAT
   }
 
+  override toEvent(records: IQueryRecordSchema[]) {
+    return {
+      ...super.toEvent(records),
+      format: this.formatString,
+      timeFormat: this.timeFormatString,
+    }
+  }
+
   set format(format: DateFormat | undefined) {
     this.props.format = format
   }
