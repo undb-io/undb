@@ -22,10 +22,9 @@ export class RelayService {
           continue
         }
 
-        const json = event.toJSON()
-
         this.eventBus.publish(event)
-        this.logger.info('event %s emitted %j', event.name, json)
+
+        this.logger.info('event %s emitted %j', event.name, event)
       }
     })
   }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { CommandBus } from '@nestjs/cqrs'
-import { recordReadableMapper, type IQueryRecordSchema, type ITableRepository } from '@undb/core'
+import { RecordFactory, recordReadableMapper, type IQueryRecordSchema, type ITableRepository } from '@undb/core'
 import { CreateRecordCommand, CreateRecordsCommand, UpdateRecordCommand, UpdateRecordsCommand } from '@undb/cqrs'
 import { openAPIMutateRecordMapper, type IOpenAPIMutateRecordSchema } from '@undb/openapi'
 import { InjectTableRepository } from '../core/table/adapters/sqlite/table-sqlite.repository.js'
@@ -17,7 +17,9 @@ export class OpenAPIRecordService {
     const table = (await this.repo.findOneById(tableId)).unwrap()
     const fields = table.schema.fields
 
-    return records.map((record) => recordReadableMapper(fields, record))
+    return records.map((record) =>
+      recordReadableMapper(fields, RecordFactory.fromQuery(record, table.schema.toIdMap()).unwrap()),
+    )
   }
 
   public async createRecord(tableId: string, id: string | undefined, values: IOpenAPIMutateRecordSchema) {

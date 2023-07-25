@@ -4,7 +4,10 @@ import type { ICommandHandler } from '@undb/domain'
 import type * as updateRecordCommandJs from './update-record.command.js'
 
 export class UpdateRecordCommandHandler implements ICommandHandler<updateRecordCommandJs.UpdateRecordCommand, void> {
-  constructor(protected readonly tableRepo: ITableRepository, protected readonly recordRepo: IRecordRepository) {}
+  constructor(
+    protected readonly tableRepo: ITableRepository,
+    protected readonly recordRepo: IRecordRepository,
+  ) {}
 
   async execute(command: updateRecordCommandJs.UpdateRecordCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()

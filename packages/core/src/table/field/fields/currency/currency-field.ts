@@ -2,8 +2,8 @@ import { isString } from 'lodash-es'
 import { None, Some, type Option } from 'oxide.ts'
 import { z } from 'zod'
 import type { RecordValueJSON } from '../../../record/record.schema.js'
-import type { IRecordDisplayValues } from '../../../record/record.type.js'
-import type { TableCompositeSpecification } from '../../../specifications/index.js'
+import type { IRecordDisplayValues, Records } from '../../../record/record.type.js'
+import type { TableCompositeSpecification } from '../../../specifications/interface.js'
 import { BaseField } from '../../field.base.js'
 import type { Field } from '../../field.type.js'
 import type { IFieldVisitor } from '../../field.visitor.js'
@@ -34,6 +34,13 @@ export class CurrencyField extends BaseField<ICurrencyField> {
   override get json() {
     return {
       ...super.json,
+      symbol: this.symbol.symbol,
+    }
+  }
+
+  override toEvent(rs: Records) {
+    return {
+      ...super.toEvent(rs),
       symbol: this.symbol.symbol,
     }
   }

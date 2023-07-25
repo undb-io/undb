@@ -7,8 +7,9 @@ export class ReferenceFieldValue extends FieldValueBase<IReferenceFieldValue> {
   get json(): JsonValue {
     return this.unpack()
   }
+
   constructor(value: IReferenceFieldValue) {
-    super(value === null ? { value } : value)
+    super(value === null ? [] : value)
   }
 
   unpack(): string[] | null {

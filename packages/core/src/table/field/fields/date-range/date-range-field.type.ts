@@ -62,4 +62,6 @@ export const isDateRangeField = z.instanceof(DateRangeField)
 
 export const dateRangeReadableValueSchema = dateRangeFieldQueryValue
 
+export type IDateRangeReadableValueSchema = z.infer<typeof dateRangeReadableValueSchema>
+
 export type IDateRangeField = IBaseField & BaseDateField

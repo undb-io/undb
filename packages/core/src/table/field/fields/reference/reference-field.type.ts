@@ -70,6 +70,8 @@ export const referenceReadableValueSchema = z
   })
   .array()
 
+export type IReferenceReadableValueSchema = z.infer<typeof referenceReadableValueSchema>
+
 export type IReferenceField = IBaseField & {
   displayFields?: DisplayFields
   foreignTableId?: TableId

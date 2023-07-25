@@ -33,7 +33,7 @@ import {
   isSearchable,
 } from '../field/index.js'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema.js'
-import type { IQueryRecordSchema } from '../record/record.type.js'
+import type { Records } from '../record/record.type.js'
 import { WithNewField } from '../specifications/table-field.specification.js'
 import type { ICalendarField } from '../view/calendar/index.js'
 import type { IGalleryField, IGanttField, IKanbanField, ITreeViewField } from '../view/index.js'
@@ -88,7 +88,7 @@ export class TableSchema extends ValueObject<Field[]> {
     ])
   }
 
-  public toEvent(records: IQueryRecordSchema[]): IBaseSchemaEventSchema {
+  public toEvent(records: Records): IBaseSchemaEventSchema {
     return this.fields.map((f) => f.toEvent(records))
   }
 

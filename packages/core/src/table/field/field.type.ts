@@ -545,7 +545,7 @@ export const baseFieldEventSchema = z.object({
   type: fieldTypes,
 })
 
-export type IBaseFieldEventSchema = z.infer<typeof baseFieldEventSchema>
+export type IBaseFieldEventSchema = z.infer<typeof baseFieldEventSchema> & { [key in symbol]: any }
 
 export const baseSchemaEventSchema = baseFieldEventSchema.array()
 export type IBaseSchemaEventSchema = z.infer<typeof baseSchemaEventSchema>

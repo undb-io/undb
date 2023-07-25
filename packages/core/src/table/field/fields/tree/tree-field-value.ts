@@ -8,7 +8,7 @@ export class TreeFieldValue extends FieldValueBase<ITreeFieldValue> {
     return this.unpack()
   }
   constructor(value: ITreeFieldValue) {
-    super(value === null ? { value } : value)
+    super(value === null ? [] : value)
   }
 
   unpack(): string[] | null {

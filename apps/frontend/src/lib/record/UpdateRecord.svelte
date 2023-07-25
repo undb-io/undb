@@ -1,9 +1,11 @@
 <script lang="ts">
+	import cx from 'classnames'
 	import {
 		currentRecordId,
 		getRecord,
 		getTable,
 		getView,
+		isShare,
 		nextRecord,
 		previousRecord,
 		q,
@@ -22,12 +24,16 @@
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import UpdateRecordMenu from './UpdateRecordMenu.svelte'
+	import RecordAudits from './RecordAudits.svelte'
 
 	const table = getTable()
 	const view = getView()
 	const record = getRecord()
 
 	export let data: Validation<any>
+
+	let displayAudits = true
+	$: shouldDisplayAudits = displayAudits && !$isShare
 
 	$: validators = createMutateRecordValuesSchema(fields ?? [], $record?.valuesJSON)
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
@@ -79,12 +85,7 @@
 </script>
 
 {#key $record}
-	<Modal class="w-full " size="lg" bind:open={$open}>
-		{#if !$record}
-			<div class="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
-				<Spinner />
-			</div>
-		{/if}
+	<Modal class="w-full h-[calc(100vh-64px)]" size="xl" bind:open={$open} outsideclose>
 		<svelte:fragment slot="header">
 			<div class="flex items-center w-full justify-between mr-6">
 				<div class="flex items-center space-x-4">
@@ -103,42 +104,76 @@
 					</ButtonGroup>
 				</div>
 
-				<UpdateRecordMenu record={$record} />
+				<div class="flex items-center gap-2">
+					{#if !$isShare}
+						<button on:click={() => (displayAudits = !displayAudits)}>
+							<i class="ti ti-history"></i>
+						</button>
+					{/if}
+					<UpdateRecordMenu record={$record} />
+				</div>
 			</div>
 		</svelte:fragment>
-		<form id="updateRecord" class="space-y-5" method="POST" use:enhance>
-			<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
-				{#each fields as field}
-					<div class="h-full items-start gap-1 pt-2">
-						<Label class="leading-5" for={field.id.value}>
-							<div class="inline-flex items-center gap-2">
-								<FieldIcon type={field.type} size={16} />
-								<span>
-									{field.name.value}
-								</span>
+
+		<svelte:fragment>
+			<div class="h-[calc(100%+48px)] -m-6">
+				{#if !$record}
+					<div
+						class="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-50 z-50 flex items-center justify-center"
+					>
+						<Spinner />
+					</div>
+				{/if}
+
+				<div class="grid grid-cols-6 h-full">
+					<div
+						class={cx(
+							'p-6 border-r dark:border-r-slate-900 h-full overflow-y-auto',
+							shouldDisplayAudits ? 'col-span-4' : 'col-span-6',
+						)}
+					>
+						<form id="updateRecord" class="space-y-5" method="POST" use:enhance>
+							<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
+								{#each fields as field}
+									<div class="h-full items-start gap-1 pt-2">
+										<Label class="leading-5" for={field.id.value}>
+											<div class="inline-flex items-center gap-2">
+												<FieldIcon type={field.type} size={16} />
+												<span>
+													{field.name.value}
+												</span>
+											</div>
+											{#if field.required}
+												<span class="text-red-500">*</span>
+											{/if}
+										</Label>
+									</div>
+									<div class="col-span-4">
+										<CellInput
+											record={$record}
+											{field}
+											bind:value={$form[field.id.value]}
+											readonly={$readonly ? true : undefined}
+										/>
+									</div>
+								{/each}
 							</div>
-							{#if field.required}
-								<span class="text-red-500">*</span>
-							{/if}
-						</Label>
+						</form>
 					</div>
-					<div class="col-span-4">
-						<CellInput
-							record={$record}
-							{field}
-							bind:value={$form[field.id.value]}
-							readonly={$readonly ? true : undefined}
-						/>
-					</div>
-				{/each}
+					{#if shouldDisplayAudits}
+						<div class="col-span-2 px-2 py-6 h-full overflow-y-auto bg-slate-50 dark:bg-slate-700">
+							<RecordAudits />
+						</div>
+					{/if}
+				</div>
 			</div>
-		</form>
+		</svelte:fragment>
 
 		<svelte:fragment slot="footer">
 			<div class="w-full flex justify-end gap-2">
-				<Button color="alternative" on:click={() => ($currentRecordId = undefined)}
-					>{$t('Cancel', { ns: 'common' })}</Button
-				>
+				<Button color="alternative" on:click={() => ($currentRecordId = undefined)}>
+					{$t('Cancel', { ns: 'common' })}
+				</Button>
 				<Button class="gap-2" type="submit" form="updateRecord" disabled={$submitting}>
 					{#if $delayed}
 						<Spinner size="5" />

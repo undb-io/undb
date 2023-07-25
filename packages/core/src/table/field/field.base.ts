@@ -8,7 +8,7 @@ import type { IFilter, IOperator } from '../filter/index.js'
 import { OptionKey } from '../option/option-key.vo.js'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from '../option/option.schema.js'
 import type { Options } from '../option/options.js'
-import type { IQueryRecordSchema, IRecordDisplayValues, Record, RecordValueJSON } from '../record/index.js'
+import type { IRecordDisplayValues, Record, RecordValueJSON, Records } from '../record/index.js'
 import type { TableCompositeSpecification } from '../specifications/interface.js'
 import type { Table } from '../table.js'
 import type { TableSchema, TableSchemaIdMap } from '../value-objects/table-schema.vo.js'
@@ -79,7 +79,7 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
     }
   }
 
-  public toEvent(records: IQueryRecordSchema[]): IBaseFieldEventSchema {
+  public toEvent(records: Records): IBaseFieldEventSchema {
     return {
       id: this.id.value,
       name: this.name.value,
@@ -211,6 +211,14 @@ export abstract class AbstractDateField<F extends IDateFieldTypes = IDateFieldTy
   abstract type: IDateFieldType
   get formatString(): string {
     return this.props.format?.unpack() ?? DEFAULT_DATE_FORMAT
+  }
+
+  override toEvent(records: Records) {
+    return {
+      ...super.toEvent(records),
+      format: this.formatString,
+      timeFormat: this.timeFormatString,
+    }
   }
 
   set format(format: DateFormat | undefined) {
@@ -352,8 +360,8 @@ export abstract class AbstractSelectField<F extends ISelectFieldTypes>
     this.props.options = options
   }
 
-  override toEvent(records: IQueryRecordSchema[]) {
-    const optionIds = records.flatMap((r) => r.values?.[this.id.value])
+  override toEvent(records: Records) {
+    const optionIds = records.flatMap((r) => r.values.value.get(this.id.value)?.json)
     return {
       ...super.toEvent(records),
       options: this.options.options.filter((o) => optionIds.includes(o.key.value)).map((o) => o.toJSON()),

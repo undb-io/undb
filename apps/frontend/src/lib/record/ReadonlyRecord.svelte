@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { currentRecordId, getRecord, getTable, getView, nextRecord, previousRecord } from '$lib/store/table'
-	import { Button, ButtonGroup, Label, Modal, P, Spinner, Toast } from 'flowbite-svelte'
+	import { currentRecordId, getRecord, getTable, getView } from '$lib/store/table'
+	import { Label, Modal, Spinner } from 'flowbite-svelte'
 	import { writable } from 'svelte/store'
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
@@ -21,7 +21,7 @@
 </script>
 
 {#key $record}
-	<Modal class="w-full" size="lg" bind:open={$open}>
+	<Modal class="w-full" size="lg" bind:open={$open} outsideclose>
 		{#if !$record}
 			<div class="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
 				<Spinner />

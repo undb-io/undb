@@ -1,5 +1,5 @@
 import { OpenAPIRegistry, OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi'
-import type { IQueryRecordSchema } from '@undb/core'
+import type { Record } from '@undb/core'
 import {
   RecordId,
   readableOptionSchema,
@@ -47,16 +47,12 @@ import { createOpenAPIMutateRecordSchema } from './schema/mutate-record.schema.j
 import { createOpenAPIRecordSchema } from './schema/open-api-record.schema.js'
 import { createCreateWebhookSchema, createUpdateWebhookSchema } from './schema/webhook.schema.js'
 
-export const createTableSchema = (
-  table: Table,
-  record?: IQueryRecordSchema,
-  host = 'http://localhost:4000',
-): OpenAPIObject => {
+export const createTableSchema = (table: Table, record?: Record, host = 'http://localhost:4000'): OpenAPIObject => {
   const registry = new OpenAPIRegistry()
 
   const recordSchema = createOpenAPIRecordSchema(table, record)
   registry.register(COMPONENT_RECORD, recordSchema)
-  registry.register(COMPONENT_RECORD_ID, recordIdSchema.openapi({ example: record?.id ?? RecordId.createId() }))
+  registry.register(COMPONENT_RECORD_ID, recordIdSchema.openapi({ example: record?.id.value ?? RecordId.createId() }))
   registry.register(COMPONENT_VIEW_ID, viewIdSchema.openapi({ example: table.mustGetView().id.value }))
   registry.register(COMPONENT_OPTION, readableOptionSchema)
   registry.register(COMPONENT_USER, recordReadableValueSchemaMap['created-by'])

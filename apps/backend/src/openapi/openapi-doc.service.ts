@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
-import type { Table } from '@undb/core'
-import { type IRecordQueryModel, type ITableRepository } from '@undb/core'
+import type { IRecordRepository, Table } from '@undb/core'
+import { type ITableRepository } from '@undb/core'
 import { createRedocHTML, createTableSchema, type IPostmanCollectionConvertor } from '@undb/openapi'
 import type { OpenAPIObject } from 'openapi3-ts/oas31'
-import { InjectRecordQueryModel } from '../core/table/adapters/sqlite/record-sqlite.query-model.js'
+import { InjectRecordRepository } from '../core/table/adapters/sqlite/record-sqlite.repository.js'
 import { InjectTableRepository } from '../core/table/adapters/sqlite/table-sqlite.repository.js'
 import { InjectPostmanConvertor } from './convertor/index.js'
 
@@ -12,16 +12,16 @@ export class OpenAPIDocService {
   constructor(
     @InjectTableRepository()
     private readonly repo: ITableRepository,
-    @InjectRecordQueryModel()
-    private readonly recordRepo: IRecordQueryModel,
+    @InjectRecordRepository()
+    private readonly recordRepo: IRecordRepository,
     @InjectPostmanConvertor()
     private readonly postmanConvertor: IPostmanCollectionConvertor,
   ) {}
 
   public async getSpec(table: Table, host: string): Promise<OpenAPIObject> {
-    const record = await this.recordRepo.findOne(table.id.value, null)
+    const record = (await this.recordRepo.findOne(table, null)).into()
 
-    const spec = createTableSchema(table, record.into(), host)
+    const spec = createTableSchema(table, record, host)
 
     return spec
   }

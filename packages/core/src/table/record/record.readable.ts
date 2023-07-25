@@ -10,7 +10,7 @@ import type { ParentField } from '../field/fields/parent/parent-field.js'
 import type { SelectField } from '../field/fields/select/select-field.js'
 import type { TreeField } from '../field/fields/tree/tree-field.js'
 import { urlReadableValueSchema } from '../field/fields/url/url-field.type.js'
-import type { CollaboratorField } from '../field/index.js'
+import type { CollaboratorField, IReferenceReadableValueSchema } from '../field/index.js'
 import {
   attachmentReadableValueSchema,
   autoIncrementReadableValueSchema,
@@ -43,19 +43,17 @@ import {
   type ReferenceField,
 } from '../field/index.js'
 import type { Table } from '../table.js'
-import type { IQueryRecordSchema } from './record.type.js'
+import type { Record } from './record.js'
 
 export const recordReadableSchema = z.record(z.any())
 
 // TODO: get value type
 export type IRecordReadable = z.infer<typeof recordReadableSchema>
 
-export const recordReadableValueMapper = (
-  record?: IQueryRecordSchema,
-): globalThis.Record<IFieldType, (field: Field) => any> => {
+export const recordReadableValueMapper = (record?: Record): globalThis.Record<IFieldType, (field: Field) => any> => {
   const values = record?.values
-  const getValue = (field: Field) => values?.[field.id.value]
-  const displayValues = record?.displayValues
+  const getValue = (field: Field) => record?.values.value.get(field.id.value)?.unpack()
+  const displayValues = record?.displayValues?.values
   return {
     string: getValue,
     number: getValue,
@@ -87,15 +85,15 @@ export const recordReadableValueMapper = (
     },
     bool: getValue,
     'date-range': getValue,
-    reference: (field) => {
+    reference: (field): IReferenceReadableValueSchema => {
       const ids = getValue(field) as string[]
-      if (!ids) return []
+      if (!ids?.length) return []
       const values = (field as ReferenceField).getDisplayValues(displayValues)
       return values.map((value, index) => ({ id: ids[index], value }))
     },
     tree: (field) => {
       const ids = getValue(field) as string[]
-      if (!ids) return []
+      if (!ids.length) return []
       const values = (field as TreeField).getDisplayValues(displayValues)
       return values.map((value, index) => ({ id: ids[index], value }))
     },
@@ -136,7 +134,7 @@ export const recordReadableValueMapper = (
   }
 }
 
-export const recordReadableMapper = (fields: Field[], record: IQueryRecordSchema): IRecordReadable => {
+export const recordReadableMapper = (fields: Field[], record: Record): IRecordReadable => {
   const result: IRecordReadable = {}
   for (const field of fields) {
     const valueMapper = recordReadableValueMapper(record)

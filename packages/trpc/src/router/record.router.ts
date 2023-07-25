@@ -23,6 +23,7 @@ import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'
+import { createRecordAuditRouter } from './audit.router.js'
 import { createParentFieldRouter } from './parent-field.router.js'
 import { createTreeFieldRouter } from './tree-field.router.js'
 
@@ -94,4 +95,5 @@ export const createRecordRouter =
         }),
       tree: createTreeFieldRouter(procedure)(queryBus),
       parent: createParentFieldRouter(procedure)(queryBus),
+      audit: createRecordAuditRouter(procedure)(commandBus, queryBus),
     })

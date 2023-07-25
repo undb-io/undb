@@ -4,7 +4,8 @@ import { z } from 'zod'
 import { baseSchemaEventSchema } from '../../field/field.type.js'
 import type { Table } from '../../table.js'
 import { recordReadableMapper, recordReadableSchema } from '../record.readable.js'
-import type { IQueryRecordSchema } from '../record.type.js'
+import type { Records } from '../record.type.js'
+import { recordIdSchema } from '../value-objects/record-id.schema.js'
 import { baseEventSchema, baseRecordEventSchema, type BaseRecordEventName } from './base-record.event.js'
 
 export const EVT_RECORD_BULK_UPDATED = 'record.bulk_updated' as const
@@ -15,6 +16,7 @@ export const recordsBulkUpdatedEventPayload = z
     schema: baseSchemaEventSchema,
     updates: z
       .object({
+        id: recordIdSchema,
         previousRecord: recordReadableSchema,
         record: recordReadableSchema,
       })
@@ -35,13 +37,15 @@ export class RecordBulkUpdatedEvent extends BaseEvent<IRecordsBulkUpdatedEventPa
     table: Table,
     previousTable: Option<Table>,
     operatorId: string,
-    previousRecords: IQueryRecordSchema[],
-    records: IQueryRecordSchema[],
+    previousRecords: Records,
+    records: Records,
     updatedFieldIds: Map<string, Set<string>>,
   ): RecordBulkUpdatedEvent {
     const recordsMap = new Map(records.map((r) => [r.id, r]))
     const fieldIds = new Set([...updatedFieldIds.values()].flatMap((f) => [...f.values()]))
-    const schema = table.schema.fields.filter((f) => fieldIds.has(f.id.value)).map((f) => f.toEvent(records))
+    const schema = table.schema.fields
+      .filter((f) => fieldIds.has(f.id.value))
+      .map((f) => f.toEvent(records.concat(previousRecords)))
     const previousSchema = previousTable.isSome()
       ? previousTable
           .unwrap()
@@ -55,8 +59,9 @@ export class RecordBulkUpdatedEvent extends BaseEvent<IRecordsBulkUpdatedEventPa
         tableId: table.id.value,
         tableName: table.name.value,
         updates: previousRecords.map((r) => {
-          const fields = table.schema.fields.filter((f) => !!updatedFieldIds.get(r.id)?.has(f.id.value))
+          const fields = table.schema.fields.filter((f) => !!updatedFieldIds.get(r.id.value)?.has(f.id.value))
           return {
+            id: r.id.value,
             previousRecord: recordReadableMapper(fields, r),
             record: recordReadableMapper(fields, recordsMap.get(r.id)!),
           }
