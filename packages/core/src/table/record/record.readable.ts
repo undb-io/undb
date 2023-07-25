@@ -87,13 +87,13 @@ export const recordReadableValueMapper = (record?: Record): globalThis.Record<IF
     'date-range': getValue,
     reference: (field): IReferenceReadableValueSchema => {
       const ids = getValue(field) as string[]
-      if (!ids) return []
+      if (!ids?.length) return []
       const values = (field as ReferenceField).getDisplayValues(displayValues)
       return values.map((value, index) => ({ id: ids[index], value }))
     },
     tree: (field) => {
       const ids = getValue(field) as string[]
-      if (!ids) return []
+      if (!ids.length) return []
       const values = (field as TreeField).getDisplayValues(displayValues)
       return values.map((value, index) => ({ id: ids[index], value }))
     },
