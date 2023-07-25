@@ -6,7 +6,7 @@ import type { WithAuditOp } from './audit-op.specification.js'
 import type { WithAuditOperator } from './audit-operaotr.specification.js'
 import type { WithAuditTableId } from './audit-table-id.specification.js'
 import type { WithAuditTarget } from './audit-target.specification.js'
-import type { WithAuditTimestamp } from './audit-timestamp.specification.js'
+import type { WithAuditAfter, WithAuditTimestamp } from './audit-timestamp.specification.js'
 
 export interface IAuditSpecVisitor {
   idEqual(s: WithAuditId): void
@@ -16,6 +16,7 @@ export interface IAuditSpecVisitor {
   targetEqual(s: WithAuditTarget): void
   detailEqual(s: WithAuditDetail): void
   tableIdEqual(s: WithAuditTableId): void
+  after(s: WithAuditAfter): void
 
   or(left: AuditSpecification, right: AuditSpecification): IAuditSpecVisitor
   not(): IAuditSpecVisitor

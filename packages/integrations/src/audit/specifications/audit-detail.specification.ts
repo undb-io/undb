@@ -10,7 +10,7 @@ export class WithAuditDetail extends CompositeSpecification<Audit, IAuditSpecVis
   }
 
   public static from(detail: object | null) {
-    return new this(new AuditDetail({ value: detail }))
+    return new this(new AuditDetail(detail === null ? { value: null } : detail))
   }
 
   isSatisfiedBy(t: Audit): boolean {

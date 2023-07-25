@@ -21,4 +21,8 @@ export const auditDetail = z.record(z.any()).nullable().or(recordUpdatedAuditDet
 
 export type IAuditDetail = z.infer<typeof auditDetail>
 
-export class AuditDetail extends ValueObject<IAuditDetail> {}
+export class AuditDetail extends ValueObject<IAuditDetail> {
+  public get value() {
+    return this.props
+  }
+}

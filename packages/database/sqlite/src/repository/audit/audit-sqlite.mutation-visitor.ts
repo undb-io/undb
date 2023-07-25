@@ -1,4 +1,5 @@
-import { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
+import { EntityManager } from '@mikro-orm/better-sqlite'
+import { wrap } from '@mikro-orm/core'
 import {
   AuditSpecification,
   IAuditSpecVisitor,
@@ -12,36 +13,44 @@ import {
   WithAuditTimestamp,
 } from '@undb/integrations'
 import { Audit } from '../../entity/audit.js'
+import { BaseEntityManager } from '../base-entity-manager.js'
 
-export class AuditSqliteQueryVisitor implements IAuditSpecVisitor {
+export class AuditSqliteMutationVisitor extends BaseEntityManager implements IAuditSpecVisitor {
   constructor(
-    private readonly em: EntityManager,
-    private qb: QueryBuilder<Audit>,
-  ) {}
+    private readonly auditId: string,
+    public readonly em: EntityManager,
+  ) {
+    super(em)
+  }
+
   tableIdEqual(s: WithAuditTableId): void {
     throw new Error('Method not implemented.')
   }
 
   idEqual(s: WithAuditId): void {
-    this.qb.andWhere({ id: s.auditId.value })
-  }
-  timestampEqual(s: WithAuditTimestamp): void {
-    this.qb.andWhere({ timestamp: s.timestamp.value })
-  }
-  op(s: WithAuditOp): void {
-    this.qb.andWhere({ op: s.op })
-  }
-  operatorEqual(s: WithAuditOperator): void {
-    this.qb.andWhere({ operator: s.operatorId })
-  }
-  targetEqual(s: WithAuditTarget): void {
-    this.qb.andWhere({ targetId: s.target.id, targetType: s.target.type })
-  }
-  detailEqual(s: WithAuditDetail): void {
     throw new Error('Method not implemented.')
   }
+  timestampEqual(s: WithAuditTimestamp): void {
+    const audit = this.em.getReference(Audit, this.auditId)
+    wrap(audit).assign({ timestamp: s.timestamp.value })
+    this.em.persist(audit)
+  }
+  op(s: WithAuditOp): void {
+    throw new Error('Method not implemented.')
+  }
+  operatorEqual(s: WithAuditOperator): void {
+    throw new Error('Method not implemented.')
+  }
+  targetEqual(s: WithAuditTarget): void {
+    throw new Error('Method not implemented.')
+  }
+  detailEqual(s: WithAuditDetail): void {
+    const audit = this.em.getReference(Audit, this.auditId)
+    wrap(audit).assign({ detail: s.detail.unpack() })
+    this.em.persist(audit)
+  }
   after(s: WithAuditAfter): void {
-    this.qb.andWhere({ timestamp: { $gt: s.timestamp.value } })
+    throw new Error('Method not implemented.')
   }
   or(left: AuditSpecification, right: AuditSpecification): IAuditSpecVisitor {
     throw new Error('Method not implemented.')

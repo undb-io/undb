@@ -1,4 +1,16 @@
-import type { IQueryAudit } from '@undb/integrations'
+import {
+  AuditFactory,
+  AuditTarget,
+  WithAuditDetail,
+  WithAuditId,
+  WithAuditOp,
+  WithAuditOperator,
+  WithAuditTableId,
+  WithAuditTarget,
+  WithAuditTimestamp,
+  type Audit as AuditDO,
+  type IQueryAudit,
+} from '@undb/integrations'
 import type { Audit } from '../../entity/audit.js'
 
 export class AuditSqliteMapper {
@@ -19,5 +31,17 @@ export class AuditSqliteMapper {
       timestamp: audit.timestamp.toISOString(),
       detail: audit.detail ?? null,
     }
+  }
+
+  static toDomain(audit: Audit): AuditDO {
+    return AuditFactory.create(
+      WithAuditId.fromString(audit.id),
+      WithAuditTimestamp.fromDate(audit.timestamp),
+      new WithAuditOp(audit.op),
+      new WithAuditOperator(audit.operator.id),
+      WithAuditDetail.from(audit.detail ?? null),
+      WithAuditTableId.from(audit.table?.id ?? ''),
+      new WithAuditTarget(new AuditTarget({ type: audit.targetType! as any, id: audit.targetId! })),
+    )
   }
 }
