@@ -1,10 +1,9 @@
 <script lang="ts">
 	import CellComponent from '$lib/cell/CellComponents/CellComponent.svelte'
-	import { getCellValue } from '$lib/cell/get-cell-value'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { currentRecordId, getTable, getView } from '$lib/store/table'
 	import type { AttachmentFieldValue, Field, Record } from '@undb/core'
-	import { Card, Dropzone, Tooltip, Carousel } from 'flowbite-svelte'
+	import { Card, Tooltip, Carousel } from 'flowbite-svelte'
 	import { fade } from 'svelte/transition'
 
 	export let field: Field
@@ -22,14 +21,6 @@
 	}))
 
 	$: fields = $table.getOrderedFields($view, false).filter((f) => f.id.value !== field.id.value)
-
-	function dropHandle(e: DragEvent): void {
-		throw new Error('Function not implemented.')
-	}
-
-	function handleChange(e: Event): void {
-		throw new Error('Function not implemented.')
-	}
 </script>
 
 <Card
@@ -49,7 +40,7 @@
 	</div>
 	<div class="flex flex-col gap-2">
 		{#each fields as field}
-			{@const value = record.values.valuesPair[field.id.value]}
+			{@const value = record.values.value.get(field.id.value)}
 			<div class="flex items-center gap-2 dark:text-gray-200">
 				<FieldIcon size={20} type={field.type} />
 				<Tooltip
@@ -61,7 +52,7 @@
 				>
 					{field.name.value}
 				</Tooltip>
-				<CellComponent {field} value={getCellValue(field, value)} displayValues={record.displayValues?.unpack()} />
+				<CellComponent {record} {field} {value} displayValues={record.displayValues?.unpack()} />
 			</div>
 		{/each}
 	</div>

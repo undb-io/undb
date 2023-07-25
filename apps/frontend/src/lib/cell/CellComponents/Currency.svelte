@@ -6,4 +6,6 @@
 	export let field: CurrencyField
 </script>
 
-<CurrencyComponent value={value?.unpack()} symbol={field.symbol.symbol} />
+{#if value}
+	<CurrencyComponent value={value?.unpack()} symbol={field.symbol.symbol} />
+{/if}

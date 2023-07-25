@@ -2,11 +2,11 @@
 	import type { IRecordDisplayValues, ReferenceField, ReferenceFieldValue } from '@undb/core'
 	import ReferenceComponent from './ReferenceComponent.svelte'
 
-	export let value: ReferenceFieldValue
+	export let value: ReferenceFieldValue | undefined
 	export let field: ReferenceField
 	export let displayValues: IRecordDisplayValues
 
-	$: unpacked = value.unpack() ?? []
+	$: unpacked = value?.unpack() ?? []
 	$: values = field.getDisplayValues(displayValues)
 </script>
 

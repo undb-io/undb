@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { UpdatedAtField, UpdatedAtFieldValue } from '@undb/core'
+	import type { Record, UpdatedAtField } from '@undb/core'
 	import DateComponent from './DateComponent.svelte'
 
-	export let value: UpdatedAtFieldValue
+	export let record: Record
 	export let field: UpdatedAtField
 </script>
 
-<DateComponent value={value.unpack()} formatString={field.formatString} />
+<DateComponent value={record.updatedAt.value} formatString={field.formatString} />

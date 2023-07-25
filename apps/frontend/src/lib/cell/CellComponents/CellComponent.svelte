@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Field, IFieldType, Option, RecordAllValueType } from '@undb/core'
+	import type { Field, FieldValue, IFieldType, Option, Record, RecordAllValueType } from '@undb/core'
 	import type { ComponentType } from 'svelte'
 	import String from './String.svelte'
 	import Number from './Number.svelte'
@@ -19,11 +19,14 @@
 	import Parent from './Parent.svelte'
 	import Currency from './Currency.svelte'
 	import Url from '../CellInput/Url.svelte'
+	import CreatedBy from './CreatedBy.svelte'
+	import UpdatedBy from './UpdatedBy.svelte'
 
 	export let field: Field
-	export let value: RecordAllValueType | Option
+	export let value: FieldValue | undefined
+	export let record: Record
 
-	const map: Record<IFieldType, ComponentType> = {
+	const map: globalThis.Record<IFieldType, ComponentType> = {
 		string: String,
 		number: Number,
 		id: Id,
@@ -51,12 +54,10 @@
 		collaborator: Collaborator,
 		min: Number,
 		max: Number,
-		'created-by': String,
-		'updated-by': String,
+		'created-by': CreatedBy,
+		'updated-by': UpdatedBy,
 		url: Url,
 	}
 </script>
 
-{#if value}
-	<svelte:component this={map[field.type]} {value} {field} {...$$restProps} />
-{/if}
+<svelte:component this={map[field.type]} {value} {field} {record} {...$$restProps} />
