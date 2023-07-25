@@ -8,4 +8,6 @@
 	$: rating = value?.unpack() ?? 0
 </script>
 
-<RatingComponent value={rating} max={field.max} />
+{#if value}
+	<RatingComponent value={rating} max={field.max} />
+{/if}

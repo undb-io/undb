@@ -1,7 +1,9 @@
 <script lang="ts">
 	import type { NumberFieldValue } from '@undb/core'
 
-	export let value: NumberFieldValue
+	export let value: NumberFieldValue | undefined
 </script>
 
-<span>{value.unpack()}</span>
+{#if value}
+	<span>{value.unpack()}</span>
+{/if}

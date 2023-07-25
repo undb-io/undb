@@ -1,8 +1,13 @@
 <script lang="ts">
-	import type { Option as CoreOption } from '@undb/core'
+	import type { MultiSelectField, MultiSelectFieldValue } from '@undb/core'
 	import Option from '$lib/option/Option.svelte'
 
-	export let value: CoreOption
+	export let value: MultiSelectFieldValue | undefined
+	export let field: MultiSelectField
+
+	$: options = value?.getOptions(field) ?? []
 </script>
 
-<Option option={value} />
+{#each options as option}
+	<Option {option} />
+{/each}
