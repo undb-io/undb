@@ -46,4 +46,6 @@ export type ICreateAttachmentFieldValue_internal = z.infer<typeof createAttachme
 
 export const attachmentReadableValueSchema = attachmentFieldQueryValue
 
+export type IAttachmentReadableValueSchema = z.infer<typeof attachmentReadableValueSchema>
+
 export type IAttachmentField = IBaseField

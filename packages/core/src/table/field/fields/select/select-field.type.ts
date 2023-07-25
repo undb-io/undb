@@ -66,6 +66,8 @@ export const isSelectField = z.instanceof(SelectField)
 
 export const selectReadableValueSchema = readableOptionSchema
 
+export type ISelectReadableValueSchema = z.infer<typeof selectReadableValueSchema>
+
 export type ISelectField = IBaseField & {
   options: Options
 }

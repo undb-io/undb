@@ -1,8 +1,7 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import CellComponent from '$lib/cell/CellComponents/CellComponent.svelte'
-	import { getCellValue } from '$lib/cell/get-cell-value'
-	import { getTable, readonly } from '$lib/store/table'
+	import { getTable, getView, readonly } from '$lib/store/table'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import type { Record } from '@undb/core'
 	import { Card, Tooltip } from 'flowbite-svelte'
@@ -10,8 +9,9 @@
 
 	export let record: Record
 	const table = getTable()
+	const view = getView()
 
-	$: values = record.values.valuesPair
+	$: fields = $table.getOrderedFields($view)
 </script>
 
 <Card
@@ -22,14 +22,14 @@
 	)}
 	{...$$restProps}
 >
-	{#each Object.entries(values) as [key, value]}
-		{@const field = $table.schema.getFieldById(key).unwrap()}
+	{#each fields as field}
+		{@const value = record.values.value.get(field.id.value)}
 		<div class="flex items-center gap-2 dark:text-gray-200">
 			<FieldIcon size={20} type={field.type} />
 			<Tooltip class="z-[999]" transition={fade} params={{ delay: 100, duration: 200 }} placement="left" arrow={false}>
 				{field.name.value}
 			</Tooltip>
-			<CellComponent {field} value={getCellValue(field, value)} displayValues={record.displayValues?.unpack()} />
+			<CellComponent {record} {field} {value} displayValues={record.displayValues?.unpack()} />
 		</div>
 	{/each}
 </Card>

@@ -1,10 +1,10 @@
-import { recordReadableValueMapper, type IQueryRecordSchema, type Table } from '@undb/core'
+import { Record, recordReadableValueMapper, type Table } from '@undb/core'
 import { COMPONENT_RECORD } from 'src/constants'
 import type { ZodRawShape } from 'zod'
 import { z } from 'zod'
 import { createOpenAPIRecordValueSchema } from './record-value.schema.js'
 
-export const createOpenAPIRecordSchema = (table: Table, record?: IQueryRecordSchema) => {
+export const createOpenAPIRecordSchema = (table: Table, record?: Record) => {
   const fields = table.schema.fields
   const mapper = recordReadableValueMapper(record)
 

@@ -51,7 +51,7 @@
 	<div class="flex items-center space-x-5 justify-between">
 		<P class="text-sm !text-gray-700 dark:!text-gray-100">{@html $t('Selected N Records', { n: $selectedCount })}</P>
 
-		<ButtonGroup>
+		<ButtonGroup size="xs">
 			<Button
 				size="xs"
 				color="blue"
@@ -69,7 +69,7 @@
 			<Button size="xs" color="blue" class="!pl-1">
 				<Chevron />
 			</Button>
-			<Dropdown style="z-index: 50;" placement="top">
+			<Dropdown style="z-index: 50;" placement="top" class="w-48">
 				<DropdownItem class="text-red-400" on:click={() => ($confirmBulkDeleteRecords = true)}>
 					{#if $bulkDeleteRecordsMutation.isLoading}
 						<Spinner class="mr-3" size="4" />

@@ -59,4 +59,6 @@ export const treeReadableValueSchema = z
   })
   .array()
 
+export type ITreeReadableValueSchema = z.infer<typeof treeReadableValueSchema>
+
 export type ITreeField = IBaseField & { parentFieldId?: FieldId; displayFields?: DisplayFields }

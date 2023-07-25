@@ -57,4 +57,6 @@ export const isMultiSelectField = z.instanceof(MultiSelectField)
 
 export const multiSelectReadableValueSchema = readableOptionSchema.array()
 
+export type IMultiSelectReadableValueSchema = z.infer<typeof multiSelectReadableValueSchema>
+
 export type IMultiSelectField = IBaseField & { options: Options }

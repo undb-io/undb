@@ -1,6 +1,6 @@
-import { RecordEvents } from '@undb/core'
-import { IEventHandler } from '@undb/domain'
-import { Subject } from 'rxjs'
+import type { RecordEvents } from '@undb/core'
+import type { IEventHandler } from '@undb/domain'
+import type { Subject } from 'rxjs'
 
 export abstract class RealtimeEventsHandler implements IEventHandler<RecordEvents> {
   protected abstract subjects: Map<string, Subject<RecordEvents>>

@@ -1,8 +1,13 @@
 <script lang="ts">
-	import type { Option as CoreOption } from '@undb/core'
+	import type { SelectField, SelectFieldValue } from '@undb/core'
 	import Option from '$lib/option/Option.svelte'
 
-	export let value: CoreOption
+	export let field: SelectField
+	export let value: SelectFieldValue | undefined
+
+	$: option = value?.getOption(field).into()
 </script>
 
-<Option option={value} />
+{#if option}
+	<Option {option} />
+{/if}

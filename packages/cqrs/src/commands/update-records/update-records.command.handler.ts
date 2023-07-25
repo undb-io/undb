@@ -1,17 +1,16 @@
 import { WithRecordIds, type IRecordRepository, type ITableRepository } from '@undb/core'
 import { type ICommandHandler } from '@undb/domain'
-import type { UpdateRecordsCommand } from './update-records.command.js'
 import { createUpdateRecordsCommandInput } from './update-records.command.input.js'
+import type { UpdateRecordsCommand } from './update-records.command.js'
 
 export class UpdateRecordsCommandHandler implements ICommandHandler<UpdateRecordsCommand, void> {
   constructor(protected readonly tableRepo: ITableRepository, protected readonly recordRepo: IRecordRepository) {}
 
   async execute(command: UpdateRecordsCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
-    const schema = table.schema.toIdMap()
 
     const withIds = WithRecordIds.fromIds(command.records.map((r) => r.id))
-    const records = await this.recordRepo.find(table.id.value, withIds, schema)
+    const records = await this.recordRepo.find(table, withIds)
 
     await createUpdateRecordsCommandInput(table.schema.fields).parseAsync(command)
 
@@ -21,6 +20,6 @@ export class UpdateRecordsCommandHandler implements ICommandHandler<UpdateRecord
       spec: record.updateRecord(table.schema, map.get(record.id.value) ?? {}),
     }))
 
-    await this.recordRepo.updateManyByIds(table, schema, updates)
+    await this.recordRepo.updateManyByIds(table, updates)
   }
 }

@@ -8,7 +8,8 @@
     "@undb/domain": "^0.0.0",
     "@undb/integrations": "^0.0.0",
     "oxide.ts": "^1.1.0",
-    "ts-pattern": "^5.0.3",
+    "p-map": "^6.0.0",
+    "ts-pattern": "^5.0.4",
     "zod": "^3.21.4"
   },
   "devDependencies": {

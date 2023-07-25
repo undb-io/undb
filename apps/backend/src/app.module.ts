@@ -13,6 +13,7 @@ import { LoggerModule } from 'nestjs-pino'
 import path from 'path'
 import { v4 as uuid } from 'uuid'
 import { AttachmentModule } from './attachment/attachment.module.js'
+import { AuditModule } from './audit/audit.module.js'
 import { AuthModule } from './auth/auth.module.js'
 import { authConfig } from './configs/auth.config.js'
 import { BaseConfigService } from './configs/base-config.service.js'
@@ -78,6 +79,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
     WebhookModule.register({}),
     RealtimeModule,
     ShareModule,
+    AuditModule,
   ],
 })
 export class AppModule implements OnModuleInit {
@@ -90,7 +92,8 @@ export class AppModule implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    const em = this.orm.em as EntityManager
+    const em = this.orm.em.fork() as EntityManager
+
     if (this.config.seed) {
       this.logger.log('seeding data...')
       await em.getConnection().loadFile(path.resolve(process.cwd(), '../../data/data.sql')).catch(console.error)

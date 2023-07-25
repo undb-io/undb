@@ -55,4 +55,6 @@ export const parentReadableValueSchema = z.object({
   value: z.any().array(),
 })
 
+export type IParentReadableValueSchema = z.infer<typeof parentReadableValueSchema>
+
 export type IParentField = IBaseField & { treeFieldId: FieldId; displayFields?: DisplayFields }

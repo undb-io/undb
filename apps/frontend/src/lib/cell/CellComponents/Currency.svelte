@@ -1,13 +1,11 @@
 <script lang="ts">
 	import type { CurrencyField, CurrencyFieldValue } from '@undb/core'
+	import CurrencyComponent from './CurrencyComponent.svelte'
 
 	export let value: CurrencyFieldValue | undefined
 	export let field: CurrencyField
-
-	$: currency = value?.unpack() ?? 0
 </script>
 
-<div class="flex items-center gap-2">
-	<span>{field.symbol.symbol}</span>
-	<span>{currency}</span>
-</div>
+{#if value}
+	<CurrencyComponent value={value?.unpack()} symbol={field.symbol.symbol} />
+{/if}

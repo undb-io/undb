@@ -1,7 +1,9 @@
 <script lang="ts">
 	import type { StringFieldValue } from '@undb/core'
 
-	export let value: StringFieldValue
+	export let value: StringFieldValue | undefined
 </script>
 
-<span>{value.unpack() ?? ''} </span>
+{#if value}
+	<span>{value?.unpack() ?? ''} </span>
+{/if}

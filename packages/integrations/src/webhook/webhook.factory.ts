@@ -11,7 +11,7 @@ import {
   newWebhookSpec,
 } from './specifications/index.js'
 import { Webhook } from './webhook.js'
-import { ICreateWebhookSchema } from './webhook.schema.js'
+import type { ICreateWebhookSchema } from './webhook.schema.js'
 import type { IUnsafeCreateWebhook } from './webhook.type.js'
 
 export class WebhookFactory {

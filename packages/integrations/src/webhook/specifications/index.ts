@@ -1,6 +1,6 @@
 import { and } from '@undb/domain'
-import { ICreateWebhookSchema } from '../webhook.schema.js'
-import { WebhookSpecification } from './interface.js'
+import type { ICreateWebhookSchema } from '../webhook.schema.js'
+import type { WebhookSpecification } from './interface.js'
 import { WithWebhookEnabled } from './webhook-enabled.specification.js'
 import { WithWebhookHeaders } from './webhook-headers.specification.js'
 import { WithWebhookId } from './webhook-id.specification.js'

@@ -3,6 +3,7 @@ import type { Option } from '../../../option/index.js'
 import { FieldValueBase } from '../../field-value.base.js'
 import type { IFieldValueVisitor } from '../../field-value.visitor.js'
 import type { FieldValue } from '../../field.type.js'
+import type { MultiSelectField } from './multi-select-field.js'
 import type { IMultiSelectFieldValue } from './multi-select-field.type.js'
 
 export class MultiSelectFieldValue extends FieldValueBase<IMultiSelectFieldValue> {
@@ -24,6 +25,11 @@ export class MultiSelectFieldValue extends FieldValueBase<IMultiSelectFieldValue
 
   unpack(): string[] | null {
     return Array.isArray(this.props) ? this.props : null
+  }
+
+  getOptions(field: MultiSelectField): Option[] {
+    const optionIds = this.unpack() ?? []
+    return optionIds.map((optionId) => field.options.getById(optionId).into()).filter(Boolean) as Option[]
   }
 
   accept(visitor: IFieldValueVisitor): void {

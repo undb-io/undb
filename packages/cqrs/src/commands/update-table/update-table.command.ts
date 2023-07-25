@@ -1,4 +1,4 @@
-import { IUpdateTableSchemaSchema } from '@undb/core'
+import type { IUpdateTableSchemaSchema } from '@undb/core'
 import type { CommandProps } from '@undb/domain'
 import { Command } from '@undb/domain'
 import type { IUpdateTableCommandInput } from './update-table.command.interface.js'

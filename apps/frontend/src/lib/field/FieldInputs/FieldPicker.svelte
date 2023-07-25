@@ -47,9 +47,8 @@
 	{#if filteredFields.length}
 		{#each filteredFields as field (field.id)}
 			<Radio value={field.id} bind:group={value} custom on:change={() => (open = false)}>
-				<div
-					role="listitem"
-					class="w-full pr-4 flex justify-between hover:bg-gray-100 transition cursor-pointer dark:text-white dark:hover:!text-gray-600"
+				<li
+					class="w-full px-3 py-2 flex justify-between hover:bg-gray-100 transition cursor-pointer dark:text-white dark:hover:!text-gray-600"
 					class:bg-gray-100={selected?.id === field.id}
 				>
 					<div
@@ -68,7 +67,7 @@
 							<i class="ti ti-check text-sm dark:text-gray-600" />
 						{/if}
 					</span>
-				</div>
+				</li>
 			</Radio>
 		{/each}
 	{:else}

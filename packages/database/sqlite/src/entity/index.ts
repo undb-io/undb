@@ -1,4 +1,5 @@
 import { Attachment } from './attachment.js'
+import { Audit } from './audit.js'
 import { Field, fieldEntities } from './field.js'
 import { Form } from './form.js'
 import { Option } from './option.js'
@@ -10,6 +11,7 @@ import { viewEntities } from './view.js'
 import { visualizationEntities } from './visualization.js'
 import { Webhook } from './webhook.js'
 
+export * from './audit.js'
 export * from './field.js'
 export * from './option.js'
 export * from './outbox.js'
@@ -30,4 +32,5 @@ export const entities = [
   Outbox,
   Webhook,
   Share,
+  Audit,
 ]

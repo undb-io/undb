@@ -76,7 +76,7 @@
 		}}
 	>
 		<i class="ti ti-plus" />
-		<span>{$t('Create New Date Field')}</span>
-		<FieldIcon type="date" />
+		<span>{$t('Create New Attachment Field')}</span>
+		<FieldIcon type="attachment" />
 	</Button>
 </div>

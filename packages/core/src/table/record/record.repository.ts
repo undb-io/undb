@@ -1,20 +1,19 @@
 import type { Option } from 'oxide.ts'
 import type { Table } from '../table.js'
-import type { TableSchemaIdMap } from '../value-objects/index.js'
 import type { Record } from './record.js'
 import type { IRecordSpec } from './specifications/interface.js'
 
 export interface IRecordRepository {
-  insert(table: Table, record: Record, schema: TableSchemaIdMap): Promise<void>
-  insertMany(table: Table, records: Record[], schema: TableSchemaIdMap): Promise<void>
+  insert(table: Table, record: Record): Promise<void>
+  insertMany(table: Table, records: Record[]): Promise<void>
 
-  findOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<Option<Record>>
-  findOne(tableId: string, spec: IRecordSpec | null, schema: TableSchemaIdMap): Promise<Option<Record>>
-  find(tableId: string, spec: IRecordSpec, schema: TableSchemaIdMap): Promise<Record[]>
+  findOneById(table: Table, id: string): Promise<Option<Record>>
+  findOne(table: Table, spec: IRecordSpec | null): Promise<Option<Record>>
+  find(table: Table, spec: IRecordSpec): Promise<Record[]>
 
-  updateOneById(table: Table, id: string, schema: TableSchemaIdMap, spec: IRecordSpec): Promise<void>
-  updateManyByIds(table: Table, schema: TableSchemaIdMap, updates: { id: string; spec: IRecordSpec }[]): Promise<void>
+  updateOneById(table: Table, id: string, spec: IRecordSpec): Promise<void>
+  updateManyByIds(table: Table, updates: { id: string; spec: IRecordSpec }[]): Promise<void>
 
-  deleteOneById(tableId: string, id: string, schema: TableSchemaIdMap): Promise<void>
-  deleteManyByIds(table: Table, ids: string[], schema: TableSchemaIdMap): Promise<void>
+  deleteOneById(table: Table, id: string): Promise<void>
+  deleteManyByIds(table: Table, ids: string[]): Promise<void>
 }

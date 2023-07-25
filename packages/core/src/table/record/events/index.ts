@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { Table } from '../../table.js'
+import type { Table } from '../../table.js'
 import { createRecordReadableValueSchema } from '../record.readable.js'
 import {
   EVT_RECORD_BULK_CREATED,
@@ -89,13 +89,22 @@ export const createRecordEventReadableValueSchema = (table: Table) => {
     ),
     recordUpdatedEvent.merge(
       z.object({
-        payload: recordUpdatedEventPayload.merge(z.object({ previousRecord: record, record })),
+        payload: recordUpdatedEventPayload.merge(
+          z.object({
+            previousRecord: record.partial(),
+            record: record.partial(),
+          }),
+        ),
       }),
     ),
     recordDeletedEvent,
     recordsBulkCreatedEvent.merge(
       z.object({
-        payload: recordsBulkCreatedEventPayload.merge(z.object({ records: record.array() })),
+        payload: recordsBulkCreatedEventPayload.merge(
+          z.object({
+            records: record.partial().array(),
+          }),
+        ),
       }),
     ),
     recordsBulkUpdatedEvent.merge(

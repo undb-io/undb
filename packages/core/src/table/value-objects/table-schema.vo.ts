@@ -11,6 +11,7 @@ import { UpdatedAtField } from '../field/fields/updated-at/updated-at-field.js'
 import type {
   AggregateFieldType,
   Field,
+  IBaseSchemaEventSchema,
   ICreateFieldSchema,
   IFieldType,
   LookingFieldTypes,
@@ -32,6 +33,7 @@ import {
   isSearchable,
 } from '../field/index.js'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema.js'
+import type { Records } from '../record/record.type.js'
 import { WithNewField } from '../specifications/table-field.specification.js'
 import type { ICalendarField } from '../view/calendar/index.js'
 import type { IGalleryField, IGanttField, IKanbanField, ITreeViewField } from '../view/index.js'
@@ -84,6 +86,10 @@ export class TableSchema extends ValueObject<Field[]> {
       UpdatedAtField.default(ctx.t('updated-at', { lng: ctx.lang })),
       UpdatedByField.default(ctx.t('updated-by', { lng: ctx.lang })),
     ])
+  }
+
+  public toEvent(records: Records): IBaseSchemaEventSchema {
+    return this.fields.map((f) => f.toEvent(records))
   }
 
   static unsafeCreate(inputs: ICreateTableSchemaInput): TableSchema {

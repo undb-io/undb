@@ -18,7 +18,7 @@ export class ExportGridCommandHandler implements ICommandHandler<ExportGridComma
       .map((s) => (filter.isNone() ? s : s.and(filter.unwrap())))
       .unwrap()
 
-    const records = await this.recordRepo.find(table.id.value, spec, table.schema.toIdMap())
+    const records = await this.recordRepo.find(table, spec)
 
     const exportor = this.service.getExportor(command.type)
 

@@ -8,6 +8,6 @@ export class DeleteRecordCommandHandler implements ICommandHandler<DeleteRecordC
   async execute(command: DeleteRecordCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
 
-    await this.recordRepo.deleteOneById(table.id.value, command.id, table.schema.toIdMap())
+    await this.recordRepo.deleteOneById(table, command.id)
   }
 }

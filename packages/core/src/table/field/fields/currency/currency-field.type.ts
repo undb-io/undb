@@ -44,4 +44,6 @@ export type ICreateCurrencyFieldValue_internal = z.infer<typeof createCurrencyFi
 
 export const currencyReadableValueSchema = currencyFieldQueryValue
 
+export type ICurrencyReadableValueSchema = z.infer<typeof currencyReadableValueSchema>
+
 export type ICurrencyField = IBaseField & { symbol: CurrencySymbol }

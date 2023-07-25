@@ -1,6 +1,7 @@
 import { BaseEvent } from '@undb/domain'
 import { z } from 'zod'
 import type { Table } from '../../table.js'
+import type { Records } from '../record.type.js'
 import { recordIdSchema } from '../value-objects/record-id.schema.js'
 import { baseEventSchema, baseRecordEventSchema, type BaseRecordEventName } from './base-record.event.js'
 
@@ -8,7 +9,12 @@ export const EVT_RECORD_BULK_DELETED = 'record.bulk_deleted' as const
 
 export const recordsBulkDeletedEventPayload = z
   .object({
-    ids: recordIdSchema.array(),
+    records: z
+      .object({
+        id: recordIdSchema,
+        name: z.string(),
+      })
+      .array(),
   })
   .merge(baseRecordEventSchema)
 
@@ -21,12 +27,15 @@ export const recordsBulkDeletedEvent = z
 export class RecordBulkDeletedEvent extends BaseEvent<IRecordsBulkDeletedEventPayload, BaseRecordEventName> {
   public readonly name = EVT_RECORD_BULK_DELETED
 
-  static from(table: Table, operatorId: string, ids: string[]): RecordBulkDeletedEvent {
+  static from(table: Table, operatorId: string, records: Records): RecordBulkDeletedEvent {
     return new this(
       {
         tableId: table.id.value,
         tableName: table.name.value,
-        ids,
+        records: records.map((r) => ({
+          id: r.id.value,
+          name: r.getDisplayFieldsValue(table),
+        })),
       },
       operatorId,
     )
