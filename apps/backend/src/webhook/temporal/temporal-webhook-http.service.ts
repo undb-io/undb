@@ -16,25 +16,23 @@ export class TemporalWebhookHttpService implements IWebhookHttpService {
     private readonly signatureService: WebhookSignatureService,
   ) {}
 
-  async send(webhooks: Webhook[], event: IEvent) {
+  async send(webhook: Webhook, event: IEvent) {
     try {
-      for (const webhook of webhooks) {
-        const signature = this.signatureService.sign(webhook, event)
+      const signature = this.signatureService.sign(webhook, event)
 
-        const headers = webhook.mergedHeaders(signature)
-        const url = webhook.url.unpack()
-        const body = webhook.constructEvent(event)
-        const method = webhook.method.unpack()
+      const headers = webhook.mergedHeaders(signature)
+      const url = webhook.url.unpack()
+      const body = webhook.constructEvent(event)
+      const method = webhook.method.unpack()
 
-        const workflowId = webhook.id.value + '_' + event.id
-        await this.client.workflow.start(executeWebhookWorkflow, {
-          args: [{ headers, url, body, method }],
-          taskQueue: 'undb_webhook',
-          workflowId,
-        })
+      const workflowId = webhook.id.value + '_' + event.id
+      await this.client.workflow.start(executeWebhookWorkflow, {
+        args: [{ headers, url, body, method }],
+        taskQueue: 'undb_webhook',
+        workflowId,
+      })
 
-        this.logger.info('temporal webhook http workflow executed %s', workflowId)
-      }
+      this.logger.info('temporal webhook http workflow executed %s', workflowId)
     } catch (error) {
       this.logger.error(error)
     }

@@ -1,8 +1,8 @@
 import { BaseEvent } from '@undb/domain'
 import { z } from 'zod'
 import type { Table } from '../../table.js'
-import { RecordFactory } from '../record.factory.js'
-import type { IQueryRecordSchema } from '../record.type.js'
+import type { Record } from '../record.js'
+import { queryRecordSchema } from '../record.type.js'
 import { recordIdSchema } from '../value-objects/index.js'
 import { baseEventSchema, baseRecordEventSchema, type BaseRecordEventName } from './base-record.event.js'
 
@@ -21,19 +21,31 @@ export const recordDeletedEvent = z
   .object({ name: z.literal(EVT_RECORD_DELETED), payload: recordDeletedEventPayload })
   .merge(baseEventSchema)
 
-export class RecordDeletedEvent extends BaseEvent<IRecordDeletedEventPayload, BaseRecordEventName> {
+export const recordDeletedEventMeta = z.object({
+  record: queryRecordSchema,
+})
+
+export type IRecordDeletedEventMeta = z.infer<typeof recordDeletedEventMeta>
+
+export class RecordDeletedEvent extends BaseEvent<
+  IRecordDeletedEventPayload,
+  BaseRecordEventName,
+  IRecordDeletedEventMeta
+> {
   public readonly name = EVT_RECORD_DELETED
 
-  static from(table: Table, operatorId: string, record: IQueryRecordSchema): RecordDeletedEvent {
-    const dr = RecordFactory.fromQuery(record, table.schema.toIdMap()).unwrap()
+  static from(table: Table, operatorId: string, record: Record): RecordDeletedEvent {
     return new this(
       {
-        id: record.id,
+        id: record.id.value,
         tableId: table.id.value,
         tableName: table.name.value,
-        name: dr.getDisplayFieldsValue(table),
+        name: record.getDisplayFieldsValue(table),
       },
       operatorId,
+      {
+        record: record.toQuery(table.id.value),
+      },
     )
   }
 }

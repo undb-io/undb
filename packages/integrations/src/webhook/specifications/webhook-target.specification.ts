@@ -1,3 +1,4 @@
+import { EVT_RECORD_ALL } from '@undb/core'
 import { CompositeSpecification } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
@@ -89,5 +90,7 @@ export class WithWebhookEvent extends CompositeSpecification<Webhook, IWebhookSp
 }
 
 export const withTableEvents = (tableId: string, events: string[]) => {
-  return new WithWebhookTable(tableId).and(new WebhookEventsIn(events)).and(WithWebhookEnabled.enabled())
+  return new WithWebhookTable(tableId)
+    .and(new WebhookEventsIn([EVT_RECORD_ALL, ...events]))
+    .and(WithWebhookEnabled.enabled())
 }

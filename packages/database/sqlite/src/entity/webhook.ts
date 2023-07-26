@@ -18,7 +18,7 @@ export class Webhook extends BaseEntity {
     this.event = webhook.target?.event ?? null
     this.enabled = webhook.enabled
     this.headers = webhook.headers.unpack()
-    this.filter = webhook.filter.into()
+    this.filter = webhook.filter.into()?.value
   }
 
   @PrimaryKey()

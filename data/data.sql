@@ -1532,6 +1532,7 @@ CREATE TABLE `undb_outbox` (
 	`name` text null,
 	`operator_id` text null,
 	`payload` json not null,
+	`meta` json null,
 	primary key (`uuid`)
 );
 CREATE TABLE `undb_webhook` (
@@ -1546,7 +1547,7 @@ CREATE TABLE `undb_webhook` (
 	`target_id` text null,
 	`target_type` text null,
 	`event` text null,
-	`enabled` integer not null default false,
+	`enabled` integer not null default false, filter json null,
 	primary key (`id`)
 );
 CREATE TABLE `undb_share` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `target_id` text null, `target_type` text null, `enabled` integer not null default false, primary key (`id`));

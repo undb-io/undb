@@ -5,6 +5,7 @@ import { baseSchemaEventSchema } from '../../field/field.type.js'
 import type { Table } from '../../table.js'
 import type { Record } from '../record.js'
 import { recordReadableMapper, recordReadableSchema } from '../record.readable.js'
+import { queryRecordSchema } from '../record.type.js'
 import { recordIdSchema } from '../value-objects/record-id.schema.js'
 import { baseEventSchema, baseRecordEventSchema, type BaseRecordEventName } from './base-record.event.js'
 
@@ -23,10 +24,23 @@ export const recordUpdatedEventPayload = z
 type IRecordUpdatedEventPayload = z.infer<typeof recordUpdatedEventPayload>
 
 export const recordUpdatedEvent = z
-  .object({ name: z.literal(EVT_RECORD_UPDATED), payload: recordUpdatedEventPayload })
+  .object({
+    name: z.literal(EVT_RECORD_UPDATED),
+    payload: recordUpdatedEventPayload,
+  })
   .merge(baseEventSchema)
 
-export class RecordUpdatedEvent extends BaseEvent<IRecordUpdatedEventPayload, BaseRecordEventName> {
+export const recordUpdatedEventMeta = z.object({
+  record: queryRecordSchema,
+})
+
+export type IRecordUpdatedEventMeta = z.infer<typeof recordUpdatedEventMeta>
+
+export class RecordUpdatedEvent extends BaseEvent<
+  IRecordUpdatedEventPayload,
+  BaseRecordEventName,
+  IRecordUpdatedEventMeta
+> {
   public readonly name = EVT_RECORD_UPDATED
 
   static from(
@@ -57,6 +71,9 @@ export class RecordUpdatedEvent extends BaseEvent<IRecordUpdatedEventPayload, Ba
         record: recordReadableMapper(fields, record),
       },
       operatorId,
+      {
+        record: record.toQuery(table.id.value),
+      },
     )
   }
 }

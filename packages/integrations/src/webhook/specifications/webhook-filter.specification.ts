@@ -1,7 +1,7 @@
-import type { IRootFilter } from '@undb/core'
+import { RootFilter, type IRootFilter } from '@undb/core'
 import { CompositeSpecification } from '@undb/domain'
 import type { Result } from 'oxide.ts'
-import { Ok, Option } from 'oxide.ts'
+import { None, Ok, Some } from 'oxide.ts'
 import type { Webhook } from '../webhook'
 import type { IWebhookSpecVisitor } from './interface'
 
@@ -15,7 +15,8 @@ export class WithWebhookFilter extends CompositeSpecification<Webhook, IWebhookS
   }
 
   mutate(t: Webhook): Result<Webhook, string> {
-    t.filter = Option(this.filter)
+    const filter = this.filter ? Some(new RootFilter(this.filter)) : None
+    t.filter = filter
     return Ok(t)
   }
 

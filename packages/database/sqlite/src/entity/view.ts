@@ -1,4 +1,3 @@
-import type { Rel } from '@mikro-orm/core'
 import {
   ArrayType,
   Cascade,
@@ -13,8 +12,8 @@ import {
   PrimaryKey,
   Property,
   StringType,
+  type Rel,
 } from '@mikro-orm/core'
-import type { IViewRowHeight } from '@undb/core'
 import {
   viewRowHeights,
   type Calendar as CoreCalendar,
@@ -28,6 +27,7 @@ import {
   type IViewDisplayType,
   type IViewFieldOption,
   type IViewPinnedFields,
+  type IViewRowHeight,
 } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Table } from './table.js'

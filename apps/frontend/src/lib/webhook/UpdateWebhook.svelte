@@ -5,7 +5,7 @@
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import { recordEvents } from '@undb/core'
-	import type { IQueryWebhook, createWebhookSchema, updateWebhookSchema } from '@undb/integrations'
+	import type { IQueryWebhook, updateWebhookSchema } from '@undb/integrations'
 	import { Button, Input, Label, Select, Toast } from 'flowbite-svelte'
 	import { keys, isEmpty, pick } from 'lodash-es'
 	import { slide } from 'svelte/transition'
@@ -30,6 +30,7 @@
 		dataType: 'json',
 		applyAction: true,
 		taintedMessage: null,
+		resetForm: false,
 		async onUpdate(event) {
 			const taintedKeys = keys($tainted)
 			if (isEmpty(taintedKeys)) return

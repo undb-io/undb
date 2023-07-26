@@ -68,6 +68,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "json"
+        },
+        "meta": {
+          "name": "meta",
+          "type": "json",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
         }
       },
       "name": "undb_outbox",
@@ -2327,6 +2336,15 @@
           "nullable": false,
           "default": "false",
           "mappedType": "integer"
+        },
+        "filter": {
+          "name": "filter",
+          "type": "json",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
         }
       },
       "name": "undb_webhook",
