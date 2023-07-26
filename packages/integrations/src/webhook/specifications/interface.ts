@@ -1,6 +1,7 @@
 import type { CompositeSpecification } from '@undb/domain'
 import type { Webhook } from '../webhook.js'
 import type { WithWebhookEnabled } from './webhook-enabled.specification.js'
+import type { WithWebhookFilter } from './webhook-filter.specification.js'
 import type { WithWebhookHeaders } from './webhook-headers.specification.js'
 import type { WithWebhookId } from './webhook-id.specification.js'
 import type { WithWebhookMethod } from './webhook-method.specification.js'
@@ -24,6 +25,7 @@ export interface IWebhookSpecVisitor {
   targetTable(s: WithWebhookTable): void
   eventEqual(s: WithWebhookEvent): void
   eventsIn(s: WebhookEventsIn): void
+  filterEqual(s: WithWebhookFilter): void
 
   or(left: WebhookSpecification, right: WebhookSpecification): IWebhookSpecVisitor
   not(): IWebhookSpecVisitor

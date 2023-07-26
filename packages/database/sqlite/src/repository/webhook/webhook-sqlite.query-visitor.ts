@@ -1,9 +1,10 @@
-import type { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
+import { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
 import type {
   IWebhookSpecVisitor,
   WebhookEventsIn,
   WithWebhookEnabled,
   WithWebhookEvent,
+  WithWebhookFilter,
   WithWebhookHeaders,
   WithWebhookId,
   WithWebhookMethod,
@@ -15,7 +16,10 @@ import type {
 import { Webhook } from '../../entity/webhook.js'
 
 export class WebhookSqliteQueryVisitor implements IWebhookSpecVisitor {
-  constructor(private readonly em: EntityManager, private qb: QueryBuilder<Webhook>) {}
+  constructor(
+    private readonly em: EntityManager,
+    private qb: QueryBuilder<Webhook>,
+  ) {}
   headersEqual(s: WithWebhookHeaders): void {
     throw new Error('Method not implemented.')
   }
@@ -38,6 +42,10 @@ export class WebhookSqliteQueryVisitor implements IWebhookSpecVisitor {
   methodEqual(s: WithWebhookMethod): void {
     const methodFieldName = this.em.getMetadata().get(Webhook.name).properties.method.fieldNames[0]
     this.qb.andWhere({ [methodFieldName]: s.webhookMethod.unpack() })
+  }
+
+  filterEqual(s: WithWebhookFilter): void {
+    throw new Error('Method not implemented.')
   }
 
   targetEqual(s: WithWebhookTarget): void {

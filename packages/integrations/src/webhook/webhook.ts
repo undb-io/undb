@@ -1,9 +1,11 @@
+import type { IRootFilter } from '@undb/core'
 import type { IEvent } from '@undb/domain'
 import { and } from '@undb/domain'
-import { isBoolean, isObject, isString } from 'lodash-es'
+import { isBoolean, isNil, isObject, isString } from 'lodash-es'
 import type { Option } from 'oxide.ts'
 import type { WebhookSpecification } from './specifications/interface.js'
 import { WithWebhookEnabled } from './specifications/webhook-enabled.specification.js'
+import { WithWebhookFilter } from './specifications/webhook-filter.specification.js'
 import { WithWebhookHeaders } from './specifications/webhook-headers.specification.js'
 import { WithWebhookMethod } from './specifications/webhook-method.specification.js'
 import { WithWebhookName } from './specifications/webhook-name.specification.js'
@@ -25,6 +27,7 @@ export class Webhook {
   public enabled!: boolean
   public target!: WebhookTarget | null
   public headers!: WebhookHeaders
+  public filter!: Option<IRootFilter>
 
   static empty(): Webhook {
     return new Webhook()
@@ -60,6 +63,9 @@ export class Webhook {
     }
     if (isObject(input.headers)) {
       specs.push(WithWebhookHeaders.from(input.headers))
+    }
+    if (!isNil(input.filter)) {
+      specs.push(new WithWebhookFilter(input.filter))
     }
 
     return and(...specs)

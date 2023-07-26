@@ -15,6 +15,7 @@ export class WebhookSqliteMapper {
         webhook.targetId && webhook.targetType && webhook.event
           ? { id: webhook.targetId, type: webhook.targetType as any, event: webhook.event as any }
           : null,
+      filter: webhook.filter,
     }
   }
 
@@ -30,6 +31,7 @@ export class WebhookSqliteMapper {
         webhook.targetId && webhook.targetType && webhook.event
           ? { id: webhook.targetId, type: webhook.targetType as any, event: webhook.event as any }
           : null,
+      filter: webhook.filter,
     })
   }
 }

@@ -1,4 +1,4 @@
-import { events } from '@undb/core'
+import { events, rootFilter } from '@undb/core'
 import { z } from 'zod'
 import { webhookHeadersSchema } from './webhook-headers.vo.js'
 import { webhookIdSchema } from './webhook-id.vo.js'
@@ -15,6 +15,7 @@ export const queryWebhook = z
     enabled: z.boolean(),
     target: webhookTargetSchema,
     headers: webhookHeadersSchema,
+    filter: rootFilter.optional(),
   })
   .strict()
 
@@ -26,6 +27,7 @@ export const unsafeCreateWebhookSchema = z.object({
   enabled: z.boolean(),
   target: webhookTargetSchema,
   headers: webhookHeadersSchema,
+  filter: rootFilter.optional(),
 })
 
 export const createWebhookSchema = z.object({
@@ -36,6 +38,7 @@ export const createWebhookSchema = z.object({
   enabled: z.boolean().default(true),
   target: webhookTargetSchema.unwrap().default({ id: '', type: 'table', event: 'record.created' }),
   headers: webhookHeadersSchema.default({}),
+  filter: rootFilter.optional(),
 })
 
 export type ICreateWebhookSchema = z.infer<typeof createWebhookSchema>
@@ -48,6 +51,7 @@ export const updateWebhookSchema = z
     enabled: z.boolean(),
     event: z.enum(events),
     headers: webhookHeadersSchema,
+    filter: rootFilter,
   })
   .partial()
 
