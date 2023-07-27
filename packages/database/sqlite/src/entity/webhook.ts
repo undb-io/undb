@@ -1,5 +1,6 @@
 import { BooleanType, Entity, Index, JsonType, PrimaryKey, Property } from '@mikro-orm/core'
-import type { Webhook as CoreWebhook } from '@undb/integrations'
+import { type IRootFilter } from '@undb/core'
+import { Webhook as CoreWebhook } from '@undb/integrations'
 import { BaseEntity } from './base.js'
 
 export const WEBHOOK_TABLE_NAME = 'undb_webhook'
@@ -17,6 +18,7 @@ export class Webhook extends BaseEntity {
     this.event = webhook.target?.event ?? null
     this.enabled = webhook.enabled
     this.headers = webhook.headers.unpack()
+    this.filter = webhook.filter.into()?.value
   }
 
   @PrimaryKey()
@@ -50,4 +52,7 @@ export class Webhook extends BaseEntity {
 
   @Property({ type: BooleanType, default: false, nullable: false })
   enabled: boolean
+
+  @Property({ type: JsonType, nullable: true })
+  filter?: IRootFilter
 }

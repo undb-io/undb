@@ -12,15 +12,25 @@
 ·
 <a href="https://github.com/orgs/undb-xyz/projects/1/views/2?query=is%3Aopen+sort%3Aupdated-desc">Roadmap</a>
 
-> use email `test@example.com` and password `123456` to login
+![undb](https://github.com/undb-xyz/undb/assets/22788984/e3495c5f-84ff-4b89-b7ed-2ec25081a990)
 
-![undb](./docs/undb.png)
+## 🚀 Quick Start
+
+- Visit out [Live Demo](https://demo.undb.xyz?lng=en) to try `undb`
+
+- Checkout quick install / deployment [document](https://docs.undb.xyz/installation/1installation-with-docker/)
+
+- Checkout [development envionment setup](https://docs.undb.xyz/contribution/development/) to setup local development environment.
+
+- Open `undb` in [gitpod](https://gitpod.io/new/#https://github.com/undb-xyz/undb) to setup development envionment quickly.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/new/#https://github.com/undb-xyz/undb)
+
+- Join our [discord](https://discord.gg/3rcNdU3y3U) to keep in touch.
 
 <p>
   <a href="https://discord.gg/3rcNdU3y3U"><img alt="Discord" src="https://img.shields.io/badge/discord-chat-5865f2?logo=discord&logoColor=f5f5f5" /></a>
 </p>
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/new/#https://github.com/undb-xyz/undb)
 
 ## ✅ Features
 
@@ -33,6 +43,7 @@
 - :sparkles: Multiple built-in field types and variants
 - :city_sunset: Different types of views, including grid, kanban, gantt, tree, calendar and more
 - 💡 Light / Dark theme
+- 🗑️ records trash / restore
 
 ## 📚 Tech Stack
 
@@ -43,10 +54,6 @@
 - ⚖️ **Domain Driven Design** Make code easy to maintain.
 
 ## Screen Shot
-
-### Light / Dark theme
-
-![image](https://github.com/undb-xyz/undb/assets/22788984/174a7fa3-f2ae-4daa-8901-950251c9e136)
 
 ![Create table](./docs/create-new-table.png)
 
@@ -87,20 +94,6 @@ docker run -d --name undb -p 4000:4000 --platform linux/x86_64 -v ~/.undb/:/var/
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/tqKa_d?referralCode=pcgp5j)
 
 ![Alt](https://repobeats.axiom.co/api/embed/4e19a26c5f110e58bbcce4bb6a79c144a481c3dd.svg 'Repobeats analytics image')
-
-## Contribution
-
-Checkout [development documentation](https://docs.undb.xyz/contribution/development/)
-
-## Contact
-
-### email
-
-`nichenqin@hotmail.com`
-
-### wechat
-
-<img width="369" alt="image" src="https://github.com/undb-xyz/undb/assets/22788984/7ccc0e6f-b183-4d67-b241-961c27407189">
 
 ## License
 

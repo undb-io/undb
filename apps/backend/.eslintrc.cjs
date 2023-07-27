@@ -4,4 +4,7 @@ module.exports = {
   parserOptions: {
     emitDecoratorMetadata: true,
   },
+  rules: {
+    '@typescript-eslint/consistent-type-imports': 'warn',
+  },
 }

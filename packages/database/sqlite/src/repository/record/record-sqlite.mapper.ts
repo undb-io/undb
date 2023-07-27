@@ -3,6 +3,7 @@ import type {
   IQueryRecords,
   IQueryRecordSchema,
   IRecordDisplayValues,
+  ITrashRecordSchema,
   Record,
   TableSchemaIdMap,
 } from '@undb/core'
@@ -104,5 +105,19 @@ export class RecordSqliteMapper {
   static toDomain(tableId: string, schema: TableSchemaIdMap, data: RecordSqlite): Result<Record, string> {
     const qr = this.toQuery(tableId, schema, data)
     return RecordFactory.fromQuery(qr, schema)
+  }
+
+  static toTrash(tableId: string, schema: TableSchemaIdMap, data: RecordSqlite): ITrashRecordSchema {
+    const query = this.toQuery(tableId, schema, data)
+    return {
+      ...query,
+      deletedAt: new Date(data.deleted_at).toISOString(),
+      deletedBy: data.deleted_by,
+      deletedByProfile: data.deleted_by_profile ? JSON.parse(data.deleted_by_profile) : null,
+    }
+  }
+
+  static toTrashes(tableId: string, schema: TableSchemaIdMap, data: RecordSqlite[]): ITrashRecordSchema[] {
+    return data.filter(Boolean).map((d) => RecordSqliteMapper.toTrash(tableId, schema, d))
   }
 }

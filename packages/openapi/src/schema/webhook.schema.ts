@@ -1,4 +1,4 @@
-import { Table, recordEvents } from '@undb/core'
+import { EVT_RECORD_CREATED, Table, recordEvents } from '@undb/core'
 import {
   WebhookId,
   webhookHeadersSchema,
@@ -15,7 +15,7 @@ export const createCreateWebhookSchema = (table: Table) => {
     method: webhookMethodSchema.openapi({ example: 'POST' }),
     name: z.string().openapi({ example: 'your awesome webhook' }),
     url: webhookURLSchema.openapi({ example: 'https://yourdomain.com/webhook' }),
-    event: z.enum(recordEvents).openapi({ example: 'record.created' }),
+    event: z.enum(recordEvents).openapi({ example: EVT_RECORD_CREATED }),
     headers: webhookHeadersSchema.openapi({ example: {} }),
   })
 
@@ -33,7 +33,7 @@ export const createUpdateWebhookSchema = (table: Table) => {
       method: webhookMethodSchema.openapi({ example: 'POST' }),
       name: z.string().openapi({ example: 'your awesome webhook' }),
       url: webhookURLSchema.openapi({ example: 'https://yourdomain.com/webhook' }),
-      event: z.enum(recordEvents).openapi({ example: 'record.created' }),
+      event: z.enum(recordEvents).openapi({ example: EVT_RECORD_CREATED }),
     })
     .partial()
 

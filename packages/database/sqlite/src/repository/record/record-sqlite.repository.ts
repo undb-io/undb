@@ -4,12 +4,12 @@ import type {
   ClsStore,
   Record as CoreRecord,
   Table as CoreTable,
-  IClsService,
   IRecordRepository,
   IRecordSpec,
   TableSchemaIdMap,
 } from '@undb/core'
 import {
+  IClsService,
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_BY_NAME,
@@ -19,6 +19,7 @@ import {
   RecordBulkUpdatedEvent,
   RecordCreatedEvent,
   RecordDeletedEvent,
+  RecordRestoredEvent,
   RecordUpdatedEvent,
   TreeField,
   TreeFieldValue,
@@ -27,13 +28,12 @@ import {
   WithRecordTableId,
   WithRecordValues,
 } from '@undb/core'
-import type { IUnitOfWork } from '@undb/domain'
-import { and } from '@undb/domain'
+import { and, type IUnitOfWork } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { ReferenceField, SelectField } from '../../entity/field.js'
 import { Table } from '../../entity/table.js'
-import type { IOutboxService } from '../../services/outbox.service.js'
+import { type IOutboxService } from '../../services/outbox.service.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME, INTERNAL_COLUMN_DELETED_BY_NAME } from '../../underlying-table/constants.js'
 import { UnderlyingTableSqliteManager } from '../../underlying-table/underlying-table-sqlite.manager.js'
 import type { Job } from '../base-entity-manager.js'
@@ -444,7 +444,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       const event = RecordDeletedEvent.from(
         coreTable,
         userId,
-        RecordSqliteMapper.toQuery(table.id, coreTable.schema.toIdMap(), record),
+        RecordSqliteMapper.toDomain(table.id, coreTable.schema.toIdMap(), record).unwrap(),
       )
       this.outboxService.persist(event)
       await this.uow.commit()
@@ -506,6 +506,44 @@ export class RecordSqliteRepository implements IRecordRepository {
         records.map((record) =>
           RecordSqliteMapper.toDomain(coreTable.id.value, coreTable.schema.toIdMap(), record).unwrap(),
         ),
+      )
+      this.outboxService.persist(event)
+      await this.uow.commit()
+    } catch (error) {
+      await this.uow.rollback()
+      throw error
+    }
+  }
+
+  async restoreOneById(table: CoreTable, id: string): Promise<void> {
+    try {
+      const userId = this.cls.get('user.userId')
+      await this.uow.begin()
+      const em = this.em
+
+      const tableId = table.id.value
+      const schema = table.schema.toIdMap()
+
+      const knex = em.getKnex()
+      const qb = knex.queryBuilder()
+
+      qb.from(tableId)
+        .update({
+          [INTERNAL_COLUMN_DELETED_AT_NAME]: null,
+          [INTERNAL_COLUMN_DELETED_BY_NAME]: null,
+        })
+        .where({ id })
+
+      await em.execute(qb)
+
+      const idSpec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
+      const record = await this.findOneRecordEntity(tableId, idSpec, em)
+      if (!record) throw new Error('not found record')
+
+      const event = RecordRestoredEvent.from(
+        table,
+        userId,
+        RecordSqliteMapper.toDomain(table.id.value, schema, record).unwrap(),
       )
       this.outboxService.persist(event)
       await this.uow.commit()

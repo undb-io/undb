@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type {
   AttachmentField,
   CollaboratorField as CoreCollaboratorField,
@@ -16,18 +16,20 @@ import type {
   MaxField,
   MinField,
   SumField,
-  Table,
 } from '@undb/core'
 import {
   AbstractReferenceFieldVisitor,
   INTERNAL_COLUMN_CREATED_BY_NAME,
+  INTERNAL_COLUMN_CREATED_BY_PROFILE_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_BY_NAME,
+  INTERNAL_COLUMN_UPDATED_BY_PROFILE_NAME,
+  Table,
 } from '@undb/core'
 import { uniqBy } from 'lodash-es'
 import { Attachment } from '../../entity/attachment.js'
 import type { CollaboratorField, LookupField, ParentField, ReferenceField, TreeField } from '../../entity/field.js'
-import type { Table as TableEntity } from '../../entity/table.js'
+import { Table as TableEntity } from '../../entity/table.js'
 import { User } from '../../entity/user.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import {
@@ -129,7 +131,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
             '${username.fieldNames[0]}', ${alias}.${username.fieldNames[0]},
             '${avatar.fieldNames[0]}', ${alias}.${avatar.fieldNames[0]},
             '${color.fieldNames[0]}', ${alias}.${color.fieldNames[0]}
-          ) as created_by_profile`,
+          ) as ${INTERNAL_COLUMN_CREATED_BY_PROFILE_NAME}`,
         ),
       )
       .leftJoin(
@@ -160,7 +162,7 @@ export class RecordSqliteReferenceQueryVisitor extends AbstractReferenceFieldVis
             '${username.fieldNames[0]}', ${alias}.${username.fieldNames[0]},
             '${avatar.fieldNames[0]}', ${alias}.${avatar.fieldNames[0]},
             '${color.fieldNames[0]}', ${alias}.${color.fieldNames[0]}
-          ) as updated_by_profile`,
+          ) as ${INTERNAL_COLUMN_UPDATED_BY_PROFILE_NAME}`,
         ),
       )
       .leftJoin(

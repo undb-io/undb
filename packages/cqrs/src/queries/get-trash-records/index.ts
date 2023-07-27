@@ -1,0 +1,5 @@
+export * from './get-trash-records.query.handler.js'
+export * from './get-trash-records.query.input.js'
+export * from './get-trash-records.query.interface.js'
+export * from './get-trash-records.query.js'
+export * from './get-trash-records.query.output.js'

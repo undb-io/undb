@@ -80,3 +80,6 @@ export const erdModal = createModal(ERD_MODAL)
 
 const FORM_EDITOR_MODAL = Symbol('FORM_EDITOR_MODAL')
 export const formEditorModal = createModal(FORM_EDITOR_MODAL)
+
+const RECORD_TRASH_MODAL = Symbol('RECORD_TRASH_MODAL')
+export const recordTrashModal = createModal(RECORD_TRASH_MODAL)

@@ -1,12 +1,26 @@
-import type { EntityManager } from '@mikro-orm/better-sqlite'
-import type { IQueryRecords, IQueryRecordSchema, IRecordQueryModel, IRecordSpec, ViewId } from '@undb/core'
+import { type EntityManager } from '@mikro-orm/better-sqlite'
+import type {
+  IQueryRecords,
+  IQueryRecordSchema,
+  IRecordQueryModel,
+  IRecordSpec,
+  RecordsWithCount,
+  TrashRecordsWithCount,
+  ViewId,
+} from '@undb/core'
 import { WithRecordId, WithRecordTableId } from '@undb/core'
 import { None, Option } from 'oxide.ts'
 import { ReferenceField, SelectField } from '../../entity/field.js'
 import { Table as TableEntity } from '../../entity/table.js'
+import {
+  INTERNAL_COLUMN_DELETED_AT_NAME,
+  INTERNAL_COLUMN_DELETED_BY_NAME,
+  INTERNAL_COLUMN_DELETED_BY_PROFILE_NAME,
+} from '../../underlying-table/constants.js'
 import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
 import { RecordSqliteQueryBuilder } from './record-query.builder.js'
 import { RecordSqliteMapper } from './record-sqlite.mapper.js'
+import { TABLE_ALIAS } from './record.constants.js'
 import type { RecordSqlite } from './record.type.js'
 
 export class RecordSqliteQueryModel implements IRecordQueryModel {
@@ -69,11 +83,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     return RecordSqliteMapper.toQueries(tableId, schema, data)
   }
 
-  async findAndCount(
-    tableId: string,
-    viewId: ViewId | undefined,
-    spec: IRecordSpec | null,
-  ): Promise<{ records: IQueryRecords; total: number }> {
+  async findAndCount(tableId: string, viewId: ViewId | undefined, spec: IRecordSpec | null): Promise<RecordsWithCount> {
     const tableEntity = await this.#getTable(tableId)
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
@@ -84,6 +94,32 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const data = await this.em.execute<RecordSqlite[]>(builder.qb)
 
     const records = RecordSqliteMapper.toQueries(tableId, schema, data)
+    // TODO: 分页需要从 query 中获取
+    const total = records.length
+
+    return { records, total: total }
+  }
+
+  async findDeletedAndCount(tableId: string, spec: IRecordSpec | null): Promise<TrashRecordsWithCount> {
+    const tableEntity = await this.#getTable(tableId)
+    const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
+    const schema = table.schema.toIdMap()
+
+    let builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec)
+    builder = builder
+      .select(INTERNAL_COLUMN_DELETED_AT_NAME, INTERNAL_COLUMN_DELETED_BY_NAME, INTERNAL_COLUMN_DELETED_BY_PROFILE_NAME)
+      .from()
+      .where(true)
+      .reference()
+      .sort()
+      .build()
+    builder.qb
+      .whereNotNull(`${TABLE_ALIAS}.${INTERNAL_COLUMN_DELETED_AT_NAME}`)
+      .orderBy(`${TABLE_ALIAS}.${INTERNAL_COLUMN_DELETED_AT_NAME}`, 'desc')
+
+    const data = await this.em.execute<RecordSqlite[]>(builder.qb)
+
+    const records = RecordSqliteMapper.toTrashes(tableId, schema, data)
     // TODO: 分页需要从 query 中获取
     const total = records.length
 

@@ -8,6 +8,7 @@
 	import { format } from 'date-fns/fp'
 	import { match } from 'ts-pattern'
 	import RecordAuditDetail from './audit/RecordAuditDetail.svelte'
+	import { EVT_RECORD_CREATED, EVT_RECORD_DELETED, EVT_RECORD_RESTORED, EVT_RECORD_UPDATED } from '@undb/core'
 
 	const record = getRecord()
 
@@ -24,19 +25,26 @@
 
 	const getAuditMessage = (audit: Omit<IQueryAudit, 'target'>) =>
 		match(audit)
-			.with({ op: 'record.created' }, { op: 'record.updated' }, (audit) =>
-				$t(audit.op, {
-					username: audit.operator.username,
-					timestamp: dateFormat(parseISO(audit.timestamp)),
-					ns: 'audit',
-				}),
+			.with(
+				{ op: EVT_RECORD_CREATED },
+				{ op: EVT_RECORD_UPDATED },
+				{ op: EVT_RECORD_DELETED },
+				{ op: EVT_RECORD_RESTORED },
+				(audit) =>
+					$t(audit.op, {
+						username: audit.operator.username,
+						timestamp: dateFormat(parseISO(audit.timestamp)),
+						ns: 'audit',
+					}),
 			)
 			.otherwise(() => null)
 
 	const getIcon = (audit: Omit<IQueryAudit, 'target'>) =>
 		match(audit)
-			.with({ op: 'record.created' }, () => 'ti ti-plus')
-			.with({ op: 'record.updated' }, () => 'ti ti-pencil')
+			.with({ op: EVT_RECORD_CREATED }, () => 'ti ti-plus')
+			.with({ op: EVT_RECORD_UPDATED }, () => 'ti ti-pencil')
+			.with({ op: EVT_RECORD_DELETED }, () => 'ti ti-trash')
+			.with({ op: EVT_RECORD_RESTORED }, () => 'ti ti-history')
 			.otherwise(() => '')
 </script>
 

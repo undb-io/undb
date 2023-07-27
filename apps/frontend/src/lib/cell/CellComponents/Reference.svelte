@@ -18,7 +18,7 @@
 			{/each}
 		</div>
 	{:else}
-		<div class="flex items-center space-x-2 text-gray-800 dark:bg-gray-700 dark:text-gray-300 font-medium">
+		<div class="flex items-center space-x-2 text-gray-800 dark:text-gray-300 font-medium">
 			{#each values as value}
 				<ReferenceComponent {value} />
 			{/each}

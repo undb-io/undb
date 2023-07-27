@@ -3,7 +3,6 @@ import type { IEvent } from '@undb/domain'
 import { type IWebhookHttpService, type Webhook } from '@undb/integrations'
 import got from 'got'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
-import pLimit from 'p-limit'
 import { WebhookSignatureService } from './webhook-signature.service.js'
 
 @Injectable()
@@ -14,9 +13,7 @@ export class WebhooHttpMemoryService implements IWebhookHttpService {
     private readonly signatureService: WebhookSignatureService,
   ) {}
 
-  private limit = pLimit(100)
-
-  private async sendOne(webhook: Webhook, event: IEvent<object>) {
+  async send(webhook: Webhook, event: IEvent<object>) {
     try {
       this.logger.info(
         'handling webhook %s of url %s with event %s',
@@ -37,9 +34,5 @@ export class WebhooHttpMemoryService implements IWebhookHttpService {
     } catch (error) {
       this.logger.error('webhook request error %j', error)
     }
-  }
-
-  async send(webhooks: Webhook[], event: IEvent<object>) {
-    await Promise.all(webhooks.map((webhook) => this.limit(() => this.sendOne(webhook, event))))
   }
 }

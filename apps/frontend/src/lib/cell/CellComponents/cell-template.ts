@@ -91,7 +91,7 @@ const id: TemplateFunc = (h, props) => {
 		'span',
 		{
 			class:
-				'bg-gray-200 text-gray-600 border border-gray-300 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-600 dark:text-gray-200',
+				'bg-gray-200 text-gray-600 border border-gray-300 dark:border-gray-900 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-600 dark:text-gray-200',
 		},
 		id,
 	)
@@ -151,7 +151,7 @@ const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile)
 
 	return html`
 		<div
-			class="flex items-center space-x-2 bg-gray-200 text-gray-600 border border-gray-300 text-xs font-medium pr-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300 h-5"
+			class="flex items-center space-x-2 bg-gray-200 text-gray-600 border border-gray-300 dark:border-gray-950 text-xs font-medium pr-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300 h-5"
 		>
 			${!collaborator.avatar
 				? html`
@@ -333,7 +333,7 @@ const referenceComponent = (h: HyperFunc, value: (string | null)[] = []) => {
 		'span',
 		{
 			class: cx(
-				'bg-gray-200 text-gray-600 border border-gray-300 text-xs px-2.5 py-0.5 rounded dark:bg-gray-600 dark:text-gray-200',
+				'bg-gray-200 text-gray-600 border border-gray-300 dark:border-gray-950 text-xs px-2.5 py-0.5 rounded dark:bg-gray-600 dark:text-gray-200',
 				!content && 'text-gray-400 font-normal',
 			),
 		},

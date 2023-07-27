@@ -1,9 +1,9 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230723024950 extends Migration {
+export class Migration20230727112248 extends Migration {
   async up(): Promise<void> {
     this.addSql(
-      'create table `undb_outbox` (`uuid` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text null, `operator_id` text null, `payload` json not null, primary key (`uuid`));',
+      'create table `undb_outbox` (`uuid` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text null, `operator_id` text null, `timestamp` datetime not null, `payload` json not null, `meta` json null, primary key (`uuid`));',
     )
     this.addSql('create index `undb_outbox_deleted_at_index` on `undb_outbox` (`deleted_at`);')
 
@@ -113,7 +113,7 @@ export class Migration20230723024950 extends Migration {
     this.addSql('create index `undb_visualization_table_id_index` on `undb_visualization` (`table_id`);')
 
     this.addSql(
-      'create table `undb_webhook` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `url` text not null, `name` text not null, `method` text not null, `headers` json not null, `target_id` text null, `target_type` text null, `event` text null, `enabled` integer not null default false, primary key (`id`));',
+      'create table `undb_webhook` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `url` text not null, `name` text not null, `method` text not null, `headers` json not null, `target_id` text null, `target_type` text null, `event` text null, `enabled` integer not null default false, `filter` json null, primary key (`id`));',
     )
     this.addSql('create index `undb_webhook_deleted_at_index` on `undb_webhook` (`deleted_at`);')
     this.addSql('create index `undb_webhook_url_index` on `undb_webhook` (`url`);')

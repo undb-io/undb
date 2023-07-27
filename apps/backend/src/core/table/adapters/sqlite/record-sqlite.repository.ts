@@ -60,4 +60,9 @@ export class NestRecordSqliteRepository extends RecordSqliteRepository {
   async deleteManyByIds(table: Table, ids: string[]): Promise<void> {
     return super.deleteManyByIds(table, ids)
   }
+
+  @UseRequestContext()
+  restoreOneById(table: Table, id: string): Promise<void> {
+    return super.restoreOneById(table, id)
+  }
 }
