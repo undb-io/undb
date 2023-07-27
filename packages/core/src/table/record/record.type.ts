@@ -44,3 +44,13 @@ export type IQueryTreeRecords = Array<IQueryTreeRecord>
 export const queryTreeRecords: z.ZodType<IQueryTreeRecords> = z.lazy(() =>
   queryRecordSchema.merge(z.object({ children: queryTreeRecords })).array(),
 )
+
+export const trashRecordSchema = z
+  .object({
+    deletedAt: z.string(),
+    deletedBy: userIdSchema,
+    deletedByProfile: collaboratorProfile,
+  })
+  .merge(queryRecordSchema)
+
+export type ITrashRecordSchema = z.infer<typeof trashRecordSchema>

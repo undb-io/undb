@@ -1,5 +1,5 @@
 import type { IRecordTreeQueryModel, ITableQueryModel } from '@undb/core'
-import { TableFactory, TreeField, WithTableViewId, withTableRecordsSpec } from '@undb/core'
+import { TableFactory, TreeField, WithTableViewId, withTableViewRecordsSpec } from '@undb/core'
 import type { IQueryHandler } from '@undb/domain'
 import type { IShareGuardService } from '@undb/integrations'
 import { WithShareView } from '@undb/integrations'
@@ -22,7 +22,7 @@ export class GetShareViewTreeRecordsQueryHandler
     const tb = TableFactory.fromQuery(table)
     const field = tb.schema.getFieldByIdOfType(query.fieldId, TreeField).unwrap()
 
-    const spec = withTableRecordsSpec(tb, query.viewId)
+    const spec = withTableViewRecordsSpec(tb, query.viewId)
     const records = await this.rm.findTrees(table.id, field, spec)
 
     return {
