@@ -34,6 +34,8 @@ export const config: InitOptions = {
         'TABLE.NOT_FOUND': 'Table not found',
       },
       common: {
+        deleted: 'deleted',
+        restore: 'restore',
         'return to home': 'Return to Home',
         'click to upload or dnd': '<strong>Click to upload</strong> or drag and drop',
         demo: 'this is a demo site for undb, you can use email: <strong>{{email}}</strong> and password: <strong>{{password}}</strong> to login',
@@ -383,6 +385,8 @@ export const config: InitOptions = {
         'TABLE.NOT_FOUND': '没有找到表格',
       },
       common: {
+        deleted: '删除了',
+        restore: '恢复',
         'return to home': '返回首页',
         'click to upload or dnd': '<strong>点击上传</strong>或拖拽文件',
         demo: '这是 undb 的 demo 网站，你可以使用邮箱: <strong>{{email}}</strong> 和密码：<strong>{{password}}</strong> 登录',

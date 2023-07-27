@@ -34,7 +34,7 @@
 	{#each records as record}
 		{@const ro = RecordFactory.fromQuery(record, schema).unwrap()}
 		{@const deletedProfile = record.deletedByProfile}
-		<div class="flex justify-between gap-2 items-center text-sm text-gray-600">
+		<div class="flex justify-between gap-2 items-center text-xs text-gray-600 dark:text-gray-200">
 			<div class="flex items-center gap-2">
 				<CollaboratorComponent
 					username={deletedProfile.username}
