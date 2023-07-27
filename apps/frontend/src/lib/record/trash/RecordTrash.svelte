@@ -1,6 +1,7 @@
 <script lang="ts">
 	import CollaboratorComponent from '$lib/cell/CellComponents/CollaboratorComponent.svelte'
 	import { t } from '$lib/i18n'
+	import { recordTrashModal } from '$lib/store/modal'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import { RecordFactory } from '@undb/core'
@@ -16,6 +17,15 @@
 	})
 
 	$: records = $getRecords.data?.records ?? []
+
+	const restore = trpc().record.restore.mutation({
+		async onSuccess(data, variables, context) {
+			await $getRecords.refetch()
+			if (!$getRecords.data?.total) {
+				recordTrashModal.close()
+			}
+		},
+	})
 </script>
 
 {#if $getRecords.isLoading}
@@ -45,7 +55,14 @@
 				<span class="text-gray-400 text-xs">
 					{format(new Date(record.deletedAt), 'yyyy-MM-dd hh:mm:ss')}
 				</span>
-				<button class="text-blue-400 hover:underline">
+				<button
+					class="text-blue-400 hover:underline"
+					on:click={() =>
+						$restore.mutate({
+							tableId: $table.id.value,
+							id: record.id,
+						})}
+				>
 					{$t('restore', { ns: 'common' })}
 				</button>
 			</div>

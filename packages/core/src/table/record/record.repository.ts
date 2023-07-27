@@ -16,4 +16,6 @@ export interface IRecordRepository {
 
   deleteOneById(table: Table, id: string): Promise<void>
   deleteManyByIds(table: Table, ids: string[]): Promise<void>
+
+  restoreOneById(table: Table, id: string): Promise<void>
 }

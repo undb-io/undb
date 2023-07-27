@@ -9,6 +9,7 @@ import {
   GetForeignRecordsQuery,
   GetRecordQuery,
   GetRecordsQuery,
+  RestoreRecordCommand,
   UpdateRecordCommand,
   bulkDeleteRecordsCommandInput,
   bulkDuplicateRecordsCommandInput,
@@ -18,6 +19,7 @@ import {
   getForeignRecordsQueryInput,
   getRecordQueryInput,
   getRecordsQueryInput,
+  restoreRecordCommandInput,
 } from '@undb/cqrs'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
@@ -64,6 +66,13 @@ export const createRecordRouter =
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new DeleteRecordCommand(input)
+          return commandBus.execute(cmd)
+        }),
+      restore: procedure
+        .input(restoreRecordCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new RestoreRecordCommand(input)
           return commandBus.execute(cmd)
         }),
       bulkDelete: procedure
