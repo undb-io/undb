@@ -5,6 +5,7 @@ import type {
   IRecordQueryModel,
   IRecordSpec,
   RecordsWithCount,
+  TrashRecordsWithCount,
   ViewId,
 } from '@undb/core'
 import { WithRecordId, WithRecordTableId } from '@undb/core'
@@ -19,6 +20,7 @@ import {
 import { TableSqliteMapper } from '../table/table-sqlite.mapper.js'
 import { RecordSqliteQueryBuilder } from './record-query.builder.js'
 import { RecordSqliteMapper } from './record-sqlite.mapper.js'
+import { TABLE_ALIAS } from './record.constants.js'
 import type { RecordSqlite } from './record.type.js'
 
 export class RecordSqliteQueryModel implements IRecordQueryModel {
@@ -98,7 +100,7 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     return { records, total: total }
   }
 
-  async findDeletedAndCount(tableId: string, spec: IRecordSpec | null): Promise<RecordsWithCount> {
+  async findDeletedAndCount(tableId: string, spec: IRecordSpec | null): Promise<TrashRecordsWithCount> {
     const tableEntity = await this.#getTable(tableId)
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
@@ -111,7 +113,9 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
       .reference()
       .sort()
       .build()
-    builder.qb.whereNotNull(INTERNAL_COLUMN_DELETED_AT_NAME).orderBy(INTERNAL_COLUMN_DELETED_AT_NAME, 'desc')
+    builder.qb
+      .whereNotNull(`${TABLE_ALIAS}.${INTERNAL_COLUMN_DELETED_AT_NAME}`)
+      .orderBy(`${TABLE_ALIAS}.${INTERNAL_COLUMN_DELETED_AT_NAME}`, 'desc')
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb)
 

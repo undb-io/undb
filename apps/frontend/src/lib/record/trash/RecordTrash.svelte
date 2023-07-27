@@ -1,0 +1,54 @@
+<script lang="ts">
+	import CollaboratorComponent from '$lib/cell/CellComponents/CollaboratorComponent.svelte'
+	import { t } from '$lib/i18n'
+	import { getTable } from '$lib/store/table'
+	import { trpc } from '$lib/trpc/client'
+	import { RecordFactory } from '@undb/core'
+	import { format } from 'date-fns'
+	import { Spinner } from 'flowbite-svelte'
+
+	const table = getTable()
+
+	$: schema = $table.schema.toIdMap()
+
+	const getRecords = trpc().record.trash.list.query({
+		tableId: $table.id.value,
+	})
+
+	$: records = $getRecords.data?.records ?? []
+</script>
+
+{#if $getRecords.isLoading}
+	<Spinner />
+{:else}
+	{#each records as record}
+		{@const ro = RecordFactory.fromQuery(record, schema).unwrap()}
+		{@const deletedProfile = record.deletedByProfile}
+		<div class="flex justify-between gap-2 items-center text-sm text-gray-600">
+			<div class="flex items-center gap-2">
+				<CollaboratorComponent
+					username={deletedProfile.username}
+					color={deletedProfile.color}
+					avatar={deletedProfile.avatar}
+				/>
+				<span>
+					{$t('deleted', { ns: 'common' })}
+				</span>
+				<span
+					class="bg-gray-200 text-gray-600 border border-gray-300 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-600 dark:text-gray-200"
+				>
+					{ro.getDisplayFieldsValue($table)}
+				</span>
+			</div>
+
+			<div class="flex items-center gap-2">
+				<span class="text-gray-400 text-xs">
+					{format(new Date(record.deletedAt), 'yyyy-MM-dd hh:mm:ss')}
+				</span>
+				<button class="text-blue-400 hover:underline">
+					{$t('restore', { ns: 'common' })}
+				</button>
+			</div>
+		</div>
+	{/each}
+{/if}

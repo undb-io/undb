@@ -17,7 +17,10 @@ import type { Promisable } from 'type-fest'
 import { Table } from '../../entity/table.js'
 import { User } from '../../entity/user.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
-import { INTERNAL_COLUMN_DELETED_BY_PROFILE_NAME } from '../../underlying-table/constants.js'
+import {
+  INTERNAL_COLUMN_DELETED_BY_NAME,
+  INTERNAL_COLUMN_DELETED_BY_PROFILE_NAME,
+} from '../../underlying-table/constants.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import { UnderlyingSelectColumn } from '../../underlying-table/underlying-column.js'
 import { RecordChartGroupVisitor } from './record-chart-group.visitor.js'
@@ -141,7 +144,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
         tableName,
       } = this.em.getMetadata().get(User.name)
 
-      const alias = INTERNAL_COLUMN_UPDATED_BY_NAME + '_' + tableName
+      const alias = INTERNAL_COLUMN_DELETED_BY_NAME + '_' + tableName
 
       this.qb
         .select(
@@ -156,7 +159,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
         .leftJoin(
           `${tableName} as ${alias}`,
           `${alias}.${id.fieldNames[0]}`,
-          `${TABLE_ALIAS}.${INTERNAL_COLUMN_UPDATED_BY_NAME}`,
+          `${TABLE_ALIAS}.${INTERNAL_COLUMN_DELETED_BY_NAME}`,
         )
     }
 

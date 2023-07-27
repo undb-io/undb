@@ -7,6 +7,7 @@
 	import { getTable } from '$lib/store/table'
 	import SearchTable from './SearchTable.svelte'
 	import FormsButton from './FormsButton.svelte'
+	import RecordTrashButton from './RecordTrashButton.svelte'
 
 	const table = getTable()
 </script>
@@ -36,5 +37,6 @@
 		</Tooltip>
 		<ToggleDisplayType />
 		<FormsButton />
+		<RecordTrashButton />
 	</div>
 </div>
