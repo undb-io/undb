@@ -43,6 +43,7 @@
 - :sparkles: Multiple built-in field types and variants
 - :city_sunset: Different types of views, including grid, kanban, gantt, tree, calendar and more
 - 💡 Light / Dark theme
+- 🗑️ records trash / restore
 
 ## 📚 Tech Stack
 
