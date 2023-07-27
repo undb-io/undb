@@ -60,7 +60,7 @@ export const createTableSchema = (table: Table, record?: Record, host = 'http://
   const valuesSchema = createOpenAPIMutateRecordSchema(table, record)
   registry.register(COMPONENT_MUTATE_RECORD_VALUES, valuesSchema)
 
-  registry.register(COMPONENT_WEBHOOK, queryWebhook)
+  registry.register(COMPONENT_WEBHOOK, queryWebhook.omit({ filter: true }))
   registry.register(COMPONENT_WEBHOOK_ID, webhookIdSchema)
 
   registry.register(COMPONENT_RECORD_EVENT, recorEventSchema)

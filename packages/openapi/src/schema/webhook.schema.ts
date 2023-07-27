@@ -1,4 +1,4 @@
-import { EVT_RECORD_CREATED, Table, recordEvents, rootFilter } from '@undb/core'
+import { EVT_RECORD_CREATED, Table, recordEvents } from '@undb/core'
 import {
   WebhookId,
   webhookHeadersSchema,
@@ -17,7 +17,6 @@ export const createCreateWebhookSchema = (table: Table) => {
     url: webhookURLSchema.openapi({ example: 'https://yourdomain.com/webhook' }),
     event: z.enum(recordEvents).openapi({ example: EVT_RECORD_CREATED }),
     headers: webhookHeadersSchema.openapi({ example: {} }),
-    filter: rootFilter.openapi({}),
   })
 
   return schema

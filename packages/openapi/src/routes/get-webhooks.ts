@@ -16,7 +16,7 @@ export const getWebhooks = (table: Table): RouteConfig => {
         description: 'get webhooks success',
         content: {
           'application/json': {
-            schema: z.object({ webhooks: queryWebhook.array() }),
+            schema: z.object({ webhooks: queryWebhook.omit({ filter: true }).array() }),
           },
         },
       },
