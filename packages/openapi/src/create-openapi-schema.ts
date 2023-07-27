@@ -38,6 +38,7 @@ import { duplicateRecordsByIds } from './routes/duplicate-records-by-ids.js'
 import { getRecordById } from './routes/get-record-by-id.js'
 import { getRecords } from './routes/get-records.js'
 import { getWebhooks } from './routes/get-webhooks.js'
+import { restoreRecordById } from './routes/restore-record-by-id.js'
 import { subscription } from './routes/subscription.js'
 import { updateRecords } from './routes/udpate-records.js'
 import { updateRecord } from './routes/update-record.js'
@@ -81,6 +82,7 @@ export const createTableSchema = (table: Table, record?: Record, host = 'http://
     duplicateRecordsByIds(table),
     deleteRecordById(table),
     deleteRecordsByIds(table),
+    restoreRecordById(table),
     createRecord(table, valuesSchema),
     createRecords(table, valuesSchema),
     updateRecord(table, valuesSchema, record),

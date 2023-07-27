@@ -8,6 +8,7 @@ import {
   DuplicateRecordCommand,
   GetRecordQuery,
   GetRecordsQuery,
+  RestoreRecordCommand,
 } from '@undb/cqrs'
 import { type IOpenAPIMutateRecordSchema } from '@undb/openapi'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
@@ -89,6 +90,12 @@ export class OpenAPIRecordController {
   @Delete('tables/:tableId/records/:id')
   public async deleteRecord(@Param('tableId') tableId: string, @Param('id') id: string) {
     await this.commandBus.execute(new DeleteRecordCommand({ tableId, id }))
+  }
+
+  @Version('1')
+  @Post('tables/:tableId/records/:id/restore')
+  public async restoreRecord(@Param('tableId') tableId: string, @Param('id') id: string) {
+    await this.commandBus.execute(new RestoreRecordCommand({ tableId, id }))
   }
 
   @Version('1')
