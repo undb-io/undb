@@ -1,10 +1,11 @@
 import type { IEventHandler } from '@nestjs/cqrs'
 import { EventsHandler } from '@nestjs/cqrs'
-import type { RecordEvents } from '@undb/core'
+import type { ITableRepository, RecordEvents } from '@undb/core'
 import { RecordEventsClasses } from '@undb/core'
 import { WebhookEventsHandler } from '@undb/cqrs'
 import { type IWebhookHttpService, type IWebhookRepository } from '@undb/integrations'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
+import { InjectTableRepository } from '../../core/table/adapters/sqlite/table-sqlite.repository.js'
 import { InjectWebhookRepository } from '../adapters/webhook-sqlite.repository.js'
 import { InjectWebhookHttpService } from '../providers.js'
 
@@ -17,7 +18,9 @@ export class NestWebhookEventHandler extends WebhookEventsHandler implements IEv
     protected readonly webhookHttpService: IWebhookHttpService,
     @InjectWebhookRepository()
     protected readonly repo: IWebhookRepository,
+    @InjectTableRepository()
+    protected readonly tableRepo: ITableRepository,
   ) {
-    super(logger, webhookHttpService, repo)
+    super(logger, webhookHttpService, repo, tableRepo)
   }
 }

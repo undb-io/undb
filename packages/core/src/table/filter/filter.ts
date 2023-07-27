@@ -1,4 +1,3 @@
-import type { CompositeSpecification } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { z } from 'zod'
@@ -154,6 +153,7 @@ import {
   StringStartsWith,
   WithRecordIds,
 } from '../record/index.js'
+import type { RecordCompositeSpecification } from '../record/specifications/interface.js'
 import type { IConjunction } from './conjunction.js'
 import { conjunctions } from './conjunction.js'
 import { $between, $eq, $is_empty, $is_false, $is_not_empty, $is_root, $is_today, $is_true, $neq } from './operators.js'
@@ -290,7 +290,7 @@ export const isFilter = (filterOrGroup: IFilterOrGroup): filterOrGroup is IFilte
   return Object.hasOwn(filterOrGroup, 'type') && Object.hasOwn(filterOrGroup, 'operator')
 }
 
-const convertIdFilter = (filter: IIdFilter): Option<CompositeSpecification> => {
+const convertIdFilter = (filter: IIdFilter): Option<RecordCompositeSpecification> => {
   if (filter.value === undefined) {
     return None
   }
@@ -316,7 +316,7 @@ const convertIdFilter = (filter: IIdFilter): Option<CompositeSpecification> => {
 
 const convertStringFilter = (
   filter: IStringFilter | IEmailFilter | IColorFilter | IUrlFilter,
-): Option<CompositeSpecification> => {
+): Option<RecordCompositeSpecification> => {
   if (filter.value === undefined) {
     return None
   }
@@ -363,7 +363,7 @@ const convertNumberFilter = (
     | ICurrencyFilter
     | IMinFilter
     | IMaxFilter,
-): Option<CompositeSpecification> => {
+): Option<RecordCompositeSpecification> => {
   if (filter.value === undefined) {
     return None
   }
@@ -392,7 +392,7 @@ const convertNumberFilter = (
   }
 }
 
-const convertSelectFilter = (filter: ISelectFilter): Option<CompositeSpecification> => {
+const convertSelectFilter = (filter: ISelectFilter): Option<RecordCompositeSpecification> => {
   if (filter.value === undefined) {
     return None
   }
@@ -427,7 +427,7 @@ const convertSelectFilter = (filter: ISelectFilter): Option<CompositeSpecificati
   }
 }
 
-const convertBoolFilter = (filter: IBoolFilter): Option<CompositeSpecification> => {
+const convertBoolFilter = (filter: IBoolFilter): Option<RecordCompositeSpecification> => {
   switch (filter.operator) {
     case $is_true.value: {
       return Some(new BoolIsTrue(filter.path))
@@ -442,7 +442,7 @@ const convertBoolFilter = (filter: IBoolFilter): Option<CompositeSpecification> 
   }
 }
 
-const convertJsonFilter = (filter: IJsonFilter): Option<CompositeSpecification> => {
+const convertJsonFilter = (filter: IJsonFilter): Option<RecordCompositeSpecification> => {
   switch (filter.operator) {
     case $is_empty.value: {
       return Some(new JsonEmpty(filter.path))
@@ -456,7 +456,7 @@ const convertJsonFilter = (filter: IJsonFilter): Option<CompositeSpecification> 
     }
   }
 }
-const convertDateRangeFilter = (filter: IDateRangeFilter): Option<CompositeSpecification> => {
+const convertDateRangeFilter = (filter: IDateRangeFilter): Option<RecordCompositeSpecification> => {
   if (filter.value !== null) {
     if (Array.isArray(filter.value)) {
       switch (filter.operator) {
@@ -517,7 +517,7 @@ const convertDateRangeFilter = (filter: IDateRangeFilter): Option<CompositeSpeci
 
 const convertDateFilter = (
   filter: IDateFilter | ICreatedAtFilter | IUpdatedAtFilter,
-): Option<CompositeSpecification> => {
+): Option<RecordCompositeSpecification> => {
   if (filter.operator === $is_today.value) {
     return Some(new DateIsToday(filter.path))
   }
@@ -559,7 +559,7 @@ const convertDateFilter = (
   }
 }
 
-const convertTreeFilter = (filter: ITreeFilter): Option<CompositeSpecification> => {
+const convertTreeFilter = (filter: ITreeFilter): Option<RecordCompositeSpecification> => {
   switch (filter.operator) {
     case $is_root.value: {
       return Some(new IsTreeRoot(filter.path))
@@ -571,7 +571,7 @@ const convertTreeFilter = (filter: ITreeFilter): Option<CompositeSpecification> 
   }
 }
 
-const convertAttachmentFilter = (filter: IAttachmentFilter): Option<CompositeSpecification> => {
+const convertAttachmentFilter = (filter: IAttachmentFilter): Option<RecordCompositeSpecification> => {
   switch (filter.operator) {
     case '$has_file_type':
       return Some(new HasFileType(filter.path, filter.value as IAttachmentFilterTypeValue))
@@ -586,7 +586,7 @@ const convertAttachmentFilter = (filter: IAttachmentFilter): Option<CompositeSpe
 
 const convertCollaboratorFilter = (
   filter: ICollaboratorFilter | ICreatedByFilter | IUpdatedByFilter,
-): Option<CompositeSpecification> => {
+): Option<RecordCompositeSpecification> => {
   switch (filter.operator) {
     case '$eq':
       return Some(CollaboratorEqual.fromString(filter.path, filter.value as string))
@@ -602,7 +602,7 @@ const convertCollaboratorFilter = (
   }
 }
 
-const convertMultiSelectFilter = (filter: IMultiSelectFilter): Option<CompositeSpecification> => {
+const convertMultiSelectFilter = (filter: IMultiSelectFilter): Option<RecordCompositeSpecification> => {
   switch (filter.operator) {
     case '$eq':
       return Some(MultiSelectEqual.fromStrings(filter.path, filter.value as string[]))
@@ -622,7 +622,7 @@ const convertMultiSelectFilter = (filter: IMultiSelectFilter): Option<CompositeS
   }
 }
 
-const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
+const convertFilter = (filter: IFilter): Option<RecordCompositeSpecification> => {
   switch (filter.type) {
     case 'id':
       return convertIdFilter(filter)
@@ -670,7 +670,7 @@ const convertFilter = (filter: IFilter): Option<CompositeSpecification> => {
   }
 }
 
-const convertFilterOrGroup = (filterOrGroup: IFilterOrGroup): Option<CompositeSpecification> => {
+const convertFilterOrGroup = (filterOrGroup: IFilterOrGroup): Option<RecordCompositeSpecification> => {
   if (isGroup(filterOrGroup)) {
     return convertFilterOrGroupList(filterOrGroup.children, filterOrGroup.conjunction)
   } else if (isFilter(filterOrGroup)) {
@@ -683,8 +683,8 @@ const convertFilterOrGroup = (filterOrGroup: IFilterOrGroup): Option<CompositeSp
 const convertFilterOrGroupList = (
   filterOrGroupList: IFilterOrGroupList = [],
   conjunction: IConjunction = '$and',
-): Option<CompositeSpecification> => {
-  let spec: Option<CompositeSpecification> = None
+): Option<RecordCompositeSpecification> => {
+  let spec: Option<RecordCompositeSpecification> = None
   for (const filter of filterOrGroupList) {
     if (spec.isNone()) {
       spec = convertFilterOrGroup(filter)
@@ -714,7 +714,7 @@ const convertFilterOrGroupList = (
   return spec
 }
 
-export const convertFilterSpec = (filter: IRootFilter): Option<CompositeSpecification> => {
+export const convertFilterSpec = (filter: IRootFilter): Option<RecordCompositeSpecification> => {
   if (Array.isArray(filter)) {
     return convertFilterOrGroupList(filter)
   }

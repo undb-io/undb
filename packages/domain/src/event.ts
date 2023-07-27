@@ -1,17 +1,28 @@
 import { v4 } from 'uuid'
 
-export interface IEvent<P extends object = object> {
+export interface IEvent<TPayload extends object = object, TMeta = any> {
   id: string
   name: string
   operatorId: string
-  payload: P
+  payload: TPayload
   timestamp: Date
+  meta: TMeta
 }
 
-export abstract class BaseEvent<P extends object = object, E extends string = string> implements IEvent<P> {
+export abstract class BaseEvent<
+  TPayload extends object = object,
+  TName extends string = string,
+  TMeta extends object | undefined = undefined,
+> implements IEvent<TPayload>
+{
   timestamp = new Date()
-  abstract name: E
-  constructor(public readonly payload: P, public readonly operatorId: string, public readonly id = v4()) {}
+  abstract name: TName
+  constructor(
+    public readonly payload: TPayload,
+    public readonly operatorId: string,
+    public readonly meta: TMeta,
+    public readonly id = v4(),
+  ) {}
 
   toJSON() {
     return {
@@ -19,6 +30,7 @@ export abstract class BaseEvent<P extends object = object, E extends string = st
       operatorId: this.operatorId,
       timestamp: this.timestamp.toISOString(),
       payload: this.payload,
+      meta: this.meta,
     }
   }
 }

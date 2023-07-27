@@ -1,4 +1,4 @@
-import { IViewRowHeight } from '@undb/core'
+import { type IViewRowHeight } from '@undb/core'
 import type { CommandProps } from '@undb/domain'
 import { Command } from '@undb/domain'
 import type { ISetRowHeightCommandInput } from './set-row-height.command.interface.js'

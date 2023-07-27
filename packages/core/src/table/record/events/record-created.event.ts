@@ -4,6 +4,7 @@ import { baseSchemaEventSchema } from '../../field/field.type.js'
 import type { Table } from '../../table.js'
 import type { Record } from '../record.js'
 import { recordReadableMapper, recordReadableSchema } from '../record.readable.js'
+import { queryRecordSchema } from '../record.type.js'
 import { recordIdSchema } from '../value-objects/record-id.schema.js'
 import { baseEventSchema, baseRecordEventSchema, type BaseRecordEventName } from './base-record.event.js'
 
@@ -19,11 +20,21 @@ export const recordCreatedEventPayload = z
 
 type IRecordCreatedEventPayload = z.infer<typeof recordCreatedEventPayload>
 
+export const recordCreatedEventMeta = z.object({
+  record: queryRecordSchema,
+})
+
+export type IRecordCreatedEventMeta = z.infer<typeof recordCreatedEventMeta>
+
 export const recordCreatedEvent = z
   .object({ name: z.literal(EVT_RECORD_CREATED), payload: recordCreatedEventPayload })
   .merge(baseEventSchema)
 
-export class RecordCreatedEvent extends BaseEvent<IRecordCreatedEventPayload, BaseRecordEventName> {
+export class RecordCreatedEvent extends BaseEvent<
+  IRecordCreatedEventPayload,
+  BaseRecordEventName,
+  IRecordCreatedEventMeta
+> {
   public readonly name = EVT_RECORD_CREATED
 
   static from(table: Table, operatorId: string, record: Record): RecordCreatedEvent {
@@ -37,6 +48,9 @@ export class RecordCreatedEvent extends BaseEvent<IRecordCreatedEventPayload, Ba
         schema: table.schema.toEvent([record]),
       },
       operatorId,
+      {
+        record: record.toQuery(table.id.value),
+      },
     )
   }
 }

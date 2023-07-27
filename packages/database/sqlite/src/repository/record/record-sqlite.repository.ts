@@ -4,12 +4,12 @@ import type {
   ClsStore,
   Record as CoreRecord,
   Table as CoreTable,
-  IClsService,
   IRecordRepository,
   IRecordSpec,
   TableSchemaIdMap,
 } from '@undb/core'
 import {
+  IClsService,
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_BY_NAME,
@@ -27,13 +27,12 @@ import {
   WithRecordTableId,
   WithRecordValues,
 } from '@undb/core'
-import type { IUnitOfWork } from '@undb/domain'
-import { and } from '@undb/domain'
+import { and, type IUnitOfWork } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { ReferenceField, SelectField } from '../../entity/field.js'
 import { Table } from '../../entity/table.js'
-import type { IOutboxService } from '../../services/outbox.service.js'
+import { type IOutboxService } from '../../services/outbox.service.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME, INTERNAL_COLUMN_DELETED_BY_NAME } from '../../underlying-table/constants.js'
 import { UnderlyingTableSqliteManager } from '../../underlying-table/underlying-table-sqlite.manager.js'
 import type { Job } from '../base-entity-manager.js'
@@ -444,7 +443,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       const event = RecordDeletedEvent.from(
         coreTable,
         userId,
-        RecordSqliteMapper.toQuery(table.id, coreTable.schema.toIdMap(), record),
+        RecordSqliteMapper.toDomain(table.id, coreTable.schema.toIdMap(), record).unwrap(),
       )
       this.outboxService.persist(event)
       await this.uow.commit()

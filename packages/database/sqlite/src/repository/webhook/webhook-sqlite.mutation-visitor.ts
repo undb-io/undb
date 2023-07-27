@@ -1,10 +1,11 @@
-import type { EntityManager } from '@mikro-orm/better-sqlite'
+import { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
 import type {
   IWebhookSpecVisitor,
   WebhookEventsIn,
   WithWebhookEnabled,
   WithWebhookEvent,
+  WithWebhookFilter,
   WithWebhookHeaders,
   WithWebhookId,
   WithWebhookMethod,
@@ -16,7 +17,10 @@ import type {
 import { Webhook } from '../../entity/webhook.js'
 
 export class WebhookSqliteMutationVisitor implements IWebhookSpecVisitor {
-  constructor(private readonly webhookId: string, private readonly em: EntityManager) {}
+  constructor(
+    private readonly webhookId: string,
+    private readonly em: EntityManager,
+  ) {}
   headersEqual(s: WithWebhookHeaders): void {
     const webhook = this.em.getReference(Webhook, this.webhookId)
     wrap(webhook).assign({ headers: s.webhookHeaders.unpack() })
@@ -54,6 +58,12 @@ export class WebhookSqliteMutationVisitor implements IWebhookSpecVisitor {
   }
   eventsIn(s: WebhookEventsIn): void {
     throw new Error('Method not implemented.')
+  }
+
+  filterEqual(s: WithWebhookFilter): void {
+    const webhook = this.em.getReference(Webhook, this.webhookId)
+    wrap(webhook).assign({ filter: s.filter })
+    this.em.persist(webhook)
   }
 
   urlEqual(s: WithWebhookURL): void {

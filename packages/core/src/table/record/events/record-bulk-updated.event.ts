@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { baseSchemaEventSchema } from '../../field/field.type.js'
 import type { Table } from '../../table.js'
 import { recordReadableMapper, recordReadableSchema } from '../record.readable.js'
-import type { Records } from '../record.type.js'
+import { queryRecordSchema, type Records } from '../record.type.js'
 import { recordIdSchema } from '../value-objects/record-id.schema.js'
 import { baseEventSchema, baseRecordEventSchema, type BaseRecordEventName } from './base-record.event.js'
 
@@ -30,7 +30,17 @@ export const recordsBulkUpdatedEvent = z
   .object({ name: z.literal(EVT_RECORD_BULK_UPDATED), payload: recordsBulkUpdatedEventPayload })
   .merge(baseEventSchema)
 
-export class RecordBulkUpdatedEvent extends BaseEvent<IRecordsBulkUpdatedEventPayload, BaseRecordEventName> {
+export const recordBulkUpdatedEventMeta = z.object({
+  records: z.record(recordIdSchema, queryRecordSchema),
+})
+
+export type IRecordBulkUpdatedEventMeta = z.infer<typeof recordBulkUpdatedEventMeta>
+
+export class RecordBulkUpdatedEvent extends BaseEvent<
+  IRecordsBulkUpdatedEventPayload,
+  BaseRecordEventName,
+  IRecordBulkUpdatedEventMeta
+> {
   public readonly name = EVT_RECORD_BULK_UPDATED
 
   static from(
@@ -68,6 +78,15 @@ export class RecordBulkUpdatedEvent extends BaseEvent<IRecordsBulkUpdatedEventPa
         }),
       },
       operatorId,
+      {
+        records: records.reduce(
+          (prev, curr) => {
+            prev[curr.id.value] = curr.toQuery(table.id.value)
+            return prev
+          },
+          {} as IRecordBulkUpdatedEventMeta['records'],
+        ),
+      },
     )
   }
 }

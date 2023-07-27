@@ -3,7 +3,7 @@ import type { JsonObject } from 'type-fest'
 import type { ICollaboratorProfile } from '../field/index.js'
 import type { Table } from '../table.js'
 import type { TableId, TableSchema, TableSchemaIdMap } from '../value-objects/index.js'
-import type { IRecordDisplayValues } from './index.js'
+import type { IQueryRecordSchema, IRecordDisplayValues } from './index.js'
 import { RecordFactory } from './record.factory.js'
 import type {
   IInternalRecordValues,
@@ -89,6 +89,22 @@ export class Record {
         .and(new WithRecordTableId(this.tableId))
         .and(new WithRecordValues(this.values.duplicate(schema))),
     ).unwrap()
+  }
+
+  toQuery(tableId: string): IQueryRecordSchema {
+    return {
+      id: this.id.value,
+      createdAt: this.createdAt.value.toISOString(),
+      updatedAt: this.updatedAt.value.toISOString(),
+      createdBy: this.createdBy,
+      createdByProfile: this.createdByProfile,
+      updatedBy: this.updatedBy,
+      updatedByProfile: this.updatedByProfile,
+      autoIncrement: this.autoIncrement,
+      tableId,
+      values: this.values.valuesJSON,
+      displayValues: this.displayValues?.values ?? {},
+    }
   }
 
   public getDisplayFieldsValue(table: Table): string {
