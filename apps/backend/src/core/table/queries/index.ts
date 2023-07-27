@@ -7,11 +7,13 @@ import { NestGetRecordsTreeQueryHandler } from './get-records-tree.query.handler
 import { NestGetRecordsQueryHandler } from './get-records.query.handler.js'
 import { NestGetTableQueryHandler } from './get-table.query.handler.js'
 import { NestGetTablesQueryHandler } from './get-tables.query.handler.js'
+import { NestGetTrashRecordsQueryHandler } from './get-trash-records.query.handler.js'
 import { NestGetTreeAvailableRecordsQueryHandler } from './get-tree-available-records.query.handler.js'
 
 export const queryHandlers = [
   NestGetTableQueryHandler,
   NestGetTablesQueryHandler,
+  NestGetTrashRecordsQueryHandler,
   NestGetRecordQueryHandler,
   NestGetRecordsQueryHandler,
   NestGetForeignRecordsQueryHandler,

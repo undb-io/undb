@@ -11,6 +11,7 @@ export class OpenAPIWebhookService {
     await this.commandBus.execute(
       new CreateWebhookCommand({
         tableId,
+        // @ts-ignore
         webhook: {
           ...values,
           target: {

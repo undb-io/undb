@@ -15,13 +15,13 @@ export abstract class BaseEvent<
   TMeta extends object | undefined = undefined,
 > implements IEvent<TPayload>
 {
-  timestamp = new Date()
   abstract name: TName
   constructor(
     public readonly payload: TPayload,
     public readonly operatorId: string,
     public readonly meta: TMeta,
     public readonly id = v4(),
+    public readonly timestamp = new Date(),
   ) {}
 
   toJSON() {

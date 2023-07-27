@@ -24,6 +24,7 @@ import { MoveViewCommandHandler } from './move-view.command.handler.js'
 import { RelayoutWidgetsCommandHandler } from './relayout-widgets.command.handler.js'
 import { ReorderOptionsCommandHandler } from './reorder-options.command.handler.js'
 import { ResetFieldSortCommandHandler } from './reset-field-sort.command.handler.js'
+import { RestoreRecordCommandHandler } from './restore-record.command.handler.js'
 import { SetCalendarFieldCommandHandler } from './set-calendar-field.command.handler.js'
 import { SetFieldSortCommandHandler } from './set-field-sort.command.handler.js'
 import { SetFieldVisibilityCommandHandler } from './set-field-visibility.command.handler.js'
@@ -102,4 +103,5 @@ export const commandHandlers = [
   SetFormFieldsOrderCommandHandler,
   SetGalleryFieldCommandHandler,
   UpdateFormCommandHandler,
+  RestoreRecordCommandHandler,
 ]

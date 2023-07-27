@@ -1,6 +1,7 @@
 import type { IRootFilter } from '../../filter/filter.js'
 import { convertFilterSpec } from '../../filter/filter.js'
 import type { Table } from '../../table.js'
+import type { RecordCompositeSpecification } from './interface.js'
 import { withQ } from './record-search.specification.js'
 import { WithRecordTableId } from './record-table-id.specification.js'
 
@@ -29,12 +30,12 @@ export * from './select.specification.js'
 export * from './string.specification.js'
 export * from './tree.specification.js'
 
-export const withTableRecordsSpec = (table: Table, viewId?: string, customFilter?: IRootFilter, q?: string) => {
-  const filter = table.getSpec(viewId)
-
-  let spec = WithRecordTableId.fromString(table.id.value)
-    .map((s) => (filter.isNone() ? s : s.and(filter.unwrap())))
-    .unwrap()
+export const withTableRecordsSpec = (
+  table: Table,
+  customFilter?: IRootFilter,
+  q?: string,
+): RecordCompositeSpecification => {
+  let spec: RecordCompositeSpecification = WithRecordTableId.fromString(table.id.value).unwrap()
 
   if (customFilter) {
     const querySpec = convertFilterSpec(customFilter)
@@ -43,6 +44,23 @@ export const withTableRecordsSpec = (table: Table, viewId?: string, customFilter
 
   const search = withQ(table, q)
   if (search.isSome()) spec = spec.and(search.unwrap())
+
+  return spec
+}
+
+export const withTableViewRecordsSpec = (
+  table: Table,
+  viewId?: string,
+  customFilter?: IRootFilter,
+  q?: string,
+): RecordCompositeSpecification => {
+  const filter = table.getSpec(viewId)
+
+  let spec = withTableRecordsSpec(table, customFilter, q)
+
+  if (filter.isSome()) {
+    spec = spec.and(filter.unwrap())
+  }
 
   return spec
 }

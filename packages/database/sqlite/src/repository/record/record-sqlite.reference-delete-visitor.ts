@@ -11,7 +11,11 @@ export class RecordSqliteReferenceDeleteVisitor
   implements IFieldVisitor
 {
   private readonly knex: Knex
-  constructor(em: EntityManager, private readonly foreignTableId: string, private readonly recordId: string) {
+  constructor(
+    em: EntityManager,
+    private readonly foreignTableId: string,
+    private readonly recordId: string,
+  ) {
     super(em)
     this.knex = em.getKnex()
   }

@@ -10,7 +10,7 @@
 	import CreateOption from '$lib/option/CreateOption.svelte'
 	import ViewConfigModal from '$lib/view/ViewConfigModal.svelte'
 	import UpdateTable from '$lib/table/UpdateTable.svelte'
-	import { createRecordModal, createTableModal, erdModal } from '$lib/store/modal'
+	import { createRecordModal, createTableModal, erdModal, recordTrashModal } from '$lib/store/modal'
 	import UpdateOption from '$lib/option/UpdateOption.svelte'
 	import VisualizationModal from '$lib/visualization/VisualizationModal.svelte'
 	import DuplicateField from '$lib/field/DuplicateField.svelte'
@@ -18,6 +18,7 @@
 	import ErdModal from '$lib/erd/ErdModal.svelte'
 	import FormListDrawer from '$lib/form/FormListDrawer.svelte'
 	import FormEditorModal from '$lib/form/FormEditorModal.svelte'
+	import RecordTrashModal from '$lib/record/trash/RecordTrashModal.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -65,6 +66,9 @@
 	<CreateOption data={data.createOption} />
 {/if}
 <UpdateOption data={data.updateOption} />
+{#if $recordTrashModal.open}
+	<RecordTrashModal />
+{/if}
 {#if $field}
 	{#key $field}
 		<UpdateField field={$field} data={data.updateField} />

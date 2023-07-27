@@ -16,7 +16,14 @@ export class RelayService {
   async handleCron() {
     await this.outboxService.handle((outboxList) => {
       for (const outbox of outboxList) {
-        const event = EventFactory.create(outbox.uuid, outbox.operatorId, outbox.name, outbox.payload, outbox.meta)
+        const event = EventFactory.create(
+          outbox.uuid,
+          outbox.operatorId,
+          outbox.name,
+          outbox.payload,
+          outbox.meta,
+          outbox.timestamp,
+        )
         if (!event) {
           this.logger.warn('unknown event name %s', outbox.name)
           continue

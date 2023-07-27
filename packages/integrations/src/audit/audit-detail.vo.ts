@@ -17,7 +17,18 @@ export const recordDeletedAuditDetail = z.object({
 
 export type IRecordDeletedAuditDetail = z.infer<typeof recordDeletedAuditDetail>
 
-export const auditDetail = z.record(z.any()).nullable().or(recordUpdatedAuditDetail).or(recordDeletedAuditDetail)
+export const recordRestoredAuditDetail = z.object({
+  name: z.string(),
+})
+
+export type IRecordRestoredAuditDetail = z.infer<typeof recordRestoredAuditDetail>
+
+export const auditDetail = z
+  .record(z.any())
+  .nullable()
+  .or(recordUpdatedAuditDetail)
+  .or(recordDeletedAuditDetail)
+  .or(recordRestoredAuditDetail)
 
 export type IAuditDetail = z.infer<typeof auditDetail>
 

@@ -13,6 +13,7 @@ export class Outbox extends BaseEntity {
     this.operatorId = event.operatorId
     this.payload = event.payload
     this.meta = event.meta
+    this.timestamp = event.timestamp
   }
 
   @PrimaryKey()
@@ -23,6 +24,9 @@ export class Outbox extends BaseEntity {
 
   @Property({ nullable: true })
   operatorId: string
+
+  @Property()
+  timestamp: Date
 
   @Property({ type: JsonType })
   payload: object

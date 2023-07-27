@@ -60,6 +60,16 @@
           "nullable": true,
           "mappedType": "text"
         },
+        "timestamp": {
+          "name": "timestamp",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
         "payload": {
           "name": "payload",
           "type": "json",

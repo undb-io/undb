@@ -9,6 +9,7 @@ import {
   GetForeignRecordsQuery,
   GetRecordQuery,
   GetRecordsQuery,
+  RestoreRecordCommand,
   UpdateRecordCommand,
   bulkDeleteRecordsCommandInput,
   bulkDuplicateRecordsCommandInput,
@@ -18,6 +19,7 @@ import {
   getForeignRecordsQueryInput,
   getRecordQueryInput,
   getRecordsQueryInput,
+  restoreRecordCommandInput,
 } from '@undb/cqrs'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
@@ -25,6 +27,7 @@ import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'
 import { createRecordAuditRouter } from './audit.router.js'
 import { createParentFieldRouter } from './parent-field.router.js'
+import { createRecordTrashRouter } from './record-trash.router.js'
 import { createTreeFieldRouter } from './tree-field.router.js'
 
 export const createRecordRouter =
@@ -65,6 +68,13 @@ export const createRecordRouter =
           const cmd = new DeleteRecordCommand(input)
           return commandBus.execute(cmd)
         }),
+      restore: procedure
+        .input(restoreRecordCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new RestoreRecordCommand(input)
+          return commandBus.execute(cmd)
+        }),
       bulkDelete: procedure
         .input(bulkDeleteRecordsCommandInput)
         .output(z.void())
@@ -96,4 +106,5 @@ export const createRecordRouter =
       tree: createTreeFieldRouter(procedure)(queryBus),
       parent: createParentFieldRouter(procedure)(queryBus),
       audit: createRecordAuditRouter(procedure)(commandBus, queryBus),
+      trash: createRecordTrashRouter(procedure)(commandBus, queryBus),
     })

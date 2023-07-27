@@ -1,6 +1,13 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
-import type { IQueryRecordSchema, IQueryRecords, IRecordQueryModel, IRecordSpec, ViewId } from '@undb/core'
+import type {
+  IQueryRecordSchema,
+  IQueryRecords,
+  IRecordQueryModel,
+  IRecordSpec,
+  RecordsWithCount,
+  ViewId,
+} from '@undb/core'
 import { EntityManager, RecordSqliteQueryModel } from '@undb/sqlite'
 import type { Option } from 'oxide.ts'
 
@@ -9,7 +16,10 @@ export const InjectRecordQueryModel = () => Inject(RECORD_QUERY_MODEL)
 
 @Injectable()
 export class NestRecordSqliteQueryModel extends RecordSqliteQueryModel implements IRecordQueryModel {
-  constructor(protected readonly orm: MikroORM, public readonly em: EntityManager) {
+  constructor(
+    protected readonly orm: MikroORM,
+    public readonly em: EntityManager,
+  ) {
     super(em)
   }
 
@@ -19,11 +29,7 @@ export class NestRecordSqliteQueryModel extends RecordSqliteQueryModel implement
   }
 
   @UseRequestContext()
-  async findAndCount(
-    tableId: string,
-    viewId: ViewId | undefined,
-    spec: IRecordSpec | null,
-  ): Promise<{ records: IQueryRecords; total: number }> {
+  async findAndCount(tableId: string, viewId: ViewId | undefined, spec: IRecordSpec | null): Promise<RecordsWithCount> {
     return super.findAndCount(tableId, viewId, spec)
   }
 
@@ -35,5 +41,10 @@ export class NestRecordSqliteQueryModel extends RecordSqliteQueryModel implement
   @UseRequestContext()
   findOneById(tableId: string, id: string): Promise<Option<IQueryRecordSchema>> {
     return super.findOneById(tableId, id)
+  }
+
+  @UseRequestContext()
+  findDeletedAndCount(tableId: string, spec: IRecordSpec | null) {
+    return super.findDeletedAndCount(tableId, spec)
   }
 }

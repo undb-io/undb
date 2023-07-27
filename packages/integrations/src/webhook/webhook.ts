@@ -1,5 +1,16 @@
 import type { RecordEvents, Table } from '@undb/core'
-import { RecordFactory, convertFilterSpec, type RootFilter } from '@undb/core'
+import {
+  EVT_RECORD_BULK_CREATED,
+  EVT_RECORD_BULK_DELETED,
+  EVT_RECORD_BULK_UPDATED,
+  EVT_RECORD_CREATED,
+  EVT_RECORD_DELETED,
+  EVT_RECORD_RESTORED,
+  EVT_RECORD_UPDATED,
+  RecordFactory,
+  convertFilterSpec,
+  type RootFilter,
+} from '@undb/core'
 import type { IEvent } from '@undb/domain'
 import { and } from '@undb/domain'
 import { isBoolean, isNil, isObject, isString } from 'lodash-es'
@@ -80,29 +91,35 @@ export class Webhook {
 
     return match(event)
       .returnType<Option<typeof event>>()
-      .with({ name: 'record.created' }, { name: 'record.deleted' }, { name: 'record.updated' }, (event) => {
-        const record = RecordFactory.fromQuery(event.meta.record, table.schema.toIdMap()).unwrap()
-        return spec.isSatisfiedBy(record) ? Some(event) : None
-      })
       .with(
-        { name: 'record.bulk_created' },
-        { name: 'record.bulk_deleted' },
-        { name: 'record.bulk_updated' },
+        { name: EVT_RECORD_CREATED },
+        { name: EVT_RECORD_DELETED },
+        { name: EVT_RECORD_UPDATED },
+        { name: EVT_RECORD_RESTORED },
+        (event) => {
+          const record = RecordFactory.fromQuery(event.meta.record, table.schema.toIdMap()).unwrap()
+          return spec.isSatisfiedBy(record) ? Some(event) : None
+        },
+      )
+      .with(
+        { name: EVT_RECORD_BULK_CREATED },
+        { name: EVT_RECORD_BULK_DELETED },
+        { name: EVT_RECORD_BULK_UPDATED },
         (event) => {
           const records = RecordFactory.fromQueryRecords(Object.values(event.meta.records), table.schema.toIdMap())
           const matched = new Set(records.filter((r) => spec.isSatisfiedBy(r)).map((r) => r.id.value))
           if (matched.size === 0) return None
 
           return match(event)
-            .with({ name: 'record.bulk_created' }, (event) => {
+            .with({ name: EVT_RECORD_BULK_CREATED }, (event) => {
               event.payload.records = event.payload.records.filter((r) => matched.has(r.id))
               return Some(event)
             })
-            .with({ name: 'record.bulk_updated' }, (event) => {
+            .with({ name: EVT_RECORD_BULK_UPDATED }, (event) => {
               event.payload.updates = event.payload.updates.filter((u) => matched.has(u.id))
               return Some(event)
             })
-            .with({ name: 'record.bulk_deleted' }, (event) => {
+            .with({ name: EVT_RECORD_BULK_DELETED }, (event) => {
               event.payload.records = event.payload.records.filter((r) => matched.has(r.id))
               return Some(event)
             })

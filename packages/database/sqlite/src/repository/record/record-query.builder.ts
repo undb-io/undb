@@ -1,8 +1,10 @@
-import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import type { Table as CoreTable, IRecordSpec, TableSchemaIdMap, VisualizationVO } from '@undb/core'
+import type { Knex } from '@mikro-orm/better-sqlite'
+import { EntityManager } from '@mikro-orm/better-sqlite'
+import type { IRecordSpec, TableSchemaIdMap, VisualizationVO } from '@undb/core'
 import {
   ChartVisualization,
   SelectField as CoreSelectField,
+  Table as CoreTable,
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
@@ -12,8 +14,13 @@ import {
 } from '@undb/core'
 import { union } from 'lodash-es'
 import type { Promisable } from 'type-fest'
-import type { Table } from '../../entity/table.js'
+import { Table } from '../../entity/table.js'
+import { User } from '../../entity/user.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
+import {
+  INTERNAL_COLUMN_DELETED_BY_NAME,
+  INTERNAL_COLUMN_DELETED_BY_PROFILE_NAME,
+} from '../../underlying-table/constants.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import { UnderlyingSelectColumn } from '../../underlying-table/underlying-column.js'
 import { RecordChartGroupVisitor } from './record-chart-group.visitor.js'
@@ -23,10 +30,10 @@ import { TABLE_ALIAS } from './record.constants.js'
 
 export interface IRecordQueryBuilder {
   from(): this
-  where(): this
+  where(includeDeleted: boolean): this
   sort(): this
   reference(): this
-  select(): this
+  select(...fields: string[]): this
   build(): Promisable<this>
 }
 
@@ -57,9 +64,16 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     return this
   }
 
-  where(): this {
+  where(includeDeleted = false): this {
     if (this.spec) {
-      const visitor = new RecordSqliteQueryVisitor(this.table.id.value, this.schema, this.em, this.qb, this.knex)
+      const visitor = new RecordSqliteQueryVisitor(
+        this.table.id.value,
+        this.schema,
+        this.em,
+        this.qb,
+        this.knex,
+        includeDeleted,
+      )
 
       this.spec.accept(visitor).unwrap()
     }
@@ -107,7 +121,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     return this
   }
 
-  select(): this {
+  select(..._fields: string[]): this {
     const schema = this.table.schema
     const view = this.table.mustGetView(this.viewId)
     const fields = view.getVisibleFields(schema.fields)
@@ -121,8 +135,33 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
         INTERNAL_COLUMN_CREATED_BY_NAME,
         INTERNAL_COLUMN_UPDATED_AT_NAME,
         INTERNAL_COLUMN_UPDATED_BY_NAME,
+        ..._fields.filter((n) => n !== INTERNAL_COLUMN_DELETED_BY_PROFILE_NAME),
       ],
     ).map((name) => `${TABLE_ALIAS}.${name}`)
+    if (_fields.includes(INTERNAL_COLUMN_DELETED_BY_PROFILE_NAME)) {
+      const {
+        properties: { id, avatar, username, color },
+        tableName,
+      } = this.em.getMetadata().get(User.name)
+
+      const alias = INTERNAL_COLUMN_DELETED_BY_NAME + '_' + tableName
+
+      this.qb
+        .select(
+          this.knex.raw(
+            `json_object(
+            '${username.fieldNames[0]}', ${alias}.${username.fieldNames[0]},
+            '${avatar.fieldNames[0]}', ${alias}.${avatar.fieldNames[0]},
+            '${color.fieldNames[0]}', ${alias}.${color.fieldNames[0]}
+          ) as ${INTERNAL_COLUMN_DELETED_BY_PROFILE_NAME}`,
+          ),
+        )
+        .leftJoin(
+          `${tableName} as ${alias}`,
+          `${alias}.${id.fieldNames[0]}`,
+          `${TABLE_ALIAS}.${INTERNAL_COLUMN_DELETED_BY_NAME}`,
+        )
+    }
 
     this.qb.select(names).distinct()
 

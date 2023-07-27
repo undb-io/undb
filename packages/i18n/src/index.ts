@@ -34,6 +34,8 @@ export const config: InitOptions = {
         'TABLE.NOT_FOUND': 'Table not found',
       },
       common: {
+        deleted: 'deleted',
+        restore: 'restore',
         'return to home': 'Return to Home',
         'click to upload or dnd': '<strong>Click to upload</strong> or drag and drop',
         demo: 'this is a demo site for undb, you can use email: <strong>{{email}}</strong> and password: <strong>{{password}}</strong> to login',
@@ -340,6 +342,7 @@ export const config: InitOptions = {
         'record.created': 'Record Created',
         'record.updated': 'Record Updated',
         'record.deleted': 'Record Deleted',
+        'record.restored': 'Record Restored',
         'record.bulk_created': 'Record Bulk Created',
         'record.bulk_updated': 'Record Bulk Updated',
         'record.bulk_deleted': 'Record Bulk Deleted',
@@ -347,6 +350,8 @@ export const config: InitOptions = {
       audit: {
         'record.created': '{{username}} has created record at {{timestamp}}',
         'record.updated': '{{username}} has updated record at {{timestamp}}',
+        'record.deleted': '{{username}} has deleted record at {{timestamp}}',
+        'record.restored': '{{username}} has restored record at {{timestamp}}',
       },
       zod: zodEn,
     },
@@ -380,6 +385,8 @@ export const config: InitOptions = {
         'TABLE.NOT_FOUND': '没有找到表格',
       },
       common: {
+        deleted: '删除了',
+        restore: '恢复',
         'return to home': '返回首页',
         'click to upload or dnd': '<strong>点击上传</strong>或拖拽文件',
         demo: '这是 undb 的 demo 网站，你可以使用邮箱: <strong>{{email}}</strong> 和密码：<strong>{{password}}</strong> 登录',
@@ -689,6 +696,7 @@ export const config: InitOptions = {
         'record.created': '行创建',
         'record.updated': '行更新',
         'record.deleted': '行删除',
+        'record.restored': '行恢复',
         'record.bulk_created': '批量行创建',
         'record.bulk_updated': '批量行更新',
         'record.bulk_deleted': '批量行删除',
@@ -696,6 +704,8 @@ export const config: InitOptions = {
       audit: {
         'record.created': '{{username}} 创建于 {{timestamp}}',
         'record.updated': '{{username}} 更新于 {{timestamp}}',
+        'record.deleted': '{{username}} 删除于 {{timestamp}}',
+        'record.restored': '{{username}} 恢复于 {{timestamp}}',
       },
       zod: zodZh,
     },

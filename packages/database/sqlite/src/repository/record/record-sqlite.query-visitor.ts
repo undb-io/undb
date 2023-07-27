@@ -1,4 +1,4 @@
-import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type { EntityProperty } from '@mikro-orm/core'
 import type {
   AbstractDateRangeDateSpec,
@@ -44,7 +44,6 @@ import type {
   StringEqual,
   StringRegex,
   StringStartsWith,
-  TableSchemaIdMap,
   TreeAvailableSpec,
   WithRecordAutoIncrement,
   WithRecordCreatedAt,
@@ -69,6 +68,7 @@ import {
   INTERNAL_INCREMENT_ID_NAME,
   MultiSelectField,
   ParentField,
+  TableSchemaIdMap,
   TreeField,
   UpdatedByField,
 } from '@undb/core'
@@ -89,9 +89,13 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     private readonly em: EntityManager,
     private qb: Knex.QueryBuilder,
     private knex: Knex,
+    includeDeleted: boolean = false,
   ) {
     const alias = TABLE_ALIAS
-    this.qb = qb.from(tableId + ' as ' + alias).whereNull(`${alias}.${INTERNAL_COLUMN_DELETED_AT_NAME}`)
+    this.qb = qb.from(tableId + ' as ' + alias)
+    if (!includeDeleted) {
+      this.qb = qb.whereNull(`${alias}.${INTERNAL_COLUMN_DELETED_AT_NAME}`)
+    }
   }
   get query() {
     return this.qb.toQuery()
