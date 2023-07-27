@@ -2,35 +2,17 @@
 	import cx from 'classnames'
 	import { Badge, Button, Modal, Toast } from 'flowbite-svelte'
 	import { slide } from 'svelte/transition'
-	import FilterItem from './FilterItem.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { filters, getTable, getView, q, recordHash } from '$lib/store/table'
 	import { isOperatorWithoutValue, type IFilter } from '@undb/core'
-	import { writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
 	import { invalidate } from '$app/navigation'
-	import Sortable, { type SortableEvent } from 'sortablejs'
-	import { isNumber } from 'lodash-es'
+	import FilterEditor from '$lib/filter/FilterEditor.svelte'
 
-	const value = writable<Partial<IFilter>[]>([...$filters])
-	$: value.set([...$filters])
-
-	$: if (!$value.length) {
-		add()
-	}
+	let value = $filters
 
 	const table = getTable()
 	const view = getView()
-
-	const TEMP_ID = '__TEMP_ID'
-
-	const add = () => {
-		$value = [...$value, { path: TEMP_ID }]
-	}
-
-	const remove = (index: number) => {
-		$value = $value.filter((f, i) => i !== index)
-	}
 
 	const data = trpc().record.list.query(
 		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
@@ -45,7 +27,7 @@
 		},
 	})
 	async function apply() {
-		const validFilters = $value.filter(
+		const validFilters = value.filter(
 			(v) =>
 				!!v.path && !!v.operator && !!v.type && (isOperatorWithoutValue(v.operator) ? true : v.value !== undefined),
 		) as IFilter[]
@@ -58,23 +40,6 @@
 	}
 
 	let open = false
-
-	const onEnd = (event: SortableEvent) => {
-		const { oldIndex, newIndex } = event
-		if (isNumber(oldIndex) && isNumber(newIndex)) {
-			;[$value[oldIndex], $value[newIndex]] = [$value[newIndex], $value[oldIndex]]
-		}
-	}
-
-	let el: HTMLUListElement
-	$: if (el) {
-		Sortable.create(el, {
-			animation: 200,
-			direction: 'vertical',
-			onEnd,
-			handle: '.handle',
-		})
-	}
 </script>
 
 <Button
@@ -98,21 +63,18 @@
 </Button>
 <Modal placement="top-center" bind:open class="w-full rounded-sm" size="lg">
 	<form on:submit|preventDefault={apply} id="filter_menu" class="space-y-4">
-		{#if $value.length}
-			<span class="text-xs font-medium text-gray-500 dark:text-gray-300">{$t('set filters in this view')}</span>
-			<ul class="space-y-2" bind:this={el}>
-				{#each $value as filter, index (filter.path)}
-					<FilterItem {filter} {index} {remove} />
-				{/each}
-			</ul>
-		{:else}
-			<span class="text-xs font-medium text-gray-400">{$t('no filters applied')}</span>
-		{/if}
+		<span class="text-xs font-medium text-gray-500 dark:text-gray-300">{$t('set filters in this view')}</span>
+		<FilterEditor bind:value let:add>
+			<div class="flex w-full justify-between">
+				<Button color="alternative" size="xs" on:click={add}>
+					{$t('Create New Filter')}
+				</Button>
+				<Button size="xs" type="submit" form="filter_menu">
+					{$t('Apply', { ns: 'common' })}
+				</Button>
+			</div>
+		</FilterEditor>
 	</form>
-	<div class="flex w-full justify-between">
-		<Button color="alternative" size="xs" on:click={add}>{$t('Create New Filter')}</Button>
-		<Button size="xs" type="submit" form="filter_menu">{$t('Apply', { ns: 'common' })}</Button>
-	</div>
 </Modal>
 
 {#if $setFilter.error}

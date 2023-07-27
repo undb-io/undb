@@ -1,0 +1,48 @@
+<script lang="ts">
+	import type { IFilter } from '@undb/core'
+	import Sortable, { type SortableEvent } from 'sortablejs'
+	import { isNumber } from 'lodash-es'
+	import FilterItem from '$lib/table/FilterItem.svelte'
+
+	export let value: Partial<IFilter>[] = []
+
+	$: if (!value) value = []
+
+	$: if (!value?.length) {
+		add()
+	}
+
+	const TEMP_ID = '__TEMP_ID'
+
+	const add = () => {
+		value = [...value, { path: TEMP_ID }]
+	}
+
+	const remove = (index: number) => {
+		value = value.filter((f, i) => i !== index)
+	}
+
+	const onEnd = (event: SortableEvent) => {
+		const { oldIndex, newIndex } = event
+		if (isNumber(oldIndex) && isNumber(newIndex)) {
+			;[value[oldIndex], value[newIndex]] = [value[newIndex], value[oldIndex]]
+		}
+	}
+
+	let el: HTMLUListElement
+	$: if (el) {
+		Sortable.create(el, {
+			animation: 200,
+			direction: 'vertical',
+			onEnd,
+			handle: '.handle',
+		})
+	}
+</script>
+
+<ul class="space-y-2" bind:this={el}>
+	{#each value as filter, index (filter.path)}
+		<FilterItem {filter} {index} {remove} />
+	{/each}
+</ul>
+<slot {add} />

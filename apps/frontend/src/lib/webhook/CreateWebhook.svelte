@@ -11,14 +11,14 @@
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import WebhookHeaderInput from './WebhookHeaderInput.svelte'
-	import FilterItem from '$lib/table/FilterItem.svelte'
+	import FilterEditor from '$lib/filter/FilterEditor.svelte'
 
 	export let data: Validation<typeof createWebhookSchema>
 
 	const table = getTable()
 
 	const createWebhook = trpc().webhook.create.mutation({
-		onSuccess(data, variables, context) {
+		onSuccess() {
 			$webhookDrawerMode = 'list'
 		},
 	})
@@ -57,15 +57,7 @@
 	const events = recordEvents.map((e) => ({ name: $t(e, { ns: 'event' }), value: e }))
 	const methods = ['POST', 'PATCH'].map((method) => ({ name: method, value: method }))
 
-	const TEMP_ID = '__TEMP_ID'
-
-	let filters = [{ path: TEMP_ID }] as Partial<IFilter>[]
-	const addFilter = () => {
-		filters = [...filters, { path: TEMP_ID }]
-	}
-	const removeFilter = (index: number) => {
-		filters = filters.filter((f, i) => i !== index)
-	}
+	let filters: Partial<IFilter>[] = []
 </script>
 
 <form id="createWebhook" method="POST" class="flex-1" use:enhance>
@@ -116,9 +108,11 @@
 					<span>{$t('Filters')}</span>
 				</div>
 
-				{#each filters as filter, index (filter.path)}
-					<FilterItem {filter} {index} remove={removeFilter} />
-				{/each}
+				<FilterEditor bind:value={filters} let:add>
+					<Button color="alternative" size="xs" on:click={add}>
+						{$t('Create New Filter')}
+					</Button>
+				</FilterEditor>
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">

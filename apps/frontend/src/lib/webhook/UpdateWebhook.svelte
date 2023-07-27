@@ -4,14 +4,15 @@
 	import { webhookDrawerMode } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { recordEvents } from '@undb/core'
+	import { recordEvents, type IFilter, isOperatorWithoutValue } from '@undb/core'
 	import type { IQueryWebhook, updateWebhookSchema } from '@undb/integrations'
 	import { Button, Input, Label, Select, Toast } from 'flowbite-svelte'
-	import { keys, isEmpty, pick } from 'lodash-es'
+	import { keys, isEmpty, pick, isEqual } from 'lodash-es'
 	import { slide } from 'svelte/transition'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import WebhookHeaderInput from './WebhookHeaderInput.svelte'
+	import FilterEditor from '$lib/filter/FilterEditor.svelte'
 
 	export let data: Validation<typeof updateWebhookSchema>
 	export let webhook: IQueryWebhook
@@ -32,9 +33,14 @@
 		taintedMessage: null,
 		resetForm: false,
 		async onUpdate(event) {
+			const validFilters = (event.form.data.filter as IFilter[]).filter(
+				(v) =>
+					!!v.path && !!v.operator && !!v.type && (isOperatorWithoutValue(v.operator) ? true : v.value !== undefined),
+			) as IFilter[]
+
 			const taintedKeys = keys($tainted)
-			if (isEmpty(taintedKeys)) return
 			const values = pick(event.form.data, taintedKeys)
+			values.filter = validFilters
 
 			$updateWebhook.mutate({
 				tableId: $table.id.value,
@@ -51,9 +57,11 @@
 		$form.name = webhook.name
 		$form.url = webhook.url
 		$form.headers = webhook.headers
+		$form.filter = webhook.filter
 		$tainted = undefined
 	}
 
+	let filters = webhook.filter as IFilter[]
 	const events = recordEvents.map((e) => ({ name: $t(e, { ns: 'event' }), value: e }))
 	const methods = ['POST', 'PATCH'].map((method) => ({ name: method, value: method }))
 </script>
@@ -100,6 +108,17 @@
 				</div>
 
 				<Select items={events} bind:value={$form.event} />
+			</Label>
+			<Label class="flex flex-col gap-2 w-full">
+				<div class="flex gap-2 items-center">
+					<span>{$t('Filters')}</span>
+				</div>
+
+				<FilterEditor bind:value={filters} let:add>
+					<Button color="alternative" size="xs" on:click={add}>
+						{$t('Create New Filter')}
+					</Button>
+				</FilterEditor>
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
