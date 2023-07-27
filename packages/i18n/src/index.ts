@@ -340,6 +340,7 @@ export const config: InitOptions = {
         'record.created': 'Record Created',
         'record.updated': 'Record Updated',
         'record.deleted': 'Record Deleted',
+        'record.restored': 'Record Restored',
         'record.bulk_created': 'Record Bulk Created',
         'record.bulk_updated': 'Record Bulk Updated',
         'record.bulk_deleted': 'Record Bulk Deleted',
@@ -347,6 +348,8 @@ export const config: InitOptions = {
       audit: {
         'record.created': '{{username}} has created record at {{timestamp}}',
         'record.updated': '{{username}} has updated record at {{timestamp}}',
+        'record.deleted': '{{username}} has deleted record at {{timestamp}}',
+        'record.restored': '{{username}} has restored record at {{timestamp}}',
       },
       zod: zodEn,
     },
@@ -689,6 +692,7 @@ export const config: InitOptions = {
         'record.created': '行创建',
         'record.updated': '行更新',
         'record.deleted': '行删除',
+        'record.restored': '行恢复',
         'record.bulk_created': '批量行创建',
         'record.bulk_updated': '批量行更新',
         'record.bulk_deleted': '批量行删除',
@@ -696,6 +700,8 @@ export const config: InitOptions = {
       audit: {
         'record.created': '{{username}} 创建于 {{timestamp}}',
         'record.updated': '{{username}} 更新于 {{timestamp}}',
+        'record.deleted': '{{username}} 删除于 {{timestamp}}',
+        'record.restored': '{{username}} 恢复于 {{timestamp}}',
       },
       zod: zodZh,
     },

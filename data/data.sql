@@ -1533,6 +1533,7 @@ CREATE TABLE `undb_outbox` (
 	`operator_id` text null,
 	`payload` json not null,
 	`meta` json null,
+        `timestamp` datetime not null,
 	primary key (`uuid`)
 );
 CREATE TABLE `undb_webhook` (
