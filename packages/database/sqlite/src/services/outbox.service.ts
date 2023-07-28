@@ -26,7 +26,7 @@ export class OutboxService implements IOutboxService {
       const outboxList = await em.find(
         Outbox,
         {},
-        { limit: 10, orderBy: { createdAt: 'desc' }, lockMode: LockMode.PESSIMISTIC_WRITE },
+        { limit: 1000, orderBy: { createdAt: 'desc' }, lockMode: LockMode.PESSIMISTIC_WRITE },
       )
 
       if (!outboxList.length) return

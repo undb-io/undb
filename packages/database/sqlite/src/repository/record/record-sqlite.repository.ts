@@ -6,6 +6,7 @@ import type {
   Table as CoreTable,
   IRecordRepository,
   IRecordSpec,
+  Record,
   TableSchemaIdMap,
 } from '@undb/core'
 import {
@@ -29,8 +30,10 @@ import {
   WithRecordValues,
 } from '@undb/core'
 import { and, type IUnitOfWork } from '@undb/domain'
+import { chunk } from 'lodash-es'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
+import pMap from 'p-map'
 import { ReferenceField, SelectField } from '../../entity/field.js'
 import { Table } from '../../entity/table.js'
 import { type IOutboxService } from '../../services/outbox.service.js'
@@ -93,9 +96,7 @@ export class RecordSqliteRepository implements IRecordRepository {
 
     const qb = em.getKnex().insert(data).into(record.tableId.value)
     await em.execute(qb)
-    for (const query of queries) {
-      await em.execute(query)
-    }
+    await Promise.all(queries.map((query) => em.execute(query)))
     await Promise.all(jobs.map((job) => job()))
   }
 
@@ -127,6 +128,8 @@ export class RecordSqliteRepository implements IRecordRepository {
   }
 
   async insertMany(table: CoreTable, records: CoreRecord[]): Promise<void> {
+    if (!records.length) return
+
     const userId = this.cls.get('user.userId')
 
     const schema = table.schema.toIdMap()
@@ -134,18 +137,17 @@ export class RecordSqliteRepository implements IRecordRepository {
     // await this.uow.begin()
     const em = this.em
     try {
-      await Promise.all(records.map((record) => this._insert(em, record, schema)))
-      const spec = WithRecordIds.fromIds(records.map((r) => r.id.value))
-      const found = await this.findRecordsEntity(table.id.value, spec)
-      if (found.length) {
-        const event = RecordBulkCreatedEvent.from(
-          table,
-          userId,
-          found.map((r) => RecordSqliteMapper.toDomain(table.id.value, schema, r).unwrap()),
-        )
+      const mapper = async (record: Record) => {
+        await this._insert(em, record, schema)
+      }
+      await pMap(records, mapper, { concurrency: 500 })
+
+      for (const chuncked of chunk(records, 1000)) {
+        const event = RecordBulkCreatedEvent.from(table, userId, chuncked)
         this.outboxService.persist(event)
         await em.flush()
       }
+
       // await this.uow.commit()
     } catch (error) {
       // await this.uow.rollback()
