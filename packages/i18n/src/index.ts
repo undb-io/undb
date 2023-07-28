@@ -34,6 +34,8 @@ export const config: InitOptions = {
         'TABLE.NOT_FOUND': 'Table not found',
       },
       common: {
+        previous: 'Previous',
+        next: 'Next',
         deleted: 'deleted',
         restore: 'restore',
         'return to home': 'Return to Home',
@@ -385,6 +387,8 @@ export const config: InitOptions = {
         'TABLE.NOT_FOUND': '没有找到表格',
       },
       common: {
+        previous: '上一页',
+        next: '下一页',
         deleted: '删除了',
         restore: '恢复',
         'return to home': '返回首页',

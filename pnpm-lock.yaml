@@ -481,6 +481,9 @@ importers:
       '@undb/core':
         specifier: ^0.0.0
         version: link:../../packages/core
+      '@undb/domain':
+        specifier: workspace:^0.0.0
+        version: link:../../packages/domain
       '@undb/i18n':
         specifier: ^0.0.0
         version: link:../../packages/i18n
@@ -913,6 +916,9 @@ importers:
       uuid:
         specifier: ^9.0.0
         version: 9.0.0
+      zod:
+        specifier: ^3.21.4
+        version: 3.21.4
     devDependencies:
       '@types/uuid':
         specifier: ^9.0.2

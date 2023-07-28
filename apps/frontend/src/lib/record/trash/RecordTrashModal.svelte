@@ -8,6 +8,6 @@
 	const table = getTable()
 </script>
 
-<Modal bind:open={$recordTrashModal.open} class="w-full h-full" title={$table.name.value + ' ' + $t('trash')}>
+<Modal bind:open={$recordTrashModal.open} class="w-full" title={$table.name.value + ' ' + $t('trash')}>
 	<RecordTrash />
 </Modal>

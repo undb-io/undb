@@ -14,7 +14,7 @@ export class GetTrashRecordsQueryHandler implements IQueryHandler<GetTrashRecord
     const table = (await this.tableRepo.findOneById(query.tableId)).unwrap()
     const spec = withTableRecordsSpec(table, query.filter, query.q)
 
-    const { records, total } = await this.rm.findDeletedAndCount(table.id.value, spec)
+    const { records, total } = await this.rm.findDeletedAndCount(table.id.value, spec, { pagination: query.pagination })
 
     return { records, total }
   }

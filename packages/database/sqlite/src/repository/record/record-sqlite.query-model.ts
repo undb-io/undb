@@ -9,6 +9,7 @@ import type {
   ViewId,
 } from '@undb/core'
 import { WithRecordId, WithRecordTableId } from '@undb/core'
+import { IRepositoryOption } from '@undb/domain/dist/index.js'
 import { None, Option } from 'oxide.ts'
 import { ReferenceField, SelectField } from '../../entity/field.js'
 import { Table as TableEntity } from '../../entity/table.js'
@@ -69,21 +70,38 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     return tableEntity
   }
 
-  async find(tableId: string, viewId: ViewId | undefined, spec: IRecordSpec | null): Promise<IQueryRecords> {
+  async find(
+    tableId: string,
+    viewId: ViewId | undefined,
+    spec: IRecordSpec | null,
+    option?: IRepositoryOption,
+  ): Promise<IQueryRecords> {
     const tableEntity = await this.#getTable(tableId)
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
 
     let builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec, viewId?.value)
     // TODO: expand reference field
-    builder = builder.select().from().where().reference().sort().build()
+    builder = builder
+      .select()
+      .from()
+      .where()
+      .reference()
+      .sort()
+      .pagination(option?.pagination)
+      .build()
 
     const data = await this.em.execute<RecordSqlite[]>(builder.qb)
 
     return RecordSqliteMapper.toQueries(tableId, schema, data)
   }
 
-  async findAndCount(tableId: string, viewId: ViewId | undefined, spec: IRecordSpec | null): Promise<RecordsWithCount> {
+  async findAndCount(
+    tableId: string,
+    viewId: ViewId | undefined,
+    spec: IRecordSpec | null,
+    option?: IRepositoryOption,
+  ): Promise<RecordsWithCount> {
     const tableEntity = await this.#getTable(tableId)
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
@@ -91,16 +109,20 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     let builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec, viewId?.value)
     builder = builder.select().from().where().reference().sort().build()
 
-    const data = await this.em.execute<RecordSqlite[]>(builder.qb)
+    const data = await this.em.execute<RecordSqlite[]>(builder.clone().pagination(option?.pagination).qb)
+    const count = await this.em.execute(builder.clone().qb.count().first())
 
     const records = RecordSqliteMapper.toQueries(tableId, schema, data)
-    // TODO: 分页需要从 query 中获取
-    const total = records.length
+    const total = count.at(0)?.['count(*)']
 
     return { records, total: total }
   }
 
-  async findDeletedAndCount(tableId: string, spec: IRecordSpec | null): Promise<TrashRecordsWithCount> {
+  async findDeletedAndCount(
+    tableId: string,
+    spec: IRecordSpec | null,
+    option?: IRepositoryOption,
+  ): Promise<TrashRecordsWithCount> {
     const tableEntity = await this.#getTable(tableId)
     const table = TableSqliteMapper.entityToDomain(tableEntity).unwrap()
     const schema = table.schema.toIdMap()
@@ -117,11 +139,11 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
       .whereNotNull(`${TABLE_ALIAS}.${INTERNAL_COLUMN_DELETED_AT_NAME}`)
       .orderBy(`${TABLE_ALIAS}.${INTERNAL_COLUMN_DELETED_AT_NAME}`, 'desc')
 
-    const data = await this.em.execute<RecordSqlite[]>(builder.qb)
+    const data = await this.em.execute<RecordSqlite[]>(builder.clone().pagination(option?.pagination).qb)
+    const count = await this.em.execute(builder.clone().qb.count().first())
 
     const records = RecordSqliteMapper.toTrashes(tableId, schema, data)
-    // TODO: 分页需要从 query 中获取
-    const total = records.length
+    const total = count.at(0)?.['count(*)']
 
     return { records, total: total }
   }
