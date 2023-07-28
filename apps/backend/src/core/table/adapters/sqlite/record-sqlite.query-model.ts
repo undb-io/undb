@@ -8,6 +8,7 @@ import type {
   RecordsWithCount,
   ViewId,
 } from '@undb/core'
+import { type IRepositoryOption } from '@undb/domain'
 import { EntityManager, RecordSqliteQueryModel } from '@undb/sqlite'
 import type { Option } from 'oxide.ts'
 
@@ -24,13 +25,23 @@ export class NestRecordSqliteQueryModel extends RecordSqliteQueryModel implement
   }
 
   @UseRequestContext()
-  find(tableId: string, viewId: ViewId | undefined, spec: IRecordSpec | null): Promise<IQueryRecords> {
-    return super.find(tableId, viewId, spec)
+  find(
+    tableId: string,
+    viewId: ViewId | undefined,
+    spec: IRecordSpec | null,
+    option?: IRepositoryOption,
+  ): Promise<IQueryRecords> {
+    return super.find(tableId, viewId, spec, option)
   }
 
   @UseRequestContext()
-  async findAndCount(tableId: string, viewId: ViewId | undefined, spec: IRecordSpec | null): Promise<RecordsWithCount> {
-    return super.findAndCount(tableId, viewId, spec)
+  async findAndCount(
+    tableId: string,
+    viewId: ViewId | undefined,
+    spec: IRecordSpec | null,
+    option?: IRepositoryOption,
+  ): Promise<RecordsWithCount> {
+    return super.findAndCount(tableId, viewId, spec, option)
   }
 
   @UseRequestContext()
@@ -44,7 +55,7 @@ export class NestRecordSqliteQueryModel extends RecordSqliteQueryModel implement
   }
 
   @UseRequestContext()
-  findDeletedAndCount(tableId: string, spec: IRecordSpec | null) {
-    return super.findDeletedAndCount(tableId, spec)
+  findDeletedAndCount(tableId: string, spec: IRecordSpec | null, option?: IRepositoryOption) {
+    return super.findDeletedAndCount(tableId, spec, option)
   }
 }

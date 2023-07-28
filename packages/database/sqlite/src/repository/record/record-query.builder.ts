@@ -12,7 +12,8 @@ import {
   INTERNAL_COLUMN_UPDATED_BY_NAME,
   NumberVisualization,
 } from '@undb/core'
-import { union } from 'lodash-es'
+import { IPagination } from '@undb/domain'
+import { isNumber, union } from 'lodash-es'
 import type { Promisable } from 'type-fest'
 import { Table } from '../../entity/table.js'
 import { User } from '../../entity/user.js'
@@ -34,12 +35,13 @@ export interface IRecordQueryBuilder {
   sort(): this
   reference(): this
   select(...fields: string[]): this
+  pagination(pagination?: IPagination): this
+  count(): this
   build(): Promisable<this>
 }
 
 export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
   public readonly knex: Knex
-  public readonly qb: Knex.QueryBuilder
   private readonly schema: TableSchemaIdMap
 
   constructor(
@@ -48,15 +50,22 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
     private readonly tableEntity: Table,
     private readonly spec: IRecordSpec | null,
     private readonly viewId?: string,
+    public readonly qb = em.getKnex().queryBuilder(),
   ) {
     this.knex = em.getKnex()
-    this.qb = this.knex.queryBuilder()
     this.schema = table.schema.toIdMap()
   }
 
   clone(): RecordSqliteQueryBuilder {
     const view = this.table.mustGetView(this.viewId)
-    return new RecordSqliteQueryBuilder(this.em, this.table, this.tableEntity, this.spec, view.id.value)
+    return new RecordSqliteQueryBuilder(
+      this.em,
+      this.table,
+      this.tableEntity,
+      this.spec,
+      view.id.value,
+      this.qb.clone(),
+    )
   }
 
   from(): this {
@@ -206,6 +215,25 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
       field.accept(visitor)
     }
 
+    return this
+  }
+
+  pagination(pagination?: IPagination): this {
+    if (!pagination) return this
+
+    if (isNumber(pagination.limit)) {
+      this.qb.limit(pagination.limit)
+      if (isNumber(pagination.page)) {
+        const offset = pagination.limit * pagination.page - pagination.limit
+        this.qb.offset(offset)
+      }
+    }
+
+    return this
+  }
+
+  count(): this {
+    this.qb.count()
     return this
   }
 
