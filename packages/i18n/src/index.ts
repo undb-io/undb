@@ -241,7 +241,8 @@ export const config: InitOptions = {
         'Update Table Name': 'Update Table Name',
         'Delete Table': 'Delete Table',
         'Confirm Delete Table': 'Are you sure to delete table?',
-        'Confirm Delete Record': 'Are you sure to delete record?',
+        'Confirm Delete Record':
+          'Are you sure to delete this record? It will be moved to the recycle bin, and you can restore it from there.',
         'Confirm Delete Field': 'Are you sure to delete field?',
         'Total Records': 'loaded {{total}} records',
         'Create New Option': 'Create New Option',
@@ -326,6 +327,7 @@ export const config: InitOptions = {
         'Create New Form': 'Create New Form',
         'drag to set date': 'drag to set date',
         'set date': 'set date',
+        'recycle bin': 'recycle bin',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -596,7 +598,7 @@ export const config: InitOptions = {
         'Update Table Name': '更新表名',
         'Delete Table': '删除表',
         'Confirm Delete Table': '确认删除表吗？',
-        'Confirm Delete Record': '确认删除记录吗？',
+        'Confirm Delete Record': '确认删除记录吗？删除后将移至回收站，您可以在回收站中重新恢复该记录。',
         'Confirm Delete Field': '确认删除列吗？',
         'Total Records': '载入 {{total}} 行记录',
         Options: '选项',
@@ -682,6 +684,7 @@ export const config: InitOptions = {
         'Create New Form': '创建表单',
         'drag to set date': '拖拽设置日期',
         'set date': '设置日期',
+        'recycle bin': '回收站',
       },
       webhook: {
         Webhook: 'Webhook',
