@@ -1,5 +1,6 @@
 <script lang="ts">
 	import CollaboratorComponent from '$lib/cell/CellComponents/CollaboratorComponent.svelte'
+	import { formatDistance } from '$lib/date'
 	import { t } from '$lib/i18n'
 	import { recordTrashModal } from '$lib/store/modal'
 	import { createPagination } from '$lib/store/pagination'
@@ -61,8 +62,8 @@
 				</div>
 
 				<div class="flex items-center gap-2">
-					<span class="text-gray-400 text-xs">
-						{format(new Date(record.deletedAt), 'yyyy-MM-dd hh:mm:ss')}
+					<span class="text-gray-400 text-xs" title={format(new Date(record.deletedAt), 'yyyy-MM-dd HH:mm:ss')}>
+						{$formatDistance(new Date(record.deletedAt))}
 					</span>
 					<button
 						class="text-blue-400 hover:underline"
