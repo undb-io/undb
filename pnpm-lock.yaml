@@ -731,6 +731,9 @@ importers:
       '@undb/integrations':
         specifier: ^0.0.0
         version: link:../integrations
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
       oxide.ts:
         specifier: ^1.1.0
         version: 1.1.0
@@ -744,6 +747,9 @@ importers:
         specifier: ^3.21.4
         version: 3.21.4
     devDependencies:
+      '@types/lodash-es':
+        specifier: ^4.17.8
+        version: 4.17.8
       '@undb/logger':
         specifier: ^0.0.0
         version: link:../logger
@@ -828,6 +834,9 @@ importers:
       oxide.ts:
         specifier: ^1.1.0
         version: 1.1.0
+      p-map:
+        specifier: ^6.0.0
+        version: 6.0.0
       reflect-metadata:
         specifier: ^0.1.13
         version: 0.1.13

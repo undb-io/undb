@@ -1,6 +1,7 @@
 import type { IClsService, IRecordRepository, ITableRepository, ITableSpecHandler } from '@undb/core'
 import { TableFactory, WithTableSchema, createMutateRecordValuesSchema } from '@undb/core'
 import { type ICommandHandler, type IUnitOfWork } from '@undb/domain'
+import { chunk } from 'lodash-es'
 import type { ICreateTableOutput } from './create-table.command.interface.js'
 import type { CreateTableCommand } from './create-table.command.js'
 
@@ -27,9 +28,13 @@ export class CreateTableCommandHandler implements ICreateTableCommandHandler {
 
       if (command.records?.length) {
         const schema = createMutateRecordValuesSchema(table.schema.fields).array()
-        const values = await schema.parseAsync(command.records)
-        const records = table.createRecords(values.map((v) => ({ values: v })))
-        await this.recordRepo.insertMany(table, records)
+
+        const chunked = chunk(command.records, 5000)
+        for (const chunkRecords of chunked) {
+          const values = await schema.parseAsync(chunkRecords)
+          const records = table.createRecords(values.map((v) => ({ values: v })))
+          await this.recordRepo.insertMany(table, records)
+        }
       }
 
       await this.uow.commit()

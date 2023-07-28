@@ -679,7 +679,7 @@ export const inferFieldType = (
       (distinctValues) => {
         const distinctValuesCount = distinctValues.length
         const valuesCount = values.length
-        return distinctValuesCount / valuesCount < 0.5 && valuesCount > 10
+        return distinctValuesCount / valuesCount < 0.5 && valuesCount > 10 && distinctValuesCount < 100
       },
       () =>
         ({
@@ -687,7 +687,7 @@ export const inferFieldType = (
           options: Options.create(distinctValues.map((value) => ({ name: value?.toString() ?? '' }))).options.map((o) =>
             o.toJSON(),
           ),
-        } as Omit<ICreateSelectFieldSchema, 'name'>),
+        }) as Omit<ICreateSelectFieldSchema, 'name'>,
     )
     .otherwise(() => ({ type: 'string' }))
 }
