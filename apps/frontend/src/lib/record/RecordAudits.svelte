@@ -4,11 +4,11 @@
 	import { trpc } from '$lib/trpc/client'
 	import CollaboratorAvatar from '$lib/user/CollaboratorAvatar.svelte'
 	import type { IQueryAudit } from '@undb/integrations/dist'
-	import { parseISO } from 'date-fns'
-	import { format } from 'date-fns/fp'
 	import { match } from 'ts-pattern'
 	import RecordAuditDetail from './audit/RecordAuditDetail.svelte'
 	import { EVT_RECORD_CREATED, EVT_RECORD_DELETED, EVT_RECORD_RESTORED, EVT_RECORD_UPDATED } from '@undb/core'
+	import { formatDistance } from '$lib/date'
+	import { format } from 'date-fns'
 
 	const record = getRecord()
 
@@ -21,8 +21,6 @@
 
 	$: audits = $getAudits.data?.audits ?? []
 
-	const dateFormat = format('yyyy-MM-dd hh:mm:ss')
-
 	const getAuditMessage = (audit: Omit<IQueryAudit, 'target'>) =>
 		match(audit)
 			.with(
@@ -33,7 +31,6 @@
 				(audit) =>
 					$t(audit.op, {
 						username: audit.operator.username,
-						timestamp: dateFormat(parseISO(audit.timestamp)),
 						ns: 'audit',
 					}),
 			)
@@ -52,15 +49,24 @@
 	{#each audits as audit}
 		{@const message = getAuditMessage(audit)}
 		{#if message}
-			<div class="flex items-center gap-2 text-gray-500 dark:text-white text-xs w-full">
-				<CollaboratorAvatar
-					username={audit.operator.username}
-					color={audit.operator.color}
-					avatar={audit.operator.avatar}
-				/>
-				<i class={getIcon(audit)}></i>
-				<span>
-					{message}
+			<div class="justify-between flex items-center">
+				<div class="flex items-center gap-2 text-gray-500 dark:text-white text-xs w-full">
+					<CollaboratorAvatar
+						username={audit.operator.username}
+						color={audit.operator.color}
+						avatar={audit.operator.avatar}
+					/>
+					<i class={getIcon(audit)}></i>
+					<span>
+						{message}
+					</span>
+				</div>
+
+				<span
+					class="text-xs text-gray-500 dark:text-white whitespace-nowrap"
+					title={format(new Date(audit.timestamp), 'yyyy-MM-dd HH:mm:ss')}
+				>
+					{$formatDistance(new Date(audit.timestamp))}
 				</span>
 			</div>
 
