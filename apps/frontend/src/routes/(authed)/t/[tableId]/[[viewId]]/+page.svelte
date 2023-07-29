@@ -19,6 +19,7 @@
 	import FormListDrawer from '$lib/form/FormListDrawer.svelte'
 	import FormEditorModal from '$lib/form/FormEditorModal.svelte'
 	import RecordTrashModal from '$lib/record/trash/RecordTrashModal.svelte'
+	import { onMount } from 'svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -43,6 +44,14 @@
 			createRecordModal.open()
 		}
 	}
+
+	onMount(() => {
+		const evtSource = new EventSource(`/api/tables/${$table.id.value}/subscription`)
+		evtSource.onmessage = (event) => {
+			console.log(JSON.parse(event.data))
+		}
+		return () => evtSource.close()
+	})
 </script>
 
 <TableIndex />
