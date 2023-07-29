@@ -137,9 +137,9 @@
 								{#each fields as field}
 									<div class="h-full items-start gap-1 pt-2">
 										<Label class="leading-5" for={field.id.value}>
-											<div class="inline-flex items-center gap-2">
+											<div class="inline-flex items-center gap-2 truncate w-full">
 												<FieldIcon type={field.type} size={16} />
-												<span>
+												<span class="truncate flex-1" title={field.name.value}>
 													{field.name.value}
 												</span>
 											</div>

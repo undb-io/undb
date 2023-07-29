@@ -86,7 +86,7 @@
 							{field}
 							{record}
 							{schema}
-							class="!py-3 !sm:py-4 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 !max-w-none"
+							class="!py-2 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 !max-w-none"
 							role="button"
 						/>
 						<CloseButton
@@ -135,7 +135,7 @@
 							{field}
 							{schema}
 							record={$records[index]}
-							class="!py-4 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 !max-w-none"
+							class="!py-2 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 !max-w-none"
 							role="button"
 						/>
 					</Checkbox>

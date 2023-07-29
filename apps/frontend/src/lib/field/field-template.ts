@@ -1,7 +1,7 @@
 import { currentFieldId } from '$lib/store/table'
 import type { RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
 import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime'
-import { AverageField, CountField, ReferenceField, SumField, MinField, MaxField, Table } from '@undb/core'
+import { AverageField, CountField, MaxField, MinField, ReferenceField, SumField, Table } from '@undb/core'
 import cx from 'classnames'
 import htm from 'htm'
 import { getIconClass } from './helpers'
@@ -58,17 +58,17 @@ export const getColumnTemplate = (h: HyperFunc, column: RevoGrid.ColumnRegular, 
 
 	return html`
 		<div
-			class="h-full inline-flex w-full justify-between items-center text-xs text-gray-700 dark:text-gray-50 font-medium dark:hover:bg-gray-700"
+			class="h-full flex justify-between items-center text-xs text-gray-700 dark:text-gray-50 font-medium dark:hover:bg-gray-700"
 		>
-			<span class="inline-flex items-center gap-1">
+			<div class="flex items-center gap-1 flex-1 w-full truncate">
 				${column.field.type === 'currency'
 					? html`<span class="text-gray-600 text-lg">${column.field.symbol.symbol}</span>`
 					: html`<i class="${cx(getIconClass(column.field.type), 'text-gray-600 text-lg dark:text-gray-200')}"></i>`}
-				<span>${column.name}</span>
-			</span>
+				<span title="{column.name}" class="flex-1 max-w-full truncate">${column.name}</span>
+			</div>
 			${readonly
 				? ''
-				: html`<span class="inline-flex gap-2 items-center ">
+				: html`<div class="flex gap-2 items-center flex-grow-0">
 						<span> ${getIssue(h, column)} </span>
 						<button
 							id="${getFieldDomId(column.prop as string | undefined)}"
@@ -77,7 +77,7 @@ export const getColumnTemplate = (h: HyperFunc, column: RevoGrid.ColumnRegular, 
 						>
 							<i class="ti ti-chevron-down text-gray-500"></i>
 						</button>
-				  </span>`}
+				  </div>`}
 		</div>
 	`
 }
