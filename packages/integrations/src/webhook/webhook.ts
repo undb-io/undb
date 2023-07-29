@@ -53,6 +53,7 @@ export class Webhook {
       name: event.name,
       timestamp: event.timestamp,
       event: event.payload,
+      meta: event.meta,
     }
   }
 

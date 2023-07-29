@@ -17,15 +17,15 @@ export const recordDeletedEventPayload = z
 
 type IRecordDeletedEventPayload = z.infer<typeof recordDeletedEventPayload>
 
-export const recordDeletedEvent = z
-  .object({ name: z.literal(EVT_RECORD_DELETED), payload: recordDeletedEventPayload })
-  .merge(baseEventSchema)
-
 export const recordDeletedEventMeta = z.object({
   record: queryRecordSchema,
 })
 
 export type IRecordDeletedEventMeta = z.infer<typeof recordDeletedEventMeta>
+
+export const recordDeletedEvent = z
+  .object({ name: z.literal(EVT_RECORD_DELETED), payload: recordDeletedEventPayload, meta: recordDeletedEventMeta })
+  .merge(baseEventSchema)
 
 export class RecordDeletedEvent extends BaseEvent<
   IRecordDeletedEventPayload,

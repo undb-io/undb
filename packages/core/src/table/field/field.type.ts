@@ -167,7 +167,7 @@ import {
   createJsonFieldSchema,
   createJsonFieldValue_internal,
   jsonFieldQuerySchema,
-  jsonFieldQueryValue,
+  jsonReadableValueSchema,
   jsonTypeSchema,
   updateJsonFieldSchema,
 } from './fields/json/json-field.type.js'
@@ -704,7 +704,7 @@ export const fieldQueryValue = z.union([
   dateRangeFieldQueryValue,
   emailFieldQueryValue,
   urlFieldQueryValue,
-  jsonFieldQueryValue,
+  jsonReadableValueSchema,
   idFieldQueryValue,
   numberFieldQueryValue,
   parentFieldQueryValue,

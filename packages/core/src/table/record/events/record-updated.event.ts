@@ -23,18 +23,19 @@ export const recordUpdatedEventPayload = z
 
 type IRecordUpdatedEventPayload = z.infer<typeof recordUpdatedEventPayload>
 
-export const recordUpdatedEvent = z
-  .object({
-    name: z.literal(EVT_RECORD_UPDATED),
-    payload: recordUpdatedEventPayload,
-  })
-  .merge(baseEventSchema)
-
 export const recordUpdatedEventMeta = z.object({
   record: queryRecordSchema,
 })
 
 export type IRecordUpdatedEventMeta = z.infer<typeof recordUpdatedEventMeta>
+
+export const recordUpdatedEvent = z
+  .object({
+    name: z.literal(EVT_RECORD_UPDATED),
+    payload: recordUpdatedEventPayload,
+    meta: recordUpdatedEventMeta,
+  })
+  .merge(baseEventSchema)
 
 export class RecordUpdatedEvent extends BaseEvent<
   IRecordUpdatedEventPayload,
