@@ -696,7 +696,10 @@ export const inferFieldType = (
 
 export const castFieldValue = (type: IFieldType, value: string | number | null | object | boolean) => {
   return match(type)
-    .with('number', () => Number(value))
+    .with('number', () => {
+      if (isNumber(value)) return value
+      return value ? Number(value) : null
+    })
     .with('bool', () =>
       match(value)
         .returnType<boolean>()
