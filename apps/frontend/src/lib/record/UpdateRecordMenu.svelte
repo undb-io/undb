@@ -46,7 +46,7 @@
 		}}
 		class="inline-flex items-center gap-2"
 	>
-		<i class="ti ti-trash" />
+		<i class="ti ti-copy" />
 		<span class="text-xs">{$t('Duplicate Record')}</span>
 	</DropdownItem>
 	<DropdownDivider />
