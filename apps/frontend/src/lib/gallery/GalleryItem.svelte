@@ -26,12 +26,13 @@
 	$: fields = $table.getOrderedFields($view, false).filter((f) => f.id.value !== field.id.value)
 </script>
 
-<Card
-	class="shadow-sm hover:shadow-md transition !max-w-none !p-2"
-	on:click={() => {
-		$currentRecordId = record.id.value
-	}}
->
+<Card class="group shadow-sm hover:shadow-md transition !max-w-none !p-2 relative">
+	<button
+		on:click={() => ($currentRecordId = record.id.value)}
+		class="top-5 right-5 z-50 py-1 px-3 bg-gray-500/5 absolute opacity-0 group-hover:opacity-100"
+	>
+		<i class="ti ti-external-link"></i>
+	</button>
 	<div class="mb-2">
 		{#if images.length}
 			<Carousel divClass="h-auto" {images} loop showCaptions={false} showThumbs={false} />
@@ -41,7 +42,7 @@
 			</div>
 		{/if}
 	</div>
-	<div class="flex flex-col gap-2">
+	<div class="flex flex-col gap-2 h-full">
 		{#each fields as field}
 			{@const value = record.values.value.get(field.id.value)}
 			<div class="flex items-center gap-2 dark:text-gray-200">
