@@ -9,7 +9,10 @@ export interface IOutboxService {
 }
 
 export class OutboxService implements IOutboxService {
-  constructor(protected readonly uow: IUnitOfWork<EntityManager>) {}
+  constructor(
+    protected readonly uow: IUnitOfWork<EntityManager>,
+    private readonly count: number,
+  ) {}
 
   private get em() {
     return this.uow.conn()
@@ -26,7 +29,7 @@ export class OutboxService implements IOutboxService {
       const outboxList = await em.find(
         Outbox,
         {},
-        { limit: 1000, orderBy: { createdAt: 'desc' }, lockMode: LockMode.PESSIMISTIC_WRITE },
+        { limit: this.count, orderBy: { createdAt: 'desc' }, lockMode: LockMode.PESSIMISTIC_WRITE },
       )
 
       if (!outboxList.length) return
