@@ -35,7 +35,7 @@
 	</button>
 	<div class="mb-2">
 		{#if images.length}
-			<Carousel divClass="h-auto" {images} loop showCaptions={false} showThumbs={false} />
+			<Carousel divClass="h-auto" {images} showCaptions={false} showThumbs={false} />
 		{:else}
 			<div class="w-full aspect-square flex items-center justify-center bg-gray-100">
 				<i class="ti ti-photo text-[120px]"></i>
