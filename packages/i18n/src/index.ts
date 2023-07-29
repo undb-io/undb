@@ -137,6 +137,7 @@ export const config: InitOptions = {
         anonymous: 'anonymous',
       },
       table: {
+        'search trash': 'search trash',
         'import data content': 'Import data (csv / excel / json)',
         'flatten import data': 'Flatten import data',
         'first row as header': 'Use First Row as Headers',
@@ -492,6 +493,7 @@ export const config: InitOptions = {
         anonymous: '匿名用户',
       },
       table: {
+        'search trash': '搜索回收站',
         'import data content': '导入数据 (csv / excel /json)',
         'flatten import data': '扁平化字段',
         'first row as header': '使用第一行作为列标题',
