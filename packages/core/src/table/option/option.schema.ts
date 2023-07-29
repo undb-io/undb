@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { colors } from '../../common/color.js'
 
-export const optionNameSchema = z.string().min(1)
+export const optionNameSchema = z.string().trim().min(1)
 
 export const optionIdSchema = z.string().min(1)
 

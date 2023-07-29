@@ -647,7 +647,9 @@ function isJsonValue(value: string | number | null | object): boolean {
 export const inferFieldType = (
   values: (string | number | null | object | boolean)[],
 ): Omit<ICreateFieldSchema, 'name'> => {
-  const distinctValues = uniq(values).filter(Boolean) as (string | number)[]
+  const distinctValues = uniq(values)
+    .map((s) => (isString(s) ? s.trim() : s))
+    .filter(Boolean) as (string | number)[]
 
   return match(distinctValues)
     .returnType<Omit<ICreateFieldSchema, 'name'>>()
@@ -702,5 +704,6 @@ export const castFieldValue = (type: IFieldType, value: string | number | null |
         .with(['false', 'FALSE'], () => false)
         .otherwise(Boolean),
     )
+    .with('select', () => value || null)
     .otherwise(() => value)
 }
