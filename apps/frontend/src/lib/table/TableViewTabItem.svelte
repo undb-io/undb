@@ -117,7 +117,7 @@
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-	class={cx('group', active && 'min-w-[100px]')}
+	class={cx('group', active && 'min-w-[100px] max-w-[200px]')}
 	data-view-id={view.id.value}
 	on:dblclick={() => (updating = !updating)}
 >
@@ -132,7 +132,7 @@
 				: 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 text-gray-500 dark:text-gray-300',
 		)}
 	>
-		<span class="inline-flex items-center gap-2">
+		<span class="inline-flex items-center gap-2 truncate">
 			<ViewIcon type={view.displayType} class={cx(!active ? '!text-gray-500 dark:!text-gray-300' : '!font-semibold')} />
 			{#if updating}
 				<form on:submit|preventDefault|stopPropagation={update}>
@@ -146,7 +146,7 @@
 					/>
 				</form>
 			{:else}
-				<span>{view.name.value}</span>
+				<span title={view.name.value} class="truncate">{view.name.value}</span>
 			{/if}
 		</span>
 		{#if active}
