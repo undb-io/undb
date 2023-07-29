@@ -2,11 +2,12 @@
 	import cx from 'classnames'
 	import RecordCard from '$lib/record/RecordCard.svelte'
 	import type { Records, Record, ReferenceFieldTypes, Table } from '@undb/core'
-	import { Alert, Button, Checkbox, CloseButton, Modal, Spinner } from 'flowbite-svelte'
+	import { Alert, Button, Checkbox, CloseButton, Modal, Search, Spinner } from 'flowbite-svelte'
 	import VirtualList from 'svelte-tiny-virtual-list'
 	import { tableById } from '$lib/store/table'
 	import { writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
+	import { isString } from 'lodash-es'
 
 	let loading = false
 	let initialLoading = false
@@ -15,7 +16,7 @@
 	export let foreignTableId: string
 	export let value: string[] = []
 	export let field: ReferenceFieldTypes
-	export let getForeignRecords: () => Promise<Records>
+	export let getForeignRecords: (q?: string) => Promise<Records>
 	export let getInitRecords: () => Promise<Records>
 
 	let records = writable<Records>([])
@@ -74,6 +75,17 @@
 
 	$: if (open) getForeign()
 	$: selected = Array.isArray(value) ? value?.map((r) => $recordsMap.get(r)!) ?? [] : []
+
+	let form: HTMLFormElement
+
+	const onSubmit = async (e: Event) => {
+		e.preventDefault()
+		const formData = new FormData(form)
+		const query = formData.get('search')
+		if (isString(query) && !!query) {
+			records.set(await getForeignRecords(query))
+		}
+	}
 </script>
 
 {#if schema}
@@ -119,8 +131,29 @@
 		{:else if !$records.length}
 			<Alert>{$t('no record available')}</Alert>
 		{:else}
-			<VirtualList height={600} width="100%" itemCount={$records.length} itemSize={62}>
-				<div slot="item" let:index let:style {style} class="flex items-stretch mb-2">
+			<form bind:this={form} on:submit={onSubmit}>
+				<div class="flex items-center gap-2">
+					<Search name="search" placeholder={$t('search')} size="sm"></Search>
+					<Button type="submit" size="xs" class="!p-2.5 hidden lg:block">
+						<svg
+							class="w-3 h-3"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+							/>
+						</svg>
+					</Button>
+				</div>
+			</form>
+			<VirtualList height={600} width="100%" itemCount={$records.length} itemSize={46}>
+				<div slot="item" let:index let:style {style} class="flex items-stretch">
 					<Checkbox
 						inline
 						value={$records[index].id.value}

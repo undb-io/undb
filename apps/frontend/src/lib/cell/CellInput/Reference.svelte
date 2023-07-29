@@ -13,7 +13,7 @@
 	$: foreignTableId = field.foreignTableId.unwrapOr($table.id.value)
 
 	const tableRecords = getRecords()
-	async function getForeignRecords() {
+	async function getForeignRecords(q?: string) {
 		if ($table.id.value === foreignTableId) {
 			return $tableRecords.filter((r) => !value.includes(r.id.value))
 		} else {
@@ -24,6 +24,7 @@
 					tableId: $table.id.value,
 					fieldId: field.id.value,
 					foreignTableId,
+					q,
 					filter: [{ type: 'id', path: 'id', operator: '$nin', value: value ?? [] }],
 				})
 
