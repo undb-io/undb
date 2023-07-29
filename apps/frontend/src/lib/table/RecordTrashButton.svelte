@@ -6,5 +6,5 @@
 
 <Button class="gap-1" color="alternative" size="xs" on:click={() => recordTrashModal.open()}>
 	<i class="ti ti-recycle" />
-	<span class="hidden lg:block">{$t('recycle bin', { ns: 'table' })}</span>
+	<span class="hidden lg:block truncate">{$t('recycle bin', { ns: 'table' })}</span>
 </Button>
