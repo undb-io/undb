@@ -25,7 +25,7 @@
 
 	$: records = $getRecords.data?.records ?? []
 	$: total = $getRecords.data?.total ?? 0
-	$: page = Math.ceil(total / itemPerPage)
+	$: totalPage = Math.ceil(total / itemPerPage)
 	$: currentPage = $pagination.page
 	const pagination = createPagination(itemPerPage)
 
@@ -99,7 +99,7 @@
 		<PaginationItem
 			class="flex items-center gap-2"
 			on:click={() => {
-				if (currentPage >= page) return
+				if (currentPage >= totalPage) return
 				pagination.next()
 			}}
 		>
