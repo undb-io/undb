@@ -31,6 +31,10 @@ export const createPagination = (limit: number = 10) => {
 		})
 	}
 
+	const reset = () => {
+		return set({ limit, page: 1 })
+	}
+
 	return {
 		set,
 		update,
@@ -39,5 +43,6 @@ export const createPagination = (limit: number = 10) => {
 		goto,
 		next,
 		prev,
+		reset,
 	}
 }
