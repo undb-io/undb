@@ -13,12 +13,15 @@
 	const view = getView()
 
 	$: fieldValue = record.values.value.get(field.id.value) as AttachmentFieldValue
-	$: images = fieldValue.getImages().map((i) => ({
-		id: i.id,
-		name: i.name,
-		imgurl: i.url,
-		attribution: i.name,
-	}))
+	$: images = fieldValue
+		.getImages()
+		.filter(Boolean)
+		.map((i) => ({
+			id: i.id,
+			name: i.name,
+			imgurl: i.url,
+			attribution: i.name,
+		}))
 
 	$: fields = $table.getOrderedFields($view, false).filter((f) => f.id.value !== field.id.value)
 </script>
