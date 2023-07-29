@@ -1,4 +1,4 @@
-import { IRepositoryOption } from '@undb/domain/dist/index.js'
+import { IRepositoryOption } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import type { ViewId } from '../view/index.js'
 import type { IQueryRecords, IQueryRecordSchema, ITrashRecordSchema } from './record.type.js'

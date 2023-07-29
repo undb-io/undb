@@ -79,6 +79,7 @@
 			color="red"
 			class="mr-2 gap-2 whitespace-nowrap"
 			disabled={$deleteRecord.isLoading}
+			size="md"
 			on:click={() => {
 				if (record) {
 					$deleteRecord.mutate({ tableId: $table.id.value, id: record.id.value })
@@ -88,10 +89,12 @@
 			{#if $deleteRecord.isLoading}
 				<Spinner size="xs" />
 			{:else}
-				<i class="ti ti-circle-check text-lg" />
+				<i class="ti ti-circle-check text-sm" />
 			{/if}
 			{$t('Confirm Yes', { ns: 'common' })}</Button
 		>
-		<Button color="alternative">{$t('Confirm No', { ns: 'common' })}</Button>
+		<Button size="md" color="alternative" on:click={() => ($currentRecordId = undefined)}>
+			{$t('Confirm No', { ns: 'common' })}
+		</Button>
 	</div>
 </Modal>

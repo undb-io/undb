@@ -107,10 +107,18 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const schema = table.schema.toIdMap()
 
     let builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec, viewId?.value)
-    builder = builder.select().from().where().reference().sort().build()
+    builder = builder.from().where().build()
 
-    const data = await this.em.execute<RecordSqlite[]>(builder.clone().pagination(option?.pagination).qb)
-    const count = await this.em.execute(builder.clone().qb.count().first())
+    const data = await this.em.execute<RecordSqlite[]>(
+      builder
+        .clone()
+        .select()
+        .reference()
+        .sort()
+        .pagination(option?.pagination)
+        .build().qb,
+    )
+    const count = await this.em.execute(builder.clone().count().build().qb.first())
 
     const records = RecordSqliteMapper.toQueries(tableId, schema, data)
     const total = count.at(0)?.['count(*)']
@@ -128,19 +136,25 @@ export class RecordSqliteQueryModel implements IRecordQueryModel {
     const schema = table.schema.toIdMap()
 
     let builder = new RecordSqliteQueryBuilder(this.em, table, tableEntity, spec)
-    builder = builder
-      .select(INTERNAL_COLUMN_DELETED_AT_NAME, INTERNAL_COLUMN_DELETED_BY_NAME, INTERNAL_COLUMN_DELETED_BY_PROFILE_NAME)
-      .from()
-      .where(true)
-      .reference()
-      .sort()
-      .build()
+    builder = builder.from().where(true).build()
     builder.qb
       .whereNotNull(`${TABLE_ALIAS}.${INTERNAL_COLUMN_DELETED_AT_NAME}`)
       .orderBy(`${TABLE_ALIAS}.${INTERNAL_COLUMN_DELETED_AT_NAME}`, 'desc')
 
-    const data = await this.em.execute<RecordSqlite[]>(builder.clone().pagination(option?.pagination).qb)
-    const count = await this.em.execute(builder.clone().qb.count().first())
+    const data = await this.em.execute<RecordSqlite[]>(
+      builder
+        .clone()
+        .select(
+          INTERNAL_COLUMN_DELETED_AT_NAME,
+          INTERNAL_COLUMN_DELETED_BY_NAME,
+          INTERNAL_COLUMN_DELETED_BY_PROFILE_NAME,
+        )
+        .reference()
+        .sort()
+        .pagination(option?.pagination)
+        .build().qb,
+    )
+    const count = await this.em.execute(builder.clone().build().qb.count().first())
 
     const records = RecordSqliteMapper.toTrashes(tableId, schema, data)
     const total = count.at(0)?.['count(*)']

@@ -4,7 +4,7 @@
 	import { t } from '$lib/i18n'
 	import { recordTrashModal } from '$lib/store/modal'
 	import { createPagination } from '$lib/store/pagination'
-	import { getTable } from '$lib/store/table'
+	import { getTable, listRecordFn } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import { RecordFactory } from '@undb/core'
 	import { format } from 'date-fns'
@@ -21,15 +21,18 @@
 		pagination: $pagination,
 	})
 
+	const listRecords = $listRecordFn(undefined, { enabled: false })
+
 	$: records = $getRecords.data?.records ?? []
 	$: total = $getRecords.data?.total ?? 0
-	$: page = Math.ceil(total / itemPerPage)
+	$: totalPage = Math.ceil(total / itemPerPage)
 	$: currentPage = $pagination.page
 	const pagination = createPagination(itemPerPage)
 
 	const restore = trpc().record.restore.mutation({
 		async onSuccess() {
 			await $getRecords.refetch()
+			await $listRecords.refetch()
 			if (!$getRecords.data?.total) {
 				recordTrashModal.close()
 			}
@@ -96,7 +99,7 @@
 		<PaginationItem
 			class="flex items-center gap-2"
 			on:click={() => {
-				if (currentPage >= page) return
+				if (currentPage >= totalPage) return
 				pagination.next()
 			}}
 		>
