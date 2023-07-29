@@ -8,6 +8,7 @@ export class GetForeignRecordsQuery extends Query implements IGetForeignRecordsQ
   readonly fieldId: string
   readonly viewId?: string
   readonly filter?: IRootFilter
+  readonly q?: string
 
   constructor(query: IGetForeignRecordsQuery) {
     super()
@@ -16,5 +17,6 @@ export class GetForeignRecordsQuery extends Query implements IGetForeignRecordsQ
     this.fieldId = query.fieldId
     this.viewId = query.viewId
     this.filter = query.filter
+    this.q = query.q
   }
 }

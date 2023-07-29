@@ -6,6 +6,7 @@ export class GetParentAvailableRecordsQuery extends Query implements IGetParentA
   readonly parentFieldId: string
   readonly recordId?: string
   readonly viewId?: string
+  readonly q?: string
 
   constructor(query: IGetParentAvailableRecordQuery) {
     super()
@@ -13,5 +14,6 @@ export class GetParentAvailableRecordsQuery extends Query implements IGetParentA
     this.parentFieldId = query.parentFieldId
     this.recordId = query.recordId
     this.viewId = query.viewId
+    this.q = query.q
   }
 }

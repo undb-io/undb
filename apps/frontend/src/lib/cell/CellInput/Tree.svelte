@@ -9,11 +9,12 @@
 
 	const table = getTable()
 
-	async function getForeignRecords() {
+	async function getForeignRecords(q?: string) {
 		const data = await trpc().record.tree.available.utils.fetch({
 			tableId: $table.id.value,
 			treeFieldId: field.id.value,
 			recordId: $currentRecordId,
+			q,
 		})
 
 		return RecordFactory.fromQueryRecords(data.records, $table.schema.toIdMap())

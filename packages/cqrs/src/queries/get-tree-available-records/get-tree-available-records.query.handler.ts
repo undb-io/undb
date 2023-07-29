@@ -1,5 +1,5 @@
 import type { IRecordQueryModel, ITableRepository } from '@undb/core'
-import { TreeAvailableSpec, ViewId, WithRecordTableId } from '@undb/core'
+import { TreeAvailableSpec, ViewId, WithRecordTableId, withQ } from '@undb/core'
 import type { IQueryHandler } from '@undb/domain'
 import { andOptions } from '@undb/domain'
 import { Option } from 'oxide.ts'
@@ -9,7 +9,10 @@ import type { GetTreeAvailableRecordsQuery } from './get-tree-available-records.
 export class GetTreeAvailableRecordsQueryHandler
   implements IQueryHandler<GetTreeAvailableRecordsQuery, IGetTreeAvailableRecordsOutput>
 {
-  constructor(protected readonly tableRepo: ITableRepository, protected readonly rm: IRecordQueryModel) {}
+  constructor(
+    protected readonly tableRepo: ITableRepository,
+    protected readonly rm: IRecordQueryModel,
+  ) {}
 
   async execute(query: GetTreeAvailableRecordsQuery): Promise<IGetTreeAvailableRecordsOutput> {
     const table = (await this.tableRepo.findOneById(query.tableId)).unwrap()
@@ -17,6 +20,7 @@ export class GetTreeAvailableRecordsQueryHandler
       table.getSpec(query.viewId),
       Option(WithRecordTableId.fromString(query.tableId).unwrap()),
       Option(new TreeAvailableSpec(query.treeFieldId, query.recordId)),
+      withQ(table, query.q),
     ).unwrap()
 
     const viewId = query.viewId ? ViewId.fromString(query.viewId) : undefined

@@ -6,6 +6,7 @@ export class GetTreeAvailableRecordsQuery extends Query implements IGetTreeAvail
   readonly treeFieldId: string
   readonly recordId?: string
   readonly viewId?: string
+  readonly q?: string
 
   constructor(query: IGetTreeAvailableRecordsQuery) {
     super()
@@ -13,5 +14,6 @@ export class GetTreeAvailableRecordsQuery extends Query implements IGetTreeAvail
     this.treeFieldId = query.treeFieldId
     this.recordId = query.recordId
     this.viewId = query.viewId
+    this.q = query.q
   }
 }

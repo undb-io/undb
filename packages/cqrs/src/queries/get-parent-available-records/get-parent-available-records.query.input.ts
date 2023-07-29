@@ -6,4 +6,5 @@ export const getParentAvailableRecordsQueryInput = z.object({
   parentFieldId: fieldIdSchema,
   recordId: recordIdSchema.optional(),
   viewId: viewIdSchema.optional(),
+  q: z.string().optional(),
 })
