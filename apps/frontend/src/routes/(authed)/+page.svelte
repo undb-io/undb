@@ -63,7 +63,7 @@
 					>
 						{table.name.slice(0, 1)}
 					</span>
-					<h5 class="font-semibold">{table.name}</h5>
+					<h5 class="font-semibold truncate" title={table.name}>{table.name}</h5>
 				</div>
 			</Card>
 		{/each}
