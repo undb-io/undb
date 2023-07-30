@@ -1,19 +1,13 @@
 import { Injectable } from '@nestjs/common'
-import { HttpService } from '@nestjs/axios'
+import packageFile from '../../../../package.json' assert { type: 'json' }
 
 @Injectable()
 export class AppInfoService {
-  constructor(private readonly httpService: HttpService) {}
-  async getAppInfo() {
-    try {
-      const appVersion = await this.httpService.axiosRef.get('https://api.github.com/repos/undb-xyz/undb/tags')
-      return {
-        version: appVersion.data?.[0]?.name,
-      }
-    } catch {
-      return {
-        version: null,
-      }
+  constructor() {}
+  getAppInfo() {
+    const { version } = packageFile
+    return {
+      version: `v${version}`,
     }
   }
 }
