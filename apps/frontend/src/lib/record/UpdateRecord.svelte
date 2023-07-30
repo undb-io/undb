@@ -33,8 +33,8 @@
 	export let data: Validation<any>
 
 	let displayAudits = true
+	let showNoUpdateMessage = false
 	$: shouldDisplayAudits = displayAudits && !$isShare
-
 	$: validators = createMutateRecordValuesSchema(fields ?? [], $record?.valuesJSON)
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 	$: records = trpc().record.list.query(
@@ -56,20 +56,34 @@
 		validators,
 		dataType: 'json',
 		invalidateAll: false,
-		resetForm: true,
+		resetForm: false,
 		clearOnSubmit: 'errors-and-message',
 		taintedMessage: null,
 		delayMs: 100,
 		async onUpdate(event) {
-			if ($readonly) return
-			if (!$record) return
+			if ($readonly || !$record) return
 			const taintedKeys = keys($tainted)
 			const values = pick(event.form.data, taintedKeys)
-			$updateRecord.mutate({
-				tableId: $table.id.value,
-				id: $record.id.value,
-				values,
-			})
+			const oldValues = $record?.valuesJSON
+			let changedSet = {}
+			showNoUpdateMessage = false
+			for (let key of taintedKeys) {
+				if (values[key] !== oldValues?.[key]) {
+					changedSet = {
+						...changedSet,
+						[key]: values[key],
+					}
+				}
+			}
+			if (Object.keys(changedSet).length === 0) {
+				showNoUpdateMessage = true
+			} else {
+				$updateRecord.mutate({
+					tableId: $table.id.value,
+					id: $record.id.value,
+					values: changedSet,
+				})
+			}
 		},
 	})
 
@@ -192,6 +206,15 @@
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$updateRecord.error.message}
+		</span>
+	</Toast>
+{/if}
+
+{#if showNoUpdateMessage}
+	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-yellow-500 border-0 text-white font-semibold">
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{ $t('RECORD.NO_COLUMN_TO_UPDATE', { ns: 'warnings'}) }
 		</span>
 	</Toast>
 {/if}
