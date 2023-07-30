@@ -33,6 +33,9 @@ export const config: InitOptions = {
       errors: {
         'TABLE.NOT_FOUND': 'Table not found',
       },
+      warnings: {
+        'RECORD.NO_COLUMN_TO_UPDATE': 'No Column to update',
+      },
       common: {
         previous: 'Previous',
         next: 'Next',
@@ -364,6 +367,9 @@ export const config: InitOptions = {
       error: {
         'AUTH.USER_NOT_FOUND': '没有找到用户',
         'AUTH.INVALID_PASSWORD': '密码不正确',
+      },
+      warnings: {
+        'RECORD.NO_COLUMN_TO_UPDATE': '没有列可更新',
       },
       auth: {
         login: '登录',
