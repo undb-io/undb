@@ -98,7 +98,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+			<div class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+				<div class="text-gray-400">
+					{$page.data.appInfo.version}
+				</div>
 				<button
 					type="submit"
 					disabled={$updateProfile.isLoading}
