@@ -13,12 +13,12 @@
 	import {
 		currentFieldId,
 		currentRecordId,
-		currentRecords,
 		getField,
 		getTable,
 		getView,
 		listRecordFn,
 		readonly,
+		recordsStore,
 	} from '$lib/store/table'
 	import { invalidate } from '$app/navigation'
 	import FieldMenu from '$lib/field/FieldMenu.svelte'
@@ -52,7 +52,7 @@
 	$: data = $listRecordFn()
 
 	$: records = RecordFactory.fromQueryRecords($data.data?.records ?? [], $table.schema.toIdMap())
-	$: $currentRecords = records
+	$: recordsStore.setAllRecords(records)
 	const field = getField()
 
 	const getFieldDomId = (fieldId?: string | number) => (fieldId ? `field_menu_${fieldId}` : undefined)
