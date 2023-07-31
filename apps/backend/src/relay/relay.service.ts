@@ -31,7 +31,7 @@ export class RelayService {
 
         this.eventBus.publish(event)
 
-        this.logger.info('event %s emitted %j', event.name, event)
+        this.logger.debug('event %s emitted %j', event.name, event)
       }
     })
   }

@@ -52,8 +52,10 @@ export class Webhook {
       operatorId: event.operatorId,
       name: event.name,
       timestamp: event.timestamp,
-      event: event.payload,
-      meta: event.meta,
+      event: {
+        payload: event.payload,
+        meta: event.meta,
+      },
     }
   }
 
@@ -86,9 +88,15 @@ export class Webhook {
   }
 
   public refineEvent(table: Table, event: RecordEvents): Option<IEvent> {
-    if (this.filter.isNone()) return Some(event)
+    if (this.filter.isNone()) {
+      return Some(event)
+    }
+
     const filter = this.filter.unwrap().value
-    const spec = convertFilterSpec(filter).unwrap()
+    const spec = convertFilterSpec(filter).into()
+    if (!spec) {
+      return Some(event)
+    }
 
     return match(event)
       .returnType<Option<typeof event>>()
