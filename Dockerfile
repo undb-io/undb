@@ -51,6 +51,7 @@ COPY --from=installer /undb/node_modules ./node_modules
 COPY --from=installer /undb/packages ./packages
 COPY --from=installer /undb/apps/backend ./apps/backend
 COPY --from=installer /undb/apps/frontend/build ./out
+COPY --from=installer /undb/package.json ./
 COPY --from=builder /usr/local/bin/litestream /usr/local/bin/litestream
 COPY scripts/start.mjs ./scripts/start.mjs
 COPY data/data.sql /data/data.sql
