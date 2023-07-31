@@ -30,7 +30,7 @@ import type { WebhookMethod } from './webhook-method.vo.js'
 import type { WebhookTarget } from './webhook-target.vo.js'
 import type { WebhookURL } from './webhook-url.vo.js'
 import { UNDB_SIGNATURE_HEADER_NAME } from './webhook.constants.js'
-import type { IUpdateWebhookSchema } from './webhook.schema.js'
+import type { IUpdateWebhookSchema, IWebhookEventSchema } from './webhook.schema.js'
 
 export class Webhook {
   public id!: WebhookId
@@ -46,14 +46,16 @@ export class Webhook {
     return new Webhook()
   }
 
-  public constructEvent(event: IEvent) {
+  public constructEvent(event: RecordEvents): IWebhookEventSchema {
     return {
       id: event.id,
       operatorId: event.operatorId,
-      name: event.name,
       timestamp: event.timestamp,
-      event: event.payload,
-      meta: event.meta,
+      event: {
+        name: event.name,
+        payload: event.payload,
+        meta: event.meta,
+      },
     }
   }
 
@@ -86,9 +88,15 @@ export class Webhook {
   }
 
   public refineEvent(table: Table, event: RecordEvents): Option<IEvent> {
-    if (this.filter.isNone()) return Some(event)
+    if (this.filter.isNone()) {
+      return Some(event)
+    }
+
     const filter = this.filter.unwrap().value
-    const spec = convertFilterSpec(filter).unwrap()
+    const spec = convertFilterSpec(filter).into()
+    if (!spec) {
+      return Some(event)
+    }
 
     return match(event)
       .returnType<Option<typeof event>>()

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import type { IEvent } from '@undb/domain'
+import { RecordEvents } from '@undb/core'
 import type { Webhook } from '@undb/integrations'
 import { type IWebhookSignService } from '@undb/integrations'
 import crypto from 'crypto'
@@ -12,7 +12,7 @@ export class WebhookSignatureService implements IWebhookSignService {
     private readonly config: WebhookConfigType,
   ) {}
 
-  public sign(webhook: Webhook, event: IEvent): string {
+  public sign(webhook: Webhook, event: RecordEvents): string {
     const body = webhook.constructEvent(event)
     const secret = this.config.secret ?? 'secret'
 

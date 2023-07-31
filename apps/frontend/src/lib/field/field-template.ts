@@ -64,7 +64,7 @@ export const getColumnTemplate = (h: HyperFunc, column: RevoGrid.ColumnRegular, 
 				${column.field.type === 'currency'
 					? html`<span class="text-gray-600 text-lg">${column.field.symbol.symbol}</span>`
 					: html`<i class="${cx(getIconClass(column.field.type), 'text-gray-600 text-lg dark:text-gray-200')}"></i>`}
-				<span title="{column.name}" class="flex-1 max-w-full truncate">${column.name}</span>
+				<span title=${column.name} class="flex-1 max-w-full truncate">${column.name}</span>
 			</div>
 			${readonly
 				? ''
