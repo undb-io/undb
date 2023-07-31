@@ -51,15 +51,14 @@ export const recordReadableSchema = z.record(z.any())
 export type IRecordReadable = z.infer<typeof recordReadableSchema>
 
 export const recordReadableValueMapper = (record?: Record): globalThis.Record<IFieldType, (field: Field) => any> => {
-  const values = record?.values
   const getValue = (field: Field) => record?.values.value.get(field.id.value)?.unpack()
   const displayValues = record?.displayValues?.values
   return {
     string: getValue,
     number: getValue,
-    id: (field) => record?.id,
-    'created-at': (field) => record?.createdAt,
-    'updated-at': (field) => record?.updatedAt,
+    id: (field) => record?.id.value,
+    'created-at': (field) => record?.createdAt.value,
+    'updated-at': (field) => record?.updatedAt.value,
     'auto-increment': (field) => record?.autoIncrement,
     color: getValue,
     email: getValue,

@@ -27,7 +27,7 @@ export const recordCreatedEventMeta = z.object({
 export type IRecordCreatedEventMeta = z.infer<typeof recordCreatedEventMeta>
 
 export const recordCreatedEvent = z
-  .object({ name: z.literal(EVT_RECORD_CREATED), payload: recordCreatedEventPayload })
+  .object({ name: z.literal(EVT_RECORD_CREATED), payload: recordCreatedEventPayload, meta: recordCreatedEventMeta })
   .merge(baseEventSchema)
 
 export class RecordCreatedEvent extends BaseEvent<

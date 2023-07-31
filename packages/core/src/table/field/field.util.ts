@@ -647,7 +647,9 @@ function isJsonValue(value: string | number | null | object): boolean {
 export const inferFieldType = (
   values: (string | number | null | object | boolean)[],
 ): Omit<ICreateFieldSchema, 'name'> => {
-  const distinctValues = uniq(values).filter(Boolean) as (string | number)[]
+  const distinctValues = uniq(values)
+    .map((s) => (isString(s) ? s.trim() : s))
+    .filter(Boolean) as (string | number)[]
 
   return match(distinctValues)
     .returnType<Omit<ICreateFieldSchema, 'name'>>()
@@ -679,7 +681,7 @@ export const inferFieldType = (
       (distinctValues) => {
         const distinctValuesCount = distinctValues.length
         const valuesCount = values.length
-        return distinctValuesCount / valuesCount < 0.5 && valuesCount > 10
+        return distinctValuesCount / valuesCount < 0.5 && valuesCount > 10 && distinctValuesCount < 100
       },
       () =>
         ({
@@ -687,14 +689,17 @@ export const inferFieldType = (
           options: Options.create(distinctValues.map((value) => ({ name: value?.toString() ?? '' }))).options.map((o) =>
             o.toJSON(),
           ),
-        } as Omit<ICreateSelectFieldSchema, 'name'>),
+        }) as Omit<ICreateSelectFieldSchema, 'name'>,
     )
     .otherwise(() => ({ type: 'string' }))
 }
 
 export const castFieldValue = (type: IFieldType, value: string | number | null | object | boolean) => {
   return match(type)
-    .with('number', () => Number(value))
+    .with('number', () => {
+      if (isNumber(value)) return value
+      return value ? Number(value) : null
+    })
     .with('bool', () =>
       match(value)
         .returnType<boolean>()
@@ -702,5 +707,6 @@ export const castFieldValue = (type: IFieldType, value: string | number | null |
         .with(['false', 'FALSE'], () => false)
         .otherwise(Boolean),
     )
+    .with('select', () => value || null)
     .otherwise(() => value)
 }

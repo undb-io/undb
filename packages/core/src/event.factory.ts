@@ -1,3 +1,4 @@
+import { IEventJSON } from '@undb/domain/dist/index.js'
 import { match } from 'ts-pattern'
 import {
   EVT_RECORD_BULK_CREATED,
@@ -28,5 +29,9 @@ export class EventFactory {
       .with(EVT_RECORD_BULK_UPDATED, () => new RecordBulkUpdatedEvent(payload, operatorId, meta, id, timestamp))
       .with(EVT_RECORD_BULK_DELETED, () => new RecordBulkDeletedEvent(payload, operatorId, meta, id, timestamp))
       .otherwise(() => null)
+  }
+
+  static fromJSON(json: IEventJSON) {
+    return this.create(json.id, json.operatorId, json.name, json.payload, json.meta, new Date(json.timestamp))
   }
 }

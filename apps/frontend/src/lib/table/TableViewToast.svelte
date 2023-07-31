@@ -2,31 +2,23 @@
 	import { t } from '$lib/i18n'
 	import { confirmBulkDeleteRecords } from '$lib/store/modal'
 	import { recordSelection, selectedCount, selectedRecords } from '$lib/store/record'
-	import { getTable, getView, q, recordHash } from '$lib/store/table'
+	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import { Toast, P, Button, Spinner, Chevron, Dropdown, DropdownItem, ButtonGroup } from 'flowbite-svelte'
 	import { quintOut } from 'svelte/easing'
 	import { slide } from 'svelte/transition'
 
 	const table = getTable()
-	const view = getView()
-
-	$: data = trpc().record.list.query(
-		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
-		{ enabled: false, refetchOnMount: false, refetchOnWindowFocus: true, queryHash: $recordHash },
-	)
 
 	const bulkDeleteRecordsMutation = trpc().record.bulkDelete.mutation({
 		async onSuccess(data, variables, context) {
 			recordSelection.reset()
-			await $data.refetch()
 		},
 	})
 
 	const bulkDuplicateRecordsMutation = trpc().record.bulkDuplicate.mutation({
 		async onSuccess(data, variables, context) {
 			recordSelection.reset()
-			await $data.refetch()
 		},
 	})
 

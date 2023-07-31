@@ -63,17 +63,17 @@
 					>
 						{table.name.slice(0, 1)}
 					</span>
-					<h5 class="font-semibold">{table.name}</h5>
+					<h5 class="font-semibold truncate" title={table.name}>{table.name}</h5>
 				</div>
 			</Card>
 		{/each}
 		<Card
-			class="!max-w-none cursor-pointer hover:bg-blue-500/90 hover:text-white transition"
+			class="!max-w-none cursor-pointer hover:bg-blue-500/90 hover:text-white transition h-full"
 			on:click={() => createTableModal.open()}
 		>
-			<div class="flex items-center gap-2">
+			<div class="flex items-center gap-2 h-full">
 				<i class="ti ti-plus" />
-				<p class="text-sm">{$t('Create New Table')}</p>
+				<p class="text-sm font-bold">{$t('Create New Table')}</p>
 			</div>
 		</Card>
 	</main>

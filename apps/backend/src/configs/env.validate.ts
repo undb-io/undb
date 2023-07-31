@@ -16,7 +16,8 @@ export const configSchema = Joi.object({
   }),
 
   // outbox
-  UNDB_OUTBOX_POLLING_INTERVAL_SECONDS: Joi.number().integer().positive().max(30).default(10),
+  UNDB_OUTBOX_POLLING_INTERVAL_SECONDS: Joi.number().integer().positive().max(30).default(1),
+  UNDB_OUTBOX_POLLING_COUNT: Joi.number().integer().positive().max(10_000).default(100),
 
   // webhook
   UNDB_WEBHOOK_SECRET: Joi.string().optional(),

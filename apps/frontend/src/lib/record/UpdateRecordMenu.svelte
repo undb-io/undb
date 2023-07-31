@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { t } from '$lib/i18n'
-	import { currentRecordId, getTable, getView, q, recordHash } from '$lib/store/table'
+	import { currentRecordId, getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { Record } from '@undb/core'
 	import { Button, Dropdown, DropdownDivider, DropdownItem, Modal, Spinner } from 'flowbite-svelte'
@@ -10,26 +10,18 @@
 	let confirmDeleteOpen = false
 
 	const table = getTable()
-	const view = getView()
 	export let record: Record | undefined
-
-	$: records = trpc().record.list.query(
-		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
-		{ queryHash: $recordHash, enabled: false },
-	)
 
 	const deleteRecord = trpc().record.delete.mutation({
 		async onSuccess(data, variables, context) {
 			$currentRecordId = undefined
 			await goto($page.url.pathname)
-			await $records.refetch()
 		},
 	})
 
 	const duplicateRecord = trpc().record.duplicate.mutation({
 		async onSuccess(data, variables, context) {
 			$currentRecordId = undefined
-			await $records.refetch()
 		},
 	})
 </script>
@@ -46,7 +38,7 @@
 		}}
 		class="inline-flex items-center gap-2"
 	>
-		<i class="ti ti-trash" />
+		<i class="ti ti-copy" />
 		<span class="text-xs">{$t('Duplicate Record')}</span>
 	</DropdownItem>
 	<DropdownDivider />
@@ -79,6 +71,7 @@
 			color="red"
 			class="mr-2 gap-2 whitespace-nowrap"
 			disabled={$deleteRecord.isLoading}
+			size="md"
 			on:click={() => {
 				if (record) {
 					$deleteRecord.mutate({ tableId: $table.id.value, id: record.id.value })
@@ -88,10 +81,12 @@
 			{#if $deleteRecord.isLoading}
 				<Spinner size="xs" />
 			{:else}
-				<i class="ti ti-circle-check text-lg" />
+				<i class="ti ti-circle-check text-sm" />
 			{/if}
 			{$t('Confirm Yes', { ns: 'common' })}</Button
 		>
-		<Button color="alternative">{$t('Confirm No', { ns: 'common' })}</Button>
+		<Button size="md" color="alternative" on:click={() => ($currentRecordId = undefined)}>
+			{$t('Confirm No', { ns: 'common' })}
+		</Button>
 	</div>
 </Modal>

@@ -7,4 +7,5 @@ export const getForeignRecordsQueryInput = z.object({
   fieldId: fieldIdSchema,
   viewId: viewIdSchema.optional(),
   filter: rootFilter.optional(),
+  q: z.string().optional(),
 })

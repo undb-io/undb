@@ -9,7 +9,8 @@
     "fast-deep-equal": "^3.1.3",
     "nanoid": "^4.0.2",
     "oxide.ts": "^1.1.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/uuid": "^9.0.2",

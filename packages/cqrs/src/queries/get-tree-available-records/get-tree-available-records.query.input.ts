@@ -6,4 +6,5 @@ export const getTreeAvailableRecordsQueryInput = z.object({
   treeFieldId: fieldIdSchema,
   recordId: recordIdSchema.optional(),
   viewId: viewIdSchema.optional(),
+  q: z.string().optional(),
 })

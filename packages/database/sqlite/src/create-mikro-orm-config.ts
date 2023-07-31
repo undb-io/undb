@@ -17,7 +17,7 @@ export const createConfig = (data: string, env = 'development') =>
     debug: env !== 'production' ? ['query'] : false,
     forceUndefined: true,
     flushMode: FlushMode.ALWAYS,
-    loggerFactory: (options) => new SqliteLogger(options),
+    loggerFactory: env === 'production' ? undefined : (options) => new SqliteLogger(options),
     migrations: {
       disableForeignKeys: true,
       snapshot: true,

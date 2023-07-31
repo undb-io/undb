@@ -23,7 +23,7 @@ import {
 	type ViewVO,
 } from '@undb/core'
 import type { IShareTarget } from '@undb/integrations'
-import { uniqBy } from 'lodash-es'
+import { isUndefined, keyBy, uniqBy } from 'lodash-es'
 import { derived, writable, type Readable } from 'svelte/store'
 import { match } from 'ts-pattern'
 
@@ -36,7 +36,6 @@ export const currentView = writable<ViewVO>()
 export const getView = () => currentView
 
 export const currentRecords = writable<Records>([])
-export const getRecords = () => currentRecords
 
 export const allTablesExcludeCurren = derived([allTables, currentTable], ([$allTables, $table]) =>
 	($allTables ?? []).filter((t) => t.id !== $table.id.value).map((t) => TableFactory.fromQuery(t)),
@@ -71,27 +70,104 @@ export const currentField = derived([currentTable, currentFieldId], ([table, fie
 )
 export const getField = () => currentField
 
+export const createRecordStore = (inputs: Records = []) => {
+	const recordsOrder = inputs.map((r) => r.id.value)
+	const recordsMap = keyBy(inputs, (record) => record.id.value)
+
+	const store = writable({ order: recordsOrder, recordsMap: recordsMap })
+	const { set, update, subscribe } = store
+
+	const setRecord = (record: Record) => {
+		return update(($store) => {
+			$store.recordsMap[record.id.value] = record
+			if (!$store.order.includes(record.id.value)) {
+				$store.order = [...$store.order, record.id.value]
+			}
+			return $store
+		})
+	}
+
+	const setRecords = (records: Records) => {
+		return update(($store) => {
+			for (const record of records) {
+				$store.recordsMap[record.id.value] = record
+				if (!$store.order.includes(record.id.value)) {
+					$store.order = [...$store.order, record.id.value]
+				}
+				return $store
+			}
+			return $store
+		})
+	}
+
+	const setAllRecords = (inputs: Records) => {
+		const recordsOrder = inputs.map((r) => r.id.value)
+		const recordsMap = keyBy(inputs, (record) => record.id.value)
+
+		return set({ order: recordsOrder, recordsMap })
+	}
+
+	const removeRecord = (recordId: string) => {
+		return update(($store) => {
+			delete $store.recordsMap[recordId]
+			$store.order = $store.order.filter((id) => id !== recordId)
+			return $store
+		})
+	}
+
+	const removeRecords = (recordIds: string[]) => {
+		return update(($store) => {
+			for (const recordId of recordIds) {
+				delete $store.recordsMap[recordId]
+				$store.order = $store.order.filter((id) => id !== recordId)
+			}
+			return $store
+		})
+	}
+
+	const records = derived(store, ($store) => $store.order.map((id) => $store.recordsMap[id]))
+	const currentRecordIndex: Readable<number | undefined> = derived([currentRecordId, store], ([$id, $store]) => {
+		$id ? $store.order.findIndex((id) => id === $id) : undefined
+	})
+
+	const nextRecord = derived([currentRecordIndex, store], ([$index, $store]) => {
+		if (isUndefined($index)) return undefined
+		if ($index === $store.order.length - 1) return undefined
+		const id = $store.order[$index + 1]
+		return $store.recordsMap[id]
+	})
+
+	const prevRecord = derived([currentRecordIndex, store], ([$index, $store]) => {
+		if (isUndefined($index)) return undefined
+		if ($index === 0) return undefined
+		const id = $store.order[$index - 1]
+		return $store.recordsMap[id]
+	})
+
+	return {
+		set,
+		update,
+		subscribe,
+
+		records,
+		nextRecord,
+		prevRecord,
+
+		setRecord,
+		setRecords,
+		setAllRecords,
+		removeRecord,
+		removeRecords,
+	}
+}
+
+export const recordsStore = createRecordStore()
+
 export const sorts = derived(currentView, (view) => view.sorts?.sorts ?? [])
 // TODO: nested should be IFilters
 export const filters = derived(currentView, (view) => (view.filter?.group.children ?? []) as IFilters)
 
 export const dashboardWidgets = derived(currentView, ($view) => $view.dashboard.into()?.widgets ?? [])
-
-export const currentRecordIndex = derived([currentRecordId, currentRecords], ([$id, $records]) =>
-	$id ? $records.findIndex((r) => r.id.value === $id) : undefined,
-)
-
-export const nextRecord = derived([currentRecordIndex, currentRecords], ([$index, $records]) => {
-	if (typeof $index === 'undefined') return undefined
-	if ($index === $records.length - 1) return undefined
-	return $records[$index + 1]
-})
-
-export const previousRecord = derived([currentRecordIndex, currentRecords], ([$index, $records]) => {
-	if (typeof $index === 'undefined') return undefined
-	if ($index === 0) return undefined
-	return $records[$index - 1]
-})
 
 export const recordHash = derived(
 	[currentTable, currentView, q],

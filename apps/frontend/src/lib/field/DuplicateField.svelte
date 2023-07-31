@@ -6,7 +6,7 @@
 	import FieldIcon from './FieldIcon.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
-	import { getTable, q, recordHash } from '$lib/store/table'
+	import { getTable } from '$lib/store/table'
 
 	const table = getTable()
 	const view = getTable()
@@ -15,21 +15,10 @@
 
 	let includesValues = false
 
-	const records = trpc().record.list.query(
-		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
-		{
-			queryHash: $recordHash,
-			refetchOnMount: false,
-			refetchOnWindowFocus: false,
-			enabled: false,
-		},
-	)
-
 	const duplicateField = trpc().table.field.duplicate.mutation({
 		async onSuccess(data, variables, context) {
 			duplicateFieldModal.close()
 			await invalidate(`table:${$table.id.value}`)
-			await $records.refetch()
 		},
 	})
 </script>

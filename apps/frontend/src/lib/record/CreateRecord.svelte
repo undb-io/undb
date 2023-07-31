@@ -1,6 +1,6 @@
 <script lang="ts">
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
-	import { getTable, getView, q, recordHash } from '$lib/store/table'
+	import { getTable, getView } from '$lib/store/table'
 	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import { Button, Label, Modal, Spinner, Toast } from 'flowbite-svelte'
@@ -11,7 +11,6 @@
 	import { t } from '$lib/i18n'
 	import { keys } from 'lodash-es'
 	import { pick } from 'lodash-es'
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -19,19 +18,8 @@
 	export let data: Validation<any>
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
-	$: records = trpc().record.list.query(
-		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
-		{
-			queryHash: $recordHash,
-			refetchOnMount: false,
-			refetchOnWindowFocus: false,
-			enabled: false,
-		},
-	)
-
 	const createRecord = trpc().record.create.mutation({
 		async onSuccess(data, variables, context) {
-			await $records.refetch()
 			await $createRecordModal.callback()
 			createRecordModal.close()
 			reset()

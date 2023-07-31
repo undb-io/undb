@@ -34,6 +34,8 @@ export const config: InitOptions = {
         'TABLE.NOT_FOUND': 'Table not found',
       },
       common: {
+        previous: 'Previous',
+        next: 'Next',
         deleted: 'deleted',
         restore: 'restore',
         'return to home': 'Return to Home',
@@ -135,6 +137,7 @@ export const config: InitOptions = {
         anonymous: 'anonymous',
       },
       table: {
+        'search trash': 'search trash',
         'import data content': 'Import data (csv / excel / json)',
         'flatten import data': 'Flatten import data',
         'first row as header': 'Use First Row as Headers',
@@ -239,7 +242,8 @@ export const config: InitOptions = {
         'Update Table Name': 'Update Table Name',
         'Delete Table': 'Delete Table',
         'Confirm Delete Table': 'Are you sure to delete table?',
-        'Confirm Delete Record': 'Are you sure to delete record?',
+        'Confirm Delete Record':
+          'Are you sure to delete this record? It will be moved to the recycle bin, and you can restore it from there.',
         'Confirm Delete Field': 'Are you sure to delete field?',
         'Total Records': 'loaded {{total}} records',
         'Create New Option': 'Create New Option',
@@ -324,6 +328,7 @@ export const config: InitOptions = {
         'Create New Form': 'Create New Form',
         'drag to set date': 'drag to set date',
         'set date': 'set date',
+        'recycle bin': 'recycle bin',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -348,10 +353,10 @@ export const config: InitOptions = {
         'record.bulk_deleted': 'Record Bulk Deleted',
       },
       audit: {
-        'record.created': '{{username}} has created record at {{timestamp}}',
-        'record.updated': '{{username}} has updated record at {{timestamp}}',
-        'record.deleted': '{{username}} has deleted record at {{timestamp}}',
-        'record.restored': '{{username}} has restored record at {{timestamp}}',
+        'record.created': '{{username}} has created record',
+        'record.updated': '{{username}} has updated record',
+        'record.deleted': '{{username}} has deleted record',
+        'record.restored': '{{username}} has restored record',
       },
       zod: zodEn,
     },
@@ -385,6 +390,8 @@ export const config: InitOptions = {
         'TABLE.NOT_FOUND': '没有找到表格',
       },
       common: {
+        previous: '上一页',
+        next: '下一页',
         deleted: '删除了',
         restore: '恢复',
         'return to home': '返回首页',
@@ -486,6 +493,7 @@ export const config: InitOptions = {
         anonymous: '匿名用户',
       },
       table: {
+        'search trash': '搜索回收站',
         'import data content': '导入数据 (csv / excel /json)',
         'flatten import data': '扁平化字段',
         'first row as header': '使用第一行作为列标题',
@@ -592,7 +600,7 @@ export const config: InitOptions = {
         'Update Table Name': '更新表名',
         'Delete Table': '删除表',
         'Confirm Delete Table': '确认删除表吗？',
-        'Confirm Delete Record': '确认删除记录吗？',
+        'Confirm Delete Record': '确认删除记录吗？删除后将移至回收站，您可以在回收站中重新恢复该记录。',
         'Confirm Delete Field': '确认删除列吗？',
         'Total Records': '载入 {{total}} 行记录',
         Options: '选项',
@@ -678,6 +686,7 @@ export const config: InitOptions = {
         'Create New Form': '创建表单',
         'drag to set date': '拖拽设置日期',
         'set date': '设置日期',
+        'recycle bin': '回收站',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -702,10 +711,10 @@ export const config: InitOptions = {
         'record.bulk_deleted': '批量行删除',
       },
       audit: {
-        'record.created': '{{username}} 创建于 {{timestamp}}',
-        'record.updated': '{{username}} 更新于 {{timestamp}}',
-        'record.deleted': '{{username}} 删除于 {{timestamp}}',
-        'record.restored': '{{username}} 恢复于 {{timestamp}}',
+        'record.created': '{{username}} 创建于',
+        'record.updated': '{{username}} 更新于',
+        'record.deleted': '{{username}} 删除于',
+        'record.restored': '{{username}} 恢复于',
       },
       zod: zodZh,
     },
