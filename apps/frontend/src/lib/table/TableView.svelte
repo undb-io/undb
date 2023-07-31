@@ -262,8 +262,6 @@
 
 	const bulkDeleteRecordsMutation = trpc().record.bulkDelete.mutation({
 		async onSuccess(data, variables, context) {
-			await $data.refetch()
-
 			recordSelection.set({})
 		},
 	})

@@ -107,6 +107,24 @@ export const createRecordStore = (inputs: Records = []) => {
 		return set({ order: recordsOrder, recordsMap })
 	}
 
+	const removeRecord = (recordId: string) => {
+		return update(($store) => {
+			delete $store.recordsMap[recordId]
+			$store.order = $store.order.filter((id) => id !== recordId)
+			return $store
+		})
+	}
+
+	const removeRecords = (recordIds: string[]) => {
+		return update(($store) => {
+			for (const recordId of recordIds) {
+				delete $store.recordsMap[recordId]
+				$store.order = $store.order.filter((id) => id !== recordId)
+			}
+			return $store
+		})
+	}
+
 	const records = derived(store, ($store) => $store.order.map((id) => $store.recordsMap[id]))
 	const currentRecordIndex: Readable<number | undefined> = derived([currentRecordId, store], ([$id, $store]) => {
 		$id ? $store.order.findIndex((id) => id === $id) : undefined
@@ -138,6 +156,8 @@ export const createRecordStore = (inputs: Records = []) => {
 		setRecord,
 		setRecords,
 		setAllRecords,
+		removeRecord,
+		removeRecords,
 	}
 }
 

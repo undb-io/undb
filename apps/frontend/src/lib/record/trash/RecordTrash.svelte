@@ -1,11 +1,11 @@
 <script lang="ts">
 	import CollaboratorComponent from '$lib/cell/CellComponents/CollaboratorComponent.svelte'
-	import { debounce, isString } from 'lodash-es'
+	import { isString } from 'lodash-es'
 	import { formatDistance } from '$lib/date'
 	import { t } from '$lib/i18n'
 	import { recordTrashModal } from '$lib/store/modal'
 	import { createPagination } from '$lib/store/pagination'
-	import { getTable, listRecordFn } from '$lib/store/table'
+	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import { RecordFactory } from '@undb/core'
 	import { format } from 'date-fns'
@@ -23,8 +23,6 @@
 		q: q || undefined,
 	})
 
-	const listRecords = $listRecordFn(undefined, { enabled: false })
-
 	$: records = $getRecords.data?.records ?? []
 	$: total = $getRecords.data?.total ?? 0
 	$: totalPage = Math.ceil(total / itemPerPage)
@@ -34,7 +32,6 @@
 	const restore = trpc().record.restore.mutation({
 		async onSuccess() {
 			await $getRecords.refetch()
-			await $listRecords.refetch()
 			if (!$getRecords.data?.total) {
 				recordTrashModal.close()
 			}

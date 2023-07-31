@@ -56,9 +56,7 @@
 	)
 
 	const updateRecord = trpc().record.update.mutation({
-		async onSuccess(data, variables, context) {
-			await $listRecords.refetch()
-		},
+		async onSuccess(data, variables, context) {},
 	})
 
 	$: records = recordsStore.records

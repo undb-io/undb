@@ -25,9 +25,7 @@
 	let end: Date | undefined
 
 	const updateRecord = trpc().record.update.mutation({
-		async onSuccess(data, variables, context) {
-			await $data.refetch()
-		},
+		async onSuccess(data, variables, context) {},
 	})
 
 	$: data = $listRecordFn(

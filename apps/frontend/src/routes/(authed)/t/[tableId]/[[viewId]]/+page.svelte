@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { currentFieldId, currentRecord, currentRecordId, getField, getTable } from '$lib/store/table'
+	import { currentFieldId, currentRecord, currentRecordId, getField, getTable, recordsStore } from '$lib/store/table'
 	import TableIndex from '$lib/table/TableIndex.svelte'
-	import { RecordFactory } from '@undb/core'
+	import { EventFactory, RecordFactory } from '@undb/core'
 	import type { PageData } from './$types'
 	import CreateRecord from '$lib/record/CreateRecord.svelte'
 	import CreateField from '$lib/field/CreateField.svelte'
@@ -20,6 +20,7 @@
 	import FormEditorModal from '$lib/form/FormEditorModal.svelte'
 	import RecordTrashModal from '$lib/record/trash/RecordTrashModal.svelte'
 	import { onMount } from 'svelte'
+	import { match } from 'ts-pattern'
 
 	const table = getTable()
 	export let data: PageData
@@ -48,7 +49,26 @@
 	onMount(() => {
 		const evtSource = new EventSource(`/api/tables/${$table.id.value}/subscription`)
 		evtSource.onmessage = (event) => {
-			console.log(JSON.parse(event.data))
+			const data = JSON.parse(event.data)
+			const evt = EventFactory.fromJSON(data.event)
+			match(evt)
+				.with({ name: 'record.created' }, { name: 'record.updated' }, { name: 'record.restored' }, (evt) => {
+					const record = RecordFactory.fromQuery(evt.meta.record, schema).unwrap()
+					recordsStore.setRecord(record)
+				})
+				.with({ name: 'record.deleted' }, (evt) => {
+					const recordId = evt.payload.id
+					recordsStore.removeRecord(recordId)
+				})
+				.with({ name: 'record.bulk_created' }, { name: 'record.bulk_updated' }, (evt) => {
+					const records = RecordFactory.fromQueryRecords(Object.values(evt.meta.records), schema)
+					recordsStore.setRecords(records)
+				})
+				.with({ name: 'record.bulk_deleted' }, (evt) => {
+					const recordIds = evt.payload.records.map((r) => r.id)
+					recordsStore.removeRecords(recordIds)
+				})
+				.exhaustive()
 		}
 		return () => evtSource.close()
 	})
