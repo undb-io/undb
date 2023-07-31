@@ -1,4 +1,4 @@
-import { EVT_RECORD_CREATED, events, rootFilter } from '@undb/core'
+import { EVT_RECORD_CREATED, events, rootFilter, userIdSchema } from '@undb/core'
 import { z } from 'zod'
 import { webhookHeadersSchema } from './webhook-headers.vo.js'
 import { webhookIdSchema } from './webhook-id.vo.js'
@@ -56,3 +56,18 @@ export const updateWebhookSchema = z
   .partial()
 
 export type IUpdateWebhookSchema = z.infer<typeof updateWebhookSchema>
+
+export const baseWebhookRecordEventSchema = z.object({
+  id: z.string().uuid(),
+  operatorId: userIdSchema,
+  timestamp: z.date(),
+})
+
+export const webhookEventSchema = z
+  .object({
+    // TODO: schema
+    event: z.any(),
+  })
+  .merge(baseWebhookRecordEventSchema)
+
+export type IWebhookEventSchema = z.infer<typeof webhookEventSchema>

@@ -1,4 +1,4 @@
-import { OpenAPIRegistry, OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi'
+import { OpenAPIRegistry, OpenApiGeneratorV31, RouteConfig } from '@asteasolutions/zod-to-openapi'
 import type { Record } from '@undb/core'
 import {
   RecordId,
@@ -47,6 +47,7 @@ import { create401ResponseSchema } from './schema/401.respoonse.js'
 import { createOpenAPIMutateRecordSchema } from './schema/mutate-record.schema.js'
 import { createOpenAPIRecordSchema } from './schema/open-api-record.schema.js'
 import { createCreateWebhookSchema, createUpdateWebhookSchema } from './schema/webhook.schema.js'
+import { recordEventsWebhook } from './webhooks/record-events.webhook.js'
 
 export const createTableSchema = (table: Table, record?: Record, host = 'http://localhost:4000'): OpenAPIObject => {
   const registry = new OpenAPIRegistry()
@@ -75,7 +76,7 @@ export const createTableSchema = (table: Table, record?: Record, host = 'http://
   const createWebhookSchema = createCreateWebhookSchema(table)
   const updateWebhookSchema = createUpdateWebhookSchema(table)
 
-  const routes = [
+  const routes: RouteConfig[] = [
     getRecords(table, recordSchema),
     getRecordById(table, recordSchema),
     duplicateRecordById(table),
@@ -103,6 +104,12 @@ export const createTableSchema = (table: Table, record?: Record, host = 'http://
     route.responses[401] = unauthorized
 
     route.security = [{ [bearerAuth.name]: [] }]
+  }
+
+  const webhooks: RouteConfig[] = [recordEventsWebhook(table)]
+
+  for (const webhook of webhooks) {
+    registry.registerWebhook(webhook)
   }
 
   function getOpenApiDocumentation() {
