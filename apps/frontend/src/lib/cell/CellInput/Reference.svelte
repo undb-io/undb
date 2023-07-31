@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { RecordFactory, type ReferenceField, TableFactory, Record } from '@undb/core'
 	import ForeignRecordsPicker from './ForeignRecordsPicker.svelte'
-	import { getRecords, getTable } from '$lib/store/table'
+	import { getTable, recordsStore } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 
 	export let value: string[] = []
@@ -12,7 +12,7 @@
 	const table = getTable()
 	$: foreignTableId = field.foreignTableId.unwrapOr($table.id.value)
 
-	const tableRecords = getRecords()
+	const tableRecords = recordsStore.records
 	async function getForeignRecords(q?: string) {
 		if ($table.id.value === foreignTableId) {
 			return $tableRecords.filter((r) => !value.includes(r.id.value))

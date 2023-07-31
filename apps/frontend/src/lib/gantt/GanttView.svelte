@@ -2,7 +2,7 @@
 	import { SvelteGantt, SvelteGanttDependencies, SvelteGanttExternal, SvelteGanttTable } from 'svelte-gantt'
 	import type { SvelteGanttComponent, SvelteGanttOptions } from 'svelte-gantt/types/gantt'
 	import { addDays, endOfWeek, format, startOfWeek, subDays } from 'date-fns'
-	import { currentRecordId, getTable, listRecordFn, readonly, recordHash } from '$lib/store/table'
+	import { currentRecordId, getTable, listRecordFn, readonly, recordHash, recordsStore } from '$lib/store/table'
 	import { RecordFactory, type DateRangeField } from '@undb/core'
 	import type { RowModel } from 'svelte-gantt/types/core/row'
 	import type { TaskModel } from 'svelte-gantt/types/core/task'
@@ -51,15 +51,16 @@
 			queryHash: $recordHash + '_gantt',
 		},
 	)
+	$: recordsStore.setAllRecords(
+		RecordFactory.fromQueryRecords($listRecords?.data?.records ?? [], $table.schema.toIdMap()) ?? [],
+	)
 
 	const updateRecord = trpc().record.update.mutation({
-		async onSuccess(data, variables, context) {
-			await $listRecords.refetch()
-		},
+		async onSuccess(data, variables, context) {},
 	})
 
-	$: records = RecordFactory.fromQueryRecords($listRecords?.data?.records ?? [], $table.schema.toIdMap()) ?? []
-	$: rows = records.map<RowModel>((r) => {
+	$: records = recordsStore.records
+	$: rows = $records.map<RowModel>((r) => {
 		const label = r.getDisplayFieldsValue($table)
 		return {
 			id: r.id.value,
@@ -69,7 +70,7 @@
 		}
 	})
 
-	$: tasks = records
+	$: tasks = $records
 		.filter((r) => {
 			const value = r.valuesJSON?.[field.id.value]
 			const [from, to] = value
@@ -223,7 +224,7 @@
 	<div class="flex flex-1 overflow-y-auto">
 		<div class="border-t flex-grow overflow-auto" bind:this={ele} id="undb-gantt" />
 	</div>
-	{#if !records.length}
+	{#if !$records.length}
 		<div class="flex items-center justify-center h-full translate-y-[-10%]">
 			<EmptyTable />
 		</div>

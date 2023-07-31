@@ -9,6 +9,15 @@ export interface IEvent<TPayload extends object = object, TMeta = any> {
   meta: TMeta
 }
 
+export interface IEventJSON<TPayload extends object = object, TMeta = any> {
+  id: string
+  name: string
+  operatorId: string
+  payload: TPayload
+  timestamp: string
+  meta: TMeta
+}
+
 export abstract class BaseEvent<
   TPayload extends object = object,
   TName extends string = string,
@@ -24,9 +33,10 @@ export abstract class BaseEvent<
     public readonly timestamp = new Date(),
   ) {}
 
-  toJSON() {
+  toJSON(): IEventJSON<TPayload, TMeta> {
     return {
-      eventId: this.id,
+      id: this.id,
+      name: this.name,
       operatorId: this.operatorId,
       timestamp: this.timestamp.toISOString(),
       payload: this.payload,

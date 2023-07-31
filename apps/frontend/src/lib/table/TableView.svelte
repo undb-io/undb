@@ -13,12 +13,12 @@
 	import {
 		currentFieldId,
 		currentRecordId,
-		currentRecords,
 		getField,
 		getTable,
 		getView,
 		listRecordFn,
 		readonly,
+		recordsStore,
 	} from '$lib/store/table'
 	import { invalidate } from '$app/navigation'
 	import FieldMenu from '$lib/field/FieldMenu.svelte'
@@ -51,8 +51,9 @@
 
 	$: data = $listRecordFn()
 
-	$: records = RecordFactory.fromQueryRecords($data.data?.records ?? [], $table.schema.toIdMap())
-	$: $currentRecords = records
+	$: recordsStore.setAllRecords(RecordFactory.fromQueryRecords($data.data?.records ?? [], $table.schema.toIdMap()))
+	$: records = recordsStore.records
+
 	const field = getField()
 
 	const getFieldDomId = (fieldId?: string | number) => (fieldId ? `field_menu_${fieldId}` : undefined)
@@ -64,7 +65,7 @@
 
 	$: $table, recordSelection.reset()
 	$: allSelected =
-		records.length > 0 && Object.entries($recordSelection).filter(([, value]) => value).length === records.length
+		$records.length > 0 && Object.entries($recordSelection).filter(([, value]) => value).length === $records.length
 	$: fields = $table.getOrderedFields($view, false)
 
 	onMount(async () => {
@@ -96,11 +97,11 @@
 	let grid: RevoGrid
 	$: if (grid) handleRevogrid(grid)
 	$: if (grid) {
-		rows = records.map((record) => record.valuesJSON)
+		rows = $records.map((record) => record.valuesJSON)
 	}
 
 	$: if (grid) {
-		rowDefinitions = records.map((_, index) => ({ type: 'rgRow', index, size: rowSize }))
+		rowDefinitions = $records.map((_, index) => ({ type: 'rgRow', index, size: rowSize }))
 	}
 
 	$: if (grid) {
@@ -118,9 +119,9 @@
 					return h('input', {
 						type: 'checkbox',
 						checked: allSelected,
-						disabled: !records.length,
+						disabled: !$records.length,
 						onChange: (event: any) => {
-							recordSelection.updateAll(records, event.target.checked)
+							recordSelection.updateAll($records, event.target.checked)
 						},
 						class:
 							'w-4 h-4 text-blue-600 absolute top-1/2 left-1/4 translate-y-[-50%] translate-x-[-50%] bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center dark:!bg-gray-200 dark:border-gray-300',
@@ -257,12 +258,10 @@
 		}
 	}
 
-	$: hasRecord = !!records.length
+	$: hasRecord = !!$records.length
 
 	const bulkDeleteRecordsMutation = trpc().record.bulkDelete.mutation({
 		async onSuccess(data, variables, context) {
-			await $data.refetch()
-
 			recordSelection.set({})
 		},
 	})

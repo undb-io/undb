@@ -1,13 +1,18 @@
-import { Controller, Get, Param, Res } from '@nestjs/common'
+import { Controller, Get, Param, Res, UseGuards } from '@nestjs/common'
 import { CommandBus } from '@nestjs/cqrs'
 import { type IExportType } from '@undb/core'
 import { ExportGridCommand } from '@undb/cqrs'
 import { type Response } from 'express'
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard.js'
 import { NestRecordExportorService } from './exportor/exportor.service.js'
 
 @Controller('record')
+@UseGuards(JwtAuthGuard)
 export class RecordController {
-  constructor(private commandBus: CommandBus, private readonly service: NestRecordExportorService) {}
+  constructor(
+    private commandBus: CommandBus,
+    private readonly service: NestRecordExportorService,
+  ) {}
 
   @Get('export/grid/:tableId/:viewId/:type')
   async exportGrid(

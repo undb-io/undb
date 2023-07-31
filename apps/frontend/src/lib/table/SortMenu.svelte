@@ -11,7 +11,7 @@
 	import { t } from '$lib/i18n'
 	import Sortable, { type SortableEvent } from 'sortablejs'
 	import { isNumber, uniqBy } from 'lodash-es'
-	import { onMount, tick } from 'svelte'
+	import { onMount } from 'svelte'
 
 	const table = getTable()
 	const view = getView()
