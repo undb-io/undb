@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import type { IEvent } from '@undb/domain'
+import { RecordEvents } from '@undb/core'
 import { type IWebhookHttpService, type Webhook } from '@undb/integrations'
 import got from 'got'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
@@ -13,7 +13,7 @@ export class WebhooHttpMemoryService implements IWebhookHttpService {
     private readonly signatureService: WebhookSignatureService,
   ) {}
 
-  async send(webhook: Webhook, event: IEvent<object>) {
+  async send(webhook: Webhook, event: RecordEvents) {
     try {
       this.logger.info(
         'handling webhook %s of url %s with event %s',

@@ -30,7 +30,7 @@ import type { WebhookMethod } from './webhook-method.vo.js'
 import type { WebhookTarget } from './webhook-target.vo.js'
 import type { WebhookURL } from './webhook-url.vo.js'
 import { UNDB_SIGNATURE_HEADER_NAME } from './webhook.constants.js'
-import type { IUpdateWebhookSchema } from './webhook.schema.js'
+import type { IUpdateWebhookSchema, IWebhookEventSchema } from './webhook.schema.js'
 
 export class Webhook {
   public id!: WebhookId
@@ -46,13 +46,13 @@ export class Webhook {
     return new Webhook()
   }
 
-  public constructEvent(event: IEvent) {
+  public constructEvent(event: RecordEvents): IWebhookEventSchema {
     return {
       id: event.id,
       operatorId: event.operatorId,
-      name: event.name,
       timestamp: event.timestamp,
       event: {
+        name: event.name,
         payload: event.payload,
         meta: event.meta,
       },

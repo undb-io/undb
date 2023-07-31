@@ -2,7 +2,7 @@
 	import { getTable } from '$lib/store/table'
 	import type { IFieldType } from '@undb/core'
 	import { isEqual } from 'lodash-es'
-	import type { IRecordUpdatedAuditDetail } from '@undb/integrations/dist'
+	import type { IRecordUpdatedAuditDetail } from '@undb/integrations'
 	import type { ComponentType } from 'svelte'
 	import StringAudit from './StringAudit.svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
@@ -25,8 +25,6 @@
 	export let detail: IRecordUpdatedAuditDetail
 
 	const table = getTable()
-
-	$: schema = $table.schema.toIdMap()
 
 	const map: Record<IFieldType, ComponentType | undefined> = {
 		string: StringAudit,

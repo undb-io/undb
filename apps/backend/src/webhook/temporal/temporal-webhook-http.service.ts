@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { Client } from '@temporalio/client'
-import type { IEvent } from '@undb/domain'
+import { RecordEvents } from '@undb/core'
 import type { Webhook } from '@undb/integrations'
 import { type IWebhookHttpService } from '@undb/integrations'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
@@ -16,7 +16,7 @@ export class TemporalWebhookHttpService implements IWebhookHttpService {
     private readonly signatureService: WebhookSignatureService,
   ) {}
 
-  async send(webhook: Webhook, event: IEvent) {
+  async send(webhook: Webhook, event: RecordEvents) {
     try {
       const signature = this.signatureService.sign(webhook, event)
 
