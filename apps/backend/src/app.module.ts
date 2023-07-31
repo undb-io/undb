@@ -30,6 +30,7 @@ import { RelayModule } from './relay/relay.module.js'
 import { ShareModule } from './share/share.module.js'
 import { TrpcModule } from './trpc/trpc.module.js'
 import { WebhookModule } from './webhook/webhook.module.js'
+import { AppInfoModule } from './appInfo/appInfo.module.js'
 
 @Module({
   imports: [
@@ -80,6 +81,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
     RealtimeModule,
     ShareModule,
     AuditModule,
+    AppInfoModule,
   ],
 })
 export class AppModule implements OnModuleInit {
