@@ -16,10 +16,7 @@
       "decoratorMetadata": true
     },
     "keepClassNames": true,
-    "baseUrl": "./",
-    "experimental": {
-      "keepImportAssertions": true
-    }
+    "baseUrl": "./"
   },
   "minify": false,
   "isModule": true
