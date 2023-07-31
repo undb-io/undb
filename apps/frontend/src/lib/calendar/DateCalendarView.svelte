@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentRecordId, getTable, listRecordFn, readonly } from '$lib/store/table'
+	import { currentRecordId, getTable, listRecordFn, readonly, recordsStore } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 
 	// @ts-ignore
@@ -44,9 +44,12 @@
 		},
 	)
 
-	$: records = RecordFactory.fromQueryRecords($data?.data?.records ?? [], $table.schema.toIdMap()) ?? []
+	$: recordsStore.setAllRecords(
+		RecordFactory.fromQueryRecords($data?.data?.records ?? [], $table.schema.toIdMap()) ?? [],
+	)
+	$: records = recordsStore.records
 	$: events =
-		records?.map((record) => {
+		$records?.map((record) => {
 			const values = record.valuesJSON
 			const title = record.getDisplayFieldsValue($table)
 			const titleHTML = !title ? `<span class="opacity-80">${$t('unnamed', { ns: 'common' })}</span>` : ''

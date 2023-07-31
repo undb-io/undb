@@ -6,11 +6,10 @@
 		getTable,
 		getView,
 		isShare,
-		nextRecord,
-		previousRecord,
 		q,
 		readonly,
 		recordHash,
+		recordsStore,
 	} from '$lib/store/table'
 	import { createMutateRecordValuesSchema } from '@undb/core'
 	import { Button, ButtonGroup, Label, Modal, P, Spinner, Toast } from 'flowbite-svelte'
@@ -82,6 +81,9 @@
 	$: if (!$open) {
 		currentRecordId.set(undefined)
 	}
+
+	const prevRecord = recordsStore.prevRecord
+	const nextRecord = recordsStore.nextRecord
 </script>
 
 {#key $record}
@@ -90,18 +92,14 @@
 			<div class="flex items-center w-full justify-between mr-6">
 				<div class="flex items-center space-x-4">
 					<P>{$t('Update Record')}</P>
-					<ButtonGroup size="xs">
-						<Button
-							size="xs"
-							disabled={!$previousRecord}
-							on:click={() => ($currentRecordId = $previousRecord?.id.value)}
-						>
+					<!-- <ButtonGroup size="xs">
+						<Button size="xs" disabled={!$prevRecord} on:click={() => ($currentRecordId = $prevRecord?.id.value)}>
 							<i class="ti ti-chevron-left text-gray-500 text-base" />
 						</Button>
 						<Button size="xs" disabled={!$nextRecord} on:click={() => ($currentRecordId = $nextRecord?.id.value)}>
 							<i class="ti ti-chevron-right text-gray-500 text-base" />
 						</Button>
-					</ButtonGroup>
+					</ButtonGroup> -->
 				</div>
 
 				<div class="flex items-center gap-2">

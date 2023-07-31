@@ -149,22 +149,6 @@ export const filters = derived(currentView, (view) => (view.filter?.group.childr
 
 export const dashboardWidgets = derived(currentView, ($view) => $view.dashboard.into()?.widgets ?? [])
 
-export const currentRecordIndex = derived([currentRecordId, currentRecords], ([$id, $records]) =>
-	$id ? $records.findIndex((r) => r.id.value === $id) : undefined,
-)
-
-export const nextRecord = derived([currentRecordIndex, currentRecords], ([$index, $records]) => {
-	if (typeof $index === 'undefined') return undefined
-	if ($index === $records.length - 1) return undefined
-	return $records[$index + 1]
-})
-
-export const previousRecord = derived([currentRecordIndex, currentRecords], ([$index, $records]) => {
-	if (typeof $index === 'undefined') return undefined
-	if ($index === 0) return undefined
-	return $records[$index - 1]
-})
-
 export const recordHash = derived(
 	[currentTable, currentView, q],
 	([$table, $view, $q]) => `records:${$table.id.value}:${$view.id.value}:${$view.displayType}:${$q}`,

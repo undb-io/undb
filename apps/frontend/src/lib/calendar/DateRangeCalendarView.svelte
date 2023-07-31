@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentRecordId, getTable, getView, listRecordFn, readonly } from '$lib/store/table'
+	import { currentRecordId, getTable, listRecordFn, readonly, recordsStore } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 
 	// @ts-ignore
@@ -19,7 +19,6 @@
 	export let field: DateRangeField
 
 	const table = getTable()
-	const view = getView()
 
 	let date = new Date()
 
@@ -46,10 +45,13 @@
 		},
 	)
 
-	$: records = RecordFactory.fromQueryRecords($data?.data?.records ?? [], $table.schema.toIdMap()) ?? []
+	$: recordsStore.setAllRecords(
+		RecordFactory.fromQueryRecords($data?.data?.records ?? [], $table.schema.toIdMap()) ?? [],
+	)
+	$: records = recordsStore.records
 
 	$: events =
-		records?.map((record) => {
+		$records?.map((record) => {
 			const values = record.valuesJSON
 			const [start, end] = values[field.id.value] ?? []
 			const title = record.getDisplayFieldsValue($table)
@@ -136,7 +138,7 @@
 	:global(.ec-popup) {
 		z-index: 10;
 	}
-	
+
 	:global(.dark .ec-toolbar) {
 		color: #e5e7eb;
 		/* background-color: gray; */
