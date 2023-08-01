@@ -4,6 +4,7 @@ import { Field, fieldEntities } from './field.js'
 import { Form } from './form.js'
 import { Option } from './option.js'
 import { Outbox } from './outbox.js'
+import { RLS } from './rls.js'
 import { Share } from './share.js'
 import { Table } from './table.js'
 import { User } from './user.js'
@@ -33,4 +34,5 @@ export const entities = [
   Webhook,
   Share,
   Audit,
+  RLS,
 ]

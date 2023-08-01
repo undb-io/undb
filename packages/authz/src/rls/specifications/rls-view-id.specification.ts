@@ -8,6 +8,9 @@ export class WithRLSViewId extends CompositeSpecification<RLS, IRLSVisitor> {
   constructor(public readonly viewId: ViewId) {
     super()
   }
+  static fromString(tableId: string): WithRLSViewId {
+    return new this(ViewId.fromString(tableId))
+  }
   isSatisfiedBy(t: RLS): boolean {
     return t.viewId.equals(this.viewId)
   }

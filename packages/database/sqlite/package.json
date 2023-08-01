@@ -7,6 +7,7 @@
     "@mikro-orm/core": "^5.7.14",
     "@mikro-orm/migrations": "^5.7.14",
     "@mikro-orm/sql-highlighter": "^1.0.1",
+    "@undb/authz": "workspace:^",
     "@undb/core": "^0.0.0",
     "@undb/domain": "^0.0.0",
     "@undb/integrations": "^0.0.0",

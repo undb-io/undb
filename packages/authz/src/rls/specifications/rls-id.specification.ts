@@ -1,25 +1,25 @@
-import { TableId } from '@undb/core'
 import { CompositeSpecification } from '@undb/domain'
 import { Ok, Result } from 'oxide.ts'
 import { IRLSVisitor } from '../interface.js'
 import { RLS } from '../rls.js'
+import { RLSID } from '../value-objects/rls-id.vo.js'
 
-export class WithRLSTableId extends CompositeSpecification<RLS, IRLSVisitor> {
-  constructor(public readonly tableId: TableId) {
+export class WithRLSId extends CompositeSpecification<RLS, IRLSVisitor> {
+  constructor(public readonly id: RLSID) {
     super()
   }
-  static fromString(tableId: string): WithRLSTableId {
-    return new this(TableId.from(tableId).unwrap())
+  static fromString(id: string): WithRLSId {
+    return new this(RLSID.from(id))
   }
   isSatisfiedBy(t: RLS): boolean {
-    return t.tableId.equals(this.tableId)
+    return t.tableId.equals(this.id)
   }
   mutate(t: RLS): Result<RLS, string> {
-    t.tableId = this.tableId
+    t.tableId = this.id
     return Ok(t)
   }
   accept(v: IRLSVisitor): Result<void, string> {
-    v.withTableId(this)
+    v.withId(this)
     return Ok(undefined)
   }
 }

@@ -150,6 +150,9 @@ importers:
       '@trpc/server':
         specifier: ^10.36.0
         version: 10.36.0
+      '@undb/authz':
+        specifier: workspace:^
+        version: link:../../packages/authz
       '@undb/cache':
         specifier: ^0.0.0
         version: link:../../packages/database/cache
@@ -880,6 +883,9 @@ importers:
       '@mikro-orm/sql-highlighter':
         specifier: ^1.0.1
         version: 1.0.1
+      '@undb/authz':
+        specifier: workspace:^
+        version: link:../../authz
       '@undb/core':
         specifier: ^0.0.0
         version: link:../../core

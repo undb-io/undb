@@ -2,21 +2,24 @@ import { CompositeSpecification } from '@undb/domain'
 import { Ok, Result } from 'oxide.ts'
 import { IRLSVisitor } from '../interface.js'
 import { RLS } from '../rls.js'
-import { RLSPolicies } from '../value-objects/rls-policies.vo.js'
+import { RLSPolicy, type RLSPolicyInterface } from '../value-objects/rls-policy.vo.js'
 
-export class WithRLSPolicies extends CompositeSpecification<RLS, IRLSVisitor> {
-  constructor(public readonly policies: RLSPolicies) {
+export class WithRLSPolicy extends CompositeSpecification<RLS, IRLSVisitor> {
+  constructor(public readonly policy: RLSPolicy) {
     super()
   }
+  static from(policy: RLSPolicyInterface): WithRLSPolicy {
+    return new this(new RLSPolicy(policy))
+  }
   isSatisfiedBy(t: RLS): boolean {
-    return t.policies.equals(this.policies)
+    return t.policy.equals(this.policy)
   }
   mutate(t: RLS): Result<RLS, string> {
-    t.policies = this.policies
+    t.policy = this.policy
     return Ok(t)
   }
   accept(v: IRLSVisitor): Result<void, string> {
-    v.withRLSPolicies(this)
+    v.withRLSPolicy(this)
     return Ok(undefined)
   }
 }

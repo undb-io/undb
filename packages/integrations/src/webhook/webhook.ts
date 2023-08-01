@@ -98,6 +98,8 @@ export class Webhook {
       return Some(event)
     }
 
+    const schema = table.schema.toIdMap()
+
     return match(event)
       .returnType<Option<typeof event>>()
       .with(
@@ -106,7 +108,7 @@ export class Webhook {
         { name: EVT_RECORD_UPDATED },
         { name: EVT_RECORD_RESTORED },
         (event) => {
-          const record = RecordFactory.fromQuery(event.meta.record, table.schema.toIdMap()).unwrap()
+          const record = RecordFactory.fromQuery(event.meta.record, schema).unwrap()
           return spec.isSatisfiedBy(record) ? Some(event) : None
         },
       )
@@ -115,7 +117,7 @@ export class Webhook {
         { name: EVT_RECORD_BULK_DELETED },
         { name: EVT_RECORD_BULK_UPDATED },
         (event) => {
-          const records = RecordFactory.fromQueryRecords(Object.values(event.meta.records), table.schema.toIdMap())
+          const records = RecordFactory.fromQueryRecords(Object.values(event.meta.records), schema)
           const matched = new Set(records.filter((r) => spec.isSatisfiedBy(r)).map((r) => r.id.value))
           if (matched.size === 0) return None
 

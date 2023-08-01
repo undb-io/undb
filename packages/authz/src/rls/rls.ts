@@ -1,10 +1,12 @@
 import type { TableId, ViewId } from '@undb/core'
-import type { RLSPolicies } from './value-objects/rls-policies.vo.js'
+import { RLSID } from './value-objects/rls-id.vo.js'
+import { RLSPolicy } from './value-objects/rls-policy.vo.js'
 
 export class RLS {
+  id!: RLSID
   tableId!: TableId
   viewId!: ViewId
-  policies!: RLSPolicies
+  policy!: RLSPolicy
 
   static empty() {
     return new this()

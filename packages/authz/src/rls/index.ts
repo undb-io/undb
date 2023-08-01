@@ -1,4 +1,5 @@
 export * from './interface.js'
+export * from './rls.factory.js'
 export * from './rls.js'
 export * from './rls.repository.js'
 export * from './specifications/index.js'

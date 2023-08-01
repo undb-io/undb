@@ -31,6 +31,7 @@
     "@temporalio/worker": "^1.8.2",
     "@temporalio/workflow": "^1.8.2",
     "@trpc/server": "^10.36.0",
+    "@undb/authz": "workspace:^",
     "@undb/cache": "^0.0.0",
     "@undb/core": "^0.0.0",
     "@undb/cqrs": "^0.0.0",
