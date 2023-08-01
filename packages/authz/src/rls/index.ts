@@ -1,3 +1,5 @@
+export * from './interface.js'
 export * from './rls.js'
+export * from './rls.repository.js'
 export * from './specifications/index.js'
 export * from './value-objects/index.js'

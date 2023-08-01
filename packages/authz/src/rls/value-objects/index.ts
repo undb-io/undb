@@ -1,2 +1,2 @@
-export * from './rls-detail.vo.js'
-export * from './rls-details.vo.js'
+export * from './rls-policies.vo.js'
+export * from './rls-policy.vo.js'
