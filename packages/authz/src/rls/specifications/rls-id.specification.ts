@@ -11,11 +11,14 @@ export class WithRLSId extends CompositeSpecification<RLS, IRLSVisitor> {
   static fromString(id: string): WithRLSId {
     return new this(RLSID.from(id))
   }
+  static create(): WithRLSId {
+    return new this(RLSID.create())
+  }
   isSatisfiedBy(t: RLS): boolean {
-    return t.tableId.equals(this.id)
+    return t.id.equals(this.id)
   }
   mutate(t: RLS): Result<RLS, string> {
-    t.tableId = this.id
+    t.id = this.id
     return Ok(t)
   }
   accept(v: IRLSVisitor): Result<void, string> {

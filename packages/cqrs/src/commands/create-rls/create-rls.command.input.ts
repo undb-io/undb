@@ -5,9 +5,9 @@ import { ZodObject, ZodString, z } from 'zod'
 export const createRLSCommandInput: ZodObject<{
   tableId: ZodString
   viewId: ZodString
-  policies: any
+  policy: any
 }> = z.object({
   tableId: tableIdSchema,
   viewId: viewIdSchema,
-  policies: rlsPolicy.array(),
+  policy: rlsPolicy,
 })
