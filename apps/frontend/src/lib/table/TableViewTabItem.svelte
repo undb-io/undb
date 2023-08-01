@@ -11,7 +11,7 @@
 	import Portal from 'svelte-portal'
 	import { t } from '$lib/i18n'
 	import { selectedFormId, webhookListDrawer } from '$lib/store/drawer'
-	import { erdModal, formEditorModal } from '$lib/store/modal'
+	import { erdModal, formEditorModal, rlsModal } from '$lib/store/modal'
 
 	const table = getTable()
 	const currentView = getView()
@@ -215,6 +215,15 @@
 				>
 					<i class="ti ti-clipboard-text text-gray-600 dark:text-gray-50" />
 					<span>{$t('create form from view')}</span>
+				</DropdownItem>
+				<DropdownItem
+					on:click={() => {
+						rlsModal.open()
+					}}
+					class="text-xs font-normal inline-flex items-center gap-2"
+				>
+					<i class="ti ti-key text-gray-600 dark:text-gray-50" />
+					<span>{$t('rls')}</span>
 				</DropdownItem>
 				{#if $table.views.count > 1}
 					<DropdownDivider />

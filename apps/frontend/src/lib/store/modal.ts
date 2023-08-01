@@ -83,3 +83,6 @@ export const formEditorModal = createModal(FORM_EDITOR_MODAL)
 
 const RECORD_TRASH_MODAL = Symbol('RECORD_TRASH_MODAL')
 export const recordTrashModal = createModal(RECORD_TRASH_MODAL)
+
+const RLS_MODAL = Symbol('RLS_MODAL')
+export const rlsModal = createModal(RLS_MODAL)
