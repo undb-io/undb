@@ -3,13 +3,21 @@ import { ValueObject } from '@undb/domain'
 import { Option } from 'oxide.ts'
 import { z } from 'zod'
 
+export const rlsAction = z.enum(['list', 'view', 'create', 'update', 'delete'])
+export type IRLSAction = z.infer<typeof rlsAction>
+
 export const rlsPolicy = z.object({
+  action: rlsAction,
   filter: rootFilter,
 })
 
 export type RLSPolicyInterface = z.infer<typeof rlsPolicy>
 
 export class RLSPolicy extends ValueObject<RLSPolicyInterface> {
+  public get action() {
+    return this.props.action
+  }
+
   public get filter() {
     return this.props.filter
   }

@@ -2,6 +2,7 @@ import { TRPCError } from '@trpc/server'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { middleware, publicProcedure, router } from '../trpc.js'
 import type { ILogger } from '../type.js'
+import { createAuthzRouter } from './authz.router.js'
 import { createRecordRouter } from './record.router.js'
 import { createShareRouter } from './share.router.js'
 import { createTableRouter } from './table.router.js'
@@ -38,6 +39,7 @@ export const createRouter = (commandBus: ICommandBus, queryBus: IQueryBus, logge
   const authedProceducr = procedure.use(authMiddleware)
 
   const appRouter = router({
+    authz: createAuthzRouter(authedProceducr)(commandBus, queryBus),
     table: createTableRouter(authedProceducr)(commandBus, queryBus),
     record: createRecordRouter(authedProceducr)(commandBus, queryBus),
     user: createUserRouter(authedProceducr)(commandBus, queryBus),
