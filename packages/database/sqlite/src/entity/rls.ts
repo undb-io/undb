@@ -1,8 +1,33 @@
-import { Cascade, Entity, JsonType, ManyToOne, PrimaryKey, Property, type Rel } from '@mikro-orm/core'
-import { RLS as RLSDO, type RLSPolicyInterface } from '@undb/authz'
+import {
+  Cascade,
+  Embeddable,
+  Embedded,
+  Entity,
+  JsonType,
+  ManyToOne,
+  PrimaryKey,
+  Property,
+  type Rel,
+} from '@mikro-orm/core'
+import { RLS as RLSDO, type IRLSAction, type RLSPolicyInterface } from '@undb/authz'
+import { type IRootFilter } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Table } from './table.js'
 import { View } from './view.js'
+
+@Embeddable()
+export class RLSPolicy {
+  constructor(policy: RLSPolicyInterface) {
+    this.action = policy.action
+    this.filter = policy.filter
+  }
+
+  @Property()
+  action: IRLSAction
+
+  @Property({ type: JsonType })
+  filter: IRootFilter
+}
 
 @Entity({ tableName: 'undb_rls' })
 export class RLS extends BaseEntity {
@@ -11,7 +36,7 @@ export class RLS extends BaseEntity {
     this.id = rls.id.value
     this.table = table
     this.view = view
-    this.policy = rls.policy
+    this.policy = new RLSPolicy(rls.policy)
   }
 
   @PrimaryKey()
@@ -23,6 +48,6 @@ export class RLS extends BaseEntity {
   @ManyToOne(() => View, { cascade: [Cascade.ALL] })
   view: Rel<View>
 
-  @Property({ type: JsonType })
-  policy: RLSPolicyInterface
+  @Embedded()
+  policy: RLSPolicy
 }
