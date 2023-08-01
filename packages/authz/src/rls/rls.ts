@@ -1,7 +1,11 @@
 import { TableId } from '@undb/core'
-import { RLSDetail } from './value-objects'
+import { RLSDetails } from './value-objects/rls-details.vo.js'
 
 export class RLS {
   tableId!: TableId
-  details!: RLSDetail[]
+  details!: RLSDetails
+
+  static empty() {
+    return new this()
+  }
 }
