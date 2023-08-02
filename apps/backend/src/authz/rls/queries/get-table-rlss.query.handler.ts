@@ -1,6 +1,6 @@
 import type { IQueryHandler } from '@nestjs/cqrs'
 import { QueryHandler } from '@nestjs/cqrs'
-import { IRLSQueryModel } from '@undb/authz'
+import { type IRLSQueryModel } from '@undb/authz'
 import type { IGetTableRLSSOutput } from '@undb/cqrs'
 import { GetTableRLSSQuery, GetTableRLSSQueryHandler } from '@undb/cqrs'
 import { InjectRLSQueryModel } from '../adapters/rls-sqlite.query-model.js'

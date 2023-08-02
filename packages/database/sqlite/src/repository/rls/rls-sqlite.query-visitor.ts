@@ -1,6 +1,6 @@
 import type { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
 import type { IRLSVisitor, WithRLSAction, WithRLSId, WithRLSPolicy, WithRLSTableId, WithRLSViewId } from '@undb/authz'
-import type { ISpecVisitor, ISpecification } from '@undb/domain/dist'
+import type { ISpecVisitor, ISpecification } from '@undb/domain'
 import type { RLS } from '../../entity/rls'
 
 export class RLSSqliteQueryVisitor implements IRLSVisitor {

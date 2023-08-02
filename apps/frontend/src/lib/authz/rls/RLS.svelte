@@ -6,27 +6,23 @@
 	import type { IFilter } from '@undb/core'
 	import { Select, Label, Button, Toast } from 'flowbite-svelte'
 	import { slide } from 'svelte/transition'
+	import RlsList from './RlsList.svelte'
+	import { actions } from './actions'
 
 	const table = getTable()
 	const view = getView()
 
 	let selected: string | undefined = 'list'
-	let countries = [
-		{ value: 'list', name: 'List' },
-		{ value: 'view', name: 'View' },
-		{ value: 'create', name: 'Create' },
-		{ value: 'update', name: 'Update' },
-		{ value: 'delete', name: 'Delete' },
-	]
 
 	let filter: IFilter[]
 
 	const createRLS = trpc().authz.rls.create.mutation({})
 </script>
 
-<div>
+<div class="space-y-2">
+	<RlsList />
 	<div class="flex items-center w-full gap-2">
-		<Select class="w-30" items={countries} bind:value={selected} size="sm" />
+		<Select class="w-30" items={actions} bind:value={selected} size="sm" />
 
 		<div class="flex-1 w-full">
 			<FilterEditor bind:value={filter} />

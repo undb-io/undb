@@ -1,8 +1,8 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { IQueryRLS, IRLSQueryModel, RLSSpecification } from '@undb/authz'
 import { RLS } from '../../entity/rls.js'
-import { RLSSqliteMapper } from './rls-sqlite.mapper'
-import { RLSSqliteQueryVisitor } from './rls-sqlite.query-visitor'
+import { RLSSqliteMapper } from './rls-sqlite.mapper.js'
+import { RLSSqliteQueryVisitor } from './rls-sqlite.query-visitor.js'
 
 export class RLSSqliteQueryModel implements IRLSQueryModel {
   constructor(protected readonly em: EntityManager) {}

@@ -496,6 +496,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^6.2.1
         version: 6.2.1(eslint@8.46.0)(typescript@5.1.6)
+      '@undb/authz':
+        specifier: workspace:^
+        version: link:../../packages/authz
       '@undb/core':
         specifier: ^0.0.0
         version: link:../../packages/core
