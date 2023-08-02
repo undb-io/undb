@@ -5,4 +5,5 @@ export interface IRLSRepository {
   find(spec: RLSSpecification): Promise<RLS[]>
 
   insert(rls: RLS): Promise<void>
+  deleteOneById(id: string): Promise<void>
 }

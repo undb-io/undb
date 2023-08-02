@@ -1,4 +1,5 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
+import { wrap } from '@mikro-orm/core'
 import { type IRLSRepository, type RLS as RLSDO, type RLSSpecification } from '@undb/authz'
 import { RLS } from '../../entity/rls.js'
 import { Table } from '../../entity/table.js'
@@ -27,5 +28,12 @@ export class RLSSqliteRepository implements IRLSRepository {
     const view = rls.viewId.isSome() ? em.getReference(View, rls.viewId.unwrap().value) : undefined
     const entity = new RLS(table, view, rls)
     await em.insert(RLS, entity)
+  }
+
+  async deleteOneById(id: string): Promise<void> {
+    const em = this.em.fork()
+    const entity = em.getReference(RLS, id)
+    wrap(entity).assign({ deletedAt: new Date() })
+    await em.persistAndFlush(entity)
   }
 }

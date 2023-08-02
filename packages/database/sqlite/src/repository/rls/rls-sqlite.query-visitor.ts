@@ -7,7 +7,9 @@ export class RLSSqliteQueryVisitor implements IRLSVisitor {
   constructor(
     private readonly em: EntityManager,
     private qb: QueryBuilder<RLS>,
-  ) {}
+  ) {
+    this.qb = this.qb.andWhere({ deletedAt: null })
+  }
   withId(s: WithRLSId): void {
     this.qb.andWhere({ id: s.id.value })
   }

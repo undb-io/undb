@@ -1,4 +1,4 @@
-import { RLSPolicyInterface } from '@undb/authz/dist/index.js'
+import type { RLSPolicyInterface } from '@undb/authz/dist/index.js'
 import type { CommandProps } from '@undb/domain'
 import { Command } from '@undb/domain'
 import type { ICreateRLSCommandInput } from './create-rls.command.interface.js'
