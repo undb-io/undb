@@ -1,4 +1,5 @@
 import type { TableId, ViewId } from '@undb/core'
+import { Option } from 'oxide.ts'
 import { RLSID } from './value-objects/rls-id.vo.js'
 import { RLSPolicy } from './value-objects/rls-policy.vo.js'
 
@@ -8,7 +9,7 @@ import { RLSPolicy } from './value-objects/rls-policy.vo.js'
 export class RLS {
   id!: RLSID
   tableId!: TableId
-  viewId!: ViewId
+  viewId!: Option<ViewId>
   policy!: RLSPolicy
 
   static empty() {

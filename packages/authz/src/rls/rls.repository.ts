@@ -1,5 +1,5 @@
-import { RLSSpecification } from './interface'
-import { RLS } from './rls.js'
+import type { RLSSpecification } from './interface.js'
+import type { RLS } from './rls.js'
 
 export interface IRLSRepository {
   find(spec: RLSSpecification): Promise<RLS[]>

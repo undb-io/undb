@@ -1,9 +1,9 @@
 import type { Table, ViewVO } from '@undb/core'
 import { and } from '@undb/domain'
-import { RLSSpecification } from './interface'
-import { RLS } from './rls'
-import { WithRLSId, WithRLSPolicy, WithRLSTableId, WithRLSViewId } from './specifications'
-import { RLSPolicyInterface } from './value-objects'
+import type { RLSSpecification } from './interface.js'
+import { RLS } from './rls.js'
+import { WithRLSId, WithRLSPolicy, WithRLSTableId, WithRLSViewId } from './specifications/index.js'
+import type { RLSPolicyInterface } from './value-objects/index.js'
 
 export class RLSFactory {
   static create(...specs: RLSSpecification[]) {
