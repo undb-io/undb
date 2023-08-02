@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "author": "",
   "dependencies": {
-    "@asteasolutions/zod-to-openapi": "^5.3.1",
+    "@asteasolutions/zod-to-openapi": "^5.4.0",
     "@undb/core": "^0.0.0",
     "@undb/integrations": "^0.0.0",
     "@undb/logger": "^0.0.0",
@@ -23,7 +23,7 @@
     "tsconfig": "^0.0.0",
     "tsup": "^7.1.0",
     "typescript": "^5.1.6",
-    "vitest": "^0.33.0"
+    "vitest": "^0.34.1"
   },
   "exports": {
     "import": "./dist/index.js",
