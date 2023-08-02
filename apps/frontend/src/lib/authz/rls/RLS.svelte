@@ -4,7 +4,8 @@
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { IFilter } from '@undb/core'
-	import { Select, Label, Button } from 'flowbite-svelte'
+	import { Select, Label, Button, Toast } from 'flowbite-svelte'
+	import { slide } from 'svelte/transition'
 
 	const table = getTable()
 	const view = getView()
@@ -50,3 +51,16 @@
 		</Button>
 	</div>
 </div>
+
+{#if $createRLS.error}
+	<Toast
+		transition={slide}
+		position="bottom-right"
+		class="z-[99999] !bg-red-500 border-0 text-white font-semibold fixed"
+	>
+		<span class="inline-flex items-center gap-3">
+			<i class="ti ti-exclamation-circle text-lg" />
+			{$createRLS.error.message}
+		</span>
+	</Toast>
+{/if}

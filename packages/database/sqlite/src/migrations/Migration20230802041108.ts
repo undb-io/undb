@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230727112248 extends Migration {
+export class Migration20230802041108 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `undb_outbox` (`uuid` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text null, `operator_id` text null, `timestamp` datetime not null, `payload` json not null, `meta` json null, primary key (`uuid`));',
@@ -104,6 +104,13 @@ export class Migration20230727112248 extends Migration {
     )
     this.addSql('create index `undb_view_deleted_at_index` on `undb_view` (`deleted_at`);')
     this.addSql('create index `undb_view_table_id_index` on `undb_view` (`table_id`);')
+
+    this.addSql(
+      'create table `undb_rls` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `view_id` text null, `policy_action` text not null, `policy_filter` json not null, constraint `undb_rls_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, constraint `undb_rls_view_id_foreign` foreign key(`view_id`) references `undb_view`(`id`) on delete cascade on update cascade, primary key (`id`));',
+    )
+    this.addSql('create index `undb_rls_deleted_at_index` on `undb_rls` (`deleted_at`);')
+    this.addSql('create index `undb_rls_table_id_index` on `undb_rls` (`table_id`);')
+    this.addSql('create index `undb_rls_view_id_index` on `undb_rls` (`view_id`);')
 
     this.addSql(
       'create table `undb_visualization` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `type` text not null, `table_id` text null, `number_aggregate_function` text null, `field_id` text null, `chart_aggregate_function` text null, `chart_type` text null, constraint `undb_visualization_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));',

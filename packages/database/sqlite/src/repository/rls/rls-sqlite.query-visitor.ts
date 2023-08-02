@@ -15,7 +15,10 @@ export class RLSSqliteQueryVisitor implements IRLSVisitor {
     this.qb.andWhere({ table: s.tableId.value })
   }
   withViewId(s: WithRLSViewId): void {
-    this.qb.andWhere({ view: s.viewId.value })
+    const viewId = s.viewId
+    if (viewId.isSome()) {
+      this.qb.andWhere({ view: s.viewId.unwrap().value })
+    }
   }
   withRLSPolicy(s: WithRLSPolicy): void {
     throw new Error('Method not implemented.')

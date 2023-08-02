@@ -1,0 +1,42 @@
+{
+    "_id": "5363cdd2-b6ea-413a-a903-5dbe7fbf5535",
+    "colName": "auth",
+    "created": "2023-04-07T06:01:42.410Z",
+    "sortNum": 30000,
+    "folders": [],
+    "requests": [
+        {
+            "_id": "1e9dcfaa-53fe-4ea5-9176-c2c2aec3cbc3",
+            "colId": "5363cdd2-b6ea-413a-a903-5dbe7fbf5535",
+            "containerId": "",
+            "name": "me",
+            "url": "localhost:4000/api/auth/me",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-04-07T06:01:47.180Z",
+            "modified": "2023-04-07T06:14:49.210Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "058060ca-7814-4551-aa1e-134fbfcc2d8e",
+            "colId": "5363cdd2-b6ea-413a-a903-5dbe7fbf5535",
+            "containerId": "",
+            "name": "login",
+            "url": "localhost:4000/api/auth/login",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-04-07T06:15:13.302Z",
+            "modified": "2023-04-07T06:16:27.356Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\":\"maria\",\n  \"password\":\"guess\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

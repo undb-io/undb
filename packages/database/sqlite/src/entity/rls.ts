@@ -48,6 +48,6 @@ export class RLS extends BaseEntity {
   @ManyToOne(() => View, { cascade: [Cascade.ALL], nullable: true })
   view?: Rel<View>
 
-  @Embedded()
+  @Embedded(() => RLSPolicy)
   policy: RLSPolicy
 }
