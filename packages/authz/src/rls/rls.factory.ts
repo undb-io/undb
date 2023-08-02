@@ -13,11 +13,11 @@ export class RLSFactory {
       .unwrap()
   }
 
-  static from(table: Table, view: ViewVO, policy: RLSPolicyInterface) {
+  static from(table: Table, view: ViewVO | undefined, policy: RLSPolicyInterface) {
     return this.create(
       WithRLSId.create(),
       WithRLSTableId.fromString(table.id.value),
-      WithRLSViewId.fromString(view.id.value),
+      WithRLSViewId.fromString(view?.id.value),
       WithRLSPolicy.from(policy),
     )
   }

@@ -1,18 +1,18 @@
 import { ViewId } from '@undb/core'
 import { CompositeSpecification } from '@undb/domain'
-import { Ok, Result } from 'oxide.ts'
+import { None, Ok, Option, Result, Some } from 'oxide.ts'
 import { IRLSVisitor } from '../interface.js'
 import { RLS } from '../rls.js'
 
 export class WithRLSViewId extends CompositeSpecification<RLS, IRLSVisitor> {
-  constructor(public readonly viewId: ViewId) {
+  constructor(public readonly viewId: Option<ViewId>) {
     super()
   }
-  static fromString(tableId: string): WithRLSViewId {
-    return new this(ViewId.fromString(tableId))
+  static fromString(viewId?: string): WithRLSViewId {
+    return new this(viewId ? Some(ViewId.fromString(viewId)) : None)
   }
   isSatisfiedBy(t: RLS): boolean {
-    return t.viewId.equals(this.viewId)
+    return t.viewId.mapOr(false, (viewId) => (this.viewId.isSome() ? viewId.equals(this.viewId.unwrap()) : false))
   }
   mutate(t: RLS): Result<RLS, string> {
     t.viewId = this.viewId

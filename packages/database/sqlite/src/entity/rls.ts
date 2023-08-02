@@ -31,7 +31,7 @@ export class RLSPolicy {
 
 @Entity({ tableName: 'undb_rls' })
 export class RLS extends BaseEntity {
-  constructor(table: Rel<Table>, view: Rel<View>, rls: RLSDO) {
+  constructor(table: Rel<Table>, view: Rel<View> | undefined, rls: RLSDO) {
     super()
     this.id = rls.id.value
     this.table = table
@@ -45,8 +45,8 @@ export class RLS extends BaseEntity {
   @ManyToOne(() => Table, { cascade: [Cascade.ALL] })
   table: Rel<Table>
 
-  @ManyToOne(() => View, { cascade: [Cascade.ALL] })
-  view: Rel<View>
+  @ManyToOne(() => View, { cascade: [Cascade.ALL], nullable: true })
+  view?: Rel<View>
 
   @Embedded()
   policy: RLSPolicy
