@@ -1,8 +1,10 @@
 import { CompositeSpecification } from '@undb/domain'
-import { Ok, Result } from 'oxide.ts'
-import { IRLSVisitor } from '../interface.js'
-import { RLS } from '../rls.js'
-import { IRLSAction, RLSPolicy, type RLSPolicyInterface } from '../value-objects/rls-policy.vo.js'
+import type { Result } from 'oxide.ts'
+import { Ok } from 'oxide.ts'
+import type { IRLSVisitor } from '../interface.js'
+import type { RLS } from '../rls.js'
+import type { IRLSAction } from '../value-objects/rls-policy.vo.js'
+import { RLSPolicy, type RLSPolicyInterface } from '../value-objects/rls-policy.vo.js'
 
 export class WithRLSPolicy extends CompositeSpecification<RLS, IRLSVisitor> {
   constructor(public readonly policy: RLSPolicy) {

@@ -1,8 +1,9 @@
 import { ViewId } from '@undb/core'
 import { CompositeSpecification } from '@undb/domain'
-import { None, Ok, Option, Result, Some } from 'oxide.ts'
-import { IRLSVisitor } from '../interface.js'
-import { RLS } from '../rls.js'
+import type { Option, Result } from 'oxide.ts'
+import { None, Ok, Some } from 'oxide.ts'
+import type { IRLSVisitor } from '../interface.js'
+import type { RLS } from '../rls.js'
 
 export class WithRLSViewId extends CompositeSpecification<RLS, IRLSVisitor> {
   constructor(public readonly viewId: Option<ViewId>) {

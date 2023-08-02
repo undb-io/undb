@@ -1,3 +1,4 @@
+import type { IQueryRLS } from '@undb/authz'
 import { RLSFactory, WithRLSId, WithRLSPolicy, WithRLSTableId, WithRLSViewId, type RLS as RLSDO } from '@undb/authz'
 import type { RLS } from '../../entity/rls.js'
 
@@ -9,5 +10,17 @@ export class RLSSqliteMapper {
       WithRLSViewId.fromString(rls.view?.id),
       WithRLSPolicy.from(rls.policy),
     )
+  }
+
+  static toQuery(rls: RLS): IQueryRLS {
+    return {
+      id: rls.id,
+      tableId: rls.table.id,
+      viewId: rls.view?.id,
+      policy: {
+        action: rls.policy.action,
+        filter: rls.policy.filter,
+      },
+    }
   }
 }

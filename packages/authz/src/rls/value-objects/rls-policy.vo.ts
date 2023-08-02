@@ -1,6 +1,6 @@
 import { convertFilterSpec, rootFilter, type RecordCompositeSpecification } from '@undb/core'
 import { ValueObject } from '@undb/domain'
-import { Option } from 'oxide.ts'
+import type { Option } from 'oxide.ts'
 import { z } from 'zod'
 
 export const rlsAction = z.enum(['list', 'view', 'create', 'update', 'delete'])

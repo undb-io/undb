@@ -1,4 +1,4 @@
-import { EntityManager } from '@mikro-orm/better-sqlite'
+import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { type IRLSRepository, type RLS as RLSDO, type RLSSpecification } from '@undb/authz'
 import { RLS } from '../../entity/rls.js'
 import { Table } from '../../entity/table.js'
@@ -26,17 +26,6 @@ export class RLSSqliteRepository implements IRLSRepository {
     const table = em.getReference(Table, rls.tableId.value)
     const view = rls.viewId.isSome() ? em.getReference(View, rls.viewId.unwrap().value) : undefined
     const entity = new RLS(table, view, rls)
-    console.log(entity)
-    console.log(entity)
-    console.log(entity)
-    console.log(entity)
-    console.log(entity)
-    console.log(entity)
-    console.log(entity)
-    console.log(entity)
-    console.log(entity)
-    console.log(entity)
-    console.log(entity)
     await em.insert(RLS, entity)
   }
 }

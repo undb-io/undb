@@ -1,9 +1,9 @@
-import { RecordCompositeSpecification } from '@undb/core'
+import type { RecordCompositeSpecification } from '@undb/core'
 import { andOptions } from '@undb/domain'
-import { Option } from 'oxide.ts'
+import type { Option } from 'oxide.ts'
 import type { IRLSRepository } from '../rls.repository.js'
 import { withTableOfActionRLS } from '../specifications/index.js'
-import { IRLSAction } from '../value-objects/rls-policy.vo.js'
+import type { IRLSAction } from '../value-objects/rls-policy.vo.js'
 
 export interface IRLSRecordSpecService {
   list(tableId: string, viewId?: string): Promise<Option<RecordCompositeSpecification>>

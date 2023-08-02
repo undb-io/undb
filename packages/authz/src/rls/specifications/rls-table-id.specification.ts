@@ -1,8 +1,9 @@
 import { TableId } from '@undb/core'
 import { CompositeSpecification } from '@undb/domain'
-import { Ok, Result } from 'oxide.ts'
-import { IRLSVisitor } from '../interface.js'
-import { RLS } from '../rls.js'
+import type { Result } from 'oxide.ts'
+import { Ok } from 'oxide.ts'
+import type { IRLSVisitor } from '../interface.js'
+import type { RLS } from '../rls.js'
 
 export class WithRLSTableId extends CompositeSpecification<RLS, IRLSVisitor> {
   constructor(public readonly tableId: TableId) {
