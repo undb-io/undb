@@ -5,12 +5,12 @@
 	import Option from './Option.svelte'
 	import { t } from '$lib/i18n'
 
-	export let field: SelectField
+	export let field: SelectField | undefined
 
 	export let group: string | undefined
 
-	$: option = group ? field.options.getById(group).into() : null
-	$: options = field.options?.options
+	$: option = group ? field?.options.getById(group).into() : null
+	$: options = field?.options?.options ?? []
 
 	$: open = false
 </script>

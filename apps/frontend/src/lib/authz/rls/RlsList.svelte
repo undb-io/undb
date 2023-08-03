@@ -14,7 +14,7 @@
 	$: rlss = $getRLSSQuery.data?.rlss ?? []
 </script>
 
-<ul class="space-y-2">
+<ul class="space-y-2 p-2 bg-gray-50 border border-gray-100 rounded-md">
 	{#each rlss as rls (rls.id)}
 		<RlsItem {rls} />
 	{/each}

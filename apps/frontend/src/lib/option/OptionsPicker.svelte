@@ -5,15 +5,15 @@
 	import Option from './Option.svelte'
 	import { t } from '$lib/i18n'
 
-	export let field: SelectField | MultiSelectField
+	export let field: SelectField | MultiSelectField | undefined
 
 	export let value: string[] | undefined = []
 	$: if (!value) {
 		value = []
 	}
 
-	$: selected = Array.isArray(value) ? value.map((id) => field.options.getById(id).into()!).filter(Boolean) : []
-	$: options = field.options?.options
+	$: selected = Array.isArray(value) ? value.map((id) => field?.options.getById(id).into()!).filter(Boolean) : []
+	$: options = field?.options?.options ?? []
 
 	$: open = false
 </script>

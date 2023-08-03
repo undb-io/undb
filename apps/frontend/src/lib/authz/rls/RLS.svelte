@@ -21,11 +21,11 @@
 
 <div class="space-y-2">
 	<RlsList />
-	<div class="flex items-center w-full gap-2">
+	<div class="flex items-start w-full gap-2 bg-green-50 border border-green-100 p-2 rounded-md">
 		<Select class="w-30" items={actions} bind:value={selected} size="sm" />
 
-		<div class="flex-1 w-full">
-			<FilterEditor bind:value={filter} />
+		<div class="flex-1 w-full bg-green-100 border border-green-200 p-1 rounded-md">
+			<FilterEditor bind:value={filter}></FilterEditor>
 		</div>
 
 		<Button

@@ -30,6 +30,9 @@ export const config: InitOptions = {
         'Profile Helper': 'Edit your personal profile.',
         'Copy Auth Token': 'Copy Auth Token',
       },
+      authz: {
+        rls: 'record level security',
+      },
       errors: {
         'TABLE.NOT_FOUND': 'Table not found',
       },
@@ -387,6 +390,9 @@ export const config: InitOptions = {
         avatar: '头像',
         'Profile Helper': '编辑你的个人简介',
         'Copy Auth Token': '复制 Auth 令牌',
+      },
+      authz: {
+        rls: '行权限',
       },
       errors: {
         'TABLE.NOT_FOUND': '没有找到表格',
