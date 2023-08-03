@@ -23,6 +23,7 @@
 	import type { ComponentType } from 'svelte'
 	import { withPrevious } from 'svelte-previous'
 	import DateRange from '$lib/cell/CellInput/DateRange.svelte'
+	import UsersPicker from '$lib/cell/CellInput/UsersPicker.svelte'
 
 	export let field: Field | undefined
 	export let operator: string | undefined
@@ -92,6 +93,8 @@
 		} else if (type === 'collaborator' || type === 'created-by' || type === 'updated-by') {
 			if (operator === '$eq' || operator === '$neq') {
 				component = UserPicker
+			} else if (operator === '$in' || operator === '$nin') {
+				component = UsersPicker
 			}
 		} else if (type === 'date-range') {
 			if (operator === '$is_empty' || operator === '$is_not_empty') component = undefined
