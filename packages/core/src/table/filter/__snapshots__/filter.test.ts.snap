@@ -59,7 +59,7 @@ OptionType {
 exports[`should create root filter 5`] = `
 OptionType {
   Symbol(T): true,
-  Symbol(Val): y {
+  Symbol(Val): m {
     "spec": NumberEqual {
       "fieldId": "name",
       "value": NumberFieldValue {
@@ -75,7 +75,7 @@ OptionType {
 exports[`should create root filter 6`] = `
 OptionType {
   Symbol(T): true,
-  Symbol(Val): y {
+  Symbol(Val): m {
     "spec": NumberEqual {
       "fieldId": "name.nested",
       "value": NumberFieldValue {
@@ -209,6 +209,20 @@ OptionType {
       "props": {
         "value": false,
       },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 16`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): CollaboratorEqual {
+    "fieldId": "field",
+    "value": CollaboratorFieldValue {
+      "props": [
+        "usr1",
+      ],
     },
   },
 }
