@@ -107,6 +107,7 @@ import { urlFilter, urlFilterOperators, urlFilterValue } from '../field/fields/u
 import {
   DateFieldValue,
   DateRangeFieldValue,
+  IFieldType,
   NumberFieldValue,
   SelectFieldValue,
   StringFieldValue,
@@ -230,6 +231,39 @@ export const operaotrs = z.union([
   maxFilterOperators,
 ])
 export type IOperator = z.infer<typeof operaotrs>
+
+export const operaotrsMap: Record<IFieldType, IOperator[]> = {
+  string: stringFilterOperators.options.map((v) => v._def.value),
+  number: numberFilterOperators.options.map((v) => v._def.value),
+  date: dateFilterOperators.options.map((v) => v._def.value),
+  id: idFilterOperators.options.map((v) => v._def.value),
+  'created-at': createdAtFilterOperators.options.map((v) => v._def.value),
+  'updated-at': updatedAtFilterOperators.options.map((v) => v._def.value),
+  'auto-increment': autoIncrementFilterOperators.options.map((v) => v._def.value),
+  color: colorFilterOperators.options.map((v) => v._def.value),
+  email: emailFilterOperators.options.map((v) => v._def.value),
+  url: urlFilterOperators.options.map((v) => v._def.value),
+  json: jsonFilterOperators.options.map((v) => v._def.value),
+  select: selectFilterOperators.options.map((v) => v._def.value),
+  'multi-select': multiSelectFilterOperators.options.map((v) => v._def.value),
+  bool: boolFilterOperators.options.map((v) => v._def.value),
+  'date-range': dateRangeFilterOperators.options.map((v) => v._def.value),
+  reference: referenceFilterOperators.options.map((v) => v._def.value),
+  tree: treeFilterOperators.options.map((v) => v._def.value),
+  parent: parentFilterOperators.options.map((v) => v._def.value),
+  rating: ratingFilterOperators.options.map((v) => v._def.value),
+  currency: currencyFilterOperators.options.map((v) => v._def.value),
+  count: countFilterOperators.options.map((v) => v._def.value),
+  lookup: lookupFilterOperators.options.map((v) => v._def.value),
+  sum: sumFilterOperators.options.map((v) => v._def.value),
+  average: averageFilterOperators.options.map((v) => v._def.value),
+  attachment: attachmentFilterOperators.options.map((v) => v._def.value),
+  collaborator: collaboratorFilterOperators.options.map((v) => v._def.value),
+  'created-by': createdByFilterOperators.options.map((v) => v._def.value),
+  'updated-by': updatedByFilterOperators.options.map((v) => v._def.value),
+  min: minFilterOperators.options.map((v) => v._def.value),
+  max: maxFilterOperators.options.map((v) => v._def.value),
+}
 
 const filter = z.discriminatedUnion('type', [
   idFilter,
