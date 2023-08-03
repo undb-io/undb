@@ -233,9 +233,9 @@ export class ViewVO extends ValueObject<IView> {
     }
   }
 
-  public get spec(): Option<CompositeSpecification> {
+  public getSpec(userId: string): Option<CompositeSpecification> {
     if (!this.filter) return None
-    return this.filter.spec
+    return this.filter.getSpec(userId)
   }
 
   public get fieldOptions() {

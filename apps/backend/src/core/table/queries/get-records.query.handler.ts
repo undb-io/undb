@@ -1,12 +1,14 @@
 import type { IQueryHandler } from '@nestjs/cqrs'
 import { QueryHandler } from '@nestjs/cqrs'
-import { type IRecordQueryModel, type ITableRepository } from '@undb/core'
+import { ClsStore, IClsService, type IRecordQueryModel, type ITableRepository } from '@undb/core'
 import type { IGetRecordsOutput } from '@undb/cqrs'
 import { GetRecordsQuery, GetRecordsQueryHandler } from '@undb/cqrs'
+import { ClsService } from 'nestjs-cls'
 import { InjectRecordQueryModel } from '../adapters/sqlite/record-sqlite.query-model.js'
 import { InjectTableRepository } from '../adapters/sqlite/table-sqlite.repository.js'
 
 @QueryHandler(GetRecordsQuery)
+// @ts-ignore
 export class NestGetRecordsQueryHandler
   extends GetRecordsQueryHandler
   implements IQueryHandler<GetRecordsQuery, IGetRecordsOutput>
@@ -16,7 +18,8 @@ export class NestGetRecordsQueryHandler
     protected readonly tableRepo: ITableRepository,
     @InjectRecordQueryModel()
     protected readonly rm: IRecordQueryModel,
+    protected readonly cls: ClsService<ClsStore>,
   ) {
-    super(tableRepo, rm)
+    super(tableRepo, rm, cls as IClsService<ClsStore>)
   }
 }

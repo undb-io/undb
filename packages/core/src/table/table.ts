@@ -143,8 +143,8 @@ export class Table {
     return new Views([this.createDefaultView()])
   }
 
-  public getSpec(viewId?: string) {
-    return this.mustGetView(viewId).spec
+  public getSpec(userId: string, viewId?: string) {
+    return this.mustGetView(viewId).getSpec(userId)
   }
 
   public getView(viewId?: string): Option<ViewVO> {

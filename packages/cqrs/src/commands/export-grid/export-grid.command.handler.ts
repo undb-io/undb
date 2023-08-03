@@ -1,4 +1,4 @@
-import type { IRecordRepository, RecordExportorService } from '@undb/core'
+import type { ClsStore, IClsService, IRecordRepository, RecordExportorService } from '@undb/core'
 import { WithRecordTableId, type ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
 import type { ExportGridCommand } from './export-grid.command.js'
@@ -8,11 +8,13 @@ export class ExportGridCommandHandler implements ICommandHandler<ExportGridComma
     protected readonly tableRepo: ITableRepository,
     protected readonly recordRepo: IRecordRepository,
     protected readonly service: RecordExportorService,
+    protected readonly cls: IClsService<ClsStore>,
   ) {}
 
   async execute(command: ExportGridCommand): Promise<string | Buffer> {
+    const userId = this.cls.get('user.userId')
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
-    const filter = table.getSpec(command.viewId)
+    const filter = table.getSpec(userId, command.viewId)
 
     const spec = WithRecordTableId.fromString(command.tableId)
       .map((s) => (filter.isNone() ? s : s.and(filter.unwrap())))

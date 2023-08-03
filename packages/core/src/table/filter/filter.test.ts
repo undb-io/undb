@@ -1,5 +1,7 @@
 import { convertFilterSpec, IRootFilter, rootFilter } from './filter.js'
 
+const userId = 'usr1'
+
 test.each<IRootFilter>([
   {
     type: 'string',
@@ -105,10 +107,16 @@ test.each<IRootFilter>([
     path: 'field',
     value: false,
   },
+  {
+    type: 'collaborator',
+    operator: '$is_me',
+    path: 'field',
+    value: null,
+  },
 ])('should create root filter', (filter) => {
   const parsed = rootFilter.parse(filter)
   expect(parsed).toEqual(filter)
 
-  const spec = convertFilterSpec(filter)
+  const spec = convertFilterSpec(filter, userId)
   expect(spec).toMatchSnapshot()
 })
