@@ -15,7 +15,7 @@ export class RLSRecordSpecService implements IRLSRecordSpecService {
     protected readonly cls: IClsService<ClsStore>,
   ) {}
 
-  private async getSpec(
+  protected async getSpec(
     action: IRLSAction,
     tableId: string,
     viewId?: string,

@@ -13,6 +13,10 @@ export class WithRecordCreatedAt extends CompositeSpecification<Record, IRecordV
     return new this(new DateVO(date))
   }
 
+  static now(): WithRecordCreatedAt {
+    return this.fromDate(new Date())
+  }
+
   static fromString(date: string): WithRecordCreatedAt {
     return this.fromDate(new Date(date))
   }
