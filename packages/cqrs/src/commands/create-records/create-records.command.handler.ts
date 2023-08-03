@@ -1,3 +1,4 @@
+import type { IRLSAuthzService } from '@undb/authz/dist/index.js'
 import type { ClsStore, IClsService } from '@undb/core'
 import { type IRecordRepository, type ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
@@ -9,6 +10,7 @@ export class CreateRecordsCommandHandler implements ICommandHandler<CreateRecord
     protected readonly tableRepo: ITableRepository,
     protected readonly recordRepo: IRecordRepository,
     protected readonly cls: IClsService<ClsStore>,
+    protected readonly rls: IRLSAuthzService,
   ) {}
 
   async execute(command: CreateRecordsCommand): Promise<void> {
@@ -18,6 +20,9 @@ export class CreateRecordsCommandHandler implements ICommandHandler<CreateRecord
     await createCreateRecordsCommandInput(table.schema.fields).parseAsync(command)
 
     const records = table.createRecords(command.records, userId)
+
+    await this.rls.checkMany('create', table, records)
+
     await this.recordRepo.insertMany(table, records)
   }
 }
