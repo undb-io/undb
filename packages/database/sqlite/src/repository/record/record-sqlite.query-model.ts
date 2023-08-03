@@ -9,7 +9,7 @@ import type {
   ViewId,
 } from '@undb/core'
 import { WithRecordId, WithRecordTableId } from '@undb/core'
-import { IRepositoryOption } from '@undb/domain/dist/index.js'
+import { IRepositoryOption } from '@undb/domain'
 import { None, Option } from 'oxide.ts'
 import { ReferenceField, SelectField } from '../../entity/field.js'
 import { Table as TableEntity } from '../../entity/table.js'

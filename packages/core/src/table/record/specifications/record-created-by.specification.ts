@@ -29,6 +29,25 @@ export class WithRecordCreatedBy extends CompositeSpecification<Record, IRecordV
   }
 }
 
+export class CreatedByIn extends CompositeSpecification<Record, IRecordVisitor> {
+  constructor(public readonly userIds: string[]) {
+    super()
+  }
+
+  isSatisfiedBy(t: Record): boolean {
+    return this.userIds.includes(t.createdBy)
+  }
+
+  mutate(r: Record): Result<Record, string> {
+    throw new Error('Method not implemeted')
+  }
+
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.createdByIn(this)
+    return Ok(undefined)
+  }
+}
+
 export class WithRecordCreatedByProfile extends CompositeSpecification<Record, IRecordVisitor> {
   constructor(public readonly profile: ICollaboratorProfile | null) {
     super()

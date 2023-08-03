@@ -44,7 +44,9 @@ export const $has_file_extension = z.literal('$has_file_extension')
 
 export const $is_root = z.literal('$is_root')
 
+export const $is_me = z.literal('$is_me')
+
 export const createdAtBuiltInOperators = new Set<ICreatedAtFilterOperator>([$is_today.value])
 
-export const operatorsWihtoutValue = z.union([$is_empty, $is_not_empty, $is_today, $is_root])
+export const operatorsWihtoutValue = z.union([$is_empty, $is_not_empty, $is_today, $is_root, $is_me])
 export const isOperatorWithoutValue = (value: string): boolean => operatorsWihtoutValue.safeParse(value).success

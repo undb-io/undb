@@ -1,5 +1,6 @@
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
+import { match } from 'ts-pattern'
 import { z } from 'zod'
 import type { IAttachmentFilter, IAttachmentFilterTypeValue } from '../field/fields/attachment/attachment.filter.js'
 import {
@@ -33,8 +34,8 @@ import {
   createdAtFilterOperators,
   createdAtFilterValue,
 } from '../field/fields/created-at/created-at.filter.js'
-import type { ICreatedByFilter } from '../field/fields/created-by/created-by.filter.js'
 import {
+  ICreatedByFilter,
   createdByFilter,
   createdByFilterOperators,
   createdByFilterValue,
@@ -95,8 +96,8 @@ import {
   updatedAtFilterOperators,
   updatedAtFilterValue,
 } from '../field/fields/updated-at/updated-at.filter.js'
-import type { IUpdatedByFilter } from '../field/fields/updated-by/updated-by.filter.js'
 import {
+  IUpdatedByFilter,
   updatedByFilter,
   updatedByFilterOperators,
   updatedByFilterValue,
@@ -116,6 +117,7 @@ import {
   BoolIsTrue,
   CollaboratorEqual,
   CollaboratorIsEmpty,
+  CreatedByIn,
   DateBetween,
   DateEqual,
   DateGreaterThan,
@@ -151,7 +153,10 @@ import {
   StringEqual,
   StringRegex,
   StringStartsWith,
+  UdpatedByIn,
+  WithRecordCreatedBy,
   WithRecordIds,
+  WithRecordUpdatedBy,
 } from '../record/index.js'
 import type { RecordCompositeSpecification } from '../record/specifications/interface.js'
 import type { IConjunction } from './conjunction.js'
@@ -585,21 +590,39 @@ const convertAttachmentFilter = (filter: IAttachmentFilter): Option<RecordCompos
 }
 
 const convertCollaboratorFilter = (
-  filter: ICollaboratorFilter | ICreatedByFilter | IUpdatedByFilter,
+  filter: ICollaboratorFilter,
+  userId: string,
 ): Option<RecordCompositeSpecification> => {
-  switch (filter.operator) {
-    case '$eq':
-      return Some(CollaboratorEqual.fromString(filter.path, filter.value as string))
-    case '$neq':
-      return Some(CollaboratorEqual.fromString(filter.path, filter.value as string).not())
-    case '$is_empty':
-      return Some(new CollaboratorIsEmpty(filter.path))
-    case '$is_not_empty':
-      return Some(new CollaboratorIsEmpty(filter.path).not())
+  return match(filter.operator)
+    .returnType<Option<RecordCompositeSpecification>>()
+    .with('$eq', () => Some(CollaboratorEqual.fromString(filter.path, filter.value as string)))
+    .with('$neq', () => Some(CollaboratorEqual.fromString(filter.path, filter.value as string).not()))
+    .with('$is_empty', () => Some(new CollaboratorIsEmpty(filter.path)))
+    .with('$is_not_empty', () => Some(new CollaboratorIsEmpty(filter.path).not()))
+    .with('$is_me', () => Some(CollaboratorEqual.fromString(filter.path, userId).not()))
+    .exhaustive()
+}
 
-    default:
-      return None
-  }
+const convertUpdatedByFilter = (filter: IUpdatedByFilter, userId: string): Option<RecordCompositeSpecification> => {
+  return match(filter)
+    .returnType<Option<RecordCompositeSpecification>>()
+    .with({ operator: '$eq' }, (filter) => Some(WithRecordUpdatedBy.fromString(filter.value as string)))
+    .with({ operator: '$neq' }, (filter) => Some(WithRecordUpdatedBy.fromString(filter.value as string).not()))
+    .with({ operator: '$is_me' }, (filter) => Some(WithRecordUpdatedBy.fromString(userId)))
+    .with({ operator: '$in' }, (filter) => Some(new UdpatedByIn(filter.value as string[])))
+    .with({ operator: '$nin' }, (filter) => Some(new UdpatedByIn(filter.value as string[]).not()))
+    .exhaustive()
+}
+
+const convertCreatedByFilter = (filter: ICreatedByFilter, userId: string): Option<RecordCompositeSpecification> => {
+  return match(filter)
+    .returnType<Option<RecordCompositeSpecification>>()
+    .with({ operator: '$eq' }, (filter) => Some(WithRecordCreatedBy.fromString(filter.value as string)))
+    .with({ operator: '$neq' }, (filter) => Some(WithRecordCreatedBy.fromString(filter.value as string).not()))
+    .with({ operator: '$is_me' }, (filter) => Some(WithRecordCreatedBy.fromString(userId)))
+    .with({ operator: '$in' }, (filter) => Some(new CreatedByIn(filter.value as string[])))
+    .with({ operator: '$nin' }, (filter) => Some(new CreatedByIn(filter.value as string[]).not()))
+    .exhaustive()
 }
 
 const convertMultiSelectFilter = (filter: IMultiSelectFilter): Option<RecordCompositeSpecification> => {
@@ -622,59 +645,46 @@ const convertMultiSelectFilter = (filter: IMultiSelectFilter): Option<RecordComp
   }
 }
 
-const convertFilter = (filter: IFilter): Option<RecordCompositeSpecification> => {
-  switch (filter.type) {
-    case 'id':
-      return convertIdFilter(filter)
-    case 'string':
-    case 'email':
-    case 'url':
-    case 'color':
-      return convertStringFilter(filter)
-    case 'json':
-      return convertJsonFilter(filter)
-    case 'number':
-    case 'rating':
-    case 'currency':
-    case 'auto-increment':
-    case 'count':
-    case 'sum':
-    case 'average':
-    case 'min':
-    case 'max':
-      return convertNumberFilter(filter)
-    case 'collaborator':
-    case 'created-by':
-    case 'updated-by':
-      return convertCollaboratorFilter(filter)
-    case 'date':
-    case 'created-at':
-    case 'updated-at':
-      return convertDateFilter(filter)
-    case 'date-range':
-      return convertDateRangeFilter(filter)
-    case 'select':
-      return convertSelectFilter(filter)
-    case 'multi-select':
-      return convertMultiSelectFilter(filter)
-    case 'bool':
-      return convertBoolFilter(filter)
-    case 'reference':
+const convertFilter = (filter: IFilter, userId: string): Option<RecordCompositeSpecification> => {
+  return match(filter)
+    .with({ type: 'id' }, (filter) => convertIdFilter(filter))
+    .with({ type: 'string' }, { type: 'email' }, { type: 'url' }, { type: 'color' }, (filter) =>
+      convertStringFilter(filter),
+    )
+    .with({ type: 'json' }, (filter) => convertJsonFilter(filter))
+    .with(
+      { type: 'number' },
+      { type: 'rating' },
+      { type: 'currency' },
+      { type: 'auto-increment' },
+      { type: 'count' },
+      { type: 'sum' },
+      { type: 'average' },
+      { type: 'min' },
+      { type: 'max' },
+      (filter) => convertNumberFilter(filter),
+    )
+    .with({ type: 'collaborator' }, (filter) => convertCollaboratorFilter(filter, userId))
+    .with({ type: 'created-by' }, (filter) => convertCreatedByFilter(filter, userId))
+    .with({ type: 'updated-by' }, (filter) => convertUpdatedByFilter(filter, userId))
+    .with({ type: 'date' }, { type: 'created-at' }, { type: 'updated-at' }, (filter) => convertDateFilter(filter))
+    .with({ type: 'date-range' }, (filter) => convertDateRangeFilter(filter))
+    .with({ type: 'select' }, (filter) => convertSelectFilter(filter))
+    .with({ type: 'multi-select' }, (filter) => convertMultiSelectFilter(filter))
+    .with({ type: 'bool' }, (filter) => convertBoolFilter(filter))
+    .with({ type: 'reference' }, (filter) => {
       throw new Error('convertFilter.reference not implemented')
-    case 'tree':
-      return convertTreeFilter(filter)
-    case 'attachment':
-      return convertAttachmentFilter(filter)
-    default:
-      return None
-  }
+    })
+    .with({ type: 'tree' }, (filter) => convertTreeFilter(filter))
+    .with({ type: 'attachment' }, (filter) => convertAttachmentFilter(filter))
+    .otherwise(() => None)
 }
 
-const convertFilterOrGroup = (filterOrGroup: IFilterOrGroup): Option<RecordCompositeSpecification> => {
+const convertFilterOrGroup = (filterOrGroup: IFilterOrGroup, userId: string): Option<RecordCompositeSpecification> => {
   if (isGroup(filterOrGroup)) {
-    return convertFilterOrGroupList(filterOrGroup.children, filterOrGroup.conjunction)
+    return convertFilterOrGroupList(filterOrGroup.children, userId, filterOrGroup.conjunction)
   } else if (isFilter(filterOrGroup)) {
-    return convertFilter(filterOrGroup)
+    return convertFilter(filterOrGroup, userId)
   }
 
   return None
@@ -682,19 +692,20 @@ const convertFilterOrGroup = (filterOrGroup: IFilterOrGroup): Option<RecordCompo
 
 const convertFilterOrGroupList = (
   filterOrGroupList: IFilterOrGroupList = [],
+  userId: string,
   conjunction: IConjunction = '$and',
 ): Option<RecordCompositeSpecification> => {
   let spec: Option<RecordCompositeSpecification> = None
   for (const filter of filterOrGroupList) {
     if (spec.isNone()) {
-      spec = convertFilterOrGroup(filter)
+      spec = convertFilterOrGroup(filter, userId)
       if (conjunction === '$not') {
         return spec.map((s) => s.not())
       }
     } else {
       if (isFilter(filter)) {
         spec = spec.map((left) => {
-          const right = convertFilterOrGroup(filter)
+          const right = convertFilterOrGroup(filter, userId)
           if (right.isSome()) {
             if (conjunction === '$and') {
               return left.and(right.unwrap())
@@ -706,7 +717,7 @@ const convertFilterOrGroupList = (
           return left
         })
       } else if (isGroup(filter)) {
-        spec = convertFilterOrGroupList(filter.children, filter.conjunction)
+        spec = convertFilterOrGroupList(filter.children, userId, filter.conjunction)
       }
     }
   }
@@ -714,10 +725,10 @@ const convertFilterOrGroupList = (
   return spec
 }
 
-export const convertFilterSpec = (filter: IRootFilter): Option<RecordCompositeSpecification> => {
+export const convertFilterSpec = (filter: IRootFilter, userId: string): Option<RecordCompositeSpecification> => {
   if (Array.isArray(filter)) {
-    return convertFilterOrGroupList(filter)
+    return convertFilterOrGroupList(filter, userId)
   }
 
-  return convertFilterOrGroup(filter)
+  return convertFilterOrGroup(filter, userId)
 }

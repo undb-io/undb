@@ -32,13 +32,14 @@ export * from './tree.specification.js'
 
 export const withTableRecordsSpec = (
   table: Table,
+  userId: string,
   customFilter?: IRootFilter,
   q?: string,
 ): RecordCompositeSpecification => {
   let spec: RecordCompositeSpecification = WithRecordTableId.fromString(table.id.value).unwrap()
 
   if (customFilter) {
-    const querySpec = convertFilterSpec(customFilter)
+    const querySpec = convertFilterSpec(customFilter, userId)
     spec = spec.and(querySpec.unwrap())
   }
 
@@ -50,13 +51,14 @@ export const withTableRecordsSpec = (
 
 export const withTableViewRecordsSpec = (
   table: Table,
+  userId: string,
   viewId?: string,
   customFilter?: IRootFilter,
   q?: string,
 ): RecordCompositeSpecification => {
-  const filter = table.getSpec(viewId)
+  const filter = table.getSpec(userId, viewId)
 
-  let spec = withTableRecordsSpec(table, customFilter, q)
+  let spec = withTableRecordsSpec(table, userId, customFilter, q)
 
   if (filter.isSome()) {
     spec = spec.and(filter.unwrap())

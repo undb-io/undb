@@ -93,7 +93,7 @@ export class Webhook {
     }
 
     const filter = this.filter.unwrap().value
-    const spec = convertFilterSpec(filter).into()
+    const spec = convertFilterSpec(filter, event.operatorId).into()
     if (!spec) {
       return Some(event)
     }

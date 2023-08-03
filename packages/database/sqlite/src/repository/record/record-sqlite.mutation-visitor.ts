@@ -5,6 +5,7 @@ import type {
   BoolIsTrue,
   CollaboratorEqual,
   CollaboratorIsEmpty,
+  CreatedByIn,
   DateBetween,
   DateEqual,
   DateGreaterThan,
@@ -45,6 +46,7 @@ import type {
   StringStartsWith,
   TableSchemaIdMap,
   TreeAvailableSpec,
+  UdpatedByIn,
   WithRecordAutoIncrement,
   WithRecordCreatedAt,
   WithRecordCreatedBy,
@@ -105,6 +107,12 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     throw new Error('Method not implemented.')
   }
   collaboratorIsEmpqy(s: CollaboratorIsEmpty): void {
+    throw new Error('Method not implemented.')
+  }
+  updatedByIn(s: UdpatedByIn): void {
+    throw new Error('Method not implemented.')
+  }
+  createdByIn(s: CreatedByIn): void {
     throw new Error('Method not implemented.')
   }
   private createRecordValueVisitor(fieldId: string) {
