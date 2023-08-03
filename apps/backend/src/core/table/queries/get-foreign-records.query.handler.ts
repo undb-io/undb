@@ -1,6 +1,7 @@
 import type { IQueryHandler } from '@nestjs/cqrs'
 import { QueryHandler } from '@nestjs/cqrs'
-import { ClsStore, IClsService, type IRecordQueryModel, type ITableRepository } from '@undb/core'
+import type { ClsStore, IClsService } from '@undb/core'
+import { type IRecordQueryModel, type ITableRepository } from '@undb/core'
 import type { IGetForeignRecordsOutput } from '@undb/cqrs'
 import { GetForeignRecordsQuery, GetForeignRecordsQueryHandler } from '@undb/cqrs'
 import { ClsService } from 'nestjs-cls'
@@ -8,6 +9,7 @@ import { InjectRecordQueryModel } from '../adapters/sqlite/record-sqlite.query-m
 import { InjectTableRepository } from '../adapters/sqlite/table-sqlite.repository.js'
 
 @QueryHandler(GetForeignRecordsQuery)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export class NestGetForeignRecordsQueryHandler
   extends GetForeignRecordsQueryHandler

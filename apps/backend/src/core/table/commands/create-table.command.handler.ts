@@ -10,6 +10,7 @@ import { InjectRecordRepository } from '../adapters/sqlite/record-sqlite.reposit
 import { InjectTableRepository } from '../adapters/sqlite/table-sqlite.repository.js'
 
 @CommandHandler(CreateTableCommand)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export class CreateTableCommandHandler extends DomainHandler implements ICommandHandler<CreateTableCommand> {
   constructor(

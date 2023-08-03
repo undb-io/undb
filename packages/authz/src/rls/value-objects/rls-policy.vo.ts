@@ -26,7 +26,7 @@ export class RLSPolicy extends ValueObject<RLSPolicyInterface> {
     return new this(detail)
   }
 
-  public get spec(): Option<RecordCompositeSpecification> {
-    return convertFilterSpec(this.filter)
+  public getSpec(userId: string): Option<RecordCompositeSpecification> {
+    return convertFilterSpec(this.filter, userId)
   }
 }

@@ -1,6 +1,7 @@
 import type { IQueryHandler } from '@nestjs/cqrs'
 import { QueryHandler } from '@nestjs/cqrs'
-import { ClsStore, IClsService, type IRecordTreeQueryModel, type ITableRepository } from '@undb/core'
+import type { ClsStore, IClsService } from '@undb/core'
+import { type IRecordTreeQueryModel, type ITableRepository } from '@undb/core'
 import type { IGetRecordsTreeOutput } from '@undb/cqrs'
 import { GetRecordsTreeQuery, GetRecordsTreeQueryHandler } from '@undb/cqrs'
 import { ClsService } from 'nestjs-cls'
@@ -8,6 +9,7 @@ import { InjectRecordTreeQueryModel } from '../adapters/sqlite/record-sqlite.tre
 import { InjectTableRepository } from '../adapters/sqlite/table-sqlite.repository.js'
 
 @QueryHandler(GetRecordsTreeQuery)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export class NestGetRecordsTreeQueryHandler
   extends GetRecordsTreeQueryHandler

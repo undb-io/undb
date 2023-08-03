@@ -10,6 +10,7 @@ import { InjectRecordQueryModel } from '../adapters/sqlite/record-sqlite.query-m
 import { InjectTableRepository } from '../adapters/sqlite/table-sqlite.repository.js'
 
 @QueryHandler(GetRecordsQuery)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export class NestGetRecordsQueryHandler
   extends GetRecordsQueryHandler
