@@ -633,7 +633,8 @@ const convertCollaboratorFilter = (
     .with('$neq', () => Some(CollaboratorEqual.fromString(filter.path, filter.value as string).not()))
     .with('$is_empty', () => Some(new CollaboratorIsEmpty(filter.path)))
     .with('$is_not_empty', () => Some(new CollaboratorIsEmpty(filter.path).not()))
-    .with('$is_me', () => Some(CollaboratorEqual.fromString(filter.path, userId).not()))
+    .with('$is_me', () => Some(CollaboratorEqual.fromString(filter.path, userId)))
+    .with('$is_not_me', () => Some(CollaboratorEqual.fromString(filter.path, userId).not()))
     .exhaustive()
 }
 
@@ -643,6 +644,7 @@ const convertUpdatedByFilter = (filter: IUpdatedByFilter, userId: string): Optio
     .with({ operator: '$eq' }, (filter) => Some(WithRecordUpdatedBy.fromString(filter.value as string)))
     .with({ operator: '$neq' }, (filter) => Some(WithRecordUpdatedBy.fromString(filter.value as string).not()))
     .with({ operator: '$is_me' }, (filter) => Some(WithRecordUpdatedBy.fromString(userId)))
+    .with({ operator: '$is_not_me' }, (filter) => Some(WithRecordUpdatedBy.fromString(userId).not()))
     .with({ operator: '$in' }, (filter) => Some(new UdpatedByIn(filter.value as string[])))
     .with({ operator: '$nin' }, (filter) => Some(new UdpatedByIn(filter.value as string[]).not()))
     .exhaustive()
@@ -654,6 +656,7 @@ const convertCreatedByFilter = (filter: ICreatedByFilter, userId: string): Optio
     .with({ operator: '$eq' }, (filter) => Some(WithRecordCreatedBy.fromString(filter.value as string)))
     .with({ operator: '$neq' }, (filter) => Some(WithRecordCreatedBy.fromString(filter.value as string).not()))
     .with({ operator: '$is_me' }, (filter) => Some(WithRecordCreatedBy.fromString(userId)))
+    .with({ operator: '$is_not_me' }, (filter) => Some(WithRecordCreatedBy.fromString(userId).not()))
     .with({ operator: '$in' }, (filter) => Some(new CreatedByIn(filter.value as string[])))
     .with({ operator: '$nin' }, (filter) => Some(new CreatedByIn(filter.value as string[]).not()))
     .exhaustive()
