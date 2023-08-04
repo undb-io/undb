@@ -1,6 +1,6 @@
 {
   "extends": "tsconfig/nestjs.json",
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "../../packages/authz/src/rls/services/rls-query.service.ts"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "resolveJsonModule": true,

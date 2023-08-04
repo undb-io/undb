@@ -8,6 +8,7 @@
 	import { slide } from 'svelte/transition'
 	import RlsList from './RlsList.svelte'
 	import { actions } from './actions'
+	import { invalidate } from '$app/navigation'
 
 	const table = getTable()
 
@@ -15,7 +16,12 @@
 
 	let filter: IFilter[]
 
-	const createRLS = trpc().authz.rls.create.mutation({})
+	const createRLS = trpc().authz.rls.create.mutation({
+		async onSettled(data, error, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+			filter = []
+		},
+	})
 </script>
 
 <div class="space-y-2">

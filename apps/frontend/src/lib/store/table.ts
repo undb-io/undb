@@ -1,6 +1,7 @@
 import { page } from '$app/stores'
 import { trpc } from '$lib/trpc/client'
 import type { CreateQueryResult } from '@tanstack/svelte-query'
+import type { RLS } from '@undb/authz'
 import {
 	ChartVisualization,
 	NumberVisualization,
@@ -22,10 +23,12 @@ import {
 	type Table,
 	type ViewVO,
 } from '@undb/core'
+import { andOptions } from '@undb/domain'
 import type { IShareTarget } from '@undb/integrations'
 import { isUndefined, keyBy, uniqBy } from 'lodash-es'
 import { derived, writable, type Readable } from 'svelte/store'
 import { match } from 'ts-pattern'
+import { me } from './me'
 
 export const allTables = writable<IQueryTable[] | undefined>()
 
@@ -306,8 +309,6 @@ export const shareTarget = derived([isShareView, isShareForm, page], ([$isShareV
 	return target
 })
 
-export const readonly = derived(isShare, ($isShare) => $isShare)
-
 export const listRecordsType = derived(isShareView, ($isShareView) => {
 	if ($isShareView) return 'share.view' as const
 	return 'internal' as const
@@ -443,3 +444,52 @@ export const tableById = derived([currentTable, allTables, shareTarget], ([$tabl
 		return t
 	}
 })
+
+export const currentRLSS = writable<RLS[]>()
+export const getRLSS = currentRLSS
+
+export const updateRLSS = derived(currentRLSS, ($rlss) => $rlss.filter((rls) => rls.policy.action === 'update'))
+
+export const updateSpec = derived([updateRLSS, me], ([$rlss, $me]) => {
+	const specs = $rlss.map((rls) => rls.policy.getSpec($me.userId))
+	return andOptions(...specs)
+})
+
+export const canUpdateRecord = derived([updateSpec, currentRecord], ([$spec, $record]) => {
+	if (!$record) return false
+	if ($spec.isNone()) return true
+	return $spec.unwrap().isSatisfiedBy($record)
+})
+
+export const deleteRLSS = derived(currentRLSS, ($rlss) => $rlss.filter((rls) => rls.policy.action === 'delete'))
+
+export const deleteSpec = derived([deleteRLSS, me], ([$rlss, $me]) => {
+	const specs = $rlss.map((rls) => rls.policy.getSpec($me.userId))
+	return andOptions(...specs)
+})
+
+export const canDeleteRecord = derived([deleteSpec, currentRecord], ([$spec, $record]) => {
+	if (!$record) return false
+	if ($spec.isNone()) return true
+	return $spec.unwrap().isSatisfiedBy($record)
+})
+
+export const createRLSS = derived(currentRLSS, ($rlss) => $rlss.filter((rls) => rls.policy.action === 'create'))
+
+export const createSpec = derived([createRLSS, me], ([$rlss, $me]) => {
+	const specs = $rlss.map((rls) => rls.policy.getSpec($me.userId))
+	return andOptions(...specs)
+})
+
+export const canCreateRecord = derived([createSpec, currentRecord], ([$spec, $record]) => {
+	if (!$record) return false
+	if ($spec.isNone()) return true
+	return $spec.unwrap().isSatisfiedBy($record)
+})
+
+export const readonly = derived(isShare, ($isShare) => $isShare)
+
+export const readonlyRecord = derived(
+	[readonly, canUpdateRecord],
+	([$readonly, $canUpdateRecord]) => $readonly || !$canUpdateRecord,
+)

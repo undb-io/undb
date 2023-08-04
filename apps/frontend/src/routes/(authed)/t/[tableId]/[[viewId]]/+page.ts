@@ -19,7 +19,9 @@ export const ssr = false
 
 export const load: PageLoad = async (event) => {
 	const { tableId, viewId } = event.params
-	const { table } = await event.parent()
+	const {
+		table: { table },
+	} = await event.parent()
 	if (!table) {
 		throw new TableNotFoundError()
 	}

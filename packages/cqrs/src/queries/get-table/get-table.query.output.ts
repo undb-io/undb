@@ -1,3 +1,8 @@
+import { queryRLS } from '@undb/authz'
 import { queryTable } from '@undb/core'
+import { z } from 'zod'
 
-export const getTableQueryOutput = queryTable.optional()
+export const getTableQueryOutput = z.object({
+  table: queryTable.optional(),
+  rlss: queryRLS.array(),
+})

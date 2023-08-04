@@ -1,3 +1,4 @@
+import type { IRootFilter } from '@undb/core'
 import { convertFilterSpec, rootFilter, type RecordCompositeSpecification } from '@undb/core'
 import { ValueObject } from '@undb/domain'
 import type { Option } from 'oxide.ts'
@@ -18,8 +19,16 @@ export class RLSPolicy extends ValueObject<RLSPolicyInterface> {
     return this.props.action
   }
 
+  public set action(action: IRLSAction) {
+    this.props.action = action
+  }
+
   public get filter() {
     return this.props.filter
+  }
+
+  public set filter(filter: IRootFilter) {
+    this.props.filter = filter
   }
 
   static from(detail: RLSPolicyInterface): RLSPolicy {

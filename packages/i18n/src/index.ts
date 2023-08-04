@@ -37,6 +37,7 @@ export const config: InitOptions = {
         'TABLE.NOT_FOUND': 'Table not found',
       },
       common: {
+        readonly: 'readonly',
         previous: 'Previous',
         next: 'Next',
         deleted: 'deleted',
@@ -398,6 +399,7 @@ export const config: InitOptions = {
         'TABLE.NOT_FOUND': '没有找到表格',
       },
       common: {
+        readonly: '只读',
         previous: '上一页',
         next: '下一页',
         deleted: '删除了',

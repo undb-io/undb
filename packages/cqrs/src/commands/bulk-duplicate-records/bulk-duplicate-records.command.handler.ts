@@ -1,4 +1,4 @@
-import type { IRLSAuthzService } from '@undb/authz/dist/index.js'
+import type { IRLSAuthzService } from '@undb/authz'
 import type { IRecordRepository, ITableRepository } from '@undb/core'
 import { WithRecordIds } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'

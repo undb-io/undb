@@ -1,4 +1,4 @@
-import { IUserQueryModel } from '@undb/core'
+import type { IUserQueryModel } from '@undb/core'
 import type { IQueryHandler } from '@undb/domain'
 import type { IGetMeOutput } from './get-me.query.interface.js'
 import type { GetMeQuery } from './get-me.query.js'

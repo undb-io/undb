@@ -6,13 +6,13 @@
 		getTable,
 		getView,
 		isShare,
-		q,
 		readonly,
-		recordHash,
 		recordsStore,
+		canUpdateRecord,
+		readonlyRecord,
 	} from '$lib/store/table'
 	import { createMutateRecordValuesSchema } from '@undb/core'
-	import { Button, Label, Modal, P, Spinner, Toast } from 'flowbite-svelte'
+	import { Badge, Button, Label, Modal, P, Spinner, Toast } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { writable } from 'svelte/store'
 	import type { Validation } from 'sveltekit-superforms/index'
@@ -37,6 +37,8 @@
 	$: validators = createMutateRecordValuesSchema(fields ?? [], $record?.valuesJSON)
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
+	$: console.log($canUpdateRecord)
+
 	const updateRecord = trpc().record.update.mutation({
 		async onSuccess(data, variables, context) {
 			currentRecordId.set(undefined)
@@ -55,7 +57,7 @@
 		taintedMessage: null,
 		delayMs: 100,
 		async onUpdate(event) {
-			if ($readonly) return
+			if ($readonlyRecord) return
 			if (!$record) return
 			const taintedKeys = keys($tainted)
 			const values = pick(event.form.data, taintedKeys)
@@ -87,6 +89,9 @@
 			<div class="flex items-center w-full justify-between mr-6">
 				<div class="flex items-center space-x-4">
 					<P>{$t('Update Record')}</P>
+					{#if $readonlyRecord}
+						<Badge color="yellow">{$t('readonly', { ns: 'common' })}</Badge>
+					{/if}
 					<!-- <ButtonGroup size="xs">
 						<Button size="xs" disabled={!$prevRecord} on:click={() => ($currentRecordId = $prevRecord?.id.value)}>
 							<i class="ti ti-chevron-left text-gray-500 text-base" />
@@ -146,7 +151,7 @@
 											record={$record}
 											{field}
 											bind:value={$form[field.id.value]}
-											readonly={$readonly ? true : undefined}
+											readonly={$readonlyRecord ? true : undefined}
 										/>
 									</div>
 								{/each}
@@ -167,7 +172,7 @@
 				<Button color="alternative" on:click={() => ($currentRecordId = undefined)}>
 					{$t('Cancel', { ns: 'common' })}
 				</Button>
-				<Button class="gap-2" type="submit" form="updateRecord" disabled={$submitting}>
+				<Button class="gap-2" type="submit" form="updateRecord" disabled={$submitting || $readonlyRecord}>
 					{#if $delayed}
 						<Spinner size="5" />
 					{:else}
