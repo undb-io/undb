@@ -36,15 +36,18 @@
 		{/if}
 	</div>
 	{#if createMode}
-		<div class="flex items-start w-full gap-2 bg-green-50 border border-green-100 p-2 rounded-md">
-			<Select class="w-30" items={actions} bind:value={selected} size="sm" />
+		<div class="space-y-2 bg-green-50 border border-green-100 p-2 rounded-md">
+			<div class="flex items-start w-full gap-2">
+				<Select class="w-30" items={actions} bind:value={selected} size="sm" />
 
-			<div class="flex-1 w-full bg-green-100 border border-green-200 p-1 rounded-md">
-				<FilterEditor bind:value={filter}></FilterEditor>
+				<div class="flex-1 w-full bg-green-100 border border-green-200 p-1 rounded-md">
+					<FilterEditor bind:value={filter} let:add>
+						<Button on:click={add} class="w-full mt-2" size="xs" color="alternative">{$t('Create New Filter')}</Button>
+					</FilterEditor>
+				</div>
 			</div>
-
 			<Button
-				class="w-20 whitespace-nowrap"
+				class="w-full whitespace-nowrap"
 				color="alternative"
 				size="xs"
 				disabled={$createRLS.isLoading}
@@ -58,7 +61,7 @@
 					})
 				}}
 			>
-				{$t('Create RLS')}
+				{$t('Create New RLS', { ns: 'authz' })}
 			</Button>
 		</div>
 	{:else}
