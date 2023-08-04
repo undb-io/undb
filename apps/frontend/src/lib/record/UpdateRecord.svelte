@@ -22,6 +22,7 @@
 	import { pick, keys } from 'lodash-es'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
+	import ReadonlyRecordBadge from '$lib/authz/rls/ReadonlyRecordBadge.svelte'
 	import UpdateRecordMenu from './UpdateRecordMenu.svelte'
 	import RecordAudits from './RecordAudits.svelte'
 
@@ -89,9 +90,7 @@
 			<div class="flex items-center w-full justify-between mr-6">
 				<div class="flex items-center space-x-4">
 					<P>{$t('Update Record')}</P>
-					{#if $readonlyRecord}
-						<Badge color="yellow">{$t('readonly', { ns: 'common' })}</Badge>
-					{/if}
+					<ReadonlyRecordBadge />
 					<!-- <ButtonGroup size="xs">
 						<Button size="xs" disabled={!$prevRecord} on:click={() => ($currentRecordId = $prevRecord?.id.value)}>
 							<i class="ti ti-chevron-left text-gray-500 text-base" />

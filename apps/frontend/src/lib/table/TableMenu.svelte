@@ -2,7 +2,8 @@
 	import { t } from '$lib/i18n'
 	import { webhookListDrawer } from '$lib/store/drawer'
 	import { erdModal, rlsModal } from '$lib/store/modal'
-	import { Dropdown, DropdownItem } from 'flowbite-svelte'
+	import { currentRLSS } from '$lib/store/table'
+	import { Badge, Dropdown, DropdownItem } from 'flowbite-svelte'
 
 	let open = false
 </script>
@@ -39,5 +40,8 @@
 	>
 		<i class="ti ti-key text-gray-600 dark:text-gray-50" />
 		<span>{$t('rls', { ns: 'authz' })}</span>
+		{#if $currentRLSS.length > 0}
+			<Badge color="blue">{$currentRLSS.length}</Badge>
+		{/if}
 	</DropdownItem>
 </Dropdown>
