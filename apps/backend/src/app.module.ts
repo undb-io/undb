@@ -17,6 +17,7 @@ import { AttachmentModule } from './attachment/attachment.module.js'
 import { AuditModule } from './audit/audit.module.js'
 import { AuthModule } from './auth/auth.module.js'
 import { AuthzModule } from './authz/authz.module.js'
+import { CacheModule } from './cache/cache.module.js'
 import { authConfig } from './configs/auth.config.js'
 import { BaseConfigService } from './configs/base-config.service.js'
 import { ConfigModule } from './configs/config.module.js'
@@ -44,6 +45,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
         idGenerator: (req: Request) => (req.headers['X-Request-Id'] as string) ?? uuid(),
       },
     }),
+    CacheModule,
     HealthModule,
     JwtModule.registerAsync({
       global: true,

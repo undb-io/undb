@@ -28,5 +28,8 @@
     "prebuild": "pnpm run clean"
   },
   "type": "module",
-  "types": "dist/index.d"
+  "types": "dist/index.d",
+  "dependencies": {
+    "@undb/authz": "workspace:^"
+  }
 }

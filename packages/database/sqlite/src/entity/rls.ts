@@ -3,6 +3,7 @@ import {
   Embeddable,
   Embedded,
   Entity,
+  Index,
   JsonType,
   ManyToOne,
   PrimaryKey,
@@ -43,9 +44,11 @@ export class RLS extends BaseEntity {
   id: string
 
   @ManyToOne(() => Table, { cascade: [Cascade.ALL] })
+  @Index()
   table: Rel<Table>
 
   @ManyToOne(() => View, { cascade: [Cascade.ALL], nullable: true })
+  @Index()
   view?: Rel<View>
 
   @Embedded(() => RLSPolicy)

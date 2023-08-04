@@ -677,7 +677,7 @@ importers:
         specifier: ^0.0.0
         version: link:../core
       '@undb/domain':
-        specifier: ^0.0.0
+        specifier: workspace:^
         version: link:../domain
       '@undb/logger':
         specifier: ^0.0.0
@@ -843,6 +843,10 @@ importers:
         version: 0.34.1
 
   packages/database/cache:
+    dependencies:
+      '@undb/authz':
+        specifier: workspace:^
+        version: link:../../authz
     devDependencies:
       '@types/uuid':
         specifier: ^9.0.2

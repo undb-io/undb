@@ -1,4 +1,5 @@
 export * from './interface.js'
+export * from './rls.cache.js'
 export * from './rls.factory.js'
 export * from './rls.js'
 export * from './rls.query-model.js'

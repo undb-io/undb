@@ -1,11 +1,8 @@
 import type { Provider } from '@nestjs/common'
-import { PinoLogger } from 'nestjs-pino'
-import { cacheStorageConfig } from '../../../configs/cache-storage.config.js'
 import { CSVExportor, RECORD_CSV_EXPORTOR } from '../exportor/csv.exportor.js'
 import { ExcelExportor, RECORD_EXCEL_EXPORTOR } from '../exportor/excel.exportor.js'
 import { NestRecordExportorService } from '../exportor/exportor.service.js'
 import { JsonExportor, RECORD_JSON_EXPORTOR } from '../exportor/json.exportor.js'
-import { cacheStorageFactory } from './cache-storage.factory.js'
 import {
   NestAggregateSqliteQueryModel,
   RECORD_AGGREGATE_REPOSITORY,
@@ -13,7 +10,7 @@ import {
 import { NestRecordSqliteQueryModel, RECORD_QUERY_MODEL } from './sqlite/record-sqlite.query-model.js'
 import { NestRecordSqliteRepository, RECORD_REPOSITORY } from './sqlite/record-sqlite.repository.js'
 import { NestRecordSqliteTreeQueryModel, RECORD_TREE_QUERY_MODEL } from './sqlite/record-sqlite.tree-query-model.js'
-import { NestTableKVCache, STORAGE } from './sqlite/table-kv.cache.js'
+import { NestTableKVCache } from './sqlite/table-kv.cache.js'
 import { NestTableSqliteQueryModel, TABLE_QUERY_MODEL } from './sqlite/table-sqlite.query-model.js'
 import { NestTableSqliteRepository, TABLE_KV_CACHE, TABLE_REPOSITORY } from './sqlite/table-sqlite.repository.js'
 
@@ -57,11 +54,6 @@ export const dbAdapters: Provider[] = [
   {
     provide: TABLE_KV_CACHE,
     useClass: NestTableKVCache,
-  },
-  {
-    provide: STORAGE,
-    useFactory: cacheStorageFactory,
-    inject: [PinoLogger, cacheStorageConfig.KEY],
   },
   NestRecordExportorService,
 ]

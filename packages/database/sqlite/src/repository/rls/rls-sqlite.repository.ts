@@ -1,6 +1,7 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import { type IRLSRepository, type RLS as RLSDO, type RLSSpecification } from '@undb/authz'
+import type { IRLSCache } from '@undb/authz'
+import { RLSFactory, type IRLSRepository, type RLS as RLSDO, type RLSSpecification } from '@undb/authz'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { RLS } from '../../entity/rls.js'
@@ -11,9 +12,17 @@ import { RLSSqliteMutationVisitor } from './rls-sqlite.mutation-visitor.js'
 import { RLSSqliteQueryVisitor } from './rls-sqlite.query-visitor.js'
 
 export class RLSSqliteRepository implements IRLSRepository {
-  constructor(private readonly em: EntityManager) {}
+  constructor(
+    private readonly em: EntityManager,
+    protected readonly cache: IRLSCache,
+  ) {}
 
   async findOneById(id: string): Promise<Option<RLSDO>> {
+    const cached = await this.cache.get(id)
+    if (cached) {
+      const rls = RLSFactory.fromQuery(cached)
+      return Some(rls)
+    }
     const found = await this.em.findOne(RLS, id)
     if (!found) return None
 
@@ -41,6 +50,8 @@ export class RLSSqliteRepository implements IRLSRepository {
   }
 
   async updateOneById(id: string, spec: RLSSpecification): Promise<void> {
+    await this.cache.remove(id)
+
     const em = this.em.fork()
     const visitor = new RLSSqliteMutationVisitor(em, id)
     spec.accept(visitor)
@@ -49,6 +60,8 @@ export class RLSSqliteRepository implements IRLSRepository {
   }
 
   async deleteOneById(id: string): Promise<void> {
+    await this.cache.remove(id)
+
     const em = this.em.fork()
     const entity = em.getReference(RLS, id)
     wrap(entity).assign({ deletedAt: new Date() })

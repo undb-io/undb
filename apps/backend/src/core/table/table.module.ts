@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
 import { RLSModule } from '../../authz/rls/rls.module.js'
+import { CacheModule } from '../../cache/cache.module.js'
 import { OutboxModule } from '../../outbox/outbox.module.js'
 import { RealtimeModule } from '../../realtime/realtime.module.js'
 import { UnitOfWorkModule } from '../../uow/uow.module.js'
@@ -13,7 +14,7 @@ import { tableSpecHandler } from './services/table-spec.handler.js'
 import { TableController } from './table.controller.js'
 
 @Module({
-  imports: [CqrsModule, RealtimeModule, UnitOfWorkModule, OutboxModule, TableAdapterModule, RLSModule],
+  imports: [CqrsModule, CacheModule, RealtimeModule, UnitOfWorkModule, OutboxModule, TableAdapterModule, RLSModule],
   controllers: [RecordController, TableController],
   providers: [...commandHandlers, ...queryHandlers, ...dbAdapters, tableSpecHandler],
 })
