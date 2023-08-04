@@ -6,15 +6,20 @@
 	import { t } from '$lib/i18n'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
-	import { getTable } from '$lib/store/table'
+	import { getTable, listRecordFn } from '$lib/store/table'
 
 	export let rls: RLS
 
 	const table = getTable()
 
+	$: data = $listRecordFn(undefined, { enabled: false })
+
 	const deleteRLS = trpc().authz.rls.delete.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
+			if (rls.policy.action === 'list') {
+				await $data.refetch()
+			}
 		},
 	})
 </script>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FilterEditor from '$lib/filter/FilterEditor.svelte'
 	import { t } from '$lib/i18n'
-	import { currentRLSS, getTable } from '$lib/store/table'
+	import { currentRLSS, getTable, listRecordFn } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { IFilter } from '@undb/core'
 	import { Select, Button, Toast } from 'flowbite-svelte'
@@ -18,11 +18,16 @@
 
 	let filter: IFilter[]
 
+	const data = $listRecordFn(undefined, { enabled: false })
+
 	const createRLS = trpc().authz.rls.create.mutation({
 		async onSettled(data, error, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			filter = []
 			createMode = false
+			if (variables.policy.action === 'list') {
+				await $data.refetch()
+			}
 		},
 	})
 </script>
