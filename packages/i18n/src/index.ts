@@ -31,7 +31,9 @@ export const config: InitOptions = {
         'Copy Auth Token': 'Copy Auth Token',
       },
       authz: {
+        'Empty RLS': '{{tableName}} has not any record level security',
         rls: 'record level security',
+        'Create New RLS': 'Create New Record Level Security',
       },
       errors: {
         'TABLE.NOT_FOUND': 'Table not found',
@@ -393,7 +395,9 @@ export const config: InitOptions = {
         'Copy Auth Token': '复制 Auth 令牌',
       },
       authz: {
+        'Empty RLS': '{{tableName}} 暂无行权限规则',
         rls: '行权限',
+        'Create New RLS': '创建行权限规则',
       },
       errors: {
         'TABLE.NOT_FOUND': '没有找到表格',
