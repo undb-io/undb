@@ -1,21 +1,9 @@
 import type { RecordEvents, Table } from '@undb/core'
-import {
-  EVT_RECORD_BULK_CREATED,
-  EVT_RECORD_BULK_DELETED,
-  EVT_RECORD_BULK_UPDATED,
-  EVT_RECORD_CREATED,
-  EVT_RECORD_DELETED,
-  EVT_RECORD_RESTORED,
-  EVT_RECORD_UPDATED,
-  RecordFactory,
-  convertFilterSpec,
-  type RootFilter,
-} from '@undb/core'
+import { convertFilterSpec, refineRecordEvents, type RootFilter } from '@undb/core'
 import type { IEvent } from '@undb/domain'
 import { and } from '@undb/domain'
 import { isBoolean, isNil, isObject, isString } from 'lodash-es'
-import { None, Some, type Option } from 'oxide.ts'
-import { match } from 'ts-pattern'
+import { Some, type Option } from 'oxide.ts'
 import type { WebhookSpecification } from './specifications/interface.js'
 import { WithWebhookEnabled } from './specifications/webhook-enabled.specification.js'
 import { WithWebhookFilter } from './specifications/webhook-filter.specification.js'
@@ -93,51 +81,9 @@ export class Webhook {
     }
 
     const filter = this.filter.unwrap().value
-    const spec = convertFilterSpec(filter, event.operatorId).into()
-    if (!spec) {
-      return Some(event)
-    }
+    const spec = convertFilterSpec(filter, event.operatorId)
 
-    const schema = table.schema.toIdMap()
-
-    return match(event)
-      .returnType<Option<typeof event>>()
-      .with(
-        { name: EVT_RECORD_CREATED },
-        { name: EVT_RECORD_DELETED },
-        { name: EVT_RECORD_UPDATED },
-        { name: EVT_RECORD_RESTORED },
-        (event) => {
-          const record = RecordFactory.fromQuery(event.meta.record, schema).unwrap()
-          return spec.isSatisfiedBy(record) ? Some(event) : None
-        },
-      )
-      .with(
-        { name: EVT_RECORD_BULK_CREATED },
-        { name: EVT_RECORD_BULK_DELETED },
-        { name: EVT_RECORD_BULK_UPDATED },
-        (event) => {
-          const records = RecordFactory.fromQueryRecords(Object.values(event.meta.records), schema)
-          const matched = new Set(records.filter((r) => spec.isSatisfiedBy(r)).map((r) => r.id.value))
-          if (matched.size === 0) return None
-
-          return match(event)
-            .with({ name: EVT_RECORD_BULK_CREATED }, (event) => {
-              event.payload.records = event.payload.records.filter((r) => matched.has(r.id))
-              return Some(event)
-            })
-            .with({ name: EVT_RECORD_BULK_UPDATED }, (event) => {
-              event.payload.updates = event.payload.updates.filter((u) => matched.has(u.id))
-              return Some(event)
-            })
-            .with({ name: EVT_RECORD_BULK_DELETED }, (event) => {
-              event.payload.records = event.payload.records.filter((r) => matched.has(r.id))
-              return Some(event)
-            })
-            .exhaustive()
-        },
-      )
-      .exhaustive()
+    return refineRecordEvents(table, event, spec)
   }
 
   public mergedHeaders(sign: string): IWebhookHeaders {

@@ -16,7 +16,7 @@ export class RLSRecordSpecService implements IRLSRecordSpecService {
   ) {}
 
   protected async getSpec(
-    action: IRLSAction,
+    action: IRLSAction | [IRLSAction, ...IRLSAction[]],
     tableId: string,
     viewId?: string,
   ): Promise<Option<RecordCompositeSpecification>> {

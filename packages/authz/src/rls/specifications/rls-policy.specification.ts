@@ -44,3 +44,18 @@ export class WithRLSAction extends CompositeSpecification<RLS, IRLSVisitor> {
     return Ok(undefined)
   }
 }
+export class WithRLSActionIn extends CompositeSpecification<RLS, IRLSVisitor> {
+  constructor(public readonly actions: [IRLSAction, ...IRLSAction[]]) {
+    super()
+  }
+  isSatisfiedBy(t: RLS): boolean {
+    return this.actions.includes(t.policy.action)
+  }
+  mutate(t: RLS): Result<RLS, string> {
+    throw new Error('Method not implemented.')
+  }
+  accept(v: IRLSVisitor): Result<void, string> {
+    v.actionsIn(this)
+    return Ok(undefined)
+  }
+}
