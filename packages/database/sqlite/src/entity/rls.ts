@@ -3,7 +3,6 @@ import {
   Embeddable,
   Embedded,
   Entity,
-  Index,
   JsonType,
   ManyToOne,
   PrimaryKey,
@@ -14,7 +13,6 @@ import { RLS as RLSDO, type IRLSAction, type RLSPolicyInterface } from '@undb/au
 import { type IRootFilter } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Table } from './table.js'
-import { View } from './view.js'
 
 @Embeddable()
 export class RLSPolicy {
@@ -32,11 +30,10 @@ export class RLSPolicy {
 
 @Entity({ tableName: 'undb_rls' })
 export class RLS extends BaseEntity {
-  constructor(table: Rel<Table>, view: Rel<View> | undefined, rls: RLSDO) {
+  constructor(table: Rel<Table>, rls: RLSDO) {
     super()
     this.id = rls.id.value
     this.table = table
-    this.view = view
     this.policy = new RLSPolicy(rls.policy)
   }
 
@@ -44,12 +41,7 @@ export class RLS extends BaseEntity {
   id: string
 
   @ManyToOne(() => Table, { cascade: [Cascade.ALL] })
-  @Index()
   table: Rel<Table>
-
-  @ManyToOne(() => View, { cascade: [Cascade.ALL], nullable: true })
-  @Index()
-  view?: Rel<View>
 
   @Embedded(() => RLSPolicy)
   policy: RLSPolicy

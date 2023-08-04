@@ -7,7 +7,7 @@ export class GetTableRLSSQueryHandler implements IQueryHandler<GetTableRLSSQuery
   constructor(protected readonly rm: IRLSQueryModel) {}
 
   async execute(query: GetTableRLSSQuery): Promise<IGetTableRLSSOutput> {
-    const spec = withTableRLS(query.tableId, query.viewId)
+    const spec = withTableRLS(query.tableId)
     const rlss = await this.rm.find(spec)
 
     return {

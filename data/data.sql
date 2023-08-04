@@ -1896,8 +1896,9 @@ CREATE INDEX `undb_audit_target_id_index` on `undb_audit` (`target_id`);
 CREATE INDEX `undb_audit_op_index` on `undb_audit` (`op`);
 CREATE INDEX `undb_audit_operator_id_index` on `undb_audit` (`operator_id`);
 CREATE INDEX `undb_audit_table_id_index` on `undb_audit` (`table_id`);
-create table `undb_rls` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `view_id` text null, `policy_action` text not null, `policy_filter` json not null, constraint `undb_rls_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, constraint `undb_rls_view_id_foreign` foreign key(`view_id`) references `undb_view`(`id`) on delete cascade on update cascade, primary key (`id`));
+
+create table `undb_rls` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `policy_action` text not null, `policy_filter` json not null, constraint `undb_rls_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));
 create index `undb_rls_deleted_at_index` on `undb_rls` (`deleted_at`);
 create index `undb_rls_table_id_index` on `undb_rls` (`table_id`);
-create index `undb_rls_view_id_index` on `undb_rls` (`view_id`);
+
 COMMIT;

@@ -1,4 +1,4 @@
-import type { TableId, ViewId } from '@undb/core'
+import type { TableId } from '@undb/core'
 import type { Option } from 'oxide.ts'
 import type { RLSSpecification } from './interface.js'
 import type { IUpdateRLSSchema } from './rls.schema.js'
@@ -11,7 +11,6 @@ import type { RLSPolicy } from './value-objects/rls-policy.vo.js'
 export class RLS {
   id!: RLSID
   tableId!: TableId
-  viewId!: Option<ViewId>
   policy!: RLSPolicy
 
   static empty() {

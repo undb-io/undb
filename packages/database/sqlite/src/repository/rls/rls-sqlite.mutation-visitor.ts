@@ -1,14 +1,6 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import type {
-  IRLSVisitor,
-  WithRLSAction,
-  WithRLSActionIn,
-  WithRLSId,
-  WithRLSPolicy,
-  WithRLSTableId,
-  WithRLSViewId,
-} from '@undb/authz'
+import type { IRLSVisitor, WithRLSAction, WithRLSActionIn, WithRLSId, WithRLSPolicy, WithRLSTableId } from '@undb/authz'
 import type { ISpecVisitor, ISpecification } from '@undb/domain'
 import { RLS } from '../../entity/rls.js'
 import { BaseEntityManager } from '../base-entity-manager.js'
@@ -24,9 +16,6 @@ export class RLSSqliteMutationVisitor extends BaseEntityManager implements IRLSV
     throw new Error('Method not implemented.')
   }
   withTableId(s: WithRLSTableId): void {
-    throw new Error('Method not implemented.')
-  }
-  withViewId(s: WithRLSViewId): void {
     throw new Error('Method not implemented.')
   }
   withRLSPolicy(s: WithRLSPolicy): void {

@@ -5,15 +5,15 @@ import type { IRLSAction } from '../value-objects/index.js'
 import { RLSRecordSpecService } from './rls-record-spec.service.js'
 
 export interface IRLSAuthzService {
-  check(action: IRLSAction, table: Table, record: Record, viewId?: string): Promise<void>
-  checkMany(action: IRLSAction, table: Table, records: Records, viewId?: string): Promise<void>
+  check(action: IRLSAction, table: Table, record: Record): Promise<void>
+  checkMany(action: IRLSAction, table: Table, records: Records): Promise<void>
 
   refineEvent(event: RecordEvents, table: Table): Promise<Option<RecordEvents>>
 }
 
 export class RLSAuthzService extends RLSRecordSpecService implements IRLSAuthzService {
-  async checkMany(action: IRLSAction, table: Table, records: Records, viewId?: string | undefined): Promise<void> {
-    const spec = await this.getSpec(action, table.id.value, viewId)
+  async checkMany(action: IRLSAction, table: Table, records: Records): Promise<void> {
+    const spec = await this.getSpec(action, table.id.value)
     if (spec.isNone()) return
 
     for (const record of records) {
@@ -22,8 +22,8 @@ export class RLSAuthzService extends RLSRecordSpecService implements IRLSAuthzSe
     }
   }
 
-  async check(action: IRLSAction, table: Table, record: Record, viewId?: string): Promise<void> {
-    const spec = await this.getSpec(action, table.id.value, viewId)
+  async check(action: IRLSAction, table: Table, record: Record): Promise<void> {
+    const spec = await this.getSpec(action, table.id.value)
     if (spec.isNone()) return
 
     const isSatisfiedBy = spec.unwrap().isSatisfiedBy(record)

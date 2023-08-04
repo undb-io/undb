@@ -1,8 +1,9 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
-import { RLS, type RLSSpecification } from '@undb/authz'
+import { RLS, type IRLSCache, type RLSSpecification } from '@undb/authz'
 import { EntityManager, RLSSqliteRepository } from '@undb/sqlite'
 import type { Option } from 'oxide.ts'
+import { InjectRLSCache } from './rls-kv.cache.js'
 
 export const RLS_REPOSITORY = Symbol('RLS_REPOSITORY')
 
@@ -13,8 +14,10 @@ export class NestRLSSqliteRepository extends RLSSqliteRepository {
   constructor(
     protected readonly orm: MikroORM,
     em: EntityManager,
+    @InjectRLSCache()
+    protected readonly cache: IRLSCache,
   ) {
-    super(em)
+    super(em, cache)
   }
 
   @UseRequestContext()

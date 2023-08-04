@@ -6,7 +6,6 @@ import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { RLS } from '../../entity/rls.js'
 import { Table } from '../../entity/table.js'
-import { View } from '../../entity/view.js'
 import { RLSSqliteMapper } from './rls-sqlite.mapper.js'
 import { RLSSqliteMutationVisitor } from './rls-sqlite.mutation-visitor.js'
 import { RLSSqliteQueryVisitor } from './rls-sqlite.query-visitor.js'
@@ -44,8 +43,7 @@ export class RLSSqliteRepository implements IRLSRepository {
   async insert(rls: RLSDO): Promise<void> {
     const em = this.em.fork()
     const table = em.getReference(Table, rls.tableId.value)
-    const view = rls.viewId.isSome() ? em.getReference(View, rls.viewId.unwrap().value) : undefined
-    const entity = new RLS(table, view, rls)
+    const entity = new RLS(table, rls)
     await em.insert(RLS, entity)
   }
 

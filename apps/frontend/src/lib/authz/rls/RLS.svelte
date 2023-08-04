@@ -1,16 +1,15 @@
 <script lang="ts">
 	import FilterEditor from '$lib/filter/FilterEditor.svelte'
 	import { t } from '$lib/i18n'
-	import { getTable, getView } from '$lib/store/table'
+	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { IFilter } from '@undb/core'
-	import { Select, Label, Button, Toast } from 'flowbite-svelte'
+	import { Select, Button, Toast } from 'flowbite-svelte'
 	import { slide } from 'svelte/transition'
 	import RlsList from './RlsList.svelte'
 	import { actions } from './actions'
 
 	const table = getTable()
-	const view = getView()
 
 	let selected: string | undefined = 'list'
 
@@ -35,7 +34,6 @@
 			on:click={() => {
 				$createRLS.mutate({
 					tableId: $table.id.value,
-					viewId: $view.id.value,
 					policy: {
 						action: selected,
 						filter,

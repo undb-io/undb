@@ -1,5 +1,5 @@
 import type { IQueryRLS } from '@undb/authz'
-import { RLSFactory, WithRLSId, WithRLSPolicy, WithRLSTableId, WithRLSViewId, type RLS as RLSDO } from '@undb/authz'
+import { RLSFactory, WithRLSId, WithRLSPolicy, WithRLSTableId, type RLS as RLSDO } from '@undb/authz'
 import type { RLS } from '../../entity/rls.js'
 
 export class RLSSqliteMapper {
@@ -7,7 +7,6 @@ export class RLSSqliteMapper {
     return RLSFactory.create(
       WithRLSId.fromString(rls.id),
       WithRLSTableId.fromString(rls.table.id),
-      WithRLSViewId.fromString(rls.view?.id),
       WithRLSPolicy.from(rls.policy),
     )
   }
@@ -16,7 +15,6 @@ export class RLSSqliteMapper {
     return {
       id: rls.id,
       tableId: rls.table.id,
-      viewId: rls.view?.id,
       policy: {
         action: rls.policy.action,
         filter: rls.policy.filter,

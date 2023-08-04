@@ -6,7 +6,7 @@ import { withTableOfActionRLS } from '../specifications/index.js'
 import type { IRLSAction } from '../value-objects/rls-policy.vo.js'
 
 export interface IRLSRecordSpecService {
-  list(tableId: string, viewId?: string): Promise<Option<RecordCompositeSpecification>>
+  list(tableId: string): Promise<Option<RecordCompositeSpecification>>
 }
 
 export class RLSRecordSpecService implements IRLSRecordSpecService {
@@ -18,16 +18,15 @@ export class RLSRecordSpecService implements IRLSRecordSpecService {
   protected async getSpec(
     action: IRLSAction | [IRLSAction, ...IRLSAction[]],
     tableId: string,
-    viewId?: string,
   ): Promise<Option<RecordCompositeSpecification>> {
     const userId = this.cls.get('user.userId')
-    const spec = withTableOfActionRLS(action, tableId, viewId)
+    const spec = withTableOfActionRLS(action, tableId)
     const rlss = await this.repo.find(spec)
     const specs = rlss.map((r) => r.policy.getSpec(userId))
     return andOptions(...specs)
   }
 
-  async list(tableId: string, viewId?: string | undefined): Promise<Option<RecordCompositeSpecification>> {
-    return this.getSpec('list', tableId, viewId)
+  async list(tableId: string): Promise<Option<RecordCompositeSpecification>> {
+    return this.getSpec('list', tableId)
   }
 }

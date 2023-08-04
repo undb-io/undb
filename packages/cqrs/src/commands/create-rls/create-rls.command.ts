@@ -5,13 +5,11 @@ import type { ICreateRLSCommandInput } from './create-rls.command.interface.js'
 
 export class CreateRLSCommand extends Command implements ICreateRLSCommandInput {
   public readonly tableId: string
-  public readonly viewId?: string
   public readonly policy: RLSPolicyInterface
 
   constructor(props: CommandProps<ICreateRLSCommandInput>) {
     super(props)
     this.tableId = props.tableId
-    this.viewId = props.viewId
     this.policy = props.policy
   }
 }

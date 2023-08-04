@@ -13,9 +13,8 @@ export class CreateRLSCommandHandler implements ICreateRLSCommandHandler {
 
   async execute(command: CreateRLSCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
-    const view = command.viewId ? table.mustGetView(command.viewId) : undefined
 
-    const rls = RLSFactory.from(table, view, command.policy)
+    const rls = RLSFactory.from(table, command.policy)
 
     await this.repo.insert(rls)
   }

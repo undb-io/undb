@@ -18,8 +18,7 @@ export class GetRecordsQueryHandler implements IQueryHandler<GetRecordsQuery, IG
     const userId = this.cls.get('user.userId')
     const table = (await this.tableRepo.findOneById(query.tableId)).unwrap()
     const spec = withTableViewRecordsSpec(table, userId, query.viewId, query.filter, query.q)
-    const view = table.mustGetView(query.viewId)
-    const rlsSpec = await this.rls.list(table.id.value, view.id.value)
+    const rlsSpec = await this.rls.list(table.id.value)
 
     const viewId = query.viewId ? ViewId.fromString(query.viewId) : undefined
     const { records, total } = await this.rm.findAndCount(
