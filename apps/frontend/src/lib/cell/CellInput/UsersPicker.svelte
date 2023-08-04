@@ -7,6 +7,7 @@
 
 	export let value: string[] | undefined
 	export let initialMembers: Map<string, ICollaboratorProfile & { userId: string }> = new Map()
+	export let readonly = false
 
 	$: membersMap = new Map(initialMembers)
 
@@ -45,7 +46,7 @@
 	$: if (value) selected = value?.map((userId) => membersMap.get(userId)!).filter(Boolean) ?? []
 </script>
 
-<Button color="alternative" class="inline-flex gap-3 max-h-10">
+<Button color="alternative" class="inline-flex gap-3 max-h-10" disabled={readonly}>
 	{#if selected.length}
 		{#each selected as member}
 			<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />
@@ -54,18 +55,20 @@
 		{$t('Select Collaborator')}
 	{/if}
 </Button>
-<Dropdown style="z-index: 50" bind:open placement="bottom-start" class="w-[400px] border z-[99999]">
-	<div class="w-full">
-		{#each members as member}
-			{@const isSelected = selected.some((s) => s.userId === member.userId)}
-			<Checkbox bind:group={value} value={member.userId} custom class="flex w-full">
-				<span class="inline-flex items-center justify-between px-4 py-2 cursor-pointer w-full hover:bg-gray-100">
-					<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />
-					{#if isSelected}
-						<i class="ti ti-check" />
-					{/if}
-				</span>
-			</Checkbox>
-		{/each}
-	</div>
-</Dropdown>
+{#if !readonly}
+	<Dropdown style="z-index: 50" bind:open placement="bottom-start" class="w-[400px] border z-[99999]">
+		<div class="w-full">
+			{#each members as member}
+				{@const isSelected = selected.some((s) => s.userId === member.userId)}
+				<Checkbox bind:group={value} value={member.userId} custom class="flex w-full">
+					<span class="inline-flex items-center justify-between px-4 py-2 cursor-pointer w-full hover:bg-gray-100">
+						<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />
+						{#if isSelected}
+							<i class="ti ti-check" />
+						{/if}
+					</span>
+				</Checkbox>
+			{/each}
+		</div>
+	</Dropdown>
+{/if}
