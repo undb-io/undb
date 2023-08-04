@@ -3,6 +3,7 @@ import { QueryHandler } from '@nestjs/cqrs'
 import { type IRecordQueryModel, type ITableRepository } from '@undb/core'
 import type { IGetRecordOutput } from '@undb/cqrs'
 import { GetRecordQuery, GetRecordQueryHandler } from '@undb/cqrs'
+import { NestRLSAuthzService } from '../../../authz/rls/rls-authz.service.js'
 import { InjectRecordQueryModel } from '../adapters/sqlite/record-sqlite.query-model.js'
 import { InjectTableRepository } from '../adapters/sqlite/table-sqlite.repository.js'
 
@@ -16,7 +17,8 @@ export class NestGetRecordQueryHandler
     protected readonly tableRepo: ITableRepository,
     @InjectRecordQueryModel()
     protected readonly rm: IRecordQueryModel,
+    protected readonly rls: NestRLSAuthzService,
   ) {
-    super(tableRepo, rm)
+    super(tableRepo, rm, rls)
   }
 }
