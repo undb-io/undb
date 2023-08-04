@@ -1,11 +1,22 @@
 <script lang="ts">
-	import type { IQueryRLS } from '@undb/authz'
+	import type { RLS } from '@undb/authz'
 	import { actions } from './actions'
 	import FilterEditor from '$lib/filter/FilterEditor.svelte'
 	import { Select, Button } from 'flowbite-svelte'
 	import { t } from '$lib/i18n'
+	import { trpc } from '$lib/trpc/client'
+	import { invalidate } from '$app/navigation'
+	import { getTable } from '$lib/store/table'
 
-	export let rls: IQueryRLS
+	export let rls: RLS
+
+	const table = getTable()
+
+	const deleteRLS = trpc().authz.rls.delete.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+		},
+	})
 </script>
 
 <li class="flex items-start gap-2">
@@ -18,5 +29,15 @@
 
 	<Button class="w-20 whitespace-nowrap" color="alternative" size="xs" on:click={() => {}}>
 		{$t('Update RLS')}
+	</Button>
+	<Button
+		color="alternative"
+		size="xs"
+		on:click={() =>
+			$deleteRLS.mutate({
+				id: rls.id.value,
+			})}
+	>
+		<i class="ti ti-trash"></i>
 	</Button>
 </li>
