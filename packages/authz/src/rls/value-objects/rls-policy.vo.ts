@@ -4,7 +4,8 @@ import { ValueObject } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { z } from 'zod'
 
-export const rlsAction = z.enum(['list', 'view', 'create', 'update', 'delete'])
+export const rlsActions = ['list', 'view', 'create', 'update', 'delete'] as const
+export const rlsAction = z.enum(rlsActions)
 export type IRLSAction = z.infer<typeof rlsAction>
 
 export const rlsPolicy = z.object({

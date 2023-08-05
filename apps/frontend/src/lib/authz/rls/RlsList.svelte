@@ -1,10 +1,12 @@
 <script lang="ts">
-	import { currentRLSS } from '$lib/store/table'
+	import type { RLS } from '@undb/authz/dist'
 	import RlsItem from './RLSItem.svelte'
+
+	export let rlss: RLS[] = []
 </script>
 
 <ul class="space-y-2">
-	{#each $currentRLSS as rls (rls.id)}
+	{#each rlss as rls (rls.id)}
 		<RlsItem {rls} />
 	{/each}
 </ul>

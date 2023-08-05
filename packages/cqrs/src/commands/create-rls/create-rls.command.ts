@@ -12,6 +12,6 @@ export class CreateRLSCommand extends Command implements ICreateRLSCommandInput 
     super(props)
     this.tableId = props.tableId
     this.policy = props.policy
-    this.subjects = props.subjects
+    this.subjects = props.subjects ?? []
   }
 }

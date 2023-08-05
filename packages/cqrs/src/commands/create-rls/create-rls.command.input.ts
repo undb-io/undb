@@ -5,5 +5,5 @@ import { z } from 'zod'
 export const createRLSCommandInput: any = z.object({
   tableId: tableIdSchema,
   policy: rlsPolicy,
-  subjects: rlsSubject.array(),
+  subjects: rlsSubject.array().optional(),
 })

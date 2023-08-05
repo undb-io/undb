@@ -34,6 +34,11 @@ export const config: InitOptions = {
         'Empty RLS': '{{tableName}} has not any record level security',
         rls: 'record level security',
         'Create New RLS': 'Create New Record Level Security',
+        list: 'list',
+        view: 'view',
+        create: 'create',
+        update: 'update',
+        delete: 'delete',
       },
       errors: {
         'TABLE.NOT_FOUND': 'Table not found',
@@ -398,6 +403,11 @@ export const config: InitOptions = {
         'Empty RLS': '{{tableName}} 暂无行权限规则',
         rls: '行权限',
         'Create New RLS': '创建行权限规则',
+        list: '列表',
+        view: '查看',
+        create: '创建',
+        update: '更新',
+        delete: '删除',
       },
       errors: {
         'TABLE.NOT_FOUND': '没有找到表格',
