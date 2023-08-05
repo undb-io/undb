@@ -90,7 +90,9 @@
 			<div class="flex items-center w-full justify-between mr-6">
 				<div class="flex items-center space-x-4">
 					<P>{$t('Update Record')}</P>
-					<ReadonlyRecordBadge />
+					{#if $record}
+						<ReadonlyRecordBadge />
+					{/if}
 					<!-- <ButtonGroup size="xs">
 						<Button size="xs" disabled={!$prevRecord} on:click={() => ($currentRecordId = $prevRecord?.id.value)}>
 							<i class="ti ti-chevron-left text-gray-500 text-base" />
