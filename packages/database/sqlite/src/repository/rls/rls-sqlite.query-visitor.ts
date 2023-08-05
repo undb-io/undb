@@ -1,5 +1,13 @@
 import type { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
-import type { IRLSVisitor, WithRLSAction, WithRLSActionIn, WithRLSId, WithRLSPolicy, WithRLSTableId } from '@undb/authz'
+import type {
+  IRLSVisitor,
+  WithRLSAction,
+  WithRLSActionIn,
+  WithRLSId,
+  WithRLSPolicy,
+  WithRLSSubjects,
+  WithRLSTableId,
+} from '@undb/authz'
 import type { ISpecVisitor, ISpecification } from '@undb/domain'
 import type { RLS } from '../../entity/rls.js'
 
@@ -21,6 +29,9 @@ export class RLSSqliteQueryVisitor implements IRLSVisitor {
   }
   withRLSPolicyAction(s: WithRLSAction): void {
     this.qb.andWhere({ policy: { action: s.action } })
+  }
+  withRLSSubjects(s: WithRLSSubjects): void {
+    throw new Error('Method not implemented.')
   }
   actionsIn(s: WithRLSActionIn): void {
     this.qb.andWhere({ policy: { action: s.actions } })

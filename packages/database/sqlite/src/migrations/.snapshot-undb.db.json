@@ -385,6 +385,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "json"
+        },
+        "subjects": {
+          "name": "subjects",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
         }
       },
       "name": "undb_rls",

@@ -1,4 +1,5 @@
 import {
+  ArrayType,
   Cascade,
   Embeddable,
   Embedded,
@@ -9,6 +10,7 @@ import {
   Property,
   type Rel,
 } from '@mikro-orm/core'
+import type { IRLSSubject } from '@undb/authz'
 import { RLS as RLSDO, type IRLSAction, type RLSPolicyInterface } from '@undb/authz'
 import { type IRootFilter } from '@undb/core'
 import { BaseEntity } from './base.js'
@@ -35,6 +37,7 @@ export class RLS extends BaseEntity {
     this.id = rls.id.value
     this.table = table
     this.policy = new RLSPolicy(rls.policy)
+    this.subjects = rls.subjects.subjects.map((s) => s.unpack())
   }
 
   @PrimaryKey()
@@ -45,4 +48,7 @@ export class RLS extends BaseEntity {
 
   @Embedded(() => RLSPolicy)
   policy: RLSPolicy
+
+  @Property({ type: ArrayType })
+  subjects: IRLSSubject[]
 }

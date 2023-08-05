@@ -1,6 +1,6 @@
 import { rootFilter, tableIdSchema } from '@undb/core'
 import { z } from 'zod'
-import { rlsAction, rlsIdSchema } from './value-objects/index.js'
+import { rlsAction, rlsIdSchema, rlsSubject } from './value-objects/index.js'
 
 export const queryRLS: any = z.object({
   id: rlsIdSchema,
@@ -9,6 +9,7 @@ export const queryRLS: any = z.object({
     action: rlsAction,
     filter: rootFilter,
   }),
+  subjects: rlsSubject.array(),
 })
 
 export type IQueryRLS = z.infer<typeof queryRLS>
