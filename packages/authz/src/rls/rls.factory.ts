@@ -4,7 +4,7 @@ import type { RLSSpecification } from './interface.js'
 import { RLS } from './rls.js'
 import type { IQueryRLS } from './rls.schema.js'
 import { WithRLSId, WithRLSPolicy, WithRLSSubjects, WithRLSTableId } from './specifications/index.js'
-import type { RLSPolicyInterface } from './value-objects/index.js'
+import type { IRLSSubject, RLSPolicyInterface } from './value-objects/index.js'
 
 export class RLSFactory {
   static create(...specs: RLSSpecification[]) {
@@ -14,8 +14,13 @@ export class RLSFactory {
       .unwrap()
   }
 
-  static from(table: Table, policy: RLSPolicyInterface) {
-    return this.create(WithRLSId.create(), WithRLSTableId.fromString(table.id.value), WithRLSPolicy.from(policy))
+  static from(table: Table, policy: RLSPolicyInterface, subjects: IRLSSubject[]) {
+    return this.create(
+      WithRLSId.create(),
+      WithRLSTableId.fromString(table.id.value),
+      WithRLSPolicy.from(policy),
+      WithRLSSubjects.from(subjects),
+    )
   }
 
   static fromQuery(rls: IQueryRLS): RLS {

@@ -1,12 +1,9 @@
-import { rlsPolicy } from '@undb/authz'
+import { rlsPolicy, rlsSubject } from '@undb/authz'
 import { tableIdSchema } from '@undb/core'
-import type { ZodObject, ZodString } from 'zod'
 import { z } from 'zod'
 
-export const createRLSCommandInput: ZodObject<{
-  tableId: ZodString
-  policy: any
-}> = z.object({
+export const createRLSCommandInput: any = z.object({
   tableId: tableIdSchema,
   policy: rlsPolicy,
+  subjects: rlsSubject.array(),
 })
