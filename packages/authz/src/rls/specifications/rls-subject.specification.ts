@@ -27,3 +27,19 @@ export class WithRLSSubjects extends CompositeSpecification<RLS, IRLSVisitor> {
     return Ok(undefined)
   }
 }
+
+export class RLSSubjectContainsUser extends CompositeSpecification<RLS, IRLSVisitor> {
+  constructor(public readonly userId: string) {
+    super()
+  }
+  isSatisfiedBy(t: RLS): boolean {
+    return !!t.subjects.users.length && t.subjects.users.some((user) => user.value.id === this.userId)
+  }
+  mutate(t: RLS): Result<RLS, string> {
+    throw new Error('Method not implemented.')
+  }
+  accept(v: IRLSVisitor): Result<void, string> {
+    v.subjectContainsUser(this)
+    return Ok(undefined)
+  }
+}

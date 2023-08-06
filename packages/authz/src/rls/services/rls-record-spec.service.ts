@@ -2,7 +2,7 @@ import type { ClsStore, IClsService, RecordCompositeSpecification } from '@undb/
 import { andOptions } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import type { IRLSRepository } from '../rls.repository.js'
-import { withTableOfActionRLS } from '../specifications/index.js'
+import { isUserMatch, withTableOfActionRLS } from '../specifications/index.js'
 import type { IRLSAction } from '../value-objects/rls-policy.vo.js'
 
 export interface IRLSRecordSpecService {
@@ -22,7 +22,7 @@ export class RLSRecordSpecService implements IRLSRecordSpecService {
     const userId = this.cls.get('user.userId')
     const spec = withTableOfActionRLS(action, tableId)
     const rlss = await this.repo.find(spec)
-    const specs = rlss.map((r) => r.policy.getSpec(userId))
+    const specs = rlss.filter((rls) => isUserMatch(userId).isSatisfiedBy(rls)).map((r) => r.policy.getSpec(userId))
     return andOptions(...specs)
   }
 

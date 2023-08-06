@@ -15,4 +15,8 @@ export class RLSSubject extends ValueObject<IRLSSubject> {
   public get value() {
     return this.props
   }
+
+  public get isUser() {
+    return this.value.type === 'user'
+  }
 }

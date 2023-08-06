@@ -2,6 +2,7 @@ import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
 import type {
   IRLSVisitor,
+  RLSSubjectContainsUser,
   WithRLSAction,
   WithRLSActionIn,
   WithRLSId,
@@ -38,6 +39,9 @@ export class RLSSqliteMutationVisitor extends BaseEntityManager implements IRLSV
     throw new Error('Method not implemented.')
   }
   actionsIn(s: WithRLSActionIn): void {
+    throw new Error('Method not implemented.')
+  }
+  subjectContainsUser(s: RLSSubjectContainsUser): void {
     throw new Error('Method not implemented.')
   }
   or(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {

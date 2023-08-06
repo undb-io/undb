@@ -5,4 +5,8 @@ export class RLSSubjects extends ValueObject<RLSSubject[]> {
   public get subjects() {
     return this.props
   }
+
+  public get users() {
+    return this.subjects.filter((subject) => subject.isUser)
+  }
 }

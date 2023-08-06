@@ -1,7 +1,7 @@
 import { page } from '$app/stores'
 import { trpc } from '$lib/trpc/client'
 import type { CreateQueryResult } from '@tanstack/svelte-query'
-import type { RLS } from '@undb/authz'
+import { isUserMatch, type RLS } from '@undb/authz'
 import {
 	ChartVisualization,
 	NumberVisualization,
@@ -451,7 +451,9 @@ export const getRLSS = currentRLSS
 export const updateRLSS = derived(currentRLSS, ($rlss) => $rlss.filter((rls) => rls.policy.action === 'update'))
 
 export const updateSpec = derived([updateRLSS, me], ([$rlss, $me]) => {
-	const specs = $rlss.map((rls) => rls.policy.getSpec($me.userId))
+	const specs = $rlss
+		.filter((rls) => isUserMatch($me.userId).isSatisfiedBy(rls))
+		.map((rls) => rls.policy.getSpec($me.userId))
 	return andOptions(...specs)
 })
 
@@ -464,7 +466,9 @@ export const canUpdateRecord = derived([updateSpec, currentRecord], ([$spec, $re
 export const deleteRLSS = derived(currentRLSS, ($rlss) => $rlss.filter((rls) => rls.policy.action === 'delete'))
 
 export const deleteSpec = derived([deleteRLSS, me], ([$rlss, $me]) => {
-	const specs = $rlss.map((rls) => rls.policy.getSpec($me.userId))
+	const specs = $rlss
+		.filter((rls) => isUserMatch($me.userId).isSatisfiedBy(rls))
+		.map((rls) => rls.policy.getSpec($me.userId))
 	return andOptions(...specs)
 })
 
@@ -477,7 +481,9 @@ export const canDeleteRecord = derived([deleteSpec, currentRecord], ([$spec, $re
 export const createRLSS = derived(currentRLSS, ($rlss) => $rlss.filter((rls) => rls.policy.action === 'create'))
 
 export const createSpec = derived([createRLSS, me], ([$rlss, $me]) => {
-	const specs = $rlss.map((rls) => rls.policy.getSpec($me.userId))
+	const specs = $rlss
+		.filter((rls) => isUserMatch($me.userId).isSatisfiedBy(rls))
+		.map((rls) => rls.policy.getSpec($me.userId))
 	return andOptions(...specs)
 })
 

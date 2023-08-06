@@ -1,6 +1,7 @@
 import type { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
 import type {
   IRLSVisitor,
+  RLSSubjectContainsUser,
   WithRLSAction,
   WithRLSActionIn,
   WithRLSId,
@@ -35,6 +36,9 @@ export class RLSSqliteQueryVisitor implements IRLSVisitor {
   }
   actionsIn(s: WithRLSActionIn): void {
     this.qb.andWhere({ policy: { action: s.actions } })
+  }
+  subjectContainsUser(s: RLSSubjectContainsUser): void {
+    throw new Error('Method not implemented.')
   }
   or(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
     throw new Error('Method not implemented.')
