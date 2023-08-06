@@ -47,7 +47,7 @@
 		"date-fns": "^2.30.0",
 		"delay": "^6.0.0",
 		"eslint": "^8.46.0",
-		"eslint-config-prettier": "^8.9.0",
+		"eslint-config-prettier": "^9.0.0",
 		"eslint-plugin-svelte": "^2.32.4",
 		"flowbite": "^1.8.1",
 		"flowbite-svelte": "^0.40.2",
