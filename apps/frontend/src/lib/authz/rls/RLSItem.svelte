@@ -13,6 +13,7 @@
 	const table = getTable()
 
 	$: filter = rls.policy.filter as IFilter[]
+	$: userIds = rls.subjects.subjects.map((s) => s.value.id)
 
 	$: data = $listRecordFn(undefined, { enabled: false })
 
@@ -28,7 +29,7 @@
 
 <li class="flex items-start gap-2">
 	<div class="flex-1 w-full p-1 rounded-md bg-gray-100 border border-gray-200">
-		<RlsItemEditor action={rls.policy.action} bind:filter />
+		<RlsItemEditor action={rls.policy.action} bind:filter bind:userIds />
 	</div>
 
 	<Button class="w-20 whitespace-nowrap" color="alternative" size="xs" on:click={() => {}}>

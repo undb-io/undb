@@ -13,7 +13,9 @@
 
 	export let action: IRLSAction
 	export let rlss: RLS[]
+
 	let filter: IFilter[]
+	let userIds: string[] = []
 	let createMode = false
 
 	const data = $listRecordFn(undefined, { enabled: false })
@@ -22,8 +24,9 @@
 		async onSettled(variables) {
 			await invalidate(`table:${$table.id.value}`)
 			filter = []
+			userIds = []
 			createMode = false
-			if ((variables as any).policy.action === 'list') {
+			if ((variables as any)?.policy.action === 'list') {
 				await $data.refetch()
 			}
 		},
@@ -34,7 +37,7 @@
 	<div class="space-y-2 bg-green-50 border border-green-100 p-2 rounded-md">
 		<div class="flex items-start w-full gap-2">
 			<div class="flex-1 w-full bg-green-100 border border-green-200 p-1 rounded-md">
-				<RlsItemEditor {action} bind:filter />
+				<RlsItemEditor {action} bind:filter bind:userIds />
 			</div>
 		</div>
 		<div class="flex justify-end">
@@ -45,6 +48,7 @@
 				on:click={() => {
 					$createRLS.mutate({
 						tableId: $table.id.value,
+						subjects: userIds.map((userId) => ({ type: 'user', id: userId })),
 						policy: {
 							action,
 							filter,

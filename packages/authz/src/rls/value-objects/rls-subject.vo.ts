@@ -11,4 +11,8 @@ export const rlsSubject = rlsSubjectUser
 
 export type IRLSSubject = z.infer<typeof rlsSubject>
 
-export class RLSSubject extends ValueObject<IRLSSubject> {}
+export class RLSSubject extends ValueObject<IRLSSubject> {
+  public get value() {
+    return this.props
+  }
+}

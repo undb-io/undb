@@ -1,5 +1,4 @@
 import {
-  ArrayType,
   Cascade,
   Embeddable,
   Embedded,
@@ -37,7 +36,7 @@ export class RLS extends BaseEntity {
     this.id = rls.id.value
     this.table = table
     this.policy = new RLSPolicy(rls.policy)
-    this.subjects = rls.subjects.subjects.map((s) => s.unpack())
+    this.subjects = rls.subjects.subjects.map((s) => s.value)
   }
 
   @PrimaryKey()
@@ -49,6 +48,6 @@ export class RLS extends BaseEntity {
   @Embedded(() => RLSPolicy)
   policy: RLSPolicy
 
-  @Property({ type: ArrayType })
+  @Property({ type: JsonType })
   subjects: IRLSSubject[]
 }

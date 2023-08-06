@@ -3,13 +3,10 @@
 	import CollaboratorComponent from '../CellComponents/CollaboratorComponent.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { t } from '$lib/i18n'
-	import type { ICollaboratorProfile, IQueryUser } from '@undb/core'
+	import type { ICollaboratorProfile } from '@undb/core'
 
 	export let value: string[] | undefined
-	export let initialMembers: Map<string, ICollaboratorProfile & { userId: string }> = new Map()
 	export let readonly = false
-
-	$: membersMap = new Map(initialMembers)
 
 	let open = false
 	let opened = false
@@ -25,25 +22,18 @@
 	$: query = trpc().user.users.query({}, { enabled: opened })
 	$: members = $query.data?.users ?? []
 
-	$: selectedQuery = trpc().user.users.query(
-		{ ids: value },
-		{ enabled: !!value?.length && !opened && !selected.length },
-	)
+	$: selectedQuery = trpc().user.users.query({ ids: value }, { enabled: !!value?.length && !opened })
 	$: selectedMembers = $selectedQuery?.data?.users ?? []
 
-	$: {
-		for (const member of [...members, ...selectedMembers]) {
-			membersMap.set(member.userId, {
-				userId: member.userId,
-				avatar: member.avatar ?? null,
-				username: member.username,
-				color: member.color,
-			})
-		}
-	}
+	$: allMembers = [...members, ...selectedMembers]
 
 	let selected: ICollaboratorProfile[] = []
-	$: if (value) selected = value?.map((userId) => membersMap.get(userId)!).filter(Boolean) ?? []
+	$: if (value?.length)
+		selected = value?.map((userId) => allMembers.find((m) => (m.userId = userId))!).filter(Boolean) ?? []
+	$: console.log('users', $selectedQuery.data?.users)
+	$: console.log({ selectedMembers })
+	$: console.log({ value })
+	$: console.log({ selected })
 </script>
 
 <Button color="alternative" class="inline-flex gap-3 max-h-10" disabled={readonly}>
