@@ -4,13 +4,13 @@ import type {
   ClsStore,
   Record as CoreRecord,
   Table as CoreTable,
+  IClsService,
   IRecordRepository,
   IRecordSpec,
   Record,
   TableSchemaIdMap,
 } from '@undb/core'
 import {
-  IClsService,
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_BY_NAME,
@@ -178,6 +178,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     tableId: string,
     spec: IRecordSpec | null,
     em = this.em,
+    includeDeleted = false,
   ): Promise<RecordSqlite | null> {
     const tableEntity = await em.findOneOrFail(
       Table,
@@ -212,7 +213,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     const builder = new RecordSqliteQueryBuilder(em, table, tableEntity, spec)
       .select()
       .from()
-      .where()
+      .where(includeDeleted)
       .reference()
       .build()
 
@@ -239,6 +240,22 @@ export class RecordSqliteRepository implements IRecordRepository {
 
     const spec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
     const data = await this.findOneRecordEntity(tableId, spec)
+
+    if (!data) {
+      return None
+    }
+
+    const schema = table.schema.toIdMap()
+
+    const record = RecordSqliteMapper.toDomain(tableId, schema, data).unwrap()
+    return Some(record)
+  }
+
+  async findDeletedOneById(table: CoreTable, id: string): Promise<Option<CoreRecord>> {
+    const tableId = table.id.value
+
+    const spec = WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id))
+    const data = await this.findOneRecordEntity(tableId, spec, this.em, true)
 
     if (!data) {
       return None

@@ -155,6 +155,7 @@ export const config: InitOptions = {
         anonymous: 'anonymous',
       },
       table: {
+        trash: 'trash',
         'search trash': 'search trash',
         'import data content': 'Import data (csv / excel / json)',
         'flatten import data': 'Flatten import data',
@@ -529,6 +530,7 @@ export const config: InitOptions = {
         anonymous: '匿名用户',
       },
       table: {
+        trash: '回收站',
         'search trash': '搜索回收站',
         'import data content': '导入数据 (csv / excel /json)',
         'flatten import data': '扁平化字段',

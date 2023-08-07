@@ -33,7 +33,8 @@ export class RLSSubjectContainsUser extends CompositeSpecification<RLS, IRLSVisi
     super()
   }
   isSatisfiedBy(t: RLS): boolean {
-    return !!t.subjects.users.length && t.subjects.users.some((user) => user.value.id === this.userId)
+    if (!t.subjects.users.length) return true
+    return t.subjects.users.some((user) => user.value.id === this.userId)
   }
   mutate(t: RLS): Result<RLS, string> {
     throw new Error('Method not implemented.')

@@ -43,6 +43,11 @@ export class NestRecordSqliteRepository extends RecordSqliteRepository {
   }
 
   @UseRequestContext()
+  findDeletedOneById(table: Table, id: string): Promise<Option<Record>> {
+    return super.findDeletedOneById(table, id)
+  }
+
+  @UseRequestContext()
   async find(table: Table, spec: IRecordSpec): Promise<Record[]> {
     return super.find(table, spec)
   }

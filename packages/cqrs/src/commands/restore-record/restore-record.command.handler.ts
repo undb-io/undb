@@ -12,7 +12,7 @@ export class RestoreRecordCommandHandler implements ICommandHandler<RestoreRecor
 
   async execute(command: RestoreRecordCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
-    const record = (await this.recordRepo.findOneById(table, command.id)).unwrap()
+    const record = (await this.recordRepo.findDeletedOneById(table, command.id)).unwrap()
 
     await this.rls.check('create', table, record)
 
