@@ -30,10 +30,6 @@
 	let selected: ICollaboratorProfile[] = []
 	$: if (value?.length)
 		selected = value?.map((userId) => allMembers.find((m) => (m.userId = userId))!).filter(Boolean) ?? []
-	$: console.log('users', $selectedQuery.data?.users)
-	$: console.log({ selectedMembers })
-	$: console.log({ value })
-	$: console.log({ selected })
 </script>
 
 <Button color="alternative" class="inline-flex gap-3 max-h-10" disabled={readonly}>
