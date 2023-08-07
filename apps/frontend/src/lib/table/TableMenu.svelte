@@ -11,7 +11,7 @@
 <button>
 	<i class="ti ti-dots"></i>
 </button>
-<Dropdown class="w-36" bind:open>
+<Dropdown style="z-index: 50;" class="w-48 z[99999]" bind:open>
 	<DropdownItem
 		on:click={() => {
 			webhookListDrawer.open()
