@@ -1,4 +1,4 @@
-import type { IRecordQueryModel, ITableRepository } from '@undb/core'
+import type { ClsStore, IClsService, IRecordQueryModel, ITableRepository } from '@undb/core'
 import { TreeAvailableSpec, ViewId, WithRecordTableId, withQ } from '@undb/core'
 import type { IQueryHandler } from '@undb/domain'
 import { andOptions } from '@undb/domain'
@@ -12,12 +12,14 @@ export class GetTreeAvailableRecordsQueryHandler
   constructor(
     protected readonly tableRepo: ITableRepository,
     protected readonly rm: IRecordQueryModel,
+    protected readonly cls: IClsService<ClsStore>,
   ) {}
 
   async execute(query: GetTreeAvailableRecordsQuery): Promise<IGetTreeAvailableRecordsOutput> {
+    const userId = this.cls.get('user.userId')
     const table = (await this.tableRepo.findOneById(query.tableId)).unwrap()
     const spec = andOptions(
-      table.getSpec(query.viewId),
+      table.getSpec(userId, query.viewId),
       Option(WithRecordTableId.fromString(query.tableId).unwrap()),
       Option(new TreeAvailableSpec(query.treeFieldId, query.recordId)),
       withQ(table, query.q),

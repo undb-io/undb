@@ -17,6 +17,7 @@ export class CreateTableCommandHandler implements ICreateTableCommandHandler {
   ) {}
 
   async execute(command: CreateTableCommand): Promise<ICreateTableOutput> {
+    const userId = this.cls.get('user.userId')
     const ctx = this.cls.get()
     const table = TableFactory.from(command, ctx).unwrap()
 
@@ -32,7 +33,10 @@ export class CreateTableCommandHandler implements ICreateTableCommandHandler {
         const chunked = chunk(command.records, 5000)
         for (const chunkRecords of chunked) {
           const values = await schema.parseAsync(chunkRecords)
-          const records = table.createRecords(values.map((v) => ({ values: v })))
+          const records = table.createRecords(
+            values.map((v) => ({ values: v })),
+            userId,
+          )
           await this.recordRepo.insertMany(table, records)
         }
       }

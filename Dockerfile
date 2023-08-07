@@ -12,7 +12,7 @@ RUN tar -C /usr/local/bin -xzf /tmp/litestream.tar.gz
 # installer
 FROM node:20.2.0 AS installer
 
-RUN npm install -g pnpm@8.6.5
+RUN npm install -g pnpm@8.6.11
 
 WORKDIR /undb
 
@@ -51,6 +51,7 @@ COPY --from=installer /undb/node_modules ./node_modules
 COPY --from=installer /undb/packages ./packages
 COPY --from=installer /undb/apps/backend ./apps/backend
 COPY --from=installer /undb/apps/frontend/build ./out
+COPY --from=installer /undb/package.json ./
 COPY --from=builder /usr/local/bin/litestream /usr/local/bin/litestream
 COPY scripts/start.mjs ./scripts/start.mjs
 COPY data/data.sql /data/data.sql

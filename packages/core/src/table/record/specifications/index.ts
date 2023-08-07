@@ -10,7 +10,7 @@ export * from './bool.specification.js'
 export * from './collaborator.specification.js'
 export * from './date-range.specification.js'
 export * from './date.specification.js'
-export type { IRecordSpec, IRecordVisitor } from './interface.js'
+export type { IRecordSpec, IRecordVisitor, RecordCompositeSpecification } from './interface.js'
 export * from './json.specification.js'
 export * from './multi-select.specification.js'
 export * from './number.specification.js'
@@ -32,13 +32,14 @@ export * from './tree.specification.js'
 
 export const withTableRecordsSpec = (
   table: Table,
+  userId: string,
   customFilter?: IRootFilter,
   q?: string,
 ): RecordCompositeSpecification => {
   let spec: RecordCompositeSpecification = WithRecordTableId.fromString(table.id.value).unwrap()
 
   if (customFilter) {
-    const querySpec = convertFilterSpec(customFilter)
+    const querySpec = convertFilterSpec(customFilter, userId)
     spec = spec.and(querySpec.unwrap())
   }
 
@@ -50,13 +51,14 @@ export const withTableRecordsSpec = (
 
 export const withTableViewRecordsSpec = (
   table: Table,
+  userId: string,
   viewId?: string,
   customFilter?: IRootFilter,
   q?: string,
 ): RecordCompositeSpecification => {
-  const filter = table.getSpec(viewId)
+  const filter = table.getSpec(userId, viewId)
 
-  let spec = withTableRecordsSpec(table, customFilter, q)
+  let spec = withTableRecordsSpec(table, userId, customFilter, q)
 
   if (filter.isSome()) {
     spec = spec.and(filter.unwrap())

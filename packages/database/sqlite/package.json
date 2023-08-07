@@ -7,6 +7,7 @@
     "@mikro-orm/core": "^5.7.14",
     "@mikro-orm/migrations": "^5.7.14",
     "@mikro-orm/sql-highlighter": "^1.0.1",
+    "@undb/authz": "workspace:^",
     "@undb/core": "^0.0.0",
     "@undb/domain": "^0.0.0",
     "@undb/integrations": "^0.0.0",
@@ -21,7 +22,7 @@
   "devDependencies": {
     "@mikro-orm/cli": "^5.7.14",
     "@mikro-orm/reflection": "^5.7.14",
-    "@swc/core": "^1.3.72",
+    "@swc/core": "^1.3.74",
     "@types/lodash-es": "^4.17.8",
     "@types/uuid": "^9.0.2",
     "@undb/logger": "^0.0.0",
@@ -29,10 +30,10 @@
     "ts-node": "^10.9.1",
     "tsconfig": "^0.0.0",
     "tslib": "^2.6.1",
-    "tsup": "^7.1.0",
-    "type-fest": "^4.0.0",
+    "tsup": "^7.2.0",
+    "type-fest": "^4.1.0",
     "typescript": "^5.1.6",
-    "vitest": "^0.33.0",
+    "vitest": "^0.34.1",
     "vitest-mock-extended": "^1.1.4"
   },
   "exports": {

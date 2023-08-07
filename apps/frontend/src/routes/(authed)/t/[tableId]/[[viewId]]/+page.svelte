@@ -10,7 +10,7 @@
 	import CreateOption from '$lib/option/CreateOption.svelte'
 	import ViewConfigModal from '$lib/view/ViewConfigModal.svelte'
 	import UpdateTable from '$lib/table/UpdateTable.svelte'
-	import { createRecordModal, createTableModal, erdModal, recordTrashModal } from '$lib/store/modal'
+	import { createRecordModal, createTableModal, erdModal, recordTrashModal, rlsModal } from '$lib/store/modal'
 	import UpdateOption from '$lib/option/UpdateOption.svelte'
 	import VisualizationModal from '$lib/visualization/VisualizationModal.svelte'
 	import DuplicateField from '$lib/field/DuplicateField.svelte'
@@ -21,6 +21,7 @@
 	import RecordTrashModal from '$lib/record/trash/RecordTrashModal.svelte'
 	import { onMount } from 'svelte'
 	import { match } from 'ts-pattern'
+	import RLSModal from '$lib/authz/rls/RLSModal.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -107,6 +108,9 @@
 	{#key $field}
 		<DuplicateField field={$field} />
 	{/key}
+{/if}
+{#if $rlsModal.open}
+	<RLSModal />
 {/if}
 
 <VisualizationModal />

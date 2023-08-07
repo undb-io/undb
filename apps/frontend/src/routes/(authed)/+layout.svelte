@@ -20,6 +20,7 @@
 	import { slide } from 'svelte/transition'
 	import { changeThemeMode, sidebarCollapsed, theme } from '$lib/store/ui'
 	import { DARK_THEME, LIGHT_THEME } from '$lib/store/ui.type'
+	import TablesNav from '$lib/table/TablesNav.svelte'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -156,29 +157,7 @@
 									</li>
 									<li>
 										<div class="text-xs font-semibold leading-6 text-gray-400">{$t('Tables', { ns: 'common' })}</div>
-										<ul class="-mx-2 mt-2 space-y-1">
-											{#each tables as table}
-												<li>
-													<a
-														href={`/t/${table.id}`}
-														class={cx(
-															'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
-															'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
-														)}
-													>
-														<span
-															class={cx(
-																'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
-																'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white',
-															)}
-														>
-															{table.name.slice(0, 1)}
-														</span>
-														<span class="truncate">{table.name}</span>
-													</a>
-												</li>
-											{/each}
-										</ul>
+										<TablesNav {tables} />
 									</li>
 								</ul>
 							</nav>
@@ -245,35 +224,7 @@
 				<P class="text-sm font-normal leading-6 !text-gray-400">{$t('Tables', { ns: 'common' })}</P>
 			</div>
 			<nav class="flex flex-1 flex-col px-6 h-full overflow-y-auto">
-				<ul class="-mx-2 space-y-1 pb-2">
-					{#each tables as table}
-						<li>
-							<a
-								href={`/t/${table.id}`}
-								class={cx(
-									table.id === $page.params.tableId
-										? 'bg-blue-50 text-indigo-600 dark:text-gray-50 dark:bg-gray-700'
-										: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50  dark:text-gray-200 dark:hover:bg-gray-700',
-									'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
-								)}
-							>
-								<span
-									class={cx(
-										table.id === $page.params.tableId
-											? 'bg-blue-50 text-indigo-600 dark:text-gray-50 dark:bg-gray-700 '
-											: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50 dark:text-gray-200 dark:hover:text-gray-200 dark:bg-gray-700',
-
-										' border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600 dark:border-white dark:group-hover:border-gray-50 dark:group-hover:text-gray-50',
-										'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white ',
-									)}
-								>
-									{table.name.slice(0, 1)}
-								</span>
-								<span class="truncate">{table.name}</span>
-							</a>
-						</li>
-					{/each}
-				</ul>
+				<TablesNav {tables} />
 			</nav>
 			<ul class="flex flex-col border-t pt-4 space-y-2 dark:border-gray-700">
 				<li class="px-6">

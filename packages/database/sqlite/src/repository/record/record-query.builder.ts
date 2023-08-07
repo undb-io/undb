@@ -1,10 +1,8 @@
-import type { Knex } from '@mikro-orm/better-sqlite'
-import { EntityManager } from '@mikro-orm/better-sqlite'
-import type { IRecordSpec, TableSchemaIdMap, VisualizationVO } from '@undb/core'
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import type { Table as CoreTable, IRecordSpec, TableSchemaIdMap, VisualizationVO } from '@undb/core'
 import {
   ChartVisualization,
   SelectField as CoreSelectField,
-  Table as CoreTable,
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
@@ -12,10 +10,10 @@ import {
   INTERNAL_COLUMN_UPDATED_BY_NAME,
   NumberVisualization,
 } from '@undb/core'
-import { IPagination } from '@undb/domain'
+import type { IPagination } from '@undb/domain'
 import { isNumber, union } from 'lodash-es'
 import type { Promisable } from 'type-fest'
-import { Table } from '../../entity/table.js'
+import type { Table } from '../../entity/table.js'
 import { User } from '../../entity/user.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
 import {

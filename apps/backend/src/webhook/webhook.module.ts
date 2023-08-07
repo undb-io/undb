@@ -1,7 +1,7 @@
 import type { DynamicModule } from '@nestjs/common'
 import { ConfigurableModuleBuilder, Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
-import { TableModule } from '../core/table/table.module.js'
+import { TableAdapterModule } from '../core/table/adapters/table-adapter.module.js'
 import { adapters } from './adapters/index.js'
 import { commands } from './commands/index.js'
 import { events } from './events/index.js'
@@ -18,7 +18,7 @@ export const { ConfigurableModuleClass: WebhookConfigurableModuleClass, OPTIONS_
 @Module({})
 export class WebhookModule extends WebhookConfigurableModuleClass {
   static register(options: typeof OPTIONS_TYPE): DynamicModule {
-    const imports: DynamicModule['imports'] = [CqrsModule, TableModule]
+    const imports: DynamicModule['imports'] = [CqrsModule, TableAdapterModule]
     const providers: DynamicModule['providers'] = [
       WebhookSignatureService,
       ...events,

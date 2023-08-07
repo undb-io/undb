@@ -1,4 +1,3 @@
-import type { Rel } from '@mikro-orm/core'
 import {
   BooleanType,
   Cascade,
@@ -12,9 +11,9 @@ import {
   PrimaryKey,
   Property,
   SmallIntType,
+  type Rel,
 } from '@mikro-orm/core'
 import type {
-  Field as CoreField,
   IAttachmentFieldQuerySchema,
   IAutoIncrementFieldQuerySchema,
   IAverageFieldQuerySchema,
@@ -25,13 +24,14 @@ import type {
   ICreatedAtFieldQuerySchema,
   ICreatedByFieldQuerySchema,
   ICurrencyFieldQuerySchema,
-  ICurrencySymbol,
   IDateFieldQuerySchema,
   IDateRangeFieldQuerySchema,
   IEmailFieldQuerySchema,
   IIdFieldQuerySchema,
   IJsonFieldQuerySchema,
   ILookupFieldQuerySchema,
+  IMaxFieldQuerySchema,
+  IMinFieldQuerySchema,
   IMultiSelectFieldQuerySchema,
   INumberFieldQuerySchema,
   IOptionColorName,
@@ -47,8 +47,6 @@ import type {
   IUpdatedAtFieldQuerySchema,
   IUpdatedByFieldQuerySchema,
   IUrlFieldQuerySchema,
-  IMinFieldQuerySchema,
-  IMaxFieldQuerySchema,
 } from '@undb/core'
 import {
   AttachmentField as CoreAttachmentField,
@@ -67,6 +65,8 @@ import {
   IdField as CoreIdField,
   JsonField as CoreJsonField,
   LookupField as CoreLookupField,
+  MaxField as CoreMaxField,
+  MinField as CoreMinField,
   MultiSelectField as CoreMultiSelectField,
   NumberField as CoreNumberField,
   ParentField as CoreParentField,
@@ -79,8 +79,8 @@ import {
   UpdatedAtField as CoreUpdatedAtField,
   UpdatedByField as CoreUpdatedByField,
   UrlField as CoreUrlField,
-  MinField as CoreMinField,
-  MaxField as CoreMaxField,
+  type Field as CoreField,
+  type ICurrencySymbol,
 } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Option } from './option.js'

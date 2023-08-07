@@ -1,10 +1,10 @@
 {
   "name": "undb",
-  "version": "0.6.5",
+  "version": "0.7.0",
   "devDependencies": {
     "@commitlint/cli": "^17.6.7",
     "@commitlint/config-conventional": "^17.6.7",
-    "@types/node": "^20.4.5",
+    "@types/node": "^20.4.6",
     "@undb/eslint-config": "^0.0.0",
     "chalk": "^5.3.0",
     "commitizen": "^4.3.0",
@@ -19,13 +19,13 @@
     "zx": "^7.2.3"
   },
   "engines": {
-    "pnpm": ">=8.6.5",
+    "pnpm": ">=8.6.11",
     "node": ">=20.0.0"
   },
   "lint-staged": {
     "*.{ts,tsx,md}": "prettier --write"
   },
-  "packageManager": "pnpm@8.6.10",
+  "packageManager": "pnpm@8.6.11",
   "private": true,
   "scripts": {
     "bootstrap": "pnpm install && pnpm run build",

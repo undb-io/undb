@@ -6,10 +6,8 @@
 		getTable,
 		getView,
 		isShare,
-		q,
-		readonly,
-		recordHash,
 		recordsStore,
+		readonlyRecord,
 	} from '$lib/store/table'
 	import { createMutateRecordValuesSchema } from '@undb/core'
 	import { Button, Label, Modal, P, Spinner, Toast } from 'flowbite-svelte'
@@ -22,6 +20,7 @@
 	import { pick, keys } from 'lodash-es'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
+	import ReadonlyRecordBadge from '$lib/authz/rls/ReadonlyRecordBadge.svelte'
 	import UpdateRecordMenu from './UpdateRecordMenu.svelte'
 	import RecordAudits from './RecordAudits.svelte'
 
@@ -55,7 +54,7 @@
 		taintedMessage: null,
 		delayMs: 100,
 		async onUpdate(event) {
-			if ($readonly) return
+			if ($readonlyRecord) return
 			if (!$record) return
 			const taintedKeys = keys($tainted)
 			const values = pick(event.form.data, taintedKeys)
@@ -87,6 +86,9 @@
 			<div class="flex items-center w-full justify-between mr-6">
 				<div class="flex items-center space-x-4">
 					<P>{$t('Update Record')}</P>
+					{#if $record}
+						<ReadonlyRecordBadge />
+					{/if}
 					<!-- <ButtonGroup size="xs">
 						<Button size="xs" disabled={!$prevRecord} on:click={() => ($currentRecordId = $prevRecord?.id.value)}>
 							<i class="ti ti-chevron-left text-gray-500 text-base" />
@@ -146,7 +148,7 @@
 											record={$record}
 											{field}
 											bind:value={$form[field.id.value]}
-											readonly={$readonly ? true : undefined}
+											readonly={$readonlyRecord ? true : undefined}
 										/>
 									</div>
 								{/each}
@@ -167,7 +169,7 @@
 				<Button color="alternative" on:click={() => ($currentRecordId = undefined)}>
 					{$t('Cancel', { ns: 'common' })}
 				</Button>
-				<Button class="gap-2" type="submit" form="updateRecord" disabled={$submitting}>
+				<Button class="gap-2" type="submit" form="updateRecord" disabled={$submitting || $readonlyRecord}>
 					{#if $delayed}
 						<Spinner size="5" />
 					{:else}

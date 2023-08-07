@@ -6,7 +6,7 @@ import type { Record } from '../record.js'
 import type { IRecordVisitor } from './interface.js'
 
 export class WithRecordUpdatedBy extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(public readonly user: string) {
+  constructor(public readonly userId: string) {
     super()
   }
 
@@ -15,16 +15,34 @@ export class WithRecordUpdatedBy extends CompositeSpecification<Record, IRecordV
   }
 
   isSatisfiedBy(t: Record): boolean {
-    return this.user === t.updatedBy
+    return this.userId === t.updatedBy
   }
 
   mutate(r: Record): Result<Record, string> {
-    r.updatedBy = this.user
+    r.updatedBy = this.userId
     return Ok(r)
   }
 
   accept(v: IRecordVisitor): Result<void, string> {
     v.updatedBy(this)
+    return Ok(undefined)
+  }
+}
+export class UdpatedByIn extends CompositeSpecification<Record, IRecordVisitor> {
+  constructor(public readonly userIds: string[]) {
+    super()
+  }
+
+  isSatisfiedBy(t: Record): boolean {
+    return this.userIds.includes(t.updatedBy)
+  }
+
+  mutate(r: Record): Result<Record, string> {
+    throw new Error('Method not implemeted')
+  }
+
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.updatedByIn(this)
     return Ok(undefined)
   }
 }
