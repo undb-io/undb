@@ -32,6 +32,7 @@ export const config: InitOptions = {
       },
       authz: {
         'Empty RLS': '{{tableName}} has not any record level security',
+        'Update RLS': 'update record level security',
         rls: 'record level security',
         'rls match rule': 'matched following ruls can',
         'Create New RLS': 'Create New Record Level Security',
@@ -405,6 +406,7 @@ export const config: InitOptions = {
       },
       authz: {
         'Empty RLS': '{{tableName}} 暂无行权限规则',
+        'Update RLS': '更新行权限',
         'rls match rule': '满足以下规则时可以',
         rls: '行权限',
         'Create New RLS': '创建行权限规则',

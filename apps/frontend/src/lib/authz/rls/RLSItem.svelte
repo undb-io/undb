@@ -57,7 +57,7 @@
 			})
 		}}
 	>
-		{$t('Update RLS')}
+		{$t('Update RLS', { ns: 'authz' })}
 	</Button>
 	<Button
 		color="alternative"
