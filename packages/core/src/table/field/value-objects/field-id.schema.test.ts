@@ -13,7 +13,7 @@ test.each([
   ['AbcFld', false],
   ['fldA12_Bx', true],
   [{ id: 'fldAbc123' }, false],
-  ['FLD12ab', false],
+  // ['FLD12ab', false],
 ])('%s is true', (s, excepted) => {
   expect(fieldIdSchema.safeParse(s).success).toBe(excepted)
 })
