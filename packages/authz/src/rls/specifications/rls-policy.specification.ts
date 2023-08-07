@@ -1,3 +1,4 @@
+import type { RootFilter } from '@undb/core'
 import { CompositeSpecification } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
@@ -44,6 +45,7 @@ export class WithRLSAction extends CompositeSpecification<RLS, IRLSVisitor> {
     return Ok(undefined)
   }
 }
+
 export class WithRLSActionIn extends CompositeSpecification<RLS, IRLSVisitor> {
   constructor(public readonly actions: [IRLSAction, ...IRLSAction[]]) {
     super()
@@ -56,6 +58,23 @@ export class WithRLSActionIn extends CompositeSpecification<RLS, IRLSVisitor> {
   }
   accept(v: IRLSVisitor): Result<void, string> {
     v.actionsIn(this)
+    return Ok(undefined)
+  }
+}
+
+export class WithRLSPolicyFilter extends CompositeSpecification<RLS, IRLSVisitor> {
+  constructor(public readonly filter: RootFilter) {
+    super()
+  }
+  isSatisfiedBy(t: RLS): boolean {
+    throw new Error('Method not implemented.')
+  }
+  mutate(t: RLS): Result<RLS, string> {
+    t.policy.filter = this.filter.value
+    return Ok(t)
+  }
+  accept(v: IRLSVisitor): Result<void, string> {
+    v.withRLSPolicyFilter(this)
     return Ok(undefined)
   }
 }

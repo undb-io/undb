@@ -1,6 +1,6 @@
 <script lang="ts">
 	import FilterEditor from '$lib/filter/FilterEditor.svelte'
-	import type { IRLSAction, IRLSSubject } from '@undb/authz/dist'
+	import type { IRLSAction } from '@undb/authz'
 	import type { IFilter } from '@undb/core'
 	import { Button } from 'flowbite-svelte'
 	import RlsSubject from './RLSSubject.svelte'

@@ -2,7 +2,7 @@
 	import cx from 'classnames'
 	import { t } from '$lib/i18n'
 	import { currentRLSS } from '$lib/store/table'
-	import type { IRLSAction } from '@undb/authz/dist'
+	import type { IRLSAction } from '@undb/authz'
 	import { TabItem } from 'flowbite-svelte'
 	import RlsList from './RlsList.svelte'
 	import RlsCreate from './RLSCreate.svelte'

@@ -6,6 +6,7 @@ import type {
   WithRLSActionIn,
   WithRLSId,
   WithRLSPolicy,
+  WithRLSPolicyFilter,
   WithRLSSubjects,
   WithRLSTableId,
 } from '@undb/authz'
@@ -30,6 +31,9 @@ export class RLSSqliteQueryVisitor implements IRLSVisitor {
   }
   withRLSPolicyAction(s: WithRLSAction): void {
     this.qb.andWhere({ policy: { action: s.action } })
+  }
+  withRLSPolicyFilter(s: WithRLSPolicyFilter): void {
+    throw new Error('Method not implemented.')
   }
   withRLSSubjects(s: WithRLSSubjects): void {
     throw new Error('Method not implemented.')

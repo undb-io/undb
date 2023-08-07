@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { RLS } from '@undb/authz/dist'
+	import type { RLS } from '@undb/authz'
 	import RlsItem from './RLSItem.svelte'
 
 	export let rlss: RLS[] = []

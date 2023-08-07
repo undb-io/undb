@@ -5,7 +5,7 @@
 	import type { IFilter } from '@undb/core'
 	import { Button, Toast } from 'flowbite-svelte'
 	import RlsItemEditor from './RLSItemEditor.svelte'
-	import type { IRLSAction, RLS } from '@undb/authz/dist'
+	import type { IRLSAction, RLS } from '@undb/authz'
 	import { t } from '$lib/i18n'
 	import { slide } from 'svelte/transition'
 	import { getValidFilters } from '$lib/filter/filter.util'

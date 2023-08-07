@@ -1,4 +1,4 @@
-import type { IRLSQueryService } from '@undb/authz/dist/index.js'
+import type { IRLSQueryService } from '@undb/authz'
 import { type ITableQueryModel } from '@undb/core'
 import type { IQueryHandler } from '@undb/domain'
 import type { IGetTableOutput } from './get-table.query.interface.js'

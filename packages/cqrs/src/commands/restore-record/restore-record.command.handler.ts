@@ -1,4 +1,4 @@
-import type { IRLSAuthzService } from '@undb/authz/dist/index.js'
+import type { IRLSAuthzService } from '@undb/authz'
 import { type IRecordRepository, type ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
 import type { RestoreRecordCommand } from './restore-record.command.js'

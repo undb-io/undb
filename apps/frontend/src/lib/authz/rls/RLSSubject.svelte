@@ -1,6 +1,6 @@
 <script lang="ts">
 	import UsersPicker from '$lib/cell/CellInput/UsersPicker.svelte'
-	import type { IRLSAction } from '@undb/authz/dist'
+	import type { IRLSAction } from '@undb/authz'
 	import { Select } from 'flowbite-svelte'
 	import type { SelectOptionType } from 'flowbite-svelte/dist/types'
 	import type { ISubjectType } from './rls.type'
