@@ -32,7 +32,7 @@ export const config: InitOptions = {
       },
       authz: {
         'Empty RLS': '{{tableName}} has not any record level security',
-        'Update RLS': 'update record level security',
+        'Update RLS': 'update',
         rls: 'record level security',
         'rls match rule': 'matched following ruls can',
         'Create New RLS': 'Create New Record Level Security',
