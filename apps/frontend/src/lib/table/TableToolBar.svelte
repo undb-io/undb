@@ -8,6 +8,7 @@
 	import SearchTable from './SearchTable.svelte'
 	import FormsButton from './FormsButton.svelte'
 	import RecordTrashButton from './RecordTrashButton.svelte'
+	import TableMenu from './TableMenu.svelte'
 
 	const table = getTable()
 </script>
@@ -38,5 +39,6 @@
 		<ToggleDisplayType />
 		<FormsButton />
 		<RecordTrashButton />
+		<TableMenu />
 	</div>
 </div>

@@ -2,7 +2,7 @@
 	import { Label } from 'flowbite-svelte'
 	import { t } from '$lib/i18n'
 	import FieldPicker from './FieldPicker.svelte'
-	import { allTableFields, getForeignTableFieldsByReferenceId } from '$lib/store/table'
+	import { allTableFields } from '$lib/store/table'
 
 	export let value: string
 	export let required = false

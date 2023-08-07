@@ -15,6 +15,7 @@
 	const TEMP_ID = '__TEMP_ID'
 
 	const add = () => {
+		if (value.some((v) => v.path === TEMP_ID)) return
 		value = [...value, { path: TEMP_ID }]
 	}
 

@@ -17,7 +17,7 @@
 <Card
 	rounded={false}
 	class={cx(
-		'!py-4 !px-4 shadow-sm rounded-md hover:shadow-md duration-200 select-none space-y-2 text-gray-700 text-sm',
+		'!py-4 !px-4 shadow-sm rounded-md hover:shadow-md duration-200 select-none space-y-2 text-gray-700 text-sm overflow-hidden',
 		$readonly ? 'cursor-pointer' : 'cursor-grab',
 	)}
 	{...$$restProps}

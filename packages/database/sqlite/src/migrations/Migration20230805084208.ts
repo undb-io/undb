@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230727112248 extends Migration {
+export class Migration20230805084208 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `undb_outbox` (`uuid` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text null, `operator_id` text null, `timestamp` datetime not null, `payload` json not null, `meta` json null, primary key (`uuid`));',
@@ -18,6 +18,12 @@ export class Migration20230727112248 extends Migration {
       'create table `undb_table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `emoji` text not null, `views_order` text null, primary key (`id`));',
     )
     this.addSql('create index `undb_table_deleted_at_index` on `undb_table` (`deleted_at`);')
+
+    this.addSql(
+      'create table `undb_rls` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `policy_action` text not null, `policy_filter` json not null, `subjects` text not null, constraint `undb_rls_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));',
+    )
+    this.addSql('create index `undb_rls_deleted_at_index` on `undb_rls` (`deleted_at`);')
+    this.addSql('create index `undb_rls_table_id_index` on `undb_rls` (`table_id`);')
 
     this.addSql(
       'create table `undb_form` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `fields` json not null, `fields_order` text null, `table_id` text null, constraint `undb_form_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));',

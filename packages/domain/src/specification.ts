@@ -33,7 +33,10 @@ export abstract class CompositeSpecification<T = any, V extends ISpecVisitor = I
 }
 
 class And<T, V extends ISpecVisitor> extends CompositeSpecification<T, V> {
-  constructor(private readonly left: ISpecification<T, V>, private readonly right: ISpecification<T, V>) {
+  constructor(
+    private readonly left: ISpecification<T, V>,
+    private readonly right: ISpecification<T, V>,
+  ) {
     super()
   }
 
@@ -51,7 +54,10 @@ class And<T, V extends ISpecVisitor> extends CompositeSpecification<T, V> {
 }
 
 class Or<T, V extends ISpecVisitor> extends CompositeSpecification<T, V> {
-  constructor(private readonly left: ISpecification<T, V>, private readonly right: ISpecification<T, V>) {
+  constructor(
+    private readonly left: ISpecification<T, V>,
+    private readonly right: ISpecification<T, V>,
+  ) {
     super()
   }
 

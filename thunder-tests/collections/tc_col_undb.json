@@ -1,0 +1,116 @@
+{
+    "_id": "9225d89a-6cb3-4439-9561-8c5f179684f0",
+    "colName": "undb",
+    "created": "2022-11-26T02:38:20.471Z",
+    "sortNum": 10000,
+    "folders": [
+        {
+            "_id": "69b6aadd-5d30-481f-832b-d6fc5067434a",
+            "name": "create-and-list",
+            "containerId": "",
+            "created": "2022-11-27T05:43:28.313Z",
+            "sortNum": 10000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "f6845b9d-b375-49cd-a345-75685dd213e8",
+            "colId": "9225d89a-6cb3-4439-9561-8c5f179684f0",
+            "containerId": "",
+            "name": "{{UNDB_API_TRPC_URL}}/table.create",
+            "url": "{{UNDB_API_TRPC_URL}}/table.create",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2022-11-26T02:38:20.473Z",
+            "modified": "2022-11-26T11:07:40.164Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"hello\",\n  \"schema\": [\n    {\n      \"type\": \"text\",\n      \"name\": \"first text\"\n    }\n  ]\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "c4ce3362-1cf3-4d88-96c0-09a202d75ccb",
+            "colId": "9225d89a-6cb3-4439-9561-8c5f179684f0",
+            "containerId": "",
+            "name": "{{UNDB_API_TRPC_URL}}/table.get",
+            "url": "{{UNDB_API_TRPC_URL}}/table.get?input={\"id\": \"tblKoStOSXI\"}",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2022-11-26T02:38:37.721Z",
+            "modified": "2022-12-29T06:45:13.213Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "input",
+                    "value": "{\"id\": \"tblKoStOSXI\"}",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "bc422a39-e725-47d4-bb45-68d8fec4f751",
+            "colId": "9225d89a-6cb3-4439-9561-8c5f179684f0",
+            "containerId": "",
+            "name": "{{UNDB_API_TRPC_URL}}/table.list",
+            "url": "{{UNDB_API_TRPC_URL}}/table.list",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2022-11-26T02:39:15.045Z",
+            "modified": "2022-12-29T06:45:45.718Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "input",
+                    "value": "{\"id\": \"hello\"}",
+                    "isDisabled": true,
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "dbcb5acd-90ae-4176-be25-aed845df6c94",
+            "colId": "9225d89a-6cb3-4439-9561-8c5f179684f0",
+            "containerId": "69b6aadd-5d30-481f-832b-d6fc5067434a",
+            "name": "create",
+            "url": "{{UNDB_API_TRPC_URL}}/table.create",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2022-11-27T05:43:34.876Z",
+            "modified": "2022-11-27T09:41:59.356Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"hello\",\n  \"schema\": [\n    {\n      \"type\": \"text\",\n      \"name\": \"first text\"\n    }\n  ]\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "36bf20ed-499b-41ee-a79e-1d77d91195c2",
+            "colId": "9225d89a-6cb3-4439-9561-8c5f179684f0",
+            "containerId": "69b6aadd-5d30-481f-832b-d6fc5067434a",
+            "name": "list",
+            "url": "{{UNDB_API_TRPC_URL}}/table.list?input={\"id\": \"hello\"}",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2022-11-27T05:43:40.642Z",
+            "modified": "2022-11-27T05:43:41.933Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "input",
+                    "value": "{\"id\": \"hello\"}",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        }
+    ]
+}

@@ -1,6 +1,7 @@
 import type { IQueryHandler } from '@nestjs/cqrs'
 import { QueryHandler } from '@nestjs/cqrs'
-import { ClsStore, IClsService, type IRecordQueryModel, type ITableQueryModel } from '@undb/core'
+import type { ClsStore, IClsService } from '@undb/core'
+import { type IRecordQueryModel, type ITableQueryModel } from '@undb/core'
 import type { IGetShareViewRecordsOutput } from '@undb/cqrs'
 import { GetShareViewRecordsQuery, GetShareViewRecordsQueryHandler } from '@undb/cqrs'
 import { ClsService } from 'nestjs-cls'
@@ -9,6 +10,7 @@ import { InjectTableQueryModel } from '../../core/table/adapters/sqlite/table-sq
 import { NestShareGuardService } from '../services/share-guard.service.js'
 
 @QueryHandler(GetShareViewRecordsQuery)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export class NestGetShareViewRecordsQueryHandler
   extends GetShareViewRecordsQueryHandler

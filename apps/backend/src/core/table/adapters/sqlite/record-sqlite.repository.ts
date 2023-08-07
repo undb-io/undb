@@ -14,6 +14,7 @@ export const RECORD_REPOSITORY = Symbol('RECORD_REPOSITORY')
 export const InjectRecordRepository = () => Inject(RECORD_REPOSITORY)
 
 @Injectable()
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export class NestRecordSqliteRepository extends RecordSqliteRepository {
   constructor(
@@ -39,6 +40,11 @@ export class NestRecordSqliteRepository extends RecordSqliteRepository {
   @UseRequestContext()
   async findOneById(table: Table, id: string): Promise<Option<Record>> {
     return super.findOneById(table, id)
+  }
+
+  @UseRequestContext()
+  findDeletedOneById(table: Table, id: string): Promise<Option<Record>> {
+    return super.findDeletedOneById(table, id)
   }
 
   @UseRequestContext()

@@ -13,6 +13,8 @@
 	let initialLoading = false
 	let open = false
 
+	export let readonly = false
+
 	export let foreignTableId: string
 	export let value: string[] = []
 	export let field: ReferenceFieldTypes
@@ -101,79 +103,84 @@
 							class="!py-2 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 !max-w-none"
 							role="button"
 						/>
-						<CloseButton
-							on:click={() => remove(record.id.value)}
-							class="absolute z-50 right-0 top-[50%] text-sm translate-y-[-55%] translate-x-[-50%] hidden group-hover:block text-gray-500"
-						/>
+						{#if !readonly}
+							<CloseButton
+								on:click={() => remove(record.id.value)}
+								class="absolute z-50 right-0 top-[50%] text-sm translate-y-[-55%] translate-x-[-50%] hidden group-hover:block text-gray-500"
+							/>
+						{/if}
 					</div>
 				{/if}
 			{/each}
 		</div>
 	</div>
-	<Button
-		color="alternative"
-		on:click={() => (open = true)}
-		{...$$restProps}
-		class={cx('space-x-2', $$restProps.class)}
-	>
-		{#if initialLoading}
-			<Spinner size="4" />
-		{:else}
-			<i class="ti ti-plus" />
-			<span>{$t('Select Record')}</span>
-		{/if}
-	</Button>
-	<Modal title={$t('Select Record') ?? undefined} bind:open size="md" class="w-[700px] h-[600px]">
-		{#if loading}
-			<div class="flex w-full h-full items-center justify-center">
-				<Spinner />
-			</div>
-		{:else if !$records.length}
-			<Alert>{$t('no record available')}</Alert>
-		{:else}
-			<form bind:this={form} on:submit={onSubmit}>
-				<div class="flex items-center gap-2">
-					<Search name="search" placeholder={$t('search')} size="sm"></Search>
-					<Button type="submit" size="xs" class="!p-2.5 hidden lg:block">
-						<svg
-							class="w-3 h-3"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-							xmlns="http://www.w3.org/2000/svg"
+
+	{#if !readonly}
+		<Button
+			color="alternative"
+			on:click={() => (open = true)}
+			{...$$restProps}
+			class={cx('space-x-2', $$restProps.class)}
+		>
+			{#if initialLoading}
+				<Spinner size="4" />
+			{:else}
+				<i class="ti ti-plus" />
+				<span>{$t('Select Record')}</span>
+			{/if}
+		</Button>
+		<Modal title={$t('Select Record') ?? undefined} bind:open size="md" class="w-[700px] h-[600px]">
+			{#if loading}
+				<div class="flex w-full h-full items-center justify-center">
+					<Spinner />
+				</div>
+			{:else if !$records.length}
+				<Alert>{$t('no record available')}</Alert>
+			{:else}
+				<form bind:this={form} on:submit={onSubmit}>
+					<div class="flex items-center gap-2">
+						<Search name="search" placeholder={$t('search')} size="sm"></Search>
+						<Button type="submit" size="xs" class="!p-2.5 hidden lg:block">
+							<svg
+								class="w-3 h-3"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+								/>
+							</svg>
+						</Button>
+					</div>
+				</form>
+				<VirtualList height={600} width="100%" itemCount={$records.length} itemSize={46}>
+					<div slot="item" let:index let:style {style} class="flex items-stretch">
+						<Checkbox
+							inline
+							value={$records[index].id.value}
+							custom
+							on:change={(e) => {
+								change(e, $records[index].id.value)
+								open = false
+							}}
+							class="w-full"
 						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+							<RecordCard
+								{field}
+								{schema}
+								record={$records[index]}
+								class="!py-2 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 !max-w-none"
+								role="button"
 							/>
-						</svg>
-					</Button>
-				</div>
-			</form>
-			<VirtualList height={600} width="100%" itemCount={$records.length} itemSize={46}>
-				<div slot="item" let:index let:style {style} class="flex items-stretch">
-					<Checkbox
-						inline
-						value={$records[index].id.value}
-						custom
-						on:change={(e) => {
-							change(e, $records[index].id.value)
-							open = false
-						}}
-						class="w-full"
-					>
-						<RecordCard
-							{field}
-							{schema}
-							record={$records[index]}
-							class="!py-2 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 !max-w-none"
-							role="button"
-						/>
-					</Checkbox>
-				</div>
-			</VirtualList>
-		{/if}
-	</Modal>
+						</Checkbox>
+					</div>
+				</VirtualList>
+			{/if}
+		</Modal>
+	{/if}
 {/if}

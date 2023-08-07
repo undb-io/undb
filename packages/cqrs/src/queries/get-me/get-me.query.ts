@@ -1,4 +1,4 @@
-import { IQueryUser } from '@undb/core'
+import type { IQueryUser } from '@undb/core'
 import { Query } from '@undb/domain'
 import type { IGetMeQuery } from './get-me.query.interface.js'
 
