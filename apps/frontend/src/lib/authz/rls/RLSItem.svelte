@@ -7,13 +7,15 @@
 	import { getTable, listRecordFn } from '$lib/store/table'
 	import type { IFilter } from '@undb/core'
 	import RlsItemEditor from './RLSItemEditor.svelte'
+	import type { ISubjectType } from './rls.type'
 
 	export let rls: RLS
 
 	const table = getTable()
 
-	$: filter = rls.policy.filter as IFilter[]
-	$: userIds = rls.subjects.subjects.map((s) => s.value.id)
+	let userIds: string[] = rls.subjects.subjects.map((s) => s.value.id)
+	let filter: IFilter[] = rls.policy.filter as IFilter[]
+	let subject: ISubjectType
 
 	$: data = $listRecordFn(undefined, { enabled: false })
 
@@ -38,7 +40,7 @@
 
 <li class="flex items-start gap-2">
 	<div class="flex-1 w-full p-1 rounded-md bg-gray-100 border border-gray-200">
-		<RlsItemEditor action={rls.policy.action} bind:filter bind:userIds />
+		<RlsItemEditor action={rls.policy.action} bind:filter bind:userIds bind:subject />
 	</div>
 
 	<Button
@@ -48,7 +50,7 @@
 		on:click={() => {
 			$updateRLS.mutate({
 				id: rls.id.value,
-				subjects: userIds.map((userId) => ({ type: 'user', id: userId })),
+				subjects: subject === 'anyone' ? [] : userIds.map((userId) => ({ type: 'user', id: userId })),
 				policy: {
 					filter,
 				},

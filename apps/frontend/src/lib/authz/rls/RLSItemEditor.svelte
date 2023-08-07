@@ -9,7 +9,7 @@
 
 	export let action: IRLSAction = 'list'
 	export let filter: Partial<IFilter>[]
-	let subject: ISubjectType = 'anyone'
+	export let subject: ISubjectType = 'anyone'
 
 	export let userIds: string[] = []
 </script>
