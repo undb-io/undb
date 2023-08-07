@@ -12,6 +12,7 @@
 	import type { Validation } from 'sveltekit-superforms/index'
 	import WebhookHeaderInput from './WebhookHeaderInput.svelte'
 	import FilterEditor from '$lib/filter/FilterEditor.svelte'
+	import { getValidFilters } from '$lib/filter/filter.util'
 
 	export let data: Validation<typeof createWebhookSchema>
 
@@ -30,10 +31,7 @@
 		applyAction: true,
 		taintedMessage: null,
 		async onUpdate(event) {
-			const validFilters = filters.filter(
-				(v) =>
-					!!v.path && !!v.operator && !!v.type && (isOperatorWithoutValue(v.operator) ? true : v.value !== undefined),
-			) as IFilter[]
+			const validFilters = getValidFilters(filters)
 
 			$createWebhook.mutate({
 				tableId: $table.id.value,

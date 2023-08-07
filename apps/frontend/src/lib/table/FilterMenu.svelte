@@ -8,6 +8,7 @@
 	import { t } from '$lib/i18n'
 	import { invalidate } from '$app/navigation'
 	import FilterEditor from '$lib/filter/FilterEditor.svelte'
+	import { getValidFilters } from '$lib/filter/filter.util'
 
 	let value = $filters
 
@@ -27,10 +28,7 @@
 		},
 	})
 	async function apply() {
-		const validFilters = value.filter(
-			(v) =>
-				!!v.path && !!v.operator && !!v.type && (isOperatorWithoutValue(v.operator) ? true : v.value !== undefined),
-		) as IFilter[]
+		const validFilters = getValidFilters(value)
 
 		$setFilter.mutate({
 			tableId: $table.id.value,

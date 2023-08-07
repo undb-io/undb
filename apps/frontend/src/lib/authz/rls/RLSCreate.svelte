@@ -8,13 +8,14 @@
 	import type { IRLSAction, RLS } from '@undb/authz/dist'
 	import { t } from '$lib/i18n'
 	import { slide } from 'svelte/transition'
+	import { getValidFilters } from '$lib/filter/filter.util'
 
 	const table = getTable()
 
 	export let action: IRLSAction
 	export let rlss: RLS[]
 
-	let filter: IFilter[]
+	let filter: Partial<IFilter>[]
 	let userIds: string[] = []
 	let createMode = false
 
@@ -46,12 +47,15 @@
 				size="xs"
 				disabled={$createRLS.isLoading}
 				on:click={() => {
+					const validFilters = getValidFilters(filter)
+					if (!validFilters.length) return
+
 					$createRLS.mutate({
 						tableId: $table.id.value,
 						subjects: userIds.map((userId) => ({ type: 'user', id: userId })),
 						policy: {
 							action,
-							filter,
+							filter: validFilters,
 						},
 					})
 				}}

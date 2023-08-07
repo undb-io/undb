@@ -8,7 +8,7 @@
 	import type { ISubjectType } from './rls.type'
 
 	export let action: IRLSAction = 'list'
-	export let filter: IFilter[]
+	export let filter: Partial<IFilter>[]
 	let subject: ISubjectType = 'anyone'
 
 	export let userIds: string[] = []
