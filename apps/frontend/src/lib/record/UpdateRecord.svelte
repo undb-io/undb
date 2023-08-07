@@ -6,13 +6,11 @@
 		getTable,
 		getView,
 		isShare,
-		readonly,
 		recordsStore,
-		canUpdateRecord,
 		readonlyRecord,
 	} from '$lib/store/table'
 	import { createMutateRecordValuesSchema } from '@undb/core'
-	import { Badge, Button, Label, Modal, P, Spinner, Toast } from 'flowbite-svelte'
+	import { Button, Label, Modal, P, Spinner, Toast } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { writable } from 'svelte/store'
 	import type { Validation } from 'sveltekit-superforms/index'

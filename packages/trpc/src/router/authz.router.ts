@@ -3,11 +3,13 @@ import {
   CreateRLSCommand,
   DeleteRLSCommand,
   GetTableRLSSQuery,
+  UpdateRLSCommand,
   createRLSCommandInput,
   deleteRLSCommandInput,
   getTableRLSSQueryInput,
+  updateRLSCommandInput,
 } from '@undb/cqrs'
-import type { ICommandBus, IQueryBus } from '@undb/domain'
+import type { CommandProps, ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'
@@ -25,7 +27,14 @@ export const createRLSRouter = (procedure: typeof publicProcedure) => (commandBu
       .input(createRLSCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
-        const cmd = new CreateRLSCommand(input)
+        const cmd = new CreateRLSCommand(input as CommandProps<unknown>)
+        return commandBus.execute(cmd)
+      }),
+    update: procedure
+      .input(updateRLSCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new UpdateRLSCommand(input)
         return commandBus.execute(cmd)
       }),
     delete: procedure

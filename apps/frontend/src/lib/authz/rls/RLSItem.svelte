@@ -25,6 +25,15 @@
 			}
 		},
 	})
+
+	const updateRLS = trpc().authz.rls.update.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+			if (rls.policy.action === 'list') {
+				await $data.refetch()
+			}
+		},
+	})
 </script>
 
 <li class="flex items-start gap-2">
@@ -32,7 +41,20 @@
 		<RlsItemEditor action={rls.policy.action} bind:filter bind:userIds />
 	</div>
 
-	<Button class="w-20 whitespace-nowrap" color="alternative" size="xs" on:click={() => {}}>
+	<Button
+		class="w-20 whitespace-nowrap"
+		color="alternative"
+		size="xs"
+		on:click={() => {
+			$updateRLS.mutate({
+				id: rls.id.value,
+				subjects: userIds.map((userId) => ({ type: 'user', id: userId })),
+				policy: {
+					filter,
+				},
+			})
+		}}
+	>
 		{$t('Update RLS')}
 	</Button>
 	<Button

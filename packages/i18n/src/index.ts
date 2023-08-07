@@ -33,17 +33,21 @@ export const config: InitOptions = {
       authz: {
         'Empty RLS': '{{tableName}} has not any record level security',
         rls: 'record level security',
+        'rls match rule': 'matched following ruls can',
         'Create New RLS': 'Create New Record Level Security',
         list: 'list',
         view: 'view',
         create: 'create',
         update: 'update',
         delete: 'delete',
+        anyone: 'Anyone',
+        users: 'Users',
       },
       errors: {
         'TABLE.NOT_FOUND': 'Table not found',
       },
       common: {
+        when: 'when',
         readonly: 'readonly',
         previous: 'Previous',
         next: 'Next',
@@ -401,6 +405,7 @@ export const config: InitOptions = {
       },
       authz: {
         'Empty RLS': '{{tableName}} 暂无行权限规则',
+        'rls match rule': '满足以下规则时可以',
         rls: '行权限',
         'Create New RLS': '创建行权限规则',
         list: '列表',
@@ -408,11 +413,14 @@ export const config: InitOptions = {
         create: '创建',
         update: '更新',
         delete: '删除',
+        anyone: '任何人',
+        users: '指定用户',
       },
       errors: {
         'TABLE.NOT_FOUND': '没有找到表格',
       },
       common: {
+        when: '当',
         readonly: '只读',
         previous: '上一页',
         next: '下一页',
