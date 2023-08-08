@@ -1,5 +1,4 @@
-import type { Rel } from '@mikro-orm/core'
-import { ArrayType, Cascade, Entity, JsonType, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
+import { ArrayType, Cascade, Entity, JsonType, ManyToOne, PrimaryKey, Property, type Rel } from '@mikro-orm/core'
 import { type Form as CoreForm, type IFormFields } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { Table } from './table.js'
