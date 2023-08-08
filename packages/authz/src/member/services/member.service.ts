@@ -1,10 +1,11 @@
 import type { ClsStore, IClsService } from '@undb/core'
+import type { Permission } from '../../rbac/permissions.js'
 import type { IMemberRepository } from '../member.repository.js'
 import { WithMemberUserId } from '../specifications/index.js'
 
 export interface IMemberService {
   setCurrentMember(): Promise<void>
-  verify(): Promise<boolean>
+  verify(permissions: Permission[]): Promise<boolean>
 }
 
 export class MemberService implements IMemberService {
@@ -22,7 +23,18 @@ export class MemberService implements IMemberService {
     this.cls.set('member.role', member.unwrap().role.unpack())
   }
 
-  async verify(): Promise<boolean> {
+  async verify(permissions: Permission[]): Promise<boolean> {
+    console.log({ permissions })
+    console.log({ permissions })
+    console.log({ permissions })
+    console.log({ permissions })
+    console.log({ permissions })
+    console.log({ permissions })
+    console.log({ permissions })
+    console.log({ permissions })
+    console.log({ permissions })
+    console.log({ permissions })
+    console.log({ permissions })
     return true
   }
 }

@@ -5,6 +5,7 @@ import { ExportGridCommand } from '@undb/cqrs'
 import { type Response } from 'express'
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard.js'
 import { AuthzGuard } from '../../authz/authz.guard.js'
+import { Permissions } from '../../authz/rbac/permission.decorator.js'
 import { NestRecordExportorService } from './exportor/exportor.service.js'
 
 @Controller('record')
@@ -16,6 +17,7 @@ export class RecordController {
   ) {}
 
   @Get('export/grid/:tableId/:viewId/:type')
+  @Permissions('table:export')
   async exportGrid(
     @Param('tableId') tableId: string,
     @Param('viewId') viewId: string,
