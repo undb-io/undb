@@ -4,6 +4,7 @@ import { WithMemberUserId } from '../specifications/index.js'
 
 export interface IMemberService {
   setCurrentMember(): Promise<void>
+  verify(): Promise<boolean>
 }
 
 export class MemberService implements IMemberService {
@@ -19,5 +20,9 @@ export class MemberService implements IMemberService {
 
     this.cls.set('member.memberId', member.unwrap().id.value)
     this.cls.set('member.role', member.unwrap().role.unpack())
+  }
+
+  async verify(): Promise<boolean> {
+    return true
   }
 }

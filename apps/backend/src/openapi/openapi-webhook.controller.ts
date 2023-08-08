@@ -3,13 +3,14 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { DeleteWebhookCommand, GetWebhooksQuery } from '@undb/cqrs'
 import { type IOpenAPICreateWebhook, type IOpenAPIUpdateWebhook } from '@undb/openapi'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'
+import { AuthzGuard } from '../authz/authz.guard.js'
 import { OpenAPIWebhookService } from './openapi-webhook.service.js'
 
 @Controller({
   path: 'openapi',
   version: '1',
 })
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, AuthzGuard)
 export class OpenAPIWebhookController {
   constructor(
     private readonly service: OpenAPIWebhookService,

@@ -57,6 +57,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
       }),
       inject: [authConfig.KEY],
     }),
+    AuthzModule,
     TrpcModule,
     LoggerModule.forRootAsync({
       useFactory: (config: BaseConfigService) => ({
@@ -85,7 +86,6 @@ import { WebhookModule } from './webhook/webhook.module.js'
     ShareModule,
     AuditModule,
     AppInfoModule,
-    AuthzModule,
   ],
 })
 export class AppModule implements OnModuleInit {

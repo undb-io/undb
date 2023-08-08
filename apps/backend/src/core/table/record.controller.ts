@@ -4,10 +4,11 @@ import { type IExportType } from '@undb/core'
 import { ExportGridCommand } from '@undb/cqrs'
 import { type Response } from 'express'
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard.js'
+import { AuthzGuard } from '../../authz/authz.guard.js'
 import { NestRecordExportorService } from './exportor/exportor.service.js'
 
 @Controller('record')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, AuthzGuard)
 export class RecordController {
   constructor(
     private commandBus: CommandBus,

@@ -1,11 +1,13 @@
-import { Controller, MessageEvent, Param, Sse, UseGuards } from '@nestjs/common'
+import type { MessageEvent } from '@nestjs/common'
+import { Controller, Param, Sse, UseGuards } from '@nestjs/common'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { Observable, map, tap } from 'rxjs'
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard.js'
+import { AuthzGuard } from '../../authz/authz.guard.js'
 import { NestRealtimeEventsHandler } from '../../realtime/events/realtime.events-handler.js'
 
 @Controller('tables')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, AuthzGuard)
 export class TableController {
   constructor(
     private readonly handler: NestRealtimeEventsHandler,
