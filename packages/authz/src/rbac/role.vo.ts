@@ -5,4 +5,8 @@ export const roles = z.enum(['owner', 'admin', 'viewer'])
 
 export type IRoles = z.infer<typeof roles>
 
-export class Role extends ValueObject<IRoles> {}
+export class Role extends ValueObject<IRoles> {
+  static owner() {
+    return new this({ value: 'owner' })
+  }
+}

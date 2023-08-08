@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type {
   AttachmentField,
   CollaboratorField as CoreCollaboratorField,
@@ -16,6 +16,7 @@ import type {
   MaxField,
   MinField,
   SumField,
+  Table,
 } from '@undb/core'
 import {
   AbstractReferenceFieldVisitor,
@@ -24,12 +25,11 @@ import {
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_BY_NAME,
   INTERNAL_COLUMN_UPDATED_BY_PROFILE_NAME,
-  Table,
 } from '@undb/core'
 import { uniqBy } from 'lodash-es'
 import { Attachment } from '../../entity/attachment.js'
 import type { CollaboratorField, LookupField, ParentField, ReferenceField, TreeField } from '../../entity/field.js'
-import { Table as TableEntity } from '../../entity/table.js'
+import type { Table as TableEntity } from '../../entity/table.js'
 import { User } from '../../entity/user.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import {

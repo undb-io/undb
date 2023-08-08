@@ -12,6 +12,9 @@ export class WithMemberId extends CompositeSpecification<Member, IMemberVisitor>
   static fromString(memberId: string) {
     return new this(MemberID.from(memberId))
   }
+  static create() {
+    return new this(MemberID.create())
+  }
   isSatisfiedBy(t: Member): boolean {
     return this.id.equals(t.id)
   }
