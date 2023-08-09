@@ -1,5 +1,5 @@
 import type { IRoles, Member as MemberDo } from '@undb/authz'
-import { MemberFactory, WithMemberId, WithMemberRole, WithMemberUserId } from '@undb/authz'
+import { MemberFactory, WithMemberId, WithMemberRole, WithMemberUserId, WithMemberUserProfile } from '@undb/authz'
 import type { Member } from '../../entity/member.js'
 
 export class MemberSqliteMapper {
@@ -8,6 +8,11 @@ export class MemberSqliteMapper {
       WithMemberId.fromString(member.id),
       WithMemberUserId.fromString(member.user.id),
       WithMemberRole.from(member.role as IRoles),
+      new WithMemberUserProfile({
+        color: member.user.color,
+        avatar: member.user.avatar ?? null,
+        username: member.user.username,
+      }),
     )
   }
 }
