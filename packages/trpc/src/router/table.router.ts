@@ -56,6 +56,7 @@ export const createTableRouter =
           return commandBus.execute(cmd)
         }),
       delete: procedure
+        .use(authz('table:delete'))
         .input(deleteTableCommandInput)
         .output(z.void())
         .mutation(({ input }) => {

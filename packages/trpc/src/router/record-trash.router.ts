@@ -1,4 +1,5 @@
-import { GetTrashRecordsQuery, IGetTrashRecordsOutput, getTrashRecordsQueryInput } from '@undb/cqrs'
+import type { IGetTrashRecordsOutput } from '@undb/cqrs'
+import { GetTrashRecordsQuery, getTrashRecordsQueryInput } from '@undb/cqrs'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'

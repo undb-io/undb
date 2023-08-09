@@ -13,6 +13,7 @@ import type { CommandProps, ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'
+import { authz } from './authz.middleware.js'
 
 export const createRLSRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
   router({
@@ -24,6 +25,7 @@ export const createRLSRouter = (procedure: typeof publicProcedure) => (commandBu
         return queryBus.execute(query)
       }),
     create: procedure
+      .use(authz('rls:create'))
       .input(createRLSCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -31,6 +33,7 @@ export const createRLSRouter = (procedure: typeof publicProcedure) => (commandBu
         return commandBus.execute(cmd)
       }),
     update: procedure
+      .use(authz('rls:update'))
       .input(updateRLSCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -38,6 +41,7 @@ export const createRLSRouter = (procedure: typeof publicProcedure) => (commandBu
         return commandBus.execute(cmd)
       }),
     delete: procedure
+      .use(authz('rls:delete'))
       .input(deleteRLSCommandInput)
       .output(z.void())
       .mutation(({ input }) => {

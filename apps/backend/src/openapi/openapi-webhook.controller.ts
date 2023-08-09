@@ -4,6 +4,7 @@ import { DeleteWebhookCommand, GetWebhooksQuery } from '@undb/cqrs'
 import { type IOpenAPICreateWebhook, type IOpenAPIUpdateWebhook } from '@undb/openapi'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'
 import { AuthzGuard } from '../authz/authz.guard.js'
+import { Permissions } from '../authz/rbac/permission.decorator.js'
 import { OpenAPIWebhookService } from './openapi-webhook.service.js'
 
 @Controller({
@@ -20,6 +21,7 @@ export class OpenAPIWebhookController {
 
   @Version('1')
   @Post('tables/:tableId/webhooks')
+  @Permissions('webhook:create')
   public async createWebhook(@Param('tableId') tableId: string, @Body('values') values: IOpenAPICreateWebhook) {
     await this.service.createWebhook(tableId, values)
   }
@@ -36,6 +38,7 @@ export class OpenAPIWebhookController {
 
   @Version('1')
   @Delete('tables/:tableId/webhooks/:id')
+  @Permissions('webhook:create')
   public async deleteWebhook(@Param('tableId') tableId: string, @Param('id') id: string) {
     const cmd = new DeleteWebhookCommand({ webhookId: id })
     await this.commandBus.execute(cmd)
