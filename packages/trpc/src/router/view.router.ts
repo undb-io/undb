@@ -20,6 +20,7 @@ import type { ICommandBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'
+import { authz } from './authz.middleware.js'
 import { createCalendarRouter } from './calendar.router.js'
 import { createDashboardRouter } from './dashboard.router.js'
 import { createFilterRouter } from './filter.router.js'
@@ -33,6 +34,7 @@ import { createViewFieldRouter } from './view-field.router.js'
 export const createViewRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus) =>
   router({
     create: procedure
+      .use(authz('table:create_view'))
       .input(createViewCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -40,6 +42,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     duplicate: procedure
+      .use(authz('table:duplicate_view'))
       .input(duplicateViewCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -47,6 +50,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     updateName: procedure
+      .use(authz('table:update_view'))
       .input(updateViewNameCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -61,6 +65,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     delete: procedure
+      .use(authz('table:delete_view'))
       .input(deleteViewCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -68,6 +73,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     switchDisplayType: procedure
+      .use(authz('table:update_view'))
       .input(switchDisplayTypeCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -75,6 +81,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute<void>(cmd)
       }),
     setShowSystemFields: procedure
+      .use(authz('table:update_view'))
       .input(setShowSystemFieldssCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -82,19 +89,20 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     setRowHeight: procedure
+      .use(authz('table:update_view'))
       .input(setRowHeightCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new SetRowHeightCommand(input)
         return commandBus.execute(cmd)
       }),
-    field: createViewFieldRouter(procedure)(commandBus),
-    filter: createFilterRouter(procedure)(commandBus),
-    sort: createSortRouter(procedure)(commandBus),
-    kanban: createKanbanRouter(procedure)(commandBus),
-    gantt: createGanttRouter(procedure)(commandBus),
-    gallery: createGalleryRouter(procedure)(commandBus),
-    calendar: createCalendarRouter(procedure)(commandBus),
-    dashboard: createDashboardRouter(procedure)(commandBus),
-    tree: createTreeViewRouter(procedure)(commandBus),
+    field: createViewFieldRouter(procedure.use(authz('table:update_view')))(commandBus),
+    filter: createFilterRouter(procedure.use(authz('table:update_view')))(commandBus),
+    sort: createSortRouter(procedure.use(authz('table:update_view')))(commandBus),
+    kanban: createKanbanRouter(procedure.use(authz('table:update_view')))(commandBus),
+    gantt: createGanttRouter(procedure.use(authz('table:update_view')))(commandBus),
+    gallery: createGalleryRouter(procedure.use(authz('table:update_view')))(commandBus),
+    calendar: createCalendarRouter(procedure.use(authz('table:update_view')))(commandBus),
+    dashboard: createDashboardRouter(procedure.use(authz('table:update_view')))(commandBus),
+    tree: createTreeViewRouter(procedure.use(authz('table:update_view')))(commandBus),
   })
