@@ -1,7 +1,7 @@
 import type { CanActivate, ExecutionContext } from '@nestjs/common'
 import { Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
-import type { Permission } from '@undb/authz'
+import type { PermissionAction } from '@undb/authz'
 import { NestMemberService } from './member/member.service.js'
 
 @Injectable()
@@ -12,7 +12,7 @@ export class AuthzGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const permissions = this.reflect.get<Permission[]>('permissions', context.getHandler())
+    const permissions = this.reflect.get<PermissionAction[]>('permissions', context.getHandler())
     if (!permissions?.length) return true
 
     await this.memberService.setCurrentMember()

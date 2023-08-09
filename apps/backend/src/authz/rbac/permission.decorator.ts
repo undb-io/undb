@@ -1,4 +1,4 @@
 import { SetMetadata } from '@nestjs/common'
-import type { Permission } from '@undb/authz'
+import type { PermissionAction } from '@undb/authz'
 
-export const Permissions = (...permissions: Permission[]) => SetMetadata('permissions', permissions)
+export const Permissions = (...permissions: PermissionAction[]) => SetMetadata('permissions', permissions)

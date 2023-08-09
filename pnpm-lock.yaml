@@ -1206,6 +1206,9 @@ importers:
       '@trpc/server':
         specifier: ^10.36.0
         version: 10.36.0
+      '@undb/authz':
+        specifier: workspace:^
+        version: link:../authz
       '@undb/core':
         specifier: ^0.0.0
         version: link:../core

@@ -17,6 +17,7 @@ import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'
 import { createAggregateRouter } from './aggregate.router.js'
+import { authz } from './authz.middleware.js'
 import { createFieldRouter } from './field.router.js'
 import { createFormRouter } from './form.router.js'
 import { createViewRouter } from './view.router.js'
@@ -40,6 +41,7 @@ export const createTableRouter =
           return queryBus.execute(query)
         }),
       create: procedure
+        .use(authz('table:create'))
         .input(createTableCommandInput)
         .output(createTableCommandOutput)
         .mutation(({ input }) => {
