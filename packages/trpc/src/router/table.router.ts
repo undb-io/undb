@@ -49,6 +49,7 @@ export const createTableRouter =
           return commandBus.execute(cmd)
         }),
       update: procedure
+        .use(authz('table:update'))
         .input(updateTableCommandInput)
         .output(z.void())
         .mutation(({ input }) => {

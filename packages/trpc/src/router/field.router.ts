@@ -26,6 +26,7 @@ export const createFieldRouter = (procedure: typeof publicProcedure) => (command
         return commandBus.execute(cmd)
       }),
     update: procedure
+      .use(authz('table:update_field'))
       .input(updateFieldCommandInput)
       .output(z.void())
       .mutation(({ input }) => {

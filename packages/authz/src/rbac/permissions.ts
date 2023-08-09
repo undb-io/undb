@@ -4,11 +4,15 @@ import type { IRoles } from './role.vo.js'
 
 export const tableActions = z.enum([
   'table:create',
+  'table:update',
   'table:delete',
   'table:export',
   'table:create_field',
+  'table:update_field',
   'table:duplicate_field',
   'table:delete_field',
+  'table:create_form',
+  'table:update_form',
 ])
 export const recordActions = z.enum(['record:create', 'record:update', 'record:delete'])
 export const webhookActions = z.enum(['webhook:create', 'webhook:delete'])
@@ -22,11 +26,15 @@ export type PermissionAction = z.infer<
 export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
   owner: {
     'table:create': true,
+    'table:update': true,
     'table:export': true,
     'table:delete': true,
     'table:create_field': true,
+    'table:update_field': true,
     'table:duplicate_field': true,
     'table:delete_field': true,
+    'table:create_form': true,
+    'table:update_form': true,
     'record:create': true,
     'record:delete': true,
     'record:update': true,
@@ -40,10 +48,14 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
   admin: {
     'table:create': true,
     'table:export': true,
+    'table:update': true,
     'table:delete': true,
     'table:create_field': true,
+    'table:update_field': true,
     'table:duplicate_field': true,
     'table:delete_field': true,
+    'table:create_form': true,
+    'table:update_form': true,
     'record:create': true,
     'record:delete': true,
     'record:update': true,
@@ -56,11 +68,15 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
   },
   viewer: {
     'table:create': false,
+    'table:update': false,
     'table:export': true,
     'table:delete': false,
     'table:create_field': false,
+    'table:update_field': true,
     'table:duplicate_field': false,
     'table:delete_field': false,
+    'table:create_form': false,
+    'table:update_form': false,
     'record:create': false,
     'record:delete': false,
     'record:update': false,
