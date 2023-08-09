@@ -31,7 +31,10 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
   },
 }
 
-export const hasPermission = (role: IRoles, action: PermissionAction) => permissions[role][action]
+export const hasPermission = (role: IRoles, action: PermissionAction) => {
+  if (!role) return false
+  return !!permissions[role]?.[action]
+}
 
 export const checkPermission = (role: IRoles, action: PermissionAction) => {
   const has = hasPermission(role, action)
