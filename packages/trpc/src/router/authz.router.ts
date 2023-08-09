@@ -2,10 +2,13 @@ import type { IGetTableRLSSOutput } from '@undb/cqrs'
 import {
   CreateRLSCommand,
   DeleteRLSCommand,
+  GetMembersQuery,
   GetTableRLSSQuery,
   UpdateRLSCommand,
   createRLSCommandInput,
   deleteRLSCommandInput,
+  getMembersQueryOutput,
+  getMembersQuerySchema,
   getTableRLSSQueryInput,
   updateRLSCommandInput,
 } from '@undb/cqrs'
@@ -50,8 +53,21 @@ export const createRLSRouter = (procedure: typeof publicProcedure) => (commandBu
       }),
   })
 
+export const createMemberRouter =
+  (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
+    router({
+      list: procedure
+        .input(getMembersQuerySchema)
+        .output(getMembersQueryOutput)
+        .query(({ input }) => {
+          const query = new GetMembersQuery(input)
+          return queryBus.execute(query)
+        }),
+    })
+
 export const createAuthzRouter =
   (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
     router({
       rls: createRLSRouter(procedure)(commandBus, queryBus),
+      member: createMemberRouter(procedure)(commandBus, queryBus),
     })

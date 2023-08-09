@@ -17,7 +17,7 @@ export class MemberSqliteRepository implements IMemberRepository {
 
     const member = await qb.getSingleResult()
     if (!member) return None
-    await this.em.populate(member, ['user'])
+    await em.populate(member, ['user'])
 
     return Some(MemberSqliteMapper.toDomain(member))
   }

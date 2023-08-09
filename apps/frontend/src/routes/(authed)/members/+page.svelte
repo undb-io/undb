@@ -1,13 +1,13 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Avatar, Card } from 'flowbite-svelte'
+	import { Avatar, Badge, Card } from 'flowbite-svelte'
 	import type { PageData } from './$types'
 	import { colors } from '$lib/field/helpers'
 	import { sidebarCollapsed } from '$lib/store/ui'
 
 	export let data: PageData
 
-	$: members = data.members.users
+	$: members = data.members.members
 </script>
 
 <ul class="gap-4 flex flex-col w-full">
@@ -16,15 +16,19 @@
 			<div class="flex items-center">
 				<div class="flex min-w-0 flex-1 items-center">
 					<div class="flex-shrink-0">
-						{#if member.avatar}
-							<Avatar src={member.avatar} />
+						{#if member.userProfile.avatar}
+							<Avatar src={member.userProfile.avatar} />
 						{:else}
-							<Avatar class={cx('text-white', colors[member.color])}>{member.username.slice(0, 2)}</Avatar>
+							<Avatar class={cx('text-white', colors[member.userProfile.color])}
+								>{member.userProfile.username.slice(0, 2)}</Avatar
+							>
 						{/if}
 					</div>
 					<div class="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
 						<div>
-							<p class="truncate text-sm font-medium text-indigo-600 dark:text-primary-600">{member.username}</p>
+							<p class="truncate text-sm font-medium text-indigo-600 dark:text-primary-600">
+								{member.userProfile.username}
+							</p>
 							<p class="mt-2 flex items-center text-sm text-gray-500 dark:text-gray-200">
 								<svg
 									class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 dark:text-gray-200"
@@ -35,7 +39,7 @@
 									<path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
 									<path d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
 								</svg>
-								<span class="truncate">{member.email}</span>
+								<!-- <span class="truncate">{member.userProfile.email}</span> -->
 							</p>
 						</div>
 						<div class="hidden">
@@ -62,6 +66,11 @@
 							</div>
 						</div>
 					</div>
+				</div>
+				<div>
+					<Badge color="blue" class="border border-blue-500">
+						{member.role}
+					</Badge>
 				</div>
 				<div class="hidden">
 					<svg

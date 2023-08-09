@@ -1,11 +1,14 @@
 import { Global, Module } from '@nestjs/common'
+import { CqrsModule } from '@nestjs/cqrs'
 import { adapters } from './adapters/index.js'
 import { NestMemberCreateService } from './member-create.service.js'
 import { NestMemberService } from './member.service.js'
+import { queries } from './queries/index.js'
 
 @Global()
 @Module({
-  providers: [NestMemberCreateService, NestMemberService, ...adapters],
+  imports: [CqrsModule],
+  providers: [NestMemberCreateService, NestMemberService, ...adapters, ...queries],
   exports: [NestMemberCreateService, NestMemberService],
 })
 export class MemberModule {}
