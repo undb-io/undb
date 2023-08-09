@@ -12,10 +12,11 @@ export class AuthzGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    await this.memberService.setCurrentMember()
+
     const permissions = this.reflect.get<PermissionAction[]>('permissions', context.getHandler())
     if (!permissions?.length) return true
 
-    await this.memberService.setCurrentMember()
     return this.memberService.verify(permissions)
   }
 }
