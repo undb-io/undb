@@ -95,7 +95,7 @@ export const createShareRouter =
           return queryBus.execute(query)
         }),
       create: procedure
-        .use(authz('share:create'))
+        .use(authz('share:enable'))
         .input(createShareCommandInput)
         .output(z.void())
         .mutation(({ input }) => {
@@ -103,6 +103,7 @@ export const createShareRouter =
           return commandBus.execute(cmd)
         }),
       update: procedure
+        .use(authz('share:enable'))
         .input(updateShareCommandInput)
         .output(z.void())
         .mutation(({ input }) => {

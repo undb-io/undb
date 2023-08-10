@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
 	import { getTable } from '$lib/store/table'
+	import { hasPermission } from '$lib/store/authz'
 	import { trpc } from '$lib/trpc/client'
 	import { getIframe, type IQueryShare, type IShareTarget } from '@undb/integrations'
 	import { Dropdown, Heading, Input, Toggle } from 'flowbite-svelte'
@@ -84,7 +85,9 @@
 	placement="bottom"
 >
 	<div class="space-y-2 p-3">
-		<Toggle bind:checked={enabled} on:change={onChange}>{enabled ? $t('disable share') : $t('enable share')}</Toggle>
+		<Toggle bind:checked={enabled} disabled={!$hasPermission('share:enable')} on:change={onChange}>
+			{enabled ? $t('disable share') : $t('enable share')}
+		</Toggle>
 		{#if share && enabled}
 			<Input value={url} readonly>
 				<svelte:fragment slot="right">

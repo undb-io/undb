@@ -7,6 +7,7 @@
 	let open = false
 	export let value: string = ''
 	export let field: Field | undefined
+	export let readonly = false
 
 	$: data = field?.type ? operaotrsMap[field.type] : []
 	$: if (!!field && !data.some((v) => v === value)) {
@@ -22,7 +23,7 @@
 >
 	{$t(value, { ns: 'common' })}
 </Button>
-{#if data.length}
+{#if data.length && !readonly}
 	<Dropdown
 		style="z-index: 999999999;"
 		class="w-[400px] z-[99999] border rounded-sm bg-white shadow-sm dark:shadow-gray-500 dark:bg-gray-700"

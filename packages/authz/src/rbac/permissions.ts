@@ -13,7 +13,17 @@ export const tableActions = z.enum([
   'table:delete_field',
   'table:create_view',
   'table:update_view_name',
+  'table:move_view',
+  'table:set_view_filter',
+  'table:set_view_sort',
   'table:switch_view_display_type',
+  'table:toggle_field_visibility',
+  'table:move_field',
+  'table:set_row_height',
+  'table:set_width',
+  'table:pin_field',
+  'table:sort_field',
+  'table:set_view_field',
   'table:delete_view',
   'table:duplicate_view',
   'table:create_form',
@@ -21,9 +31,11 @@ export const tableActions = z.enum([
 ])
 export const recordActions = z.enum(['record:create', 'record:update', 'record:delete'])
 export const webhookActions = z.enum(['webhook:create', 'webhook:update', 'webhook:delete'])
-export const shareActions = z.enum(['share:create'])
+export const shareActions = z.enum(['share:enable', 'share:disable'])
 export const memberActions = z.enum(['member:update_role'])
 export const rlsPermissionActions = z.enum(['rls:create', 'rls:update', 'rls:delete'])
+export const widgetActions = z.enum(['widget:create', 'widget:relayout', 'widget:delete'])
+export const visualizationActions = z.enum(['visualization:update'])
 
 export type PermissionAction = z.infer<
   | typeof tableActions
@@ -32,6 +44,8 @@ export type PermissionAction = z.infer<
   | typeof rlsPermissionActions
   | typeof memberActions
   | typeof shareActions
+  | typeof widgetActions
+  | typeof visualizationActions
 >
 
 export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
@@ -48,7 +62,17 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'table:update_form': true,
     'table:create_view': true,
     'table:update_view_name': true,
+    'table:move_view': true,
     'table:switch_view_display_type': true,
+    'table:set_view_filter': true,
+    'table:set_view_sort': true,
+    'table:toggle_field_visibility': true,
+    'table:set_row_height': true,
+    'table:move_field': true,
+    'table:set_width': true,
+    'table:pin_field': true,
+    'table:sort_field': true,
+    'table:set_view_field': true,
     'table:delete_view': true,
     'table:duplicate_view': true,
     'record:create': true,
@@ -61,7 +85,12 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'rls:create': true,
     'rls:update': true,
     'rls:delete': true,
-    'share:create': true,
+    'share:enable': true,
+    'share:disable': true,
+    'widget:create': true,
+    'widget:delete': true,
+    'widget:relayout': true,
+    'visualization:update': true,
   },
   admin: {
     'table:create': true,
@@ -74,7 +103,17 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'table:delete_field': true,
     'table:create_view': true,
     'table:update_view_name': true,
+    'table:move_view': true,
     'table:switch_view_display_type': true,
+    'table:set_view_filter': true,
+    'table:set_view_sort': true,
+    'table:toggle_field_visibility': true,
+    'table:set_row_height': true,
+    'table:move_field': true,
+    'table:set_width': true,
+    'table:pin_field': true,
+    'table:sort_field': true,
+    'table:set_view_field': true,
     'table:delete_view': true,
     'table:duplicate_view': true,
     'table:create_form': true,
@@ -89,7 +128,12 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'rls:create': true,
     'rls:update': true,
     'rls:delete': true,
-    'share:create': true,
+    'share:enable': true,
+    'share:disable': true,
+    'widget:create': true,
+    'widget:delete': true,
+    'widget:relayout': true,
+    'visualization:update': true,
   },
   editor: {
     'table:create': false,
@@ -102,7 +146,17 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'table:delete_field': false,
     'table:create_view': true,
     'table:update_view_name': true,
+    'table:move_view': true,
     'table:switch_view_display_type': true,
+    'table:set_view_filter': true,
+    'table:set_view_sort': true,
+    'table:toggle_field_visibility': true,
+    'table:set_row_height': true,
+    'table:move_field': true,
+    'table:set_width': true,
+    'table:pin_field': true,
+    'table:sort_field': true,
+    'table:set_view_field': true,
     'table:delete_view': true,
     'table:duplicate_view': true,
     'table:create_form': true,
@@ -117,7 +171,12 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'rls:create': false,
     'rls:update': false,
     'rls:delete': false,
-    'share:create': true,
+    'share:enable': true,
+    'share:disable': true,
+    'widget:create': true,
+    'widget:delete': true,
+    'widget:relayout': true,
+    'visualization:update': true,
   },
   viewer: {
     'table:create': false,
@@ -130,7 +189,17 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'table:delete_field': false,
     'table:create_view': false,
     'table:update_view_name': false,
+    'table:move_view': false,
     'table:switch_view_display_type': false,
+    'table:set_view_filter': false,
+    'table:set_view_sort': false,
+    'table:toggle_field_visibility': false,
+    'table:set_row_height': false,
+    'table:move_field': false,
+    'table:set_width': false,
+    'table:pin_field': false,
+    'table:sort_field': false,
+    'table:set_view_field': false,
     'table:delete_view': false,
     'table:duplicate_view': false,
     'table:create_form': false,
@@ -145,7 +214,12 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'rls:create': false,
     'rls:update': false,
     'rls:delete': false,
-    'share:create': false,
+    'share:enable': true,
+    'share:disable': true,
+    'widget:create': false,
+    'widget:delete': false,
+    'widget:relayout': false,
+    'visualization:update': false,
   },
 }
 

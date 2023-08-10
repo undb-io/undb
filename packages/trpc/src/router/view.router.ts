@@ -50,7 +50,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     updateName: procedure
-      .use(authz('table:update_view'))
+      .use(authz('table:update_view_name'))
       .input(updateViewNameCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -58,6 +58,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     move: procedure
+      .use(authz('table:move_view'))
       .input(moveViewCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -73,7 +74,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     switchDisplayType: procedure
-      .use(authz('table:update_view'))
+      .use(authz('table:switch_view_display_type'))
       .input(switchDisplayTypeCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -81,7 +82,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute<void>(cmd)
       }),
     setShowSystemFields: procedure
-      .use(authz('table:update_view'))
+      .use(authz('table:toggle_field_visibility'))
       .input(setShowSystemFieldssCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -89,20 +90,20 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     setRowHeight: procedure
-      .use(authz('table:update_view'))
+      .use(authz('table:set_row_height'))
       .input(setRowHeightCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new SetRowHeightCommand(input)
         return commandBus.execute(cmd)
       }),
-    field: createViewFieldRouter(procedure.use(authz('table:update_view')))(commandBus),
-    filter: createFilterRouter(procedure.use(authz('table:update_view')))(commandBus),
-    sort: createSortRouter(procedure.use(authz('table:update_view')))(commandBus),
-    kanban: createKanbanRouter(procedure.use(authz('table:update_view')))(commandBus),
-    gantt: createGanttRouter(procedure.use(authz('table:update_view')))(commandBus),
-    gallery: createGalleryRouter(procedure.use(authz('table:update_view')))(commandBus),
-    calendar: createCalendarRouter(procedure.use(authz('table:update_view')))(commandBus),
-    dashboard: createDashboardRouter(procedure.use(authz('table:update_view')))(commandBus),
-    tree: createTreeViewRouter(procedure.use(authz('table:update_view')))(commandBus),
+    field: createViewFieldRouter(procedure)(commandBus),
+    filter: createFilterRouter(procedure)(commandBus),
+    sort: createSortRouter(procedure)(commandBus),
+    kanban: createKanbanRouter(procedure)(commandBus),
+    gantt: createGanttRouter(procedure)(commandBus),
+    gallery: createGalleryRouter(procedure)(commandBus),
+    calendar: createCalendarRouter(procedure)(commandBus),
+    dashboard: createDashboardRouter(procedure)(commandBus),
+    tree: createTreeViewRouter(procedure)(commandBus),
   })

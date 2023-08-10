@@ -1,6 +1,6 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Badge, Button, Modal, Toast } from 'flowbite-svelte'
+	import { Alert, Badge, Button, Modal, Toast } from 'flowbite-svelte'
 	import { allTableFields, getTable, getView, listRecordFn, sorts } from '$lib/store/table'
 	import { isSortable, type ISortSchema } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
@@ -12,6 +12,7 @@
 	import Sortable, { type SortableEvent } from 'sortablejs'
 	import { isNumber, uniqBy } from 'lodash-es'
 	import { onMount } from 'svelte'
+	import { hasPermission } from '$lib/store/authz'
 
 	const table = getTable()
 	const view = getView()
@@ -28,7 +29,8 @@
 		$value = [...$value, { id: TEMP_ID, direction: 'asc' }]
 	}
 
-	$: if (!$value.length) {
+	const canSetViewSort = $hasPermission('table:set_view_sort')
+	$: if (!$value.length && canSetViewSort) {
 		add()
 	}
 
@@ -102,7 +104,9 @@
 			<ul class="w-full items-center space-y-2" bind:this={el}>
 				{#each $value as sort, idx (sort.id)}
 					<li class="flex gap-2 items-center">
-						<i role="button" class="handle ti ti-grip-vertical flex items-center" />
+						{#if canSetViewSort}
+							<i role="button" class="handle ti ti-grip-vertical flex items-center" />
+						{/if}
 						<div class="flex flex-1">
 							<FieldPicker
 								bind:value={sort.id}
@@ -111,10 +115,12 @@
 								class="w-48 rounded-r-none !justify-start border-r-0"
 								fields={$allTableFields}
 								filter={(f) => isSortable(f.type)}
+								readonly={!canSetViewSort}
 							/>
 							<div class="inline-flex w-1/2">
 								{#each directions as direction, i (direction)}
 									<Button
+										disabled={!canSetViewSort}
 										size="xs"
 										class={cx('!rounded-none', i === 1 && '!rounded-r-md border-l-0')}
 										on:click={() => {
@@ -126,31 +132,35 @@
 							</div>
 						</div>
 
-						<button
-							on:click|preventDefault|stopPropagation={() => {
-								value.update((sorts) => sorts.filter((_, index) => index !== idx))
-							}}
-						>
-							<i class="ti ti-trash text-gray-500" />
-						</button>
+						{#if canSetViewSort}
+							<button
+								on:click|preventDefault|stopPropagation={() => {
+									value.update((sorts) => sorts.filter((_, index) => index !== idx))
+								}}
+							>
+								<i class="ti ti-trash text-gray-500" />
+							</button>
+						{/if}
 					</li>
 				{/each}
 			</ul>
 		{:else}
-			<span class="text-xs font-medium text-gray-400">{$t('no sorts applied')}</span>
+			<Alert color="blue">{$t('no sorts applied')}</Alert>
 		{/if}
 	</form>
-	<div class="flex w-full justify-between">
-		<Button
-			color="alternative"
-			size="xs"
-			on:click={add}
-			disabled={$value.some((v) => v.id === TEMP_ID) || $setSort.isLoading}
-		>
-			{$t('Create New Sort')}
-		</Button>
-		<Button size="xs" type="submit" form="sort_menu">{$t('Apply', { ns: 'common' })}</Button>
-	</div>
+	{#if canSetViewSort}
+		<div class="flex w-full justify-between">
+			<Button
+				color="alternative"
+				size="xs"
+				on:click={add}
+				disabled={$value.some((v) => v.id === TEMP_ID) || $setSort.isLoading}
+			>
+				{$t('Create New Sort')}
+			</Button>
+			<Button size="xs" type="submit" form="sort_menu">{$t('Apply', { ns: 'common' })}</Button>
+		</div>
+	{/if}
 </Modal>
 
 {#if $setSort.error}
