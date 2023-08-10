@@ -10,6 +10,7 @@
 	import { filter, isNumber } from 'lodash-es'
 	import { createFieldModal } from '$lib/store/modal'
 	import Sortable, { type SortableEvent } from 'sortablejs'
+	import { hasPermission } from '$lib/store/authz'
 
 	const table = getTable()
 	const view = getView()
@@ -66,6 +67,7 @@
 			animation: 200,
 			direction: 'vertical',
 			onEnd,
+			disabled: !$hasPermission('table:move_field'),
 		})
 	}
 
@@ -113,7 +115,7 @@
 			{@const checked = visibility[item.id] === undefined || !!visibility[item.id]}
 			<li class="flex items-center gap-2 w-full" data-field-id={item.id}>
 				<Checkbox
-					disabled={checked && fields.length - hiddenCount === 1}
+					disabled={(checked && fields.length - hiddenCount === 1) || !$hasPermission('table:toggle_field_visibility')}
 					class="flex items-center gap-2"
 					{checked}
 					on:change={(e) => onChangeVisibility(e, item.field)}
@@ -127,16 +129,20 @@
 		{/each}
 	</ul>
 
-	<Hr />
+	{#if $hasPermission('table:toggle_field_visibility')}
+		<Hr />
 
-	<Toggle size="small" checked={$view.showSystemFields} on:change={onChangeShowSystemFields}
-		>{$t('Show System Fields')}</Toggle
-	>
+		<Toggle size="small" checked={$view.showSystemFields} on:change={onChangeShowSystemFields}>
+			{$t('Show System Fields')}
+		</Toggle>
+	{/if}
 
-	<Button size="xs" class="w-full gap-2" color="alternative" on:click={() => createFieldModal.open()}>
-		<i class="ti ti-plus" />
-		<span>
-			{$t('Create New Field')}
-		</span>
-	</Button>
+	{#if $hasPermission('table:create_field')}
+		<Button size="xs" class="w-full gap-2" color="alternative" on:click={() => createFieldModal.open()}>
+			<i class="ti ti-plus" />
+			<span>
+				{$t('Create New Field')}
+			</span>
+		</Button>
+	{/if}
 </Modal>

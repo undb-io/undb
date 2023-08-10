@@ -11,6 +11,7 @@
 	import ViewIcon from '$lib/view/ViewIcon.svelte'
 	import type { IViewDisplayType } from '@undb/core'
 	import { sidebarCollapsed } from '$lib/store/ui'
+	import { hasPermission } from '$lib/store/authz'
 
 	const table = getTable()
 	const currentView = getView()
@@ -89,31 +90,33 @@
 			</li>
 		{/each}
 	</ul>
-	<button class="w-7 h-7 hover:bg-gray-100 transition dark:hover:bg-[unset]">
-		<i class="ti ti-plus text-gray-500 dark:hover:text-gray-100 dark:text-gray-400" />
-	</button>
-	<Dropdown style="z-index: 50;" bind:open class="z-[99999] w-48">
-		{#each items as item}
-			<DropdownItem>
-				<Radio
-					custom
-					value={item.value}
-					bind:group={value}
-					on:click={() =>
-						$createView.mutate({
-							tableId: $table.id.value,
-							view: {
-								name: $t('view n', { n: views.length + 1 }),
-								displayType: item.value,
-							},
-						})}
-				>
-					<div role="button" class="flex items-center w-full h-full gap-2">
-						<ViewIcon type={item.value} />
-						{$t(item.value)}
-					</div>
-				</Radio>
-			</DropdownItem>
-		{/each}
-	</Dropdown>
+	{#if $hasPermission('table:create_view')}
+		<button class="w-7 h-7 hover:bg-gray-100 transition dark:hover:bg-[unset]">
+			<i class="ti ti-plus text-gray-500 dark:hover:text-gray-100 dark:text-gray-400" />
+		</button>
+		<Dropdown style="z-index: 50;" bind:open class="z-[99999] w-48">
+			{#each items as item}
+				<DropdownItem>
+					<Radio
+						custom
+						value={item.value}
+						bind:group={value}
+						on:click={() =>
+							$createView.mutate({
+								tableId: $table.id.value,
+								view: {
+									name: $t('view n', { n: views.length + 1 }),
+									displayType: item.value,
+								},
+							})}
+					>
+						<div role="button" class="flex items-center w-full h-full gap-2">
+							<ViewIcon type={item.value} />
+							{$t(item.value)}
+						</div>
+					</Radio>
+				</DropdownItem>
+			{/each}
+		</Dropdown>
+	{/if}
 </section>

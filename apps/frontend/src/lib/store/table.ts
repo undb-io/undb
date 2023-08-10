@@ -28,6 +28,7 @@ import type { IShareTarget } from '@undb/integrations'
 import { isUndefined, keyBy, uniqBy } from 'lodash-es'
 import { derived, writable, type Readable } from 'svelte/store'
 import { match } from 'ts-pattern'
+import { hasPermission } from './authz'
 import { me } from './me'
 
 export const allTables = writable<IQueryTable[] | undefined>()
@@ -457,11 +458,15 @@ export const updateSpec = derived([updateRLSS, me], ([$rlss, $me]) => {
 	return andOptions(...specs)
 })
 
-export const canUpdateRecord = derived([updateSpec, currentRecord], ([$spec, $record]) => {
-	if (!$record) return false
-	if ($spec.isNone()) return true
-	return $spec.unwrap().isSatisfiedBy($record)
-})
+export const canUpdateRecord = derived(
+	[updateSpec, currentRecord, hasPermission],
+	([$spec, $record, $hasPermission]) => {
+		if (!$hasPermission('record:update')) return false
+		if (!$record) return false
+		if ($spec.isNone()) return true
+		return $spec.unwrap().isSatisfiedBy($record)
+	},
+)
 
 export const deleteRLSS = derived(currentRLSS, ($rlss) => $rlss.filter((rls) => rls.policy.action === 'delete'))
 
@@ -472,11 +477,15 @@ export const deleteSpec = derived([deleteRLSS, me], ([$rlss, $me]) => {
 	return andOptions(...specs)
 })
 
-export const canDeleteRecord = derived([deleteSpec, currentRecord], ([$spec, $record]) => {
-	if (!$record) return false
-	if ($spec.isNone()) return true
-	return $spec.unwrap().isSatisfiedBy($record)
-})
+export const canDeleteRecord = derived(
+	[deleteSpec, currentRecord, hasPermission],
+	([$spec, $record, $hasPermission]) => {
+		if (!$hasPermission('record:delete')) return false
+		if (!$record) return false
+		if ($spec.isNone()) return true
+		return $spec.unwrap().isSatisfiedBy($record)
+	},
+)
 
 export const createRLSS = derived(currentRLSS, ($rlss) => $rlss.filter((rls) => rls.policy.action === 'create'))
 
@@ -487,11 +496,15 @@ export const createSpec = derived([createRLSS, me], ([$rlss, $me]) => {
 	return andOptions(...specs)
 })
 
-export const canCreateRecord = derived([createSpec, currentRecord], ([$spec, $record]) => {
-	if (!$record) return false
-	if ($spec.isNone()) return true
-	return $spec.unwrap().isSatisfiedBy($record)
-})
+export const canCreateRecord = derived(
+	[createSpec, currentRecord, hasPermission],
+	([$spec, $record, $hasPermission]) => {
+		if (!$hasPermission('record:create')) return false
+		if (!$record) return false
+		if ($spec.isNone()) return true
+		return $spec.unwrap().isSatisfiedBy($record)
+	},
+)
 
 export const readonly = derived(isShare, ($isShare) => $isShare)
 

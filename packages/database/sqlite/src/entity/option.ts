@@ -1,10 +1,20 @@
-import type { Rel } from '@mikro-orm/core'
-import { Cascade, Embeddable, Embedded, Entity, Enum, Index, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
-import type {
-  Option as CoreOption,
-  OptionColor as CoreOptionColor,
-  IOptionColorName,
-  IOptionColorShade,
+import {
+  Cascade,
+  Embeddable,
+  Embedded,
+  Entity,
+  Enum,
+  Index,
+  ManyToOne,
+  PrimaryKey,
+  Property,
+  type Rel,
+} from '@mikro-orm/core'
+import {
+  type Option as CoreOption,
+  type OptionColor as CoreOptionColor,
+  type IOptionColorName,
+  type IOptionColorShade,
 } from '@undb/core'
 import { BaseEntity } from './base.js'
 import { MultiSelectField, SelectField } from './field.js'

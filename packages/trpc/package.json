@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "dependencies": {
     "@trpc/server": "^10.36.0",
+    "@undb/authz": "workspace:^",
     "@undb/core": "^0.0.0",
     "@undb/cqrs": "^0.0.0",
     "@undb/domain": "^0.0.0",

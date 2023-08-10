@@ -5,6 +5,6 @@ export const ssr = false
 export const prerender = false
 export const load: PageLoad = async () => {
 	return {
-		members: trpc().user.users.utils.fetch({}),
+		members: trpc().authz.member.list.utils.fetch(),
 	}
 }

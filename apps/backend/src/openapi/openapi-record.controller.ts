@@ -14,6 +14,8 @@ import { type IOpenAPIMutateRecordSchema } from '@undb/openapi'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { Observable, map, tap } from 'rxjs'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'
+import { AuthzGuard } from '../authz/authz.guard.js'
+import { Permissions } from '../authz/rbac/permission.decorator.js'
 import { NestRealtimeEventsHandler } from '../realtime/events/realtime.events-handler.js'
 import { OpenAPIRecordService } from './openapi-record.service.js'
 
@@ -21,7 +23,7 @@ import { OpenAPIRecordService } from './openapi-record.service.js'
   path: 'openapi',
   version: '1',
 })
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, AuthzGuard)
 export class OpenAPIRecordController {
   constructor(
     private queryBus: QueryBus,
@@ -50,6 +52,7 @@ export class OpenAPIRecordController {
 
   @Version('1')
   @Post('tables/:tableId/records')
+  @Permissions('record:create')
   public async createRecord(
     @Param('tableId') tableId: string,
     @Body('id') id: string | undefined,
@@ -60,6 +63,7 @@ export class OpenAPIRecordController {
 
   @Version('1')
   @Post('tables/:tableId/records/bulk')
+  @Permissions('record:create')
   public async createRecords(
     @Param('tableId') tableId: string,
     @Body('records') records: { id?: string; values: IOpenAPIMutateRecordSchema }[],
@@ -69,6 +73,7 @@ export class OpenAPIRecordController {
 
   @Version('1')
   @Patch('tables/:tableId/records')
+  @Permissions('record:update')
   public async updateRecord(
     @Param('tableId') tableId: string,
     @Body('id') id: string,
@@ -79,6 +84,7 @@ export class OpenAPIRecordController {
 
   @Version('1')
   @Patch('tables/:tableId/records/bulk')
+  @Permissions('record:update')
   public async updateRecords(
     @Param('tableId') tableId: string,
     @Body('records') records: { id: string; values: IOpenAPIMutateRecordSchema }[],
@@ -88,30 +94,35 @@ export class OpenAPIRecordController {
 
   @Version('1')
   @Delete('tables/:tableId/records/:id')
+  @Permissions('record:delete')
   public async deleteRecord(@Param('tableId') tableId: string, @Param('id') id: string) {
     await this.commandBus.execute(new DeleteRecordCommand({ tableId, id }))
   }
 
   @Version('1')
   @Post('tables/:tableId/records/:id/restore')
+  @Permissions('record:create')
   public async restoreRecord(@Param('tableId') tableId: string, @Param('id') id: string) {
     await this.commandBus.execute(new RestoreRecordCommand({ tableId, id }))
   }
 
   @Version('1')
   @Delete('tables/:tableId/records')
+  @Permissions('record:delete')
   public async deleteRecordsByIds(@Param('tableId') tableId: string, @Body('ids') ids: [string, ...string[]]) {
     await this.commandBus.execute(new BulkDeleteRecordsCommand({ tableId, ids }))
   }
 
   @Version('1')
   @Post('tables/:tableId/records/:id')
+  @Permissions('record:create')
   public async duplicateRecordById(@Param('tableId') tableId: string, @Param('id') id: string) {
     await this.commandBus.execute(new DuplicateRecordCommand({ tableId, id }))
   }
 
   @Version('1')
   @Post('tables/:tableId/records')
+  @Permissions('record:create')
   public async duplicateRecordsByIds(@Param('tableId') tableId: string, @Body('ids') ids: [string, ...string[]]) {
     await this.commandBus.execute(new BulkDuplicateRecordsCommand({ tableId, ids }))
   }

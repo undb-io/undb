@@ -6,6 +6,7 @@
 	import { t } from '$lib/i18n'
 	import { createTableModal, importDataModal } from '$lib/store/modal'
 	import { sidebarCollapsed } from '$lib/store/ui'
+	import { hasPermission } from '$lib/store/authz'
 
 	export let data: LayoutData
 
@@ -19,9 +20,9 @@
 	}
 </script>
 
-<nav class="bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-600">
+<nav class="bg-white border-b h-16 px-5 py-4 border-gray-200 dark:bg-gray-900 dark:border-gray-600">
 	{#if $sidebarCollapsed}
-		<div class="fixed top-3 left-3">
+		<div class="fixed top-5 left-3">
 			<button on:click={() => ($sidebarCollapsed = false)}>
 				<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
 			</button>
@@ -29,24 +30,26 @@
 		</div>
 	{/if}
 
-	<div class="w-full px-5 py-4 flex justify-end" id="navbar-default">
-		<ButtonGroup>
-			<Button size="sm" on:click={() => createTableModal.open()}>
-				<i class="ti ti-plus text-sm mr-3" />
-				{$t('Create New Table')}
-			</Button>
-			<Button size="sm">
-				<i class="ti ti-chevron-down" />
-			</Button>
-			<Dropdown style="z-index: 50;" placement="bottom" class="w-[200px]">
-				<DropdownItem on:click={() => importDataModal.open()} class="flex items-center gap-2">
-					<i class="ti ti-csv" />
-					<span>
-						{$t('import data content')}
-					</span>
-				</DropdownItem>
-			</Dropdown>
-		</ButtonGroup>
+	<div class="w-full flex justify-end" id="navbar-default">
+		{#if $hasPermission('table:create')}
+			<ButtonGroup>
+				<Button size="sm" on:click={() => createTableModal.open()}>
+					<i class="ti ti-plus text-sm mr-3" />
+					{$t('Create New Table')}
+				</Button>
+				<Button size="sm">
+					<i class="ti ti-chevron-down" />
+				</Button>
+				<Dropdown style="z-index: 50;" placement="bottom" class="w-[200px]">
+					<DropdownItem on:click={() => importDataModal.open()} class="flex items-center gap-2">
+						<i class="ti ti-csv" />
+						<span>
+							{$t('import data content')}
+						</span>
+					</DropdownItem>
+				</Dropdown>
+			</ButtonGroup>
+		{/if}
 	</div>
 </nav>
 
@@ -67,15 +70,17 @@
 				</div>
 			</Card>
 		{/each}
-		<Card
-			class="!max-w-none cursor-pointer hover:bg-blue-500/90 hover:text-white transition h-full"
-			on:click={() => createTableModal.open()}
-		>
-			<div class="flex items-center gap-2 h-full">
-				<i class="ti ti-plus" />
-				<p class="text-sm font-bold">{$t('Create New Table')}</p>
-			</div>
-		</Card>
+		{#if $hasPermission('table:create')}
+			<Card
+				class="!max-w-none cursor-pointer hover:bg-blue-500/90 hover:text-white transition h-full"
+				on:click={() => createTableModal.open()}
+			>
+				<div class="flex items-center gap-2 h-full">
+					<i class="ti ti-plus" />
+					<p class="text-sm font-bold">{$t('Create New Table')}</p>
+				</div>
+			</Card>
+		{/if}
 	</main>
 {:else}
 	<Empty />

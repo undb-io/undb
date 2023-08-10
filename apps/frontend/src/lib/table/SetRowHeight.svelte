@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation'
 	import { t } from '$lib/i18n'
+	import { hasPermission } from '$lib/store/authz'
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import { viewRowHeights } from '@undb/core'
-	import { Button, Dropdown, DropdownItem, Radio } from 'flowbite-svelte'
+	import { Button, Dropdown, DropdownItem, Radio, Tooltip } from 'flowbite-svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -29,22 +30,28 @@
 >
 	<i class="ti ti-line-height text-sm dark:text-gray-200" />
 </Button>
-<Dropdown style="z-index: 50;" bind:open class="z-[999999] shadow-md dark:border  dark:rounded-lg">
-	{#each viewRowHeights as rowHeight}
-		<DropdownItem
-			class="flex items-center justify-between"
-			on:click={() => {
-				if (rh !== rowHeight) {
-					$setRowHeight.mutate({ tableId: $table.id.value, viewId: $view.id.value, rowHeight })
-				}
-			}}
-		>
-			<span>
-				{$t(rowHeight)}
-			</span>
-			{#if rh === rowHeight}
-				<i class="ti ti-check" />
-			{/if}
-		</DropdownItem>
-	{/each}
-</Dropdown>
+{#if $hasPermission('table:set_row_height')}
+	<Dropdown style="z-index: 50;" bind:open class="z-[999999] shadow-md dark:border  dark:rounded-lg">
+		{#each viewRowHeights as rowHeight}
+			<DropdownItem
+				class="flex items-center justify-between"
+				on:click={() => {
+					if (rh !== rowHeight) {
+						$setRowHeight.mutate({ tableId: $table.id.value, viewId: $view.id.value, rowHeight })
+					}
+				}}
+			>
+				<span>
+					{$t(rowHeight)}
+				</span>
+				{#if rh === rowHeight}
+					<i class="ti ti-check" />
+				{/if}
+			</DropdownItem>
+		{/each}
+	</Dropdown>
+{:else if rh}
+	<Tooltip placement="bottom" class="z-50">
+		{$t(rh)}
+	</Tooltip>
+{/if}

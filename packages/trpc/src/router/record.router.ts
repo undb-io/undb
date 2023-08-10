@@ -26,6 +26,7 @@ import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'
 import { createRecordAuditRouter } from './audit.router.js'
+import { authz } from './authz.middleware.js'
 import { createParentFieldRouter } from './parent-field.router.js'
 import { createRecordTrashRouter } from './record-trash.router.js'
 import { createTreeFieldRouter } from './tree-field.router.js'
@@ -34,6 +35,7 @@ export const createRecordRouter =
   (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
     router({
       create: procedure
+        .use(authz('record:create'))
         .input(z.any())
         .output(createRecordCommandOutput)
         .mutation(({ input }) => {
@@ -41,6 +43,7 @@ export const createRecordRouter =
           return commandBus.execute(cmd)
         }),
       duplicate: procedure
+        .use(authz('record:create'))
         .input(duplicateRecordCommandInput)
         .output(z.void())
         .mutation(({ input }) => {
@@ -48,6 +51,7 @@ export const createRecordRouter =
           return commandBus.execute(cmd)
         }),
       bulkDuplicate: procedure
+        .use(authz('record:create'))
         .input(bulkDuplicateRecordsCommandInput)
         .output(z.void())
         .mutation(({ input }) => {
@@ -55,6 +59,7 @@ export const createRecordRouter =
           return commandBus.execute(cmd)
         }),
       update: procedure
+        .use(authz('record:update'))
         .input(z.any())
         .output(z.void())
         .mutation(({ input }) => {
@@ -62,6 +67,7 @@ export const createRecordRouter =
           return commandBus.execute(cmd)
         }),
       delete: procedure
+        .use(authz('record:delete'))
         .input(deleteRecordCommandInput)
         .output(z.void())
         .mutation(({ input }) => {
@@ -69,6 +75,7 @@ export const createRecordRouter =
           return commandBus.execute(cmd)
         }),
       restore: procedure
+        .use(authz('record:create'))
         .input(restoreRecordCommandInput)
         .output(z.void())
         .mutation(({ input }) => {
@@ -76,6 +83,7 @@ export const createRecordRouter =
           return commandBus.execute(cmd)
         }),
       bulkDelete: procedure
+        .use(authz('record:delete'))
         .input(bulkDeleteRecordsCommandInput)
         .output(z.void())
         .mutation(({ input }) => {

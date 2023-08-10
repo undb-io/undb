@@ -7,6 +7,7 @@
 	import { t } from '$lib/i18n'
 	import CreateForm from './CreateForm.svelte'
 	import { page } from '$app/stores'
+	import { hasPermission } from '$lib/store/authz'
 
 	const table = getTable()
 
@@ -31,12 +32,14 @@
 				{$table.name.value} - {$t('forms')}
 			</Heading>
 
-			<Button size="xs" class="whitespace-nowrap" on:click={() => ($formDrawerMode = 'create')}>
-				{$t('Create New Form')}
-			</Button>
+			{#if $hasPermission('table:create_form')}
+				<Button size="xs" class="whitespace-nowrap" on:click={() => ($formDrawerMode = 'create')}>
+					{$t('Create New Form')}
+				</Button>
+			{/if}
 		</div>
 		<FormsList />
-	{:else if $formDrawerMode === 'create'}
+	{:else if $formDrawerMode === 'create' && $hasPermission('table:create_form')}
 		<CreateForm data={$page.data.createForm} />
 	{/if}
 </Drawer>

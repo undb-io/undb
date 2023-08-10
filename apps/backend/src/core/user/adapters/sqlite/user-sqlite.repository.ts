@@ -6,7 +6,10 @@ import type { Option } from 'oxide.ts'
 
 @Injectable()
 export class NestUserSqliteRepository extends UserSqliteRepository {
-  constructor(protected readonly orm: MikroORM, em: EntityManager) {
+  constructor(
+    protected readonly orm: MikroORM,
+    em: EntityManager,
+  ) {
     super(em)
   }
 
@@ -28,5 +31,10 @@ export class NestUserSqliteRepository extends UserSqliteRepository {
   @UseRequestContext()
   findOne(spec: UserSpecification): Promise<Option<User>> {
     return super.findOne(spec)
+  }
+
+  @UseRequestContext()
+  count(spec: UserSpecification | null): Promise<number> {
+    return super.count(spec)
   }
 }

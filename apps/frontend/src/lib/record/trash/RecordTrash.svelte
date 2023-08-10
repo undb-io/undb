@@ -10,6 +10,7 @@
 	import { RecordFactory } from '@undb/core'
 	import { format } from 'date-fns'
 	import { Spinner, PaginationItem, Search, Button } from 'flowbite-svelte'
+	import { hasPermission } from '$lib/store/authz'
 
 	const table = getTable()
 
@@ -76,7 +77,8 @@
 		{#each records as record}
 			{@const ro = RecordFactory.fromQuery(record, schema).unwrap()}
 			{@const deletedProfile = record.deletedByProfile}
-			{@const canCreate = $createSpec.isNone() ? true : $createSpec.unwrap().isSatisfiedBy(ro)}
+			{@const canCreate =
+				($createSpec.isNone() ? true : $createSpec.unwrap().isSatisfiedBy(ro)) && $hasPermission('record:create')}
 			<div class="flex justify-between gap-2 items-center text-xs text-gray-600 dark:text-gray-200">
 				<div class="flex items-center gap-2">
 					<CollaboratorComponent

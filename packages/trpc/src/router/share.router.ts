@@ -33,6 +33,7 @@ import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'
+import { authz } from './authz.middleware.js'
 
 export const createShareRouter =
   (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
@@ -94,6 +95,7 @@ export const createShareRouter =
           return queryBus.execute(query)
         }),
       create: procedure
+        .use(authz('share:enable'))
         .input(createShareCommandInput)
         .output(z.void())
         .mutation(({ input }) => {
@@ -101,6 +103,7 @@ export const createShareRouter =
           return commandBus.execute(cmd)
         }),
       update: procedure
+        .use(authz('share:enable'))
         .input(updateShareCommandInput)
         .output(z.void())
         .mutation(({ input }) => {

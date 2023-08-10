@@ -26,32 +26,34 @@
 	})
 </script>
 
-<button>
-	<i class="ti ti-dots" />
-</button>
-<Dropdown style="z-index: 50;" class="w-[200px]">
-	{#if $canCreateRecord}
-		<DropdownItem
-			on:click={() => {
-				if (record) {
-					$duplicateRecord.mutate({ tableId: $table.id.value, id: record.id.value })
-				}
-			}}
-			class="inline-flex items-center gap-2"
-		>
-			<i class="ti ti-copy" />
-			<span class="text-xs">{$t('Duplicate Record')}</span>
-		</DropdownItem>
-	{/if}
+{#if $canCreateRecord || $canDeleteRecord}
+	<button>
+		<i class="ti ti-dots" />
+	</button>
+	<Dropdown style="z-index: 50;" class="w-[200px]">
+		{#if $canCreateRecord}
+			<DropdownItem
+				on:click={() => {
+					if (record) {
+						$duplicateRecord.mutate({ tableId: $table.id.value, id: record.id.value })
+					}
+				}}
+				class="inline-flex items-center gap-2"
+			>
+				<i class="ti ti-copy" />
+				<span class="text-xs">{$t('Duplicate Record')}</span>
+			</DropdownItem>
+		{/if}
 
-	{#if $canDeleteRecord}
-		<DropdownDivider />
-		<DropdownItem on:click={() => (confirmDeleteOpen = true)} class="inline-flex items-center gap-2 text-red-400">
-			<i class="ti ti-trash" />
-			<span class="text-xs">{$t('Delete Record')}</span>
-		</DropdownItem>
-	{/if}
-</Dropdown>
+		{#if $canDeleteRecord}
+			<DropdownDivider />
+			<DropdownItem on:click={() => (confirmDeleteOpen = true)} class="inline-flex items-center gap-2 text-red-400">
+				<i class="ti ti-trash" />
+				<span class="text-xs">{$t('Delete Record')}</span>
+			</DropdownItem>
+		{/if}
+	</Dropdown>
+{/if}
 
 <Modal bind:open={confirmDeleteOpen} size="xs">
 	<div class="text-center">
