@@ -5,12 +5,14 @@ import {
   GetMembersQuery,
   GetTableRLSSQuery,
   UpdateRLSCommand,
+  UpdateRoleCommand,
   createRLSCommandInput,
   deleteRLSCommandInput,
   getMembersQueryOutput,
   getMembersQuerySchema,
   getTableRLSSQueryInput,
   updateRLSCommandInput,
+  updateRoleCommandInput,
 } from '@undb/cqrs'
 import type { CommandProps, ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
@@ -62,6 +64,14 @@ export const createMemberRouter =
         .query(({ input }) => {
           const query = new GetMembersQuery(input)
           return queryBus.execute(query)
+        }),
+      updateRole: procedure
+        .use(authz('member:update_role'))
+        .input(updateRoleCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new UpdateRoleCommand(input)
+          return commandBus.execute(cmd)
         }),
     })
 

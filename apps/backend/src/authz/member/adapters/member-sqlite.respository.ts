@@ -28,6 +28,16 @@ export class NestMemberSqliteRepository extends MemberSqliteRepository {
   }
 
   @UseRequestContext()
+  findOneById(id: string): Promise<Option<Member>> {
+    return super.findOneById(id)
+  }
+
+  @UseRequestContext()
+  updateOneById(id: string, spec: MemberSpecification): Promise<void> {
+    return super.updateOneById(id, spec)
+  }
+
+  @UseRequestContext()
   count(): Promise<number> {
     return super.count()
   }
