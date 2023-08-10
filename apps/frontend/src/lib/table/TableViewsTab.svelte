@@ -11,6 +11,7 @@
 	import ViewIcon from '$lib/view/ViewIcon.svelte'
 	import type { IViewDisplayType } from '@undb/core'
 	import { sidebarCollapsed } from '$lib/store/ui'
+	import { hasPermission } from '$lib/store/authz'
 
 	const table = getTable()
 	const currentView = getView()
@@ -89,9 +90,11 @@
 			</li>
 		{/each}
 	</ul>
-	<button class="w-7 h-7 hover:bg-gray-100 transition dark:hover:bg-[unset]">
-		<i class="ti ti-plus text-gray-500 dark:hover:text-gray-100 dark:text-gray-400" />
-	</button>
+	{#if $hasPermission('table:create_view')}
+		<button class="w-7 h-7 hover:bg-gray-100 transition dark:hover:bg-[unset]">
+			<i class="ti ti-plus text-gray-500 dark:hover:text-gray-100 dark:text-gray-400" />
+		</button>
+	{/if}
 	<Dropdown style="z-index: 50;" bind:open class="z-[99999] w-48">
 		{#each items as item}
 			<DropdownItem>

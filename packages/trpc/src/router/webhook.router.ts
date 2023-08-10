@@ -34,6 +34,7 @@ export const createWebhookRouter =
           return commandBus.execute(cmd)
         }),
       update: procedure
+        .use(authz('webhook:update'))
         .input(updateWebhookCommandInput)
         .output(z.any())
         .mutation(({ input }) => {

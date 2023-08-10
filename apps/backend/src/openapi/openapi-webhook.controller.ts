@@ -28,6 +28,7 @@ export class OpenAPIWebhookController {
 
   @Version('1')
   @Patch('tables/:tableId/webhooks')
+  @Permissions('webhook:update')
   public async updateWebhook(
     @Param('tableId') tableId: string,
     @Param('id') id: string,
