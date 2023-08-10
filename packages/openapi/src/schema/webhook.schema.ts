@@ -1,6 +1,6 @@
+import type { Table } from '@undb/core'
 import {
   EVT_RECORD_CREATED,
-  Table,
   createQueryRecordSchema,
   createRecordReadableValueSchema,
   recordBulkUpdatedEventMeta,
