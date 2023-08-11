@@ -3,6 +3,7 @@ import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { middleware, publicProcedure, router } from '../trpc.js'
 import type { ILogger } from '../type.js'
 import { createAuthzRouter } from './authz.router.js'
+import { createInvitationRouter } from './invitation.router.js'
 import { createRecordRouter } from './record.router.js'
 import { createShareRouter } from './share.router.js'
 import { createTableRouter } from './table.router.js'
@@ -45,6 +46,7 @@ export const createRouter = (commandBus: ICommandBus, queryBus: IQueryBus, logge
     user: createUserRouter(authedProceducr)(commandBus, queryBus),
     webhook: createWebhookRouter(authedProceducr)(commandBus, queryBus),
     share: createShareRouter(procedure)(commandBus, queryBus),
+    invitation: createInvitationRouter(procedure)(commandBus, queryBus),
   })
   return appRouter
 }

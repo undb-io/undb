@@ -1,4 +1,5 @@
 export * from './audit/index.js'
+export * from './invitation/index.js'
 export * from './member/index.js'
 export * from './record/index.js'
 export * from './rls/index.js'
