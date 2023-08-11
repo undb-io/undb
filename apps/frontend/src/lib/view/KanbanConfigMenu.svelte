@@ -3,6 +3,7 @@
 	import { configViewModal } from '$lib/store/modal'
 	import { getTable, getView } from '$lib/store/table'
 	import { Button } from 'flowbite-svelte'
+	import { hasPermission } from '$lib/store/authz'
 
 	const view = getView()
 	const table = getTable()
@@ -10,7 +11,7 @@
 	$: field = fieldId ? $table.schema.getFieldById(fieldId).into() : undefined
 </script>
 
-{#if field}
+{#if field && $hasPermission('record:create')}
 	<Button
 		color="alternative"
 		size="xs"

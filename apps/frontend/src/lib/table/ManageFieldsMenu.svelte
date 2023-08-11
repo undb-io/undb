@@ -86,28 +86,30 @@
 	}
 </script>
 
-<Button
-	size="xs"
-	color="alternative"
-	class={cx(
-		'relative h-full !rounded-md gap-2 whitespace-nowrap border-0 hover:!bg-blue-50 dark:hover:!bg-gray-800 text-blue-600 dark:text-gray-100',
-		!!hiddenCount && '!bg-blue-50 dark:!bg-primary-600',
-	)}
-	on:click={() => (open = true)}
->
-	<i class="ti ti-columns-3 text-sm" />
-	<span>
-		{$t('Manage Fields')}
-	</span>
-	{#if hiddenCount}
-		<Indicator color="blue" border size="xl" placement="top-right">
-			<span class="text-white text-xs font-bold">{hiddenCount}</span>
-		</Indicator>
-		<Tooltip placement="bottom" class="z-50 dark:bg-primary-900 dark:text-gray-100 hidden lg:block">
-			{$t('N Fields Hidden', { n: hiddenCount })}
-		</Tooltip>
-	{/if}
-</Button>
+{#if $hasPermission('table:toggle_field_visibility')}
+	<Button
+		size="xs"
+		color="alternative"
+		class={cx(
+			'relative h-full !rounded-md gap-2 whitespace-nowrap border-0 hover:!bg-blue-50 dark:hover:!bg-gray-800 text-blue-600 dark:text-gray-100',
+			!!hiddenCount && '!bg-blue-50 dark:!bg-primary-600',
+		)}
+		on:click={() => (open = true)}
+	>
+		<i class="ti ti-columns-3 text-sm" />
+		<span>
+			{$t('Manage Fields')}
+		</span>
+		{#if hiddenCount}
+			<Indicator color="blue" border size="xl" placement="top-right">
+				<span class="text-white text-xs font-bold">{hiddenCount}</span>
+			</Indicator>
+			<Tooltip placement="bottom" class="z-50 dark:bg-primary-900 dark:text-gray-100 hidden lg:block">
+				{$t('N Fields Hidden', { n: hiddenCount })}
+			</Tooltip>
+		{/if}
+	</Button>
+{/if}
 
 <Modal bind:open size="xs" class="w-full" placement="top-center">
 	<ul class="space-y-2" bind:this={el}>
