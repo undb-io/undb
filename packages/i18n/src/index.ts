@@ -161,6 +161,7 @@ export const config: InitOptions = {
         email: 'email',
         'empty invitation': '{{count}} pending invites',
         invite: 'invite',
+        'cancel invite': 'cancel',
       },
       table: {
         trash: 'trash',
@@ -544,6 +545,7 @@ export const config: InitOptions = {
         email: '电子邮件',
         'empty invitation': '{{count}} 个待接受的邀请',
         invite: '邀请',
+        'cancel invite': '取消邀请',
       },
       table: {
         trash: '回收站',

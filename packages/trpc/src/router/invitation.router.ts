@@ -1,7 +1,9 @@
 import {
+  CancelInvitationCommand,
   GetInvitationsQuery,
   InviteCommand,
   ReInviteCommand,
+  cancelInvitationCommandInput,
   getInvitationsQueryOutput,
   getInvitationsQuerySchema,
   inviteCommandInput,
@@ -38,6 +40,14 @@ export const createInvitationRouter =
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new ReInviteCommand(input)
+          return commandBus.execute(cmd)
+        }),
+      cancel: procedure
+        .use(authz('invitation:cancel'))
+        .input(cancelInvitationCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new CancelInvitationCommand(input)
           return commandBus.execute(cmd)
         }),
     })

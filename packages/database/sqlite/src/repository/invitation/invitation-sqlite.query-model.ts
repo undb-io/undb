@@ -12,12 +12,13 @@ export class InvitationSqliteQueryModel implements IInvitationQueryModel {
   async find(spec: Option<InvitationSpecification>): Promise<IQueryInvitation[]> {
     const em = this.em.fork()
 
+    const qb = em.qb(Invitation)
     if (spec.isSome()) {
-      const visitor = new InvitationSqliteQueryVisitor(em, em.qb(Invitation))
+      const visitor = new InvitationSqliteQueryVisitor(em, qb)
       spec.unwrap().accept(visitor)
     }
 
-    const results = await em.find(Invitation, {})
+    const results = await qb.getResultList()
 
     return results.map((entity) => InvitationSqliteMapper.toQuery(entity))
   }

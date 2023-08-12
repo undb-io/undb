@@ -24,7 +24,10 @@ export class Invitation {
     }
 
     specs.push(this.extend())
-    specs.push(this.status.activate())
+    const activate = this.status.activate()
+    if (activate.isSome()) {
+      specs.push(activate.unwrap())
+    }
 
     const spec = and(...specs).unwrap()
 

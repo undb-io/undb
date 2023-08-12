@@ -1,5 +1,7 @@
 import { ValueObject } from '@undb/domain'
+import { None, Some, type Option } from 'oxide.ts'
 import { z } from 'zod'
+import type { InvitationSpecification } from '../interface'
 import { WithInvitationStatus } from '../specifications'
 
 export const invitationStatus = z.enum(['active', 'cancelled'])
@@ -8,20 +10,26 @@ export type IInvitationStatus = z.infer<typeof invitationStatus>
 
 export class InvitationStatus extends ValueObject<IInvitationStatus> {
   public value() {
-    return this.props.value
+    return this.unpack()
   }
 
   static fromString(status: string) {
     return new this({ value: invitationStatus.parse(status) })
   }
 
-  public activate() {
+  public activate(): Option<InvitationSpecification> {
+    if (this.unpack() === 'active') {
+      return None
+    }
     const status = new InvitationStatus({ value: 'active' })
-    return new WithInvitationStatus(status)
+    return Some(new WithInvitationStatus(status))
   }
 
-  public cancel() {
+  public cancel(): Option<InvitationSpecification> {
+    if (this.unpack() === 'cancelled') {
+      return None
+    }
     const status = new InvitationStatus({ value: 'cancelled' })
-    return new WithInvitationStatus(status)
+    return Some(new WithInvitationStatus(status))
   }
 }
