@@ -2,6 +2,7 @@ import { ValueObject } from '@undb/domain'
 import { None, Some, type Option } from 'oxide.ts'
 import { z } from 'zod'
 import type { InvitationSpecification } from '../interface'
+import { InvitationCancelled } from '../invitation.errors'
 import { WithInvitationStatus } from '../specifications'
 
 export const invitationStatus = z.enum(['active', 'cancelled', 'accepted'])
@@ -11,6 +12,10 @@ export type IInvitationStatus = z.infer<typeof invitationStatus>
 export class InvitationStatus extends ValueObject<IInvitationStatus> {
   public value() {
     return this.unpack()
+  }
+
+  public get isCancelled() {
+    return this.unpack() === 'cancelled'
   }
 
   static fromString(status: string) {
@@ -38,7 +43,15 @@ export class InvitationStatus extends ValueObject<IInvitationStatus> {
       return None
     }
 
+    if (this.isCancelled) {
+      throw new InvitationCancelled()
+    }
+
     const status = new InvitationStatus({ value: 'accepted' })
     return Some(new WithInvitationStatus(status))
+  }
+
+  public get acceptable(): boolean {
+    return this.unpack() === 'active'
   }
 }

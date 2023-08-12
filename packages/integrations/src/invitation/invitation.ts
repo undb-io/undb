@@ -5,6 +5,7 @@ import { isAfter } from 'date-fns'
 import { Some, type Option } from 'oxide.ts'
 import type { InvitationSpecification } from './interface'
 import type { InvitationId } from './invitation-id.vo'
+import { InvitationExpired } from './invitation.errors'
 import {
   WithInvitationCancelledBy,
   WithInvitationExpiredAt,
@@ -68,6 +69,9 @@ export class Invitation {
   }
 
   public accept() {
+    if (this.isExpired) {
+      throw new InvitationExpired(this.expiredAt.value)
+    }
     return this.status.accept()
   }
 }
