@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
 	import { hasPermission } from '$lib/store/authz'
+	import { trpc } from '$lib/trpc/client'
+	import type { IRolesWithoutOwner } from '@undb/authz/dist'
 	import type { IQueryInvitation } from '@undb/integrations/dist'
 	import { Badge, Card, Select } from 'flowbite-svelte'
 	import type { SelectOptionType } from 'flowbite-svelte/dist/types'
@@ -13,8 +15,15 @@
 		{ value: 'viewer', name: $t('viewer', { ns: 'authz' }) },
 	]
 
-	const reinvaite = () => {
-		throw new Error('todo')
+	const reinviteMutation = trpc().invitation.reinvite.mutation({})
+
+	const reinvite = (e: Event) => {
+		const target = e.target as HTMLSelectElement
+		const role = target.value as IRolesWithoutOwner
+		$reinviteMutation.mutate({
+			id: invitation.id,
+			role,
+		})
 	}
 </script>
 
@@ -28,7 +37,7 @@
 		</div>
 		<div>
 			{#if $hasPermission('invitation:invite')}
-				<Select {items} value={invitation.role} size="sm" class="col-span-1" on:change={reinvaite} />
+				<Select {items} value={invitation.role} size="sm" class="col-span-1" on:change={reinvite} />
 			{:else}
 				<Badge>{$t(invitation.role, { ns: 'authz' })}</Badge>
 			{/if}

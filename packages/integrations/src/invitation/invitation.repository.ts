@@ -3,6 +3,7 @@ import type { InvitationSpecification } from './interface.js'
 import type { Invitation } from './invitation.js'
 
 export interface IInvitationRepository {
+  findOneById(id: string): Promise<Option<Invitation>>
   findOne(spec: InvitationSpecification): Promise<Option<Invitation>>
 
   insert(invitation: Invitation): Promise<void>

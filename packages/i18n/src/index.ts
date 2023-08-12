@@ -160,6 +160,7 @@ export const config: InitOptions = {
         anonymous: 'anonymous',
         email: 'email',
         'empty invitation': '{{count}} pending invites',
+        invite: 'invite',
       },
       table: {
         trash: 'trash',
@@ -542,6 +543,7 @@ export const config: InitOptions = {
         anonymous: '匿名用户',
         email: '电子邮件',
         'empty invitation': '{{count}} 个待接受的邀请',
+        invite: '邀请',
       },
       table: {
         trash: '回收站',

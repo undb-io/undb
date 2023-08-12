@@ -1,9 +1,11 @@
 import {
   GetInvitationsQuery,
   InviteCommand,
+  ReInviteCommand,
   getInvitationsQueryOutput,
   getInvitationsQuerySchema,
   inviteCommandInput,
+  reinviteCommandInput,
 } from '@undb/cqrs'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
@@ -28,6 +30,14 @@ export const createInvitationRouter =
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new InviteCommand(input)
+          return commandBus.execute(cmd)
+        }),
+      reinvite: procedure
+        .use(authz('invitation:invite'))
+        .input(reinviteCommandInput)
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new ReInviteCommand(input)
           return commandBus.execute(cmd)
         }),
     })

@@ -23,6 +23,11 @@ export class NestInvitationSqliteRepository extends InvitationSqliteRepository {
   }
 
   @UseRequestContext()
+  findOneById(id: string): Promise<Option<Invitation>> {
+    return super.findOneById(id)
+  }
+
+  @UseRequestContext()
   findOne(spec: InvitationSpecification): Promise<Option<Invitation>> {
     return super.findOne(spec)
   }

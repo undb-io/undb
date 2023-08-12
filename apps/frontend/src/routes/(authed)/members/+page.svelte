@@ -19,11 +19,9 @@
 		<TabItem open title={$t('Members', { ns: 'common' })}>
 			<MemberList {members} />
 		</TabItem>
-		{#if $hasPermission('invitation:list')}
-			<TabItem title={$t('Invitations', { ns: 'common' })}>
-				<InvitationList />
-			</TabItem>
-		{/if}
+		<TabItem title={$t('Invitations', { ns: 'common' })} disabled={!$hasPermission('invitation:list')}>
+			<InvitationList />
+		</TabItem>
 	</Tabs>
 </div>
 

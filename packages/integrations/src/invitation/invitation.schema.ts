@@ -8,6 +8,10 @@ export const inviteSchema = z.object({
   role: rolesWithoutOwner,
 })
 
+export const reinviteSchema = z.object({
+  role: rolesWithoutOwner,
+})
+
 export const queryInivtation = z.object({
   id: inviteIdSchema,
   email: emailSchema,
