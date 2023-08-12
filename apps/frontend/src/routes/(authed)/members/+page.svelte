@@ -2,10 +2,11 @@
 	import type { PageData } from './$types'
 	import { sidebarCollapsed } from '$lib/store/ui'
 	import MemberList from '$lib/authz/member/MemberList.svelte'
-	import InviteButton from '$lib/invitation/InviteButton.svelte'
-	import { Hr } from 'flowbite-svelte'
+	import { TabItem, Tabs } from 'flowbite-svelte'
 	import InviteModal from '$lib/invitation/InviteModal.svelte'
 	import { inviteModal } from '$lib/store/modal'
+	import InvitationList from '$lib/invitation/InvitationList.svelte'
+	import { t } from '$lib/i18n'
 
 	export let data: PageData
 
@@ -13,13 +14,14 @@
 </script>
 
 <div class="space-y-2">
-	<div class="w-full flex justify-end">
-		<InviteButton />
-	</div>
-
-	<Hr />
-
-	<MemberList {members} />
+	<Tabs style="underline">
+		<TabItem open title={$t('Members', { ns: 'common' })}>
+			<MemberList {members} />
+		</TabItem>
+		<TabItem title={$t('Invitations', { ns: 'common' })}>
+			<InvitationList />
+		</TabItem>
+	</Tabs>
 </div>
 
 {#if $sidebarCollapsed}

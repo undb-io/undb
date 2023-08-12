@@ -37,7 +37,7 @@ export const memberActions = z.enum(['member:update_role'])
 export const rlsPermissionActions = z.enum(['rls:list', 'rls:create', 'rls:update', 'rls:delete'])
 export const widgetActions = z.enum(['widget:create', 'widget:relayout', 'widget:delete'])
 export const visualizationActions = z.enum(['visualization:update'])
-export const invitationActions = z.enum(['invitation:invite', 'invitation:cancel'])
+export const invitationActions = z.enum(['invitation:list', 'invitation:invite', 'invitation:cancel'])
 
 export type PermissionAction = z.infer<
   | typeof tableActions
@@ -97,6 +97,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'widget:delete': true,
     'widget:relayout': true,
     'visualization:update': true,
+    'invitation:list': true,
     'invitation:invite': true,
     'invitation:cancel': true,
   },
@@ -145,6 +146,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'widget:delete': true,
     'widget:relayout': true,
     'visualization:update': true,
+    'invitation:list': true,
     'invitation:invite': true,
     'invitation:cancel': true,
   },
@@ -193,6 +195,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'widget:delete': true,
     'widget:relayout': true,
     'visualization:update': true,
+    'invitation:list': false,
     'invitation:invite': false,
     'invitation:cancel': false,
   },
@@ -241,6 +244,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'widget:delete': false,
     'widget:relayout': false,
     'visualization:update': false,
+    'invitation:list': false,
     'invitation:invite': false,
     'invitation:cancel': false,
   },

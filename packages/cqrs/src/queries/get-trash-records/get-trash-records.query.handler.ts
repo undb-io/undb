@@ -1,4 +1,4 @@
-import type { IRLSRecordSpecService } from '@undb/authz/dist/index.js'
+import type { IRLSRecordSpecService } from '@undb/authz'
 import type { ClsStore, IClsService, IRecordQueryModel, ITableRepository } from '@undb/core'
 import { withTableRecordsSpec } from '@undb/core'
 import { andOptions, type IQueryHandler } from '@undb/domain'

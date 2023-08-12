@@ -1,4 +1,4 @@
-import type { IRolesWithoutOwner } from '@undb/authz/dist/index.js'
+import type { IRolesWithoutOwner } from '@undb/authz'
 import type { CommandProps } from '@undb/domain'
 import { Command } from '@undb/domain'
 import type { IInviteCommandInput } from './invite.command.interface.js'

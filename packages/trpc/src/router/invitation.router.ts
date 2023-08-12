@@ -1,4 +1,10 @@
-import { InviteCommand, inviteCommandInput } from '@undb/cqrs'
+import {
+  GetInvitationsQuery,
+  InviteCommand,
+  getInvitationsQueryOutput,
+  getInvitationsQuerySchema,
+  inviteCommandInput,
+} from '@undb/cqrs'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
@@ -8,6 +14,14 @@ import { authz } from './authz.middleware.js'
 export const createInvitationRouter =
   (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
     router({
+      list: procedure
+        .use(authz('invitation:list'))
+        .input(getInvitationsQuerySchema)
+        .output(getInvitationsQueryOutput)
+        .query(({ input }) => {
+          const query = new GetInvitationsQuery(input)
+          return queryBus.execute(query)
+        }),
       invite: procedure
         .use(authz('invitation:invite'))
         .input(inviteCommandInput)

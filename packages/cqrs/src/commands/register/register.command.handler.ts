@@ -1,4 +1,4 @@
-import type { IMemberCreateService } from '@undb/authz/dist/index.js'
+import type { IMemberCreateService } from '@undb/authz'
 import type { IUserRepository } from '@undb/core'
 import { UserFactory, WithUserColor, WithUserEmail, WithUserId, WithUserPassword, WithUsername } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'

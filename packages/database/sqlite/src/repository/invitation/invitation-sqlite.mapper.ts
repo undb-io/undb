@@ -1,4 +1,4 @@
-import type { IRolesWithoutOwner } from '@undb/authz/dist/index.js'
+import type { IRolesWithoutOwner } from '@undb/authz'
 import type { IQueryInvitation, Invitation as InvitationDo } from '@undb/integrations'
 import {
   InvitationFactory,

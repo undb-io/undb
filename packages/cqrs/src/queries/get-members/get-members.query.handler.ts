@@ -1,4 +1,4 @@
-import type { IMemberQueryModel } from '@undb/authz/dist/index.js'
+import type { IMemberQueryModel } from '@undb/authz'
 import type { IQueryHandler } from '@undb/domain'
 import { None } from 'oxide.ts'
 import type { IGetMembersOutput } from './get-members.query.interface.js'
