@@ -1,7 +1,7 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import { colors } from '$lib/field/helpers'
-	import type { IQueryMember, IUpdateMemberRole } from '@undb/authz'
+	import type { IQueryMember, IRolesWithoutOwner } from '@undb/authz'
 	import { Card, Avatar, Badge, Select } from 'flowbite-svelte'
 	import { hasPermission } from '$lib/store/authz'
 	import type { SelectOptionType } from 'flowbite-svelte/dist/types'
@@ -20,7 +20,7 @@
 	const updateRoleMutation = trpc().authz.member.updateRole.mutation({})
 	const updateRole = (e: Event) => {
 		const target = e.target as HTMLSelectElement
-		const value = target.value as IUpdateMemberRole
+		const value = target.value as IRolesWithoutOwner
 		$updateRoleMutation.mutate({
 			memberId: member.id,
 			role: value,

@@ -1,3 +1,3 @@
-import { z } from 'zod'
+import { inviteSchema } from '@undb/integrations'
 
-export const inviteCommandInput = z.object({})
+export const inviteCommandInput = inviteSchema

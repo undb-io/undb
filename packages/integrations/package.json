@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "author": "",
   "dependencies": {
+    "@undb/authz": "workspace:^",
     "@undb/core": "^0.0.0",
     "@undb/domain": "^0.0.0",
     "@undb/logger": "^0.0.0",

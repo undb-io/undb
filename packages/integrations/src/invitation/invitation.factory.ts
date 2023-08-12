@@ -1,7 +1,10 @@
-import { and } from '@undb/domain'
+import { Role } from '@undb/authz'
+import { EmailVO, and } from '@undb/domain'
 import type { InvitationSpecification } from './interface.js'
 import { Invitation } from './invitation.js'
+import { WithInvitationEmail } from './specifications/invitation-email.specification.js'
 import { WithInvitationId } from './specifications/invitation-id.specification.js'
+import { WithInvitationRole } from './specifications/invitation-role.specification.js'
 
 export class InvitationFactory {
   static create(...specs: InvitationSpecification[]): Invitation {
@@ -11,7 +14,11 @@ export class InvitationFactory {
       .unwrap()
   }
 
-  static invite() {
-    return this.create(WithInvitationId.create())
+  static invite(email: string, role: string) {
+    return this.create(
+      WithInvitationId.create(),
+      new WithInvitationEmail(EmailVO.fromString(email)),
+      new WithInvitationRole(Role.fromString(role)),
+    )
   }
 }

@@ -1074,6 +1074,9 @@ importers:
 
   packages/integrations:
     dependencies:
+      '@undb/authz':
+        specifier: workspace:^
+        version: link:../authz
       '@undb/core':
         specifier: ^0.0.0
         version: link:../core

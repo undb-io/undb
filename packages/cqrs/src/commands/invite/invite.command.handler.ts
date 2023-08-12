@@ -9,7 +9,7 @@ export class InviteCommandHandler implements IInviteCommandHandler {
   constructor(protected readonly repo: IInvitationRepository) {}
 
   async execute(command: InviteCommand): Promise<void> {
-    const invitation = InvitationFactory.invite()
+    const invitation = InvitationFactory.invite(command.email, command.role)
 
     await this.repo.insert(invitation)
   }

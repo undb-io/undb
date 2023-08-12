@@ -1,4 +1,4 @@
-import { Entity, PrimaryKey } from '@mikro-orm/core'
+import { Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core'
 import { Invitation as InvitationDo } from '@undb/integrations'
 
 @Entity({
@@ -7,8 +7,18 @@ import { Invitation as InvitationDo } from '@undb/integrations'
 export class Invitation {
   constructor(invitation: InvitationDo) {
     this.id = invitation.id.value
+    this.email = invitation.email.unpack()
+    this.role = invitation.role.unpack()
   }
 
   @PrimaryKey()
   id: string
+
+  @Property()
+  @Index()
+  @Unique()
+  email: string
+
+  @Property()
+  role: string
 }
