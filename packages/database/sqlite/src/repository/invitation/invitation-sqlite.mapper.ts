@@ -1,4 +1,5 @@
-import type { Invitation as InvitationDo } from '@undb/integrations'
+import type { IRolesWithoutOwner } from '@undb/authz/dist/index.js'
+import type { IQueryInvitation, Invitation as InvitationDo } from '@undb/integrations'
 import {
   InvitationFactory,
   WithInvitationEmail,
@@ -16,5 +17,14 @@ export class InvitationSqliteMapper {
       WithInvitationRole.fromString(invitation.role),
       WithInvitationExpiredAt.fromDate(invitation.expiredAt),
     )
+  }
+
+  static toQuery(invitation: Invitation): IQueryInvitation {
+    return {
+      id: invitation.id,
+      email: invitation.email,
+      role: invitation.role as IRolesWithoutOwner,
+      expiredAt: invitation.expiredAt.toISOString(),
+    }
   }
 }
