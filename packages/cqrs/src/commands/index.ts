@@ -1,3 +1,4 @@
+export * from './accept-invitation/index.js'
 export * from './bulk-delete-records/index.js'
 export * from './bulk-duplicate-records/index.js'
 export * from './cancel-invitation/index.js'

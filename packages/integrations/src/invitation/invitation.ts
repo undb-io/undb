@@ -1,6 +1,7 @@
 import { Role } from '@undb/authz'
 import { UserId } from '@undb/core'
 import { and, andOptions, type EmailVO } from '@undb/domain'
+import { isAfter } from 'date-fns'
 import { Some, type Option } from 'oxide.ts'
 import type { InvitationSpecification } from './interface'
 import type { InvitationId } from './invitation-id.vo'
@@ -46,6 +47,10 @@ export class Invitation {
     return spec
   }
 
+  public get isExpired(): boolean {
+    return isAfter(this.expiredAt.value, new Date())
+  }
+
   public extend(): InvitationSpecification {
     const spec = WithInvitationExpiredAt.default()
 
@@ -60,5 +65,9 @@ export class Invitation {
       return andOptions(spec, Some(new WithInvitationCancelledBy(Some(UserId.from(userId).unwrap()))))
     }
     return spec
+  }
+
+  public accept() {
+    return this.status.accept()
   }
 }

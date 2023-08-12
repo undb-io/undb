@@ -4,7 +4,7 @@ import { z } from 'zod'
 import type { InvitationSpecification } from '../interface'
 import { WithInvitationStatus } from '../specifications'
 
-export const invitationStatus = z.enum(['active', 'cancelled'])
+export const invitationStatus = z.enum(['active', 'cancelled', 'accepted'])
 
 export type IInvitationStatus = z.infer<typeof invitationStatus>
 
@@ -30,6 +30,15 @@ export class InvitationStatus extends ValueObject<IInvitationStatus> {
       return None
     }
     const status = new InvitationStatus({ value: 'cancelled' })
+    return Some(new WithInvitationStatus(status))
+  }
+
+  public accept(): Option<InvitationSpecification> {
+    if (this.unpack() === 'accepted') {
+      return None
+    }
+
+    const status = new InvitationStatus({ value: 'accepted' })
     return Some(new WithInvitationStatus(status))
   }
 }

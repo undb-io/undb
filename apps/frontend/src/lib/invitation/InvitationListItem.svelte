@@ -2,8 +2,8 @@
 	import { t } from '$lib/i18n'
 	import { hasPermission } from '$lib/store/authz'
 	import { trpc } from '$lib/trpc/client'
-	import type { IRolesWithoutOwner } from '@undb/authz/dist'
-	import type { IQueryInvitation } from '@undb/integrations/dist'
+	import type { IRolesWithoutOwner } from '@undb/authz'
+	import type { IQueryInvitation } from '@undb/integrations'
 	import { Badge, Card, Dropdown, DropdownItem, Select } from 'flowbite-svelte'
 	import type { SelectOptionType } from 'flowbite-svelte/dist/types'
 
