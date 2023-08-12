@@ -8,6 +8,9 @@ export class WithInvitationExpiredAt extends CompositeSpecification<Invitation, 
   constructor(public readonly expiredAt: InvitationExpiredAt) {
     super()
   }
+  static fromDate(expiredAt: Date) {
+    return new this(new InvitationExpiredAt(expiredAt))
+  }
   static default() {
     return new this(InvitationExpiredAt.default())
   }

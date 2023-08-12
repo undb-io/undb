@@ -8,6 +8,9 @@ export class WithInvitationId extends CompositeSpecification<Invitation, IInvita
   constructor(public readonly id: InvitationId) {
     super()
   }
+  static fromString(id: string) {
+    return new this(InvitationId.from(id).unwrap())
+  }
   static create() {
     return new this(InvitationId.create())
   }

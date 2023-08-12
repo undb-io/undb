@@ -15,4 +15,8 @@ export class Role extends ValueObject<IRoles> {
   static fromString(role: string): Role {
     return new this({ value: roles.parse(role) })
   }
+
+  static fromStringWithoutOwner(role: string): Role {
+    return new this({ value: rolesWithoutOwner.parse(role) })
+  }
 }

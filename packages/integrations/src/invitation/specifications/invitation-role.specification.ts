@@ -1,4 +1,4 @@
-import type { Role } from '@undb/authz'
+import { Role } from '@undb/authz'
 import { CompositeSpecification } from '@undb/domain'
 import { Ok, type Result } from 'oxide.ts'
 import type { IInvitationVisitor } from '../interface.js'
@@ -7,6 +7,9 @@ import type { Invitation } from '../invitation.js'
 export class WithInvitationRole extends CompositeSpecification<Invitation, IInvitationVisitor> {
   constructor(public readonly role: Role) {
     super()
+  }
+  static fromString(role: string) {
+    return new this(Role.fromString(role))
   }
   isSatisfiedBy(t: Invitation): boolean {
     return this.role.equals(t.role)
