@@ -159,6 +159,7 @@ export const config: InitOptions = {
         Copied: 'Copied',
         anonymous: 'anonymous',
         email: 'email',
+        'empty invitation': '{{count}} pending invites',
       },
       table: {
         trash: 'trash',
@@ -540,6 +541,7 @@ export const config: InitOptions = {
         Copied: '已复制',
         anonymous: '匿名用户',
         email: '电子邮件',
+        'empty invitation': '{{count}} 个待定的邀请',
       },
       table: {
         trash: '回收站',
