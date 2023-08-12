@@ -6,6 +6,7 @@ import { WithInvitationEmail } from './specifications/invitation-email.specifica
 import { WithInvitationExpiredAt } from './specifications/invitation-expired-at.specification.js'
 import { WithInvitationId } from './specifications/invitation-id.specification.js'
 import { WithInvitationRole } from './specifications/invitation-role.specification.js'
+import { WithInvitationStatus } from './specifications/invitation-status.specification.js'
 
 export class InvitationFactory {
   static create(...specs: InvitationSpecification[]): Invitation {
@@ -21,6 +22,7 @@ export class InvitationFactory {
       new WithInvitationEmail(EmailVO.fromString(email)),
       new WithInvitationRole(Role.fromString(role)),
       WithInvitationExpiredAt.default(),
+      WithInvitationStatus.active(),
     )
   }
 }

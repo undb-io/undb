@@ -13,6 +13,7 @@ export class Invitation extends BaseEntity {
     this.email = invitation.email.unpack()
     this.role = invitation.role.unpack()
     this.expiredAt = invitation.expiredAt.value
+    this.status = invitation.status.unpack()
   }
 
   @PrimaryKey()
@@ -28,4 +29,7 @@ export class Invitation extends BaseEntity {
 
   @Property()
   expiredAt: Date
+
+  @Property()
+  status: string
 }

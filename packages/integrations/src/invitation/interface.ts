@@ -4,12 +4,14 @@ import type { WithInvitationEmail } from './specifications/invitation-email.spec
 import type { WithInvitationExpiredAt } from './specifications/invitation-expired-at.specification.js'
 import type { WithInvitationId } from './specifications/invitation-id.specification.js'
 import type { WithInvitationRole } from './specifications/invitation-role.specification.js'
+import type { WithInvitationStatus } from './specifications/invitation-status.specification.js'
 
 export interface IInvitationVisitor extends ISpecVisitor {
   withInvitationId(s: WithInvitationId): void
   withEmail(s: WithInvitationEmail): void
   withRole(s: WithInvitationRole): void
   expiredAt(s: WithInvitationExpiredAt): void
+  withStatus(s: WithInvitationStatus): void
 }
 
 export type InvitationSpecification = CompositeSpecification<Invitation, IInvitationVisitor>

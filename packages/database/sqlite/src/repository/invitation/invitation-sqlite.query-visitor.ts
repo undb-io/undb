@@ -6,6 +6,7 @@ import type {
   WithInvitationExpiredAt,
   WithInvitationId,
   WithInvitationRole,
+  WithInvitationStatus,
 } from '@undb/integrations'
 import type { Invitation } from '../../entity/invitation.js'
 
@@ -14,6 +15,9 @@ export class InvitationSqliteQueryVisitor implements IInvitationVisitor {
     public readonly em: EntityManager,
     public readonly qb: QueryBuilder<Invitation>,
   ) {}
+  withStatus(s: WithInvitationStatus): void {
+    this.qb.andWhere({ status: s.status.unpack() })
+  }
   withInvitationId(s: WithInvitationId): void {
     this.qb.andWhere({ id: s.id.value })
   }

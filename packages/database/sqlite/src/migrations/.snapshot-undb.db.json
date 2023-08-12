@@ -69,6 +69,15 @@
           "nullable": false,
           "length": 0,
           "mappedType": "datetime"
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
         }
       },
       "name": "undb_invitation",

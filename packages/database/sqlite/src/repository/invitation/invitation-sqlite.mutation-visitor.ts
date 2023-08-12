@@ -7,6 +7,7 @@ import type {
   WithInvitationExpiredAt,
   WithInvitationId,
   WithInvitationRole,
+  WithInvitationStatus,
 } from '@undb/integrations'
 import { Invitation } from '../../entity/invitation.js'
 
@@ -15,6 +16,11 @@ export class InvitationSqliteMutationVisitor implements IInvitationVisitor {
     public readonly id: string,
     public readonly em: EntityManager,
   ) {}
+  withStatus(s: WithInvitationStatus): void {
+    const invitation = this.em.getReference(Invitation, this.id)
+    wrap(invitation).assign({ status: s.status.unpack() })
+    this.em.persist(invitation)
+  }
   withInvitationId(s: WithInvitationId): void {
     throw new Error('Method not implemented.')
   }

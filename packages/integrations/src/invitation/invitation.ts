@@ -3,13 +3,14 @@ import { and, type EmailVO } from '@undb/domain'
 import type { InvitationSpecification } from './interface'
 import type { InvitationId } from './invitation-id.vo'
 import { WithInvitationExpiredAt, WithInvitationRole } from './specifications'
-import type { InvitationExpiredAt } from './value-objects'
+import type { InvitationExpiredAt, InvitationStatus } from './value-objects'
 
 export class Invitation {
   id!: InvitationId
   email!: EmailVO
   role!: Role
   expiredAt!: InvitationExpiredAt
+  status!: InvitationStatus
 
   static empty() {
     return new Invitation()
@@ -23,11 +24,24 @@ export class Invitation {
     }
 
     specs.push(this.extend())
+    specs.push(this.status.activate())
 
-    return and(...specs).unwrap()
+    const spec = and(...specs).unwrap()
+
+    spec.mutate(this)
+
+    return spec
   }
 
   public extend(): InvitationSpecification {
-    return WithInvitationExpiredAt.default()
+    const spec = WithInvitationExpiredAt.default()
+
+    spec.mutate(this)
+
+    return spec
+  }
+
+  public cancel() {
+    return this.status.cancel()
   }
 }

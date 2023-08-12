@@ -15,10 +15,12 @@
 		{ value: 'editor', name: $t('editor', { ns: 'authz' }) },
 		{ value: 'viewer', name: $t('viewer', { ns: 'authz' }) },
 	]
+	const getInvitations = trpc().invitation.list.query(undefined, { enabled: false })
 
 	const inviteMutation = trpc().invitation.invite.mutation({
-		onSuccess(data, variables, context) {
+		async onSuccess(data, variables, context) {
 			inviteModal.close()
+			await $getInvitations.refetch()
 		},
 	})
 
