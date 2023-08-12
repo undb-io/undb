@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { EventBus } from '@nestjs/cqrs'
-import { EventFactory } from '@undb/core'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { NestOutboxService } from '../outbox/outbox.service.js'
+import { ReplyEventService } from './reply-event.service.js'
 
 @Injectable()
 export class RelayService {
@@ -11,19 +11,13 @@ export class RelayService {
     private readonly logger: PinoLogger,
     private readonly outboxService: NestOutboxService,
     private readonly eventBus: EventBus,
+    private readonly replyEventService: ReplyEventService,
   ) {}
 
   async handleCron() {
     await this.outboxService.handle((outboxList) => {
       for (const outbox of outboxList) {
-        const event = EventFactory.create(
-          outbox.uuid,
-          outbox.operatorId,
-          outbox.name,
-          outbox.payload,
-          outbox.meta,
-          outbox.timestamp,
-        )
+        const event = this.replyEventService.construcEvent(outbox)
         if (!event) {
           this.logger.warn('unknown event name %s', outbox.name)
           continue

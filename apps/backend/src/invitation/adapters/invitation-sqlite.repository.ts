@@ -1,5 +1,6 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
+import { type IEvent } from '@undb/domain'
 import { Invitation, type InvitationSpecification } from '@undb/integrations'
 import { EntityManager, InvitationSqliteRepository } from '@undb/sqlite'
 import type { Option } from 'oxide.ts'
@@ -18,8 +19,8 @@ export class NestInvitationSqliteRepository extends InvitationSqliteRepository {
   }
 
   @UseRequestContext()
-  insert(invitation: Invitation): Promise<void> {
-    return super.insert(invitation)
+  insert(invitation: Invitation, evt: IEvent): Promise<void> {
+    return super.insert(invitation, evt)
   }
 
   @UseRequestContext()

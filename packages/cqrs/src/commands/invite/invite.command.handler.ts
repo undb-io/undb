@@ -22,7 +22,7 @@ export class InviteCommandHandler implements IInviteCommandHandler {
     } else {
       const invitation = InvitationFactory.invite(command.email, command.role, userId)
 
-      const evt = InvitedEvent.from(invitation)
+      const evt = InvitedEvent.from(invitation, userId)
 
       await this.repo.insert(invitation, evt)
     }
