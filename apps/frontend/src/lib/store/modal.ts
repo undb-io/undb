@@ -86,3 +86,6 @@ export const recordTrashModal = createModal(RECORD_TRASH_MODAL)
 
 const RLS_MODAL = Symbol('RLS_MODAL')
 export const rlsModal = createModal(RLS_MODAL)
+
+const INVITE_MODAL = Symbol('INVITE_MODAL')
+export const inviteModal = createModal(INVITE_MODAL)

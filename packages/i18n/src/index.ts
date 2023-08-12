@@ -43,6 +43,10 @@ export const config: InitOptions = {
         delete: 'delete',
         anyone: 'Anyone',
         users: 'Users',
+        owner: 'owner',
+        admin: 'admin',
+        editor: 'editor',
+        viewer: 'viewer',
       },
       errors: {
         'TABLE.NOT_FOUND': 'Table not found',
@@ -153,6 +157,7 @@ export const config: InitOptions = {
         'full screen': 'Full screen',
         Copied: 'Copied',
         anonymous: 'anonymous',
+        email: 'email',
       },
       table: {
         trash: 'trash',
@@ -418,6 +423,10 @@ export const config: InitOptions = {
         delete: '删除',
         anyone: '任何人',
         users: '指定用户',
+        owner: '拥有者',
+        admin: '管理员',
+        editor: '编辑者',
+        viewer: '查看者',
       },
       errors: {
         'TABLE.NOT_FOUND': '没有找到表格',
@@ -528,6 +537,7 @@ export const config: InitOptions = {
         'full screen': '全屏',
         Copied: '已复制',
         anonymous: '匿名用户',
+        email: '电子邮件',
       },
       table: {
         trash: '回收站',

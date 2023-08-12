@@ -4,6 +4,8 @@
 	import MemberList from '$lib/authz/member/MemberList.svelte'
 	import InviteButton from '$lib/invitation/InviteButton.svelte'
 	import { Hr } from 'flowbite-svelte'
+	import InviteModal from '$lib/invitation/InviteModal.svelte'
+	import { inviteModal } from '$lib/store/modal'
 
 	export let data: PageData
 
@@ -26,4 +28,8 @@
 			<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
 		</button>
 	</div>
+{/if}
+
+{#if $inviteModal.open}
+	<InviteModal />
 {/if}

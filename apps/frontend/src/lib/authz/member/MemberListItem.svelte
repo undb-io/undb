@@ -6,15 +6,16 @@
 	import { hasPermission } from '$lib/store/authz'
 	import type { SelectOptionType } from 'flowbite-svelte/dist/types'
 	import { trpc } from '$lib/trpc/client'
+	import { t } from '$lib/i18n'
 
 	export let member: IQueryMember
 
 	const canUpdateRole = $hasPermission('member:update_role')
 
 	const items: SelectOptionType[] = [
-		{ value: 'admin', name: 'admin' },
-		{ value: 'editor', name: 'editor' },
-		{ value: 'viewer', name: 'viewer' },
+		{ value: 'admin', name: $t('admin', { ns: 'authz' }) },
+		{ value: 'editor', name: $t('editor', { ns: 'authz' }) },
+		{ value: 'viewer', name: $t('viewer', { ns: 'authz' }) },
 	]
 
 	const updateRoleMutation = trpc().authz.member.updateRole.mutation({})
@@ -88,7 +89,7 @@
 				<Select {items} value={member.role} size="sm" on:change={updateRole} />
 			{:else}
 				<Badge color="blue" class="border border-blue-500">
-					{member.role}
+					{$t(member.role, { ns: 'authz' })}
 				</Badge>
 			{/if}
 		</div>
