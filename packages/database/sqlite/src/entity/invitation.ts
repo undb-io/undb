@@ -1,12 +1,13 @@
-import { Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core'
+import { Entity, Index, ManyToOne, PrimaryKey, Property, Unique, type Rel } from '@mikro-orm/core'
 import { Invitation as InvitationDo } from '@undb/integrations'
 import { BaseEntity } from './base.js'
+import { User } from './user.js'
 
 @Entity({
   tableName: 'undb_invitation',
 })
 export class Invitation extends BaseEntity {
-  constructor(invitation: InvitationDo) {
+  constructor(invitation: InvitationDo, invitedBy: Rel<User>) {
     super()
 
     this.id = invitation.id.value
@@ -14,6 +15,7 @@ export class Invitation extends BaseEntity {
     this.role = invitation.role.unpack()
     this.expiredAt = invitation.expiredAt.value
     this.status = invitation.status.unpack()
+    this.invitedBy = invitedBy
   }
 
   @PrimaryKey()
@@ -32,4 +34,10 @@ export class Invitation extends BaseEntity {
 
   @Property()
   status: string
+
+  @ManyToOne(() => User)
+  invitedBy: Rel<User>
+
+  @ManyToOne(() => User, { nullable: true })
+  cancelledBy?: Rel<User>
 }

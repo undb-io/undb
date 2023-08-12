@@ -59,15 +59,17 @@
 				<button>
 					<i class="ti ti-dots"></i>
 				</button>
-				<Dropdown class="w-48">
-					<DropdownItem
-						class="text-red-500"
-						on:click={() =>
-							$cancelInvitation.mutate({
-								id: invitation.id,
-							})}>{$t('cancel invite', { ns: 'common' })}</DropdownItem
-					>
-				</Dropdown>
+				{#if $hasPermission('invitation:cancel')}
+					<Dropdown class="w-48">
+						<DropdownItem
+							class="text-red-500"
+							on:click={() =>
+								$cancelInvitation.mutate({
+									id: invitation.id,
+								})}>{$t('cancel invite', { ns: 'common' })}</DropdownItem
+						>
+					</Dropdown>
+				{/if}
 			</div>
 		</div>
 	</div>

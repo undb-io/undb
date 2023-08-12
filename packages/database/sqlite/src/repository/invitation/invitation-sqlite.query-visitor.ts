@@ -2,9 +2,11 @@ import type { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
 import type { ISpecVisitor, ISpecification } from '@undb/domain'
 import type {
   IInvitationVisitor,
+  WithInvitationCancelledBy,
   WithInvitationEmail,
   WithInvitationExpiredAt,
   WithInvitationId,
+  WithInvitationInvitedBy,
   WithInvitationRole,
   WithInvitationStatus,
 } from '@undb/integrations'
@@ -15,6 +17,12 @@ export class InvitationSqliteQueryVisitor implements IInvitationVisitor {
     public readonly em: EntityManager,
     public readonly qb: QueryBuilder<Invitation>,
   ) {}
+  invitedBy(s: WithInvitationInvitedBy): void {
+    this.qb.andWhere({ invitedBy: s.invitedBy.value })
+  }
+  cancelledBy(s: WithInvitationCancelledBy): void {
+    this.qb.andWhere({ cancelledBy: s.cancelledBy.into(null)?.value })
+  }
   withStatus(s: WithInvitationStatus): void {
     this.qb.andWhere({ status: s.status.unpack() })
   }

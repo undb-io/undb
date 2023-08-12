@@ -1,4 +1,5 @@
 import { rolesWithoutOwner } from '@undb/authz'
+import { userIdSchema } from '@undb/core'
 import { emailSchema } from '@undb/domain'
 import { z } from 'zod'
 import { inviteIdSchema } from './invitation-id.vo.js'
@@ -19,6 +20,8 @@ export const queryInivtation = z.object({
   role: rolesWithoutOwner,
   expiredAt: z.string(),
   status: invitationStatus,
+  invitedBy: userIdSchema,
+  cancelledBy: userIdSchema.optional(),
 })
 
 export type IQueryInvitation = z.infer<typeof queryInivtation>
