@@ -11,7 +11,7 @@
 	$: field = fieldId ? $table.schema.getFieldById(fieldId).into() : undefined
 </script>
 
-{#if field && $hasPermission('record:create')}
+{#if field}
 	<Button
 		color="alternative"
 		size="xs"

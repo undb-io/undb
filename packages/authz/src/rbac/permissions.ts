@@ -29,7 +29,7 @@ export const tableActions = z.enum([
   'table:create_form',
   'table:update_form',
 ])
-export const recordActions = z.enum(['record:create', 'record:update', 'record:delete'])
+export const recordActions = z.enum(['record:create', 'record:update', 'record:delete', 'record:list_trash'])
 export const webhookActions = z.enum(['webhook:create', 'webhook:update', 'webhook:delete'])
 export const shareActions = z.enum(['share:enable', 'share:disable'])
 export const memberActions = z.enum(['member:update_role'])
@@ -78,6 +78,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'record:create': true,
     'record:delete': true,
     'record:update': true,
+    'record:list_trash': true,
     'webhook:create': true,
     'webhook:update': true,
     'webhook:delete': true,
@@ -121,6 +122,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'record:create': true,
     'record:delete': true,
     'record:update': true,
+    'record:list_trash': true,
     'webhook:create': true,
     'webhook:update': true,
     'webhook:delete': true,
@@ -144,6 +146,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'table:update_field': true,
     'table:duplicate_field': false,
     'table:delete_field': false,
+
     'table:create_view': true,
     'table:update_view_name': true,
     'table:move_view': true,
@@ -164,6 +167,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'record:create': true,
     'record:delete': true,
     'record:update': true,
+    'record:list_trash': true,
     'webhook:create': true,
     'webhook:update': true,
     'webhook:delete': true,
@@ -187,6 +191,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'table:update_field': true,
     'table:duplicate_field': false,
     'table:delete_field': false,
+
     'table:create_view': false,
     'table:update_view_name': false,
     'table:move_view': false,
@@ -207,6 +212,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'record:create': false,
     'record:delete': false,
     'record:update': false,
+    'record:list_trash': false,
     'webhook:create': false,
     'webhook:update': false,
     'webhook:delete': false,

@@ -31,6 +31,7 @@
 	import TableViewToast from './TableViewToast.svelte'
 	import { recordSelection, selectedCount, selectedRecords } from '$lib/store/record'
 	import { getColumnTemplate } from '$lib/field/field-template'
+	import { hasPermission } from '$lib/store/authz'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -331,7 +332,9 @@
 				triggeredBy={`#${fieldMenuDOMId}`}
 				class="w-[250px] border border-gray-200 dark:border-0 dark:shadow-md rounded-md z-[99999]"
 			>
-				<FieldMenu {togglePin} />
+				{#if $hasPermission('table:update_field')}
+					<FieldMenu {togglePin} />
+				{/if}
 			</Dropdown>
 		</Portal>
 	{/key}

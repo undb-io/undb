@@ -44,7 +44,7 @@
 			<FormsButton />
 		{/if}
 
-		{#if $hasPermission('record:delete')}
+		{#if $hasPermission('record:list_trash')}
 			<RecordTrashButton />
 		{/if}
 
