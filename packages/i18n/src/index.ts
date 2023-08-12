@@ -541,7 +541,7 @@ export const config: InitOptions = {
         Copied: '已复制',
         anonymous: '匿名用户',
         email: '电子邮件',
-        'empty invitation': '{{count}} 个待定的邀请',
+        'empty invitation': '{{count}} 个待接受的邀请',
       },
       table: {
         trash: '回收站',
