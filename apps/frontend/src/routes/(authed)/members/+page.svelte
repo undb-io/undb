@@ -7,6 +7,7 @@
 	import { inviteModal } from '$lib/store/modal'
 	import InvitationList from '$lib/invitation/InvitationList.svelte'
 	import { t } from '$lib/i18n'
+	import { hasPermission } from '$lib/store/authz'
 
 	export let data: PageData
 
@@ -18,9 +19,11 @@
 		<TabItem open title={$t('Members', { ns: 'common' })}>
 			<MemberList {members} />
 		</TabItem>
-		<TabItem title={$t('Invitations', { ns: 'common' })}>
-			<InvitationList />
-		</TabItem>
+		{#if $hasPermission('invitation:list')}
+			<TabItem title={$t('Invitations', { ns: 'common' })}>
+				<InvitationList />
+			</TabItem>
+		{/if}
 	</Tabs>
 </div>
 
