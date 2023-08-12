@@ -9,6 +9,7 @@ export class Invitation {
     this.id = invitation.id.value
     this.email = invitation.email.unpack()
     this.role = invitation.role.unpack()
+    this.expiredAt = invitation.expiredAt.value
   }
 
   @PrimaryKey()
@@ -21,4 +22,7 @@ export class Invitation {
 
   @Property()
   role: string
+
+  @Property()
+  expiredAt: Date
 }
