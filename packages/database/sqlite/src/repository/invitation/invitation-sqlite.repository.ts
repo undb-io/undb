@@ -1,7 +1,9 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
+import type { IEvent } from '@undb/domain'
 import type { IInvitationRepository, Invitation as InvitationDo, InvitationSpecification } from '@undb/integrations'
 import { None, Some, type Option } from 'oxide.ts'
 import { Invitation } from '../../entity/invitation.js'
+import { Outbox } from '../../entity/outbox.js'
 import { User } from '../../entity/user.js'
 import { InvitationSqliteMapper } from './invitation-sqlite.mapper.js'
 import { InvitationSqliteMutationVisitor } from './invitation-sqlite.mutation-visitor.js'
@@ -43,9 +45,14 @@ export class InvitationSqliteRepository implements IInvitationRepository {
     await em.flush()
   }
 
-  async insert(invitation: InvitationDo): Promise<void> {
-    const invitedBy = this.em.getReference(User, invitation.invitedBy.value)
+  async insert(invitation: InvitationDo, evt: IEvent): Promise<void> {
+    const em = this.em.fork()
+    const invitedBy = em.getReference(User, invitation.invitedBy.value)
     const entity = new Invitation(invitation, invitedBy)
-    await this.em.insert(entity)
+    em.persist(entity)
+
+    em.persist(new Outbox(evt))
+
+    await em.flush()
   }
 }

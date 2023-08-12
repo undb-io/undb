@@ -1,3 +1,4 @@
+export * from './events/index.js'
 export * from './interface.js'
 export * from './invitation-id.vo.js'
 export * from './invitation.factory.js'

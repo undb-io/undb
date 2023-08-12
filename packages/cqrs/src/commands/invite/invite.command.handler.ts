@@ -1,7 +1,7 @@
 import type { ClsStore, IClsService } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
 import type { IInvitationRepository } from '@undb/integrations'
-import { InvitationFactory, WithInvitationEmail } from '@undb/integrations'
+import { InvitationFactory, InvitedEvent, WithInvitationEmail } from '@undb/integrations'
 import type { InviteCommand } from './invite.command.js'
 
 type IInviteCommandHandler = ICommandHandler<InviteCommand, void>
@@ -22,7 +22,9 @@ export class InviteCommandHandler implements IInviteCommandHandler {
     } else {
       const invitation = InvitationFactory.invite(command.email, command.role, userId)
 
-      await this.repo.insert(invitation)
+      const evt = InvitedEvent.from(invitation)
+
+      await this.repo.insert(invitation, evt)
     }
   }
 }
