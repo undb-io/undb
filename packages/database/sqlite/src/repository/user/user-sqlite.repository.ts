@@ -49,4 +49,13 @@ export class UserSqliteRepository implements IUserRepository {
     const user = await qb.getSingleResult()
     return !!user
   }
+
+  async count(spec: UserSpecification | null): Promise<number> {
+    const qb = this.em.qb(User)
+    const visitor = new UserSqliteQueryVisitor(this.em, qb)
+
+    spec?.accept(visitor)
+
+    return qb.getCount()
+  }
 }

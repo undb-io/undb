@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ParentField, RecordFactory, TreeField } from '@undb/core'
 	import ForeignRecordsPicker from './ForeignRecordsPicker.svelte'
-	import { currentRecordId, getRecords, getTable } from '$lib/store/table'
+	import { currentRecordId, getTable, recordsStore } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 
 	export let value: string | null
@@ -20,7 +20,7 @@
 		return RecordFactory.fromQueryRecords(data.records, $table.schema.toIdMap())
 	}
 
-	const tableRecords = getRecords()
+	const tableRecords = recordsStore.records
 
 	async function getInitRecords() {
 		return $tableRecords.filter((r) => value === r.id.value)

@@ -694,6 +694,39 @@ export type UnpackedFieldValue =
   | IMinFieldValue
   | IMaxFieldValue
 
+export const fieldQueryValueMap: Record<IFieldType, z.ZodTypeAny> = {
+  string: stringFieldQueryValue,
+  number: numberFieldQueryValue,
+  id: idFieldQueryValue,
+  'created-at': createdAtFieldQueryValue,
+  'updated-at': updatedAtFieldQueryValue,
+  'auto-increment': autoIncrementQueryValue,
+  color: colorFieldQueryValue,
+  email: emailFieldQueryValue,
+  url: urlFieldQueryValue,
+  json: jsonReadableValueSchema,
+  date: dateFieldQueryValue,
+  select: selectFieldQueryValue,
+  'multi-select': multiSelectFieldQueryValue,
+  bool: boolFieldQueryValue,
+  'date-range': dateRangeFieldQueryValue,
+  reference: referenceFieldQueryValue,
+  tree: treeFieldQueryValue,
+  parent: parentFieldQueryValue,
+  rating: ratingFieldQueryValue,
+  currency: currencyFieldQueryValue,
+  count: countFieldQueryValue,
+  lookup: lookupFieldQueryValue,
+  sum: sumFieldQueryValue,
+  average: averageFieldQueryValue,
+  attachment: attachmentFieldQueryValue,
+  collaborator: collaboratorFieldQueryValue,
+  'created-by': createdByFieldQueryValue,
+  'updated-by': updatedByFieldQueryValue,
+  min: minFieldQueryValue,
+  max: maxFieldQueryValue,
+}
+
 export const fieldQueryValue = z.union([
   treeFieldQueryValue,
   autoIncrementQueryValue,

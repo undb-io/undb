@@ -11,6 +11,7 @@
 	export let selected: IQueryFieldSchema | undefined = undefined
 	export let selectedId: string | undefined = undefined
 	export let type: IFieldType | undefined = undefined
+	export let readonly = false
 
 	export let fields: IQueryFieldSchema[] = []
 	export let filter: (field: IQueryFieldSchema) => boolean = identity
@@ -39,40 +40,42 @@
 		<span class="text-gray-500 font-normal">{$t('Select Field')}</span>
 	{/if}
 </Button>
-<Dropdown
-	style="z-index: 50;"
-	class="w-[400px] z-[99999] border rounded-sm bg-white shadow-sm dark:shadow-gray-500 dark:bg-gray-700"
-	bind:open
->
-	{#if filteredFields.length}
-		{#each filteredFields as field (field.id)}
-			<Radio value={field.id} bind:group={value} custom on:change={() => (open = false)}>
-				<li
-					class="w-full px-3 py-2 flex justify-between hover:bg-gray-100 transition cursor-pointer dark:text-white dark:hover:!text-gray-600"
-					class:bg-gray-100={selected?.id === field.id}
-				>
-					<div
-						class={cx(
-							'inline-flex gap-2 items-center text-gray-600 dark:text-white dark:hover:text-gray-600',
-							selected?.id === field.id ? 'dark:!text-gray-600' : '',
-						)}
+{#if !readonly}
+	<Dropdown
+		style="z-index: 50;"
+		class="w-[400px] z-[99999] border rounded-sm bg-white shadow-sm dark:shadow-gray-500 dark:bg-gray-700"
+		bind:open
+	>
+		{#if filteredFields.length}
+			{#each filteredFields as field (field.id)}
+				<Radio value={field.id} bind:group={value} custom on:change={() => (open = false)}>
+					<li
+						class="w-full px-3 py-2 flex justify-between hover:bg-gray-100 transition cursor-pointer dark:text-white dark:hover:!text-gray-600"
+						class:bg-gray-100={selected?.id === field.id}
 					>
-						<FieldIcon size={14} type={field.type} />
-						<span class="text-xs">
-							{field.name}
+						<div
+							class={cx(
+								'inline-flex gap-2 items-center text-gray-600 dark:text-white dark:hover:text-gray-600',
+								selected?.id === field.id ? 'dark:!text-gray-600' : '',
+							)}
+						>
+							<FieldIcon size={14} type={field.type} />
+							<span class="text-xs">
+								{field.name}
+							</span>
+						</div>
+						<span>
+							{#if selected?.id === field.id}
+								<i class="ti ti-check text-sm dark:text-gray-600" />
+							{/if}
 						</span>
-					</div>
-					<span>
-						{#if selected?.id === field.id}
-							<i class="ti ti-check text-sm dark:text-gray-600" />
-						{/if}
-					</span>
-				</li>
-			</Radio>
-		{/each}
-	{:else}
-		<div class="p-2">
-			<slot name="empty" />
-		</div>
-	{/if}
-</Dropdown>
+					</li>
+				</Radio>
+			{/each}
+		{:else}
+			<div class="p-2">
+				<slot name="empty" />
+			</div>
+		{/if}
+	</Dropdown>
+{/if}

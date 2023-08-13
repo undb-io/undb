@@ -5,7 +5,7 @@ import path from 'path'
 import { match } from 'ts-pattern'
 import type { Driver, Storage } from 'unstorage'
 import { createStorage } from 'unstorage'
-import { type cacheStorageConfig } from '../../../configs/cache-storage.config.js'
+import type { cacheStorageConfig } from '../configs/cache-storage.config.js'
 
 export const cacheStorageFactory = async (
   logger: PinoLogger,

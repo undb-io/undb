@@ -2,7 +2,7 @@ import type { RouteConfig } from '@asteasolutions/zod-to-openapi'
 import { type Table } from '@undb/core'
 import { queryWebhook } from '@undb/integrations'
 import { z } from 'zod'
-import { TAG_WEBHOOK } from '../constants.js'
+import { TAG_WEBHOOK_CRUD } from '../constants.js'
 
 export const getWebhooks = (table: Table): RouteConfig => {
   return {
@@ -10,7 +10,7 @@ export const getWebhooks = (table: Table): RouteConfig => {
     path: `/tables/${table.id.value}/webhooks`,
     description: `Get ${table.name.value} webhooks`,
     summary: `Get ${table.name.value} webhooks`,
-    tags: [TAG_WEBHOOK],
+    tags: [TAG_WEBHOOK_CRUD],
     responses: {
       200: {
         description: 'get webhooks success',

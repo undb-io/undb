@@ -24,10 +24,10 @@
     "rimraf": "^5.0.1",
     "t": "^0.5.1",
     "tsconfig": "^0.0.0",
-    "tsup": "^7.1.0",
-    "type-fest": "^4.0.0",
+    "tsup": "^7.2.0",
+    "type-fest": "^4.1.0",
     "typescript": "^5.1.6",
-    "vitest": "^0.33.0",
+    "vitest": "^0.34.1",
     "vitest-mock-extended": "^1.1.4"
   },
   "exports": {

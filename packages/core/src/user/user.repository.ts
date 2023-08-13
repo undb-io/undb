@@ -7,5 +7,6 @@ export interface IUserRepository {
   updateOneById(id: string, spec: UserSpecification): Promise<void>
   findOneById(id: string): Promise<Option<User>>
   findOne(spec: UserSpecification): Promise<Option<User>>
+  count(spec: UserSpecification | null): Promise<number>
   exists(spec: UserSpecification): Promise<boolean>
 }

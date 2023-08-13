@@ -38,6 +38,7 @@
 - :balloon: Light weight, requires just one file storage by default
 - :computer: Self hosted in seconds
 - :pencil: Customizable
+- 🔑 Power BI like Record Level Security
 - 🔧 Deploy with variant adapters
 - 🎮 Developer friendly. Provide openapi / webhooks / realtime subscriptions / sdk(soon) / erd preview and more
 - :sparkles: Multiple built-in field types and variants

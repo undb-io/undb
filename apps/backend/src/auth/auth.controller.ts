@@ -1,13 +1,17 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put, Request, Res, UseGuards } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { type Response } from 'express'
+import { AuthzGuard } from '../authz/authz.guard.js'
 import { AuthService } from './auth.service.js'
 import { JwtAuthGuard } from './jwt-auth.guard.js'
 import { LocalAuthGuard } from './local-auth.guard.js'
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService, private jwtService: JwtService) {}
+  constructor(
+    private authService: AuthService,
+    private jwtService: JwtService,
+  ) {}
 
   @HttpCode(HttpStatus.OK)
   @Post('register')
@@ -36,7 +40,7 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, AuthzGuard)
   @Get('me')
   getProfile(@Request() req: Express.Request) {
     return this.authService.me(req.user as any)

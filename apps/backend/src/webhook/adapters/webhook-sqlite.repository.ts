@@ -10,8 +10,16 @@ export const InjectWebhookRepository = () => Inject(WEBHOOK_REPOSITORY)
 
 @Injectable()
 export class NestWebhookSqliteRepository extends WebhookSqliteRepository {
-  constructor(public readonly orm: MikroORM, em: EntityManager) {
+  constructor(
+    public readonly orm: MikroORM,
+    em: EntityManager,
+  ) {
     super(em)
+  }
+
+  @UseRequestContext()
+  find(spec: WebhookSpecification): Promise<Webhook[]> {
+    return super.find(spec)
   }
 
   @UseRequestContext()

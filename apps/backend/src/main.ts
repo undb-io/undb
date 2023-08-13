@@ -1,3 +1,5 @@
+import tracer from './tracer.js'
+
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import * as trpcExpress from '@trpc/server/adapters/express'
 import type { AppRouter } from '@undb/trpc'
@@ -18,6 +20,8 @@ import { TRPC_CONTEXT } from './trpc/providers/context.js'
 import { TRPC_ENDPOINT } from './trpc/trpc.constants.js'
 
 export async function bootstrap() {
+  await tracer.start()
+
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
   })

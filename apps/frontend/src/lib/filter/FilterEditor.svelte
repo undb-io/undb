@@ -3,18 +3,21 @@
 	import Sortable, { type SortableEvent } from 'sortablejs'
 	import { isNumber } from 'lodash-es'
 	import FilterItem from '$lib/table/FilterItem.svelte'
-
+	import { Alert } from 'flowbite-svelte'
+	import { t } from '$lib/i18n'
 	export let value: Partial<IFilter>[] = []
+	export let readonly = false
 
 	$: if (!value) value = []
 
-	$: if (!value?.length) {
+	$: if (!value?.length && !readonly) {
 		add()
 	}
 
 	const TEMP_ID = '__TEMP_ID'
 
 	const add = () => {
+		if (value.some((v) => v.path === TEMP_ID)) return
 		value = [...value, { path: TEMP_ID }]
 	}
 
@@ -40,9 +43,17 @@
 	}
 </script>
 
-<ul class="space-y-2" bind:this={el}>
-	{#each value as filter, index (filter.path)}
-		<FilterItem {filter} {index} {remove} />
-	{/each}
-</ul>
-<slot {add} />
+{#if value?.length}
+	<ul class="space-y-2" bind:this={el}>
+		{#each value as filter, index (filter.path)}
+			<FilterItem {filter} {index} {remove} {readonly} />
+		{/each}
+	</ul>
+{:else}
+	<Alert color="blue">
+		{$t('no filters applied')}
+	</Alert>
+{/if}
+{#if !readonly}
+	<slot {add} />
+{/if}

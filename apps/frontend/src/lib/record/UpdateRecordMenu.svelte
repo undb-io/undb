@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { t } from '$lib/i18n'
-	import { currentRecordId, getTable, getView, q, recordHash } from '$lib/store/table'
+	import { canCreateRecord, canDeleteRecord, currentRecordId, getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { Record } from '@undb/core'
 	import { Button, Dropdown, DropdownDivider, DropdownItem, Modal, Spinner } from 'flowbite-svelte'
@@ -10,51 +10,50 @@
 	let confirmDeleteOpen = false
 
 	const table = getTable()
-	const view = getView()
 	export let record: Record | undefined
-
-	$: records = trpc().record.list.query(
-		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
-		{ queryHash: $recordHash, enabled: false },
-	)
 
 	const deleteRecord = trpc().record.delete.mutation({
 		async onSuccess(data, variables, context) {
 			$currentRecordId = undefined
 			await goto($page.url.pathname)
-			await $records.refetch()
 		},
 	})
 
 	const duplicateRecord = trpc().record.duplicate.mutation({
 		async onSuccess(data, variables, context) {
 			$currentRecordId = undefined
-			await $records.refetch()
 		},
 	})
 </script>
 
-<button>
-	<i class="ti ti-dots" />
-</button>
-<Dropdown style="z-index: 50;" class="w-[200px]">
-	<DropdownItem
-		on:click={() => {
-			if (record) {
-				$duplicateRecord.mutate({ tableId: $table.id.value, id: record.id.value })
-			}
-		}}
-		class="inline-flex items-center gap-2"
-	>
-		<i class="ti ti-copy" />
-		<span class="text-xs">{$t('Duplicate Record')}</span>
-	</DropdownItem>
-	<DropdownDivider />
-	<DropdownItem on:click={() => (confirmDeleteOpen = true)} class="inline-flex items-center gap-2 text-red-400">
-		<i class="ti ti-trash" />
-		<span class="text-xs">{$t('Delete Record')}</span>
-	</DropdownItem>
-</Dropdown>
+{#if $canCreateRecord || $canDeleteRecord}
+	<button>
+		<i class="ti ti-dots" />
+	</button>
+	<Dropdown style="z-index: 50;" class="w-[200px]">
+		{#if $canCreateRecord}
+			<DropdownItem
+				on:click={() => {
+					if (record) {
+						$duplicateRecord.mutate({ tableId: $table.id.value, id: record.id.value })
+					}
+				}}
+				class="inline-flex items-center gap-2"
+			>
+				<i class="ti ti-copy" />
+				<span class="text-xs">{$t('Duplicate Record')}</span>
+			</DropdownItem>
+		{/if}
+
+		{#if $canDeleteRecord}
+			<DropdownDivider />
+			<DropdownItem on:click={() => (confirmDeleteOpen = true)} class="inline-flex items-center gap-2 text-red-400">
+				<i class="ti ti-trash" />
+				<span class="text-xs">{$t('Delete Record')}</span>
+			</DropdownItem>
+		{/if}
+	</Dropdown>
+{/if}
 
 <Modal bind:open={confirmDeleteOpen} size="xs">
 	<div class="text-center">

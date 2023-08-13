@@ -3,7 +3,7 @@
 	import { getRecord } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import CollaboratorAvatar from '$lib/user/CollaboratorAvatar.svelte'
-	import type { IQueryAudit } from '@undb/integrations/dist'
+	import type { IQueryAudit } from '@undb/integrations'
 	import { match } from 'ts-pattern'
 	import RecordAuditDetail from './audit/RecordAuditDetail.svelte'
 	import { EVT_RECORD_CREATED, EVT_RECORD_DELETED, EVT_RECORD_RESTORED, EVT_RECORD_UPDATED } from '@undb/core'

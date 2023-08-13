@@ -8,6 +8,8 @@
 	import SearchTable from './SearchTable.svelte'
 	import FormsButton from './FormsButton.svelte'
 	import RecordTrashButton from './RecordTrashButton.svelte'
+	import TableMenu from './TableMenu.svelte'
+	import { hasPermission } from '$lib/store/authz'
 
 	const table = getTable()
 </script>
@@ -29,14 +31,17 @@
 			<i class="ti ti-code" />
 			<span class="whitespace-nowrap">{$t('API Preview')}</span>
 		</Button>
-		<button on:click={() => updateTableModal.open()}>
-			<i class="ti ti-settings text-gray-600 dark:text-gray-200" />
-		</button>
-		<Tooltip class="z-50" placement="bottom">
-			{$t('Edit Table')}
-		</Tooltip>
+		{#if $hasPermission('table:update')}
+			<button on:click={() => updateTableModal.open()}>
+				<i class="ti ti-settings text-gray-600 dark:text-gray-200" />
+			</button>
+			<Tooltip class="z-50" placement="bottom">
+				{$t('Edit Table')}
+			</Tooltip>
+		{/if}
 		<ToggleDisplayType />
 		<FormsButton />
 		<RecordTrashButton />
+		<TableMenu />
 	</div>
 </div>

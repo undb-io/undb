@@ -1,7 +1,13 @@
-import { z } from 'zod'
+import { ZodRawShape, z } from 'zod'
 import { userIdSchema } from '../../user/value-objects/user-id.vo.js'
-import { collaboratorProfile, createFieldsSchema_internal, fieldQueryValue } from '../field/index.js'
+import {
+  collaboratorProfile,
+  createFieldsSchema_internal,
+  fieldQueryValue,
+  fieldQueryValueMap,
+} from '../field/index.js'
 import { fieldIdSchema } from '../field/value-objects/field-id.schema.js'
+import { Table } from '../table.js'
 import { TableId, tableIdSchema } from '../value-objects/index.js'
 import type { Record } from './record.js'
 import { recordIdSchema } from './value-objects/record-id.schema.js'
@@ -54,3 +60,25 @@ export const trashRecordSchema = z
   .merge(queryRecordSchema)
 
 export type ITrashRecordSchema = z.infer<typeof trashRecordSchema>
+
+export const createRecordValuesQuerySchema = (table: Table) => {
+  const fields = table.schema.fields
+
+  const shape: ZodRawShape = {}
+
+  for (const field of fields) {
+    if (field.controlled) continue
+
+    const valueSchema = fieldQueryValueMap[field.type]
+    shape[field.id.value] = valueSchema
+  }
+
+  return z.object(shape)
+}
+
+export const createQueryRecordSchema = (table: Table) => {
+  const schema = queryRecordSchema
+
+  const valuesSchema = createRecordValuesQuerySchema(table)
+  return schema.merge(z.object({ values: valuesSchema }))
+}

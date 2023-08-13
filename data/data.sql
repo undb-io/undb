@@ -1896,4 +1896,15 @@ CREATE INDEX `undb_audit_target_id_index` on `undb_audit` (`target_id`);
 CREATE INDEX `undb_audit_op_index` on `undb_audit` (`op`);
 CREATE INDEX `undb_audit_operator_id_index` on `undb_audit` (`operator_id`);
 CREATE INDEX `undb_audit_table_id_index` on `undb_audit` (`table_id`);
+
+create table `undb_rls` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `policy_action` text not null, `policy_filter` json not null, `subjects` text not null, constraint `undb_rls_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));
+create index `undb_rls_deleted_at_index` on `undb_rls` (`deleted_at`);
+create index `undb_rls_table_id_index` on `undb_rls` (`table_id`);
+
+create table `undb_member` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `role` text not null, `user_id` text not null, constraint `undb_member_user_id_foreign` foreign key(`user_id`) references `undb_user`(`id`) on update cascade, primary key (`id`));
+create index `undb_member_deleted_at_index` on `undb_member` (`deleted_at`);
+create index `undb_member_user_id_index` on `undb_member` (`user_id`);
+INSERT INTO undb_member VALUES('mem12345678',1684577267430,1685212920300,NULL,'owner','usrbuajh55q');
+INSERT INTO undb_member VALUES('mem12345679',1684577267430,1685212920300,NULL,'admin','usrzvhv8srb');
+
 COMMIT;

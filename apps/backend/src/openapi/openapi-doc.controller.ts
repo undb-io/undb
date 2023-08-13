@@ -3,6 +3,7 @@ import { type Response } from 'express'
 import { type IncomingHttpHeaders } from 'http'
 import { parseURL } from 'ufo'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'
+import { AuthzGuard } from '../authz/authz.guard.js'
 import { OpenAPIDocService } from './openapi-doc.service.js'
 
 @Controller('openapi')
@@ -10,7 +11,7 @@ export class OpenAPIDocController {
   constructor(private readonly openAPIService: OpenAPIDocService) {}
 
   @Get('docs/tables/:tableId')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, AuthzGuard)
   public async doc(@Res() res: Response, @Param('tableId') tableId: string, @Headers() headers: IncomingHttpHeaders) {
     const referer = headers.referer
     const parsed = parseURL(referer)

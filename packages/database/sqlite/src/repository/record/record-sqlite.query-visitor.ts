@@ -6,6 +6,7 @@ import type {
   BoolIsTrue,
   CollaboratorEqual,
   CollaboratorIsEmpty,
+  CreatedByIn,
   DateBetween,
   DateEqual,
   DateGreaterThan,
@@ -45,6 +46,7 @@ import type {
   StringRegex,
   StringStartsWith,
   TreeAvailableSpec,
+  UdpatedByIn,
   WithRecordAutoIncrement,
   WithRecordCreatedAt,
   WithRecordCreatedBy,
@@ -58,7 +60,6 @@ import type {
 } from '@undb/core'
 import {
   CollaboratorField,
-  CreatedByField,
   DateRangeField,
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_CREATED_BY_NAME,
@@ -70,7 +71,6 @@ import {
   ParentField,
   TableSchemaIdMap,
   TreeField,
-  UpdatedByField,
 } from '@undb/core'
 import { endOfDay, startOfDay } from 'date-fns'
 import { castArray } from 'lodash-es'
@@ -146,11 +146,17 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   createdBy(s: WithRecordCreatedBy): void {
     this.qb.where({ [this.getFieldId(INTERNAL_COLUMN_CREATED_BY_NAME)]: s.user })
   }
+  createdByIn(s: CreatedByIn): void {
+    this.qb.whereIn(this.getFieldId(INTERNAL_COLUMN_CREATED_BY_NAME), s.userIds)
+  }
   updatedAt(s: WithRecordUpdatedAt): void {
     this.qb.where({ [this.getFieldId(INTERNAL_COLUMN_UPDATED_AT_NAME)]: s.date.value })
   }
   updatedBy(s: WithRecordUpdatedBy): void {
-    this.qb.where({ [this.getFieldId(INTERNAL_COLUMN_UPDATED_BY_NAME)]: s.user })
+    this.qb.where({ [this.getFieldId(INTERNAL_COLUMN_UPDATED_BY_NAME)]: s.userId })
+  }
+  updatedByIn(s: UdpatedByIn): void {
+    this.qb.whereIn(this.getFieldId(INTERNAL_COLUMN_UPDATED_BY_NAME), s.userIds)
   }
   autoIncrement(s: WithRecordAutoIncrement): void {
     this.qb.where(this.getFieldId(INTERNAL_INCREMENT_ID_NAME), s.n)
@@ -315,9 +321,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     const value = s.value.unpack()
     if (!value?.length) return
 
-    if (field instanceof UpdatedByField || field instanceof CreatedByField) {
-      this.qb.where(this.getFieldId(s.fieldId), value.at(0))
-    } else if (field instanceof CollaboratorField) {
+    if (field instanceof CollaboratorField) {
       const ft = new CollaboratorForeignTable(this.tableId, field.id.value)
       const alias = getForeignTableAlias(field, this.schema)
       this.qb

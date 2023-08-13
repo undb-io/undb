@@ -51,9 +51,9 @@
 </script>
 
 <main class="bg-blue-50 h-screen w-screen flex flex-col dark:bg-gray-500">
-	<div class="container mx-auto w-full flex items-center justify-center flex-1">
+	<div class="container mx-auto w-full flex flex-col gap-3 items-center justify-center flex-1 h-full p-6 pb-2">
 		<section
-			class="border dark:border-gray-700 rounded-md bg-white py-8 px-6 shadow-lg w-full max-w-5xl dark:bg-gray-600 dark:text-gray-200"
+			class="border dark:border-gray-700 rounded-md bg-white py-8 px-6 shadow-lg w-full max-w-5xl dark:bg-gray-600 dark:text-gray-200 max-h-full overflow-y-auto"
 		>
 			<Heading tag="h3" class="text-center mb-5">{f.name.value}</Heading>
 			{#if !submitted}
@@ -103,17 +103,17 @@
 				</div>
 			{/if}
 		</section>
+		<section class="flex items-center justify-center py-6 gap-2">
+			<a
+				href="https://github.com/undb-xyz/undb"
+				class="inline-flex gap-2 items-center text-sm text-gray-500 dark:text-white"
+				target="_blank"
+			>
+				<img class="h-6 w-auto" src={logo} alt="undb" />
+				<span> Powered by undb </span>
+			</a>
+		</section>
 	</div>
-	<section class="flex items-center justify-center py-6 gap-2">
-		<a
-			href="https://github.com/undb-xyz/undb"
-			class="inline-flex gap-2 items-center text-sm text-gray-500 dark:text-white"
-			target="_blank"
-		>
-			<img class="h-6 w-auto" src={logo} alt="undb" />
-			<span> Powered by undb </span>
-		</a>
-	</section>
 </main>
 
 {#if $createShareRecord.error}

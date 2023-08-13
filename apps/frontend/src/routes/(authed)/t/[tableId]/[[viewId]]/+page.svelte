@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { currentFieldId, currentRecord, currentRecordId, getField, getTable } from '$lib/store/table'
+	import { currentFieldId, currentRecord, currentRecordId, getField, getTable, recordsStore } from '$lib/store/table'
 	import TableIndex from '$lib/table/TableIndex.svelte'
-	import { RecordFactory } from '@undb/core'
+	import { EventFactory, RecordFactory } from '@undb/core'
 	import type { PageData } from './$types'
 	import CreateRecord from '$lib/record/CreateRecord.svelte'
 	import CreateField from '$lib/field/CreateField.svelte'
@@ -10,7 +10,7 @@
 	import CreateOption from '$lib/option/CreateOption.svelte'
 	import ViewConfigModal from '$lib/view/ViewConfigModal.svelte'
 	import UpdateTable from '$lib/table/UpdateTable.svelte'
-	import { createRecordModal, createTableModal, erdModal, recordTrashModal } from '$lib/store/modal'
+	import { createRecordModal, createTableModal, erdModal, recordTrashModal, rlsModal } from '$lib/store/modal'
 	import UpdateOption from '$lib/option/UpdateOption.svelte'
 	import VisualizationModal from '$lib/visualization/VisualizationModal.svelte'
 	import DuplicateField from '$lib/field/DuplicateField.svelte'
@@ -19,6 +19,9 @@
 	import FormListDrawer from '$lib/form/FormListDrawer.svelte'
 	import FormEditorModal from '$lib/form/FormEditorModal.svelte'
 	import RecordTrashModal from '$lib/record/trash/RecordTrashModal.svelte'
+	import { onDestroy, onMount } from 'svelte'
+	import { match } from 'ts-pattern'
+	import RLSModal from '$lib/authz/rls/RLSModal.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -43,6 +46,40 @@
 			createRecordModal.open()
 		}
 	}
+	let evtSource: EventSource
+
+	$: if ($table) {
+		if (evtSource) {
+			evtSource.close()
+		}
+		evtSource = new EventSource(`/api/tables/${$table.id.value}/subscription`)
+		evtSource.onmessage = (event) => {
+			const data = JSON.parse(event.data)
+			const evt = EventFactory.fromJSON(data.event)
+			match(evt)
+				.with({ name: 'record.created' }, { name: 'record.updated' }, { name: 'record.restored' }, (evt) => {
+					const record = RecordFactory.fromQuery(evt.meta.record, schema).unwrap()
+					recordsStore.setRecord(record)
+				})
+				.with({ name: 'record.deleted' }, (evt) => {
+					const recordId = evt.payload.id
+					recordsStore.removeRecord(recordId)
+				})
+				.with({ name: 'record.bulk_created' }, { name: 'record.bulk_updated' }, (evt) => {
+					const records = RecordFactory.fromQueryRecords(Object.values(evt.meta.records), schema)
+					recordsStore.setRecords(records)
+				})
+				.with({ name: 'record.bulk_deleted' }, (evt) => {
+					const recordIds = evt.payload.records.map((r) => r.id)
+					recordsStore.removeRecords(recordIds)
+				})
+				.exhaustive()
+		}
+	}
+
+	onDestroy(() => {
+		if (evtSource) evtSource.close()
+	})
 </script>
 
 <TableIndex />
@@ -78,6 +115,9 @@
 	{#key $field}
 		<DuplicateField field={$field} />
 	{/key}
+{/if}
+{#if $rlsModal.open}
+	<RLSModal />
 {/if}
 
 <VisualizationModal />

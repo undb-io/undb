@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "dependencies": {
     "@trpc/server": "^10.36.0",
+    "@undb/authz": "workspace:^",
     "@undb/core": "^0.0.0",
     "@undb/cqrs": "^0.0.0",
     "@undb/domain": "^0.0.0",
@@ -13,9 +14,9 @@
   "devDependencies": {
     "rimraf": "^5.0.1",
     "tsconfig": "^0.0.0",
-    "tsup": "^7.1.0",
+    "tsup": "^7.2.0",
     "typescript": "^5.1.6",
-    "vitest": "^0.33.0"
+    "vitest": "^0.34.1"
   },
   "exports": {
     "import": "./dist/index.js",

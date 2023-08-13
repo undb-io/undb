@@ -1,0 +1,27 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`delete record > delete record 1`] = `
+{
+  "meta": {
+    "record": {
+      "autoIncrement": undefined,
+      "createdBy": undefined,
+      "createdByProfile": null,
+      "displayValues": {},
+      "id": "record",
+      "tableId": "tableId",
+      "updatedBy": undefined,
+      "updatedByProfile": null,
+      "values": {},
+    },
+  },
+  "name": "record.deleted",
+  "operatorId": "user1",
+  "payload": {
+    "id": "record",
+    "name": "",
+    "tableId": "tableId",
+    "tableName": "name",
+  },
+}
+`;

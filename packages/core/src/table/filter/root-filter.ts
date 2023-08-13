@@ -21,8 +21,8 @@ export class RootFilter extends ValueObject<IRootFilter> {
     return { conjunction: '$and', children: [this.value] }
   }
 
-  get spec(): Option<CompositeSpecification> {
-    return convertFilterSpec(this.value)
+  getSpec(userId: string): Option<CompositeSpecification> {
+    return convertFilterSpec(this.value, userId)
   }
 
   // FIXME: remove field

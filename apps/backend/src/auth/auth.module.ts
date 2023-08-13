@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
 import { PassportModule } from '@nestjs/passport'
+import { MemberModule } from '../authz/member/member.module.js'
 import { UserModule } from '../core/user/user.module.js'
 import { AuthController } from './auth.controller.js'
 import { AuthService } from './auth.service.js'
@@ -17,7 +18,7 @@ const CommandHandlers = [NestLgoinCommandHandler, NestRegisterCommandHandler, Ne
 const QueryHandlers = [NestGetMeQueryHandler]
 
 @Module({
-  imports: [CqrsModule, UserModule, PassportModule],
+  imports: [CqrsModule, UserModule, PassportModule, MemberModule],
   providers: [AuthService, LocalStrategy, JwtStrategy, ...CommandHandlers, ...QueryHandlers],
   controllers: [AuthController],
 })

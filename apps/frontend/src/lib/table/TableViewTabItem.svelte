@@ -10,8 +10,9 @@
 	import { goto, invalidate } from '$app/navigation'
 	import Portal from 'svelte-portal'
 	import { t } from '$lib/i18n'
-	import { selectedFormId, webhookListDrawer } from '$lib/store/drawer'
-	import { erdModal, formEditorModal } from '$lib/store/modal'
+	import { selectedFormId } from '$lib/store/drawer'
+	import { formEditorModal } from '$lib/store/modal'
+	import { hasPermission } from '$lib/store/authz'
 
 	const table = getTable()
 	const currentView = getView()
@@ -158,65 +159,59 @@
 	{#if active}
 		<Portal target="body">
 			<Dropdown style="z-index: 50;" triggeredBy={`#${view.id.value}`} bind:open class="!z-[9999999] w-48">
-				<DropdownItem on:click={() => (updating = true)} class="text-xs font-normal inline-flex items-center gap-2">
-					<i class="ti ti-pencil text-gray-600 dark:text-gray-50" />
-					<span>{$t('Update View Name')}</span>
-				</DropdownItem>
-				<DropdownItem on:click={duplicateView} class="text-xs font-normal inline-flex items-center gap-2">
-					<i class="ti ti-copy text-gray-600 dark:text-gray-50" />
-					<span>{$t('Duplicate View')}</span>
-				</DropdownItem>
-				<DropdownItem class="flex items-center justify-between">
-					<span class="text-xs font-normal inline-flex items-center gap-2">
-						<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
-						{$t('Export')}
-					</span>
-					<i class="ti ti-chevron-right" />
-				</DropdownItem>
-				<Dropdown style="z-index: 50;" placement="right-start" class="w-48">
-					<DropdownItem on:click={() => exportGrid('csv')} class="text-xs font-normal inline-flex items-center gap-2">
-						<i class="ti ti-csv text-gray-600 dark:text-gray-50" />
-						<span>{$t('Export CSV')}</span>
+				{#if $hasPermission('table:update_view_name')}
+					<DropdownItem on:click={() => (updating = true)} class="text-xs font-normal inline-flex items-center gap-2">
+						<i class="ti ti-pencil text-gray-600 dark:text-gray-50" />
+						<span>{$t('Update View Name')}</span>
 					</DropdownItem>
-					<DropdownItem on:click={() => exportGrid('excel')} class="text-xs font-normal inline-flex items-center gap-2">
-						<i class="ti ti-file-spreadsheet text-gray-600 dark:text-gray-50" />
-						<span>{$t('Export Excel')}</span>
+				{/if}
+				{#if $hasPermission('table:duplicate_view')}
+					<DropdownItem on:click={duplicateView} class="text-xs font-normal inline-flex items-center gap-2">
+						<i class="ti ti-copy text-gray-600 dark:text-gray-50" />
+						<span>{$t('Duplicate View')}</span>
 					</DropdownItem>
-					<DropdownItem on:click={() => exportGrid('json')} class="text-xs font-normal inline-flex items-center gap-2">
-						<i class="ti ti-json text-gray-600 dark:text-gray-50" />
-						<span>{$t('Export Json')}</span>
+				{/if}
+				{#if $hasPermission('table:export')}
+					<DropdownItem class="flex items-center justify-between">
+						<span class="text-xs font-normal inline-flex items-center gap-2">
+							<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
+							{$t('Export')}
+						</span>
+						<i class="ti ti-chevron-right" />
 					</DropdownItem>
-				</Dropdown>
-				<DropdownItem
-					on:click={() => {
-						webhookListDrawer.open()
-						open = false
-					}}
-					class="text-xs font-normal inline-flex items-center gap-2"
-				>
-					<i class="ti ti-webhook text-gray-600 dark:text-gray-50" />
-					<span>{$t('Webhook')}</span>
-				</DropdownItem>
-				<DropdownItem
-					on:click={() => {
-						erdModal.open()
-						open = false
-					}}
-					class="text-xs font-normal inline-flex items-center gap-2"
-				>
-					<i class="ti ti-hierarchy-3 text-gray-600 dark:text-gray-50" />
-					<span>{$t('ERD')}</span>
-				</DropdownItem>
-				<DropdownItem
-					on:click={() => {
-						createFormFromView()
-					}}
-					class="text-xs font-normal inline-flex items-center gap-2"
-				>
-					<i class="ti ti-clipboard-text text-gray-600 dark:text-gray-50" />
-					<span>{$t('create form from view')}</span>
-				</DropdownItem>
-				{#if $table.views.count > 1}
+					<Dropdown style="z-index: 50;" placement="right-start" class="w-48">
+						<DropdownItem on:click={() => exportGrid('csv')} class="text-xs font-normal inline-flex items-center gap-2">
+							<i class="ti ti-csv text-gray-600 dark:text-gray-50" />
+							<span>{$t('Export CSV')}</span>
+						</DropdownItem>
+						<DropdownItem
+							on:click={() => exportGrid('excel')}
+							class="text-xs font-normal inline-flex items-center gap-2"
+						>
+							<i class="ti ti-file-spreadsheet text-gray-600 dark:text-gray-50" />
+							<span>{$t('Export Excel')}</span>
+						</DropdownItem>
+						<DropdownItem
+							on:click={() => exportGrid('json')}
+							class="text-xs font-normal inline-flex items-center gap-2"
+						>
+							<i class="ti ti-json text-gray-600 dark:text-gray-50" />
+							<span>{$t('Export Json')}</span>
+						</DropdownItem>
+					</Dropdown>
+				{/if}
+				{#if $hasPermission('table:create_form')}
+					<DropdownItem
+						on:click={() => {
+							createFormFromView()
+						}}
+						class="text-xs font-normal inline-flex items-center gap-2"
+					>
+						<i class="ti ti-clipboard-text text-gray-600 dark:text-gray-50" />
+						<span>{$t('create form from view')}</span>
+					</DropdownItem>
+				{/if}
+				{#if $table.views.count > 1 && $hasPermission('table:delete_view')}
 					<DropdownDivider />
 					<DropdownItem class="text-red-600 text-xs font-normal inline-flex items-center gap-2" on:click={deleteView}>
 						<i class="ti ti-trash" />

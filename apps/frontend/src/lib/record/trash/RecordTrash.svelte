@@ -1,15 +1,16 @@
 <script lang="ts">
 	import CollaboratorComponent from '$lib/cell/CellComponents/CollaboratorComponent.svelte'
-	import { debounce, isString } from 'lodash-es'
+	import { isString } from 'lodash-es'
 	import { formatDistance } from '$lib/date'
 	import { t } from '$lib/i18n'
 	import { recordTrashModal } from '$lib/store/modal'
 	import { createPagination } from '$lib/store/pagination'
-	import { getTable, listRecordFn } from '$lib/store/table'
+	import { createSpec, getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import { RecordFactory } from '@undb/core'
 	import { format } from 'date-fns'
 	import { Spinner, PaginationItem, Search, Button } from 'flowbite-svelte'
+	import { hasPermission } from '$lib/store/authz'
 
 	const table = getTable()
 
@@ -23,8 +24,6 @@
 		q: q || undefined,
 	})
 
-	const listRecords = $listRecordFn(undefined, { enabled: false })
-
 	$: records = $getRecords.data?.records ?? []
 	$: total = $getRecords.data?.total ?? 0
 	$: totalPage = Math.ceil(total / itemPerPage)
@@ -34,7 +33,6 @@
 	const restore = trpc().record.restore.mutation({
 		async onSuccess() {
 			await $getRecords.refetch()
-			await $listRecords.refetch()
 			if (!$getRecords.data?.total) {
 				recordTrashModal.close()
 			}
@@ -79,6 +77,8 @@
 		{#each records as record}
 			{@const ro = RecordFactory.fromQuery(record, schema).unwrap()}
 			{@const deletedProfile = record.deletedByProfile}
+			{@const canCreate =
+				($createSpec.isNone() ? true : $createSpec.unwrap().isSatisfiedBy(ro)) && $hasPermission('record:create')}
 			<div class="flex justify-between gap-2 items-center text-xs text-gray-600 dark:text-gray-200">
 				<div class="flex items-center gap-2">
 					<CollaboratorComponent
@@ -100,16 +100,18 @@
 					<span class="text-gray-400 text-xs" title={format(new Date(record.deletedAt), 'yyyy-MM-dd HH:mm:ss')}>
 						{$formatDistance(new Date(record.deletedAt))}
 					</span>
-					<button
-						class="text-blue-400 hover:underline"
-						on:click={() =>
-							$restore.mutate({
-								tableId: $table.id.value,
-								id: record.id,
-							})}
-					>
-						{$t('restore', { ns: 'common' })}
-					</button>
+					{#if canCreate}
+						<button
+							class="text-blue-400 hover:underline"
+							on:click={() =>
+								$restore.mutate({
+									tableId: $table.id.value,
+									id: record.id,
+								})}
+						>
+							{$t('restore', { ns: 'common' })}
+						</button>
+					{/if}
 				</div>
 			</div>
 		{/each}

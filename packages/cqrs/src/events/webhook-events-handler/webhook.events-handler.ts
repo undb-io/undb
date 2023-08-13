@@ -13,24 +13,29 @@ export class WebhookEventsHandler implements IEventHandler<RecordEvents> {
   ) {}
 
   async handle(event: RecordEvents): Promise<void> {
-    const tableId = event.payload.tableId
-    const table = (await this.tableRepo.findOneById(tableId)).unwrap()
+    try {
+      const tableId = event.payload.tableId
+      const table = (await this.tableRepo.findOneById(tableId)).expect('not found table')
 
-    const spec = withTableEvents(tableId, [event.name])
-    const webhooks = await this.repo.find(spec)
+      const spec = withTableEvents(tableId, [event.name])
+      const webhooks = await this.repo.find(spec)
 
-    pMap(
-      webhooks,
-      async (webhook) => {
-        const refinedEvent = webhook.refineEvent(table, event)
-        if (refinedEvent.isNone()) {
-          this.logger.info('skipping webhook sending')
-          return
-        }
+      await pMap(
+        webhooks,
+        async (webhook) => {
+          const refinedEvent = webhook.refineEvent(table, event)
+          if (refinedEvent.isNone()) {
+            this.logger.info('skipping webhook sending')
+            return
+          }
 
-        await this.httpService.send(webhook, refinedEvent.unwrap())
-      },
-      { concurrency: 100 },
-    )
+          await this.httpService.send(webhook, refinedEvent.unwrap())
+        },
+        { concurrency: 100 },
+      )
+    } catch (error) {
+      this.logger.error(error)
+      throw error
+    }
   }
 }

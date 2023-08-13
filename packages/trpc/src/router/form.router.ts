@@ -10,11 +10,13 @@ import type { ICommandBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'
+import { authz } from './authz.middleware.js'
 import { createFormFieldRouter } from './form-field.router.js'
 
 export const createFormRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus) =>
   router({
     create: procedure
+      .use(authz('table:create_form'))
       .input(createFormCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -22,6 +24,7 @@ export const createFormRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     createFromView: procedure
+      .use(authz('table:create_form'))
       .input(createFormFromViewCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -29,6 +32,7 @@ export const createFormRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     update: procedure
+      .use(authz('table:update_form'))
       .input(updateFormCommandInput)
       .output(z.void())
       .mutation(({ input }) => {

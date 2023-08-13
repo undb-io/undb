@@ -26,7 +26,14 @@ import type { IQueryForm } from './form/form.type.js'
 import { Forms } from './form/forms.js'
 import type { ICreateOptionSchema, IUpdateOptionSchema } from './option/index.js'
 import type { Record, Records } from './record/index.js'
-import { WithRecordId, WithRecordTableId } from './record/index.js'
+import {
+  WithRecordCreatedAt,
+  WithRecordCreatedBy,
+  WithRecordId,
+  WithRecordTableId,
+  WithRecordUpdatedAt,
+  WithRecordUpdatedBy,
+} from './record/index.js'
 import { RecordFactory } from './record/record.factory.js'
 import type { IMutateRecordValueSchema } from './record/record.schema.js'
 import { createRecordInputs } from './record/record.utils.js'
@@ -143,8 +150,8 @@ export class Table {
     return new Views([this.createDefaultView()])
   }
 
-  public getSpec(viewId?: string) {
-    return this.mustGetView(viewId).spec
+  public getSpec(userId: string, viewId?: string) {
+    return this.mustGetView(viewId).getSpec(userId)
   }
 
   public getView(viewId?: string): Option<ViewVO> {
@@ -290,16 +297,20 @@ export class Table {
     return fields
   }
 
-  public createRecord(id: string | undefined, value: IMutateRecordValueSchema): Record {
+  public createRecord(id: string | undefined, value: IMutateRecordValueSchema, userId: string): Record {
     const inputs = createRecordInputs(this.schema, value)
     const spec = new WithRecordTableId(this.id)
       .and(WithRecordId.fromNullableString(id))
       .and(WithRecordValues.fromArray(inputs))
+      .and(WithRecordCreatedBy.fromString(userId))
+      .and(WithRecordCreatedAt.now())
+      .and(WithRecordUpdatedBy.fromString(userId))
+      .and(WithRecordUpdatedAt.now())
     return RecordFactory.create(spec).unwrap()
   }
 
-  public createRecords(values: { id?: string; values: IMutateRecordValueSchema }[]): Records {
-    return values.map((value) => this.createRecord(value.id, value.values))
+  public createRecords(values: { id?: string; values: IMutateRecordValueSchema }[], userId: string): Records {
+    return values.map((value) => this.createRecord(value.id, value.values, userId))
   }
 
   public createField(viewId: string | undefined, input: ICreateFieldSchema, at?: number): TableCompositeSpecification {

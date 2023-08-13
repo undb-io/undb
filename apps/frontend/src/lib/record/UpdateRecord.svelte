@@ -6,14 +6,11 @@
 		getTable,
 		getView,
 		isShare,
-		nextRecord,
-		previousRecord,
-		q,
-		readonly,
-		recordHash,
+		recordsStore,
+		readonlyRecord,
 	} from '$lib/store/table'
 	import { createMutateRecordValuesSchema } from '@undb/core'
-	import { Button, ButtonGroup, Label, Modal, P, Spinner, Toast } from 'flowbite-svelte'
+	import { Button, Label, Modal, P, Spinner, Toast } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { writable } from 'svelte/store'
 	import type { Validation } from 'sveltekit-superforms/index'
@@ -23,6 +20,7 @@
 	import { pick, keys } from 'lodash-es'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
+	import ReadonlyRecordBadge from '$lib/authz/rls/ReadonlyRecordBadge.svelte'
 	import UpdateRecordMenu from './UpdateRecordMenu.svelte'
 	import RecordAudits from './RecordAudits.svelte'
 
@@ -37,14 +35,9 @@
 	$: shouldDisplayAudits = displayAudits && !$isShare
 	$: validators = createMutateRecordValuesSchema(fields ?? [], $record?.valuesJSON)
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
-	$: records = trpc().record.list.query(
-		{ tableId: $table.id.value, viewId: $view.id.value, q: $q },
-		{ queryHash: $recordHash, enabled: false, refetchOnMount: false, refetchOnWindowFocus: false },
-	)
 
 	const updateRecord = trpc().record.update.mutation({
 		async onSuccess(data, variables, context) {
-			await $records.refetch()
 			currentRecordId.set(undefined)
 		},
 	})
@@ -96,6 +89,9 @@
 	$: if (!$open) {
 		currentRecordId.set(undefined)
 	}
+
+	const prevRecord = recordsStore.prevRecord
+	const nextRecord = recordsStore.nextRecord
 </script>
 
 {#key $record}
@@ -104,18 +100,17 @@
 			<div class="flex items-center w-full justify-between mr-6">
 				<div class="flex items-center space-x-4">
 					<P>{$t('Update Record')}</P>
-					<ButtonGroup size="xs">
-						<Button
-							size="xs"
-							disabled={!$previousRecord}
-							on:click={() => ($currentRecordId = $previousRecord?.id.value)}
-						>
+					{#if $record}
+						<ReadonlyRecordBadge />
+					{/if}
+					<!-- <ButtonGroup size="xs">
+						<Button size="xs" disabled={!$prevRecord} on:click={() => ($currentRecordId = $prevRecord?.id.value)}>
 							<i class="ti ti-chevron-left text-gray-500 text-base" />
 						</Button>
 						<Button size="xs" disabled={!$nextRecord} on:click={() => ($currentRecordId = $nextRecord?.id.value)}>
 							<i class="ti ti-chevron-right text-gray-500 text-base" />
 						</Button>
-					</ButtonGroup>
+					</ButtonGroup> -->
 				</div>
 
 				<div class="flex items-center gap-2">
@@ -167,7 +162,7 @@
 											record={$record}
 											{field}
 											bind:value={$form[field.id.value]}
-											readonly={$readonly ? true : undefined}
+											readonly={$readonlyRecord ? true : undefined}
 										/>
 									</div>
 								{/each}
@@ -188,7 +183,7 @@
 				<Button color="alternative" on:click={() => ($currentRecordId = undefined)}>
 					{$t('Cancel', { ns: 'common' })}
 				</Button>
-				<Button class="gap-2" type="submit" form="updateRecord" disabled={$submitting}>
+				<Button class="gap-2" type="submit" form="updateRecord" disabled={$submitting || $readonlyRecord}>
 					{#if $delayed}
 						<Spinner size="5" />
 					{:else}

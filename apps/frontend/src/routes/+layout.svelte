@@ -10,6 +10,7 @@
 	import { onMount } from 'svelte'
 	import { changeThemeMode } from '$lib/store/ui'
 	import { LIGHT_THEME, type Theme } from '$lib/store/ui.type'
+	import { me, role } from '$lib/store/me'
 
 	NProgress.configure({
 		minimum: 0.16,
@@ -26,6 +27,13 @@
 		if (!$navigating) {
 			NProgress.done()
 		}
+	}
+
+	$: if ($page.data.me?.me) {
+		me.set($page.data.me?.me)
+	}
+	$: if ($page.data.me?.member?.role) {
+		role.set($page.data.me?.member?.role)
 	}
 
 	onMount(async () => {

@@ -1,5 +1,7 @@
 export * from './audit/index.js'
+export * from './member/index.js'
 export * from './record/index.js'
+export * from './rls/index.js'
 export * from './share/index.js'
 export * from './table/index.js'
 export * from './user/index.js'

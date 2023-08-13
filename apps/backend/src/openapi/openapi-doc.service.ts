@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import type { IRecordRepository, Table } from '@undb/core'
-import { type ITableRepository } from '@undb/core'
+import type { Table } from '@undb/core'
+import { type IRecordRepository, type ITableRepository } from '@undb/core'
 import { createRedocHTML, createTableSchema, type IPostmanCollectionConvertor } from '@undb/openapi'
 import type { OpenAPIObject } from 'openapi3-ts/oas31'
 import { InjectRecordRepository } from '../core/table/adapters/sqlite/record-sqlite.repository.js'

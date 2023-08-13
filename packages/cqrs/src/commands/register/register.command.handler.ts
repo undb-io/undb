@@ -1,20 +1,17 @@
-import {
-  IUserRepository,
-  UserFactory,
-  WithUserColor,
-  WithUserEmail,
-  WithUserId,
-  WithUserPassword,
-  WithUsername,
-} from '@undb/core'
+import type { IMemberCreateService } from '@undb/authz/dist/index.js'
+import type { IUserRepository } from '@undb/core'
+import { UserFactory, WithUserColor, WithUserEmail, WithUserId, WithUserPassword, WithUsername } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
-import { IRegisterCommandOutput } from './register.command.interface.js'
+import type { IRegisterCommandOutput } from './register.command.interface.js'
 import type { RegisterCommand } from './register.command.js'
 
 type IRegisterCommandHandler = ICommandHandler<RegisterCommand, IRegisterCommandOutput>
 
 export class RegisterCommandHandler implements IRegisterCommandHandler {
-  constructor(protected readonly repo: IUserRepository) {}
+  constructor(
+    protected readonly repo: IUserRepository,
+    protected readonly memberService: IMemberCreateService,
+  ) {}
 
   async execute({ email, password }: RegisterCommand): Promise<IRegisterCommandOutput> {
     const exists = await this.repo.exists(WithUserEmail.fromString(email))
@@ -29,6 +26,7 @@ export class RegisterCommandHandler implements IRegisterCommandHandler {
     )
 
     await this.repo.insert(user)
+    await this.memberService.grantDefault(user)
 
     return { email, sub: user.userId.value }
   }

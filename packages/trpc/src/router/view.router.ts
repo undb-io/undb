@@ -20,6 +20,7 @@ import type { ICommandBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'
 import { router } from '../trpc.js'
+import { authz } from './authz.middleware.js'
 import { createCalendarRouter } from './calendar.router.js'
 import { createDashboardRouter } from './dashboard.router.js'
 import { createFilterRouter } from './filter.router.js'
@@ -33,6 +34,7 @@ import { createViewFieldRouter } from './view-field.router.js'
 export const createViewRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus) =>
   router({
     create: procedure
+      .use(authz('table:create_view'))
       .input(createViewCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -40,6 +42,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     duplicate: procedure
+      .use(authz('table:duplicate_view'))
       .input(duplicateViewCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -47,6 +50,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     updateName: procedure
+      .use(authz('table:update_view_name'))
       .input(updateViewNameCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -54,6 +58,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     move: procedure
+      .use(authz('table:move_view'))
       .input(moveViewCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -61,6 +66,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     delete: procedure
+      .use(authz('table:delete_view'))
       .input(deleteViewCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -68,6 +74,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     switchDisplayType: procedure
+      .use(authz('table:switch_view_display_type'))
       .input(switchDisplayTypeCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -75,6 +82,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute<void>(cmd)
       }),
     setShowSystemFields: procedure
+      .use(authz('table:toggle_field_visibility'))
       .input(setShowSystemFieldssCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
@@ -82,6 +90,7 @@ export const createViewRouter = (procedure: typeof publicProcedure) => (commandB
         return commandBus.execute(cmd)
       }),
     setRowHeight: procedure
+      .use(authz('table:set_row_height'))
       .input(setRowHeightCommandInput)
       .output(z.void())
       .mutation(({ input }) => {

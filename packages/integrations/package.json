@@ -17,9 +17,9 @@
     "@types/lodash-es": "^4.17.8",
     "rimraf": "^5.0.1",
     "tsconfig": "^0.0.0",
-    "tsup": "^7.1.0",
+    "tsup": "^7.2.0",
     "typescript": "^5.1.6",
-    "vitest": "^0.33.0"
+    "vitest": "^0.34.1"
   },
   "exports": {
     "import": "./dist/index.js",

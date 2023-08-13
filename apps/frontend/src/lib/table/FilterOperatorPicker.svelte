@@ -1,17 +1,17 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { getFilterOperators } from '$lib/field/helpers'
-	import type { Field } from '@undb/core'
+	import { operaotrsMap, type Field } from '@undb/core'
 	import { Button, Dropdown, Radio } from 'flowbite-svelte'
 	import { t } from '$lib/i18n'
 
 	let open = false
 	export let value: string = ''
 	export let field: Field | undefined
+	export let readonly = false
 
-	$: data = getFilterOperators(field?.type)
-	$: if (!!field && !data.some((v) => v.value === value)) {
-		value = data[0]?.value ?? ''
+	$: data = field?.type ? operaotrsMap[field.type] : []
+	$: if (!!field && !data.some((v) => v === value)) {
+		value = data[0] ?? ''
 	}
 </script>
 
@@ -23,15 +23,15 @@
 >
 	{$t(value, { ns: 'common' })}
 </Button>
-{#if data.length}
+{#if data.length && !readonly}
 	<Dropdown
 		style="z-index: 999999999;"
 		class="w-[400px] z-[99999] border rounded-sm bg-white shadow-sm dark:shadow-gray-500 dark:bg-gray-700"
 		bind:open
 	>
 		{#each data as item}
-			{@const selected = item.value === value}
-			<Radio value={item.value} bind:group={value} custom on:change={() => (open = false)}>
+			{@const selected = item === value}
+			<Radio value={item} bind:group={value} custom on:change={() => (open = false)}>
 				<li
 					role="listitem"
 					class="w-full pr-4 flex justify-between hover:bg-gray-100 transition cursor-pointer dark:text-white dark:hover:!text-gray-600"
@@ -43,7 +43,7 @@
 							selected ? 'dark:!text-gray-600' : '',
 						)}
 					>
-						{$t(item.value, { ns: 'common' })}
+						{$t(item, { ns: 'common' })}
 					</div>
 					<span>
 						{#if selected}

@@ -12,9 +12,12 @@ import { ClsModule } from 'nestjs-cls'
 import { LoggerModule } from 'nestjs-pino'
 import path from 'path'
 import { v4 as uuid } from 'uuid'
+import { AppInfoModule } from './appInfo/appInfo.module.js'
 import { AttachmentModule } from './attachment/attachment.module.js'
 import { AuditModule } from './audit/audit.module.js'
 import { AuthModule } from './auth/auth.module.js'
+import { AuthzModule } from './authz/authz.module.js'
+import { CacheModule } from './cache/cache.module.js'
 import { authConfig } from './configs/auth.config.js'
 import { BaseConfigService } from './configs/base-config.service.js'
 import { ConfigModule } from './configs/config.module.js'
@@ -42,6 +45,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
         idGenerator: (req: Request) => (req.headers['X-Request-Id'] as string) ?? uuid(),
       },
     }),
+    CacheModule,
     HealthModule,
     JwtModule.registerAsync({
       global: true,
@@ -53,6 +57,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
       }),
       inject: [authConfig.KEY],
     }),
+    AuthzModule,
     TrpcModule,
     LoggerModule.forRootAsync({
       useFactory: (config: BaseConfigService) => ({
@@ -80,6 +85,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
     RealtimeModule,
     ShareModule,
     AuditModule,
+    AppInfoModule,
   ],
 })
 export class AppModule implements OnModuleInit {
