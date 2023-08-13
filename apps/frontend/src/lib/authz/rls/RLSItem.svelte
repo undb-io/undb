@@ -8,6 +8,7 @@
 	import type { IFilter } from '@undb/core'
 	import RlsItemEditor from './RLSItemEditor.svelte'
 	import type { ISubjectType } from './rls.type'
+	import { hasPermission } from '$lib/store/authz'
 
 	export let rls: RLS
 
@@ -43,30 +44,34 @@
 		<RlsItemEditor action={rls.policy.action} bind:filter bind:userIds bind:subject />
 	</div>
 
-	<Button
-		class="w-20 whitespace-nowrap"
-		color="alternative"
-		size="xs"
-		on:click={() => {
-			$updateRLS.mutate({
-				id: rls.id.value,
-				subjects: subject === 'anyone' ? [] : userIds.map((userId) => ({ type: 'user', id: userId })),
-				policy: {
-					filter,
-				},
-			})
-		}}
-	>
-		{$t('Update RLS', { ns: 'authz' })}
-	</Button>
-	<Button
-		color="alternative"
-		size="xs"
-		on:click={() =>
-			$deleteRLS.mutate({
-				id: rls.id.value,
-			})}
-	>
-		<i class="ti ti-trash"></i>
-	</Button>
+	{#if $hasPermission('rls:update')}
+		<Button
+			class="w-20 whitespace-nowrap"
+			color="alternative"
+			size="xs"
+			on:click={() => {
+				$updateRLS.mutate({
+					id: rls.id.value,
+					subjects: subject === 'anyone' ? [] : userIds.map((userId) => ({ type: 'user', id: userId })),
+					policy: {
+						filter,
+					},
+				})
+			}}
+		>
+			{$t('Update RLS', { ns: 'authz' })}
+		</Button>
+	{/if}
+	{#if $hasPermission('rls:delete')}
+		<Button
+			color="alternative"
+			size="xs"
+			on:click={() =>
+				$deleteRLS.mutate({
+					id: rls.id.value,
+				})}
+		>
+			<i class="ti ti-trash"></i>
+		</Button>
+	{/if}
 </li>

@@ -22,14 +22,16 @@
 			subject = 'users'
 		}
 	})
+
+	export let readonly = false
 </script>
 
 <div class="flex items-center gap-2 px-1 text-sm">
 	<span>{$t('when', { ns: 'common' })}</span>
-	<Select size="sm" class="inline-flex w-32" bind:value={subject} {items}></Select>
+	<Select size="sm" class="inline-flex w-32" bind:value={subject} {items} disabled={readonly}></Select>
 
 	{#if subject === 'users'}
-		<UsersPicker bind:value />
+		<UsersPicker {readonly} bind:value />
 	{/if}
 
 	<span class="flex-1">

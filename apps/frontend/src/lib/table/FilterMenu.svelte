@@ -61,7 +61,9 @@
 </Button>
 <Modal placement="top-center" bind:open class="w-full rounded-sm" size="lg">
 	<form on:submit|preventDefault={apply} id="filter_menu" class="space-y-4">
-		<span class="text-xs font-medium text-gray-500 dark:text-gray-300">{$t('set filters in this view')}</span>
+		{#if $hasPermission('table:set_view_filter')}
+			<span class="text-xs font-medium text-gray-500 dark:text-gray-300">{$t('set filters in this view')}</span>
+		{/if}
 		<FilterEditor bind:value let:add readonly={!$hasPermission('table:set_view_filter')}>
 			<div class="flex w-full justify-between">
 				<Button color="alternative" size="xs" on:click={add}>

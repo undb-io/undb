@@ -40,8 +40,14 @@
 			</Tooltip>
 		{/if}
 		<ToggleDisplayType />
-		<FormsButton />
-		<RecordTrashButton />
+		{#if $hasPermission('table:list_form')}
+			<FormsButton />
+		{/if}
+
+		{#if $hasPermission('record:list_trash')}
+			<RecordTrashButton />
+		{/if}
+
 		<TableMenu />
 	</div>
 </div>

@@ -98,7 +98,7 @@
 					/>
 				{:else}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<span on:click={() => (updating = true)} class="font-semibold text-sm">
+					<span on:click={() => (updating = true)} class="font-semibold text-sm dark:text-gray-100">
 						{dataItem.widget?.visualization.name.value}
 					</span>
 				{/if}

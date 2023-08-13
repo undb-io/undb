@@ -17,7 +17,7 @@ import { authz } from './authz.middleware.js'
 export const createViewFieldRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus) =>
   router({
     setWidth: procedure
-      .use(authz('table:set_width'))
+      .use(authz('table:set_field_width'))
       .input(setFieldWidthCommandInput)
       .output(z.void())
       .mutation(({ input }) => {
