@@ -3,7 +3,6 @@
 	import { configViewModal } from '$lib/store/modal'
 	import { getTable, getView } from '$lib/store/table'
 	import { Button } from 'flowbite-svelte'
-	import { hasPermission } from '$lib/store/authz'
 
 	const view = getView()
 	const table = getTable()

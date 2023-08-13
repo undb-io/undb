@@ -40,7 +40,7 @@
 			</Tooltip>
 		{/if}
 		<ToggleDisplayType />
-		{#if $hasPermission('table:create_form')}
+		{#if $hasPermission('table:list_form')}
 			<FormsButton />
 		{/if}
 

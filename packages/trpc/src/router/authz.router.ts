@@ -23,6 +23,7 @@ import { authz } from './authz.middleware.js'
 export const createRLSRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
   router({
     list: procedure
+      .use(authz('rls:list'))
       .input(getTableRLSSQueryInput)
       .output(z.any())
       .query<IGetTableRLSSOutput>(({ input }) => {

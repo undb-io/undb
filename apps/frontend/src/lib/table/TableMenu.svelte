@@ -33,7 +33,7 @@
 		<i class="ti ti-hierarchy-3 text-gray-600 dark:text-gray-50" />
 		<span>{$t('ERD')}</span>
 	</DropdownItem>
-	{#if $hasPermission('table:update')}
+	{#if $hasPermission('rls:list')}
 		<DropdownItem
 			on:click={() => {
 				rlsModal.open()
