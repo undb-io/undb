@@ -1,3 +1,4 @@
+import { NestAcceptInvitationCommandHandler } from './accept-invitation.command-handler.js'
 import { NestCancelInvitationCommandHandler } from './cancel-invitation.command-handler.js'
 import { NestInviteCommandHandler } from './invite.command-handler.js'
 import { NestReInviteCommandHandler } from './reinvite.command-handler.js'
@@ -8,4 +9,5 @@ export const commands = [
   NestReInviteCommandHandler,
   NestCancelInvitationCommandHandler,
   NestSendInvitationMailCommandHandler,
+  NestAcceptInvitationCommandHandler,
 ]

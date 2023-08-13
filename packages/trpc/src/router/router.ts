@@ -46,7 +46,7 @@ export const createRouter = (commandBus: ICommandBus, queryBus: IQueryBus, logge
     user: createUserRouter(authedProceducr)(commandBus, queryBus),
     webhook: createWebhookRouter(authedProceducr)(commandBus, queryBus),
     share: createShareRouter(procedure)(commandBus, queryBus),
-    invitation: createInvitationRouter(procedure)(commandBus, queryBus),
+    invitation: createInvitationRouter(authedProceducr, publicProcedure)(commandBus, queryBus),
   })
   return appRouter
 }

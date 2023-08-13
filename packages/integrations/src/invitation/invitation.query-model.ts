@@ -4,4 +4,5 @@ import type { IQueryInvitation } from './invitation.schema'
 
 export interface IInvitationQueryModel {
   find(spec: Option<InvitationSpecification>): Promise<IQueryInvitation[]>
+  findOneById(id: string): Promise<Option<IQueryInvitation>>
 }

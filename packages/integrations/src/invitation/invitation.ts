@@ -61,7 +61,7 @@ export class Invitation {
   }
 
   public get isExpired(): boolean {
-    return isAfter(this.expiredAt.value, new Date())
+    return isAfter(new Date(), this.expiredAt.value)
   }
 
   public extend(): InvitationSpecification {
@@ -85,7 +85,7 @@ export class Invitation {
   }
 
   public accept() {
-    if (this.isExpired) {
+    if (this.isExpired && !this.status.isAccepted) {
       throw new InvitationExpired(this.expiredAt.value)
     }
     return andOptions(this.status.accept(), Some(WithInvitationAcceptedAt.now()))
