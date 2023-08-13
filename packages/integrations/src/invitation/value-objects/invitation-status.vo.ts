@@ -5,7 +5,7 @@ import type { InvitationSpecification } from '../interface'
 import { InvitationCancelled } from '../invitation.errors'
 import { WithInvitationStatus } from '../specifications'
 
-export const invitationStatus = z.enum(['active', 'cancelled', 'accepted'])
+export const invitationStatus = z.enum(['pending', 'cancelled', 'accepted'])
 
 export type IInvitationStatus = z.infer<typeof invitationStatus>
 
@@ -27,10 +27,10 @@ export class InvitationStatus extends ValueObject<IInvitationStatus> {
   }
 
   public activate(): Option<InvitationSpecification> {
-    if (this.unpack() === 'active') {
+    if (this.unpack() === 'pending') {
       return None
     }
-    const status = new InvitationStatus({ value: 'active' })
+    const status = new InvitationStatus({ value: 'pending' })
     return Some(new WithInvitationStatus(status))
   }
 
@@ -56,6 +56,6 @@ export class InvitationStatus extends ValueObject<IInvitationStatus> {
   }
 
   public get acceptable(): boolean {
-    return this.unpack() === 'active'
+    return this.unpack() === 'pending'
   }
 }

@@ -8,8 +8,8 @@ export class WithInvitationStatus extends CompositeSpecification<Invitation, IIn
   constructor(public readonly status: InvitationStatus) {
     super()
   }
-  static active() {
-    return new this(new InvitationStatus({ value: 'active' }))
+  static pending() {
+    return new this(new InvitationStatus({ value: 'pending' }))
   }
   isSatisfiedBy(t: Invitation): boolean {
     return this.status.equals(t.status)

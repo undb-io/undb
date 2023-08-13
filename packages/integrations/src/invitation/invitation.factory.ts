@@ -25,7 +25,7 @@ export class InvitationFactory {
       new WithInvitationEmail(EmailVO.fromString(email)),
       new WithInvitationRole(Role.fromString(role)),
       WithInvitationExpiredAt.default(),
-      WithInvitationStatus.active(),
+      WithInvitationStatus.pending(),
       new WithInvitationInvitedBy(UserId.from(userId).unwrap()),
       WithInvitationInvitedAt.now(),
     )
