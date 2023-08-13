@@ -5,7 +5,7 @@ import { InjectInvitationRepository } from './adapters/invitation-sqlite.reposit
 
 class ____FakeMailService implements IInvitationMailService {
   send(invitation: Invitation): Promise<void> {
-    throw new Error('Method not implemented.')
+    throw new Error('mail send Method not implemented.')
   }
 }
 

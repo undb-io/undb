@@ -1,13 +1,17 @@
 import type { IRolesWithoutOwner } from '@undb/authz'
 import { UserId } from '@undb/core'
+import { DateVO } from '@undb/domain'
 import type { IInvitationStatus, IQueryInvitation, Invitation as InvitationDo } from '@undb/integrations'
 import {
   InvitationFactory,
   InvitationStatus,
+  WithInvitationAcceptedAt,
+  WithInvitationCancelledAt,
   WithInvitationCancelledBy,
   WithInvitationEmail,
   WithInvitationExpiredAt,
   WithInvitationId,
+  WithInvitationInvitedAt,
   WithInvitationInvitedBy,
   WithInvitationRole,
   WithInvitationStatus,
@@ -24,9 +28,12 @@ export class InvitationSqliteMapper {
       WithInvitationExpiredAt.fromDate(invitation.expiredAt),
       new WithInvitationStatus(InvitationStatus.fromString(invitation.status)),
       new WithInvitationInvitedBy(UserId.from(invitation.invitedBy.id).unwrap()),
+      new WithInvitationInvitedAt(new DateVO(invitation.invitedAt)),
       new WithInvitationCancelledBy(
         invitation.cancelledBy ? Some(UserId.from(invitation.cancelledBy.id).unwrap()) : None,
       ),
+      new WithInvitationCancelledAt(invitation.cancelldAt ? Some(new DateVO(invitation.cancelldAt)) : None),
+      new WithInvitationAcceptedAt(invitation.acceptedAt ? Some(new DateVO(invitation.acceptedAt)) : None),
     )
   }
 
@@ -38,7 +45,10 @@ export class InvitationSqliteMapper {
       expiredAt: invitation.expiredAt.toISOString(),
       status: invitation.status as IInvitationStatus,
       invitedBy: invitation.invitedBy.id,
+      invitedAt: invitation.invitedAt.toISOString(),
       cancelledBy: invitation.cancelledBy?.id,
+      cancelledAt: invitation.cancelldAt?.toISOString(),
+      acceptedAt: invitation.acceptedAt?.toISOString(),
     }
   }
 }

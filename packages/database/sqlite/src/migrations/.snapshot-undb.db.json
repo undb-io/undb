@@ -1955,6 +1955,16 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "invited_at": {
+          "name": "invited_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
         "cancelled_by_id": {
           "name": "cancelled_by_id",
           "type": "text",
@@ -1963,6 +1973,26 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "cancelld_at": {
+          "name": "cancelld_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "accepted_at": {
+          "name": "accepted_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
         }
       },
       "name": "undb_invitation",

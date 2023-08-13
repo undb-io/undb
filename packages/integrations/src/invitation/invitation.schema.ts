@@ -21,7 +21,10 @@ export const queryInivtation = z.object({
   expiredAt: z.string(),
   status: invitationStatus,
   invitedBy: userIdSchema,
+  invitedAt: z.string(),
   cancelledBy: userIdSchema.optional(),
+  cancelledAt: z.string().optional(),
+  acceptedAt: z.string().optional(),
 })
 
 export type IQueryInvitation = z.infer<typeof queryInivtation>

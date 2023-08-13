@@ -14,6 +14,10 @@ export class InvitationStatus extends ValueObject<IInvitationStatus> {
     return this.unpack()
   }
 
+  public get isAccepted(): boolean {
+    return this.unpack() === 'accepted'
+  }
+
   public get isCancelled() {
     return this.unpack() === 'cancelled'
   }

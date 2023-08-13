@@ -6,6 +6,7 @@ import { Invitation } from './invitation.js'
 import { WithInvitationEmail } from './specifications/invitation-email.specification.js'
 import { WithInvitationExpiredAt } from './specifications/invitation-expired-at.specification.js'
 import { WithInvitationId } from './specifications/invitation-id.specification.js'
+import { WithInvitationInvitedAt } from './specifications/invitation-invited-at.specification.js'
 import { WithInvitationInvitedBy } from './specifications/invitation-invited-by.specification.js'
 import { WithInvitationRole } from './specifications/invitation-role.specification.js'
 import { WithInvitationStatus } from './specifications/invitation-status.specification.js'
@@ -26,6 +27,7 @@ export class InvitationFactory {
       WithInvitationExpiredAt.default(),
       WithInvitationStatus.active(),
       new WithInvitationInvitedBy(UserId.from(userId).unwrap()),
+      WithInvitationInvitedAt.now(),
     )
   }
 }

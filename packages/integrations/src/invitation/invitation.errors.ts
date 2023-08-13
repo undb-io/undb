@@ -15,3 +15,11 @@ export class InvitationCancelled extends ExceptionBase {
     super('invitation is already cancelled')
   }
 }
+
+export class InvitationAccepted extends ExceptionBase {
+  code = 'INVITATION.ACCEPTED'
+
+  constructor() {
+    super('invitation is already accepted')
+  }
+}

@@ -2,10 +2,13 @@ import type { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
 import type { ISpecVisitor, ISpecification } from '@undb/domain'
 import type {
   IInvitationVisitor,
+  WithInvitationAcceptedAt,
+  WithInvitationCancelledAt,
   WithInvitationCancelledBy,
   WithInvitationEmail,
   WithInvitationExpiredAt,
   WithInvitationId,
+  WithInvitationInvitedAt,
   WithInvitationInvitedBy,
   WithInvitationRole,
   WithInvitationStatus,
@@ -17,6 +20,15 @@ export class InvitationSqliteQueryVisitor implements IInvitationVisitor {
     public readonly em: EntityManager,
     public readonly qb: QueryBuilder<Invitation>,
   ) {}
+  invitedAt(s: WithInvitationInvitedAt): void {
+    throw new Error('Method not implemented.')
+  }
+  cancelledAt(s: WithInvitationCancelledAt): void {
+    throw new Error('Method not implemented.')
+  }
+  acceptedAt(s: WithInvitationAcceptedAt): void {
+    throw new Error('Method not implemented.')
+  }
   invitedBy(s: WithInvitationInvitedBy): void {
     this.qb.andWhere({ invitedBy: s.invitedBy.value })
   }

@@ -16,6 +16,7 @@ export class Invitation extends BaseEntity {
     this.expiredAt = invitation.expiredAt.value
     this.status = invitation.status.unpack()
     this.invitedBy = invitedBy
+    this.invitedAt = invitation.invitedAt.value
   }
 
   @PrimaryKey()
@@ -38,6 +39,15 @@ export class Invitation extends BaseEntity {
   @ManyToOne(() => User)
   invitedBy: Rel<User>
 
+  @Property()
+  invitedAt: Date
+
   @ManyToOne(() => User, { nullable: true })
   cancelledBy?: Rel<User>
+
+  @Property({ nullable: true })
+  cancelldAt?: Date
+
+  @Property({ nullable: true })
+  acceptedAt?: Date
 }

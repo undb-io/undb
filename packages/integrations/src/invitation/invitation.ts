@@ -1,18 +1,22 @@
 import { Role } from '@undb/authz'
 import { UserId } from '@undb/core'
+import type { DateVO } from '@undb/domain'
 import { and, andOptions, type EmailVO } from '@undb/domain'
 import { isAfter } from 'date-fns'
 import { Some, type Option } from 'oxide.ts'
-import type { InvitationSpecification } from './interface'
-import type { InvitationId } from './invitation-id.vo'
-import { InvitationExpired } from './invitation.errors'
+import type { InvitationSpecification } from './interface.js'
+import type { InvitationId } from './invitation-id.vo.js'
+import { InvitationAccepted, InvitationExpired } from './invitation.errors.js'
 import {
+  WithInvitationAcceptedAt,
   WithInvitationCancelledBy,
   WithInvitationExpiredAt,
+  WithInvitationInvitedAt,
   WithInvitationInvitedBy,
   WithInvitationRole,
-} from './specifications'
-import type { InvitationExpiredAt, InvitationStatus } from './value-objects'
+} from './specifications/index.js'
+import { WithInvitationCancelledAt } from './specifications/invitation-cancelled-at.specification.js'
+import type { InvitationExpiredAt, InvitationStatus } from './value-objects/index.js'
 
 export class Invitation {
   id!: InvitationId
@@ -21,18 +25,26 @@ export class Invitation {
   expiredAt!: InvitationExpiredAt
   status!: InvitationStatus
   invitedBy!: UserId
+  invitedAt!: DateVO
   cancelledBy!: Option<UserId>
+  cancelledAt!: Option<DateVO>
+  acceptedAt!: Option<DateVO>
 
   static empty() {
     return new Invitation()
   }
 
   public reinvite(role: string, userId: string): InvitationSpecification {
+    if (this.status.isAccepted) {
+      throw new InvitationAccepted()
+    }
+
     const specs: InvitationSpecification[] = []
     const roleVo = Role.fromStringWithoutOwner(role)
     if (!this.role.equals(roleVo)) {
       specs.push(new WithInvitationRole(roleVo))
       specs.push(new WithInvitationInvitedBy(UserId.from(userId).unwrap()))
+      specs.push(WithInvitationInvitedAt.now())
     }
 
     specs.push(this.extend())
@@ -63,7 +75,11 @@ export class Invitation {
   public cancel(userId: string) {
     const spec = this.status.cancel()
     if (spec.isSome()) {
-      return andOptions(spec, Some(new WithInvitationCancelledBy(Some(UserId.from(userId).unwrap()))))
+      return andOptions(
+        spec,
+        Some(new WithInvitationCancelledBy(Some(UserId.from(userId).unwrap()))),
+        Some(WithInvitationCancelledAt.now()),
+      )
     }
     return spec
   }
@@ -72,6 +88,6 @@ export class Invitation {
     if (this.isExpired) {
       throw new InvitationExpired(this.expiredAt.value)
     }
-    return this.status.accept()
+    return andOptions(this.status.accept(), Some(WithInvitationAcceptedAt.now()))
   }
 }

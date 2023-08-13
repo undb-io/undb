@@ -3,10 +3,13 @@ import { wrap } from '@mikro-orm/core'
 import type { ISpecVisitor, ISpecification } from '@undb/domain'
 import type {
   IInvitationVisitor,
+  WithInvitationAcceptedAt,
+  WithInvitationCancelledAt,
   WithInvitationCancelledBy,
   WithInvitationEmail,
   WithInvitationExpiredAt,
   WithInvitationId,
+  WithInvitationInvitedAt,
   WithInvitationInvitedBy,
   WithInvitationRole,
   WithInvitationStatus,
@@ -19,6 +22,21 @@ export class InvitationSqliteMutationVisitor implements IInvitationVisitor {
     public readonly id: string,
     public readonly em: EntityManager,
   ) {}
+  invitedAt(s: WithInvitationInvitedAt): void {
+    const invitation = this.em.getReference(Invitation, this.id)
+    wrap(invitation).assign({ invitedAt: s.invitedAt.value })
+    this.em.persist(invitation)
+  }
+  cancelledAt(s: WithInvitationCancelledAt): void {
+    const invitation = this.em.getReference(Invitation, this.id)
+    wrap(invitation).assign({ cancelldAt: s.cancelledAt.into(null)?.value })
+    this.em.persist(invitation)
+  }
+  acceptedAt(s: WithInvitationAcceptedAt): void {
+    const invitation = this.em.getReference(Invitation, this.id)
+    wrap(invitation).assign({ acceptedAt: s.acceptedAt.into(null)?.value })
+    this.em.persist(invitation)
+  }
   invitedBy(s: WithInvitationInvitedBy): void {
     const invitation = this.em.getReference(Invitation, this.id)
     const user = this.em.getReference(User, s.invitedBy.value)
