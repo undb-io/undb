@@ -54,7 +54,7 @@
 		taintedMessage: null,
 		delayMs: 100,
 		async onUpdate(event) {
-			if ($readonly || !$record) return
+			if ($readonlyRecord || !$record) return
 			const taintedKeys = keys($tainted)
 			const values = pick(event.form.data, taintedKeys)
 			const oldValues = $record?.valuesJSON
