@@ -10,12 +10,12 @@ const dir = fileURLToPath(new URL(`./templates`, import.meta.url))
   imports: [
     MailerModule.forRootAsync({
       useFactory: () => ({
-        transport: 'smtps://user@domain.com:pass@smtp.domain.com',
+        transport: {
+          host: 'localhost',
+          port: 1025,
+        },
         defaults: {
           from: '"nest-modules" <modules@nestjs.com>',
-        },
-        preview: {
-          open: true,
         },
         template: {
           dir,
