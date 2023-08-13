@@ -3,28 +3,29 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { Global, Module } from '@nestjs/common'
 import { fileURLToPath } from 'node:url'
 
-const dir = fileURLToPath(new URL(`./templates`, import.meta.url))
-
 @Global()
 @Module({
   imports: [
     MailerModule.forRootAsync({
-      useFactory: () => ({
-        transport: {
-          host: 'localhost',
-          port: 1025,
-        },
-        defaults: {
-          from: '"nest-modules" <modules@nestjs.com>',
-        },
-        template: {
-          dir,
-          adapter: new HandlebarsAdapter(),
-          options: {
-            strict: true,
+      useFactory: () => {
+        const dir = fileURLToPath(new URL(`./templates`, import.meta.url))
+        return {
+          transport: {
+            host: '0.0.0.0',
+            port: 1025,
           },
-        },
-      }),
+          defaults: {
+            from: '"nest-modules" <modules@nestjs.com>',
+          },
+          template: {
+            dir,
+            adapter: new HandlebarsAdapter(),
+            options: {
+              strict: true,
+            },
+          },
+        }
+      },
     }),
   ],
 })
