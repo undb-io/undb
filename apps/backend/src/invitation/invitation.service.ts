@@ -1,20 +1,15 @@
 import { Injectable } from '@nestjs/common'
-import type { IInvitationMailService, Invitation } from '@undb/integrations'
 import { InvitationService, type IInvitationRepository } from '@undb/integrations'
 import { InjectInvitationRepository } from './adapters/invitation-sqlite.repository.js'
-
-class ____FakeMailService implements IInvitationMailService {
-  send(invitation: Invitation): Promise<void> {
-    throw new Error('mail send Method not implemented.')
-  }
-}
+import { InvitationMailService } from './invitation-mail.service.js'
 
 @Injectable()
 export class NestInvitationService extends InvitationService {
   constructor(
     @InjectInvitationRepository()
     protected readonly repo: IInvitationRepository,
+    protected readonly mail: InvitationMailService,
   ) {
-    super(repo, new ____FakeMailService())
+    super(repo, mail)
   }
 }
