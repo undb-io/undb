@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { getInvitationURL, type IInvitationMailService, type Invitation } from '@undb/integrations'
+import { type IInvitationMailService, type Invitation } from '@undb/integrations'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
+import { joinURL } from 'ufo'
 import { BaseConfigService } from '../configs/base-config.service.js'
 import { type IMailService } from '../mail/mail.interface.js'
 import { InjectMailService } from '../mail/providers.js'
@@ -17,13 +18,14 @@ export class InvitationMailService implements IInvitationMailService {
   async send(invitation: Invitation): Promise<void> {
     try {
       const host = this.config.host
+      const url = joinURL(host, 'api', 'invitations', invitation.id.value, 'accept')
       await this.mailService.sendMail({
         to: invitation.email.unpack(),
         subject: 'Invitation',
         template: 'invite',
         context: {
           email: invitation.email.unpack(),
-          url: getInvitationURL(host, invitation.id.value),
+          url,
         },
       })
     } catch (error) {
