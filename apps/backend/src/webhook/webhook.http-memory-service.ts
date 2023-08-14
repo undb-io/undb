@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { RecordEvents } from '@undb/core'
+import type { RecordEvents } from '@undb/core'
 import { type IWebhookHttpService, type Webhook } from '@undb/integrations'
 import got from 'got'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'

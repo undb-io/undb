@@ -8,6 +8,7 @@
 	import CreateWebhook from './CreateWebhook.svelte'
 	import { page } from '$app/stores'
 	import UpdateWebhook from './UpdateWebhook.svelte'
+	import { hasPermission } from '$lib/store/authz'
 
 	const table = getTable()
 
@@ -38,12 +39,14 @@
 				{$table.name.value} - Webhooks
 			</Heading>
 
-			<Button size="xs" class="whitespace-nowrap" on:click={() => ($webhookDrawerMode = 'create')}>
-				{$t('Create New Webhook', { ns: 'webhook' })}
-			</Button>
+			{#if $hasPermission('webhook:create')}
+				<Button size="xs" class="whitespace-nowrap" on:click={() => ($webhookDrawerMode = 'create')}>
+					{$t('Create New Webhook', { ns: 'webhook' })}
+				</Button>
+			{/if}
 		</div>
 		<WebhookList />
-	{:else if $webhookDrawerMode === 'create'}
+	{:else if $webhookDrawerMode === 'create' && $hasPermission('webhook:create')}
 		<div class="flex flex-col flex-1">
 			<div class="flex items-center justify-between mb-4">
 				<Heading tag="h5" class="whitespace-nowrap truncate">
@@ -55,7 +58,7 @@
 			</div>
 			<CreateWebhook data={$page.data.createWebhook} />
 		</div>
-	{:else if $webhookDrawerMode === 'update' && $selectedWebhook}
+	{:else if $webhookDrawerMode === 'update' && $selectedWebhook && $hasPermission('webhook:update')}
 		<div class="flex flex-col flex-1">
 			<div class="flex items-center justify-between mb-4">
 				<Heading tag="h5" class="whitespace-nowrap truncate">

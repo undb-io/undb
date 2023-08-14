@@ -8,6 +8,7 @@
 	import { t } from '$lib/i18n'
 	import { invalidate } from '$app/navigation'
 	import { FieldId } from '@undb/core'
+	import { hasPermission } from '$lib/store/authz'
 
 	const table = getTable()
 	const view = getView()
@@ -39,6 +40,7 @@
 			name="galleryFieldId"
 			value={field.id.value}
 			on:change={onChange}
+			disabled={!$hasPermission('table:set_view_field')}
 			class="space-x-1"
 		>
 			<FieldIcon type={field.type} />
@@ -60,6 +62,7 @@
 		size="xs"
 		color="light"
 		class="flex gap-2"
+		disabled={!$hasPermission('table:create_field')}
 		on:click={() => {
 			const id = FieldId.createId()
 			$createFieldInitial = {

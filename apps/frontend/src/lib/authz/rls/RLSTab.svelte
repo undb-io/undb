@@ -6,6 +6,7 @@
 	import { Badge, TabItem } from 'flowbite-svelte'
 	import RlsList from './RlsList.svelte'
 	import RlsCreate from './RLSCreate.svelte'
+	import { hasPermission } from '$lib/store/authz'
 
 	export let action: IRLSAction
 
@@ -13,7 +14,7 @@
 	$: count = rlss.length
 </script>
 
-<TabItem open={action === 'list'} defaultClass={cx({ '!text-gray-300': !rlss.length })}>
+<TabItem open={action === 'list'} defaultClass={cx({ '!text-gray-500 dark:!text-gray-300': !rlss.length })}>
 	<span slot="title" class="flex items-center gap-2">
 		{$t(action, { ns: 'authz' })}
 		{#if count}
@@ -24,6 +25,8 @@
 	</span>
 	<div class="space-y-2">
 		<RlsList {rlss} />
-		<RlsCreate {action} {rlss} />
+		{#if $hasPermission('rls:create')}
+			<RlsCreate {action} {rlss} />
+		{/if}
 	</div>
 </TabItem>

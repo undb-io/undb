@@ -21,6 +21,7 @@
 	import { changeThemeMode, sidebarCollapsed, theme } from '$lib/store/ui'
 	import { DARK_THEME, LIGHT_THEME } from '$lib/store/ui.type'
 	import TablesNav from '$lib/table/TablesNav.svelte'
+	import { hasPermission } from '$lib/store/authz'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -228,31 +229,33 @@
 			</nav>
 			<ul class="flex flex-col border-t pt-4 space-y-2 dark:border-gray-700">
 				<li class="px-6">
-					<ButtonGroup class="w-full dark:bg-gray-700">
-						<Button
-							size="xs"
-							class="w-full dark:border-0 dark:hover:border-primary-700  dark:hover:bg-primary-700 dark:focus:ring-primary-800 "
-							outline
-							on:click={() => createTableModal.open()}
-						>
-							{$t('Create New Table')}
-						</Button>
-						<Button
-							size="xs"
-							class="dark:border-0 dark:hover:border-primary-700 dark:hover:bg-primary-700  dark:focus:ring-primary-800"
-							outline
-						>
-							<i class="ti ti-chevron-down" />
-						</Button>
-						<Dropdown style="z-index: 50;" placement="top" class="w-[300px]">
-							<DropdownItem on:click={() => importDataModal.open()} class="flex items-center gap-2">
-								<i class="ti ti-csv" />
-								<span>
-									{$t('import data content')}
-								</span>
-							</DropdownItem>
-						</Dropdown>
-					</ButtonGroup>
+					{#if $hasPermission('table:create')}
+						<ButtonGroup class="w-full dark:bg-gray-700">
+							<Button
+								size="xs"
+								class="w-full dark:border-0 dark:hover:border-primary-700  dark:hover:bg-primary-700 dark:focus:ring-primary-800 "
+								outline
+								on:click={() => createTableModal.open()}
+							>
+								{$t('Create New Table')}
+							</Button>
+							<Button
+								size="xs"
+								class="dark:border-0 dark:hover:border-primary-700 dark:hover:bg-primary-700  dark:focus:ring-primary-800"
+								outline
+							>
+								<i class="ti ti-chevron-down" />
+							</Button>
+							<Dropdown style="z-index: 50;" placement="top" class="w-[300px]">
+								<DropdownItem on:click={() => importDataModal.open()} class="flex items-center gap-2">
+									<i class="ti ti-csv" />
+									<span>
+										{$t('import data content')}
+									</span>
+								</DropdownItem>
+							</Dropdown>
+						</ButtonGroup>
+					{/if}
 				</li>
 
 				<button

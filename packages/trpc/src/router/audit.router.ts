@@ -1,4 +1,5 @@
-import { GetRecordAuditsQuery, IGetRecordAuditsOutput, getRecordAuditsQueryInput } from '@undb/cqrs'
+import type { IGetRecordAuditsOutput } from '@undb/cqrs'
+import { GetRecordAuditsQuery, getRecordAuditsQueryInput } from '@undb/cqrs'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
 import type { publicProcedure } from '../trpc.js'

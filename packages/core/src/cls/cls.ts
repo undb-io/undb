@@ -63,6 +63,10 @@ export interface ClsStore {
     userId: string
     isAnonymous?: boolean
   }
+  member: {
+    memberId: string
+    role: string
+  }
 }
 
 export interface IClsService<S extends ClsStore = ClsStore> {

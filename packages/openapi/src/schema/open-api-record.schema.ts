@@ -1,4 +1,5 @@
-import { Record, recordReadableValueMapper, type Table } from '@undb/core'
+import type { Record } from '@undb/core'
+import { recordReadableValueMapper, type Table } from '@undb/core'
 import { COMPONENT_RECORD } from 'src/constants'
 import type { ZodRawShape } from 'zod'
 import { z } from 'zod'

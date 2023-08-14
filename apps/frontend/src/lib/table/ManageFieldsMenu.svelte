@@ -10,6 +10,7 @@
 	import { filter, isNumber } from 'lodash-es'
 	import { createFieldModal } from '$lib/store/modal'
 	import Sortable, { type SortableEvent } from 'sortablejs'
+	import { hasPermission } from '$lib/store/authz'
 
 	const table = getTable()
 	const view = getView()
@@ -66,6 +67,7 @@
 			animation: 200,
 			direction: 'vertical',
 			onEnd,
+			disabled: !$hasPermission('table:move_field'),
 		})
 	}
 
@@ -84,28 +86,30 @@
 	}
 </script>
 
-<Button
-	size="xs"
-	color="alternative"
-	class={cx(
-		'relative h-full !rounded-md gap-2 whitespace-nowrap border-0 hover:!bg-blue-50 dark:hover:!bg-gray-800 text-blue-600 dark:text-gray-100',
-		!!hiddenCount && '!bg-blue-50 dark:!bg-primary-600',
-	)}
-	on:click={() => (open = true)}
->
-	<i class="ti ti-columns-3 text-sm" />
-	<span>
-		{$t('Manage Fields')}
-	</span>
-	{#if hiddenCount}
-		<Indicator color="blue" border size="xl" placement="top-right">
-			<span class="text-white text-xs font-bold">{hiddenCount}</span>
-		</Indicator>
-		<Tooltip placement="bottom" class="z-50 dark:bg-primary-900 dark:text-gray-100 hidden lg:block">
-			{$t('N Fields Hidden', { n: hiddenCount })}
-		</Tooltip>
-	{/if}
-</Button>
+{#if $hasPermission('table:toggle_field_visibility')}
+	<Button
+		size="xs"
+		color="alternative"
+		class={cx(
+			'relative h-full !rounded-md gap-2 whitespace-nowrap border-0 hover:!bg-blue-50 dark:hover:!bg-gray-800 text-blue-600 dark:text-gray-100',
+			!!hiddenCount && '!bg-blue-50 dark:!bg-primary-600',
+		)}
+		on:click={() => (open = true)}
+	>
+		<i class="ti ti-columns-3 text-sm" />
+		<span>
+			{$t('Manage Fields')}
+		</span>
+		{#if hiddenCount}
+			<Indicator color="blue" border size="xl" placement="top-right">
+				<span class="text-white text-xs font-bold">{hiddenCount}</span>
+			</Indicator>
+			<Tooltip placement="bottom" class="z-50 dark:bg-primary-900 dark:text-gray-100 hidden lg:block">
+				{$t('N Fields Hidden', { n: hiddenCount })}
+			</Tooltip>
+		{/if}
+	</Button>
+{/if}
 
 <Modal bind:open size="xs" class="w-full" placement="top-center">
 	<ul class="space-y-2" bind:this={el}>
@@ -113,7 +117,7 @@
 			{@const checked = visibility[item.id] === undefined || !!visibility[item.id]}
 			<li class="flex items-center gap-2 w-full" data-field-id={item.id}>
 				<Checkbox
-					disabled={checked && fields.length - hiddenCount === 1}
+					disabled={(checked && fields.length - hiddenCount === 1) || !$hasPermission('table:toggle_field_visibility')}
 					class="flex items-center gap-2"
 					{checked}
 					on:change={(e) => onChangeVisibility(e, item.field)}
@@ -127,16 +131,20 @@
 		{/each}
 	</ul>
 
-	<Hr />
+	{#if $hasPermission('table:toggle_field_visibility')}
+		<Hr />
 
-	<Toggle size="small" checked={$view.showSystemFields} on:change={onChangeShowSystemFields}
-		>{$t('Show System Fields')}</Toggle
-	>
+		<Toggle size="small" checked={$view.showSystemFields} on:change={onChangeShowSystemFields}>
+			{$t('Show System Fields')}
+		</Toggle>
+	{/if}
 
-	<Button size="xs" class="w-full gap-2" color="alternative" on:click={() => createFieldModal.open()}>
-		<i class="ti ti-plus" />
-		<span>
-			{$t('Create New Field')}
-		</span>
-	</Button>
+	{#if $hasPermission('table:create_field')}
+		<Button size="xs" class="w-full gap-2" color="alternative" on:click={() => createFieldModal.open()}>
+			<i class="ti ti-plus" />
+			<span>
+				{$t('Create New Field')}
+			</span>
+		</Button>
+	{/if}
 </Modal>

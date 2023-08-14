@@ -26,6 +26,8 @@ import { coreModules } from './core/index.js'
 import { UserService } from './core/user/user.service.js'
 import { HealthModule } from './health/health.module.js'
 import { I18nModule } from './i18n/i18n.module.js'
+import { InvitationModule } from './invitation/invitation.module.js'
+import { MailModule } from './mail/mail.module.js'
 import { OpenAPIModule } from './openapi/openapi.module.js'
 import { OutboxModule } from './outbox/outbox.module.js'
 import { RealtimeModule } from './realtime/realtime.module.js'
@@ -57,7 +59,9 @@ import { WebhookModule } from './webhook/webhook.module.js'
       }),
       inject: [authConfig.KEY],
     }),
+    AuthzModule,
     TrpcModule,
+    MailModule.register({}),
     LoggerModule.forRootAsync({
       useFactory: (config: BaseConfigService) => ({
         pinoHttp: {
@@ -85,7 +89,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
     ShareModule,
     AuditModule,
     AppInfoModule,
-    AuthzModule,
+    InvitationModule,
   ],
 })
 export class AppModule implements OnModuleInit {

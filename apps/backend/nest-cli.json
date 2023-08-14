@@ -1,5 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "builder": "swc",
+    "watchAssets": true,
+    "assets": ["**/*.hbs"]
+  }
 }

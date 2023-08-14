@@ -18,7 +18,7 @@
 		tree: 'text-green-500',
 		grid: 'text-sky-500',
 		kanban: 'text-orange-500',
-		gallery: 'text-dark-500',
+		gallery: 'text-yellow-500',
 		gantt: 'text-fuchsia-500',
 		calendar: 'text-green-500',
 		dashboard: 'text-cyan-500',

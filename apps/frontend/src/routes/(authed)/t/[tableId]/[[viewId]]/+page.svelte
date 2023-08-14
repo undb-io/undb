@@ -19,7 +19,7 @@
 	import FormListDrawer from '$lib/form/FormListDrawer.svelte'
 	import FormEditorModal from '$lib/form/FormEditorModal.svelte'
 	import RecordTrashModal from '$lib/record/trash/RecordTrashModal.svelte'
-	import { onMount } from 'svelte'
+	import { onDestroy } from 'svelte'
 	import { match } from 'ts-pattern'
 	import RLSModal from '$lib/authz/rls/RLSModal.svelte'
 
@@ -46,9 +46,13 @@
 			createRecordModal.open()
 		}
 	}
+	let evtSource: EventSource
 
-	onMount(() => {
-		const evtSource = new EventSource(`/api/tables/${$table.id.value}/subscription`)
+	$: if ($table) {
+		if (evtSource) {
+			evtSource.close()
+		}
+		evtSource = new EventSource(`/api/tables/${$table.id.value}/subscription`)
 		evtSource.onmessage = (event) => {
 			const data = JSON.parse(event.data)
 			const evt = EventFactory.fromJSON(data.event)
@@ -71,7 +75,10 @@
 				})
 				.exhaustive()
 		}
-		return () => evtSource.close()
+	}
+
+	onDestroy(() => {
+		if (evtSource) evtSource.close()
 	})
 </script>
 

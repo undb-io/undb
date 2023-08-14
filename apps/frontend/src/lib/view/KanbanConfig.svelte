@@ -8,6 +8,7 @@
 	import { t } from '$lib/i18n'
 	import { invalidate } from '$app/navigation'
 	import { FieldId } from '@undb/core'
+	import { hasPermission } from '$lib/store/authz'
 
 	const table = getTable()
 	const view = getView()
@@ -34,7 +35,14 @@
 
 <div class="flex flex-col space-y-2">
 	{#each kanbanFields as field}
-		<Radio bind:group={$kanbanField} name="kanbanFieldId" value={field.id.value} on:change={onChange} class="space-x-1">
+		<Radio
+			bind:group={$kanbanField}
+			disabled={!$hasPermission('table:set_view_field')}
+			name="kanbanFieldId"
+			value={field.id.value}
+			on:change={onChange}
+			class="space-x-1"
+		>
 			<FieldIcon type={field.type} />
 			<span>{field.name.value}</span>
 		</Radio>
@@ -53,6 +61,7 @@
 	<Button
 		size="xs"
 		color="light"
+		disabled={!$hasPermission('table:create_field')}
 		class="flex gap-2"
 		on:click={() => {
 			const id = FieldId.createId()
@@ -78,6 +87,7 @@
 		size="xs"
 		color="light"
 		class="flex gap-2"
+		disabled={!$hasPermission('table:create_field')}
 		on:click={() => {
 			const id = FieldId.createId()
 			$createFieldInitial = {

@@ -28,6 +28,7 @@
 	export let field: Field | undefined
 	export let operator: string | undefined
 	export let value: any
+	export let readonly = false
 
 	let component: ComponentType | undefined
 
@@ -121,5 +122,13 @@
 </script>
 
 {#if operator && !isOperatorWithoutValue(operator)}
-	<svelte:component this={component} bind:value {field} {...$$restProps} class={wrapperClass} disabled={!field} />
+	<svelte:component
+		this={component}
+		bind:value
+		{field}
+		{...$$restProps}
+		class={wrapperClass}
+		disabled={!field}
+		{readonly}
+	/>
 {/if}

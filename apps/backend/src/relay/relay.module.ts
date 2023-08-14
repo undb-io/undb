@@ -7,10 +7,11 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { InjectOutboxConfig, type OutboxConfigType } from '../configs/outbox.config.js'
 import { OutboxModule } from '../outbox/outbox.module.js'
 import { RelayService } from './relay.service.js'
+import { ReplyEventService } from './reply-event.service.js'
 
 @Module({
   imports: [ScheduleModule.forRoot(), CqrsModule, OutboxModule],
-  providers: [RelayService],
+  providers: [RelayService, ReplyEventService],
 })
 export class RelayModule implements OnModuleInit {
   constructor(

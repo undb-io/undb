@@ -1,16 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { type ConfigType } from '@nestjs/config'
+import { CommandBus } from '@nestjs/cqrs'
 import type { IQueryUser, User, UserSpecification } from '@undb/core'
-import {
-  UserFactory,
-  WithUserColor,
-  WithUserEmail,
-  WithUserId,
-  WithUserPassword,
-  WithUsername,
-  type IUserQueryModel,
-  type IUserRepository,
-} from '@undb/core'
+import { WithUserEmail, type IUserQueryModel, type IUserRepository } from '@undb/core'
+import { RegisterCommand } from '@undb/cqrs'
 import bcrypt from 'bcrypt'
 import type { authConfig } from '../../configs/auth.config.js'
 import { InjectAuthConfig } from '../../configs/auth.config.js'
@@ -22,6 +15,7 @@ export class UserService {
     @InjectUserQueryModel() private readonly rm: IUserQueryModel,
     @InjectUserRepository() private readonly repo: IUserRepository,
     @InjectAuthConfig() private readonly config: ConfigType<typeof authConfig>,
+    private readonly commandBus: CommandBus,
   ) {}
 
   async createAdmin() {
@@ -33,14 +27,12 @@ export class UserService {
       const exists = await this.repo.exists(email)
       if (exists) return
 
-      const user = UserFactory.create(
-        email,
-        WithUserPassword.fromString(hashedPassword),
-        admin.username ? WithUsername.fromString(admin.username) : WithUsername.fromEmail(admin.email),
-        WithUserId.create(),
-        WithUserColor.random(),
+      await this.commandBus.execute(
+        new RegisterCommand({
+          email: admin.email,
+          password: hashedPassword,
+        }),
       )
-      await this.repo.insert(user)
     }
   }
 
