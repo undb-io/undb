@@ -12,6 +12,7 @@ import type { cacheStorageConfig } from '../configs/cache-storage.config.js'
 import { InjectCacheStorageConfig } from '../configs/cache-storage.config.js'
 import { InjectWebhookConfig, type WebhookConfigType } from '../configs/webhook.config.js'
 import { StorageHealthIndicator } from '../storage/storage.health.js'
+import { MailHealthIndicator } from './mail.health.js'
 
 @Controller('health')
 export class HealthController implements OnModuleInit {
@@ -22,6 +23,7 @@ export class HealthController implements OnModuleInit {
     private readonly health: HealthCheckService,
     private readonly storageHealth: StorageHealthIndicator,
     private readonly redisIndicator: RedisHealthIndicator,
+    private readonly mailIndicator: MailHealthIndicator,
     private readonly mongooseIndicator: MongooseHealthIndicator,
     @InjectCacheStorageConfig() private readonly cacheConfig: ConfigType<typeof cacheStorageConfig>,
     @InjectWebhookConfig() private readonly webhookConfig: WebhookConfigType,
@@ -47,7 +49,10 @@ export class HealthController implements OnModuleInit {
   }
 
   get healthIndicators(): HealthIndicatorFunction[] {
-    const indicators: HealthIndicatorFunction[] = [() => this.storageHealth.isHealthy()]
+    const indicators: HealthIndicatorFunction[] = [
+      () => this.storageHealth.isHealthy(),
+      () => this.mailIndicator.isHealthy(),
+    ]
     if (this.cacheConfig.provider === 'redis') {
       indicators.push(() =>
         this.redisIndicator.checkHealth('cache-storage-redis', { client: this.redis!, type: 'redis' }),

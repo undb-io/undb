@@ -87,6 +87,9 @@ importers:
       '@nestjs-modules/mailer':
         specifier: ^1.9.1
         version: 1.9.1(@nestjs/common@10.1.3)(@nestjs/core@10.1.3)(nodemailer@6.9.4)
+      '@nestjs/axios':
+        specifier: ^3.0.0
+        version: 3.0.0(@nestjs/common@10.1.3)(axios@1.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/common':
         specifier: ^10.1.3
         version: 10.1.3(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -119,7 +122,7 @@ importers:
         version: 4.0.0(@nestjs/common@10.1.3)(@nestjs/core@10.1.3)(express@4.18.2)
       '@nestjs/terminus':
         specifier: ^10.0.1
-        version: 10.0.1(@mikro-orm/core@5.7.14)(@mikro-orm/nestjs@5.2.0)(@nestjs/common@10.1.3)(@nestjs/core@10.1.3)(@nestjs/mongoose@10.0.1)(mongoose@7.4.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+        version: 10.0.1(@mikro-orm/core@5.7.14)(@mikro-orm/nestjs@5.2.0)(@nestjs/axios@3.0.0)(@nestjs/common@10.1.3)(@nestjs/core@10.1.3)(@nestjs/mongoose@10.0.1)(mongoose@7.4.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@opentelemetry/auto-instrumentations-node':
         specifier: ^0.38.0
         version: 0.38.0(@opentelemetry/api@1.4.1)
@@ -186,6 +189,9 @@ importers:
       aws-sdk-v3-nest:
         specifier: ^0.3.0
         version: 0.3.0(@nestjs/common@10.1.3)
+      axios:
+        specifier: ^1.4.0
+        version: 1.4.0
       bcrypt:
         specifier: ^5.1.0
         version: 5.1.0
@@ -3401,7 +3407,7 @@ packages:
     dependencies:
       '@nestjs/common': 10.1.3(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/core': 10.1.3(@nestjs/common@10.1.3)(@nestjs/platform-express@10.1.3)(reflect-metadata@0.1.13)(rxjs@7.8.1)
-      '@nestjs/terminus': 10.0.1(@mikro-orm/core@5.7.14)(@mikro-orm/nestjs@5.2.0)(@nestjs/common@10.1.3)(@nestjs/core@10.1.3)(@nestjs/mongoose@10.0.1)(mongoose@7.4.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/terminus': 10.0.1(@mikro-orm/core@5.7.14)(@mikro-orm/nestjs@5.2.0)(@nestjs/axios@3.0.0)(@nestjs/common@10.1.3)(@nestjs/core@10.1.3)(@nestjs/mongoose@10.0.1)(mongoose@7.4.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       ioredis: 5.3.2
       tslib: 2.4.1
     dev: false
@@ -3737,6 +3743,20 @@ packages:
       - supports-color
     dev: false
 
+  /@nestjs/axios@3.0.0(@nestjs/common@10.1.3)(axios@1.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+    resolution: {integrity: sha512-ULdH03jDWkS5dy9X69XbUVbhC+0pVnrRcj7bIK/ytTZ76w7CgvTZDJqsIyisg3kNOiljRW/4NIjSf3j6YGvl+g==}
+    peerDependencies:
+      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
+      axios: ^1.3.1
+      reflect-metadata: ^0.1.12
+      rxjs: ^6.0.0 || ^7.0.0
+    dependencies:
+      '@nestjs/common': 10.1.3(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      axios: 1.4.0
+      reflect-metadata: 0.1.13
+      rxjs: 7.8.1
+    dev: false
+
   /@nestjs/cli@10.1.11(@swc/cli@0.1.62)(@swc/core@1.3.74):
     resolution: {integrity: sha512-ORkpVFQvcPYtvkLfa0I9dMSPIppkqTOyLqPvJV0wiZofp8iR1+VEVzJVi+PMj53gOkly8TV9+6iy/dBA5Ssrog==}
     engines: {node: '>= 16'}
@@ -3964,7 +3984,7 @@ packages:
       path-to-regexp: 0.2.5
     dev: false
 
-  /@nestjs/terminus@10.0.1(@mikro-orm/core@5.7.14)(@mikro-orm/nestjs@5.2.0)(@nestjs/common@10.1.3)(@nestjs/core@10.1.3)(@nestjs/mongoose@10.0.1)(mongoose@7.4.1)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+  /@nestjs/terminus@10.0.1(@mikro-orm/core@5.7.14)(@mikro-orm/nestjs@5.2.0)(@nestjs/axios@3.0.0)(@nestjs/common@10.1.3)(@nestjs/core@10.1.3)(@nestjs/mongoose@10.0.1)(mongoose@7.4.1)(reflect-metadata@0.1.13)(rxjs@7.8.1):
     resolution: {integrity: sha512-orQmQFdwN4QC2Oo30BrxEKzKAVeVluWQElgIe16NGvm597VqRH4b1GbKldVg6H8adehd/nR6RdCUyFozRdl2rA==}
     peerDependencies:
       '@grpc/grpc-js': '*'
@@ -4014,6 +4034,7 @@ packages:
     dependencies:
       '@mikro-orm/core': 5.7.14(@mikro-orm/better-sqlite@5.7.14)(@mikro-orm/migrations@5.7.14)
       '@mikro-orm/nestjs': 5.2.0(@mikro-orm/core@5.7.14)(@nestjs/common@10.1.3)(@nestjs/core@10.1.3)
+      '@nestjs/axios': 3.0.0(@nestjs/common@10.1.3)(axios@1.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/common': 10.1.3(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/core': 10.1.3(@nestjs/common@10.1.3)(@nestjs/platform-express@10.1.3)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/mongoose': 10.0.1(@nestjs/common@10.1.3)(@nestjs/core@10.1.3)(mongoose@7.4.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -7528,6 +7549,16 @@ packages:
       '@nestjs/common': 10.1.3(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
     dev: false
 
+  /axios@1.4.0:
+    resolution: {integrity: sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==}
+    dependencies:
+      follow-redirects: 1.15.2
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
   /axobject-query@3.2.1:
     resolution: {integrity: sha512-jsyHu61e6N4Vbz/v18DHwWYKK0bSWLqn47eeDSKPB7m8tqMHF9YJ+mhIk2lVteyZrY8tnSj/jHOv4YiTCuCJgg==}
     dependencies:
@@ -10347,6 +10378,16 @@ packages:
       '@popperjs/core': 2.11.8
       mini-svg-data-uri: 1.4.4
     dev: true
+
+  /follow-redirects@1.15.2:
+    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: false
 
   /for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}

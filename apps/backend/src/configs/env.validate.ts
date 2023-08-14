@@ -93,6 +93,10 @@ export const configSchema = Joi.object({
 
   // mail
   UNDB_MAIL_PROVIDER: Joi.string().valid('basic').optional(),
+  UNDB_MAIL_HEALTH: Joi.when('UNDB_MAIL_PROVIDER', {
+    is: 'basic',
+    then: Joi.string().uri(),
+  }),
   UNDB_MAIL_HOST: Joi.string().optional(),
   UNDB_MAIL_PORT: Joi.number().port().optional(),
   UNDB_MAIL_DEFAULT_FROM: Joi.string().optional(),
