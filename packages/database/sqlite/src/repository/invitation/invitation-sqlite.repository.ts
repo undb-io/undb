@@ -12,11 +12,14 @@ import { InvitationSqliteQueryVisitor } from './invitation-sqlite.query-visitor.
 export class InvitationSqliteRepository implements IInvitationRepository {
   constructor(protected readonly em: EntityManager) {}
   async findOneById(id: string): Promise<Option<InvitationDo>> {
-    const found = await this.em.findOne(Invitation, id)
+    const em = this.em.fork()
+    const found = await em.findOne(Invitation, id)
 
     if (!found) {
       return None
     }
+
+    await em.populate(found, ['invitedBy.username'])
 
     return Some(InvitationSqliteMapper.toDomain(found))
   }
@@ -32,6 +35,8 @@ export class InvitationSqliteRepository implements IInvitationRepository {
     if (!found) {
       return None
     }
+
+    await em.populate(found, ['invitedBy.username'])
 
     return Some(InvitationSqliteMapper.toDomain(found))
   }

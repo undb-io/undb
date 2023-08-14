@@ -16,7 +16,7 @@ import {
   WithInvitationRole,
 } from './specifications/index.js'
 import { WithInvitationCancelledAt } from './specifications/invitation-cancelled-at.specification.js'
-import type { InvitationExpiredAt, InvitationStatus } from './value-objects/index.js'
+import type { InvitationExpiredAt, InvitationStatus, InvitationUserProfile } from './value-objects/index.js'
 
 export class Invitation {
   id!: InvitationId
@@ -25,6 +25,7 @@ export class Invitation {
   expiredAt!: InvitationExpiredAt
   status!: InvitationStatus
   invitedBy!: UserId
+  invitedByProfile!: InvitationUserProfile
   invitedAt!: DateVO
   cancelledBy!: Option<UserId>
   cancelledAt!: Option<DateVO>

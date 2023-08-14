@@ -3,7 +3,7 @@ import { userIdSchema } from '@undb/core'
 import { emailSchema } from '@undb/domain'
 import { z } from 'zod'
 import { inviteIdSchema } from './invitation-id.vo.js'
-import { invitationStatus } from './value-objects/index.js'
+import { invitationStatus, invitationUserProfile } from './value-objects/index.js'
 
 export const inviteSchema = z.object({
   email: emailSchema,
@@ -21,6 +21,7 @@ export const queryInivtation = z.object({
   expiredAt: z.string(),
   status: invitationStatus,
   invitedBy: userIdSchema,
+  invitedByProfile: invitationUserProfile,
   invitedAt: z.string(),
   cancelledBy: userIdSchema.optional(),
   cancelledAt: z.string().optional(),

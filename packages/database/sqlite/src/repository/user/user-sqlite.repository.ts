@@ -11,7 +11,7 @@ export class UserSqliteRepository implements IUserRepository {
   constructor(private readonly em: EntityManager) {}
   async insert(user: CoreUser): Promise<void> {
     const entity = new User(user)
-    await this.em.persistAndFlush(entity)
+    await this.em.fork().persistAndFlush(entity)
   }
 
   async updateOneById(id: string, spec: UserSpecification): Promise<void> {
@@ -22,7 +22,8 @@ export class UserSqliteRepository implements IUserRepository {
   }
 
   async findOneById(id: string): Promise<Option<CoreUser>> {
-    const user = await this.em.findOne(User, id)
+    const em = this.em.fork()
+    const user = await em.findOne(User, id)
     if (!user) {
       return None
     }
@@ -30,8 +31,9 @@ export class UserSqliteRepository implements IUserRepository {
   }
 
   async findOne(spec: UserSpecification): Promise<Option<CoreUser>> {
-    const qb = this.em.qb(User)
-    const visitor = new UserSqliteQueryVisitor(this.em, qb)
+    const em = this.em.fork()
+    const qb = em.qb(User)
+    const visitor = new UserSqliteQueryVisitor(em, qb)
     spec.accept(visitor)
 
     const user = await qb.getSingleResult()
