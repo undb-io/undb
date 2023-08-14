@@ -162,6 +162,7 @@ export const config: InitOptions = {
         'empty invitation': '{{count}} pending invites',
         invite: 'invite',
         'cancel invite': 'cancel',
+        'copy invitation url': 'copy invitation url',
       },
       table: {
         trash: 'trash',
@@ -546,6 +547,7 @@ export const config: InitOptions = {
         'empty invitation': '{{count}} 个待接受的邀请',
         invite: '邀请',
         'cancel invite': '取消邀请',
+        'copy invitation url': '复制邀请链接',
       },
       table: {
         trash: '回收站',

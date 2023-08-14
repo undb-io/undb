@@ -1,11 +1,13 @@
 <script lang="ts">
+	import { page } from '$app/stores'
 	import { t } from '$lib/i18n'
 	import { hasPermission } from '$lib/store/authz'
 	import { trpc } from '$lib/trpc/client'
 	import type { IRolesWithoutOwner } from '@undb/authz'
-	import type { IQueryInvitation } from '@undb/integrations'
+	import { getInvitationURL, type IQueryInvitation } from '@undb/integrations'
 	import { Badge, Card, Dropdown, DropdownItem, Select } from 'flowbite-svelte'
 	import type { SelectOptionType } from 'flowbite-svelte/dist/types'
+	import { copyText } from 'svelte-copy'
 
 	export let invitation: IQueryInvitation
 
@@ -37,6 +39,14 @@
 			}
 		},
 	})
+
+	$: url = getInvitationURL($page.url.host, invitation.id)
+
+	let open = false
+	const copyURL = () => {
+		copyText(url)
+		open = false
+	}
 </script>
 
 <Card class="!max-w-none w-full">
@@ -59,8 +69,11 @@
 				<button>
 					<i class="ti ti-dots"></i>
 				</button>
-				{#if $hasPermission('invitation:cancel')}
-					<Dropdown class="w-48">
+				<Dropdown bind:open class="w-48">
+					<DropdownItem on:click={copyURL}>
+						{$t('copy invitation url', { ns: 'common' })}
+					</DropdownItem>
+					{#if $hasPermission('invitation:cancel')}
 						<DropdownItem
 							class="text-red-500"
 							on:click={() =>
@@ -68,8 +81,8 @@
 									id: invitation.id,
 								})}>{$t('cancel invite', { ns: 'common' })}</DropdownItem
 						>
-					</Dropdown>
-				{/if}
+					{/if}
+				</Dropdown>
 			</div>
 		</div>
 	</div>
