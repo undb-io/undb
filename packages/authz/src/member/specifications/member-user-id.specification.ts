@@ -1,10 +1,11 @@
-import type { ICollaboratorProfile } from '@undb/core'
+import type { User } from '@undb/core'
 import { UserId } from '@undb/core'
 import { CompositeSpecification } from '@undb/domain'
 import type { Result } from 'oxide.ts'
-import { Ok, Option } from 'oxide.ts'
+import { Ok } from 'oxide.ts'
 import type { IMemberVisitor } from '../interface.js'
 import type { Member } from '../member.js'
+import { MemberUserProfile } from '../value-objects/member-user-profile.vo.js'
 
 export class WithMemberUserId extends CompositeSpecification<Member, IMemberVisitor> {
   constructor(public readonly userId: UserId) {
@@ -27,14 +28,17 @@ export class WithMemberUserId extends CompositeSpecification<Member, IMemberVisi
 }
 
 export class WithMemberUserProfile extends CompositeSpecification<Member, IMemberVisitor> {
-  constructor(public readonly profile: ICollaboratorProfile) {
+  constructor(public readonly profile: MemberUserProfile) {
     super()
   }
+  public static fromUser(user: User) {
+    return new this(MemberUserProfile.fromUser(user))
+  }
   isSatisfiedBy(t: Member): boolean {
-    throw new Error('Method not implemented.')
+    return this.profile.equals(t.userProfile)
   }
   mutate(t: Member): Result<Member, string> {
-    t.userProfile = Option(this.profile)
+    t.userProfile = this.profile
     return Ok(t)
   }
   accept(v: IMemberVisitor): Result<void, string> {
