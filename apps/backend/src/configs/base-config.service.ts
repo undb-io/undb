@@ -8,4 +8,8 @@ export class BaseConfigService {
   public get isProd() {
     return this.config.get('NODE_ENV') === 'production'
   }
+
+  public get host() {
+    return this.config.get('UNDB_HOST')
+  }
 }

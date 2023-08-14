@@ -2,6 +2,7 @@ import Joi from 'joi'
 import path from 'node:path'
 
 export const configSchema = Joi.object({
+  UNDB_HOST: Joi.string().uri().default('http://localhost:4000'),
   // base
   NODE_ENV: Joi.string().valid('development', 'production', 'test', 'provision').default('development'),
   PORT: Joi.number().default(4000),
