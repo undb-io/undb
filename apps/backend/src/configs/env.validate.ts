@@ -89,4 +89,10 @@ export const configSchema = Joi.object({
     is: 'mongo',
     then: Joi.string().optional().default('undb_cache'),
   }),
+
+  // mail
+  UNDB_MAIL_PROVIDER: Joi.string().valid('basic').optional(),
+  UNDB_MAIL_HOST: Joi.string().optional(),
+  UNDB_MAIL_PORT: Joi.number().port().optional(),
+  UNDB_MAIL_DEFAULT_FROM: Joi.string().optional(),
 })

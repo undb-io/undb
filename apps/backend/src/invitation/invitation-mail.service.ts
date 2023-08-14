@@ -1,12 +1,14 @@
-import { MailerService } from '@nestjs-modules/mailer'
 import { Injectable } from '@nestjs/common'
 import { getInvitationURL, type IInvitationMailService, type Invitation } from '@undb/integrations'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
+import { type IMailService } from '../mail/mail.interface.js'
+import { InjectMailService } from '../mail/providers.js'
 
 @Injectable()
 export class InvitationMailService implements IInvitationMailService {
   constructor(
-    protected readonly mailService: MailerService,
+    @InjectMailService()
+    protected readonly mailService: IMailService,
     @InjectPinoLogger(InvitationMailService.name)
     private readonly logger: PinoLogger,
   ) {}

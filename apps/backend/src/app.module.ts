@@ -61,7 +61,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
     }),
     AuthzModule,
     TrpcModule,
-    MailModule,
+    MailModule.register({}),
     LoggerModule.forRootAsync({
       useFactory: (config: BaseConfigService) => ({
         pinoHttp: {
