@@ -1110,6 +1110,9 @@ importers:
       ts-pattern:
         specifier: ^5.0.4
         version: 5.0.4
+      ufo:
+        specifier: ^1.2.0
+        version: 1.2.0
       zod:
         specifier: ^3.21.4
         version: 3.21.4

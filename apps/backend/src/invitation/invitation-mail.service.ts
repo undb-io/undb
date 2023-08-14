@@ -1,6 +1,6 @@
 import { MailerService } from '@nestjs-modules/mailer'
 import { Injectable } from '@nestjs/common'
-import type { IInvitationMailService, Invitation } from '@undb/integrations'
+import { getInvitationURL, type IInvitationMailService, type Invitation } from '@undb/integrations'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 
 @Injectable()
@@ -16,6 +16,10 @@ export class InvitationMailService implements IInvitationMailService {
         to: invitation.email.unpack(),
         subject: 'Invitation',
         template: 'invite',
+        context: {
+          email: invitation.email.unpack(),
+          url: getInvitationURL('http://localhost:3000', invitation.id.value),
+        },
       })
     } catch (error) {
       this.logger.error(error)

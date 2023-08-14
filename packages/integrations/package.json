@@ -12,6 +12,7 @@
     "lodash-es": "^4.17.21",
     "oxide.ts": "^1.1.0",
     "ts-pattern": "^5.0.4",
+    "ufo": "^1.2.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
