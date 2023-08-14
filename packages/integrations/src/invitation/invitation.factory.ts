@@ -1,5 +1,5 @@
 import { Role } from '@undb/authz'
-import { UserId } from '@undb/core'
+import type { User } from '@undb/core'
 import { EmailVO, and } from '@undb/domain'
 import type { InvitationSpecification } from './interface.js'
 import { Invitation } from './invitation.js'
@@ -7,7 +7,10 @@ import { WithInvitationEmail } from './specifications/invitation-email.specifica
 import { WithInvitationExpiredAt } from './specifications/invitation-expired-at.specification.js'
 import { WithInvitationId } from './specifications/invitation-id.specification.js'
 import { WithInvitationInvitedAt } from './specifications/invitation-invited-at.specification.js'
-import { WithInvitationInvitedBy } from './specifications/invitation-invited-by.specification.js'
+import {
+  WithInvitationInvitedBy,
+  WithInvitationInvitedByProfile,
+} from './specifications/invitation-invited-by.specification.js'
 import { WithInvitationRole } from './specifications/invitation-role.specification.js'
 import { WithInvitationStatus } from './specifications/invitation-status.specification.js'
 
@@ -19,14 +22,15 @@ export class InvitationFactory {
       .unwrap()
   }
 
-  static invite(email: string, role: string, userId: string) {
+  static invite(email: string, role: string, user: User) {
     return this.create(
       WithInvitationId.create(),
       new WithInvitationEmail(EmailVO.fromString(email)),
       new WithInvitationRole(Role.fromString(role)),
       WithInvitationExpiredAt.default(),
       WithInvitationStatus.pending(),
-      new WithInvitationInvitedBy(UserId.from(userId).unwrap()),
+      new WithInvitationInvitedBy(user.userId),
+      WithInvitationInvitedByProfile.fromUser(user),
       WithInvitationInvitedAt.now(),
     )
   }

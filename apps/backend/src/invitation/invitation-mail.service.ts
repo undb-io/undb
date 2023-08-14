@@ -26,6 +26,7 @@ export class InvitationMailService implements IInvitationMailService {
         context: {
           email: invitation.email.unpack(),
           url,
+          invitedBy: invitation.invitedByProfile.profile.username,
         },
       })
     } catch (error) {

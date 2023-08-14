@@ -25,6 +25,8 @@ export class InvitationSqliteQueryModel implements IInvitationQueryModel {
 
     const results = await qb.getResultList()
 
+    await em.populate(results, ['invitedBy.username'])
+
     return results.map((entity) => InvitationSqliteMapper.toQuery(entity))
   }
 }

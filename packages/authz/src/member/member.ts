@@ -1,15 +1,16 @@
-import type { ICollaboratorProfile, UserId } from '@undb/core'
-import { Some, type Option } from 'oxide.ts'
-import type { IRoles, Role } from '../rbac/role.vo.js'
+import type { UserId } from '@undb/core'
+import { None, Some, type Option } from 'oxide.ts'
+import type { IRoles } from '../rbac/role.vo.js'
+import { Role } from '../rbac/role.vo.js'
 import type { MemberSpecification } from './interface.js'
 import { WithMemberRole } from './specifications/member-role.specification.js'
-import type { MemberID } from './value-objects/index.js'
+import type { MemberID, MemberUserProfile } from './value-objects/index.js'
 
 export class Member {
   id!: MemberID
   role!: Role
   userId!: UserId
-  userProfile!: Option<ICollaboratorProfile>
+  userProfile!: MemberUserProfile
 
   static empty() {
     return new this()
@@ -17,6 +18,9 @@ export class Member {
 
   public updateRole(role: IRoles): Option<MemberSpecification> {
     // TODO: validate
+    if (this.role.equals(Role.fromStringWithoutOwner(role))) {
+      return None
+    }
     return Some(WithMemberRole.from(role))
   }
 }

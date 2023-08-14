@@ -37,4 +37,9 @@ export class NestUserSqliteRepository extends UserSqliteRepository {
   count(spec: UserSpecification | null): Promise<number> {
     return super.count(spec)
   }
+
+  @UseRequestContext()
+  updateOneById(id: string, spec: UserSpecification): Promise<void> {
+    return super.updateOneById(id, spec)
+  }
 }

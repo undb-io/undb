@@ -5,6 +5,7 @@ import type { IInvitationStatus, IQueryInvitation, Invitation as InvitationDo } 
 import {
   InvitationFactory,
   InvitationStatus,
+  InvitationUserProfile,
   WithInvitationAcceptedAt,
   WithInvitationCancelledAt,
   WithInvitationCancelledBy,
@@ -13,6 +14,7 @@ import {
   WithInvitationId,
   WithInvitationInvitedAt,
   WithInvitationInvitedBy,
+  WithInvitationInvitedByProfile,
   WithInvitationRole,
   WithInvitationStatus,
 } from '@undb/integrations'
@@ -28,6 +30,7 @@ export class InvitationSqliteMapper {
       WithInvitationExpiredAt.fromDate(invitation.expiredAt),
       new WithInvitationStatus(InvitationStatus.fromString(invitation.status)),
       new WithInvitationInvitedBy(UserId.from(invitation.invitedBy.id).unwrap()),
+      new WithInvitationInvitedByProfile(new InvitationUserProfile({ username: invitation.invitedBy.username })),
       new WithInvitationInvitedAt(new DateVO(invitation.invitedAt)),
       new WithInvitationCancelledBy(
         invitation.cancelledBy ? Some(UserId.from(invitation.cancelledBy.id).unwrap()) : None,
@@ -45,6 +48,9 @@ export class InvitationSqliteMapper {
       expiredAt: invitation.expiredAt.toISOString(),
       status: invitation.status as IInvitationStatus,
       invitedBy: invitation.invitedBy.id,
+      invitedByProfile: {
+        username: invitation.invitedBy.username,
+      },
       invitedAt: invitation.invitedAt.toISOString(),
       cancelledBy: invitation.cancelledBy?.id,
       cancelledAt: invitation.cancelldAt?.toISOString(),
