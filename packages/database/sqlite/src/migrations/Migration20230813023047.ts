@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230808064943 extends Migration {
+export class Migration20230813023047 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `undb_outbox` (`uuid` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text null, `operator_id` text null, `timestamp` datetime not null, `payload` json not null, `meta` json null, primary key (`uuid`));',
@@ -100,6 +100,15 @@ export class Migration20230808064943 extends Migration {
     )
     this.addSql('create index `undb_member_deleted_at_index` on `undb_member` (`deleted_at`);')
     this.addSql('create index `undb_member_user_id_index` on `undb_member` (`user_id`);')
+
+    this.addSql(
+      'create table `undb_invitation` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `email` text not null, `role` text not null, `expired_at` datetime not null, `status` text not null, `invited_by_id` text not null, `invited_at` datetime not null, `cancelled_by_id` text null, `cancelld_at` datetime null, `accepted_at` datetime null, constraint `undb_invitation_invited_by_id_foreign` foreign key(`invited_by_id`) references `undb_user`(`id`) on update cascade, constraint `undb_invitation_cancelled_by_id_foreign` foreign key(`cancelled_by_id`) references `undb_user`(`id`) on delete set null on update cascade, primary key (`id`));',
+    )
+    this.addSql('create index `undb_invitation_deleted_at_index` on `undb_invitation` (`deleted_at`);')
+    this.addSql('create index `undb_invitation_email_index` on `undb_invitation` (`email`);')
+    this.addSql('create unique index `undb_invitation_email_unique` on `undb_invitation` (`email`);')
+    this.addSql('create index `undb_invitation_invited_by_id_index` on `undb_invitation` (`invited_by_id`);')
+    this.addSql('create index `undb_invitation_cancelled_by_id_index` on `undb_invitation` (`cancelled_by_id`);')
 
     this.addSql(
       'create table `undb_audit` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `timestamp` datetime not null, `op` text not null, `target_id` text null, `target_type` text null, `detail` json null, `operator_id` text not null, `table_id` text null, constraint `undb_audit_operator_id_foreign` foreign key(`operator_id`) references `undb_user`(`id`) on update cascade, constraint `undb_audit_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));',

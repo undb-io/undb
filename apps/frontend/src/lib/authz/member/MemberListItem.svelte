@@ -1,26 +1,27 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import { colors } from '$lib/field/helpers'
-	import type { IQueryMember, IUpdateMemberRole } from '@undb/authz'
+	import type { IQueryMember, IRolesWithoutOwner } from '@undb/authz'
 	import { Card, Avatar, Badge, Select } from 'flowbite-svelte'
 	import { hasPermission } from '$lib/store/authz'
 	import type { SelectOptionType } from 'flowbite-svelte/dist/types'
 	import { trpc } from '$lib/trpc/client'
+	import { t } from '$lib/i18n'
 
 	export let member: IQueryMember
 
 	const canUpdateRole = $hasPermission('member:update_role')
 
 	const items: SelectOptionType[] = [
-		{ value: 'admin', name: 'admin' },
-		{ value: 'editor', name: 'editor' },
-		{ value: 'viewer', name: 'viewer' },
+		{ value: 'admin', name: $t('admin', { ns: 'authz' }) },
+		{ value: 'editor', name: $t('editor', { ns: 'authz' }) },
+		{ value: 'viewer', name: $t('viewer', { ns: 'authz' }) },
 	]
 
 	const updateRoleMutation = trpc().authz.member.updateRole.mutation({})
 	const updateRole = (e: Event) => {
 		const target = e.target as HTMLSelectElement
-		const value = target.value as IUpdateMemberRole
+		const value = target.value as IRolesWithoutOwner
 		$updateRoleMutation.mutate({
 			memberId: member.id,
 			role: value,
@@ -88,7 +89,7 @@
 				<Select {items} value={member.role} size="sm" on:change={updateRole} />
 			{:else}
 				<Badge color="blue" class="border border-blue-500">
-					{member.role}
+					{$t(member.role, { ns: 'authz' })}
 				</Badge>
 			{/if}
 		</div>

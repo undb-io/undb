@@ -11,6 +11,3 @@ export const queryMember = z.object({
 })
 
 export type IQueryMember = z.infer<typeof queryMember>
-
-export const updateMemberRole = roles.exclude(['owner'])
-export type IUpdateMemberRole = z.infer<typeof updateMemberRole>

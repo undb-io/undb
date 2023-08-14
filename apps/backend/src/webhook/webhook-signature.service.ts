@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { RecordEvents } from '@undb/core'
+import type { RecordEvents } from '@undb/core'
 import type { Webhook } from '@undb/integrations'
 import { type IWebhookSignService } from '@undb/integrations'
 import crypto from 'crypto'

@@ -4,13 +4,18 @@ import type { PageLoad } from './$types'
 
 export const ssr = false
 export const prerender = false
-const schema = z.object({
-	email: z.string().email(),
-	password: z.string(),
-})
 
-export const load: PageLoad = async () => {
-	const form = await superValidate({}, schema)
+export const load: PageLoad = async ({ url }) => {
+	const form = await superValidate(
+		{},
+		z.object({
+			email: z
+				.string()
+				.email()
+				.default(url.searchParams.get('email') ?? ''),
+			password: z.string(),
+		}),
+	)
 
 	return { form }
 }

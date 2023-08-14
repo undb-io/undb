@@ -1,4 +1,4 @@
-import { IEventJSON } from '@undb/domain'
+import type { IEventJSON } from '@undb/domain'
 import { match } from 'ts-pattern'
 import {
   EVT_RECORD_BULK_CREATED,

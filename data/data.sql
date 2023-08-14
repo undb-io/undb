@@ -1907,4 +1907,11 @@ create index `undb_member_user_id_index` on `undb_member` (`user_id`);
 INSERT INTO undb_member VALUES('mem12345678',1684577267430,1685212920300,NULL,'owner','usrbuajh55q');
 INSERT INTO undb_member VALUES('mem12345679',1684577267430,1685212920300,NULL,'admin','usrzvhv8srb');
 
+create table `undb_invitation` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `email` text not null, `role` text not null, `expired_at` datetime not null, `status` text not null, `invited_by_id` text not null, `invited_at` datetime not null, `cancelled_by_id` text null, `cancelld_at` datetime null, `accepted_at` datetime null, constraint `undb_invitation_invited_by_id_foreign` foreign key(`invited_by_id`) references `undb_user`(`id`) on update cascade, constraint `undb_invitation_cancelled_by_id_foreign` foreign key(`cancelled_by_id`) references `undb_user`(`id`) on delete set null on update cascade, primary key (`id`));
+create index `undb_invitation_deleted_at_index` on `undb_invitation` (`deleted_at`);
+create index `undb_invitation_email_index` on `undb_invitation` (`email`);
+create unique index `undb_invitation_email_unique` on `undb_invitation` (`email`);
+create index `undb_invitation_invited_by_id_index` on `undb_invitation` (`invited_by_id`);
+create index `undb_invitation_cancelled_by_id_index` on `undb_invitation` (`cancelled_by_id`);
+
 COMMIT;

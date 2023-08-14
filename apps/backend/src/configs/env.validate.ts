@@ -2,6 +2,7 @@ import Joi from 'joi'
 import path from 'node:path'
 
 export const configSchema = Joi.object({
+  UNDB_HOST: Joi.string().uri().default('http://localhost:4000'),
   // base
   NODE_ENV: Joi.string().valid('development', 'production', 'test', 'provision').default('development'),
   PORT: Joi.number().default(4000),
@@ -89,4 +90,14 @@ export const configSchema = Joi.object({
     is: 'mongo',
     then: Joi.string().optional().default('undb_cache'),
   }),
+
+  // mail
+  UNDB_MAIL_PROVIDER: Joi.string().valid('basic').optional(),
+  UNDB_MAIL_HEALTH: Joi.when('UNDB_MAIL_PROVIDER', {
+    is: 'basic',
+    then: Joi.string().uri(),
+  }),
+  UNDB_MAIL_HOST: Joi.string().optional(),
+  UNDB_MAIL_PORT: Joi.number().port().optional(),
+  UNDB_MAIL_DEFAULT_FROM: Joi.string().optional(),
 })

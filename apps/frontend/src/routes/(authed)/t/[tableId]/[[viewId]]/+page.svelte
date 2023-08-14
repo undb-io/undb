@@ -19,7 +19,7 @@
 	import FormListDrawer from '$lib/form/FormListDrawer.svelte'
 	import FormEditorModal from '$lib/form/FormEditorModal.svelte'
 	import RecordTrashModal from '$lib/record/trash/RecordTrashModal.svelte'
-	import { onDestroy, onMount } from 'svelte'
+	import { onDestroy } from 'svelte'
 	import { match } from 'ts-pattern'
 	import RLSModal from '$lib/authz/rls/RLSModal.svelte'
 

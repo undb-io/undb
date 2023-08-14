@@ -26,6 +26,7 @@ processes = []
     port = 443
 
 [env]
+  UNDB_HOST = "https://demo.undb.xyz"
   PUBLIC_UNDB_ADMIN_EMAIL = "test@example.com"
   PUBLIC_UNDB_ADMIN_PASSWORD = "123456"
   UNDB_SEED = "true"
