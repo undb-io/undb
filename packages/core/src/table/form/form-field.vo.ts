@@ -1,6 +1,7 @@
 import { ValueObject } from '@undb/domain'
 import { z } from 'zod'
 import type { Field } from '../field/index.js'
+import type { IRootFilter } from '../filter/index.js'
 import { rootFilter } from '../filter/index.js'
 
 export const formField = z.object({
@@ -18,6 +19,14 @@ export class FormField extends ValueObject<IFormField> {
 
   public get hidden(): boolean {
     return !!this.props.hidden
+  }
+
+  public get filter() {
+    return this.props.filter
+  }
+
+  public set filter(filter: IRootFilter | undefined) {
+    this.props.filter = filter
   }
 
   static getDefault(field: Field): FormField {
