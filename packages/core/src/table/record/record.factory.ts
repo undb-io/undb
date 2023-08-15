@@ -1,8 +1,9 @@
 import { and } from '@undb/domain'
 import type { Result } from 'oxide.ts'
+import type { Table } from '../table.js'
 import type { TableSchemaIdMap } from '../value-objects/index.js'
 import { Record } from './record.js'
-import type { IQueryRecordSchema, Records } from './record.type.js'
+import type { IQueryRecordSchema, IQueryRecordValues, Records } from './record.type.js'
 import {
   WithDisplayValues,
   WithRecordCreatedAt,
@@ -28,6 +29,18 @@ export class RecordFactory {
         .mutate(Record.empty())
     }
     return spec.mutate(Record.empty())
+  }
+
+  static temp(table: Table, values: IQueryRecordValues, userId: string): Record {
+    const schema = table.schema.toIdMap()
+    return this.create(
+      WithRecordId.fromNullableString(),
+      WithRecordCreatedAt.now(),
+      WithRecordUpdatedAt.now(),
+      WithRecordCreatedBy.fromString(userId),
+      WithRecordUpdatedBy.fromString(userId),
+      WithRecordValues.fromObject(schema, values),
+    ).unwrap()
   }
 
   static fromQueryRecords(rs: IQueryRecordSchema[], schema: TableSchemaIdMap): Records {

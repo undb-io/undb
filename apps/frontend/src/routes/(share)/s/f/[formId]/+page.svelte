@@ -5,14 +5,17 @@
 	import { t } from '$lib/i18n'
 	import { getTable, shareTarget } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { Alert, Button, Heading, Label, P, Spinner, Toast } from 'flowbite-svelte'
+	import { Alert, Button, Heading, Label, Spinner, Toast } from 'flowbite-svelte'
 	import { keys, pick } from 'lodash-es'
 	import { superForm } from 'sveltekit-superforms/client'
-	import type { Validation } from 'sveltekit-superforms/index'
 	import logo from '$lib/assets/logo.svg'
 	import { slide } from 'svelte/transition'
+	import type { PageData } from './$types'
+	import { onMount } from 'svelte'
+	import { RecordFactory } from '@undb/core'
+	import { me } from '$lib/store/me'
 
-	export let data: Validation<any>
+	export let data: PageData
 
 	const table = getTable()
 	let submitted = false
@@ -23,7 +26,7 @@
 		},
 	})
 
-	const { form, enhance, constraints, delayed, submitting, tainted } = superForm(data, {
+	const { form, enhance, constraints, delayed, submitting, tainted } = superForm(data.createShareRecord, {
 		id: 'createRecord',
 		SPA: true,
 		dataType: 'json',
@@ -45,9 +48,17 @@
 		},
 	})
 
+	onMount(() => {
+		$tainted = undefined
+	})
+
 	$: f = $table.forms.getById($page.params.formId).unwrap()
 
 	$: fields = f.getNotHiddenFields($table.schema)
+
+	$: values = pick($form, keys($tainted))
+
+	$: tempRecord = RecordFactory.temp($table, values, $me.userId)
 </script>
 
 <main class="bg-blue-50 h-screen w-screen flex flex-col dark:bg-gray-500">

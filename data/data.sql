@@ -531,6 +531,7 @@ INSERT INTO undb_widget VALUES('widbzd1xggl',1685213092659,1685213092659,NULL,'{
 INSERT INTO undb_widget VALUES('widobnuj5w9',1685213148218,1685213148218,NULL,'{"x":0,"y":0,"h":4,"w":6}','viwab1ycczl','virg85utg7b');
 INSERT INTO undb_widget VALUES('widbbypud7z',1685213181402,1685213181402,NULL,'{"x":0,"y":0,"h":4,"w":6}','viwufxtr4ao','vir8md89zv2');
 CREATE TABLE `undb_form` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `fields` json not null, `fields_order` text null, `table_id` text null, constraint `undb_form_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));
+INSERT INTO undb_form VALUES('fomur7lowc9',1692082650679,1692082672990,NULL,'new project','{"fld2z8lm0nq":{"hidden":false,"required":false},"fldi3ctnklu":{"hidden":false,"required":false},"fldz6ialch3":{"hidden":false,"required":false},"fldldugufai":{"hidden":false,"required":false},"fld6ipbvk1v":{"hidden":false,"required":false},"fldq4vl65vq":{"hidden":false,"required":false},"fldxgzu2rfm":{"hidden":false,"required":false},"fldxjfi8nvf":{"hidden":false,"required":false},"fldx46wrlru":{"hidden":true,"required":false},"fldisycq2kk":{"hidden":true,"required":false},"fldf3858jba":{"hidden":true,"required":false},"fldzcbm7d6f":{"hidden":true,"required":false},"fldfhnwfm1d":{"hidden":true,"required":false},"fld5tprv6oh":{"hidden":true,"required":false},"fld9k1d6632":{"hidden":false,"required":false},"fldqt93dh02":{"hidden":false,"required":false},"fldicbkx09x":{"hidden":true,"required":false},"fldrwyxeapl":{"hidden":false,"required":false},"fldifd9g29a":{"hidden":false,"required":false},"fldglbeppsl":{"hidden":false,"required":false}}',NULL,'tblfx77neny');
 CREATE TABLE IF NOT EXISTS "undb_view" (
 	`id` text NOT NULL,
 	`created_at` datetime NOT NULL,
@@ -1552,6 +1553,7 @@ CREATE TABLE `undb_webhook` (
 	primary key (`id`)
 );
 CREATE TABLE `undb_share` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `target_id` text null, `target_type` text null, `enabled` integer not null default false, primary key (`id`));
+INSERT INTO undb_share VALUES('shrirkzc7hy6gsl',1692082674245,1692082674245,NULL,'fomur7lowc9','form',1);
 CREATE TABLE `undb_audit` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `timestamp` datetime not null, `op` text not null, `target_id` text null, `target_type` text null, `detail` json null, `operator_id` text not null, `table_id` text null, constraint `undb_audit_operator_id_foreign` foreign key(`operator_id`) references `undb_user`(`id`) on update cascade, constraint `undb_audit_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));
 INSERT INTO undb_audit VALUES('audz3cklk08wlyp',1690190264897,1690190264897,NULL,1684598875000,'record.created','recf03f2mz9','record',NULL,'usrzvhv8srb','tbl4undb0lh');
 INSERT INTO undb_audit VALUES('audkbhdmitw3zko',1690190264898,1690190264898,NULL,1684599665000,'record.created','recjpd9hcvj','record',NULL,'usrzvhv8srb','tbl4undb0lh');
@@ -1743,6 +1745,11 @@ INSERT INTO undb_audit VALUES('audoe6jtw1f7dor',1690190264922,1690190264922,NULL
 INSERT INTO undb_audit VALUES('auddrsacuvbe7br',1690190264922,1690190264922,NULL,1685209776000,'record.created','rec734usgen','record',NULL,'usrbuajh55q','tblfx77neny');
 INSERT INTO undb_audit VALUES('audqy0wzfkxu1z7',1690190264922,1690190264922,NULL,1685209776000,'record.created','recutcmrgjy','record',NULL,'usrbuajh55q','tblfx77neny');
 INSERT INTO undb_audit VALUES('auds5lb1o5wnw77',1690190264922,1690190264922,NULL,1685209776000,'record.created','rec4f5oh4ao','record',NULL,'usrbuajh55q','tblfx77neny');
+CREATE TABLE `undb_rls` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `policy_action` text not null, `policy_filter` json not null, `subjects` text not null, constraint `undb_rls_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));
+CREATE TABLE `undb_member` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `role` text not null, `user_id` text not null, constraint `undb_member_user_id_foreign` foreign key(`user_id`) references `undb_user`(`id`) on update cascade, primary key (`id`));
+INSERT INTO undb_member VALUES('mem12345678',1684577267430,1685212920300,NULL,'owner','usrbuajh55q');
+INSERT INTO undb_member VALUES('mem12345679',1684577267430,1685212920300,NULL,'admin','usrzvhv8srb');
+CREATE TABLE `undb_invitation` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `email` text not null, `role` text not null, `expired_at` datetime not null, `status` text not null, `invited_by_id` text not null, `invited_at` datetime not null, `cancelled_by_id` text null, `cancelld_at` datetime null, `accepted_at` datetime null, constraint `undb_invitation_invited_by_id_foreign` foreign key(`invited_by_id`) references `undb_user`(`id`) on update cascade, constraint `undb_invitation_cancelled_by_id_foreign` foreign key(`cancelled_by_id`) references `undb_user`(`id`) on delete set null on update cascade, primary key (`id`));
 DELETE FROM sqlite_sequence;
 INSERT INTO sqlite_sequence VALUES('mikro_orm_migrations',5);
 INSERT INTO sqlite_sequence VALUES('tbl4undb0lh',24);
@@ -1896,22 +1903,13 @@ CREATE INDEX `undb_audit_target_id_index` on `undb_audit` (`target_id`);
 CREATE INDEX `undb_audit_op_index` on `undb_audit` (`op`);
 CREATE INDEX `undb_audit_operator_id_index` on `undb_audit` (`operator_id`);
 CREATE INDEX `undb_audit_table_id_index` on `undb_audit` (`table_id`);
-
-create table `undb_rls` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `policy_action` text not null, `policy_filter` json not null, `subjects` text not null, constraint `undb_rls_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));
-create index `undb_rls_deleted_at_index` on `undb_rls` (`deleted_at`);
-create index `undb_rls_table_id_index` on `undb_rls` (`table_id`);
-
-create table `undb_member` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `role` text not null, `user_id` text not null, constraint `undb_member_user_id_foreign` foreign key(`user_id`) references `undb_user`(`id`) on update cascade, primary key (`id`));
-create index `undb_member_deleted_at_index` on `undb_member` (`deleted_at`);
-create index `undb_member_user_id_index` on `undb_member` (`user_id`);
-INSERT INTO undb_member VALUES('mem12345678',1684577267430,1685212920300,NULL,'owner','usrbuajh55q');
-INSERT INTO undb_member VALUES('mem12345679',1684577267430,1685212920300,NULL,'admin','usrzvhv8srb');
-
-create table `undb_invitation` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `email` text not null, `role` text not null, `expired_at` datetime not null, `status` text not null, `invited_by_id` text not null, `invited_at` datetime not null, `cancelled_by_id` text null, `cancelld_at` datetime null, `accepted_at` datetime null, constraint `undb_invitation_invited_by_id_foreign` foreign key(`invited_by_id`) references `undb_user`(`id`) on update cascade, constraint `undb_invitation_cancelled_by_id_foreign` foreign key(`cancelled_by_id`) references `undb_user`(`id`) on delete set null on update cascade, primary key (`id`));
-create index `undb_invitation_deleted_at_index` on `undb_invitation` (`deleted_at`);
-create index `undb_invitation_email_index` on `undb_invitation` (`email`);
-create unique index `undb_invitation_email_unique` on `undb_invitation` (`email`);
-create index `undb_invitation_invited_by_id_index` on `undb_invitation` (`invited_by_id`);
-create index `undb_invitation_cancelled_by_id_index` on `undb_invitation` (`cancelled_by_id`);
-
+CREATE INDEX `undb_rls_deleted_at_index` on `undb_rls` (`deleted_at`);
+CREATE INDEX `undb_rls_table_id_index` on `undb_rls` (`table_id`);
+CREATE INDEX `undb_member_deleted_at_index` on `undb_member` (`deleted_at`);
+CREATE INDEX `undb_member_user_id_index` on `undb_member` (`user_id`);
+CREATE INDEX `undb_invitation_deleted_at_index` on `undb_invitation` (`deleted_at`);
+CREATE INDEX `undb_invitation_email_index` on `undb_invitation` (`email`);
+CREATE UNIQUE INDEX `undb_invitation_email_unique` on `undb_invitation` (`email`);
+CREATE INDEX `undb_invitation_invited_by_id_index` on `undb_invitation` (`invited_by_id`);
+CREATE INDEX `undb_invitation_cancelled_by_id_index` on `undb_invitation` (`cancelled_by_id`);
 COMMIT;
