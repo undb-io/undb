@@ -2,7 +2,7 @@
 	import cx from 'classnames'
 	import { sidebarCollapsed } from '$lib/store/ui'
 	import TableNavigator from '$lib/table/TableNavigator.svelte'
-	import { Button, Chevron, Dropdown, DropdownItem, Tooltip } from 'flowbite-svelte'
+	import { Button, Dropdown, DropdownItem, Tooltip } from 'flowbite-svelte'
 	import { getTable } from '$lib/store/table'
 	import { t } from '$lib/i18n'
 
@@ -40,7 +40,12 @@
 		<div class="flex items-center justify-between w-full">
 			<TableNavigator />
 			<div>
-				<Button size="xs"><Chevron>{$t('download openapi')}</Chevron></Button>
+				<Button size="xs" class="gap-2">
+					<i class="ti ti-chevron-down"></i>
+					<span>
+						{$t('download openapi')}
+					</span>
+				</Button>
 				<Dropdown style="z-index: 50;">
 					<DropdownItem on:click={() => download()}>{$t('openapi spec')}</DropdownItem>
 					<DropdownItem on:click={() => download('postman')}>{$t('postman collections')}</DropdownItem>

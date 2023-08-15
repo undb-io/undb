@@ -3,13 +3,13 @@
   "description": "",
   "version": "0.0.0",
   "dependencies": {
-    "@trpc/server": "^10.36.0",
+    "@trpc/server": "^10.37.1",
     "@undb/authz": "workspace:^",
     "@undb/core": "^0.0.0",
     "@undb/cqrs": "^0.0.0",
     "@undb/domain": "^0.0.0",
     "@undb/integrations": "^0.0.0",
-    "zod": "^3.21.4"
+    "zod": "^3.22.0"
   },
   "devDependencies": {
     "rimraf": "^5.0.1",

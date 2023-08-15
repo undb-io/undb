@@ -4,7 +4,7 @@
 	import { Dialog, DialogOverlay, TransitionChild, TransitionRoot } from '@rgossiaux/svelte-headlessui'
 	import type { LayoutData } from './$types'
 	import CreateTable from '$lib/table/CreateTable.svelte'
-	import { Avatar, Button, ButtonGroup, Chevron, Dropdown, DropdownItem, P, Toast, Tooltip } from 'flowbite-svelte'
+	import { Avatar, Button, ButtonGroup, Dropdown, DropdownItem, P, Toast, Tooltip } from 'flowbite-svelte'
 	import { page } from '$app/stores'
 	import { allTables, currentRecordId } from '$lib/store/table'
 	import { goto } from '$app/navigation'
@@ -282,12 +282,11 @@
 						{$t('Settings', { ns: 'auth' })}
 					</DropdownItem>
 					<DropdownItem class="flex items-center justify-between">
-						<Chevron placement="right">
-							<div>
-								<i class="ti ti-world" />
-								{$t('language', { ns: 'common' })}
-							</div>
-						</Chevron>
+						<div>
+							<i class="ti ti-world" />
+							{$t('language', { ns: 'common' })}
+						</div>
+						<i class="ti ti-chevron-right"></i>
 					</DropdownItem>
 					<Dropdown style="z-index: 50;" placement="right-start" class="dark:border dark:border-gray-800/75 w-48">
 						<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('zh-CN')}>
@@ -360,12 +359,11 @@
 				{$t('Settings', { ns: 'auth' })}
 			</DropdownItem>
 			<DropdownItem class="flex items-center justify-between">
-				<Chevron placement="right">
-					<div>
-						<i class="ti ti-world" />
-						{$t('language', { ns: 'common' })}
-					</div>
-				</Chevron>
+				<div>
+					<i class="ti ti-world" />
+					{$t('language', { ns: 'common' })}
+				</div>
+				<i class="ti ti-chevron-right"></i>
 			</DropdownItem>
 			<Dropdown style="z-index: 50;" placement="left-start" class="w-48">
 				<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('zh-CN')}>
