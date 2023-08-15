@@ -361,6 +361,7 @@ export const config: InitOptions = {
         'drag to set date': 'drag to set date',
         'set date': 'set date',
         'recycle bin': 'recycle bin',
+        'show form conditions': 'show conditions',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -751,6 +752,7 @@ export const config: InitOptions = {
         'drag to set date': '拖拽设置日期',
         'set date': '设置日期',
         'recycle bin': '回收站',
+        'show form conditions': '显示过滤',
       },
       webhook: {
         Webhook: 'Webhook',

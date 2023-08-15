@@ -1,34 +1,20 @@
 import { ValueObject } from '@undb/domain'
 import { merge } from 'lodash-es'
 import { z } from 'zod'
-import type { Field } from '../field'
-import type { TableSchema } from '../value-objects'
-import type { ViewFieldOptions } from '../view'
-
-export const formField = z.object({
-  hidden: z.boolean().optional(),
-  required: z.boolean(),
-})
-
-export type IFormField = z.infer<typeof formField>
+import type { TableSchema } from '../value-objects/index.js'
+import type { ViewFieldOptions } from '../view/index.js'
+import { FormField, formField } from './form-field.vo.js'
 
 export const formFields = z.record(z.string(), formField)
 
 export type IFormFields = z.infer<typeof formFields>
 
-export class FormFields extends ValueObject<Map<string, IFormField>> {
-  public static getDefault(field: Field): IFormField {
-    return {
-      hidden: false,
-      required: field.required,
-    }
-  }
-
+export class FormFields extends ValueObject<Map<string, FormField>> {
   static default(schema: TableSchema) {
-    const fields: IFormFields = {}
+    const fields: Record<string, FormField> = {}
 
     for (const field of schema.fields) {
-      fields[field.id.value] = FormFields.getDefault(field)
+      fields[field.id.value] = FormField.getDefault(field)
     }
 
     return new this(new Map(Object.entries(fields)))
@@ -46,22 +32,25 @@ export class FormFields extends ValueObject<Map<string, IFormField>> {
 
   static from(schema: TableSchema, input?: IFormFields) {
     if (!input) return this.default(schema)
-    const formFields = new Map<string, IFormField>()
+    const formFields = new Map<string, FormField>()
 
     for (const [fieldId, option] of Object.entries(input)) {
       const field = schema.getFieldById(fieldId).into()
       if (!field) continue
-      formFields.set(fieldId, {
-        required: field.required ? true : option.required,
-        hidden: field.required ? false : !!option.hidden,
-      })
+      formFields.set(
+        fieldId,
+        new FormField({
+          required: field.required ? true : option.required,
+          hidden: field.required ? false : !!option.hidden,
+        }),
+      )
     }
 
     return input ? new this(formFields) : this.default(schema)
   }
 
   static unsafeFrom(input: IFormFields) {
-    return new this(new Map(Object.entries(input)))
+    return new this(new Map(Object.entries(input).map(([key, value]) => [key, new FormField(value)])))
   }
 
   public get value() {
