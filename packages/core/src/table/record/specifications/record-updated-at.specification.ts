@@ -22,7 +22,7 @@ export class WithRecordUpdatedAt extends CompositeSpecification<Record, IRecordV
   }
 
   isSatisfiedBy(t: Record): boolean {
-    return this.date.equals(t.createdAt)
+    return this.date.equals(t.updatedAt)
   }
 
   mutate(r: Record): Result<Record, string> {

@@ -1,3 +1,4 @@
+import { isNumber } from 'lodash-es'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import { NumberFieldValue } from '../../field/fields/number/number-field-value.js'
@@ -23,6 +24,7 @@ export class NumberGreaterThan extends BaseRecordSpecification<NumberFieldValue>
     if (!(value instanceof NumberFieldValue)) return false
     const n1 = value.unpack()
     const n2 = this.value.unpack()
+    if (n1 === null && isNumber(n2)) return true
     return n1 !== null && n2 !== null && n1 > n2
   }
 
@@ -53,6 +55,7 @@ export class NumberGreaterThanOrEqual extends BaseRecordSpecification<NumberFiel
     if (!(value instanceof NumberFieldValue)) return false
     const n1 = value.unpack()
     const n2 = this.value.unpack()
+    if (n1 === null && isNumber(n2)) return true
     return n1 !== null && n2 !== null && n1 >= n2
   }
 
