@@ -8,6 +8,7 @@ import type { WithInvitationExpiredAt } from './specifications/invitation-expire
 import type { WithInvitationId } from './specifications/invitation-id.specification.js'
 import type { WithInvitationInvitedAt } from './specifications/invitation-invited-at.specification.js'
 import type { WithInvitationInvitedBy } from './specifications/invitation-invited-by.specification.js'
+import type { WithInvitationQ } from './specifications/invitation-q.specification.js'
 import type { WithInvitationRole } from './specifications/invitation-role.specification.js'
 import type { WithInvitationStatus } from './specifications/invitation-status.specification.js'
 
@@ -22,6 +23,7 @@ export interface IInvitationVisitor extends ISpecVisitor {
   cancelledBy(s: WithInvitationCancelledBy): void
   cancelledAt(s: WithInvitationCancelledAt): void
   acceptedAt(s: WithInvitationAcceptedAt): void
+  like(s: WithInvitationQ): void
 }
 
 export type InvitationSpecification = CompositeSpecification<Invitation, IInvitationVisitor>
