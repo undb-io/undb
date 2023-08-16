@@ -1,4 +1,4 @@
-import { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
 import type { EntityProperty } from '@mikro-orm/core'
 import type {
   AbstractDateRangeDateSpec,
@@ -45,6 +45,7 @@ import type {
   StringEqual,
   StringRegex,
   StringStartsWith,
+  TableSchemaIdMap,
   TreeAvailableSpec,
   UdpatedByIn,
   WithRecordAutoIncrement,
@@ -61,6 +62,7 @@ import type {
 import {
   CollaboratorField,
   DateRangeField,
+  FieldTypeNotSearchable,
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
@@ -69,7 +71,6 @@ import {
   INTERNAL_INCREMENT_ID_NAME,
   MultiSelectField,
   ParentField,
-  TableSchemaIdMap,
   TreeField,
 } from '@undb/core'
 import { endOfDay, startOfDay } from 'date-fns'
@@ -165,8 +166,10 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     throw new Error('Method not implemented.')
   }
   like(s: WithRecordLike): void {
-    if (s.type === 'string') {
-      this.qb.whereLike(this.getFieldId(s.fieldId), `%${s.q}%`)
+    if (s.type === 'string' || s.type === 'email') {
+      this.qb.andWhereLike(this.getFieldId(s.fieldId), `%${s.q}%`)
+    } else {
+      throw new FieldTypeNotSearchable(s.type)
     }
   }
   stringEqual(s: StringEqual): void {
