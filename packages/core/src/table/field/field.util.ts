@@ -85,7 +85,7 @@ export const cannotDuplicate: Set<IFieldType> = new Set<IFieldType>([
   'parent',
 ])
 
-export const searchableFieldTypes = new Set<IFieldType>(['string'])
+export const searchableFieldTypes = new Set<IFieldType>(['string', 'email', 'number', 'currency'])
 
 export const isSearchable = (type: IFieldType) => searchableFieldTypes.has(type)
 
