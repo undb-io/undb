@@ -1,6 +1,6 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import type { IMemberVisitor, WithMemberId, WithMemberRole, WithMemberUserId } from '@undb/authz'
+import type { IMemberVisitor, WithMemberId, WithMemberRole, WithMemberUserId, WithMemberUserLike } from '@undb/authz'
 import type { ISpecVisitor, ISpecification } from '@undb/domain'
 import { Member } from '../../entity/member.js'
 
@@ -9,6 +9,9 @@ export class MemberSqliteMutationVisitor implements IMemberVisitor {
     private readonly memberId: string,
     private readonly em: EntityManager,
   ) {}
+  userLike(s: WithMemberUserLike): void {
+    throw new Error('Method not implemented.')
+  }
   withMemberId(s: WithMemberId): void {
     throw new Error('Method not implemented.')
   }
