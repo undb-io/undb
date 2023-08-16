@@ -11,6 +11,7 @@ import type {
   WithInvitationId,
   WithInvitationInvitedAt,
   WithInvitationInvitedBy,
+  WithInvitationQ,
   WithInvitationRole,
   WithInvitationStatus,
 } from '@undb/integrations'
@@ -22,6 +23,9 @@ export class InvitationSqliteMutationVisitor implements IInvitationVisitor {
     public readonly id: string,
     public readonly em: EntityManager,
   ) {}
+  like(s: WithInvitationQ): void {
+    throw new Error('Method not implemented.')
+  }
   invitedAt(s: WithInvitationInvitedAt): void {
     const invitation = this.em.getReference(Invitation, this.id)
     wrap(invitation).assign({ invitedAt: s.invitedAt.value })
