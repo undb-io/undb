@@ -80,6 +80,7 @@
 	$: formField = $selectedForm?.fields.value.get(field.id.value)
 	$: open = !!formField?.filter
 	$: filter = (formField?.filter ?? []) as IFilter[]
+	$: previousFields = $selectedForm?.fieldsOrder?.getPreviousFieldIds(field.id.value) ?? []
 </script>
 
 {#if $selectedForm}
@@ -123,7 +124,7 @@
 			</div>
 			{#if open}
 				<div class="border-t border-t-slate-100 pt-2 space-y-2">
-					<FilterEditor bind:value={filter} let:add>
+					<FilterEditor bind:value={filter} let:add fieldFilter={(field) => previousFields.includes(field.id)}>
 						<Button on:click={add} class="w-full mt-2" size="xs" color="alternative">
 							{$t('Create New Filter')}
 						</Button>
@@ -134,8 +135,10 @@
 							size="xs"
 							on:click={() => {
 								setFormFieldFilter()
-							}}>{$t('Apply', { ns: 'common' })}</Button
+							}}
 						>
+							{$t('Apply', { ns: 'common' })}
+						</Button>
 					</div>
 				</div>
 			{/if}
