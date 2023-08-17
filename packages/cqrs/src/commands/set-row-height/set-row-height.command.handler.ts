@@ -1,8 +1,7 @@
 import type { ITableRepository } from '@undb/core'
-import type { ICommandHandler } from '@undb/domain'
 import type { SetRowHeightCommand } from './set-row-height.command.js'
 
-export class SetRowHeightCommandHandler implements ICommandHandler<SetRowHeightCommand, void> {
+export class SetRowHeightCommandHandler {
   constructor(protected readonly tableRepo: ITableRepository) {}
 
   async execute(command: SetRowHeightCommand): Promise<void> {

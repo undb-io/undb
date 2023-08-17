@@ -82,6 +82,7 @@
 		"svelte-preprocess": "^5.0.4",
 		"svelte-previous": "^2.1.4",
 		"svelte-tiny-virtual-list": "^2.0.5",
+		"sveltekit-search-params": "^1.0.14",
 		"sveltekit-superforms": "^0.8.7",
 		"svelvet": "^8.1.0",
 		"tailwindcss": "^3.3.3",
