@@ -17,6 +17,7 @@ import type { IRootFilter } from './filter/index.js'
 import type {
   ICreateFormBaseSchema,
   ICreateFormSchema,
+  ISetFormFieldFilterSchema,
   ISetFormFieldRequirementsSchema,
   ISetFormFieldVisibilitySchema,
   ISetFormFieldsOrderSchema,
@@ -489,6 +490,13 @@ export class Table {
   public setFormFieldRequirements(input: ISetFormFieldRequirementsSchema): TableCompositeSpecification {
     const form = this.forms.getById(input.formId).expect('not found form')
     const spec = form.setFieldRequirements(input.requirements)
+    spec.mutate(this)
+    return spec
+  }
+
+  public setFormFieldFilter(input: ISetFormFieldFilterSchema): TableCompositeSpecification {
+    const form = this.forms.getById(input.formId).expect('not found form')
+    const spec = form.setFieldFilter(input.fieldId, input.filter)
     spec.mutate(this)
     return spec
   }

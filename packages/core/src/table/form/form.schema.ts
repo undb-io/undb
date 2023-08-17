@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { fieldIdSchema } from '../field/index.js'
+import { rootFilter } from '../filter/filter.js'
 import { formFields } from './form-fields.vo.js'
 import { formIdSchema } from './form-id.vo.js'
 import { formNameSchema } from './form-name.vo.js'
@@ -57,6 +58,15 @@ export const setFormFieldRequirementsSchema = z
   .merge(formFieldOptionBaseSchema)
 
 export type ISetFormFieldRequirementsSchema = z.infer<typeof setFormFieldRequirementsSchema>
+
+export const setFormFieldFilterSchema = z
+  .object({
+    fieldId: fieldIdSchema,
+    filter: rootFilter.nullable(),
+  })
+  .merge(formFieldOptionBaseSchema)
+
+export type ISetFormFieldFilterSchema = z.infer<typeof setFormFieldFilterSchema>
 
 export const setFormFieldsOrderSchema = z.object({
   formId: formIdSchema,

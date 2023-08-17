@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash-es'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { match } from 'ts-pattern'
@@ -34,8 +35,8 @@ import {
   createdAtFilterOperators,
   createdAtFilterValue,
 } from '../field/fields/created-at/created-at.filter.js'
+import type { ICreatedByFilter } from '../field/fields/created-by/created-by.filter.js'
 import {
-  ICreatedByFilter,
   createdByFilter,
   createdByFilterOperators,
   createdByFilterValue,
@@ -96,18 +97,18 @@ import {
   updatedAtFilterOperators,
   updatedAtFilterValue,
 } from '../field/fields/updated-at/updated-at.filter.js'
+import type { IUpdatedByFilter } from '../field/fields/updated-by/updated-by.filter.js'
 import {
-  IUpdatedByFilter,
   updatedByFilter,
   updatedByFilterOperators,
   updatedByFilterValue,
 } from '../field/fields/updated-by/updated-by.filter.js'
 import type { IUrlFilter } from '../field/fields/url/url.filter.js'
 import { urlFilter, urlFilterOperators, urlFilterValue } from '../field/fields/url/url.filter.js'
+import type { IFieldType } from '../field/index.js'
 import {
   DateFieldValue,
   DateRangeFieldValue,
-  IFieldType,
   NumberFieldValue,
   SelectFieldValue,
   StringFieldValue,
@@ -769,3 +770,5 @@ export const convertFilterSpec = (filter: IRootFilter, userId: string): Option<R
 
   return convertFilterOrGroup(filter, userId)
 }
+
+export const isEmptyFilter = (filter: IRootFilter) => isEmpty(filter)

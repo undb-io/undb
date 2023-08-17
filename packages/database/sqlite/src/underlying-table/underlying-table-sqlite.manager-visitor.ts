@@ -4,6 +4,7 @@ import type {
   ITableSpecVisitor,
   WithDuplicatedField,
   WithForeignTableId,
+  WithFormFieldFilter,
   WithFormFieldsRequirements,
   WithFormName,
   WithGalleryField,
@@ -31,10 +32,14 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   private qb?: Knex.QueryBuilder
   #queries: string[] = []
   #jobs: Job[] = []
-  constructor(private readonly tableName: string, private readonly em: EntityManager) {
+  constructor(
+    private readonly tableName: string,
+    private readonly em: EntityManager,
+  ) {
     const knex = em.getKnex()
     this.knex = knex
   }
+  withFormFieldFilter(s: WithFormFieldFilter): void {}
   viewIdEqual(s: WithTableViewId): void {}
   formIdEqual(s: WithTableFormId): void {}
   withoutWidget(): void {}

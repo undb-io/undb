@@ -79,9 +79,9 @@
 			</Label>
 			<CellInput class="w-full" {field} />
 			<div class="flex items-center justify-end gap-2">
-				<!-- <Toggle size="small">
+				<Toggle size="small">
 					{$t('show form conditions')}
-				</Toggle> -->
+				</Toggle>
 
 				{#if !field.controlled}
 					<Toggle
