@@ -15,7 +15,7 @@
 		"@event-calendar/core": "^1.5.1",
 		"@event-calendar/day-grid": "^1.5.1",
 		"@event-calendar/interaction": "^1.5.1",
-		"@event-calendar/time-grid": "^1.5.1",
+		"@event-calendar/time-grid": "^2.0.0",
 		"@playwright/test": "^1.37.0",
 		"@popperjs/core": "^2.11.8",
 		"@revolist/revogrid": "^3.6.16",

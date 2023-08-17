@@ -452,8 +452,8 @@ importers:
         specifier: ^1.5.1
         version: 1.5.1
       '@event-calendar/time-grid':
-        specifier: ^1.5.1
-        version: 1.5.1
+        specifier: ^2.0.0
+        version: 2.0.0
       '@playwright/test':
         specifier: ^1.37.0
         version: 1.37.0
@@ -2867,6 +2867,12 @@ packages:
       svelte: 4.2.0
     dev: true
 
+  /@event-calendar/core@2.0.0:
+    resolution: {integrity: sha512-BTI9vOVkpwe75qqHjzhzG4+LoQLTca4OEIRB7t8Hk8mqnt1H5XAOHjldOqsus7ln346taN7Vg0bf6yhw4T+m+A==}
+    dependencies:
+      svelte: 4.2.0
+    dev: true
+
   /@event-calendar/day-grid@1.5.1:
     resolution: {integrity: sha512-YZD2Yi6iXkACftsppM0SK59Z7aoMHnJULq9gJPh2RH7UpT2yMP6m/q22Xf8Qm7r77DZM/58TFIdPAL8vG0+QKQ==}
     dependencies:
@@ -2881,10 +2887,10 @@ packages:
       svelte: 4.2.0
     dev: true
 
-  /@event-calendar/time-grid@1.5.1:
-    resolution: {integrity: sha512-LlJQqJkBYtdeQQZtmEVn053lvFVfouaOwkjXRYciJx/0JXtjc6cSsKOcIx9OHcn30smcqOWXckU3MWXHuPm2cQ==}
+  /@event-calendar/time-grid@2.0.0:
+    resolution: {integrity: sha512-mPkfNf//N5qnwQMkDGTFwGabD8VWw+J5wJhtgZ7hIKhNbTpYvenmpjkKYpzel7vqvREkCl2oOHY4Vtcx7KTrVw==}
     dependencies:
-      '@event-calendar/core': 1.5.1
+      '@event-calendar/core': 2.0.0
       svelte: 4.2.0
     dev: true
 
