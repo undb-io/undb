@@ -45,6 +45,32 @@
 		})
 	}
 
+	const setFormFieldFilterMutation = trpc().table.form.field.setFilter.mutation({})
+
+	const setFormFieldFilter = () => {
+		if (!$selectedForm) return
+		$setFormFieldFilterMutation.mutate({
+			tableId: $table.id.value,
+			formId: $selectedForm.id.value,
+			fieldId,
+			filter,
+		})
+	}
+
+	const onChange = (e: Event) => {
+		if (!$selectedForm) return
+		const target = e.target as HTMLInputElement
+		const checked = target.checked
+		if (!checked) {
+			$setFormFieldFilterMutation.mutate({
+				tableId: $table.id.value,
+				formId: $selectedForm.id.value,
+				fieldId,
+				filter: null,
+			})
+		}
+	}
+
 	const onRquiredChange = (e: Event) => {
 		const target = e.target as HTMLInputElement
 
@@ -79,7 +105,7 @@
 			</Label>
 			<CellInput class="w-full" {field} />
 			<div class="flex items-center justify-end gap-2">
-				<Toggle size="small">
+				<Toggle size="small" on:change={onChange}>
 					{$t('show form conditions')}
 				</Toggle>
 
@@ -94,9 +120,9 @@
 					</Toggle>
 				{/if}
 			</div>
-			<!-- <div class="border-t border-t-slate-100 pt-2">
-				<FilterEditor value={filter} />
-			</div> -->
+			<div class="border-t border-t-slate-100 pt-2">
+				<FilterEditor bind:value={filter} />
+			</div>
 		</div>
 	{/if}
 {/if}

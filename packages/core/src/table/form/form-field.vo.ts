@@ -2,12 +2,12 @@ import { ValueObject } from '@undb/domain'
 import { z } from 'zod'
 import type { Field } from '../field/index.js'
 import type { IRootFilter } from '../filter/index.js'
-import { isEmptyFilter, rootFilter } from '../filter/index.js'
+import { isEmptyFilter } from '../filter/index.js'
 
 export const formField = z.object({
   hidden: z.boolean().optional(),
   required: z.boolean(),
-  filter: rootFilter.nullable(),
+  filter: z.any().nullable(),
 })
 
 export type IFormField = z.infer<typeof formField>

@@ -35,6 +35,7 @@ const authMiddleware = middleware(({ ctx, next }) => {
 
   return next()
 })
+
 export const createRouter = (commandBus: ICommandBus, queryBus: IQueryBus, logger: ILogger) => {
   const procedure = publicProcedure.use(loggerMiddleware(logger))
   const authedProceducr = procedure.use(authMiddleware)

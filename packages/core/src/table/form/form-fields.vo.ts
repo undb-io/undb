@@ -24,7 +24,7 @@ export class FormFields extends ValueObject<Map<string, FormField>> {
     const fields: IFormFields = {}
 
     for (const [fieldId, option] of viewFields) {
-      fields[fieldId] = { required: false, hidden: option.hidden }
+      fields[fieldId] = { required: false, hidden: option.hidden, filter: null }
     }
 
     return this.from(schema)
@@ -42,6 +42,7 @@ export class FormFields extends ValueObject<Map<string, FormField>> {
         new FormField({
           required: field.required ? true : option.required,
           hidden: field.required ? false : !!option.hidden,
+          filter: option.filter,
         }),
       )
     }
