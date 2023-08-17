@@ -8,7 +8,7 @@
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { Field, IFilter } from '@undb/core'
-	import { Label, Toggle } from 'flowbite-svelte'
+	import { Button, Label, Toggle } from 'flowbite-svelte'
 
 	const table = getTable()
 	export let field: Field
@@ -78,6 +78,7 @@
 	}
 
 	$: formField = $selectedForm?.fields.value.get(field.id.value)
+	$: open = !!formField?.filter
 	$: filter = (formField?.filter ?? []) as IFilter[]
 </script>
 
@@ -105,7 +106,7 @@
 			</Label>
 			<CellInput class="w-full" {field} />
 			<div class="flex items-center justify-end gap-2">
-				<Toggle size="small" on:change={onChange}>
+				<Toggle size="small" bind:checked={open} on:change={onChange}>
 					{$t('show form conditions')}
 				</Toggle>
 
@@ -120,9 +121,24 @@
 					</Toggle>
 				{/if}
 			</div>
-			<div class="border-t border-t-slate-100 pt-2">
-				<FilterEditor bind:value={filter} />
-			</div>
+			{#if open}
+				<div class="border-t border-t-slate-100 pt-2 space-y-2">
+					<FilterEditor bind:value={filter} let:add>
+						<Button on:click={add} class="w-full mt-2" size="xs" color="alternative">
+							{$t('Create New Filter')}
+						</Button>
+					</FilterEditor>
+
+					<div class="flex justify-end">
+						<Button
+							size="xs"
+							on:click={() => {
+								setFormFieldFilter()
+							}}>{$t('Apply', { ns: 'common' })}</Button
+						>
+					</div>
+				</div>
+			{/if}
 		</div>
 	{/if}
 {/if}

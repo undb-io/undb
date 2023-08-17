@@ -282,7 +282,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.addJobs(async () => {
       const form = this.em.getReference(Form, s.formId)
       await wrap(form).init()
-      const fields = { [s.fieldId]: s.filter }
+      const fields = { [s.fieldId]: { filter: s.filter } }
       wrap(form).assign({ fields }, { mergeObjects: true, merge: true })
       await this.em.persistAndFlush(form)
     })

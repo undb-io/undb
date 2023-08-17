@@ -3,6 +3,7 @@ import { merge } from 'lodash-es'
 import { z } from 'zod'
 import type { TableSchema } from '../value-objects/index.js'
 import type { ViewFieldOptions } from '../view/index.js'
+import type { IFormField } from './form-field.vo.js'
 import { FormField, formField } from './form-field.vo.js'
 
 export const formFields = z.record(z.string(), formField)
@@ -59,7 +60,11 @@ export class FormFields extends ValueObject<Map<string, FormField>> {
   }
 
   public toJSON() {
-    return Object.fromEntries(this.value)
+    const result: Record<string, IFormField> = {}
+    for (const [key, value] of this.value) {
+      result[key] = value.unpack()
+    }
+    return result
   }
 
   *[Symbol.iterator]() {
