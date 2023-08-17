@@ -443,8 +443,8 @@ importers:
   apps/frontend:
     devDependencies:
       '@event-calendar/core':
-        specifier: ^1.5.1
-        version: 1.5.1
+        specifier: ^2.0.0
+        version: 2.0.0
       '@event-calendar/day-grid':
         specifier: ^1.5.1
         version: 1.5.1
@@ -2863,6 +2863,12 @@ packages:
 
   /@event-calendar/core@1.5.1:
     resolution: {integrity: sha512-aZyzH9ZDKtGMgHOXco/o6fjc8/cqbfHu8tQR73O3jvqDE18uVP3aeYyL3PQdmVPi/+FBhf4JaP2caz6V2YucGg==}
+    dependencies:
+      svelte: 4.2.0
+    dev: true
+
+  /@event-calendar/core@2.0.0:
+    resolution: {integrity: sha512-BTI9vOVkpwe75qqHjzhzG4+LoQLTca4OEIRB7t8Hk8mqnt1H5XAOHjldOqsus7ln346taN7Vg0bf6yhw4T+m+A==}
     dependencies:
       svelte: 4.2.0
     dev: true
@@ -10432,6 +10438,7 @@ packages:
 
   /filelist@1.0.4:
     resolution: {integrity: sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==}
+    requiresBuild: true
     dependencies:
       minimatch: 5.1.6
 
@@ -11746,6 +11753,7 @@ packages:
 
   /is-arrayish@0.2.1:
     resolution: {integrity: sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg==}
+    requiresBuild: true
     dev: true
 
   /is-bigint@1.0.4:
@@ -12066,6 +12074,7 @@ packages:
     resolution: {integrity: sha512-ZDi3aP+fG/LchyBzUM804VjddnwfSfsdeYkwt8NcbKRvo4rFkjhs456iLFn3k2ZUWvNe4i48WACDbza8fhq2+w==}
     engines: {node: '>=10'}
     hasBin: true
+    requiresBuild: true
     dependencies:
       async: 3.2.4
       chalk: 4.1.2
