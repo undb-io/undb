@@ -61,6 +61,9 @@
 		if (!$selectedForm) return
 		const target = e.target as HTMLInputElement
 		const checked = target.checked
+		if (formField) {
+			formField.filter = checked ? formField.filter ?? [] : null
+		}
 		if (!checked) {
 			$setFormFieldFilterMutation.mutate({
 				tableId: $table.id.value,
@@ -107,7 +110,7 @@
 			</Label>
 			<CellInput class="w-full" {field} />
 			<div class="flex items-center justify-end gap-2">
-				<Toggle size="small" bind:checked={open} on:change={onChange}>
+				<Toggle size="small" checked={open} on:change={onChange}>
 					{$t('show form conditions')}
 				</Toggle>
 
@@ -124,7 +127,11 @@
 			</div>
 			{#if open}
 				<div class="border-t border-t-slate-100 pt-2 space-y-2">
-					<FilterEditor bind:value={filter} let:add fieldFilter={(field) => previousFields.includes(field.id)}>
+					<FilterEditor
+						bind:value={formField.filter}
+						let:add
+						fieldFilter={(field) => previousFields.includes(field.id)}
+					>
 						<Button on:click={add} class="w-full mt-2" size="xs" color="alternative">
 							{$t('Create New Filter')}
 						</Button>
