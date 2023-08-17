@@ -13,7 +13,7 @@
 	},
 	"devDependencies": {
 		"@event-calendar/core": "^1.5.1",
-		"@event-calendar/day-grid": "^1.5.1",
+		"@event-calendar/day-grid": "^2.0.0",
 		"@event-calendar/interaction": "^1.5.1",
 		"@event-calendar/time-grid": "^1.5.1",
 		"@playwright/test": "^1.37.0",
