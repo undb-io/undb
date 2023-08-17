@@ -84,6 +84,7 @@
 	$: open = !!formField?.filter
 	$: filter = (formField?.filter ?? []) as IFilter[]
 	$: previousFields = $selectedForm?.fieldsOrder?.getPreviousFieldIds(field.id.value) ?? []
+	$: isFirst = $selectedForm?.fieldsOrder?.isFirst(field.id.value) ?? false
 </script>
 
 {#if $selectedForm}
@@ -110,9 +111,11 @@
 			</Label>
 			<CellInput class="w-full" {field} />
 			<div class="flex items-center justify-end gap-2">
-				<Toggle size="small" checked={open} on:change={onChange}>
-					{$t('show form conditions')}
-				</Toggle>
+				{#if !isFirst}
+					<Toggle size="small" checked={open} on:change={onChange}>
+						{$t('show form conditions')}
+					</Toggle>
+				{/if}
 
 				{#if !field.controlled}
 					<Toggle

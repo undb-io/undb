@@ -12,4 +12,8 @@ export class FormFieldsOrder extends OrderVO {
 
     return result
   }
+
+  public isFirst(fieldId: string): boolean {
+    return this.order[0] === fieldId
+  }
 }
