@@ -26,8 +26,8 @@
 
 	let spec: RecordCompositeSpecification | null = null
 
-	$: if (filter) {
-		spec = convertFilterSpec(filter, ANONYMOUS_USER_ID).into(null)
+	$: if (filter && formField && form.fieldsOrder) {
+		spec = formField.getSpec(field.id.value, ANONYMOUS_USER_ID, form.fieldsOrder).into(null)
 	}
 
 	$: isMatch = spec ? spec.isSatisfiedBy(tempRecord) : true

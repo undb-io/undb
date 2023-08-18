@@ -683,7 +683,14 @@ const convertMultiSelectFilter = (filter: IMultiSelectFilter): Option<RecordComp
   }
 }
 
-const convertFilter = (filter: IFilter, userId: string): Option<RecordCompositeSpecification> => {
+const convertFilter = (
+  filter: IFilter,
+  userId: string,
+  validFieldIds: Option<string[]>,
+): Option<RecordCompositeSpecification> => {
+  if (validFieldIds.isSome() && !validFieldIds.unwrap().includes(filter.path)) {
+    return None
+  }
   return match(filter)
     .with({ type: 'id' }, (filter) => convertIdFilter(filter))
     .with({ type: 'string' }, { type: 'email' }, { type: 'url' }, { type: 'color' }, (filter) =>
@@ -718,11 +725,15 @@ const convertFilter = (filter: IFilter, userId: string): Option<RecordCompositeS
     .otherwise(() => None)
 }
 
-const convertFilterOrGroup = (filterOrGroup: IFilterOrGroup, userId: string): Option<RecordCompositeSpecification> => {
+const convertFilterOrGroup = (
+  filterOrGroup: IFilterOrGroup,
+  userId: string,
+  validFieldIds: Option<string[]>,
+): Option<RecordCompositeSpecification> => {
   if (isGroup(filterOrGroup)) {
-    return convertFilterOrGroupList(filterOrGroup.children, userId, filterOrGroup.conjunction)
+    return convertFilterOrGroupList(filterOrGroup.children, userId, validFieldIds, filterOrGroup.conjunction)
   } else if (isFilter(filterOrGroup)) {
-    return convertFilter(filterOrGroup, userId)
+    return convertFilter(filterOrGroup, userId, validFieldIds)
   }
 
   return None
@@ -731,31 +742,36 @@ const convertFilterOrGroup = (filterOrGroup: IFilterOrGroup, userId: string): Op
 const convertFilterOrGroupList = (
   filterOrGroupList: IFilterOrGroupList = [],
   userId: string,
+  validFieldIds: Option<string[]>,
   conjunction: IConjunction = '$and',
 ): Option<RecordCompositeSpecification> => {
   let spec: Option<RecordCompositeSpecification> = None
   for (const filter of filterOrGroupList) {
     if (spec.isNone()) {
-      spec = convertFilterOrGroup(filter, userId)
+      spec = convertFilterOrGroup(filter, userId, validFieldIds)
       if (conjunction === '$not') {
         return spec.map((s) => s.not())
       }
     } else {
       if (isFilter(filter)) {
-        spec = spec.map((left) => {
-          const right = convertFilterOrGroup(filter, userId)
-          if (right.isSome()) {
-            if (conjunction === '$and') {
-              return left.and(right.unwrap())
-            } else if (conjunction === '$or') {
-              return left.or(right.unwrap())
+        if (validFieldIds.isSome() && !validFieldIds.unwrap().includes(filter.path)) {
+          spec = None
+        } else {
+          spec = spec.map((left) => {
+            const right = convertFilterOrGroup(filter, userId, validFieldIds)
+            if (right.isSome()) {
+              if (conjunction === '$and') {
+                return left.and(right.unwrap())
+              } else if (conjunction === '$or') {
+                return left.or(right.unwrap())
+              }
+              return left.and(right.unwrap().not())
             }
-            return left.and(right.unwrap().not())
-          }
-          return left
-        })
+            return left
+          })
+        }
       } else if (isGroup(filter)) {
-        spec = convertFilterOrGroupList(filter.children, userId, filter.conjunction)
+        spec = convertFilterOrGroupList(filter.children, userId, validFieldIds, filter.conjunction)
       }
     }
   }
@@ -763,12 +779,16 @@ const convertFilterOrGroupList = (
   return spec
 }
 
-export const convertFilterSpec = (filter: IRootFilter, userId: string): Option<RecordCompositeSpecification> => {
+export const convertFilterSpec = (
+  filter: IRootFilter,
+  userId: string,
+  validFieldIds: Option<string[]> = None,
+): Option<RecordCompositeSpecification> => {
   if (Array.isArray(filter)) {
-    return convertFilterOrGroupList(filter, userId)
+    return convertFilterOrGroupList(filter, userId, validFieldIds)
   }
 
-  return convertFilterOrGroup(filter, userId)
+  return convertFilterOrGroup(filter, userId, validFieldIds)
 }
 
 export const isEmptyFilter = (filter: IRootFilter) => isEmpty(filter)
