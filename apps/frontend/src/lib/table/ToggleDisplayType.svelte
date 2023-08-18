@@ -72,6 +72,5 @@
 			</Radio>
 		{/each}
 	</Dropdown>
-	<ViewIcon {type} />
 	<Tooltip class="z-50" placement="bottom">{$t(type)}</Tooltip>
 {/if}
