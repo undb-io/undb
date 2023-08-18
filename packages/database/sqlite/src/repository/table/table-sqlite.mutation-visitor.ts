@@ -7,6 +7,7 @@ import type {
   WithCurrencySymbol,
   WithDuplicatedField,
   WithForeignTableId,
+  WithFormFieldFilter,
   WithFormFieldsOrder,
   WithFormFieldsRequirements,
   WithFormFieldsSpecification,
@@ -111,7 +112,10 @@ import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
 import { TableSqliteVisualizationVisitor } from './table-sqlite-visualization.visitor.js'
 
 export class TableSqliteMutationVisitor extends BaseEntityManager implements ITableSpecVisitor {
-  constructor(private readonly tableId: string, em: EntityManager) {
+  constructor(
+    private readonly tableId: string,
+    em: EntityManager,
+  ) {
     super(em)
   }
   viewIdEqual(s: WithTableViewId): void {
@@ -270,6 +274,15 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
       const form = this.em.getReference(Form, s.formId)
       await wrap(form).init()
       const fields = mapValues(s.requirements, (required) => ({ required }))
+      wrap(form).assign({ fields }, { mergeObjects: true, merge: true })
+      await this.em.persistAndFlush(form)
+    })
+  }
+  withFormFieldFilter(s: WithFormFieldFilter): void {
+    this.addJobs(async () => {
+      const form = this.em.getReference(Form, s.formId)
+      await wrap(form).init()
+      const fields = { [s.fieldId]: { filter: s.filter } }
       wrap(form).assign({ fields }, { mergeObjects: true, merge: true })
       await this.em.persistAndFlush(form)
     })

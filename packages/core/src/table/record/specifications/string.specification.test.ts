@@ -1,6 +1,13 @@
 import { StringFieldValue } from '../../field/index.js'
 import { createTestRecord } from '../fixtures/index.js'
-import { StringContain, StringEndsWith, StringEqual, StringRegex, StringStartsWith } from './string.specification.js'
+import {
+  StringContain,
+  StringEmpty,
+  StringEndsWith,
+  StringEqual,
+  StringRegex,
+  StringStartsWith,
+} from './string.specification.js'
 
 test.each<[StringContain, StringEqual, boolean]>([
   [
@@ -88,6 +95,15 @@ test.each<[StringRegex, StringEqual, boolean]>([
     true,
   ],
 ])('should match StringRegex', (spec, value, result) => {
+  const record = createTestRecord(value)
+  expect(spec.isSatisfiedBy(record)).toBe(result)
+})
+
+test.each<[StringEmpty, StringEqual, boolean]>([
+  [new StringEmpty('hello'), new StringEqual('hello', new StringFieldValue('world111')), false],
+  [new StringEmpty('hello'), new StringEqual('hello', new StringFieldValue('')), true],
+  [new StringEmpty('hello'), new StringEqual('hello', new StringFieldValue(null)), true],
+])('should match StringEmpty', (spec, value, result) => {
   const record = createTestRecord(value)
   expect(spec.isSatisfiedBy(record)).toBe(result)
 })

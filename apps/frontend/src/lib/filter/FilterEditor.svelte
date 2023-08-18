@@ -1,12 +1,13 @@
 <script lang="ts">
-	import type { IFilter } from '@undb/core'
+	import type { IFilter, IQueryFieldSchema } from '@undb/core'
 	import Sortable, { type SortableEvent } from 'sortablejs'
-	import { isNumber } from 'lodash-es'
+	import { identity, isNumber } from 'lodash-es'
 	import FilterItem from '$lib/table/FilterItem.svelte'
 	import { Alert } from 'flowbite-svelte'
 	import { t } from '$lib/i18n'
 	export let value: Partial<IFilter>[] = []
 	export let readonly = false
+	export let fieldFilter: (field: IQueryFieldSchema) => boolean = identity
 
 	$: if (!value) value = []
 
@@ -46,7 +47,7 @@
 {#if value?.length}
 	<ul class="space-y-2" bind:this={el}>
 		{#each value as filter, index (filter.path)}
-			<FilterItem {filter} {index} {remove} {readonly} />
+			<FilterItem {filter} {index} {remove} {readonly} {fieldFilter} />
 		{/each}
 	</ul>
 {:else}

@@ -39,5 +39,5 @@ export const createFormRouter = (procedure: typeof publicProcedure) => (commandB
         const cmd = new UpdateFormCommand(input)
         return commandBus.execute(cmd)
       }),
-    field: createFormFieldRouter(procedure)(commandBus),
+    field: createFormFieldRouter(procedure.use(authz('table:update_form')))(commandBus),
   })

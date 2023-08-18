@@ -58,6 +58,15 @@ export const setFormFieldRequirementsSchema = z
 
 export type ISetFormFieldRequirementsSchema = z.infer<typeof setFormFieldRequirementsSchema>
 
+export const setFormFieldFilterSchema = z
+  .object({
+    fieldId: fieldIdSchema,
+    filter: z.any().nullable(),
+  })
+  .merge(formFieldOptionBaseSchema)
+
+export type ISetFormFieldFilterSchema = z.infer<typeof setFormFieldFilterSchema>
+
 export const setFormFieldsOrderSchema = z.object({
   formId: formIdSchema,
   fieldsOrder: fieldIdSchema.array(),

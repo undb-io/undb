@@ -40,7 +40,7 @@ export class TableSqliteMapper {
                 ? view.widgets.getItems(false).map((widget) => widget.toQuery())
                 : [],
             },
-          } as IQueryView),
+          }) as IQueryView,
       ),
     }
   }
