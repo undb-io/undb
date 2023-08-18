@@ -1,4 +1,3 @@
-import { and } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import type { Table } from '../table.js'
 import type { TableSchemaIdMap } from '../value-objects/index.js'
@@ -19,15 +18,7 @@ import { WithRecordAutoIncrement } from './specifications/record-auto-increment.
 import { WithRecordUpdatedBy, WithRecordUpdatedByProfile } from './specifications/record-updated-by.specification.js'
 
 export class RecordFactory {
-  static create(...specs: RecordCompositeSpecification[]): Result<Record, string>
-  static create(spec: RecordCompositeSpecification): Result<Record, string>
-
-  static create(spec: RecordCompositeSpecification | RecordCompositeSpecification[]): Result<Record, string> {
-    if (Array.isArray(spec)) {
-      return and(...spec)
-        .unwrap()
-        .mutate(Record.empty())
-    }
+  static create(spec: RecordCompositeSpecification): Result<Record, string> {
     return spec.mutate(Record.empty())
   }
 
