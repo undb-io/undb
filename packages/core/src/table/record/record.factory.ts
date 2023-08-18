@@ -31,16 +31,26 @@ export class RecordFactory {
     return spec.mutate(Record.empty())
   }
 
-  static temp(table: Table, values: IQueryRecordValues, userId: string): Record {
+  static temp(
+    table: Table,
+    values: IQueryRecordValues,
+    userId: string,
+    ...specs: RecordCompositeSpecification[]
+  ): Record {
     const schema = table.schema.toIdMap()
-    return this.create(
-      WithRecordId.fromNullableString(),
-      WithRecordCreatedAt.now(),
-      WithRecordUpdatedAt.now(),
-      WithRecordCreatedBy.fromString(userId),
-      WithRecordUpdatedBy.fromString(userId),
-      WithRecordValues.fromObject(schema, values),
-    ).unwrap()
+    let spec: RecordCompositeSpecification = WithRecordId.fromNullableString()
+      .and(new WithRecordTableId(table.id))
+      .and(WithRecordCreatedAt.now())
+      .and(WithRecordUpdatedAt.now())
+      .and(WithRecordCreatedBy.fromString(userId))
+      .and(WithRecordUpdatedBy.fromString(userId))
+      .and(WithRecordValues.fromObject(schema, values))
+
+    for (const s of specs) {
+      spec = spec.and(s)
+    }
+
+    return this.create(spec).unwrap()
   }
 
   static fromQueryRecords(rs: IQueryRecordSchema[], schema: TableSchemaIdMap): Records {

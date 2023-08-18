@@ -114,8 +114,8 @@ export class StringEmpty extends BaseRecordSpecification<StringFieldValue> {
 
   isSatisfiedBy(r: Record): boolean {
     const value = r.values.value.get(this.fieldId)
-
-    return value instanceof StringFieldValue && !value.unpack()
+    if (value instanceof StringFieldValue) return !value.unpack()
+    return !value
   }
 
   accept(v: IRecordVisitor): Result<void, string> {

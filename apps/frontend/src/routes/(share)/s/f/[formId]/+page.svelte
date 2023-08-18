@@ -12,8 +12,9 @@
 	import { slide } from 'svelte/transition'
 	import type { PageData } from './$types'
 	import { onMount } from 'svelte'
-	import { RecordFactory } from '@undb/core'
+	import { RecordFactory, RecordId, WithRecordId } from '@undb/core'
 	import { me } from '$lib/store/me'
+	import FormSubmitItem from '$lib/form/FormSubmitItem.svelte'
 
 	export let data: PageData
 
@@ -26,7 +27,7 @@
 		},
 	})
 
-	const { form, enhance, constraints, delayed, submitting, tainted } = superForm(data.createShareRecord, {
+	const superFrm = superForm(data.createShareRecord, {
 		id: 'createRecord',
 		SPA: true,
 		dataType: 'json',
@@ -47,6 +48,7 @@
 			})
 		},
 	})
+	const { form, enhance, constraints, delayed, submitting, tainted } = superFrm
 
 	onMount(() => {
 		$tainted = undefined
@@ -58,7 +60,8 @@
 
 	$: values = pick($form, keys($tainted))
 
-	$: tempRecord = RecordFactory.temp($table, values, $me.userId)
+	const id = RecordId.create()
+	$: tempRecord = RecordFactory.temp($table, values, $me.userId, new WithRecordId(id))
 </script>
 
 <main class="bg-blue-50 h-screen w-screen flex flex-col dark:bg-gray-500">
@@ -71,27 +74,7 @@
 				<form id="createShareRecord" class="space-y-5" method="POST" use:enhance>
 					<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 						{#each fields as field}
-							<div class="h-full items-start gap-1 pt-2">
-								<Label class="leading-5" for={field.id.value} data-field-id={field.id.value}>
-									<div class="inline-flex items-center gap-2">
-										<FieldIcon type={field.type} size={16} />
-										<span>
-											{field.name.value}
-										</span>
-									</div>
-									{#if f.fields.isRequired(field.id.value)}
-										<span class="text-red-500">*</span>
-									{/if}
-								</Label>
-							</div>
-							<div class="col-span-4">
-								<CellInput
-									class="w-full"
-									{field}
-									bind:value={$form[field.id.value]}
-									{...$constraints[field.id.value]}
-								/>
-							</div>
+							<FormSubmitItem form={f} {field} {tempRecord} {superFrm} />
 						{/each}
 					</div>
 
