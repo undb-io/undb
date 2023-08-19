@@ -10,7 +10,7 @@
     "nanoid": "^4.0.2",
     "oxide.ts": "^1.1.0",
     "uuid": "^9.0.0",
-    "zod": "^3.22.0"
+    "zod": "^3.22.1"
   },
   "devDependencies": {
     "@types/uuid": "^9.0.2",
@@ -19,7 +19,7 @@
     "tsup": "^7.2.0",
     "type-fest": "^4.2.0",
     "typescript": "^5.1.6",
-    "vitest": "^0.34.1"
+    "vitest": "^0.34.2"
   },
   "exports": {
     "import": "./dist/index.js",

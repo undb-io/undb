@@ -9,14 +9,14 @@
     "@undb/cqrs": "^0.0.0",
     "@undb/domain": "^0.0.0",
     "@undb/integrations": "^0.0.0",
-    "zod": "^3.22.0"
+    "zod": "^3.22.1"
   },
   "devDependencies": {
     "rimraf": "^5.0.1",
     "tsconfig": "^0.0.0",
     "tsup": "^7.2.0",
     "typescript": "^5.1.6",
-    "vitest": "^0.34.1"
+    "vitest": "^0.34.2"
   },
   "exports": {
     "import": "./dist/index.js",

@@ -13,7 +13,7 @@
     "oxide.ts": "^1.1.0",
     "ts-pattern": "^5.0.5",
     "ufo": "^1.2.0",
-    "zod": "^3.22.0"
+    "zod": "^3.22.1"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.8",
@@ -21,7 +21,7 @@
     "tsconfig": "^0.0.0",
     "tsup": "^7.2.0",
     "typescript": "^5.1.6",
-    "vitest": "^0.34.1"
+    "vitest": "^0.34.2"
   },
   "exports": {
     "import": "./dist/index.js",

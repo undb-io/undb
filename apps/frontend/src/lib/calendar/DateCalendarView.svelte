@@ -90,7 +90,7 @@
 		},
 		selectable: false,
 		eventDurationEditable: false,
-		eventTimeFormat: () => null,
+		eventTimeFormat: () => '',
 		editable: !$readonly,
 		eventDrop: $readonly
 			? undefined
