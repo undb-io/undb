@@ -46,6 +46,12 @@ export class Form extends ValueObject<IForm> {
     this.props.fieldsOrder = fields
   }
 
+  public getOrderedField(schema: TableSchema): FormFieldsOrder {
+    if (this.fieldsOrder) return this.fieldsOrder
+    const order = schema.fields.map((f) => f.id.value)
+    return new FormFieldsOrder(order)
+  }
+
   private getOrderedFieldIds(schema: TableSchema): string[] {
     return this.fieldsOrder?.order ?? schema.fields.map((f) => f.id.value)
   }
