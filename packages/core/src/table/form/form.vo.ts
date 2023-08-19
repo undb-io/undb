@@ -48,12 +48,12 @@ export class Form extends ValueObject<IForm> {
 
   public getOrderedField(schema: TableSchema): FormFieldsOrder {
     if (this.fieldsOrder) return this.fieldsOrder
-    const order = schema.fields.map((f) => f.id.value)
+    const order = schema.fields.filter((f) => !f.controlled).map((f) => f.id.value)
     return new FormFieldsOrder(order)
   }
 
   private getOrderedFieldIds(schema: TableSchema): string[] {
-    return this.fieldsOrder?.order ?? schema.fields.map((f) => f.id.value)
+    return this.fieldsOrder?.order ?? schema.fields.filter((f) => !f.controlled).map((f) => f.id.value)
   }
 
   public getHiddenFields(schema: TableSchema): Field[] {
