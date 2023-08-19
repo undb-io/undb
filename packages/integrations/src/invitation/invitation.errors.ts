@@ -1,5 +1,13 @@
 import { ExceptionBase } from '@undb/domain'
 
+export class UserAlreadyExists extends ExceptionBase {
+  code = 'INVITATION.USER_ALREADY_EXISTS'
+
+  constructor(email: string) {
+    super(`user with email ${email} has already exists in system`)
+  }
+}
+
 export class InvitationExpired extends ExceptionBase {
   code = 'INVITATION.EXPIRED'
 

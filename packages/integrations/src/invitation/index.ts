@@ -1,6 +1,7 @@
 export * from './events/index.js'
 export * from './interface.js'
 export * from './invitation-id.vo.js'
+export * from './invitation.errors.js'
 export * from './invitation.factory.js'
 export * from './invitation.js'
 export * from './invitation.query-model.js'

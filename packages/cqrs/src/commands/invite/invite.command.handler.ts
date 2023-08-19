@@ -1,7 +1,7 @@
-import type { ClsStore, IClsService, IUserRepository } from '@undb/core'
+import { WithUserEmail, type ClsStore, type IClsService, type IUserRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
 import type { IInvitationRepository } from '@undb/integrations'
-import { InvitationFactory, InvitedEvent, WithInvitationEmail } from '@undb/integrations'
+import { InvitationFactory, InvitedEvent, UserAlreadyExists, WithInvitationEmail } from '@undb/integrations'
 import type { InviteCommand } from './invite.command.js'
 
 type IInviteCommandHandler = ICommandHandler<InviteCommand, void>
@@ -14,6 +14,11 @@ export class InviteCommandHandler implements IInviteCommandHandler {
   ) {}
 
   async execute(command: InviteCommand): Promise<void> {
+    const existUser = (await this.userRepo.findOne(WithUserEmail.fromString(command.email))).into()
+    if (existUser) {
+      throw new UserAlreadyExists(command.email)
+    }
+
     const userId = this.cls.get('user.userId')
     const user = (await this.userRepo.findOneById(userId)).unwrap()
 
