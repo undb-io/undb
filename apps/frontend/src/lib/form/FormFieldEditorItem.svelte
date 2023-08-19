@@ -83,8 +83,8 @@
 	$: formField = $selectedForm?.fields.value.get(field.id.value)
 	$: open = !!formField?.filter
 	$: filter = (formField?.filter ?? []) as IFilter[]
-	$: previousFields = $selectedForm?.fieldsOrder?.getPreviousFieldIds(field.id.value) ?? []
-	$: isFirst = $selectedForm?.fieldsOrder?.isFirst(field.id.value) ?? false
+	$: previousFields = $selectedForm?.getOrderedField($table.schema).getPreviousFieldIds(field.id.value) ?? []
+	$: isFirst = $selectedForm?.getOrderedField($table.schema).isFirst(field.id.value) ?? false
 </script>
 
 {#if $selectedForm}

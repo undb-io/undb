@@ -1,6 +1,7 @@
 <script lang="ts">
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
+	import { getTable } from '$lib/store/table'
 	import {
 		ANONYMOUS_USER_ID,
 		convertFilterSpec,
@@ -17,6 +18,8 @@
 	export let tempRecord: Record
 	export let superFrm: SuperForm<any>
 
+	const table = getTable()
+
 	const { form: f, constraints } = superFrm
 
 	$: required = form.fields.isRequired(field.id.value)
@@ -27,7 +30,7 @@
 	let spec: RecordCompositeSpecification | null = null
 
 	$: if (filter && formField && form.fieldsOrder) {
-		spec = formField.getSpec(field.id.value, ANONYMOUS_USER_ID, form.fieldsOrder).into(null)
+		spec = formField.getSpec(field.id.value, ANONYMOUS_USER_ID, form.getOrderedField($table.schema)).into(null)
 	}
 
 	$: isMatch = spec ? spec.isSatisfiedBy(tempRecord) : true
