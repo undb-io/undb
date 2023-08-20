@@ -5,7 +5,8 @@
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import { viewRowHeights } from '@undb/core'
-	import { Button, Dropdown, DropdownItem, Radio, Tooltip } from 'flowbite-svelte'
+	import { Dropdown, DropdownItem, Tooltip } from 'flowbite-svelte'
+	import { Button } from '$components/ui/button'
 
 	const table = getTable()
 	const view = getView()
@@ -23,9 +24,9 @@
 </script>
 
 <Button
-	size="xs"
+	size="sm"
 	color="alternative"
-	class="h-full w-8 px-0 !rounded-md inline-flex items-center whitespace-nowrap transition dark:hover:bg-gray-800 dark:border-gray-400"
+	class=" w-8 px-0  inline-flex items-center whitespace-nowrap transition dark:hover:bg-gray-800 border-gray-200 text-gray-900 dark:text-gray-50 dark:border-gray-400  border bg-[unset] hover:text-primary hover:bg-gray-100"
 	on:click={() => (open = !open)}
 >
 	<i class="ti ti-line-height text-sm dark:text-gray-200" />

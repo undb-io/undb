@@ -1,6 +1,6 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Alert, Badge, Button, Modal, Toast } from 'flowbite-svelte'
+	import { Alert, Badge, Modal, Toast } from 'flowbite-svelte'
 	import { allTableFields, getTable, getView, listRecordFn, sorts } from '$lib/store/table'
 	import { isSortable, type ISortSchema } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
@@ -13,6 +13,7 @@
 	import { isNumber, uniqBy } from 'lodash-es'
 	import { onMount } from 'svelte'
 	import { hasPermission } from '$lib/store/authz'
+	import { Button } from '$components/ui/button'
 
 	const table = getTable()
 	const view = getView()
@@ -80,10 +81,10 @@
 </script>
 
 <Button
-	size="xs"
+	size="sm"
 	color="light"
 	class={cx(
-		'h-full !rounded-md whitespace-nowrap border-0 hover:!bg-blue-50  dark:hover:!bg-gray-800 dark:bg-gray-700',
+		'whitespace-nowrap border-0 bg-[unset] hover:!bg-blue-50  dark:hover:!bg-gray-800 dark:bg-gray-700',
 		!!$sorts.length && '!bg-blue-50 dark:!bg-primary-600',
 	)}
 	on:click={() => (open = true)}
@@ -121,7 +122,7 @@
 								{#each directions as direction, i (direction)}
 									<Button
 										disabled={!canSetViewSort}
-										size="xs"
+										size="sm"
 										class={cx('!rounded-none', i === 1 && '!rounded-r-md border-l-0')}
 										on:click={() => {
 											value.update((sort) => sort.map((s, index) => (index === idx ? { ...s, direction } : s)))
@@ -152,13 +153,14 @@
 		<div class="flex w-full justify-between">
 			<Button
 				color="alternative"
-				size="xs"
+				size="sm"
+				class="bg-unset border-gray-200 border text-gray-900 dark:hover:bg-gray-900 hover:text-primary hover:bg-gray-100"
 				on:click={add}
 				disabled={$value.some((v) => v.id === TEMP_ID) || $setSort.isLoading}
 			>
 				{$t('Create New Sort')}
 			</Button>
-			<Button size="xs" type="submit" form="sort_menu">{$t('Apply', { ns: 'common' })}</Button>
+			<Button size="sm" type="submit" form="sort_menu">{$t('Apply', { ns: 'common' })}</Button>
 		</div>
 	{/if}
 </Modal>

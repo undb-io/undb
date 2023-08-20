@@ -1,6 +1,7 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Badge, Button, Modal, Toast } from 'flowbite-svelte'
+	import { Badge, Modal, Toast } from 'flowbite-svelte'
+	import { Button } from '$components/ui/button'
 	import { slide } from 'svelte/transition'
 	import { trpc } from '$lib/trpc/client'
 	import { filters, getTable, getView, q, recordHash } from '$lib/store/table'
@@ -42,11 +43,11 @@
 
 <Button
 	id="filters-menu"
-	size="xs"
+	size="sm"
 	color="alternative"
 	on:click={() => (open = true)}
 	class={cx(
-		'h-full !rounded-md whitespace-nowrap border-0 hover:!bg-blue-50 dark:hover:!bg-gray-800',
+		'whitespace-nowrap border-0 bg-[unset] hover:!bg-blue-50 dark:hover:!bg-gray-800',
 		!!$filters.length && '!bg-blue-50 dark:!bg-primary-600',
 	)}
 >
@@ -66,10 +67,14 @@
 		{/if}
 		<FilterEditor bind:value let:add readonly={!$hasPermission('table:set_view_filter')}>
 			<div class="flex w-full justify-between">
-				<Button color="alternative" size="xs" on:click={add}>
+				<Button
+					class="bg-unset border-gray-200 border text-gray-900 dark:hover:bg-gray-900 hover:text-primary hover:bg-gray-100"
+					size="sm"
+					on:click={add}
+				>
 					{$t('Create New Filter')}
 				</Button>
-				<Button size="xs" type="submit" form="filter_menu">
+				<Button size="sm" type="submit" form="filter_menu">
 					{$t('Apply', { ns: 'common' })}
 				</Button>
 			</div>

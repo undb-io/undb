@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
 	import { getTable, q, tableQ } from '$lib/store/table'
-	import { Search } from 'flowbite-svelte'
-	import {Button} from '$components/ui/button'
+	import { Button } from '$components/ui/button'
+	import { Input } from '$components/ui/input'
 
 	let value: string | undefined = $q
 
@@ -23,13 +23,14 @@
 	}}
 >
 	<div class="flex items-center gap-2">
-		<Search
+		<Input bind:value {placeholder} />
+		<!-- <Search
 			size="sm"
 			bind:value
 			{placeholder}
 			class="dark:hover:bg-gray-800 dark:border-gray-400 dark:hover:border-gray-800 dark:text-gray-200 min-w-[100px]"
-		/>
-		<Button>
+		/> -->
+		<Button type="submit" size="sm">
 			<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 				<path
 					stroke-linecap="round"

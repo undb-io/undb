@@ -6,11 +6,12 @@
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { Field } from '@undb/core'
-	import { Badge, Button, Checkbox, Hr, Indicator, Modal, Toggle, Tooltip } from 'flowbite-svelte'
+	import { Badge, Checkbox, Hr, Indicator, Modal, Toggle, Tooltip } from 'flowbite-svelte'
 	import { filter, isNumber } from 'lodash-es'
 	import { createFieldModal } from '$lib/store/modal'
 	import Sortable, { type SortableEvent } from 'sortablejs'
 	import { hasPermission } from '$lib/store/authz'
+	import { Button } from '$components/ui/button'
 
 	const table = getTable()
 	const view = getView()
@@ -88,11 +89,11 @@
 
 {#if $hasPermission('table:toggle_field_visibility')}
 	<Button
-		size="xs"
+		size="sm"
 		color="alternative"
 		class={cx(
-			'relative h-full !rounded-md gap-2 whitespace-nowrap border-0 hover:!bg-blue-50 dark:hover:!bg-gray-800 text-blue-600 dark:text-gray-100',
-			!!hiddenCount && '!bg-blue-50 dark:!bg-primary-600',
+			'relative gap-2 whitespace-nowrap border-0 hover:!bg-blue-50 dark:hover:!bg-gray-800 text-blue-600 dark:text-gray-100',
+			!!hiddenCount && 'bg-blue-50  dark:bg-primary',
 		)}
 		on:click={() => (open = true)}
 	>
@@ -140,7 +141,11 @@
 	{/if}
 
 	{#if $hasPermission('table:create_field')}
-		<Button size="xs" class="w-full gap-2" color="alternative" on:click={() => createFieldModal.open()}>
+		<Button
+			size="sm"
+			class="w-full gap-2 border-gray-200 text-gray-900 dark:text-gray-300  dark:hover:text-gray-50 dark:hover:border-gray-300 !bg-[unset] border hover:!bg-gray-100 dark:hover:!bg-[unset]"
+			on:click={() => createFieldModal.open()}
+		>
 			<i class="ti ti-plus" />
 			<span>
 				{$t('Create New Field')}

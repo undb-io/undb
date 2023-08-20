@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Tooltip } from 'flowbite-svelte'
+	import { Tooltip } from 'flowbite-svelte'
 	import ToggleDisplayType from './ToggleDisplayType.svelte'
 	import { t } from '$lib/i18n'
 	import ViewToolbar from './ViewToolbar.svelte'
@@ -10,6 +10,7 @@
 	import RecordTrashButton from './RecordTrashButton.svelte'
 	import TableMenu from './TableMenu.svelte'
 	import { hasPermission } from '$lib/store/authz'
+	import { Button } from '$components/ui/button'
 
 	const table = getTable()
 </script>
@@ -23,9 +24,9 @@
 	<div class="flex items-center ml-2 gap-3">
 		<SearchTable />
 		<Button
-			size="xs"
-			outline
-			class="flex items-center gap-2 dark:text-gray-200 dark:bg-primary-600 dark:border-primary-600 dark:hover:bg-primary-700 dark:hover:border-primary-700"
+			size="sm"
+			variant="outline"
+			class="flex items-center rounded-lg text-primary text-xs border-primary hover:bg-primary hover:text-gray-50 gap-2  dark:bg-primary dark:border-primary-600 dark:hover:bg-primary/90 dark:text-gray-50 "
 			href={`/t/${$table.id.value}/openapi`}
 		>
 			<i class="ti ti-code" />
