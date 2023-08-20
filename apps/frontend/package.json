@@ -95,5 +95,13 @@
 		"xlsx": "^0.18.5",
 		"zod": "^3.21.4"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"bits-ui": "^0.0.26",
+		"clsx": "^2.0.0",
+		"radix-icons-svelte": "^1.2.1",
+		"tailwind-merge": "^1.14.0",
+		"tailwind-variants": "^0.1.13",
+		"tailwindcss-animate": "^1.0.6"
+	}
 }

@@ -4,6 +4,7 @@
 	import { createMutation } from '@tanstack/svelte-query'
 	import type { IAttachmentItem } from '@undb/core'
 	import { Fileupload, Label } from 'flowbite-svelte'
+	// import * as Form from '$components/ui/form'
 
 	$: me = $page.data.me?.me
 	let attachment: IAttachmentItem | undefined
@@ -67,7 +68,7 @@
 				<div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 					<div class="sm:col-span-4">
 						<label for="username" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200"
-							>{$t('username', { ns: 'auth' })}</label
+							>{$t('username', { ns: 'auth' })}000</label
 						>
 						<div class="mt-2">
 							<div
