@@ -68,7 +68,7 @@
 				<div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 					<div class="sm:col-span-4">
 						<label for="username" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200"
-							>{$t('username', { ns: 'auth' })}000</label
+							>{$t('username', { ns: 'auth' })}</label
 						>
 						<div class="mt-2">
 							<div
