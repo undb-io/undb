@@ -53,6 +53,7 @@ import type {
 } from '../field/index.js'
 import type { WithReferenceFieldId } from '../field/specifications/lookup-field.specification.js'
 import type {
+  WithFormFieldFilter,
   WithFormFieldsRequirements,
   WithFormFieldsSpecification,
   WithFormFieldsVisibility,
@@ -105,6 +106,7 @@ import type {
 import type { WithNumberAggregateSpec } from '../visualization/specifications/number-visualization.specification.js'
 
 export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVisitor, IFieldVisitor {
+  withFormFieldFilter(s: WithFormFieldFilter): void {}
   viewIdEqual(s: WithTableViewId): void {}
   withoutWidget(s: WithoutWidgetSpecification): void {}
   withChartAggregate(s: WithChartAggregateSpec): void {}

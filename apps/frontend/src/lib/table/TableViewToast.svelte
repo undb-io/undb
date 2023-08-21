@@ -4,7 +4,7 @@
 	import { recordSelection, selectedCount, selectedRecords } from '$lib/store/record'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { Toast, P, Button, Spinner, Chevron, Dropdown, DropdownItem, ButtonGroup } from 'flowbite-svelte'
+	import { Toast, P, Button, Spinner, Dropdown, DropdownItem, ButtonGroup } from 'flowbite-svelte'
 	import { quintOut } from 'svelte/easing'
 	import { slide } from 'svelte/transition'
 
@@ -59,7 +59,7 @@
 				{$t('Duplicate Selected Record')}
 			</Button>
 			<Button size="xs" color="blue" class="!pl-1">
-				<Chevron />
+				<i class="ti ti-chevron-down"></i>
 			</Button>
 			<Dropdown style="z-index: 50;" placement="top" class="w-48">
 				<DropdownItem class="text-red-400" on:click={() => ($confirmBulkDeleteRecords = true)}>

@@ -1,7 +1,8 @@
-import { addDays, addHours, endOfDay, startOfDay } from 'date-fns'
+import { addDays, addHours, endOfDay, startOfDay, subDays } from 'date-fns'
 import { DateFieldValue } from '../../field/index.js'
 import { createTestRecord } from '../fixtures/index.js'
 import {
+  DateBetween,
   DateEqual,
   DateGreaterThan,
   DateGreaterThanOrEqual,
@@ -67,4 +68,12 @@ test.each<[DateIsToday, DateEqual, boolean]>([
   const record = createTestRecord(value)
   expect(spec.isSatisfiedBy(record)).toBe(result)
   vi.useRealTimers()
+})
+
+test.each<[DateBetween, DateEqual, boolean]>([
+  [new DateBetween('name', subDays(date, 1), addDays(date, 1)), new DateEqual('name', dateValue), true],
+  [new DateBetween('name', addDays(date, 1), addDays(date, 2)), new DateEqual('name', dateValue), false],
+])('DateBetween.isSatisfiedBy', (spec, value, result) => {
+  const record = createTestRecord(value)
+  expect(spec.isSatisfiedBy(record)).toBe(result)
 })

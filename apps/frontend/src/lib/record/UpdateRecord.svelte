@@ -23,6 +23,7 @@
 	import ReadonlyRecordBadge from '$lib/authz/rls/ReadonlyRecordBadge.svelte'
 	import UpdateRecordMenu from './UpdateRecordMenu.svelte'
 	import RecordAudits from './RecordAudits.svelte'
+	import { onMount } from 'svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -78,6 +79,10 @@
 				})
 			}
 		},
+	})
+
+	onMount(() => {
+		$tainted = undefined
 	})
 
 	const { form, enhance, delayed, tainted, submitting } = superFrm
@@ -209,7 +214,7 @@
 	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-yellow-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
-			{ $t('RECORD.NO_COLUMN_TO_UPDATE', { ns: 'warnings'}) }
+			{$t('RECORD.NO_COLUMN_TO_UPDATE', { ns: 'warnings' })}
 		</span>
 	</Toast>
 {/if}

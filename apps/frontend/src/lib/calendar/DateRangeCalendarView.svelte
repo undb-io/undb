@@ -100,7 +100,7 @@
 		eventClick: (info: { event: { id: string } }) => {
 			$currentRecordId = info.event.id
 		},
-		eventTimeFormat: () => null,
+		eventTimeFormat: () => '',
 		eventResize: (info: { event: { id: string; start: Date; end: Date } }) => {
 			$updateRecord.mutate({
 				tableId: $table.id.value,

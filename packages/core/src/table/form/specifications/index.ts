@@ -1,3 +1,4 @@
+export * from './form-field-filter.specification.js'
 export * from './form-fields-order.specification.js'
 export * from './form-fields.specification.js'
 export * from './form-name.specification.js'

@@ -11,8 +11,8 @@
     "tsconfig": "^0.0.0",
     "tsup": "^7.2.0",
     "typescript": "^5.1.6",
-    "unstorage": "^1.8.0",
-    "vitest": "^0.34.1"
+    "unstorage": "^1.9.0",
+    "vitest": "^0.34.2"
   },
   "exports": {
     "import": "./dist/index.js",

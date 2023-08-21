@@ -18,6 +18,7 @@ import type {
   WithFieldWidth,
   WithFilter,
   WithForeignTableId,
+  WithFormFieldFilter,
   WithFormFieldsOrder,
   WithFormFieldsRequirements,
   WithFormFieldsSpecification,
@@ -69,6 +70,9 @@ import type { Table } from '../../entity/index.js'
 
 export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   constructor(public qb: QueryBuilder<Table>) {}
+  withFormFieldFilter(s: WithFormFieldFilter): void {
+    throw new Error('Method not implemented.')
+  }
   withDuplicatedField(s: WithDuplicatedField): void {
     throw new Error('Method not implemented.')
   }

@@ -3,15 +3,17 @@
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
 	import { Button } from 'flowbite-svelte'
 	import FilterOperatorPicker from './FilterOperatorPicker.svelte'
-	import { isFilterable, type Field, type IFilter, isOperatorWithoutValue } from '@undb/core'
+	import { isFilterable, type Field, type IFilter, isOperatorWithoutValue, type IQueryFieldSchema } from '@undb/core'
 	import { allTableFields, getTable } from '$lib/store/table'
 	import FilterValue from './FilterValue.svelte'
+	import { identity } from 'lodash-es'
 	export let filter: Partial<IFilter>
 
 	export let index: number
 	export let remove: (index: number) => void
 	export let field: Field | undefined = undefined
 	export let readonly = false
+	export let fieldFilter: (field: IQueryFieldSchema) => boolean = identity
 
 	const table = getTable()
 
@@ -34,7 +36,7 @@
 			bind:value={filter.path}
 			bind:type={filter.type}
 			fields={$allTableFields}
-			filter={(f) => isFilterable(f.type)}
+			filter={(f) => isFilterable(f.type) && fieldFilter(f)}
 			{readonly}
 		/>
 		<FilterOperatorPicker

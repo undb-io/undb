@@ -5,7 +5,7 @@ import type { MemberSpecification } from './interface.js'
 import { Member } from './member.js'
 import { WithMemberId } from './specifications/member-id.specification.js'
 import { WithMemberRole } from './specifications/member-role.specification.js'
-import { WithMemberUserId } from './specifications/member-user-id.specification.js'
+import { WithMemberUserId, WithMemberUserProfile } from './specifications/member-user-id.specification.js'
 
 export class MemberFactory {
   static create(...specs: MemberSpecification[]): Member {
@@ -16,7 +16,12 @@ export class MemberFactory {
   }
 
   static grant(user: User, role: IRoles) {
-    return this.create(WithMemberId.create(), new WithMemberUserId(user.userId), WithMemberRole.from(role))
+    return this.create(
+      WithMemberId.create(),
+      new WithMemberUserId(user.userId),
+      WithMemberRole.from(role),
+      WithMemberUserProfile.fromUser(user),
+    )
   }
 
   static owner(user: User) {

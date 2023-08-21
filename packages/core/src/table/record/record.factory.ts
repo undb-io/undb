@@ -1,8 +1,8 @@
-import { and } from '@undb/domain'
 import type { Result } from 'oxide.ts'
+import type { Table } from '../table.js'
 import type { TableSchemaIdMap } from '../value-objects/index.js'
 import { Record } from './record.js'
-import type { IQueryRecordSchema, Records } from './record.type.js'
+import type { IQueryRecordSchema, IQueryRecordValues, Records } from './record.type.js'
 import {
   WithDisplayValues,
   WithRecordCreatedAt,
@@ -18,16 +18,30 @@ import { WithRecordAutoIncrement } from './specifications/record-auto-increment.
 import { WithRecordUpdatedBy, WithRecordUpdatedByProfile } from './specifications/record-updated-by.specification.js'
 
 export class RecordFactory {
-  static create(...specs: RecordCompositeSpecification[]): Result<Record, string>
-  static create(spec: RecordCompositeSpecification): Result<Record, string>
-
-  static create(spec: RecordCompositeSpecification | RecordCompositeSpecification[]): Result<Record, string> {
-    if (Array.isArray(spec)) {
-      return and(...spec)
-        .unwrap()
-        .mutate(Record.empty())
-    }
+  static create(spec: RecordCompositeSpecification): Result<Record, string> {
     return spec.mutate(Record.empty())
+  }
+
+  static temp(
+    table: Table,
+    values: IQueryRecordValues,
+    userId: string,
+    ...specs: RecordCompositeSpecification[]
+  ): Record {
+    const schema = table.schema.toIdMap()
+    let spec: RecordCompositeSpecification = WithRecordId.fromNullableString()
+      .and(new WithRecordTableId(table.id))
+      .and(WithRecordCreatedAt.now())
+      .and(WithRecordUpdatedAt.now())
+      .and(WithRecordCreatedBy.fromString(userId))
+      .and(WithRecordUpdatedBy.fromString(userId))
+      .and(WithRecordValues.fromObject(schema, values))
+
+    for (const s of specs) {
+      spec = spec.and(s)
+    }
+
+    return this.create(spec).unwrap()
   }
 
   static fromQueryRecords(rs: IQueryRecordSchema[], schema: TableSchemaIdMap): Records {

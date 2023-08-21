@@ -28,6 +28,7 @@ import type {
   WithoutOption,
 } from '../field/specifications/select-field.specification.js'
 import type {
+  WithFormFieldFilter,
   WithFormFieldsRequirements,
   WithFormFieldsSpecification,
   WithFormFieldsVisibility,
@@ -93,6 +94,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   formFieldsOrder(s: WithFormFieldsOrder): void
   withFormFieldsVisibility(s: WithFormFieldsVisibility): void
   withFormFieldsRequirements(s: WithFormFieldsRequirements): void
+  withFormFieldFilter(s: WithFormFieldFilter): void
   formIdEqual(s: WithTableFormId): void
   newForm(s: WithNewForm): void
 

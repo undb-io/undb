@@ -8,7 +8,7 @@
     "tsconfig": "^0.0.0",
     "tsup": "^7.2.0",
     "typescript": "^5.1.6",
-    "vitest": "^0.34.1"
+    "vitest": "^0.34.2"
   },
   "exports": {
     "import": "./dist/index.js",
@@ -27,7 +27,7 @@
   "type": "module",
   "types": "dist/index.d",
   "dependencies": {
-    "pino": "^8.14.2",
+    "pino": "^8.15.0",
     "pino-pretty": "^10.2.0"
   }
 }

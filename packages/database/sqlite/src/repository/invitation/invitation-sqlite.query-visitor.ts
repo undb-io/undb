@@ -10,6 +10,7 @@ import type {
   WithInvitationId,
   WithInvitationInvitedAt,
   WithInvitationInvitedBy,
+  WithInvitationQ,
   WithInvitationRole,
   WithInvitationStatus,
 } from '@undb/integrations'
@@ -20,6 +21,9 @@ export class InvitationSqliteQueryVisitor implements IInvitationVisitor {
     public readonly em: EntityManager,
     public readonly qb: QueryBuilder<Invitation>,
   ) {}
+  like(s: WithInvitationQ): void {
+    this.qb.andWhere({ email: { $like: `%${s.q}%` } })
+  }
   invitedAt(s: WithInvitationInvitedAt): void {
     throw new Error('Method not implemented.')
   }

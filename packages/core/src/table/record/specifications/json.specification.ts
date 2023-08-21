@@ -20,3 +20,15 @@ export class JsonEmpty extends BaseRecordSpecification<JsonFieldValue> {
     return Ok(undefined)
   }
 }
+
+export class JsonEqual extends BaseRecordSpecification<JsonFieldValue> {
+  isSatisfiedBy(r: Record): boolean {
+    const value = r.values.value.get(this.fieldId)
+
+    return value instanceof JsonFieldValue && value.equals(this.value)
+  }
+
+  accept(v: IRecordVisitor): Result<void, string> {
+    throw new Error('Method not implemented.')
+  }
+}

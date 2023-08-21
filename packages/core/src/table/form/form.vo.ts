@@ -2,6 +2,7 @@ import { ValueObject, and } from '@undb/domain'
 import { isString, sortBy } from 'lodash-es'
 import type { Option } from 'oxide.ts'
 import type { Field } from '../field/field.type.js'
+import type { IRootFilter } from '../filter/filter.js'
 import type { TableCompositeSpecification } from '../specifications/interface.js'
 import type { TableSchema } from '../value-objects/index.js'
 import type { ViewVO } from '../view/index.js'
@@ -11,6 +12,7 @@ import { FormId } from './form-id.vo.js'
 import { FormName } from './form-name.vo.js'
 import type { ICreateFormBaseSchema, ICreateFormSchema, IUpdateFormSchema } from './form.schema.js'
 import type { IForm } from './form.type.js'
+import { WithFormFieldFilter } from './specifications/form-field-filter.specification.js'
 import { WithFormFieldsOrder } from './specifications/form-fields-order.specification.js'
 import { WithFormFieldsRequirements, WithFormFieldsVisibility } from './specifications/form-fields.specification.js'
 import { WithFormName } from './specifications/form-name.specification.js'
@@ -44,8 +46,14 @@ export class Form extends ValueObject<IForm> {
     this.props.fieldsOrder = fields
   }
 
+  public getOrderedField(schema: TableSchema): FormFieldsOrder {
+    if (this.fieldsOrder) return this.fieldsOrder
+    const order = schema.fields.filter((f) => !f.controlled).map((f) => f.id.value)
+    return new FormFieldsOrder(order)
+  }
+
   private getOrderedFieldIds(schema: TableSchema): string[] {
-    return this.fieldsOrder?.order ?? schema.fields.map((f) => f.id.value)
+    return this.fieldsOrder?.order ?? schema.fields.filter((f) => !f.controlled).map((f) => f.id.value)
   }
 
   public getHiddenFields(schema: TableSchema): Field[] {
@@ -123,6 +131,10 @@ export class Form extends ValueObject<IForm> {
 
   public setFieldRequirements(requirements: Record<string, boolean>): TableCompositeSpecification {
     return new WithFormFieldsRequirements(this.id.value, requirements)
+  }
+
+  public setFieldFilter(fieldId: string, filter: IRootFilter): TableCompositeSpecification {
+    return new WithFormFieldFilter(this.id.value, fieldId, filter)
   }
 
   public update(input: IUpdateFormSchema): Option<TableCompositeSpecification> {

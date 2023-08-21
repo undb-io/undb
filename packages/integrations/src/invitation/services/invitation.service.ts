@@ -12,8 +12,12 @@ export class InvitationService implements IInvitationService {
   ) {}
 
   async sendInvitationMail(id: string): Promise<void> {
-    const invitation = (await this.repo.findOneById(id)).unwrap()
+    try {
+      const invitation = (await this.repo.findOneById(id)).unwrap()
 
-    await this.mailService.send(invitation)
+      await this.mailService.send(invitation)
+    } catch (error) {
+      throw error
+    }
   }
 }
