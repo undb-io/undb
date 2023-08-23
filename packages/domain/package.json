@@ -10,7 +10,7 @@
     "nanoid": "^4.0.2",
     "oxide.ts": "^1.1.0",
     "uuid": "^9.0.0",
-    "zod": "^3.22.1"
+    "zod": "^3.22.2"
   },
   "devDependencies": {
     "@types/uuid": "^9.0.2",

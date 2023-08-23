@@ -13,8 +13,8 @@
     "oxide.ts": "^1.1.0",
     "ts-mixer": "^6.0.3",
     "ts-pattern": "^5.0.5",
-    "zod": "^3.22.1",
-    "zod-i18n-map": "^2.14.0"
+    "zod": "^3.22.2",
+    "zod-i18n-map": "^2.15.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.197",
