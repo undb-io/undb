@@ -11,8 +11,8 @@
     "date-fns": "^2.30.0",
     "lodash-es": "^4.17.21",
     "openapi-snippet": "^0.14.0",
-    "openapi-to-postmanv2": "^4.15.0",
-    "zod": "^3.22.1"
+    "openapi-to-postmanv2": "^4.16.0",
+    "zod": "^3.22.2"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.8",
