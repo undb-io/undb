@@ -86,23 +86,19 @@
 							<i class="ti ti-dots"></i>
 						</DropdownMenu.Trigger>
 						<DropdownMenu.Content class="w-48">
-							<DropdownMenu.Item>
-								<button class="w-full text-left" on:click={copyURL}>
-									{$t('copy invitation url', { ns: 'common' })}
-								</button>
+							<DropdownMenu.Item on:m-click={copyURL}>
+								{$t('copy invitation url', { ns: 'common' })}
 							</DropdownMenu.Item>
 							{#if $hasPermission('invitation:cancel')}
-								<DropdownMenu.Item class="text-red-500">
-									<button
-										class="w-full text-left"
-										on:click={() => {
-											$cancelInvitation.mutate({
-												id: invitation.id,
-											})
-										}}
-									>
-										{$t('cancel invite', { ns: 'common' })}
-									</button>
+								<DropdownMenu.Item
+									on:m-click={() => {
+										$cancelInvitation.mutate({
+											id: invitation.id,
+										})
+									}}
+									class="text-red-500"
+								>
+									{$t('cancel invite', { ns: 'common' })}
 								</DropdownMenu.Item>
 							{/if}
 						</DropdownMenu.Content>
