@@ -5,10 +5,13 @@
 	import { trpc } from '$lib/trpc/client'
 	import type { IRolesWithoutOwner } from '@undb/authz'
 	import { getInvitationURL, type IQueryInvitation } from '@undb/integrations'
-	import { Badge, Dropdown, DropdownItem, Select } from 'flowbite-svelte'
+	import { Dropdown, DropdownItem } from 'flowbite-svelte'
 	import type { SelectOptionType } from 'flowbite-svelte/dist/types'
 	import { copyText } from 'svelte-copy'
 	import * as Card from '$lib/components/ui/card'
+	import * as Select from '$lib/components/ui/select'
+	import { Badge } from '$lib/components/ui/badge'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 
 	export let invitation: IQueryInvitation
 
@@ -27,12 +30,10 @@
 
 	const reinviteMutation = trpc().invitation.reinvite.mutation({})
 
-	const reinvite = (e: Event) => {
-		const target = e.target as HTMLSelectElement
-		const role = target.value as IRolesWithoutOwner
+	const reinvite = (value: IRolesWithoutOwner) => {
 		$reinviteMutation.mutate({
 			id: invitation.id,
-			role,
+			role: value,
 		})
 	}
 
@@ -65,29 +66,47 @@
 			<div class="flex items-center gap-3">
 				<div>
 					{#if $hasPermission('invitation:invite')}
-						<Select {items} value={invitation.role} size="sm" class="col-span-1" on:change={reinvite} />
+						<Select.Root value={invitation.role} onValueChange={reinvite}>
+							<Select.Trigger class="w-[180px]">
+								<Select.Value />
+							</Select.Trigger>
+							<Select.Content>
+								{#each items as item}
+									<Select.Item value={item.value}>{item.name}</Select.Item>
+								{/each}
+							</Select.Content>
+						</Select.Root>
 					{:else}
 						<Badge>{$t(invitation.role, { ns: 'authz' })}</Badge>
 					{/if}
 				</div>
 				<div>
-					<button>
-						<i class="ti ti-dots"></i>
-					</button>
-					<Dropdown bind:open class="w-48">
-						<DropdownItem on:click={copyURL}>
-							{$t('copy invitation url', { ns: 'common' })}
-						</DropdownItem>
-						{#if $hasPermission('invitation:cancel')}
-							<DropdownItem
-								class="text-red-500"
-								on:click={() =>
-									$cancelInvitation.mutate({
-										id: invitation.id,
-									})}>{$t('cancel invite', { ns: 'common' })}</DropdownItem
-							>
-						{/if}
-					</Dropdown>
+					<DropdownMenu.Root bind:open>
+						<DropdownMenu.Trigger>
+							<i class="ti ti-dots"></i>
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content class="w-48">
+							<DropdownMenu.Item>
+								<button class="w-full text-left" on:click={copyURL}>
+									{$t('copy invitation url', { ns: 'common' })}
+								</button>
+							</DropdownMenu.Item>
+							{#if $hasPermission('invitation:cancel')}
+								<DropdownMenu.Item class="text-red-500">
+									<button
+										class="w-full text-left"
+										on:click={() => {
+											$cancelInvitation.mutate({
+												id: invitation.id,
+											})
+										}}
+									>
+										{$t('cancel invite', { ns: 'common' })}
+									</button>
+								</DropdownMenu.Item>
+							{/if}
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
 				</div>
 			</div>
 		</div>

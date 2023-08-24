@@ -2,12 +2,14 @@
 	import cx from 'classnames'
 	import { colors } from '$lib/field/helpers'
 	import type { IQueryMember, IRolesWithoutOwner } from '@undb/authz'
-	import { Avatar, Badge, Select } from 'flowbite-svelte'
+	import { Avatar } from 'flowbite-svelte'
 	import { hasPermission } from '$lib/store/authz'
 	import type { SelectOptionType } from 'flowbite-svelte/dist/types'
 	import { trpc } from '$lib/trpc/client'
 	import { t } from '$lib/i18n'
 	import * as Card from '$lib/components/ui/card'
+	import * as Select from '$lib/components/ui/select'
+	import { Badge } from '$lib/components/ui/badge'
 
 	export let member: IQueryMember
 
@@ -20,9 +22,7 @@
 	]
 
 	const updateRoleMutation = trpc().authz.member.updateRole.mutation({})
-	const updateRole = (e: Event) => {
-		const target = e.target as HTMLSelectElement
-		const value = target.value as IRolesWithoutOwner
+	const updateRole = (value: IRolesWithoutOwner) => {
 		$updateRoleMutation.mutate({
 			memberId: member.id,
 			role: value,
@@ -88,7 +88,16 @@
 			</div>
 			<div>
 				{#if canUpdateRole && member.role !== 'owner'}
-					<Select {items} value={member.role} size="sm" on:change={updateRole} />
+					<Select.Root value={member.role} onValueChange={updateRole}>
+						<Select.Trigger class="w-[180px]">
+							<Select.Value />
+						</Select.Trigger>
+						<Select.Content>
+							{#each items as item}
+								<Select.Item value={item.value}>{item.name}</Select.Item>
+							{/each}
+						</Select.Content>
+					</Select.Root>
 				{:else}
 					<Badge color="blue" class="border border-blue-500">
 						{$t(member.role, { ns: 'authz' })}
