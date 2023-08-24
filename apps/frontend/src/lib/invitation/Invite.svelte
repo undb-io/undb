@@ -4,7 +4,10 @@
 	import { trpc } from '$lib/trpc/client'
 	import type { IRolesWithoutOwner } from '@undb/authz'
 	import { inviteSchema } from '@undb/integrations'
-	import { Button, Input, Select } from 'flowbite-svelte'
+	import { Input } from '$lib/components/ui/input'
+	import * as Select from '$lib/components/ui/select'
+	import { Button } from '$lib/components/ui/button'
+
 	import type { SelectOptionType } from 'flowbite-svelte/dist/types'
 
 	let email = ''
@@ -15,7 +18,7 @@
 		{ value: 'editor', name: $t('editor', { ns: 'authz' }) },
 		{ value: 'viewer', name: $t('viewer', { ns: 'authz' }) },
 	]
-	const getInvitations = trpc().invitation.list.query(undefined, { enabled: false })
+	const getInvitations = trpc().invitation.list.query({}, { enabled: false })
 
 	const inviteMutation = trpc().invitation.invite.mutation({
 		async onSuccess(data, variables, context) {
@@ -37,11 +40,20 @@
 <form class="space-y-4" on:submit={invite}>
 	<div class="grid grid-cols-4 items-center gap-2">
 		<div class="col-span-3">
-			<Input placeholder={$t('email', { ns: 'common' })} bind:value={email} autocomplete="off" type="email">
-				<i class="ti ti-mail" slot="left"></i>
-			</Input>
+			<Input placeholder={$t('email', { ns: 'common' })} bind:value={email} autocomplete="off" type="email"></Input>
 		</div>
-		<Select {items} bind:value={role} size="sm" class="col-span-1" />
+		<Select.Root bind:value={role}>
+			<Select.Trigger>
+				<Select.Value />
+			</Select.Trigger>
+			<Select.Content>
+				{#each items as item}
+					<Select.Item value={item.value}>
+						{item.name}
+					</Select.Item>
+				{/each}
+			</Select.Content>
+		</Select.Root>
 	</div>
 
 	<div class="flex justify-end">

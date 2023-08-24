@@ -89,7 +89,7 @@
 			<div>
 				{#if canUpdateRole && member.role !== 'owner'}
 					<Select.Root value={member.role} onValueChange={updateRole}>
-						<Select.Trigger class="w-[180px]">
+						<Select.Trigger class="w-[120px]">
 							<Select.Value />
 						</Select.Trigger>
 						<Select.Content>

@@ -67,7 +67,7 @@
 				<div>
 					{#if $hasPermission('invitation:invite')}
 						<Select.Root value={invitation.role} onValueChange={reinvite}>
-							<Select.Trigger class="w-[180px]">
+							<Select.Trigger class="w-[120px]">
 								<Select.Value />
 							</Select.Trigger>
 							<Select.Content>
