@@ -3,7 +3,8 @@
 	import { getTable, listRecordFn } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { IFilter } from '@undb/core'
-	import { Button, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 	import RlsItemEditor from './RLSItemEditor.svelte'
 	import type { IRLSAction, RLS } from '@undb/authz'
 	import { t } from '$lib/i18n'
@@ -44,7 +45,7 @@
 		<div class="flex justify-end">
 			<Button
 				class="whitespace-nowrap"
-				size="xs"
+				size="sm"
 				disabled={$createRLS.isLoading}
 				on:click={() => {
 					const validFilters = getValidFilters(filter)
@@ -60,6 +61,7 @@
 					})
 				}}
 			>
+				<i class="ti ti-plus"></i>
 				{$t('Create New RLS', { ns: 'authz' })}
 			</Button>
 		</div>
@@ -67,6 +69,7 @@
 {:else}
 	<div class="w-full flex items-center justify-center">
 		<Button size="sm" on:click={() => (createMode = true)} color={rlss.length ? 'alternative' : 'blue'}>
+			<i class="ti ti-plus"></i>
 			{$t('Create New RLS', { ns: 'authz' })}
 		</Button>
 	</div>

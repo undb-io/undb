@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { RLS } from '@undb/authz'
-	import { Button } from 'flowbite-svelte'
 	import { t } from '$lib/i18n'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
@@ -9,6 +8,7 @@
 	import RlsItemEditor from './RLSItemEditor.svelte'
 	import type { ISubjectType } from './rls.type'
 	import { hasPermission } from '$lib/store/authz'
+	import { Button } from '$lib/components/ui/button'
 
 	export let rls: RLS
 
@@ -46,9 +46,9 @@
 
 	{#if $hasPermission('rls:update')}
 		<Button
-			class="w-20 whitespace-nowrap"
-			color="alternative"
-			size="xs"
+			variant="outline"
+			class="whitespace-nowrap"
+			size="sm"
 			on:click={() => {
 				$updateRLS.mutate({
 					id: rls.id.value,
@@ -64,8 +64,8 @@
 	{/if}
 	{#if $hasPermission('rls:delete')}
 		<Button
-			color="alternative"
-			size="xs"
+			variant="outline"
+			size="sm"
 			on:click={() =>
 				$deleteRLS.mutate({
 					id: rls.id.value,

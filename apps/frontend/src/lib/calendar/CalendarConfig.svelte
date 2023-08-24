@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getTable, getView } from '$lib/store/table'
-	import { Button, Hr, Radio } from 'flowbite-svelte'
+	import { Hr, Radio } from 'flowbite-svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { writable } from 'svelte/store'
@@ -8,7 +8,7 @@
 	import { t } from '$lib/i18n'
 	import { invalidate } from '$app/navigation'
 	import { FieldId } from '@undb/core'
-
+	import { Button } from '$lib/components/ui/button'
 	const table = getTable()
 	const view = getView()
 	$: calendarFields = $table.schema.calendarFields
@@ -57,8 +57,8 @@
 
 <div class="flex flex-col justify-center gap-2">
 	<Button
-		size="xs"
-		color="light"
+		size="sm"
+		variant="outline"
 		class="flex gap-2"
 		on:click={() => {
 			const id = FieldId.createId()
@@ -81,8 +81,8 @@
 	</Button>
 
 	<Button
-		size="xs"
-		color="light"
+		size="sm"
+		variant="outline"
 		class="flex gap-2"
 		on:click={() => {
 			const id = FieldId.createId()
