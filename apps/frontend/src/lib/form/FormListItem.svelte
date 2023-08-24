@@ -1,27 +1,29 @@
 <script lang="ts">
-	import { t } from '$lib/i18n'
-	import { formListDrawer, selectedForm, selectedFormId } from '$lib/store/drawer'
+	import { formListDrawer, selectedFormId } from '$lib/store/drawer'
 	import { formEditorModal } from '$lib/store/modal'
 	import type { Form } from '@undb/core'
-	import { Card, P, Toggle, Tooltip } from 'flowbite-svelte'
+	import { P } from 'flowbite-svelte'
+	import * as Card from '$lib/components/ui/card'
 
 	export let form: Form
 </script>
 
-<Card
-	class="w-full !max-w-none shadow-sm cursor-pointer hover:shadow-md transition-all"
-	on:click={() => {
-		$selectedFormId = form.id.value
-		formListDrawer.close()
-		formEditorModal.open()
-	}}
->
-	<div class="flex items-center justify-between group">
-		<div class="flex flex-col gap-2">
-			<div class="flex items-center gap-3">
-				<i class="ti ti-forms" />
-				<P class="font-semibold text-lg">{form.name.value}</P>
+<Card.Root class="w-full !max-w-none shadow-sm cursor-pointer hover:shadow-md transition-all">
+	<Card.Header>
+		<div
+			on:click={() => {
+				$selectedFormId = form.id.value
+				formListDrawer.close()
+				formEditorModal.open()
+			}}
+			class="flex items-center justify-between group"
+		>
+			<div class="flex flex-col gap-2">
+				<div class="flex items-center gap-3">
+					<i class="ti ti-forms" />
+					<P class="font-semibold text-lg">{form.name.value}</P>
+				</div>
 			</div>
 		</div>
-	</div>
-</Card>
+	</Card.Header>
+</Card.Root>

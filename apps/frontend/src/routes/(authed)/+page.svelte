@@ -1,12 +1,13 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Button, ButtonGroup, Card, Dropdown, DropdownItem, Tooltip } from 'flowbite-svelte'
+	import { Button, ButtonGroup, Dropdown, DropdownItem, Tooltip } from 'flowbite-svelte'
 	import type { LayoutData } from './$types'
 	import Empty from '$lib/table/Empty.svelte'
 	import { t } from '$lib/i18n'
 	import { createTableModal, importDataModal } from '$lib/store/modal'
 	import { sidebarCollapsed } from '$lib/store/ui'
 	import { hasPermission } from '$lib/store/authz'
+	import * as Card from '$lib/components/ui/card'
 
 	export let data: LayoutData
 
@@ -56,30 +57,36 @@
 {#if !!data.tables.length}
 	<main class="w-full p-10 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
 		{#each data.tables as table}
-			<Card href={`/t/${table.id}`} class="!max-w-none">
-				<div class="flex items-center gap-3">
-					<span
-						class={cx(
-							'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
-							'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white',
-						)}
-					>
-						{table.name.slice(0, 1)}
-					</span>
-					<h5 class="font-semibold truncate" title={table.name}>{table.name}</h5>
-				</div>
-			</Card>
+			<a href={`/t/${table.id}`}>
+				<Card.Root class="hover:shadow-lg transition">
+					<Card.Header>
+						<div class="flex items-center gap-3">
+							<span
+								class={cx(
+									'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
+									'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white',
+								)}
+							>
+								{table.name.slice(0, 1)}
+							</span>
+							<h5 class="font-semibold truncate" title={table.name}>{table.name}</h5>
+						</div>
+					</Card.Header>
+				</Card.Root>
+			</a>
 		{/each}
 		{#if $hasPermission('table:create')}
-			<Card
+			<Card.Root
 				class="!max-w-none cursor-pointer hover:bg-blue-500/90 hover:text-white transition h-full"
 				on:click={() => createTableModal.open()}
 			>
-				<div class="flex items-center gap-2 h-full">
-					<i class="ti ti-plus" />
-					<p class="text-sm font-bold">{$t('Create New Table')}</p>
-				</div>
-			</Card>
+				<Card.Header>
+					<div class="flex items-center gap-2 h-full">
+						<i class="ti ti-plus" />
+						<p class="text-sm font-bold">{$t('Create New Table')}</p>
+					</div>
+				</Card.Header>
+			</Card.Root>
 		{/if}
 	</main>
 {:else}

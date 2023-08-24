@@ -4,8 +4,9 @@
 	import { getTable, getView, readonly } from '$lib/store/table'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import type { Record } from '@undb/core'
-	import { Card, Tooltip } from 'flowbite-svelte'
+	import { Tooltip } from 'flowbite-svelte'
 	import { fade } from 'svelte/transition'
+	import * as Card from '$lib/components/ui/card'
 
 	export let record: Record
 	const table = getTable()
@@ -14,8 +15,7 @@
 	$: fields = $table.getOrderedFields($view)
 </script>
 
-<Card
-	rounded={false}
+<Card.Root
 	class={cx(
 		'!py-4 !px-4 shadow-sm rounded-md hover:shadow-md duration-200 select-none space-y-2 text-gray-700 text-sm overflow-hidden',
 		$readonly ? 'cursor-pointer' : 'cursor-grab',
@@ -32,4 +32,4 @@
 			<CellComponent {record} {field} {value} displayValues={record.displayValues?.unpack()} />
 		</div>
 	{/each}
-</Card>
+</Card.Root>

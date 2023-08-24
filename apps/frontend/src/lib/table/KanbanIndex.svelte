@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { getTable, getView } from '$lib/store/table'
 	import KanbanConfig from '$lib/view/KanbanConfig.svelte'
-	import { Card } from 'flowbite-svelte'
 	import SelectKanbanView from './SelectKanbanView.svelte'
 	import DateKanbanView from './DateKanbanView.svelte'
 	import type { DateField, IFieldType, SelectField } from '@undb/core'
 	import type { ComponentType } from 'svelte'
+	import * as Card from '$lib/components/ui/card'
 
 	const table = getTable()
 	const view = getView()
@@ -23,8 +23,10 @@
 	<svelte:component this={map[field.type]} {field} />
 {:else}
 	<div class="flex items-center justify-center h-screen w-full bg-gray-100 dark:bg-slate-800/80">
-		<Card class="flex-1">
-			<KanbanConfig />
-		</Card>
+		<Card.Root class="w-96">
+			<Card.Header>
+				<KanbanConfig />
+			</Card.Header>
+		</Card.Root>
 	</div>
 {/if}

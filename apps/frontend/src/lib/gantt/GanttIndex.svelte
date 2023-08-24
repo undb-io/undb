@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getTable, getView } from '$lib/store/table'
-	import { Card } from 'flowbite-svelte'
+	import * as Card from '$lib/components/ui/card'
 	import type { DateRangeField } from '@undb/core'
 	import GanttConfig from './GanttConfig.svelte'
 	import GanttView from './GanttView.svelte'
@@ -16,8 +16,10 @@
 	<GanttView {field} />
 {:else}
 	<div class="flex items-center justify-center h-screen w-full bg-gray-100 dark:bg-slate-800/80">
-		<Card class="flex-1">
-			<GanttConfig />
-		</Card>
+		<Card.Root class="w-96">
+			<Card.Header>
+				<GanttConfig />
+			</Card.Header>
+		</Card.Root>
 	</div>
 {/if}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
 	import type { Record, ReferenceFieldTypes, TableSchema } from '@undb/core'
-	import { Card } from 'flowbite-svelte'
+	import * as Card from '$lib/components/ui/card'
 
 	export let schema: TableSchema
 	export let field: ReferenceFieldTypes
@@ -11,7 +11,7 @@
 </script>
 
 {#if record}
-	<Card {...$$restProps}>
+	<Card.Root {...$$restProps}>
 		{value.toString()}
-	</Card>
+	</Card.Root>
 {/if}
