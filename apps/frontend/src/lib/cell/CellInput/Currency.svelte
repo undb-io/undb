@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { NumberInput } from 'flowbite-svelte'
+	import { Input } from '$lib/components/ui/input'
+
 	export let value: number = 0
 </script>
 
-<NumberInput bind:value step={0.01} {...$$restProps} />
+<Input type="number" bind:value step={1} {...$$restProps} />

@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { NumberInput } from 'flowbite-svelte'
+	import { Input } from '$lib/components/ui/input'
+
 	export let value: number = 0
 </script>
 
-<NumberInput bind:value {...$$restProps} />
+<Input {value} {...$$restProps} type="number" on:change={(e) => (value = Number(e.target.value))} />
