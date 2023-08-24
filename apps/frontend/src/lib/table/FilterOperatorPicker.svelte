@@ -3,7 +3,6 @@
 	import { t } from '$lib/i18n'
 	import * as Select from '$lib/components/ui/select'
 
-	let open = false
 	export let value: string = ''
 	export let field: Field | undefined
 	export let readonly = false
@@ -12,11 +11,12 @@
 	$: if (!!field && !data.some((v) => v === value)) {
 		value = data[0] ?? ''
 	}
+	$: console.log(value)
 </script>
 
 <Select.Root bind:value disabled={readonly}>
 	<Select.Trigger>
-		<Select.Value class="text-xs font-bold" />
+		<Select.Value />
 	</Select.Trigger>
 	<Select.Content>
 		{#each data as item}

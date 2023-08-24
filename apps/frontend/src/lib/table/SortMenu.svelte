@@ -14,6 +14,8 @@
 	import { onMount } from 'svelte'
 	import { hasPermission } from '$lib/store/authz'
 	import { Button } from '$components/ui/button'
+	import * as Popover from '$lib/components/ui/popover'
+	import { Separator } from '$lib/components/ui/separator'
 
 	const table = getTable()
 	const view = getView()
@@ -80,90 +82,83 @@
 	}
 </script>
 
-<Button
-	size="sm"
-	color="light"
-	class={cx(
-		'whitespace-nowrap border-0 bg-[unset] hover:!bg-blue-50  dark:hover:!bg-gray-800 dark:bg-gray-700',
-		!!$sorts.length && '!bg-blue-50 dark:!bg-primary-600',
-	)}
-	on:click={() => (open = true)}
->
-	<span class="inline-flex items-center gap-2 text-blue-600 dark:text-gray-100">
-		<i class="ti ti-arrows-sort text-sm" />
-		<span class="whitespace-nowrap">{$t('Sort')}</span>
-		{#if !!$sorts.length}
-			<Badge class="rounded-full h-4 px-2 bg-blue-700 !text-white">{$sorts.length}</Badge>
-		{/if}
-	</span>
-</Button>
-
-<Modal bind:open class="w-full" size="lg" placement="top-center">
-	<form id="sort_menu" class="space-y-4" on:submit={sort}>
-		{#if $value.length}
-			<span class="text-xs font-medium text-gray-500">{$t('set sorts in this view')}</span>
-			<ul class="w-full items-center space-y-2" bind:this={el}>
-				{#each $value as sort, idx (sort.id)}
-					<li class="flex gap-2 items-center">
-						{#if canSetViewSort}
-							<i role="button" class="handle ti ti-grip-vertical flex items-center" />
-						{/if}
-						<div class="flex flex-1">
-							<FieldPicker
-								bind:value={sort.id}
-								table={$table}
-								size="xs"
-								class="w-48 rounded-r-none !justify-start border-r-0"
-								fields={$allTableFields}
-								filter={(f) => isSortable(f.type)}
-								readonly={!canSetViewSort}
-							/>
-							<div class="inline-flex w-1/2">
-								{#each directions as direction, i (direction)}
-									<Button
-										disabled={!canSetViewSort}
-										size="sm"
-										class={cx('!rounded-none', i === 1 && '!rounded-r-md border-l-0')}
-										on:click={() => {
-											value.update((sort) => sort.map((s, index) => (index === idx ? { ...s, direction } : s)))
-										}}
-										color={sort.direction === direction ? 'blue' : 'light'}>{$t(direction, { ns: 'common' })}</Button
-									>
-								{/each}
+<Popover.Root positioning={{ placement: 'bottom-start' }} closeOnOutsideClick={false} closeOnEscape bind:open>
+	<Popover.Trigger asChild let:builder>
+		<Button builders={[builder]} variant="secondary" class="w-24 gap-2 whitespace-nowrap" size="sm">
+			<i class="ti ti-filter text-sm" />
+			{$t('Sort')}
+		</Button>
+	</Popover.Trigger>
+	<Popover.Content class="w-[800px]">
+		<form id="sort_menu" class="space-y-4" on:submit={sort}>
+			{#if $value.length}
+				<span class="text-xs font-medium text-gray-500">{$t('set sorts in this view')}</span>
+				<ul class="w-full items-center space-y-2" bind:this={el}>
+					{#each $value as sort, idx (sort.id)}
+						<li class="flex gap-2 items-center">
+							{#if canSetViewSort}
+								<i role="button" class="handle ti ti-grip-vertical flex items-center" />
+							{/if}
+							<div class="flex flex-1">
+								<FieldPicker
+									bind:value={sort.id}
+									table={$table}
+									size="xs"
+									class="w-48 rounded-r-none !justify-start border-r-0"
+									fields={$allTableFields}
+									filter={(f) => isSortable(f.type)}
+									readonly={!canSetViewSort}
+								/>
+								<div class="inline-flex w-1/2">
+									{#each directions as direction, i (direction)}
+										<Button
+											disabled={!canSetViewSort}
+											size="sm"
+											class={cx('!rounded-none', i === 1 && '!rounded-r-md border-l-0')}
+											on:click={(e) => {
+												e.stopPropagation()
+												value.update((sort) => sort.map((s, index) => (index === idx ? { ...s, direction } : s)))
+											}}
+											color={sort.direction === direction ? 'blue' : 'light'}>{$t(direction, { ns: 'common' })}</Button
+										>
+									{/each}
+								</div>
 							</div>
-						</div>
 
-						{#if canSetViewSort}
-							<button
-								on:click|preventDefault|stopPropagation={() => {
-									value.update((sorts) => sorts.filter((_, index) => index !== idx))
-								}}
-							>
-								<i class="ti ti-trash text-gray-500" />
-							</button>
-						{/if}
-					</li>
-				{/each}
-			</ul>
-		{:else}
-			<Alert color="blue">{$t('no sorts applied')}</Alert>
+							{#if canSetViewSort}
+								<button
+									on:click|preventDefault|stopPropagation={() => {
+										value.update((sorts) => sorts.filter((_, index) => index !== idx))
+									}}
+								>
+									<i class="ti ti-trash text-gray-500" />
+								</button>
+							{/if}
+						</li>
+					{/each}
+				</ul>
+			{:else}
+				<Alert color="blue">{$t('no sorts applied')}</Alert>
+			{/if}
+		</form>
+		{#if canSetViewSort}
+			<Separator class="my-4" />
+
+			<div class="flex w-full justify-between">
+				<Button
+					color="alternative"
+					size="sm"
+					class="bg-unset border-gray-200 border text-gray-900 dark:hover:bg-gray-900 hover:text-primary hover:bg-gray-100"
+					on:click={add}
+					disabled={$value.some((v) => v.id === TEMP_ID) || $setSort.isLoading}
+				>
+					{$t('Create New Sort')}
+				</Button>
+				<Button size="sm" type="submit" form="sort_menu">{$t('Apply', { ns: 'common' })}</Button>
+			</div>
 		{/if}
-	</form>
-	{#if canSetViewSort}
-		<div class="flex w-full justify-between">
-			<Button
-				color="alternative"
-				size="sm"
-				class="bg-unset border-gray-200 border text-gray-900 dark:hover:bg-gray-900 hover:text-primary hover:bg-gray-100"
-				on:click={add}
-				disabled={$value.some((v) => v.id === TEMP_ID) || $setSort.isLoading}
-			>
-				{$t('Create New Sort')}
-			</Button>
-			<Button size="sm" type="submit" form="sort_menu">{$t('Apply', { ns: 'common' })}</Button>
-		</div>
-	{/if}
-</Modal>
+	</Popover.Content>
+</Popover.Root>
 
 {#if $setSort.error}
 	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
