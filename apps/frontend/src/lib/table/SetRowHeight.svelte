@@ -4,9 +4,10 @@
 	import { hasPermission } from '$lib/store/authz'
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { viewRowHeights } from '@undb/core'
+	import { viewRowHeights, type IViewRowHeight } from '@undb/core'
 	import { Dropdown, DropdownItem, Tooltip } from 'flowbite-svelte'
 	import { Button } from '$components/ui/button'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 
 	const table = getTable()
 	const view = getView()
@@ -21,38 +22,25 @@
 			open = false
 		},
 	})
+
+	const onValueChange = (value: string | undefined) => {
+		if (rh !== value) {
+			$setRowHeight.mutate({ tableId: $table.id.value, viewId: $view.id.value, rowHeight: value as IViewRowHeight })
+		}
+	}
 </script>
 
-<Button
-	size="sm"
-	color="alternative"
-	class=" w-8 px-0  inline-flex items-center whitespace-nowrap transition dark:hover:bg-gray-800 border-gray-200 text-gray-900 dark:text-gray-50 dark:border-gray-400  border bg-[unset] hover:text-primary hover:bg-gray-100"
-	on:click={() => (open = !open)}
->
-	<i class="ti ti-line-height text-sm dark:text-gray-200" />
-</Button>
-{#if $hasPermission('table:set_row_height')}
-	<Dropdown style="z-index: 50;" bind:open class="z-[999999] shadow-md dark:border  dark:rounded-lg">
-		{#each viewRowHeights as rowHeight}
-			<DropdownItem
-				class="flex items-center justify-between"
-				on:click={() => {
-					if (rh !== rowHeight) {
-						$setRowHeight.mutate({ tableId: $table.id.value, viewId: $view.id.value, rowHeight })
-					}
-				}}
-			>
-				<span>
-					{$t(rowHeight)}
-				</span>
-				{#if rh === rowHeight}
-					<i class="ti ti-check" />
-				{/if}
-			</DropdownItem>
-		{/each}
-	</Dropdown>
-{:else if rh}
-	<Tooltip placement="bottom" class="z-50">
-		{$t(rh)}
-	</Tooltip>
-{/if}
+<DropdownMenu.Root>
+	<DropdownMenu.Trigger asChild let:builder>
+		<Button variant="secondary" size="sm" builders={[builder]}>
+			<i class="ti ti-line-height text-sm dark:text-gray-200" />
+		</Button>
+	</DropdownMenu.Trigger>
+	<DropdownMenu.Content class="w-56">
+		<DropdownMenu.RadioGroup bind:value={rh} {onValueChange}>
+			{#each viewRowHeights as rowHeight}
+				<DropdownMenu.RadioItem value={rowHeight}>{$t(rowHeight)}</DropdownMenu.RadioItem>
+			{/each}
+		</DropdownMenu.RadioGroup>
+	</DropdownMenu.Content>
+</DropdownMenu.Root>
