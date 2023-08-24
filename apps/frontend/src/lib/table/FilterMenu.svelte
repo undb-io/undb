@@ -43,7 +43,7 @@
 
 <Popover.Root positioning={{ placement: 'bottom-start' }} closeOnOutsideClick={false} closeOnEscape bind:open>
 	<Popover.Trigger asChild let:builder>
-		<Button builders={[builder]} variant="secondary" class="w-24 gap-2 whitespace-nowrap" size="sm">
+		<Button builders={[builder]} variant="secondary" class="gap-2 whitespace-nowrap" size="sm">
 			<i class="ti ti-filter text-sm" />
 			{$t('Filter')}
 		</Button>
