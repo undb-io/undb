@@ -862,6 +862,9 @@ importers:
       vitest:
         specifier: ^0.34.2
         version: 0.34.2
+      vitest-mock-extended:
+        specifier: ^1.2.0
+        version: 1.2.0(typescript@5.1.6)(vitest@0.34.2)
 
   packages/database/cache:
     dependencies:
