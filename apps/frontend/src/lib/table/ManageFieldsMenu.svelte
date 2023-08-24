@@ -14,6 +14,8 @@
 	import { Button } from '$components/ui/button'
 	import * as Popover from '$lib/components/ui/popover'
 	import { Separator } from '$lib/components/ui/separator'
+	import { Label } from '$lib/components/ui/label'
+	import { Switch } from '$lib/components/ui/switch'
 
 	const table = getTable()
 	const view = getView()
@@ -48,13 +50,11 @@
 		},
 	})
 
-	const onChangeShowSystemFields = (e: Event) => {
-		const ele = e.target as HTMLInputElement
-
+	const onChangeShowSystemFields = (value: boolean | undefined) => {
 		$setShowSystemFields.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
-			showSystemFields: ele.checked,
+			showSystemFields: !!value,
 		})
 	}
 
@@ -123,15 +123,21 @@
 			{#if $hasPermission('table:toggle_field_visibility')}
 				<Separator class="my-4" />
 
-				<Toggle size="small" checked={$view.showSystemFields} on:change={onChangeShowSystemFields}>
-					{$t('Show System Fields')}
-				</Toggle>
+				<div class="flex items-center space-x-2">
+					<Switch
+						id="show-system-fields"
+						bind:checked={$view.showSystemFields}
+						onCheckedChange={onChangeShowSystemFields}
+					/>
+					<Label for="show-system-fields">{$t('Show System Fields')}</Label>
+				</div>
 			{/if}
 
 			{#if $hasPermission('table:create_field')}
 				<Button
 					size="sm"
-					class="w-full gap-2 border-gray-200 text-gray-900 dark:text-gray-300  dark:hover:text-gray-50 dark:hover:border-gray-300 !bg-[unset] border hover:!bg-gray-100 dark:hover:!bg-[unset]"
+					variant="outline"
+					class="mt-4 w-full gap-2 border-gray-200 text-gray-900 dark:text-gray-300  dark:hover:text-gray-50 dark:hover:border-gray-300 !bg-[unset] border hover:!bg-gray-100 dark:hover:!bg-[unset]"
 					on:click={() => {
 						open = false
 						createFieldModal.open()
