@@ -1,12 +1,11 @@
 <script lang="ts">
-	import cx from 'classnames'
 	import { invalidate } from '$app/navigation'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { t } from '$lib/i18n'
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { Field } from '@undb/core'
-	import { Badge, Checkbox, Hr, Indicator, Modal, Toggle, Tooltip } from 'flowbite-svelte'
+	import { Checkbox } from '$lib/components/ui/checkbox'
 	import { filter, isNumber } from 'lodash-es'
 	import { createFieldModal } from '$lib/store/modal'
 	import Sortable, { type SortableEvent } from 'sortablejs'
@@ -33,14 +32,12 @@
 		},
 	})
 
-	const onChangeVisibility = (e: Event, field: Field) => {
-		const ele = e.target as HTMLInputElement
-
+	const onChangeVisibility = (checked: boolean | 'indeterminate' | undefined, field: Field) => {
 		$setVisibility.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
 			fieldId: field.id.value,
-			hidden: !ele.checked,
+			hidden: !checked,
 		})
 	}
 
@@ -104,18 +101,22 @@
 				{#each items as item (item.id)}
 					{@const checked = visibility[item.id] === undefined || !!visibility[item.id]}
 					<li class="flex items-center gap-2 w-full" data-field-id={item.id}>
-						<Checkbox
-							disabled={(checked && fields.length - hiddenCount === 1) ||
-								!$hasPermission('table:toggle_field_visibility')}
-							class="flex items-center gap-2"
-							{checked}
-							on:change={(e) => onChangeVisibility(e, item.field)}
-						>
-							<FieldIcon type={item.field.type} />
-							<span>
-								{item.field.name.value}
-							</span>
-						</Checkbox>
+						<Label class="flex items-center justify-center gap-2">
+							<Checkbox
+								disabled={(checked && fields.length - hiddenCount === 1) ||
+									!$hasPermission('table:toggle_field_visibility')}
+								class="flex items-center gap-2"
+								{checked}
+								onCheckedChange={(checked) => onChangeVisibility(checked, item.field)}
+							></Checkbox>
+
+							<div>
+								<FieldIcon type={item.field.type} />
+								<span>
+									{item.field.name.value}
+								</span>
+							</div>
+						</Label>
 					</li>
 				{/each}
 			</ul>
