@@ -1,7 +1,15 @@
 <script lang="ts">
 	import { getTable, getView, q, recordHash } from '$lib/store/table'
 	import { createFieldInitial, createFieldModal } from '$lib/store/modal'
-	import { Button, Input, Label, Modal, Spinner, Toggle, Popover, Badge, Textarea, Toast } from 'flowbite-svelte'
+	import { Spinner, Toast } from 'flowbite-svelte'
+	import { Badge } from '$lib/components/ui/badge'
+	import { Label } from '$lib/components/ui/label'
+	import { Input } from '$lib/components/ui/input'
+	import { Button } from '$components/ui/button'
+	import { Textarea } from '$lib/components/ui/textarea'
+	import { Switch } from '$lib/components/ui/switch'
+	import * as HoverCard from '$lib/components/ui/hover-card'
+
 	import FieldIcon from './FieldIcon.svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { trpc } from '$lib/trpc/client'
@@ -10,9 +18,9 @@
 	import { canDisplay, isControlledFieldType } from '@undb/core'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
-	import Portal from 'svelte-portal'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
+	import * as Dialog from '$lib/components/ui/dialog'
 
 	const table = getTable()
 	const view = getView()
@@ -68,15 +76,12 @@
 		.filter(Boolean)
 </script>
 
-<Portal target="body">
-	<Modal
-		title={$t('Create New Field') ?? undefined}
-		placement="top-center"
-		class="static w-full rounded-sm"
-		size="lg"
-		backdropClasses="fixed inset-0 z-[49] bg-gray-900 bg-opacity-50 dark:bg-opacity-80"
-		bind:open={$createFieldModal.open}
-	>
+<Dialog.Root bind:open={$createFieldModal.open}>
+	<Dialog.Content class="!w-1/2 max-w-none">
+		<Dialog.Header>
+			<Dialog.Title>{$t('Create New Field') ?? undefined}</Dialog.Title>
+		</Dialog.Header>
+
 		<form method="POST" id="createField" use:enhance>
 			<div class="space-y-2">
 				<div class="grid grid-cols-2 gap-x-3 gap-y-4">
@@ -113,11 +118,10 @@
 				<MutateFieldComponent type={$form.type} form={superFrm} isNew />
 			</div>
 		</form>
-
-		<svelte:fragment slot="footer">
+		<Dialog.Footer>
 			<div class="w-full flex items-center justify-between">
 				<div class="flex-1">
-					<Button size="xs" color="alternative" class="space-x-1" on:click={() => (showDescription = !showDescription)}>
+					<Button size="sm" variant="secondary" class="space-x-1" on:click={() => (showDescription = !showDescription)}>
 						{#if showDescription}
 							<i class="ti ti-eye-closed text-[16px]" />
 						{:else}
@@ -129,27 +133,33 @@
 				<div class="flex justify-end items-center gap-4">
 					<div class="flex gap-2 items-center">
 						{#if !isControlledFieldType($form.type)}
-							<Toggle class="whitespace-nowrap" size="small" bind:checked={$form.required}
-								>{$t('Required', { ns: 'common' })}</Toggle
-							>
+							<Label class="flex items-center justify-center gap-2">
+								<Switch class="whitespace-nowrap" bind:checked={$form.required}></Switch>
+								{$t('Required', { ns: 'common' })}
+							</Label>
 						{/if}
 						{#if canDisplay($form.type)}
-							<Toggle class="whitespace-nowrap" size="small" bind:checked={$form.display}
-								>{$t('Display', { ns: 'common' })}</Toggle
-							>
-							{#if displayFields.length}
-								<Popover class="w-64 text-sm font-light " title={$t('Display Fields') ?? undefined}>
-									<div class="flex gap-2">
-										{#each displayFields as field}
-											<Badge>{field}</Badge>
-										{/each}
-									</div>
-								</Popover>
-							{/if}
+							<HoverCard.Root>
+								<HoverCard.Trigger>
+									<Label class="flex items-center justify-center gap-2">
+										<Switch class="whitespace-nowrap" bind:checked={$form.display}></Switch>
+										{$t('Display', { ns: 'common' })}
+									</Label>
+								</HoverCard.Trigger>
+								{#if displayFields.length}
+									<HoverCard.Content>
+										<div class="flex gap-2">
+											{#each displayFields as field}
+												<Badge>{field}</Badge>
+											{/each}
+										</div>
+									</HoverCard.Content>
+								{/if}
+							</HoverCard.Root>
 						{/if}
 					</div>
 					<div class="space-x-2">
-						<Button color="alternative" on:click={createFieldModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
+						<Button variant="secondary" on:click={createFieldModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
 						<Button class="gap-4" type="submit" form="createField" disabled={$submitting}>
 							{#if $delayed}
 								<Spinner size="5" />
@@ -159,9 +169,9 @@
 					</div>
 				</div>
 			</div>
-		</svelte:fragment>
-	</Modal>
-</Portal>
+		</Dialog.Footer>
+	</Dialog.Content>
+</Dialog.Root>
 
 {#if $createField.error}
 	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">

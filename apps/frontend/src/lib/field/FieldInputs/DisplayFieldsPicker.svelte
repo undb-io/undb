@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Badge, Button, Checkbox, Dropdown, Popover } from 'flowbite-svelte'
 	import { canDisplay, type IQueryFieldSchema } from '@undb/core'
-	import Portal from 'svelte-portal'
 	import FieldIcon from '../FieldIcon.svelte'
 	import { t } from '$lib/i18n'
 
@@ -50,39 +49,37 @@
 		</Popover>
 	{/if}
 </Button>
-<Portal target="body">
-	<Dropdown
-		style="z-index: 50;"
-		triggeredBy="#displayFieldIds"
-		inline
-		class="max-h-64 w-[400px] overflow-y-auto py-1 shadow-md z-[999999]"
-	>
-		{#if !filteredFields.length}
-			<div class="px-3 py-2">
-				<slot name="empty" />
-			</div>
-		{/if}
+<Dropdown
+	style="z-index: 50;"
+	triggeredBy="#displayFieldIds"
+	inline
+	class="max-h-64 w-[400px] overflow-y-auto py-1 shadow-md z-[999999]"
+>
+	{#if !filteredFields.length}
+		<div class="px-3 py-2">
+			<slot name="empty" />
+		</div>
+	{/if}
 
-		{#each filteredFields as field}
-			{@const selected = !!group?.includes(field.id)}
-			<Checkbox
-				value={field.id}
-				bind:group
-				class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-500 cursor-pointer"
-				custom
-			>
-				<li class="w-full flex justify-between items-center text-gray-500 dark:text-gray-200">
-					<div class="flex flex-1 items-center gap-2">
-						<FieldIcon type={field.type} size={16} />
-						<span>
-							{field.name}
-						</span>
-					</div>
-					{#if selected}
-						<i class="ti ti-check text-sm" />
-					{/if}
-				</li>
-			</Checkbox>
-		{/each}
-	</Dropdown>
-</Portal>
+	{#each filteredFields as field}
+		{@const selected = !!group?.includes(field.id)}
+		<Checkbox
+			value={field.id}
+			bind:group
+			class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-500 cursor-pointer"
+			custom
+		>
+			<li class="w-full flex justify-between items-center text-gray-500 dark:text-gray-200">
+				<div class="flex flex-1 items-center gap-2">
+					<FieldIcon type={field.type} size={16} />
+					<span>
+						{field.name}
+					</span>
+				</div>
+				{#if selected}
+					<i class="ti ti-check text-sm" />
+				{/if}
+			</li>
+		</Checkbox>
+	{/each}
+</Dropdown>
