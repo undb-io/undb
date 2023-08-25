@@ -16,7 +16,7 @@
 			<i class="ti ti-dots dark:text-gray-50"></i>
 		</Button>
 	</DropdownMenu.Trigger>
-	<DropdownMenu.Content>
+	<DropdownMenu.Content class="w-48">
 		<DropdownMenu.Item
 			on:m-click={() => {
 				webhookModal.open()
