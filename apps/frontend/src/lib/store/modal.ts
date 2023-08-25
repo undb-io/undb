@@ -89,3 +89,6 @@ export const rlsModal = createModal(RLS_MODAL)
 
 const INVITE_MODAL = Symbol('INVITE_MODAL')
 export const inviteModal = createModal(INVITE_MODAL)
+
+const WBHOOK_MODAL = Symbol('WBHOOK_MODAL')
+export const webhookModal = createModal(WBHOOK_MODAL)

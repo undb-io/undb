@@ -1,12 +1,16 @@
 <script lang="ts">
-	import Checkbox from '$lib/cell/CellInput/Checkbox.svelte'
 	import { t } from '$lib/i18n'
 	import { webhookDrawerMode } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { recordEvents, type IFilter, isOperatorWithoutValue } from '@undb/core'
+	import { recordEvents, type IFilter } from '@undb/core'
 	import type { createWebhookSchema } from '@undb/integrations'
-	import { Button, Input, Label, Select, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
+	import { Label } from '$lib/components/ui/label'
+	import { Input } from '$lib/components/ui/input'
+	import * as Select from '$lib/components/ui/select'
+	import { Button } from '$components/ui/button'
+	import { Checkbox } from '$lib/components/ui/checkbox'
 	import { slide } from 'svelte/transition'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
@@ -67,7 +71,7 @@
 					<span class="text-red-500">*</span>
 				</div>
 
-				<Input name="name" size="sm" type="text" bind:value={$form.name} />
+				<Input name="name" type="text" bind:value={$form.name} />
 			</Label>
 
 			<Label class="flex flex-col gap-2 w-full">
@@ -76,14 +80,14 @@
 					<span class="text-red-500">*</span>
 				</div>
 
-				<Input name="url" size="sm" type="text" bind:value={$form.url} />
+				<Input name="url" type="text" bind:value={$form.url} />
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
 					<span>{$t('Enabled', { ns: 'webhook' })}</span>
 				</div>
 
-				<Checkbox bind:value={$form.enabled} />
+				<Checkbox bind:checked={$form.enabled} />
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
@@ -91,7 +95,16 @@
 					<span class="text-red-500">*</span>
 				</div>
 
-				<Select items={methods} bind:value={$form.method} />
+				<Select.Root bind:value={$form.method}>
+					<Select.Trigger>
+						<Select.Value />
+					</Select.Trigger>
+					<Select.Content>
+						{#each methods as method}
+							<Select.Item value={method.value}>{method.name}</Select.Item>
+						{/each}
+					</Select.Content>
+				</Select.Root>
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
@@ -99,7 +112,16 @@
 					<span class="text-red-500">*</span>
 				</div>
 
-				<Select items={events} bind:value={$form.target.event} />
+				<Select.Root bind:value={$form.target.event}>
+					<Select.Trigger>
+						<Select.Value />
+					</Select.Trigger>
+					<Select.Content>
+						{#each events as event}
+							<Select.Item value={event.value}>{event.name}</Select.Item>
+						{/each}
+					</Select.Content>
+				</Select.Root>
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
@@ -107,7 +129,7 @@
 				</div>
 
 				<FilterEditor bind:value={filters} let:add>
-					<Button color="alternative" size="xs" on:click={add}>
+					<Button variant="secondary" size="sm" on:click={add}>
 						{$t('Create New Filter')}
 					</Button>
 				</FilterEditor>
@@ -122,8 +144,8 @@
 			</Label>
 		</div>
 		<div class="w-full flex justify-end gap-4">
-			<Button size="xs" color="alternative">{$t('Cancel', { ns: 'common' })}</Button>
-			<Button size="xs" form="createWebhook" type="submit">{$t('Confirm', { ns: 'common' })}</Button>
+			<Button size="sm" variant="secondary">{$t('Cancel', { ns: 'common' })}</Button>
+			<Button size="sm" form="createWebhook" type="submit">{$t('Confirm', { ns: 'common' })}</Button>
 		</div>
 	</div>
 </form>

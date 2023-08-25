@@ -4,8 +4,10 @@
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { IQueryWebhook } from '@undb/integrations'
-	import { Badge, P } from 'flowbite-svelte'
+	import { P } from 'flowbite-svelte'
 	import * as Card from '$lib/components/ui/card'
+	import { Button } from '$components/ui/button'
+	import { Badge } from '$components/ui/badge'
 
 	export let webhook: IQueryWebhook
 	const table = getTable()
@@ -42,26 +44,30 @@
 				</div>
 				<div class="flex items-center gap-2">
 					{#if webhook.enabled}
-						<Badge color="green">{$t('Enabled', { ns: 'webhook' })}</Badge>
+						<Badge class="bg-green-500">{$t('Enabled', { ns: 'webhook' })}</Badge>
 					{:else}
-						<Badge color="dark">{$t('Disabled', { ns: 'webhook' })}</Badge>
+						<Badge class="bg-slate-500">{$t('Disabled', { ns: 'webhook' })}</Badge>
 					{/if}
 					{#if webhook.target?.event}
-						{$t(webhook.target?.event, { ns: 'event' })}
+						<span class="text-sm">
+							{$t(webhook.target?.event, { ns: 'event' })}
+						</span>
 					{/if}
 				</div>
 			</div>
 
 			<div>
-				<button
-					class="group-hover:opacity-100 opacity-0"
+				<Button
+					class="group-hover:opacity-100 opacity-0 transition"
+					size="icon"
+					variant="destructive"
 					on:click={() =>
 						$deleteWebhook.mutate({
 							webhookId: webhook.id,
 						})}
 				>
 					<i class="ti ti-trash" />
-				</button>
+				</Button>
 			</div>
 		</div>
 	</Card.Header>

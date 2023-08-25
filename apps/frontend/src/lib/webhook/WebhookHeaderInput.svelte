@@ -1,15 +1,19 @@
 <script lang="ts">
-	import { Button, Input } from 'flowbite-svelte'
+	import { Button } from '$components/ui/button'
+	import { Input } from '$lib/components/ui/input'
 
 	export let value: Record<string, string> = {}
 	let headers: { key: string; value: string }[] = Object.entries(value).map(([key, value]) => ({ key, value }))
 
 	$: value = headers
 		.filter((header) => !!header.key && !!header.value)
-		.reduce((prev, curr) => {
-			prev[curr.key] = curr.value
-			return prev
-		}, {} as Record<string, string>)
+		.reduce(
+			(prev, curr) => {
+				prev[curr.key] = curr.value
+				return prev
+			},
+			{} as Record<string, string>,
+		)
 
 	const addHeader = () => {
 		headers = [...headers, { key: '', value: '' }]
@@ -26,8 +30,8 @@
 			{#each headers as header, i}
 				<div class="flex gap-2">
 					<div class="flex-1 grid grid-cols-2 gap-4">
-						<Input size="sm" bind:value={header.key} />
-						<Input size="sm" bind:value={header.value} />
+						<Input bind:value={header.key} />
+						<Input bind:value={header.value} />
 					</div>
 					<button class="text-gray-600" on:click|preventDefault|stopPropagation={() => removeHeader(i)}>
 						<i class="ti ti-trash" />
@@ -36,5 +40,5 @@
 			{/each}
 		</div>
 	{/if}
-	<Button size="xs" color="light" on:click={() => addHeader()}>Add Header</Button>
+	<Button size="sm" variant="outline" on:click={() => addHeader()}>Add Header</Button>
 </div>

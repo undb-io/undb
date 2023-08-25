@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
-	import { webhookListDrawer } from '$lib/store/drawer'
-	import { erdModal, rlsModal } from '$lib/store/modal'
+	import { erdModal, rlsModal, webhookModal } from '$lib/store/modal'
 	import { currentRLSS } from '$lib/store/table'
 	import { hasPermission } from '$lib/store/authz'
 	import * as DropdownMenu from '$components/ui/dropdown-menu'
@@ -20,7 +19,7 @@
 	<DropdownMenu.Content>
 		<DropdownMenu.Item
 			on:m-click={() => {
-				webhookListDrawer.open()
+				webhookModal.open()
 				open = false
 			}}
 		>
