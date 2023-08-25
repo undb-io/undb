@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Accordion, Spinner, Toast } from 'flowbite-svelte'
+	import { Spinner, Toast } from 'flowbite-svelte'
+	import * as Accordion from '$lib/components/ui/accordion'
 	import type { Validation } from 'sveltekit-superforms'
 	import { FieldId, TableId, type createTableInput } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
@@ -94,9 +95,7 @@
 							id="name"
 							name="name"
 							type="text"
-							label="name"
 							bind:value={$form.name}
-							data-invalid={$errors.name}
 							required
 							on:blur={onBlur}
 							{...$constraints.name}
@@ -113,18 +112,18 @@
 					</p>
 
 					{#if $form.schema?.length}
-						<Accordion class="my-4">
+						<Accordion.Root class="my-4" value={$form.schema[0]?.id}>
 							{#each $form.schema as field, i (field.id)}
 								<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} isNew />
 							{/each}
-						</Accordion>
+						</Accordion.Root>
 					{/if}
 				</div>
 
 				<Button variant="outline" class="w-full my-3" on:click={addField}>
 					<i class="ti ti-plus text-sm mr-4" />
-					{$t('Create New Field')}</Button
-				>
+					{$t('Create New Field')}
+				</Button>
 			</div>
 		</form>
 
