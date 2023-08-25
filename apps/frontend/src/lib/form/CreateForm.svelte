@@ -5,10 +5,13 @@
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { createFormSchema } from '@undb/core'
-	import { Button, Input, Label, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
 	import { slide } from 'svelte/transition'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
+	import { Label } from '$lib/components/ui/label'
+	import { Input } from '$lib/components/ui/input'
+	import { Button } from '$components/ui/button'
 
 	export let data: Validation<typeof createFormSchema>
 
@@ -47,14 +50,14 @@
 					<span class="text-red-500">*</span>
 				</div>
 
-				<Input name="name" size="sm" type="text" bind:value={$form.name} />
+				<Input name="name" type="text" bind:value={$form.name} />
 			</Label>
 		</div>
-		<div class="w-full flex justify-end gap-4">
-			<Button size="xs" color="alternative" on:click={() => ($formDrawerMode = 'list')}
+		<div class="w-full flex justify-end gap-4 mt-4">
+			<Button size="sm" variant="secondary" on:click={() => ($formDrawerMode = 'list')}
 				>{$t('Cancel', { ns: 'common' })}</Button
 			>
-			<Button size="xs" form="createForm" type="submit">{$t('Confirm', { ns: 'common' })}</Button>
+			<Button size="sm" form="createForm" type="submit">{$t('Confirm', { ns: 'common' })}</Button>
 		</div>
 	</div>
 </form>

@@ -5,7 +5,8 @@
 	import { selectedForm } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { Button, ButtonGroup, P } from 'flowbite-svelte'
+	import { Button } from '$components/ui/button'
+
 	import * as Card from '$lib/components/ui/card'
 
 	const table = getTable()
@@ -62,21 +63,26 @@
 </script>
 
 <div class="mb-2 flex justify-between">
-	<P>{$t('Field')}</P>
-	<ButtonGroup>
+	<p>{$t('Field')}</p>
+	<div class="flex items-center">
 		{#if notHiddenFields.length}
-			<Button color="alternative" size="xs" class="inline-flex gap-2 items-center" on:click={hideAll}>
+			<Button
+				variant="outline"
+				size="sm"
+				class="inline-flex gap-2 items-center rounded-r-none border-r-0"
+				on:click={hideAll}
+			>
 				<i class="ti ti-eye-closed" />
 				{$t('hide form all')}
 			</Button>
 		{/if}
 		{#if hiddenFields.length}
-			<Button color="alternative" size="xs" class="inline-flex gap-2 items-center" on:click={showAll}>
+			<Button variant="outline" size="sm" class="inline-flex gap-2 items-center rounded-l-none" on:click={showAll}>
 				<i class="ti ti-eye" />
 				{$t('show form all')}
 			</Button>
 		{/if}
-	</ButtonGroup>
+	</div>
 </div>
 <div class="space-y-2">
 	{#each hiddenFields as field}

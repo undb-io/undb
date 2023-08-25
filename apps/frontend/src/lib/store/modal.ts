@@ -92,3 +92,6 @@ export const inviteModal = createModal(INVITE_MODAL)
 
 const WBHOOK_MODAL = Symbol('WBHOOK_MODAL')
 export const webhookModal = createModal(WBHOOK_MODAL)
+
+const FORM_LIST_DRAWER = Symbol('FORM_LIST_DRAWER')
+export const formListDrawer = createModal(FORM_LIST_DRAWER)

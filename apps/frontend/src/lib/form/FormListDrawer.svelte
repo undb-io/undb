@@ -1,13 +1,16 @@
 <script lang="ts">
-	import { Button, Drawer, Heading } from 'flowbite-svelte'
 	import FormsList from './FormsList.svelte'
 	import { sineIn } from 'svelte/easing'
-	import { formDrawerMode, formListDrawer } from '$lib/store/drawer'
+	import { formDrawerMode } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
 	import { t } from '$lib/i18n'
 	import CreateForm from './CreateForm.svelte'
 	import { page } from '$app/stores'
 	import { hasPermission } from '$lib/store/authz'
+	import * as Sheet from '$lib/components/ui/sheet'
+	import { Button } from '$components/ui/button'
+
+	import { formListDrawer } from '$lib/store/modal'
 
 	const table = getTable()
 
@@ -18,28 +21,26 @@
 	}
 </script>
 
-<Drawer
-	title="Forms"
-	class="h-full !w-1/3 flex flex-col"
-	transitionType="fly"
-	{transitionParams}
-	placement="right"
-	bind:hidden={$formListDrawer.hidden}
->
-	{#if $formDrawerMode === 'list'}
-		<div class="flex items-center justify-between">
-			<Heading tag="h5" class="whitespace-nowrap truncate">
-				{$table.name.value} - {$t('forms')}
-			</Heading>
+<Sheet.Root bind:open={$formListDrawer.open}>
+	<Sheet.Content class="!w-1/3 !max-w-none">
+		<Sheet.Header>
+			<Sheet.Title>{$t('Forms')}</Sheet.Title>
+		</Sheet.Header>
+		{#if $formDrawerMode === 'list'}
+			<div class="flex items-center justify-between">
+				<h4 class="whitespace-nowrap truncate">
+					{$table.name.value} - {$t('forms')}
+				</h4>
 
-			{#if $hasPermission('table:create_form')}
-				<Button size="xs" class="whitespace-nowrap" on:click={() => ($formDrawerMode = 'create')}>
-					{$t('Create New Form')}
-				</Button>
-			{/if}
-		</div>
-		<FormsList />
-	{:else if $formDrawerMode === 'create' && $hasPermission('table:create_form')}
-		<CreateForm data={$page.data.createForm} />
-	{/if}
-</Drawer>
+				{#if $hasPermission('table:create_form')}
+					<Button size="sm" class="whitespace-nowrap" on:click={() => ($formDrawerMode = 'create')}>
+						{$t('Create New Form')}
+					</Button>
+				{/if}
+			</div>
+			<FormsList />
+		{:else if $formDrawerMode === 'create' && $hasPermission('table:create_form')}
+			<CreateForm data={$page.data.createForm} />
+		{/if}
+	</Sheet.Content>
+</Sheet.Root>

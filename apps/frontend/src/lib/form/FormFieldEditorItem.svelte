@@ -8,7 +8,9 @@
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { Field, IFilter } from '@undb/core'
-	import { Button, Label, Toggle } from 'flowbite-svelte'
+	import { Switch } from '$lib/components/ui/switch'
+	import { Label } from '$lib/components/ui/label'
+	import { Button } from '$components/ui/button'
 
 	const table = getTable()
 	export let field: Field
@@ -57,10 +59,8 @@
 		})
 	}
 
-	const onChange = (e: Event) => {
+	const onChange = (checked: boolean | undefined) => {
 		if (!$selectedForm) return
-		const target = e.target as HTMLInputElement
-		const checked = target.checked
 		if (formField) {
 			formField.filter = checked ? formField.filter ?? [] : null
 		}
@@ -74,10 +74,8 @@
 		}
 	}
 
-	const onRquiredChange = (e: Event) => {
-		const target = e.target as HTMLInputElement
-
-		setFormFieldsRequirements(target.checked)
+	const onRquiredChange = (checked: boolean | undefined) => {
+		setFormFieldsRequirements(!!checked)
 	}
 
 	$: formField = $selectedForm?.fields.value.get(field.id.value)
@@ -98,8 +96,8 @@
 					<i class="ti ti-eye-closed" />
 				</button>
 			{/if}
-			<Label class="leading-5" for={field.id.value} data-field-id={field.id.value}>
-				<div class="inline-flex items-center gap-2">
+			<Label class="leading-5" for={field.id.value}>
+				<div class="inline-flex items-center gap-2" data-field-id={field.id.value}>
 					<FieldIcon type={field.type} size={16} />
 					<span>
 						{field.name.value}
@@ -112,20 +110,21 @@
 			<CellInput class="w-full" {field} />
 			<div class="flex items-center justify-end gap-2">
 				{#if !isFirst}
-					<Toggle size="small" checked={open} on:change={onChange}>
+					<Label class="inline-flex items-center gap-2">
+						<Switch checked={open} onCheckedChange={onChange}></Switch>
 						{$t('show form conditions')}
-					</Toggle>
+					</Label>
 				{/if}
 
 				{#if !field.controlled}
-					<Toggle
-						size="small"
-						disabled={field.required}
-						checked={$selectedForm.fields.isRequired(field.id.value)}
-						on:change={(e) => onRquiredChange(e)}
-					>
+					<Label class="inline-flex items-center gap-2">
+						<Switch
+							disabled={field.required}
+							checked={$selectedForm.fields.isRequired(field.id.value)}
+							onCheckedChange={(checked) => onRquiredChange(checked)}
+						></Switch>
 						{$t('Required', { ns: 'common' })}
-					</Toggle>
+					</Label>
 				{/if}
 			</div>
 			{#if open}
@@ -135,14 +134,14 @@
 						let:add
 						fieldFilter={(field) => previousFields.includes(field.id)}
 					>
-						<Button on:click={add} class="w-full mt-2" size="xs" color="alternative">
+						<Button on:click={add} class="w-full mt-2" size="sm" variant="outline">
 							{$t('Create New Filter')}
 						</Button>
 					</FilterEditor>
 
 					<div class="flex justify-end">
 						<Button
-							size="xs"
+							size="sm"
 							on:click={() => {
 								setFormFieldFilter()
 							}}
