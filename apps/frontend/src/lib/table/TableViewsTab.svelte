@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getTable, getView } from '$lib/store/table'
-	import { Dropdown, DropdownItem, Radio, Tooltip } from 'flowbite-svelte'
+	import * as Tooltip from '$lib/components/ui/tooltip'
 	import TableViewTabItem from './TableViewTabItem.svelte'
 	import { t } from '$lib/i18n'
 	import Sortable from 'sortablejs'
@@ -12,6 +12,8 @@
 	import type { IViewDisplayType } from '@undb/core'
 	import { sidebarCollapsed } from '$lib/store/ui'
 	import { hasPermission } from '$lib/store/authz'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { Button } from '$components/ui/button'
 
 	const table = getTable()
 	const currentView = getView()
@@ -77,10 +79,16 @@
 >
 	{#if $sidebarCollapsed}
 		<div class="ml-2">
-			<button on:click={() => ($sidebarCollapsed = false)}>
-				<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500 dark:hover:text-gray-100" />
-			</button>
-			<Tooltip placement="bottom">meta + b</Tooltip>
+			<Tooltip.Root>
+				<Tooltip.Trigger>
+					<button on:click={() => ($sidebarCollapsed = false)}>
+						<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500 dark:hover:text-gray-100" />
+					</button>
+				</Tooltip.Trigger>
+				<Tooltip.Content>
+					<p>meta + b</p>
+				</Tooltip.Content>
+			</Tooltip.Root>
 		</div>
 	{/if}
 	<ul bind:this={el} class="flex flex-wrap space-x-2">
@@ -91,32 +99,34 @@
 		{/each}
 	</ul>
 	{#if $hasPermission('table:create_view')}
-		<button class="w-7 h-7 hover:bg-gray-100 transition dark:hover:bg-[unset]">
-			<i class="ti ti-plus text-gray-500 dark:hover:text-gray-100 dark:text-gray-400" />
-		</button>
-		<Dropdown style="z-index: 50;" bind:open class="z-[99999] w-48">
-			{#each items as item}
-				<DropdownItem>
-					<Radio
-						custom
-						value={item.value}
-						bind:group={value}
-						on:click={() =>
-							$createView.mutate({
-								tableId: $table.id.value,
-								view: {
-									name: $t('view n', { n: views.length + 1 }),
-									displayType: item.value,
-								},
-							})}
-					>
-						<div role="button" class="flex items-center w-full h-full gap-2">
-							<ViewIcon type={item.value} />
-							{$t(item.value)}
-						</div>
-					</Radio>
-				</DropdownItem>
-			{/each}
-		</Dropdown>
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger asChild let:builder>
+				<Button size="icon" builders={[builder]} variant="ghost" class="w-7 h-7">
+					<i class="ti ti-plus"></i>
+				</Button>
+			</DropdownMenu.Trigger>
+			<DropdownMenu.Content class="w-48">
+				<DropdownMenu.Group>
+					{#each items as item}
+						<DropdownMenu.Item
+							on:m-click={() => {
+								$createView.mutate({
+									tableId: $table.id.value,
+									view: {
+										name: $t('view n', { n: views.length + 1 }),
+										displayType: item.value,
+									},
+								})
+							}}
+						>
+							<div role="button" class="flex items-center w-full h-full gap-2">
+								<ViewIcon type={item.value} />
+								{$t(item.value)}
+							</div>
+						</DropdownMenu.Item>
+					{/each}
+				</DropdownMenu.Group>
+			</DropdownMenu.Content>
+		</DropdownMenu.Root>
 	{/if}
 </section>

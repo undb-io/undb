@@ -3,16 +3,15 @@
 	import { getTable, getView } from '$lib/store/table'
 	import { page } from '$app/stores'
 	import ViewIcon from '$lib/view/ViewIcon.svelte'
-	import { Dropdown, DropdownDivider, DropdownItem } from 'flowbite-svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { ViewVO, ViewName, type IExportType, FormId } from '@undb/core'
 	import { tick } from 'svelte'
 	import { goto, invalidate } from '$app/navigation'
-	import Portal from 'svelte-portal'
 	import { t } from '$lib/i18n'
 	import { selectedFormId } from '$lib/store/drawer'
 	import { formEditorModal } from '$lib/store/modal'
 	import { hasPermission } from '$lib/store/authz'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 
 	const table = getTable()
 	const currentView = getView()
@@ -150,75 +149,88 @@
 				<span title={view.name.value} class="truncate">{view.name.value}</span>
 			{/if}
 		</span>
+
 		{#if active}
-			<span id={view.id.value} class="w-4 inline-block" on:click|preventDefault|stopPropagation={() => (open = true)}>
-				<i class="ti ti-dots" />
-			</span>
+			<DropdownMenu.Root bind:open>
+				<DropdownMenu.Trigger>
+					<span id={view.id.value} class="w-4 inline-block">
+						<i class="ti ti-dots" />
+					</span>
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content class="w-48">
+					<DropdownMenu.Group>
+						{#if $hasPermission('table:update_view_name')}
+							<DropdownMenu.Item
+								on:m-click={() => (updating = true)}
+								class="text-xs font-normal flex items-center gap-2"
+							>
+								<i class="ti ti-pencil text-gray-600 dark:text-gray-50" />
+								<span>{$t('Update View Name')}</span>
+							</DropdownMenu.Item>
+						{/if}
+						{#if $hasPermission('table:duplicate_view')}
+							<DropdownMenu.Item on:m-click={duplicateView} class="text-xs font-normal flex items-center gap-2">
+								<i class="ti ti-copy text-gray-600 dark:text-gray-50" />
+								<span>{$t('Duplicate View')}</span>
+							</DropdownMenu.Item>
+						{/if}
+						{#if $hasPermission('table:export')}
+							<DropdownMenu.Sub>
+								<DropdownMenu.SubTrigger>
+									<span class="text-xs font-normal flex items-center gap-2">
+										<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
+										{$t('Export')}
+									</span>
+								</DropdownMenu.SubTrigger>
+								<DropdownMenu.SubContent>
+									<DropdownMenu.Item
+										on:m-click={() => exportGrid('csv')}
+										class="text-xs font-normal flex items-center gap-2"
+									>
+										<i class="ti ti-csv text-gray-600 dark:text-gray-50" />
+										<span>{$t('Export CSV')}</span>
+									</DropdownMenu.Item>
+									<DropdownMenu.Item
+										on:m-click={() => exportGrid('excel')}
+										class="text-xs font-normal flex items-center gap-2"
+									>
+										<i class="ti ti-file-spreadsheet text-gray-600 dark:text-gray-50" />
+										<span>{$t('Export Excel')}</span>
+									</DropdownMenu.Item>
+									<DropdownMenu.Item
+										on:m-click={() => exportGrid('json')}
+										class="text-xs font-normal flex items-center gap-2"
+									>
+										<i class="ti ti-json text-gray-600 dark:text-gray-50" />
+										<span>{$t('Export Json')}</span>
+									</DropdownMenu.Item>
+								</DropdownMenu.SubContent>
+							</DropdownMenu.Sub>
+						{/if}
+						{#if $hasPermission('table:create_form')}
+							<DropdownMenu.Item
+								on:m-click={() => {
+									createFormFromView()
+								}}
+								class="text-xs font-normal flex items-center gap-2"
+							>
+								<i class="ti ti-clipboard-text text-gray-600 dark:text-gray-50" />
+								<span>{$t('create form from view')}</span>
+							</DropdownMenu.Item>
+						{/if}
+						{#if $table.views.count > 1 && $hasPermission('table:delete_view')}
+							<DropdownMenu.Separator />
+							<DropdownMenu.Item
+								class="text-red-500 text-xs font-normal flex items-center gap-2"
+								on:m-click={deleteView}
+							>
+								<i class="ti ti-trash" />
+								<span>{$t('Delete View')}</span>
+							</DropdownMenu.Item>
+						{/if}
+					</DropdownMenu.Group>
+				</DropdownMenu.Content>
+			</DropdownMenu.Root>
 		{/if}
 	</a>
-	{#if active}
-		<Portal target="body">
-			<Dropdown style="z-index: 50;" triggeredBy={`#${view.id.value}`} bind:open class="!z-[9999999] w-48">
-				{#if $hasPermission('table:update_view_name')}
-					<DropdownItem on:click={() => (updating = true)} class="text-xs font-normal inline-flex items-center gap-2">
-						<i class="ti ti-pencil text-gray-600 dark:text-gray-50" />
-						<span>{$t('Update View Name')}</span>
-					</DropdownItem>
-				{/if}
-				{#if $hasPermission('table:duplicate_view')}
-					<DropdownItem on:click={duplicateView} class="text-xs font-normal inline-flex items-center gap-2">
-						<i class="ti ti-copy text-gray-600 dark:text-gray-50" />
-						<span>{$t('Duplicate View')}</span>
-					</DropdownItem>
-				{/if}
-				{#if $hasPermission('table:export')}
-					<DropdownItem class="flex items-center justify-between">
-						<span class="text-xs font-normal inline-flex items-center gap-2">
-							<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
-							{$t('Export')}
-						</span>
-						<i class="ti ti-chevron-right" />
-					</DropdownItem>
-					<Dropdown style="z-index: 50;" placement="right-start" class="w-48">
-						<DropdownItem on:click={() => exportGrid('csv')} class="text-xs font-normal inline-flex items-center gap-2">
-							<i class="ti ti-csv text-gray-600 dark:text-gray-50" />
-							<span>{$t('Export CSV')}</span>
-						</DropdownItem>
-						<DropdownItem
-							on:click={() => exportGrid('excel')}
-							class="text-xs font-normal inline-flex items-center gap-2"
-						>
-							<i class="ti ti-file-spreadsheet text-gray-600 dark:text-gray-50" />
-							<span>{$t('Export Excel')}</span>
-						</DropdownItem>
-						<DropdownItem
-							on:click={() => exportGrid('json')}
-							class="text-xs font-normal inline-flex items-center gap-2"
-						>
-							<i class="ti ti-json text-gray-600 dark:text-gray-50" />
-							<span>{$t('Export Json')}</span>
-						</DropdownItem>
-					</Dropdown>
-				{/if}
-				{#if $hasPermission('table:create_form')}
-					<DropdownItem
-						on:click={() => {
-							createFormFromView()
-						}}
-						class="text-xs font-normal inline-flex items-center gap-2"
-					>
-						<i class="ti ti-clipboard-text text-gray-600 dark:text-gray-50" />
-						<span>{$t('create form from view')}</span>
-					</DropdownItem>
-				{/if}
-				{#if $table.views.count > 1 && $hasPermission('table:delete_view')}
-					<DropdownDivider />
-					<DropdownItem class="text-red-600 text-xs font-normal inline-flex items-center gap-2" on:click={deleteView}>
-						<i class="ti ti-trash" />
-						<span>{$t('Delete View')}</span>
-					</DropdownItem>
-				{/if}
-			</Dropdown>
-		</Portal>
-	{/if}
 </div>

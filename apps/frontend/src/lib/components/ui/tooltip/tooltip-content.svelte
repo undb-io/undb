@@ -17,6 +17,4 @@
 		className,
 	)}
 	{...$$restProps}
->
-	<slot />
-</TooltipPrimitive.Content>
+></TooltipPrimitive.Content>
