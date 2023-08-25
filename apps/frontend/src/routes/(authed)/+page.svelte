@@ -1,6 +1,5 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Button, ButtonGroup, Dropdown, DropdownItem, Tooltip } from 'flowbite-svelte'
 	import type { LayoutData } from './$types'
 	import Empty from '$lib/table/Empty.svelte'
 	import { t } from '$lib/i18n'
@@ -8,6 +7,9 @@
 	import { sidebarCollapsed } from '$lib/store/ui'
 	import { hasPermission } from '$lib/store/authz'
 	import * as Card from '$lib/components/ui/card'
+	import { Button } from '$components/ui/button'
+	import * as DropdownMenu from '$components/ui/dropdown-menu'
+	import * as Tooltip from '$components/ui/tooltip'
 
 	export let data: LayoutData
 
@@ -24,32 +26,40 @@
 <nav class="bg-white border-b h-16 px-5 py-4 border-gray-200 dark:bg-gray-900 dark:border-gray-600">
 	{#if $sidebarCollapsed}
 		<div class="fixed top-5 left-3">
-			<button on:click={() => ($sidebarCollapsed = false)}>
-				<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
-			</button>
-			<Tooltip placement="right" class="w-24">meta + b</Tooltip>
+			<Tooltip.Root>
+				<Tooltip.Trigger asChild let:builder>
+					<Button variant="ghost" builders={[builder]} on:click={() => ($sidebarCollapsed = false)}>
+						<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
+					</Button>
+				</Tooltip.Trigger>
+				<Tooltip.Content sideOffset={1}>
+					<p class="w-24">meta + b</p>
+				</Tooltip.Content>
+			</Tooltip.Root>
 		</div>
 	{/if}
 
 	<div class="w-full flex justify-end" id="navbar-default">
 		{#if $hasPermission('table:create')}
-			<ButtonGroup>
-				<Button size="sm" on:click={() => createTableModal.open()}>
-					<i class="ti ti-plus text-sm mr-3" />
-					{$t('Create New Table')}
-				</Button>
-				<Button size="sm">
-					<i class="ti ti-chevron-down" />
-				</Button>
-				<Dropdown style="z-index: 50;" placement="bottom" class="w-[200px]">
-					<DropdownItem on:click={() => importDataModal.open()} class="flex items-center gap-2">
+			<Button size="sm" variant="outline" on:click={() => createTableModal.open()}>
+				<i class="ti ti-plus text-sm mr-3" />
+				{$t('Create New Table')}
+			</Button>
+			<DropdownMenu.Root>
+				<DropdownMenu.Trigger>
+					<Button size="sm" variant="outline">
+						<i class="ti ti-chevron-down" />
+					</Button>
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content>
+					<DropdownMenu.Item on:m-click={() => importDataModal.open()} class="flex items-center gap-2">
 						<i class="ti ti-csv" />
 						<span>
 							{$t('import data content')}
 						</span>
-					</DropdownItem>
-				</Dropdown>
-			</ButtonGroup>
+					</DropdownMenu.Item>
+				</DropdownMenu.Content>
+			</DropdownMenu.Root>
 		{/if}
 	</div>
 </nav>

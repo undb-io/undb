@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, A, Toast } from 'flowbite-svelte'
+	import { A, Toast } from 'flowbite-svelte'
 	import type { PageData } from './$types'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { goto } from '$app/navigation'
@@ -8,6 +8,9 @@
 	import { page } from '$app/stores'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
+	import { Button } from '$components/ui/button'
+	import { Input } from '$components/ui/input'
+	import { Label } from '$components/ui/label'
 
 	export let data: PageData
 
@@ -49,7 +52,7 @@
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
 	<div class="sm:mx-auto sm:w-full sm:max-w-sm">
 		<img class="mx-auto h-10 w-auto" src={logo} alt="undb" />
-		<h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+		<h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-gray-100">
 			{$t('register to undb', { ns: 'auth' })}
 		</h2>
 	</div>
@@ -57,11 +60,11 @@
 	<div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
 		<form class="space-y-6" action="/register" method="POST" use:enhance>
 			<div>
-				<label for="email" class="block text-sm font-medium leading-6 text-gray-900"
-					>{$t('email', { ns: 'auth' })}</label
+				<Label for="email" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+					>{$t('email', { ns: 'auth' })}</Label
 				>
 				<div class="mt-2">
-					<input
+					<Input
 						id="email"
 						name="email"
 						type="email"
@@ -75,11 +78,11 @@
 			</div>
 
 			<div>
-				<label for="email" class="block text-sm font-medium leading-6 text-gray-900"
-					>{$t('password', { ns: 'auth' })}</label
+				<Label for="email" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+					>{$t('password', { ns: 'auth' })}</Label
 				>
 				<div class="mt-2">
-					<input
+					<Input
 						id="password"
 						name="password"
 						type="password"
@@ -93,13 +96,13 @@
 			</div>
 
 			<div>
-				<Button type="submit" class="w-full">{$t('register', { ns: 'auth' })}</Button>
+				<Button size="sm" type="submit" class="w-full">{$t('register', { ns: 'auth' })}</Button>
 			</div>
 		</form>
 
 		<p class="mt-10 text-center text-sm text-gray-500">
 			{$t('has account', { ns: 'auth' })}
-			<A class="ml-1" href="/login">{$t('login', { ns: 'auth' })}</A>
+			<a class="ml-1 text-primary" href="/login">{$t('login', { ns: 'auth' })}</a>
 		</p>
 	</div>
 </div>
