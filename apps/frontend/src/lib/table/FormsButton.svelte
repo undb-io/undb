@@ -4,4 +4,7 @@
 	import { Button } from '$components/ui/button'
 </script>
 
-<Button size="sm" on:click={() => formListDrawer.open()} class="whitespace-nowrap">{$t('forms')}</Button>
+<Button size="sm" on:click={() => formListDrawer.open()} class="whitespace-nowrap gap-2">
+	<i class="ti ti-clipboard-text"></i>
+	{$t('forms')}
+</Button>

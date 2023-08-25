@@ -12,7 +12,7 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button builders={[builder]} variant="ghost">
+		<Button builders={[builder]} variant="ghost" size="icon" class="w-7 h-7">
 			<i class="ti ti-dots dark:text-gray-50"></i>
 		</Button>
 	</DropdownMenu.Trigger>
