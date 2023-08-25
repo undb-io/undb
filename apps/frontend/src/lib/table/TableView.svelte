@@ -22,7 +22,6 @@
 	} from '$lib/store/table'
 	import { invalidate } from '$app/navigation'
 	import FieldMenu from '$lib/field/FieldMenu.svelte'
-	import Portal from 'svelte-portal'
 	import { onMount, tick } from 'svelte'
 	import { editors } from '$lib/cell/CellEditors/editors'
 	import { t } from '$lib/i18n'
@@ -32,6 +31,7 @@
 	import { recordSelection, selectedCount, selectedRecords } from '$lib/store/record'
 	import { getColumnTemplate } from '$lib/field/field-template'
 	import { hasPermission } from '$lib/store/authz'
+	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -325,18 +325,16 @@
 
 {#if fieldMenuDOMId}
 	{#key fieldMenuDOMId}
-		<Portal target="body">
-			<Dropdown
-				style="z-index: 50;"
-				open
-				triggeredBy={`#${fieldMenuDOMId}`}
-				class="w-[250px] border border-gray-200 dark:border-0 dark:shadow-md rounded-md z-[99999]"
-			>
-				{#if $hasPermission('table:update_field')}
-					<FieldMenu {togglePin} />
-				{/if}
-			</Dropdown>
-		</Portal>
+		<Dropdown
+			style="z-index: 50;"
+			open
+			triggeredBy={`#${fieldMenuDOMId}`}
+			class="w-[250px] border border-gray-200 dark:border-0 dark:shadow-md rounded-md z-[99999]"
+		>
+			{#if $hasPermission('table:update_field')}
+				<FieldMenu {togglePin} />
+			{/if}
+		</Dropdown>
 	{/key}
 {/if}
 
@@ -376,47 +374,25 @@
 	</div>
 </Modal>
 
-<Portal target="body">
-	<Modal bind:open={$confirmDeleteField} size="xs">
-		<div class="text-center">
-			<svg
-				aria-hidden="true"
-				class="mx-auto mb-4 w-14 h-14 text-gray-400 dark:text-gray-200"
-				fill="none"
-				stroke="currentColor"
-				viewBox="0 0 24 24"
-				xmlns="http://www.w3.org/2000/svg"
-				><path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-				/></svg
-			>
-			<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-200">
-				{$t('Confirm Delete Field')}
-			</h3>
-			<Button
-				color="red"
-				class="mr-2 gap-2 whitespace-nowrap"
-				disabled={$deleteField.isLoading}
-				on:click={() => {
+<AlertDialog.Root bind:open={$confirmDeleteField}>
+	<AlertDialog.Content>
+		<AlertDialog.Header>
+			<AlertDialog.Title>{$t('Confirm Delete Field')}</AlertDialog.Title>
+		</AlertDialog.Header>
+		<AlertDialog.Footer>
+			<AlertDialog.Cancel>{$t('Confirm No', { ns: 'common' })}</AlertDialog.Cancel>
+			<AlertDialog.Action
+				on:m-click={() => {
 					if ($field) {
 						$deleteField.mutate({ tableId: $table.id.value, id: $field.id.value })
 					}
 				}}
 			>
-				{#if $deleteField.isLoading}
-					<Spinner size="xs" />
-				{:else}
-					<i class="ti ti-circle-check text-lg" />
-				{/if}
-				{$t('Confirm Yes', { ns: 'common' })}</Button
-			>
-			<Button color="alternative">{$t('Confirm No', { ns: 'common' })}</Button>
-		</div>
-	</Modal>
-</Portal>
+				{$t('Confirm Yes', { ns: 'common' })}
+			</AlertDialog.Action>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>
 
 <style>
 	:global(revo-grid[theme='compact'] revogr-header .header-rgRow) {
