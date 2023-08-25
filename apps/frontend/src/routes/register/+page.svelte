@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { A, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
 	import type { PageData } from './$types'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { goto } from '$app/navigation'
