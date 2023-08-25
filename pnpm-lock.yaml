@@ -466,9 +466,6 @@ importers:
       '@revolist/svelte-datagrid':
         specifier: ^3.2.16
         version: 3.2.16
-      '@rgossiaux/svelte-headlessui':
-        specifier: ^2.0.0
-        version: 2.0.0(svelte@4.2.0)
       '@sveltejs/adapter-auto':
         specifier: ^2.1.0
         version: 2.1.0(@sveltejs/kit@1.23.0)
@@ -5432,14 +5429,6 @@ packages:
     dependencies:
       '@revolist/revogrid': 3.6.16
       '@stencil/core': 2.17.4
-    dev: true
-
-  /@rgossiaux/svelte-headlessui@2.0.0(svelte@4.2.0):
-    resolution: {integrity: sha512-ksh245HqMM8yqkzd/OyAK2FCHZYOSA3ldLIHab7C9S60FmifqT24JFVgi8tZpsDEMk3plbfQvfah93n5IEi8sg==}
-    peerDependencies:
-      svelte: ^3.47.0
-    dependencies:
-      svelte: 4.2.0
     dev: true
 
   /@rollup/pluginutils@4.2.1:
