@@ -54,7 +54,7 @@
 </script>
 
 <Dialog.Root bind:open={$createRecordModal.open}>
-	<Dialog.Content class="!w-1/2 max-w-none">
+	<Dialog.Content class="!w-1/2 max-w-none max-h-[98%] overflow-y-auto">
 		<Dialog.Header>
 			<Dialog.Title>{$t('Create New Record')}</Dialog.Title>
 		</Dialog.Header>

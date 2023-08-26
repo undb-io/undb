@@ -129,7 +129,7 @@
 </script>
 
 <Dialog.Root bind:open={$importDataModal.open}>
-	<Dialog.Content class="overflow-y-auto !w-1/2 max-w-none">
+	<Dialog.Content class="overflow-y-auto !w-1/2 max-w-none max-h-[98%]">
 		<Dialog.Header>
 			<Dialog.Title>{$t('import data')}</Dialog.Title>
 		</Dialog.Header>
